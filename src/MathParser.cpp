@@ -160,7 +160,11 @@ MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol)
 {
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
+#if wxUSE_UNICODE
     wxString str((const char*)(node->content), *wxConvCurrent);
+#else
+    wxString str((const char*)(node->content));
+#endif
     cell->SetValue(wxString(str));
     cell->SetStyle(m_ParserStyle);
     cell->SetSymbol(symbol);
@@ -299,7 +303,11 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
   while (node) {
     // Parse tags
     if (node->type == XML_ELEMENT_NODE) {
+#if wxUSE_UNICODE
       wxString tagName((const char*)(node->name), *wxConvCurrent);
+#else
+      wxString tagName((const char*)(node->name));
+#endif
       if (tagName == wxT("mfrac")) {
         if (cell == NULL)
           cell = ParseFracTag(node);
@@ -490,7 +498,11 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
     free(buf);
 #else
-    xmlDocPtr doc = xmlParseMemory(s.mb_str(*wxConvCurrent), s.Length());
+    s = wxT("<?xml version=\"1.0\" encoding=\"") +
+        wxLocale::GetSystemEncodingName() +
+        wxT("\"?>") +
+        s;
+    xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());
 #endif
     if (doc != NULL) {
       cell = ParseTag(xmlDocGetRootElement(doc));

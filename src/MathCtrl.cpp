@@ -200,10 +200,6 @@ void MathCtrl::Recalculate(bool scroll)
  */
 void MathCtrl::Recalculate(MathCell *cell, bool scroll)
 {
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
-  wxMemoryDC dc;
   RecalculateWidths(cell);
   BreakLines(cell);
   RecalculateSize(cell);
@@ -225,7 +221,7 @@ void MathCtrl::RecalculateWidths(MathCell* tmp)
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
   
-  wxMemoryDC dc;
+  wxClientDC dc(this);
   CellParser parser(dc);
   while (tmp != NULL) {
     tmp->RecalculateWidths(parser, fontsize, false);
@@ -248,7 +244,7 @@ void MathCtrl::RecalculateSize(MathCell* tmp)
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
   
-  wxMemoryDC dc;
+  wxClientDC dc(this);
   CellParser parser(dc);
   while (tmp != NULL) {
     tmp->RecalculateSize(parser, fontsize, false);
