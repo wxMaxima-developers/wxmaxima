@@ -97,9 +97,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   SetupFontList();
   const wxString m_styleFor_choices[] = {
     _("Normal text"),  _("Hidden groups"), _("Main prompts"),
-    _("Other prompts"), _("Input"), _("Labels"), _("Special constants")
+    _("Other prompts"), _("Input"), _("Labels"), _("Special constants"),
+    _("Background")
   };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxT(""), wxDefaultPosition, wxSize(150, -1), 7, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxT(""), wxDefaultPosition, wxSize(150, -1), 8, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   const wxString m_styleColor_choices[] = {    
     _("aquamarine"), _("black"), _("blue"), _("blue violet"),
     _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
@@ -120,9 +121,9 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     _("wheat"), _("white"), _("yellow"), _("yellow green")
   };
   m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxT(""), wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
-  m_styleBold = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
-  m_styleItalic = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
-  m_styleUnderlined = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
+  m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
+  m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
+  m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
   m_buttonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
   m_buttonOK = new wxButton(this, wxID_OK, _("OK"));
   
@@ -248,9 +249,9 @@ void Config::do_layout()
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(m_styleColor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_styleBold, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_styleItalic, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_styleUnderlined, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_boldCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_italicCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_underlinedCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
   notebook_1_pane_2->SetAutoLayout(true);
@@ -327,6 +328,10 @@ void Config::ReadStyles()
   wxString font;
   config->Read(wxT("Style/fontname"), &font);
   m_fontFamily->SetValue(font);
+  
+  m_styleBackground.color = wxT("white");
+  config->Read(wxT("Style/Background/color"),
+               &m_styleBackground.color);
 
   // Normal text
   m_styleNormalText.color = wxT("black");
@@ -428,14 +433,17 @@ void Config::ReadStyles()
     if (m_styleNormalText.color == colorlist[i])
       break;
   m_styleColor->SetSelection(i);
-  m_styleBold->SetValue(m_styleNormalText.bold);
-  m_styleItalic->SetValue(m_styleNormalText.italic);
-  m_styleUnderlined->SetValue(m_styleNormalText.underlined);
+  m_boldCB->SetValue(m_styleNormalText.bold);
+  m_italicCB->SetValue(m_styleNormalText.italic);
+  m_underlinedCB->SetValue(m_styleNormalText.underlined);
 }
 
 void Config::WriteStyles()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
+  
+  config->Write(wxT("Style/Background/color"),
+                m_styleBackground.color);
   
   config->Write(wxT("Style/fontname"), m_fontFamily->GetValue());
   // Normal text
@@ -518,8 +526,9 @@ void Config::OnChangeColor(wxCommandEvent& event)
 void Config::OnChangeStyle(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
+  int st = m_styleFor->GetSelection();
   
-  if (m_styleFor->GetSelection() == 1 || m_styleFor->GetSelection() == 6)
+  if (st == 1 || st == 6)
     m_styleColor->Enable(false);
   else {
     m_styleColor->Enable(true);
@@ -530,18 +539,29 @@ void Config::OnChangeStyle(wxCommandEvent& event)
     if (i<COLORLIST_LENGTH)
       m_styleColor->SetSelection(i);
   }
-  m_styleBold->SetValue(tmp->bold);
-  m_styleItalic->SetValue(tmp->italic);
-  m_styleUnderlined->SetValue(tmp->underlined);
+  
+  if (st == 7) {
+    m_boldCB->Enable(false);
+    m_italicCB->Enable(false);
+    m_underlinedCB->Enable(false);
+  }
+  else {
+    m_boldCB->Enable(true);
+    m_italicCB->Enable(true);
+    m_underlinedCB->Enable(true);
+    m_boldCB->SetValue(tmp->bold);
+    m_italicCB->SetValue(tmp->italic);
+    m_underlinedCB->SetValue(tmp->underlined);
+  }
 }
 
 void Config::OnCheckbox(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
   
-  tmp->bold = m_styleBold->GetValue();
-  tmp->italic = m_styleItalic->GetValue();
-  tmp->underlined = m_styleUnderlined->GetValue();
+  tmp->bold = m_boldCB->GetValue();
+  tmp->italic = m_italicCB->GetValue();
+  tmp->underlined = m_underlinedCB->GetValue();
 }
 
 class FixedFonts : public wxFontEnumerator
@@ -593,6 +613,9 @@ style* Config::GetStylePointer()
       break;
     case 6:
       tmp = &m_styleSpecial;
+      break;
+    case 7:
+      tmp = &m_styleBackground;
       break;
     default:
       tmp = &m_styleNormalText;

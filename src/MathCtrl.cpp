@@ -83,8 +83,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     m_memory = new wxBitmap(sz.x, sz.y);
   
   // Prepare memory DC
+  wxString bgColStr = wxT("white");
+  config->Read(wxT("Style/Background/color"), &bgColStr);
+  SetBackgroundColour(wxTheColourDatabase->Find(bgColStr));
   dcm.SelectObject(*m_memory);
-  dcm.SetBackground(wxBrush(GetBackgroundColour(), wxSOLID));
+  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
   dcm.Clear();
   PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);

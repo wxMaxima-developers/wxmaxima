@@ -73,16 +73,17 @@ protected:
   wxComboBox* m_fontFamily;
   wxComboBox* m_styleFor;
   wxComboBox* m_styleColor;
-  wxCheckBox* m_styleBold;
-  wxCheckBox* m_styleItalic;
-  wxCheckBox* m_styleUnderlined;
+  wxCheckBox* m_boldCB;
+  wxCheckBox* m_italicCB;
+  wxCheckBox* m_underlinedCB;
   wxCheckBox* m_fixedFontInTC;
   wxPanel* notebook_1_pane_2;
   wxNotebook* notebook_1;
   wxButton* m_buttonOK;
   wxButton* m_buttonCancel;
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
-        m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput;
+        m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
+        m_styleBackground;
   // end wxGlade
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
