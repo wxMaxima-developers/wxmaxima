@@ -29,6 +29,8 @@
 #include "maximaicon.xpm"
 #endif
 
+#include "ok.xpm"
+
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
                              long style):
@@ -406,12 +408,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                                 wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|
                                 wxTE_RICH);
   button_0 = new wxBitmapButton(panel, button_enter,
-                                wxArtProvider::GetBitmap(wxART_TICK_MARK,
-                                                         wxART_HELP_BROWSER));
+                                wxBitmap(ok_xpm));
   button_1 = new wxBitmapButton(panel, button_long_input,
                                 wxArtProvider::GetBitmap(wxART_NORMAL_FILE,
                                                          wxART_HELP_BROWSER));
-  button_0->SetSize(button_1->GetSize());
   
   // buttons
   button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
