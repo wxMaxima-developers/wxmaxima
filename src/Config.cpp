@@ -23,98 +23,37 @@
 #include <wx/config.h>
 #include <wx/fontenum.h>
 
-struct translations
+// Should match whatever  is put in the m_language
+const int langs[] = 
 {
-  wxString name;
-  wxLanguage code;
+  wxLANGUAGE_DEFAULT,
+  wxLANGUAGE_ENGLISH,
+  wxLANGUAGE_FRENCH,
+  wxLANGUAGE_ITALIAN,
+  wxLANGUAGE_SPANISH
 };
 
 #define LANGUAGE_NUMBER 5
 
-const translations langs[] = 
-{
-  { _("(Use default language)"), wxLANGUAGE_DEFAULT },
-  { _("English"),                wxLANGUAGE_ENGLISH },
-  { _("French"),                 wxLANGUAGE_FRENCH  },
-  { _("Italian"),                wxLANGUAGE_ITALIAN },
-  { _("Spanish"),                wxLANGUAGE_SPANISH }
-};
-
-struct colors
-{
-  wxString name;
-  wxString translation;
-};
-
-const colors colorlist[] = {
-  { wxT("aquamarine"), _("aquamarine") },
-  { wxT("black"), _("black") },
-  { wxT("blue"), _("blue") },
-  { wxT("blue violet"), _("blue violet") },
-  { wxT("brown"),  _("brown") },
-  { wxT("cadet blue"), _("cadet blue") },
-  { wxT("coral"), _("coral") },
-  { wxT("cornflower blue"), _("cornflower blue") },
-  { wxT("cyan"), _("cyan") },
-  { wxT("dark grey"), _("dark grey") },
-  { wxT("dark green"), _("dark green") },
-  { wxT("dark olive green"), _("dark olive green") },
-  { wxT("dark orchid"), _("dark orchid") },
-  { wxT("dark slate blue"), _("dark slate blue") },
-  { wxT("dark slate grey"), _("dark slate grey") },
-  { wxT("dark turquoise"), _("dark turquoise") },
-  { wxT("dim grey"), _("dim grey") },
-  { wxT("firebrick"), _("firebrick") },
-  { wxT("forest green"), _("forest green") },
-  { wxT("gold"), _("gold") },
-  { wxT("goldenrod"), _("goldenrod") },
-  { wxT("grey"), _("grey") },
-  { wxT("green"), _("green") },
-  { wxT("green yellow"), _("green yellow") },
-  { wxT("indian red"), _("indian red") },
-  { wxT("khaki"), _("khaki") },
-  { wxT("light blue"), _("light blue") },
-  { wxT("light grey"), _("light grey") },
-  { wxT("light steel blue"), _("light steel blue") },
-  { wxT("lime green"), _("lime green") },
-  { wxT("magenta"), _("magenta") },
-  { wxT("maroon"), _("maroon") },
-  { wxT("medium aquamarine"), _("medium aquamarine") },
-  { wxT("medium blue"), _("medium blue") },
-  { wxT("medium forrest green"), _("medium forrest green") },
-  { wxT("medium goldenrod"), _("medium goldenrod") },
-  { wxT("medium orchid"), _("medium orchid") },
-  { wxT("medium sea green"), _("medium sea green") },
-  { wxT("medium slate blue"), _("medium slate blue") },
-  { wxT("medium spring green"), _("medium spring green") },
-  { wxT("medium turquoise"), _("medium turquoise") },
-  { wxT("medium violet red"), _("medium violet red") },
-  { wxT("midnight blue"), _("midnight blue") },
-  { wxT("navy"), _("navy") },
-  { wxT("orange"), _("orange") },
-  { wxT("orange red"), _("orange red") },
-  { wxT("orchid"), _("orchid") },
-  { wxT("pale green"), _("pale green") },
-  { wxT("pink"), _("pink") },
-  { wxT("plum"), _("plum") },
-  { wxT("purple"), _("purple") },
-  { wxT("red"), _("red") },
-  { wxT("salmon"), _("salmon") },
-  { wxT("sea green"), _("sea green") },
-  { wxT("sienna"), _("sienna") },
-  { wxT("sky blue"), _("sky blue") },
-  { wxT("slate blue"), _("slate blue") },
-  { wxT("spring green"), _("spring green") },
-  { wxT("steel blue"), _("steel blue") },
-  { wxT("tan"), _("tan") },
-  { wxT("thistle"), _("thistle") },
-  { wxT("turquoise"), _("turquoise") },
-  { wxT("violet"), _("violet") },
-  { wxT("violet red"), _("violet red") },
-  { wxT("wheat"), _("wheat") },
-  { wxT("white"), _("white") },
-  { wxT("yellow"), _("yellow") },
-  { wxT("yellow green"), _("yellow green") }
+const wxString colorlist[] = {
+  wxT("aquamarine"), wxT("black"), wxT("blue"), wxT("blue violet"),
+  wxT("brown"),  wxT("cadet blue"),  wxT("coral"), wxT("cornflower blue"),
+  wxT("cyan"), wxT("dark grey"), wxT("dark green"), wxT("dark olive green"),
+  wxT("dark orchid"), wxT("dark slate blue"), wxT("dark slate grey"),
+  wxT("dark turquoise"), wxT("dim grey"), wxT("firebrick"), wxT("forest green"),
+  wxT("gold"), wxT("goldenrod"), wxT("grey"), wxT("green"), wxT("green yellow"),
+  wxT("indian red"), wxT("khaki"), wxT("light blue"), wxT("light grey"),
+  wxT("light steel blue"), wxT("lime green"), wxT("magenta"), wxT("maroon"),
+  wxT("medium aquamarine"), wxT("medium blue"), wxT("medium forrest green"),
+  wxT("medium goldenrod"), wxT("medium orchid"), wxT("medium sea green"),
+  wxT("medium slate blue"), wxT("medium spring green"), wxT("medium turquoise"),
+  wxT("medium violet red"), wxT("midnight blue"), wxT("navy"), wxT("orange"),
+  wxT("orange red"), wxT("orchid"), wxT("pale green"), wxT("pink"), wxT("plum"),
+  wxT("purple"), wxT("red"), wxT("salmon"), wxT("sea green"), wxT("sienna"),
+  wxT("sky blue"), wxT("slate blue"), wxT("spring green"), wxT("steel blue"),
+  wxT("tan"), wxT("thistle"), wxT("turquoise"), wxT("violet"),
+  wxT("violet red"), wxT("wheat"), wxT("white"), wxT("yellow"),
+  wxT("yellow green")
 };
 
 #define COLORLIST_LENGTH 68
@@ -139,11 +78,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
   const wxString m_language_choices[] = {
-    
+    _("(Use default language)"), _("English"),
+    _("French"),  _("Italian"), _("Spanish")
   };
-  m_language = new wxComboBox(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 0, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
-  for (int i=0; i<LANGUAGE_NUMBER; i++)
-    m_language->Append(langs[i].name);
+  m_language = new wxComboBox(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
@@ -157,21 +95,30 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
   setupFontList();
   const wxString m_styleFor_choices[] = {
-    _("Normal text"),
-    _("Hidden groups"),
-    _("Main prompts"),
-    _("Other prompts"),
-    _("Input"),
-    _("Labels"),
-    _("Special constants")
+    _("Normal text"),  _("Hidden groups"), _("Main prompts"),
+    _("Other prompts"), _("Input"), _("Labels"), _("Special constants")
   };
   m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxT(""), wxDefaultPosition, wxSize(150, -1), 7, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   const wxString m_styleColor_choices[] = {    
-    
+    _("aquamarine"), _("black"), _("blue"), _("blue violet"),
+    _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
+    _("cyan"), _("dark grey"), _("dark green"), _("dark olive green"),
+    _("dark orchid"), _("dark slate blue"), _("dark slate grey"),
+    _("dark turquoise"), _("dim grey"), _("firebrick"), _("forest green"),
+    _("gold"), _("goldenrod"), _("grey"), _("green"), _("green yellow"),
+    _("indian red"), _("khaki"), _("light blue"), _("light grey"),
+    _("light steel blue"), _("lime green"), _("magenta"), _("maroon"),
+    _("medium aquamarine"), _("medium blue"), _("medium forrest green"),
+    _("medium goldenrod"), _("medium orchid"), _("medium sea green"),
+    _("medium slate blue"), _("medium spring green"), _("medium turquoise"),
+    _("medium violet red"), _("midnight blue"), _("navy"), _("orange"),
+    _("orange red"), _("orchid"), _("pale green"), _("pink"), _("plum"),
+    _("purple"), _("red"), _("salmon"), _("sea green"), _("sienna"),
+    _("sky blue"), _("slate blue"), _("spring green"), _("steel blue"),
+    _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
+    _("wheat"), _("white"), _("yellow"), _("yellow green")
   };
-  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxT(""), wxDefaultPosition, wxSize(150, -1), 0, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
-  for (int i=0; i<COLORLIST_LENGTH; i++)
-    m_styleColor->Append(colorlist[i].translation);
+  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxT(""), wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_styleBold = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_styleItalic = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_styleUnderlined = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -222,7 +169,7 @@ void Config::set_properties()
   
   int i=0;
   for (i=0; i<LANGUAGE_NUMBER; i++)
-    if (langs[i].code == lang)
+    if (langs[i] == lang)
       break;
   if (i<LANGUAGE_NUMBER)
     m_language->SetSelection(i);
@@ -343,7 +290,7 @@ void Config::onOk(wxCommandEvent& event)
   
   i = m_language->GetSelection();
   if (i>-1 && i<LANGUAGE_NUMBER) {
-    config->Write(wxT("language"), langs[i].code);
+    config->Write(wxT("language"), langs[i]);
   }
 
   writeStyles();
@@ -475,7 +422,11 @@ void Config::readStyles()
   
   // Set values in dialog
   m_styleFor->SetSelection(0);
-  m_styleColor->SetValue(m_styleNormalText.color);
+  int i=0;
+  for (i=0; i<COLORLIST_LENGTH; i++)
+    if (m_styleNormalText.color == colorlist[i])
+      break;
+  m_styleColor->SetSelection(i);
   m_styleBold->SetValue(m_styleNormalText.bold);
   m_styleItalic->SetValue(m_styleNormalText.italic);
   m_styleUnderlined->SetValue(m_styleNormalText.underlined);
@@ -558,7 +509,7 @@ void Config::onChangeColor(wxCommandEvent& event)
   style* tmp =GetStylePointer();
   
   int i = m_styleColor->GetSelection();
-  tmp->color = colorlist[i].name;
+  tmp->color = colorlist[i];
 }
 
 void Config::onChangeStyle(wxCommandEvent& event)
@@ -571,10 +522,10 @@ void Config::onChangeStyle(wxCommandEvent& event)
     m_styleColor->Enable(true);
     int i=0;
     for (i=0; i<COLORLIST_LENGTH; i++)
-      if (colorlist[i].name == tmp->color)
+      if (colorlist[i] == tmp->color)
         break;
     if (i<COLORLIST_LENGTH)
-      m_styleColor->SetValue(colorlist[i].translation);
+      m_styleColor->SetSelection(i);
   }
   m_styleBold->SetValue(tmp->bold);
   m_styleItalic->SetValue(tmp->italic);
