@@ -102,7 +102,7 @@
 (defun wxxml-stripdollar(sym)
   (or (symbolp sym) 
       (return-from wxxml-stripdollar sym))
-  (let* ((pname (string-left-trim '(#\$) (symbol-name sym)))
+  (let* ((pname (print-invert-case (wxxml-stripdollar1 sym)))
          (pname (string-substitute "&amp;" #\& pname))
          (pname (string-substitute "&gt;" #\> pname))
          (pname (string-substitute "&lt;" #\< pname)))
