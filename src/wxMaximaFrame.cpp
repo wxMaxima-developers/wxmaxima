@@ -57,8 +57,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Autoload a file when it is updated"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_1->AppendSeparator();
+#if defined __WXMSW__
   wxglade_tmp_menu_1->Append(menu_print_setup, _("Print setup"),
                              _("Setup printer"));
+#endif
   wxglade_tmp_menu_1->Append(menu_print, _("&Print\tCtrl-P"),
                              _("Print session"));
   wxglade_tmp_menu_1->AppendSeparator();
