@@ -163,7 +163,7 @@ void Config::set_properties()
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("fontsize"), &fntsz);
-  config->Read(wxT("showLongExpr"), &showLongExpr);
+  config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
   
@@ -280,7 +280,7 @@ void Config::onOk(wxCommandEvent& event)
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize->GetValue());
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
-  config->Write(wxT("showLongExpr"), m_showLong->GetValue());
+  config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
