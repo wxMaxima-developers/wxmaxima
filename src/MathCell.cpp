@@ -116,7 +116,7 @@ int MathCell::GetFullWidth(double scale)
       m_fullWidth = m_width;
     else
       m_fullWidth = m_width + m_nextToDraw->GetFullWidth(scale) +
-                    SCALE_PX(2, scale);
+                    SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_fullWidth;
 }
@@ -131,7 +131,7 @@ int MathCell::GetLineWidth(double scale)
       m_lineWidth = m_width;
     else
       m_lineWidth = m_width + m_nextToDraw->GetLineWidth(scale) +
-                    SCALE_PX(2, scale);
+                    SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_lineWidth;
 }
@@ -146,7 +146,7 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   m_currentPoint.y = point.y;
   if (m_nextToDraw != NULL && all) {
     double scale = parser.GetScale();
-    point.x += m_width + SCALE_PX(2, scale);
+    point.x += m_width + SCALE_PX(MC_CELL_SKIP, scale);
     m_nextToDraw->Draw(parser, point, fontsize, true);
   }
 }

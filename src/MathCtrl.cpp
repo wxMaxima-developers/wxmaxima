@@ -26,6 +26,9 @@
 
 using namespace std;
 
+#define MC_BASE_INDENT 5
+#define MC_LINE_SKIP 5
+
 enum {
   TIMER_ID
 };
@@ -92,8 +95,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   // Draw content
   if (m_tree != NULL) {
     wxPoint point;
-    point.x = 5;
-    point.y = 5 + m_tree->GetMaxCenter();
+    point.x = MC_BASE_INDENT;
+    point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
     dcm.BeginDrawing();
     // Draw tree
     MathCell* tmp = m_tree;
@@ -107,14 +110,14 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         tmp->Draw(parser, point, fontsize, false);
       if (tmp->m_nextToDraw != NULL) {
         if (tmp->m_nextToDraw->BreakLineHere()) {
-          point.x = 5;
+          point.x = MC_BASE_INDENT;
           point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
           if (tmp->m_bigSkip)
-            point.y += 5;
+            point.y += MC_LINE_SKIP;
           drop = tmp->m_nextToDraw->GetMaxDrop();
         }
         else
-          point.x += (tmp->GetWidth() + 2);
+          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       }
       tmp = tmp->m_nextToDraw;
     }
@@ -636,23 +639,23 @@ void MathCtrl::OnKeyUp(wxKeyEvent& event)
 void MathCtrl::GetMaxPoint(int* width, int* height)
 {
   MathCell* tmp = m_tree;
-  int currentHeight = 5;
-  int currentWidth = 5;
-  *width = 5;
-  *height = 5;
+  int currentHeight = MC_BASE_INDENT;
+  int currentWidth = MC_BASE_INDENT;
+  *width = MC_BASE_INDENT;
+  *height = MC_BASE_INDENT;
   bool bigSkip = false;
   while (tmp != NULL) {
     if (tmp->BreakLineHere()) {
       currentHeight += tmp->GetMaxHeight();
       if (bigSkip)
-        currentHeight += 5;
+        currentHeight += MC_LINE_SKIP;
       *height = currentHeight;
-      currentWidth = 5 + tmp->GetWidth();
-      *width = MAX(currentWidth + 5, *width);
+      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+      *width = MAX(currentWidth + MC_BASE_INDENT, *width);
     }
     else {
-      currentWidth += (tmp->GetWidth() + 2);
-      *width = MAX(currentWidth - 2, *width);
+      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+      *width = MAX(currentWidth - MC_CELL_SKIP, *width);
     }
     bigSkip = tmp->m_bigSkip;
     tmp = tmp->m_nextToDraw;
@@ -670,18 +673,18 @@ void MathCtrl::GetMaxPoint(int* width, int* height)
 void MathCtrl::BreakLines(MathCell* tmp)
 {
   int fullWidth = GetClientSize().GetWidth() - 9;
-  int currentWidth = 5;
+  int currentWidth = MC_BASE_INDENT;
     
   while (tmp != NULL) {
     tmp->BreakLine(false);
     tmp->ResetData();
     if (tmp->BreakLineHere() ||
        (currentWidth + tmp->GetWidth() >= fullWidth)) {
-      currentWidth = 5 + tmp->GetWidth();
+      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
       tmp->BreakLine(true);
     }
     else
-      currentWidth += (tmp->GetWidth() + 2);
+      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -691,7 +694,7 @@ void MathCtrl::BreakLines(MathCell* tmp)
  */
 void MathCtrl::AdjustSize(bool scroll)
 {
-  int width = 5, height = 5;
+  int width = MC_BASE_INDENT, height = MC_BASE_INDENT;
   int clientWidth, clientHeight, virtualHeight;
   
   GetClientSize(&clientWidth, &clientHeight);
