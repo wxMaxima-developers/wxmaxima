@@ -82,6 +82,7 @@ MathCell* MathParser::ParseDiffTag(xmlNodePtr node)
     child = child->next;
     if (child) {
       diff->SetBase(ParseTag(child, true));
+      diff->SetStyle(m_ParserStyle);
       return diff;
     }
   }
@@ -102,6 +103,7 @@ MathCell* MathParser::ParseSupTag(xmlNodePtr node)
       MathCell* power = ParseTag(child, false);
       power->SetExponentFlag();
       expt->SetPower(power);
+      expt->SetStyle(m_ParserStyle);
       return expt;
     }
   }
@@ -118,6 +120,7 @@ MathCell* MathParser::ParseSubTag(xmlNodePtr node)
     child = child->next;
     if (child) {
       sub->SetIndex(ParseTag(child, false));
+      sub->SetStyle(m_ParserStyle);
       return sub;
     }
   }
@@ -150,6 +153,7 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
     fun->SetName(ParseTag(child, false));
     child = child->next;
     if (child) {
+      fun->SetStyle(m_ParserStyle);
       fun->SetArg(ParseTag(child, false));
       return fun;
     }
@@ -214,6 +218,7 @@ MathCell* MathParser::ParseLimitTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         limit->SetBase(ParseTag(child, false));
+        limit->SetStyle(m_ParserStyle);
         return limit;
       }
     }
@@ -236,6 +241,7 @@ MathCell* MathParser::ParseSumTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         sum->SetBase(ParseTag(child, false));
+        sum->SetStyle(m_ParserStyle);
         return sum;
       }
     }
@@ -261,6 +267,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
           child = child->next;
           if (child) {
             in->SetVar(ParseTag(child, true));
+            in->SetStyle(m_ParserStyle);
             return in;
           }
         }
@@ -273,6 +280,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         in->SetVar(ParseTag(child, true));
+        in->SetStyle(m_ParserStyle);
         return in;
       }
     }  
@@ -295,6 +303,7 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
     }
     rows = rows->next;
   }
+  matrix->SetStyle(m_ParserStyle);
   matrix->SetDimension();
   return matrix;
 }

@@ -523,18 +523,20 @@ bool MathCtrl::Copy(bool lb)
   if (m_selectionStart == NULL) return false;
   wxString s;
   MathCell* tmp = m_selectionStart;
+  
   while (tmp != NULL) {
-    if (tmp->BreakLineHere() && lb && s.Length()>0)
+    if (lb && tmp->BreakLineHere() && s.Length()>0)
       s += wxT("\n");
-    s += tmp->ToString(false);
-    if (!lb) {
-      s.Trim();
-      s.Trim(false);
+    if (lb && (tmp->GetType() == TC_PROMPT || tmp->GetType() == TC_INPUT)) {
+      if (s.Length()>0 && s.Right(1) != wxT("\n") && s.Right(1) != wxT(" "))
+        s += wxT(" ");
     }
+    s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
     tmp = tmp->GetNext();
   }
+  
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
