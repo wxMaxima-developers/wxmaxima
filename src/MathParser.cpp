@@ -301,6 +301,7 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
 
 MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
 {
+  wxYield();
   MathCell* cell = NULL;
   while (node) {
     // Parse tags
