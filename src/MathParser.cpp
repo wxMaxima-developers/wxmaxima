@@ -501,10 +501,13 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
     free(buf);
 #else
-    s = wxT("<?xml version=\"1.0\" encoding=\"") +
-        wxLocale::GetSystemEncodingName() +
-        wxT("\"?>") +
-        s;
+    wxString encoding = wxLocale::GetSystemEncodingName();
+    if (encoding.Length()>0) {
+      s = wxT("<?xml version=\"1.0\" encoding=\"") +
+          wxLocale::GetSystemEncodingName() +
+          wxT("\"?>") +
+          s;
+    }
     xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());
 #endif
     if (doc != NULL) {
