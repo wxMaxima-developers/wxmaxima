@@ -31,13 +31,16 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Sum"));
   label_2 = new wxStaticText(this, -1, _("Sum of:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"), wxDefaultPosition,
+                              wxSize(110,-1));
   label_4 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("1"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
+                              wxSize(110,-1));
   label_5 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"), wxDefaultPosition,
+                              wxSize(110,-1));
   checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
   checkbox_2 = new wxCheckBox(this, use_nusum_id, _("Nusum"));
   static_line_1 = new wxStaticLine(this, -1);

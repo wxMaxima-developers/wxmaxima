@@ -30,11 +30,13 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Limit"));
   label_2 = new wxStaticText(this, -1, _("Limit of:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("when variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+                              wxSize(110,-1));
   label_4 = new wxStaticText(this, -1, _("goes to:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+                              wxSize(110,-1));
   button_1 = new wxButton(this, special, _("Special"));
   label_5 = new wxStaticText(this, -1, _("from:"));
   const wxString combo_box_1_choices[] = {

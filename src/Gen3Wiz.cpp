@@ -25,6 +25,7 @@
 Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
                  wxString val1, wxString val2, wxString val3,
                  wxWindow* parent, int id, const wxString& title,
+                 bool eq,
                  const wxPoint& pos, const wxSize& size, long style):
   wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -33,9 +34,19 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
   text_ctrl_1 = new BTextCtrl(this, -1, val1, wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, lab2);
-  text_ctrl_2 = new BTextCtrl(this, -1, val2);
+  if (eq)
+    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+                                wxSize(230,-1));
+  else
+    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+                                wxSize(110,-1));
   label_4 = new wxStaticText(this, -1, lab3);
-  text_ctrl_3 = new BTextCtrl(this, -1, val3);
+  if (eq)
+    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+                                wxSize(230,-1));
+  else
+    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+                                wxSize(110,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));

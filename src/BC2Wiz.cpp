@@ -30,19 +30,19 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("BC2"));
   label_2 = new wxStaticText(this, -1, _("Solution:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                                wxSize(200,-1));
+                                wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("At point:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x="), wxDefaultPosition,
-                                wxSize(60,-1));
+                                wxSize(70,-1));
   label_4 = new wxStaticText(this, -1, _("the value is:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("y="), wxDefaultPosition,
-                                wxSize(60,-1));
+                                wxSize(70,-1));
   label_5 = new wxStaticText(this, -1, _("At point:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("x="), wxDefaultPosition,
-                                wxSize(60,-1));
+                                wxSize(70,-1));
   label_6 = new wxStaticText(this, -1, _("the value is:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y="), wxDefaultPosition,
-                                wxSize(60,-1));
+                                wxSize(70,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -64,27 +64,28 @@ void BC2Wiz::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 1, 3, 3);
-  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(2, 4, 3, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 2, 3, 3);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* sizer_4 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
-  sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
-  grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_3->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_3->Add(text_ctrl_2, 0, 0, 0);
-  grid_sizer_3->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_3->Add(text_ctrl_3, 0, 0, 0);
-  grid_sizer_3->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_3->Add(text_ctrl_4, 0, 0, 0);
-  grid_sizer_3->Add(label_6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_3->Add(text_ctrl_5, 0, 0, 0);
-  grid_sizer_2->Add(grid_sizer_3, 1, wxALIGN_CENTER_HORIZONTAL, 0);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  sizer_1->Add(text_ctrl_2, 0, wxALL, 2);
+  sizer_1->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  sizer_1->Add(text_ctrl_3, 0, wxALL, 2);
+  grid_sizer_2->Add(sizer_1, 0, wxALL, 0);
+  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  sizer_2->Add(text_ctrl_4, 0, wxALL, 2);
+  sizer_2->Add(label_6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  sizer_2->Add(text_ctrl_5, 0, wxALL, 2);
+  grid_sizer_2->Add(sizer_2, 0, wxALL, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, 0, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxALL, 2);
-  sizer_1->Add(button_1, 0, wxALL, 2);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
+  sizer_4->Add(button_2, 0, wxALL, 2);
+  sizer_4->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_4, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

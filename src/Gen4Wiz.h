@@ -31,6 +31,7 @@ public:
   Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
           wxString val1, wxString val2, wxString val3, wxString val4,
           wxWindow* parent, int id, const wxString& title,
+          bool eq = false,
           const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize,
           long style=wxDEFAULT_DIALOG_STYLE);

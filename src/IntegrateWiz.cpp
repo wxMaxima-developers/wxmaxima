@@ -34,13 +34,16 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+                              wxSize(110,-1));
   checkbox_1 = new wxCheckBox(this, definite_id, _("Definite integration"));
   label_4 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+                              wxSize(110,-1));
   button_3 = new wxButton(this, special_from, _("Special"));
   label_5 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
+                              wxSize(110,-1));
   button_4 = new wxButton(this, special_to, _("Special"));
   checkbox_2 = new wxCheckBox(this, -1, _("Numerical integration"));
   static_line_1 = new wxStaticLine(this, -1);

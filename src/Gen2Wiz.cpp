@@ -39,7 +39,7 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
                                 wxSize(230,-1));
   else
     text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
-                                wxSize(80,-1));
+                                wxSize(110,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));

@@ -34,14 +34,17 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Series"));
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+                              wxSize(110,-1));
   label_4 = new wxStaticText(this, -1, _("around:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+                              wxSize(110,-1));
   button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("depth:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"), wxDefaultPosition,
+                              wxSize(110,-1));
   checkbox_1 = new wxCheckBox(this, powerseries_id, _("Power series"));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));

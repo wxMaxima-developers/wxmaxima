@@ -40,7 +40,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Plot 2D"));
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   button_3 = new wxButton(this, parametric, _("Parametric"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
@@ -394,9 +394,11 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Parametric plot"));
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""));
+  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT(""));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+                              wxSize(230,-1));
   label_4 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
                               wxSize(30,-1));

@@ -30,13 +30,13 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Substitute"));
   label_2 = new wxStaticText(this, -1, _("Substitute:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                                wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("with:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                                wxSize(180,-1));
+                              wxSize(230,-1));
   label_4 = new wxStaticText(this, -1, _("in:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                                wxSize(180,-1));
+                              wxSize(230,-1));
   checkbox_1 = new wxCheckBox(this, -1, _("Rational"));
   static_line_1 = new wxStaticLine(this, -1);
   button_1 = new wxButton(this, wxID_OK, _("OK"));
