@@ -230,6 +230,10 @@
 (defprop $set wxxml-matchfix wxxml)
 (defprop $set (("<mn>{</mn>")"<mn>}</mn> ") wxxmlsym)
 
+;;($matchfix '${ '$})
+;;(defun ${ (&rest a)
+;; `(($set) ,@a))
+
 (defprop mabs wxxml-matchfix wxxml)
 (defprop mabs (("<mabs>")"</mabs> ") wxxmlsym) 
 
@@ -910,3 +914,44 @@
 		   (return-from $example
 		     `((mlist) ,@ (nreverse all)))
 		   ))))))
+
+;;
+;; Port of Barton Willis's texput function.
+;;
+
+(defun $wxxmlput (e s &optional tx)
+  (cond ((mstringp e)
+	 (setq e (define-symbol (string-left-trim '(#\&) e)))))
+  (cond (($listp s)
+	 (setq s (margs s)))
+	(t
+	 (setq s (list s))))
+  (setq s (mapcar #'stripdollar s))
+  (cond ((null tx)
+	 (putprop e (nth 0 s) 'wxxmlword))
+	
+	((eq tx '$matchfix)
+	 (putprop e 'wxxml-matchfix 'wxxml)
+	 (cond ((< (length s) 2)
+		(merror "Improper 2nd argument to `wxxmlput' for matchfix operator."))
+	       ((eq (length s) 2)
+		(putprop e (list (list (nth 0 s)) (nth 1 s)) 'wxxmlsym))
+	       (t
+		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'wxxmlsym))))
+
+	((eq tx '$prefix)
+	 (putprop e 'wxxml-prefix 'wxxml)
+	 (putprop e s 'wxxmlsym)
+	 (putprop e 200 'wxxml-lbp)
+	 (putprop e 180 'wxxml-rbp))
+		
+	((eq tx '$infix)
+	 (putprop e 'wxxml-infix 'wxxml)
+	 (putprop e  s 'wxxmlsym)
+	 (putprop e 200 'wxxml-lbp)
+	 (putprop e 180 'wxxml-rbp))
+
+	((eq tx '$postfix)
+	 (putprop e 'wxxml-postfix 'wxxml)
+	 (putprop e  s 'wxxmlsym)
+	 (putprop e 160 'wxxml-lbp))))
