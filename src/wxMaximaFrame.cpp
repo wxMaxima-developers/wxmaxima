@@ -319,7 +319,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_5_sub1->Append(menu_factcomb, _("&Combine factorials"),
                              _("Combine factorials in an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(-1, _("Factorials and &gamma"),
+  wxglade_tmp_menu_5->Append(wxNewId(), _("Factorials and &gamma"),
                              wxglade_tmp_menu_5_sub1,
                              _("Functions for simplifying factorials and gamma function"));
   // Trigonometric
@@ -336,7 +336,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("R&ationalize trigonometric"),
                              _("Rationalize trigonometrix expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(-1, _("&Trigonometric simplification"),
+  wxglade_tmp_menu_5->Append(wxNewId(), _("&Trigonometric simplification"),
                              wxglade_tmp_menu_5_sub2,
                              _("Functions for simplifying trigonometric expressions"));
   // Complex
@@ -357,7 +357,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Convert exponential function of imaginary argument to trigonometric form"), wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
                              _("Conver trigonometric functions to exponential form"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(-1, _("&Complex simplification"),
+  wxglade_tmp_menu_5->Append(wxNewId(), _("&Complex simplification"),
                              wxglade_tmp_menu_5_sub3,
                              _("Functions for complex simplification"));
   wxglade_tmp_menu_5->AppendSeparator();
