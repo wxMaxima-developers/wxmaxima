@@ -882,7 +882,12 @@ bool MathCtrl::ExportToHTML(wxString file)
   output.Write(wxT(" <HEAD>\n"));
   output.Write(wxT("  <TITLE>wxMaxima HTML export</TITLE>\n"));
   output.Write(wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">\n"));
-  
+  wxString encoding = wxLocale::GetSystemEncodingName();
+  if (encoding.Length()>0)
+    output.Write(wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=") +
+                 encoding +
+                 wxT("\">\n"));
+
   //
   // Write styles
   //
@@ -907,7 +912,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
   
-  output.Write(wxT("  <STYLE>\n"));
+  output.Write(wxT("  <STYLE TYPE=\"text/css\">\n"));
   
   output.Write(wxT("body {\n"));
   if (font.Length()) {
@@ -1013,7 +1018,7 @@ bool MathCtrl::ExportToHTML(wxString file)
                       start, end))
         return false;
       output.Write(wxT("  <BR>\n"));
-      output.Write(wxT("  <IMG SRC=\"img/") + 
+      output.Write(wxT("  <IMG ALT=\"Result\" SRC=\"img/") + 
                    filename + 
                    wxString::Format(wxT("%d.png\">\n"), count));
       count++;
