@@ -36,6 +36,7 @@ class TextCell : public MathCell
     void RecalculateWidths(CellParser& parser, int fontsize, bool all);
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
     void SetFont(CellParser& parser, int fontsize);
+    void SetForeground(CellParser& parser);
     wxString ToString(bool all);
     wxString GetDiffPart();
     void SetSymbol(bool symbol);

@@ -87,56 +87,10 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
   
-  
   if (DrawThisCell(parser, point) && m_text != wxT("*")) {
     SetFont(parser, fontsize);
-    switch(m_style) {
-      case TC_PROMPT:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
-#endif
-        break;
-      case TC_MAIN_PROMPT:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
-#endif
-        break;
-      case TC_ERROR:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
-#endif
-        break;
-      case TC_INPUT:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
-#endif
-        break;
-      case TC_LABEL:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
-#endif
-        break;
-      case TC_VARIABLE:
-      case TC_OPERATOR:
-      case TC_NUMBER:
-      default:
-#if wxCHECK_VERSION(2, 5, 3)
-        dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
-#else
-        dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
-#endif
-        break;
-    }
+    SetForeground(parser);
+
     // This only happend in labels - labels are always on the beginnig
     // of a line so we can add some more text.
     if (!m_nextToDrawIsNext)
@@ -203,6 +157,59 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.GetFontName()));
 }
 
+void TextCell::SetForeground(CellParser& parser)
+{
+  wxDC& dc = parser.GetDC();
+#if wxCHECK_VERSION(2, 5, 3)
+  switch(m_style) {
+    case TC_PROMPT:
+      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
+      break;
+    case TC_MAIN_PROMPT:
+      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
+      break;
+    case TC_ERROR:
+      dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
+      break;
+    case TC_INPUT:
+      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
+      break;
+    case TC_LABEL:
+      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
+      break;
+    case TC_VARIABLE:
+    case TC_OPERATOR:
+    case TC_NUMBER:
+    default:
+     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
+      break;
+  }
+#else
+  switch(m_style) {
+    case TC_PROMPT:
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
+      break;
+    case TC_MAIN_PROMPT:
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
+      break;
+    case TC_ERROR:
+     dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
+       break;
+    case TC_INPUT:
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
+      break;
+    case TC_LABEL:
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
+      break;
+    case TC_VARIABLE:
+    case TC_OPERATOR:
+    case TC_NUMBER:
+    default:
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
+      break;
+  }
+#endif
+}
 bool TextCell::IsOperator()
 {
   if (wxString(wxT("+*/-")).Find(m_text)>=0)
