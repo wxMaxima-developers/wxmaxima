@@ -180,7 +180,8 @@ void wxMaxima::consoleAppend(wxString s, int type)
   if (!t.Length())
     return;
   
-  SetStatusText(_("Parsing output"));
+  if (type != ERRORT)
+    SetStatusText(_("Parsing output"));
   if (type == TEXTT) {
     while (s.Length()>0) {
       int start = s.Find(wxT("<mth"));
@@ -662,7 +663,7 @@ bool wxMaxima::startMaxima()
 
 void wxMaxima::onProcessEvent(wxProcessEvent& event)
 {
-  SetStatusText(_("Maxima process terminated. Please configure wxMaxima with 'Edit->Configure'"));
+  SetStatusText(_("Maxima process terminated. Please configure wxMaxima with 'Edit->Configure'."));
 }
 
 void wxMaxima::cleanUp()
