@@ -239,6 +239,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_6->Append(menu_risch, _("Risch integration"),
                              _("Integrate expression with Risch algorithm"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_6->Append(menu_change_var, _("C&hange variable"),
+                             _("Change variable in integral or sum"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_diff, _("&Differentiate"),
                              _("Differentiate expression"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_limit, _("Find &limit"),
@@ -288,12 +291,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_5->Append(menu_radsimp, _("Simplify &radicals"),
                              _("Simplify expression containing radicals"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_logcontract, _("Contract logarithms"),
-                             _("Convert sum of logarithms to logarithm of product"),
-                             wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_factor, _("&Factor expression"),
                              _("Factor an expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_gfactor, _("Factor &complex"),
+  wxglade_tmp_menu_5->Append(menu_gfactor, _("Factor complex"),
                              _("Factor an expression in Gaussian numbers"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_expand, _("&Expand expression"),
@@ -301,50 +301,69 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_5->Append(menu_logexpand, _("Expand logarithms"),
                              _("Convert logarithm of product to sum of logarithms"),
                               wxITEM_NORMAL);
+  wxglade_tmp_menu_5->Append(menu_logcontract, _("Contract logarithms"),
+                             _("Convert sum of logarithms to logarithm of product"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_5->AppendSeparator();
-  wxglade_tmp_menu_5->Append(menu_to_fact, _("Convert to factorials"),
+  // Factorials and gamma
+  wxMenu* wxglade_tmp_menu_5_sub1 = new wxMenu();
+  wxglade_tmp_menu_5_sub1->Append(menu_to_fact, _("Convert to &factorials"),
                              _("Convert binomials, beta and gamma function to factorials"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_to_gamma, _("Convert to gamma"),
+  wxglade_tmp_menu_5_sub1->Append(menu_to_gamma, _("Convert to &gamma"),
                              _("Convert binomials, factorials and beta function to gamma function"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_factsimp, _("Simplify factoria&ls"),
+  wxglade_tmp_menu_5_sub1->Append(menu_factsimp, _("&Simplify factorials"),
                              _("Simplify an expression containing factorials"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_factcomb, _("Combine factorials"),
+  wxglade_tmp_menu_5_sub1->Append(menu_factcomb, _("&Combine factorials"),
                              _("Combine factorials in an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->AppendSeparator();
-  wxglade_tmp_menu_5->Append(menu_trigsimp, _("Simplify &trigonometric"),
+  wxglade_tmp_menu_5->Append(-1, _("Factorials and &gamma"),
+                             wxglade_tmp_menu_5_sub1,
+                             _("Functions for simplifying factorials and gamma function"));
+  // Trigonometric
+  wxMenu* wxglade_tmp_menu_5_sub2 = new wxMenu();
+  wxglade_tmp_menu_5_sub2->Append(menu_trigsimp, _("&Simplify trigonometric"),
                              _("Simplify trigonometric expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_trigreduce, _("Reduce tr&igonometric"),
+  wxglade_tmp_menu_5_sub2->Append(menu_trigreduce, _("&Reduce trigonometric"),
                              _("Reduce trigonometric expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_trigexpand, _("E&xpand trigonometric"),
+  wxglade_tmp_menu_5_sub2->Append(menu_trigexpand, _("&Expand trigonometric"),
                              _("Expand trigonometric expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_trigrat, _("Rationalize trigonometric"),
+  wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("R&ationalize trigonometric"),
                              _("Rationalize trigonometrix expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->AppendSeparator();
-  wxglade_tmp_menu_5->Append(menu_rectform, _("Convert t&o rectform"),
+  wxglade_tmp_menu_5->Append(-1, _("&Trigonometric simplification"),
+                             wxglade_tmp_menu_5_sub2,
+                             _("Functions for simplifying trigonometric expressions"));
+  // Complex
+  wxMenu* wxglade_tmp_menu_5_sub3 = new wxMenu();
+  wxglade_tmp_menu_5_sub3->Append(menu_rectform, _("Convert to &rectform"),
                              _("Convert complex expression to rect form"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_polarform, _("Convert to &polarform"),
+  wxglade_tmp_menu_5_sub3->Append(menu_polarform, _("Convert to &polarform"),
                              _("Convert complex expression to polar form"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_realpart, _("Get real part"),
+  wxglade_tmp_menu_5_sub3->Append(menu_realpart, _("Get real p&art"),
                              _("Get the real part of complex expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_imagpart, _("Get imaginary part"),
+  wxglade_tmp_menu_5_sub3->Append(menu_imagpart, _("Get &imaginary part"),
                              _("Get the imaginary part of complex expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_demoivre, _("&Demoivre"),
+  wxglade_tmp_menu_5_sub3->Append(menu_demoivre, _("&Demoivre"),
                              _("Convert exponential function of imaginary argument to trigonometric form"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_exponentialize, _("Expo&nentialize"),
+  wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
                              _("Conver trigonometric functions to exponential form"), wxITEM_NORMAL);
+  wxglade_tmp_menu_5->Append(-1, _("&Complex simplification"),
+                             wxglade_tmp_menu_5_sub3,
+                             _("Functions for complex simplification"));
   wxglade_tmp_menu_5->AppendSeparator();
+  wxglade_tmp_menu_5->Append(menu_nouns, _("Evaluate &noun forms"),
+                             _("Evaluate all noun forms in expression"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &algebraic"),
                              _("Toggle algebraic computation"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality"),

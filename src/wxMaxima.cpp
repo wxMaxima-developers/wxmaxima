@@ -1535,6 +1535,10 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId()) {
+  case menu_nouns:
+    cmd = wxT("ev(") + expr + wxT(", nouns);");
+    SendMaxima(cmd);
+    break;
   case button_ratsimp:
   case menu_ratsimp:
     cmd = wxT("ratsimp(") + expr + wxT(");");
@@ -1658,12 +1662,28 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId()) {
+  case menu_change_var:
+    {
+      Gen4Wiz *wiz = new Gen4Wiz(_("Integral/sum:"), _("old variable:"),
+                                 _("new variable:"), _("equation:"),
+                                 expr, wxT("x"), wxT("y"), wxT("y=x"),
+                                 this, -1, _("Change variable"), true);
+      wiz->setValue(expr);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wxT("changevar(") + wiz->GetValue1() + wxT(", ") +
+          wiz->GetValue4() + wxT(", ") + wiz->GetValue3() + wxT(", ") +
+          wiz->GetValue2() + wxT(");");
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
   case menu_pade:
     {
       Gen3Wiz *wiz = new Gen3Wiz(_("Taylor series:"), _("num deg:"),
                                  _("denom deg:"), expr, wxT("4"), wxT("4"),
                                  this, -1, _("Pade approximation"));
-      wiz->setValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("pade(") + wiz->GetValue1() + wxT(", ") +
@@ -2189,6 +2209,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_unsum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_product, wxMaxima::CalculusMenu)
+  EVT_MENU(menu_change_var, wxMaxima::CalculusMenu)
   EVT_MENU(menu_make_list, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_apply, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_time, wxMaxima::MaximaMenu)
@@ -2196,6 +2217,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_factcomb, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_realpart, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_imagpart, wxMaxima::SimplifyMenu)
+  EVT_MENU(menu_nouns, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_logcontract, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_logexpand, wxMaxima::SimplifyMenu)
   EVT_MENU(gp_plot2, wxMaxima::PlotMenu)
