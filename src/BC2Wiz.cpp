@@ -67,7 +67,6 @@ void BC2Wiz::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 2, 3, 3);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_4 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
@@ -83,9 +82,9 @@ void BC2Wiz::do_layout()
   grid_sizer_2->Add(sizer_2, 0, wxALL, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, 0, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_4->Add(button_2, 0, wxALL, 2);
-  sizer_4->Add(button_1, 0, wxALL, 2);
-  grid_sizer_1->Add(sizer_4, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
+  sizer_3->Add(button_2, 0, wxALL, 2);
+  sizer_3->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_3, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);
