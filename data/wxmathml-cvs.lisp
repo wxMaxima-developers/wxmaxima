@@ -468,7 +468,7 @@
   (cond ((null (cddr x))
          (if (null (cdr x))
              (wxxml-function x l r t)
-           (wxxml (cadr x) (cons "<mo>+</mo>" l) r 'mplus rop)))
+           (wxxml (cadr x) l r 'mplus rop)))
         (t (setq l (wxxml (cadr x) l nil lop 'mplus)
                  x (cddr x))
            (do ((nl l)  (dissym))
