@@ -553,7 +553,7 @@ void Config::setupFontList()
   enumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, true);
   
   const wxArrayString& strings = enumerator.GetFacenames();
-  for (int i=0; i<strings.Count(); i++)
+  for (unsigned int i=0; i<strings.Count(); i++)
     m_fontFamily->Append(strings.Item(i));
 }
 
