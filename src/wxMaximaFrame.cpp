@@ -437,7 +437,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // console
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
 
-  frame_1_statusbar = CreateStatusBar(1);
+  frame_1_statusbar = CreateStatusBar(2);
+  int widths[] = {-1, 300};
+  SetStatusWidths(2, widths);
   
   set_properties();
   do_layout();

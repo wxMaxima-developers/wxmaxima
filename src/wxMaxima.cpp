@@ -183,7 +183,7 @@ void wxMaxima::consoleAppend(wxString s, int type)
     return;
 
   if (type != ERRORT)
-    SetStatusText(_("Parsing output"));
+    SetStatusText(_("Parsing output"), 1);
   if (type == TEXTT) {
     while (s.Length()>0) {
       int start = s.Find(wxT("<mth"));
@@ -250,7 +250,7 @@ void wxMaxima::consoleAppend(wxString s, int type)
     doRawConsoleAppend(s, type, false);
   }
   else if (type == PROMPTT) {
-    SetStatusText(_("Ready for user input"));
+    SetStatusText(_("Ready for user input"), 1);
     m_lastPrompt = s;
     s = clearWhitespaces(s);
     if (s.StartsWith(wxT("(%i")) || s.StartsWith(wxT("MAXIMA>"))) {
@@ -334,7 +334,7 @@ void wxMaxima::sendMaxima(wxString s, bool clear, bool out, bool silent)
     consoleAppend(s, INPUTT);
   if (silent) {
     m_inputLine->addToHistory(s);
-    SetStatusText(_("Maxima is calculating"));
+    SetStatusText(_("Maxima is calculating"), 1);
     m_dispReadOut = false;
   }
   s.Append(wxT("\n"));
@@ -382,7 +382,7 @@ void wxMaxima::clientEvent(wxSocketEvent& event)
       m_currentOutput += wxString(buffer, *wxConvCurrent);
 #endif
       if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
-        SetStatusText(_("Reading maxima output"));
+        SetStatusText(_("Reading maxima output"), 1);
         m_dispReadOut = true;
       }
 
@@ -428,7 +428,7 @@ void wxMaxima::readFirstPrompt()
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
   m_first = false;
-  SetStatusText(_("Ready for user input"));
+  SetStatusText(_("Ready for user input"), 1);
   m_currentOutput = wxT("");
 }
 
@@ -469,7 +469,7 @@ void wxMaxima::readPrompt()
         m_inLispMode = false;
     }
     else
-      SetStatusText(_("Ready for user input"));
+      SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                                                 m_currentOutput.Length());
   }
@@ -519,7 +519,7 @@ void wxMaxima::readProcessOutput()
               wxT(" http://wxmaxima.sourceforge.net\n") +
               o.SubString(st, o.Length()-1));
   m_inPrompt = true;
-  SetStatusText(_("Ready for user input"));
+  SetStatusText(_("Ready for user input"), 1);
 }
 #endif
 
@@ -544,7 +544,7 @@ void wxMaxima::setupVariables()
 
 bool wxMaxima::startServer()
 {
-  SetStatusText(wxString::Format(wxT("Starting server on port %d"), m_port));
+  SetStatusText(wxString::Format(wxT("Starting server on port %d"), m_port), 1);
 
   wxIPV4address addr;
 
@@ -656,10 +656,10 @@ bool wxMaxima::startMaxima()
     m_first = true;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_pid = -1;
-    SetStatusText(_("Starting maxima..."));
+    SetStatusText(_("Starting maxima..."), 1);
     wxExecute(command, wxEXEC_ASYNC, m_process);
     m_input = m_process->GetInputStream();
-    SetStatusText(_("Maxima started. Waiting for connection..."));
+    SetStatusText(_("Maxima started. Waiting for connection..."), 1);
   }
   else
     return false;
@@ -669,7 +669,7 @@ bool wxMaxima::startMaxima()
 void wxMaxima::onProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
-    SetStatusText(_("Maxima process terminated."));
+    SetStatusText(_("Maxima process terminated."), 1);
   delete m_process;
   m_process = NULL;
 }
