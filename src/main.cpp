@@ -42,7 +42,6 @@ bool MyApp::OnInit()
   wxConfig::Set(config);
   int x, y, h, w, m, rs=0, lang = wxLANGUAGE_UNKNOWN;
   bool have_pos;
-  wxString enc;
   have_pos = config->Read(wxT("pos-x"), &x);
   config->Read(wxT("pos-y"), &y);
   config->Read(wxT("pos-h"), &h);
@@ -50,7 +49,6 @@ bool MyApp::OnInit()
   config->Read(wxT("pos-max"), &m);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("language"), &lang);
-  config->Read(wxT("encoding"), &enc);
   if (rs==0)
     have_pos = false;
   if (!have_pos || m==1) {
@@ -64,6 +62,9 @@ bool MyApp::OnInit()
   if (lang==wxLANGUAGE_UNKNOWN)
     lang = wxLocale::GetSystemLanguage();
   m_locale->Init(lang);
+#if defined (__WXMSW__)
+  m_locale->AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
+#endif
   m_locale->AddCatalog(wxT("wxMaxima"));
   m_locale->AddCatalog(wxT("wxMaxima-wxstd"));
 
