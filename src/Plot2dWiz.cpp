@@ -369,7 +369,7 @@ void Plot2DWiz::OnCombobox(wxCommandEvent &event)
 void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxT(""),
-                                 wxT(""), wxT(""),
+                                 wxT("plot2d.eps"), wxT("eps"),
                                  _("Postscript file (*.eps)|*.eps|All|*"),
                                  wxSAVE|wxOVERWRITE_PROMPT);
   if (file.Length()>0)
