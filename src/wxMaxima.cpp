@@ -306,7 +306,15 @@ void wxMaxima::sendMaxima(wxString s, bool clear, bool out, bool silent)
     m_dispReadOut = false;
   }
   s.Append(wxT("\n"));
+#if wxUSE_UNICODE
+  char *buf;
+  wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
+  buf = strdup(tmp);
+  m_client->Write(buf, strlen(buf));
+  free(buf);
+#else
   m_client->Write(s.mb_str(*wxConvCurrent), s.Length());
+#endif
 }
 
 void wxMaxima::enterCommand(wxCommandEvent& event)
@@ -336,7 +344,11 @@ void wxMaxima::clientEvent(wxSocketEvent& event)
     if (!m_client->Error()) {
       read = m_client->LastCount();
       buffer[read] = 0;
+#if wxUSE_UNICODE
+      m_currentOutput += wxConvertMB2WX(buffer);
+#else
       m_currentOutput += wxString(buffer, *wxConvCurrent);
+#endif
       if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
         SetStatusText(_("Reading maxima output"));
         m_dispReadOut = true;
@@ -352,7 +364,8 @@ void wxMaxima::clientEvent(wxSocketEvent& event)
     break;
   case wxSOCKET_LOST:
     consoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
-                    "Restart maxima with 'Maxima->Restart maxima'.\n"), ERRORT);
+                      "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                  ERRORT);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_client->Destroy();

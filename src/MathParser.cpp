@@ -480,14 +480,18 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
   wxConfigBase* config = wxConfig::Get();
   bool showLong = false;
-  wxString enc(wxT("ISO-8859-1"));
-  config->Read(wxT("showLongExpr"), &showLong);
-  config->Read(wxT("encoding"), &enc);
+  config->Read(wxT("showLong"), &showLong);
 
-  s = wxT("<?xml version=\"1.0\" encoding=\"") + enc + wxT("\"?>") + s;
   if (s.Length() < MAXLENGTH || showLong) {
-    wxCSConv conv(enc);
-    xmlDocPtr doc = xmlParseMemory(s.mb_str(conv), s.Length());
+#if wxUSE_UNICODE
+    char *buf;
+    wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
+    buf = strdup(tmp);
+    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
+    free(buf);
+#else
+    xmlDocPtr doc = xmlParseMemory(s.mb_str(*wxConvCurrent), s.Length());
+#endif
     if (doc != NULL) {
       cell = ParseTag(xmlDocGetRootElement(doc));
       xmlFreeDoc(doc);
