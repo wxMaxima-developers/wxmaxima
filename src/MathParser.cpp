@@ -167,6 +167,7 @@ MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol)
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
     wxString str((const char*)(node->content), wxConvUTF8);
+    str = ToLocal(str);
     cell->SetValue(wxString(str));
     cell->SetStyle(m_ParserStyle);
     cell->SetSymbol(symbol);
@@ -312,6 +313,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
     // Parse tags
     if (node->type == XML_ELEMENT_NODE) {
       wxString tagName((const char*)(node->name), wxConvUTF8);
+      tagName = ToLocal(tagName);
       if (tagName == wxT("mfrac")) {
         if (cell == NULL)
           cell = ParseFracTag(node);
@@ -511,7 +513,15 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
   if (s.Length() < MAXLENGTH || showLong) {
     s = ToUnicode(s);
+#if wxUSE_UNICODE
+    char *buf; 	 
+    wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str()); 	 
+    buf = strdup(tmp); 	 
+    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf)); 	 
+    free(buf);
+#else
     xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());
+#endif
     if (doc != NULL) {
       cell = ParseTag(xmlDocGetRootElement(doc));
       xmlFreeDoc(doc);
@@ -530,5 +540,14 @@ wxString MathParser::ToUnicode(wxString s)
   return s;
 #else
   return wxString(s.wc_str(wxConvLocal), wxConvUTF8);
+#endif
+}
+
+wxString MathParser::ToLocal(wxString s)
+{
+#if wxUSE_UNICODE
+  return s;
+#else
+  return wxString(s.wc_str(wxConvUTF8), wxConvLocal);
 #endif
 }

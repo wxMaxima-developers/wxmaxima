@@ -49,6 +49,7 @@ class MathParser {
     MathCell* ParseLimitTag(xmlNodePtr node);
     MathCell* ParseParenTag(xmlNodePtr node);
     wxString ToUnicode(wxString s);
+    wxString ToLocal(wxString s);
     int m_ParserStyle;
     int m_FracStyle;
 };
