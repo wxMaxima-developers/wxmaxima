@@ -50,15 +50,15 @@ protected:
   wxStaticText* label_3;
   BTextCtrl* text_ctrl_2;
   wxStaticText* label_4;
-  wxTextCtrl* text_ctrl_3;
+  BTextCtrl* text_ctrl_3;
   wxStaticText* label_5;
-  wxTextCtrl* text_ctrl_4;
+  BTextCtrl* text_ctrl_4;
   wxStaticText* label_6;
   BTextCtrl* text_ctrl_5;
   wxStaticText* label_7;
-  wxTextCtrl* text_ctrl_6;
+  BTextCtrl* text_ctrl_6;
   wxStaticText* label_8;
-  wxTextCtrl* text_ctrl_7;
+  BTextCtrl* text_ctrl_7;
   wxStaticText* label_9;
   wxSpinCtrl* text_ctrl_8;
   wxStaticText* label_10;
@@ -69,7 +69,7 @@ protected:
   wxComboBox* combo_box_2;
   wxCheckBox* check_box_1;
   wxStaticText* label_13;
-  wxTextCtrl* text_ctrl_10;
+  BTextCtrl* text_ctrl_10;
   wxBitmapButton* button_3;
   wxStaticLine* static_line_1;
   wxButton* button_1;

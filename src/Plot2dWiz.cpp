@@ -46,20 +46,20 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(30,-1));
   label_4 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_3 = new wxTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+                              wxSize(50,-1));
   label_5 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_4 = new wxTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+                              wxSize(50,-1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(30,-1), wxTE_READONLY);
   label_7 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_6 = new wxTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+                              wxSize(50,-1));
   label_8 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_7 = new wxTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+                              wxSize(50,-1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxT(""), wxDefaultPosition,
                                wxSize(50,22), wxSP_ARROW_KEYS, 0, 1000);
@@ -84,8 +84,8 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                wxDefaultSize, 5,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Plot to file:"));
-  text_ctrl_9 = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                               wxSize(230, -1));
+  text_ctrl_9 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+                              wxSize(230, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
@@ -326,6 +326,8 @@ wxString Plot2DWiz::getValue()
 #if defined (__WXMSW__)
     file.Replace(wxT("\\"), wxT("/"));
 #endif
+    if (file.Right(3) != wxT(".ps"))
+      file = file + wxT(".ps");
     s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
   }
   s += wxT(")$");
@@ -399,11 +401,11 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
                               wxSize(30,-1));
   label_5 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_4 = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+                              wxSize(50,-1));
   label_6 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_5 = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                               wxSize(50,-1));
+  text_ctrl_5 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+                              wxSize(50,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
