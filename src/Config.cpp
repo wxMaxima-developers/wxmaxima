@@ -83,7 +83,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   };
   m_language = new wxComboBox(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
-  m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis"));
+  m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
+  m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
@@ -122,8 +123,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_styleBold = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_styleItalic = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_styleUnderlined = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  m_buttonOK = new wxButton(this, wxID_OK, _("OK"));
   m_buttonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  m_buttonOK = new wxButton(this, wxID_OK, _("OK"));
   
   set_properties();
   do_layout();
@@ -148,11 +149,13 @@ void Config::set_properties()
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima console."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
   m_showHeader->SetToolTip(_("Show initial header with maxima system information."));
+  m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, br, mf;
   int fntsz = 12;
-  bool match = true, showLongExpr = false, showHeader = true;
+  bool match = true, showLongExpr = false;
+  bool showHeader = true, fixedFontTC = true;
   int rs=0;
   int lang = wxLANGUAGE_UNKNOWN;
   
@@ -166,6 +169,7 @@ void Config::set_properties()
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
+  config->Read(wxT("fixedFontTC"), &fixedFontTC);
   
   int i=0;
   for (i=0; i<LANGUAGE_NUMBER; i++)
@@ -189,6 +193,7 @@ void Config::set_properties()
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
+  m_fixedFontInTC->SetValue(fixedFontTC);
   
   m_buttonOK->SetDefault();
   readStyles();
@@ -223,6 +228,7 @@ void Config::do_layout()
   sizer_6->Add(sizer_7, 1, wxEXPAND, 0);
   sizer_6->Add(m_saveSize, 0, wxALL, 3);
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
+  sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL|wxEXPAND, 3);
@@ -285,6 +291,7 @@ void Config::onOk(wxCommandEvent& event)
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
+  config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

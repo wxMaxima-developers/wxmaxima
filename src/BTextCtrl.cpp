@@ -31,15 +31,19 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
                     long style)
  : wxTextCtrl(parent, id, value, pos, size, style)
 {
+  bool fixedFont = true;
   matchParens = true;
   wxConfigBase *config = wxConfig::Get();
   config->Read(wxT("matchParens"), &matchParens);
+  config->Read(wxT("fixedFontTC"), &fixedFont);
   marked = -1;
+  if (fixedFont) {
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
-  SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
 #else
-  SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
 #endif
+  }
 }
 
 

@@ -76,6 +76,7 @@ protected:
   wxCheckBox* m_styleBold;
   wxCheckBox* m_styleItalic;
   wxCheckBox* m_styleUnderlined;
+  wxCheckBox* m_fixedFontInTC;
   wxPanel* notebook_1_pane_2;
   wxNotebook* notebook_1;
   wxButton* m_buttonOK;

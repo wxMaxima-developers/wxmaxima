@@ -23,6 +23,7 @@
 #include "Version.h"
 
 #include <wx/artprov.h>
+#include <wx/config.h>
 
 #ifndef __WXMSW__
 #include "maximaicon.xpm"
@@ -449,12 +450,16 @@ void wxMaximaFrame::set_properties()
 {
   SetIcon(wxICON(maximaicon));
   SetTitle(wxString::Format(_("wxMaxima %s"), wxT(WXMAXIMA_VERSION)));
+  bool fixed = true;
+  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
+  if (fixed) {
   // Set font for input line
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
-  m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
 #else
-  m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
 #endif
+  }
   
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
 #if wxCHECK_VERSION(2, 5, 0)
