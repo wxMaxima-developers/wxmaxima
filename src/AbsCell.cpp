@@ -37,6 +37,7 @@ MathCell* AbsCell::Copy(bool all)
 {
   AbsCell* tmp = new AbsCell;
   tmp->SetInner(m_innerCell->Copy(true));
+  tmp->m_style = m_style;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;

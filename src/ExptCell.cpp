@@ -32,6 +32,7 @@ MathCell* ExptCell::Copy(bool all)
   ExptCell* tmp = new ExptCell;
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetPower(m_powCell->Copy(true));
+  tmp->m_style = m_style;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;

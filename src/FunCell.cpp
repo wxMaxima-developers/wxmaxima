@@ -41,6 +41,7 @@ MathCell* FunCell::Copy(bool all)
   FunCell* tmp = new FunCell;
   tmp->SetName(m_nameCell->Copy(true));
   tmp->SetArg(m_argCell->Copy(true));
+  tmp->m_style = m_style;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(true));
   return tmp;

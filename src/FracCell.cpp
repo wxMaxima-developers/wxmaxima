@@ -35,6 +35,7 @@ MathCell* FracCell::Copy(bool all)
   tmp->SetDenom(m_denom->Copy(true));
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
+  tmp->m_style = m_style;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;

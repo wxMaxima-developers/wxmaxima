@@ -41,6 +41,7 @@ MathCell* MatrCell::Copy(bool all)
   MatrCell *tmp = new MatrCell;
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
+  tmp->m_style = m_style;
   for (int i=0; i<m_matWidth*m_matHeight; i++)
     (tmp->m_cells).push_back(m_cells[i]->Copy(true));
   if (all && m_nextToDraw!=NULL)

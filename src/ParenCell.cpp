@@ -40,6 +40,7 @@ MathCell* ParenCell::Copy(bool all)
 {
   ParenCell *tmp = new ParenCell;
   tmp->SetInner(m_innerCell->Copy(true), m_style);
+  tmp->m_style = m_style;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;
