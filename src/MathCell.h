@@ -25,7 +25,10 @@
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 #define ABS(a) ((a)>=0 ? (a) : -(a))
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
+
 #define MC_CELL_SKIP 2
+#define MC_BASE_INDENT 5
+#define MC_LINE_SKIP 5
 
 #include <wx/wx.h>
 #include "CellParser.h"

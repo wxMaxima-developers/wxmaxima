@@ -88,6 +88,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_printData = new wxPrintData;
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
   m_inputLine->SetFocus();
+  wxInitAllImageHandlers();
 }
 
 
@@ -750,6 +751,8 @@ void wxMaxima::updateMenus(wxUpdateUIEvent& event)
   wxMenuBar* menubar = GetMenuBar();
   menubar->Enable(menu_copy_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_lb_from_console, m_console->CanCopy());
+  menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
+  menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   if (m_console->GetTree()!=NULL && m_supportPrinting)
     menubar->Enable(menu_print, true);
@@ -991,6 +994,24 @@ void wxMaxima::editMenu(wxCommandEvent& event)
     if (m_console->CanCopy())
       m_console->Copy(true);
     break;
+  case menu_copy_as_bitmap:
+    if (m_console->CanCopy())
+      m_console->CopyBitmap();
+    break;
+  case menu_copy_to_file:
+  {
+    wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+                                   wxT(""), wxT(""),
+                                   _("PNG image (*.png)|*.png|"
+                                     "JPEG image (*.jpg)|*.jpg|"
+                                     "Windows bitmap (*.bmp)|*.bmp|"
+                                     "X pixmap (*.xpm)|*.xpm"),
+                                   wxSAVE);
+    if (file.Length()) {
+      m_console->CopyToFile(file);
+      m_lastPath = wxPathOnly(file);
+    }
+  }
   case menu_delete_selection:
     if (m_console->CanDeleteSelection())
       m_console->DeleteSelection();
@@ -2144,6 +2165,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_print_setup, wxMaxima::printMenu)
   EVT_MENU(menu_inc_fontsize, wxMaxima::editMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::editMenu)
+  EVT_MENU(menu_copy_as_bitmap, wxMaxima::editMenu)
+  EVT_MENU(menu_copy_to_file, wxMaxima::editMenu)
   EVT_SOCKET(socket_server_id, wxMaxima::serverEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::clientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::updateMenus)
@@ -2151,6 +2174,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_inc_fontsize, wxMaxima::updateMenus)
   EVT_UPDATE_UI(menu_dec_fontsize, wxMaxima::updateMenus)
   EVT_UPDATE_UI(menu_print, wxMaxima::updateMenus)
+  EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::updateMenus)
+  EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::updateMenus)
   EVT_CLOSE(wxMaxima::onClose)
   EVT_ACTIVATE(wxMaxima::onActivate)
   EVT_SET_FOCUS(wxMaxima::onSetFocus)

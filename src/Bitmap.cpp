@@ -1,0 +1,223 @@
+/*
+ *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+#include "Bitmap.h"
+#include "CellParser.h"
+
+#include <wx/config.h>
+#include <wx/clipbrd.h>
+
+#define BM_FULL_WIDTH 600
+
+Bitmap::Bitmap()
+{
+  m_tree = NULL;
+}
+
+Bitmap::~Bitmap()
+{
+  if (m_tree != NULL)
+    DestroyTree();
+}
+
+void Bitmap::SetData(MathCell* tree)
+{
+  if (m_tree != NULL)
+    delete m_tree;
+  m_tree = tree;
+  if (m_tree != NULL)
+    m_tree->ForceBreakLine(true);
+  Layout();
+}
+
+void Bitmap::Layout()
+{
+  RecalculateWidths();
+  BreakLines();
+  RecalculateSize();
+  
+  int width, height;
+  GetMaxPoint(&width, &height);
+  m_bmp.Create(width, height);
+  
+  Draw();
+}
+
+void Bitmap::RecalculateSize()
+{
+  int fontsize = 12;
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  MathCell* tmp = m_tree;
+  
+  wxMemoryDC dc;
+  CellParser parser(dc);
+  
+  while (tmp != NULL) {
+    tmp->RecalculateSize(parser, fontsize, false);
+    tmp = tmp->m_next;
+  }
+}
+
+void Bitmap::RecalculateWidths()
+{
+  int fontsize = 12;
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  
+  MathCell* tmp = m_tree;
+  
+  wxMemoryDC dc;
+  CellParser parser(dc);
+  
+  while (tmp != NULL) {
+    tmp->RecalculateWidths(parser, fontsize, false);
+    tmp = tmp->m_next;
+  }
+}
+
+void Bitmap::BreakLines()
+{  
+  int fullWidth = BM_FULL_WIDTH;
+  int currentWidth = 0;
+  
+  MathCell* tmp = m_tree;
+  
+  while (tmp != NULL) {
+    tmp->BreakLine(false);
+    tmp->ResetData();
+    if (tmp->BreakLineHere() ||
+       (currentWidth + tmp->GetWidth() >= fullWidth)) {
+      currentWidth = tmp->GetWidth();
+      tmp->BreakLine(true);
+    }
+    else
+      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+    tmp = tmp->m_nextToDraw;
+  }
+}
+
+void Bitmap::GetMaxPoint(int* width, int* height)
+{
+  MathCell* tmp = m_tree;
+  int currentHeight = MC_BASE_INDENT;
+  int currentWidth = MC_BASE_INDENT;
+  *width = MC_BASE_INDENT;
+  *height = MC_BASE_INDENT;
+  bool bigSkip = false;
+  while (tmp != NULL) {
+    if (tmp->BreakLineHere()) {
+      currentHeight += tmp->GetMaxHeight();
+      if (bigSkip)
+        currentHeight += MC_LINE_SKIP;
+      *height = currentHeight;
+      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+      *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+    }
+    else {
+      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+      *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+    }
+    bigSkip = tmp->m_bigSkip;
+    tmp = tmp->m_nextToDraw;
+  }
+}
+
+void Bitmap::Draw()
+{
+  MathCell* tmp = m_tree;
+  wxMemoryDC dc;
+  dc.SelectObject(m_bmp);
+  
+  dc.SetBackground(wxBrush(wxT("white"), wxSOLID));
+  dc.Clear();
+  
+  if (tmp != NULL) {
+    wxPoint point;
+    point.x = 0;
+    point.y = tmp->GetMaxCenter();
+    int fontsize = 12;
+    int drop = tmp->GetMaxDrop();
+    
+    wxConfig::Get()->Read(wxT("fontsize"), &fontsize);
+    
+    CellParser parser(dc);
+    
+    while(tmp != NULL) {
+      tmp->Draw(parser, point, fontsize, false);
+      if (tmp->m_nextToDraw != NULL &&
+          tmp->m_nextToDraw->BreakLineHere()) {
+        point.x = 0;
+        point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+        if (tmp->m_bigSkip)
+          point.y += MC_LINE_SKIP;
+        drop = tmp->m_nextToDraw->GetMaxDrop();
+      }
+      else
+        point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+      tmp = tmp->m_nextToDraw;
+      if (tmp == NULL || tmp->BreakPageHere())
+        break;
+    }
+  }
+}
+
+bool Bitmap::ToFile(wxString file)
+{
+  bool res = false;
+  if (file.Right(4) == wxT(".bmp"))
+    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_BMP);
+  else if (file.Right(4) == wxT(".xpm"))
+    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_XPM);
+  else if (file.Right(4) == wxT(".jpg"))
+    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_JPEG);
+  else {
+    if (file.Right(4) != wxT(".png"))
+      file = file + wxT(".png");
+    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_PNG);
+  }
+  return res;
+}
+
+bool Bitmap::ToClipboard()
+{
+  if (wxTheClipboard->Open()) {
+    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
+    wxTheClipboard->Close();
+    if (res)
+      printf("OK");
+    else
+      printf("Cancel");
+    return res;
+  }
+  return false;
+}
+
+void Bitmap::DestroyTree()
+{
+  if (m_tree!=NULL) {
+    MathCell *tmp1, *tmp = m_tree;
+    while (tmp!=NULL) {
+      tmp1 = tmp;
+      tmp = tmp->m_next;
+      tmp1->Destroy();
+      delete tmp1;
+    }
+  }
+  m_tree = NULL;
+}

@@ -47,6 +47,7 @@ wxmaxima_SOURCES = \
 	CellParser.cpp     CellParser.h     \
 	MathParser.cpp     MathParser.h     \
 	MathPrintout.cpp   MathPrintout.h   \
+	Bitmap.cpp         Bitmap.h         \
 	TextStyle.h
 
 wxmaxima_LDFLAGS =

@@ -37,9 +37,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   
   // menus
   frame_1_menubar = new wxMenuBar();
-  wxMenuItem *tmp_menu_item;
 
 #if defined __WXGTK20__
+  wxMenuItem *tmp_menu_item;
  #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
   tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
   tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
@@ -84,6 +84,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                    _("Copy selection from console"), wxT("gtk-copy"));
   wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
                              _("Copy selection from console (including linebreaks)"),
+                             wxITEM_NORMAL);
+#if defined __WXMSW__
+  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as &image"),
+                             _("Copy selection from console as image"),
+                             wxITEM_NORMAL);
+#endif
+  wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
+                             _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"), 

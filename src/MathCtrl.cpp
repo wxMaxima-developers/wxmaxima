@@ -19,15 +19,13 @@
  */
 
 #include "MathCtrl.h"
+#include "Bitmap.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
 #include <wx/settings.h>
 
 using namespace std;
-
-#define MC_BASE_INDENT 5
-#define MC_LINE_SKIP 5
 
 enum {
   TIMER_ID
@@ -784,6 +782,48 @@ MathCell* MathCtrl::CopyTree()
     tmp1 = tmp1->m_nextToDraw;
   }
   return copy;
+}
+
+bool MathCtrl::CopyBitmap()
+{
+  MathCell* tmp = CopySelection();
+  
+  Bitmap bmp;
+  bmp.SetData(tmp);
+  
+  return bmp.ToClipboard();
+}
+
+bool MathCtrl::CopyToFile(wxString file)
+{
+  MathCell* tmp = CopySelection();
+  
+  Bitmap bmp;
+  bmp.SetData(tmp);
+  
+  return bmp.ToFile(file);
+}
+
+MathCell* MathCtrl::CopySelection()
+{
+  MathCell *tmp, *tmp1 = NULL, *tmp2 = NULL;
+  tmp = m_selectionStart;
+  
+  while (tmp != NULL) {
+    if (tmp1 == NULL) {
+      tmp1 = tmp->Copy(false);
+      tmp2 = tmp1;
+    }
+    else {
+      tmp2->AppendCell(tmp->Copy(false));
+      tmp2 = tmp2->m_next;
+    }
+    if (tmp == m_selectionEnd)
+      break;
+    tmp = tmp->m_nextToDraw;
+  }
+  
+  return tmp1;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

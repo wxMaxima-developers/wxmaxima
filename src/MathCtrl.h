@@ -45,9 +45,12 @@ class MathCtrl:public wxScrolledWindow
     bool CanDeleteSelection();
     void DeleteSelection();
     bool Copy(bool lb = false);
+    bool CopyBitmap();
+    bool CopyToFile(wxString file);
     wxString GetString();
     MathCell* GetTree() { return m_tree; }
   protected:
+    MathCell* CopySelection();
     void GetMaxPoint(int* width, int* height);
     void BreakLines(MathCell* cell);
     void OnTimer(wxTimerEvent& event);
