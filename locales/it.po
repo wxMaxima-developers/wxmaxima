@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-14 10:17+0100\n"
-"PO-Revision-Date: 2005-01-31 12:38+0100\n"
+"PO-Revision-Date: 2005-02-14 11:17+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -52,14 +52,12 @@ msgid "&Continued fraction"
 msgstr "Frazione &continua"
 
 #: ../src/wxMaximaFrame.cpp:73
-#, fuzzy
 msgid "&Copy"
-msgstr "Copia"
+msgstr "&Copia"
 
 #: ../src/wxMaximaFrame.cpp:79
-#, fuzzy
 msgid "&Delete selection"
-msgstr "Elimina la selezione"
+msgstr "&Elimina la selezione"
 
 #: ../src/wxMaximaFrame.cpp:318
 msgid "&Demoivre"
@@ -79,7 +77,7 @@ msgstr "&Differenzia"
 
 #: ../src/wxMaximaFrame.cpp:96
 msgid "&Edit"
-msgstr ""
+msgstr "&Modifica"
 
 #: ../src/wxMaximaFrame.cpp:147
 msgid "&Eliminate variable"
@@ -389,10 +387,8 @@ msgid "Compute the inverse of a matrix"
 msgstr "Calcola l'inversa di una matrice"
 
 #: ../src/wxMaximaFrame.cpp:245
-#, fuzzy
 msgid "Compute the least common multiple (do load(functs) before using)"
-msgstr ""
-"Calcola il minimo comune multiplo (esegui load(functs) prima di usarlo)"
+msgstr "Calcola il minimo comune multiplo (esegui load(functs) prima di usarlo)"
 
 #: ../src/wxMaximaFrame.cpp:95
 msgid "Configure wxMaxima"
@@ -459,9 +455,8 @@ msgid "Convert to gamma"
 msgstr "Converti in gamma"
 
 #: ../src/wxMaximaFrame.cpp:76
-#, fuzzy
 msgid "Copy &text"
-msgstr "Copia testo"
+msgstr "Copia il &testo"
 
 #: ../src/wxMaximaFrame.cpp:74
 msgid "Copy selection from console"
@@ -476,9 +471,8 @@ msgid "Decompose rational function to partial fractions"
 msgstr "Decomponi la funzione razionale in frazioni parziali"
 
 #: ../src/wxMaximaFrame.cpp:89
-#, fuzzy
 msgid "Decrease fontsize in console"
-msgstr "Grandezza carattere nella finestra console."
+msgstr "Rimpicciolisci il carattere nella finestra console"
 
 #: ../src/wxMaxima.cpp:1073 ../src/wxMaxima.cpp:1081
 msgid "Delete"
@@ -557,9 +551,8 @@ msgid "Divide numbers or polynomials"
 msgstr "Dividi i numeri o i polinomiali"
 
 #: ../src/wxMaximaFrame.cpp:172
-#, fuzzy
 msgid "E&quations"
-msgstr "&Equazioni"
+msgstr "E&quazioni"
 
 #: ../src/wxMaximaFrame.cpp:67
 msgid "E&xit\tCtrl-Q"
@@ -837,9 +830,8 @@ msgstr ""
 "multiriga\" alla destra della riga di ingresso."
 
 #: ../src/wxMaximaFrame.cpp:87
-#, fuzzy
 msgid "Increase fontsize in console"
-msgstr "Grandezza carattere nella finestra console."
+msgstr "Ingrandisci il carattere nella finestra console"
 
 #: ../src/wxMaximaFrame.cpp:374
 msgid "Info about maxima build"
@@ -1024,9 +1016,8 @@ msgid "Maxima program:"
 msgstr "Programma maxima:"
 
 #: ../src/wxMaxima.cpp:708
-#, fuzzy
 msgid "Maxima session"
-msgstr "Opzioni di Maxima"
+msgstr "Sessione Maxima"
 
 #: ../src/wxMaxima.cpp:874
 msgid "Maxima session (*.sav)|*.sav|All|*"
@@ -1073,7 +1064,6 @@ msgid "Numerical"
 msgstr "Numerico"
 
 #: ../src/SumWiz.cpp:40
-#, fuzzy
 msgid "Nusum"
 msgstr "Somnu"
 
@@ -1089,7 +1079,7 @@ msgstr "OK"
 
 #: ../src/Config.cpp:76
 msgid "Open"
-msgstr ""
+msgstr "Apri"
 
 #: ../src/wxMaximaFrame.cpp:45
 msgid "Open session from a file"
@@ -1230,7 +1220,6 @@ msgid "Rationalize trigonometrix expression"
 msgstr "Razionalizza un'espressione trigonometrica"
 
 #: ../src/wxMaxima.cpp:1577
-#, fuzzy
 msgid "Ratsimp"
 msgstr "Sempraz"
 
@@ -1848,11 +1837,11 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:86
 msgid "Zoom &in\tAlt-I"
-msgstr ""
+msgstr "&Ingrandisci\tAlt-I"
 
 #: ../src/wxMaximaFrame.cpp:88
 msgid "Zoom ou&t\tAlt-O"
-msgstr ""
+msgstr "Rimpicci&olisci\tAlt-O"
 
 #: ../src/MatWiz.cpp:161
 msgid "antisymmetric"
@@ -2392,19 +2381,3 @@ msgstr "giallo"
 #: ../src/Config.cpp:119
 msgid "yellow green"
 msgstr "cadet"
-
-#~ msgid "Ok"
-#~ msgstr "Ok"
-
-#~ msgid "Printing"
-#~ msgstr "In stampa"
-
-#~ msgid ""
-#~ "There was a problem printing.\n"
-#~ "Perhaps your current printer is not set correctly?"
-#~ msgstr ""
-#~ "C'è stato un problema durante la stampa.\n"
-#~ "Forse la stampante non è impostata correttamente?"
-
-#~ msgid "wxMaxima printout"
-#~ msgstr "Stampa di wxMaxima"
