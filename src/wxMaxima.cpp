@@ -51,6 +51,7 @@
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
 #include <wx/dynlib.h>
+#include <wx/dir.h>
 
 enum {
   maxima_process_id
@@ -138,7 +139,8 @@ void wxMaxima::InitSession()
       exit(0);
     }
   }
-  StartMaxima();
+  if (!StartMaxima())
+    SetStatusText(_("Starting maxima process failed"), 1);
 }
 
 wxString wxMaxima::ClearWhitespaces(wxString s)
@@ -546,7 +548,7 @@ void wxMaxima::SetupVariables()
 
 bool wxMaxima::StartServer()
 {
-  SetStatusText(wxString::Format(wxT("Starting server on port %d"), m_port), 1);
+  SetStatusText(wxString::Format(_("Starting server on port %d"), m_port), 1);
 
   wxIPV4address addr;
 
@@ -557,8 +559,10 @@ bool wxMaxima::StartServer()
   if (!m_server->Ok()) {
     delete m_server;
     m_isRunning = false;
+    SetStatusText(_("Starting server failed"), 1);
     return false;
   }
+  SetStatusText(_("Server started"), 1);
   m_server->SetEventHandler(*this, socket_server_id);
   m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
@@ -640,10 +644,21 @@ bool wxMaxima::StartMaxima()
       wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
       wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
 
-      command.Replace(wxT("bin\\maxima.bat"),
-                      wxT("lib\\maxima\\5.9.1\\binary-gcl\\maxima.exe"));
-      command.Append(wxString::Format(
-        wxT(" -eval \"(maxima::start-server %d)\" -eval \"(run)\" -f"), m_port));
+      command = maximaPrefix + wxT("\\lib\\maxima");
+      if (!wxDirExists(command))
+        return false;
+      
+      wxArrayString files;
+      wxDir::GetAllFiles(command, &files, wxT("maxima.exe"));
+      if (files.Count() == 0)
+        return false;
+      else {
+        command = files[0];
+        command.Append(wxString::Format(
+           wxT(" -eval \"(maxima::start-server %d)\" -eval \"(run)\" -f"),
+           m_port
+        ));
+      }
     }
     else
       command.Append(wxString::Format(wxT(" -s %d"), m_port));
