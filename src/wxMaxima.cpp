@@ -839,6 +839,7 @@ void wxMaxima::OnActivate(wxActivateEvent& event)
       }
     }
   }
+  event.Skip();
 }
 
 void wxMaxima::OnSetFocus(wxFocusEvent& event)
