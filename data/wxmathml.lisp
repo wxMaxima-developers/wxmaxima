@@ -77,7 +77,8 @@
           (list (cond ((numberp x) (wxxmlnumformat x))
                       ((mstringp x)
                        (let* 
-                           ((tmp-x (string-left-trim '(#\&) x))
+                           ((tmp-x (string-left-trim '(#\&)
+                                                     (wxxml-symbol-to-string x)))
                             (tmp-x (string-substitute "&amp;" #\& tmp-x))
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
