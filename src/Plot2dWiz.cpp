@@ -40,7 +40,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("Plot 2D"));
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(230,-1));
+                              wxSize(250,-1));
   button_3 = new wxButton(this, parametric, _("Parametric"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
@@ -62,7 +62,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                               wxSize(50,-1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxT(""), wxDefaultPosition,
-                               wxSize(50,22), wxSP_ARROW_KEYS, 0, 1000);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {
     _("default"),
@@ -70,7 +70,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
     wxT("openmath")
   };
   combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
-                               wxDefaultSize, 3,
+                               wxSize(150, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
   label_11 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] = {
@@ -81,11 +81,11 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
     wxT("set logscale x; set grid")
   };
   combo_box_2 = new wxComboBox(this, combobox, wxT(""), wxDefaultPosition,
-                               wxDefaultSize, 5,
+                               wxSize(280, -1), 5,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_9 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(230, -1));
+                              wxSize(280, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
@@ -127,7 +127,7 @@ void Plot2DWiz::do_layout()
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  sizer_2->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
+  sizer_2->Add(text_ctrl_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_2->Add(button_3, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
@@ -149,8 +149,8 @@ void Plot2DWiz::do_layout()
   grid_sizer_2->Add(label_10, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(combo_box_1, 0, wxALL, 2);
   grid_sizer_2->Add(label_11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_2->Add(combo_box_2, 0, wxALL|wxEXPAND, 2);
-  sizer_5->Add(text_ctrl_9, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_2->Add(combo_box_2, 0, wxALL, 2);
+  sizer_5->Add(text_ctrl_9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_5->Add(button_4, 0, wxALL, 2);
   grid_sizer_2->Add(label_12, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(sizer_5, 1, wxEXPAND, 0);
