@@ -27,7 +27,7 @@
 
 MathPrintout::MathPrintout(wxString title) : wxPrintout(title)
 {
-  m_numberOfPages = 1;
+  m_numberOfPages = 0;
   m_tree = NULL;
 }
 
