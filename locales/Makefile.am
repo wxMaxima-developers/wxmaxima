@@ -9,7 +9,7 @@ localedir = $(datadir)/locale
 
 install-data-local: @CATALOGS_TO_INSTALL@
 
-install-wxmaxima-catalogs: allmo
+install-wxmaxima-catalogs:
 	for i in $(WXMAXIMA_LINGUAS) ; do \
 		$(mkinstalldirs) $(DESTDIR)$(localedir)/$$i/LC_MESSAGES ; \
 		$(INSTALL_DATA) $(srcdir)/$$i.mo $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima.mo ; \
