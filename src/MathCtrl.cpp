@@ -25,7 +25,7 @@
 #include <wx/config.h>
 #include <wx/settings.h>
 #include <wx/filename.h>
-#include <wx/file.h>
+#include <wx/textfile.h>
 
 enum {
   TIMER_ID
@@ -873,20 +873,24 @@ bool MathCtrl::ExportToHTML(wxString file)
     if (!wxMkdir(imgDir))
       return false;
   
-  wxFile output(file, wxFile::write);
-  if (!output.IsOpened())
-    return false;
+  wxTextFile output;
+	if (wxFileExists(file))	{
+		wxRemoveFile(file);
+	}
+	if (!output.Create(file)) {
+		return false;
+	}
   
-  output.Write(wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"));
-  output.Write(wxT("<HTML>\n"));
-  output.Write(wxT(" <HEAD>\n"));
-  output.Write(wxT("  <TITLE>wxMaxima HTML export</TITLE>\n"));
-  output.Write(wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">\n"));
+  output.AddLine(wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"));
+  output.AddLine(wxT("<HTML>"));
+  output.AddLine(wxT(" <HEAD>"));
+  output.AddLine(wxT("  <TITLE>wxMaxima HTML export</TITLE>"));
+  output.AddLine(wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">"));
   wxString encoding = wxLocale::GetSystemEncodingName();
   if (encoding.Length()>0)
-    output.Write(wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=") +
-                 encoding +
-                 wxT("\">\n"));
+    output.AddLine(wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=") +
+                   encoding +
+                   wxT("\">"));
 
   //
   // Write styles
@@ -912,97 +916,103 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
   
-  output.Write(wxT("  <STYLE TYPE=\"text/css\">\n"));
+  output.AddLine(wxT("  <STYLE TYPE=\"text/css\">"));
   
-  output.Write(wxT("body {\n"));
+  output.AddLine(wxT("body {"));
   if (font.Length()) {
-    output.Write(wxT("  font-family: "));
-    output.Write(font);
-    output.Write(wxT(";\n"));
+    output.AddLine(wxT("  font-family: ") +
+                   font +
+                   wxT(";"));
   }
 //  output.Write(wxT("  font-size: "));
 //  output.Write(wxString::Format(wxT("%d"), fontSize));
 //  output.Write(wxT(";\n"));
   if (colorMain.Length()) {
-    output.Write(wxT("  color: "));
-    output.Write(colorMain);
-    output.Write(wxT(";\n"));
+    output.AddLine(wxT("  color: ") +
+                   colorMain +
+                   wxT(";"));
   }
-  output.Write(wxT("}\n"));
+  output.AddLine(wxT("}"));
   
-  output.Write(wxT(".input {\n"));
+  output.AddLine(wxT(".input {"));
   if (colorInput.Length()) {
-    output.Write(wxT("  color: "));
-    output.Write(colorInput);
-    output.Write(wxT(";\n"));
+    output.AddLine(wxT("  color: ") +
+                   colorInput +
+                   wxT(";"));
   }
   if (boldInput)
-    output.Write(wxT("  font-weight: bold;\n"));
-  output.Write(wxT("}\n"));
+    output.AddLine(wxT("  font-weight: bold;"));
+  output.AddLine(wxT("}"));
   
-  output.Write(wxT(".prompt {\n"));
+  output.AddLine(wxT(".prompt {"));
   if (colorPrompt.Length()) {
-    output.Write(wxT("  color: "));
-    output.Write(colorPrompt);
-    output.Write(wxT(";\n"));
+    output.AddLine(wxT("  color: ") +
+                   colorPrompt +
+                   wxT(";"));
   }
   if (boldPrompt)
-    output.Write(wxT("  font-weight: bold;\n"));
-  output.Write(wxT("}\n"));
+    output.AddLine(wxT("  font-weight: bold;"));
+  output.AddLine(wxT("}"));
 
-  output.Write(wxT("  </STYLE>\n"));
-  output.Write(wxT(" </HEAD>\n"));
-  output.Write(wxT(" <BODY>\n"));
+  output.AddLine(wxT("  </STYLE>"));
+  output.AddLine(wxT(" </HEAD>"));
+  output.AddLine(wxT(" <BODY>"));
   
   //
   // Write maxima header
   //
   if (tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
-    output.Write(wxT("\n <P>\n"));
+    output.AddLine(wxT(""));
+    output.AddLine(wxT(" <P>"));
     while(tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
-      output.Write(tmp->ToString(false));
-      output.Write(wxT("<BR/>\n"));
+      output.AddLine(wxT("   ") + tmp->ToString(false));
+      output.AddLine(wxT("   <BR/>"));
       tmp = tmp->m_nextToDraw;
     }
-    output.Write(wxT(" </P>\n"));
+    output.AddLine(wxT(" </P>"));
   }
   
-  output.Write(wxT("\n"));
+  output.AddLine(wxT(""));
   
   //
   // Write contents
   //
   while(tmp!=NULL) {
-    output.Write(wxT(" <P>\n"));
+    output.AddLine(wxT("<!-- Input/output group -->"));
+    output.AddLine(wxT(""));
+    output.AddLine(wxT(" <P>"));
     
     // PROMPT
-    output.Write(wxT("  <SPAN CLASS=\"prompt\">"));
+    output.AddLine(wxT("  <SPAN CLASS=\"prompt\">"));
     while(tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
-      output.Write(tmp->ToString(false));
+      output.AddLine(wxT("  ") + tmp->ToString(false));
       tmp = tmp->m_nextToDraw;
     }
-    output.Write(wxT("</SPAN>\n"));
+    output.AddLine(wxT("  </SPAN>"));
     
     // INPUT
-    output.Write(wxT("  <SPAN CLASS=\"input\">\n"));
+    output.AddLine(wxT("  <SPAN CLASS=\"input\">"));
     while(tmp!=NULL && tmp->GetType()==TC_INPUT) {
       wxString input = tmp->ToString(false);
+      wxString line = wxT("");
       for (unsigned int i=0; i<input.Length(); i++) {
         if (input.GetChar(i) == ' ')
-          output.Write(wxT("&nbsp;"));
+          line += wxT("&nbsp;");
         else
           break;
       }
       input = input.Trim(false);
-      output.Write(input);
-      output.Write(wxT("<BR>\n"));
+      line += input;
+      output.AddLine(wxT("   ") + line);
+      output.AddLine(wxT("   <BR>"));
       tmp = tmp->m_nextToDraw;
     }
-    output.Write(wxT("  </SPAN>\n"));
+    output.AddLine(wxT("  </SPAN>"));
     
     // Check if there is no optput (commands with $)
     if (tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
-      output.Write(wxT(" </P>\n\n"));
+      output.AddLine(wxT(" </P>"));
+      output.AddLine(wxT(""));
       continue;
     }
     
@@ -1017,13 +1027,14 @@ bool MathCtrl::ExportToHTML(wxString file)
                       wxString::Format(wxT("%d.png"), count),
                       start, end))
         return false;
-      output.Write(wxT("  <BR>\n"));
-      output.Write(wxT("  <IMG ALT=\"Result\" SRC=\"img/") + 
-                   filename + 
-                   wxString::Format(wxT("%d.png\">\n"), count));
+      output.AddLine(wxT("  <BR>"));
+      output.AddLine(wxT("  <IMG ALT=\"Result\" SRC=\"img/") + 
+                     filename + 
+                     wxString::Format(wxT("%d.png\">"), count));
       count++;
     }
-    output.Write(wxT(" </P>\n\n"));
+    output.AddLine(wxT(" </P>"));
+    output.AddLine(wxT(""));
     if (tmp!=NULL)
       tmp = tmp->m_nextToDraw;
   }
@@ -1031,18 +1042,23 @@ bool MathCtrl::ExportToHTML(wxString file)
   //
   // Footer
   //
-  output.Write(wxT(" <HR>\n <SMALL>"));
-  output.Write(_("Created with"));
-  output.Write(wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
-               wxT("wxMaxima</A>")
-               wxT(".</SMALL>\n\n"));
+  output.AddLine(wxT(" <HR>"));
+  output.AddLine(wxT(" <SMALL> Created with")
+                 wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
+                 wxT("wxMaxima</A>")
+                 wxT(".</SMALL>"));
+  output.AddLine(wxT(""));
   
   //
   // Close document
   //
-  output.Write(wxT(" </BODY>\n"));
-  output.Write(wxT("</HTML>\n"));
-  return true;
+  output.AddLine(wxT(" </BODY>"));
+  output.AddLine(wxT("</HTML>"));
+  
+  bool done = output.Write(wxTextFileType_None);
+	output.Close();
+
+  return done;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
