@@ -38,7 +38,7 @@ class MyApp : public wxApp
 public:
   virtual bool OnInit();
 private:
-  wxLocale *m_locale;
+  wxLocale m_locale;
 };
 
 IMPLEMENT_APP(MyApp)
@@ -65,15 +65,14 @@ bool MyApp::OnInit()
     w = 950;
   }
   
-  m_locale = new wxLocale;
-  if (lang==wxLANGUAGE_UNKNOWN)
+  if (lang == wxLANGUAGE_UNKNOWN)
     lang = wxLocale::GetSystemLanguage();
-  m_locale->Init(lang);
+  m_locale.Init(lang);
 #if defined (__WXMSW__)
-  m_locale->AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
+  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
 #endif
-  m_locale->AddCatalog(wxT("wxMaxima"));
-  m_locale->AddCatalog(wxT("wxMaxima-wxstd"));
+  m_locale.AddCatalog(wxT("wxMaxima"));
+  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
   wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
                                  wxPoint(x, y), wxSize(w, h));
