@@ -35,6 +35,15 @@
  (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
  (*expr wxxml-lbp wxxml-rbp))
 
+(defvar *symbol-to-string* nil)
+
+(if (equal *autoconf-version* "5.9.1")
+  (setf *symbol-to-string* 'symbol-name)
+  (setf *symbol-to-string* 'print-invert-case))
+
+(defun wxxml-symbol-to-string (sym)
+  (apply *symbol-to-string* (list sym)))
+
 (defun wxxml (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its
   ;; left, r to its right. lop and rop are the operators on the left
@@ -102,7 +111,7 @@
 (defun wxxml-stripdollar (sym)
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
-  (let* ((pname (symbol-name sym))
+  (let* ((pname (wxxml-symbol-to-string sym))
          (pname (if (memq (elt pname 0) '(#\$ #\&)) (subseq pname 1) pname))
          (pname (string-substitute "&amp;" #\& pname))
          (pname (string-substitute "&gt;" #\> pname))
@@ -700,7 +709,7 @@
          (append l
                  (if (cadr x)
                      (list (format nil "<lbl>(~A)<mspace/></lbl>"
-                                   (stripdollar (cadr x))))
+                                   (stripdollar (wxxml-symbol-to-string (cadr x)))))
                    nil))
          r 'mparen 'mparen))
 
