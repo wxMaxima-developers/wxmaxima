@@ -63,6 +63,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Load a maxima package file"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_batch_id, _("&Batch file\tCtrl-B"),
                    _("Batch maxima file"), wxT("gtk-execute"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export to HTML"),
+                   _("Export console output to HTML file"), wxT("stock_export"));
   wxglade_tmp_menu_1->AppendSeparator();
   wxglade_tmp_menu_1->Append(menu_select_file, _("Select &file"),
                              _("Select a file (copy filename to input line)"),

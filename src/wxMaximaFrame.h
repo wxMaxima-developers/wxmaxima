@@ -171,7 +171,8 @@ enum {
   menu_inc_fontsize,
   menu_dec_fontsize,
   menu_copy_as_bitmap,
-  menu_copy_to_file
+  menu_copy_to_file,
+  menu_export_html
 };
 
 class wxMaximaFrame: public wxFrame {

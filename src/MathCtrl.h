@@ -47,10 +47,13 @@ class MathCtrl:public wxScrolledWindow
     bool Copy(bool lb = false);
     bool CopyBitmap();
     bool CopyToFile(wxString file);
+    bool CopyToFile(wxString file, MathCell* start, MathCell* end);
+    bool ExportToHTML(wxString file);
     wxString GetString();
     MathCell* GetTree() { return m_tree; }
   protected:
     MathCell* CopySelection();
+    MathCell* CopySelection(MathCell* start, MathCell* end);
     void GetMaxPoint(int* width, int* height);
     void BreakLines(MathCell* cell);
     void OnTimer(wxTimerEvent& event);

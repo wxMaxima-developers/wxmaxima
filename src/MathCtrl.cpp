@@ -24,8 +24,8 @@
 #include <wx/clipbrd.h>
 #include <wx/config.h>
 #include <wx/settings.h>
-
-using namespace std;
+#include <wx/filename.h>
+#include <wx/file.h>
 
 enum {
   TIMER_ID
@@ -259,7 +259,6 @@ void MathCtrl::RecalculateSize(MathCell* tmp)
 void MathCtrl::OnSize(wxSizeEvent& event)
 {
   wxDELETE(m_memory);
-  //wxScrolledWindow::OnSize(event);
   
   if (m_tree != NULL) {
     BreakLines(m_tree);
@@ -267,6 +266,8 @@ void MathCtrl::OnSize(wxSizeEvent& event)
   }
   else
     Refresh();
+  
+  wxScrolledWindow::OnSize(event);
 }
 
 /***
@@ -748,6 +749,9 @@ void MathCtrl::OnTimer(wxTimerEvent& event)
   m_timer.Start(50, true);
 }
 
+/***
+ * Destroy the tree
+ */
 void MathCtrl::DestroyTree()
 {
   DestroyTree(m_tree);
@@ -765,6 +769,9 @@ void MathCtrl::DestroyTree(MathCell* tmp)
   }
 }
 
+/***
+ * Copy tree
+ */
 MathCell* MathCtrl::CopyTree()
 {
   if (m_tree == NULL)
@@ -784,6 +791,9 @@ MathCell* MathCtrl::CopyTree()
   return copy;
 }
 
+/***
+ * Copy selection as bitmap
+ */
 bool MathCtrl::CopyBitmap()
 {
   MathCell* tmp = CopySelection();
@@ -804,10 +814,28 @@ bool MathCtrl::CopyToFile(wxString file)
   return bmp.ToFile(file);
 }
 
+bool MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end)
+{
+  MathCell* tmp = CopySelection(start, end);
+  
+  Bitmap bmp;
+  bmp.SetData(tmp);
+  
+  return bmp.ToFile(file);
+}
+
+/***
+ * Copy selection
+ */
 MathCell* MathCtrl::CopySelection()
 {
+  return CopySelection(m_selectionStart, m_selectionEnd);
+}
+
+MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end)
+{
   MathCell *tmp, *tmp1 = NULL, *tmp2 = NULL;
-  tmp = m_selectionStart;
+  tmp = start;
   
   while (tmp != NULL) {
     if (tmp1 == NULL) {
@@ -818,12 +846,195 @@ MathCell* MathCtrl::CopySelection()
       tmp2->AppendCell(tmp->Copy(false));
       tmp2 = tmp2->m_next;
     }
-    if (tmp == m_selectionEnd)
+    if (tmp == end)
       break;
     tmp = tmp->m_nextToDraw;
   }
   
   return tmp1;
+}
+
+/***
+ * Export content to a HTML file.
+ */
+bool MathCtrl::ExportToHTML(wxString file)
+{
+  wxString dir = wxPathOnly(file);
+  wxString imgDir = dir + wxT("/img");
+  wxString path, filename, ext;
+  int count = 0;
+  MathCell *tmp = m_tree, *start = NULL, *end = NULL;
+  
+  wxFileName::SplitPath(file, &path, &filename, &ext);
+  
+  if (!wxDirExists(imgDir))
+    if (!wxMkdir(imgDir))
+      return false;
+  
+  wxFile output(file, wxFile::write);
+  if (!output.IsOpened())
+    return false;
+  
+  output.Write(wxT("<HTML>\n"));
+  output.Write(wxT(" <HEAD>\n"));
+  output.Write(wxT("  <TITLE>wxMaxima HTML export</TITLE>\n"));
+  output.Write(wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">\n"));
+  
+  //
+  // Write styles
+  //
+  wxString font;
+  wxString colorInput;
+  wxString colorPrompt;
+  wxString colorMain;
+  bool italicInput = false;
+  bool boldInput = false;
+  bool italicPrompt = false;
+  bool boldPrompt = false;
+  int fontSize = 12;
+  wxConfigBase* config = wxConfig::Get();
+  
+  config->Read(wxT("Style/fontname"), &font);
+  config->Read(wxT("Style/Input/color"), &colorInput);
+  config->Read(wxT("Style/MainPrompt/color"), &colorPrompt);
+  config->Read(wxT("Style/NormalText/color"), &colorMain);
+  config->Read(wxT("fontSize"), &fontSize);
+  config->Read(wxT("Style/Input/bold"), &boldInput);
+  config->Read(wxT("Style/Input/italic"), &italicInput);
+  config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
+  config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
+  
+  output.Write(wxT("  <STYLE>\n"));
+  
+  output.Write(wxT("body {\n"));
+  if (font.Length()) {
+    output.Write(wxT("  font-family: "));
+    output.Write(font);
+    output.Write(wxT(";\n"));
+  }
+//  output.Write(wxT("  font-size: "));
+//  output.Write(wxString::Format(wxT("%d"), fontSize));
+//  output.Write(wxT(";\n"));
+  if (colorMain.Length()) {
+    output.Write(wxT("  color: "));
+    output.Write(colorMain);
+    output.Write(wxT(";\n"));
+  }
+  output.Write(wxT("}\n"));
+  
+  output.Write(wxT(".input {\n"));
+  if (colorInput.Length()) {
+    output.Write(wxT("  color: "));
+    output.Write(colorInput);
+    output.Write(wxT(";\n"));
+  }
+  if (boldInput)
+    output.Write(wxT("  font-weight: bold;\n"));
+  output.Write(wxT("}\n"));
+  
+  output.Write(wxT(".prompt {\n"));
+  if (colorPrompt.Length()) {
+    output.Write(wxT("  color: "));
+    output.Write(colorPrompt);
+    output.Write(wxT(";\n"));
+  }
+  if (boldPrompt)
+    output.Write(wxT("  font-weight: bold;\n"));
+  output.Write(wxT("}\n"));
+
+  output.Write(wxT("  </STYLE>\n"));
+  output.Write(wxT(" </HEAD>\n"));
+  output.Write(wxT(" <BODY>\n"));
+  
+  //
+  // Write maxima header
+  //
+  if (tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
+    output.Write("\n <P>\n");
+    while(tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
+      output.Write(tmp->ToString(false));
+      output.Write(wxT("<BR/>\n"));
+      tmp = tmp->m_nextToDraw;
+    }
+    output.Write(wxT(" </P>\n"));
+  }
+  
+  output.Write(wxT("\n"));
+  
+  //
+  // Write contents
+  //
+  while(tmp!=NULL) {
+    output.Write(wxT(" <P>\n"));
+    
+    // PROMPT
+    output.Write(wxT("  <SPAN CLASS=\"prompt\">"));
+    while(tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
+      output.Write(tmp->ToString(false));
+      tmp = tmp->m_nextToDraw;
+    }
+    output.Write(wxT("</SPAN>\n"));
+    
+    // INPUT
+    output.Write(wxT("  <SPAN CLASS=\"input\">\n"));
+    while(tmp!=NULL && tmp->GetType()==TC_INPUT) {
+      wxString input = tmp->ToString(false);
+      for (unsigned int i=0; i<input.Length(); i++) {
+        if (input.GetChar(i) == ' ')
+          output.Write(wxT("&nbsp;"));
+        else
+          break;
+      }
+      input = input.Trim(false);
+      output.Write(input);
+      output.Write(wxT("<BR>\n"));
+      tmp = tmp->m_nextToDraw;
+    }
+    output.Write(wxT("  </SPAN>\n"));
+    
+    // Check if there is no optput (commands with $)
+    if (tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
+      output.Write(wxT(" </P>\n\n"));
+      continue;
+    }
+    
+    // OUTPUT
+    start = tmp;
+    while (tmp!=NULL && tmp->m_nextToDraw!=NULL &&
+           tmp->m_nextToDraw->GetType()!=TC_MAIN_PROMPT)
+      tmp = tmp->m_nextToDraw;
+    end = tmp;
+    if (start!=NULL && end!=NULL) {
+      if (!CopyToFile(imgDir + wxT("/") +filename +
+                      wxString::Format(wxT("%d.png"), count),
+                      start, end))
+        return false;
+      output.Write(wxT("  <BR>\n"));
+      output.Write(wxT("  <IMG SRC=\"img/") + 
+                   filename + 
+                   wxString::Format(wxT("%d.png\">\n"), count));
+      count++;
+    }
+    output.Write(wxT(" </P>\n\n"));
+    if (tmp!=NULL)
+      tmp = tmp->m_nextToDraw;
+  }
+  
+  //
+  // Footer
+  //
+  output.Write(wxT(" <HR>\n <SMALL>"));
+  output.Write(_("Created with"));
+  output.Write(wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
+               wxT("wxMaxima</A>")
+               wxT(".</SMALL>\n\n"));
+  
+  //
+  // Close document
+  //
+  output.Write(wxT(" </BODY>\n"));
+  output.Write(wxT("</HTML>\n"));
+  return true;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

@@ -794,10 +794,10 @@ wxString wxMaxima::getDefaultEntry()
 void wxMaxima::onMonitorFile(wxCommandEvent& event)
 {
   wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
-                                     wxT(""), wxT(""),
-                                     _("Maxima package (*.mac)|*.mac|"
-                                       "Lisp package (*.lisp)|*.lisp|All|*"),
-                                     wxOPEN);
+                                 wxT(""), wxT(""),
+                                 _("Maxima package (*.mac)|*.mac|"
+                                    "Lisp package (*.lisp)|*.lisp|All|*"),
+                                 wxOPEN);
   if (file.Length()!=0) {
     m_monitorFile = file;
 #if defined __WXMSW__
@@ -893,7 +893,7 @@ void wxMaxima::fileMenu(wxCommandEvent& event)
   case menu_save_id:
     {
       wxString file = wxFileSelector(_("Save to file"), m_lastPath,
-                                     wxT(""), wxT(""),
+                                     wxT("wxMaxima.sav"), wxT(""),
                                      _("Maxima session (*.sav)|*.sav|"
                                        "All|*"),
                                      wxSAVE|wxOVERWRITE_PROMPT);
@@ -906,6 +906,21 @@ void wxMaxima::fileMenu(wxCommandEvent& event)
         cmd.append(file);
         cmd.append(wxT("\", ALL);"));
         sendMaxima(cmd);
+      }
+    }
+    break;
+  case menu_export_html:
+    {
+      wxString file = wxFileSelector(_("Export to HTML file"), m_lastPath,
+                                     wxT("index.html"), wxT(""),
+                                     _("HTML file (*.html)|*.html|"
+                                       "All|*"),
+                                     wxSAVE|wxOVERWRITE_PROMPT);
+      if (file.Length()) {
+        m_lastPath = wxPathOnly(file);
+        if (!m_console->ExportToHTML(file))
+          wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
+                       wxOK);
       }
     }
     break;
@@ -1016,7 +1031,7 @@ void wxMaxima::editMenu(wxCommandEvent& event)
                                      "JPEG image (*.jpg)|*.jpg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
                                      "X pixmap (*.xpm)|*.xpm"),
-                                   wxSAVE);
+                                   wxSAVE|wxOVERWRITE_PROMPT);
     if (file.Length()) {
       m_console->CopyToFile(file);
       m_lastPath = wxPathOnly(file);
@@ -2077,6 +2092,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_variables, wxMaxima::maximaMenu)
   EVT_MENU(menu_options_id, wxMaxima::editMenu)
   EVT_MENU(menu_sconsole_id, wxMaxima::fileMenu)
+  EVT_MENU(menu_export_html, wxMaxima::fileMenu)
   EVT_MENU(menu_help_id, wxMaxima::aboutMenu)
   EVT_MENU(menu_bug_report, wxMaxima::aboutMenu)
   EVT_MENU(menu_build_info, wxMaxima::aboutMenu)
