@@ -51,6 +51,7 @@
 #include <wx/html/helpctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
+#include <wx/dynlib.h>
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
@@ -79,6 +80,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetDropTarget(new FileDrop(this, m_inputLine, DND_LOAD));
   m_inputLine->SetDropTarget(new FileDrop(this, m_inputLine, DND_WRITE));
 
+  checkForPrintingSupport();
+  
   m_printData = new wxPrintData;
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
   m_inputLine->SetFocus();
@@ -90,6 +93,25 @@ wxMaxima::~wxMaxima()
   if (m_client != NULL)
     m_client->Destroy();
   delete m_printData;
+}
+
+void wxMaxima::checkForPrintingSupport()
+{
+#if defined __WXMSW__
+  m_supportPrinting = true;
+#elif defined wxUSE_LIBGNOMEPRINT && wxUSE_LIBGNOMEPRINT
+  wxLogNull log;
+  wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
+  wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
+  if (m_gnomep->IsLoaded() && m_gnomepui->IsLoaded())
+    m_supportPrinting = true;
+  else
+    m_supportPrinting = false;
+  delete m_gnomep;
+  delete m_gnomepui;
+#else
+  m_supportPrinting = false;
+#endif
 }
 
 void wxMaxima::initSession()
@@ -682,6 +704,7 @@ void wxMaxima::printMenu(wxCommandEvent& event)
       MathPrintout printout(_("wxMaxima printout"));
       MathCell* copy = m_console->CopyTree();
       printout.SetData(copy);
+/*
       if (!printer.Print(this, &printout, true)) {
         if (wxPrinter::GetLastError() == wxPRINTER_ERROR)
           wxMessageBox(_("There was a problem printing.\n"
@@ -691,6 +714,9 @@ void wxMaxima::printMenu(wxCommandEvent& event)
       else {
         (*m_printData) = printer.GetPrintDialogData().GetPrintData();
       }
+*/
+      if (printer.Print(this, &printout, true))
+        (*m_printData) = printer.GetPrintDialogData().GetPrintData();
       break;
     }
     case menu_print_setup:
@@ -711,7 +737,7 @@ void wxMaxima::updateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_lb_from_console, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
-  if (m_console->GetTree()!=NULL)
+  if (m_console->GetTree()!=NULL && m_supportPrinting)
     menubar->Enable(menu_print, true);
   else
     menubar->Enable(menu_print, false);
@@ -1363,7 +1389,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
       wiz->ShowModal();
       if (wiz->isOk()) {
         cmd = wxT("charpoly(") + wiz->getValue_1() + wxT(", ")
-          + wiz->getValue_2() + wxT(");");
+          + wiz->getValue_2() + wxT("), expand;");
         sendMaxima(cmd);
       }
       wiz->Destroy();

@@ -82,6 +82,8 @@ class wxMaxima : public wxMaximaFrame
           bool newLine, bool bigSkip = true);      //
   void doRawConsoleAppend(wxString s, int type,    //
           bool newLine = true);                    //
+  
+  void checkForPrintingSupport();
   wxString getDefaultEntry();
   bool startServer();                              // starts the server
   bool startMaxima();                              // starts maxima (uses getCommand)
@@ -125,6 +127,7 @@ class wxMaxima : public wxMaximaFrame
   wxString m_lastPath;
   MathParser m_MParser;
   wxPrintData* m_printData;
+  bool m_supportPrinting;
   DECLARE_EVENT_TABLE()
 };
 
