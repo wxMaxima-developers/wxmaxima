@@ -99,7 +99,8 @@ void wxMaxima::checkForPrintingSupport()
 {
 #if defined __WXMSW__
   m_supportPrinting = true;
-#elif defined wxUSE_LIBGNOMEPRINT && wxUSE_LIBGNOMEPRINT
+#elif defined wxUSE_LIBGNOMEPRINT
+ #if wxUSE_LIBGNOMEPRINT
   wxLogNull log;
   wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
   wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
@@ -109,6 +110,9 @@ void wxMaxima::checkForPrintingSupport()
     m_supportPrinting = false;
   delete m_gnomep;
   delete m_gnomepui;
+ #else
+  m_supportPrinting = false;
+ #endif
 #else
   m_supportPrinting = false;
 #endif
@@ -701,7 +705,7 @@ void wxMaxima::printMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      MathPrintout printout(_("wxMaxima printout"));
+      MathPrintout printout(_("Maxima session"));
       MathCell* copy = m_console->CopyTree();
       printout.SetData(copy);
 /*
