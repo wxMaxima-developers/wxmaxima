@@ -46,13 +46,13 @@ AM_PATH_WXCONFIG(2.4.0, wxWin=1)
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
-          wxWindows must be installed on your system.
+          wxWidgetss must be installed on your system.
 
           Please check that wx-config is in path, the directory
-          where wxWindows libraries are installed (returned by
+          where wxWidgets libraries are installed (returned by
           'wx-config --libs' or 'wx-config --static --libs' command)
           is in LD_LIBRARY_PATH or equivalent variable and
-          wxWindows version is 2.4.0 or above.
+          wxWidgets version is 2.4.0 or above.
           ])
 else
    if test x"${static_wx}" = x"true" ; then
@@ -65,9 +65,17 @@ else
    CXXFLAGS=$WX_CXXFLAGS
    AC_LANG_SAVE
    AC_LANG_CPLUSPLUS
+   AC_MSG_CHECKING([if we can compile a wxWidgets program])
    AC_TRY_LINK([#include <wx/wx.h>],
                [wxString test=wxT("")],
-                ,[WX_LIBS])
+               [AC_MSG_RESULT([yes])],
+               [echo ""
+                echo ""
+                echo "*** The test program failed to compile or link. See the file config.log for the"
+                echo "*** exact error that occured. This usually means that wxWidgets library was"
+                echo "*** incorrectly installed."
+                echo ""
+                AC_MSG_ERROR([Failed to compile a test program])])
    AC_LANG_RESTORE
    LIBS=$ac_save_LIBS
    CXXFLAGS=$ac_save_CXXFLAGS
