@@ -91,6 +91,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
                              _("Copy selection from console (including linebreaks)"),
                              wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
+                   _("&Delete selection"), 
+                   _("Delete selected input/output group"), wxT("gtk-delete"));
 #if defined __WXMSW__
   wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as &image"),
                              _("Copy selection from console as image"),
@@ -102,9 +105,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
-                   _("&Delete selection"), 
-                   _("Delete selected input/output group"), wxT("gtk-delete"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
                    _("Delete the contents of console."), wxT("gtk-clear"));
