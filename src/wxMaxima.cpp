@@ -33,7 +33,6 @@
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
 #include "Gen4Wiz.h"
-#include "IC2Wiz.h"
 #include "BC2Wiz.h"
 #include "MatWiz.h"
 #include "DragNDrop.h"
