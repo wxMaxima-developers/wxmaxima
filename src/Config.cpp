@@ -212,7 +212,7 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
   grid_sizer_2->Add(label_5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_maximaProgram, 0, wxALL, 3);
+  grid_sizer_2->Add(m_maximaProgram, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_mpBrowse, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(label_6, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
