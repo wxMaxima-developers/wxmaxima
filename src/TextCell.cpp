@@ -60,7 +60,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   dc.GetTextExtent(m_text, &m_width, &m_height);
   m_width = m_width + SCALE_PX(4, scale);
   m_height = m_height + SCALE_PX(4, scale);
-  if (m_text == wxT("*"))
+  if (m_style == TC_OPERATOR && m_text == wxT("*"))
     m_width = 0;
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -75,7 +75,7 @@ void TextCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height = MAX(m_height, fontsize);
   m_height += SCALE_PX(4, scale);
   m_width += SCALE_PX(4, scale);
-  if (m_text == wxT("*"))
+  if (m_style == TC_OPERATOR && m_text == wxT("*"))
     m_width = 0;
   m_center = m_height/2;
   MathCell::RecalculateSize(parser, fontsize, all);
@@ -87,7 +87,8 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
   
-  if (DrawThisCell(parser, point) && m_text != wxT("*")) {
+  if (DrawThisCell(parser, point) &&
+      (m_style != TC_OPERATOR || m_text != wxT("*"))) {
     SetFont(parser, fontsize);
     SetForeground(parser);
 

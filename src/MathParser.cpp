@@ -421,9 +421,15 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("mo") ||
-               tagName == wxT("mi") ||
-               tagName == wxT("mn")) {
+      else if (tagName == wxT("mo")) {
+        MathCell* tmp = ParseText(node->children);
+        tmp->SetStyle(TC_OPERATOR);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("mn")) {
         if (cell == NULL)
           cell = ParseText(node->children);
         else
