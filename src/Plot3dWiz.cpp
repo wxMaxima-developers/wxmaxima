@@ -73,7 +73,7 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
     wxT("openmath")
   };
   combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
-                               wxDefaultSize, 3, combo_box_1_choices,
+                               wxSize(150, -1), 3, combo_box_1_choices,
                                wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] = {
@@ -85,12 +85,12 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
     wxT("set mapping cylindrical")
   };
   combo_box_2 = new wxComboBox(this, combobox, wxT(""), wxDefaultPosition,
-                               wxSize(230,-1), 6, combo_box_2_choices,
+                               wxSize(250,-1), 6, combo_box_2_choices,
                                wxCB_DROPDOWN);
   check_box_1  = new wxCheckBox(this, -1, _("pm3d"));
   label_13 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_10 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                               wxSize(230, -1));
+                               wxSize(250, -1));
   button_3 = new wxBitmapButton(this, file_browse_3d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
@@ -164,7 +164,7 @@ void Plot3DWiz::do_layout()
   sizer_5->Add(check_box_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   grid_sizer_2->Add(sizer_5, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_13, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  sizer_6->Add(text_ctrl_10, 0, wxALL|wxEXPAND, 2);
+  sizer_6->Add(text_ctrl_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_6->Add(button_3, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_6, 1, wxEXPAND, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
