@@ -37,6 +37,7 @@ public:
 private:
   void set_properties();
   void do_layout();
+  void OnCheckbox(wxCommandEvent& event);
 protected:
   wxStaticText* label_1;
   wxStaticText* label_2;
@@ -52,6 +53,7 @@ protected:
   wxButton* button_2;
   wxCheckBox* checkbox_1;
   wxCheckBox* checkbox_2;
+  DECLARE_EVENT_TABLE()
 };
 
 

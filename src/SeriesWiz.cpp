@@ -19,6 +19,11 @@
  */
 
 
+enum {
+  powerseries_id,
+  special_id
+};
+
 
 #include "SeriesWiz.h"
 
@@ -34,10 +39,10 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
   label_4 = new wxStaticText(this, -1, _("around:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
-  button_3 = new wxButton(this, special_sw, _("Special"));
+  button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("depth:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"));
-  checkbox_1 = new wxCheckBox(this, -1, _("Power series"));
+  checkbox_1 = new wxCheckBox(this, powerseries_id, _("Power series"));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -122,6 +127,12 @@ wxString SeriesWiz::GetValue()
   return s;
 }
 
+void SeriesWiz::OnCheckbox(wxCommandEvent& event)
+{
+  text_ctrl_4->Enable(!checkbox_1->GetValue());
+}
+
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-  EVT_BUTTON(special_sw, SeriesWiz::OnButton)
+  EVT_BUTTON(special_id, SeriesWiz::OnButton)
+  EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox)
 END_EVENT_TABLE()

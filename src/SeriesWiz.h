@@ -26,10 +26,6 @@
 
 #include "BTextCtrl.h"
 
-enum {
-  special_sw
-};
-
 class SeriesWiz: public wxDialog {
 public:
   SeriesWiz(wxWindow* parent, int id, const wxString& title,
@@ -42,6 +38,7 @@ private:
   void set_properties();
   void do_layout();
   void OnButton(wxCommandEvent& event);
+  void OnCheckbox(wxCommandEvent& event);
 protected:
   wxStaticText* label_1;
   wxStaticText* label_2;

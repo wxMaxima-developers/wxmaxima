@@ -43,12 +43,14 @@ private:
   void set_properties();
   void do_layout();
   void OnButton(wxCommandEvent& event);
+  void OnCheckbox(wxCommandEvent& event);
 protected:
   wxStaticText* label_1;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;
   BTextCtrl* text_ctrl_2;
+  wxCheckBox* checkbox_1;
   wxStaticText* label_4;
   BTextCtrl* text_ctrl_3;
   wxButton* button_3;
@@ -58,7 +60,7 @@ protected:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  wxCheckBox* checkbox_1;
+  wxCheckBox* checkbox_2;
   DECLARE_EVENT_TABLE()
 };
 

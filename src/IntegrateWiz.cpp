@@ -20,6 +20,10 @@
 
 #include "IntegrateWiz.h"
 
+enum {
+  definite_id
+};
+
 IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
                            const wxString& title, const wxPoint& pos,
                            const wxSize& size, long style):
@@ -28,16 +32,17 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   label_1 = new wxStaticText(this, -1, _("Integrate"));
   label_2 = new wxStaticText(this, -1, _("Integrate:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
+  checkbox_1 = new wxCheckBox(this, definite_id, _("Definite integration"));
   label_4 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT(""));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
   button_3 = new wxButton(this, special_from, _("Special"));
   label_5 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT(""));
+  text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"));
   button_4 = new wxButton(this, special_to, _("Special"));
-  checkbox_1 = new wxCheckBox(this, -1, _("Numerical"));
+  checkbox_2 = new wxCheckBox(this, -1, _("Numerical integration"));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -52,6 +57,11 @@ void IntegrateWiz::set_properties()
   SetTitle(_("Integrate"));
   label_1->SetFont(wxFont(20, wxROMAN, wxSLANT, wxNORMAL, 0, wxT("")));
   button_1->SetDefault();
+  text_ctrl_3->Enable(false);
+  button_3->Enable(false);
+  text_ctrl_4->Enable(false);
+  button_4->Enable(false);
+  checkbox_2->Enable(false);
 }
 
 
@@ -67,6 +77,8 @@ void IntegrateWiz::do_layout()
   grid_sizer_4->Add(text_ctrl_1, 0, wxALL, 2);
   grid_sizer_4->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_4->Add(text_ctrl_2, 0, wxALL, 2);
+  grid_sizer_4->Add(20, 20, 0, 0);
+  grid_sizer_4->Add(checkbox_1, 0, wxALL, 2);
   grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_5->Add(text_ctrl_3, 0, wxALL|wxEXPAND, 2);
   grid_sizer_5->Add(button_3, 0, wxALL, 2);
@@ -78,7 +90,7 @@ void IntegrateWiz::do_layout()
   grid_sizer_6->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_6, 1, 0, 0);
   grid_sizer_4->Add(20, 20, 0, 0);
-  grid_sizer_4->Add(checkbox_1, 0, wxALL, 2);
+  grid_sizer_4->Add(checkbox_2, 0, wxALL, 2);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
   grid_sizer_3->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
   sizer_3->Add(button_2, 0, wxALL, 2);
@@ -94,7 +106,7 @@ void IntegrateWiz::do_layout()
 wxString IntegrateWiz::GetValue()
 {
   wxString s;
-  if (checkbox_1->IsChecked())
+  if (checkbox_2->GetValue())
     s = wxT("romberg(");
   else
     s = wxT("integrate(");
@@ -103,7 +115,7 @@ wxString IntegrateWiz::GetValue()
   s += text_ctrl_2->GetValue();
   wxString from = text_ctrl_3->GetValue();
   wxString to = text_ctrl_4->GetValue();
-  if (from.Length()>0 && to.Length()>0) {
+  if (checkbox_1->GetValue()) {
     s += wxT(", ");
     s += from;
     s += wxT(", ");
@@ -112,6 +124,17 @@ wxString IntegrateWiz::GetValue()
   s += wxT(");");
   
   return s;
+}
+
+void IntegrateWiz::OnCheckbox(wxCommandEvent& event)
+{
+  bool enable = checkbox_1->GetValue();
+  
+  text_ctrl_3->Enable(enable);
+  button_3->Enable(enable);
+  text_ctrl_4->Enable(enable);
+  button_4->Enable(enable);
+  checkbox_2->Enable(enable);
 }
 
 void IntegrateWiz::OnButton(wxCommandEvent& event) {
@@ -158,4 +181,5 @@ void IntegrateWiz::OnButton(wxCommandEvent& event) {
 BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
   EVT_BUTTON(special_from, IntegrateWiz::OnButton)
   EVT_BUTTON(special_to, IntegrateWiz::OnButton)
+  EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
 END_EVENT_TABLE()

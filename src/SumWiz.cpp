@@ -18,7 +18,9 @@
  *
  */
 
-
+enum {
+  use_nusum_id
+};
 
 #include "SumWiz.h"
 
@@ -37,7 +39,7 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   label_5 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"));
   checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
-  checkbox_2 = new wxCheckBox(this, -1, _("Nusum"));
+  checkbox_2 = new wxCheckBox(this, use_nusum_id, _("Nusum"));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -54,6 +56,9 @@ void SumWiz::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   checkbox_1->SetValue(true);
   button_1->SetDefault();
+  
+  checkbox_1->SetToolTip(_("Simplify the sum"));
+  checkbox_2->SetToolTip(_("Use Gosper algorithm"));
 }
 
 
@@ -110,3 +115,12 @@ wxString SumWiz::GetValue()
 
   return s;
 }
+
+void SumWiz::OnCheckbox(wxCommandEvent& event)
+{
+  checkbox_1->Enable(!checkbox_2->GetValue());
+}
+
+BEGIN_EVENT_TABLE(SumWiz, wxDialog)
+  EVT_CHECKBOX(use_nusum_id, SumWiz::OnCheckbox)
+END_EVENT_TABLE()
