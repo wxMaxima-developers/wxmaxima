@@ -44,7 +44,6 @@
 #include <wx/filedlg.h>
 #include <wx/utils.h>
 #include <wx/msgdlg.h>
-#include <wx/process.h>
 #include <wx/textfile.h>
 #include <wx/tipdlg.h>
 #include <wx/fs_zip.h>
@@ -52,6 +51,10 @@
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
 #include <wx/dynlib.h>
+
+enum {
+  maxima_process_id
+};
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
@@ -168,7 +171,6 @@ void wxMaxima::firstOutput(wxString s)
 void wxMaxima::consoleAppend(wxString s, int type)
 {
   m_inPrompt = false;
-  SetStatusText(_("Parsing output"));
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxT(""));
 
@@ -177,7 +179,8 @@ void wxMaxima::consoleAppend(wxString s, int type)
   t.Trim(false);
   if (!t.Length())
     return;
-
+  
+  SetStatusText(_("Parsing output"));
   if (type == TEXTT) {
     while (s.Length()>0) {
       int start = s.Find(wxT("<mth"));
@@ -595,10 +598,10 @@ wxString wxMaxima::getCommand()
 
   if (!have_config) {
     wxMessageBox(_("wxMaxima could not find maxima!\n\n"
-                   "Please configure wxMaxima with Maxima->Configure.\n"
+                   "Please configure wxMaxima with 'Edit->Configure'.\n"
                    "Then start maxima with 'Maxima->Restart maxima'."), _("Warning"),
                    wxOK|wxICON_EXCLAMATION);
-    SetStatusText(_("Please configure wxMaxima with Maxima->Configure."));
+    SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     return wxT("");
   }
 
@@ -642,7 +645,7 @@ bool wxMaxima::startMaxima()
                    m_port));
 #endif
 
-    m_process = new wxProcess();
+    m_process = new wxProcess(this, maxima_process_id);
     m_process->Redirect();
     m_first = true;
     GetMenuBar()->Enable(menu_interrupt_id, false);
@@ -650,10 +653,16 @@ bool wxMaxima::startMaxima()
     SetStatusText(_("Starting maxima..."));
     wxExecute(command, wxEXEC_ASYNC, m_process);
     m_input = m_process->GetInputStream();
+    SetStatusText(_("Maxima started. Waiting for connection..."));
   }
   else
     return false;
   return true;
+}
+
+void wxMaxima::onProcessEvent(wxProcessEvent& event)
+{
+  SetStatusText(_("Maxima process terminated. Please configure wxMaxima with 'Edit->Configure'"));
 }
 
 void wxMaxima::cleanUp()
@@ -2144,4 +2153,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_CLOSE(wxMaxima::onClose)
   EVT_ACTIVATE(wxMaxima::onActivate)
   EVT_SET_FOCUS(wxMaxima::onSetFocus)
+  EVT_END_PROCESS(maxima_process_id, wxMaxima::onProcessEvent)
 END_EVENT_TABLE()

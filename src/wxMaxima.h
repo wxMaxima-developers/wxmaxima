@@ -28,6 +28,7 @@
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/dnd.h>
+#include <wx/process.h>
 
 #include <vector>
 
@@ -73,6 +74,7 @@ class wxMaxima : public wxMaximaFrame
   void onActivate(wxActivateEvent& event);         //
   void onSetFocus(wxFocusEvent& event);            //
   void updateMenus(wxUpdateUIEvent& event);        //
+  void onProcessEvent(wxProcessEvent& event);      //
 
   void serverEvent(wxSocketEvent& event);          // server event: maxima connection
   void clientEvent(wxSocketEvent& event);          // client event: maxima input/output
