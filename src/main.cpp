@@ -24,6 +24,7 @@
 #include <wx/config.h>
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
+#include <wx/image.h>
 
 #include "wxMaxima.h"
 
