@@ -130,6 +130,7 @@ class wxMaxima : public wxMaximaFrame
   MathParser m_MParser;
   wxPrintData* m_printData;
   bool m_supportPrinting;
+  bool m_closing;
   DECLARE_EVENT_TABLE()
 };
 

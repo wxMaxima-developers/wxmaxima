@@ -69,7 +69,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_promptPrefix = wxT("<PROMPT-P/>");
   GetMenuBar()->Enable(menu_interrupt_id, false);
   m_firstPrompt = wxT("(%i1) ");
-  
+
   m_client = NULL;
   m_server = NULL;
 
@@ -84,10 +84,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_inputLine->SetDropTarget(new FileDrop(this, m_inputLine, DND_WRITE));
 
   checkForPrintingSupport();
-  
+
   m_printData = new wxPrintData;
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
   m_inputLine->SetFocus();
+  m_closing = false;
   wxInitAllImageHandlers();
 }
 
@@ -154,10 +155,10 @@ void wxMaxima::firstOutput(wxString s)
   wxConfigBase* config = wxConfig::Get();
   bool showHeader = true;
   config->Read(wxT("showHeader"), &showHeader);
-  
+
   int start = s.Find(m_firstPrompt);
   m_console->ClearWindow();
-  
+
   if (showHeader)
     consoleAppend(s.SubString(0, start-1), TEXTT);
   consoleAppend(m_firstPrompt, PROMPTT);
@@ -180,7 +181,7 @@ void wxMaxima::consoleAppend(wxString s, int type)
   t.Trim(false);
   if (!t.Length())
     return;
-  
+
   if (type != ERRORT)
     SetStatusText(_("Parsing output"));
   if (type == TEXTT) {
@@ -394,9 +395,10 @@ void wxMaxima::clientEvent(wxSocketEvent& event)
     }
     break;
   case wxSOCKET_LOST:
-    consoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
-                      "Restart maxima with 'Maxima->Restart maxima'.\n"),
-                  ERRORT);
+    if (!m_closing)
+      consoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
+                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                    ERRORT);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_client->Destroy();
@@ -490,8 +492,10 @@ void wxMaxima::serverEvent(wxSocketEvent& event)
     }
     break;
   case wxSOCKET_LOST:
-    consoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                    "Restart maxima with 'Maxima->Restart maxima'.\n"), ERRORT);
+    if (!m_closing)
+      consoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                    ERRORT);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_isConnected = false;
@@ -627,13 +631,13 @@ bool wxMaxima::startMaxima()
     if (wxGetOsVersion() == wxWIN95) {
       wxString maximaPrefix = command.SubString(1, command.Length()-3);
       wxString sysPath;
-      
+
       wxGetEnv(wxT("path"), &sysPath);
       maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxT(""));
-      
+
       wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
       wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
-      
+
       command.Replace(wxT("bin\\maxima.bat"),
                       wxT("lib\\maxima\\5.9.1\\binary-gcl\\maxima.exe"));
       command.Append(wxString::Format(
@@ -664,7 +668,8 @@ bool wxMaxima::startMaxima()
 
 void wxMaxima::onProcessEvent(wxProcessEvent& event)
 {
-  SetStatusText(_("Maxima process terminated. Please configure wxMaxima with 'Edit->Configure'."));
+  if (!m_closing)
+    SetStatusText(_("Maxima process terminated."));
 }
 
 void wxMaxima::cleanUp()
@@ -2025,6 +2030,8 @@ void wxMaxima::onClose(wxCloseEvent& event)
     config->Write(wxT("pos-max"), 0);
   if (m_lastPath.Length()>0)
     config->Write(wxT("lastPath"), m_lastPath);
+  m_process->Detach();
+  m_closing = true;
   cleanUp();
   Destroy();
 }
