@@ -38,7 +38,7 @@
 (defvar *symbol-to-string* nil)
 
 (if (equal *autoconf-version* "5.9.1")
-  (setf *symbol-to-string* 'symbol-name)
+    (setf *symbol-to-string* 'symbol-name)
   (setf *symbol-to-string* 'print-invert-case))
 
 (defun wxxml-symbol-to-string (sym)
@@ -781,12 +781,6 @@
 		 (wxxml-list (cddr x) nil nil ",")
                  (list ")</mrow></msub>") r))))
 
-;;;
-;;; Change loadfile to call playback after loading
-;;; Change playback to include prompt and input tags
-;;;
-
-
 ;;(defmvar $playback_with_loadfile
 ;;         t  "Should we issue playback when loading sessions."  boolean)
 
@@ -795,52 +789,124 @@
 ;;	    (not (memq $loadprint '(nil $autoload))))
 ;;  (if $playback_with_loadfile (meval '($playback))))
 
-;;(defmspec $playback (x) (setq x (cdr x))
-;;	  (let ((state-pdl (cons 'playback state-pdl)))
-;;	    (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
-;;	       (setq inchar (getlabcharn $inchar))
-;;					; Only the 1st alphabetic char. of $INCHAR is tested
-;;	       (setq timep $showtime grindp $grind)
-;;	       (do ((x x (cdr x)))( (null x))
-;;		 (cond ((eq (ml-typep (car x)) 'fixnum) (setq numbp (car x)))
-;;		       ((eq (car x) '$all))
-;;		       ((eq (car x) '$slow) (setq slowp t))
-;;		       ((eq (car x) '$nostring) (setq nostringp t))
-;;		       ((eq (car x) '$grind) (setq grindp t))
-;;		       ((eq (car x) '$input) (setq inputp t))
-;;		       ((memq (car x) '($showtime $time)) (setq timep (or timep t)))
-;;		       ((memq (car x) '($gctime $totaltime)) (setq timep '$all))
-;;		       ((setq l2 (listargp (car x)))
-;;			(setq l1 (nconc l1 (getlabels (car l2) (cdr l2) nil)) largp t))
-;;		       (t (improper-arg-err (car x) '$playback))))
-;;	       (cond ((and largp (null numbp)) (go loop))
-;;		     ((and (setq l (cdr $labels)) (not $nolabels)) (setq l (cdr l))))
-;;	       (when (or (null numbp) (< (length l) numbp))
-;;		 (setq l1 (reverse l)) (go loop))
-;;	       (do ((i numbp (f1- i)) (l2)) ((zerop i) (setq l1 (nconc l1 l2)))
-;;		 (setq l2 (cons (car l) l2) l (cdr l)))
-;;	       loop (if (null l1) (return '$done))
-;;	       ((lambda (errset incharp)
-;;		  (errset
-;;		   (cond ((and (not nostringp) incharp)
-;;			  (let ((linelable (car l1))) (mterpri) (princ "<mth><prompt>")
-;;                                    (printlabel)
-;;                                    (princ "</prompt><mspace/><input>"))
-;;			  (if grindp (mgrind (meval1 (car l1)) nil)
-;;			      (mapc #'tyo (mstring (meval1 (car l1)))))
-;;			  (if (get (car l1) 'nodisp) (princ '$) (princ '|;|))
-;;        (princ "</input></mth>")
-;;			  (mterpri))
-;;			 ((or incharp
-;;			      (prog2 (when (and timep (setq l (get (car l1) 'time)))
-;;				       (setq x (gctimep timep (cdr l)))
-;;				       (mtell-open "~A msec." (car l))
-;;				       #+gc (if x (mtell-open "  GCtime= ~A msec." (cdr l)))
-;;				       (mterpri))
-;;				  (not (or inputp (get (car l1) 'nodisp)))))
-;;			  (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
-;;			 (t (go a)))))
-;;		'errbreak2 (char= (getlabcharn (car l1)) inchar))
-;;	       (if (and slowp (cdr l1) (not (continuep))) (return '$terminated))
-;;	       a    (setq l1 (cdr l1))
-;;	       (go loop))))
+(declare-top
+ (special $grind))
+
+(defmspec $playback (x)
+  (setq x (cdr x))
+  (let ((state-pdl (cons 'playback state-pdl)))
+    (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
+          (setq inchar (getlabcharn $inchar))
+          (setq timep $showtime grindp $grind)
+          (do ((x x (cdr x)))( (null x))
+              (cond ((eq (ml-typep (car x)) 'fixnum) (setq numbp (car x)))
+                    ((eq (car x) '$all))
+                    ((eq (car x) '$slow) (setq slowp t))
+                    ((eq (car x) '$nostring) (setq nostringp t))
+                    ((eq (car x) '$grind) (setq grindp t))
+                    ((eq (car x) '$input) (setq inputp t))
+                    ((memq (car x) '($showtime $time))
+                     (setq timep (or timep t)))
+                    ((memq (car x) '($gctime $totaltime))
+                     (setq timep '$all))
+                    ((setq l2 (listargp (car x)))
+                     (setq l1 (nconc l1 (getlabels (car l2) (cdr l2) nil))
+                           largp t))
+                    (t (improper-arg-err (car x) '$playback))))
+          (cond ((and largp (null numbp)) (go loop))
+                ((and (setq l (cdr $labels)) (not $nolabels))
+                 (setq l (cdr l))))
+          (when (or (null numbp) (< (length l) numbp))
+            (setq l1 (reverse l)) (go loop))
+          (do ((i numbp (f1- i)) (l2))
+              ((zerop i) (setq l1 (nconc l1 l2)))
+              (setq l2 (cons (car l) l2) l (cdr l)))
+          loop (if (null l1) (return '$done))
+          ((lambda (errset incharp)
+             (errset
+              (cond ((and (not nostringp) incharp)
+                     (let ((linelable (car l1)))
+                       (mterpri) (princ "<mth><prompt>")
+                       (printlabel)
+                       (princ "</prompt><mspace/><input>"))
+                     (if grindp (mgrind (meval1 (car l1)) nil)
+                       (mapc #'tyo (mstring (meval1 (car l1)))))
+                     (if (get (car l1) 'nodisp) (princ '$) (princ '|;|))
+                     (princ "</input></mth>")
+                     (mterpri))
+                    ((or incharp
+                         (prog2 (when (and timep (setq l (get (car l1) 'time)))
+                                  (setq x (gctimep timep (cdr l)))
+                                  (mtell-open "~A msec." (car l))
+                                  #+gc
+                                  (if x 
+                                      (mtell-open "  GCtime= ~A msec." (cdr l)))
+                                  (mterpri))
+                             (not (or inputp (get (car l1) 'nodisp)))))
+                     (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
+                    (t (go a)))))
+           'errbreak2 (char= (getlabcharn (car l1)) inchar))
+          (if (and slowp (cdr l1) (not (continuep))) (return '$terminated))
+          a    (setq l1 (cdr l1))
+          (go loop))))
+
+(defmspec $example (l)   (setq l (cdr l))
+	  (block
+	      $example
+	    (let ((example (car l))
+		  (file (or (cadr l)  (combine-path 
+				       (list *maxima-demodir* $manual_demo)))))
+	      (or (symbolp example)
+		  (merror
+		   "First arg ~M to example must be a symbol, eg example(functions)"))
+	      (setq file ($file_search1 $manual_demo '((mlist) $file_search_demo)))
+	      (with-open-file
+		  (st file)
+		(let (			;*mread-prompt*
+		      )
+		  (prog ( tem  all c-tag d-tag)
+
+		   again
+		   (setq tem (read-char st nil))
+		   (or tem (go notfound))
+		   (or (eql tem #\&) (go again))
+		   (setq tem (read-char st nil))
+		   (or (eql tem #\&) (go again))
+		   ;; so we are just after having read &&
+	  
+		   (setq tem (read st nil nil))
+		   (or tem (go notfound))
+		   (setq tem ($concat tem))
+		   (cond ((eql tem example)
+			  (go doit))
+			 (t (push tem all)
+			    (go again)))
+		   ;; at this stage we read maxima forms and print and eval
+		   ;; until a peek sees '&' as the first character of next expression.
+		   doit
+		   (setq tem (peek-char nil st nil))
+		   (cond ((or (null tem) (eql tem #\&))
+			  (return-from $example '$done)))
+		   (setq tem (dbm-read st nil nil))
+		   (setq $linenum (+ 1 $linenum))
+		   (set (setq c-tag (makelabel $inchar)) (nth 2 tem))
+		   (let ($display2d)
+         (princ "<mth><prompt>")
+		     (displa `((mlable) ,c-tag ""))
+         (princ "</prompt><input><mspace/>")
+         (displa (nth 2 tem))
+         (princ "</input></mth>")
+					;(mformat nil "Input: ~M;" (nth 2 tem))
+		     )
+		   (setq $% (meval* (nth 2 tem)))
+		   (set (setq d-tag (makelabel $outchar)) $%)
+		   (if (eq (caar tem) 'displayinput)
+		       (displa `((mlable) ,d-tag ,$%)))
+					;(mformat nil "==> ~M"  (setq $% (meval* (nth 2 tem))))
+		   (go doit) 	
+
+		   notfound
+		   (format t "Not Found.  You can look at:")
+		   (return-from $example
+		     `((mlist) ,@ (nreverse all)))
+		   ))))))
