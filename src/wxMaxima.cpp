@@ -184,9 +184,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     while (s.Length()>0) {
       int start = s.Find(wxT("<mth"));
       if (start == -1) {
-        s.Replace(wxT("&"), wxT("&amp;"));   // This is not in xml formated text
-        s.Replace(wxT(">"), wxT("&gt;"));    // so it is safe to do some
-        s.Replace(wxT("<"), wxT("&lt;"));    // substitutions
         t = s;
         t.Trim();
         t.Trim(false);
@@ -205,9 +202,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         else
           end += 5;
         wxString rest = s.SubString(start, end);
-        pre.Replace(wxT("&"), wxT("&amp;"));
-        pre.Replace(wxT(">"), wxT("&gt;"));
-        pre.Replace(wxT("<"), wxT("&lt;"));
         if (pre1.Length()) {
           DoRawConsoleAppend(pre, TEXTT);
           DoConsoleAppend(wxT("<span>") + ClearWhitespaces(rest) +
@@ -222,10 +216,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     }
   }
   else if (type == INPUTT) {
-    // This can be replaced - so we dont confuse libxml
-    s.Replace(wxT("&"), wxT("&amp;"));
-    s.Replace(wxT("<"), wxT("&lt;"));
-    s.Replace(wxT(">"), wxT("&gt;"));
     // Break long lines
     unsigned int i=0;
     int j=0;
