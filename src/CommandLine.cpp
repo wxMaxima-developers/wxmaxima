@@ -193,6 +193,19 @@ void CommandLine::FilterLine(wxKeyEvent& event)
         SetInsertionPoint(to+1);
       }
       break;
+    case '{':
+      if (from==to) {
+        WriteText(wxT("{}"));
+        SetInsertionPoint(GetInsertionPoint()-1);
+      }
+      else {
+        SetInsertionPoint(to);
+        WriteText(wxT("}"));
+        SetInsertionPoint(from);
+        WriteText(wxT("{"));
+        SetInsertionPoint(to+1);
+      }
+      break;
     case '"':
       if (from==to) {
         WriteText(wxT("\"\""));
