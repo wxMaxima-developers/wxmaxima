@@ -26,6 +26,13 @@
 
 #include "wxMaxima.h"
 
+#if defined wxUSE_LIBGNOMEPRINT
+ #if wxUSE_LIBGNOMEPRINT
+  #include "wx/html/forcelnk.h"
+  FORCE_LINK(gnome_print)
+ #endif
+#endif
+
 class MyApp : public wxApp
 {
 public:
