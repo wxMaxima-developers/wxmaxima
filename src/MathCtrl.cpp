@@ -877,6 +877,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   if (!output.IsOpened())
     return false;
   
+  output.Write(wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"));
   output.Write(wxT("<HTML>\n"));
   output.Write(wxT(" <HEAD>\n"));
   output.Write(wxT("  <TITLE>wxMaxima HTML export</TITLE>\n"));
