@@ -244,7 +244,7 @@ void Config::do_layout()
   grid_sizer_4->Add(m_styleColor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(m_styleBold, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(m_styleItalic, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_styleUnderlined, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_4->Add(m_styleUnderlined, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
   notebook_1_pane_2->SetAutoLayout(true);
@@ -292,7 +292,7 @@ void Config::onOk(wxCommandEvent& event)
   config->Flush();
 
   writeStyles();
-  EndModal(wxID_CANCEL);
+  EndModal(wxID_OK);
 }
 
 void Config::onMpBrowse(wxCommandEvent& event)
