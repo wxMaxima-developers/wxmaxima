@@ -45,7 +45,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
   (menu)->Append(tmp_menu_item);
 #else
- #define APPEND_MENU_ITEM(menu, is, label, help, stock) \
+ #define APPEND_MENU_ITEM(menu, id, label, help, stock) \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 #endif
   
@@ -105,15 +105,15 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu();
-  wxglade_tmp_menu_2->Append(menu_interrupt_id, _("&Interrupt\tCtrl-G"),
-                            _("Interrupt current computation"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_restart_id, _("&Restart maxima"),
-                             _("Restart maxima"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
+                   _("&Interrupt\tCtrl-G"),
+                   _("Interrupt current computation"), wxT("gtk-stop"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_restart_id,
+                   _("&Restart maxima"), _("Restart maxima"), wxT("gtk-refresh"));
   wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Soft restart"),
                              _("Restart maxima (softly)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_add_path, _("Add to &path"),
-                             _("Add a directory to search path"),
-                             wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &path"),
+                   _("Add a directory to search path"),wxT("gtk-add"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_functions, _("Show &functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
