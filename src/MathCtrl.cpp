@@ -87,7 +87,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   // Prepare memory DC
   wxString bgColStr = wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
+#if wxCHECK_VERSION(2, 5, 2)
   SetBackgroundColour(wxTheColourDatabase->Find(bgColStr));
+#else
+  SetBackgroundColour(*(wxTheColourDatabase->FindColour(bgColStr)));
+#endif
   dcm.SelectObject(*m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
   dcm.Clear();
