@@ -362,8 +362,8 @@ wxString Plot3DWiz::GetValue()
 #if defined (__WXMSW__)
     file.Replace(wxT("\\"), wxT("/"));
 #endif
-    if (file.Right(3) != wxT(".ps"))
-      file = file + wxT(".ps");
+    if (file.Right(4) != wxT(".eps"))
+      file = file + wxT(".eps");
     s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
   }
   s += wxT(")$");
