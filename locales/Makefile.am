@@ -53,7 +53,7 @@ XGETTEXT_ARGS=-C -k_ -s -j
 $(srcdir)/wxMaxima.pot:
 	touch $@
 	(cd $(srcdir) ; find ../src -name "*.cpp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
-	(cd $(srcdir) ; find ../src -name "*.txt" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
+	(cd $(srcdir) ; find ../data -name "*.txt" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
 
 allpo: force-update
 	@-for t in $(WXMAXIMA_LINGUAS); do $(MAKE) $(srcdir)/$$t.po; done
@@ -80,7 +80,7 @@ stats:
 #echo "$$i.po `expr 100 "*" $$TR / $$TOTAL`% of $$TOTAL strings"; 
 
 EXTRA_DIST = fr.po wxwin/fr.mo \
-	     es.po wxwin/es.mo \
+             es.po wxwin/es.mo \
              it.po wxwin/it.mo \
              wxMaxima.pot
 
