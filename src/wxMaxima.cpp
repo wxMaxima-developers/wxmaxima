@@ -80,8 +80,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_lastPrompt = wxEmptyString;
 
+#if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new FileDrop(this, m_inputLine, DND_LOAD));
   m_inputLine->SetDropTarget(new FileDrop(this, m_inputLine, DND_WRITE));
+#endif
 
   checkForPrintingSupport();
 

@@ -24,6 +24,8 @@
 #include "DragNDrop.h"
 #include "Gen1Wiz.h"
 
+#if wxUSE_DRAG_AND_DROP
+
 bool FileDrop::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
 {
   for (unsigned int i=0; i<files.GetCount(); i++) {
@@ -59,3 +61,5 @@ bool FileDrop::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
   }
   return true;
 }
+
+#endif

@@ -24,6 +24,8 @@
 #include "wxMaxima.h"
 #include "CommandLine.h"
 
+#if wxUSE_DRAG_AND_DROP
+
 enum {
   DND_LOAD,
   DND_WRITE
@@ -32,7 +34,7 @@ enum {
 class FileDrop : public wxFileDropTarget
 {
  public:
-  FileDrop(wxMaxima *parent, CommandLine *in, int t) : wxFileDropTarget()
+  FileDrop(wxMaxima *parent, CommandLine *in, int t)
     { wxmax = parent; input = in; type = t;};
   ~FileDrop() {};
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files);
@@ -41,5 +43,7 @@ class FileDrop : public wxFileDropTarget
   CommandLine *input;
   int type;
 };
+
+#endif
 
 #endif
