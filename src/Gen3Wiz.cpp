@@ -31,7 +31,7 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
   label_1 = new wxStaticText(this, -1, title);
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 = new BTextCtrl(this, -1, val1, wxDefaultPosition,
-                              wxSize(180,-1));
+                              wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, lab2);
   text_ctrl_2 = new BTextCtrl(this, -1, val2);
   label_4 = new wxStaticText(this, -1, lab3);
