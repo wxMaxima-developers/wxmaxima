@@ -58,9 +58,5 @@ EXTRA_wxmaxima_SOURCES = Resources.rc
 EXTRA_DIST = maximaicon.xpm maximaicon.ico docs.zip \
              intro.zip tips.txt wxmathml.lisp wxmathml-cvs.lisp
 
-wxmaximadir = ${datadir}/wxMaxima
-
-wxmaxima_DATA = docs.zip intro.zip tips.txt wxmathml.lisp wxmathml-cvs.lisp
-
 Resources.o :
 	windres --include-dir $(WX_RC_PATH) Resources.rc -o Resources.o

@@ -1,4 +1,4 @@
-SUBDIRS = src locales
+SUBDIRS = src locales data
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop maxima-new.png
 
