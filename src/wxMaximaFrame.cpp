@@ -236,7 +236,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_lcm, _("Least common multiple"),
                              _("Compute the least common multiple "
-                               "(do load(functs) befor using)"),
+                               "(do load(functs) before using)"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_divide, _("Di&vide polynomials"),
                              _("Divide numbers or polynomials"),
