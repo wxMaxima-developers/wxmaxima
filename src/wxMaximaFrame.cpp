@@ -41,14 +41,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
-  wxglade_tmp_menu_1->Append(menu_save_id, _("&Save session\tCtrl-S"),
-                             _("Save session to a file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_open_id, _("&Open session\tCtrl-O"),
                              _("Open session from a file"), wxITEM_NORMAL);
-/*
-  wxglade_tmp_menu_1->Append(menu_sconsole_id, _("Save &console"),
-                             _("Save console output"), wxITEM_NORMAL);
-*/
+  wxglade_tmp_menu_1->Append(menu_save_id, _("&Save session\tCtrl-S"),
+                             _("Save session to a file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
                              _("Load a maxima package file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch file\tCtrl-B"),
@@ -70,24 +66,35 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Exit wxMaxima"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
   
-  // Maxima menu
+  // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu();
+  wxglade_tmp_menu_2->Append(menu_copy_from_console, _("&Copy"),
+                             _("Copy selection from console"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
+                             _("Copy selection from console (including linebreaks)"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_delete_selection, _("&Delete selection"),
+                             _("Delete selected input/output group"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_clear_screen, _("C&lear screen"),
                              _("Delete the contents of console."),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_copy_from_console, _("Copy"),
-                             _("Copy selection from console"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy text"),
-                             _("Copy selection from console (including linebreaks)"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_delete_selection, _("Delete selection"),
-                             _("Delete selected input/output group"),
-                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_inc_fontsize, _("&Increase fontsize\tCtrl-+"),
+                             _("Increase fontsize in console"));
+  wxglade_tmp_menu_2->Append(menu_dec_fontsize, _("D&ecrease fontsize\tCtrl--"),
+                             _("Decrease fontsize in console"));
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
                              _("Set focus to the input line"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_options_id, _("C&onfigure"),
+                             _("Configure wxMaxima"), wxITEM_NORMAL);
+  frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
+  
+  // Maxima menu
+  wxglade_tmp_menu_2 = new wxMenu();
   wxglade_tmp_menu_2->Append(menu_interrupt_id, _("&Interrupt\tCtrl-G"),
                             _("Interrupt current computation"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_restart_id, _("&Restart maxima"),
@@ -117,8 +124,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Toggle the 2d display of maxima output"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_texform, _("Display Te&X form"),
                              _("Display expression in TeX form"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_options_id, _("C&onfigure"),
-                             _("Configure wxMaxima"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Maxima"));
 
   // Equations menu
@@ -162,7 +167,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_3->Append(menu_atvalue, _("A&t value"),
                              _("Setup atvalues for solving ODE with "
                                "Laplace transformation"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_3, _("&Equations"));
+  frame_1_menubar->Append(wxglade_tmp_menu_3, _("E&quations"));
 
   // Algebra menu
   wxMenu* wxglade_tmp_menu_4 = new wxMenu();

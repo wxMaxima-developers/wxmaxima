@@ -715,6 +715,16 @@ void wxMaxima::updateMenus(wxUpdateUIEvent& event)
     menubar->Enable(menu_print, true);
   else
     menubar->Enable(menu_print, false);
+  int fontSize = 12;
+  wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
+  if (fontSize<20)
+    menubar->Enable(menu_inc_fontsize, true);
+  else
+    menubar->Enable(menu_inc_fontsize, false);
+  if (fontSize>8)
+    menubar->Enable(menu_dec_fontsize, true);
+  else
+    menubar->Enable(menu_dec_fontsize, false);
 }
 
 wxString wxMaxima::getDefaultEntry()
@@ -909,12 +919,8 @@ void wxMaxima::fileMenu(wxCommandEvent& event)
   }
 }
 
-void wxMaxima::maximaMenu(wxCommandEvent& event)
+void wxMaxima::editMenu(wxCommandEvent& event)
 {
-  wxString expr = getDefaultEntry();
-  wxString cmd;
-  wxString b = wxT("\\");
-  wxString f = wxT("/");
   switch (event.GetId()) {
   case menu_options_id:
     {
@@ -932,6 +938,59 @@ void wxMaxima::maximaMenu(wxCommandEvent& event)
       }
     }
     break;
+  case menu_clear_screen:
+    m_console->ClearWindow();
+    consoleAppend(m_lastPrompt, PROMPTT);
+    break;
+  case menu_copy_from_console:
+    if (m_console->CanCopy())
+      m_console->Copy();
+    else if (m_inputLine->CanCopy())
+      m_inputLine->Copy();
+    break;
+  case menu_copy_lb_from_console:
+    if (m_console->CanCopy())
+      m_console->Copy(true);
+    break;
+  case menu_delete_selection:
+    if (m_console->CanDeleteSelection())
+      m_console->DeleteSelection();
+    break;
+  case menu_inc_fontsize:
+    {
+      int fontSize = 12;
+      wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
+      if (fontSize<20) {
+        fontSize++;
+        wxConfig::Get()->Write(wxT("fontSize"), fontSize);
+        m_console->Recalculate(false);
+        m_console->Refresh();
+      }
+    }
+    break;
+  case menu_dec_fontsize:
+    {
+      int fontSize = 12;
+      wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
+      if (fontSize>8) {
+        fontSize--;
+        wxConfig::Get()->Write(wxT("fontSize"), fontSize);
+        m_console->Recalculate(false);
+        m_console->Refresh();
+      }
+    }
+    break;
+  }
+  m_inputLine->SetFocus();
+}
+
+void wxMaxima::maximaMenu(wxCommandEvent& event)
+{
+  wxString expr = getDefaultEntry();
+  wxString cmd;
+  wxString b = wxT("\\");
+  wxString f = wxT("/");
+  switch (event.GetId()) {
   case menu_restart_id:
     startMaxima();
     break;
@@ -1029,24 +1088,6 @@ void wxMaxima::maximaMenu(wxCommandEvent& event)
       }
       wiz->Destroy();
     }
-    break;
-  case menu_clear_screen:
-    m_console->ClearWindow();
-    consoleAppend(m_lastPrompt, PROMPTT);
-    break;
-  case menu_copy_from_console:
-    if (m_console->CanCopy())
-      m_console->Copy();
-    else if (m_inputLine->CanCopy())
-      m_inputLine->Copy();
-    break;
-  case menu_copy_lb_from_console:
-    if (m_console->CanCopy())
-      m_console->Copy(true);
-    break;
-  case menu_delete_selection:
-    if (m_console->CanDeleteSelection())
-      m_console->DeleteSelection();
     break;
   default:
     break;
@@ -2000,7 +2041,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_select_file, wxMaxima::fileMenu)
   EVT_MENU(menu_functions, wxMaxima::maximaMenu)
   EVT_MENU(menu_variables, wxMaxima::maximaMenu)
-  EVT_MENU(menu_options_id, wxMaxima::maximaMenu)
+  EVT_MENU(menu_options_id, wxMaxima::editMenu)
   EVT_MENU(menu_sconsole_id, wxMaxima::fileMenu)
   EVT_MENU(menu_help_id, wxMaxima::aboutMenu)
   EVT_MENU(menu_bug_report, wxMaxima::aboutMenu)
@@ -2088,21 +2129,25 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_display, wxMaxima::maximaMenu)
   EVT_MENU(menu_pade, wxMaxima::calculusMenu)
   EVT_MENU(menu_add_path, wxMaxima::maximaMenu)
-  EVT_MENU(menu_clear_screen, wxMaxima::maximaMenu)
-  EVT_MENU(menu_copy_from_console, wxMaxima::maximaMenu)
-  EVT_MENU(menu_copy_lb_from_console, wxMaxima::maximaMenu)
-  EVT_MENU(menu_delete_selection, wxMaxima::maximaMenu)
-  EVT_MENU(menu_goto_input, wxMaxima::maximaMenu)
+  EVT_MENU(menu_clear_screen, wxMaxima::editMenu)
+  EVT_MENU(menu_copy_from_console, wxMaxima::editMenu)
+  EVT_MENU(menu_copy_lb_from_console, wxMaxima::editMenu)
+  EVT_MENU(menu_delete_selection, wxMaxima::editMenu)
+  EVT_MENU(menu_goto_input, wxMaxima::editMenu)
   EVT_MENU(menu_texform, wxMaxima::maximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::simplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::simplifyMenu)
   EVT_MENU(menu_goto_input, wxMaxima::maximaMenu)
   EVT_MENU(menu_print, wxMaxima::printMenu)
   EVT_MENU(menu_print_setup, wxMaxima::printMenu)
+  EVT_MENU(menu_inc_fontsize, wxMaxima::editMenu)
+  EVT_MENU(menu_dec_fontsize, wxMaxima::editMenu)
   EVT_SOCKET(socket_server_id, wxMaxima::serverEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::clientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::updateMenus)
   EVT_UPDATE_UI(menu_copy_lb_from_console, wxMaxima::updateMenus)
+  EVT_UPDATE_UI(menu_inc_fontsize, wxMaxima::updateMenus)
+  EVT_UPDATE_UI(menu_dec_fontsize, wxMaxima::updateMenus)
   EVT_UPDATE_UI(menu_print, wxMaxima::updateMenus)
   EVT_CLOSE(wxMaxima::onClose)
   EVT_ACTIVATE(wxMaxima::onActivate)

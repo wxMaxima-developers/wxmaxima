@@ -67,12 +67,12 @@ class wxMaxima : public wxMaximaFrame
   void plottingMenu(wxCommandEvent& event);        //
   void numericalMenu(wxCommandEvent& event);       //
   void aboutMenu(wxCommandEvent& event);           //
+  void editMenu(wxCommandEvent& event);            //
   void interrupt(wxCommandEvent& event);           //
   void onMonitorFile(wxCommandEvent& event);       //
   void onActivate(wxActivateEvent& event);         //
   void onSetFocus(wxFocusEvent& event);            //
   void updateMenus(wxUpdateUIEvent& event);        //
-  void openWebpage(wxString keywork);
 
   void serverEvent(wxSocketEvent& event);          // server event: maxima connection
   void clientEvent(wxSocketEvent& event);          // client event: maxima input/output
