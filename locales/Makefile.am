@@ -15,7 +15,7 @@ install-wxmaxima-catalogs: allmo
 		$(INSTALL_DATA) $(srcdir)/$$i.mo $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima.mo ; \
 	done
 
-install-wxstd-catalogs: allmo
+install-wxstd-catalogs:
 	for i in $(WXWIN_LINGUAS) ; do \
 		$(mkinstalldirs) $(DESTDIR)$(localedir)/$$i/LC_MESSAGES ; \
 		$(INSTALL_DATA) $(srcdir)/wxwin/$$i.mo $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
@@ -82,6 +82,6 @@ stats:
 EXTRA_DIST = fr.po wxwin/fr.mo \
              es.po wxwin/es.mo \
              it.po wxwin/it.mo \
-             wxMaxima.pot
+             wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE
