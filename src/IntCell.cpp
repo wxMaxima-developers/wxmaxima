@@ -28,8 +28,8 @@ IntCell::IntCell() : MathCell()
   m_over = NULL;
   m_var = NULL;
   m_signSize = 50;
-  m_signWidth = 20;
-  m_signMiddle = 10;
+  m_signWidth = 18;
+  m_signMiddle = 9;
   m_intStyle = INT_IDEF;
 }
 
@@ -196,18 +196,38 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     else
       sign.y += SCALE_PX(3, scale);
     // top decoration
-    dc.DrawEllipticArc(sign.x + m_signMiddle,
-                       sign.y - (m_signSize+1)/2,
-                       SCALE_PX(10, scale), SCALE_PX(20, scale), 60, 180);
+    dc.DrawLine(sign.x + m_signMiddle,
+                sign.y - (m_signSize+1)/2 + SCALE_PX(9, scale) - 1,
+                sign.x + m_signMiddle + SCALE_PX(2, scale),
+                sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale));
+    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(2, scale),
+                sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale),
+                sign.x + m_signMiddle + SCALE_PX(6, scale),
+                sign.y - (m_signSize+1)/2);
+    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(6, scale),
+                sign.y - (m_signSize+1)/2,
+                sign.x + m_signMiddle + SCALE_PX(9, scale),
+                sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale));
+    
     // bottom decoration
-    dc.DrawEllipticArc(sign.x + m_signMiddle - SCALE_PX(10, scale),
-                       sign.y + (m_signSize+1)/2 - SCALE_PX(20, scale),
-                       SCALE_PX(10, scale), SCALE_PX(20, scale), 240, 360);
+    dc.DrawLine(sign.x + m_signMiddle,
+                sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1,
+                sign.x + m_signMiddle - SCALE_PX(3, scale),
+                sign.y + (m_signSize+1)/2 - SCALE_PX(2, scale));
+    dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(3, scale),
+                sign.y + (m_signSize+1)/2 - SCALE_PX(2, scale),
+                sign.x + m_signMiddle - SCALE_PX(6, scale),
+                sign.y + (m_signSize+1)/2);
+    dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(6, scale),
+                sign.y + (m_signSize+1)/2,
+                sign.x + m_signMiddle - SCALE_PX(9, scale),
+                sign.y + (m_signSize+1)/2 - SCALE_PX(3, scale));
+
     // line
-    dc.DrawLine(sign.x + m_signMiddle, sign.y - (m_signSize+1)/2 + 
-                SCALE_PX(10, scale) - 1,
-                sign.x + m_signMiddle, sign.y + (m_signSize+1)/2 -
-                SCALE_PX(10, scale) + 1);
+    dc.DrawLine(sign.x + m_signMiddle,
+                sign.y - (m_signSize+1)/2 + SCALE_PX(9, scale) - 1,
+                sign.x + m_signMiddle,
+                sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1);
     UnsetPen(parser);
     
     base.x += m_signWidth - SCALE_PX(6, scale);
