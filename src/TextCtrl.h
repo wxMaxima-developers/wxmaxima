@@ -34,9 +34,9 @@ class TextCtrl: public wxTextCtrl {
            const wxSize& size = wxDefaultSize,
            long style = 0);
   ~TextCtrl();
-  void setMactchParens(bool match) { m_matchParens = match; }
+  void SetMactchParens(bool match) { m_matchParens = match; }
  private:
-  void onChar(wxKeyEvent& event);
+  void OnChar(wxKeyEvent& event);
   bool m_matchParens;
   DECLARE_EVENT_TABLE()
 };

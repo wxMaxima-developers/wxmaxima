@@ -51,61 +51,61 @@ class wxMaxima : public wxMaximaFrame
   wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
-  void showTip(bool force);
-  void initSession();
-  void sendMaxima(wxString s, bool clear=true, bool out=true,
+  void ShowTip(bool force);
+  void InitSession();
+  void SendMaxima(wxString s, bool clear=true, bool out=true,
                   bool silent=true);               // sends input to maxima
  protected:
-  void enterCommand(wxCommandEvent& event);        // enter in the command line
+  void EnterCommand(wxCommandEvent& event);        // enter in the command line
 
-  void fileMenu(wxCommandEvent& event);            //
-  void printMenu(wxCommandEvent& event);           //
-  void maximaMenu(wxCommandEvent& event);          //
-  void algebraMenu(wxCommandEvent& event);         //
-  void equationsMenu(wxCommandEvent& event);       //
-  void calculusMenu(wxCommandEvent& event);        // event handling for menus
-  void simplifyMenu(wxCommandEvent& event);        //
-  void plottingMenu(wxCommandEvent& event);        //
-  void numericalMenu(wxCommandEvent& event);       //
-  void aboutMenu(wxCommandEvent& event);           //
-  void editMenu(wxCommandEvent& event);            //
-  void interrupt(wxCommandEvent& event);           //
-  void onMonitorFile(wxCommandEvent& event);       //
-  void onActivate(wxActivateEvent& event);         //
-  void onSetFocus(wxFocusEvent& event);            //
-  void updateMenus(wxUpdateUIEvent& event);        //
-  void onProcessEvent(wxProcessEvent& event);      //
+  void FileMenu(wxCommandEvent& event);            //
+  void PrintMenu(wxCommandEvent& event);           //
+  void MaximaMenu(wxCommandEvent& event);          //
+  void AlgebraMenu(wxCommandEvent& event);         //
+  void EquationsMenu(wxCommandEvent& event);       //
+  void CalculusMenu(wxCommandEvent& event);        // event handling for menus
+  void SimplifyMenu(wxCommandEvent& event);        //
+  void PlotMenu(wxCommandEvent& event);            //
+  void NumericalMenu(wxCommandEvent& event);       //
+  void HelpMenu(wxCommandEvent& event);            //
+  void EditMenu(wxCommandEvent& event);            //
+  void Interrupt(wxCommandEvent& event);           //
+  void OnMonitorFile(wxCommandEvent& event);       //
+  void OnActivate(wxActivateEvent& event);         //
+  void OnSetFocus(wxFocusEvent& event);            //
+  void UpdateMenus(wxUpdateUIEvent& event);        //
+  void OnProcessEvent(wxProcessEvent& event);      //
 
-  void serverEvent(wxSocketEvent& event);          // server event: maxima connection
-  void clientEvent(wxSocketEvent& event);          // client event: maxima input/output
+  void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
+  void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
   
-  void consoleAppend(wxString s, int type = TEXTT);// append maxima output to console
-  void doConsoleAppend(wxString s, int type,       //
+  void ConsoleAppend(wxString s, int type = TEXTT);// append maxima output to console
+  void DoConsoleAppend(wxString s, int type,       //
           bool newLine, bool bigSkip = true);      //
-  void doRawConsoleAppend(wxString s, int type,    //
+  void DoRawConsoleAppend(wxString s, int type,    //
           bool newLine = true);                    //
   
-  void checkForPrintingSupport();
-  wxString getDefaultEntry();
-  bool startServer();                              // starts the server
-  bool startMaxima();                              // starts maxima (uses getCommand)
-  void cleanUp();                                  // shuts down server and client on exit
-  void onClose(wxCloseEvent& event);               // close wxMaxima window
-  bool guessConfiguration();                       // tries to guess the configuration values
-  wxString getCommand();                           // returns the command to start maxima
+  void CheckForPrintingSupport();
+  wxString GetDefaultEntry();
+  bool StartServer();                              // starts the server
+  bool StartMaxima();                              // starts maxima (uses getCommand)
+  void CleanUp();                                  // shuts down server and client on exit
+  void OnClose(wxCloseEvent& event);               // close wxMaxima window
+  bool GuessConfiguration();                       // tries to guess the configuration values
+  wxString GetCommand();                           // returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
-  void readFirstPrompt();            // reads everything before first prompt
+  void ReadFirstPrompt();            // reads everything before first prompt
                                      // setsup m_pid
-  void readPrompt();                 // reads prompts
-  void readMath();                   // reads output other than prompts
+  void ReadPrompt();                 // reads prompts
+  void ReadMath();                   // reads output other than prompts
 #ifndef __WXMSW__
-  void readProcessOutput();          // reads output of maxima command
+  void ReadProcessOutput();          // reads output of maxima command
 #endif
-  void setupVariables();             // sets some maxima variables
-  void killMaxima();                 // kills the maxima process
-  wxString clearWhitespaces(wxString s);
-  void firstOutput(wxString s);
+  void SetupVariables();             // sets some maxima variables
+  void KillMaxima();                 // kills the maxima process
+  wxString ClearWhitespaces(wxString s);
+  void FirstOutput(wxString s);
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;

@@ -35,13 +35,13 @@ public:
   SysWiz(wxWindow* parent, int id, const wxString& title,
          int eqn, const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  wxString getValue();
+  wxString GetValue();
 private:
   void set_properties();
   void do_layout();
-  int size;
+  int m_size;
+  vector<BTextCtrl*> m_inputs;
   wxStaticText* label_1;
-  vector<BTextCtrl*> inputs;
   BTextCtrl* variables;
   wxStaticLine* static_line_1;
   wxButton* button_1;

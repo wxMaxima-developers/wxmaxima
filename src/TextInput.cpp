@@ -39,12 +39,12 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
   text_ctrl_1->SetFocus();
 }
 
-wxString TextInput::getValue()
+wxString TextInput::GetValue()
 {
   return (text_ctrl_1->GetValue()).Strip();
 }
 
-void TextInput::setValue(wxString s)
+void TextInput::SetValue(wxString s)
 {
   if (s!=wxT("%")) {
     text_ctrl_1->SetValue(s);

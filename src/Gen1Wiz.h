@@ -31,8 +31,8 @@ public:
   Gen1Wiz(wxWindow* parent, int id, const wxString& title,
           const wxString& label, const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  wxString getValue() { return text_ctrl_1->GetValue(); }
-  void setValue(wxString v) { text_ctrl_1->SetValue(v); }
+  wxString GetValue() { return text_ctrl_1->GetValue(); }
+  void SetValue(wxString v) { text_ctrl_1->SetValue(v); }
 private:
   bool equal;
   void set_properties();

@@ -82,7 +82,7 @@ void IC1Wiz::do_layout()
   Layout();
 }
 
-wxString IC1Wiz::getValue() {
+wxString IC1Wiz::GetValue() {
   wxString s;
   s += wxT("ic1(");
   s += text_ctrl_1->GetValue();

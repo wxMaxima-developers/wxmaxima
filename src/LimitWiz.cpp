@@ -94,7 +94,7 @@ void LimitWiz::do_layout()
   Layout();
 }
 
-wxString LimitWiz::getValue()
+wxString LimitWiz::GetValue()
 {
   wxString s = wxT("limit(");
   s += text_ctrl_1->GetValue();
@@ -112,7 +112,7 @@ wxString LimitWiz::getValue()
   return s;
 }
 
-void LimitWiz::onButton(wxCommandEvent& event)
+void LimitWiz::OnButton(wxCommandEvent& event)
 {
   wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
                         wxT("- Infinity")};
@@ -131,5 +131,5 @@ void LimitWiz::onButton(wxCommandEvent& event)
 }
 
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
-  EVT_BUTTON(special, LimitWiz::onButton)
+  EVT_BUTTON(special, LimitWiz::OnButton)
 END_EVENT_TABLE()

@@ -35,8 +35,8 @@ public:
           const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize,
           long style=wxDEFAULT_DIALOG_STYLE);
-  wxString getValue_1() { return text_ctrl_1->GetValue(); }
-  wxString getValue_2() { return text_ctrl_2->GetValue(); }
+  wxString GetValue1() { return text_ctrl_1->GetValue(); }
+  wxString GetValue2() { return text_ctrl_2->GetValue(); }
 private:
   bool equal;
   void set_properties();

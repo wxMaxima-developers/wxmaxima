@@ -83,8 +83,8 @@ bool MyApp::OnInit()
     frame->Maximize(true);
 
   frame->Show(TRUE);
-  frame->initSession();
-  frame->showTip(false);
+  frame->InitSession();
+  frame->ShowTip(false);
   
   return TRUE;
 }

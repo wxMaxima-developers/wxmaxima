@@ -37,17 +37,17 @@ class CommandLine : public wxTextCtrl
               const wxSize& size,
               long style);
   ~CommandLine();
-  int addToHistory(wxString s);
-  wxString previous();
-  wxString next();
-  wxString complete(wxString s);
-  void setMatchParens(bool match) { m_matchParens = match; }
+  int AddToHistory(wxString s);
+  wxString Previous();
+  wxString Next();
+  wxString Complete(wxString s);
+  void SetMatchParens(bool match) { m_matchParens = match; }
  protected:
-  std::vector<wxString> history;
-  int history_index;
-  void filterLine(wxKeyEvent& event);
-  void highligth(wxKeyEvent& event);
-  long marked;
+  std::vector<wxString> m_history;
+  int m_historyIndex;
+  void FilterLine(wxKeyEvent& event);
+  void Highligth(wxKeyEvent& event);
+  long m_marked;
   bool m_matchParens;
   DECLARE_EVENT_TABLE()
 };

@@ -35,9 +35,8 @@ class BTextCtrl: public wxTextCtrl {
            long style = 0);
   ~BTextCtrl();
  private:
-  int marked;
-  bool matchParens;
-  void onChar(wxKeyEvent& event);
+  bool m_matchParens;
+  void OnChar(wxKeyEvent& event);
   DECLARE_EVENT_TABLE()
 };
 

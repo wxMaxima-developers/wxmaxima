@@ -94,7 +94,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     
   };
   m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
-  setupFontList();
+  SetupFontList();
   const wxString m_styleFor_choices[] = {
     _("Normal text"),  _("Hidden groups"), _("Main prompts"),
     _("Other prompts"), _("Input"), _("Labels"), _("Special constants")
@@ -196,7 +196,7 @@ void Config::set_properties()
   m_fixedFontInTC->SetValue(fixedFontTC);
   
   m_buttonOK->SetDefault();
-  readStyles();
+  ReadStyles();
 }
 
 
@@ -278,7 +278,7 @@ void Config::do_layout()
   // end wxGlade
 }
 
-void Config::onOk(wxCommandEvent& event)
+void Config::OnOk(wxCommandEvent& event)
 {
   int i=0;
   wxString search = wxT("maxima-htmldir");
@@ -302,11 +302,11 @@ void Config::onOk(wxCommandEvent& event)
   }
   config->Flush();
 
-  writeStyles();
+  WriteStyles();
   EndModal(wxID_OK);
 }
 
-void Config::onMpBrowse(wxCommandEvent& event)
+void Config::OnMpBrowse(wxCommandEvent& event)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString dd;
@@ -320,7 +320,7 @@ void Config::onMpBrowse(wxCommandEvent& event)
   }
 }
 
-void Config::readStyles()
+void Config::ReadStyles()
 {
   wxConfigBase* config = wxConfig::Get();
   
@@ -433,7 +433,7 @@ void Config::readStyles()
   m_styleUnderlined->SetValue(m_styleNormalText.underlined);
 }
 
-void Config::writeStyles()
+void Config::WriteStyles()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   
@@ -507,7 +507,7 @@ void Config::writeStyles()
   config->Flush();
 }
 
-void Config::onChangeColor(wxCommandEvent& event)
+void Config::OnChangeColor(wxCommandEvent& event)
 {
   style* tmp =GetStylePointer();
   
@@ -515,7 +515,7 @@ void Config::onChangeColor(wxCommandEvent& event)
   tmp->color = colorlist[i];
 }
 
-void Config::onChangeStyle(wxCommandEvent& event)
+void Config::OnChangeStyle(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
   
@@ -535,7 +535,7 @@ void Config::onChangeStyle(wxCommandEvent& event)
   m_styleUnderlined->SetValue(tmp->underlined);
 }
 
-void Config::onCheckbox(wxCommandEvent& event)
+void Config::OnCheckbox(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
   
@@ -558,7 +558,7 @@ private:
    wxArrayString m_facenames;
 };
 
-void Config::setupFontList()
+void Config::SetupFontList()
 {
   FixedFonts enumerator;
   enumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, true);
@@ -602,11 +602,11 @@ style* Config::GetStylePointer()
 }
 
 BEGIN_EVENT_TABLE(Config, wxDialog)
-  EVT_BUTTON(wxID_OK, Config::onOk)
-  EVT_BUTTON(wxID_OPEN, Config::onMpBrowse)
-  EVT_COMBOBOX(combobox_colour, Config::onChangeColor)
-  EVT_COMBOBOX(combobox_styleFor, Config::onChangeStyle)
-  EVT_CHECKBOX(checkbox_bold, Config::onCheckbox)
-  EVT_CHECKBOX(checkbox_italic, Config::onCheckbox)
-  EVT_CHECKBOX(checkbox_underlined, Config::onCheckbox)
+  EVT_BUTTON(wxID_OK, Config::OnOk)
+  EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
+  EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
+  EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
+  EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
+  EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
+  EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
 END_EVENT_TABLE()

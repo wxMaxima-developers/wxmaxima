@@ -34,12 +34,12 @@ public:
             const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize,
             long style=wxDEFAULT_DIALOG_STYLE);
-  void setValue(wxString s);
-  void parse(wxString s);
-  void onCombobox(wxCommandEvent& event);
-  void onFileBrowse(wxCommandEvent& event);
-  wxString getValue();
+  void SetValue(wxString s);
+  void Parse(wxString s);
+  wxString GetValue();
 private:
+  void OnCombobox(wxCommandEvent& event);
+  void OnFileBrowse(wxCommandEvent& event);
   void set_properties();
   void do_layout();
 protected:

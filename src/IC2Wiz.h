@@ -32,14 +32,11 @@ public:
          const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize,
          long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
-  void setValue(wxString s) { text_ctrl_1->SetValue(s); }
-  wxString getValue();
-  void onButton(wxCommandEvent& event);
+  void SetValue(wxString s) { text_ctrl_1->SetValue(s); }
+  wxString GetValue();
 private:
   void set_properties();
   void do_layout();
-  bool ok;
 protected:
   wxStaticText* label_1;
   wxStaticText* label_2;

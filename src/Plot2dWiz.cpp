@@ -166,15 +166,15 @@ void Plot2DWiz::do_layout()
   Layout();
 }
 
-void Plot2DWiz::setValue(wxString s)
+void Plot2DWiz::SetValue(wxString s)
 {
   if (s.StartsWith(wxT("plot2d")))
-    parse(s);
+    Parse(s);
   else
     text_ctrl_1->SetValue(s);
 }
 
-void Plot2DWiz::parse(wxString s)
+void Plot2DWiz::Parse(wxString s)
 {
   int depth = 0;
   unsigned int i=0;
@@ -285,7 +285,7 @@ void Plot2DWiz::parse(wxString s)
   }
 }
 
-wxString Plot2DWiz::getValue()
+wxString Plot2DWiz::GetValue()
 {
   wxString f = combo_box_1->GetValue();
   wxString p = combo_box_2->GetValue();
@@ -335,7 +335,7 @@ wxString Plot2DWiz::getValue()
   return s;
 }
 
-void Plot2DWiz::onButton(wxCommandEvent& event)
+void Plot2DWiz::OnButton(wxCommandEvent& event)
 {
   Plot2dPar *wiz = new Plot2dPar(this, -1, _("Plot 2D"));
   wiz->Centre(wxBOTH);
@@ -344,11 +344,11 @@ void Plot2DWiz::onButton(wxCommandEvent& event)
       text_ctrl_1->SetValue(wxT(""));
     if (((text_ctrl_1->GetValue()).Strip()).Length())
       text_ctrl_1->AppendText(wxT(", "));
-    text_ctrl_1->AppendText(wiz->getValue());
+    text_ctrl_1->AppendText(wiz->GetValue());
   }
 }
 
-void Plot2DWiz::onCombobox(wxCommandEvent &event)
+void Plot2DWiz::OnCombobox(wxCommandEvent &event)
 {
   wxString selection = combo_box_2->GetStringSelection();
   if (selection.StartsWith(wxT("set polar"))) {
@@ -366,7 +366,7 @@ void Plot2DWiz::onCombobox(wxCommandEvent &event)
   }
 }
 
-void Plot2DWiz::onFileBrowse(wxCommandEvent& event)
+void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxT(""),
                                  wxT(""), wxT(""),
@@ -377,9 +377,9 @@ void Plot2DWiz::onFileBrowse(wxCommandEvent& event)
 }
 
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
-  EVT_COMBOBOX(combobox, Plot2DWiz::onCombobox)
-  EVT_BUTTON(parametric, Plot2DWiz::onButton)
-  EVT_BUTTON(file_browse_2d, Plot2DWiz::onFileBrowse)
+  EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
+  EVT_BUTTON(parametric, Plot2DWiz::OnButton)
+  EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
 END_EVENT_TABLE()
 
 ///////////////////////
@@ -454,7 +454,7 @@ void Plot2dPar::do_layout()
   Layout();
 }
 
-wxString Plot2dPar::getValue()
+wxString Plot2dPar::GetValue()
 {
   wxString s;
   s = wxT("[parametric, ");

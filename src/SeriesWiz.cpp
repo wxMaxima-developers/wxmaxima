@@ -44,7 +44,6 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -87,7 +86,7 @@ void SeriesWiz::do_layout()
   Layout();
 }
 
-void SeriesWiz::onButton(wxCommandEvent& event)
+void SeriesWiz::OnButton(wxCommandEvent& event)
 {
   wxString choices[] = {wxT("Pi"), wxT("E")};
   wxString choice = wxGetSingleChoice(_("Select a constant"),
@@ -100,7 +99,7 @@ void SeriesWiz::onButton(wxCommandEvent& event)
   }
 }
 
-wxString SeriesWiz::getValue()
+wxString SeriesWiz::GetValue()
 {
   wxString s;
   if (checkbox_1->IsChecked())
@@ -124,5 +123,5 @@ wxString SeriesWiz::getValue()
 }
 
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-  EVT_BUTTON(special_sw, SeriesWiz::onButton)
+  EVT_BUTTON(special_sw, SeriesWiz::OnButton)
 END_EVENT_TABLE()

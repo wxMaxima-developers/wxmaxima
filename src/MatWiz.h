@@ -42,15 +42,15 @@ public:
   MatWiz(wxWindow* parent, int id, const wxString& title, int type,
          int heigth, int width, const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  void onButton(wxCommandEvent& event);
-  wxString getValue();
+  wxString GetValue();
 private:
+  void OnButton(wxCommandEvent& event);
   void set_properties();
   void do_layout();
-  int width, height;
-  int matrix_type;
+  int m_width, m_height;
+  int m_matrixType;
+  vector<BTextCtrl*> m_inputs;
   wxStaticText* label_1;
-  vector<BTextCtrl*> inputs;
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
@@ -62,10 +62,9 @@ public:
          const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize,
          long style=wxDEFAULT_DIALOG_STYLE);
-  wxString getValue_1() { return text_ctrl_1->GetValue(); }
-  wxString getValue_2() { return text_ctrl_2->GetValue(); }
-  int getMatrixType();
-  void onButton(wxCommandEvent& event);
+  wxString GetValue1() { return text_ctrl_1->GetValue(); }
+  wxString GetValue2() { return text_ctrl_2->GetValue(); }
+  int GetMatrixType();
 private:
   void set_properties();
   void do_layout();

@@ -28,8 +28,7 @@ TextCtrl::TextCtrl(wxWindow *parent, wxWindowID id, const wxString& value,
                    long style) : wxTextCtrl(parent, id, value, pos, size, style)
 {
   m_matchParens = true;
-  wxConfigBase* config = wxConfig::Get();
-  config->Read(wxT("matchParens"), &m_matchParens);
+  wxConfig::Get()->Read(wxT("matchParens"), &m_matchParens);
 }
 
 
@@ -37,7 +36,7 @@ TextCtrl::~TextCtrl()
 {
 }
 
-void TextCtrl::onChar(wxKeyEvent& event)
+void TextCtrl::OnChar(wxKeyEvent& event)
 {
   long from, to;
   GetSelection(&from, &to);
@@ -121,5 +120,5 @@ void TextCtrl::onChar(wxKeyEvent& event)
 }
 
 BEGIN_EVENT_TABLE(TextCtrl, wxTextCtrl)
-  EVT_CHAR(TextCtrl::onChar)
+  EVT_CHAR(TextCtrl::OnChar)
 END_EVENT_TABLE()

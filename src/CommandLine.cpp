@@ -28,10 +28,9 @@ CommandLine::CommandLine(wxWindow *parent,
                          const wxSize& size,
                          long style) : wxTextCtrl(parent, id, value, pos, size, style)
 {
-  history_index = 1;
+  m_historyIndex = 1;
   m_matchParens = true;
-  wxConfigBase* config = wxConfig::Get();
-  config->Read(wxT("matchParens"), &m_matchParens);
+  wxConfig::Get()->Read(wxT("matchParens"), &m_matchParens);
 }
 
 
@@ -39,7 +38,7 @@ CommandLine::~CommandLine()
 {
 }
 
-int CommandLine::addToHistory(wxString s)
+int CommandLine::AddToHistory(wxString s)
 {
   if (s.Last() == ';')
     s.RemoveLast();
@@ -50,79 +49,79 @@ int CommandLine::addToHistory(wxString s)
   s.Trim();
   s.Trim(false);
   if (s.Length()!=0)
-    history.push_back(s);
-  history_index = history.size();
+    m_history.push_back(s);
+  m_historyIndex = m_history.size();
   return 0;
 }
 
-wxString CommandLine::next()
+wxString CommandLine::Next()
 {
-  if (history.size()==0)
+  if (m_history.size()==0)
     return wxT("");
-  if (history_index+1 < (int)history.size()) {
-    history_index++;
-    return history[history_index];
+  if (m_historyIndex+1 < (int)m_history.size()) {
+    m_historyIndex++;
+    return m_history[m_historyIndex];
   }
-  else if (history_index+1 == (int)history.size()) {
-    history_index++;
+  else if (m_historyIndex+1 == (int)m_history.size()) {
+    m_historyIndex++;
     return wxT("");
   }
   else {
-    history_index = 0;
-    return history[history_index];
+    m_historyIndex = 0;
+    return m_history[m_historyIndex];
   }
   return wxT("");
 }
 
-wxString CommandLine::previous()
+wxString CommandLine::Previous()
 {
-  if (history.size()==0)
+  if (m_history.size()==0)
     return wxT("");
-  if (history_index>0) {
-    history_index--;
-    return history[history_index];
+  if (m_historyIndex>0) {
+    m_historyIndex--;
+    return m_history[m_historyIndex];
   }
   else {
-    history_index = history.size();
+    m_historyIndex = m_history.size();
     return wxT("");
   }
   return wxT("");
 }
 
-wxString CommandLine::complete(wxString s)
+wxString CommandLine::Complete(wxString s)
 {
   int i;
-  if (history.size()==0)
+  if (m_history.size()==0)
     return s;
-  if (history_index < 0)
-    history_index = history.size();
-  for (i = history_index-1; i>=0; i--)
-    if (history[i].StartsWith(s) ||
-        history[i].StartsWith(wxT("<ml>") + s))
+  if (m_historyIndex < 0)
+    m_historyIndex = m_history.size();
+  for (i = m_historyIndex-1; i>=0; i--)
+    if (m_history[i].StartsWith(s) ||
+        m_history[i].StartsWith(wxT("<ml>") + s))
       break;
   if (i>=0) {
-    history_index = i;
-    return history[i];
+    m_historyIndex = i;
+    return m_history[i];
   }
-  for (i = history.size()-1; i >= history_index; i--)
-    if (history[i].StartsWith(s) ||
-        history[i].StartsWith(wxT("<ml>") + s))
+  for (i = m_history.size()-1; i >= m_historyIndex; i--)
+    if (m_history[i].StartsWith(s) ||
+        m_history[i].StartsWith(wxT("<ml>") + s))
       break;
-  if (i >= history_index) {
-    history_index = i;
-    return history[i];
+  if (i >= m_historyIndex) {
+    m_historyIndex = i;
+    return m_history[i];
   }
   return s;
 }
 
-void CommandLine::filterLine(wxKeyEvent& event)
+void CommandLine::FilterLine(wxKeyEvent& event)
 {
   long from, to;
   GetSelection(&from, &to);
   switch(event.GetKeyCode()) {
   case WXK_UP:
-    marked = -1;
-    SetValue(previous());
+    m_marked = -1;
+    SetValue(Previous());
 #if defined (__WXMSW__)
     SetStyle(0, GetLastPosition(), wxTextAttr(*wxBLACK));
 #endif
@@ -130,8 +129,8 @@ void CommandLine::filterLine(wxKeyEvent& event)
     return;
     break;
   case WXK_DOWN:
-    marked = -1;
-    SetValue(next());
+    m_marked = -1;
+    SetValue(Next());
 #if defined (__WXMSW__)
     SetStyle(0, GetLastPosition(), wxTextAttr(*wxBLACK));
 #endif
@@ -140,7 +139,7 @@ void CommandLine::filterLine(wxKeyEvent& event)
     break;
   case WXK_TAB:
     {
-      marked = -1;
+      m_marked = -1;
       wxString s = GetValue();
       long int l = GetInsertionPoint();
       long int l1,l2;
@@ -153,7 +152,7 @@ void CommandLine::filterLine(wxKeyEvent& event)
       }
       else
         s = s.SubString(0, l-1);
-      wxString com = complete(s);
+      wxString com = Complete(s);
       if (com != s)
         SetValue(com);
       if (com.Find(wxT("<ml>"))>-1)
@@ -216,18 +215,18 @@ void CommandLine::filterLine(wxKeyEvent& event)
     event.Skip();
 }
 
-void CommandLine::highligth(wxKeyEvent& event)
+void CommandLine::Highligth(wxKeyEvent& event)
 {
-#if defined (__WXMSW__)
+#if defined(__WXMSW__)
   long curr = GetInsertionPoint();
   wxString value = GetValue();
   char cl = value.GetChar(curr-1);
   char op;
   int j;
 
-  if (marked >=0) {
-    SetStyle(marked, marked+1, wxTextAttr(*wxBLACK));
-    marked = -1;
+  if (m_marked >=0) {
+    SetStyle(m_marked, m_marked+1, wxTextAttr(*wxBLACK));
+    m_marked = -1;
   }
   if (cl == ')')
     op = '(';
@@ -249,13 +248,13 @@ void CommandLine::highligth(wxKeyEvent& event)
     }
   }
   if (j>=0) {
-    marked = j;
-    SetStyle(marked, marked+1, wxTextAttr(*wxBLUE));
+    m_marked = j;
+    SetStyle(m_marked, m_marked+1, wxTextAttr(*wxBLUE));
   }
 #endif
 }
 
 BEGIN_EVENT_TABLE(CommandLine, wxTextCtrl)
-  EVT_CHAR(CommandLine::filterLine)
-  EVT_KEY_UP(CommandLine::highligth)
+  EVT_CHAR(CommandLine::FilterLine)
+  EVT_KEY_UP(CommandLine::Highligth)
 END_EVENT_TABLE()

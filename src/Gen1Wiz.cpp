@@ -67,11 +67,11 @@ wxString GetTextFromUser(wxString label, wxString title, wxString value,
                          wxWindow* parent)
 {
   Gen1Wiz *wiz = new Gen1Wiz(parent, -1, title, label);
-  wiz->setValue(value);
+  wiz->SetValue(value);
   wxString val;
   wiz->Centre(wxBOTH);
   if (wiz->ShowModal() == wxID_OK) {
-    val = wiz->getValue();
+    val = wiz->GetValue();
     val.Trim();
     val.Trim(false);
   }

@@ -32,11 +32,10 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
  : wxTextCtrl(parent, id, value, pos, size, style)
 {
   bool fixedFont = true;
-  matchParens = true;
+  m_matchParens = true;
   wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("matchParens"), &matchParens);
+  config->Read(wxT("matchParens"), &m_matchParens);
   config->Read(wxT("fixedFontTC"), &fixedFont);
-  marked = -1;
   if (fixedFont) {
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
     SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
@@ -51,10 +50,10 @@ BTextCtrl::~BTextCtrl()
 {
 }
 
-void BTextCtrl::onChar(wxKeyEvent& event)
+void BTextCtrl::OnChar(wxKeyEvent& event)
 {
   long from, to;
-  if (!matchParens) {
+  if (!m_matchParens) {
     event.Skip();
     return;
   }
@@ -105,5 +104,5 @@ void BTextCtrl::onChar(wxKeyEvent& event)
 }
 
 BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
-  EVT_CHAR(BTextCtrl::onChar)
+  EVT_CHAR(BTextCtrl::OnChar)
 END_EVENT_TABLE()

@@ -25,12 +25,12 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
   wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  height = h;
-  width = w;
-  matrix_type = type;
+  m_height = h;
+  m_width = w;
+  m_matrixType = type;
   label_1 = new wxStaticText(this, -1, title);
   for (int i=0; i<h*w; i++) {
-    inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
     wxSize(50,-1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
@@ -46,44 +46,44 @@ void MatWiz::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   button_1->SetDefault();
   
-  if (matrix_type == MATRIX_ANTISYMETRIC) {
-    for (int i=0; i<height; i++)
+  if (m_matrixType == MATRIX_ANTISYMETRIC) {
+    for (int i=0; i<m_height; i++)
       for (int j=0; j<=i; j++)
-        inputs[i*width+j]->Enable(false);
+        m_inputs[i*m_width+j]->Enable(false);
   }
-  else if (matrix_type == MATRIX_SYMETRIC) {
-    for (int i=0; i<height; i++)
+  else if (m_matrixType == MATRIX_SYMETRIC) {
+    for (int i=0; i<m_height; i++)
       for (int j=0; j<i; j++)
-        inputs[i*width+j]->Enable(false);
+        m_inputs[i*m_width+j]->Enable(false);
   }
-  else if (matrix_type == MATRIX_DIAGONAL) {
-    for (int i=0; i<height; i++)
-      for (int j=0; j<width; j++)
+  else if (m_matrixType == MATRIX_DIAGONAL) {
+    for (int i=0; i<m_height; i++)
+      for (int j=0; j<m_width; j++)
         if (i!=j)
-          inputs[i*width+j]->Enable(false);
+          m_inputs[i*m_width+j]->Enable(false);
   }
 }
 
 void MatWiz::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(height+1, width+1, 1, 1);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_height+1, m_width+1, 1, 1);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText* text;
   grid_sizer_2->Add(20, 20, 0, 0);
-  for (int i=1; i<=width; i++) {
+  for (int i=1; i<=m_width; i++) {
     text = new wxStaticText(this, -1, wxString::Format(wxT("%d"), i),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
   }
-  for (int j=0; j<height; j++) {
+  for (int j=0; j<m_height; j++) {
     text = new wxStaticText(this, -1, wxString::Format(wxT("%d"), j+1),
                             wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
     grid_sizer_2->Add(text, 0,
                       wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-    for (int i=0; i<width; i++) {
-      grid_sizer_2->Add(inputs[j*width+i], 0, wxALL, 1);
+    for (int i=0; i<m_width; i++) {
+      grid_sizer_2->Add(m_inputs[j*m_width+i], 0, wxALL, 1);
     }
   }
   grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 1);
@@ -99,29 +99,29 @@ void MatWiz::do_layout()
   Layout();
 }
 
-wxString MatWiz::getValue()
+wxString MatWiz::GetValue()
 {
   wxString cmd = wxT("matrix(");
-  for (int i=0; i<height; i++) {
+  for (int i=0; i<m_height; i++) {
     cmd += wxT("[");
-    for (int j=0; j<width; j++) {
+    for (int j=0; j<m_width; j++) {
       
-      if (matrix_type == MATRIX_SYMETRIC && i>j)
-        cmd += inputs[j*width+i]->GetValue();
-      else if (matrix_type == MATRIX_ANTISYMETRIC && i>j)
-        cmd += wxT("-(") + inputs[j*width+i]->GetValue() + wxT(")");
+      if (m_matrixType == MATRIX_SYMETRIC && i>j)
+        cmd += m_inputs[j*m_width+i]->GetValue();
+      else if (m_matrixType == MATRIX_ANTISYMETRIC && i>j)
+        cmd += wxT("-(") + m_inputs[j*m_width+i]->GetValue() + wxT(")");
       else
-        cmd += inputs[i*width+j]->GetValue();
+        cmd += m_inputs[i*m_width+j]->GetValue();
       
-      if (j<width-1)
+      if (j<m_width-1)
         cmd += wxT(",");
       else
         cmd += wxT("]");
     }
-    if (i<height-1)
+    if (i<m_height-1)
       cmd += wxT(", ");
   }
-  if (width>10 || height>10)
+  if (m_width>10 || m_height>10)
     cmd += wxT(")$");
   else
     cmd += wxT(");");
@@ -191,7 +191,7 @@ void MatDim::do_layout()
   Layout();
 }
 
-int MatDim::getMatrixType()
+int MatDim::GetMatrixType()
 {
   int type = combo_box_1->GetSelection();
   if (type == 0)

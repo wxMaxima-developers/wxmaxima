@@ -179,15 +179,15 @@ void Plot3DWiz::do_layout()
   Layout();
 }
 
-void Plot3DWiz::setValue(wxString s)
+void Plot3DWiz::SetValue(wxString s)
 {
   if (s.StartsWith(wxT("plot3d")))
-    parse(s);
+    Parse(s);
   else
     text_ctrl_1->SetValue(s);
 }
 
-void Plot3DWiz::parse(wxString s)
+void Plot3DWiz::Parse(wxString s)
 {
   int depth = 0;
   unsigned int i=0;
@@ -318,7 +318,7 @@ void Plot3DWiz::parse(wxString s)
 }
 
 
-wxString Plot3DWiz::getValue()
+wxString Plot3DWiz::GetValue()
 {
   wxString s = wxT("plot3d(");
   wxString p = combo_box_2->GetValue();
@@ -371,7 +371,7 @@ wxString Plot3DWiz::getValue()
   return s;
 }
 
-void Plot3DWiz::onCombobox(wxCommandEvent &event)
+void Plot3DWiz::OnCombobox(wxCommandEvent &event)
 {
   wxString selection = combo_box_2->GetStringSelection();
   if (selection.StartsWith(wxT("set mapping cylindrical"))) {
@@ -397,7 +397,7 @@ void Plot3DWiz::onCombobox(wxCommandEvent &event)
 }
 
 
-void Plot3DWiz::onFileBrowse(wxCommandEvent& event)
+void Plot3DWiz::OnFileBrowse(wxCommandEvent& event)
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxT(""),
                                  wxT(""), wxT(""),
@@ -408,6 +408,6 @@ void Plot3DWiz::onFileBrowse(wxCommandEvent& event)
 }
 
 BEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
-  EVT_COMBOBOX(combobox, Plot3DWiz::onCombobox)
-  EVT_BUTTON(file_browse_3d, Plot3DWiz::onFileBrowse)
+  EVT_COMBOBOX(combobox, Plot3DWiz::OnCombobox)
+  EVT_BUTTON(file_browse_3d, Plot3DWiz::OnFileBrowse)
 END_EVENT_TABLE()

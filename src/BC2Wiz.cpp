@@ -49,7 +49,6 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -93,15 +92,7 @@ void BC2Wiz::do_layout()
   Layout();
 }
 
-
-void BC2Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-wxString BC2Wiz::getValue() {
+wxString BC2Wiz::GetValue() {
   wxString s;
   s += wxT("bc2(");
   s += text_ctrl_1->GetValue();

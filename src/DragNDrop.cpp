@@ -51,10 +51,10 @@ bool FileDrop::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
       }
       if (choice.Find(wxT("%file%"))>-1) {
         choice.Replace(wxT("%file%"), wxT("\"") + file + wxT("\""));
-        wxmax->sendMaxima(choice + wxT("$"));
+        wxmax->SendMaxima(choice + wxT("$"));
       }
       else
-        wxmax->sendMaxima(choice + wxT("(\"") + file + wxT("\")$"));
+        wxmax->SendMaxima(choice + wxT("(\"") + file + wxT("\")$"));
     }
     else
       input->WriteText(files.Item(i));

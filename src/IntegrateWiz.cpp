@@ -91,7 +91,7 @@ void IntegrateWiz::do_layout()
   Layout();
 }
 
-wxString IntegrateWiz::getValue()
+wxString IntegrateWiz::GetValue()
 {
   wxString s;
   if (checkbox_1->IsChecked())
@@ -114,7 +114,7 @@ wxString IntegrateWiz::getValue()
   return s;
 }
 
-void IntegrateWiz::onButton(wxCommandEvent& event) {
+void IntegrateWiz::OnButton(wxCommandEvent& event) {
   switch (event.GetId()) {
   case special_from:
     {
@@ -156,6 +156,6 @@ void IntegrateWiz::onButton(wxCommandEvent& event) {
 }
 
 BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
-  EVT_BUTTON(special_from, IntegrateWiz::onButton)
-  EVT_BUTTON(special_to, IntegrateWiz::onButton)
+  EVT_BUTTON(special_from, IntegrateWiz::OnButton)
+  EVT_BUTTON(special_to, IntegrateWiz::OnButton)
 END_EVENT_TABLE()

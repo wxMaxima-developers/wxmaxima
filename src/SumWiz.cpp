@@ -43,7 +43,6 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   button_1->SetDefault();
-  ok = false;
   set_properties();
   do_layout();
 }
@@ -89,7 +88,7 @@ void SumWiz::do_layout()
   Layout();
 }
 
-wxString SumWiz::getValue()
+wxString SumWiz::GetValue()
 {
   wxString s;
   if (checkbox_2->IsChecked())
@@ -111,14 +110,3 @@ wxString SumWiz::getValue()
 
   return s;
 }
-
-void SumWiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(SumWiz, wxDialog)
-  EVT_BUTTON(wxID_OK, SumWiz::onButton)
-END_EVENT_TABLE()

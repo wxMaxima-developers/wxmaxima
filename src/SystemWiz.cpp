@@ -24,11 +24,11 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
                const wxPoint& pos, const wxSize& sz, long style):
   wxDialog(parent, id, title, pos, sz, wxDEFAULT_DIALOG_STYLE)
 {
-  size = numEq;
+  m_size = numEq;
   label_1 = new wxStaticText(this, -1, title);
-  for (int i=0; i<size; i++) {
-    inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
-                                   wxSize(230,-1)));
+  for (int i=0; i<m_size; i++) {
+    m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+                                     wxSize(230,-1)));
   }
   variables = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                             wxSize(230,-1));
@@ -50,13 +50,13 @@ void SysWiz::set_properties()
 void SysWiz::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(size+1, 2, 1, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_size+1, 2, 1, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText* text;
-  for (int i=1; i<=size; i++) {
+  for (int i=1; i<=m_size; i++) {
     text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
     grid_sizer_2->Add(text, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 1);
-    grid_sizer_2->Add(inputs[i-1], 0, wxALL, 1);
+    grid_sizer_2->Add(m_inputs[i-1], 0, wxALL, 1);
   }
   text = new wxStaticText(this, -1, _("Variables:"));
   grid_sizer_2->Add(text, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
@@ -74,12 +74,12 @@ void SysWiz::do_layout()
   Layout();
 }
 
-wxString SysWiz::getValue()
+wxString SysWiz::GetValue()
 {
   wxString cmd = wxT("([");
-  for (int i=0; i<size; i++) {
-    cmd += inputs[i]->GetValue();
-    if (i<size-1)
+  for (int i=0; i<m_size; i++) {
+    cmd += m_inputs[i]->GetValue();
+    if (i<m_size-1)
       cmd += wxT(", ");
   }
   cmd += wxT("], [") + variables->GetValue() + wxT("]);");

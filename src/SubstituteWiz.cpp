@@ -83,7 +83,7 @@ void SubstituteWiz::do_layout()
   Layout();
 }
 
-wxString SubstituteWiz::getValue()
+wxString SubstituteWiz::GetValue()
 {
   wxString val;
   if (checkbox_1->IsChecked())

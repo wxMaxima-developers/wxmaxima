@@ -84,14 +84,14 @@ protected:
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput;
   // end wxGlade
-  void onOk(wxCommandEvent& event);
-  void onMpBrowse(wxCommandEvent& event);
-  void onChangeStyle(wxCommandEvent& event);
-  void onChangeColor(wxCommandEvent& event);
-  void onCheckbox(wxCommandEvent& event);
-  void readStyles();
-  void writeStyles();
-  void setupFontList();
+  void OnOk(wxCommandEvent& event);
+  void OnMpBrowse(wxCommandEvent& event);
+  void OnChangeStyle(wxCommandEvent& event);
+  void OnChangeColor(wxCommandEvent& event);
+  void OnCheckbox(wxCommandEvent& event);
+  void ReadStyles();
+  void WriteStyles();
+  void SetupFontList();
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };

@@ -34,15 +34,15 @@ public:
   Plot2DWiz(wxWindow* parent, int id, const wxString& title,
             const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  void setValue(wxString s);
-  wxString getValue();
-  void onButton(wxCommandEvent& event);
-  void onCombobox(wxCommandEvent& event);
-  void onFileBrowse(wxCommandEvent& event);
-  void parse(wxString in);
+  void SetValue(wxString s);
+  wxString GetValue();
 private:
   void set_properties();
   void do_layout();
+  void OnButton(wxCommandEvent& event);
+  void OnCombobox(wxCommandEvent& event);
+  void OnFileBrowse(wxCommandEvent& event);
+  void Parse(wxString in);
 protected:
   int type;
   wxStaticText* label_1;
@@ -82,8 +82,8 @@ public:
   Plot2dPar(wxWindow* parent, int id, const wxString& title,
             const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  void setValue(wxString s) { text_ctrl_1->SetValue(s); }
-  wxString getValue();
+  void SetValue(wxString s) { text_ctrl_1->SetValue(s); }
+  wxString GetValue();
 private:
   void set_properties();
   void do_layout();
