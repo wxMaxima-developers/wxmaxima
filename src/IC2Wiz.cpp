@@ -42,8 +42,8 @@ IC2Wiz::IC2Wiz(wxWindow* parent, int id,
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("'diff(y,x)="), wxDefaultPosition,
                               wxSize(180,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -88,9 +88,9 @@ void IC2Wiz::do_layout()
 
 void IC2Wiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 wxString IC2Wiz::getValue() {
@@ -109,6 +109,5 @@ wxString IC2Wiz::getValue() {
 }
 
 BEGIN_EVENT_TABLE(IC2Wiz, wxDialog)
-  EVT_BUTTON(wxOK, IC2Wiz::onButton)
-  EVT_BUTTON(wxCANCEL, IC2Wiz::onButton)
+  EVT_BUTTON(wxID_OK, IC2Wiz::onButton)
 END_EVENT_TABLE()

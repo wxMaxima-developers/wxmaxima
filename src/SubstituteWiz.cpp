@@ -27,67 +27,67 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-    label_1 = new wxStaticText(this, -1, _("Substitute"));
-    label_2 = new wxStaticText(this, -1, _("Substitute:"));
-    text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  label_1 = new wxStaticText(this, -1, _("Substitute"));
+  label_2 = new wxStaticText(this, -1, _("Substitute:"));
+  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                                 wxSize(180,-1));
-    label_3 = new wxStaticText(this, -1, _("with:"));
-    text_ctrl_2 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  label_3 = new wxStaticText(this, -1, _("with:"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                                 wxSize(180,-1));
-    label_4 = new wxStaticText(this, -1, _("in:"));
-    text_ctrl_3 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  label_4 = new wxStaticText(this, -1, _("in:"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                                 wxSize(180,-1));
-    checkbox_1 = new wxCheckBox(this, -1, _("Rational"));
-    static_line_1 = new wxStaticLine(this, -1);
-    button_1 = new wxButton(this, wxOK, _("OK"));
-    button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-    ok = false;
+  checkbox_1 = new wxCheckBox(this, -1, _("Rational"));
+  static_line_1 = new wxStaticLine(this, -1);
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  ok = false;
 
-    set_properties();
-    do_layout();
+  set_properties();
+  do_layout();
 }
 
 
 void SubstituteWiz::set_properties()
 {
-    SetTitle(_("Substitution"));
-    label_1->SetFont(wxFont(22, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
-    checkbox_1->SetValue(true);
-    button_1->SetDefault();
+  SetTitle(_("Substitution"));
+  label_1->SetFont(wxFont(22, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  checkbox_1->SetValue(true);
+  button_1->SetDefault();
 }
 
 
 void SubstituteWiz::do_layout()
 {
-    wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 3, 3);
-    wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-    wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 3, 3);
-    grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
-    grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-    grid_sizer_2->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
-    grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-    grid_sizer_2->Add(text_ctrl_2, 0, wxALL|wxEXPAND, 2);
-    grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-    grid_sizer_2->Add(text_ctrl_3, 0, wxALL|wxEXPAND, 2);
-    grid_sizer_2->Add(20, 20, 0, 0);
-    grid_sizer_2->Add(checkbox_1, 0, wxALL, 2);
-    grid_sizer_2->AddGrowableCol(1);
-    grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-    grid_sizer_1->Add(static_line_1, 0, wxEXPAND, 0);
-    sizer_1->Add(button_1, 0, wxALL, 2);
-    sizer_1->Add(button_2, 0, wxALL, 2);
-    grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
-    SetAutoLayout(true);
-    SetSizer(grid_sizer_1);
-    grid_sizer_1->Fit(this);
-    grid_sizer_1->SetSizeHints(this);
-    grid_sizer_1->AddGrowableCol(0);
-    Layout();
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 3, 3);
+  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 3, 3);
+  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_2, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_3, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_2->Add(20, 20, 0, 0);
+  grid_sizer_2->Add(checkbox_1, 0, wxALL, 2);
+  grid_sizer_2->AddGrowableCol(1);
+  grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
+  grid_sizer_1->Add(static_line_1, 0, wxEXPAND, 0);
+  sizer_1->Add(button_1, 0, wxALL, 2);
+  sizer_1->Add(button_2, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+  SetAutoLayout(true);
+  SetSizer(grid_sizer_1);
+  grid_sizer_1->Fit(this);
+  grid_sizer_1->SetSizeHints(this);
+  grid_sizer_1->AddGrowableCol(0);
+  Layout();
 }
 
 void SubstituteWiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK) {
+  if (event.GetId()==wxID_OK) {
     ok = true;
   }
   Close();
@@ -110,6 +110,5 @@ wxString SubstituteWiz::getValue()
 }
 
 BEGIN_EVENT_TABLE(SubstituteWiz, wxDialog)
-  EVT_BUTTON(wxOK, SubstituteWiz::onButton)
-  EVT_BUTTON(wxCANCEL, SubstituteWiz::onButton)
+  EVT_BUTTON(wxID_OK, SubstituteWiz::onButton)
 END_EVENT_TABLE()

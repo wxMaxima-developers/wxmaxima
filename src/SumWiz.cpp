@@ -39,8 +39,8 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
   checkbox_2 = new wxCheckBox(this, -1, _("Nusum"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   button_1->SetDefault();
   ok = false;
@@ -54,6 +54,7 @@ void SumWiz::set_properties()
   SetTitle(_("Sum"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   checkbox_1->SetValue(true);
+  button_1->SetDefault();
 }
 
 
@@ -113,12 +114,11 @@ wxString SumWiz::getValue()
 
 void SumWiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK)
+  if (event.GetId()==wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(SumWiz, wxDialog)
-  EVT_BUTTON(wxOK, SumWiz::onButton)
-  EVT_BUTTON(wxCANCEL, SumWiz::onButton)
+  EVT_BUTTON(wxID_OK, SumWiz::onButton)
 END_EVENT_TABLE()

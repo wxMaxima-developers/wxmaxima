@@ -39,9 +39,8 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"));
   checkbox_1 = new wxCheckBox(this, -1, _("Power series"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -53,6 +52,7 @@ void SeriesWiz::set_properties()
 {
   SetTitle(_("Series"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  button_1->SetDefault();
 }
 
 
@@ -90,10 +90,8 @@ void SeriesWiz::do_layout()
 void SeriesWiz::onButton(wxCommandEvent& event)
 {
   switch (event.GetId()) {
-  case wxOK:
-    ok = true;
-  case wxCANCEL:
-    Close();
+  case wxID_OK:
+    event.Skip();
     break;
   case special_sw:
     {
@@ -135,7 +133,6 @@ wxString SeriesWiz::getValue()
 }
 
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-  EVT_BUTTON(wxOK, SeriesWiz::onButton)
-  EVT_BUTTON(wxCANCEL, SeriesWiz::onButton)
+  EVT_BUTTON(wxID_OK, SeriesWiz::onButton)
   EVT_BUTTON(special_sw, SeriesWiz::onButton)
 END_EVENT_TABLE()

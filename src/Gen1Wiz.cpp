@@ -30,8 +30,8 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                               wxSize(300,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -66,14 +66,13 @@ void Gen1Wiz::do_layout()
 
 void Gen1Wiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(Gen1Wiz, wxDialog)
-  EVT_BUTTON(wxOK, Gen1Wiz::onButton)
-  EVT_BUTTON(wxCANCEL, Gen1Wiz::onButton)
+  EVT_BUTTON(wxID_OK, Gen1Wiz::onButton)
 END_EVENT_TABLE()
 
 wxString GetTextFromUser(wxString label, wxString title, wxString value,

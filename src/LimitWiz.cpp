@@ -46,8 +46,8 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
                                wxSize(130, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxOK, _("OK"));
-  button_3 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+  button_3 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2->SetDefault();
 
   set_properties();
@@ -61,6 +61,7 @@ void LimitWiz::set_properties()
   SetTitle(_("Limit"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   combo_box_1->SetSelection(0);
+  button_1->SetDefault();
 }
 
 
@@ -133,16 +134,14 @@ void LimitWiz::onButton(wxCommandEvent& event)
       }
     }
     break;
-  case wxOK:
+  case wxID_OK:
     ok = true;
-  case wxCANCEL:
-    Close();
+    event.Skip();
     break;
   }
 }
 
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
   EVT_BUTTON(special, LimitWiz::onButton)
-  EVT_BUTTON(wxOK, LimitWiz::onButton)
-  EVT_BUTTON(wxCANCEL, LimitWiz::onButton)
+  EVT_BUTTON(wxID_OK, LimitWiz::onButton)
 END_EVENT_TABLE()

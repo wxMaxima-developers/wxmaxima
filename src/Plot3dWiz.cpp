@@ -95,8 +95,8 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   ok = false;
   type = cartesian;
@@ -110,7 +110,6 @@ void Plot3DWiz::set_properties()
 {
   SetTitle(_("Plot 3D"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
-  button_1->SetDefault();
   text_ctrl_3->SetValue(wxT("-5"));
   text_ctrl_4->SetValue(wxT("5"));
   text_ctrl_6->SetValue(wxT("-5"));
@@ -120,6 +119,7 @@ void Plot3DWiz::set_properties()
 
   button_3->SetToolTip(_("Browse"));
   combo_box_1->SetSelection(0);
+  button_1->SetDefault();
 #if defined (__WXMSW__)
   check_box_1->SetValue(true);
 #endif
@@ -340,7 +340,7 @@ wxString Plot3DWiz::getValue()
   s += wxT(",") + text_ctrl_6->GetValue();
   s += wxT(",") + text_ctrl_7->GetValue();
   s += wxT("]");
-  if (f != _T("default"))
+  if (f != _("default"))
     s += wxT(", [plot_format,") + f + wxT("]");
   if (xg != 30 || yg != 30) {
     s += wxT(", [grid,");
@@ -372,10 +372,10 @@ wxString Plot3DWiz::getValue()
 
 void Plot3DWiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK) {
+  if (event.GetId()==wxID_OK) {
     ok = true;
   }
-  Close();
+  event.Skip();
 }
 
 void Plot3DWiz::onCombobox(wxCommandEvent &event)
@@ -416,7 +416,6 @@ void Plot3DWiz::onFileBrowse(wxCommandEvent& event)
 
 BEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
   EVT_COMBOBOX(combobox, Plot3DWiz::onCombobox)
-  EVT_BUTTON(wxOK, Plot3DWiz::onButton)
-  EVT_BUTTON(wxCANCEL, Plot3DWiz::onButton)
+  EVT_BUTTON(wxID_OK, Plot3DWiz::onButton)
   EVT_BUTTON(file_browse_3d, Plot3DWiz::onFileBrowse)
 END_EVENT_TABLE()

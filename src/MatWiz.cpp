@@ -34,9 +34,8 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
     wxSize(50,-1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -47,6 +46,7 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
 void MatWiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  button_1->SetDefault();
   
   if (matrix_type == MATRIX_ANTISYMETRIC) {
     for (int i=0; i<height; i++)
@@ -132,14 +132,13 @@ wxString MatWiz::getValue()
 
 void MatWiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
   Close();
 }
 
 BEGIN_EVENT_TABLE(MatWiz, wxDialog)
-  EVT_BUTTON(wxOK, MatWiz::onButton)
-  EVT_BUTTON(wxCANCEL, MatWiz::onButton)
+  EVT_BUTTON(wxID_OK, MatWiz::onButton)
 END_EVENT_TABLE()
 
 
@@ -166,8 +165,8 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
                                combo_box_1_choices,
                                wxCB_DROPDOWN|wxCB_READONLY);
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   
   set_properties();
   do_layout();
@@ -209,9 +208,9 @@ void MatDim::do_layout()
 
 void MatDim::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 int MatDim::getMatrixType()
@@ -227,6 +226,5 @@ int MatDim::getMatrixType()
 }
 
 BEGIN_EVENT_TABLE(MatDim, wxDialog)
-  EVT_BUTTON(wxOK, MatDim::onButton)
-  EVT_BUTTON(wxCANCEL, MatDim::onButton)
+  EVT_BUTTON(wxID_OK, MatDim::onButton)
 END_EVENT_TABLE()

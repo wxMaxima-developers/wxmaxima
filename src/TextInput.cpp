@@ -31,8 +31,8 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
   text_ctrl_1 = new TextCtrl(this, -1, wxT(""), wxDefaultPosition,
                              wxDefaultSize,
                              wxTE_PROCESS_TAB|wxTE_PROCESS_ENTER|wxTE_MULTILINE|wxTE_RICH);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -42,9 +42,9 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
 
 void TextInput::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 wxString TextInput::getValue()
@@ -65,11 +65,12 @@ void TextInput::set_properties()
   SetSize(wxSize(780, 550));
   SetTitle(_("wxMaxima input"));
   if (setFont)
- #if defined(__WXGTK12__) && !defined(__WXGTK20__)
+#if defined(__WXGTK12__) && !defined(__WXGTK20__)
     text_ctrl_1->SetFont(wxFont(14, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
- #else
+#else
     text_ctrl_1->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
- #endif
+#endif
+  button_1->SetDefault();
 }
 
 
@@ -90,6 +91,5 @@ void TextInput::do_layout()
 }
 
 BEGIN_EVENT_TABLE(TextInput, wxDialog)
-  EVT_BUTTON(wxOK, TextInput::onButton)
-  EVT_BUTTON(wxCANCEL, TextInput::onButton)
+  EVT_BUTTON(wxID_OK, TextInput::onButton)
 END_EVENT_TABLE()

@@ -33,9 +33,8 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
   variables = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                             wxSize(230,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -47,6 +46,7 @@ void SysWiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   variables->SetToolTip(_("Enter comma separated list of variables."));
+  button_1->SetDefault();
 }
 
 void SysWiz::do_layout()
@@ -90,12 +90,11 @@ wxString SysWiz::getValue()
 
 void SysWiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId() == wxOK)
+  if (event.GetId() == wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(SysWiz, wxDialog)
-  EVT_BUTTON(wxOK, SysWiz::onButton)
-  EVT_BUTTON(wxCANCEL, SysWiz::onButton)
+  EVT_BUTTON(wxID_OK, SysWiz::onButton)
 END_EVENT_TABLE()

@@ -39,8 +39,8 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   button_4 = new wxButton(this, special_to, _("Special"));
   checkbox_1 = new wxCheckBox(this, -1, _("Numerical"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -153,10 +153,9 @@ void IntegrateWiz::onButton(wxCommandEvent& event) {
       }
     }
     break;
-  case wxOK:
+  case wxID_OK:
     ok = true;
-  case wxCANCEL:
-    Close();
+    event.Skip();
     break;
   }
 }
@@ -164,6 +163,5 @@ void IntegrateWiz::onButton(wxCommandEvent& event) {
 BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
   EVT_BUTTON(special_from, IntegrateWiz::onButton)
   EVT_BUTTON(special_to, IntegrateWiz::onButton)
-  EVT_BUTTON(wxOK, IntegrateWiz::onButton)
-  EVT_BUTTON(wxCANCEL, IntegrateWiz::onButton)
+  EVT_BUTTON(wxID_OK, IntegrateWiz::onButton)
 END_EVENT_TABLE()

@@ -39,9 +39,8 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
   label_5 = new wxStaticText(this, -1, lab4);
   text_ctrl_4 = new BTextCtrl(this, -1, val4);
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -77,16 +76,16 @@ void Gen4Wiz::do_layout()
 void Gen4Wiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  button_1->SetDefault();
 }
 
 void Gen4Wiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK)
+  if (event.GetId()==wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(Gen4Wiz, wxDialog)
-  EVT_BUTTON(wxOK, Gen4Wiz::onButton)
-  EVT_BUTTON(wxCANCEL, Gen4Wiz::onButton)
+  EVT_BUTTON(wxID_OK, Gen4Wiz::onButton)
 END_EVENT_TABLE()

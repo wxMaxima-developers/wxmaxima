@@ -90,9 +90,8 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   ok = false;
   type = cartesian;
@@ -113,6 +112,7 @@ void Plot2DWiz::set_properties()
   text_ctrl_8->SetValue(wxT("10"));
 
   button_4->SetToolTip(_("Browse"));
+  button_1->SetDefault();
   combo_box_1->SetSelection(0);
 }
 
@@ -337,10 +337,9 @@ wxString Plot2DWiz::getValue()
 void Plot2DWiz::onButton(wxCommandEvent& event)
 {
   switch(event.GetId()) {
-  case wxOK:
+  case wxID_OK:
     ok = true;
-  case wxCANCEL:
-    Close();
+    event.Skip();
     break;
   case parametric:
     {
@@ -388,8 +387,7 @@ void Plot2DWiz::onFileBrowse(wxCommandEvent& event)
 
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
   EVT_COMBOBOX(combobox, Plot2DWiz::onCombobox)
-  EVT_BUTTON(wxOK, Plot2DWiz::onButton)
-  EVT_BUTTON(wxCANCEL, Plot2DWiz::onButton)
+  EVT_BUTTON(wxID_OK, Plot2DWiz::onButton)
   EVT_BUTTON(parametric, Plot2DWiz::onButton)
   EVT_BUTTON(file_browse_2d, Plot2DWiz::onFileBrowse)
 END_EVENT_TABLE()
@@ -419,9 +417,10 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   text_ctrl_5 = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                                wxSize(50,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
+  ok = false;
   set_properties();
   do_layout();
 }
@@ -486,12 +485,11 @@ wxString Plot2dPar::getValue()
 
 void Plot2dPar::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK)
+  if (event.GetId()==wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(Plot2dPar, wxDialog)
-  EVT_BUTTON(wxOK, Plot2dPar::onButton)
-  EVT_BUTTON(wxCANCEL, Plot2dPar::onButton)
+  EVT_BUTTON(wxID_OK, Plot2dPar::onButton)
 END_EVENT_TABLE()

@@ -37,9 +37,8 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
   label_4 = new wxStaticText(this, -1, lab3);
   text_ctrl_3 = new BTextCtrl(this, -1, val3);
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxOK, _("OK"));
-  button_2 = new wxButton(this, wxCANCEL, _("Cancel"));
-  button_1->SetDefault();
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
   set_properties();
   do_layout();
@@ -73,16 +72,16 @@ void Gen3Wiz::do_layout()
 void Gen3Wiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  button_1->SetDefault();
 }
 
 void Gen3Wiz::onButton(wxCommandEvent& event)
 {
-  if (event.GetId()==wxOK)
+  if (event.GetId()==wxID_OK)
     ok = true;
-  Close();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(Gen3Wiz, wxDialog)
-  EVT_BUTTON(wxOK, Gen3Wiz::onButton)
-  EVT_BUTTON(wxCANCEL, Gen3Wiz::onButton)
+  EVT_BUTTON(wxID_OK, Gen3Wiz::onButton)
 END_EVENT_TABLE()
