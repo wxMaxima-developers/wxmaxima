@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-27 08:34+0100\n"
+"POT-Creation-Date: 2005-01-29 17:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,8 +258,8 @@ msgstr ""
 msgid "Apropos"
 msgstr ""
 
-#: ../src/IC2Wiz.cpp:35 ../src/IC1Wiz.cpp:34 ../src/BC2Wiz.cpp:34
-#: ../src/BC2Wiz.cpp:40
+#: ../src/BC2Wiz.cpp:34 ../src/BC2Wiz.cpp:40 ../src/IC1Wiz.cpp:34
+#: ../src/IC2Wiz.cpp:35
 msgid "At point:"
 msgstr ""
 
@@ -271,7 +271,7 @@ msgstr ""
 msgid "Autoload a file when it is updated"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1117 ../src/BC2Wiz.cpp:30 ../src/BC2Wiz.cpp:58
+#: ../src/BC2Wiz.cpp:30 ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:1117
 msgid "BC2"
 msgstr ""
 
@@ -287,7 +287,7 @@ msgstr ""
 msgid "Bold"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:121 ../src/Plot2dWiz.cpp:115 ../src/Config.cpp:137
+#: ../src/Config.cpp:137 ../src/Plot2dWiz.cpp:115 ../src/Plot3dWiz.cpp:121
 msgid "Browse"
 msgstr ""
 
@@ -323,13 +323,13 @@ msgstr ""
 msgid "Calculate sums"
 msgstr ""
 
-#: ../src/TextInput.cpp:35 ../src/SumWiz.cpp:43 ../src/SubstituteWiz.cpp:43
-#: ../src/SeriesWiz.cpp:43 ../src/Plot3dWiz.cpp:99 ../src/Plot2dWiz.cpp:94
-#: ../src/Plot2dWiz.cpp:423 ../src/MatWiz.cpp:38 ../src/MatWiz.cpp:170
-#: ../src/LimitWiz.cpp:50 ../src/IntegrateWiz.cpp:43 ../src/IC2Wiz.cpp:46
-#: ../src/IC1Wiz.cpp:42 ../src/Gen4Wiz.cpp:43 ../src/Gen3Wiz.cpp:41
-#: ../src/Gen2Wiz.cpp:45 ../src/Gen1Wiz.cpp:34 ../src/SystemWiz.cpp:37
-#: ../src/Config.cpp:179 ../src/BC2Wiz.cpp:48
+#: ../src/BC2Wiz.cpp:48 ../src/Config.cpp:179 ../src/Gen1Wiz.cpp:34
+#: ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:41 ../src/Gen4Wiz.cpp:43
+#: ../src/IC1Wiz.cpp:42 ../src/IC2Wiz.cpp:46 ../src/IntegrateWiz.cpp:43
+#: ../src/LimitWiz.cpp:50 ../src/MatWiz.cpp:38 ../src/MatWiz.cpp:170
+#: ../src/Plot2dWiz.cpp:94 ../src/Plot2dWiz.cpp:423 ../src/Plot3dWiz.cpp:99
+#: ../src/SeriesWiz.cpp:43 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:43
+#: ../src/SystemWiz.cpp:37 ../src/TextInput.cpp:35
 msgid "Cancel"
 msgstr ""
 
@@ -385,8 +385,8 @@ msgstr ""
 msgid "Configure wxMaxima"
 msgstr ""
 
-#: ../src/SeriesWiz.cpp:102 ../src/LimitWiz.cpp:123
 #: ../src/IntegrateWiz.cpp:125 ../src/IntegrateWiz.cpp:143
+#: ../src/LimitWiz.cpp:123 ../src/SeriesWiz.cpp:102
 msgid "Constant"
 msgstr ""
 
@@ -656,9 +656,9 @@ msgstr ""
 msgid "Expression(s):"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1206 ../src/wxMaxima.cpp:1585 ../src/wxMaxima.cpp:1600
-#: ../src/wxMaxima.cpp:1629 ../src/wxMaxima.cpp:1646 ../src/wxMaxima.cpp:1663
-#: ../src/SeriesWiz.cpp:30 ../src/Plot3dWiz.cpp:43
+#: ../src/Plot3dWiz.cpp:43 ../src/SeriesWiz.cpp:30 ../src/wxMaxima.cpp:1206
+#: ../src/wxMaxima.cpp:1585 ../src/wxMaxima.cpp:1600 ../src/wxMaxima.cpp:1629
+#: ../src/wxMaxima.cpp:1646 ../src/wxMaxima.cpp:1663
 msgid "Expression:"
 msgstr ""
 
@@ -722,7 +722,7 @@ msgstr ""
 msgid "Font size:"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:69 ../src/Plot2dWiz.cpp:66
+#: ../src/Plot2dWiz.cpp:66 ../src/Plot3dWiz.cpp:69
 msgid "Format:"
 msgstr ""
 
@@ -798,11 +798,11 @@ msgstr ""
 msgid "Hidden groups"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1091 ../src/IC1Wiz.cpp:30 ../src/IC1Wiz.cpp:52
+#: ../src/IC1Wiz.cpp:30 ../src/IC1Wiz.cpp:52 ../src/wxMaxima.cpp:1091
 msgid "IC1"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1104 ../src/IC2Wiz.cpp:31 ../src/IC2Wiz.cpp:56
+#: ../src/IC2Wiz.cpp:31 ../src/IC2Wiz.cpp:56 ../src/wxMaxima.cpp:1104
 msgid "IC2"
 msgstr ""
 
@@ -838,8 +838,8 @@ msgid ""
 "that file using 'File->Select file'."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1616 ../src/wxMaximaFrame.cpp:403
 #: ../src/IntegrateWiz.cpp:28 ../src/IntegrateWiz.cpp:53
+#: ../src/wxMaxima.cpp:1616 ../src/wxMaximaFrame.cpp:403
 msgid "Integrate"
 msgstr ""
 
@@ -907,8 +907,8 @@ msgstr ""
 msgid "Least common multiple"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1697 ../src/wxMaximaFrame.cpp:404
-#: ../src/LimitWiz.cpp:30 ../src/LimitWiz.cpp:61
+#: ../src/LimitWiz.cpp:30 ../src/LimitWiz.cpp:61 ../src/wxMaxima.cpp:1697
+#: ../src/wxMaximaFrame.cpp:404
 msgid "Limit"
 msgstr ""
 
@@ -1042,13 +1042,13 @@ msgstr ""
 msgid "Nusum"
 msgstr ""
 
-#: ../src/TextInput.cpp:34 ../src/SumWiz.cpp:42 ../src/SubstituteWiz.cpp:42
-#: ../src/SeriesWiz.cpp:42 ../src/Plot3dWiz.cpp:98 ../src/Plot2dWiz.cpp:93
-#: ../src/Plot2dWiz.cpp:422 ../src/MatWiz.cpp:37 ../src/MatWiz.cpp:169
-#: ../src/LimitWiz.cpp:49 ../src/IntegrateWiz.cpp:42 ../src/IC2Wiz.cpp:45
-#: ../src/IC1Wiz.cpp:41 ../src/Gen4Wiz.cpp:42 ../src/Gen3Wiz.cpp:40
-#: ../src/Gen2Wiz.cpp:44 ../src/Gen1Wiz.cpp:33 ../src/SystemWiz.cpp:36
-#: ../src/BC2Wiz.cpp:47
+#: ../src/BC2Wiz.cpp:47 ../src/Gen1Wiz.cpp:33 ../src/Gen2Wiz.cpp:44
+#: ../src/Gen3Wiz.cpp:40 ../src/Gen4Wiz.cpp:42 ../src/IC1Wiz.cpp:41
+#: ../src/IC2Wiz.cpp:45 ../src/IntegrateWiz.cpp:42 ../src/LimitWiz.cpp:49
+#: ../src/MatWiz.cpp:37 ../src/MatWiz.cpp:169 ../src/Plot2dWiz.cpp:93
+#: ../src/Plot2dWiz.cpp:422 ../src/Plot3dWiz.cpp:98 ../src/SeriesWiz.cpp:42
+#: ../src/SubstituteWiz.cpp:42 ../src/SumWiz.cpp:42 ../src/SystemWiz.cpp:36
+#: ../src/TextInput.cpp:34
 msgid "OK"
 msgstr ""
 
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:78 ../src/Plot2dWiz.cpp:75
+#: ../src/Plot2dWiz.cpp:75 ../src/Plot3dWiz.cpp:78
 msgid "Options:"
 msgstr ""
 
@@ -1120,13 +1120,13 @@ msgstr ""
 msgid "Plot &format"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1783 ../src/wxMaximaFrame.cpp:408
 #: ../src/Plot2dWiz.cpp:40 ../src/Plot2dWiz.cpp:107 ../src/Plot2dWiz.cpp:347
+#: ../src/wxMaxima.cpp:1783 ../src/wxMaximaFrame.cpp:408
 msgid "Plot 2D"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1769 ../src/wxMaximaFrame.cpp:409
-#: ../src/Plot3dWiz.cpp:42 ../src/Plot3dWiz.cpp:111
+#: ../src/Plot3dWiz.cpp:42 ../src/Plot3dWiz.cpp:111 ../src/wxMaxima.cpp:1769
+#: ../src/wxMaximaFrame.cpp:409
 msgid "Plot 3D"
 msgstr ""
 
@@ -1142,7 +1142,7 @@ msgstr ""
 msgid "Plot in 3 dimensions"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:91 ../src/Plot2dWiz.cpp:86
+#: ../src/Plot2dWiz.cpp:86 ../src/Plot3dWiz.cpp:91
 msgid "Plot to file:"
 msgstr ""
 
@@ -1154,7 +1154,7 @@ msgstr ""
 msgid "Polynomial 2:"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:411 ../src/Plot2dWiz.cpp:383
+#: ../src/Plot2dWiz.cpp:383 ../src/Plot3dWiz.cpp:411
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr ""
 
@@ -1251,7 +1251,7 @@ msgstr ""
 msgid "Rows:"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:409 ../src/Plot2dWiz.cpp:381
+#: ../src/Plot2dWiz.cpp:381 ../src/Plot3dWiz.cpp:409
 msgid "Save plot to file"
 msgstr ""
 
@@ -1275,8 +1275,8 @@ msgstr ""
 msgid "Select &file"
 msgstr ""
 
-#: ../src/SeriesWiz.cpp:101 ../src/LimitWiz.cpp:122
 #: ../src/IntegrateWiz.cpp:124 ../src/IntegrateWiz.cpp:142
+#: ../src/LimitWiz.cpp:122 ../src/SeriesWiz.cpp:101
 msgid "Select a constant"
 msgstr ""
 
@@ -1304,8 +1304,8 @@ msgstr ""
 msgid "Select package to load"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1683 ../src/wxMaximaFrame.cpp:405
-#: ../src/SeriesWiz.cpp:29 ../src/SeriesWiz.cpp:54
+#: ../src/SeriesWiz.cpp:29 ../src/SeriesWiz.cpp:54 ../src/wxMaxima.cpp:1683
+#: ../src/wxMaximaFrame.cpp:405
 msgid "Series"
 msgstr ""
 
@@ -1417,7 +1417,7 @@ msgstr ""
 msgid "Show the description of command/variable:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:390 ../src/SumWiz.cpp:39
+#: ../src/SumWiz.cpp:39 ../src/wxMaximaFrame.cpp:390
 msgid "Simplify"
 msgstr ""
 
@@ -1457,7 +1457,7 @@ msgstr ""
 msgid "Simplify trigonometric expression"
 msgstr ""
 
-#: ../src/IC2Wiz.cpp:32 ../src/IC1Wiz.cpp:31 ../src/BC2Wiz.cpp:31
+#: ../src/BC2Wiz.cpp:31 ../src/IC1Wiz.cpp:31 ../src/IC2Wiz.cpp:32
 msgid "Solution:"
 msgstr ""
 
@@ -1534,8 +1534,8 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: ../src/SeriesWiz.cpp:37 ../src/LimitWiz.cpp:38 ../src/IntegrateWiz.cpp:36
-#: ../src/IntegrateWiz.cpp:39
+#: ../src/IntegrateWiz.cpp:36 ../src/IntegrateWiz.cpp:39
+#: ../src/LimitWiz.cpp:38 ../src/SeriesWiz.cpp:37
 msgid "Special"
 msgstr ""
 
@@ -1555,8 +1555,8 @@ msgstr ""
 msgid "Styles"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:988 ../src/wxMaximaFrame.cpp:406
-#: ../src/SubstituteWiz.cpp:30
+#: ../src/SubstituteWiz.cpp:30 ../src/wxMaxima.cpp:988
+#: ../src/wxMaximaFrame.cpp:406
 msgid "Substitute"
 msgstr ""
 
@@ -1568,8 +1568,8 @@ msgstr ""
 msgid "Substitution"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1711 ../src/wxMaximaFrame.cpp:398 ../src/SumWiz.cpp:29
-#: ../src/SumWiz.cpp:54
+#: ../src/SumWiz.cpp:29 ../src/SumWiz.cpp:54 ../src/wxMaxima.cpp:1711
+#: ../src/wxMaximaFrame.cpp:398
 msgid "Sum"
 msgstr ""
 
@@ -1701,8 +1701,8 @@ msgstr ""
 msgid "Unsum expression:"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:45 ../src/Plot3dWiz.cpp:54 ../src/Plot2dWiz.cpp:45
-#: ../src/Plot2dWiz.cpp:54 ../src/Plot2dWiz.cpp:412
+#: ../src/Plot2dWiz.cpp:45 ../src/Plot2dWiz.cpp:54 ../src/Plot2dWiz.cpp:412
+#: ../src/Plot3dWiz.cpp:45 ../src/Plot3dWiz.cpp:54
 msgid "Variable:"
 msgstr ""
 
@@ -1815,8 +1815,8 @@ msgstr ""
 msgid "brown"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1353 ../src/wxMaxima.cpp:1600 ../src/wxMaxima.cpp:1724
-#: ../src/wxMaxima.cpp:1740 ../src/SumWiz.cpp:33 ../src/IntegrateWiz.cpp:32
+#: ../src/IntegrateWiz.cpp:32 ../src/SumWiz.cpp:33 ../src/wxMaxima.cpp:1353
+#: ../src/wxMaxima.cpp:1600 ../src/wxMaxima.cpp:1724 ../src/wxMaxima.cpp:1740
 msgid "by variable:"
 msgstr ""
 
@@ -1868,7 +1868,7 @@ msgstr ""
 msgid "dark turquoise"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:71 ../src/Plot2dWiz.cpp:68 ../src/Plot2dWiz.cpp:316
+#: ../src/Plot2dWiz.cpp:68 ../src/Plot2dWiz.cpp:316 ../src/Plot3dWiz.cpp:71
 msgid "default"
 msgstr ""
 
@@ -1912,10 +1912,10 @@ msgstr ""
 msgid "from expression:"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1354 ../src/wxMaxima.cpp:1740 ../src/SumWiz.cpp:35
-#: ../src/Plot3dWiz.cpp:48 ../src/Plot3dWiz.cpp:57 ../src/Plot2dWiz.cpp:48
-#: ../src/Plot2dWiz.cpp:57 ../src/Plot2dWiz.cpp:415 ../src/LimitWiz.cpp:39
-#: ../src/IntegrateWiz.cpp:34
+#: ../src/IntegrateWiz.cpp:34 ../src/LimitWiz.cpp:39 ../src/Plot2dWiz.cpp:48
+#: ../src/Plot2dWiz.cpp:57 ../src/Plot2dWiz.cpp:415 ../src/Plot3dWiz.cpp:48
+#: ../src/Plot3dWiz.cpp:57 ../src/SumWiz.cpp:35 ../src/wxMaxima.cpp:1354
+#: ../src/wxMaxima.cpp:1740
 msgid "from:"
 msgstr ""
 
@@ -2135,8 +2135,8 @@ msgstr ""
 msgid "the derivative is:"
 msgstr ""
 
-#: ../src/IC2Wiz.cpp:38 ../src/IC1Wiz.cpp:37 ../src/BC2Wiz.cpp:37
-#: ../src/BC2Wiz.cpp:43
+#: ../src/BC2Wiz.cpp:37 ../src/BC2Wiz.cpp:43 ../src/IC1Wiz.cpp:37
+#: ../src/IC2Wiz.cpp:38
 msgid "the value is:"
 msgstr ""
 
@@ -2156,10 +2156,10 @@ msgstr ""
 msgid "to matrix:"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1354 ../src/wxMaxima.cpp:1630 ../src/wxMaxima.cpp:1647
-#: ../src/wxMaxima.cpp:1741 ../src/SumWiz.cpp:37 ../src/Plot3dWiz.cpp:51
-#: ../src/Plot3dWiz.cpp:60 ../src/Plot2dWiz.cpp:51 ../src/Plot2dWiz.cpp:60
-#: ../src/Plot2dWiz.cpp:418 ../src/IntegrateWiz.cpp:37
+#: ../src/IntegrateWiz.cpp:37 ../src/Plot2dWiz.cpp:51 ../src/Plot2dWiz.cpp:60
+#: ../src/Plot2dWiz.cpp:418 ../src/Plot3dWiz.cpp:51 ../src/Plot3dWiz.cpp:60
+#: ../src/SumWiz.cpp:37 ../src/wxMaxima.cpp:1354 ../src/wxMaxima.cpp:1630
+#: ../src/wxMaxima.cpp:1647 ../src/wxMaxima.cpp:1741
 msgid "to:"
 msgstr ""
 
@@ -2284,10 +2284,10 @@ msgid ""
 "and command completion based on previous input available using the tab key."
 msgstr ""
 
-#: ../src/Config.cpp:117
-msgid "yello green"
-msgstr ""
-
 #: ../src/Config.cpp:116
 msgid "yellow"
+msgstr ""
+
+#: ../src/Config.cpp:117
+msgid "yellow green"
 msgstr ""
