@@ -46,7 +46,7 @@ AM_PATH_WXCONFIG(2.4.0, wxWin=1)
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
-          wxWidgetss must be installed on your system.
+          wxWidgets must be installed on your system.
 
           Please check that wx-config is in path, the directory
           where wxWidgets libraries are installed (returned by
@@ -89,11 +89,9 @@ if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
-   ISS_FILES="wxMaxima.iss INSTALL.win32"
 else
    RC_OBJ=""
    WX_RC_PATH=""
-   ISS_FILES=""
 fi
 
 
@@ -128,7 +126,6 @@ fi
 
 AC_SUBST(CATALOGS_TO_INSTALL)
 AC_SUBST(WX_LIBS)
-AC_SUBST(ISS_FILES)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 
