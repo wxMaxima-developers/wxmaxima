@@ -29,9 +29,10 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
   m_width = w;
   m_matrixType = type;
   label_1 = new wxStaticText(this, -1, title);
+  int width = 50 > 400/m_width ? 50 : 400/m_width;
   for (int i=0; i<h*w; i++) {
     m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
-    wxSize(50,-1)));
+                                     wxSize(width,-1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
   button_1 = new wxButton(this, wxID_OK, _("OK"));
