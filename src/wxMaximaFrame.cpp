@@ -99,6 +99,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
+                             _("Copy selection from console to input line"),
+                             wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"), 
                    _("Delete selected input/output group"), wxT("gtk-delete"));

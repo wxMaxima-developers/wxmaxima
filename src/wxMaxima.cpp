@@ -1036,6 +1036,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     if (m_console->CanCopy())
       m_console->CopyBitmap();
     break;
+  case menu_selection_to_input:
+    if (m_console->CanCopy())
+      m_inputLine->WriteText((m_console->GetString()).Trim(false));
+    return;
+    break;
   case menu_copy_to_file:
   {
     wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
@@ -1238,7 +1243,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     {
       Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("At point:"), _("the value is:"),
                                  expr, wxT("x="), wxT("y="),
-                                 this, -1, _("IC1:"), true);
+                                 this, -1, _("IC1"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
@@ -1253,7 +1258,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("At point:"),
                                  _("the value is:"), _("the derivative is:"),
                                  expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
-                                 this, -1, _("IC2:"), true);
+                                 this, -1, _("IC2"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("ic2(") + wiz->GetValue1() + wxT(", ") +
@@ -2215,6 +2220,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
+  EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
@@ -2224,6 +2230,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_print, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
+//  EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_ACTIVATE(wxMaxima::OnActivate)
   EVT_SET_FOCUS(wxMaxima::OnSetFocus)
