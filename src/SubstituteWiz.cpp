@@ -53,7 +53,6 @@ void SubstituteWiz::set_properties()
 {
   SetTitle(_("Substitution"));
   label_1->SetFont(wxFont(22, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
-  checkbox_1->SetValue(true);
   button_1->SetDefault();
 }
 
