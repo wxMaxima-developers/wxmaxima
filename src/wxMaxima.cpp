@@ -33,7 +33,6 @@
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
 #include "Gen4Wiz.h"
-#include "IC1Wiz.h"
 #include "IC2Wiz.h"
 #include "BC2Wiz.h"
 #include "MatWiz.h"
@@ -1238,11 +1237,13 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_ivp_1:
     {
-      IC1Wiz *wiz = new IC1Wiz(this, -1, _("IC1"));
-      wiz->SetValue(expr);
+      Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("At point:"), _("the value is:"),
+                                 expr, wxT("x="), wxT("y="),
+                                 this, -1, _("IC1:"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
-        wxString val = wiz->GetValue();
+        wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
+          wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
         SendMaxima(val);
       }
       wiz->Destroy();
@@ -1250,11 +1251,14 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_ivp_2:
     {
-      IC2Wiz *wiz = new IC2Wiz(this, -1, _("IC2"));
-      wiz->SetValue(expr);
+      Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("At point:"),
+                                 _("the value is:"), _("the derivative is:"),
+                                 expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
+                                 this, -1, _("IC1:"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
-        wxString val = wiz->GetValue();
+        wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
+          wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
         SendMaxima(val);
       }
       wiz->Destroy();

@@ -21,8 +21,6 @@ wxmaxima_SOURCES = \
 	Gen2Wiz.cpp        Gen2Wiz.h        \
 	Gen3Wiz.cpp        Gen3Wiz.h        \
 	Gen4Wiz.cpp        Gen4Wiz.h        \
-	IC1Wiz.cpp         IC1Wiz.h         \
-	IC2Wiz.cpp         IC2Wiz.h         \
 	BC2Wiz.cpp         BC2Wiz.h         \
 	SystemWiz.cpp      SystemWiz.h      \
 	BTextCtrl.cpp      BTextCtrl.h      \
