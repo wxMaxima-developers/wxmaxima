@@ -114,7 +114,7 @@ const colors colorlist[] = {
   { wxT("wheat"), _("wheat") },
   { wxT("white"), _("white") },
   { wxT("yellow"), _("yellow") },
-  { wxT("yello green"), _("yello green") }
+  { wxT("yellow green"), _("yellow green") }
 };
 
 #define COLORLIST_LENGTH 68
