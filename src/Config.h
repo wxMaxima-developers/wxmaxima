@@ -30,8 +30,6 @@
 #include "TextStyle.h"
 
 enum {
-  mp_browse_id,
-  mf_browse_id,
   combobox_colour,
   combobox_styleFor,
   checkbox_bold,

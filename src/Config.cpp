@@ -73,7 +73,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
-  m_mpBrowse = new wxButton(notebook_1_pane_1, mp_browse_id, _("Browse"));
+  m_mpBrowse = new wxButton(notebook_1_pane_1, wxID_OPEN, _("Open"));
   label_6 = new wxStaticText(notebook_1_pane_1, -1, _("Additional parameters:"));
   m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
@@ -593,7 +593,7 @@ style* Config::GetStylePointer()
 
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::onOk)
-  EVT_BUTTON(mp_browse_id, Config::onMpBrowse)
+  EVT_BUTTON(wxID_OPEN, Config::onMpBrowse)
   EVT_COMBOBOX(combobox_colour, Config::onChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::onChangeStyle)
   EVT_CHECKBOX(checkbox_bold, Config::onCheckbox)
