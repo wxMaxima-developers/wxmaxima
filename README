@@ -85,6 +85,7 @@ Then build wxMaxima with
   make install
 
 
+
 CONFIGURATION
 ==============
 
@@ -104,6 +105,24 @@ subdirectory of maxima installation directory. For example:
 
 If you install in some other directory, you must configure wxMaxima with
 Maxima->Configure.
+
+
+
+PRINTING
+=========
+
+
+** Linux
+
+The default Postscript driver used for printing on Linux can not print wxMaxima
+session properly (it has problems in finding out how much space is needed to
+print a string).
+
+Starting with version 2.5.4 wxGTK can be compiled with support for libgnomeprint
+(and libgnomeprintui) which has much better support for printing. Using this
+driver, wxMaxima can print correctly. So printing on Linux is only available if
+wxGTK has been compiled with support for libgnomeprint and libgnomeprint is
+found when wxMaxima is started.
 
 
 
