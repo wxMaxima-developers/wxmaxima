@@ -321,11 +321,8 @@ void Config::readStyles()
   
   wxString font;
   config->Read(wxT("Style/fontname"), &font);
-  if (font.Length())
-    m_fontFamily->SetValue(font);
-  else
-    m_fontFamily->SetSelection(0);
-  
+  m_fontFamily->SetValue(font);
+
   m_styleNormalText.color = wxT("black");
   m_styleNormalText.bold = false;
   m_styleNormalText.italic = false;
