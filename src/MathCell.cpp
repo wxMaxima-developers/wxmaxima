@@ -146,15 +146,7 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   m_currentPoint.y = point.y;
   if (m_nextToDraw != NULL && all) {
     double scale = parser.GetScale();
-/*    if (m_nextToDraw->m_breakLine) {
-      point.x = SCALE_PX(5, scale);
-      point.y += drop + m_nextToDraw->GetMaxCenter();
-      if (m_bigSkip)
-        point.y += SCALE_PX(5, scale);
-      drop = m_nextToDraw->GetMaxDrop();
-    }
-    else*/
-      point.x += m_width + SCALE_PX(2, scale);
+    point.x += m_width + SCALE_PX(2, scale);
     m_nextToDraw->Draw(parser, point, fontsize, true);
   }
 }
