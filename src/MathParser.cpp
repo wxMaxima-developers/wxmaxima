@@ -166,11 +166,7 @@ MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol)
 {
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
-#if wxUSE_UNICODE
-    wxString str((const char*)(node->content), *wxConvCurrent);
-#else
-    wxString str((const char*)(node->content));
-#endif
+    wxString str((const char*)(node->content), wxConvUTF8);
     cell->SetValue(wxString(str));
     cell->SetStyle(m_ParserStyle);
     cell->SetSymbol(symbol);
@@ -283,7 +279,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
         in->SetStyle(m_ParserStyle);
         return in;
       }
-    }  
+    }
   }
   delete in;
   return NULL;
@@ -315,11 +311,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
   while (node) {
     // Parse tags
     if (node->type == XML_ELEMENT_NODE) {
-#if wxUSE_UNICODE
-      wxString tagName((const char*)(node->name), *wxConvCurrent);
-#else
-      wxString tagName((const char*)(node->name));
-#endif
+      wxString tagName((const char*)(node->name), wxConvUTF8);
       if (tagName == wxT("mfrac")) {
         if (cell == NULL)
           cell = ParseFracTag(node);
@@ -518,22 +510,8 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   config->Read(wxT("showLong"), &showLong);
 
   if (s.Length() < MAXLENGTH || showLong) {
-#if wxUSE_UNICODE
-    char *buf;
-    wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
-    buf = strdup(tmp);
-    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
-    free(buf);
-#else
-    wxString encoding = wxLocale::GetSystemEncodingName();
-    if (encoding.Length()>0) {
-      s = wxT("<?xml version=\"1.0\" encoding=\"") +
-          encoding +
-          wxT("\"?>") +
-          s;
-    }
+    s = ToUnicode(s);
     xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());
-#endif
     if (doc != NULL) {
       cell = ParseTag(xmlDocGetRootElement(doc));
       xmlFreeDoc(doc);
@@ -544,4 +522,13 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     cell->ForceBreakLine(true);
   }
   return cell;
+}
+
+wxString MathParser::ToUnicode(wxString s)
+{
+#if wxUSE_UNICODE
+  return s;
+#else
+  return wxString(s.wc_str(wxConvLocal), wxConvUTF8);
+#endif
 }
