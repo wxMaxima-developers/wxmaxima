@@ -670,6 +670,8 @@ void wxMaxima::onProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
     SetStatusText(_("Maxima process terminated."));
+  delete m_process;
+  m_process = NULL;
 }
 
 void wxMaxima::cleanUp()
@@ -853,6 +855,7 @@ void wxMaxima::interrupt(wxCommandEvent& event)
 
 void wxMaxima::killMaxima()
 {
+  m_process->Detach();
   if (m_pid < 0) {
     if (m_inLispMode)
       sendMaxima(wxT("($quit)"), false, false);
@@ -2030,7 +2033,6 @@ void wxMaxima::onClose(wxCloseEvent& event)
     config->Write(wxT("pos-max"), 0);
   if (m_lastPath.Length()>0)
     config->Write(wxT("lastPath"), m_lastPath);
-  m_process->Detach();
   m_closing = true;
   cleanUp();
   Destroy();
