@@ -30,6 +30,7 @@
 #endif
 
 #include "ok.xpm"
+#include "multiline.xpm"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
@@ -410,8 +411,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   button_0 = new wxBitmapButton(panel, button_enter,
                                 wxBitmap(ok_xpm));
   button_1 = new wxBitmapButton(panel, button_long_input,
-                                wxArtProvider::GetBitmap(wxART_NORMAL_FILE,
-                                                         wxART_HELP_BROWSER));
+                                wxBitmap(multiline_xpm));
   
   // buttons
   button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
@@ -504,8 +504,8 @@ void wxMaximaFrame::do_layout()
   sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
                wxALIGN_CENTER_VERTICAL, 2);
   sizer_3->Add(m_inputLine, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_0, 0, wxALL, 2);
-  sizer_3->Add(button_1, 0, wxALL, 2);
+  sizer_3->Add(button_0, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(button_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_3->AddGrowableCol(1);
   
   // all
