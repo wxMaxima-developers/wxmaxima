@@ -286,12 +286,11 @@ void Config::onOk(wxCommandEvent& event)
     config->Write(wxT("pos-restore"), 1);
   else
     config->Write(wxT("pos-restore"), 0);
-  config->Flush();
-  
   i = m_language->GetSelection();
   if (i>-1 && i<LANGUAGE_NUMBER) {
     config->Write(wxT("language"), langs[i]);
   }
+  config->Flush();
 
   writeStyles();
   Close();
@@ -502,6 +501,8 @@ void Config::writeStyles()
                 m_styleInput.italic);
   config->Write(wxT("Style/Input/underlined"),
                 m_styleInput.underlined);
+           
+  config->Flush();
 }
 
 void Config::onChangeColor(wxCommandEvent& event)
