@@ -1,0 +1,113 @@
+WXMAXIMA
+=========
+
+wxMaxima is an interface for the computer algebra system maxima. For more
+information about maxima, go to
+
+  http://maxima.sourceforge.net/
+
+wxMaxima can be found at
+
+  http://wxmaxima.sourceforge.net/
+
+wxMaxima uses wxWidgets and runs natively on Linux and Windows. It
+provides nicely formatted display of maxima output.
+
+wxMaxima requires maxima version 5.9.1.
+
+
+
+LICENCE
+========
+
+wxMaxima is licenced under GPL. See the file COPYING.
+
+
+
+INSTALLATION
+=============
+
+
+BINARY INSTALLATION
+--------------------
+
+Binaries for Linux and Windows are provided at wxMaxima homepage. They do
+not need wxWidgets to be installed on your computer.
+
+Windows binaries come with an installer. You should install wxMaxima in a
+subdirectory of maxima installation directory (see section
+CONFIGURATION). The Linux rpm is compiled on Fedora Core 3. Binaries
+for some other distributions are contributed by wxMaxima users and are
+available from the download section of wxMaxima homepage.
+
+
+SOURCE INSTALLATION
+--------------------
+
+** Linux
+
+Download and install wxWidgets library from
+
+  http://www.wxwidgets.org/
+
+I recommend the development version 2.5.3. Go to the source directory and do
+
+  ./configure
+  make
+  make install
+
+wxMaxima also requires libxml2 to be installed on your system. libxml2 comes
+with most distributions, make sure you have the development packages
+installed.
+
+** Windows 
+   
+I build the windows binaries using Dev-CPP. Dev-CPP can be downloaded from
+
+  http://www.bloodshed.net
+
+You will also need to install the wxWidgets and libxml2 devpacks (and their
+dependencies), which can also be found at the web-page. In Dev-CPP create a new
+wxWidgets project, add libxml2 and other required libraries to the project and
+import all the sources of wxMaxima.
+
+
+
+CONFIGURATION
+==============
+
+
+** Linux
+
+wxMaxima does not need any configuration if maxima is in your path. If not,
+configure wxMaxima with Maxima->Configure.
+
+** Windows
+
+To automatically configure wxMaxima, wxMaxima must be installed in a
+subdirectory of maxima installation directory. For example:
+
+  maxima installation:   C:\Program Files\maxima-5.9.1
+  wxMaxima installation: C:\Program Files\maxima-5.9.1\wxMaxima
+
+If you install in some other directory, you must configure wxMaxima with
+Maxima->Configure.
+
+
+
+UPDATING
+=========
+
+
+** Linux
+
+When you update maxima or wxMaxima, you should delete the file .wxMaxima in
+your home directory.
+
+** Windows
+
+To update maxima or wxMaxima, you should:
+ - uninstall wxMaxima
+ - uninstall maxima (if updating maxima)
+ - install maxima   (if updating maxima)
+ - install wxMaxima (in a subdirectory of maxima, see section CONFIGURATION)
