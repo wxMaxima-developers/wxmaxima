@@ -24,7 +24,7 @@
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 #define ABS(a) ((a)>=0 ? (a) : -(a))
-#define SCALE_PX(px, scale) ((int)(((double)px)*scale + 0.5))
+#define SCALE_PX(px, scale) ((int)(((double)(px))*(scale) + 0.5))
 
 #include <wx/wx.h>
 #include "CellParser.h"
