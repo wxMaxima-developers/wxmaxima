@@ -254,7 +254,11 @@ void Config::do_layout()
   sizer_8->AddGrowableCol(0);
   notebook_1->AddPage(notebook_1_pane_1, _("Options"));
   notebook_1->AddPage(notebook_1_pane_2, _("Style"));
+#if wxCHECK_VERSION(2,5,3)
+  sizer_1->Add(notebook_1, 1, wxEXPAND|wxALL, 2);
+#else
   sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND|wxALL, 2);
+#endif
   sizer_2->Add(m_buttonCancel, 0, wxALL, 2);
   sizer_2->Add(m_buttonOK, 0, wxALL, 2);
   sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
