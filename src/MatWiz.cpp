@@ -88,12 +88,12 @@ void MatWiz::do_layout()
       grid_sizer_2->Add(inputs[j*width+i], 0, wxALL, 1);
     }
   }
-  grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
+  grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND, 0);
-  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
   sizer_1->Add(button_2, 0, wxALL, 2);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);
@@ -187,18 +187,18 @@ void MatDim::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 3, 3);
-  grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
-  grid_sizer_2->Add(label_2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 1);
+  grid_sizer_2->Add(label_2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 2);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
-  grid_sizer_2->Add(label_3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(label_3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 2);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 2);
-  grid_sizer_2->Add(label_4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(label_4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 2);
   grid_sizer_2->Add(combo_box_1, 0, wxALL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND, 0);
-  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
   sizer_1->Add(button_2, 0, wxALL, 2);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

@@ -62,10 +62,10 @@ void Gen4Wiz::do_layout()
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(text_ctrl_4, 0, wxALL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND, 0);
-  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
   sizer_1->Add(button_2, 0, wxALL, 2);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
+  sizer_1->Add(button_1, 0, wxALL, 2);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);
