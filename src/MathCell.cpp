@@ -35,6 +35,7 @@ MathCell::MathCell()
   m_bigSkip = true;
   m_style = TC_VARIABLE;
   m_nextToDrawIsNext = true;
+  m_hidden = false;
 }
 
 /***

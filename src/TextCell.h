@@ -27,7 +27,7 @@ class TextCell : public MathCell
 {
   public:
     TextCell();
-    TextCell(wxString text) : m_text(text) {}
+    TextCell(wxString text) : m_text(text) { m_symbol = false; }
     ~TextCell();
     MathCell* Copy(bool all);
     void Destroy();
@@ -39,8 +39,8 @@ class TextCell : public MathCell
     void SetForeground(CellParser& parser);
     wxString ToString(bool all);
     wxString GetDiffPart();
-    void SetSymbol(bool symbol);
     bool IsOperator();
+    void SetSymbol(bool symbol) { m_symbol = symbol; }
     bool IsShortNum();
   protected:
     wxString m_text;

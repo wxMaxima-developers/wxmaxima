@@ -36,13 +36,12 @@
 
 enum {
   TC_VARIABLE,
-  TC_OPERATOR,
-  TC_NUMBER,
   TC_PROMPT,
   TC_MAIN_PROMPT,
   TC_INPUT,
   TC_ERROR,
-  TC_LABEL
+  TC_LABEL,
+  TC_STRING
 };
 
 class MathCell
@@ -101,6 +100,7 @@ class MathCell
     bool m_nextToDrawIsNext;
     virtual void SetExponentFlag() { };
     virtual bool IsShortNum() { return false; };
+    void SetHidden(bool hidden) { m_hidden = hidden; }
   protected:
     int m_height;
     int m_maxHeight;
@@ -114,6 +114,7 @@ class MathCell
     bool m_breakPage;
     bool m_breakLine;
     bool m_forceBreakLine;
+    bool m_hidden;
 };
 
 #endif	//_MATHCELL_H_

@@ -44,7 +44,6 @@
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 #include <wx/tipdlg.h>
-#include <wx/fs_zip.h>
 #include <wx/html/helpctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
@@ -72,11 +71,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_client = NULL;
   m_server = NULL;
 
-  wxFileSystem::AddHandler(new wxZipFSHandler);
-
-  wxConfigBase* config = wxConfig::Get();
-  config->Read(wxT("lastPath"), &m_lastPath);
-
+  wxConfig::Get()->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
 #if wxUSE_DRAG_AND_DROP
@@ -90,7 +85,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
   m_inputLine->SetFocus();
   m_closing = false;
-  wxInitAllImageHandlers();
 }
 
 
@@ -240,7 +234,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
       if (j>70 && breaks.Find(s[i])>-1) {
         s = s.SubString(0, i) + wxT("\n") + s.SubString(i+1, s.Length());
         j = 0;
-        i = i;
       }
       else if (s[i] == '\n')
         j = 0;
@@ -304,7 +297,6 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   int count = 0;
   while(tokens.HasMoreTokens()) {
     TextCell* cell = new TextCell(tokens.GetNextToken());
-    cell->SetSymbol(false);
     if (type == PROMPTT)
       cell->SetStyle(TC_PROMPT);
     else if (type == MPROMPTT)
@@ -354,7 +346,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
   m_client->Write(buf, strlen(buf));
   free(buf);
 #else
-  m_client->Write(s.mb_str(*wxConvCurrent), s.Length());
+  m_client->Write(s.c_str(), s.Length());
 #endif
 }
 

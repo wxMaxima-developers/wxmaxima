@@ -421,9 +421,9 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("mo")) {
+      else if (tagName == wxT("mh")) {
         MathCell* tmp = ParseText(node->children);
-        tmp->SetStyle(TC_OPERATOR);
+        tmp->SetHidden(true);
         if (cell == NULL)
           cell = tmp;
         else
@@ -436,10 +436,19 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
           cell->AppendCell(ParseText(node->children));
       }
       else if (tagName == wxT("ms")) {
+        MathCell* tmp = ParseText(node->children, true);
         if (cell == NULL)
-          cell = ParseText(node->children, true);
+          cell = tmp;
         else
-          cell->AppendCell(ParseText(node->children, true));
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("mstr")) {
+        MathCell* tmp = ParseText(node->children);
+        tmp->SetStyle(TC_STRING);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
       }
       else if (tagName == wxT("lbl")) {
         int oldPS = m_ParserStyle;
@@ -519,7 +528,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     wxString encoding = wxLocale::GetSystemEncodingName();
     if (encoding.Length()>0) {
       s = wxT("<?xml version=\"1.0\" encoding=\"") +
-          wxLocale::GetSystemEncodingName() +
+          encoding +
           wxT("\"?>") +
           s;
     }

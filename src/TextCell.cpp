@@ -42,6 +42,7 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_forceBreakLine = m_forceBreakLine;
   tmp->m_nextToDrawIsNext = m_nextToDrawIsNext;
   tmp->m_bigSkip = m_bigSkip;
+  tmp->m_hidden = m_hidden;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;
@@ -60,7 +61,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   dc.GetTextExtent(m_text, &m_width, &m_height);
   m_width = m_width + SCALE_PX(4, scale);
   m_height = m_height + SCALE_PX(4, scale);
-  if (m_style == TC_OPERATOR && m_text == wxT("*"))
+  if (m_hidden)
     m_width = 0;
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -75,7 +76,7 @@ void TextCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height = MAX(m_height, fontsize);
   m_height += SCALE_PX(4, scale);
   m_width += SCALE_PX(4, scale);
-  if (m_style == TC_OPERATOR && m_text == wxT("*"))
+  if (m_hidden)
     m_width = 0;
   m_center = m_height/2;
   MathCell::RecalculateSize(parser, fontsize, all);
@@ -87,8 +88,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
   
-  if (DrawThisCell(parser, point) &&
-      (m_style != TC_OPERATOR || m_text != wxT("*"))) {
+  if (DrawThisCell(parser, point) && !m_hidden) {
     SetFont(parser, fontsize);
     SetForeground(parser);
 
@@ -178,9 +178,6 @@ void TextCell::SetForeground(CellParser& parser)
     case TC_LABEL:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
       break;
-    case TC_VARIABLE:
-    case TC_OPERATOR:
-    case TC_NUMBER:
     default:
      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
       break;
@@ -202,9 +199,6 @@ void TextCell::SetForeground(CellParser& parser)
     case TC_LABEL:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
       break;
-    case TC_VARIABLE:
-    case TC_OPERATOR:
-    case TC_NUMBER:
     default:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
       break;
@@ -221,12 +215,9 @@ bool TextCell::IsOperator()
 wxString TextCell::ToString(bool all)
 {
   wxString text = m_text;
+  if (m_style == TC_STRING)
+    text += wxT(" ");
   return text + MathCell::ToString(all);
-}
-
-void TextCell::SetSymbol(bool symbol)
-{
-  m_symbol = symbol;
 }
 
 wxString TextCell::GetDiffPart()

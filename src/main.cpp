@@ -23,6 +23,7 @@
 #include <wx/tipdlg.h>
 #include <wx/config.h>
 #include <wx/intl.h>
+#include <wx/fs_zip.h>
 
 #include "wxMaxima.h"
 
@@ -47,6 +48,10 @@ bool MyApp::OnInit()
 {
   wxConfig *config = new wxConfig(wxT("wxMaxima"));
   wxConfig::Set(config);
+  
+  wxInitAllImageHandlers();
+  wxFileSystem::AddHandler(new wxZipFSHandler);
+  
   int x, y, h, w, m, rs=0, lang = wxLANGUAGE_UNKNOWN;
   bool have_pos;
   have_pos = config->Read(wxT("pos-x"), &x);
