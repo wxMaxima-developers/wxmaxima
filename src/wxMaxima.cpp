@@ -932,7 +932,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxSAVE|wxOVERWRITE_PROMPT);
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
-        if (file.Right(4) != wxT(".html"))
+        if (file.Right(5) != wxT(".html"))
           file = file + wxT(".html");
         if (!m_console->ExportToHTML(file))
           wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
