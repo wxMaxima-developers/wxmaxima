@@ -303,19 +303,26 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   wxStringTokenizer tokens(s, wxT("\n"));
   int count = 0;
   while(tokens.HasMoreTokens()) {
-    wxString line = wxT("<span>") + tokens.GetNextToken() + wxT("</span>");
-    if (tokens.HasMoreTokens()) {
-      if (count == 0)
-        DoConsoleAppend(line, type, newLine, false);
-      else
-        DoConsoleAppend(line, type, true, false);
-    }
-    else {
-      if (count == 0)
-        DoConsoleAppend(line, type, newLine, true);
-      else
-        DoConsoleAppend(line, type, true, true);
-    }
+    TextCell* cell = new TextCell(tokens.GetNextToken());
+    cell->SetSymbol(false);
+    if (type == PROMPTT)
+      cell->SetStyle(TC_PROMPT);
+    else if (type == MPROMPTT)
+      cell->SetStyle(TC_MAIN_PROMPT);
+    else if (type == INPUTT)
+      cell->SetStyle(TC_INPUT);
+    else if (type == ERRORT)
+      cell->SetStyle(TC_ERROR);
+    else
+      cell->SetStyle(TC_VARIABLE);
+    
+    if (tokens.HasMoreTokens())
+      cell->SetSkip(false);
+    
+    if (count == 0)
+      m_console->AddLine(cell, newLine);
+    else
+      m_console->AddLine(cell, true);
     count++;
   }
 }
