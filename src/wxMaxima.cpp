@@ -1949,7 +1949,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
   wxString cmd;
   switch (event.GetId()) {
   case menu_to_float:
-    cmd = wxT("float(") + expr + wxT(");");
+    cmd = wxT("float(") + expr + wxT("), numer;");
     SendMaxima(cmd);
     break;
   case menu_to_bfloat:
