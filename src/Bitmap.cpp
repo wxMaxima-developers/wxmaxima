@@ -199,10 +199,6 @@ bool Bitmap::ToClipboard()
   if (wxTheClipboard->Open()) {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
     wxTheClipboard->Close();
-    if (res)
-      printf("OK");
-    else
-      printf("Cancel");
     return res;
   }
   return false;
