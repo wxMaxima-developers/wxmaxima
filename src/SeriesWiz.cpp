@@ -35,7 +35,7 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                               wxSize(180,-1));
-  label_3 = new wxStaticText(this, -1, _("var:"));
+  label_3 = new wxStaticText(this, -1, _("variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"));
   label_4 = new wxStaticText(this, -1, _("around:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"));
@@ -72,7 +72,7 @@ void SeriesWiz::do_layout()
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 2);
   grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  sizer_2->Add(text_ctrl_3, 0, wxALL, 2);
+  sizer_2->Add(text_ctrl_3, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_2->Add(button_3, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
