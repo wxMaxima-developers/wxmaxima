@@ -446,7 +446,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-/*      else if (tagName == wxT("prompt")) {
+      else if (tagName == wxT("prompt")) {
         int oldPS = m_ParserStyle;
         m_ParserStyle = TC_MAIN_PROMPT;
         MathCell* tmp = ParseTag(node->children);
@@ -466,7 +466,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
           cell = tmp;
         else
           cell->AppendCell(tmp);
-      }*/
+      }
       else if (node->children) {
         if (cell == NULL)
           cell = ParseTag(node->children);
