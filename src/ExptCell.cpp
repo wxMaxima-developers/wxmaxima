@@ -91,8 +91,10 @@ void ExptCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_baseCell->RecalculateSize(parser, fontsize, true);
   m_powCell->RecalculateSize(parser, MAX(8, fontsize-3), true);
-  m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() - SCALE_PX(13, scale);
-  m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() - SCALE_PX(13, scale);
+  m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
+             SCALE_PX((13*fontsize)/10, scale);
+  m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
+             SCALE_PX((13*fontsize)/10, scale);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -108,7 +110,8 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   
     pw.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
-                   + m_powCell->GetMaxCenter() +  SCALE_PX(13, scale);
+                   + m_powCell->GetMaxCenter() +  
+                     SCALE_PX((13*fontsize)/10, scale);
     m_powCell->Draw(parser, pw, MAX(8, fontsize-3), true);
   }
   
