@@ -88,7 +88,6 @@ protected:
   // end wxGlade
   bool m_ok;
   void onOk(wxCommandEvent& event);
-  void onCancel(wxCommandEvent& event);
   void onMpBrowse(wxCommandEvent& event);
   void onChangeStyle(wxCommandEvent& event);
   void onChangeColor(wxCommandEvent& event);

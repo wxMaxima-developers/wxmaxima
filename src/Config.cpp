@@ -122,8 +122,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_styleBold = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_styleItalic = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_styleUnderlined = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  m_buttonOK = new wxButton(this, wxOK, _("Ok"));
-  m_buttonCancel = new wxButton(this, wxCANCEL, _("Cancel"));
+  m_buttonOK = new wxButton(this, wxID_OK, _("OK"));
+  m_buttonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
   
   set_properties();
   do_layout();
@@ -296,11 +296,6 @@ void Config::onOk(wxCommandEvent& event)
   Close();
 }
 
-void Config::onCancel(wxCommandEvent& event)
-{
-  Close();
-}
-
 void Config::onMpBrowse(wxCommandEvent& event)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
@@ -323,11 +318,11 @@ void Config::readStyles()
   config->Read(wxT("Style/fontname"), &font);
   m_fontFamily->SetValue(font);
 
+  // Normal text
   m_styleNormalText.color = wxT("black");
   m_styleNormalText.bold = false;
   m_styleNormalText.italic = false;
   m_styleNormalText.underlined = false;
-  // Normal text
   config->Read(wxT("Style/NormalText/color"),
                &m_styleNormalText.color);
   config->Read(wxT("Style/NormalText/bold"),
@@ -337,10 +332,10 @@ void Config::readStyles()
   config->Read(wxT("Style/NormalText/underlined"),
                &m_styleNormalText.underlined);
   
+  // Hidden group
   m_styleHiddenText.bold = false;
   m_styleHiddenText.italic = true;
   m_styleHiddenText.underlined = true;
-  // Hidden group
   config->Read(wxT("Style/HiddenText/bold"),
                &m_styleHiddenText.bold);
   config->Read(wxT("Style/HiddenText/italic"),
@@ -348,11 +343,11 @@ void Config::readStyles()
   config->Read(wxT("Style/HiddenText/underlined"),
                &m_styleHiddenText.underlined);
   
+  // Main prompt
   m_styleMainPrompt.color = wxT("red");
   m_styleMainPrompt.bold = false;
   m_styleMainPrompt.italic = false;
   m_styleMainPrompt.underlined = false;
-  // Main prompt
   config->Read(wxT("Style/MainPrompt/color"),
                &m_styleMainPrompt.color);
   config->Read(wxT("Style/MainPrompt/bold"),
@@ -362,11 +357,11 @@ void Config::readStyles()
   config->Read(wxT("Style/MainPrompt/underlined"),
                &m_styleMainPrompt.underlined);
 
+  // Other prompt
   m_styleOtherPrompt.color = wxT("red");
   m_styleOtherPrompt.bold = false;
   m_styleOtherPrompt.italic = true;
   m_styleOtherPrompt.underlined = false;
-  // Other prompt
   config->Read(wxT("Style/OtherPrompt/color"),
                &m_styleOtherPrompt.color);
   config->Read(wxT("Style/OtherPrompt/bold"),
@@ -376,11 +371,11 @@ void Config::readStyles()
   config->Read(wxT("Style/OtherPrompt/underlined"),
                &m_styleOtherPrompt.underlined);
   
+  // Labels
   m_styleLabel.color = wxT("brown");
   m_styleLabel.bold = false;
   m_styleLabel.italic = false;
   m_styleLabel.underlined = false;
-  // Labels
   config->Read(wxT("Style/Label/color"),
                &m_styleLabel.color);
   config->Read(wxT("Style/Label/bold"),
@@ -390,11 +385,11 @@ void Config::readStyles()
   config->Read(wxT("Style/Label/underlined"),
                &m_styleLabel.underlined);
   
+  // Special
   m_styleSpecial.color = wxT("black");
   m_styleSpecial.bold = false;
   m_styleSpecial.italic = false;
   m_styleSpecial.underlined = false;
-  // Special
   config->Read(wxT("Style/Special/bold"),
                &m_styleSpecial.bold);
   config->Read(wxT("Style/Special/italic"),
@@ -402,11 +397,11 @@ void Config::readStyles()
   config->Read(wxT("Style/Special/underlined"),
                &m_styleSpecial.underlined);
   
+  // Input
   m_styleInput.color = wxT("blue");
   m_styleInput.bold = false;
   m_styleInput.italic = false;
   m_styleInput.underlined = false;
-  // Input
   config->Read(wxT("Style/Input/color"),
                &m_styleInput.color);
   config->Read(wxT("Style/Input/bold"),
@@ -597,8 +592,7 @@ style* Config::GetStylePointer()
 }
 
 BEGIN_EVENT_TABLE(Config, wxDialog)
-  EVT_BUTTON(wxOK, Config::onOk)
-  EVT_BUTTON(wxCANCEL, Config::onCancel)
+  EVT_BUTTON(wxID_OK, Config::onOk)
   EVT_BUTTON(mp_browse_id, Config::onMpBrowse)
   EVT_COMBOBOX(combobox_colour, Config::onChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::onChangeStyle)
