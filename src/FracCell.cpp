@@ -25,6 +25,7 @@ FracCell::FracCell() : MathCell()
   m_num = NULL;
   m_denom = NULL;
   m_fracStyle = FC_NORMAL;
+  m_exponent = false;
 }
 
 MathCell* FracCell::Copy(bool all)
@@ -33,6 +34,7 @@ MathCell* FracCell::Copy(bool all)
   tmp->SetNum(m_num->Copy(true));
   tmp->SetDenom(m_denom->Copy(true));
   tmp->m_fracStyle = m_fracStyle;
+  tmp->m_exponent = m_exponent;
   if (all && m_nextToDraw!=NULL)
     tmp->AppendCell(m_nextToDraw->Copy(all));
   return tmp;
@@ -82,7 +84,15 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_num->RecalculateWidths(parser, MAX(8, fontsize-2), true);
   m_denom->RecalculateWidths(parser, MAX(8, fontsize-2), true);
-  m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale));
+  if (m_exponent) {
+    wxDC& dc = parser.GetDC();
+    int width, height;
+    dc.GetTextExtent(wxT("/"), &width, &height);
+    m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + width;
+  }
+  else {
+    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale));
+  }
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -91,9 +101,15 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_num->RecalculateSize(parser, MAX(8, fontsize-2), true);
   m_denom->RecalculateSize(parser, MAX(8, fontsize-2), true);
-  m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
-             SCALE_PX(4, scale);
-  m_center = m_num->GetMaxHeight() + SCALE_PX(2, scale);
+  if (!m_exponent) {
+    m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
+               SCALE_PX(4, scale);
+    m_center = m_num->GetMaxHeight() + SCALE_PX(2, scale);
+  }
+  else {
+    m_height = m_num->GetMaxHeight();
+    m_center = m_height/2;
+  }
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -103,19 +119,37 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     wxPoint num, denom;
-    SetPen(parser);
-    if (m_fracStyle != FC_CHOOSE)
-      dc.DrawLine(point.x, point.y, point.x + m_width, point.y);
-    UnsetPen(parser);
+        
+    if (m_exponent) {
+      int width, height;
+      double scale = parser.GetScale();
+      dc.GetTextExtent(wxT("/"), &width, &height);
+      num.x = point.x;
+      num.y = point.y;
+      denom.x = point.x + m_num->GetFullWidth(scale) + width;
+      denom.y = num.y;
       
-    num.x = point.x + (m_width - m_num->GetFullWidth(scale))/2;
-    num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() - 
-            SCALE_PX(2, scale);
-    m_num->Draw(parser, num, MAX(8, fontsize-2), true);
+      dc.GetTextExtent(wxT("/"), &width, &height);
+      m_num->Draw(parser, num, MAX(8, fontsize-2), true);
+      m_denom->Draw(parser, denom, MAX(8, fontsize-2), true);
+      dc.DrawText(wxT("/"),
+                  point.x + m_num->GetFullWidth(scale),
+                  point.y - m_num->GetMaxCenter() + SCALE_PX(2, scale));
+    }
+    else {
+      num.x = point.x + (m_width - m_num->GetFullWidth(scale))/2;
+      num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() - 
+              SCALE_PX(2, scale);
+      m_num->Draw(parser, num, MAX(8, fontsize-2), true);
   
-    denom.x = point.x + (m_width - m_denom->GetFullWidth(scale))/2;
-    denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
-    m_denom->Draw(parser, denom, MAX(8, fontsize-2), true);
+      denom.x = point.x + (m_width - m_denom->GetFullWidth(scale))/2;
+      denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
+      m_denom->Draw(parser, denom, MAX(8, fontsize-2), true);
+      SetPen(parser);
+      if (m_fracStyle != FC_CHOOSE)
+        dc.DrawLine(point.x, point.y, point.x + m_width, point.y);
+      UnsetPen(parser);
+    }
   }
 
   MathCell::Draw(parser, point, fontsize, all);
@@ -171,4 +205,10 @@ void FracCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     *first = this;
     *last = this;
   }
+}
+
+void FracCell::SetExponentFlag()
+{
+  if (m_num->IsShortNum() && m_denom->IsShortNum())
+    m_exponent = true;
 }

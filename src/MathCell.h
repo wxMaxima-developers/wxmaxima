@@ -24,7 +24,7 @@
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 #define ABS(a) ((a)>=0 ? (a) : -(a))
-#define SCALE_PX(px, scale) ((int)(((double)(px))*(scale) + 0.5))
+#define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 #define MC_CELL_SKIP 2
 
 #include <wx/wx.h>
@@ -96,6 +96,8 @@ class MathCell
     wxPoint m_currentPoint;
     bool m_bigSkip;
     bool m_nextToDrawIsNext;
+    virtual void SetExponentFlag() { };
+    virtual bool IsShortNum() { return false; };
   protected:
     int m_height;
     int m_maxHeight;

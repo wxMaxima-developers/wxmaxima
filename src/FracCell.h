@@ -45,9 +45,11 @@ class FracCell : public MathCell
     bool IsOperator() { return true; }
     void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
     wxString ToString(bool all);
+    void SetExponentFlag();
 	protected:
     MathCell *m_num;
     MathCell *m_denom;
+    bool m_exponent;
     int m_fracStyle;
 };
 

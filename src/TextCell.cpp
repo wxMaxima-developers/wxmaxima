@@ -225,3 +225,12 @@ wxString TextCell::GetDiffPart()
 {
   return wxT(",") + m_text + wxT(",1");
 }
+
+bool TextCell::IsShortNum()
+{
+  if (m_next != NULL)
+    return false;
+  else if (m_text.Length() < 4)
+    return true;
+  return false;
+}

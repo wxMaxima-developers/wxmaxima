@@ -40,6 +40,7 @@ class TextCell : public MathCell
     wxString GetDiffPart();
     void SetSymbol(bool symbol);
     bool IsOperator();
+    bool IsShortNum();
   protected:
     wxString m_text;
     bool m_symbol;

@@ -99,7 +99,9 @@ MathCell* MathParser::ParseSupTag(xmlNodePtr node)
     expt->SetBase(ParseTag(child, false));
     child = child->next;
     if (child) {
-      expt->SetPower(ParseTag(child, false));
+      MathCell* power = ParseTag(child, false);
+      power->SetExponentFlag();
+      expt->SetPower(power);
       return expt;
     }
   }
