@@ -71,6 +71,18 @@ dependencies), which can also be found at the web-page. In Dev-CPP create a new
 wxWidgets project, add libxml2 and other required libraries to the project and
 import all the sources of wxMaxima.
 
+** Building from CVS (Linux)
+
+To build wxMaxima from CVS, first checkout the CVS tree. For details see
+
+  http://sourceforge.net/cvs/?group_id=126731
+
+Then build wxMaxima with
+
+  ./bootstrap
+  ./configure
+  make
+  make install
 
 
 CONFIGURATION
