@@ -952,7 +952,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   // Write maxima header
   //
   if (tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
-    output.Write("\n <P>\n");
+    output.Write(wxT("\n <P>\n"));
     while(tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
       output.Write(tmp->ToString(false));
       output.Write(wxT("<BR/>\n"));
