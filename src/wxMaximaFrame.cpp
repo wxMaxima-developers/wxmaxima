@@ -83,9 +83,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_2->Append(menu_clear_screen, _("C&lear screen"),
                              _("Delete the contents of console."),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_inc_fontsize, _("&Increase fontsize\tCtrl-+"),
+  wxglade_tmp_menu_2->Append(menu_inc_fontsize, _("Zoom &in\tAlt-I"),
                              _("Increase fontsize in console"));
-  wxglade_tmp_menu_2->Append(menu_dec_fontsize, _("D&ecrease fontsize\tCtrl--"),
+  wxglade_tmp_menu_2->Append(menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                              _("Decrease fontsize in console"));
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
                              _("Set focus to the input line"),
