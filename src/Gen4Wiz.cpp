@@ -39,8 +39,8 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
   label_5 = new wxStaticText(this, -1, lab4);
   text_ctrl_4 = new BTextCtrl(this, -1, val4);
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

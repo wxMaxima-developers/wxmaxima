@@ -31,8 +31,8 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
   text_ctrl_1 = new TextCtrl(this, -1, wxT(""), wxDefaultPosition,
                              wxDefaultSize,
                              wxTE_PROCESS_TAB|wxTE_PROCESS_ENTER|wxTE_MULTILINE|wxTE_RICH);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

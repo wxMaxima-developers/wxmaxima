@@ -39,8 +39,8 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
   checkbox_2 = new wxCheckBox(this, -1, _("Nusum"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   button_1->SetDefault();
   ok = false;

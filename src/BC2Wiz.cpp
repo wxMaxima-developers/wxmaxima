@@ -44,8 +44,8 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y="), wxDefaultPosition,
                                 wxSize(60,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

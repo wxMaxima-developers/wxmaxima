@@ -39,8 +39,8 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"));
   checkbox_1 = new wxCheckBox(this, -1, _("Power series"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

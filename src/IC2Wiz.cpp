@@ -42,8 +42,8 @@ IC2Wiz::IC2Wiz(wxWindow* parent, int id,
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("'diff(y,x)="), wxDefaultPosition,
                               wxSize(180,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

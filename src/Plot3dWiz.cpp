@@ -95,8 +95,8 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   ok = false;
   type = cartesian;

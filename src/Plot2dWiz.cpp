@@ -90,8 +90,8 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   ok = false;
   type = cartesian;
@@ -417,8 +417,8 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   text_ctrl_5 = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                                wxSize(50,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   ok = false;
   set_properties();

@@ -37,8 +37,8 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
   label_4 = new wxStaticText(this, -1, lab3);
   text_ctrl_3 = new BTextCtrl(this, -1, val3);
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();

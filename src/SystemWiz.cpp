@@ -33,8 +33,8 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
   variables = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
                             wxSize(230,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
 
   set_properties();
   do_layout();
