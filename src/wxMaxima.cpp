@@ -1253,11 +1253,12 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("At point:"),
                                  _("the value is:"), _("the derivative is:"),
                                  expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
-                                 this, -1, _("IC1:"), true);
+                                 this, -1, _("IC2:"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
-        wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
-          wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(");");
+        wxString val = wxT("ic2(") + wiz->GetValue1() + wxT(", ") +
+          wiz->GetValue2() + wxT(", ") + wiz->GetValue3() +
+          wxT(", ") + wiz->GetValue4() + wxT(");");
         SendMaxima(val);
       }
       wiz->Destroy();
