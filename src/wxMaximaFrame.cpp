@@ -37,18 +37,28 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   
   // menus
   frame_1_menubar = new wxMenuBar();
-  SetMenuBar(frame_1_menubar);
+  wxMenuItem *tmp_menu_item;
+
+#if defined __WXGTK20__
+ #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
+  tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
+  tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
+  (menu)->Append(tmp_menu_item);
+#else
+ #define APPEND_MENU_ITEM(menu, is, label, help, stock) \
+  (menu)->Append((id), (label), (help), wxITEM_NORMAL);
+#endif
   
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
-  wxglade_tmp_menu_1->Append(menu_open_id, _("&Open session\tCtrl-O"),
-                             _("Open session from a file"), wxITEM_NORMAL);
-  wxglade_tmp_menu_1->Append(menu_save_id, _("&Save session\tCtrl-S"),
-                             _("Save session to a file"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open session\tCtrl-O"),
+                             _("Open session from a file"), wxT("gtk-open"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save session\tCtrl-S"),
+                   _("Save session to a file"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
                              _("Load a maxima package file"), wxITEM_NORMAL);
-  wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch file\tCtrl-B"),
-                             _("Batch maxima file"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_batch_id, _("&Batch file\tCtrl-B"),
+                   _("Batch maxima file"), wxT("gtk-execute"));
   wxglade_tmp_menu_1->AppendSeparator();
   wxglade_tmp_menu_1->Append(menu_select_file, _("Select &file"),
                              _("Select a file (copy filename to input line)"),
@@ -61,38 +71,36 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxglade_tmp_menu_1->Append(menu_print_setup, _("Print setup"),
                              _("Setup printer"));
 #endif
-  wxglade_tmp_menu_1->Append(menu_print, _("&Print\tCtrl-P"),
-                             _("Print session"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_print, _("&Print\tCtrl-P"),
+                   _("Print session"), wxT("gtk-print"));
   wxglade_tmp_menu_1->AppendSeparator();
-  wxglade_tmp_menu_1->Append(menu_exit_id, _("E&xit\tCtrl-Q"),
-                             _("Exit wxMaxima"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_exit_id, _("E&xit\tCtrl-Q"),
+                   _("Exit wxMaxima"), wxT("gtk-quit"));
   frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
   
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu();
-  wxglade_tmp_menu_2->Append(menu_copy_from_console, _("&Copy"),
-                             _("Copy selection from console"),
-                             wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
+                   _("Copy selection from console"), wxT("gtk-copy"));
   wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
                              _("Copy selection from console (including linebreaks)"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_delete_selection, _("&Delete selection"),
-                             _("Delete selected input/output group"),
-                             wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
+                   _("&Delete selection"), 
+                   _("Delete selected input/output group"), wxT("gtk-delete"));
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_clear_screen, _("C&lear screen"),
-                             _("Delete the contents of console."),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_inc_fontsize, _("Zoom &in\tAlt-I"),
-                             _("Increase fontsize in console"));
-  wxglade_tmp_menu_2->Append(menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
-                             _("Decrease fontsize in console"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
+                   _("Delete the contents of console."), wxT("gtk-clear"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &in\tAlt-I"),
+                   _("Increase fontsize in console"), wxT("gtk-zoom-in"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
+                   _("Decrease fontsize in console"), wxT("gtk-zoom-out"));
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
                              _("Set focus to the input line"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_options_id, _("C&onfigure"),
-                             _("Configure wxMaxima"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_options_id, _("C&onfigure"),
+                   _("Configure wxMaxima"), wxT("gtk-preferences"));
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
   
   // Maxima menu
@@ -356,28 +364,31 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   // Help menu
   wxMenu* wxglade_tmp_menu_7 = new wxMenu();
-  wxglade_tmp_menu_7->Append(menu_help_id, _("Maxima &help\tF1"),
-                             _("Show maxima help"), wxITEM_NORMAL);
-  wxglade_tmp_menu_7->Append(menu_describe, _("&Describe\tCtrl-H"),
-                             _("Show the description of a command"),
-                             wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_help_id, _("Maxima &help\tF1"),
+                   _("Show maxima help"), wxT("gtk-help"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_describe, _("&Describe\tCtrl-H"),
+                   _("Show the description of a command"),wxT("gtk-help"));
   wxglade_tmp_menu_7->Append(menu_example, _("&Example"),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_apropos, _("&Apropos"),
                              _("Show commands similar to"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_7->Append(menu_show_tip, _("Show &tip"),
-                             _("Show a tip"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_show_tip, _("Show &tip"),
+                   _("Show a tip"), wxART_TIP);
   wxglade_tmp_menu_7->AppendSeparator();
   wxglade_tmp_menu_7->Append(menu_build_info, _("Build &info"),
                              _("Info about maxima build"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug report"),
                              _("Report bug"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->AppendSeparator();
-  wxglade_tmp_menu_7->Append(menu_about_id, _("About"),
-                             _("About wxMaxima"), wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_about_id, _("About"),
+                   _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
+  
+  SetMenuBar(frame_1_menubar);
+
+#undef APPEND_MENU_ITEM
 
   // input line
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
