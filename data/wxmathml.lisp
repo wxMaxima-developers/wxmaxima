@@ -103,7 +103,9 @@
   (or (symbolp sym) 
       (return-from wxxml-stripdollar sym))
   (let* ((pname (string-left-trim '(#\$) (symbol-name sym)))
-         (pname (string-substitute "&amp;" #\& pname)))
+         (pname (string-substitute "&amp;" #\& pname))
+         (pname (string-substitute "&gt;" #\> pname))
+         (pname (string-substitute "&lt;" #\< pname)))
     (strcat "<mn>" pname "</mn> ")))
 
 (defun wxxml-paren (x l r)

@@ -99,11 +99,13 @@
                    "</mn></msup> </mrow> ")
                   ))))))
 
-(defun wxxml-stripdollar (sym)
+(defun wxxml-stripdollar(sym)
   (or (symbolp sym) 
       (return-from wxxml-stripdollar sym))
-  (let* ((pname (print-invert-case (wxxml-stripdollar1 sym)))
-         (pname (string-substitute "&amp;" #\& pname)))
+  (let* ((pname (string-left-trim '(#\$) (symbol-name sym)))
+         (pname (string-substitute "&amp;" #\& pname))
+         (pname (string-substitute "&gt;" #\> pname))
+         (pname (string-substitute "&lt;" #\< pname)))
     (strcat "<mn>" pname "</mn> ")))
 
 (defun wxxml-stripdollar1 (x)
