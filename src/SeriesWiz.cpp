@@ -89,23 +89,14 @@ void SeriesWiz::do_layout()
 
 void SeriesWiz::onButton(wxCommandEvent& event)
 {
-  switch (event.GetId()) {
-  case wxID_OK:
-    event.Skip();
-    break;
-  case special_sw:
-    {
-      wxString choices[] = {wxT("Pi"), wxT("E")};
-      wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                          _("Constant"), 2, choices, this);
-      if (choice.Length()) {
-        if (choice == wxT("Pi"))
-          text_ctrl_3->SetValue(wxT("%pi"));
-        else if (choice == wxT("E"))
-          text_ctrl_3->SetValue(wxT("%e"));
-      }
-    }
-    break;
+  wxString choices[] = {wxT("Pi"), wxT("E")};
+  wxString choice = wxGetSingleChoice(_("Select a constant"),
+                                      _("Constant"), 2, choices, this);
+  if (choice.Length()) {
+    if (choice == wxT("Pi"))
+      text_ctrl_3->SetValue(wxT("%pi"));
+    else if (choice == wxT("E"))
+      text_ctrl_3->SetValue(wxT("%e"));
   }
 }
 
@@ -133,6 +124,5 @@ wxString SeriesWiz::getValue()
 }
 
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-  EVT_BUTTON(wxID_OK, SeriesWiz::onButton)
   EVT_BUTTON(special_sw, SeriesWiz::onButton)
 END_EVENT_TABLE()

@@ -43,7 +43,6 @@ public:
   Config(wxWindow* parent, int id, const wxString& title,
          const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return m_ok; }
 private:
   // begin wxGlade: Config::methods
   void set_properties();
@@ -84,7 +83,6 @@ protected:
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput;
   // end wxGlade
-  bool m_ok;
   void onOk(wxCommandEvent& event);
   void onMpBrowse(wxCommandEvent& event);
   void onChangeStyle(wxCommandEvent& event);

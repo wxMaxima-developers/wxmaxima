@@ -44,7 +44,6 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 void Gen4Wiz::do_layout()
@@ -78,14 +77,3 @@ void Gen4Wiz::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   button_1->SetDefault();
 }
-
-void Gen4Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(Gen4Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, Gen4Wiz::onButton)
-END_EVENT_TABLE()

@@ -128,7 +128,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   set_properties();
   do_layout();
   // end wxGlade
-  m_ok = false;
+
 }
 
 
@@ -271,7 +271,6 @@ void Config::do_layout()
 void Config::onOk(wxCommandEvent& event)
 {
   int i=0;
-  m_ok = true;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
   wxString maxima = m_maximaProgram->GetValue();
@@ -293,7 +292,7 @@ void Config::onOk(wxCommandEvent& event)
   config->Flush();
 
   writeStyles();
-  Close();
+  EndModal(wxID_CANCEL);
 }
 
 void Config::onMpBrowse(wxCommandEvent& event)

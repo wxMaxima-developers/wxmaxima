@@ -43,7 +43,6 @@ IC1Wiz::IC1Wiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -83,14 +82,6 @@ void IC1Wiz::do_layout()
   Layout();
 }
 
-
-void IC1Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
 wxString IC1Wiz::getValue() {
   wxString s;
   s += wxT("ic1(");
@@ -103,7 +94,3 @@ wxString IC1Wiz::getValue() {
 
   return s;
 }
-
-BEGIN_EVENT_TABLE(IC1Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, IC1Wiz::onButton)
-END_EVENT_TABLE()

@@ -42,7 +42,6 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 void Gen3Wiz::do_layout()
@@ -74,14 +73,3 @@ void Gen3Wiz::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
   button_1->SetDefault();
 }
-
-void Gen3Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(Gen3Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, Gen3Wiz::onButton)
-END_EVENT_TABLE()

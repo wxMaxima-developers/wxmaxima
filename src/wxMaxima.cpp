@@ -956,9 +956,7 @@ void wxMaxima::editMenu(wxCommandEvent& event)
     {
       Config *configW = new Config(this,-1, _("Maxima configuration"));
       configW->Centre(wxBOTH);
-      configW->ShowModal();
-      configW->Destroy();
-      if (configW->isOk()) {
+      if (configW->ShowModal() == wxID_OK) {
         wxConfigBase* config = wxConfig::Get();
         bool match = true;
         config->Read(wxT("matchParens"), &match);
@@ -966,6 +964,7 @@ void wxMaxima::editMenu(wxCommandEvent& event)
         m_console->Recalculate(false);
         m_console->Refresh();
       }
+      configW->Destroy();
     }
     break;
   case menu_clear_screen:
@@ -1090,8 +1089,7 @@ void wxMaxima::maximaMenu(wxCommandEvent& event)
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, _("Substitute"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1107,8 +1105,7 @@ void wxMaxima::maximaMenu(wxCommandEvent& event)
       }
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         val.Trim();
         val.Trim(false);
@@ -1144,8 +1141,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       Gen2Wiz *wiz = new Gen2Wiz(_("Solve equation(s):"), _("for variable(s):"),
                                  expr, wxT("x"), this, -1, _("Solve"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("solve([") + wiz->getValue_1() + wxT("], [") +
               wiz->getValue_2() + wxT("]);");
         sendMaxima(cmd);
@@ -1161,8 +1157,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
                                  this, -1, _("Solve ODE"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("ode2(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(", ") + wiz->getValue_3() + wxT(");");
         sendMaxima(val);
@@ -1175,8 +1170,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       IC1Wiz *wiz = new IC1Wiz(this, -1, _("IC1"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1188,8 +1182,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       IC2Wiz *wiz = new IC2Wiz(this, -1, _("IC2"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1201,8 +1194,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       BC2Wiz *wiz = new BC2Wiz(this, -1, _("BC2"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1215,8 +1207,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
                                  _("eliminate variables:"), expr, wxT(""),
                                  this, -1, _("Eliminate"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("eliminate([") + wiz->getValue_1() + wxT("],[")
           + wiz->getValue_2() + wxT("]);");
         sendMaxima(cmd);
@@ -1239,8 +1230,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       }
       SysWiz *wiz = new SysWiz(this, -1, _("Solve algebraic system"), isz);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("algsys") + wiz->getValue();
         sendMaxima(cmd);
       }
@@ -1262,8 +1252,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
       }
       SysWiz *wiz = new SysWiz(this, -1, _("Solve linear system"), isz);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("linsolve") + wiz->getValue();
         sendMaxima(cmd);
       }
@@ -1276,8 +1265,7 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
                                  expr, wxT("y(x)"),
                                  this, -1, _("Solve ODE"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("desolve([") + wiz->getValue_1() + wxT("],[")
           + wiz->getValue_2() + wxT("]);");
         sendMaxima(cmd);
@@ -1286,21 +1274,20 @@ void wxMaxima::equationsMenu(wxCommandEvent& event)
     }
     break;
   case menu_atvalue:
-	    {
-	      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("at point:"),
-                                   _("has value:"), expr, wxT("x=0"), wxT("0"),
-	                                 this, -1, _("Atvalue"));
-	      wiz->setValue(expr);
-	      wiz->Centre(wxBOTH);
-	      wiz->ShowModal();
-	      if (wiz->isOk()) {
-	        wxString val = wxT("atvalue(") + wiz->getValue_1() + wxT(", ")
-	          + wiz->getValue_2() +
-	          wxT(", ") + wiz->getValue_3() + wxT(");");
-	        sendMaxima(val);
-	      }
-	      wiz->Destroy();
-	    }
+    {
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("at point:"),
+                                 _("has value:"), expr, wxT("x=0"), wxT("0"),
+                                 this, -1, _("Atvalue"));
+      wiz->setValue(expr);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wxT("atvalue(") + wiz->getValue_1() + wxT(", ")
+                       + wiz->getValue_2() +
+        wxT(", ") + wiz->getValue_3() + wxT(");");
+        sendMaxima(val);
+      }
+      wiz->Destroy();
+    }
     break;
   default:
     break;
@@ -1343,8 +1330,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  wxT(""), expr,
                                  this, -1, _("Matrix map"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("matrixmap(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1356,8 +1342,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
     {
       MatDim *wiz = new MatDim(this, -1, _("Matrix"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         if (expr.Length() && expr != wxT("%"))
           cmd = expr;
         long w, h;
@@ -1374,8 +1359,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
         MatWiz *mwiz = new MatWiz(this, -1, _("Enter matrix"),
                                   type, w, h);
         mwiz->Centre(wxBOTH);
-        mwiz->ShowModal();
-        if (mwiz->isOk()) {
+        if (mwiz->ShowModal() == wxID_OK) {
           cmd += mwiz->getValue();
           sendMaxima(cmd);
         }
@@ -1390,8 +1374,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  expr, wxT("x"),
                                  this, -1, _("Char poly"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("charpoly(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT("), expand;");
         sendMaxima(cmd);
@@ -1406,8 +1389,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  this, -1, _("Generate Matrix"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("genmatrix(") + wiz->getValue_1() +
           wxT(", ") + wiz->getValue_2() +
           wxT(", ") + wiz->getValue_3() + wxT(");");
@@ -1423,8 +1405,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  wxT(""), expr,
                                  this, -1, _("Map"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("map(") + wiz->getValue_1() + wxT(", ") + wiz->getValue_2() +
               wxT(");");
         sendMaxima(cmd);
@@ -1439,8 +1420,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  expr, wxT("k"), wxT("1"), wxT("10"),
                                  this, -1, _("Make list"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("makelist(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(", ") +
           wiz->getValue_3() + wxT(", ") +
@@ -1456,8 +1436,7 @@ void wxMaxima::algebraMenu(wxCommandEvent& event)
                                  wxT("\"+\""), expr,
                                  this, -1, _("Apply"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("apply(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1606,8 +1585,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  this, -1, _("Pade approximation"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("pade(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(", ") + wiz->getValue_3() + wxT(");");
         sendMaxima(val);
@@ -1625,8 +1603,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  wxT(""), wxT(""),
                                  this, -1, _("LCM"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("lcm(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1640,8 +1617,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  wxT(""), wxT(""),
                                  this, -1, _("GCD"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("gcd(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1655,8 +1631,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  expr, wxT(""),
                                  this, -1, _("Divide"), true);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("divide(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1670,8 +1645,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  expr, wxT("n"),
                                  this, -1, _("Partial fractions"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("partfrac(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1685,8 +1659,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  expr, wxT("x"),
                                  this, -1, _("Integrate (risch)"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("risch(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1700,8 +1673,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
       IntegrateWiz *wiz = new IntegrateWiz(this, -1, _("Integrate"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1715,8 +1687,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  this, -1, _("Laplace"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("laplace(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() +
           wxT(", ") + wiz->getValue_3() + wxT(");");
@@ -1732,8 +1703,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  this, -1, _("Inverse Laplace"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("ilt(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(", ") + wiz->getValue_3() + wxT(");");
         sendMaxima(val);
@@ -1749,8 +1719,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  this, -1, _("Differentiate"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wxT("diff(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2();
         if (wiz->getValue_3()!=wxT("1"))
@@ -1767,8 +1736,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
       SeriesWiz *wiz = new SeriesWiz(this, -1, _("Series"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1781,8 +1749,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
       LimitWiz *wiz = new LimitWiz(this, -1, _("Limit"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1795,8 +1762,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
       SumWiz *wiz = new SumWiz(this, -1, _("Sum"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1809,8 +1775,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  expr, wxT("n"),
                                  this, -1, _("Unsum"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("unsum(") + wiz->getValue_1() + wxT(", ")
           + wiz->getValue_2() + wxT(");");
         sendMaxima(cmd);
@@ -1825,8 +1790,7 @@ void wxMaxima::calculusMenu(wxCommandEvent& event)
                                  _("to:"), expr, wxT("k"), wxT("1"), wxT("n"),
                                  this, -1, _("Product"));
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         cmd = wxT("product(") + wiz->getValue_1() + wxT(", ") +
           wiz->getValue_2() + wxT(", ") +
           wiz->getValue_3() + wxT(", ") +
@@ -1853,8 +1817,7 @@ void wxMaxima::plottingMenu(wxCommandEvent& event)
       Plot3DWiz *wiz = new Plot3DWiz(this, -1, _("Plot 3D"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }
@@ -1867,8 +1830,7 @@ void wxMaxima::plottingMenu(wxCommandEvent& event)
       Plot2DWiz *wiz = new Plot2DWiz(this, -1, _("Plot 2D"));
       wiz->setValue(expr);
       wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
+      if (wiz->ShowModal() == wxID_OK) {
         wxString val = wiz->getValue();
         sendMaxima(val);
       }

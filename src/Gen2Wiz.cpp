@@ -46,7 +46,6 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -78,14 +77,3 @@ void Gen2Wiz::do_layout()
   grid_sizer_1->SetSizeHints(this);
   Layout();
 }
-
-void Gen2Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(Gen2Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, Gen2Wiz::onButton)
-END_EVENT_TABLE()

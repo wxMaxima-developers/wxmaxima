@@ -35,12 +35,9 @@ public:
           const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize,
           long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   wxString getValue_1() { return text_ctrl_1->GetValue(); }
   wxString getValue_2() { return text_ctrl_2->GetValue(); }
-  void onButton(wxCommandEvent& event);
 private:
-  bool ok;
   bool equal;
   void set_properties();
   void do_layout();
@@ -53,7 +50,6 @@ protected:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  DECLARE_EVENT_TABLE()
 };
 
 

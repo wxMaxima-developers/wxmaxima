@@ -44,7 +44,6 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -153,15 +152,10 @@ void IntegrateWiz::onButton(wxCommandEvent& event) {
       }
     }
     break;
-  case wxID_OK:
-    ok = true;
-    event.Skip();
-    break;
   }
 }
 
 BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
   EVT_BUTTON(special_from, IntegrateWiz::onButton)
   EVT_BUTTON(special_to, IntegrateWiz::onButton)
-  EVT_BUTTON(wxID_OK, IntegrateWiz::onButton)
 END_EVENT_TABLE()

@@ -39,8 +39,6 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-
-  ok = false;
 }
 
 void MatWiz::set_properties()
@@ -130,18 +128,6 @@ wxString MatWiz::getValue()
   return cmd;
 }
 
-void MatWiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  Close();
-}
-
-BEGIN_EVENT_TABLE(MatWiz, wxDialog)
-  EVT_BUTTON(wxID_OK, MatWiz::onButton)
-END_EVENT_TABLE()
-
-
 MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
   wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
@@ -170,7 +156,6 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
   
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -206,13 +191,6 @@ void MatDim::do_layout()
   Layout();
 }
 
-void MatDim::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
 int MatDim::getMatrixType()
 {
   int type = combo_box_1->GetSelection();
@@ -224,7 +202,3 @@ int MatDim::getMatrixType()
     return MATRIX_SYMETRIC;
   return MATRIX_ANTISYMETRIC;
 }
-
-BEGIN_EVENT_TABLE(MatDim, wxDialog)
-  EVT_BUTTON(wxID_OK, MatDim::onButton)
-END_EVENT_TABLE()

@@ -32,15 +32,12 @@ public:
                 const wxPoint& pos=wxDefaultPosition,
                 const wxSize& size=wxDefaultSize,
                 long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   wxString getValue();
   void setValue(wxString s) { text_ctrl_3->SetValue(s); }
 private:
   void set_properties();
   void do_layout();
-  void onButton(wxCommandEvent& event);
 protected:
-  bool ok;
   wxStaticText* label_1;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
@@ -52,7 +49,6 @@ protected:
   wxButton* button_1;
   wxButton* button_2;
   wxCheckBox* checkbox_1;
-  DECLARE_EVENT_TABLE()
 };
 
 

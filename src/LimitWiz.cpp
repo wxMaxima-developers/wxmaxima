@@ -52,7 +52,6 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -115,33 +114,22 @@ wxString LimitWiz::getValue()
 
 void LimitWiz::onButton(wxCommandEvent& event)
 {
-  switch (event.GetId()) {
-  case special:
-    {
-      wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
-                            wxT("- Infinity")};
-      wxString choice = wxGetSingleChoice(_("Select a constant"),
-                                          _("Constant"), 4, choices, this);
-      if (choice.Length()) {
-        if (choice == wxT("Pi"))
-          text_ctrl_3->SetValue(wxT("%pi"));
-        else if (choice == wxT("E"))
-          text_ctrl_3->SetValue(wxT("%e"));
-        else if (choice == wxT("Infinity"))
-          text_ctrl_3->SetValue(wxT("inf"));
-        else if (choice == wxT("- Infinity"))
-          text_ctrl_3->SetValue(wxT("minf"));
-      }
-    }
-    break;
-  case wxID_OK:
-    ok = true;
-    event.Skip();
-    break;
+  wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
+                        wxT("- Infinity")};
+  wxString choice = wxGetSingleChoice(_("Select a constant"),
+                                      _("Constant"), 4, choices, this);
+  if (choice.Length()) {
+    if (choice == wxT("Pi"))
+      text_ctrl_3->SetValue(wxT("%pi"));
+    else if (choice == wxT("E"))
+      text_ctrl_3->SetValue(wxT("%e"));
+    else if (choice == wxT("Infinity"))
+      text_ctrl_3->SetValue(wxT("inf"));
+    else if (choice == wxT("- Infinity"))
+      text_ctrl_3->SetValue(wxT("minf"));
   }
 }
 
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
   EVT_BUTTON(special, LimitWiz::onButton)
-  EVT_BUTTON(wxID_OK, LimitWiz::onButton)
 END_EVENT_TABLE()

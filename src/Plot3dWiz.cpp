@@ -98,7 +98,6 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
 
-  ok = false;
   type = cartesian;
 
   set_properties();
@@ -370,14 +369,6 @@ wxString Plot3DWiz::getValue()
   return s;
 }
 
-void Plot3DWiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK) {
-    ok = true;
-  }
-  event.Skip();
-}
-
 void Plot3DWiz::onCombobox(wxCommandEvent &event)
 {
   wxString selection = combo_box_2->GetStringSelection();
@@ -416,6 +407,5 @@ void Plot3DWiz::onFileBrowse(wxCommandEvent& event)
 
 BEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
   EVT_COMBOBOX(combobox, Plot3DWiz::onCombobox)
-  EVT_BUTTON(wxID_OK, Plot3DWiz::onButton)
   EVT_BUTTON(file_browse_3d, Plot3DWiz::onFileBrowse)
 END_EVENT_TABLE()

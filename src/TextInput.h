@@ -31,20 +31,16 @@ class TextInput: public wxDialog {
             const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize,
             long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   wxString getValue();
   void setValue(wxString s);
  private:
   void set_properties();
   void do_layout();
-  void onButton(wxCommandEvent& event);
  protected:
   TextCtrl* text_ctrl_1;
   wxButton* button_1;
   wxButton* button_2;
-  bool ok;
   bool setFont;
-  DECLARE_EVENT_TABLE()
 };
 
 #endif	//_TEXTINPUT_H_

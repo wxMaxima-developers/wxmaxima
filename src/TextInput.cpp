@@ -37,14 +37,6 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
   set_properties();
   do_layout();
   text_ctrl_1->SetFocus();
-  ok = false;
-}
-
-void TextInput::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
 }
 
 wxString TextInput::getValue()
@@ -89,7 +81,3 @@ void TextInput::do_layout()
   grid_sizer_1->AddGrowableCol(0);
   Layout();
 }
-
-BEGIN_EVENT_TABLE(TextInput, wxDialog)
-  EVT_BUTTON(wxID_OK, TextInput::onButton)
-END_EVENT_TABLE()

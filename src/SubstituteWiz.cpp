@@ -42,8 +42,6 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
   button_1 = new wxButton(this, wxID_OK, _("OK"));
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   
-  ok = false;
-
   set_properties();
   do_layout();
 }
@@ -85,14 +83,6 @@ void SubstituteWiz::do_layout()
   Layout();
 }
 
-void SubstituteWiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK) {
-    ok = true;
-  }
-  Close();
-}
-
 wxString SubstituteWiz::getValue()
 {
   wxString val;
@@ -108,7 +98,3 @@ wxString SubstituteWiz::getValue()
   val.Append(wxT(");"));
   return val;
 }
-
-BEGIN_EVENT_TABLE(SubstituteWiz, wxDialog)
-  EVT_BUTTON(wxID_OK, SubstituteWiz::onButton)
-END_EVENT_TABLE()

@@ -36,12 +36,10 @@ public:
   LimitWiz(wxWindow* parent, int id, const wxString& title,
            const wxPoint& pos=wxDefaultPosition,
            const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   void setValue(wxString s) { text_ctrl_1->SetValue(s); }
   void onButton(wxCommandEvent& event);
   wxString getValue();
 private:
-  bool ok;
   void set_properties();
   void do_layout();
 protected:

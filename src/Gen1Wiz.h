@@ -31,12 +31,9 @@ public:
   Gen1Wiz(wxWindow* parent, int id, const wxString& title,
           const wxString& label, const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   wxString getValue() { return text_ctrl_1->GetValue(); }
   void setValue(wxString v) { text_ctrl_1->SetValue(v); }
-  void onButton(wxCommandEvent& event);
 private:
-  bool ok;
   bool equal;
   void set_properties();
   void do_layout();
@@ -46,7 +43,6 @@ private:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  DECLARE_EVENT_TABLE()
 };
 
 wxString GetTextFromUser(wxString label, wxString title, wxString value,

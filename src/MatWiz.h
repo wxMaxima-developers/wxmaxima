@@ -42,11 +42,9 @@ public:
   MatWiz(wxWindow* parent, int id, const wxString& title, int type,
          int heigth, int width, const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   void onButton(wxCommandEvent& event);
   wxString getValue();
 private:
-  bool ok;
   void set_properties();
   void do_layout();
   int width, height;
@@ -56,7 +54,6 @@ private:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  DECLARE_EVENT_TABLE()
 };
 
 class MatDim: public wxDialog {
@@ -65,13 +62,11 @@ public:
          const wxPoint& pos=wxDefaultPosition,
          const wxSize& size=wxDefaultSize,
          long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   wxString getValue_1() { return text_ctrl_1->GetValue(); }
   wxString getValue_2() { return text_ctrl_2->GetValue(); }
   int getMatrixType();
   void onButton(wxCommandEvent& event);
 private:
-  bool ok;
   void set_properties();
   void do_layout();
 protected:
@@ -85,7 +80,6 @@ protected:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  DECLARE_EVENT_TABLE()
 };
 
 

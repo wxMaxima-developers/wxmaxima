@@ -93,7 +93,6 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
 
-  ok = false;
   type = cartesian;
 
   set_properties();
@@ -336,24 +335,14 @@ wxString Plot2DWiz::getValue()
 
 void Plot2DWiz::onButton(wxCommandEvent& event)
 {
-  switch(event.GetId()) {
-  case wxID_OK:
-    ok = true;
-    event.Skip();
-    break;
-  case parametric:
-    {
-      Plot2dPar *wiz = new Plot2dPar(this, -1, _("Plot 2D"));
-      wiz->Centre(wxBOTH);
-      wiz->ShowModal();
-      if (wiz->isOk()) {
-        if (text_ctrl_1->GetValue()==wxT("%"))
-          text_ctrl_1->SetValue(wxT(""));
-        if (((text_ctrl_1->GetValue()).Strip()).Length())
-          text_ctrl_1->AppendText(wxT(", "));
-        text_ctrl_1->AppendText(wiz->getValue());
-      }
-    }
+  Plot2dPar *wiz = new Plot2dPar(this, -1, _("Plot 2D"));
+  wiz->Centre(wxBOTH);
+  if (wiz->ShowModal() == wxID_OK) {
+    if (text_ctrl_1->GetValue()==wxT("%"))
+      text_ctrl_1->SetValue(wxT(""));
+    if (((text_ctrl_1->GetValue()).Strip()).Length())
+      text_ctrl_1->AppendText(wxT(", "));
+    text_ctrl_1->AppendText(wiz->getValue());
   }
 }
 
@@ -387,7 +376,6 @@ void Plot2DWiz::onFileBrowse(wxCommandEvent& event)
 
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
   EVT_COMBOBOX(combobox, Plot2DWiz::onCombobox)
-  EVT_BUTTON(wxID_OK, Plot2DWiz::onButton)
   EVT_BUTTON(parametric, Plot2DWiz::onButton)
   EVT_BUTTON(file_browse_2d, Plot2DWiz::onFileBrowse)
 END_EVENT_TABLE()
@@ -420,7 +408,6 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_1 = new wxButton(this, wxID_OK, _("OK"));
 
-  ok = false;
   set_properties();
   do_layout();
 }
@@ -482,14 +469,3 @@ wxString Plot2dPar::getValue()
 
   return s;
 }
-
-void Plot2dPar::onButton(wxCommandEvent& event)
-{
-  if (event.GetId()==wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(Plot2dPar, wxDialog)
-  EVT_BUTTON(wxID_OK, Plot2dPar::onButton)
-END_EVENT_TABLE()

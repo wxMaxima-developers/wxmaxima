@@ -117,7 +117,3 @@ wxString BC2Wiz::getValue() {
 
   return s;
 }
-
-BEGIN_EVENT_TABLE(BC2Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, BC2Wiz::onButton)
-END_EVENT_TABLE()

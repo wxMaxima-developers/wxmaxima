@@ -34,17 +34,14 @@ public:
             const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize,
             long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   void setValue(wxString s);
   void parse(wxString s);
-  void onButton(wxCommandEvent& event);
   void onCombobox(wxCommandEvent& event);
   void onFileBrowse(wxCommandEvent& event);
   wxString getValue();
 private:
   void set_properties();
   void do_layout();
-  bool ok;
 protected:
   int type;
   wxStaticText* label_1;

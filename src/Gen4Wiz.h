@@ -34,15 +34,12 @@ public:
           const wxPoint& pos=wxDefaultPosition,
           const wxSize& size=wxDefaultSize,
           long style=wxDEFAULT_DIALOG_STYLE);
-  bool isOk() { return ok; }
   void setValue(wxString s) { text_ctrl_1->SetValue(s); }
-  void onButton(wxCommandEvent& event);
   wxString getValue_1() { return text_ctrl_1->GetValue(); };
   wxString getValue_2() { return text_ctrl_2->GetValue(); };
   wxString getValue_3() { return text_ctrl_3->GetValue(); };
   wxString getValue_4() { return text_ctrl_4->GetValue(); };
 private:
-  bool ok;
   void set_properties();
   void do_layout();
 protected:
@@ -58,7 +55,6 @@ protected:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
-  DECLARE_EVENT_TABLE()
 };
 
 #endif // DIFFWIZ_H

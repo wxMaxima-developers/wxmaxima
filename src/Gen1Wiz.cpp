@@ -35,7 +35,6 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  ok = false;
 }
 
 
@@ -64,17 +63,6 @@ void Gen1Wiz::do_layout()
   Layout();
 }
 
-void Gen1Wiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(Gen1Wiz, wxDialog)
-  EVT_BUTTON(wxID_OK, Gen1Wiz::onButton)
-END_EVENT_TABLE()
-
 wxString GetTextFromUser(wxString label, wxString title, wxString value,
                          wxWindow* parent)
 {
@@ -82,8 +70,7 @@ wxString GetTextFromUser(wxString label, wxString title, wxString value,
   wiz->setValue(value);
   wxString val;
   wiz->Centre(wxBOTH);
-  wiz->ShowModal();
-  if (wiz->isOk()) {
+  if (wiz->ShowModal() == wxID_OK) {
     val = wiz->getValue();
     val.Trim();
     val.Trim(false);

@@ -38,8 +38,6 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
 
   set_properties();
   do_layout();
-
-  ok = false;
 }
 
 void SysWiz::set_properties()
@@ -87,14 +85,3 @@ wxString SysWiz::getValue()
   cmd += wxT("], [") + variables->GetValue() + wxT("]);");
   return cmd;
 }
-
-void SysWiz::onButton(wxCommandEvent& event)
-{
-  if (event.GetId() == wxID_OK)
-    ok = true;
-  event.Skip();
-}
-
-BEGIN_EVENT_TABLE(SysWiz, wxDialog)
-  EVT_BUTTON(wxID_OK, SysWiz::onButton)
-END_EVENT_TABLE()
