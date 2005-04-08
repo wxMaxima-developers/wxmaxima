@@ -23,6 +23,7 @@
 
 #include <wx/wx.h>
 #include <wx/statline.h>
+#include <wx/spinctrl.h>
 
 #include "BTextCtrl.h"
 
@@ -49,7 +50,7 @@ protected:
   BTextCtrl* text_ctrl_3;
   wxButton* button_3;
   wxStaticText* label_5;
-  BTextCtrl* text_ctrl_4;
+  wxSpinCtrl* spin_ctrl_1;
   wxCheckBox* checkbox_1;
   wxStaticLine* static_line_1;
   wxButton* button_1;

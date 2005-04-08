@@ -43,8 +43,7 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
                               wxSize(110,-1));
   button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("depth:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("8"), wxDefaultPosition,
-                              wxSize(110,-1));
+  spin_ctrl_1 = new wxSpinCtrl(this, -1, wxT("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   checkbox_1 = new wxCheckBox(this, powerseries_id, _("Power series"));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -79,7 +78,7 @@ void SeriesWiz::do_layout()
   sizer_2->Add(button_3, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_4, 0, wxALL, 2);
+  grid_sizer_2->Add(spin_ctrl_1, 0, wxALL, 2);
   grid_sizer_2->Add(20, 20, 0, 0, 0);
   grid_sizer_2->Add(checkbox_1, 0, 0, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
@@ -121,7 +120,7 @@ wxString SeriesWiz::GetValue()
   s += text_ctrl_3->GetValue();
   if (!checkbox_1->IsChecked()) {
     s += wxT(", ");
-    s += text_ctrl_4->GetValue();
+    s += spin_ctrl_1->GetValue();
     s += wxT(");");
   }
   else
@@ -132,7 +131,7 @@ wxString SeriesWiz::GetValue()
 
 void SeriesWiz::OnCheckbox(wxCommandEvent& event)
 {
-  text_ctrl_4->Enable(!checkbox_1->GetValue());
+  spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }
 
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
