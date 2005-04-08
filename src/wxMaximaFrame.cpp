@@ -26,11 +26,11 @@
 #include <wx/config.h>
 
 #ifndef __WXMSW__
-#include "maximaicon.xpm"
+#include "../art/maximaicon.xpm"
 #endif
 
-#include "ok.xpm"
-#include "multiline.xpm"
+#include "../art/ok.xpm"
+#include "../art/multiline.xpm"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
@@ -39,7 +39,135 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 {
   panel = new wxPanel(this, -1);
   
-  // menus
+  // input line
+  label_1 = new wxStaticText(panel, -1, _("INPUT:"));
+  m_inputLine = new CommandLine(panel, input_line_id, wxT(""),
+                                wxDefaultPosition, wxDefaultSize,
+                                wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|
+                                wxTE_RICH);
+  button_0 = new wxBitmapButton(panel, button_enter,
+                                wxBitmap(ok_xpm));
+  button_1 = new wxBitmapButton(panel, button_long_input,
+                                wxBitmap(multiline_xpm));
+  
+  // buttons
+  button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
+  button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
+  button_4 = new wxButton(panel, button_factor, _("Factor"));
+  button_5 = new wxButton(panel, button_expand, _("Expand"));
+  button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
+  button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
+  button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
+  button_9 = new wxButton(panel, button_rectform, _("Rectform"));
+  button_10 = new wxButton(panel, button_sum, _("Sum"));
+  button_11 = new wxButton(panel, button_product, _("Product"));
+  button_12 = new wxButton(panel, button_solve, _("Solve"));
+  button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE"));
+  button_14 = new wxButton(panel, button_diff, _("Diff"));
+  button_15 = new wxButton(panel, button_integrate, _("Integrate"));
+  button_16 = new wxButton(panel, button_limit, _("Limit"));
+  button_17 = new wxButton(panel, button_taylor, _("Series"));
+  button_18 = new wxButton(panel, button_subst, _("Substitute"));
+  button_19 = new wxButton(panel, button_map, _("Map"));
+  button_20 = new wxButton(panel, button_plot2, _("Plot 2D"));
+  button_21 = new wxButton(panel, button_plot3, _("Plot 3D"));
+  
+  // console
+  m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
+
+  SetupMenu();
+  SetupToolBar();
+  
+  frame_1_statusbar = CreateStatusBar(2);
+  int widths[] = {-1, 300};
+  SetStatusWidths(2, widths);
+  
+  set_properties();
+  do_layout();
+}
+
+void wxMaximaFrame::set_properties()
+{
+  SetIcon(wxICON(maximaicon));
+  SetTitle(wxString::Format(_("wxMaxima %s"), wxT(WXMAXIMA_VERSION)));
+  bool fixed = true;
+  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
+  if (fixed) {
+  // Set font for input line
+#if defined(__WXGTK12__) && !defined(__WXGTK20__)
+    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+#else
+    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+#endif
+  }
+  
+  m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
+#if wxCHECK_VERSION(2, 5, 0)
+  m_console->SetMinSize(wxSize(100, 100));
+#endif
+
+  button_0->SetToolTip(_("Enter command"));
+  button_1->SetToolTip(_("Multiline input"));
+  frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
+}
+
+void wxMaximaFrame::do_layout()
+{
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxGridSizer* grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
+  wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
+
+  // buttons
+  grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_10, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_11, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_14, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_15, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_16, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_17, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_18, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
+  grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+   
+  // input line
+  sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
+               wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(m_inputLine, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(button_0, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(button_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->AddGrowableCol(1);
+  
+  // all
+  grid_sizer_1->Add(m_console, 1, wxALL|wxEXPAND, 0);
+  grid_sizer_1->Add(sizer_3, 1, wxALL|wxEXPAND, 0);
+  grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
+  
+  panel->SetAutoLayout(true);
+  panel->SetSizer(grid_sizer_1);
+  grid_sizer_1->Fit(panel);
+  grid_sizer_1->SetSizeHints(panel);
+  grid_sizer_1->AddGrowableRow(0);
+  grid_sizer_1->AddGrowableCol(0);
+
+  sizer_1->Add(panel, 1, wxEXPAND, 0);
+  SetAutoLayout(true);
+  SetSizer(sizer_1);
+  Layout();
+}
+
+void wxMaximaFrame::SetupMenu()
+{
   frame_1_menubar = new wxMenuBar();
 
 #if defined __WXGTK20__
@@ -52,7 +180,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
  #define APPEND_MENU_ITEM(menu, id, label, help, stock) \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 #endif
-  
+
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open session\tCtrl-O"),
@@ -78,12 +206,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Setup printer"));
 #endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_print, _("&Print\tCtrl-P"),
-                   _("Print session"), wxT("gtk-print"));
+                   _("Print document"), wxT("gtk-print"));
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_exit_id, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
   frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
-  
+
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
@@ -92,7 +220,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              _("Copy selection from console (including linebreaks)"),
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
-                   _("&Delete selection"), 
+                   _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
 #if defined __WXMSW__
   wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as &image"),
@@ -119,7 +247,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_options_id, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
-  
+
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
@@ -421,131 +549,93 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_about_id, _("About"),
                    _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
-  
+
   SetMenuBar(frame_1_menubar);
 
 #undef APPEND_MENU_ITEM
 
-  // input line
-  label_1 = new wxStaticText(panel, -1, _("INPUT:"));
-  m_inputLine = new CommandLine(panel, input_line_id, wxT(""),
-                                wxDefaultPosition, wxDefaultSize,
-                                wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|
-                                wxTE_RICH);
-  button_0 = new wxBitmapButton(panel, button_enter,
-                                wxBitmap(ok_xpm));
-  button_1 = new wxBitmapButton(panel, button_long_input,
-                                wxBitmap(multiline_xpm));
-  
-  // buttons
-  button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
-  button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
-  button_4 = new wxButton(panel, button_factor, _("Factor"));
-  button_5 = new wxButton(panel, button_expand, _("Expand"));
-  button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
-  button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
-  button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
-  button_9 = new wxButton(panel, button_rectform, _("Rectform"));
-  button_10 = new wxButton(panel, button_sum, _("Sum"));
-  button_11 = new wxButton(panel, button_product, _("Product"));
-  button_12 = new wxButton(panel, button_solve, _("Solve"));
-  button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE"));
-  button_14 = new wxButton(panel, button_diff, _("Diff"));
-  button_15 = new wxButton(panel, button_integrate, _("Integrate"));
-  button_16 = new wxButton(panel, button_limit, _("Limit"));
-  button_17 = new wxButton(panel, button_taylor, _("Series"));
-  button_18 = new wxButton(panel, button_subst, _("Substitute"));
-  button_19 = new wxButton(panel, button_map, _("Map"));
-  button_20 = new wxButton(panel, button_plot2, _("Plot 2D"));
-  button_21 = new wxButton(panel, button_plot3, _("Plot 3D"));
-  
-  // console
-  m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
-
-  frame_1_statusbar = CreateStatusBar(2);
-  int widths[] = {-1, 300};
-  SetStatusWidths(2, widths);
-  
-  set_properties();
-  do_layout();
 }
 
-void wxMaximaFrame::set_properties()
+#ifndef __WXGTK20__
+
+#include "../art/icons.h"
+
+
+void wxMaximaFrame::SetupToolBar()
 {
-  SetIcon(wxICON(maximaicon));
-  SetTitle(wxString::Format(_("wxMaxima %s"), wxT(WXMAXIMA_VERSION)));
-  bool fixed = true;
-  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
-  if (fixed) {
-  // Set font for input line
-#if defined(__WXGTK12__) && !defined(__WXGTK20__)
-    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+  wxToolBar* frame_1_toolbar = CreateToolBar();
+  
+  frame_1_toolbar->AddTool(tb_open, _("Open"),
+                           wxBitmap(open_xpm), _("Open session"));
+  frame_1_toolbar->AddTool(tb_save, _("Save"),
+                           wxBitmap(save_xpm), _("Save session"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_print, _("Print"),
+                           wxBitmap(print_xpm), _("Print document"));
+  frame_1_toolbar->AddTool(tb_pref, _("Options"),
+                           wxBitmap(pref_xpm), _("Configure wxMaxima"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+                           wxBitmap(copy_xpm), _("Copy selection"));
+  frame_1_toolbar->AddTool(tb_delete, _("Delete"),
+                           wxBitmap(cut_xpm), _("Delete selection"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
+                           wxBitmap(stop_xpm),
+                           _("Interrupt current computation"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_help, _("Help"),
+                           wxBitmap(help_xpm), _("Show maxima help"));
+  
+  frame_1_toolbar->Realize();
+  SetToolBar(frame_1_toolbar);
+}
+
 #else
-    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
-#endif
-  }
-  
-  m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
-#if wxCHECK_VERSION(2, 5, 0)
-  m_console->SetMinSize(wxSize(100, 100));
-#endif
 
-  button_0->SetToolTip(_("Enter command"));
-  button_1->SetToolTip(_("Multiline input"));
-  frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
-}
-
-void wxMaximaFrame::do_layout()
+void wxMaximaFrame::SetupToolBar()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
-  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxGridSizer* grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
-  wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
-
-  // buttons
-  grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_10, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_11, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_14, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_15, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_16, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_17, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_18, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
-   
-  // input line
-  sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
-               wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(m_inputLine, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_0, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->AddGrowableCol(1);
+  wxToolBar* frame_1_toolbar = CreateToolBar();
   
-  // all
-  grid_sizer_1->Add(m_console, 1, wxALL|wxEXPAND, 2);
-  grid_sizer_1->Add(sizer_3, 1, wxALL|wxEXPAND, 0);
-  grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
+  frame_1_toolbar->AddTool(tb_open, _("Open"),
+                           wxArtProvider::GetBitmap(wxT("gtk-open"),
+                                                    wxART_TOOLBAR),
+                           _("Open session"));
+  frame_1_toolbar->AddTool(tb_save, _("Save"),
+                           wxArtProvider::GetBitmap(wxT("gtk-save"),
+                                                    wxART_TOOLBAR),
+                           _("Save session"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_print, _("Print"),
+                           wxArtProvider::GetBitmap(wxT("gtk-print"),
+                                                    wxART_TOOLBAR),
+                           _("Print document"));
+  frame_1_toolbar->AddTool(tb_pref, _("Options"),
+                           wxArtProvider::GetBitmap(wxT("gtk-preferences"),
+                                                    wxART_TOOLBAR),
+                           _("Configure wxMaxima"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+                           wxArtProvider::GetBitmap(wxT("gtk-copy"),
+                                                    wxART_TOOLBAR),
+                           _("Copy selection"));
+  frame_1_toolbar->AddTool(tb_delete, _("Delete"),
+                           wxArtProvider::GetBitmap(wxT("gtk-cut"),
+                                                    wxART_TOOLBAR),
+                           _("Delete selection"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
+                           wxArtProvider::GetBitmap(wxT("gtk-stop"),
+                                                    wxART_TOOLBAR),
+                           _("Interrupt current computation"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_help, _("Help"),
+                           wxArtProvider::GetBitmap(wxT("gtk-help"),
+                                                    wxART_TOOLBAR),
+                           _("Show maxima help"));
   
-  panel->SetAutoLayout(true);
-  panel->SetSizer(grid_sizer_1);
-  grid_sizer_1->Fit(panel);
-  grid_sizer_1->SetSizeHints(panel);
-  grid_sizer_1->AddGrowableRow(0);
-  grid_sizer_1->AddGrowableCol(0);
-
-  sizer_1->Add(panel, 1, wxEXPAND, 0);
-  SetAutoLayout(true);
-  SetSizer(sizer_1);
-  Layout();
+  frame_1_toolbar->Realize();
+  SetToolBar(frame_1_toolbar);
 }
+
+#endif

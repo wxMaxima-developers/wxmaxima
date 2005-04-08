@@ -74,6 +74,7 @@ class wxMaxima : public wxMaximaFrame
   void OnActivate(wxActivateEvent& event);         //
   void OnSetFocus(wxFocusEvent& event);            //
   void UpdateMenus(wxUpdateUIEvent& event);        //
+  void UpdateToolBar(wxUpdateUIEvent& event);      //
   void OnProcessEvent(wxProcessEvent& event);      //
 
   void ServerEvent(wxSocketEvent& event);          // server event: maxima connection

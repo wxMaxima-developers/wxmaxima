@@ -175,7 +175,16 @@ enum {
   menu_export_html,
   menu_selection_to_input,
   menu_change_var,
-  menu_nouns
+  menu_nouns,
+  tb_open,
+  tb_save,
+  tb_copy,
+  tb_delete,
+  tb_print,
+  tb_pref,
+  tb_interrupt,
+  tb_help,
+  tb_batch
 };
 
 class wxMaximaFrame: public wxFrame {
@@ -187,6 +196,8 @@ public:
 private:
   void set_properties();
   void do_layout();
+  void SetupToolBar();
+  void SetupMenu();
 protected:
   wxMenuBar* frame_1_menubar;
   wxPanel *panel;

@@ -724,6 +724,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 {
   switch(event.GetId()) {
     case menu_print:
+    case tb_print:
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
@@ -779,6 +780,21 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(menu_dec_fontsize, true);
   else
     menubar->Enable(menu_dec_fontsize, false);
+}
+
+void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
+{
+  wxToolBar * toolbar = GetToolBar();
+  toolbar->EnableTool(tb_copy, m_console->CanCopy());
+  toolbar->EnableTool(tb_delete, m_console->CanDeleteSelection());
+  if (m_pid > 0)
+    toolbar->EnableTool(tb_interrupt, true);
+  else
+    toolbar->EnableTool(tb_interrupt, false);
+  if (m_console->GetTree()!=NULL && m_supportPrinting)
+    toolbar->EnableTool(tb_print, true);
+  else
+    toolbar->EnableTool(tb_print, false);
 }
 
 wxString wxMaxima::GetDefaultEntry()
@@ -878,6 +894,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   wxString f = wxT("/");
   switch (event.GetId()) {
   case menu_open_id:
+  case tb_open:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
 									                   wxT(""), wxT(""),
@@ -888,10 +905,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
         file.Replace(b,f);
-        SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
+        if (file.Right(4) == wxT(".sav"))
+          SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
+        else
+          SendMaxima(wxT("load(\"") + file + wxT("\")$"));
       }
     }
     break;
+  case tb_save:
   case menu_save_id:
     {
       wxString file = wxFileSelector(_("Save to file"), m_lastPath,
@@ -946,6 +967,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     }
     break;
   case menu_batch_id:
+  case tb_batch:
     {
       wxString file = wxFileSelector(_("Select package to batch"), m_lastPath,
                                      wxT(""), wxT(""),
@@ -995,6 +1017,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 {
   switch (event.GetId()) {
   case menu_options_id:
+  case tb_pref:
     {
       Config *configW = new Config(this,-1, _("Maxima configuration"));
       configW->Centre(wxBOTH);
@@ -1012,6 +1035,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->ClearWindow();
     ConsoleAppend(m_lastPrompt, PROMPTT);
     break;
+  case tb_copy:
   case menu_copy_from_console:
     if (m_console->CanCopy())
       m_console->Copy();
@@ -1045,6 +1069,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_lastPath = wxPathOnly(file);
     }
   }
+  case tb_delete:
   case menu_delete_selection:
     if (m_console->CanDeleteSelection())
       m_console->DeleteSelection();
@@ -1949,7 +1974,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
   wxString cmd;
   switch (event.GetId()) {
   case menu_to_float:
-    cmd = wxT("float(") + expr + wxT("), numer;");
+    cmd = wxT("float(") + expr + wxT(");");
     SendMaxima(cmd);
     break;
   case menu_to_bfloat:
@@ -1993,6 +2018,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
                  _("About wxMaxima"), wxOK|wxICON_INFORMATION);
     break;
   case menu_help_id:
+  case tb_help:
     {
       wxString filename;
 #ifndef __WXMSW__
@@ -2233,6 +2259,15 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
+  EVT_TOOL(tb_open, wxMaxima::FileMenu)
+  EVT_TOOL(tb_batch, wxMaxima::FileMenu)
+  EVT_TOOL(tb_save, wxMaxima::FileMenu)
+  EVT_TOOL(tb_copy, wxMaxima::EditMenu)
+  EVT_TOOL(tb_delete, wxMaxima::EditMenu)
+  EVT_TOOL(tb_print, wxMaxima::PrintMenu)
+  EVT_TOOL(tb_pref, wxMaxima::EditMenu)
+  EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
+  EVT_TOOL(tb_help, wxMaxima::HelpMenu)
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
@@ -2242,6 +2277,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_print, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
 //  EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_ACTIVATE(wxMaxima::OnActivate)
