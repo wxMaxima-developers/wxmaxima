@@ -350,14 +350,14 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_4->Append(menu_transpose, _("&Transpose matrix"),
                              _("Transpose a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->AppendSeparator();
-  wxglade_tmp_menu_4->Append(menu_map_mat, _("Ma&p to matrix"),
-                             _("Map function to a matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_map, _("&Map to list"),
-                             _("Map function to a list"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_make_list, _("Make &list"),
                              _("Make list from expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_apply, _("&Apply"),
+  wxglade_tmp_menu_4->Append(menu_apply, _("&Apply to list"),
                              _("Apply function to a list"), wxITEM_NORMAL);
+  wxglade_tmp_menu_4->Append(menu_map, _("&Map to list"),
+                             _("Map function to a list"), wxITEM_NORMAL);
+  wxglade_tmp_menu_4->Append(menu_map_mat, _("Ma&p to matrix"),
+                             _("Map function to a matrix"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_4, _("&Algebra"));
 
   // Calculus menu
