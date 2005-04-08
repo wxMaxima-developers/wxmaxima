@@ -218,7 +218,6 @@
 (defprop %erf   "<mn>erf</mn> "   wxxmlword)
 (defprop $erf   "<mn>erf</mn> "   wxxmlword)
 (defprop $true  "<mn>true</mn> "  wxxmlword)
-(defprop $T     "<mn>T</mn> "     wxxmlword)
 (defprop $false "<mn>false</mn> " wxxmlword)
 
 (defprop mprogn wxxml-matchfix wxxml)
