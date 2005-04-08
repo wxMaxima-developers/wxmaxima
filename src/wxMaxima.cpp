@@ -890,25 +890,48 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 {
   wxString expr = GetDefaultEntry();
   wxString cmd;
+#if defined __WXMSW__
   wxString b = wxT("\\");
   wxString f = wxT("/");
+#endif
   switch (event.GetId()) {
-  case menu_open_id:
   case tb_open:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
 									                   wxT(""), wxT(""),
                                      _("Maxima session (*.sav)|*.sav|"
                                        "Maxima package (*.mac)|*.mac|"
+                                       "Lisp package (*.lisp)|*.lisp|"
+                                       "Demo file (*.dem)|*.dem|"
                                        "All|*"),
                                      wxOPEN);
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
         file.Replace(b,f);
+#endif
         if (file.Right(4) == wxT(".sav"))
           SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
+        else if (file.Right(4) == wxT(".dem"))
+          SendMaxima(wxT("demo(\"") + file + wxT("\")$"));
         else
           SendMaxima(wxT("load(\"") + file + wxT("\")$"));
+      }
+    }
+    break;
+  case menu_open_id:
+    {
+      wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
+									                   wxT(""), wxT(""),
+                                     _("Maxima session (*.sav)|*.sav|"
+                                       "All|*"),
+                                     wxOPEN);
+      if (file.Length()) {
+        m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
+        file.Replace(b,f);
+#endif
+        SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
       }
     }
     break;
@@ -924,7 +947,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_lastPath = wxPathOnly(file);
         if (wxFileExists(file))
           wxRemoveFile(file);
+#if defined __WXMSW__
         file.Replace(b,f);
+#endif
         wxString cmd(wxT("save(\""));
         cmd.append(file);
         cmd.append(wxT("\", ALL);"));
@@ -958,7 +983,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxOPEN);
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
         file.Replace(b,f);
+#endif
         wxString cmd(wxT("load(\""));
         cmd.append(file);
         cmd.append(wxT("\");"));
@@ -976,7 +1003,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxOPEN);
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
         file.Replace(b,f);
+#endif
         wxString cmd;
         if (file.Right(4) == wxT(".dem") || file.Right(5) == wxT(".demo"))
           cmd.append(wxT("demo(\""));
@@ -999,7 +1028,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxOPEN);
       if (file.Length()) {
         m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
         file.Replace(b,f);
+#endif
         m_inputLine->WriteText(file);
         return;
       }
