@@ -54,7 +54,7 @@ wxmaxima_LDADD = $(RC_OBJ) $(WX_LIBS)
 wxmaxima_DEPENDENCIES = $(RC_OBJ)
 EXTRA_wxmaxima_SOURCES = Resources.rc
 
-EXTRA_DIST = multiline.xpm ok.xpm maximaicon.xpm maximaicon.ico
+EXTRA_DIST = maximaicon.xpm maximaicon.ico
 
 Resources.o :
 	windres --include-dir $(WX_RC_PATH) Resources.rc -o Resources.o
