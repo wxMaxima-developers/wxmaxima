@@ -57,4 +57,4 @@ EXTRA_wxmaxima_SOURCES = Resources.rc
 EXTRA_DIST = maximaicon.xpm maximaicon.ico
 
 Resources.o :
-	windres --include-dir $(WX_RC_PATH) Resources.rc -o Resources.o
+	windres --include-dir $(WX_RC_PATH) --include-dir ../art Resources.rc -o Resources.o
