@@ -120,7 +120,7 @@ wxString SeriesWiz::GetValue()
   s += text_ctrl_3->GetValue();
   if (!checkbox_1->IsChecked()) {
     s += wxT(", ");
-    s += spin_ctrl_1->GetValue();
+    s += wxString::Format(wxT("%d"), spin_ctrl_1->GetValue());
     s += wxT(");");
   }
   else
