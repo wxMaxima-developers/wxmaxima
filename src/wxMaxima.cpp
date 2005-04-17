@@ -419,7 +419,7 @@ void wxMaxima::ReadFirstPrompt()
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
   m_first = false;
-  m_inListMode = false;
+  m_inLispMode = false;
   SetStatusText(_("Ready for user input"), 1);
   m_currentOutput = wxT("");
 }
