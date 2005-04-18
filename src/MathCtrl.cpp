@@ -453,6 +453,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
     if (m_selectionStart->m_next != m_selectionStart->m_nextToDraw) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
       m_selectionStart->m_nextToDrawIsNext = true;
+      m_selectionStart->Hide(false);
       m_selectionStart->ResetData();
     }
     else {
@@ -463,6 +464,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
            break;
       }
       m_selectionStart->m_nextToDrawIsNext = false;
+      m_selectionStart->Hide(true);
       m_selectionStart->ResetData();
     }
     m_selectionStart = NULL;
@@ -484,6 +486,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
     if (m_selectionStart->m_next != m_selectionStart->m_nextToDraw) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
       m_selectionStart->m_nextToDrawIsNext = true;
+      m_selectionStart->Hide(false);
       m_selectionStart->ResetData();
     }
     else {
@@ -494,6 +497,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
            break;
       }
       m_selectionStart->m_nextToDrawIsNext = false;
+      m_selectionStart->Hide(true);
       m_selectionStart->ResetData();
     }
     m_selectionStart = NULL;
@@ -919,6 +923,9 @@ bool MathCtrl::ExportToHTML(wxString file)
   bool boldInput = false;
   bool italicPrompt = false;
   bool boldPrompt = false;
+  bool italicHidden = false;
+  bool boldHidden = false;
+  bool underlinedHidden = false;
   int fontSize = 12;
   wxConfigBase* config = wxConfig::Get();
   
@@ -931,18 +938,20 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/Input/italic"), &italicInput);
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
+  config->Read(wxT("Style/HiddenText/bold"), &boldHidden);
+  config->Read(wxT("Style/HiddenText/italic"), &italicHidden);
+  config->Read(wxT("Style/HiddenText/underlined"), &underlinedHidden);
+  
   
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
   
+  // BODY STYLE
   AddLineToFile(output, wxT("body {"));
   if (font.Length()) {
     AddLineToFile(output, wxT("  font-family: ") +
                           font +
                           wxT(";"));
   }
-//  output.Write(wxT("  font-size: "));
-//  output.Write(wxString::Format(wxT("%d"), fontSize));
-//  output.Write(wxT(";\n"));
   if (colorMain.Length()) {
     AddLineToFile(output, wxT("  color: ") +
                           colorMain +
@@ -950,6 +959,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   }
   AddLineToFile(output, wxT("}"));
   
+  // INPUT STYLE
   AddLineToFile(output, wxT(".input {"));
   if (colorInput.Length()) {
     AddLineToFile(output, wxT("  color: ") +
@@ -958,8 +968,11 @@ bool MathCtrl::ExportToHTML(wxString file)
   }
   if (boldInput)
     AddLineToFile(output, wxT("  font-weight: bold;"));
+  if (italicInput)
+    AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
   
+  // PROMPT STYLE
   AddLineToFile(output, wxT(".prompt {"));
   if (colorPrompt.Length()) {
     AddLineToFile(output, wxT("  color: ") +
@@ -968,8 +981,25 @@ bool MathCtrl::ExportToHTML(wxString file)
   }
   if (boldPrompt)
     AddLineToFile(output, wxT("  font-weight: bold;"));
+  if (italicPrompt)
+    AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
 
+  // HIDDEN STYLE
+  AddLineToFile(output, wxT(".hidden {"));
+  if (colorPrompt.Length()) {
+    AddLineToFile(output, wxT("  color: ") +
+                          colorPrompt +
+                          wxT(";"));
+  }
+  if (boldHidden)
+    AddLineToFile(output, wxT("  font-weight: bold;"));
+  if (italicHidden)
+    AddLineToFile(output, wxT("  font-style: italic;"));
+  if (underlinedHidden)
+    AddLineToFile(output, wxT("  text-decoration: underline;"));
+  AddLineToFile(output, wxT("}"));
+  
   AddLineToFile(output, wxT("  </STYLE>"));
   AddLineToFile(output, wxT(" </HEAD>"));
   AddLineToFile(output, wxT(" <BODY>"));
@@ -999,11 +1029,12 @@ bool MathCtrl::ExportToHTML(wxString file)
     AddLineToFile(output, wxT(" <P>"));
     
     // PROMPT
-    AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-    while(tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
-      AddLineToFile(output, wxT("  ") + tmp->ToString(false));
-      tmp = tmp->m_nextToDraw;
-    }
+    if (tmp->m_nextToDrawIsNext)
+      AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
+    else
+      AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
+    AddLineToFile(output, wxT("  ") + tmp->ToString(false));
+    tmp = tmp->m_nextToDraw;
     AddLineToFile(output, wxT("  </SPAN>"));
     
     // INPUT
