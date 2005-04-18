@@ -99,6 +99,7 @@ class MathCell
     bool m_bigSkip;
     bool m_nextToDrawIsNext;
     virtual void SetExponentFlag() { };
+    virtual void Hide(bool hide) { };
     virtual bool IsShortNum() { return false; };
     void SetHidden(bool hidden) { m_hidden = hidden; }
   protected:

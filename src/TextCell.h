@@ -27,11 +27,12 @@ class TextCell : public MathCell
 {
   public:
     TextCell();
-    TextCell(wxString text) : m_text(text) { m_symbol = false; }
+    TextCell(wxString text) : m_text(text), 
+                              m_textOrig(text)  { m_symbol = false; }
     ~TextCell();
     MathCell* Copy(bool all);
     void Destroy();
-    void SetValue(wxString text) { m_text = text; }
+    void SetValue(wxString text) { m_text = text; m_textOrig = text; }
     void RecalculateSize(CellParser& parser, int fontsize, bool all);
     void RecalculateWidths(CellParser& parser, int fontsize, bool all);
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
@@ -42,8 +43,10 @@ class TextCell : public MathCell
     bool IsOperator();
     void SetSymbol(bool symbol) { m_symbol = symbol; }
     bool IsShortNum();
+    void Hide(bool hide);
   protected:
     wxString m_text;
+    wxString m_textOrig;
     bool m_symbol;
 };
 

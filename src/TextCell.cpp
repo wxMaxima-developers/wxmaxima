@@ -23,6 +23,7 @@
 TextCell::TextCell() : MathCell()
 {
   m_text = wxT("");
+  m_textOrig = wxT("");
   m_symbol = false;
 }
 
@@ -88,6 +89,9 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
   
+  if (m_width == 0)
+    RecalculateWidths(parser, fontsize, false);
+  
   if (DrawThisCell(parser, point) && !m_hidden) {
     SetFont(parser, fontsize);
     SetForeground(parser);
@@ -95,7 +99,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     // This only happend in labels - labels are always on the beginnig
     // of a line so we can add some more text.
     if (!m_nextToDrawIsNext)
-      dc.DrawText(m_text + _T(" << Hidden expression. >>"),
+      dc.DrawText(m_text,
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
     else
@@ -232,4 +236,13 @@ bool TextCell::IsShortNum()
   else if (m_text.Length() < 4)
     return true;
   return false;
+}
+
+void TextCell::Hide(bool hide)
+{
+  m_width = 0;
+  if (hide)
+    m_text = m_text + wxT(" << Hidden expression. >>");
+  else
+    m_text = m_textOrig;
 }
