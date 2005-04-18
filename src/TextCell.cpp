@@ -23,7 +23,6 @@
 TextCell::TextCell() : MathCell()
 {
   m_text = wxT("");
-  m_textOrig = wxT("");
   m_symbol = false;
 }
 
@@ -244,5 +243,5 @@ void TextCell::Hide(bool hide)
   if (hide)
     m_text = m_text + wxT(" << Hidden expression. >>");
   else
-    m_text = m_textOrig;
+    m_text = m_text.Left(m_text.Length() - 25);
 }
