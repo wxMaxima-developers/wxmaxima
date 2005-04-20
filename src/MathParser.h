@@ -34,7 +34,7 @@ class MathParser {
   private:
     MathCell* ParseTag(xmlNodePtr node, bool all = true);
     MathCell* ParseFracTag(xmlNodePtr node);
-    MathCell* ParseText(xmlNodePtr node, bool symbol = false);
+    MathCell* ParseText(xmlNodePtr node, bool symbol = false, bool greek = false);
     MathCell* ParseSupTag(xmlNodePtr node);
     MathCell* ParseSubTag(xmlNodePtr node);
     MathCell* ParseAbsTag(xmlNodePtr node);

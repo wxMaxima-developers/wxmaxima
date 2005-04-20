@@ -27,7 +27,7 @@ class TextCell : public MathCell
 {
   public:
     TextCell();
-    TextCell(wxString text) : m_text(text) { m_symbol = false; }
+    TextCell(wxString text) : m_text(text) { m_symbol = false; m_greek = false; }
     ~TextCell();
     MathCell* Copy(bool all);
     void Destroy();
@@ -41,11 +41,14 @@ class TextCell : public MathCell
     wxString GetDiffPart();
     bool IsOperator();
     void SetSymbol(bool symbol) { m_symbol = symbol; }
+    void SetGreek(bool greek) { m_greek = greek; }
+    wxString GetGreekString();
     bool IsShortNum();
     void Hide(bool hide);
   protected:
     wxString m_text;
     bool m_symbol;
+    bool m_greek;
 };
 
 

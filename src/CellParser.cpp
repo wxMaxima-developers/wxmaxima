@@ -27,6 +27,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_scale = 1.0;
   m_top = -1;
   m_bottom = -1;
+  
   ReadStyle();
 }
 
@@ -35,19 +36,35 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_scale = scale;
   m_top = -1;
   m_bottom = -1;
+  m_haveSymbolFont = false;
+  m_symbolFontAdj = 0;
   ReadStyle();
+}
+
+CellParser::~CellParser()
+{
 }
 
 void CellParser::ReadStyle()
 {
   wxConfigBase* config = wxConfig::Get();
+  
+  // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
   
+  // Symbol font
+  m_haveSymbolFont = false;
+  m_symbolFontAdj = 0;
+  m_symbolFontName = wxEmptyString;
+  config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
+  config->Read(wxT("Style/Symbol/adj"), &m_symbolFontAdj);
+  config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);  
+  
+  // Normal text
   m_styles[0].color = wxT("black");
   m_styles[0].bold = false;
   m_styles[0].italic = false;
   m_styles[0].underlined = false;
-  // Normal text
   config->Read(wxT("Style/NormalText/color"),
                &m_styles[0].color);
   config->Read(wxT("Style/NormalText/bold"),
@@ -57,10 +74,10 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/NormalText/underlined"),
                &m_styles[0].underlined);
   
+  // Hidden groups
   m_styles[1].bold = false;
   m_styles[1].italic = true;
   m_styles[1].underlined = true;
-  // Normal text
   config->Read(wxT("Style/HiddenText/color"),
                &m_styles[1].color);
   config->Read(wxT("Style/HiddenText/bold"),
@@ -70,11 +87,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/HiddenText/underlined"),
                &m_styles[1].underlined);
   
+  // Main prompt
   m_styles[2].color = wxT("red");
   m_styles[2].bold = false;
   m_styles[2].italic = false;
   m_styles[2].underlined = false;
-  // Main prompt
   config->Read(wxT("Style/MainPrompt/color"),
                &m_styles[2].color);
   config->Read(wxT("Style/MainPrompt/bold"),
@@ -84,11 +101,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/MainPrompt/underlined"),
                &m_styles[2].underlined);
 
+  // Other prompt
   m_styles[3].color = wxT("red");
   m_styles[3].bold = false;
   m_styles[3].italic = true;
   m_styles[3].underlined = false;
-  // Other prompt
   config->Read(wxT("Style/OtherPrompt/color"),
                &m_styles[3].color);
   config->Read(wxT("Style/OtherPrompt/bold"),
@@ -98,11 +115,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/OtherPrompt/underlined"),
                &m_styles[3].underlined);
   
+  // Labels
   m_styles[4].color = wxT("brown");
   m_styles[4].bold = false;
   m_styles[4].italic = false;
   m_styles[4].underlined = false;
-  // Labels
   config->Read(wxT("Style/Label/color"),
                &m_styles[4].color);
   config->Read(wxT("Style/Label/bold"),
@@ -112,11 +129,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Label/underlined"),
                &m_styles[4].underlined);
   
+  // Special
   m_styles[5].color = wxT("black");
   m_styles[5].bold = false;
   m_styles[5].italic = false;
   m_styles[5].underlined = false;
-  // Special
   config->Read(wxT("Style/Special/color"),
                &m_styles[5].color);
   config->Read(wxT("Style/Special/bold"),
@@ -126,11 +143,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Special/underlined"),
                &m_styles[5].underlined);
   
+  // Input
   m_styles[6].color = wxT("blue");
   m_styles[6].bold = false;
   m_styles[6].italic = false;
   m_styles[6].underlined = false;
-  // Input
   config->Read(wxT("Style/Input/color"),
                &m_styles[6].color);
   config->Read(wxT("Style/Input/bold"),
@@ -141,10 +158,6 @@ void CellParser::ReadStyle()
                &m_styles[6].underlined);
                
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[0].color, 1, wxSOLID)));
-}
-
-CellParser::~CellParser()
-{
 }
 
 int CellParser::IsBold(int st)

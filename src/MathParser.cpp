@@ -162,7 +162,7 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
   return NULL;
 }
 
-MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol)
+MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol, bool greek)
 {
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
@@ -171,6 +171,7 @@ MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol)
     cell->SetValue(wxString(str));
     cell->SetStyle(m_ParserStyle);
     cell->SetSymbol(symbol);
+    cell->SetGreek(greek);
   }
   return cell;
 }
@@ -428,6 +429,13 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
           cell = ParseText(node->children);
         else
           cell->AppendCell(ParseText(node->children));
+      }
+      else if (tagName == wxT("g")) {
+        MathCell* tmp = ParseText(node->children, false, true);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
       }
       else if (tagName == wxT("ms")) {
         MathCell* tmp = ParseText(node->children, true);

@@ -35,7 +35,9 @@ enum {
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
-  checkbox_header
+  checkbox_header,
+  button_symbol,
+  checkbox_symbol
 };
 
 class Config: public wxDialog {
@@ -81,15 +83,23 @@ protected:
   wxNotebook* notebook_1;
   wxButton* m_buttonOK;
   wxButton* m_buttonCancel;
+  wxStaticText* label_9;
+  wxCheckBox* m_symbolFontOk;
+  wxButton* m_getSymbolFont;
+  wxStaticText* label_10;
+  wxSpinCtrl* m_symbolFontAdj;
+  wxString m_symbolFontName;
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
         m_styleBackground;
   // end wxGlade
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
+  void OnSymbolBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeColor(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
+  void OnCheckSymbol(wxCommandEvent& event);
   void ReadStyles();
   void WriteStyles();
   void SetupFontList();
