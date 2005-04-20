@@ -523,7 +523,7 @@ wxString MathCtrl::GetString()
     s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
-    tmp = tmp->GetNext();
+    tmp = tmp->m_nextToDraw;
   }
   return s;
 }
@@ -547,7 +547,7 @@ bool MathCtrl::Copy(bool lb)
     s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
-    tmp = tmp->GetNext();
+    tmp = tmp->m_nextToDraw;
   }
   
   if (wxTheClipboard->Open()) {
