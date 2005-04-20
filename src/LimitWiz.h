@@ -53,6 +53,7 @@ protected:
   wxButton* button_1;
   wxStaticText* label_5;
   wxComboBox* combo_box_1;
+  wxCheckBox* checkbox_1;
   wxStaticLine* static_line_1;
   wxButton* button_2;
   wxButton* button_3;

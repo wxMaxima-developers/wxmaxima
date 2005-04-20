@@ -47,6 +47,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
   combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
                                wxSize(130, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
+  checkbox_1 = new wxCheckBox(this, -1, _("Use Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
   button_3 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
@@ -71,7 +72,7 @@ void LimitWiz::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 3, 3);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 3, 3);
-  wxFlexGridSizer* sizer_1 = new wxFlexGridSizer(1, 2, 0, 0);
+  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 3);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
@@ -80,10 +81,11 @@ void LimitWiz::do_layout()
   grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   sizer_1->Add(text_ctrl_3, 0, wxALL|wxEXPAND, 2);
   sizer_1->Add(button_1, 0, wxALL, 2);
-  sizer_1->AddGrowableCol(0);
   grid_sizer_2->Add(sizer_1, 1, 0, 0);
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(combo_box_1, 0, wxALL, 2);
+  grid_sizer_2->Add(20, 20, 0, wxALL, 2);
+  grid_sizer_2->Add(checkbox_1, 9, wxALL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
   sizer_2->Add(button_3, 0, wxALL, 2);
@@ -98,7 +100,11 @@ void LimitWiz::do_layout()
 
 wxString LimitWiz::GetValue()
 {
-  wxString s = wxT("limit(");
+  wxString s;
+  if (checkbox_1->GetValue())
+    s = wxT("tlimit(");
+  else
+    s = wxT("limit(");
   s += text_ctrl_1->GetValue();
   s += wxT(", ");
   s += text_ctrl_2->GetValue();
@@ -106,9 +112,9 @@ wxString LimitWiz::GetValue()
   s += text_ctrl_3->GetValue();
   wxString f = combo_box_1->GetValue();
   if (f == wxT("left"))
-    s += wxT(", MINUS");
+    s += wxT(", minus");
   else if (f == wxT("right"))
-    s += wxT(", PLUS");
+    s += wxT(", plus");
   s += wxT(");");
   
   return s;
