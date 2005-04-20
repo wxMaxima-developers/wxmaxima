@@ -1183,8 +1183,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
  #if defined (__WXMSW__)
         dir.Replace(wxT("\\"), wxT("/"));
  #endif
-        cmd = wxT("FILE_SEARCH_MAXIMA : cons(\"") + dir +
-              wxT("/###.{lisp,mac,mc}\", FILE_SEARCH_MAXIMA)$");
+        cmd = wxT("file_search_maxima : cons(sconcat(\"") + dir +
+              wxT("/###.{lisp,mac,mc}\"), file_search_maxima)$");
         SendMaxima(cmd);
       }
     }
