@@ -61,9 +61,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   SetFont(parser, fontsize);
   if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
-    dc.GetTextExtent(wxT("p"), &m_width, &m_height);
+    dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
   else if (m_greek && parser.HaveSymbolFont())
-    dc.GetTextExtent(GetGreekString(), &m_width, &m_height);
+    dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
   else
     dc.GetTextExtent(m_text, &m_width, &m_height);
   m_width = m_width + 2*SCALE_PX(2, scale);
@@ -93,11 +93,11 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetForeground(parser);
     
     if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
-        dc.DrawText(wxT("p"),
+        dc.DrawText(GetGreekString(parser),
                     point.x + SCALE_PX(2, scale),
                     point.y - m_center + SCALE_PX(2, scale));
     else if (m_greek && parser.HaveSymbolFont())
-      dc.DrawText(GetGreekString(),
+      dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
     else
@@ -129,7 +129,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsItalic(TS_NORMAL_TEXT),
                         parser.IsBold(TS_NORMAL_TEXT),
                         parser.IsUnderlined(TS_NORMAL_TEXT),
-                        parser.GetSymbolFontName()));
+                        parser.GetSymbolFontName(),
+                        parser.GetSymbolFontEncoding()));
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -144,7 +145,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsItalic(TS_NORMAL_TEXT),
                         parser.IsBold(TS_NORMAL_TEXT),
                         parser.IsUnderlined(TS_NORMAL_TEXT),
-                        parser.GetSymbolFontName()));
+                        parser.GetSymbolFontName(),
+                        parser.GetSymbolFontEncoding()));
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -269,14 +271,19 @@ void TextCell::Hide(bool hide)
     m_text = m_text.Left(m_text.Length() - 25);
 }
 
-wxString TextCell::GetGreekString()
+wxString TextCell::GetGreekString(CellParser& parser)
+{
+  if (parser.SymbolFontIso())
+    return GetGreekStringIso();
+  return GetGreekStringSym();
+}
+
+wxString TextCell::GetGreekStringSym()
 {
   if (m_text == wxT("gamma"))
     return wxT("G");
   else if (m_text == wxT("zeta"))
     return wxT("z");
-  else if (m_text == wxT("%phi"))
-    return wxT("f");
 
   else if (m_text == wxT("%alpha"))
     return wxT("a");
@@ -308,6 +315,8 @@ wxString TextCell::GetGreekString()
     return wxT("x");
   else if (m_text == wxT("%omicron"))
     return wxT("o");
+  else if (m_text == wxT("%pi"))
+    return wxT("p");
   else if (m_text == wxT("%rho"))
     return wxT("r");
   else if (m_text == wxT("%sigma"))
@@ -372,6 +381,113 @@ wxString TextCell::GetGreekString()
     return wxT("W");
   else if (m_text == wxT("%Pi"))
     return wxT("P");
+
+  return m_text;
+}
+
+wxString TextCell::GetGreekStringIso()
+{
+  if (m_text == wxT("gamma"))
+    return wxString::Format("%c", 195);
+  else if (m_text == wxT("zeta"))
+    return wxString::Format("%c", 230);
+
+  else if (m_text == wxT("%alpha"))
+    return wxString::Format("%c", 225);
+  else if (m_text == wxT("%beta"))
+    return wxString::Format("%c", 226);
+  else if (m_text == wxT("%gamma"))
+    return wxString::Format("%c", 227);
+  else if (m_text == wxT("%delta"))
+    return wxString::Format("%c", 228);
+  else if (m_text == wxT("%epsilon"))
+    return wxString::Format("%c", 229);
+  else if (m_text == wxT("%zeta"))
+    return wxString::Format("%c", 230);
+  else if (m_text == wxT("%eta"))
+    return wxString::Format("%c", 231);
+  else if (m_text == wxT("%theta"))
+    return wxString::Format("%c", 232);
+  else if (m_text == wxT("%iota"))
+    return wxString::Format("%c", 233);
+  else if (m_text == wxT("%kappa"))
+    return wxString::Format("%c", 234);
+  else if (m_text == wxT("%lambda"))
+    return wxString::Format("%c", 235);
+  else if (m_text == wxT("%mu"))
+    return wxString::Format("%c", 236);
+  else if (m_text == wxT("%nu"))
+    return wxString::Format("%c", 237);
+  else if (m_text == wxT("%xi"))
+    return wxString::Format("%c", 238);
+  else if (m_text == wxT("%omicron"))
+    return wxString::Format("%c", 239);
+  else if (m_text == wxT("%rho"))
+    return wxString::Format("%c", 241);
+  else if (m_text == wxT("%pi"))
+    return wxString::Format("%c", 240);
+  else if (m_text == wxT("%sigma"))
+    return wxString::Format("%c", 243);
+  else if (m_text == wxT("%tau"))
+    return wxString::Format("%c", 244);
+  else if (m_text == wxT("%upsilon"))
+    return wxString::Format("%c", 245);
+  else if (m_text == wxT("%phi"))
+    return wxString::Format("%c", 246);
+  else if (m_text == wxT("%chi"))
+    return wxString::Format("%c", 247);
+  else if (m_text == wxT("%psi"))
+    return wxString::Format("%c", 248);
+  else if (m_text == wxT("%omega"))
+    return wxString::Format("%c", 249);
+  else if (m_text == wxT("%Alpha"))
+    return wxString::Format("%c", 193);
+  else if (m_text == wxT("%Beta"))
+    return wxString::Format("%c", 194);
+  else if (m_text == wxT("%Gamma"))
+    return wxString::Format("%c", 195);
+  else if (m_text == wxT("%Delta"))
+    return wxString::Format("%c", 196);
+  else if (m_text == wxT("%Epsilon"))
+    return wxString::Format("%c", 197);
+  else if (m_text == wxT("%Zeta"))
+    return wxString::Format("%c", 198);
+  else if (m_text == wxT("%Eta"))
+    return wxString::Format("%c", 199);
+  else if (m_text == wxT("%Theta"))
+    return wxString::Format("%c", 200);
+  else if (m_text == wxT("%Iota"))
+    return wxString::Format("%c", 201);
+  else if (m_text == wxT("%Kappa"))
+    return wxString::Format("%c", 202);
+  else if (m_text == wxT("%Lambda"))
+    return wxString::Format("%c", 203);
+  else if (m_text == wxT("%Mu"))
+    return wxString::Format("%c", 204);
+  else if (m_text == wxT("%Nu"))
+    return wxString::Format("%c", 205);
+  else if (m_text == wxT("%Xi"))
+    return wxString::Format("%c", 206);
+  else if (m_text == wxT("%Omicron"))
+    return wxString::Format("%c", 207);
+  else if (m_text == wxT("%Pi"))
+    return wxString::Format("%c", 208);
+  else if (m_text == wxT("%Rho"))
+    return wxString::Format("%c", 209);
+  else if (m_text == wxT("%Sigma"))
+    return wxString::Format("%c", 211);
+  else if (m_text == wxT("%Tau"))
+    return wxString::Format("%c", 212);
+  else if (m_text == wxT("%Upsilon"))
+    return wxString::Format("%c", 213);
+  else if (m_text == wxT("%Phi"))
+    return wxString::Format("%c", 214);
+  else if (m_text == wxT("%Chi"))
+    return wxString::Format("%c", 215);
+  else if (m_text == wxT("%Psi"))
+    return wxString::Format("%c", 216);
+  else if (m_text == wxT("%Omega"))
+    return wxString::Format("%c", 217);
 
   return m_text;
 }

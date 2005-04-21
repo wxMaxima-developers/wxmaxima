@@ -37,6 +37,8 @@ class CellParser {
     int GetBottom() { return m_bottom; }
     wxString GetFontName() { return m_fontName; }
     wxString GetSymbolFontName() { return m_symbolFontName; }
+    wxFontEncoding GetSymbolFontEncoding();
+    bool SymbolFontIso() { return m_symbolFontIso; }
     int GetSymbolFontAdj() { return m_symbolFontAdj; }
     bool HaveSymbolFont() { return m_haveSymbolFont; }
     wxString GetColor(int st) { return m_styles[st].color; }
@@ -52,6 +54,7 @@ class CellParser {
     wxString m_symbolFontName;
     int m_symbolFontAdj;
     bool m_haveSymbolFont;
+    bool m_symbolFontIso;
     style m_styles[7];
 };
 

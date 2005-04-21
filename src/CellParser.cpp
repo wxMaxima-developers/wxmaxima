@@ -37,6 +37,7 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_top = -1;
   m_bottom = -1;
   m_haveSymbolFont = false;
+  m_symbolFontIso = false;
   m_symbolFontAdj = 0;
   ReadStyle();
 }
@@ -58,7 +59,8 @@ void CellParser::ReadStyle()
   m_symbolFontName = wxEmptyString;
   config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
   config->Read(wxT("Style/Symbol/adj"), &m_symbolFontAdj);
-  config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);  
+  config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);
+  config->Read(wxT("Style/Symbol/iso"), &m_symbolFontIso);
   
   // Normal text
   m_styles[0].color = wxT("black");
@@ -179,4 +181,11 @@ int CellParser::IsUnderlined(int st)
   if (m_styles[st].underlined)
     return 1;
   return 0;
+}
+
+wxFontEncoding CellParser::GetSymbolFontEncoding()
+{
+  if (m_symbolFontIso)
+    return wxFONTENCODING_ISO8859_7;
+  return wxFONTENCODING_DEFAULT;
 }
