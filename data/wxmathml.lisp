@@ -244,10 +244,8 @@
 	r (wxxml-list (cddr x) nil (cons "</mparen></mfun> " r) "<mn>,</mn>"))
   (append l r))
 
-(defprop $%pi "<ms>%pi</ms> " wxxmlword)
-(defprop $%gamma "<g>gamma</g> " wxxmlword)
+
 (defprop $zeta "<g>zeta</g> " wxxmlword)
-(defprop %zeta "<g>zeta</g> " wxxmlword)
 
 ;;
 ;; Greek characters
@@ -267,6 +265,7 @@
 (defprop $%nu "<g>%nu</g>" wxxmlword)
 (defprop $%xi "<g>%xi</g>" wxxmlword)
 (defprop $%omicron "<g>%omicron</g>" wxxmlword)
+(defprop $%pi "<ms>%pi</ms> " wxxmlword)
 (defprop $%rho "<g>%rho</g>" wxxmlword)
 (defprop $%sigma "<g>%sigma</g>" wxxmlword)
 (defprop $%tau "<g>%tau</g>" wxxmlword)
@@ -402,9 +401,11 @@
 (defun wxxml-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (append l `("<mtable>")
           (mapcan #'(lambda(y)
-                      (wxxml-list (cdr y)
-                                  (list "<mtr><mtd>")
-                                  (list "</mtd></mtr> ") "</mtd><mtd>"))
+                        (cond ((null (cdr y)) (list "<mtr><mtd><mspace/></mtd></mtr>"))
+                              (t
+                                (wxxml-list (cdr y)
+                                     (list "<mtr><mtd>")
+                                     (list "</mtd></mtr> ") "</mtd><mtd>"))))
                   (cdr x))
           '("</mtable>") r))
 
