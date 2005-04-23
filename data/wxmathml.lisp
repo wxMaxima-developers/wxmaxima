@@ -246,6 +246,7 @@
 
 
 (defprop $zeta "<g>zeta</g> " wxxmlword)
+(defprop %zeta "<g>zeta</g> " wxxmlword)
 
 ;;
 ;; Greek characters
