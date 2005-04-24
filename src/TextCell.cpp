@@ -64,6 +64,10 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
   else if (m_greek && parser.HaveSymbolFont())
     dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+  else if (m_text == wxT("")) {
+    dc.GetTextExtent(wxT("X"), &m_widht, &m_height);
+    m_width = 0;
+  }
   else
     dc.GetTextExtent(m_text, &m_width, &m_height);
   m_width = m_width + 2*SCALE_PX(2, scale);
@@ -84,14 +88,14 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
-  
+
   if (m_width == 0)
     RecalculateWidths(parser, fontsize, false);
-  
+
   if (DrawThisCell(parser, point) && !m_hidden) {
     SetFont(parser, fontsize);
     SetForeground(parser);
-    
+
     if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
         dc.DrawText(GetGreekString(parser),
                     point.x + SCALE_PX(2, scale),
@@ -112,10 +116,10 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
 {
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
-  
+
   int fontsize1 = (int) (((double)fontsize)*scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
-  
+
   if (!m_nextToDrawIsNext)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_HIDDEN_GROUP),
