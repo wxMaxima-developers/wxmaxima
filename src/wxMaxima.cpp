@@ -1230,7 +1230,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
         wxString val = wiz->GetValue();
         val.Trim();
         val.Trim(false);
-        if (val.Last()!=';' && val.Last()!='$')
+        if (!m_inLispMode && val.Last()!=';' && val.Last()!='$')
           val += wxT("$");
         SendMaxima(val);
       }
