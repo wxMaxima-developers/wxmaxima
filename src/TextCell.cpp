@@ -65,7 +65,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   else if (m_greek && parser.HaveSymbolFont())
     dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
   else if (m_text == wxT("")) {
-    dc.GetTextExtent(wxT("X"), &m_widht, &m_height);
+    dc.GetTextExtent(wxT("X"), &m_width, &m_height);
     m_width = 0;
   }
   else
