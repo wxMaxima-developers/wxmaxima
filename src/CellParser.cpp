@@ -186,6 +186,10 @@ int CellParser::IsUnderlined(int st)
 wxFontEncoding CellParser::GetSymbolFontEncoding()
 {
   if (m_symbolFontIso)
+#if defined __WXMSW__
+    return wxFONTENCODING_CP1253;
+#else
     return wxFONTENCODING_ISO8859_7;
+#endif
   return wxFONTENCODING_DEFAULT;
 }

@@ -99,11 +99,12 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_9 = new wxStaticText(notebook_1_pane_2, -1, _("Greek font:"));
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
 #if defined __WXMSW__
+  m_symbolFontIso = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("cp1253 encoding"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, wxT("Symbol"), wxDefaultPosition, wxSize(150, -1));
 #else
+  m_symbolFontIso = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("iso8859-7 encoding"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, wxT("Greek"), wxDefaultPosition, wxSize(150, -1));
 #endif
-  m_symbolFontIso = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("iso8859-7"));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
   m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
   const wxString m_styleFor_choices[] = {
