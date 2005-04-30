@@ -349,9 +349,15 @@ void Config::OnSymbolBrowse(wxCommandEvent& event)
 {
   wxFont symbol;
   if (m_symbolFontIso->GetValue())
+#if defined __WXMSW__
+    symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
+                                            false, m_symbolFontName,
+                                            wxFONTENCODING_CP1253));
+#else
     symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
                                             false, m_symbolFontName,
                                             wxFONTENCODING_ISO8859_7));
+#endif
   else
     symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
                                             false, m_symbolFontName));
