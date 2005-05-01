@@ -440,7 +440,7 @@ void wxMaxima::ReadMath()
   end = m_currentOutput.Find(mth);
   while (end > -1) {
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o + wxT("</mth>"), TEXTT);
+    ConsoleAppend(o + mth, TEXTT);
     m_currentOutput = m_currentOutput.SubString(end+mth.Length(),
                                                 m_currentOutput.Length());
     end = m_currentOutput.Find(mth);

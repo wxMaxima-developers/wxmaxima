@@ -122,7 +122,7 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 wxString SqrtCell::ToString(bool all)
 {
   return wxT("sqrt(") + m_innerCell->ToString(true) + wxT(")") +
-         MathCell::ToString(all);;
+         MathCell::ToString(all);
 }
 
 void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
