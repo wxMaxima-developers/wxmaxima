@@ -977,7 +977,7 @@
 ;; Port of Barton Willis's texput function.
 ;;
 
-(defun $wxxmlput (e s &optional tx)
+(defun $wxxmlput (e s &optional tx lbp rbp)
   (cond ((mstringp e)
 	 (setq e (define-symbol (string-left-trim '(#\&) e)))))
   (cond (($listp s)
@@ -985,9 +985,12 @@
 	(t
 	 (setq s (list s))))
   (setq s (mapcar #'stripdollar s))
+  (cond ((or (null lbp) (not (integerp lbp)))
+         (setq lbp 180)))
+  (cond ((or (null rbp) (not (integerp rbp)))
+         (setq rbp 180)))
   (cond ((null tx)
 	 (putprop e (nth 0 s) 'wxxmlword))
-	
 	((eq tx '$matchfix)
 	 (putprop e 'wxxml-matchfix 'wxxml)
 	 (cond ((< (length s) 2)
@@ -996,20 +999,18 @@
 		(putprop e (list (list (nth 0 s)) (nth 1 s)) 'wxxmlsym))
 	       (t
 		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'wxxmlsym))))
-
 	((eq tx '$prefix)
 	 (putprop e 'wxxml-prefix 'wxxml)
 	 (putprop e s 'wxxmlsym)
-	 (putprop e 200 'wxxml-lbp)
-	 (putprop e 180 'wxxml-rbp))
-		
+         (putprop e lbp 'wxxml-lbp)
+         (putprop e rbp 'wxxml-rbp))
 	((eq tx '$infix)
 	 (putprop e 'wxxml-infix 'wxxml)
 	 (putprop e  s 'wxxmlsym)
-	 (putprop e 200 'wxxml-lbp)
-	 (putprop e 180 'wxxml-rbp))
-
+         (putprop e lbp 'wxxml-lbp)
+         (putprop e rbp 'wxxml-rbp))
 	((eq tx '$postfix)
 	 (putprop e 'wxxml-postfix 'wxxml)
 	 (putprop e  s 'wxxmlsym)
-	 (putprop e 160 'wxxml-lbp))))
+         (putprop e lbp 'wxxml-lbp))
+        (t (merror "Improper arguments to `wxxmlput'."))))
