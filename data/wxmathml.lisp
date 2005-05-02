@@ -305,6 +305,8 @@
 (defprop $inf "<ms>inf </ms> " wxxmlword)
 (defprop $minf "<ms>minf </ms> " wxxmlword)
 
+(defprop mreturn "return" wxxmlword)
+
 (defprop mquote wxxml-prefix wxxml)
 (defprop mquote ("<mn>'</mn>") wxxmlsym)
 (defprop mquote 201. wxxml-rbp)
