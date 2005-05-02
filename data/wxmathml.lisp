@@ -672,9 +672,12 @@
   ;; format the macsyma derivative form so it looks
   ;; sort of like a quotient times the deriva-dand.
   (let*
-      ((arg (cadr x)) ;; the function being differentiated
+      (($simp t)
+       (arg (cadr x)) ;; the function being differentiated
        (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
        (ords (odds difflist 0)) ;; e.g. (1 2)
+       (ords (cond ((null ords) '(1))
+                   (t ords)))
        (vars (odds difflist 1)) ;; e.g. (x y)
        (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
        (denom (cons '(mtimes)
