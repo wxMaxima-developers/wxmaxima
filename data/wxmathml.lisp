@@ -83,6 +83,7 @@
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
                          tmp-x))
+                      ((and (symbolp x) (get x 'reversealias)))
                       ((and (symbolp x) (get x 'wxxmlword)))
                       (t (wxxml-stripdollar x))))
 	  r))
