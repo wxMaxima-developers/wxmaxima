@@ -95,6 +95,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     m_innerCell->Draw(parser, in, fontsize, true);
   
     SetPen(parser);
+    // left
     dc.DrawLine(point.x + SCALE_PX(5, scale),
                 point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
                 point.x + SCALE_PX(2, scale),
@@ -107,17 +108,18 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 point.y + m_innerCell->GetMaxDrop() - SCALE_PX(5, scale),
                 point.x + SCALE_PX(5, scale),
                 point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale),
+    // right
+    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
                 point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
-                point.x + m_width - SCALE_PX(2, scale),
+                point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y - m_innerCell->GetMaxCenter() + SCALE_PX(5, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y - m_innerCell->GetMaxCenter() + SCALE_PX(5, scale),
-                point.x + m_width - SCALE_PX(2, scale),
+                point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y + m_innerCell->GetMaxDrop() - SCALE_PX(5, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y + m_innerCell->GetMaxDrop() - SCALE_PX(5, scale),
-                point.x + m_width - SCALE_PX(5, scale),
+                point.x + m_width - SCALE_PX(5, scale) - 1,
                 point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
     UnsetPen(parser);
   }

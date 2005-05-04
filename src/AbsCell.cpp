@@ -92,9 +92,9 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 point.y - m_center + SCALE_PX(2, scale),
                 point.x + SCALE_PX(2, scale),
                 point.y - m_center + m_height - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(2, scale),
+                point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen(parser);
   }

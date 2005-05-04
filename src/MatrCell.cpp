@@ -139,17 +139,17 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 point.x + SCALE_PX(5, scale),
                 point.y + m_center - SCALE_PX(2, scale));
     // right bracket
-    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale),
+                point.x + m_width - SCALE_PX(1, scale) - 1,
                 point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale),
+                point.x + m_width - SCALE_PX(1, scale) - 1,
                 point.y + m_center - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale),
+    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
                 point.y + m_center - SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(5, scale),
+                point.x + m_width - SCALE_PX(5, scale) - 1,
                 point.y + m_center - SCALE_PX(2, scale));
     UnsetPen(parser);
   }
