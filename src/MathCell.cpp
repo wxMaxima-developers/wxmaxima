@@ -308,12 +308,12 @@ void MathCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 /***
  * Does this cell contain a rectangle small
  */
-bool MathCell::ContainsRect(wxRect& small, bool all) {
+bool MathCell::ContainsRect(wxRect& sm, bool all) {
   wxRect big = GetRect(all);
-  if (big.x <= small.x &&
-      big.y <= small.y &&
-      big.x + big.width >= small.x + small.width &&
-      big.y + big.height >= small.y + small.height)
+  if (big.x <= sm.x &&
+      big.y <= sm.y &&
+      big.x + big.width >= sm.x + sm.width &&
+      big.y + big.height >= sm.y + sm.height)
     return true;
   return false;
 }
