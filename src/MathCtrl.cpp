@@ -559,60 +559,58 @@ bool MathCtrl::Copy(bool lb)
 }
 
 /***
- * Can delete selection - only if exactly input label is selected!
+ * Can delete selection - we can't delete the last prompt!
  */
 bool MathCtrl::CanDeleteSelection()
 {
-  if (m_selectionStart == NULL)
+  if (m_selectionStart == NULL || m_selectionEnd == NULL)
     return false;
-  if (m_selectionStart != m_selectionEnd)
+  if (m_selectionEnd->m_next == NULL || m_selectionEnd->m_nextToDraw == NULL)
     return false;
-  if (m_selectionStart->m_next == NULL)
-    return false;
-  if (m_selectionStart->GetType() == TC_MAIN_PROMPT)
+  if (m_selectionStart->GetType() == TC_MAIN_PROMPT &&
+      (m_selectionEnd == m_selectionStart ||
+       m_selectionEnd->m_nextToDraw->GetType() == TC_MAIN_PROMPT))
     return true;
   return false;
 }
 
 /***
- * Delete the selection - m_selectionStart points to the input label.
+ * Delete the selection
  */
 void MathCtrl::DeleteSelection()
 {
   if (!CanDeleteSelection())
     return;
-  MathCell* tmp = m_selectionStart->m_next;
-  while (tmp != NULL && tmp->GetType()!=TC_MAIN_PROMPT)
-    tmp = tmp->m_next;
+  MathCell *start = m_selectionStart;
+  MathCell *end = m_selectionEnd->m_next;
+  while (end != NULL && end->GetType() != TC_MAIN_PROMPT)
+    end = end->m_next;
+  if (end == NULL || start == NULL || end->m_previous == NULL)
+    return;
   // We are deleting the first cell in the tree
-  if (m_selectionStart == m_tree) {
-    if (tmp != NULL && tmp->m_previous != NULL) {
-      m_tree = tmp;
-      tmp->m_previous->m_next = NULL;
-      m_tree->m_previous = NULL;
-      delete m_selectionStart;
-    }
+  if (start == m_tree) {
+    end->m_previous->m_next = NULL;
+    m_tree = end;
+    delete start;
   }
   // the cell to be deleted is not the first in the tree
   else {
-    if (tmp != NULL && tmp->m_previous != NULL) {
-      MathCell* previous = m_selectionStart->m_previous;
-      tmp->m_previous->m_next = NULL;
-      previous->m_next = tmp;
-      previous->m_nextToDraw = tmp;
-      tmp->m_previous = previous;
-      // We have to correct the m_nextToDraw for hidden group just before
-      // the one to delete - check previous label and main prompt.
-      while (previous != NULL && previous->GetType() != TC_LABEL)
-        previous = previous->m_previous;
-      if (previous != NULL && previous->m_nextToDraw != previous->m_next)
-        previous->m_nextToDraw = tmp;
-      while (previous != NULL && previous->GetType() != TC_MAIN_PROMPT)
-        previous = previous->m_previous;
-      if (previous != NULL && previous->m_nextToDraw != previous->m_next)
-        previous->m_nextToDraw = tmp;
-      delete m_selectionStart;
-    }
+    MathCell* previous = start->m_previous;
+    end->m_previous->m_next = NULL;
+    end->m_previous = previous;
+    previous->m_next = end;
+    previous->m_nextToDraw = end;
+    // We have to correct the m_nextToDraw for hidden group just before
+    // the first to be deleted - check previous label and main prompt.
+    while (previous != NULL && previous->GetType() != TC_LABEL)
+      previous = previous->m_previous;
+    if (previous != NULL && previous->m_nextToDraw != previous->m_next)
+      previous->m_nextToDraw = end;
+    while (previous != NULL && previous->GetType() != TC_MAIN_PROMPT)
+      previous = previous->m_previous;
+    if (previous != NULL && previous->m_nextToDraw != previous->m_next)
+      previous->m_nextToDraw = end;
+    delete start;
   }
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
