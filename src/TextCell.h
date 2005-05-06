@@ -43,8 +43,8 @@ class TextCell : public MathCell
     void SetSymbol(bool symbol) { m_symbol = symbol; }
     void SetGreek(bool greek) { m_greek = greek; }
     wxString GetGreekString(CellParser& parser);
-    wxString GetGreekStringSym();
     wxString GetGreekStringIso();
+    wxString GetGreekStringUnicode();
     bool IsShortNum();
     void Hide(bool hide);
   protected:
