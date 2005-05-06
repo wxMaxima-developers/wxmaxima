@@ -126,6 +126,32 @@ found when wxMaxima is started.
 
 
 
+GREEK CHARACTERS
+=================
+
+wxMaxima can display greek characters if apropriate font is installed on your
+system. Two kind of fonts can be used:
+
+ o fonts in WinGreek/ISO8859-7 encoding (most fonts on MS Windows have this
+   encoding)
+ o special symbol fonts (fonts which map latin characters to greek characters,
+   compatible the Symbol font on MS Windows).
+
+The first method should be used on MS Windows and wxGTK1 (you may need to install
+some iso8859-7 fonts). The second method should be used on wxGTK2.
+
+Some TTF fonts, which are compatible with the Symbol font:
+
+ o BSTGreek(*) : http://www.biblestudytools.net/OtherResources/BSTFonts/
+ o GreekFP     : http://www.paradigm-sw.com/gfp/font.htm
+ o Galilee(**) : http://faculty.bbc.edu/rdecker/galilee.htm
+
+To install the fonts on Linux, you can usually put them in $HOME/.fonts directory.
+
+(*)  You can extract the font from the exe file using unzip on Linux.
+(**) Download the old version, not the unicode one.
+
+
 UPDATING
 =========
 
