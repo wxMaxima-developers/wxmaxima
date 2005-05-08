@@ -319,9 +319,9 @@ wxString TextCell::GetGreekStringIso()
     return wxT("\xEE");
   else if (m_text == wxT("%omicron"))
     return wxT("\xEF");
-  else if (m_text == wxT("%rho"))
-    return wxT("\xF0");
   else if (m_text == wxT("%pi"))
+    return wxT("\xF0");
+  else if (m_text == wxT("%rho"))
     return wxT("\xF1");
   else if (m_text == wxT("%sigma"))
     return wxT("\xF3");
