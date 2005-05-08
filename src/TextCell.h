@@ -44,7 +44,7 @@ class TextCell : public MathCell
     void SetGreek(bool greek) { m_greek = greek; }
     wxString GetGreekString(CellParser& parser);
     wxString GetGreekStringIso();
-    wxString GetGreekStringUnicode();
+    wchar_t* GetGreekStringUnicode();
     bool IsShortNum();
     void Hide(bool hide);
   protected:
