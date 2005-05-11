@@ -99,10 +99,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_9 = new wxStaticText(notebook_1_pane_2, -1, _("Greek font:"));
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
 #if defined __WXMSW__
-  m_symbolFontIso = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("cp1253 encoding"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, wxT("Symbol"), wxDefaultPosition, wxSize(150, -1));
 #else
-  m_symbolFontIso = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("iso8859-7 encoding"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, wxT("Greek"), wxDefaultPosition, wxSize(150, -1));
 #endif
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
@@ -262,7 +260,6 @@ void Config::do_layout()
   grid_sizer_1->Add(label_9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_12->Add(m_symbolFontOk, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_12->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_12->Add(m_symbolFontIso, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(sizer_12, 1, wxALL|wxEXPAND, 0);
   grid_sizer_1->Add(label_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
@@ -348,19 +345,15 @@ void Config::OnMpBrowse(wxCommandEvent& event)
 void Config::OnSymbolBrowse(wxCommandEvent& event)
 {
   wxFont symbol;
-  if (m_symbolFontIso->GetValue())
 #if defined __WXMSW__
-    symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                            false, m_symbolFontName,
-                                            wxFONTENCODING_CP1253));
+  symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
+                                          false, m_symbolFontName,
+                                          wxFONTENCODING_CP1253));
 #else
-    symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                            false, m_symbolFontName,
-                                            wxFONTENCODING_ISO8859_7));
+  symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
+                                          false, m_symbolFontName,
+                                          wxFONTENCODING_ISO8859_7));
 #endif
-  else
-    symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                            false, m_symbolFontName));
   if (symbol.Ok()) {
     m_symbolFontName = symbol.GetFaceName();
     m_getSymbolFont->SetLabel(m_symbolFontName);
@@ -374,7 +367,6 @@ void Config::ReadStyles()
   wxString font;
   int adj = 0;
   bool symbolOk = false;
-  bool symbolIso = false;
   
   config->Read(wxT("Style/fontname"), &font);
   m_fontFamily->SetValue(font);
@@ -383,15 +375,12 @@ void Config::ReadStyles()
   config->Read(wxT("Style/Symbol/ok"), &symbolOk);
   config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
   config->Read(wxT("Style/Symbol/adj"), &adj);
-  config->Read(wxT("Style/Symbol/iso"), &symbolIso);
   m_symbolFontAdj->SetValue(adj);
-  m_symbolFontIso->SetValue(symbolIso);
   m_symbolFontOk->SetValue(symbolOk);
   if (m_symbolFontName.Length()>0)
     m_getSymbolFont->SetLabel(m_symbolFontName);
   m_getSymbolFont->Enable(symbolOk);
   m_symbolFontAdj->Enable(symbolOk);
-  m_symbolFontIso->Enable(symbolOk);
   
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
@@ -514,7 +503,6 @@ void Config::WriteStyles()
   config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());
   config->Write(wxT("Style/Symbol/fontname"), m_symbolFontName);
   config->Write(wxT("Style/Symbol/adj"), m_symbolFontAdj->GetValue());
-  config->Write(wxT("Style/Symbol/iso"), m_symbolFontIso->GetValue());
   
   // Normal text
   config->Write(wxT("Style/NormalText/color"),
@@ -637,7 +625,6 @@ void Config::OnCheckbox(wxCommandEvent& event)
 void Config::OnCheckSymbol(wxCommandEvent& event)
 {
   m_getSymbolFont->Enable(m_symbolFontOk->GetValue());
-  m_symbolFontIso->Enable(m_symbolFontOk->GetValue());
   m_symbolFontAdj->Enable(m_symbolFontOk->GetValue());
 }
 

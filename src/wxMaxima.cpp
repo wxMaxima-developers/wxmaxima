@@ -747,15 +747,6 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
         (*m_printData) = printer.GetPrintDialogData().GetPrintData();
       break;
     }
-    case menu_print_setup:
-    {
-      wxPrintDialogData printDialogData(*m_printData);
-      wxPrintDialog printerDialog(this, &printDialogData);
-      printerDialog.GetPrintDialogData().SetSetupDialog(true);
-      printerDialog.ShowModal();
-      (*m_printData) = printerDialog.GetPrintDialogData().GetPrintData();
-      break;
-    }
   }
 }
 
@@ -2285,7 +2276,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_goto_input, wxMaxima::MaximaMenu)
   EVT_MENU(menu_print, wxMaxima::PrintMenu)
-  EVT_MENU(menu_print_setup, wxMaxima::PrintMenu)
   EVT_MENU(menu_inc_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)

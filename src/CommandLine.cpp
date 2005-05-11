@@ -231,8 +231,13 @@ void CommandLine::FilterLine(wxKeyEvent& event)
 void CommandLine::Highligth(wxKeyEvent& event)
 {
 #if defined(__WXMSW__)
-  long curr = GetInsertionPoint();
   wxString value = GetValue();
+  if (value == wxEmptyString)
+    return;
+  long curr = GetInsertionPoint();
+  if (curr == 0)
+    return;
+  
   char cl = value.GetChar(curr-1);
   char op;
   int j;

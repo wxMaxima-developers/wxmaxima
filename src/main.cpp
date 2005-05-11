@@ -50,7 +50,10 @@ bool MyApp::OnInit()
   wxConfig *config = new wxConfig(wxT("wxMaxima"));
   wxConfig::Set(config);
   
-  wxInitAllImageHandlers();
+  wxImage::AddHandler(new wxPNGHandler);
+  wxImage::AddHandler(new wxXPMHandler);
+  wxImage::AddHandler(new wxJPEGHandler);
+  
   wxFileSystem::AddHandler(new wxZipFSHandler);
   
   int x, y, h, w, m, rs=0, lang = wxLANGUAGE_UNKNOWN;

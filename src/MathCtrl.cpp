@@ -273,9 +273,7 @@ void MathCtrl::OnSize(wxSizeEvent& event)
     BreakLines(m_tree);
     AdjustSize(false);
   }
-  else
-    Refresh();
-  
+  Refresh();
   wxScrolledWindow::OnSize(event);
 }
 
@@ -309,6 +307,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
     SelectPoint(m_down);
   m_leftDown = false;
   m_mouseDrag = false;
+  SetFocus();
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event)

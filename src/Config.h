@@ -85,7 +85,6 @@ protected:
   wxButton* m_buttonCancel;
   wxStaticText* label_9;
   wxCheckBox* m_symbolFontOk;
-  wxCheckBox* m_symbolFontIso;
   wxButton* m_getSymbolFont;
   wxStaticText* label_10;
   wxSpinCtrl* m_symbolFontAdj;
