@@ -283,8 +283,8 @@ void Config::do_layout()
 #else
   sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND|wxALL, 2);
 #endif
-  sizer_2->Add(m_buttonCancel, 0, wxALL, 2);
-  sizer_2->Add(m_buttonOK, 0, wxALL, 2);
+  sizer_2->Add(m_buttonCancel, 0, wxALL, 5);
+  sizer_2->Add(m_buttonOK, 0, wxALL, 5);
   sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(sizer_1);
