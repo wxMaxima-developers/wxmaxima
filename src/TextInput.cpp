@@ -71,8 +71,8 @@ void TextInput::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
-  sizer_1->Add(button_2, 0, wxALL, 2);
-  sizer_1->Add(button_1, 0, wxALL, 2);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  sizer_1->Add(button_1, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER|wxBOTTOM, 2);
 
   SetAutoLayout(true);
