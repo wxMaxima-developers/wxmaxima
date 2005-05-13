@@ -309,9 +309,9 @@ void Config::do_layout()
 #endif
 
   // OK and cancel buttons
-  sizer_2->Add(m_buttonCancel, 0, wxALL, 5);
-  sizer_2->Add(m_buttonOK, 0, wxALL, 5);
-  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
+  sizer_2->Add(m_buttonCancel, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(m_buttonOK, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 2);
   
   SetAutoLayout(true);
   SetSizer(sizer_1);

@@ -90,9 +90,9 @@ void MatWiz::do_layout()
   grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxALL, 5);
-  sizer_1->Add(button_1, 0, wxALL, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);
@@ -182,8 +182,8 @@ void MatDim::do_layout()
   grid_sizer_2->Add(combo_box_1, 0, wxALL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxALL, 2);
-  sizer_1->Add(button_1, 0, wxALL, 2);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
