@@ -53,6 +53,7 @@ private:
 protected:
   // begin wxGlade: Config::attributes
   wxStaticBox* sizer_11_staticbox;
+  wxStaticBox* sizer_12_staticbox;
   wxStaticBox* sizer_9_staticbox;
   wxStaticBox* sizer_6_staticbox;
   wxStaticBox* sizer_4_staticbox;
@@ -83,7 +84,6 @@ protected:
   wxNotebook* notebook_1;
   wxButton* m_buttonOK;
   wxButton* m_buttonCancel;
-  wxStaticText* label_9;
   wxCheckBox* m_symbolFontOk;
   wxButton* m_getSymbolFont;
   wxStaticText* label_10;

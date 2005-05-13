@@ -68,9 +68,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   notebook_1_pane_2 = new wxPanel(notebook_1, -1);
   notebook_1_pane_1 = new wxPanel(notebook_1, -1);
   sizer_6_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("wxMaxima options"));
-  sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Font"));
-  sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
   sizer_4_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("Maxima options"));
+  sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Font"));
+  sizer_12_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Greek font"));
+  sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
   label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
@@ -96,7 +97,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   };
   m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
   SetupFontList();
-  label_9 = new wxStaticText(notebook_1_pane_2, -1, _("Greek font:"));
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
@@ -226,8 +226,14 @@ void Config::do_layout()
   wxBoxSizer* sizer_7 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticBoxSizer* sizer_4 = new wxStaticBoxSizer(sizer_4_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
-  wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
+  wxStaticBoxSizer* sizer_12 = new wxStaticBoxSizer(sizer_12_staticbox, wxVERTICAL);
+  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(2, 2, 3, 3);
+  
+  // Title
   sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
+  
+  // TAB 1
+  // Maxima options box
   grid_sizer_2->Add(label_5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_maximaProgram, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_mpBrowse, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
@@ -235,6 +241,9 @@ void Config::do_layout()
   grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
   sizer_4->Add(grid_sizer_2, 1, wxEXPAND, 3);
   sizer_3->Add(sizer_4, 1, wxALL|wxEXPAND, 3);
+  
+  // TAB 2
+  // wxMaxima options box
   sizer_7->Add(label_4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_7->Add(m_language, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_6->Add(sizer_7, 1, wxEXPAND, 0);
@@ -244,23 +253,32 @@ void Config::do_layout()
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL|wxEXPAND, 3);
+  
+  // Tab 1
   notebook_1_pane_1->SetAutoLayout(true);
   notebook_1_pane_1->SetSizer(sizer_3);
   sizer_3->Fit(notebook_1_pane_1);
   sizer_3->SetSizeHints(notebook_1_pane_1);
   sizer_3->AddGrowableCol(0);
+  
+  // TAB 2
+  // Font box
   grid_sizer_1->Add(label_7, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_fontSize, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_8, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_fontFamily, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(label_9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_12->Add(m_symbolFontOk, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_12->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(sizer_12, 1, wxALL|wxEXPAND, 0);
-  grid_sizer_1->Add(label_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  sizer_9->Add(grid_sizer_1, 1, wxEXPAND, 0);
+  sizer_9->Add(grid_sizer_1, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL|wxEXPAND, 3);
+  
+  // Greek font box
+  grid_sizer_3->Add(m_symbolFontOk, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(label_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
+  sizer_12->Add(grid_sizer_3, 1, wxALL|wxEXPAND, 0);
+  sizer_8->Add(sizer_12, 1, wxALL|wxEXPAND, 3);
+  
+  // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
@@ -271,21 +289,30 @@ void Config::do_layout()
   grid_sizer_4->Add(m_underlinedCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
+  
+  // Tab 2
   notebook_1_pane_2->SetAutoLayout(true);
   notebook_1_pane_2->SetSizer(sizer_8);
   sizer_8->Fit(notebook_1_pane_2);
   sizer_8->SetSizeHints(notebook_1_pane_2);
   sizer_8->AddGrowableCol(0);
+  
+  // Add tabs to notebook and
   notebook_1->AddPage(notebook_1_pane_1, _("Options"));
   notebook_1->AddPage(notebook_1_pane_2, _("Style"));
+  
+  // Add notebook to dialog
 #if wxCHECK_VERSION(2,5,3)
   sizer_1->Add(notebook_1, 1, wxEXPAND|wxALL, 2);
 #else
   sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND|wxALL, 2);
 #endif
+
+  // OK and cancel buttons
   sizer_2->Add(m_buttonCancel, 0, wxALL, 5);
   sizer_2->Add(m_buttonOK, 0, wxALL, 5);
   sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxBOTTOM, 2);
+  
   SetAutoLayout(true);
   SetSizer(sizer_1);
   sizer_1->Fit(this);
