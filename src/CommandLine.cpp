@@ -123,7 +123,8 @@ void CommandLine::FilterLine(wxKeyEvent& event)
     m_marked = -1;
     SetValue(Previous());
 #if defined (__WXMSW__)
-    SetStyle(0, GetLastPosition(), wxTextAttr(*wxBLACK));
+    SetStyle(0, GetLastPosition(),
+             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
 #endif
     SetInsertionPointEnd();
     return;
@@ -132,7 +133,8 @@ void CommandLine::FilterLine(wxKeyEvent& event)
     m_marked = -1;
     SetValue(Next());
 #if defined (__WXMSW__)
-    SetStyle(0, GetLastPosition(), wxTextAttr(*wxBLACK));
+    SetStyle(0, GetLastPosition(),
+             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
 #endif
     SetInsertionPointEnd();
     return;
@@ -243,7 +245,8 @@ void CommandLine::Highligth(wxKeyEvent& event)
   int j;
 
   if (m_marked >=0) {
-    SetStyle(m_marked, m_marked+1, wxTextAttr(*wxBLACK));
+    SetStyle(m_marked, m_marked+1,
+             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
     m_marked = -1;
   }
   if (cl == ')')

@@ -29,7 +29,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
                     const wxPoint& pos,
                     const wxSize& size,
                     long style)
- : wxTextCtrl(parent, id, value, pos, size, style)
+ : wxTextCtrl(parent, id, value, pos, size, style|wxTE_RICH)
 {
   bool fixedFont = true;
   m_matchParens = true;
