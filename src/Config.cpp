@@ -239,7 +239,7 @@ void Config::do_layout()
   grid_sizer_2->Add(m_mpBrowse, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(label_6, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
-  sizer_4->Add(grid_sizer_2, 1, wxEXPAND, 3);
+  sizer_4->Add(grid_sizer_2, 1, wxALL|wxEXPAND, 3);
   sizer_3->Add(sizer_4, 1, wxALL|wxEXPAND, 3);
   
   // TAB 2
@@ -275,7 +275,7 @@ void Config::do_layout()
   grid_sizer_3->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_3->Add(label_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  sizer_12->Add(grid_sizer_3, 1, wxALL|wxEXPAND, 0);
+  sizer_12->Add(grid_sizer_3, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_12, 1, wxALL|wxEXPAND, 3);
   
   // Styles box
