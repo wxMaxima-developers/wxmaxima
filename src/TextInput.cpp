@@ -73,7 +73,7 @@ void TextInput::do_layout()
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
   sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 2);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER|wxTOP|wxBOTTOM, 3);
 
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
