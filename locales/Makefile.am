@@ -79,9 +79,9 @@ stats:
 
 #echo "$$i.po `expr 100 "*" $$TR / $$TOTAL`% of $$TOTAL strings"; 
 
-EXTRA_DIST = fr.po wxwin/fr.mo \
-             es.po wxwin/es.mo \
-             it.po wxwin/it.mo \
+EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
+             es.po es.mo wxwin/es.mo \
+             it.po it.mo wxwin/it.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE

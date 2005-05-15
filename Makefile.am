@@ -8,7 +8,8 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop maxima-new.png  \
              art/small/copy.xpm art/small/cut.xpm art/small/help.xpm     \
              art/small/open.xpm art/small/pref.xpm art/small/print.xpm   \
              art/small/stop.xpm art/small/save.xpm                       \
-             art/icons.h art/small/icons.h art/big/icons.h
+             art/icons.h art/small/icons.h art/big/icons.h               \
+             art/maximaicon.xpm
 
 docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING
