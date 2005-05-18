@@ -72,8 +72,10 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     dc.GetTextExtent(m_text, &m_width, &m_height);
   m_width = m_width + 2*SCALE_PX(2, scale);
   m_height = m_height + 2*SCALE_PX(2, scale);
-  if (m_hidden)
-    m_width = 0;
+  if (m_hidden) {
+    m_height = 0;
+    m_width = -2*MC_CELL_SKIP;
+  }
   m_center = m_height/2;
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
