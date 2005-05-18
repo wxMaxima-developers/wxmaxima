@@ -343,11 +343,10 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
 void wxMaxima::EnterCommand(wxCommandEvent& event)
 {
   wxString input = m_inputLine->GetValue();
-  if (input.Length() == 0)
-    return;
   input.Trim();
   input.Trim(false);
-  if (!m_inLispMode && input.Last() != ';' && input.Last()!='$')
+  if (!m_inLispMode && (input.Length() == 0  ||
+                        (input.Last() != ';' && input.Last()!='$')))
     input.Append(';');
   SendMaxima(input);
   m_inputLine->Clear();
