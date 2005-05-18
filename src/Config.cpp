@@ -74,10 +74,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
   label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
-  m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
+  m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(notebook_1_pane_1, wxID_OPEN, _("Open"));
   label_6 = new wxStaticText(notebook_1_pane_1, -1, _("Additional parameters:"));
-  m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1));
+  m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
   const wxString m_language_choices[] = {
     _("(Use default language)"), _("English"),
