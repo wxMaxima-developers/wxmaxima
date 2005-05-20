@@ -105,7 +105,6 @@ class wxMaxima : public wxMaximaFrame
 #endif
   void SetupVariables();             // sets some maxima variables
   void KillMaxima();                 // kills the maxima process
-  wxString ClearWhitespaces(wxString s);
   void FirstOutput(wxString s);
   wxSocketBase *m_client;
   wxSocketServer *m_server;

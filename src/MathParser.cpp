@@ -315,7 +315,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
     if (node->type == XML_ELEMENT_NODE) {
       wxString tagName((const char*)(node->name), wxConvUTF8);
       tagName = ToLocal(tagName);
-      if (tagName == wxT("mfrac")) {
+      if (tagName == wxT("f")) {
         if (cell == NULL)
           cell = ParseFracTag(node);
         else
@@ -327,79 +327,79 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(new TextCell(wxT(" ")));
       }
-      else if (tagName == wxT("msub")) {
+      else if (tagName == wxT("i")) {
         if (cell == NULL)
           cell = ParseSubTag(node);
         else
           cell->AppendCell(ParseSubTag(node));
       }
-      else if (tagName == wxT("mat")) {
+      else if (tagName == wxT("at")) {
         if (cell == NULL)
           cell = ParseAtTag(node);
         else
           cell->AppendCell(ParseAtTag(node));
       }
-      else if (tagName == wxT("mfun")) {
+      else if (tagName == wxT("fn")) {
         if (cell == NULL)
           cell = ParseFunTag(node);
         else
           cell->AppendCell(ParseFunTag(node));
       }
-      else if (tagName == wxT("msup")) {
+      else if (tagName == wxT("e")) {
         if (cell == NULL)
           cell = ParseSupTag(node);
         else
           cell->AppendCell(ParseSupTag(node));
       }
-      else if (tagName == wxT("msqrt")) {
+      else if (tagName == wxT("q")) {
         if (cell == NULL)
           cell = ParseSqrtTag(node);
         else
           cell->AppendCell(ParseSqrtTag(node));
       }
-      else if (tagName == wxT("mdiff")) {
+      else if (tagName == wxT("d")) {
         if (cell == NULL)
           cell = ParseDiffTag(node);
         else
           cell->AppendCell(ParseDiffTag(node));
       }
-      else if (tagName == wxT("mabs")) {
+      else if (tagName == wxT("a")) {
         if (cell == NULL)
           cell = ParseAbsTag(node);
         else
           cell->AppendCell(ParseAbsTag(node));
       }
-      else if (tagName == wxT("mparen")) {
+      else if (tagName == wxT("p")) {
         if (cell == NULL)
           cell = ParseParenTag(node);
         else
           cell->AppendCell(ParseParenTag(node));
       }
-      else if (tagName == wxT("mlimit")) {
+      else if (tagName == wxT("lm")) {
         if (cell == NULL)
           cell = ParseLimitTag(node);
         else
           cell->AppendCell(ParseLimitTag(node));
       }
-      else if (tagName == wxT("msum")) {
+      else if (tagName == wxT("sm")) {
         if (cell == NULL)
           cell = ParseSumTag(node);
         else
           cell->AppendCell(ParseSumTag(node));
       }
-      else if (tagName == wxT("mint")) {
+      else if (tagName == wxT("in")) {
         if (cell == NULL)
           cell = ParseIntTag(node);
         else
           cell->AppendCell(ParseIntTag(node));
       }
-      else if (tagName == wxT("mrow")) {
+      else if (tagName == wxT("r")) {
         if (cell == NULL)
           cell = ParseTag(node->children);
         else
           cell->AppendCell(ParseTag(node->children));
       }
-      else if (tagName == wxT("mtable")) {
+      else if (tagName == wxT("tb")) {
         if (cell == NULL)
           cell = ParseTableTag(node);
         else

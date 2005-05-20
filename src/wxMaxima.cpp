@@ -135,17 +135,6 @@ void wxMaxima::InitSession()
     SetStatusText(_("Starting maxima process failed"), 1);
 }
 
-wxString wxMaxima::ClearWhitespaces(wxString s)
-{
-  wxString t(s);
-  t.Replace(wxT("\n"), wxT(""));
-  while (t.Find(wxT(" <")) > -1)
-    t.Replace(wxT(" <"), wxT("<"));
-  while (t.Find(wxT("> ")) > -1)
-    t.Replace(wxT("> "), wxT(">"));
-  return t;
-}
-
 void wxMaxima::FirstOutput(wxString s)
 {
   wxConfigBase* config = wxConfig::Get();
@@ -204,11 +193,11 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         wxString rest = s.SubString(start, end);
         if (pre1.Length()) {
           DoRawConsoleAppend(pre, TEXTT);
-          DoConsoleAppend(wxT("<span>") + ClearWhitespaces(rest) +
+          DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
         else {
-          DoConsoleAppend(wxT("<span>") + ClearWhitespaces(rest) +
+          DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
         s = s.SubString(end+1, s.Length());
@@ -237,19 +226,19 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   else if (type == PROMPTT) {
     SetStatusText(_("Ready for user input"), 1);
     m_lastPrompt = s;
-    s = ClearWhitespaces(s);
+    s = s;
     if (s.StartsWith(wxT("(%i")) || s.StartsWith(wxT("MAXIMA>"))) {
       m_inPrompt = true;
       type = MPROMPTT;
     }
-    DoConsoleAppend(wxT("<span>") + ClearWhitespaces(s) + wxT("</span>"),
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
                     type, true);
   }
   else if (type == ERRORT) {
     DoRawConsoleAppend(s, ERRORT);
   }
   else {
-    DoConsoleAppend(wxT("<span>") + ClearWhitespaces(s) + wxT("</span>"),
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
                     type, false);
   }
 }
