@@ -249,8 +249,6 @@ bool TextCell::IsOperator()
 wxString TextCell::ToString(bool all)
 {
   wxString text = m_text;
-  if (m_style == TC_STRING)
-    text += wxT(" ");
   return text + MathCell::ToString(all);
 }
 

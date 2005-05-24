@@ -754,19 +754,11 @@
 	x (wxxml-list (cdr x) nil r "")) 
   (append l x))
 
-(defun wxxml-matchfix-sp (x l r)
-  (setq l (append l (car (wxxmlsym (caar x))))
-	;; car of wxxmlsym of a matchfix operator is the lead op
-	r (append (cdr (wxxmlsym (caar x))) r)
-	;; cdr is the trailing op
-	x (wxxml-list (cdr x) nil r " ")) 
-  (append l x))
-
 (defprop text-string wxxml-matchfix-np wxxml)
 (defprop text-string (("<mstr>")"</mstr>") wxxmlsym)
 
-(defprop mtext wxxml-matchfix-sp wxxml)
-(defprop mtext ((" ")" ") wxxmlsym)
+(defprop mtext wxxml-matchfix-np wxxml)
+(defprop mtext (("")"") wxxmlsym)
 
 (defun wxxml-mlable (x l r)
   (wxxml (caddr x)
