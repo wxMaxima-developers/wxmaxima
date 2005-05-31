@@ -37,6 +37,8 @@ class FunCell : public MathCell
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
     wxString ToString(bool all);
     void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+    bool BreakUp(bool br);
+    void Unbreak(bool all);
   protected:
     MathCell *m_nameCell;
     MathCell *m_argCell;

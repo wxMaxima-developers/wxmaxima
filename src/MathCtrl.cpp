@@ -111,20 +111,22 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     CellParser parser(dcm);
     parser.SetBouns(top, bottom);
     while (tmp != NULL) {
-      tmp->m_currentPoint.x = point.x;
-      tmp->m_currentPoint.y = point.y;
-      if (tmp->DrawThisCell(parser, point))
-        tmp->Draw(parser, point, fontsize, false);
-      if (tmp->m_nextToDraw != NULL) {
-        if (tmp->m_nextToDraw->BreakLineHere()) {
-          point.x = MC_BASE_INDENT;
-          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
-          drop = tmp->m_nextToDraw->GetMaxDrop();
+      if (!tmp->m_isBroken) {
+        tmp->m_currentPoint.x = point.x;
+        tmp->m_currentPoint.y = point.y;
+        if (tmp->DrawThisCell(parser, point))
+          tmp->Draw(parser, point, fontsize, false);
+        if (tmp->m_nextToDraw != NULL) {
+          if (tmp->m_nextToDraw->BreakLineHere() && !tmp->m_nextToDraw->m_isBroken) {
+            point.x = MC_BASE_INDENT;
+            point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+            if (tmp->m_bigSkip)
+              point.y += MC_LINE_SKIP;
+            drop = tmp->m_nextToDraw->GetMaxDrop();
+          }
+          else
+            point.x += (tmp->GetWidth() + MC_CELL_SKIP);
         }
-        else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       }
       tmp = tmp->m_nextToDraw;
     }
@@ -136,11 +138,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         if (m_selectionStart == m_selectionEnd)
           m_selectionStart->DrawBoundingBox(dcm);
         else {
-          tmp->DrawBoundingBox(dcm, true);
+          if (!tmp->m_isBroken)
+            tmp->DrawBoundingBox(dcm, true);
           while (1) {
             tmp = tmp->m_nextToDraw;
             if (tmp == NULL) break;
-            if (tmp->BreakLineHere())
+            if (tmp->BreakLineHere() && !tmp->m_isBroken)
               tmp->DrawBoundingBox(dcm, true);
             if (tmp == m_selectionEnd) break;
           }
@@ -149,7 +152,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       // We have a selection by dragging
       else {
         while (1) {
-          tmp->DrawBoundingBox(dcm, false);
+          if (!tmp->m_isBroken)
+            tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
@@ -183,10 +187,9 @@ void MathCtrl::AddLine(MathCell *newNode, bool forceNewLine)
     m_last = m_tree;
   }
   else {
-    MathCell* tmp = m_last;
-    while (tmp->m_next != NULL)
-      tmp = tmp->m_next;
-    tmp->AppendCell(newNode);
+    while (m_last->m_next != NULL)
+      m_last = m_last->m_next;
+    m_last->AppendCell(newNode);
   }
   newNode->ForceBreakLine(forceNewLine);
   Recalculate(newNode, true);
@@ -211,6 +214,7 @@ void MathCtrl::Recalculate(bool scroll)
 void MathCtrl::Recalculate(MathCell *cell, bool scroll)
 {
   RecalculateWidths(cell);
+  BreakUpCells(cell);
   BreakLines(cell);
   RecalculateSize(cell);
   AdjustSize(scroll);
@@ -257,8 +261,9 @@ void MathCtrl::RecalculateSize(MathCell* tmp)
   wxClientDC dc(this);
   CellParser parser(dc);
   while (tmp != NULL) {
-    tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_next;
+    if (!tmp->m_isBroken)
+      tmp->RecalculateSize(parser, fontsize, false);
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -270,7 +275,12 @@ void MathCtrl::OnSize(wxSizeEvent& event)
   wxDELETE(m_memory);
   
   if (m_tree != NULL) {
+    m_selectionStart = NULL;
+    m_selectionEnd = NULL;
+    UnBreakUpCells();
+    BreakUpCells();
     BreakLines(m_tree);
+    RecalculateSize();
     AdjustSize(false);
   }
   Refresh();
@@ -438,9 +448,9 @@ void MathCtrl::SelectPoint(wxPoint& point)
   // We selected output - select whole line.
   //
   if (m_selectionStart->GetType() == TC_VARIABLE) {
-    while (m_selectionStart->GetPrevious() != NULL &&
-           m_selectionStart->GetPrevious()->GetType() == TC_VARIABLE)
-      m_selectionStart = m_selectionStart->GetPrevious();
+    while (m_selectionStart->m_previousToDraw != NULL &&
+           m_selectionStart->m_previousToDraw->GetType() == TC_VARIABLE)
+      m_selectionStart = m_selectionStart->m_previousToDraw;
     while (m_selectionEnd->m_nextToDraw != NULL &&
            m_selectionEnd->m_nextToDraw->GetType() == TC_VARIABLE)
       m_selectionEnd = m_selectionEnd->m_nextToDraw;
@@ -449,20 +459,20 @@ void MathCtrl::SelectPoint(wxPoint& point)
   // We selected a label - fold the output.
   //
   else if (m_selectionStart->GetType() == TC_LABEL) {
-    if (m_selectionStart->m_next != m_selectionStart->m_nextToDraw) {
+    if (m_selectionStart->m_isFolded) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
-      m_selectionStart->m_nextToDrawIsNext = true;
+      m_selectionStart->m_isFolded = false;
       m_selectionStart->Hide(false);
       m_selectionStart->ResetData();
     }
     else {
       while(m_selectionStart->m_nextToDraw != NULL) {
-        m_selectionStart->m_nextToDraw = m_selectionStart->m_nextToDraw->m_next;
+        m_selectionStart->m_nextToDraw = m_selectionStart->m_nextToDraw->m_nextToDraw;
         if (m_selectionStart->m_nextToDraw != NULL &&
             m_selectionStart->m_nextToDraw->GetType() != TC_VARIABLE)
            break;
       }
-      m_selectionStart->m_nextToDrawIsNext = false;
+      m_selectionStart->m_isFolded = true;
       m_selectionStart->Hide(true);
       m_selectionStart->ResetData();
     }
@@ -482,20 +492,20 @@ void MathCtrl::SelectPoint(wxPoint& point)
       Refresh();
       return;
     }
-    if (m_selectionStart->m_next != m_selectionStart->m_nextToDraw) {
+    if (m_selectionStart->m_isFolded) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
-      m_selectionStart->m_nextToDrawIsNext = true;
+      m_selectionStart->m_isFolded = false;
       m_selectionStart->Hide(false);
       m_selectionStart->ResetData();
     }
     else {
       while(m_selectionStart->m_nextToDraw != NULL) {
-        m_selectionStart->m_nextToDraw = m_selectionStart->m_nextToDraw->m_next;
+        m_selectionStart->m_nextToDraw = m_selectionStart->m_nextToDraw->m_nextToDraw;
         if (m_selectionStart->m_nextToDraw != NULL &&
             m_selectionStart->m_nextToDraw->GetType() == TC_MAIN_PROMPT)
            break;
       }
-      m_selectionStart->m_nextToDrawIsNext = false;
+      m_selectionStart->m_isFolded = true;
       m_selectionStart->Hide(true);
       m_selectionStart->ResetData();
     }
@@ -564,7 +574,7 @@ bool MathCtrl::CanDeleteSelection()
 {
   if (m_selectionStart == NULL || m_selectionEnd == NULL)
     return false;
-  if (m_selectionEnd->m_next == NULL || m_selectionEnd->m_nextToDraw == NULL)
+  if (m_selectionEnd->m_nextToDraw == NULL)
     return false;
   if (m_selectionStart->GetType() == TC_MAIN_PROMPT &&
       (m_selectionEnd == m_selectionStart ||
@@ -581,9 +591,9 @@ void MathCtrl::DeleteSelection()
   if (!CanDeleteSelection())
     return;
   MathCell *start = m_selectionStart;
-  MathCell *end = m_selectionEnd->m_next;
+  MathCell *end = m_selectionEnd->m_nextToDraw;
   while (end != NULL && end->GetType() != TC_MAIN_PROMPT)
-    end = end->m_next;
+    end = end->m_nextToDraw;
   if (end == NULL || start == NULL || end->m_previous == NULL)
     return;
   // We are deleting the first cell in the tree
@@ -595,19 +605,22 @@ void MathCtrl::DeleteSelection()
   // the cell to be deleted is not the first in the tree
   else {
     MathCell* previous = start->m_previous;
+    MathCell* previousToDraw = start->m_previousToDraw;
+    
     end->m_previous->m_next = NULL;
     end->m_previous = previous;
     previous->m_next = end;
-    previous->m_nextToDraw = end;
+    previousToDraw->m_nextToDraw = end;
+    end->m_previousToDraw = previousToDraw;
     // We have to correct the m_nextToDraw for hidden group just before
     // the first to be deleted - check previous label and main prompt.
     while (previous != NULL && previous->GetType() != TC_LABEL)
       previous = previous->m_previous;
-    if (previous != NULL && previous->m_nextToDraw != previous->m_next)
+    if (previous != NULL && previous->m_isFolded)
       previous->m_nextToDraw = end;
     while (previous != NULL && previous->GetType() != TC_MAIN_PROMPT)
       previous = previous->m_previous;
-    if (previous != NULL && previous->m_nextToDraw != previous->m_next)
+    if (previous != NULL && previous->m_isFolded)
       previous->m_nextToDraw = end;
     delete start;
   }
@@ -656,19 +669,21 @@ void MathCtrl::GetMaxPoint(int* width, int* height)
   *height = MC_BASE_INDENT;
   bool bigSkip = false;
   while (tmp != NULL) {
-    if (tmp->BreakLineHere()) {
-      currentHeight += tmp->GetMaxHeight();
-      if (bigSkip)
-        currentHeight += MC_LINE_SKIP;
-      *height = currentHeight;
-      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
-      *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+    if (!tmp->m_isBroken) {
+      if (tmp->BreakLineHere()) {
+        currentHeight += tmp->GetMaxHeight();
+        if (bigSkip)
+          currentHeight += MC_LINE_SKIP;
+        *height = currentHeight;
+        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+        *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+      }
+      else {
+        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+      }
+      bigSkip = tmp->m_bigSkip;
     }
-    else {
-      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-      *width = MAX(currentWidth - MC_CELL_SKIP, *width);
-    }
-    bigSkip = tmp->m_bigSkip;
     tmp = tmp->m_nextToDraw;
   }
   //*width = *width+10;
@@ -687,15 +702,17 @@ void MathCtrl::BreakLines(MathCell* tmp)
   int currentWidth = MC_BASE_INDENT;
     
   while (tmp != NULL) {
-    tmp->BreakLine(false);
     tmp->ResetData();
-    if (tmp->BreakLineHere() ||
-       (currentWidth + tmp->GetWidth() >= fullWidth)) {
-      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
-      tmp->BreakLine(true);
+    tmp->BreakLine(false);
+    if (!tmp->m_isBroken) {
+      if (tmp->BreakLineHere() ||
+          (currentWidth + tmp->GetWidth() >= fullWidth)) {
+        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+        tmp->BreakLine(true);
+      }
+      else
+        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     }
-    else
-      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -709,8 +726,9 @@ void MathCtrl::AdjustSize(bool scroll)
   int clientWidth, clientHeight, virtualHeight;
   
   GetClientSize(&clientWidth, &clientHeight);
-  if (m_tree!=NULL)
+  if (m_tree!=NULL) {
     GetMaxPoint(&width, &height);
+  }
   virtualHeight = MAX(clientHeight, height) + 10;
   
   SetVirtualSize(width + 9, virtualHeight + 9);
@@ -794,11 +812,18 @@ MathCell* MathCtrl::CopyTree()
   MathCell* copy;
   tmp = tmp1->Copy(false);
   copy = tmp;
-  tmp1 = tmp1->m_nextToDraw;
+  
+  if (tmp1->m_isFolded)
+    tmp1 = tmp1->m_nextToDraw;
+  else
+    tmp1 = tmp1->m_next;
   while (tmp1!=NULL) {
     tmp->AppendCell(tmp1->Copy(false));
     tmp = tmp->m_next;
-    tmp1 = tmp1->m_nextToDraw;
+    if (tmp1->m_isFolded)
+      tmp1 = tmp1->m_nextToDraw;
+    else
+      tmp1 = tmp1->m_next;
   }
   return copy;
 }
@@ -826,9 +851,10 @@ bool MathCtrl::CopyToFile(wxString file)
   return bmp.ToFile(file);
 }
 
-bool MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end)
+bool MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
+                          bool asData)
 {
-  MathCell* tmp = CopySelection(start, end);
+  MathCell* tmp = CopySelection(start, end, asData);
   
   Bitmap bmp;
   bmp.SetData(tmp);
@@ -844,7 +870,7 @@ MathCell* MathCtrl::CopySelection()
   return CopySelection(m_selectionStart, m_selectionEnd);
 }
 
-MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end)
+MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData)
 {
   MathCell *tmp, *tmp1 = NULL, *tmp2 = NULL;
   tmp = start;
@@ -860,7 +886,10 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end)
     }
     if (tmp == end)
       break;
-    tmp = tmp->m_nextToDraw;
+    if (asData)
+      tmp = tmp->m_next;
+    else
+      tmp = tmp->m_nextToDraw;
   }
   
   return tmp1;
@@ -1026,7 +1055,7 @@ bool MathCtrl::ExportToHTML(wxString file)
     AddLineToFile(output, wxT(" <P>"));
     
     // PROMPT
-    if (tmp->m_nextToDrawIsNext)
+    if (!tmp->m_isFolded)
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
     else
       AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
@@ -1062,25 +1091,34 @@ bool MathCtrl::ExportToHTML(wxString file)
     
     // OUTPUT
     start = tmp;
-    while (tmp!=NULL && tmp->m_nextToDraw!=NULL &&
-           tmp->m_nextToDraw->GetType()!=TC_MAIN_PROMPT)
-      tmp = tmp->m_nextToDraw;
-    end = tmp;
+    if (tmp != NULL && tmp->m_isFolded) {
+      end = tmp;
+    }
+    else {
+      while (tmp!=NULL && tmp->m_next!=NULL &&
+             tmp->m_next->GetType()!=TC_MAIN_PROMPT)
+        tmp = tmp->m_next;
+      end = tmp;
+    }
     if (start!=NULL && end!=NULL) {
       if (!CopyToFile(imgDir + wxT("/") +filename +
-                      wxString::Format(wxT("%d.png"), count),
-                      start, end))
+                      wxString::Format(wxT("_%d.png"), count),
+                      start, end, true))
         return false;
       AddLineToFile(output, wxT("  <BR>"));
       AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"img/") + 
                             filename + 
-                            wxString::Format(wxT("%d.png\">"), count));
+                            wxString::Format(wxT("_%d.png\">"), count));
       count++;
     }
     AddLineToFile(output, wxT(" </P>"));
     AddLineToFile(output, wxT(""));
-    if (tmp!=NULL)
-      tmp = tmp->m_nextToDraw;
+    if (tmp != NULL) {
+      if (start->m_isFolded)
+        tmp = tmp->m_nextToDraw;
+      else
+        tmp = tmp->m_next;
+    }
   }
   
   //
@@ -1103,6 +1141,51 @@ bool MathCtrl::ExportToHTML(wxString file)
 	output.Close();
 
   return done;
+}
+
+void MathCtrl::BreakUpCells()
+{
+  if (m_tree != NULL)
+    BreakUpCells(m_tree);
+}
+
+void MathCtrl::BreakUpCells(MathCell *cell)
+{
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  int fontsize = 12;
+  MathCell *tmp = cell;
+  
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  int clientWidth = GetClientSize().GetWidth() - 9;
+  
+  while (tmp != NULL) {
+    if (tmp->GetWidth()>clientWidth) {
+      if (tmp->BreakUp(true))
+        tmp->RecalculateWidths(parser, fontsize, false);
+    }
+    tmp = tmp->m_nextToDraw;
+  }
+}
+
+void MathCtrl::UnBreakUpCells()
+{
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  int fontsize = 12;
+  
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  int clientWidth = GetClientSize().GetWidth() - 9;
+  
+  MathCell *tmp = m_tree;
+  while (tmp != NULL) {
+    if (tmp->m_isBroken) {
+      tmp->Unbreak(false);
+      tmp->RecalculateWidths(parser, fontsize, false);
+    }
+    tmp->Unbreak(false);
+    tmp = tmp->m_next;
+  }
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

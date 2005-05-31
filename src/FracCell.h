@@ -46,9 +46,14 @@ class FracCell : public MathCell
     void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
     wxString ToString(bool all);
     void SetExponentFlag();
+    bool BreakUp(bool br);
+    void SetupBreakUps();
+    void Unbreak(bool all);
 	protected:
     MathCell *m_num;
     MathCell *m_denom;
+    MathCell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
+    MathCell *m_last1, *m_last2;
     bool m_exponent;
     int m_fracStyle;
 };

@@ -83,17 +83,19 @@ bool MathPrintout::OnPrintPage(int num)
     CellParser parser(*dc, ppiScale);
     
     while(tmp != NULL) {
-      tmp->Draw(parser, point, fontsize, false);
-      if (tmp->m_nextToDraw != NULL &&
-          tmp->m_nextToDraw->BreakLineHere()) {
-        point.x = marginX;
-        point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-        if (tmp->m_bigSkip)
-          point.y += SCALE_PX(5, ppiScale);
-        drop = tmp->m_nextToDraw->GetMaxDrop();
+      if (!tmp->m_isBroken) {
+        tmp->Draw(parser, point, fontsize, false);
+        if (tmp->m_nextToDraw != NULL && !tmp->m_nextToDraw->m_isBroken &&
+            tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = marginX;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += SCALE_PX(5, ppiScale);
+          drop = tmp->m_nextToDraw->GetMaxDrop();
+        }
+        else
+          point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
       }
-      else
-        point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
       tmp = tmp->m_nextToDraw;
       if (tmp == NULL || tmp->BreakPageHere())
         break;
@@ -125,15 +127,17 @@ void MathPrintout::BreakLines()
   MathCell* tmp = m_tree;
   
   while (tmp != NULL) {
-    tmp->BreakLine(false);
-    tmp->ResetData();
-    if (tmp->BreakLineHere() ||
-       (currentWidth + tmp->GetWidth() >= fullWidth)) {
-      currentWidth = marginX + tmp->GetWidth();
-      tmp->BreakLine(true);
+    if (!tmp->m_isBroken) {
+      tmp->BreakLine(false);
+      tmp->ResetData();
+      if (tmp->BreakLineHere() ||
+         (currentWidth + tmp->GetWidth() >= fullWidth)) {
+        currentWidth = marginX + tmp->GetWidth();
+        tmp->BreakLine(true);
+      }
+      else
+        currentWidth += (tmp->GetWidth() + SCALE_PX(2, scale));
     }
-    else
-      currentWidth += (tmp->GetWidth() + SCALE_PX(2, scale));
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -159,20 +163,22 @@ void MathPrintout::BreakPages()
 
   m_numberOfPages = 1;
   while (tmp != NULL) {
-    tmp->BreakPage(false);
-    if (tmp->BreakLineHere()) {
-      if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY) {
-        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
-        tmp->BreakPage(true);
-        m_pages.push_back(tmp);
-        m_numberOfPages++;
+    if (!tmp->m_isBroken) {
+      tmp->BreakPage(false);
+      if (tmp->BreakLineHere()) {
+        if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY) {
+          currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+          tmp->BreakPage(true);
+          m_pages.push_back(tmp);
+          m_numberOfPages++;
+        }
+        else
+          currentHeight += tmp->GetMaxHeight() + skip;
+        if (tmp->m_bigSkip)
+          skip = SCALE_PX(5, scale);
+        else
+          skip = 0;
       }
-      else
-        currentHeight += tmp->GetMaxHeight() + skip;
-      if (tmp->m_bigSkip)
-        skip = SCALE_PX(5, scale);
-      else
-        skip = 0;
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -181,6 +187,7 @@ void MathPrintout::BreakPages()
 void MathPrintout::SetupData()
 {
   RecalculateWidths();
+  BreakUpCells();
   BreakLines();
   RecalculateSize();
   BreakPages();
@@ -268,7 +275,7 @@ void MathPrintout::RecalculateSize()
   CellParser parser(*dc, scale);
   while (tmp != NULL) {
     tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -328,5 +335,31 @@ void MathPrintout::DestroyTree(MathCell* tmp)
     tmp = tmp->m_next;
     tmp1->Destroy();
     delete tmp1;
+  }
+}
+
+void MathPrintout::BreakUpCells()
+{
+  MathCell *tmp = m_tree;
+  int pageWidth, pageHeight, marginX, marginY;
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  int fontsize = 12;
+  config->Read(wxT("fontSize"), &fontsize);
+  double scale = GetPPIScale();
+  
+  wxDC *dc = GetDC();
+  CellParser parser(*dc, scale);
+  
+  GetPageSizePixels(&pageWidth, &pageHeight);
+  GetPageMargins(&marginX, &marginY);
+  
+  int fullWidth = pageWidth - marginX;
+  
+  while (tmp != NULL) {
+    if (tmp->GetWidth() > fullWidth) {
+      if (tmp->BreakUp(true))
+        tmp->RecalculateWidths(parser, fontsize, false);
+    }
+    tmp = tmp->m_nextToDraw;
   }
 }

@@ -25,6 +25,8 @@ ParenCell::ParenCell() : MathCell()
 {
   m_innerCell = NULL;
   m_print = true;
+  m_open = new TextCell(wxT("("));
+  m_close = new TextCell(wxT(")"));
 }
 
 
@@ -34,6 +36,8 @@ ParenCell::~ParenCell()
     delete m_innerCell;
   if (m_next != NULL)
     delete m_next;
+  delete m_open;
+  delete m_close;
 }
 
 MathCell* ParenCell::Copy(bool all)
@@ -41,8 +45,8 @@ MathCell* ParenCell::Copy(bool all)
   ParenCell *tmp = new ParenCell;
   tmp->SetInner(m_innerCell->Copy(true), m_style);
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next != NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 
@@ -62,6 +66,13 @@ void ParenCell::SetInner(MathCell *inner, int style)
     delete m_innerCell;
   m_innerCell = inner;
   m_style = style;
+  
+  
+  m_open->m_nextToDraw = m_innerCell;
+  m_open->m_previousToDraw = this;
+  while (inner->m_next != NULL)
+    inner = inner->m_next;
+  m_last1 = inner;
 }
 
 void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
@@ -72,6 +83,9 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   
   m_innerCell->RecalculateWidths(parser, fontsize, true);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
+  
+  m_open->RecalculateWidths(parser, fontsize, false);
+  m_close->RecalculateWidths(parser, fontsize, false);
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -81,6 +95,9 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_innerCell->RecalculateSize(parser, fontsize, true);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
+  
+  m_open->RecalculateSize(parser, fontsize, false);
+  m_close->RecalculateSize(parser, fontsize, false);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -129,10 +146,12 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 wxString ParenCell::ToString(bool all)
 {
   wxString s;
-  if (m_print)
-    s = wxT("(") + m_innerCell->ToString(true) + wxT(")");
-  else
-    s = m_innerCell->ToString(true);
+  if (!m_isBroken) {
+    if (m_print)
+      s = wxT("(") + m_innerCell->ToString(true) + wxT(")");
+    else
+      s = m_innerCell->ToString(true);
+  }
   s +=  MathCell::ToString(all);
   return s;
 }
@@ -149,4 +168,28 @@ void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     *first = this;
     *last = this;
   }
+}
+
+bool ParenCell::BreakUp(bool br)
+{
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_open->m_nextToDraw = m_innerCell;
+    m_innerCell->m_previousToDraw = m_open;
+    m_last1->m_nextToDraw = m_close;
+    m_close->m_previousToDraw = m_last1;
+    m_close->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close;
+    m_nextToDraw = m_open;
+    return true;
+  }
+  return false;
+}
+
+void ParenCell::Unbreak(bool all)
+{
+  if (m_isBroken)
+    m_innerCell->Unbreak(true);
+  MathCell::Unbreak(all);
 }

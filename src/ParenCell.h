@@ -36,8 +36,11 @@ class ParenCell : public MathCell
     void RecalculateSize(CellParser& parser, int fontsize, bool all);
     void RecalculateWidths(CellParser& parser, int fontsize, bool all);
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+    bool BreakUp(bool br);
+    void Unbreak(bool all);
 	protected:
-    MathCell* m_innerCell;
+    MathCell *m_innerCell, *m_open, *m_close;
+    MathCell *m_last1;
     bool m_print;
     wxString ToString(bool all);
 };

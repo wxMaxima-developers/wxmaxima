@@ -41,8 +41,8 @@ MathCell* DiffCell::Copy(bool all)
   DiffCell* tmp = new DiffCell;
   tmp->SetDiff(m_diffCell->Copy(true));
   tmp->SetBase(m_baseCell->Copy(true));
-  if (all && m_nextToDraw!= NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!= NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

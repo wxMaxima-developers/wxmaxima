@@ -52,8 +52,8 @@ MathCell* SumCell::Copy(bool all)
   tmp->SetOver(m_over->Copy(true));
   tmp->m_sumStyle = m_sumStyle;
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

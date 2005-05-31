@@ -39,8 +39,8 @@ MathCell* SqrtCell::Copy(bool all)
   SqrtCell* tmp = new SqrtCell;
   tmp->SetInner(m_innerCell->Copy(true));
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

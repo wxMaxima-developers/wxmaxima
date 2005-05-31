@@ -19,6 +19,7 @@
  */
 
 #include "FracCell.h"
+#include "TextCell.h"
 
 FracCell::FracCell() : MathCell()
 {
@@ -26,6 +27,12 @@ FracCell::FracCell() : MathCell()
   m_denom = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
+  
+  m_open1 = NULL;
+  m_close1 = NULL;
+  m_open2 = NULL;
+  m_close2 = NULL;
+  m_divide = NULL;
 }
 
 MathCell* FracCell::Copy(bool all)
@@ -36,8 +43,9 @@ MathCell* FracCell::Copy(bool all)
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  tmp->SetupBreakUps();
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 
@@ -60,6 +68,12 @@ void FracCell::Destroy()
   m_num = NULL;
   m_denom = NULL;
   m_next = NULL;
+  
+  delete m_open1;
+  delete m_open2;
+  delete m_close1;
+  delete m_close2;
+  delete m_divide;
 }
 
 void FracCell::SetNum(MathCell *num)
@@ -83,9 +97,15 @@ void FracCell::SetDenom(MathCell *denom)
 void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  m_num->RecalculateWidths(parser, MAX(8, fontsize-2), true);
-  m_denom->RecalculateWidths(parser, MAX(8, fontsize-2), true);
-  if (m_exponent) {
+  if (m_isBroken) {
+    m_num->RecalculateWidths(parser, fontsize, true);
+    m_denom->RecalculateWidths(parser, fontsize, true);
+  }
+  else {
+    m_num->RecalculateWidths(parser, MAX(8, fontsize-2), true);
+    m_denom->RecalculateWidths(parser, MAX(8, fontsize-2), true);
+  }
+  if (m_exponent && !m_isBroken) {
     wxDC& dc = parser.GetDC();
     int width, height;
     dc.GetTextExtent(wxT("/"), &width, &height);
@@ -94,6 +114,11 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   else {
     m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale));
   }
+  m_open1->RecalculateWidths(parser, fontsize, false);
+  m_close1->RecalculateWidths(parser, fontsize, false);
+  m_open2->RecalculateWidths(parser, fontsize, false);
+  m_close2->RecalculateWidths(parser, fontsize, false);
+  m_divide->RecalculateWidths(parser, fontsize, false);
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -111,6 +136,12 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = m_num->GetMaxHeight();
     m_center = m_height/2;
   }
+  
+  m_open1->RecalculateSize(parser, fontsize, false);
+  m_close1->RecalculateSize(parser, fontsize, false);
+  m_open2->RecalculateSize(parser, fontsize, false);
+  m_close2->RecalculateSize(parser, fontsize, false);
+  m_divide->RecalculateSize(parser, fontsize, false);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -121,7 +152,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     double scale = parser.GetScale();
     wxPoint num, denom;
         
-    if (m_exponent) {
+    if (m_exponent && !m_isBroken) {
       int width, height;
       double scale = parser.GetScale();
       dc.GetTextExtent(wxT("/"), &width, &height);
@@ -159,38 +190,40 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 wxString FracCell::ToString(bool all)
 {
   wxString s;
-  if (m_fracStyle == FC_NORMAL) {
-    if (m_num->IsCompound())
-      s += wxT("(") + m_num->ToString(true) + wxT(")/");
-    else
-      s += m_num->ToString(true) + wxT("/");
-    if (m_denom->IsCompound())
-      s += wxT("(") + m_denom->ToString(true) + wxT(")");
-    else
-      s += m_denom->ToString(true);
-    s += MathCell::ToString(all);
-  }
-  else if (m_fracStyle == FC_CHOOSE) {
-    s = wxT("binom(") + m_num->ToString(true) + wxT(",") +
-        m_denom->ToString(true) + wxT(")");
-    s += MathCell::ToString(all);
-  }
-  else {
-    MathCell* tmp = m_denom;
-    while (tmp != NULL) {
-      tmp = tmp->m_next;   // Skip the d
-      if (tmp == NULL)
-        break;
-      tmp = tmp->m_next;   // Skip the *
-      if (tmp == NULL)
-        break;
-      s += tmp->GetDiffPart();
-      tmp = tmp->m_next;   // Skip the *
-      if (tmp == NULL)
-        break;
-      tmp = tmp->m_next;
+  if (!m_isBroken) {
+    if (m_fracStyle == FC_NORMAL) {
+      if (m_num->IsCompound())
+        s += wxT("(") + m_num->ToString(true) + wxT(")/");
+      else
+        s += m_num->ToString(true) + wxT("/");
+      if (m_denom->IsCompound())
+        s += wxT("(") + m_denom->ToString(true) + wxT(")");
+      else
+        s += m_denom->ToString(true);
+    }
+    else if (m_fracStyle == FC_CHOOSE) {
+      s = wxT("binom(") + m_num->ToString(true) + wxT(",") +
+          m_denom->ToString(true) + wxT(")");
+    }
+    else {
+      MathCell* tmp = m_denom;
+      while (tmp != NULL) {
+        tmp = tmp->m_next;   // Skip the d
+        if (tmp == NULL)
+          break;
+        tmp = tmp->m_next;   // Skip the *
+        if (tmp == NULL)
+          break;
+        s += tmp->GetDiffPart();
+        tmp = tmp->m_next;   // Skip the *
+        if (tmp == NULL)
+          break;
+        tmp = tmp->m_next;
+      }
     }
   }
+  if (m_fracStyle == FC_NORMAL)
+    s += MathCell::ToString(all);
   return s;
 }
 
@@ -212,4 +245,78 @@ void FracCell::SetExponentFlag()
 {
   if (m_num->IsShortNum() && m_denom->IsShortNum())
     m_exponent = true;
+}
+
+bool FracCell::BreakUp(bool br)
+{
+  if (m_fracStyle == FC_DIFF)
+    return false;
+  
+  if (br && !m_isBroken) {
+    m_isBroken = true;
+    m_open1->m_previousToDraw = this;
+    m_open1->m_nextToDraw = m_num;
+    m_num->m_previousToDraw = m_open1;
+    m_last1->m_nextToDraw = m_close1;
+    m_close1->m_previousToDraw = m_last1;
+    m_close1->m_nextToDraw = m_divide;
+    m_divide->m_previousToDraw = m_close1;
+    m_divide->m_nextToDraw = m_open2;
+    m_open2->m_previousToDraw = m_divide;
+    m_open2->m_nextToDraw = m_denom;
+    m_denom->m_previousToDraw = m_open2;
+    m_last2->m_nextToDraw = m_close2;
+    m_close2->m_previousToDraw = m_last2;
+    m_close2->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close2;
+    m_nextToDraw = m_open1;
+    return true;
+  }
+  return false;
+}
+
+void FracCell::SetupBreakUps()
+{
+  if (m_fracStyle == FC_NORMAL) {
+    m_open1 = new TextCell(wxT("("));
+    m_close1 = new TextCell(wxT(")"));
+    m_open2 = new TextCell(wxT("("));
+    m_close2 = new TextCell(wxT(")"));
+    if (!m_num->IsCompound()) {
+      m_open1->SetHidden(true);
+      m_close1->SetHidden(true);
+    }
+    if (!m_denom->IsCompound()) {
+      m_open2->SetHidden(true);
+      m_close2->SetHidden(true);
+    }
+    m_divide = new TextCell(wxT("/"));
+  }
+  else {
+    m_open1 = new TextCell(wxT("binom("));
+    m_close1 = new TextCell(wxT("x"));
+    m_open2 = new TextCell(wxT("x"));
+    m_close2 = new TextCell(wxT(")"));
+    m_divide = new TextCell(wxT(","));
+    m_close1->SetHidden(true);
+    m_open2->SetHidden(true);
+  }
+  
+  m_last1 = m_num;
+  while (m_last1->m_next != NULL)
+    m_last1 = m_last1->m_next;
+  
+  m_last2 = m_denom;
+  while (m_last2->m_next != NULL)
+    m_last2 = m_last2->m_next;
+}
+
+void FracCell::Unbreak(bool all)
+{
+  if (m_isBroken) {
+    m_num->Unbreak(true);
+    m_denom->Unbreak(true);
+  }
+  MathCell::Unbreak(all);
 }

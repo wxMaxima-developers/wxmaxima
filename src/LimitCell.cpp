@@ -46,8 +46,8 @@ MathCell* LimitCell::Copy(bool all)
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetName(m_name->Copy(true));
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(true));
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(true));
   return tmp;
 }
 

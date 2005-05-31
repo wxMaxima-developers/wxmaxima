@@ -37,6 +37,7 @@ class Bitmap
     void BreakLines();
     void RecalculateSize();
     void GetMaxPoint(int* width, int* height);
+    void BreakUpCells();
     void Layout();
     void Draw();
 	  MathCell *m_tree;

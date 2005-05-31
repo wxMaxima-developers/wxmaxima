@@ -53,6 +53,7 @@ class MathPrintout : public wxPrintout
     void RecalculateWidths();
     double GetPPIScale();
     void GetScreenScale(double *scaleX, double *scaleY);
+    void BreakUpCells();
   private:
     int m_numberOfPages;
     MathCell* m_tree;

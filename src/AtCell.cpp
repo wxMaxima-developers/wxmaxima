@@ -42,8 +42,8 @@ MathCell* AtCell::Copy(bool all)
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!= NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!= NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

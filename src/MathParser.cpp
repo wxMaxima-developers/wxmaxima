@@ -63,6 +63,7 @@ MathCell* MathParser::ParseFracTag(xmlNodePtr node)
         frac->SetFracStyle(FC_CHOOSE);
       }
       frac->SetStyle(m_ParserStyle);
+      frac->SetupBreakUps();
       return frac;
     }
   }

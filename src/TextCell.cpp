@@ -41,12 +41,12 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_symbol = m_symbol;
   tmp->m_style = m_style;
   tmp->m_forceBreakLine = m_forceBreakLine;
-  tmp->m_nextToDrawIsNext = m_nextToDrawIsNext;
+  tmp->m_isFolded = m_isFolded;
   tmp->m_bigSkip = m_bigSkip;
   tmp->m_hidden = m_hidden;
   tmp->m_greek = m_greek;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!=NULL)
+      tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 
@@ -122,7 +122,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   int fontsize1 = (int) (((double)fontsize)*scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
-  if (!m_nextToDrawIsNext)
+  if (m_isFolded)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_HIDDEN_GROUP),
                       parser.IsBold(TS_HIDDEN_GROUP),

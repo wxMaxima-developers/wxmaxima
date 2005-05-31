@@ -40,8 +40,8 @@ MathCell* SubCell::Copy(bool all)
   SubCell* tmp = new SubCell;
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(all));
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

@@ -24,6 +24,7 @@ MathCell::MathCell()
 {
   m_next = NULL;
   m_previous = NULL;
+  m_previousToDraw = NULL;
   m_nextToDraw = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
@@ -33,9 +34,10 @@ MathCell::MathCell()
   m_breakPage = false;
   m_forceBreakLine = false;
   m_bigSkip = true;
-  m_style = TC_VARIABLE;
-  m_nextToDrawIsNext = true;
+  m_isFolded = false;
   m_hidden = false;
+  m_isBroken = false;
+  m_style = TC_VARIABLE;
 }
 
 /***
@@ -52,8 +54,12 @@ void MathCell::AppendCell(MathCell *p_next) {
   if (p_next == NULL) return;
   if (m_next == NULL) {
     m_next = p_next;
-    m_nextToDraw = p_next;
     m_next->m_previous = this;
+    MathCell *tmp = this;
+    while (tmp->m_nextToDraw != NULL)
+      tmp = tmp->m_nextToDraw;
+    tmp->m_nextToDraw = p_next;
+    p_next->m_previousToDraw = tmp;
   }
   else m_next->AppendCell(p_next);
 };
@@ -63,16 +69,17 @@ void MathCell::AppendCell(MathCell *p_next) {
  */
 int MathCell::GetMaxCenter()
 {
+  int center = m_isBroken ? 0 : m_center;
   if (m_maxCenter == -1) {
     if (m_nextToDraw == NULL)
-      m_maxCenter = m_center;
+      m_maxCenter = center;
     else {
       // If the next cell is on a new line, maxCenter is m_center
-      if (m_nextToDraw->m_breakLine) {
-        m_maxCenter = m_center;
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken) {
+        m_maxCenter = center;
       }
       else {
-        m_maxCenter = MAX(m_center, m_nextToDraw->GetMaxCenter());
+        m_maxCenter = MAX(center, m_nextToDraw->GetMaxCenter());
       }
     }
   }
@@ -84,15 +91,16 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
+  int drop = m_isBroken ? 0 : (m_height - m_center);
   if (m_maxDrop == -1) {
     if (m_nextToDraw == NULL)
-      m_maxDrop = m_height - m_center;
+      m_maxDrop = drop;
     else {
-      if (m_nextToDraw->m_breakLine) {
-        m_maxDrop = m_height - m_center;
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken) {
+        m_maxDrop = drop;
       }
       else {
-        m_maxDrop = MAX(m_height-m_center, m_nextToDraw->GetMaxDrop());
+        m_maxDrop = MAX(drop, m_nextToDraw->GetMaxDrop());
       }
     }
   }
@@ -113,10 +121,10 @@ int MathCell::GetMaxHeight()
 int MathCell::GetFullWidth(double scale)
 {
   if (m_fullWidth == -1) {
-    if (m_nextToDraw == NULL)
+    if (m_next == NULL)
       m_fullWidth = m_width;
     else
-      m_fullWidth = m_width + m_nextToDraw->GetFullWidth(scale) +
+      m_fullWidth = m_width + m_next->GetFullWidth(scale) +
                     SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_fullWidth;
@@ -127,11 +135,12 @@ int MathCell::GetFullWidth(double scale)
  */
 int MathCell::GetLineWidth(double scale)
 {
+  int width = m_isBroken ? 0 : m_width;
   if (m_lineWidth == -1) {
     if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine)
-      m_lineWidth = m_width;
+      m_lineWidth = width;
     else
-      m_lineWidth = m_width + m_nextToDraw->GetLineWidth(scale) +
+      m_lineWidth = width + m_nextToDraw->GetLineWidth(scale) +
                     SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_lineWidth;
@@ -160,8 +169,8 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
  */
 void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
-  if (m_nextToDraw != NULL && all)
-    m_nextToDraw->RecalculateSize(parser, fontsize, all);  
+  if (m_next != NULL && all)
+    m_next->RecalculateSize(parser, fontsize, all);  
 }
 
 /***
@@ -176,8 +185,8 @@ void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop = -1;
-  if (m_nextToDraw != NULL && all)
-    m_nextToDraw->RecalculateWidths(parser, fontsize, all);
+  if (m_next != NULL && all)
+    m_next->RecalculateWidths(parser, fontsize, all);
 }
 
 /***
@@ -198,7 +207,10 @@ bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
  * Get the rectangle around this box - if all is true then return the box around
  * the whole line.
  */
-wxRect MathCell::GetRect(bool all) {
+wxRect MathCell::GetRect(bool all)
+{
+  if (m_isBroken)
+    return wxRect(-1,-1,0,0);
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
                   GetLineWidth(1.0), GetMaxHeight());
@@ -329,6 +341,20 @@ void MathCell::ResetData()
   m_lineWidth = -1;
   m_currentPoint.x = -1;
   m_currentPoint.y = -1;
+}
+
+/***
+ * Unbreaks broken cells
+ */
+void MathCell::Unbreak(bool all)
+{
+  m_isBroken = false;
+  if (!m_isFolded)
+    m_nextToDraw = m_next;
+  m_previousToDraw = m_previous;
+  ResetData();
+  if (all && m_next != NULL)
+    m_next->Unbreak(all);
 }
 
 void MathCell::SetPen(CellParser& parser)

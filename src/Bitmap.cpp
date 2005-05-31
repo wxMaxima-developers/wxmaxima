@@ -42,14 +42,13 @@ void Bitmap::SetData(MathCell* tree)
   if (m_tree != NULL)
     delete m_tree;
   m_tree = tree;
-  if (m_tree != NULL)
-    m_tree->ForceBreakLine(true);
   Layout();
 }
 
 void Bitmap::Layout()
 {
   RecalculateWidths();
+  BreakUpCells();
   BreakLines();
   RecalculateSize();
   
@@ -71,7 +70,7 @@ void Bitmap::RecalculateSize()
   
   while (tmp != NULL) {
     tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -99,15 +98,17 @@ void Bitmap::BreakLines()
   MathCell* tmp = m_tree;
   
   while (tmp != NULL) {
-    tmp->BreakLine(false);
-    tmp->ResetData();
-    if (tmp->BreakLineHere() ||
-       (currentWidth + tmp->GetWidth() >= fullWidth)) {
-      currentWidth = tmp->GetWidth();
-      tmp->BreakLine(true);
+    if (!tmp->m_isBroken) {
+      tmp->BreakLine(false);
+      tmp->ResetData();
+      if (tmp->BreakLineHere() ||
+         (currentWidth + tmp->GetWidth() >= fullWidth)) {
+        currentWidth = tmp->GetWidth();
+        tmp->BreakLine(true);
+      }
+      else
+        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     }
-    else
-      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -120,20 +121,24 @@ void Bitmap::GetMaxPoint(int* width, int* height)
   *width = MC_BASE_INDENT;
   *height = MC_BASE_INDENT;
   bool bigSkip = false;
+  bool firstCell = true;
   while (tmp != NULL) {
-    if (tmp->BreakLineHere()) {
-      currentHeight += tmp->GetMaxHeight();
-      if (bigSkip)
-        currentHeight += MC_LINE_SKIP;
-      *height = currentHeight;
-      currentWidth = MC_BASE_INDENT + tmp->GetWidth();
-      *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+    if (!tmp->m_isBroken) {
+      if (tmp->BreakLineHere() || firstCell) {
+        firstCell = false;
+        currentHeight += tmp->GetMaxHeight();
+        if (bigSkip)
+          currentHeight += MC_LINE_SKIP;
+        *height = currentHeight;
+        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+        *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+      }
+      else {
+        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+      }
+      bigSkip = tmp->m_bigSkip;
     }
-    else {
-      currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-      *width = MAX(currentWidth - MC_CELL_SKIP, *width);
-    }
-    bigSkip = tmp->m_bigSkip;
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -159,22 +164,23 @@ void Bitmap::Draw()
     CellParser parser(dc);
     
     while(tmp != NULL) {
-      tmp->Draw(parser, point, fontsize, false);
-      if (tmp->m_nextToDraw != NULL &&
-          tmp->m_nextToDraw->BreakLineHere()) {
-        point.x = 0;
-        point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-        if (tmp->m_bigSkip)
-          point.y += MC_LINE_SKIP;
-        drop = tmp->m_nextToDraw->GetMaxDrop();
+      if (!tmp->m_isBroken) {
+        tmp->Draw(parser, point, fontsize, false);
+        if (tmp->m_nextToDraw != NULL && !tmp->m_nextToDraw->m_isBroken &&
+            tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = 0;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += MC_LINE_SKIP;
+          drop = tmp->m_nextToDraw->GetMaxDrop();
+        }
+        else
+          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       }
-      else
-        point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       tmp = tmp->m_nextToDraw;
-      if (tmp == NULL || tmp->BreakPageHere())
-        break;
     }
   }
+  dc.SelectObject(wxNullBitmap);
 }
 
 bool Bitmap::ToFile(wxString file)
@@ -216,4 +222,21 @@ void Bitmap::DestroyTree()
     }
   }
   m_tree = NULL;
+}
+
+void Bitmap::BreakUpCells()
+{
+  MathCell *tmp = m_tree;
+  int fontsize = 12;
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  wxMemoryDC dc;
+  CellParser parser(dc);
+  
+  while (tmp != NULL) {
+    if (tmp->GetWidth() > BM_FULL_WIDTH) {
+      if (tmp->BreakUp(true))
+        tmp->RecalculateWidths(parser, fontsize, false);
+    }
+    tmp = tmp->m_nextToDraw;
+  }
 }

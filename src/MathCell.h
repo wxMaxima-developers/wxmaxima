@@ -55,8 +55,6 @@ class MathCell
     int GetWidth() { return m_width; }
     int GetCenter() { return m_center; }
     int GetDrop() { return m_height - m_center; }
-    MathCell* GetNext() { return m_next; }
-    MathCell* GetPrevious() { return m_previous; }
     int GetType() { return m_style; }
     void AppendCell(MathCell *p_next);
     virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
@@ -92,16 +90,18 @@ class MathCell
     bool ContainsRect(wxRect& big, bool all = true);
     void SetPen(CellParser& parser);
     void UnsetPen(CellParser& parser);
-    MathCell* m_next;
-    MathCell* m_previous;
-    MathCell* m_nextToDraw;
+    MathCell *m_next, *m_previous;
+    MathCell *m_nextToDraw, *m_previousToDraw;
     wxPoint m_currentPoint;
     bool m_bigSkip;
-    bool m_nextToDrawIsNext;
+    bool m_isFolded;
+    bool m_isBroken;
     virtual void SetExponentFlag() { };
     virtual void Hide(bool hide) { };
     virtual bool IsShortNum() { return false; };
     void SetHidden(bool hidden) { m_hidden = hidden; }
+    virtual bool BreakUp(bool br) { return false; };
+    virtual void Unbreak(bool all);
   protected:
     int m_height;
     int m_maxHeight;

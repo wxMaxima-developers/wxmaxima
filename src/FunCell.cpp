@@ -42,8 +42,8 @@ MathCell* FunCell::Copy(bool all)
   tmp->SetName(m_nameCell->Copy(true));
   tmp->SetArg(m_argCell->Copy(true));
   tmp->m_style = m_style;
-  if (all && m_nextToDraw!=NULL)
-    tmp->AppendCell(m_nextToDraw->Copy(true));
+  if (all && m_next!=NULL)
+    tmp->AppendCell(m_next->Copy(true));
   return tmp;
 }
 
@@ -112,7 +112,9 @@ void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString FunCell::ToString(bool all)
 {
-  wxString s = m_nameCell->ToString(true) + m_argCell->ToString(true);
+  wxString s;
+  if (!m_isBroken)
+    s += m_nameCell->ToString(true) + m_argCell->ToString(true);
   s += MathCell::ToString(all);
   return s;
 }
@@ -129,4 +131,29 @@ void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
     *first = this;
     *last = this;
   }
+}
+
+bool FunCell::BreakUp(bool br)
+{
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_nameCell->m_previousToDraw = this;
+    m_nameCell->m_nextToDraw = m_argCell;
+    m_argCell->m_previousToDraw = m_nameCell;
+    m_argCell->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_argCell;
+    m_nextToDraw = m_nameCell;
+    return true;
+  }
+  return false;
+}
+
+void FunCell::Unbreak(bool all)
+{
+  if (m_isBroken) {
+    m_nameCell->Unbreak(true);
+    m_argCell->Unbreak(true);
+  }
+  MathCell::Unbreak(all);
 }
