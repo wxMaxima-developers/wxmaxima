@@ -96,10 +96,10 @@ class MathCell
     bool m_bigSkip;
     bool m_isFolded;
     bool m_isBroken;
+    bool m_isHidden;
     virtual void SetExponentFlag() { };
     virtual void Hide(bool hide) { };
     virtual bool IsShortNum() { return false; };
-    void SetHidden(bool hidden) { m_hidden = hidden; }
     virtual bool BreakUp(bool br) { return false; };
     virtual void Unbreak(bool all);
   protected:
@@ -115,7 +115,6 @@ class MathCell
     bool m_breakPage;
     bool m_breakLine;
     bool m_forceBreakLine;
-    bool m_hidden;
 };
 
 #endif	//_MATHCELL_H_

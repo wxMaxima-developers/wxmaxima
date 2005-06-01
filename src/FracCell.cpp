@@ -284,12 +284,12 @@ void FracCell::SetupBreakUps()
     m_open2 = new TextCell(wxT("("));
     m_close2 = new TextCell(wxT(")"));
     if (!m_num->IsCompound()) {
-      m_open1->SetHidden(true);
-      m_close1->SetHidden(true);
+      m_open1->m_isHidden = true;
+      m_close1->m_isHidden = true;
     }
     if (!m_denom->IsCompound()) {
-      m_open2->SetHidden(true);
-      m_close2->SetHidden(true);
+      m_open2->m_isHidden = true;
+      m_close2->m_isHidden = true;
     }
     m_divide = new TextCell(wxT("/"));
   }
@@ -299,8 +299,8 @@ void FracCell::SetupBreakUps()
     m_open2 = new TextCell(wxT("x"));
     m_close2 = new TextCell(wxT(")"));
     m_divide = new TextCell(wxT(","));
-    m_close1->SetHidden(true);
-    m_open2->SetHidden(true);
+    m_close1->m_isHidden = true;
+    m_open2->m_isHidden = true;
   }
   
   m_last1 = m_num;

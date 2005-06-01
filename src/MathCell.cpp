@@ -35,7 +35,7 @@ MathCell::MathCell()
   m_forceBreakLine = false;
   m_bigSkip = true;
   m_isFolded = false;
-  m_hidden = false;
+  m_isHidden = false;
   m_isBroken = false;
   m_style = TC_VARIABLE;
 }

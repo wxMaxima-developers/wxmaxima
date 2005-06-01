@@ -574,6 +574,9 @@ bool MathCtrl::CanDeleteSelection()
 {
   if (m_selectionStart == NULL || m_selectionEnd == NULL)
     return false;
+  while (m_selectionEnd->m_nextToDraw != NULL &&
+         m_selectionEnd->m_nextToDraw->m_isHidden)
+    m_selectionEnd = m_selectionEnd->m_nextToDraw;
   if (m_selectionEnd->m_nextToDraw == NULL)
     return false;
   if (m_selectionStart->GetType() == TC_MAIN_PROMPT &&

@@ -419,7 +419,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
       }
       else if (tagName == wxT("mh")) {
         MathCell* tmp = ParseText(node->children);
-        tmp->SetHidden(true);
+        tmp->m_isHidden = true;
         if (cell == NULL)
           cell = tmp;
         else
