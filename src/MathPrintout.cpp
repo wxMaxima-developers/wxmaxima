@@ -357,7 +357,7 @@ void MathPrintout::BreakUpCells()
   
   while (tmp != NULL) {
     if (tmp->GetWidth() > fullWidth) {
-      if (tmp->BreakUp(true))
+      if (tmp->BreakUp())
         tmp->RecalculateWidths(parser, fontsize, false);
     }
     tmp = tmp->m_nextToDraw;

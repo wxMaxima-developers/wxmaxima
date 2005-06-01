@@ -234,7 +234,7 @@ void Bitmap::BreakUpCells()
   
   while (tmp != NULL) {
     if (tmp->GetWidth() > BM_FULL_WIDTH) {
-      if (tmp->BreakUp(true))
+      if (tmp->BreakUp())
         tmp->RecalculateWidths(parser, fontsize, false);
     }
     tmp = tmp->m_nextToDraw;
