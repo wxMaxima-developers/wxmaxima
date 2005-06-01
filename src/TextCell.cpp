@@ -25,6 +25,7 @@ TextCell::TextCell() : MathCell()
   m_text = wxT("");
   m_symbol = false;
   m_greek = false;
+  m_fontSize = -1;
 }
 
 
@@ -46,7 +47,7 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_isHidden = m_isHidden;
   tmp->m_greek = m_greek;
   if (all && m_next!=NULL)
-      tmp->AppendCell(m_next->Copy(all));
+    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 
@@ -57,26 +58,29 @@ void TextCell::Destroy()
 
 void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  wxDC& dc = parser.GetDC();
-  double scale = parser.GetScale();
-  SetFont(parser, fontsize);
-  if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
-    dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-  else if (m_greek && parser.HaveSymbolFont())
-    dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-  else if (m_text == wxT("")) {
-    dc.GetTextExtent(wxT("X"), &m_width, &m_height);
-    m_width = 0;
+  if (m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate()) {
+    m_fontSize = fontsize;
+    wxDC& dc = parser.GetDC();
+    double scale = parser.GetScale();
+    SetFont(parser, fontsize);
+    if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
+      dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+    else if (m_greek && parser.HaveSymbolFont())
+      dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+    else if (m_text == wxT("")) {
+      dc.GetTextExtent(wxT("X"), &m_width, &m_height);
+      m_width = 0;
+    }
+    else
+      dc.GetTextExtent(m_text, &m_width, &m_height);
+    m_width = m_width + 2*SCALE_PX(2, scale);
+    m_height = m_height + 2*SCALE_PX(2, scale);
+    if (m_isHidden) {
+      m_height = 0;
+      m_width = -2*MC_CELL_SKIP;
+    }
+    m_center = m_height/2;
   }
-  else
-    dc.GetTextExtent(m_text, &m_width, &m_height);
-  m_width = m_width + 2*SCALE_PX(2, scale);
-  m_height = m_height + 2*SCALE_PX(2, scale);
-  if (m_isHidden) {
-    m_height = 0;
-    m_width = -2*MC_CELL_SKIP;
-  }
-  m_center = m_height/2;
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -91,7 +95,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
 
-  if (m_width == 0)
+  if (m_width == -1)
     RecalculateWidths(parser, fontsize, false);
 
   if (DrawThisCell(parser, point) && !m_isHidden) {
@@ -99,9 +103,9 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetForeground(parser);
 
     if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
-        dc.DrawText(GetGreekString(parser),
-                    point.x + SCALE_PX(2, scale),
-                    point.y - m_center + SCALE_PX(2, scale));
+      dc.DrawText(GetGreekString(parser),
+                  point.x + SCALE_PX(2, scale),
+                  point.y - m_center + SCALE_PX(2, scale));
     else if (m_greek && parser.HaveSymbolFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
@@ -266,10 +270,11 @@ bool TextCell::IsShortNum()
   return false;
 }
 
-void TextCell::Hide(bool hide)
+void TextCell::Fold(bool fold)
 {
-  m_width = 0;
-  if (hide)
+  m_isFolded = fold;
+  m_width = -1;
+  if (fold)
     m_text = m_text + wxT(" << Hidden expression. >>");
   else
     m_text = m_text.Left(m_text.Length() - 25);

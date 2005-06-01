@@ -49,11 +49,12 @@ class TextCell : public MathCell
     wxString GetGreekStringIso();
 #endif
     bool IsShortNum();
-    void Hide(bool hide);
+    void Fold(bool fold);
   protected:
     wxString m_text;
     bool m_symbol;
     bool m_greek;
+    int m_fontSize;
 };
 
 
