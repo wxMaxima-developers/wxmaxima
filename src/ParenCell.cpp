@@ -170,7 +170,7 @@ void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
   }
 }
 
-bool ParenCell::BreakUp(bool br)
+bool ParenCell::BreakUp()
 {
   if (!m_isBroken) {
     m_isBroken = true;

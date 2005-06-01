@@ -247,12 +247,12 @@ void FracCell::SetExponentFlag()
     m_exponent = true;
 }
 
-bool FracCell::BreakUp(bool br)
+bool FracCell::BreakUp()
 {
   if (m_fracStyle == FC_DIFF)
     return false;
   
-  if (br && !m_isBroken) {
+  if (!m_isBroken) {
     m_isBroken = true;
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;

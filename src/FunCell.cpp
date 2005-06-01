@@ -133,7 +133,7 @@ void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   }
 }
 
-bool FunCell::BreakUp(bool br)
+bool FunCell::BreakUp()
 {
   if (!m_isBroken) {
     m_isBroken = true;
