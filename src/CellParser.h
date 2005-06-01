@@ -45,6 +45,8 @@ class CellParser {
     int IsItalic(int st);
     int IsUnderlined(int st);
     void ReadStyle();
+    void SetForceUpdate(bool force) { m_forceUpdate = force; }
+    bool ForceUpdate() { return m_forceUpdate; }
   private:
     double m_scale;
     wxDC& m_dc;
@@ -53,6 +55,7 @@ class CellParser {
     wxString m_symbolFontName;
     int m_symbolFontAdj;
     bool m_haveSymbolFont;
+    bool m_forceUpdate;
     style m_styles[7];
 };
 

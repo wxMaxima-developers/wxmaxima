@@ -27,6 +27,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_scale = 1.0;
   m_top = -1;
   m_bottom = -1;
+  m_forceUpdate = false;
   
   ReadStyle();
 }
