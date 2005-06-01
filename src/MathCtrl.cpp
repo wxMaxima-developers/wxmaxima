@@ -45,6 +45,7 @@ wxScrolledWindow(parent, id, position, size,
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
+  m_forceUpdate = false;
   m_timer.SetOwner(this, TIMER_ID);
   AdjustSize(false);
 }
@@ -202,6 +203,15 @@ void MathCtrl::AddLine(MathCell *newNode, bool forceNewLine)
 /***
  * Recalculate sizes of cells
  */
+void MathCtrl::RecalculateForce()
+{
+  if (m_tree != NULL) {
+    m_forceUpdate = true;
+    Recalculate(m_tree, false);
+    m_forceUpdate = false;
+  }
+}
+
 void MathCtrl::Recalculate(bool scroll)
 {
   if (m_tree != NULL)
@@ -237,6 +247,8 @@ void MathCtrl::RecalculateWidths(MathCell* tmp)
   
   wxClientDC dc(this);
   CellParser parser(dc);
+  parser.SetForceUpdate(m_forceUpdate);
+  
   while (tmp != NULL) {
     tmp->RecalculateWidths(parser, fontsize, false);
     tmp = tmp->m_next;
@@ -260,6 +272,8 @@ void MathCtrl::RecalculateSize(MathCell* tmp)
   
   wxClientDC dc(this);
   CellParser parser(dc);
+  parser.SetForceUpdate(m_forceUpdate);
+  
   while (tmp != NULL) {
     if (!tmp->m_isBroken)
       tmp->RecalculateSize(parser, fontsize, false);
@@ -280,7 +294,6 @@ void MathCtrl::OnSize(wxSizeEvent& event)
     UnBreakUpCells();
     BreakUpCells();
     BreakLines(m_tree);
-    RecalculateSize();
     AdjustSize(false);
   }
   Refresh();
@@ -461,8 +474,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
   else if (m_selectionStart->GetType() == TC_LABEL) {
     if (m_selectionStart->m_isFolded) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
-      m_selectionStart->m_isFolded = false;
-      m_selectionStart->Hide(false);
+      m_selectionStart->Fold(false);
       m_selectionStart->ResetData();
     }
     else {
@@ -472,8 +484,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
             m_selectionStart->m_nextToDraw->GetType() != TC_VARIABLE)
            break;
       }
-      m_selectionStart->m_isFolded = true;
-      m_selectionStart->Hide(true);
+      m_selectionStart->Fold(true);
       m_selectionStart->ResetData();
     }
     m_selectionStart = NULL;
@@ -494,8 +505,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
     }
     if (m_selectionStart->m_isFolded) {
       m_selectionStart->m_nextToDraw = m_selectionStart->m_next;
-      m_selectionStart->m_isFolded = false;
-      m_selectionStart->Hide(false);
+      m_selectionStart->Fold(false);
       m_selectionStart->ResetData();
     }
     else {
@@ -505,8 +515,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
             m_selectionStart->m_nextToDraw->GetType() == TC_MAIN_PROMPT)
            break;
       }
-      m_selectionStart->m_isFolded = true;
-      m_selectionStart->Hide(true);
+      m_selectionStart->Fold(true);
       m_selectionStart->ResetData();
     }
     m_selectionStart = NULL;
@@ -1164,8 +1173,10 @@ void MathCtrl::BreakUpCells(MathCell *cell)
   
   while (tmp != NULL) {
     if (tmp->GetWidth()>clientWidth) {
-      if (tmp->BreakUp(true))
+      if (tmp->BreakUp()) {
         tmp->RecalculateWidths(parser, fontsize, false);
+        tmp->RecalculateSize(parser, fontsize, false);
+      }
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -1185,6 +1196,7 @@ void MathCtrl::UnBreakUpCells()
     if (tmp->m_isBroken) {
       tmp->Unbreak(false);
       tmp->RecalculateWidths(parser, fontsize, false);
+      tmp->RecalculateSize(parser, fontsize, false);
     }
     tmp->Unbreak(false);
     tmp = tmp->m_next;

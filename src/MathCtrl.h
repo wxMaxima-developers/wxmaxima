@@ -35,6 +35,7 @@ class MathCtrl:public wxScrolledWindow
     MathCell* CopyTree();
     void AddLine(MathCell *newLine, bool forceNewLine = false);
     void Recalculate(bool scroll = true);
+    void RecalculateForce();
     void Recalculate(MathCell *cell, bool scroll = true);
     void RecalculateWidths();
     void RecalculateWidths(MathCell *cell);
@@ -78,6 +79,7 @@ class MathCtrl:public wxScrolledWindow
     bool m_mouseDrag;
     bool m_selectWholeLine;
     bool m_mouseOutside;
+    bool m_forceUpdate;
     MathCell *m_tree;
     MathCell *m_last;
     MathCell *m_firstVisible;
