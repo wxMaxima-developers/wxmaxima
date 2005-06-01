@@ -98,9 +98,9 @@ class MathCell
     bool m_isBroken;
     bool m_isHidden;
     virtual void SetExponentFlag() { };
-    virtual void Hide(bool hide) { };
+    virtual void Fold(bool fold) { };
     virtual bool IsShortNum() { return false; };
-    virtual bool BreakUp(bool br) { return false; };
+    virtual bool BreakUp() { return false; };
     virtual void Unbreak(bool all);
   protected:
     int m_height;
