@@ -19,10 +19,13 @@
  */
 
 #include "AbsCell.h"
+#include "TextCell.h"
 
 AbsCell::AbsCell() : MathCell()
 {
   m_innerCell = NULL;
+  m_open = new TextCell(wxT("abs("));
+  m_close = new TextCell(wxT(")"));
 }
 
 AbsCell::~AbsCell()
@@ -31,6 +34,8 @@ AbsCell::~AbsCell()
     delete m_innerCell;
   if (m_next != NULL)
     delete m_next;
+  delete m_open;
+  delete m_close;
 }
 
 MathCell* AbsCell::Copy(bool all)
@@ -58,6 +63,10 @@ void AbsCell::SetInner(MathCell *inner)
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
+  
+  m_last = m_innerCell;
+  while (m_last->m_next != NULL)
+    m_last = m_last->m_next;
 }
 
 void AbsCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
@@ -65,6 +74,8 @@ void AbsCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_innerCell->RecalculateWidths(parser, fontsize, true);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
+  m_open->RecalculateWidths(parser, fontsize, true);
+  m_close->RecalculateWidths(parser, fontsize, true);
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -74,6 +85,8 @@ void AbsCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_innerCell->RecalculateSize(parser, fontsize, true);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
+  m_open->RecalculateSize(parser, fontsize, true);
+  m_close->RecalculateSize(parser, fontsize, true);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -119,4 +132,28 @@ void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     *first = this;
     *last = this;
   }
+}
+
+bool AbsCell::BreakUp()
+{
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_open->m_nextToDraw = m_innerCell;
+    m_innerCell->m_previousToDraw = m_open;
+    m_last->m_nextToDraw = m_close;
+    m_close->m_previousToDraw = m_last;
+    m_close->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close;
+    m_nextToDraw = m_open;
+    return true;
+  }
+  return false;
+}
+
+void AbsCell::Unbreak(bool all)
+{
+  if (m_isBroken)
+    m_innerCell->Unbreak(true);
+  MathCell::Unbreak(all);
 }

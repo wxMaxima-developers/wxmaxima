@@ -32,8 +32,11 @@ class AbsCell : public MathCell
     void SetInner(MathCell *inner);
     MathCell* Copy(bool all);
     void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+    bool BreakUp();
+    void Unbreak(bool all);
 	protected:
-    MathCell* m_innerCell;
+    MathCell *m_innerCell;
+    MathCell *m_open, *m_close, *m_last;
     void RecalculateSize(CellParser& parser, int fontsize, bool all);
     void RecalculateWidths(CellParser& parser, int fontsize, bool all);
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

@@ -19,10 +19,13 @@
  */
 
 #include "SqrtCell.h"
+#include "TextCell.h"
 
 SqrtCell::SqrtCell() : MathCell()
 {
   m_innerCell = NULL;
+  m_open = new TextCell(wxT("sqrt("));
+  m_close = new TextCell(wxT(")"));
 }
 
 
@@ -32,6 +35,8 @@ SqrtCell::~SqrtCell()
     delete m_innerCell;
   if (m_next != NULL)
     delete m_next;
+  delete m_open;
+  delete m_close;
 }
 
 MathCell* SqrtCell::Copy(bool all)
@@ -59,6 +64,10 @@ void SqrtCell::SetInner(MathCell *inner)
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
+  
+  m_last = inner;
+  while (m_last->m_next != NULL)
+    m_last = m_last->m_next;
 }
 
 void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
@@ -67,6 +76,8 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_innerCell->RecalculateWidths(parser, fontsize, true);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
             3*SCALE_PX(1, scale)+1;
+  m_open->RecalculateWidths(parser, fontsize, all);
+  m_close->RecalculateWidths(parser, fontsize, all);
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -76,6 +87,8 @@ void SqrtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_innerCell->RecalculateSize(parser, fontsize, true);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(3, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(3, scale);
+  m_open->RecalculateSize(parser, fontsize, all);
+  m_close->RecalculateSize(parser, fontsize, all);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -121,6 +134,8 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString SqrtCell::ToString(bool all)
 {
+  if (m_isBroken)
+    return wxT("");
   return wxT("sqrt(") + m_innerCell->ToString(true) + wxT(")") +
          MathCell::ToString(all);
 }
@@ -137,4 +152,28 @@ void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     *first = this;
     *last = this;
   }
+}
+
+bool SqrtCell::BreakUp()
+{
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_open->m_nextToDraw = m_innerCell;
+    m_innerCell->m_previousToDraw = m_open;
+    m_last->m_nextToDraw = m_close;
+    m_close->m_previousToDraw = m_last;
+    m_close->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close;
+    m_nextToDraw = m_open;
+    return true;
+  }
+  return false;
+}
+
+void SqrtCell::Unbreak(bool all)
+{
+  if (m_isBroken)
+    m_innerCell->Unbreak(true);
+  MathCell::Unbreak(all);
 }
