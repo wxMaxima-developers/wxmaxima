@@ -1038,7 +1038,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         bool match = true;
         wxConfig::Get()->Read(wxT("matchParens"), &match);
         m_inputLine->SetMatchParens(match);
-        m_console->Recalculate(false);
+        m_console->RecalculateForce();
         m_console->Refresh();
       }
       configW->Destroy();
