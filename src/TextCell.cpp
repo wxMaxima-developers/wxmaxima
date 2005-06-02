@@ -58,7 +58,7 @@ void TextCell::Destroy()
 
 void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  if (m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate()) {
+  if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate()) {
     m_fontSize = fontsize;
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
@@ -95,7 +95,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   wxString fontname = parser.GetFontName();
 
-  if (m_width == -1)
+  if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize, false);
 
   if (DrawThisCell(parser, point) && !m_isHidden) {
