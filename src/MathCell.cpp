@@ -30,6 +30,8 @@ MathCell::MathCell()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop = -1;
+  m_width = -1;
+  m_height = -1;
   m_breakLine = false;
   m_breakPage = false;
   m_forceBreakLine = false;
