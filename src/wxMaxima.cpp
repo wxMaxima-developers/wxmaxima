@@ -226,10 +226,14 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   else if (type == PROMPTT) {
     SetStatusText(_("Ready for user input"), 1);
     m_lastPrompt = s;
-    s = s;
-    if (s.StartsWith(wxT("(%i")) || s.StartsWith(wxT("MAXIMA>"))) {
+    if (s.StartsWith(wxT("(%i"))) {
       m_inPrompt = true;
       type = MPROMPTT;
+    }
+    else if (s.Right(8) == wxT("MAXIMA> ")) {
+      m_inPrompt = true;
+      type = MPROMPTT;
+      s = s.Right(8);
     }
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
                     type, true);
