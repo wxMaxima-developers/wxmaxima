@@ -125,8 +125,14 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  m_num->RecalculateSize(parser, MAX(8, fontsize-2), true);
-  m_denom->RecalculateSize(parser, MAX(8, fontsize-2), true);
+  if (m_isBroken) {
+    m_num->RecalculateSize(parser, fontsize, true);
+    m_denom->RecalculateSize(parser, fontsize, true);
+  }
+  else {
+    m_num->RecalculateSize(parser, MAX(8, fontsize-2), true);
+    m_denom->RecalculateSize(parser, MAX(8, fontsize-2), true);
+  }
   if (!m_exponent) {
     m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
                SCALE_PX(4, scale);
@@ -247,35 +253,6 @@ void FracCell::SetExponentFlag()
     m_exponent = true;
 }
 
-bool FracCell::BreakUp()
-{
-  if (m_fracStyle == FC_DIFF)
-    return false;
-  
-  if (!m_isBroken) {
-    m_isBroken = true;
-    m_open1->m_previousToDraw = this;
-    m_open1->m_nextToDraw = m_num;
-    m_num->m_previousToDraw = m_open1;
-    m_last1->m_nextToDraw = m_close1;
-    m_close1->m_previousToDraw = m_last1;
-    m_close1->m_nextToDraw = m_divide;
-    m_divide->m_previousToDraw = m_close1;
-    m_divide->m_nextToDraw = m_open2;
-    m_open2->m_previousToDraw = m_divide;
-    m_open2->m_nextToDraw = m_denom;
-    m_denom->m_previousToDraw = m_open2;
-    m_last2->m_nextToDraw = m_close2;
-    m_close2->m_previousToDraw = m_last2;
-    m_close2->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close2;
-    m_nextToDraw = m_open1;
-    return true;
-  }
-  return false;
-}
-
 void FracCell::SetupBreakUps()
 {
   if (m_fracStyle == FC_NORMAL) {
@@ -310,6 +287,36 @@ void FracCell::SetupBreakUps()
   m_last2 = m_denom;
   while (m_last2->m_next != NULL)
     m_last2 = m_last2->m_next;
+}
+
+
+bool FracCell::BreakUp()
+{
+  if (m_fracStyle == FC_DIFF)
+    return false;
+  
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_open1->m_previousToDraw = this;
+    m_open1->m_nextToDraw = m_num;
+    m_num->m_previousToDraw = m_open1;
+    m_last1->m_nextToDraw = m_close1;
+    m_close1->m_previousToDraw = m_last1;
+    m_close1->m_nextToDraw = m_divide;
+    m_divide->m_previousToDraw = m_close1;
+    m_divide->m_nextToDraw = m_open2;
+    m_open2->m_previousToDraw = m_divide;
+    m_open2->m_nextToDraw = m_denom;
+    m_denom->m_previousToDraw = m_open2;
+    m_last2->m_nextToDraw = m_close2;
+    m_close2->m_previousToDraw = m_last2;
+    m_close2->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close2;
+    m_nextToDraw = m_open1;
+    return true;
+  }
+  return false;
 }
 
 void FracCell::Unbreak(bool all)
