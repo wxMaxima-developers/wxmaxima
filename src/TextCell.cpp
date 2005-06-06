@@ -28,11 +28,24 @@ TextCell::TextCell() : MathCell()
   m_fontSize = -1;
 }
 
+TextCell::TextCell(wxString text) : MathCell()
+{
+  m_text = text;
+  m_symbol = false;
+  m_greek = false;
+  m_text.Replace(wxT("\n"), wxT(""));
+}
 
 TextCell::~TextCell()
 {
   if (m_next != NULL)
     delete m_next;
+}
+
+void TextCell::SetValue(wxString text)
+{
+  m_text = text;
+  m_text.Replace(wxT("\n"), wxT(""));
 }
 
 MathCell* TextCell::Copy(bool all)

@@ -27,11 +27,11 @@ class TextCell : public MathCell
 {
   public:
     TextCell();
-    TextCell(wxString text) : m_text(text) { m_symbol = false; m_greek = false; }
+    TextCell(wxString text);
     ~TextCell();
     MathCell* Copy(bool all);
     void Destroy();
-    void SetValue(wxString text) { m_text = text; }
+    void SetValue(wxString text);
     void RecalculateSize(CellParser& parser, int fontsize, bool all);
     void RecalculateWidths(CellParser& parser, int fontsize, bool all);
     void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

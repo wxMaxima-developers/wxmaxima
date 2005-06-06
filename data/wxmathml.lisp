@@ -548,8 +548,8 @@
 
 (defprop $~ wxxml-infix wxxml)
 (defprop $~ ("<mn>~</mn>") wxxmlsym)
-(defprop $~ 80. wxxml-lbp)
-(defprop $~ 80. wxxml-rbp)
+(defprop $~ 134. wxxml-lbp)
+(defprop $~ 133. wxxml-rbp)
 
 (defprop min wxxml-infix wxxml)
 (defprop min ("<mn>in</mn>") wxxmlsym)
@@ -905,6 +905,8 @@
           a    (setq l1 (cdr l1))
           (go loop))))
 
+(defmvar $%)
+
 (defmspec $example (l)   (setq l (cdr l))
 	  (block
 	      $example
@@ -941,6 +943,7 @@
 		   doit
 		   (setq tem (peek-char nil st nil))
 		   (cond ((or (null tem) (eql tem #\&))
+        (setq *need-prompt* t)
 			  (return-from $example '$done)))
 		   (setq tem (dbm-read st nil nil))
 		   (setq $linenum (+ 1 $linenum))
@@ -948,7 +951,7 @@
 		   (let ($display2d)
          (princ "<mth><prompt>")
 		     (displa `((mlable) ,c-tag ""))
-         (princ "</prompt><input><mspace/>")
+         (princ "</prompt><input>")
          (displa (nth 2 tem))
          (princ "</input></mth>")
 					;(mformat nil "Input: ~M;" (nth 2 tem))
@@ -962,6 +965,7 @@
 
 		   notfound
 		   (format t "Not Found.  You can look at:")
+       (setq *need-prompt* t)
 		   (return-from $example
 		     `((mlist) ,@ (nreverse all)))
 		   ))))))
