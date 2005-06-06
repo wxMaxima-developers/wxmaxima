@@ -39,9 +39,11 @@ class ExptCell : public MathCell
     wxString GetDiffPart();
     void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
     void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
+    bool BreakUp();
+    void Unbreak(bool all);
 	protected:
-	  MathCell *m_baseCell;
-    MathCell *m_powCell;
+	  MathCell *m_baseCell, *m_powCell;
+    MathCell *m_open, *m_close, *m_exp, *m_last1, *m_last2;
     bool m_isMatrix;
 };
 

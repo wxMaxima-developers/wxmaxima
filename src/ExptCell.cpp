@@ -19,12 +19,16 @@
  */
 
 #include "ExptCell.h"
+#include "TextCell.h"
 
 ExptCell::ExptCell() : MathCell()
 {
   m_baseCell = NULL;
   m_powCell = NULL;
   m_isMatrix = false;
+  m_exp = new TextCell(wxT("^"));
+  m_open = new TextCell(wxT("("));
+  m_close = new TextCell(wxT(")"));
 }
 
 MathCell* ExptCell::Copy(bool all)
@@ -46,6 +50,9 @@ ExptCell::~ExptCell()
     delete m_powCell;
   if (m_next != NULL)
     delete m_next;
+  delete m_exp;
+  delete m_open;
+  delete m_close;
 }
 
 void ExptCell::Destroy()
@@ -66,6 +73,15 @@ void ExptCell::SetPower(MathCell *power)
   if (m_powCell != NULL)
     delete m_powCell;
   m_powCell = power;
+  
+  if (!m_powCell->IsCompound()) {
+    m_open->m_isHidden = true;
+    m_close->m_isHidden = true;
+  }
+  
+  m_last2 = power;
+  while (m_last2->m_next != NULL)
+    m_last2 = m_last2->m_next;
 }
 
 void ExptCell::SetBase(MathCell *base)
@@ -75,15 +91,25 @@ void ExptCell::SetBase(MathCell *base)
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
+  
+  m_last1 = base;
+  while (m_last1->m_next != NULL)
+    m_last1 = m_last1->m_next;
 }
 
 void ExptCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_powCell->RecalculateWidths(parser, MAX(8, fontsize-3), true);
+  if (m_isBroken)
+    m_powCell->RecalculateWidths(parser, fontsize, true);
+  else
+    m_powCell->RecalculateWidths(parser, MAX(8, fontsize-3), true);
   m_width = m_baseCell->GetFullWidth(scale) + m_powCell->GetFullWidth(scale) -
             SCALE_PX(2, scale);
+  m_exp->RecalculateWidths(parser, fontsize, true);
+  m_open->RecalculateWidths(parser, fontsize, true);
+  m_close->RecalculateWidths(parser, fontsize, true);
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -91,11 +117,17 @@ void ExptCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_powCell->RecalculateSize(parser, MAX(8, fontsize-3), true);
+  if (m_isBroken)
+    m_powCell->RecalculateSize(parser, fontsize, true);
+  else
+    m_powCell->RecalculateSize(parser, MAX(8, fontsize-3), true);
   m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
              SCALE_PX((8*fontsize)/10+4, scale);
   m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8*fontsize)/10+4, scale);
+  m_exp->RecalculateSize(parser, fontsize, true);
+  m_open->RecalculateSize(parser, fontsize, true);
+  m_close->RecalculateSize(parser, fontsize, true);
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -120,6 +152,8 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 }
 
 wxString ExptCell::ToString(bool all) {
+  if (m_isBroken)
+    return wxT("");
   wxString s = m_baseCell->ToString(true) + wxT("^");
   if (m_isMatrix) s += wxT("^");
   if (m_powCell->IsCompound())
@@ -153,4 +187,35 @@ void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     *first = this;
     *last = this;
   }
+}
+
+bool ExptCell::BreakUp()
+{
+  if (!m_isBroken) {
+    m_isBroken = true;
+    m_baseCell->m_previousToDraw = this;
+    m_last1->m_nextToDraw = m_exp;
+    m_exp->m_previousToDraw = m_last1;
+    m_exp->m_nextToDraw = m_open;
+    m_open->m_previousToDraw = m_exp;
+    m_open->m_nextToDraw = m_powCell;
+    m_powCell->m_previousToDraw = m_open;
+    m_last2->m_nextToDraw = m_close;
+    m_close->m_previousToDraw = m_last2;
+    m_close->m_nextToDraw = m_nextToDraw;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = m_close;
+    m_nextToDraw = m_baseCell;
+    return true;
+  }
+  return false;
+}
+
+void ExptCell::Unbreak(bool all)
+{
+  if (m_isBroken) {
+    m_baseCell->Unbreak(true);
+    m_powCell->Unbreak(true);
+  }
+  MathCell::Unbreak(all);
 }
