@@ -85,8 +85,7 @@ bool MathPrintout::OnPrintPage(int num)
     while(tmp != NULL) {
       if (!tmp->m_isBroken) {
         tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_nextToDraw != NULL && !tmp->m_nextToDraw->m_isBroken &&
-            tmp->m_nextToDraw->BreakLineHere()) {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
           point.x = marginX;
           point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
           if (tmp->m_bigSkip)
@@ -95,6 +94,15 @@ bool MathPrintout::OnPrintPage(int num)
         }
         else
           point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
+      }
+      else {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = marginX;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += SCALE_PX(5, ppiScale);
+          drop = tmp->m_nextToDraw->GetMaxDrop();
+        }
       }
       tmp = tmp->m_nextToDraw;
       if (tmp == NULL || tmp->BreakPageHere())

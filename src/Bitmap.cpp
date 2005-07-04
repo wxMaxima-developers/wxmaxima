@@ -166,8 +166,7 @@ void Bitmap::Draw()
     while(tmp != NULL) {
       if (!tmp->m_isBroken) {
         tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_nextToDraw != NULL && !tmp->m_nextToDraw->m_isBroken &&
-            tmp->m_nextToDraw->BreakLineHere()) {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
           point.x = 0;
           point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
           if (tmp->m_bigSkip)
@@ -176,6 +175,15 @@ void Bitmap::Draw()
         }
         else
           point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+      }
+      else {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = 0;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += MC_LINE_SKIP;
+          drop = tmp->m_nextToDraw->GetMaxDrop();
+        }
       }
       tmp = tmp->m_nextToDraw;
     }

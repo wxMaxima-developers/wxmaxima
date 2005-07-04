@@ -42,12 +42,18 @@ class CommandLine : public wxTextCtrl
   wxString Next();
   wxString Complete(wxString s);
   void SetMatchParens(bool match) { m_matchParens = match; }
+#if defined __WXMSW__
+  void SetValue(wxString s);
+  void WriteText(wxString s);
+#endif
  protected:
   std::vector<wxString> m_history;
   int m_historyIndex;
   void FilterLine(wxKeyEvent& event);
-  void Highligth(wxKeyEvent& event);
-  long m_marked;
+#if defined __WXMSW__
+  void Highlight(wxKeyEvent& event);
+  void DoHighlight();
+#endif
   bool m_matchParens;
   DECLARE_EVENT_TABLE()
 };

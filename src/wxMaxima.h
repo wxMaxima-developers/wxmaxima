@@ -100,6 +100,7 @@ class wxMaxima : public wxMaximaFrame
                                      // setsup m_pid
   void ReadPrompt();                 // reads prompts
   void ReadMath();                   // reads output other than prompts
+  void ReadLispError();              // lisp errors (no prompt prefix/suffix)
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
 #endif

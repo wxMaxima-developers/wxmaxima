@@ -417,7 +417,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("mh")) {
+      else if (tagName == wxT("h")) {
         MathCell* tmp = ParseText(node->children);
         tmp->m_isHidden = true;
         if (cell == NULL)
@@ -425,7 +425,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("mn")) {
+      else if (tagName == wxT("n")) {
         if (cell == NULL)
           cell = ParseText(node->children);
         else
@@ -438,14 +438,14 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("ms")) {
+      else if (tagName == wxT("s")) {
         MathCell* tmp = ParseText(node->children, true);
         if (cell == NULL)
           cell = tmp;
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("mstr")) {
+      else if (tagName == wxT("st")) {
         MathCell* tmp = ParseText(node->children);
         tmp->SetStyle(TC_STRING);
         if (cell == NULL)

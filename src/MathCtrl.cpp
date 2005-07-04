@@ -118,7 +118,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         if (tmp->DrawThisCell(parser, point))
           tmp->Draw(parser, point, fontsize, false);
         if (tmp->m_nextToDraw != NULL) {
-          if (tmp->m_nextToDraw->BreakLineHere() && !tmp->m_nextToDraw->m_isBroken) {
+          if (tmp->m_nextToDraw->BreakLineHere()) {
             point.x = MC_BASE_INDENT;
             point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
             if (tmp->m_bigSkip)
@@ -127,6 +127,15 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
           }
           else
             point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+        }
+      }
+      else {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = MC_BASE_INDENT;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += MC_LINE_SKIP;
+          drop = tmp->m_nextToDraw->GetMaxDrop();
         }
       }
       tmp = tmp->m_nextToDraw;
@@ -583,14 +592,15 @@ bool MathCtrl::CanDeleteSelection()
 {
   if (m_selectionStart == NULL || m_selectionEnd == NULL)
     return false;
-  while (m_selectionEnd->m_nextToDraw != NULL &&
-         m_selectionEnd->m_nextToDraw->m_isHidden)
-    m_selectionEnd = m_selectionEnd->m_nextToDraw;
-  if (m_selectionEnd->m_nextToDraw == NULL)
+  MathCell* end = m_selectionEnd;
+  while (end->m_nextToDraw != NULL &&
+         end->m_nextToDraw->m_isHidden)
+    end = end->m_nextToDraw;
+  if (end->m_nextToDraw == NULL)
     return false;
   if (m_selectionStart->GetType() == TC_MAIN_PROMPT &&
-      (m_selectionEnd == m_selectionStart ||
-       m_selectionEnd->m_nextToDraw->GetType() == TC_MAIN_PROMPT))
+      (end == m_selectionStart ||
+       end->m_nextToDraw->GetType() == TC_MAIN_PROMPT))
     return true;
   return false;
 }

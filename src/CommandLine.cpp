@@ -21,6 +21,18 @@
 #include "CommandLine.h"
 #include <wx/config.h>
 
+#if defined __WXMSW__
+
+#define MIN(a,b) (a)<(b) ? (a) : (b)
+#define NUM_OF_COLOURS 10
+const wxString hl_colours[] = {
+  wxT("RED"), wxT("BLUE"), wxT("PURPLE"), wxT("ORANGE"),
+  wxT("ORANGE RED"), wxT("GOLD"), wxT("NAVY"),
+  wxT("DARK GREEN"), wxT("SEA GREEN"), wxT("YELLOW GREEN"), wxT("BLACK")
+};
+
+#endif
+
 CommandLine::CommandLine(wxWindow *parent,
                          wxWindowID id,
                          const wxString& value,
@@ -120,28 +132,17 @@ void CommandLine::FilterLine(wxKeyEvent& event)
   GetSelection(&from, &to);
   switch(event.GetKeyCode()) {
   case WXK_UP:
-    m_marked = -1;
     SetValue(Previous());
-#if defined (__WXMSW__)
-    SetStyle(0, GetLastPosition(),
-             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
-#endif
     SetInsertionPointEnd();
     return;
     break;
   case WXK_DOWN:
-    m_marked = -1;
     SetValue(Next());
-#if defined (__WXMSW__)
-    SetStyle(0, GetLastPosition(),
-             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
-#endif
     SetInsertionPointEnd();
     return;
     break;
   case WXK_TAB:
     {
-      m_marked = -1;
       wxString s = GetValue();
       long int l = GetInsertionPoint();
       long int l1,l2;
@@ -230,52 +231,64 @@ void CommandLine::FilterLine(wxKeyEvent& event)
     event.Skip();
 }
 
-void CommandLine::Highligth(wxKeyEvent& event)
+#if defined __WXMSW__
+
+void CommandLine::Highlight(wxKeyEvent& event)
 {
-#if defined(__WXMSW__)
+  DoHighlight();
+}
+
+void CommandLine::DoHighlight()
+{
   wxString value = GetValue();
   if (value == wxEmptyString)
     return;
-  long curr = GetInsertionPoint();
-  if (curr == 0)
-    return;
-  
-  char cl = value.GetChar(curr-1);
-  char op;
-  int j;
 
-  if (m_marked >=0) {
-    SetStyle(m_marked, m_marked+1,
-             wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
-    m_marked = -1;
-  }
-  if (cl == ')')
-    op = '(';
-  else if (cl == ']')
-    op = '[';
-  else if (cl == '"')
-    op = '"';
-  else
-    return;
-  int depth = 0;
-  for (j = curr-2; j>=0; j--) {
-    if (value.GetChar(j) == cl)
+  Freeze();
+  SetStyle(0, value.Length(),
+           wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
+  
+  int depth = 1;
+  for (int i=0; i<value.Length(); i++) {
+    if (value.GetChar(i) == '(' || value.GetChar(i) == '[') {
+      if (depth < 1)
+        depth = 1;
+      SetStyle(i, i+1,
+               wxTextAttr(wxTheColourDatabase->Find(hl_colours[MIN(NUM_OF_COLOURS, depth)])));
       depth++;
-    else if (value.GetChar(j) == op) {
-      if (depth == 0)
-        break;
-      else
+    }
+    else if (value.GetChar(i) == ')' || value.GetChar(i) == ']') {
+      if (depth > 0)
         depth--;
+      SetStyle(i, i+1,
+               wxTextAttr(wxTheColourDatabase->Find(hl_colours[MIN(NUM_OF_COLOURS, depth)])));
     }
   }
-  if (j>=0) {
-    m_marked = j;
-    SetStyle(m_marked, m_marked+1, wxTextAttr(*wxBLUE));
-  }
-#endif
+  
+  Thaw();
 }
+
+void CommandLine::SetValue(wxString s)
+{
+  Freeze();
+  wxTextCtrl::SetValue(s);
+  DoHighlight();
+  Thaw();
+}
+
+void CommandLine::WriteText(wxString s)
+{
+  Freeze();
+  wxTextCtrl::WriteText(s);
+  DoHighlight();
+  Thaw();
+}
+
+#endif
 
 BEGIN_EVENT_TABLE(CommandLine, wxTextCtrl)
   EVT_CHAR(CommandLine::FilterLine)
-  EVT_KEY_UP(CommandLine::Highligth)
+#if defined __WXMSW__
+  EVT_KEY_UP(CommandLine::Highlight)
+#endif
 END_EVENT_TABLE()

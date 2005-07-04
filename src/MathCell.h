@@ -83,7 +83,7 @@ class MathCell
     void SetSkip(bool skip) { m_bigSkip = skip; }
     void SetStyle(int style) { m_style = style; }
     void DrawBoundingBox(wxDC& dc, bool all = false);
-    bool BreakLineHere() { return m_breakLine || m_forceBreakLine; }
+    bool BreakLineHere();
     bool BreakPageHere() { return m_breakPage; }
     int GetCurrentX() { return m_currentPoint.x; }
     int GetCurrentY() { return m_currentPoint.y; }

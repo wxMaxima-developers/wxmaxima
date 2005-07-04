@@ -274,6 +274,9 @@ void Plot2DWiz::Parse(wxString s)
       }
       else if (curr == wxT("nticks")) {
         curr = wxT("");
+        while (i<s.Length() && s.GetChar(i)!=',')
+          i++;
+        i++;
         while (i<s.Length() && s.GetChar(i)!=']') {
           curr += s.GetChar(i);
           i++;
@@ -446,8 +449,8 @@ void Plot2dPar::do_layout()
   grid_sizer_2->AddGrowableCol(1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
-  sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

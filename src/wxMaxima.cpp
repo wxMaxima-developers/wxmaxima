@@ -377,6 +377,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       ReadMath();
 
       ReadPrompt();
+      
+      ReadLispError();
     }
     break;
   case wxSOCKET_LOST:
@@ -461,6 +463,24 @@ void wxMaxima::ReadPrompt()
   }
 }
 
+/***
+ * This works only for gcl by default - other lisps have different prompts.
+ */
+void wxMaxima::ReadLispError()
+{
+  static const wxString lispError = wxT("dbl:MAXIMA>>"); // gcl
+  int  end = m_currentOutput.Find(lispError);
+  if (end > -1) {
+    m_readingPrompt = false;
+    m_inLispMode = true;
+    wxString o = m_currentOutput.Left(end);
+    ConsoleAppend(o, TEXTT);
+    ConsoleAppend(lispError, PROMPTT);
+    SetStatusText(_("Ready for user input"), 1);
+    m_currentOutput = wxT("");
+  }
+}
+
 void wxMaxima::ServerEvent(wxSocketEvent& event)
 {
   switch (event.GetSocketEvent()) {
@@ -520,11 +540,14 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"), false, false, false);
   SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"), false, false, false);
 #if defined (__WXMSW__)
-  SendMaxima(wxT(":lisp-quiet ($load \"wxmathml.lisp\")"), false, false, false);
+  wxString cwd = wxGetCwd();
+  cwd.Replace(wxT("\\"), wxT("/"));
+  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/wxmathml\")"),
+             false, false, false);
 #else
   wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
-             wxT("/share/wxMaxima/wxmathml.lisp\")"), false, false, false);
+             wxT("/share/wxMaxima/wxmathml\")"), false, false, false);
 #endif
 }
 

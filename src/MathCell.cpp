@@ -320,7 +320,15 @@ void MathCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 }
 
 /***
- * Does this cell contain a rectangle small
+ * Break line when the cell is not broken only.
+ */
+bool MathCell::BreakLineHere()
+{
+  return (!m_isBroken && (m_breakLine || m_forceBreakLine));
+}
+
+/***
+ * Does this cell contain a rectangle sm
  */
 bool MathCell::ContainsRect(wxRect& sm, bool all) {
   wxRect big = GetRect(all);
