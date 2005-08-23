@@ -128,7 +128,7 @@ void wxMaxima::InitSession()
                      "enabled and try again!"),
                    _("Fatal error"),
                    wxOK|wxICON_ERROR);
-      exit(0);
+      wxExit();
     }
   }
   if (!StartMaxima())
@@ -159,7 +159,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
 {
   m_inPrompt = false;
   m_dispReadOut = false;
-  s.Replace(m_promptSuffix, wxT(""));
+  s.Replace(m_promptSuffix, wxEmptyString);
 
   wxString t(s);
   t.Trim();
@@ -178,7 +178,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         t.Trim(false);
         if (t.Length())
           DoRawConsoleAppend(s, TEXTT);
-        s = wxT("");
+        s = wxEmptyString;
       }
       else {
         wxString pre = s.SubString(0, start-1);
@@ -313,7 +313,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
     s.Replace(wxT("<nl>"), wxT("\n"));
   }
   if (clear)
-    m_inputLine->SetValue(wxT(""));
+    m_inputLine->SetValue(wxEmptyString);
   if (out)
     ConsoleAppend(s, INPUTT);
   if (silent) {
@@ -417,7 +417,7 @@ void wxMaxima::ReadFirstPrompt()
   m_first = false;
   m_inLispMode = false;
   SetStatusText(_("Ready for user input"), 1);
-  m_currentOutput = wxT("");
+  m_currentOutput = wxEmptyString;
 }
 
 void wxMaxima::ReadMath()
@@ -477,7 +477,7 @@ void wxMaxima::ReadLispError()
     ConsoleAppend(o, TEXTT);
     ConsoleAppend(lispError, PROMPTT);
     SetStatusText(_("Ready for user input"), 1);
-    m_currentOutput = wxT("");
+    m_currentOutput = wxEmptyString;
   }
 }
 
@@ -542,7 +542,7 @@ void wxMaxima::SetupVariables()
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/wxmathml\")"),
+  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"),
              false, false, false);
 #else
   wxString prefix = wxT(PREFIX);
@@ -590,7 +590,7 @@ bool wxMaxima::GuessConfiguration()
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("maxima"), maxima);
-  config->Write(wxT("parameters"), wxT(""));
+  config->Write(wxT("parameters"), wxEmptyString);
 
   config->Flush();
   return true;
@@ -619,7 +619,7 @@ wxString wxMaxima::GetCommand()
                    "Then start maxima with 'Maxima->Restart maxima'."), _("Warning"),
                    wxOK|wxICON_EXCLAMATION);
     SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
-    return wxT("");
+    return wxEmptyString;
   }
 
   config->Read(wxT("parameters"), &r);
@@ -644,7 +644,7 @@ bool wxMaxima::StartMaxima()
       wxString sysPath;
 
       wxGetEnv(wxT("path"), &sysPath);
-      maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxT(""));
+      maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxEmptyString);
 
       wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
       wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
@@ -716,7 +716,7 @@ void wxMaxima::ShowTip(bool force)
   if (!ShowTips && !force)
     return;
 #if defined (__WXMSW__)
-  wxString tips = wxGetCwd() + wxT("\\tips.txt");
+  wxString tips = wxGetCwd() + wxT("\\data\\tips.txt");
 #else
   wxString prefix = wxT(PREFIX);
   wxString tips = prefix + wxT("/share/wxMaxima/tips.txt");
@@ -821,7 +821,7 @@ wxString wxMaxima::GetDefaultEntry()
 void wxMaxima::OnMonitorFile(wxCommandEvent& event)
 {
   wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
-                                 wxT(""), wxT(""),
+                                 wxEmptyString, wxEmptyString,
                                  _("Maxima package (*.mac)|*.mac|"
                                     "Lisp package (*.lisp)|*.lisp|All|*"),
                                  wxOPEN);
@@ -907,7 +907,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case tb_open:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
-									                   wxT(""), wxT(""),
+									                   wxEmptyString, wxEmptyString,
                                      _("Maxima session (*.sav)|*.sav|"
                                        "Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|"
@@ -931,7 +931,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_open_id:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
-									                   wxT(""), wxT(""),
+									                   wxEmptyString, wxEmptyString,
                                      _("Maxima session (*.sav)|*.sav|"
                                        "All|*"),
                                      wxOPEN);
@@ -986,7 +986,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_load_id:
     {
       wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
-                                     wxT(""), wxT(""),
+                                     wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|All|*"),
                                      wxOPEN);
@@ -1006,7 +1006,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case tb_batch:
     {
       wxString file = wxFileSelector(_("Select package to batch"), m_lastPath,
-                                     wxT(""), wxT(""),
+                                     wxEmptyString, wxEmptyString,
                                      _("Maxima file (*.mac)|*.mac|"
                                        "Demo file (*.dem)|*.dem|All|*"),
                                      wxOPEN);
@@ -1029,7 +1029,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_select_file:
     {
       wxString file = wxFileSelector(_("Select a file"), m_lastPath,
-                                     wxT(""), wxT(""),
+                                     wxEmptyString, wxEmptyString,
                                      _("All|*|"
                                        "Maxima package (*.mac)|*.mac|"
                                        "Demo file (*.dem)|*.dem|"
@@ -1175,7 +1175,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_fun_def:
     cmd = GetTextFromUser(_("Show the definition of function:"),
-                          _("Function"), wxT(""), this);
+                          _("Function"), wxEmptyString, this);
     if (cmd.Length()) {
       cmd = wxT("fundef(") + cmd + wxT(");");
       SendMaxima(cmd);
@@ -1339,7 +1339,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case menu_eliminate:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("From equations:"),
-                                 _("eliminate variables:"), expr, wxT(""),
+                                 _("eliminate variables:"), expr, wxEmptyString,
                                  this, -1, _("Eliminate"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -1462,7 +1462,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   case menu_map_mat:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Map function:"), _("to matrix:"),
-                                 wxT(""), expr,
+                                 wxEmptyString, expr,
                                  this, -1, _("Matrix map"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -1537,7 +1537,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   case menu_map:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Map function:"), _("to list:"),
-                                 wxT(""), expr,
+                                 wxEmptyString, expr,
                                  this, -1, _("Map"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -1692,7 +1692,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
     break;
   case menu_tellrat:
     cmd = GetTextFromUser(_("Enter an equation for rational simplification:"),
-                          _("Ratsimp"), wxT(""), this);
+                          _("Ratsimp"), wxEmptyString, this);
     if (cmd.Length()) {
       cmd = wxT("tellrat(") + cmd + wxT(");");
       SendMaxima(cmd);
@@ -1755,7 +1755,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case menu_lcm:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 wxT(""), wxT(""),
+                                 wxEmptyString, wxEmptyString,
                                  this, -1, _("LCM"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -1769,7 +1769,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case menu_gcd:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 wxT(""), wxT(""),
+                                 wxEmptyString, wxEmptyString,
                                  this, -1, _("GCD"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -1783,7 +1783,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case menu_divide:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
-                                 expr, wxT(""),
+                                 expr, wxEmptyString,
                                  this, -1, _("Divide"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK) {
@@ -2065,7 +2065,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       filename = wxT(PREFIX);
       filename += wxT("/share/wxMaxima/");
 #else
-      filename = wxGetCwd() + wxT("\\");
+      filename = wxGetCwd() + wxT("\\data\\");
 #endif
       if (!wxFileExists(filename + wxT("intro.zip")) ||
           !wxFileExists(filename + wxT("docs.zip")))
@@ -2086,10 +2086,10 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_describe:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show the description of command/variable:"),
-                            _("Describe"), wxT(""), this);
+                            _("Describe"), wxEmptyString, this);
     else {
       cmd = expr;
-      m_inputLine->SetValue(wxT(""));
+      m_inputLine->SetValue(wxEmptyString);
     }
     if (cmd.Length()) {
       cmd = wxT("? ") + cmd + wxT(";");
@@ -2099,10 +2099,10 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_example:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
-                            wxT(""), this);
+                            wxEmptyString, this);
     else {
       cmd = expr;
-      m_inputLine->SetValue(wxT(""));
+      m_inputLine->SetValue(wxEmptyString);
     }
     if (cmd.Length()) {
       cmd = wxT("example(") + cmd + wxT(");");
@@ -2112,10 +2112,10 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_apropos:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show all commands similar to:"), _("Apropos"),
-                            wxT(""), this);
+                            wxEmptyString, this);
     else {
       cmd = expr;
-      m_inputLine->SetValue(wxT(""));
+      m_inputLine->SetValue(wxEmptyString);
     }
     if (cmd.Length()) {
       cmd = wxT("apropos(\"") + cmd + wxT("\");");

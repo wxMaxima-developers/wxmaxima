@@ -135,7 +135,7 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 wxString SqrtCell::ToString(bool all)
 {
   if (m_isBroken)
-    return wxT("");
+    return wxEmptyString;
   return wxT("sqrt(") + m_innerCell->ToString(true) + wxT(")") +
          MathCell::ToString(all);
 }

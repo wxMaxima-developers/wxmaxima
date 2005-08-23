@@ -89,6 +89,6 @@ void Gen4Wiz::do_layout()
 
 void Gen4Wiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
 }

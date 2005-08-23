@@ -38,9 +38,9 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   config->Read(wxT("fixedFontTC"), &fixedFont);
   if (fixedFont) {
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
-    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
-    SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
   }
 }
@@ -52,67 +52,58 @@ BTextCtrl::~BTextCtrl()
 
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
-  long from, to;
-  if (!m_matchParens) {
+  if (!m_matchParens || MatchParenthesis(event.GetKeyCode())) {
     event.Skip();
     return;
   }
-  GetSelection(&from, &to);
-  switch (event.GetKeyCode()) {
-    case '(':
-    if (from==to) {
-      WriteText(wxT("()"));
-      SetInsertionPoint(GetInsertionPoint()-1);
-    }
-    else {
-      SetInsertionPoint(to);
-      WriteText(wxT(")"));
-      SetInsertionPoint(from);
-      WriteText(wxT("("));
-      SetInsertionPoint(to+1);
-    }
+}
+
+bool BTextCtrl::MatchParenthesis(int code)
+{
+  bool skip = true;
+  switch (code) {
+  case '(':
+    CloseParenthesis(wxT("("), wxT(")"));
+    skip = false;
     break;
   case '[':
-    if (from==to) {
-      WriteText(wxT("[]"));
-      SetInsertionPoint(GetInsertionPoint()-1);
-    }
-    else {
-      SetInsertionPoint(to);
-      WriteText(wxT("]"));
-      SetInsertionPoint(from);
-      WriteText(wxT("["));
-      SetInsertionPoint(to+1);
-    }
+    CloseParenthesis(wxT("["), wxT("]"));
+    skip = false;
     break;
   case '{':
-    if (from==to) {
-      WriteText(wxT("{}"));
-      SetInsertionPoint(GetInsertionPoint()-1);
-    }
-    else {
-      SetInsertionPoint(to);
-      WriteText(wxT("}"));
-      SetInsertionPoint(from);
-      WriteText(wxT("{"));
-      SetInsertionPoint(to+1);
-    }
+    CloseParenthesis(wxT("{"), wxT("}"));
+    skip = false;
     break;
   case '"':
-    if (from==to) {
-      WriteText(wxT("\"\""));
-      SetInsertionPoint(GetInsertionPoint()-1);
-    }
-    else {
-      SetInsertionPoint(to);
-      WriteText(wxT("\""));
-      SetInsertionPoint(from);
-      WriteText(wxT("\""));
-      SetInsertionPoint(to+1);
-    }
+    CloseParenthesis(wxT("\""), wxT("\""));
+    skip = false;
     break;
+  case WXK_UP:
+  case WXK_DOWN:
+  case WXK_TAB:
+    skip = false;
   default:
-    event.Skip();
+    break;
+  }
+  
+  return skip;
+}
+
+void BTextCtrl::CloseParenthesis(wxString open, wxString close)
+{
+  long from, to;
+  GetSelection(&from, &to);
+  
+  if (from==to) {
+    WriteText(open + close);
+    SetInsertionPoint(GetInsertionPoint()-1);
+  }
+  else {
+    SetInsertionPoint(to);
+    WriteText(close);
+    SetInsertionPoint(from);
+    WriteText(open);
+    SetInsertionPoint(to+1);
   }
 }
 

@@ -74,39 +74,39 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
   label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
-  m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(notebook_1_pane_1, wxID_OPEN, _("Open"));
   label_6 = new wxStaticText(notebook_1_pane_1, -1, _("Additional parameters:"));
-  m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
   const wxString m_language_choices[] = {
     _("(Use default language)"), _("English"),
     _("French"),  _("Italian"), _("Spanish")
   };
-  m_language = new wxComboBox(notebook_1_pane_1, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_language = new wxComboBox(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
-  m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
+  m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
   const wxString m_fontFamily_choices[] = {
     
   };
-  m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
+  m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
   SetupFontList();
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
-  m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
+  m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
   const wxString m_styleFor_choices[] = {
     _("Normal text"),  _("Hidden groups"), _("Main prompts"),
     _("Other prompts"), _("Input"), _("Labels"), _("Special constants"),
     _("Background")
   };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxT(""), wxDefaultPosition, wxSize(150, -1), 8, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 8, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   const wxString m_styleColor_choices[] = {    
     _("aquamarine"), _("black"), _("blue"), _("blue violet"),
     _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
@@ -126,7 +126,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
     _("wheat"), _("white"), _("yellow"), _("yellow green")
   };
-  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxT(""), wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -144,7 +144,7 @@ void Config::set_properties()
 {
   // begin wxGlade: Config::set_properties
   SetTitle(_("wxMaxima configuration"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   // end wxGlade
   
   m_maximaProgram->SetToolTip(_("Enter the path to the maxima executable."));
@@ -358,7 +358,7 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   config->Read(wxT("maxima"), &dd);
   wxString file = wxFileSelector(_("Select maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
-                                 wxT(""), _("Bat files (*.bat)|*.bat|All|*"),
+                                 wxEmptyString, _("Bat files (*.bat)|*.bat|All|*"),
                                  wxOPEN);
   if (file.Length()) {
     m_maximaProgram->SetValue(file);

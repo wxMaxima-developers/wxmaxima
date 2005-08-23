@@ -22,7 +22,7 @@
 
 LimitCell::LimitCell() : MathCell()
 {
-	m_base = NULL;
+  m_base = NULL;
   m_under = NULL;
   m_name = NULL;
 }

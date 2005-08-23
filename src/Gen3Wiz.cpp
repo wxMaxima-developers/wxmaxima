@@ -81,6 +81,6 @@ void Gen3Wiz::do_layout()
 
 void Gen3Wiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
 }

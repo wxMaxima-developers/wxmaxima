@@ -27,17 +27,20 @@
 
 class BTextCtrl: public wxTextCtrl {
  public:
-  BTextCtrl(wxWindow *parent,
-           wxWindowID id,
-           const wxString& value,
-           const wxPoint& pos = wxDefaultPosition,
-           const wxSize& size = wxDefaultSize,
-           long style = 0);
-  ~BTextCtrl();
+   BTextCtrl(wxWindow *parent,
+            wxWindowID id,
+            const wxString& value,
+            const wxPoint& pos = wxDefaultPosition,
+            const wxSize& size = wxDefaultSize,
+            long style = 0);
+   ~BTextCtrl();
+   void SetMatchParens(bool match) { m_matchParens = match; }
  private:
-  bool m_matchParens;
-  void OnChar(wxKeyEvent& event);
-  DECLARE_EVENT_TABLE()
+   bool m_matchParens;
+   bool MatchParenthesis(int code);
+   void CloseParenthesis(wxString open, wxString close);
+   void OnChar(wxKeyEvent& event);
+   DECLARE_EVENT_TABLE()
 };
 
 #endif	//_TEXTCTRL_H_

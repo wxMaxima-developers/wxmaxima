@@ -27,7 +27,7 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, title);
   label_2 = new wxStaticText(this, -1, label1);
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(300,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -40,7 +40,7 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
 
 void Gen1Wiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
 }
 

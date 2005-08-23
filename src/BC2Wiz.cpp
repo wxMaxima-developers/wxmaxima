@@ -29,7 +29,7 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("BC2"));
   label_2 = new wxStaticText(this, -1, _("Solution:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                 wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("At point:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x="), wxDefaultPosition,
@@ -55,7 +55,7 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
 void BC2Wiz::set_properties()
 {
   SetTitle(_("BC2"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
 }
 

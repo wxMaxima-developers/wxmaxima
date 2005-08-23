@@ -248,7 +248,7 @@ wxString SumCell::ToString(bool all)
   }
   wxString to = m_over->ToString(true);
   s += wxT(",") + var + wxT(",") + from;
-  if (to!=wxT("")) 
+  if (to!=wxEmptyString) 
     s += wxT(",") + to + wxT(")");
   else
     s = wxT("l") + s + wxT(")"),

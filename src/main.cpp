@@ -28,6 +28,9 @@
 
 #include "wxMaxima.h"
 
+// On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
+// We have to force gnome_print support to be linked in static builds of wxMaxima.
+
 #if defined wxUSE_LIBGNOMEPRINT
  #if wxUSE_LIBGNOMEPRINT
   #include "wx/html/forcelnk.h"
@@ -56,8 +59,13 @@ bool MyApp::OnInit()
   
   wxFileSystem::AddHandler(new wxZipFSHandler);
   
-  int x, y, h, w, m, rs=0, lang = wxLANGUAGE_UNKNOWN;
+  int x = 40, y = 40, h = 650, w = 950, m = 0;
+  int rs = 0, lang = wxLANGUAGE_UNKNOWN;
+  int display_width = 1024, display_height = 768;
   bool have_pos;
+  
+  wxDisplaySize(&display_width, &display_height);
+  
   have_pos = config->Read(wxT("pos-x"), &x);
   config->Read(wxT("pos-y"), &y);
   config->Read(wxT("pos-h"), &h);
@@ -65,9 +73,10 @@ bool MyApp::OnInit()
   config->Read(wxT("pos-max"), &m);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("language"), &lang);
+  
   if (rs==0)
     have_pos = false;
-  if (!have_pos || m==1) {
+  if (!have_pos || m == 1 || x > display_width || y > display_height) {
     x = 40;
     y = 40;
     h = 650;
@@ -88,12 +97,12 @@ bool MyApp::OnInit()
 
   frame->Move(wxPoint(x, y));
   frame->SetSize(wxSize(w, h));
-  if (m==1)
+  if (m == 1)
     frame->Maximize(true);
 
   frame->Show(true);
   frame->InitSession();
   frame->ShowTip(false);
   
-  return TRUE;
+  return true;
 }

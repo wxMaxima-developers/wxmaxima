@@ -87,23 +87,23 @@
                       ((and (symbolp x) (get x 'reversealias)))
                       ((and (symbolp x) (get x 'wxxmlword)))
                       (t (wxxml-stripdollar x))))
-	  r))
+      r))
 
 (defun wxxmlnumformat (atom)
   (let (r firstpart exponent)
     (cond ((integerp atom)
            (strcat "<n>" (format nil "~d" atom) "</n>"))
-	  (t
-	   (setq r (exploden atom))
-	   (setq exponent (member 'e r :test #'string-equal))
-	   (cond ((null exponent)
+      (t
+       (setq r (exploden atom))
+       (setq exponent (member 'e r :test #'string-equal))
+       (cond ((null exponent)
                   ;; it is not. go with it as given
                   (strcat "<n>" (format nil "~s" atom) "</n>"))
-		 (t
-		  (setq firstpart
-			(nreverse (cdr (member 'e (reverse r) 
+         (t
+          (setq firstpart
+            (nreverse (cdr (member 'e (reverse r) 
                                                :test #'string-equal))))
-		  (strcat 
+          (strcat 
                    "<r><n>"
                    (apply #'strcat firstpart)
                    "</n><h>*</h><e><n>10</n><n>"
@@ -127,12 +127,12 @@
 (defun wxxml-array (x l r)
   (let ((f))
     (if (eq 'mqapply (caar x))
-	(setq f (cadr x)
-	      x (cdr x)
-	      l (wxxml f (append l (list "<i><r>")) nil
+    (setq f (cadr x)
+          x (cdr x)
+          l (wxxml f (append l (list "<i><r>")) nil
                        'mparen 'mparen))
       (setq f (caar x)
-	    l (wxxml (wxxmlword f) (append l '("<i><r>"))
+        l (wxxml (wxxmlword f) (append l '("<i><r>"))
                      nil lop 'mfunction)))
     (setq r (nconc (wxxml-list (cdr x) (list "</r><r>")
                                (list "</r></i>") "<n>,</n>") r))
@@ -185,18 +185,18 @@
                   (rop op (if (null (cdr y)) ext-rop op)))
                  ((null (cdr y))
                   (setq nl (nconc nl (wxxml (car y) l r lop rop))) nl)
-	         (setq nl (nconc nl (wxxml (car y)  l (list sym)   lop rop))
-		       y (cdr y)
-		       l nil))))))
+             (setq nl (nconc nl (wxxml (car y)  l (list sym)   lop rop))
+               y (cdr y)
+               l nil))))))
 
 (defun wxxml-nofix (x l r) (wxxml (caar x) l r (caar x) rop))
 
 (defun wxxml-matchfix (x l r)
   (setq l (append l (car (wxxmlsym (caar x))))
-	;; car of wxxmlsym of a matchfix operator is the lead op
-	r (append (cdr (wxxmlsym (caar x))) r)
-	;; cdr is the trailing op
-	x (wxxml-list (cdr x) nil r "<n>,</n>")) 
+    ;; car of wxxmlsym of a matchfix operator is the lead op
+    r (append (cdr (wxxmlsym (caar x))) r)
+    ;; cdr is the trailing op
+    x (wxxml-list (cdr x) nil r "<n>,</n>")) 
   (append l x))
 
 (defun wxxmlsym (x)
@@ -243,7 +243,7 @@
 (defun wxxml-mqapply (x l r)
   (setq l (wxxml (cadr x) (append l '("<fn>"))
                  (list "<p>" ) lop 'mfunction)
-	r (wxxml-list (cddr x) nil (cons "</p></fn>" r) "<n>,</n>"))
+    r (wxxml-list (cddr x) nil (cons "</p></fn>" r) "<n>,</n>"))
   (append l r))
 
 
@@ -397,7 +397,7 @@
 (defun wxxml-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
   (setq l (wxxml (cadr x) (append l '("<f><r>")) nil 'mparen 'mparen)
-	r (wxxml (caddr x) (list "</r><r>")
+    r (wxxml (caddr x) (list "</r><r>")
                  (append '("</r></f>")r) 'mparen 'mparen))
   (append l r))
 
@@ -430,9 +430,9 @@
 
 (defun wxxml-lsum(x l r)
   (let ((op (cond ((eq (caar x) '%lsum) "<sm><r>")))
-	;; gotta be one of those above 
-	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
-	(index ;; "index = lowerlimit"
+    ;; gotta be one of those above 
+    (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
+    (index ;; "index = lowerlimit"
          (wxxml `((min simp) , (caddr x), (cadddr x))
                 nil nil 'mparen 'mparen)))
     (append l `(,op ,@index
@@ -441,15 +441,15 @@
 
 (defun wxxml-sum(x l r)
   (let ((op (cond ((eq (caar x) '%sum) "<sm><r>")
-		  ((eq (caar x) '%product) "<sm type=\"prod\"><r>")
+          ((eq (caar x) '%product) "<sm type=\"prod\"><r>")
                   ;; extend here
-		  ))
-	;; gotta be one of those above
-	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
-	(index ;; "index = lowerlimit"
+          ))
+    ;; gotta be one of those above
+    (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
+    (index ;; "index = lowerlimit"
          (wxxml `((mequal simp) ,(caddr x) ,(cadddr x))
                 nil nil 'mparen 'mparen))
-	(toplim (wxxml (car (cddddr x)) nil nil 'mparen 'mparen)))
+    (toplim (wxxml (car (cddddr x)) nil nil 'mparen 'mparen)))
     (append l `( ,op ,@index "</r><r>" ,@toplim
                      "</r><r>"
                      ,@s1 "</r></sm>") r)))
@@ -458,7 +458,7 @@
 
 (defun wxxml-int (x l r)
   (let ((s1 (wxxml (cadr x) nil nil 'mparen 'mparen));;integrand delims / & d
-	(var (wxxml (caddr x) nil nil 'mparen rop))) ;; variable
+    (var (wxxml (caddr x) nil nil 'mparen rop))) ;; variable
     (cond ((= (length x) 3)
            (append l `("<in def=\"false\"><r><p print=\"false\">"
                        ,@s1
@@ -487,7 +487,7 @@
 
 (defun wxxml-limit (x l r) ;; ignoring direction, last optional arg to limit
   (let ((s1 (wxxml (second x) nil nil 'mparen rop));; limitfunction
-	(subfun ;; the thing underneath "limit"
+    (subfun ;; the thing underneath "limit"
          (wxxml `((mrarr simp) ,(third x)
                   ,(fourth x)) nil nil 'mparen 'mparen)))
     (append l `("<lm><n>lim</n><r>"
@@ -498,7 +498,7 @@
 ;; e.g.  at(diff(f(x)),x=a)
 (defun wxxml-at (x l r)
   (let ((s1 (wxxml (cadr x) nil nil lop rop))
-	(sub (wxxml (caddr x) nil nil 'mparen 'mparen)))
+    (sub (wxxml (caddr x) nil nil 'mparen 'mparen)))
     (append l '("<at><r>") s1
             '("</r><r>") sub '("</r></at>") r)))
 
@@ -592,7 +592,7 @@
 (defprop mleqp 80. wxxml-rbp)
 
 (defprop mnot wxxml-prefix wxxml)
-(defprop mnot "<n>not</n>" wxxmlsym)
+(defprop mnot ("<n>not</n>") wxxmlsym)
 (defprop mnot 70. wxxml-rbp)
 
 (defprop mand wxxml-nary wxxml)
@@ -728,35 +728,35 @@
 
 (defun wxxmlmdo (x)
   (nconc (cond ((second x) `("<n>for</n><mspace/>" ,(second x))))
-	 (cond ((equal 1 (third x)) nil)
-	       ((third x)  `("<n>from</n><mspace/>" ,(third x))))
-	 (cond ((equal 1 (fourth x)) nil)
-	       ((fourth x) `("<n>step</n><mspace/>" ,(fourth x)))
-	       ((fifth x)  `("<n>next</n><mspace/>" ,(fifth x))))
-	 (cond ((sixth x)  `("<n>thru</n><mspace/>" ,(sixth x))))
-	 (cond ((null (seventh x)) nil)
-	       ((eq 'mnot (caar (seventh x)))
-		`("<n>while</n><mspace/>" ,(cadr (seventh x))))
-	       (t `("<n>unless</n><mspace/>" ,(seventh x))))
-	 `("<n>do</n><mspace/>" ,(eighth x))))
+     (cond ((equal 1 (third x)) nil)
+           ((third x)  `("<n>from</n><mspace/>" ,(third x))))
+     (cond ((equal 1 (fourth x)) nil)
+           ((fourth x) `("<n>step</n><mspace/>" ,(fourth x)))
+           ((fifth x)  `("<n>next</n><mspace/>" ,(fifth x))))
+     (cond ((sixth x)  `("<n>thru</n><mspace/>" ,(sixth x))))
+     (cond ((null (seventh x)) nil)
+           ((eq 'mnot (caar (seventh x)))
+        `("<n>while</n><mspace/>" ,(cadr (seventh x))))
+           (t `("<n>unless</n><mspace/>" ,(seventh x))))
+     `("<n>do</n><mspace/>" ,(eighth x))))
 
 (defun wxxmlmdoin (x)
   (nconc `("<n>for</n><mspace/>" ,(second x) "<n>in</n><mspace/>"
            ,(third x))
-	 (cond ((sixth x) `("<n>thru</n><mspace/>" ,(sixth x))))
-	 (cond ((null (seventh x)) nil)
-	       ((eq 'mnot (caar (seventh x)))
-		`("<n>while</n><mspace/>" ,(cadr (seventh x))))
-	       (t `("<n>unless</n><mspace/>" ,(seventh x))))
-	 `("<n>do</n><mspace/>" ,(eighth x))))
+     (cond ((sixth x) `("<n>thru</n><mspace/>" ,(sixth x))))
+     (cond ((null (seventh x)) nil)
+           ((eq 'mnot (caar (seventh x)))
+        `("<n>while</n><mspace/>" ,(cadr (seventh x))))
+           (t `("<n>unless</n><mspace/>" ,(seventh x))))
+     `("<n>do</n><mspace/>" ,(eighth x))))
 
 
 (defun wxxml-matchfix-np (x l r)
   (setq l (append l (car (wxxmlsym (caar x))))
-	;; car of wxxmlsym of a matchfix operator is the lead op
-	r (append (cdr (wxxmlsym (caar x))) r)
-	;; cdr is the trailing op
-	x (wxxml-list (cdr x) nil r "")) 
+    ;; car of wxxmlsym of a matchfix operator is the lead op
+    r (append (cdr (wxxmlsym (caar x))) r)
+    ;; cdr is the trailing op
+    x (wxxml-list (cdr x) nil r "")) 
   (append l x))
 
 (defprop text-string wxxml-matchfix-np wxxml)
@@ -776,6 +776,16 @@
 
 (defprop mlable wxxml-mlable wxxml)
 
+(defun wxxml-mprompt (x l r)
+  (wxxml (caddr x)
+         (append l
+                 (if (cadr x)
+                     (list (format nil "<prompt>(~A)<mspace/></prompt><input>"
+                                   (stripdollar (wxxml-symbol-to-string (cadr x)))))
+                   nil))
+         (append (list "</input>") r) 'mparen 'mparen))
+
+(defprop mprompt wxxml-mprompt wxxml)
 
 (defun wxxml-spaceout (x l r)
   (append l (list " " (make-string (cadr x) :initial-element #\.) "") r))
@@ -803,42 +813,42 @@
 
 (defun wxxml-pderivop (x l r)
   (cond ((and $pdiff_uses_prime_for_derivatives (eq 3 (length x)))
-	 (let* ((n (car (last x)))
-		(p))
-	   
-	   (cond ((<= n $pdiff_prime_limit)
-		  (setq p (make-list n :initial-element "'")))
-		 (t
-		  (setq p (list "(" n ")"))))
-	   (cond ((eq rop 'mexpt)
-		  (append l (list "<p><e><r>")
+     (let* ((n (car (last x)))
+        (p))
+       
+       (cond ((<= n $pdiff_prime_limit)
+          (setq p (make-list n :initial-element "'")))
+         (t
+          (setq p (list "(" n ")"))))
+       (cond ((eq rop 'mexpt)
+          (append l (list "<p><e><r>")
                           (wxxml (cadr x) nil nil lop rop) 
-			  (list "</r><r>") p
+              (list "</r><r>") p
                           (list "</r></e>") (list "</p>") r))
-		 (t
-		  (append (append l '("<e><r>"))
+         (t
+          (append (append l '("<e><r>"))
                           (wxxml (cadr x) nil nil lop rop) 
-			  (list "</r><r>") p
+              (list "</r><r>") p
                           (list "</r></e>")  r)))))
         
-	((and $pdiff_uses_named_subscripts_for_derivatives 
-	      (< (apply #'+ (cddr x)) $pdiff_prime_limit))
-	 (let ((n (cddr x))
-	       (v (mapcar #'stripdollar (cdr $pdiff_diff_var_names)))
-	       (p))
-	   (cond ((> (length n) (length v))
-		  (merror "Not enough elements in pdiff_diff_var_names to display the expression")))
-	   (dotimes (i (length n))
-	     (setq p (append p (make-list (nth i n)
+    ((and $pdiff_uses_named_subscripts_for_derivatives 
+          (< (apply #'+ (cddr x)) $pdiff_prime_limit))
+     (let ((n (cddr x))
+           (v (mapcar #'stripdollar (cdr $pdiff_diff_var_names)))
+           (p))
+       (cond ((> (length n) (length v))
+          (merror "Not enough elements in pdiff_diff_var_names to display the expression")))
+       (dotimes (i (length n))
+         (setq p (append p (make-list (nth i n)
                                           :initial-element (nth i v)))))
-	   (append (append l '("<i><r>"))
+       (append (append l '("<i><r>"))
                    (wxxml (cadr x) nil nil lop rop)
                    (list "</r><r>") p (list "</r></i>") r)))
-	(t
-	 (append (append l '("<i><r>"))
+    (t
+     (append (append l '("<i><r>"))
                  (wxxml (cadr x) nil nil lop rop)
                  (list "</r><r>(") 
-		 (wxxml-list (cddr x) nil nil ",")
+         (wxxml-list (cddr x) nil nil ",")
                  (list ")</r></i>") r))))
 
 ;;(defmvar $playback_with_loadfile
@@ -846,7 +856,7 @@
 
 ;;(defmspec $loadfile (form)
 ;;  (loadfile (filestrip (cdr form)) nil
-;;	    (not (memq $loadprint '(nil $autoload))))
+;;      (not (memq $loadprint '(nil $autoload))))
 ;;  (if $playback_with_loadfile (meval '($playback))))
 
 (declare-top
@@ -910,70 +920,67 @@
           a    (setq l1 (cdr l1))
           (go loop))))
 
-(defmvar $%)
+
+(declare-top
+  (special $%))
 
 (defmspec $example (l)   (setq l (cdr l))
-	  (block
-	      $example
-	    (let ((example (car l))
-		  (file (or (cadr l)  (combine-path 
-				       (list *maxima-demodir* $manual_demo)))))
-	      (or (symbolp example)
-		  (merror
-		   "First arg ~M to example must be a symbol, eg example(functions)"))
-	      (setq file ($file_search1 $manual_demo '((mlist) $file_search_demo)))
-	      (with-open-file
-		  (st file)
-		(let (			;*mread-prompt*
-		      )
-		  (prog ( tem  all c-tag d-tag)
+      (block
+          $example
+        (let ((example (car l))
+          (file (or (cadr l)  (combine-path 
+                       (list *maxima-demodir* $manual_demo)))))
+          (or (symbolp example)
+          (merror
+           "First arg ~M to example must be a symbol, eg example(functions)"))
+          (setq file ($file_search1 $manual_demo '((mlist) $file_search_demo)))
+          (with-open-file
+          (st file)
+        (let (          ;*mread-prompt*
+              )
+          (prog ( tem  all c-tag d-tag)
 
-		   again
-		   (setq tem (read-char st nil))
-		   (or tem (go notfound))
-		   (or (eql tem #\&) (go again))
-		   (setq tem (read-char st nil))
-		   (or (eql tem #\&) (go again))
-		   ;; so we are just after having read &&
-	  
-		   (setq tem (read st nil nil))
-		   (or tem (go notfound))
-		   (setq tem ($concat tem))
-		   (cond ((eql tem example)
-			  (go doit))
-			 (t (push tem all)
-			    (go again)))
-		   ;; at this stage we read maxima forms and print and eval
-		   ;; until a peek sees '&' as the first character of next expression.
-		   doit
-		   (setq tem (peek-char nil st nil))
-		   (cond ((or (null tem) (eql tem #\&))
+           again
+           (setq tem (read-char st nil))
+           (or tem (go notfound))
+           (or (eql tem #\&) (go again))
+           (setq tem (read-char st nil))
+           (or (eql tem #\&) (go again))
+           ;; so we are just after having read &&
+      
+           (setq tem (read st nil nil))
+           (or tem (go notfound))
+           (setq tem ($concat tem))
+           (cond ((eql tem example)
+              (go doit))
+             (t (push tem all)
+                (go again)))
+           ;; at this stage we read maxima forms and print and eval
+           ;; until a peek sees '&' as the first character of next expression.
+           doit
+           (setq tem (peek-char nil st nil))
+           (cond ((or (null tem) (eql tem #\&))
         (setq *need-prompt* t)
-			  (return-from $example '$done)))
-		   (setq tem (dbm-read st nil nil))
-		   (setq $linenum (+ 1 $linenum))
-		   (set (setq c-tag (makelabel $inchar)) (nth 2 tem))
-		   (let ($display2d)
-         (princ "<mth><prompt>")
-		     (displa `((mlable) ,c-tag ""))
-         (princ "</prompt><input>")
-         (displa (nth 2 tem))
-         (princ "</input></mth>")
-					;(mformat nil "Input: ~M;" (nth 2 tem))
-		     )
-		   (setq $% (meval* (nth 2 tem)))
-		   (set (setq d-tag (makelabel $outchar)) $%)
-		   (if (eq (caar tem) 'displayinput)
-		       (displa `((mlable) ,d-tag ,$%)))
-					;(mformat nil "==> ~M"  (setq $% (meval* (nth 2 tem))))
-		   (go doit) 	
+              (return-from $example '$done)))
+           (setq tem (dbm-read st nil nil))
+           (setq $linenum (+ 1 $linenum))
+           (set (setq c-tag (makelabel $inchar)) (nth 2 tem))
+             (displa `((mprompt) ,c-tag ,(nth 2 tem)))
+                    ;(mformat nil "Input: ~M;" (nth 2 tem))
+           (setq $% (meval* (nth 2 tem)))
+           (set (setq d-tag (makelabel $outchar)) $%)
+           (if (eq (caar tem) 'displayinput)
+               (displa `((mlable) ,d-tag ,$%)))
+                    ;(mformat nil "==> ~M"  (setq $% (meval* (nth 2 tem))))
+           (go doit)    
 
-		   notfound
-		   (format t "Not Found.  You can look at:")
+           notfound
+           (format t "Not Found.  You can look at:")
        (setq *need-prompt* t)
-		   (return-from $example
-		     `((mlist) ,@ (nreverse all)))
-		   ))))))
+           (return-from $example
+             `((mlist) ,@ (nreverse all)))
+           ))))))
+
 
 ;;
 ;; Port of Barton Willis's texput function.
@@ -981,38 +988,38 @@
 
 (defun $wxxmlput (e s &optional tx lbp rbp)
   (cond ((mstringp e)
-	 (setq e (define-symbol (string-left-trim '(#\&) e)))))
+     (setq e (define-symbol (string-left-trim '(#\&) e)))))
   (cond (($listp s)
-	 (setq s (margs s)))
-	(t
-	 (setq s (list s))))
+     (setq s (margs s)))
+    (t
+     (setq s (list s))))
   (setq s (mapcar #'stripdollar s))
   (cond ((or (null lbp) (not (integerp lbp)))
          (setq lbp 180)))
   (cond ((or (null rbp) (not (integerp rbp)))
          (setq rbp 180)))
   (cond ((null tx)
-	 (putprop e (nth 0 s) 'wxxmlword))
-	((eq tx '$matchfix)
-	 (putprop e 'wxxml-matchfix 'wxxml)
-	 (cond ((< (length s) 2)
-		(merror "Improper 2nd argument to `wxxmlput' for matchfix operator."))
-	       ((eq (length s) 2)
-		(putprop e (list (list (nth 0 s)) (nth 1 s)) 'wxxmlsym))
-	       (t
-		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'wxxmlsym))))
-	((eq tx '$prefix)
-	 (putprop e 'wxxml-prefix 'wxxml)
-	 (putprop e s 'wxxmlsym)
+     (putprop e (nth 0 s) 'wxxmlword))
+    ((eq tx '$matchfix)
+     (putprop e 'wxxml-matchfix 'wxxml)
+     (cond ((< (length s) 2)
+        (merror "Improper 2nd argument to `wxxmlput' for matchfix operator."))
+           ((eq (length s) 2)
+        (putprop e (list (list (nth 0 s)) (nth 1 s)) 'wxxmlsym))
+           (t
+        (putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'wxxmlsym))))
+    ((eq tx '$prefix)
+     (putprop e 'wxxml-prefix 'wxxml)
+     (putprop e s 'wxxmlsym)
          (putprop e lbp 'wxxml-lbp)
          (putprop e rbp 'wxxml-rbp))
-	((eq tx '$infix)
-	 (putprop e 'wxxml-infix 'wxxml)
-	 (putprop e  s 'wxxmlsym)
+    ((eq tx '$infix)
+     (putprop e 'wxxml-infix 'wxxml)
+     (putprop e  s 'wxxmlsym)
          (putprop e lbp 'wxxml-lbp)
          (putprop e rbp 'wxxml-rbp))
-	((eq tx '$postfix)
-	 (putprop e 'wxxml-postfix 'wxxml)
-	 (putprop e  s 'wxxmlsym)
+    ((eq tx '$postfix)
+     (putprop e 'wxxml-postfix 'wxxml)
+     (putprop e  s 'wxxmlsym)
          (putprop e lbp 'wxxml-lbp))
         (t (merror "Improper arguments to `wxxmlput'."))))

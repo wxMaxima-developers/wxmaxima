@@ -28,7 +28,7 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
            wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMINIMIZE_BOX|wxMAXIMIZE_BOX),
   setFont(setfont)
 {
-  text_ctrl_1 = new TextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new TextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                              wxDefaultSize,
                              wxTE_PROCESS_TAB|wxTE_PROCESS_ENTER|wxTE_MULTILINE|wxTE_RICH);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -58,9 +58,9 @@ void TextInput::set_properties()
   SetTitle(_("wxMaxima input"));
   if (setFont)
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
-    text_ctrl_1->SetFont(wxFont(14, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    text_ctrl_1->SetFont(wxFont(14, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
-    text_ctrl_1->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    text_ctrl_1->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
   button_1->SetDefault();
 }

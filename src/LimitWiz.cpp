@@ -29,7 +29,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Limit"));
   label_2 = new wxStaticText(this, -1, _("Limit of:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("when variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
@@ -44,7 +44,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
     _("left"),
     _("right")
   };
-  combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
+  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(130, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
   checkbox_1 = new wxCheckBox(this, -1, _("Use Taylor series"));
@@ -61,7 +61,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
 void LimitWiz::set_properties()
 {
   SetTitle(_("Limit"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   combo_box_1->SetSelection(0);
   button_2->SetDefault();
 }

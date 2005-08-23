@@ -543,7 +543,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
 wxString MathCtrl::GetString()
 {
   if (m_selectionStart == NULL)
-    return wxT("");
+    return wxEmptyString;
   wxString s;
   MathCell* tmp = m_selectionStart;
   while (tmp != NULL) {
@@ -1056,7 +1056,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   // Write maxima header
   //
   if (tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
-    AddLineToFile(output, wxT(""));
+    AddLineToFile(output, wxEmptyString);
     AddLineToFile(output, wxT(" <P>"));
     while(tmp!=NULL && tmp->GetType()!=TC_MAIN_PROMPT) {
       AddLineToFile(output, wxT("   ") + tmp->ToString(false));
@@ -1066,14 +1066,14 @@ bool MathCtrl::ExportToHTML(wxString file)
     AddLineToFile(output, wxT(" </P>"));
   }
   
-  AddLineToFile(output, wxT(""));
+  AddLineToFile(output, wxEmptyString);
   
   //
   // Write contents
   //
   while(tmp!=NULL) {
     AddLineToFile(output, wxT("<!-- Input/output group -->"));
-    AddLineToFile(output, wxT(""));
+    AddLineToFile(output, wxEmptyString);
     AddLineToFile(output, wxT(" <P>"));
     
     // PROMPT
@@ -1089,7 +1089,7 @@ bool MathCtrl::ExportToHTML(wxString file)
     AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
     while(tmp!=NULL && tmp->GetType()==TC_INPUT) {
       wxString input = tmp->ToString(false);
-      wxString line = wxT("");
+      wxString line = wxEmptyString;
       for (unsigned int i=0; i<input.Length(); i++) {
         if (input.GetChar(i) == ' ')
           line += wxT("&nbsp;");
@@ -1107,7 +1107,7 @@ bool MathCtrl::ExportToHTML(wxString file)
     // Check if there is no optput (commands with $)
     if (tmp!=NULL && tmp->GetType()==TC_MAIN_PROMPT) {
       AddLineToFile(output, wxT(" </P>"));
-      AddLineToFile(output, wxT(""));
+      AddLineToFile(output, wxEmptyString);
       continue;
     }
     
@@ -1134,7 +1134,7 @@ bool MathCtrl::ExportToHTML(wxString file)
       count++;
     }
     AddLineToFile(output, wxT(" </P>"));
-    AddLineToFile(output, wxT(""));
+    AddLineToFile(output, wxEmptyString);
     if (tmp != NULL) {
       if (start->m_isFolded)
         tmp = tmp->m_nextToDraw;
@@ -1151,7 +1151,7 @@ bool MathCtrl::ExportToHTML(wxString file)
                         wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
                         wxT("wxMaxima</A>")
                         wxT(".</SMALL>"));
-  AddLineToFile(output, wxT(""));
+  AddLineToFile(output, wxEmptyString);
   
   //
   // Close document

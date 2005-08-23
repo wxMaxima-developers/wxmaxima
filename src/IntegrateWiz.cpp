@@ -31,7 +31,7 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
 {
   label_1 = new wxStaticText(this, -1, _("Integrate"));
   label_2 = new wxStaticText(this, -1, _("Integrate:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
@@ -58,7 +58,7 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
 void IntegrateWiz::set_properties()
 {
   SetTitle(_("Integrate"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxSLANT, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxSLANT, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
   text_ctrl_3->Enable(false);
   button_3->Enable(false);

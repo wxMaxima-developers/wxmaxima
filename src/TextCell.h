@@ -58,4 +58,4 @@ class TextCell : public MathCell
 };
 
 
-#endif	//_TEXTCELL_H_
+#endif //_TEXTCELL_H_

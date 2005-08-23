@@ -80,7 +80,7 @@ void DiffCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
   m_diffCell->RecalculateWidths(parser, fontsize, true);
-  m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + MC_CELL_SKIP;
+  m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + 2*MC_CELL_SKIP;
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
@@ -88,8 +88,8 @@ void DiffCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   m_baseCell->RecalculateSize(parser, fontsize, true);
   m_diffCell->RecalculateSize(parser, fontsize, true);
-  m_height = MAX(m_baseCell->GetMaxHeight(), m_diffCell->GetMaxHeight());
   m_center = MAX(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
+  m_height = m_center + MAX(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -101,7 +101,7 @@ void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     df.y = point.y;
     m_diffCell->Draw(parser, df, fontsize, true);
   
-    bs.x = point.x + m_diffCell->GetFullWidth(parser.GetScale()) + MC_CELL_SKIP;
+    bs.x = point.x + m_diffCell->GetFullWidth(parser.GetScale()) + 2*MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->Draw(parser, bs, fontsize, true);
   }

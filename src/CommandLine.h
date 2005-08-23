@@ -24,10 +24,11 @@
 #define _WXCOMMANDLINE_H_
 
 #include <wx/wx.h>
-
 #include <vector>
 
-class CommandLine : public wxTextCtrl
+#include "BTextCtrl.h"
+
+class CommandLine : public BTextCtrl
 {
  public:
   CommandLine(wxWindow *parent,
@@ -41,22 +42,23 @@ class CommandLine : public wxTextCtrl
   wxString Previous();
   wxString Next();
   wxString Complete(wxString s);
-  void SetMatchParens(bool match) { m_matchParens = match; }
 #if defined __WXMSW__
   void SetValue(wxString s);
   void WriteText(wxString s);
 #endif
  protected:
   std::vector<wxString> m_history;
+  int m_historySize;
   int m_historyIndex;
+  wxString m_currentValue;
+  wxString m_currentHistoryValue;
+  wxString m_currentDisplayedValue;
   void FilterLine(wxKeyEvent& event);
 #if defined __WXMSW__
-  void Highlight(wxKeyEvent& event);
   void DoHighlight();
 #endif
-  bool m_matchParens;
   DECLARE_EVENT_TABLE()
 };
 
 
-#endif	//_WXCOMMANDLINE_H_
+#endif  //_WXCOMMANDLINE_H_

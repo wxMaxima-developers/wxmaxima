@@ -44,7 +44,7 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
 
 void MatWiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
   
   if (m_matrixType == MATRIX_ANTISYMETRIC) {
@@ -147,7 +147,7 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
     _("symmetric"),
     _("antisymmetric")
   };
-  combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
+  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(150, -1), 4,
                                combo_box_1_choices,
                                wxCB_DROPDOWN|wxCB_READONLY);
@@ -162,7 +162,7 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
 
 void MatDim::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
   combo_box_1->SetSelection(0);
 }

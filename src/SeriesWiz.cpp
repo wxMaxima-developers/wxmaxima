@@ -33,9 +33,9 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Series"));
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
-  label_3 = new wxStaticText(this, -1, _("variable:"));
+  label_3 = new wxStaticText(this, -1, _("variable"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(110,-1));
   label_4 = new wxStaticText(this, -1, _("around:"));
@@ -57,7 +57,7 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
 void SeriesWiz::set_properties()
 {
   SetTitle(_("Series"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
 }
 

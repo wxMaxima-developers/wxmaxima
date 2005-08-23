@@ -30,7 +30,7 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Sum"));
   label_2 = new wxStaticText(this, -1, _("Sum of:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"), wxDefaultPosition,
@@ -56,7 +56,7 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
 void SumWiz::set_properties()
 {
   SetTitle(_("Sum"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   checkbox_1->SetValue(true);
   button_1->SetDefault();
   

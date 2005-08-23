@@ -21,9 +21,11 @@
 #include "CommandLine.h"
 #include <wx/config.h>
 
+#define MIN(a,b) (a)<(b)?(a):(b)
+#define MAX(a,b) (a)<(b)?(b):(a)
+
 #if defined __WXMSW__
 
-#define MIN(a,b) (a)<(b) ? (a) : (b)
 #define NUM_OF_COLOURS 10
 const wxString hl_colours[] = {
   wxT("RED"), wxT("BLUE"), wxT("PURPLE"), wxT("ORANGE"),
@@ -38,11 +40,10 @@ CommandLine::CommandLine(wxWindow *parent,
                          const wxString& value,
                          const wxPoint& pos,
                          const wxSize& size,
-                         long style) : wxTextCtrl(parent, id, value, pos, size, style)
+                         long style) : BTextCtrl(parent, id, value, pos, size, style)
 {
   m_historyIndex = 1;
-  m_matchParens = true;
-  wxConfig::Get()->Read(wxT("matchParens"), &m_matchParens);
+  m_historySize = 0;
 }
 
 
@@ -62,51 +63,39 @@ int CommandLine::AddToHistory(wxString s)
   s.Trim(false);
   if (s.Length()!=0)
     m_history.push_back(s);
-  m_historyIndex = m_history.size();
+  m_historySize = m_history.size();
+  m_historyIndex = m_historySize;
+  m_currentValue = wxEmptyString;
+  m_currentDisplayedValue = wxEmptyString;
   return 0;
 }
 
 wxString CommandLine::Next()
 {
   if (m_history.size()==0)
-    return wxT("");
-  if (m_historyIndex+1 < (int)m_history.size()) {
-    m_historyIndex++;
-    return m_history[m_historyIndex];
-  }
-  else if (m_historyIndex+1 == (int)m_history.size()) {
-    m_historyIndex++;
-    return wxT("");
-  }
-  else {
-    m_historyIndex = 0;
-    return m_history[m_historyIndex];
-  }
-  return wxT("");
+    return wxEmptyString;
+  m_historyIndex = MIN(m_historyIndex+1, m_historySize);
+  if (m_historyIndex == m_historySize)
+    return m_currentValue;
+  return m_history[m_historyIndex];
 }
 
 wxString CommandLine::Previous()
 {
   if (m_history.size()==0)
-    return wxT("");
-  if (m_historyIndex>0) {
-    m_historyIndex--;
-    return m_history[m_historyIndex];
-  }
-  else {
-    m_historyIndex = m_history.size();
-    return wxT("");
-  }
-  return wxT("");
+    return wxEmptyString;
+  
+  m_historyIndex = MAX(m_historyIndex-1, 0);
+  return m_history[m_historyIndex];
 }
 
 wxString CommandLine::Complete(wxString s)
 {
   int i;
-  if (m_history.size()==0)
+  if (m_historySize==0)
     return s;
   if (m_historyIndex < 0)
-    m_historyIndex = m_history.size();
+    m_historyIndex = m_historySize;
   for (i = m_historyIndex-1; i>=0; i--)
     if (m_history[i].StartsWith(s) ||
         m_history[i].StartsWith(wxT("<ml>") + s))
@@ -115,7 +104,7 @@ wxString CommandLine::Complete(wxString s)
     m_historyIndex = i;
     return m_history[i];
   }
-  for (i = m_history.size()-1; i >= m_historyIndex; i--)
+  for (i = m_historySize-1; i >= m_historyIndex; i--)
     if (m_history[i].StartsWith(s) ||
         m_history[i].StartsWith(wxT("<ml>") + s))
       break;
@@ -128,21 +117,23 @@ wxString CommandLine::Complete(wxString s)
 
 void CommandLine::FilterLine(wxKeyEvent& event)
 {
-  long from, to;
-  GetSelection(&from, &to);
   switch(event.GetKeyCode()) {
   case WXK_UP:
-    SetValue(Previous());
+    m_currentHistoryValue = Previous();
+    m_currentDisplayedValue = m_currentHistoryValue;
+    SetValue(m_currentHistoryValue);
     SetInsertionPointEnd();
-    return;
     break;
   case WXK_DOWN:
-    SetValue(Next());
+    m_currentHistoryValue = Next();
+    m_currentDisplayedValue = m_currentHistoryValue;
+    SetValue(m_currentHistoryValue);
     SetInsertionPointEnd();
-    return;
     break;
   case WXK_TAB:
     {
+      if (event.AltDown())
+        return;
       wxString s = GetValue();
       long int l = GetInsertionPoint();
       long int l1,l2;
@@ -155,88 +146,34 @@ void CommandLine::FilterLine(wxKeyEvent& event)
       }
       else
         s = s.SubString(0, l-1);
-      wxString com = Complete(s);
-      if (com != s)
-        SetValue(com);
-      if (com.Find(wxT("<ml>"))>-1)
+      wxString comp = Complete(s);
+      if (comp != s) {
+        m_currentDisplayedValue = comp;
+        m_currentHistoryValue = comp;
+        SetValue(comp);
+      }
+      if (comp.Find(wxT("<ml>"))>-1)
         l = l+4;
       SetInsertionPoint(l-1);
       SetSelection(l, GetLastPosition());
     }
-    return;
     break;
   default:
-    break;
-  }
-  if (m_matchParens) {
-    switch (event.GetKeyCode()) {
-    case '(':
-      if (from==to) {
-        WriteText(wxT("()"));
-        SetInsertionPoint(GetInsertionPoint()-1);
+    {
+      wxString value = GetValue();
+      if (m_currentDisplayedValue != value) {
+        m_currentValue = value;
+        m_historyIndex = m_historySize;
       }
-      else {
-        SetInsertionPoint(to);
-        WriteText(wxT(")"));
-        SetInsertionPoint(from);
-        WriteText(wxT("("));
-        SetInsertionPoint(to+1);
-      }
-      break;
-    case '[':
-      if (from==to) {
-        WriteText(wxT("[]"));
-        SetInsertionPoint(GetInsertionPoint()-1);
-      }
-      else {
-        SetInsertionPoint(to);
-        WriteText(wxT("]"));
-        SetInsertionPoint(from);
-        WriteText(wxT("["));
-        SetInsertionPoint(to+1);
-      }
-      break;
-    case '{':
-      if (from==to) {
-        WriteText(wxT("{}"));
-        SetInsertionPoint(GetInsertionPoint()-1);
-      }
-      else {
-        SetInsertionPoint(to);
-        WriteText(wxT("}"));
-        SetInsertionPoint(from);
-        WriteText(wxT("{"));
-        SetInsertionPoint(to+1);
-      }
-      break;
-    case '"':
-      if (from==to) {
-        WriteText(wxT("\"\""));
-        SetInsertionPoint(GetInsertionPoint()-1);
-      }
-      else {
-        SetInsertionPoint(to);
-        WriteText(wxT("\""));
-        SetInsertionPoint(from);
-        WriteText(wxT("\""));
-        SetInsertionPoint(to+1);
-      }
-      break;
-    default:
-      event.Skip();
       break;
     }
   }
-  else
-    event.Skip();
+#if defined __WXMSW__
+  DoHighlight();
+#endif
 }
 
 #if defined __WXMSW__
-
-void CommandLine::Highlight(wxKeyEvent& event)
-{
-  DoHighlight();
-}
 
 void CommandLine::DoHighlight()
 {
@@ -286,9 +223,6 @@ void CommandLine::WriteText(wxString s)
 
 #endif
 
-BEGIN_EVENT_TABLE(CommandLine, wxTextCtrl)
-  EVT_CHAR(CommandLine::FilterLine)
-#if defined __WXMSW__
-  EVT_KEY_UP(CommandLine::Highlight)
-#endif
+BEGIN_EVENT_TABLE(CommandLine, BTextCtrl)
+  EVT_KEY_UP(CommandLine::FilterLine)
 END_EVENT_TABLE()

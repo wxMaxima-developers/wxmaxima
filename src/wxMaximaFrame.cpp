@@ -41,7 +41,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   
   // input line
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
-  m_inputLine = new CommandLine(panel, input_line_id, wxT(""),
+  m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
                                 wxDefaultPosition, wxDefaultSize,
                                 wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|
                                 wxTE_RICH);
@@ -95,9 +95,9 @@ void wxMaximaFrame::set_properties()
   if (fixed) {
   // Set font for input line
 #if defined(__WXGTK12__) && !defined(__WXGTK20__)
-    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
-    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("")));
+    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
   }
   
@@ -169,9 +169,9 @@ void wxMaximaFrame::do_layout()
 void wxMaximaFrame::SetupMenu()
 {
   frame_1_menubar = new wxMenuBar();
-
-#if defined __WXGTK20__
   wxMenuItem *tmp_menu_item;
+  
+#if defined __WXGTK20__
  #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
   tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
   tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
@@ -180,15 +180,15 @@ void wxMaximaFrame::SetupMenu()
  #define APPEND_MENU_ITEM(menu, id, label, help, stock) \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 #endif
-
+  
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open session\tCtrl-O"),
-                             _("Open session from a file"), wxT("gtk-open"));
+                   _("Open session from a file"), wxT("gtk-open"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save session\tCtrl-S"),
                    _("Save session to a file"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
-                             _("Load a maxima package file"), wxITEM_NORMAL);
+                   _("Load a maxima package file"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_batch_id, _("&Batch file\tCtrl-B"),
                    _("Batch maxima file"), wxT("gtk-execute"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export to HTML"),

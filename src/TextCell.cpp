@@ -22,7 +22,7 @@
 
 TextCell::TextCell() : MathCell()
 {
-  m_text = wxT("");
+  m_text = wxEmptyString;
   m_symbol = false;
   m_greek = false;
   m_fontSize = -1;
@@ -33,7 +33,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_text = text;
   m_symbol = false;
   m_greek = false;
-  m_text.Replace(wxT("\n"), wxT(""));
+  m_text.Replace(wxT("\n"), wxEmptyString);
 }
 
 TextCell::~TextCell()
@@ -45,12 +45,12 @@ TextCell::~TextCell()
 void TextCell::SetValue(wxString text)
 {
   m_text = text;
-  m_text.Replace(wxT("\n"), wxT(""));
+  m_text.Replace(wxT("\n"), wxEmptyString);
 }
 
 MathCell* TextCell::Copy(bool all)
 {
-  TextCell *tmp = new TextCell;
+  TextCell *tmp = new TextCell(wxEmptyString);
   tmp->m_text = wxString(m_text);
   tmp->m_symbol = m_symbol;
   tmp->m_style = m_style;
@@ -80,7 +80,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
     else if (m_greek && parser.HaveSymbolFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-    else if (m_text == wxT("")) {
+    else if (m_text == wxEmptyString) {
       dc.GetTextExtent(wxT("X"), &m_width, &m_height);
       m_width = 0;
     }

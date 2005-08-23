@@ -43,7 +43,7 @@ MathCell::MathCell()
 }
 
 /***
- * Derived classes must test if m_next if not NULL end delete it!
+ * Derived classes must test if m_next if not NULL end delete it!!!
  */
 MathCell::~MathCell()
 {
@@ -179,7 +179,7 @@ void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
  * Recalculate widths of cells. (Used for changing font size - must recalculate
  * all size information).
  *
- * must: set m_width.
+ * Should set: set m_width.
  */
 void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
@@ -206,8 +206,8 @@ bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
 }
 
 /***
- * Get the rectangle around this box - if all is true then return the box around
- * the whole line.
+ * Get the rectangle around this cell - if all is true then return the rectangle
+ * around the whole line.
  */
 wxRect MathCell::GetRect(bool all)
 {
@@ -258,7 +258,7 @@ wxString MathCell::ToString(bool all)
 {
   if (all && m_next != NULL)
     return m_next->ToString(all);
-  return wxT("");
+  return wxEmptyString;
 }
 
 /***
@@ -266,7 +266,7 @@ wxString MathCell::ToString(bool all)
  */
 wxString MathCell::GetDiffPart()
 {
-  return wxT("");
+  return wxEmptyString;
 }
 
 /***
@@ -341,7 +341,7 @@ bool MathCell::ContainsRect(wxRect& sm, bool all) {
 }
 
 /***
- * Resets remembered data
+ * Resets remembered data.
  */
 void MathCell::ResetData()
 {
@@ -367,18 +367,27 @@ void MathCell::Unbreak(bool all)
     m_next->Unbreak(all);
 }
 
+/***
+ * Set the pen in device context accordint to the style of the cell.
+ */
 void MathCell::SetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
   if (m_style == TC_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
                                               1, wxSOLID)));
+  else if (m_style == TC_INPUT)
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
+                                              1, wxSOLID)));
 }
 
+/***
+ * Reset the pen in the device context.
+ */
 void MathCell::UnsetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  if (m_style == TC_PROMPT)
+  if (m_style == TC_PROMPT || m_style == TC_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_NORMAL_TEXT),
                                               1, wxSOLID)));
 }

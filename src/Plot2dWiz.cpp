@@ -39,7 +39,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Plot 2D"));
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(250,-1));
   button_3 = new wxButton(this, parametric, _("Parametric"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
@@ -61,7 +61,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(50,-1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
-  text_ctrl_8 = new wxSpinCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {
@@ -69,7 +69,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
     wxT("gnuplot"),
     wxT("openmath")
   };
-  combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
+  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(150, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
   label_11 = new wxStaticText(this, -1, _("Options:"));
@@ -80,11 +80,11 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
     wxT("set logscale y; set grid"),
     wxT("set logscale x; set grid")
   };
-  combo_box_2 = new wxComboBox(this, combobox, wxT(""), wxDefaultPosition,
+  combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
                                wxSize(280, -1), 5,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Plot to file:"));
-  text_ctrl_9 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
@@ -103,7 +103,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
 void Plot2DWiz::set_properties()
 {
   SetTitle(_("Plot 2D"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_3->SetValue(wxT("-5"));
   text_ctrl_4->SetValue(wxT("5"));
   text_ctrl_6->SetValue(wxT("0"));
@@ -201,21 +201,21 @@ void Plot2DWiz::Parse(wxString s)
   while (i<s.Length() && s.GetChar(i)!='[')
     i++;
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_2->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_3->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=']') {
     curr += s.GetChar(i);
     i++;
@@ -226,7 +226,7 @@ void Plot2DWiz::Parse(wxString s)
   while(i<s.Length()) {
     if (s.GetChar(i) == '[') {
       i++;
-      curr = wxT("");
+      curr = wxEmptyString;
       while (i<s.Length() && s.GetChar(i) != ',') {
         curr += s.GetChar(i);
         i++;
@@ -234,7 +234,7 @@ void Plot2DWiz::Parse(wxString s)
       curr.Trim();
       curr.Trim(false);
       if (curr == wxT("y")) {
-        curr = wxT("");
+        curr = wxEmptyString;
         i++;
         while (i<s.Length() && s.GetChar(i)!=',') {
           curr += s.GetChar(i);
@@ -242,7 +242,7 @@ void Plot2DWiz::Parse(wxString s)
         }
         text_ctrl_6->SetValue(curr);
         i++;
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!=']') {
           curr += s.GetChar(i);
           i++;
@@ -254,7 +254,7 @@ void Plot2DWiz::Parse(wxString s)
         while (i<s.Length() && s.GetChar(i)!='"')
           i++;
         i++;
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!='"') {
           curr += s.GetChar(i);
           i++;
@@ -265,7 +265,7 @@ void Plot2DWiz::Parse(wxString s)
         while (i<s.Length() && s.GetChar(i)!='"')
           i++;
         i++;
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!='"') {
           curr += s.GetChar(i);
           i++;
@@ -273,7 +273,7 @@ void Plot2DWiz::Parse(wxString s)
         text_ctrl_9->SetValue(curr);
       }
       else if (curr == wxT("nticks")) {
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!=',')
           i++;
         i++;
@@ -344,7 +344,7 @@ void Plot2DWiz::OnButton(wxCommandEvent& event)
   wiz->Centre(wxBOTH);
   if (wiz->ShowModal() == wxID_OK) {
     if (text_ctrl_1->GetValue()==wxT("%"))
-      text_ctrl_1->SetValue(wxT(""));
+      text_ctrl_1->SetValue(wxEmptyString);
     if (((text_ctrl_1->GetValue()).Strip()).Length())
       text_ctrl_1->AppendText(wxT(", "));
     text_ctrl_1->AppendText(wiz->GetValue());
@@ -371,7 +371,7 @@ void Plot2DWiz::OnCombobox(wxCommandEvent &event)
 
 void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
 {
-  wxString file = wxFileSelector(_("Save plot to file"), wxT(""),
+  wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot2d.eps"), wxT("eps"),
                                  _("Postscript file (*.eps)|*.eps|All|*"),
                                  wxSAVE|wxOVERWRITE_PROMPT);
@@ -397,19 +397,19 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
 {
   label_1 = new wxStaticText(this, -1, _("Parametric plot"));
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230,-1));
   label_4 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
                               wxSize(30,-1));
   label_5 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   label_6 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -422,7 +422,7 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
 void Plot2dPar::set_properties()
 {
   SetTitle(_("Parametric plot"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_4->SetValue(wxT("-6"));
   text_ctrl_5->SetValue(wxT("6"));
   button_1->SetDefault();

@@ -57,4 +57,4 @@ class IntCell : public MathCell
 };
 
 
-#endif	//_UNDERCELL_H_
+#endif  //_UNDERCELL_H_

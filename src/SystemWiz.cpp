@@ -28,9 +28,9 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
   label_1 = new wxStaticText(this, -1, title);
   for (int i=0; i<m_size; i++) {
     m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
-                                     wxSize(230,-1)));
+                       wxSize(230,-1)));
   }
-  variables = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  variables = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                             wxSize(230,-1));
   static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -42,7 +42,7 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
 
 void SysWiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   variables->SetToolTip(_("Enter comma separated list of variables."));
   button_1->SetDefault();
 }

@@ -40,31 +40,31 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_1 = new wxStaticText(this, -1, _("Plot 3D"));
-  label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this,-1, wxT(""), wxDefaultPosition);
+  label_2 = new wxStaticText(this, -1, _("Expression"));
+  text_ctrl_1 = new BTextCtrl(this,-1, wxEmptyString, wxDefaultPosition);
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(30,-1));
   label_4 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   label_5 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(30,-1));
   label_7 = new wxStaticText(this, -1, _("from:"));
-  text_ctrl_6 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_6 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   label_8 = new wxStaticText(this, -1, _("to:"));
-  text_ctrl_7 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_7 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   label_9 = new wxStaticText(this, -1, _("Grid:"));
-  text_ctrl_8 = new wxSpinCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(50,-1), wxSP_ARROW_KEYS, 0, 100);
   label_10 = new wxStaticText(this, -1, wxT("x"));
-  text_ctrl_9 = new wxSpinCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_9 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(50,-1), wxSP_ARROW_KEYS, 0, 100);
   label_11 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {
@@ -72,7 +72,7 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
     wxT("gnuplot"),
     wxT("openmath")
   };
-  combo_box_1 = new wxComboBox(this, -1, wxT(""), wxDefaultPosition,
+  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(150, -1), 3, combo_box_1_choices,
                                wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Options:"));
@@ -84,12 +84,12 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
     wxT("set mapping spherical"),
     wxT("set mapping cylindrical")
   };
-  combo_box_2 = new wxComboBox(this, combobox, wxT(""), wxDefaultPosition,
+  combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
                                wxSize(250,-1), 6, combo_box_2_choices,
                                wxCB_DROPDOWN);
   check_box_1  = new wxCheckBox(this, -1, _("pm3d"));
   label_13 = new wxStaticText(this, -1, _("Plot to file:"));
-  text_ctrl_10 = new BTextCtrl(this, -1, wxT(""), wxDefaultPosition,
+  text_ctrl_10 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(250, -1));
   button_3 = new wxBitmapButton(this, file_browse_3d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
@@ -108,7 +108,7 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
 void Plot3DWiz::set_properties()
 {
   SetTitle(_("Plot 3D"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxT("")));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_3->SetValue(wxT("-5"));
   text_ctrl_4->SetValue(wxT("5"));
   text_ctrl_6->SetValue(wxT("-5"));
@@ -222,21 +222,21 @@ void Plot3DWiz::Parse(wxString s)
   while (i<s.Length() && s.GetChar(i)!='[')
     i++;
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_2->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_3->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=']') {
     curr += s.GetChar(i);
     i++;
@@ -247,21 +247,21 @@ void Plot3DWiz::Parse(wxString s)
   while (i<s.Length() && s.GetChar(i)!='[')
     i++;
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_5->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=',') {
     curr += s.GetChar(i);
     i++;
   }
   text_ctrl_6->SetValue(curr);
   i++;
-  curr = wxT("");
+  curr = wxEmptyString;
   while (i<s.Length() && s.GetChar(i)!=']') {
     curr += s.GetChar(i);
     i++;
@@ -272,7 +272,7 @@ void Plot3DWiz::Parse(wxString s)
   while(i<s.Length()) {
     if (s.GetChar(i) == '[') {
       i++;
-      curr = wxT("");
+      curr = wxEmptyString;
       while (i<s.Length() && s.GetChar(i) != ',') {
         curr += s.GetChar(i);
         i++;
@@ -283,7 +283,7 @@ void Plot3DWiz::Parse(wxString s)
         while (i<s.Length() && s.GetChar(i)!='"')
           i++;
         i++;
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!='"') {
           curr += s.GetChar(i);
           i++;
@@ -294,7 +294,7 @@ void Plot3DWiz::Parse(wxString s)
         while (i<s.Length() && s.GetChar(i)!='"')
           i++;
         i++;
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!='"') {
           curr += s.GetChar(i);
           i++;
@@ -302,7 +302,7 @@ void Plot3DWiz::Parse(wxString s)
         text_ctrl_10->SetValue(curr);
       }
       else if (curr == wxT("gnuplot_pm3d")) {
-        curr = wxT("");
+        curr = wxEmptyString;
         while (i<s.Length() && s.GetChar(i)!=']') {
           curr += s.GetChar(i);
           i++;
@@ -399,7 +399,7 @@ void Plot3DWiz::OnCombobox(wxCommandEvent &event)
 
 void Plot3DWiz::OnFileBrowse(wxCommandEvent& event)
 {
-  wxString file = wxFileSelector(_("Save plot to file"), wxT(""),
+  wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot3d.eps"), wxT("eps"),
                                  _("Postscript file (*.eps)|*.eps|All|*"),
                                  wxSAVE|wxOVERWRITE_PROMPT);

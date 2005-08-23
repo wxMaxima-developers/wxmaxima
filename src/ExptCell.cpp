@@ -153,7 +153,7 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString ExptCell::ToString(bool all) {
   if (m_isBroken)
-    return wxT("");
+    return wxEmptyString;
   wxString s = m_baseCell->ToString(true) + wxT("^");
   if (m_isMatrix) s += wxT("^");
   if (m_powCell->IsCompound())
