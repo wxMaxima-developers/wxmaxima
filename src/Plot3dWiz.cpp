@@ -95,8 +95,13 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   type = cartesian;
 
@@ -118,9 +123,11 @@ void Plot3DWiz::set_properties()
 
   button_3->SetToolTip(_("Browse"));
   combo_box_1->SetSelection(0);
+#if defined __WXMSW__
   button_1->SetDefault();
-#if defined (__WXMSW__)
   check_box_1->SetValue(true);
+#else
+  button_2->SetDefault();
 #endif
 }
 
@@ -169,8 +176,8 @@ void Plot3DWiz::do_layout()
   grid_sizer_2->Add(sizer_6, 1, wxEXPAND, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

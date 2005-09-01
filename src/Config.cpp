@@ -130,8 +130,13 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  m_buttonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  m_buttonOK = new wxButton(this, wxID_OK, _("OK"));
+#if defined __WXMSW__
+  m_button1 = new wxButton(this, wxID_OK, _("OK"));
+  m_button2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  m_button1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  m_button2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
   
   set_properties();
   do_layout();
@@ -206,7 +211,11 @@ void Config::set_properties()
   m_showHeader->SetValue(showHeader);
   m_fixedFontInTC->SetValue(fixedFontTC);
   
-  m_buttonOK->SetDefault();
+#if defined __WXMSW__
+  m_button1->SetDefault();
+#else
+  m_button2->SetDefault();
+#endif
   ReadStyles();
 }
 
@@ -309,8 +318,8 @@ void Config::do_layout()
 #endif
 
   // OK and cancel buttons
-  sizer_2->Add(m_buttonCancel, 0, wxLEFT|wxRIGHT, 5);
-  sizer_2->Add(m_buttonOK, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(m_button1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(m_button2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   
   SetAutoLayout(true);

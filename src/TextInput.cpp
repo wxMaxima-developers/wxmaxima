@@ -31,8 +31,13 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
   text_ctrl_1 = new TextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                              wxDefaultSize,
                              wxTE_PROCESS_TAB|wxTE_PROCESS_ENTER|wxTE_MULTILINE|wxTE_RICH);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   set_properties();
   do_layout();
@@ -62,7 +67,11 @@ void TextInput::set_properties()
 #else
     text_ctrl_1->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
 }
 
 
@@ -71,8 +80,8 @@ void TextInput::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL|wxEXPAND, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER|wxTOP|wxBOTTOM, 3);
 
   SetAutoLayout(true);

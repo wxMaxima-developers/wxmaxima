@@ -82,4 +82,4 @@ protected:
 };
 
 
-#endif // LIMITWIZ_H
+#endif // MATWIZ_H

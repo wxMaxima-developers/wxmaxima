@@ -82,8 +82,8 @@ protected:
   wxCheckBox* m_fixedFontInTC;
   wxPanel* notebook_1_pane_2;
   wxNotebook* notebook_1;
-  wxButton* m_buttonOK;
-  wxButton* m_buttonCancel;
+  wxButton* m_button1;
+  wxButton* m_button2;
   wxCheckBox* m_symbolFontOk;
   wxButton* m_getSymbolFont;
   wxStaticText* label_10;

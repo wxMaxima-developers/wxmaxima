@@ -47,8 +47,13 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   button_4 = new wxButton(this, special_to, _("Special"));
   checkbox_2 = new wxCheckBox(this, -1, _("Numerical integration"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   set_properties();
   do_layout();
@@ -59,7 +64,11 @@ void IntegrateWiz::set_properties()
 {
   SetTitle(_("Integrate"));
   label_1->SetFont(wxFont(20, wxROMAN, wxSLANT, wxNORMAL, 0, wxEmptyString));
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
   text_ctrl_3->Enable(false);
   button_3->Enable(false);
   text_ctrl_4->Enable(false);
@@ -96,8 +105,8 @@ void IntegrateWiz::do_layout()
   grid_sizer_4->Add(checkbox_2, 0, wxALL, 2);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
   grid_sizer_3->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_3->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_3->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_3->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_3->Add(sizer_3, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_3);

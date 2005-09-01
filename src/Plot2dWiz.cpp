@@ -90,8 +90,13 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
                                                          wxART_HELP_BROWSER));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   type = cartesian;
 
@@ -111,7 +116,11 @@ void Plot2DWiz::set_properties()
   text_ctrl_8->SetValue(wxT("10"));
 
   button_4->SetToolTip(_("Browse"));
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
   combo_box_1->SetSelection(0);
 }
 
@@ -156,8 +165,8 @@ void Plot2DWiz::do_layout()
   grid_sizer_2->Add(sizer_5, 1, wxEXPAND, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
@@ -412,8 +421,13 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(50,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   set_properties();
   do_layout();
@@ -425,7 +439,11 @@ void Plot2dPar::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_4->SetValue(wxT("-6"));
   text_ctrl_5->SetValue(wxT("6"));
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
 }
 
 void Plot2dPar::do_layout()
@@ -449,8 +467,8 @@ void Plot2dPar::do_layout()
   grid_sizer_2->AddGrowableCol(1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_2->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_2->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

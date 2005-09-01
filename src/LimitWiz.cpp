@@ -49,8 +49,13 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
                                combo_box_1_choices, wxCB_DROPDOWN);
   checkbox_1 = new wxCheckBox(this, -1, _("Use Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_3 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_2 = new wxButton(this, wxID_OK, _("OK"));
+  button_3 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_3 = new wxButton(this, wxID_OK, _("OK"));
+#endif
   button_2->SetDefault();
 
   set_properties();
@@ -63,7 +68,11 @@ void LimitWiz::set_properties()
   SetTitle(_("Limit"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   combo_box_1->SetSelection(0);
+#if defined __WXMSW__
   button_2->SetDefault();
+#else
+  button_3->SetDefault();
+#endif
 }
 
 
@@ -88,8 +97,8 @@ void LimitWiz::do_layout()
   grid_sizer_2->Add(checkbox_1, 9, wxALL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_2->Add(button_3, 0, wxLEFT|wxRIGHT, 5);
   sizer_2->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
+  sizer_2->Add(button_3, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

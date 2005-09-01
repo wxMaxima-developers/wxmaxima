@@ -44,8 +44,13 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
   checkbox_2 = new wxCheckBox(this, use_nusum_id, _("Nusum"));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   button_1->SetDefault();
   set_properties();
@@ -58,7 +63,11 @@ void SumWiz::set_properties()
   SetTitle(_("Sum"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   checkbox_1->SetValue(true);
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
   
   checkbox_1->SetToolTip(_("Simplify the sum"));
   checkbox_2->SetToolTip(_("Use Gosper algorithm"));
@@ -86,8 +95,8 @@ void SumWiz::do_layout()
   grid_sizer_2->Add(sizer_2, 1, wxALIGN_LEFT, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 2);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

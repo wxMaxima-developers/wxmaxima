@@ -33,8 +33,13 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
   variables = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                             wxSize(230,-1));
   static_line_1 = new wxStaticLine(this, -1);
-  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
 
   set_properties();
   do_layout();
@@ -44,7 +49,11 @@ void SysWiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   variables->SetToolTip(_("Enter comma separated list of variables."));
+#if defined __WXMSW__
   button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
 }
 
 void SysWiz::do_layout()
@@ -64,8 +73,8 @@ void SysWiz::do_layout()
   grid_sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
+  sizer_1->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
