@@ -162,7 +162,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       // We have a selection by dragging
       else {
         while (1) {
-          if (!tmp->m_isBroken)
+          if (!tmp->m_isBroken && !tmp->m_isHidden)
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
@@ -223,6 +223,7 @@ void MathCtrl::RecalculateForce()
 
 void MathCtrl::Recalculate(bool scroll)
 {
+  UnBreakUpCells();
   if (m_tree != NULL)
     Recalculate(m_tree, scroll);
 }
@@ -233,9 +234,9 @@ void MathCtrl::Recalculate(bool scroll)
 void MathCtrl::Recalculate(MathCell *cell, bool scroll)
 {
   RecalculateWidths(cell);
+  RecalculateSize(cell);
   BreakUpCells(cell);
   BreakLines(cell);
-  RecalculateSize(cell);
   AdjustSize(scroll);
 }
 
@@ -300,9 +301,7 @@ void MathCtrl::OnSize(wxSizeEvent& event)
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    UnBreakUpCells();
-    BreakUpCells();
-    BreakLines(m_tree);
+    Recalculate();
     AdjustSize(false);
   }
   Refresh();
@@ -498,7 +497,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
     }
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    AdjustSize(false);
+    Recalculate(false);
     Refresh();
     return;
   }
@@ -529,7 +528,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
     }
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    AdjustSize(false);
+    Recalculate(false);
     Refresh();
     return;
   }
@@ -756,7 +755,7 @@ void MathCtrl::AdjustSize(bool scroll)
   SetVirtualSize(width + 9, virtualHeight + 9);
   SetScrollRate(10, 10);
   if (scroll && height>clientHeight)
-    Scroll(0, (height + 9)/10);
+    Scroll(0, height);
 }
 
 
@@ -1205,10 +1204,7 @@ void MathCtrl::UnBreakUpCells()
   while (tmp != NULL) {
     if (tmp->m_isBroken) {
       tmp->Unbreak(false);
-      tmp->RecalculateWidths(parser, fontsize, false);
-      tmp->RecalculateSize(parser, fontsize, false);
     }
-    tmp->Unbreak(false);
     tmp = tmp->m_next;
   }
 }

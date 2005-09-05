@@ -22,6 +22,6 @@
 #define WXMAXIMAVERSION_H
 
 #define WXMAXIMA_VERSION "0.6.2"
-#define WXMAXIMA_DATE "may 2005"
+#define WXMAXIMA_DATE "september 2005"
 
 #endif

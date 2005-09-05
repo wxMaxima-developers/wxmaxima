@@ -76,7 +76,7 @@ bool MyApp::OnInit()
   
   if (rs==0)
     have_pos = false;
-  if (!have_pos || m == 1 || x > display_width || y > display_height) {
+  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0) {
     x = 40;
     y = 40;
     h = 650;
@@ -102,7 +102,8 @@ bool MyApp::OnInit()
 
   frame->Show(true);
   frame->InitSession();
-  frame->ShowTip(false);
+  if (!frame->IsIconized())
+    frame->ShowTip(false);
   
   return true;
 }

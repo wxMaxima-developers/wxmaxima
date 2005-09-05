@@ -104,7 +104,6 @@ class MathCell
     virtual void Unbreak(bool all);
   protected:
     int m_height;
-    int m_maxHeight;
     int m_width;
     int m_fullWidth;
     int m_lineWidth;

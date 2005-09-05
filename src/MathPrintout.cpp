@@ -195,9 +195,9 @@ void MathPrintout::BreakPages()
 void MathPrintout::SetupData()
 {
   RecalculateWidths();
+  RecalculateSize();
   BreakUpCells();
   BreakLines();
-  RecalculateSize();
   BreakPages();
 }
 

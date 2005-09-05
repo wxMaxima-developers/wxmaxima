@@ -1096,19 +1096,20 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
     break;
   case menu_copy_to_file:
-  {
-    wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
-                                   wxT("image.png"), wxT("png"),
-                                   _("PNG image (*.png)|*.png|"
-                                     "JPEG image (*.jpg)|*.jpg|"
-                                     "Windows bitmap (*.bmp)|*.bmp|"
-                                     "X pixmap (*.xpm)|*.xpm"),
-                                   wxSAVE|wxOVERWRITE_PROMPT);
-    if (file.Length()) {
-      m_console->CopyToFile(file);
-      m_lastPath = wxPathOnly(file);
+    {
+      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+                                     wxT("image.png"), wxT("png"),
+                                     _("PNG image (*.png)|*.png|"
+                                       "JPEG image (*.jpg)|*.jpg|"
+                                       "Windows bitmap (*.bmp)|*.bmp|"
+                                       "X pixmap (*.xpm)|*.xpm"),
+                                     wxSAVE|wxOVERWRITE_PROMPT);
+      if (file.Length()) {
+        m_console->CopyToFile(file);
+        m_lastPath = wxPathOnly(file);
+      }
     }
-  }
+    break;
   case tb_delete:
   case menu_delete_selection:
     if (m_console->CanDeleteSelection())

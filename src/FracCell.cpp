@@ -289,7 +289,6 @@ void FracCell::SetupBreakUps()
     m_last2 = m_last2->m_next;
 }
 
-
 bool FracCell::BreakUp()
 {
   if (m_fracStyle == FC_DIFF)

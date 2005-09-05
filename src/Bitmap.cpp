@@ -48,9 +48,9 @@ void Bitmap::SetData(MathCell* tree)
 void Bitmap::Layout()
 {
   RecalculateWidths();
+  RecalculateSize();
   BreakUpCells();
   BreakLines();
-  RecalculateSize();
   
   int width, height;
   GetMaxPoint(&width, &height);
@@ -91,7 +91,7 @@ void Bitmap::RecalculateWidths()
 }
 
 void Bitmap::BreakLines()
-{  
+{
   int fullWidth = BM_FULL_WIDTH;
   int currentWidth = 0;
   
@@ -242,8 +242,10 @@ void Bitmap::BreakUpCells()
   
   while (tmp != NULL) {
     if (tmp->GetWidth() > BM_FULL_WIDTH) {
-      if (tmp->BreakUp())
+      if (tmp->BreakUp()) {
         tmp->RecalculateWidths(parser, fontsize, false);
+        tmp->RecalculateSize(parser, fontsize, false);
+      }
     }
     tmp = tmp->m_nextToDraw;
   }

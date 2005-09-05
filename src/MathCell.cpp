@@ -52,7 +52,8 @@ MathCell::~MathCell()
 /***
  * Append new cell to the end of group.
  */
-void MathCell::AppendCell(MathCell *p_next) {
+void MathCell::AppendCell(MathCell *p_next)
+{
   if (p_next == NULL) return;
   if (m_next == NULL) {
     m_next = p_next;
@@ -183,10 +184,7 @@ void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
  */
 void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  m_fullWidth = -1;
-  m_lineWidth = -1;
-  m_maxCenter = -1;
-  m_maxDrop = -1;
+  ResetData();
   if (m_next != NULL && all)
     m_next->RecalculateWidths(parser, fontsize, all);
 }
@@ -330,7 +328,8 @@ bool MathCell::BreakLineHere()
 /***
  * Does this cell contain a rectangle sm
  */
-bool MathCell::ContainsRect(wxRect& sm, bool all) {
+bool MathCell::ContainsRect(wxRect& sm, bool all)
+{
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&
       big.y <= sm.y &&
@@ -345,12 +344,13 @@ bool MathCell::ContainsRect(wxRect& sm, bool all) {
  */
 void MathCell::ResetData()
 {
+  m_fullWidth = -1;
+  m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop = -1;
-  m_maxHeight = -1;
-  m_lineWidth = -1;
   m_currentPoint.x = -1;
   m_currentPoint.y = -1;
+  m_breakLine = false;
 }
 
 /***
@@ -358,11 +358,13 @@ void MathCell::ResetData()
  */
 void MathCell::Unbreak(bool all)
 {
-  m_isBroken = false;
-  if (!m_isFolded)
-    m_nextToDraw = m_next;
-  m_previousToDraw = m_previous;
   ResetData();
+  m_isBroken = false;
+  if (!m_isFolded) {
+    m_nextToDraw = m_next;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = this;
+  }
   if (all && m_next != NULL)
     m_next->Unbreak(all);
 }
