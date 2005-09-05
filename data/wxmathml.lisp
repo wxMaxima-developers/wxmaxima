@@ -29,9 +29,6 @@
 
 ;;(macsyma-module wxxml)
 
-#+franz
-($bothcases t) ;; allow alpha and Alpha to be different
-
 (declare-top
  (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
  (*expr wxxml-lbp wxxml-rbp))
@@ -921,8 +918,9 @@
           (go loop))))
 
 
-(declare-top
-  (special $%))
+#|
+
+;; Redefining example here makes if fail on example(nusum); and run_testsuite() fails.
 
 (defmspec $example (l)   (setq l (cdr l))
       (block
@@ -980,7 +978,7 @@
            (return-from $example
              `((mlist) ,@ (nreverse all)))
            ))))))
-
+|#
 
 ;;
 ;; Port of Barton Willis's texput function.
