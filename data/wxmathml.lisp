@@ -308,35 +308,42 @@
 
 (defprop mquote wxxml-prefix wxxml)
 (defprop mquote ("<n>'</n>") wxxmlsym)
+(defprop mquote "<n>'</n>" wxxmlword)
 (defprop mquote 201. wxxml-rbp)
 
 (defprop msetq wxxml-infix wxxml)
 (defprop msetq ("<n>:</n>") wxxmlsym)
+(defprop msetq "<n>:</n>" wxxmlword)
 (defprop msetq 180. wxxml-rbp)
 (defprop msetq 20. wxxml-rbp)
 
 (defprop mset wxxml-infix wxxml)
 (defprop mset ("<n>::</n>") wxxmlsym)
+(defprop mset "<n>::</n>" wxxmlword)
 (defprop mset 180. wxxml-lbp)
 (defprop mset 20. wxxml-rbp)
 
 (defprop mdefine wxxml-infix wxxml)
 (defprop mdefine ("<n>:=</n>") wxxmlsym)
+(defprop mdefine "<n>:=</n>" wxxmlword)
 (defprop mdefine 180. wxxml-lbp)
 (defprop mdefine 20. wxxml-rbp)
 
 (defprop mdefmacro wxxml-infix wxxml)
 (defprop mdefmacro ("<n>::=</n>") wxxmlsym)
+(defprop mdefmacro "<n>::=</n>" wxxmlword)
 (defprop mdefmacro 180. wxxml-lbp)
 (defprop mdefmacro 20. wxxml-rbp)
 
 (defprop marrow wxxml-infix wxxml)
 (defprop marrow ("<n>-></n>") wxxmlsym)
+(defprop marrow "<n>-></n>" wxxmlword)
 (defprop marrow 25 wxxml-lbp)
 (defprop marrow 25 wxxml-rbp)
 
 (defprop mfactorial wxxml-postfix wxxml)
 (defprop mfactorial ("<n>!</n>") wxxmlsym)
+(defprop mfactorial "<n>!</n>" wxxmlword)
 (defprop mfactorial 160. wxxml-lbp)
 
 (defprop mexpt wxxml-mexpt wxxml)
@@ -372,11 +379,13 @@
 
 (defprop mnctimes wxxml-nary wxxml)
 (defprop mnctimes "<n>.</n>" wxxmlsym)
+(defprop mnctimes "<n>.</n>" wxxmlword)
 (defprop mnctimes 110. wxxml-lbp)
 (defprop mnctimes 109. wxxml-rbp)
 
 (defprop mtimes wxxml-nary wxxml)
 (defprop mtimes "<h>*</h>" wxxmlsym)
+(defprop mtimes "<n>*</n>" wxxmlword)
 (defprop mtimes 120. wxxml-lbp)
 (defprop mtimes 120. wxxml-rbp)
 
@@ -388,6 +397,7 @@
 
 (defprop mquotient wxxml-mquotient wxxml)
 (defprop mquotient ("<n>/</n>") wxxmlsym)
+(defprop mquotient "<n>/</n>" wxxmlword)
 (defprop mquotient 122. wxxml-lbp) ;;dunno about this
 (defprop mquotient 123. wxxml-rbp)
 
@@ -546,21 +556,25 @@
 
 (defprop mminus wxxml-prefix wxxml)
 (defprop mminus ("-") wxxmlsym)
+(defprop mminus "<n>-</n>" wxxmlword)
 (defprop mminus 100. wxxml-rbp)
 (defprop mminus 100. wxxml-lbp)
 
 (defprop $~ wxxml-infix wxxml)
 (defprop $~ ("<n>~</n>") wxxmlsym)
+(defprop $~ "<n>~</n>" wxxmlword)
 (defprop $~ 134. wxxml-lbp)
 (defprop $~ 133. wxxml-rbp)
 
 (defprop min wxxml-infix wxxml)
 (defprop min ("<n>in</n>") wxxmlsym)
+(defprop min "<n>in</n>" wxxmlword)
 (defprop min 80. wxxml-lbp)
 (defprop min 80. wxxml-rbp)
 
 (defprop mequal wxxml-infix wxxml)
 (defprop mequal ("<n>=</n>") wxxmlsym)
+(defprop mequal "<n>=</n>" wxxmlword)
 (defprop mequal 80. wxxml-lbp)
 (defprop mequal 80. wxxml-rbp)
 
@@ -570,37 +584,45 @@
 
 (defprop mgreaterp wxxml-infix wxxml)
 (defprop mgreaterp ("<n>&gt;</n>") wxxmlsym)
+(defprop mgreaterp "<n>&gt;</n>" wxxmlword)
 (defprop mgreaterp 80. wxxml-lbp)
 (defprop mgreaterp 80. wxxml-rbp)
 
 (defprop mgeqp wxxml-infix wxxml)
 (defprop mgeqp ("<n>&gt;=</n>") wxxmlsym)
+(defprop mgeqp "<n>&gt;=</n>" wxxmlword)
 (defprop mgeqp 80. wxxml-lbp)
 (defprop mgeqp 80. wxxml-rbp)
 
 (defprop mlessp wxxml-infix wxxml)
 (defprop mlessp ("<n>&lt;</n>") wxxmlsym)
+(defprop mlessp "<n>&lt;</n>" wxxmlword)
 (defprop mlessp 80. wxxml-lbp)
 (defprop mlessp 80. wxxml-rbp)
 
 (defprop mleqp wxxml-infix wxxml)
 (defprop mleqp ("<n>&lt;=</n>") wxxmlsym)
+(defprop mleqp "<n>&lt;=</n>" wxxmlword)
 (defprop mleqp 80. wxxml-lbp)
 (defprop mleqp 80. wxxml-rbp)
 
 (defprop mnot wxxml-prefix wxxml)
 (defprop mnot ("<n>not</n>") wxxmlsym)
+(defprop mnot "<n>not</n>" wxxmlword)
 (defprop mnot 70. wxxml-rbp)
 
 (defprop mand wxxml-nary wxxml)
 (defprop mand "<mspace/><n>and</n><mspace/>" wxxmlsym)
+(defprop mand "<n>and</n>" wxxmlword)
 (defprop mand 60. wxxml-lbp)
 (defprop mand 60. wxxml-rbp)
 
 (defprop mor wxxml-nary wxxml)
+(defprop mor "<mspace/><n>or</n><mspace/>" wxxmlsym)
+(defprop mor "<n>or</n>" wxxmlword)
 (defprop mor 50. wxxml-lbp)
 (defprop mor 50. wxxml-rbp)
-(defprop mor "<mspace/><n>or</n><mspace/>" wxxmlsym)
+
 
 (defun wxxml-setup (x)
   (let((a (car x))
