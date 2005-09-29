@@ -252,6 +252,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 {
   MathCell* cell;
 
+  s.Replace(wxT("\n"), wxT(""), true);
   if (type == PROMPTT)
     cell = m_MParser.ParseLine(s, TC_PROMPT);
   else if (type == MPROMPTT)
@@ -338,8 +339,8 @@ void wxMaxima::EnterCommand(wxCommandEvent& event)
   wxString input = m_inputLine->GetValue();
   input.Trim();
   input.Trim(false);
-  if (!m_inLispMode && (input.Length() == 0  ||
-                        (input.Last() != ';' && input.Last()!='$')))
+  if (!m_inLispMode &&
+	    (input.Length() == 0  || (input.Last() != ';' && input.Last()!='$')))
     input.Append(';');
   SendMaxima(input);
   m_inputLine->Clear();
