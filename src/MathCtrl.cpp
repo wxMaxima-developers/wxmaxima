@@ -301,8 +301,7 @@ void MathCtrl::OnSize(wxSizeEvent& event)
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    Recalculate();
-    AdjustSize(false);
+    Recalculate(false);
   }
   Refresh();
   wxScrolledWindow::OnSize(event);
