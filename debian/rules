@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses cdbs.  Originaly written by Robert Millan.
+# This file is public domain.
+  
+DEB_TAR_SRCDIR                  := wxmaxima-0.6.2
+DEB_AUTO_CLEANUP_RCS            := yes
+
+# Add here any variable or target overrides you need
+
+
+  
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+#include /usr/share/cdbs/1/rules/tarball.mk
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+
+binary-predeb/wxmaxima::
+	rm -fr debian/wxmaxima/usr/share/wxMaxima/COPYING
+
+binary-install/wxmaxima::
+	rm -rf debian/wxmaxima/usr/share/doc/wxmaxima/NEWS
