@@ -1164,15 +1164,15 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     SendMaxima(wxT("values;"));
     break;
   case menu_display:
-    cmd = wxT("if display2d#false then display2d:false else display2d:true;");
+    cmd = wxT("if display2d#false then display2d:false else display2d:true$");
     SendMaxima(cmd, false);
     break;
   case menu_texform:
-    cmd = wxT("tex(") + expr + wxT(");");
+    cmd = wxT("tex(") + expr + wxT(")$");
     SendMaxima(cmd);
     break;
   case menu_time:
-    cmd = wxT("if showtime#false then showtime:false else showtime:all;");
+    cmd = wxT("if showtime#false then showtime:false else showtime:all$");
     SendMaxima(cmd, false);
     break;
   case menu_fun_def:

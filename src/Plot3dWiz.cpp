@@ -44,28 +44,28 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   text_ctrl_1 = new BTextCtrl(this,-1, wxEmptyString, wxDefaultPosition);
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
-                              wxSize(30,-1));
+                              wxSize(40,-1));
   label_4 = new wxStaticText(this, -1, _("from:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(50,-1));
+                              wxSize(70,-1));
   label_5 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(50,-1));
+                              wxSize(70,-1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
-                              wxSize(30,-1));
+                              wxSize(40,-1));
   label_7 = new wxStaticText(this, -1, _("from:"));
   text_ctrl_6 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(50,-1));
+                              wxSize(70,-1));
   label_8 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(50,-1));
+                              wxSize(70,-1));
   label_9 = new wxStaticText(this, -1, _("Grid:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(50,-1), wxSP_ARROW_KEYS, 0, 100);
+                               wxSize(70,-1), wxSP_ARROW_KEYS, 0, 100);
   label_10 = new wxStaticText(this, -1, wxT("x"));
   text_ctrl_9 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(50,-1), wxSP_ARROW_KEYS, 0, 100);
+                               wxSize(70,-1), wxSP_ARROW_KEYS, 0, 100);
   label_11 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {
     _("default"),

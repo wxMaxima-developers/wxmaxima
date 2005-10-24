@@ -91,7 +91,7 @@ bool MyApp::OnInit()
 #endif
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
-
+  
   wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
                                  wxPoint(x, y), wxSize(w, h));
 

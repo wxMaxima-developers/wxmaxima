@@ -23,6 +23,7 @@
 
 struct style
 {
+  style() : bold(false), italic(false), underlined(false) { };
   wxString color;
   bool bold;
   bool italic;

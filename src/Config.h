@@ -37,7 +37,28 @@ enum {
   checkbox_underlined,
   checkbox_header,
   button_symbol,
-  checkbox_symbol
+  checkbox_symbol,
+  font_family
+};
+
+class ExamplePanel : public wxPanel {
+public:
+  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size) { };
+  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font, int size) {
+    m_fgColor = fg_color;
+    m_italic = italic;
+    m_bold = bold;
+    m_underlined = underlined;
+    m_font = font;
+    m_size = size;
+  }
+private:
+  void OnPaint(wxPaintEvent& event);
+  wxString m_fgColor;
+  bool m_italic, m_bold, m_underlined;
+  wxString m_font;
+  int m_size;
+  DECLARE_EVENT_TABLE()
 };
 
 class Config: public wxDialog {
@@ -89,10 +110,11 @@ protected:
   wxStaticText* label_10;
   wxSpinCtrl* m_symbolFontAdj;
   wxString m_symbolFontName;
+  ExamplePanel* label_11;
+  // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
         m_styleBackground;
-  // end wxGlade
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
   void OnSymbolBrowse(wxCommandEvent& event);
@@ -103,9 +125,10 @@ protected:
   void ReadStyles();
   void WriteStyles();
   void SetupFontList();
+  void UpdateExample();
+  void OnChangeFontFamily(wxCommandEvent& event);
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };
-
 
 #endif // CONFIG_H

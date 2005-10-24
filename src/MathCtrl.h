@@ -71,7 +71,7 @@ class MathCtrl:public wxScrolledWindow
     void OnKeyUp(wxKeyEvent& event);
     void SelectPoint(wxPoint& point);
     void SelectRect(wxPoint one, wxPoint two);
-    void AdjustSize(bool scroll);
+    void AdjustSize(bool scroll = false);
     wxPoint m_down;
     wxPoint m_up;
     wxPoint m_mousePoint;

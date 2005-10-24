@@ -95,7 +95,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_fontFamily_choices[] = {
     
   };
-  m_fontFamily = new wxComboBox(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
+  m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
   SetupFontList();
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
@@ -130,6 +130,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
+  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxDefaultSize);
 #if defined __WXMSW__
   m_button1 = new wxButton(this, wxID_OK, _("OK"));
   m_button2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -141,7 +142,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   set_properties();
   do_layout();
   // end wxGlade
-
+  UpdateExample();
 }
 
 
@@ -227,7 +228,7 @@ void Config::do_layout()
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(4, 1, 3, 3);
   wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(2, 4, 3, 7);
+  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(2, 2, 2, 7);
   wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
@@ -237,6 +238,7 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxStaticBoxSizer* sizer_12 = new wxStaticBoxSizer(sizer_12_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(2, 2, 3, 3);
+  wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
   
   // Title
   sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
@@ -290,12 +292,13 @@ void Config::do_layout()
   // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
-  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
-  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(m_styleColor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_boldCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_italicCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_underlinedCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_boldCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_italicCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_underlinedCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(sizer_5, 1, wxALL|wxEXPAND, 3);
+  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
+  grid_sizer_4->Add(label_11, 0, wxALL|wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
   
@@ -390,6 +393,11 @@ void Config::OnSymbolBrowse(wxCommandEvent& event)
     m_symbolFontName = symbol.GetFaceName();
     m_getSymbolFont->SetLabel(m_symbolFontName);
   }
+}
+
+void Config::OnChangeFontFamily(wxCommandEvent& event)
+{
+  UpdateExample();
 }
 
 void Config::ReadStyles()
@@ -611,6 +619,8 @@ void Config::OnChangeColor(wxCommandEvent& event)
   
   int i = m_styleColor->GetSelection();
   tmp->color = colorlist[i];
+  
+  UpdateExample();
 }
 
 void Config::OnChangeStyle(wxCommandEvent& event)
@@ -643,6 +653,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
     m_italicCB->SetValue(tmp->italic);
     m_underlinedCB->SetValue(tmp->underlined);
   }
+  UpdateExample();
 }
 
 void Config::OnCheckbox(wxCommandEvent& event)
@@ -652,6 +663,8 @@ void Config::OnCheckbox(wxCommandEvent& event)
   tmp->bold = m_boldCB->GetValue();
   tmp->italic = m_italicCB->GetValue();
   tmp->underlined = m_underlinedCB->GetValue();
+  
+  UpdateExample();
 }
 
 void Config::OnCheckSymbol(wxCommandEvent& event)
@@ -720,14 +733,71 @@ style* Config::GetStylePointer()
   return tmp;
 }
 
+void Config::UpdateExample()
+{
+  style *tmp = GetStylePointer();
+  wxString example = _("Example text");
+  wxString color(tmp->color);
+
+  wxClientDC dc(label_11);
+  
+  if (tmp == &m_styleBackground ||
+      tmp == &m_styleSpecial)
+    color = m_styleNormalText.color;
+  else if (tmp == &m_styleHiddenText)
+    color = m_styleMainPrompt.color;
+
+  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily->GetValue(), m_fontSize->GetValue());
+#if wxCHECK_VERSION(2, 5, 3)
+  label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
+#else
+  label_11->SetBackgroundColour(*(wxTheColourDatabase->FindColour(m_styleBackground.color)));
+#endif
+  label_11->Refresh();
+}
+
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
   EVT_BUTTON(button_symbol, Config::OnSymbolBrowse)
   EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
+  EVT_COMBOBOX(font_family, Config::OnChangeFontFamily)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_symbol, Config::OnCheckSymbol)
+END_EVENT_TABLE()
+
+void ExamplePanel::OnPaint(wxPaintEvent& event)
+{
+  wxString example(_("Example text"));
+  wxPaintDC dc(this);
+  int panel_width, panel_height;
+  int text_width, text_height;
+  int bold = wxNORMAL, italic = wxNORMAL, underlined = 0;
+  
+  GetClientSize(&panel_width, &panel_height);
+  
+#if wxCHECK_VERSION(2, 5, 3)
+  dc.SetTextForeground(wxTheColourDatabase->Find(m_fgColor));
+#else
+  dc.SetTextForeground(*(wxTheColourDatabase->FindColour(m_fgColor)));
+#endif
+  
+  if (m_bold)
+    bold = wxBOLD;
+  if (m_italic)
+    italic = wxSLANT;
+  if (m_underlined)
+    underlined = 1;
+  dc.SetFont(wxFont(m_size, wxMODERN, italic, bold, underlined, m_font));
+  dc.GetTextExtent(example, &text_width, &text_height);
+  
+  dc.DrawText(example, (panel_width - text_width)/2,
+                       (panel_height - text_height)/2);
+}
+
+BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
+  EVT_PAINT(ExamplePanel::OnPaint)
 END_EVENT_TABLE()

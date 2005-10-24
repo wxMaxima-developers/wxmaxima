@@ -59,18 +59,18 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
   button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
   button_9 = new wxButton(panel, button_rectform, _("Rectform"));
-  button_10 = new wxButton(panel, button_sum, _("Sum"));
-  button_11 = new wxButton(panel, button_product, _("Product"));
-  button_12 = new wxButton(panel, button_solve, _("Solve"));
-  button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE"));
-  button_14 = new wxButton(panel, button_diff, _("Diff"));
-  button_15 = new wxButton(panel, button_integrate, _("Integrate"));
-  button_16 = new wxButton(panel, button_limit, _("Limit"));
-  button_17 = new wxButton(panel, button_taylor, _("Series"));
-  button_18 = new wxButton(panel, button_subst, _("Substitute"));
-  button_19 = new wxButton(panel, button_map, _("Map"));
-  button_20 = new wxButton(panel, button_plot2, _("Plot 2D"));
-  button_21 = new wxButton(panel, button_plot3, _("Plot 3D"));
+  button_10 = new wxButton(panel, button_sum, _("Sum..."));
+  button_11 = new wxButton(panel, button_product, _("Product..."));
+  button_12 = new wxButton(panel, button_solve, _("Solve..."));
+  button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
+  button_14 = new wxButton(panel, button_diff, _("Diff..."));
+  button_15 = new wxButton(panel, button_integrate, _("Integrate..."));
+  button_16 = new wxButton(panel, button_limit, _("Limit..."));
+  button_17 = new wxButton(panel, button_taylor, _("Series..."));
+  button_18 = new wxButton(panel, button_subst, _("Substitute..."));
+  button_19 = new wxButton(panel, button_map, _("Map..."));
+  button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
+  button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
   
   // console
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
@@ -279,7 +279,7 @@ void wxMaximaFrame::SetupMenu()
 
   // Equations menu
   wxMenu* wxglade_tmp_menu_3 = new wxMenu();
-  wxglade_tmp_menu_3->Append(menu_solve, _("&Solve"),
+  wxglade_tmp_menu_3->Append(menu_solve, _("&Solve ..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
   wxglade_tmp_menu_3->Append(menu_allroots, _("Roots of &polynomial"),
                              _("Find all roots of a polynomial"),
@@ -287,50 +287,50 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_3->Append(menu_realroots, _("&Roots of polynomial (real)"),
                              _("Find real roots of a polynomial"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_lin, _("Solve &linear system"),
+  wxglade_tmp_menu_3->Append(menu_solve_lin, _("Solve &linear system ..."),
                              _("Solve linear system of equations"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_algsys, _("Solve &algebraic system"),
+  wxglade_tmp_menu_3->Append(menu_solve_algsys, _("Solve &algebraic system ..."),
                              _("Solve algebraic system of equations"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_eliminate, _("&Eliminate variable"),
+  wxglade_tmp_menu_3->Append(menu_eliminate, _("&Eliminate variable ..."),
                              _("Eliminate a variable from a system "
                                "of equations"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_3->AppendSeparator();
-  wxglade_tmp_menu_3->Append(menu_solve_ode, _("Solve &ODE"),
+  wxglade_tmp_menu_3->Append(menu_solve_ode, _("Solve &ODE ..."),
                              _("Solve ordinary differential equation "
                                "of maximum degree 2"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_ivp_1, _("Initial value problem (&1)"),
+  wxglade_tmp_menu_3->Append(menu_ivp_1, _("Initial value problem (&1) ..."),
                              _("Solve initial value problem for first"
                                " degree ODE"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_ivp_2, _("Initial value problem (&2)"),
+  wxglade_tmp_menu_3->Append(menu_ivp_2, _("Initial value problem (&2) ..."),
                              _("Solve initial value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_bvp, _("&Boundary value problem"),
+  wxglade_tmp_menu_3->Append(menu_bvp, _("&Boundary value problem ..."),
                              _("Solve boundary value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
   wxglade_tmp_menu_3->AppendSeparator();
-  wxglade_tmp_menu_3->Append(menu_solve_de, _("Solve ODE with Lapla&ce"),
+  wxglade_tmp_menu_3->Append(menu_solve_de, _("Solve ODE with Lapla&ce ..."),
                              _("Solve ordinary differential equations "
                                "with Laplace transformation"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_atvalue, _("A&t value"),
+  wxglade_tmp_menu_3->Append(menu_atvalue, _("A&t value ..."),
                              _("Setup atvalues for solving ODE with "
                                "Laplace transformation"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_3, _("E&quations"));
 
   // Algebra menu
   wxMenu* wxglade_tmp_menu_4 = new wxMenu();
-  wxglade_tmp_menu_4->Append(menu_gen_mat, _("&Generate matrix"),
+  wxglade_tmp_menu_4->Append(menu_gen_mat, _("&Generate matrix ..."),
                              _("Generate a matrix from a 2-dimensional array"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_enter_mat, _("&Enter matrix"),
+  wxglade_tmp_menu_4->Append(menu_enter_mat, _("&Enter matrix ..."),
                              _("Enter a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_invert_mat, _("&Invert matrix"),
                              _("Compute the inverse of a matrix"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_cpoly, _("&Characteristic poly"),
+  wxglade_tmp_menu_4->Append(menu_cpoly, _("&Characteristic polynomial ..."),
                              _("Compute the characteristic polynomial "
                                "of a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_determinant, _("&Determinant"),
@@ -346,61 +346,61 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_4->Append(menu_transpose, _("&Transpose matrix"),
                              _("Transpose a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->AppendSeparator();
-  wxglade_tmp_menu_4->Append(menu_make_list, _("Make &list"),
+  wxglade_tmp_menu_4->Append(menu_make_list, _("Make &list ..."),
                              _("Make list from expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_apply, _("&Apply to list"),
+  wxglade_tmp_menu_4->Append(menu_apply, _("&Apply to list ..."),
                              _("Apply function to a list"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_map, _("&Map to list"),
+  wxglade_tmp_menu_4->Append(menu_map, _("&Map to list ..."),
                              _("Map function to a list"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_map_mat, _("Ma&p to matrix"),
+  wxglade_tmp_menu_4->Append(menu_map_mat, _("Ma&p to matrix ..."),
                              _("Map function to a matrix"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_4, _("&Algebra"));
 
   // Calculus menu
   wxMenu*  wxglade_tmp_menu_6 = new wxMenu();
-  wxglade_tmp_menu_6->Append(menu_integrate, _("&Integrate"),
+  wxglade_tmp_menu_6->Append(menu_integrate, _("&Integrate ..."),
                              _("Integrate expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_risch, _("Risch integration"),
+  wxglade_tmp_menu_6->Append(menu_risch, _("Risch integration ..."),
                              _("Integrate expression with Risch algorithm"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_change_var, _("C&hange variable"),
+  wxglade_tmp_menu_6->Append(menu_change_var, _("C&hange variable ..."),
                              _("Change variable in integral or sum"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_diff, _("&Differentiate"),
+  wxglade_tmp_menu_6->Append(menu_diff, _("&Differentiate ..."),
                              _("Differentiate expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_limit, _("Find &limit"),
+  wxglade_tmp_menu_6->Append(menu_limit, _("Find &limit ..."),
                              _("Find a limit of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_series, _("Get &series"),
+  wxglade_tmp_menu_6->Append(menu_series, _("Get &series ..."),
                              _("Get the Taylor or power series of expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_pade, _("P&ade approximation"),
+  wxglade_tmp_menu_6->Append(menu_pade, _("P&ade approximation ..."),
                              _("Pade approximation of a Taylor series"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_sum, _("Calculate su&m"),
+  wxglade_tmp_menu_6->Append(menu_sum, _("Calculate su&m ..."),
                              _("Calculate sums"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_unsum, _("U&nsum expression"),
+  wxglade_tmp_menu_6->Append(menu_unsum, _("U&nsum expression ..."),
                              _("What has to be summed to get this result"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_product, _("Calculate &product"),
+  wxglade_tmp_menu_6->Append(menu_product, _("Calculate &product ..."),
                              _("Calculate products"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_laplace, _("Laplace &transform"),
+  wxglade_tmp_menu_6->Append(menu_laplace, _("Laplace &transform ..."),
                              _("Get Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_ilt, _("Inverse Laplace t&ransform"),
+  wxglade_tmp_menu_6->Append(menu_ilt, _("Inverse Laplace t&ransform ..."),
                              _("Get inverse Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_gcd, _("&Greatest common divisor"),
+  wxglade_tmp_menu_6->Append(menu_gcd, _("&Greatest common divisor ..."),
                              _("Compute the greatest common divisor"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_lcm, _("Least common multiple"),
+  wxglade_tmp_menu_6->Append(menu_lcm, _("Least common multiple ..."),
                              _("Compute the least common multiple "
                                "(do load(functs) before using)"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_divide, _("Di&vide polynomials"),
+  wxglade_tmp_menu_6->Append(menu_divide, _("Di&vide polynomials ..."),
                              _("Divide numbers or polynomials"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_partfrac, _("Partial &fractions"),
+  wxglade_tmp_menu_6->Append(menu_partfrac, _("Partial &fractions ..."),
                              _("Decompose rational function to partial fractions"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_continued_fraction, _("&Continued fraction"),
@@ -493,17 +493,17 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality"),
                              _("Add equality to the rational simplifier"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_modulus, _("&Modulus computation"),
+  wxglade_tmp_menu_5->Append(menu_modulus, _("&Modulus computation ..."),
                              _("Setup modulus computation"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_5, _("&Simplify"));
 
   // Plot menu
   wxglade_tmp_menu_6 = new wxMenu();
-  wxglade_tmp_menu_6->Append(gp_plot2, _("Plot &2d"),
+  wxglade_tmp_menu_6->Append(gp_plot2, _("Plot &2d ..."),
                              _("Plot in 2 dimensions"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(gp_plot3, _("Plot &3d"),
+  wxglade_tmp_menu_6->Append(gp_plot3, _("Plot &3d ..."),
                              _("Plot in 3 dimensions"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_plot_format, _("Plot &format"),
+  wxglade_tmp_menu_6->Append(menu_plot_format, _("Plot &format ..."),
                              _("Set plot format"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Plotting"));
 
@@ -517,7 +517,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &bigfloat"),
                              _("The bigfloat value of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_set_precision, _("Set &precision"),
+  wxglade_tmp_menu_6->Append(menu_set_precision, _("Set &precision ..."),
                              _("Set the floating point precision"),
                              wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Numeric"));
