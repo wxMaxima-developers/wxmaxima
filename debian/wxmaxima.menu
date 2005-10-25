@@ -1,2 +1,7 @@
-?package(wxmaxima):needs="X11" section="Apps/Math"\
-  title="wxmaxima" command="/usr/bin/wxmaxima"
+?package(wxmaxima):\
+	needs="X11" \
+	section="Apps/Math"\
+	title="wxmaxima" \
+	command="/usr/bin/wxmaxima" \
+	longtitle="GUI for the computer algebra system maxima" \
+	icon="/usr/share/wxMaxima/icons/maximaicon.xpm"
