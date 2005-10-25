@@ -11,12 +11,12 @@ DEB_DH_INSTALL_ARGS := -v
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
+#include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
 binary-predeb/wxmaxima::
 	rm -fr debian/wxmaxima/usr/share/wxMaxima/COPYING
 	mkdir debian/wxmaxima/usr/share/wxMaxima/icons
-	cp art/maximaicon.xpm debian/wxmaxima/usr/share/wxMaxima/icons
+	cp debian/maximaicon.xpm debian/wxmaxima/usr/share/wxMaxima/icons
 
 binary-install/wxmaxima::
 	rm -rf debian/wxmaxima/usr/share/doc/wxmaxima/NEWS
