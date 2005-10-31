@@ -73,6 +73,7 @@
 (defun wxxml-atom (x l r) 
   (append l
           (list (cond ((numberp x) (wxxmlnumformat x))
+                      ((typep x 'structure) (strcat "<st>Lisp structure: " (type-of x) " </st>"))
                       ((mstringp x)
                        (let* 
                            ((tmp-x (string-left-trim '(#\&)
