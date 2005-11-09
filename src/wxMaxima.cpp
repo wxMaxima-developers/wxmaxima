@@ -962,7 +962,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
         wxString cmd(wxT("save(\""));
         cmd.append(file);
-        cmd.append(wxT("\", ALL);"));
+        cmd.append(wxT("\", all);"));
         SendMaxima(cmd);
       }
     }
@@ -2322,7 +2322,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
-//  EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_ACTIVATE(wxMaxima::OnActivate)
   EVT_SET_FOCUS(wxMaxima::OnSetFocus)
