@@ -27,6 +27,10 @@
 #include <wx/filename.h>
 #include <wx/textfile.h>
 
+#if wxUSE_DRAG_AND_DROP
+#include <wx/dnd.h>
+#endif
+
 void AddLineToFile(wxTextFile& output, wxString s);
 
 enum {
@@ -327,8 +331,27 @@ void MathCtrl::ClearWindow()
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
-  m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
+#if wxUSE_DRAG_AND_DROP
+  if (m_selectionStart != NULL) {
+    MathCell *tmp = NULL;
+    for (tmp = m_selectionStart; tmp != NULL, tmp != m_selectionEnd; tmp = tmp->m_nextToDraw)
+      if (tmp->ContainsPoint(m_down))
+        break;
+    if (tmp != NULL && (tmp != m_selectionEnd || (tmp == m_selectionEnd && tmp->ContainsPoint(m_down)))) {
+      wxDropSource dragSource(this);
+      wxTextDataObject my_data(GetString());
+	    dragSource.SetData( my_data );
+	    wxDragResult result = dragSource.DoDragDrop(true);
+    }
+    else
+      m_leftDown = true;
+  }
+  else
+    m_leftDown = true;
+#else
+  m_leftDown = true;
+#endif
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
@@ -488,7 +511,7 @@ void MathCtrl::SelectPoint(wxPoint& point)
       while(m_selectionStart->m_nextToDraw != NULL) {
         m_selectionStart->m_nextToDraw = m_selectionStart->m_nextToDraw->m_nextToDraw;
         if (m_selectionStart->m_nextToDraw != NULL &&
-            m_selectionStart->m_nextToDraw->GetType() != TC_VARIABLE)
+            m_selectionStart->m_nextToDraw->GetType() != TC_VARIABLE) /// BUG ...
            break;
       }
       m_selectionStart->Fold(true);
