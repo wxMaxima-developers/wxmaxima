@@ -70,7 +70,7 @@
 ;;; First we have the functions which are called directly by wxxml and its
 ;;; descendents
 
-(defun wxxml-atom (x l r) 
+(defun wxxml-atom (x l r)
   (append l
           (list (cond ((numberp x) (wxxmlnumformat x))
                       ((typep x 'structure) (strcat "<n>Lisp structure: " (type-of x) " </n>"))
@@ -82,8 +82,8 @@
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
                          (strcat "<st>" tmp-x "</st>")))
-                      ((and (symbolp x) (get x 'reversealias)))
                       ((and (symbolp x) (get x 'wxxmlword)))
+                      ((and (symbolp x) (get x 'reversealias)) (wxxml-symbol-to-string (get x 'reversealias)))
                       (t (wxxml-stripdollar x))))
       r))
 
