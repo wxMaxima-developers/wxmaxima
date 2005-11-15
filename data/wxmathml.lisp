@@ -211,8 +211,7 @@
 
 ;;(defun mathml-bigfloat (x l r) (declare (ignore l r)) (fpformat x))
 (defun wxxml-bigfloat (x l r)
-  (setq l (append l (fpformat x)))
-  (nconc l r))
+   (append l (fpformat x) r))
 
 (defprop mprog  "<n>block</n>" wxxmlword) 
 (defprop %erf   "<n>erf</n>"   wxxmlword)
@@ -714,15 +713,30 @@
       ((mquotient) ,(simplifya numer nil) ,denom)
       ,arg)))
 
+;;(defun wxxml-mcond (x l r)
+;;  (append l
+;;          (wxxml (cadr x) '("<n>if</n><mspace/>")
+;;                 '("<mspace/><n>then</n><mspace/>") 'mparen 'mparen)
+;;          (if (eql (fifth x) '$false)
+;;              (wxxml (caddr x) nil r 'mcond rop)
+;;            (append (wxxml (caddr x) nil nil 'mparen 'mparen)
+;;                    (wxxml (fifth x) '("<mspace/><n>else</n><mspace/>")
+;;                           r 'mcond rop)))))
 (defun wxxml-mcond (x l r)
-  (append l
-          (wxxml (cadr x) '("<n>if</n><mspace/>")
-                 '("<mspace/><n>then</n><mspace/>") 'mparen 'mparen)
-          (if (eql (fifth x) '$false)
-              (wxxml (caddr x) nil r 'mcond rop)
-            (append (wxxml (caddr x) nil nil 'mparen 'mparen)
-                    (wxxml (fifth x) '("<mspace/><n>else</n><mspace/>")
-                           r 'mcond rop)))))
+	(let ((res ()))
+		(setq res (wxxml (cadr x) '("<n>if</n><mspace/>") '("<mspace/><n>then</n><mspace/>") 'mparen 'mparen))
+		(setq res (append res (wxxml (caddr x) nil '("<mspace/>") 'mparen 'mparen)))
+		(let ((args (cdddr x)))
+			(loop while (>= (length args) 2) do
+				(cond
+					((and (= (length args) 2) (eql (car args) t))
+						(unless (or (eql (cadr args) '$false) (null (cadr args)))
+							(setq res (wxxml (cadr args) (append res '("<n>else</n><mspace/>")) nil 'mparen 'mparen))))
+					(t
+						(setq res (wxxml (car args) (append res '("<n>elseif</n><mspace/>"))
+						               (wxxml (cadr args) '("<mspace/><n>then</n><mspace/>") '("<mspace/>") 'mparen 'mparen) 'mparen 'mparen))))
+				(setq args (cddr args)))
+		(append l res r))))
 
 (defprop mdo wxxml-mdo wxxml)
 (defprop mdo 30. wxxml-lbp)
