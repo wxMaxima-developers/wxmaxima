@@ -3,12 +3,12 @@ Section: math
 Priority: optional
 Maintainer: Rafa Rodriguez Galvan <rafael.rodriguez@uca.es>
 Uploaders: Marco Presi (Zufus) <zufus@debian.org>
-Build-Depends: cdbs, debhelper (>= 4.1.0), libwxgtk2.6-dev, libxml2-dev (>=2.5.0) 
-Standards-Version: 3.6.2
+Build-Depends: cdbs, patchutils (>= 0.2.25), debhelper (>= 4.1.0), libwxgtk2.6-dev, libxml2-dev (>=2.5.0) 
+Standards-Version: 3.6.2.1
 
 Package: wxmaxima
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, maxima (>=5.9.1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, maxima (>=5.9.2)
 Description: a wxWidgets GUI for the computer algebra system maxima
  wxmaxima provides a wxWindows interface for maxima, including a menu
  system, browsable help and formated output. Features as symbolic
