@@ -2064,8 +2064,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     {
       wxString filename;
 #ifndef __WXMSW__
-      filename = wxT(PREFIX);
-      filename += wxT("/share/wxMaxima/");
+      filename = wxT(PREFIX) + wxT("/share/wxMaxima/");
+      if (!wxFileExists(filename + wxT("docs.zip")))
+        filename = wxT(PREFIX) + wxT("/share/doc/wxmaxima/");
 #else
       filename = wxGetCwd() + wxT("\\data\\");
 #endif
