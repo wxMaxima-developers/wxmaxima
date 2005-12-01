@@ -72,6 +72,7 @@ class MathCtrl:public wxScrolledWindow
     void SelectPoint(wxPoint& point);
     void SelectRect(wxPoint one, wxPoint two);
     void AdjustSize(bool scroll = false);
+    void OnEraseBackground(wxEraseEvent& event) { };
     wxPoint m_down;
     wxPoint m_up;
     wxPoint m_mousePoint;
