@@ -1027,6 +1027,27 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
     break;
+  case menu_create_batch:
+    {
+      wxString file = wxFileSelector(_("Save to file"), m_lastPath,
+                                     wxT("wxMaxima.mac"), wxT("mac"),
+                                     _("Maxima session (*.mac)|*.mac|"
+                                       "All|*"),
+                                     wxSAVE|wxOVERWRITE_PROMPT);
+      if (file.Length()) {
+        m_lastPath = wxPathOnly(file);
+        if (wxFileExists(file))
+          wxRemoveFile(file);
+#if defined __WXMSW__
+        file.Replace(b,f);
+#endif
+        wxString cmd(wxT("stringout(\""));
+        cmd.append(file);
+        cmd.append(wxT("\", input);"));
+        SendMaxima(cmd);
+      }
+    }
+    break;
   case menu_select_file:
     {
       wxString file = wxFileSelector(_("Select a file"), m_lastPath,

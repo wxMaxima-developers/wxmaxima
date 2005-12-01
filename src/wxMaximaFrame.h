@@ -183,7 +183,8 @@ enum {
   tb_pref,
   tb_interrupt,
   tb_help,
-  tb_batch
+  tb_batch,
+  menu_create_batch
 };
 
 class wxMaximaFrame: public wxFrame {

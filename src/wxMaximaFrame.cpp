@@ -191,6 +191,8 @@ void wxMaximaFrame::SetupMenu()
                    _("Load a maxima package file"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_batch_id, _("&Batch file\tCtrl-B"),
                    _("Batch maxima file"), wxT("gtk-execute"));
+  wxglade_tmp_menu_1->Append(menu_create_batch, _("&Create batch file"),
+                   _("Create a batch file from current session"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export to HTML"),
                    _("Export console output to HTML file"), wxT("stock_export"));
   wxglade_tmp_menu_1->AppendSeparator();
