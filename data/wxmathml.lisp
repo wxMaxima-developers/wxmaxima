@@ -96,7 +96,8 @@
        (setq exponent (member 'e r :test #'string-equal))
        (cond ((null exponent)
                   ;; it is not. go with it as given
-                  (strcat "<n>" (format nil "~s" atom) "</n>"))
+                  ;(strcat "<n>" (format nil "~s" atom) "</n>"))
+                  (strcat "<n>" (apply #'strcat r) "</n>"))
          (t
           (setq firstpart
             (nreverse (cdr (member 'e (reverse r) 
