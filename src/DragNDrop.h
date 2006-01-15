@@ -17,12 +17,11 @@
  *
  */
 
- 
+
 #ifndef _DRAGNDROP_H
 #define _DRAGNDROP_H
 
 #include "wxMaxima.h"
-#include "CommandLine.h"
 
 #if wxUSE_DRAG_AND_DROP
 
@@ -34,14 +33,12 @@ enum {
 class FileDrop : public wxFileDropTarget
 {
  public:
-  FileDrop(wxMaxima *parent, CommandLine *in, int t)
-    { wxmax = parent; input = in; type = t;};
+  FileDrop(wxMaxima *parent)
+    { wxmax = parent; }
   ~FileDrop() {};
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files);
  protected:
   wxMaxima *wxmax;
-  CommandLine *input;
-  int type;
 };
 
 #endif

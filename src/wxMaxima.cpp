@@ -75,8 +75,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_lastPrompt = wxEmptyString;
 
 #if wxUSE_DRAG_AND_DROP
-  m_console->SetDropTarget(new FileDrop(this, m_inputLine, DND_LOAD));
-  m_inputLine->SetDropTarget(new FileDrop(this, m_inputLine, DND_WRITE));
+  m_console->SetDropTarget(new FileDrop(this));
 #endif
 
   CheckForPrintingSupport();
@@ -291,10 +290,10 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
       cell->SetStyle(TC_ERROR);
     else
       cell->SetStyle(TC_VARIABLE);
-    
+
     if (tokens.HasMoreTokens())
       cell->SetSkip(false);
-    
+
     if (count == 0)
       m_console->AddLine(cell, newLine);
     else
@@ -378,7 +377,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       ReadMath();
 
       ReadPrompt();
-      
+
       ReadLispError();
     }
     break;
@@ -653,7 +652,7 @@ bool wxMaxima::StartMaxima()
       command = maximaPrefix + wxT("\\lib\\maxima");
       if (!wxDirExists(command))
         return false;
-      
+
       wxArrayString files;
       wxDir::GetAllFiles(command, &files, wxT("maxima.exe"));
       if (files.Count() == 0)

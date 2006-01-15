@@ -28,36 +28,32 @@
 
 bool FileDrop::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
 {
+  wxmax->Raise();
   for (unsigned int i=0; i<files.GetCount(); i++) {
-    wxmax->Raise();
     wxString file = files.Item(i);
 #if defined (__WXMSW__)
     file.Replace(wxT("\\"), wxT("/"));
 #endif
-    if (type == DND_LOAD) {
-      wxString choices[] = {wxT("load"), wxT("batch"),
-                            wxT("demo"), wxT("loadfile"), wxT("custom")};
-      wxString choice = wxGetSingleChoice(_T("Select function for loading ") +
-                                          wxFileNameFromPath(files.Item(i)),
-                                          _T("Function"), 5, choices, wxmax);
+    wxString choices[] = {wxT("load"), wxT("batch"),
+                          wxT("demo"), wxT("loadfile"), wxT("custom")};
+    wxString choice = wxGetSingleChoice(_T("Select function for loading ") +
+                                        wxFileNameFromPath(files.Item(i)),
+                                        _T("Function"), 5, choices, wxmax);
+    if (choice.Length()==0)
+      return false;
+    if (choice == wxT("custom")) {
+      choice = GetTextFromUser(_T("Enter function for loading ") +
+                               wxFileNameFromPath(files.Item(i)),
+                               _T("Function"), wxT("load"), wxmax);
       if (choice.Length()==0)
         return false;
-      if (choice == wxT("custom")) {
-        choice = GetTextFromUser(_T("Enter function for loading ") +
-                                 wxFileNameFromPath(files.Item(i)),
-                                 _T("Function"), wxT("load"), wxmax);
-        if (choice.Length()==0)
-          return false;
-      }
-      if (choice.Find(wxT("%file%"))>-1) {
-        choice.Replace(wxT("%file%"), wxT("\"") + file + wxT("\""));
-        wxmax->SendMaxima(choice + wxT("$"));
-      }
-      else
-        wxmax->SendMaxima(choice + wxT("(\"") + file + wxT("\")$"));
+    }
+    if (choice.Find(wxT("%file%"))>-1) {
+      choice.Replace(wxT("%file%"), wxT("\"") + file + wxT("\""));
+      wxmax->SendMaxima(choice + wxT("$"));
     }
     else
-      input->WriteText(files.Item(i));
+      wxmax->SendMaxima(choice + wxT("(\"") + file + wxT("\")$"));
   }
   return true;
 }
