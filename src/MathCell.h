@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,13 +35,12 @@
 #include "TextStyle.h"
 
 enum {
-  TC_VARIABLE,
-  TC_PROMPT,
-  TC_MAIN_PROMPT,
-  TC_INPUT,
-  TC_ERROR,
-  TC_LABEL,
-  TC_STRING
+  MC_TYPE_TEXT,
+  MC_TYPE_MAIN_PROMPT,
+  MC_TYPE_PROMPT,
+  MC_TYPE_LABEL,
+  MC_TYPE_INPUT,
+  MC_TYPE_ERROR
 };
 
 class MathCell
@@ -55,7 +54,7 @@ class MathCell
     int GetWidth() { return m_width; }
     int GetCenter() { return m_center; }
     int GetDrop() { return m_height - m_center; }
-    int GetType() { return m_style; }
+    int GetType() { return m_type; }
     void AppendCell(MathCell *p_next);
     virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
     virtual void RecalculateWidths(CellParser& parser, int fontsize, bool all);
@@ -81,7 +80,7 @@ class MathCell
     bool ContainsPoint(wxPoint& point) { return GetRect().Inside(point); }
     virtual wxRect GetRect(bool all = false);
     void SetSkip(bool skip) { m_bigSkip = skip; }
-    void SetStyle(int style) { m_style = style; }
+    void SetType(int type) { m_type = type; }
     void DrawBoundingBox(wxDC& dc, bool all = false);
     bool BreakLineHere();
     bool BreakPageHere() { return m_breakPage; }
@@ -110,7 +109,7 @@ class MathCell
     int m_center;
     int m_maxCenter;
     int m_maxDrop;
-    int m_style;
+    int m_type;
     bool m_breakPage;
     bool m_breakLine;
     bool m_forceBreakLine;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -144,8 +144,8 @@ void wxMaxima::FirstOutput(wxString s)
   m_console->ClearWindow();
 
   if (showHeader)
-    ConsoleAppend(s.SubString(0, start-1), TEXTT);
-  ConsoleAppend(m_firstPrompt, PROMPTT);
+    ConsoleAppend(s.SubString(0, start-1), MC_TYPE_TEXT);
+  ConsoleAppend(m_firstPrompt, MC_TYPE_PROMPT);
 }
 
 ///////////////////////////
@@ -166,9 +166,9 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   if (!t.Length())
     return;
 
-  if (type != ERRORT)
+  if (type != MC_TYPE_ERROR)
     SetStatusText(_("Parsing output"), 1);
-  if (type == TEXTT) {
+  if (type == MC_TYPE_TEXT) {
     while (s.Length()>0) {
       int start = s.Find(wxT("<mth"));
       if (start == -1) {
@@ -176,7 +176,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         t.Trim();
         t.Trim(false);
         if (t.Length())
-          DoRawConsoleAppend(s, TEXTT);
+          DoRawConsoleAppend(s, MC_TYPE_TEXT);
         s = wxEmptyString;
       }
       else {
@@ -191,7 +191,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
           end += 5;
         wxString rest = s.SubString(start, end);
         if (pre1.Length()) {
-          DoRawConsoleAppend(pre, TEXTT);
+          DoRawConsoleAppend(pre, MC_TYPE_TEXT);
           DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
@@ -203,7 +203,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
       }
     }
   }
-  else if (type == INPUTT) {
+  else if (type == MC_TYPE_INPUT) {
     // Break long lines
     unsigned int i=0;
     int j=0;
@@ -222,23 +222,25 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     // Append the input
     DoRawConsoleAppend(s, type, false);
   }
-  else if (type == PROMPTT) {
+  else if (type == MC_TYPE_PROMPT) {
     SetStatusText(_("Ready for user input"), 1);
     m_lastPrompt = s;
     if (s.StartsWith(wxT("(%i"))) {
       m_inPrompt = true;
-      type = MPROMPTT;
+      type = MC_TYPE_MAIN_PROMPT;
     }
     else if (s.Right(8) == wxT("MAXIMA> ")) {
       m_inPrompt = true;
-      type = MPROMPTT;
+      type = MC_TYPE_MAIN_PROMPT;
       s = s.Right(8);
     }
+    else
+      s = s + wxT(" ");
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
                     type, true);
   }
-  else if (type == ERRORT) {
-    DoRawConsoleAppend(s, ERRORT);
+  else if (type == MC_TYPE_ERROR) {
+    DoRawConsoleAppend(s, MC_TYPE_ERROR);
   }
   else {
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
@@ -252,16 +254,8 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
   MathCell* cell;
 
   s.Replace(wxT("\n"), wxT(""), true);
-  if (type == PROMPTT)
-    cell = m_MParser.ParseLine(s, TC_PROMPT);
-  else if (type == MPROMPTT)
-    cell = m_MParser.ParseLine(s, TC_MAIN_PROMPT);
-  else if (type == INPUTT)
-    cell = m_MParser.ParseLine(s, TC_INPUT);
-  else if (type == ERRORT)
-    cell = m_MParser.ParseLine(s, TC_ERROR);
-  else
-    cell = m_MParser.ParseLine(s);
+
+  cell = m_MParser.ParseLine(s, type);
 
   if (cell == NULL) {
     wxMessageBox(_("There was an error in generated XML!\n\n"
@@ -280,16 +274,8 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   int count = 0;
   while(tokens.HasMoreTokens()) {
     TextCell* cell = new TextCell(tokens.GetNextToken());
-    if (type == PROMPTT)
-      cell->SetStyle(TC_PROMPT);
-    else if (type == MPROMPTT)
-      cell->SetStyle(TC_MAIN_PROMPT);
-    else if (type == INPUTT)
-      cell->SetStyle(TC_INPUT);
-    else if (type == ERRORT)
-      cell->SetStyle(TC_ERROR);
-    else
-      cell->SetStyle(TC_VARIABLE);
+
+    cell->SetType(type);
 
     if (tokens.HasMoreTokens())
       cell->SetSkip(false);
@@ -305,7 +291,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
 {
   if (!m_isConnected) {
-    ConsoleAppend(wxT("\nNot connected to maxima!\n"), ERRORT);
+    ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
     return;
   }
   if (s.StartsWith(wxT("<ml>"))) {
@@ -315,7 +301,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
   if (clear)
     m_inputLine->SetValue(wxEmptyString);
   if (out)
-    ConsoleAppend(s, INPUTT);
+    ConsoleAppend(s, MC_TYPE_INPUT);
   if (silent) {
     m_inputLine->AddToHistory(s);
     SetStatusText(_("Maxima is calculating"), 1);
@@ -385,7 +371,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     if (!m_closing)
       ConsoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
                         "Restart maxima with 'Maxima->Restart maxima'.\n"),
-                    ERRORT);
+                    MC_TYPE_ERROR);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_client->Destroy();
@@ -426,7 +412,7 @@ void wxMaxima::ReadMath()
   while (end > -1) {
     m_readingPrompt = true;
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o, TEXTT);
+    ConsoleAppend(o, MC_TYPE_TEXT);
     m_currentOutput = m_currentOutput.SubString(end+m_promptPrefix.Length(),
                                                 m_currentOutput.Length());
     end = m_currentOutput.Find(m_promptPrefix);
@@ -436,7 +422,7 @@ void wxMaxima::ReadMath()
   end = m_currentOutput.Find(mth);
   while (end > -1) {
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o + mth, TEXTT);
+    ConsoleAppend(o + mth, MC_TYPE_TEXT);
     m_currentOutput = m_currentOutput.SubString(end+mth.Length(),
                                                 m_currentOutput.Length());
     end = m_currentOutput.Find(mth);
@@ -450,7 +436,7 @@ void wxMaxima::ReadPrompt()
     m_readingPrompt = false;
     wxString o = m_currentOutput.Left(end);
     if (o != wxT("\n") && o.Length()) {
-      ConsoleAppend(o, PROMPTT);
+      ConsoleAppend(o, MC_TYPE_PROMPT);
       if (o.StartsWith(wxT("\nMAXIMA>")))
         m_inLispMode = true;
       else
@@ -474,8 +460,8 @@ void wxMaxima::ReadLispError()
     m_readingPrompt = false;
     m_inLispMode = true;
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o, TEXTT);
-    ConsoleAppend(lispError, PROMPTT);
+    ConsoleAppend(o, MC_TYPE_TEXT);
+    ConsoleAppend(lispError, MC_TYPE_PROMPT);
     SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = wxEmptyString;
   }
@@ -501,7 +487,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
     if (!m_closing)
       ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                         "Restart maxima with 'Maxima->Restart maxima'.\n"),
-                    ERRORT);
+                    MC_TYPE_ERROR);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_isConnected = false;
@@ -1094,7 +1080,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_clear_screen:
     m_console->ClearWindow();
-    ConsoleAppend(m_lastPrompt, PROMPTT);
+    ConsoleAppend(m_lastPrompt, MC_TYPE_PROMPT);
     break;
   case tb_copy:
   case menu_copy_from_console:

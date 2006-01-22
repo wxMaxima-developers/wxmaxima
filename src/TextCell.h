@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,8 +40,8 @@ class TextCell : public MathCell
     wxString ToString(bool all);
     wxString GetDiffPart();
     bool IsOperator();
-    void SetSymbol(bool symbol) { m_symbol = symbol; }
-    void SetGreek(bool greek) { m_greek = greek; }
+    void SetStyle(int style) { m_textStyle = style; }
+    int GetStyle() { return m_textStyle; }
     wxString GetGreekString(CellParser& parser);
 #if defined __WXGTK20__
     wchar_t* GetGreekStringUnicode();
@@ -52,9 +52,8 @@ class TextCell : public MathCell
     void Fold(bool fold);
   protected:
     wxString m_text;
-    bool m_symbol;
-    bool m_greek;
     int m_fontSize;
+    int m_textStyle;
 };
 
 

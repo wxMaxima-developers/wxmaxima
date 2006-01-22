@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ void MatWiz::set_properties()
 {
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   button_1->SetDefault();
-  
+
   if (m_matrixType == MATRIX_ANTISYMETRIC) {
     for (int i=0; i<m_height; i++)
       for (int j=0; j<=i; j++)
@@ -111,14 +111,14 @@ wxString MatWiz::GetValue()
   for (int i=0; i<m_height; i++) {
     cmd += wxT("[");
     for (int j=0; j<m_width; j++) {
-      
+
       if (m_matrixType == MATRIX_SYMETRIC && i>j)
         cmd += m_inputs[j*m_width+i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMETRIC && i>j)
         cmd += wxT("-(") + m_inputs[j*m_width+i]->GetValue() + wxT(")");
       else
         cmd += m_inputs[i*m_width+j]->GetValue();
-      
+
       if (j<m_width-1)
         cmd += wxT(",");
       else

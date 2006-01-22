@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ wxString CommandLine::Previous()
 {
   if (m_history.size()==0)
     return wxEmptyString;
-  
+
   m_historyIndex = MAX(m_historyIndex-1, 0);
   return m_history[m_historyIndex];
 }
@@ -182,9 +182,10 @@ void CommandLine::DoHighlight()
     return;
 
   Freeze();
+
   SetStyle(0, value.Length(),
            wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
-  
+
   int depth = 1;
   for (int i=0; i<value.Length(); i++) {
     if (value.GetChar(i) == '(' || value.GetChar(i) == '[') {
@@ -201,7 +202,7 @@ void CommandLine::DoHighlight()
                wxTextAttr(wxTheColourDatabase->Find(hl_colours[MIN(NUM_OF_COLOURS, depth)])));
     }
   }
-  
+
   Thaw();
 }
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,18 +56,18 @@ bool MathPrintout::OnPrintPage(int num)
   double ppiScale;
   MathCell* tmp = m_tree;
   wxDC* dc = GetDC();
-  
+
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
-  
+
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
-  
+
   dc->SetUserScale(screenScaleX, screenScaleY);
-  
+
   // Go to current page
   tmp = m_pages[num-1];
-  
+
   // Print page
   if (tmp != NULL) {
     wxPoint point;
@@ -76,12 +76,12 @@ bool MathPrintout::OnPrintPage(int num)
     wxConfigBase* config = wxConfig::Get();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
-    
+
     config->Read(wxT("fontsize"), &fontsize);
-    
+
     PrintHeader(num, dc, ppiScale);
     CellParser parser(*dc, ppiScale);
-    
+
     while(tmp != NULL) {
       if (!tmp->m_isBroken) {
         tmp->Draw(parser, point, fontsize, false);
@@ -125,15 +125,15 @@ void MathPrintout::BreakLines()
   int pageWidth, pageHeight;
   int marginX, marginY;
   double scale = GetPPIScale();
-  
+
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  
+
   int fullWidth = pageWidth - marginX;
   int currentWidth = marginX;
-  
+
   MathCell* tmp = m_tree;
-  
+
   while (tmp != NULL) {
     if (!tmp->m_isBroken) {
       tmp->BreakLine(false);
@@ -154,18 +154,18 @@ void MathPrintout::BreakPages()
 {
   if (m_tree == NULL)
     return;
-  
+
   int pageWidth, pageHeight;
   int marginX, marginY;
   int headerHeight = GetHeaderHeight();
   double scale = GetPPIScale();
-  
+
   GetPageMargins(&marginX, &marginY);
   GetPageSizePixels(&pageWidth, &pageHeight);
-  
+
   int currentHeight = marginY;
   int skip = SCALE_PX(5, scale);
-  
+
   MathCell* tmp = m_tree;
   m_pages.push_back(tmp);
 
@@ -218,7 +218,7 @@ void MathPrintout::OnPreparePrinting()
 void MathPrintout::GetPageMargins(int* horizontal, int* vertical)
 {
   double scale = GetPPIScale();
-  
+
   *horizontal = (int)(SCALE_PX(PRINT_MARGIN_HORIZONTAL, scale) * 10);
   *vertical = (int)(SCALE_PX(PRINT_MARGIN_VERTICAL, scale) * 10);
 }
@@ -228,7 +228,7 @@ int MathPrintout::GetHeaderHeight()
   wxDC *dc = GetDC();
   double ppiScale = GetPPIScale();
   int width, height;
-  
+
   dc->SetFont(wxFont((int)((double)10*ppiScale + 0.5),
               wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
   dc->GetTextExtent(wxT("wxMaxima session"), &width, &height);
@@ -241,32 +241,32 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
   int pageWidth, pageHeight;
   int width, height;
   int pages_width, pages_height;
-  
+
   GetPageMargins(&marginX, &marginY);
   GetPageSizePixels(&pageWidth, &pageHeight);
-  
+
   double ppiScale = GetPPIScale();
   double screenScaleX, screenScaleY;
   GetScreenScale(&screenScaleX, &screenScaleY);
   scale = ppiScale*screenScaleX;
-  
+
   dc->SetTextForeground(wxColour(wxT("grey")));
   dc->SetPen(wxPen(wxT("light grey"), 1, wxSOLID));
-  
+
   dc->SetFont(wxFont(MAX((int)(10.0*ppiScale+0.5),1),
                      wxMODERN, wxNORMAL, wxNORMAL));
   dc->GetTextExtent(wxT("Maxima session"), &width, &height);
   wxString page = wxString::Format(wxT("%d / %d"), pageNum, m_numberOfPages);
   dc->GetTextExtent(page, &pages_width, &pages_height);
-  
+
   dc->SetFont(wxFont(MAX((int)(10.0*scale+0.5),1),
                      wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
   dc->DrawText(wxT("Maxima session"), marginX, marginY);
   dc->DrawText(page, pageWidth - pages_width - marginX, marginY);
-  
+
   dc->DrawLine(marginX, marginY + height + SCALE_PX(3, scale),
                pageWidth - marginX, marginY + height + SCALE_PX(3, scale));
-  
+
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxSOLID));
 }
@@ -278,7 +278,7 @@ void MathPrintout::RecalculateSize()
   config->Read(wxT("fontSize"), &fontsize);
   MathCell* tmp = m_tree;
   double scale = GetPPIScale();
-  
+
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
   while (tmp != NULL) {
@@ -294,7 +294,7 @@ void MathPrintout::RecalculateWidths()
   config->Read(wxT("fontSize"), &fontsize);
   MathCell* tmp = m_tree;
   double scale = GetPPIScale();
-  
+
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
   while (tmp != NULL) {
@@ -307,10 +307,10 @@ double MathPrintout::GetPPIScale()
 {
   int ppiScreenX, ppiScreenY;
   int ppiPrinterX, ppiPrinterY;
-  
+
   GetPPIScreen(&ppiScreenX, &ppiScreenY);
   GetPPIPrinter(&ppiPrinterX, &ppiPrinterY);
-  
+
   return ((double)ppiPrinterX) / ((double)ppiScreenX);
 }
 
@@ -319,10 +319,10 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
   int pageSizeX, pageSizeY;
   int previewSizeX, previewSizeY;
   wxDC *dc = GetDC();
-  
+
   GetPageSizePixels(&pageSizeX, &pageSizeY);
   dc->GetSize(&previewSizeX, &previewSizeY);
-  
+
   *scaleX = ((double)previewSizeX) / ((double)pageSizeX);
   *scaleY = ((double)previewSizeY) / ((double)pageSizeY);
 }
@@ -354,15 +354,15 @@ void MathPrintout::BreakUpCells()
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
   double scale = GetPPIScale();
-  
+
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
-  
+
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  
+
   int fullWidth = pageWidth - marginX;
-  
+
   while (tmp != NULL) {
     if (tmp->GetWidth() > fullWidth) {
       if (tmp->BreakUp())

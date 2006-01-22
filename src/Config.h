@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -114,7 +114,8 @@ protected:
   // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
-        m_styleBackground;
+        m_styleBackground, m_styleNumber, m_styleString, m_styleGreek,
+        m_styleVariable;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
   void OnSymbolBrowse(wxCommandEvent& event);

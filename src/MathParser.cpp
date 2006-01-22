@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ MathCell* MathParser::ParseFracTag(xmlNodePtr node)
       if (node->properties != NULL) {
         frac->SetFracStyle(FC_CHOOSE);
       }
-      frac->SetStyle(m_ParserStyle);
+      frac->SetType(m_ParserStyle);
       frac->SetupBreakUps();
       return frac;
     }
@@ -83,7 +83,7 @@ MathCell* MathParser::ParseDiffTag(xmlNodePtr node)
     child = child->next;
     if (child) {
       diff->SetBase(ParseTag(child, true));
-      diff->SetStyle(m_ParserStyle);
+      diff->SetType(m_ParserStyle);
       return diff;
     }
   }
@@ -104,7 +104,7 @@ MathCell* MathParser::ParseSupTag(xmlNodePtr node)
       MathCell* power = ParseTag(child, false);
       power->SetExponentFlag();
       expt->SetPower(power);
-      expt->SetStyle(m_ParserStyle);
+      expt->SetType(m_ParserStyle);
       return expt;
     }
   }
@@ -121,7 +121,7 @@ MathCell* MathParser::ParseSubTag(xmlNodePtr node)
     child = child->next;
     if (child) {
       sub->SetIndex(ParseTag(child, false));
-      sub->SetStyle(m_ParserStyle);
+      sub->SetType(m_ParserStyle);
       return sub;
     }
   }
@@ -138,7 +138,7 @@ MathCell* MathParser::ParseAtTag(xmlNodePtr node)
     child = child->next;
     if (child) {
       at->SetIndex(ParseTag(child, false));
-      at->SetStyle(m_ParserStyle);
+      at->SetType(m_ParserStyle);
       return at;
     }
   }
@@ -154,7 +154,7 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
     fun->SetName(ParseTag(child, false));
     child = child->next;
     if (child) {
-      fun->SetStyle(m_ParserStyle);
+      fun->SetType(m_ParserStyle);
       fun->SetArg(ParseTag(child, false));
       return fun;
     }
@@ -163,16 +163,15 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
   return NULL;
 }
 
-MathCell* MathParser::ParseText(xmlNodePtr node, bool symbol, bool greek)
+MathCell* MathParser::ParseText(xmlNodePtr node, int style)
 {
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
     wxString str((const char*)(node->content), wxConvUTF8);
     str = ToLocal(str);
     cell->SetValue(wxString(str));
-    cell->SetStyle(m_ParserStyle);
-    cell->SetSymbol(symbol);
-    cell->SetGreek(greek);
+    cell->SetType(m_ParserStyle);
+    cell->SetStyle(style);
   }
   return cell;
 }
@@ -182,7 +181,7 @@ MathCell* MathParser::ParseSqrtTag(xmlNodePtr node)
   xmlNodePtr child = node->children;
   SqrtCell* cell = new SqrtCell;
   cell->SetInner(ParseTag(child, true));
-  cell->SetStyle(m_ParserStyle);
+  cell->SetType(m_ParserStyle);
   return cell;
 }
 
@@ -191,7 +190,7 @@ MathCell* MathParser::ParseAbsTag(xmlNodePtr node)
   xmlNodePtr child = node->children;
   AbsCell* cell = new AbsCell;
   cell->SetInner(ParseTag(child, true));
-  cell->SetStyle(m_ParserStyle);
+  cell->SetType(m_ParserStyle);
   return cell;
 }
 
@@ -217,7 +216,7 @@ MathCell* MathParser::ParseLimitTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         limit->SetBase(ParseTag(child, false));
-        limit->SetStyle(m_ParserStyle);
+        limit->SetType(m_ParserStyle);
         return limit;
       }
     }
@@ -240,7 +239,7 @@ MathCell* MathParser::ParseSumTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         sum->SetBase(ParseTag(child, false));
-        sum->SetStyle(m_ParserStyle);
+        sum->SetType(m_ParserStyle);
         return sum;
       }
     }
@@ -266,7 +265,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
           child = child->next;
           if (child) {
             in->SetVar(ParseTag(child, true));
-            in->SetStyle(m_ParserStyle);
+            in->SetType(m_ParserStyle);
             return in;
           }
         }
@@ -279,7 +278,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
       child = child->next;
       if (child) {
         in->SetVar(ParseTag(child, true));
-        in->SetStyle(m_ParserStyle);
+        in->SetType(m_ParserStyle);
         return in;
       }
     }
@@ -302,7 +301,7 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
     }
     rows = rows->next;
   }
-  matrix->SetStyle(m_ParserStyle);
+  matrix->SetType(m_ParserStyle);
   matrix->SetDimension();
   return matrix;
 }
@@ -316,11 +315,100 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
     if (node->type == XML_ELEMENT_NODE) {
       wxString tagName((const char*)(node->name), wxConvUTF8);
       tagName = ToLocal(tagName);
-      if (tagName == wxT("f")) {
+
+      if (tagName == wxT("v")) {               // Variables (atoms)
+        if (cell == NULL)
+          cell = ParseText(node->children, TS_VARIABLES);
+        else
+          cell->AppendCell(ParseText(node->children, TS_VARIABLES));
+      }
+      else if (tagName == wxT("t")) {          // Other text
+        if (cell == NULL)
+          cell = ParseText(node->children, TS_NORMAL_TEXT);
+        else
+          cell->AppendCell(ParseText(node->children, TS_NORMAL_TEXT));
+      }
+      else if (tagName == wxT("n")) {          // Numbers
+        if (cell == NULL)
+          cell = ParseText(node->children, TS_NUMBER);
+        else
+          cell->AppendCell(ParseText(node->children, TS_NUMBER));
+      }
+      else if (tagName == wxT("h")) {          // Hidden cells (*)
+        MathCell* tmp = ParseText(node->children);
+        tmp->m_isHidden = true;
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("p")) {          // Parenthesis
+        if (cell == NULL)
+          cell = ParseParenTag(node);
+        else
+          cell->AppendCell(ParseParenTag(node));
+      }
+      else if (tagName == wxT("f")) {               // Fractions
         if (cell == NULL)
           cell = ParseFracTag(node);
         else
           cell->AppendCell(ParseFracTag(node));
+      }
+      else if (tagName == wxT("e")) {          // Exponentials
+        if (cell == NULL)
+          cell = ParseSupTag(node);
+        else
+          cell->AppendCell(ParseSupTag(node));
+      }
+      else if (tagName == wxT("i")) {          // Subscripts
+        if (cell == NULL)
+          cell = ParseSubTag(node);
+        else
+          cell->AppendCell(ParseSubTag(node));
+      }
+      else if (tagName == wxT("fn")) {         // Functions
+        if (cell == NULL)
+          cell = ParseFunTag(node);
+        else
+          cell->AppendCell(ParseFunTag(node));
+      }
+      else if (tagName == wxT("g")) {          // Greek constants
+        MathCell* tmp = ParseText(node->children, TS_GREEK_CONSTANT);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("s")) {          // Special constants %e,...
+        MathCell* tmp = ParseText(node->children, TS_SPECIAL_CONSTANT);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("q")) {          // Square roots
+        if (cell == NULL)
+          cell = ParseSqrtTag(node);
+        else
+          cell->AppendCell(ParseSqrtTag(node));
+      }
+      else if (tagName == wxT("d")) {          // Differentials
+        if (cell == NULL)
+          cell = ParseDiffTag(node);
+        else
+          cell->AppendCell(ParseDiffTag(node));
+      }
+      else if (tagName == wxT("sm")) {         // Sums
+        if (cell == NULL)
+          cell = ParseSumTag(node);
+        else
+          cell->AppendCell(ParseSumTag(node));
+      }
+      else if (tagName == wxT("in")) {         // integrals
+        if (cell == NULL)
+          cell = ParseIntTag(node);
+        else
+          cell->AppendCell(ParseIntTag(node));
       }
       else if (tagName == wxT("mspace")) {
         if (cell == NULL)
@@ -328,41 +416,11 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(new TextCell(wxT(" ")));
       }
-      else if (tagName == wxT("i")) {
-        if (cell == NULL)
-          cell = ParseSubTag(node);
-        else
-          cell->AppendCell(ParseSubTag(node));
-      }
       else if (tagName == wxT("at")) {
         if (cell == NULL)
           cell = ParseAtTag(node);
         else
           cell->AppendCell(ParseAtTag(node));
-      }
-      else if (tagName == wxT("fn")) {
-        if (cell == NULL)
-          cell = ParseFunTag(node);
-        else
-          cell->AppendCell(ParseFunTag(node));
-      }
-      else if (tagName == wxT("e")) {
-        if (cell == NULL)
-          cell = ParseSupTag(node);
-        else
-          cell->AppendCell(ParseSupTag(node));
-      }
-      else if (tagName == wxT("q")) {
-        if (cell == NULL)
-          cell = ParseSqrtTag(node);
-        else
-          cell->AppendCell(ParseSqrtTag(node));
-      }
-      else if (tagName == wxT("d")) {
-        if (cell == NULL)
-          cell = ParseDiffTag(node);
-        else
-          cell->AppendCell(ParseDiffTag(node));
       }
       else if (tagName == wxT("a")) {
         if (cell == NULL)
@@ -370,29 +428,11 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(ParseAbsTag(node));
       }
-      else if (tagName == wxT("p")) {
-        if (cell == NULL)
-          cell = ParseParenTag(node);
-        else
-          cell->AppendCell(ParseParenTag(node));
-      }
       else if (tagName == wxT("lm")) {
         if (cell == NULL)
           cell = ParseLimitTag(node);
         else
           cell->AppendCell(ParseLimitTag(node));
-      }
-      else if (tagName == wxT("sm")) {
-        if (cell == NULL)
-          cell = ParseSumTag(node);
-        else
-          cell->AppendCell(ParseSumTag(node));
-      }
-      else if (tagName == wxT("in")) {
-        if (cell == NULL)
-          cell = ParseIntTag(node);
-        else
-          cell->AppendCell(ParseIntTag(node));
       }
       else if (tagName == wxT("r")) {
         if (cell == NULL)
@@ -417,45 +457,9 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("h")) {
-        MathCell* tmp = ParseText(node->children);
-        tmp->m_isHidden = true;
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
-      else if (tagName == wxT("n")) {
-        if (cell == NULL)
-          cell = ParseText(node->children);
-        else
-          cell->AppendCell(ParseText(node->children));
-      }
-      else if (tagName == wxT("g")) {
-        MathCell* tmp = ParseText(node->children, false, true);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
-      else if (tagName == wxT("s")) {
-        MathCell* tmp = ParseText(node->children, true);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
-      else if (tagName == wxT("st")) {
-        MathCell* tmp = ParseText(node->children);
-        tmp->SetStyle(TC_STRING);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
       else if (tagName == wxT("lbl")) {
         int oldPS = m_ParserStyle;
-        m_ParserStyle = TC_LABEL;
+        m_ParserStyle = MC_TYPE_LABEL;
         MathCell* tmp = ParseTag(node->children);
         m_ParserStyle = oldPS;
         tmp->ForceBreakLine(true);
@@ -464,9 +468,16 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
+      else if (tagName == wxT("st")) {
+        MathCell* tmp = ParseText(node->children, TS_STRING);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
       else if (tagName == wxT("prompt")) {
         int oldPS = m_ParserStyle;
-        m_ParserStyle = TC_MAIN_PROMPT;
+        m_ParserStyle = MC_TYPE_MAIN_PROMPT;
         MathCell* tmp = ParseTag(node->children);
         m_ParserStyle = oldPS;
         tmp->ForceBreakLine(true);
@@ -477,7 +488,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
       }
       else if (tagName == wxT("input")) {
         int oldPS = m_ParserStyle;
-        m_ParserStyle = TC_INPUT;
+        m_ParserStyle = MC_TYPE_INPUT;
         MathCell* tmp = ParseTag(node->children);
         m_ParserStyle = oldPS;
         if (cell == NULL)
@@ -523,10 +534,10 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   if (s.Length() < MAXLENGTH || showLong) {
     s = ToUnicode(s);
 #if wxUSE_UNICODE
-    char *buf; 	 
-    wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str()); 	 
-    buf = strdup(tmp); 	 
-    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf)); 	 
+    char *buf;
+    wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
+    buf = strdup(tmp);
+    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
     free(buf);
 #else
     xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());

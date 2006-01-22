@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ MathCell* AtCell::Copy(bool all)
   AtCell* tmp = new AtCell;
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!= NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -104,11 +104,11 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   if (DrawThisCell(parser, point)) {
     wxPoint bs, in;
-  
+
     bs.x = point.x;
     bs.y = point.y;
     m_baseCell->Draw(parser, bs, fontsize, true);
-  
+
     in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
                    + m_indexCell->GetMaxCenter() -  SCALE_PX(7, scale);

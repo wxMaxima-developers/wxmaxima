@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ MathCell::MathCell()
   m_isFolded = false;
   m_isHidden = false;
   m_isBroken = false;
-  m_style = TC_VARIABLE;
+  m_type = MC_TYPE_TEXT;
 }
 
 /***
@@ -173,7 +173,7 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   if (m_next != NULL && all)
-    m_next->RecalculateSize(parser, fontsize, all);  
+    m_next->RecalculateSize(parser, fontsize, all);
 }
 
 /***
@@ -214,7 +214,7 @@ wxRect MathCell::GetRect(bool all)
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
                   GetLineWidth(1.0), GetMaxHeight());
-  return wxRect(m_currentPoint.x, m_currentPoint.y-m_center,  
+  return wxRect(m_currentPoint.x, m_currentPoint.y-m_center,
                                   m_width, m_height);
 }
 
@@ -375,10 +375,10 @@ void MathCell::Unbreak(bool all)
 void MathCell::SetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  if (m_style == TC_PROMPT)
+  if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
                                               1, wxSOLID)));
-  else if (m_style == TC_INPUT)
+  else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
                                               1, wxSOLID)));
 }
@@ -389,7 +389,7 @@ void MathCell::SetPen(CellParser& parser)
 void MathCell::UnsetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  if (m_style == TC_PROMPT || m_style == TC_INPUT)
+  if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_NORMAL_TEXT),
                                               1, wxSOLID)));
 }

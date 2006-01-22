@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ MathCell* MatrCell::Copy(bool all)
   MatrCell *tmp = new MatrCell;
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   for (int i=0; i<m_matWidth*m_matHeight; i++)
     (tmp->m_cells).push_back(m_cells[i]->Copy(true));
   if (all && m_next!=NULL)
@@ -83,7 +83,7 @@ void MatrCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   for (int i=0; i< m_matWidth*m_matHeight; i++) {
     m_cells[i]->RecalculateSize(parser, MAX(8, fontsize-2), true);
   }

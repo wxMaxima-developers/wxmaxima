@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ class CellParser {
     int m_symbolFontAdj;
     bool m_haveSymbolFont;
     bool m_forceUpdate;
-    style m_styles[7];
+    style m_styles[11];
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ FracCell::FracCell() : MathCell()
   m_denom = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
-  
+
   m_open1 = NULL;
   m_close1 = NULL;
   m_open2 = NULL;
@@ -42,7 +42,7 @@ MathCell* FracCell::Copy(bool all)
   tmp->SetDenom(m_denom->Copy(true));
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   tmp->SetupBreakUps();
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
@@ -68,7 +68,7 @@ void FracCell::Destroy()
   m_num = NULL;
   m_denom = NULL;
   m_next = NULL;
-  
+
   delete m_open1;
   delete m_open2;
   delete m_close1;
@@ -142,7 +142,7 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = m_num->GetMaxHeight();
     m_center = m_height/2;
   }
-  
+
   m_open1->RecalculateSize(parser, fontsize, false);
   m_close1->RecalculateSize(parser, fontsize, false);
   m_open2->RecalculateSize(parser, fontsize, false);
@@ -157,7 +157,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     wxPoint num, denom;
-        
+
     if (m_exponent && !m_isBroken) {
       int width, height;
       double scale = parser.GetScale();
@@ -166,7 +166,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       num.y = point.y;
       denom.x = point.x + m_num->GetFullWidth(scale) + width;
       denom.y = num.y;
-      
+
       dc.GetTextExtent(wxT("/"), &width, &height);
       m_num->Draw(parser, num, MAX(8, fontsize-2), true);
       m_denom->Draw(parser, denom, MAX(8, fontsize-2), true);
@@ -176,10 +176,10 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     else {
       num.x = point.x + (m_width - m_num->GetFullWidth(scale))/2;
-      num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() - 
+      num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               SCALE_PX(2, scale);
       m_num->Draw(parser, num, MAX(8, fontsize-2), true);
-  
+
       denom.x = point.x + (m_width - m_denom->GetFullWidth(scale))/2;
       denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
       m_denom->Draw(parser, denom, MAX(8, fontsize-2), true);
@@ -279,11 +279,11 @@ void FracCell::SetupBreakUps()
     m_close1->m_isHidden = true;
     m_open2->m_isHidden = true;
   }
-  
+
   m_last1 = m_num;
   while (m_last1->m_next != NULL)
     m_last1 = m_last1->m_next;
-  
+
   m_last2 = m_denom;
   while (m_last2->m_next != NULL)
     m_last2 = m_last2->m_next;
@@ -293,7 +293,7 @@ bool FracCell::BreakUp()
 {
   if (m_fracStyle == FC_DIFF)
     return false;
-  
+
   if (!m_isBroken) {
     m_isBroken = true;
     m_open1->m_previousToDraw = this;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ MathCell* DiffCell::Copy(bool all)
   DiffCell* tmp = new DiffCell;
   tmp->SetDiff(m_diffCell->Copy(true));
   tmp->SetBase(m_baseCell->Copy(true));
+  tmp->m_type = m_type;
   if (all && m_next!= NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -100,12 +101,12 @@ void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     df.x = point.x;
     df.y = point.y;
     m_diffCell->Draw(parser, df, fontsize, true);
-  
+
     bs.x = point.x + m_diffCell->GetFullWidth(parser.GetScale()) + 2*MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->Draw(parser, bs, fontsize, true);
   }
-  
+
   MathCell::Draw(parser, point, fontsize, all);
 }
 

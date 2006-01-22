@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ MathCell* SumCell::Copy(bool all)
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetOver(m_over->Copy(true));
   tmp->m_sumStyle = m_sumStyle;
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -101,17 +101,17 @@ void SumCell::SetUnder(MathCell *under)
 void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_signCenter = SCALE_PX(m_signCenter, scale);
   m_signSize = SCALE_PX(m_signSize, scale);
   m_signWidth = SCALE_PX(m_signWidth, scale);
-  
+
   m_base->RecalculateWidths(parser, fontsize, true);
   m_under->RecalculateWidths(parser, MAX(8, fontsize-5), true);
   if (m_over == NULL)
     m_over = new TextCell;
   m_over->RecalculateWidths(parser, MAX(8, fontsize-5), true);
-  
+
   m_signCenter = MAX(m_signCenter, m_under->GetFullWidth(scale)/2);
   m_signCenter = MAX(m_signCenter, m_over->GetFullWidth(scale)/2);
   m_width = 2*m_signCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
@@ -122,7 +122,7 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void SumCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_under->RecalculateSize(parser, MAX(8, fontsize-5), true);
   m_over->RecalculateSize(parser, MAX(8, fontsize-5), true);
   m_base->RecalculateSize(parser, fontsize, true);
@@ -132,7 +132,7 @@ void SumCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height = m_center +
              MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize/2,
                  m_base->GetMaxDrop());
-  
+
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -141,13 +141,13 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (DrawThisCell(parser, point)) {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
-    
+
     wxPoint base(point), under(point), over(point);
-  
+
     under.x += m_signCenter - m_under->GetFullWidth(scale)/2;
     under.y = point.y + m_signSize/2 + m_under->GetMaxCenter() + 2;
     m_under->Draw(parser, under, MAX(8, fontsize-5), true);
-    
+
     over.x += m_signCenter - m_over->GetFullWidth(scale)/2;
     over.y = point.y - m_signSize/2 - m_over->GetMaxDrop() - 2;
     m_over->Draw(parser, over, MAX(8, fontsize-5), true);
@@ -236,7 +236,7 @@ wxString SumCell::ToString(bool all)
   else
     s = wxT("product(");
   s += m_base->ToString(true);
-  
+
   MathCell* tmp = m_under;
   wxString var = tmp->ToString(false);
   wxString from;
@@ -248,7 +248,7 @@ wxString SumCell::ToString(bool all)
   }
   wxString to = m_over->ToString(true);
   s += wxT(",") + var + wxT(",") + from;
-  if (to!=wxEmptyString) 
+  if (to!=wxEmptyString)
     s += wxT(",") + to + wxT(")");
   else
     s = wxT("l") + s + wxT(")"),

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ MathCell* FunCell::Copy(bool all)
   FunCell* tmp = new FunCell;
   tmp->SetName(m_nameCell->Copy(true));
   tmp->SetArg(m_argCell->Copy(true));
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(true));
   return tmp;
@@ -99,14 +99,14 @@ void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   if (DrawThisCell(parser, point)) {
     double scale = parser.GetScale();
-    
+
     wxPoint name(point), arg(point);
     m_nameCell->Draw(parser, name, fontsize, true);
-  
+
     arg.x += m_nameCell->GetFullWidth(scale) - SCALE_PX(1, scale);
     m_argCell->Draw(parser, arg, fontsize, true);
   }
-  
+
   MathCell::Draw(parser, point, fontsize, all);
 }
 

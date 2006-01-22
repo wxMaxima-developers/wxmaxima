@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
-  
+
   ReadStyle();
 }
 
@@ -49,10 +49,10 @@ CellParser::~CellParser()
 void CellParser::ReadStyle()
 {
   wxConfigBase* config = wxConfig::Get();
-  
+
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
-  
+
   // Symbol font
   m_haveSymbolFont = false;
   m_symbolFontAdj = 0;
@@ -60,11 +60,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
   config->Read(wxT("Style/Symbol/adj"), &m_symbolFontAdj);
   config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);
-  
+
   // Normal text
   m_styles[0].color = wxT("black");
   m_styles[0].bold = false;
-  m_styles[0].italic = false;
+  m_styles[0].italic = true;
   m_styles[0].underlined = false;
   config->Read(wxT("Style/NormalText/color"),
                &m_styles[0].color);
@@ -74,7 +74,7 @@ void CellParser::ReadStyle()
                &m_styles[0].italic);
   config->Read(wxT("Style/NormalText/underlined"),
                &m_styles[0].underlined);
-  
+
   // Hidden groups
   m_styles[1].bold = false;
   m_styles[1].italic = true;
@@ -87,7 +87,7 @@ void CellParser::ReadStyle()
                &m_styles[1].italic);
   config->Read(wxT("Style/HiddenText/underlined"),
                &m_styles[1].underlined);
-  
+
   // Main prompt
   m_styles[2].color = wxT("red");
   m_styles[2].bold = false;
@@ -115,7 +115,7 @@ void CellParser::ReadStyle()
                &m_styles[3].italic);
   config->Read(wxT("Style/OtherPrompt/underlined"),
                &m_styles[3].underlined);
-  
+
   // Labels
   m_styles[4].color = wxT("brown");
   m_styles[4].bold = false;
@@ -129,9 +129,9 @@ void CellParser::ReadStyle()
                &m_styles[4].italic);
   config->Read(wxT("Style/Label/underlined"),
                &m_styles[4].underlined);
-  
+
   // Special
-  m_styles[5].color = wxT("black");
+  m_styles[5].color = m_styles[0].color;
   m_styles[5].bold = false;
   m_styles[5].italic = false;
   m_styles[5].underlined = false;
@@ -143,7 +143,7 @@ void CellParser::ReadStyle()
                &m_styles[5].italic);
   config->Read(wxT("Style/Special/underlined"),
                &m_styles[5].underlined);
-  
+
   // Input
   m_styles[6].color = wxT("blue");
   m_styles[6].bold = false;
@@ -157,7 +157,63 @@ void CellParser::ReadStyle()
                &m_styles[6].italic);
   config->Read(wxT("Style/Input/underlined"),
                &m_styles[6].underlined);
-               
+
+  // Number
+  m_styles[7].color = m_styles[0].color;
+  m_styles[7].bold = false;
+  m_styles[7].italic = false;
+  m_styles[7].underlined = false;
+  config->Read(wxT("Style/Number/color"),
+               &m_styles[7].color);
+  config->Read(wxT("Style/Number/bold"),
+               &m_styles[7].bold);
+  config->Read(wxT("Style/Number/italic"),
+               &m_styles[7].italic);
+  config->Read(wxT("Style/Number/underlined"),
+               &m_styles[7].underlined);
+
+  // String
+  m_styles[8].color = m_styles[0].color;
+  m_styles[8].bold = false;
+  m_styles[8].italic = true;
+  m_styles[8].underlined = false;
+  config->Read(wxT("Style/String/color"),
+               &m_styles[8].color);
+  config->Read(wxT("Style/String/bold"),
+               &m_styles[8].bold);
+  config->Read(wxT("Style/String/italic"),
+               &m_styles[8].italic);
+  config->Read(wxT("Style/String/underlined"),
+               &m_styles[8].underlined);
+
+  // Greek
+  m_styles[9].color = m_styles[0].color;
+  m_styles[9].bold = false;
+  m_styles[9].italic = false;
+  m_styles[9].underlined = false;
+  config->Read(wxT("Style/Greek/color"),
+               &m_styles[9].color);
+  config->Read(wxT("Style/Greek/bold"),
+               &m_styles[9].bold);
+  config->Read(wxT("Style/Greek/italic"),
+               &m_styles[9].italic);
+  config->Read(wxT("Style/Greek/underlined"),
+               &m_styles[9].underlined);
+
+  // Variables
+  m_styles[10].color = m_styles[0].color;
+  m_styles[10].bold = false;
+  m_styles[10].italic = true;
+  m_styles[10].underlined = false;
+  config->Read(wxT("Style/Variable/color"),
+               &m_styles[10].color);
+  config->Read(wxT("Style/Variable/bold"),
+               &m_styles[10].bold);
+  config->Read(wxT("Style/Variable/italic"),
+               &m_styles[10].italic);
+  config->Read(wxT("Style/Variable/underlined"),
+               &m_styles[10].underlined);
+
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[0].color, 1, wxSOLID)));
 }
 

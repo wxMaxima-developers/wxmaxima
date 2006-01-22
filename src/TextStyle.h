@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,13 +31,17 @@ struct style
 };
 
 enum {
-  TS_NORMAL_TEXT = 0,
-  TS_HIDDEN_GROUP = 1,
-  TS_MAIN_PROMPT = 2,
-  TS_OTHER_PROMPT = 3,
-  TS_LABEL = 4,
+  TS_NORMAL_TEXT      = 0,
+  TS_HIDDEN_GROUP     = 1,
+  TS_MAIN_PROMPT      = 2,
+  TS_OTHER_PROMPT     = 3,
+  TS_LABEL            = 4,
   TS_SPECIAL_CONSTANT = 5,
-  TS_INPUT = 6
+  TS_INPUT            = 6,
+  TS_NUMBER           = 7,
+  TS_STRING           = 8,
+  TS_GREEK_CONSTANT   = 9,
+  TS_VARIABLES        = 10
 };
 
 #endif

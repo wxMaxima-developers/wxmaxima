@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ MathCell* IntCell::Copy(bool all)
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetOver(m_over->Copy(true));
   tmp->SetVar(m_var->Copy(true));
+  tmp->m_type = m_type;
   tmp->m_intStyle = m_intStyle;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
@@ -116,11 +117,11 @@ void IntCell::SetVar(MathCell *var)
 void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_signSize = SCALE_PX(m_signSize, scale);
   m_signWidth = SCALE_PX(m_signWidth, scale);
   m_signMiddle = SCALE_PX(m_signMiddle, scale);
-  
+
   m_base->RecalculateWidths(parser, fontsize, true);
   m_var->RecalculateWidths(parser, fontsize, true);
   if (m_under == NULL)
@@ -129,10 +130,10 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (m_over == NULL)
     m_over = new TextCell;
   m_over->RecalculateWidths(parser, MAX(8, fontsize-5), true);
-  
+
   m_signMiddle = MAX(m_signMiddle,
                      m_under->GetFullWidth(scale)/2 + SCALE_PX(5, scale));
-  
+
   int signOver = MAX(SCALE_PX(10, scale),
                      m_over->GetFullWidth(scale)/2 + SCALE_PX(5, scale));
   m_signWidth = m_signMiddle + signOver;
@@ -145,12 +146,12 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_under->RecalculateSize(parser, MAX(8, fontsize-5), true);
   m_over->RecalculateSize(parser, MAX(8, fontsize-5), true);
   m_base->RecalculateSize(parser, fontsize, true);
   m_var->RecalculateSize(parser, fontsize, true);
- 
+
   m_signSize = MAX(m_signSize, m_base->GetMaxHeight() + SCALE_PX(30, scale));
   m_signSize = MAX(m_signSize, m_var->GetMaxHeight() + SCALE_PX(30, scale));
   if (m_intStyle == INT_DEF) {
@@ -165,7 +166,7 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
                     m_base->GetMaxCenter() + SCALE_PX(15, scale)) +
                SCALE_PX(3, scale);
   }
-  
+
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -174,16 +175,16 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (DrawThisCell(parser, point)) {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
-    
+
     wxPoint base(point), under(point), over(point), var(point), sign(point);
-  
+
     if (m_intStyle == INT_DEF) {
       under.x += m_signMiddle - m_under->GetFullWidth(scale)/2 -
                  SCALE_PX(5, scale);
       under.y = point.y + (m_height - m_center) - m_under->GetMaxDrop();
       m_under->Draw(parser, under, MAX(8, fontsize-5), true);
-    
-      over.x += m_signMiddle - m_over->GetFullWidth(scale)/2 + 
+
+      over.x += m_signMiddle - m_over->GetFullWidth(scale)/2 +
                 SCALE_PX(5, scale);
       over.y = point.y - m_center + m_over->GetMaxCenter();
       m_over->Draw(parser, over, MAX(8, fontsize-5), true);
@@ -208,7 +209,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 sign.y - (m_signSize+1)/2,
                 sign.x + m_signMiddle + SCALE_PX(9, scale),
                 sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale));
-    
+
     // bottom decoration
     dc.DrawLine(sign.x + m_signMiddle,
                 sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1,
@@ -229,10 +230,10 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 sign.x + m_signMiddle,
                 sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1);
     UnsetPen(parser);
-    
+
     base.x += m_signWidth - SCALE_PX(6, scale);
     m_base->Draw(parser, base, fontsize, true);
-    
+
     var.x += m_signWidth + m_base->GetFullWidth(scale) - SCALE_PX(2, scale);
     var.y += m_var->GetMaxCenter() - m_var->GetMaxHeight()/2;
     m_var->Draw(parser, var, fontsize, true);
@@ -246,21 +247,21 @@ wxString IntCell::ToString(bool all)
   wxString s = wxT("integrate(");
 
   s += m_base->ToString(true);
-  
+
   MathCell* tmp = m_var;
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL) {
     var = tmp->ToString(true);
   }
-  
+
   wxString to = m_over->ToString(true);
   wxString from = m_under->ToString(true);
-  
+
   s += wxT(",") + var;
   if (m_intStyle == INT_DEF)
     s += wxT(",") + from + wxT(",") + to;
-  
+
   s += wxT(")");
   s += MathCell::ToString(all);
   return s;

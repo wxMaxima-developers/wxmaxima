@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ MathCell* AbsCell::Copy(bool all)
 {
   AbsCell* tmp = new AbsCell;
   tmp->SetInner(m_innerCell->Copy(true));
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -63,7 +63,7 @@ void AbsCell::SetInner(MathCell *inner)
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
-  
+
   m_last = m_innerCell;
   while (m_last->m_next != NULL)
     m_last = m_last->m_next;
@@ -100,7 +100,7 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.x = point.x + SCALE_PX(4, scale);
     in.y = point.y;
     m_innerCell->Draw(parser, in, fontsize, true);
-  
+
     dc.DrawLine(point.x + SCALE_PX(2, scale),
                 point.y - m_center + SCALE_PX(2, scale),
                 point.x + SCALE_PX(2, scale),
@@ -124,10 +124,10 @@ void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
-  
+
   if (m_innerCell->ContainsRect(rect))
     m_innerCell->SelectRect(rect, first, last);
-  
+
   if (*first == NULL || *last == NULL) {
     *first = this;
     *last = this;

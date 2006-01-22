@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,11 +51,11 @@ void Bitmap::Layout()
   RecalculateSize();
   BreakUpCells();
   BreakLines();
-  
+
   int width, height;
   GetMaxPoint(&width, &height);
   m_bmp.Create(width, height);
-  
+
   Draw();
 }
 
@@ -64,10 +64,10 @@ void Bitmap::RecalculateSize()
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   MathCell* tmp = m_tree;
-  
+
   wxMemoryDC dc;
   CellParser parser(dc);
-  
+
   while (tmp != NULL) {
     tmp->RecalculateSize(parser, fontsize, false);
     tmp = tmp->m_nextToDraw;
@@ -78,12 +78,12 @@ void Bitmap::RecalculateWidths()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  
+
   MathCell* tmp = m_tree;
-  
+
   wxMemoryDC dc;
   CellParser parser(dc);
-  
+
   while (tmp != NULL) {
     tmp->RecalculateWidths(parser, fontsize, false);
     tmp = tmp->m_next;
@@ -94,9 +94,9 @@ void Bitmap::BreakLines()
 {
   int fullWidth = BM_FULL_WIDTH;
   int currentWidth = 0;
-  
+
   MathCell* tmp = m_tree;
-  
+
   while (tmp != NULL) {
     if (!tmp->m_isBroken) {
       tmp->BreakLine(false);
@@ -148,21 +148,21 @@ void Bitmap::Draw()
   MathCell* tmp = m_tree;
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
-  
+
   dc.SetBackground(wxBrush(wxT("white"), wxSOLID));
   dc.Clear();
-  
+
   if (tmp != NULL) {
     wxPoint point;
     point.x = 0;
     point.y = tmp->GetMaxCenter();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
-    
+
     wxConfig::Get()->Read(wxT("fontsize"), &fontsize);
-    
+
     CellParser parser(dc);
-    
+
     while(tmp != NULL) {
       if (!tmp->m_isBroken) {
         tmp->Draw(parser, point, fontsize, false);
@@ -239,7 +239,7 @@ void Bitmap::BreakUpCells()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   wxMemoryDC dc;
   CellParser parser(dc);
-  
+
   while (tmp != NULL) {
     if (tmp->GetWidth() > BM_FULL_WIDTH) {
       if (tmp->BreakUp()) {

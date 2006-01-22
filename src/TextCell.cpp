@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,16 +23,14 @@
 TextCell::TextCell() : MathCell()
 {
   m_text = wxEmptyString;
-  m_symbol = false;
-  m_greek = false;
   m_fontSize = -1;
+  m_textStyle = TS_NORMAL_TEXT;
 }
 
 TextCell::TextCell(wxString text) : MathCell()
 {
   m_text = text;
-  m_symbol = false;
-  m_greek = false;
+  m_textStyle = TS_NORMAL_TEXT;
   m_text.Replace(wxT("\n"), wxEmptyString);
 }
 
@@ -52,13 +50,12 @@ MathCell* TextCell::Copy(bool all)
 {
   TextCell *tmp = new TextCell(wxEmptyString);
   tmp->m_text = wxString(m_text);
-  tmp->m_symbol = m_symbol;
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   tmp->m_forceBreakLine = m_forceBreakLine;
   tmp->m_isFolded = m_isFolded;
   tmp->m_bigSkip = m_bigSkip;
   tmp->m_isHidden = m_isHidden;
-  tmp->m_greek = m_greek;
+  tmp->m_textStyle = m_textStyle;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -76,9 +73,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
-    if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
+    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-    else if (m_greek && parser.HaveSymbolFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
     else if (m_text == wxEmptyString) {
       dc.GetTextExtent(wxT("X"), &m_width, &m_height);
@@ -115,11 +112,11 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetFont(parser, fontsize);
     SetForeground(parser);
 
-    if (m_symbol && parser.HaveSymbolFont() && m_text == wxT("%pi"))
+    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
-    else if (m_greek && parser.HaveSymbolFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
@@ -145,7 +142,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsBold(TS_HIDDEN_GROUP),
                       parser.IsUnderlined(TS_HIDDEN_GROUP),
                       parser.GetFontName()));
-  else if (m_symbol) {
+  else if (m_textStyle == TS_SPECIAL_CONSTANT) {
     if (parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
                         wxMODERN,
@@ -161,7 +158,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName()));
   }
-  else if (m_greek) {
+  else if (m_textStyle == TS_GREEK_CONSTANT) {
     if (parser.HaveSymbolFont())
       dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
                         wxMODERN,
@@ -177,25 +174,25 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName()));
   }
-  else if (m_style == TC_MAIN_PROMPT)
+  else if (m_type == MC_TYPE_MAIN_PROMPT)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_MAIN_PROMPT),
                       parser.IsBold(TS_MAIN_PROMPT),
                       parser.IsUnderlined(TS_MAIN_PROMPT),
                       parser.GetFontName()));
-  else if (m_style == TC_PROMPT)
+  else if (m_type == MC_TYPE_PROMPT)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_OTHER_PROMPT),
                       parser.IsBold(TS_OTHER_PROMPT),
                       parser.IsUnderlined(TS_OTHER_PROMPT),
                       parser.GetFontName()));
-  else if (m_style == TC_LABEL)
+  else if (m_type == MC_TYPE_LABEL)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_LABEL),
                       parser.IsBold(TS_LABEL),
                       parser.IsUnderlined(TS_LABEL),
                       parser.GetFontName()));
-  else if (m_style == TC_INPUT)
+  else if (m_type == MC_TYPE_INPUT)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(TS_INPUT),
                       parser.IsBold(TS_INPUT),
@@ -203,9 +200,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.GetFontName()));
   else
     dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_NORMAL_TEXT),
-                      parser.IsBold(TS_NORMAL_TEXT),
-                      parser.IsUnderlined(TS_NORMAL_TEXT),
+                      parser.IsItalic(m_textStyle),
+                      parser.IsBold(m_textStyle),
+                      parser.IsUnderlined(m_textStyle),
                       parser.GetFontName()));
 }
 
@@ -213,45 +210,45 @@ void TextCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
 #if wxCHECK_VERSION(2, 5, 3)
-  switch(m_style) {
-    case TC_PROMPT:
+  switch(m_type) {
+    case MC_TYPE_PROMPT:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
       break;
-    case TC_MAIN_PROMPT:
+    case MC_TYPE_MAIN_PROMPT:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
       break;
-    case TC_ERROR:
+    case MC_TYPE_ERROR:
       dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
       break;
-    case TC_INPUT:
+    case MC_TYPE_INPUT:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
       break;
-    case TC_LABEL:
+    case MC_TYPE_LABEL:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
       break;
     default:
-     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
+      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
       break;
   }
 #else
-  switch(m_style) {
-    case TC_PROMPT:
+  switch(m_type) {
+    case MC_TYPE_PROMPT:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
       break;
-    case TC_MAIN_PROMPT:
+    case MC_TYPE_MAIN_PROMPT:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
       break;
-    case TC_ERROR:
+    case MC_TYPE_ERROR:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
       break;
-    case TC_INPUT:
+    case MC_TYPE_INPUT:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
       break;
-    case TC_LABEL:
+    case MC_TYPE_LABEL:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
       break;
     default:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
+      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(m_textStyle))));
       break;
   }
 #endif

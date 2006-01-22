@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
   panel = new wxPanel(this, -1);
-  
+
   // input line
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
   m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
@@ -49,7 +49,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                                 wxBitmap(ok_xpm));
   button_1 = new wxBitmapButton(panel, button_long_input,
                                 wxBitmap(multiline_xpm));
-  
+
   // buttons
   button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
   button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
@@ -71,17 +71,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   button_19 = new wxButton(panel, button_map, _("Map..."));
   button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
   button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
-  
+
   // console
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
 
   SetupMenu();
   SetupToolBar();
-  
+
   frame_1_statusbar = CreateStatusBar(2);
   int widths[] = {-1, 300};
   SetStatusWidths(2, widths);
-  
+
   set_properties();
   do_layout();
 }
@@ -100,7 +100,7 @@ void wxMaximaFrame::set_properties()
     m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
   }
-  
+
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
 #if wxCHECK_VERSION(2, 5, 0)
   m_console->SetMinSize(wxSize(100, 100));
@@ -139,7 +139,7 @@ void wxMaximaFrame::do_layout()
   grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
   grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
   grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
-   
+
   // input line
   sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
                wxALIGN_CENTER_VERTICAL, 2);
@@ -147,12 +147,12 @@ void wxMaximaFrame::do_layout()
   sizer_3->Add(button_0, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_3->Add(button_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
   sizer_3->AddGrowableCol(1);
-  
+
   // all
   grid_sizer_1->Add(m_console, 1, wxALL|wxEXPAND, 0);
   grid_sizer_1->Add(sizer_3, 1, wxALL|wxEXPAND, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
-  
+
   panel->SetAutoLayout(true);
   panel->SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(panel);
@@ -170,7 +170,7 @@ void wxMaximaFrame::SetupMenu()
 {
   frame_1_menubar = new wxMenuBar();
   wxMenuItem *tmp_menu_item;
-  
+
 #if defined __WXGTK20__
  #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
   tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
@@ -180,7 +180,7 @@ void wxMaximaFrame::SetupMenu()
  #define APPEND_MENU_ITEM(menu, id, label, help, stock) \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 #endif
-  
+
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open session\tCtrl-O"),
@@ -562,7 +562,7 @@ void wxMaximaFrame::SetupMenu()
 void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
-  
+
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            wxBitmap(open_xpm), _("Open session"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
@@ -584,7 +584,7 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_help, _("Help"),
                            wxBitmap(help_xpm), _("Show maxima help"));
-  
+
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }
@@ -594,7 +594,7 @@ void wxMaximaFrame::SetupToolBar()
 void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
-  
+
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            wxArtProvider::GetBitmap(wxT("gtk-open"),
                                                     wxART_TOOLBAR),
@@ -631,7 +631,7 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxT("gtk-help"),
                                                     wxART_TOOLBAR),
                            _("Show maxima help"));
-  
+
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }

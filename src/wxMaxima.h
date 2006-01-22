@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,15 +36,6 @@ using namespace std;
 
 #define SOCKET_SIZE 1024
 
-enum {
-  TEXTT,
-  INPUTT,
-  PROMPTT,
-  MPROMPTT,
-  ERRORT,
-  COMMENTT
-};
-
 class wxMaxima : public wxMaximaFrame
 {
  public:
@@ -79,13 +70,13 @@ class wxMaxima : public wxMaximaFrame
 
   void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
   void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
-  
-  void ConsoleAppend(wxString s, int type = TEXTT);// append maxima output to console
+
+  void ConsoleAppend(wxString s, int type);// append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
           bool newLine, bool bigSkip = true);      //
   void DoRawConsoleAppend(wxString s, int type,    //
           bool newLine = true);                    //
-  
+
   void CheckForPrintingSupport();
   wxString GetDefaultEntry();
   bool StartServer();                              // starts the server

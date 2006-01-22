@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include <wx/fontdlg.h>
 
 // Should match whatever  is put in the m_language
-const int langs[] = 
+const int langs[] =
 {
   wxLANGUAGE_DEFAULT,
   wxLANGUAGE_ENGLISH,
@@ -93,7 +93,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
   const wxString m_fontFamily_choices[] = {
-    
+
   };
   m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
   SetupFontList();
@@ -102,12 +102,13 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
   m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
   const wxString m_styleFor_choices[] = {
-    _("Normal text"),  _("Hidden groups"), _("Main prompts"),
-    _("Other prompts"), _("Input"), _("Labels"), _("Special constants"),
-    _("Background")
+    _("Variables"), _("Numbers"),  _("Special constants"), _("Greek constants"),
+    _("Strings"), _("Text"), _("Input"), _("Main prompts"),
+    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Background")
+
   };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 8, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
-  const wxString m_styleColor_choices[] = {    
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 12, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  const wxString m_styleColor_choices[] = {
     _("aquamarine"), _("black"), _("blue"), _("blue violet"),
     _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
     _("cyan"), _("dark grey"), _("dark green"), _("dark olive green"),
@@ -138,7 +139,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_button1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   m_button2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
-  
+
   set_properties();
   do_layout();
   // end wxGlade
@@ -152,7 +153,7 @@ void Config::set_properties()
   SetTitle(_("wxMaxima configuration"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   // end wxGlade
-  
+
   m_maximaProgram->SetToolTip(_("Enter the path to the maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for maxima"
                                        " (e.g. -l clisp)."));
@@ -167,7 +168,7 @@ void Config::set_properties()
   m_fontFamily->SetToolTip(_("Font used for display in console."));
   m_symbolFontOk->SetToolTip(_("Use greek font to display greek characters."));
   m_symbolFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
-  
+
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, br, mf;
   int fntsz = 12;
@@ -175,7 +176,7 @@ void Config::set_properties()
   bool showHeader = true, fixedFontTC = true;
   int rs=0;
   int lang = wxLANGUAGE_UNKNOWN;
-  
+
   m_fontSize->SetRange(8, 20);
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
@@ -187,7 +188,7 @@ void Config::set_properties()
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
-  
+
   int i=0;
   for (i=0; i<LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
@@ -196,7 +197,7 @@ void Config::set_properties()
     m_language->SetSelection(i);
   else
     m_language->SetSelection(0);
-  
+
   if (mp.Length())
     m_maximaProgram->SetValue(mp);
   else
@@ -211,7 +212,7 @@ void Config::set_properties()
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
   m_fixedFontInTC->SetValue(fixedFontTC);
-  
+
 #if defined __WXMSW__
   m_button1->SetDefault();
 #else
@@ -239,10 +240,10 @@ void Config::do_layout()
   wxStaticBoxSizer* sizer_12 = new wxStaticBoxSizer(sizer_12_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(2, 2, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
-  
+
   // Title
   sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
-  
+
   // TAB 1
   // Maxima options box
   grid_sizer_2->Add(label_5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
@@ -252,7 +253,7 @@ void Config::do_layout()
   grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
   sizer_4->Add(grid_sizer_2, 1, wxALL|wxEXPAND, 3);
   sizer_3->Add(sizer_4, 1, wxALL|wxEXPAND, 3);
-  
+
   // TAB 2
   // wxMaxima options box
   sizer_7->Add(label_4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
@@ -264,14 +265,14 @@ void Config::do_layout()
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL|wxEXPAND, 3);
-  
+
   // Tab 1
   notebook_1_pane_1->SetAutoLayout(true);
   notebook_1_pane_1->SetSizer(sizer_3);
   sizer_3->Fit(notebook_1_pane_1);
   sizer_3->SetSizeHints(notebook_1_pane_1);
   sizer_3->AddGrowableCol(0);
-  
+
   // TAB 2
   // Font box
   grid_sizer_1->Add(label_7, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
@@ -280,7 +281,7 @@ void Config::do_layout()
   grid_sizer_1->Add(m_fontFamily, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   sizer_9->Add(grid_sizer_1, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL|wxEXPAND, 3);
-  
+
   // Greek font box
   grid_sizer_3->Add(m_symbolFontOk, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_3->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
@@ -288,7 +289,7 @@ void Config::do_layout()
   grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
   sizer_12->Add(grid_sizer_3, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_12, 1, wxALL|wxEXPAND, 3);
-  
+
   // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
@@ -301,18 +302,18 @@ void Config::do_layout()
   grid_sizer_4->Add(label_11, 0, wxALL|wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
-  
+
   // Tab 2
   notebook_1_pane_2->SetAutoLayout(true);
   notebook_1_pane_2->SetSizer(sizer_8);
   sizer_8->Fit(notebook_1_pane_2);
   sizer_8->SetSizeHints(notebook_1_pane_2);
   sizer_8->AddGrowableCol(0);
-  
+
   // Add tabs to notebook and
   notebook_1->AddPage(notebook_1_pane_1, _("Options"));
   notebook_1->AddPage(notebook_1_pane_2, _("Style"));
-  
+
   // Add notebook to dialog
 #if wxCHECK_VERSION(2,5,3)
   sizer_1->Add(notebook_1, 1, wxEXPAND|wxALL, 2);
@@ -324,7 +325,7 @@ void Config::do_layout()
   sizer_2->Add(m_button1, 0, wxLEFT|wxRIGHT, 5);
   sizer_2->Add(m_button2, 0, wxLEFT|wxRIGHT, 5);
   sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
-  
+
   SetAutoLayout(true);
   SetSizer(sizer_1);
   sizer_1->Fit(this);
@@ -403,14 +404,14 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
 void Config::ReadStyles()
 {
   wxConfigBase* config = wxConfig::Get();
-  
+
   wxString font;
   int adj = 0;
   bool symbolOk = false;
-  
+
   config->Read(wxT("Style/fontname"), &font);
   m_fontFamily->SetValue(font);
-  
+
   m_symbolFontName = wxEmptyString;
   config->Read(wxT("Style/Symbol/ok"), &symbolOk);
   config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
@@ -421,7 +422,7 @@ void Config::ReadStyles()
     m_getSymbolFont->SetLabel(m_symbolFontName);
   m_getSymbolFont->Enable(symbolOk);
   m_symbolFontAdj->Enable(symbolOk);
-  
+
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
                &m_styleBackground.color);
@@ -439,7 +440,7 @@ void Config::ReadStyles()
                &m_styleNormalText.italic);
   config->Read(wxT("Style/NormalText/underlined"),
                &m_styleNormalText.underlined);
-  
+
   // Hidden group
   m_styleHiddenText.bold = false;
   m_styleHiddenText.italic = true;
@@ -450,7 +451,7 @@ void Config::ReadStyles()
                &m_styleHiddenText.italic);
   config->Read(wxT("Style/HiddenText/underlined"),
                &m_styleHiddenText.underlined);
-  
+
   // Main prompt
   m_styleMainPrompt.color = wxT("red");
   m_styleMainPrompt.bold = false;
@@ -478,7 +479,7 @@ void Config::ReadStyles()
                &m_styleOtherPrompt.italic);
   config->Read(wxT("Style/OtherPrompt/underlined"),
                &m_styleOtherPrompt.underlined);
-  
+
   // Labels
   m_styleLabel.color = wxT("brown");
   m_styleLabel.bold = false;
@@ -492,19 +493,21 @@ void Config::ReadStyles()
                &m_styleLabel.italic);
   config->Read(wxT("Style/Label/underlined"),
                &m_styleLabel.underlined);
-  
+
   // Special
-  m_styleSpecial.color = wxT("black");
+  m_styleSpecial.color = m_styleNormalText.color;
   m_styleSpecial.bold = false;
   m_styleSpecial.italic = false;
   m_styleSpecial.underlined = false;
+  config->Read(wxT("Style/Special/color"),
+               &m_styleSpecial.color);
   config->Read(wxT("Style/Special/bold"),
                &m_styleSpecial.bold);
   config->Read(wxT("Style/Special/italic"),
                &m_styleSpecial.italic);
   config->Read(wxT("Style/Special/underlined"),
                &m_styleSpecial.underlined);
-  
+
   // Input
   m_styleInput.color = wxT("blue");
   m_styleInput.bold = false;
@@ -518,7 +521,63 @@ void Config::ReadStyles()
                &m_styleInput.italic);
   config->Read(wxT("Style/Input/underlined"),
                &m_styleInput.underlined);
-  
+
+  // Number
+  m_styleNumber.color = m_styleNormalText.color;
+  m_styleNumber.bold = false;
+  m_styleNumber.italic = false;
+  m_styleNumber.underlined = false;
+  config->Read(wxT("Style/Number/color"),
+               &m_styleNumber.color);
+  config->Read(wxT("Style/Number/bold"),
+               &m_styleNumber.bold);
+  config->Read(wxT("Style/Number/italic"),
+               &m_styleNumber.italic);
+  config->Read(wxT("Style/Number/underlined"),
+               &m_styleNumber.underlined);
+
+  // String
+  m_styleString.color = m_styleNormalText.color;
+  m_styleString.bold = false;
+  m_styleString.italic = true;
+  m_styleString.underlined = false;
+  config->Read(wxT("Style/String/color"),
+               &m_styleString.color);
+  config->Read(wxT("Style/String/bold"),
+               &m_styleString.bold);
+  config->Read(wxT("Style/String/italic"),
+               &m_styleString.italic);
+  config->Read(wxT("Style/String/underlined"),
+               &m_styleString.underlined);
+
+  // Greek
+  m_styleGreek.color = m_styleNormalText.color;
+  m_styleGreek.bold = false;
+  m_styleGreek.italic = false;
+  m_styleGreek.underlined = false;
+  config->Read(wxT("Style/Greek/color"),
+               &m_styleGreek.color);
+  config->Read(wxT("Style/Greek/bold"),
+               &m_styleGreek.bold);
+  config->Read(wxT("Style/Greek/italic"),
+               &m_styleGreek.italic);
+  config->Read(wxT("Style/Greek/underlined"),
+               &m_styleGreek.underlined);
+
+  // Variable
+  m_styleVariable.color = m_styleNormalText.color;
+  m_styleVariable.bold = false;
+  m_styleVariable.italic = true;
+  m_styleVariable.underlined = false;
+  config->Read(wxT("Style/Variable/color"),
+               &m_styleVariable.color);
+  config->Read(wxT("Style/Variable/bold"),
+               &m_styleVariable.bold);
+  config->Read(wxT("Style/Variable/italic"),
+               &m_styleVariable.italic);
+  config->Read(wxT("Style/Variable/underlined"),
+               &m_styleVariable.underlined);
+
   // Set values in dialog
   m_styleFor->SetSelection(0);
   int i=0;
@@ -534,16 +593,16 @@ void Config::ReadStyles()
 void Config::WriteStyles()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  
+
   config->Write(wxT("Style/Background/color"),
                 m_styleBackground.color);
-  
+
   config->Write(wxT("Style/fontname"), m_fontFamily->GetValue());
-  
+
   config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());
   config->Write(wxT("Style/Symbol/fontname"), m_symbolFontName);
   config->Write(wxT("Style/Symbol/adj"), m_symbolFontAdj->GetValue());
-  
+
   // Normal text
   config->Write(wxT("Style/NormalText/color"),
                 m_styleNormalText.color);
@@ -553,7 +612,7 @@ void Config::WriteStyles()
                 m_styleNormalText.italic);
   config->Write(wxT("Style/NormalText/underlined"),
                 m_styleNormalText.underlined);
-  
+
   // Hidden
   config->Write(wxT("Style/HiddenText/bold"),
                 m_styleHiddenText.bold);
@@ -561,7 +620,7 @@ void Config::WriteStyles()
                 m_styleHiddenText.italic);
   config->Write(wxT("Style/HiddenText/underlined"),
                 m_styleHiddenText.underlined);
-  
+
   // Main prompt
   config->Write(wxT("Style/MainPrompt/color"),
                 m_styleMainPrompt.color);
@@ -581,7 +640,7 @@ void Config::WriteStyles()
                 m_styleOtherPrompt.italic);
   config->Write(wxT("Style/OtherPrompt/underlined"),
                 m_styleOtherPrompt.underlined);
-  
+
   // Label
   config->Write(wxT("Style/Label/color"),
                 m_styleLabel.color);
@@ -591,15 +650,17 @@ void Config::WriteStyles()
                 m_styleLabel.italic);
   config->Write(wxT("Style/Label/underlined"),
                 m_styleLabel.underlined);
-  
+
   // Special
+  config->Write(wxT("Style/Special/color"),
+                m_styleSpecial.color);
   config->Write(wxT("Style/Special/bold"),
                 m_styleSpecial.bold);
   config->Write(wxT("Style/Special/italic"),
                 m_styleSpecial.italic);
   config->Write(wxT("Style/Special/underlined"),
                 m_styleSpecial.underlined);
-  
+
   // Input
   config->Write(wxT("Style/Input/color"),
                 m_styleInput.color);
@@ -609,17 +670,57 @@ void Config::WriteStyles()
                 m_styleInput.italic);
   config->Write(wxT("Style/Input/underlined"),
                 m_styleInput.underlined);
-           
+
+  // Number
+  config->Write(wxT("Style/Number/color"),
+                m_styleNumber.color);
+  config->Write(wxT("Style/Number/bold"),
+                m_styleNumber.bold);
+  config->Write(wxT("Style/Number/italic"),
+                m_styleNumber.italic);
+  config->Write(wxT("Style/Number/underlined"),
+                m_styleNumber.underlined);
+
+  // Greek
+  config->Write(wxT("Style/Greek/color"),
+                m_styleGreek.color);
+  config->Write(wxT("Style/Greek/bold"),
+                m_styleGreek.bold);
+  config->Write(wxT("Style/Greek/italic"),
+                m_styleGreek.italic);
+  config->Write(wxT("Style/Greek/underlined"),
+                m_styleGreek.underlined);
+
+  // String
+  config->Write(wxT("Style/String/color"),
+                m_styleString.color);
+  config->Write(wxT("Style/String/bold"),
+                m_styleString.bold);
+  config->Write(wxT("Style/String/italic"),
+                m_styleString.italic);
+  config->Write(wxT("Style/String/underlined"),
+                m_styleString.underlined);
+
+  // Variable
+  config->Write(wxT("Style/Variable/color"),
+                m_styleVariable.color);
+  config->Write(wxT("Style/Variable/bold"),
+                m_styleVariable.bold);
+  config->Write(wxT("Style/Variable/italic"),
+                m_styleVariable.italic);
+  config->Write(wxT("Style/Variable/underlined"),
+                m_styleVariable.underlined);
+
   config->Flush();
 }
 
 void Config::OnChangeColor(wxCommandEvent& event)
 {
   style* tmp =GetStylePointer();
-  
+
   int i = m_styleColor->GetSelection();
   tmp->color = colorlist[i];
-  
+
   UpdateExample();
 }
 
@@ -627,9 +728,10 @@ void Config::OnChangeStyle(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
-  
-  if (st == 1 || st == 6)
+
+  if (tmp == &m_styleHiddenText) {
     m_styleColor->Enable(false);
+  }
   else {
     m_styleColor->Enable(true);
     int i=0;
@@ -639,8 +741,8 @@ void Config::OnChangeStyle(wxCommandEvent& event)
     if (i<COLORLIST_LENGTH)
       m_styleColor->SetSelection(i);
   }
-  
-  if (st == 7) {
+
+  if (st == 11) {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
     m_underlinedCB->Enable(false);
@@ -659,11 +761,11 @@ void Config::OnChangeStyle(wxCommandEvent& event)
 void Config::OnCheckbox(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
-  
+
   tmp->bold = m_boldCB->GetValue();
   tmp->italic = m_italicCB->GetValue();
   tmp->underlined = m_underlinedCB->GetValue();
-  
+
   UpdateExample();
 }
 
@@ -691,7 +793,7 @@ void Config::SetupFontList()
 {
   FixedFonts enumerator;
   enumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, true);
-  
+
   const wxArrayString& strings = enumerator.GetFacenames();
   for (unsigned int i=0; i<strings.Count(); i++)
     m_fontFamily->Append(strings.Item(i));
@@ -706,28 +808,40 @@ style* Config::GetStylePointer()
   switch (m_styleFor->GetSelection())
   {
     case 1:
-      tmp = &m_styleHiddenText;
+      tmp = &m_styleNumber;
       break;
     case 2:
-      tmp = &m_styleMainPrompt;
-      break;
-    case 3:
-      tmp = &m_styleOtherPrompt;
-      break;
-    case 4:
-      tmp = &m_styleInput;
-      break;
-    case 5:
-      tmp = &m_styleLabel;
-      break;
-    case 6:
       tmp = &m_styleSpecial;
       break;
+    case 3:
+      tmp = &m_styleGreek;
+      break;
+    case 4:
+      tmp = &m_styleString;
+      break;
+    case 5:
+      tmp = &m_styleNormalText;
+      break;
+    case 6:
+      tmp = &m_styleInput;
+      break;
     case 7:
+      tmp = &m_styleMainPrompt;
+      break;
+    case 8:
+      tmp = &m_styleOtherPrompt;
+      break;
+    case 9:
+      tmp = &m_styleLabel;
+      break;
+    case 10:
+      tmp = &m_styleHiddenText;
+      break;
+    case 11:
       tmp = &m_styleBackground;
       break;
     default:
-      tmp = &m_styleNormalText;
+      tmp = &m_styleVariable;
       break;
   }
   return tmp;
@@ -740,9 +854,8 @@ void Config::UpdateExample()
   wxString color(tmp->color);
 
   wxClientDC dc(label_11);
-  
-  if (tmp == &m_styleBackground ||
-      tmp == &m_styleSpecial)
+
+  if (tmp == &m_styleBackground)
     color = m_styleNormalText.color;
   else if (tmp == &m_styleHiddenText)
     color = m_styleMainPrompt.color;
@@ -776,15 +889,15 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
   int panel_width, panel_height;
   int text_width, text_height;
   int bold = wxNORMAL, italic = wxNORMAL, underlined = 0;
-  
+
   GetClientSize(&panel_width, &panel_height);
-  
+
 #if wxCHECK_VERSION(2, 5, 3)
   dc.SetTextForeground(wxTheColourDatabase->Find(m_fgColor));
 #else
   dc.SetTextForeground(*(wxTheColourDatabase->FindColour(m_fgColor)));
 #endif
-  
+
   if (m_bold)
     bold = wxBOLD;
   if (m_italic)
@@ -793,7 +906,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
     underlined = 1;
   dc.SetFont(wxFont(m_size, wxMODERN, italic, bold, underlined, m_font));
   dc.GetTextExtent(example, &text_width, &text_height);
-  
+
   dc.DrawText(example, (panel_width - text_width)/2,
                        (panel_height - text_height)/2);
 }

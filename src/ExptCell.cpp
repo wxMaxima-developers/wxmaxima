@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ MathCell* ExptCell::Copy(bool all)
   ExptCell* tmp = new ExptCell;
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetPower(m_powCell->Copy(true));
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -73,12 +73,12 @@ void ExptCell::SetPower(MathCell *power)
   if (m_powCell != NULL)
     delete m_powCell;
   m_powCell = power;
-  
+
   if (!m_powCell->IsCompound()) {
     m_open->m_isHidden = true;
     m_close->m_isHidden = true;
   }
-  
+
   m_last2 = power;
   while (m_last2->m_next != NULL)
     m_last2 = m_last2->m_next;
@@ -91,7 +91,7 @@ void ExptCell::SetBase(MathCell *base)
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
-  
+
   m_last1 = base;
   while (m_last1->m_next != NULL)
     m_last1 = m_last1->m_next;
@@ -140,14 +140,14 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     bs.x = point.x;
     bs.y = point.y;
     m_baseCell->Draw(parser, bs, fontsize, true);
-  
+
     pw.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
-                   + m_powCell->GetMaxCenter() +  
+                   + m_powCell->GetMaxCenter() +
                      SCALE_PX((8*fontsize)/10+4, scale);
     m_powCell->Draw(parser, pw, MAX(8, fontsize-3), true);
   }
-  
+
   MathCell::Draw(parser, point, fontsize, all);
 }
 

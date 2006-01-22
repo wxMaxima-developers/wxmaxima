@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -52,20 +52,20 @@ bool MyApp::OnInit()
 {
   wxConfig *config = new wxConfig(wxT("wxMaxima"));
   wxConfig::Set(config);
-  
+
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
-  
+
   wxFileSystem::AddHandler(new wxZipFSHandler);
-  
+
   int x = 40, y = 40, h = 650, w = 950, m = 0;
   int rs = 0, lang = wxLANGUAGE_UNKNOWN;
   int display_width = 1024, display_height = 768;
   bool have_pos;
-  
+
   wxDisplaySize(&display_width, &display_height);
-  
+
   have_pos = config->Read(wxT("pos-x"), &x);
   config->Read(wxT("pos-y"), &y);
   config->Read(wxT("pos-h"), &h);
@@ -73,7 +73,7 @@ bool MyApp::OnInit()
   config->Read(wxT("pos-max"), &m);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("language"), &lang);
-  
+
   if (rs==0)
     have_pos = false;
   if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0) {
@@ -82,7 +82,7 @@ bool MyApp::OnInit()
     h = 650;
     w = 950;
   }
-  
+
   if (lang == wxLANGUAGE_UNKNOWN)
     lang = wxLocale::GetSystemLanguage();
   m_locale.Init(lang);
@@ -91,7 +91,7 @@ bool MyApp::OnInit()
 #endif
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
-  
+
   wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
                                  wxPoint(x, y), wxSize(w, h));
 
@@ -104,6 +104,6 @@ bool MyApp::OnInit()
   frame->InitSession();
   if (!frame->IsIconized())
     frame->ShowTip(false);
-  
+
   return true;
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,11 +30,11 @@ class MathParser {
   public:
     MathParser();
     ~MathParser();
-    MathCell* ParseLine(wxString s, int style = TC_VARIABLE);
+    MathCell* ParseLine(wxString s, int style = MC_TYPE_TEXT);
   private:
     MathCell* ParseTag(xmlNodePtr node, bool all = true);
     MathCell* ParseFracTag(xmlNodePtr node);
-    MathCell* ParseText(xmlNodePtr node, bool symbol = false, bool greek = false);
+    MathCell* ParseText(xmlNodePtr node, int style = TS_NORMAL_TEXT);
     MathCell* ParseSupTag(xmlNodePtr node);
     MathCell* ParseSubTag(xmlNodePtr node);
     MathCell* ParseAbsTag(xmlNodePtr node);

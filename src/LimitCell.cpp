@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ MathCell* LimitCell::Copy(bool all)
   tmp->SetBase(m_base->Copy(true));
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetName(m_name->Copy(true));
-  tmp->m_style = m_style;
+  tmp->m_type = m_type;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(true));
   return tmp;
@@ -95,11 +95,11 @@ void LimitCell::SetUnder(MathCell *under)
 void LimitCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_base->RecalculateWidths(parser, fontsize, true);
   m_under->RecalculateWidths(parser, MAX(7, fontsize-5), true);
   m_name->RecalculateWidths(parser, fontsize, true);
-  
+
   m_width = MAX(m_name->GetFullWidth(scale), m_under->GetFullWidth(scale))
           + m_base->GetFullWidth(scale);
 
@@ -111,11 +111,11 @@ void LimitCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_under->RecalculateSize(parser, MAX(7, fontsize-5), true);
   m_name->RecalculateSize(parser, fontsize, true);
   m_base->RecalculateSize(parser, fontsize, true);
-  
+
   m_center = MAX(m_base->GetMaxCenter(), m_name->GetMaxCenter());
   m_height = m_center + MAX(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
                             m_base->GetMaxDrop());
-  
+
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -124,12 +124,12 @@ void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (DrawThisCell(parser, point)) {
     double scale = parser.GetScale();
     wxPoint base(point), under(point), name(point);
-  
+
     name.x = point.x + MAX(m_name->GetFullWidth(scale),
                            m_under->GetFullWidth(scale))/2 -
                        m_name->GetFullWidth(scale)/2;
     m_name->Draw(parser, name, fontsize, true);
-  
+
     under.x = point.x + MAX(m_name->GetFullWidth(scale),
                             m_under->GetFullWidth(scale))/2 -
                         m_under->GetFullWidth(scale)/2;

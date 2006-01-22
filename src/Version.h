@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef WXMAXIMAVERSION_H
 #define WXMAXIMAVERSION_H
 
-#define WXMAXIMA_VERSION "0.6.4"
-#define WXMAXIMA_DATE "november 2005"
+#define WXMAXIMA_VERSION "0.6.5"
+#define WXMAXIMA_DATE "march 2006"
 
 #endif

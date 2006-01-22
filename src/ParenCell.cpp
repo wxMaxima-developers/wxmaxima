@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2004-2005 Andrej Vodopivec <andrejv@users.sourceforge.net>
+ *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ ParenCell::~ParenCell()
 MathCell* ParenCell::Copy(bool all)
 {
   ParenCell *tmp = new ParenCell;
-  tmp->SetInner(m_innerCell->Copy(true), m_style);
-  tmp->m_style = m_style;
+  tmp->SetInner(m_innerCell->Copy(true), m_type);
+  tmp->m_type = m_type;
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -58,16 +58,16 @@ void ParenCell::Destroy()
   m_next = NULL;
 }
 
-void ParenCell::SetInner(MathCell *inner, int style)
+void ParenCell::SetInner(MathCell *inner, int type)
 {
   if (inner == NULL)
     return;
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
-  m_style = style;
-  
-  
+  m_type = type;
+
+
   m_open->m_nextToDraw = m_innerCell;
   m_open->m_previousToDraw = this;
   while (inner->m_next != NULL)
@@ -80,10 +80,10 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
-  
+
   m_innerCell->RecalculateWidths(parser, fontsize, true);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
-  
+
   m_open->RecalculateWidths(parser, fontsize, false);
   m_close->RecalculateWidths(parser, fontsize, false);
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -95,7 +95,7 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_innerCell->RecalculateSize(parser, fontsize, true);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
-  
+
   m_open->RecalculateSize(parser, fontsize, false);
   m_close->RecalculateSize(parser, fontsize, false);
   MathCell::RecalculateSize(parser, fontsize, all);
@@ -110,7 +110,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.x = point.x + SCALE_PX(6, scale);
     in.y = point.y;
     m_innerCell->Draw(parser, in, fontsize, true);
-  
+
     SetPen(parser);
     // left
     dc.DrawLine(point.x + SCALE_PX(5, scale),
@@ -160,10 +160,10 @@ void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
-  
+
   if (m_innerCell->ContainsRect(rect))
     m_innerCell->SelectRect(rect, first, last);
-  
+
   if (*first == NULL || *last == NULL) {
     *first = this;
     *last = this;
