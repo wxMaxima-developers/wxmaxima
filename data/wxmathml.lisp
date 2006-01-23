@@ -56,6 +56,8 @@
         ((memq 'array (cdar x)) (wxxml-array x l r))
         ;; dispatch for object-oriented wxxml-ifiying
         ((get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
+        ((equal (get (caar x) 'dimension) 'dimension-infix)
+         (wxxml-infix x l r))
         (t (wxxml-function x l r nil))))
 
 (defun string-substitute (newstring oldchar x &aux matchpos)
