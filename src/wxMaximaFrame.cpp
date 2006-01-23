@@ -51,26 +51,42 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                                 wxBitmap(multiline_xpm));
 
   // buttons
-  button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
-  button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
-  button_4 = new wxButton(panel, button_factor, _("Factor"));
-  button_5 = new wxButton(panel, button_expand, _("Expand"));
-  button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
-  button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
-  button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
-  button_9 = new wxButton(panel, button_rectform, _("Rectform"));
-  button_10 = new wxButton(panel, button_sum, _("Sum..."));
-  button_11 = new wxButton(panel, button_product, _("Product..."));
-  button_12 = new wxButton(panel, button_solve, _("Solve..."));
-  button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
-  button_14 = new wxButton(panel, button_diff, _("Diff..."));
-  button_15 = new wxButton(panel, button_integrate, _("Integrate..."));
-  button_16 = new wxButton(panel, button_limit, _("Limit..."));
-  button_17 = new wxButton(panel, button_taylor, _("Series..."));
-  button_18 = new wxButton(panel, button_subst, _("Substitute..."));
-  button_19 = new wxButton(panel, button_map, _("Map..."));
-  button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
-  button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
+  int panelSize = 1;
+  wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
+  if (panelSize == 2) {
+    button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
+    button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
+    button_4 = new wxButton(panel, button_factor, _("Factor"));
+    button_5 = new wxButton(panel, button_expand, _("Expand"));
+    button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
+    button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
+    button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
+    button_9 = new wxButton(panel, button_rectform, _("Rectform"));
+    button_10 = new wxButton(panel, button_sum, _("Sum..."));
+    button_11 = new wxButton(panel, button_product, _("Product..."));
+    button_12 = new wxButton(panel, button_solve, _("Solve..."));
+    button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
+    button_14 = new wxButton(panel, button_diff, _("Diff..."));
+    button_15 = new wxButton(panel, button_integrate, _("Integrate..."));
+    button_16 = new wxButton(panel, button_limit, _("Limit..."));
+    button_17 = new wxButton(panel, button_taylor, _("Series..."));
+    button_18 = new wxButton(panel, button_subst, _("Substitute..."));
+    button_19 = new wxButton(panel, button_map, _("Map..."));
+    button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
+    button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
+  }
+  else if (panelSize == 1) {
+    button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
+    button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
+    button_4 = new wxButton(panel, button_factor, _("Factor"));
+    button_5 = new wxButton(panel, button_expand, _("Expand"));
+    button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
+    button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
+    button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
+    button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
+    button_9 = new wxButton(panel, button_rectform, _("Rectform"));
+    button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
+  }
 
   // console
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
@@ -113,32 +129,60 @@ void wxMaximaFrame::set_properties()
 
 void wxMaximaFrame::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  int panelSize = 1;
+  wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
+
+  wxFlexGridSizer* grid_sizer_1;
+  if (panelSize > 1)
+    grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  else
+    grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
+
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxGridSizer* grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
+
+  wxGridSizer* grid_sizer_2;
+  if (panelSize == 2)
+    grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
+  else
+    grid_sizer_2 = new wxGridSizer(2, 5, 0, 0);
+
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
 
   // buttons
-  grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_10, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_11, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_14, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_15, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_16, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_17, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_18, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
-  grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+  if (panelSize == 2) {
+    grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_10, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_11, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_14, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_15, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_16, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_17, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_18, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+  }
+  else {
+    grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+  }
 
   // input line
   sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
@@ -151,7 +195,9 @@ void wxMaximaFrame::do_layout()
   // all
   grid_sizer_1->Add(m_console, 1, wxALL|wxEXPAND, 0);
   grid_sizer_1->Add(sizer_3, 1, wxALL|wxEXPAND, 0);
-  grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
+
+  if (panelSize > 0)
+    grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
 
   panel->SetAutoLayout(true);
   panel->SetSizer(grid_sizer_1);

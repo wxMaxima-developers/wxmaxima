@@ -38,7 +38,8 @@ enum {
   checkbox_header,
   button_symbol,
   checkbox_symbol,
-  font_family
+  font_family,
+  panel_size
 };
 
 class ExamplePanel : public wxPanel {
@@ -86,6 +87,8 @@ protected:
   wxTextCtrl* m_additionalParameters;
   wxStaticText* label_4;
   wxComboBox* m_language;
+  wxStaticText* label_9;
+  wxComboBox* m_panelSize;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
@@ -121,6 +124,7 @@ protected:
   void OnSymbolBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeColor(wxCommandEvent& event);
+  void OnChangePanelSize(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
   void OnCheckSymbol(wxCommandEvent& event);
   void ReadStyles();

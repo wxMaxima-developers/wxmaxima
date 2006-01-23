@@ -146,9 +146,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     if (parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
                         wxMODERN,
-                        parser.IsItalic(TS_NORMAL_TEXT),
-                        parser.IsBold(TS_NORMAL_TEXT),
-                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.IsItalic(TS_GREEK_CONSTANT),
+                        parser.IsBold(TS_GREEK_CONSTANT),
+                        parser.IsUnderlined(TS_GREEK_CONSTANT),
                         parser.GetSymbolFontName(),
                         parser.GetSymbolFontEncoding()));
     else
@@ -162,9 +162,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     if (parser.HaveSymbolFont())
       dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
                         wxMODERN,
-                        parser.IsItalic(TS_NORMAL_TEXT),
-                        parser.IsBold(TS_NORMAL_TEXT),
-                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.IsItalic(TS_GREEK_CONSTANT),
+                        parser.IsBold(TS_GREEK_CONSTANT),
+                        parser.IsUnderlined(TS_GREEK_CONSTANT),
                         parser.GetSymbolFontName(),
                         parser.GetSymbolFontEncoding()));
     else

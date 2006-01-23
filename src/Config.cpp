@@ -84,6 +84,11 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     _("French"),  _("Italian"), _("Spanish")
   };
   m_language = new wxComboBox(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
+  const wxString m_panelSize_choices[] = {
+    _("Off"), _("Basic"), _("Full")
+  };
+  m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN|wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
@@ -176,6 +181,7 @@ void Config::set_properties()
   bool showHeader = true, fixedFontTC = true;
   int rs=0;
   int lang = wxLANGUAGE_UNKNOWN;
+  int panelSize = 1;
 
   m_fontSize->SetRange(8, 20);
   config->Read(wxT("maxima"), &mp);
@@ -188,6 +194,7 @@ void Config::set_properties()
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
+  config->Read(wxT("panelSize"), &panelSize);
 
   int i=0;
   for (i=0; i<LANGUAGE_NUMBER; i++)
@@ -197,6 +204,8 @@ void Config::set_properties()
     m_language->SetSelection(i);
   else
     m_language->SetSelection(0);
+
+  m_panelSize->SetSelection(panelSize);
 
   if (mp.Length())
     m_maximaProgram->SetValue(mp);
@@ -234,7 +243,8 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
   wxStaticBoxSizer* sizer_6 = new wxStaticBoxSizer(sizer_6_staticbox, wxVERTICAL);
-  wxBoxSizer* sizer_7 = new wxBoxSizer(wxHORIZONTAL);
+  //wxBoxSizer* sizer_7 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(2, 2, 2, 2);
   wxStaticBoxSizer* sizer_4 = new wxStaticBoxSizer(sizer_4_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxStaticBoxSizer* sizer_12 = new wxStaticBoxSizer(sizer_12_staticbox, wxVERTICAL);
@@ -256,9 +266,11 @@ void Config::do_layout()
 
   // TAB 2
   // wxMaxima options box
-  sizer_7->Add(label_4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_7->Add(m_language, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_6->Add(sizer_7, 1, wxEXPAND, 0);
+  grid_sizer_5->Add(label_4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(m_language, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(label_9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(m_panelSize, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
   sizer_6->Add(m_saveSize, 0, wxALL, 3);
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
   sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
@@ -350,6 +362,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
+  config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
@@ -585,9 +598,9 @@ void Config::ReadStyles()
     if (m_styleNormalText.color == colorlist[i])
       break;
   m_styleColor->SetSelection(i);
-  m_boldCB->SetValue(m_styleNormalText.bold);
-  m_italicCB->SetValue(m_styleNormalText.italic);
-  m_underlinedCB->SetValue(m_styleNormalText.underlined);
+  m_boldCB->SetValue(m_styleVariable.bold);
+  m_italicCB->SetValue(m_styleVariable.italic);
+  m_underlinedCB->SetValue(m_styleVariable.underlined);
 }
 
 void Config::WriteStyles()
@@ -799,6 +812,13 @@ void Config::SetupFontList()
     m_fontFamily->Append(strings.Item(i));
 }
 
+void Config::OnChangePanelSize(wxCommandEvent &event)
+{
+  wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
+               _("Configuration warning"),
+               wxOK);
+}
+
 //
 // Should match whatever is put in m_styleFor
 //
@@ -876,6 +896,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(font_family, Config::OnChangeFontFamily)
+  EVT_COMBOBOX(panel_size, Config::OnChangePanelSize)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
