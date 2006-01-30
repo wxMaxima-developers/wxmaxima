@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([wxMaxima], [0.6.5], [andrejv@users.sourceforge.net])
+AC_INIT([wxMaxima], [0.6.4], [andrejv@users.sourceforge.net])
 AC_CONFIG_SRCDIR([src/wxMaxima.h])
 
 AC_CANONICAL_BUILD
@@ -15,7 +15,7 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AM_INIT_AUTOMAKE(wxMaxima, 0.6.5)
+AM_INIT_AUTOMAKE(wxMaxima, 0.6.4)
 
 dnl check for host
 case "$host" in
@@ -144,4 +144,4 @@ AC_CONFIG_FILES([
         data/Makefile
 ])
 
-AC_OUTPUT(wxmaxima.spec)
+AC_OUTPUT(wxmaxima.spec data/Info.plist)

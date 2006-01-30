@@ -88,6 +88,8 @@ bool MyApp::OnInit()
   m_locale.Init(lang);
 #if defined (__WXMSW__)
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
+#elif defined (__WXMAC__)
+  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
 #endif
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));

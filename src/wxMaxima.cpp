@@ -54,6 +54,10 @@ enum {
   maxima_process_id
 };
 
+#if defined (__WXMAC__)
+#define MACPREFIX "wxMaxima.app/Contents/Resources/"
+#endif
+
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent,id,title,pos,size)
@@ -97,6 +101,8 @@ wxMaxima::~wxMaxima()
 void wxMaxima::CheckForPrintingSupport()
 {
 #if defined __WXMSW__
+  m_supportPrinting = true;
+#elif defined __WXMAC__
   m_supportPrinting = true;
 #elif defined wxUSE_LIBGNOMEPRINT
  #if wxUSE_LIBGNOMEPRINT
@@ -703,6 +709,9 @@ void wxMaxima::ShowTip(bool force)
     return;
 #if defined (__WXMSW__)
   wxString tips = wxGetCwd() + wxT("\\data\\tips.txt");
+#elif defined (__WXMAC__)
+  wxString prefix = wxT(MACPREFIX);
+  wxString tips = prefix + wxT("tips.txt");
 #else
   wxString prefix = wxT(PREFIX);
   wxString tips = prefix + wxT("/share/wxMaxima/tips.txt");
@@ -2069,16 +2078,18 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case tb_help:
     {
       wxString filename;
-#ifndef __WXMSW__
+#if defined __WXMSW__
+      filename = wxGetCwd() + wxT("\\data\\");
+#elif defined __WXMAC__
+      filename = wxT(MACPREFIX);
+#else
       filename = wxT(PREFIX);
       filename += wxT("/share/wxMaxima/");
       if (!wxFileExists(filename + wxT("docs.zip")))
       {
         filename = wxT(PREFIX);
         filename += wxT("/share/doc/wxmaxima/");
-      }
-#else
-      filename = wxGetCwd() + wxT("\\data\\");
+      } 
 #endif
       if (!wxFileExists(filename + wxT("intro.zip")) ||
           !wxFileExists(filename + wxT("docs.zip")))
