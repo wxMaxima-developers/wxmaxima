@@ -110,7 +110,9 @@ void wxMaximaFrame::set_properties()
   wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
   if (fixed) {
   // Set font for input line
-#if defined(__WXGTK12__) && !defined(__WXGTK20__)
+#if defined (__WXGTK12__) && !defined (__WXGTK20__)
+    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+#elif defined (__WXMAC__)
     m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
     m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));

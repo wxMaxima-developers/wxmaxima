@@ -37,7 +37,9 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   config->Read(wxT("matchParens"), &m_matchParens);
   config->Read(wxT("fixedFontTC"), &fixedFont);
   if (fixedFont) {
-#if defined(__WXGTK12__) && !defined(__WXGTK20__)
+#if defined (__WXGTK12__) && !defined (__WXGTK20__)
+    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+#elif defined (__WXMAC__)
     SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
     SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
