@@ -21,7 +21,8 @@ wxMaxima.app:
 	mkdir -p wxMaxima.app/Contents/Resources
 	cp data/docs.zip wxMaxima.app/Contents/Resources
 	cp data/intro.zip wxMaxima.app/Contents/Resources
-	Cp data/tips.txt wxMaxima.app/Contents/Resources
+	cp data/tips.txt wxMaxima.app/Contents/Resources
+	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp art/wxmac.icns wxMaxima.app/Contents/Resources
 	cp data/Info.plist wxMaxima.app/Contents
 	cp data/PkgInfo wxMaxima.app/Contents

@@ -536,6 +536,11 @@ void wxMaxima::SetupVariables()
   cwd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"),
              false, false, false);
+#elif defined (__WXMAC__)
+  wxString cwd = wxGetCwd();
+  cwd = cwd + wxT("/") + wxT(MACPREFIX);
+  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"),
+	     false, false, false);
 #else
   wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
