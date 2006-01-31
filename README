@@ -71,6 +71,19 @@ dependencies), which can also be found at the web-page. In Dev-CPP create a new
 wxWidgets project, add libxml2 and other required libraries to the project and
 import all the sources of wxMaxima.
 
+** MacOS
+
+Support for MacOS is experimental. To build wxMaxima first make sure you have
+libxml2 and wxWidgets (it is possible that the static build is required) 
+installed on your system. Then build wxMaxima with
+
+  ./configure --with-wx-config=<path to your wx-config>
+  make
+  make wxMaxima.app
+
+This should create a working wxMaxima.app. This has been tested with wxWidgets
+version 2.6.2.
+
 ** Building from CVS (Linux)
 
 To build wxMaxima from CVS, first checkout the CVS tree. For details see
