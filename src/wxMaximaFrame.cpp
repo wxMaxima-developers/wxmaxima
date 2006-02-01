@@ -80,11 +80,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
     button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
     button_4 = new wxButton(panel, button_factor, _("Factor"));
     button_5 = new wxButton(panel, button_expand, _("Expand"));
+    button_12 = new wxButton(panel, button_solve, _("Solve..."));
     button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
     button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
     button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
     button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
     button_9 = new wxButton(panel, button_rectform, _("Rectform"));
+    button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
     button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
   }
 
@@ -146,7 +148,7 @@ void wxMaximaFrame::do_layout()
   if (panelSize == 2)
     grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
   else
-    grid_sizer_2 = new wxGridSizer(2, 5, 0, 0);
+    grid_sizer_2 = new wxGridSizer(2, 6, 0, 0);
 
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
 
@@ -178,11 +180,13 @@ void wxMaximaFrame::do_layout()
     grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
+    grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
     grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
   }
 
@@ -331,6 +335,8 @@ void wxMaximaFrame::SetupMenu()
   wxMenu* wxglade_tmp_menu_3 = new wxMenu();
   wxglade_tmp_menu_3->Append(menu_solve, _("&Solve ..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
+  wxglade_tmp_menu_3->Append(menu_solve_num, _("Solve &numerically ..."),
+                             _("Find a root of an equation on an interval"), wxITEM_NORMAL);
   wxglade_tmp_menu_3->Append(menu_allroots, _("Roots of &polynomial"),
                              _("Find all roots of a polynomial"),
                              wxITEM_NORMAL);
