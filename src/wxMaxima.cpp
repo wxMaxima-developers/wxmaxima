@@ -1300,6 +1300,25 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
+  case menu_solve_num:
+    {
+      if (expr.StartsWith(wxT("%")))
+        expr = wxT("''(") + expr + wxT(")");
+      Gen4Wiz *wiz = new Gen4Wiz(_("Solve equation:"), _("in variable:"),
+                                 _("lower bound:"), _("upper bound:"),
+                                 expr, wxT("x"), wxT("-1"), wxT("1"),
+                                 this, -1, _("Solve numerically"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
+              wiz->GetValue2() + wxT(", ") +
+              wiz->GetValue3() + wxT(", ") +
+              wiz->GetValue4() + wxT(");");
+        SendMaxima(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
   case button_solve_ode:
   case menu_solve_ode:
     {
@@ -2094,7 +2113,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       {
         filename = wxT(PREFIX);
         filename += wxT("/share/doc/wxmaxima/");
-      } 
+      }
 #endif
       if (!wxFileExists(filename + wxT("intro.zip")) ||
           !wxFileExists(filename + wxT("docs.zip")))
@@ -2256,6 +2275,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_allroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_realroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve, wxMaxima::EquationsMenu)
+  EVT_MENU(menu_solve_num, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve_ode, wxMaxima::EquationsMenu)
   EVT_MENU(menu_map_mat, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_enter_mat, wxMaxima::AlgebraMenu)
