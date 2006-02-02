@@ -741,7 +741,7 @@ void wxMaxima::ShowTip(bool force)
 void wxMaxima::PrintMenu(wxCommandEvent& event)
 {
   switch(event.GetId()) {
-    case menu_print:
+    case wxID_PRINT:
     case tb_print:
     {
       wxPrintDialogData printDialogData(*m_printData);
@@ -776,9 +776,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   if (m_console->GetTree()!=NULL && m_supportPrinting)
-    menubar->Enable(menu_print, true);
+    menubar->Enable(wxID_PRINT, true);
   else
-    menubar->Enable(menu_print, false);
+    menubar->Enable(wxID_PRINT, false);
   int fontSize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
   if (fontSize<20)
@@ -1066,7 +1066,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_exit_id:
+  case wxID_EXIT:
     Close();
     break;
   default:
@@ -1077,7 +1077,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
   switch (event.GetId()) {
-  case menu_options_id:
+  case wxID_PREFERENCES:
   case tb_pref:
     {
       Config *configW = new Config(this,-1, _("Maxima configuration"));
@@ -2085,7 +2085,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId()) {
-  case menu_about_id:
+  case wxID_ABOUT:
     wxMessageBox(wxString::Format(
                  _("wxMaxima is a wxWidgets interface for the\n"
                    "computer algebra system MAXIMA.\n"
@@ -2098,7 +2098,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
                  wxT("http://maxima.sourceforge.net/")),
                  _("About wxMaxima"), wxOK|wxICON_INFORMATION);
     break;
-  case menu_help_id:
+  case wxID_HELP:
   case tb_help:
     {
       wxString filename;
@@ -2231,8 +2231,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(button_enter, wxMaxima::EnterCommand)
   EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_restart_id, wxMaxima::MaximaMenu)
-  EVT_MENU(menu_exit_id, wxMaxima::FileMenu)
-  EVT_MENU(menu_about_id, wxMaxima::HelpMenu)
+  EVT_MENU(wxID_EXIT, wxMaxima::FileMenu)
+  EVT_MENU(wxID_ABOUT, wxMaxima::HelpMenu)
   EVT_MENU(menu_save_id, wxMaxima::FileMenu)
   EVT_MENU(menu_load_id, wxMaxima::FileMenu)
   EVT_MENU(menu_monitor_file, wxMaxima::OnMonitorFile)
@@ -2240,10 +2240,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_select_file, wxMaxima::FileMenu)
   EVT_MENU(menu_functions, wxMaxima::MaximaMenu)
   EVT_MENU(menu_variables, wxMaxima::MaximaMenu)
-  EVT_MENU(menu_options_id, wxMaxima::EditMenu)
+  EVT_MENU(wxID_PREFERENCES, wxMaxima::EditMenu)
   EVT_MENU(menu_sconsole_id, wxMaxima::FileMenu)
   EVT_MENU(menu_export_html, wxMaxima::FileMenu)
-  EVT_MENU(menu_help_id, wxMaxima::HelpMenu)
+  EVT_MENU(wxID_HELP, wxMaxima::HelpMenu)
   EVT_MENU(menu_bug_report, wxMaxima::HelpMenu)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
@@ -2287,6 +2287,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_clear_fun, wxMaxima::MaximaMenu)
   EVT_MENU(menu_ivp_1, wxMaxima::EquationsMenu)
   EVT_MENU(menu_ivp_2, wxMaxima::EquationsMenu)
+  EVT_MENU(menu_bvp, wxMaxima::EquationsMenu)
   EVT_MENU(menu_bvp, wxMaxima::EquationsMenu)
   EVT_MENU(menu_fun_def, wxMaxima::MaximaMenu)
   EVT_MENU(menu_describe, wxMaxima::HelpMenu)
@@ -2341,7 +2342,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_goto_input, wxMaxima::MaximaMenu)
-  EVT_MENU(menu_print, wxMaxima::PrintMenu)
+  EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
   EVT_MENU(menu_inc_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
@@ -2362,7 +2363,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_lb_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_inc_fontsize, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_dec_fontsize, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_print, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)

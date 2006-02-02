@@ -255,10 +255,10 @@ void wxMaximaFrame::SetupMenu()
                              _("Autoload a file when it is updated"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_1->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_print, _("&Print\tCtrl-P"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
   wxglade_tmp_menu_1->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_exit_id, _("E&xit\tCtrl-Q"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_EXIT, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
   frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
 
@@ -294,7 +294,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Set focus to the input line"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_options_id, _("C&onfigure"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
 
@@ -580,7 +580,7 @@ void wxMaximaFrame::SetupMenu()
 
   // Help menu
   wxMenu* wxglade_tmp_menu_7 = new wxMenu();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_help_id, _("Maxima &help\tF1"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("Maxima &help\tF1"),
                    _("Show maxima help"), wxT("gtk-help"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_describe, _("&Describe\tCtrl-H"),
                    _("Show the description of a command"),wxT("gtk-help"));
@@ -598,7 +598,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug report"),
                              _("Report bug"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_about_id, _("About"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_ABOUT, _("About"),
                    _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
 
