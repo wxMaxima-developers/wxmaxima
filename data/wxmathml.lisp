@@ -674,6 +674,7 @@
         (%log "<v>log</v>")
         (%max "<v>max</v>")
         (%min "<v>min</v>")
+        ($min "<v>min</v>")
         ($psi "<v>psi</v>")
         (%sec "<v>sec</v>")
         (%sech "<v>sech</v>")
