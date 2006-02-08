@@ -357,6 +357,8 @@ void Plot2DWiz::OnButton(wxCommandEvent& event)
     if (((text_ctrl_1->GetValue()).Strip()).Length())
       text_ctrl_1->AppendText(wxT(", "));
     text_ctrl_1->AppendText(wiz->GetValue());
+    if (text_ctrl_8->GetValue() == 10)
+      text_ctrl_8->SetValue(300);
   }
 }
 
