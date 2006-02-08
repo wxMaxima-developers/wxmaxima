@@ -172,6 +172,7 @@ MathCell* MathParser::ParseText(xmlNodePtr node, int style)
     cell->SetValue(wxString(str));
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);
+    cell->SetHighlight(m_highlight);
   }
   return cell;
 }
@@ -475,6 +476,16 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         else
           cell->AppendCell(tmp);
       }
+      else if (tagName == wxT("hl")) {
+        bool highlight = m_highlight;
+        m_highlight = true;
+        MathCell* tmp = ParseTag(node->children);
+        m_highlight = highlight;
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
       else if (tagName == wxT("prompt")) {
         int oldPS = m_ParserStyle;
         m_ParserStyle = MC_TYPE_MAIN_PROMPT;
@@ -525,6 +536,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 {
   m_ParserStyle = style;
   m_FracStyle = FC_NORMAL;
+  m_highlight = false;
   MathCell* cell = NULL;
 
   wxConfigBase* config = wxConfig::Get();

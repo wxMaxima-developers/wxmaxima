@@ -41,7 +41,8 @@ enum {
   TS_NUMBER           = 7,
   TS_STRING           = 8,
   TS_GREEK_CONSTANT   = 9,
-  TS_VARIABLES        = 10
+  TS_VARIABLES        = 10,
+  TS_HIGHLIGHT        = 11
 };
 
 #endif

@@ -118,7 +118,7 @@ protected:
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
         m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
         m_styleBackground, m_styleNumber, m_styleString, m_styleGreek,
-        m_styleVariable;
+        m_styleVariable, m_styleHighlight;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
   void OnSymbolBrowse(wxCommandEvent& event);

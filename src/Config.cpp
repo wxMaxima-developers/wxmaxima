@@ -109,10 +109,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_styleFor_choices[] = {
     _("Variables"), _("Numbers"),  _("Special constants"), _("Greek constants"),
     _("Strings"), _("Text"), _("Input"), _("Main prompts"),
-    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Background")
+    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highilight"), _("Background")
 
   };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 12, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 13, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
   const wxString m_styleColor_choices[] = {
     _("aquamarine"), _("black"), _("blue"), _("blue violet"),
     _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
@@ -440,6 +440,10 @@ void Config::ReadStyles()
   config->Read(wxT("Style/Background/color"),
                &m_styleBackground.color);
 
+  m_styleHighlight.color = wxT("red");
+  config->Read(wxT("Style/Highlight/color"),
+               &m_styleHighlight.color);
+
   // Normal text
   m_styleNormalText.color = wxT("black");
   m_styleNormalText.bold = false;
@@ -609,6 +613,8 @@ void Config::WriteStyles()
 
   config->Write(wxT("Style/Background/color"),
                 m_styleBackground.color);
+  config->Write(wxT("Style/Highlight/color"),
+                m_styleHighlight.color);
 
   config->Write(wxT("Style/fontname"), m_fontFamily->GetValue());
 
@@ -755,7 +761,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
       m_styleColor->SetSelection(i);
   }
 
-  if (st == 11) {
+  if (st == 11 || st == 12) {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
     m_underlinedCB->Enable(false);
@@ -858,6 +864,9 @@ style* Config::GetStylePointer()
       tmp = &m_styleHiddenText;
       break;
     case 11:
+      tmp = &m_styleHighlight;
+      break;
+    case 12:
       tmp = &m_styleBackground;
       break;
     default:

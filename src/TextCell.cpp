@@ -25,6 +25,7 @@ TextCell::TextCell() : MathCell()
   m_text = wxEmptyString;
   m_fontSize = -1;
   m_textStyle = TS_NORMAL_TEXT;
+  m_highlight = false;
 }
 
 TextCell::TextCell(wxString text) : MathCell()
@@ -32,6 +33,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_text = text;
   m_textStyle = TS_NORMAL_TEXT;
   m_text.Replace(wxT("\n"), wxEmptyString);
+  m_highlight = false;
 }
 
 TextCell::~TextCell()
@@ -56,6 +58,7 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_bigSkip = m_bigSkip;
   tmp->m_isHidden = m_isHidden;
   tmp->m_textStyle = m_textStyle;
+  tmp->m_highlight = m_highlight;
   if (all && m_next!=NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -210,6 +213,10 @@ void TextCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
 #if wxCHECK_VERSION(2, 5, 3)
+  if (m_highlight) {
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
+    return;
+  }
   switch(m_type) {
     case MC_TYPE_PROMPT:
       dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
@@ -231,6 +238,10 @@ void TextCell::SetForeground(CellParser& parser)
       break;
   }
 #else
+  if (m_highlight) {
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_HIGHLIGHT))));
+    return;
+  }
   switch(m_type) {
     case MC_TYPE_PROMPT:
       dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));

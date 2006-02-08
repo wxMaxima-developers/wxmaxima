@@ -56,7 +56,7 @@ class CellParser {
     int m_symbolFontAdj;
     bool m_haveSymbolFont;
     bool m_forceUpdate;
-    style m_styles[11];
+    style m_styles[12];
 };
 
 #endif

@@ -52,6 +52,7 @@ class MathParser {
     wxString ToLocal(wxString s);
     int m_ParserStyle;
     int m_FracStyle;
+    bool m_highlight;
 };
 
 #endif	//_MATHPARSER_H_
