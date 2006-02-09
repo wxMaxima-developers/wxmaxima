@@ -135,6 +135,7 @@ MathCell* MathParser::ParseAtTag(xmlNodePtr node)
   xmlNodePtr child = node->children;
   if (child) {
     at->SetBase(ParseTag(child, false));
+    at->SetHighlight(m_highlight);
     child = child->next;
     if (child) {
       at->SetIndex(ParseTag(child, false));
@@ -183,6 +184,7 @@ MathCell* MathParser::ParseSqrtTag(xmlNodePtr node)
   SqrtCell* cell = new SqrtCell;
   cell->SetInner(ParseTag(child, true));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   return cell;
 }
 
@@ -192,6 +194,7 @@ MathCell* MathParser::ParseAbsTag(xmlNodePtr node)
   AbsCell* cell = new AbsCell;
   cell->SetInner(ParseTag(child, true));
   cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   return cell;
 }
 
@@ -200,6 +203,7 @@ MathCell* MathParser::ParseParenTag(xmlNodePtr node)
   xmlNodePtr child = node->children;
   ParenCell* cell = new ParenCell;
   cell->SetInner(ParseTag(child, true), m_ParserStyle);
+  cell->SetHighlight(m_highlight);
   if (node->properties != NULL)
     cell->SetPrint(false);
   return cell;
@@ -232,6 +236,7 @@ MathCell* MathParser::ParseSumTag(xmlNodePtr node)
   xmlNodePtr child = node->children;
   if (node->properties != NULL)
     sum->SetSumStyle(SM_PROD);
+  sum->SetHighlight(m_highlight);
   if (child) {
     sum->SetUnder(ParseTag(child, false));
     child = child->next;
@@ -253,6 +258,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
 {
   IntCell *in = new IntCell;
   xmlNodePtr child = node->children;
+  in->SetHighlight(m_highlight);
   if (node->properties == NULL) {
     in->SetIntStyle(INT_DEF);
     if (child) {
@@ -291,6 +297,7 @@ MathCell* MathParser::ParseIntTag(xmlNodePtr node)
 MathCell* MathParser::ParseTableTag(xmlNodePtr node)
 {
   MatrCell *matrix = new MatrCell;
+  matrix->SetHighlight(m_highlight);
   xmlNodePtr rows = node->children;
   while (rows) {
     matrix->NewRow();

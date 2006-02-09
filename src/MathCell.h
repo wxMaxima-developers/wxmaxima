@@ -96,6 +96,7 @@ class MathCell
     bool m_isFolded;
     bool m_isBroken;
     bool m_isHidden;
+    void SetHighlight(bool highlight) { m_highlight = highlight; }
     virtual void SetExponentFlag() { };
     virtual void Fold(bool fold) { };
     virtual bool IsShortNum() { return false; };
@@ -113,6 +114,7 @@ class MathCell
     bool m_breakPage;
     bool m_breakLine;
     bool m_forceBreakLine;
+    bool m_highlight;
 };
 
 #endif	//_MATHCELL_H_

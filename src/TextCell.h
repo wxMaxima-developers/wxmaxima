@@ -41,7 +41,6 @@ class TextCell : public MathCell
     wxString GetDiffPart();
     bool IsOperator();
     void SetStyle(int style) { m_textStyle = style; }
-    void SetHighlight(bool highlight) { m_highlight = highlight; }
     int GetStyle() { return m_textStyle; }
     wxString GetGreekString(CellParser& parser);
 #if defined __WXGTK20__
@@ -55,7 +54,6 @@ class TextCell : public MathCell
     wxString m_text;
     int m_fontSize;
     int m_textStyle;
-    bool m_highlight;
 };
 
 

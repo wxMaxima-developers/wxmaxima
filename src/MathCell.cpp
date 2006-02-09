@@ -39,6 +39,7 @@ MathCell::MathCell()
   m_isFolded = false;
   m_isHidden = false;
   m_isBroken = false;
+  m_highlight = false;
   m_type = MC_TYPE_TEXT;
 }
 
@@ -375,7 +376,10 @@ void MathCell::Unbreak(bool all)
 void MathCell::SetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  if (m_type == MC_TYPE_PROMPT)
+  if (m_highlight)
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_HIGHLIGHT),
+                                              1, wxSOLID)));
+  else if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
                                               1, wxSOLID)));
   else if (m_type == MC_TYPE_INPUT)
@@ -389,7 +393,7 @@ void MathCell::SetPen(CellParser& parser)
 void MathCell::UnsetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT)
+  if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_NORMAL_TEXT),
                                               1, wxSOLID)));
 }
