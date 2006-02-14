@@ -39,7 +39,8 @@ enum {
   button_symbol,
   checkbox_symbol,
   font_family,
-  panel_size
+  panel_size,
+  language_id
 };
 
 class ExamplePanel : public wxPanel {
@@ -124,7 +125,7 @@ protected:
   void OnSymbolBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeColor(wxCommandEvent& event);
-  void OnChangePanelSize(wxCommandEvent& event);
+  void OnChangeWarning(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
   void OnCheckSymbol(wxCommandEvent& event);
   void ReadStyles();

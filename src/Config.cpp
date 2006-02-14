@@ -83,7 +83,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     _("(Use default language)"), _("English"),
     _("French"),  _("Italian"), _("Spanish")
   };
-  m_language = new wxComboBox(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 5, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
   label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
   const wxString m_panelSize_choices[] = {
     _("Off"), _("Basic"), _("Full")
@@ -382,10 +382,17 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString dd;
   config->Read(wxT("maxima"), &dd);
+#if defined __WXMSW__
   wxString file = wxFileSelector(_("Select maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
                                  wxEmptyString, _("Bat files (*.bat)|*.bat|All|*"),
                                  wxOPEN);
+#else
+  wxString file = wxFileSelector(_("Select maxima program"),
+                                 wxPathOnly(dd), wxFileNameFromPath(dd),
+                                 wxEmptyString, _("All|*"),
+                                 wxOPEN);
+#endif
   if (file.Length()) {
     m_maximaProgram->SetValue(file);
   }
@@ -818,7 +825,7 @@ void Config::SetupFontList()
     m_fontFamily->Append(strings.Item(i));
 }
 
-void Config::OnChangePanelSize(wxCommandEvent &event)
+void Config::OnChangeWarning(wxCommandEvent &event)
 {
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
@@ -905,7 +912,8 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(font_family, Config::OnChangeFontFamily)
-  EVT_COMBOBOX(panel_size, Config::OnChangePanelSize)
+  EVT_COMBOBOX(language_id, Config::OnChangeWarning)
+  EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
