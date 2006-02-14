@@ -53,6 +53,7 @@ MathCell* MathParser::ParseFracTag(xmlNodePtr node)
 {
   FracCell *frac = new FracCell;
   frac->SetFracStyle(m_FracStyle);
+  frac->SetHighlight(m_highlight);
   xmlNodePtr child = node->children;
   if (child) {
     frac->SetNum(ParseTag(child, false));
