@@ -874,9 +874,13 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
   wxArrayString out;
   wxConfig::Get()->Read(wxT("maxima"), &maxima);
   wxFileName::SplitPath(maxima, &path, NULL, NULL);
-  wxString command = wxT("\"") + path;
-  command += wxString::Format(wxT("\\winkill\" -INT %ld"), m_pid);
-  wxExecute(command, out);
+  wxString command = wxT("\"") + path + wxT("\\winkill\"");
+  if (wxFileExists(command)) {
+    command += wxString::Format(wxT("\\winkill\" -INT %ld"), m_pid);
+    wxExecute(command, out);
+  }
+  else
+    wxProcess::Kill(m_pid, wxSIGTERM);
 #else
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
