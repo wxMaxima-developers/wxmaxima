@@ -216,7 +216,7 @@
 
 ;;(defun mathml-bigfloat (x l r) (declare (ignore l r)) (fpformat x))
 (defun wxxml-bigfloat (x l r)
-   (append l (fpformat x) r))
+   (append l '("<n>") (fpformat x) '("</n>") r))
 
 (defprop mprog  "<t>block</t>" wxxmlword)
 (defprop %erf   "<t>erf</t>"   wxxmlword)
@@ -239,6 +239,14 @@
 
 (defprop mabs wxxml-matchfix wxxml)
 (defprop mabs (("<a>")"</a>") wxxmlsym)
+
+(defprop mbox wxxml-mbox wxxml)
+(defprop mlabox wxxml-mbox wxxml)
+
+(defun wxxml-mbox (x l r)
+  (setq l (wxxml (cadr x) (append l '("<hl>")) nil 'mparen 'mparen)
+        r (append '("</hl>") r))
+  (append l r))
 
 (defprop mqapply wxxml-mqapply wxxml)
 
