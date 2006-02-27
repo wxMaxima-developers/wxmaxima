@@ -305,8 +305,8 @@ void wxMaximaFrame::SetupMenu()
                    _("Interrupt current computation"), wxT("gtk-stop"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_restart_id,
                    _("&Restart maxima"), _("Restart maxima"), wxT("gtk-refresh"));
-  wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Soft restart"),
-                             _("Restart maxima (softly)"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Clear memory"),
+                             _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &path"),
                    _("Add a directory to search path"),wxT("gtk-add"));
   wxglade_tmp_menu_2->AppendSeparator();
@@ -544,7 +544,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_5->Append(menu_nouns, _("Evaluate &noun forms"),
                              _("Evaluate all noun forms in expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &algebraic"),
+  wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &algebraic flag"),
                              _("Toggle algebraic computation"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality"),
                              _("Add equality to the rational simplifier"),
