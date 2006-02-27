@@ -33,6 +33,8 @@ wxMaxima.app:
 	cp locales/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima.mo
 	cp locales/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima.mo
 	cp locales/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima.mo
+	cp locales/de.mo wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES/wxMaxima.mo
 	cp locales/wxwin/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima-wxstd.mo
+	cp locales/wxwin/de.mo wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES/wxMaxima-wxstd.mo
