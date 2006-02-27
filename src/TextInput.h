@@ -27,8 +27,8 @@
 
 class TextInput: public wxDialog {
  public:
-  TextInput(wxWindow* parent, int id, const wxString& title, bool setfont=true,
-            const wxPoint& pos=wxDefaultPosition,
+  TextInput(wxWindow* parent, int id=-1, const wxString& title=wxT(""),
+            bool setfont=true, const wxPoint& pos=wxDefaultPosition,
             const wxSize& size=wxDefaultSize,
             long style=wxDEFAULT_DIALOG_STYLE);
   wxString GetValue();

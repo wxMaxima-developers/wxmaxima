@@ -874,13 +874,9 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
   wxArrayString out;
   wxConfig::Get()->Read(wxT("maxima"), &maxima);
   wxFileName::SplitPath(maxima, &path, NULL, NULL);
-  wxString command = wxT("\"") + path + wxT("\\winkill\"");
-  if (wxFileExists(command)) {
-    command += wxString::Format(wxT("\\winkill\" -INT %ld"), m_pid);
-    wxExecute(command, out);
-  }
-  else
-    wxProcess::Kill(m_pid, wxSIGTERM);
+  wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
+  command += wxString::Format(wxT(" -INT %ld"), m_pid);
+  wxExecute(command, out);
 #else
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
@@ -1253,7 +1249,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case button_long_input:
     {
-      TextInput *wiz = new TextInput(this, -1, _("Text input"));
+      TextInput *wiz = new TextInput(this);
       if (expr.StartsWith(wxT("<ml>"))) {
         expr = expr.SubString(4, expr.Length());
         expr.Replace(wxT("<nl>"), wxT("\n"));
@@ -1737,7 +1733,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
     break;
   case menu_tellrat:
     cmd = GetTextFromUser(_("Enter an equation for rational simplification:"),
-                          _("Ratsimp"), wxEmptyString, this);
+                          _("Tellrat"), wxEmptyString, this);
     if (cmd.Length()) {
       cmd = wxT("tellrat(") + cmd + wxT(");");
       SendMaxima(cmd);
