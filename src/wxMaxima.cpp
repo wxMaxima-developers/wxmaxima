@@ -1080,7 +1080,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case wxID_PREFERENCES:
   case tb_pref:
     {
-      Config *configW = new Config(this,-1, _("Maxima configuration"));
+      Config *configW = new Config(this,-1, _("wxMaxima configuration"));
       configW->Centre(wxBOTH);
       if (configW->ShowModal() == wxID_OK) {
         bool match = true;
@@ -1965,20 +1965,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
-  case menu_unsum:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Unsum expression:"), _("by variable:"),
-                                 expr, wxT("n"),
-                                 this, -1, _("Unsum"));
-      wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK) {
-        cmd = wxT("unsum(") + wiz->GetValue1() + wxT(", ")
-          + wiz->GetValue2() + wxT(");");
-        SendMaxima(cmd);
-      }
-      wiz->Destroy();
-    }
-    break;
   case button_product:
   case menu_product:
     {
@@ -2313,7 +2299,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_solve_de, wxMaxima::EquationsMenu)
   EVT_MENU(menu_atvalue, wxMaxima::EquationsMenu)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
-  EVT_MENU(menu_unsum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_product, wxMaxima::CalculusMenu)
   EVT_MENU(menu_change_var, wxMaxima::CalculusMenu)
   EVT_MENU(menu_make_list, wxMaxima::AlgebraMenu)

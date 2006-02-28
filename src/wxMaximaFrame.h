@@ -110,7 +110,6 @@ enum {
   menu_example,
   menu_apropos,
   menu_product,
-  menu_unsum,
   menu_make_list,
   menu_apply,
   menu_time,

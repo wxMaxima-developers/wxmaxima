@@ -435,9 +435,6 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_sum, _("Calculate su&m ..."),
                              _("Calculate sums"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_unsum, _("U&nsum expression ..."),
-                             _("What has to be summed to get this result"),
-                             wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_product, _("Calculate &product ..."),
                              _("Calculate products"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_laplace, _("Laplace &transform ..."),
@@ -513,8 +510,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_5_sub2->Append(menu_trigexpand, _("&Expand trigonometric"),
                              _("Expand trigonometric expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("R&ationalize trigonometric"),
-                             _("Rationalize trigonometrix expression"),
+  wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("&Canonical form"),
+                             _("Convert trigonometric expression to canonical qausilinear form"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Trigonometric simplification"),
                              wxglade_tmp_menu_5_sub2,
@@ -545,7 +542,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Evaluate all noun forms in expression"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &algebraic flag"),
-                             _("Toggle algebraic computation"), wxITEM_NORMAL);
+                             _("Toggle algebraic flag"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality"),
                              _("Add equality to the rational simplifier"),
                              wxITEM_NORMAL);
