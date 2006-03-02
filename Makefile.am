@@ -30,6 +30,7 @@ wxMaxima.app:
 	mkdir -p wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES
+	mkdir -p wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES
 	cp locales/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima.mo
 	cp locales/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima.mo
 	cp locales/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima.mo
