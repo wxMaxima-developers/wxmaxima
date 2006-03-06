@@ -117,6 +117,7 @@ enum {
   menu_factcomb,
   menu_realpart,
   menu_imagpart,
+  menu_subst,
   button_factor_id,
   button_solve,
   button_solve_ode,
@@ -178,7 +179,6 @@ enum {
   tb_pref,
   tb_interrupt,
   tb_help,
-  tb_batch,
   menu_create_batch
 };
 

@@ -538,12 +538,15 @@ void wxMaximaFrame::SetupMenu()
                              wxglade_tmp_menu_5_sub3,
                              _("Functions for complex simplification"));
   wxglade_tmp_menu_5->AppendSeparator();
+  wxglade_tmp_menu_5->Append(menu_subst, _("Substitute ..."),
+                             _("Make substitution in expression"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_nouns, _("Evaluate &noun forms"),
                              _("Evaluate all noun forms in expression"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &algebraic flag"),
                              _("Toggle algebraic flag"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality"),
+  wxglade_tmp_menu_5->Append(menu_tellrat, _("Add algebraic e&quality ..."),
                              _("Add equality to the rational simplifier"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_modulus, _("&Modulus computation ..."),
