@@ -86,7 +86,9 @@ bool MyApp::OnInit()
   if (lang == wxLANGUAGE_UNKNOWN)
     lang = wxLocale::GetSystemLanguage();
   m_locale.Init(lang);
+
 #if defined (__WXMSW__)
+  wxSetEnv(wxT("LANG"), m_locale.GetName());
   wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
 #elif defined (__WXMAC__)
