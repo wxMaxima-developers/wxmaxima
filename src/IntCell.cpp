@@ -198,10 +198,10 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       sign.y += SCALE_PX(3, scale);
     // top decoration
     dc.DrawLine(sign.x + m_signMiddle,
-                sign.y - (m_signSize+1)/2 + SCALE_PX(9, scale) - 1,
-                sign.x + m_signMiddle + SCALE_PX(2, scale),
+                sign.y - (m_signSize+1)/2 + SCALE_PX(12, scale) - 1,
+                sign.x + m_signMiddle + SCALE_PX(3, scale),
                 sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale));
-    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(2, scale),
+    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(3, scale),
                 sign.y - (m_signSize+1)/2 + SCALE_PX(3, scale),
                 sign.x + m_signMiddle + SCALE_PX(6, scale),
                 sign.y - (m_signSize+1)/2);
@@ -212,11 +212,11 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     // bottom decoration
     dc.DrawLine(sign.x + m_signMiddle,
-                sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1,
+                sign.y + (m_signSize+1)/2 - SCALE_PX(12, scale) + 1,
                 sign.x + m_signMiddle - SCALE_PX(3, scale),
-                sign.y + (m_signSize+1)/2 - SCALE_PX(2, scale));
+                sign.y + (m_signSize+1)/2 - SCALE_PX(3, scale));
     dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(3, scale),
-                sign.y + (m_signSize+1)/2 - SCALE_PX(2, scale),
+                sign.y + (m_signSize+1)/2 - SCALE_PX(3, scale),
                 sign.x + m_signMiddle - SCALE_PX(6, scale),
                 sign.y + (m_signSize+1)/2);
     dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(6, scale),
@@ -226,9 +226,9 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     // line
     dc.DrawLine(sign.x + m_signMiddle,
-                sign.y - (m_signSize+1)/2 + SCALE_PX(9, scale) - 1,
+                sign.y - (m_signSize+1)/2 + SCALE_PX(12, scale) - 1,
                 sign.x + m_signMiddle,
-                sign.y + (m_signSize+1)/2 - SCALE_PX(9, scale) + 1);
+                sign.y + (m_signSize+1)/2 - SCALE_PX(12, scale) + 1);
     UnsetPen(parser);
 
     base.x += m_signWidth - SCALE_PX(6, scale);
