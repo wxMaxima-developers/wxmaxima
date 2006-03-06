@@ -87,6 +87,7 @@ bool MyApp::OnInit()
     lang = wxLocale::GetSystemLanguage();
   m_locale.Init(lang);
 #if defined (__WXMSW__)
+  wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
 #elif defined (__WXMAC__)
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
@@ -103,6 +104,8 @@ bool MyApp::OnInit()
     frame->Maximize(true);
 
   frame->Show(true);
+  if (argc == 2)
+    frame->SetOpenFile(wxString(argv[1]));
   frame->InitSession();
   if (!frame->IsIconized())
     frame->ShowTip(false);

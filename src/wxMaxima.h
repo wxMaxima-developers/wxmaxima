@@ -44,6 +44,7 @@ class wxMaxima : public wxMaximaFrame
   ~wxMaxima();
   void ShowTip(bool force);
   void InitSession();
+  void SetOpenFile(wxString file) {m_openFile = file; }
   void SendMaxima(wxString s, bool clear=true, bool out=true,
                   bool silent=true);               // sends input to maxima
  protected:
@@ -92,6 +93,8 @@ class wxMaxima : public wxMaximaFrame
   void ReadPrompt();                 // reads prompts
   void ReadMath();                   // reads output other than prompts
   void ReadLispError();              // lisp errors (no prompt prefix/suffix)
+  void OpenFile(wxString file,
+                wxString command=wxEmptyString);      // Open a file
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
 #endif
@@ -123,6 +126,7 @@ class wxMaxima : public wxMaximaFrame
   wxPrintData* m_printData;
   bool m_supportPrinting;
   bool m_closing;
+  wxString m_openFile;
   DECLARE_EVENT_TABLE()
 };
 

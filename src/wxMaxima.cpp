@@ -88,6 +88,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
   m_inputLine->SetFocus();
   m_closing = false;
+  m_openFile = wxEmptyString;
 }
 
 
@@ -409,6 +410,10 @@ void wxMaxima::ReadFirstPrompt()
   m_first = false;
   m_inLispMode = false;
   SetStatusText(_("Ready for user input"), 1);
+  if (m_openFile.Length()) {
+    OpenFile(m_openFile);
+    m_openFile = wxEmptyString;
+  }
   m_currentOutput = wxEmptyString;
 }
 
@@ -895,6 +900,23 @@ void wxMaxima::KillMaxima()
   wxProcess::Kill(m_pid, wxSIGKILL);
 }
 
+void wxMaxima::OpenFile(wxString file, wxString cmd)
+{
+  if (file.Length()) {
+    m_lastPath = wxPathOnly(file);
+#if defined __WXMSW__
+    file.Replace(wxT("\\"), wxT("/"));
+#endif
+    if (file.Right(4) == wxT(".sav")) {
+      m_console->DestroyTree();
+      SendMaxima(wxT("loadsession(\"") + file + wxT("\")$"), false, false, false);
+    }
+    else if (file.Right(4) == wxT(".dem"))
+      SendMaxima(wxT("demo(\"") + file + wxT("\")$"));
+    else
+      SendMaxima(wxT("load(\"") + file + wxT("\")$"));
+  }
+}
 void wxMaxima::FileMenu(wxCommandEvent& event)
 {
   wxString expr = GetDefaultEntry();
@@ -914,18 +936,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                        "Demo file (*.dem)|*.dem|"
                                        "All|*"),
                                      wxOPEN);
-      if (file.Length()) {
-        m_lastPath = wxPathOnly(file);
-#if defined __WXMSW__
-        file.Replace(b,f);
-#endif
-        if (file.Right(4) == wxT(".sav"))
-          SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
-        else if (file.Right(4) == wxT(".dem"))
-          SendMaxima(wxT("demo(\"") + file + wxT("\")$"));
-        else
-          SendMaxima(wxT("load(\"") + file + wxT("\")$"));
-      }
+      OpenFile(file);
     }
     break;
   case menu_open_id:
@@ -940,7 +951,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #if defined __WXMSW__
         file.Replace(b,f);
 #endif
-        SendMaxima(wxT("loadfile(\"") + file + wxT("\")$"));
+        m_console->DestroyTree();
+        SendMaxima(wxT("loadsession(\"") + file + wxT("\")$"), false, false, false);
       }
     }
     break;
@@ -961,7 +973,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
         wxString cmd(wxT("save(\""));
         cmd.append(file);
-        cmd.append(wxT("\", all);"));
+        cmd.append(wxT("\", all)$"));
         SendMaxima(cmd);
       }
     }
@@ -990,40 +1002,20 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      _("Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|All|*"),
                                      wxOPEN);
-      if (file.Length()) {
-        m_lastPath = wxPathOnly(file);
-#if defined __WXMSW__
-        file.Replace(b,f);
-#endif
-        wxString cmd(wxT("load(\""));
-        cmd.append(file);
-        cmd.append(wxT("\");"));
-        SendMaxima(cmd);
-      }
+      OpenFile(file, wxT("load"));
     }
     break;
   case menu_batch_id:
-  case tb_batch:
     {
       wxString file = wxFileSelector(_("Select package to batch"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima file (*.mac)|*.mac|"
                                        "Demo file (*.dem)|*.dem|All|*"),
                                      wxOPEN);
-      if (file.Length()) {
-        m_lastPath = wxPathOnly(file);
-#if defined __WXMSW__
-        file.Replace(b,f);
-#endif
-        wxString cmd;
-        if (file.Right(4) == wxT(".dem") || file.Right(5) == wxT(".demo"))
-          cmd.append(wxT("demo(\""));
-        else
-          cmd.append(wxT("batch(\""));
-        cmd.append(file);
-        cmd.append(wxT("\");"));
-        SendMaxima(cmd);
-      }
+      if (file.Right(4) == wxT(".dem") || file.Right(5) == wxT(".demo"))
+        OpenFile(file, wxT("demo"));
+      else
+        OpenFile(file, wxT("batch"));
     }
     break;
   case menu_create_batch:
@@ -1235,6 +1227,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       SendMaxima(cmd);
     }
     break;
+  case menu_subst:
   case button_subst:
     {
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, _("Substitute"));
@@ -2333,8 +2326,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
+  EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
-  EVT_TOOL(tb_batch, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_delete, wxMaxima::EditMenu)
