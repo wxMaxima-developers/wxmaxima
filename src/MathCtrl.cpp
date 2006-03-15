@@ -1139,7 +1139,8 @@ bool MathCtrl::ExportToHTML(wxString file)
     }
     else {
       while (tmp!=NULL && tmp->m_next!=NULL &&
-             tmp->m_next->GetType()!=MC_TYPE_MAIN_PROMPT)
+             (tmp->m_next->GetType()!=MC_TYPE_MAIN_PROMPT) &&
+             (tmp->m_next->GetType()!=MC_TYPE_PROMPT))
         tmp = tmp->m_next;
       end = tmp;
     }
