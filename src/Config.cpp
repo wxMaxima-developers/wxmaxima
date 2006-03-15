@@ -897,7 +897,7 @@ void Config::UpdateExample()
   else if (tmp == &m_styleHiddenText)
     color = m_styleMainPrompt.color;
 
-  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily->GetValue(), m_fontSize->GetValue());
+  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily->GetValue());
 #if wxCHECK_VERSION(2, 5, 3)
   label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
 #else

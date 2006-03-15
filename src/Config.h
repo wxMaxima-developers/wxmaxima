@@ -45,14 +45,21 @@ enum {
 
 class ExamplePanel : public wxPanel {
 public:
-  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size) { };
-  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font, int size) {
+  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size) {
+#if defined (__WXGTK12__) && !defined (__WXGTK20__)
+    m_size = 12;
+#elif defined (__WXMAC__)
+    m_size = 12;
+#else
+    m_size = 10;
+#endif
+  };
+  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font) {
     m_fgColor = fg_color;
     m_italic = italic;
     m_bold = bold;
     m_underlined = underlined;
     m_font = font;
-    m_size = size;
   }
 private:
   void OnPaint(wxPaintEvent& event);
