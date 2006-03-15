@@ -907,7 +907,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 #if defined __WXMSW__
     file.Replace(wxT("\\"), wxT("/"));
 #endif
-    if (file.Right(4) == wxT(".sav")) {
+    if (cmd.Length())
+      SendMaxima(cmd + wxT("(\"") + file + wxT("\")$"));
+    else if (file.Right(4) == wxT(".sav")) {
       m_console->DestroyTree();
       SendMaxima(wxT("loadsession(\"") + file + wxT("\")$"), false, false, false);
     }
