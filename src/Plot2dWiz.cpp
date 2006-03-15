@@ -60,6 +60,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_8 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70,-1));
+  checkbox_1 = new wxCheckBox(this, -1, _("Send ranges to gnuplot"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
@@ -74,14 +75,15 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                combo_box_1_choices, wxCB_DROPDOWN);
   label_11 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] = {
-    wxT("set zeroaxis"),
-    wxT("set grid"),
-    wxT("set polar; set zeroaxis"),
-    wxT("set logscale y; set grid"),
-    wxT("set logscale x; set grid")
+    wxT("set zeroaxis;"),
+    wxT("set size ratio 1; set zeroaxis;"),
+    wxT("set grid;"),
+    wxT("set polar; set zeroaxis;"),
+    wxT("set logscale y; set grid;"),
+    wxT("set logscale x; set grid;")
   };
   combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
-                               wxSize(280, -1), 5,
+                               wxSize(280, -1), 6,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -153,6 +155,8 @@ void Plot2DWiz::do_layout()
   sizer_4->Add(label_8, 0,  wxALL|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   sizer_4->Add(text_ctrl_7, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_4, 1, wxEXPAND, 0);
+  grid_sizer_2->Add(10, 10);
+  grid_sizer_2->Add(checkbox_1, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(label_9, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
   grid_sizer_2->Add(text_ctrl_8, 0, wxALL, 2);
   grid_sizer_2->Add(label_10, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
@@ -299,15 +303,26 @@ void Plot2DWiz::Parse(wxString s)
 
 wxString Plot2DWiz::GetValue()
 {
-  wxString f = combo_box_1->GetValue();
-  wxString p = combo_box_2->GetValue();
-  wxString s = wxT("plot2d([");
-  wxString y1 = text_ctrl_6->GetValue();
-  wxString y2 = text_ctrl_7->GetValue();
+  wxString f = combo_box_1->GetValue();     // function
+  wxString p = combo_box_2->GetValue();     // preamble
+  wxString s = wxT("plot2d([");             // result
   wxString x1 = text_ctrl_3->GetValue();
   wxString x2 = text_ctrl_4->GetValue();
-  wxString file = text_ctrl_9->GetValue();
-  int t = text_ctrl_8->GetValue();
+  wxString y1 = text_ctrl_6->GetValue();
+  wxString y2 = text_ctrl_7->GetValue();
+  int t = text_ctrl_8->GetValue();          // Number of ticks
+  wxString file = text_ctrl_9->GetValue();  // plot to file
+  wxString r;                               // range
+  if (checkbox_1->IsChecked()) {
+    r = wxT("set xrange [") + x1 + wxT(":") + x2 + wxT("];");
+    if (y1 != wxT("0") || y2 != wxT("0"))
+      r += wxT(" set yrange [") + y1 + wxT(":") + y2 + wxT("];");
+    if (p.Length())
+      p = r + wxT(" ") + p;
+    else
+      p = r;
+  }
+
   s += text_ctrl_1->GetValue();
   s += wxT("], [");
   s += text_ctrl_2->GetValue();
