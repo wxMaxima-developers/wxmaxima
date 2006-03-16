@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; Modified for use with wxMaxima
 ;;   Andrej Vodopivec
