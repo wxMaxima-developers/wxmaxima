@@ -85,7 +85,7 @@
                             (tmp-x (string-substitute "&amp;" #\& tmp-x))
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
-                         (strcat "<st>\"" tmp-x "\"</st>")))
+                         (strcat "<st>" tmp-x "</st>")))
                       ((and (symbolp x) (get x 'wxxmlword)))
                       ((and (symbolp x) (get x 'reversealias))
                        (strcat "<v>" (wxxml-symbol-to-string
@@ -97,7 +97,7 @@
 (defun wxxmlnumformat (atom)
   (let (r firstpart exponent)
     (cond ((integerp atom)
-           (strcat "<n>" (format nil "~d" atom) "</n>"))
+           (strcat "<n>" (apply #'strcat (exploden atom)) "</n>"))
 	  (t
 	   (setq r (exploden atom))
 	   (setq exponent (member 'e r :test #'string-equal))
@@ -437,10 +437,13 @@
         (t
          (append l `("<tb>")
                  (mapcan #'(lambda (y)
-			     (wxxml-list (cdr y)
-					 (list "<mtr><mtd>")
-					 (list "</mtd></mtr>")
-					 "</mtd><mtd>"))
+			     (cond ((null (cdr y))
+				    (list "<mtr><mtd><mspace/></mtd></mtr>"))
+				   (t
+				    (wxxml-list (cdr y)
+						(list "<mtr><mtd>")
+						(list "</mtd></mtr>")
+						"</mtd><mtd>"))))
                          (cdr x))
                  `("</tb>") r))))
 
