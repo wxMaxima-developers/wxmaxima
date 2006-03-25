@@ -171,7 +171,11 @@ MathCell* MathParser::ParseText(xmlNodePtr node, int style)
   if (node != NULL && node->content != NULL) {
     wxString str((const char*)(node->content), wxConvUTF8);
     str = ToLocal(str);
-    cell->SetValue(wxString(str));
+    if (str.IsNumber()) {
+      if (str.Length()>100)
+        str = str.Left(30) + wxString::Format(wxT("[%d digits]"), str.Length()-60) + str.Right(30);
+    }
+    cell->SetValue(str);
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);
     cell->SetHighlight(m_highlight);
@@ -568,7 +572,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     }
   }
   else {
-    cell = new TextCell(wxT(" << Expression to long to display! >>"));
+    cell = new TextCell(wxT(" << Expression too long to display! >>"));
     cell->ForceBreakLine(true);
   }
   return cell;
