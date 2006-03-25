@@ -15,13 +15,12 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop		\
 docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING
 
-
-wxMaxima.app:
+wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
 	mkdir -p wxMaxima.app/Contents/Resources
 	cp data/docs.zip wxMaxima.app/Contents/Resources
 	cp data/intro.zip wxMaxima.app/Contents/Resources
-	cp data/tips.txt wxMaxima.app/Contents/Resources
+	cp data/tips*.txt wxMaxima.app/Contents/Resources
 	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp art/wxmac.icns wxMaxima.app/Contents/Resources
 	cp data/Info.plist wxMaxima.app/Contents
