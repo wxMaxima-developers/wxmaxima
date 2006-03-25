@@ -68,6 +68,11 @@ void MatWiz::set_properties()
         if (i!=j)
           m_inputs[i*m_width+j]->Enable(false);
   }
+#if defined __WXMSW__
+  button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
 }
 
 void MatWiz::do_layout()
