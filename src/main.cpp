@@ -38,14 +38,6 @@
  #endif
 #endif
 
-class MyApp : public wxApp
-{
-public:
-  virtual bool OnInit();
-private:
-  wxLocale m_locale;
-};
-
 IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()

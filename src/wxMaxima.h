@@ -36,6 +36,15 @@ using namespace std;
 
 #define SOCKET_SIZE 1024
 
+class MyApp : public wxApp
+{
+public:
+  virtual bool OnInit();
+  wxLocale m_locale;
+};
+
+DECLARE_APP(MyApp)
+
 class wxMaxima : public wxMaximaFrame
 {
  public:
