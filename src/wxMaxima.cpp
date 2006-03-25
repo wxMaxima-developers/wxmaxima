@@ -718,7 +718,7 @@ void wxMaxima::ShowTip(bool force)
   if (!ShowTips && !force)
     return;
   wxString tips = wxT("tips.txt");
-  wxString tips_loc = wxT("tips_") + wxGetApp().m_locale.GetName() + wxT(".txt");
+  wxString tips_loc = wxT("tips_") + wxGetApp().m_locale.GetName().Left(2) + wxT(".txt");
 #if defined (__WXMSW__)
   wxString prefix = wxGetCwd() + wxT("\\data\\");
 #elif defined (__WXMAC__)
@@ -731,7 +731,6 @@ void wxMaxima::ShowTip(bool force)
     tips = prefix + tips_loc;
   else
     tips = prefix + tips;
-  wxMessageBox(tips, tips_loc);
   if (wxFileExists(tips)) {
     wxTipProvider *t = wxCreateFileTipProvider(tips, tipNum);
     ShowTips = wxShowTip(this, t, ShowTips);
