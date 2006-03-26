@@ -325,8 +325,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_time, _("Toggle &time display"),
                              _("Display time used for execution"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_display, _("Toggle &2d display"),
-                             _("Toggle the 2d display of maxima output"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_display, _("Change &2d display"),
+                             _("Change the 2d display algorithm used to display math output."), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_texform, _("Display Te&X form"),
                              _("Display expression in TeX form"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Maxima"));
