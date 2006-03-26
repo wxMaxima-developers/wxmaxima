@@ -110,7 +110,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_styleFor_choices[] = {
     _("Variables"), _("Numbers"),  _("Special constants"), _("Greek constants"),
     _("Strings"), _("Text"), _("Input"), _("Main prompts"),
-    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highilight"), _("Background")
+    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background")
 
   };
   m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 13, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
