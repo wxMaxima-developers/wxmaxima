@@ -38,12 +38,12 @@
 #include "DragNDrop.h"
 #include "SystemWiz.h"
 #include "MathPrintout.h"
+#include "MyTipProvider.h"
 
 #include <wx/filedlg.h>
 #include <wx/utils.h>
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
-#include <wx/tipdlg.h>
 #include <wx/html/helpctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
@@ -280,7 +280,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   wxStringTokenizer tokens(s, wxT("\n"));
   int count = 0;
   while(tokens.HasMoreTokens()) {
-    TextCell* cell = new TextCell(tokens.GetNextToken());
+    TextCell* cell = new TextCell(RemoveTabs(tokens.GetNextToken()));
 
     cell->SetType(type);
 
@@ -293,6 +293,28 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
       m_console->AddLine(cell, true);
     count++;
   }
+}
+
+wxString wxMaxima::RemoveTabs(wxString s)
+{
+  int pos = 0;
+  char c;
+  wxString t = wxEmptyString;
+
+  for (int i=0; i<s.Length(); i++) {
+    c = s.GetChar(i);
+    if (c == '\t') {
+      do {
+        t += ' ';
+        pos++;
+      } while (pos%8!=0);
+    }
+    else {
+      t += c;
+      pos++;
+    }
+  }
+  return t;
 }
 
 void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
@@ -718,21 +740,16 @@ void wxMaxima::ShowTip(bool force)
   if (!ShowTips && !force)
     return;
   wxString tips = wxT("tips.txt");
-  wxString tips_loc = wxT("tips_") + wxGetApp().m_locale.GetName().Left(2) + wxT(".txt");
 #if defined (__WXMSW__)
   wxString prefix = wxGetCwd() + wxT("\\data\\");
 #elif defined (__WXMAC__)
-  wxString prefix = wxT(MACPREFIX);
+  wxString prefix = wxT(MACPREFIX) + wxT("/");
 #else
-  wxString prefix = wxT(PREFIX);
-  wxString tips = prefix + wxT("/share/wxMaxima/");
+  wxString prefix = wxT(PREFIX) + wxT("/");
 #endif
-  if (wxFileExists(prefix + tips_loc))
-    tips = prefix + tips_loc;
-  else
-    tips = prefix + tips;
+  tips = prefix + tips;
   if (wxFileExists(tips)) {
-    wxTipProvider *t = wxCreateFileTipProvider(tips, tipNum);
+    MyTipProvider *t = new MyTipProvider(tips, tipNum);
     ShowTips = wxShowTip(this, t, ShowTips);
     config->Write(wxT("ShowTips"), ShowTips);
     tipNum = t->GetCurrentTip();
@@ -1183,8 +1200,20 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     SendMaxima(wxT("values;"));
     break;
   case menu_display:
-    cmd = wxT("if display2d#false then display2d:false else display2d:true$");
-    SendMaxima(cmd, false);
+   {
+      wxString choices[] = { _("xml"), _("ascii"), _("none") };
+      wxString choice = wxGetSingleChoice(
+        _("Select math display algorithm"),
+        _("Display algorithm"),
+        3,
+        choices,
+        this
+      );
+      if (choice.Length()) {
+        cmd = wxT("set_display('") + choice + wxT(")$");
+        SendMaxima(cmd, false);
+      }
+    }
     break;
   case menu_texform:
     cmd = wxT("tex(") + expr + wxT(")$");

@@ -110,6 +110,7 @@ class wxMaxima : public wxMaximaFrame
   void SetupVariables();             // sets some maxima variables
   void KillMaxima();                 // kills the maxima process
   void FirstOutput(wxString s);
+  wxString RemoveTabs(wxString s);
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;
