@@ -254,9 +254,11 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_1->Append(menu_monitor_file, _("&Monitor file"),
                              _("Autoload a file when it is updated"),
                              wxITEM_NORMAL);
+#if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
+#endif
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_EXIT, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
@@ -622,8 +624,10 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            wxBitmap(save_xpm), _("Save session"));
   frame_1_toolbar->AddSeparator();
+#if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
                            wxBitmap(print_xpm), _("Print document"));
+#endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
                            wxBitmap(pref_xpm), _("Configure wxMaxima"));
   frame_1_toolbar->AddSeparator();
@@ -658,10 +662,12 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Save session"));
   frame_1_toolbar->AddSeparator();
+#if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
                            wxArtProvider::GetBitmap(wxT("gtk-print"),
                                                     wxART_TOOLBAR),
                            _("Print document"));
+#endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
                            wxArtProvider::GetBitmap(wxT("gtk-preferences"),
                                                     wxART_TOOLBAR),

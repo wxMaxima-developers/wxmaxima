@@ -21,6 +21,10 @@
 #ifndef _MATHPRINTOUT_H
 #define _MATHPRINTOUT_H
 
+#include "Setup.h"
+
+#if WXM_PRINT
+
 #include <wx/wx.h>
 #include <wx/print.h>
 
@@ -59,5 +63,7 @@ class MathPrintout : public wxPrintout
     MathCell* m_tree;
     vector<MathCell*> m_pages;
 };
+
+#endif
 
 #endif

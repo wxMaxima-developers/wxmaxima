@@ -20,6 +20,8 @@
 
 #include "MathPrintout.h"
 
+#if WXM_PRINT
+
 #include <wx/config.h>
 
 #define PRINT_MARGIN_HORIZONTAL 5
@@ -371,3 +373,5 @@ void MathPrintout::BreakUpCells()
     tmp = tmp->m_nextToDraw;
   }
 }
+
+#endif

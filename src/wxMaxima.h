@@ -60,7 +60,6 @@ class wxMaxima : public wxMaximaFrame
   void EnterCommand(wxCommandEvent& event);        // enter in the command line
 
   void FileMenu(wxCommandEvent& event);            //
-  void PrintMenu(wxCommandEvent& event);           //
   void MaximaMenu(wxCommandEvent& event);          //
   void AlgebraMenu(wxCommandEvent& event);         //
   void EquationsMenu(wxCommandEvent& event);       //
@@ -87,7 +86,10 @@ class wxMaxima : public wxMaximaFrame
   void DoRawConsoleAppend(wxString s, int type,    //
           bool newLine = true);                    //
 
+#if WXM_PRINT
   void CheckForPrintingSupport();
+  void PrintMenu(wxCommandEvent& event);
+#endif
   wxString GetDefaultEntry();
   bool StartServer();                              // starts the server
   bool StartMaxima();                              // starts maxima (uses getCommand)
@@ -134,7 +136,9 @@ class wxMaxima : public wxMaximaFrame
   wxString m_lastPath;
   MathParser m_MParser;
   wxPrintData* m_printData;
+#if WXM_PRINT
   bool m_supportPrinting;
+#endif
   bool m_closing;
   wxString m_openFile;
   DECLARE_EVENT_TABLE()

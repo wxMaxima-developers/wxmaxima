@@ -31,6 +31,7 @@
 
 #include "CommandLine.h"
 #include "MathCtrl.h"
+#include "Setup.h"
 
 enum {
   socket_client_id = wxID_HIGHEST,

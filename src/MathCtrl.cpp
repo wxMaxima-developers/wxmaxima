@@ -20,6 +20,7 @@
 
 #include "MathCtrl.h"
 #include "Bitmap.h"
+#include "Setup.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -27,7 +28,7 @@
 #include <wx/filename.h>
 #include <wx/textfile.h>
 
-#if wxUSE_DRAG_AND_DROP
+#if wxUSE_DRAG_AND_DROP && WXM_DND
 #include <wx/dnd.h>
 #endif
 
@@ -332,7 +333,7 @@ void MathCtrl::ClearWindow()
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
-#if wxUSE_DRAG_AND_DROP
+#if wxUSE_DRAG_AND_DROP && WXM_DND
   if (m_selectionStart != NULL) {
     MathCell *tmp = NULL;
     for (tmp = m_selectionStart; tmp != NULL, tmp != m_selectionEnd; tmp = tmp->m_nextToDraw)

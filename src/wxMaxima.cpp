@@ -78,14 +78,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   wxConfig::Get()->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
-#if wxUSE_DRAG_AND_DROP
+#if wxUSE_DRAG_AND_DROP && WXM_DND
   m_console->SetDropTarget(new FileDrop(this));
 #endif
 
+#if WXM_PRINT
   CheckForPrintingSupport();
-
   m_printData = new wxPrintData;
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
+#endif
+
   m_inputLine->SetFocus();
   m_closing = false;
   m_openFile = wxEmptyString;
@@ -96,8 +98,12 @@ wxMaxima::~wxMaxima()
 {
   if (m_client != NULL)
     m_client->Destroy();
+#if WXM_PRINT
   delete m_printData;
+#endif
 }
+
+#if WXM_PRINT
 
 void wxMaxima::CheckForPrintingSupport()
 {
@@ -123,6 +129,8 @@ void wxMaxima::CheckForPrintingSupport()
   m_supportPrinting = false;
 #endif
 }
+
+#endif
 
 void wxMaxima::InitSession()
 {
@@ -770,6 +778,8 @@ void wxMaxima::ShowTip(bool force)
 //
 ///////////////////////////
 
+#if WXM_PRINT
+
 void wxMaxima::PrintMenu(wxCommandEvent& event)
 {
   switch(event.GetId()) {
@@ -799,6 +809,8 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   }
 }
 
+#endif
+
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 {
   wxMenuBar* menubar = GetMenuBar();
@@ -807,10 +819,12 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
+#if WXM_PRINT
   if (m_console->GetTree()!=NULL && m_supportPrinting)
     menubar->Enable(wxID_PRINT, true);
   else
     menubar->Enable(wxID_PRINT, false);
+#endif
   int fontSize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
   if (fontSize<20)
@@ -832,10 +846,12 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     toolbar->EnableTool(tb_interrupt, true);
   else
     toolbar->EnableTool(tb_interrupt, false);
+#if WXM_PRINT
   if (m_console->GetTree()!=NULL && m_supportPrinting)
     toolbar->EnableTool(tb_print, true);
   else
     toolbar->EnableTool(tb_print, false);
+#endif
 }
 
 wxString wxMaxima::GetDefaultEntry()
@@ -2361,7 +2377,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_goto_input, wxMaxima::MaximaMenu)
+#if WXM_PRINT
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
+#endif
   EVT_MENU(menu_inc_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
@@ -2372,7 +2390,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_delete, wxMaxima::EditMenu)
+#if WXM_PRINT
   EVT_TOOL(tb_print, wxMaxima::PrintMenu)
+#endif
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)

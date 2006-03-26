@@ -24,7 +24,7 @@
 #include "DragNDrop.h"
 #include "Gen1Wiz.h"
 
-#if wxUSE_DRAG_AND_DROP
+#if wxUSE_DRAG_AND_DROP && WXM_DND
 
 bool FileDrop::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
 {
