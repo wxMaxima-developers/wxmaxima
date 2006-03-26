@@ -5,6 +5,8 @@ AC_PREREQ(2.59)
 AC_INIT([wxMaxima], [0.6.5], [andrejv@users.sourceforge.net])
 AC_CONFIG_SRCDIR([src/wxMaxima.h])
 
+AC_CONFIG_HEADER(src/Setup.h)
+
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
@@ -28,6 +30,39 @@ case "$host" in
         *)
                 win32=false
 esac
+
+
+dnl optional support for printing and drag'n'drop
+
+AC_ARG_ENABLE(printing,
+[  --enable-printing             Enable printing support.],
+     	[case "${enableval}" in
+          yes) wxm_print=true ;;
+          no)  wxm_print=false ;;
+	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-printing) ;;
+     	 esac],
+	[wxm_print=true])
+
+if test x"${wxm_print}" = x"true" ; then
+   AC_DEFINE([WXM_PRINT], [1], ["Add printing support"])
+else
+   AC_DEFINE([WXM_PRINT], [0], ["Add printing support"])
+fi
+
+AC_ARG_ENABLE(dnd,
+[  --enable-dnd                  Enable drag'n'drop support.],
+     	[case "${enableval}" in
+          yes) wxm_dnd=true ;;
+          no)  wxm_dnd=false ;;
+	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-dnd) ;;
+     	 esac],
+	[wxm_dnd=true])
+
+if test x"${wxm_dnd}" = x"true" ; then
+   AC_DEFINE([WXM_DND], [1], ["Add support for drag'n'drop"])
+else
+   AC_DEFINE([WXM_DND], [0], ["Add support for drag'n'drop"])
+fi
 
 
 dnl check for wxWidgets
