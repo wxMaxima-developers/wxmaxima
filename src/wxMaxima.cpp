@@ -743,9 +743,11 @@ void wxMaxima::ShowTip(bool force)
 #if defined (__WXMSW__)
   wxString prefix = wxGetCwd() + wxT("\\data\\");
 #elif defined (__WXMAC__)
-  wxString prefix = wxT(MACPREFIX) + wxT("/");
+  wxString prefix = wxT(MACPREFIX);
+  prefix += wxT("/");
 #else
-  wxString prefix = wxT(PREFIX) + wxT("/");
+  wxString prefix = wxT(PREFIX);
+  prefix += wxT("/");
 #endif
   tips = prefix + tips;
   if (wxFileExists(tips)) {
