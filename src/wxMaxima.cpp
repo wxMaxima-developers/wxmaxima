@@ -236,7 +236,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
       m_inPrompt = true;
       type = MC_TYPE_MAIN_PROMPT;
     }
-    else if (s.Right(8) == wxT("MAXIMA> ")) {
+    else if (s.StartsWith(wxT("MAXIMA> "))) {
       m_inPrompt = true;
       type = MC_TYPE_MAIN_PROMPT;
       s = s.Right(8);
@@ -469,7 +469,10 @@ void wxMaxima::ReadPrompt()
     m_readingPrompt = false;
     wxString o = m_currentOutput.Left(end);
     if (o != wxT("\n") && o.Length()) {
-      ConsoleAppend(o, MC_TYPE_PROMPT);
+      if (o.StartsWith(wxT("(%i")) || o.StartsWith(wxT("MAXIMA> ")) || o.Find(wxT("<mth>"))>=0)
+        ConsoleAppend(o, MC_TYPE_PROMPT);
+      else
+        DoRawConsoleAppend(o, MC_TYPE_PROMPT);
       if (o.StartsWith(wxT("\nMAXIMA>")))
         m_inLispMode = true;
       else
