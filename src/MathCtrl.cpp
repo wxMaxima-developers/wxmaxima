@@ -153,9 +153,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         if (m_selectionStart == m_selectionEnd)
           m_selectionStart->DrawBoundingBox(dcm);
         else {
-          if (!tmp->m_isBroken)
+          while(tmp != NULL && tmp->m_isBroken)
+            tmp = tmp->m_nextToDraw;
+          if (tmp != NULL)
             tmp->DrawBoundingBox(dcm, true);
-          while (1) {
+          while (tmp != NULL) {
             tmp = tmp->m_nextToDraw;
             if (tmp == NULL) break;
             if (tmp->BreakLineHere() && !tmp->m_isBroken)
@@ -325,6 +327,64 @@ void MathCtrl::ClearWindow()
   }
   Refresh();
   Scroll(0, 0);
+}
+
+/***
+ * Right mouse - popup-menu
+ */
+
+void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
+{
+  if (!CanCopy())
+    return;
+
+  wxMenu* popupMenu = new wxMenu();
+  popupMenu->Append(popid_copy, _("&Copy"),
+                    _("Copy selection from console"), wxITEM_NORMAL);
+  popupMenu->Append(popid_copy_text, _("Copy &text"),
+                    _("Copy selection from console (including linebreaks)"),
+                    wxITEM_NORMAL);
+#if defined __WXMSW__
+  popupMenu->Append(popid_copy_image, _("Copy as &image"),
+                    _("Copy selection from console as image"),
+                    wxITEM_NORMAL);
+#endif
+  if (CanDeleteSelection())
+    popupMenu->Append(popid_delete, _("&Delete selection"),
+                      _("Delete selection from console"), wxITEM_NORMAL);
+  popupMenu->AppendSeparator();
+  popupMenu->Append(popid_float, _("To &float"),
+                    _("The float value of an expression"),
+                    wxITEM_NORMAL);
+  popupMenu->AppendSeparator();
+  popupMenu->Append(popid_solve, _("&Solve ..."),
+                    _("Solve equation(s)"), wxITEM_NORMAL);
+  popupMenu->Append(popid_solve_num, _("Solve &numerically ..."),
+                   _("Find a root of an equation on an interval"), wxITEM_NORMAL);
+  popupMenu->AppendSeparator();
+  popupMenu->Append(popid_simplify, _("&Simplify expression"),
+                    _("Simplify rational expression"), wxITEM_NORMAL);
+  popupMenu->Append(popid_factor, _("&Factor expression"),
+                    _("Factor an expression"), wxITEM_NORMAL);
+  popupMenu->Append(popid_expand, _("&Expand expression"),
+                    _("Expand an expression"), wxITEM_NORMAL);
+  popupMenu->Append(popid_subst, _("Substitute ..."),
+                    _("Make substitution in expression"),
+                    wxITEM_NORMAL);
+  popupMenu->AppendSeparator();
+  popupMenu->Append(popid_integrate, _("&Integrate ..."),
+                    _("Integrate expression"), wxITEM_NORMAL);
+  popupMenu->Append(popid_diff, _("&Differentiate ..."),
+                    _("Differentiate expression"), wxITEM_NORMAL);
+  popupMenu->AppendSeparator();
+  popupMenu->Append(popid_plot2d, _("Plot &2d ..."),
+                    _("Plot in 2 dimensions"), wxITEM_NORMAL);
+  popupMenu->Append(popid_plot3d, _("Plot &3d ..."),
+                    _("Plot in 3 dimensions"), wxITEM_NORMAL);
+
+  PopupMenu(popupMenu);
+
+  delete popupMenu;
 }
 
 /***
@@ -1237,6 +1297,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
+  EVT_RIGHT_UP(MathCtrl::OnMouseRightUp)
   EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
   EVT_MOTION(MathCtrl::OnMouseMotion)
   EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)

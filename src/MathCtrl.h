@@ -25,6 +25,24 @@
 
 #include "MathCell.h"
 
+enum {
+  popid_copy,
+  popid_copy_text,
+  popid_copy_image,
+  popid_delete,
+  popid_simplify,
+  popid_expand,
+  popid_factor,
+  popid_solve,
+  popid_solve_num,
+  popid_integrate,
+  popid_diff,
+  popid_subst,
+  popid_plot2d,
+  popid_plot3d,
+  popid_float
+};
+
 class MathCtrl:public wxScrolledWindow
 {
   public:
@@ -65,6 +83,7 @@ class MathCtrl:public wxScrolledWindow
     void OnMouseEnter(wxMouseEvent& event);
     void OnPaint(wxPaintEvent& event);
     void OnSize(wxSizeEvent& event);
+    void OnMouseRightUp(wxMouseEvent& event);
     void OnMouseLeftUp(wxMouseEvent& event);
     void OnMouseLeftDown(wxMouseEvent& event);
     void OnMouseMotion(wxMouseEvent& event);
