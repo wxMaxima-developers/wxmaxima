@@ -6,7 +6,7 @@ wxmaxima_SOURCES = \
 	CommandLine.cpp    CommandLine.h    \
 	Config.cpp         Config.h         \
 	DragNDrop.cpp      DragNDrop.h      \
-	main.cpp           Version.h        \
+	main.cpp                            \
 	TextInput.cpp      TextInput.h      \
 	wxMaxima.cpp       wxMaxima.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \
