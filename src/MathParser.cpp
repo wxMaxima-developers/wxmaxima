@@ -165,14 +165,41 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
   return NULL;
 }
 
+/************
+ * Check if n is an integer or a bflat (format 3.14b0)
+ */
+
+bool IsNumber(wxString n) {
+  int n_dots = 0, n_b = 0, i = 0;
+  char c;
+  for (i=0; i<n.Length(); i++) {
+    c = n.GetChar(i);
+    if (c == '.') {
+      n_dots++;
+      if (n_dots>1)
+        break;
+    }
+    else if (c == 'b') {
+      n_b++;
+      if (n_b>1)
+        break;
+    }
+    else if (c<'0' || c>'9')
+      break;
+  }
+  if (i<n.Length())
+    return false;
+  return true;
+}
+
 MathCell* MathParser::ParseText(xmlNodePtr node, int style)
 {
   TextCell* cell = new TextCell;
   if (node != NULL && node->content != NULL) {
     wxString str((const char*)(node->content), wxConvUTF8);
     str = ToLocal(str);
-    if (str.IsNumber()) {
-      if (str.Length()>100)
+    if (IsNumber(str)) {
+      if (str.Length()>100) // This could be made configurable.
         str = str.Left(30) + wxString::Format(wxT("[%d digits]"), str.Length()-60) + str.Right(30);
     }
     cell->SetValue(str);
@@ -572,7 +599,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     }
   }
   else {
-    cell = new TextCell(wxT(" << Expression too long to display! >>"));
+    cell = new TextCell(_(" << Expression too long to display! >>"));
     cell->ForceBreakLine(true);
   }
   return cell;
