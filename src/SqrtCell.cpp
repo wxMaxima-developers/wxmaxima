@@ -74,7 +74,7 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_innerCell->RecalculateWidths(parser, fontsize, true);
-  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(4, scale) +
+  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
             3*SCALE_PX(1, scale)+1;
   m_open->RecalculateWidths(parser, fontsize, all);
   m_close->RecalculateWidths(parser, fontsize, all);
@@ -99,19 +99,27 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     double scale = parser.GetScale();
 
     wxPoint in(point);
-    in.x += SCALE_PX(4, scale) + SCALE_PX(1, scale) + 1;
+    in.x += SCALE_PX(10, scale) + SCALE_PX(1, scale) + 1;
     m_innerCell->Draw(parser, in, fontsize, true);
 
     SetPen(parser);
     dc.DrawLine(point.x,
-                point.y - SCALE_PX(3, scale),
-                point.x + SCALE_PX(4, scale),
+                point.y,
+                point.x + SCALE_PX(3, scale),
+                point.y - SCALE_PX(1, scale));
+    dc.DrawLine(point.x + SCALE_PX(3, scale),
+                point.y - SCALE_PX(1, scale),
+                point.x + SCALE_PX(7, scale),
                 point.y + m_height - m_center - SCALE_PX(4, scale));
-    dc.DrawLine(point.x + SCALE_PX(4, scale),
+    dc.DrawLine(point.x + SCALE_PX(3, scale) + 1,
+                point.y - SCALE_PX(1, scale),
+                point.x + SCALE_PX(7, scale) + 1,
+                point.y + m_height - m_center - SCALE_PX(4, scale));
+    dc.DrawLine(point.x + SCALE_PX(7, scale) + 1,
                 point.y + m_height - m_center - SCALE_PX(4, scale),
-                point.x + SCALE_PX(4, scale),
+                point.x + SCALE_PX(10, scale),
                 point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + SCALE_PX(4, scale),
+    dc.DrawLine(point.x + SCALE_PX(10, scale),
                 point.y - m_center + SCALE_PX(2, scale),
                 point.x + m_width - SCALE_PX(1, scale),
                 point.y - m_center + SCALE_PX(2, scale));
