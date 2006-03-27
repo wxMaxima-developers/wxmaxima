@@ -1,8 +1,7 @@
 (in-package :maxima)
 
-;; Modified for use with wxMaxima
-;;   Andrej Vodopivec
-;; This is not MathML anymore
+;; wxMaxima xml format (based on David Drysdale MathML printing)
+;; Andrej Vodopivec, 2004-2006
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
@@ -13,10 +12,6 @@
 ;;   small corrections and additions: Andrey Grozin, 2001
 ;;   additional additions: Judah Milgram (JM), September 2001
 ;;   additional corrections: Barton Willis (BLW), October 2001
-
-;; Usage: wxxml(d8,"/tmp/foo.xml"); wxxml(d10,"/tmp/foo.xml"); ..
-;; to append lines d8 and d10 to the wxxml file.  If given only
-;; one argument the result goes to standard output.
 
 ;; Method:
 
@@ -32,15 +27,6 @@
 (declare-top
  (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
  (*expr wxxml-lbp wxxml-rbp))
-
-(defvar *symbol-to-string* nil)
-
-(if (equal *autoconf-version* "5.9.1")
-    (setf *symbol-to-string* 'symbol-name)
-    (setf *symbol-to-string* 'print-invert-case))
-
-(defun wxxml-symbol-to-string (sym)
-  (apply *symbol-to-string* (list sym)))
 
 (defun wxxml (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its
@@ -79,17 +65,15 @@
 		       (strcat "<v>Lisp structure: " (type-of x) " </v>"))
                       ((mstringp x)
                        (let*
-                           ((tmp-x
-			     (string-left-trim '(#\&)
-					       (wxxml-symbol-to-string x)))
+                           ((tmp-x (maybe-invert-string-case (symbol-name (stripdollar x))))
                             (tmp-x (string-substitute "&amp;" #\& tmp-x))
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
                          (strcat "<st>" tmp-x "</st>")))
-                      ((and (symbolp x) (get x 'wxxmlword)))
+                      ((and (symbolp x) (get x 'wxxmlword))
+		       (wxxml-stripdollar (get x 'wxxmlword)))
                       ((and (symbolp x) (get x 'reversealias))
-                       (strcat "<v>" (wxxml-symbol-to-string
-				      (get x 'reversealias)) "</v>"))
+                       (wxxml-stripdollar (get x 'reversealias)))
                       (t (wxxml-stripdollar x))
 		      ))
 	  r))
@@ -114,12 +98,12 @@
 (defun wxxml-stripdollar (sym)
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
-  (let* ((pname (wxxml-symbol-to-string sym))
+  (let* ((pname (maybe-invert-string-case (symbol-name sym)))
          (pname (if (memq (elt pname 0) '(#\$ #\&)) (subseq pname 1) pname))
          (pname (string-substitute "&amp;" #\& pname))
          (pname (string-substitute "&gt;" #\> pname))
          (pname (string-substitute "&lt;" #\< pname)))
-    (strcat "<v>" pname "</v>")))
+    (concatenate 'string "<v>" pname "</v>")))
 
 (defun wxxml-paren (x l r)
   (wxxml x (append l '("<p>")) (cons "</p>" r) 'mparen 'mparen))
@@ -231,10 +215,6 @@
 
 (defprop $set wxxml-matchfix wxxml)
 (defprop $set (("<t>{</t>")"<t>}</t>") wxxmlsym)
-
-;;($matchfix '${ '$})
-;;(defun ${ (&rest a)
-;; `(($set) ,@a))
 
 (defprop mabs wxxml-matchfix wxxml)
 (defprop mabs (("<a>")"</a>") wxxmlsym)
@@ -829,7 +809,7 @@
                  (if (cadr x)
                      (list
 		      (format nil "<lbl>(~A) </lbl>"
-			      (stripdollar (wxxml-symbol-to-string (cadr x)))))
+			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))))
 		     nil))
          r 'mparen 'mparen))
 
@@ -841,7 +821,7 @@
                  (if (cadr x)
                      (list
 		      (format nil "<prompt>(~A) </prompt><input>"
-			      (stripdollar (wxxml-symbol-to-string (cadr x)))))
+			      (wxxml-stripdollar (cadr x))))
 		     nil))
          (append (list "</input>") r) 'mparen 'mparen))
 
@@ -1083,7 +1063,7 @@ and run_testsuite() fails.
 	 (setq s (margs s)))
 	(t
 	 (setq s (list s))))
-  (setq s (mapcar #'stripdollar s))
+  (setq s (mapcar #'wxxml-stripdollar s))
   (cond ((or (null lbp) (not (integerp lbp)))
          (setq lbp 180)))
   (cond ((or (null rbp) (not (integerp rbp)))
