@@ -20,7 +20,6 @@
 
 
 #include "wxMaximaFrame.h"
-#include "Version.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -107,7 +106,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 void wxMaximaFrame::set_properties()
 {
   SetIcon(wxICON(maximaicon));
-  SetTitle(wxString::Format(_("wxMaxima %s"), wxT(WXMAXIMA_VERSION)));
+  SetTitle(wxString::Format(_("wxMaxima %s"), wxT(VERSION)));
   bool fixed = true;
   wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
   if (fixed) {

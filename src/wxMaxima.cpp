@@ -550,7 +550,7 @@ void wxMaxima::ReadProcessOutput()
   if (st==-1)
     st = 0;
   FirstOutput(wxT("wxMaxima ")
-              wxT(WXMAXIMA_VERSION)
+              wxT(VERSION)
               wxT(" http://wxmaxima.sourceforge.net\n") +
               o.SubString(st, o.Length()-1));
   m_inPrompt = true;
