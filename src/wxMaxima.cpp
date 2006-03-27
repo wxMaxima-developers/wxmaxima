@@ -19,7 +19,6 @@
  */
 
 #include "wxMaxima.h"
-#include "Version.h"
 #include "Config.h"
 #include "TextInput.h"
 #include "SubstituteWiz.h"
@@ -427,7 +426,7 @@ void wxMaxima::ReadFirstPrompt()
   if (start==-1)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
-              wxT(WXMAXIMA_VERSION)
+              wxT(VERSION)
               wxT(" http://wxmaxima.sourceforge.net\n") +
               m_currentOutput.SubString(start, m_currentOutput.Length()-1));
 #endif // __WXMSW__
@@ -2091,7 +2090,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
   wxString cmd;
   switch (event.GetId()) {
   case menu_to_float:
-    cmd = wxT("float(") + expr + wxT(");");
+    cmd = wxT("float(") + expr + wxT("), numer;");
     SendMaxima(cmd);
     break;
   case menu_to_bfloat:
@@ -2126,10 +2125,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
                  _("wxMaxima is a wxWidgets interface for the\n"
                    "computer algebra system MAXIMA.\n"
                    "\nVersion: %s."
-                   "\nReleased: %s."
                    "\nLicense: GPL.\n"
                    "\n%s\n%s"),
-                 wxT(WXMAXIMA_VERSION), wxT(WXMAXIMA_DATE),
+                 wxT(VERSION),
                  wxT("http://wxmaxima.sourceforge.net/"),
                  wxT("http://maxima.sourceforge.net/")),
                  _("About wxMaxima"), wxOK|wxICON_INFORMATION);
@@ -2241,7 +2239,153 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   Destroy();
 }
 
+void wxMaxima::PopupMenu(wxCommandEvent& event)
+{
+  wxString selection = m_console->GetString();
+  switch (event.GetId()) {
+  case popid_copy:
+    if (m_console->CanCopy())
+      m_console->Copy();
+    break;
+  case popid_copy_text:
+    if (m_console->CanCopy())
+      m_console->Copy(true);
+    break;
+  case popid_copy_image:
+    if (m_console->CanCopy())
+      m_console->CopyBitmap();
+    break;
+  case popid_delete:
+    if (m_console->CanDeleteSelection())
+      m_console->DeleteSelection();
+    break;
+  case popid_simplify:
+    SendMaxima(wxT("ratsimp(") + selection + wxT(");"));
+    break;
+  case popid_expand:
+    SendMaxima(wxT("expand(") + selection + wxT(");"));
+    break;
+  case popid_factor:
+    SendMaxima(wxT("factor(") + selection + wxT(");"));
+    break;
+  case popid_solve:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Solve equation(s):"), _("for variable(s):"),
+                                 selection, wxT("x"), this, -1, _("Solve"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
+                       wiz->GetValue2() + wxT("]);");
+        SendMaxima(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_solve_num:
+    {
+      Gen4Wiz *wiz = new Gen4Wiz(_("Solve equation:"), _("in variable:"),
+                                 _("lower bound:"), _("upper bound:"),
+                                 selection, wxT("x"), wxT("-1"), wxT("1"),
+                                 this, -1, _("Solve numerically"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
+                       wiz->GetValue2() + wxT(", ") +
+                      wiz->GetValue3() + wxT(", ") +
+                       wiz->GetValue4() + wxT(");");
+        SendMaxima(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_integrate:
+    {
+      IntegrateWiz *wiz = new IntegrateWiz(this, -1, _("Integrate"));
+      wiz->SetValue(selection);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wiz->GetValue();
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_diff:
+    {
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("in variable:"),
+                                 _("times:"), selection, wxT("x"), wxT("1"),
+                                 this, -1, _("Differentiate"));
+      wiz->setValue(selection);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wxT("diff(") + wiz->GetValue1() + wxT(", ") +
+          wiz->GetValue2();
+        if (wiz->GetValue3()!=wxT("1"))
+          val += wxT(", ") + wiz->GetValue3();
+        val += wxT(");");
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_subst:
+    {
+      SubstituteWiz *wiz = new SubstituteWiz(this, -1, _("Substitute"));
+      wiz->SetValue(selection);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wiz->GetValue();
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_plot2d:
+    {
+      Plot2DWiz *wiz = new Plot2DWiz(this, -1, _("Plot 2D"));
+      wiz->SetValue(selection);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wiz->GetValue();
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_plot3d:
+    {
+      Plot3DWiz *wiz = new Plot3DWiz(this, -1, _("Plot 3D"));
+      wiz->SetValue(selection);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK) {
+        wxString val = wiz->GetValue();
+        SendMaxima(val);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case popid_float:
+    SendMaxima(wxT("float(") + selection + wxT("), numer;"));
+    break;
+  }
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
+  EVT_MENU(popid_copy, wxMaxima::PopupMenu)
+  EVT_MENU(popid_copy_text, wxMaxima::PopupMenu)
+  EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_delete, wxMaxima::PopupMenu)
+  EVT_MENU(popid_simplify, wxMaxima::PopupMenu)
+  EVT_MENU(popid_factor, wxMaxima::PopupMenu)
+  EVT_MENU(popid_expand, wxMaxima::PopupMenu)
+  EVT_MENU(popid_solve, wxMaxima::PopupMenu)
+  EVT_MENU(popid_solve_num, wxMaxima::PopupMenu)
+  EVT_MENU(popid_subst, wxMaxima::PopupMenu)
+  EVT_MENU(popid_plot2d, wxMaxima::PopupMenu)
+  EVT_MENU(popid_plot3d, wxMaxima::PopupMenu)
+  EVT_MENU(popid_diff, wxMaxima::PopupMenu)
+  EVT_MENU(popid_integrate, wxMaxima::PopupMenu)
+  EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_TEXT_ENTER(input_line_id, wxMaxima::EnterCommand)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
