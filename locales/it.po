@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-27 13:13-0800\n"
+"POT-Creation-Date: 2006-03-29 08:05-0800\n"
 "PO-Revision-Date: 2006-03-29 16:17+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -430,7 +430,8 @@ msgstr "Cambia la finestra &2d"
 
 #: ../src/wxMaximaFrame.cpp:330
 msgid "Change the 2d display algorithm used to display math output."
-msgstr "Cambia l'algoritmo della finestra 2D usato per visualizzare il risultato."
+msgstr ""
+"Cambia l'algoritmo della finestra 2D usato per visualizzare il risultato."
 
 #: ../src/wxMaxima.cpp:1815
 msgid "Change variable"
@@ -559,8 +560,10 @@ msgid "Convert to &rectform"
 msgstr "Converti in forma no&rmale"
 
 #: ../src/wxMaximaFrame.cpp:515
-msgid "Convert trigonometric expression to canonical qausilinear form"
-msgstr "Converti l'espressione trigonometrica nella forma canonica quasilineare"
+#, fuzzy
+msgid "Convert trigonometric expression to canonical quasilinear form"
+msgstr ""
+"Converti l'espressione trigonometrica nella forma canonica quasilineare"
 
 #: ../src/wxMaximaFrame.cpp:633 ../src/wxMaximaFrame.cpp:675
 msgid "Copy"
@@ -2057,7 +2060,9 @@ msgstr ""
 msgid ""
 "To save the size and position of wxMaxima windows between session, use 'Edit-"
 ">Configure' dialog."
-msgstr "Per salvare l'ampiezza e posizione della finestra di wxMaxima tra le sessioni, usare la finestra \"Modifica->Configura\"."
+msgstr ""
+"Per salvare l'ampiezza e posizione della finestra di wxMaxima tra le "
+"sessioni, usare la finestra \"Modifica->Configura\"."
 
 #: ../src/wxMaximaFrame.cpp:548
 msgid "Toggle &algebraic flag"
@@ -2157,7 +2162,9 @@ msgstr ""
 msgid ""
 "You can delete output/input group if you select the input label and choose "
 "'Edit->Delete selection' from menus."
-msgstr "Puoi cancellare un'insieme di equazioni immesse o risultanti selezionando le etichette e scegliendo dai menu \"Modifica->Elimina selezione\"."
+msgstr ""
+"Puoi cancellare un'insieme di equazioni immesse o risultanti selezionando le "
+"etichette e scegliendo dai menu \"Modifica->Elimina selezione\"."
 
 #: ../data/tips.txt:17
 msgid ""
@@ -2184,13 +2191,19 @@ msgid ""
 "can select a custom function for loading your file. If your custom function "
 "is 'A:read_matrix(%file%, csv)', then %file% will be replaced with the "
 "filename of your file."
-msgstr "Puoi caricare i file in maxima anche trascinandoli sulla finestra console. È anche possibile selezionare una funzione personalizzata per caricare il file. Se la funzione personalizzata è \"A:read_matrix(%file%, CSV) allora %file% verrà sostituito con il nome del file."
+msgstr ""
+"Puoi caricare i file in maxima anche trascinandoli sulla finestra console. È "
+"anche possibile selezionare una funzione personalizzata per caricare il "
+"file. Se la funzione personalizzata è \"A:read_matrix(%file%, CSV) allora %"
+"file% verrà sostituito con il nome del file."
 
 #: ../data/tips.txt:14
 msgid ""
 "You can select the output of maxima in wxMaxima console with mouse and copy "
 "it to the clipboard with 'Edit->copy'."
-msgstr "Puoi selezionare il risultato di maxima nella console wxMaxima con il mouse e copiarlo negli appunti con \"Modifica->Copia\"."
+msgstr ""
+"Puoi selezionare il risultato di maxima nella console wxMaxima con il mouse "
+"e copiarlo negli appunti con \"Modifica->Copia\"."
 
 #: ../data/tips.txt:15
 msgid ""
@@ -2219,10 +2232,6 @@ msgstr "acquamarina"
 #: ../src/SeriesWiz.cpp:41
 msgid "around:"
 msgstr "intorno:"
-
-#: ../src/wxMaxima.cpp:1224
-msgid "ascii"
-msgstr "ASCII"
 
 #: ../src/wxMaxima.cpp:1503
 msgid "at point:"
@@ -2498,10 +2507,6 @@ msgstr "blu marina"
 msgid "new variable:"
 msgstr "nuova veriabile:"
 
-#: ../src/wxMaxima.cpp:1224
-msgid "none"
-msgstr "nessuno"
-
 #: ../src/wxMaxima.cpp:1829
 msgid "num deg:"
 msgstr "num deg:"
@@ -2766,10 +2771,6 @@ msgstr ""
 "accessibile tramite i tasti freccia in su e freccia in giu oppure con il "
 "completamento automatico della riga usando il tasto di tabulazione."
 
-#: ../src/wxMaxima.cpp:1224
-msgid "xml"
-msgstr "xml"
-
 #: ../src/Config.cpp:134
 msgid "yellow"
 msgstr "giallo"
@@ -2777,3 +2778,12 @@ msgstr "giallo"
 #: ../src/Config.cpp:134
 msgid "yellow green"
 msgstr "giallo verde"
+
+#~ msgid "ascii"
+#~ msgstr "ASCII"
+
+#~ msgid "none"
+#~ msgstr "nessuno"
+
+#~ msgid "xml"
+#~ msgstr "xml"
