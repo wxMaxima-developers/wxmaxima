@@ -512,7 +512,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Expand trigonometric expression"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("&Canonical form"),
-                             _("Convert trigonometric expression to canonical qausilinear form"),
+                             _("Convert trigonometric expression to canonical quasilinear form"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Trigonometric simplification"),
                              wxglade_tmp_menu_5_sub2,

@@ -1221,7 +1221,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_display:
    {
-      wxString choices[] = { _("xml"), _("ascii"), _("none") };
+      wxString choices[] = { wxT("xml"), wxT("ascii"),  wxT("none") };
       wxString choice = wxGetSingleChoice(
         _("Select math display algorithm"),
         _("Display algorithm"),
