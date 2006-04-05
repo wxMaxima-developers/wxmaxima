@@ -8,42 +8,59 @@
 
 import re
 
-def convert(lines):
+TOC_FILE = "maxima_toc.html"
+INDEX_FILES = ["maxima_44.html", "maxima_45.html", "maxima_46.html", "maxima_47.html",
+  "maxima_48.html", "maxima_49.html", "maxima_50.html", "maxima_51.html", "maxima_52.html",
+  "maxima_53.html", "maxima_54.html", "maxima_55.html"]
+
+def convert_index(files):
+  index = open("index.hhk", "w")
+  fun = re.compile(".*?\"top\"><a\shref=\"(.*?)\"><code>(.*?)</code></a>*")
+  var = re.compile(".*?\"top\"><a\shref=\"(.*?)\">(.*?)</a>*")
+  for f in files:
+    in_file = open(f, "r")
+    for l in in_file.readlines():
+      m = fun.search(l)
+      if m:
+        index.write("<li><object type=\"text/sitemap\">\n")
+        index.write("   <param name=\"Local\" value=\"" + m.group(1) + "\">\n")
+        index.write("   <param name=\"Name\" value=\"" + m.group(2) + "\"></object>\n")
+      else:
+        m = var.search(l)
+        if m:
+          index.write("<li><object type=\"text/sitemap\">\n")
+          index.write("   <param name=\"Local\" value=\"" + m.group(1) + "\">\n")
+          index.write("   <param name=\"Name\" value=\"" + m.group(2) + "\"></object>\n")
+  index.close
+
+def convert_toc(toc):
+  f = open(toc, "r")
+  contents = open("contents.hhc", "w")
+  lines = f.readlines()
   li = re.compile(".*?<li><a\sname=\"(.*?\")\shref=\"(.*?)\">.*?\s(.*?)</a>")
   ul = re.compile(".*<ul class=\"toc\">")
   ul_end = re.compile(".*</ul>")
-  index = open("index.hhk", "w")
-  contents = open("contents.hhc", "w")
-  TOC_depth = 0
   for l in lines:
     m = ul.search(l)
     if m:
-      if TOC_depth==0:
-        index.write("<ul>\n")
       contents.write("<ul>\n")
-      TOC_depth = TOC_depth+1
     m = ul_end.search(l)
     if m:
-      TOC_depth = TOC_depth-1
-      if TOC_depth==0:
-        index.write("</ul>\n")
       contents.write("</ul>\n")
     m = li.search(l)
     if m:
-      index.write("<li><object type=\"text/sitemap\">\n")
-      index.write("   <param name=\"Local\" value=\"" + m.group(2) + "\">\n")
-      index.write("   <param name=\"Name\" value=\"" + m.group(3) + "\"></object>\n")
       contents.write("<li><object type=\"text/sitemap\">\n")
       contents.write("   <param name=\"Local\" value=\"" + m.group(2) + "\">\n")
       contents.write("   <param name=\"Name\" value=\"" + m.group(3) + "\"></object>\n")
-  index.close()
+  f.close()
   contents.close()
 
 if __name__ == "__main__":
   try:
-    toc = open("maxima_toc.html", "r")
-    lines = toc.readlines()
-    toc.close()
-    convert(lines)
+    convert_toc(TOC_FILE)
   except:
-    print "Can't find `maxima_toc.html' file"
+    print "Error creating TOC file"
+  try:
+    convert_index(INDEX_FILES)
+  except:
+    print "Error creating INDEX file"
