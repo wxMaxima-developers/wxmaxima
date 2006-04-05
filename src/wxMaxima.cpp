@@ -18,6 +18,7 @@
  *
  */
 
+
 #include "wxMaxima.h"
 #include "Config.h"
 #include "TextInput.h"
@@ -973,7 +974,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case tb_open:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
-									                   wxEmptyString, wxEmptyString,
+                                     wxEmptyString, wxEmptyString,
                                      _("Maxima session (*.sav)|*.sav|"
                                        "Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|"
@@ -986,7 +987,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_open_id:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
-									                   wxEmptyString, wxEmptyString,
+                                     wxEmptyString, wxEmptyString,
                                      _("Maxima session (*.sav)|*.sav|"
                                        "All|*"),
                                      wxOPEN);
@@ -2161,7 +2162,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
         if (expr == wxT("%"))
           help->DisplayContents();
         else
-          help->KeywordSearch(expr);
+          help->KeywordSearch(expr, wxHELP_SEARCH_INDEX);
       }
     }
     return;
