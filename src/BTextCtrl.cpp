@@ -18,8 +18,6 @@
  *
  */
 
-
-
 #include "BTextCtrl.h"
 #include <wx/config.h>
 
@@ -29,7 +27,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
                     const wxPoint& pos,
                     const wxSize& size,
                     long style)
- : wxTextCtrl(parent, id, value, pos, size, style|wxTE_RICH)
+ : wxTextCtrl(parent, id, value, pos, size, style)
 {
   bool fixedFont = true;
   m_matchParens = true;
@@ -54,10 +52,8 @@ BTextCtrl::~BTextCtrl()
 
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
-  if (!m_matchParens || MatchParenthesis(event.GetKeyCode())) {
+  if (!m_matchParens || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
-    return;
-  }
 }
 
 bool BTextCtrl::MatchParenthesis(int code)
@@ -83,7 +79,7 @@ bool BTextCtrl::MatchParenthesis(int code)
   case WXK_UP:
   case WXK_DOWN:
   case WXK_TAB:
-    skip = false;
+    skip = true;
   default:
     break;
   }
