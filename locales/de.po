@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-29 08:05-0800\n"
-"PO-Revision-Date: 2006-03-23 22:43+0100\n"
+"PO-Revision-Date: 2006-04-08 19:02+0200\n"
 "Last-Translator: Harald Geyer <Harald.Geyer@gmx.at>\n"
 "Language-Team: german <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: ../src/MathParser.cpp:602
 msgid " << Expression too long to display! >>"
-msgstr ""
+msgstr " << Ausdruck zu lang um angezeigt zu werden! >>"
 
 #: ../src/wxMaximaFrame.cpp:414
 msgid "&Algebra"
@@ -424,14 +424,12 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: ../src/wxMaximaFrame.cpp:329
-#, fuzzy
 msgid "Change &2d display"
 msgstr "F&ormeldarstellung ändern"
 
 #: ../src/wxMaximaFrame.cpp:330
-#, fuzzy
 msgid "Change the 2d display algorithm used to display math output."
-msgstr "Schaltet zwischen Text- und Formeldarstellung um"
+msgstr "Ändere den Algorithmus um mathematische Ausgaben darzustellen."
 
 #: ../src/wxMaxima.cpp:1815
 msgid "Change variable"
@@ -562,7 +560,6 @@ msgid "Convert to &rectform"
 msgstr "&Standarddarstellung"
 
 #: ../src/wxMaximaFrame.cpp:515
-#, fuzzy
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr "Wandle trigonometrischen Ausdruck in eine kanonische Form"
 
@@ -652,9 +649,8 @@ msgid "Delete selection"
 msgstr "Auswahl löschen"
 
 #: ../src/MathCtrl.cpp:354
-#, fuzzy
 msgid "Delete selection from console"
-msgstr "Auswahl von Konsole kopieren"
+msgstr "Auswahl von Konsole löschen"
 
 #: ../src/wxMaximaFrame.cpp:289
 msgid "Delete the contents of console."
@@ -693,9 +689,8 @@ msgid "Display Te&X form"
 msgstr "Als Te&X"
 
 #: ../src/wxMaxima.cpp:1227
-#, fuzzy
 msgid "Display algorithm"
-msgstr "Verwende den Gosper-Algorithmus für allg. Partialsummen"
+msgstr "Darstellungmethode"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "Display expression in TeX form"
@@ -1047,9 +1042,8 @@ msgid "Hidden groups"
 msgstr "Versteckte Zeilen"
 
 #: ../src/Config.cpp:113
-#, fuzzy
 msgid "Highlight"
-msgstr "Hergehoben"
+msgstr "Hervorgehoben"
 
 #: ../src/wxMaxima.cpp:1391
 msgid "IC1"
@@ -1627,7 +1621,7 @@ msgstr "Datei zum Öffnen auswählen"
 
 #: ../src/wxMaxima.cpp:1226
 msgid "Select math display algorithm"
-msgstr ""
+msgstr "Algorithmus zum Anzeigen von Formeln auswählen"
 
 #: ../src/Config.cpp:387 ../src/Config.cpp:392
 msgid "Select maxima program"
@@ -2015,7 +2009,7 @@ msgstr "Startpunkte:"
 
 #: ../src/MyTipProvider.cpp:45
 msgid "Tips not available, sorry!"
-msgstr ""
+msgstr "Tipps sind leider nicht verfügbar!"
 
 #: ../src/wxMaximaFrame.cpp:574
 msgid "To &bigfloat"
@@ -2744,7 +2738,7 @@ msgid "wxMaxima input"
 msgstr "wxMaxima - Mehrzeilige Eingabe"
 
 #: ../src/wxMaxima.cpp:2125
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "wxMaxima is a wxWidgets interface for the\n"
 "computer algebra system MAXIMA.\n"
@@ -2759,7 +2753,6 @@ msgstr ""
 "für das Computer Algebra System MAXIMA.\n"
 "\n"
 "Version: %s.\n"
-"Veröffentlicht: %s.\n"
 "Lizenz: GPL.\n"
 "\n"
 "%s\n"
