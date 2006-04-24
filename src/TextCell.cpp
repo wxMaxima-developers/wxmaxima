@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "TextCell.h"
 
@@ -45,21 +44,22 @@ TextCell::~TextCell()
 void TextCell::SetValue(wxString text)
 {
   m_text = text;
+  m_width = -1;
   m_text.Replace(wxT("\n"), wxEmptyString);
 }
 
 MathCell* TextCell::Copy(bool all)
 {
   TextCell *tmp = new TextCell(wxEmptyString);
+  CopyData(this, tmp);
   tmp->m_text = wxString(m_text);
-  tmp->m_type = m_type;
   tmp->m_forceBreakLine = m_forceBreakLine;
   tmp->m_isFolded = m_isFolded;
   tmp->m_bigSkip = m_bigSkip;
   tmp->m_isHidden = m_isHidden;
   tmp->m_textStyle = m_textStyle;
   tmp->m_highlight = m_highlight;
-  if (all && m_next!=NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
@@ -71,28 +71,33 @@ void TextCell::Destroy()
 
 void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate()) {
+  if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
+  {
     m_fontSize = fontsize;
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("inf"))
+      dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-    else if (m_text == wxEmptyString) {
+    else if (m_text == wxEmptyString)
+    {
       dc.GetTextExtent(wxT("X"), &m_width, &m_height);
       m_width = 0;
     }
     else
       dc.GetTextExtent(m_text, &m_width, &m_height);
-    m_width = m_width + 2*SCALE_PX(2, scale);
-    m_height = m_height + 2*SCALE_PX(2, scale);
-    if (m_isHidden) {
+    m_width = m_width + 2 * SCALE_PX(2, scale);
+    m_height = m_height + 2 * SCALE_PX(2, scale);
+    if (m_isHidden)
+    {
       m_height = 0;
-      m_width = -2*MC_CELL_SKIP;
+      m_width = -2 * MC_CELL_SKIP;
     }
-    m_center = m_height/2;
+    m_center = m_height / 2;
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -111,12 +116,17 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize, false);
 
-  if (DrawThisCell(parser, point) && !m_isHidden) {
+  if (DrawThisCell(parser, point) && !m_isHidden)
+  {
     SetFont(parser, fontsize);
     SetForeground(parser);
 
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
+                  point.x + SCALE_PX(2, scale),
+                  point.y - m_center + SCALE_PX(2, scale));
+    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("inf"))
+      dc.DrawText(GetSymbolString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
@@ -136,7 +146,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
 
-  int fontsize1 = (int) (((double)fontsize)*scale + 0.5);
+  int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
   if (m_isFolded)
@@ -145,15 +155,22 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsBold(TS_HIDDEN_GROUP),
                       parser.IsUnderlined(TS_HIDDEN_GROUP),
                       parser.GetFontName()));
-  else if (m_textStyle == TS_SPECIAL_CONSTANT) {
+  else if (m_textStyle == TS_SPECIAL_CONSTANT)
+  {
     if (parser.HaveSymbolFont() && m_text == wxT("%pi"))
-      dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
+      dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
                         parser.IsItalic(TS_GREEK_CONSTANT),
                         parser.IsBold(TS_GREEK_CONSTANT),
                         parser.IsUnderlined(TS_GREEK_CONSTANT),
-                        parser.GetSymbolFontName(),
-                        parser.GetSymbolFontEncoding()));
+                        parser.GetGreekFontName(),
+                        parser.GetGreekFontEncoding()));
+    else if (parser.HaveSymbolFont() && m_text == wxT("inf"))
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_NORMAL_TEXT),
+                        parser.IsBold(TS_NORMAL_TEXT),
+                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.GetSymbolFontName()));
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -161,15 +178,16 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName()));
   }
-  else if (m_textStyle == TS_GREEK_CONSTANT) {
+  else if (m_textStyle == TS_GREEK_CONSTANT)
+  {
     if (parser.HaveSymbolFont())
-      dc.SetFont(wxFont(fontsize1 + parser.GetSymbolFontAdj(),
+      dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
                         parser.IsItalic(TS_GREEK_CONSTANT),
                         parser.IsBold(TS_GREEK_CONSTANT),
                         parser.IsUnderlined(TS_GREEK_CONSTANT),
-                        parser.GetSymbolFontName(),
-                        parser.GetSymbolFontEncoding()));
+                        parser.GetGreekFontName(),
+                        parser.GetGreekFontEncoding()));
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -201,6 +219,12 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsBold(TS_INPUT),
                       parser.IsUnderlined(TS_INPUT),
                       parser.GetFontName()));
+  else if (m_type == MC_TYPE_COMMENT)
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      parser.IsItalic(TS_STRING),
+                      parser.IsBold(TS_STRING),
+                      parser.IsUnderlined(TS_STRING),
+                      parser.GetFontName()));
   else
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(m_textStyle),
@@ -213,60 +237,70 @@ void TextCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
 #if wxCHECK_VERSION(2, 5, 3)
-  if (m_highlight) {
+  if (m_highlight)
+  {
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
-    return;
+    return ;
   }
-  switch(m_type) {
-    case MC_TYPE_PROMPT:
-      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
-      break;
-    case MC_TYPE_MAIN_PROMPT:
-      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
-      break;
-    case MC_TYPE_ERROR:
-      dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
-      break;
-    case MC_TYPE_INPUT:
-      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
-      break;
-    case MC_TYPE_LABEL:
-      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
-      break;
-    default:
-      dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
-      break;
+  switch (m_type)
+  {
+  case MC_TYPE_PROMPT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
+    break;
+  case MC_TYPE_MAIN_PROMPT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
+    break;
+  case MC_TYPE_ERROR:
+    dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
+    break;
+  case MC_TYPE_INPUT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
+    break;
+  case MC_TYPE_LABEL:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
+    break;
+  case MC_TYPE_COMMENT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_STRING)));
+    break;
+  default:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
+    break;
   }
 #else
-  if (m_highlight) {
+  if (m_highlight)
+  {
     dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_HIGHLIGHT))));
-    return;
+    return ;
   }
-  switch(m_type) {
-    case MC_TYPE_PROMPT:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
-      break;
-    case MC_TYPE_MAIN_PROMPT:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
-      break;
-    case MC_TYPE_ERROR:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
-      break;
-    case MC_TYPE_INPUT:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
-      break;
-    case MC_TYPE_LABEL:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
-      break;
-    default:
-      dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(m_textStyle))));
-      break;
+  switch (m_type)
+  {
+  case MC_TYPE_PROMPT:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
+    break;
+  case MC_TYPE_MAIN_PROMPT:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
+    break;
+  case MC_TYPE_ERROR:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
+    break;
+  case MC_TYPE_INPUT:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
+    break;
+  case MC_TYPE_LABEL:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
+    break;
+  case MC_TYPE_COMMENT:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_STRING))));
+    break;
+  default:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(m_textStyle))));
+    break;
   }
 #endif
 }
 bool TextCell::IsOperator()
 {
-  if (wxString(wxT("+*/-")).Find(m_text)>=0)
+  if (wxString(wxT("+*/-")).Find(m_text) >= 0)
     return true;
   return false;
 }
@@ -299,6 +333,18 @@ void TextCell::Fold(bool fold)
     m_text = m_text + wxT(" << Hidden expression. >>");
   else
     m_text = m_text.Left(m_text.Length() - 25);
+}
+
+wxString TextCell::GetSymbolString(CellParser& parser)
+{
+#if defined __WXMSW__
+  if (m_text == wxT("inf"))
+    return wxT("\xA5");
+  else
+    return m_text;
+#else
+  return m_text;
+#endif
 }
 
 wxString TextCell::GetGreekString(CellParser& parser)

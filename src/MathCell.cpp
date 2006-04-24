@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "MathCell.h"
 
@@ -47,16 +46,17 @@ MathCell::MathCell()
  * Derived classes must test if m_next if not NULL end delete it!!!
  */
 MathCell::~MathCell()
-{
-}
+{}
 
 /***
  * Append new cell to the end of group.
  */
 void MathCell::AppendCell(MathCell *p_next)
 {
-  if (p_next == NULL) return;
-  if (m_next == NULL) {
+  if (p_next == NULL)
+    return ;
+  if (m_next == NULL)
+  {
     m_next = p_next;
     m_next->m_previous = this;
     MathCell *tmp = this;
@@ -65,7 +65,8 @@ void MathCell::AppendCell(MathCell *p_next)
     tmp->m_nextToDraw = p_next;
     p_next->m_previousToDraw = tmp;
   }
-  else m_next->AppendCell(p_next);
+  else
+    m_next->AppendCell(p_next);
 };
 
 /***
@@ -74,17 +75,17 @@ void MathCell::AppendCell(MathCell *p_next)
 int MathCell::GetMaxCenter()
 {
   int center = m_isBroken ? 0 : m_center;
-  if (m_maxCenter == -1) {
+  if (m_maxCenter == -1)
+  {
     if (m_nextToDraw == NULL)
       m_maxCenter = center;
-    else {
+    else
+    {
       // If the next cell is on a new line, maxCenter is m_center
-      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken) {
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
         m_maxCenter = center;
-      }
-      else {
+      else
         m_maxCenter = MAX(center, m_nextToDraw->GetMaxCenter());
-      }
     }
   }
   return m_maxCenter;
@@ -96,16 +97,16 @@ int MathCell::GetMaxCenter()
 int MathCell::GetMaxDrop()
 {
   int drop = m_isBroken ? 0 : (m_height - m_center);
-  if (m_maxDrop == -1) {
+  if (m_maxDrop == -1)
+  {
     if (m_nextToDraw == NULL)
       m_maxDrop = drop;
-    else {
-      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken) {
+    else
+    {
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
         m_maxDrop = drop;
-      }
-      else {
+      else
         m_maxDrop = MAX(drop, m_nextToDraw->GetMaxDrop());
-      }
     }
   }
   return m_maxDrop;
@@ -124,7 +125,8 @@ int MathCell::GetMaxHeight()
  */
 int MathCell::GetFullWidth(double scale)
 {
-  if (m_fullWidth == -1) {
+  if (m_fullWidth == -1)
+  {
     if (m_next == NULL)
       m_fullWidth = m_width;
     else
@@ -140,7 +142,8 @@ int MathCell::GetFullWidth(double scale)
 int MathCell::GetLineWidth(double scale)
 {
   int width = m_isBroken ? 0 : m_width;
-  if (m_lineWidth == -1) {
+  if (m_lineWidth == -1)
+  {
     if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine)
       m_lineWidth = width;
     else
@@ -158,7 +161,8 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   m_currentPoint.x = point.x;
   m_currentPoint.y = point.y;
-  if (m_nextToDraw != NULL && all) {
+  if (m_nextToDraw != NULL && all)
+  {
     double scale = parser.GetScale();
     point.x += m_width + SCALE_PX(MC_CELL_SKIP, scale);
     m_nextToDraw->Draw(parser, point, fontsize, true);
@@ -211,12 +215,12 @@ bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
 wxRect MathCell::GetRect(bool all)
 {
   if (m_isBroken)
-    return wxRect(-1,-1,0,0);
+    return wxRect( -1, -1, 0, 0);
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
                   GetLineWidth(1.0), GetMaxHeight());
-  return wxRect(m_currentPoint.x, m_currentPoint.y-m_center,
-                                  m_width, m_height);
+  return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
+                m_width, m_height);
 }
 
 /***
@@ -229,7 +233,7 @@ void MathCell::DrawBoundingBox(wxDC& dc, bool all)
   int x = rect.GetX(), y = rect.GetY();
   int width = rect.GetWidth(), height = rect.GetHeight();
   dc.SetLogicalFunction(wxINVERT);
-  dc.DrawRectangle(x-1, y-1, width+2, height+2);
+  dc.DrawRectangle(x - 1, y - 1, width + 2, height + 2);
 }
 
 /***
@@ -237,8 +241,10 @@ void MathCell::DrawBoundingBox(wxDC& dc, bool all)
  */
 bool MathCell::IsCompound()
 {
-  if (IsOperator()) return true;
-  if (m_next == NULL) return false;
+  if (IsOperator())
+    return true;
+  if (m_next == NULL)
+    return false;
   return m_next->IsCompound();
 }
 
@@ -275,7 +281,8 @@ wxString MathCell::GetDiffPart()
 void MathCell::SelectRect(wxRect& rect, MathCell** first, MathCell** last)
 {
   SelectFirst(rect, first);
-  if (*first != NULL) {
+  if (*first != NULL)
+  {
     *last = *first;
     (*first)->SelectLast(rect, last);
     if (*last == *first)
@@ -333,9 +340,9 @@ bool MathCell::ContainsRect(wxRect& sm, bool all)
 {
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&
-      big.y <= sm.y &&
-      big.x + big.width >= sm.x + sm.width &&
-      big.y + big.height >= sm.y + sm.height)
+          big.y <= sm.y &&
+          big.x + big.width >= sm.x + sm.width &&
+          big.y + big.height >= sm.y + sm.height)
     return true;
   return false;
 }
@@ -361,7 +368,8 @@ void MathCell::Unbreak(bool all)
 {
   ResetData();
   m_isBroken = false;
-  if (!m_isFolded) {
+  if (!m_isFolded)
+  {
     m_nextToDraw = m_next;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = this;
@@ -378,13 +386,13 @@ void MathCell::SetPen(CellParser& parser)
   wxDC& dc = parser.GetDC();
   if (m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_HIGHLIGHT),
-                                              1, wxSOLID)));
+                1, wxSOLID)));
   else if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
-                                              1, wxSOLID)));
+                1, wxSOLID)));
   else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
-                                              1, wxSOLID)));
+                1, wxSOLID)));
 }
 
 /***
@@ -395,5 +403,15 @@ void MathCell::UnsetPen(CellParser& parser)
   wxDC& dc = parser.GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_NORMAL_TEXT),
-                                              1, wxSOLID)));
+                1, wxSOLID)));
+}
+
+/***
+ * Copy all importatn data from s to t
+ */
+
+void MathCell::CopyData(MathCell* s, MathCell* t)
+{
+  t->m_forceBreakLine = s->m_forceBreakLine;
+  t->m_type = s->m_type;
 }

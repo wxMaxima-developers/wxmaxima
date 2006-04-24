@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "Bitmap.h"
 #include "CellParser.h"
@@ -68,7 +67,8 @@ void Bitmap::RecalculateSize()
   wxMemoryDC dc;
   CellParser parser(dc);
 
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
     tmp->RecalculateSize(parser, fontsize, false);
     tmp = tmp->m_nextToDraw;
   }
@@ -84,7 +84,8 @@ void Bitmap::RecalculateWidths()
   wxMemoryDC dc;
   CellParser parser(dc);
 
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
     tmp->RecalculateWidths(parser, fontsize, false);
     tmp = tmp->m_next;
   }
@@ -97,12 +98,15 @@ void Bitmap::BreakLines()
 
   MathCell* tmp = m_tree;
 
-  while (tmp != NULL) {
-    if (!tmp->m_isBroken) {
+  while (tmp != NULL)
+  {
+    if (!tmp->m_isBroken)
+    {
       tmp->BreakLine(false);
       tmp->ResetData();
       if (tmp->BreakLineHere() ||
-         (currentWidth + tmp->GetWidth() >= fullWidth)) {
+              (currentWidth + tmp->GetWidth() >= fullWidth))
+      {
         currentWidth = tmp->GetWidth();
         tmp->BreakLine(true);
       }
@@ -122,9 +126,12 @@ void Bitmap::GetMaxPoint(int* width, int* height)
   *height = MC_BASE_INDENT;
   bool bigSkip = false;
   bool firstCell = true;
-  while (tmp != NULL) {
-    if (!tmp->m_isBroken) {
-      if (tmp->BreakLineHere() || firstCell) {
+  while (tmp != NULL)
+  {
+    if (!tmp->m_isBroken)
+    {
+      if (tmp->BreakLineHere() || firstCell)
+      {
         firstCell = false;
         currentHeight += tmp->GetMaxHeight();
         if (bigSkip)
@@ -133,7 +140,8 @@ void Bitmap::GetMaxPoint(int* width, int* height)
         currentWidth = MC_BASE_INDENT + tmp->GetWidth();
         *width = MAX(currentWidth + MC_BASE_INDENT, *width);
       }
-      else {
+      else
+      {
         currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
         *width = MAX(currentWidth - MC_CELL_SKIP, *width);
       }
@@ -152,7 +160,8 @@ void Bitmap::Draw()
   dc.SetBackground(wxBrush(wxT("white"), wxSOLID));
   dc.Clear();
 
-  if (tmp != NULL) {
+  if (tmp != NULL)
+  {
     wxPoint point;
     point.x = 0;
     point.y = tmp->GetMaxCenter();
@@ -163,10 +172,13 @@ void Bitmap::Draw()
 
     CellParser parser(dc);
 
-    while(tmp != NULL) {
-      if (!tmp->m_isBroken) {
+    while (tmp != NULL)
+    {
+      if (!tmp->m_isBroken)
+      {
         tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        {
           point.x = 0;
           point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
           if (tmp->m_bigSkip)
@@ -176,8 +188,10 @@ void Bitmap::Draw()
         else
           point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       }
-      else {
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+      else
+      {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        {
           point.x = 0;
           point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
           if (tmp->m_bigSkip)
@@ -200,7 +214,8 @@ bool Bitmap::ToFile(wxString file)
     res = m_bmp.SaveFile(file, wxBITMAP_TYPE_XPM);
   else if (file.Right(4) == wxT(".jpg"))
     res = m_bmp.SaveFile(file, wxBITMAP_TYPE_JPEG);
-  else {
+  else
+  {
     if (file.Right(4) != wxT(".png"))
       file = file + wxT(".png");
     res = m_bmp.SaveFile(file, wxBITMAP_TYPE_PNG);
@@ -210,7 +225,8 @@ bool Bitmap::ToFile(wxString file)
 
 bool Bitmap::ToClipboard()
 {
-  if (wxTheClipboard->Open()) {
+  if (wxTheClipboard->Open())
+  {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
     wxTheClipboard->Close();
     return res;
@@ -220,9 +236,11 @@ bool Bitmap::ToClipboard()
 
 void Bitmap::DestroyTree()
 {
-  if (m_tree!=NULL) {
+  if (m_tree != NULL)
+  {
     MathCell *tmp1, *tmp = m_tree;
-    while (tmp!=NULL) {
+    while (tmp != NULL)
+    {
       tmp1 = tmp;
       tmp = tmp->m_next;
       tmp1->Destroy();
@@ -240,9 +258,12 @@ void Bitmap::BreakUpCells()
   wxMemoryDC dc;
   CellParser parser(dc);
 
-  while (tmp != NULL) {
-    if (tmp->GetWidth() > BM_FULL_WIDTH) {
-      if (tmp->BreakUp()) {
+  while (tmp != NULL)
+  {
+    if (tmp->GetWidth() > BM_FULL_WIDTH)
+    {
+      if (tmp->BreakUp())
+      {
         tmp->RecalculateWidths(parser, fontsize, false);
         tmp->RecalculateSize(parser, fontsize, false);
       }

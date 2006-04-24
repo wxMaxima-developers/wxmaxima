@@ -1,23 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "wxMaximaFrame.h"
 
@@ -34,7 +32,7 @@
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
                              long style):
-  wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
+    wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
   panel = new wxPanel(this, -1);
 
@@ -42,17 +40,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
   m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
                                 wxDefaultPosition, wxDefaultSize,
-                                wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|
+                                wxTE_PROCESS_ENTER | wxTE_PROCESS_TAB |
                                 wxTE_RICH);
   button_0 = new wxBitmapButton(panel, button_enter,
                                 wxBitmap(ok_xpm));
   button_1 = new wxBitmapButton(panel, button_long_input,
                                 wxBitmap(multiline_xpm));
-
   // buttons
   int panelSize = 1;
   wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
-  if (panelSize == 2) {
+  if (panelSize == 2)
+  {
     button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
     button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
     button_4 = new wxButton(panel, button_factor, _("Factor"));
@@ -74,7 +72,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
     button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
     button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
   }
-  else if (panelSize == 1) {
+  else if (panelSize == 1)
+  {
     button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
     button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
     button_4 = new wxButton(panel, button_factor, _("Factor"));
@@ -96,7 +95,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetupToolBar();
 
   frame_1_statusbar = CreateStatusBar(2);
-  int widths[] = {-1, 300};
+  int widths[] =
+    {
+      -1, 300
+    };
   SetStatusWidths(2, widths);
 
   set_properties();
@@ -106,11 +108,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 void wxMaximaFrame::set_properties()
 {
   SetIcon(wxICON(maximaicon));
-  SetTitle(wxString::Format(_("wxMaxima %s"), wxT(VERSION)));
+  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
   bool fixed = true;
-  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
-  if (fixed) {
-  // Set font for input line
+  wxConfig::Get()
+  ->Read(wxT("fixedFontTC"), &fixed )
+  ;
+  if (fixed )
+  {
+    // Set font for input line
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
     m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #elif defined (__WXMAC__)
@@ -118,13 +123,13 @@ void wxMaximaFrame::set_properties()
 #else
     m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
+
   }
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
 #if wxCHECK_VERSION(2, 5, 0)
   m_console->SetMinSize(wxSize(100, 100));
 #endif
-
   button_0->SetToolTip(_("Enter command"));
   button_1->SetToolTip(_("Multiline input"));
   frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
@@ -152,54 +157,56 @@ void wxMaximaFrame::do_layout()
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
 
   // buttons
-  if (panelSize == 2) {
-    grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_10, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_11, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_14, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_15, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_16, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_17, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_18, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_19, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+  if (panelSize == 2)
+  {
+    grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_4, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_5, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_6, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_7, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_8, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_9, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_10, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_11, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_12, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_13, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_14, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_15, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_16, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_17, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_18, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_19, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
   }
-  else {
-    grid_sizer_2->Add(button_2, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_3, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_4, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_5, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_12, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_20, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_6, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_7, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_8, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_9, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_13, 0, wxALL|wxEXPAND, 0);
-    grid_sizer_2->Add(button_21, 0, wxALL|wxEXPAND, 0);
+  else
+  {
+    grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_4, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_5, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_12, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_6, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_7, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_8, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_9, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_13, 0, wxALL | wxEXPAND, 0);
+    grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
   }
 
   // input line
-  sizer_3->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|
+  sizer_3->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL |
                wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(m_inputLine, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_0, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(m_inputLine, 0, wxALL | wxEXPAND | wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(button_0, 0, wxALL | wxALIGN_CENTER_VERTICAL, 2);
+  sizer_3->Add(button_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 2);
   sizer_3->AddGrowableCol(1);
 
   // all
-  grid_sizer_1->Add(m_console, 1, wxALL|wxEXPAND, 0);
-  grid_sizer_1->Add(sizer_3, 1, wxALL|wxEXPAND, 0);
+  grid_sizer_1->Add(m_console, 1, wxALL | wxEXPAND, 0);
+  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 0);
 
   if (panelSize > 0)
     grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
@@ -223,27 +230,25 @@ void wxMaximaFrame::SetupMenu()
   wxMenuItem *tmp_menu_item;
 
 #if defined __WXGTK20__
- #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
+#define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
   tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
   tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
   (menu)->Append(tmp_menu_item);
 #else
- #define APPEND_MENU_ITEM(menu, id, label, help, stock) \
+#define APPEND_MENU_ITEM(menu, id, label, help, stock) \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 #endif
 
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open session\tCtrl-O"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
                    _("Open session from a file"), wxT("gtk-open"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save session\tCtrl-S"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
+                   _("Save session to a file"), wxT("gtk-save"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save as"),
                    _("Save session to a file"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
-                   _("Load a maxima package file"), wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_batch_id, _("&Batch file\tCtrl-B"),
-                   _("Batch maxima file"), wxT("gtk-execute"));
-  wxglade_tmp_menu_1->Append(menu_create_batch, _("&Create batch file"),
-                   _("Create a batch file from current session"));
+                             _("Load a maxima package file"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export to HTML"),
                    _("Export console output to HTML file"), wxT("stock_export"));
   wxglade_tmp_menu_1->AppendSeparator();
@@ -258,6 +263,7 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
 #endif
+
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_EXIT, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
@@ -278,12 +284,27 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from console as image"),
                              wxITEM_NORMAL);
 #endif
+
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_unfold, _("Unfold"),
+                             _("Unfold all folded groups"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_long_input, _("Long input\tCtrl-I"),
+                             _("Open multiline input dialog"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_edit_input, _("&Edit input\tCtrl-E"),
+                             _("Edit selected input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
+                             _("Re-evaluate selected input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_add_comment, _("Add comment"),
+                             _("Insert comment before selected input"));
+  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert input"),
+                             _("Insert new input before selected input"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
                    _("Delete the contents of console."), wxT("gtk-clear"));
@@ -292,8 +313,11 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                    _("Decrease fontsize in console"), wxT("gtk-zoom-out"));
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
-                             _("Set focus to the input line"),
-                             wxITEM_NORMAL);
+                             _("Set focus to the input line"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_goto_output, _("Go to output window\tF3"),
+                             _("Set focus to the output window"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tF2"),
+                             _("Select last input in the console!"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
@@ -309,7 +333,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Clear memory"),
                              _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &path"),
-                   _("Add a directory to search path"),wxT("gtk-add"));
+                   _("Add a directory to search path"), wxT("gtk-add"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_functions, _("Show &functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
@@ -414,7 +438,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_4, _("&Algebra"));
 
   // Calculus menu
-  wxMenu*  wxglade_tmp_menu_6 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_6 = new wxMenu();
   wxglade_tmp_menu_6->Append(menu_integrate, _("&Integrate ..."),
                              _("Integrate expression"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_risch, _("Risch integration ..."),
@@ -478,7 +502,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Expand an expression"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_logexpand, _("Expand logarithms"),
                              _("Convert logarithm of product to sum of logarithms"),
-                              wxITEM_NORMAL);
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_logcontract, _("Contract logarithms"),
                              _("Convert sum of logarithms to logarithm of product"),
                              wxITEM_NORMAL);
@@ -486,55 +510,55 @@ void wxMaximaFrame::SetupMenu()
   // Factorials and gamma
   wxMenu* wxglade_tmp_menu_5_sub1 = new wxMenu();
   wxglade_tmp_menu_5_sub1->Append(menu_to_fact, _("Convert to &factorials"),
-                             _("Convert binomials, beta and gamma function to factorials"),
-                             wxITEM_NORMAL);
+                                  _("Convert binomials, beta and gamma function to factorials"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub1->Append(menu_to_gamma, _("Convert to &gamma"),
-                             _("Convert binomials, factorials and beta function to gamma function"),
-                             wxITEM_NORMAL);
+                                  _("Convert binomials, factorials and beta function to gamma function"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub1->Append(menu_factsimp, _("&Simplify factorials"),
-                             _("Simplify an expression containing factorials"),
-                             wxITEM_NORMAL);
+                                  _("Simplify an expression containing factorials"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub1->Append(menu_factcomb, _("&Combine factorials"),
-                             _("Combine factorials in an expression"),
-                             wxITEM_NORMAL);
+                                  _("Combine factorials in an expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("Factorials and &gamma"),
                              wxglade_tmp_menu_5_sub1,
                              _("Functions for simplifying factorials and gamma function"));
   // Trigonometric
   wxMenu* wxglade_tmp_menu_5_sub2 = new wxMenu();
   wxglade_tmp_menu_5_sub2->Append(menu_trigsimp, _("&Simplify trigonometric"),
-                             _("Simplify trigonometric expression"),
-                             wxITEM_NORMAL);
+                                  _("Simplify trigonometric expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub2->Append(menu_trigreduce, _("&Reduce trigonometric"),
-                             _("Reduce trigonometric expression"),
-                             wxITEM_NORMAL);
+                                  _("Reduce trigonometric expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub2->Append(menu_trigexpand, _("&Expand trigonometric"),
-                             _("Expand trigonometric expression"),
-                             wxITEM_NORMAL);
+                                  _("Expand trigonometric expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("&Canonical form"),
-                             _("Convert trigonometric expression to canonical quasilinear form"),
-                             wxITEM_NORMAL);
+                                  _("Convert trigonometric expression to canonical quasilinear form"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Trigonometric simplification"),
                              wxglade_tmp_menu_5_sub2,
                              _("Functions for simplifying trigonometric expressions"));
   // Complex
   wxMenu* wxglade_tmp_menu_5_sub3 = new wxMenu();
   wxglade_tmp_menu_5_sub3->Append(menu_rectform, _("Convert to &rectform"),
-                             _("Convert complex expression to rect form"),
-                             wxITEM_NORMAL);
+                                  _("Convert complex expression to rect form"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_polarform, _("Convert to &polarform"),
-                             _("Convert complex expression to polar form"),
-                             wxITEM_NORMAL);
+                                  _("Convert complex expression to polar form"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_realpart, _("Get real p&art"),
-                             _("Get the real part of complex expression"),
-                             wxITEM_NORMAL);
+                                  _("Get the real part of complex expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_imagpart, _("Get &imaginary part"),
-                             _("Get the imaginary part of complex expression"),
-                             wxITEM_NORMAL);
+                                  _("Get the imaginary part of complex expression"),
+                                  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_demoivre, _("&Demoivre"),
-                             _("Convert exponential function of imaginary argument to trigonometric form"), wxITEM_NORMAL);
+                                  _("Convert exponential function of imaginary argument to trigonometric form"), wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
-                             _("Conver trigonometric functions to exponential form"), wxITEM_NORMAL);
+                                  _("Conver trigonometric functions to exponential form"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Complex simplification"),
                              wxglade_tmp_menu_5_sub3,
                              _("Functions for complex simplification"));
@@ -584,7 +608,7 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("Maxima &help\tF1"),
                    _("Show maxima help"), wxT("gtk-help"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_describe, _("&Describe\tCtrl-H"),
-                   _("Show the description of a command"),wxT("gtk-help"));
+                   _("Show the description of a command"), wxT("gtk-help"));
   wxglade_tmp_menu_7->Append(menu_example, _("&Example"),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);

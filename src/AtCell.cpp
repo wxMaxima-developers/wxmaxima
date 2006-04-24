@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "AtCell.h"
 
@@ -39,10 +38,10 @@ AtCell::~AtCell()
 MathCell* AtCell::Copy(bool all)
 {
   AtCell* tmp = new AtCell;
+  CopyData(this, tmp);
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
-  tmp->m_type = m_type;
-  if (all && m_next!= NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
@@ -62,7 +61,7 @@ void AtCell::Destroy()
 void AtCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return;
+    return ;
   if (m_indexCell != NULL)
     delete m_indexCell;
   m_indexCell = index;
@@ -71,7 +70,7 @@ void AtCell::SetIndex(MathCell *index)
 void AtCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return;
+    return ;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -81,7 +80,7 @@ void AtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(8, fontsize-4), true);
+  m_indexCell->RecalculateWidths(parser, MAX(8, fontsize - 4), true);
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
             SCALE_PX(4, scale);
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -91,7 +90,7 @@ void AtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(8, fontsize-4), true);
+  m_indexCell->RecalculateSize(parser, MAX(8, fontsize - 4), true);
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX(7, scale);
   m_center = m_baseCell->GetCenter();
@@ -102,7 +101,8 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point)) {
+  if (DrawThisCell(parser, point))
+  {
     wxPoint bs, in;
 
     bs.x = point.x;
@@ -111,8 +111,8 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-                   + m_indexCell->GetMaxCenter() -  SCALE_PX(7, scale);
-    m_indexCell->Draw(parser, in, MAX(8, fontsize-3), true);
+           + m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
+    m_indexCell->Draw(parser, in, MAX(8, fontsize - 3), true);
     SetPen(parser);
     dc.DrawLine(in.x - SCALE_PX(2, scale),
                 bs.y - m_baseCell->GetMaxCenter(),
@@ -140,7 +140,8 @@ void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
     m_baseCell->SelectRect(rect, first, last);
   else if (m_indexCell->ContainsRect(rect))
     m_indexCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }

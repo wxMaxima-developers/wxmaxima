@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include <wx/wx.h>
 #include <wx/image.h>
@@ -43,9 +42,11 @@ enum {
   language_id
 };
 
-class ExamplePanel : public wxPanel {
+class ExamplePanel : public wxPanel
+{
 public:
-  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size) {
+  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
+  {
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
     m_size = 12;
 #elif defined (__WXMAC__)
@@ -53,8 +54,10 @@ public:
 #else
     m_size = 10;
 #endif
+
   };
-  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font) {
+  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font)
+  {
     m_fgColor = fg_color;
     m_italic = italic;
     m_bold = bold;
@@ -70,11 +73,12 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-class Config: public wxDialog {
+class Config: public wxDialog
+{
 public:
   Config(wxWindow* parent, int id, const wxString& title,
-         const wxPoint& pos=wxDefaultPosition,
-         const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
+         const wxPoint& pos = wxDefaultPosition,
+         const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 private:
   // begin wxGlade: Config::methods
   void set_properties();
@@ -124,9 +128,9 @@ protected:
   ExamplePanel* label_11;
   // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
-        m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
-        m_styleBackground, m_styleNumber, m_styleString, m_styleGreek,
-        m_styleVariable, m_styleHighlight;
+  m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
+  m_styleBackground, m_styleNumber, m_styleString, m_styleGreek,
+  m_styleVariable, m_styleHighlight;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
   void OnSymbolBrowse(wxCommandEvent& event);

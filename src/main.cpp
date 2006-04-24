@@ -1,23 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
@@ -66,9 +64,10 @@ bool MyApp::OnInit()
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("language"), &lang);
 
-  if (rs==0)
+  if (rs == 0)
     have_pos = false;
-  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0) {
+  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0)
+  {
     x = 40;
     y = 40;
     h = 650;
@@ -86,6 +85,7 @@ bool MyApp::OnInit()
 #elif defined (__WXMAC__)
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
 #endif
+
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
@@ -98,8 +98,16 @@ bool MyApp::OnInit()
     frame->Maximize(true);
 
   frame->Show(true);
-  if (argc == 2)
-    frame->SetOpenFile(wxString(argv[1]));
+  if (argc == 2) {
+    wxString file(argv[1]);
+    if (file.Right(4) == wxT(".wxm"))
+    {
+      if (!frame->ReadBatchFile(file))
+        frame->SetOpenFile(file);
+    }
+    else
+      frame->SetOpenFile(file);
+  }
   frame->InitSession();
   if (!frame->IsIconized())
     frame->ShowTip(false);

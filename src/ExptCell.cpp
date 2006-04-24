@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "ExptCell.h"
 #include "TextCell.h"
@@ -34,10 +33,10 @@ ExptCell::ExptCell() : MathCell()
 MathCell* ExptCell::Copy(bool all)
 {
   ExptCell* tmp = new ExptCell;
+  CopyData(this, tmp);
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetPower(m_powCell->Copy(true));
-  tmp->m_type = m_type;
-  if (all && m_next!=NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
@@ -69,12 +68,13 @@ void ExptCell::Destroy()
 void ExptCell::SetPower(MathCell *power)
 {
   if (power == NULL)
-    return;
+    return ;
   if (m_powCell != NULL)
     delete m_powCell;
   m_powCell = power;
 
-  if (!m_powCell->IsCompound()) {
+  if (!m_powCell->IsCompound())
+  {
     m_open->m_isHidden = true;
     m_close->m_isHidden = true;
   }
@@ -87,7 +87,7 @@ void ExptCell::SetPower(MathCell *power)
 void ExptCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return;
+    return ;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -104,7 +104,7 @@ void ExptCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (m_isBroken)
     m_powCell->RecalculateWidths(parser, fontsize, true);
   else
-    m_powCell->RecalculateWidths(parser, MAX(8, fontsize-3), true);
+    m_powCell->RecalculateWidths(parser, MAX(8, fontsize - 3), true);
   m_width = m_baseCell->GetFullWidth(scale) + m_powCell->GetFullWidth(scale) -
             SCALE_PX(2, scale);
   m_exp->RecalculateWidths(parser, fontsize, true);
@@ -120,11 +120,11 @@ void ExptCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   if (m_isBroken)
     m_powCell->RecalculateSize(parser, fontsize, true);
   else
-    m_powCell->RecalculateSize(parser, MAX(8, fontsize-3), true);
+    m_powCell->RecalculateSize(parser, MAX(8, fontsize - 3), true);
   m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
-             SCALE_PX((8*fontsize)/10+4, scale);
+             SCALE_PX((8 * fontsize) / 10 + 4, scale);
   m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
-             SCALE_PX((8*fontsize)/10+4, scale);
+             SCALE_PX((8 * fontsize) / 10 + 4, scale);
   m_exp->RecalculateSize(parser, fontsize, true);
   m_open->RecalculateSize(parser, fontsize, true);
   m_close->RecalculateSize(parser, fontsize, true);
@@ -143,19 +143,21 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     pw.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
-                   + m_powCell->GetMaxCenter() +
-                     SCALE_PX((8*fontsize)/10+4, scale);
-    m_powCell->Draw(parser, pw, MAX(8, fontsize-3), true);
+           + m_powCell->GetMaxCenter() +
+           SCALE_PX((8 * fontsize) / 10 + 4, scale);
+    m_powCell->Draw(parser, pw, MAX(8, fontsize - 3), true);
   }
 
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString ExptCell::ToString(bool all) {
+wxString ExptCell::ToString(bool all)
+{
   if (m_isBroken)
     return wxEmptyString;
   wxString s = m_baseCell->ToString(true) + wxT("^");
-  if (m_isMatrix) s += wxT("^");
+  if (m_isMatrix)
+    s += wxT("^");
   if (m_powCell->IsCompound())
     s += wxT("(") + m_powCell->ToString(true) + wxT(")");
   else
@@ -183,7 +185,8 @@ void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     m_powCell->SelectRect(rect, first, last);
   else if (m_baseCell->ContainsRect(rect))
     m_baseCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }
@@ -191,7 +194,8 @@ void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 
 bool ExptCell::BreakUp()
 {
-  if (!m_isBroken) {
+  if (!m_isBroken)
+  {
     m_isBroken = true;
     m_baseCell->m_previousToDraw = this;
     m_last1->m_nextToDraw = m_exp;
@@ -213,7 +217,8 @@ bool ExptCell::BreakUp()
 
 void ExptCell::Unbreak(bool all)
 {
-  if (m_isBroken) {
+  if (m_isBroken)
+  {
     m_baseCell->Unbreak(true);
     m_powCell->Unbreak(true);
   }

@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "Config.h"
 
@@ -26,37 +25,38 @@
 
 // Should match whatever  is put in the m_language
 const int langs[] =
-{
-  wxLANGUAGE_DEFAULT,
-  wxLANGUAGE_ENGLISH,
-  wxLANGUAGE_FRENCH,
-  wxLANGUAGE_GERMAN,
-  wxLANGUAGE_ITALIAN,
-  wxLANGUAGE_SPANISH
-};
+  {
+    wxLANGUAGE_DEFAULT,
+    wxLANGUAGE_ENGLISH,
+    wxLANGUAGE_FRENCH,
+    wxLANGUAGE_GERMAN,
+    wxLANGUAGE_ITALIAN,
+    wxLANGUAGE_SPANISH
+  };
 
 #define LANGUAGE_NUMBER 6
 
-const wxString colorlist[] = {
-  wxT("aquamarine"), wxT("black"), wxT("blue"), wxT("blue violet"),
-  wxT("brown"),  wxT("cadet blue"),  wxT("coral"), wxT("cornflower blue"),
-  wxT("cyan"), wxT("dark grey"), wxT("dark green"), wxT("dark olive green"),
-  wxT("dark orchid"), wxT("dark slate blue"), wxT("dark slate grey"),
-  wxT("dark turquoise"), wxT("dim grey"), wxT("firebrick"), wxT("forest green"),
-  wxT("gold"), wxT("goldenrod"), wxT("grey"), wxT("green"), wxT("green yellow"),
-  wxT("indian red"), wxT("khaki"), wxT("light blue"), wxT("light grey"),
-  wxT("light steel blue"), wxT("lime green"), wxT("magenta"), wxT("maroon"),
-  wxT("medium aquamarine"), wxT("medium blue"), wxT("medium forrest green"),
-  wxT("medium goldenrod"), wxT("medium orchid"), wxT("medium sea green"),
-  wxT("medium slate blue"), wxT("medium spring green"), wxT("medium turquoise"),
-  wxT("medium violet red"), wxT("midnight blue"), wxT("navy"), wxT("orange"),
-  wxT("orange red"), wxT("orchid"), wxT("pale green"), wxT("pink"), wxT("plum"),
-  wxT("purple"), wxT("red"), wxT("salmon"), wxT("sea green"), wxT("sienna"),
-  wxT("sky blue"), wxT("slate blue"), wxT("spring green"), wxT("steel blue"),
-  wxT("tan"), wxT("thistle"), wxT("turquoise"), wxT("violet"),
-  wxT("violet red"), wxT("wheat"), wxT("white"), wxT("yellow"),
-  wxT("yellow green")
-};
+const wxString colorlist[] =
+  {
+    wxT("aquamarine"), wxT("black"), wxT("blue"), wxT("blue violet"),
+    wxT("brown"), wxT("cadet blue"), wxT("coral"), wxT("cornflower blue"),
+    wxT("cyan"), wxT("dark grey"), wxT("dark green"), wxT("dark olive green"),
+    wxT("dark orchid"), wxT("dark slate blue"), wxT("dark slate grey"),
+    wxT("dark turquoise"), wxT("dim grey"), wxT("firebrick"), wxT("forest green"),
+    wxT("gold"), wxT("goldenrod"), wxT("grey"), wxT("green"), wxT("green yellow"),
+    wxT("indian red"), wxT("khaki"), wxT("light blue"), wxT("light grey"),
+    wxT("light steel blue"), wxT("lime green"), wxT("magenta"), wxT("maroon"),
+    wxT("medium aquamarine"), wxT("medium blue"), wxT("medium forrest green"),
+    wxT("medium goldenrod"), wxT("medium orchid"), wxT("medium sea green"),
+    wxT("medium slate blue"), wxT("medium spring green"), wxT("medium turquoise"),
+    wxT("medium violet red"), wxT("midnight blue"), wxT("navy"), wxT("orange"),
+    wxT("orange red"), wxT("orchid"), wxT("pale green"), wxT("pink"), wxT("plum"),
+    wxT("purple"), wxT("red"), wxT("salmon"), wxT("sea green"), wxT("sienna"),
+    wxT("sky blue"), wxT("slate blue"), wxT("spring green"), wxT("steel blue"),
+    wxT("tan"), wxT("thistle"), wxT("turquoise"), wxT("violet"),
+    wxT("violet red"), wxT("wheat"), wxT("white"), wxT("yellow"),
+    wxT("yellow green")
+  };
 
 #define COLORLIST_LENGTH 68
 
@@ -80,16 +80,18 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_6 = new wxStaticText(notebook_1_pane_1, -1, _("Additional parameters:"));
   m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
-  const wxString m_language_choices[] = {
-    _("(Use default language)"), _("English"),
-    _("French"),  _("German"), _("Italian"), _("Spanish")
-  };
-  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 6, m_language_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  const wxString m_language_choices[] =
+    {
+      _("(Use default language)"), _("English"),
+      _("French"), _("German"), _("Italian"), _("Spanish")
+    };
+  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 6, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
-  const wxString m_panelSize_choices[] = {
-    _("Off"), _("Basic"), _("Full")
-  };
-  m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN|wxCB_READONLY);
+  const wxString m_panelSize_choices[] =
+    {
+      _("Off"), _("Basic"), _("Full")
+    };
+  m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
@@ -98,42 +100,44 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
   m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
-  const wxString m_fontFamily_choices[] = {
-
-  };
-  m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN|wxCB_READONLY|wxCB_SORT);
+  const wxString m_fontFamily_choices[] =
+    {}
+    ;
+  m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT);
   SetupFontList();
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
   m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
-  const wxString m_styleFor_choices[] = {
-    _("Variables"), _("Numbers"),  _("Special constants"), _("Greek constants"),
-    _("Strings"), _("Text"), _("Input"), _("Main prompts"),
-    _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background")
+  const wxString m_styleFor_choices[] =
+    {
+      _("Variables"), _("Numbers"), _("Special constants"), _("Greek constants"),
+      _("Strings"), _("Text"), _("Input"), _("Main prompts"),
+      _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background")
 
-  };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 13, m_styleFor_choices, wxCB_DROPDOWN|wxCB_READONLY);
-  const wxString m_styleColor_choices[] = {
-    _("aquamarine"), _("black"), _("blue"), _("blue violet"),
-    _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
-    _("cyan"), _("dark grey"), _("dark green"), _("dark olive green"),
-    _("dark orchid"), _("dark slate blue"), _("dark slate grey"),
-    _("dark turquoise"), _("dim grey"), _("firebrick"), _("forest green"),
-    _("gold"), _("goldenrod"), _("grey"), _("green"), _("green yellow"),
-    _("indian red"), _("khaki"), _("light blue"), _("light grey"),
-    _("light steel blue"), _("lime green"), _("magenta"), _("maroon"),
-    _("medium aquamarine"), _("medium blue"), _("medium forrest green"),
-    _("medium goldenrod"), _("medium orchid"), _("medium sea green"),
-    _("medium slate blue"), _("medium spring green"), _("medium turquoise"),
-    _("medium violet red"), _("midnight blue"), _("navy"), _("orange"),
-    _("orange red"), _("orchid"), _("pale green"), _("pink"), _("plum"),
-    _("purple"), _("red"), _("salmon"), _("sea green"), _("sienna"),
-    _("sky blue"), _("slate blue"), _("spring green"), _("steel blue"),
-    _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
-    _("wheat"), _("white"), _("yellow"), _("yellow green")
-  };
-  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN|wxCB_READONLY);
+    };
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 13, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  const wxString m_styleColor_choices[] =
+    {
+      _("aquamarine"), _("black"), _("blue"), _("blue violet"),
+      _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
+      _("cyan"), _("dark grey"), _("dark green"), _("dark olive green"),
+      _("dark orchid"), _("dark slate blue"), _("dark slate grey"),
+      _("dark turquoise"), _("dim grey"), _("firebrick"), _("forest green"),
+      _("gold"), _("goldenrod"), _("grey"), _("green"), _("green yellow"),
+      _("indian red"), _("khaki"), _("light blue"), _("light grey"),
+      _("light steel blue"), _("lime green"), _("magenta"), _("maroon"),
+      _("medium aquamarine"), _("medium blue"), _("medium forrest green"),
+      _("medium goldenrod"), _("medium orchid"), _("medium sea green"),
+      _("medium slate blue"), _("medium spring green"), _("medium turquoise"),
+      _("medium violet red"), _("midnight blue"), _("navy"), _("orange"),
+      _("orange red"), _("orchid"), _("pale green"), _("pink"), _("plum"),
+      _("purple"), _("red"), _("salmon"), _("sea green"), _("sienna"),
+      _("sky blue"), _("slate blue"), _("spring green"), _("steel blue"),
+      _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
+      _("wheat"), _("white"), _("yellow"), _("yellow green")
+    };
+  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -180,7 +184,7 @@ void Config::set_properties()
   int fntsz = 12;
   bool match = true, showLongExpr = false;
   bool showHeader = true, fixedFontTC = true;
-  int rs=0;
+  int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
 
@@ -197,11 +201,11 @@ void Config::set_properties()
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
 
-  int i=0;
-  for (i=0; i<LANGUAGE_NUMBER; i++)
+  int i = 0;
+  for (i = 0; i < LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
       break;
-  if (i<LANGUAGE_NUMBER)
+  if (i < LANGUAGE_NUMBER)
     m_language->SetSelection(i);
   else
     m_language->SetSelection(0);
@@ -214,7 +218,7 @@ void Config::set_properties()
     m_maximaProgram->SetValue(wxT("maxima"));
   m_additionalParameters->SetValue(mc);
   m_fontSize->SetValue(fntsz);
-  if (rs==1)
+  if (rs == 1)
     m_saveSize->SetValue(true);
   else
     m_saveSize->SetValue(false);
@@ -228,6 +232,7 @@ void Config::set_properties()
 #else
   m_button2->SetDefault();
 #endif
+
   ReadStyles();
 }
 
@@ -253,31 +258,31 @@ void Config::do_layout()
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
 
   // Title
-  sizer_1->Add(label_1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 3);
+  sizer_1->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 3);
 
   // TAB 1
   // Maxima options box
-  grid_sizer_2->Add(label_5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_maximaProgram, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_mpBrowse, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(label_6, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(label_5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_2->Add(label_6, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
-  sizer_4->Add(grid_sizer_2, 1, wxALL|wxEXPAND, 3);
-  sizer_3->Add(sizer_4, 1, wxALL|wxEXPAND, 3);
+  sizer_4->Add(grid_sizer_2, 1, wxALL | wxEXPAND, 3);
+  sizer_3->Add(sizer_4, 1, wxALL | wxEXPAND, 3);
 
   // TAB 2
   // wxMaxima options box
-  grid_sizer_5->Add(label_4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(m_language, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(label_9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(m_panelSize, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(label_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(label_9, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(m_panelSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
   sizer_6->Add(m_saveSize, 0, wxALL, 3);
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
   sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
-  sizer_3->Add(sizer_6, 1, wxALL|wxEXPAND, 3);
+  sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
   // Tab 1
   notebook_1_pane_1->SetAutoLayout(true);
@@ -288,33 +293,33 @@ void Config::do_layout()
 
   // TAB 2
   // Font box
-  grid_sizer_1->Add(label_7, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_fontSize, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(label_8, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_fontFamily, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_9->Add(grid_sizer_1, 1, wxALL|wxEXPAND, 3);
-  sizer_8->Add(sizer_9, 1, wxALL|wxEXPAND, 3);
+  grid_sizer_1->Add(label_7, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_fontSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_fontFamily, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
+  sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
   // Greek font box
-  grid_sizer_3->Add(m_symbolFontOk, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(m_getSymbolFont, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(label_10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  sizer_12->Add(grid_sizer_3, 1, wxALL|wxEXPAND, 3);
-  sizer_8->Add(sizer_12, 1, wxALL|wxEXPAND, 3);
+  grid_sizer_3->Add(m_symbolFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(m_getSymbolFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_12->Add(grid_sizer_3, 1, wxALL | wxEXPAND, 3);
+  sizer_8->Add(sizer_12, 1, wxALL | wxEXPAND, 3);
 
   // Styles box
-  grid_sizer_4->Add(m_styleFor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
-  grid_sizer_4->Add(m_styleColor, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_boldCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_italicCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_underlinedCB, 0, wxALL|wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(sizer_5, 1, wxALL|wxEXPAND, 3);
+  grid_sizer_4->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
-  grid_sizer_4->Add(label_11, 0, wxALL|wxEXPAND, 3);
-  sizer_11->Add(grid_sizer_4, 1, wxALL|wxEXPAND, 3);
-  sizer_8->Add(sizer_11, 1, wxALL|wxEXPAND, 3);
+  grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND, 3);
+  sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
+  sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
 
   // Tab 2
   notebook_1_pane_2->SetAutoLayout(true);
@@ -329,15 +334,15 @@ void Config::do_layout()
 
   // Add notebook to dialog
 #if wxCHECK_VERSION(2,5,3)
-  sizer_1->Add(notebook_1, 1, wxEXPAND|wxALL, 2);
+  sizer_1->Add(notebook_1, 1, wxEXPAND | wxALL, 2);
 #else
-  sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND|wxALL, 2);
+  sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND | wxALL, 2);
 #endif
 
   // OK and cancel buttons
-  sizer_2->Add(m_button1, 0, wxLEFT|wxRIGHT, 5);
-  sizer_2->Add(m_button2, 0, wxLEFT|wxRIGHT, 5);
-  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
+  sizer_2->Add(m_button1, 0, wxLEFT | wxRIGHT, 5);
+  sizer_2->Add(m_button2, 0, wxLEFT | wxRIGHT, 5);
+  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
 
   SetAutoLayout(true);
   SetSizer(sizer_1);
@@ -351,7 +356,7 @@ void Config::do_layout()
 
 void Config::OnOk(wxCommandEvent& event)
 {
-  int i=0;
+  int i = 0;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
   wxString maxima = m_maximaProgram->GetValue();
@@ -369,7 +374,8 @@ void Config::OnOk(wxCommandEvent& event)
   else
     config->Write(wxT("pos-restore"), 0);
   i = m_language->GetSelection();
-  if (i>-1 && i<LANGUAGE_NUMBER) {
+  if (i > -1 && i < LANGUAGE_NUMBER)
+  {
     config->Write(wxT("language"), langs[i]);
   }
   config->Flush();
@@ -394,7 +400,9 @@ void Config::OnMpBrowse(wxCommandEvent& event)
                                  wxEmptyString, _("All|*"),
                                  wxOPEN);
 #endif
-  if (file.Length()) {
+
+  if (file.Length())
+  {
     m_maximaProgram->SetValue(file);
   }
 }
@@ -411,7 +419,9 @@ void Config::OnSymbolBrowse(wxCommandEvent& event)
                                           false, m_symbolFontName,
                                           wxFONTENCODING_ISO8859_7));
 #endif
-  if (symbol.Ok()) {
+
+  if (symbol.Ok())
+  {
     m_symbolFontName = symbol.GetFaceName();
     m_getSymbolFont->SetLabel(m_symbolFontName);
   }
@@ -439,7 +449,7 @@ void Config::ReadStyles()
   config->Read(wxT("Style/Symbol/adj"), &adj);
   m_symbolFontAdj->SetValue(adj);
   m_symbolFontOk->SetValue(symbolOk);
-  if (m_symbolFontName.Length()>0)
+  if (m_symbolFontName.Length() > 0)
     m_getSymbolFont->SetLabel(m_symbolFontName);
   m_getSymbolFont->Enable(symbolOk);
   m_symbolFontAdj->Enable(symbolOk);
@@ -605,8 +615,8 @@ void Config::ReadStyles()
 
   // Set values in dialog
   m_styleFor->SetSelection(0);
-  int i=0;
-  for (i=0; i<COLORLIST_LENGTH; i++)
+  int i = 0;
+  for (i = 0; i < COLORLIST_LENGTH; i++)
     if (m_styleNormalText.color == colorlist[i])
       break;
   m_styleColor->SetSelection(i);
@@ -743,7 +753,7 @@ void Config::WriteStyles()
 
 void Config::OnChangeColor(wxCommandEvent& event)
 {
-  style* tmp =GetStylePointer();
+  style* tmp = GetStylePointer();
 
   int i = m_styleColor->GetSelection();
   tmp->color = colorlist[i];
@@ -756,25 +766,29 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   style* tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
 
-  if (tmp == &m_styleHiddenText) {
+  if (tmp == &m_styleHiddenText)
+  {
     m_styleColor->Enable(false);
   }
-  else {
+  else
+  {
     m_styleColor->Enable(true);
-    int i=0;
-    for (i=0; i<COLORLIST_LENGTH; i++)
+    int i = 0;
+    for (i = 0; i < COLORLIST_LENGTH; i++)
       if (colorlist[i] == tmp->color)
         break;
-    if (i<COLORLIST_LENGTH)
+    if (i < COLORLIST_LENGTH)
       m_styleColor->SetSelection(i);
   }
 
-  if (st == 11 || st == 12) {
+  if (st == 11 || st == 12)
+  {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
     m_underlinedCB->Enable(false);
   }
-  else {
+  else
+  {
     m_boldCB->Enable(true);
     m_italicCB->Enable(true);
     m_underlinedCB->Enable(true);
@@ -805,7 +819,10 @@ void Config::OnCheckSymbol(wxCommandEvent& event)
 class FixedFonts : public wxFontEnumerator
 {
 public:
-  const wxArrayString& GetFacenames() { return m_facenames; }
+  const wxArrayString& GetFacenames()
+  {
+    return m_facenames;
+  }
 protected:
   virtual bool OnFacename(const wxString& facename)
   {
@@ -813,7 +830,7 @@ protected:
     return true;
   }
 private:
-   wxArrayString m_facenames;
+  wxArrayString m_facenames;
 };
 
 void Config::SetupFontList()
@@ -822,7 +839,7 @@ void Config::SetupFontList()
   enumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, true);
 
   const wxArrayString& strings = enumerator.GetFacenames();
-  for (unsigned int i=0; i<strings.Count(); i++)
+  for (unsigned int i = 0; i < strings.Count(); i++)
     m_fontFamily->Append(strings.Item(i));
 }
 
@@ -841,45 +858,45 @@ style* Config::GetStylePointer()
   style* tmp = &m_styleNormalText;
   switch (m_styleFor->GetSelection())
   {
-    case 1:
-      tmp = &m_styleNumber;
-      break;
-    case 2:
-      tmp = &m_styleSpecial;
-      break;
-    case 3:
-      tmp = &m_styleGreek;
-      break;
-    case 4:
-      tmp = &m_styleString;
-      break;
-    case 5:
-      tmp = &m_styleNormalText;
-      break;
-    case 6:
-      tmp = &m_styleInput;
-      break;
-    case 7:
-      tmp = &m_styleMainPrompt;
-      break;
-    case 8:
-      tmp = &m_styleOtherPrompt;
-      break;
-    case 9:
-      tmp = &m_styleLabel;
-      break;
-    case 10:
-      tmp = &m_styleHiddenText;
-      break;
-    case 11:
-      tmp = &m_styleHighlight;
-      break;
-    case 12:
-      tmp = &m_styleBackground;
-      break;
-    default:
-      tmp = &m_styleVariable;
-      break;
+  case 1:
+    tmp = &m_styleNumber;
+    break;
+  case 2:
+    tmp = &m_styleSpecial;
+    break;
+  case 3:
+    tmp = &m_styleGreek;
+    break;
+  case 4:
+    tmp = &m_styleString;
+    break;
+  case 5:
+    tmp = &m_styleNormalText;
+    break;
+  case 6:
+    tmp = &m_styleInput;
+    break;
+  case 7:
+    tmp = &m_styleMainPrompt;
+    break;
+  case 8:
+    tmp = &m_styleOtherPrompt;
+    break;
+  case 9:
+    tmp = &m_styleLabel;
+    break;
+  case 10:
+    tmp = &m_styleHiddenText;
+    break;
+  case 11:
+    tmp = &m_styleHighlight;
+    break;
+  case 12:
+    tmp = &m_styleBackground;
+    break;
+  default:
+    tmp = &m_styleVariable;
+    break;
   }
   return tmp;
 }
@@ -903,6 +920,7 @@ void Config::UpdateExample()
 #else
   label_11->SetBackgroundColour(*(wxTheColourDatabase->FindColour(m_styleBackground.color)));
 #endif
+
   label_11->Refresh();
 }
 
@@ -946,8 +964,8 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
   dc.SetFont(wxFont(m_size, wxMODERN, italic, bold, underlined, m_font));
   dc.GetTextExtent(example, &text_width, &text_height);
 
-  dc.DrawText(example, (panel_width - text_width)/2,
-                       (panel_height - text_height)/2);
+  dc.DrawText(example, (panel_width - text_width) / 2,
+              (panel_height - text_height) / 2);
 }
 
 BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)

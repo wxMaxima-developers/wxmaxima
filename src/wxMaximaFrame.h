@@ -1,24 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-
-
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
@@ -39,8 +36,8 @@ enum {
   input_line_id,
   menu_open_id,
   menu_save_id,
+  menu_save_as_id,
   menu_load_id,
-  menu_batch_id,
   menu_sconsole_id,
   menu_interrupt_id,
   menu_restart_id,
@@ -180,15 +177,23 @@ enum {
   tb_pref,
   tb_interrupt,
   tb_help,
-  menu_create_batch
+  menu_edit_input,
+  menu_reeval_input,
+  menu_long_input,
+  menu_add_comment,
+  menu_insert_input,
+  menu_unfold,
+  menu_select_last,
+  menu_goto_output
 };
 
-class wxMaximaFrame: public wxFrame {
+class wxMaximaFrame: public wxFrame
+{
 public:
   wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
-                const wxPoint& pos=wxDefaultPosition,
-                const wxSize& size=wxDefaultSize,
-                long style=wxDEFAULT_FRAME_STYLE);
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = wxDEFAULT_FRAME_STYLE);
 private:
   void set_properties();
   void do_layout();
@@ -225,6 +230,5 @@ protected:
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
 };
-
 
 #endif // WXMAXIMAFRAME_H

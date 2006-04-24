@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "SubCell.h"
 
@@ -38,10 +37,10 @@ SubCell::~SubCell()
 MathCell* SubCell::Copy(bool all)
 {
   SubCell* tmp = new SubCell;
+  CopyData(this, tmp);
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
-  tmp->m_type = m_type;
-  if (all && m_next!=NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
@@ -60,7 +59,7 @@ void SubCell::Destroy()
 void SubCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return;
+    return ;
   if (m_indexCell != NULL)
     delete m_indexCell;
   m_indexCell = index;
@@ -69,7 +68,7 @@ void SubCell::SetIndex(MathCell *index)
 void SubCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return;
+    return ;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -79,7 +78,7 @@ void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(8, fontsize-3), true);
+  m_indexCell->RecalculateWidths(parser, MAX(8, fontsize - 3), true);
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) -
             SCALE_PX(2, parser.GetScale());
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -88,16 +87,17 @@ void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void SubCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(8, fontsize-3), true);
+  m_indexCell->RecalculateSize(parser, MAX(8, fontsize - 3), true);
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             SCALE_PX((8*fontsize)/10+4, parser.GetScale());
+             SCALE_PX((8 * fontsize) / 10 + 4, parser.GetScale());
   m_center = m_baseCell->GetCenter();
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
-  if (DrawThisCell(parser, point)) {
+  if (DrawThisCell(parser, point))
+  {
     double scale = parser.GetScale();
     wxPoint bs, in;
 
@@ -108,8 +108,8 @@ void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           SCALE_PX((8*fontsize)/10+4, scale);
-    m_indexCell->Draw(parser, in, MAX(8, fontsize-3), true);
+           SCALE_PX((8 * fontsize) / 10 + 4, scale);
+    m_indexCell->Draw(parser, in, MAX(8, fontsize - 3), true);
   }
 
   MathCell::Draw(parser, point, fontsize, all);
@@ -135,7 +135,8 @@ void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
     m_indexCell->SelectRect(rect, first, last);
   else if (m_baseCell->ContainsRect(rect))
     m_baseCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }

@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2005-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "CellParser.h"
 
@@ -43,8 +42,7 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
 }
 
 CellParser::~CellParser()
-{
-}
+{}
 
 void CellParser::ReadStyle()
 {
@@ -243,15 +241,24 @@ int CellParser::IsUnderlined(int st)
   return 0;
 }
 
-wxFontEncoding CellParser::GetSymbolFontEncoding()
+wxString CellParser::GetSymbolFontName()
+{
+#if defined __WXMSW__
+  return wxT("Symbol");
+#else
+  return GetFontName();
+#endif
+}
+
+wxFontEncoding CellParser::GetGreekFontEncoding()
 {
 #if defined __WXGTK20__
   return wxFONTENCODING_DEFAULT;
 #else
  #if defined __WXMSW__
-    return wxFONTENCODING_CP1253;
+  return wxFONTENCODING_CP1253;
  #else
-    return wxFONTENCODING_ISO8859_7;
+  return wxFONTENCODING_ISO8859_7;
  #endif
 #endif
 }

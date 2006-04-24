@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "SqrtCell.h"
 #include "TextCell.h"
@@ -42,9 +41,9 @@ SqrtCell::~SqrtCell()
 MathCell* SqrtCell::Copy(bool all)
 {
   SqrtCell* tmp = new SqrtCell;
+  CopyData(this, tmp);
   tmp->SetInner(m_innerCell->Copy(true));
-  tmp->m_type = m_type;
-  if (all && m_next!=NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
@@ -60,7 +59,7 @@ void SqrtCell::Destroy()
 void SqrtCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
-    return;
+    return ;
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
@@ -75,7 +74,7 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_innerCell->RecalculateWidths(parser, fontsize, true);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
-            3*SCALE_PX(1, scale)+1;
+            3 * SCALE_PX(1, scale) + 1;
   m_open->RecalculateWidths(parser, fontsize, all);
   m_close->RecalculateWidths(parser, fontsize, all);
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -94,7 +93,8 @@ void SqrtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
 void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
-  if (DrawThisCell(parser, point)) {
+  if (DrawThisCell(parser, point))
+  {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
 
@@ -148,7 +148,8 @@ void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
   if (m_innerCell->ContainsRect(rect))
     m_innerCell->SelectRect(rect, first, last);
 
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }
@@ -156,7 +157,8 @@ void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 
 bool SqrtCell::BreakUp()
 {
-  if (!m_isBroken) {
+  if (!m_isBroken)
+  {
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;

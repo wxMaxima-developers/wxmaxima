@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "IntegrateWiz.h"
 
@@ -27,23 +26,23 @@ enum {
 IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
                            const wxString& title, const wxPoint& pos,
                            const wxSize& size, long style):
-  wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_1 = new wxStaticText(this, -1, _("Integrate"));
   label_2 = new wxStaticText(this, -1, _("Integrate:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(230,-1));
+                              wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("by variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
-                              wxSize(110,-1));
+                              wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, definite_id, _("Definite integration"));
   label_4 = new wxStaticText(this, -1, _("from:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
-                              wxSize(110,-1));
+                              wxSize(110, -1));
   button_3 = new wxButton(this, special_from, _("Special"));
   label_5 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
-                              wxSize(110,-1));
+                              wxSize(110, -1));
   button_4 = new wxButton(this, special_to, _("Special"));
   checkbox_2 = new wxCheckBox(this, -1, _("Numerical integration"));
   static_line_1 = new wxStaticLine(this, -1);
@@ -69,6 +68,7 @@ void IntegrateWiz::set_properties()
 #else
   button_2->SetDefault();
 #endif
+
   text_ctrl_3->Enable(false);
   button_3->Enable(false);
   text_ctrl_4->Enable(false);
@@ -84,30 +84,30 @@ void IntegrateWiz::do_layout()
   wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(5, 2, 3, 3);
   wxFlexGridSizer* grid_sizer_6 = new wxFlexGridSizer(1, 2, 0, 0);
   wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(1, 2, 0, 0);
-  grid_sizer_3->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 2);
-  grid_sizer_4->Add(label_2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_3->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
+  grid_sizer_4->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
   grid_sizer_4->Add(text_ctrl_1, 0, wxALL, 2);
-  grid_sizer_4->Add(label_3, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
+  grid_sizer_4->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
   grid_sizer_4->Add(text_ctrl_2, 0, wxALL, 2);
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_1, 0, wxALL, 2);
-  grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_5->Add(text_ctrl_3, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_5->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 2);
   grid_sizer_5->Add(button_3, 0, wxALL, 2);
   grid_sizer_5->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_5, 1, 0, 0);
-  grid_sizer_4->Add(label_5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 2);
-  grid_sizer_6->Add(text_ctrl_4, 0, wxALL|wxEXPAND, 2);
+  grid_sizer_4->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_6->Add(text_ctrl_4, 0, wxALL | wxEXPAND, 2);
   grid_sizer_6->Add(button_4, 0, wxALL, 2);
   grid_sizer_6->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_6, 1, 0, 0);
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_2, 0, wxALL, 2);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
-  grid_sizer_3->Add(static_line_1, 0, wxEXPAND|wxLEFT|wxRIGHT, 2);
-  sizer_3->Add(button_1, 0, wxLEFT|wxRIGHT, 5);
-  sizer_3->Add(button_2, 0, wxLEFT|wxRIGHT, 5);
-  grid_sizer_3->Add(sizer_3, 1, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 3);
+  grid_sizer_3->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  sizer_3->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
+  sizer_3->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
+  grid_sizer_3->Add(sizer_3, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
   SetAutoLayout(true);
   SetSizer(grid_sizer_3);
   grid_sizer_3->Fit(this);
@@ -127,7 +127,8 @@ wxString IntegrateWiz::GetValue()
   s += text_ctrl_2->GetValue();
   wxString from = text_ctrl_3->GetValue();
   wxString to = text_ctrl_4->GetValue();
-  if (checkbox_1->GetValue()) {
+  if (checkbox_1->GetValue())
+  {
     s += wxT(", ");
     s += from;
     s += wxT(", ");
@@ -149,15 +150,18 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent& event)
   checkbox_2->Enable(enable);
 }
 
-void IntegrateWiz::OnButton(wxCommandEvent& event) {
-  switch (event.GetId()) {
+void IntegrateWiz::OnButton(wxCommandEvent& event)
+{
+  switch (event.GetId())
+  {
   case special_from:
     {
       wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
                             wxT("- Infinity")};
       wxString choice = wxGetSingleChoice(_("Select a constant"),
                                           _("Constant"), 4, choices, this);
-      if (choice.Length()) {
+      if (choice.Length())
+      {
         if (choice == wxT("Pi"))
           text_ctrl_3->SetValue(wxT("%pi"));
         else if (choice == wxT("E"))
@@ -175,7 +179,8 @@ void IntegrateWiz::OnButton(wxCommandEvent& event) {
                             wxT("- Infinity")};
       wxString choice = wxGetSingleChoice(_("Select a constant"),
                                           _("Constant"), 4, choices, this);
-      if (choice.Length()) {
+      if (choice.Length())
+      {
         if (choice == wxT("Pi"))
           text_ctrl_4->SetValue(wxT("%pi"));
         else if (choice == wxT("E"))

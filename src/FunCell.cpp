@@ -1,22 +1,21 @@
-/*
- *  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+///
+///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
 
 #include "FunCell.h"
 
@@ -39,10 +38,10 @@ FunCell::~FunCell()
 MathCell* FunCell::Copy(bool all)
 {
   FunCell* tmp = new FunCell;
+  CopyData(this, tmp);
   tmp->SetName(m_nameCell->Copy(true));
   tmp->SetArg(m_argCell->Copy(true));
-  tmp->m_type = m_type;
-  if (all && m_next!=NULL)
+  if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(true));
   return tmp;
 }
@@ -61,7 +60,7 @@ void FunCell::Destroy()
 void FunCell::SetName(MathCell *name)
 {
   if (name == NULL)
-    return;
+    return ;
   if (m_nameCell != NULL)
     delete m_nameCell;
   m_nameCell = name;
@@ -70,7 +69,7 @@ void FunCell::SetName(MathCell *name)
 void FunCell::SetArg(MathCell *arg)
 {
   if (arg == NULL)
-    return;
+    return ;
   if (m_argCell != NULL)
     delete m_argCell;
   m_argCell = arg;
@@ -97,7 +96,8 @@ void FunCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
 void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
-  if (DrawThisCell(parser, point)) {
+  if (DrawThisCell(parser, point))
+  {
     double scale = parser.GetScale();
 
     wxPoint name(point), arg(point);
@@ -127,7 +127,8 @@ void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
     m_nameCell->SelectRect(rect, first, last);
   else if (m_argCell->ContainsRect(rect))
     m_argCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }
@@ -135,7 +136,8 @@ void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 
 bool FunCell::BreakUp()
 {
-  if (!m_isBroken) {
+  if (!m_isBroken)
+  {
     m_isBroken = true;
     m_nameCell->m_previousToDraw = this;
     m_nameCell->m_nextToDraw = m_argCell;
@@ -151,7 +153,8 @@ bool FunCell::BreakUp()
 
 void FunCell::Unbreak(bool all)
 {
-  if (m_isBroken) {
+  if (m_isBroken)
+  {
     m_nameCell->Unbreak(true);
     m_argCell->Unbreak(true);
   }
