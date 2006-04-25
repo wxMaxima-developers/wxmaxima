@@ -172,7 +172,7 @@ public:
 
   MathCell *m_next, *m_previous;
   MathCell *m_nextToDraw, *m_previousToDraw;
-  wxPoint m_currentPoint;
+  wxPoint m_currentPoint;  // Current point in console (the center of the cell)
   bool m_bigSkip;
   bool m_isFolded;
   bool m_isBroken;

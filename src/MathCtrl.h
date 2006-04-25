@@ -114,6 +114,7 @@ public:
   void UnfoldAll();
   bool SelectPrevInput();
   bool SelectNextInput();
+  bool SelectPrompt();
   void ScrollToSelectionStart();
   bool SelectLastInput();
 protected:

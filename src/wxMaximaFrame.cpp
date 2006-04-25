@@ -301,9 +301,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Edit selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_add_comment, _("Add comment"),
+  wxglade_tmp_menu_2->Append(menu_add_comment, _("Add comment\tF6"),
                              _("Insert comment before selected input"));
-  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert input"),
+  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert input\tF7"),
                              _("Insert new input before selected input"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),

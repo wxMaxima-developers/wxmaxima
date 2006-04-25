@@ -393,12 +393,20 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
                     wxEmptyString, wxITEM_NORMAL);
 #endif
 
+  if (CanDeleteSelection())
+      popupMenu->Append(popid_delete, _("Delete selection"),
+                        wxEmptyString, wxITEM_NORMAL);
+
   popupMenu->AppendSeparator();
   if (CanEdit())
   {
     popupMenu->Append(popid_edit, _("Edit input"),
                       wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_reeval, _("Re-evaluate input"),
+                      wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(popid_add_comment, _("Add comment"),
+                      wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(popid_insert_input, _("Insert input"),
                       wxEmptyString, wxITEM_NORMAL);
   }
   else if (CanAddComment())
@@ -410,9 +418,6 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
   }
   else
   {
-    if (CanDeleteSelection())
-      popupMenu->Append(popid_delete, _("Delete selection"),
-                        wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_float, _("To float"),
                       wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
@@ -890,11 +895,15 @@ void MathCtrl::OnChar(wxKeyEvent& event)
 {
   switch (event.GetKeyCode())
   {
+  case WXK_LEFT:
+    if (SelectPrompt())
+      return;
   case WXK_UP:
     if (!SelectPrevInput())
       event.Skip();
     break;
   case WXK_DOWN:
+  case WXK_RIGHT:
     if (!SelectNextInput())
       event.Skip();
     break;
@@ -1688,9 +1697,13 @@ bool MathCtrl::SelectPrevInput()
   MathCell *tmp = m_selectionStart;
 
   // Move in front of current input
-  if (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+  if (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
   {
-    while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+    while (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
       tmp = tmp->m_previousToDraw;
   }
 
@@ -1698,7 +1711,9 @@ bool MathCtrl::SelectPrevInput()
     return false;
 
   // Move to prev input
-  while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)
+  while (tmp != NULL &&
+      !(tmp->GetType() == MC_TYPE_INPUT ||
+        tmp->GetType() == MC_TYPE_COMMENT))
     tmp = tmp->m_previousToDraw;
 
   if (tmp == NULL)
@@ -1707,7 +1722,9 @@ bool MathCtrl::SelectPrevInput()
   // Selection ends here
   m_selectionEnd = tmp;
 
-  while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+  while (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
   {
     m_selectionStart = tmp;
     tmp = tmp->m_previousToDraw;
@@ -1725,9 +1742,13 @@ bool MathCtrl::SelectNextInput()
   MathCell *tmp = m_selectionEnd;
 
   // Move to the back of current input
-  if (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+  if (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
   {
-    while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+    while (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
       tmp = tmp->m_nextToDraw;
   }
 
@@ -1735,7 +1756,9 @@ bool MathCtrl::SelectNextInput()
     return false;
 
   // Move to next input
-  while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)
+  while (tmp != NULL &&
+      !(tmp->GetType() == MC_TYPE_INPUT ||
+        tmp->GetType() == MC_TYPE_COMMENT))
     tmp = tmp->m_nextToDraw;
 
   if (tmp == NULL)
@@ -1744,7 +1767,9 @@ bool MathCtrl::SelectNextInput()
   // Selection starts here
   m_selectionStart = tmp;
 
-  while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
+  while (tmp != NULL &&
+      (tmp->GetType() == MC_TYPE_INPUT ||
+       tmp->GetType() == MC_TYPE_COMMENT))
   {
     m_selectionEnd = tmp;
     tmp = tmp->m_nextToDraw;
@@ -1786,6 +1811,21 @@ bool MathCtrl::SelectLastInput()
   return false;
 }
 
+bool MathCtrl::SelectPrompt()
+{
+  if (m_selectionStart == NULL || m_selectionStart->m_previousToDraw == NULL)
+    return false;
+
+  if (m_selectionStart->m_previousToDraw->GetType() == MC_TYPE_MAIN_PROMPT)
+  {
+    m_selectionStart = m_selectionStart->m_previousToDraw;
+    m_selectionEnd = m_selectionStart;
+    ScrollToSelectionStart();
+    return true;
+  }
+
+  return false;
+}
 
 void MathCtrl::ScrollToSelectionStart()
 {
@@ -1802,10 +1842,10 @@ void MathCtrl::ScrollToSelectionStart()
   GetViewStart(&view_x, &view_y);
   GetSize(&width, &height);
 
-  CalcUnscrolledPosition(view_x, view_y, &view_x1, &view_y1);
+  view_y *= SCROLL_UNIT;
 
-  if ((start_y - SCROLL_UNIT < view_y1) ||
-      (end_y + end_height + SCROLL_UNIT > view_y1 + height))
+  if ((start_y - end_height - SCROLL_UNIT < view_y) ||
+      (end_y + end_height + SCROLL_UNIT > view_y + height))
   {
     Scroll(-1, MAX(start_y/SCROLL_UNIT - 2, 0));
   }

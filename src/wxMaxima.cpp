@@ -1024,8 +1024,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_edit_input, m_console->CanEdit());
   menubar->Enable(menu_reeval_input, m_console->CanEdit());
-  menubar->Enable(menu_add_comment, m_console->CanAddComment());
-  menubar->Enable(menu_insert_input, m_console->CanAddComment());
+  menubar->Enable(menu_add_comment, m_console->CanAddComment() || m_console->CanEdit());
+  menubar->Enable(menu_insert_input, m_console->CanAddComment() || m_console->CanEdit());
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -1223,7 +1223,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
       file = wxFileSelector(_("Save to file"), m_lastPath,
                             file, wxT("wxm"),
-                            _("Maxima session (*.wxm)|*.wxm|"),
+                            _("Maxima session (*.wxm)|*.wxm"),
                             wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
       {
@@ -1244,7 +1244,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       {
         file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
-                              _("Maxima session (*.wxm)|*.wxm|"),
+                              _("Maxima session (*.wxm)|*.wxm"),
                               wxSAVE | wxOVERWRITE_PROMPT);
       }
       if (file.Length())
@@ -2776,7 +2776,10 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
 void wxMaxima::PrependCell(wxCommandEvent& event)
 {
   if (!m_console->CanAddComment())
-    return;
+  {
+    if (!m_console->SelectPrompt())
+      return ;
+  }
 
   MathCell* prompt = m_console->GetSelectionStart();
 
@@ -2801,6 +2804,10 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
     DoRawConsoleAppend(_("Edit comment"), MC_TYPE_COMMENT, true);
 
   m_console->SetInsertPoint(NULL);
+
+  prompt = prompt->m_nextToDraw;
+
+  m_console->SetSelection(prompt);
 
   ResetTitle(false);
   m_inInsertMode = false;
