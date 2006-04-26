@@ -22,8 +22,8 @@
 TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
                      bool setfont, const wxPoint& pos, const wxSize& size,
                      long style):
-    wxDialog(parent, id, title, pos, size,
-             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMINIMIZE_BOX | wxMAXIMIZE_BOX),
+    wxDialog(parent, id, title, pos, size, wxRESIZE_BORDER),
+           //  wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMINIMIZE_BOX | wxMAXIMIZE_BOX),
     setFont(setfont)
 {
   text_ctrl_1 = new TextCtrl(this, -1, wxEmptyString, wxDefaultPosition,

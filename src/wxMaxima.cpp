@@ -543,10 +543,15 @@ void wxMaxima::ReadPrompt()
       {
         if (m_inInsertMode && o.StartsWith(wxT("(%i")))
         {
+          MathCell* tmp = m_console->GetInsertPoint();
           m_console->SetInsertPoint(NULL);
-          m_console->SetScrollTo( -1);
+          m_console->SetScrollTo(-1);
           m_inInsertMode = false;
           m_lastPrompt = o;
+          wxYield();  // Let's redraw the output windows so that we get new positions!
+          m_console->SetSelection(tmp);
+          if (!m_console->SelectNextInput())
+            m_console->SetSelection(NULL);
           m_console->GetLastCell()->SetValue(o);
           SetStatusText(_("Ready for user input"), 1);
         }
@@ -1438,6 +1443,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case menu_restart_id:
+    m_currentFile = wxEmptyString;
+    ResetTitle(true);
     StartMaxima();
     break;
   case menu_soft_restart:
@@ -2680,10 +2687,14 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
   // Copy the input and edit it!
   wxString text = m_console->GetString(true);
 
+  if (text.Right(1) == wxT(";"))
+    text = text.Left(text.Length()-1);
+
   TextInput *wiz = new TextInput(this);
 
   wiz->SetValue(text);
   wiz->Centre(wxBOTH);
+
   if (wiz->ShowModal() == wxID_OK)
   {
     wxString val = wiz->GetValue();
@@ -2739,8 +2750,15 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
       DoRawConsoleAppend(val, MC_TYPE_COMMENT, true);
 
       m_console->SetInsertPoint(NULL);
-
       m_console->SetScrollTo(-1);
+
+      wxYield();
+      m_console->SetSelection(beginInput);
+      if (!m_console->SelectNextInput())
+      {
+        if (!m_console->SelectPrevInput())
+          m_console->SetSelection(NULL);
+      }
 
       m_inInsertMode = false;
     }
@@ -2807,6 +2825,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 
   prompt = prompt->m_nextToDraw;
 
+  m_console->SetScrollTo(-1);
   m_console->SetSelection(prompt);
 
   ResetTitle(false);
@@ -2816,7 +2835,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 void wxMaxima::ResetTitle(bool saved)
 {
   if (m_currentFile.Length() == 0)
-    return ;
+    SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
   else if (saved != m_fileSaved)
   {
     m_fileSaved = saved;

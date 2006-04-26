@@ -51,6 +51,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size):
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
   m_last = NULL;
+  m_insertPoint = NULL;
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
@@ -807,6 +808,11 @@ void MathCtrl::DeleteSelection(bool deletePrompt)
   {
     end->m_previous->m_next = NULL;
     m_tree = end;
+    if (m_tree != NULL)
+    {
+      m_tree->m_previous = NULL;
+      m_tree->m_previousToDraw = NULL;
+    }
     delete start;
   }
   // the cell to be deleted is not the first in the tree
@@ -849,7 +855,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt)
 /***
  * Support for copying and deleting with keyboard
  */
-void MathCtrl::OnKeyUp(wxKeyEvent& event)
+void MathCtrl::OnKeyDown(wxKeyEvent& event)
 {
   switch (event.GetKeyCode())
   {
@@ -1863,7 +1869,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
   EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
   EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
-  EVT_KEY_UP(MathCtrl::OnKeyUp)
+  EVT_KEY_DOWN(MathCtrl::OnKeyDown)
   EVT_CHAR(MathCtrl::OnChar)
   EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
 END_EVENT_TABLE()

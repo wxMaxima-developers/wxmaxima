@@ -90,6 +90,10 @@ public:
   {
     m_insertPoint = insert;
   }
+  MathCell* GetInsertPoint()
+  {
+    return m_insertPoint;
+  }
   void ClearInsertPoint()
   {
     m_insertPoint = NULL;
@@ -132,7 +136,7 @@ protected:
   void OnMouseLeftDown(wxMouseEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnDoubleClick(wxMouseEvent& event);
-  void OnKeyUp(wxKeyEvent& event);
+  void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
   void SelectPoint(wxPoint& point);
   void SelectRect(wxPoint one, wxPoint two);
