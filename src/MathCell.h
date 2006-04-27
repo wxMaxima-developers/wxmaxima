@@ -40,7 +40,9 @@ enum {
   MC_TYPE_LABEL,
   MC_TYPE_INPUT,
   MC_TYPE_ERROR,
-  MC_TYPE_COMMENT
+  MC_TYPE_COMMENT,
+  MC_TYPE_SECTION,
+  MC_TYPE_TITLE
 };
 
 class MathCell
@@ -177,6 +179,15 @@ public:
   bool m_isFolded;
   bool m_isBroken;
   bool m_isHidden;
+  bool IsComment()
+  {
+    return m_type == MC_TYPE_COMMENT || m_type == MC_TYPE_SECTION ||
+           m_type == MC_TYPE_TITLE;
+  }
+  bool IsEditable()
+  {
+    return m_type == MC_TYPE_INPUT || IsComment();
+  }
 protected:
   int m_height;
   int m_width;

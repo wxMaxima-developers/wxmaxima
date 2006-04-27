@@ -640,10 +640,13 @@ void wxMaximaFrame::SetupMenu()
 
 void wxMaximaFrame::SetupToolBar()
 {
+  wxBitmap bmpOpen(open_xpm);
   wxToolBar* frame_1_toolbar = CreateToolBar();
 
+  frame_1_toolbar->SetToolBitmapSize(wxSize(bmpOpen.GetWidth(), bmpOpen.GetHeight()));
+
   frame_1_toolbar->AddTool(tb_open, _("Open"),
-                           wxBitmap(open_xpm), _("Open session"));
+                           bmpOpen, _("Open session"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            wxBitmap(save_xpm), _("Save session"));
   frame_1_toolbar->AddSeparator();

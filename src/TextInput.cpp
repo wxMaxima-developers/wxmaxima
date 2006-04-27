@@ -22,8 +22,7 @@
 TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
                      bool setfont, const wxPoint& pos, const wxSize& size,
                      long style):
-    wxDialog(parent, id, title, pos, size, wxRESIZE_BORDER),
-           //  wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMINIMIZE_BOX | wxMAXIMIZE_BOX),
+    wxDialog(parent, id, title, pos, size, style),
     setFont(setfont)
 {
   text_ctrl_1 = new TextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -52,13 +51,12 @@ void TextInput::SetValue(wxString s)
   if (s != wxT("%"))
   {
     text_ctrl_1->SetValue(s);
-    text_ctrl_1->SetInsertionPoint(text_ctrl_1->GetLastPosition());
+    //text_ctrl_1->SetInsertionPoint(text_ctrl_1->GetLastPosition());
   }
 }
 
 void TextInput::set_properties()
 {
-  SetSize(wxSize(700, 300));
   SetTitle(_("wxMaxima input"));
   if (setFont)
 
@@ -75,15 +73,14 @@ void TextInput::set_properties()
 #endif
 }
 
-
 void TextInput::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 2);
+  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 0);
   sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
   sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER | wxTOP | wxBOTTOM, 3);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER | wxTOP | wxBOTTOM, 0);
 
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

@@ -20,6 +20,9 @@
 #ifndef _TEXTINPUT_H_
 #define _TEXTINPUT_H_
 
+#define TEXT_INPUT_HEIGHT 250
+#define TEXT_INPUT_WIDTH 700
+
 #include <wx/wx.h>
 
 #include "TextCtrl.h"
@@ -29,8 +32,8 @@ class TextInput: public wxDialog
 public:
   TextInput(wxWindow* parent, int id = -1, const wxString& title = wxT(""),
             bool setfont = true, const wxPoint& pos = wxDefaultPosition,
-            const wxSize& size = wxSize(700, 300),
-            long style = wxDEFAULT_DIALOG_STYLE);
+            const wxSize& size = wxSize(TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT),
+            long style = wxRESIZE_BORDER);
   wxString GetValue();
   void SetValue(wxString s);
 private:

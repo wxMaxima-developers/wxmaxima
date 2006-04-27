@@ -1216,7 +1216,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima session (*.wxm)|*.wxm|"),
+                                     _("wxMaxima session (*.wxm)|*.wxm"),
                                      wxOPEN);
       OpenFile(file);
     }
@@ -2692,8 +2692,34 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
   TextInput *wiz = new TextInput(this);
 
+  int x, pos_x = 10; //(m_console->GetSelectionStart())->GetCurrentX();
+  int y, pos_y = (m_console->GetSelectionStart())->GetCurrentY();
+
+  m_console->CalcScrolledPosition(pos_x, pos_y, &pos_x, &pos_y);
+  pos_y = MAX(pos_y, 10);
+  pos_x = MAX(pos_x, 10);
+
+  // Position of the window
+  GetPosition(&x, &y);
+  pos_x += x;
+  pos_y += y;
+
+  // Add caption, menu and toolbar...
+  pos_y = pos_y +
+          wxSystemSettings::GetMetric(wxSYS_CAPTION_Y) +
+          wxSystemSettings::GetMetric(wxSYS_MENU_Y) +
+          wxSystemSettings::GetMetric(wxSYS_EDGE_Y) +
+          (GetToolBar()->GetToolSize()).y;
+  pos_x = pos_x +
+          wxSystemSettings::GetMetric(wxSYS_EDGE_X);
+
+  // If we are below the screen - popup above tag
+  if (pos_y + TEXT_INPUT_HEIGHT >= wxSystemSettings::GetMetric(wxSYS_SCREEN_Y))
+    pos_y -= TEXT_INPUT_HEIGHT;
+
   wiz->SetValue(text);
-  wiz->Centre(wxBOTH);
+  //wiz->Centre(wxBOTH);
+  wiz->Move(pos_x, pos_y);
 
   if (wiz->ShowModal() == wxID_OK)
   {

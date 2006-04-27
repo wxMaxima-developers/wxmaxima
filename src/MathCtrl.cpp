@@ -1528,6 +1528,10 @@ bool MathCtrl::ExportToMAC(wxString file)
     }
   }
 
+  AddLineToFile(output, wxEmptyString);
+  AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"));
+  AddLineToFile(output, wxT("\"Created widh wxMaxima\"$"));
+
   bool done = output.Write(wxTextFileType_None);
   output.Close();
 
@@ -1704,12 +1708,10 @@ bool MathCtrl::SelectPrevInput()
 
   // Move in front of current input
   if (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+      tmp->IsEditable())
   {
     while (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+      tmp->IsEditable())
       tmp = tmp->m_previousToDraw;
   }
 
@@ -1718,8 +1720,7 @@ bool MathCtrl::SelectPrevInput()
 
   // Move to prev input
   while (tmp != NULL &&
-      !(tmp->GetType() == MC_TYPE_INPUT ||
-        tmp->GetType() == MC_TYPE_COMMENT))
+      !tmp->IsEditable())
     tmp = tmp->m_previousToDraw;
 
   if (tmp == NULL)
@@ -1729,8 +1730,7 @@ bool MathCtrl::SelectPrevInput()
   m_selectionEnd = tmp;
 
   while (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+         tmp->IsEditable())
   {
     m_selectionStart = tmp;
     tmp = tmp->m_previousToDraw;
@@ -1749,12 +1749,10 @@ bool MathCtrl::SelectNextInput()
 
   // Move to the back of current input
   if (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+      tmp->IsEditable())
   {
     while (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+           tmp->IsEditable())
       tmp = tmp->m_nextToDraw;
   }
 
@@ -1763,8 +1761,7 @@ bool MathCtrl::SelectNextInput()
 
   // Move to next input
   while (tmp != NULL &&
-      !(tmp->GetType() == MC_TYPE_INPUT ||
-        tmp->GetType() == MC_TYPE_COMMENT))
+      !tmp->IsEditable())
     tmp = tmp->m_nextToDraw;
 
   if (tmp == NULL)
@@ -1774,8 +1771,7 @@ bool MathCtrl::SelectNextInput()
   m_selectionStart = tmp;
 
   while (tmp != NULL &&
-      (tmp->GetType() == MC_TYPE_INPUT ||
-       tmp->GetType() == MC_TYPE_COMMENT))
+      tmp->IsEditable())
   {
     m_selectionEnd = tmp;
     tmp = tmp->m_nextToDraw;
