@@ -89,7 +89,7 @@ void SubCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_baseCell->RecalculateSize(parser, fontsize, true);
   m_indexCell->RecalculateSize(parser, MAX(8, fontsize - 3), true);
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             SCALE_PX((8 * fontsize) / 10 + 4, parser.GetScale());
+             SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser.GetScale());
   m_center = m_baseCell->GetCenter();
   MathCell::RecalculateSize(parser, fontsize, all);
 }
@@ -108,7 +108,7 @@ void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           SCALE_PX((8 * fontsize) / 10 + 4, scale);
+           SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
     m_indexCell->Draw(parser, in, MAX(8, fontsize - 3), true);
   }
 

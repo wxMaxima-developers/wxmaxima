@@ -29,6 +29,12 @@
 #define MC_BASE_INDENT 5
 #define MC_LINE_SKIP 5
 
+#ifndef __WXMAC__
+#define MC_EXP_INDENT 4
+#else
+#define MC_EXP_INDENT 2
+#endif
+
 #include <wx/wx.h>
 #include "CellParser.h"
 #include "TextStyle.h"
