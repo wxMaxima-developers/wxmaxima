@@ -181,6 +181,8 @@ enum {
   menu_reeval_input,
   menu_long_input,
   menu_add_comment,
+  menu_add_section,
+  menu_add_title,
   menu_insert_input,
   menu_unfold,
   menu_select_last,

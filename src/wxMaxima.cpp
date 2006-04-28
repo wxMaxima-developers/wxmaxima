@@ -614,6 +614,44 @@ void wxMaxima::HandleMainPrompt(wxString o)
         }
         DoRawConsoleAppend(input, MC_TYPE_COMMENT, true);
       }
+      else if (line == wxT("/* [wxMaxima: section start ]"))
+      {
+        DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+        line = m_batchFileLines[m_batchFilePosition++];
+        bool newline = false;
+        wxString input;
+        while (line != wxT("   [wxMaxima: section end   ] */") &&
+               m_batchFilePosition < m_batchFileLines.GetCount()) {
+          if (newline)
+            input = input + wxT("\n") + line;
+          else
+          {
+            input = line;
+            newline = true;
+          }
+          line = m_batchFileLines[m_batchFilePosition++];
+        }
+        DoRawConsoleAppend(input, MC_TYPE_SECTION, true);
+      }
+      else if (line == wxT("/* [wxMaxima: title   start ]"))
+      {
+        DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+        line = m_batchFileLines[m_batchFilePosition++];
+        bool newline = false;
+        wxString input;
+        while (line != wxT("   [wxMaxima: title   end   ] */") &&
+               m_batchFilePosition < m_batchFileLines.GetCount()) {
+          if (newline)
+            input = input + wxT("\n") + line;
+          else
+          {
+            input = line;
+            newline = true;
+          }
+          line = m_batchFileLines[m_batchFilePosition++];
+        }
+        DoRawConsoleAppend(input, MC_TYPE_TITLE, true);
+      }
       else if (line == wxT("/* [wxMaxima: input   start ] */"))
       {
         line = m_batchFileLines[m_batchFilePosition++];
@@ -1030,6 +1068,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_edit_input, m_console->CanEdit());
   menubar->Enable(menu_reeval_input, m_console->CanEdit());
   menubar->Enable(menu_add_comment, m_console->CanAddComment() || m_console->CanEdit());
+  menubar->Enable(menu_add_title, m_console->CanAddComment() || m_console->CanEdit());
+  menubar->Enable(menu_add_section, m_console->CanAddComment() || m_console->CanEdit());
   menubar->Enable(menu_insert_input, m_console->CanAddComment() || m_console->CanEdit());
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
@@ -2759,6 +2799,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
     }
     else
     {
+      int type = beginInput->GetType();
       beginInput = beginInput->m_previous;
 
       m_inInsertMode = true;
@@ -2773,7 +2814,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
       m_console->SetInsertPoint(beginInput);
 
-      DoRawConsoleAppend(val, MC_TYPE_COMMENT, true);
+      DoRawConsoleAppend(val, type, true);
 
       m_console->SetInsertPoint(NULL);
       m_console->SetScrollTo(-1);
@@ -2842,10 +2883,23 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   m_inInsertMode = true;
 
   m_console->SetInsertPoint(prompt);
-  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input)
+  switch (event.GetId())
+  {
+  case popid_insert_input:
+  case menu_insert_input:
     DoRawConsoleAppend(_("Edit input"), MC_TYPE_INPUT, false);
-  else
+    break;
+  case menu_add_comment:
+  case popid_add_comment:
     DoRawConsoleAppend(_("Edit comment"), MC_TYPE_COMMENT, true);
+    break;
+  case menu_add_title:
+    DoRawConsoleAppend(_("Edit title name"), MC_TYPE_TITLE, true);
+    break;
+  case menu_add_section:
+    DoRawConsoleAppend(_("Edit section name"), MC_TYPE_SECTION, true);
+    break;
+  }
 
   m_console->SetInsertPoint(NULL);
 
@@ -3060,6 +3114,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_add_section, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_add_title, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_insert_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
@@ -3072,6 +3128,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluate)
   EVT_MENU(menu_long_input, wxMaxima::MaximaMenu)
   EVT_MENU(menu_add_comment, wxMaxima::PrependCell)
+  EVT_MENU(menu_add_section, wxMaxima::PrependCell)
+  EVT_MENU(menu_add_title, wxMaxima::PrependCell)
   EVT_MENU(popid_add_comment, wxMaxima::PrependCell)
   EVT_MENU(menu_insert_input, wxMaxima::PrependCell)
   EVT_MENU(popid_insert_input, wxMaxima::PrependCell)

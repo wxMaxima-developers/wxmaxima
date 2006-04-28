@@ -1290,17 +1290,38 @@ bool MathCtrl::ExportToHTML(wxString file)
 
   // COMMENT STYLE
   AddLineToFile(output, wxT(".comment {"));
-  if (colorString.Length())
+  if (colorMain.Length())
   {
-    wxColour color(colorString);
+    wxColour color(colorMain);
     AddLineToFile(output, wxT("  color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
-  if (boldString)
-    AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicString)
-    AddLineToFile(output, wxT("  font-style: italic;"));
+  AddLineToFile(output, wxT("}"));
+  AddLineToFile(output, wxT(".section {"));
+  if (colorMain.Length())
+  {
+    wxColour color(colorMain);
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
+  AddLineToFile(output, wxT("  font-weight: bold;"));
+  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  AddLineToFile(output, wxT("  font-size: 1.5em;"));
+  AddLineToFile(output, wxT("}"));
+  AddLineToFile(output, wxT(".title {"));
+  if (colorMain.Length())
+  {
+    wxColour color(colorMain);
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
+  AddLineToFile(output, wxT("  font-weight: bold;"));
+  AddLineToFile(output, wxT("  font-style: italic;"));
+  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  AddLineToFile(output, wxT("  font-size: 2em;"));
   AddLineToFile(output, wxT("}"));
 
   // PROMPT STYLE
@@ -1381,6 +1402,16 @@ bool MathCtrl::ExportToHTML(wxString file)
       if (type == MC_TYPE_COMMENT)
       {
         AddLineToFile(output, wxT("  <SPAN CLASS=\"comment\">"));
+        AddLineToFile(output, wxT("  <BR>"));
+      }
+      else if (type == MC_TYPE_SECTION)
+      {
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"section\">"));
+        AddLineToFile(output, wxT("  <BR>"));
+      }
+      else if (type == MC_TYPE_TITLE)
+      {
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"title\">"));
         AddLineToFile(output, wxT("  <BR>"));
       }
       else
@@ -1526,6 +1557,32 @@ bool MathCtrl::ExportToMAC(wxString file)
       }
       AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"));
     }
+
+    if (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
+    {
+      AddLineToFile(output, wxEmptyString);
+      AddLineToFile(output, wxT("/* [wxMaxima: section start ]"));
+      while (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
+      {
+        wxString input = tmp->ToString(false);
+        AddLineToFile(output, input);
+        tmp = tmp->m_next;
+      }
+      AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"));
+    }
+
+    if (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
+    {
+      AddLineToFile(output, wxEmptyString);
+      AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"));
+      while (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
+      {
+        wxString input = tmp->ToString(false);
+        AddLineToFile(output, input);
+        tmp = tmp->m_next;
+      }
+      AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"));
+    }
   }
 
   AddLineToFile(output, wxEmptyString);
@@ -1598,7 +1655,7 @@ bool MathCtrl::CanEdit()
           m_insertPoint != NULL || m_editingEnabled == false)
     return false;
   MathCell *tmp = m_selectionStart;
-  if (tmp->GetType() != MC_TYPE_INPUT && tmp->GetType() != MC_TYPE_COMMENT)
+  if (!tmp->IsEditable())
     return false;
   if (tmp->m_previous == NULL || tmp->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;

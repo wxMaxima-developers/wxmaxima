@@ -221,9 +221,21 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.GetFontName()));
   else if (m_type == MC_TYPE_COMMENT)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_STRING),
-                      parser.IsBold(TS_STRING),
-                      parser.IsUnderlined(TS_STRING),
+                      wxNORMAL,
+                      wxNORMAL,
+                      0,
+                      parser.GetFontName()));
+  else if (m_type == MC_TYPE_SECTION)
+    dc.SetFont(wxFont(fontsize1 + 4, wxMODERN,
+                      wxNORMAL,
+                      wxBOLD,
+                      1,
+                      parser.GetFontName()));
+  else if (m_type == MC_TYPE_TITLE)
+    dc.SetFont(wxFont(fontsize1 + 8, wxMODERN,
+                      wxSLANT,
+                      wxBOLD,
+                      1,
                       parser.GetFontName()));
   else
     dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -260,7 +272,9 @@ void TextCell::SetForeground(CellParser& parser)
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
     break;
   case MC_TYPE_COMMENT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_STRING)));
+  case MC_TYPE_SECTION:
+  case MC_TYPE_TITLE:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
     break;
   default:
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
@@ -290,7 +304,9 @@ void TextCell::SetForeground(CellParser& parser)
     dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
     break;
   case MC_TYPE_COMMENT:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_STRING))));
+  case MC_TYPE_TITLE:
+  case MC_TYPE_SECTION:
+    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
     break;
   default:
     dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(m_textStyle))));
