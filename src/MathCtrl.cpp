@@ -1726,12 +1726,23 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
   }
 }
 
-bool MathCtrl::CanAddComment()
+bool MathCtrl::CanAddInput()
 {
   if (m_selectionStart == m_selectionEnd &&
       m_selectionStart != NULL &&
       m_selectionStart->GetType() == MC_TYPE_MAIN_PROMPT &&
       !m_selectionStart->m_isFolded)
+    return true;
+  else if (CanEdit())
+    return true;
+  return false;
+}
+
+bool MathCtrl::CanAddComment()
+{
+  if (CanAddInput())
+    return true;
+  else if (m_selectionStart == NULL && m_tree != NULL)
     return true;
   return false;
 }
@@ -1872,10 +1883,24 @@ bool MathCtrl::SelectLastInput()
 
 bool MathCtrl::SelectPrompt()
 {
-  if (m_selectionStart == NULL || m_selectionStart->m_previousToDraw == NULL)
-    return false;
-
-  if (m_selectionStart->m_previousToDraw->GetType() == MC_TYPE_MAIN_PROMPT)
+  if (m_selectionStart == NULL)
+  {
+    m_selectionStart = m_selectionEnd = GetLastCell();
+    if (m_selectionStart == NULL)
+      return false;
+    else if(m_selectionStart->GetType() != MC_TYPE_MAIN_PROMPT)
+    {
+      m_selectionStart = m_selectionEnd = NULL;
+      return false;
+    }
+    else
+      return true;
+  }
+  else if (m_selectionStart == m_selectionEnd &&
+           m_selectionStart->GetType() == MC_TYPE_MAIN_PROMPT)
+    return true;
+  else if (m_selectionStart->m_previousToDraw != NULL &&
+           m_selectionStart->m_previousToDraw->GetType() == MC_TYPE_MAIN_PROMPT)
   {
     m_selectionStart = m_selectionStart->m_previousToDraw;
     m_selectionEnd = m_selectionStart;

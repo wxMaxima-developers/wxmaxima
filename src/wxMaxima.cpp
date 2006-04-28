@@ -1067,10 +1067,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_edit_input, m_console->CanEdit());
   menubar->Enable(menu_reeval_input, m_console->CanEdit());
-  menubar->Enable(menu_add_comment, m_console->CanAddComment() || m_console->CanEdit());
-  menubar->Enable(menu_add_title, m_console->CanAddComment() || m_console->CanEdit());
-  menubar->Enable(menu_add_section, m_console->CanAddComment() || m_console->CanEdit());
-  menubar->Enable(menu_insert_input, m_console->CanAddComment() || m_console->CanEdit());
+  menubar->Enable(menu_add_comment, m_console->CanAddComment());
+  menubar->Enable(menu_add_title, m_console->CanAddComment());
+  menubar->Enable(menu_add_section, m_console->CanAddComment());
+  menubar->Enable(menu_insert_input, m_console->CanAddInput());
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -1277,6 +1277,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         if (wxFileExists(file))
           wxRemoveFile(file);
         m_console->ExportToMAC(file);
+        m_fileSaved = false;
         ResetTitle(true);
       }
     }
@@ -2860,11 +2861,8 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
 
 void wxMaxima::PrependCell(wxCommandEvent& event)
 {
-  if (!m_console->CanAddComment())
-  {
-    if (!m_console->SelectPrompt())
-      return ;
-  }
+  if (!m_console->SelectPrompt())
+    return ;
 
   MathCell* prompt = m_console->GetSelectionStart();
 
@@ -2907,6 +2905,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 
   m_console->SetScrollTo(-1);
   m_console->SetSelection(prompt);
+  m_console->SetFocus();
 
   ResetTitle(false);
   m_inInsertMode = false;
@@ -2916,7 +2915,7 @@ void wxMaxima::ResetTitle(bool saved)
 {
   if (m_currentFile.Length() == 0)
     SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
-  else if (saved != m_fileSaved)
+  else if (m_fileSaved != saved)
   {
     m_fileSaved = saved;
     if (m_fileSaved)

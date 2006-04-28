@@ -70,6 +70,7 @@ public:
   }
   bool CanDeleteSelection();
   bool CanAddComment();
+  bool CanAddInput();
   void DeleteSelection(bool deletePrompt = true);
   bool Copy(bool lb = false);
   bool CopyBitmap();
