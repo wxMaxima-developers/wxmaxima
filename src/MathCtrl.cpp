@@ -892,6 +892,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
     else
       event.Skip();
     break;
+  case WXK_ESCAPE:
+    SetSelection(NULL);
+    Refresh();
+    break;
   default:
     event.Skip();
   }

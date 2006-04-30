@@ -280,11 +280,10 @@ void wxMaximaFrame::SetupMenu()
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
 #if defined __WXMSW__
-  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as &image"),
+  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as image"),
                              _("Copy selection from console as image"),
                              wxITEM_NORMAL);
 #endif
-
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
@@ -301,14 +300,18 @@ void wxMaximaFrame::SetupMenu()
                              _("Edit selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_add_comment, _("Insert text\tF6"),
-                             _("Insert text before selected input"));
-  wxglade_tmp_menu_2->Append(menu_add_section, _("Insert section"),
-                             _("Insert section before selected input"));
-  wxglade_tmp_menu_2->Append(menu_add_title, _("Insert title"),
-                             _("Insert title before selected input"));
-  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert input\tF7"),
+  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu();
+  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("&Input\tF7"),
                              _("Insert new input before selected input"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("&Text\tF6"),
+                             _("Insert text before selected input"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("&Section\tCtrl-F6"),
+                             _("Insert section before selected input"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("T&itle\tCtrl-Shift-F6"),
+                             _("Insert title before selected input"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("I&nsert"),
+                             wxglade_tmp_menu_2_sub1,
+                             _("Insert"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
                    _("Delete the contents of console."), wxT("gtk-clear"));

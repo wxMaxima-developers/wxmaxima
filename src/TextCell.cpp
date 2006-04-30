@@ -77,6 +77,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
+
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
     else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("inf"))
@@ -90,13 +91,16 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
     else
       dc.GetTextExtent(m_text, &m_width, &m_height);
+
     m_width = m_width + 2 * SCALE_PX(2, scale);
     m_height = m_height + 2 * SCALE_PX(2, scale);
+
     if (m_isHidden)
     {
       m_height = 0;
       m_width = -2 * MC_CELL_SKIP;
     }
+
     m_center = m_height / 2;
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -155,8 +159,10 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsBold(TS_HIDDEN_GROUP),
                       parser.IsUnderlined(TS_HIDDEN_GROUP),
                       parser.GetFontName()));
-  else if (m_textStyle == TS_SPECIAL_CONSTANT)
+  else
+  switch(m_textStyle)
   {
+  case TS_SPECIAL_CONSTANT:
     if (parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
@@ -177,9 +183,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName()));
-  }
-  else if (m_textStyle == TS_GREEK_CONSTANT)
-  {
+    break;
+  case TS_GREEK_CONSTANT:
     if (parser.HaveSymbolFont())
       dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
@@ -194,55 +199,67 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName()));
+    break;
+  default:
+    switch(m_type)
+    {
+    case MC_TYPE_MAIN_PROMPT:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_MAIN_PROMPT),
+                        parser.IsBold(TS_MAIN_PROMPT),
+                        parser.IsUnderlined(TS_MAIN_PROMPT),
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_PROMPT:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_OTHER_PROMPT),
+                        parser.IsBold(TS_OTHER_PROMPT),
+                        parser.IsUnderlined(TS_OTHER_PROMPT),
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_LABEL:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_LABEL),
+                        parser.IsBold(TS_LABEL),
+                        parser.IsUnderlined(TS_LABEL),
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_INPUT:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_INPUT),
+                        parser.IsBold(TS_INPUT),
+                        parser.IsUnderlined(TS_INPUT),
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_COMMENT:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        wxNORMAL,
+                        wxNORMAL,
+                        0,
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_SECTION:
+      dc.SetFont(wxFont(fontsize1 + 4, wxMODERN,
+                        wxNORMAL,
+                        wxBOLD,
+                        1,
+                        parser.GetFontName()));
+      break;
+    case MC_TYPE_TITLE:
+      dc.SetFont(wxFont(fontsize1 + 8, wxMODERN,
+                        wxSLANT,
+                        wxBOLD,
+                        1,
+                        parser.GetFontName()));
+      break;
+    default:
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(m_textStyle),
+                        parser.IsBold(m_textStyle),
+                        parser.IsUnderlined(m_textStyle),
+                        parser.GetFontName()));
+    }
   }
-  else if (m_type == MC_TYPE_MAIN_PROMPT)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_MAIN_PROMPT),
-                      parser.IsBold(TS_MAIN_PROMPT),
-                      parser.IsUnderlined(TS_MAIN_PROMPT),
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_PROMPT)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_OTHER_PROMPT),
-                      parser.IsBold(TS_OTHER_PROMPT),
-                      parser.IsUnderlined(TS_OTHER_PROMPT),
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_LABEL)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_LABEL),
-                      parser.IsBold(TS_LABEL),
-                      parser.IsUnderlined(TS_LABEL),
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_INPUT)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_INPUT),
-                      parser.IsBold(TS_INPUT),
-                      parser.IsUnderlined(TS_INPUT),
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_COMMENT)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      wxNORMAL,
-                      wxNORMAL,
-                      0,
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_SECTION)
-    dc.SetFont(wxFont(fontsize1 + 4, wxMODERN,
-                      wxNORMAL,
-                      wxBOLD,
-                      1,
-                      parser.GetFontName()));
-  else if (m_type == MC_TYPE_TITLE)
-    dc.SetFont(wxFont(fontsize1 + 8, wxMODERN,
-                      wxSLANT,
-                      wxBOLD,
-                      1,
-                      parser.GetFontName()));
-  else
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(m_textStyle),
-                      parser.IsBold(m_textStyle),
-                      parser.IsUnderlined(m_textStyle),
-                      parser.GetFontName()));
 }
 
 void TextCell::SetForeground(CellParser& parser)

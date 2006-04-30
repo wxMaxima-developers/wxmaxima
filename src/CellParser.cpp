@@ -213,7 +213,7 @@ void CellParser::ReadStyle()
                &m_styles[10].underlined);
 
   // Highlight
-  m_styles[10].color = m_styles[0].color;
+  m_styles[11].color = m_styles[0].color;
   config->Read(wxT("Style/Highlight/color"),
                &m_styles[11].color);
 

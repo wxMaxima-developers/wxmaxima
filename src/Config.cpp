@@ -31,10 +31,11 @@ const int langs[] =
     wxLANGUAGE_FRENCH,
     wxLANGUAGE_GERMAN,
     wxLANGUAGE_ITALIAN,
+    wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_SPANISH
   };
 
-#define LANGUAGE_NUMBER 6
+#define LANGUAGE_NUMBER 7
 
 const wxString colorlist[] =
   {
@@ -83,9 +84,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_language_choices[] =
     {
       _("(Use default language)"), _("English"),
-      _("French"), _("German"), _("Italian"), _("Spanish")
+      _("French"), _("German"), _("Italian"), _("Portuguese (Brazilian)"),
+      _("Spanish")
     };
-  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 6, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
   const wxString m_panelSize_choices[] =
     {

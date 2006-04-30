@@ -1267,7 +1267,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (m_currentFile.Length() >0)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
       file = wxFileSelector(_("Save to file"), m_lastPath,
-                            file, wxT("wxm"),
+                            file + wxT(".wxm"), wxT("wxm"),
                             _("Maxima session (*.wxm)|*.wxm"),
                             wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
@@ -1276,6 +1276,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_lastPath = wxPathOnly(file);
         if (wxFileExists(file))
           wxRemoveFile(file);
+        if (file.Right(4) != wxT(".wxm"))
+          file = file + wxT(".wxm");
         m_console->ExportToMAC(file);
         m_fileSaved = false;
         ResetTitle(true);
@@ -1297,6 +1299,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       {
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
+        if (file.Right(4) != wxT(".wxm"))
+          file = file + wxT(".wxm");
         if (wxFileExists(file))
           wxRemoveFile(file);
         m_console->ExportToMAC(file);
@@ -1306,11 +1310,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
   case menu_export_html:
     {
-      wxString file = wxFileSelector(_("Export to HTML file"), m_lastPath,
-                                     _("untitled.html"), wxT("html"),
-                                     _("HTML file (*.html)|*.html|"
-                                       "All|*"),
-                                     wxSAVE | wxOVERWRITE_PROMPT);
+      wxString file(_("untitled"));
+      if (m_currentFile.Length() >0)
+        wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
+      file = wxFileSelector(_("Export to HTML file"), m_lastPath,
+                            file + wxT(".html"), wxT("html"),
+                            _("HTML file (*.html)|*.html|"
+                              "All|*"),
+                            wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
       {
         m_lastPath = wxPathOnly(file);
