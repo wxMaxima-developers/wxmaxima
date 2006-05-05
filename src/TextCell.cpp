@@ -115,7 +115,6 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  wxString fontname = parser.GetFontName();
 
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize, false);

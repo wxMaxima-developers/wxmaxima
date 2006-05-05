@@ -74,23 +74,23 @@ void CellParser::ReadStyle()
     m_fontEncoding = wxFONTENCODING_CP1257;
 #else
   if (encoding == wxT("ISO-8859-1"))
-    m_fontEncoding = wxFONTENCODING_ISO88591;
+    m_fontEncoding = wxFONTENCODING_ISO8859_1;
   else if (encoding == wxT("ISO-8859-2"))
-    m_fontEncoding = wxFONTENCODING_ISO88592;
+    m_fontEncoding = wxFONTENCODING_ISO8859_2;
   else if (encoding == wxT("ISO-8859-3"))
-    m_fontEncoding = wxFONTENCODING_ISO88593;
+    m_fontEncoding = wxFONTENCODING_ISO8859_3;
   else if (encoding == wxT("ISO-8859-4"))
-    m_fontEncoding = wxFONTENCODING_ISO88594;
+    m_fontEncoding = wxFONTENCODING_ISO8859_4;
   else if (encoding == wxT("ISO-8859-5"))
-    m_fontEncoding = wxFONTENCODING_ISO88595;
+    m_fontEncoding = wxFONTENCODING_ISO8859_5;
   else if (encoding == wxT("ISO-8859-6"))
-    m_fontEncoding = wxFONTENCODING_ISO88596;
+    m_fontEncoding = wxFONTENCODING_ISO8859_6;
   else if (encoding == wxT("ISO-8859-7"))
-    m_fontEncoding = wxFONTENCODING_ISO88597;
+    m_fontEncoding = wxFONTENCODING_ISO8859_7;
   else if (encoding == wxT("ISO-8859-8"))
-    m_fontEncoding = wxFONTENCODING_ISO88598;
+    m_fontEncoding = wxFONTENCODING_ISO8859_8;
   else if (encoding == wxT("ISO-8859-9"))
-    m_fontEncoding = wxFONTENCODING_ISO88599;
+    m_fontEncoding = wxFONTENCODING_ISO8859_9;
 #endif
 
   // Symbol font

@@ -538,7 +538,11 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two)
   if (m_activeCell != NULL)
   {
     if (m_activeCell->ContainsPoint(one) && m_activeCell->ContainsPoint(two))
-      m_activeCell->SelectRect(one, two);
+    {
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      m_activeCell->SelectRectText(parser, one, two);
+    }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
@@ -640,7 +644,9 @@ void MathCtrl::SelectPoint(wxPoint& point)
   {
     if (m_activeCell->ContainsPoint(m_down))
     {
-      m_activeCell->SelectPoint(m_down);
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      m_activeCell->SelectPointText(parser, m_down);
       Refresh();
     }
     else

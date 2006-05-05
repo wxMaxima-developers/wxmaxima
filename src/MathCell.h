@@ -206,9 +206,9 @@ public:
   {
     return wxPoint(-1, -1);
   }
-  virtual void SelectPoint(wxPoint& point)
+  virtual void SelectPointText(CellParser& p, wxPoint& point)
   { }
-  virtual void SelectRect(wxPoint& one, wxPoint& two)
+  virtual void SelectRectText(CellParser& p, wxPoint& one, wxPoint& two)
   { }
   virtual void PasteFromClipboard()
   { }

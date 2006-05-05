@@ -119,7 +119,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  wxString fontname = parser.GetFontName();
 
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize, false);
@@ -127,6 +126,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (DrawThisCell(parser, point) && !m_isHidden)
   {
     SetForeground(parser);
+    SetPen(parser);
     SetFont(parser, fontsize);
 
     int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
@@ -160,22 +160,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       //
       int caretInLine = 0;
       int caretInColumn = 0;
-      int pos = 0;
+      
+      PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
+      
+      wxString line = GetLineString(caretInLine, 0, caretInColumn);
+      int lineWidth, lineHeight;
+      dc.GetTextExtent(line, &lineWidth, &lineHeight);
+      
 
-      for (pos = 0; pos < m_positionOfCaret; pos++)
-      {
-        if (m_text.GetChar(pos) == '\n')
-        {
-          caretInLine += 1;
-          caretInColumn = 0;
-        }
-        else
-          caretInColumn++;
-      }
-
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + caretInColumn * m_charWidth,
+      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                  point.x + SCALE_PX(2, scale) + caretInColumn * m_charWidth,
+                  point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
 
       //
@@ -192,34 +187,31 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
              m_positionOfCaret < end;
              m_positionOfCaret++)
         {
-          point = CaretToPoint();
+          point = PositionToPoint(dc);
           dc.DrawRectangle(point.x + SCALE_PX(2, scale),
                            point.y  + SCALE_PX(2, scale) - m_center,
-                           m_charWidth, m_charHeight);
+                           m_charWidth,
+			   m_charHeight);
         }
         m_positionOfCaret = save;
         dc.SetLogicalFunction(wxCOPY);
       }
 
+      //
+      // Matching parens
+      //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
-        long save = m_positionOfCaret;
         dc.SetLogicalFunction(wxAND);
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-        m_positionOfCaret = m_paren1;
-        wxPoint point = CaretToPoint();
+        wxPoint point = PositionToPoint(dc, m_paren1);
         dc.DrawRectangle(point.x + SCALE_PX(2, scale),
                          point.y  + SCALE_PX(2, scale) - m_center,
                          m_charWidth, m_charHeight);
-//        m_positionOfCaret = m_paren2;
-//        point = CaretToPoint();
-//        dc.DrawRectangle(point.x + SCALE_PX(2, scale),
-//                         point.y  + SCALE_PX(2, scale) - m_center,
-//                         m_charWidth, m_charHeight);
-        m_positionOfCaret = save;
         dc.SetLogicalFunction(wxCOPY);
       }
     }
+    UnsetPen(parser);
   }
   MathCell::Draw(parser, point, fontsize, all);
 }
@@ -331,11 +323,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       else
         m_selectionEnd = m_selectionStart = -1;
       int column, line;
-      PositionToXY(&column, &line);
+      PositionToXY(m_positionOfCaret, &column, &line);
 
       line = line < m_numberOfLines-1 ? line + 1 : line;
 
-      XYToPosition(column, line);
+      m_positionOfCaret = XYToPosition(column, line);
 
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
@@ -352,11 +344,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       else
         m_selectionEnd = m_selectionStart = -1;
       int column, line;
-      PositionToXY(&column, &line);
+      PositionToXY(m_positionOfCaret, &column, &line);
 
       line = line > 0 ? line - 1 : 0;
 
-      XYToPosition(column, line);
+      m_positionOfCaret = XYToPosition(column, line);
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
     }
@@ -400,8 +392,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       else
       {
         int col, lin;
-        PositionToXY(&col, &lin);
-        XYToPosition(0, lin);
+        PositionToXY(m_positionOfCaret, &col, &lin);
+        m_positionOfCaret = XYToPosition(0, lin);
       }
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
@@ -453,7 +445,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         break;
       }
       int col, line;
-      PositionToXY(&col, &line);
+      PositionToXY(m_positionOfCaret, &col, &line);
       wxString ins;
       do {
         col++;
@@ -585,12 +577,12 @@ void EditorCell::AddEnding()
 // position of caret is pos if caret is just before the character
 //   at position pos in m_text.
 //
-void EditorCell::PositionToXY(int* x, int* y)
+void EditorCell::PositionToXY(int position, int* x, int* y)
 {
   int col = 0, lin = 0;
   int pos = 0;
 
-  while (pos < m_positionOfCaret)
+  while (pos < position)
   {
     if (m_text.GetChar(pos) == '\n')
     {
@@ -606,7 +598,7 @@ void EditorCell::PositionToXY(int* x, int* y)
   *y = lin;
 }
 
-void EditorCell::XYToPosition(int x, int y)
+int EditorCell::XYToPosition(int x, int y)
 {
   int col = 0, lin = 0;
   int pos = 0;
@@ -626,27 +618,43 @@ void EditorCell::XYToPosition(int x, int y)
     col++;
   }
 
-  m_positionOfCaret = pos;
+  return pos;
 }
 
-wxPoint EditorCell::CaretToPoint()
+wxPoint EditorCell::PositionToPoint(wxDC& dc, int pos)
 {
   int x = m_currentPoint.x, y = m_currentPoint.y;
+  int height, width;
   int cX, cY;
+  wxString line = wxEmptyString;
+
+  if (pos == -1)
+    pos = m_positionOfCaret;
 
   if (x == -1 || y == -1)
     return wxPoint(-1, -1);
 
-  PositionToXY(&cX, &cY);
+  PositionToXY(pos, &cX, &cY);
+  if (cX>0)
+    line = GetLineString(cY, 0, cX);
 
-  x += m_charWidth * cX;
+  dc.GetTextExtent(line, &width, &height);
+
+  x += width;
   y += m_charHeight * cY;
 
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPoint(wxPoint& point)
+void EditorCell::SelectPointText(CellParser& parser, wxPoint& point)
 {
+  double scale = parser.GetScale();
+  wxDC& dc = parser.GetDC();
+  wxString s;
+  
+  SetPen(parser);
+  SetFont(parser, m_fontSize);
+
   m_selectionEnd = m_selectionStart = -1;
   wxPoint translate(point);
 
@@ -655,16 +663,35 @@ void EditorCell::SelectPoint(wxPoint& point)
 
   int col = translate.x / m_charWidth;
   int lin = translate.y / m_charHeight;
+  int width, height;
 
+  s = GetLineString(lin, 0, col + 1);
+  dc.GetTextExtent(s, &width, &height);
+  while (width < translate.x && col < m_text.Length())
+  {
+    col++;
+    s = GetLineString(lin, 0, col + 1);
+    dc.GetTextExtent(s, &width, &height);
+  }
+  
+  s = GetLineString(lin, 0, col);
+  dc.GetTextExtent(s, &width, &height);
+  while (width > translate.x && col > 0)
+  {
+    col--;
+    s = GetLineString(lin, 0, col);
+    dc.GetTextExtent(s, &width, &height);
+  }
+
+  m_positionOfCaret = XYToPosition(col, lin);
   FindMatchingParens();
-  XYToPosition(col, lin);
 }
 
-void EditorCell::SelectRect(wxPoint& one, wxPoint& two)
+void EditorCell::SelectRectText(CellParser& parser, wxPoint& one, wxPoint& two)
 {
-  SelectPoint(one);
+  SelectPointText(parser, one);
   long start = m_positionOfCaret;
-  SelectPoint(two);
+  SelectPointText(parser, two);
   m_selectionEnd = m_positionOfCaret;
   m_selectionStart = start;
   m_paren2 = m_paren1 = -1;
@@ -738,4 +765,23 @@ void EditorCell::PasteFromClipboard()
   }
 
   m_width = m_height = m_maxDrop = m_center = -1;
+}
+
+wxString EditorCell::GetLineString(int line, int start, int end)
+{
+  if (start >= end)
+    return wxEmptyString;
+
+  int posStart = 0, posEnd = 0;
+  
+  posStart = XYToPosition(start, line);
+  if (end == -1)
+  {
+    posEnd = XYToPosition(0, line+1);
+    posEnd--;
+  }
+  else
+    posEnd = XYToPosition(end, line);
+  
+  return m_text.SubString(posStart, posEnd - 1);
 }

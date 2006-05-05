@@ -47,11 +47,11 @@ public:
   void ProcessEvent(wxKeyEvent& event);
   bool ActivateCell();
   void AddEnding();
-  void PositionToXY(int* line, int* col);
-  void XYToPosition(int x, int y);
-  wxPoint CaretToPoint();
-  void SelectPoint(wxPoint& point);
-  void SelectRect(wxPoint& one, wxPoint& two);
+  void PositionToXY(int pos, int* line, int* col);
+  int XYToPosition(int x, int y);
+  wxPoint PositionToPoint(wxDC& dc, int pos = -1);
+  void SelectPointText(CellParser& parser, wxPoint& point);
+  void SelectRectText(CellParser& parser, wxPoint& one, wxPoint& two);
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard();
@@ -69,6 +69,7 @@ public:
     m_matchParens = match;
   }
   void FindMatchingParens();
+  wxString GetLineString(int line, int start = 0, int end = -1);
 private:
   wxString m_text;
   long m_positionOfCaret;

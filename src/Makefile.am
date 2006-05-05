@@ -47,6 +47,7 @@ wxmaxima_SOURCES = \
 	MathPrintout.cpp   MathPrintout.h   \
 	Bitmap.cpp         Bitmap.h         \
 	MyTipProvider.cpp  MyTipProvider.h  \
+	EditorCell.cpp     EditorCell.h     \
 	TextStyle.h
 
 wxmaxima_LDFLAGS =
