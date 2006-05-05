@@ -23,7 +23,6 @@
 // and is common in wxWidgets libraries distributed all over.
 //
 
-#include "wxMaxima.h"
 #include "MyTipProvider.h"
 
 MyTipProvider::MyTipProvider(const wxString& filename, int n)

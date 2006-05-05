@@ -26,6 +26,9 @@
 
 enum {
   popid_copy,
+  popid_cut,
+  popid_paste,
+  popid_select_all,
   popid_copy_text,
   popid_copy_image,
   popid_delete,
@@ -64,14 +67,26 @@ public:
   void RecalculateSize();
   void RecalculateSize(MathCell *cell);
   void ClearWindow();
-  bool CanCopy()
+  bool CanCopy(bool fromActive = false)
   {
-    return m_selectionStart != NULL;
+    return m_selectionStart != NULL ||
+           (fromActive && m_activeCell != NULL && m_activeCell->CanCopy());
   }
+  bool CanPaste()
+  {
+    return m_activeCell != NULL;
+  }
+  bool CanCut()
+  {
+    return m_activeCell != NULL && m_activeCell->CanCopy();
+  }
+  void SelectAll();
   bool CanDeleteSelection();
   bool CanAddComment();
   bool CanAddInput();
   void DeleteSelection(bool deletePrompt = true);
+  bool CutToClipboard();
+  void PasteFromClipboard();
   bool Copy(bool lb = false);
   bool CopyBitmap();
   bool CopyToFile(wxString file);
@@ -87,6 +102,7 @@ public:
   void BreakUpCells(MathCell *cell);
   void UnBreakUpCells();
   MathCell* GetLastCell();
+  MathCell* GetLastPrompt();
   void SetInsertPoint(MathCell* insert)
   {
     m_insertPoint = insert;
@@ -122,6 +138,12 @@ public:
   bool SelectPrompt();
   void ScrollToSelectionStart();
   bool SelectLastInput();
+  void SetActiveCell(MathCell *cell);
+  MathCell* GetActiveCell()
+  {
+    return m_activeCell;
+  }
+  void ShowPoint(wxPoint point);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -160,6 +182,7 @@ protected:
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
   MathCell *m_insertPoint;
+  MathCell *m_activeCell;
   bool m_editingEnabled;
   int m_scrollTo;
   wxTimer m_timer;

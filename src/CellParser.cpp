@@ -51,6 +51,48 @@ void CellParser::ReadStyle()
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
 
+  // Encogind - used only for comments
+  m_fontEncoding = wxFONTENCODING_DEFAULT;
+  wxString encoding;
+  config->Read(wxT("fontEncoding"), &encoding);
+  #if defined __WXMSW__
+  if (encoding == wxT("CP-1250"))
+    m_fontEncoding = wxFONTENCODING_CP1250;
+  else if (encoding == wxT("CP-1251"))
+    m_fontEncoding = wxFONTENCODING_CP1251;
+  else if (encoding == wxT("CP-1252"))
+    m_fontEncoding = wxFONTENCODING_CP1252;
+  else if (encoding == wxT("CP-1253"))
+    m_fontEncoding = wxFONTENCODING_CP1253;
+  else if (encoding == wxT("CP-1254"))
+    m_fontEncoding = wxFONTENCODING_CP1254;
+  else if (encoding == wxT("CP-1255"))
+    m_fontEncoding = wxFONTENCODING_CP1255;
+  else if (encoding == wxT("CP-1256"))
+    m_fontEncoding = wxFONTENCODING_CP1256;
+  else if (encoding == wxT("CP-1257"))
+    m_fontEncoding = wxFONTENCODING_CP1257;
+#else
+  if (encoding == wxT("ISO-8859-1"))
+    m_fontEncoding = wxFONTENCODING_ISO88591;
+  else if (encoding == wxT("ISO-8859-2"))
+    m_fontEncoding = wxFONTENCODING_ISO88592;
+  else if (encoding == wxT("ISO-8859-3"))
+    m_fontEncoding = wxFONTENCODING_ISO88593;
+  else if (encoding == wxT("ISO-8859-4"))
+    m_fontEncoding = wxFONTENCODING_ISO88594;
+  else if (encoding == wxT("ISO-8859-5"))
+    m_fontEncoding = wxFONTENCODING_ISO88595;
+  else if (encoding == wxT("ISO-8859-6"))
+    m_fontEncoding = wxFONTENCODING_ISO88596;
+  else if (encoding == wxT("ISO-8859-7"))
+    m_fontEncoding = wxFONTENCODING_ISO88597;
+  else if (encoding == wxT("ISO-8859-8"))
+    m_fontEncoding = wxFONTENCODING_ISO88598;
+  else if (encoding == wxT("ISO-8859-9"))
+    m_fontEncoding = wxFONTENCODING_ISO88599;
+#endif
+
   // Symbol font
   m_haveSymbolFont = false;
   m_symbolFontAdj = 0;

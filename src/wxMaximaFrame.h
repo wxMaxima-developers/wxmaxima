@@ -186,7 +186,12 @@ enum {
   menu_insert_input,
   menu_unfold,
   menu_select_last,
-  menu_goto_output
+  menu_goto_output,
+  activate_cell,
+  deactivate_cell_ok,
+  deactivate_cell_cancel,
+  menu_cut,
+  menu_paste
 };
 
 class wxMaximaFrame: public wxFrame

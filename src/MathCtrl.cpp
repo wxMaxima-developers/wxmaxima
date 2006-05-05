@@ -35,7 +35,7 @@
 
 #define SCROLL_UNIT 10
 
-void AddLineToFile(wxTextFile& output, wxString s);
+void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
 enum {
   TIMER_ID
@@ -43,7 +43,7 @@ enum {
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size):
     wxScrolledWindow(parent, id, position, size,
-                     wxVSCROLL | wxHSCROLL | wxSUNKEN_BORDER)
+                     wxVSCROLL | wxHSCROLL | wxSUNKEN_BORDER | wxWANTS_CHARS)
 {
   m_scrollTo = -1;
   m_tree = NULL;
@@ -52,6 +52,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size):
   m_selectionEnd = NULL;
   m_last = NULL;
   m_insertPoint = NULL;
+  m_activeCell = NULL;
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
@@ -98,11 +99,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   // Prepare memory DC
   wxString bgColStr = wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
-#if wxCHECK_VERSION(2, 5, 2)
   SetBackgroundColour(wxTheColourDatabase->Find(bgColStr));
-#else
-  SetBackgroundColour(*(wxTheColourDatabase->FindColour(bgColStr)));
-#endif
 
   dcm.SelectObject(*m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
@@ -380,72 +377,94 @@ void MathCtrl::ClearWindow()
  */
 void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
 {
-  /* If we have no selection or we are not in editing mode don't popup a menu!*/
-  if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
-    return ;
-
   wxMenu* popupMenu = new wxMenu();
-  popupMenu->Append(popid_copy, _("Copy"),
-                    wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(popid_copy_text, _("Copy text"),
-                    wxEmptyString, wxITEM_NORMAL);
+
+  if (m_activeCell == NULL)
+  {
+    /* If we have no selection or we are not in editing mode don't popup a menu!*/
+    if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
+      return ;
+
+    if (CanCopy())
+    {
+      popupMenu->Append(popid_copy, _("Copy"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_copy_text, _("Copy text"),
+                        wxEmptyString, wxITEM_NORMAL);
 #if defined __WXMSW__
-  popupMenu->Append(popid_copy_image, _("Copy as image"),
-                    wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_copy_image, _("Copy as image"),
+                        wxEmptyString, wxITEM_NORMAL);
 #endif
 
-  if (CanDeleteSelection())
-      popupMenu->Append(popid_delete, _("Delete selection"),
-                        wxEmptyString, wxITEM_NORMAL);
+      if (CanDeleteSelection())
+          popupMenu->Append(popid_delete, _("Delete selection"),
+                            wxEmptyString, wxITEM_NORMAL);
 
-  popupMenu->AppendSeparator();
-  if (CanEdit())
-  {
-    popupMenu->Append(popid_edit, _("Edit input"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_reeval, _("Re-evaluate input"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_add_comment, _("Add comment"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_insert_input, _("Insert input"),
-                      wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+    }
+    if (CanEdit())
+    {
+      popupMenu->Append(popid_edit, _("Edit input"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_reeval, _("Re-evaluate input"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_input, _("Insert input"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_add_comment, _("Insert text"),
+                        wxEmptyString, wxITEM_NORMAL);
+    }
+    else if (CanAddComment())
+    {
+      popupMenu->Append(popid_insert_input, _("Insert input"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_add_comment, _("Insert text"),
+                        wxEmptyString, wxITEM_NORMAL);
+    }
+    else
+    {
+      popupMenu->Append(popid_float, _("To float"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_solve, _("Solve ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_solve_num, _("Solve numerically ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_simplify, _("Simplify expression"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_factor, _("Factor expression"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_expand, _("Expand expression"),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_subst, _("Substitute ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_integrate, _("Integrate ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_diff, _("Differentiate ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_plot2d, _("Plot 2d ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_plot3d, _("Plot 3d ..."),
+                        wxEmptyString, wxITEM_NORMAL);
+    }
   }
-  else if (CanAddComment())
-  {
-    popupMenu->Append(popid_add_comment, _("Add comment"),
+  else {
+    popupMenu->Append(popid_copy, _("Copy"),
                       wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_insert_input, _("Insert input"),
+    popupMenu->Append(popid_cut, _("Cut"),
                       wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(popid_paste, _("Paste"),
+                      wxEmptyString, wxITEM_NORMAL);
+    popupMenu->AppendSeparator();
+    popupMenu->Append(popid_select_all, _("Select all"),
+                      wxEmptyString, wxITEM_NORMAL);
+
+    popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
+    popupMenu->Enable(popid_cut, m_activeCell->CanCopy());
   }
-  else
-  {
-    popupMenu->Append(popid_float, _("To float"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->AppendSeparator();
-    popupMenu->Append(popid_solve, _("Solve ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_solve_num, _("Solve numerically ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->AppendSeparator();
-    popupMenu->Append(popid_simplify, _("Simplify expression"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_factor, _("Factor expression"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_expand, _("Expand expression"),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_subst, _("Substitute ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->AppendSeparator();
-    popupMenu->Append(popid_integrate, _("Integrate ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_diff, _("Differentiate ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->AppendSeparator();
-    popupMenu->Append(popid_plot2d, _("Plot 2d ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_plot3d, _("Plot 3d ..."),
-                      wxEmptyString, wxITEM_NORMAL);
-  }
+
 
   PopupMenu(popupMenu);
 
@@ -515,6 +534,20 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two)
 {
   if (m_tree == NULL)
     return ;
+
+  if (m_activeCell != NULL)
+  {
+    if (m_activeCell->ContainsPoint(one) && m_activeCell->ContainsPoint(two))
+      m_activeCell->SelectRect(one, two);
+    else
+    {
+      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
+      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+    }
+
+    Refresh();
+    return ;
+  }
 
   MathCell* tmp;
   wxPoint start, end;
@@ -601,6 +634,23 @@ void MathCtrl::SelectPoint(wxPoint& point)
 {
   if (m_tree == NULL)
     return ;
+
+  // If we have active cell handle it spacial.
+  if (m_activeCell != NULL)
+  {
+    if (m_activeCell->ContainsPoint(m_down))
+    {
+      m_activeCell->SelectPoint(m_down);
+      Refresh();
+    }
+    else
+    {
+      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
+      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+    }
+    return ;
+  }
+
   MathCell* tmp = NULL;
   m_selectWholeLine = true;
 
@@ -629,10 +679,10 @@ void MathCtrl::SelectPoint(wxPoint& point)
   m_selectionEnd = tmp;
 
   //
-  // We selected output, input or comment - select whole line.
+  // We selected output - select whole line.
   //
   int type = m_selectionStart->GetType();
-  if (type == MC_TYPE_TEXT || type == MC_TYPE_INPUT || type == MC_TYPE_COMMENT)
+  if (type == MC_TYPE_TEXT)
   {
     if (m_selectionStart->GetType() == type)
     {
@@ -739,6 +789,11 @@ wxString MathCtrl::GetString(bool lb)
  */
 bool MathCtrl::Copy(bool lb)
 {
+  if (m_activeCell != NULL)
+  {
+    return m_activeCell->CopyToClipboard();
+  }
+
   if (m_selectionStart == NULL)
     return false;
   wxString s;
@@ -861,10 +916,58 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
   {
   case 'c':
   case 'C':
-    if (event.ControlDown() && CanCopy())
+    if (!event.ControlDown())
+    {
+      event.Skip();
+      break;
+    }
+    if (m_activeCell != NULL)
+      m_activeCell->CopyToClipboard();
+    else if (CanCopy())
       Copy();
     else
       event.Skip();
+    break;
+  case 'x':
+  case 'X':
+    if (!event.ControlDown())
+    {
+      event.Skip();
+      break;
+    }
+    if (m_activeCell != NULL)
+    {
+      m_activeCell->CutToClipboard();
+      RecalculateForce();
+      Refresh();
+    }
+    break;
+  case 'v':
+  case 'V':
+    if (!event.ControlDown())
+    {
+      event.Skip();
+      break;
+    }
+    if (m_activeCell != NULL)
+    {
+      m_activeCell->PasteFromClipboard();
+      RecalculateForce();
+      Refresh();
+    }
+    break;
+  case 'a':
+  case 'A':
+    if (!event.ControlDown())
+    {
+      event.Skip();
+      break;
+    }
+    if (m_activeCell != NULL)
+    {
+      m_activeCell->SelectAll();
+      Refresh();
+    }
     break;
   case WXK_DELETE:
     if (CanDeleteSelection())
@@ -889,12 +992,34 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
         (wxGetApp().GetTopWindow())->ProcessEvent(ev);
       }
     }
+    else if (m_activeCell != NULL)
+    {
+      if (event.ControlDown())
+      {
+        if (m_activeCell->GetType() == MC_TYPE_INPUT)
+          m_activeCell->AddEnding();
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_ok);
+        (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+      }
+      else
+        event.Skip();
+    }
     else
       event.Skip();
     break;
   case WXK_ESCAPE:
-    SetSelection(NULL);
-    Refresh();
+    if (m_activeCell == NULL)
+    {
+      SetSelection(NULL);
+      Refresh();
+    }
+    else
+    {
+      if (m_activeCell->GetType() == MC_TYPE_INPUT)
+        m_activeCell->AddEnding();
+      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
+      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+    }
     break;
   default:
     event.Skip();
@@ -903,6 +1028,23 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
 
 void MathCtrl::OnChar(wxKeyEvent& event)
 {
+  if (m_activeCell != NULL)
+  {
+    m_activeCell->ProcessEvent(event);
+    wxPoint point = m_activeCell->CaretToPoint();
+
+    m_activeCell->ResetData();
+    if (m_activeCell->m_previous != NULL)
+      m_activeCell->m_previous->ResetData();
+
+    Recalculate(false);
+    Refresh();
+
+    ShowPoint(point);
+
+    return ;
+  }
+
   switch (event.GetKeyCode())
   {
   case WXK_LEFT:
@@ -1179,15 +1321,19 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData)
  * Export content to a HTML file.
  */
 
-void AddLineToFile(wxTextFile& output, wxString s)
+void AddLineToFile(wxTextFile& output, wxString s, bool unicode)
 {
+  if (unicode)
+  {
 #if wxUNICODE
-  output.AddLine(s);
+    output.AddLine(s);
 #else
-
-  wxString t(s.wc_str(wxConvLocal), wxConvUTF8);
-  output.AddLine(t);
+    wxString t(s.wc_str(wxConvLocal), wxConvUTF8);
+    output.AddLine(t);
 #endif
+  }
+  else
+    output.AddLine(s);
 }
 
 bool MathCtrl::ExportToHTML(wxString file)
@@ -1395,8 +1541,11 @@ bool MathCtrl::ExportToHTML(wxString file)
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
     else
       AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
-    AddLineToFile(output, wxT("  ") + tmp->ToString(false));
-    tmp = tmp->m_nextToDraw;
+    while (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT)
+    {
+      AddLineToFile(output, tmp->ToString(false));
+      tmp = tmp->m_next;
+    }
     AddLineToFile(output, wxT("  </SPAN>"));
 
     // INPUT
@@ -1427,13 +1576,18 @@ bool MathCtrl::ExportToHTML(wxString file)
       wxString line = wxEmptyString;
       for (unsigned int i = 0; i < input.Length(); i++)
       {
-        if (input.GetChar(i) == ' ')
-          line += wxT("&nbsp;");
-        else
-          break;
+        if (input.GetChar(i) == '\n')
+        {
+          line += wxT("<BR>\n");
+          i++;
+          while (i < input.Length() && input.GetChar(i) == ' ')
+          {
+            line += wxT("&nbsp;");
+            i++;
+          }
+        }
+        line += input.GetChar(i);
       }
-      input = input.Trim(false);
-      line += input;
       AddLineToFile(output, wxT("   ") + line);
       AddLineToFile(output, wxT("   <BR>"));
       tmp = tmp->m_nextToDraw;
@@ -1457,8 +1611,7 @@ bool MathCtrl::ExportToHTML(wxString file)
     else
     {
       while (tmp != NULL && tmp->m_next != NULL &&
-              (tmp->m_next->GetType() != MC_TYPE_MAIN_PROMPT) &&
-              (tmp->m_next->GetType() != MC_TYPE_PROMPT))
+             tmp->m_next->GetType() != MC_TYPE_MAIN_PROMPT)
         tmp = tmp->m_next;
       end = tmp;
     }
@@ -1518,7 +1671,7 @@ bool MathCtrl::ExportToMAC(wxString file)
   if (!output.Create(file))
     return false;
 
-  AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"));
+  AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
 
   MathCell* tmp = m_tree;
 
@@ -1537,61 +1690,61 @@ bool MathCtrl::ExportToMAC(wxString file)
     // Write input
     if (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
     {
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"));
+      AddLineToFile(output, wxEmptyString, false);
+      AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
       {
         wxString input = tmp->ToString(false);
-        AddLineToFile(output, input);
+        AddLineToFile(output, input, false);
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"));
+      AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
     }
 
     // Write comment
     if (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT)
     {
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"));
+      AddLineToFile(output, wxEmptyString, false);
+      AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT)
       {
         wxString input = tmp->ToString(false);
-        AddLineToFile(output, input);
+        AddLineToFile(output, input, false);
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"));
+      AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
     }
 
     if (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
     {
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: section start ]"));
+      AddLineToFile(output, wxEmptyString, false);
+      AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
       {
         wxString input = tmp->ToString(false);
-        AddLineToFile(output, input);
+        AddLineToFile(output, input, false);
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"));
+      AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
     }
 
     if (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
     {
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"));
+      AddLineToFile(output, wxEmptyString, false);
+      AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
       {
         wxString input = tmp->ToString(false);
-        AddLineToFile(output, input);
+        AddLineToFile(output, input, false);
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"));
+      AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
     }
   }
 
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"));
-  AddLineToFile(output, wxT("\"Created widh wxMaxima\"$"));
+  AddLineToFile(output, wxEmptyString, false);
+  AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
+  AddLineToFile(output, wxT("\"Created widh wxMaxima\"$"), false);
 
   bool done = output.Write(wxTextFileType_None);
   output.Close();
@@ -1655,30 +1808,20 @@ void MathCtrl::UnBreakUpCells()
 
 bool MathCtrl::CanEdit()
 {
-  if (m_selectionStart == NULL || m_selectionEnd == NULL ||
-          m_insertPoint != NULL || m_editingEnabled == false)
-    return false;
-  MathCell *tmp = m_selectionStart;
-  if (!tmp->IsEditable())
-    return false;
-  if (tmp->m_previous == NULL || tmp->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
+  if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart ||
+      m_insertPoint != NULL || m_editingEnabled == false)
     return false;
 
-  int type = tmp->GetType();
-  while (tmp)
-  {
-    if (tmp->GetType() != type)
-      return false;
-    if (tmp == m_selectionEnd)
-      break;
-    tmp = tmp->m_next;
-  }
-  if (tmp == NULL)
+  if (!m_selectionStart->IsEditable())
     return false;
-  if (tmp->m_next == NULL)
+
+  if (m_selectionStart->m_previous == NULL ||
+      m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;
-  if (tmp->m_next->GetType() == type)
+
+  if (m_selectionStart->m_next == NULL)
     return false;
+
   return true;
 }
 
@@ -1713,6 +1856,24 @@ MathCell* MathCtrl::GetLastCell()
   return m_last;
 }
 
+MathCell* MathCtrl::GetLastPrompt()
+{
+  MathCell *tmp = m_tree;
+  MathCell *last = NULL;
+
+  if (tmp == NULL)
+    return NULL;
+
+  while (tmp != NULL)
+  {
+    if (tmp->GetType() == MC_TYPE_MAIN_PROMPT)
+      last = tmp;
+    tmp = tmp->m_nextToDraw;
+  }
+
+  return last;
+}
+
 void MathCtrl::OnDoubleClick(wxMouseEvent &event)
 {
   if (CanEdit())
@@ -1732,23 +1893,24 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
 
 bool MathCtrl::CanAddInput()
 {
-  if (m_selectionStart == m_selectionEnd &&
-      m_selectionStart != NULL &&
+  if (m_tree == NULL)
+    return false;
+
+  if (m_selectionStart == NULL)
+    return true;
+  else if (m_selectionStart == m_selectionEnd &&
       m_selectionStart->GetType() == MC_TYPE_MAIN_PROMPT &&
       !m_selectionStart->m_isFolded)
     return true;
   else if (CanEdit())
     return true;
+
   return false;
 }
 
 bool MathCtrl::CanAddComment()
 {
-  if (CanAddInput())
-    return true;
-  else if (m_selectionStart == NULL && m_tree != NULL)
-    return true;
-  return false;
+  return CanAddInput();
 }
 
 void MathCtrl::UnfoldAll()
@@ -1889,15 +2051,8 @@ bool MathCtrl::SelectPrompt()
 {
   if (m_selectionStart == NULL)
   {
-    m_selectionStart = m_selectionEnd = GetLastCell();
-    if (m_selectionStart == NULL)
-      return false;
-    else if(m_selectionStart->GetType() != MC_TYPE_MAIN_PROMPT)
-    {
-      m_selectionStart = m_selectionEnd = NULL;
-      return false;
-    }
-    else
+    m_selectionStart = m_selectionEnd = GetLastPrompt();
+    if (m_selectionStart != NULL)
       return true;
   }
   else if (m_selectionStart == m_selectionEnd &&
@@ -1920,9 +2075,13 @@ void MathCtrl::ScrollToSelectionStart()
   if (m_selectionStart == NULL)
     return ;
 
-  int start_y = m_selectionStart->GetCurrentY();
-  int end_y = m_selectionEnd->GetCurrentY();
-  int end_height = m_selectionEnd->GetHeight();
+  int cellY = m_selectionStart->GetCurrentY();
+
+  if (cellY == -1)
+    return ;
+
+  int cellDrop = m_selectionStart->GetDrop();
+  int cellCenter = m_selectionStart->GetCenter();
 
   int view_x, view_y, view_x1, view_y1;
   int height, width;
@@ -1932,11 +2091,99 @@ void MathCtrl::ScrollToSelectionStart()
 
   view_y *= SCROLL_UNIT;
 
-  if ((start_y - end_height - SCROLL_UNIT < view_y) ||
-      (end_y + end_height + SCROLL_UNIT > view_y + height))
+  if ((cellY - cellCenter - SCROLL_UNIT < view_y) ||
+      (cellY + cellDrop + SCROLL_UNIT > view_y + height))
   {
-    Scroll(-1, MAX(start_y/SCROLL_UNIT - 2, 0));
+    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
   }
+  Refresh();
+}
+
+void MathCtrl::SetActiveCell(MathCell *cell)
+{
+  if (m_activeCell != NULL)
+  {
+    m_activeCell->ActivateCell();
+  }
+
+  m_activeCell = cell;
+
+  if (m_activeCell != NULL)
+  {
+    bool match = false;
+    if (m_activeCell->GetType() == MC_TYPE_INPUT)
+      wxConfig::Get()->Read(wxT("matchParens"), &match);
+    m_activeCell->ActivateCell();
+    m_activeCell->SetMatchParens(match);
+  }
+}
+
+void MathCtrl::ShowPoint(wxPoint point)
+{
+  if (point.x == -1 || point.y == -1)
+    return ;
+
+  int view_x, view_y, view_x1, view_y1;
+  int height, width;
+  bool sc = false;
+
+  int scrollToX = -1, scrollToY = -1;
+
+  GetViewStart(&view_x, &view_y);
+  GetSize(&width, &height);
+
+  view_x *= SCROLL_UNIT;
+  view_y *= SCROLL_UNIT;
+
+  if ((point.y < view_y) ||
+      (point.y > view_y + height - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
+  {
+    sc = true;
+    scrollToY = point.y - height / 2;
+  }
+  else
+    scrollToY = view_y;
+
+  if ((point.x < view_x) ||
+      (point.x > view_x + width - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
+  {
+    sc = true;
+    scrollToX = point.x - width / 2;
+  }
+  else
+    scrollToX = view_x;
+
+  if (sc)
+    Scroll(scrollToX / SCROLL_UNIT, scrollToY / SCROLL_UNIT);
+}
+
+bool MathCtrl::CutToClipboard()
+{
+  if (m_activeCell == NULL)
+    return false;
+
+  m_activeCell->CutToClipboard();
+  Recalculate(false);
+  Refresh();
+  return true;
+}
+
+void MathCtrl::PasteFromClipboard()
+{
+  if (m_activeCell == NULL)
+    return ;
+
+  m_activeCell->PasteFromClipboard();
+  Recalculate(false);
+  Refresh();
+}
+
+void MathCtrl::SelectAll()
+{
+  if (m_activeCell == NULL)
+    return;
+
+  m_activeCell->SelectAll();
   Refresh();
 }
 

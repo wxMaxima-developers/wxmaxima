@@ -37,6 +37,7 @@
 #include "SystemWiz.h"
 #include "MathPrintout.h"
 #include "MyTipProvider.h"
+#include "EditorCell.h"
 
 #include <wx/filedlg.h>
 #include <wx/utils.h>
@@ -239,25 +240,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   }
   else if (type == MC_TYPE_INPUT)
   {
-    // Break long lines
-    unsigned int i = 0;
-    int j = 0;
-    wxString breaks = wxT(" *+-/()[]:=,");
-    while (i < s.Length())
-    {
-      if (j > 70 && breaks.Find(s[i]) > -1)
-      {
-        s = s.SubString(0, i) + wxT("\n") + s.SubString(i + 1, s.Length());
-        j = 0;
-      }
-      else if (s[i] == '\n')
-        j = 0;
-      else
-        j++;
-      i++;
-    }
-    // Append the input
-    DoRawConsoleAppend(s, type, false);
+    wxMessageBox("should not be here!!!");
   }
   else if (type == MC_TYPE_PROMPT)
   {
@@ -265,13 +248,13 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     m_lastPrompt = s;
     if (s.StartsWith(wxT("(%i")) || s == m_commentPrefix)
     {
+      wxMessageBox("Should not be here!!! (1)");
       m_inPrompt = true;
       type = MC_TYPE_MAIN_PROMPT;
     }
     else if (s.StartsWith(wxT("MAXIMA> ")))
     {
       m_inPrompt = true;
-      type = MC_TYPE_MAIN_PROMPT;
       s = s.Right(8);
     }
     else
@@ -313,25 +296,37 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 {
-  if (type == MC_TYPE_INPUT)
+  if (type == MC_TYPE_INPUT || type == MC_TYPE_COMMENT ||
+      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE)
+  {
     ResetTitle(false);
 
-  wxStringTokenizer tokens(s, wxT("\n"));
-  int count = 0;
-  while (tokens.HasMoreTokens())
-  {
-    TextCell* cell = new TextCell(RemoveTabs(tokens.GetNextToken()));
+    EditorCell* cell = new EditorCell();
 
+    cell->SetValue(s);
     cell->SetType(type);
 
-    if (tokens.HasMoreTokens())
-      cell->SetSkip(false);
+    m_console->InsertLine(cell, newLine);
+  }
+  else
+  {
+    wxStringTokenizer tokens(s, wxT("\n"));
+    int count = 0;
+    while (tokens.HasMoreTokens())
+    {
+      TextCell* cell = new TextCell(RemoveTabs(tokens.GetNextToken()));
 
-    if (count == 0)
-      m_console->InsertLine(cell, newLine);
-    else
-      m_console->InsertLine(cell, true);
-    count++;
+      cell->SetType(type);
+
+      if (tokens.HasMoreTokens())
+        cell->SetSkip(false);
+
+      if (count == 0)
+        m_console->InsertLine(cell, newLine);
+      else
+        m_console->InsertLine(cell, true);
+      count++;
+    }
   }
 }
 
@@ -384,7 +379,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
   if (clear)
     m_inputLine->SetValue(wxEmptyString);
   if (out)
-    ConsoleAppend(s, MC_TYPE_INPUT);
+    DoRawConsoleAppend(s, MC_TYPE_INPUT, false);
   if (silent)
   {
     m_inputLine->AddToHistory(s);
@@ -425,11 +420,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   switch (event.GetSocketEvent())
   {
   case wxSOCKET_INPUT:
-#if wxCHECK_VERSION(2, 5, 3)
     wxMilliSleep(1);  // Let's wait for more data
-#else
-    wxUsleep(1);
-#endif
 
     m_client->Read(buffer, SOCKET_SIZE);
     if (!m_client->Error())
@@ -552,7 +543,8 @@ void wxMaxima::ReadPrompt()
           m_console->SetSelection(tmp);
           if (!m_console->SelectNextInput())
             m_console->SetSelection(NULL);
-          m_console->GetLastCell()->SetValue(o);
+          m_console->GetLastPrompt()->SetValue(o);
+          m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
         else
@@ -582,12 +574,12 @@ void wxMaxima::ReadPrompt()
  * - if we still have something to send to maxima we send it (and before that append comments!)
  * - mostly we just append the prompt!
  */
-
 void wxMaxima::HandleMainPrompt(wxString o)
 {
   m_lastPrompt = o;
-  if (m_batchFileLines.IsEmpty())
+  if (m_batchFileLines.IsEmpty()) {
     DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+  }
   else
   {
     bool done = false;
@@ -655,7 +647,7 @@ void wxMaxima::HandleMainPrompt(wxString o)
       else if (line == wxT("/* [wxMaxima: input   start ] */"))
       {
         line = m_batchFileLines[m_batchFilePosition++];
-        ConsoleAppend(o, MC_TYPE_PROMPT);
+        DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
         bool newline = false;
         wxString input;
         while (line != wxT("/* [wxMaxima: input   end   ] */") &&
@@ -675,7 +667,7 @@ void wxMaxima::HandleMainPrompt(wxString o)
       }
     }
     if (!done)
-      ConsoleAppend(o, MC_TYPE_PROMPT);
+      DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
 
     if (m_batchFileLines.GetCount() <= m_batchFilePosition)
     {
@@ -711,8 +703,7 @@ bool wxMaxima::ReadBatchFile(wxString file)
        !inputFile.Eof();
        line = inputFile.GetNextLine())
   {
-    if (line.Length())
-      m_batchFileLines.Add(line);
+    m_batchFileLines.Add(line);
   }
   m_batchFileLines.Add(line);
 
@@ -1059,7 +1050,9 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 {
   wxMenuBar* menubar = GetMenuBar();
-  menubar->Enable(menu_copy_from_console, m_console->CanCopy());
+  menubar->Enable(menu_copy_from_console, m_console->CanCopy(true) || m_inputLine->CanCopy());
+  menubar->Enable(menu_cut, m_console->CanCut() || m_inputLine->CanCut());
+  menubar->Enable(menu_paste, m_inputLine->CanPaste());
   menubar->Enable(menu_copy_lb_from_console, m_console->CanCopy());
   menubar->Enable(menu_selection_to_input, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
@@ -1401,6 +1394,18 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->Copy();
     else if (m_inputLine->CanCopy())
       m_inputLine->Copy();
+    break;
+  case menu_cut:
+    if (m_console->CanCut())
+      m_console->CutToClipboard();
+    else if (m_inputLine->CanCut())
+      m_inputLine->Cut();
+    break;
+  case menu_paste:
+    if (m_console->CanPaste())
+      m_console->PasteFromClipboard();
+    else if (m_inputLine->CanPaste())
+      m_inputLine->Paste();
     break;
   case menu_copy_lb_from_console:
     if (m_console->CanCopy())
@@ -2599,8 +2604,18 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case popid_copy:
-    if (m_console->CanCopy())
+    if (m_console->CanCopy(true))
       m_console->Copy();
+    break;
+  case popid_cut:
+    if (m_console->CanCopy(true))
+      m_console->CutToClipboard();
+    break;
+  case popid_paste:
+    m_console->PasteFromClipboard();
+    break;
+  case popid_select_all:
+    m_console->SelectAll();
     break;
   case popid_copy_text:
     if (m_console->CanCopy())
@@ -2728,142 +2743,70 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   }
 }
 
+void wxMaxima::HandleCellEvent(wxCommandEvent& event)
+{
+  ResetTitle(false);
+  MathCell* tmp = m_console->GetActiveCell();
+
+  if (tmp->GetType() == MC_TYPE_INPUT)
+    tmp->AddEnding();
+
+  m_console->SetSelection(tmp);
+
+  m_console->SetActiveCell(NULL);
+
+  if (event.GetId() == deactivate_cell_ok && tmp->GetType() == MC_TYPE_INPUT)
+  {
+    wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
+    ProcessEvent(ev);
+  }
+  else
+    m_console->Refresh();
+}
+
 void wxMaxima::EditInputMenu(wxCommandEvent& event)
 {
   if (!m_console->CanEdit())
     return ;
-  // Copy the input and edit it!
-  wxString text = m_console->GetString(true);
 
-  if (text.Right(1) == wxT(";"))
-    text = text.Left(text.Length()-1);
+  MathCell* tmp = m_console->GetSelectionStart();
 
-  TextInput *wiz = new TextInput(this);
+  m_console->SetActiveCell(tmp);
+  m_console->SetSelection(NULL);
 
-  int x, pos_x = 10; //(m_console->GetSelectionStart())->GetCurrentX();
-  int y, pos_y = (m_console->GetSelectionStart())->GetCurrentY();
-
-  m_console->CalcScrolledPosition(pos_x, pos_y, &pos_x, &pos_y);
-  pos_y = MAX(pos_y, 10);
-  pos_x = MAX(pos_x, 10);
-
-  // Position of the window
-  GetPosition(&x, &y);
-  pos_x += x;
-  pos_y += y;
-
-  // Add caption, menu and toolbar...
-  pos_y = pos_y +
-          wxSystemSettings::GetMetric(wxSYS_CAPTION_Y) +
-          wxSystemSettings::GetMetric(wxSYS_MENU_Y) +
-          wxSystemSettings::GetMetric(wxSYS_EDGE_Y) +
-          (GetToolBar()->GetToolSize()).y;
-  pos_x = pos_x +
-          wxSystemSettings::GetMetric(wxSYS_EDGE_X);
-
-  // If we are below the screen - popup above tag
-  if (pos_y + TEXT_INPUT_HEIGHT >= wxSystemSettings::GetMetric(wxSYS_SCREEN_Y))
-    pos_y -= TEXT_INPUT_HEIGHT;
-
-  wiz->SetValue(text);
-  //wiz->Centre(wxBOTH);
-  wiz->Move(pos_x, pos_y);
-
-  if (wiz->ShowModal() == wxID_OK)
-  {
-    wxString val = wiz->GetValue();
-    val.Trim();
-    val.Trim(false);
-
-    if (val.Length() == 0)
-      return ;
-
-    MathCell* beginInput = m_console->GetSelectionStart();
-
-    ResetTitle(false);
-
-    if (beginInput->GetType() == MC_TYPE_INPUT)
-    {
-      if (!m_inLispMode && val.Last() != ';' && val.Last() != '$')
-        val += wxT(";");
-
-      beginInput = beginInput->m_previous;
-
-      m_inInsertMode = true;
-
-      int x, y;
-      m_console->GetViewStart(&x, &y);
-      m_console->SetScrollTo(y);
-
-      m_console->SetSelection(beginInput);
-
-      m_console->DeleteSelection(false);
-
-      m_console->SetInsertPoint(beginInput);
-
-      beginInput->SetValue(m_lastPrompt);
-
-      SendMaxima(val);
-    }
-    else
-    {
-      int type = beginInput->GetType();
-      beginInput = beginInput->m_previous;
-
-      m_inInsertMode = true;
-
-      int x, y;
-      m_console->GetViewStart(&x, &y);
-      m_console->SetScrollTo(y);
-
-      m_console->SetSelection(beginInput);
-
-      m_console->DeleteSelection(false);
-
-      m_console->SetInsertPoint(beginInput);
-
-      DoRawConsoleAppend(val, type, true);
-
-      m_console->SetInsertPoint(NULL);
-      m_console->SetScrollTo(-1);
-
-      wxYield();
-      m_console->SetSelection(beginInput);
-      if (!m_console->SelectNextInput())
-      {
-        if (!m_console->SelectPrevInput())
-          m_console->SetSelection(NULL);
-      }
-
-      m_inInsertMode = false;
-    }
-  }
-  wiz->Destroy();
+  m_console->Refresh();
 }
 
 void wxMaxima::ReEvaluate(wxCommandEvent& event)
 {
   if (!m_console->CanEdit())
     return ;
-  wxString text = m_console->GetString(true);
 
-  m_inInsertMode = true;
+  ResetTitle(false);
 
   MathCell* beginInput = m_console->GetSelectionStart();
-  beginInput = beginInput->m_previous;
 
-  int x, y;
-  m_console->GetViewStart(&x, &y);
-  m_console->SetScrollTo(y);
+  if (beginInput->GetType() == MC_TYPE_INPUT)
+  {
+    wxString text = m_console->GetString(true);
 
-  m_console->SetSelection(beginInput);
-  m_console->DeleteSelection(false);
+    m_inInsertMode = true;
 
-  m_console->SetInsertPoint(beginInput);
+    beginInput = beginInput->m_previous;
 
-  beginInput->SetValue(m_lastPrompt);
+    int x, y;
+    m_console->GetViewStart(&x, &y);
+    m_console->SetScrollTo(y);
 
-  SendMaxima(text);
+    m_console->SetSelection(beginInput);
+    m_console->DeleteSelection(false);
+
+    m_console->SetInsertPoint(beginInput);
+
+    beginInput->SetValue(m_lastPrompt);
+
+    SendMaxima(text);
+  }
 }
 
 void wxMaxima::PrependCell(wxCommandEvent& event)
@@ -2892,17 +2835,17 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
-    DoRawConsoleAppend(_("Edit input"), MC_TYPE_INPUT, false);
+    DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false);
     break;
   case menu_add_comment:
   case popid_add_comment:
-    DoRawConsoleAppend(_("Edit comment"), MC_TYPE_COMMENT, true);
+    DoRawConsoleAppend(wxEmptyString, MC_TYPE_COMMENT, true);
     break;
   case menu_add_title:
-    DoRawConsoleAppend(_("Edit title name"), MC_TYPE_TITLE, true);
+    DoRawConsoleAppend(wxEmptyString, MC_TYPE_TITLE, true);
     break;
   case menu_add_section:
-    DoRawConsoleAppend(_("Edit section name"), MC_TYPE_SECTION, true);
+    DoRawConsoleAppend(wxEmptyString, MC_TYPE_SECTION, true);
     break;
   }
 
@@ -2911,7 +2854,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   prompt = prompt->m_nextToDraw;
 
   m_console->SetScrollTo(-1);
-  m_console->SetSelection(prompt);
+  m_console->SetActiveCell(prompt);
   m_console->SetFocus();
 
   ResetTitle(false);
@@ -3141,4 +3084,12 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_insert_input, wxMaxima::PrependCell)
   EVT_MENU(menu_unfold, wxMaxima::EditMenu)
   EVT_MENU(menu_select_last, wxMaxima::EditMenu)
+  EVT_MENU(activate_cell, wxMaxima::HandleCellEvent)
+  EVT_MENU(deactivate_cell_cancel, wxMaxima::HandleCellEvent)
+  EVT_MENU(deactivate_cell_ok, wxMaxima::HandleCellEvent)
+  EVT_MENU(menu_cut, wxMaxima::EditMenu)
+  EVT_MENU(menu_paste, wxMaxima::EditMenu)
+  EVT_MENU(popid_cut, wxMaxima::PopupMenu)
+  EVT_MENU(popid_paste, wxMaxima::PopupMenu)
+  EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
 END_EVENT_TABLE()

@@ -88,6 +88,10 @@ public:
   {
     return m_forceUpdate;
   }
+  wxFontEncoding GetFontEncoding()
+  {
+    return m_fontEncoding;
+  }
 private:
   double m_scale;
   wxDC& m_dc;
@@ -97,6 +101,7 @@ private:
   int m_symbolFontAdj;
   bool m_haveSymbolFont;
   bool m_forceUpdate;
+  wxFontEncoding m_fontEncoding;
   style m_styles[12];
 };
 

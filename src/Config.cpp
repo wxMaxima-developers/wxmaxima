@@ -107,6 +107,24 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     ;
   m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT);
   SetupFontList();
+  label_12 = new wxStaticText(notebook_1_pane_2, -1, _("Font encoding:"));
+#ifndef __WXMSW__
+  const wxString m_fontEncodings[] =
+    {
+      _("Default"), wxT("ISO-8859-1"), wxT("ISO-8859-2"), wxT("ISO-8859-3"),
+      wxT("ISO-8859-4"), wxT("ISO-8859-5"), wxT("ISO-8859-6"),
+      wxT("ISO-8859-7"), wxT("ISO-8859-8"), wxT("ISO-8859-9")
+    };
+  m_fontEncoding = new wxComboBox(notebook_1_pane_2, font_family, _("Default"), wxDefaultPosition, wxSize(230, -1), 10, m_fontEncodings, wxCB_DROPDOWN | wxCB_READONLY);
+#else
+  const wxString m_fontEncodings[] =
+    {
+      _("Default"), wxT("CP-1250"), wxT("CP-1251"), wxT("CP-1252"),
+      wxT("CP-1253"), wxT("CP-1254"), wxT("CP-1255"), wxT("CP-1256"),
+      wxT("CP-1257"), wxT("CP-1258")
+    };
+  m_fontEncoding = new wxComboBox(notebook_1_pane_2, font_family, _("Default"), wxDefaultPosition, wxSize(230, -1), 9, m_fontEncodings, wxCB_DROPDOWN | wxCB_READONLY);
+#endif
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
@@ -189,6 +207,7 @@ void Config::set_properties()
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
+  wxString fontEncoding(_("Default"));
 
   m_fontSize->SetRange(8, 20);
   config->Read(wxT("maxima"), &mp);
@@ -202,6 +221,7 @@ void Config::set_properties()
   config->Read(wxT("showHeader"), &showHeader);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
+  config->Read(wxT("fontEncoding"), &fontEncoding);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -228,6 +248,8 @@ void Config::set_properties()
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
   m_fixedFontInTC->SetValue(fixedFontTC);
+
+  m_fontEncoding->SetValue(fontEncoding);
 
 #if defined __WXMSW__
   m_button1->SetDefault();
@@ -272,7 +294,6 @@ void Config::do_layout()
   sizer_4->Add(grid_sizer_2, 1, wxALL | wxEXPAND, 3);
   sizer_3->Add(sizer_4, 1, wxALL | wxEXPAND, 3);
 
-  // TAB 2
   // wxMaxima options box
   grid_sizer_5->Add(label_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -286,7 +307,6 @@ void Config::do_layout()
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
-  // Tab 1
   notebook_1_pane_1->SetAutoLayout(true);
   notebook_1_pane_1->SetSizer(sizer_3);
   sizer_3->Fit(notebook_1_pane_1);
@@ -299,6 +319,8 @@ void Config::do_layout()
   grid_sizer_1->Add(m_fontSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_fontFamily, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(label_12, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_fontEncoding, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
@@ -335,11 +357,7 @@ void Config::do_layout()
   notebook_1->AddPage(notebook_1_pane_2, _("Style"));
 
   // Add notebook to dialog
-#if wxCHECK_VERSION(2,5,3)
   sizer_1->Add(notebook_1, 1, wxEXPAND | wxALL, 2);
-#else
-  sizer_1->Add(new wxNotebookSizer(notebook_1), 1, wxEXPAND | wxALL, 2);
-#endif
 
   // OK and cancel buttons
   sizer_2->Add(m_button1, 0, wxLEFT | wxRIGHT, 5);
@@ -380,6 +398,8 @@ void Config::OnOk(wxCommandEvent& event)
   {
     config->Write(wxT("language"), langs[i]);
   }
+  config->Write(wxT("fontEncoding"), m_fontEncoding->GetValue());
+
   config->Flush();
 
   WriteStyles();
@@ -917,11 +937,7 @@ void Config::UpdateExample()
     color = m_styleMainPrompt.color;
 
   label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily->GetValue());
-#if wxCHECK_VERSION(2, 5, 3)
   label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
-#else
-  label_11->SetBackgroundColour(*(wxTheColourDatabase->FindColour(m_styleBackground.color)));
-#endif
 
   label_11->Refresh();
 }
@@ -951,11 +967,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 
   GetClientSize(&panel_width, &panel_height);
 
-#if wxCHECK_VERSION(2, 5, 3)
   dc.SetTextForeground(wxTheColourDatabase->Find(m_fgColor));
-#else
-  dc.SetTextForeground(*(wxTheColourDatabase->FindColour(m_fgColor)));
-#endif
 
   if (m_bold)
     bold = wxBOLD;

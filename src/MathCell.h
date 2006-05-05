@@ -194,6 +194,36 @@ public:
   {
     return m_type == MC_TYPE_INPUT || IsComment();
   }
+  virtual void ProcessEvent(wxKeyEvent& event)
+  { }
+  virtual bool ActivateCell()
+  {
+    return false;
+  }
+  virtual void AddEnding()
+  { }
+  virtual wxPoint CaretToPoint()
+  {
+    return wxPoint(-1, -1);
+  }
+  virtual void SelectPoint(wxPoint& point)
+  { }
+  virtual void SelectRect(wxPoint& one, wxPoint& two)
+  { }
+  virtual void PasteFromClipboard()
+  { }
+  virtual bool CopyToClipboard()
+  { }
+  virtual bool CutToClipboard()
+  { }
+  virtual void SelectAll()
+  { }
+  virtual bool CanCopy()
+  {
+    return false;
+  }
+  virtual void SetMatchParens(bool match)
+  { }
 protected:
   int m_height;
   int m_width;

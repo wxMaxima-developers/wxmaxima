@@ -33,6 +33,7 @@
 #include "SumCell.h"
 #include "IntCell.h"
 #include "FunCell.h"
+#include "EditorCell.h"
 
 #include <wx/wx.h>
 #include <wx/config.h>
@@ -579,29 +580,6 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         m_highlight = true;
         MathCell* tmp = ParseTag(node->children);
         m_highlight = highlight;
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
-      else if (tagName == wxT("prompt"))
-      {
-        int oldPS = m_ParserStyle;
-        m_ParserStyle = MC_TYPE_MAIN_PROMPT;
-        MathCell* tmp = ParseTag(node->children);
-        m_ParserStyle = oldPS;
-        tmp->ForceBreakLine(true);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
-      else if (tagName == wxT("input"))
-      {
-        int oldPS = m_ParserStyle;
-        m_ParserStyle = MC_TYPE_INPUT;
-        MathCell* tmp = ParseTag(node->children);
-        m_ParserStyle = oldPS;
         if (cell == NULL)
           cell = tmp;
         else

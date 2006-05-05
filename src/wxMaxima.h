@@ -88,6 +88,7 @@ protected:
   void EditInputMenu(wxCommandEvent& event);       //
   void ReEvaluate(wxCommandEvent& event);          //
   void PrependCell(wxCommandEvent& event);         //
+  void HandleCellEvent(wxCommandEvent& event);
 
   void HandleMainPrompt(wxString prompt);
 

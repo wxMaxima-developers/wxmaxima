@@ -55,6 +55,7 @@ void MathCell::AppendCell(MathCell *p_next)
 {
   if (p_next == NULL)
     return ;
+  m_maxDrop = -1;
   if (m_next == NULL)
   {
     m_next = p_next;
@@ -96,9 +97,9 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
-  int drop = m_isBroken ? 0 : (m_height - m_center);
   if (m_maxDrop == -1)
   {
+    int drop = m_isBroken ? 0 : (m_height - m_center);
     if (m_nextToDraw == NULL)
       m_maxDrop = drop;
     else
@@ -144,7 +145,8 @@ int MathCell::GetLineWidth(double scale)
   int width = m_isBroken ? 0 : m_width;
   if (m_lineWidth == -1)
   {
-    if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine)
+    if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine ||
+        m_nextToDraw->m_type == MC_TYPE_MAIN_PROMPT)
       m_lineWidth = width;
     else
       m_lineWidth = width + m_nextToDraw->GetLineWidth(scale) +
@@ -277,7 +279,6 @@ wxString MathCell::GetDiffPart()
 /***
  * Find the first and last cell in rectangle rect in this line.
  */
-
 void MathCell::SelectRect(wxRect& rect, MathCell** first, MathCell** last)
 {
   SelectFirst(rect, first);
@@ -409,7 +410,6 @@ void MathCell::UnsetPen(CellParser& parser)
 /***
  * Copy all importatn data from s to t
  */
-
 void MathCell::CopyData(MathCell* s, MathCell* t)
 {
   t->m_forceBreakLine = s->m_forceBreakLine;

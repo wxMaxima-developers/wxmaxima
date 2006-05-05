@@ -224,34 +224,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_LABEL),
                         parser.GetFontName()));
       break;
-    case MC_TYPE_INPUT:
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_INPUT),
-                        parser.IsBold(TS_INPUT),
-                        parser.IsUnderlined(TS_INPUT),
-                        parser.GetFontName()));
-      break;
-    case MC_TYPE_COMMENT:
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        wxNORMAL,
-                        wxNORMAL,
-                        0,
-                        parser.GetFontName()));
-      break;
-    case MC_TYPE_SECTION:
-      dc.SetFont(wxFont(fontsize1 + 4, wxMODERN,
-                        wxNORMAL,
-                        wxBOLD,
-                        1,
-                        parser.GetFontName()));
-      break;
-    case MC_TYPE_TITLE:
-      dc.SetFont(wxFont(fontsize1 + 8, wxMODERN,
-                        wxSLANT,
-                        wxBOLD,
-                        1,
-                        parser.GetFontName()));
-      break;
     default:
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(m_textStyle),
@@ -265,7 +237,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
 void TextCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-#if wxCHECK_VERSION(2, 5, 3)
   if (m_highlight)
   {
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
@@ -282,54 +253,13 @@ void TextCell::SetForeground(CellParser& parser)
   case MC_TYPE_ERROR:
     dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
     break;
-  case MC_TYPE_INPUT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
-    break;
   case MC_TYPE_LABEL:
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
-    break;
-  case MC_TYPE_COMMENT:
-  case MC_TYPE_SECTION:
-  case MC_TYPE_TITLE:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
     break;
   default:
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
     break;
   }
-#else
-  if (m_highlight)
-  {
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_HIGHLIGHT))));
-    return ;
-  }
-  switch (m_type)
-  {
-  case MC_TYPE_PROMPT:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_OTHER_PROMPT))));
-    break;
-  case MC_TYPE_MAIN_PROMPT:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_MAIN_PROMPT))));
-    break;
-  case MC_TYPE_ERROR:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(wxT("red"))));
-    break;
-  case MC_TYPE_INPUT:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_INPUT))));
-    break;
-  case MC_TYPE_LABEL:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_LABEL))));
-    break;
-  case MC_TYPE_COMMENT:
-  case MC_TYPE_TITLE:
-  case MC_TYPE_SECTION:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(TS_NORMAL_TEXT))));
-    break;
-  default:
-    dc.SetTextForeground(*(wxTheColourDatabase->FindColour(parser.GetColor(m_textStyle))));
-    break;
-  }
-#endif
 }
 bool TextCell::IsOperator()
 {

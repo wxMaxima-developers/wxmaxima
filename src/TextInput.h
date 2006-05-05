@@ -30,10 +30,10 @@
 class TextInput: public wxDialog
 {
 public:
-  TextInput(wxWindow* parent, int id = -1, const wxString& title = wxT(""),
+  TextInput(wxWindow* parent, int id = -1, const wxString& title = wxEmptyString,
             bool setfont = true, const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxSize(TEXT_INPUT_WIDTH, TEXT_INPUT_HEIGHT),
-            long style = wxRESIZE_BORDER);
+            long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX | wxMAXIMIZE_BOX);
   wxString GetValue();
   void SetValue(wxString s);
 private:

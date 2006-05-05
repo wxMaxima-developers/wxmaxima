@@ -123,13 +123,10 @@ void wxMaximaFrame::set_properties()
 #else
     m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
-
   }
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
-#if wxCHECK_VERSION(2, 5, 0)
   m_console->SetMinSize(wxSize(100, 100));
-#endif
   button_0->SetToolTip(_("Enter command"));
   button_1->SetToolTip(_("Multiline input"));
   frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
@@ -290,6 +287,11 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
+                             _("Cut selection from console"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
+                             _("Paste text from clipboard"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_unfold, _("Unfold"),
                              _("Unfold all folded groups"), wxITEM_NORMAL);
