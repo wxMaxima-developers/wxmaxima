@@ -144,6 +144,8 @@ public:
     return m_activeCell;
   }
   void ShowPoint(wxPoint point);
+  void OnSetFocus(wxFocusEvent& event);
+  void OnKillFocus(wxFocusEvent& event);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -183,9 +185,11 @@ protected:
   MathCell *m_selectionEnd;
   MathCell *m_insertPoint;
   MathCell *m_activeCell;
+  CellParser *m_selectionParser;
+  bool m_switchDisplayCaret;
   bool m_editingEnabled;
   int m_scrollTo;
-  wxTimer m_timer;
+  wxTimer m_timer, m_caretTimer;
   wxBitmap *m_memory;
   DECLARE_EVENT_TABLE()
 };

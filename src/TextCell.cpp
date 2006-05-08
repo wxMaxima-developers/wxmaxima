@@ -157,7 +157,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsItalic(TS_HIDDEN_GROUP),
                       parser.IsBold(TS_HIDDEN_GROUP),
                       parser.IsUnderlined(TS_HIDDEN_GROUP),
-                      parser.GetFontName()));
+                      parser.GetFontName(),
+                      parser.GetFontEncoding()));
   else
   switch(m_textStyle)
   {
@@ -181,7 +182,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
     break;
   case TS_GREEK_CONSTANT:
     if (parser.HaveSymbolFont())
@@ -197,7 +199,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
     break;
   default:
     switch(m_type)
@@ -207,28 +210,32 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsItalic(TS_MAIN_PROMPT),
                         parser.IsBold(TS_MAIN_PROMPT),
                         parser.IsUnderlined(TS_MAIN_PROMPT),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
       break;
     case MC_TYPE_PROMPT:
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_OTHER_PROMPT),
                         parser.IsBold(TS_OTHER_PROMPT),
                         parser.IsUnderlined(TS_OTHER_PROMPT),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
       break;
     case MC_TYPE_LABEL:
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_LABEL),
                         parser.IsBold(TS_LABEL),
                         parser.IsUnderlined(TS_LABEL),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
       break;
     default:
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(m_textStyle),
                         parser.IsBold(m_textStyle),
                         parser.IsUnderlined(m_textStyle),
-                        parser.GetFontName()));
+                        parser.GetFontName(),
+                        parser.GetFontEncoding()));
     }
   }
 }

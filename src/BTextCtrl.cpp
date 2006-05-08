@@ -42,7 +42,6 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #else
     SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
-
   }
 }
 

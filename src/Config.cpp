@@ -20,7 +20,7 @@
 #include "Config.h"
 
 #include <wx/config.h>
-#include <wx/fontenum.h>
+#include <wx/font.h>
 #include <wx/fontdlg.h>
 
 // Should match whatever  is put in the m_language
@@ -102,29 +102,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
   m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
-  const wxString m_fontFamily_choices[] =
-    {}
-    ;
-  m_fontFamily = new wxComboBox(notebook_1_pane_2, font_family, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 0, m_fontFamily_choices, wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT);
-  SetupFontList();
-  label_12 = new wxStaticText(notebook_1_pane_2, -1, _("Font encoding:"));
-#ifndef __WXMSW__
-  const wxString m_fontEncodings[] =
-    {
-      _("Default"), wxT("ISO-8859-1"), wxT("ISO-8859-2"), wxT("ISO-8859-3"),
-      wxT("ISO-8859-4"), wxT("ISO-8859-5"), wxT("ISO-8859-6"),
-      wxT("ISO-8859-7"), wxT("ISO-8859-8"), wxT("ISO-8859-9")
-    };
-  m_fontEncoding = new wxComboBox(notebook_1_pane_2, font_family, _("Default"), wxDefaultPosition, wxSize(230, -1), 10, m_fontEncodings, wxCB_DROPDOWN | wxCB_READONLY);
-#else
-  const wxString m_fontEncodings[] =
-    {
-      _("Default"), wxT("CP-1250"), wxT("CP-1251"), wxT("CP-1252"),
-      wxT("CP-1253"), wxT("CP-1254"), wxT("CP-1255"), wxT("CP-1256"),
-      wxT("CP-1257"), wxT("CP-1258")
-    };
-  m_fontEncoding = new wxComboBox(notebook_1_pane_2, font_family, _("Default"), wxDefaultPosition, wxSize(230, -1), 9, m_fontEncodings, wxCB_DROPDOWN | wxCB_READONLY);
-#endif
+  m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
@@ -195,12 +173,12 @@ void Config::set_properties()
   m_showHeader->SetToolTip(_("Show initial header with maxima system information."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
-  m_fontFamily->SetToolTip(_("Font used for display in console."));
+  m_getFont->SetToolTip(_("Font used for display in console."));
   m_symbolFontOk->SetToolTip(_("Use greek font to display greek characters."));
   m_symbolFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  wxString mp, mc, ib, br, mf;
+  wxString mp, mc, ib, mf;
   int fntsz = 12;
   bool match = true, showLongExpr = false;
   bool showHeader = true, fixedFontTC = true;
@@ -212,7 +190,6 @@ void Config::set_properties()
   m_fontSize->SetRange(8, 20);
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
-  config->Read(wxT("browser"), &br);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("fontsize"), &fntsz);
@@ -248,8 +225,6 @@ void Config::set_properties()
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
   m_fixedFontInTC->SetValue(fixedFontTC);
-
-  m_fontEncoding->SetValue(fontEncoding);
 
 #if defined __WXMSW__
   m_button1->SetDefault();
@@ -318,9 +293,7 @@ void Config::do_layout()
   grid_sizer_1->Add(label_7, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_fontSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_fontFamily, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(label_12, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_fontEncoding, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
@@ -398,7 +371,6 @@ void Config::OnOk(wxCommandEvent& event)
   {
     config->Write(wxT("language"), langs[i]);
   }
-  config->Write(wxT("fontEncoding"), m_fontEncoding->GetValue());
 
   config->Flush();
 
@@ -451,19 +423,35 @@ void Config::OnSymbolBrowse(wxCommandEvent& event)
 
 void Config::OnChangeFontFamily(wxCommandEvent& event)
 {
-  UpdateExample();
+  wxFont font;
+  font = wxGetFontFromUser(this, wxFont(m_fontSize->GetValue(),
+                                        wxNORMAL, wxNORMAL, wxNORMAL,
+                                        false, m_fontFamily,
+                                        m_fontEncoding));
+  if (font.Ok())
+  {
+    m_fontFamily = font.GetFaceName();
+    m_getFont->SetLabel(m_fontFamily);
+    m_fontEncoding = font.GetEncoding();
+    m_fontSize->SetValue(font.GetPointSize());
+    UpdateExample();
+  }
 }
 
 void Config::ReadStyles()
 {
   wxConfigBase* config = wxConfig::Get();
 
-  wxString font;
   int adj = 0;
   bool symbolOk = false;
 
-  config->Read(wxT("Style/fontname"), &font);
-  m_fontFamily->SetValue(font);
+  config->Read(wxT("Style/fontname"), &m_fontFamily);
+  if (m_fontFamily.Length())
+    m_getFont->SetLabel(m_fontFamily);
+
+  int encoding = m_fontEncoding;
+  config->Read(wxT("fontEncoding"), &encoding);
+  m_fontEncoding = (wxFontEncoding)encoding;
 
   m_symbolFontName = wxEmptyString;
   config->Read(wxT("Style/Symbol/ok"), &symbolOk);
@@ -656,7 +644,9 @@ void Config::WriteStyles()
   config->Write(wxT("Style/Highlight/color"),
                 m_styleHighlight.color);
 
-  config->Write(wxT("Style/fontname"), m_fontFamily->GetValue());
+  config->Write(wxT("Style/fontname"), m_fontFamily);
+  int encoding = (int)m_fontEncoding;
+  config->Write(wxT("fontEncoding"), m_fontEncoding);
 
   config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());
   config->Write(wxT("Style/Symbol/fontname"), m_symbolFontName);
@@ -838,33 +828,6 @@ void Config::OnCheckSymbol(wxCommandEvent& event)
   m_symbolFontAdj->Enable(m_symbolFontOk->GetValue());
 }
 
-class FixedFonts : public wxFontEnumerator
-{
-public:
-  const wxArrayString& GetFacenames()
-  {
-    return m_facenames;
-  }
-protected:
-  virtual bool OnFacename(const wxString& facename)
-  {
-    m_facenames.Add(facename);
-    return true;
-  }
-private:
-  wxArrayString m_facenames;
-};
-
-void Config::SetupFontList()
-{
-  FixedFonts enumerator;
-  enumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, true);
-
-  const wxArrayString& strings = enumerator.GetFacenames();
-  for (unsigned int i = 0; i < strings.Count(); i++)
-    m_fontFamily->Append(strings.Item(i));
-}
-
 void Config::OnChangeWarning(wxCommandEvent &event)
 {
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
@@ -936,7 +899,7 @@ void Config::UpdateExample()
   else if (tmp == &m_styleHiddenText)
     color = m_styleMainPrompt.color;
 
-  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily->GetValue());
+  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily);
   label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
 
   label_11->Refresh();
@@ -946,9 +909,9 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
   EVT_BUTTON(button_symbol, Config::OnSymbolBrowse)
+  EVT_BUTTON(font_family, Config::OnChangeFontFamily)
   EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
-  EVT_COMBOBOX(font_family, Config::OnChangeFontFamily)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
   EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
@@ -985,3 +948,4 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
   EVT_PAINT(ExamplePanel::OnPaint)
 END_EVENT_TABLE()
+

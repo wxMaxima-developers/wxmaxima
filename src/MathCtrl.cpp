@@ -34,11 +34,14 @@
 #endif
 
 #define SCROLL_UNIT 10
+#define CARET_TIMER_TIMEOUT 500
+
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
 enum {
-  TIMER_ID
+  TIMER_ID,
+  CARET_TIMER_ID
 };
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size):
@@ -58,7 +61,9 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size):
   m_mouseOutside = false;
   m_forceUpdate = false;
   m_editingEnabled = true;
+  m_switchDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
+  m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   AdjustSize(false);
 }
 
@@ -159,6 +164,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     if (m_selectionStart != NULL)
     {
       MathCell* tmp = m_selectionStart;
+      dcm.SetLogicalFunction(wxAND);
+      dcm.SetBrush(*wxLIGHT_GREY_BRUSH);
+      dcm.SetPen(*wxLIGHT_GREY_PEN);
       // We have a selection with click
       if (m_selectWholeLine)
       {
@@ -255,7 +263,7 @@ void MathCtrl::AddLine(MathCell *newNode, bool forceNewLine)
 }
 
 /***
- * Recalculate sizes of cells
+ * Recalculate dimensions of cells
  */
 void MathCtrl::RecalculateForce()
 {
@@ -540,15 +548,14 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two)
     if (m_activeCell->ContainsPoint(one) && m_activeCell->ContainsPoint(two))
     {
       wxClientDC dc(this);
-      CellParser parser(dc);
-      m_activeCell->SelectRectText(parser, one, two);
+      m_activeCell->SelectRectText(dc, one, two);
+      m_switchDisplayCaret = false;
     }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
-
     Refresh();
     return ;
   }
@@ -645,15 +652,15 @@ void MathCtrl::SelectPoint(wxPoint& point)
     if (m_activeCell->ContainsPoint(m_down))
     {
       wxClientDC dc(this);
-      CellParser parser(dc);
-      m_activeCell->SelectPointText(parser, m_down);
-      Refresh();
+      m_activeCell->SelectPointText(dc, m_down);
+      m_switchDisplayCaret = false;
     }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
+    Refresh();
     return ;
   }
 
@@ -1037,17 +1044,27 @@ void MathCtrl::OnChar(wxKeyEvent& event)
   if (m_activeCell != NULL)
   {
     m_activeCell->ProcessEvent(event);
-    wxPoint point = m_activeCell->CaretToPoint();
 
-    m_activeCell->ResetData();
-    if (m_activeCell->m_previous != NULL)
-      m_activeCell->m_previous->ResetData();
+    m_switchDisplayCaret = false;
 
-    Recalculate(false);
-    Refresh();
+    wxClientDC dc(this);
+    CellParser parser(dc);
+
+    wxPoint point = m_activeCell->PositionToPoint(parser);
+
+    if (m_activeCell->IsDirty())
+    {
+      m_activeCell->ResetData();
+      if (m_activeCell->m_previous != NULL)
+        m_activeCell->m_previous->ResetData();
+
+      Recalculate(false);
+
+    }
 
     ShowPoint(point);
 
+    Refresh();
     return ;
   }
 
@@ -1181,25 +1198,41 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event)
 
 void MathCtrl::OnTimer(wxTimerEvent& event)
 {
-  if (!m_leftDown || !m_mouseOutside)
-    return ;
-  int dx = 0, dy = 0;
-  int currX, currY;
+  if (event.GetId() == TIMER_ID)
+  {
+    if (!m_leftDown || !m_mouseOutside)
+      return ;
+    int dx = 0, dy = 0;
+    int currX, currY;
 
-  wxSize size = GetClientSize();
-  CalcUnscrolledPosition(0, 0, &currX, &currY);
+    wxSize size = GetClientSize();
+    CalcUnscrolledPosition(0, 0, &currX, &currY);
 
-  if (m_mousePoint.x <= 0)
-    dx = -10;
-  else if (m_mousePoint.x >= size.GetWidth())
-    dx = 10;
-  if (m_mousePoint.y <= 0)
-    dy = -10;
-  else if (m_mousePoint.y >= size.GetHeight())
-    dy = 10;
+    if (m_mousePoint.x <= 0)
+      dx = -10;
+    else if (m_mousePoint.x >= size.GetWidth())
+      dx = 10;
+    if (m_mousePoint.y <= 0)
+      dy = -10;
+    else if (m_mousePoint.y >= size.GetHeight())
+      dy = 10;
 
-  Scroll((currX + dx) / 10, (currY + dy) / 10);
-  m_timer.Start(50, true);
+    Scroll((currX + dx) / 10, (currY + dy) / 10);
+    m_timer.Start(50, true);
+  }
+  else
+  {
+    if (m_activeCell != NULL)
+    {
+      if (m_switchDisplayCaret)
+      {
+        m_activeCell->SwitchCaretDisplay();
+        Refresh();
+      }
+      m_switchDisplayCaret = true;
+      m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
+    }
+  }
 }
 
 /***
@@ -1825,8 +1858,8 @@ bool MathCtrl::CanEdit()
       m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;
 
-  if (m_selectionStart->m_next == NULL)
-    return false;
+//  if (m_selectionStart->m_next == NULL)
+//    return false;
 
   return true;
 }
@@ -2121,6 +2154,8 @@ void MathCtrl::SetActiveCell(MathCell *cell)
       wxConfig::Get()->Read(wxT("matchParens"), &match);
     m_activeCell->ActivateCell();
     m_activeCell->SetMatchParens(match);
+    m_switchDisplayCaret = false;
+    m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
   }
 }
 
@@ -2193,6 +2228,18 @@ void MathCtrl::SelectAll()
   Refresh();
 }
 
+void MathCtrl::OnSetFocus(wxFocusEvent& event)
+{
+  if (m_activeCell != NULL)
+    m_activeCell->SetFocus(true);
+}
+
+void MathCtrl::OnKillFocus(wxFocusEvent& event)
+{
+  if (m_activeCell != NULL)
+    m_activeCell->SetFocus(false);
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
@@ -2204,7 +2251,10 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
   EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
   EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
+  EVT_TIMER(CARET_TIMER_ID, MathCtrl::OnTimer)
   EVT_KEY_DOWN(MathCtrl::OnKeyDown)
   EVT_CHAR(MathCtrl::OnChar)
   EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
+  EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
+  EVT_SET_FOCUS(MathCtrl::OnSetFocus)
 END_EVENT_TABLE()

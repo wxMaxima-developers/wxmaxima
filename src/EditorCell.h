@@ -49,9 +49,9 @@ public:
   void AddEnding();
   void PositionToXY(int pos, int* line, int* col);
   int XYToPosition(int x, int y);
-  wxPoint PositionToPoint(wxDC& dc, int pos = -1);
-  void SelectPointText(CellParser& parser, wxPoint& point);
-  void SelectRectText(CellParser& parser, wxPoint& one, wxPoint& two);
+  wxPoint PositionToPoint(CellParser& parser, int pos = -1);
+  void SelectPointText(wxDC &dc, wxPoint& point);
+  void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two);
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard();
@@ -70,6 +70,18 @@ public:
   }
   void FindMatchingParens();
   wxString GetLineString(int line, int start = 0, int end = -1);
+  bool IsDirty()
+  {
+    return m_isDirty;
+  }
+  void SwitchCaretDisplay()
+  {
+    m_displayCaret = !m_displayCaret;
+  }
+  void SetFocus(bool focus)
+  {
+    m_hasFocus = focus;
+  }
 private:
   wxString m_text;
   long m_positionOfCaret;
@@ -82,6 +94,14 @@ private:
   int m_charHeight;
   bool m_matchParens;
   int m_paren1, m_paren2;
+  bool m_isDirty;
+  bool m_displayCaret;
+  bool m_hasFocus;
+  int m_fontStyle;
+  wxFontWeight m_fontWeight;
+  bool m_underlined;
+  wxString m_fontName;
+  wxFontEncoding m_fontEncoding;
 };
 
 #endif

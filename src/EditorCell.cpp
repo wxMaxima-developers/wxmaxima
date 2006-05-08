@@ -33,6 +33,12 @@ EditorCell::EditorCell() : MathCell()
   m_isActive = false;
   m_matchParens = true;
   m_paren1 = m_paren2 = -1;
+  m_isDirty = false;
+  m_hasFocus = false;
+  m_underlined = false;
+  m_fontWeight = wxFONTWEIGHT_NORMAL;
+  m_fontStyle = wxNORMAL;
+  m_fontEncoding = wxFONTENCODING_DEFAULT;
 }
 
 EditorCell::~EditorCell()
@@ -64,6 +70,7 @@ wxString EditorCell::ToString(bool all)
 
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
+  m_isDirty = false;
   if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
   {
     m_fontSize = fontsize;
@@ -147,7 +154,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale) + m_charHeight * numberOfLines);
 
-      m_numberOfLines++;
       newLinePos++;
       prevNewLinePos = newLinePos;
       numberOfLines++;
@@ -158,42 +164,52 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       //
       // Draw the caret
       //
-      int caretInLine = 0;
-      int caretInColumn = 0;
-      
-      PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
-      
-      wxString line = GetLineString(caretInLine, 0, caretInColumn);
-      int lineWidth, lineHeight;
-      dc.GetTextExtent(line, &lineWidth, &lineHeight);
-      
+      if (m_displayCaret && m_hasFocus)
+      {
+        int caretInLine = 0;
+        int caretInColumn = 0;
 
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                  point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+        PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
+
+        wxString line = GetLineString(caretInLine, 0, caretInColumn);
+        int lineWidth, lineHeight;
+        dc.GetTextExtent(line, &lineWidth, &lineHeight);
+
+
+        dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
+                    point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                    point.x + SCALE_PX(2, scale) + lineWidth,
+                    point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+      }
 
       //
       // Mark selection
       //
       if (m_selectionStart > -1)
       {
-        dc.SetLogicalFunction(wxINVERT);
+        dc.SetLogicalFunction(wxAND);
+        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
+        dc.SetPen(*wxLIGHT_GREY_PEN);
         wxPoint point;
-        long save = m_positionOfCaret;
         long start = MIN(m_selectionStart, m_selectionEnd);
         long end = MAX(m_selectionStart, m_selectionEnd);
-        for (m_positionOfCaret = start;
-             m_positionOfCaret < end;
-             m_positionOfCaret++)
+        long pos1 = start, pos2 = start;
+        wxPoint point1;
+
+        while (pos1 < end)
         {
-          point = PositionToPoint(dc);
+          while (pos1 < end && m_text.GetChar(pos1) != '\n')
+            pos1++;
+          point = PositionToPoint(parser, pos2);
+          point1 = PositionToPoint(parser, pos1);
           dc.DrawRectangle(point.x + SCALE_PX(2, scale),
                            point.y  + SCALE_PX(2, scale) - m_center,
-                           m_charWidth,
-			   m_charHeight);
+                           point1.x - point.x,
+                           m_charHeight);
+          pos1++;
+          pos2 = pos1;
         }
-        m_positionOfCaret = save;
+
         dc.SetLogicalFunction(wxCOPY);
       }
 
@@ -204,10 +220,18 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       {
         dc.SetLogicalFunction(wxAND);
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-        wxPoint point = PositionToPoint(dc, m_paren1);
+        dc.SetPen(*wxLIGHT_GREY_PEN);
+        wxPoint point = PositionToPoint(parser, m_paren1);
+        int width, height;
+        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         dc.DrawRectangle(point.x + SCALE_PX(2, scale),
                          point.y  + SCALE_PX(2, scale) - m_center,
-                         m_charWidth, m_charHeight);
+                         width, height);
+        point = PositionToPoint(parser, m_paren2);
+        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
+        dc.DrawRectangle(point.x + SCALE_PX(2, scale),
+                         point.y  + SCALE_PX(2, scale) - m_center,
+                         width, height);
         dc.SetLogicalFunction(wxCOPY);
       }
     }
@@ -221,42 +245,39 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
 
+  m_fontSize = fontsize;
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
+  m_fontName = parser.GetFontName();
+  m_fontEncoding = parser.GetFontEncoding();
+
   switch(m_type)
   {
-  case MC_TYPE_COMMENT:
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      wxNORMAL,
-                      wxNORMAL,
-                      0,
-                      parser.GetFontName(),
-                      parser.GetFontEncoding()));
-    break;
-  case MC_TYPE_SECTION:
-    dc.SetFont(wxFont(fontsize1 + 4, wxMODERN,
-                      wxNORMAL,
-                      wxBOLD,
-                      1,
-                      parser.GetFontName(),
-                      parser.GetFontEncoding()));
-    break;
   case MC_TYPE_TITLE:
-    dc.SetFont(wxFont(fontsize1 + 8, wxMODERN,
-                      wxSLANT,
-                      wxBOLD,
-                      1,
-                      parser.GetFontName(),
-                      parser.GetFontEncoding()));
+    fontsize1 += 4;
+    m_fontStyle = wxFONTSTYLE_SLANT;
+  case MC_TYPE_SECTION:
+    fontsize1 += 4;
+    m_fontWeight = wxFONTWEIGHT_BOLD;
+    m_underlined = true;
+  case MC_TYPE_COMMENT:
+    m_fontEncoding = parser.GetFontEncoding();
     break;
   default:
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_INPUT),
-                      parser.IsBold(TS_INPUT),
-                      parser.IsUnderlined(TS_INPUT),
-                      parser.GetFontName()));
+    m_fontStyle = parser.IsItalic(TS_INPUT);
+    m_fontWeight = parser.IsBold(TS_INPUT);
+    m_underlined = parser.IsUnderlined(TS_INPUT);
+    m_fontEncoding = parser.GetFontEncoding();
+    break;
   }
+
+  dc.SetFont(wxFont(fontsize1, wxMODERN,
+                    m_fontStyle,
+                    m_fontWeight,
+                    m_underlined,
+                    m_fontName,
+                    m_fontEncoding));
 }
 
 void EditorCell::SetForeground(CellParser& parser)
@@ -358,6 +379,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
              wxT("\n") +
              m_text.SubString(m_positionOfCaret, m_text.Length());
     m_positionOfCaret++;
+    m_isDirty = true;
     break;
   case WXK_END:
     if (event.ShiftDown())
@@ -400,6 +422,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     break;
   case WXK_DELETE:
+    m_isDirty = true;
     if (m_positionOfCaret < m_text.Length())
     {
       if (m_selectionStart == -1)
@@ -417,6 +440,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     break;
   case WXK_BACK:
+    m_isDirty = true;
     if (m_selectionStart > -1) {
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
@@ -434,6 +458,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     break;
   case WXK_TAB:
+    m_isDirty = true;
     {
       if (m_selectionStart > -1) {
         long start = MIN(m_selectionEnd, m_selectionStart);
@@ -461,6 +486,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   default:
     if (event.ControlDown())
       break;
+    m_isDirty = true;
     if (m_selectionStart > -1) {
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
@@ -499,15 +525,27 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
-  m_width = m_height = m_maxDrop = m_center = -1;
+  if (m_isDirty)
+    m_width = m_height = m_maxDrop = m_center = -1;
+  m_displayCaret = true;
 }
 
 void EditorCell::FindMatchingParens()
 {
-  wxChar first = m_text.GetChar(m_positionOfCaret);
+  m_paren2 = m_positionOfCaret;
+  if (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+  {
+    m_paren2--;
+    if (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+    {
+      m_paren1 = m_paren2 = -1;
+      return ;
+    }
+  }
+
+  wxChar first = m_text.GetChar(m_paren2);
   wxChar second;
   int dir;
-  m_paren1 = m_paren2 = -1;
 
   switch (first)
   {
@@ -539,7 +577,6 @@ void EditorCell::FindMatchingParens()
     return;
   }
 
-  m_paren2 = m_positionOfCaret;
   m_paren1 = m_paren2 + dir;
   int depth = 1;
   while (m_paren1 >= 0 && m_paren1 < m_text.Length())
@@ -559,6 +596,8 @@ void EditorCell::FindMatchingParens()
 bool EditorCell::ActivateCell()
 {
   m_isActive = !m_isActive;
+  m_displayCaret = true;
+  m_hasFocus = true;
 
   m_selectionEnd = m_selectionStart = -1;
 
@@ -621,8 +660,11 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(wxDC& dc, int pos)
+wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
 {
+  wxDC& dc = parser.GetDC();
+  SetFont(parser, m_fontSize);
+
   int x = m_currentPoint.x, y = m_currentPoint.y;
   int height, width;
   int cX, cY;
@@ -635,7 +677,7 @@ wxPoint EditorCell::PositionToPoint(wxDC& dc, int pos)
     return wxPoint(-1, -1);
 
   PositionToXY(pos, &cX, &cY);
-  if (cX>0)
+  if (cX > 0)
     line = GetLineString(cY, 0, cX);
 
   dc.GetTextExtent(line, &width, &height);
@@ -646,14 +688,22 @@ wxPoint EditorCell::PositionToPoint(wxDC& dc, int pos)
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPointText(CellParser& parser, wxPoint& point)
+void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 {
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
   wxString s;
-  
-  SetPen(parser);
-  SetFont(parser, m_fontSize);
+  int fontsize1 = m_fontSize;
+
+  if (m_type == MC_TYPE_TITLE)
+    fontsize1 += 8;
+  else if (m_type == MC_TYPE_SECTION)
+    fontsize1 += 4;
+
+  dc.SetFont(wxFont(fontsize1, wxMODERN,
+                    m_fontStyle,
+                    m_fontWeight,
+                    m_underlined,
+                    m_fontName,
+                    m_fontEncoding));
 
   m_selectionEnd = m_selectionStart = -1;
   wxPoint translate(point);
@@ -661,37 +711,33 @@ void EditorCell::SelectPointText(CellParser& parser, wxPoint& point)
   translate.x -= m_currentPoint.x - 2;
   translate.y -= m_currentPoint.y - 2 - m_center;
 
-  int col = translate.x / m_charWidth;
   int lin = translate.y / m_charHeight;
   int width, height;
+  int lineStart = XYToPosition(0, lin);
+  m_positionOfCaret = lineStart;
 
-  s = GetLineString(lin, 0, col + 1);
-  dc.GetTextExtent(s, &width, &height);
-  while (width < translate.x && col < m_text.Length())
+  while (m_text.GetChar(m_positionOfCaret) != '\n')
   {
-    col++;
-    s = GetLineString(lin, 0, col + 1);
-    dc.GetTextExtent(s, &width, &height);
-  }
-  
-  s = GetLineString(lin, 0, col);
-  dc.GetTextExtent(s, &width, &height);
-  while (width > translate.x && col > 0)
-  {
-    col--;
-    s = GetLineString(lin, 0, col);
-    dc.GetTextExtent(s, &width, &height);
+    s = m_text.SubString(lineStart, m_positionOfCaret);
+    dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),
+                                      &width, &height);
+    if (width > translate.x)
+      break;
+
+    m_positionOfCaret++;
   }
 
-  m_positionOfCaret = XYToPosition(col, lin);
+  m_positionOfCaret = MIN(m_positionOfCaret, m_text.Length());
+
+  m_displayCaret = true;
   FindMatchingParens();
 }
 
-void EditorCell::SelectRectText(CellParser& parser, wxPoint& one, wxPoint& two)
+void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
 {
-  SelectPointText(parser, one);
+  SelectPointText(dc, one);
   long start = m_positionOfCaret;
-  SelectPointText(parser, two);
+  SelectPointText(dc, two);
   m_selectionEnd = m_positionOfCaret;
   m_selectionStart = start;
   m_paren2 = m_paren1 = -1;
@@ -773,7 +819,7 @@ wxString EditorCell::GetLineString(int line, int start, int end)
     return wxEmptyString;
 
   int posStart = 0, posEnd = 0;
-  
+
   posStart = XYToPosition(start, line);
   if (end == -1)
   {
@@ -782,6 +828,6 @@ wxString EditorCell::GetLineString(int line, int start, int end)
   }
   else
     posEnd = XYToPosition(end, line);
-  
+
   return m_text.SubString(posStart, posEnd - 1);
 }

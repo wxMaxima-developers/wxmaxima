@@ -202,13 +202,9 @@ public:
   }
   virtual void AddEnding()
   { }
-  virtual wxPoint CaretToPoint()
-  {
-    return wxPoint(-1, -1);
-  }
-  virtual void SelectPointText(CellParser& p, wxPoint& point)
+  virtual void SelectPointText(wxDC &dc, wxPoint& point)
   { }
-  virtual void SelectRectText(CellParser& p, wxPoint& one, wxPoint& two)
+  virtual void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
   { }
   virtual void PasteFromClipboard()
   { }
@@ -223,6 +219,16 @@ public:
     return false;
   }
   virtual void SetMatchParens(bool match)
+  { }
+  virtual wxPoint PositionToPoint(CellParser& parser, int pos = -1)
+  { }
+  virtual bool IsDirty()
+  {
+    return false;
+  }
+  virtual void SwitchCaretDisplay()
+  { }
+  virtual void SetFocus(bool focus)
   { }
 protected:
   int m_height;

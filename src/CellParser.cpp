@@ -19,6 +19,7 @@
 
 #include "CellParser.h"
 
+#include <wx/font.h>
 #include <wx/config.h>
 
 CellParser::CellParser(wxDC& dc) : m_dc(dc)
@@ -53,45 +54,9 @@ void CellParser::ReadStyle()
 
   // Encogind - used only for comments
   m_fontEncoding = wxFONTENCODING_DEFAULT;
-  wxString encoding;
+  int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
-  #if defined __WXMSW__
-  if (encoding == wxT("CP-1250"))
-    m_fontEncoding = wxFONTENCODING_CP1250;
-  else if (encoding == wxT("CP-1251"))
-    m_fontEncoding = wxFONTENCODING_CP1251;
-  else if (encoding == wxT("CP-1252"))
-    m_fontEncoding = wxFONTENCODING_CP1252;
-  else if (encoding == wxT("CP-1253"))
-    m_fontEncoding = wxFONTENCODING_CP1253;
-  else if (encoding == wxT("CP-1254"))
-    m_fontEncoding = wxFONTENCODING_CP1254;
-  else if (encoding == wxT("CP-1255"))
-    m_fontEncoding = wxFONTENCODING_CP1255;
-  else if (encoding == wxT("CP-1256"))
-    m_fontEncoding = wxFONTENCODING_CP1256;
-  else if (encoding == wxT("CP-1257"))
-    m_fontEncoding = wxFONTENCODING_CP1257;
-#else
-  if (encoding == wxT("ISO-8859-1"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_1;
-  else if (encoding == wxT("ISO-8859-2"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_2;
-  else if (encoding == wxT("ISO-8859-3"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_3;
-  else if (encoding == wxT("ISO-8859-4"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_4;
-  else if (encoding == wxT("ISO-8859-5"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_5;
-  else if (encoding == wxT("ISO-8859-6"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_6;
-  else if (encoding == wxT("ISO-8859-7"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_7;
-  else if (encoding == wxT("ISO-8859-8"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_8;
-  else if (encoding == wxT("ISO-8859-9"))
-    m_fontEncoding = wxFONTENCODING_ISO8859_9;
-#endif
+  m_fontEncoding = (wxFontEncoding)encoding;
 
   // Symbol font
   m_haveSymbolFont = false;
@@ -262,11 +227,11 @@ void CellParser::ReadStyle()
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[0].color, 1, wxSOLID)));
 }
 
-int CellParser::IsBold(int st)
+wxFontWeight CellParser::IsBold(int st)
 {
   if (m_styles[st].bold)
-    return wxBOLD;
-  return wxNORMAL;
+    return wxFONTWEIGHT_BOLD;
+  return wxFONTWEIGHT_NORMAL;
 }
 
 int CellParser::IsItalic(int st)

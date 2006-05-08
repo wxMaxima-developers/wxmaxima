@@ -102,7 +102,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_batchFilePosition = 0;
 }
 
-
 wxMaxima::~wxMaxima()
 {
   if (m_client != NULL)
@@ -112,6 +111,10 @@ wxMaxima::~wxMaxima()
   delete m_printData;
 #endif
 }
+
+///--------------------------------------------------------------------------------
+///  Startup
+///--------------------------------------------------------------------------------
 
 #if WXM_PRINT
 
@@ -177,11 +180,45 @@ void wxMaxima::FirstOutput(wxString s)
   HandleMainPrompt(m_firstPrompt);
 }
 
-///////////////////////////
-//
-// MAXIMA INTERACTION
-//
-///////////////////////////
+/***
+ * This reads the file as a wxMaxima batch file. If the file is OK we
+ * setup inputs and comments and return true. If not we return false - wxMaxima
+ * then uses batch to load the file!
+ */
+bool wxMaxima::ReadBatchFile(wxString file)
+{
+  wxTextFile inputFile(file);
+  m_batchFileLines.Clear();
+
+  if (!inputFile.Open())
+  {
+    wxMessageBox(_("Error opening file"), _("Error"));
+    return false;
+  }
+
+  if (inputFile.GetFirstLine() !=
+      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
+    return false;
+
+  wxString line;
+  for (line = inputFile.GetFirstLine();
+       !inputFile.Eof();
+       line = inputFile.GetNextLine())
+  {
+    m_batchFileLines.Add(line);
+  }
+  m_batchFileLines.Add(line);
+
+  inputFile.Close();
+  m_batchFilePosition = 0;
+  m_currentFile = file;
+
+  return true;
+}
+
+///--------------------------------------------------------------------------------
+///  Appending stuff to output
+///--------------------------------------------------------------------------------
 
 void wxMaxima::ConsoleAppend(wxString s, int type)
 {
@@ -330,6 +367,79 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   }
 }
 
+void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool split)
+{
+  if (!m_isConnected)
+  {
+    ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
+    return ;
+  }
+
+  if (!m_variablesOK)
+  {
+    m_variablesOK = true;
+    SetupVariables();
+  }
+
+  if (s.StartsWith(wxT("<ml>")))
+  {
+    s = s.SubString(4, s.Length());
+    s.Replace(wxT("<nl>"), wxT("\n"));
+  }
+  if (clear)
+    m_inputLine->SetValue(wxEmptyString);
+  if (out)
+  {
+    if (split)
+      s = SplitInput(s);
+    DoRawConsoleAppend(s, MC_TYPE_INPUT, false);
+  }
+  if (silent)
+  {
+    m_inputLine->AddToHistory(s);
+    SetStatusText(_("Maxima is calculating"), 1);
+    m_dispReadOut = false;
+  }
+  s.Append(wxT("\n"));
+  m_console->EnableEdit(false);
+
+#if wxUSE_UNICODE
+  char *buf;
+  wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
+  buf = strdup(tmp);
+  m_client->Write(buf, strlen(buf));
+  free(buf);
+#else
+  m_client->Write(s.c_str(), s.Length());
+#endif
+}
+
+///--------------------------------------------------------------------------------
+///  Modifying strings
+///--------------------------------------------------------------------------------
+
+wxString wxMaxima::SplitInput(wxString input)
+{
+  wxString seps(wxT(" +-"));
+  wxString newInput;
+  int col = 0;
+
+  for (int i=0; i<input.Length(); i++)
+  {
+    if (col > 80 && seps.Find(input.GetChar(i)) > -1)
+    {
+      newInput += wxT("\n ");
+      col = 0;
+    }
+    col++;
+    newInput += input.GetChar(i);
+    if (input.GetChar(i) == '\n')
+      col = 0;
+  }
+
+  return newInput;
+}
+
 wxString wxMaxima::RemoveTabs(wxString s)
 {
   int pos = 0;
@@ -357,61 +467,9 @@ wxString wxMaxima::RemoveTabs(wxString s)
   return t;
 }
 
-void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent)
-{
-  if (!m_isConnected)
-  {
-    ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
-    return ;
-  }
-
-  if (!m_variablesOK)
-  {
-    m_variablesOK = true;
-    SetupVariables();
-  }
-
-  if (s.StartsWith(wxT("<ml>")))
-  {
-    s = s.SubString(4, s.Length());
-    s.Replace(wxT("<nl>"), wxT("\n"));
-  }
-  if (clear)
-    m_inputLine->SetValue(wxEmptyString);
-  if (out)
-    DoRawConsoleAppend(s, MC_TYPE_INPUT, false);
-  if (silent)
-  {
-    m_inputLine->AddToHistory(s);
-    SetStatusText(_("Maxima is calculating"), 1);
-    m_dispReadOut = false;
-  }
-  s.Append(wxT("\n"));
-  m_console->EnableEdit(false);
-
-#if wxUSE_UNICODE
-  char *buf;
-  wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
-  buf = strdup(tmp);
-  m_client->Write(buf, strlen(buf));
-  free(buf);
-#else
-  m_client->Write(s.c_str(), s.Length());
-#endif
-}
-
-void wxMaxima::EnterCommand(wxCommandEvent& event)
-{
-  wxString input = m_inputLine->GetValue();
-  input.Trim();
-  input.Trim(false);
-  if (!m_inLispMode &&
-          (input.Length() == 0 || (input.Last() != ';' && input.Last() != '$')))
-    input.Append(';');
-  SendMaxima(input);
-  m_inputLine->Clear();
-  m_inputLine->SetFocus();
-}
+///--------------------------------------------------------------------------------
+///  Socket stuff
+///--------------------------------------------------------------------------------
 
 void wxMaxima::ClientEvent(wxSocketEvent& event)
 {
@@ -420,8 +478,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   switch (event.GetSocketEvent())
   {
   case wxSOCKET_INPUT:
-    wxMilliSleep(1);  // Let's wait for more data
-
     m_client->Read(buffer, SOCKET_SIZE);
     if (!m_client->Error())
     {
@@ -464,6 +520,191 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
   }
 }
+
+void wxMaxima::ServerEvent(wxSocketEvent& event)
+{
+  switch (event.GetSocketEvent())
+  {
+  case wxSOCKET_CONNECTION :
+    {
+      m_isConnected = true;
+      m_client = m_server->Accept(false);
+      m_client->SetEventHandler(*this, socket_client_id);
+      m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
+      m_client->Notify(true);
+#ifndef __WXMSW__
+      ReadProcessOutput();
+#endif
+    }
+    break;
+  case wxSOCKET_LOST:
+    if (!m_closing)
+      ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                    MC_TYPE_ERROR);
+    m_pid = -1;
+    GetMenuBar()->Enable(menu_interrupt_id, false);
+    m_isConnected = false;
+  default:
+    break;
+  }
+}
+
+bool wxMaxima::StartServer()
+{
+  SetStatusText(wxString::Format(_("Starting server on port %d"), m_port), 1);
+
+  wxIPV4address addr;
+
+  addr.AnyAddress();
+  addr.Service(m_port);
+
+  m_server = new wxSocketServer(addr);
+  if (!m_server->Ok())
+  {
+    delete m_server;
+    m_isRunning = false;
+    SetStatusText(_("Starting server failed"), 1);
+    return false;
+  }
+  SetStatusText(_("Server started"), 1);
+  m_server->SetEventHandler(*this, socket_server_id);
+  m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
+  m_server->Notify(true);
+
+  m_isConnected = false;
+  m_isRunning = true;
+  return m_isRunning;
+}
+
+///--------------------------------------------------------------------------------
+///  Maxima process stuff
+///--------------------------------------------------------------------------------
+
+bool wxMaxima::StartMaxima()
+{
+  if (m_isConnected)
+  {
+    KillMaxima();
+    //    m_client->Close();
+    m_isConnected = false;
+  }
+
+  m_variablesOK = false;
+  wxString command = GetCommand();
+
+  if (command.Length() > 0)
+  {
+#if defined(__WXMSW__)
+    if (wxGetOsVersion() == wxWIN95)
+    {
+      wxString maximaPrefix = command.SubString(1, command.Length() - 3);
+      wxString sysPath;
+
+      wxGetEnv(wxT("path"), &sysPath);
+      maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxEmptyString);
+
+      wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
+      wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
+
+      command = maximaPrefix + wxT("\\lib\\maxima");
+      if (!wxDirExists(command))
+        return false;
+
+      wxArrayString files;
+      wxDir::GetAllFiles(command, &files, wxT("maxima.exe"));
+      if (files.Count() == 0)
+        return false;
+      else
+      {
+        command = files[0];
+        command.Append(wxString::Format(
+                         wxT(" -eval \"(maxima::start-server %d)\" -eval \"(run)\" -f"),
+                         m_port
+                       ));
+      }
+    }
+    else
+      command.Append(wxString::Format(wxT(" -s %d"), m_port));
+    wxSetEnv(wxT("home"), wxGetHomeDir());
+#else
+    command.Append(wxString::Format(wxT(" -r \":lisp (setup-server %d)\""),
+                                    m_port));
+#endif
+
+    m_process = new wxProcess(this, maxima_process_id);
+    m_process->Redirect();
+    m_first = true;
+    GetMenuBar()->Enable(menu_interrupt_id, false);
+    m_pid = -1;
+    SetStatusText(_("Starting maxima..."), 1);
+    wxExecute(command, wxEXEC_ASYNC, m_process);
+    m_input = m_process->GetInputStream();
+    SetStatusText(_("Maxima started. Waiting for connection..."), 1);
+  }
+  else
+    return false;
+  return true;
+}
+
+
+void wxMaxima::Interrupt(wxCommandEvent& event)
+{
+  if (m_pid < 0)
+  {
+    GetMenuBar()->Enable(menu_interrupt_id, false);
+    return ;
+  }
+#if defined (__WXMSW__)
+  wxString path, maxima;
+  wxArrayString out;
+  wxConfig::Get()->Read(wxT("maxima"), &maxima);
+  wxFileName::SplitPath(maxima, &path, NULL, NULL);
+  wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
+  command += wxString::Format(wxT(" -INT %ld"), m_pid);
+  wxExecute(command, out);
+#else
+  wxProcess::Kill(m_pid, wxSIGINT);
+#endif
+}
+
+void wxMaxima::KillMaxima()
+{
+  m_process->Detach();
+  if (m_pid < 0)
+  {
+    if (m_inLispMode)
+      SendMaxima(wxT("($quit)"), false, false);
+    else
+      SendMaxima(wxT("quit();"), false, false);
+    return ;
+  }
+  wxProcess::Kill(m_pid, wxSIGKILL);
+}
+
+void wxMaxima::OnProcessEvent(wxProcessEvent& event)
+{
+  if (!m_closing)
+    SetStatusText(_("Maxima process terminated."), 1);
+  delete m_process;
+  m_process = NULL;
+}
+
+void wxMaxima::CleanUp()
+{
+  if (m_isConnected)
+  {
+    KillMaxima();
+  }
+  if (m_isRunning)
+  {
+    m_server->Destroy();
+  }
+}
+
+///--------------------------------------------------------------------------------
+///  Dealing with stuff read from the socket
+///--------------------------------------------------------------------------------
 
 void wxMaxima::ReadFirstPrompt()
 {
@@ -662,7 +903,7 @@ void wxMaxima::HandleMainPrompt(wxString o)
           }
           line = m_batchFileLines[m_batchFilePosition++];
         }
-        SendMaxima(input);
+        SendMaxima(input, true, true, true, false);
         done = true;
       }
     }
@@ -676,42 +917,6 @@ void wxMaxima::HandleMainPrompt(wxString o)
       m_batchFileLines.Clear();
     }
   }
-}
-
-/***
- * This reads the file as a wxMaxima batch file. If the file is OK we
- * setup inputs and comments and return true. If not we return false - wxMaxima
- * then uses batch to load the file!
- */
-bool wxMaxima::ReadBatchFile(wxString file)
-{
-  wxTextFile inputFile(file);
-  m_batchFileLines.Clear();
-
-  if (!inputFile.Open())
-  {
-    wxMessageBox(_("Error opening file"), _("Error"));
-    return false;
-  }
-
-  if (inputFile.GetFirstLine() !=
-      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
-    return false;
-
-  wxString line;
-  for (line = inputFile.GetFirstLine();
-       !inputFile.Eof();
-       line = inputFile.GetNextLine())
-  {
-    m_batchFileLines.Add(line);
-  }
-  m_batchFileLines.Add(line);
-
-  inputFile.Close();
-  m_batchFilePosition = 0;
-  m_currentFile = file;
-
-  return true;
 }
 
 /***
@@ -730,35 +935,6 @@ void wxMaxima::ReadLispError()
     ConsoleAppend(lispError, MC_TYPE_PROMPT);
     SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = wxEmptyString;
-  }
-}
-
-void wxMaxima::ServerEvent(wxSocketEvent& event)
-{
-  switch (event.GetSocketEvent())
-  {
-  case wxSOCKET_CONNECTION :
-    {
-      m_isConnected = true;
-      m_client = m_server->Accept(false);
-      m_client->SetEventHandler(*this, socket_client_id);
-      m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
-      m_client->Notify(true);
-#ifndef __WXMSW__
-      ReadProcessOutput();
-#endif
-    }
-    break;
-  case wxSOCKET_LOST:
-    if (!m_closing)
-      ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
-                    MC_TYPE_ERROR);
-    m_pid = -1;
-    GetMenuBar()->Enable(menu_interrupt_id, false);
-    m_isConnected = false;
-  default:
-    break;
   }
 }
 
@@ -809,32 +985,9 @@ void wxMaxima::SetupVariables()
 #endif
 }
 
-bool wxMaxima::StartServer()
-{
-  SetStatusText(wxString::Format(_("Starting server on port %d"), m_port), 1);
-
-  wxIPV4address addr;
-
-  addr.AnyAddress();
-  addr.Service(m_port);
-
-  m_server = new wxSocketServer(addr);
-  if (!m_server->Ok())
-  {
-    delete m_server;
-    m_isRunning = false;
-    SetStatusText(_("Starting server failed"), 1);
-    return false;
-  }
-  SetStatusText(_("Server started"), 1);
-  m_server->SetEventHandler(*this, socket_server_id);
-  m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
-  m_server->Notify(true);
-
-  m_isConnected = false;
-  m_isRunning = true;
-  return m_isRunning;
-}
+///--------------------------------------------------------------------------------
+///  Getting confuguration
+///--------------------------------------------------------------------------------
 
 bool wxMaxima::GuessConfiguration()
 {
@@ -888,92 +1041,6 @@ wxString wxMaxima::GetCommand()
   return command;
 }
 
-bool wxMaxima::StartMaxima()
-{
-  if (m_isConnected)
-  {
-    KillMaxima();
-    //    m_client->Close();
-    m_isConnected = false;
-  }
-
-  m_variablesOK = false;
-  wxString command = GetCommand();
-
-  if (command.Length() > 0)
-  {
-#if defined(__WXMSW__)
-    if (wxGetOsVersion() == wxWIN95)
-    {
-      wxString maximaPrefix = command.SubString(1, command.Length() - 3);
-      wxString sysPath;
-
-      wxGetEnv(wxT("path"), &sysPath);
-      maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxEmptyString);
-
-      wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
-      wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
-
-      command = maximaPrefix + wxT("\\lib\\maxima");
-      if (!wxDirExists(command))
-        return false;
-
-      wxArrayString files;
-      wxDir::GetAllFiles(command, &files, wxT("maxima.exe"));
-      if (files.Count() == 0)
-        return false;
-      else
-      {
-        command = files[0];
-        command.Append(wxString::Format(
-                         wxT(" -eval \"(maxima::start-server %d)\" -eval \"(run)\" -f"),
-                         m_port
-                       ));
-      }
-    }
-    else
-      command.Append(wxString::Format(wxT(" -s %d"), m_port));
-    wxSetEnv(wxT("home"), wxGetHomeDir());
-#else
-    command.Append(wxString::Format(wxT(" -r \":lisp (setup-server %d)\""),
-                                    m_port));
-#endif
-
-    m_process = new wxProcess(this, maxima_process_id);
-    m_process->Redirect();
-    m_first = true;
-    GetMenuBar()->Enable(menu_interrupt_id, false);
-    m_pid = -1;
-    SetStatusText(_("Starting maxima..."), 1);
-    wxExecute(command, wxEXEC_ASYNC, m_process);
-    m_input = m_process->GetInputStream();
-    SetStatusText(_("Maxima started. Waiting for connection..."), 1);
-  }
-  else
-    return false;
-  return true;
-}
-
-void wxMaxima::OnProcessEvent(wxProcessEvent& event)
-{
-  if (!m_closing)
-    SetStatusText(_("Maxima process terminated."), 1);
-  delete m_process;
-  m_process = NULL;
-}
-
-void wxMaxima::CleanUp()
-{
-  if (m_isConnected)
-  {
-    KillMaxima();
-  }
-  if (m_isRunning)
-  {
-    m_server->Destroy();
-  }
-}
-
 void wxMaxima::ShowTip(bool force)
 {
   bool ShowTips = true;
@@ -1007,11 +1074,22 @@ void wxMaxima::ShowTip(bool force)
   }
 }
 
-///////////////////////////
-//
-// EVENT HANDLING
-//
-///////////////////////////
+///--------------------------------------------------------------------------------
+///  Menu and button events
+///--------------------------------------------------------------------------------
+
+void wxMaxima::EnterCommand(wxCommandEvent& event)
+{
+  wxString input = m_inputLine->GetValue();
+  input.Trim();
+  input.Trim(false);
+  if (!m_inLispMode &&
+          (input.Length() == 0 || (input.Last() != ';' && input.Last() != '$')))
+    input.Append(';');
+  SendMaxima(input);
+  m_inputLine->Clear();
+  m_inputLine->SetFocus();
+}
 
 #if WXM_PRINT
 
@@ -1165,40 +1243,6 @@ void wxMaxima::OnSetFocus(wxFocusEvent& event)
     }
   }
   event.Skip();
-}
-
-void wxMaxima::Interrupt(wxCommandEvent& event)
-{
-  if (m_pid < 0)
-  {
-    GetMenuBar()->Enable(menu_interrupt_id, false);
-    return ;
-  }
-#if defined (__WXMSW__)
-  wxString path, maxima;
-  wxArrayString out;
-  wxConfig::Get()->Read(wxT("maxima"), &maxima);
-  wxFileName::SplitPath(maxima, &path, NULL, NULL);
-  wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
-  command += wxString::Format(wxT(" -INT %ld"), m_pid);
-  wxExecute(command, out);
-#else
-  wxProcess::Kill(m_pid, wxSIGINT);
-#endif
-}
-
-void wxMaxima::KillMaxima()
-{
-  m_process->Detach();
-  if (m_pid < 0)
-  {
-    if (m_inLispMode)
-      SendMaxima(wxT("($quit)"), false, false);
-    else
-      SendMaxima(wxT("quit();"), false, false);
-    return ;
-  }
-  wxProcess::Kill(m_pid, wxSIGKILL);
 }
 
 void wxMaxima::OpenFile(wxString file, wxString cmd)
@@ -1386,7 +1430,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_clear_screen:
     m_console->ClearWindow();
-    ConsoleAppend(m_lastPrompt, MC_TYPE_PROMPT);
+    DoRawConsoleAppend(m_lastPrompt, MC_TYPE_MAIN_PROMPT);
     break;
   case tb_copy:
   case menu_copy_from_console:
@@ -2805,7 +2849,7 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
 
     beginInput->SetValue(m_lastPrompt);
 
-    SendMaxima(text);
+    SendMaxima(text, true, true, true, false);
   }
 }
 

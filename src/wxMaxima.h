@@ -52,7 +52,8 @@ public:
     m_openFile = file;
   }
   void SendMaxima(wxString s, bool clear = true, bool out = true,
-                  bool silent = true);             // sends input to maxima
+                  bool silent = true,   // sends input to maxima, also add to command
+                  bool split = true);   // history...
   bool ReadBatchFile(wxString file);
 protected:
   void EnterCommand(wxCommandEvent& event);        // enter in the command line
@@ -91,6 +92,8 @@ protected:
   void HandleCellEvent(wxCommandEvent& event);
 
   void HandleMainPrompt(wxString prompt);
+
+  wxString SplitInput(wxString input);
 
 #if WXM_PRINT
   void CheckForPrintingSupport();

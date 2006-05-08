@@ -109,9 +109,9 @@ protected:
   wxStaticText* label_7;
   wxSpinCtrl* m_fontSize;
   wxStaticText* label_8;
-  wxComboBox* m_fontFamily;
-  wxStaticText* label_12;
-  wxComboBox* m_fontEncoding;
+  wxButton* m_getFont;
+  wxString m_fontFamily;
+  wxFontEncoding m_fontEncoding;
   wxComboBox* m_styleFor;
   wxComboBox* m_styleColor;
   wxCheckBox* m_boldCB;

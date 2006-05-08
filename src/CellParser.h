@@ -76,7 +76,7 @@ public:
   {
     return m_styles[st].color;
   }
-  int IsBold(int st);
+  wxFontWeight IsBold(int st);
   int IsItalic(int st);
   int IsUnderlined(int st);
   void ReadStyle();
