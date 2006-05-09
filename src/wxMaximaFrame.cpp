@@ -177,7 +177,7 @@ void wxMaximaFrame::do_layout()
     grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
     grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
   }
-  else
+  else if (panelSiye == 1)
   {
     grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
     grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
