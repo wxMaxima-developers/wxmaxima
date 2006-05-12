@@ -645,7 +645,6 @@ void Config::WriteStyles()
                 m_styleHighlight.color);
 
   config->Write(wxT("Style/fontname"), m_fontFamily);
-  int encoding = (int)m_fontEncoding;
   config->Write(wxT("fontEncoding"), m_fontEncoding);
 
   config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());

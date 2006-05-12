@@ -26,7 +26,7 @@
 #include "MyTipProvider.h"
 
 MyTipProvider::MyTipProvider(const wxString& filename, int n)
-    : m_current(n), m_file(filename), wxTipProvider(n)
+    :  wxTipProvider(n), m_current(n), m_file(filename)
 {
   m_file.Open();
 }

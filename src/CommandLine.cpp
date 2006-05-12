@@ -191,7 +191,7 @@ void CommandLine::DoHighlight()
            wxTextAttr(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)));
 
   int depth = 1;
-  for (int i = 0; i < value.Length(); i++)
+  for (unsigned int i = 0; i < value.Length(); i++)
   {
     if (value.GetChar(i) == '(' || value.GetChar(i) == '[')
     {

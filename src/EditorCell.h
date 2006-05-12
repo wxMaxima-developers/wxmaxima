@@ -84,7 +84,7 @@ public:
   }
 private:
   wxString m_text;
-  long m_positionOfCaret;
+  unsigned int m_positionOfCaret;
   long m_selectionStart;
   long m_selectionEnd;
   int m_numberOfLines;

@@ -158,7 +158,7 @@ protected:
   wxString m_openFile;
   wxString m_currentFile;
   wxArrayString m_batchFileLines;
-  int m_batchFilePosition;
+  unsigned int m_batchFilePosition;
   bool m_fileSaved;
   bool m_variablesOK;
   DECLARE_EVENT_TABLE()

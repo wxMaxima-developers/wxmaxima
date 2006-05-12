@@ -182,7 +182,7 @@ MathCell* MathParser::ParseFunTag(xmlNodePtr node)
 
 bool IsNumber(wxString n)
 {
-  int n_dots = 0, n_b = 0, i = 0;
+  unsigned int n_dots = 0, n_b = 0, i = 0;
   char c;
   for (i = 0; i < n.Length(); i++)
   {

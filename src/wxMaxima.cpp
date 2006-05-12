@@ -424,7 +424,7 @@ wxString wxMaxima::SplitInput(wxString input)
   wxString newInput;
   int col = 0;
 
-  for (int i=0; i<input.Length(); i++)
+  for (unsigned int i=0; i<input.Length(); i++)
   {
     if (col > 80 && seps.Find(input.GetChar(i)) > -1)
     {
@@ -446,7 +446,7 @@ wxString wxMaxima::RemoveTabs(wxString s)
   char c;
   wxString t = wxEmptyString;
 
-  for (int i = 0; i < s.Length(); i++)
+  for (unsigned int i = 0; i < s.Length(); i++)
   {
     c = s.GetChar(i);
     if (c == '\t')
@@ -2792,6 +2792,9 @@ void wxMaxima::HandleCellEvent(wxCommandEvent& event)
   ResetTitle(false);
   MathCell* tmp = m_console->GetActiveCell();
 
+  if (tmp == NULL)
+    return ;
+
   if (tmp->GetType() == MC_TYPE_INPUT)
     tmp->AddEnding();
 
@@ -2815,6 +2818,9 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
   MathCell* tmp = m_console->GetSelectionStart();
 
+  if (tmp == NULL)
+    return ;
+
   m_console->SetActiveCell(tmp);
   m_console->SetSelection(NULL);
 
@@ -2829,6 +2835,9 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
   ResetTitle(false);
 
   MathCell* beginInput = m_console->GetSelectionStart();
+
+  if (beginInput == NULL)
+    return ;
 
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {

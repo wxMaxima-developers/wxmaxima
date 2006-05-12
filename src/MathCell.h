@@ -209,9 +209,9 @@ public:
   virtual void PasteFromClipboard()
   { }
   virtual bool CopyToClipboard()
-  { }
+  { return false; }
   virtual bool CutToClipboard()
-  { }
+  { return false; }
   virtual void SelectAll()
   { }
   virtual bool CanCopy()
@@ -221,7 +221,7 @@ public:
   virtual void SetMatchParens(bool match)
   { }
   virtual wxPoint PositionToPoint(CellParser& parser, int pos = -1)
-  { }
+  { return wxPoint(-1, -1); }
   virtual bool IsDirty()
   {
     return false;

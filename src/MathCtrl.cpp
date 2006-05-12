@@ -490,7 +490,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
   if (m_selectionStart != NULL)
   {
     MathCell *tmp = NULL;
-    for (tmp = m_selectionStart; tmp != NULL, tmp != m_selectionEnd; tmp = tmp->m_nextToDraw)
+    for (tmp = m_selectionStart; tmp != NULL && tmp != m_selectionEnd; tmp = tmp->m_nextToDraw)
       if (tmp->ContainsPoint(m_down))
         break;
     if (tmp != NULL && (tmp != m_selectionEnd ||
@@ -499,7 +499,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
       wxDropSource dragSource(this);
       wxTextDataObject my_data(GetString());
       dragSource.SetData( my_data );
-      wxDragResult result = dragSource.DoDragDrop(true);
+      dragSource.DoDragDrop(true);
     }
     else
       m_leftDown = true;
@@ -550,13 +550,13 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two)
       wxClientDC dc(this);
       m_activeCell->SelectRectText(dc, one, two);
       m_switchDisplayCaret = false;
+      Refresh();
     }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
-    Refresh();
     return ;
   }
 
@@ -654,13 +654,13 @@ void MathCtrl::SelectPoint(wxPoint& point)
       wxClientDC dc(this);
       m_activeCell->SelectPointText(dc, m_down);
       m_switchDisplayCaret = false;
+      Refresh();
     }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
-    Refresh();
     return ;
   }
 
@@ -1702,7 +1702,6 @@ bool MathCtrl::ExportToHTML(wxString file)
 bool MathCtrl::ExportToMAC(wxString file)
 {
   wxString dir = wxPathOnly(file);
-  int count = 0;
 
   wxTextFile output;
   if (wxFileExists(file))
@@ -1828,7 +1827,6 @@ void MathCtrl::UnBreakUpCells()
   int fontsize = 12;
 
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  int clientWidth = GetClientSize().GetWidth() - 9;
 
   MathCell *tmp = m_tree;
   while (tmp != NULL)
@@ -2122,7 +2120,7 @@ void MathCtrl::ScrollToSelectionStart()
   int cellDrop = m_selectionStart->GetDrop();
   int cellCenter = m_selectionStart->GetCenter();
 
-  int view_x, view_y, view_x1, view_y1;
+  int view_x, view_y;
   int height, width;
 
   GetViewStart(&view_x, &view_y);
@@ -2164,7 +2162,7 @@ void MathCtrl::ShowPoint(wxPoint point)
   if (point.x == -1 || point.y == -1)
     return ;
 
-  int view_x, view_y, view_x1, view_y1;
+  int view_x, view_y;
   int height, width;
   bool sc = false;
 

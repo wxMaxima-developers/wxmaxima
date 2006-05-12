@@ -80,7 +80,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     dc.GetTextExtent(wxT("X"), &m_charWidth, &m_charHeight);
 
-    int newLinePos = 0, prevNewLinePos = 0;
+    unsigned int newLinePos = 0, prevNewLinePos = 0;
     int width = 0, width1, height1;
 
     m_numberOfLines = 1;
@@ -136,7 +136,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetPen(parser);
     SetFont(parser, fontsize);
 
-    int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
+    unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
 
     //
     // Draw the text
@@ -579,7 +579,7 @@ void EditorCell::FindMatchingParens()
 
   m_paren1 = m_paren2 + dir;
   int depth = 1;
-  while (m_paren1 >= 0 && m_paren1 < m_text.Length())
+  while (m_paren1 >= 0 && m_paren1 < (int)m_text.Length())
   {
     if (m_text.GetChar(m_paren1) == second)
       depth--;
@@ -589,7 +589,7 @@ void EditorCell::FindMatchingParens()
       break;
     m_paren1 += dir;
   }
-  if (m_paren1 < 0 || m_paren1 >= m_text.Length())
+  if (m_paren1 < 0 || m_paren1 >= (int)m_text.Length())
     m_paren1 = m_paren2 = -1;
 }
 
@@ -639,17 +639,16 @@ void EditorCell::PositionToXY(int position, int* x, int* y)
 
 int EditorCell::XYToPosition(int x, int y)
 {
-  int col = 0, lin = 0;
-  int pos = 0;
+  int col = 0, lin = 0, pos = 0;
 
-  while (pos < m_text.Length() && lin < y)
+  while (pos < (int)m_text.Length() && lin < y)
   {
     if (m_text.GetChar(pos) == '\n')
       lin++;
     pos++;
   }
 
-  while (pos < m_text.Length() && col < x)
+  while (pos < (int)m_text.Length() && col < x)
   {
     if (m_text.GetChar(pos) == '\n')
       break;
@@ -716,7 +715,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
 
-  while (m_text.GetChar(m_positionOfCaret) != '\n')
+  while (m_text.GetChar(m_positionOfCaret) != '\n' && m_positionOfCaret < m_text.Length())
   {
     s = m_text.SubString(lineStart, m_positionOfCaret);
     dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),

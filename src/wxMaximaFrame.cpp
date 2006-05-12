@@ -177,7 +177,7 @@ void wxMaximaFrame::do_layout()
     grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
     grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
   }
-  else if (panelSiye == 1)
+  else if (panelSize == 1)
   {
     grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
     grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
@@ -224,9 +224,9 @@ void wxMaximaFrame::do_layout()
 void wxMaximaFrame::SetupMenu()
 {
   frame_1_menubar = new wxMenuBar();
-  wxMenuItem *tmp_menu_item;
 
 #if defined __WXGTK20__
+  wxMenuItem *tmp_menu_item;
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)                         \
   tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
   tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU));      \
