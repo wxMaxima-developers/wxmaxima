@@ -33,7 +33,7 @@
   ;; left, r to its right. lop and rop are the operators on the left
   ;; and right of x in the tree, and will determine if parens must
   ;; be inserted
-;  (setq x (nformat x))
+  (setq x (nformat x))
   (cond ((atom x) (wxxml-atom x l r))
         ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
              (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
