@@ -729,7 +729,8 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   m_positionOfCaret = MIN(m_positionOfCaret, m_text.Length());
 
   m_displayCaret = true;
-  FindMatchingParens();
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
 }
 
 void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)

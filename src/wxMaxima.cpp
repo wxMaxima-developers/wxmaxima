@@ -390,9 +390,10 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
     m_inputLine->SetValue(wxEmptyString);
   if (out)
   {
+    wxString s1(s);
     if (split)
-      s = SplitInput(s);
-    DoRawConsoleAppend(s, MC_TYPE_INPUT, false);
+      s1 = SplitInput(s);
+    DoRawConsoleAppend(s1, MC_TYPE_INPUT, false);
   }
   if (silent)
   {
