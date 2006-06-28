@@ -259,7 +259,7 @@ wxString CellParser::GetSymbolFontName()
 
 wxFontEncoding CellParser::GetGreekFontEncoding()
 {
-#if defined (__WXGTK20__) || defined (__WXMAC__)
+#if defined __WXGTK20__
   return wxFONTENCODING_DEFAULT;
 #else
  #if defined __WXMSW__

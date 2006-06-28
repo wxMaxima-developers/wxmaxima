@@ -78,8 +78,9 @@ bool BTextCtrl::MatchParenthesis(int code)
     break;
   case WXK_UP:
   case WXK_DOWN:
-  case WXK_TAB:
     skip = false;
+  case WXK_TAB:
+    skip = true;
   default:
     break;
   }

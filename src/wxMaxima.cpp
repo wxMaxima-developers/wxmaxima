@@ -277,7 +277,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   }
   else if (type == MC_TYPE_INPUT)
   {
-    wxMessageBox("should not be here!!!");
+    wxMessageBox(wxT("Should not be here!!!"));
   }
   else if (type == MC_TYPE_PROMPT)
   {
@@ -285,7 +285,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     m_lastPrompt = s;
     if (s.StartsWith(wxT("(%i")) || s == m_commentPrefix)
     {
-      wxMessageBox("Should not be here!!! (1)");
+      wxMessageBox(wxT("Should not be here!!! (1)"));
       m_inPrompt = true;
       type = MC_TYPE_MAIN_PROMPT;
     }
@@ -1042,6 +1042,10 @@ wxString wxMaxima::GetCommand()
   return command;
 }
 
+///--------------------------------------------------------------------------------
+///  Tips and help
+///--------------------------------------------------------------------------------
+
 void wxMaxima::ShowTip(bool force)
 {
   bool ShowTips = true;
@@ -1059,7 +1063,7 @@ void wxMaxima::ShowTip(bool force)
   prefix += wxT("/");
 #else
   wxString prefix = wxT(PREFIX);
-  prefix += wxT("/");
+  prefix += wxT("/share/wxMaxima/");
 #endif
 
   tips = prefix + tips;
@@ -1073,6 +1077,10 @@ void wxMaxima::ShowTip(bool force)
     config->Flush();
     delete t;
   }
+  else
+    wxMessageBox(_("wxMaxima could not find the tip file."
+                   "\n\nPlease check your installation."),
+                 _("Error"), wxICON_ERROR | wxOK);
 }
 
 ///--------------------------------------------------------------------------------

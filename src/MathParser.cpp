@@ -37,7 +37,7 @@
 
 #include <wx/wx.h>
 #include <wx/config.h>
-#include <wx/strconv.h>
+//#include <wx/strconv.h>
 
 #define MAXLENGTH 50000
 
