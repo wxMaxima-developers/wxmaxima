@@ -7,7 +7,8 @@ Group: Sciences/Mathematics
 URL: http://wxmaxima.sourceforge.net/
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires: gtk2, libxml2
+Requires: gtk2, libxml2, wxGTK
+BuildRequires: libxml2-devel, wxGTK-devel
 
 %description
 wxMaxima is a wxWidgets interface for the computer algebra system Maxima.
@@ -16,7 +17,7 @@ wxMaxima is a wxWidgets interface for the computer algebra system Maxima.
 %setup -q
 
 %build
-%{configure} --enable-static-wx
+%{configure} --disable-dnd
 make DESTDIR=${RPM_BUILD_ROOT}
 
 %install
@@ -24,32 +25,22 @@ make install DESTDIR=${RPM_BUILD_ROOT}
 install -D -m 644 wxmaxima.desktop ${RPM_BUILD_ROOT}/usr/share/applications/wxmaxima.desktop
 install -D -m 644 maxima-new.png ${RPM_BUILD_ROOT}/usr/share/pixmaps/maxima-new.png
 
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/wxmaxima
-%{_datadir}/wxMaxima/COPYING
-%{_datadir}/wxMaxima/README
-%{_datadir}/wxMaxima/tips.txt
-%{_datadir}/wxMaxima/docs.zip
-%{_datadir}/wxMaxima/intro.zip
-%{_datadir}/wxMaxima/wxmathml.lisp
-%{_datadir}/locale/fr/LC_MESSAGES/wxMaxima.mo
-%{_datadir}/locale/fr/LC_MESSAGES/wxMaxima-wxstd.mo
-%{_datadir}/locale/es/LC_MESSAGES/wxMaxima.mo
-%{_datadir}/locale/es/LC_MESSAGES/wxMaxima-wxstd.mo
-%{_datadir}/locale/it/LC_MESSAGES/wxMaxima.mo
-%{_datadir}/locale/it/LC_MESSAGES/wxMaxima-wxstd.mo
-%{_datadir}/locale/de/LC_MESSAGES/wxMaxima.mo
-%{_datadir}/locale/de/LC_MESSAGES/wxMaxima-wxstd.mo
+%{_datadir}/wxMaxima/*
 /usr/share/pixmaps/maxima-new.png
 /usr/share/applications/wxmaxima.desktop
 
-
 %changelog
+* Fri Jun 23 2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+- Updated for wxMaxima 0.6.6
+
 * Wed Dec 15 2004 Andrej Vodopivec <andrejv@users.sourceforge.net>
 - Added french translation files.
 

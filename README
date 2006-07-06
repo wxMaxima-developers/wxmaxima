@@ -1,8 +1,8 @@
 WXMAXIMA
 =========
 
-wxMaxima is an interface for the computer algebra system maxima. For more
-information about maxima, go to
+wxMaxima is an interface for the computer algebra system maxima. For
+more information about maxima, go to
 
   http://maxima.sourceforge.net/
 
@@ -13,7 +13,7 @@ wxMaxima can be found at
 wxMaxima uses wxWidgets and runs natively on Linux and Windows. It
 provides nicely formatted display of maxima output.
 
-wxMaxima requires maxima version 5.9.1.
+wxMaxima requires maxima version 5.9.2.
 
 
 
@@ -31,12 +31,11 @@ INSTALLATION
 BINARY INSTALLATION
 --------------------
 
-Binaries for Linux and Windows are provided at wxMaxima homepage. They do
-not need wxWidgets to be installed on your computer.
+Binaries for Linux and Windows are provided at wxMaxima homepage.
 
-Windows binaries come with an installer. You should install wxMaxima in a
-subdirectory of maxima installation directory (see section
-CONFIGURATION). The Linux rpm is compiled on Fedora Core 3. Binaries
+Windows binaries come with an installer. You should install wxMaxima
+in a subdirectory of maxima installation directory (see section
+CONFIGURATION). The Linux rpm is compiled on Fedora Core 5. Binaries
 for some other distributions are contributed by wxMaxima users and are
 available from the download section of wxMaxima homepage.
 
@@ -56,37 +55,39 @@ Go to the source directory and do
   make
   make install
 
-wxMaxima also requires libxml2 to be installed on your system. libxml2 comes
-with most distributions, make sure you have the development packages
-installed.
+wxMaxima also requires libxml2 to be installed on your system. libxml2
+comes with most distributions, make sure you have the development
+packages installed.
 
-** Windows 
-   
-I build the windows binaries using Dev-CPP. Dev-CPP can be downloaded from
+** Windows
+
+I build the windows binaries using Dev-CPP. Dev-CPP can be downloaded
+from
 
   http://www.bloodshed.net
 
-You will also need to install the wxWidgets and libxml2 devpacks (and their
-dependencies), which can also be found at the web-page. In Dev-CPP create a new
-wxWidgets project, add libxml2 and other required libraries to the project and
-import all the sources of wxMaxima.
+You will also need to install the wxWidgets and libxml2 devpacks (and
+their dependencies), which can also be found at the web-page. In
+Dev-CPP create a new wxWidgets project, add libxml2 and other required
+libraries to the project and import all the sources of wxMaxima.
 
 ** MacOS
 
-Support for MacOS is experimental. To build wxMaxima first make sure you have
-libxml2 and wxWidgets (it is possible that the static build is required) 
-installed on your system. Then build wxMaxima with
+Support for MacOS is experimental. To build wxMaxima first make sure
+you have libxml2 and wxWidgets (it is possible that the static build
+is required) installed on your system. Then build wxMaxima with
 
   ./configure --with-wx-config=<path to your wx-config>
   make
   make wxMaxima.app
 
-This should create a working wxMaxima.app. This has been tested with wxWidgets
-version 2.6.2.
+This should create a working wxMaxima.app. This has been tested with
+wxWidgets version 2.6.2.
 
 ** Building from CVS (Linux)
 
-To build wxMaxima from CVS, first checkout the CVS tree. For details see
+To build wxMaxima from CVS, first checkout the CVS tree. For details
+see
 
   http://sourceforge.net/cvs/?group_id=126731
 
@@ -105,19 +106,19 @@ CONFIGURATION
 
 ** Linux
 
-wxMaxima does not need any configuration if maxima is in your path. If not,
-configure wxMaxima with Maxima->Configure.
+wxMaxima does not need any configuration if maxima is in your path. If
+not, configure wxMaxima with Maxima->Configure.
 
 ** Windows
 
 To automatically configure wxMaxima, wxMaxima must be installed in a
 subdirectory of maxima installation directory. For example:
 
-  maxima installation:   C:\Program Files\maxima-5.9.1
-  wxMaxima installation: C:\Program Files\maxima-5.9.1\wxMaxima
+  maxima installation:   C:\Program Files\maxima-5.9.2
+  wxMaxima installation: C:\Program Files\maxima-5.9.2\wxMaxima
 
-If you install in some other directory, you must configure wxMaxima with
-Maxima->Configure.
+If you install in some other directory, you must configure wxMaxima
+with Maxima->Configure.
 
 
 
@@ -127,15 +128,15 @@ PRINTING
 
 ** Linux
 
-The default Postscript driver used for printing on Linux can not print wxMaxima
-session properly (it has problems in finding out how much space is needed to
-print a string).
+The default Postscript driver used for printing on Linux can not print
+wxMaxima session properly (it has problems in finding out how much
+space is needed to print a string).
 
-Starting with version 2.5.4 wxGTK can be compiled with support for libgnomeprint
-(and libgnomeprintui) which has much better support for printing. Using this
-driver, wxMaxima can print correctly. So printing on Linux is only available if
-wxGTK has been compiled with support for libgnomeprint and libgnomeprint is
-found when wxMaxima is started.
+Starting with version 2.5.4 wxGTK can be compiled with support for
+libgnomeprint (and libgnomeprintui) which has much better support for
+printing. Using this driver, wxMaxima can print correctly. So printing
+on Linux is only available if wxGTK has been compiled with support for
+libgnomeprint and libgnomeprint is found when wxMaxima is started.
 
 
 
@@ -145,8 +146,8 @@ UPDATING
 
 ** Linux
 
-When you update maxima or wxMaxima, you should delete the file .wxMaxima in
-your home directory.
+When you update maxima or wxMaxima, you should delete the file
+.wxMaxima in your home directory.
 
 ** Windows
 

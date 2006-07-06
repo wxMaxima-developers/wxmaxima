@@ -100,6 +100,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_variablesOK = false;
 
   m_batchFilePosition = 0;
+  m_helpFile = wxEmptyString;
 }
 
 wxMaxima::~wxMaxima()
@@ -484,11 +485,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     {
       read = m_client->LastCount();
       buffer[read] = 0;
-#if wxUSE_UNICODE
-      m_currentOutput += wxConvertMB2WX(buffer);
-#else
       m_currentOutput += wxString(buffer, *wxConvCurrent);
-#endif
 
       if (!m_dispReadOut && m_currentOutput != wxT("\n"))
       {
@@ -1078,10 +1075,75 @@ void wxMaxima::ShowTip(bool force)
     delete t;
   }
   else
-    wxMessageBox(_("wxMaxima could not find the tip file."
+  {
+    wxMessageBox(_("wxMaxima could not find tip files."
                    "\n\nPlease check your installation."),
                  _("Error"), wxICON_ERROR | wxOK);
+  }
 }
+
+wxString wxMaxima::GetHelpFile()
+{
+  wxProcess *process = new wxProcess(this, -1);
+  process->Redirect();
+  wxString command = GetCommand();
+  command += wxT(" -d");
+  wxArrayString output;
+  wxExecute(command, output, wxEXEC_ASYNC);
+
+  wxString line;
+  wxString docdir;
+  wxString langsubdir;
+
+  for (unsigned int i=0; i<output.GetCount(); i++)
+  {
+    line = output[i];
+    if (line.StartsWith(wxT("maxima-htmldir")))
+      docdir = line.Mid(15);
+    else if (line.StartsWith(wxT("maxima-lang-subdir")))
+    {
+      langsubdir = line.Mid(19);
+      if (langsubdir == wxT("NIL"))
+        langsubdir = wxEmptyString;
+    }
+  }
+
+  if (docdir.Length() == 0)
+    return wxEmptyString;
+
+  wxString headerFile = docdir + wxT("/");
+  if (langsubdir.Length())
+    headerFile += langsubdir + wxT("/");
+
+  headerFile += wxT("header.hhp");
+
+  if (!wxFileExists(headerFile))
+    headerFile = docdir + wxT("/header.hhp");
+
+  return headerFile;
+}
+
+void wxMaxima::ShowHelp(wxString keyword)
+{
+  if (m_helpFile.Length() == 0)
+    m_helpFile = GetHelpFile();
+
+  if (m_helpFile.Length() == 0)
+  {
+    wxMessageBox(_("wxMaxima could not file help files."
+                   "\n\nPlease check your installation."),
+                 _("Error"), wxICON_ERROR | wxOK);
+    return ;
+  }
+
+  wxHtmlHelpController *help = new wxHtmlHelpController;
+  help->AddBook(m_helpFile);
+  if (keyword == wxT("%"))
+    help->DisplayContents();
+  else
+    help->KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+}
+
 
 ///--------------------------------------------------------------------------------
 ///  Menu and button events
@@ -1092,6 +1154,12 @@ void wxMaxima::EnterCommand(wxCommandEvent& event)
   wxString input = m_inputLine->GetValue();
   input.Trim();
   input.Trim(false);
+  if (input.StartsWith(wxT("? ")))
+  {
+    ShowHelp(input.Mid(2));
+    m_inputLine->Clear();
+    return ;
+  }
   if (!m_inLispMode &&
           (input.Length() == 0 || (input.Last() != ';' && input.Last() != '$')))
     input.Append(';');
@@ -2539,37 +2607,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     break;
   case wxID_HELP:
   case tb_help:
-    {
-      wxString filename;
-#if defined __WXMSW__
-      filename = wxGetCwd() + wxT("\\data\\");
-#elif defined __WXMAC__
-      filename = wxT(MACPREFIX);
-#else
-      filename = wxT(PREFIX);
-      filename += wxT("/share/wxMaxima/");
-      if (!wxFileExists(filename + wxT("docs.zip")))
-      {
-        filename = wxT(PREFIX);
-        filename += wxT("/share/doc/wxmaxima/");
-      }
-#endif
-      if (!wxFileExists(filename + wxT("intro.zip")) ||
-              !wxFileExists(filename + wxT("docs.zip")))
-        wxMessageBox(_("wxMaxima could not find help files."
-                       "\n\nPlease check your installation."),
-                     _("Error"), wxICON_ERROR | wxOK);
-      else
-      {
-        wxHtmlHelpController *help = new wxHtmlHelpController;
-        help->AddBook(filename + wxT("docs.zip"));
-        help->AddBook(filename + wxT("intro.zip"));
-        if (expr == wxT("%"))
-          help->DisplayContents();
-        else
-          help->KeywordSearch(expr, wxHELP_SEARCH_INDEX);
-      }
-    }
+    ShowHelp(expr);
     return ;
   case menu_describe:
     if (expr == wxT("%"))

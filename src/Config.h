@@ -118,6 +118,7 @@ protected:
   wxCheckBox* m_italicCB;
   wxCheckBox* m_underlinedCB;
   wxCheckBox* m_fixedFontInTC;
+  wxCheckBox* m_unixCopy;
   wxPanel* notebook_1_pane_2;
   wxNotebook* notebook_1;
   wxButton* m_button1;

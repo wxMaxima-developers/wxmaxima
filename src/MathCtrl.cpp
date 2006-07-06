@@ -517,6 +517,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
     SelectPoint(m_down);
   m_leftDown = false;
   m_mouseDrag = false;
+  CheckUnixCopy();
   SetFocus();
 }
 
@@ -1782,7 +1783,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
   AddLineToFile(output, wxEmptyString, false);
   AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
-  AddLineToFile(output, wxT("\"Created with wxMaxima\"$"), false);
+  AddLineToFile(output, wxT("\"Created widh wxMaxima\"$"), false);
 
   bool done = output.Write(wxTextFileType_None);
   output.Close();
@@ -2237,6 +2238,27 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
 {
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(false);
+}
+
+void MathCtrl::CheckUnixCopy()
+{
+  bool copy = false;
+  wxConfig::Get()->Read(wxT("unixCopy"), &copy);
+
+  if (copy)
+  {
+#if defined __WXGTK__
+    wxTheClipboard->UsePrimarySelection(true);
+#endif
+    if (CanCopy() && wxTheClipboard->Open())
+    {
+      wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+      wxTheClipboard->Close();
+    }
+#if defined __WXGTK__
+    wxTheClipboard->UsePrimarySelection(false);
+#endif
+  }
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

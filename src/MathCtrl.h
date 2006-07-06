@@ -169,6 +169,7 @@ protected:
   void OnEraseBackground(wxEraseEvent& event)
   { }
   void InsertAfter(MathCell *insertPoint, MathCell *newCell, bool forceBreakLine);
+  void CheckUnixCopy();
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;

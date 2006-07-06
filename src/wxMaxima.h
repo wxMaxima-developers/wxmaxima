@@ -46,6 +46,8 @@ public:
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
   void ShowTip(bool force);
+  wxString GetHelpFile();
+  void ShowHelp(wxString keyword = wxEmptyString);
   void InitSession();
   void SetOpenFile(wxString file)
   {
@@ -161,6 +163,7 @@ protected:
   unsigned int m_batchFilePosition;
   bool m_fileSaved;
   bool m_variablesOK;
+  wxString m_helpFile;
   DECLARE_EVENT_TABLE()
 };
 

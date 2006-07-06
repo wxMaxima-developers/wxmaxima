@@ -612,7 +612,7 @@ void EditorCell::AddEnding()
 }
 
 //
-// lines and comuns are counter from zero
+// lines and columns are counted from zero
 // position of caret is pos if caret is just before the character
 //   at position pos in m_text.
 //

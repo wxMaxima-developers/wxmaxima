@@ -99,6 +99,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
+  m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy selection on select"));
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
   m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
@@ -176,11 +177,12 @@ void Config::set_properties()
   m_getFont->SetToolTip(_("Font used for display in console."));
   m_symbolFontOk->SetToolTip(_("Use greek font to display greek characters."));
   m_symbolFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
+  m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   int fntsz = 12;
-  bool match = true, showLongExpr = false;
+  bool match = true, showLongExpr = false, unixCopy = false;
   bool showHeader = true, fixedFontTC = true;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -196,6 +198,7 @@ void Config::set_properties()
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
+  config->Read(wxT("unixCopy"), &unixCopy);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("fontEncoding"), &fontEncoding);
@@ -224,6 +227,7 @@ void Config::set_properties()
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
+  m_unixCopy->SetValue(unixCopy);
   m_fixedFontInTC->SetValue(fixedFontTC);
 
 #if defined __WXMSW__
@@ -280,6 +284,7 @@ void Config::do_layout()
   sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
+  sizer_6->Add(m_unixCopy, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
   notebook_1_pane_1->SetAutoLayout(true);
@@ -361,6 +366,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
+  config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
