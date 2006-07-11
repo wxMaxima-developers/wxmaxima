@@ -53,7 +53,7 @@ public:
   }
   wxString GetSymbolString(CellParser& parser);
   wxString GetGreekString(CellParser& parser);
-#if defined __WXGTK20__
+#if defined (__WXGTK20__) || defined (__WXMAC__)
   wchar_t* GetGreekStringUnicode();
 #else
   wxString GetGreekStringIso();

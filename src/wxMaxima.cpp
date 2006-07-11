@@ -1084,6 +1084,34 @@ void wxMaxima::ShowTip(bool force)
 
 wxString wxMaxima::GetHelpFile()
 {
+#if defined __WXMSW__
+  wxString command;
+  wxString html;
+
+  wxConfig::Get()->Read(wxT("maxima"), &command);
+
+  if (command.empty())
+    return wxEmptyString;
+
+  command.Replace(wxT("bin\\maxima.bat"), wxT("share\\maxima"));
+
+  html = wxFindFirstFile(command + wxT("\\*"), wxDIR);
+
+  if (html.empty())
+    return wxEmptyString;
+
+  html = html + wxT("\\doc\\html\\");
+
+  wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
+
+  if (wxFileExists(html + locale + wxT("\\header.hhp")))
+    return html + locale + wxT("\\header.hhp");
+
+  if (wxFileExists(html + wxT("header.hhp")))
+    return html + wxT("header.hhp");
+
+  return wxEmptyString;
+#else
   wxProcess *process = new wxProcess(this, -1);
   process->Redirect();
   wxString command = GetCommand();
@@ -1121,6 +1149,7 @@ wxString wxMaxima::GetHelpFile()
     headerFile = docdir + wxT("/header.hhp");
 
   return headerFile;
+#endif
 }
 
 void wxMaxima::ShowHelp(wxString keyword)

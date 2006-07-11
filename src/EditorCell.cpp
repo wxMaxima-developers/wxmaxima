@@ -496,7 +496,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
     }
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+#if wxUSE_UNICODE
+             event.GetUnicodeKey();
+#else
              wxString::Format(wxT("%c"), event.GetKeyCode()) +
+#endif
              m_text.SubString(m_positionOfCaret, m_text.Length());
     m_positionOfCaret++;
     if (m_matchParens)
