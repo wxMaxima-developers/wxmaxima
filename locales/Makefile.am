@@ -2,8 +2,8 @@
 # This file is based on the corresponding file for the poedit program
 #
 
-WXMAXIMA_LINGUAS = fr es it de pt_BR
-WXWIN_LINGUAS = fr es it de pt_BR
+WXMAXIMA_LINGUAS = fr es it de pt_BR ru
+WXWIN_LINGUAS = fr es it de pt_BR ru
 
 localedir = $(datadir)/locale
 
@@ -84,6 +84,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              it.po it.mo wxwin/it.mo  \
              de.po de.mo wxwin/de.mo  \
 	     pt_BR.po pt_BR.mo wxwin/pt_BR.mo \
+	     ru.po ru.mo wxwin/ru.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE
