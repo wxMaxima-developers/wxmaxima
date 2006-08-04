@@ -149,7 +149,9 @@ void wxMaxima::CheckForPrintingSupport()
 
 void wxMaxima::InitSession()
 {
-  while (!StartServer())
+  bool server = false;
+
+  while (!(server = StartServer()))
   {
     m_port++;
     if (m_port > 5000)
@@ -159,10 +161,12 @@ void wxMaxima::InitSession()
                      "enabled and try again!"),
                    _("Fatal error"),
                    wxOK | wxICON_ERROR);
-      wxExit();
     }
   }
-  if (!StartMaxima())
+
+  if (!server)
+    SetStatusText(_("Starting server failed"));
+  else if (!StartMaxima())
     SetStatusText(_("Starting maxima process failed"), 1);
 }
 
