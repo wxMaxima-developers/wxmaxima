@@ -497,7 +497,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
 #if wxUSE_UNICODE
-             event.GetUnicodeKey();
+             event.GetUnicodeKey() +
 #else
              wxString::Format(wxT("%c"), event.GetKeyCode()) +
 #endif
