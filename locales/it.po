@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-08 10:55+0200\n"
-"PO-Revision-Date: 2006-08-09 11:30+0200\n"
+"POT-Creation-Date: 2006-08-09 20:02+0200\n"
+"PO-Revision-Date: 2006-08-09 20:27+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -189,7 +189,7 @@ msgstr "&Numerico"
 
 #: ../src/wxMaximaFrame.cpp:241
 msgid "&Open\tCtrl-O"
-msgstr "Apri\tCtrl-O"
+msgstr "&Apri\tCtrl-A"
 
 #: ../src/wxMaximaFrame.cpp:598
 msgid "&Plotting"
@@ -610,9 +610,8 @@ msgid "Copy selection from console to input line"
 msgstr "Copia la selezione dalla console sulla riga d'ingresso"
 
 #: ../src/Config.cpp:103
-#, fuzzy
 msgid "Copy selection on select"
-msgstr "Copia la selezione se selezionata"
+msgstr "Copia la selezione negli appunti se selezionata col mouse"
 
 #: ../src/Config.cpp:181
 msgid "Copy selection to clipboard when selection is made in console."
@@ -2854,7 +2853,7 @@ msgstr "Configurazione di wxMaxima"
 
 #: ../src/wxMaxima.cpp:1166
 msgid ""
-"wxMaxima could not file help files.\n"
+"wxMaxima could not find help files.\n"
 "\n"
 "Please check your installation."
 msgstr ""
