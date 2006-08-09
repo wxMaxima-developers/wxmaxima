@@ -1163,7 +1163,7 @@ void wxMaxima::ShowHelp(wxString keyword)
 
   if (m_helpFile.Length() == 0)
   {
-    wxMessageBox(_("wxMaxima could not file help files."
+    wxMessageBox(_("wxMaxima could not find help files."
                    "\n\nPlease check your installation."),
                  _("Error"), wxICON_ERROR | wxOK);
     return ;

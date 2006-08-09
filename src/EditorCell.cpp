@@ -150,7 +150,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
         newLinePos++;
       }
 
-      dc.DrawText(m_text.SubString(prevNewLinePos, newLinePos),
+      dc.DrawText(m_text.SubString(prevNewLinePos, newLinePos - 1),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale) + m_charHeight * numberOfLines);
 
