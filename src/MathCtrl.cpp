@@ -1783,7 +1783,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
   AddLineToFile(output, wxEmptyString, false);
   AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
-  AddLineToFile(output, wxT("\"Created widh wxMaxima\"$"), false);
+  AddLineToFile(output, wxT("\"Created with wxMaxima\"$"), false);
 
   bool done = output.Write(wxTextFileType_None);
   output.Close();
