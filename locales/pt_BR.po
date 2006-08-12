@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 20:02+0200\n"
-"PO-Revision-Date: 2006-04-29 09:58-0300\n"
+"POT-Creation-Date: 2006-08-12 10:52-0300\n"
+"PO-Revision-Date: 2006-08-12 15:43-0300\n"
 "Last-Translator: Eduardo M Kalinowski <ekalin@bol.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -97,9 +97,8 @@ msgid "&Edit"
 msgstr "&Editar"
 
 #: ../src/wxMaximaFrame.cpp:301
-#, fuzzy
 msgid "&Edit input\tCtrl-E"
-msgstr "&Imprimir\tCtrl-P"
+msgstr "&Editar entrada\tCtrl-E"
 
 #: ../src/wxMaximaFrame.cpp:386
 msgid "&Eliminate variable ..."
@@ -150,9 +149,8 @@ msgid "&Help"
 msgstr "&Ajuda"
 
 #: ../src/wxMaximaFrame.cpp:306
-#, fuzzy
 msgid "&Input\tF7"
-msgstr "Entrada"
+msgstr "&Entrada\tF7"
 
 #: ../src/wxMaximaFrame.cpp:451
 msgid "&Integrate ..."
@@ -191,9 +189,8 @@ msgid "&Numeric"
 msgstr "&Numérico"
 
 #: ../src/wxMaximaFrame.cpp:241
-#, fuzzy
 msgid "&Open\tCtrl-O"
-msgstr "&Abrir sessão\tCtrl-O"
+msgstr "&Abrir\tCtrl-O"
 
 #: ../src/wxMaximaFrame.cpp:598
 msgid "&Plotting"
@@ -205,7 +202,7 @@ msgstr "&Imprimir\tCtrl-P"
 
 #: ../src/wxMaximaFrame.cpp:303
 msgid "&Re-evaluate input\tCtrl-R"
-msgstr ""
+msgstr "&Reavaliar entrada\tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:541
 msgid "&Reduce trigonometric"
@@ -220,14 +217,12 @@ msgid "&Roots of polynomial (real)"
 msgstr "&Raízes do polinômio (real)"
 
 #: ../src/wxMaximaFrame.cpp:243
-#, fuzzy
 msgid "&Save\tCtrl-S"
-msgstr "&Salvar sessão\tCtrl-S"
+msgstr "&Salvar\tCtrl-S"
 
 #: ../src/wxMaximaFrame.cpp:310
-#, fuzzy
 msgid "&Section\tCtrl-F6"
-msgstr "&Salvar sessão\tCtrl-S"
+msgstr "&Sessão\tCtrl-F6"
 
 #: ../src/wxMaximaFrame.cpp:588
 msgid "&Simplify"
@@ -250,9 +245,8 @@ msgid "&Solve ..."
 msgstr "&Resolver ..."
 
 #: ../src/wxMaximaFrame.cpp:308
-#, fuzzy
 msgid "&Text\tF6"
-msgstr "Texto"
+msgstr "&Texto\tF6"
 
 #: ../src/wxMaximaFrame.cpp:436
 msgid "&Transpose matrix"
@@ -586,9 +580,8 @@ msgid "Copy &text"
 msgstr "Copiar &texto"
 
 #: ../src/MathCtrl.cpp:403 ../src/wxMaximaFrame.cpp:280
-#, fuzzy
 msgid "Copy as image"
-msgstr "Copiar como &imagem"
+msgstr "Copiar como imagem"
 
 #: ../src/wxMaximaFrame.cpp:672 ../src/wxMaximaFrame.cpp:716
 msgid "Copy selection"
@@ -615,26 +608,24 @@ msgid "Copy selection from console to input line"
 msgstr "Copiar seleção do console para a linha de entrada"
 
 #: ../src/Config.cpp:103
-#, fuzzy
 msgid "Copy selection on select"
-msgstr "Copiar seleção do console"
+msgstr "Copiar seleção ao selecionar"
 
 #: ../src/Config.cpp:181
-#, fuzzy
 msgid "Copy selection to clipboard when selection is made in console."
-msgstr "Copiar seleção do console para um arquivo"
+msgstr ""
+"Copiar seleção para a área de transferência quando algo é selecionado no "
+"console."
 
 #: ../src/MathCtrl.cpp:400
-#, fuzzy
 msgid "Copy text"
-msgstr "Copiar &texto"
+msgstr "Copiar texto"
 
 #: ../src/MathCtrl.cpp:464 ../src/wxMaximaFrame.cpp:290
 msgid "Cut"
-msgstr ""
+msgstr "Recortar"
 
 #: ../src/wxMaximaFrame.cpp:291
-#, fuzzy
 msgid "Cut selection from console"
 msgstr "Copiar seleção do console"
 
@@ -647,9 +638,8 @@ msgid "Decrease fontsize in console"
 msgstr "Diminuir o tamanho da fonte do console"
 
 #: ../src/Config.cpp:191
-#, fuzzy
 msgid "Default"
-msgstr "padrão"
+msgstr "Padrão"
 
 #: ../src/IntegrateWiz.cpp:38
 msgid "Definite integration"
@@ -718,9 +708,8 @@ msgid "Differentiate"
 msgstr "Diferenciar"
 
 #: ../src/MathCtrl.cpp:452
-#, fuzzy
 msgid "Differentiate ..."
-msgstr "&Diferenciar ..."
+msgstr "Diferenciar ..."
 
 #: ../src/wxMaximaFrame.cpp:460
 msgid "Differentiate expression"
@@ -760,12 +749,11 @@ msgstr "&Sair\tCtrl-Q"
 
 #: ../src/MathCtrl.cpp:415
 msgid "Edit input"
-msgstr ""
+msgstr "Editar entrada"
 
 #: ../src/wxMaximaFrame.cpp:302
-#, fuzzy
 msgid "Edit selected input"
-msgstr "Apagar grupo selecionado de entrada/saída"
+msgstr "Editar grupo selecionado de entrada"
 
 #: ../src/wxMaximaFrame.cpp:431
 msgid "Eige&nvectors"
@@ -835,7 +823,7 @@ msgstr "Erro"
 
 #: ../src/wxMaxima.cpp:200
 msgid "Error opening file"
-msgstr ""
+msgstr "Erro ao abrir o arquivo"
 
 #: ../src/wxMaxima.cpp:1474 ../src/wxMaxima.cpp:1917 ../src/wxMaxima.cpp:1941
 #: ../src/wxMaxima.cpp:2052
@@ -875,9 +863,8 @@ msgid "Expand an expression"
 msgstr "Expandir uma expressão"
 
 #: ../src/MathCtrl.cpp:445
-#, fuzzy
 msgid "Expand expression"
-msgstr "&Expandir expressão"
+msgstr "Expandir expressão"
 
 #: ../src/wxMaximaFrame.cpp:512
 msgid "Expand logarithms"
@@ -930,9 +917,8 @@ msgid "Factor complex"
 msgstr "Fatorar complexo"
 
 #: ../src/MathCtrl.cpp:443
-#, fuzzy
 msgid "Factor expression"
-msgstr "&Fatorar expressão"
+msgstr "Fatorar expressão"
 
 #: ../src/wxMaximaFrame.cpp:533
 msgid "Factorials and &gamma"
@@ -1083,9 +1069,8 @@ msgid "Go to input\tF4"
 msgstr "Ir à entrada\tF4"
 
 #: ../src/wxMaximaFrame.cpp:326
-#, fuzzy
 msgid "Go to output window\tF3"
-msgstr "Ir à entrada\tF4"
+msgstr "Ir à janela de saída\tF3"
 
 #: ../src/Config.cpp:114
 msgid "Greek constants"
@@ -1116,9 +1101,8 @@ msgid "Highlight"
 msgstr "Destaque"
 
 #: ../src/wxMaximaFrame.cpp:314
-#, fuzzy
 msgid "I&nsert"
-msgstr "Integrar"
+msgstr "I&nserir"
 
 #: ../src/wxMaxima.cpp:1851
 msgid "IC1"
@@ -1161,34 +1145,32 @@ msgid "Input"
 msgstr "Entrada"
 
 #: ../src/wxMaximaFrame.cpp:316
-#, fuzzy
 msgid "Insert"
-msgstr "Interromper"
+msgstr "Inserir"
 
 #: ../src/MathCtrl.cpp:419 ../src/MathCtrl.cpp:426
 msgid "Insert input"
-msgstr ""
+msgstr "Inserir entrada"
 
 #: ../src/wxMaximaFrame.cpp:307
 msgid "Insert new input before selected input"
-msgstr ""
+msgstr "Inserir nova entrada antes da entrada selecionada"
 
 #: ../src/wxMaximaFrame.cpp:311
 msgid "Insert section before selected input"
-msgstr ""
+msgstr "Inserir a seleção antes da entrada selecionada"
 
 #: ../src/MathCtrl.cpp:421 ../src/MathCtrl.cpp:428
-#, fuzzy
 msgid "Insert text"
-msgstr "&Inverter matriz"
+msgstr "Inserir texto"
 
 #: ../src/wxMaximaFrame.cpp:309
 msgid "Insert text before selected input"
-msgstr ""
+msgstr "Inserir texto antes da entrada selecionada"
 
 #: ../src/wxMaximaFrame.cpp:313
 msgid "Insert title before selected input"
-msgstr ""
+msgstr "Inserir título antes da entrada selecionada"
 
 #: ../data/tips.txt:10
 msgid ""
@@ -1212,9 +1194,8 @@ msgid "Integrate (risch)"
 msgstr "Integrar (risch)"
 
 #: ../src/MathCtrl.cpp:450
-#, fuzzy
 msgid "Integrate ..."
-msgstr "&Integrar ..."
+msgstr "Integrar ..."
 
 #: ../src/wxMaximaFrame.cpp:452
 msgid "Integrate expression"
@@ -1302,9 +1283,8 @@ msgid "Load a maxima package file"
 msgstr "Carregar um arquivo de pacote maxima"
 
 #: ../src/wxMaximaFrame.cpp:299
-#, fuzzy
 msgid "Long input\tCtrl-I"
-msgstr "&Imprimir\tCtrl-P"
+msgstr "Entrada longa\tCtrl-I"
 
 #: ../src/wxMaximaFrame.cpp:445
 msgid "Ma&p to matrix ..."
@@ -1391,9 +1371,8 @@ msgid "Maxima session"
 msgstr "Sessão Maxima"
 
 #: ../src/wxMaxima.cpp:1418 ../src/wxMaxima.cpp:1442
-#, fuzzy
 msgid "Maxima session (*.wxm)|*.wxm"
-msgstr "Sessão maxima (*.mac)|*.mac|Todos|*"
+msgstr "Sessão Maxima (*.wxm)|*.wxm"
 
 #: ../src/wxMaxima.cpp:645
 msgid "Maxima started. Waiting for connection..."
@@ -1465,9 +1444,8 @@ msgid "Open"
 msgstr "Abrir"
 
 #: ../src/wxMaximaFrame.cpp:300
-#, fuzzy
 msgid "Open multiline input dialog"
-msgstr "Entrada de múltiplas linhas"
+msgstr "Abrir janela para entrada de múltiplas linhas"
 
 #: ../src/wxMaximaFrame.cpp:660 ../src/wxMaximaFrame.cpp:696
 msgid "Open session"
@@ -1532,11 +1510,11 @@ msgstr "Frações parciais"
 
 #: ../src/MathCtrl.cpp:466 ../src/wxMaximaFrame.cpp:293
 msgid "Paste"
-msgstr ""
+msgstr "Colar"
 
 #: ../src/wxMaximaFrame.cpp:294
 msgid "Paste text from clipboard"
-msgstr ""
+msgstr "Colar texto da área de transferência"
 
 #: ../src/wxMaxima.cpp:1037
 msgid "Please configure wxMaxima with 'Edit->Configure'."
@@ -1568,9 +1546,8 @@ msgid "Plot 2D..."
 msgstr "Gráfico 2D..."
 
 #: ../src/MathCtrl.cpp:455
-#, fuzzy
 msgid "Plot 2d ..."
-msgstr "Gráfico &2d ..."
+msgstr "Gráfico 2d ..."
 
 #: ../src/Plot3dWiz.cpp:41 ../src/Plot3dWiz.cpp:116 ../src/wxMaxima.cpp:2548
 #: ../src/wxMaxima.cpp:2853
@@ -1582,9 +1559,8 @@ msgid "Plot 3D..."
 msgstr "Gráfico 3D..."
 
 #: ../src/MathCtrl.cpp:457
-#, fuzzy
 msgid "Plot 3d ..."
-msgstr "Gráfico &3d ..."
+msgstr "Gráfico 3d ..."
 
 #: ../src/wxMaxima.cpp:2576
 msgid "Plot format"
@@ -1612,7 +1588,7 @@ msgstr "Polinômio 2:"
 
 #: ../src/Config.cpp:88
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Português (Brasileiro)"
 
 #: ../src/Plot2dWiz.cpp:431 ../src/Plot3dWiz.cpp:441
 msgid "Postscript file (*.eps)|*.eps|All|*"
@@ -1653,12 +1629,11 @@ msgstr "Racional"
 
 #: ../src/MathCtrl.cpp:417
 msgid "Re-evaluate input"
-msgstr ""
+msgstr "Reavaliar entrada"
 
 #: ../src/wxMaximaFrame.cpp:304
-#, fuzzy
 msgid "Re-evaluate selected input"
-msgstr "Apagar grupo selecionado de entrada/saída"
+msgstr "Reavaliar entrada selecionada"
 
 #: ../src/wxMaxima.cpp:496
 msgid "Reading maxima output"
@@ -1703,16 +1678,15 @@ msgstr "Linas:"
 
 #: ../src/Config.cpp:89
 msgid "Russian"
-msgstr ""
+msgstr "Russo"
 
 #: ../src/wxMaximaFrame.cpp:661 ../src/wxMaximaFrame.cpp:697
 msgid "Save"
 msgstr "Salvar"
 
 #: ../src/wxMaximaFrame.cpp:245
-#, fuzzy
 msgid "Save as"
-msgstr "Salvar"
+msgstr "Salvar como"
 
 #: ../src/Plot2dWiz.cpp:429 ../src/Plot3dWiz.cpp:439
 msgid "Save plot to file"
@@ -1760,22 +1734,20 @@ msgid "Select a file (copy filename to input line)"
 msgstr "Selecione um arquivo (copiar caminho para a linha de entrada)"
 
 #: ../src/MathCtrl.cpp:469
-#, fuzzy
 msgid "Select all"
-msgstr "Selecione um arquivo"
+msgstr "Selecionar tudo"
 
 #: ../src/wxMaxima.cpp:1404
 msgid "Select file to open"
 msgstr "Selecione o arquivo para abrir"
 
 #: ../src/wxMaximaFrame.cpp:328
-#, fuzzy
 msgid "Select last input\tF2"
-msgstr "Seleção para entrada\tF5"
+msgstr "Selecionar última entrada\tF2"
 
 #: ../src/wxMaximaFrame.cpp:329
 msgid "Select last input in the console!"
-msgstr ""
+msgstr "Selecione a última entrada no console!"
 
 #: ../src/wxMaxima.cpp:1673
 msgid "Select math display algorithm"
@@ -1826,9 +1798,8 @@ msgid "Set focus to the input line"
 msgstr "Focar a linha de entrada"
 
 #: ../src/wxMaximaFrame.cpp:327
-#, fuzzy
 msgid "Set focus to the output window"
-msgstr "Focar a linha de entrada"
+msgstr "Focar a janela de saída"
 
 #: ../src/wxMaximaFrame.cpp:597
 msgid "Set plot format"
@@ -1950,9 +1921,8 @@ msgid "Simplify an expression containing factorials"
 msgstr "Simplificar uma expressão envolvendo fatoriais"
 
 #: ../src/MathCtrl.cpp:441
-#, fuzzy
 msgid "Simplify expression"
-msgstr "&Simplificar expressão"
+msgstr "Simplificar expressão"
 
 #: ../src/wxMaximaFrame.cpp:503
 msgid "Simplify expression containing radicals"
@@ -1995,9 +1965,8 @@ msgid "Solve &numerically ..."
 msgstr "Resolver &numericamente ..."
 
 #: ../src/MathCtrl.cpp:436
-#, fuzzy
 msgid "Solve ..."
-msgstr "&Resolver ..."
+msgstr "Resolver ..."
 
 #: ../src/wxMaxima.cpp:1835 ../src/wxMaxima.cpp:1959
 msgid "Solve ODE"
@@ -2056,9 +2025,8 @@ msgid "Solve numerically"
 msgstr "Resolver numericamente"
 
 #: ../src/MathCtrl.cpp:438
-#, fuzzy
 msgid "Solve numerically ..."
-msgstr "Resolver &numericamente ..."
+msgstr "Resolver numericamente ..."
 
 #: ../src/wxMaximaFrame.cpp:392
 msgid "Solve ordinary differential equation of maximum degree 2"
@@ -2149,7 +2117,7 @@ msgstr "Soma..."
 
 #: ../src/wxMaximaFrame.cpp:312
 msgid "T&itle\tCtrl-Shift-F6"
-msgstr ""
+msgstr "&Título\tCtrl-Shift-F6"
 
 #: ../src/wxMaxima.cpp:2314
 msgid "Taylor series:"
@@ -2206,9 +2174,8 @@ msgstr ""
 "'Álgebra->Introduzir matriz' no menu."
 
 #: ../src/MathCtrl.cpp:433
-#, fuzzy
 msgid "To float"
-msgstr "Para &float"
+msgstr "Para float"
 
 #: ../data/tips.txt:6
 msgid ""
@@ -2277,13 +2244,12 @@ msgid "Underlined"
 msgstr "Sublinhado"
 
 #: ../src/wxMaximaFrame.cpp:296
-#, fuzzy
 msgid "Unfold"
-msgstr "dourado"
+msgstr "Desdobrar"
 
 #: ../src/wxMaximaFrame.cpp:297
 msgid "Unfold all folded groups"
-msgstr ""
+msgstr "Desdobrar todos os grupos dobrados"
 
 #: ../src/SumWiz.cpp:72
 msgid "Use Gosper algorithm"
@@ -2412,7 +2378,7 @@ msgstr "Afas&ar\tAlt-O"
 
 #: ../src/wxMaxima.cpp:3000 ../src/wxMaximaFrame.cpp:111
 msgid "[ unsaved ]"
-msgstr ""
+msgstr "[ não salvo ]"
 
 #: ../src/MatWiz.cpp:167
 msgid "antisymmetric"
@@ -2821,13 +2787,12 @@ msgid "turquoise"
 msgstr "turquesa"
 
 #: ../src/wxMaxima.cpp:1413 ../src/wxMaxima.cpp:1460
-#, fuzzy
 msgid "untitled"
-msgstr "cardo"
+msgstr "sem título"
 
 #: ../src/wxMaxima.cpp:1441
 msgid "untitled.wxm"
-msgstr ""
+msgstr "sem título.wxm"
 
 #: ../src/wxMaxima.cpp:1815 ../src/wxMaxima.cpp:2778
 msgid "upper bound:"
@@ -2875,16 +2840,15 @@ msgstr "wxMaxima"
 
 #: ../src/wxMaxima.cpp:3000 ../src/wxMaxima.cpp:3005 ../src/wxMaxima.cpp:3008
 #: ../src/wxMaximaFrame.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "wxMaxima %s "
-msgstr "wxMaxima %s"
+msgstr "wxMaxima %s "
 
 #: ../src/Config.cpp:78 ../src/Config.cpp:163 ../src/wxMaxima.cpp:1528
 msgid "wxMaxima configuration"
 msgstr "Configuração do wxMaxima"
 
 #: ../src/wxMaxima.cpp:1166
-#, fuzzy
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
@@ -2907,13 +2871,12 @@ msgstr ""
 "Então inicie o maxima com 'Maxima->Reiniciar maxima'."
 
 #: ../src/wxMaxima.cpp:1083
-#, fuzzy
 msgid ""
 "wxMaxima could not find tip files.\n"
 "\n"
 "Please check your installation."
 msgstr ""
-"wxMaxima não pôde encontrar os arquivos de ajuda.\n"
+"wxMaxima não pôde encontrar os arquivos de dicas.\n"
 "\n"
 "Queira verificar sua instalação."
 
@@ -2979,9 +2942,8 @@ msgid "wxMaxima options"
 msgstr "Opções do wxMaxima"
 
 #: ../src/wxMaxima.cpp:1406
-#, fuzzy
 msgid "wxMaxima session (*.wxm)|*.wxm"
-msgstr "Sessão maxima (*.mac)|*.mac|Todos|*"
+msgstr "Sessão wxMaxima (*.wxm)|*.wxm"
 
 #: ../data/tips.txt:3
 msgid ""
