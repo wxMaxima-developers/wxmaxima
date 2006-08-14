@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 20:02+0200\n"
+"POT-Creation-Date: 2006-08-14 21:01+0400\n"
 "PO-Revision-Date: 2006-07-22 13:59+0300\n"
 "Last-Translator: Vadim V. Zhytnikov <vvzhy@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -267,7 +267,7 @@ msgstr "Значение в точке ..."
 msgid "About"
 msgstr "О программе"
 
-#: ../src/wxMaxima.cpp:2639 ../src/wxMaximaFrame.cpp:636
+#: ../src/wxMaximaFrame.cpp:636 ../src/wxMaxima.cpp:2639
 msgid "About wxMaxima"
 msgstr "О wxMaxima"
 
@@ -339,8 +339,8 @@ msgstr "Применить функцию:"
 msgid "Apropos"
 msgstr "По поводу"
 
-#: ../src/BC2Wiz.cpp:30 ../src/BC2Wiz.cpp:36 ../src/wxMaxima.cpp:1849
-#: ../src/wxMaxima.cpp:1864
+#: ../src/wxMaxima.cpp:1849 ../src/wxMaxima.cpp:1864 ../src/BC2Wiz.cpp:30
+#: ../src/BC2Wiz.cpp:36
 msgid "At point:"
 msgstr "В точке:"
 
@@ -352,7 +352,7 @@ msgstr "Значение в точке"
 msgid "Autoload a file when it is updated"
 msgstr "Загружать файл при его изменении"
 
-#: ../src/BC2Wiz.cpp:26 ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:1881
+#: ../src/wxMaxima.cpp:1881 ../src/BC2Wiz.cpp:26 ../src/BC2Wiz.cpp:58
 msgid "BC2"
 msgstr "BC2"
 
@@ -372,7 +372,7 @@ msgstr "Пакетные файлы (*.bat)|*.bat|Все|*"
 msgid "Bold"
 msgstr "Жирный"
 
-#: ../src/Plot2dWiz.cpp:121 ../src/Plot3dWiz.cpp:125
+#: ../src/Plot3dWiz.cpp:125 ../src/Plot2dWiz.cpp:121
 msgid "Browse"
 msgstr "Просмотр"
 
@@ -416,19 +416,18 @@ msgstr "Вычислить сумму ..."
 msgid "Calculate sums"
 msgstr "Вычислить суммы"
 
-#: ../src/BC2Wiz.cpp:45 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:147
-#: ../src/Config.cpp:149 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
-#: ../src/Gen2Wiz.cpp:43 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:50
-#: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:56 ../src/Gen4Wiz.cpp:58
-#: ../src/IntegrateWiz.cpp:51 ../src/IntegrateWiz.cpp:53
-#: ../src/LimitWiz.cpp:52 ../src/LimitWiz.cpp:54 ../src/MatWiz.cpp:40
+#: ../src/LimitWiz.cpp:52 ../src/LimitWiz.cpp:54 ../src/Gen4Wiz.cpp:56
+#: ../src/Gen4Wiz.cpp:58 ../src/SumWiz.cpp:48 ../src/SumWiz.cpp:50
+#: ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40 ../src/SubstituteWiz.cpp:41
+#: ../src/SubstituteWiz.cpp:43 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
+#: ../src/Config.cpp:147 ../src/Config.cpp:149 ../src/MatWiz.cpp:40
 #: ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:176 ../src/MatWiz.cpp:178
-#: ../src/Plot2dWiz.cpp:98 ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:472
-#: ../src/Plot2dWiz.cpp:474 ../src/Plot3dWiz.cpp:101 ../src/Plot3dWiz.cpp:103
-#: ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51 ../src/SubstituteWiz.cpp:41
-#: ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:48 ../src/SumWiz.cpp:50
-#: ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40 ../src/TextInput.cpp:33
-#: ../src/TextInput.cpp:35
+#: ../src/Gen3Wiz.cpp:50 ../src/Gen3Wiz.cpp:52 ../src/SeriesWiz.cpp:49
+#: ../src/SeriesWiz.cpp:51 ../src/Plot3dWiz.cpp:101 ../src/Plot3dWiz.cpp:103
+#: ../src/BC2Wiz.cpp:45 ../src/BC2Wiz.cpp:47 ../src/IntegrateWiz.cpp:51
+#: ../src/IntegrateWiz.cpp:53 ../src/TextInput.cpp:33 ../src/TextInput.cpp:35
+#: ../src/Gen2Wiz.cpp:43 ../src/Gen2Wiz.cpp:45 ../src/Plot2dWiz.cpp:98
+#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:472 ../src/Plot2dWiz.cpp:474
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -506,8 +505,8 @@ msgstr "Предупреждение о настройке"
 msgid "Configure wxMaxima"
 msgstr "Настроить wxMaxima"
 
-#: ../src/IntegrateWiz.cpp:162 ../src/IntegrateWiz.cpp:181
 #: ../src/LimitWiz.cpp:136 ../src/SeriesWiz.cpp:110
+#: ../src/IntegrateWiz.cpp:162 ../src/IntegrateWiz.cpp:181
 msgid "Constant"
 msgstr "Константа"
 
@@ -648,8 +647,8 @@ msgstr "По умолчанию"
 msgid "Definite integration"
 msgstr "Определенный интеграл"
 
-#: ../src/wxMaxima.cpp:1721 ../src/wxMaxima.cpp:1730
 #: ../src/wxMaximaFrame.cpp:673 ../src/wxMaximaFrame.cpp:717
+#: ../src/wxMaxima.cpp:1721 ../src/wxMaxima.cpp:1730
 msgid "Delete"
 msgstr "Удалить"
 
@@ -983,7 +982,7 @@ msgstr "Размер шрифта:"
 msgid "Font used for display in console."
 msgstr "Шрифт, используемый в консоли."
 
-#: ../src/Plot2dWiz.cpp:66 ../src/Plot3dWiz.cpp:68
+#: ../src/Plot3dWiz.cpp:68 ../src/Plot2dWiz.cpp:66
 msgid "Format:"
 msgstr "Формат:"
 
@@ -1187,8 +1186,8 @@ msgstr ""
 msgid "Integral/sum:"
 msgstr "Интеграл/сумма"
 
-#: ../src/IntegrateWiz.cpp:31 ../src/IntegrateWiz.cpp:64
 #: ../src/wxMaxima.cpp:2409 ../src/wxMaxima.cpp:2795
+#: ../src/IntegrateWiz.cpp:31 ../src/IntegrateWiz.cpp:64
 msgid "Integrate"
 msgstr "Интегрировать"
 
@@ -1421,19 +1420,18 @@ msgstr "Численное интегрирование"
 msgid "Nusum"
 msgstr "Суммирование (nusum)"
 
-#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/Config.cpp:146
-#: ../src/Config.cpp:150 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
-#: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:46 ../src/Gen3Wiz.cpp:49
-#: ../src/Gen3Wiz.cpp:53 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:59
-#: ../src/IntegrateWiz.cpp:50 ../src/IntegrateWiz.cpp:54
-#: ../src/LimitWiz.cpp:51 ../src/LimitWiz.cpp:55 ../src/MatWiz.cpp:39
+#: ../src/LimitWiz.cpp:51 ../src/LimitWiz.cpp:55 ../src/Gen4Wiz.cpp:55
+#: ../src/Gen4Wiz.cpp:59 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:51
+#: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:41 ../src/SubstituteWiz.cpp:40
+#: ../src/SubstituteWiz.cpp:44 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
+#: ../src/Config.cpp:146 ../src/Config.cpp:150 ../src/MatWiz.cpp:39
 #: ../src/MatWiz.cpp:43 ../src/MatWiz.cpp:175 ../src/MatWiz.cpp:179
-#: ../src/Plot2dWiz.cpp:97 ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:471
-#: ../src/Plot2dWiz.cpp:475 ../src/Plot3dWiz.cpp:100 ../src/Plot3dWiz.cpp:104
-#: ../src/SeriesWiz.cpp:48 ../src/SeriesWiz.cpp:52 ../src/SubstituteWiz.cpp:40
-#: ../src/SubstituteWiz.cpp:44 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:51
-#: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:41 ../src/TextInput.cpp:32
-#: ../src/TextInput.cpp:36
+#: ../src/Gen3Wiz.cpp:49 ../src/Gen3Wiz.cpp:53 ../src/SeriesWiz.cpp:48
+#: ../src/SeriesWiz.cpp:52 ../src/Plot3dWiz.cpp:100 ../src/Plot3dWiz.cpp:104
+#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/IntegrateWiz.cpp:50
+#: ../src/IntegrateWiz.cpp:54 ../src/TextInput.cpp:32 ../src/TextInput.cpp:36
+#: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:46 ../src/Plot2dWiz.cpp:97
+#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:471 ../src/Plot2dWiz.cpp:475
 msgid "OK"
 msgstr "OK"
 
@@ -1463,7 +1461,7 @@ msgstr "Открыть сессию из файла"
 msgid "Options"
 msgstr "Опции"
 
-#: ../src/Plot2dWiz.cpp:76 ../src/Plot3dWiz.cpp:78
+#: ../src/Plot3dWiz.cpp:78 ../src/Plot2dWiz.cpp:76
 msgid "Options:"
 msgstr "Опции:"
 
@@ -1539,8 +1537,8 @@ msgstr "График 3Dd ..."
 msgid "Plot &format ..."
 msgstr "Формат графики ..."
 
-#: ../src/Plot2dWiz.cpp:39 ../src/Plot2dWiz.cpp:113 ../src/Plot2dWiz.cpp:393
-#: ../src/wxMaxima.cpp:2562 ../src/wxMaxima.cpp:2840
+#: ../src/wxMaxima.cpp:2562 ../src/wxMaxima.cpp:2840 ../src/Plot2dWiz.cpp:39
+#: ../src/Plot2dWiz.cpp:113 ../src/Plot2dWiz.cpp:393
 msgid "Plot 2D"
 msgstr "График 2D"
 
@@ -1552,8 +1550,8 @@ msgstr "График 2D..."
 msgid "Plot 2d ..."
 msgstr "График 2D ..."
 
-#: ../src/Plot3dWiz.cpp:41 ../src/Plot3dWiz.cpp:116 ../src/wxMaxima.cpp:2548
-#: ../src/wxMaxima.cpp:2853
+#: ../src/wxMaxima.cpp:2548 ../src/wxMaxima.cpp:2853 ../src/Plot3dWiz.cpp:41
+#: ../src/Plot3dWiz.cpp:116
 msgid "Plot 3D"
 msgstr "График 3D"
 
@@ -1577,7 +1575,7 @@ msgstr "Двумерный график"
 msgid "Plot in 3 dimensions"
 msgstr "Трехмерный график"
 
-#: ../src/Plot2dWiz.cpp:89 ../src/Plot3dWiz.cpp:92
+#: ../src/Plot3dWiz.cpp:92 ../src/Plot2dWiz.cpp:89
 msgid "Plot to file:"
 msgstr "Вывести график в файл:"
 
@@ -1593,7 +1591,7 @@ msgstr "Полином 2:"
 msgid "Portuguese (Brazilian)"
 msgstr "Португальский (Бразилия)"
 
-#: ../src/Plot2dWiz.cpp:431 ../src/Plot3dWiz.cpp:441
+#: ../src/Plot3dWiz.cpp:441 ../src/Plot2dWiz.cpp:431
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript файл (*.eps)|*.eps|Все|*"
 
@@ -1681,7 +1679,7 @@ msgstr "Строки:"
 
 #: ../src/Config.cpp:89
 msgid "Russian"
-msgstr ""
+msgstr "Русский"
 
 #: ../src/wxMaximaFrame.cpp:661 ../src/wxMaximaFrame.cpp:697
 msgid "Save"
@@ -1691,7 +1689,7 @@ msgstr "Сохранить"
 msgid "Save as"
 msgstr "Сохранить как"
 
-#: ../src/Plot2dWiz.cpp:429 ../src/Plot3dWiz.cpp:439
+#: ../src/Plot3dWiz.cpp:439 ../src/Plot2dWiz.cpp:429
 msgid "Save plot to file"
 msgstr "Сохранить график в файл"
 
@@ -1723,8 +1721,8 @@ msgstr "Запоминать положение и размер окна wxMaxim
 msgid "Select &file"
 msgstr "Выбрать файл"
 
-#: ../src/IntegrateWiz.cpp:161 ../src/IntegrateWiz.cpp:180
 #: ../src/LimitWiz.cpp:135 ../src/SeriesWiz.cpp:109
+#: ../src/IntegrateWiz.cpp:161 ../src/IntegrateWiz.cpp:180
 msgid "Select a constant"
 msgstr "Выбрать константу"
 
@@ -1942,7 +1940,7 @@ msgstr "Упростить сумму"
 msgid "Simplify trigonometric expression"
 msgstr "Упростить тригонометрическое выражение"
 
-#: ../src/BC2Wiz.cpp:27 ../src/wxMaxima.cpp:1849 ../src/wxMaxima.cpp:1864
+#: ../src/wxMaxima.cpp:1849 ../src/wxMaxima.cpp:1864 ../src/BC2Wiz.cpp:27
 msgid "Solution:"
 msgstr "Решение:"
 
@@ -2048,8 +2046,8 @@ msgstr "Решить..."
 msgid "Spanish"
 msgstr "Испанский"
 
-#: ../src/IntegrateWiz.cpp:42 ../src/IntegrateWiz.cpp:46
-#: ../src/LimitWiz.cpp:36 ../src/SeriesWiz.cpp:42
+#: ../src/LimitWiz.cpp:36 ../src/SeriesWiz.cpp:42 ../src/IntegrateWiz.cpp:42
+#: ../src/IntegrateWiz.cpp:46
 msgid "Special"
 msgstr "Дополнительно"
 
@@ -2271,8 +2269,8 @@ msgstr "Использовать греческий шрифт"
 msgid "Use greek font to display greek characters."
 msgstr "Использовать греческий шрифт для отображения греческих букв"
 
-#: ../src/Plot2dWiz.cpp:44 ../src/Plot2dWiz.cpp:53 ../src/Plot2dWiz.cpp:460
-#: ../src/Plot3dWiz.cpp:44 ../src/Plot3dWiz.cpp:53
+#: ../src/Plot3dWiz.cpp:44 ../src/Plot3dWiz.cpp:53 ../src/Plot2dWiz.cpp:44
+#: ../src/Plot2dWiz.cpp:53 ../src/Plot2dWiz.cpp:460
 msgid "Variable:"
 msgstr "Переменная:"
 
@@ -2379,7 +2377,7 @@ msgstr "Увеличить\tAlt-I"
 msgid "Zoom ou&t\tAlt-O"
 msgstr "Уменьшить\tAlt-O"
 
-#: ../src/wxMaxima.cpp:3000 ../src/wxMaximaFrame.cpp:111
+#: ../src/wxMaximaFrame.cpp:111 ../src/wxMaxima.cpp:3000
 msgid "[ unsaved ]"
 msgstr "[ не сохранено ]"
 
@@ -2419,8 +2417,8 @@ msgstr "двухстононний"
 msgid "brown"
 msgstr "коричневый"
 
-#: ../src/IntegrateWiz.cpp:35 ../src/SumWiz.cpp:34 ../src/wxMaxima.cpp:2121
-#: ../src/wxMaxima.cpp:2393 ../src/wxMaxima.cpp:2518
+#: ../src/SumWiz.cpp:34 ../src/wxMaxima.cpp:2121 ../src/wxMaxima.cpp:2393
+#: ../src/wxMaxima.cpp:2518 ../src/IntegrateWiz.cpp:35
 msgid "by variable:"
 msgstr "по переменной:"
 
@@ -2472,8 +2470,8 @@ msgstr "темнный сероватый"
 msgid "dark turquoise"
 msgstr "темно-бирюзовый"
 
-#: ../src/Plot2dWiz.cpp:69 ../src/Plot2dWiz.cpp:365 ../src/Plot3dWiz.cpp:71
-#: ../src/Plot3dWiz.cpp:373
+#: ../src/Plot3dWiz.cpp:71 ../src/Plot3dWiz.cpp:373 ../src/Plot2dWiz.cpp:69
+#: ../src/Plot2dWiz.cpp:365
 msgid "default"
 msgstr "по умолчанию"
 
@@ -2521,10 +2519,10 @@ msgstr "лесной зеленый"
 msgid "from expression:"
 msgstr "из выражения:"
 
-#: ../src/IntegrateWiz.cpp:39 ../src/LimitWiz.cpp:37 ../src/Plot2dWiz.cpp:47
-#: ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:463 ../src/Plot3dWiz.cpp:47
-#: ../src/Plot3dWiz.cpp:56 ../src/SumWiz.cpp:37 ../src/wxMaxima.cpp:2122
-#: ../src/wxMaxima.cpp:2518
+#: ../src/LimitWiz.cpp:37 ../src/SumWiz.cpp:37 ../src/wxMaxima.cpp:2122
+#: ../src/wxMaxima.cpp:2518 ../src/Plot3dWiz.cpp:47 ../src/Plot3dWiz.cpp:56
+#: ../src/IntegrateWiz.cpp:39 ../src/Plot2dWiz.cpp:47 ../src/Plot2dWiz.cpp:56
+#: ../src/Plot2dWiz.cpp:463
 msgid "from:"
 msgstr "из:"
 
@@ -2757,8 +2755,8 @@ msgstr "желто-коричневый"
 msgid "the derivative is:"
 msgstr "производная:"
 
-#: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:1849
-#: ../src/wxMaxima.cpp:1865
+#: ../src/wxMaxima.cpp:1849 ../src/wxMaxima.cpp:1865 ../src/BC2Wiz.cpp:33
+#: ../src/BC2Wiz.cpp:39
 msgid "the value is:"
 msgstr "значение:"
 
@@ -2778,10 +2776,10 @@ msgstr "к списоку:"
 msgid "to matrix:"
 msgstr "к матрице:"
 
-#: ../src/IntegrateWiz.cpp:43 ../src/Plot2dWiz.cpp:50 ../src/Plot2dWiz.cpp:59
-#: ../src/Plot2dWiz.cpp:466 ../src/Plot3dWiz.cpp:50 ../src/Plot3dWiz.cpp:59
 #: ../src/SumWiz.cpp:40 ../src/wxMaxima.cpp:2122 ../src/wxMaxima.cpp:2423
-#: ../src/wxMaxima.cpp:2440 ../src/wxMaxima.cpp:2519
+#: ../src/wxMaxima.cpp:2440 ../src/wxMaxima.cpp:2519 ../src/Plot3dWiz.cpp:50
+#: ../src/Plot3dWiz.cpp:59 ../src/IntegrateWiz.cpp:43 ../src/Plot2dWiz.cpp:50
+#: ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:466
 msgid "to:"
 msgstr "к:"
 
@@ -2841,8 +2839,8 @@ msgstr "на:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:3000 ../src/wxMaxima.cpp:3005 ../src/wxMaxima.cpp:3008
-#: ../src/wxMaximaFrame.cpp:111
+#: ../src/wxMaximaFrame.cpp:111 ../src/wxMaxima.cpp:3000
+#: ../src/wxMaxima.cpp:3005 ../src/wxMaxima.cpp:3008
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
@@ -2852,7 +2850,6 @@ msgid "wxMaxima configuration"
 msgstr "Конфигурация wxMaxima"
 
 #: ../src/wxMaxima.cpp:1166
-#, fuzzy
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
