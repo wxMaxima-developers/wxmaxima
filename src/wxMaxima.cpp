@@ -991,56 +991,47 @@ void wxMaxima::SetupVariables()
 ///  Getting confuguration
 ///--------------------------------------------------------------------------------
 
-bool wxMaxima::GuessConfiguration()
-{
-#if defined (__WXMSW__)
-  wxString maxima = wxGetCwd();
-  maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
-  if (!wxFileExists(maxima))
-    return false;
-#else
-  wxString maxima = wxT("maxima");
-#endif
-
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  config->Write(wxT("maxima"), maxima);
-  config->Write(wxT("parameters"), wxEmptyString);
-
-  config->Flush();
-  return true;
-}
-
 wxString wxMaxima::GetCommand()
 {
+#if defined (__WXWIN__)
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  wxString command, r;
+  wxString maxima = wxGetCwd();
+  wxString command, parameters;
+
+  maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
+
+  if (!wxFileExists(maxima))
+  {
+    config->Read(wxT("maxima"), &maxima);
+    if (!wxFileExists(maxima))
+    {
+      wxMessageBox(_("wxMaxima could not find maxima!\n\n"
+                     "Please configure wxMaxima with 'Edit->Configure'.\n"
+                     "Then start maxima with 'Maxima->Restart maxima'."), _("Warning"),
+                   wxOK | wxICON_EXCLAMATION);
+      SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
+      return wxEmptyString;
+    }
+  }
+
+  config->Read(wxT("parameters"), &parameters);
+  command = wxT("\"") + command + wxT("\" ") + parameters;
+  return command;
+#else
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  wxString command, parameters;
   bool have_config = config->Read(wxT("maxima"), &command);
 
-  // Test if we have correct configuration on Windows
-#if defined (__WXMSW__)
-  if (have_config && !wxFileExists(command))
-    have_config = false;
-#endif
-
   if (!have_config)
   {
-    GuessConfiguration();
-    have_config = config->Read(wxT("maxima"), &command);
+    command = wxT("maxima");
+    config->Write(wxT("maxima"), &command);
   }
 
-  if (!have_config)
-  {
-    wxMessageBox(_("wxMaxima could not find maxima!\n\n"
-                   "Please configure wxMaxima with 'Edit->Configure'.\n"
-                   "Then start maxima with 'Maxima->Restart maxima'."), _("Warning"),
-                 wxOK | wxICON_EXCLAMATION);
-    SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
-    return wxEmptyString;
-  }
-
-  config->Read(wxT("parameters"), &r);
-  command = wxT("\"") + command + wxT("\" ") + r;
+  config->Read(wxT("parameters"), &parameters);
+  command = wxT("\"") + command + wxT("\" ") + parameters;
   return command;
+#endif
 }
 
 ///--------------------------------------------------------------------------------

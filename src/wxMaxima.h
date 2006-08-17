@@ -107,7 +107,6 @@ protected:
   bool StartMaxima();                              // starts maxima (uses getCommand)
   void CleanUp();                                  // shuts down server and client on exit
   void OnClose(wxCloseEvent& event);               // close wxMaxima window
-  bool GuessConfiguration();                       // tries to guess the configuration values
   wxString GetCommand();                           // returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
