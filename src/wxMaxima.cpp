@@ -2992,12 +2992,14 @@ void wxMaxima::ResetTitle(bool saved)
   else if (m_fileSaved != saved)
   {
     m_fileSaved = saved;
+    wxString name, ext;
+    wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
     if (m_fileSaved)
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + m_currentFile + wxT(" ]"));
+               wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
     else
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + m_currentFile + wxT("* ]"));
+               wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
   }
 }
 
