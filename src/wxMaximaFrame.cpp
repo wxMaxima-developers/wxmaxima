@@ -110,10 +110,8 @@ void wxMaximaFrame::set_properties()
   SetIcon(wxICON(maximaicon));
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
   bool fixed = true;
-  wxConfig::Get()
-  ->Read(wxT("fixedFontTC"), &fixed )
-  ;
-  if (fixed )
+  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
+  if (fixed)
   {
     // Set font for input line
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
