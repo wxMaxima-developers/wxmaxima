@@ -215,10 +215,27 @@ void Config::set_properties()
 
   m_panelSize->SetSelection(panelSize);
 
+#if defined __WXMSW__
+  wxString cwd = wxGetCwd();
+  cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
+  if (wxFileExists(cwd))
+  {
+    m_maximaProgram->Enable(false);
+    m_mpBrowse->Enable(false);
+  }
+  else
+  {
+    if (mp.Length())
+      m_maximaProgram->SetValue(mp);
+    else
+      m_maximaProgram->SetValue(wxT("maxima.bat"));
+  }
+#else
   if (mp.Length())
     m_maximaProgram->SetValue(mp);
   else
     m_maximaProgram->SetValue(wxT("maxima"));
+#endif
   m_additionalParameters->SetValue(mc);
   m_fontSize->SetValue(fntsz);
   if (rs == 1)
