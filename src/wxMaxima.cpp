@@ -993,7 +993,7 @@ void wxMaxima::SetupVariables()
 
 wxString wxMaxima::GetCommand()
 {
-#if defined (__WXWIN__)
+#if defined (__WXMSW__)
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString maxima = wxGetCwd();
   wxString command, parameters;
@@ -1015,7 +1015,7 @@ wxString wxMaxima::GetCommand()
   }
 
   config->Read(wxT("parameters"), &parameters);
-  command = wxT("\"") + command + wxT("\" ") + parameters;
+  command = wxT("\"") + maxima + wxT("\" ") + parameters;
   return command;
 #else
   wxConfig *config = (wxConfig *)wxConfig::Get();
@@ -1083,7 +1083,11 @@ wxString wxMaxima::GetHelpFile()
   wxString command;
   wxString html;
 
-  wxConfig::Get()->Read(wxT("maxima"), &command);
+  command = wxGetCwd();
+  command.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
+
+  if (!wxFileExists(command))
+    wxConfig::Get()->Read(wxT("maxima"), &command);
 
   if (command.empty())
     return wxEmptyString;

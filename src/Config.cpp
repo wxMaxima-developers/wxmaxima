@@ -220,6 +220,7 @@ void Config::set_properties()
   cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
   if (wxFileExists(cwd))
   {
+    m_maximaProgram->SetValue(cwd);
     m_maximaProgram->Enable(false);
     m_mpBrowse->Enable(false);
   }
