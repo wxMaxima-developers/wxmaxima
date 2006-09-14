@@ -1616,7 +1616,7 @@ bool MathCtrl::ExportToHTML(wxString file)
       wxString line = wxEmptyString;
       for (unsigned int i = 0; i < input.Length(); i++)
       {
-        if (input.GetChar(i) == '\n')
+        while (input.GetChar(i) == '\n')
         {
           line += wxT("<BR>\n");
           i++;

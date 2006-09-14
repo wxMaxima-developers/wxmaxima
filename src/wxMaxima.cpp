@@ -43,11 +43,11 @@
 #include <wx/utils.h>
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
-#include <wx/html/helpctrl.h>
 #include <wx/tokenzr.h>
 #include <wx/mimetype.h>
 #include <wx/dynlib.h>
 #include <wx/dir.h>
+#include <wx/filename.h>
 
 enum {
   maxima_process_id
@@ -1154,22 +1154,23 @@ wxString wxMaxima::GetHelpFile()
 void wxMaxima::ShowHelp(wxString keyword)
 {
   if (m_helpFile.Length() == 0)
-    m_helpFile = GetHelpFile();
-
-  if (m_helpFile.Length() == 0)
   {
-    wxMessageBox(_("wxMaxima could not find help files."
-                   "\n\nPlease check your installation."),
-                 _("Error"), wxICON_ERROR | wxOK);
-    return ;
+    m_helpFile = GetHelpFile();
+    if (m_helpFile.Length() == 0)
+    {
+      wxMessageBox(_("wxMaxima could not find help files."
+                     "\n\nPlease check your installation."),
+                   _("Error"), wxICON_ERROR | wxOK);
+      return ;
+    }
+
+    m_helpCtrl.Initialize(m_helpFile);
   }
 
-  wxHtmlHelpController *help = new wxHtmlHelpController;
-  help->AddBook(m_helpFile);
   if (keyword == wxT("%"))
-    help->DisplayContents();
+    m_helpCtrl.DisplayContents();
   else
-    help->KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+    m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
 }
 
 
@@ -1207,7 +1208,10 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      MathPrintout printout(_("Maxima session"));
+      wxString title(_("Maxima session"));
+      if (m_currentFile.Length())
+        wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, NULL);
+      MathPrintout printout(title);
       MathCell* copy = m_console->CopyTree();
       printout.SetData(copy);
       /*
@@ -2647,10 +2651,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       m_inputLine->SetValue(wxEmptyString);
     }
     if (cmd.Length())
-    {
-      cmd = wxT("? ") + cmd + wxT(";");
-      SendMaxima(cmd, false);
-    }
+      ShowHelp(cmd);
     break;
   case menu_example:
     if (expr == wxT("%"))

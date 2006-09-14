@@ -56,6 +56,9 @@ protected:
   int m_signWidth;
   int m_signMiddle;
   int m_intStyle;
+#if defined __WXMSW__ || wxUSE_UNICODE
+  int m_charHeight, m_charWidth;
+#endif
 };
 
 #endif  //_UNDERCELL_H_

@@ -253,7 +253,7 @@ wxString CellParser::GetSymbolFontName()
 #if defined __WXMSW__
   return wxT("Symbol");
 #else
-  return GetFontName();
+  return wxT("Standard Symbols L");
 #endif
 }
 

@@ -23,14 +23,12 @@ TextCell::TextCell() : MathCell()
 {
   m_text = wxEmptyString;
   m_fontSize = -1;
-  m_textStyle = TS_NORMAL_TEXT;
   m_highlight = false;
 }
 
 TextCell::TextCell(wxString text) : MathCell()
 {
   m_text = text;
-  m_textStyle = TS_NORMAL_TEXT;
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_highlight = false;
 }
@@ -240,33 +238,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   }
 }
 
-void TextCell::SetForeground(CellParser& parser)
-{
-  wxDC& dc = parser.GetDC();
-  if (m_highlight)
-  {
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
-    return ;
-  }
-  switch (m_type)
-  {
-  case MC_TYPE_PROMPT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
-    break;
-  case MC_TYPE_MAIN_PROMPT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
-    break;
-  case MC_TYPE_ERROR:
-    dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
-    break;
-  case MC_TYPE_LABEL:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
-    break;
-  default:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
-    break;
-  }
-}
 bool TextCell::IsOperator()
 {
   if (wxString(wxT("+*/-")).Find(m_text) >= 0)
@@ -309,6 +280,11 @@ wxString TextCell::GetSymbolString(CellParser& parser)
 #if defined __WXMSW__
   if (m_text == wxT("inf"))
     return wxT("\xA5");
+  else
+    return m_text;
+#elif wxUSE_UNICODE
+if (m_text == wxT("inf"))
+    return wxT("\x221E");
   else
     return m_text;
 #else

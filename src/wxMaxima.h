@@ -28,6 +28,12 @@
 #include <wx/dnd.h>
 #include <wx/process.h>
 
+//#if defined (__WXMSW__)
+//#include <wx/msw/helpchm.h>
+//#else
+#include <wx/html/helpctrl.h>
+//#endif
+
 #define SOCKET_SIZE 1024
 
 class MyApp : public wxApp
@@ -163,6 +169,11 @@ protected:
   bool m_fileSaved;
   bool m_variablesOK;
   wxString m_helpFile;
+//#if defined (__WXMSW__)
+//  wxCHMHelpController m_helpCtrl;
+//#else
+  wxHtmlHelpController m_helpCtrl;
+//#endif
   DECLARE_EVENT_TABLE()
 };
 

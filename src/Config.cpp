@@ -652,7 +652,7 @@ void Config::ReadStyles()
   m_styleFor->SetSelection(0);
   int i = 0;
   for (i = 0; i < COLORLIST_LENGTH; i++)
-    if (m_styleNormalText.color == colorlist[i])
+    if (m_styleVariable.color == colorlist[i])
       break;
   m_styleColor->SetSelection(i);
   m_boldCB->SetValue(m_styleVariable.bold);

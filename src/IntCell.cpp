@@ -20,13 +20,25 @@
 #include "IntCell.h"
 #include "TextCell.h"
 
+
+#if defined __WXMSW__
+  #define INTEGRAL_TOP "\xF3"
+  #define INTEGRAL_BOTTOM "\xF5"
+  #define INTEGRAL_EXTEND "\xF4"
+#elif wxUSE_UNICODE
+  #define INTEGRAL_TOP "\x2320"
+  #define INTEGRAL_BOTTOM "\x2321"
+  #define INTEGRAL_EXTEND "\x23AE"
+#endif
+
+
 IntCell::IntCell() : MathCell()
 {
   m_base = NULL;
   m_under = NULL;
   m_over = NULL;
   m_var = NULL;
-  m_signSize = 50;
+  m_signSize = 20;
   m_signWidth = 18;
   m_signMiddle = 9;
   m_intStyle = INT_IDEF;
@@ -117,9 +129,9 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
 
-  m_signSize = SCALE_PX(m_signSize, scale);
-  m_signWidth = SCALE_PX(m_signWidth, scale);
-  m_signMiddle = SCALE_PX(m_signMiddle, scale);
+  m_signSize = SCALE_PX(20, scale);
+  m_signWidth = SCALE_PX(18, scale);
+  m_signMiddle = SCALE_PX(9, scale);
 
   m_base->RecalculateWidths(parser, fontsize, true);
   m_var->RecalculateWidths(parser, fontsize, true);
@@ -133,6 +145,16 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_signMiddle = MAX(m_signMiddle,
                      m_under->GetFullWidth(scale) / 2 + SCALE_PX(5, scale));
 
+#if defined __WXMSW__ || wxUSE_UNICODE
+  wxDC& dc = parser.GetDC();
+  int fontsize1 = (int) ((12 * scale + 0.5));
+  dc.SetFont(wxFont(fontsize1, wxMODERN,
+                    parser.IsItalic(TS_NORMAL_TEXT),
+                    parser.IsBold(TS_NORMAL_TEXT),
+                    parser.IsUnderlined(TS_NORMAL_TEXT),
+                    parser.GetSymbolFontName()));
+  dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
+#endif
   int signOver = MAX(SCALE_PX(10, scale),
                      m_over->GetFullWidth(scale) / 2 + SCALE_PX(5, scale));
   m_signWidth = m_signMiddle + signOver;
@@ -193,12 +215,44 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       m_over->Draw(parser, over, MAX(8, fontsize - 5), true);
     }
 
-    SetPen(parser);
     sign.y = sign.y - m_center + (m_signSize + 1) / 2;
     if (m_intStyle == INT_DEF)
       sign.y += m_over->GetMaxHeight();
     else
       sign.y += SCALE_PX(3, scale);
+
+#if defined __WXMSW__ || wxUSE_UNICODE
+    SetForeground(parser);
+    int fontsize1 = (int) ((12 * scale + 0.5));
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+               parser.IsItalic(TS_NORMAL_TEXT),
+               parser.IsBold(TS_NORMAL_TEXT),
+               parser.IsUnderlined(TS_NORMAL_TEXT),
+               parser.GetSymbolFontName()));
+    dc.DrawText(wxT(INTEGRAL_TOP),
+                sign.x + m_signMiddle - m_charWidth / 2,
+                sign.y - (m_signSize + 1) / 2);
+    dc.DrawText(wxT(INTEGRAL_BOTTOM),
+                sign.x + m_signMiddle - m_charWidth / 2,
+                sign.y + (m_signSize + 1) / 2 - m_charHeight);
+    int top, bottom;
+    top = sign.y - (m_signSize + 1) / 2 + m_charHeight / 2;
+    bottom = sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2;
+    if (top <= bottom)
+    {
+      while (top < bottom)
+      {
+        dc.DrawText(wxT(INTEGRAL_EXTEND),
+                      point.x + m_signMiddle - m_charWidth / 2,
+                      top);
+        top += (2*m_charHeight)/3;
+      }
+      dc.DrawText(wxT(INTEGRAL_EXTEND),
+                      point.x + m_signMiddle - m_charWidth / 2,
+                      sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
+    }
+#elif
+    SetPen(parser);
     // top decoration
     dc.DrawLine(sign.x + m_signMiddle,
                 sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
@@ -212,7 +266,6 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 sign.y - (m_signSize + 1) / 2,
                 sign.x + m_signMiddle + SCALE_PX(9, scale),
                 sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale));
-
     // bottom decoration
     dc.DrawLine(sign.x + m_signMiddle,
                 sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1,
@@ -226,14 +279,13 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 sign.y + (m_signSize + 1) / 2,
                 sign.x + m_signMiddle - SCALE_PX(9, scale),
                 sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale));
-
     // line
     dc.DrawLine(sign.x + m_signMiddle,
                 sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
                 sign.x + m_signMiddle,
                 sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1);
     UnsetPen(parser);
-
+#endif
     base.x += m_signWidth - SCALE_PX(6, scale);
     m_base->Draw(parser, base, fontsize, true);
 

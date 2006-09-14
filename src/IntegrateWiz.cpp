@@ -20,7 +20,10 @@
 #include "IntegrateWiz.h"
 
 enum {
-  definite_id
+  definite_id,
+  special_from,
+  special_to,
+  numeric_id
 };
 
 IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
@@ -44,7 +47,11 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
   button_4 = new wxButton(this, special_to, _("Special"));
-  checkbox_2 = new wxCheckBox(this, -1, _("Numerical integration"));
+  checkbox_2 = new wxCheckBox(this, numeric_id, _("Numerical integration"));
+  label_6 = new wxStaticText(this, -1, _("method:"));
+  wxString numeric_methods[] = { wxT("quadpack"), wxT("romberg") };
+  combobox_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                              2, numeric_methods, wxCB_DROPDOWN | wxCB_READONLY);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -74,6 +81,9 @@ void IntegrateWiz::set_properties()
   text_ctrl_4->Enable(false);
   button_4->Enable(false);
   checkbox_2->Enable(false);
+  combobox_1->Enable(false);
+
+  combobox_1->SetSelection(0);
 }
 
 
@@ -103,6 +113,8 @@ void IntegrateWiz::do_layout()
   grid_sizer_4->Add(grid_sizer_6, 1, 0, 0);
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_2, 0, wxALL, 2);
+  grid_sizer_4->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_4->Add(combobox_1, 0, wxALL, 2);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
   grid_sizer_3->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   sizer_3->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
@@ -119,22 +131,54 @@ wxString IntegrateWiz::GetValue()
 {
   wxString s;
   if (checkbox_2->GetValue())
-    s = wxT("romberg(");
-  else
-    s = wxT("integrate(");
-  s += text_ctrl_1->GetValue();
-  s += wxT(", ");
-  s += text_ctrl_2->GetValue();
-  wxString from = text_ctrl_3->GetValue();
-  wxString to = text_ctrl_4->GetValue();
-  if (checkbox_1->GetValue())
   {
-    s += wxT(", ");
-    s += from;
-    s += wxT(", ");
-    s += to;
+    if (combobox_1->GetValue() == wxT("romberg"))
+    {
+      s = wxT("romberg(") +
+          text_ctrl_1->GetValue() +
+          wxT(", ") +
+          text_ctrl_2->GetValue() +
+          wxT(", ") +
+          text_ctrl_3->GetValue() +
+          wxT(", ") +
+          text_ctrl_4->GetValue() +
+          wxT(");");
+    }
+    else
+    {
+      wxString from = text_ctrl_3->GetValue();
+      wxString to = text_ctrl_4->GetValue();
+      if (from == wxT("minf") && to == wxT("inf"))
+        s = wxT("quad_qagi(") +
+            text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", 0, 'both);");
+      else if (from == wxT("minf") || to == wxT("inf"))
+        s = wxT("quad_qagi(") +
+            text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") +
+            from + wxT(", ") + to + wxT(");");
+      else
+        s = wxT("quad_qags(") +
+            text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") +
+            from + wxT(", ") + to + wxT(");");
+    }
   }
-  s += wxT(");");
+  else
+  {
+    s = wxT("integrate(") +
+        text_ctrl_1->GetValue() +
+        wxT(", ") +
+        text_ctrl_2->GetValue();
+    if (checkbox_1->GetValue())
+    {
+      s += wxT(", ") +
+           text_ctrl_3->GetValue() +
+           wxT(", ") +
+           text_ctrl_4->GetValue();
+    }
+    s += wxT(");");
+  }
 
   return s;
 }
@@ -148,6 +192,9 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent& event)
   text_ctrl_4->Enable(enable);
   button_4->Enable(enable);
   checkbox_2->Enable(enable);
+
+  enable = enable && checkbox_2->GetValue();
+  combobox_1->Enable(enable);
 }
 
 void IntegrateWiz::OnButton(wxCommandEvent& event)
@@ -199,4 +246,5 @@ BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
   EVT_BUTTON(special_from, IntegrateWiz::OnButton)
   EVT_BUTTON(special_to, IntegrateWiz::OnButton)
   EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
+  EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
 END_EVENT_TABLE()

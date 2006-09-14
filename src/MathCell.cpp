@@ -40,6 +40,7 @@ MathCell::MathCell()
   m_isBroken = false;
   m_highlight = false;
   m_type = MC_TYPE_TEXT;
+  m_textStyle = TS_NORMAL_TEXT;
 }
 
 /***
@@ -413,4 +414,32 @@ void MathCell::CopyData(MathCell* s, MathCell* t)
 {
   t->m_forceBreakLine = s->m_forceBreakLine;
   t->m_type = s->m_type;
+}
+
+void MathCell::SetForeground(CellParser& parser)
+{
+  wxDC& dc = parser.GetDC();
+  if (m_highlight)
+  {
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
+    return ;
+  }
+  switch (m_type)
+  {
+  case MC_TYPE_PROMPT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
+    break;
+  case MC_TYPE_MAIN_PROMPT:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
+    break;
+  case MC_TYPE_ERROR:
+    dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
+    break;
+  case MC_TYPE_LABEL:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
+    break;
+  default:
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
+    break;
+  }
 }

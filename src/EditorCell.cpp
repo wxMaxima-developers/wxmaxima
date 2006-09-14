@@ -255,10 +255,10 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   switch(m_type)
   {
   case MC_TYPE_TITLE:
-    fontsize1 += 4;
+    fontsize1 += SCALE_PX(4, scale);
     m_fontStyle = wxFONTSTYLE_SLANT;
   case MC_TYPE_SECTION:
-    fontsize1 += 4;
+    fontsize1 += SCALE_PX(4, scale);
     m_fontWeight = wxFONTWEIGHT_BOLD;
     m_underlined = true;
   case MC_TYPE_COMMENT:

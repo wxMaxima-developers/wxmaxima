@@ -25,11 +25,6 @@
 
 #include "BTextCtrl.h"
 
-enum {
-  special_from,
-  special_to
-};
-
 class IntegrateWiz: public wxDialog
 {
 public:
@@ -64,6 +59,8 @@ protected:
   wxButton* button_1;
   wxButton* button_2;
   wxCheckBox* checkbox_2;
+  wxStaticText* label_6;
+  wxComboBox* combobox_1;
   DECLARE_EVENT_TABLE()
 };
 

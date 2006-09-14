@@ -35,7 +35,6 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SetFont(CellParser& parser, int fontsize);
-  void SetForeground(CellParser& parser);
   wxString ToString(bool all);
   wxString GetDiffPart();
   bool IsOperator();
@@ -63,7 +62,6 @@ public:
 protected:
   wxString m_text;
   int m_fontSize;
-  int m_textStyle;
 };
 
 #endif //_TEXTCELL_H_

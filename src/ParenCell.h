@@ -44,6 +44,11 @@ protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
   bool m_print;
+#if defined __WXMSW__ || wxUSE_UNICODE
+  int m_charWidth, m_charHeight;
+  int m_charWidth1, m_charHeight1;
+  bool m_smallParen;
+#endif
   wxString ToString(bool all);
 };
 

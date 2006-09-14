@@ -230,6 +230,7 @@ public:
   { }
   virtual void SetFocus(bool focus)
   { }
+  void SetForeground(CellParser& parser);
 protected:
   int m_height;
   int m_width;
@@ -239,6 +240,7 @@ protected:
   int m_maxCenter;
   int m_maxDrop;
   int m_type;
+  int m_textStyle;
   bool m_breakPage;
   bool m_breakLine;
   bool m_forceBreakLine;

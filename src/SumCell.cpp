@@ -101,9 +101,9 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
 
-  m_signCenter = SCALE_PX(m_signCenter, scale);
-  m_signSize = SCALE_PX(m_signSize, scale);
-  m_signWidth = SCALE_PX(m_signWidth, scale);
+  m_signSize = SCALE_PX(50, scale);
+  m_signWidth = SCALE_PX(30, scale);
+  m_signCenter = SCALE_PX(15, scale);
 
   m_base->RecalculateWidths(parser, fontsize, true);
   m_under->RecalculateWidths(parser, MAX(8, fontsize - 5), true);

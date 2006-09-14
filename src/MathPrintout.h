@@ -59,6 +59,7 @@ public:
   void BreakUpCells();
 private:
   int m_numberOfPages;
+  wxString m_title;
   MathCell* m_tree;
   vector<MathCell*> m_pages;
 };
