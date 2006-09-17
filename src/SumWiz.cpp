@@ -40,8 +40,8 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
   label_5 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"), wxDefaultPosition,
                               wxSize(110, -1));
-  checkbox_1 = new wxCheckBox(this, -1, _("Simplify"));
-  checkbox_2 = new wxCheckBox(this, use_nusum_id, _("Nusum"));
+  checkbox_1 = new wxCheckBox(this, -1, _("&Simplify"));
+  checkbox_2 = new wxCheckBox(this, use_nusum_id, _("&Nusum"));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

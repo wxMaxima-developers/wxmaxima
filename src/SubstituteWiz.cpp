@@ -34,7 +34,7 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
   label_4 = new wxStaticText(this, -1, _("in:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
-  checkbox_1 = new wxCheckBox(this, -1, _("Rational"));
+  checkbox_1 = new wxCheckBox(this, -1, _("&Rational"));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

@@ -42,7 +42,7 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
   button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("depth:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxT("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
-  checkbox_1 = new wxCheckBox(this, powerseries_id, _("Power series"));
+  checkbox_1 = new wxCheckBox(this, powerseries_id, _("&Power series"));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

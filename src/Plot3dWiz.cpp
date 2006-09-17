@@ -88,7 +88,7 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
                                wxSize(250, -1), 6, combo_box_2_choices,
                                wxCB_DROPDOWN);
-  check_box_1 = new wxCheckBox(this, -1, _("pm3d"));
+  check_box_1 = new wxCheckBox(this, -1, _("&pm3d"));
   label_13 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_10 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(250, -1));

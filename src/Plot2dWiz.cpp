@@ -40,7 +40,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(250, -1));
-  button_3 = new wxButton(this, parametric, _("Parametric"));
+  button_3 = new wxButton(this, parametric, _("&Parametric"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
@@ -59,7 +59,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_8 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
-  checkbox_1 = new wxCheckBox(this, -1, _("Send ranges to gnuplot"));
+  checkbox_1 = new wxCheckBox(this, -1, _("Send ranges to &gnuplot"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
