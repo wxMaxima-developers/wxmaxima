@@ -28,6 +28,8 @@
  (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
  (*expr wxxml-lbp wxxml-rbp))
 
+(setf (get '$inchar 'assign) 'neverset)
+
 (defun wxxml (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its
   ;; left, r to its right. lop and rop are the operators on the left
