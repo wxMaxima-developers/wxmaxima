@@ -66,6 +66,11 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Symbol/adj"), &m_symbolFontAdj);
   config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);
 
+#if wxUSE_UNICODE
+  m_unicodeSymbolsFont = wxT("Sans");
+  config->Read(wxT("Style/Unicode/fontname"), &m_unicodeSymbolsFont);
+#endif
+
   // Normal text
   m_styles[0].color = wxT("black");
   m_styles[0].bold = false;
@@ -252,8 +257,10 @@ wxString CellParser::GetSymbolFontName()
 {
 #if defined __WXMSW__
   return wxT("Symbol");
+#elif wxUSE_UNICODE
+  return m_unicodeSymbolsFont;
 #else
-  return wxT("Standard Symbols L");
+  return m_fontName;
 #endif
 }
 

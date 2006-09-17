@@ -39,7 +39,8 @@ enum {
   checkbox_symbol,
   font_family,
   panel_size,
-  language_id
+  language_id,
+  unicode_glyphs
 };
 
 class ExamplePanel : public wxPanel
@@ -87,7 +88,6 @@ private:
 protected:
   // begin wxGlade: Config::attributes
   wxStaticBox* sizer_11_staticbox;
-  wxStaticBox* sizer_12_staticbox;
   wxStaticBox* sizer_9_staticbox;
   wxStaticBox* sizer_6_staticbox;
   wxStaticBox* sizer_4_staticbox;
@@ -128,6 +128,11 @@ protected:
   wxStaticText* label_10;
   wxSpinCtrl* m_symbolFontAdj;
   wxString m_symbolFontName;
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  wxStaticText* m_unicodeGlyphs;
+  wxButton* m_getUnicodeFont;
+  wxString m_unicodeFont;
+#endif
   ExamplePanel* label_11;
   // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
@@ -136,6 +141,9 @@ protected:
   m_styleVariable, m_styleHighlight;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  void OnChangeUnicodeFont(wxCommandEvent& event);
+#endif
   void OnSymbolBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeColor(wxCommandEvent& event);

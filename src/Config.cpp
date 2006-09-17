@@ -72,8 +72,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   notebook_1_pane_1 = new wxPanel(notebook_1, -1);
   sizer_6_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("wxMaxima options"));
   sizer_4_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("Maxima options"));
-  sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Font"));
-  sizer_12_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Greek font"));
+  sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Fonts"));
   sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
   label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
@@ -109,6 +108,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
   m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  m_unicodeGlyphs = new wxStaticText(notebook_1_pane_2, -1, _("Unicode glyphs:"));
+  m_getUnicodeFont = new wxButton(notebook_1_pane_2, unicode_glyphs, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+#endif
   const wxString m_styleFor_choices[] =
     {
       _("Variables"), _("Numbers"), _("Special constants"), _("Greek constants"),
@@ -177,8 +180,12 @@ void Config::set_properties()
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in console."));
   m_symbolFontOk->SetToolTip(_("Use greek font to display greek characters."));
+  m_getSymbolFont->SetToolTip(_("Font used for displaying greek characters in console."));
   m_symbolFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
+#endif
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
@@ -271,11 +278,9 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
   wxStaticBoxSizer* sizer_6 = new wxStaticBoxSizer(sizer_6_staticbox, wxVERTICAL);
-  //wxBoxSizer* sizer_7 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(2, 2, 2, 2);
   wxStaticBoxSizer* sizer_4 = new wxStaticBoxSizer(sizer_4_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
-  wxStaticBoxSizer* sizer_12 = new wxStaticBoxSizer(sizer_12_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(2, 2, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -318,16 +323,16 @@ void Config::do_layout()
   grid_sizer_1->Add(m_fontSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_symbolFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_getSymbolFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_symbolFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  grid_sizer_1->Add(m_unicodeGlyphs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_getUnicodeFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+#endif
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
-
-  // Greek font box
-  grid_sizer_3->Add(m_symbolFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(m_getSymbolFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_3->Add(m_symbolFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer_12->Add(grid_sizer_3, 1, wxALL | wxEXPAND, 3);
-  sizer_8->Add(sizer_12, 1, wxALL | wxEXPAND, 3);
 
   // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -463,6 +468,21 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
   }
 }
 
+#if !defined __WXMSW__ && wxUSE_UNICODE
+void Config::OnChangeUnicodeFont(wxCommandEvent& event)
+{
+  wxFont font;
+  font = wxGetFontFromUser(this, wxFont(m_fontSize->GetValue(),
+                                        wxNORMAL, wxNORMAL, wxNORMAL,
+                                        false, m_unicodeFont));
+  if (font.Ok())
+  {
+    m_unicodeFont = font.GetFaceName();
+    m_getUnicodeFont->SetLabel(m_unicodeFont);
+  }
+}
+#endif
+
 void Config::ReadStyles()
 {
   wxConfigBase* config = wxConfig::Get();
@@ -473,6 +493,13 @@ void Config::ReadStyles()
   config->Read(wxT("Style/fontname"), &m_fontFamily);
   if (m_fontFamily.Length())
     m_getFont->SetLabel(m_fontFamily);
+
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  m_unicodeFont = m_fontFamily;
+  config->Read(wxT("Style/Unicode/fontname"), &m_unicodeFont);
+  if (m_unicodeFont.Length())
+    m_getUnicodeFont->SetLabel(m_unicodeFont);
+#endif
 
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
@@ -671,6 +698,10 @@ void Config::WriteStyles()
 
   config->Write(wxT("Style/fontname"), m_fontFamily);
   config->Write(wxT("fontEncoding"), m_fontEncoding);
+  
+#if !defined __WXMW__ && wxUSE_UNICODE
+  config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);
+#endif
 
   config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());
   config->Write(wxT("Style/Symbol/fontname"), m_symbolFontName);
@@ -934,6 +965,9 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
   EVT_BUTTON(button_symbol, Config::OnSymbolBrowse)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
+#if !defined __WXMSW__ && wxUSE_UNICODE
+  EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
+#endif
   EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
@@ -972,4 +1006,3 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
   EVT_PAINT(ExamplePanel::OnPaint)
 END_EVENT_TABLE()
-

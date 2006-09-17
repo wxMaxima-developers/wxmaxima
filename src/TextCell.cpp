@@ -78,8 +78,11 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("inf"))
+#if defined __WXMSW__ || wxUSE_UNICODE
+    else if (m_text == wxT("inf") || m_text == wxT("->") ||
+             m_text == wxT(">=") || m_text == wxT("<="))
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
+#endif
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
     else if (m_text == wxEmptyString)
@@ -126,10 +129,13 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
-    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("inf"))
+#if defined __WXMSW__ || wxUSE_UNICODE
+    else if (m_text == wxT("inf") || m_text == wxT("->") ||
+             m_text == wxT(">=") || m_text == wxT("<="))
       dc.DrawText(GetSymbolString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
+#endif
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
@@ -169,12 +175,14 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_GREEK_CONSTANT),
                         parser.GetGreekFontName(),
                         parser.GetGreekFontEncoding()));
-    else if (parser.HaveSymbolFont() && m_text == wxT("inf"))
+#if defined __WXMSW__ || wxUSE_UNICODE
+    else if (m_text == wxT("inf"))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_NORMAL_TEXT),
                         parser.IsBold(TS_NORMAL_TEXT),
                         parser.IsUnderlined(TS_NORMAL_TEXT),
                         parser.GetSymbolFontName()));
+#endif
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -228,6 +236,16 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontEncoding()));
       break;
     default:
+#if defined __WXMSW__ || wxUSE_UNICODE
+    if (m_text == wxT("->") ||
+        m_text == wxT(">=") || m_text == wxT("<="))
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_NORMAL_TEXT),
+                        parser.IsBold(TS_NORMAL_TEXT),
+                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.GetSymbolFontName()));
+    else
+#endif
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(m_textStyle),
                         parser.IsBold(m_textStyle),
@@ -280,11 +298,23 @@ wxString TextCell::GetSymbolString(CellParser& parser)
 #if defined __WXMSW__
   if (m_text == wxT("inf"))
     return wxT("\xA5");
+  else if (m_text == wxT("->"))
+    return wxT("\xAE");
+  else if (m_text == wxT(">="))
+    return wxT("\xB3");
+  else if (m_text == wxT("<="))
+    return wxT("\xA3");
   else
     return m_text;
 #elif wxUSE_UNICODE
-if (m_text == wxT("inf"))
+  if (m_text == wxT("inf"))
     return wxT("\x221E");
+  else if (m_text == wxT("->"))
+    return wxT("\x2192");
+  else if (m_text == wxT(">="))
+    return wxT("\x2265");
+  else if (m_text == wxT("<="))
+    return wxT("\x2264");
   else
     return m_text;
 #else

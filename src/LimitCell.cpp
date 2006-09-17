@@ -19,6 +19,9 @@
 
 #include "LimitCell.h"
 
+#define MIN_LIMIT_FONT_SIZE 8
+#define LIMIT_FONT_SIZE_DECREASE 1
+
 LimitCell::LimitCell() : MathCell()
 {
   m_base = NULL;
@@ -96,7 +99,7 @@ void LimitCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
 
   m_base->RecalculateWidths(parser, fontsize, true);
-  m_under->RecalculateWidths(parser, MAX(7, fontsize - 5), true);
+  m_under->RecalculateWidths(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE), true);
   m_name->RecalculateWidths(parser, fontsize, true);
 
   m_width = MAX(m_name->GetFullWidth(scale), m_under->GetFullWidth(scale))
@@ -107,7 +110,7 @@ void LimitCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
 void LimitCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
-  m_under->RecalculateSize(parser, MAX(7, fontsize - 5), true);
+  m_under->RecalculateSize(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE), true);
   m_name->RecalculateSize(parser, fontsize, true);
   m_base->RecalculateSize(parser, fontsize, true);
 
@@ -134,7 +137,7 @@ void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                             m_under->GetFullWidth(scale)) / 2 -
               m_under->GetFullWidth(scale) / 2;
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
-    m_under->Draw(parser, under, MAX(7, fontsize - 5), true);
+    m_under->Draw(parser, under, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE), true);
 
     base.x += MAX(m_name->GetFullWidth(scale),
                   m_under->GetFullWidth(scale));

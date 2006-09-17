@@ -25,10 +25,12 @@
   #define INTEGRAL_TOP "\xF3"
   #define INTEGRAL_BOTTOM "\xF5"
   #define INTEGRAL_EXTEND "\xF4"
+  #define INTEGRAL_FONT_SIZE 12
 #elif wxUSE_UNICODE
   #define INTEGRAL_TOP "\x2320"
   #define INTEGRAL_BOTTOM "\x2321"
   #define INTEGRAL_EXTEND "\x23AE"
+  #define INTEGRAL_FONT_SIZE fontsize
 #endif
 
 
@@ -147,7 +149,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
   wxDC& dc = parser.GetDC();
-  int fontsize1 = (int) ((12 * scale + 0.5));
+  int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     parser.IsItalic(TS_NORMAL_TEXT),
                     parser.IsBold(TS_NORMAL_TEXT),
@@ -223,7 +225,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
     SetForeground(parser);
-    int fontsize1 = (int) ((12 * scale + 0.5));
+    int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                parser.IsItalic(TS_NORMAL_TEXT),
                parser.IsBold(TS_NORMAL_TEXT),

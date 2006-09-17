@@ -27,6 +27,7 @@
  #define PAREN_RIGHT_BOTTOM "\xF8"
  #define PAREN_LEFT_EXTEND "\xE7"
  #define PAREN_RIGHT_EXTEND "\xF7"
+ #define PAREN_FONT_SIZE 12
 #elif wxUSE_UNICODE
  #define PAREN_LEFT_TOP "\x239B"
  #define PAREN_LEFT_BOTTOM "\x239D"
@@ -34,6 +35,7 @@
  #define PAREN_RIGHT_BOTTOM "\x23A0"
  #define PAREN_LEFT_EXTEND "\x239C"
  #define PAREN_RIGHT_EXTEND "\x239F"
+ #define PAREN_FONT_SIZE fontsize
 #endif
 
 ParenCell::ParenCell() : MathCell()
@@ -42,9 +44,6 @@ ParenCell::ParenCell() : MathCell()
   m_print = true;
   m_open = new TextCell(wxT("("));
   m_close = new TextCell(wxT(")"));
-#if defined __WXMSW__ || wxUSE_UNICODE
-  m_smallParen = false;
-#endif
 }
 
 
@@ -103,21 +102,12 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
   wxDC& dc = parser.GetDC();
- #if defined __WXMSW__
-  int fontsize1 = (int) ((12 * scale + 0.5));
+  int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     parser.IsItalic(TS_NORMAL_TEXT),
                     parser.IsBold(TS_NORMAL_TEXT),
                     parser.IsUnderlined(TS_NORMAL_TEXT),
                     parser.GetSymbolFontName()));
- #else
-  int fontsize1 = (int) ((10 * scale + 0.5));
-  dc.SetFont(wxFont(fontsize1, wxMODERN,
-                    parser.IsItalic(TS_NORMAL_TEXT),
-                    parser.IsBold(TS_NORMAL_TEXT),
-                    parser.IsUnderlined(TS_NORMAL_TEXT),
-                    parser.GetSymbolFontName()));
- #endif
   dc.GetTextExtent(wxT(PAREN_LEFT_TOP), &m_charWidth, &m_charHeight);
   m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;
 #else
@@ -145,10 +135,6 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
                     false,
                     parser.GetFontName()));
   dc.GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
-  if (m_height < (3*m_charHeight)/2)
-    m_smallParen = true;
-  else
-    m_smallParen = false;
 #endif
 
   m_open->RecalculateSize(parser, fontsize, false);
@@ -171,14 +157,9 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 #endif
     m_innerCell->Draw(parser, in, fontsize, true);
 
-#if defined __WXMSW__ || wxUSE_UNICODE
-
- #if defined __WXMSW__
-    int fontsize1 = (int) ((12 * scale + 0.5));
- #else
-    int fontsize1 = (int) ((10 * scale + 0.5));
- #endif
-    if (m_smallParen)
+#if defined __WXMSW__
+    int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
+    if (m_height < (3*m_charHeight)/2)
     {
       fontsize1 = (int) ((fontsize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -234,6 +215,87 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
         dc.DrawText(wxT(PAREN_RIGHT_EXTEND),
                       point.x + m_width - m_charWidth,
                       point.y + m_height - m_center - (3*m_charHeight)/2);
+      }
+    }
+#elif wxUSE_UNICODE
+    int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
+    if (m_height < (3*m_charHeight)/2)
+    {
+      fontsize1 = (int) ((fontsize * scale + 0.5));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false,
+                        false,
+                        false,
+                        parser.GetFontName()));
+      dc.DrawText(wxT("("),
+                  point.x + m_charWidth - m_charWidth1,
+                  point.y - m_charHeight1 / 2);
+      dc.DrawText(wxT(")"),
+                  point.x + m_width - m_charWidth,
+                  point.y - m_charHeight1 / 2);
+    }
+    else if (m_height < (5*m_charHeight)/2)
+    {
+      SetForeground(parser);
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false,
+                        false,
+                        false,
+                        parser.GetSymbolFontName()));
+      dc.DrawText(wxT(PAREN_LEFT_TOP),
+                  point.x,
+                  point.y - MIN(m_center, m_charHeight));
+      dc.DrawText(wxT(PAREN_LEFT_BOTTOM),
+                  point.x,
+                  point.y - MAX(0, m_charHeight - m_center));
+      dc.DrawText(wxT(PAREN_RIGHT_TOP),
+                  point.x + m_width - m_charWidth,
+                  point.y - MIN(m_center, m_charHeight));
+      dc.DrawText(wxT(PAREN_RIGHT_BOTTOM),
+                  point.x + m_width - m_charWidth,
+                  point.y- MAX(0, m_charHeight - m_center));
+    }
+    else
+    {
+      SetForeground(parser);
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false,
+                        false,
+                        false,
+                        parser.GetSymbolFontName()));
+      dc.DrawText(wxT(PAREN_LEFT_TOP),
+                  point.x,
+                  point.y - m_center);
+      dc.DrawText(wxT(PAREN_LEFT_BOTTOM),
+                  point.x,
+                  point.y + m_height - m_center - m_charHeight);
+      dc.DrawText(wxT(PAREN_RIGHT_TOP),
+                  point.x + m_width - m_charWidth,
+                  point.y - m_center);
+      dc.DrawText(wxT(PAREN_RIGHT_BOTTOM),
+                  point.x + m_width - m_charWidth,
+                  point.y + m_height - m_center - m_charHeight);
+      int top, bottom;
+      top = point.y - m_center + (2*m_charHeight)/3;
+      bottom = point.y + m_height - m_center - (5*m_charHeight)/3;
+      if (top <= bottom)
+      {
+        while (top < bottom)
+        {
+          dc.DrawText(wxT(PAREN_LEFT_EXTEND),
+                        point.x,
+                        top);
+          dc.DrawText(wxT(PAREN_RIGHT_EXTEND),
+                        point.x + m_width - m_charWidth,
+                        top);
+          top += (2*m_charHeight)/3;
+        }
+        dc.DrawText(wxT(PAREN_LEFT_EXTEND),
+                        point.x,
+                        point.y + m_height - m_center - (5*m_charHeight)/3);
+        dc.DrawText(wxT(PAREN_RIGHT_EXTEND),
+                      point.x + m_width - m_charWidth,
+                      point.y + m_height - m_center - (5*m_charHeight)/3);
       }
     }
 #else

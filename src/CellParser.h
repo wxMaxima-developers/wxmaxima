@@ -98,6 +98,9 @@ private:
   int m_top, m_bottom;
   wxString m_fontName;
   wxString m_symbolFontName;
+#if wxUSE_UNICODE
+  wxString m_unicodeSymbolsFont;
+#endif
   int m_symbolFontAdj;
   bool m_haveSymbolFont;
   bool m_forceUpdate;

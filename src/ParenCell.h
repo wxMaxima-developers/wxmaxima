@@ -47,7 +47,6 @@ protected:
 #if defined __WXMSW__ || wxUSE_UNICODE
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
-  bool m_smallParen;
 #endif
   wxString ToString(bool all);
 };
