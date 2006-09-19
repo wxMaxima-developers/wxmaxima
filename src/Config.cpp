@@ -99,7 +99,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
-  m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy selection on select"));
+  m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
   label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
   m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
