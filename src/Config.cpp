@@ -421,7 +421,13 @@ void Config::OnMpBrowse(wxCommandEvent& event)
 
   if (file.Length())
   {
-    m_maximaProgram->SetValue(file);
+    if (file.Right(8) == wxT("wxmaxima") || file.Right(12) == wxT("wxmaxima.exe") ||
+        file.Right(12) == wxT("wxMaxima.exe"))
+      wxMessageBox(_("Invalid entry for maxima program.\n\nPlease enter the path to maxima program again."),
+                   _("Error"),
+                   wxOK|wxICON_ERROR);
+    else
+      m_maximaProgram->SetValue(file);
   }
 }
 
