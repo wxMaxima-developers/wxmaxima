@@ -23,6 +23,9 @@
 #include <wx/font.h>
 #include <wx/fontdlg.h>
 
+#define MAX(a,b) ((a)>(b) ? (a) : (b))
+#define MIN(a,b) ((a)>(b) ? (b) : (a))
+
 // Should match whatever  is put in the m_language
 const int langs[] =
   {
@@ -100,9 +103,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
-  label_7 = new wxStaticText(notebook_1_pane_2, -1, _("Font size:"));
-  m_fontSize = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
-  label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Font family:"));
+  label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
   m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
@@ -171,7 +172,6 @@ void Config::set_properties()
   m_additionalParameters->SetToolTip(_("Additional parameters for maxima"
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
-  m_fontSize->SetToolTip(_("Font size in console window."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima console."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
@@ -189,7 +189,6 @@ void Config::set_properties()
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
-  int fntsz = 12;
   bool match = true, showLongExpr = false, unixCopy = false;
   bool showHeader = true, fixedFontTC = true;
   int rs = 0;
@@ -197,12 +196,10 @@ void Config::set_properties()
   int panelSize = 1;
   wxString fontEncoding(_("Default"));
 
-  m_fontSize->SetRange(8, 20);
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
-  config->Read(wxT("fontsize"), &fntsz);
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
@@ -245,7 +242,6 @@ void Config::set_properties()
     m_maximaProgram->SetValue(wxT("maxima"));
 #endif
   m_additionalParameters->SetValue(mc);
-  m_fontSize->SetValue(fntsz);
   if (rs == 1)
     m_saveSize->SetValue(true);
   else
@@ -319,8 +315,6 @@ void Config::do_layout()
 
   // TAB 2
   // Font box
-  grid_sizer_1->Add(label_7, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_fontSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_symbolFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -385,7 +379,7 @@ void Config::OnOk(wxCommandEvent& event)
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("maxima"), m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_fontSize->GetValue());
+  config->Write(wxT("fontSize"), m_fontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
@@ -454,16 +448,18 @@ void Config::OnSymbolBrowse(wxCommandEvent& event)
 void Config::OnChangeFontFamily(wxCommandEvent& event)
 {
   wxFont font;
-  font = wxGetFontFromUser(this, wxFont(m_fontSize->GetValue(),
+  font = wxGetFontFromUser(this, wxFont(m_fontSize,
                                         wxNORMAL, wxNORMAL, wxNORMAL,
                                         false, m_fontFamily,
                                         m_fontEncoding));
   if (font.Ok())
   {
     m_fontFamily = font.GetFaceName();
-    m_getFont->SetLabel(m_fontFamily);
     m_fontEncoding = font.GetEncoding();
-    m_fontSize->SetValue(font.GetPointSize());
+    m_fontSize = font.GetPointSize();
+    m_fontSize = MIN(m_fontSize, 20);
+    m_fontSize = MAX(m_fontSize, 8);
+    m_getFont->SetLabel(m_fontFamily + wxString::Format(wxT(" (%d)"), m_fontSize));
     UpdateExample();
   }
 }
@@ -472,7 +468,7 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
 void Config::OnChangeUnicodeFont(wxCommandEvent& event)
 {
   wxFont font;
-  font = wxGetFontFromUser(this, wxFont(m_fontSize->GetValue(),
+  font = wxGetFontFromUser(this, wxFont(m_fontSize,
                                         wxNORMAL, wxNORMAL, wxNORMAL,
                                         false, m_unicodeFont));
   if (font.Ok())
@@ -490,9 +486,11 @@ void Config::ReadStyles()
   int adj = 0;
   bool symbolOk = false;
 
+  m_fontSize = 12;
+  config->Read(wxT("fontsize"), &m_fontSize);
   config->Read(wxT("Style/fontname"), &m_fontFamily);
   if (m_fontFamily.Length())
-    m_getFont->SetLabel(m_fontFamily);
+    m_getFont->SetLabel(m_fontFamily + wxString::Format(wxT(" (%d)"), m_fontSize));
 
 #if !defined __WXMSW__ && wxUSE_UNICODE
   m_unicodeFont = m_fontFamily;
@@ -887,7 +885,7 @@ void Config::OnChangeWarning(wxCommandEvent &event)
 {
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
-               wxOK);
+               wxOK|wxICON_WARNING);
 }
 
 //

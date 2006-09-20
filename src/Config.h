@@ -106,8 +106,6 @@ protected:
   wxCheckBox* m_showLong;
   wxCheckBox* m_showHeader;
   wxPanel* notebook_1_pane_1;
-  wxStaticText* label_7;
-  wxSpinCtrl* m_fontSize;
   wxStaticText* label_8;
   wxButton* m_getFont;
   wxString m_fontFamily;
@@ -155,6 +153,7 @@ protected:
   void SetupFontList();
   void UpdateExample();
   void OnChangeFontFamily(wxCommandEvent& event);
+  int m_fontSize;
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };
