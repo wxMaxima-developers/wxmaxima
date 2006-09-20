@@ -1414,7 +1414,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
       file = wxFileSelector(_("Save to file"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
-                            _("Maxima session (*.wxm)|*.wxm"),
+                            _("wxMaxima session (*.wxm)|*.wxm"),
                             wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
       {
