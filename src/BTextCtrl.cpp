@@ -30,6 +30,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 {
   bool fixedFont = true;
   m_matchParens = true;
+  m_skipTab = true;
   wxConfigBase *config = wxConfig::Get();
   config->Read(wxT("matchParens"), &m_matchParens);
   config->Read(wxT("fixedFontTC"), &fixedFont);
@@ -78,10 +79,8 @@ bool BTextCtrl::MatchParenthesis(int code)
     break;
   case WXK_UP:
   case WXK_DOWN:
-    skip = false;
-    break;
   case WXK_TAB:
-    skip = true;
+    skip = m_skipTab;
   default:
     break;
   }

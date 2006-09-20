@@ -110,6 +110,7 @@ void wxMaximaFrame::set_properties()
   SetIcon(wxICON(maximaicon));
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
   bool fixed = true;
+  m_inputLine->SetSkipTab(false);
   wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
   if (fixed)
   {
