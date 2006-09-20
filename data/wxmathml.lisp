@@ -46,6 +46,8 @@
         ((get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
         ((equal (get (caar x) 'dimension) 'dimension-infix)
          (wxxml-infix x l r))
+	((equal (get (caar x) 'dimension) 'dimension-match)
+         (wxxml-matchfix-dim x l r))
         (t (wxxml-function x l r nil))))
 
 (defun string-substitute (newstring oldchar x &aux matchpos)
@@ -186,6 +188,22 @@
 	;; cdr is the trailing op
 	x (wxxml-list (cdr x) nil r "<t>,</t>"))
   (append l x))
+
+(defun wxxml-matchfix-dim (x l r)
+  (setq l (append l 
+		  (list (wxxml-dissym-to-string (car (get (caar x) 'dissym)))))
+	r (append (list (wxxml-dissym-to-string (cdr (get (caar x) 'dissym))))
+		  r)
+	x (wxxml-list (cdr x) nil r "<t>,</t>"))
+  (append l x))
+
+(defun wxxml-dissym-to-string (lst)
+  (let* ((pname (format nil "~{~a~}" lst))
+         (pname (string-substitute "&amp;" #\& pname))
+         (pname (string-substitute "&gt;" #\> pname))
+         (pname (string-substitute "&lt;" #\< pname)))
+    (concatenate 'string "<v>" pname "</v>")))
+	 
 
 (defun wxxmlsym (x)
   (or (get x 'wxxmlsym)
