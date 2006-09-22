@@ -28,7 +28,7 @@
  #define PAREN_LEFT_EXTEND "\xE7"
  #define PAREN_RIGHT_EXTEND "\xF7"
  #define PAREN_FONT_SIZE 12
-#elif wxUSE_UNICODE
+#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
  #define PAREN_LEFT_TOP "\x239B"
  #define PAREN_LEFT_BOTTOM "\x239D"
  #define PAREN_RIGHT_TOP "\x239E"
@@ -100,7 +100,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
   m_innerCell->RecalculateWidths(parser, fontsize, true);
 
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -126,7 +126,7 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((fontsize * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -150,7 +150,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     wxPoint in(point);
 
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     in.x += m_charWidth;
 #else
     in.x = point.x + SCALE_PX(6, scale);
@@ -217,7 +217,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                       point.y + m_height - m_center - (3*m_charHeight)/2);
       }
     }
-#elif wxUSE_UNICODE
+#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
     if (m_height < (3*m_charHeight)/2)
     {

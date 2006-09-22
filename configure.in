@@ -32,10 +32,26 @@ case "$host" in
 esac
 
 
-dnl optional support for printing and drag'n'drop
+dnl optional support for glyphs drawing, printing and drag'n'drop
+
+AC_ARG_ENABLE(unicode-glyphs,
+[  --enable-unicode-glyphs Enable support for drawing with unicode fonts.],
+     	[case "${enableval}" in
+          yes) wxm_unicode_glyphs=true ;;
+          no)  wxm_unicode_glyphs=false ;;
+	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-unicode-glyphs) ;;
+     	 esac],
+	[wxm_unicode_glyphs=true])
+
+if test x"${wxm_unicode_glyphs}" = x"true" ; then
+   AC_DEFINE([WXM_UNICODE_GLYPHS], [1], ["Add support for drawing with unicode glyphs"])
+else
+   AC_DEFINE([WXM_UNICODE_GLYPHS], [0], ["Add support for drawing with unicode glyphs"])
+fi
+
 
 AC_ARG_ENABLE(printing,
-[  --enable-printing             Enable printing support.],
+[  --enable-printing       Enable printing support.],
      	[case "${enableval}" in
           yes) wxm_print=true ;;
           no)  wxm_print=false ;;
@@ -50,7 +66,7 @@ else
 fi
 
 AC_ARG_ENABLE(dnd,
-[  --enable-dnd                  Enable drag'n'drop support.],
+[  --enable-dnd            Enable drag'n'drop support.],
      	[case "${enableval}" in
           yes) wxm_dnd=true ;;
           no)  wxm_dnd=false ;;
@@ -69,7 +85,7 @@ dnl check for wxWidgets
 
 AM_OPTIONS_WXCONFIG
 AC_ARG_ENABLE(static-wx,
-[  --enable-static-wx            Compile with static wx libraries.],
+[  --enable-static-wx      Compile with static wx libraries.],
      	[case "${enableval}" in
           yes) static_wx=true ;;
           no)  static_wx=false ;;

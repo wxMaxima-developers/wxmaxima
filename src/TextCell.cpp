@@ -18,6 +18,7 @@
 ///
 
 #include "TextCell.h"
+#include "Setup.h"
 
 TextCell::TextCell() : MathCell()
 {
@@ -78,7 +79,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
@@ -129,7 +130,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(2, scale),
                   point.y - m_center + SCALE_PX(2, scale));
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.DrawText(GetSymbolString(parser),
@@ -175,7 +176,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_GREEK_CONSTANT),
                         parser.GetGreekFontName(),
                         parser.GetGreekFontEncoding()));
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf"))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_NORMAL_TEXT),
@@ -236,7 +237,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontEncoding()));
       break;
     default:
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     if (m_text == wxT("->") ||
         m_text == wxT(">=") || m_text == wxT("<="))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -306,7 +307,7 @@ wxString TextCell::GetSymbolString(CellParser& parser)
     return wxT("\xA3");
   else
     return m_text;
-#elif wxUSE_UNICODE
+#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   if (m_text == wxT("inf"))
     return wxT("\x221E");
   else if (m_text == wxT("->"))

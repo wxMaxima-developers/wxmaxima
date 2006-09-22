@@ -711,7 +711,7 @@ void wxMaxima::CleanUp()
 void wxMaxima::ReadFirstPrompt()
 {
 #if defined(__WXMSW__)
-  int start = m_currentOutput.Find(wxT("Maxima 5.9"));
+  int start = m_currentOutput.Find(wxT("Maxima"));
   if (start == -1)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
@@ -948,7 +948,7 @@ void wxMaxima::ReadProcessOutput()
   {
     o += m_input->GetC();
   }
-  int st = o.Find(wxT("Maxima 5.9"));
+  int st = o.Find(wxT("Maxima"));
   if (st == -1)
     st = 0;
   FirstOutput(wxT("wxMaxima ")

@@ -812,6 +812,7 @@ void EditorCell::PasteFromClipboard()
       m_positionOfCaret += data.Length();
       m_selectionEnd = m_positionOfCaret;
     }
+    wxTheClipboard->Close();
   }
 
   m_width = m_height = m_maxDrop = m_center = -1;

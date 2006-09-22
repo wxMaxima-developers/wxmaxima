@@ -26,7 +26,7 @@
   #define INTEGRAL_BOTTOM "\xF5"
   #define INTEGRAL_EXTEND "\xF4"
   #define INTEGRAL_FONT_SIZE 12
-#elif wxUSE_UNICODE
+#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   #define INTEGRAL_TOP "\x2320"
   #define INTEGRAL_BOTTOM "\x2321"
   #define INTEGRAL_EXTEND "\x23AE"
@@ -147,7 +147,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_signMiddle = MAX(m_signMiddle,
                      m_under->GetFullWidth(scale) / 2 + SCALE_PX(5, scale));
 
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -223,7 +223,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     else
       sign.y += SCALE_PX(3, scale);
 
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     SetForeground(parser);
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -253,7 +253,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                       point.x + m_signMiddle - m_charWidth / 2,
                       sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
     }
-#elif
+#else
     SetPen(parser);
     // top decoration
     dc.DrawLine(sign.x + m_signMiddle,

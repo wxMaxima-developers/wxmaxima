@@ -27,6 +27,7 @@
 #define CONFIG_H
 
 #include "TextStyle.h"
+#include "Setup.h"
 
 enum {
   combobox_colour,
@@ -126,7 +127,7 @@ protected:
   wxStaticText* label_10;
   wxSpinCtrl* m_symbolFontAdj;
   wxString m_symbolFontName;
-#if !defined __WXMSW__ && wxUSE_UNICODE
+#if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxStaticText* m_unicodeGlyphs;
   wxButton* m_getUnicodeFont;
   wxString m_unicodeFont;
@@ -139,7 +140,7 @@ protected:
   m_styleVariable, m_styleHighlight;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
-#if !defined __WXMSW__ && wxUSE_UNICODE
+#if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   void OnChangeUnicodeFont(wxCommandEvent& event);
 #endif
   void OnSymbolBrowse(wxCommandEvent& event);

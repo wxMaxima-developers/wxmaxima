@@ -21,6 +21,7 @@
 #define _PARENCELL_H_
 
 #include "MathCell.h"
+#include "Setup.h"
 
 class ParenCell : public MathCell
 {
@@ -44,7 +45,7 @@ protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
   bool m_print;
-#if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
 #endif
