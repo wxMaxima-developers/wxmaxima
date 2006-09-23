@@ -551,7 +551,9 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two)
       wxClientDC dc(this);
       m_activeCell->SelectRectText(dc, one, two);
       m_switchDisplayCaret = false;
-      Refresh();
+      wxRect rect = m_activeCell->GetRect();
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RefreshRect(rect);
     }
     else
     {
@@ -656,13 +658,13 @@ void MathCtrl::SelectPoint(wxPoint& point)
       m_activeCell->SelectPointText(dc, m_down);
       m_switchDisplayCaret = false;
       Refresh();
+      return ;
     }
     else
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
-    return ;
   }
 
   MathCell* tmp = NULL;
@@ -773,6 +775,18 @@ void MathCtrl::SelectPoint(wxPoint& point)
     Refresh();
     return ;
   }
+  //
+  // We selected something we can edit.
+  //
+/*
+  if (m_selectionStart->IsEditable())
+  {
+    wxClientDC dc(this);
+    m_selectionStart->SelectPointText(dc, m_down);
+    wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_edit);
+    (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+  }
+*/
 
   Refresh();
 }
@@ -1044,6 +1058,7 @@ void MathCtrl::OnChar(wxKeyEvent& event)
 {
   if (m_activeCell != NULL)
   {
+    bool hasHeightChanged = false;
     m_activeCell->ProcessEvent(event);
 
     m_switchDisplayCaret = false;
@@ -1055,17 +1070,29 @@ void MathCtrl::OnChar(wxKeyEvent& event)
 
     if (m_activeCell->IsDirty())
     {
+      int height = m_activeCell->GetHeight();
       m_activeCell->ResetData();
       if (m_activeCell->m_previous != NULL)
         m_activeCell->m_previous->ResetData();
 
       Recalculate(false);
-
+      if (height != m_activeCell->GetHeight())
+        hasHeightChanged = true;
+    }
+    
+    if (hasHeightChanged)
+      Refresh();
+    else
+    {
+      // Refresh only the active cell
+      wxRect rect = m_activeCell->GetRect();
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      rect.width = GetSize().x;
+      RefreshRect(rect);
     }
 
     ShowPoint(point);
 
-    Refresh();
     return ;
   }
 
@@ -1228,7 +1255,10 @@ void MathCtrl::OnTimer(wxTimerEvent& event)
       if (m_switchDisplayCaret)
       {
         m_activeCell->SwitchCaretDisplay();
-        Refresh();
+        
+        wxRect rect = m_activeCell->GetRect();
+        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+        RefreshRect(rect);
       }
       m_switchDisplayCaret = true;
       m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);

@@ -27,7 +27,8 @@
 
 #define MC_CELL_SKIP 2
 #define MC_BASE_INDENT 5
-#define MC_LINE_SKIP 5
+#define MC_LINE_SKIP 2
+#define MC_TEXT_PADDING 2
 
 #ifndef __WXMAC__
 #define MC_EXP_INDENT 4

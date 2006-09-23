@@ -93,9 +93,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
     else
       dc.GetTextExtent(m_text, &m_width, &m_height);
-
-    m_width = m_width + 2 * SCALE_PX(2, scale);
-    m_height = m_height + 2 * SCALE_PX(2, scale);
+    
+    m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
 
     if (m_isHidden)
     {
@@ -128,23 +128,23 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
-                  point.x + SCALE_PX(2, scale),
-                  point.y - m_center + SCALE_PX(2, scale));
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.DrawText(GetSymbolString(parser),
-                  point.x + SCALE_PX(2, scale),
-                  point.y - m_center + SCALE_PX(2, scale));
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.DrawText(GetGreekString(parser),
-                  point.x + SCALE_PX(2, scale),
-                  point.y - m_center + SCALE_PX(2, scale));
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
     else
       dc.DrawText(m_text,
-                  point.x + SCALE_PX(2, scale),
-                  point.y - m_center + SCALE_PX(2, scale));
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
   }
   MathCell::Draw(parser, point, fontsize, all);
 }

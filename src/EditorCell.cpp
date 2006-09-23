@@ -530,7 +530,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
   if (m_isDirty)
-    m_width = m_height = m_maxDrop = m_center = -1;
+    m_width = m_maxDrop = m_center = -1;
   m_displayCaret = true;
 }
 
