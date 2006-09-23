@@ -150,6 +150,10 @@ void wxMaxima::CheckForPrintingSupport()
 void wxMaxima::InitSession()
 {
   bool server = false;
+  int defaultPort = 4010;
+  
+  wxConfig::Get()->Read(wxT("defaultPort"), defaultPort);
+  m_port = defaultPort;
 
   while (!(server = StartServer()))
   {
@@ -1173,7 +1177,6 @@ void wxMaxima::ShowHelp(wxString keyword)
     m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
 }
 
-
 ///--------------------------------------------------------------------------------
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
@@ -1186,6 +1189,12 @@ void wxMaxima::EnterCommand(wxCommandEvent& event)
   if (input.StartsWith(wxT("? ")))
   {
     ShowHelp(input.Mid(2));
+    m_inputLine->Clear();
+    return ;
+  }
+  if (input == wxT("?"))
+  {
+    ShowHelp();
     m_inputLine->Clear();
     return ;
   }
@@ -1273,8 +1282,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   wxToolBar * toolbar = GetToolBar();
-  toolbar->EnableTool(tb_copy, m_console->CanCopy());
+  toolbar->EnableTool(tb_copy,  m_console->CanCopy(true) || m_inputLine->CanCopy());
   toolbar->EnableTool(tb_delete, m_console->CanDeleteSelection());
+  toolbar->EnableTool(tb_insert_text, m_console->CanAddComment());
+  toolbar->EnableTool(tb_insert_input, m_console->CanAddInput());
   toolbar->EnableTool(tb_save, !m_fileSaved);
   if (m_pid > 0)
     toolbar->EnableTool(tb_interrupt, true);
@@ -2952,7 +2963,8 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   m_console->SetInsertPoint(prompt);
 
   DoRawConsoleAppend(prompt->GetValue(), MC_TYPE_MAIN_PROMPT);
-  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input)
+  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input ||
+      event.GetId() == tb_insert_input)
     prompt->SetValue(m_newInput);
   else
     prompt->SetValue(m_commentPrefix);
@@ -2964,10 +2976,12 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
+  case tb_insert_input:
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false);
     break;
   case menu_add_comment:
   case popid_add_comment:
+  case tb_insert_text:
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_COMMENT, true);
     break;
   case menu_add_title:
@@ -3174,6 +3188,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_delete, wxMaxima::EditMenu)
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
+  EVT_TOOL(tb_insert_input, wxMaxima::PrependCell)
+  EVT_TOOL(tb_insert_text, wxMaxima::PrependCell)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
@@ -3191,6 +3207,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_insert_input, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_insert_text, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)

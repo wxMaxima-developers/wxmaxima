@@ -132,6 +132,8 @@ protected:
   wxButton* m_getUnicodeFont;
   wxString m_unicodeFont;
 #endif
+  wxStaticText* label_12;
+  wxSpinCtrl* m_defaultPort;
   ExamplePanel* label_11;
   // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,

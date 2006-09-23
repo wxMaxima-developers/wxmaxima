@@ -96,6 +96,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     {
       _("Off"), _("Basic"), _("Full")
     };
+  label_12 = new wxStaticText(notebook_1_pane_1, -1, _("Default port:"));
+  m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 50, 5000);
   m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
@@ -160,7 +162,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   UpdateExample();
 }
 
-
 void Config::set_properties()
 {
   // begin wxGlade: Config::set_properties
@@ -186,6 +187,7 @@ void Config::set_properties()
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
 #endif
+  m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
@@ -194,8 +196,10 @@ void Config::set_properties()
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
+  int defaultPort = 4010;
   wxString fontEncoding(_("Default"));
 
+  config->Read(wxT("defaultPort"), &defaultPort);
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("pos-restore"), &rs);
@@ -207,6 +211,8 @@ void Config::set_properties()
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("fontEncoding"), &fontEncoding);
+
+  m_defaultPort->SetValue(defaultPort);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -297,6 +303,8 @@ void Config::do_layout()
   grid_sizer_5->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(label_9, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(m_panelSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(label_12, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_5->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
   sizer_6->Add(m_saveSize, 0, wxALL, 3);
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
@@ -385,6 +393,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("panelSize"), m_panelSize->GetSelection());
+  config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

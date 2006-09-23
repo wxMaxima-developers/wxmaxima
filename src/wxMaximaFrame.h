@@ -191,7 +191,9 @@ enum {
   deactivate_cell_ok,
   deactivate_cell_cancel,
   menu_cut,
-  menu_paste
+  menu_paste,
+  tb_insert_text,
+  tb_insert_input
 };
 
 class wxMaximaFrame: public wxFrame
