@@ -98,6 +98,7 @@ protected:
   void ReEvaluate(wxCommandEvent& event);          //
   void PrependCell(wxCommandEvent& event);         //
   void HandleCellEvent(wxCommandEvent& event);
+  void DumpProcessOutput();
 
   void HandleMainPrompt(wxString prompt);
 

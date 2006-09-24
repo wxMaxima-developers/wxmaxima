@@ -2090,6 +2090,9 @@ bool MathCtrl::SelectLastInput()
   if (tmp == NULL)
     return false;
 
+  if (m_activeCell != NULL)
+    return false;
+  
   while (tmp != NULL)
   {
     while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)

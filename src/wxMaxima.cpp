@@ -184,7 +184,10 @@ void wxMaxima::FirstOutput(wxString s)
   m_console->ClearWindow();
 
   if (showHeader)
+  {
+    DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
     ConsoleAppend(s.SubString(0, start - 1), MC_TYPE_TEXT);
+  }
 
   HandleMainPrompt(m_firstPrompt);
 }
@@ -692,8 +695,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
     SetStatusText(_("Maxima process terminated."), 1);
-  delete m_process;
-  m_process = NULL;
+//  delete m_process;
+//  m_process = NULL;
 }
 
 void wxMaxima::CleanUp()
@@ -1181,6 +1184,31 @@ void wxMaxima::ShowHelp(wxString keyword)
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
+void wxMaxima::DumpProcessOutput()
+{
+  wxString o;
+  while (m_process->IsInputAvailable())
+  {
+    o += m_input->GetC();
+  }
+  
+  wxMessageBox(o, wxT("Process output (stdout)"));
+  
+  o = wxEmptyString;
+  wxInputStream *error = m_process->GetErrorStream();
+  while (m_process->IsErrorAvailable())
+  {
+    o += error->GetC();
+  }
+  
+  wxMessageBox(o, wxT("Process output (stderr)"));
+  
+}
+
+///--------------------------------------------------------------------------------
+///  Menu and button events
+///--------------------------------------------------------------------------------
+
 void wxMaxima::EnterCommand(wxCommandEvent& event)
 {
   wxString input = m_inputLine->GetValue();
@@ -1195,6 +1223,12 @@ void wxMaxima::EnterCommand(wxCommandEvent& event)
   if (input == wxT("?"))
   {
     ShowHelp();
+    m_inputLine->Clear();
+    return ;
+  }
+  if (input == wxT("wxmaxima_debug_dump_output"))
+  {
+    DumpProcessOutput();
     m_inputLine->Clear();
     return ;
   }
@@ -2967,7 +3001,11 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
       event.GetId() == tb_insert_input)
     prompt->SetValue(m_newInput);
   else
+  {
     prompt->SetValue(m_commentPrefix);
+    prompt->ResetData();
+    m_console->Recalculate(false);
+  }
 
   m_inInsertMode = true;
 
@@ -2999,6 +3037,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   m_console->SetScrollTo(-1);
   m_console->SetActiveCell(prompt);
   m_console->SetFocus();
+  m_console->Refresh();
 
   ResetTitle(false);
   m_inInsertMode = false;

@@ -61,6 +61,7 @@ public:
   void Fold(bool fold);
 protected:
   wxString m_text;
+  int m_realCenter;
   int m_fontSize;
 };
 

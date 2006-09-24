@@ -103,7 +103,12 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_width = -2 * MC_CELL_SKIP;
     }
 
-    m_center = m_height / 2;
+    m_realCenter = m_center = m_height / 2;
+    if (m_type == MC_TYPE_MAIN_PROMPT && m_text.StartsWith(wxT("/*")))
+    {
+      m_center += m_height;
+      m_height += m_height;
+    }
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -129,22 +134,22 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.DrawText(GetSymbolString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
     else
       dc.DrawText(m_text,
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale));
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
   }
   MathCell::Draw(parser, point, fontsize, all);
 }
