@@ -19,6 +19,8 @@
 
 #include "IntegrateWiz.h"
 
+#include <wx/config.h>
+
 enum {
   definite_id,
   special_from,
@@ -83,7 +85,9 @@ void IntegrateWiz::set_properties()
   checkbox_2->Enable(false);
   combobox_1->Enable(false);
 
-  combobox_1->SetSelection(0);
+  int num_sel = 0;
+  wxConfig::Get()->Read(wxT("Wiz/Int/numericSelection"), &num_sel);
+  combobox_1->SetSelection(num_sel);
 }
 
 
@@ -134,6 +138,7 @@ wxString IntegrateWiz::GetValue()
   {
     if (combobox_1->GetValue() == wxT("romberg"))
     {
+      wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 1);
       s = wxT("romberg(") +
           text_ctrl_1->GetValue() +
           wxT(", ") +
@@ -146,6 +151,7 @@ wxString IntegrateWiz::GetValue()
     }
     else
     {
+      wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 0);
       wxString from = text_ctrl_3->GetValue();
       wxString to = text_ctrl_4->GetValue();
       if (from == wxT("minf") && to == wxT("inf"))
