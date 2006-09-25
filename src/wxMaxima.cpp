@@ -152,7 +152,7 @@ void wxMaxima::InitSession()
   bool server = false;
   int defaultPort = 4010;
   
-  wxConfig::Get()->Read(wxT("defaultPort"), defaultPort);
+  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_port = defaultPort;
 
   while (!(server = StartServer()))
