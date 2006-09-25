@@ -20,6 +20,8 @@
 #include "TextCell.h"
 #include "Setup.h"
 
+wxString g_foldText(_(" << Unfold >>"));
+
 TextCell::TextCell() : MathCell()
 {
   m_text = wxEmptyString;
@@ -104,7 +106,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
 
     m_realCenter = m_center = m_height / 2;
-    if (m_type == MC_TYPE_MAIN_PROMPT && m_text.StartsWith(wxT("/*")))
+    if (m_type == MC_TYPE_MAIN_PROMPT && !m_text.StartsWith(wxT("/*")))
     {
       m_center += m_height;
       m_height += m_height;
@@ -294,9 +296,9 @@ void TextCell::Fold(bool fold)
   m_isFolded = fold;
   m_width = -1;
   if (fold)
-    m_text = m_text + wxT(" << Hidden expression. >>");
+    m_text = m_text + wxGetTranslation(g_foldText);
   else
-    m_text = m_text.Left(m_text.Length() - 25);
+    m_text = m_text.Left(m_text.Length() - wxStrlen(wxGetTranslation(g_foldText)));
 }
 
 wxString TextCell::GetSymbolString(CellParser& parser)
