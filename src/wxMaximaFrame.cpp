@@ -719,7 +719,7 @@ void wxMaximaFrame::SetupToolBar()
                            _("Delete selection"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_insert_text, _("Insert text"),
-                           wxArtProvider::GetBitmap(wxT("stock_new-text"),
+                           wxArtProvider::GetBitmap(wxART_NORMAL_FILE,
                                                     wxART_TOOLBAR),
                            _("Insert text"));
   frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
