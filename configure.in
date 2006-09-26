@@ -72,7 +72,7 @@ AC_ARG_ENABLE(dnd,
           no)  wxm_dnd=false ;;
 	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-dnd) ;;
      	 esac],
-	[wxm_dnd=true])
+	[wxm_dnd=false])
 
 if test x"${wxm_dnd}" = x"true" ; then
    AC_DEFINE([WXM_DND], [1], ["Add support for drag'n'drop"])
