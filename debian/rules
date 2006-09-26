@@ -20,6 +20,5 @@ binary-predeb/wxmaxima::
 
 binary-install/wxmaxima::
 	rm -rf $(DEB_DESTDIR)/usr/share/doc/wxmaxima/NEWS
-	mv $(DEB_DESTDIR)/usr/share/wxMaxima/*.zip $(DEB_DESTDIR)/usr/share/doc/wxmaxima/
 	mv $(DEB_DESTDIR)/usr/share/wxMaxima/README $(DEB_DESTDIR)/usr/share/doc/wxmaxima/
 	dh_desktop -pwxmaxima
