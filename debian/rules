@@ -9,9 +9,12 @@ DEB_AUTO_CLEANUP_RCS            := yes
 DEB_DH_INSTALL_ARGS := -v
 # Add here any variable or target overrides you need
 
+DEB_CONFIGURE_EXTRA_FLAGS := --disable-dnd
+
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
+
 
 binary-predeb/wxmaxima::
 	rm -fr $(DEB_DESTDIR)/usr/share/wxMaxima/COPYING

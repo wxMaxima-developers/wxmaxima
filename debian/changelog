@@ -2,9 +2,12 @@ wxmaxima (0.7.0a-1) unstable; urgency=low
 
   * New upstream release.
   * Updated depends on maxima (>= 5.10.0). Closes: #387782
+  * Added depends on maxima-doc
   * Bumped standard versions tp 3.7.2
+  * Added a patch to locate documentation
+  * Disabled support for drag and drop (knonw bug in upstream sources)
 
- -- Marco Presi (Zufus) <zufus@debian.org>  Tue, 26 Sep 2006 11:26:36 +0200
+ -- Marco Presi (Zufus) <zufus@debian.org>  Wed, 27 Sep 2006 11:39:41 +0200
 
 wxmaxima (0.6.4-1) unstable; urgency=low
 
