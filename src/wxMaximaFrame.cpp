@@ -23,7 +23,9 @@
 #include <wx/config.h>
 
 #ifndef __WXMSW__
-#include "../art/maximaicon.xpm"
+ #include "../art/maximaicon.xpm"
+#else
+ #include <wx/image.h>
 #endif
 
 #include "../art/ok.xpm"
@@ -92,7 +94,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
 
   SetupMenu();
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   SetupToolBar();
+#endif
 
   frame_1_statusbar = CreateStatusBar(2);
   int widths[] =
@@ -245,6 +249,8 @@ void wxMaximaFrame::SetupMenu()
                    _("Save session to a file"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
                              _("Load a maxima package file"), wxITEM_NORMAL);
+  wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch file\tCtrl-B"),
+                             _("Load a maxima file using batch command"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export to HTML"),
                    _("Export console output to HTML file"), wxT("stock_export"));
   wxglade_tmp_menu_1->AppendSeparator();
@@ -641,49 +647,55 @@ void wxMaximaFrame::SetupMenu()
 
 }
 
-#ifndef __WXGTK20__
-
-#include "../art/icons.h"
-
+#if defined (__WXMSW__)
 
 void wxMaximaFrame::SetupToolBar()
 {
-  wxBitmap bmpOpen(open_xpm);
+  wxImage bmpOpen(wxT("art/toolbar/open.png"));
   wxToolBar* frame_1_toolbar = CreateToolBar();
-
-#if defined __WXMAC__
-  frame_1_toolbar->SetToolBitmapSize(wxSize(bmpOpen.GetWidth(), bmpOpen.GetHeight()));
-#endif
 
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            bmpOpen, _("Open session"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
-                           wxBitmap(save_xpm), _("Save session"));
+                           wxImage(wxT("art/toolbar/save.png")),
+                           _("Save session"));
   frame_1_toolbar->AddSeparator();
 #if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
-                           wxBitmap(print_xpm), _("Print document"));
+                           wxImage(wxT("art/toolbar/print.png")),
+                           _("Print document"));
 #endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
-                           wxBitmap(pref_xpm), _("Configure wxMaxima"));
+                           wxImage(wxT("art/toolbar/configure.png")),
+                           _("Configure wxMaxima"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_copy, _("Copy"),
-                           wxBitmap(copy_xpm), _("Copy selection"));
+                           wxImage(wxT("art/toolbar/copy.png")),
+                           _("Copy selection"));
   frame_1_toolbar->AddTool(tb_delete, _("Delete"),
-                           wxBitmap(cut_xpm), _("Delete selection"));
+                           wxImage(wxT("art/toolbar/cut.png")),
+                           _("Delete selection"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_insert_text, _("Insert text"),
+                           wxImage(wxT("art/toolbar/text.png")),
+                           _("Insert text"));
+  frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
+                           wxImage(wxT("art/toolbar/input.png")),
+                           _("Insert input group"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
-                           wxBitmap(stop_xpm),
+                           wxImage(wxT("art/toolbar/stop.png")),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_help, _("Help"),
-                           wxBitmap(help_xpm), _("Show maxima help"));
+                           wxImage(wxT("art/toolbar/help.png")),
+                           _("Show maxima help"));
 
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }
 
-#else
+#elif defined (__WXGTK20__)
 
 void wxMaximaFrame::SetupToolBar()
 {

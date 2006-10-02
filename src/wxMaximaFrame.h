@@ -35,6 +35,7 @@ enum {
   socket_server_id,
   input_line_id,
   menu_open_id,
+  menu_batch_id,
   menu_save_id,
   menu_save_as_id,
   menu_load_id,
@@ -169,6 +170,7 @@ enum {
   menu_selection_to_input,
   menu_change_var,
   menu_nouns,
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   tb_open,
   tb_save,
   tb_copy,
@@ -177,6 +179,9 @@ enum {
   tb_pref,
   tb_interrupt,
   tb_help,
+  tb_insert_text,
+  tb_insert_input,
+#endif
   menu_edit_input,
   menu_reeval_input,
   menu_long_input,
@@ -191,9 +196,7 @@ enum {
   deactivate_cell_ok,
   deactivate_cell_cancel,
   menu_cut,
-  menu_paste,
-  tb_insert_text,
-  tb_insert_input
+  menu_paste
 };
 
 class wxMaximaFrame: public wxFrame
@@ -206,7 +209,9 @@ public:
 private:
   void set_properties();
   void do_layout();
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   void SetupToolBar();
+#endif
   void SetupMenu();
 protected:
   wxMenuBar* frame_1_menubar;

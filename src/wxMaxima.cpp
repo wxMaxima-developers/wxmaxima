@@ -1247,7 +1247,9 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case wxID_PRINT:
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_print:
+#endif
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
@@ -1313,6 +1315,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(menu_dec_fontsize, false);
 }
 
+#if defined (__WXMSW__) || defined (__WXGTK20__)
+
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   wxToolBar * toolbar = GetToolBar();
@@ -1332,6 +1336,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     toolbar->EnableTool(tb_print, false);
 #endif
 }
+
+#endif
 
 wxString wxMaxima::GetDefaultEntry()
 {
@@ -1442,7 +1448,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   switch (event.GetId())
   {
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_open:
+#endif
   case menu_open_id:
     {
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
@@ -1475,7 +1483,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
     break;
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_save:
+#endif
   case menu_save_id:
     {
       wxString file = m_currentFile;
@@ -1530,6 +1540,15 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       OpenFile(file, wxT("load"));
     }
     break;
+  case menu_batch_id:
+    {
+      wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
+                                     wxEmptyString, wxEmptyString,
+                                     _("Maxima package (*.mac)|*.mac|"),
+                                     wxOPEN);
+      OpenFile(file, wxT("batch"));
+    }
+    break;
   case menu_select_file:
     {
       wxString file = wxFileSelector(_("Select a file"), m_lastPath,
@@ -1567,7 +1586,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
     break;
   case wxID_PREFERENCES:
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_pref:
+#endif
     {
       Config *configW = new Config(this, -1, _("wxMaxima configuration"));
       configW->Centre(wxBOTH);
@@ -1586,7 +1607,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->ClearWindow();
     DoRawConsoleAppend(m_lastPrompt, MC_TYPE_MAIN_PROMPT);
     break;
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_copy:
+#endif
   case menu_copy_from_console:
     if (m_console->CanCopy())
       m_console->Copy();
@@ -1637,7 +1660,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_unfold:
     m_console->UnfoldAll();
     break;
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_delete:
+#endif
   case menu_delete_selection:
   case popid_delete:
     if (m_console->CanDeleteSelection())
@@ -2683,7 +2708,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
                  _("About wxMaxima"), wxOK | wxICON_INFORMATION);
     break;
   case wxID_HELP:
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_help:
+#endif
     ShowHelp(expr);
     return ;
   case menu_describe:
@@ -2997,9 +3024,16 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   m_console->SetInsertPoint(prompt);
 
   DoRawConsoleAppend(prompt->GetValue(), MC_TYPE_MAIN_PROMPT);
-  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input ||
-      event.GetId() == tb_insert_input)
+  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input
+#if defined (__WXMSW__) || defined (__WXGTK20__)
+      || event.GetId() == tb_insert_input
+#endif
+  )
+  {
     prompt->SetValue(m_newInput);
+    prompt->ResetData();
+    m_console->Recalculate(false);
+  }
   else
   {
     prompt->SetValue(m_commentPrefix);
@@ -3014,12 +3048,16 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_insert_input:
+#endif
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false);
     break;
   case menu_add_comment:
   case popid_add_comment:
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_insert_text:
+#endif
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_COMMENT, true);
     break;
   case menu_add_title:
@@ -3119,6 +3157,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
   EVT_MENU(menu_open_id, wxMaxima::FileMenu)
+  EVT_MENU(menu_batch_id, wxMaxima::FileMenu)
   EVT_MENU(menu_ratsimp, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_radsimp, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_expand, wxMaxima::SimplifyMenu)
@@ -3214,7 +3253,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_goto_output, wxMaxima::EditMenu)
 #if WXM_PRINT
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
+ #if defined (__WXMSW__) || (__WXGTK20__)
   EVT_TOOL(tb_print, wxMaxima::PrintMenu)
+ #endif
 #endif
   EVT_MENU(menu_inc_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
@@ -3222,6 +3263,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
@@ -3231,6 +3273,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_insert_text, wxMaxima::PrependCell)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
+#endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
@@ -3242,14 +3285,16 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_edit_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
+#if defined (__WXMSW__) || defined (__WXGTK20__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_insert_input, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_insert_text, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
+#endif
+  EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_add_section, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_add_title, wxMaxima::UpdateMenus)
