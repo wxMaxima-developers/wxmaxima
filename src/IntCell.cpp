@@ -325,6 +325,25 @@ wxString IntCell::ToString(bool all)
   return s;
 }
 
+wxString IntCell::ToTeX(bool all)
+{
+  wxString s = wxT("\\int");
+
+  wxString to = m_over->ToTeX(true);
+  wxString from = m_under->ToTeX(true);
+
+  if (m_intStyle == INT_DEF)
+    s += wxT("_{") + from + wxT("}^{") + to + wxT("}");
+  else
+    s += wxT(" ");
+  
+  s += m_base->ToTeX(true);
+  s += m_var->ToTeX(true);
+
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void IntCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

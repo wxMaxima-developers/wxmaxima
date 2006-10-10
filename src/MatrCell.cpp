@@ -189,6 +189,25 @@ wxString MatrCell::ToString(bool all)
   return s;
 }
 
+wxString MatrCell::ToTeX(bool all)
+{
+  wxString s = wxT("\\pmatrix{");
+  for (int i = 0; i < m_matHeight; i++)
+  {
+    for (int j = 0; j < m_matWidth; j++)
+    {
+      s += m_cells[i * m_matWidth + j]->ToTeX(true);
+      if (j < m_matWidth - 1)
+        s += wxT(" & ");
+    }
+    if (i < m_matHeight - 1)
+      s += wxT("\\cr ");
+  }
+  s += wxT("}");
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void MatrCell::SetDimension()
 {
   if (m_matHeight != 0)

@@ -41,6 +41,8 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   bool BreakUp();
   void Unbreak(bool all);
+  wxString ToString(bool all);
+  wxString ToTeX(bool all);
 protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
@@ -49,7 +51,6 @@ protected:
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
 #endif
-  wxString ToString(bool all);
 };
 
 #endif //_PARENCELL_H_

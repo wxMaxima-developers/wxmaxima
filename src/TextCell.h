@@ -36,6 +36,7 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SetFont(CellParser& parser, int fontsize);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
   wxString GetDiffPart();
   bool IsOperator();
   wxString GetValue()

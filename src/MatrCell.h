@@ -51,6 +51,7 @@ public:
   void SetDimension();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
 protected:
   int m_matWidth;
   int m_matHeight;

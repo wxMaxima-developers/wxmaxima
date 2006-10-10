@@ -36,6 +36,7 @@ public:
   void SetUnder(MathCell* under);
   void SetName(MathCell* name);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
 protected:
   MathCell *m_base;

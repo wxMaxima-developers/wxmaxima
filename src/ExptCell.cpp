@@ -166,6 +166,16 @@ wxString ExptCell::ToString(bool all)
   return s;
 }
 
+wxString ExptCell::ToTeX(bool all)
+{
+  if (m_isBroken)
+    return wxEmptyString;
+  wxString s = wxT("{") + m_baseCell->ToTeX(true) + wxT("}^{") +
+               m_powCell->ToTeX(true) + wxT("}");
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 wxString ExptCell::GetDiffPart()
 {
   wxString s(wxT(","));

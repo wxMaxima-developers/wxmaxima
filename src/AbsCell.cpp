@@ -120,6 +120,12 @@ wxString AbsCell::ToString(bool all)
          MathCell::ToString(all);
 }
 
+wxString AbsCell::ToTeX(bool all)
+{
+  return wxT("\\left| ") + m_innerCell->ToTeX(true) + wxT("\\right| ") +
+         MathCell::ToTeX(all);
+}
+
 void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

@@ -132,6 +132,15 @@ wxString AtCell::ToString(bool all)
   return s;
 }
 
+wxString AtCell::ToTeX(bool all)
+{
+  wxString s = wxT("\\left. ");
+  s += m_baseCell->ToTeX(true);
+  s += wxT("\\right|_{") + m_indexCell->ToTeX(true) + wxT("}");
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

@@ -40,6 +40,7 @@ protected:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
 };
 
 #endif //_ABSCELL_H_

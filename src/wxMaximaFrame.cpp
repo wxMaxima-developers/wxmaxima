@@ -278,6 +278,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
                              _("Copy selection from console (including linebreaks)"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy TeX"),
+                             _("Copy selection from console in TeX format"),
+                             wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));

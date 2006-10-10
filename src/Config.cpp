@@ -107,10 +107,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  m_symbolFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_symbol, _("Use greek font"));
-  m_getSymbolFont = new wxButton(notebook_1_pane_2, button_symbol, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font"));
+  m_getGreekFont = new wxButton(notebook_1_pane_2, button_greek, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
-  m_symbolFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
+  m_greekFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_unicodeGlyphs = new wxStaticText(notebook_1_pane_2, -1, _("Unicode glyphs:"));
   m_getUnicodeFont = new wxButton(notebook_1_pane_2, unicode_glyphs, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
@@ -180,9 +180,9 @@ void Config::set_properties()
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in console."));
-  m_symbolFontOk->SetToolTip(_("Use greek font to display greek characters."));
-  m_getSymbolFont->SetToolTip(_("Font used for displaying greek characters in console."));
-  m_symbolFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
+  m_greekFontOk->SetToolTip(_("Use greek font to display greek characters."));
+  m_getGreekFont->SetToolTip(_("Font used for displaying greek characters in console."));
+  m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
@@ -324,10 +324,10 @@ void Config::do_layout()
   // Font box
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_symbolFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_getSymbolFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_greekFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_getGreekFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_symbolFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(m_greekFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   grid_sizer_1->Add(m_unicodeGlyphs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getUnicodeFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -439,23 +439,23 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   }
 }
 
-void Config::OnSymbolBrowse(wxCommandEvent& event)
+void Config::OnGreekBrowse(wxCommandEvent& event)
 {
-  wxFont symbol;
+  wxFont greek;
 #if defined __WXMSW__
-  symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                          false, m_symbolFontName,
-                                          wxFONTENCODING_CP1253));
+  greek = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
+                                         false, m_greekFontName,
+                                         wxFONTENCODING_CP1253));
 #else
-  symbol = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                          false, m_symbolFontName,
-                                          wxFONTENCODING_ISO8859_7));
+  greek = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
+                                         false, m_greekFontName,
+                                         wxFONTENCODING_ISO8859_7));
 #endif
 
-  if (symbol.Ok())
+  if (greek.Ok())
   {
-    m_symbolFontName = symbol.GetFaceName();
-    m_getSymbolFont->SetLabel(m_symbolFontName);
+    m_greekFontName = greek.GetFaceName();
+    m_getGreekFont->SetLabel(m_greekFontName);
   }
 }
 
@@ -498,7 +498,7 @@ void Config::ReadStyles()
   wxConfigBase* config = wxConfig::Get();
 
   int adj = 0;
-  bool symbolOk = false;
+  bool greekOk = false;
 
   m_fontSize = 12;
   config->Read(wxT("fontsize"), &m_fontSize);
@@ -517,16 +517,16 @@ void Config::ReadStyles()
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding)encoding;
 
-  m_symbolFontName = wxEmptyString;
-  config->Read(wxT("Style/Symbol/ok"), &symbolOk);
-  config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
-  config->Read(wxT("Style/Symbol/adj"), &adj);
-  m_symbolFontAdj->SetValue(adj);
-  m_symbolFontOk->SetValue(symbolOk);
-  if (m_symbolFontName.Length() > 0)
-    m_getSymbolFont->SetLabel(m_symbolFontName);
-  m_getSymbolFont->Enable(symbolOk);
-  m_symbolFontAdj->Enable(symbolOk);
+  m_greekFontName = wxEmptyString;
+  config->Read(wxT("Style/GreekFont/ok"), &greekOk);
+  config->Read(wxT("Style/GreekFont/fontname"), &m_greekFontName);
+  config->Read(wxT("Style/GreekFont/adj"), &adj);
+  m_greekFontAdj->SetValue(adj);
+  m_greekFontOk->SetValue(greekOk);
+  if (m_greekFontName.Length() > 0)
+    m_getGreekFont->SetLabel(m_greekFontName);
+  m_getGreekFont->Enable(greekOk);
+  m_greekFontAdj->Enable(greekOk);
 
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
@@ -715,9 +715,9 @@ void Config::WriteStyles()
   config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);
 #endif
 
-  config->Write(wxT("Style/Symbol/ok"), m_symbolFontOk->GetValue());
-  config->Write(wxT("Style/Symbol/fontname"), m_symbolFontName);
-  config->Write(wxT("Style/Symbol/adj"), m_symbolFontAdj->GetValue());
+  config->Write(wxT("Style/GreekFont/ok"), m_greekFontOk->GetValue());
+  config->Write(wxT("Style/GreekFont/fontname"), m_greekFontName);
+  config->Write(wxT("Style/GreekFont/adj"), m_greekFontAdj->GetValue());
 
   // Normal text
   config->Write(wxT("Style/NormalText/color"),
@@ -889,10 +889,10 @@ void Config::OnCheckbox(wxCommandEvent& event)
   UpdateExample();
 }
 
-void Config::OnCheckSymbol(wxCommandEvent& event)
+void Config::OnCheckGreek(wxCommandEvent& event)
 {
-  m_getSymbolFont->Enable(m_symbolFontOk->GetValue());
-  m_symbolFontAdj->Enable(m_symbolFontOk->GetValue());
+  m_getGreekFont->Enable(m_greekFontOk->GetValue());
+  m_greekFontAdj->Enable(m_greekFontOk->GetValue());
 }
 
 void Config::OnChangeWarning(wxCommandEvent &event)
@@ -975,7 +975,7 @@ void Config::UpdateExample()
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
-  EVT_BUTTON(button_symbol, Config::OnSymbolBrowse)
+  EVT_BUTTON(button_greek, Config::OnGreekBrowse)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
@@ -987,7 +987,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
-  EVT_CHECKBOX(checkbox_symbol, Config::OnCheckSymbol)
+  EVT_CHECKBOX(checkbox_greek, Config::OnCheckGreek)
 END_EVENT_TABLE()
 
 void ExamplePanel::OnPaint(wxPaintEvent& event)

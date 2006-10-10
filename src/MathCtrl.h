@@ -46,7 +46,8 @@ enum {
   popid_edit,
   popid_reeval,
   popid_add_comment,
-  popid_insert_input
+  popid_insert_input,
+  popid_copy_tex
 };
 
 class MathCtrl: public wxScrolledWindow
@@ -88,6 +89,7 @@ public:
   bool CutToClipboard();
   void PasteFromClipboard();
   bool Copy(bool lb = false);
+  bool CopyTeX();
   bool CopyBitmap();
   bool CopyToFile(wxString file);
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);

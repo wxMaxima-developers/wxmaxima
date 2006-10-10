@@ -160,6 +160,19 @@ wxString LimitCell::ToString(bool all)
   return s;
 }
 
+wxString LimitCell::ToTeX(bool all)
+{
+  wxString s = wxT("\\lim");
+  wxString under = m_under->ToTeX(true);
+  wxString base = m_base->ToTeX(true);
+  wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
+  wxString to = under.SubString(under.Find(wxT("->")) + 2,
+                                under.Length() - 1);
+  s += wxT("_{") + var + wxT("\\to ") + to + wxT("}") + base;
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void LimitCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

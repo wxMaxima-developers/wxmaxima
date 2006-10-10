@@ -268,6 +268,13 @@ wxString MathCell::ToString(bool all)
   return wxEmptyString;
 }
 
+wxString MathCell::ToTeX(bool all)
+{
+  if (all && m_next != NULL)
+    return m_next->ToTeX(all);
+  return wxEmptyString;
+}
+
 /***
  * Get the part for diff tag support - only ExpTag overvrides this.
  */

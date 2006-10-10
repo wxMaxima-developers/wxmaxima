@@ -33,6 +33,7 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
   void SetValue(wxString& text)

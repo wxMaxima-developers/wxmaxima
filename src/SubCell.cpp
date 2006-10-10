@@ -127,6 +127,14 @@ wxString SubCell::ToString(bool all)
   return s;
 }
 
+wxString SubCell::ToTeX(bool all)
+{
+  wxString s = wxT("{") + m_baseCell->ToTeX(true) + wxT("}_{") +
+               m_indexCell->ToTeX(true) + wxT("}");
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

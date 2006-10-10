@@ -37,8 +37,8 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_scale = scale;
   m_top = -1;
   m_bottom = -1;
-  m_haveSymbolFont = false;
-  m_symbolFontAdj = 0;
+  m_haveGreekFont = false;
+  m_greekFontAdj = 0;
   ReadStyle();
 }
 
@@ -58,13 +58,13 @@ void CellParser::ReadStyle()
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding)encoding;
 
-  // Symbol font
-  m_haveSymbolFont = false;
-  m_symbolFontAdj = 0;
-  m_symbolFontName = wxEmptyString;
-  config->Read(wxT("Style/Symbol/fontname"), &m_symbolFontName);
-  config->Read(wxT("Style/Symbol/adj"), &m_symbolFontAdj);
-  config->Read(wxT("Style/Symbol/ok"), &m_haveSymbolFont);
+  // Greek font
+  m_haveGreekFont = false;
+  m_greekFontAdj = 0;
+  m_greekFontName = wxEmptyString;
+  config->Read(wxT("Style/GreekFont/fontname"), &m_greekFontName);
+  config->Read(wxT("Style/GreekFont/adj"), &m_greekFontAdj);
+  config->Read(wxT("Style/GreekFont/ok"), &m_haveGreekFont);
 
 #if wxUSE_UNICODE
   m_unicodeSymbolsFont = wxT("Sans");

@@ -109,7 +109,8 @@ void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString DiffCell::ToString(bool all) {
+wxString DiffCell::ToString(bool all)
+{
   MathCell* tmp = m_baseCell->m_next;
   wxString s = wxT("'diff(");
   if (tmp != NULL)
@@ -117,6 +118,13 @@ wxString DiffCell::ToString(bool all) {
   s += m_diffCell->ToString(true);
   s += wxT(")");
   s += MathCell::ToString(all);
+  return s;
+}
+
+wxString DiffCell::ToTeX(bool all)
+{
+  wxString s = m_diffCell->ToTeX(true) + m_baseCell->ToTeX(true);
+  s += MathCell::ToTeX(all);
   return s;
 }
 

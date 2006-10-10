@@ -68,6 +68,12 @@ wxString EditorCell::ToString(bool all)
   return text + MathCell::ToString(all);
 }
 
+wxString EditorCell::ToTeX(bool all)
+{
+  wxString text = m_text;
+  return text + MathCell::ToTeX(all);
+}
+
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   m_isDirty = false;

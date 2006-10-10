@@ -112,10 +112,19 @@ void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString FunCell::ToString(bool all)
 {
-  wxString s;
-  if (!m_isBroken)
-    s += m_nameCell->ToString(true) + m_argCell->ToString(true);
+  if (m_isBroken)
+    return wxEmptyString;
+  wxString s = m_nameCell->ToString(true) + m_argCell->ToString(true);
   s += MathCell::ToString(all);
+  return s;
+}
+
+wxString FunCell::ToTeX(bool all)
+{
+  if (m_isBroken)
+    return wxEmptyString;
+  wxString s = m_nameCell->ToTeX(true) + m_argCell->ToTeX(true);
+  s += MathCell::ToTeX(all);
   return s;
 }
 

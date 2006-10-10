@@ -259,6 +259,25 @@ wxString SumCell::ToString(bool all)
   return s;
 }
 
+wxString SumCell::ToTeX(bool all)
+{
+  wxString s;
+  if (m_sumStyle == SM_SUM)
+    s = wxT("\\sum");
+  else
+    s = wxT("\\prod");
+  
+
+  s += wxT("_{") + m_under->ToTeX(true) + wxT("}");
+  wxString to = m_over->ToTeX(true);
+  if (to.Length())
+    s += wxT("^{") + to + wxT("}");
+  s += m_base->ToTeX(true);
+
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void SumCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

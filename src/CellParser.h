@@ -61,16 +61,16 @@ public:
   wxString GetSymbolFontName();
   wxString GetGreekFontName()
   {
-    return m_symbolFontName;
+    return m_greekFontName;
   }
   wxFontEncoding GetGreekFontEncoding();
   int GetGreekFontAdj()
   {
-    return m_symbolFontAdj;
+    return m_greekFontAdj;
   }
-  bool HaveSymbolFont()
+  bool HaveGreekFont()
   {
-    return m_haveSymbolFont;
+    return m_haveGreekFont;
   }
   wxString GetColor(int st)
   {
@@ -97,12 +97,12 @@ private:
   wxDC& m_dc;
   int m_top, m_bottom;
   wxString m_fontName;
-  wxString m_symbolFontName;
+  wxString m_greekFontName;
 #if wxUSE_UNICODE
   wxString m_unicodeSymbolsFont;
 #endif
-  int m_symbolFontAdj;
-  bool m_haveSymbolFont;
+  int m_greekFontAdj;
+  bool m_haveGreekFont;
   bool m_forceUpdate;
   wxFontEncoding m_fontEncoding;
   style m_styles[12];

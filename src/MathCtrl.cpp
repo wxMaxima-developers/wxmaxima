@@ -399,6 +399,8 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
                         wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_copy_text, _("Copy text"),
                         wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_copy_tex, _("Copy TeX"),
+                        wxEmptyString, wxITEM_NORMAL);
 #if defined __WXMSW__
       popupMenu->Append(popid_copy_image, _("Copy as image"),
                         wxEmptyString, wxITEM_NORMAL);
@@ -839,6 +841,79 @@ bool MathCtrl::Copy(bool lb)
     s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
+    tmp = tmp->m_nextToDraw;
+  }
+
+  if (wxTheClipboard->Open())
+  {
+    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxTheClipboard->Close();
+    return true;
+  }
+  return false;
+}
+
+bool MathCtrl::CopyTeX()
+{
+  if (m_activeCell != NULL)
+    return false;
+
+  if (m_selectionStart == NULL)
+    return false;
+  
+  wxString s;
+  MathCell* tmp = m_selectionStart;
+
+  bool inMath = false;
+  bool inVerbatim = false;
+  wxString label;
+  
+  while (tmp != NULL)
+  {
+    if (tmp->GetType() == MC_TYPE_MAIN_PROMPT || tmp->GetType() == MC_TYPE_INPUT)
+    {
+      if (inMath)
+      {
+        s += label + wxT("$$\n");
+        label = wxEmptyString;
+        inMath = false;
+      }
+      if (!inVerbatim)
+      {
+        s += wxT("\\begin{verbatim}\n");
+        inVerbatim = true;
+      }
+      s += tmp->ToString(false);
+    }
+    else if (tmp->GetType() == MC_TYPE_LABEL)
+    {
+      label = tmp->ToTeX(false);
+    }
+    else
+    {
+      if (inVerbatim)
+      {
+        s += wxT("\n\\end{verbatim}\n");
+        inVerbatim = false;
+      }
+      if (!inMath)
+      {
+        s += wxT("$$");
+        inMath = true;
+      }
+      s += tmp->ToTeX(false);
+    }
+    if (tmp == m_selectionEnd)
+    {
+      if (inMath)
+      {
+        s += label + wxT("$$");
+        label = wxEmptyString;
+      }
+      if (inVerbatim)
+        s += wxT("\n\\end{verbatim}\n");
+      break;
+    }
     tmp = tmp->m_nextToDraw;
   }
 

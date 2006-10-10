@@ -248,6 +248,27 @@ wxString FracCell::ToString(bool all)
   return s;
 }
 
+wxString FracCell::ToTeX(bool all)
+{
+  wxString s;
+  if (!m_isBroken)
+  {
+    if (m_fracStyle == FC_CHOOSE)
+    {
+      s = wxT("\\pmatrix{") + m_num->ToTeX(true) + wxT("\\cr ") +
+          m_denom->ToTeX(true) + wxT("}");
+    }
+    else
+    {
+      s = wxT("\\frac{") + m_num->ToTeX(true) + wxT("}{") +
+          m_denom->ToTeX(true) + wxT("}");
+    }
+  }
+  if (m_fracStyle == FC_NORMAL)
+    s += MathCell::ToTeX(all);
+  return s;
+}
+
 void FracCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

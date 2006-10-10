@@ -36,8 +36,8 @@ enum {
   checkbox_italic,
   checkbox_underlined,
   checkbox_header,
-  button_symbol,
-  checkbox_symbol,
+  button_greek,
+  checkbox_greek,
   font_family,
   panel_size,
   language_id,
@@ -122,11 +122,11 @@ protected:
   wxNotebook* notebook_1;
   wxButton* m_button1;
   wxButton* m_button2;
-  wxCheckBox* m_symbolFontOk;
-  wxButton* m_getSymbolFont;
+  wxCheckBox* m_greekFontOk;
+  wxButton* m_getGreekFont;
   wxStaticText* label_10;
-  wxSpinCtrl* m_symbolFontAdj;
-  wxString m_symbolFontName;
+  wxSpinCtrl* m_greekFontAdj;
+  wxString m_greekFontName;
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxStaticText* m_unicodeGlyphs;
   wxButton* m_getUnicodeFont;
@@ -145,12 +145,12 @@ protected:
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   void OnChangeUnicodeFont(wxCommandEvent& event);
 #endif
-  void OnSymbolBrowse(wxCommandEvent& event);
+  void OnGreekBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeColor(wxCommandEvent& event);
   void OnChangeWarning(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
-  void OnCheckSymbol(wxCommandEvent& event);
+  void OnCheckGreek(wxCommandEvent& event);
   void ReadStyles();
   void WriteStyles();
   void SetupFontList();

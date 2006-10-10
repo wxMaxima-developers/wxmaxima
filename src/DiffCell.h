@@ -24,21 +24,22 @@
 
 class DiffCell : public MathCell
 {
-	public:
-		DiffCell();
-		~DiffCell();
-    void Destroy();
-    MathCell* Copy(bool all);
-    void SetBase(MathCell *base);
-    void SetDiff(MathCell *diff);
-    void RecalculateSize(CellParser& parser, int fontsize, bool all);
-    void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-    void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
-    void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-    wxString ToString(bool all);
-	protected:
-	  MathCell *m_baseCell;
-    MathCell *m_diffCell;
+public:
+	DiffCell();
+	~DiffCell();
+  void Destroy();
+  MathCell* Copy(bool all);
+  void SetBase(MathCell *base);
+  void SetDiff(MathCell *diff);
+  void RecalculateSize(CellParser& parser, int fontsize, bool all);
+  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+  wxString ToString(bool all);
+  wxString ToTeX(bool all);
+protected:
+  MathCell *m_baseCell;
+  MathCell *m_diffCell;
 };
 
 #endif	//_EXPTCELL_H_

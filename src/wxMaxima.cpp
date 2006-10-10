@@ -1032,7 +1032,7 @@ wxString wxMaxima::GetCommand()
   if (!have_config)
   {
     command = wxT("maxima");
-    config->Write(wxT("maxima"), &command);
+    config->Write(wxT("maxima"), command);
   }
 
   config->Read(wxT("parameters"), &parameters);
@@ -1286,6 +1286,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_cut, m_console->CanCut() || m_inputLine->CanCut());
   menubar->Enable(menu_paste, m_inputLine->CanPaste());
   menubar->Enable(menu_copy_lb_from_console, m_console->CanCopy());
+  menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(menu_selection_to_input, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
@@ -1631,6 +1632,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_copy_lb_from_console:
     if (m_console->CanCopy())
       m_console->Copy(true);
+    break;
+  case menu_copy_tex_from_console:
+    if (m_console->CanCopy())
+      m_console->CopyTeX();
     break;
   case menu_copy_as_bitmap:
     if (m_console->CanCopy())
@@ -2799,6 +2804,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     if (m_console->CanCopy(true))
       m_console->Copy();
     break;
+  case popid_copy_tex:
+    if (m_console->CanCopy(true))
+      m_console->CopyTeX();
+    break;
   case popid_cut:
     if (m_console->CanCopy(true))
       m_console->CutToClipboard();
@@ -3115,6 +3124,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_diff, wxMaxima::PopupMenu)
   EVT_MENU(popid_integrate, wxMaxima::PopupMenu)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
+  EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_TEXT_ENTER(input_line_id, wxMaxima::EnterCommand)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
@@ -3245,6 +3255,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_clear_screen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_lb_from_console, wxMaxima::EditMenu)
+  EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
   EVT_MENU(menu_goto_input, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
@@ -3278,6 +3289,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_lb_from_console, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_inc_fontsize, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_dec_fontsize, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)

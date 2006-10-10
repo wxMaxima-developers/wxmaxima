@@ -175,6 +175,7 @@ public:
   }
 
   virtual wxString ToString(bool all);
+  virtual wxString ToTeX(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);

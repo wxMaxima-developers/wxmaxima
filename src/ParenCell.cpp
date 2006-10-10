@@ -346,6 +346,20 @@ wxString ParenCell::ToString(bool all)
   return s;
 }
 
+wxString ParenCell::ToTeX(bool all)
+{
+  wxString s;
+  if (!m_isBroken)
+  {
+    if (m_print)
+      s = wxT("\\left( ") + m_innerCell->ToTeX(true) + wxT("\\right) ");
+    else
+      s = m_innerCell->ToTeX(true);
+  }
+  s += MathCell::ToTeX(all);
+  return s;
+}
+
 void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

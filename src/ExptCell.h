@@ -35,6 +35,7 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
+  wxString ToTeX(bool all);
   wxString GetDiffPart();
   void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
   void IsMatrix(bool isMatrix)

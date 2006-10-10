@@ -79,14 +79,14 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
+    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
 #endif
-    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
     else if (m_text == wxEmptyString)
     {
@@ -133,7 +133,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetFont(parser, fontsize);
     SetForeground(parser);
 
-    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveSymbolFont() && m_text == wxT("%pi"))
+    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -144,7 +144,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
-    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveSymbolFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -175,7 +175,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   switch(m_textStyle)
   {
   case TS_SPECIAL_CONSTANT:
-    if (parser.HaveSymbolFont() && m_text == wxT("%pi"))
+    if (parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
                         parser.IsItalic(TS_GREEK_CONSTANT),
@@ -200,7 +200,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontEncoding()));
     break;
   case TS_GREEK_CONSTANT:
-    if (parser.HaveSymbolFont())
+    if (parser.HaveGreekFont())
       dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
                         wxMODERN,
                         parser.IsItalic(TS_GREEK_CONSTANT),
@@ -275,6 +275,46 @@ wxString TextCell::ToString(bool all)
 {
   wxString text = m_text;
   return text + MathCell::ToString(all);
+}
+
+wxString TextCell::ToTeX(bool all)
+{
+  wxString text;
+  if (m_isHidden)
+    text = wxT("\\,");
+  else if (m_textStyle == TS_GREEK_CONSTANT)
+  {
+    text = m_text;
+    text.Replace(wxT("%"), wxT("\\"));
+  }
+  else if (m_textStyle == TS_SPECIAL_CONSTANT)
+  {
+    if (m_text == wxT("inf"))
+      text = wxT("\\infty ");
+    else if (m_text == wxT("%e"))
+      text = wxT("e");
+    else if (m_text == wxT("%i"))
+      text = wxT("i");
+    else if (m_text == wxT("%pi"))
+      text = wxT("\\pi ");
+    else
+      text = m_text;
+  }
+  else if (m_type == MC_TYPE_LABEL)
+  {
+    text = wxT("\\leqno{\\tt ") + m_text + wxT("}");
+    text.Replace(wxT("%"), wxT("\\%"));
+  }
+  else
+  {
+    text = m_text;
+    text.Replace(wxT("\\"), wxT("\\\\"));
+    text.Replace(wxT("^"), wxT("\\^"));
+    text.Replace(wxT("_"), wxT("\\_"));
+    text.Replace(wxT("%"), wxT("\\%"));
+  }
+  
+  return text + MathCell::ToTeX(all);
 }
 
 wxString TextCell::GetDiffPart()
