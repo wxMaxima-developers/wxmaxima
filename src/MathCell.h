@@ -87,7 +87,11 @@ public:
   bool ContainsRect(wxRect& big, bool all = true);
   bool ContainsPoint(wxPoint& point)
   {
+#if wxCHECK_VERSION(2, 7, 1)
+    return GetRect().Contains(point);
+#else
     return GetRect().Inside(point);
+#endif
   }
   void CopyData(MathCell *s, MathCell *t);
 

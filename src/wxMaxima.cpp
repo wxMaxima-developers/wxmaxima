@@ -49,6 +49,10 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 
+#if wxCHECK_VERSION(2, 7, 1)
+ #include <wx/aboutdlg.h>
+#endif
+
 enum {
   maxima_process_id
 };
@@ -1253,7 +1257,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      wxString title(_("Maxima session"));
+      wxString title(_("wxMaxima session"));
       if (m_currentFile.Length())
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, NULL);
       MathPrintout printout(title);
@@ -2701,6 +2705,28 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case wxID_ABOUT:
+#if wxCHECK_VERSION(2, 7, 1)
+  {
+    wxAboutDialogInfo info;
+    
+    info.SetName(_("wxMaxima"));
+    info.SetVersion(wxT(VERSION));
+    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
+    
+    info.SetCopyright(wxT("(C) 2004-2006 Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
+    
+    info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
+    
+    info.AddTranslator(wxT("Eric Delevaux <ericdel@libertysurf.fr>"));
+    info.AddTranslator(wxT("Marco Ciampa <ciampix@libero.it>"));
+    info.AddTranslator(wxT("Antonio Ullan <aullan@unex.es>"));
+    info.AddTranslator(wxT("Harald Geyer <Harald.Geyer@gmx.at>"));
+    info.AddTranslator(wxT("Eduardo M. Kalinowski"));
+    info.AddTranslator(wxT("Vadim V. Zhytnikov"));
+
+    wxAboutBox(info);
+  }
+#else
     wxMessageBox(wxString::Format(
                    _("wxMaxima is a wxWidgets interface for the\n"
                      "computer algebra system MAXIMA.\n"
@@ -2711,6 +2737,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
                    wxT("http://wxmaxima.sourceforge.net/"),
                    wxT("http://maxima.sourceforge.net/")),
                  _("About wxMaxima"), wxOK | wxICON_INFORMATION);
+#endif
     break;
   case wxID_HELP:
 #if defined (__WXMSW__) || defined (__WXGTK20__)

@@ -119,7 +119,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     wxPoint point;
     point.x = MC_BASE_INDENT;
     point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
-    dcm.BeginDrawing();
     // Draw tree
     MathCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
@@ -205,17 +204,14 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         }
       }
     }
-    dcm.EndDrawing();
   }
 
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
-  dc.BeginDrawing();
   dc.Blit(0, rect.GetTop(),
           sz.x, rect.GetBottom() - rect.GetTop() + 1,
           &dcm,
           0, rect.GetTop());
-  dc.EndDrawing();
 }
 
 /***
