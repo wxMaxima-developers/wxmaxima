@@ -69,11 +69,12 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   const wxString combo_box_1_choices[] =
     {
       _("default"),
+      _("inline"),
       wxT("gnuplot"),
       wxT("openmath")
     };
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(150, -1), 3, combo_box_1_choices,
+                               wxSize(150, -1), 4, combo_box_1_choices,
                                wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] =
@@ -123,13 +124,16 @@ void Plot3DWiz::set_properties()
   text_ctrl_9->SetValue(wxT("30"));
 
   button_3->SetToolTip(_("Browse"));
-  combo_box_1->SetSelection(0);
 #if defined __WXMSW__
   button_1->SetDefault();
   check_box_1->SetValue(true);
 #else
   button_2->SetDefault();
 #endif
+  
+  int selection = 1;
+  wxConfig::Get()->Read(wxT("Wiz/Plot3D/format"), &selection);
+  combo_box_1->SetSelection(selection);
 }
 
 
@@ -370,7 +374,7 @@ wxString Plot3DWiz::GetValue()
   s += wxT(",") + text_ctrl_6->GetValue();
   s += wxT(",") + text_ctrl_7->GetValue();
   s += wxT("]");
-  if (f != _("default"))
+  if (f != _("default") && f != _("inline"))
     s += wxT(", [plot_format,") + f + wxT("]");
   if (xg != 30 || yg != 30)
   {
@@ -401,8 +405,15 @@ wxString Plot3DWiz::GetValue()
       file = file + wxT(".eps");
     s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
   }
-  s += wxT(")$");
+  else if (f == _("inline"))
+    s = wxT("wx") + s;
+  
+  if (file.Length() == 0 && f == _("inline"))
+    s += wxT(");");
+  else
+    s += wxT(")$");
 
+  wxConfig::Get()->Write(wxT("Wiz/Plot3D/format"), combo_box_1->GetSelection());
   return s;
 }
 

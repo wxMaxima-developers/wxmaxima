@@ -28,6 +28,8 @@
  (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
  (*expr wxxml-lbp wxxml-rbp))
 
+($put '$wxmaxima `((mlist simp) 0 7 1) '$version)
+
 (setf (get '$inchar 'assign) 'neverset)
 
 (defun wxxml (x l r lop rop)
@@ -914,6 +916,47 @@
 		 (wxxml-list (cddr x) nil nil ",")
                  (list ")</r></i>") r))))
 
+;;
+;; Plotting support
+;;
+
+(defun $wxplot2d (&rest args)
+  (let ((preamble "set terminal png size 400,330; set zeroaxis")
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2)))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$plot2d `((mlist simp) ,@args
+				((mlist simp) $plot_format $gnuplot)
+				((mlist simp) $gnuplot_preamble ,preamble)
+				((mlist simp) $gnuplot_term $png)
+				((mlist simp) $gnuplot_out_file "maxout.png"))))
+    "<img>maxout.png</img>"))
+
+(defun $wxplot3d (&rest args)
+  (let ((preamble "set terminal png size 400,330;")
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2)))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$plot3d `((mlist simp) ,@args
+				((mlist simp) $plot_format $gnuplot)
+				((mlist simp) $gnuplot_preamble ,preamble)
+				((mlist simp) $gnuplot_term $png)
+				((mlist simp) $gnuplot_out_file "maxout.png"))))
+    "<img>maxout.png</img>"))
 
 ;;
 ;; Port of Barton Willis's texput function.

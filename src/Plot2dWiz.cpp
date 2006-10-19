@@ -20,6 +20,7 @@
 #include "Plot2dWiz.h"
 
 #include <wx/artprov.h>
+#include <wx/config.h>
 
 enum {
   parametric,
@@ -67,11 +68,12 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   const wxString combo_box_1_choices[] =
     {
       _("default"),
+      _("inline"),
       wxT("gnuplot"),
       wxT("openmath")
     };
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(150, -1), 3,
+                               wxSize(150, -1), 4,
                                combo_box_1_choices, wxCB_DROPDOWN);
   label_11 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] =
@@ -125,7 +127,9 @@ void Plot2DWiz::set_properties()
   button_2->SetDefault();
 #endif
 
-  combo_box_1->SetSelection(0);
+  int selection = 1;
+  wxConfig::Get()->Read(wxT("Wiz/Plot2D/format"), &selection);
+  combo_box_1->SetSelection(selection);
 }
 
 
@@ -324,7 +328,7 @@ void Plot2DWiz::Parse(wxString s)
 
 wxString Plot2DWiz::GetValue()
 {
-  wxString f = combo_box_1->GetValue();     // function
+  wxString f = combo_box_1->GetValue();     // format
   wxString p = combo_box_2->GetValue();     // preamble
   wxString s = wxT("plot2d([");             // result
   wxString x1 = text_ctrl_3->GetValue();
@@ -362,7 +366,7 @@ wxString Plot2DWiz::GetValue()
     s += text_ctrl_5->GetValue();
     s += wxT(",") + y1 + wxT(",") + y2 + wxT("]");
   }
-  if (f != _("default"))
+  if (f != _("default") && f != _("inline"))
     s += wxT(", [plot_format, ") + f + wxT("]");
   if (p.Length() > 0)
     s += wxT(", [gnuplot_preamble, \"") + p + wxT("\"]");
@@ -383,8 +387,15 @@ wxString Plot2DWiz::GetValue()
       file = file + wxT(".eps");
     s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
   }
-  s += wxT(")$");
+  else if (f == _("inline"))
+    s = wxT("wx") + s;
+  
+  if (file.Length() == 0 && f == _("inline"))
+    s += wxT(");");
+  else
+    s += wxT(")$");
 
+  wxConfig::Get()->Write(wxT("Wiz/Plot2D/format"), combo_box_1->GetSelection());
   return s;
 }
 

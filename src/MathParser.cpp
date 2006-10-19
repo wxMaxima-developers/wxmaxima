@@ -34,10 +34,10 @@
 #include "IntCell.h"
 #include "FunCell.h"
 #include "EditorCell.h"
+#include "ImgCell.h"
 
 #include <wx/wx.h>
 #include <wx/config.h>
-//#include <wx/strconv.h>
 
 #define MAXLENGTH 50000
 
@@ -580,6 +580,18 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         m_highlight = true;
         MathCell* tmp = ParseTag(node->children);
         m_highlight = highlight;
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("img"))
+      {
+        wxString filename((const char*)(node->children->content), wxConvUTF8);
+        filename = ToLocal(filename);
+        
+        ImgCell *tmp = new ImgCell;
+        tmp->LoadImage(filename);
         if (cell == NULL)
           cell = tmp;
         else
