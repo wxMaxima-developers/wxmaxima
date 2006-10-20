@@ -920,14 +920,17 @@
 ;; Plotting support
 ;;
 
+(defmvar $wxplot_preamble "set terminal png size 400,250; set zeroaxis;")
+
 (defun $wxplot2d (&rest args)
-  (let ((preamble "set terminal png size 400,330; set zeroaxis")
-	(system-preamble (get-plot-option-string '$gnuplot_preamble 2)))
+  (let ((preamble $wxplot_preamble)
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (plot-temp-file "maxout.png")))
     (if (length system-preamble)
-	(setq preamble (format nil "~a ~a" preamble system-preamble)))
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	  (setq preamble (format nil "~a ~a"
+	  (setq preamble (format nil "~a; ~a"
 				 preamble
 				 (maybe-invert-string-case
 				  (symbol-name
@@ -936,17 +939,18 @@
 				((mlist simp) $plot_format $gnuplot)
 				((mlist simp) $gnuplot_preamble ,preamble)
 				((mlist simp) $gnuplot_term $png)
-				((mlist simp) $gnuplot_out_file "maxout.png"))))
-    "<img>maxout.png</img>"))
+				((mlist simp) $gnuplot_out_file ,filename))))
+    (format nil "<img>~a</img>" filename)))
 
 (defun $wxplot3d (&rest args)
-  (let ((preamble "set terminal png size 400,330;")
-	(system-preamble (get-plot-option-string '$gnuplot_preamble 2)))
+  (let ((preamble $wxplot_preamble)
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (plot-temp-file "maxout.png")))
     (if (length system-preamble)
-	(setq preamble (format nil "~a ~a" preamble system-preamble)))
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	  (setq preamble (format nil "~a ~a"
+	  (setq preamble (format nil "~a; ~a"
 				 preamble
 				 (maybe-invert-string-case
 				  (symbol-name
@@ -955,8 +959,8 @@
 				((mlist simp) $plot_format $gnuplot)
 				((mlist simp) $gnuplot_preamble ,preamble)
 				((mlist simp) $gnuplot_term $png)
-				((mlist simp) $gnuplot_out_file "maxout.png"))))
-    "<img>maxout.png</img>"))
+				((mlist simp) $gnuplot_out_file ,filename))))
+    (format nil "<img>~a</img>" filename)))
 
 ;;
 ;; Port of Barton Willis's texput function.
