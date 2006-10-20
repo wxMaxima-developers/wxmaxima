@@ -39,12 +39,31 @@ void ImgCell::LoadImage(wxString image)
   if (m_bitmap != NULL)
     delete m_bitmap;
   
-  wxFile imageFile(image);
-  if (imageFile.Length() == 0)
+  bool loadedImage = false;
+  
+  if (wxFileExists(image))
+  {
+    wxFile imageFile(image);
+    
+    if (imageFile.Length())
+    {
+      wxImage pngImage(image, wxBITMAP_TYPE_PNG);
+  
+      if (pngImage.Ok())
+      {
+        loadedImage = true;
+        m_bitmap = new wxBitmap(pngImage);
+      }
+    }
+    
+    imageFile.Close();
+  }
+      
+  if (!loadedImage)
   {
     m_bitmap = new wxBitmap;
     
-    m_bitmap->Create(500, 400);
+    m_bitmap->Create(400, 250);
     
     wxString error(_("Error"));
     
@@ -54,19 +73,11 @@ void ImgCell::LoadImage(wxString image)
     int width = 0, height = 0;
     dc.GetTextExtent(error, &width, &height);
     
-    dc.DrawRectangle(0, 0, 500, 400);
-    dc.DrawLine(0, 0,   500, 400);
-    dc.DrawLine(0, 400, 500, 0);
-    dc.DrawText(error, 250 - width/2, 200 - height/2);
+    dc.DrawRectangle(0, 0, 400, 250);
+    dc.DrawLine(0, 0,   400, 250);
+    dc.DrawLine(0, 250, 400, 0);
+    dc.DrawText(error, 200 - width/2, 125 - height/2);
   }
-  else {
-    wxImage pngImage(image, wxBITMAP_TYPE_PNG);
-  
-    if (pngImage.Ok())
-      m_bitmap = new wxBitmap(pngImage);
-  }
-  
-  imageFile.Close();
 }
 
 MathCell* ImgCell::Copy(bool all)
