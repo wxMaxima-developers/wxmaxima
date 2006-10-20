@@ -592,6 +592,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
         
         ImgCell *tmp = new ImgCell;
         tmp->LoadImage(filename);
+        wxRemoveFile(filename);
         if (cell == NULL)
           cell = tmp;
         else
