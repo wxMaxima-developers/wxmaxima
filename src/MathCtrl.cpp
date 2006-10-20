@@ -913,8 +913,6 @@ bool MathCtrl::CopyTeX()
     tmp = tmp->m_nextToDraw;
   }
   
-  wxMessageBox(s);
-  
   if (wxTheClipboard->Open())
   {
     wxTheClipboard->SetData(new wxTextDataObject(s));
