@@ -397,6 +397,11 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
     SetupVariables();
   }
 
+#if wxUSE_UNICODE
+  s.Replace(wxT("\x00B2"), wxT("^2"));
+  s.Replace(wxT("\x00B3"), wxT("^3"));
+#endif
+  
   if (s.StartsWith(wxT("<ml>")))
   {
     s = s.SubString(4, s.Length());
