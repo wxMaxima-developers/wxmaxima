@@ -124,16 +124,21 @@ void Plot3DWiz::set_properties()
   text_ctrl_9->SetValue(wxT("30"));
 
   button_3->SetToolTip(_("Browse"));
+  
+  bool pm3dValue = false;
 #if defined __WXMSW__
   button_1->SetDefault();
-  check_box_1->SetValue(true);
+  pm3dValue = true;
 #else
   button_2->SetDefault();
 #endif
   
   int selection = 1;
   wxConfig::Get()->Read(wxT("Wiz/Plot3D/format"), &selection);
+  wxConfig::Get()->Read(wxT("Wiz/Plot3D/pm3d"), &pm3dValue);
+  
   combo_box_1->SetSelection(selection);
+  check_box_1->SetValue(pm3dValue);
 }
 
 
@@ -195,6 +200,11 @@ void Plot3DWiz::SetValue(wxString s)
 {
   if (s.StartsWith(wxT("plot3d")))
     Parse(s);
+  else if (s.StartsWith(wxT("wxplot3d")))
+  {
+    Parse(s.SubString(2, s.Length()));
+    combo_box_1->SetValue(_("inline"));
+  }
   else
     text_ctrl_1->SetValue(s);
 }
@@ -414,6 +424,7 @@ wxString Plot3DWiz::GetValue()
     s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot3D/format"), combo_box_1->GetSelection());
+  wxConfig::Get()->Write(wxT("Wiz/Plot3D/pm3d"), check_box_1->GetValue());
   return s;
 }
 

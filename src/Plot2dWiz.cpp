@@ -128,8 +128,13 @@ void Plot2DWiz::set_properties()
 #endif
 
   int selection = 1;
+  bool sendRanges = false;
+  
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/format"), &selection);
+  wxConfig::Get()->Read(wxT("Wiz/Plot2D/sendRanges"), &sendRanges);
+  
   combo_box_1->SetSelection(selection);
+  checkbox_1->SetValue(sendRanges);
 }
 
 
@@ -189,6 +194,11 @@ void Plot2DWiz::SetValue(wxString s)
 {
   if (s.StartsWith(wxT("plot2d")))
     Parse(s);
+  else if (s.StartsWith(wxT("wxplot2d")))
+  {
+    Parse(s.SubString(2, s.Length()));
+    combo_box_1->SetValue(_("inline"));
+  }
   else
     text_ctrl_1->SetValue(s);
 }
@@ -198,6 +208,7 @@ void Plot2DWiz::Parse(wxString s)
   int depth = 0;
   unsigned int i = 0;
   wxString curr;
+  
   s = s.SubString(7, s.Length());
   // Function to plot
   do
@@ -396,6 +407,7 @@ wxString Plot2DWiz::GetValue()
     s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot2D/format"), combo_box_1->GetSelection());
+  wxConfig::Get()->Write(wxT("Wiz/Plot2D/sendRanges"), checkbox_1->GetValue());
   return s;
 }
 
