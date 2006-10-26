@@ -962,6 +962,29 @@
 				((mlist simp) $gnuplot_out_file ,filename))))
     (format nil "<img>~a</img>" filename)))
 
+(defun $wximplicit_plot (&rest args)
+  (if (not (fboundp '$implicit_plot))
+      ($load "implicit_plot"))
+  (let ((preamble $wxplot_preamble)
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (plot-temp-file "maxout.png")))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$implicit_plot `((mlist simp) ,@args
+				((mlist simp) $plot_format $gnuplot)
+				((mlist simp) $gnuplot_preamble ,preamble)
+				((mlist simp) $gnuplot_term $png)
+				((mlist simp) $gnuplot_out_file ,filename))))
+    (format nil "<img>~a</img>" filename)))
+
+
 ;;
 ;; Port of Barton Willis's texput function.
 ;;
