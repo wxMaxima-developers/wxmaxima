@@ -8,11 +8,11 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-09 20:02+0200\n"
-"PO-Revision-Date: 2006-08-09 20:27+0200\n"
+"PO-Revision-Date: 2006-10-27 00:30+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/MathParser.cpp:648
@@ -1120,9 +1120,7 @@ msgstr "Ingresso:"
 msgid ""
 "If you want to input more than one line at a time, use the 'Multiline input' "
 "button at the right of the input line."
-msgstr ""
-"Se si vuole inserire pi˘ di una riga alla volta, usare il tasto \"Ingresso "
-"multiriga\" alla destra della riga di ingresso."
+msgstr "Se si vuole inserire pi√π di una riga alla volta, usare il tasto \"Ingresso multiriga\" alla destra della riga di ingresso."
 
 #: ../src/wxMaximaFrame.cpp:321
 msgid "Increase fontsize in console"
@@ -1176,9 +1174,7 @@ msgstr "Inserisci il titolo prima dell'ingresso selezionato"
 msgid ""
 "Instead of typing a long pathname of a file to input line, you can select "
 "that file using 'File->Select file'."
-msgstr ""
-"Invece di battere un lungo percorso di un file nella riga di ingresso Ë "
-"possibile selezionare il file da usare con \"File->Seleziona file\"."
+msgstr "Invece di battere un lungo percorso di un file nella riga di ingresso √® possibile selezionare il file da usare con \"File->Seleziona file\"."
 
 #: ../src/wxMaxima.cpp:2296
 msgid "Integral/sum:"
@@ -1470,7 +1466,7 @@ msgstr "Altri prompt"
 
 #: ../src/wxMaximaFrame.cpp:467
 msgid "P&ade approximation ..."
-msgstr "Approssimazione di P&adÈ ..."
+msgstr "Approssimazione di P&ade ..."
 
 #: ../src/wxMaxima.cpp:1581
 msgid ""
@@ -1482,7 +1478,7 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:2316
 msgid "Pade approximation"
-msgstr "Approssimazione di PadÈ"
+msgstr "Approssimazione di Pade"
 
 #: ../src/wxMaximaFrame.cpp:468
 msgid "Pade approximation of a Taylor series"
@@ -1522,7 +1518,7 @@ msgstr "Configurare wxMaxima con \"Modifica->Configura\"."
 
 #: ../src/Config.cpp:839
 msgid "Please restart wxMaxima for changes to take effect!"
-msgstr "Riavviare wxMaxima perchË i cambiamenti abbiano effetto!"
+msgstr "Riavviare wxMaxima perch√© i cambiamenti abbiano effetto!"
 
 #: ../src/wxMaximaFrame.cpp:592
 msgid "Plot &2d ..."
@@ -2146,7 +2142,7 @@ msgid ""
 "\n"
 "Please report this as a bug."
 msgstr ""
-"C'Ë stato un'errore nell'XML generato!\n"
+"C'√® stato un'errore nell'XML generato!\n"
 "\n"
 "Fate un rapporto di questo bug."
 
@@ -2183,10 +2179,7 @@ msgid ""
 "To plot in polar coordinates, select 'set polar' in the Options entry for "
 "Plot2d dialog. You can also plot in spherical and cylindrical coordinates in "
 "3D."
-msgstr ""
-"Per disegnare un grafico in coordinate polari selezionare \"imposta polari\" "
-"nella voce Opzioni della finestra di dialogo Grafico2D. » anche possibile "
-"fare grafici in coordinate sferiche e cilindriche in 3D."
+msgstr "Per disegnare un grafico in coordinate polari selezionare \"imposta polari\" nella voce Opzioni della finestra di dialogo Grafico2D. √à anche possibile fare grafici in coordinate sferiche e cilindriche in 3D."
 
 #: ../data/tips.txt:11
 msgid ""
@@ -2296,11 +2289,7 @@ msgid ""
 "When applying functions with one argument from menus, the default argument "
 "is '%'. To apply the function to some other value, enter it into the input "
 "line. You can also select a previous (sub)expression for this value."
-msgstr ""
-"Applicando le funzioni da un'argomento da menu, l'argomento predefinito Ë \"%"
-"\". Per applicare le funzioni ad altri valori, inserirli nella riga "
-"d'ingresso. Per questo valore Ë possibile selezionare anche una precedente "
-"(sotto)espressione."
+msgstr "Applicando le funzioni da un'argomento da menu, l'argomento predefinito √® \"%\". Per applicare le funzioni ad altri valori, inserirli nella riga d'ingresso. Per questo valore √® possibile selezionare anche una precedente (sotto)espressione."
 
 #: ../src/Config.cpp:172
 msgid "Write matching parenthesis in text controls."
@@ -2311,10 +2300,7 @@ msgid ""
 "You can access the last output using the variable '%'. You can access the "
 "output of previous commands using variables '%on' where n is the number of "
 "output."
-msgstr ""
-"Puoi accedere all'ultimo risultato usando la variabile \"%\". Per accedere "
-"ai risultati dei comandi precedenti usare le variabili \"%on\" dove n Ë il "
-"numero del risultato."
+msgstr "Puoi accedere all'ultimo risultato usando la variabile \"%\". Per accedere ai risultati dei comandi precedenti usare le variabili \"%on\" dove n √® il numero del risultato."
 
 #: ../data/tips.txt:18
 msgid ""
@@ -2349,11 +2335,7 @@ msgid ""
 "can select a custom function for loading your file. If your custom function "
 "is 'A:read_matrix(%file%, csv)', then %file% will be replaced with the "
 "filename of your file."
-msgstr ""
-"Puoi caricare i file in maxima anche trascinandoli sulla finestra console. » "
-"anche possibile selezionare una funzione personalizzata per caricare il "
-"file. Se la funzione personalizzata Ë \"A:read_matrix(%file%, CSV) allora %"
-"file% verr‡ sostituito con il nome del file."
+msgstr "Puoi caricare i file in maxima anche trascinandoli sulla finestra console. √à anche possibile selezionare una funzione personalizzata per caricare il file. Se la funzione personalizzata √® \"A:read_matrix(%file%, CSV) allora %file% verr√† sostituito con il nome del file."
 
 #: ../data/tips.txt:14
 msgid ""
@@ -2367,9 +2349,7 @@ msgstr ""
 msgid ""
 "You can use the maxima tex command to print the expression in TeX form. Then "
 "you can copy it to text editor to include it in you paper."
-msgstr ""
-"Puoi usare il comando tex maxima per stampare l'espressione in formato TeX. "
-"Poi si puÚ copiarlo in un editor di testi per inserirlo in uno scritto."
+msgstr "Puoi usare il comando tex maxima per stampare l'espressione in formato TeX. Poi si pu√≤ copiarlo in un editor di testi per inserirlo in uno scritto."
 
 #: ../src/wxMaximaFrame.cpp:320
 msgid "Zoom &in\tAlt-I"
@@ -2483,7 +2463,7 @@ msgstr "denom deg:"
 
 #: ../src/SeriesWiz.cpp:43
 msgid "depth:"
-msgstr "profondit‡:"
+msgstr "profondit√†:"
 
 #: ../src/MatWiz.cpp:165
 msgid "diagonal"
@@ -2755,12 +2735,12 @@ msgstr "tan"
 
 #: ../src/wxMaxima.cpp:1865
 msgid "the derivative is:"
-msgstr "la derivata Ë:"
+msgstr "la derivata √®:"
 
 #: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:1849
 #: ../src/wxMaxima.cpp:1865
 msgid "the value is:"
-msgstr "il valore Ë:"
+msgstr "il valore √®:"
 
 #: ../src/Config.cpp:137
 msgid "thistle"
@@ -2900,10 +2880,7 @@ msgid ""
 "wxMaxima dialogs set default values for inputs entries, one of which is '%'. "
 "To change this argument to some other value, enter it to the input line or "
 "select an expression in the console window."
-msgstr ""
-"wxMaxima imposta le finestre di ingresso dati ai valori predefiniti, uno dei "
-"quali Ë \"%\". Per cambiare questo argomento in un'altro valore, inserirlo "
-"nella riga d'ingresso o selezionare un'espressione nella finestra di console."
+msgstr "wxMaxima imposta le finestre di ingresso dati ai valori predefiniti, uno dei quali √® \"%\". Per cambiare questo argomento in un'altro valore, inserirlo nella riga d'ingresso o selezionare un'espressione nella finestra di console."
 
 #: ../data/tips.txt:5
 msgid ""
@@ -2930,7 +2907,7 @@ msgid ""
 "%s\n"
 "%s"
 msgstr ""
-"wxMaxima Ë un'interfaccia a wxWidgets\n"
+"wxMaxima √® un'interfaccia a wxWidgets\n"
 "per il sistema algebrico Maxima.\n"
 "\n"
 "Versione: %s.\n"
@@ -2951,10 +2928,7 @@ msgstr "Sessione wxMaxima (*.wxm)|*.wxm"
 msgid ""
 "wxMaxima's input line has command history available using up and down keys "
 "and command completion based on previous input available using the tab key."
-msgstr ""
-"La riga d'ingresso di wxMaxima mantiene la cronologia dei comandi. Essa Ë "
-"accessibile tramite i tasti freccia in su e freccia in giu oppure con il "
-"completamento automatico della riga usando il tasto di tabulazione."
+msgstr "La riga d'ingresso di wxMaxima mantiene la cronologia dei comandi. Essa √® accessibile tramite i tasti freccia in su e freccia in giu oppure con il completamento automatico della riga usando il tasto di tabulazione."
 
 #: ../src/Config.cpp:138
 msgid "yellow"
