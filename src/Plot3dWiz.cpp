@@ -388,7 +388,7 @@ wxString Plot3DWiz::GetValue()
     s += wxT(", [plot_format,") + f + wxT("]");
   if (xg != 30 || yg != 30)
   {
-    s += wxT(", [grid,");
+    s += wxT(",\n [grid,");
     s += wxString::Format(wxT("%d"), xg);
     s += wxT(",");
     s += wxString::Format(wxT("%d"), yg);
@@ -396,24 +396,24 @@ wxString Plot3DWiz::GetValue()
   }
 #if defined (__WXMSW__)
   if (!check_box_1->IsChecked())
-    s += wxT(", [gnuplot_pm3d,false]");
+    s += wxT(",\n [gnuplot_pm3d,false]");
 #else
   if (check_box_1->IsChecked())
-    s += wxT(", [gnuplot_pm3d,true]");
+    s += wxT(",\n [gnuplot_pm3d,true]");
 #endif
 
   if (p.Length() > 0)
-    s += wxT(", [gnuplot_preamble, \"") + p + wxT("\"]");
+    s += wxT(",\n [gnuplot_preamble, \"") + p + wxT("\"]");
   if (file.Length())
   {
-    s += wxT(", [gnuplot_term, ps]");
+    s += wxT(",\n [gnuplot_term, ps]");
 #if defined (__WXMSW__)
     file.Replace(wxT("\\"), wxT("/"));
 #endif
 
     if (file.Right(4) != wxT(".eps") && file.Right(3) != wxT(".ps"))
       file = file + wxT(".eps");
-    s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
+    s += wxT(",\n [gnuplot_out_file, \"") + file + wxT("\"]");
   }
   else if (f == _("inline"))
     s = wxT("wx") + s;

@@ -378,12 +378,12 @@ wxString Plot2DWiz::GetValue()
     s += wxT(",") + y1 + wxT(",") + y2 + wxT("]");
   }
   if (f != _("default") && f != _("inline"))
-    s += wxT(", [plot_format, ") + f + wxT("]");
+    s += wxT(",\n [plot_format, ") + f + wxT("]");
   if (p.Length() > 0)
-    s += wxT(", [gnuplot_preamble, \"") + p + wxT("\"]");
+    s += wxT(",\n [gnuplot_preamble, \"") + p + wxT("\"]");
   if (t != 10)
   {
-    s += wxT(", [nticks,");
+    s += wxT(",\n [nticks,");
     s += wxString::Format(wxT("%d"), t);
     s += wxT("]");
   }
@@ -396,7 +396,7 @@ wxString Plot2DWiz::GetValue()
 
     if (file.Right(4) != wxT(".eps") && file.Right(3) != wxT(".ps"))
       file = file + wxT(".eps");
-    s += wxT(", [gnuplot_out_file, \"") + file + wxT("\"]");
+    s += wxT(",\n [gnuplot_out_file, \"") + file + wxT("\"]");
   }
   else if (f == _("inline"))
     s = wxT("wx") + s;
