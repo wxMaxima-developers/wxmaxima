@@ -49,7 +49,8 @@ enum {
   MC_TYPE_ERROR,
   MC_TYPE_COMMENT,
   MC_TYPE_SECTION,
-  MC_TYPE_TITLE
+  MC_TYPE_TITLE,
+  MC_TYPE_IMAGE
 };
 
 class MathCell

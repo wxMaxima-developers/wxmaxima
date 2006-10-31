@@ -47,7 +47,8 @@ enum {
   popid_reeval,
   popid_add_comment,
   popid_insert_input,
-  popid_copy_tex
+  popid_copy_tex,
+  popid_image
 };
 
 class MathCtrl: public wxScrolledWindow

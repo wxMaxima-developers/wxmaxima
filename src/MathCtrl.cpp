@@ -389,71 +389,78 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
     if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
       return ;
 
-    if (CanCopy())
+    if (m_selectionStart == m_selectionEnd && m_selectionStart->GetType() == MC_TYPE_IMAGE)
     {
-      popupMenu->Append(popid_copy, _("Copy"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_copy_text, _("Copy text"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_copy_tex, _("Copy TeX"),
-                        wxEmptyString, wxITEM_NORMAL);
-#if defined __WXMSW__
-      popupMenu->Append(popid_copy_image, _("Copy as image"),
-                        wxEmptyString, wxITEM_NORMAL);
-#endif
-
-      if (CanDeleteSelection())
-          popupMenu->Append(popid_delete, _("Delete selection"),
-                            wxEmptyString, wxITEM_NORMAL);
-
-      popupMenu->AppendSeparator();
-    }
-    if (CanEdit())
-    {
-      popupMenu->Append(popid_edit, _("Edit input"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_reeval, _("Re-evaluate input"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_insert_input, _("Insert input"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_add_comment, _("Insert text"),
-                        wxEmptyString, wxITEM_NORMAL);
-    }
-    else if (CanAddComment())
-    {
-      popupMenu->Append(popid_insert_input, _("Insert input"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_add_comment, _("Insert text"),
-                        wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_image, _("Save image"), wxEmptyString, wxITEM_NORMAL);
     }
     else
     {
-      popupMenu->Append(popid_float, _("To float"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->AppendSeparator();
-      popupMenu->Append(popid_solve, _("Solve ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_solve_num, _("Solve numerically ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->AppendSeparator();
-      popupMenu->Append(popid_simplify, _("Simplify expression"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_factor, _("Factor expression"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_expand, _("Expand expression"),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_subst, _("Substitute ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->AppendSeparator();
-      popupMenu->Append(popid_integrate, _("Integrate ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_diff, _("Differentiate ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->AppendSeparator();
-      popupMenu->Append(popid_plot2d, _("Plot 2d ..."),
-                        wxEmptyString, wxITEM_NORMAL);
-      popupMenu->Append(popid_plot3d, _("Plot 3d ..."),
-                        wxEmptyString, wxITEM_NORMAL);
+      if (CanCopy())
+      {
+        popupMenu->Append(popid_copy, _("Copy"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_copy_text, _("Copy text"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_copy_tex, _("Copy TeX"),
+                          wxEmptyString, wxITEM_NORMAL);
+  #if defined __WXMSW__
+        popupMenu->Append(popid_copy_image, _("Copy as image"),
+                          wxEmptyString, wxITEM_NORMAL);
+  #endif
+
+        if (CanDeleteSelection())
+            popupMenu->Append(popid_delete, _("Delete selection"),
+                              wxEmptyString, wxITEM_NORMAL);
+
+        popupMenu->AppendSeparator();
+      }
+      if (CanEdit())
+      {
+        popupMenu->Append(popid_edit, _("Edit input"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_reeval, _("Re-evaluate input"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_insert_input, _("Insert input"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_add_comment, _("Insert text"),
+                          wxEmptyString, wxITEM_NORMAL);
+      }
+      else if (CanAddComment())
+      {
+        popupMenu->Append(popid_insert_input, _("Insert input"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_add_comment, _("Insert text"),
+                          wxEmptyString, wxITEM_NORMAL);
+      }
+      else
+      {
+        popupMenu->Append(popid_float, _("To float"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_solve, _("Solve ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_solve_num, _("Solve numerically ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_simplify, _("Simplify expression"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_factor, _("Factor expression"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_expand, _("Expand expression"),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_subst, _("Substitute ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_integrate, _("Integrate ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_diff, _("Differentiate ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_plot2d, _("Plot 2d ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_plot3d, _("Plot 3d ..."),
+                          wxEmptyString, wxITEM_NORMAL);
+      }
     }
   }
   else {
@@ -856,14 +863,14 @@ bool MathCtrl::CopyTeX()
 
   if (m_selectionStart == NULL)
     return false;
-  
+
   wxString s;
   MathCell* tmp = m_selectionStart;
 
   bool inMath = false;
   bool inVerbatim = false;
   wxString label;
-  
+
   while (tmp != NULL)
   {
     if (tmp->GetType() == MC_TYPE_MAIN_PROMPT || tmp->GetType() == MC_TYPE_INPUT)
@@ -912,7 +919,7 @@ bool MathCtrl::CopyTeX()
     }
     tmp = tmp->m_nextToDraw;
   }
-  
+
   if (wxTheClipboard->Open())
   {
     wxTheClipboard->SetData(new wxTextDataObject(s));
@@ -1151,7 +1158,7 @@ void MathCtrl::OnChar(wxKeyEvent& event)
       if (height != m_activeCell->GetHeight())
         hasHeightChanged = true;
     }
-    
+
     if (hasHeightChanged)
       Refresh();
     else
@@ -1327,7 +1334,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event)
       if (m_switchDisplayCaret)
       {
         m_activeCell->SwitchCaretDisplay();
-        
+
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
         RefreshRect(rect);
@@ -2164,7 +2171,7 @@ bool MathCtrl::SelectLastInput()
 
   if (m_activeCell != NULL)
     return false;
-  
+
   while (tmp != NULL)
   {
     while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)

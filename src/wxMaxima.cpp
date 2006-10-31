@@ -155,7 +155,7 @@ void wxMaxima::InitSession()
 {
   bool server = false;
   int defaultPort = 4010;
-  
+
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_port = defaultPort;
 
@@ -401,7 +401,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
   s.Replace(wxT("\x00B2"), wxT("^2"));
   s.Replace(wxT("\x00B3"), wxT("^3"));
 #endif
-  
+
   if (s.StartsWith(wxT("<ml>")))
   {
     s = s.SubString(4, s.Length());
@@ -1200,18 +1200,18 @@ void wxMaxima::DumpProcessOutput()
   {
     o += m_input->GetC();
   }
-  
+
   wxMessageBox(o, wxT("Process output (stdout)"));
-  
+
   o = wxEmptyString;
   wxInputStream *error = m_process->GetErrorStream();
   while (m_process->IsErrorAvailable())
   {
     o += error->GetC();
   }
-  
+
   wxMessageBox(o, wxT("Process output (stderr)"));
-  
+
 }
 
 ///--------------------------------------------------------------------------------
@@ -2713,15 +2713,15 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #if wxCHECK_VERSION(2, 7, 1)
   {
     wxAboutDialogInfo info;
-    
+
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
     info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
-    
+
     info.SetCopyright(wxT("(C) 2004-2006 Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-    
+
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-    
+
     info.AddTranslator(wxT("Eric Delevaux <ericdel@libertysurf.fr>"));
     info.AddTranslator(wxT("Marco Ciampa <ciampix@libero.it>"));
     info.AddTranslator(wxT("Antonio Ullan <aullan@unex.es>"));
@@ -2973,6 +2973,22 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case popid_float:
     SendMaxima(wxT("float(") + selection + wxT("), numer;"));
     break;
+  case popid_image:
+    {
+      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+                                     wxT("image.png"), wxT("png"),
+                                     _("PNG image (*.png)|*.png|"
+                                       "JPEG image (*.jpg)|*.jpg|"
+                                       "Windows bitmap (*.bmp)|*.bmp|"
+                                       "X pixmap (*.xpm)|*.xpm"),
+                                     wxSAVE | wxOVERWRITE_PROMPT);
+      if (file.Length())
+      {
+        m_console->CopyToFile(file);
+        m_lastPath = wxPathOnly(file);
+      }
+    }
+    break;
   }
 }
 
@@ -3157,6 +3173,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_integrate, wxMaxima::PopupMenu)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
+  EVT_MENU(popid_image, wxMaxima::PopupMenu)
   EVT_TEXT_ENTER(input_line_id, wxMaxima::EnterCommand)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
