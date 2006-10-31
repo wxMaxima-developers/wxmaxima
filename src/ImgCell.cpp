@@ -24,6 +24,7 @@
 ImgCell::ImgCell() : MathCell()
 {
   m_bitmap = NULL;
+  m_type = MC_TYPE_IMAGE;
 }
 
 ImgCell::~ImgCell()
@@ -38,41 +39,41 @@ void ImgCell::LoadImage(wxString image)
 {
   if (m_bitmap != NULL)
     delete m_bitmap;
-  
+
   bool loadedImage = false;
-  
+
   if (wxFileExists(image))
   {
     wxFile imageFile(image);
-    
+
     if (imageFile.Length())
     {
       wxImage pngImage(image, wxBITMAP_TYPE_PNG);
-  
+
       if (pngImage.Ok())
       {
         loadedImage = true;
         m_bitmap = new wxBitmap(pngImage);
       }
     }
-    
+
     imageFile.Close();
   }
-      
+
   if (!loadedImage)
   {
     m_bitmap = new wxBitmap;
-    
+
     m_bitmap->Create(400, 250);
-    
+
     wxString error(_("Error"));
-    
+
     wxMemoryDC dc;
     dc.SelectObject(*m_bitmap);
-    
+
     int width = 0, height = 0;
     dc.GetTextExtent(error, &width, &height);
-    
+
     dc.DrawRectangle(0, 0, 400, 250);
     dc.DrawLine(0, 0,   400, 250);
     dc.DrawLine(0, 250, 400, 0);
@@ -84,9 +85,9 @@ MathCell* ImgCell::Copy(bool all)
 {
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
-  
+
   tmp->m_bitmap = new wxBitmap(*m_bitmap);
-  
+
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -106,9 +107,9 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_width = m_bitmap->GetWidth() + 2;
   else
     m_width = 0;
-  
+
   double scale = parser.GetScale();
-  
+
   m_width = (int) (scale * m_width);
 }
 
@@ -118,10 +119,10 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = m_bitmap->GetHeight() + 2;
   else
     m_height = 0;
-  
+
   double scale = parser.GetScale();
   m_height= (int) (scale * m_height);
-  
+
   m_center = m_height / 2;
 }
 
@@ -133,20 +134,20 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
-    
+
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
-    
+
     if (scale != 1.0)
     {
       wxImage img = m_bitmap->ConvertToImage();
       img.Rescale(m_width, m_height);
-      
+
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
     }
     else
       bitmapDC.SelectObject(*m_bitmap);
-    
+
     dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
   }
   MathCell::Draw(parser, point, fontsize, all);
