@@ -422,6 +422,7 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
     SetStatusText(_("Maxima is calculating"), 1);
     m_dispReadOut = false;
   }
+  s.Replace(wxT("\n"), wxEmptyString);
   s.Append(wxT("\n"));
   m_console->EnableEdit(false);
 
@@ -2989,6 +2990,11 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       }
     }
     break;
+#if defined __WXMSW__
+  case popid_image_copy:
+    m_console->CopyBitmap();
+    break;
+#endif
   }
 }
 
@@ -3174,6 +3180,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
+#if defined __WXMSW__
+  EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
+#endif
   EVT_TEXT_ENTER(input_line_id, wxMaxima::EnterCommand)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
