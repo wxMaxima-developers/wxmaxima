@@ -41,6 +41,7 @@ private:
   void OnButton(wxCommandEvent& event);
   void OnCombobox(wxCommandEvent& event);
   void OnFileBrowse(wxCommandEvent& event);
+  void OnPopupMenu(wxCommandEvent& event);
   void Parse(wxString in);
 protected:
   int type;
@@ -76,11 +77,10 @@ protected:
   DECLARE_EVENT_TABLE()
 };
 
-
-class Plot2dPar: public wxDialog
+class Plot2DPar: public wxDialog
 {
 public:
-  Plot2dPar(wxWindow* parent, int id, const wxString& title,
+  Plot2DPar(wxWindow* parent, int id, const wxString& title,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   void SetValue(wxString s)
@@ -107,5 +107,31 @@ protected:
   wxButton* button_1;
   wxButton* button_2;
 };
+
+class Plot2DDiscrete: public wxDialog
+{
+public:
+  Plot2DDiscrete(wxWindow* parent, int id, const wxString& title,
+            const wxPoint& pos = wxDefaultPosition,
+            const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  void SetValue(wxString s)
+  {
+    text_ctrl_1->SetValue(s);
+  }
+  wxString GetValue();
+private:
+  void set_properties();
+  void do_layout();
+protected:
+  wxStaticText* label_1;
+  wxStaticText* label_2;
+  wxStaticText* label_3;
+  BTextCtrl* text_ctrl_1;
+  BTextCtrl* text_ctrl_2;
+  wxStaticLine* static_line_1;
+  wxButton* button_1;
+  wxButton* button_2;
+};
+
 
 #endif // PLOT2DWIZ_H

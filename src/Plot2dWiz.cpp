@@ -23,9 +23,11 @@
 #include <wx/config.h>
 
 enum {
-  parametric,
+  special,
   combobox,
-  file_browse_2d
+  file_browse_2d,
+  parametric_plot,
+  discrete_plot
 };
 
 enum {
@@ -41,7 +43,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(250, -1));
-  button_3 = new wxButton(this, parametric, _("&Parametric"));
+  button_3 = new wxButton(this, special, _("&Special"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
@@ -129,10 +131,10 @@ void Plot2DWiz::set_properties()
 
   int selection = 1;
   bool sendRanges = false;
-  
+
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/format"), &selection);
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/sendRanges"), &sendRanges);
-  
+
   combo_box_1->SetSelection(selection);
   checkbox_1->SetValue(sendRanges);
 }
@@ -208,7 +210,7 @@ void Plot2DWiz::Parse(wxString s)
   int depth = 0;
   unsigned int i = 0;
   wxString curr;
-  
+
   s = s.SubString(7, s.Length());
   // Function to plot
   do
@@ -400,7 +402,7 @@ wxString Plot2DWiz::GetValue()
   }
   else if (f == _("inline"))
     s = wxT("wx") + s;
-  
+
   if (file.Length() == 0 && f == _("inline"))
     s += wxT(");");
   else
@@ -413,17 +415,55 @@ wxString Plot2DWiz::GetValue()
 
 void Plot2DWiz::OnButton(wxCommandEvent& event)
 {
-  Plot2dPar *wiz = new Plot2dPar(this, -1, _("Plot 2D"));
-  wiz->Centre(wxBOTH);
-  if (wiz->ShowModal() == wxID_OK)
+  wxMenu* popupMenu = new wxMenu();
+
+  popupMenu->Append(parametric_plot, wxT("Parametric plot"));
+  popupMenu->Append(discrete_plot, wxT("Discrete plot"));
+
+  wxPoint pos = button_3->GetPosition();
+  pos.y += button_3->GetRect().height;
+
+  PopupMenu(popupMenu, pos);
+
+/*
+
+*/
+}
+
+void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
+{
+  switch(event.GetId())
   {
-    if (text_ctrl_1->GetValue() == wxT("%"))
-      text_ctrl_1->SetValue(wxEmptyString);
-    if (((text_ctrl_1->GetValue()).Strip()).Length())
-      text_ctrl_1->AppendText(wxT(", "));
-    text_ctrl_1->AppendText(wiz->GetValue());
-    if (text_ctrl_8->GetValue() == 10)
-      text_ctrl_8->SetValue(300);
+    case parametric_plot:
+    {
+      Plot2DPar *wiz = new Plot2DPar(this, -1, _("Plot 2D"));
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        if (text_ctrl_1->GetValue() == wxT("%"))
+          text_ctrl_1->SetValue(wxEmptyString);
+        if (((text_ctrl_1->GetValue()).Strip()).Length())
+          text_ctrl_1->AppendText(wxT(", "));
+        text_ctrl_1->AppendText(wiz->GetValue());
+        if (text_ctrl_8->GetValue() == 10)
+          text_ctrl_8->SetValue(300);
+      }
+    }
+    break;
+    case discrete_plot:
+    {
+      Plot2DDiscrete *wiz = new Plot2DDiscrete(this, -1, _("Plot 2D"));
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        if (text_ctrl_1->GetValue() == wxT("%"))
+          text_ctrl_1->SetValue(wxEmptyString);
+        if (((text_ctrl_1->GetValue()).Strip()).Length())
+          text_ctrl_1->AppendText(wxT(", "));
+        text_ctrl_1->AppendText(wiz->GetValue());
+      }
+    }
+    break;
   }
 }
 
@@ -459,17 +499,19 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
 
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
   EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
-  EVT_BUTTON(parametric, Plot2DWiz::OnButton)
+  EVT_BUTTON(special, Plot2DWiz::OnButton)
   EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
+  EVT_MENU(parametric_plot, Plot2DWiz::OnPopupMenu)
+  EVT_MENU(discrete_plot, Plot2DWiz::OnPopupMenu)
 END_EVENT_TABLE()
 
 ///////////////////////
 //
-// Plot2dPar
+// Plot2DPar
 //
 ///////////////////////
 
-Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
+Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -502,7 +544,7 @@ Plot2dPar::Plot2dPar(wxWindow* parent, int id, const wxString& title,
   do_layout();
 }
 
-void Plot2dPar::set_properties()
+void Plot2DPar::set_properties()
 {
   SetTitle(_("Parametric plot"));
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
@@ -515,7 +557,7 @@ void Plot2dPar::set_properties()
 #endif
 }
 
-void Plot2dPar::do_layout()
+void Plot2DPar::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
@@ -546,10 +588,10 @@ void Plot2dPar::do_layout()
   Layout();
 }
 
-wxString Plot2dPar::GetValue()
+wxString Plot2DPar::GetValue()
 {
   wxString s;
-  s = wxT("[parametric, ");
+  s = wxT("['parametric, ");
   s += text_ctrl_1->GetValue();
   s += wxT(", ");
   s += text_ctrl_2->GetValue();
@@ -559,6 +601,86 @@ wxString Plot2dPar::GetValue()
   s += text_ctrl_4->GetValue();
   s += wxT(", ");
   s += text_ctrl_5->GetValue();
+  s += wxT("]]");
+
+  return s;
+}
+
+///////////////////////
+//
+// Plot2DDiscrete
+//
+///////////////////////
+
+Plot2DDiscrete::Plot2DDiscrete(wxWindow* parent, int id, const wxString& title,
+                     const wxPoint& pos, const wxSize& size, long style):
+    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+{
+  label_1 = new wxStaticText(this, -1, _("Discrete plot"));
+  label_2 = new wxStaticText(this, -1, wxT("x = "));
+  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+                              wxSize(230, -1));
+  label_3 = new wxStaticText(this, -1, wxT("y = "));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+                              wxSize(230, -1));
+
+  static_line_1 = new wxStaticLine(this, -1);
+#if defined __WXMSW__
+  button_1 = new wxButton(this, wxID_OK, _("OK"));
+  button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+#else
+  button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  button_2 = new wxButton(this, wxID_OK, _("OK"));
+#endif
+
+  set_properties();
+  do_layout();
+}
+
+void Plot2DDiscrete::set_properties()
+{
+  SetTitle(_("Discrete plot"));
+  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
+#if defined __WXMSW__
+  button_1->SetDefault();
+#else
+  button_2->SetDefault();
+#endif
+
+  text_ctrl_1->SetToolTip(_("Comma separated x coordinates"));
+  text_ctrl_2->SetToolTip(_("Comma separated y coordinates"));
+}
+
+void Plot2DDiscrete::do_layout()
+{
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 2, 3, 3);
+  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 2);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 2);
+  grid_sizer_2->AddGrowableCol(1);
+  grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
+  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  sizer_2->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
+  sizer_2->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
+  grid_sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  SetAutoLayout(true);
+  SetSizer(grid_sizer_1);
+  grid_sizer_1->Fit(this);
+  grid_sizer_1->SetSizeHints(this);
+  Layout();
+}
+
+wxString Plot2DDiscrete::GetValue()
+{
+  wxString s;
+  s = wxT("['discrete, [");
+  s += text_ctrl_1->GetValue();
+  s += wxT("], [");
+  s += text_ctrl_2->GetValue();
   s += wxT("]]");
 
   return s;
