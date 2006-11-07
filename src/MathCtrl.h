@@ -48,6 +48,9 @@ enum {
   popid_add_comment,
   popid_insert_input,
   popid_copy_tex,
+#if defined __WXMSW__
+  popid_image_copy,
+#endif
   popid_image
 };
 

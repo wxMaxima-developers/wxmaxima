@@ -389,8 +389,13 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
     if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
       return ;
 
-    if (m_selectionStart == m_selectionEnd && m_selectionStart->GetType() == MC_TYPE_IMAGE)
+    if (m_selectionStart != NULL &&
+        m_selectionStart == m_selectionEnd &&
+        m_selectionStart->GetType() == MC_TYPE_IMAGE)
     {
+  #if defined __WXMSW__
+      popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+  #endif
       popupMenu->Append(popid_image, _("Save image"), wxEmptyString, wxITEM_NORMAL);
     }
     else
