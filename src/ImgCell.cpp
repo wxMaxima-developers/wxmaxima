@@ -109,6 +109,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_width = 0;
 
   double scale = parser.GetScale();
+  scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
 }
@@ -121,6 +122,8 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = 0;
 
   double scale = parser.GetScale();
+  scale = MAX(scale, 1.0);
+  
   m_height= (int) (scale * m_height);
 
   m_center = m_height / 2;
@@ -134,6 +137,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
+    scale = MAX(scale, 1.0);
 
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
