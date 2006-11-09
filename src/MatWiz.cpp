@@ -121,7 +121,7 @@ wxString MatWiz::GetValue()
   wxString cmd = wxT("matrix(");
   for (int i = 0; i < m_height; i++)
   {
-    cmd += wxT("[");
+    cmd += wxT("\n [");
     for (int j = 0; j < m_width; j++)
     {
 
@@ -140,10 +140,10 @@ wxString MatWiz::GetValue()
     if (i < m_height - 1)
       cmd += wxT(", ");
   }
-  if (m_width > 10 || m_height > 10)
-    cmd += wxT(")$");
+  if (m_width > 7 || m_height > 7)
+    cmd += wxT("\n)$");
   else
-    cmd += wxT(");");
+    cmd += wxT("\n);");
   return cmd;
 }
 
