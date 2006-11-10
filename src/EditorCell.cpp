@@ -17,11 +17,13 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+#include <wx/clipbrd.h>
+
 #include "EditorCell.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 
-#include <wx/clipbrd.h>
+#define INCREASE_SIZE 6
 
 EditorCell::EditorCell() : MathCell()
 {
@@ -261,10 +263,10 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   switch(m_type)
   {
   case MC_TYPE_TITLE:
-    fontsize1 += SCALE_PX(4, scale);
+    fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
     m_fontStyle = wxFONTSTYLE_SLANT;
   case MC_TYPE_SECTION:
-    fontsize1 += SCALE_PX(4, scale);
+    fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
     m_fontWeight = wxFONTWEIGHT_BOLD;
     m_underlined = true;
   case MC_TYPE_COMMENT:
@@ -703,9 +705,9 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int fontsize1 = m_fontSize;
 
   if (m_type == MC_TYPE_TITLE)
-    fontsize1 += 8;
+    fontsize1 += 2*INCREASE_SIZE;
   else if (m_type == MC_TYPE_SECTION)
-    fontsize1 += 4;
+    fontsize1 += INCREASE_SIZE;
 
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     m_fontStyle,
