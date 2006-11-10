@@ -137,6 +137,8 @@ void Plot2DWiz::set_properties()
 
   combo_box_1->SetSelection(selection);
   checkbox_1->SetValue(sendRanges);
+  
+  text_ctrl_1->SetFocus();
 }
 
 
@@ -424,10 +426,6 @@ void Plot2DWiz::OnButton(wxCommandEvent& event)
   pos.y += button_3->GetRect().height;
 
   PopupMenu(popupMenu, pos);
-
-/*
-
-*/
 }
 
 void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
@@ -555,6 +553,8 @@ void Plot2DPar::set_properties()
 #else
   button_2->SetDefault();
 #endif
+  
+  text_ctrl_1->SetFocus();
 }
 
 void Plot2DPar::do_layout()
@@ -649,6 +649,8 @@ void Plot2DDiscrete::set_properties()
 
   text_ctrl_1->SetToolTip(_("Comma separated x coordinates"));
   text_ctrl_2->SetToolTip(_("Comma separated y coordinates"));
+  
+  text_ctrl_1->SetFocus();
 }
 
 void Plot2DDiscrete::do_layout()

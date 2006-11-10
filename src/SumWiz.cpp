@@ -70,6 +70,8 @@ void SumWiz::set_properties()
 
   checkbox_1->SetToolTip(_("Simplify the sum"));
   checkbox_2->SetToolTip(_("Use Gosper algorithm"));
+  
+  text_ctrl_1->SetFocus();
 }
 
 

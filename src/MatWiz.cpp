@@ -76,6 +76,8 @@ void MatWiz::set_properties()
 #else
   button_2->SetDefault();
 #endif
+  
+  m_inputs[0]->SetFocus();
 }
 
 void MatWiz::do_layout()
@@ -194,6 +196,7 @@ void MatDim::set_properties()
 #endif
 
   combo_box_1->SetSelection(0);
+  text_ctrl_1->SetFocus();
 }
 
 

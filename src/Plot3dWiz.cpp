@@ -139,6 +139,8 @@ void Plot3DWiz::set_properties()
   
   combo_box_1->SetSelection(selection);
   check_box_1->SetValue(pm3dValue);
+  
+  text_ctrl_1->SetFocus();
 }
 
 

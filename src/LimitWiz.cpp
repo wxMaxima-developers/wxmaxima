@@ -72,6 +72,8 @@ void LimitWiz::set_properties()
 #else
   button_3->SetDefault();
 #endif
+  
+  text_ctrl_1->SetFocus();
 }
 
 

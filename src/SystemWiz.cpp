@@ -54,6 +54,8 @@ void SysWiz::set_properties()
 #else
   button_2->SetDefault();
 #endif
+  
+  m_inputs[0]->SetFocus();
 }
 
 void SysWiz::do_layout()

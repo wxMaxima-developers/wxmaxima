@@ -59,6 +59,8 @@ void Gen2Wiz::set_properties()
 #else
   button_2->SetDefault();
 #endif
+  
+  text_ctrl_1->SetFocus();
 }
 
 
