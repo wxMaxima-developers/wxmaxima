@@ -38,7 +38,6 @@ TextInput::TextInput(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  text_ctrl_1->SetFocus();
 }
 
 wxString TextInput::GetValue()
@@ -71,6 +70,8 @@ void TextInput::set_properties()
 #else
   button_2->SetDefault();
 #endif
+  
+  text_ctrl_1->SetFocus();
 }
 
 void TextInput::do_layout()
