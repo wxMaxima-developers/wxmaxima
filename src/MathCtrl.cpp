@@ -1478,7 +1478,7 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData)
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode)
 {
-  if (s == wxT("\n"))
+  if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
   else
   {
