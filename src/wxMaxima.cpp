@@ -1116,6 +1116,7 @@ wxString wxMaxima::GetHelpFile()
   if (html.empty())
     return wxEmptyString;
 
+
   html = html + wxT("\\doc\\html\\");
 
   wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
@@ -1126,8 +1127,28 @@ wxString wxMaxima::GetHelpFile()
   if (wxFileExists(html + wxT("header.hhp")))
     return html + wxT("header.hhp");
 
+/*
+  html = html + wxT("\\doc\\chm\\");
+
+  wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
+
+  if (wxFileExists(html + locale + wxT("\\maxima.chm")))
+    return html + locale + wxT("\\maxima.chm");
+
+  if (wxFileExists(html + wxT("maxima.chm")))
+    return html + wxT("maxima.chm");
+*/
+
   return wxEmptyString;
 #else
+  wxString headerFile;
+  wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
+  
+  if (headerFile.Length() && wxFileExists(headerFile))
+    return headerFile;
+  else
+    headerFile = wxEmptyString;
+  
   wxProcess *process = new wxProcess(this, -1);
   process->Redirect();
   wxString command = GetCommand();
@@ -1155,7 +1176,7 @@ wxString wxMaxima::GetHelpFile()
   if (docdir.Length() == 0)
     return wxEmptyString;
 
-  wxString headerFile = docdir + wxT("/");
+  headerFile = docdir + wxT("/");
   if (langsubdir.Length())
     headerFile += langsubdir + wxT("/");
 
@@ -1164,12 +1185,17 @@ wxString wxMaxima::GetHelpFile()
   if (!wxFileExists(headerFile))
     headerFile = docdir + wxT("/header.hhp");
 
+  if (wxFileExists(headerFile))
+    wxConfig::Get()->Write(wxT("helpFile"), headerFile);
+  
   return headerFile;
 #endif
 }
 
 void wxMaxima::ShowHelp(wxString keyword)
 {
+  wxLogNull disableWarnings;
+  
   if (m_helpFile.Length() == 0)
   {
     m_helpFile = GetHelpFile();
@@ -1917,7 +1943,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Equation:"), _("function:"), _("variable:"),
                                  expr, wxT("y"), wxT("x"),
                                  this, -1, _("Solve ODE"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2056,7 +2082,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("at point:"),
                                  _("has value:"), expr, wxT("x=0"), wxT("0"),
                                  this, -1, _("Atvalue"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2172,7 +2198,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("From array:"), _("width:"), _("height:"),
                                  expr, wxT("3"), wxT("3"),
                                  this, -1, _("Generate Matrix"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2381,7 +2407,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
                                  _("new variable:"), _("equation:"),
                                  expr, wxT("x"), wxT("y"), wxT("y=x"),
                                  this, -1, _("Change variable"), true);
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2506,7 +2532,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("change var:"),
                                  _("to:"), expr, wxT("t"), wxT("s"),
                                  this, -1, _("Laplace"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2523,7 +2549,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("change var:"),
                                  _("to:"), expr, wxT("s"), wxT("t"),
                                  this, -1, _("Inverse Laplace"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2540,7 +2566,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("in variable:"),
                                  _("times:"), expr, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
-      wiz->setValue(expr);
+      wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2918,7 +2944,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("in variable:"),
                                  _("times:"), selection, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
-      wiz->setValue(selection);
+      wiz->SetValue(selection);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -3114,7 +3140,8 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__)
   case tb_insert_input:
 #endif
-    DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false);
+    DoRawConsoleAppend(m_inputLine->GetValue(), MC_TYPE_INPUT, false);
+    m_inputLine->SetValue(wxEmptyString);
     break;
   case menu_add_comment:
   case popid_add_comment:
