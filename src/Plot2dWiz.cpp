@@ -205,6 +205,8 @@ void Plot2DWiz::SetValue(wxString s)
   }
   else
     text_ctrl_1->SetValue(s);
+  
+  text_ctrl_1->SetSelection(-1, -1);
 }
 
 void Plot2DWiz::Parse(wxString s)

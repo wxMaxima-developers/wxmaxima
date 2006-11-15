@@ -35,9 +35,10 @@ public:
           const wxPoint& pos = wxDefaultPosition,
           const wxSize& size = wxDefaultSize,
           long style = wxDEFAULT_DIALOG_STYLE);
-  void setValue(wxString s)
+  void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);
+    text_ctrl_1->SetSelection(-1, -1);
   }
   wxString GetValue1()
   {

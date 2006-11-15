@@ -56,6 +56,7 @@ void SysWiz::set_properties()
 #endif
   
   m_inputs[0]->SetFocus();
+  m_inputs[0]->SetSelection(-1, -1);
 }
 
 void SysWiz::do_layout()

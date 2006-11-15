@@ -209,6 +209,8 @@ void Plot3DWiz::SetValue(wxString s)
   }
   else
     text_ctrl_1->SetValue(s);
+  
+  text_ctrl_1->SetSelection(-1, -1);
 }
 
 void Plot3DWiz::Parse(wxString s)

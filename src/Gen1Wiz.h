@@ -38,6 +38,7 @@ public:
   void SetValue(wxString v)
   {
     text_ctrl_1->SetValue(v);
+    text_ctrl_1->SetSelection(-1, -1);
   }
 private:
   bool equal;

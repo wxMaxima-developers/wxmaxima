@@ -28,6 +28,7 @@
 #include <wx/settings.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
+#include <wx/tokenzr.h>
 
 #if wxUSE_DRAG_AND_DROP && WXM_DND
  #include <wx/dnd.h>
@@ -1477,17 +1478,29 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData)
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode)
 {
-  if (unicode)
-  {
-#if wxUNICODE
-    output.AddLine(s);
-#else
-    wxString t(s.wc_str(wxConvLocal), wxConvUTF8);
-    output.AddLine(t);
-#endif
-  }
+  if (s == wxT("\n"))
+    output.AddLine(wxEmptyString);
   else
-    output.AddLine(s);
+  {
+    wxStringTokenizer lines(s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+    wxString line;
+
+    while (lines.HasMoreTokens())
+    {
+      line = lines.GetNextToken();
+      if (unicode)
+      {
+    #if wxUNICODE
+        output.AddLine(line);
+    #else
+        wxString t(line.wc_str(wxConvLocal), wxConvUTF8);
+        output.AddLine(t);
+    #endif
+      }
+      else
+        output.AddLine(line);
+    }
+  }
 }
 
 bool MathCtrl::ExportToHTML(wxString file)
