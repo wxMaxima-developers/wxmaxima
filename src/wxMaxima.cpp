@@ -129,7 +129,6 @@ void wxMaxima::CheckForPrintingSupport()
   m_supportPrinting = true;
 #elif defined __WXMAC__
   m_supportPrinting = true;
-
 #elif defined wxUSE_LIBGNOMEPRINT
  #if wxUSE_LIBGNOMEPRINT
   wxLogNull log;
@@ -1280,6 +1279,8 @@ void wxMaxima::EnterCommand(wxCommandEvent& event)
 
 void wxMaxima::PrintMenu(wxCommandEvent& event)
 {
+  if (!m_supportPrinting)
+    return ;
   switch (event.GetId())
   {
   case wxID_PRINT:
