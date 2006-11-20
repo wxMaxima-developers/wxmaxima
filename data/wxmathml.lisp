@@ -80,6 +80,9 @@
 		       (wxxml-stripdollar (get x 'wxxmlword)))
                       ((and (symbolp x) (get x 'reversealias))
                        (wxxml-stripdollar (get x 'reversealias)))
+		      ((streamp x)
+		       (format nil "<v>Stream (~A)</v>"
+			       (stream-element-type x)))
                       (t (wxxml-stripdollar x))
 		      ))
 	  r))
@@ -122,7 +125,7 @@
 	      l (wxxml f (append l (list "<i><r>")) nil
                        'mparen 'mparen))
 	(setq f (caar x)
-	      l (wxxml (wxxmlword f) (append l '("<i><r>"))
+	      l (wxxml f (append l '("<i><r>"))
 		       nil lop 'mfunction)))
     (setq r (nconc (wxxml-list (cdr x) (list "</r><r>")
                                (list "</r></i>") "<v>,</v>") r))
@@ -143,7 +146,7 @@
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
 (defun wxxml-function (x l r op) op
-       (setq l (wxxml (wxxmlword (caar x)) (append l '("<fn>"))
+       (setq l (wxxml (caar x) (append l '("<fn>"))
 		      nil 'mparen 'mparen)
 	     r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
 		      'mparen 'mparen))
