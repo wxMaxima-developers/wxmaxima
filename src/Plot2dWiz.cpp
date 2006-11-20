@@ -137,7 +137,7 @@ void Plot2DWiz::set_properties()
 
   combo_box_1->SetSelection(selection);
   checkbox_1->SetValue(sendRanges);
-  
+
   text_ctrl_1->SetFocus();
 }
 
@@ -205,7 +205,7 @@ void Plot2DWiz::SetValue(wxString s)
   }
   else
     text_ctrl_1->SetValue(s);
-  
+
   text_ctrl_1->SetSelection(-1, -1);
 }
 
@@ -445,8 +445,6 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
         if (((text_ctrl_1->GetValue()).Strip()).Length())
           text_ctrl_1->AppendText(wxT(", "));
         text_ctrl_1->AppendText(wiz->GetValue());
-        if (text_ctrl_8->GetValue() == 10)
-          text_ctrl_8->SetValue(300);
       }
     }
     break;
@@ -531,6 +529,9 @@ Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
   label_6 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
+  label_7 = new wxStaticText(this, -1, _("Ticks:"));
+  spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -550,12 +551,13 @@ void Plot2DPar::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_4->SetValue(wxT("-6"));
   text_ctrl_5->SetValue(wxT("6"));
+  spin_ctrl_1->SetValue(300);
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
   button_2->SetDefault();
 #endif
-  
+
   text_ctrl_1->SetFocus();
 }
 
@@ -563,7 +565,7 @@ void Plot2DPar::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 3, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 3, 3);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
@@ -577,6 +579,8 @@ void Plot2DPar::do_layout()
   sizer_1->Add(label_6, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 2);
   sizer_1->Add(text_ctrl_5, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_1, 1, 0, 0);
+  grid_sizer_2->Add(label_7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+  grid_sizer_2->Add(spin_ctrl_1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2);
   grid_sizer_2->AddGrowableCol(1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
@@ -603,7 +607,8 @@ wxString Plot2DPar::GetValue()
   s += text_ctrl_4->GetValue();
   s += wxT(", ");
   s += text_ctrl_5->GetValue();
-  s += wxT("]]");
+  s += wxT("], ");
+  s += wxString::Format(wxT("[nticks, %d]]"), spin_ctrl_1->GetValue());
 
   return s;
 }
@@ -651,7 +656,7 @@ void Plot2DDiscrete::set_properties()
 
   text_ctrl_1->SetToolTip(_("Comma separated x coordinates"));
   text_ctrl_2->SetToolTip(_("Comma separated y coordinates"));
-  
+
   text_ctrl_1->SetFocus();
 }
 

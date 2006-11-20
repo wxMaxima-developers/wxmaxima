@@ -104,6 +104,8 @@ protected:
   wxStaticText* label_6;
   BTextCtrl* text_ctrl_4;
   BTextCtrl* text_ctrl_5;
+  wxStaticText* label_7;
+  wxSpinCtrl* spin_ctrl_1;
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
