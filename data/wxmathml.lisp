@@ -928,6 +928,14 @@
 ;; Plotting support
 ;;
 
+(defprop wxxmltag wxxml-tag wxxml)
+
+(defun wxxml-tag (x l r)
+  (let ((name (cadr x))
+	(tag (caddr x)))
+    (append l (list (format nil "<~a>~a</~a>" tag name tag)) r)))
+
+
 (defmvar $wxplot_preamble "set terminal png size 400,250; set zeroaxis;")
 
 (defun $wxplot2d (&rest args)
@@ -951,7 +959,7 @@
 				    ((mlist simp) $gnuplot_term $png)
 				    ((mlist simp) $gnuplot_out_file ,filename))))
 ;;	))
-  (format nil "<img>~a</img>" filename)))
+  `((wxxmltag simp) ,filename "img")))
 
 (defun $wxplot3d (&rest args)
   (let ((preamble $wxplot_preamble)
@@ -974,7 +982,7 @@
 				    ((mlist simp) $gnuplot_term $png)
 				    ((mlist simp) $gnuplot_out_file ,filename))))
 ;;	))
-    (format nil "<img>~a</img>" filename)))
+  `((wxxmltag simp) ,filename "img")))
 
 (defun $wximplicit_plot (&rest args)
   (if (not (fboundp '$implicit_plot))
@@ -999,7 +1007,7 @@
 					   ((mlist simp) $gnuplot_term $png)
 					   ((mlist simp) $gnuplot_out_file ,filename))))
 ;;	))
-    (format nil "<img>~a</img>" filename)))
+  `((wxxmltag simp) ,filename "img")))
 
 
 ;;
