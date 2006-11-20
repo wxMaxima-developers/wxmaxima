@@ -674,9 +674,9 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
     return ;
   }
 #if defined (__WXMSW__)
-  wxString path, maxima;
+  wxString path, maxima = GetCommand(false);
   wxArrayString out;
-  wxConfig::Get()->Read(wxT("maxima"), &maxima);
+  maxima = maxima.SubString(2, maxima.Length() - 3);
   wxFileName::SplitPath(maxima, &path, NULL, NULL);
   wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
   command += wxString::Format(wxT(" -INT %ld"), m_pid);
@@ -1007,12 +1007,12 @@ void wxMaxima::SetupVariables()
 ///  Getting confuguration
 ///--------------------------------------------------------------------------------
 
-wxString wxMaxima::GetCommand()
+wxString wxMaxima::GetCommand(bool params)
 {
 #if defined (__WXMSW__)
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString maxima = wxGetCwd();
-  wxString command, parameters;
+  wxString parameters;
 
   maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
 
@@ -1031,8 +1031,9 @@ wxString wxMaxima::GetCommand()
   }
 
   config->Read(wxT("parameters"), &parameters);
-  command = wxT("\"") + maxima + wxT("\" ") + parameters;
-  return command;
+  if (params)
+    return wxT("\"") + maxima + wxT("\" ") + parameters;
+  return maxima;
 #else
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString command, parameters;
@@ -1097,57 +1098,40 @@ wxString wxMaxima::GetHelpFile()
 {
 #if defined __WXMSW__
   wxString command;
-  wxString html;
+  wxString chm;
 
-  command = wxGetCwd();
-  command.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
-
-  if (!wxFileExists(command))
-    wxConfig::Get()->Read(wxT("maxima"), &command);
+  command = GetCommand(false);
 
   if (command.empty())
     return wxEmptyString;
 
   command.Replace(wxT("bin\\maxima.bat"), wxT("share\\maxima"));
 
-  html = wxFindFirstFile(command + wxT("\\*"), wxDIR);
+  chm = wxFindFirstFile(command + wxT("\\*"), wxDIR);
 
-  if (html.empty())
+  if (chm.empty())
     return wxEmptyString;
 
-
-  html = html + wxT("\\doc\\html\\");
-
-  wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
-
-  if (wxFileExists(html + locale + wxT("\\header.hhp")))
-    return html + locale + wxT("\\header.hhp");
-
-  if (wxFileExists(html + wxT("header.hhp")))
-    return html + wxT("header.hhp");
-
-/*
-  html = html + wxT("\\doc\\chm\\");
+  chm = chm + wxT("\\doc\\chm\\");
 
   wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
 
-  if (wxFileExists(html + locale + wxT("\\maxima.chm")))
-    return html + locale + wxT("\\maxima.chm");
+  if (wxFileExists(chm + locale + wxT("\\maxima.chm")))
+    return chm + locale + wxT("\\maxima.chm");
 
-  if (wxFileExists(html + wxT("maxima.chm")))
-    return html + wxT("maxima.chm");
-*/
+  if (wxFileExists(chm + wxT("maxima.chm")))
+    return chm + wxT("maxima.chm");
 
   return wxEmptyString;
 #else
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
-  
+
   if (headerFile.Length() && wxFileExists(headerFile))
     return headerFile;
   else
     headerFile = wxEmptyString;
-  
+
   wxProcess *process = new wxProcess(this, -1);
   process->Redirect();
   wxString command = GetCommand();
@@ -1186,7 +1170,7 @@ wxString wxMaxima::GetHelpFile()
 
   if (wxFileExists(headerFile))
     wxConfig::Get()->Write(wxT("helpFile"), headerFile);
-  
+
   return headerFile;
 #endif
 }
@@ -1194,7 +1178,7 @@ wxString wxMaxima::GetHelpFile()
 void wxMaxima::ShowHelp(wxString keyword)
 {
   wxLogNull disableWarnings;
-  
+
   if (m_helpFile.Length() == 0)
   {
     m_helpFile = GetHelpFile();
