@@ -86,7 +86,7 @@
                       ((and (symbolp x) (get x 'reversealias))
                        (wxxml-stripdollar (get x 'reversealias)))
 		      ((streamp x)
-		       (format nil "<v>Stream (~A)</v>"
+		       (format nil "<v>Stream [~A]</v>"
 			       (stream-element-type x)))
                       (t (wxxml-stripdollar x))
 		      ))
@@ -716,14 +716,15 @@
 (defprop %derivative 119. wxxml-rbp)
 
 (defun wxxml-derivative (x l r)
-  (wxxml (wxxml-d x "<s>d</s>") (append l '("<d>"))
+  (wxxml (wxxml-d x) (append l '("<d>"))
          (append '("</d>") r) 'mparen 'mparen))
 
-(defun wxxml-d (x dsym) ;dsym should be "&DifferentialD;" or "&PartialD;"
+(defun wxxml-d (x)
   ;; format the macsyma derivative form so it looks
   ;; sort of like a quotient times the deriva-dand.
   (let*
       (($simp t)
+       (dsym '((wxxmltag simp) "d" "s"))
        (arg (cadr x)) ;; the function being differentiated
        (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
        (ords (odds difflist 0)) ;; e.g. (1 2)
