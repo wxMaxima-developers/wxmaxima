@@ -75,11 +75,15 @@
                             (tmp-x (string-substitute "&amp;" #\& tmp-x))
                             (tmp-x (string-substitute "&lt;" #\< tmp-x))
                             (tmp-x (string-substitute "&gt;" #\> tmp-x)))
+			 (if $stringdisp
+			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
                          (strcat "<st>" tmp-x "</st>")))
 		      ((stringp x)
 		       (let* ((tmp-x (string-substitute "&amp;" #\& x))
 			      (tmp-x (string-substitute "&lt;" #\< tmp-x))
 			      (tmp-x (string-substitute "&gt;" #\> tmp-x)))
+			 (if $stringdisp
+			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
                          (strcat "<st>" tmp-x "</st>")))
                       ((and (symbolp x) (get x 'wxxmlword))
 		       (wxxml-stripdollar (get x 'wxxmlword)))
@@ -113,7 +117,10 @@
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
   (let* ((pname (maybe-invert-string-case (symbol-name sym)))
-         (pname (if (memq (elt pname 0) '(#\$ #\&)) (subseq pname 1) pname))
+         (pname (if (memq (elt pname 0) '(#\$ #\&)) (subseq pname 1)
+		    (if $lispdisp
+			(format nil "?~a" pname)
+			pname)))
          (pname (string-substitute "&amp;" #\& pname))
          (pname (string-substitute "&gt;" #\> pname))
          (pname (string-substitute "&lt;" #\< pname)))
