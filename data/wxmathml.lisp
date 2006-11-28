@@ -15,17 +15,15 @@
 
 ;; Method:
 
-;; Producing wxxml from a macsyma internal expression is done by
+;; Producing wxxml from a maxima internal expression is done by
 ;; a reversal of the parsing process.  Fundamentally, a
 ;; traversal of the expression tree is produced by the program,
 ;; with appropriate substitutions and recognition of the
 ;; infix / prefix / postfix / matchfix relations on symbols. Various
 ;; changes are made to this so that MathML will like the results.
 
-;;(macsyma-module wxxml)
-
 (declare-top
- (special lop rop ccol $gcprint texport $labels $inchar maxima-main-dir)
+ (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
 ($put '$wxmaxima `((mlist simp) 0 7 1) '$version)
@@ -52,6 +50,9 @@
          (wxxml-matchfix-dim x l r))
         (t (wxxml-function x l r nil))))
 
+(defmacro make-tag (val tag)
+  ``((wxxmltag simp) ,,val ,,tag))
+
 (defun string-substitute (newstring oldchar x &aux matchpos)
   (setq matchpos (position oldchar x))
   (if (null matchpos) x
@@ -61,32 +62,35 @@
 		   (string-substitute newstring oldchar
 				      (subseq x (1+ matchpos))))))
 
+(defun wxxml-fix-string (x)
+  (if (stringp x)
+      (let* ((tmp-x (string-substitute "&amp;" #\& x))
+	     (tmp-x (string-substitute "&lt;" #\< tmp-x))
+	     (tmp-x (string-substitute "&gt;" #\> tmp-x)))
+	tmp-x)
+      x))
+
 ;;; First we have the functions which are called directly by wxxml and its
 ;;; descendents
 
-(defun wxxml-atom (x l r)
+(defun wxxml-atom (x l r &aux tmp-x)
   (append l
           (list (cond ((numberp x) (wxxmlnumformat x))
                       ((typep x 'structure-object)
-		       (strcat "<v>Lisp structure: " (type-of x) " </v>"))
+		       (format nil "<v>Structure [~A]</v>" (type-of x)))
                       ((mstringp x)
-                       (let*
-                           ((tmp-x (maybe-invert-string-case (symbol-name (stripdollar x))))
-                            (tmp-x (string-substitute "&amp;" #\& tmp-x))
-                            (tmp-x (string-substitute "&lt;" #\< tmp-x))
-                            (tmp-x (string-substitute "&gt;" #\> tmp-x)))
-			 (if $stringdisp
-			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
-                         (strcat "<st>" tmp-x "</st>")))
+		       (setq tmp-x (maybe-invert-string-case
+				    (symbol-name (stripdollar x))))
+		       (setq tmp-x (wxxml-fix-string tmp-x))
+		       (if (and (boundp '$stringdisp) $stringdisp)
+			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
+		       (concatenate 'string "<st>" tmp-x "</st>"))
 		      ((stringp x)
-		       (let* ((tmp-x (string-substitute "&amp;" #\& x))
-			      (tmp-x (string-substitute "&lt;" #\< tmp-x))
-			      (tmp-x (string-substitute "&gt;" #\> tmp-x)))
-			 (if $stringdisp
-			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
-                         (strcat "<st>" tmp-x "</st>")))
-                      ((and (symbolp x) (get x 'wxxmlword))
-		       (wxxml-stripdollar (get x 'wxxmlword)))
+		       (setq tmp-x (wxxml-fix-string x))
+		       (if (and (boundp '$stringdisp) $stringdisp)
+			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
+		       (concatenate 'string "<st>" tmp-x "</st>"))
+                      ((and (symbolp x) (get x 'wxxmlword)))
                       ((and (symbolp x) (get x 'reversealias))
                        (wxxml-stripdollar (get x 'reversealias)))
 		      ((streamp x)
@@ -113,35 +117,33 @@
 			  "<r><n>~{~c~}</n><h>*</h><e><n>10</n><n>~{~c~}</n></e></r>"
 			  firstpart (cdr exponent))))))))
 
-(defun wxxml-stripdollar (sym)
+(defun wxxml-stripdollar (sym &aux pname)
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
-  (let* ((pname (maybe-invert-string-case (symbol-name sym)))
-         (pname (if (memq (elt pname 0) '(#\$ #\&)) (subseq pname 1)
-		    (if $lispdisp
-			(format nil "?~a" pname)
-			pname)))
-         (pname (string-substitute "&amp;" #\& pname))
-         (pname (string-substitute "&gt;" #\> pname))
-         (pname (string-substitute "&lt;" #\< pname)))
-    (concatenate 'string "<v>" pname "</v>")))
+  (setq pname (maybe-invert-string-case (symbol-name sym)))
+  (setq pname (cond ((memq (elt pname 0) '(#\$ #\& #\%))
+		     (subseq pname 1))
+		    ($lispdisp
+		     (concatenate 'string "?" pname))
+		    (t pname)))
+  (setq pname (wxxml-fix-string pname))
+  (concatenate 'string "<v>" pname "</v>"))
 
 (defun wxxml-paren (x l r)
   (wxxml x (append l '("<p>")) (cons "</p>" r) 'mparen 'mparen))
 
-(defun wxxml-array (x l r)
-  (let ((f))
-    (if (eq 'mqapply (caar x))
-	(setq f (cadr x)
-	      x (cdr x)
-	      l (wxxml f (append l (list "<i><r>")) nil
-                       'mparen 'mparen))
-	(setq f (caar x)
-	      l (wxxml f (append l '("<i><r>"))
-		       nil lop 'mfunction)))
-    (setq r (nconc (wxxml-list (cdr x) (list "</r><r>")
-                               (list "</r></i>") "<v>,</v>") r))
-    (nconc l r)))
+(defun wxxml-array (x l r &aux f)
+  (if (eq 'mqapply (caar x))
+      (setq f (cadr x)
+	    x (cdr x)
+	    l (wxxml f (append l (list "<i><r>")) nil
+		     'mparen 'mparen))
+      (setq f (caar x)
+	    l (wxxml f (append l '("<i><r>"))
+		     nil lop 'mfunction)))
+  (setq r (nconc (wxxml-list (cdr x) (list "</r><r>")
+			     (list "</r></i>") "<v>,</v>") r))
+  (nconc l r))
 
 ;; set up a list , separated by symbols (, * ...)  and then tack on the
 ;; ending item (e.g. "]" or perhaps ")"
@@ -157,12 +159,12 @@
 
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
-(defun wxxml-function (x l r op) op
-       (setq l (wxxml (caar x) (append l '("<fn>"))
-		      nil 'mparen 'mparen)
-	     r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
-		      'mparen 'mparen))
-       (append l r))
+(defun wxxml-function (x l r op)
+  (setq l (wxxml (caar x) (append l '("<fn>"))
+		 nil 'mparen 'mparen)
+	r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
+		 'mparen 'mparen))
+  (append l r))
 
 ;;; Now we have functions which are called via property lists
 
@@ -214,19 +216,17 @@
 	x (wxxml-list (cdr x) nil r "<t>,</t>"))
   (append l x))
 
-(defun wxxml-dissym-to-string (lst)
-  (let* ((pname (format nil "~{~a~}" lst))
-         (pname (string-substitute "&amp;" #\& pname))
-         (pname (string-substitute "&gt;" #\> pname))
-         (pname (string-substitute "&lt;" #\< pname)))
-    (concatenate 'string "<v>" pname "</v>")))
-	 
+(defun wxxml-dissym-to-string (lst &aux pname)
+  (setq pname
+	(wxxml-fix-string (format nil "~{~a~}" lst)))
+  (concatenate 'string "<v>" pname "</v>"))
 
 (defun wxxmlsym (x)
   (or (get x 'wxxmlsym)
       (get x 'strsym)
-      (get x 'dissym)
-      (stripdollar x)))
+      (and (get x 'dissym)
+	   (list (wxxml-dissym-to-string (get x 'dissym))))
+      (list (stripdollar x))))
 
 (defun wxxmlword (x)
   (or (get x 'wxxmlword)
@@ -282,6 +282,7 @@
 (defprop $%alpha "<g>%alpha</g>" wxxmlword)
 (defprop $%beta "<g>%beta</g>" wxxmlword)
 (defprop $%gamma "<g>%gamma</g>" wxxmlword)
+(defprop %gamma "<g>gamma</g>" wxxmlword)
 (defprop $%delta "<g>%delta</g>" wxxmlword)
 (defprop $%epsilon "<g>%epsilon</g>" wxxmlword)
 (defprop $%zeta "<g>%zeta</g>" wxxmlword)
@@ -480,10 +481,7 @@
 
 (defun wxxml-sum(x l r)
   (let ((op (cond ((eq (caar x) '%sum) "<sm><r>")
-		  ((eq (caar x) '%product) "<sm type=\"prod\"><r>")
-                  ;; extend here
-		  ))
-	;; gotta be one of those above
+		  ((eq (caar x) '%product) "<sm type=\"prod\"><r>")))
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
          (wxxml `((mequal simp) ,(caddr x) ,(cadddr x))
@@ -611,6 +609,7 @@
 (defprop mequal 80. wxxml-rbp)
 
 (defprop mnotequal wxxml-infix wxxml)
+(defprop mnotequal ("<t>#</t>") wxxmlsym)
 (defprop mnotequal 80. wxxml-lbp)
 (defprop mnotequal 80. wxxml-rbp)
 
@@ -656,64 +655,6 @@
 (defprop mor 50. wxxml-rbp)
 
 
-(defun wxxml-setup (x)
-  (let((a (car x))
-       (b (cadr x)))
-    ;;      (setf (get a 'wxxml) 'wxxml-prefix) ; we don't want sin x
-    (setf (get a 'wxxmlword) b)
-    (setf (get a 'wxxmlsym) (list b))
-    (setf (get a 'wxxml-rbp) 320)
-    (setf (get a 'wxxml-lbp) 320)))
-
-
-(mapc #'wxxml-setup
-      '(
-        (%acos "<v>acos</v>")
-        (%asin "<v>asin</v>")
-        (%asinh "<v>asinh</v>")
-        (%acosh "<v>acosh</v>")
-        (%atan "<v>atan</v>")
-        (%atanh "<v>atanh</v>")
-        (%arg "<v>arg</v>")
-        (%bessel_j "<v>bessel_j</v>")
-        (%bessel_i "<v>bessel_i</v>")
-        (%bessel_k "<v>bessel_k</v>")
-        (%bessel_y "<v>bessel_y</v>")
-        (%beta "<v>beta</v>")
-        (%cos "<v>cos</v>")
-        (%cosh "<v>cosh</v>")
-        (%cot "<v>cot</v>")
-        (%coth "<v>coth</v>")
-        (%csc "<v>csc</v>")
-        (%deg "<v>deg</v>")
-        (%determinant "<v>determinant</v>")
-        (%dim "<v>dim</v>")
-        (%exp "<v>exp</v>")
-        (%gamma "<g>gamma</g>")
-        (%gcd "<v>gcd</v>")
-        (%hom "<v>hom</v>")
-        (%ker "<v>ker</v>")
-        (%lg "<v>lg</v>")
-        (%liminf "<v>lim inf</v>")
-        (%limsup "<v>lim sup</v>")
-        (%ln "<v>ln</v>")
-        ($li "<v>li</v>")
-        (%log "<v>log</v>")
-        (%max "<v>max</v>")
-        (%min "<v>min</v>")
-        ($min "<v>min</v>")
-        ($psi "<v>psi</v>")
-        (%sec "<v>sec</v>")
-        (%sech "<v>sech</v>")
-        (%sin "<v>sin</v>")
-        (%sinh "<v>sinh</v>")
-        (%sup "<v>sup</v>")
-        (%tan "<v>tan</v>")
-        (%tanh "<v>tanh</v>")
-        (%erf "<v>erf</v>")
-        (%laplace "<v>laplace</v>")
-        ))
-
 (defprop mcond wxxml-mcond wxxml)
 (defprop mcond 25. wxxml-lbp)
 (defprop mcond 25. wxxml-rbp)
@@ -747,15 +688,6 @@
       ((mquotient) ,(simplifya numer nil) ,denom)
       ,arg)))
 
-;;(defun wxxml-mcond (x l r)
-;;  (append l
-;;          (wxxml (cadr x) '("<t>if</t><mspace/>")
-;;                 '("<mspace/><t>then</t><mspace/>") 'mparen 'mparen)
-;;          (if (eql (fifth x) '$false)
-;;              (wxxml (caddr x) nil r 'mcond rop)
-;;            (append (wxxml (caddr x) nil nil 'mparen 'mparen)
-;;                    (wxxml (fifth x) '("<mspace/><t>else</t><mspace/>")
-;;                           r 'mcond rop)))))
 (defun wxxml-mcond (x l r)
   (let ((res ()))
     (setq res (wxxml (cadr x) '("<t>if</t><mspace/>")
@@ -803,28 +735,32 @@
   (wxxml-list (wxxmlmdoin x) l r "<mspace/>"))
 
 (defun wxxmlmdo (x)
-  (nconc (cond ((second x) `("<t>for</t>" ,(second x))))
+  (nconc (cond ((second x) (list (make-tag "for" "t") (second x))))
 	 (cond ((equal 1 (third x)) nil)
-	       ((third x)  `("<t>from</t>" ,(third x))))
+	       ((third x)  (list (make-tag "from" "t") (third x))))
 	 (cond ((equal 1 (fourth x)) nil)
-	       ((fourth x) `("<t>step</t>" ,(fourth x)))
-	       ((fifth x)  `("<t>next</t>" ,(fifth x))))
-	 (cond ((sixth x)  `("<t>thru</t>" ,(sixth x))))
+	       ((fourth x)
+		(list (make-tag "step" "t")  (fourth x)))
+	       ((fifth x)
+		(list (make-tag "next" "t") (fifth x))))
+	 (cond ((sixth x)
+		(list (make-tag "thru" "t") (sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		`("<t>while</t>" ,(cadr (seventh x))))
-	       (t `("<t>unless</t>" ,(seventh x))))
-	 `("<t>do</t>" ,(eighth x))))
+		(list (make-tag "while" "t") (cadr (seventh x))))
+	       (t (list (make-tag "unless" "t") (seventh x))))
+	 (list (make-tag "do" "t") (eighth x))))
 
 (defun wxxmlmdoin (x)
-  (nconc `("<t>for</t>" ,(second x) "<t>in</t>"
-           ,(third x))
-	 (cond ((sixth x) `("<t>thru</t>" ,(sixth x))))
+  (nconc (list (make-tag "for" "t") (second x)
+	       (make-tag "in" "t") (third x))
+	 (cond ((sixth x)
+		(list (make-tag "thru" "t") (sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		`("<t>while</t>" ,(cadr (seventh x))))
-	       (t `("<t>unless</t>" ,(seventh x))))
-	 `("<t>do</t>" ,(eighth x))))
+		(list (make-tag "while" "t") (cadr (seventh x))))
+	       (t (list (make-tag "unless" "t") (seventh x))))
+	 (list (make-tag "do" "t") (eighth x))))
 
 
 (defun wxxml-matchfix-np (x l r)
@@ -859,10 +795,8 @@
 (defprop spaceout wxxml-spaceout wxxml)
 
 (defun mydispla (x)
-  (let ((ccol 1)
-        (texport *standard-output*))
-    (mapc #'princ
-          (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
+  (mapc #'princ
+	(wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
 
 (setf *alt-display2d* 'mydispla)
 
