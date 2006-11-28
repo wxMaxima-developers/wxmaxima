@@ -48,7 +48,7 @@
          (wxxml-infix x l r))
 	((equal (get (caar x) 'dimension) 'dimension-match)
          (wxxml-matchfix-dim x l r))
-        (t (wxxml-function x l r nil))))
+        (t (wxxml-function x l r))))
 
 (defmacro make-tag (val tag)
   ``((wxxmltag simp) ,,val ,,tag))
@@ -159,7 +159,7 @@
 
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
-(defun wxxml-function (x l r op)
+(defun wxxml-function (x l r)
   (setq l (wxxml (caar x) (append l '("<fn>"))
 		 nil 'mparen 'mparen)
 	r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
@@ -187,9 +187,9 @@
          (ext-lop lop)
          (ext-rop rop))
     (cond ((null y)
-	   (wxxml-function x l r t)) ; this should not happen
+	   (wxxml-function x l r)) ; this should not happen
           ((null (cdr y))
-	   (wxxml-function x l r t)) ; this should not happen, too
+	   (wxxml-function x l r)) ; this should not happen, too
           (t (do ((nl) (lop ext-lop op)
                   (rop op (if (null (cdr y)) ext-rop op)))
                  ((null (cdr y))
@@ -567,7 +567,7 @@
   (cond ((memq 'trunc (car x))(setq r (cons "<t>+</t><t>...</t>" r))))
   (cond ((null (cddr x))
          (if (null (cdr x))
-             (wxxml-function x l r t)
+             (wxxml-function x l r)
 	     (wxxml (cadr x) l r 'mplus rop)))
         (t (setq l (wxxml (cadr x) l nil lop 'mplus)
                  x (cddr x))
