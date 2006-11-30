@@ -13,7 +13,7 @@ wxMaxima can be found at
 wxMaxima uses wxWidgets and runs natively on Linux and Windows. It
 provides nicely formatted display of maxima output.
 
-wxMaxima requires maxima version 5.9.2.
+wxMaxima requires maxima version 5.11.0.
 
 
 
@@ -96,6 +96,9 @@ Then build wxMaxima with
   ./bootstrap
   ./configure
   make
+  cd locales
+  make allmo
+  cd ..
   make install
 
 
@@ -114,8 +117,8 @@ not, configure wxMaxima with Maxima->Configure.
 To automatically configure wxMaxima, wxMaxima must be installed in a
 subdirectory of maxima installation directory. For example:
 
-  maxima installation:   C:\Program Files\maxima-5.9.2
-  wxMaxima installation: C:\Program Files\maxima-5.9.2\wxMaxima
+  maxima installation:   C:\Program Files\maxima-5.11.0
+  wxMaxima installation: C:\Program Files\maxima-5.11.0\wxMaxima
 
 If you install in some other directory, you must configure wxMaxima
 with Maxima->Configure.
