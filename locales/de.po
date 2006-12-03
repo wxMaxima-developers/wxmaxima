@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-30 09:57+0100\n"
-"PO-Revision-Date: 2006-09-17 22:23+0200\n"
+"PO-Revision-Date: 2006-12-03 19:14+0100\n"
 "Last-Translator: Harald Geyer <Harald.Geyer@gmx.at>\n"
 "Language-Team: german <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,9 +19,8 @@ msgid " << Expression too long to display! >>"
 msgstr " << Ausdruck zu lang um angezeigt zu werden! >>"
 
 #: ../src/TextCell.cpp:23
-#, fuzzy
 msgid " << Unfold >>"
-msgstr "Hervorholen"
+msgstr " << Anzeigen >>"
 
 #: ../src/wxMaximaFrame.cpp:455
 msgid "&Algebra"
@@ -80,9 +79,8 @@ msgid "&Copy"
 msgstr "&Kopieren"
 
 #: ../src/IntegrateWiz.cpp:43
-#, fuzzy
 msgid "&Definite integration"
-msgstr "Bestimmtes Integral"
+msgstr "&Bestimmtes Integral"
 
 #: ../src/wxMaximaFrame.cpp:285
 msgid "&Delete selection"
@@ -201,14 +199,12 @@ msgid "&Numeric"
 msgstr "&Numerisch"
 
 #: ../src/IntegrateWiz.cpp:52
-#, fuzzy
 msgid "&Numerical integration"
-msgstr "Numerische integration"
+msgstr "&Numerische Integration"
 
 #: ../src/SumWiz.cpp:44
-#, fuzzy
 msgid "&Nusum"
-msgstr "Suche geschl. Ausdruck"
+msgstr "&Suche geschl. Ausdruck"
 
 #: ../src/wxMaximaFrame.cpp:244
 msgid "&Open\tCtrl-O"
@@ -219,9 +215,8 @@ msgid "&Plotting"
 msgstr "&Plotten"
 
 #: ../src/SeriesWiz.cpp:45
-#, fuzzy
 msgid "&Power series"
-msgstr "Potenzreihen"
+msgstr "&Potenzreihe"
 
 #: ../src/wxMaximaFrame.cpp:265
 msgid "&Print\tCtrl-P"
@@ -229,9 +224,8 @@ msgstr "&Drucken\tCtrl-P"
 
 # frei
 #: ../src/SubstituteWiz.cpp:37
-#, fuzzy
 msgid "&Rational"
-msgstr "Erweitert"
+msgstr "&Streng dich extra an"
 
 #: ../src/wxMaximaFrame.cpp:311
 msgid "&Re-evaluate input\tCtrl-R"
@@ -278,9 +272,8 @@ msgid "&Solve ..."
 msgstr "Lö&sen ..."
 
 #: ../src/Plot2dWiz.cpp:46
-#, fuzzy
 msgid "&Special"
-msgstr "Besondere Werte"
+msgstr "Be&sondere Werte"
 
 #: ../src/wxMaximaFrame.cpp:316
 msgid "&Text\tF6"
@@ -295,9 +288,8 @@ msgid "&Trigonometric simplification"
 msgstr "&Trigonometrisch"
 
 #: ../src/Plot3dWiz.cpp:92
-#, fuzzy
 msgid "&pm3d"
-msgstr "Farbe nach Höhe"
+msgstr "&Farbe nach Höhe"
 
 #: ../src/Config.cpp:89
 msgid "(Use default language)"
@@ -514,14 +506,12 @@ msgid "Combine factorials in an expression"
 msgstr "In einem Ausdruck Falkultäten kombinieren"
 
 #: ../src/Plot2dWiz.cpp:657
-#, fuzzy
 msgid "Comma separated x coordinates"
-msgstr "Geben Sie hier die Variablen durch Beistriche getrennt ein."
+msgstr "Die x-Koordinaten durch Beistriche getrennt"
 
 #: ../src/Plot2dWiz.cpp:658
-#, fuzzy
 msgid "Comma separated y coordinates"
-msgstr "Geben Sie hier die Variablen durch Beistriche getrennt ein."
+msgstr "Die x-Koordinaten durch Beistriche getrennt"
 
 #: ../src/wxMaximaFrame.cpp:502
 msgid "Compute continued fraction of a value"
@@ -637,9 +627,8 @@ msgid "Copy &text"
 msgstr "&Text kopieren"
 
 #: ../src/MathCtrl.cpp:410 ../src/wxMaximaFrame.cpp:281
-#, fuzzy
 msgid "Copy TeX"
-msgstr "Text kopieren"
+msgstr "TeX kopieren"
 
 #: ../src/MathCtrl.cpp:413 ../src/wxMaximaFrame.cpp:288
 msgid "Copy as image"
@@ -662,9 +651,8 @@ msgid "Copy selection from console as image"
 msgstr "Auswahl von Konsole als Bild kopieren"
 
 #: ../src/wxMaximaFrame.cpp:282
-#, fuzzy
 msgid "Copy selection from console in TeX format"
-msgstr "Auswahl von Konsole als Bild kopieren"
+msgstr "Auswahl von Konsole im TeX-Format kopieren"
 
 #: ../src/wxMaximaFrame.cpp:293
 msgid "Copy selection from console to a file"
@@ -684,9 +672,8 @@ msgid "Copy text"
 msgstr "Text kopieren"
 
 #: ../src/Config.cpp:107
-#, fuzzy
 msgid "Copy to clipboard on select"
-msgstr "Beim Auswählen sofort kopieren"
+msgstr "Beim Auswählen in Zwischenablage kopieren"
 
 #: ../src/MathCtrl.cpp:475 ../src/wxMaximaFrame.cpp:298
 msgid "Cut"
@@ -709,14 +696,12 @@ msgid "Default"
 msgstr "Standard"
 
 #: ../src/Config.cpp:108
-#, fuzzy
 msgid "Default font:"
-msgstr "Standard"
+msgstr "Standardschrift:"
 
 #: ../src/Config.cpp:99
-#, fuzzy
 msgid "Default port:"
-msgstr "Standard"
+msgstr "Standardport:"
 
 #: ../src/wxMaxima.cpp:1816 ../src/wxMaxima.cpp:1825
 #: ../src/wxMaximaFrame.cpp:678 ../src/wxMaximaFrame.cpp:731
@@ -790,7 +775,7 @@ msgstr "Ausdruck differenzieren"
 
 #: ../src/Plot2dWiz.cpp:626 ../src/Plot2dWiz.cpp:649
 msgid "Discrete plot"
-msgstr ""
+msgstr "Diskret"
 
 #: ../src/wxMaximaFrame.cpp:372
 msgid "Display Te&X form"
@@ -1043,19 +1028,16 @@ msgid "Font used for display in console."
 msgstr "In der Konsole verwendete Schrift."
 
 #: ../src/Config.cpp:184
-#, fuzzy
 msgid "Font used for displaying greek characters in console."
-msgstr "In der Konsole verwendete Schrift."
+msgstr "Schrift für griechische Zeichen in der Konsole."
 
 #: ../src/Config.cpp:188
-#, fuzzy
 msgid "Font used for displaying unicode glyphs in console."
-msgstr "In der Konsole verwendete Schrift."
+msgstr "Schrift für Unicode Glyphen in der Konsole."
 
 #: ../src/Config.cpp:78
-#, fuzzy
 msgid "Fonts"
-msgstr "Schriftart"
+msgstr "Schriftarten"
 
 #: ../src/Plot2dWiz.cpp:69 ../src/Plot3dWiz.cpp:68
 msgid "Format:"
@@ -1227,7 +1209,6 @@ msgstr "Eingabe einfügen"
 
 #: ../src/wxMaximaFrame.cpp:685 ../src/wxMaximaFrame.cpp:687
 #: ../src/wxMaximaFrame.cpp:740 ../src/wxMaximaFrame.cpp:743
-#, fuzzy
 msgid "Insert input group"
 msgstr "Eingabe einfügen"
 
@@ -1309,6 +1290,9 @@ msgid ""
 "\n"
 "Please enter the path to maxima program again."
 msgstr ""
+"Ungültige Angabe für das Maxima-Programm.\n"
+"\n"
+"Bitte geben Sie den Prad für das Maxima-Prgramm erneut ein."
 
 #: ../src/wxMaxima.cpp:2536
 msgid "Inverse Laplace"
@@ -1332,7 +1316,7 @@ msgstr "KGV"
 
 #: ../src/Config.cpp:122
 msgid "Labels"
-msgstr "Ausgabemarken"
+msgstr "Label"
 
 #: ../src/Config.cpp:178
 msgid "Language used for wxMaxima GUI."
@@ -1368,7 +1352,7 @@ msgstr "Grenzwert..."
 
 #: ../src/wxMaximaFrame.cpp:253
 msgid "Load a maxima file using batch command"
-msgstr ""
+msgstr "Eine Maxima-Datei mit dem Befehl batch laden"
 
 #: ../src/wxMaximaFrame.cpp:251
 msgid "Load a maxima package file"
@@ -1447,9 +1431,8 @@ msgid "Maxima options"
 msgstr "Maxima Optionen"
 
 #: ../src/wxMaxima.cpp:1569
-#, fuzzy
 msgid "Maxima package (*.mac)|*.mac|"
-msgstr "Maxima-Sitzung (*.wxm)|*.wxm"
+msgstr "Maxima-Paket (*.mac)|*.mac"
 
 #: ../src/wxMaxima.cpp:1381 ../src/wxMaxima.cpp:1559
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
@@ -1763,9 +1746,8 @@ msgid "Save as"
 msgstr "Speichern als"
 
 #: ../src/MathCtrl.cpp:400
-#, fuzzy
 msgid "Save image"
-msgstr "Speichern als"
+msgstr "Bild speichern"
 
 #: ../src/Plot2dWiz.cpp:490 ../src/Plot3dWiz.cpp:465
 msgid "Save plot to file"
@@ -1849,7 +1831,6 @@ msgid "Selection to input\tF5"
 msgstr "Auswahl als Eingabe\tF5"
 
 #: ../src/Plot2dWiz.cpp:65
-#, fuzzy
 msgid "Send ranges to &gnuplot"
 msgstr "In gnuplot Bereiche erzwingen"
 
@@ -2216,7 +2197,7 @@ msgstr "Der Wert eines Ausdrucks als lange Gleitkommazahl"
 
 #: ../src/Config.cpp:190
 msgid "The default port used for communication between Maxima and wxMaxima."
-msgstr ""
+msgstr "Der Port an dem Maxima und wxMaxima standardmäßig kommunizieren."
 
 #: ../src/wxMaximaFrame.cpp:613
 msgid "The float value of an expression"
@@ -2339,12 +2320,11 @@ msgstr "Alle versteckten Zeilen hervorholen"
 
 #: ../src/Config.cpp:115
 msgid "Unicode glyphs:"
-msgstr ""
+msgstr "Unicode Glyphen:"
 
 #: ../src/LimitWiz.cpp:47
-#, fuzzy
 msgid "Use &Taylor series"
-msgstr "Verwende Taylorreihen"
+msgstr "Verwende &Taylorreihe"
 
 #: ../src/SumWiz.cpp:72
 msgid "Use Gosper algorithm"
@@ -2356,9 +2336,8 @@ msgstr ""
 "Eine griechische Schrifart verwenden um griechische Zeichen darzustellen."
 
 #: ../src/Config.cpp:110
-#, fuzzy
 msgid "Use greek font:"
-msgstr "Griechische Schriftwart verwenden"
+msgstr "Griechische Schriftart:"
 
 #: ../src/Plot2dWiz.cpp:47 ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:523
 #: ../src/Plot3dWiz.cpp:44 ../src/Plot3dWiz.cpp:53
@@ -2419,9 +2398,9 @@ msgid ""
 "input label hides input and output. Clicking on the label again, shows "
 "hidden expressions."
 msgstr ""
-"Man kann eine Ausgabe verschwinden lassen, indem man auf dieAusgabemarke "
-"klickt. Wenn man auf eine Eingabemarke klickt, verschwindenEingabe und "
-"Ausgabe. Klickt man auf die Marke erneut, erscheinen dieAusdrücke wieder."
+"Man kann eine Ausgabe ausblenden, indem man auf das Ausgabelabel "
+"klickt. Wenn man auf ein Eingabelabel klickt, verschwinden Eingabe und "
+"Ausgabe. Klickt man auf das Label erneut, erscheinen die Ausdrücke wieder."
 
 #: ../data/tips.txt:13
 msgid ""
@@ -2674,9 +2653,8 @@ msgstr "Indischrot"
 #: ../src/Plot2dWiz.cpp:407 ../src/Plot2dWiz.cpp:410 ../src/Plot3dWiz.cpp:72
 #: ../src/Plot3dWiz.cpp:208 ../src/Plot3dWiz.cpp:391 ../src/Plot3dWiz.cpp:422
 #: ../src/Plot3dWiz.cpp:425
-#, fuzzy
 msgid "inline"
-msgstr "Unterstrichen"
+msgstr "eingebettet"
 
 #: ../src/Config.cpp:134
 msgid "khaki"
@@ -2755,9 +2733,8 @@ msgid "medium violet red"
 msgstr "Mittel-Violettrot"
 
 #: ../src/IntegrateWiz.cpp:53
-#, fuzzy
 msgid "method:"
-msgstr "Näherungen:"
+msgstr "Methode:"
 
 #: ../src/Config.cpp:139
 msgid "midnight blue"
@@ -3017,19 +2994,12 @@ msgid "wxMaxima input"
 msgstr "wxMaxima - Mehrzeilige Eingabe"
 
 #: ../src/wxMaxima.cpp:2731
-#, fuzzy
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
 msgstr ""
-"wxMaxima ist eine wxWidgets Bedienoberfläche\n"
-"für das Computer Algebra System MAXIMA.\n"
-"\n"
-"Version: %s.\n"
-"Lizenz: GPL.\n"
-"\n"
-"%s\n"
-"%s"
+"wxMaxima ist eine wxWidgets basierte Bedienoberfläche "
+"für das Computer Algebra System MAXIMA."
 
 #: ../src/wxMaxima.cpp:2748
 #, c-format
@@ -3057,9 +3027,8 @@ msgid "wxMaxima options"
 msgstr "wxMaxima Optionen"
 
 #: ../src/wxMaxima.cpp:1277
-#, fuzzy
 msgid "wxMaxima session"
-msgstr "Maximasitzung"
+msgstr "wxMaxima-Sitzung"
 
 #: ../src/wxMaxima.cpp:1480 ../src/wxMaxima.cpp:1492
 msgid "wxMaxima session (*.wxm)|*.wxm"
