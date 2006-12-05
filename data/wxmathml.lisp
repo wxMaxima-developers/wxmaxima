@@ -883,10 +883,15 @@
     (append l (list (format nil "<~a>~a</~a>" tag name tag)) r)))
 
 
-(defmvar $wxplot_preamble "set terminal png size 400,250; set zeroaxis;")
+(defmvar $wxplot_size '((mlist simp) 400 250))
+
+(defun $wxplot_preamble ()
+  (format nil "set terminal png size ~d,~d; set zeroaxis;"
+	  ($first $wxplot_size)
+	  ($second $wxplot_size)))
 
 (defun $wxplot2d (&rest args)
-  (let ((preamble $wxplot_preamble)
+  (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
 ;;    (with-output-to-string (str)
@@ -909,7 +914,7 @@
   `((wxxmltag simp) ,filename "img")))
 
 (defun $wxplot3d (&rest args)
-  (let ((preamble $wxplot_preamble)
+  (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
 ;;    (with-output-to-string (str)
@@ -934,7 +939,7 @@
 (defun $wximplicit_plot (&rest args)
   (if (not (fboundp '$implicit_plot))
       ($load "implicit_plot"))
-  (let ((preamble $wxplot_preamble)
+  (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
 ;;    (with-output-to-string (str)
