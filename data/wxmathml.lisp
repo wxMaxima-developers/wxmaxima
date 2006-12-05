@@ -53,6 +53,9 @@
 (defmacro make-tag (val tag)
   ``((wxxmltag simp) ,,val ,,tag))
 
+(defun $wxxmltag (val tag)
+  (make-tag ($sconcat val) ($sconcat tag)))
+
 (defun string-substitute (newstring oldchar x &aux matchpos)
   (setq matchpos (position oldchar x))
   (if (null matchpos) x
@@ -447,7 +450,9 @@
               (null (cdadr x)))
          (append l `("<fn><t>matrix</t><p><t>[</t><t>]</t></p></fn>") r))
         (t
-         (append l `("<tb>")
+         (append l (if (find 'inference (car x))
+		       (list "<tb inference='t'>")
+		       (list "<tb>"))
                  (mapcan #'(lambda (y)
 			     (cond ((null (cdr y))
 				    (list "<mtr><mtd><mspace/></mtd></mtr>"))
