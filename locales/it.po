@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-30 09:57+0100\n"
-"PO-Revision-Date: 2006-10-27 00:30+0200\n"
+"PO-Revision-Date: 2006-12-05 22:10+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -20,9 +20,8 @@ msgid " << Expression too long to display! >>"
 msgstr "<< Espressione troppo lunga da visualizzare! >>"
 
 #: ../src/TextCell.cpp:23
-#, fuzzy
 msgid " << Unfold >>"
-msgstr "Apri"
+msgstr " << Sfoglia >>"
 
 #: ../src/wxMaximaFrame.cpp:455
 msgid "&Algebra"
@@ -37,9 +36,8 @@ msgid "&Apropos"
 msgstr "&Aproposito"
 
 #: ../src/wxMaximaFrame.cpp:252
-#, fuzzy
 msgid "&Batch file\tCtrl-B"
-msgstr "&Salva\tCtrl-S"
+msgstr "File &batch\tCtrl-B"
 
 #: ../src/wxMaximaFrame.cpp:409
 msgid "&Boundary value problem ..."
@@ -82,9 +80,8 @@ msgid "&Copy"
 msgstr "&Copia"
 
 #: ../src/IntegrateWiz.cpp:43
-#, fuzzy
 msgid "&Definite integration"
-msgstr "Integrazione definita"
+msgstr "Integrazione &definita"
 
 #: ../src/wxMaximaFrame.cpp:285
 msgid "&Delete selection"
@@ -203,14 +200,12 @@ msgid "&Numeric"
 msgstr "&Numerico"
 
 #: ../src/IntegrateWiz.cpp:52
-#, fuzzy
 msgid "&Numerical integration"
-msgstr "Integrazione numerica"
+msgstr "Integrazione &numerica"
 
 #: ../src/SumWiz.cpp:44
-#, fuzzy
 msgid "&Nusum"
-msgstr "Somnu"
+msgstr "Som&nu"
 
 #: ../src/wxMaximaFrame.cpp:244
 msgid "&Open\tCtrl-O"
@@ -221,18 +216,16 @@ msgid "&Plotting"
 msgstr "&Disegno"
 
 #: ../src/SeriesWiz.cpp:45
-#, fuzzy
 msgid "&Power series"
-msgstr "Serie di potenze"
+msgstr "Serie di &potenze"
 
 #: ../src/wxMaximaFrame.cpp:265
 msgid "&Print\tCtrl-P"
 msgstr "Stam&pa\tCtrl-P"
 
 #: ../src/SubstituteWiz.cpp:37
-#, fuzzy
 msgid "&Rational"
-msgstr "Razionale"
+msgstr "&Razionale"
 
 #: ../src/wxMaximaFrame.cpp:311
 msgid "&Re-evaluate input\tCtrl-R"
@@ -279,9 +272,8 @@ msgid "&Solve ..."
 msgstr "Ris&olvi ..."
 
 #: ../src/Plot2dWiz.cpp:46
-#, fuzzy
 msgid "&Special"
-msgstr "Speciale"
+msgstr "&Speciale"
 
 #: ../src/wxMaximaFrame.cpp:316
 msgid "&Text\tF6"
@@ -296,9 +288,8 @@ msgid "&Trigonometric simplification"
 msgstr "Semplificazione &trigonometrica"
 
 #: ../src/Plot3dWiz.cpp:92
-#, fuzzy
 msgid "&pm3d"
-msgstr "pm3d"
+msgstr "&pm3d"
 
 #: ../src/Config.cpp:89
 msgid "(Use default language)"
@@ -516,14 +507,12 @@ msgid "Combine factorials in an expression"
 msgstr "Combina i fattoriali in un'espressione"
 
 #: ../src/Plot2dWiz.cpp:657
-#, fuzzy
 msgid "Comma separated x coordinates"
-msgstr "Inserire un'elenco di variabili separate dalla virgola."
+msgstr "Coordinate x separate da virgole"
 
 #: ../src/Plot2dWiz.cpp:658
-#, fuzzy
 msgid "Comma separated y coordinates"
-msgstr "Inserire un'elenco di variabili separate dalla virgola."
+msgstr "Coordinate y separate da virgole"
 
 #: ../src/wxMaximaFrame.cpp:502
 msgid "Compute continued fraction of a value"
@@ -638,9 +627,8 @@ msgid "Copy &text"
 msgstr "Copia il &testo"
 
 #: ../src/MathCtrl.cpp:410 ../src/wxMaximaFrame.cpp:281
-#, fuzzy
 msgid "Copy TeX"
-msgstr "Copia il testo"
+msgstr "Copia TeX"
 
 #: ../src/MathCtrl.cpp:413 ../src/wxMaximaFrame.cpp:288
 msgid "Copy as image"
@@ -663,9 +651,8 @@ msgid "Copy selection from console as image"
 msgstr "Copia la selezione dalla console come immagine"
 
 #: ../src/wxMaximaFrame.cpp:282
-#, fuzzy
 msgid "Copy selection from console in TeX format"
-msgstr "Copia la selezione dalla console come immagine"
+msgstr "Copia la selezione dalla console in formato TeX"
 
 #: ../src/wxMaximaFrame.cpp:293
 msgid "Copy selection from console to a file"
@@ -684,9 +671,8 @@ msgid "Copy text"
 msgstr "Copia il testo"
 
 #: ../src/Config.cpp:107
-#, fuzzy
 msgid "Copy to clipboard on select"
-msgstr "Copia la selezione negli appunti se selezionata col mouse"
+msgstr "Copia negli appunti alla selezione"
 
 #: ../src/MathCtrl.cpp:475 ../src/wxMaximaFrame.cpp:298
 msgid "Cut"
@@ -709,14 +695,12 @@ msgid "Default"
 msgstr "Predefinito"
 
 #: ../src/Config.cpp:108
-#, fuzzy
 msgid "Default font:"
-msgstr "Predefinito"
+msgstr "Carattere predefinito:"
 
 #: ../src/Config.cpp:99
-#, fuzzy
 msgid "Default port:"
-msgstr "Predefinito"
+msgstr "Porta predefinita:"
 
 #: ../src/wxMaxima.cpp:1816 ../src/wxMaxima.cpp:1825
 #: ../src/wxMaximaFrame.cpp:678 ../src/wxMaximaFrame.cpp:731
@@ -790,7 +774,7 @@ msgstr "Differenzia l'espressione"
 
 #: ../src/Plot2dWiz.cpp:626 ../src/Plot2dWiz.cpp:649
 msgid "Discrete plot"
-msgstr ""
+msgstr "Grafico discreto"
 
 #: ../src/wxMaximaFrame.cpp:372
 msgid "Display Te&X form"
@@ -1042,19 +1026,16 @@ msgid "Font used for display in console."
 msgstr "Carattere usato nella finestra console."
 
 #: ../src/Config.cpp:184
-#, fuzzy
 msgid "Font used for displaying greek characters in console."
-msgstr "Carattere usato nella finestra console."
+msgstr "Font usato per mostrare i caratteri greci in console."
 
 #: ../src/Config.cpp:188
-#, fuzzy
 msgid "Font used for displaying unicode glyphs in console."
-msgstr "Carattere usato nella finestra console."
+msgstr "Font usato per mostrare i glifi unicode in console."
 
 #: ../src/Config.cpp:78
-#, fuzzy
 msgid "Fonts"
-msgstr "Carattere"
+msgstr "Font"
 
 #: ../src/Plot2dWiz.cpp:69 ../src/Plot3dWiz.cpp:68
 msgid "Format:"
@@ -1226,9 +1207,8 @@ msgstr "Inserimento ingresso"
 
 #: ../src/wxMaximaFrame.cpp:685 ../src/wxMaximaFrame.cpp:687
 #: ../src/wxMaximaFrame.cpp:740 ../src/wxMaximaFrame.cpp:743
-#, fuzzy
 msgid "Insert input group"
-msgstr "Inserimento ingresso"
+msgstr "Inserimento gruppo in ingresso"
 
 #: ../src/wxMaximaFrame.cpp:315
 msgid "Insert new input before selected input"
@@ -1308,6 +1288,9 @@ msgid ""
 "\n"
 "Please enter the path to maxima program again."
 msgstr ""
+"Voce non valida per il programma maxima.\n"
+"\n"
+"Inserire nuovamente il percorso per il programma maxima."
 
 #: ../src/wxMaxima.cpp:2536
 msgid "Inverse Laplace"
@@ -1367,7 +1350,7 @@ msgstr "Limite..."
 
 #: ../src/wxMaximaFrame.cpp:253
 msgid "Load a maxima file using batch command"
-msgstr ""
+msgstr "Carica un file maxima usando un comando batch"
 
 #: ../src/wxMaximaFrame.cpp:251
 msgid "Load a maxima package file"
@@ -1446,9 +1429,8 @@ msgid "Maxima options"
 msgstr "Opzioni di Maxima"
 
 #: ../src/wxMaxima.cpp:1569
-#, fuzzy
 msgid "Maxima package (*.mac)|*.mac|"
-msgstr "Sessione Maxima (*.wxm)|*.wxm"
+msgstr "Pacchetto Maxima (*.mac)|*.mac"
 
 #: ../src/wxMaxima.cpp:1381 ../src/wxMaxima.cpp:1559
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
@@ -1762,9 +1744,8 @@ msgid "Save as"
 msgstr "Salva come"
 
 #: ../src/MathCtrl.cpp:400
-#, fuzzy
 msgid "Save image"
-msgstr "Salva come"
+msgstr "Salva immagine"
 
 #: ../src/Plot2dWiz.cpp:490 ../src/Plot3dWiz.cpp:465
 msgid "Save plot to file"
@@ -1848,9 +1829,8 @@ msgid "Selection to input\tF5"
 msgstr "Selezione su ingresso\tF5"
 
 #: ../src/Plot2dWiz.cpp:65
-#, fuzzy
 msgid "Send ranges to &gnuplot"
-msgstr "Imposta i limiti di gnuplot"
+msgstr "Passa i limiti a &gnuplot"
 
 #: ../src/SeriesWiz.cpp:32 ../src/SeriesWiz.cpp:62 ../src/wxMaxima.cpp:2571
 msgid "Series"
@@ -2216,7 +2196,7 @@ msgstr "Il valore di un'espressione in virgola mobile precisa (bigfloat)"
 
 #: ../src/Config.cpp:190
 msgid "The default port used for communication between Maxima and wxMaxima."
-msgstr ""
+msgstr "La porta predefinita usata per la comunicazione tra Maxima e wxMaxima."
 
 #: ../src/wxMaximaFrame.cpp:613
 msgid "The float value of an expression"
@@ -2338,12 +2318,11 @@ msgstr "Apri tutti i gruppi chiusi"
 
 #: ../src/Config.cpp:115
 msgid "Unicode glyphs:"
-msgstr ""
+msgstr "Glifi unicode:"
 
 #: ../src/LimitWiz.cpp:47
-#, fuzzy
 msgid "Use &Taylor series"
-msgstr "Usa le serie di Taylor"
+msgstr "Usa le serie di &Taylor"
 
 #: ../src/SumWiz.cpp:72
 msgid "Use Gosper algorithm"
@@ -2354,9 +2333,8 @@ msgid "Use greek font to display greek characters."
 msgstr "Usa font greco per mostrare i caratteri greci."
 
 #: ../src/Config.cpp:110
-#, fuzzy
 msgid "Use greek font:"
-msgstr "Usa font greco"
+msgstr "Usa font greco:"
 
 #: ../src/Plot2dWiz.cpp:47 ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:523
 #: ../src/Plot3dWiz.cpp:44 ../src/Plot3dWiz.cpp:53
@@ -2673,9 +2651,8 @@ msgstr "rosso indiano"
 #: ../src/Plot2dWiz.cpp:407 ../src/Plot2dWiz.cpp:410 ../src/Plot3dWiz.cpp:72
 #: ../src/Plot3dWiz.cpp:208 ../src/Plot3dWiz.cpp:391 ../src/Plot3dWiz.cpp:422
 #: ../src/Plot3dWiz.cpp:425
-#, fuzzy
 msgid "inline"
-msgstr "Sottolineato"
+msgstr "inlinea"
 
 #: ../src/Config.cpp:134
 msgid "khaki"
@@ -2754,9 +2731,8 @@ msgid "medium violet red"
 msgstr "rosso violetto medio"
 
 #: ../src/IntegrateWiz.cpp:53
-#, fuzzy
 msgid "method:"
-msgstr "profondità:"
+msgstr "metodo:"
 
 #: ../src/Config.cpp:139
 msgid "midnight blue"
@@ -3016,19 +2992,10 @@ msgid "wxMaxima input"
 msgstr "Ingresso wxMaxima"
 
 #: ../src/wxMaxima.cpp:2731
-#, fuzzy
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
-msgstr ""
-"wxMaxima è un'interfaccia a wxWidgets\n"
-"per il sistema algebrico Maxima.\n"
-"\n"
-"Versione: %s.\n"
-"Licenza: GPL.\n"
-"\n"
-"%s\n"
-"%s"
+msgstr "wxMaxima è un'interfaccia utente grafica basata sui wxWidgets per il sistema algebrico computerizzato Maxima."
 
 #: ../src/wxMaxima.cpp:2748
 #, c-format
@@ -3056,9 +3023,8 @@ msgid "wxMaxima options"
 msgstr "Opzioni wxMaxima"
 
 #: ../src/wxMaxima.cpp:1277
-#, fuzzy
 msgid "wxMaxima session"
-msgstr "Sessione Maxima"
+msgstr "Sessione wxMaxima"
 
 #: ../src/wxMaxima.cpp:1480 ../src/wxMaxima.cpp:1492
 msgid "wxMaxima session (*.wxm)|*.wxm"
@@ -3080,18 +3046,3 @@ msgstr "giallo"
 #: ../src/Config.cpp:144
 msgid "yellow green"
 msgstr "giallo verde"
-
-#~ msgid "Font family:"
-#~ msgstr "Famiglia del carattere:"
-
-#~ msgid "Font size in console window."
-#~ msgstr "Grandezza carattere nella finestra console."
-
-#~ msgid "Font size:"
-#~ msgstr "Grandezza carattere:"
-
-#~ msgid "Greek font"
-#~ msgstr "Carattere greco"
-
-#~ msgid "Parametric"
-#~ msgstr "Parametrica"
