@@ -361,6 +361,10 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
 {
   MatrCell *matrix = new MatrCell;
   matrix->SetHighlight(m_highlight);
+  
+  if (node->properties != NULL)
+    matrix->SetSpecialFlag(true);
+  
   xmlNodePtr rows = node->children;
   while (rows)
   {

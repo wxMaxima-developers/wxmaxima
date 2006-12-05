@@ -52,9 +52,11 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
+  void SetSpecialFlag(bool special) { m_specialMatrix = special; }
 protected:
   int m_matWidth;
   int m_matHeight;
+  bool m_specialMatrix;
   vector<MathCell*> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;

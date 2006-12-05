@@ -23,6 +23,7 @@ MatrCell::MatrCell() : MathCell()
 {
   m_matWidth = 0;
   m_matHeight = 0;
+  m_specialMatrix = false;
 }
 
 MatrCell::~MatrCell()
@@ -137,32 +138,40 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       mp.x += (m_widths[i] + SCALE_PX(10, scale));
     }
     SetPen(parser);
-    // left bracket
-    dc.DrawLine(point.x + SCALE_PX(5, scale),
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + SCALE_PX(1, scale),
-                point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + SCALE_PX(1, scale),
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + SCALE_PX(1, scale),
-                point.y + m_center - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + SCALE_PX(1, scale),
-                point.y + m_center - SCALE_PX(2, scale),
-                point.x + SCALE_PX(5, scale),
-                point.y + m_center - SCALE_PX(2, scale));
-    // right bracket
-    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale) - 1,
-                point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale) - 1,
-                point.y + m_center - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
-                point.y + m_center - SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(5, scale) - 1,
-                point.y + m_center - SCALE_PX(2, scale));
+    if (m_specialMatrix)
+      dc.DrawLine(point.x + SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + SCALE_PX(1, scale),
+                  point.y + m_center - SCALE_PX(2, scale));
+    else
+    {
+      // left bracket
+      dc.DrawLine(point.x + SCALE_PX(5, scale),
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(2, scale));
+      dc.DrawLine(point.x + SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + SCALE_PX(1, scale),
+                  point.y + m_center - SCALE_PX(2, scale));
+      dc.DrawLine(point.x + SCALE_PX(1, scale),
+                  point.y + m_center - SCALE_PX(2, scale),
+                  point.x + SCALE_PX(5, scale),
+                  point.y + m_center - SCALE_PX(2, scale));
+      // right bracket
+      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + m_width - SCALE_PX(1, scale) - 1,
+                  point.y - m_center + SCALE_PX(2, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + m_width - SCALE_PX(1, scale) - 1,
+                  point.y + m_center - SCALE_PX(2, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
+                  point.y + m_center - SCALE_PX(2, scale),
+                  point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y + m_center - SCALE_PX(2, scale));
+    }
     UnsetPen(parser);
   }
   MathCell::Draw(parser, point, fontsize, all);
