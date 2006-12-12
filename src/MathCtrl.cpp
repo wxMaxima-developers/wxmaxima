@@ -368,6 +368,7 @@ void MathCtrl::ClearWindow()
 {
   if (m_tree != NULL)
   {
+    SetActiveCell(NULL);
     DestroyTree();
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
