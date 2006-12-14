@@ -441,7 +441,12 @@
                  (append '("</r></f>")r) 'mparen 'mparen))
   (append l r))
 
-(defprop $matrix wxxml-matrix wxxml)
+(defprop $matrix wxxml-matrix-test wxxml)
+
+(defun wxxml-matrix-test (x l r)
+  (if (every #'$listp (cdr x))
+      (wxxml-matrix x l r)
+      (wxxml-function x l r)))
 
 (defun wxxml-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (cond ((null (cdr x))
