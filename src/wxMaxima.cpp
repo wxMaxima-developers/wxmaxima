@@ -2726,21 +2726,24 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   {
     wxAboutDialogInfo info;
 
+#if defined __WXMSW__
+    info.SetIcon(GetIcon());
+    info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
+    info.SetDescription(_("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets."));
+#endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
-
-    info.SetCopyright(wxT("(C) 2004-2006 Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-
+    info.SetCopyright(wxT("(C) 2004-2006 Andrej Vodopivec"));
+#ifndef __WXMSW__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-
-    info.AddTranslator(wxT("Eric Delevaux <ericdel@libertysurf.fr>"));
-    info.AddTranslator(wxT("Marco Ciampa <ciampix@libero.it>"));
-    info.AddTranslator(wxT("Antonio Ullan <aullan@unex.es>"));
-    info.AddTranslator(wxT("Harald Geyer <Harald.Geyer@gmx.at>"));
+    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
+    info.AddTranslator(wxT("Eric Delevaux"));
+    info.AddTranslator(wxT("Marco Ciampa"));
+    info.AddTranslator(wxT("Antonio Ullan"));
+    info.AddTranslator(wxT("Harald Geyer"));
     info.AddTranslator(wxT("Eduardo M. Kalinowski"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov"));
-
+#endif
     wxAboutBox(info);
   }
 #else
