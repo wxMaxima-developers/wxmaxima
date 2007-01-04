@@ -480,7 +480,7 @@ wchar_t* TextCell::GetGreekStringUnicode()
     return L"\x03A6";
   else if (m_text == wxT("%Chi"))
     return L"\x03A7";
-  else if (m_text == wxT("%Psi"))
+  else if (m_text == wxT("%Psi") || m_text == wxT("psi"))
     return L"\x03A8";
   else if (m_text == wxT("%Omega"))
     return L"\x03A9";

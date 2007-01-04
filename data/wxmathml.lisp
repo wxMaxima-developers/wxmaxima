@@ -306,6 +306,7 @@
 (defprop $%phi "<g>%phi</g>" wxxmlword)
 (defprop $%chi "<g>%chi</g>" wxxmlword)
 (defprop $%psi "<g>%psi</g>" wxxmlword)
+(defprop $psi "<g>psi</g>" wxxmlword)
 (defprop $%omega "<g>%omega</g>" wxxmlword)
 (defprop |$%Alpha| "<g>%Alpha</g>" wxxmlword)
 (defprop |$%Beta| "<g>%Beta</g>" wxxmlword)
