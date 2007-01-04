@@ -92,7 +92,7 @@ transcoded:
 	cat it.po | sed -e "s/UTF-8/ISO-8859-1/" | iconv -f utf-8 -t iso8859-1 > transcoded/it.po
 	$(MSGFMT) transcoded/it.po -o transcoded/it.mo
 	cp pt_BR.po transcoded
-	$(MSGFMT) transcoded/pt_BR.po -o transcoded/fr.mo
+	$(MSGFMT) transcoded/pt_BR.po -o transcoded/pt_BR.mo
 	cp ru.po transcoded
 	$(MSGFMT) transcoded/ru.po -o transcoded/ru.mo
 
