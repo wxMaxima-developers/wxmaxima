@@ -361,10 +361,10 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
 {
   MatrCell *matrix = new MatrCell;
   matrix->SetHighlight(m_highlight);
-  
+
   if (node->properties != NULL)
     matrix->SetSpecialFlag(true);
-  
+
   xmlNodePtr rows = node->children;
   while (rows)
   {
@@ -386,6 +386,7 @@ MathCell* MathParser::ParseTableTag(xmlNodePtr node)
 MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
 {
   //  wxYield();
+  MathCell* tmp = NULL;
   MathCell* cell = NULL;
   while (node)
   {
@@ -593,7 +594,7 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
       {
         wxString filename((const char*)(node->children->content), wxConvUTF8);
         filename = ToLocal(filename);
-        
+
         ImgCell *tmp = new ImgCell;
         tmp->LoadImage(filename);
         wxRemoveFile(filename);
@@ -620,8 +621,17 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
     }
     if (!all)
       break;
+
+    if (tmp == NULL)
+      tmp = cell;
+    else
+      cell = cell->m_next;
+
     node = node->next;
   }
+
+  if (tmp != NULL)
+    return tmp;
   return cell;
 }
 
