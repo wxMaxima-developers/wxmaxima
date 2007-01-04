@@ -160,11 +160,16 @@ wxString IntegrateWiz::GetValue()
         s = wxT("quad_qagi(") +
             text_ctrl_1->GetValue() + wxT(", ") +
             text_ctrl_2->GetValue() + wxT(", 0, 'both);");
-      else if (from == wxT("minf") || to == wxT("inf"))
+      else if (from == wxT("minf"))
         s = wxT("quad_qagi(") +
             text_ctrl_1->GetValue() + wxT(", ") +
             text_ctrl_2->GetValue() + wxT(", ") +
-            from + wxT(", ") + to + wxT(");");
+            to + wxT(", minf);");
+      else if (to == wxT("inf"))
+        s = wxT("quad_qagi(") +
+            text_ctrl_1->GetValue() + wxT(", ") +
+            text_ctrl_2->GetValue() + wxT(", ") +
+            from + wxT(", inf);");
       else
         s = wxT("quad_qags(") +
             text_ctrl_1->GetValue() + wxT(", ") +
