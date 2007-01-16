@@ -26,7 +26,7 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-($put '$wxmaxima `((mlist simp) 0 7 1) '$version)
+($put '$wxmaxima `((mlist simp) 0 7 2) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 
@@ -124,8 +124,13 @@
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
   (setq pname (maybe-invert-string-case (symbol-name sym)))
-  (setq pname (cond ((memq (elt pname 0) '(#\$ #\& #\%))
+  (setq pname (cond ((memq (elt pname 0) '(#\$ #\&))
 		     (subseq pname 1))
+		    ((equal (elt pname 0) #\%)
+		     (if $noundisp
+			 (concatenate 'string "'"
+				      (subseq pname 1))
+			 (subseq pname 1)))
 		    ($lispdisp
 		     (concatenate 'string "?" pname))
 		    (t pname)))
@@ -185,7 +190,11 @@
 
 (defun wxxml-nary (x l r)
   (let* ((op (caar x))
-         (sym (wxxmlsym op))
+	 (sym (cond ((eq op 'mtimes)
+		     (if $stardisp
+			 "<v>*</v>"
+			 "<h>*</h>"))
+	       (t (wxxmlsym op))))
          (y (cdr x))
          (ext-lop lop)
          (ext-rop rop))
@@ -675,8 +684,33 @@
 (defprop %derivative 119. wxxml-rbp)
 
 (defun wxxml-derivative (x l r)
-  (wxxml (wxxml-d x) (append l '("<d>"))
-         (append '("</d>") r) 'mparen 'mparen))
+  (if $derivabbrev
+      (append l
+	      (wxxml-d-abbrev x)
+	      r)
+      (wxxml (wxxml-d x) (append l '("<d>"))
+	     (append '("</d>") r) 'mparen 'mparen)))
+
+(defun wxxml-d-abbrev-subscript (l_vars l_ords &aux var_xml)
+  (let ((sub ()))
+    (loop while l_vars do
+	  (setq var_xml (car (wxxml (car l_vars) nil nil 'mparen 'mparen)))
+	  (loop for i from 1 to (car l_ords) do
+		(setq sub (cons var_xml sub)))
+	  (setq l_vars (cdr l_vars)
+		l_ords (cdr l_ords)))
+    (reverse sub)))
+
+(defun wxxml-d-abbrev (x)
+  (let*
+      ((difflist (cddr x))
+       (ords (odds  difflist 0))
+       (ords (cond ((null ords) '(1))
+		   (t ords)))
+       (vars (odds difflist 1))
+       (fun (wxxml (cadr x) nil nil 'mparen 'mparen)))
+    (append '("<i diff><r>") fun '("</r>")
+	    '("<r>") (wxxml-d-abbrev-subscript vars ords) '("</r></i>"))))
 
 (defun wxxml-d (x)
   ;; format the macsyma derivative form so it looks
@@ -967,6 +1001,29 @@
 ;;	))
   `((wxxmltag simp) ,filename "img")))
 
+
+(defun $wxcontour_plot (&rest args)
+  (let ((preamble ($wxplot_preamble))
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (plot-temp-file "maxout.png")))
+;;    (with-output-to-string (str)
+;;      (let ((*standard-output* str))
+	(if (length system-preamble)
+	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
+	(dolist (arg args)
+	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	      (setq preamble (format nil "~a; ~a"
+				     preamble
+				     (maybe-invert-string-case
+				      (symbol-name
+				       (stripdollar (caddr arg))))))))
+	(meval ($funmake '$contour_plot `((mlist simp) ,@args
+					  ((mlist simp) $plot_format $gnuplot)
+					  ((mlist simp) $gnuplot_preamble ,preamble)
+					  ((mlist simp) $gnuplot_term $png)
+					  ((mlist simp) $gnuplot_out_file ,filename))))
+;;	))
+  `((wxxmltag simp) ,filename "img")))
 
 ;;
 ;; Port of Barton Willis's texput function.
