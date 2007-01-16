@@ -221,7 +221,7 @@ wxString FracCell::ToString(bool all)
     }
     else if (m_fracStyle == FC_CHOOSE)
     {
-      s = wxT("binom(") + m_num->ToString(true) + wxT(",") +
+      s = wxT("binomial(") + m_num->ToString(true) + wxT(",") +
           m_denom->ToString(true) + wxT(")");
     }
     else
@@ -312,7 +312,7 @@ void FracCell::SetupBreakUps()
   }
   else
   {
-    m_open1 = new TextCell(wxT("binom("));
+    m_open1 = new TextCell(wxT("binomial("));
     m_close1 = new TextCell(wxT("x"));
     m_open2 = new TextCell(wxT("x"));
     m_close2 = new TextCell(wxT(")"));
