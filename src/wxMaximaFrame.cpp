@@ -609,7 +609,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_6 = new wxMenu();
   wxglade_tmp_menu_6->Append(menu_num_out, _("Toggle &numeric output"),
                              _("Toggle numeric output"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_float, _("To &float"),
+  wxglade_tmp_menu_6->Append(menu_to_float, _("To &float\tCtrl-F"),
                              _("The float value of an expression"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &bigfloat"),
