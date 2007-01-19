@@ -709,7 +709,7 @@
 		   (t ords)))
        (vars (odds difflist 1))
        (fun (wxxml (cadr x) nil nil 'mparen 'mparen)))
-    (append '("<i diff><r>") fun '("</r>")
+    (append '("<i d=\"1\"><r>") fun '("</r>")
 	    '("<r>") (wxxml-d-abbrev-subscript vars ords) '("</r></i>"))))
 
 (defun wxxml-d (x)
