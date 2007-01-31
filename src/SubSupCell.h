@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -17,20 +17,21 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _SUBCELL_H_
-#define _SUBCELL_H_
+#ifndef _SUBSUPCELL_H_
+#define _SUBSUPCELL_H_
 
 #include "MathCell.h"
 
-class SubCell : public MathCell
+class SubSupCell : public MathCell
 {
 public:
-  SubCell();
-  ~SubCell();
+  SubSupCell();
+  ~SubSupCell();
   MathCell* Copy(bool all);
   void Destroy();
   void SetBase(MathCell *base);
   void SetIndex(MathCell *index);
+  void SetExponent(MathCell *expt);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
@@ -39,7 +40,8 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
 protected:
   MathCell *m_baseCell;
+  MathCell *m_exptCell;
   MathCell *m_indexCell;
 };
 
-#endif //_SUBCELL_H_
+#endif //_SUBSUPCELL_H_

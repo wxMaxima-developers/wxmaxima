@@ -35,6 +35,7 @@
 #include "FunCell.h"
 #include "EditorCell.h"
 #include "ImgCell.h"
+#include "SubSupCell.h"
 
 #include <wx/wx.h>
 #include <wx/config.h>
@@ -118,6 +119,34 @@ MathCell* MathParser::ParseSupTag(xmlNodePtr node)
   return NULL;
 }
 
+MathCell* MathParser::ParseSubSupTag(xmlNodePtr node)
+{
+  SubSupCell *subsup = new SubSupCell;
+  xmlNodePtr child = node->children;
+  if (child)
+  {
+    subsup->SetBase(ParseTag(child, false));
+    child = child->next;
+    if (child)
+    {
+      MathCell* index = ParseTag(child, false);
+      index->SetExponentFlag();
+      subsup->SetIndex(index);
+      child = child->next;
+      if (child)
+      {
+        MathCell* power = ParseTag(child, false);
+        power->SetExponentFlag();
+        subsup->SetExponent(power);
+        subsup->SetType(m_ParserStyle);
+        return subsup;
+      }
+    }
+  }
+  delete subsup;
+  return NULL;
+}
+
 MathCell* MathParser::ParseSubTag(xmlNodePtr node)
 {
   SubCell *sub = new SubCell;
@@ -128,7 +157,9 @@ MathCell* MathParser::ParseSubTag(xmlNodePtr node)
     child = child->next;
     if (child)
     {
-      sub->SetIndex(ParseTag(child, false));
+      MathCell* index = ParseTag(child, false);
+      index->SetExponentFlag();
+      sub->SetIndex(index);
       sub->SetType(m_ParserStyle);
       return sub;
     }
@@ -525,6 +556,13 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
           cell = ParseAbsTag(node);
         else
           cell->AppendCell(ParseAbsTag(node));
+      }
+      else if (tagName == wxT("ie"))
+      {
+        if (cell == NULL)
+          cell = ParseSubSupTag(node);
+        else
+          cell->AppendCell(ParseSubSupTag(node));
       }
       else if (tagName == wxT("lm"))
       {

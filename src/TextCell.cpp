@@ -102,7 +102,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     if (m_isHidden)
     {
       m_height = 0;
-      m_width = -2 * MC_CELL_SKIP;
+      m_width = 0;
     }
 
     m_realCenter = m_center = m_height / 2;
@@ -387,102 +387,108 @@ wchar_t* TextCell::GetGreekStringUnicode()
     return L"\x0393";
   else if (m_text == wxT("zeta"))
     return L"\x03B6";
-
-  else if (m_text == wxT("%alpha"))
-    return L"\x03B1";
-  else if (m_text == wxT("%beta"))
-    return L"\x03B2";
-  else if (m_text == wxT("%gamma"))
-    return L"\x03B3";
-  else if (m_text == wxT("%delta"))
-    return L"\x03B4";
-  else if (m_text == wxT("%epsilon"))
-    return L"\x03B5";
-  else if (m_text == wxT("%zeta"))
-    return L"\x03B6";
-  else if (m_text == wxT("%eta"))
-    return L"\x03B7";
-  else if (m_text == wxT("%theta"))
-    return L"\x03B8";
-  else if (m_text == wxT("%iota"))
-    return L"\x03B9";
-  else if (m_text == wxT("%kappa"))
-    return L"\x03BA";
-  else if (m_text == wxT("%lambda"))
-    return L"\x03BB";
-  else if (m_text == wxT("%mu"))
-    return L"\x03BC";
-  else if (m_text == wxT("%nu"))
-    return L"\x03BD";
-  else if (m_text == wxT("%xi"))
-    return L"\x03BE";
-  else if (m_text == wxT("%omicron"))
-    return L"\x03BF";
-  else if (m_text == wxT("%pi"))
-    return L"\x03C0";
-  else if (m_text == wxT("%rho"))
-    return L"\x03C1";
-  else if (m_text == wxT("%sigma"))
-    return L"\x03C3";
-  else if (m_text == wxT("%tau"))
-    return L"\x03C4";
-  else if (m_text == wxT("%upsilon"))
-    return L"\x03C5";
-  else if (m_text == wxT("%phi"))
-    return L"\x03C6";
-  else if (m_text == wxT("%chi"))
-    return L"\x03C7";
-  else if (m_text == wxT("%psi"))
-    return L"\x03C8";
-  else if (m_text == wxT("%omega"))
-    return L"\x03C9";
-  else if (m_text == wxT("%Alpha"))
-    return L"\x0391";
-  else if (m_text == wxT("%Beta"))
-    return L"\x0392";
-  else if (m_text == wxT("%Gamma"))
-    return L"\x0393";
-  else if (m_text == wxT("%Delta"))
-    return L"\x0394";
-  else if (m_text == wxT("%Epsilon"))
-    return L"\x0395";
-  else if (m_text == wxT("%Zeta"))
-    return L"\x0396";
-  else if (m_text == wxT("%Eta"))
-    return L"\x0397";
-  else if (m_text == wxT("%Theta"))
-    return L"\x0398";
-  else if (m_text == wxT("%Iota"))
-    return L"\x0399";
-  else if (m_text == wxT("%Kappa"))
-    return L"\x039A";
-  else if (m_text == wxT("%Lambda"))
-    return L"\x039B";
-  else if (m_text == wxT("%Mu"))
-    return L"\x039C";
-  else if (m_text == wxT("%Nu"))
-    return L"\x039D";
-  else if (m_text == wxT("%Xi"))
-    return L"\x039E";
-  else if (m_text == wxT("%Omicron"))
-    return L"\x039F";
-  else if (m_text == wxT("%Pi"))
-    return L"\x03A0";
-  else if (m_text == wxT("%Rho"))
-    return L"\x03A1";
-  else if (m_text == wxT("%Sigma"))
-    return L"\x03A3";
-  else if (m_text == wxT("%Tau"))
-    return L"\x03A4";
-  else if (m_text == wxT("%Upsilon"))
-    return L"\x03A5";
-  else if (m_text == wxT("%Phi"))
-    return L"\x03A6";
-  else if (m_text == wxT("%Chi"))
-    return L"\x03A7";
-  else if (m_text == wxT("%Psi") || m_text == wxT("psi"))
+  else if (m_text == wxT("psi"))
     return L"\x03A8";
-  else if (m_text == wxT("%Omega"))
+
+  wxString txt(m_text);
+  if (txt[0] != '%')
+    txt = wxT("%") + txt;
+  
+  if (txt == wxT("%alpha"))
+    return L"\x03B1";
+  else if (txt == wxT("%beta"))
+    return L"\x03B2";
+  else if (txt == wxT("%gamma"))
+    return L"\x03B3";
+  else if (txt == wxT("%delta"))
+    return L"\x03B4";
+  else if (txt == wxT("%epsilon"))
+    return L"\x03B5";
+  else if (txt == wxT("%zeta"))
+    return L"\x03B6";
+  else if (txt == wxT("%eta"))
+    return L"\x03B7";
+  else if (txt == wxT("%theta"))
+    return L"\x03B8";
+  else if (txt == wxT("%iota"))
+    return L"\x03B9";
+  else if (txt == wxT("%kappa"))
+    return L"\x03BA";
+  else if (txt == wxT("%lambda"))
+    return L"\x03BB";
+  else if (txt == wxT("%mu"))
+    return L"\x03BC";
+  else if (txt == wxT("%nu"))
+    return L"\x03BD";
+  else if (txt == wxT("%xi"))
+    return L"\x03BE";
+  else if (txt == wxT("%omicron"))
+    return L"\x03BF";
+  else if (txt == wxT("%pi"))
+    return L"\x03C0";
+  else if (txt == wxT("%rho"))
+    return L"\x03C1";
+  else if (txt == wxT("%sigma"))
+    return L"\x03C3";
+  else if (txt == wxT("%tau"))
+    return L"\x03C4";
+  else if (txt == wxT("%upsilon"))
+    return L"\x03C5";
+  else if (txt == wxT("%phi"))
+    return L"\x03C6";
+  else if (txt == wxT("%chi"))
+    return L"\x03C7";
+  else if (txt == wxT("%psi"))
+    return L"\x03C8";
+  else if (txt == wxT("%omega"))
+    return L"\x03C9";
+  else if (txt == wxT("%Alpha"))
+    return L"\x0391";
+  else if (txt == wxT("%Beta"))
+    return L"\x0392";
+  else if (txt == wxT("%Gamma"))
+    return L"\x0393";
+  else if (txt == wxT("%Delta"))
+    return L"\x0394";
+  else if (txt == wxT("%Epsilon"))
+    return L"\x0395";
+  else if (txt == wxT("%Zeta"))
+    return L"\x0396";
+  else if (txt == wxT("%Eta"))
+    return L"\x0397";
+  else if (txt == wxT("%Theta"))
+    return L"\x0398";
+  else if (txt == wxT("%Iota"))
+    return L"\x0399";
+  else if (txt == wxT("%Kappa"))
+    return L"\x039A";
+  else if (txt == wxT("%Lambda"))
+    return L"\x039B";
+  else if (txt == wxT("%Mu"))
+    return L"\x039C";
+  else if (txt == wxT("%Nu"))
+    return L"\x039D";
+  else if (txt == wxT("%Xi"))
+    return L"\x039E";
+  else if (txt == wxT("%Omicron"))
+    return L"\x039F";
+  else if (txt == wxT("%Pi"))
+    return L"\x03A0";
+  else if (txt == wxT("%Rho"))
+    return L"\x03A1";
+  else if (txt == wxT("%Sigma"))
+    return L"\x03A3";
+  else if (txt == wxT("%Tau"))
+    return L"\x03A4";
+  else if (txt == wxT("%Upsilon"))
+    return L"\x03A5";
+  else if (txt == wxT("%Phi"))
+    return L"\x03A6";
+  else if (txt == wxT("%Chi"))
+    return L"\x03A7";
+  else if (txt == wxT("%Psi"))
+    return L"\x03A8";
+  else if (txt == wxT("%Omega"))
     return L"\x03A9";
 
   return L"";
@@ -496,102 +502,108 @@ wxString TextCell::GetGreekStringIso()
     return wxT("\xC3");
   else if (m_text == wxT("zeta"))
     return wxT("\xE6");
-
-  else if (m_text == wxT("%alpha"))
-    return wxT("\xE1");
-  else if (m_text == wxT("%beta"))
-    return wxT("\xE2");
-  else if (m_text == wxT("%gamma"))
-    return wxT("\xE3");
-  else if (m_text == wxT("%delta"))
-    return wxT("\xE4");
-  else if (m_text == wxT("%epsilon"))
-    return wxT("\xE5");
-  else if (m_text == wxT("%zeta"))
-    return wxT("\xE6");
-  else if (m_text == wxT("%eta"))
-    return wxT("\xE7");
-  else if (m_text == wxT("%theta"))
-    return wxT("\xE8");
-  else if (m_text == wxT("%iota"))
-    return wxT("\xE9");
-  else if (m_text == wxT("%kappa"))
-    return wxT("\xEA");
-  else if (m_text == wxT("%lambda"))
-    return wxT("\xEB");
-  else if (m_text == wxT("%mu"))
-    return wxT("\xEC");
-  else if (m_text == wxT("%nu"))
-    return wxT("\xED");
-  else if (m_text == wxT("%xi"))
-    return wxT("\xEE");
-  else if (m_text == wxT("%omicron"))
-    return wxT("\xEF");
-  else if (m_text == wxT("%pi"))
-    return wxT("\xF0");
-  else if (m_text == wxT("%rho"))
-    return wxT("\xF1");
-  else if (m_text == wxT("%sigma"))
-    return wxT("\xF3");
-  else if (m_text == wxT("%tau"))
-    return wxT("\xF4");
-  else if (m_text == wxT("%upsilon"))
-    return wxT("\xF5");
-  else if (m_text == wxT("%phi"))
-    return wxT("\xF6");
-  else if (m_text == wxT("%chi"))
-    return wxT("\xF7");
-  else if (m_text == wxT("%psi"))
-    return wxT("\xF8");
-  else if (m_text == wxT("%omega"))
-    return wxT("\xF9");
-  else if (m_text == wxT("%Alpha"))
-    return wxT("\xC1");
-  else if (m_text == wxT("%Beta"))
-    return wxT("\xC2");
-  else if (m_text == wxT("%Gamma"))
-    return wxT("\xC3");
-  else if (m_text == wxT("%Delta"))
-    return wxT("\xC4");
-  else if (m_text == wxT("%Epsilon"))
-    return wxT("\xC5");
-  else if (m_text == wxT("%Zeta"))
-    return wxT("\xC6");
-  else if (m_text == wxT("%Eta"))
-    return wxT("\xC7");
-  else if (m_text == wxT("%Theta"))
-    return wxT("\xC8");
-  else if (m_text == wxT("%Iota"))
-    return wxT("\xC9");
-  else if (m_text == wxT("%Kappa"))
-    return wxT("\xCA");
-  else if (m_text == wxT("%Lambda"))
-    return wxT("\xCB");
-  else if (m_text == wxT("%Mu"))
-    return wxT("\xCC");
-  else if (m_text == wxT("%Nu"))
-    return wxT("\xCD");
-  else if (m_text == wxT("%Xi"))
-    return wxT("\xCE");
-  else if (m_text == wxT("%Omicron"))
-    return wxT("\xCF");
-  else if (m_text == wxT("%Pi"))
-    return wxT("\xD0");
-  else if (m_text == wxT("%Rho"))
-    return wxT("\xD1");
-  else if (m_text == wxT("%Sigma"))
-    return wxT("\xD3");
-  else if (m_text == wxT("%Tau"))
-    return wxT("\xD4");
-  else if (m_text == wxT("%Upsilon"))
-    return wxT("\xD5");
-  else if (m_text == wxT("%Phi"))
-    return wxT("\xD6");
-  else if (m_text == wxT("%Chi"))
-    return wxT("\xD7");
-  else if (m_text == wxT("%Psi"))
+  else if (m_text == wxT("psi"))
     return wxT("\xD8");
-  else if (m_text == wxT("%Omega"))
+  
+  wxString txt(m_text);
+  if (txt[0] != '%')
+    txt = wxT("%") + txt;
+  
+  if (text == wxT("%alpha"))
+    return wxT("\xE1");
+  else if (text == wxT("%beta"))
+    return wxT("\xE2");
+  else if (txt == wxT("%gamma"))
+    return wxT("\xE3");
+  else if (txt == wxT("%delta"))
+    return wxT("\xE4");
+  else if (txt == wxT("%epsilon"))
+    return wxT("\xE5");
+  else if (txt == wxT("%zeta"))
+    return wxT("\xE6");
+  else if (txt == wxT("%eta"))
+    return wxT("\xE7");
+  else if (txt == wxT("%theta"))
+    return wxT("\xE8");
+  else if (txt == wxT("%iota"))
+    return wxT("\xE9");
+  else if (txt == wxT("%kappa"))
+    return wxT("\xEA");
+  else if (txt == wxT("%lambda"))
+    return wxT("\xEB");
+  else if (txt == wxT("%mu"))
+    return wxT("\xEC");
+  else if (txt == wxT("%nu"))
+    return wxT("\xED");
+  else if (txt == wxT("%xi"))
+    return wxT("\xEE");
+  else if (txt == wxT("%omicron"))
+    return wxT("\xEF");
+  else if (txt == wxT("%pi"))
+    return wxT("\xF0");
+  else if (txt == wxT("%rho"))
+    return wxT("\xF1");
+  else if (txt == wxT("%sigma"))
+    return wxT("\xF3");
+  else if (txt == wxT("%tau"))
+    return wxT("\xF4");
+  else if (txt == wxT("%upsilon"))
+    return wxT("\xF5");
+  else if (txt == wxT("%phi"))
+    return wxT("\xF6");
+  else if (txt == wxT("%chi"))
+    return wxT("\xF7");
+  else if (txt == wxT("%psi"))
+    return wxT("\xF8");
+  else if (txt == wxT("%omega"))
+    return wxT("\xF9");
+  else if (txt == wxT("%Alpha"))
+    return wxT("\xC1");
+  else if (txt == wxT("%Beta"))
+    return wxT("\xC2");
+  else if (txt == wxT("%Gamma"))
+    return wxT("\xC3");
+  else if (txt == wxT("%Delta"))
+    return wxT("\xC4");
+  else if (txt == wxT("%Epsilon"))
+    return wxT("\xC5");
+  else if (txt == wxT("%Zeta"))
+    return wxT("\xC6");
+  else if (txt == wxT("%Eta"))
+    return wxT("\xC7");
+  else if (txt == wxT("%Theta"))
+    return wxT("\xC8");
+  else if (txt == wxT("%Iota"))
+    return wxT("\xC9");
+  else if (txt == wxT("%Kappa"))
+    return wxT("\xCA");
+  else if (txt == wxT("%Lambda"))
+    return wxT("\xCB");
+  else if (txt == wxT("%Mu"))
+    return wxT("\xCC");
+  else if (txt == wxT("%Nu"))
+    return wxT("\xCD");
+  else if (txt == wxT("%Xi"))
+    return wxT("\xCE");
+  else if (txt == wxT("%Omicron"))
+    return wxT("\xCF");
+  else if (txt == wxT("%Pi"))
+    return wxT("\xD0");
+  else if (txt == wxT("%Rho"))
+    return wxT("\xD1");
+  else if (txt == wxT("%Sigma"))
+    return wxT("\xD3");
+  else if (txt == wxT("%Tau"))
+    return wxT("\xD4");
+  else if (txt == wxT("%Upsilon"))
+    return wxT("\xD5");
+  else if (txt == wxT("%Phi"))
+    return wxT("\xD6");
+  else if (txt == wxT("%Chi"))
+    return wxT("\xD7");
+  else if (txt == wxT("%Psi"))
+    return wxT("\xD8");
+  else if (txt == wxT("%Omega"))
     return wxT("\xD9");
 
   return m_text;

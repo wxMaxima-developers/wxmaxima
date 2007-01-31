@@ -48,6 +48,7 @@ private:
   MathCell* ParseSqrtTag(xmlNodePtr node);
   MathCell* ParseLimitTag(xmlNodePtr node);
   MathCell* ParseParenTag(xmlNodePtr node);
+  MathCell* ParseSubSupTag(xmlNodePtr node);
   wxString ToUnicode(wxString s);
   wxString ToLocal(wxString s);
   int m_ParserStyle;
