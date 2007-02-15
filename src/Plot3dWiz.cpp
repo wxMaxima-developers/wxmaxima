@@ -422,10 +422,7 @@ wxString Plot3DWiz::GetValue()
   else if (f == _("inline"))
     s = wxT("wx") + s;
   
-  if (file.Length() == 0 && f == _("inline"))
-    s += wxT(");");
-  else
-    s += wxT(")$");
+  s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot3D/format"), combo_box_1->GetSelection());
   wxConfig::Get()->Write(wxT("Wiz/Plot3D/pm3d"), check_box_1->GetValue());

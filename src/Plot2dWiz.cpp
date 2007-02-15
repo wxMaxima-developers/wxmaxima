@@ -407,10 +407,7 @@ wxString Plot2DWiz::GetValue()
   else if (f == _("inline"))
     s = wxT("wx") + s;
 
-  if (file.Length() == 0 && f == _("inline"))
-    s += wxT(");");
-  else
-    s += wxT(")$");
+  s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot2D/format"), combo_box_1->GetSelection());
   wxConfig::Get()->Write(wxT("Wiz/Plot2D/sendRanges"), checkbox_1->GetValue());

@@ -1020,47 +1020,43 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
-;;    (with-output-to-string (str)
-;;      (let ((*standard-output* str))
-	(if (length system-preamble)
-	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
-	(dolist (arg args)
-	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	      (setq preamble (format nil "~a; ~a"
-				     preamble
-				     (maybe-invert-string-case
-				      (symbol-name
-				       (stripdollar (caddr arg))))))))
-	(meval ($funmake '$plot2d `((mlist simp) ,@args
-				    ((mlist simp) $plot_format $gnuplot)
-				    ((mlist simp) $gnuplot_preamble ,preamble)
-				    ((mlist simp) $gnuplot_term $png)
-				    ((mlist simp) $gnuplot_out_file ,filename))))
-;;	))
-  `((wxxmltag simp) ,filename "img")))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$plot2d `((mlist simp) ,@args
+				((mlist simp) $plot_format $gnuplot)
+				((mlist simp) $gnuplot_preamble ,preamble)
+				((mlist simp) $gnuplot_term $png)
+				((mlist simp) $gnuplot_out_file ,filename))))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
 
 (defun $wxplot3d (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
-;;    (with-output-to-string (str)
-;;      (let ((*standard-output* str))
-	(if (length system-preamble)
-	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
-	(dolist (arg args)
-	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	      (setq preamble (format nil "~a; ~a"
-				     preamble
-				     (maybe-invert-string-case
-				      (symbol-name
-				       (stripdollar (caddr arg))))))))
-	(meval ($funmake '$plot3d `((mlist simp) ,@args
-				    ((mlist simp) $plot_format $gnuplot)
-				    ((mlist simp) $gnuplot_preamble ,preamble)
-				    ((mlist simp) $gnuplot_term $png)
-				    ((mlist simp) $gnuplot_out_file ,filename))))
-;;	))
-  `((wxxmltag simp) ,filename "img")))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$plot3d `((mlist simp) ,@args
+				((mlist simp) $plot_format $gnuplot)
+				((mlist simp) $gnuplot_preamble ,preamble)
+				((mlist simp) $gnuplot_term $png)
+				((mlist simp) $gnuplot_out_file ,filename))))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
 
 (defun $wximplicit_plot (&rest args)
   (if (not (fboundp '$implicit_plot))
@@ -1068,48 +1064,44 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
-;;    (with-output-to-string (str)
-;;      (let ((*standard-output* str))
-	(if (length system-preamble)
-	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
-	(dolist (arg args)
-	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	      (setq preamble (format nil "~a; ~a"
-				     preamble
-				     (maybe-invert-string-case
-				      (symbol-name
-				       (stripdollar (caddr arg))))))))
-	(meval ($funmake '$implicit_plot `((mlist simp) ,@args
-					   ((mlist simp) $plot_format $gnuplot)
-					   ((mlist simp) $gnuplot_preamble ,preamble)
-					   ((mlist simp) $gnuplot_term $png)
-					   ((mlist simp) $gnuplot_out_file ,filename))))
-;;	))
-  `((wxxmltag simp) ,filename "img")))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$implicit_plot `((mlist simp) ,@args
+				       ((mlist simp) $plot_format $gnuplot)
+				       ((mlist simp) $gnuplot_preamble ,preamble)
+				       ((mlist simp) $gnuplot_term $png)
+				       ((mlist simp) $gnuplot_out_file ,filename))))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
 
 
 (defun $wxcontour_plot (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
-;;    (with-output-to-string (str)
-;;      (let ((*standard-output* str))
-	(if (length system-preamble)
-	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
-	(dolist (arg args)
-	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	      (setq preamble (format nil "~a; ~a"
-				     preamble
-				     (maybe-invert-string-case
-				      (symbol-name
-				       (stripdollar (caddr arg))))))))
-	(meval ($funmake '$contour_plot `((mlist simp) ,@args
-					  ((mlist simp) $plot_format $gnuplot)
-					  ((mlist simp) $gnuplot_preamble ,preamble)
-					  ((mlist simp) $gnuplot_term $png)
-					  ((mlist simp) $gnuplot_out_file ,filename))))
-;;	))
-  `((wxxmltag simp) ,filename "img")))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble
+				 (maybe-invert-string-case
+				  (symbol-name
+				   (stripdollar (caddr arg))))))))
+    (meval ($funmake '$contour_plot `((mlist simp) ,@args
+				      ((mlist simp) $plot_format $gnuplot)
+				      ((mlist simp) $gnuplot_preamble ,preamble)
+				      ((mlist simp) $gnuplot_term $png)
+				      ((mlist simp) $gnuplot_out_file ,filename))))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
 
 ;;
 ;; Port of Barton Willis's texput function.
