@@ -334,6 +334,7 @@
 (defprop $%upsilon "<g>%upsilon</g>" wxxmlword)
 (defprop $upsilon "<g>upsilon</g>" wxxmlword)
 (defprop $%phi "<g>%phi</g>" wxxmlword)
+(defprop $phi "<g>phi</g>" wxxmlword)
 (defprop $%chi "<g>%chi</g>" wxxmlword)
 (defprop $chi "<g>chi</g>" wxxmlword)
 (defprop $%psi "<g>%psi</g>" wxxmlword)
@@ -633,9 +634,19 @@
 	(subfun ;; the thing underneath "limit"
          (wxxml `((mrarr simp) ,(third x)
                   ,(fourth x)) nil nil 'mparen 'mparen)))
-    (append l `("<lm><t>lim</t><r>"
-                ,@subfun "</r><r>"
-                ,@s1 "</r></lm>") r)))
+    (case (fifth x)
+      ($plus
+       (append l `("<lm><t>lim</t><r>"
+		   ,@subfun "<t>+</t></r><r>"
+		   ,@s1 "</r></lm>") r))
+      ($minus
+       (append l `("<lm><t>lim</t><r>"
+		   ,@subfun "<t>-</t></r><r>"
+		   ,@s1 "</r></lm>") r))
+      (otherwise
+       (append l `("<lm><t>lim</t><r>"
+		   ,@subfun "</r><r>"
+		   ,@s1 "</r></lm>") r)))))
 
 (defprop %at wxxml-at wxxml)
 ;; e.g.  at(diff(f(x)),x=a)
@@ -1057,6 +1068,38 @@
 				((mlist simp) $gnuplot_out_file ,filename))))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
+
+(defun $wxdraw2d (&rest args)
+  (if (not (fboundp '$draw2d))
+      ($load "draw"))
+  (let* ((filename (plot-temp-file "wxdraw2d.png"))
+	 ($draw_pipes nil)
+	 (preamble (format nil "set out '~a'; ~a;"
+			   filename ($wxplot_preamble)))
+	 res)
+    (setq res (meval ($funmake '$draw2d `((mlist simp)
+					  ((mequal simp) '$user_preamble
+					   ,preamble)
+					  ((mequal simp) '$terminal '$png)
+					  ,@args))))
+    ($ldisp `((wxxmltag simp) ,filename "img"))
+    res))
+
+(defun $wxdraw3d (&rest args)
+  (if (not (fboundp '$draw3d))
+      ($load "draw"))
+  (let* ((filename (plot-temp-file "wxdraw3d.png"))
+	 ($draw_pipes nil)
+	 (preamble (format nil "set out '~a'; ~a;"
+			   filename ($wxplot_preamble)))
+	 res)
+    (setq res (meval ($funmake '$draw3d `((mlist simp)
+					  ((mequal simp) '$user_preamble
+					   ,preamble)
+					  ((mequal simp) '$terminal '$png)
+					  ,@args))))
+    ($ldisp `((wxxmltag simp) ,filename "img"))
+    res))
 
 (defun $wximplicit_plot (&rest args)
   (if (not (fboundp '$implicit_plot))
