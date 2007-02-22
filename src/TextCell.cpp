@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
     else
       dc.GetTextExtent(m_text, &m_width, &m_height);
-    
+
     m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
 
@@ -313,7 +313,7 @@ wxString TextCell::ToTeX(bool all)
     text.Replace(wxT("_"), wxT("\\_"));
     text.Replace(wxT("%"), wxT("\\%"));
   }
-  
+
   return text + MathCell::ToTeX(all);
 }
 
@@ -393,7 +393,7 @@ wchar_t* TextCell::GetGreekStringUnicode()
   wxString txt(m_text);
   if (txt[0] != '%')
     txt = wxT("%") + txt;
-  
+
   if (txt == wxT("%alpha"))
     return L"\x03B1";
   else if (txt == wxT("%beta"))
@@ -504,14 +504,14 @@ wxString TextCell::GetGreekStringIso()
     return wxT("\xE6");
   else if (m_text == wxT("psi"))
     return wxT("\xD8");
-  
+
   wxString txt(m_text);
   if (txt[0] != '%')
     txt = wxT("%") + txt;
-  
-  if (text == wxT("%alpha"))
+
+  if (txt == wxT("%alpha"))
     return wxT("\xE1");
-  else if (text == wxT("%beta"))
+  else if (txt == wxT("%beta"))
     return wxT("\xE2");
   else if (txt == wxT("%gamma"))
     return wxT("\xE3");

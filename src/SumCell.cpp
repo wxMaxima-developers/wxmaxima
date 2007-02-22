@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -266,7 +266,7 @@ wxString SumCell::ToTeX(bool all)
     s = wxT("\\sum");
   else
     s = wxT("\\prod");
-  
+
 
   s += wxT("_{") + m_under->ToTeX(true) + wxT("}");
   wxString to = m_over->ToTeX(true);

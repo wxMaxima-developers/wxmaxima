@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_baseCell->RecalculateWidths(parser, fontsize, true);
   m_indexCell->RecalculateWidths(parser, MAX(8, fontsize - 3), true);
   m_exptCell->RecalculateWidths(parser, MAX(8, fontsize - 3), true);
-  m_width = m_baseCell->GetFullWidth(scale) + 
+  m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
             SCALE_PX(2, parser.GetScale());
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -105,18 +105,18 @@ void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void SubSupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  
+
   m_baseCell->RecalculateSize(parser, fontsize, true);
   m_indexCell->RecalculateSize(parser, MAX(8, fontsize - 3), true);
   m_exptCell->RecalculateSize(parser, MAX(8, fontsize - 3), true);
-  
+
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
              2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser.GetScale());
-  
+
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-  
+
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -136,7 +136,7 @@ void SubSupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
            m_indexCell->GetMaxCenter() -
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
     m_indexCell->Draw(parser, in, MAX(8, fontsize - 3), true);
-    
+
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);

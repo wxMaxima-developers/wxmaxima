@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1313,7 +1313,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_edit_input, m_console->CanEdit());
-  menubar->Enable(menu_reeval_input, m_console->CanEdit());
+  menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
+                                     m_console->GetActiveCell() != NULL);
   menubar->Enable(menu_add_comment, m_console->CanAddComment());
   menubar->Enable(menu_add_title, m_console->CanAddComment());
   menubar->Enable(menu_add_section, m_console->CanAddComment());
@@ -2733,7 +2734,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2006 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2007 Andrej Vodopivec"));
 #ifndef __WXMSW__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
@@ -3054,6 +3055,14 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
 void wxMaxima::ReEvaluate(wxCommandEvent& event)
 {
+  MathCell* tmp = m_console->GetActiveCell();
+  if (tmp != NULL)
+  {
+    m_console->SetActiveCell(NULL);
+    tmp->AddEnding();
+    m_console->SetSelection(tmp);
+  }
+
   if (!m_console->CanEdit())
     return ;
 

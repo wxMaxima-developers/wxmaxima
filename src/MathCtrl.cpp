@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1158,21 +1158,32 @@ void MathCtrl::OnChar(wxKeyEvent& event)
     if (m_activeCell->IsDirty())
     {
       int height = m_activeCell->GetHeight();
+      wxConfig *config = (wxConfig *)wxConfig::Get();
+
+      int fontsize = 12;
+      wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+
       m_activeCell->ResetData();
       if (m_activeCell->m_previous != NULL)
         m_activeCell->m_previous->ResetData();
 
-      Recalculate(false);
+      m_activeCell->RecalculateSize(parser, fontsize, false);
+      m_activeCell->RecalculateWidths(parser, fontsize, false);
+      int width = m_activeCell->GetWidth() + m_activeCell->m_previous->GetWidth();
+
       if (height != m_activeCell->GetHeight())
+        hasHeightChanged = true;
+      if (width >= GetSize().GetWidth())
         hasHeightChanged = true;
     }
 
     if (hasHeightChanged)
+    {
+      Recalculate(false);
       Refresh();
+    }
     else
     {
-      // Refresh only the active cell
-      //printf("Ferreshing rect\n");
       wxRect rect = m_activeCell->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       rect.width = GetSize().x;

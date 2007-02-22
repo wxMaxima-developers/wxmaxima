@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ void LimitWiz::set_properties()
 #else
   button_3->SetDefault();
 #endif
-  
+
   text_ctrl_1->SetFocus();
 }
 

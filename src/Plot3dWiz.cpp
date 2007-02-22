@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ void Plot3DWiz::set_properties()
   text_ctrl_9->SetValue(wxT("30"));
 
   button_3->SetToolTip(_("Browse"));
-  
+
   bool pm3dValue = false;
 #if defined __WXMSW__
   button_1->SetDefault();
@@ -132,14 +132,14 @@ void Plot3DWiz::set_properties()
 #else
   button_2->SetDefault();
 #endif
-  
+
   int selection = 1;
   wxConfig::Get()->Read(wxT("Wiz/Plot3D/format"), &selection);
   wxConfig::Get()->Read(wxT("Wiz/Plot3D/pm3d"), &pm3dValue);
-  
+
   combo_box_1->SetSelection(selection);
   check_box_1->SetValue(pm3dValue);
-  
+
   text_ctrl_1->SetFocus();
 }
 
@@ -209,7 +209,7 @@ void Plot3DWiz::SetValue(wxString s)
   }
   else
     text_ctrl_1->SetValue(s);
-  
+
   text_ctrl_1->SetSelection(-1, -1);
 }
 
@@ -421,7 +421,7 @@ wxString Plot3DWiz::GetValue()
   }
   else if (f == _("inline"))
     s = wxT("wx") + s;
-  
+
   s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot3D/format"), combo_box_1->GetSelection());

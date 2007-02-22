@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2006-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -305,6 +305,50 @@ void EditorCell::SetForeground(CellParser& parser)
   }
 }
 
+#ifndef WX_USE_UNICODE
+
+int ChangeNumpadToChar(int c)
+{
+  switch (c) {
+    case WXK_NUMPAD0:
+      return '0';
+      break;
+    case WXK_NUMPAD1:
+      return '1';
+      break;
+    case WXK_NUMPAD2:
+      return '2';
+      break;
+    case WXK_NUMPAD3:
+      return '3';
+      break;
+    case WXK_NUMPAD4:
+      return '4';
+      break;
+    case WXK_NUMPAD5:
+      return '5';
+      break;
+    case WXK_NUMPAD6:
+      return '6';
+      break;
+    case WXK_NUMPAD7:
+      return '7';
+      break;
+    case WXK_NUMPAD8:
+      return '8';
+      break;
+    case WXK_NUMPAD9:
+      return '9';
+      break;
+    case WXK_NUMPAD_DECIMAL:
+      return '.';
+      break;
+  }
+  return c;
+}
+
+#endif
+
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   switch (event.GetKeyCode())
@@ -507,7 +551,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 #if wxUSE_UNICODE
              event.GetUnicodeKey() +
 #else
-             wxString::Format(wxT("%c"), event.GetKeyCode()) +
+             wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
 #endif
              m_text.SubString(m_positionOfCaret, m_text.Length());
     m_positionOfCaret++;

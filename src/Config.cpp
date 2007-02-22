@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -710,7 +710,7 @@ void Config::WriteStyles()
 
   config->Write(wxT("Style/fontname"), m_fontFamily);
   config->Write(wxT("fontEncoding"), m_fontEncoding);
-  
+
 #if !defined __WXMW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);
 #endif

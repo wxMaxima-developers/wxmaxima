@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #define ABS(a) ((a)>=0 ? (a) : -(a))
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
-#define MC_CELL_SKIP 2
+#define MC_CELL_SKIP 0
 #define MC_BASE_INDENT 5
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 2

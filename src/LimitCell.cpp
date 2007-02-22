@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2006 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -149,12 +149,17 @@ void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString LimitCell::ToString(bool all)
 {
-  wxString s = m_name->ToString(true);
+  wxString s(wxT("limit"));
   wxString under = m_under->ToString(true);
   wxString base = m_base->ToString(true);
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
+  if (to.Right(1) == wxT("+"))
+    to = to.Left(to.Length() - 1) + wxT(",plus");
+  if (to.Right(1) == wxT("-"))
+    to = to.Left(to.Length() - 1) + wxT(",minus");
+
   s += wxT("(") + base + wxT(",") + var + wxT(",") + to + wxT(")");
   s += MathCell::ToString(all);
   return s;
