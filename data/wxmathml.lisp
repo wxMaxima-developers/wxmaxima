@@ -1040,11 +1040,11 @@
 				 (maybe-invert-string-case
 				  (symbol-name
 				   (stripdollar (caddr arg))))))))
-    (meval ($funmake '$plot2d `((mlist simp) ,@args
-				((mlist simp) $plot_format $gnuplot)
-				((mlist simp) $gnuplot_preamble ,preamble)
-				((mlist simp) $gnuplot_term $png)
-				((mlist simp) $gnuplot_out_file ,filename))))
+    (apply #'$plot2d `(,@args
+		       ((mlist simp) $plot_format $gnuplot)
+		       ((mlist simp) $gnuplot_preamble ,preamble)
+		       ((mlist simp) $gnuplot_term $png)
+		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
@@ -1061,11 +1061,11 @@
 				 (maybe-invert-string-case
 				  (symbol-name
 				   (stripdollar (caddr arg))))))))
-    (meval ($funmake '$plot3d `((mlist simp) ,@args
-				((mlist simp) $plot_format $gnuplot)
-				((mlist simp) $gnuplot_preamble ,preamble)
-				((mlist simp) $gnuplot_term $png)
-				((mlist simp) $gnuplot_out_file ,filename))))
+    (apply #'$plot3d `(,@args
+		       ((mlist simp) $plot_format $gnuplot)
+		       ((mlist simp) $gnuplot_preamble ,preamble)
+		       ((mlist simp) $gnuplot_term $png)
+		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
@@ -1077,11 +1077,11 @@
 	 (preamble (format nil "set out '~a'; ~a;"
 			   filename ($wxplot_preamble)))
 	 res)
-    (setq res (meval ($funmake '$draw2d `((mlist simp)
-					  ((mequal simp) '$user_preamble
-					   ,preamble)
-					  ((mequal simp) '$terminal '$png)
-					  ,@args))))
+    (setq res (apply #'$draw
+		     `((($gr2d)
+			((mequal simp) $user_preamble ,preamble)
+		       ((mequal simp) $terminal $png)
+			,@args))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     res))
 
@@ -1093,11 +1093,11 @@
 	 (preamble (format nil "set out '~a'; ~a;"
 			   filename ($wxplot_preamble)))
 	 res)
-    (setq res (meval ($funmake '$draw3d `((mlist simp)
-					  ((mequal simp) '$user_preamble
-					   ,preamble)
-					  ((mequal simp) '$terminal '$png)
-					  ,@args))))
+    (setq res (apply #'$draw
+		     `((($gr3d)
+		       ((mequal simp) $user_preamble ,preamble)
+		       ((mequal simp) $terminal $png)
+			,@args))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     res))
 
@@ -1116,11 +1116,11 @@
 				 (maybe-invert-string-case
 				  (symbol-name
 				   (stripdollar (caddr arg))))))))
-    (meval ($funmake '$implicit_plot `((mlist simp) ,@args
-				       ((mlist simp) $plot_format $gnuplot)
-				       ((mlist simp) $gnuplot_preamble ,preamble)
-				       ((mlist simp) $gnuplot_term $png)
-				       ((mlist simp) $gnuplot_out_file ,filename))))
+    (apply #'$implicit_plot `(,@args
+			      ((mlist simp) $plot_format $gnuplot)
+			      ((mlist simp) $gnuplot_preamble ,preamble)
+			      ((mlist simp) $gnuplot_term $png)
+			      ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
@@ -1138,11 +1138,12 @@
 				 (maybe-invert-string-case
 				  (symbol-name
 				   (stripdollar (caddr arg))))))))
-    (meval ($funmake '$contour_plot `((mlist simp) ,@args
-				      ((mlist simp) $plot_format $gnuplot)
-				      ((mlist simp) $gnuplot_preamble ,preamble)
-				      ((mlist simp) $gnuplot_term $png)
-				      ((mlist simp) $gnuplot_out_file ,filename))))
+    (apply #'$contour_plot `(,@args
+			     ((mlist simp) $plot_format $gnuplot)
+			     ((mlist simp) $gnuplot_preamble ,preamble)
+			     ((mlist simp) $gnuplot_term $png)
+			     ((mlist simp) $gnuplot_out_file ,filename)))
+
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
