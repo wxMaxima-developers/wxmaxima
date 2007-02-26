@@ -1164,13 +1164,10 @@ void MathCtrl::OnChar(wxKeyEvent& event)
       wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
 
       m_activeCell->ResetData();
-      if (m_activeCell->m_previous != NULL)
-        m_activeCell->m_previous->ResetData();
-
-      m_activeCell->RecalculateSize(parser, fontsize, false);
       m_activeCell->RecalculateWidths(parser, fontsize, false);
-      int width = m_activeCell->GetWidth() + m_activeCell->m_previous->GetWidth();
+      m_activeCell->RecalculateSize(parser, fontsize, false);
 
+      int width = m_activeCell->GetWidth() + m_activeCell->m_previous->GetWidth();
       if (height != m_activeCell->GetHeight())
         hasHeightChanged = true;
       if (width >= GetSize().GetWidth())
@@ -1190,27 +1187,27 @@ void MathCtrl::OnChar(wxKeyEvent& event)
       RefreshRect(rect);
     }
 
-    ShowPoint(point);
-
-    return ;
+  ShowPoint(point);
   }
-
-  switch (event.GetKeyCode())
+  else
   {
-  case WXK_LEFT:
-    if (SelectPrompt())
-      return;
-  case WXK_UP:
-    if (!SelectPrevInput())
+    switch (event.GetKeyCode())
+    {
+    case WXK_LEFT:
+      if (SelectPrompt())
+        return;
+    case WXK_UP:
+      if (!SelectPrevInput())
+        event.Skip();
+      break;
+    case WXK_DOWN:
+    case WXK_RIGHT:
+      if (!SelectNextInput())
+        event.Skip();
+      break;
+    default:
       event.Skip();
-    break;
-  case WXK_DOWN:
-  case WXK_RIGHT:
-    if (!SelectNextInput())
-      event.Skip();
-    break;
-  default:
-    event.Skip();
+    }
   }
 }
 

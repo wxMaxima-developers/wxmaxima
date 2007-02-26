@@ -179,9 +179,8 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  wxConfigBase* config = wxConfig::Get();
   bool showHeader = true;
-  config->Read(wxT("showHeader"), &showHeader);
+  wxConfig::Get()->Read(wxT("showHeader"), &showHeader);
 
   int start = s.Find(m_firstPrompt);
   m_console->ClearWindow();
@@ -711,13 +710,9 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 void wxMaxima::CleanUp()
 {
   if (m_isConnected)
-  {
     KillMaxima();
-  }
   if (m_isRunning)
-  {
     m_server->Destroy();
-  }
 }
 
 ///--------------------------------------------------------------------------------
@@ -3059,8 +3054,10 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
   if (tmp != NULL)
   {
     m_console->SetActiveCell(NULL);
-    tmp->AddEnding();
+    if (tmp->GetType() == MC_TYPE_INPUT)
+      tmp->AddEnding();
     m_console->SetSelection(tmp);
+    m_console->Refresh();
   }
 
   if (!m_console->CanEdit())
@@ -3110,22 +3107,6 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   m_console->SetInsertPoint(prompt);
 
   DoRawConsoleAppend(prompt->GetValue(), MC_TYPE_MAIN_PROMPT);
-  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input
-#if defined (__WXMSW__) || defined (__WXGTK20__)
-      || event.GetId() == tb_insert_input
-#endif
-  )
-  {
-    prompt->SetValue(m_newInput);
-    prompt->ResetData();
-    m_console->Recalculate(false);
-  }
-  else
-  {
-    prompt->SetValue(m_commentPrefix);
-    prompt->ResetData();
-    m_console->Recalculate(false);
-  }
 
   m_inInsertMode = true;
 
@@ -3155,13 +3136,26 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
     break;
   }
 
+  if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input
+#if defined (__WXMSW__) || defined (__WXGTK20__)
+      || event.GetId() == tb_insert_input
+#endif
+  )
+  {
+    prompt->SetValue(m_newInput);
+  }
+  else
+  {
+    prompt->SetValue(m_commentPrefix);
+  }
   m_console->SetInsertPoint(NULL);
-
+  prompt->ResetData();
   prompt = prompt->m_nextToDraw;
-
+  prompt->ResetData();
   m_console->SetScrollTo(-1);
   m_console->SetActiveCell(prompt);
   m_console->SetFocus();
+  m_console->Recalculate(false);
   m_console->Refresh();
 
   ResetTitle(false);

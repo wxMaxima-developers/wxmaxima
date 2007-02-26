@@ -130,10 +130,11 @@ void EditorCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
-void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
+  wxPoint point(point1);
 
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize, false);
@@ -245,7 +246,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point1, fontsize, all);
 }
 
 void EditorCell::SetFont(CellParser& parser, int fontsize)
@@ -582,7 +583,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
   if (m_isDirty)
-    m_width = m_maxDrop = m_center = -1;
+    m_width = m_maxDrop = -1;
   m_displayCaret = true;
 }
 
