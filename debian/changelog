@@ -1,3 +1,12 @@
+wxmaxima (0.7.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Added a patch to replace automatically the parameter 'maxima' in 
+    users ~/.wxMaxima if set to a wrong value (it happens on upgrades from
+    wxmaxima_0.7.0a-1). (Closes: #391535)
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Mon, 26 Feb 2007 12:32:24 +0000
+
 wxmaxima (0.7.0a-1) unstable; urgency=low
 
   * New upstream release.
