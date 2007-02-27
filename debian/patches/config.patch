@@ -1,16 +1,3 @@
-diff -Nur wxmaxima-0.7.1/src/Config.cpp wxmaxima-0.7.1.new/src/Config.cpp
---- wxmaxima-0.7.1/src/Config.cpp	2007-02-26 12:54:03.000000000 +0000
-+++ wxmaxima-0.7.1.new/src/Config.cpp	2007-02-26 13:46:22.000000000 +0000
-@@ -242,7 +242,8 @@
-       m_maximaProgram->SetValue(wxT("maxima.bat"));
-   }
- #else
--  if (mp.Length())
-+  /* Fix for wxmaxima-0.7.0a, where the maxima parameter was always set to "1"*/
-+  if (mp.Length() && !mp.IsSameAs(wxT("1")))
-     m_maximaProgram->SetValue(mp);
-   else
-     m_maximaProgram->SetValue(wxT("maxima"));
 diff -Nur wxmaxima-0.7.1/src/wxMaxima.cpp wxmaxima-0.7.1.new/src/wxMaxima.cpp
 --- wxmaxima-0.7.1/src/wxMaxima.cpp	2007-02-26 13:45:48.000000000 +0000
 +++ wxmaxima-0.7.1.new/src/wxMaxima.cpp	2007-02-26 13:48:09.000000000 +0000

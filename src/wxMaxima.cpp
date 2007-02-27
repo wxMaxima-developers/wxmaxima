@@ -1034,7 +1034,8 @@ wxString wxMaxima::GetCommand(bool params)
   wxString command, parameters;
   bool have_config = config->Read(wxT("maxima"), &command);
 
-  if (!have_config)
+  //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
+  if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
     command = wxT("maxima");
     config->Write(wxT("maxima"), command);
