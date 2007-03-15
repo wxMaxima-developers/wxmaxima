@@ -1022,10 +1022,15 @@
 
 (defmvar $wxplot_size '((mlist simp) 400 250))
 
+(defmvar $wxplot_old_gnuplot nil)
+
 (defun $wxplot_preamble ()
-  (format nil "set terminal png size ~d,~d; set zeroaxis;"
-	  ($first $wxplot_size)
-	  ($second $wxplot_size)))
+  (let ((frmt (if $wxplot_old_gnuplot
+		  "set terminal png picsize ~d ~d; set zeroaxis;"
+		  "set terminal png size ~d,~d; set zeroaxis;")))
+    (format nil frmt
+	    ($first $wxplot_size)
+	    ($second $wxplot_size))))
 
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))
