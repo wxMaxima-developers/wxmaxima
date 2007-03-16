@@ -1075,8 +1075,6 @@
   "")
 
 (defun $wxdraw2d (&rest args)
-  (if (not (fboundp '$draw2d))
-      ($load "draw"))
   (let* ((filename (plot-temp-file "wxdraw2d.png"))
 	 ($draw_pipes nil)
 	 (preamble (format nil "set out '~a'; ~a;"
@@ -1091,8 +1089,6 @@
     res))
 
 (defun $wxdraw3d (&rest args)
-  (if (not (fboundp '$draw3d))
-      ($load "draw"))
   (let* ((filename (plot-temp-file "wxdraw3d.png"))
 	 ($draw_pipes nil)
 	 (preamble (format nil "set out '~a'; ~a;"
@@ -1107,8 +1103,6 @@
     res))
 
 (defun $wximplicit_plot (&rest args)
-  (if (not (fboundp '$implicit_plot))
-      ($load "implicit_plot"))
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (plot-temp-file "maxout.png")))
