@@ -44,11 +44,8 @@ XGETTEXT_ARGS=-C -k_ -s -j
 
 # a PO file must be updated to include new translations
 %.po: $(srcdir)/wxMaxima.pot
-	if [ -f $@ ]; then \
-		$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;\
-	else \
-		cp $(srcdir)/wxMaxima.pot $@; \
-	fi
+	touch $@
+	$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;
 
 $(srcdir)/wxMaxima.pot:
 	touch $@
