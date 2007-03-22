@@ -284,8 +284,13 @@ wxString TextCell::ToTeX(bool all)
     text = wxT("\\,");
   else if (m_textStyle == TS_GREEK_CONSTANT)
   {
-    text = m_text;
-    text.Replace(wxT("%"), wxT("\\"));
+    if (m_text[0] != '%')
+      text = wxT("\\") + m_text;
+    else
+    {
+      text = m_text;
+      text.Replace(wxT("%"), wxT("\\"));
+    }
   }
   else if (m_textStyle == TS_SPECIAL_CONSTANT)
   {
