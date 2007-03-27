@@ -62,7 +62,6 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_8 = new wxStaticText(this, -1, _("to:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
-  checkbox_1 = new wxCheckBox(this, -1, _("Send ranges to &gnuplot"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
@@ -136,7 +135,6 @@ void Plot2DWiz::set_properties()
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/sendRanges"), &sendRanges);
 
   combo_box_1->SetSelection(selection);
-  checkbox_1->SetValue(sendRanges);
 
   text_ctrl_1->SetFocus();
 }
@@ -170,8 +168,6 @@ void Plot2DWiz::do_layout()
   sizer_4->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxALL, 2);
   sizer_4->Add(text_ctrl_7, 0, wxALL, 2);
   grid_sizer_2->Add(sizer_4, 1, wxEXPAND, 0);
-  grid_sizer_2->Add(10, 10);
-  grid_sizer_2->Add(checkbox_1, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
   grid_sizer_2->Add(label_9, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
   grid_sizer_2->Add(text_ctrl_8, 0, wxALL, 2);
   grid_sizer_2->Add(label_10, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
@@ -354,17 +350,6 @@ wxString Plot2DWiz::GetValue()
   wxString y2 = text_ctrl_7->GetValue();
   int t = text_ctrl_8->GetValue();          // Number of ticks
   wxString file = text_ctrl_9->GetValue();  // plot to file
-  wxString r;                               // range
-  if (checkbox_1->IsChecked())
-  {
-    r = wxT("set xrange [") + x1 + wxT(":") + x2 + wxT("];");
-    if (y1 != wxT("0") || y2 != wxT("0"))
-      r += wxT(" set yrange [") + y1 + wxT(":") + y2 + wxT("];");
-    if (p.Length())
-      p = r + wxT(" ") + p;
-    else
-      p = r;
-  }
 
   s += text_ctrl_1->GetValue();
   s += wxT("], [");
@@ -410,7 +395,6 @@ wxString Plot2DWiz::GetValue()
   s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot2D/format"), combo_box_1->GetSelection());
-  wxConfig::Get()->Write(wxT("Wiz/Plot2D/sendRanges"), checkbox_1->GetValue());
   return s;
 }
 

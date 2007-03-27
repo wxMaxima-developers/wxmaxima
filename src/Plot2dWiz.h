@@ -61,7 +61,6 @@ protected:
   BTextCtrl* text_ctrl_6;
   wxStaticText* label_8;
   BTextCtrl* text_ctrl_7;
-  wxCheckBox* checkbox_1;
   wxStaticText* label_9;
   wxComboBox* combo_box_1;
   wxStaticText* label_10;
