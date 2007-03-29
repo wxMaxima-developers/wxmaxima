@@ -41,7 +41,7 @@
              (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
          (wxxml-paren x l r))
         ;; special check needed because macsyma notates arrays peculiarly
-        ((memq 'array (cdar x)) (wxxml-array x l r))
+        ((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
         ;; dispatch for object-oriented wxxml-ifiying
         ((get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
         ((equal (get (caar x) 'dimension) 'dimension-infix)
@@ -127,7 +127,7 @@
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
   (setq pname (maybe-invert-string-case (symbol-name sym)))
-  (setq pname (cond ((memq (elt pname 0) '(#\$ #\&))
+  (setq pname (cond ((member (elt pname 0) '(#\$ #\&) :test #'eq)
 		     (subseq pname 1))
 		    ((equal (elt pname 0) #\%)
 		     (if $noundisp
@@ -681,7 +681,8 @@
 (defprop mplus 100. wxxml-rbp)
 
 (defun wxxml-mplus (x l r)
-  (cond ((memq 'trunc (car x))(setq r (cons "<t>+</t><t>...</t>" r))))
+  (cond ((member 'trunc (car x) :test #'eq)
+	 (setq r (cons "<t>+</t><t>...</t>" r))))
   (cond ((null (cddr x))
          (if (null (cdr x))
              (wxxml-function x l r)
