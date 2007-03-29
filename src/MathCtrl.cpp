@@ -1516,13 +1516,13 @@ void AddLineToFile(wxTextFile& output, wxString s, bool unicode)
 
 bool MathCtrl::ExportToHTML(wxString file)
 {
-  wxString dir = wxPathOnly(file);
-  wxString imgDir = dir + wxT("/img");
+  wxString imgDir;
   wxString path, filename, ext;
   int count = 0;
   MathCell *tmp = m_tree, *start = NULL, *end = NULL;
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
+  imgDir = path + wxT("/") + filename + wxT("_img");
 
   if (!wxDirExists(imgDir))
     if (!wxMkdir(imgDir))
@@ -1656,8 +1656,9 @@ bool MathCtrl::ExportToHTML(wxString file)
   AddLineToFile(output, wxT(".prompt {"));
   if (colorPrompt.Length())
   {
+    wxColour color(colorPrompt);
     AddLineToFile(output, wxT("  color: ") +
-                  colorPrompt +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
   if (boldPrompt)
@@ -1670,8 +1671,9 @@ bool MathCtrl::ExportToHTML(wxString file)
   AddLineToFile(output, wxT(".hidden {"));
   if (colorPrompt.Length())
   {
+    wxColour color(colorPrompt);
     AddLineToFile(output, wxT("  color: ") +
-                  colorPrompt +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
   if (boldHidden)
@@ -1800,7 +1802,7 @@ bool MathCtrl::ExportToHTML(wxString file)
                       start, end, true))
         return false;
       AddLineToFile(output, wxT("  <BR>"));
-      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"img/") +
+      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
                     filename +
                     wxString::Format(wxT("_%d.png\">"), count));
       count++;
@@ -1840,8 +1842,6 @@ bool MathCtrl::ExportToHTML(wxString file)
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
-  wxString dir = wxPathOnly(file);
-
   wxTextFile output;
   if (wxFileExists(file))
     wxRemoveFile(file);
