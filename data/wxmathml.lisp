@@ -81,6 +81,8 @@
           (list (cond ((numberp x) (wxxmlnumformat x))
                       ((typep x 'structure-object)
 		       (format nil "<v>Structure [~A]</v>" (type-of x)))
+		      ((hash-table-p x)
+		       (format nil "<v>HashTable</v>"))
                       ((mstringp x)
 		       (setq tmp-x (maybe-invert-string-case
 				    (symbol-name (stripdollar x))))
@@ -1076,30 +1078,34 @@
   "")
 
 (defun $wxdraw2d (&rest args)
-  (let* ((filename (plot-temp-file "wxdraw2d.png"))
+  (let* ((filename "maxima_out.png")
 	 ($draw_pipes nil)
 	 (preamble (format nil "set out '~a'; ~a;"
 			   filename ($wxplot_preamble)))
 	 res)
     (setq res (apply #'$draw
 		     `((($gr2d)
-			((mequal simp) $user_preamble ,preamble)
-		       ((mequal simp) $terminal $png)
-			,@args))))
+			,@(append
+			   `(((mequal simp) $terminal $png)
+			     ((mequal simp) $pic_width ,($first $wxplot_size))
+			     ((mequal simp) $pic_height ,($second $wxplot_size)))
+			   args)))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     res))
 
 (defun $wxdraw3d (&rest args)
-  (let* ((filename (plot-temp-file "wxdraw3d.png"))
+  (let* ((filename "maxima_out.png")
 	 ($draw_pipes nil)
 	 (preamble (format nil "set out '~a'; ~a;"
 			   filename ($wxplot_preamble)))
 	 res)
     (setq res (apply #'$draw
 		     `((($gr3d)
-		       ((mequal simp) $user_preamble ,preamble)
-		       ((mequal simp) $terminal $png)
-			,@args))))
+			,@(append
+			   `(((mequal simp) $terminal $png)
+			     ((mequal simp) $pic_width ,($first $wxplot_size))
+			     ((mequal simp) $pic_height ,($second $wxplot_size)))
+			   args)))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     res))
 
