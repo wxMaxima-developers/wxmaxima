@@ -104,6 +104,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_variablesOK = false;
 
   m_batchFilePosition = 0;
+  m_fileRead = false;
   m_helpFile = wxEmptyString;
 }
 
@@ -834,6 +835,11 @@ void wxMaxima::HandleMainPrompt(wxString o)
   if (m_batchFileLines.IsEmpty()) {
     DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
   }
+  else if (m_fileRead)
+  {
+    PrintFile();
+    DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+  }
   else
   {
     bool done = false;
@@ -930,6 +936,81 @@ void wxMaxima::HandleMainPrompt(wxString o)
       m_batchFileLines.Clear();
     }
   }
+}
+
+/***
+ * This function displays a session file without evaluating inputs.
+ */
+void wxMaxima::PrintFile()
+{
+  for (int i=0; i<m_batchFileLines.GetCount(); i++)
+  {
+    // Print title
+    if (m_batchFileLines[i] == wxT("/* [wxMaxima: title   start ]"))
+    {
+      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      ++i;
+      wxString line;
+      while (m_batchFileLines[i] != wxT("   [wxMaxima: title   end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = m_batchFileLines[i];
+        else
+          line += wxT("\n") + m_batchFileLines[i];
+        ++i;
+      }
+      DoRawConsoleAppend(line, MC_TYPE_TITLE);
+    }
+    // Print section
+    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: section start ]"))
+    {
+      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      ++i;
+      wxString line;
+      while (m_batchFileLines[i] != wxT("   [wxMaxima: section end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = m_batchFileLines[i];
+        else
+          line += wxT("\n") + m_batchFileLines[i];
+        ++i;
+      }
+      DoRawConsoleAppend(line, MC_TYPE_SECTION);
+    }
+    // Print comment
+    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: comment start ]"))
+    {
+      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      ++i;
+      wxString line;
+      while (m_batchFileLines[i] != wxT("   [wxMaxima: comment end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = m_batchFileLines[i];
+        else
+          line += wxT("\n") + m_batchFileLines[i];
+        ++i;
+      }
+      DoRawConsoleAppend(line, MC_TYPE_COMMENT);
+    }
+    // Print input
+    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: input   start ] */"))
+    {
+      wxString line;
+      DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT);
+      ++i;
+      while (m_batchFileLines[i] != wxT("/* [wxMaxima: input   end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = m_batchFileLines[i];
+        else
+          line += wxT("\n") + m_batchFileLines[i];
+        ++i;
+      }
+      DoRawConsoleAppend(line, MC_TYPE_INPUT, false);
+    }
+  }
+  m_batchFileLines.Clear();
 }
 
 /***
@@ -1476,7 +1557,20 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima session (*.wxm)|*.wxm"),
                                      wxOPEN);
+      m_fileRead = false;
       OpenFile(file);
+    }
+    break;
+  case menu_read_id:
+    {
+      wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
+                                    wxEmptyString, wxEmptyString,
+                                    _("wxMaxima session (*.wxm)|*.wxm"),
+                                    wxOPEN);
+      m_fileRead = true;
+      OpenFile(file);
+      m_fileSaved = false;
+      ResetTitle(true);
     }
     break;
   case menu_save_as_id:
@@ -2870,6 +2964,34 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     if (m_console->CanCopy())
       m_console->CopyBitmap();
     break;
+  case popid_comment:
+  {
+    wxString value = m_console->GetSelectionStart()->GetValue();
+    m_console->SelectPrompt();
+    m_console->GetSelectionStart()->SetValue(wxT("/*"));
+    m_console->SetInsertPoint(m_console->GetSelectionStart());
+    MathCell *tmp = m_console->GetSelectionStart();
+    DoRawConsoleAppend(value, MC_TYPE_COMMENT);
+    DoRawConsoleAppend(wxT("(%i111)"), MC_TYPE_MAIN_PROMPT);
+    m_console->SetSelection(tmp);
+    m_console->SelectNextInput();
+    m_console->SelectNextInput();
+    m_console->SelectPrompt();
+    m_console->SetInsertPoint(NULL);
+    m_console->DeleteSelection();
+    m_console->RecalculateForce();
+    m_console->Refresh();
+  }
+    break;
+  case popid_uncomment:
+    m_console->GetSelectionStart()->SetType(MC_TYPE_INPUT);
+    m_console->GetSelectionStart()->AddEnding();
+    m_console->SelectPrompt();
+    m_console->GetSelectionStart()->SetValue(wxT(">> "));
+    m_console->SelectNextInput();
+    m_console->RecalculateForce();
+    m_console->Refresh();
+    break;
   case popid_simplify:
     SendMaxima(wxT("ratsimp(") + selection + wxT(");"));
     break;
@@ -3199,6 +3321,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_comment, wxMaxima::PopupMenu)
+  EVT_MENU(popid_uncomment, wxMaxima::PopupMenu)
 #if defined __WXMSW__
   EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
 #endif
@@ -3244,6 +3368,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
   EVT_MENU(menu_open_id, wxMaxima::FileMenu)
+  EVT_MENU(menu_read_id, wxMaxima::FileMenu)
   EVT_MENU(menu_batch_id, wxMaxima::FileMenu)
   EVT_MENU(menu_ratsimp, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_radsimp, wxMaxima::SimplifyMenu)

@@ -24,6 +24,7 @@ SubCell::SubCell() : MathCell()
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
+
 SubCell::~SubCell()
 {
   if (m_baseCell != NULL)

@@ -119,10 +119,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     {
       _("Variables"), _("Numbers"), _("Special constants"), _("Greek constants"),
       _("Strings"), _("Text"), _("Input"), _("Main prompts"),
-      _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background")
-
+      _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background"),
+      _("Text background")
     };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 13, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 14, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
   const wxString m_styleColor_choices[] =
     {
       _("aquamarine"), _("black"), _("blue"), _("blue violet"),
@@ -404,9 +404,9 @@ void Config::OnOk(wxCommandEvent& event)
     config->Write(wxT("language"), langs[i]);
   }
 
-  config->Flush();
-
   WriteStyles();
+  config->Flush();
+  
   EndModal(wxID_OK);
 }
 
@@ -531,6 +531,10 @@ void Config::ReadStyles()
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
                &m_styleBackground.color);
+  
+  m_styleTextBackground.color = wxT("light blue");
+  config->Read(wxT("Style/TextBackground/color"),
+               &m_styleTextBackground.color);
 
   m_styleHighlight.color = wxT("red");
   config->Read(wxT("Style/Highlight/color"),
@@ -707,6 +711,8 @@ void Config::WriteStyles()
                 m_styleBackground.color);
   config->Write(wxT("Style/Highlight/color"),
                 m_styleHighlight.color);
+  config->Write(wxT("Style/TextBackground/color"),
+                m_styleTextBackground.color);
 
   config->Write(wxT("Style/fontname"), m_fontFamily);
   config->Write(wxT("fontEncoding"), m_fontEncoding);
@@ -860,7 +866,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
       m_styleColor->SetSelection(i);
   }
 
-  if (st == 11 || st == 12)
+  if (st == 11 || st == 12 || st == 13)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
@@ -946,6 +952,9 @@ style* Config::GetStylePointer()
   case 12:
     tmp = &m_styleBackground;
     break;
+  case 13:
+    tmp = &m_styleTextBackground;
+    break;
   default:
     tmp = &m_styleVariable;
     break;
@@ -959,15 +968,18 @@ void Config::UpdateExample()
   wxString example = _("Example text");
   wxString color(tmp->color);
 
-  wxClientDC dc(label_11);
+//  wxClientDC dc(label_11);
 
-  if (tmp == &m_styleBackground)
+  if (tmp == &m_styleBackground || tmp == &m_styleTextBackground)
     color = m_styleNormalText.color;
   else if (tmp == &m_styleHiddenText)
     color = m_styleMainPrompt.color;
 
   label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_fontFamily);
-  label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
+  if (tmp == &m_styleNormalText || tmp == &m_styleTextBackground)
+    label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleTextBackground.color));
+  else
+    label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
 
   label_11->Refresh();
 }

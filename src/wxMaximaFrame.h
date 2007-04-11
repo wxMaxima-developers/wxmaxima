@@ -35,6 +35,7 @@ enum {
   socket_server_id,
   input_line_id,
   menu_open_id,
+  menu_read_id,
   menu_batch_id,
   menu_save_id,
   menu_save_as_id,

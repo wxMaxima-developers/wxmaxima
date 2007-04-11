@@ -250,6 +250,9 @@ void wxMaximaFrame::SetupMenu()
   wxMenu* wxglade_tmp_menu_1 = new wxMenu();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
                    _("Open session from a file"), wxT("gtk-open"));
+  wxglade_tmp_menu_1->Append(menu_read_id, _("Read &file"),
+                             _("Read session from a file"),
+                             wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save session to a file"), wxT("gtk-save"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save as"),

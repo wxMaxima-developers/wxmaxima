@@ -424,14 +424,32 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
       }
       if (CanEdit())
       {
-        popupMenu->Append(popid_edit, _("Edit input"),
-                          wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_reeval, _("Re-evaluate input"),
-                          wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_insert_input, _("Insert input"),
-                          wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_add_comment, _("Insert text"),
-                          wxEmptyString, wxITEM_NORMAL);
+        if (m_selectionStart->GetType() == MC_TYPE_INPUT)
+        {
+          popupMenu->Append(popid_edit, _("Edit input"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_reeval, _("Re-evaluate input"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_insert_input, _("Insert input"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_add_comment, _("Insert text"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_comment, _("Comment out"),
+                            wxEmptyString, wxITEM_NORMAL);
+        }
+        else
+        {
+          popupMenu->Append(popid_edit, _("Edit text"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_reeval, _("Re-evaluate input"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_insert_input, _("Insert input"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_add_comment, _("Insert text"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_uncomment, _("Uncomment"),
+                            wxEmptyString, wxITEM_NORMAL);
+        }
       }
       else if (CanAddComment())
       {
@@ -1553,6 +1571,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   wxString colorPrompt;
   wxString colorMain;
   wxString colorString;
+  wxString colorTextBg;
   bool italicInput = false;
   bool boldInput = false;
   bool italicPrompt = false;
@@ -1580,7 +1599,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/HiddenText/bold"), &boldHidden);
   config->Read(wxT("Style/HiddenText/italic"), &italicHidden);
   config->Read(wxT("Style/HiddenText/underlined"), &underlinedHidden);
-
+  config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
 
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
 
@@ -1625,12 +1644,26 @@ bool MathCtrl::ExportToHTML(wxString file)
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
+  if (colorTextBg.Length())
+  {
+    wxColour color(colorTextBg);
+    AddLineToFile(output, wxT("  background-color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
   AddLineToFile(output, wxT("}"));
   AddLineToFile(output, wxT(".section {"));
   if (colorMain.Length())
   {
     wxColour color(colorMain);
     AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
+  if (colorTextBg.Length())
+  {
+    wxColour color(colorTextBg);
+    AddLineToFile(output, wxT("  background-color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
@@ -1643,6 +1676,13 @@ bool MathCtrl::ExportToHTML(wxString file)
   {
     wxColour color(colorMain);
     AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
+  if (colorTextBg.Length())
+  {
+    wxColour color(colorTextBg);
+    AddLineToFile(output, wxT("  background-color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
@@ -1688,6 +1728,12 @@ bool MathCtrl::ExportToHTML(wxString file)
   AddLineToFile(output, wxT(" </HEAD>"));
   AddLineToFile(output, wxT(" <BODY>"));
 
+  wxString version(wxT(VERSION));
+  AddLineToFile(output, wxEmptyString);
+  AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
+  AddLineToFile(output, wxT("<!--           Created by wxMaxima version ") + version + wxT("          -->"));
+  AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
+
   //
   // Write maxima header
   //
@@ -1710,6 +1756,8 @@ bool MathCtrl::ExportToHTML(wxString file)
   // Write contents
   //
   int type = 0;
+  wxString closeTag;
+
   while (tmp != NULL)
   {
     AddLineToFile(output, wxT("<!-- Input/output group -->"));
@@ -1717,16 +1765,21 @@ bool MathCtrl::ExportToHTML(wxString file)
     AddLineToFile(output, wxT(" <P>"));
 
     // PROMPT
-    if (!tmp->m_isFolded)
-      AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-    else
-      AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
-    while (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT)
+    if (tmp->GetValue() != wxT("/*"))
     {
-      AddLineToFile(output, tmp->ToString(false));
-      tmp = tmp->m_next;
+      if (!tmp->m_isFolded)
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
+      else
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
+      while (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT)
+      {
+        AddLineToFile(output, tmp->ToString(false));
+        tmp = tmp->m_next;
+      }
+      AddLineToFile(output, wxT("  </SPAN>"));
     }
-    AddLineToFile(output, wxT("  </SPAN>"));
+    else
+      tmp = tmp->m_nextToDraw;
 
     // INPUT
     if (tmp != NULL)
@@ -1734,21 +1787,24 @@ bool MathCtrl::ExportToHTML(wxString file)
       type = tmp->GetType();
       if (type == MC_TYPE_COMMENT)
       {
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"comment\">"));
-        AddLineToFile(output, wxT("  <BR>"));
+        AddLineToFile(output, wxT("  <DIV CLASS=\"comment\">"));
+        closeTag = wxT("   </DIV>");
       }
       else if (type == MC_TYPE_SECTION)
       {
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"section\">"));
-        AddLineToFile(output, wxT("  <BR>"));
+        AddLineToFile(output, wxT("  <DIV CLASS=\"section\">"));
+        closeTag = wxT("   </DIV>");
       }
       else if (type == MC_TYPE_TITLE)
       {
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"title\">"));
-        AddLineToFile(output, wxT("  <BR>"));
+        AddLineToFile(output, wxT("  <DIV CLASS=\"title\">"));
+        closeTag = wxT("   </DIV>");
       }
       else
+      {
         AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
+        closeTag = wxT("   </SPAN>");
+      }
     }
     while (tmp != NULL && tmp->GetType() == type)
     {
@@ -1772,7 +1828,7 @@ bool MathCtrl::ExportToHTML(wxString file)
       AddLineToFile(output, wxT("   <BR>"));
       tmp = tmp->m_nextToDraw;
     }
-    AddLineToFile(output, wxT("  </SPAN>"));
+    AddLineToFile(output, closeTag);
 
     // Check if there is no optput (commands with $)
     if (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT)
@@ -1849,6 +1905,8 @@ bool MathCtrl::ExportToMAC(wxString file)
     return false;
 
   AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
+  wxString version(wxT(VERSION));
+  AddLineToFile(output, wxT("/* [ Created by wxMaxima version ") + version + wxT(" ] */"), false);
 
   MathCell* tmp = m_tree;
 

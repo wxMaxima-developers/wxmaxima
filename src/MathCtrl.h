@@ -51,7 +51,9 @@ enum {
 #if defined __WXMSW__
   popid_image_copy,
 #endif
-  popid_image
+  popid_image,
+  popid_comment,
+  popid_uncomment
 };
 
 class MathCtrl: public wxScrolledWindow

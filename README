@@ -31,13 +31,13 @@ INSTALLATION
 BINARY INSTALLATION
 --------------------
 
-Binaries for Linux and Windows are provided at wxMaxima homepage.
+Binaries for Windows are provided at wxMaxima homepage.
 
 Windows binaries come with an installer. You should install wxMaxima
 in a subdirectory of maxima installation directory (see section
-CONFIGURATION). The Linux rpm is compiled on Fedora Core 5. Binaries
-for some other distributions are contributed by wxMaxima users and are
-available from the download section of wxMaxima homepage.
+CONFIGURATION). Binaries for some Linux distributions are contributed
+by wxMaxima users and are available from the download section of
+wxMaxima homepage.
 
 
 SOURCE INSTALLATION
@@ -84,6 +84,10 @@ is required) installed on your system. Then build wxMaxima with
 This should create a working wxMaxima.app. This has been tested with
 wxWidgets version 2.6.2.
 
+wxMaxima has been tested with maxima compiled with cmucl. If you use
+a different lisp and wxMaxima does not work, recompile maxima using
+cmucl.
+
 ** Building from CVS (Linux)
 
 To build wxMaxima from CVS, first checkout the CVS tree. For details
@@ -117,8 +121,8 @@ not, configure wxMaxima with Maxima->Configure.
 To automatically configure wxMaxima, wxMaxima must be installed in a
 subdirectory of maxima installation directory. For example:
 
-  maxima installation:   C:\Program Files\maxima-5.11.0
-  wxMaxima installation: C:\Program Files\maxima-5.11.0\wxMaxima
+  maxima installation:   C:\Program Files\maxima-5.12.0
+  wxMaxima installation: C:\Program Files\maxima-5.12.0\wxMaxima
 
 If you install in some other directory, you must configure wxMaxima
 with Maxima->Configure.

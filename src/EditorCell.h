@@ -36,6 +36,7 @@ public:
   wxString ToTeX(bool all);
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
+  void SetBackground(CellParser& parser, wxPoint& point);
   void SetValue(wxString& text)
   {
     m_text = text;

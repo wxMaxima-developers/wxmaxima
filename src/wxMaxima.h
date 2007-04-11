@@ -133,6 +133,7 @@ protected:
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
   wxString RemoveTabs(wxString s);
+  void PrintFile();
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;
@@ -169,6 +170,7 @@ protected:
   unsigned int m_batchFilePosition;
   bool m_fileSaved;
   bool m_variablesOK;
+  bool m_fileRead;
   wxString m_helpFile;
 #if defined (__WXMSW__)
   wxCHMHelpController m_helpCtrl;

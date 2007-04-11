@@ -229,6 +229,13 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Highlight/color"),
                &m_styles[11].color);
 
+  // Text background
+  m_styles[12].color = wxT("white");
+  config->Read(wxT("Style/Background/color"),
+               &m_styles[12].color);
+  config->Read(wxT("Style/TextBackground/color"),
+               &m_styles[12].color);
+
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[0].color, 1, wxSOLID)));
 }
 
