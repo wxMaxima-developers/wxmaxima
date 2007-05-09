@@ -101,7 +101,6 @@ bool MyApp::OnInit()
   if (m == 1)
     frame->Maximize(true);
 
-  frame->Show(true);
   if (argc == 2) {
     wxString file(argv[1]);
     if (file.Right(4) == wxT(".wxm"))
@@ -112,6 +111,8 @@ bool MyApp::OnInit()
     else
       frame->SetOpenFile(file);
   }
+
+  frame->Show(true);
   frame->InitSession();
   if (!frame->IsIconized())
     frame->ShowTip(false);

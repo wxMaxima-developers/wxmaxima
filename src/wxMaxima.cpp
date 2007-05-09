@@ -213,7 +213,10 @@ bool wxMaxima::ReadBatchFile(wxString file)
 
   if (inputFile.GetFirstLine() !=
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
+  {
+    inputFile.Close();
     return false;
+  }
 
   wxString line;
   for (line = inputFile.GetFirstLine();
@@ -1510,30 +1513,31 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   if (file.Length())
   {
     m_lastPath = wxPathOnly(file);
+    wxString unixFilename(file);
 #if defined __WXMSW__
-    file.Replace(wxT("\\"), wxT("/"));
+    unixFilename.Replace(wxT("\\"), wxT("/"));
 #endif
 
     if (cmd.Length() > 0)
     {
-      SendMaxima(cmd + wxT("(\"") + file + wxT("\")$"));
+      SendMaxima(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
     }
     else if (file.Right(4) == wxT(".wxm"))
     {
       if (!ReadBatchFile(file))
-        SendMaxima(wxT("batch(\"") + file + wxT("\")$"));
+        SendMaxima(wxT("batch(\"") + unixFilename + wxT("\")$"));
       else
         StartMaxima();
     }
     else if (file.Right(4) == wxT(".sav"))
     {
       m_console->DestroyTree();
-      SendMaxima(wxT("loadsession(\"") + file + wxT("\")$"), false, false, false);
+      SendMaxima(wxT("loadsession(\"") + unixFilename + wxT("\")$"), false, false, false);
     }
     else if (file.Right(4) == wxT(".dem"))
-      SendMaxima(wxT("demo(\"") + file + wxT("\")$"));
+      SendMaxima(wxT("demo(\"") + unixFilename + wxT("\")$"));
     else
-      SendMaxima(wxT("load(\"") + file + wxT("\")$"));
+      SendMaxima(wxT("load(\"") + unixFilename + wxT("\")$"));
   }
 }
 
@@ -1586,8 +1590,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       {
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
-        if (wxFileExists(file))
-          wxRemoveFile(file);
         if (file.Right(4) != wxT(".wxm"))
           file = file + wxT(".wxm");
         m_console->ExportToMAC(file);
@@ -1615,8 +1617,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_lastPath = wxPathOnly(file);
         if (file.Right(4) != wxT(".wxm"))
           file = file + wxT(".wxm");
-        if (wxFileExists(file))
-          wxRemoveFile(file);
         m_console->ExportToMAC(file);
         ResetTitle(true);
       }
@@ -3296,10 +3296,10 @@ void wxMaxima::ResetTitle(bool saved)
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
     if (m_fileSaved)
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
+               wxT(" [ ") + name + "." + ext + wxT(" ]"));
     else
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
+               wxT(" [ ") + name + "." + ext + wxT("* ]"));
   }
 }
 

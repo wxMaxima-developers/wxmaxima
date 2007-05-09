@@ -1546,15 +1546,15 @@ bool MathCtrl::ExportToHTML(wxString file)
     if (!wxMkdir(imgDir))
       return false;
 
-  wxTextFile output;
-  if (wxFileExists(file))
+  wxTextFile output(file);
+  if (output.Exists())
   {
-    wxRemoveFile(file);
+    if (!output.Open(file))
+      return false;
+    output.Clear();
   }
-  if (!output.Create(file))
-  {
+  else if (!output.Create(file))
     return false;
-  }
 
   AddLineToFile(output, wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"));
   AddLineToFile(output, wxT("<HTML>"));
@@ -1567,11 +1567,10 @@ bool MathCtrl::ExportToHTML(wxString file)
   // Write styles
   //
   wxString font;
-  wxString colorInput;
-  wxString colorPrompt;
-  wxString colorMain;
-  wxString colorString;
-  wxString colorTextBg;
+  wxString colorInput(wxT("blue"));
+  wxString colorPrompt(wxT("red"));
+  wxString colorMain(wxT("black"));
+  wxString colorTextBg(wxT("white"));
   bool italicInput = false;
   bool boldInput = false;
   bool italicPrompt = false;
@@ -1586,7 +1585,6 @@ bool MathCtrl::ExportToHTML(wxString file)
 
   config->Read(wxT("Style/fontname"), &font);
   config->Read(wxT("Style/Input/color"), &colorInput);
-  config->Read(wxT("Style/String/color"), &colorString);
   config->Read(wxT("Style/MainPrompt/color"), &colorPrompt);
   config->Read(wxT("Style/NormalText/color"), &colorMain);
   config->Read(wxT("fontSize"), &fontSize);
@@ -1898,10 +1896,14 @@ bool MathCtrl::ExportToHTML(wxString file)
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
-  wxTextFile output;
-  if (wxFileExists(file))
-    wxRemoveFile(file);
-  if (!output.Create(file))
+  wxTextFile output(file);
+  if (output.Exists())
+  {
+    if (!output.Open(file))
+      return false;
+    output.Clear();
+  }
+  else if (!output.Create(file))
     return false;
 
   AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
