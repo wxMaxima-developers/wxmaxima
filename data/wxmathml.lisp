@@ -1080,8 +1080,6 @@
 (defun $wxdraw2d (&rest args)
   (let* ((filename "maxima_out.png")
 	 ($draw_pipes nil)
-	 (preamble (format nil "set out '~a'; ~a;"
-			   filename ($wxplot_preamble)))
 	 res)
     (setq res (apply #'$draw
 		     `((($gr2d)
@@ -1096,8 +1094,6 @@
 (defun $wxdraw3d (&rest args)
   (let* ((filename "maxima_out.png")
 	 ($draw_pipes nil)
-	 (preamble (format nil "set out '~a'; ~a;"
-			   filename ($wxplot_preamble)))
 	 res)
     (setq res (apply #'$draw
 		     `((($gr3d)
