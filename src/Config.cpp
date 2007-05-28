@@ -33,13 +33,15 @@ const int langs[] =
     wxLANGUAGE_ENGLISH,
     wxLANGUAGE_FRENCH,
     wxLANGUAGE_GERMAN,
+    wxLANGUAGE_HUNGARIAN,
     wxLANGUAGE_ITALIAN,
     wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_RUSSIAN,
-    wxLANGUAGE_SPANISH
+    wxLANGUAGE_SPANISH,
+    wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 8
+#define LANGUAGE_NUMBER 10
 
 const wxString colorlist[] =
   {
@@ -87,8 +89,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_language_choices[] =
     {
       _("(Use default language)"), _("English"),
-      _("French"), _("German"), _("Italian"), _("Portuguese (Brazilian)"),
-      _("Russian"), _("Spanish")
+      _("French"), _("German"), _("Hungarian"), _("Italian"), _("Portuguese (Brazilian)"),
+      _("Russian"), _("Spanish"), _("Ukrainian")
     };
   m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
@@ -406,7 +408,7 @@ void Config::OnOk(wxCommandEvent& event)
 
   WriteStyles();
   config->Flush();
-  
+
   EndModal(wxID_OK);
 }
 
@@ -531,7 +533,7 @@ void Config::ReadStyles()
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
                &m_styleBackground.color);
-  
+
   m_styleTextBackground.color = wxT("light blue");
   config->Read(wxT("Style/TextBackground/color"),
                &m_styleTextBackground.color);

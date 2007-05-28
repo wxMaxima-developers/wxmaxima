@@ -1557,6 +1557,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_open_id:
     {
+      if (!m_fileSaved) {
+        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+                                 _("Close document?"),
+                                 wxOK|wxCANCEL);
+        if (close != wxOK)
+          return;
+      }
+
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima session (*.wxm)|*.wxm"),
@@ -1567,6 +1575,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
   case menu_read_id:
     {
+      if (!m_fileSaved) {
+        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+                                 _("Close document?"),
+                                 wxOK|wxCANCEL);
+        if (close != wxOK)
+          return;
+      }
+
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                     wxEmptyString, wxEmptyString,
                                     _("wxMaxima session (*.wxm)|*.wxm"),
@@ -1836,6 +1852,13 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case menu_restart_id:
+    if (!m_fileSaved) {
+        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+                                 _("Close document?"),
+                                 wxOK|wxCANCEL);
+        if (close != wxOK)
+          return;
+    }
     m_currentFile = wxEmptyString;
     ResetTitle(true);
     StartMaxima();
@@ -2914,6 +2937,15 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
+  if (!m_fileSaved && event.CanVeto()) {
+    int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close wxMaxima without saving changes?"),
+                             _("Quit?"),
+                             wxOK|wxCANCEL);
+    if (close != wxOK) {
+      event.Veto();
+      return;
+    }
+  }
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxSize size = GetSize();
   wxPoint pos = GetPosition();
@@ -3287,19 +3319,23 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 
 void wxMaxima::ResetTitle(bool saved)
 {
-  if (m_currentFile.Length() == 0)
-    SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
-  else if (m_fileSaved != saved)
+  m_fileSaved = saved;
+  if (m_currentFile.Length() == 0) {
+    if (saved)
+      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
+    else
+      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
+  }
+  else
   {
-    m_fileSaved = saved;
     wxString name, ext;
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
     if (m_fileSaved)
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + "." + ext + wxT(" ]"));
+               wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
     else
       SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + "." + ext + wxT("* ]"));
+               wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
   }
 }
 
