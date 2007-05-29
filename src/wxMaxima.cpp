@@ -1558,7 +1558,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_open_id:
     {
       if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+        int close = wxMessageBox(_("Document not saved!\n\nClose current document and loose all changes?"),
                                  _("Close document?"),
                                  wxOK|wxCANCEL);
         if (close != wxOK)
@@ -1576,7 +1576,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_read_id:
     {
       if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+        int close = wxMessageBox(_("Document not saved!\n\nClose current document and loose all changes?"),
                                  _("Close document?"),
                                  wxOK|wxCANCEL);
         if (close != wxOK)
@@ -1853,7 +1853,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   {
   case menu_restart_id:
     if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close current document and loose all changes?"),
+        int close = wxMessageBox(_("Document not saved!\n\nClose current document and loose all changes?"),
                                  _("Close document?"),
                                  wxOK|wxCANCEL);
         if (close != wxOK)
@@ -2938,7 +2938,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
   if (!m_fileSaved && event.CanVeto()) {
-    int close = wxMessageBox(_("Document not saved!\n\nDo you wish to close wxMaxima without saving changes?"),
+    int close = wxMessageBox(_("Document not saved!\n\nQuit wxMaxima and loose all changes?"),
                              _("Quit?"),
                              wxOK|wxCANCEL);
     if (close != wxOK) {
