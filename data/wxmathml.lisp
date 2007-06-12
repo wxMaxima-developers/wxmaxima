@@ -1078,30 +1078,24 @@
   "")
 
 (defun $wxdraw2d (&rest args)
-  (let* ((filename "maxima_out.png")
-	 ($draw_pipes nil)
-	 res)
-    (setq res (apply #'$draw
-		     `((($gr2d)
-			,@(append
-			   `(((mequal simp) $terminal $png)
-			     ((mequal simp) $pic_width ,($first $wxplot_size))
-			     ((mequal simp) $pic_height ,($second $wxplot_size)))
-			   args)))))
-    ($ldisp `((wxxmltag simp) ,filename "img"))
-    res))
+  (apply #'$wxdraw
+	 (list (append '(($gr2d)) args))))
+
 
 (defun $wxdraw3d (&rest args)
+  (apply #'$wxdraw
+	 (list (append '(($gr3d)) args))))
+
+(defun $wxdraw (&rest args)
   (let* ((filename "maxima_out.png")
 	 ($draw_pipes nil)
 	 res)
     (setq res (apply #'$draw
-		     `((($gr3d)
-			,@(append
-			   `(((mequal simp) $terminal $png)
-			     ((mequal simp) $pic_width ,($first $wxplot_size))
-			     ((mequal simp) $pic_height ,($second $wxplot_size)))
-			   args)))))
+		     (append
+		      `(((mequal simp) $terminal $png)
+			((mequal simp) $pic_width ,($first $wxplot_size))
+			((mequal simp) $pic_height ,($second $wxplot_size)))
+		      args)))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     res))
 
