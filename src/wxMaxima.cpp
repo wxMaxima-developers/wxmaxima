@@ -2851,12 +2851,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #ifndef __WXMSW__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
-    info.AddTranslator(wxT("Eric Delevaux"));
-    info.AddTranslator(wxT("Marco Ciampa"));
-    info.AddTranslator(wxT("Antonio Ullan"));
-    info.AddTranslator(wxT("Harald Geyer"));
-    info.AddTranslator(wxT("Eduardo M. Kalinowski"));
-    info.AddTranslator(wxT("Vadim V. Zhytnikov"));
+    info.AddTranslator(wxT("Istvan Blahota (hu)"));
+    info.AddTranslator(wxT("Marco Ciampa (it)"));
+    info.AddTranslator(wxT("Eric Delevaux (fr)"));
+    info.AddTranslator(wxT("Harald Geyer (de)"));
+    info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
+    info.AddTranslator(wxT("Sergey Semernikov (uk)"));
+    info.AddTranslator(wxT("Antonio Ullan (es)"));
+    info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
 #endif
     wxAboutBox(info);
   }
