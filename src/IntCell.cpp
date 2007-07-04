@@ -151,9 +151,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
-                    parser.IsItalic(TS_NORMAL_TEXT),
-                    parser.IsBold(TS_NORMAL_TEXT),
-                    parser.IsUnderlined(TS_NORMAL_TEXT),
+                    false, false, false,
                     parser.GetSymbolFontName()));
   dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
 #endif
@@ -227,9 +225,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetForeground(parser);
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxMODERN,
-               parser.IsItalic(TS_NORMAL_TEXT),
-               parser.IsBold(TS_NORMAL_TEXT),
-               parser.IsUnderlined(TS_NORMAL_TEXT),
+               false, false, false,
                parser.GetSymbolFontName()));
     dc.DrawText(wxT(INTEGRAL_TOP),
                 sign.x + m_signMiddle - m_charWidth / 2,

@@ -261,6 +261,8 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
 
   m_fontName = parser.GetFontName();
   m_fontEncoding = parser.GetFontEncoding();
+  m_fontStyle = parser.IsItalic(TS_NORMAL_TEXT);
+  m_fontWeight = parser.IsBold(TS_NORMAL_TEXT);
 
   switch(m_type)
   {
@@ -895,7 +897,7 @@ void EditorCell::SetBackground(CellParser& parser, wxPoint& point)
 {
   if (GetType() != MC_TYPE_INPUT && !m_isActive) {
     wxDC &dc = parser.GetDC();
-  
+
     if (m_height > 0 && m_width > 0) {
        wxBrush br(wxColor(parser.GetColor(TS_TEXT_BACKGROUND)));
        dc.SetBrush(br);

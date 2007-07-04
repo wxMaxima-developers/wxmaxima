@@ -1649,6 +1649,7 @@ bool MathCtrl::ExportToHTML(wxString file)
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
                   wxT(";"));
   }
+  AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
   AddLineToFile(output, wxT(".section {"));
   if (colorMain.Length())
@@ -1668,6 +1669,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   AddLineToFile(output, wxT("  font-weight: bold;"));
   AddLineToFile(output, wxT("  text-decoration: underline;"));
   AddLineToFile(output, wxT("  font-size: 1.5em;"));
+  AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
   AddLineToFile(output, wxT(".title {"));
   if (colorMain.Length())
@@ -1688,6 +1690,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("  text-decoration: underline;"));
   AddLineToFile(output, wxT("  font-size: 2em;"));
+  AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
 
   // PROMPT STYLE
