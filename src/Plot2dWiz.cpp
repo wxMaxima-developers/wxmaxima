@@ -402,8 +402,8 @@ void Plot2DWiz::OnButton(wxCommandEvent& event)
 {
   wxMenu* popupMenu = new wxMenu();
 
-  popupMenu->Append(parametric_plot, wxT("Parametric plot"));
-  popupMenu->Append(discrete_plot, wxT("Discrete plot"));
+  popupMenu->Append(parametric_plot, _("Parametric plot"));
+  popupMenu->Append(discrete_plot, _("Discrete plot"));
 
   wxPoint pos = button_3->GetPosition();
   pos.y += button_3->GetRect().height;

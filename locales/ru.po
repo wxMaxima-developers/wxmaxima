@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-16 12:35+0200\n"
+"POT-Creation-Date: 2007-07-16 13:26+0200\n"
 "PO-Revision-Date: 2007-05-02 15:45+0300\n"
 "Last-Translator: Sergey Semerikov <cc@kpi.dp.ua>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -454,14 +454,14 @@ msgid "Calculate sums"
 msgstr "Вычислить суммы"
 
 #: ../src/BC2Wiz.cpp:45 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:155
-#: ../src/Config.cpp:157 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
+#: ../src/Config.cpp:157 ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103
+#: ../src/Plot2dWiz.cpp:519 ../src/Plot2dWiz.cpp:521 ../src/Plot2dWiz.cpp:618
+#: ../src/Plot2dWiz.cpp:620 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
 #: ../src/Gen2Wiz.cpp:43 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:50
 #: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:56 ../src/Gen4Wiz.cpp:58
 #: ../src/IntegrateWiz.cpp:60 ../src/IntegrateWiz.cpp:62
 #: ../src/LimitWiz.cpp:52 ../src/LimitWiz.cpp:54 ../src/MatWiz.cpp:40
 #: ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:179 ../src/MatWiz.cpp:181
-#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:519
-#: ../src/Plot2dWiz.cpp:521 ../src/Plot2dWiz.cpp:618 ../src/Plot2dWiz.cpp:620
 #: ../src/Plot3dWiz.cpp:102 ../src/Plot3dWiz.cpp:104 ../src/SeriesWiz.cpp:49
 #: ../src/SeriesWiz.cpp:51 ../src/SubstituteWiz.cpp:41
 #: ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:48 ../src/SumWiz.cpp:50
@@ -782,7 +782,7 @@ msgstr "Дифференцировать ..."
 msgid "Differentiate expression"
 msgstr "Дифференцировать выражение"
 
-#: ../src/Plot2dWiz.cpp:607 ../src/Plot2dWiz.cpp:630
+#: ../src/Plot2dWiz.cpp:406 ../src/Plot2dWiz.cpp:607 ../src/Plot2dWiz.cpp:630
 msgid "Discrete plot"
 msgstr "Дискретный график"
 
@@ -1518,14 +1518,14 @@ msgid "Numbers"
 msgstr "Числа"
 
 #: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/Config.cpp:154
-#: ../src/Config.cpp:158 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
+#: ../src/Config.cpp:158 ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104
+#: ../src/Plot2dWiz.cpp:518 ../src/Plot2dWiz.cpp:522 ../src/Plot2dWiz.cpp:617
+#: ../src/Plot2dWiz.cpp:621 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
 #: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:46 ../src/Gen3Wiz.cpp:49
 #: ../src/Gen3Wiz.cpp:53 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:59
 #: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:63
 #: ../src/LimitWiz.cpp:51 ../src/LimitWiz.cpp:55 ../src/MatWiz.cpp:39
 #: ../src/MatWiz.cpp:43 ../src/MatWiz.cpp:178 ../src/MatWiz.cpp:182
-#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:518
-#: ../src/Plot2dWiz.cpp:522 ../src/Plot2dWiz.cpp:617 ../src/Plot2dWiz.cpp:621
 #: ../src/Plot3dWiz.cpp:101 ../src/Plot3dWiz.cpp:105 ../src/SeriesWiz.cpp:48
 #: ../src/SeriesWiz.cpp:52 ../src/SubstituteWiz.cpp:40
 #: ../src/SubstituteWiz.cpp:44 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:51
@@ -1588,7 +1588,7 @@ msgstr "Аппроксимация Паде"
 msgid "Pade approximation of a Taylor series"
 msgstr "Паде-аппроксимация ряда Тейлора"
 
-#: ../src/Plot2dWiz.cpp:497 ../src/Plot2dWiz.cpp:531
+#: ../src/Plot2dWiz.cpp:405 ../src/Plot2dWiz.cpp:497 ../src/Plot2dWiz.cpp:531
 msgid "Parametric plot"
 msgstr "Параметрический график"
 
@@ -2646,8 +2646,8 @@ msgstr "лесной зеленый"
 msgid "from expression:"
 msgstr "из выражения:"
 
-#: ../src/IntegrateWiz.cpp:44 ../src/LimitWiz.cpp:37 ../src/Plot2dWiz.cpp:50
-#: ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:507 ../src/Plot3dWiz.cpp:47
+#: ../src/Plot2dWiz.cpp:50 ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:507
+#: ../src/IntegrateWiz.cpp:44 ../src/LimitWiz.cpp:37 ../src/Plot3dWiz.cpp:47
 #: ../src/Plot3dWiz.cpp:56 ../src/SumWiz.cpp:37 ../src/wxMaxima.cpp:2331
 #: ../src/wxMaxima.cpp:2727
 msgid "from:"
@@ -2909,8 +2909,8 @@ msgstr "к списку:"
 msgid "to matrix:"
 msgstr "к матрице:"
 
-#: ../src/IntegrateWiz.cpp:48 ../src/Plot2dWiz.cpp:53 ../src/Plot2dWiz.cpp:62
-#: ../src/Plot2dWiz.cpp:510 ../src/Plot3dWiz.cpp:50 ../src/Plot3dWiz.cpp:59
+#: ../src/Plot2dWiz.cpp:53 ../src/Plot2dWiz.cpp:62 ../src/Plot2dWiz.cpp:510
+#: ../src/IntegrateWiz.cpp:48 ../src/Plot3dWiz.cpp:50 ../src/Plot3dWiz.cpp:59
 #: ../src/SumWiz.cpp:40 ../src/wxMaxima.cpp:2331 ../src/wxMaxima.cpp:2632
 #: ../src/wxMaxima.cpp:2649 ../src/wxMaxima.cpp:2728
 msgid "to:"
