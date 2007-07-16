@@ -199,7 +199,6 @@ void Config::set_properties()
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
   int defaultPort = 4010;
-  wxString fontEncoding(_("Default"));
 
   config->Read(wxT("defaultPort"), &defaultPort);
   config->Read(wxT("maxima"), &mp);
@@ -212,7 +211,6 @@ void Config::set_properties()
   config->Read(wxT("unixCopy"), &unixCopy);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
-  config->Read(wxT("fontEncoding"), &fontEncoding);
 
   m_defaultPort->SetValue(defaultPort);
 
@@ -515,7 +513,7 @@ void Config::ReadStyles()
     m_getUnicodeFont->SetLabel(m_unicodeFont);
 #endif
 
-  int encoding = m_fontEncoding;
+  int encoding = wxFONTENCODING_DEFAULT;
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding)encoding;
 
