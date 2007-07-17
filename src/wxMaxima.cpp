@@ -2856,7 +2856,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
     info.AddTranslator(wxT("Harald Geyer (de)"));
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
-    info.AddTranslator(wxT("Sergey Semernikov (uk)"));
+    info.AddTranslator(wxT("Sergey Semerikov (uk)"));
     info.AddTranslator(wxT("Antonio Ullan (es)"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
 #endif
