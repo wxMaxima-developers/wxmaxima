@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-16 13:26+0200\n"
-"PO-Revision-Date: 2007-05-02 15:45+0300\n"
+"PO-Revision-Date: 2007-07-17 22:28+0300\n"
 "Last-Translator: Sergey Semerikov <cc@kpi.dp.ua>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -499,9 +499,8 @@ msgid "Choose font"
 msgstr "Выбор шрифта"
 
 #: ../src/wxMaxima.cpp:1562 ../src/wxMaxima.cpp:1580 ../src/wxMaxima.cpp:1857
-#, fuzzy
 msgid "Close document?"
-msgstr "Печатать документ"
+msgstr "Закрыть документ?"
 
 #: ../src/MatWiz.cpp:161
 msgid "Columns:"
@@ -521,7 +520,7 @@ msgstr "Введите список y-координат, разделенных запятыми"
 
 #: ../src/MathCtrl.cpp:437
 msgid "Comment out"
-msgstr ""
+msgstr "Закомментировать"
 
 #: ../src/wxMaximaFrame.cpp:512
 msgid "Compute continued fraction of a value"
@@ -816,6 +815,9 @@ msgid ""
 "\n"
 "Close current document and loose all changes?"
 msgstr ""
+"Документ не сохранен!\n"
+"\n"
+"Закрыть текущий документ с потерей всех изменений?"
 
 #: ../src/wxMaxima.cpp:2943
 msgid ""
@@ -823,6 +825,9 @@ msgid ""
 "\n"
 "Quit wxMaxima and loose all changes?"
 msgstr ""
+"Документ не сохранен!\n"
+"\n"
+"Выйти из wxMaxima с потерей всех изменений?"
 
 #: ../src/wxMaximaFrame.cpp:429
 msgid "E&quations"
@@ -841,9 +846,8 @@ msgid "Edit selected input"
 msgstr "Редактировать выделенный ввод"
 
 #: ../src/MathCtrl.cpp:442
-#, fuzzy
 msgid "Edit text"
-msgstr "Редактировать ввод"
+msgstr "Редактировать текст"
 
 #: ../src/wxMaximaFrame.cpp:449
 msgid "Eige&nvectors"
@@ -1184,7 +1188,7 @@ msgstr "Выделение"
 
 #: ../src/Config.cpp:92
 msgid "Hungarian"
-msgstr ""
+msgstr "Венгерский"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "I&nsert"
@@ -1717,7 +1721,7 @@ msgstr "Произведение:"
 
 #: ../src/wxMaxima.cpp:2944
 msgid "Quit?"
-msgstr ""
+msgstr "Выйти?"
 
 #: ../src/MathCtrl.cpp:431 ../src/MathCtrl.cpp:444
 msgid "Re-evaluate input"
@@ -1728,14 +1732,12 @@ msgid "Re-evaluate selected input"
 msgstr "Перевычислить выделенный ввод"
 
 #: ../src/wxMaximaFrame.cpp:253
-#, fuzzy
 msgid "Read &file"
-msgstr "Выбрать файл"
+msgstr "Прочесть файл"
 
 #: ../src/wxMaximaFrame.cpp:254
-#, fuzzy
 msgid "Read session from a file"
-msgstr "Открыть сессию из файла"
+msgstr "Прочесть сессию из файла"
 
 #: ../src/wxMaxima.cpp:515
 msgid "Reading maxima output"
@@ -2234,9 +2236,8 @@ msgid "Text"
 msgstr "Текст"
 
 #: ../src/Config.cpp:125
-#, fuzzy
 msgid "Text background"
-msgstr "Фон"
+msgstr "Фон текста"
 
 #: ../src/wxMaximaFrame.cpp:626
 msgid "The bigfloat value of an expression"
@@ -2273,9 +2274,8 @@ msgid "To &bigfloat"
 msgstr "В число с плавающей точкой повышенной точности"
 
 #: ../src/wxMaximaFrame.cpp:622
-#, fuzzy
 msgid "To &float\tCtrl-F"
-msgstr "В число с плавающей точкой"
+msgstr "В число с плавающей точкой\tCtrl-F"
 
 #: ../data/tips.txt:9
 msgid ""
@@ -2357,7 +2357,7 @@ msgstr "Украинский"
 
 #: ../src/MathCtrl.cpp:450
 msgid "Uncomment"
-msgstr ""
+msgstr "Раскомментировать"
 
 #: ../src/Config.cpp:151
 msgid "Underlined"
@@ -2504,9 +2504,8 @@ msgid "[ unsaved ]"
 msgstr "[ не сохранено ]"
 
 #: ../src/wxMaxima.cpp:3329
-#, fuzzy
 msgid "[ unsaved* ]"
-msgstr "[ не сохранено ]"
+msgstr "[ не сохранено* ]"
 
 #: ../src/MatWiz.cpp:170
 msgid "antisymmetric"
