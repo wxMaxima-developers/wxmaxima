@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-16 13:26+0200\n"
-"PO-Revision-Date: 2007-03-22 12:23+0100\n"
+"PO-Revision-Date: 2007-07-23 12:53+0200\n"
 "Last-Translator: Harald Geyer <Harald.Geyer@gmx.at>\n"
 "Language-Team: german <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +220,7 @@ msgstr "&Potenzreihe"
 
 #: ../src/wxMaximaFrame.cpp:275
 msgid "&Print\tCtrl-P"
-msgstr "&Drucken\tCtrl-P"
+msgstr "Drucken\tCtrl-P"
 
 # frei
 #: ../src/SubstituteWiz.cpp:37
@@ -498,9 +498,8 @@ msgid "Choose font"
 msgstr "Schriftart wählen"
 
 #: ../src/wxMaxima.cpp:1562 ../src/wxMaxima.cpp:1580 ../src/wxMaxima.cpp:1857
-#, fuzzy
 msgid "Close document?"
-msgstr "Dokument drucken"
+msgstr "Dokument schließen?"
 
 #: ../src/MatWiz.cpp:161
 msgid "Columns:"
@@ -520,7 +519,7 @@ msgstr "Die x-Koordinaten durch Beistriche getrennt"
 
 #: ../src/MathCtrl.cpp:437
 msgid "Comment out"
-msgstr ""
+msgstr "Auskommentieren"
 
 #: ../src/wxMaximaFrame.cpp:512
 msgid "Compute continued fraction of a value"
@@ -764,7 +763,7 @@ msgstr "Polynomdi&vision ..."
 
 #: ../src/wxMaximaFrame.cpp:68
 msgid "Diff..."
-msgstr "Differenzieren..."
+msgstr "Ableiten..."
 
 #: ../src/wxMaxima.cpp:2667 ../src/wxMaxima.cpp:3087
 msgid "Differentiate"
@@ -812,6 +811,9 @@ msgid ""
 "\n"
 "Close current document and loose all changes?"
 msgstr ""
+"Dokument nicht gespeichert!\n"
+"\n"
+"Aktuelles Dokument schließen und alle Änderungen verlieren?"
 
 #: ../src/wxMaxima.cpp:2943
 msgid ""
@@ -819,6 +821,9 @@ msgid ""
 "\n"
 "Quit wxMaxima and loose all changes?"
 msgstr ""
+"Document not saved!\n"
+"\n"
+"wxMaxima beenden und alle Änderungen verlieren?"
 
 #: ../src/wxMaximaFrame.cpp:429
 msgid "E&quations"
@@ -837,9 +842,8 @@ msgid "Edit selected input"
 msgstr "Ausgewählte Eingabe bearbeiten"
 
 #: ../src/MathCtrl.cpp:442
-#, fuzzy
 msgid "Edit text"
-msgstr "Eingabe bearbeiten"
+msgstr "Text bearbeiten"
 
 #: ../src/wxMaximaFrame.cpp:449
 msgid "Eige&nvectors"
@@ -1181,7 +1185,7 @@ msgstr "Hervorgehoben"
 
 #: ../src/Config.cpp:92
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungarisch"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "I&nsert"
@@ -1550,7 +1554,7 @@ msgstr "Sitzung öffnen"
 
 #: ../src/wxMaximaFrame.cpp:252
 msgid "Open session from a file"
-msgstr "Eine Sitzung aus einer Datei laden"
+msgstr "Eine Sitzung aus einer Datei laden (Code wird augeführt)"
 
 #: ../src/Config.cpp:359 ../src/wxMaximaFrame.cpp:681
 #: ../src/wxMaximaFrame.cpp:732
@@ -1714,7 +1718,7 @@ msgstr "Produkt:"
 
 #: ../src/wxMaxima.cpp:2944
 msgid "Quit?"
-msgstr ""
+msgstr "Beenden?"
 
 #: ../src/MathCtrl.cpp:431 ../src/MathCtrl.cpp:444
 msgid "Re-evaluate input"
@@ -1725,14 +1729,12 @@ msgid "Re-evaluate selected input"
 msgstr "Ausgewählte Eingabe neu berechnen"
 
 #: ../src/wxMaximaFrame.cpp:253
-#, fuzzy
 msgid "Read &file"
-msgstr "Datei &auswählen"
+msgstr "&Datei einlesen"
 
 #: ../src/wxMaximaFrame.cpp:254
-#, fuzzy
 msgid "Read session from a file"
-msgstr "Eine Sitzung aus einer Datei laden"
+msgstr "Eine Sitzung aus einer Datei laden (Code wird nicht ausgeführt)"
 
 #: ../src/wxMaxima.cpp:515
 msgid "Reading maxima output"
@@ -2230,9 +2232,8 @@ msgid "Text"
 msgstr "Text"
 
 #: ../src/Config.cpp:125
-#, fuzzy
 msgid "Text background"
-msgstr "Hintergrund"
+msgstr "Texthintergrund"
 
 #: ../src/wxMaximaFrame.cpp:626
 msgid "The bigfloat value of an expression"
@@ -2351,11 +2352,11 @@ msgstr "Gestalt:"
 
 #: ../src/Config.cpp:93
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainisch"
 
 #: ../src/MathCtrl.cpp:450
 msgid "Uncomment"
-msgstr ""
+msgstr "Kommentarzeichen entfernen"
 
 #: ../src/Config.cpp:151
 msgid "Underlined"
@@ -2503,9 +2504,8 @@ msgid "[ unsaved ]"
 msgstr "[ nicht gespeichert ]"
 
 #: ../src/wxMaxima.cpp:3329
-#, fuzzy
 msgid "[ unsaved* ]"
-msgstr "[ nicht gespeichert ]"
+msgstr "[ nicht gespeichert* ]"
 
 #: ../src/MatWiz.cpp:170
 msgid "antisymmetric"
