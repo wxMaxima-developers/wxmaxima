@@ -1088,7 +1088,7 @@
 
 (defun $wxdraw (&rest args)
   (let* ((filename "maxima_out.png")
-	 ($draw_pipes nil)
+	 (*windows-OS* t)
 	 res)
     (setq res (apply #'$draw
 		     (append
