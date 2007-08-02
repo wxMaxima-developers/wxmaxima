@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-16 13:26+0200\n"
-"PO-Revision-Date: 2007-05-24 20:50+0200\n"
+"PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Antonio Ullan <aullan@unex.es>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -199,7 +199,7 @@ msgstr "&Monitorizar archivo"
 
 #: ../src/wxMaximaFrame.cpp:631
 msgid "&Numeric"
-msgstr "N&umérico"
+msgstr "&Numérico"
 
 #: ../src/IntegrateWiz.cpp:52
 msgid "&Numerical integration"
@@ -502,9 +502,8 @@ msgid "Choose font"
 msgstr "Elegir fuente"
 
 #: ../src/wxMaxima.cpp:1562 ../src/wxMaxima.cpp:1580 ../src/wxMaxima.cpp:1857
-#, fuzzy
 msgid "Close document?"
-msgstr "Imprimir documento"
+msgstr "¿Cerrar documento?"
 
 #: ../src/MatWiz.cpp:161
 msgid "Columns:"
@@ -524,7 +523,7 @@ msgstr "Coordenadas y separadas por comas."
 
 #: ../src/MathCtrl.cpp:437
 msgid "Comment out"
-msgstr ""
+msgstr "Comentar"
 
 #: ../src/wxMaximaFrame.cpp:512
 msgid "Compute continued fraction of a value"
@@ -593,10 +592,8 @@ msgid "Convert complex expression to rect form"
 msgstr "Convertir expresión compleja a forma cartesiana"
 
 #: ../src/wxMaximaFrame.cpp:586
-msgid ""
-"Convert exponential function of imaginary argument to trigonometric form"
-msgstr ""
-"Convertir función exponencial de argumento imaginario a forma trigonométrica"
+msgid "Convert exponential function of imaginary argument to trigonometric form"
+msgstr "Convertir función exponencial de argumento imaginario a forma trigonométrica"
 
 #: ../src/wxMaximaFrame.cpp:531
 msgid "Convert logarithm of product to sum of logarithms"
@@ -811,6 +808,9 @@ msgid ""
 "\n"
 "Close current document and loose all changes?"
 msgstr ""
+"¡Documento no guardado!\n"
+"\n"
+"¿Cerrar el documento actual y perder todos los cambios?"
 
 #: ../src/wxMaxima.cpp:2943
 msgid ""
@@ -818,6 +818,9 @@ msgid ""
 "\n"
 "Quit wxMaxima and loose all changes?"
 msgstr ""
+"¡Documento no guardado!\n"
+"\n"
+"¿Abandonar wxMaxima y perder todos los cambios?"
 
 #: ../src/wxMaximaFrame.cpp:429
 msgid "E&quations"
@@ -836,9 +839,8 @@ msgid "Edit selected input"
 msgstr "Editar la entrada seleccionada"
 
 #: ../src/MathCtrl.cpp:442
-#, fuzzy
 msgid "Edit text"
-msgstr "Editar entrada"
+msgstr "Editar texto"
 
 #: ../src/wxMaximaFrame.cpp:449
 msgid "Eige&nvectors"
@@ -1179,7 +1181,7 @@ msgstr "Resaltado"
 
 #: ../src/Config.cpp:92
 msgid "Hungarian"
-msgstr ""
+msgstr "Húngaro"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "I&nsert"
@@ -1434,7 +1436,7 @@ msgstr "Aplicar ..."
 
 #: ../src/Config.cpp:105
 msgid "Match parenthesis in text controls"
-msgstr "Coincidir paréntesis en los controles de texto"
+msgstr "Hacer coincidir paréntesis en los controles de texto"
 
 #: ../src/wxMaxima.cpp:2249
 msgid "Matrix"
@@ -1647,7 +1649,7 @@ msgstr "Gráficos 3D"
 
 #: ../src/wxMaximaFrame.cpp:75 ../src/wxMaximaFrame.cpp:90
 msgid "Plot 3D..."
-msgstr "Gráficos 3D"
+msgstr "Gráficos 3D..."
 
 #: ../src/MathCtrl.cpp:487
 msgid "Plot 3d ..."
@@ -1712,7 +1714,7 @@ msgstr "Producto:"
 
 #: ../src/wxMaxima.cpp:2944
 msgid "Quit?"
-msgstr ""
+msgstr "¿Salir?"
 
 #: ../src/MathCtrl.cpp:431 ../src/MathCtrl.cpp:444
 msgid "Re-evaluate input"
@@ -1723,14 +1725,12 @@ msgid "Re-evaluate selected input"
 msgstr "Re-calcular entrada seleccionada"
 
 #: ../src/wxMaximaFrame.cpp:253
-#, fuzzy
 msgid "Read &file"
-msgstr "Seleccionar &archivo"
+msgstr "Leer &archivo"
 
 #: ../src/wxMaximaFrame.cpp:254
-#, fuzzy
 msgid "Read session from a file"
-msgstr "Abrir sesión desde un archivo"
+msgstr "Leer sesión desde un archivo"
 
 #: ../src/wxMaxima.cpp:515
 msgid "Reading maxima output"
@@ -1832,8 +1832,7 @@ msgstr "Seleccionar un archivo"
 
 #: ../src/wxMaximaFrame.cpp:268
 msgid "Select a file (copy filename to input line)"
-msgstr ""
-"Seleccionar un archivo (copiar el nombre del fichero en la línea de entrada)"
+msgstr "Seleccionar un archivo (copiar el nombre del fichero en la línea de entrada)"
 
 #: ../src/MathCtrl.cpp:500
 msgid "Select all"
@@ -2132,8 +2131,7 @@ msgstr "Resolver ecuación diferencial ordinaria de orden máximo 2"
 
 #: ../src/wxMaximaFrame.cpp:424
 msgid "Solve ordinary differential equations with Laplace transformation"
-msgstr ""
-"Resolver  ecuaciones diferenciales ordinarias con la transformada de Laplace"
+msgstr "Resolver  ecuaciones diferenciales ordinarias con la transformada de Laplace"
 
 #: ../src/wxMaximaFrame.cpp:66 ../src/wxMaximaFrame.cpp:83
 msgid "Solve..."
@@ -2231,7 +2229,6 @@ msgid "Text"
 msgstr "Texto"
 
 #: ../src/Config.cpp:125
-#, fuzzy
 msgid "Text background"
 msgstr "Fondo"
 
@@ -2349,11 +2346,11 @@ msgstr "Tipo:"
 
 #: ../src/Config.cpp:93
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraniano"
 
 #: ../src/MathCtrl.cpp:450
 msgid "Uncomment"
-msgstr ""
+msgstr "Descomentar"
 
 #: ../src/Config.cpp:151
 msgid "Underlined"
@@ -2500,9 +2497,8 @@ msgid "[ unsaved ]"
 msgstr "[no guardado]"
 
 #: ../src/wxMaxima.cpp:3329
-#, fuzzy
 msgid "[ unsaved* ]"
-msgstr "[no guardado]"
+msgstr "[no guardado*]"
 
 #: ../src/MatWiz.cpp:170
 msgid "antisymmetric"
@@ -3045,21 +3041,20 @@ msgid "wxMaxima input"
 msgstr "entrada wxMaxima"
 
 #: ../src/wxMaxima.cpp:2846
-#, fuzzy
 msgid ""
 "wxMaxima is a graphical user interface for the\n"
 "computer algebra system Maxima based on wxWidgets."
 msgstr ""
-"wxMaxima es una interface gráfica de usuario para el CAS maximabasado en "
-"wxWidgets"
+"wxMaxima es una interface gráfica de usuario para \n"
+"el Sistema Algebraico de Computador (CAS) Maxima, basado en wxWidgets."
 
 #: ../src/wxMaxima.cpp:2853
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
 msgstr ""
-"wxMaxima es una interface gráfica de usuario para el CAS maximabasado en "
-"wxWidgets"
+"wxMaxima es una interface gráfica de usuario para el Sistema Algebraico de Computador (CAS), Maxima, basado en "
+"wxWidgets."
 
 #: ../src/wxMaxima.cpp:2867
 #, c-format
@@ -3111,8 +3106,3 @@ msgstr "amarillo"
 msgid "yellow green"
 msgstr "verde amarillo"
 
-#~ msgid "Default"
-#~ msgstr "Predeterminado"
-
-#~ msgid "Send ranges to &gnuplot"
-#~ msgstr "Enviar rango a &gnuplot"
