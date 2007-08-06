@@ -3,7 +3,7 @@
 #
 
 WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk
-WXWIN_LINGUAS = fr es it de pt_BR ru
+WXWIN_LINGUAS = fr es it de pt_BR ru hu uk
 
 localedir = $(datadir)/locale
 
@@ -94,7 +94,7 @@ transcoded:
 	$(MSGFMT) transcoded/ru.po -o transcoded/ru.mo
 	cp uk.po transcoded
 	$(MSGFMT) transcoded/uk.po -o transcoded/uk.mo
-	cp hu.po transcoded
+	cat hu.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utk-8 -t iso8859-2 > transcoded/hu.po
 	$(MSGFMT) transcoded/hu.po -o transcoded/hu.mo
 
 
@@ -104,6 +104,8 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              de.po de.mo wxwin/de.mo  \
 	     pt_BR.po pt_BR.mo wxwin/pt_BR.mo \
 	     ru.po ru.mo wxwin/ru.mo \
+	     ru.po hu.mo wxwin/hu.mo \
+	     ru.po uk.mo wxwin/uk.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE

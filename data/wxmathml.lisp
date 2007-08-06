@@ -1090,6 +1090,7 @@
   (let* ((filename "maxima_out.png")
 	 (*windows-OS* t)
 	 res)
+    (declare (special *windows-OS*))
     (setq res (apply #'$draw
 		     (append
 		      `(((mequal simp) $terminal $png)
@@ -1153,7 +1154,7 @@
   (cond (($listp s)
 	 (setq s (margs s)))
 	(t
-	 (setq s (list s))))
+	 (setq s (list ($sconcat s)))))
   (setq s (mapcar #'wxxml-stripdollar s))
   (cond ((or (null lbp) (not (integerp lbp)))
          (setq lbp 180)))
