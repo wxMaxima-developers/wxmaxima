@@ -94,7 +94,7 @@ transcoded:
 	$(MSGFMT) transcoded/ru.po -o transcoded/ru.mo
 	cp uk.po transcoded
 	$(MSGFMT) transcoded/uk.po -o transcoded/uk.mo
-	cat hu.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utk-8 -t iso8859-2 > transcoded/hu.po
+	cat hu.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utf-8 -t iso8859-2 > transcoded/hu.po
 	$(MSGFMT) transcoded/hu.po -o transcoded/hu.mo
 
 
