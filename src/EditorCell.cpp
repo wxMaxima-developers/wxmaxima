@@ -897,14 +897,14 @@ void EditorCell::SetBackground(CellParser& parser, wxPoint& point)
 {
   if (GetType() != MC_TYPE_INPUT && !m_isActive) {
     wxDC &dc = parser.GetDC();
+    wxRect rect = GetRect(false);
+    int y = rect.GetY();
 
-    if (m_height > 0 && m_width > 0) {
+    if (m_height > 0 && m_width > 0 && y>=0) {
        wxBrush br(wxColor(parser.GetColor(TS_TEXT_BACKGROUND)));
        dc.SetBrush(br);
        wxPen pen(wxColor(parser.GetColor(TS_TEXT_BACKGROUND)));
        dc.SetPen(pen);
-       wxRect rect = GetRect(false);
-       int y = rect.GetY();
        int height = rect.GetHeight();
        dc.DrawRectangle(0, y - 1, 10000, height + 2);
     }
