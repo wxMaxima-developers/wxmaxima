@@ -1,7 +1,7 @@
 (in-package :maxima)
 
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
-;; Andrej Vodopivec, 2004-2006
+;; Andrej Vodopivec, 2004-2007
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
@@ -1024,8 +1024,15 @@
 
 
 (defmvar $wxplot_size '((mlist simp) 400 250))
-
 (defmvar $wxplot_old_gnuplot nil)
+
+(defvar *image-counter* 0)
+
+(defun wxplot-filename (&optional (suff t))
+  (incf *image-counter*)
+  (if suff
+      (plot-temp-file (format nil "maxout_~d.png" *image-counter*))
+      (plot-temp-file (format nil "maxout_~d" *image-counter*))))
 
 (defun $wxplot_preamble ()
   (let ((frmt (if $wxplot_old_gnuplot
@@ -1038,7 +1045,7 @@
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
-	(filename (plot-temp-file "maxout.png")))
+	(filename (wxplot-filename)))
     (if (length system-preamble)
 	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
@@ -1059,7 +1066,7 @@
 (defun $wxplot3d (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
-	(filename (plot-temp-file "maxout.png")))
+	(filename (wxplot-filename)))
     (if (length system-preamble)
 	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
@@ -1079,31 +1086,34 @@
 
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
-	 (list (append '(($gr2d)) args))))
+	 (list (cons '($gr2d) args))))
 
 
 (defun $wxdraw3d (&rest args)
   (apply #'$wxdraw
-	 (list (append '(($gr3d)) args))))
+	 (list (cons '($gr3d) args))))
 
 (defun $wxdraw (&rest args)
-  (let* ((filename "maxima_out.png")
+  (let* ((filename (wxplot-filename nil))
 	 (*windows-OS* t)
 	 res)
     (declare (special *windows-OS*))
-    (setq res (apply #'$draw
+    (setq res ($apply '$draw
 		     (append
-		      `(((mequal simp) $terminal $png)
+		      `((mlist simp)
+			((mequal simp) $terminal $png)
 			((mequal simp) $pic_width ,($first $wxplot_size))
-			((mequal simp) $pic_height ,($second $wxplot_size)))
+			((mequal simp) $pic_height ,($second $wxplot_size))
+			((mequal simp) $file_name ,
+			 (intern (maybe-invert-string-case (concatenate 'string "&" filename)))))
 		      args)))
-    ($ldisp `((wxxmltag simp) ,filename "img"))
+    ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
     res))
 
 (defun $wximplicit_plot (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
-	(filename (plot-temp-file "maxout.png")))
+	(filename (wxplot-filename)))
     (if (length system-preamble)
 	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
@@ -1113,7 +1123,7 @@
 				 (maybe-invert-string-case
 				  (symbol-name
 				   (stripdollar (caddr arg))))))))
-    (apply #'$implicit_plot `(,@args
+    ($apply '$implicit_plot `((mlist simp) ,@args
 			      ((mlist simp) $plot_format $gnuplot)
 			      ((mlist simp) $gnuplot_preamble ,preamble)
 			      ((mlist simp) $gnuplot_term $png)
@@ -1125,7 +1135,7 @@
 (defun $wxcontour_plot (&rest args)
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
-	(filename (plot-temp-file "maxout.png")))
+	(filename (wxplot-filename)))
     (if (length system-preamble)
 	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
