@@ -1899,6 +1899,10 @@ bool MathCtrl::ExportToHTML(wxString file)
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
+  bool wxm = false;
+  if (file.Right(4) == wxT(".wxm"))
+    wxm = true;
+
   wxTextFile output(file);
   if (output.Exists())
   {
@@ -1909,9 +1913,12 @@ bool MathCtrl::ExportToMAC(wxString file)
   else if (!output.Create(file))
     return false;
 
-  AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
-  wxString version(wxT(VERSION));
-  AddLineToFile(output, wxT("/* [ Created by wxMaxima version ") + version + wxT(" ] */"), false);
+  if (wxm)
+  {
+    AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
+    wxString version(wxT(VERSION));
+    AddLineToFile(output, wxT("/* [ Created by wxMaxima version ") + version + wxT(" ] */"), false);
+  }
 
   MathCell* tmp = m_tree;
 
@@ -1931,60 +1938,84 @@ bool MathCtrl::ExportToMAC(wxString file)
     if (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
     {
       AddLineToFile(output, wxEmptyString, false);
-      AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT)
       {
         wxString input = tmp->ToString(false);
         AddLineToFile(output, input, false);
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
     }
 
     // Write comment
     if (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT)
     {
       AddLineToFile(output, wxEmptyString, false);
-      AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
       while (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT)
       {
-        wxString input = tmp->ToString(false);
-        AddLineToFile(output, input, false);
+        if (wxm)
+        {
+          wxString input = tmp->ToString(false);
+          AddLineToFile(output, input, false);
+        }
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
     }
 
     if (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
     {
-      AddLineToFile(output, wxEmptyString, false);
-      AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
+      if (wxm)
+      {
+        AddLineToFile(output, wxEmptyString, false);
+        AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
+      }
       while (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION)
       {
-        wxString input = tmp->ToString(false);
-        AddLineToFile(output, input, false);
+        if (wxm)
+        {
+          wxString input = tmp->ToString(false);
+          AddLineToFile(output, input, false);
+        }
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
     }
 
     if (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
     {
-      AddLineToFile(output, wxEmptyString, false);
-      AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
+      if (wxm)
+      {
+        AddLineToFile(output, wxEmptyString, false);
+        AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
+      }
       while (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE)
       {
-        wxString input = tmp->ToString(false);
-        AddLineToFile(output, input, false);
+        if (wxm)
+        {
+          wxString input = tmp->ToString(false);
+          AddLineToFile(output, input, false);
+        }
         tmp = tmp->m_next;
       }
-      AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
+      if (wxm)
+        AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
     }
   }
 
   AddLineToFile(output, wxEmptyString, false);
-  AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
-  AddLineToFile(output, wxT("\"Created with wxMaxima\"$"), false);
+  if (wxm)
+  {
+    AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
+    AddLineToFile(output, wxT("\"Created with wxMaxima\"$"), false);
+  }
 
   bool done = output.Write(wxTextFileType_None);
   output.Close();

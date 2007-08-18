@@ -835,13 +835,16 @@ void wxMaxima::ReadPrompt()
 void wxMaxima::HandleMainPrompt(wxString o)
 {
   m_lastPrompt = o;
-  if (m_batchFileLines.IsEmpty()) {
+  if (m_batchFileLines.IsEmpty())
+  {
     DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+    m_inPrompt = true;
   }
   else if (m_fileRead)
   {
     PrintFile();
     DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+    m_inPrompt = true;
   }
   else
   {
@@ -1600,14 +1603,16 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
       file = wxFileSelector(_("Save to file"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
-                            _("wxMaxima session (*.wxm)|*.wxm"),
+                            _("wxMaxima session (*.wxm)|*.wxm|"
+                               "Maxima batch file (*.mac)|*.mac|"
+                               "All|*"),
                             wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
       {
-        m_currentFile = file;
         m_lastPath = wxPathOnly(file);
-        if (file.Right(4) != wxT(".wxm"))
+        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac"))
           file = file + wxT(".wxm");
+        m_currentFile = file;
         m_console->ExportToMAC(file);
         m_fileSaved = false;
         ResetTitle(true);
@@ -1624,14 +1629,16 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       {
         file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
-                              _("Maxima session (*.wxm)|*.wxm"),
+                              _("wxMaxima session (*.wxm)|*.wxm|"
+                                "Maxima batch file (*mac)|*.mac|"
+                                "All|*"),
                               wxSAVE | wxOVERWRITE_PROMPT);
       }
       if (file.Length())
       {
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
-        if (file.Right(4) != wxT(".wxm"))
+        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac"))
           file = file + wxT(".wxm");
         m_console->ExportToMAC(file);
         ResetTitle(true);
@@ -2842,12 +2849,12 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
 #if defined __WXMSW__
     info.SetIcon(GetIcon());
-    info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
     info.SetDescription(_("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets."));
 #endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
     info.SetCopyright(wxT("(C) 2004-2007 Andrej Vodopivec"));
+    info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #ifndef __WXMSW__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
