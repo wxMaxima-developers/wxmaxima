@@ -121,9 +121,9 @@ wxString LimitWiz::GetValue()
   s += wxT(", ");
   s += text_ctrl_3->GetValue();
   wxString f = combo_box_1->GetValue();
-  if (f == wxT("left"))
+  if (f == _("left"))
     s += wxT(", minus");
-  else if (f == wxT("right"))
+  else if (f == _("right"))
     s += wxT(", plus");
   s += wxT(");");
 
