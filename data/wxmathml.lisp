@@ -1084,6 +1084,8 @@
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
+(defvar *windows-OS* (string= *autoconf-win32* "true"))
+
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
 	 (list (cons '($gr2d) args))))
@@ -1097,7 +1099,6 @@
   (let* ((filename (wxplot-filename nil))
 	 (*windows-OS* t)
 	 res)
-    (declare (special *windows-OS*))
     (setq res ($apply '$draw
 		     (append
 		      `((mlist simp)
