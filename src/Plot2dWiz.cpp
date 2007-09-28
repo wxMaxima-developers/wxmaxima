@@ -64,7 +64,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 10);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] =
     {
@@ -119,7 +119,6 @@ void Plot2DWiz::set_properties()
   text_ctrl_4->SetValue(wxT("5"));
   text_ctrl_6->SetValue(wxT("0"));
   text_ctrl_7->SetValue(wxT("0"));
-  text_ctrl_8->SetValue(wxT("10"));
 
   button_4->SetToolTip(_("Browse"));
 #if defined __WXMSW__
@@ -512,7 +511,7 @@ Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 300);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -532,7 +531,6 @@ void Plot2DPar::set_properties()
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   text_ctrl_4->SetValue(wxT("-6"));
   text_ctrl_5->SetValue(wxT("6"));
-  spin_ctrl_1->SetValue(300);
 #if defined __WXMSW__
   button_1->SetDefault();
 #else

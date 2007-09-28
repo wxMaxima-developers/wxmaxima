@@ -71,7 +71,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  // begin wxGlade: Config::Config
+  int defaultPort = 4010, adj = 0;
+  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
+  wxConfig::Get()->Read(wxT("Style/GreekFont/adj"), &adj);
+
   notebook_1 = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize, 0);
   notebook_1_pane_2 = new wxPanel(notebook_1, -1);
   notebook_1_pane_1 = new wxPanel(notebook_1, -1);
@@ -99,7 +102,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Off"), _("Basic"), _("Full")
     };
   label_12 = new wxStaticText(notebook_1_pane_1, -1, _("Default port:"));
-  m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 50, 5000);
+  m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 50, 5000, defaultPort);
   m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
@@ -112,7 +115,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
   m_getGreekFont = new wxButton(notebook_1_pane_2, button_greek, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
-  m_greekFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4);
+  m_greekFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 4, adj);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_unicodeGlyphs = new wxStaticText(notebook_1_pane_2, -1, _("Unicode glyphs:"));
   m_getUnicodeFont = new wxButton(notebook_1_pane_2, unicode_glyphs, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
@@ -160,16 +163,14 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-  // end wxGlade
   UpdateExample();
 }
 
 void Config::set_properties()
 {
-  // begin wxGlade: Config::set_properties
   SetTitle(_("wxMaxima configuration"));
+
   label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
-  // end wxGlade
 
   m_maximaProgram->SetToolTip(_("Enter the path to the maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for maxima"
@@ -198,9 +199,7 @@ void Config::set_properties()
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
-  int defaultPort = 4010;
 
-  config->Read(wxT("defaultPort"), &defaultPort);
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("pos-restore"), &rs);
@@ -211,8 +210,6 @@ void Config::set_properties()
   config->Read(wxT("unixCopy"), &unixCopy);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
-
-  m_defaultPort->SetValue(defaultPort);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
