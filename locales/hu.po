@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-28 15:11+0200\n"
-"PO-Revision-Date: 2007-09-28 15:24+0200\n"
+"POT-Creation-Date: 2007-10-10 13:33+0200\n"
+"PO-Revision-Date: 2007-10-10 13:31+0200\n"
 "Last-Translator: Blahota István\n"
 "Language-Team:  <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgstr "&Példa"
 
 #: ../src/wxMaximaFrame.cpp:528
 msgid "&Expand expression"
-msgstr "Ki&fejezés felbontása"
+msgstr "Kifejezé&s felbontása"
 
 #: ../src/wxMaximaFrame.cpp:562
 msgid "&Expand trigonometric"
@@ -194,7 +194,7 @@ msgstr "&Modulus számítás ..."
 
 #: ../src/wxMaximaFrame.cpp:270
 msgid "&Monitor file"
-msgstr "Fáj&lellenőrzés"
+msgstr "Fá&jlellenőrzés"
 
 #: ../src/wxMaximaFrame.cpp:631
 msgid "&Numeric"
@@ -206,7 +206,7 @@ msgstr "&Numerikus integrálás"
 
 #: ../src/SumWiz.cpp:44
 msgid "&Nusum"
-msgstr "&Numerikusan összegez"
+msgstr "&Numerikus összegzés"
 
 #: ../src/wxMaximaFrame.cpp:251
 msgid "&Open\tCtrl-O"
@@ -296,7 +296,7 @@ msgstr "&Trigonometrikus átalakítás"
 msgid "&pm3d"
 msgstr "&pm3d"
 
-#: ../src/Config.cpp:91
+#: ../src/Config.cpp:94
 msgid "(Use default language)"
 msgstr "(Alapértelmezett nyelv)"
 
@@ -306,7 +306,7 @@ msgstr "Ér&tékadás ..."
 
 #: ../src/wxMaximaFrame.cpp:653
 msgid "About"
-msgstr "&Névjegy"
+msgstr "Névjegy"
 
 #: ../src/wxMaxima.cpp:2882 ../src/wxMaximaFrame.cpp:654
 msgid "About wxMaxima"
@@ -336,23 +336,23 @@ msgstr "Egyenlőség hozzáadása racionális egyszerűsítéshez"
 msgid "Add to &path"
 msgstr "&Hozzáadás az elérési úthoz"
 
-#: ../src/Config.cpp:175
+#: ../src/Config.cpp:176
 msgid "Additional parameters for maxima (e.g. -l clisp)."
-msgstr "További paraméterek a maxima számára."
+msgstr "További paraméterek a Maxima számára."
 
-#: ../src/Config.cpp:86
+#: ../src/Config.cpp:89
 msgid "Additional parameters:"
 msgstr "Paraméterek:"
 
-#: ../src/Config.cpp:187
+#: ../src/Config.cpp:188
 msgid "Adjustment for the size of greek font."
 msgstr "A görög betűk méretének beállítása."
 
-#: ../src/Config.cpp:114
+#: ../src/Config.cpp:117
 msgid "Adjustment:"
 msgstr "Beállítás:"
 
-#: ../src/Config.cpp:426
+#: ../src/Config.cpp:423
 msgid "All|*"
 msgstr "Minden fájl|*"
 
@@ -397,23 +397,23 @@ msgstr "Újratölti egy fájlt ha az frissült"
 msgid "BC2"
 msgstr "Peremérték probléma"
 
-#: ../src/Config.cpp:124
+#: ../src/Config.cpp:127
 msgid "Background"
 msgstr "Háttér"
 
-#: ../src/Config.cpp:99
+#: ../src/Config.cpp:102
 msgid "Basic"
 msgstr "Alap"
 
-#: ../src/Config.cpp:421
+#: ../src/Config.cpp:418
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch fájlok (*.bat)|*.bat|Minden fájl|*"
 
-#: ../src/Config.cpp:149
+#: ../src/Config.cpp:152
 msgid "Bold"
 msgstr "Félkövér"
 
-#: ../src/Plot2dWiz.cpp:124 ../src/Plot3dWiz.cpp:126
+#: ../src/Plot2dWiz.cpp:123 ../src/Plot3dWiz.cpp:124
 msgid "Browse"
 msgstr "Böngészés"
 
@@ -421,7 +421,7 @@ msgstr "Böngészés"
 msgid "Build &info"
 msgstr "&Fordítási információ"
 
-#: ../src/Config.cpp:96
+#: ../src/Config.cpp:99
 msgid "Button panel:"
 msgstr "Gombkészlet:"
 
@@ -457,15 +457,15 @@ msgstr "Öss&zeg számítása ..."
 msgid "Calculate sums"
 msgstr "Összeg számítása"
 
-#: ../src/BC2Wiz.cpp:45 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:155
-#: ../src/Config.cpp:157 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
+#: ../src/BC2Wiz.cpp:45 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:158
+#: ../src/Config.cpp:160 ../src/Gen1Wiz.cpp:35 ../src/Gen1Wiz.cpp:37
 #: ../src/Gen2Wiz.cpp:43 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:50
 #: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:56 ../src/Gen4Wiz.cpp:58
 #: ../src/IntegrateWiz.cpp:60 ../src/IntegrateWiz.cpp:62
 #: ../src/LimitWiz.cpp:52 ../src/LimitWiz.cpp:54 ../src/MatWiz.cpp:40
 #: ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:179 ../src/MatWiz.cpp:181
-#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:519
-#: ../src/Plot2dWiz.cpp:521 ../src/Plot2dWiz.cpp:618 ../src/Plot2dWiz.cpp:620
+#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:518
+#: ../src/Plot2dWiz.cpp:520 ../src/Plot2dWiz.cpp:616 ../src/Plot2dWiz.cpp:618
 #: ../src/Plot3dWiz.cpp:102 ../src/Plot3dWiz.cpp:104 ../src/SeriesWiz.cpp:49
 #: ../src/SeriesWiz.cpp:51 ../src/SubstituteWiz.cpp:41
 #: ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:48 ../src/SumWiz.cpp:50
@@ -498,7 +498,7 @@ msgstr "Karakterisztikus polinom"
 msgid "Char poly of:"
 msgstr "Karakt. pol.-ja ennek:"
 
-#: ../src/Config.cpp:111 ../src/Config.cpp:113 ../src/Config.cpp:118
+#: ../src/Config.cpp:114 ../src/Config.cpp:116 ../src/Config.cpp:121
 msgid "Choose font"
 msgstr "Betűtípus választás"
 
@@ -514,11 +514,11 @@ msgstr "Oszlopok:"
 msgid "Combine factorials in an expression"
 msgstr "Faktoriálisokkal számol egy kifejezésben"
 
-#: ../src/Plot2dWiz.cpp:638
+#: ../src/Plot2dWiz.cpp:636
 msgid "Comma separated x coordinates"
 msgstr "Vesszővel válassza el az x koordinátákat"
 
-#: ../src/Plot2dWiz.cpp:639
+#: ../src/Plot2dWiz.cpp:637
 msgid "Comma separated y coordinates"
 msgstr "Vesszővel válassza el az y koordinátákat"
 
@@ -556,7 +556,7 @@ msgstr ""
 "Legkisebb közös többszörös kiszámolása (használata előtt hajtsd végre a load"
 "(functs) parancsot)"
 
-#: ../src/Config.cpp:907
+#: ../src/Config.cpp:904
 msgid "Configuration warning"
 msgstr "Figyelmeztetés a beállításokkal kapcsolatban"
 
@@ -572,7 +572,7 @@ msgstr "Állandó"
 
 #: ../src/wxMaximaFrame.cpp:533
 msgid "Contract logarithms"
-msgstr "Loga&ritmikus összevonás"
+msgstr "Logaritmikus összevonás"
 
 #: ../src/wxMaximaFrame.cpp:588
 msgid "Conver trigonometric functions to exponential form"
@@ -595,7 +595,8 @@ msgid "Convert complex expression to rect form"
 msgstr "Komplex kifejezés algebraivá alakítása"
 
 #: ../src/wxMaximaFrame.cpp:586
-msgid "Convert exponential function of imaginary argument to trigonometric form"
+msgid ""
+"Convert exponential function of imaginary argument to trigonometric form"
 msgstr "Komplex exponenciális függvényt trigonometrikus alakúra konvertálása"
 
 #: ../src/wxMaximaFrame.cpp:531
@@ -637,7 +638,7 @@ msgstr "Szö&veg másolása"
 
 #: ../src/MathCtrl.cpp:412 ../src/wxMaximaFrame.cpp:291
 msgid "Copy TeX"
-msgstr "&TeX másolás"
+msgstr "TeX másolás"
 
 #: ../src/MathCtrl.cpp:415 ../src/wxMaximaFrame.cpp:298
 msgid "Copy as image"
@@ -671,7 +672,7 @@ msgstr "Kijelölt rész másolása konzolról fájlba"
 msgid "Copy selection from console to input line"
 msgstr "Kijelölt rész másolása konzolról a bemeneti sorba"
 
-#: ../src/Config.cpp:188
+#: ../src/Config.cpp:189
 msgid "Copy selection to clipboard when selection is made in console."
 msgstr "Ha a konzolban kijelöl valamit, az vágólapra kerül."
 
@@ -679,13 +680,13 @@ msgstr "Ha a konzolban kijelöl valamit, az vágólapra kerül."
 msgid "Copy text"
 msgstr "Szöveg másolása"
 
-#: ../src/Config.cpp:109
+#: ../src/Config.cpp:112
 msgid "Copy to clipboard on select"
 msgstr "A kijelölés vágólapra kerül"
 
 #: ../src/MathCtrl.cpp:495 ../src/wxMaximaFrame.cpp:308
 msgid "Cut"
-msgstr "Kivágá&s"
+msgstr "Kivágás"
 
 #: ../src/wxMaximaFrame.cpp:309
 msgid "Cut selection from console"
@@ -699,11 +700,11 @@ msgstr "Racionális törtfüggvény parciális törtekre bontása"
 msgid "Decrease fontsize in console"
 msgstr "A konzol betűméretének csökkentése"
 
-#: ../src/Config.cpp:110
+#: ../src/Config.cpp:113
 msgid "Default font:"
 msgstr "Alapértelmezett betűtípus:"
 
-#: ../src/Config.cpp:101
+#: ../src/Config.cpp:104
 msgid "Default port:"
 msgstr "Alapértelmezett port:"
 
@@ -777,7 +778,7 @@ msgstr "Differenciálás ..."
 msgid "Differentiate expression"
 msgstr "Kifejezés differenciálása"
 
-#: ../src/Plot2dWiz.cpp:406 ../src/Plot2dWiz.cpp:607 ../src/Plot2dWiz.cpp:630
+#: ../src/Plot2dWiz.cpp:405 ../src/Plot2dWiz.cpp:605 ../src/Plot2dWiz.cpp:628
 msgid "Discrete plot"
 msgstr "Diszkrét pontok"
 
@@ -861,7 +862,7 @@ msgstr "Kiküszöbölés"
 msgid "Eliminate a variable from a system of equations"
 msgstr "Változó kiküszöbölése egyenletrendszerből"
 
-#: ../src/Config.cpp:91
+#: ../src/Config.cpp:94
 msgid "English"
 msgstr "Angol"
 
@@ -893,20 +894,20 @@ msgstr "Új ábrázolási mód bevitele:"
 msgid "Enter new precision:"
 msgstr "Új pontosság bevitele:"
 
-#: ../src/Config.cpp:174
+#: ../src/Config.cpp:175
 msgid "Enter the path to the maxima executable."
-msgstr "A maxima elérési útjának beírása."
+msgstr "A Maxima elérési útjának beírása."
 
 #: ../src/SystemWiz.cpp:70
 #, c-format
 msgid "Equation %d:"
-msgstr "Egyenlet  %d:"
+msgstr "egyenlet  %d:"
 
 #: ../src/wxMaxima.cpp:2049
 msgid "Equation:"
 msgstr "Egyenlet:"
 
-#: ../src/Config.cpp:435 ../src/ImgCell.cpp:69 ../src/wxMaxima.cpp:210
+#: ../src/Config.cpp:432 ../src/ImgCell.cpp:69 ../src/wxMaxima.cpp:210
 #: ../src/wxMaxima.cpp:343 ../src/wxMaxima.cpp:1176 ../src/wxMaxima.cpp:1272
 msgid "Error"
 msgstr "Hiba"
@@ -932,7 +933,7 @@ msgstr "A nem kiértékelésre szánt formákat is kiértékeli"
 msgid "Example"
 msgstr "Példa"
 
-#: ../src/Config.cpp:968 ../src/Config.cpp:1007
+#: ../src/Config.cpp:965 ../src/Config.cpp:1004
 msgid "Example text"
 msgstr "Példaszöveg"
 
@@ -958,7 +959,7 @@ msgstr "Kifejezés felbontása"
 
 #: ../src/wxMaximaFrame.cpp:530
 msgid "Expand logarithms"
-msgstr "&Logaritmikus felbontás"
+msgstr "Logaritmikus felbontás"
 
 #: ../src/wxMaximaFrame.cpp:563
 msgid "Expand trigonometric expression"
@@ -1004,7 +1005,7 @@ msgstr "Kifejezés faktorizálása Gauss-egészekre"
 
 #: ../src/wxMaximaFrame.cpp:525
 msgid "Factor complex"
-msgstr "K&omplex faktorizáció"
+msgstr "Komplex faktorizáció"
 
 #: ../src/MathCtrl.cpp:473
 msgid "Factor expression"
@@ -1046,23 +1047,23 @@ msgstr "Mátrix sajátvektorainak kiszámolása"
 msgid "Find real roots of a polynomial"
 msgstr "Polinom valós gyökeinek meghatározása"
 
-#: ../src/Config.cpp:106
+#: ../src/Config.cpp:109
 msgid "Fixed font in text controls"
 msgstr "Rögzített szélességű betűtípus a bemeneti sorban"
 
-#: ../src/Config.cpp:184
+#: ../src/Config.cpp:185
 msgid "Font used for display in console."
 msgstr "A konzolban használt betűtípus."
 
-#: ../src/Config.cpp:186
+#: ../src/Config.cpp:187
 msgid "Font used for displaying greek characters in console."
 msgstr "A konzolban használt görög betűk típusa."
 
-#: ../src/Config.cpp:190
+#: ../src/Config.cpp:191
 msgid "Font used for displaying unicode glyphs in console."
 msgstr "A konzolban használt unicode jelek betűtípusa."
 
-#: ../src/Config.cpp:80
+#: ../src/Config.cpp:83
 msgid "Fonts"
 msgstr "Betűkészletek"
 
@@ -1070,7 +1071,7 @@ msgstr "Betűkészletek"
 msgid "Format:"
 msgstr "Formátum:"
 
-#: ../src/Config.cpp:92
+#: ../src/Config.cpp:95
 msgid "French"
 msgstr "Francia"
 
@@ -1082,13 +1083,13 @@ msgstr "Ebből a függvényből:"
 msgid "From equations:"
 msgstr "Ezekből az egyenlet(ek)ből:"
 
-#: ../src/Config.cpp:99
+#: ../src/Config.cpp:102
 msgid "Full"
 msgstr "Teljes"
 
 #: ../src/wxMaxima.cpp:1912
 msgid "Function"
-msgstr "Eljárás"
+msgstr "Függvény"
 
 #: ../src/wxMaximaFrame.cpp:591
 msgid "Functions for complex simplification"
@@ -1114,7 +1115,7 @@ msgstr "Mátrix generálás"
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Mátrix generálása kétváltozós függvényből"
 
-#: ../src/Config.cpp:92
+#: ../src/Config.cpp:95
 msgid "German"
 msgstr "Német"
 
@@ -1152,13 +1153,13 @@ msgstr "Komplex kifejezés valós része"
 
 #: ../src/wxMaximaFrame.cpp:342
 msgid "Go to input\tF4"
-msgstr "&Ugrás a bemeneti sorra\tF4"
+msgstr "Ugrás a bemeneti sorra\tF4"
 
 #: ../src/wxMaximaFrame.cpp:344
 msgid "Go to output window\tF3"
-msgstr "Ugrás &a kimeneti ablakra\tF3"
+msgstr "Ugrás a kimeneti ablakra\tF3"
 
-#: ../src/Config.cpp:122
+#: ../src/Config.cpp:125
 msgid "Greek constants"
 msgstr "Görög betűk"
 
@@ -1174,15 +1175,15 @@ msgstr "HTML fájl (*.html)|*.html|Minden fájl|*"
 msgid "Help"
 msgstr "Segítség"
 
-#: ../src/Config.cpp:124
+#: ../src/Config.cpp:127
 msgid "Hidden groups"
 msgstr "Rejtett csoportok"
 
-#: ../src/Config.cpp:124
+#: ../src/Config.cpp:127
 msgid "Highlight"
 msgstr "Kiemelés"
 
-#: ../src/Config.cpp:92
+#: ../src/Config.cpp:95
 msgid "Hungarian"
 msgstr "Magyar"
 
@@ -1216,7 +1217,7 @@ msgstr "A konzol betűméretének növelése"
 
 #: ../src/wxMaximaFrame.cpp:649
 msgid "Info about maxima build"
-msgstr "Információ a maxima fordításáról"
+msgstr "Információ a Maxima fordításáról"
 
 #: ../src/wxMaximaFrame.cpp:413
 msgid "Initial value problem (&1) ..."
@@ -1226,7 +1227,7 @@ msgstr "Kezdetiérték probléma (&1) ..."
 msgid "Initial value problem (&2) ..."
 msgstr "Kezdetiérték probléma (&2) ..."
 
-#: ../src/Config.cpp:123
+#: ../src/Config.cpp:126
 msgid "Input"
 msgstr "Bemenet"
 
@@ -1315,7 +1316,7 @@ msgstr "Megszakítás"
 msgid "Interrupt current computation"
 msgstr "Jelenlegi számítás megszakítása"
 
-#: ../src/Config.cpp:434
+#: ../src/Config.cpp:431
 msgid ""
 "Invalid entry for maxima program.\n"
 "\n"
@@ -1323,7 +1324,7 @@ msgid ""
 msgstr ""
 "Hibás elérési út.\n"
 "\n"
-"Írja be a maxima futtatható fájl elérési útját újra."
+"Írja be a Maxima futtatható fájl elérési útját újra."
 
 #: ../src/wxMaxima.cpp:2657
 msgid "Inverse Laplace"
@@ -1333,11 +1334,11 @@ msgstr "Inverz Laplace"
 msgid "Inverse Laplace t&ransform ..."
 msgstr "I&nverz Laplace-transzformáció ..."
 
-#: ../src/Config.cpp:92
+#: ../src/Config.cpp:95
 msgid "Italian"
 msgstr "Olasz"
 
-#: ../src/Config.cpp:150
+#: ../src/Config.cpp:153
 msgid "Italic"
 msgstr "Dőlt"
 
@@ -1345,15 +1346,15 @@ msgstr "Dőlt"
 msgid "LCM"
 msgstr "Legkisebb közös többszörös"
 
-#: ../src/Config.cpp:124
+#: ../src/Config.cpp:127
 msgid "Labels"
 msgstr "Címkék"
 
-#: ../src/Config.cpp:180
+#: ../src/Config.cpp:181
 msgid "Language used for wxMaxima GUI."
 msgstr "A wxMaxima grafikus felület nyelve."
 
-#: ../src/Config.cpp:88
+#: ../src/Config.cpp:91
 msgid "Language:"
 msgstr "Nyelv:"
 
@@ -1367,7 +1368,7 @@ msgstr "L&aplace-transzformáció ..."
 
 #: ../src/wxMaximaFrame.cpp:501
 msgid "Least common multiple ..."
-msgstr "Leg&kisebb közös többszörös ..."
+msgstr "Legkisebb közös többszörös ..."
 
 #: ../src/LimitWiz.cpp:26 ../src/LimitWiz.cpp:67 ../src/wxMaxima.cpp:2706
 msgid "Limit"
@@ -1375,7 +1376,7 @@ msgstr "Határérték"
 
 #: ../src/LimitWiz.cpp:27
 msgid "Limit of:"
-msgstr "Ennek a h.értéke:"
+msgstr "Ennek a határértéke:"
 
 #: ../src/wxMaximaFrame.cpp:70
 msgid "Limit..."
@@ -1383,7 +1384,7 @@ msgstr "Határérték ..."
 
 #: ../src/wxMaximaFrame.cpp:263
 msgid "Load a maxima file using batch command"
-msgstr "Batch parancsokat használó maxima fájl betöltése"
+msgstr "Batch parancsokat használó Maxima fájl betöltése"
 
 #: ../src/wxMaximaFrame.cpp:261
 msgid "Load a maxima package file"
@@ -1391,13 +1392,13 @@ msgstr "Maxima csomagfájl betöltése"
 
 #: ../src/wxMaximaFrame.cpp:317
 msgid "Long input\tCtrl-I"
-msgstr "Többs&oros bemenet\tCtrl-I"
+msgstr "Többsoros bemenet\tCtrl-I"
 
 #: ../src/wxMaximaFrame.cpp:463
 msgid "Ma&p to matrix ..."
 msgstr "Mátrix leképe&zése ..."
 
-#: ../src/Config.cpp:123
+#: ../src/Config.cpp:126
 msgid "Main prompts"
 msgstr "Fő promptok"
 
@@ -1437,7 +1438,7 @@ msgstr "A leképezés:"
 msgid "Map..."
 msgstr "Leképez ..."
 
-#: ../src/Config.cpp:105
+#: ../src/Config.cpp:108
 msgid "Match parenthesis in text controls"
 msgstr "Nyitó zárójelek párjának automatikus beírása"
 
@@ -1457,9 +1458,9 @@ msgstr "&Maxima súgó\tF1"
 msgid "Maxima is calculating"
 msgstr "Maxima számol"
 
-#: ../src/Config.cpp:79
+#: ../src/Config.cpp:82
 msgid "Maxima options"
-msgstr "Maxima opciói"
+msgstr "A Maxima opciói"
 
 #: ../src/wxMaxima.cpp:1683
 msgid "Maxima package (*.mac)|*.mac|"
@@ -1471,11 +1472,11 @@ msgstr "Maxima csomag (*.mac)|*.mac|Lisp csomag (*.lisp)|*.lisp|Minden fájl|*"
 
 #: ../src/wxMaxima.cpp:709
 msgid "Maxima process terminated."
-msgstr "A Maxima eljárása megszakadt."
+msgstr "A Maxima eljárásának futása megszakadt."
 
-#: ../src/Config.cpp:83
+#: ../src/Config.cpp:86
 msgid "Maxima program:"
-msgstr "Maxima program:"
+msgstr "A Maxima program:"
 
 #: ../src/wxMaxima.cpp:664
 msgid "Maxima started. Waiting for connection..."
@@ -1509,19 +1510,19 @@ msgstr "Az egyenletek száma hibás!"
 msgid "Number of equations:"
 msgstr "Egyenletek száma:"
 
-#: ../src/Config.cpp:122
+#: ../src/Config.cpp:125
 msgid "Numbers"
 msgstr "Számok"
 
-#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/Config.cpp:154
-#: ../src/Config.cpp:158 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
+#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/Config.cpp:157
+#: ../src/Config.cpp:161 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:38
 #: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:46 ../src/Gen3Wiz.cpp:49
 #: ../src/Gen3Wiz.cpp:53 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:59
 #: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:63
 #: ../src/LimitWiz.cpp:51 ../src/LimitWiz.cpp:55 ../src/MatWiz.cpp:39
 #: ../src/MatWiz.cpp:43 ../src/MatWiz.cpp:178 ../src/MatWiz.cpp:182
-#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:518
-#: ../src/Plot2dWiz.cpp:522 ../src/Plot2dWiz.cpp:617 ../src/Plot2dWiz.cpp:621
+#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:517
+#: ../src/Plot2dWiz.cpp:521 ../src/Plot2dWiz.cpp:615 ../src/Plot2dWiz.cpp:619
 #: ../src/Plot3dWiz.cpp:101 ../src/Plot3dWiz.cpp:105 ../src/SeriesWiz.cpp:48
 #: ../src/SeriesWiz.cpp:52 ../src/SubstituteWiz.cpp:40
 #: ../src/SubstituteWiz.cpp:44 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:51
@@ -1530,11 +1531,11 @@ msgstr "Számok"
 msgid "OK"
 msgstr "OK"
 
-#: ../src/Config.cpp:99
+#: ../src/Config.cpp:102
 msgid "Off"
 msgstr "Ki"
 
-#: ../src/Config.cpp:85 ../src/wxMaximaFrame.cpp:670
+#: ../src/Config.cpp:88 ../src/wxMaximaFrame.cpp:670
 #: ../src/wxMaximaFrame.cpp:717
 msgid "Open"
 msgstr "Megnyitás"
@@ -1551,7 +1552,7 @@ msgstr "Megnyitás"
 msgid "Open session from a file"
 msgstr "Megnyitás fájlból"
 
-#: ../src/Config.cpp:359 ../src/wxMaximaFrame.cpp:681
+#: ../src/Config.cpp:356 ../src/wxMaximaFrame.cpp:681
 #: ../src/wxMaximaFrame.cpp:732
 msgid "Options"
 msgstr "Beállítások"
@@ -1560,7 +1561,7 @@ msgstr "Beállítások"
 msgid "Options:"
 msgstr "Beállítások:"
 
-#: ../src/Config.cpp:124
+#: ../src/Config.cpp:127
 msgid "Other prompts"
 msgstr "Egyéb promptok"
 
@@ -1584,7 +1585,7 @@ msgstr "Padé-approximáció"
 msgid "Pade approximation of a Taylor series"
 msgstr "Taylor-sor Padé-approximációja"
 
-#: ../src/Plot2dWiz.cpp:405 ../src/Plot2dWiz.cpp:497 ../src/Plot2dWiz.cpp:531
+#: ../src/Plot2dWiz.cpp:404 ../src/Plot2dWiz.cpp:496 ../src/Plot2dWiz.cpp:530
 msgid "Parametric plot"
 msgstr "Paraméteres ábrázolás"
 
@@ -1602,7 +1603,7 @@ msgstr "Parciális törtek"
 
 #: ../src/MathCtrl.cpp:497 ../src/wxMaximaFrame.cpp:311
 msgid "Paste"
-msgstr "Beilles&ztés"
+msgstr "Beillesztés"
 
 #: ../src/wxMaximaFrame.cpp:312
 msgid "Paste text from clipboard"
@@ -1612,7 +1613,7 @@ msgstr "Szöveg beillesztése vágólapról"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítás' menüpontban."
 
-#: ../src/Config.cpp:906
+#: ../src/Config.cpp:903
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "A változások életbelépéséhez indítsa újra a wxMaximát!"
 
@@ -1628,8 +1629,8 @@ msgstr "&3d-s ábrázolás ..."
 msgid "Plot &format ..."
 msgstr "Á&brázolási mód ..."
 
-#: ../src/Plot2dWiz.cpp:42 ../src/Plot2dWiz.cpp:116 ../src/Plot2dWiz.cpp:420
-#: ../src/Plot2dWiz.cpp:434 ../src/wxMaxima.cpp:2778 ../src/wxMaxima.cpp:3124
+#: ../src/Plot2dWiz.cpp:42 ../src/Plot2dWiz.cpp:116 ../src/Plot2dWiz.cpp:419
+#: ../src/Plot2dWiz.cpp:433 ../src/wxMaxima.cpp:2778 ../src/wxMaxima.cpp:3124
 msgid "Plot 2D"
 msgstr "2 dimenziós ábrázolás"
 
@@ -1678,11 +1679,11 @@ msgstr "1. polinom:"
 msgid "Polynomial 2:"
 msgstr "2. polinom:"
 
-#: ../src/Config.cpp:92
+#: ../src/Config.cpp:95
 msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazil)"
 
-#: ../src/Plot2dWiz.cpp:473 ../src/Plot3dWiz.cpp:464
+#: ../src/Plot2dWiz.cpp:472 ../src/Plot3dWiz.cpp:462
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript fájl (*.eps)|*.eps|Minden fájl|*"
 
@@ -1758,7 +1759,7 @@ msgstr "Maxima újraindítása"
 
 #: ../src/wxMaximaFrame.cpp:471
 msgid "Risch integration ..."
-msgstr "&Risch-integrálás ..."
+msgstr "Risch-integrálás ..."
 
 #: ../src/wxMaximaFrame.cpp:392
 msgid "Roots of &polynomial"
@@ -1768,7 +1769,7 @@ msgstr "&Polinom gyökei"
 msgid "Rows:"
 msgstr "Sorok:"
 
-#: ../src/Config.cpp:93
+#: ../src/Config.cpp:96
 msgid "Russian"
 msgstr "Orosz"
 
@@ -1778,13 +1779,13 @@ msgstr "Mentés"
 
 #: ../src/wxMaximaFrame.cpp:258
 msgid "Save as"
-msgstr "Me&ntés másként"
+msgstr "Mentés másként"
 
 #: ../src/MathCtrl.cpp:402
 msgid "Save image"
 msgstr "Kép mentése"
 
-#: ../src/Plot2dWiz.cpp:471 ../src/Plot3dWiz.cpp:462
+#: ../src/Plot2dWiz.cpp:470 ../src/Plot3dWiz.cpp:460
 msgid "Save plot to file"
 msgstr "Ábrázolás mentése fájlba"
 
@@ -1804,11 +1805,11 @@ msgstr "Mentés fájlba"
 msgid "Save to file"
 msgstr "Mentés fájlba"
 
-#: ../src/Config.cpp:104
+#: ../src/Config.cpp:107
 msgid "Save wxMaxima window size/position"
 msgstr "Ablak méret/pozíció mentése"
 
-#: ../src/Config.cpp:177
+#: ../src/Config.cpp:178
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "wxMaxima ablak méret/pozíció mentése."
 
@@ -1839,7 +1840,7 @@ msgstr "Fájl kiválasztása megnyitásra"
 
 #: ../src/wxMaximaFrame.cpp:346
 msgid "Select last input\tF2"
-msgstr "Utols&ó bemenet kijelölése\tF2"
+msgstr "Utolsó bemenet kijelölése\tF2"
 
 #: ../src/wxMaximaFrame.cpp:347
 msgid "Select last input in the console!"
@@ -1849,9 +1850,9 @@ msgstr "Utolsó bemenet kijelölése a konzolon!"
 msgid "Select math display algorithm"
 msgstr "Matematikai megjelenítés algoritmusának kiválasztása"
 
-#: ../src/Config.cpp:419 ../src/Config.cpp:424
+#: ../src/Config.cpp:416 ../src/Config.cpp:421
 msgid "Select maxima program"
-msgstr "A maxima program kiválasztása"
+msgstr "A Maxima program kiválasztása"
 
 #: ../src/wxMaxima.cpp:1463 ../src/wxMaxima.cpp:1671 ../src/wxMaxima.cpp:1681
 msgid "Select package to load"
@@ -1859,11 +1860,11 @@ msgstr "Csomag kiválasztása"
 
 #: ../src/wxMaximaFrame.cpp:302
 msgid "Selection to image"
-msgstr "Kijelölés mentése ké&pbe"
+msgstr "Kijelölés mentése képbe"
 
 #: ../src/wxMaximaFrame.cpp:305
 msgid "Selection to input\tF5"
-msgstr "Kivá&lasztás a bemenetre\tF5"
+msgstr "Kiválasztás a bemenetre\tF5"
 
 #: ../src/SeriesWiz.cpp:32 ../src/SeriesWiz.cpp:62 ../src/wxMaxima.cpp:2692
 msgid "Series"
@@ -1881,7 +1882,7 @@ msgstr "A kiszolgáló elindult"
 msgid "Set &precision ..."
 msgstr "&Pontosság állítása ..."
 
-#: ../src/Config.cpp:182 ../src/Config.cpp:183
+#: ../src/Config.cpp:183 ../src/Config.cpp:184
 msgid "Set fixed font in text controls."
 msgstr "Rögzített szélességű betűtípus beállítása a bemeneti sorban."
 
@@ -1959,19 +1960,19 @@ msgstr "Megmutatja a definiált változókat"
 msgid "Show definition of a function"
 msgstr "Megmutatja a függvény definícióját"
 
-#: ../src/Config.cpp:181
+#: ../src/Config.cpp:182
 msgid "Show initial header with maxima system information."
 msgstr "A Maxima rendszer információs fejlécének megjelenítése."
 
-#: ../src/Config.cpp:107
+#: ../src/Config.cpp:110
 msgid "Show long expressions"
 msgstr "Hosszú kifejezések megjelenítése"
 
-#: ../src/Config.cpp:179
+#: ../src/Config.cpp:180
 msgid "Show long expressions in wxMaxima console."
 msgstr "A wxMaxima konzolja megjeleníti a hosszú kifejezéseket."
 
-#: ../src/Config.cpp:108
+#: ../src/Config.cpp:111
 msgid "Show maxima header"
 msgstr "A Maxima fejlécének megjelenítése"
 
@@ -2132,13 +2133,14 @@ msgstr "Legfeljebb másodrendű közönséges differenciálegyenlet megoldása"
 
 #: ../src/wxMaximaFrame.cpp:424
 msgid "Solve ordinary differential equations with Laplace transformation"
-msgstr "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
+msgstr ""
+"Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
 #: ../src/wxMaximaFrame.cpp:66 ../src/wxMaximaFrame.cpp:83
 msgid "Solve..."
 msgstr "Megold ..."
 
-#: ../src/Config.cpp:93
+#: ../src/Config.cpp:96
 msgid "Spanish"
 msgstr "Spanyol"
 
@@ -2147,7 +2149,7 @@ msgstr "Spanyol"
 msgid "Special"
 msgstr "Különleges"
 
-#: ../src/Config.cpp:122
+#: ../src/Config.cpp:125
 msgid "Special constants"
 msgstr "Különleges állandó"
 
@@ -2168,15 +2170,15 @@ msgstr "A szerver leállt"
 msgid "Starting server on port %d"
 msgstr "A szerver elindult és az alábbi porton figyel %d"
 
-#: ../src/Config.cpp:123
+#: ../src/Config.cpp:126
 msgid "Strings"
 msgstr "Karakterláncok"
 
-#: ../src/Config.cpp:360
+#: ../src/Config.cpp:357
 msgid "Style"
 msgstr "Stílus"
 
-#: ../src/Config.cpp:81
+#: ../src/Config.cpp:84
 msgid "Styles"
 msgstr "Stílusok"
 
@@ -2187,7 +2189,7 @@ msgstr "Behelyettesít"
 
 #: ../src/MathCtrl.cpp:477 ../src/wxMaximaFrame.cpp:593
 msgid "Substitute ..."
-msgstr "&Behelyettesítés ..."
+msgstr "Behelyettesítés ..."
 
 #: ../src/wxMaximaFrame.cpp:72
 msgid "Substitute..."
@@ -2225,11 +2227,11 @@ msgstr "Taylor-sor:"
 msgid "Tellrat"
 msgstr "A 'tellrat' eljárás"
 
-#: ../src/Config.cpp:123
+#: ../src/Config.cpp:126
 msgid "Text"
 msgstr "Szöveg"
 
-#: ../src/Config.cpp:125
+#: ../src/Config.cpp:128
 msgid "Text background"
 msgstr "A szöveg háttere"
 
@@ -2237,7 +2239,7 @@ msgstr "A szöveg háttere"
 msgid "The bigfloat value of an expression"
 msgstr "A szám hosszú tizedes tört alakja"
 
-#: ../src/Config.cpp:192
+#: ../src/Config.cpp:193
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr ""
 "A Maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
@@ -2257,7 +2259,7 @@ msgstr ""
 " \n"
 " Kérem jelentse a hibát."
 
-#: ../src/Plot2dWiz.cpp:65 ../src/Plot2dWiz.cpp:513
+#: ../src/Plot2dWiz.cpp:65 ../src/Plot2dWiz.cpp:512
 msgid "Ticks:"
 msgstr "Törésvonalak:"
 
@@ -2350,7 +2352,7 @@ msgstr "Mátrix transzponálás"
 msgid "Type:"
 msgstr "Típus:"
 
-#: ../src/Config.cpp:93
+#: ../src/Config.cpp:96
 msgid "Ukrainian"
 msgstr "Ukrán"
 
@@ -2358,19 +2360,19 @@ msgstr "Ukrán"
 msgid "Uncomment"
 msgstr "Megjelölés megszüntetése"
 
-#: ../src/Config.cpp:151
+#: ../src/Config.cpp:154
 msgid "Underlined"
 msgstr "Aláhúzott"
 
 #: ../src/wxMaximaFrame.cpp:314
 msgid "Unfold"
-msgstr "&Felfedés"
+msgstr "Felfedés"
 
 #: ../src/wxMaximaFrame.cpp:315
 msgid "Unfold all folded groups"
 msgstr "Felfed minden rejtett csoportot"
 
-#: ../src/Config.cpp:117
+#: ../src/Config.cpp:120
 msgid "Unicode glyphs:"
 msgstr "Unicode jelek:"
 
@@ -2382,26 +2384,26 @@ msgstr "&Taylor-sor használata"
 msgid "Use Gosper algorithm"
 msgstr "A Gosper algoritmus használata"
 
-#: ../src/Config.cpp:185
+#: ../src/Config.cpp:186
 msgid "Use greek font to display greek characters."
 msgstr "Görög betűk használata a görög karakterek megjelenítéséhez."
 
-#: ../src/Config.cpp:112
+#: ../src/Config.cpp:115
 msgid "Use greek font:"
 msgstr "Görög betűk használata:"
 
-#: ../src/Plot2dWiz.cpp:47 ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:504
+#: ../src/Plot2dWiz.cpp:47 ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:503
 #: ../src/Plot3dWiz.cpp:44 ../src/Plot3dWiz.cpp:53
 msgid "Variable:"
 msgstr "Változó:"
 
-#: ../src/Config.cpp:122
+#: ../src/Config.cpp:125
 msgid "Variables"
 msgstr "Változók"
 
 #: ../src/SystemWiz.cpp:74
 msgid "Variables:"
-msgstr "Változók:"
+msgstr "változók:"
 
 #: ../src/wxMaxima.cpp:1108
 msgid "Warning"
@@ -2422,7 +2424,7 @@ msgstr ""
 "írja be azt a bemeneti sorba. Esetleg kijelölhet valamilyen kifejezést, vagy "
 "annak egy részét. Ezután válassza ki az eljárást."
 
-#: ../src/Config.cpp:178
+#: ../src/Config.cpp:179
 msgid "Write matching parenthesis in text controls."
 msgstr "Nyitó zárójelek párjának automatikus beírása."
 
@@ -2512,7 +2514,7 @@ msgstr "[ mentetlen*]"
 msgid "antisymmetric"
 msgstr "antiszimmetrikus"
 
-#: ../src/Config.cpp:130
+#: ../src/Config.cpp:133
 msgid "aquamarine"
 msgstr "akvamarin"
 
@@ -2524,15 +2526,15 @@ msgstr "körül:"
 msgid "at point:"
 msgstr "pontban:"
 
-#: ../src/Config.cpp:130
+#: ../src/Config.cpp:133
 msgid "black"
 msgstr "fekete"
 
-#: ../src/Config.cpp:130
+#: ../src/Config.cpp:133
 msgid "blue"
 msgstr "kék"
 
-#: ../src/Config.cpp:130
+#: ../src/Config.cpp:133
 msgid "blue violet"
 msgstr "ibolyakék"
 
@@ -2540,7 +2542,7 @@ msgstr "ibolyakék"
 msgid "both sides"
 msgstr "két oldalról"
 
-#: ../src/Config.cpp:131
+#: ../src/Config.cpp:134
 msgid "brown"
 msgstr "barna"
 
@@ -2549,7 +2551,7 @@ msgstr "barna"
 msgid "by variable:"
 msgstr "a változó:"
 
-#: ../src/Config.cpp:131
+#: ../src/Config.cpp:134
 msgid "cadet blue"
 msgstr "kadétkék"
 
@@ -2557,48 +2559,48 @@ msgstr "kadétkék"
 msgid "change var:"
 msgstr "ezt cseréljük:"
 
-#: ../src/Config.cpp:131
+#: ../src/Config.cpp:134
 msgid "coral"
 msgstr "korall"
 
-#: ../src/Config.cpp:131
+#: ../src/Config.cpp:134
 msgid "cornflower blue"
 msgstr "búzavirágkék"
 
-#: ../src/Config.cpp:132
+#: ../src/Config.cpp:135
 msgid "cyan"
 msgstr "cián"
 
-#: ../src/Config.cpp:132
+#: ../src/Config.cpp:135
 msgid "dark green"
 msgstr "sötétzöld"
 
-#: ../src/Config.cpp:132
+#: ../src/Config.cpp:135
 msgid "dark grey"
 msgstr "sötétszürke"
 
-#: ../src/Config.cpp:132
+#: ../src/Config.cpp:135
 msgid "dark olive green"
 msgstr "sötét olajzöld"
 
-#: ../src/Config.cpp:133
+#: ../src/Config.cpp:136
 msgid "dark orchid"
 msgstr "sötét orchidea"
 
-#: ../src/Config.cpp:133
+#: ../src/Config.cpp:136
 msgid "dark slate blue"
 msgstr "sötét palakék"
 
-#: ../src/Config.cpp:133
+#: ../src/Config.cpp:136
 msgid "dark slate grey"
 msgstr "sötét palaszürke"
 
-#: ../src/Config.cpp:134
+#: ../src/Config.cpp:137
 msgid "dark turquoise"
 msgstr "sötét türkiz"
 
-#: ../src/Plot2dWiz.cpp:71 ../src/Plot2dWiz.cpp:371 ../src/Plot3dWiz.cpp:71
-#: ../src/Plot3dWiz.cpp:391
+#: ../src/Plot2dWiz.cpp:71 ../src/Plot2dWiz.cpp:370 ../src/Plot3dWiz.cpp:71
+#: ../src/Plot3dWiz.cpp:389
 msgid "default"
 msgstr "alapértelmezett"
 
@@ -2614,7 +2616,7 @@ msgstr "fokszám:"
 msgid "diagonal"
 msgstr "átlós"
 
-#: ../src/Config.cpp:134
+#: ../src/Config.cpp:137
 msgid "dim grey"
 msgstr "halványszürke"
 
@@ -2626,7 +2628,7 @@ msgstr "kiejtjük az alábbi változó(ka)t:"
 msgid "equation:"
 msgstr "egyenlet:"
 
-#: ../src/Config.cpp:134
+#: ../src/Config.cpp:137
 msgid "firebrick"
 msgstr "téglavörös"
 
@@ -2638,16 +2640,16 @@ msgstr "az alábbi függvény(ek)re:"
 msgid "for variable(s):"
 msgstr "az alábbi változó(k)ra:"
 
-#: ../src/Config.cpp:134
+#: ../src/Config.cpp:137
 msgid "forest green"
 msgstr "fűzöld"
 
 #: ../src/wxMaxima.cpp:2337
 msgid "from expression:"
-msgstr "ebből a kifejezésből:"
+msgstr "Ebből a kifejezésből:"
 
 #: ../src/IntegrateWiz.cpp:44 ../src/LimitWiz.cpp:37 ../src/Plot2dWiz.cpp:50
-#: ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:507 ../src/Plot3dWiz.cpp:47
+#: ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:506 ../src/Plot3dWiz.cpp:47
 #: ../src/Plot3dWiz.cpp:56 ../src/SumWiz.cpp:37 ../src/wxMaxima.cpp:2338
 #: ../src/wxMaxima.cpp:2734
 msgid "from:"
@@ -2665,23 +2667,23 @@ msgstr "általános"
 msgid "goes to:"
 msgstr "tart ide:"
 
-#: ../src/Config.cpp:135
+#: ../src/Config.cpp:138
 msgid "gold"
 msgstr "arany"
 
-#: ../src/Config.cpp:135
+#: ../src/Config.cpp:138
 msgid "goldenrod"
 msgstr "aranyvessző"
 
-#: ../src/Config.cpp:135
+#: ../src/Config.cpp:138
 msgid "green"
 msgstr "zöld"
 
-#: ../src/Config.cpp:135
+#: ../src/Config.cpp:138
 msgid "green yellow"
 msgstr "zöldessárga"
 
-#: ../src/Config.cpp:135
+#: ../src/Config.cpp:138
 msgid "grey"
 msgstr "szürke"
 
@@ -2691,7 +2693,7 @@ msgstr "értéke:"
 
 #: ../src/wxMaxima.cpp:2304
 msgid "height:"
-msgstr "Oszlopok:"
+msgstr "oszlopok:"
 
 #: ../src/wxMaxima.cpp:2030 ../src/wxMaxima.cpp:2289 ../src/wxMaxima.cpp:2594
 #: ../src/wxMaxima.cpp:2672 ../src/wxMaxima.cpp:3061 ../src/wxMaxima.cpp:3092
@@ -2702,17 +2704,17 @@ msgstr "ilyen változó szerint:"
 msgid "in:"
 msgstr "ebbe:"
 
-#: ../src/Config.cpp:136
+#: ../src/Config.cpp:139
 msgid "indian red"
 msgstr "indián vörös"
 
-#: ../src/Plot2dWiz.cpp:72 ../src/Plot2dWiz.cpp:200 ../src/Plot2dWiz.cpp:371
-#: ../src/Plot2dWiz.cpp:392 ../src/Plot3dWiz.cpp:72 ../src/Plot3dWiz.cpp:208
-#: ../src/Plot3dWiz.cpp:391 ../src/Plot3dWiz.cpp:422
+#: ../src/Plot2dWiz.cpp:72 ../src/Plot2dWiz.cpp:199 ../src/Plot2dWiz.cpp:370
+#: ../src/Plot2dWiz.cpp:391 ../src/Plot3dWiz.cpp:72 ../src/Plot3dWiz.cpp:206
+#: ../src/Plot3dWiz.cpp:389 ../src/Plot3dWiz.cpp:420
 msgid "inline"
 msgstr "sorok között"
 
-#: ../src/Config.cpp:136
+#: ../src/Config.cpp:139
 msgid "khaki"
 msgstr "keki"
 
@@ -2720,19 +2722,19 @@ msgstr "keki"
 msgid "left"
 msgstr "balról"
 
-#: ../src/Config.cpp:136
+#: ../src/Config.cpp:139
 msgid "light blue"
 msgstr "világoskék"
 
-#: ../src/Config.cpp:136
+#: ../src/Config.cpp:139
 msgid "light grey"
 msgstr "világosszürke"
 
-#: ../src/Config.cpp:137
+#: ../src/Config.cpp:140
 msgid "light steel blue"
 msgstr "világos acélkék"
 
-#: ../src/Config.cpp:137
+#: ../src/Config.cpp:140
 msgid "lime green"
 msgstr "lime zöld"
 
@@ -2740,51 +2742,51 @@ msgstr "lime zöld"
 msgid "lower bound:"
 msgstr "alsó végpont:"
 
-#: ../src/Config.cpp:137
+#: ../src/Config.cpp:140
 msgid "magenta"
 msgstr "bíborvörös"
 
-#: ../src/Config.cpp:137
+#: ../src/Config.cpp:140
 msgid "maroon"
 msgstr "gesztenyebarna"
 
-#: ../src/Config.cpp:138
+#: ../src/Config.cpp:141
 msgid "medium aquamarine"
 msgstr "közepesen akvamarin"
 
-#: ../src/Config.cpp:138
+#: ../src/Config.cpp:141
 msgid "medium blue"
 msgstr "közepesen kék"
 
-#: ../src/Config.cpp:138
+#: ../src/Config.cpp:141
 msgid "medium forrest green"
 msgstr "közepesen fúzöld"
 
-#: ../src/Config.cpp:139
+#: ../src/Config.cpp:142
 msgid "medium goldenrod"
 msgstr "közepesen aranyvessző"
 
-#: ../src/Config.cpp:139
+#: ../src/Config.cpp:142
 msgid "medium orchid"
 msgstr "közepesen orchidea"
 
-#: ../src/Config.cpp:139
+#: ../src/Config.cpp:142
 msgid "medium sea green"
 msgstr "közepesen tengerzöld"
 
-#: ../src/Config.cpp:140
+#: ../src/Config.cpp:143
 msgid "medium slate blue"
 msgstr "közepesen palakék"
 
-#: ../src/Config.cpp:140
+#: ../src/Config.cpp:143
 msgid "medium spring green"
 msgstr "közepesen tavaszzöld"
 
-#: ../src/Config.cpp:140
+#: ../src/Config.cpp:143
 msgid "medium turquoise"
 msgstr "közepesen türkiz"
 
-#: ../src/Config.cpp:141
+#: ../src/Config.cpp:144
 msgid "medium violet red"
 msgstr "közepesen ibolyavörös"
 
@@ -2792,11 +2794,11 @@ msgstr "közepesen ibolyavörös"
 msgid "method:"
 msgstr "eljárás:"
 
-#: ../src/Config.cpp:141
+#: ../src/Config.cpp:144
 msgid "midnight blue"
 msgstr "éjfélkék"
 
-#: ../src/Config.cpp:141
+#: ../src/Config.cpp:144
 msgid "navy"
 msgstr "matrózkék"
 
@@ -2812,35 +2814,35 @@ msgstr "számláló foka:"
 msgid "old variable:"
 msgstr "régi változó:"
 
-#: ../src/Config.cpp:141
+#: ../src/Config.cpp:144
 msgid "orange"
 msgstr "narancs"
 
-#: ../src/Config.cpp:142
+#: ../src/Config.cpp:145
 msgid "orange red"
 msgstr "narancsvörös"
 
-#: ../src/Config.cpp:142
+#: ../src/Config.cpp:145
 msgid "orchid"
 msgstr "orchidea"
 
-#: ../src/Config.cpp:142
+#: ../src/Config.cpp:145
 msgid "pale green"
 msgstr "sápadt zöld"
 
-#: ../src/Config.cpp:142
+#: ../src/Config.cpp:145
 msgid "pink"
 msgstr "rózsaszín"
 
-#: ../src/Config.cpp:142
+#: ../src/Config.cpp:145
 msgid "plum"
 msgstr "szilvakék"
 
-#: ../src/Config.cpp:143
+#: ../src/Config.cpp:146
 msgid "purple"
 msgstr "bíbor"
 
-#: ../src/Config.cpp:143
+#: ../src/Config.cpp:146
 msgid "red"
 msgstr "vörös"
 
@@ -2848,31 +2850,31 @@ msgstr "vörös"
 msgid "right"
 msgstr "jobbról"
 
-#: ../src/Config.cpp:143
+#: ../src/Config.cpp:146
 msgid "salmon"
 msgstr "lazac"
 
-#: ../src/Config.cpp:143
+#: ../src/Config.cpp:146
 msgid "sea green"
 msgstr "tengerzöld"
 
-#: ../src/Config.cpp:143
+#: ../src/Config.cpp:146
 msgid "sienna"
 msgstr "vörösesbarna"
 
-#: ../src/Config.cpp:144
+#: ../src/Config.cpp:147
 msgid "sky blue"
 msgstr "égkék"
 
-#: ../src/Config.cpp:144
+#: ../src/Config.cpp:147
 msgid "slate blue"
 msgstr "palakék"
 
-#: ../src/Config.cpp:144
+#: ../src/Config.cpp:147
 msgid "spring green"
 msgstr "tavaszzöld"
 
-#: ../src/Config.cpp:144
+#: ../src/Config.cpp:147
 msgid "steel blue"
 msgstr "acélkék"
 
@@ -2880,7 +2882,7 @@ msgstr "acélkék"
 msgid "symmetric"
 msgstr "szimmetrikus"
 
-#: ../src/Config.cpp:145
+#: ../src/Config.cpp:148
 msgid "tan"
 msgstr "napbarnított"
 
@@ -2893,7 +2895,7 @@ msgstr "a derivált:"
 msgid "the value is:"
 msgstr "az érték:"
 
-#: ../src/Config.cpp:145
+#: ../src/Config.cpp:148
 msgid "thistle"
 msgstr "bogáncs"
 
@@ -2910,13 +2912,13 @@ msgid "to matrix:"
 msgstr "erre a mátrixra:"
 
 #: ../src/IntegrateWiz.cpp:48 ../src/Plot2dWiz.cpp:53 ../src/Plot2dWiz.cpp:62
-#: ../src/Plot2dWiz.cpp:510 ../src/Plot3dWiz.cpp:50 ../src/Plot3dWiz.cpp:59
+#: ../src/Plot2dWiz.cpp:509 ../src/Plot3dWiz.cpp:50 ../src/Plot3dWiz.cpp:59
 #: ../src/SumWiz.cpp:40 ../src/wxMaxima.cpp:2338 ../src/wxMaxima.cpp:2639
 #: ../src/wxMaxima.cpp:2656 ../src/wxMaxima.cpp:2735
 msgid "to:"
 msgstr "meddig:"
 
-#: ../src/Config.cpp:145
+#: ../src/Config.cpp:148
 msgid "turquoise"
 msgstr "türkiz"
 
@@ -2940,15 +2942,15 @@ msgstr "változó"
 msgid "variable:"
 msgstr "változó:"
 
-#: ../src/Config.cpp:145
+#: ../src/Config.cpp:148
 msgid "violet"
 msgstr "ibolya"
 
-#: ../src/Config.cpp:145
+#: ../src/Config.cpp:148
 msgid "violet red"
 msgstr "ibolyavörös"
 
-#: ../src/Config.cpp:146
+#: ../src/Config.cpp:149
 msgid "wheat"
 msgstr "búza"
 
@@ -2956,13 +2958,13 @@ msgstr "búza"
 msgid "when variable:"
 msgstr "amikor a változó:"
 
-#: ../src/Config.cpp:146
+#: ../src/Config.cpp:149
 msgid "white"
 msgstr "fehér"
 
 #: ../src/wxMaxima.cpp:2304
 msgid "width:"
-msgstr "Sorok:"
+msgstr "sorok:"
 
 #: ../src/SubstituteWiz.cpp:31
 msgid "with:"
@@ -2978,7 +2980,7 @@ msgstr "wxMaxima"
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: ../src/Config.cpp:82 ../src/Config.cpp:170 ../src/wxMaxima.cpp:1729
+#: ../src/Config.cpp:85 ../src/Config.cpp:171 ../src/wxMaxima.cpp:1729
 msgid "wxMaxima configuration"
 msgstr "A wxMaxima beállítása"
 
@@ -2999,7 +3001,7 @@ msgid ""
 "Please configure wxMaxima with 'Edit->Configure'.\n"
 "Then start maxima with 'Maxima->Restart maxima'."
 msgstr ""
-"A wxMaxima nem találja a maxima programot! \n"
+"A wxMaxima nem találja a Maxima programot! \n"
 " \n"
 " Kérem adja meg az elérési útját a 'Szerkesztés->Beállítás' menüpont alatt.\n"
 " Ezután indítsa el a maximát a 'Maxima->Maxima újraindítása' segítségével."
@@ -3088,7 +3090,7 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: ../src/Config.cpp:78
+#: ../src/Config.cpp:81
 msgid "wxMaxima options"
 msgstr "A wxMaxima opciói"
 
@@ -3117,11 +3119,10 @@ msgstr ""
 "korábbi parancsokat, valamint a tab gombot megnyomva kiegészítheti az Ön "
 "által beírt szöveget, amennyiben az valamely korábban beírt utasítása része."
 
-#: ../src/Config.cpp:146
+#: ../src/Config.cpp:149
 msgid "yellow"
 msgstr "sárga"
 
-#: ../src/Config.cpp:146
+#: ../src/Config.cpp:149
 msgid "yellow green"
 msgstr "sárgászöld"
-
