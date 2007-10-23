@@ -26,7 +26,7 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-($put '$wxmaxima `((mlist simp) 0 7 3) '$version)
+($put '$wxmaxima `((mlist simp) 0 7 4) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 
@@ -83,13 +83,6 @@
 		       (format nil "<v>Structure [~A]</v>" (type-of x)))
 		      ((hash-table-p x)
 		       (format nil "<v>HashTable</v>"))
-                      ((mstringp x)
-		       (setq tmp-x (maybe-invert-string-case
-				    (symbol-name (stripdollar x))))
-		       (setq tmp-x (wxxml-fix-string tmp-x))
-		       (if (and (boundp '$stringdisp) $stringdisp)
-			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
-		       (concatenate 'string "<st>" tmp-x "</st>"))
 		      ((stringp x)
 		       (setq tmp-x (wxxml-fix-string x))
 		       (if (and (boundp '$stringdisp) $stringdisp)
@@ -326,7 +319,7 @@
 (defprop $%omicron "<g>%omicron</g>" wxxmlword)
 (defprop $omicron "<g>omicron</g>" wxxmlword)
 (defprop $%pi "<s>%pi</s>" wxxmlword)
-(defprop $pi "<s>pi</s>" wxxmlword)
+(defprop $pi "<g>pi</g>" wxxmlword)
 (defprop $%rho "<g>%rho</g>" wxxmlword)
 (defprop $rho "<g>rho</g>" wxxmlword)
 (defprop $%sigma "<g>%sigma</g>" wxxmlword)
@@ -574,11 +567,14 @@
 (defprop %sum wxxml-sum wxxml)
 (defprop %lsum wxxml-lsum wxxml)
 (defprop %product wxxml-sum wxxml)
+(defprop $sum wxxml-sum wxxml)
+(defprop $lsum wxxml-lsum wxxml)
+(defprop $product wxxml-sum wxxml)
 
 ;; easily extended to union, intersect, otherops
 
 (defun wxxml-lsum(x l r)
-  (let ((op (cond ((eq (caar x) '%lsum) "<sm><r>")))
+  (let ((op "<sm><r>")
 	;; gotta be one of those above
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
@@ -589,8 +585,10 @@
 		,@s1 "</r></sm>") r)))
 
 (defun wxxml-sum(x l r)
-  (let ((op (cond ((eq (caar x) '%sum) "<sm><r>")
-		  ((eq (caar x) '%product) "<sm type=\"prod\"><r>")))
+  (let ((op (if (or (eq (caar x) '%sum)
+		    (eq (caar x) '$sum))
+		"<sm><r>"
+		"<sm type=\"prod\"><r>"))
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
          (wxxml `((mequal simp) ,(caddr x) ,(cadddr x))
@@ -1032,7 +1030,7 @@
   (incf *image-counter*)
   (if suff
       (plot-temp-file (format nil "maxout_~d.png" *image-counter*))
-      (plot-temp-file (format nil "maxout_~d" *image-counter*))))
+      (format nil "maxout_~d" *image-counter*)))
 
 (defun $wxplot_preamble ()
   (let ((frmt (if $wxplot_old_gnuplot
@@ -1051,10 +1049,7 @@
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
-				 preamble
-				 (maybe-invert-string-case
-				  (symbol-name
-				   (stripdollar (caddr arg))))))))
+				 preamble (caddr arg)))))
     (apply #'$plot2d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
 		       ((mlist simp) $gnuplot_preamble ,preamble)
@@ -1072,10 +1067,7 @@
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
-				 preamble
-				 (maybe-invert-string-case
-				  (symbol-name
-				   (stripdollar (caddr arg))))))))
+				 preamble (caddr arg)))))
     (apply #'$plot3d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
 		       ((mlist simp) $gnuplot_preamble ,preamble)
@@ -1105,10 +1097,9 @@
 			((mequal simp) $terminal $png)
 			((mequal simp) $pic_width ,($first $wxplot_size))
 			((mequal simp) $pic_height ,($second $wxplot_size))
-			((mequal simp) $file_name ,
-			 (intern (maybe-invert-string-case (concatenate 'string "&" filename)))))
+			((mequal simp) $file_name ,filename))
 		      args)))
-    ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+    ($ldisp `((wxxmltag simp) ,(plot-temp-file (format nil "~a.png" filename)) "img"))
     res))
 
 (defun $wximplicit_plot (&rest args)
@@ -1120,10 +1111,7 @@
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
-				 preamble
-				 (maybe-invert-string-case
-				  (symbol-name
-				   (stripdollar (caddr arg))))))))
+				 preamble (caddr arg)))))
     ($apply '$implicit_plot `((mlist simp) ,@args
 			      ((mlist simp) $plot_format $gnuplot)
 			      ((mlist simp) $gnuplot_preamble ,preamble)
@@ -1141,11 +1129,7 @@
 	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	  (setq preamble (format nil "~a; ~a"
-				 preamble
-				 (maybe-invert-string-case
-				  (symbol-name
-				   (stripdollar (caddr arg))))))))
+	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
     (apply #'$contour_plot `(,@args
 			     ((mlist simp) $plot_format $gnuplot)
 			     ((mlist simp) $gnuplot_preamble ,preamble)
@@ -1160,8 +1144,6 @@
 ;;
 
 (defun $wxxmlput (e s &optional tx lbp rbp)
-  (cond ((mstringp e)
-	 (setq e (define-symbol (string-left-trim '(#\&) e)))))
   (cond (($listp s)
 	 (setq s (margs s)))
 	(t
