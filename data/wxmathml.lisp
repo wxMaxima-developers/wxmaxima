@@ -30,6 +30,8 @@
 
 (setf (get '$inchar 'assign) 'neverset)
 
+(defvar *var-tag* '("<v>" "</v>"))
+
 (defun wxxml (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its
   ;; left, r to its right. lop and rop are the operators on the left
@@ -133,7 +135,7 @@
 		     (concatenate 'string "?" pname))
 		    (t pname)))
   (setq pname (wxxml-fix-string pname))
-  (concatenate 'string "<v>" pname "</v>"))
+  (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
 (defun wxxml-paren (x l r)
   (wxxml x (append l '("<p>")) (cons "</p>" r) 'mparen 'mparen))
@@ -166,8 +168,10 @@
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
 (defun wxxml-function (x l r)
-  (setq l (wxxml (caar x) (append l '("<fn>"))
-		 nil 'mparen 'mparen)
+  (setq l 
+	(let ((*var-tag* '("<fnm>" "</fnm>")))
+	  (wxxml (caar x) (append l '("<fn>"))
+		 nil 'mparen 'mparen))
 	r (wxxml (cons '(mprogn) (cdr x)) nil (append '("</fn>") r)
 		 'mparen 'mparen))
   (append l r))
