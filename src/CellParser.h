@@ -105,7 +105,7 @@ private:
   bool m_haveGreekFont;
   bool m_forceUpdate;
   wxFontEncoding m_fontEncoding;
-  style m_styles[13];
+  style m_styles[14];
 };
 
 #endif

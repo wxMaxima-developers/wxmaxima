@@ -22,9 +22,7 @@
 
 struct style
 {
-  style() : bold(false), italic(false), underlined(false)
-  { }
-  ;
+  style() : bold(false), italic(false), underlined(false) { };
   wxString color;
   bool bold;
   bool italic;
@@ -33,18 +31,19 @@ struct style
 
 enum {
   TS_NORMAL_TEXT = 0,
-  TS_HIDDEN_GROUP = 1,
-  TS_MAIN_PROMPT = 2,
-  TS_OTHER_PROMPT = 3,
-  TS_LABEL = 4,
-  TS_SPECIAL_CONSTANT = 5,
-  TS_INPUT = 6,
-  TS_NUMBER = 7,
-  TS_STRING = 8,
-  TS_GREEK_CONSTANT = 9,
-  TS_VARIABLES = 10,
-  TS_HIGHLIGHT = 11,
-  TS_TEXT_BACKGROUND = 12
+  TS_HIDDEN_GROUP,
+  TS_MAIN_PROMPT,
+  TS_OTHER_PROMPT,
+  TS_LABEL,
+  TS_INPUT,
+  TS_SPECIAL_CONSTANT,
+  TS_NUMBER,
+  TS_STRING,
+  TS_GREEK_CONSTANT,
+  TS_VARIABLE,
+  TS_FUNCTION,
+  TS_HIGHLIGHT,
+  TS_TEXT_BACKGROUND
 };
 
 #endif

@@ -399,9 +399,9 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
       if (tagName == wxT("v"))
       {               // Variables (atoms)
         if (cell == NULL)
-          cell = ParseText(node->children, TS_VARIABLES);
+          cell = ParseText(node->children, TS_VARIABLE);
         else
-          cell->AppendCell(ParseText(node->children, TS_VARIABLES));
+          cell->AppendCell(ParseText(node->children, TS_VARIABLE));
       }
       else if (tagName == wxT("t"))
       {          // Other text
@@ -472,6 +472,14 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
       else if (tagName == wxT("s"))
       {          // Special constants %e,...
         MathCell* tmp = ParseText(node->children, TS_SPECIAL_CONSTANT);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("fnm"))
+      {         // Function names
+        MathCell* tmp = ParseText(node->children, TS_FUNCTION);
         if (cell == NULL)
           cell = tmp;
         else

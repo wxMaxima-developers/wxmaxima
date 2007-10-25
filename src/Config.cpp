@@ -122,12 +122,12 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
 #endif
   const wxString m_styleFor_choices[] =
     {
-      _("Variables"), _("Numbers"), _("Special constants"), _("Greek constants"),
+      _("Variables"), _("Function names"), _("Numbers"), _("Special constants"), _("Greek constants"),
       _("Strings"), _("Text"), _("Input"), _("Main prompts"),
       _("Other prompts"), _("Labels"), _("Hidden groups"), _("Highlight"), _("Background"),
       _("Text background")
     };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 14, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 15, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
   const wxString m_styleColor_choices[] =
     {
       _("aquamarine"), _("black"), _("blue"), _("blue violet"),
@@ -688,6 +688,20 @@ void Config::ReadStyles()
   config->Read(wxT("Style/Variable/underlined"),
                &m_styleVariable.underlined);
 
+  // Function
+  m_styleFunction.color = m_styleNormalText.color;
+  m_styleFunction.bold = false;
+  m_styleFunction.italic = false;
+  m_styleFunction.underlined = false;
+  config->Read(wxT("Style/Function/color"),
+               &m_styleFunction.color);
+  config->Read(wxT("Style/Function/bold"),
+               &m_styleFunction.bold);
+  config->Read(wxT("Style/Function/italic"),
+               &m_styleFunction.italic);
+  config->Read(wxT("Style/Function/underlined"),
+               &m_styleFunction.underlined);
+
   // Set values in dialog
   m_styleFor->SetSelection(0);
   int i = 0;
@@ -830,6 +844,16 @@ void Config::WriteStyles()
   config->Write(wxT("Style/Variable/underlined"),
                 m_styleVariable.underlined);
 
+  // Function names
+  config->Write(wxT("Style/Function/color"),
+                m_styleFunction.color);
+  config->Write(wxT("Style/Function/bold"),
+                m_styleFunction.bold);
+  config->Write(wxT("Style/Function/italic"),
+                m_styleFunction.italic);
+  config->Write(wxT("Style/Function/underlined"),
+                m_styleFunction.underlined);
+
   config->Flush();
 }
 
@@ -914,42 +938,45 @@ style* Config::GetStylePointer()
   switch (m_styleFor->GetSelection())
   {
   case 1:
-    tmp = &m_styleNumber;
+    tmp = &m_styleFunction;
     break;
   case 2:
-    tmp = &m_styleSpecial;
+    tmp = &m_styleNumber;
     break;
   case 3:
-    tmp = &m_styleGreek;
+    tmp = &m_styleSpecial;
     break;
   case 4:
-    tmp = &m_styleString;
+    tmp = &m_styleGreek;
     break;
   case 5:
-    tmp = &m_styleNormalText;
+    tmp = &m_styleString;
     break;
   case 6:
-    tmp = &m_styleInput;
+    tmp = &m_styleNormalText;
     break;
   case 7:
-    tmp = &m_styleMainPrompt;
+    tmp = &m_styleInput;
     break;
   case 8:
-    tmp = &m_styleOtherPrompt;
+    tmp = &m_styleMainPrompt;
     break;
   case 9:
-    tmp = &m_styleLabel;
+    tmp = &m_styleOtherPrompt;
     break;
   case 10:
-    tmp = &m_styleHiddenText;
+    tmp = &m_styleLabel;
     break;
   case 11:
-    tmp = &m_styleHighlight;
+    tmp = &m_styleHiddenText;
     break;
   case 12:
-    tmp = &m_styleBackground;
+    tmp = &m_styleHighlight;
     break;
   case 13:
+    tmp = &m_styleBackground;
+    break;
+  case 14:
     tmp = &m_styleTextBackground;
     break;
   default:

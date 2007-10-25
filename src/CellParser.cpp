@@ -72,171 +72,185 @@ void CellParser::ReadStyle()
 #endif
 
   // Normal text
-  m_styles[0].color = wxT("black");
-  m_styles[0].bold = false;
-  m_styles[0].italic = true;
-  m_styles[0].underlined = false;
+  m_styles[TS_NORMAL_TEXT].color = wxT("black");
+  m_styles[TS_NORMAL_TEXT].bold = false;
+  m_styles[TS_NORMAL_TEXT].italic = true;
+  m_styles[TS_NORMAL_TEXT].underlined = false;
   config->Read(wxT("Style/NormalText/color"),
-               &m_styles[0].color);
+               &m_styles[TS_NORMAL_TEXT].color);
   config->Read(wxT("Style/NormalText/bold"),
-               &m_styles[0].bold);
+               &m_styles[TS_NORMAL_TEXT].bold);
   config->Read(wxT("Style/NormalText/italic"),
-               &m_styles[0].italic);
+               &m_styles[TS_NORMAL_TEXT].italic);
   config->Read(wxT("Style/NormalText/underlined"),
-               &m_styles[0].underlined);
+               &m_styles[TS_NORMAL_TEXT].underlined);
 
   // Hidden groups
-  m_styles[1].bold = false;
-  m_styles[1].italic = true;
-  m_styles[1].underlined = true;
+  m_styles[TS_HIDDEN_GROUP].bold = false;
+  m_styles[TS_HIDDEN_GROUP].italic = true;
+  m_styles[TS_HIDDEN_GROUP].underlined = true;
   config->Read(wxT("Style/HiddenText/color"),
-               &m_styles[1].color);
+               &m_styles[TS_HIDDEN_GROUP].color);
   config->Read(wxT("Style/HiddenText/bold"),
-               &m_styles[1].bold);
+               &m_styles[TS_HIDDEN_GROUP].bold);
   config->Read(wxT("Style/HiddenText/italic"),
-               &m_styles[1].italic);
+               &m_styles[TS_HIDDEN_GROUP].italic);
   config->Read(wxT("Style/HiddenText/underlined"),
-               &m_styles[1].underlined);
+               &m_styles[TS_HIDDEN_GROUP].underlined);
 
   // Main prompt
-  m_styles[2].color = wxT("red");
-  m_styles[2].bold = false;
-  m_styles[2].italic = false;
-  m_styles[2].underlined = false;
+  m_styles[TS_MAIN_PROMPT].color = wxT("red");
+  m_styles[TS_MAIN_PROMPT].bold = false;
+  m_styles[TS_MAIN_PROMPT].italic = false;
+  m_styles[TS_MAIN_PROMPT].underlined = false;
   config->Read(wxT("Style/MainPrompt/color"),
-               &m_styles[2].color);
+               &m_styles[TS_MAIN_PROMPT].color);
   config->Read(wxT("Style/MainPrompt/bold"),
-               &m_styles[2].bold);
+               &m_styles[TS_MAIN_PROMPT].bold);
   config->Read(wxT("Style/MainPrompt/italic"),
-               &m_styles[2].italic);
+               &m_styles[TS_MAIN_PROMPT].italic);
   config->Read(wxT("Style/MainPrompt/underlined"),
-               &m_styles[2].underlined);
+               &m_styles[TS_MAIN_PROMPT].underlined);
 
   // Other prompt
-  m_styles[3].color = wxT("red");
-  m_styles[3].bold = false;
-  m_styles[3].italic = true;
-  m_styles[3].underlined = false;
+  m_styles[TS_OTHER_PROMPT].color = wxT("red");
+  m_styles[TS_OTHER_PROMPT].bold = false;
+  m_styles[TS_OTHER_PROMPT].italic = true;
+  m_styles[TS_OTHER_PROMPT].underlined = false;
   config->Read(wxT("Style/OtherPrompt/color"),
-               &m_styles[3].color);
+               &m_styles[TS_OTHER_PROMPT].color);
   config->Read(wxT("Style/OtherPrompt/bold"),
-               &m_styles[3].bold);
+               &m_styles[TS_OTHER_PROMPT].bold);
   config->Read(wxT("Style/OtherPrompt/italic"),
-               &m_styles[3].italic);
+               &m_styles[TS_OTHER_PROMPT].italic);
   config->Read(wxT("Style/OtherPrompt/underlined"),
-               &m_styles[3].underlined);
+               &m_styles[TS_OTHER_PROMPT].underlined);
 
   // Labels
-  m_styles[4].color = wxT("brown");
-  m_styles[4].bold = false;
-  m_styles[4].italic = false;
-  m_styles[4].underlined = false;
+  m_styles[TS_LABEL].color = wxT("brown");
+  m_styles[TS_LABEL].bold = false;
+  m_styles[TS_LABEL].italic = false;
+  m_styles[TS_LABEL].underlined = false;
   config->Read(wxT("Style/Label/color"),
-               &m_styles[4].color);
+               &m_styles[TS_LABEL].color);
   config->Read(wxT("Style/Label/bold"),
-               &m_styles[4].bold);
+               &m_styles[TS_LABEL].bold);
   config->Read(wxT("Style/Label/italic"),
-               &m_styles[4].italic);
+               &m_styles[TS_LABEL].italic);
   config->Read(wxT("Style/Label/underlined"),
-               &m_styles[4].underlined);
+               &m_styles[TS_LABEL].underlined);
 
   // Special
-  m_styles[5].color = m_styles[0].color;
-  m_styles[5].bold = false;
-  m_styles[5].italic = false;
-  m_styles[5].underlined = false;
+  m_styles[TS_SPECIAL_CONSTANT].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_SPECIAL_CONSTANT].bold = false;
+  m_styles[TS_SPECIAL_CONSTANT].italic = false;
+  m_styles[TS_SPECIAL_CONSTANT].underlined = false;
   config->Read(wxT("Style/Special/color"),
-               &m_styles[5].color);
+               &m_styles[TS_SPECIAL_CONSTANT].color);
   config->Read(wxT("Style/Special/bold"),
-               &m_styles[5].bold);
+               &m_styles[TS_SPECIAL_CONSTANT].bold);
   config->Read(wxT("Style/Special/italic"),
-               &m_styles[5].italic);
+               &m_styles[TS_SPECIAL_CONSTANT].italic);
   config->Read(wxT("Style/Special/underlined"),
-               &m_styles[5].underlined);
+               &m_styles[TS_SPECIAL_CONSTANT].underlined);
 
   // Input
-  m_styles[6].color = wxT("blue");
-  m_styles[6].bold = false;
-  m_styles[6].italic = false;
-  m_styles[6].underlined = false;
+  m_styles[TS_INPUT].color = wxT("blue");
+  m_styles[TS_INPUT].bold = false;
+  m_styles[TS_INPUT].italic = false;
+  m_styles[TS_INPUT].underlined = false;
   config->Read(wxT("Style/Input/color"),
-               &m_styles[6].color);
+               &m_styles[TS_INPUT].color);
   config->Read(wxT("Style/Input/bold"),
-               &m_styles[6].bold);
+               &m_styles[TS_INPUT].bold);
   config->Read(wxT("Style/Input/italic"),
-               &m_styles[6].italic);
+               &m_styles[TS_INPUT].italic);
   config->Read(wxT("Style/Input/underlined"),
-               &m_styles[6].underlined);
+               &m_styles[TS_INPUT].underlined);
 
   // Number
-  m_styles[7].color = m_styles[0].color;
-  m_styles[7].bold = false;
-  m_styles[7].italic = false;
-  m_styles[7].underlined = false;
+  m_styles[TS_NUMBER].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_NUMBER].bold = false;
+  m_styles[TS_NUMBER].italic = false;
+  m_styles[TS_NUMBER].underlined = false;
   config->Read(wxT("Style/Number/color"),
-               &m_styles[7].color);
+               &m_styles[TS_NUMBER].color);
   config->Read(wxT("Style/Number/bold"),
-               &m_styles[7].bold);
+               &m_styles[TS_NUMBER].bold);
   config->Read(wxT("Style/Number/italic"),
-               &m_styles[7].italic);
+               &m_styles[TS_NUMBER].italic);
   config->Read(wxT("Style/Number/underlined"),
-               &m_styles[7].underlined);
+               &m_styles[TS_NUMBER].underlined);
 
   // String
-  m_styles[8].color = m_styles[0].color;
-  m_styles[8].bold = false;
-  m_styles[8].italic = true;
-  m_styles[8].underlined = false;
+  m_styles[TS_STRING].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_STRING].bold = false;
+  m_styles[TS_STRING].italic = true;
+  m_styles[TS_STRING].underlined = false;
   config->Read(wxT("Style/String/color"),
-               &m_styles[8].color);
+               &m_styles[TS_STRING].color);
   config->Read(wxT("Style/String/bold"),
-               &m_styles[8].bold);
+               &m_styles[TS_STRING].bold);
   config->Read(wxT("Style/String/italic"),
-               &m_styles[8].italic);
+               &m_styles[TS_STRING].italic);
   config->Read(wxT("Style/String/underlined"),
-               &m_styles[8].underlined);
+               &m_styles[TS_STRING].underlined);
 
   // Greek
-  m_styles[9].color = m_styles[0].color;
-  m_styles[9].bold = false;
-  m_styles[9].italic = false;
-  m_styles[9].underlined = false;
+  m_styles[TS_GREEK_CONSTANT].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_GREEK_CONSTANT].bold = false;
+  m_styles[TS_GREEK_CONSTANT].italic = false;
+  m_styles[TS_GREEK_CONSTANT].underlined = false;
   config->Read(wxT("Style/Greek/color"),
-               &m_styles[9].color);
+               &m_styles[TS_GREEK_CONSTANT].color);
   config->Read(wxT("Style/Greek/bold"),
-               &m_styles[9].bold);
+               &m_styles[TS_GREEK_CONSTANT].bold);
   config->Read(wxT("Style/Greek/italic"),
-               &m_styles[9].italic);
+               &m_styles[TS_GREEK_CONSTANT].italic);
   config->Read(wxT("Style/Greek/underlined"),
-               &m_styles[9].underlined);
+               &m_styles[TS_GREEK_CONSTANT].underlined);
 
   // Variables
-  m_styles[10].color = m_styles[0].color;
-  m_styles[10].bold = false;
-  m_styles[10].italic = true;
-  m_styles[10].underlined = false;
+  m_styles[TS_VARIABLE].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_VARIABLE].bold = false;
+  m_styles[TS_VARIABLE].italic = true;
+  m_styles[TS_VARIABLE].underlined = false;
   config->Read(wxT("Style/Variable/color"),
-               &m_styles[10].color);
+               &m_styles[TS_VARIABLE].color);
   config->Read(wxT("Style/Variable/bold"),
-               &m_styles[10].bold);
+               &m_styles[TS_VARIABLE].bold);
   config->Read(wxT("Style/Variable/italic"),
-               &m_styles[10].italic);
+               &m_styles[TS_VARIABLE].italic);
   config->Read(wxT("Style/Variable/underlined"),
-               &m_styles[10].underlined);
+               &m_styles[TS_VARIABLE].underlined);
+
+  // FUNCTIONS
+  m_styles[TS_FUNCTION].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_FUNCTION].bold = false;
+  m_styles[TS_FUNCTION].italic = false;
+  m_styles[TS_FUNCTION].underlined = false;
+  config->Read(wxT("Style/Function/color"),
+               &m_styles[TS_FUNCTION].color);
+  config->Read(wxT("Style/Function/bold"),
+               &m_styles[TS_FUNCTION].bold);
+  config->Read(wxT("Style/Function/italic"),
+               &m_styles[TS_FUNCTION].italic);
+  config->Read(wxT("Style/Function/underlined"),
+               &m_styles[TS_FUNCTION].underlined);
 
   // Highlight
-  m_styles[11].color = m_styles[0].color;
+  m_styles[TS_HIGHLIGHT].color = m_styles[TS_NORMAL_TEXT].color;
   config->Read(wxT("Style/Highlight/color"),
-               &m_styles[11].color);
+               &m_styles[TS_HIGHLIGHT].color);
 
   // Text background
-  m_styles[12].color = wxT("white");
+  m_styles[TS_TEXT_BACKGROUND].color = wxT("white");
   config->Read(wxT("Style/Background/color"),
-               &m_styles[12].color);
+               &m_styles[TS_TEXT_BACKGROUND].color);
   config->Read(wxT("Style/TextBackground/color"),
-               &m_styles[12].color);
+               &m_styles[TS_TEXT_BACKGROUND].color);
 
-  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[0].color, 1, wxSOLID)));
+  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_NORMAL_TEXT].color, 1, wxSOLID)));
 }
 
 wxFontWeight CellParser::IsBold(int st)
