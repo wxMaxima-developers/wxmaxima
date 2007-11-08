@@ -252,9 +252,7 @@
 (defun wxxml-bigfloat (x l r)
   (append l '("<n>") (fpformat x) '("</n>") r))
 
-(defprop mprog  "<t>block</t>" wxxmlword)
-(defprop %erf   "<t>erf</t>"   wxxmlword)
-(defprop $erf   "<t>erf</t>"   wxxmlword)
+(defprop mprog  "<fnm>block</fnm>" wxxmlword)
 (defprop $true  "<t>true</t>"  wxxmlword)
 (defprop $false "<t>false</t>" wxxmlword)
 
@@ -546,10 +544,10 @@
 
 (defun wxxml-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (cond ((null (cdr x))
-         (append l `("<fn><t>matrix</t><p/></fn>") r))
+         (append l `("<fn><fnm>matrix</fnm><p/></fn>") r))
         ((and (null (cddr x))
               (null (cdadr x)))
-         (append l `("<fn><t>matrix</t><p><t>[</t><t>]</t></p></fn>") r))
+         (append l `("<fn><fnm>matrix</fnm><p><t>[</t><t>]</t></p></fn>") r))
         (t
          (append l (if (find 'inference (car x))
 		       (list "<tb inference='t'>")
@@ -640,15 +638,15 @@
                   ,(fourth x)) nil nil 'mparen 'mparen)))
     (case (fifth x)
       ($plus
-       (append l `("<lm><t>lim</t><r>"
+       (append l `("<lm><fnm>lim</fnm><r>"
 		   ,@subfun "<t>+</t></r><r>"
 		   ,@s1 "</r></lm>") r))
       ($minus
-       (append l `("<lm><t>lim</t><r>"
+       (append l `("<lm><fnm>lim</fnm><r>"
 		   ,@subfun "<t>-</t></r><r>"
 		   ,@s1 "</r></lm>") r))
       (otherwise
-       (append l `("<lm><t>lim</t><r>"
+       (append l `("<lm><fnm>lim</fnm><r>"
 		   ,@subfun "</r><r>"
 		   ,@s1 "</r></lm>") r)))))
 
@@ -719,8 +717,8 @@
 (defprop $~ 133. wxxml-rbp)
 
 (defprop min wxxml-infix wxxml)
-(defprop min ("<t>in</t>") wxxmlsym)
-(defprop min "<t>in</t>" wxxmlword)
+(defprop min ("<fnm>in</fnm>") wxxmlsym)
+(defprop min "<fnm>in</fnm>" wxxmlword)
 (defprop min 80. wxxml-lbp)
 (defprop min 80. wxxml-rbp)
 
@@ -760,19 +758,19 @@
 (defprop mleqp 80. wxxml-rbp)
 
 (defprop mnot wxxml-prefix wxxml)
-(defprop mnot ("<t>not</t>") wxxmlsym)
-(defprop mnot "<t>not</t>" wxxmlword)
+(defprop mnot ("<fnm>not</fnm>") wxxmlsym)
+(defprop mnot "<fnm>not</fnm>" wxxmlword)
 (defprop mnot 70. wxxml-rbp)
 
 (defprop mand wxxml-nary wxxml)
-(defprop mand "<mspace/><t>and</t><mspace/>" wxxmlsym)
-(defprop mand "<t>and</t>" wxxmlword)
+(defprop mand "<mspace/><fnm>and</fnm><mspace/>" wxxmlsym)
+(defprop mand "<fnm>and</fnm>" wxxmlword)
 (defprop mand 60. wxxml-lbp)
 (defprop mand 60. wxxml-rbp)
 
 (defprop mor wxxml-nary wxxml)
-(defprop mor "<mspace/><t>or</t><mspace/>" wxxmlsym)
-(defprop mor "<t>or</t>" wxxmlword)
+(defprop mor "<mspace/><fnm>or</fnm><mspace/>" wxxmlsym)
+(defprop mor "<fnm>or</fnm>" wxxmlword)
 (defprop mor 50. wxxml-lbp)
 (defprop mor 50. wxxml-rbp)
 
@@ -837,8 +835,8 @@
 
 (defun wxxml-mcond (x l r)
   (let ((res ()))
-    (setq res (wxxml (cadr x) '("<t>if</t><mspace/>")
-		     '("<mspace/><t>then</t><mspace/>") 'mparen 'mparen))
+    (setq res (wxxml (cadr x) '("<fnm>if</fnm><mspace/>")
+		     '("<mspace/><fnm>then</fnm><mspace/>") 'mparen 'mparen))
     (setq res (append res (wxxml (caddr x) nil
 				 '("<mspace/>") 'mparen 'mparen)))
     (let ((args (cdddr x)))
@@ -847,13 +845,13 @@
 	      ((and (= (length args) 2) (eql (car args) t))
 	       (unless (or (eql (cadr args) '$false) (null (cadr args)))
 		 (setq res (wxxml (cadr args)
-				  (append res '("<t>else</t><mspace/>"))
+				  (append res '("<fnm>else</fnm><mspace/>"))
 				  nil 'mparen 'mparen))))
 	      (t
 	       (setq res (wxxml (car args)
-				(append res '("<t>elseif</t><mspace/>"))
+				(append res '("<fnm>elseif</fnm><mspace/>"))
 				(wxxml (cadr args)
-				       '("<mspace/><t>then</t><mspace/>")
+				       '("<mspace/><fnm>then</fnm><mspace/>")
 				       '("<mspace/>") 'mparen 'mparen)
 				'mparen 'mparen))))
 	    (setq args (cddr args)))
@@ -882,32 +880,32 @@
   (wxxml-list (wxxmlmdoin x) l r "<mspace/>"))
 
 (defun wxxmlmdo (x)
-  (nconc (cond ((second x) (list (make-tag "for" "t") (second x))))
+  (nconc (cond ((second x) (list (make-tag "for" "fnm") (second x))))
 	 (cond ((equal 1 (third x)) nil)
-	       ((third x)  (list (make-tag "from" "t") (third x))))
+	       ((third x)  (list (make-tag "from" "fnm") (third x))))
 	 (cond ((equal 1 (fourth x)) nil)
 	       ((fourth x)
-		(list (make-tag "step" "t")  (fourth x)))
+		(list (make-tag "step" "fnm")  (fourth x)))
 	       ((fifth x)
-		(list (make-tag "next" "t") (fifth x))))
+		(list (make-tag "next" "fnm") (fifth x))))
 	 (cond ((sixth x)
-		(list (make-tag "thru" "t") (sixth x))))
+		(list (make-tag "thru" "fnm") (sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		(list (make-tag "while" "t") (cadr (seventh x))))
-	       (t (list (make-tag "unless" "t") (seventh x))))
-	 (list (make-tag "do" "t") (eighth x))))
+		(list (make-tag "while" "fnm") (cadr (seventh x))))
+	       (t (list (make-tag "unless" "fnm") (seventh x))))
+	 (list (make-tag "do" "fnm") (eighth x))))
 
 (defun wxxmlmdoin (x)
-  (nconc (list (make-tag "for" "t") (second x)
-	       (make-tag "in" "t") (third x))
+  (nconc (list (make-tag "for" "fnm") (second x)
+	       (make-tag "in" "fnm") (third x))
 	 (cond ((sixth x)
-		(list (make-tag "thru" "t") (sixth x))))
+		(list (make-tag "thru" "fnm") (sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		(list (make-tag "while" "t") (cadr (seventh x))))
-	       (t (list (make-tag "unless" "t") (seventh x))))
-	 (list (make-tag "do" "t") (eighth x))))
+		(list (make-tag "while" "fnm") (cadr (seventh x))))
+	       (t (list (make-tag "unless" "fnm") (seventh x))))
+	 (list (make-tag "do" "fnm") (eighth x))))
 
 
 (defun wxxml-matchfix-np (x l r)
@@ -1032,9 +1030,9 @@
 
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
-  (if suff
-      (plot-temp-file (format nil "maxout_~d.png" *image-counter*))
-      (format nil "maxout_~d" *image-counter*)))
+  (plot-temp-file (if suff
+		      (format nil "maxout_~d.png" *image-counter*)
+		      (format nil "maxout_~d" *image-counter*))))
 
 (defun $wxplot_preamble ()
   (let ((frmt (if $wxplot_old_gnuplot
@@ -1103,7 +1101,7 @@
 			((mequal simp) $pic_height ,($second $wxplot_size))
 			((mequal simp) $file_name ,filename))
 		      args)))
-    ($ldisp `((wxxmltag simp) ,(plot-temp-file (format nil "~a.png" filename)) "img"))
+    ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
     res))
 
 (defun $wximplicit_plot (&rest args)
