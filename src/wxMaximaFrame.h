@@ -172,7 +172,7 @@ enum {
   menu_selection_to_input,
   menu_change_var,
   menu_nouns,
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   tb_open,
   tb_save,
   tb_copy,
@@ -211,7 +211,7 @@ public:
 private:
   void set_properties();
   void do_layout();
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   void SetupToolBar();
 #endif
   void SetupMenu();

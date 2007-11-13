@@ -103,8 +103,8 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   }
   else
   {
-    m_num->RecalculateWidths(parser, MAX(8, fontsize - 2), true);
-    m_denom->RecalculateWidths(parser, MAX(8, fontsize - 2), true);
+    m_num->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
+    m_denom->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
   if (m_exponent && !m_isBroken)
   {
@@ -135,8 +135,8 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   }
   else
   {
-    m_num->RecalculateSize(parser, MAX(8, fontsize - 2), true);
-    m_denom->RecalculateSize(parser, MAX(8, fontsize - 2), true);
+    m_num->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
+    m_denom->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
   if (!m_exponent)
   {
@@ -177,8 +177,8 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       denom.y = num.y;
 
       dc.GetTextExtent(wxT("/"), &width, &height);
-      m_num->Draw(parser, num, MAX(8, fontsize - 2), true);
-      m_denom->Draw(parser, denom, MAX(8, fontsize - 2), true);
+      m_num->Draw(parser, num, MAX(MC_MIN_SIZE, fontsize - 2), true);
+      m_denom->Draw(parser, denom, MAX(MC_MIN_SIZE, fontsize - 2), true);
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
                   point.y - m_num->GetMaxCenter() + SCALE_PX(2, scale));
@@ -188,11 +188,11 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       num.x = point.x + (m_width - m_num->GetFullWidth(scale)) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               SCALE_PX(2, scale);
-      m_num->Draw(parser, num, MAX(8, fontsize - 2), true);
+      m_num->Draw(parser, num, MAX(MC_MIN_SIZE, fontsize - 2), true);
 
       denom.x = point.x + (m_width - m_denom->GetFullWidth(scale)) / 2;
       denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
-      m_denom->Draw(parser, denom, MAX(8, fontsize - 2), true);
+      m_denom->Draw(parser, denom, MAX(MC_MIN_SIZE, fontsize - 2), true);
       SetPen(parser);
       if (m_fracStyle != FC_CHOOSE)
         dc.DrawLine(point.x, point.y, point.x + m_width, point.y);

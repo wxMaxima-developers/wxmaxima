@@ -469,7 +469,7 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
     m_fontEncoding = font.GetEncoding();
     m_fontSize = font.GetPointSize();
     m_fontSize = MIN(m_fontSize, 20);
-    m_fontSize = MAX(m_fontSize, 8);
+    m_fontSize = MAX(m_fontSize, 10);
     m_getFont->SetLabel(m_fontFamily + wxString::Format(wxT(" (%d)"), m_fontSize));
     UpdateExample();
   }

@@ -197,9 +197,14 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       if (m_selectionStart > -1)
       {
+#if defined(__WXMAC__)
+	dc.SetLogicalFunction(wxXOR);
+	dc.SetPen(*wxBLACK_PEN);
+#else
         dc.SetLogicalFunction(wxAND);
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
         dc.SetPen(*wxLIGHT_GREY_PEN);
+#endif
         wxPoint point;
         long start = MIN(m_selectionStart, m_selectionEnd);
         long end = MAX(m_selectionStart, m_selectionEnd);
@@ -228,7 +233,11 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
+#if defined(__WXMAC__)
+	dc.SetLogicalFunction(wxXOR);
+#else
         dc.SetLogicalFunction(wxAND);
+#endif
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
         dc.SetPen(*wxLIGHT_GREY_PEN);
         wxPoint point = PositionToPoint(parser, m_paren1);

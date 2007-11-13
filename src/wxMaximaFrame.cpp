@@ -94,7 +94,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
 
   SetupMenu();
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   SetupToolBar();
 #endif
 
@@ -120,20 +120,6 @@ void wxMaximaFrame::set_properties()
 {
   SetIcon(wxICON(maximaicon));
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
-  bool fixed = true;
-  m_inputLine->SetSkipTab(false);
-  wxConfig::Get()->Read(wxT("fixedFontTC"), &fixed);
-  if (fixed)
-  {
-    // Set font for input line
-#if defined (__WXGTK12__) && !defined (__WXGTK20__)
-    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
-#elif defined (__WXMAC__)
-    m_inputLine->SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
-#else
-    m_inputLine->SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
-#endif
-  }
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
   m_console->SetMinSize(wxSize(100, 100));
@@ -649,7 +635,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Info about maxima build"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug report"),
                              _("Report bug"), wxITEM_NORMAL);
+#ifndef __WXMAC__
   wxglade_tmp_menu_7->AppendSeparator();
+#endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_ABOUT, _("About"),
                    _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
@@ -660,48 +648,54 @@ void wxMaximaFrame::SetupMenu()
 
 }
 
+#if defined (__WXMSW__) || defined (__WXMAC__)
+
 #if defined (__WXMSW__)
+#define IMAGE(img) wxImage(wxT("art/toolbar/") + wxT(img))
+#else
+#define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/toolbar/") wxT(img))
+#endif
 
 void wxMaximaFrame::SetupToolBar()
 {
-  wxImage bmpOpen(wxT("art/toolbar/open.png"));
   wxToolBar* frame_1_toolbar = CreateToolBar();
 
   frame_1_toolbar->AddTool(tb_open, _("Open"),
-                           bmpOpen, _("Open session"));
+                           IMAGE("open.png"),
+			   _("Open session"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
-                           wxImage(wxT("art/toolbar/save.png")),
+                           IMAGE("save.png"),
                            _("Save session"));
   frame_1_toolbar->AddSeparator();
 #if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
-                           wxImage(wxT("art/toolbar/print.png")),
+                           IMAGE("print.png"),
                            _("Print document"));
 #endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
-                           wxImage(wxT("art/toolbar/configure.png")),
+                           IMAGE("configure.png"),
                            _("Configure wxMaxima"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_copy, _("Copy"),
-                           wxImage(wxT("art/toolbar/copy.png")),
+                           IMAGE("copy.png"),
                            _("Copy selection"));
   frame_1_toolbar->AddTool(tb_delete, _("Delete"),
-                           wxImage(wxT("art/toolbar/cut.png")),
+                           IMAGE("cut.png"),
                            _("Delete selection"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_insert_text, _("Insert text"),
-                           wxImage(wxT("art/toolbar/text.png")),
+                           IMAGE("text.png"),
                            _("Insert text"));
   frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
                            wxImage(wxT("art/toolbar/input.png")),
                            _("Insert input group"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
-                           wxImage(wxT("art/toolbar/stop.png")),
+                           IMAGE("stop.png"),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_help, _("Help"),
-                           wxImage(wxT("art/toolbar/help.png")),
+                           IMAGE("help.png"),
                            _("Show maxima help"));
 
   frame_1_toolbar->Realize();

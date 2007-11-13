@@ -1351,7 +1351,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case wxID_PRINT:
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_print:
 #endif
     {
@@ -1421,7 +1421,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(menu_dec_fontsize, false);
 }
 
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined(__WXMAC__)
 
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
@@ -1555,7 +1555,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   switch (event.GetId())
   {
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_open:
 #endif
   case menu_open_id:
@@ -1619,7 +1619,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_save:
 #endif
   case menu_save_id:
@@ -1722,7 +1722,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
     break;
   case wxID_PREFERENCES:
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_pref:
 #endif
     {
@@ -1743,7 +1743,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->ClearWindow();
     DoRawConsoleAppend(m_lastPrompt, MC_TYPE_MAIN_PROMPT);
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_copy:
 #endif
   case menu_copy_from_console:
@@ -1800,7 +1800,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_unfold:
     m_console->UnfoldAll();
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_delete:
 #endif
   case menu_delete_selection:
@@ -2847,9 +2847,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   {
     wxAboutDialogInfo info;
 
-#if defined __WXMSW__
+#if defined __WXMSW__ || defined __WXMAC__
     info.SetIcon(GetIcon());
     info.SetDescription(_("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets."));
+#else
+    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
 #endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
@@ -2857,7 +2859,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #ifndef __WXMSW__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
     info.AddTranslator(wxT("Istvan Blahota (hu)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
@@ -2883,7 +2884,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #endif
     break;
   case wxID_HELP:
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:
 #endif
     ShowHelp(expr);
@@ -3279,7 +3280,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_insert_input:
 #endif
     DoRawConsoleAppend(m_inputLine->GetValue(), MC_TYPE_INPUT, false);
@@ -3287,7 +3288,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
     break;
   case menu_add_comment:
   case popid_add_comment:
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_insert_text:
 #endif
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_COMMENT, true);
@@ -3301,7 +3302,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   }
 
   if (event.GetId() == popid_insert_input || event.GetId() == menu_insert_input
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
       || event.GetId() == tb_insert_input
 #endif
   )
@@ -3511,7 +3512,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_goto_output, wxMaxima::EditMenu)
 #if WXM_PRINT
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
- #if defined (__WXMSW__) || (__WXGTK20__)
+ #if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_print, wxMaxima::PrintMenu)
  #endif
 #endif
@@ -3521,7 +3522,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
@@ -3544,7 +3545,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_edit_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
-#if defined (__WXMSW__) || defined (__WXGTK20__)
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)

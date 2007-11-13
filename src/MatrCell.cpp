@@ -66,7 +66,7 @@ void MatrCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
-    m_cells[i]->RecalculateWidths(parser, MAX(8, fontsize - 2), true);
+    m_cells[i]->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
   for (int i = 0; i < m_matWidth; i++)
   {
@@ -92,7 +92,7 @@ void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
-    m_cells[i]->RecalculateSize(parser, MAX(8, fontsize - 2), true);
+    m_cells[i]->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
   for (int i = 0; i < m_matHeight; i++)
   {
@@ -132,7 +132,7 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
         mp.y += m_centers[j];
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth(scale)) / 2;
-        m_cells[j*m_matWidth + i]->Draw(parser, mp1, MAX(8, fontsize - 2), true);
+        m_cells[j*m_matWidth + i]->Draw(parser, mp1, MAX(MC_MIN_SIZE, fontsize - 2), true);
         mp.y += (m_drops[j] + SCALE_PX(10, scale));
       }
       mp.x += (m_widths[i] + SCALE_PX(10, scale));

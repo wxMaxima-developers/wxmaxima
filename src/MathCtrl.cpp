@@ -165,9 +165,15 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     if (m_selectionStart != NULL)
     {
       MathCell* tmp = m_selectionStart;
+#if defined(__WXMAC__)
+      dcm.SetLogicalFunction(wxXOR);
+      dcm.SetBrush(*wxLIGHT_GREY_BRUSH);
+      dcm.SetPen(*wxBLACK_PEN);
+#else
       dcm.SetLogicalFunction(wxAND);
       dcm.SetBrush(*wxLIGHT_GREY_BRUSH);
       dcm.SetPen(*wxLIGHT_GREY_PEN);
+#endif
       // We have a selection with click
       if (m_selectWholeLine)
       {
