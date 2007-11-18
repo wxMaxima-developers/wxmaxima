@@ -557,8 +557,6 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
   m_mouseDrag = false;
   CheckUnixCopy();
   SetFocus();
-  wxUpdateUIEvent ev(plot_slider_id);
-  (wxGetApp().GetTopWindow())->ProcessEvent(ev);
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event)

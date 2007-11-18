@@ -3361,16 +3361,12 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
   {
     SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
 
-    wxRect rect = cell->GetRect();
-    int x, y;
-    m_console->CalcScrolledPosition(rect.x, rect.y, &x, &y);
-    m_plotSlider->Move(x + cell->GetWidth() + 5, y);
     m_plotSlider->SetRange(0, cell->Length() - 1);
     m_plotSlider->SetValue(cell->GetDisplayedIndex());
-    m_plotSlider->Show(true);
+    m_plotSlider->Enable(true);
   }
   else
-    m_plotSlider->Show(false);
+    m_plotSlider->Enable(false);
 }
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)

@@ -40,10 +40,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   // input line
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
-  m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxDefaultSize,
-			      wxSL_VERTICAL | !wxSL_AUTOTICKS);
-  m_plotSlider->Show(false);
   m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
                                 wxDefaultPosition, wxDefaultSize,
                                 wxTE_PROCESS_ENTER | wxTE_PROCESS_TAB |
@@ -705,6 +701,11 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("help.png"),
                            _("Show maxima help"));
 
+  frame_1_toolbar->AddSeparator();
+  m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
+			      wxDefaultPosition, wxDefaultSize,
+			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+  frame_1_toolbar->AddControl(m_plotSlider);
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }
@@ -763,6 +764,11 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Show maxima help"));
 
+  frame_1_toolbar->AddSeparator();
+  m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
+			      wxDefaultPosition, wxDefaultSize,
+			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+  frame_1_toolbar->AddControl(m_plotSlider);
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }
