@@ -36,6 +36,7 @@
  #endif
 #endif
 
+
 IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
@@ -112,6 +113,21 @@ bool MyApp::OnInit()
       frame->SetOpenFile(file);
   }
 
+#if defined (__WXMAC__)
+  wxApp::SetExitOnFrameDelete(false);
+  wxMenuBar *menuBar = new wxMenuBar;
+  wxMenu *fileMenu = new wxMenu;
+  fileMenu->Append(mac_newId, _("&New\tCtrl-N"));
+  fileMenu->Append(mac_openId, _("&Open\tCtrl-O"));
+  menuBar->Append(fileMenu, _("File"));
+  wxMenuBar::MacSetCommonMenuBar(menuBar);
+
+  Connect(mac_newId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
+  Connect(mac_openId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
+  Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
+#endif
+
+  SetTopWindow(frame);
   frame->Show(true);
   frame->InitSession();
   if (!frame->IsIconized())
@@ -119,3 +135,95 @@ bool MyApp::OnInit()
 
   return true;
 }
+
+#if defined (__WXMAC__)
+
+void MyApp::OnFileMenu(wxCommandEvent &ev)
+{
+  int x = 40, y = 40, h = 650, w = 950, m = 0;
+  int rs = 0;
+  int display_width = 1024, display_height = 768;
+  bool have_pos = false;
+  wxConfigBase *config = wxConfig::Get();
+
+  wxDisplaySize(&display_width, &display_height);
+
+  have_pos = config->Read(wxT("pos-x"), &x);
+  config->Read(wxT("pos-y"), &y);
+  config->Read(wxT("pos-h"), &h);
+  config->Read(wxT("pos-w"), &w);
+  config->Read(wxT("pos-max"), &m);
+  config->Read(wxT("pos-restore"), &rs);
+
+  if (rs == 0)
+    have_pos = false;
+  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0)
+  {
+    x = 40;
+    y = 40;
+    h = 650;
+    w = 950;
+  }
+  
+  switch(ev.GetId())
+    {
+    case mac_newId:
+      {
+	wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
+				       wxPoint(x, y), wxSize(w, h));
+
+	frame->Move(wxPoint(x, y));
+	frame->SetSize(wxSize(w, h));
+	if (m == 1)
+	  frame->Maximize(true);
+
+	SetTopWindow(frame);
+	frame->Show(true);
+	frame->InitSession();
+	if (!frame->IsIconized())
+	  frame->ShowTip(false);
+      }
+      break;
+    case mac_openId:
+      {
+	wxString file = wxFileSelector(_("Select file to open"), wxEmptyString,
+				       wxEmptyString, wxEmptyString,
+				       _("wxMaxima session (*.wxm)|*.wxm"),
+				       wxOPEN);
+
+	if (file.Length() > 0)
+	  {
+	    wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
+					   wxPoint(x, y), wxSize(w, h));
+	    
+	    
+	    frame->SetOpenFile(file);
+	    
+	    frame->Move(wxPoint(x, y));
+	    frame->SetSize(wxSize(w, h));
+	    if (m == 1)
+	      frame->Maximize(true);
+	    
+	    frame->Show(true);
+	    frame->InitSession();
+	    if (!frame->IsIconized())
+	      frame->ShowTip(false);
+	  }
+      }
+      break;
+    case wxID_EXIT:
+      {
+	wxWindow *frame = GetTopWindow();
+	if (frame == NULL)
+	  wxExit();
+	else
+	  {
+	    if (frame->Close())
+	      wxExit();
+	  }
+      }
+      break;
+    }
+}
+
+#endif

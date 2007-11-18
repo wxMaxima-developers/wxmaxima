@@ -33,6 +33,7 @@
 enum {
   socket_client_id = wxID_HIGHEST,
   socket_server_id,
+  plot_slider_id,
   input_line_id,
   menu_open_id,
   menu_read_id,
@@ -198,7 +199,11 @@ enum {
   deactivate_cell_ok,
   deactivate_cell_cancel,
   menu_cut,
-  menu_paste
+  menu_paste,
+#if defined (__WXMAC__)
+  mac_newId,
+  mac_openId
+#endif
 };
 
 class wxMaximaFrame: public wxFrame
@@ -245,6 +250,7 @@ protected:
   wxButton* button_21;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
+  wxSlider* m_plotSlider;
 };
 
 #endif // WXMAXIMAFRAME_H

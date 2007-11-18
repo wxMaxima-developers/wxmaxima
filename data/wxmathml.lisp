@@ -194,7 +194,7 @@
   (let* ((op (caar x))
 	 (sym (cond ((eq op 'mtimes)
 		     (if $stardisp
-			 "<v>*</v>"
+			 "<t>*</t>"
 			 "<h>*</h>"))
 	       (t (wxxmlsym op))))
          (y (cdr x))
@@ -1041,6 +1041,36 @@
     (format nil frmt
 	    ($first $wxplot_size)
 	    ($second $wxplot_size))))
+
+(defun $range (i j)
+  (mfuncall '$makelist 'x 'x i j))
+
+(defun $with_slider (a a-range expr &rest args)
+  (let (images)
+    (dolist (aval (reverse (cdr a-range)))
+      (let ((preamble ($wxplot_preamble))
+	    (system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	    (filename (wxplot-filename))
+	    (expr (maxima-substitute aval a expr)))
+	(setq preamble
+	      (format nil "set title '~a=~a'~%~a"
+		      (stripdollar (maybe-invert-string-case (symbol-name a)))
+		      (mfuncall '$string aval)
+		      preamble))
+	(if (length system-preamble)
+	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
+	(dolist (arg args)
+	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	      (setq preamble (format nil "~a; ~a"
+				     preamble (caddr arg)))))
+	(apply #'$plot2d `(,expr ,@args
+			   ((mlist simp) $plot_format $gnuplot)
+			   ((mlist simp) $gnuplot_preamble ,preamble)
+			   ((mlist simp) $gnuplot_term $png)
+			   ((mlist simp) $gnuplot_out_file ,filename)))
+	(setq images (cons filename images))))
+    ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
+  "")
 
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))

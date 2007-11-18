@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -17,72 +17,93 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+#include "SlideShowCell.h"
 #include "ImgCell.h"
 
 #include <wx/file.h>
 
-ImgCell::ImgCell() : MathCell()
+SlideShow::SlideShow() : MathCell()
 {
+  m_size = m_displayed = 0;
   m_bitmap = NULL;
-  m_type = MC_TYPE_IMAGE;
+  m_images = NULL;
+  m_type = MC_TYPE_SLIDE;
 }
 
-ImgCell::~ImgCell()
+SlideShow::~SlideShow()
 {
   if (m_bitmap != NULL)
     delete m_bitmap;
+  if (m_images != NULL)
+    delete m_images;
   if (m_next != NULL)
     delete m_next;
 }
 
-void ImgCell::LoadImage(wxString image)
+void SlideShow::LoadImages(wxArrayString images)
 {
+  printf("Reading images (%d)\n", images.GetCount());
   if (m_bitmap != NULL)
     delete m_bitmap;
+  if (m_images != NULL)
+    delete m_images;
 
-  bool loadedImage = false;
+  m_size = images.GetCount();
+  m_images = new wxImage[m_size];
 
-  if (wxFileExists(image))
+  for (int i=0; i<m_size; i++)
   {
-    wxFile imageFile(image);
+    printf("  -> image", i);
+    bool loadedImage = false;
 
-    if (imageFile.Length())
+    if (wxFileExists(images[i]))
     {
-      wxImage pngImage(image, wxBITMAP_TYPE_PNG);
-
-      if (pngImage.Ok())
+      printf(" OK\n");
+      wxFile imageFile(images[i]);
+	
+      if (imageFile.Length())
       {
-        loadedImage = true;
-        m_bitmap = new wxBitmap(pngImage);
+	wxImage pngImage(images[i], wxBITMAP_TYPE_PNG);
+
+	if (pngImage.Ok())
+	{
+	  loadedImage = true;
+	  m_images[i] = pngImage;
+	}
       }
+
+      imageFile.Close();
+      wxRemoveFile(images[i]);
     }
 
-    imageFile.Close();
-    wxRemoveFile(image);
+    if (!loadedImage)
+    {
+      wxBitmap *bitmap = new wxBitmap;
+
+      bitmap->Create(400, 250);
+
+      wxString error = wxString::Format(_("Error %d"), i);
+
+      wxMemoryDC dc;
+      dc.SelectObject(*bitmap);
+
+      int width = 0, height = 0;
+      dc.GetTextExtent(error, &width, &height);
+
+      dc.DrawRectangle(0, 0, 400, 250);
+      dc.DrawLine(0, 0,   400, 250);
+      dc.DrawLine(0, 250, 400, 0);
+      dc.DrawText(error, 200 - width/2, 125 - height/2);
+      m_images[i] = bitmap->ConvertToImage();
+      delete bitmap;
+    }
   }
 
-  if (!loadedImage)
-  {
-    m_bitmap = new wxBitmap;
-
-    m_bitmap->Create(400, 250);
-
-    wxString error(_("Error"));
-
-    wxMemoryDC dc;
-    dc.SelectObject(*m_bitmap);
-
-    int width = 0, height = 0;
-    dc.GetTextExtent(error, &width, &height);
-
-    dc.DrawRectangle(0, 0, 400, 250);
-    dc.DrawLine(0, 0,   400, 250);
-    dc.DrawLine(0, 250, 400, 0);
-    dc.DrawText(error, 200 - width/2, 125 - height/2);
-  }
+  m_displayed = 0;
+  m_bitmap = new wxBitmap(m_images[m_displayed]);
 }
 
-MathCell* ImgCell::Copy(bool all)
+MathCell* SlideShow::Copy(bool all)
 {
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
@@ -94,7 +115,7 @@ MathCell* ImgCell::Copy(bool all)
   return tmp;
 }
 
-void ImgCell::Destroy()
+void SlideShow::Destroy()
 {
   if (m_bitmap != NULL)
     delete m_bitmap;
@@ -102,7 +123,18 @@ void ImgCell::Destroy()
   m_next = NULL;
 }
 
-void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SlideShow::SetDisplayedIndex(int ind)
+{
+  if (ind >= 0 && ind < m_size)
+  {
+    if (m_bitmap != NULL)
+      delete m_bitmap;
+    m_displayed = ind;
+    m_bitmap = new wxBitmap(m_images[ind]);
+  }
+}
+
+void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   if (m_bitmap != NULL)
     m_width = m_bitmap->GetWidth() + 2;
@@ -115,7 +147,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_width = (int) (scale * m_width);
 }
 
-void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   if (m_bitmap != NULL)
     m_height = m_bitmap->GetHeight() + 2;
@@ -130,7 +162,7 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_center = m_height / 2;
 }
 
-void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -158,13 +190,13 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString ImgCell::ToString(bool all)
+wxString SlideShow::ToString(bool all)
 {
   return wxT(" << Graphics >> ") +
          MathCell::ToString(all);
 }
 
-wxString ImgCell::ToTeX(bool all)
+wxString SlideShow::ToTeX(bool all)
 {
   return wxT(" << Graphics >> ") +
          MathCell::ToTeX(all);

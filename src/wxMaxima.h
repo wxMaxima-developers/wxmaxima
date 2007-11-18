@@ -41,6 +41,9 @@ class MyApp : public wxApp
 public:
   virtual bool OnInit();
   wxLocale m_locale;
+#if defined (__WXMAC__)
+  void OnFileMenu(wxCommandEvent &ev);
+#endif
 };
 
 DECLARE_APP(MyApp)
@@ -82,6 +85,7 @@ protected:
   void OnSetFocus(wxFocusEvent& event);            //
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
+  void UpdateSlider(wxUpdateUIEvent& event);       //
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
 
@@ -98,6 +102,7 @@ protected:
   void ReEvaluate(wxCommandEvent& event);          //
   void PrependCell(wxCommandEvent& event);         //
   void HandleCellEvent(wxCommandEvent& event);
+  void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
 
   void HandleMainPrompt(wxString prompt);

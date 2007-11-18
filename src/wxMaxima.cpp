@@ -38,6 +38,7 @@
 #include "MathPrintout.h"
 #include "MyTipProvider.h"
 #include "EditorCell.h"
+#include "SlideShowCell.h"
 
 #include <wx/filedlg.h>
 #include <wx/utils.h>
@@ -3349,7 +3350,41 @@ void wxMaxima::ResetTitle(bool saved)
   }
 }
 
+///--------------------------------------------------------------------------------
+///  Plot Slider
+///--------------------------------------------------------------------------------
+
+void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
+{
+  
+  if (m_console->IsSelected(MC_TYPE_SLIDE))
+  {
+    SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+
+    wxRect rect = cell->GetRect();
+    int x, y;
+    m_console->CalcScrolledPosition(rect.x, rect.y, &x, &y);
+    m_plotSlider->Move(x + cell->GetWidth() + 5, y);
+    m_plotSlider->SetRange(0, cell->Length() - 1);
+    m_plotSlider->SetValue(cell->GetDisplayedIndex());
+    m_plotSlider->Show(true);
+  }
+  else
+    m_plotSlider->Show(false);
+}
+
+void wxMaxima::SliderEvent(wxScrollEvent &ev)
+{
+  SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+  if (cell != NULL)
+  {
+    cell->SetDisplayedIndex(ev.GetPosition());
+    m_console->Refresh();
+  }
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
+  EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_text, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
@@ -3397,7 +3432,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(button_enter, wxMaxima::EnterCommand)
   EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_restart_id, wxMaxima::MaximaMenu)
+#ifndef __WXMAC__
   EVT_MENU(wxID_EXIT, wxMaxima::FileMenu)
+#endif
   EVT_MENU(wxID_ABOUT, wxMaxima::HelpMenu)
   EVT_MENU(menu_save_id, wxMaxima::FileMenu)
   EVT_MENU(menu_save_as_id, wxMaxima::FileMenu)
@@ -3535,6 +3572,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 #endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
+  EVT_UPDATE_UI(plot_slider_id, wxMaxima::UpdateSlider)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_lb_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)

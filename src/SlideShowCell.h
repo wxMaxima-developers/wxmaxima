@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -17,27 +17,32 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _IMGCELL_H_
-#define _IMGCELL_H_
+#ifndef _SLIDESHOW_H_
+#define _SLIDESHOW_H_
 
 #include "MathCell.h"
 #include <wx/image.h>
 
-class ImgCell : public MathCell
+class SlideShow : public MathCell
 {
 public:
-  ImgCell();
-  ~ImgCell();
+  SlideShow();
+  ~SlideShow();
   void Destroy();
-  void LoadImage(wxString image);
+  void LoadImages(wxArrayString images);
   MathCell* Copy(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   {
     *first = *last = this;
   }
-  friend class SlideShow;
+  int GetDisplayedIndex() { return m_displayed; }
+  void SetDisplayedIndex(int ind);
+  int Length() { return m_size; }
 protected:
+  int m_size;
+  int m_displayed;
   wxBitmap *m_bitmap;
+  wxImage *m_images;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

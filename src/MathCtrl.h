@@ -154,6 +154,7 @@ public:
   void ShowPoint(wxPoint point);
   void OnSetFocus(wxFocusEvent& event);
   void OnKillFocus(wxFocusEvent& event);
+  bool IsSelected(int type);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

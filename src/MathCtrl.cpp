@@ -178,7 +178,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       if (m_selectWholeLine)
       {
         if (m_selectionStart == m_selectionEnd)
-          m_selectionStart->DrawBoundingBox(dcm);
+	{
+	  if (m_selectionStart->GetType() != MC_TYPE_SLIDE)
+	    m_selectionStart->DrawBoundingBox(dcm);
+	}
         else
         {
           while (tmp != NULL && tmp->m_isBroken)
@@ -398,9 +401,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event)
     if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
       return ;
 
-    if (m_selectionStart != NULL &&
-        m_selectionStart == m_selectionEnd &&
-        m_selectionStart->GetType() == MC_TYPE_IMAGE)
+    if (IsSelected(MC_TYPE_IMAGE))
     {
   #if defined __WXMSW__
       popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
@@ -556,6 +557,8 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
   m_mouseDrag = false;
   CheckUnixCopy();
   SetFocus();
+  wxUpdateUIEvent ev(plot_slider_id);
+  (wxGetApp().GetTopWindow())->ProcessEvent(ev);
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event)
@@ -2500,6 +2503,13 @@ void MathCtrl::CheckUnixCopy()
     wxTheClipboard->UsePrimarySelection(false);
 #endif
   }
+}
+
+bool MathCtrl::IsSelected(int type)
+{
+  return m_selectionStart != NULL &&
+    m_selectionStart == m_selectionEnd &&
+    m_selectionStart->GetType() == type;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

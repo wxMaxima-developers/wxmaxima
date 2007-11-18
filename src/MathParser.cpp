@@ -36,9 +36,11 @@
 #include "EditorCell.h"
 #include "ImgCell.h"
 #include "SubSupCell.h"
+#include "SlideShowCell.h"
 
 #include <wx/wx.h>
 #include <wx/config.h>
+#include <wx/tokenzr.h>
 
 #define MAXLENGTH 50000
 
@@ -612,11 +614,30 @@ MathCell* MathParser::ParseTag(xmlNodePtr node, bool all)
 
         ImgCell *tmp = new ImgCell;
         tmp->LoadImage(filename);
-        wxRemoveFile(filename);
         if (cell == NULL)
           cell = tmp;
         else
           cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("slide"))
+      {
+	SlideShow *tmp = new SlideShow;
+	wxString str((const char*)(node->children->content), wxConvUTF8);
+	wxArrayString images;
+	wxStringTokenizer tokens(str, wxT(";"));
+	while (tokens.HasMoreTokens()) {
+	  wxString token = tokens.GetNextToken();
+	  if (token.Length())
+	  {
+	    printf("Reading image: &s", token.c_str());
+	    images.Add(token);
+	  }
+	}
+	tmp->LoadImages(images);
+	if (cell == NULL)
+	  cell = tmp;
+	else
+	  cell->AppendCell(tmp);
       }
       else if (node->children)
       {

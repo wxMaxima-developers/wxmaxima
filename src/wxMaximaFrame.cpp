@@ -40,6 +40,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   // input line
   label_1 = new wxStaticText(panel, -1, _("INPUT:"));
+  m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
+			      wxDefaultPosition, wxDefaultSize,
+			      wxSL_VERTICAL | !wxSL_AUTOTICKS);
+  m_plotSlider->Show(false);
   m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
                                 wxDefaultPosition, wxDefaultSize,
                                 wxTE_PROCESS_ENTER | wxTE_PROCESS_TAB |
@@ -199,7 +203,7 @@ void wxMaximaFrame::do_layout()
 
   // all
   grid_sizer_1->Add(m_console, 1, wxALL | wxEXPAND, 0);
-  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 0);
+  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 2);
 
   if (panelSize > 0)
     grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
@@ -233,7 +237,7 @@ void wxMaximaFrame::SetupMenu()
 #endif
 
   // File menu
-  wxMenu* wxglade_tmp_menu_1 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_1 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
                    _("Open session from a file"), wxT("gtk-open"));
   wxglade_tmp_menu_1->Append(menu_read_id, _("&Read file"),
@@ -268,7 +272,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
 
   // Edit menu
-  wxMenu* wxglade_tmp_menu_2 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_2 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
                    _("Copy selection from console"), wxT("gtk-copy"));
   wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
@@ -306,7 +310,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Edit selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
-  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
   wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("&Input\tF7"),
                              _("Insert new input before selected input"));
   wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("&Text\tF6"),
@@ -337,7 +341,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
 
   // Maxima menu
-  wxglade_tmp_menu_2 = new wxMenu();
+  wxglade_tmp_menu_2 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
                    _("&Interrupt\tCtrl-G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
@@ -364,13 +368,14 @@ void wxMaximaFrame::SetupMenu()
                              _("Display time used for execution"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_display, _("Change &2d display"),
-                             _("Change the 2d display algorithm used to display math output."), wxITEM_NORMAL);
+                             _("Change the 2d display algorithm used to display math output."),
+			     wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_texform, _("Display Te&X form"),
                              _("Display expression in TeX form"), wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Maxima"));
 
   // Equations menu
-  wxMenu* wxglade_tmp_menu_3 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_3 = new wxMenu;
   wxglade_tmp_menu_3->Append(menu_solve, _("&Solve ..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
   wxglade_tmp_menu_3->Append(menu_solve_num, _("Solve &numerically ..."),
@@ -415,7 +420,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_3, _("E&quations"));
 
   // Algebra menu
-  wxMenu* wxglade_tmp_menu_4 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_4 = new wxMenu;
   wxglade_tmp_menu_4->Append(menu_gen_mat, _("&Generate matrix ..."),
                              _("Generate a matrix from a 2-dimensional array"),
                              wxITEM_NORMAL);
@@ -451,7 +456,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_4, _("&Algebra"));
 
   // Calculus menu
-  wxMenu* wxglade_tmp_menu_6 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_6 = new wxMenu;
   wxglade_tmp_menu_6->Append(menu_integrate, _("&Integrate ..."),
                              _("Integrate expression"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_risch, _("Risch integration ..."),
@@ -500,7 +505,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Calculus"));
 
   // Simplify menu
-  wxMenu* wxglade_tmp_menu_5 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_5 = new wxMenu;
   wxglade_tmp_menu_5->Append(menu_ratsimp, _("&Simplify expression"),
                              _("Simplify rational expression"), wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(menu_radsimp, _("Simplify &radicals"),
@@ -521,7 +526,7 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   wxglade_tmp_menu_5->AppendSeparator();
   // Factorials and gamma
-  wxMenu* wxglade_tmp_menu_5_sub1 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_5_sub1 = new wxMenu;
   wxglade_tmp_menu_5_sub1->Append(menu_to_fact, _("Convert to &factorials"),
                                   _("Convert binomials, beta and gamma function to factorials"),
                                   wxITEM_NORMAL);
@@ -538,7 +543,7 @@ void wxMaximaFrame::SetupMenu()
                              wxglade_tmp_menu_5_sub1,
                              _("Functions for simplifying factorials and gamma function"));
   // Trigonometric
-  wxMenu* wxglade_tmp_menu_5_sub2 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_5_sub2 = new wxMenu;
   wxglade_tmp_menu_5_sub2->Append(menu_trigsimp, _("&Simplify trigonometric"),
                                   _("Simplify trigonometric expression"),
                                   wxITEM_NORMAL);
@@ -555,7 +560,7 @@ void wxMaximaFrame::SetupMenu()
                              wxglade_tmp_menu_5_sub2,
                              _("Functions for simplifying trigonometric expressions"));
   // Complex
-  wxMenu* wxglade_tmp_menu_5_sub3 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_5_sub3 = new wxMenu;
   wxglade_tmp_menu_5_sub3->Append(menu_rectform, _("Convert to &rectform"),
                                   _("Convert complex expression to rect form"),
                                   wxITEM_NORMAL);
@@ -569,9 +574,11 @@ void wxMaximaFrame::SetupMenu()
                                   _("Get the imaginary part of complex expression"),
                                   wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_demoivre, _("&Demoivre"),
-                                  _("Convert exponential function of imaginary argument to trigonometric form"), wxITEM_NORMAL);
+                                  _("Convert exponential function of imaginary argument to trigonometric form"),
+				  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
-                                  _("Conver trigonometric functions to exponential form"), wxITEM_NORMAL);
+                                  _("Conver trigonometric functions to exponential form"),
+				  wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Complex simplification"),
                              wxglade_tmp_menu_5_sub3,
                              _("Functions for complex simplification"));
@@ -592,7 +599,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_5, _("&Simplify"));
 
   // Plot menu
-  wxglade_tmp_menu_6 = new wxMenu();
+  wxglade_tmp_menu_6 = new wxMenu;
   wxglade_tmp_menu_6->Append(gp_plot2, _("Plot &2d ..."),
                              _("Plot in 2 dimensions"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(gp_plot3, _("Plot &3d ..."),
@@ -602,7 +609,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Plotting"));
 
   // Numeric menu
-  wxglade_tmp_menu_6 = new wxMenu();
+  wxglade_tmp_menu_6 = new wxMenu;
   wxglade_tmp_menu_6->Append(menu_num_out, _("Toggle &numeric output"),
                              _("Toggle numeric output"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_to_float, _("To &float\tCtrl-F"),
@@ -617,7 +624,7 @@ void wxMaximaFrame::SetupMenu()
   frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Numeric"));
 
   // Help menu
-  wxMenu* wxglade_tmp_menu_7 = new wxMenu();
+  wxMenu* wxglade_tmp_menu_7 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("Maxima &help\tF1"),
                    _("Show maxima help"), wxT("gtk-help"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_describe, _("&Describe\tCtrl-H"),
