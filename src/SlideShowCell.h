@@ -23,6 +23,10 @@
 #include "MathCell.h"
 #include <wx/image.h>
 
+#include <vector>
+
+using namespace std;
+
 class SlideShow : public MathCell
 {
 public:
@@ -41,8 +45,7 @@ public:
 protected:
   int m_size;
   int m_displayed;
-  wxBitmap *m_bitmap;
-  wxImage *m_images;
+  vector<wxBitmap*> m_bitmaps;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

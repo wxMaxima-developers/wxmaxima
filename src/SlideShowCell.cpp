@@ -25,51 +25,39 @@
 SlideShow::SlideShow() : MathCell()
 {
   m_size = m_displayed = 0;
-  m_bitmap = NULL;
-  m_images = NULL;
   m_type = MC_TYPE_SLIDE;
 }
 
 SlideShow::~SlideShow()
 {
-  if (m_bitmap != NULL)
-    delete m_bitmap;
-  if (m_images != NULL)
-    delete m_images;
+  for (int i=0; i<m_size; i++)
+    delete m_bitmaps[i];
   if (m_next != NULL)
     delete m_next;
 }
 
 void SlideShow::LoadImages(wxArrayString images)
 {
-  printf("Reading images (%d)\n", images.GetCount());
-  if (m_bitmap != NULL)
-    delete m_bitmap;
-  if (m_images != NULL)
-    delete m_images;
-
   m_size = images.GetCount();
-  m_images = new wxImage[m_size];
 
   for (int i=0; i<m_size; i++)
   {
-    printf("  -> image", i);
     bool loadedImage = false;
 
     if (wxFileExists(images[i]))
     {
-      printf(" OK\n");
       wxFile imageFile(images[i]);
-	
+
       if (imageFile.Length())
       {
-	wxImage pngImage(images[i], wxBITMAP_TYPE_PNG);
-
-	if (pngImage.Ok())
-	{
-	  loadedImage = true;
-	  m_images[i] = pngImage;
-	}
+        wxBitmap *bitmap = new wxBitmap;
+        if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
+        {
+          loadedImage = true;
+          m_bitmaps.push_back(bitmap);
+        }
+        else
+          delete bitmap;
       }
 
       imageFile.Close();
@@ -79,7 +67,6 @@ void SlideShow::LoadImages(wxArrayString images)
     if (!loadedImage)
     {
       wxBitmap *bitmap = new wxBitmap;
-
       bitmap->Create(400, 250);
 
       wxString error = wxString::Format(_("Error %d"), i);
@@ -94,13 +81,12 @@ void SlideShow::LoadImages(wxArrayString images)
       dc.DrawLine(0, 0,   400, 250);
       dc.DrawLine(0, 250, 400, 0);
       dc.DrawText(error, 200 - width/2, 125 - height/2);
-      m_images[i] = bitmap->ConvertToImage();
-      delete bitmap;
+
+      m_bitmaps.push_back(bitmap);
     }
   }
 
   m_displayed = 0;
-  m_bitmap = new wxBitmap(m_images[m_displayed]);
 }
 
 MathCell* SlideShow::Copy(bool all)
@@ -108,7 +94,7 @@ MathCell* SlideShow::Copy(bool all)
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
 
-  tmp->m_bitmap = new wxBitmap(*m_bitmap);
+  tmp->m_bitmap = new wxBitmap(*m_bitmaps[m_displayed]);
 
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
@@ -117,27 +103,25 @@ MathCell* SlideShow::Copy(bool all)
 
 void SlideShow::Destroy()
 {
-  if (m_bitmap != NULL)
-    delete m_bitmap;
-  m_bitmap = NULL;
+  for (int i=0; i<m_size; i++)
+    if (m_bitmaps[i] != NULL)
+    {
+      delete m_bitmaps[i];
+      m_bitmaps[i] = NULL;
+    }
   m_next = NULL;
 }
 
 void SlideShow::SetDisplayedIndex(int ind)
 {
   if (ind >= 0 && ind < m_size)
-  {
-    if (m_bitmap != NULL)
-      delete m_bitmap;
     m_displayed = ind;
-    m_bitmap = new wxBitmap(m_images[ind]);
-  }
 }
 
 void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  if (m_bitmap != NULL)
-    m_width = m_bitmap->GetWidth() + 2;
+  if (m_bitmaps[m_displayed] != NULL)
+    m_width = m_bitmaps[m_displayed]->GetWidth() + 2;
   else
     m_width = 0;
 
@@ -149,8 +133,8 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
 void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
-  if (m_bitmap != NULL)
-    m_height = m_bitmap->GetHeight() + 2;
+  if (m_bitmaps[m_displayed] != NULL)
+    m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
   else
     m_height = 0;
 
@@ -166,7 +150,7 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point) && m_bitmap != NULL)
+  if (DrawThisCell(parser, point) && m_bitmaps[m_displayed] != NULL)
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
@@ -176,14 +160,14 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     if (scale != 1.0)
     {
-      wxImage img = m_bitmap->ConvertToImage();
+      wxImage img = m_bitmaps[m_displayed]->ConvertToImage();
       img.Rescale(m_width, m_height);
 
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
     }
     else
-      bitmapDC.SelectObject(*m_bitmap);
+      bitmapDC.SelectObject(*m_bitmaps[m_displayed]);
 
     dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
   }
