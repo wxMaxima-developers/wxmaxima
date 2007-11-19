@@ -766,7 +766,7 @@ void wxMaximaFrame::SetupToolBar()
 
   frame_1_toolbar->AddSeparator();
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxDefaultSize,
+			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   frame_1_toolbar->AddControl(m_plotSlider);
   frame_1_toolbar->Realize();
