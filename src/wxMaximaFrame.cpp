@@ -44,6 +44,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                                 wxDefaultPosition, wxDefaultSize,
                                 wxTE_PROCESS_ENTER | wxTE_PROCESS_TAB |
                                 wxTE_RICH);
+  m_inputLine->SetSkipTab(false);
   button_0 = new wxBitmapButton(panel, button_enter,
                                 wxBitmap(ok_xpm));
   button_1 = new wxBitmapButton(panel, button_long_input,
