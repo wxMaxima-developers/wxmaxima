@@ -1056,7 +1056,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
   {
   case 'c':
   case 'C':
-    if (!event.ControlDown() || event.AltDown())
+    if (!event.CmdDown() || event.AltDown())
     {
       event.Skip();
       break;
@@ -1070,7 +1070,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
     break;
   case 'x':
   case 'X':
-    if (!event.ControlDown() || event.AltDown())
+    if (!event.CmdDown() || event.AltDown())
     {
       event.Skip();
       break;
@@ -1084,7 +1084,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
     break;
   case 'v':
   case 'V':
-    if (!event.ControlDown() || event.AltDown())
+    if (!event.CmdDown() || event.AltDown())
     {
       event.Skip();
       break;
@@ -1098,7 +1098,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
     break;
   case 'a':
   case 'A':
-    if (!event.ControlDown() || event.AltDown())
+    if (!event.CmdDown() || event.AltDown())
     {
       event.Skip();
       break;

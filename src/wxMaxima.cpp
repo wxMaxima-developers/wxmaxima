@@ -2858,7 +2858,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetVersion(wxT(VERSION));
     info.SetCopyright(wxT("(C) 2004-2007 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
-#ifndef __WXMSW__
+#if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddTranslator(wxT("Istvan Blahota (hu)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));

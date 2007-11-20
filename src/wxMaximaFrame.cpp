@@ -118,7 +118,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
 void wxMaximaFrame::set_properties()
 {
+#if !defined __WXMAC__
   SetIcon(wxICON(maximaicon));
+#endif
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
