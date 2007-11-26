@@ -48,7 +48,7 @@ enum {
   popid_add_comment,
   popid_insert_input,
   popid_copy_tex,
-#if defined __WXMSW__
+#if defined __WXMSW__ || defined __WXMAC__
   popid_image_copy,
 #endif
   popid_image,

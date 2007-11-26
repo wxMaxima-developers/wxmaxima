@@ -283,7 +283,7 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
-#if defined __WXMSW__
+#if defined __WXMSW__ || defined __WXMAC__
   wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as image"),
                              _("Copy selection from console as image"),
                              wxITEM_NORMAL);

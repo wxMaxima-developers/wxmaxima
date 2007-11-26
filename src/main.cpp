@@ -216,11 +216,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 	wxWindow *frame = GetTopWindow();
 	if (frame == NULL)
 	  wxExit();
-	else
-	  {
-	    if (frame->Close())
-	      wxExit();
-	  }
+	else if (frame->Close())
+	  wxExit();
       }
       break;
     }

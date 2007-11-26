@@ -28,6 +28,7 @@
 Bitmap::Bitmap()
 {
   m_tree = NULL;
+  m_bmp.Create(10,10);
 }
 
 Bitmap::~Bitmap()
@@ -65,6 +66,7 @@ void Bitmap::RecalculateSize()
   MathCell* tmp = m_tree;
 
   wxMemoryDC dc;
+  dc.SelectObject(m_bmp);
   CellParser parser(dc);
 
   while (tmp != NULL)
@@ -82,6 +84,7 @@ void Bitmap::RecalculateWidths()
   MathCell* tmp = m_tree;
 
   wxMemoryDC dc;
+  dc.SelectObject(m_bmp);
   CellParser parser(dc);
 
   while (tmp != NULL)
