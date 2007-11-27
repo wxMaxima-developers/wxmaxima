@@ -1096,7 +1096,31 @@
 		 (list args)))))
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
-  
+
+(defun $with_slider_draw3d (a a-range &rest args)
+  (let (images)
+    (dolist (aval (reverse (cdr a-range)))
+      (let* ((filename (wxplot-filename nil))
+	     (*windows-OS* t)
+	     (args (cons `((mequal simp) $title
+			   ,(format nil "~a=~a"
+				   (stripdollar (maybe-invert-string-case (symbol-name a)))
+				   (mfuncall '$string aval)))
+			 args))
+	     (args (cons '($gr3d)
+			 (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
+				 args))))
+	(setq images (cons (format nil "~a.png" filename) images))
+	($apply '$draw
+		(append
+		 `((mlist simp)
+		   ((mequal simp) $terminal $png)
+		   ((mequal simp) $pic_width ,($first $wxplot_size))
+		   ((mequal simp) $pic_height ,($second $wxplot_size))
+		   ((mequal simp) $file_name ,filename))
+		 (list args)))))
+    ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
+  "")  
 
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))
