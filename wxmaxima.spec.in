@@ -23,7 +23,7 @@ make DESTDIR=${RPM_BUILD_ROOT}
 %install
 make install DESTDIR=${RPM_BUILD_ROOT}
 install -D -m 644 wxmaxima.desktop ${RPM_BUILD_ROOT}/usr/share/applications/wxmaxima.desktop
-install -D -m 644 maxima-new.png ${RPM_BUILD_ROOT}/usr/share/pixmaps/maxima-new.png
+install -D -m 644 wxmaxima.png ${RPM_BUILD_ROOT}/usr/share/pixmaps/wxmaxima.png
 
 %find_lang %{name}
 
@@ -34,7 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_bindir}/wxmaxima
 %{_datadir}/wxMaxima/*
-/usr/share/pixmaps/maxima-new.png
+/usr/share/pixmaps/wxmaxima.png
 /usr/share/applications/wxmaxima.desktop
 
 %changelog
