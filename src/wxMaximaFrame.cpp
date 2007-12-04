@@ -657,7 +657,7 @@ void wxMaximaFrame::SetupMenu()
 #if defined (__WXMSW__) || defined (__WXMAC__)
 
 #if defined (__WXMSW__)
-#define IMAGE(img) wxImage(wxT("art/toolbar/") + wxT(img))
+#define IMAGE(img) wxImage(wxT("art/toolbar/") wxT(img))
 #else
 #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/toolbar/") wxT(img))
 #endif
