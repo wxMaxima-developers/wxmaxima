@@ -463,7 +463,7 @@
 		       'mparen 'mparen))
 	(setq f (caar xarr)
 	      l (wxxml f (append l (if nc
-				       (list "<ie mat=true><r>")
+				       (list "<ie mat=\"true\"><r>")
 				       (list "<ie><r>")))
 		       (list "</r>") lop 'mfunction)))
     (setq  l (append l (wxxml-list (cdr xarr) (list "<r>")
