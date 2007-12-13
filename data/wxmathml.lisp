@@ -1043,7 +1043,8 @@
 	    ($second $wxplot_size))))
 
 (defun $range (i j)
-  (mfuncall '$makelist 'x 'x i j))
+  (let ((x (gensym)))
+    (mfuncall '$makelist x x i j)))
 
 (defun $with_slider (a a-range expr &rest args)
   (let (images)

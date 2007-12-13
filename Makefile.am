@@ -1,7 +1,7 @@
 SUBDIRS = src locales data
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop		\
-             maxima-new.png art/ok.xpm art/multiline.xpm		\
+             wxmaxima.png art/ok.xpm art/multiline.xpm		\
              art/readme.txt art/license.txt                             \
              art/toolbar/configure.png art/toolbar/cut.png              \
              art/toolbar/input.png art/toolbar/print.png                \
