@@ -1073,6 +1073,8 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
+(defvar *windows-OS* (string= *autoconf-win32* "true"))
+
 (defun $with_slider_draw (a a-range &rest args)
   (let (images)
     (dolist (aval (reverse (cdr a-range)))
@@ -1158,8 +1160,6 @@
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
-
-(defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
