@@ -1,14 +1,14 @@
 # wxMaxima italian po translation
 # Copyright (C) 2005 Marco Ciampa
 # This file is distributed under the same license as the wxMaxima package.
-# Marco Ciampa <ciampix@libero.it>, 2005-2006.
+# Marco Ciampa <ciampix@libero.it>, 2005-2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-16 13:26+0200\n"
-"PO-Revision-Date: 2007-03-22 11:44+0100\n"
+"PO-Revision-Date: 2007-12-23 14:38+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -521,7 +521,7 @@ msgstr "Coordinate y separate da virgole"
 
 #: ../src/MathCtrl.cpp:437
 msgid "Comment out"
-msgstr ""
+msgstr "Commenta"
 
 #: ../src/wxMaximaFrame.cpp:512
 msgid "Compute continued fraction of a value"
@@ -811,6 +811,9 @@ msgid ""
 "\n"
 "Close current document and loose all changes?"
 msgstr ""
+"Documento non salvato!\n"
+"\n"
+"Chiudere il documento corrente e perdere tutti i cambiamenti?"
 
 #: ../src/wxMaxima.cpp:2943
 msgid ""
@@ -818,6 +821,9 @@ msgid ""
 "\n"
 "Quit wxMaxima and loose all changes?"
 msgstr ""
+"Documento non salvato!\n"
+"\n"
+"Uscire da wxMaxima e perdere tutti i cambiamenti?"
 
 #: ../src/wxMaximaFrame.cpp:429
 msgid "E&quations"
@@ -1179,7 +1185,7 @@ msgstr "Evidenzia"
 
 #: ../src/Config.cpp:92
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungherese"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "I&nsert"
@@ -1712,7 +1718,7 @@ msgstr "Prodotto:"
 
 #: ../src/wxMaxima.cpp:2944
 msgid "Quit?"
-msgstr ""
+msgstr "Uscire?"
 
 #: ../src/MathCtrl.cpp:431 ../src/MathCtrl.cpp:444
 msgid "Re-evaluate input"
@@ -2349,11 +2355,11 @@ msgstr "Tipo:"
 
 #: ../src/Config.cpp:93
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraino"
 
 #: ../src/MathCtrl.cpp:450
 msgid "Uncomment"
-msgstr ""
+msgstr "Decommenta"
 
 #: ../src/Config.cpp:151
 msgid "Underlined"
@@ -3111,9 +3117,3 @@ msgstr "giallo"
 #: ../src/Config.cpp:146
 msgid "yellow green"
 msgstr "giallo verde"
-
-#~ msgid "Default"
-#~ msgstr "Predefinito"
-
-#~ msgid "Send ranges to &gnuplot"
-#~ msgstr "Passa i limiti a &gnuplot"
