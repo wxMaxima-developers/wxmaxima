@@ -960,6 +960,22 @@
      (setq tp '$unknown)))
   tp)
 
+(defun wxxml-inference (x l r)
+  (let ((name (cadr x))
+	(values (caddr x))
+	(dis (cadddr x))
+	(m ()))
+    (labels
+	((build-eq (e)
+	   `((mequal simp) ,(cadr e) ,(caddr e))))
+      (dolist (i (cdr dis))
+	(setq m (append m `(((mlist simp) ,(build-eq (nth i values)))))))
+      (setq m (cons `((mlist simp) ,name) m))
+      (setq m (cons '($matrix simp inference) m))
+      (wxxml m l r 'mparen 'mparen))))
+
+(defprop $inference_result wxxml-inference wxxml)
+
 ;;;
 ;;; This is the display support only - copy/paste will not work
 ;;;
