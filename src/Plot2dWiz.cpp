@@ -64,7 +64,8 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 10);
+                               wxSize(70, -1), wxSP_ARROW_KEYS, 0, 1000, 10);
+  text_ctrl_8->SetValue(10);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] =
     {
@@ -511,7 +512,8 @@ Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 300);
+                               wxSize(70, -1), wxSP_ARROW_KEYS, 0, 1000, 300);
+  spin_ctrl_1->SetValue(300);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
