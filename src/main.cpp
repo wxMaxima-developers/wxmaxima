@@ -41,39 +41,17 @@ IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
 {
+  int lang = wxLANGUAGE_UNKNOWN;
+
   wxConfig *config = new wxConfig(wxT("wxMaxima"));
   wxConfig::Set(config);
+  config->Read(wxT("language"), &lang);
 
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
-
-  int x = 40, y = 40, h = 650, w = 950, m = 0;
-  int rs = 0, lang = wxLANGUAGE_UNKNOWN;
-  int display_width = 1024, display_height = 768;
-  bool have_pos;
-
-  wxDisplaySize(&display_width, &display_height);
-
-  have_pos = config->Read(wxT("pos-x"), &x);
-  config->Read(wxT("pos-y"), &y);
-  config->Read(wxT("pos-h"), &h);
-  config->Read(wxT("pos-w"), &w);
-  config->Read(wxT("pos-max"), &m);
-  config->Read(wxT("pos-restore"), &rs);
-  config->Read(wxT("language"), &lang);
-
-  if (rs == 0)
-    have_pos = false;
-  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0)
-  {
-    x = 40;
-    y = 40;
-    h = 650;
-    w = 950;
-  }
 
   if (lang == wxLANGUAGE_UNKNOWN)
     lang = wxLocale::GetSystemLanguage();
@@ -94,24 +72,6 @@ bool MyApp::OnInit()
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
-  wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
-                                 wxPoint(x, y), wxSize(w, h));
-
-  frame->Move(wxPoint(x, y));
-  frame->SetSize(wxSize(w, h));
-  if (m == 1)
-    frame->Maximize(true);
-
-  if (argc == 2) {
-    wxString file(argv[1]);
-    if (file.Right(4) == wxT(".wxm"))
-    {
-      if (!frame->ReadBatchFile(file))
-        frame->SetOpenFile(file);
-    }
-    else
-      frame->SetOpenFile(file);
-  }
 
 #if defined (__WXMAC__)
   wxApp::SetExitOnFrameDelete(false);
@@ -127,24 +87,22 @@ bool MyApp::OnInit()
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
-  SetTopWindow(frame);
-  frame->Show(true);
-  frame->InitSession();
-  if (!frame->IsIconized())
-    frame->ShowTip(false);
+  if (argc == 2)
+    NewWindow(wxString(argv[1]));
+  else
+    NewWindow();
 
   return true;
 }
 
-#if defined (__WXMAC__)
-
-void MyApp::OnFileMenu(wxCommandEvent &ev)
+void MyApp::NewWindow(wxString file)
 {
   int x = 40, y = 40, h = 650, w = 950, m = 0;
   int rs = 0;
   int display_width = 1024, display_height = 768;
-  bool have_pos = false;
-  wxConfigBase *config = wxConfig::Get();
+  bool have_pos;
+
+  wxConfig *config = (wxConfig *)wxConfig::Get();
 
   wxDisplaySize(&display_width, &display_height);
 
@@ -164,25 +122,40 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     h = 650;
     w = 950;
   }
-  
+  wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
+                                 wxPoint(x, y), wxSize(w, h));
+
+  frame->Move(wxPoint(x, y));
+  frame->SetSize(wxSize(w, h));
+  if (m == 1)
+    frame->Maximize(true);
+
+  if (file.Length() > 0) {
+    if (file.Right(4) == wxT(".wxm"))
+    {
+      if (!frame->ReadBatchFile(file))
+        frame->SetOpenFile(file);
+    }
+    else
+      frame->SetOpenFile(file);
+  }
+
+  SetTopWindow(frame);
+  frame->Show(true);
+  frame->InitSession();
+  if (!frame->IsIconized())
+    frame->ShowTip(false);
+
+}
+
+#if defined (__WXMAC__)
+
+void MyApp::OnFileMenu(wxCommandEvent &ev)
+{  
   switch(ev.GetId())
     {
     case mac_newId:
-      {
-	wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
-				       wxPoint(x, y), wxSize(w, h));
-
-	frame->Move(wxPoint(x, y));
-	frame->SetSize(wxSize(w, h));
-	if (m == 1)
-	  frame->Maximize(true);
-
-	SetTopWindow(frame);
-	frame->Show(true);
-	frame->InitSession();
-	if (!frame->IsIconized())
-	  frame->ShowTip(false);
-      }
+      NewWindow();
       break;
     case mac_openId:
       {
@@ -190,25 +163,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 				       wxEmptyString, wxEmptyString,
 				       _("wxMaxima session (*.wxm)|*.wxm"),
 				       wxOPEN);
-
 	if (file.Length() > 0)
-	  {
-	    wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
-					   wxPoint(x, y), wxSize(w, h));
-	    
-	    
-	    frame->SetOpenFile(file);
-	    
-	    frame->Move(wxPoint(x, y));
-	    frame->SetSize(wxSize(w, h));
-	    if (m == 1)
-	      frame->Maximize(true);
-	    
-	    frame->Show(true);
-	    frame->InitSession();
-	    if (!frame->IsIconized())
-	      frame->ShowTip(false);
-	  }
+	  NewWindow(file);
       }
       break;
     case wxID_EXIT:
@@ -221,6 +177,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       }
       break;
     }
+}
+
+void MyApp::MacNewFile()
+{
+  wxWindow *frame = GetTopWindow();
+  if (frame == NULL)
+    NewWindow();
 }
 
 #endif

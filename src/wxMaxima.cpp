@@ -654,6 +654,10 @@ bool wxMaxima::StartMaxima()
                                     m_port));
 #endif
 
+#if defined __WXMAC__
+    wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
+#endif
+
     m_process = new wxProcess(this, maxima_process_id);
     m_process->Redirect();
     m_first = true;
