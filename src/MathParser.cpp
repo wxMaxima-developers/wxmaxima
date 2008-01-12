@@ -17,6 +17,10 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+#include <wx/wx.h>
+#include <wx/config.h>
+#include <wx/tokenzr.h>
+
 #include "MathParser.h"
 
 #include "FracCell.h"
@@ -37,10 +41,6 @@
 #include "ImgCell.h"
 #include "SubSupCell.h"
 #include "SlideShowCell.h"
-
-#include <wx/wx.h>
-#include <wx/config.h>
-#include <wx/tokenzr.h>
 
 #define MAXLENGTH 50000
 
