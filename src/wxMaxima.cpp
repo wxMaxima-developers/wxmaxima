@@ -2976,6 +2976,9 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
+#if defined __WXMAC__
+  wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
+#endif
   CleanUp();
   Destroy();
 }

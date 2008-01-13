@@ -122,6 +122,12 @@ void MyApp::NewWindow(wxString file)
     h = 650;
     w = 950;
   }
+
+#if defined __WXMAC__
+  x += (topLevelWindows.GetCount() - 1)*20;
+  y += (topLevelWindows.GetCount() - 1)*20;
+#endif
+
   wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
                                  wxPoint(x, y), wxSize(w, h));
 
@@ -139,6 +145,10 @@ void MyApp::NewWindow(wxString file)
     else
       frame->SetOpenFile(file);
   }
+
+#if defined __WXMAC__
+  topLevelWindows.Append(frame);
+#endif
 
   SetTopWindow(frame);
   frame->Show(true);
@@ -169,11 +179,31 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       break;
     case wxID_EXIT:
       {
+#if defined __WXMAC__
+	bool quit = true;
+	wxWindowList::compatibility_iterator node = topLevelWindows.GetFirst();
+	while (node) {
+	  wxWindow *frame = node->GetData();
+	  node = node->GetNext();
+	  frame->Raise();
+	  if (!frame->Close()) {
+	    quit = false;
+	    break;
+	  }
+	  // else {
+	  //  wxWindowList::compatibility_iterator tmp = node;
+	  // topLevelWindows.Erase(tmp);
+	  //}
+	}
+	if (quit)
+	  wxExit();	    	    
+#else
 	wxWindow *frame = GetTopWindow();
 	if (frame == NULL)
 	  wxExit();
 	else if (frame->Close())
 	  wxExit();
+#endif
       }
       break;
     }
@@ -184,6 +214,11 @@ void MyApp::MacNewFile()
   wxWindow *frame = GetTopWindow();
   if (frame == NULL)
     NewWindow();
+}
+
+void MyApp::MacOpenFile(const wxString &file)
+{
+  NewWindow(file);
 }
 
 #endif

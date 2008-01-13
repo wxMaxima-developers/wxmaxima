@@ -41,8 +41,12 @@ class MyApp : public wxApp
 public:
   virtual bool OnInit();
   wxLocale m_locale;
+  void NewWindow(wxString file = wxEmptyString);
 #if defined (__WXMAC__)
+  wxWindowList topLevelWindows;
   void OnFileMenu(wxCommandEvent &ev);
+  virtual void MacNewFile();
+  virtual void MacOpenFile(const wxString& file);
 #endif
 };
 
@@ -66,6 +70,8 @@ public:
                   bool silent = true,   // sends input to maxima, also add to command
                   bool split = true);   // history...
   bool ReadBatchFile(wxString file);
+  void OpenFile(wxString file,
+                wxString command = wxEmptyString); // Open a file
 protected:
   void EnterCommand(wxCommandEvent& event);        // enter in the command line
 
@@ -127,8 +133,6 @@ protected:
   void ReadPrompt();                 // reads prompts
   void ReadMath();                   // reads output other than prompts
   void ReadLispError();              // lisp errors (no prompt prefix/suffix)
-  void OpenFile(wxString file,
-                wxString command = wxEmptyString);      // Open a file
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
 #endif

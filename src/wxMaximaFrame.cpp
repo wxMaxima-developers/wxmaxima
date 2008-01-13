@@ -237,6 +237,10 @@ void wxMaximaFrame::SetupMenu()
 
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu;
+#if defined __WXMAC__
+  wxglade_tmp_menu_1->Append(mac_newId, _("&New window\tCtrl-N"),
+			     _("Open a new window"));
+#endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
                    _("Open session from a file"), wxT("gtk-open"));
   wxglade_tmp_menu_1->Append(menu_read_id, _("&Read file"),
@@ -693,7 +697,7 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("text.png"),
                            _("Insert text"));
   frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
-                           wxImage(wxT("art/toolbar/input.png")),
+                           IMAGE("input.png"),
                            _("Insert input group"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
