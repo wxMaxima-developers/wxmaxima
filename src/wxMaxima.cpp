@@ -107,6 +107,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_batchFilePosition = 0;
   m_fileRead = false;
   m_helpFile = wxEmptyString;
+
+  m_isConnected = false;
+  m_isRunning = false;
 }
 
 wxMaxima::~wxMaxima()
@@ -163,13 +166,14 @@ void wxMaxima::InitSession()
   while (!(server = StartServer()))
   {
     m_port++;
-    if (m_port > 5000)
+    if (m_port > defaultPort + 50)
     {
       wxMessageBox(_("wxMaxima could not start the server.\n\n"
                      "Please check you have network support\n"
                      "enabled and try again!"),
                    _("Fatal error"),
                    wxOK | wxICON_ERROR);
+      break;
     }
   }
 
@@ -549,6 +553,11 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   {
   case wxSOCKET_CONNECTION :
     {
+      if (m_isConnected) {
+	wxSocketBase *tmp = m_server->Accept(false);
+	tmp->Close();
+	return;
+      }
       m_isConnected = true;
       m_client = m_server->Accept(false);
       m_client->SetEventHandler(*this, socket_client_id);
@@ -585,7 +594,9 @@ bool wxMaxima::StartServer()
   if (!m_server->Ok())
   {
     delete m_server;
+    m_server = NULL;
     m_isRunning = false;
+    m_isConnected = false;
     SetStatusText(_("Starting server failed"), 1);
     return false;
   }
