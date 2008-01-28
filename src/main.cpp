@@ -124,8 +124,8 @@ void MyApp::NewWindow(wxString file)
   }
 
 #if defined __WXMAC__
-  x += (topLevelWindows.GetCount() - 1)*20;
-  y += (topLevelWindows.GetCount() - 1)*20;
+  x += topLevelWindows.GetCount()*20;
+  y += topLevelWindows.GetCount()*20;
 #endif
 
   wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
