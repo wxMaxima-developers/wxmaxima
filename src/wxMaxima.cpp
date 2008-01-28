@@ -1696,7 +1696,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     {
       wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("Maxima package (*.mac)|*.mac|"),
+                                     _("Maxima package (*.mac)|*.mac"),
                                      wxOPEN);
       OpenFile(file, wxT("batch"));
     }
