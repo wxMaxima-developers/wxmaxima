@@ -570,7 +570,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     m_positionOfCaret++;
     if (m_matchParens)
     {
+#if wxUSE_UNICODE
+      switch (event.GetUnicodeKey())
+#else
       switch (event.GetKeyCode())
+#endif
       {
       case '(':
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +

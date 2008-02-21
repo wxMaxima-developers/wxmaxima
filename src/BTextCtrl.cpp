@@ -39,7 +39,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
     SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #elif defined (__WXMAC__)
-    SetFont(wxFont(14, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #else
     SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
 #endif
@@ -52,8 +52,13 @@ BTextCtrl::~BTextCtrl()
 
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
+#if wxUSE_UNICODE
+ if (!m_matchParens || MatchParenthesis(event.GetUnicodeKey()))
+    event.Skip();
+#else
   if (!m_matchParens || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
+#endif
 }
 
 bool BTextCtrl::MatchParenthesis(int code)
