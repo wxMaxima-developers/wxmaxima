@@ -123,18 +123,26 @@ void CommandLine::FilterLine(wxKeyEvent& event)
     m_currentHistoryValue = Previous();
     m_currentDisplayedValue = m_currentHistoryValue;
     SetValue(m_currentHistoryValue);
-    SetInsertionPointEnd();
+    if (m_currentHistoryValue.length()>0)
+      SetInsertionPointEnd();
     break;
   case WXK_DOWN:
     m_currentHistoryValue = Next();
     m_currentDisplayedValue = m_currentHistoryValue;
     SetValue(m_currentHistoryValue);
-    SetInsertionPointEnd();
+    if (m_currentHistoryValue.length()>0)
+      SetInsertionPointEnd();
     break;
   case WXK_TAB:
     {
+#if defined __WXMAC__
+      if (event.CmdDown())
+	return ;
+#else
       if (event.AltDown())
         return ;
+#endif
+
       wxString s = GetValue();
       long int l = GetInsertionPoint();
       long int l1, l2;
@@ -161,20 +169,23 @@ void CommandLine::FilterLine(wxKeyEvent& event)
       SetSelection(l, GetLastPosition());
     }
     break;
-  default:
-    {
-      wxString value = GetValue();
-      if (m_currentDisplayedValue != value)
-      {
-        m_currentValue = value;
-        m_historyIndex = m_historySize;
-      }
-      break;
-    }
+  default:   
+    event.Skip();
+    break;
   }
 #if defined __WXMSW__
   DoHighlight();
 #endif
+}
+
+void CommandLine::TrackChanges(wxKeyEvent &event)
+{
+  wxString value = GetValue();
+  if (m_currentDisplayedValue != value)
+  {
+    m_currentValue = value;
+    m_historyIndex = m_historySize;
+  }
 }
 
 #if defined __WXMSW__
@@ -232,5 +243,6 @@ void CommandLine::WriteText(wxString s)
 #endif
 
 BEGIN_EVENT_TABLE(CommandLine, BTextCtrl)
-  EVT_KEY_UP(CommandLine::FilterLine)
+  EVT_KEY_DOWN(CommandLine::FilterLine)
+  EVT_KEY_UP(CommandLine::TrackChanges)
 END_EVENT_TABLE()

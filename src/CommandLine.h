@@ -50,6 +50,7 @@ protected:
   wxString m_currentHistoryValue;
   wxString m_currentDisplayedValue;
   void FilterLine(wxKeyEvent& event);
+  void TrackChanges(wxKeyEvent& event);
 #if defined __WXMSW__
   void DoHighlight();
 #endif
