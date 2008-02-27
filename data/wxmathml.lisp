@@ -490,7 +490,7 @@
           r (if (mmminusp (setq x (nformat (caddr x))))
                 ;; the change in base-line makes parens unnecessary
                 (wxxml (cadr x) '("</r><r>-")
-                       (cons "</r></e>" r) 'mparen 'mparen)
+                       (cons "</r></e>" r) 'mminus 'mminus)
 		(if (and (integerp x) (< x 10))
 		    (wxxml x (list "</r>")
 			   (cons "</e>" r) 'mparen 'mparen)
@@ -707,8 +707,8 @@
 (defprop mminus wxxml-prefix wxxml)
 (defprop mminus ("-") wxxmlsym)
 (defprop mminus "<t>-</t>" wxxmlword)
-(defprop mminus 100. wxxml-rbp)
-(defprop mminus 100. wxxml-lbp)
+(defprop mminus 101. wxxml-rbp)
+(defprop mminus 101. wxxml-lbp)
 
 (defprop $~ wxxml-infix wxxml)
 (defprop $~ ("<t>~</t>") wxxmlsym)
