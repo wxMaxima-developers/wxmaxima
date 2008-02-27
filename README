@@ -71,11 +71,11 @@ their dependencies), which can also be found at the web-page. In
 Dev-CPP create a new wxWidgets project, add libxml2 and other required
 libraries to the project and import all the sources of wxMaxima.
 
-** MacOS
+** Mac OS X
 
-Support for MacOS is experimental. To build wxMaxima first make sure
-you have libxml2 and wxWidgets (it is possible that the static build
-is required) installed on your system. Then build wxMaxima with
+Support for Mac OS X is experimental. To build wxMaxima first make
+sure you have libxml2 and wxWidgets (it is possible that the static
+build is required) installed on your system. Then build wxMaxima with
 
   ./configure --with-wx-config=<path to your wx-config>
   make
@@ -84,8 +84,8 @@ is required) installed on your system. Then build wxMaxima with
 This should create a working wxMaxima.app. This has been tested with
 wxWidgets version 2.6.2.
 
-wxMaxima has been tested with maxima compiled with cmucl. If you use
-a different lisp and wxMaxima does not work, recompile maxima using
+wxMaxima has been tested with maxima compiled with cmucl. If you use a
+different lisp and wxMaxima does not work, recompile maxima using
 cmucl.
 
 ** Building from CVS (Linux)
@@ -121,8 +121,8 @@ not, configure wxMaxima with Maxima->Configure.
 To automatically configure wxMaxima, wxMaxima must be installed in a
 subdirectory of maxima installation directory. For example:
 
-  maxima installation:   C:\Program Files\maxima-5.12.0
-  wxMaxima installation: C:\Program Files\maxima-5.12.0\wxMaxima
+  maxima installation:   C:\Program Files\maxima-5.14.0
+  wxMaxima installation: C:\Program Files\maxima-5.14.0\wxMaxima
 
 If you install in some other directory, you must configure wxMaxima
 with Maxima->Configure.
