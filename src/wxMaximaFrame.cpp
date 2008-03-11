@@ -332,12 +332,22 @@ void wxMaximaFrame::SetupMenu()
                    _("Increase fontsize in console"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                    _("Decrease fontsize in console"), wxT("gtk-zoom-out"));
+#if defined __WXMAC__
+  wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tCtrl-Shift-D"),
+                             _("Set focus to the input line"), wxITEM_NORMAL);
+#else
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
                              _("Set focus to the input line"), wxITEM_NORMAL);
+#endif
   wxglade_tmp_menu_2->Append(menu_goto_output, _("Go to output window\tF3"),
                              _("Set focus to the output window"), wxITEM_NORMAL);
+#if defined __WXMAC__
+  wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tCtrl-D"),
+			     _("Select last input in the colsole!"));
+#else
   wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tF2"),
                              _("Select last input in the console!"));
+#endif
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));

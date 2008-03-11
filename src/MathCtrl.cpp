@@ -2378,7 +2378,7 @@ void MathCtrl::ScrollToSelectionStart(bool top)
     if (top)
       Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
     else
-      Scroll(-1, MAX((cellY - height + cellDrop)/SCROLL_UNIT + 2, 0));
+      Scroll(-1, MAX((cellY - height + cellDrop)/SCROLL_UNIT + 4, 0));
   }
   Refresh();
 }
