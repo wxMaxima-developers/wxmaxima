@@ -2289,7 +2289,7 @@ bool MathCtrl::SelectNextInput()
     tmp = tmp->m_nextToDraw;
   }
 
-  ScrollToSelectionStart();
+  ScrollToSelectionStart(false);
   return true;
 }
 
@@ -2351,7 +2351,7 @@ bool MathCtrl::SelectPrompt()
   return false;
 }
 
-void MathCtrl::ScrollToSelectionStart()
+void MathCtrl::ScrollToSelectionStart(bool top)
 {
   if (m_selectionStart == NULL)
     return ;
@@ -2375,7 +2375,10 @@ void MathCtrl::ScrollToSelectionStart()
   if ((cellY - cellCenter - SCROLL_UNIT < view_y) ||
       (cellY + cellDrop + SCROLL_UNIT > view_y + height))
   {
-    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
+    if (top)
+      Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
+    else
+      Scroll(-1, MAX((cellY - height + cellDrop)/SCROLL_UNIT + 2, 0));
   }
   Refresh();
 }
