@@ -2276,8 +2276,10 @@ bool MathCtrl::SelectNextInput()
       !tmp->IsEditable())
     tmp = tmp->m_nextToDraw;
 
-  if (tmp == NULL)
+  if (tmp == NULL) {
+    ScrollToBottom();
     return false;
+  }
 
   // Selection starts here
   m_selectionStart = tmp;
@@ -2511,6 +2513,13 @@ bool MathCtrl::IsSelected(int type)
   return m_selectionStart != NULL &&
     m_selectionStart == m_selectionEnd &&
     m_selectionStart->GetType() == type;
+}
+
+void MathCtrl::ScrollToBottom()
+{
+  int width = -1, height = -1;
+  GetVirtualSize(&width, &height);
+  Scroll(-1, height/SCROLL_UNIT);
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

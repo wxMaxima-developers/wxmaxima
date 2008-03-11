@@ -135,6 +135,7 @@ public:
   {
     m_scrollTo = to;
   }
+  void ScrollToBottom();
   bool CanEdit();
   void EnableEdit(bool enable = true)
   {
