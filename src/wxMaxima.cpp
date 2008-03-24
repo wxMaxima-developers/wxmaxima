@@ -374,7 +374,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
     int count = 0;
     while (tokens.HasMoreTokens())
     {
-      TextCell* cell = new TextCell(RemoveTabs(tokens.GetNextToken()));
+      TextCell* cell = new TextCell(tokens.GetNextToken());
 
       cell->SetType(type);
 
@@ -468,33 +468,6 @@ wxString wxMaxima::SplitInput(wxString input)
   }
 
   return newInput;
-}
-
-wxString wxMaxima::RemoveTabs(wxString s)
-{
-  int pos = 0;
-  char c;
-  wxString t = wxEmptyString;
-
-  for (unsigned int i = 0; i < s.Length(); i++)
-  {
-    c = s.GetChar(i);
-    if (c == '\t')
-    {
-      do
-      {
-        t += ' ';
-        pos++;
-      }
-      while (pos % 8 != 0);
-    }
-    else
-    {
-      t += c;
-      pos++;
-    }
-  }
-  return t;
 }
 
 ///--------------------------------------------------------------------------------
@@ -723,6 +696,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
     SetStatusText(_("Maxima process terminated."), 1);
+  
 //  delete m_process;
 //  m_process = NULL;
 }
@@ -2871,7 +2845,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2007 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2008 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));

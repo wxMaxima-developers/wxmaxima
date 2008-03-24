@@ -141,7 +141,6 @@ protected:
   void KillMaxima();                 // kills the maxima process
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
-  wxString RemoveTabs(wxString s);
   void PrintFile();
   wxSocketBase *m_client;
   wxSocketServer *m_server;
