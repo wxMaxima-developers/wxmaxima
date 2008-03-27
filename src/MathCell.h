@@ -30,12 +30,12 @@
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 2
 
-#ifndef __WXMAC__
-#define MC_EXP_INDENT 4
-#define MC_MIN_SIZE 10
+#if defined __WXMAC__
+ #define MC_EXP_INDENT 2
+ #define MC_MIN_SIZE 10
 #else
-#define MC_EXP_INDENT 2
-#define MC_MIN_SIZE 8
+ #define MC_EXP_INDENT 4
+ #define MC_MIN_SIZE 8
 #endif
 
 #include <wx/wx.h>

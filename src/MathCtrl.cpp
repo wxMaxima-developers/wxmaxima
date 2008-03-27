@@ -133,7 +133,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         tmp->m_currentPoint.x = point.x;
         tmp->m_currentPoint.y = point.y;
         if (tmp->DrawThisCell(parser, point))
-          tmp->Draw(parser, point, fontsize, false);
+          tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
         if (tmp->m_nextToDraw != NULL)
         {
           if (tmp->m_nextToDraw->BreakLineHere())
@@ -322,7 +322,7 @@ void MathCtrl::RecalculateWidths(MathCell* tmp)
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(parser, fontsize, false);
+    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
     tmp = tmp->m_next;
   }
 }
@@ -349,7 +349,7 @@ void MathCtrl::RecalculateSize(MathCell* tmp)
   while (tmp != NULL)
   {
     if (!tmp->m_isBroken)
-      tmp->RecalculateSize(parser, fontsize, false);
+      tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
     tmp = tmp->m_nextToDraw;
   }
 }
@@ -1189,8 +1189,8 @@ void MathCtrl::OnChar(wxKeyEvent& event)
       wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
 
       m_activeCell->ResetData();
-      m_activeCell->RecalculateWidths(parser, fontsize, false);
-      m_activeCell->RecalculateSize(parser, fontsize, false);
+      m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+      m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
 
       int width = m_activeCell->GetWidth() + m_activeCell->m_previous->GetWidth();
       if (height != m_activeCell->GetHeight())
@@ -2052,8 +2052,8 @@ void MathCtrl::BreakUpCells(MathCell *cell)
     {
       if (tmp->BreakUp())
       {
-        tmp->RecalculateWidths(parser, fontsize, false);
-        tmp->RecalculateSize(parser, fontsize, false);
+        tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+        tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
       }
     }
     tmp = tmp->m_nextToDraw;
@@ -2062,12 +2062,6 @@ void MathCtrl::BreakUpCells(MathCell *cell)
 
 void MathCtrl::UnBreakUpCells()
 {
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  int fontsize = 12;
-
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-
   MathCell *tmp = m_tree;
   while (tmp != NULL)
   {
