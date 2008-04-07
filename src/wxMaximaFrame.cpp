@@ -202,7 +202,11 @@ void wxMaximaFrame::do_layout()
 
   // all
   grid_sizer_1->Add(m_console, 1, wxALL | wxEXPAND, 0);
-  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 2);
+#if defined __WXMAC__
+  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 3);
+#else
+  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 0);
+#endif
 
   if (panelSize > 0)
     grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
