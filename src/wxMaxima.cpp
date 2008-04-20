@@ -40,6 +40,7 @@
 #include "EditorCell.h"
 #include "SlideShowCell.h"
 
+#include <wx/clipbrd.h>
 #include <wx/filedlg.h>
 #include <wx/utils.h>
 #include <wx/msgdlg.h>
@@ -106,6 +107,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_batchFilePosition = 0;
   m_fileRead = false;
+  wxConfig::Get()->Read(wxT("readFileOnStart"), &m_fileRead);
+
   m_helpFile = wxEmptyString;
 
   m_isConnected = false;
@@ -696,7 +699,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
     SetStatusText(_("Maxima process terminated."), 1);
-  
+
 //  delete m_process;
 //  m_process = NULL;
 }
@@ -2964,6 +2967,7 @@ void wxMaxima::OnClose(wxCloseEvent& event)
 #if defined __WXMAC__
   wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
 #endif
+  wxTheClipboard->Flush();
   CleanUp();
   Destroy();
 }
@@ -3348,7 +3352,7 @@ void wxMaxima::ResetTitle(bool saved)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-  
+
   if (m_console->IsSelected(MC_TYPE_SLIDE))
   {
     SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();

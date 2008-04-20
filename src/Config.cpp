@@ -111,6 +111,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
+  m_readFileOnStart = new wxCheckBox(notebook_1_pane_1, -1, _("Read file from command line"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
@@ -192,11 +193,12 @@ void Config::set_properties()
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
 #endif
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
+  m_readFileOnStart->SetToolTip(_("Read file from command line instead of executing it."));
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false;
-  bool showHeader = true, fixedFontTC = true;
+  bool showHeader = true, fixedFontTC = true, readFile = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
@@ -211,6 +213,7 @@ void Config::set_properties()
   config->Read(wxT("unixCopy"), &unixCopy);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
+  config->Read(wxT("readFileOnStart"), &readFile);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -255,6 +258,7 @@ void Config::set_properties()
   m_showHeader->SetValue(showHeader);
   m_unixCopy->SetValue(unixCopy);
   m_fixedFontInTC->SetValue(fixedFontTC);
+  m_readFileOnStart->SetValue(readFile);
 
 #if defined __WXMSW__
   m_button1->SetDefault();
@@ -310,6 +314,7 @@ void Config::do_layout()
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_6->Add(m_unixCopy, 0, wxALL, 3);
+  sizer_6->Add(m_readFileOnStart, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
   notebook_1_pane_1->SetAutoLayout(true);
@@ -392,6 +397,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
+  config->Write(wxT("readFileOnStart"), m_readFileOnStart->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
