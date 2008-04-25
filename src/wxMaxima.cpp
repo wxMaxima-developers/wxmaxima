@@ -837,6 +837,7 @@ void wxMaxima::HandleMainPrompt(wxString o)
   {
     PrintFile();
     DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+    ResetTitle(true);
     m_inPrompt = true;
   }
   else
