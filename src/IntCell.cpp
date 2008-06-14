@@ -173,21 +173,21 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_base->RecalculateSize(parser, fontsize, true);
   m_var->RecalculateSize(parser, fontsize, true);
 
-  m_signSize = MAX(m_signSize, m_base->GetMaxHeight() + SCALE_PX(30, scale));
-  m_signSize = MAX(m_signSize, m_var->GetMaxHeight() + SCALE_PX(30, scale));
+  m_signSize = MAX(m_signSize, m_base->GetMaxHeight()); // + SCALE_PX(30, scale));
+  m_signSize = MAX(m_signSize, m_var->GetMaxHeight()); // + SCALE_PX(30, scale));
   if (m_intStyle == INT_DEF)
   {
     m_height = m_signSize + m_under->GetMaxHeight() + m_over->GetMaxHeight();
     m_center = MAX((m_signSize + 1) / 2,
-                   m_base->GetMaxCenter() + SCALE_PX(15, scale)) +
+                   m_base->GetMaxCenter()) + // SCALE_PX(15, scale)) +
                m_over->GetMaxHeight();
   }
   else
   {
-    m_height = m_signSize + SCALE_PX(6, scale);
+    m_height = m_signSize + SCALE_PX(2, scale);
     m_center = MAX((m_signSize + 1) / 2,
-                   m_base->GetMaxCenter() + SCALE_PX(15, scale)) +
-               SCALE_PX(3, scale);
+                   m_base->GetMaxCenter()) + // SCALE_PX(15, scale)) +
+               SCALE_PX(1, scale);
   }
 
   MathCell::RecalculateSize(parser, fontsize, all);
