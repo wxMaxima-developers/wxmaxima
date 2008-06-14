@@ -101,6 +101,7 @@ public:
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
   bool ExportToHTML(wxString file);
   bool ExportToMAC(wxString file);
+  bool ExportToTeX(wxString file);
   wxString GetString(bool lb = false);
   MathCell* GetTree()
   {

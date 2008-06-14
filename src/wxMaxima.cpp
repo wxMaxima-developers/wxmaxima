@@ -1624,7 +1624,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
                               _("wxMaxima session (*.wxm)|*.wxm|"
-                                "Maxima batch file (*mac)|*.mac|"
+                                "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
                               wxSAVE | wxOVERWRITE_PROMPT);
       }
@@ -1647,16 +1647,25 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       file = wxFileSelector(_("Export to HTML file"), m_lastPath,
                             file + wxT(".html"), wxT("html"),
                             _("HTML file (*.html)|*.html|"
+                              "pdfLaTeX file (*.tex)|*.tex|"
                               "All|*"),
                             wxSAVE | wxOVERWRITE_PROMPT);
       if (file.Length())
       {
         m_lastPath = wxPathOnly(file);
-        if (file.Right(5) != wxT(".html"))
+        if (file.Right(5) != wxT(".html") && file.Right(4) != wxT(".tex"))
           file = file + wxT(".html");
-        if (!m_console->ExportToHTML(file))
-          wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
-                       wxOK);
+        
+        if (file.Right(4) == wxT(".tex")) {
+          if (!m_console->ExportToTeX(file))
+            wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
+                         wxOK);
+        }
+        else {
+          if (!m_console->ExportToHTML(file))
+            wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
+                         wxOK);
+        }
       }
     }
     break;
