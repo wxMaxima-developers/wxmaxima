@@ -144,10 +144,11 @@ public:
   }
   void UnfoldAll();
   bool SelectPrevInput();
-  bool SelectNextInput();
+  bool SelectNextInput(bool input = false);
   bool SelectPrompt();
   void ScrollToSelectionStart(bool top = true);
   bool SelectLastInput();
+  bool SelectFirstInput();
   void SetActiveCell(MathCell *cell);
   MathCell* GetActiveCell()
   {

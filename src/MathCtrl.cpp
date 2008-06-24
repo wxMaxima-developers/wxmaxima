@@ -2016,9 +2016,6 @@ bool MathCtrl::CanEdit() {
       || m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;
 
-  //  if (m_selectionStart->m_next == NULL)
-  //    return false;
-
   return true;
 }
 
@@ -2151,15 +2148,15 @@ bool MathCtrl::SelectPrevInput() {
   return true;
 }
 
-bool MathCtrl::SelectNextInput() {
+bool MathCtrl::SelectNextInput(bool input) {
   if (m_selectionStart == NULL)
     return false;
 
   MathCell *tmp = m_selectionEnd;
 
   // Move to the back of current input
-  if (tmp != NULL && tmp->IsEditable()) {
-    while (tmp != NULL && tmp->IsEditable())
+  if (tmp != NULL && tmp->IsEditable(input)) {
+    while (tmp != NULL && tmp->IsEditable(input))
       tmp = tmp->m_nextToDraw;
   }
 
@@ -2167,7 +2164,7 @@ bool MathCtrl::SelectNextInput() {
     return false;
 
   // Move to next input
-  while (tmp != NULL && !tmp->IsEditable())
+  while (tmp != NULL && !tmp->IsEditable(input))
     tmp = tmp->m_nextToDraw;
 
   if (tmp == NULL) {
@@ -2178,7 +2175,7 @@ bool MathCtrl::SelectNextInput() {
   // Selection starts here
   m_selectionStart = tmp;
 
-  while (tmp != NULL && tmp->IsEditable()) {
+  while (tmp != NULL && tmp->IsEditable(input)) {
     m_selectionEnd = tmp;
     tmp = tmp->m_nextToDraw;
   }
@@ -2215,6 +2212,22 @@ bool MathCtrl::SelectLastInput() {
     return true;
   }
 
+  return false;
+}
+
+bool MathCtrl::SelectFirstInput() {
+  MathCell *tmp = m_tree;
+  
+  if (m_activeCell != NULL)
+    return false;
+  
+  while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)
+    tmp = tmp->m_nextToDraw;
+  
+  if (tmp != NULL) {
+    m_selectionStart = m_selectionEnd = tmp;
+    return true;
+  }
   return false;
 }
 
@@ -2386,20 +2399,20 @@ void MathCtrl::ScrollToBottom() {
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
-EVT_SIZE(MathCtrl::OnSize)
-EVT_PAINT(MathCtrl::OnPaint)
-EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
-EVT_RIGHT_UP(MathCtrl::OnMouseRightUp)
-EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
-EVT_LEFT_DCLICK(MathCtrl::OnDoubleClick)
-EVT_MOTION(MathCtrl::OnMouseMotion)
-EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
-EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
-EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
-EVT_TIMER(CARET_TIMER_ID, MathCtrl::OnTimer)
-EVT_KEY_DOWN(MathCtrl::OnKeyDown)
-EVT_CHAR(MathCtrl::OnChar)
-EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
-EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
-EVT_SET_FOCUS(MathCtrl::OnSetFocus)
+  EVT_SIZE(MathCtrl::OnSize)
+  EVT_PAINT(MathCtrl::OnPaint)
+  EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
+  EVT_RIGHT_UP(MathCtrl::OnMouseRightUp)
+  EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
+  EVT_LEFT_DCLICK(MathCtrl::OnDoubleClick)
+  EVT_MOTION(MathCtrl::OnMouseMotion)
+  EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
+  EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
+  EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
+  EVT_TIMER(CARET_TIMER_ID, MathCtrl::OnTimer)
+  EVT_KEY_DOWN(MathCtrl::OnKeyDown)
+  EVT_CHAR(MathCtrl::OnChar)
+  EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
+  EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
+  EVT_SET_FOCUS(MathCtrl::OnSetFocus)
 END_EVENT_TABLE()

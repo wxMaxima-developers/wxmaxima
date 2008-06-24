@@ -33,9 +33,11 @@
 #if defined __WXMAC__
  #define MC_EXP_INDENT 2
  #define MC_MIN_SIZE 10
+ #define MC_MAX_SIZE 20
 #else
  #define MC_EXP_INDENT 4
  #define MC_MIN_SIZE 8
+ #define MC_MAX_SIZE 20
 #endif
 
 #include <wx/wx.h>
@@ -200,9 +202,9 @@ public:
     return m_type == MC_TYPE_COMMENT || m_type == MC_TYPE_SECTION ||
            m_type == MC_TYPE_TITLE;
   }
-  bool IsEditable()
+  bool IsEditable(bool input = false)
   {
-    return m_type == MC_TYPE_INPUT || IsComment();
+    return m_type == MC_TYPE_INPUT || (!input && IsComment());
   }
   virtual void ProcessEvent(wxKeyEvent& event)
   { }

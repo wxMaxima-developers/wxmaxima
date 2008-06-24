@@ -113,6 +113,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_isConnected = false;
   m_isRunning = false;
+  m_inReevalMode = false;
 }
 
 wxMaxima::~wxMaxima()
@@ -783,7 +784,7 @@ void wxMaxima::ReadPrompt()
     {
       if (o.StartsWith(wxT("(%i")))
       {
-        if (m_inInsertMode && o.StartsWith(wxT("(%i")))
+        if (m_inInsertMode && o.StartsWith(wxT("(%i")) && !m_inReevalMode)
         {
           MathCell* tmp = m_console->GetInsertPoint();
           m_console->SetInsertPoint(NULL);
@@ -797,6 +798,24 @@ void wxMaxima::ReadPrompt()
           m_console->GetLastPrompt()->SetValue(o);
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
+        }
+        else if (m_inReevalMode) {
+          MathCell *tmp = m_console->GetInsertPoint();
+          m_inInsertMode = false;
+          m_console->SetInsertPoint(NULL);
+          m_lastPrompt = o;
+          m_console->SetSelection(tmp);
+          if (!m_console->SelectNextInput(true)) {
+            m_console->SetSelection(NULL);
+            m_console->SetScrollTo(-1);
+            m_inReevalMode = false;
+            m_console->GetLastPrompt()->SetValue(o);
+          }
+          else {
+            m_console->Refresh();
+            m_console->EnableEdit();
+            ReEvaluate();
+          }
         }
         else
           HandleMainPrompt(o);
@@ -1827,7 +1846,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       int fontSize = 12;
       wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
-      if (fontSize < 20)
+      if (fontSize < MC_MAX_SIZE)
       {
         fontSize++;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
@@ -1840,7 +1859,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       int fontSize = 12;
       wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
-      if (fontSize > 8)
+      if (fontSize > MC_MIN_SIZE)
       {
         fontSize--;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
@@ -1934,6 +1953,13 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
               wxT("/###.{lisp,mac,mc}\"), file_search_maxima)$");
         SendMaxima(cmd);
       }
+    }
+    break;
+  case menu_reeval_all:
+    m_console->SetActiveCell(NULL);
+    if (m_console->SelectFirstInput()) {
+      m_inReevalMode = true;
+      ReEvaluate();
     }
     break;
   case menu_clear_var:
@@ -3220,7 +3246,12 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
   m_console->Refresh();
 }
 
-void wxMaxima::ReEvaluate(wxCommandEvent& event)
+void wxMaxima::ReEvaluateEvent(wxCommandEvent& event)
+{
+  ReEvaluate();
+}
+
+void wxMaxima::ReEvaluate()
 {
   MathCell* tmp = m_console->GetActiveCell();
   if (tmp != NULL)
@@ -3232,16 +3263,17 @@ void wxMaxima::ReEvaluate(wxCommandEvent& event)
     m_console->Refresh();
   }
 
-  if (!m_console->CanEdit())
+  if (!m_console->CanEdit()) {
     return ;
-
+  }
+  
   ResetTitle(false);
 
   MathCell* beginInput = m_console->GetSelectionStart();
 
   if (beginInput == NULL)
     return ;
-
+  
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {
     wxString text = m_console->GetString(true);
@@ -3605,9 +3637,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_SET_FOCUS(wxMaxima::OnSetFocus)
   EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
-  EVT_MENU(popid_reeval, wxMaxima::ReEvaluate)
+  EVT_MENU(popid_reeval, wxMaxima::ReEvaluateEvent)
   EVT_MENU(menu_edit_input, wxMaxima::EditInputMenu)
-  EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluate)
+  EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluateEvent)
   EVT_MENU(menu_long_input, wxMaxima::MaximaMenu)
   EVT_MENU(menu_add_comment, wxMaxima::PrependCell)
   EVT_MENU(menu_add_section, wxMaxima::PrependCell)
@@ -3625,4 +3657,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_cut, wxMaxima::PopupMenu)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
+  EVT_MENU(menu_reeval_all, wxMaxima::MaximaMenu)
 END_EVENT_TABLE()

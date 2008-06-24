@@ -105,11 +105,12 @@ protected:
                           bool newLine = true);    //
 
   void EditInputMenu(wxCommandEvent& event);       //
-  void ReEvaluate(wxCommandEvent& event);          //
+  void ReEvaluateEvent(wxCommandEvent& event);          //
   void PrependCell(wxCommandEvent& event);         //
   void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
+  void ReEvaluate();
 
   void HandleMainPrompt(wxString prompt);
 
@@ -162,6 +163,7 @@ protected:
   bool m_inLispMode;                // don't add ; in lisp mode
   bool m_inPrompt;
   bool m_inInsertMode;
+  bool m_inReevalMode;
   wxString m_lastPrompt;
   wxString m_monitorFile;
   time_t m_monitorTime;

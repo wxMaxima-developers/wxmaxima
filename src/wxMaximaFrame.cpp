@@ -299,9 +299,15 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
+#if defined (__WXMAC__)
+  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tCtrl+E"),
+                               _("Copy selection from console to input line"),
+                               wxITEM_NORMAL);
+#else
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
+#endif
   wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
                              _("Cut selection from console"),
                              wxITEM_NORMAL);
@@ -317,6 +323,8 @@ void wxMaximaFrame::SetupMenu()
                              _("Edit selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Re-evaluate all\tCtrl-Shift-R"),
+                               _("Re-evaluate all input"), wxITEM_NORMAL);
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
   wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("&Input\tF7"),
                              _("Insert new input before selected input"));
@@ -368,6 +376,8 @@ void wxMaximaFrame::SetupMenu()
                              _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &path"),
                    _("Add a directory to search path"), wxT("gtk-add"));
+  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Reevaluate all\tCtrl-Shift-R"),
+                               _("Reevaluate all input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_functions, _("Show &functions"),
                              _("Show defined functions"), wxITEM_NORMAL);

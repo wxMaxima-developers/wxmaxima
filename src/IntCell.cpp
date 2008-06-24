@@ -168,8 +168,8 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
 
-  m_under->RecalculateSize(parser, MAX(8, fontsize - 5), true);
-  m_over->RecalculateSize(parser, MAX(8, fontsize - 5), true);
+  m_under->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_over->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
   m_base->RecalculateSize(parser, fontsize, true);
   m_var->RecalculateSize(parser, fontsize, true);
 
@@ -207,12 +207,12 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       under.x += m_signMiddle - m_under->GetFullWidth(scale) / 2 -
                  SCALE_PX(5, scale);
       under.y = point.y + (m_height - m_center) - m_under->GetMaxDrop();
-      m_under->Draw(parser, under, MAX(8, fontsize - 5), true);
+      m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
       over.x += m_signMiddle - m_over->GetFullWidth(scale) / 2 +
                 SCALE_PX(5, scale);
       over.y = point.y - m_center + m_over->GetMaxCenter();
-      m_over->Draw(parser, over, MAX(8, fontsize - 5), true);
+      m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
     }
 
     sign.y = sign.y - m_center + (m_signSize + 1) / 2;

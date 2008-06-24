@@ -22,14 +22,17 @@
 
 struct style
 {
-  style() : bold(false), italic(false), underlined(false) { };
+  style() :
+    bold(false), italic(false), underlined(false)
+    {  };
   wxString color;
   bool bold;
   bool italic;
   bool underlined;
 };
 
-enum {
+enum
+{
   TS_NORMAL_TEXT = 0,
   TS_HIDDEN_GROUP,
   TS_MAIN_PROMPT,
