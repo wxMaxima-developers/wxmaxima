@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2008 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -784,22 +784,7 @@ void wxMaxima::ReadPrompt()
     {
       if (o.StartsWith(wxT("(%i")))
       {
-        if (m_inInsertMode && o.StartsWith(wxT("(%i")) && !m_inReevalMode)
-        {
-          MathCell* tmp = m_console->GetInsertPoint();
-          m_console->SetInsertPoint(NULL);
-          m_console->SetScrollTo(-1);
-          m_inInsertMode = false;
-          m_lastPrompt = o;
-          wxYield();  // Let's redraw the output windows so that we get new positions!
-          m_console->SetSelection(tmp);
-          if (!m_console->SelectNextInput())
-            m_console->SetSelection(NULL);
-          m_console->GetLastPrompt()->SetValue(o);
-          m_console->Refresh();
-          SetStatusText(_("Ready for user input"), 1);
-        }
-        else if (m_inReevalMode) {
+        if (m_inReevalMode) {
           MathCell *tmp = m_console->GetInsertPoint();
           m_inInsertMode = false;
           m_console->SetInsertPoint(NULL);
@@ -816,6 +801,21 @@ void wxMaxima::ReadPrompt()
             m_console->EnableEdit();
             ReEvaluate();
           }
+        }
+        else if (m_inInsertMode)
+        {
+          MathCell* tmp = m_console->GetInsertPoint();
+          m_console->SetInsertPoint(NULL);
+          m_console->SetScrollTo(-1);
+          m_inInsertMode = false;
+          m_lastPrompt = o;
+          wxYield();  // Let's redraw the output windows so that we get new positions!
+          m_console->SetSelection(tmp);
+          if (!m_console->SelectNextInput())
+            m_console->SetSelection(NULL);
+          m_console->GetLastPrompt()->SetValue(o);
+          m_console->Refresh();
+          SetStatusText(_("Ready for user input"), 1);
         }
         else
           HandleMainPrompt(o);

@@ -50,6 +50,8 @@
          (wxxml-infix x l r))
 	((equal (get (caar x) 'dimension) 'dimension-match)
          (wxxml-matchfix-dim x l r))
+	((equal (get (caar x) 'dimension) 'dimension-nary)
+	 (wxxml-nary x l r))
         (t (wxxml-function x l r))))
 
 (defmacro make-tag (val tag)
@@ -196,7 +198,9 @@
 		     (if $stardisp
 			 "<t>*</t>"
 			 "<h>*</h>"))
-	       (t (wxxmlsym op))))
+	       ((eq (get op 'dimension) 'dimension-nary)
+		(wxxml-dissym-to-string (get op 'dissym)))
+	       ((wxxmlsym op))))
          (y (cdr x))
          (ext-lop lop)
          (ext-rop rop))
@@ -601,6 +605,7 @@
 		,@s1 "</r></sm>") r)))
 
 (defprop %integrate wxxml-int wxxml)
+(defprop $integrate wxxml-int wxxml)
 
 (defun wxxml-int (x l r)
   (let ((s1 (wxxml (cadr x) nil nil 'mparen 'mparen));;integrand delims / & d
@@ -1074,8 +1079,7 @@
 		      (stripdollar (maybe-invert-string-case (symbol-name a)))
 		      (mfuncall '$string aval)
 		      preamble))
-	(if (length system-preamble)
-	    (setq preamble (format nil "~a; ~a" preamble system-preamble)))
+	(setq preamble (format nil "~a; ~a" preamble system-preamble))
 	(dolist (arg args)
 	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	      (setq preamble (format nil "~a; ~a"
@@ -1145,8 +1149,7 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))
-    (if (length system-preamble)
-	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (setq preamble (format nil "~a; ~a" preamble system-preamble))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
@@ -1163,8 +1166,7 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))
-    (if (length system-preamble)
-	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (setq preamble (format nil "~a; ~a" preamble system-preamble))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
@@ -1205,8 +1207,7 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))
-    (if (length system-preamble)
-	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (setq preamble (format nil "~a; ~a" preamble system-preamble))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a"
@@ -1224,8 +1225,7 @@
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))
-    (if (length system-preamble)
-	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (setq preamble (format nil "~a; ~a" preamble system-preamble))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
