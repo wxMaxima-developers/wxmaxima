@@ -27,7 +27,7 @@
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 
-// Should match whatever  is put in the m_language
+// Should match whatever is put in the m_language
 const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
@@ -36,13 +36,14 @@ const int langs[] =
     wxLANGUAGE_GERMAN,
     wxLANGUAGE_HUNGARIAN,
     wxLANGUAGE_ITALIAN,
+    wxLANGUAGE_POLISH,
     wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_RUSSIAN,
     wxLANGUAGE_SPANISH,
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 10
+#define LANGUAGE_NUMBER 11
 
 const wxString colorlist[] =
   {
@@ -93,7 +94,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   const wxString m_language_choices[] =
     {
       _("(Use default language)"), _("English"),
-      _("French"), _("German"), _("Hungarian"), _("Italian"), _("Portuguese (Brazilian)"),
+      _("French"), _("German"), _("Hungarian"), _("Italian"), _("Polish"), _("Portuguese (Brazilian)"),
       _("Russian"), _("Spanish"), _("Ukrainian")
     };
   m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
