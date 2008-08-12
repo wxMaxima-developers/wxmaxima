@@ -126,9 +126,11 @@
   (or (symbolp sym)
       (return-from wxxml-stripdollar sym))
   (setq pname (maybe-invert-string-case (symbol-name sym)))
-  (setq pname (cond ((member (elt pname 0) '(#\$ #\&) :test #'eq)
+  (setq pname (cond ((and (> (length pname) 0)
+			  (member (elt pname 0) '(#\$ #\&) :test #'eq))
 		     (subseq pname 1))
-		    ((equal (elt pname 0) #\%)
+		    ((and (> (length pname) 0)
+			  (equal (elt pname 0) #\%))
 		     (if $noundisp
 			 (concatenate 'string "'"
 				      (subseq pname 1))
