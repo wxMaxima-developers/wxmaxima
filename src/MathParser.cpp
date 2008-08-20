@@ -688,11 +688,17 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     s = ToUnicode(s);
 
 #if wxUSE_UNICODE
+ #if wxCHECK_VERSION(2,9,0)
+    char *buf = s.char_str();
+    xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
+    //free(buf);
+ #else
     char *buf;
     wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
     buf = strdup(tmp);
     xmlDocPtr doc = xmlParseMemory(buf, strlen(buf));
     free(buf);
+ #endif
 #else
     xmlDocPtr doc = xmlParseMemory(s.c_str(), s.Length());
 #endif

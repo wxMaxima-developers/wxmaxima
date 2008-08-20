@@ -425,12 +425,12 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   wxString file = wxFileSelector(_("Select maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
                                  wxEmptyString, _("Bat files (*.bat)|*.bat|All|*"),
-                                 wxOPEN);
+                                 wxFD_OPEN);
 #else
   wxString file = wxFileSelector(_("Select maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
                                  wxEmptyString, _("All|*"),
-                                 wxOPEN);
+                                 wxFD_OPEN);
 #endif
 
   if (file.Length())
@@ -735,7 +735,7 @@ void Config::WriteStyles()
                 m_styleTextBackground.color);
 
   config->Write(wxT("Style/fontname"), m_fontFamily);
-  config->Write(wxT("fontEncoding"), m_fontEncoding);
+  config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
 
 #if !defined __WXMW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);

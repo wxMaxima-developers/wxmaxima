@@ -438,11 +438,17 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
   m_console->EnableEdit(false);
 
 #if wxUSE_UNICODE
+ #if wxCHECK_VERSION(2,9,0)
+  char *buf = s.char_str();
+  m_client->Write(buf, strlen(buf));
+  //free(buf);
+ #else
   char *buf;
   wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
   buf = strdup(tmp);
   m_client->Write(buf, strlen(buf));
   free(buf);
+ #endif
 #else
   m_client->Write(s.c_str(), s.Length());
 #endif
@@ -1477,7 +1483,7 @@ void wxMaxima::OnMonitorFile(wxCommandEvent& event)
                                  wxEmptyString, wxEmptyString,
                                  _("Maxima package (*.mac)|*.mac|"
                                    "Lisp package (*.lisp)|*.lisp|All|*"),
-                                 wxOPEN);
+                                 wxFD_OPEN);
   if (file.Length() != 0)
   {
     m_monitorFile = file;
@@ -1584,7 +1590,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima session (*.wxm)|*.wxm"),
-                                     wxOPEN);
+                                     wxFD_OPEN);
       m_fileRead = false;
       OpenFile(file);
     }
@@ -1602,7 +1608,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                     wxEmptyString, wxEmptyString,
                                     _("wxMaxima session (*.wxm)|*.wxm"),
-                                    wxOPEN);
+                                    wxFD_OPEN);
       m_fileRead = true;
       OpenFile(file);
       m_fileSaved = false;
@@ -1619,7 +1625,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                             _("wxMaxima session (*.wxm)|*.wxm|"
                                "Maxima batch file (*.mac)|*.mac|"
                                "All|*"),
-                            wxSAVE | wxOVERWRITE_PROMPT);
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         m_lastPath = wxPathOnly(file);
@@ -1645,7 +1651,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                               _("wxMaxima session (*.wxm)|*.wxm|"
                                 "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
-                              wxSAVE | wxOVERWRITE_PROMPT);
+                              wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       }
       if (file.Length())
       {
@@ -1668,7 +1674,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                             _("HTML file (*.html)|*.html|"
                               "pdfLaTeX file (*.tex)|*.tex|"
                               "All|*"),
-                            wxSAVE | wxOVERWRITE_PROMPT);
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         m_lastPath = wxPathOnly(file);
@@ -1694,7 +1700,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|All|*"),
-                                     wxOPEN);
+                                     wxFD_OPEN);
       OpenFile(file, wxT("load"));
     }
     break;
@@ -1703,7 +1709,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac"),
-                                     wxOPEN);
+                                     wxFD_OPEN);
       OpenFile(file, wxT("batch"));
     }
     break;
@@ -1715,7 +1721,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                        "Maxima package (*.mac)|*.mac|"
                                        "Demo file (*.dem)|*.dem|"
                                        "Lisp file (*.lisp)|*.lisp"),
-                                     wxOPEN);
+                                     wxFD_OPEN);
       if (file.Length())
       {
         m_lastPath = wxPathOnly(file);
@@ -1811,7 +1817,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                                        "JPEG image (*.jpg)|*.jpg|"
                                        "Windows bitmap (*.bmp)|*.bmp|"
                                        "X pixmap (*.xpm)|*.xpm"),
-                                     wxSAVE | wxOVERWRITE_PROMPT);
+                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         m_console->CopyToFile(file);
@@ -3191,7 +3197,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
                                        "JPEG image (*.jpg)|*.jpg|"
                                        "Windows bitmap (*.bmp)|*.bmp|"
                                        "X pixmap (*.xpm)|*.xpm"),
-                                     wxSAVE | wxOVERWRITE_PROMPT);
+                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         m_console->CopyToFile(file);

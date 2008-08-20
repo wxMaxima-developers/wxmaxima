@@ -462,7 +462,7 @@ void Plot3DWiz::OnFileBrowse(wxCommandEvent& event)
   wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot3d.eps"), wxT("eps"),
                                  _("Postscript file (*.eps)|*.eps|All|*"),
-                                 wxSAVE | wxOVERWRITE_PROMPT);
+                                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
   if (file.Length() > 0)
     text_ctrl_10->SetValue(file);
 }
