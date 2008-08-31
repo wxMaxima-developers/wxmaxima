@@ -24,6 +24,12 @@
 #include <wx/font.h>
 #include <wx/fontdlg.h>
 
+#if !wxCHECK_VERSION(2, 8, 0)
+ #define wxFD_OPEN wxOPEN 
+ #define wxFD_SAVE wxSAVE 
+ #define wxFD_OVERWRITE_PROMPT wxOVERWRITE_PROMPT 
+#endif
+
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 

@@ -22,6 +22,12 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 
+#if !wxCHECK_VERSION(2, 8, 0)
+ #define wxFD_OPEN wxOPEN 
+ #define wxFD_SAVE wxSAVE 
+ #define wxFD_OVERWRITE_PROMPT wxOVERWRITE_PROMPT 
+#endif
+
 enum {
   special,
   combobox,
