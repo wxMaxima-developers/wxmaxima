@@ -188,6 +188,10 @@ protected:
   wxHtmlHelpController m_helpCtrl;
 #endif
   DECLARE_EVENT_TABLE()
+#if defined (__WXMSW__) || defined (__WXMAC__)
+  wxImage playbackStart;
+  wxImage playbackStop;
+#endif
 };
 
 #endif //_WXMAXIM_H_

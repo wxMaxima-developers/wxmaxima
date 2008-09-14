@@ -22,6 +22,7 @@
 #include "MathCtrl.h"
 #include "Bitmap.h"
 #include "Setup.h"
+#include "SlideShowCell.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -36,13 +37,15 @@
 
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
+#define ANIMATION_TIMER_TIMEOUT 300
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
 enum
 {
   TIMER_ID,
-  CARET_TIMER_ID
+  CARET_TIMER_ID,
+  ANIMATION_TIMER_ID
 };
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
@@ -64,6 +67,8 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_switchDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
+  m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
+  m_animate = false;
   AdjustSize(false);
 }
 
@@ -432,6 +437,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
  * Left mouse - selection handling
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
+  m_animate = false;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
 #if wxUSE_DRAG_AND_DROP && WXM_DND
@@ -460,6 +466,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
+  m_animate = false;
   if (!m_mouseDrag)
     SelectPoint(m_down);
   m_leftDown = false;
@@ -1147,39 +1154,64 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
 }
 
 void MathCtrl::OnTimer(wxTimerEvent& event) {
-  if (event.GetId() == TIMER_ID) {
-    if (!m_leftDown || !m_mouseOutside)
-      return;
-    int dx = 0, dy = 0;
-    int currX, currY;
-
-    wxSize size = GetClientSize();
-    CalcUnscrolledPosition(0, 0, &currX, &currY);
-
-    if (m_mousePoint.x <= 0)
-      dx = -10;
-    else if (m_mousePoint.x >= size.GetWidth())
-      dx = 10;
-    if (m_mousePoint.y <= 0)
-      dy = -10;
-    else if (m_mousePoint.y >= size.GetHeight())
-      dy = 10;
-
-    Scroll((currX + dx) / 10, (currY + dy) / 10);
-    m_timer.Start(50, true);
-  } else {
-    if (m_activeCell != NULL) {
-      if (m_switchDisplayCaret) {
-        m_activeCell->SwitchCaretDisplay();
-
-        wxRect rect = m_activeCell->GetRect();
-        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-        RefreshRect(rect);
+  switch (event.GetId()) {
+    case TIMER_ID:
+      {
+        if (!m_leftDown || !m_mouseOutside)
+          return;
+        int dx = 0, dy = 0;
+        int currX, currY;
+    
+        wxSize size = GetClientSize();
+        CalcUnscrolledPosition(0, 0, &currX, &currY);
+    
+        if (m_mousePoint.x <= 0)
+          dx = -10;
+        else if (m_mousePoint.x >= size.GetWidth())
+          dx = 10;
+        if (m_mousePoint.y <= 0)
+          dy = -10;
+        else if (m_mousePoint.y >= size.GetHeight())
+          dy = 10;
+    
+        Scroll((currX + dx) / 10, (currY + dy) / 10);
+        m_timer.Start(50, true);
       }
-      m_switchDisplayCaret = true;
-      m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
-    }
-  }
+      break;
+    case ANIMATION_TIMER_ID:
+      {
+        if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
+            m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
+          
+          SlideShow *tmp = (SlideShow *)m_selectionStart;
+          tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+          
+	  wxRect rect = m_selectionStart->GetRect();
+	  CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+	  RefreshRect(rect);
+          
+	  m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT);
+        }
+        else
+          m_animate = false;
+      }
+      break;
+    case CARET_TIMER_ID:
+      {
+        if (m_activeCell != NULL) {
+          if (m_switchDisplayCaret) {
+            m_activeCell->SwitchCaretDisplay();
+    
+            wxRect rect = m_activeCell->GetRect();
+            CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+            RefreshRect(rect);
+          }
+          m_switchDisplayCaret = true;
+          m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
+        }
+      }
+      break;
+   }
 }
 
 /***
@@ -2398,6 +2430,21 @@ void MathCtrl::ScrollToBottom() {
   Scroll(-1, height/SCROLL_UNIT);
 }
 
+void MathCtrl::Animate(bool run) {
+  if (CanAnimate()) {
+    if (run) {
+      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+      Refresh();
+
+      m_animate = true;
+      m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT, true);
+    }
+    else
+      m_animate = false;
+  }
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
@@ -2410,6 +2457,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
   EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
   EVT_TIMER(CARET_TIMER_ID, MathCtrl::OnTimer)
+  EVT_TIMER(ANIMATION_TIMER_ID, MathCtrl::OnTimer)
   EVT_KEY_DOWN(MathCtrl::OnKeyDown)
   EVT_CHAR(MathCtrl::OnChar)
   EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)

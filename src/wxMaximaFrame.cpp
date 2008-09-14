@@ -694,9 +694,11 @@ void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
 
+  frame_1_toolbar->SetToolBitmapSize(wxSize(22, 22));
+
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            IMAGE("open.png"),
-			   _("Open session"));
+			                     _("Open session"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            IMAGE("save.png"),
                            _("Save session"));
@@ -728,15 +730,17 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("stop.png"),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_help, _("Help"),
-                           IMAGE("help.png"),
-                           _("Show maxima help"));
-
-  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_animation, _("Animation"),
+                           IMAGE("playback-start.png"),
+                           _("Animation"));
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   frame_1_toolbar->AddControl(m_plotSlider);
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_help, _("Help"),
+                           IMAGE("help.png"),
+                           _("Show maxima help"));
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }

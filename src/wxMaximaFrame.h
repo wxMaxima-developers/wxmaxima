@@ -185,6 +185,7 @@ enum {
   tb_help,
   tb_insert_text,
   tb_insert_input,
+  tb_animation,
 #endif
   menu_edit_input,
   menu_reeval_input,

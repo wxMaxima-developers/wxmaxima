@@ -120,6 +120,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
+  
+#if defined (__WXMSW__)
+  playbackStart.LoadFile(wxT("art/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
+  playbackStop.LoadFile(wxT("art/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
+#elif defined (__WXMAC__)
+  playbackStart.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
+  playbackStop.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
+#endif
 }
 
 wxMaxima::~wxMaxima()
@@ -1466,6 +1474,13 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   else
     toolbar->EnableTool(tb_print, false);
 #endif
+  toolbar->EnableTool(tb_animation, m_console->CanAnimate());
+#if defined (__WXMSW__) || defined (__WXMAC__)
+  if (m_console->AnimationRunning())
+    toolbar->SetToolNormalBitmap(tb_animation, playbackStop);
+  else
+    toolbar->SetToolNormalBitmap(tb_animation, playbackStart);
+#endif
 }
 
 #endif
@@ -1741,6 +1756,16 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
   case wxID_EXIT:
     Close();
+    break;
+  case tb_animation:
+    {
+      if (m_console->CanAnimate()) {
+        if (m_console->AnimationRunning())
+          m_console->Animate(false);
+        else
+          m_console->Animate(true);
+      }
+    }
     break;
   default:
     break;
@@ -3410,11 +3435,16 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
   if (m_console->IsSelected(MC_TYPE_SLIDE))
   {
-    SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
-
-    m_plotSlider->SetRange(0, cell->Length() - 1);
-    m_plotSlider->SetValue(cell->GetDisplayedIndex());
-    m_plotSlider->Enable(true);
+    if (!m_console->AnimationRunning())
+    {
+      SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+  
+      m_plotSlider->SetRange(0, cell->Length() - 1);
+      m_plotSlider->SetValue(cell->GetDisplayedIndex());
+      m_plotSlider->Enable(true);
+    }
+    else
+      m_plotSlider->Enable(false);
   }
   else
     m_plotSlider->Enable(false);
@@ -3616,6 +3646,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_insert_text, wxMaxima::PrependCell)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
+  EVT_TOOL(tb_animation, wxMaxima::FileMenu)
 #endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
@@ -3638,6 +3669,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_insert_input, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_insert_text, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_animation, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)

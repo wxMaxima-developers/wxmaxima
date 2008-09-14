@@ -91,6 +91,11 @@ public:
   bool CanDeleteSelection();
   bool CanAddComment();
   bool CanAddInput();
+  bool CanAnimate() {
+    return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
+      m_selectionStart->GetType() == MC_TYPE_SLIDE;
+  }
+  void Animate(bool run);
   void DeleteSelection(bool deletePrompt = true);
   bool CutToClipboard();
   void PasteFromClipboard();
@@ -158,6 +163,7 @@ public:
   void OnSetFocus(wxFocusEvent& event);
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
+  bool AnimationRunning() { return m_animate; }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -202,7 +208,8 @@ protected:
   bool m_switchDisplayCaret;
   bool m_editingEnabled;
   int m_scrollTo;
-  wxTimer m_timer, m_caretTimer;
+  wxTimer m_timer, m_caretTimer, m_animationTimer;
+  bool m_animate;
   wxBitmap *m_memory;
   DECLARE_EVENT_TABLE()
 };
