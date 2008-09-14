@@ -2935,6 +2935,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
+    info.AddTranslator(wxT("Alexey Beshenov (ru)"));
     info.AddTranslator(wxT("Istvan Blahota (hu)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
@@ -2944,6 +2945,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
     info.AddTranslator(wxT("Antonio Ullan (es)"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
+    info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
 #endif
     wxAboutBox(info);
   }
