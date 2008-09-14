@@ -50,6 +50,7 @@
 #include <wx/dynlib.h>
 #include <wx/dir.h>
 #include <wx/filename.h>
+#include <wx/artprov.h>
 
 #if wxCHECK_VERSION(2, 7, 1)
  #include <wx/aboutdlg.h>
@@ -1475,11 +1476,20 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     toolbar->EnableTool(tb_print, false);
 #endif
   toolbar->EnableTool(tb_animation, m_console->CanAnimate());
-#if defined (__WXMSW__) || defined (__WXMAC__)
+#if defined (__WXMSW__) || defined (__WXMAC__) 
   if (m_console->AnimationRunning())
     toolbar->SetToolNormalBitmap(tb_animation, playbackStop);
   else
     toolbar->SetToolNormalBitmap(tb_animation, playbackStart);
+#elif defined (__WXGTK__)
+  if (m_console->AnimationRunning())
+    toolbar->SetToolNormalBitmap(tb_animation,
+				 wxArtProvider::GetBitmap(wxT("media-playback-stop"),
+							  wxART_TOOLBAR));
+  else
+    toolbar->SetToolNormalBitmap(tb_animation,
+				 wxArtProvider::GetBitmap(wxT("media-playback-start"),
+							  wxART_TOOLBAR) );
 #endif
 }
 

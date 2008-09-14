@@ -794,16 +794,18 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_help, _("Help"),
-                           wxArtProvider::GetBitmap(wxT("gtk-help"),
-                                                    wxART_TOOLBAR),
-                           _("Show maxima help"));
-
-  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_animation, _("Animation"),
+			   wxArtProvider::GetBitmap(wxT("media-playback-start"),
+						    wxART_TOOLBAR));
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   frame_1_toolbar->AddControl(m_plotSlider);
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_help, _("Help"),
+                           wxArtProvider::GetBitmap(wxT("gtk-help"),
+                                                    wxART_TOOLBAR),
+                           _("Show maxima help"));
   frame_1_toolbar->Realize();
   SetToolBar(frame_1_toolbar);
 }
