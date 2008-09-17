@@ -93,7 +93,7 @@ AC_ARG_ENABLE(static-wx,
      	 esac],
 	[static_wx=false])
 
-AM_PATH_WXCONFIG(2.6.0, wxWin=1)
+AM_PATH_WXCONFIG(2.8.0, wxWin=1)
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
@@ -103,7 +103,7 @@ if test "$wxWin" != 1; then
           where wxWidgets libraries are installed (returned by
           'wx-config --libs' or 'wx-config --static --libs' command)
           is in LD_LIBRARY_PATH or equivalent variable and
-          wxWidgets version is 2.6.0 or above.
+          wxWidgets version is 2.8.0 or above.
           ])
 else
    if test x"${static_wx}" = x"true" ; then
@@ -144,27 +144,6 @@ else
    RC_OBJ=""
    WX_RC_PATH=""
 fi
-
-
-CXXFLAGS="$CXXFLAGS"
-
-dnl
-dnl check for xml2
-dnl
-AM_PATH_XML2(2.5.0, xml2=1)
-  if test "$xml2" != 1; then
-      AC_MSG_ERROR([
-      xml2 must be installed on your system
-      but xml2-config script couldn't be found.
-     
-      Please check that xml2-config is in path, the directory
-      where xml2 libraries are installed (returned by
-      'xml2-config --libs' command) is in LD_LIBRARY_PATH or
-      equivalent variable and xml2 version is 2.5.0 or above.
-      ])
-   fi
-   CPPFLAGS="$CPPFLAGS $XML_CPPFLAGS"
-   WX_LIBS="$WX_LIBS $XML_LIBS"
 
 dnl
 dnl translations
