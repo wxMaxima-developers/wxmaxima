@@ -51,16 +51,8 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 #include <wx/artprov.h>
+#include <wx/aboutdlg.h>
 
-#if wxCHECK_VERSION(2, 7, 1)
- #include <wx/aboutdlg.h>
-#endif
-
-#if !wxCHECK_VERSION(2, 8, 0)
- #define wxFD_OPEN wxOPEN 
- #define wxFD_SAVE wxSAVE 
- #define wxFD_OVERWRITE_PROMPT wxOVERWRITE_PROMPT 
-#endif
 
 enum {
   maxima_process_id
@@ -123,9 +115,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_inReevalMode = false;
   
 #if defined (__WXMSW__)
+  m_animationButtonStop = false;
   playbackStart.LoadFile(wxT("art/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
   playbackStop.LoadFile(wxT("art/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
 #elif defined (__WXMAC__)
+  m_animationButtonStop = false;
   playbackStart.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
   playbackStop.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
 #endif
@@ -1477,10 +1471,14 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 #endif
   toolbar->EnableTool(tb_animation, m_console->CanAnimate());
 #if defined (__WXMSW__) || defined (__WXMAC__) 
-  if (m_console->AnimationRunning())
+  if (m_console->AnimationRunning() && !m_animationButtonStop) {
+    m_animationButtonStop = true;
     toolbar->SetToolNormalBitmap(tb_animation, playbackStop);
-  else
+  }
+  else if (!m_console->AnimationRunning() && m_animationButtonStop) {
+    m_animationButtonStop = false;
     toolbar->SetToolNormalBitmap(tb_animation, playbackStart);
+  }
 #elif defined (__WXGTK__)
   if (m_console->AnimationRunning())
     toolbar->SetToolNormalBitmap(tb_animation,
@@ -2919,10 +2917,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case wxID_ABOUT:
-#if wxCHECK_VERSION(2, 7, 1)
   {
     wxAboutDialogInfo info;
-
 #if defined __WXMSW__ || defined __WXMAC__
     info.SetIcon(GetIcon());
     info.SetDescription(_("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets."));
@@ -2949,19 +2945,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #endif
     wxAboutBox(info);
   }
-#else
-    wxMessageBox(wxString::Format(
-                   _("wxMaxima is a wxWidgets interface for the\n"
-                     "computer algebra system MAXIMA.\n"
-                     "\nVersion: %s."
-                     "\nLicense: GPL.\n"
-                     "\n%s\n%s"),
-                   wxT(VERSION),
-                   wxT("http://wxmaxima.sourceforge.net/"),
-                   wxT("http://maxima.sourceforge.net/")),
-                 _("About wxMaxima"), wxOK | wxICON_INFORMATION);
-#endif
-    break;
+  break;
   case wxID_HELP:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:

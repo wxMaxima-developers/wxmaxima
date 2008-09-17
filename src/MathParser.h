@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2007 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2008 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #ifndef _MATHPARSER_H_
 #define _MATHPARSER_H_
 
-#include <libxml/parser.h>
+#include <wx/xml/xml.h>
 
 #include "MathCell.h"
 #include "TextCell.h"
@@ -32,25 +32,23 @@ public:
   ~MathParser();
   MathCell* ParseLine(wxString s, int style = MC_TYPE_TEXT);
 private:
-  MathCell* ParseTag(xmlNodePtr node, bool all = true);
-  MathCell* ParseFracTag(xmlNodePtr node);
-  MathCell* ParseText(xmlNodePtr node, int style = TS_NORMAL_TEXT);
-  MathCell* ParseSupTag(xmlNodePtr node);
-  MathCell* ParseSubTag(xmlNodePtr node);
-  MathCell* ParseAbsTag(xmlNodePtr node);
-  MathCell* ParseUnderTag(xmlNodePtr node);
-  MathCell* ParseTableTag(xmlNodePtr node);
-  MathCell* ParseAtTag(xmlNodePtr node);
-  MathCell* ParseDiffTag(xmlNodePtr node);
-  MathCell* ParseSumTag(xmlNodePtr node);
-  MathCell* ParseIntTag(xmlNodePtr node);
-  MathCell* ParseFunTag(xmlNodePtr node);
-  MathCell* ParseSqrtTag(xmlNodePtr node);
-  MathCell* ParseLimitTag(xmlNodePtr node);
-  MathCell* ParseParenTag(xmlNodePtr node);
-  MathCell* ParseSubSupTag(xmlNodePtr node);
-  wxString ToUnicode(wxString s);
-  wxString ToLocal(wxString s);
+  MathCell* ParseTag(wxXmlNode* node, bool all = true);
+  MathCell* ParseFracTag(wxXmlNode* node);
+  MathCell* ParseText(wxXmlNode* node, int style = TS_NORMAL_TEXT);
+  MathCell* ParseSupTag(wxXmlNode* node);
+  MathCell* ParseSubTag(wxXmlNode* node);
+  MathCell* ParseAbsTag(wxXmlNode* node);
+  MathCell* ParseUnderTag(wxXmlNode* node);
+  MathCell* ParseTableTag(wxXmlNode* node);
+  MathCell* ParseAtTag(wxXmlNode* node);
+  MathCell* ParseDiffTag(wxXmlNode* node);
+  MathCell* ParseSumTag(wxXmlNode* node);
+  MathCell* ParseIntTag(wxXmlNode* node);
+  MathCell* ParseFunTag(wxXmlNode* node);
+  MathCell* ParseSqrtTag(wxXmlNode* node);
+  MathCell* ParseLimitTag(wxXmlNode* node);
+  MathCell* ParseParenTag(wxXmlNode* node);
+  MathCell* ParseSubSupTag(wxXmlNode* node);
   int m_ParserStyle;
   int m_FracStyle;
   bool m_highlight;

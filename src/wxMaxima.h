@@ -191,6 +191,7 @@ protected:
 #if defined (__WXMSW__) || defined (__WXMAC__)
   wxImage playbackStart;
   wxImage playbackStop;
+  bool m_animationButtonStop;
 #endif
 };
 
