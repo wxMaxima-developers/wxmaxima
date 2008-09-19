@@ -304,7 +304,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
 #if defined (__WXMAC__)
-  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tCtrl+E"),
+  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tCtrl-Shift-E"),
                                _("Copy selection from console to input line"),
                                wxITEM_NORMAL);
 #else
@@ -380,8 +380,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &path"),
                    _("Add a directory to search path"), wxT("gtk-add"));
-  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Reevaluate all\tCtrl-Shift-R"),
-                               _("Reevaluate all input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_functions, _("Show &functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
