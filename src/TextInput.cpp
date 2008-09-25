@@ -76,12 +76,12 @@ void TextInput::set_properties()
 
 void TextInput::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 0);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER | wxTOP | wxBOTTOM, 3);
+  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_CENTER, 0);
 
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);

@@ -24,7 +24,6 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
                  const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_1 = new wxStaticText(this, -1, title);
   label_2 = new wxStaticText(this, -1, label1);
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
@@ -45,7 +44,6 @@ Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
 
 void Gen1Wiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -58,15 +56,14 @@ void Gen1Wiz::set_properties()
 
 void Gen1Wiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 3);
-  grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 0);
-  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 3);
+  grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+  grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

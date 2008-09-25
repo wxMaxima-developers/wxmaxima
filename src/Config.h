@@ -92,7 +92,6 @@ protected:
   wxStaticBox* sizer_9_staticbox;
   wxStaticBox* sizer_6_staticbox;
   wxStaticBox* sizer_4_staticbox;
-  wxStaticText* label_1;
   wxStaticText* label_5;
   wxTextCtrl* m_maximaProgram;
   wxButton* m_mpBrowse;

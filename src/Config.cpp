@@ -84,7 +84,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   sizer_4_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("Maxima options"));
   sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Fonts"));
   sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
-  label_1 = new wxStaticText(this, -1, _("wxMaxima configuration"));
   label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(notebook_1_pane_1, wxID_OPEN, _("Open"));
@@ -173,8 +172,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
 void Config::set_properties()
 {
   SetTitle(_("wxMaxima configuration"));
-
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
 
   m_maximaProgram->SetToolTip(_("Enter the path to the maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for maxima"
@@ -289,9 +286,6 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
 
-  // Title
-  sizer_1->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 3);
-
   // TAB 1
   // Maxima options box
   grid_sizer_2->Add(label_5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -368,9 +362,9 @@ void Config::do_layout()
   sizer_1->Add(notebook_1, 1, wxEXPAND | wxALL, 2);
 
   // OK and cancel buttons
-  sizer_2->Add(m_button1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_2->Add(m_button2, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  sizer_2->Add(m_button1, 0, wxALL, 5);
+  sizer_2->Add(m_button2, 0, wxALL, 5);
+  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT, 0);
 
   SetAutoLayout(true);
   SetSizer(sizer_1);

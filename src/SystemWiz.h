@@ -40,7 +40,6 @@ private:
   void do_layout();
   int m_size;
   vector<BTextCtrl*> m_inputs;
-  wxStaticText* label_1;
   BTextCtrl* variables;
   wxStaticLine* static_line_1;
   wxButton* button_1;

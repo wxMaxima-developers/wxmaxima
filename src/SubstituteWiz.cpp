@@ -24,7 +24,6 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_1 = new wxStaticText(this, -1, _("Substitute"));
   label_2 = new wxStaticText(this, -1, _("Substitute:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -52,7 +51,6 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
 void SubstituteWiz::set_properties()
 {
   SetTitle(_("Substitution"));
-  label_1->SetFont(wxFont(22, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -65,24 +63,23 @@ void SubstituteWiz::set_properties()
 
 void SubstituteWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 3, 3);
-  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 2);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 2);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 2);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(20, 20, 0, 0);
-  grid_sizer_2->Add(checkbox_1, 0, wxALL, 2);
+  grid_sizer_2->Add(checkbox_1, 0, wxALL, 5);
   grid_sizer_2->AddGrowableCol(1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 2);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

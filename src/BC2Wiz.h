@@ -41,7 +41,6 @@ public:
 private:
   void set_properties();
   void do_layout();
-  wxStaticText* label_1;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;

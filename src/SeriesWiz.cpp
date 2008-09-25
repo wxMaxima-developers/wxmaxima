@@ -29,7 +29,6 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_1 = new wxStaticText(this, -1, _("Series"));
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -60,7 +59,6 @@ SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
 void SeriesWiz::set_properties()
 {
   SetTitle(_("Series"));
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -73,28 +71,27 @@ void SeriesWiz::set_properties()
 
 void SeriesWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 2, 3, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
-  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
-  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 2);
-  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  sizer_2->Add(text_ctrl_3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 2);
-  sizer_2->Add(button_3, 0, wxALL, 2);
+  grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  sizer_2->Add(text_ctrl_3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_2->Add(button_3, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-  grid_sizer_2->Add(spin_ctrl_1, 0, wxALL, 2);
+  grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  grid_sizer_2->Add(spin_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(20, 20, 0, 0, 0);
   grid_sizer_2->Add(checkbox_1, 0, 0, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

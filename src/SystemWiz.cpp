@@ -24,7 +24,6 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
     wxDialog(parent, id, title, pos, sz, wxDEFAULT_DIALOG_STYLE)
 {
   m_size = numEq;
-  label_1 = new wxStaticText(this, -1, title);
   for (int i = 0; i < m_size; i++)
   {
     m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
@@ -47,7 +46,6 @@ SysWiz::SysWiz(wxWindow* parent, int id, const wxString& title, int numEq,
 
 void SysWiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
   variables->SetToolTip(_("Enter comma separated list of variables."));
 #if defined __WXMSW__
   button_1->SetDefault();
@@ -61,7 +59,7 @@ void SysWiz::set_properties()
 
 void SysWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 1, 3);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText* text;
@@ -74,12 +72,11 @@ void SysWiz::do_layout()
   text = new wxStaticText(this, -1, _("Variables:"));
   grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 0);
   grid_sizer_2->Add(variables, 0, wxALL, 1);
-  grid_sizer_1->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 2);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);

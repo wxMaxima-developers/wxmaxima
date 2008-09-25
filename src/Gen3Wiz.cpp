@@ -26,7 +26,6 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
                  const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_1 = new wxStaticText(this, -1, title);
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 = new BTextCtrl(this, -1, val1, wxDefaultPosition,
                               wxSize(230, -1));
@@ -59,21 +58,20 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
 
 void Gen3Wiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 3, 3);
-  grid_sizer_1->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 3);
-  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 2);
-  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 2);
-  grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(text_ctrl_3, 0, wxALL, 2);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 0, 0);
+  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
+  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(text_ctrl_2, 0,  wxALL, 5);
+  grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(text_ctrl_3, 0,  wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  sizer_1->Add(button_1, 0, wxLEFT | wxRIGHT, 5);
-  sizer_1->Add(button_2, 0, wxLEFT | wxRIGHT, 5);
-  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT | wxTOP | wxBOTTOM, 3);
+  sizer_1->Add(button_1, 0, wxALL, 5);
+  sizer_1->Add(button_2, 0, wxALL, 5);
+  grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
   SetSizer(grid_sizer_1);
   grid_sizer_1->Fit(this);
@@ -83,7 +81,6 @@ void Gen3Wiz::do_layout()
 
 void Gen3Wiz::set_properties()
 {
-  label_1->SetFont(wxFont(20, wxROMAN, wxITALIC, wxNORMAL, 0, wxEmptyString));
 #if defined __WXMSW__
   button_1->SetDefault();
 #else

@@ -43,7 +43,6 @@ private:
   void do_layout();
   void OnCheckbox(wxCommandEvent& event);
 protected:
-  wxStaticText* label_1;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;

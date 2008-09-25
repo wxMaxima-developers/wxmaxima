@@ -44,7 +44,6 @@ private:
   void do_layout();
 protected:
   int type;
-  wxStaticText* label_1;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;
