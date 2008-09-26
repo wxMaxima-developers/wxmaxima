@@ -890,7 +890,8 @@ void Config::OnChangeStyle(wxCommandEvent& event)
       m_styleColor->SetSelection(i);
   }
 
-  if (st == 11 || st == 12 || st == 13)
+  // Background color only
+  if (st == 12 || st == 13 || st == 14)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
