@@ -1069,7 +1069,10 @@
   (let ((x (gensym)))
     (mfuncall '$makelist x x i j)))
 
-(defun $with_slider (a a-range expr &rest args)
+(defun $with_slider (&rest args)
+  (apply #'$wxanimate args))
+
+(defun $wxanimate (a a-range expr &rest args)
   (let (images)
     (dolist (aval (reverse (cdr a-range)))
       (let ((preamble ($wxplot_preamble))
@@ -1097,7 +1100,10 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defun $with_slider_draw (a a-range &rest args)
+(defun $with_slider_draw (&rest args)
+  (apply #'$wxanimate_draw args))
+
+(defun $wxanimate_draw (a a-range &rest args)
   (let (images)
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
@@ -1122,7 +1128,10 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
-(defun $with_slider_draw3d (a a-range &rest args)
+(defun $with_slider_draw3d (&rest args)
+  (apply #'$wxanimate_draw3d args))
+
+(defun $wxanimate_draw3d (a a-range &rest args)
   (let (images)
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
