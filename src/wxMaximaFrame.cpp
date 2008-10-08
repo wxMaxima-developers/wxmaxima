@@ -732,9 +732,12 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("stop.png"),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_animation, _("Animation"),
+  frame_1_toolbar->AddTool(tb_animation_start, _("Start animation"),
                            IMAGE("playback-start.png"),
-                           _("Animation"));
+                           _("Start animation"));
+  frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
+			   IMAGE("playback-stop.png"),
+			   _("Stop animation"));
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
@@ -796,8 +799,11 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Interrupt current computation"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_animation, _("Animation"),
+  frame_1_toolbar->AddTool(tb_animation_start, _("Animation"),
 			   wxArtProvider::GetBitmap(wxT("media-playback-start"),
+						    wxART_TOOLBAR));
+  frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
+			   wxArtProvider::GetBitmap(wxT("media-playback-stop"),
 						    wxART_TOOLBAR));
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),

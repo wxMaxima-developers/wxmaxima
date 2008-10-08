@@ -31,6 +31,7 @@ enum {
   popid_select_all,
   popid_copy_text,
   popid_copy_image,
+  popid_copy_to_input,
   popid_delete,
   popid_simplify,
   popid_expand,

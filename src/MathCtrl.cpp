@@ -376,6 +376,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
         popupMenu->Append(popid_copy_image, _("Copy as image"),
             wxEmptyString, wxITEM_NORMAL);
 #endif
+	popupMenu->Append(popid_copy_to_input, _("Copy to input"), wxEmptyString, wxITEM_NORMAL);
 
         if (CanDeleteSelection())
           popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);

@@ -113,16 +113,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
-  
-#if defined (__WXMSW__)
-  m_animationButtonStop = false;
-  playbackStart.LoadFile(wxT("art/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
-  playbackStop.LoadFile(wxT("art/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
-#elif defined (__WXMAC__)
-  m_animationButtonStop = false;
-  playbackStart.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-start.png"), wxBITMAP_TYPE_PNG);
-  playbackStop.LoadFile(wxT("wxMaxima.app/Contents/Resources/toolbar/playback-stop.png"), wxBITMAP_TYPE_PNG);
-#endif
 }
 
 wxMaxima::~wxMaxima()
@@ -1469,26 +1459,14 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   else
     toolbar->EnableTool(tb_print, false);
 #endif
-  toolbar->EnableTool(tb_animation, m_console->CanAnimate());
-#if defined (__WXMSW__) || defined (__WXMAC__) 
-  if (m_console->AnimationRunning() && !m_animationButtonStop) {
-    m_animationButtonStop = true;
-    toolbar->SetToolNormalBitmap(tb_animation, playbackStop);
-  }
-  else if (!m_console->AnimationRunning() && m_animationButtonStop) {
-    m_animationButtonStop = false;
-    toolbar->SetToolNormalBitmap(tb_animation, playbackStart);
-  }
-#elif defined (__WXGTK__)
-  if (m_console->AnimationRunning())
-    toolbar->SetToolNormalBitmap(tb_animation,
-				 wxArtProvider::GetBitmap(wxT("media-playback-stop"),
-							  wxART_TOOLBAR));
+  if (m_console->CanAnimate() && !m_console->AnimationRunning())
+    toolbar->EnableTool(tb_animation_start, true);
   else
-    toolbar->SetToolNormalBitmap(tb_animation,
-				 wxArtProvider::GetBitmap(wxT("media-playback-start"),
-							  wxART_TOOLBAR) );
-#endif
+    toolbar->EnableTool(tb_animation_start, false);
+  if (m_console->CanAnimate() && m_console->AnimationRunning())
+    toolbar->EnableTool(tb_animation_stop, true);
+  else
+    toolbar->EnableTool(tb_animation_stop, false);
 }
 
 #endif
@@ -1765,15 +1743,13 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case wxID_EXIT:
     Close();
     break;
-  case tb_animation:
-    {
-      if (m_console->CanAnimate()) {
-        if (m_console->AnimationRunning())
-          m_console->Animate(false);
-        else
-          m_console->Animate(true);
-      }
-    }
+  case tb_animation_start:
+    if (m_console->CanAnimate() && !m_console->AnimationRunning())
+      m_console->Animate(true);
+    break;
+  case tb_animation_stop:
+    if (m_console->CanAnimate() && m_console->AnimationRunning())
+      m_console->Animate(false);
     break;
   default:
     break;
@@ -1844,6 +1820,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->CopyBitmap();
     break;
   case menu_selection_to_input:
+  case popid_copy_to_input:
     if (m_console->CanCopy())
       m_inputLine->WriteText((m_console->GetString()).Trim(false));
     return ;
@@ -3461,6 +3438,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_text, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_copy_to_input, wxMaxima::EditMenu)
   EVT_MENU(popid_delete, wxMaxima::EditMenu)
   EVT_MENU(popid_simplify, wxMaxima::PopupMenu)
   EVT_MENU(popid_factor, wxMaxima::PopupMenu)
@@ -3642,7 +3620,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_insert_text, wxMaxima::PrependCell)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
-  EVT_TOOL(tb_animation, wxMaxima::FileMenu)
+  EVT_TOOL(tb_animation_start, wxMaxima::FileMenu)
+  EVT_TOOL(tb_animation_stop, wxMaxima::FileMenu)
 #endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
@@ -3665,7 +3644,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_insert_input, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_insert_text, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_animation, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_animation_start, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)

@@ -145,11 +145,11 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxPoint base(point), under(point), over(point);
 
     under.x += m_signCenter - m_under->GetFullWidth(scale) / 2;
-    under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + 2;
+    under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale);
     m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
     over.x += m_signCenter - m_over->GetFullWidth(scale) / 2;
-    over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - 2;
+    over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
     m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
     SetPen(parser);

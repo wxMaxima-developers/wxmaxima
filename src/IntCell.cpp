@@ -40,7 +40,7 @@ IntCell::IntCell() : MathCell()
   m_under = NULL;
   m_over = NULL;
   m_var = NULL;
-  m_signSize = 20;
+  m_signSize = 50;
   m_signWidth = 18;
   m_signMiddle = 9;
   m_intStyle = INT_IDEF;
@@ -131,7 +131,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
 
-  m_signSize = SCALE_PX(20, scale);
+  m_signSize = SCALE_PX(50, scale);
   m_signWidth = SCALE_PX(18, scale);
   m_signMiddle = SCALE_PX(9, scale);
 
@@ -145,7 +145,8 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_over->RecalculateWidths(parser, MAX(8, fontsize - 5), true);
 
   m_signMiddle = MAX(m_signMiddle,
-                     m_under->GetFullWidth(scale) / 2 + SCALE_PX(5, scale));
+                     MAX(m_under->GetFullWidth(scale) / 2 + SCALE_PX(4, scale),
+			 m_over->GetFullWidth(scale) / 2 - SCALE_PX(4, scale)));
 
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxDC& dc = parser.GetDC();
@@ -156,10 +157,15 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
 #endif
   int signOver = MAX(SCALE_PX(10, scale),
-                     m_over->GetFullWidth(scale) / 2 + SCALE_PX(5, scale));
-  m_signWidth = m_signMiddle + signOver;
+                     m_over->GetFullWidth(scale) / 2 + SCALE_PX(4, scale));
+
+  m_signWidth = m_signMiddle +
+    MAX(m_signMiddle,
+	MAX(m_over->GetFullWidth(scale) / 2 + SCALE_PX(4, scale),
+	    m_under->GetFullWidth(scale) / 2 - SCALE_PX(4, scale)));
+
   m_width = m_signWidth + m_base->GetFullWidth(scale) +
-            m_var->GetFullWidth(scale) - SCALE_PX(2, scale);
+            m_var->GetFullWidth(scale) + SCALE_PX(2, scale);
 
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -173,21 +179,19 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_base->RecalculateSize(parser, fontsize, true);
   m_var->RecalculateSize(parser, fontsize, true);
 
-  m_signSize = MAX(m_signSize, m_base->GetMaxHeight()); // + SCALE_PX(30, scale));
-  m_signSize = MAX(m_signSize, m_var->GetMaxHeight()); // + SCALE_PX(30, scale));
   if (m_intStyle == INT_DEF)
   {
-    m_height = m_signSize + m_under->GetMaxHeight() + m_over->GetMaxHeight();
-    m_center = MAX((m_signSize + 1) / 2,
-                   m_base->GetMaxCenter()) + // SCALE_PX(15, scale)) +
-               m_over->GetMaxHeight();
+    m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+		   m_base->GetMaxCenter());
+    m_height = m_center + 
+      MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+	  m_base->GetMaxDrop());
   }
   else
   {
-    m_height = m_signSize + SCALE_PX(2, scale);
-    m_center = MAX((m_signSize + 1) / 2,
-                   m_base->GetMaxCenter()) + // SCALE_PX(15, scale)) +
-               SCALE_PX(1, scale);
+    m_center = MAX(m_signSize / 2, m_base->GetMaxCenter());
+    m_height = m_center +
+      MAX(m_signSize / 2, m_base->GetMaxDrop());
   }
 
   MathCell::RecalculateSize(parser, fontsize, all);
@@ -205,21 +209,15 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     if (m_intStyle == INT_DEF)
     {
       under.x += m_signMiddle - m_under->GetFullWidth(scale) / 2 -
-                 SCALE_PX(5, scale);
-      under.y = point.y + (m_height - m_center) - m_under->GetMaxDrop();
+                 SCALE_PX(4, scale);
+      under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale);
       m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
       over.x += m_signMiddle - m_over->GetFullWidth(scale) / 2 +
-                SCALE_PX(5, scale);
-      over.y = point.y - m_center + m_over->GetMaxCenter();
+                SCALE_PX(4, scale);
+      over.y = point.y - m_signSize/2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
       m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
     }
-
-    sign.y = sign.y - m_center + (m_signSize + 1) / 2;
-    if (m_intStyle == INT_DEF)
-      sign.y += m_over->GetMaxHeight();
-    else
-      sign.y += SCALE_PX(3, scale);
 
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     SetForeground(parser);
@@ -284,10 +282,10 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1);
     UnsetPen(parser);
 #endif
-    base.x += m_signWidth - SCALE_PX(6, scale);
+    base.x += m_signWidth + SCALE_PX(2, scale);
     m_base->Draw(parser, base, fontsize, true);
 
-    var.x += m_signWidth + m_base->GetFullWidth(scale) - SCALE_PX(2, scale);
+    var.x += m_signWidth + m_base->GetFullWidth(scale) + SCALE_PX(2, scale);
     var.y += m_var->GetMaxCenter() - m_var->GetMaxHeight() / 2;
     m_var->Draw(parser, var, fontsize, true);
   }
