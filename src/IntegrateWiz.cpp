@@ -33,23 +33,23 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
                            const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_2 = new wxStaticText(this, -1, _("Integrate:"));
+  label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("by variable:"));
+  label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, definite_id, _("&Definite integration"));
-  label_4 = new wxStaticText(this, -1, _("from:"));
+  label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, special_from, _("Special"));
-  label_5 = new wxStaticText(this, -1, _("to:"));
+  label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
   button_4 = new wxButton(this, special_to, _("Special"));
   checkbox_2 = new wxCheckBox(this, numeric_id, _("&Numerical integration"));
-  label_6 = new wxStaticText(this, -1, _("method:"));
+  label_6 = new wxStaticText(this, -1, _("Method:"));
   wxString numeric_methods[] = { wxT("quadpack"), wxT("romberg") };
   combobox_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                               2, numeric_methods, wxCB_DROPDOWN | wxCB_READONLY);

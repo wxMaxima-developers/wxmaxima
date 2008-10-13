@@ -27,16 +27,16 @@ SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_2 = new wxStaticText(this, -1, _("Sum of:"));
+  label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("by variable:"));
+  label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"), wxDefaultPosition,
                               wxSize(110, -1));
-  label_4 = new wxStaticText(this, -1, _("from:"));
+  label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
-  label_5 = new wxStaticText(this, -1, _("to:"));
+  label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Simplify"));

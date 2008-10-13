@@ -46,19 +46,19 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
-  label_4 = new wxStaticText(this, -1, _("from:"));
+  label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
-  label_5 = new wxStaticText(this, -1, _("to:"));
+  label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(40, -1), wxTE_READONLY);
-  label_7 = new wxStaticText(this, -1, _("from:"));
+  label_7 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
-  label_8 = new wxStaticText(this, -1, _("to:"));
+  label_8 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
@@ -89,7 +89,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
                                wxSize(280, -1), 6,
                                combo_box_2_choices, wxCB_DROPDOWN);
-  label_12 = new wxStaticText(this, -1, _("Plot to file:"));
+  label_12 = new wxStaticText(this, -1, _("File:"));
   text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
@@ -500,10 +500,10 @@ Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
   label_4 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
                               wxSize(40, -1));
-  label_5 = new wxStaticText(this, -1, _("from:"));
+  label_5 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
-  label_6 = new wxStaticText(this, -1, _("to:"));
+  label_6 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));

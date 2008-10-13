@@ -43,19 +43,19 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
-  label_4 = new wxStaticText(this, -1, _("from:"));
+  label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
-  label_5 = new wxStaticText(this, -1, _("to:"));
+  label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(40, -1));
-  label_7 = new wxStaticText(this, -1, _("from:"));
+  label_7 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_6 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
-  label_8 = new wxStaticText(this, -1, _("to:"));
+  label_8 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Grid:"));

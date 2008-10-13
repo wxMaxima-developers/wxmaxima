@@ -404,7 +404,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
         popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_solve, _("Solve ..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_solve_num, _("Solve numerically ..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_solve_num, _("Find root ..."), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_simplify, _("Simplify expression"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(popid_factor, _("Factor expression"), wxEmptyString, wxITEM_NORMAL);

@@ -2062,7 +2062,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case button_solve:
   case menu_solve:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Solve equation(s):"), _("for variable(s):"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
                                  expr, wxT("x"), this, -1, _("Solve"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -2078,10 +2078,10 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     {
       if (expr.StartsWith(wxT("%")))
         expr = wxT("''(") + expr + wxT(")");
-      Gen4Wiz *wiz = new Gen4Wiz(_("Solve equation:"), _("in variable:"),
-                                 _("lower bound:"), _("upper bound:"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
+                                 _("Lower bound:"), _("Upper bound:"),
                                  expr, wxT("x"), wxT("-1"), wxT("1"),
-                                 this, -1, _("Solve numerically"), true);
+                                 this, -1, _("Find root"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -2097,7 +2097,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case button_solve_ode:
   case menu_solve_ode:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Equation:"), _("function:"), _("variable:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Equation:"), _("Function:"), _("Variable:"),
                                  expr, wxT("y"), wxT("x"),
                                  this, -1, _("Solve ODE"));
       wiz->SetValue(expr);
@@ -2113,7 +2113,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_ivp_1:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("At point:"), _("the value is:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("Point:"), _("Value:"),
                                  expr, wxT("x="), wxT("y="),
                                  this, -1, _("IC1"), true);
       wiz->Centre(wxBOTH);
@@ -2128,8 +2128,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_ivp_2:
     {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("At point:"),
-                                 _("the value is:"), _("the derivative is:"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("Point:"),
+                                 _("Value:"), _("Derivative:"),
                                  expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
                                  this, -1, _("IC2"), true);
       wiz->Centre(wxBOTH);
@@ -2158,8 +2158,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_eliminate:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("From equations:"),
-                                 _("eliminate variables:"), expr, wxEmptyString,
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equations:"),
+                                 _("Variables:"), expr, wxEmptyString,
                                  this, -1, _("Eliminate"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -2221,7 +2221,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_solve_de:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Solve equation(s):"), _("for function(s):"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Function(s):"),
                                  expr, wxT("y(x)"),
                                  this, -1, _("Solve ODE"));
       wiz->Centre(wxBOTH);
@@ -2236,8 +2236,8 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     break;
   case menu_atvalue:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("at point:"),
-                                 _("has value:"), expr, wxT("x=0"), wxT("0"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Point:"),
+                                 _("Value:"), expr, wxT("x=0"), wxT("0"),
                                  this, -1, _("Atvalue"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
@@ -2289,7 +2289,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_map_mat:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Map function:"), _("to matrix:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("Matrix:"),
                                  wxEmptyString, expr,
                                  this, -1, _("Matrix map"));
       wiz->Centre(wxBOTH);
@@ -2337,7 +2337,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_cpoly:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Char poly of:"), _("in variable:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Variable:"),
                                  expr, wxT("x"),
                                  this, -1, _("Char poly"));
       wiz->Centre(wxBOTH);
@@ -2352,7 +2352,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_gen_mat:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("From array:"), _("width:"), _("height:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Array:"), _("Width:"), _("Height:"),
                                  expr, wxT("3"), wxT("3"),
                                  this, -1, _("Generate Matrix"));
       wiz->SetValue(expr);
@@ -2370,7 +2370,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   case button_map:
   case menu_map:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Map function:"), _("to list:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List:"),
                                  wxEmptyString, expr,
                                  this, -1, _("Map"));
       wiz->Centre(wxBOTH);
@@ -2385,8 +2385,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_make_list:
     {
-      Gen4Wiz *wiz = new Gen4Wiz(_("from expression:"), _("by variable:"),
-                                 _("from:"), _("to:"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"),
+                                 _("From:"), _("To:"),
                                  expr, wxT("k"), wxT("1"), wxT("10"),
                                  this, -1, _("Make list"));
       wiz->Centre(wxBOTH);
@@ -2403,7 +2403,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_apply:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Apply function:"), _("to list:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List:"),
                                  wxT("\"+\""), expr,
                                  this, -1, _("Apply"), true);
       wiz->Centre(wxBOTH);
@@ -2560,8 +2560,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
   case menu_change_var:
     {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Integral/sum:"), _("old variable:"),
-                                 _("new variable:"), _("equation:"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Integral/Sum:"), _("Old variable:"),
+                                 _("New variable:"), _("Equation:"),
                                  expr, wxT("x"), wxT("y"), wxT("y=x"),
                                  this, -1, _("Change variable"), true);
       wiz->SetValue(expr);
@@ -2578,8 +2578,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     break;
   case menu_pade:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Taylor series:"), _("num deg:"),
-                                 _("denom deg:"), expr, wxT("4"), wxT("4"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Taylor series:"), _("Num. deg:"),
+                                 _("Denom. deg:"), expr, wxT("4"), wxT("4"),
                                  this, -1, _("Pade approximation"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -2642,7 +2642,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     break;
   case menu_partfrac:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("in variable:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
                                  expr, wxT("n"),
                                  this, -1, _("Partial fractions"));
       wiz->Centre(wxBOTH);
@@ -2657,7 +2657,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     break;
   case menu_risch:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("by variable:"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
                                  expr, wxT("x"),
                                  this, -1, _("Integrate (risch)"));
       wiz->Centre(wxBOTH);
@@ -2686,8 +2686,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     break;
   case menu_laplace:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("change var:"),
-                                 _("to:"), expr, wxT("t"), wxT("s"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
+                                 _("New variable:"), expr, wxT("t"), wxT("s"),
                                  this, -1, _("Laplace"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
@@ -2703,8 +2703,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     break;
   case menu_ilt:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("change var:"),
-                                 _("to:"), expr, wxT("s"), wxT("t"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
+                                 _("New variable:"), expr, wxT("s"), wxT("t"),
                                  this, -1, _("Inverse Laplace"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
@@ -2720,8 +2720,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_diff:
   case menu_diff:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("in variable:"),
-                                 _("times:"), expr, wxT("x"), wxT("1"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable:"),
+                                 _("Times:"), expr, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
@@ -2782,8 +2782,8 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_product:
   case menu_product:
     {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Product:"), _("by variable:"), _("from:"),
-                                 _("to:"), expr, wxT("k"), wxT("1"), wxT("n"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"), _("From:"),
+                                 _("To:"), expr, wxT("k"), wxT("1"), wxT("n"),
                                  this, -1, _("Product"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -3089,7 +3089,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     break;
   case popid_solve:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Solve equation(s):"), _("for variable(s):"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
                                  selection, wxT("x"), this, -1, _("Solve"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -3103,10 +3103,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     break;
   case popid_solve_num:
     {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Solve equation:"), _("in variable:"),
-                                 _("lower bound:"), _("upper bound:"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
+                                 _("Lower bound:"), _("Upper bound:"),
                                  selection, wxT("x"), wxT("-1"), wxT("1"),
-                                 this, -1, _("Solve numerically"), true);
+                                 this, -1, _("Find root"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -3134,8 +3134,8 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     break;
   case popid_diff:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("in variable:"),
-                                 _("times:"), selection, wxT("x"), wxT("1"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable:"),
+                                 _("Times:"), selection, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
       wiz->SetValue(selection);
       wiz->Centre(wxBOTH);

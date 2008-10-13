@@ -23,17 +23,17 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
                    const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_2 = new wxStaticText(this, -1, _("Limit of:"));
+  label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("when variable:"));
+  label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(110, -1));
-  label_4 = new wxStaticText(this, -1, _("goes to:"));
+  label_4 = new wxStaticText(this, -1, _("Point:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_1 = new wxButton(this, special, _("Special"));
-  label_5 = new wxStaticText(this, -1, _("from:"));
+  label_5 = new wxStaticText(this, -1, _("Direction:"));
   const wxString combo_box_1_choices[] =
     {
       _("both sides"),
@@ -43,7 +43,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(130, -1), 3,
                                combo_box_1_choices, wxCB_DROPDOWN);
-  checkbox_1 = new wxCheckBox(this, -1, _("Use &Taylor series"));
+  checkbox_1 = new wxCheckBox(this, -1, _("&Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
 
 #if defined __WXMSW__

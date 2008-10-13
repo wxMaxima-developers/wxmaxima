@@ -407,7 +407,7 @@ void wxMaximaFrame::SetupMenu()
   wxMenu* wxglade_tmp_menu_3 = new wxMenu;
   wxglade_tmp_menu_3->Append(menu_solve, _("&Solve ..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_num, _("Solve &numerically ..."),
+  wxglade_tmp_menu_3->Append(menu_solve_num, _("&Find root ..."),
                              _("Find a root of an equation on an interval"), wxITEM_NORMAL);
   wxglade_tmp_menu_3->Append(menu_allroots, _("Roots of &polynomial"),
                              _("Find all roots of a polynomial"),

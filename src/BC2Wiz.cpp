@@ -26,16 +26,16 @@ BC2Wiz::BC2Wiz(wxWindow* parent, int id, const wxString& title,
   label_2 = new wxStaticText(this, -1, _("Solution:"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("At point:"));
+  label_3 = new wxStaticText(this, -1, _("Point:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x="), wxDefaultPosition,
                               wxSize(70, -1));
-  label_4 = new wxStaticText(this, -1, _("the value is:"));
+  label_4 = new wxStaticText(this, -1, _("Value:"));
   text_ctrl_3 = new BTextCtrl(this, -1, wxT("y="), wxDefaultPosition,
                               wxSize(70, -1));
-  label_5 = new wxStaticText(this, -1, _("At point:"));
+  label_5 = new wxStaticText(this, -1, _("Point:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("x="), wxDefaultPosition,
                               wxSize(70, -1));
-  label_6 = new wxStaticText(this, -1, _("the value is:"));
+  label_6 = new wxStaticText(this, -1, _("Value:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y="), wxDefaultPosition,
                               wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);

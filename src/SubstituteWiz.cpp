@@ -24,14 +24,14 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  label_2 = new wxStaticText(this, -1, _("Substitute:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  label_2 = new wxStaticText(this, -1, _("Expression:"));
+  text_ctrl_1 = new BTextCtrl(this, -1, wxT("%"), wxDefaultPosition,
                               wxSize(230, -1));
-  label_3 = new wxStaticText(this, -1, _("with:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  label_3 = new wxStaticText(this, -1, _("Old value:"));
+  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
                               wxSize(230, -1));
-  label_4 = new wxStaticText(this, -1, _("in:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  label_4 = new wxStaticText(this, -1, _("New value:"));
+  text_ctrl_3 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(230, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Rational"));
   static_line_1 = new wxStaticLine(this, -1);
@@ -50,7 +50,7 @@ SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
 
 void SubstituteWiz::set_properties()
 {
-  SetTitle(_("Substitution"));
+  SetTitle(_("Substitute"));
 #if defined __WXMSW__
   button_1->SetDefault();
 #else
@@ -95,11 +95,11 @@ wxString SubstituteWiz::GetValue()
     val = wxT("ratsubst(");
   else
     val = wxT("subst(");
+  val.Append(text_ctrl_3->GetValue());
+  val.Append(wxT(", "));
   val.Append(text_ctrl_2->GetValue());
   val.Append(wxT(", "));
   val.Append(text_ctrl_1->GetValue());
-  val.Append(wxT(", "));
-  val.Append(text_ctrl_3->GetValue());
   val.Append(wxT(");"));
   return val;
 }
