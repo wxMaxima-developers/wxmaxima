@@ -13,8 +13,6 @@ wxMaxima can be found at
 wxMaxima uses wxWidgets and runs natively on Linux and Windows. It
 provides nicely formatted display of maxima output.
 
-wxMaxima requires maxima version 5.15.0.
-
 
 
 LICENCE
@@ -55,9 +53,6 @@ Go to the source directory and do
   make
   make install
 
-wxMaxima also requires libxml2 to be installed on your system. libxml2
-comes with most distributions, make sure you have the development
-packages installed.
 
 ** Windows
 
@@ -66,16 +61,15 @@ from
 
   http://www.bloodshed.net
 
-You will also need to install the wxWidgets and libxml2 devpacks (and
-their dependencies), which can also be found at the web-page. In
-Dev-CPP create a new wxWidgets project, add libxml2 and other required
-libraries to the project and import all the sources of wxMaxima.
+You will also need to install the wxWidgets devpack (and its
+dependencies), which can also be found at the web-page. In Dev-CPP
+create a new wxWidgets project and import all the sources of wxMaxima.
 
 ** Mac OS X
 
 Support for Mac OS X is experimental. To build wxMaxima first make
-sure you have libxml2 and wxWidgets (it is possible that the static
-build is required) installed on your system. Then build wxMaxima with
+sure you have wxWidgets (it is possible that the static build is
+required) installed on your system. Then build wxMaxima with
 
   ./configure --with-wx-config=<path to your wx-config>
   make
