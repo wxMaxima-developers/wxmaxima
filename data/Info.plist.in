@@ -3,19 +3,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 
 <plist version="1.0">
-  <dict>
+<dict>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     
     <key>CFBundleIdentifier</key>
-    <string>net.sf.wxmaxima</string>
+    <string>net.sf.wxMaxima</string>
     <key>CFBundleName</key>
     <string>wxMaxima</string>
-    
+
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleExecutable</key>
-    <string>wxMaxima</string>
+    <string>wxmaxima</string>
     <key>CFBundleIconFile</key>
     <string>wxmac.icns</string>
     <key>CFBundlePackageType</key>
@@ -26,31 +26,25 @@
     <string>@VERSION@</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.4.0</string>
-    
+
     <key>CFBundleDocumentTypes</key>
     <array>
-      <dict>
-        <key>CFBundleTypeExtensions</key>
-        <array>
-          <string>wxm</string>
-        </array>
-	<key>CFBundleTypeRole</key>
-	<string>Editor</key>
-<!--
-	<key>CFBundleTypeMIMETypes</key>
-	<array>
-	  <string>application/x-wxm</string>
-          <string>text/x-wxm</string>
-        </array>
-        <key>CFBundleTypeName</key>
-        <string>wxMaxima Document</string>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleTypeIconFile</key>
-        <string>file_po.icns</string>
--->
-      </dict>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>wxm</string>
+            </array>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-wxm</string>
+                <string>text/x-po</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>wxMaxima</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
     </array>
-    
-  </dict>
+
+</dict>
 </plist>
