@@ -60,18 +60,18 @@ void SysWiz::set_properties()
 void SysWiz::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 1, 3);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText* text;
   for (int i = 1; i <= m_size; i++)
   {
     text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
-    grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 1);
-    grid_sizer_2->Add(m_inputs[i - 1], 0, wxALL, 1);
+    grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    grid_sizer_2->Add(m_inputs[i - 1], 0, wxALL, 5);
   }
   text = new wxStaticText(this, -1, _("Variables:"));
-  grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 0);
-  grid_sizer_2->Add(variables, 0, wxALL, 1);
+  grid_sizer_2->Add(text, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(variables, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
