@@ -1687,7 +1687,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_lastPath = wxPathOnly(file);
         if (file.Right(5) != wxT(".html") && file.Right(4) != wxT(".tex"))
           file = file + wxT(".html");
-        
+
         if (file.Right(4) == wxT(".tex")) {
           if (!m_console->ExportToTeX(file))
             wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
@@ -2238,7 +2238,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     {
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Point:"),
                                  _("Value:"), expr, wxT("x=0"), wxT("0"),
-                                 this, -1, _("Atvalue"));
+                                 this, -1, _("At value"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
@@ -3277,14 +3277,14 @@ void wxMaxima::ReEvaluate()
   if (!m_console->CanEdit()) {
     return ;
   }
-  
+
   ResetTitle(false);
 
   MathCell* beginInput = m_console->GetSelectionStart();
 
   if (beginInput == NULL)
     return ;
-  
+
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {
     wxString text = m_console->GetString(true);
@@ -3411,7 +3411,7 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
     if (!m_console->AnimationRunning())
     {
       SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
-  
+
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
       m_plotSlider->Enable(true);
