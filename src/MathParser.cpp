@@ -688,12 +688,10 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
     xml.Load(xmlStream);
 
-    wxXmlNode *doc = xml.GetRoot()->GetChildren();
+    wxXmlNode *doc = xml.GetRoot();
 
     if (doc != NULL)
-    {
-      cell = ParseTag(doc);
-    }
+      cell = ParseTag(doc->GetChildren());
   }
   else
   {
