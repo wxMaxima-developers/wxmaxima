@@ -284,22 +284,29 @@ void wxMaximaFrame::SetupMenu()
 
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu;
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
+  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_copy_from_console, _("&Copy"),
                    _("Copy selection from console"), wxT("gtk-copy"));
-  wxglade_tmp_menu_2->Append(menu_copy_lb_from_console, _("Copy &text"),
-                             _("Copy selection from console (including linebreaks)"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy TeX"),
-                             _("Copy selection from console in TeX format"),
-                             wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
-                   _("&Delete selection"),
-                   _("Delete selected input/output group"), wxT("gtk-delete"));
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_lb_from_console, _("Copy &text"),
+                                  _("Copy selection from console (including linebreaks)"),
+                                  wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_tex_from_console, _("Copy TeX"),
+                                  _("Copy selection from console in TeX format"),
+                                  wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
-  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as image"),
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_as_bitmap, _("Copy as image"),
                              _("Copy selection from console as image"),
                              wxITEM_NORMAL);
 #endif
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Copy"), wxglade_tmp_menu_2_sub1, _("Copy"));
+  wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
+                             _("Cut selection from console"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
+                             _("Paste text from clipboard"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
+                   _("&Delete selection"),
+                   _("Delete selected input/output group"), wxT("gtk-delete"));
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from console to a file"),
                              wxITEM_NORMAL);
@@ -312,11 +319,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
 #endif
-  wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
-                             _("Cut selection from console"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
-                             _("Paste text from clipboard"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_unfold, _("Unfold"),
                              _("Unfold all folded groups"), wxITEM_NORMAL);
@@ -329,17 +331,17 @@ void wxMaximaFrame::SetupMenu()
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_all, _("Re-evaluate all\tCtrl-Shift-R"),
                                _("Re-evaluate all input"), wxITEM_NORMAL);
-  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("&Input\tF7"),
+  wxMenu* wxglade_tmp_menu_2_sub2 = new wxMenu;
+  wxglade_tmp_menu_2_sub2->Append(menu_insert_input, _("&Input\tF7"),
                              _("Insert new input before selected input"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("&Text\tF6"),
+  wxglade_tmp_menu_2_sub2->Append(menu_add_comment, _("&Text\tF6"),
                              _("Insert text before selected input"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("&Section\tCtrl-F6"),
+  wxglade_tmp_menu_2_sub2->Append(menu_add_section, _("&Section\tCtrl-F6"),
                              _("Insert section before selected input"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("T&itle\tCtrl-Shift-F6"),
+  wxglade_tmp_menu_2_sub2->Append(menu_add_title, _("T&itle\tCtrl-Shift-F6"),
                              _("Insert title before selected input"));
   wxglade_tmp_menu_2->Append(wxNewId(), _("I&nsert"),
-                             wxglade_tmp_menu_2_sub1,
+                             wxglade_tmp_menu_2_sub2,
                              _("Insert"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
@@ -635,7 +637,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Plot in 3 dimensions"), wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_plot_format, _("Plot &format ..."),
                              _("Set plot format"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Plotting"));
+  frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Plot"));
 
   // Numeric menu
   wxglade_tmp_menu_6 = new wxMenu;
