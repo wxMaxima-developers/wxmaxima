@@ -158,6 +158,7 @@ enum {
   menu_copy_from_console,
   menu_copy_lb_from_console,
   menu_copy_tex_from_console,
+  menu_copy_input_from_console,
   menu_delete_selection,
   menu_goto_input,
   menu_logcontract,
@@ -203,6 +204,7 @@ enum {
   deactivate_cell_cancel,
   menu_cut,
   menu_paste,
+  menu_paste_input,
 #if defined (__WXMAC__)
   mac_newId,
   mac_openId

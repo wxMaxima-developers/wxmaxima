@@ -105,8 +105,9 @@ protected:
                           bool newLine = true);    //
 
   void EditInputMenu(wxCommandEvent& event);       //
-  void ReEvaluateEvent(wxCommandEvent& event);          //
+  void ReEvaluateEvent(wxCommandEvent& event);     //
   void PrependCell(wxCommandEvent& event);         //
+  void DoPrependCell(int id, wxString value = wxEmptyString, bool refresh = false);
   void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();

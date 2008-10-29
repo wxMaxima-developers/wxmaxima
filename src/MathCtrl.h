@@ -101,6 +101,7 @@ public:
   bool CutToClipboard();
   void PasteFromClipboard();
   bool Copy(bool lb = false);
+  bool CopyInput();
   bool CopyTeX();
   bool CopyBitmap();
   bool CopyToFile(wxString file);

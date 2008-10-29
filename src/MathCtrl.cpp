@@ -49,7 +49,7 @@ enum
 };
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
-  wxScrolledWindow(parent, id, position, size, 
+  wxScrolledWindow(parent, id, position, size,
   wxVSCROLL | wxHSCROLL | wxSUNKEN_BORDER | wxWANTS_CHARS) {
   m_scrollTo = -1;
   m_tree = NULL;
@@ -827,6 +827,29 @@ bool MathCtrl::CopyTeX() {
   return false;
 }
 
+bool MathCtrl::CopyInput() {
+  if (m_selectionStart == NULL)
+      return false;
+    wxString s;
+    MathCell* tmp = m_selectionStart;
+
+    while (tmp != NULL) {
+      if (tmp->GetType() == MC_TYPE_INPUT)
+        s += wxT("<wxmaxima-input>\n") + tmp->ToString(false) + wxT("\n");
+      if (tmp == m_selectionEnd)
+        break;
+      tmp = tmp->m_nextToDraw;
+    }
+    s += wxT("<wxmaxima-input>");
+
+    if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(s));
+      wxTheClipboard->Close();
+      return true;
+    }
+    return false;
+}
+
 /***
  * Can delete selection - we can't delete the last prompt!
  */
@@ -1162,10 +1185,10 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
           return;
         int dx = 0, dy = 0;
         int currX, currY;
-    
+
         wxSize size = GetClientSize();
         CalcUnscrolledPosition(0, 0, &currX, &currY);
-    
+
         if (m_mousePoint.x <= 0)
           dx = -10;
         else if (m_mousePoint.x >= size.GetWidth())
@@ -1174,7 +1197,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
           dy = -10;
         else if (m_mousePoint.y >= size.GetHeight())
           dy = 10;
-    
+
         Scroll((currX + dx) / 10, (currY + dy) / 10);
         m_timer.Start(50, true);
       }
@@ -1183,14 +1206,14 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       {
         if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
             m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
-          
+
           SlideShow *tmp = (SlideShow *)m_selectionStart;
           tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-          
+
 	  wxRect rect = m_selectionStart->GetRect();
 	  CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
 	  RefreshRect(rect);
-          
+
 	  m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT);
         }
         else
@@ -1202,7 +1225,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         if (m_activeCell != NULL) {
           if (m_switchDisplayCaret) {
             m_activeCell->SwitchCaretDisplay();
-    
+
             wxRect rect = m_activeCell->GetRect();
             CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
             RefreshRect(rect);
@@ -1692,7 +1715,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   wxString path, filename, ext;
   MathCell *tmp = m_tree, *start= NULL, *end= NULL;
   int count = 0;
-  
+
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
 
@@ -2250,13 +2273,13 @@ bool MathCtrl::SelectLastInput() {
 
 bool MathCtrl::SelectFirstInput() {
   MathCell *tmp = m_tree;
-  
+
   if (m_activeCell != NULL)
     return false;
-  
+
   while (tmp != NULL && tmp->GetType() != MC_TYPE_INPUT)
     tmp = tmp->m_nextToDraw;
-  
+
   if (tmp != NULL) {
     m_selectionStart = m_selectionEnd = tmp;
     return true;

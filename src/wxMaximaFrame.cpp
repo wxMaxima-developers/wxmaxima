@@ -293,6 +293,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->Append(menu_copy_tex_from_console, _("Copy TeX"),
                                   _("Copy selection from console in TeX format"),
                                   wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy input"),
+                                  _("Copy input from console"),
+                                  wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
   wxglade_tmp_menu_2_sub1->Append(menu_copy_as_bitmap, _("Copy as image"),
                              _("Copy selection from console as image"),
@@ -303,7 +306,11 @@ void wxMaximaFrame::SetupMenu()
                              _("Cut selection from console"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
-                             _("Paste text from clipboard"));
+                             _("Paste text from clipboard"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_paste_input, _("Paste input"),
+                             _("Paste input to console"),
+                             wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
