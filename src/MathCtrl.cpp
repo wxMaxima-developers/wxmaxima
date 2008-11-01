@@ -1561,7 +1561,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString version(wxT(VERSION));
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
-  AddLineToFile(output, wxT("<!--           Created by wxMaxima version ") + version + wxT("          -->"));
+  AddLineToFile(output, wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->"));
   AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
 
   //
@@ -1930,7 +1930,7 @@ bool MathCtrl::ExportToMAC(wxString file) {
   if (wxm) {
     AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
     wxString version(wxT(VERSION));
-    AddLineToFile(output, wxT("/* [ Created by wxMaxima version ") + version + wxT(" ] */"), false);
+    AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
   MathCell* tmp = m_tree;
