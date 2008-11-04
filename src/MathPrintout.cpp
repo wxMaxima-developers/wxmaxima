@@ -89,29 +89,29 @@ bool MathPrintout::OnPrintPage(int num)
       if (!tmp->m_isBroken)
       {
         tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = marginX;
-          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
             point.y += SCALE_PX(5, ppiScale);
-          drop = tmp->m_nextToDraw->GetMaxDrop();
+          drop = tmp->m_next->GetMaxDrop();
         }
         else
           point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
       }
       else
       {
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = marginX;
-          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
             point.y += SCALE_PX(5, ppiScale);
-          drop = tmp->m_nextToDraw->GetMaxDrop();
+          drop = tmp->m_next->GetMaxDrop();
         }
       }
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->m_next;
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
@@ -156,7 +156,7 @@ void MathPrintout::BreakLines()
       else
         currentWidth += (tmp->GetWidth() + SCALE_PX(2, scale));
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -202,7 +202,7 @@ void MathPrintout::BreakPages()
           skip = 0;
       }
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -298,7 +298,7 @@ void MathPrintout::RecalculateSize()
   while (tmp != NULL)
   {
     tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -388,7 +388,7 @@ void MathPrintout::BreakUpCells()
       if (tmp->BreakUp())
         tmp->RecalculateWidths(parser, fontsize, false);
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 

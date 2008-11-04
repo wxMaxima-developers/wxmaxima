@@ -72,7 +72,7 @@ void Bitmap::RecalculateSize()
   while (tmp != NULL)
   {
     tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -116,7 +116,7 @@ void Bitmap::BreakLines()
       else
         currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -150,7 +150,7 @@ void Bitmap::GetMaxPoint(int* width, int* height)
       }
       bigSkip = tmp->m_bigSkip;
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }
 
@@ -180,29 +180,29 @@ void Bitmap::Draw()
       if (!tmp->m_isBroken)
       {
         tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = 0;
-          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
-          drop = tmp->m_nextToDraw->GetMaxDrop();
+          drop = tmp->m_next->GetMaxDrop();
         }
         else
           point.x += (tmp->GetWidth() + MC_CELL_SKIP);
       }
       else
       {
-        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = 0;
-          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
-          drop = tmp->m_nextToDraw->GetMaxDrop();
+          drop = tmp->m_next->GetMaxDrop();
         }
       }
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->m_next;
     }
   }
   dc.SelectObject(wxNullBitmap);
@@ -277,6 +277,6 @@ void Bitmap::BreakUpCells()
         tmp->RecalculateSize(parser, fontsize, false);
       }
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 }

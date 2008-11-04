@@ -144,7 +144,7 @@ void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 }
 
 bool FunCell::BreakUp()
-{
+{/*
   if (!m_isBroken)
   {
     m_isBroken = true;
@@ -156,7 +156,7 @@ bool FunCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_argCell;
     m_nextToDraw = m_nameCell;
     return true;
-  }
+  }*/
   return false;
 }
 

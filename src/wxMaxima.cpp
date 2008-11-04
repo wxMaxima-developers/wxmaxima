@@ -3369,74 +3369,7 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
-  MathCell* prompt = m_console->GetSelectionStart();
-
-  if (value == wxEmptyString) {
-    value = m_inputLine->GetValue();
-    m_inputLine->SetValue(wxEmptyString);
-  }
-
-  int x, y;
-  m_console->GetViewStart(&x, &y);
-  m_console->SetScrollTo(y);
-
-  m_console->SetInsertPoint(prompt);
-
-  DoRawConsoleAppend(prompt->GetValue(), MC_TYPE_MAIN_PROMPT);
-
-  m_inInsertMode = true;
-
-  m_console->SetInsertPoint(prompt);
-  switch (id)
-  {
-  case popid_insert_input:
-  case menu_insert_input:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_insert_input:
-#endif
-    DoRawConsoleAppend(value, MC_TYPE_INPUT, false);
-    break;
-  case menu_add_comment:
-  case popid_add_comment:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_insert_text:
-#endif
-    DoRawConsoleAppend(wxEmptyString, MC_TYPE_COMMENT, true);
-    break;
-  case menu_add_title:
-    DoRawConsoleAppend(wxEmptyString, MC_TYPE_TITLE, true);
-    break;
-  case menu_add_section:
-    DoRawConsoleAppend(wxEmptyString, MC_TYPE_SECTION, true);
-    break;
-  }
-
-  if (id == popid_insert_input || id == menu_insert_input
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-      || id == tb_insert_input
-#endif
-  )
-    prompt->SetValue(m_newInput);
-  else
-    prompt->SetValue(m_commentPrefix);
-  m_console->SetInsertPoint(NULL);
-  prompt->ResetData();
-  prompt = prompt->m_nextToDraw;
-  prompt->ResetData();
-  m_console->SetScrollTo(-1);
-  if (value == wxEmptyString && refresh)
-    m_console->SetActiveCell(prompt);
-  else
-    m_console->SetSelection(prompt);
-
-  if (refresh) {
-    m_console->SetFocus();
-    m_console->Recalculate(false);
-    m_console->Refresh();
-    ResetTitle(false);
-  }
-
-  m_inInsertMode = false;
+  // TODO: implement
 }
 
 void wxMaxima::ResetTitle(bool saved)

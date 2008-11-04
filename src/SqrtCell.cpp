@@ -165,7 +165,8 @@ void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 
 bool SqrtCell::BreakUp()
 {
-  if (!m_isBroken)
+  //TODO: implement
+/*  if (!m_isBroken)
   {
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
@@ -177,7 +178,7 @@ bool SqrtCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
     return true;
-  }
+  }*/
   return false;
 }
 

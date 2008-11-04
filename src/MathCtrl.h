@@ -23,6 +23,7 @@
 #include <wx/wx.h>
 
 #include "MathCell.h"
+#include "GroupCell.h"
 
 enum {
   popid_copy,
@@ -65,11 +66,10 @@ public:
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
-  void AddLine(MathCell *newLine, bool forceNewLine = false);
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool scroll = true);
   void RecalculateForce();
-  void Recalculate(MathCell *cell, bool scroll = true);
+  void Recalculate(GroupCell *cell, bool scroll = true);
   void RecalculateWidths();
   void RecalculateWidths(MathCell *cell);
   void RecalculateSize();
@@ -121,7 +121,10 @@ public:
   MathCell* GetLastPrompt();
   void SetInsertPoint(MathCell* insert)
   {
-    m_insertPoint = insert;
+    if (insert == NULL)
+      m_insertPoint = NULL;
+    else
+      m_insertPoint = (GroupCell *)insert;
   }
   MathCell* GetInsertPoint()
   {
@@ -170,7 +173,7 @@ protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
-  void BreakLines(MathCell* cell);
+  void BreakLines(GroupCell* cell);
   void OnTimer(wxTimerEvent& event);
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
@@ -188,7 +191,6 @@ protected:
   void AdjustSize(bool scroll = false);
   void OnEraseBackground(wxEraseEvent& event)
   { }
-  void InsertAfter(MathCell *insertPoint, MathCell *newCell, bool forceBreakLine);
   void CheckUnixCopy();
   wxPoint m_down;
   wxPoint m_up;
@@ -198,13 +200,11 @@ protected:
   bool m_selectWholeLine;
   bool m_mouseOutside;
   bool m_forceUpdate;
-  MathCell *m_tree;
-  MathCell *m_last;
-  MathCell *m_firstVisible;
-  MathCell *m_lastVisible;
+  GroupCell *m_tree;
+  GroupCell *m_last;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
-  MathCell *m_insertPoint;
+  GroupCell *m_insertPoint;
   MathCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;

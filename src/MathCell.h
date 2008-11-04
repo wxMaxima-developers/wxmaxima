@@ -55,7 +55,8 @@ enum {
   MC_TYPE_SECTION,
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
-  MC_TYPE_SLIDE
+  MC_TYPE_SLIDE,
+  MC_TYPE_GROUP
 };
 
 class MathCell
@@ -191,7 +192,6 @@ public:
   virtual void Unbreak(bool all);
 
   MathCell *m_next, *m_previous;
-  MathCell *m_nextToDraw, *m_previousToDraw;
   wxPoint m_currentPoint;  // Current point in console (the center of the cell)
   bool m_bigSkip;
   bool m_isFolded;
