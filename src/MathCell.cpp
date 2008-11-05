@@ -23,6 +23,7 @@ MathCell::MathCell()
 {
   m_next = NULL;
   m_previous = NULL;
+  m_group = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -63,6 +64,23 @@ void MathCell::AppendCell(MathCell *p_next)
   else
     m_next->AppendCell(p_next);
 };
+
+/***
+ * Get the pointer to the parent group cell
+ */
+
+MathCell* MathCell::GetParent()
+{
+  MathCell *tmp = this;
+
+  if (tmp->m_group != NULL)
+    return tmp->m_group;
+
+  while (tmp->m_previous != NULL)
+    tmp = tmp->m_previous;
+
+  return tmp->m_group;
+}
 
 /***
  * Get the maximum drop of the center.
@@ -359,7 +377,7 @@ void MathCell::ResetData()
   m_maxDrop = -1;
 //  m_currentPoint.x = -1;
 //  m_currentPoint.y = -1;
-  m_breakLine = false;
+  m_breakLine = m_forceBreakLine;
 }
 
 /***
@@ -434,3 +452,4 @@ void MathCell::SetForeground(CellParser& parser)
     break;
   }
 }
+

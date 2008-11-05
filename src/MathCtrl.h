@@ -152,7 +152,6 @@ public:
   {
     m_editingEnabled = enable;
   }
-  void UnfoldAll();
   bool SelectPrevInput();
   bool SelectNextInput(bool input = false);
   bool SelectPrompt();
@@ -169,6 +168,7 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
+  void PrependCell(int id, wxString value, bool refresh);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

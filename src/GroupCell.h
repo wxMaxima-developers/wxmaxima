@@ -34,9 +34,17 @@ public:
   void AppendOutput(MathCell *cell);
   MathCell* Copy(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+  void SelectPoint(wxPoint& rect, MathCell** first, MathCell** last);
   void BreakLines(int fullWidth);
+  MathCell* GetPrompt() { return m_input; }
+  MathCell* GetInput() { return m_input->m_next; }
+  MathCell* GetLabel() { return m_output; }
+  MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
+  wxRect GetOutputRect() { return m_outputRect; }
+  void RemoveOutput();
 protected:
   MathCell *m_input, *m_output;
+  wxRect m_outputRect;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

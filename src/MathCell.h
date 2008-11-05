@@ -185,13 +185,15 @@ public:
     return false;
   }
 
+  MathCell* GetParent();
+
   virtual wxString ToString(bool all);
   virtual wxString ToTeX(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);
 
-  MathCell *m_next, *m_previous;
+  MathCell *m_next, *m_previous, *m_group;
   wxPoint m_currentPoint;  // Current point in console (the center of the cell)
   bool m_bigSkip;
   bool m_isFolded;

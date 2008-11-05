@@ -789,24 +789,26 @@ void wxMaxima::ReadPrompt()
     {
       if (o.StartsWith(wxT("(%i")))
       {
+
         if (m_inReevalMode) {
           MathCell *tmp = m_console->GetInsertPoint();
           m_inInsertMode = false;
           m_console->SetInsertPoint(NULL);
           m_lastPrompt = o;
           m_console->SetSelection(tmp);
-          if (!m_console->SelectNextInput(true)) {
+          if (m_console->SelectNextInput(true)) {
+            m_console->Refresh();
+            m_console->EnableEdit();
+            ReEvaluate();
+          }
+          else {
             m_console->SetSelection(NULL);
             m_console->SetScrollTo(-1);
             m_inReevalMode = false;
             m_console->GetLastPrompt()->SetValue(o);
           }
-          else {
-            m_console->Refresh();
-            m_console->EnableEdit();
-            ReEvaluate();
-          }
         }
+
         else if (m_inInsertMode)
         {
           MathCell* tmp = m_console->GetInsertPoint();
@@ -822,8 +824,10 @@ void wxMaxima::ReadPrompt()
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
+
         else
           HandleMainPrompt(o);
+
         m_console->EnableEdit();
       }
       else
@@ -1847,7 +1851,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
   case menu_unfold:
-    m_console->UnfoldAll();
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_delete:
@@ -3326,16 +3329,16 @@ void wxMaxima::ReEvaluate()
     m_console->Refresh();
   }
 
-  if (!m_console->CanEdit()) {
+  if (!m_console->CanEdit())
     return ;
-  }
 
   ResetTitle(false);
 
   MathCell* beginInput = m_console->GetSelectionStart();
-
   if (beginInput == NULL)
     return ;
+
+  GroupCell* group = (GroupCell *)beginInput->GetParent();
 
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {
@@ -3343,20 +3346,17 @@ void wxMaxima::ReEvaluate()
 
     m_inInsertMode = true;
 
-    beginInput = beginInput->m_previous;
-
     int x, y;
     m_console->GetViewStart(&x, &y);
     m_console->SetScrollTo(y);
 
-    m_console->SetSelection(beginInput);
-    m_console->DeleteSelection(false);
+    group->RemoveOutput();
 
-    m_console->SetInsertPoint(beginInput);
+    m_console->SetInsertPoint(group);
 
-    beginInput->SetValue(m_lastPrompt);
+    group->GetPrompt()->SetValue(m_lastPrompt);
 
-    SendMaxima(text, true, true, true, false);
+    SendMaxima(text, true, false, true, false);
   }
 }
 
@@ -3369,7 +3369,33 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
-  // TODO: implement
+
+  int type = 0;
+  switch (id)
+  {
+  case popid_insert_input:
+  case menu_insert_input:
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case tb_insert_input:
+#endif
+    type = MC_TYPE_INPUT;
+    break;
+  case menu_add_comment:
+  case popid_add_comment:
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case tb_insert_text:
+#endif
+    type = MC_TYPE_COMMENT;
+    break;
+  case menu_add_title:
+    type = MC_TYPE_TITLE;
+    break;
+  case menu_add_section:
+    type = MC_TYPE_SECTION;
+    break;
+  }
+
+  m_console->PrependCell(type, value, refresh);
 }
 
 void wxMaxima::ResetTitle(bool saved)
