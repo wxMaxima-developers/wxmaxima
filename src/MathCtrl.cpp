@@ -283,7 +283,9 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
 
   if (where == m_tree) {
     newGroup->m_next = m_tree;
+    newGroup->m_nextToDraw = m_tree;
     m_tree->m_previous = newGroup;
+    m_tree->m_previousToDraw = newGroup;
     m_tree = newGroup;
 
     Recalculate(m_tree, true);
@@ -291,10 +293,14 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
 
   else {
     where->m_previous->m_next = newGroup;
+    where->m_previous->m_nextToDraw = newGroup;
     newGroup->m_previous = where->m_previous;
+    newGroup->m_previousToDraw = where->m_previous;
 
     newGroup->m_next = where;
+    newGroup->m_nextToDraw = where;
     where->m_previous = newGroup;
+    where->m_previousToDraw = newGroup;
 
     Recalculate(newGroup, true);
   }
@@ -550,6 +556,7 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two) {
   if (m_tree == NULL)
     return;
 
+  // If we have an acrive cell handle it
   if (m_activeCell != NULL) {
     if (m_activeCell->ContainsPoint(one) && m_activeCell->ContainsPoint(two)) {
       wxClientDC dc(this);
@@ -559,35 +566,20 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two) {
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
     } else {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
-      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+      SetActiveCell(NULL);
     }
-    return;
   }
 
-  MathCell* tmp;
-  wxPoint start, end;
-  wxRect rect;
-  MathCell* st = m_selectionStart;
-  MathCell* en = m_selectionEnd;
-
+  MathCell *st = m_selectionStart, *en = m_selectionEnd;
   m_selectionStart = m_selectionEnd = NULL;
-
-  if (one.y < two.y || (one.y == two.y && one.x < two.x)) {
-    start = one;
-    end = two;
-  } else {
-    start = two;
-    end = one;
-  }
+  wxRect rect;
 
   rect.x = MIN(m_down.x, m_up.x);
   rect.y = MIN(m_down.y, m_up.y);
   rect.width = MAX(ABS(m_down.x - m_up.x), 1);
   rect.height = MAX(ABS(m_down.y - m_up.y), 1);
 
-  // Lets select a rectangle
-  tmp = m_tree;
+  MathCell *tmp = m_tree;
   while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
     tmp = tmp->m_next;
   m_selectionStart = tmp;
@@ -599,33 +591,6 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two) {
   }
 
   if (m_selectionStart != NULL && m_selectionEnd != NULL) {
-
-    // If selection is on multiple lines, we need to correct it
-    if (m_selectionStart->GetCurrentY() != m_selectionEnd->GetCurrentY()) {
-      MathCell *tmp = m_selectionEnd;
-      MathCell *curr;
-
-      // Find the first cell in selection
-      while (m_selectionStart != tmp && (m_selectionStart->GetCurrentX()
-          + m_selectionStart->GetWidth() < start.x
-          || m_selectionStart->GetCurrentY() + m_selectionStart->GetDrop()
-              < start.y))
-        m_selectionStart = m_selectionStart->m_next;
-
-      // Find the last cell in selection
-      curr = m_selectionEnd = m_selectionStart;
-      while (1) {
-        curr = curr->m_next;
-        if (curr == NULL)
-          break;
-        if ((curr->GetCurrentX() <= end.x && curr->GetCurrentY()
-            - curr->GetMaxCenter() <= end.y))
-          m_selectionEnd = curr;
-        if (curr == tmp)
-          break;
-      }
-    }
-
     if (m_selectionStart == m_selectionEnd)
       m_selectionStart->SelectInner(rect, &m_selectionStart, &m_selectionEnd);
   }
@@ -790,7 +755,6 @@ bool MathCtrl::CopyTeX() {
 }
 
 bool MathCtrl::CopyInput() {
-
   if (m_selectionStart == NULL)
       return false;
 
@@ -842,8 +806,8 @@ bool MathCtrl::CanDeleteSelection() {
  * Delete the selection
  */
 void MathCtrl::DeleteSelection(bool deletePrompt) {
-  if (m_selectionStart == NULL || m_selectionEnd == NULL || m_insertPoint
-      != NULL)
+  if (m_selectionStart == NULL || m_selectionEnd == NULL ||
+      m_insertPoint != NULL)
     return;
 
   GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
@@ -858,9 +822,13 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
     return;
 
   if (start == m_tree) {
-    if (end->m_previous != NULL)
+    if (end->m_previous != NULL) {
+      end->m_previous->m_nextToDraw = NULL;
       end->m_previous->m_next = NULL;
+    }
     end->m_next->m_previous = NULL;
+    end->m_next->m_previousToDraw = NULL;
+
     m_tree = (GroupCell *)end->m_next;
     end->m_next = NULL;
     DestroyTree(start);
@@ -868,7 +836,9 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   else {
     start->m_previous->m_next = end->m_next;
+    start->m_previous->m_nextToDraw = end->m_next;
     end->m_next->m_previous = start->m_previous;
+    end->m_next->m_previousToDraw = start->m_previous;
     end->m_next = NULL;
     DestroyTree(start);
   }
@@ -878,6 +848,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
     m_selectionStart =  m_selectionEnd = newSelection->GetInput();
   }
 
+  Recalculate();
   AdjustSize(false);
   Refresh();
 }

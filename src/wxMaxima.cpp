@@ -1938,6 +1938,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           m_console->SelectPrevInput();
           m_console->ScrollToSelectionStart(false);
           m_console->SetSelection(NULL);
+
         }
         wxTheClipboard->Close();
       }
