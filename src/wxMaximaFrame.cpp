@@ -287,9 +287,6 @@ void wxMaximaFrame::SetupMenu()
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_copy_from_console, _("&Copy"),
                    _("Copy selection from console"), wxT("gtk-copy"));
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_lb_from_console, _("Copy &text"),
-                                  _("Copy selection from console (including linebreaks)"),
-                                  wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->Append(menu_copy_tex_from_console, _("Copy TeX"),
                                   _("Copy selection from console in TeX format"),
                                   wxITEM_NORMAL);

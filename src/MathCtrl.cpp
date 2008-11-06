@@ -160,19 +160,19 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       dcm.SetBrush(*wxLIGHT_GREY_BRUSH);
       dcm.SetPen(*wxLIGHT_GREY_PEN);
 #endif
-      // We have a selection with click
 
+      // We have a selection with click
       if (m_selectWholeLine) {
         if (m_selectionStart == m_selectionEnd) {
           if (m_selectionStart->GetType() != MC_TYPE_SLIDE)
             m_selectionStart->DrawBoundingBox(dcm);
         } else {
           while (tmp != NULL && tmp->m_isBroken)
-            tmp = tmp->m_next;
+            tmp = tmp->m_nextToDraw;
           if (tmp != NULL)
             tmp->DrawBoundingBox(dcm, true);
           while (tmp != NULL) {
-            tmp = tmp->m_next;
+            tmp = tmp->m_nextToDraw;
             if (tmp == NULL)
               break;
             if (tmp->BreakLineHere() && !tmp->m_isBroken)
@@ -182,7 +182,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           }
         }
       }
-
       // We have a selection by dragging
       else {
         while (1) {
@@ -190,7 +189,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
-          tmp = tmp->m_next;
+          tmp = tmp->m_nextToDraw;
           if (tmp == NULL)
             break;
         }
@@ -207,39 +206,42 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 /***
  * Add a new line
  */
-void MathCtrl::InsertLine(MathCell *newNode, bool forceNewLine) {
+void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 
   GroupCell *tmp = m_insertPoint;
   if (tmp == NULL)
     tmp = m_last;
 
-  if (newNode->GetType() == MC_TYPE_MAIN_PROMPT) {
+  newCell->ForceBreakLine(forceNewLine);
+
+  if (newCell->GetType() == MC_TYPE_MAIN_PROMPT) {
     GroupCell *newGroup = new GroupCell;
-    newNode->m_group = newGroup;
-    newGroup->SetInput(newNode);
+    newGroup->SetInput(newCell);
     if (m_last == NULL) {
-      m_last = m_tree = newGroup;
+      tmp = m_last = m_tree = newGroup;
     }
     else {
       m_last->AppendCell(newGroup);
-      m_last = newGroup;
+      tmp = m_last = newGroup;
     }
   }
 
-  else if (newNode->GetType() == MC_TYPE_INPUT) {
-    newNode->m_group = tmp;
-    tmp->AppendInput(newNode);
+  else if (newCell->GetType() == MC_TYPE_INPUT) {
+    tmp->AppendInput(newCell);
   }
 
   else {
-    newNode->m_group = tmp;
-    tmp->AppendOutput(newNode);
+    if (newCell->GetType() == MC_TYPE_TITLE ||
+        newCell->GetType() == MC_TYPE_SECTION ||
+        newCell->GetType() == MC_TYPE_COMMENT)
+      tmp->SetSpecial(true);
+    tmp->AppendOutput(newCell);
   }
 
-  Recalculate(tmp, true);
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
 
+  Recalculate(tmp, true);
   Refresh();
 }
 
@@ -254,45 +256,47 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
   else
     where = (GroupCell *)m_selectionStart->GetParent();
 
-  GroupCell *newCell = new GroupCell;
+  GroupCell *newGroup = new GroupCell;
 
   TextCell *prompt = new TextCell;
   if (type == MC_TYPE_INPUT)
-    prompt->SetValue(wxT(">>"));
-  else
+    prompt->SetValue(wxT(">> "));
+  else {
+    newGroup->SetSpecial(true);
     prompt->SetValue(wxT("/*"));
+  }
   prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
-  newCell->SetInput(prompt);
+  newGroup->SetInput(prompt);
 
   if (value == wxEmptyString)
     value = wxT(" ");
-  EditorCell *valueCell = new EditorCell;
-  valueCell->SetType(type);
-  valueCell->SetValue(value);
-  if (type != MC_TYPE_INPUT) {
-    valueCell->ForceBreakLine(true);
-    newCell->SetOutput(valueCell);
-  }
+
+  EditorCell *newCell = new EditorCell;
+  newCell->SetType(type);
+  newCell->SetValue(value);
+
+  if (type != MC_TYPE_INPUT)
+    newGroup->AppendOutput(newCell);
   else
-    newCell->AppendInput(valueCell);
+    newGroup->AppendInput(newCell);
 
   if (where == m_tree) {
-    newCell->m_next = m_tree;
-    m_tree->m_previous = newCell;
-    m_tree = newCell;
+    newGroup->m_next = m_tree;
+    m_tree->m_previous = newGroup;
+    m_tree = newGroup;
 
-    Recalculate(m_tree);
+    Recalculate(m_tree, true);
   }
 
   else {
-    where->m_previous->m_next = newCell;
-    newCell->m_previous = where->m_previous;
+    where->m_previous->m_next = newGroup;
+    newGroup->m_previous = where->m_previous;
 
-    newCell->m_next = where;
-    where->m_previous = newCell;
+    newGroup->m_next = where;
+    where->m_previous = newGroup;
 
-    Recalculate(newCell);
+    Recalculate(newGroup, true);
   }
 
   if (refresh)
@@ -321,9 +325,9 @@ void MathCtrl::Recalculate(bool scroll) {
  */
 void MathCtrl::Recalculate(GroupCell *cell, bool scroll) {
   RecalculateWidths(cell);
+  BreakUpCells(cell);
   BreakLines(cell);
   RecalculateSize(cell);
-  BreakUpCells(cell);
   AdjustSize(scroll);
 }
 
@@ -395,10 +399,10 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
 void MathCtrl::ClearWindow() {
   if (m_tree != NULL) {
     SetActiveCell(NULL);
-    DestroyTree();
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
     m_last = NULL;
+    DestroyTree();
   }
   Refresh();
   Scroll(0, 0);
@@ -423,7 +427,6 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
     } else {
       if (CanCopy()) {
         popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_copy_text, _("Copy text"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(popid_copy_tex, _("Copy TeX"), wxEmptyString, wxITEM_NORMAL);
 #if defined __WXMSW__
         popupMenu->Append(popid_copy_image, _("Copy as image"),
@@ -442,13 +445,11 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
           popupMenu->Append(popid_reeval, _("Re-evaluate input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_comment, _("Comment out"), wxEmptyString, wxITEM_NORMAL);
         } else {
           popupMenu->Append(popid_edit, _("Edit text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_reeval, _("Re-evaluate input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_uncomment, _("Uncomment"), wxEmptyString, wxITEM_NORMAL);
         }
       } else if (CanAddComment()) {
         popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
@@ -680,32 +681,27 @@ void MathCtrl::SelectPoint(wxPoint& point) {
   MathCell *tr;
   tr = tmp->GetPrompt();
 
-  if (tr->ContainsPoint(point)) {
+  if (tr != NULL && tr->ContainsPoint(point)) {
     m_selectionStart = m_selectionEnd = tr;
   }
 
   if (m_selectionStart == NULL) {
     tr = tmp->GetInput();
-    if (tr->ContainsPoint(point)) {
+    if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
     }
   }
 
   if (m_selectionStart == NULL) {
     tr = tmp->GetLabel();
-    if (tr->ContainsPoint(point)) {
+    if (tr != NULL && tr->GetType() == MC_TYPE_LABEL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
     }
   }
 
   if (m_selectionStart == NULL) {
     if ((tmp->GetOutputRect()).Contains(point)) {
-      tr = tmp->GetOutput();
-      if (tr != NULL) {
-        m_selectionStart = m_selectionEnd = tr;
-        while (m_selectionEnd->m_next != NULL)
-          m_selectionEnd = m_selectionEnd->m_next;
-      }
+      tmp->SelectOutput(&m_selectionStart, &m_selectionEnd);
     }
   }
 
@@ -734,7 +730,7 @@ wxString MathCtrl::GetString(bool lb) {
 /***
  * Copy selection to clipboard.
  */
-bool MathCtrl::Copy(bool lb) {
+bool MathCtrl::Copy() {
   if (m_activeCell != NULL) {
     return m_activeCell->CopyToClipboard();
   }
@@ -745,13 +741,6 @@ bool MathCtrl::Copy(bool lb) {
   MathCell* tmp = m_selectionStart;
 
   while (tmp != NULL) {
-    if (lb && tmp->BreakLineHere() && s.Length() > 0)
-      s += wxT("\n");
-    if (lb && (tmp->GetType() == MC_TYPE_PROMPT || tmp->GetType()
-        == MC_TYPE_INPUT)) {
-      if (s.Length() > 0 && s.Right(1) != wxT("\n") && s.Right(1) != wxT(" "))
-        s += wxT(" ");
-    }
     s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
@@ -780,43 +769,16 @@ bool MathCtrl::CopyTeX() {
   bool inVerbatim = false;
   wxString label;
 
+  if (tmp->GetType() != MC_TYPE_GROUP) {
+    inMath = true;
+    s = wxT("$$");
+  }
   while (tmp != NULL) {
-    if (tmp->GetType() == MC_TYPE_MAIN_PROMPT || tmp->GetType()
-        == MC_TYPE_INPUT) {
-      if (inMath) {
-        s += label + wxT("$$\n");
-        label = wxEmptyString;
-        inMath = false;
-      }
-      if (!inVerbatim) {
-        s += wxT("\\begin{verbatim}\n");
-        inVerbatim = true;
-      }
-      s += tmp->ToString(false);
-    } else if (tmp->GetType() == MC_TYPE_LABEL) {
-      label = tmp->ToTeX(false);
-    } else {
-      if (inVerbatim) {
-        s += wxT("\n\\end{verbatim}\n");
-        inVerbatim = false;
-      }
-      if (!inMath) {
-        s += wxT("$$");
-        inMath = true;
-      }
-      s += tmp->ToTeX(false);
-    }
-    if (tmp == m_selectionEnd) {
-      if (inMath) {
-        s += label + wxT("$$");
-        label = wxEmptyString;
-      }
-      if (inVerbatim)
-        s += wxT("\n\\end{verbatim}\n");
-      break;
-    }
+    s += tmp->ToTeX(false);
     tmp = tmp->m_next;
   }
+  if (inMath == true)
+    s += wxT("$$");
 
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
@@ -828,26 +790,32 @@ bool MathCtrl::CopyTeX() {
 }
 
 bool MathCtrl::CopyInput() {
+
   if (m_selectionStart == NULL)
       return false;
-    wxString s;
-    MathCell* tmp = m_selectionStart;
 
-    while (tmp != NULL) {
-      if (tmp->GetType() == MC_TYPE_INPUT)
-        s += wxT("<wxmaxima-input>\n") + tmp->ToString(false) + wxT("\n");
-      if (tmp == m_selectionEnd)
-        break;
-      tmp = tmp->m_next;
-    }
-    s += wxT("<wxmaxima-input>");
+  wxString s;
+  GroupCell *tmp = (GroupCell *)m_selectionStart->GetParent();
+  GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
+  MathCell *input;
 
-    if (wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(s));
-      wxTheClipboard->Close();
-      return true;
-    }
-    return false;
+  while (tmp != NULL) {
+    input = tmp->GetInput();
+    if (input != NULL)
+      s += wxT("<wxmaxima-input>\n") + input->ToString(false) + wxT("\n");
+    if (tmp == end)
+      break;
+    tmp = (GroupCell *)tmp->m_next;
+  }
+  s += wxT("<wxmaxima-input>");
+
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxTheClipboard->Close();
+    return true;
+  }
+
+  return false;
 }
 
 /***
@@ -857,23 +825,61 @@ bool MathCtrl::CanDeleteSelection() {
   if (m_selectionStart == NULL || m_selectionEnd == NULL || m_insertPoint
       != NULL)
     return false;
-  MathCell* end = m_selectionEnd;
-  while (end->m_next != NULL && end->m_next->m_isHidden)
-    end = end->m_next;
+
+  GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
+  GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
+
+  if (start == NULL || end == NULL)
+    return false;
+
   if (end->m_next == NULL)
     return false;
-  if (m_selectionStart->GetType() == MC_TYPE_MAIN_PROMPT && (end
-      == m_selectionStart || end->m_next->GetType()
-      == MC_TYPE_MAIN_PROMPT))
-    return true;
-  return false;
+
+  return true;
 }
 
 /***
  * Delete the selection
  */
 void MathCtrl::DeleteSelection(bool deletePrompt) {
-  //TODO: implement
+  if (m_selectionStart == NULL || m_selectionEnd == NULL || m_insertPoint
+      != NULL)
+    return;
+
+  GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
+  GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
+
+  if (start == NULL || end == NULL)
+    return;
+
+  GroupCell *newSelection = (GroupCell *)end->m_next;
+
+  if (end->m_next == NULL)
+    return;
+
+  if (start == m_tree) {
+    if (end->m_previous != NULL)
+      end->m_previous->m_next = NULL;
+    end->m_next->m_previous = NULL;
+    m_tree = (GroupCell *)end->m_next;
+    end->m_next = NULL;
+    DestroyTree(start);
+  }
+
+  else {
+    start->m_previous->m_next = end->m_next;
+    end->m_next->m_previous = start->m_previous;
+    end->m_next = NULL;
+    DestroyTree(start);
+  }
+
+
+  if (newSelection != NULL) {
+    m_selectionStart =  m_selectionEnd = newSelection->GetInput();
+  }
+
+  AdjustSize(false);
+  Refresh();
 }
 
 /***
@@ -995,11 +1001,12 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
       m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
 
-      int width = m_activeCell->GetWidth()
-          + m_activeCell->m_previous->GetWidth();
+      GroupCell *group = (GroupCell *)m_activeCell->GetParent();
+      group->ResetData();
+      group->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+      group->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+
       if (height != m_activeCell->GetHeight())
-        hasHeightChanged = true;
-      if (width >= GetSize().GetWidth())
         hasHeightChanged = true;
     }
 
@@ -1181,7 +1188,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
  */
 void MathCtrl::DestroyTree() {
   DestroyTree(m_tree);
-  m_tree = NULL;
+  m_tree = m_last = NULL;
 }
 
 void MathCtrl::DestroyTree(MathCell* tmp) {
@@ -1309,11 +1316,28 @@ void AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   }
 }
 
+wxString PrependNBSP(wxString input)
+{
+  wxString line = wxEmptyString;
+  for (unsigned int i = 0; i < input.Length(); i++) {
+    while (input.GetChar(i) == '\n') {
+      line += wxT("<BR>\n");
+      i++;
+      while (i < input.Length() && input.GetChar(i) == ' ') {
+        line += wxT("&nbsp;");
+        i++;
+      }
+    }
+    line += input.GetChar(i);
+  }
+  return line;
+}
+
 bool MathCtrl::ExportToHTML(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
   int count = 0;
-  MathCell *tmp = m_tree, *start= NULL, *end= NULL;
+  GroupCell *tmp = (GroupCell *)m_tree;
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
@@ -1341,9 +1365,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
       output,
       wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">"));
 
-  //
-  // Write styles
-  //
+//////////////////////////////////////////////
+// Write styles
+//////////////////////////////////////////////
+
   wxString font;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
@@ -1502,123 +1527,66 @@ bool MathCtrl::ExportToHTML(wxString file) {
   AddLineToFile(output, wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->"));
   AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
 
-  //
-  // Write maxima header
-  //
-  if (tmp != NULL && tmp->GetType() != MC_TYPE_MAIN_PROMPT) {
-    AddLineToFile(output, wxEmptyString);
-    AddLineToFile(output, wxT(" <P>"));
-    while (tmp != NULL && tmp->GetType() != MC_TYPE_MAIN_PROMPT) {
-      AddLineToFile(output, wxT("   ") + tmp->ToString(false));
-      AddLineToFile(output, wxT("   <BR/>"));
-      tmp = tmp->m_next;
-    }
-    AddLineToFile(output, wxT(" </P>"));
-  }
-
-  AddLineToFile(output, wxEmptyString);
-
-  //
-  // Write contents
-  //
-  int type = 0;
-  wxString closeTag;
+//////////////////////////////////////////////
+// Write contents
+//////////////////////////////////////////////
 
   while (tmp != NULL) {
-    AddLineToFile(output, wxT("<!-- Input/output group -->"));
-    AddLineToFile(output, wxEmptyString);
-    AddLineToFile(output, wxT(" <P>"));
+    AddLineToFile(output, wxT("\n\n<!-- Input/Output group -->\n\n"));
 
-    // PROMPT
-    if (tmp->GetValue() != wxT("/*")) {
-      if (!tmp->m_isFolded)
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-      else
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"hidden\">"));
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT) {
-        AddLineToFile(output, tmp->ToString(false));
-        tmp = tmp->m_next;
-      }
+    MathCell *prompt = tmp->GetPrompt();
+    if (prompt != NULL && !tmp->IsSpecial()) {
+      AddLineToFile(output, wxT("<P>"));
+      AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
+      AddLineToFile(output, prompt->ToString(false));
       AddLineToFile(output, wxT("  </SPAN>"));
-    } else
-      tmp = tmp->m_next;
-
-    // INPUT
-    if (tmp != NULL) {
-      type = tmp->GetType();
-      if (type == MC_TYPE_COMMENT) {
-        AddLineToFile(output, wxT("  <DIV CLASS=\"comment\">"));
-        closeTag = wxT("   </DIV>");
-      } else if (type == MC_TYPE_SECTION) {
-        AddLineToFile(output, wxT("  <DIV CLASS=\"section\">"));
-        closeTag = wxT("   </DIV>");
-      } else if (type == MC_TYPE_TITLE) {
-        AddLineToFile(output, wxT("  <DIV CLASS=\"title\">"));
-        closeTag = wxT("   </DIV>");
-      } else {
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
-        closeTag = wxT("   </SPAN>");
-      }
     }
-    while (tmp != NULL && tmp->GetType() == type) {
-      wxString input = tmp->ToString(false);
-      wxString line = wxEmptyString;
-      for (unsigned int i = 0; i < input.Length(); i++) {
-        while (input.GetChar(i) == '\n') {
-          line += wxT("<BR>\n");
-          i++;
-          while (i < input.Length() && input.GetChar(i) == ' ') {
-            line += wxT("&nbsp;");
-            i++;
-          }
-        }
-        line += input.GetChar(i);
-      }
-      AddLineToFile(output, wxT("   ") + line);
-      AddLineToFile(output, wxT("   <BR>"));
-      tmp = tmp->m_next;
-    }
-    AddLineToFile(output, closeTag);
 
-    // Check if there is no optput (commands with $)
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT) {
-      AddLineToFile(output, wxT(" </P>"));
+    MathCell *input = tmp->GetInput();
+    if (input != NULL) {
+      AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
+      AddLineToFile(output, PrependNBSP(input->ToString(false)));
+      AddLineToFile(output, wxT("  </SPAN>"));
+    }
+
+    MathCell *out = tmp->GetLabel();
+    if (out == NULL) {
       AddLineToFile(output, wxEmptyString);
-      continue;
+    }
+    else {
+      if (tmp->IsSpecial()) {
+        switch(out->GetType()) {
+          case MC_TYPE_COMMENT:
+            AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
+            break;
+          case MC_TYPE_SECTION:
+            AddLineToFile(output, wxT("<P CLASS=\"section\">"));
+            break;
+          case MC_TYPE_TITLE:
+            AddLineToFile(output, wxT("<P CLASS=\"title\">"));
+            break;
+        }
+        AddLineToFile(output, PrependNBSP(out->ToString(false)));
+      }
+      else {
+        CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
+        AddLineToFile(output, wxT("  <BR>"));
+        AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+            filename +
+            wxString::Format(wxT("_%d.png\">"), count));
+        count++;
+      }
     }
 
-    // OUTPUT
-    start = tmp;
-    if (tmp != NULL && tmp->m_isFolded) {
-      end = tmp;
-    } else {
-      while (tmp != NULL && tmp->m_next != NULL && tmp->m_next->GetType()
-          != MC_TYPE_MAIN_PROMPT)
-        tmp = tmp->m_next;
-      end = tmp;
-    }
-    if (start != NULL && end != NULL) {
-      if (!CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), start, end, true))
-        return false;
-      AddLineToFile(output, wxT("  <BR>"));
-      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-      filename +
-      wxString::Format(wxT("_%d.png\">"), count));
-      count++;
-    }
-    AddLineToFile(output, wxT(" </P>"));
-    AddLineToFile(output, wxEmptyString);
-    if (tmp != NULL) {
-      if (start->m_isFolded)
-        tmp = tmp->m_next;
-      else
-        tmp = tmp->m_next;
-    }
+    AddLineToFile(output, wxT("</P>"));
+
+    tmp = (GroupCell *)tmp->m_next;
   }
 
-  //
-  // Footer
-  //
+//////////////////////////////////////////////
+// Footer
+//////////////////////////////////////////////
+
   AddLineToFile(output, wxT(" <HR>"));
   AddLineToFile(output, wxT(" <SMALL> Created with")
   wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
@@ -1636,16 +1604,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   output.Close();
 
   return done;
-}
-
-wxString StringToTeX(wxString s) {
-  if (s.Left(5) == wxT("TeX:\n"))
-    return s.SubString(5, s.Length());
-  s.Replace(wxT("_"), wxT("\\_"));
-  s.Replace(wxT("{"), wxT("\\{"));
-  s.Replace(wxT("}"), wxT("\\}"));
-  s.Replace(wxT("^"), wxT("\\^"));
-  return s;
 }
 
 bool MathCtrl::ExportToTeX(wxString file) {
@@ -1674,171 +1632,13 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\begin{document}"));
 
   //
-  // Write maxima header
-  //
-  if (tmp != NULL && tmp->GetType() != MC_TYPE_MAIN_PROMPT) {
-    AddLineToFile(output, wxEmptyString);
-    AddLineToFile(output, wxT("\\begin{verbatim}"));
-    while (tmp != NULL && tmp->GetType() != MC_TYPE_MAIN_PROMPT) {
-      AddLineToFile(output, tmp->ToString(false));
-      tmp = tmp->m_next;
-    }
-    AddLineToFile(output, wxT("\\end{verbatim}"));
-  }
-
-  AddLineToFile(output, wxEmptyString);
-
-  //
   // Write contents
   //
-  int type = 0;
-  wxString closeTag;
-  wxString prompt;
 
   while (tmp != NULL) {
-    AddLineToFile(output, wxT("%%-- Input/output group"));
-    AddLineToFile(output, wxEmptyString);
-
-    // PROMPT
-    if (tmp->GetValue() != wxT("/*")) {
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT) {
-        prompt = tmp->ToString(false);
-        tmp = tmp->m_next;
-      }
-    } else
-      tmp = tmp->m_next;
-
-    if (tmp == NULL)
-      continue;
-    // INPUT
-    bool section = true;
-    if (tmp != NULL) {
-      type = tmp->GetType();
-      if (type == MC_TYPE_COMMENT) {
-        AddLineToFile(output, wxEmptyString);
-        closeTag = wxEmptyString;
-      } else if (type == MC_TYPE_SECTION) {
-        AddLineToFile(output, wxT("\\subsection{"));
-        closeTag = wxT("}");
-      } else if (type == MC_TYPE_TITLE) {
-        AddLineToFile(output, wxT("\\section{"));
-        closeTag = wxT("}");
-      } else {
-        section = false;
-        AddLineToFile(output, wxT("\\begin{verbatim}"));
-        closeTag = wxT("\\end{verbatim}");
-      }
-    }
-    while (tmp != NULL && tmp->GetType() == type) {
-      if (section)
-        AddLineToFile(output, prompt + StringToTeX(tmp->ToString(false)));
-      else
-        AddLineToFile(output, prompt + tmp->ToString(false));
-      prompt = wxEmptyString;
-      tmp = tmp->m_next;
-    }
-    AddLineToFile(output, closeTag);
-
-    // Check if there is no optput (commands with $)
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_MAIN_PROMPT)
-      continue;
-
-    // OUTPUT
-    start = tmp;
-    if (tmp != NULL && tmp->m_isFolded)
-      end = tmp;
-    else {
-      while (tmp != NULL && tmp->m_next != NULL && tmp->m_next->GetType()
-          != MC_TYPE_MAIN_PROMPT)
-        tmp = tmp->m_next;
-      end = tmp;
-    }
-
-    if (start != NULL && end != NULL) {
-      wxString s;
-      MathCell* tmpOut = start;
-
-      bool inMath = false;
-      bool inVerbatim = false;
-      wxString label;
-
-      while (tmpOut != NULL) {
-        if (tmpOut->GetType() == MC_TYPE_MAIN_PROMPT || tmpOut->GetType() == MC_TYPE_INPUT) {
-          if (inMath) {
-            s += label + wxT("$$\n");
-            label = wxEmptyString;
-            inMath = false;
-          }
-          if (!inVerbatim) {
-            s += wxT("\\begin{verbatim}\n");
-            inVerbatim = true;
-          }
-          s += wxT(" ");
-          s += tmpOut->ToString(false);
-          s += wxT("\n");
-        } else if (tmpOut->GetType() == MC_TYPE_LABEL) {
-          if (label.Length() > 0) {
-            if (inMath) {
-              s += label + wxT("$$\n");
-              inMath = false;
-            }
-            AddLineToFile(output, s);
-            s = wxEmptyString;
-          }
-          label = tmpOut->ToTeX(false);
-        } else if (tmpOut->GetType() == MC_TYPE_PROMPT) {
-          if (inMath) {
-            s += wxT("$$\n");
-            label = wxEmptyString;
-            inMath = false;
-          }
-          if (!inVerbatim) {
-            s += wxT("\\begin{verbatim}\n");
-            inVerbatim = true;
-          }
-          s += tmpOut->ToString(false);
-        } else {
-          if (inVerbatim) {
-            s += wxT("\n\\end{verbatim}\n");
-            inVerbatim = false;
-          }
-          if (!inMath) {
-            s += wxT("$$");
-            inMath = true;
-          }
-          s += tmpOut->ToTeX(false);
-        }
-        if (tmpOut == end) {
-          if (inMath) {
-            s += label + wxT("$$");
-            label = wxEmptyString;
-          }
-          if (inVerbatim)
-            s += wxT("\n\\end{verbatim}\n");
-          break;
-        }
-        tmpOut = tmpOut->m_next;
-      }
-      if (s.Find(wxT("<< Graphics >>"))>0) {
-        if (!wxDirExists(imgDir))
-            if (!wxMkdir(imgDir))
-              return false;
-        if (!CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), start, end, true))
-            return false;
-        AddLineToFile(output, wxT(""));
-        AddLineToFile(output, wxT("\\includegraphics[width=9cm]{") + filename + wxT("_img/") + filename + wxString::Format(wxT("_%d.png}"), count));
-        count++;
-      } else
-        AddLineToFile(output, s);
-    }
-
-    AddLineToFile(output, wxEmptyString);
-    if (tmp != NULL) {
-      if (start->m_isFolded)
-        tmp = tmp->m_next;
-      else
-        tmp = tmp->m_next;
-    }
+    wxString s = tmp->ToTeX(false);
+    AddLineToFile(output, s);
+    tmp = tmp->m_next;
   }
 
   //
@@ -1853,6 +1653,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
 }
 
 bool MathCtrl::ExportToMAC(wxString file) {
+
   bool wxm = false;
   if (file.Right(4) == wxT(".wxm"))
     wxm = true;
@@ -1871,80 +1672,64 @@ bool MathCtrl::ExportToMAC(wxString file) {
     AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = (GroupCell *)m_tree;
 
   //
   // Write contents
   //
   while (tmp != NULL) {
-    // Go to first main prompt
-    while (tmp != NULL && tmp->GetType() != MC_TYPE_MAIN_PROMPT)
-      tmp = tmp->m_next;
-
-    // Go to input
-    tmp = tmp->m_next;
 
     // Write input
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT) {
-      AddLineToFile(output, wxEmptyString, false);
-      if (wxm)
-        AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_INPUT) {
-        wxString input = tmp->ToString(false);
+    if (!tmp->IsSpecial()) {
+      MathCell *txt = tmp->GetInput();
+      if (txt != NULL) {
+        AddLineToFile(output, wxEmptyString, false);
+        if (wxm)
+          AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
+        wxString input = txt->ToString(false);
         AddLineToFile(output, input, false);
-        tmp = tmp->m_next;
-      }
-      if (wxm)
         AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
+      }
     }
 
-    // Write comment
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT) {
+    // Write text
+    else {
       AddLineToFile(output, wxEmptyString, false);
-      if (wxm)
-        AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_COMMENT) {
-        if (wxm) {
-          wxString input = tmp->ToString(false);
-          AddLineToFile(output, input, false);
+      MathCell *txt = tmp->GetLabel();
+
+      if (wxm) {
+        switch (txt->GetType()) {
+          case MC_TYPE_COMMENT:
+            AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
+            break;
+          case MC_TYPE_SECTION:
+            AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
+            break;
+          case MC_TYPE_TITLE:
+            AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
+            break;
         }
-        tmp = tmp->m_next;
       }
-      if (wxm)
-        AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
+
+      wxString comment = txt->ToString(false);
+      AddLineToFile(output, comment, false);
+
+      if (txt) {
+        switch (txt->GetType()) {
+          case MC_TYPE_COMMENT:
+            AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
+            break;
+          case MC_TYPE_SECTION:
+            AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
+            break;
+          case MC_TYPE_TITLE:
+            AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
+            break;
+        }
+      }
     }
 
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION) {
-      if (wxm) {
-        AddLineToFile(output, wxEmptyString, false);
-        AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
-      }
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_SECTION) {
-        if (wxm) {
-          wxString input = tmp->ToString(false);
-          AddLineToFile(output, input, false);
-        }
-        tmp = tmp->m_next;
-      }
-      if (wxm)
-        AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
-    }
-
-    if (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE) {
-      if (wxm) {
-        AddLineToFile(output, wxEmptyString, false);
-        AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
-      }
-      while (tmp != NULL && tmp->GetType() == MC_TYPE_TITLE) {
-        if (wxm) {
-          wxString input = tmp->ToString(false);
-          AddLineToFile(output, input, false);
-        }
-        tmp = tmp->m_next;
-      }
-      if (wxm)
-        AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
-    }
+    tmp = (GroupCell *)tmp->m_next;
   }
 
   AddLineToFile(output, wxEmptyString, false);
@@ -1968,29 +1753,23 @@ void MathCtrl::BreakUpCells(MathCell *cell) {
   wxClientDC dc(this);
   CellParser parser(dc);
   int fontsize = 12;
-  MathCell *tmp = cell;
+  GroupCell *tmp = (GroupCell *)cell;
 
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int clientWidth = GetClientSize().GetWidth() - 9;
+  fontsize = MAX(fontsize, MC_MIN_SIZE);
 
   while (tmp != NULL) {
-    if (tmp->GetWidth() > clientWidth) {
-      if (tmp->BreakUp()) {
-        tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-        tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
-      }
-    }
-    tmp = tmp->m_next;
+    tmp->BreakUpCells(dc, parser, fontsize, clientWidth);
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 
 void MathCtrl::UnBreakUpCells() {
-  MathCell *tmp = m_tree;
+  GroupCell *tmp = m_tree;
   while (tmp != NULL) {
-    if (tmp->m_isBroken) {
-      tmp->Unbreak(false);
-    }
-    tmp = tmp->m_next;
+    tmp->UnBreakUpCells();
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 
@@ -2003,10 +1782,6 @@ bool MathCtrl::CanEdit() {
     return false;
 
   if (!m_selectionStart->IsEditable())
-    return false;
-
-  if (m_selectionStart->m_previous == NULL
-      || m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;
 
   return true;
@@ -2044,6 +1819,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
 }
 
 bool MathCtrl::CanAddInput() {
+  // TODO: popravi
   if (m_tree == NULL)
     return false;
 
@@ -2075,14 +1851,22 @@ bool MathCtrl::SelectPrevInput() {
   if (tmp == NULL)
     return false;
 
-  MathCell *inpt = tmp->GetInput();
-
-  if (inpt == NULL)
-    return false;
+  MathCell *inpt = NULL;
+  while (tmp != NULL && inpt == NULL) {
+    inpt = tmp->GetInput();
+    if (inpt == NULL) {
+      inpt = tmp->GetLabel();
+      if (inpt != NULL && !inpt->IsEditable())
+        inpt = NULL;
+    }
+    if (inpt == NULL)
+      tmp = (GroupCell *)tmp->m_previous;
+  }
 
   m_selectionStart = m_selectionEnd = inpt;
   Refresh();
 
+  ScrollToSelectionStart();
   return true;
 }
 
@@ -2099,7 +1883,17 @@ bool MathCtrl::SelectNextInput(bool input) {
   if (tmp == NULL)
     return false;
 
-  MathCell *inpt = tmp->GetInput();
+  MathCell *inpt = NULL;
+  while (tmp != NULL && inpt == NULL) {
+    inpt = tmp->GetInput();
+    if (inpt == NULL && !input) {
+      inpt = tmp->GetLabel();
+      if (inpt != NULL && !inpt->IsEditable())
+        inpt = NULL;
+    }
+    if (inpt == NULL)
+      tmp = (GroupCell *)tmp->m_next;
+  }
 
   if (inpt == NULL)
     return false;
@@ -2107,6 +1901,7 @@ bool MathCtrl::SelectNextInput(bool input) {
   m_selectionStart = m_selectionEnd = inpt;
   Refresh();
 
+  ScrollToSelectionStart(false);
   return true;
 }
 
@@ -2125,6 +1920,7 @@ bool MathCtrl::SelectLastInput() {
   m_selectionStart = m_selectionEnd = input;
   Refresh();
 
+  ScrollToSelectionStart();
   return true;
 }
 
@@ -2143,10 +1939,11 @@ bool MathCtrl::SelectFirstInput() {
 }
 
 bool MathCtrl::SelectPrompt() {
-  if (m_selectionStart == NULL)
-    return false;
+  GroupCell *tmp = m_last;
 
-  GroupCell *tmp = (GroupCell *)m_selectionStart->GetParent();
+  if (m_selectionStart != NULL)
+    tmp = (GroupCell *)m_selectionStart->GetParent();
+
   if (tmp == NULL)
     return false;
 

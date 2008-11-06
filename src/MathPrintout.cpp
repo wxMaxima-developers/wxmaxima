@@ -18,6 +18,7 @@
 ///
 
 #include "MathPrintout.h"
+#include "GroupCell.h"
 
 #if WXM_PRINT
 
@@ -86,31 +87,18 @@ bool MathPrintout::OnPrintPage(int num)
 
     while (tmp != NULL)
     {
-      if (!tmp->m_isBroken)
+      tmp->Draw(parser, point, fontsize, false);
+      if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
       {
-        tmp->Draw(parser, point, fontsize, false);
-        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
-        {
-          point.x = marginX;
-          point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += SCALE_PX(5, ppiScale);
-          drop = tmp->m_next->GetMaxDrop();
-        }
-        else
-          point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
+        point.x = marginX;
+        point.y += drop + tmp->m_next->GetMaxCenter();
+        if (tmp->m_bigSkip)
+          point.y += SCALE_PX(5, ppiScale);
+        drop = tmp->m_next->GetMaxDrop();
       }
       else
-      {
-        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
-        {
-          point.x = marginX;
-          point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += SCALE_PX(5, ppiScale);
-          drop = tmp->m_next->GetMaxDrop();
-        }
-      }
+        point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
+
       tmp = tmp->m_next;
       if (tmp == NULL || tmp->BreakPageHere())
         break;
@@ -139,24 +127,16 @@ void MathPrintout::BreakLines()
   int fullWidth = pageWidth - marginX;
   int currentWidth = marginX;
 
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = (GroupCell *)m_tree;
 
   while (tmp != NULL)
   {
     if (!tmp->m_isBroken)
     {
-      tmp->BreakLine(false);
       tmp->ResetData();
-      if (tmp->BreakLineHere() ||
-              (currentWidth + tmp->GetWidth() >= fullWidth))
-      {
-        currentWidth = marginX + tmp->GetWidth();
-        tmp->BreakLine(true);
-      }
-      else
-        currentWidth += (tmp->GetWidth() + SCALE_PX(2, scale));
+      tmp->BreakLines(fullWidth);
+      tmp = (GroupCell *)tmp->m_next;
     }
-    tmp = tmp->m_next;
   }
 }
 
@@ -182,25 +162,22 @@ void MathPrintout::BreakPages()
   m_numberOfPages = 1;
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    tmp->BreakPage(false);
+    if (tmp->BreakLineHere())
     {
-      tmp->BreakPage(false);
-      if (tmp->BreakLineHere())
+      if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY)
       {
-        if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY)
-        {
-          currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
-          tmp->BreakPage(true);
-          m_pages.push_back(tmp);
-          m_numberOfPages++;
-        }
-        else
-          currentHeight += tmp->GetMaxHeight() + skip;
-        if (tmp->m_bigSkip)
-          skip = SCALE_PX(5, scale);
-        else
-          skip = 0;
+        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+        tmp->BreakPage(true);
+        m_pages.push_back(tmp);
+        m_numberOfPages++;
       }
+      else
+        currentHeight += tmp->GetMaxHeight() + skip;
+      if (tmp->m_bigSkip)
+        skip = SCALE_PX(5, scale);
+      else
+        skip = 0;
     }
     tmp = tmp->m_next;
   }
@@ -209,9 +186,9 @@ void MathPrintout::BreakPages()
 void MathPrintout::SetupData()
 {
   RecalculateWidths();
-  RecalculateSize();
-  BreakUpCells();
   BreakLines();
+  BreakUpCells();
+  RecalculateSize();
   BreakPages();
 }
 

@@ -142,7 +142,7 @@ void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 }
 
 bool AbsCell::BreakUp()
-{/*
+{
   if (!m_isBroken)
   {
     m_isBroken = true;
@@ -155,7 +155,7 @@ bool AbsCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
     return true;
-  }*/
+  }
   return false;
 }
 

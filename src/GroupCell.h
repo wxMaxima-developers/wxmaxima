@@ -41,12 +41,19 @@ public:
   MathCell* GetLabel() { return m_output; }
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   wxRect GetOutputRect() { return m_outputRect; }
+  bool IsSpecial() { return m_special; }
+  void SetSpecial(bool special) { m_special = special; }
   void RemoveOutput();
-protected:
-  MathCell *m_input, *m_output;
-  wxRect m_outputRect;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void SelectOutput(MathCell **start, MathCell **end);
+  void BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth);
+  void UnBreakUpCells();
+protected:
+  void DestroyOutput();
+  MathCell *m_input, *m_output;
+  bool m_special;
+  wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
   wxString ToTeX(bool all);

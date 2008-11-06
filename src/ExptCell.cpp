@@ -204,8 +204,7 @@ void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 
 bool ExptCell::BreakUp()
 {
-  // TODO: implement
-/*  if (!m_isBroken)
+  if (!m_isBroken)
   {
     m_isBroken = true;
     m_baseCell->m_previousToDraw = this;
@@ -222,7 +221,7 @@ bool ExptCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_baseCell;
     return true;
-  }*/
+  }
   return false;
 }
 

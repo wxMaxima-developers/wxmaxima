@@ -30,7 +30,6 @@ enum {
   popid_cut,
   popid_paste,
   popid_select_all,
-  popid_copy_text,
   popid_copy_image,
   popid_copy_to_input,
   popid_delete,
@@ -54,8 +53,6 @@ enum {
   popid_image_copy,
 #endif
   popid_image,
-  popid_comment,
-  popid_uncomment
 };
 
 class MathCtrl: public wxScrolledWindow
@@ -100,7 +97,7 @@ public:
   void DeleteSelection(bool deletePrompt = true);
   bool CutToClipboard();
   void PasteFromClipboard();
-  bool Copy(bool lb = false);
+  bool Copy();
   bool CopyInput();
   bool CopyTeX();
   bool CopyBitmap();

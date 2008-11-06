@@ -156,7 +156,6 @@ enum {
   menu_monitor_file,
   menu_clear_screen,
   menu_copy_from_console,
-  menu_copy_lb_from_console,
   menu_copy_tex_from_console,
   menu_copy_input_from_console,
   menu_delete_selection,

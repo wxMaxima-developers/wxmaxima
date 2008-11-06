@@ -113,6 +113,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
+  MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
 void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
@@ -128,6 +129,7 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height= (int) (scale * m_height);
 
   m_center = m_height / 2;
+  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

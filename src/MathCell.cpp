@@ -23,6 +23,8 @@ MathCell::MathCell()
 {
   m_next = NULL;
   m_previous = NULL;
+  m_nextToDraw = NULL;
+  m_previousToDraw = NULL;
   m_group = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
@@ -60,10 +62,16 @@ void MathCell::AppendCell(MathCell *p_next)
   {
     m_next = p_next;
     m_next->m_previous = this;
+    MathCell *tmp = this;
+    while (tmp->m_nextToDraw != NULL)
+      tmp = tmp->m_nextToDraw;
+    tmp->m_nextToDraw = p_next;
+    p_next->m_previousToDraw = tmp;
   }
   else
     m_next->AppendCell(p_next);
 };
+
 
 /***
  * Get the pointer to the parent group cell
@@ -90,15 +98,15 @@ int MathCell::GetMaxCenter()
   int center = m_isBroken ? 0 : m_center;
   if (m_maxCenter == -1)
   {
-    if (m_next == NULL)
+    if (m_nextToDraw == NULL)
       m_maxCenter = center;
     else
     {
       // If the next cell is on a new line, maxCenter is m_center
-      if (m_next->m_breakLine && !m_next->m_isBroken)
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
         m_maxCenter = center;
       else
-        m_maxCenter = MAX(center, m_next->GetMaxCenter());
+        m_maxCenter = MAX(center, m_nextToDraw->GetMaxCenter());
     }
   }
   return m_maxCenter;
@@ -112,14 +120,14 @@ int MathCell::GetMaxDrop()
   if (m_maxDrop == -1)
   {
     int drop = m_isBroken ? 0 : (m_height - m_center);
-    if (m_next == NULL)
+    if (m_nextToDraw == NULL)
       m_maxDrop = drop;
     else
     {
-      if (m_next->m_breakLine && !m_next->m_isBroken)
+      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
         m_maxDrop = drop;
       else
-        m_maxDrop = MAX(drop, m_next->GetMaxDrop());
+        m_maxDrop = MAX(drop, m_nextToDraw->GetMaxDrop());
     }
   }
   return m_maxDrop;
@@ -157,11 +165,11 @@ int MathCell::GetLineWidth(double scale)
   int width = m_isBroken ? 0 : m_width;
   if (m_lineWidth == -1)
   {
-    if (m_next == NULL || m_next->m_breakLine ||
-        m_next->m_type == MC_TYPE_MAIN_PROMPT)
+    if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine ||
+        m_nextToDraw->m_type == MC_TYPE_MAIN_PROMPT)
       m_lineWidth = width;
     else
-      m_lineWidth = width + m_next->GetLineWidth(scale) +
+      m_lineWidth = width + m_nextToDraw->GetLineWidth(scale) +
                     SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_lineWidth;
@@ -175,11 +183,11 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   m_currentPoint.x = point.x;
   m_currentPoint.y = point.y;
-  if (m_next != NULL && all)
+  if (m_nextToDraw != NULL && all)
   {
     double scale = parser.GetScale();
     point.x += m_width + SCALE_PX(MC_CELL_SKIP, scale);
-    m_next->Draw(parser, point, fontsize, true);
+    m_nextToDraw->Draw(parser, point, fontsize, true);
   }
 }
 
@@ -318,8 +326,8 @@ void MathCell::SelectFirst(wxRect& rect, MathCell** first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
-  else if (m_next != NULL)
-    m_next->SelectFirst(rect, first);
+  else if (m_nextToDraw != NULL)
+    m_nextToDraw->SelectFirst(rect, first);
   else
     *first = NULL;
 }
@@ -331,8 +339,8 @@ void MathCell::SelectLast(wxRect& rect, MathCell** last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
-  if (m_next != NULL)
-    m_next->SelectLast(rect, last);
+  if (m_nextToDraw != NULL)
+    m_nextToDraw->SelectLast(rect, last);
 }
 
 /***
@@ -385,7 +393,16 @@ void MathCell::ResetData()
  */
 void MathCell::Unbreak(bool all)
 {
-  // TODO:implement
+  ResetData();
+  m_isBroken = false;
+  if (!m_isFolded)
+  {
+    m_nextToDraw = m_next;
+    if (m_nextToDraw != NULL)
+      m_nextToDraw->m_previousToDraw = this;
+  }
+  if (all && m_next != NULL)
+    m_next->Unbreak(all);
 }
 
 /***

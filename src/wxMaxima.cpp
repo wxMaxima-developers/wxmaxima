@@ -1411,7 +1411,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true) || m_inputLine->CanCopy());
   menubar->Enable(menu_cut, m_console->CanCut() || m_inputLine->CanCut());
   menubar->Enable(menu_paste, m_inputLine->CanPaste());
-  menubar->Enable(menu_copy_lb_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_input_from_console, m_console->CanCopy());
   menubar->Enable(menu_selection_to_input, m_console->CanCopy());
@@ -1816,10 +1815,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     else if (m_inputLine->CanPaste())
       m_inputLine->Paste();
     break;
-  case menu_copy_lb_from_console:
-    if (m_console->CanCopy())
-      m_console->Copy(true);
-    break;
   case menu_copy_tex_from_console:
     if (m_console->CanCopy())
       m_console->CopyTeX();
@@ -1863,6 +1858,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->DeleteSelection();
       m_console->Recalculate(false);
       m_console->Refresh();
+      return;
     }
     break;
   case menu_select_last:
@@ -1908,7 +1904,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           wxTextDataObject data;
           wxTheClipboard->GetData(data);
           wxString inputs(data.GetText());
-          wxStringTokenizer lines(inputs);
+          wxStringTokenizer lines(inputs, wxT("\n"));
           wxString input;
           wxArrayString inp;
 
@@ -1939,6 +1935,8 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
             }
           }
 
+          m_console->SelectPrevInput();
+          m_console->ScrollToSelectionStart(false);
           m_console->SetSelection(NULL);
         }
         wxTheClipboard->Close();
@@ -3097,41 +3095,9 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case popid_select_all:
     m_console->SelectAll();
     break;
-  case popid_copy_text:
-    if (m_console->CanCopy())
-      m_console->Copy(true);
-    break;
   case popid_copy_image:
     if (m_console->CanCopy())
       m_console->CopyBitmap();
-    break;
-  case popid_comment:
-  {
-    wxString value = m_console->GetSelectionStart()->GetValue();
-    m_console->SelectPrompt();
-    m_console->GetSelectionStart()->SetValue(wxT("/*"));
-    m_console->SetInsertPoint(m_console->GetSelectionStart());
-    MathCell *tmp = m_console->GetSelectionStart();
-    DoRawConsoleAppend(value, MC_TYPE_COMMENT);
-    DoRawConsoleAppend(wxT("(%i111)"), MC_TYPE_MAIN_PROMPT);
-    m_console->SetSelection(tmp);
-    m_console->SelectNextInput();
-    m_console->SelectNextInput();
-    m_console->SelectPrompt();
-    m_console->SetInsertPoint(NULL);
-    m_console->DeleteSelection();
-    m_console->RecalculateForce();
-    m_console->Refresh();
-  }
-    break;
-  case popid_uncomment:
-    m_console->GetSelectionStart()->SetType(MC_TYPE_INPUT);
-    m_console->GetSelectionStart()->AddEnding();
-    m_console->SelectPrompt();
-    m_console->GetSelectionStart()->SetValue(wxT(">> "));
-    m_console->SelectNextInput();
-    m_console->RecalculateForce();
-    m_console->Refresh();
     break;
   case popid_simplify:
     SendMaxima(wxT("ratsimp(") + selection + wxT(");"));
@@ -3326,7 +3292,6 @@ void wxMaxima::ReEvaluate()
     if (tmp->GetType() == MC_TYPE_INPUT)
       tmp->AddEnding();
     m_console->SetSelection(tmp);
-    m_console->Refresh();
   }
 
   if (!m_console->CanEdit())
@@ -3351,6 +3316,7 @@ void wxMaxima::ReEvaluate()
     m_console->SetScrollTo(y);
 
     group->RemoveOutput();
+    m_console->Recalculate(group, false);
 
     m_console->SetInsertPoint(group);
 
@@ -3366,6 +3332,8 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
     return ;
 
   DoPrependCell(event.GetId());
+
+  m_console->SelectPrevInput();
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
@@ -3457,7 +3425,6 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
-  EVT_MENU(popid_copy_text, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_to_input, wxMaxima::EditMenu)
   EVT_MENU(popid_delete, wxMaxima::EditMenu)
@@ -3474,8 +3441,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
-  EVT_MENU(popid_comment, wxMaxima::PopupMenu)
-  EVT_MENU(popid_uncomment, wxMaxima::PopupMenu)
 #if defined __WXMSW__
   EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
 #endif
@@ -3611,7 +3576,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
   EVT_MENU(menu_clear_screen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
-  EVT_MENU(menu_copy_lb_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
   EVT_MENU(menu_goto_input, wxMaxima::EditMenu)
@@ -3649,7 +3613,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(plot_slider_id, wxMaxima::UpdateSlider)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_copy_lb_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_inc_fontsize, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_dec_fontsize, wxMaxima::UpdateMenus)

@@ -335,7 +335,7 @@ bool FracCell::BreakUp()
   if (m_fracStyle == FC_DIFF)
     return false;
 
-/*  if (!m_isBroken)
+  if (!m_isBroken)
   {
     m_isBroken = true;
     m_open1->m_previousToDraw = this;
@@ -356,7 +356,7 @@ bool FracCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close2;
     m_nextToDraw = m_open1;
     return true;
-  }*/
+  }
   return false;
 }
 
