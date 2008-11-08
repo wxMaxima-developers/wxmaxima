@@ -186,8 +186,8 @@ void MathPrintout::BreakPages()
 void MathPrintout::SetupData()
 {
   RecalculateWidths();
-  BreakLines();
   BreakUpCells();
+  BreakLines();
   RecalculateSize();
   BreakPages();
 }
@@ -343,7 +343,7 @@ void MathPrintout::DestroyTree(MathCell* tmp)
 
 void MathPrintout::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  GroupCell *tmp = (GroupCell *)m_tree;
   int pageWidth, pageHeight, marginX, marginY;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
@@ -360,12 +360,8 @@ void MathPrintout::BreakUpCells()
 
   while (tmp != NULL)
   {
-    if (tmp->GetWidth() > fullWidth)
-    {
-      if (tmp->BreakUp())
-        tmp->RecalculateWidths(parser, fontsize, false);
-    }
-    tmp = tmp->m_next;
+    tmp->BreakUpCells(*dc, parser, fontsize, fullWidth);
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 

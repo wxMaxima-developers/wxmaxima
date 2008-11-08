@@ -66,11 +66,8 @@ public:
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool scroll = true);
   void RecalculateForce();
-  void Recalculate(GroupCell *cell, bool scroll = true);
   void RecalculateWidths();
-  void RecalculateWidths(MathCell *cell);
   void RecalculateSize();
-  void RecalculateSize(MathCell *cell);
   void ClearWindow();
   bool CanCopy(bool fromActive = false)
   {
@@ -87,8 +84,6 @@ public:
   }
   void SelectAll();
   bool CanDeleteSelection();
-  bool CanAddComment();
-  bool CanAddInput();
   bool CanAnimate() {
     return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
       m_selectionStart->GetType() == MC_TYPE_SLIDE;
@@ -165,12 +160,12 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
-  void PrependCell(int id, wxString value, bool refresh);
+  void PrependCell(int id, wxString value, bool refresh, bool prepend = true);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
-  void BreakLines(GroupCell* cell);
+  void BreakLines();
   void OnTimer(wxTimerEvent& event);
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);

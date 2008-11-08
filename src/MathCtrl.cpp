@@ -142,7 +142,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();
         } else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+          point.x += tmp->GetWidth() + MC_CELL_SKIP;
       }
       tmp = tmp->m_next;
     }
@@ -185,7 +185,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       // We have a selection by dragging
       else {
         while (1) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden)
+          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE)
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
@@ -218,11 +218,11 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
     GroupCell *newGroup = new GroupCell;
     newGroup->SetInput(newCell);
     if (m_last == NULL) {
-      tmp = m_last = m_tree = newGroup;
+      m_last = m_tree = newGroup;
     }
     else {
       m_last->AppendCell(newGroup);
-      tmp = m_last = newGroup;
+      m_last = newGroup;
     }
   }
 
@@ -241,20 +241,24 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
 
-  Recalculate(tmp, true);
+  Recalculate(true);
+
   Refresh();
 }
 
 /***
  * Prepend a new cell
  */
-void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
+void MathCtrl::PrependCell(int type, wxString value, bool refresh, bool prepend) {
   GroupCell *where;
 
   if (m_selectionStart == NULL)
     where = m_last;
-  else
+  else {
     where = (GroupCell *)m_selectionStart->GetParent();
+    if (!prepend && where->m_next != NULL)
+      where = (GroupCell *)where->m_next;
+  }
 
   GroupCell *newGroup = new GroupCell;
 
@@ -288,7 +292,7 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
     m_tree->m_previousToDraw = newGroup;
     m_tree = newGroup;
 
-    Recalculate(m_tree, true);
+    Recalculate(false);
   }
 
   else {
@@ -302,8 +306,12 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
     where->m_previous = newGroup;
     where->m_previousToDraw = newGroup;
 
-    Recalculate(newGroup, true);
+    Recalculate(false);
   }
+
+//  wxYield();
+
+  ScrollToSelectionStart(false);
 
   if (refresh)
     Refresh();
@@ -315,25 +323,20 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh) {
 void MathCtrl::RecalculateForce() {
   if (m_tree != NULL) {
     m_forceUpdate = true;
-    Recalculate(m_tree, false);
+    Recalculate(false);
     m_forceUpdate = false;
   }
-}
-
-void MathCtrl::Recalculate(bool scroll) {
-  UnBreakUpCells();
-  if (m_tree != NULL)
-    Recalculate(m_tree, scroll);
 }
 
 /***
  * Recalculate size of this line
  */
-void MathCtrl::Recalculate(GroupCell *cell, bool scroll) {
-  RecalculateWidths(cell);
-  BreakUpCells(cell);
-  BreakLines(cell);
-  RecalculateSize(cell);
+void MathCtrl::Recalculate(bool scroll) {
+  UnBreakUpCells();
+  RecalculateWidths();
+  BreakUpCells();
+  BreakLines();
+  RecalculateSize();
   AdjustSize(scroll);
 }
 
@@ -341,11 +344,7 @@ void MathCtrl::Recalculate(GroupCell *cell, bool scroll) {
  * Recalculate widths of cells
  */
 void MathCtrl::RecalculateWidths() {
-  if (m_tree != NULL)
-    RecalculateWidths(m_tree);
-}
-
-void MathCtrl::RecalculateWidths(MathCell* tmp) {
+  MathCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
@@ -364,11 +363,7 @@ void MathCtrl::RecalculateWidths(MathCell* tmp) {
  * Recalculate sizes of cells
  */
 void MathCtrl::RecalculateSize() {
-  if (m_tree != NULL)
-    RecalculateSize(m_tree);
-}
-
-void MathCtrl::RecalculateSize(MathCell* tmp) {
+  MathCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
@@ -377,10 +372,19 @@ void MathCtrl::RecalculateSize(MathCell* tmp) {
   CellParser parser(dc);
   parser.SetForceUpdate(m_forceUpdate);
 
+  wxPoint point;
+  point.x = MC_BASE_INDENT;
+  point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
+
   while (tmp != NULL) {
-    if (!tmp->m_isBroken)
-      tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    tmp->m_currentPoint.x = point.x;
+    tmp->m_currentPoint.y = point.y;
+    tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    point.y += tmp->GetMaxDrop();
     tmp = tmp->m_next;
+    if (tmp != NULL)
+      point.y += tmp->GetMaxCenter();
+    point.y += MC_LINE_SKIP;
   }
 }
 
@@ -395,6 +399,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
     m_selectionEnd = NULL;
     Recalculate(false);
   }
+
   Refresh();
   wxScrolledWindow::OnSize(event);
 }
@@ -422,7 +427,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
 
   if (m_activeCell == NULL) {
     /* If we have no selection or we are not in editing mode don't popup a menu!*/
-    if (!(CanCopy() || CanAddComment()) || m_editingEnabled == false)
+    if (m_editingEnabled == false)
       return;
 
     if (IsSelected(MC_TYPE_IMAGE)) {
@@ -457,9 +462,6 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
           popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
         }
-      } else if (CanAddComment()) {
-        popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
       } else {
         popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
@@ -848,7 +850,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
     m_selectionStart =  m_selectionEnd = newSelection->GetInput();
   }
 
-  Recalculate();
+  Recalculate(false);
   AdjustSize(false);
   Refresh();
 }
@@ -858,6 +860,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
  */
 void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   switch (event.GetKeyCode()) {
+
     case 'c':
     case 'C':
       if (!event.CmdDown() || event.AltDown()) {
@@ -871,6 +874,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       else
         event.Skip();
       break;
+
     case 'x':
     case 'X':
       if (!event.CmdDown() || event.AltDown()) {
@@ -883,6 +887,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
       break;
+
     case 'v':
     case 'V':
       if (!event.CmdDown() || event.AltDown()) {
@@ -895,6 +900,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
       break;
+
     case 'a':
     case 'A':
       if (!event.CmdDown() || event.AltDown()) {
@@ -906,6 +912,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
       break;
+
     case WXK_DELETE:
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
@@ -913,9 +920,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       } else
         event.Skip();
       break;
+
     case WXK_RETURN:
       if (CanEdit()) {
         if (event.ControlDown()) {
+          if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_INPUT)
+            m_selectionStart->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else {
@@ -930,16 +940,26 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else
           event.Skip();
+      } else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT) {
+        PrependCell(MC_TYPE_INPUT, GetString(), true, false);
+//        wxYield();
+        SelectNextInput();
       } else
         event.Skip();
       break;
+
     case WXK_ESCAPE:
       if (m_activeCell == NULL) {
         SetSelection(NULL);
         Refresh();
       } else {
-        if (m_activeCell->GetType() == MC_TYPE_INPUT)
-          m_activeCell->AddEnding();
+        if (m_activeCell->GetType() == MC_TYPE_INPUT) {
+          if (m_activeCell->AddEnding()) {
+            m_activeCell->ResetData();
+            GroupCell *group = (GroupCell *)m_activeCell->GetParent();
+            Recalculate(false);
+          }
+        }
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
         (wxGetApp().GetTopWindow())->ProcessEvent(ev);
       }
@@ -995,16 +1015,63 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
   } else {
     switch (event.GetKeyCode()) {
-      case WXK_LEFT:
+
       case WXK_UP:
         if (!SelectPrevInput())
           event.Skip();
+        else
+          Refresh();
         break;
+
       case WXK_DOWN:
-      case WXK_RIGHT:
         if (!SelectNextInput())
           event.Skip();
+        else
+          Refresh();
         break;
+
+      case WXK_LEFT:
+        if (m_selectionStart != NULL) {
+          GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
+          if (m_selectionStart->GetType() == MC_TYPE_INPUT && group->m_previous != NULL) {
+            group = (GroupCell *)group->m_previous;
+            MathCell *start, *end;
+            group->SelectOutput(&start, &end);
+            if (start != NULL && end != NULL) {
+              m_selectionStart = start;
+              m_selectionEnd = end;
+            }
+          }
+          else {
+            MathCell *input = group->GetInput();
+            if (input != NULL)
+              m_selectionStart = m_selectionEnd = input;
+          }
+          ScrollToSelectionStart(true);
+          Refresh();
+        }
+        else
+          event.Skip();
+        break;
+
+      case WXK_RIGHT:
+        if (m_selectionStart != NULL) {
+          GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
+          if (m_selectionStart->GetType() == MC_TYPE_TEXT && group->m_next != NULL) {
+            group = (GroupCell *)group->m_next;
+            MathCell *input = group->GetInput();
+            if (input != NULL)
+              m_selectionStart = m_selectionEnd = input;
+          } else {
+            group->SelectOutput(&m_selectionStart, &m_selectionEnd);
+          }
+          ScrollToSelectionStart(false);
+          Refresh();
+        }
+        else
+          event.Skip();
+        break;
+
       default:
         event.Skip();
     }
@@ -1045,7 +1112,8 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
 /***
  * Break lines.
  */
-void MathCtrl::BreakLines(GroupCell* tmp) {
+void MathCtrl::BreakLines() {
+  GroupCell *tmp = m_tree;
   int fullWidth = GetClientSize().GetWidth() - 9;
 
   while (tmp != NULL) {
@@ -1789,26 +1857,6 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   }
 }
 
-bool MathCtrl::CanAddInput() {
-  // TODO: popravi
-  if (m_tree == NULL)
-    return false;
-
-  if (m_selectionStart == NULL)
-    return true;
-  else if (m_selectionStart == m_selectionEnd && m_selectionStart->GetType()
-      == MC_TYPE_MAIN_PROMPT && !m_selectionStart->m_isFolded)
-    return true;
-  else if (CanEdit())
-    return true;
-
-  return false;
-}
-
-bool MathCtrl::CanAddComment() {
-  return CanAddInput();
-}
-
 bool MathCtrl::SelectPrevInput() {
   if (m_selectionStart == NULL)
     return false;
@@ -1932,7 +1980,9 @@ void MathCtrl::ScrollToSelectionStart(bool top) {
   if (m_selectionStart == NULL)
     return;
 
-  int cellY = m_selectionStart->GetCurrentY();
+  MathCell *tmp = m_selectionStart->GetParent();
+
+  int cellY = tmp->GetCurrentY();
 
   if (cellY == -1)
     return;

@@ -119,8 +119,12 @@ void GroupCell::AppendOutput(MathCell *cell) {
     m_output = cell;
     m_output->m_group = this;
   }
-  else
-    m_output->AppendCell(cell);
+  else {
+    MathCell *tmp = m_output;
+    while (tmp->m_next != NULL)
+      tmp = tmp->m_next;
+    tmp->AppendCell(cell);
+  }
 }
 
 void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
@@ -131,7 +135,12 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_width = m_input->GetFullWidth(scale);
   }
   else {
-    m_output->RecalculateWidths(parser, fontsize, true);
+    MathCell *tmp = m_output;
+    while (tmp != NULL) {
+      tmp->RecalculateWidths(parser, fontsize, false);
+      tmp = tmp->m_next;
+    }
+    // This is not correct, m_width will be computed correctly in RecalculateSize!
     m_width = MAX(m_input->GetFullWidth(scale), m_output->GetFullWidth(scale));
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -142,10 +151,9 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
   m_input->RecalculateSize(parser, fontsize, true);
   m_center = m_input->GetMaxCenter();
-  if (m_output == NULL) {
-    m_height = m_input->GetMaxHeight();
-  }
-  else {
+  m_height = m_input->GetMaxHeight();
+
+  if (m_output != NULL) {
     m_output->RecalculateSize(parser, fontsize, true);
     m_outputRect.x = m_currentPoint.x;
     m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
@@ -166,8 +174,8 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
       }
       tmp = tmp->m_nextToDraw;
     }
-
   }
+
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
@@ -193,6 +201,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       m_outputRect.x = in.x;
 
       while (tmp != NULL) {
+
         if (!tmp->m_isBroken) {
           tmp->m_currentPoint.x = in.x;
           tmp->m_currentPoint.y = in.y;
@@ -208,6 +217,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
             } else
               in.x += (tmp->GetWidth() + MC_CELL_SKIP);
           }
+
         } else {
           if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
             in.x = MC_BASE_INDENT;
@@ -307,13 +317,16 @@ void GroupCell::BreakLines(int fullWidth) {
 void GroupCell::SelectOutput(MathCell **start, MathCell **end) {
   *start = m_output;
 
-  while (*start != NULL && (*start)->GetType() != MC_TYPE_TEXT)
-    *start = (*start)->m_next;
+  while (*start != NULL && (*start)->GetType() != MC_TYPE_LABEL)
+    *start = (*start)->m_nextToDraw;
+
+  if (*start != NULL)
+    *start = (*start)->m_nextToDraw;
 
   *end = *start;
 
-  while (*end != NULL && (*end)->m_next != NULL)
-    *end = (*end)->m_next;
+  while (*end != NULL && (*end)->m_nextToDraw != NULL)
+    *end = (*end)->m_nextToDraw;
 
   if (*end == NULL || *start == NULL)
     *end = *start = NULL;

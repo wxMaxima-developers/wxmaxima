@@ -215,7 +215,7 @@ public:
   {
     return false;
   }
-  virtual void AddEnding()
+  virtual bool AddEnding()
   { }
   virtual void SelectPointText(wxDC &dc, wxPoint& point)
   { }

@@ -32,6 +32,7 @@ MathCell::MathCell()
   m_maxDrop = -1;
   m_width = -1;
   m_height = -1;
+  m_center = -1;
   m_breakLine = false;
   m_breakPage = false;
   m_forceBreakLine = false;
@@ -58,6 +59,7 @@ void MathCell::AppendCell(MathCell *p_next)
   if (p_next == NULL)
     return ;
   m_maxDrop = -1;
+  m_maxCenter = -1;
   if (m_next == NULL)
   {
     m_next = p_next;
@@ -95,9 +97,9 @@ MathCell* MathCell::GetParent()
  */
 int MathCell::GetMaxCenter()
 {
-  int center = m_isBroken ? 0 : m_center;
   if (m_maxCenter == -1)
   {
+    int center = m_isBroken ? 0 : m_center;
     if (m_nextToDraw == NULL)
       m_maxCenter = center;
     else
@@ -282,8 +284,11 @@ bool MathCell::IsOperator()
  */
 wxString MathCell::ToString(bool all)
 {
-  if (all && m_next != NULL)
+  if (all && m_next != NULL) {
+    if (m_next->ForceBreakLineHere())
+      return wxT("\n") + m_next->ToString(all);
     return m_next->ToString(all);
+  }
   return wxEmptyString;
 }
 

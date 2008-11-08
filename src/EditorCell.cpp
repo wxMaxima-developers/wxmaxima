@@ -677,11 +677,14 @@ bool EditorCell::ActivateCell()
   return true;
 }
 
-void EditorCell::AddEnding()
+bool EditorCell::AddEnding()
 {
   wxString text = m_text.Trim();
-  if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$"))
+  if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
     m_text += wxT(";");
+    return true;
+  }
+  return false;
 }
 
 //

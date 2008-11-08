@@ -48,9 +48,9 @@ void Bitmap::SetData(MathCell* tree)
 void Bitmap::Layout()
 {
   RecalculateWidths();
-  RecalculateSize();
   BreakUpCells();
   BreakLines();
+  RecalculateSize();
 
   int width, height;
   GetMaxPoint(&width, &height);
@@ -116,7 +116,7 @@ void Bitmap::BreakLines()
       else
         currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
     }
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -150,7 +150,7 @@ void Bitmap::GetMaxPoint(int* width, int* height)
       }
       bigSkip = tmp->m_bigSkip;
     }
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -202,7 +202,7 @@ void Bitmap::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
       }
-      tmp = tmp->m_next;
+      tmp = tmp->m_nextToDraw;
     }
   }
   dc.SelectObject(wxNullBitmap);

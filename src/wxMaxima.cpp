@@ -1420,10 +1420,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_edit_input, m_console->CanEdit());
   menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
                                      m_console->GetActiveCell() != NULL);
-  menubar->Enable(menu_add_comment, m_console->CanAddComment());
-  menubar->Enable(menu_add_title, m_console->CanAddComment());
-  menubar->Enable(menu_add_section, m_console->CanAddComment());
-  menubar->Enable(menu_insert_input, m_console->CanAddInput());
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -1450,8 +1446,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   wxToolBar * toolbar = GetToolBar();
   toolbar->EnableTool(tb_copy,  m_console->CanCopy(true) || m_inputLine->CanCopy());
   toolbar->EnableTool(tb_delete, m_console->CanDeleteSelection());
-  toolbar->EnableTool(tb_insert_text, m_console->CanAddComment());
-  toolbar->EnableTool(tb_insert_input, m_console->CanAddInput());
   toolbar->EnableTool(tb_save, !m_fileSaved);
   if (m_pid > 0)
     toolbar->EnableTool(tb_interrupt, true);
@@ -3317,7 +3311,7 @@ void wxMaxima::ReEvaluate()
     m_console->SetScrollTo(y);
 
     group->RemoveOutput();
-    m_console->Recalculate(group, false);
+    m_console->Recalculate(false);
 
     m_console->SetInsertPoint(group);
 
@@ -3628,17 +3622,11 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_insert_input, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_insert_text, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_animation_start, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_add_comment, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_add_section, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_add_title, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_insert_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_ACTIVATE(wxMaxima::OnActivate)
