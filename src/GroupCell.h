@@ -40,6 +40,7 @@ public:
   MathCell* GetInput() { return m_input->m_next; }
   MathCell* GetLabel() { return m_output; }
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
+  MathCell* GetEditable();
   wxRect GetOutputRect() { return m_outputRect; }
   bool IsSpecial() { return m_special; }
   void SetSpecial(bool special) { m_special = special; }
@@ -53,6 +54,7 @@ protected:
   void DestroyOutput();
   MathCell *m_input, *m_output;
   bool m_special;
+  int m_indent;
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);

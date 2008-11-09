@@ -3359,6 +3359,7 @@ void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
   }
 
   m_console->PrependCell(type, value, refresh);
+  m_console->SetFocus();
 }
 
 void wxMaxima::ResetTitle(bool saved)

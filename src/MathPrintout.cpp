@@ -85,6 +85,10 @@ bool MathPrintout::OnPrintPage(int num)
     PrintHeader(num, dc, ppiScale);
     CellParser parser(*dc, ppiScale);
 
+    int marginX, marginY;
+    GetPageMargins(&marginX, &marginY);
+    parser.SetIndent(marginX);
+
     while (tmp != NULL)
     {
       tmp->Draw(parser, point, fontsize, false);
@@ -124,7 +128,7 @@ void MathPrintout::BreakLines()
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
 
-  int fullWidth = pageWidth - marginX;
+  int fullWidth = pageWidth - marginX - marginY;
   int currentWidth = marginX;
 
   GroupCell* tmp = (GroupCell *)m_tree;
@@ -272,6 +276,10 @@ void MathPrintout::RecalculateSize()
 
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
+  int marginX, marginY;
+  GetPageMargins(&marginX, &marginY);
+  parser.SetIndent(marginX);
+
   while (tmp != NULL)
   {
     tmp->RecalculateSize(parser, fontsize, false);
@@ -289,6 +297,10 @@ void MathPrintout::RecalculateWidths()
 
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
+  int marginX, marginY;
+  GetPageMargins(&marginX, &marginY);
+  parser.SetIndent(marginX);
+
   while (tmp != NULL)
   {
     tmp->RecalculateWidths(parser, fontsize, false);
@@ -344,7 +356,7 @@ void MathPrintout::DestroyTree(MathCell* tmp)
 void MathPrintout::BreakUpCells()
 {
   GroupCell *tmp = (GroupCell *)m_tree;
-  int pageWidth, pageHeight, marginX, marginY;
+  int pageWidth, pageHeight;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
@@ -352,6 +364,9 @@ void MathPrintout::BreakUpCells()
 
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
+  int marginX, marginY;
+  GetPageMargins(&marginX, &marginY);
+  parser.SetIndent(marginX);
 
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);

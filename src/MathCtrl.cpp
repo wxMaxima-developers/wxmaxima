@@ -846,9 +846,8 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   }
 
 
-  if (newSelection != NULL) {
-    m_selectionStart =  m_selectionEnd = newSelection->GetInput();
-  }
+  if (newSelection != NULL)
+    m_selectionStart =  m_selectionEnd = newSelection->GetEditable();
 
   Recalculate(false);
   AdjustSize(false);
@@ -1727,7 +1726,8 @@ bool MathCtrl::ExportToMAC(wxString file) {
           AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
         wxString input = txt->ToString(false);
         AddLineToFile(output, input, false);
-        AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
+        if (wxm)
+          AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
       }
     }
 
@@ -1749,11 +1749,13 @@ bool MathCtrl::ExportToMAC(wxString file) {
             break;
         }
       }
+      else
+        AddLineToFile(output, wxT("/*"), false);
 
       wxString comment = txt->ToString(false);
       AddLineToFile(output, comment, false);
 
-      if (txt) {
+      if (wxm) {
         switch (txt->GetType()) {
           case MC_TYPE_COMMENT:
             AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
@@ -1766,6 +1768,8 @@ bool MathCtrl::ExportToMAC(wxString file) {
             break;
         }
       }
+      else
+        AddLineToFile(output, wxT("*/"), false);
     }
 
     tmp = (GroupCell *)tmp->m_next;
@@ -1872,12 +1876,7 @@ bool MathCtrl::SelectPrevInput() {
 
   MathCell *inpt = NULL;
   while (tmp != NULL && inpt == NULL) {
-    inpt = tmp->GetInput();
-    if (inpt == NULL) {
-      inpt = tmp->GetLabel();
-      if (inpt != NULL && !inpt->IsEditable())
-        inpt = NULL;
-    }
+    inpt = tmp->GetEditable();
     if (inpt == NULL)
       tmp = (GroupCell *)tmp->m_previous;
   }
@@ -1904,12 +1903,7 @@ bool MathCtrl::SelectNextInput(bool input) {
 
   MathCell *inpt = NULL;
   while (tmp != NULL && inpt == NULL) {
-    inpt = tmp->GetInput();
-    if (inpt == NULL && !input) {
-      inpt = tmp->GetLabel();
-      if (inpt != NULL && !inpt->IsEditable())
-        inpt = NULL;
-    }
+    inpt = tmp->GetEditable();
     if (inpt == NULL)
       tmp = (GroupCell *)tmp->m_next;
   }
@@ -1932,11 +1926,17 @@ bool MathCtrl::SelectLastInput() {
   if (tmp == NULL)
     return false;
 
-  MathCell *input = tmp->GetInput();
-  if (input == NULL)
+  MathCell *inpt = NULL;
+  while (tmp != NULL && inpt == NULL) {
+    inpt = tmp->GetEditable();
+    if (inpt == NULL)
+      tmp = (GroupCell *)tmp->m_previous;
+  }
+
+  if (inpt == NULL)
     return false;
 
-  m_selectionStart = m_selectionEnd = input;
+  m_selectionStart = m_selectionEnd = inpt;
   Refresh();
 
   ScrollToSelectionStart();
@@ -1966,11 +1966,7 @@ bool MathCtrl::SelectPrompt() {
   if (tmp == NULL)
     return false;
 
-  MathCell *prompt = tmp->GetPrompt();
-  if (prompt == NULL)
-    return false;
-
-  m_selectionStart = m_selectionEnd = prompt;
+  m_selectionStart = m_selectionEnd = tmp;
   Refresh();
 
   return true;

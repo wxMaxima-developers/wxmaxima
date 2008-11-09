@@ -18,7 +18,7 @@
 ///
 
 #include "GroupCell.h"
-#include "TextCell.h"
+#include "TextCell.h"  m_indent = parser.GetIndent();
 
 GroupCell::GroupCell() : MathCell()
 {
@@ -32,6 +32,7 @@ GroupCell::GroupCell() : MathCell()
   m_forceBreakLine = true;
   m_special = false;
   m_type = MC_TYPE_GROUP;
+  m_indent = MC_BASE_INDENT;
 }
 
 GroupCell::~GroupCell()
@@ -131,9 +132,11 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_input->RecalculateWidths(parser, fontsize, true);
+
   if (m_output == NULL) {
     m_width = m_input->GetFullWidth(scale);
   }
+
   else {
     MathCell *tmp = m_output;
     while (tmp != NULL) {
@@ -152,6 +155,7 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_input->RecalculateSize(parser, fontsize, true);
   m_center = m_input->GetMaxCenter();
   m_height = m_input->GetMaxHeight();
+  m_indent = parser.GetIndent();
 
   if (m_output != NULL) {
     m_output->RecalculateSize(parser, fontsize, true);
@@ -209,7 +213,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
             tmp->Draw(parser, in, MAX(fontsize, MC_MIN_SIZE), false);
           if (tmp->m_nextToDraw != NULL) {
             if (tmp->m_nextToDraw->BreakLineHere()) {
-              in.x = MC_BASE_INDENT;
+              in.x = m_indent;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               if (tmp->m_bigSkip)
                 in.y += MC_LINE_SKIP;
@@ -220,7 +224,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
         } else {
           if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
-            in.x = MC_BASE_INDENT;
+            in.x = m_indent;
             in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
             if (tmp->m_bigSkip)
               in.y += MC_LINE_SKIP;
@@ -294,9 +298,15 @@ void GroupCell::SelectPoint(wxPoint& point, MathCell **first, MathCell **last)
     m_input->SelectInner(rect, first, last);
 }
 
+MathCell *GroupCell::GetEditable() {
+  if (IsSpecial())
+    return GetLabel();
+  return GetInput();
+}
+
 void GroupCell::BreakLines(int fullWidth) {
 
-  int currentWidth = MC_BASE_INDENT;
+  int currentWidth = m_indent;
 
   MathCell *tmp = m_output;
 
@@ -305,7 +315,7 @@ void GroupCell::BreakLines(int fullWidth) {
     tmp->BreakLine(false);
     if (!tmp->m_isBroken) {
       if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth)) {
-        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+        currentWidth = m_indent + tmp->GetWidth();
         tmp->BreakLine(true);
       } else
         currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);

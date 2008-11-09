@@ -21,6 +21,7 @@
 
 #include <wx/font.h>
 #include <wx/config.h>
+#include "MathCell.h"
 
 CellParser::CellParser(wxDC& dc) : m_dc(dc)
 {
@@ -28,6 +29,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
+  m_indent = MC_BASE_INDENT;
 
   ReadStyle();
 }
