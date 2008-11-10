@@ -23,13 +23,13 @@
 #include <wx/wx.h>
 
 #include "MathCell.h"
+#include "GroupCell.h"
 
 enum {
   popid_copy,
   popid_cut,
   popid_paste,
   popid_select_all,
-  popid_copy_text,
   popid_copy_image,
   popid_copy_to_input,
   popid_delete,
@@ -53,8 +53,6 @@ enum {
   popid_image_copy,
 #endif
   popid_image,
-  popid_comment,
-  popid_uncomment
 };
 
 class MathCtrl: public wxScrolledWindow
@@ -65,15 +63,11 @@ public:
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
-  void AddLine(MathCell *newLine, bool forceNewLine = false);
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool scroll = true);
   void RecalculateForce();
-  void Recalculate(MathCell *cell, bool scroll = true);
   void RecalculateWidths();
-  void RecalculateWidths(MathCell *cell);
   void RecalculateSize();
-  void RecalculateSize(MathCell *cell);
   void ClearWindow();
   bool CanCopy(bool fromActive = false)
   {
@@ -90,8 +84,6 @@ public:
   }
   void SelectAll();
   bool CanDeleteSelection();
-  bool CanAddComment();
-  bool CanAddInput();
   bool CanAnimate() {
     return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
       m_selectionStart->GetType() == MC_TYPE_SLIDE;
@@ -100,7 +92,7 @@ public:
   void DeleteSelection(bool deletePrompt = true);
   bool CutToClipboard();
   void PasteFromClipboard();
-  bool Copy(bool lb = false);
+  bool Copy();
   bool CopyInput();
   bool CopyTeX();
   bool CopyBitmap();
@@ -121,7 +113,10 @@ public:
   MathCell* GetLastPrompt();
   void SetInsertPoint(MathCell* insert)
   {
-    m_insertPoint = insert;
+    if (insert == NULL)
+      m_insertPoint = NULL;
+    else
+      m_insertPoint = (GroupCell *)insert;
   }
   MathCell* GetInsertPoint()
   {
@@ -149,7 +144,6 @@ public:
   {
     m_editingEnabled = enable;
   }
-  void UnfoldAll();
   bool SelectPrevInput();
   bool SelectNextInput(bool input = false);
   bool SelectPrompt();
@@ -166,11 +160,12 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
+  void PrependCell(int id, wxString value, bool refresh, bool prepend = true);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
-  void BreakLines(MathCell* cell);
+  void BreakLines();
   void OnTimer(wxTimerEvent& event);
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
@@ -188,7 +183,6 @@ protected:
   void AdjustSize(bool scroll = false);
   void OnEraseBackground(wxEraseEvent& event)
   { }
-  void InsertAfter(MathCell *insertPoint, MathCell *newCell, bool forceBreakLine);
   void CheckUnixCopy();
   wxPoint m_down;
   wxPoint m_up;
@@ -198,13 +192,11 @@ protected:
   bool m_selectWholeLine;
   bool m_mouseOutside;
   bool m_forceUpdate;
-  MathCell *m_tree;
-  MathCell *m_last;
-  MathCell *m_firstVisible;
-  MathCell *m_lastVisible;
+  GroupCell *m_tree;
+  GroupCell *m_last;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
-  MathCell *m_insertPoint;
+  GroupCell *m_insertPoint;
   MathCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;

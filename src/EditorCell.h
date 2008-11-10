@@ -48,7 +48,7 @@ public:
   void Reset();
   void ProcessEvent(wxKeyEvent& event);
   bool ActivateCell();
-  void AddEnding();
+  bool AddEnding();
   void PositionToXY(int pos, int* line, int* col);
   int XYToPosition(int x, int y);
   wxPoint PositionToPoint(CellParser& parser, int pos = -1);

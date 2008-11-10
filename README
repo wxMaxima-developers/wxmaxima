@@ -76,18 +76,18 @@ required) installed on your system. Then build wxMaxima with
   make wxMaxima.app
 
 This should create a working wxMaxima.app. This has been tested with
-wxWidgets version 2.6.2.
+wxWidgets version 2.8.7.
 
 wxMaxima has been tested with maxima compiled with cmucl. If you use a
 different lisp and wxMaxima does not work, recompile maxima using
 cmucl.
 
-** Building from CVS (Linux)
+** Building from SVN (Linux)
 
-To build wxMaxima from CVS, first checkout the CVS tree. For details
+To build wxMaxima from SVN, first checkout the SVN tree. For details
 see
 
-  http://sourceforge.net/cvs/?group_id=126731
+  http://sourceforge.net/svn/?group_id=126731
 
 Then build wxMaxima with
 
@@ -115,8 +115,8 @@ not, configure wxMaxima with Maxima->Configure.
 To automatically configure wxMaxima, wxMaxima must be installed in a
 subdirectory of maxima installation directory. For example:
 
-  maxima installation:   C:\Program Files\maxima-5.14.0
-  wxMaxima installation: C:\Program Files\maxima-5.14.0\wxMaxima
+  maxima installation:   C:\Program Files\maxima-5.17.0
+  wxMaxima installation: C:\Program Files\maxima-5.17.0\wxMaxima
 
 If you install in some other directory, you must configure wxMaxima
 with Maxima->Configure.

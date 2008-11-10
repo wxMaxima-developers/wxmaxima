@@ -92,7 +92,10 @@ public:
   {
     return m_fontEncoding;
   }
+  int GetIndent() { return m_indent; }
+  void SetIndent(int indent) { m_indent = indent; }
 private:
+  int m_indent;
   double m_scale;
   wxDC& m_dc;
   int m_top, m_bottom;

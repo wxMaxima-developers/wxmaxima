@@ -84,9 +84,6 @@ void ParenCell::SetInner(MathCell *inner, int type)
   m_innerCell = inner;
   m_type = type;
 
-
-  m_open->m_nextToDraw = m_innerCell;
-  m_open->m_previousToDraw = this;
   while (inner->m_next != NULL)
     inner = inner->m_next;
   m_last1 = inner;

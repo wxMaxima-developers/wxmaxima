@@ -55,7 +55,8 @@ enum {
   MC_TYPE_SECTION,
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
-  MC_TYPE_SLIDE
+  MC_TYPE_SLIDE,
+  MC_TYPE_GROUP
 };
 
 class MathCell
@@ -184,13 +185,15 @@ public:
     return false;
   }
 
+  MathCell* GetParent();
+
   virtual wxString ToString(bool all);
   virtual wxString ToTeX(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);
 
-  MathCell *m_next, *m_previous;
+  MathCell *m_next, *m_previous, *m_group;
   MathCell *m_nextToDraw, *m_previousToDraw;
   wxPoint m_currentPoint;  // Current point in console (the center of the cell)
   bool m_bigSkip;
@@ -212,7 +215,7 @@ public:
   {
     return false;
   }
-  virtual void AddEnding()
+  virtual bool AddEnding()
   { }
   virtual void SelectPointText(wxDC &dc, wxPoint& point)
   { }

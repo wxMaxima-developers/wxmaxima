@@ -23,14 +23,16 @@ MathCell::MathCell()
 {
   m_next = NULL;
   m_previous = NULL;
-  m_previousToDraw = NULL;
   m_nextToDraw = NULL;
+  m_previousToDraw = NULL;
+  m_group = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop = -1;
   m_width = -1;
   m_height = -1;
+  m_center = -1;
   m_breakLine = false;
   m_breakPage = false;
   m_forceBreakLine = false;
@@ -57,6 +59,7 @@ void MathCell::AppendCell(MathCell *p_next)
   if (p_next == NULL)
     return ;
   m_maxDrop = -1;
+  m_maxCenter = -1;
   if (m_next == NULL)
   {
     m_next = p_next;
@@ -71,14 +74,32 @@ void MathCell::AppendCell(MathCell *p_next)
     m_next->AppendCell(p_next);
 };
 
+
+/***
+ * Get the pointer to the parent group cell
+ */
+
+MathCell* MathCell::GetParent()
+{
+  MathCell *tmp = this;
+
+  if (tmp->m_group != NULL)
+    return tmp->m_group;
+
+  while (tmp->m_previous != NULL)
+    tmp = tmp->m_previous;
+
+  return tmp->m_group;
+}
+
 /***
  * Get the maximum drop of the center.
  */
 int MathCell::GetMaxCenter()
 {
-  int center = m_isBroken ? 0 : m_center;
   if (m_maxCenter == -1)
   {
+    int center = m_isBroken ? 0 : m_center;
     if (m_nextToDraw == NULL)
       m_maxCenter = center;
     else
@@ -263,8 +284,11 @@ bool MathCell::IsOperator()
  */
 wxString MathCell::ToString(bool all)
 {
-  if (all && m_next != NULL)
+  if (all && m_next != NULL) {
+    if (m_next->ForceBreakLineHere())
+      return wxT("\n") + m_next->ToString(all);
     return m_next->ToString(all);
+  }
   return wxEmptyString;
 }
 
@@ -366,7 +390,7 @@ void MathCell::ResetData()
   m_maxDrop = -1;
 //  m_currentPoint.x = -1;
 //  m_currentPoint.y = -1;
-  m_breakLine = false;
+  m_breakLine = m_forceBreakLine;
 }
 
 /***
@@ -450,3 +474,4 @@ void MathCell::SetForeground(CellParser& parser)
     break;
   }
 }
+
