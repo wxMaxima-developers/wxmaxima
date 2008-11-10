@@ -195,7 +195,6 @@ enum {
   menu_add_section,
   menu_add_title,
   menu_insert_input,
-  menu_unfold,
   menu_select_last,
   menu_goto_output,
   activate_cell,

@@ -1839,8 +1839,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_unfold:
-    break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_delete:
 #endif
@@ -3644,7 +3642,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_add_comment, wxMaxima::PrependCell)
   EVT_MENU(menu_insert_input, wxMaxima::PrependCell)
   EVT_MENU(popid_insert_input, wxMaxima::PrependCell)
-  EVT_MENU(menu_unfold, wxMaxima::EditMenu)
   EVT_MENU(menu_select_last, wxMaxima::EditMenu)
   EVT_MENU(activate_cell, wxMaxima::HandleCellEvent)
   EVT_MENU(deactivate_cell_cancel, wxMaxima::HandleCellEvent)

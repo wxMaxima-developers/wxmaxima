@@ -324,9 +324,6 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
 #endif
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_unfold, _("Unfold"),
-                             _("Unfold all folded groups"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_long_input, _("Long input\tCtrl-I"),
                              _("Open multiline input dialog"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_edit_input, _("&Edit input\tCtrl-E"),
