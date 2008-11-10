@@ -118,9 +118,12 @@
 		  (setq firstpart
 			(nreverse (cdr (member 'e (reverse r)
                                                :test #'string-equal))))
+		  (if (char= (cadr exponent) #\+)
+		      (setq exponent (cddr exponent))
+		      (setq exponent (cdr exponent)))
 		  (format nil 
 			  "<r><n>~{~c~}</n><h>*</h><e><n>10</n><n>~{~c~}</n></e></r>"
-			  firstpart (cdr exponent))))))))
+			  firstpart exponent)))))))
 
 (defun wxxml-stripdollar (sym &aux pname)
   (or (symbolp sym)
