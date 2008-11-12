@@ -548,21 +548,21 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
     m_mousePoint.x = event.GetX();
     m_mousePoint.y = event.GetY();
   }
-  SelectRect(m_down, m_up);
+  SelectRect();
 }
 
 /***
  * Select the rectangle sorounded by point one and two.
  */
-void MathCtrl::SelectRect(wxPoint one, wxPoint two) {
+void MathCtrl::SelectRect() {
   if (m_tree == NULL)
     return;
 
   // If we have an acrive cell handle it
   if (m_activeCell != NULL) {
-    if (m_activeCell->ContainsPoint(one) && m_activeCell->ContainsPoint(two)) {
+    if (m_activeCell->ContainsPoint(m_down) && m_activeCell->ContainsPoint(m_up)) {
       wxClientDC dc(this);
-      m_activeCell->SelectRectText(dc, one, two);
+      m_activeCell->SelectRectText(dc, m_down, m_up);
       m_switchDisplayCaret = false;
       wxRect rect = m_activeCell->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
@@ -593,8 +593,10 @@ void MathCtrl::SelectRect(wxPoint one, wxPoint two) {
   }
 
   if (m_selectionStart != NULL && m_selectionEnd != NULL) {
-    if (m_selectionStart == m_selectionEnd)
-      m_selectionStart->SelectInner(rect, &m_selectionStart, &m_selectionEnd);
+    if (m_selectionStart == m_selectionEnd) {
+      GroupCell *group = (GroupCell *)m_selectionStart;
+      group->SelectRectGroup(rect, m_down, m_up, &m_selectionStart, &m_selectionEnd);
+    }
   }
 
   // Refresh only if the selection has changed
@@ -689,7 +691,7 @@ wxString MathCtrl::GetString(bool lb) {
     s += tmp->ToString(false);
     if (tmp == m_selectionEnd)
       break;
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
   return s;
 }
@@ -704,15 +706,7 @@ bool MathCtrl::Copy() {
 
   if (m_selectionStart == NULL)
     return false;
-  wxString s;
-  MathCell* tmp = m_selectionStart;
-
-  while (tmp != NULL) {
-    s += tmp->ToString(false);
-    if (tmp == m_selectionEnd)
-      break;
-    tmp = tmp->m_next;
-  }
+  wxString s = GetString();
 
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));

@@ -179,7 +179,7 @@ protected:
   void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
   void SelectPoint(wxPoint& point);
-  void SelectRect(wxPoint one, wxPoint two);
+  void SelectRect();
   void AdjustSize(bool scroll = false);
   void OnEraseBackground(wxEraseEvent& event)
   { }
