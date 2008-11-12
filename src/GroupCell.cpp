@@ -245,8 +245,13 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 wxString GroupCell::ToString(bool all)
 {
   wxString str = m_input->ToString(true) + wxT("\n");
-  if (m_output != NULL)
-    str += m_output->ToString(true) + wxT("\n");
+  if (m_output != NULL) {
+    MathCell *tmp = m_output;
+    while (tmp != NULL) {
+      str += m_output->ToString(true);
+      tmp = tmp->m_nextToDraw;
+    }
+  }
   return str + MathCell::ToString(all);
 }
 
@@ -264,10 +269,35 @@ wxString GroupCell::ToTeX(bool all)
       else
         str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
     }
-    else
-      str += wxT("$$") + m_output->ToTeX(true) + wxT("$$\n\n");
+    else {
+      str += wxT("$$");
+      MathCell *tmp = m_output;
+      while (tmp != NULL) {
+        str += tmp->ToTeX(false);
+        tmp = tmp->m_nextToDraw;
+      }
+      str += wxT("$$");
+    }
   }
   return str + MathCell::ToTeX(all);
+}
+
+void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
+    MathCell **first, MathCell **last)
+{
+  *first = NULL;
+  *last = NULL;
+
+  if (m_input->ContainsRect(rect))
+    m_input->SelectRect(rect, first, last);
+  else if (m_output != NULL && m_outputRect.Contains(rect))
+    SelectRectInOutput(rect, one, two, first, last);
+
+  if (*first == NULL || *last == NULL)
+  {
+    *first = this;
+    *last = this;
+  }
 }
 
 void GroupCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
@@ -296,6 +326,66 @@ void GroupCell::SelectPoint(wxPoint& point, MathCell **first, MathCell **last)
 
   if (m_input->ContainsRect(rect))
     m_input->SelectInner(rect, first, last);
+}
+
+void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
+    MathCell **first, MathCell **last)
+{
+  MathCell* tmp;
+  wxPoint start, end;
+
+  if (one.y < two.y || (one.y == two.y && one.x < two.x)) {
+    start = one;
+    end = two;
+  } else {
+    start = two;
+    end = one;
+  }
+
+  // Lets select a rectangle
+  tmp = m_output;
+  *first = *last = NULL;
+
+  while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
+    tmp = tmp->m_nextToDraw;
+  *first = tmp;
+  *last = tmp;
+  while (tmp != NULL) {
+    if (rect.Intersects(tmp->GetRect()))
+      *last = tmp;
+    tmp = tmp->m_nextToDraw;
+  }
+
+  if (*first != NULL && *last != NULL) {
+
+    // If selection is on multiple lines, we need to correct it
+    if ((*first)->GetCurrentY() != (*last)->GetCurrentY()) {
+      tmp = *last;
+      MathCell *curr;
+
+      // Find the first cell in selection
+      while (*first != tmp &&
+             ((*first)->GetCurrentX() + (*first)->GetWidth() < start.x
+              || (*first)->GetCurrentY() + (*first)->GetDrop() < start.y))
+        *first = (*first)->m_nextToDraw;
+
+      // Find the last cell in selection
+      curr = *last = *first;
+       while (1) {
+        curr = curr->m_nextToDraw;
+        if (curr == NULL)
+          break;
+        if (curr->GetCurrentX() <= end.x &&
+            curr->GetCurrentY() - curr->GetMaxCenter() <= end.y)
+          *last = curr;
+        if (curr == tmp)
+          break;
+      }
+    }
+
+    if (*first == *last)
+      (*first)->SelectInner(rect, first, last);
+  }
 }
 
 MathCell *GroupCell::GetEditable() {

@@ -48,6 +48,8 @@ public:
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void SelectOutput(MathCell **start, MathCell **end);
+  void SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
+  void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   void BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
 protected:
