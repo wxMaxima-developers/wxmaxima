@@ -706,7 +706,7 @@ bool MathCtrl::Copy() {
 
   if (m_selectionStart == NULL)
     return false;
-  wxString s = GetString();
+  wxString s = GetString(true);
 
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
