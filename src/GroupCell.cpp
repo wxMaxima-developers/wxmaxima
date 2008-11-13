@@ -244,11 +244,13 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString GroupCell::ToString(bool all)
 {
-  wxString str = m_input->ToString(true) + wxT("\n");
+  wxString str = m_input->ToString(true);
   if (m_output != NULL) {
     MathCell *tmp = m_output;
     while (tmp != NULL) {
-      str += m_output->ToString(true);
+      if (tmp->ForceBreakLineHere() && str.Length()>0)
+        str += wxT("\n");
+      str += tmp->ToString(false);
       tmp = tmp->m_nextToDraw;
     }
   }
@@ -259,24 +261,38 @@ wxString GroupCell::ToTeX(bool all)
 {
   wxString str;
   if (!IsSpecial()) {
-    str = wxT("\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
+    str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
   }
   if (m_output != NULL) {
     if (IsSpecial()) {
       str = m_output->ToString(true);
-      if (!str.StartsWith(wxT("TeX:")))
-        str = wxT("\\begin{verbatim}\n") + str + wxT("\n\\end{verbatim}");
-      else
-        str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
+      switch (m_output->GetType()) {
+        case MC_TYPE_TITLE:
+          str = wxT("\n\\section{") + str + wxT("}\n");
+          break;
+        case MC_TYPE_SECTION:
+          str = wxT("\n\\subsection{") + str + wxT("}\n");
+          break;
+        default:
+          if (!str.StartsWith(wxT("TeX:")))
+            str = wxT("\n\\begin{verbatim}\n") + str + wxT("\n\\end{verbatim}\n");
+          else
+            str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
+          break;
+      }
     }
     else {
       str += wxT("$$");
+      wxString label;
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        str += tmp->ToTeX(false);
+        if (tmp->GetType() == MC_TYPE_LABEL)
+          label = tmp->ToTeX(false);
+        else
+          str += tmp->ToTeX(false);
         tmp = tmp->m_nextToDraw;
       }
-      str += wxT("$$");
+      str += label + wxT("$$\n");
     }
   }
   return str + MathCell::ToTeX(all);
