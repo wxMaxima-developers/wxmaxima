@@ -2766,7 +2766,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_diff:
   case menu_diff:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
                                  _("Times:"), expr, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
       wiz->SetValue(expr);
@@ -3154,7 +3154,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     break;
   case popid_diff:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
                                  _("Times:"), selection, wxT("x"), wxT("1"),
                                  this, -1, _("Differentiate"));
       wiz->SetValue(selection);
