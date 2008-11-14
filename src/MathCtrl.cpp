@@ -185,7 +185,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       // We have a selection by dragging
       else {
         while (1) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE)
+          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
+              (m_activeCell != tmp))
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
