@@ -2773,10 +2773,16 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        wxString val = wxT("diff(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2();
-        if (wiz->GetValue3() != wxT("1"))
-          val += wxT(", ") + wiz->GetValue3();
+        wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
+        wxStringTokenizer times(wiz->GetValue3(), wxT(","));
+
+        wxString val = wxT("diff(") + wiz->GetValue1();
+
+        while (vars.HasMoreTokens() && times.HasMoreTokens()) {
+          val += wxT(",") + vars.GetNextToken();
+          val += wxT(",") + times.GetNextToken();
+        }
+
         val += wxT(");");
         SendMaxima(val);
       }
@@ -3155,10 +3161,16 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        wxString val = wxT("diff(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2();
-        if (wiz->GetValue3() != wxT("1"))
-          val += wxT(", ") + wiz->GetValue3();
+        wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
+        wxStringTokenizer times(wiz->GetValue3(), wxT(","));
+
+        wxString val = wxT("diff(") + wiz->GetValue1();
+
+        while (vars.HasMoreTokens() && times.HasMoreTokens()) {
+          val += wxT(",") + vars.GetNextToken();
+          val += wxT(",") + times.GetNextToken();
+        }
+
         val += wxT(");");
         SendMaxima(val);
       }
