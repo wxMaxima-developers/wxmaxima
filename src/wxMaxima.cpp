@@ -3278,9 +3278,6 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
     return ;
 
   m_console->SetActiveCell(tmp);
-  m_console->SetSelection(NULL);
-
-  m_console->Refresh();
 }
 
 void wxMaxima::ReEvaluateEvent(wxCommandEvent& event)
@@ -3339,6 +3336,8 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   DoPrependCell(event.GetId());
 
   m_console->SelectPrevInput();
+
+  m_console->SetActiveCell(m_console->GetSelectionStart());
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
