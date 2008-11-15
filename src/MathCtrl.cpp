@@ -164,7 +164,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       // We have a selection with click
       if (m_selectWholeLine) {
         if (m_selectionStart == m_selectionEnd) {
-          if (m_selectionStart->GetType() != MC_TYPE_SLIDE)
+          if (m_selectionStart->GetType() != MC_TYPE_SLIDE && m_activeCell != tmp)
             m_selectionStart->DrawBoundingBox(dcm);
         } else {
           while (tmp != NULL && tmp->m_isBroken)
@@ -186,7 +186,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       else {
         while (1) {
           if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
-              (m_activeCell != tmp))
+              m_activeCell != tmp)
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
@@ -273,9 +273,6 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh, bool prepend)
   prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
   newGroup->SetInput(prompt);
-
-  if (value == wxEmptyString)
-    value = wxT(" ");
 
   EditorCell *newCell = new EditorCell;
   newCell->SetType(type);
@@ -600,6 +597,14 @@ void MathCtrl::SelectRect() {
     }
   }
 
+//  ZIGA
+//  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
+//      && m_selectionStart->IsEditable()) {
+//    SetActiveCell(m_selectionStart);
+//    wxDC dc(this);
+//    m_activeCell->SelectRectText(dc, m_down, m_up);
+//  }
+
   // Refresh only if the selection has changed
   if (st != m_selectionStart || en != m_selectionEnd)
     Refresh();
@@ -659,13 +664,23 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     tr = tmp->GetInput();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
+//  ZIGA:
+//      SetActiveCell(tr);
+//      wxClientDC dc(this);
+//      m_activeCell->SelectPointText(dc, m_down);
     }
   }
 
   if (m_selectionStart == NULL) {
     tr = tmp->GetLabel();
-    if (tr != NULL && tr->GetType() == MC_TYPE_LABEL && tr->ContainsPoint(point)) {
+    if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
+//  ZIGA:
+//      if (tr->IsEditable()) {
+//        SetActiveCell(tr);
+//        wxClientDC dc(this);
+//        m_activeCell->SelectPointText(dc, m_down);
+//      }
     }
   }
 
@@ -813,6 +828,8 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   if (start == NULL || end == NULL)
     return;
 
+  SetActiveCell(NULL);
+
   GroupCell *newSelection = (GroupCell *)end->m_next;
 
   if (end->m_next == NULL)
@@ -917,17 +934,16 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
     case WXK_RETURN:
       if (CanEdit()) {
-        if (event.ControlDown()) {
+        if (event.ControlDown() || event.ShiftDown()) {
           if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_INPUT)
             m_selectionStart->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else {
-          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_edit);
-          (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+          SetActiveCell(m_selectionStart);
         }
       } else if (m_activeCell != NULL) {
-        if (event.ControlDown()) {
+        if (event.ControlDown() || event.ShiftDown()) {
           if (m_activeCell->GetType() == MC_TYPE_INPUT)
             m_activeCell->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_ok);
@@ -936,8 +952,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
           event.Skip();
       } else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT) {
         PrependCell(MC_TYPE_INPUT, GetString(), true, false);
-//        wxYield();
         SelectNextInput();
+        SetActiveCell(m_selectionStart);
       } else
         event.Skip();
       break;
@@ -2007,6 +2023,7 @@ void MathCtrl::SetActiveCell(MathCell *cell) {
   m_activeCell = cell;
 
   if (m_activeCell != NULL) {
+    SetSelection(NULL);
     bool match = false;
     if (m_activeCell->GetType() == MC_TYPE_INPUT)
       wxConfig::Get()->Read(wxT("matchParens"), &match);
@@ -2015,6 +2032,8 @@ void MathCtrl::SetActiveCell(MathCell *cell) {
     m_switchDisplayCaret = false;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
   }
+
+  Refresh();
 }
 
 void MathCtrl::ShowPoint(wxPoint point) {
