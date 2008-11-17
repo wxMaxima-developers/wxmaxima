@@ -35,6 +35,16 @@ SubCell::~SubCell()
     delete m_next;
 }
 
+void SubCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_baseCell != NULL)
+    m_baseCell->SetParent(parent, true);
+  if (m_indexCell != NULL)
+    m_indexCell->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* SubCell::Copy(bool all)
 {
   SubCell* tmp = new SubCell;

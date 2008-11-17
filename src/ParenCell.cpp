@@ -57,6 +57,18 @@ ParenCell::~ParenCell()
   delete m_close;
 }
 
+void ParenCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_innerCell != NULL)
+    m_innerCell->SetParent(parent, true);
+  if (m_open != NULL)
+    m_open->SetParent(parent, true);
+  if (m_close != NULL)
+    m_close->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* ParenCell::Copy(bool all)
 {
   ParenCell *tmp = new ParenCell;

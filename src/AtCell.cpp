@@ -35,6 +35,16 @@ AtCell::~AtCell()
     delete m_next;
 }
 
+void AtCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_baseCell != NULL)
+    m_baseCell->SetParent(parent, true);
+  if (m_indexCell != NULL)
+    m_indexCell->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* AtCell::Copy(bool all)
 {
   AtCell* tmp = new AtCell;

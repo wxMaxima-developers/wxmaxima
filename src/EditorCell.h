@@ -84,6 +84,7 @@ public:
   {
     m_hasFocus = focus;
   }
+  bool IsActive() { return m_isActive; }
 private:
   wxString m_text;
   unsigned int m_positionOfCaret;

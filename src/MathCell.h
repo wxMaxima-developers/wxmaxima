@@ -26,9 +26,11 @@
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
 #define MC_CELL_SKIP 0
-#define MC_BASE_INDENT 5
+#define MC_BASE_INDENT 12
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 2
+
+#define MC_GROUP_SKIP 25
 
 #if defined __WXMAC__
  #define MC_EXP_INDENT 2
@@ -246,6 +248,8 @@ public:
   virtual void SetFocus(bool focus)
   { }
   void SetForeground(CellParser& parser);
+  virtual bool IsActive() { return false; }
+  virtual void SetParent(MathCell *parent, bool all);
 protected:
   int m_height;
   int m_width;

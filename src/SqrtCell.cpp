@@ -38,6 +38,18 @@ SqrtCell::~SqrtCell()
   delete m_close;
 }
 
+void SqrtCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_innerCell != NULL)
+    m_innerCell->SetParent(parent, true);
+  if (m_open != NULL)
+    m_open->SetParent(parent, true);
+  if (m_close != NULL)
+    m_close->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* SqrtCell::Copy(bool all)
 {
   SqrtCell* tmp = new SqrtCell;

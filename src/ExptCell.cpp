@@ -30,17 +30,6 @@ ExptCell::ExptCell() : MathCell()
   m_close = new TextCell(wxT(")"));
 }
 
-MathCell* ExptCell::Copy(bool all)
-{
-  ExptCell* tmp = new ExptCell;
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->Copy(true));
-  tmp->SetPower(m_powCell->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
-  return tmp;
-}
-
 ExptCell::~ExptCell()
 {
   if (m_baseCell != NULL)
@@ -52,6 +41,31 @@ ExptCell::~ExptCell()
   delete m_exp;
   delete m_open;
   delete m_close;
+}
+
+void ExptCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_baseCell != NULL)
+    m_baseCell->SetParent(parent, true);
+  if (m_powCell != NULL)
+    m_powCell->SetParent(parent, true);
+  if (m_open != NULL)
+    m_open->SetParent(parent, true);
+  if (m_close != NULL)
+    m_close->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
+MathCell* ExptCell::Copy(bool all)
+{
+  ExptCell* tmp = new ExptCell;
+  CopyData(this, tmp);
+  tmp->SetBase(m_baseCell->Copy(true));
+  tmp->SetPower(m_powCell->Copy(true));
+  if (all && m_next != NULL)
+    tmp->AppendCell(m_next->Copy(all));
+  return tmp;
 }
 
 void ExptCell::Destroy()

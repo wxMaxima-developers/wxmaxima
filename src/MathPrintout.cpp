@@ -62,8 +62,11 @@ bool MathPrintout::OnPrintPage(int num)
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
 
+
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
+
+  marginX += SCALE_PX(MC_BASE_INDENT, ppiScale);
 
   dc->SetUserScale(screenScaleX, screenScaleY);
 
@@ -85,8 +88,6 @@ bool MathPrintout::OnPrintPage(int num)
     PrintHeader(num, dc, ppiScale);
     CellParser parser(*dc, ppiScale);
 
-    int marginX, marginY;
-    GetPageMargins(&marginX, &marginY);
     parser.SetIndent(marginX);
 
     while (tmp != NULL)
@@ -278,6 +279,7 @@ void MathPrintout::RecalculateSize()
   CellParser parser(*dc, scale);
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
+  marginX += SCALE_PX(MC_BASE_INDENT, scale);
   parser.SetIndent(marginX);
 
   while (tmp != NULL)
@@ -299,6 +301,7 @@ void MathPrintout::RecalculateWidths()
   CellParser parser(*dc, scale);
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
+  marginX += SCALE_PX(MC_BASE_INDENT, scale);
   parser.SetIndent(marginX);
 
   while (tmp != NULL)
@@ -366,6 +369,7 @@ void MathPrintout::BreakUpCells()
   CellParser parser(*dc, scale);
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
+  marginX += SCALE_PX(MC_BASE_INDENT, scale);
   parser.SetIndent(marginX);
 
   GetPageSizePixels(&pageWidth, &pageHeight);

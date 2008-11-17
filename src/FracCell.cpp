@@ -34,6 +34,24 @@ FracCell::FracCell() : MathCell()
   m_divide = NULL;
 }
 
+void FracCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_num != NULL)
+    m_num->SetParent(parent, true);
+  if (m_denom != NULL)
+    m_denom->SetParent(parent, true);
+  if (m_open1 != NULL)
+    m_open1->SetParent(parent, true);
+  if (m_close1 != NULL)
+    m_close2->SetParent(parent, true);
+  if (m_open2 != NULL)
+    m_open2->SetParent(parent, true);
+  if (m_close2 != NULL)
+    m_close2->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* FracCell::Copy(bool all)
 {
   FracCell* tmp = new FracCell;

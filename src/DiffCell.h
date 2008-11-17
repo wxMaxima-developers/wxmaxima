@@ -37,6 +37,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
+  void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;

@@ -44,6 +44,7 @@ public:
   }
   bool BreakUp();
   void Unbreak(bool all);
+  void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_baseCell, *m_powCell;
   MathCell *m_open, *m_close, *m_exp, *m_last1, *m_last2;

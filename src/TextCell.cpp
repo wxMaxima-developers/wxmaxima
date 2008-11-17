@@ -106,11 +106,6 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
 
     m_realCenter = m_center = m_height / 2;
-    if (m_type == MC_TYPE_MAIN_PROMPT && !m_text.StartsWith(wxT("/*")))
-    {
-      m_center += m_height;
-      m_height += m_height;
-    }
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
 }

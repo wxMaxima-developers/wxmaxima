@@ -35,6 +35,16 @@ FunCell::~FunCell()
     delete m_next;
 }
 
+void FunCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_nameCell != NULL)
+    m_nameCell->SetParent(parent, true);
+  if (m_argCell != NULL)
+    m_argCell->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* FunCell::Copy(bool all)
 {
   FunCell* tmp = new FunCell;

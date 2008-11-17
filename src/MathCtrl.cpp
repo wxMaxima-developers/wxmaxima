@@ -139,7 +139,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           point.x = MC_BASE_INDENT;
           point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
+            point.y += MC_GROUP_SKIP;
           drop = tmp->m_next->GetMaxDrop();
         } else
           point.x += tmp->GetWidth() + MC_CELL_SKIP;
@@ -225,6 +225,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
       m_last->AppendCell(newGroup);
       m_last = newGroup;
     }
+    tmp = newGroup;
   }
 
   else if (newCell->GetType() == MC_TYPE_INPUT) {
@@ -237,6 +238,11 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
         newCell->GetType() == MC_TYPE_COMMENT)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
+  }
+
+  while (newCell != NULL) {
+    newCell->SetParent(tmp, false);
+    newCell = newCell->m_next;
   }
 
   m_selectionStart = NULL;
@@ -283,6 +289,8 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh, bool prepend)
   else
     newGroup->AppendInput(newCell);
 
+  newGroup->SetParent(newGroup, false);
+
   if (where == m_tree) {
     newGroup->m_next = m_tree;
     newGroup->m_nextToDraw = m_tree;
@@ -307,8 +315,7 @@ void MathCtrl::PrependCell(int type, wxString value, bool refresh, bool prepend)
     Recalculate(false);
   }
 
-//  wxYield();
-
+  SetActiveCell(NULL);
   ScrollToSelectionStart(false);
 
   if (refresh)
@@ -382,7 +389,7 @@ void MathCtrl::RecalculateSize() {
     tmp = tmp->m_next;
     if (tmp != NULL)
       point.y += tmp->GetMaxCenter();
-    point.y += MC_LINE_SKIP;
+    point.y += MC_GROUP_SKIP;
   }
 }
 
@@ -556,18 +563,20 @@ void MathCtrl::SelectRect() {
   if (m_tree == NULL)
     return;
 
+  if (m_activeCell != NULL) {
+    if (!m_activeCell->GetParent()->ContainsPoint(m_down))
+      SetActiveCell(NULL);
+  }
+
   // If we have an acrive cell handle it
   if (m_activeCell != NULL) {
-    if (m_activeCell->ContainsPoint(m_down) && m_activeCell->ContainsPoint(m_up)) {
       wxClientDC dc(this);
       m_activeCell->SelectRectText(dc, m_down, m_up);
       m_switchDisplayCaret = false;
       wxRect rect = m_activeCell->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
-    } else {
-      SetActiveCell(NULL);
-    }
+      return;
   }
 
   MathCell *st = m_selectionStart, *en = m_selectionEnd;
@@ -579,15 +588,19 @@ void MathCtrl::SelectRect() {
   rect.width = MAX(ABS(m_down.x - m_up.x), 1);
   rect.height = MAX(ABS(m_down.y - m_up.y), 1);
 
-  MathCell *tmp = m_tree;
-  while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
-    tmp = tmp->m_next;
+  // find the first group in selection
+  GroupCell *tmp = (GroupCell *)m_tree;
+  while (tmp != NULL && !rect.Intersects(tmp->GetRect()) &&
+      !rect.Intersects(tmp->HideRect()))
+    tmp = (GroupCell *)tmp->m_next;
+
+  // find the last group in selection
   m_selectionStart = tmp;
   m_selectionEnd = tmp;
   while (tmp != NULL) {
-    if (rect.Intersects(tmp->GetRect()))
+    if (rect.Intersects(tmp->GetRect()) || rect.Intersects(tmp->HideRect()))
       m_selectionEnd = tmp;
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
   }
 
   if (m_selectionStart != NULL && m_selectionEnd != NULL) {
@@ -597,13 +610,16 @@ void MathCtrl::SelectRect() {
     }
   }
 
-//  ZIGA
-//  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
-//      && m_selectionStart->IsEditable()) {
-//    SetActiveCell(m_selectionStart);
-//    wxDC dc(this);
-//    m_activeCell->SelectRectText(dc, m_down, m_up);
-//  }
+  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
+      && m_selectionStart->IsEditable()) {
+    bool activate = false;
+    wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+    if (activate) {
+      SetActiveCell(m_selectionStart);
+      wxDC dc(this);
+      m_activeCell->SelectRectText(dc, m_down, m_up);
+    }
+  }
 
   // Refresh only if the selection has changed
   if (st != m_selectionStart || en != m_selectionEnd)
@@ -617,7 +633,7 @@ void MathCtrl::SelectPoint(wxPoint& point) {
   if (m_tree == NULL)
     return;
 
-  // If we have active cell handle it spacial.
+  // If we have active cell handle it special.
   if (m_activeCell != NULL) {
     if (m_activeCell->ContainsPoint(m_down)) {
       wxClientDC dc(this);
@@ -626,12 +642,11 @@ void MathCtrl::SelectPoint(wxPoint& point) {
       Refresh();
       return;
     } else {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
-      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+      SetActiveCell(NULL);
     }
   }
 
-  GroupCell* tmp= NULL;
+  GroupCell* tmp = NULL;
   m_selectWholeLine = true;
 
   //
@@ -639,10 +654,12 @@ void MathCtrl::SelectPoint(wxPoint& point) {
   //
   tmp = m_tree;
   while (tmp != NULL) {
-    if (tmp->ContainsPoint(point))
+    if (tmp->ContainsPoint(point) || (tmp->HideRect()).Contains(point))
       break;
     tmp = (GroupCell *)tmp->m_next;
   }
+
+  // We did no select anything.
   if (tmp == NULL) {
     if (m_selectionStart != NULL) {
       m_selectionStart = NULL;
@@ -656,34 +673,51 @@ void MathCtrl::SelectPoint(wxPoint& point) {
   MathCell *tr;
   tr = tmp->GetPrompt();
 
+  // Check if we clicked on prompt.
   if (tr != NULL && tr->ContainsPoint(point)) {
     m_selectionStart = m_selectionEnd = tr;
   }
 
+  // Check if we cliked on input.
   if (m_selectionStart == NULL) {
     tr = tmp->GetInput();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-//  ZIGA:
-//      SetActiveCell(tr);
-//      wxClientDC dc(this);
-//      m_activeCell->SelectPointText(dc, m_down);
+      bool activate = false;
+      wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+      if (activate) {
+        SetActiveCell(tr);
+        wxClientDC dc(this);
+        m_activeCell->SelectPointText(dc, m_down);
+      }
     }
   }
 
+  // Check if we clicked on label.
   if (m_selectionStart == NULL) {
     tr = tmp->GetLabel();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-//  ZIGA:
-//      if (tr->IsEditable()) {
-//        SetActiveCell(tr);
-//        wxClientDC dc(this);
-//        m_activeCell->SelectPointText(dc, m_down);
-//      }
+      if (tr->IsEditable()) {
+        bool activate = false;
+        wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+        if (activate) {
+          SetActiveCell(tr);
+          wxClientDC dc(this);
+          m_activeCell->SelectPointText(dc, m_down);
+        }
+      }
     }
   }
 
+  // Check if we clicked on the hide box
+  if (tmp->HideRect().Contains(m_down)) {
+    tmp->SwitchHide();
+    tmp->ResetData();
+    Recalculate(false);
+  }
+
+  // Check if we clicked on output.
   if (m_selectionStart == NULL) {
     if ((tmp->GetOutputRect()).Contains(point)) {
       tmp->SelectOutput(&m_selectionStart, &m_selectionEnd);
@@ -697,8 +731,14 @@ void MathCtrl::SelectPoint(wxPoint& point) {
  * Get the string representation of the selection
  */
 wxString MathCtrl::GetString(bool lb) {
-  if (m_selectionStart == NULL)
-    return wxEmptyString;
+
+  if (m_selectionStart == NULL) {
+    if (m_activeCell == NULL)
+      return wxEmptyString;
+    else
+      return m_activeCell->ToString(false);
+  }
+
   wxString s;
   MathCell* tmp = m_selectionStart;
   while (tmp != NULL) {
@@ -993,7 +1033,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
     if (m_activeCell->IsDirty()) {
       int height = m_activeCell->GetHeight();
-      wxConfig *config = (wxConfig *)wxConfig::Get();
 
       int fontsize = 12;
       wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
@@ -1023,7 +1062,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
     ShowPoint(point);
 
-  } else {
+  }
+  else {
     switch (event.GetKeyCode()) {
 
       case WXK_UP:
@@ -1104,7 +1144,7 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
       if (tmp->BreakLineHere()) {
         currentHeight += tmp->GetMaxHeight();
         if (bigSkip)
-          currentHeight += MC_LINE_SKIP;
+          currentHeight += MC_GROUP_SKIP;
         *height = currentHeight;
         currentWidth = MC_BASE_INDENT + tmp->GetWidth();
         *width = MAX(currentWidth + MC_BASE_INDENT, *width);
@@ -1973,6 +2013,8 @@ bool MathCtrl::SelectPrompt() {
 
   if (m_selectionStart != NULL)
     tmp = (GroupCell *)m_selectionStart->GetParent();
+  else if (m_activeCell != NULL)
+    tmp = (GroupCell *)m_activeCell->GetParent();
 
   if (tmp == NULL)
     return false;
@@ -1988,6 +2030,8 @@ void MathCtrl::ScrollToSelectionStart(bool top) {
     return;
 
   MathCell *tmp = m_selectionStart->GetParent();
+  if (tmp == NULL)
+    return;
 
   int cellY = tmp->GetCurrentY();
 
@@ -2031,6 +2075,7 @@ void MathCtrl::SetActiveCell(MathCell *cell) {
     m_activeCell->SetMatchParens(match);
     m_switchDisplayCaret = false;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
+
   }
 
   Refresh();

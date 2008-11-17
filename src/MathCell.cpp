@@ -51,6 +51,14 @@ MathCell::MathCell()
 MathCell::~MathCell()
 {}
 
+void MathCell::SetParent(MathCell *parent, bool all)
+{
+  m_group = parent;
+
+  if (m_next != NULL && all)
+    m_next->SetParent(parent, all);
+}
+
 /***
  * Append new cell to the end of group.
  */
@@ -81,15 +89,7 @@ void MathCell::AppendCell(MathCell *p_next)
 
 MathCell* MathCell::GetParent()
 {
-  MathCell *tmp = this;
-
-  if (tmp->m_group != NULL)
-    return tmp->m_group;
-
-  while (tmp->m_previous != NULL)
-    tmp = tmp->m_previous;
-
-  return tmp->m_group;
+  return m_group;
 }
 
 /***

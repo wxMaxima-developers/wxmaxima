@@ -67,6 +67,14 @@ void EditorCell::Destroy()
 wxString EditorCell::ToString(bool all)
 {
   wxString text = m_text;
+
+  if (m_selectionStart > -1)
+  {
+    long start = MIN(m_selectionStart, m_selectionEnd);
+    long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    text = m_text.SubString(start, end);
+  }
+
   return text + MathCell::ToString(all);
 }
 
@@ -147,6 +155,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
     SetFont(parser, fontsize);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
+    wxRect rect = GetRect(); // rectangle representing the cell
 
     //
     // Draw the text
@@ -185,11 +194,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         int lineWidth, lineHeight;
         dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-
+#if defined(__WXMAC__)
+        dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
+                    point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                    point.x + SCALE_PX(2, scale) + lineWidth,
+                    point.y + SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
+#else
         dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
                     point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
                     point.x + SCALE_PX(2, scale) + lineWidth,
                     point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+#endif
       }
 
       //
@@ -198,29 +213,42 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       if (m_selectionStart > -1)
       {
 #if defined(__WXMAC__)
-	dc.SetLogicalFunction(wxXOR);
-	dc.SetPen(*wxBLACK_PEN);
+        dc.SetLogicalFunction(wxXOR);
 #else
         dc.SetLogicalFunction(wxAND);
-        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-        dc.SetPen(*wxLIGHT_GREY_PEN);
 #endif
-        wxPoint point;
+        dc.SetPen(*wxLIGHT_GREY_PEN);
+        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
+
+        wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
         long end = MAX(m_selectionStart, m_selectionEnd);
         long pos1 = start, pos2 = start;
-        wxPoint point1;
 
         while (pos1 < end)
         {
           while (pos1 < end && m_text.GetChar(pos1) != '\n')
             pos1++;
-          point = PositionToPoint(parser, pos2);
-          point1 = PositionToPoint(parser, pos1);
+          point = PositionToPoint(parser, pos2);  // left  point
+          point1 = PositionToPoint(parser, pos1); // right point
+
+#if defined(__WXMAC__)
+          long selectionWidth = 0;
+          if (pos1 == end)
+            selectionWidth = point1.x - point.x + SCALE_PX(2, scale);
+          else // we have a \n, draw selection to the right border (mac behaviour)
+            selectionWidth = rect.GetRight() - point.x;
+
+          dc.DrawRectangle(point.x + SCALE_PX(1, scale),
+                           point.y + SCALE_PX(1, scale) - m_center,
+                           selectionWidth,
+                           m_charHeight + SCALE_PX(2, scale) );
+#else
           dc.DrawRectangle(point.x + SCALE_PX(2, scale),
-                           point.y  + SCALE_PX(2, scale) - m_center,
+                           point.y + SCALE_PX(2, scale) - m_center,
                            point1.x - point.x,
                            m_charHeight);
+#endif
           pos1++;
           pos2 = pos1;
         }
@@ -234,7 +262,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 #if defined(__WXMAC__)
-	dc.SetLogicalFunction(wxXOR);
+        dc.SetLogicalFunction(wxXOR);
 #else
         dc.SetLogicalFunction(wxAND);
 #endif

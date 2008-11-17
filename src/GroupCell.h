@@ -52,10 +52,14 @@ public:
   void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   void BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
+  void SetParent(MathCell *parent, bool all);
+  void SwitchHide() { m_hide = !m_hide && (m_output != NULL); }
+  wxRect HideRect();
 protected:
   void DestroyOutput();
   MathCell *m_input, *m_output;
   bool m_special;
+  bool m_hide;
   int m_indent;
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

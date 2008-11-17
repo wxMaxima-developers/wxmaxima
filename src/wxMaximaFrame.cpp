@@ -284,29 +284,21 @@ void wxMaximaFrame::SetupMenu()
 
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu;
-  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_copy_from_console, _("&Copy"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
                    _("Copy selection from console"), wxT("gtk-copy"));
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_tex_from_console, _("Copy TeX"),
+  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy TeX"),
                                   _("Copy selection from console in TeX format"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy input"),
-                                  _("Copy input from console"),
-                                  wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_as_bitmap, _("Copy as image"),
+  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as image"),
                              _("Copy selection from console as image"),
                              wxITEM_NORMAL);
 #endif
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Copy"), wxglade_tmp_menu_2_sub1, _("Copy"));
   wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
                              _("Cut selection from console"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
                              _("Paste text from clipboard"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_paste_input, _("Paste input"),
-                             _("Paste input to console"),
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"),
@@ -323,6 +315,17 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from console to input line"),
                              wxITEM_NORMAL);
 #endif
+  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy input"),
+                                  _("Copy input from console"),
+                                  wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut input"),
+                                  _("Cut input from console"),
+                                  wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste input"),
+                             _("Paste input to console"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Input"), wxglade_tmp_menu_2_sub1, _("Input"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_long_input, _("Long input\tCtrl-I"),
                              _("Open multiline input dialog"), wxITEM_NORMAL);

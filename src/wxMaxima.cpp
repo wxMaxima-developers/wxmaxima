@@ -1413,6 +1413,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_paste, m_inputLine->CanPaste());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_input_from_console, m_console->CanCopy());
+  menubar->Enable(menu_cut_input_from_console, m_console->CanCopy());
   menubar->Enable(menu_selection_to_input, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
@@ -1474,7 +1475,7 @@ wxString wxMaxima::GetDefaultEntry()
   wxString s = m_inputLine->GetValue();
   if (s.Length() == 0)
   {
-    if (m_console->CanCopy())
+    if (m_console->CanCopy(true))
       s = m_console->GetString();
     else
       s = wxT("%");
@@ -1797,6 +1798,12 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     if (m_console->CanCopy())
       m_console->CopyInput();
     break;
+  case menu_cut_input_from_console:
+    if (m_console->CanCopy())
+      m_console->CopyInput();
+    if (m_console->CanDeleteSelection())
+      m_console->DeleteSelection();
+    break;
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
@@ -1935,6 +1942,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         wxTheClipboard->Close();
       }
     }
+    return;
     break;
   }
   m_inputLine->SetFocus();
@@ -3600,6 +3608,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_input_from_console, wxMaxima::EditMenu)
+  EVT_MENU(menu_cut_input_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
@@ -3625,6 +3634,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_input_from_console, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_cut_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_edit_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

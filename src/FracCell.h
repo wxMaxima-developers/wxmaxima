@@ -55,6 +55,7 @@ public:
   bool BreakUp();
   void SetupBreakUps();
   void Unbreak(bool all);
+  void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_num;
   MathCell *m_denom;

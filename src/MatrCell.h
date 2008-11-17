@@ -53,6 +53,7 @@ public:
   wxString ToString(bool all);
   wxString ToTeX(bool all);
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
+  void SetParent(MathCell *parent, bool all);
 protected:
   int m_matWidth;
   int m_matHeight;

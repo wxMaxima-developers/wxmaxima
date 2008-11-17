@@ -37,6 +37,17 @@ MatrCell::~MatrCell()
     delete m_next;
 }
 
+void MatrCell::SetParent(MathCell *parent, bool all)
+{
+  for (unsigned int i = 0; i < m_cells.size(); i++)
+  {
+    if (m_cells[i] != NULL)
+      m_cells[i]->SetParent(parent, true);
+  }
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* MatrCell::Copy(bool all)
 {
   MatrCell *tmp = new MatrCell;

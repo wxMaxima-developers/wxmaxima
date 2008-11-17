@@ -35,6 +35,16 @@ DiffCell::~DiffCell()
     delete m_next;
 }
 
+void DiffCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_baseCell != NULL)
+    m_baseCell->SetParent(parent, true);
+  if (m_diffCell != NULL)
+    m_diffCell->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* DiffCell::Copy(bool all)
 {
   DiffCell* tmp = new DiffCell;

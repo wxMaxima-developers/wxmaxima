@@ -60,6 +60,20 @@ IntCell::~IntCell()
     delete m_next;
 }
 
+void IntCell::SetParent(MathCell *parent, bool all)
+{
+  if (m_base != NULL)
+    m_base->SetParent(parent, true);
+  if (m_under != NULL)
+    m_under->SetParent(parent, true);
+  if (m_over != NULL)
+    m_over->SetParent(parent, true);
+  if (m_var != NULL)
+    m_var->SetParent(parent, true);
+
+  MathCell::SetParent(parent, all);
+}
+
 MathCell* IntCell::Copy(bool all)
 {
   IntCell *tmp = new IntCell;
@@ -183,7 +197,7 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   {
     m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
 		   m_base->GetMaxCenter());
-    m_height = m_center + 
+    m_height = m_center +
       MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
 	  m_base->GetMaxDrop());
   }
