@@ -437,11 +437,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       else
         m_selectionEnd = m_selectionStart = -1;
       int column, line;
-      PositionToXY(m_positionOfCaret, &column, &line);
+      PositionToXY(m_positionOfCaret, &column, &line); // get current line
 
-      line = line < m_numberOfLines-1 ? line + 1 : line;
-
-      m_positionOfCaret = XYToPosition(column, line);
+      if (line < m_numberOfLines-1) // can we go down ?
+        m_positionOfCaret = XYToPosition(column, line + 1);
+      else // we can't go down. move caret to the end
+        m_positionOfCaret = m_text.Length();
 
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
@@ -458,11 +459,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       else
         m_selectionEnd = m_selectionStart = -1;
       int column, line;
-      PositionToXY(m_positionOfCaret, &column, &line);
+      PositionToXY(m_positionOfCaret, &column, &line); // get current line
 
-      line = line > 0 ? line - 1 : 0;
+      if (line > 0) // can we go up?
+        m_positionOfCaret = XYToPosition(column, line - 1);
+      else // we can't move up, move to the beginning
+        m_positionOfCaret = 0;
 
-      m_positionOfCaret = XYToPosition(column, line);
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
     }
