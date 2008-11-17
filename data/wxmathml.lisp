@@ -1117,8 +1117,10 @@
 				   (mfuncall '$string aval)))
 			 args))
 	     (args (cons '($gr2d)
-			 (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
-				 args))))
+			 (draw-transform 
+			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
+				  args)
+			  '$draw2d_transform))))
 	(setq images (cons (format nil "~a.png" filename) images))
 	($apply '$draw
 		(append
@@ -1145,8 +1147,10 @@
 				   (mfuncall '$string aval)))
 			 args))
 	     (args (cons '($gr3d)
-			 (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
-				 args))))
+			 (draw-transform 
+			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
+				  args)
+			  '$draw3d_transform))))
 	(setq images (cons (format nil "~a.png" filename) images))
 	($apply '$draw
 		(append
@@ -1195,12 +1199,11 @@
 
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
-	 (list (cons '($gr2d) args))))
-
+	 (list (cons '($gr2d) (draw-transform args '$draw2d_transform)))))
 
 (defun $wxdraw3d (&rest args)
   (apply #'$wxdraw
-	 (list (cons '($gr3d) args))))
+	 (list (cons '($gr3d) (draw-transform args '$draw3d_transform)))))
 
 (defun $wxdraw (&rest args)
   (let* ((filename (wxplot-filename nil))
