@@ -394,12 +394,14 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   switch (event.GetKeyCode())
   {
+
   case WXK_ESCAPE:
     {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
       (wxGetApp().GetTopWindow())->ProcessEvent(ev);
     }
     break;
+
   case WXK_LEFT:
     if (event.ShiftDown())
     {
@@ -408,11 +410,15 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     else
       m_selectionEnd = m_selectionStart = -1;
+
     if (m_positionOfCaret > 0)
       m_positionOfCaret--;
+
     if (event.ShiftDown())
       m_selectionEnd = m_positionOfCaret;
+
     break;
+
   case WXK_RIGHT:
     if (event.ShiftDown())
     {
@@ -421,11 +427,15 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     else
       m_selectionEnd = m_selectionStart = -1;
+
     if (m_positionOfCaret < m_text.Length())
       m_positionOfCaret++;
+
     if (event.ShiftDown())
       m_selectionEnd = m_positionOfCaret;
+
     break;
+
   case WXK_PAGEDOWN:
   case WXK_DOWN:
     {
@@ -436,6 +446,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       }
       else
         m_selectionEnd = m_selectionStart = -1;
+
       int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
 
@@ -448,6 +459,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         m_selectionEnd = m_positionOfCaret;
     }
     break;
+
   case WXK_PAGEUP:
   case WXK_UP:
     {
@@ -458,6 +470,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       }
       else
         m_selectionEnd = m_selectionStart = -1;
+
       int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
 
@@ -470,6 +483,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         m_selectionEnd = m_positionOfCaret;
     }
     break;
+
   case WXK_RETURN:
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              wxT("\n") +
@@ -477,6 +491,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     m_positionOfCaret++;
     m_isDirty = true;
     break;
+
   case WXK_END:
     if (event.ShiftDown())
     {
@@ -485,6 +500,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     else
       m_selectionEnd = m_selectionStart = -1;
+
     if (event.ControlDown())
       m_positionOfCaret = m_text.Length();
     else
@@ -493,9 +509,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
              m_text.GetChar(m_positionOfCaret) != '\n')
         m_positionOfCaret++;
     }
+
     if (event.ShiftDown())
       m_selectionEnd = m_positionOfCaret;
     break;
+
   case WXK_HOME:
     {
       if (event.ShiftDown())
@@ -505,6 +523,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       }
       else
         m_selectionEnd = m_selectionStart = -1;
+
       if (event.ControlDown())
         m_positionOfCaret = 0;
       else
@@ -513,10 +532,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         PositionToXY(m_positionOfCaret, &col, &lin);
         m_positionOfCaret = XYToPosition(0, lin);
       }
+
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
     }
     break;
+
   case WXK_DELETE:
     m_isDirty = true;
     if (m_positionOfCaret < m_text.Length())
@@ -535,6 +556,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       }
     }
     break;
+
   case WXK_BACK:
     m_isDirty = true;
     if (m_selectionStart > -1) {
@@ -553,6 +575,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret--;
     }
     break;
+
   case WXK_TAB:
     m_isDirty = true;
     {
@@ -565,6 +588,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         m_selectionEnd = m_selectionStart = -1;
         break;
       }
+
       int col, line;
       PositionToXY(m_positionOfCaret, &col, &line);
       wxString ins;
@@ -579,10 +603,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret += ins.Length();
     }
     break;
+
   default:
     if (event.ControlDown())
       break;
+
     m_isDirty = true;
+
     if (m_selectionStart > -1) {
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
@@ -591,6 +618,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret = start;
       m_selectionEnd = m_selectionStart = -1;
     }
+
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
 #if wxUSE_UNICODE
              event.GetUnicodeKey() +
@@ -598,7 +626,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
              wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
 #endif
              m_text.SubString(m_positionOfCaret, m_text.Length());
+
     m_positionOfCaret++;
+
     if (m_matchParens)
     {
 #if wxUSE_UNICODE
@@ -629,8 +659,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
+
   if (m_isDirty)
     m_width = m_maxDrop = -1;
+
   m_displayCaret = true;
 }
 
@@ -683,16 +715,19 @@ void EditorCell::FindMatchingParens()
 
   m_paren1 = m_paren2 + dir;
   int depth = 1;
+
   while (m_paren1 >= 0 && m_paren1 < (int)m_text.Length())
   {
     if (m_text.GetChar(m_paren1) == second)
       depth--;
     else if (m_text.GetChar(m_paren1) == first)
       depth++;
+
     if (depth == 0)
       break;
     m_paren1 += dir;
   }
+
   if (m_paren1 < 0 || m_paren1 >= (int)m_text.Length())
     m_paren1 = m_paren2 = -1;
 }

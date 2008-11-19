@@ -85,6 +85,10 @@ public:
     m_hasFocus = focus;
   }
   bool IsActive() { return m_isActive; }
+  bool CaretAtStart() { return m_positionOfCaret == 0; }
+  void CaretToStart() { m_positionOfCaret = 0; }
+  bool CaretAtEnd() { return m_positionOfCaret == m_text.Length(); }
+  void CaretToEnd() { m_positionOfCaret = m_text.Length(); }
 private:
   wxString m_text;
   unsigned int m_positionOfCaret;

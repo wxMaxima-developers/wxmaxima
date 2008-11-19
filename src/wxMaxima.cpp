@@ -1923,20 +1923,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
             }
           }
 
-          int i = inp.Count();
-
-          if (i>0) {
-            --i;
-            while (i>=0) {
-              DoPrependCell(tb_insert_input, inp[i], i==0);
-              m_console->SelectPrompt();
-              --i;
-            }
-          }
+          for (int i=0; i<inp.Count(); i++)
+            DoPrependCell(tb_insert_input, inp[i], i==0);
 
           m_console->SelectPrevInput();
           m_console->ScrollToSelectionStart(false);
-          m_console->SetSelection(NULL);
 
         }
         wxTheClipboard->Close();
@@ -3313,11 +3304,10 @@ void wxMaxima::ReEvaluate()
   if (beginInput == NULL)
     return ;
 
-  GroupCell* group = (GroupCell *)beginInput->GetParent();
-
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {
     wxString text = m_console->GetString(true);
+    GroupCell* group = (GroupCell *)beginInput->GetParent();
 
     m_inInsertMode = true;
 
@@ -3344,8 +3334,6 @@ void wxMaxima::PrependCell(wxCommandEvent& event)
   DoPrependCell(event.GetId());
 
   m_console->SelectPrevInput();
-
-  m_console->SetActiveCell(m_console->GetSelectionStart());
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {

@@ -18,7 +18,7 @@
 ///
 
 #include "GroupCell.h"
-#include "TextCell.h"  m_indent = parser.GetIndent();
+#include "TextCell.h"
 
 GroupCell::GroupCell() : MathCell()
 {
@@ -55,7 +55,8 @@ void GroupCell::SetParent(MathCell *parent, bool all)
   }
 }
 
-void GroupCell::DestroyOutput() {
+void GroupCell::DestroyOutput()
+{
   MathCell *tmp = m_output, *tmp1;
   while (tmp != NULL) {
     tmp1 = tmp;
@@ -132,7 +133,8 @@ void GroupCell::RemoveOutput()
   m_hide = false;
 }
 
-void GroupCell::AppendOutput(MathCell *cell) {
+void GroupCell::AppendOutput(MathCell *cell)
+{
   m_hide = false;
   if (m_output == NULL) {
     m_output = cell;
@@ -297,7 +299,7 @@ wxRect GroupCell::HideRect()
 wxString GroupCell::ToString(bool all)
 {
   wxString str = m_input->ToString(true);
-  if (m_output != NULL) {
+  if (m_output != NULL && !m_hide) {
     MathCell *tmp = m_output;
     while (tmp != NULL) {
       if (tmp->ForceBreakLineHere() && str.Length()>0)
@@ -315,7 +317,7 @@ wxString GroupCell::ToTeX(bool all)
   if (!IsSpecial()) {
     str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
   }
-  if (m_output != NULL) {
+  if (m_output != NULL && !m_hide) {
     if (IsSpecial()) {
       str = m_output->ToString(true);
       switch (m_output->GetType()) {
@@ -358,7 +360,7 @@ void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
 
   if (m_input->ContainsRect(rect))
     m_input->SelectRect(rect, first, last);
-  else if (m_output != NULL && m_outputRect.Contains(rect))
+  else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
 
   if (*first == NULL || *last == NULL)
@@ -459,14 +461,15 @@ void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
   }
 }
 
-MathCell *GroupCell::GetEditable() {
+MathCell *GroupCell::GetEditable()
+{
   if (IsSpecial())
     return GetLabel();
   return GetInput();
 }
 
-void GroupCell::BreakLines(int fullWidth) {
-
+void GroupCell::BreakLines(int fullWidth)
+{
   int currentWidth = m_indent;
 
   MathCell *tmp = m_output;
@@ -485,7 +488,8 @@ void GroupCell::BreakLines(int fullWidth) {
   }
 }
 
-void GroupCell::SelectOutput(MathCell **start, MathCell **end) {
+void GroupCell::SelectOutput(MathCell **start, MathCell **end)
+{
 
   if (m_hide)
     return;
@@ -507,7 +511,8 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end) {
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth) {
+void GroupCell::BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth)
+{
   MathCell *tmp = m_output;
 
   while (tmp != NULL && !m_hide) {
@@ -521,7 +526,8 @@ void GroupCell::BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clie
   }
 }
 
-void GroupCell::UnBreakUpCells() {
+void GroupCell::UnBreakUpCells()
+{
   MathCell *tmp = m_output;
   while (tmp != NULL) {
     if (tmp->m_isBroken) {

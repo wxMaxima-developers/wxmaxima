@@ -612,11 +612,11 @@ void MathCtrl::SelectRect() {
 
   if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
       && m_selectionStart->IsEditable()) {
-    bool activate = false;
+    bool activate = true;
     wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
     if (activate) {
       SetActiveCell(m_selectionStart);
-      wxDC dc(this);
+      wxClientDC dc(this);
       m_activeCell->SelectRectText(dc, m_down, m_up);
     }
   }
@@ -683,7 +683,7 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     tr = tmp->GetInput();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-      bool activate = false;
+      bool activate = true;
       wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
       if (activate) {
         SetActiveCell(tr);
@@ -699,7 +699,7 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
       if (tr->IsEditable()) {
-        bool activate = false;
+        bool activate = true;
         wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
         if (activate) {
           SetActiveCell(tr);
@@ -965,6 +965,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_DELETE:
+    case WXK_BACK:
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
         (wxGetApp().GetTopWindow())->ProcessEvent(ev);
@@ -1022,7 +1023,26 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 void MathCtrl::OnChar(wxKeyEvent& event) {
   if (m_activeCell != NULL) {
     bool hasHeightChanged = false;
+
+    if (event.GetKeyCode() == WXK_UP &&
+        ((EditorCell *)m_activeCell)->CaretAtStart()) {
+      if (SelectPrevInput())
+        ((EditorCell *)m_activeCell)->CaretToEnd();
+      return;
+    }
+
+    if (event.GetKeyCode() == WXK_DOWN &&
+        ((EditorCell *)m_activeCell)->CaretAtEnd()) {
+      if (SelectNextInput())
+        ((EditorCell *)m_activeCell)->CaretToStart();
+      return;
+    }
+
     m_activeCell->ProcessEvent(event);
+
+    // CTRL+"s deactivates on MAC
+    if (m_activeCell == NULL)
+      return;
 
     m_switchDisplayCaret = false;
 
@@ -1913,10 +1933,16 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
 }
 
 bool MathCtrl::SelectPrevInput() {
-  if (m_selectionStart == NULL)
+  if (m_selectionStart == NULL && m_activeCell == NULL)
     return false;
 
-  GroupCell *tmp = (GroupCell *)m_selectionStart->GetParent();
+  GroupCell *tmp;
+  if (m_selectionStart != NULL)
+    tmp = (GroupCell *)m_selectionStart->GetParent();
+  else {
+    tmp = (GroupCell *)m_activeCell->GetParent();
+    SetActiveCell(NULL);
+  }
 
   if (tmp == NULL)
     return false;
@@ -1932,18 +1958,35 @@ bool MathCtrl::SelectPrevInput() {
       tmp = (GroupCell *)tmp->m_previous;
   }
 
+  if (inpt == NULL)
+    return false;
+
   m_selectionStart = m_selectionEnd = inpt;
+  ScrollToSelectionStart(true);
+
+  bool activate = true;
+  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+  if (activate) {
+    SetActiveCell(m_selectionStart);
+    ((EditorCell *)m_activeCell)->CaretToEnd();
+  }
+
   Refresh();
 
-  ScrollToSelectionStart();
   return true;
 }
 
 bool MathCtrl::SelectNextInput(bool input) {
-  if (m_selectionStart == NULL)
+  if (m_selectionStart == NULL && m_activeCell == NULL)
     return false;
 
-  GroupCell *tmp = (GroupCell *)m_selectionStart->GetParent();
+  GroupCell *tmp;
+  if (m_selectionStart != NULL)
+    tmp = (GroupCell *)m_selectionStart->GetParent();
+  else {
+    tmp = (GroupCell *)m_activeCell->GetParent();
+    SetActiveCell(NULL);
+  }
 
   if (tmp == NULL)
     return false;
@@ -1963,9 +2006,17 @@ bool MathCtrl::SelectNextInput(bool input) {
     return false;
 
   m_selectionStart = m_selectionEnd = inpt;
+  ScrollToSelectionStart(false);
+
+  bool activate = true;
+  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+  if (activate) {
+    SetActiveCell(m_selectionStart);
+    ((EditorCell *)m_activeCell)->CaretToStart();
+  }
+
   Refresh();
 
-  ScrollToSelectionStart(false);
   return true;
 }
 
@@ -1988,9 +2039,17 @@ bool MathCtrl::SelectLastInput() {
     return false;
 
   m_selectionStart = m_selectionEnd = inpt;
-  Refresh();
 
   ScrollToSelectionStart();
+
+  bool activate = true;
+  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+
+  if (activate) {
+    SetActiveCell(m_selectionStart);
+    ((EditorCell *)m_activeCell)->CaretToStart();
+  }
+
   return true;
 }
 

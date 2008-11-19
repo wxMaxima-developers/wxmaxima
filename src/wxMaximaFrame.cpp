@@ -263,7 +263,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch file\tCtrl-B"),
                              _("Load a maxima file using batch command"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export"),
-                   _("Export console output to HTML file"), wxT("stock_export"));
+                   _("Export document output to HTML file"), wxT("stock_export"));
   wxglade_tmp_menu_1->AppendSeparator();
   wxglade_tmp_menu_1->Append(menu_select_file, _("Select &file"),
                              _("Select a file (copy filename to input line)"),
@@ -285,17 +285,17 @@ void wxMaximaFrame::SetupMenu()
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
-                   _("Copy selection from console"), wxT("gtk-copy"));
+                   _("Copy selection from document"), wxT("gtk-copy"));
   wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy TeX"),
-                                  _("Copy selection from console in TeX format"),
+                                  _("Copy selection from document in TeX format"),
                                   wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
   wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as image"),
-                             _("Copy selection from console as image"),
+                             _("Copy selection from document as image"),
                              wxITEM_NORMAL);
 #endif
   wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
-                             _("Cut selection from console"),
+                             _("Cut selection from document"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
                              _("Paste text from clipboard"),
@@ -304,28 +304,28 @@ void wxMaximaFrame::SetupMenu()
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
-                             _("Copy selection from console to a file"),
+                             _("Copy selection from document to a file"),
                              wxITEM_NORMAL);
 #if defined (__WXMAC__)
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tCtrl-Shift-E"),
-                               _("Copy selection from console to input line"),
+                               _("Copy selection from document to input line"),
                                wxITEM_NORMAL);
 #else
   wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
-                             _("Copy selection from console to input line"),
+                             _("Copy selection from document to input line"),
                              wxITEM_NORMAL);
 #endif
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy input"),
-                                  _("Copy input from console"),
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy groups"),
+                                  _("Copy groups from document"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut input"),
-                                  _("Cut input from console"),
+  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut groups"),
+                                  _("Cut groups from document"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste input"),
-                             _("Paste input to console"),
+  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste groups"),
+                             _("Paste groups to document"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Input"), wxglade_tmp_menu_2_sub1, _("Input"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Group"), wxglade_tmp_menu_2_sub1, _("Input"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_long_input, _("Long input\tCtrl-I"),
                              _("Open multiline input dialog"), wxITEM_NORMAL);
@@ -349,11 +349,11 @@ void wxMaximaFrame::SetupMenu()
                              _("Insert"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
-                   _("Delete the contents of console."), wxT("gtk-clear"));
+                   _("Delete the contents of document."), wxT("gtk-clear"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &in\tAlt-I"),
-                   _("Increase fontsize in console"), wxT("gtk-zoom-in"));
+                   _("Increase fontsize in document"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
-                   _("Decrease fontsize in console"), wxT("gtk-zoom-out"));
+                   _("Decrease fontsize in document"), wxT("gtk-zoom-out"));
 #if defined __WXMAC__
   wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tCtrl-Shift-D"),
                              _("Set focus to the input line"), wxITEM_NORMAL);
@@ -368,7 +368,7 @@ void wxMaximaFrame::SetupMenu()
 			     _("Select last input in the colsole!"));
 #else
   wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tF2"),
-                             _("Select last input in the console!"));
+                             _("Select last input in the document!"));
 #endif
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),

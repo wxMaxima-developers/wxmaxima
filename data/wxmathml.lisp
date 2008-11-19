@@ -996,6 +996,7 @@
 (defmvar $pdiff_diff_var_names (list '(mlist) '|$x| '|$y| '|$z|))
 
 (setf (get '%pderivop 'wxxml) 'wxxml-pderivop)
+(setf (get '$pderivop 'wxxml) 'wxxml-pderivop)
 
 (defun wxxml-pderivop (x l r)
   (cond ((and $pdiff_uses_prime_for_derivatives (eq 3 (length x)))

@@ -197,7 +197,7 @@ void Config::set_properties()
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
-  bool match = true, showLongExpr = false, unixCopy = false, activateSelection = false;
+  bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true;
   bool showHeader = true, fixedFontTC = true, readFile = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
