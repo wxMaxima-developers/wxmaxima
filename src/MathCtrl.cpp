@@ -431,16 +431,20 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
   wxMenu* popupMenu = new wxMenu();
 
   if (m_activeCell == NULL) {
+
     /* If we have no selection or we are not in editing mode don't popup a menu!*/
     if (m_editingEnabled == false)
       return;
 
-    if (IsSelected(MC_TYPE_IMAGE)) {
+    if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
 #if defined __WXMSW__
       popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
 #endif
       popupMenu->Append(popid_image, _("Save image"), wxEmptyString, wxITEM_NORMAL);
-    } else {
+    }
+
+    else {
+
       if (CanCopy()) {
         popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(popid_copy_tex, _("Copy TeX"), wxEmptyString, wxITEM_NORMAL);
@@ -455,6 +459,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
 
         popupMenu->AppendSeparator();
       }
+
       if (CanEdit()) {
         if (m_selectionStart->GetType() == MC_TYPE_INPUT) {
           popupMenu->Append(popid_edit, _("Edit input"), wxEmptyString, wxITEM_NORMAL);
@@ -467,7 +472,9 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
           popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
         }
-      } else {
+      }
+
+      else {
         popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_solve, _("Solve ..."), wxEmptyString, wxITEM_NORMAL);
@@ -485,7 +492,9 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
         popupMenu->Append(popid_plot3d, _("Plot 3d ..."), wxEmptyString, wxITEM_NORMAL);
       }
     }
-  } else {
+  }
+
+  else {
     popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_cut, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
@@ -975,35 +984,49 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
     case WXK_RETURN:
       if (CanEdit()) {
-        if (event.ControlDown() || event.ShiftDown()) {
+        if (event.ControlDown() || event.ShiftDown())
+        {
           if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_INPUT)
             m_selectionStart->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-        } else {
-          SetActiveCell(m_selectionStart);
         }
-      } else if (m_activeCell != NULL) {
+        else
+          SetActiveCell(m_selectionStart);
+      }
+
+      else if (m_activeCell != NULL) {
         if (event.ControlDown() || event.ShiftDown()) {
           if (m_activeCell->GetType() == MC_TYPE_INPUT)
             m_activeCell->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_ok);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-        } else
+        }
+        else
           event.Skip();
-      } else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT) {
+      }
+
+      else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT)
+      {
         PrependCell(MC_TYPE_INPUT, GetString(), true, false);
         SelectNextInput();
-        SetActiveCell(m_selectionStart);
-      } else
+        if (m_activeCell == NULL)
+          SetActiveCell(m_selectionStart);
+      }
+
+      else
         event.Skip();
+
       break;
 
     case WXK_ESCAPE:
-      if (m_activeCell == NULL) {
+      if (m_activeCell == NULL)
+      {
         SetSelection(NULL);
         Refresh();
-      } else {
+      }
+
+      else {
         if (m_activeCell->GetType() == MC_TYPE_INPUT) {
           if (m_activeCell->AddEnding()) {
             m_activeCell->ResetData();
@@ -1024,14 +1047,16 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   if (m_activeCell != NULL) {
     bool hasHeightChanged = false;
 
-    if (event.GetKeyCode() == WXK_UP &&
+    bool activate = true;
+    wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
+    if (activate && event.GetKeyCode() == WXK_UP &&
         ((EditorCell *)m_activeCell)->CaretAtStart()) {
       if (SelectPrevInput())
         ((EditorCell *)m_activeCell)->CaretToEnd();
       return;
     }
 
-    if (event.GetKeyCode() == WXK_DOWN &&
+    if (activate && event.GetKeyCode() == WXK_DOWN &&
         ((EditorCell *)m_activeCell)->CaretAtEnd()) {
       if (SelectNextInput())
         ((EditorCell *)m_activeCell)->CaretToStart();
@@ -1939,10 +1964,8 @@ bool MathCtrl::SelectPrevInput() {
   GroupCell *tmp;
   if (m_selectionStart != NULL)
     tmp = (GroupCell *)m_selectionStart->GetParent();
-  else {
+  else
     tmp = (GroupCell *)m_activeCell->GetParent();
-    SetActiveCell(NULL);
-  }
 
   if (tmp == NULL)
     return false;
@@ -1983,10 +2006,8 @@ bool MathCtrl::SelectNextInput(bool input) {
   GroupCell *tmp;
   if (m_selectionStart != NULL)
     tmp = (GroupCell *)m_selectionStart->GetParent();
-  else {
+  else
     tmp = (GroupCell *)m_activeCell->GetParent();
-    SetActiveCell(NULL);
-  }
 
   if (tmp == NULL)
     return false;
