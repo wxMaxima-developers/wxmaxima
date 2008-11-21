@@ -22,6 +22,15 @@
 
 #include "MathCell.h"
 
+enum
+{
+  GC_TYPE_CODE,
+  GC_TYPE_TITLE,
+  GC_TYPE_SECTION,
+  GC_TYPE_SUBSECTION,
+  GC_TYPE_TEXT
+};
+
 class GroupCell: public MathCell
 {
 public:

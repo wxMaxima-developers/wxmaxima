@@ -64,6 +64,7 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
+  GroupCell* CreateGCAfter(GroupCell *afterThisGC, wxString contents);
   void Recalculate(bool scroll = true);
   void RecalculateForce();
   void RecalculateWidths();
@@ -187,6 +188,8 @@ protected:
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
+  bool m_hCaretActive; // horizontal caret
+  GroupCell *m_hCaretPosition;
   bool m_leftDown;
   bool m_mouseDrag;
   bool m_selectWholeLine;

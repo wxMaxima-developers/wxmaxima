@@ -18,6 +18,7 @@
 ///
 
 #include <wx/clipbrd.h>
+#include <wx/settings.h>
 
 #include "EditorCell.h"
 #include "wxMaxima.h"
@@ -138,6 +139,14 @@ void EditorCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   MathCell::RecalculateSize(parser, fontsize, all);
 }
 
+///////////////////////////
+// EditorCell::Draw
+// Draws the editor cell in the following order:
+// 1. draw selection (wxCOPY)
+// 2. mark matching parenthesis (wxCOPY)
+// 3. draw text (wxCOPY)
+// 4. draw caret (wxXOR)
+////////////////////////////
 void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all)
 {
   double scale = parser.GetScale();
@@ -149,17 +158,80 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
 
   if (DrawThisCell(parser, point) && !m_isHidden)
   {
+    dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
+    
+    if (m_isActive) // draw selection or matching parens
+    {
+      //
+      // Mark selection
+      //
+      if (m_selectionStart > -1)
+      {
+#if defined(__WXMAC__)
+        wxRect rect = GetRect(); // rectangle representing the cell
+#endif
+        dc.SetPen(wxNullPen); // no border on rectangles 
+        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  )); //highlight c. 
+
+        wxPoint point, point1;
+        long start = MIN(m_selectionStart, m_selectionEnd);
+        long end = MAX(m_selectionStart, m_selectionEnd);
+        long pos1 = start, pos2 = start;
+
+        while (pos1 < end) // go through selection, draw a rect for each line of selection
+        {
+          while (pos1 < end && m_text.GetChar(pos1) != '\n')
+            pos1++;
+            
+          point = PositionToPoint(parser, pos2);  // left  point
+          point1 = PositionToPoint(parser, pos1); // right point
+          long selectionWidth = point1.x - point.x;
+#if defined(__WXMAC__)
+          if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
+            selectionWidth = rect.GetRight() - point.x - SCALE_PX(2,scale);
+#endif
+          dc.DrawRectangle(point.x + SCALE_PX(2, scale), // draw the rectangle
+                           point.y + SCALE_PX(2, scale) - m_center,
+                           selectionWidth,
+                           m_charHeight);
+          pos1++;
+          pos2 = pos1;
+        }
+      } // if (m_selectionStart > -1)
+      
+      //
+      // Matching parens - draw only if we dont have selection
+      //
+      else if (m_paren1 != -1 && m_paren2 != -1)
+      {
+
+        dc.SetPen(wxNullPen); // no border on rectangles 
+        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  ));
+
+        wxPoint point = PositionToPoint(parser, m_paren1);
+        int width, height;
+        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
+        dc.DrawRectangle(point.x + SCALE_PX(2, scale) + 1,
+                         point.y  + SCALE_PX(2, scale) - m_center + 1,
+                         width - 1, height - 1);
+        point = PositionToPoint(parser, m_paren2);
+        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
+        dc.DrawRectangle(point.x + SCALE_PX(2, scale) + 1,
+                         point.y  + SCALE_PX(2, scale) - m_center + 1,
+                         width - 1, height - 1);
+      } // else if (m_paren1 != -1 && m_paren2 != -1)
+    } // if (m_isActive)
+      
+    //
+    // Draw the text
+    //  
     SetBackground(parser, point1);
     SetForeground(parser);
     SetPen(parser);
     SetFont(parser, fontsize);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
-    wxRect rect = GetRect(); // rectangle representing the cell
-
-    //
-    // Draw the text
-    //
+    
     while (newLinePos < m_text.Length())
     {
       while (newLinePos < m_text.Length())
@@ -178,112 +250,39 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       numberOfLines++;
     }
 
-    if (m_isActive)
+    //
+    // Draw the caret
+    //
+    if (m_displayCaret && m_hasFocus && m_isActive)
     {
-      //
-      // Draw the caret
-      //
-      if (m_displayCaret && m_hasFocus)
-      {
-        int caretInLine = 0;
-        int caretInColumn = 0;
+      int caretInLine = 0;
+      int caretInColumn = 0;
 
-        PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
+      PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
 
-        wxString line = GetLineString(caretInLine, 0, caretInColumn);
-        int lineWidth, lineHeight;
-        dc.GetTextExtent(line, &lineWidth, &lineHeight);
-
+      wxString line = GetLineString(caretInLine, 0, caretInColumn);
+      int lineWidth, lineHeight;
+      dc.GetTextExtent(line, &lineWidth, &lineHeight);
+      
+      dc.SetLogicalFunction(wxXOR);
 #if defined(__WXMAC__)
-        dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                    point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                    point.x + SCALE_PX(2, scale) + lineWidth,
-                    point.y + SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
+      // draw 1 pixel shorter caret than on windows
+      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
+                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                  point.x + SCALE_PX(2, scale) + lineWidth,
+                  point.y + SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #else
-        dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                    point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                    point.x + SCALE_PX(2, scale) + lineWidth,
-                    point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
+                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                  point.x + SCALE_PX(2, scale) + lineWidth,
+                  point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #endif
-      }
-
-      //
-      // Mark selection
-      //
-      if (m_selectionStart > -1)
-      {
-#if defined(__WXMAC__)
-        dc.SetLogicalFunction(wxXOR);
-#else
-        dc.SetLogicalFunction(wxAND);
-#endif
-        dc.SetPen(*wxLIGHT_GREY_PEN);
-        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-
-        wxPoint point, point1;
-        long start = MIN(m_selectionStart, m_selectionEnd);
-        long end = MAX(m_selectionStart, m_selectionEnd);
-        long pos1 = start, pos2 = start;
-
-        while (pos1 < end)
-        {
-          while (pos1 < end && m_text.GetChar(pos1) != '\n')
-            pos1++;
-          point = PositionToPoint(parser, pos2);  // left  point
-          point1 = PositionToPoint(parser, pos1); // right point
-
-#if defined(__WXMAC__)
-          long selectionWidth = 0;
-          if (pos1 == end)
-            selectionWidth = point1.x - point.x + SCALE_PX(2, scale);
-          else // we have a \n, draw selection to the right border (mac behaviour)
-            selectionWidth = rect.GetRight() - point.x;
-
-          dc.DrawRectangle(point.x + SCALE_PX(1, scale),
-                           point.y + SCALE_PX(1, scale) - m_center,
-                           selectionWidth,
-                           m_charHeight + SCALE_PX(2, scale) );
-#else
-          dc.DrawRectangle(point.x + SCALE_PX(2, scale),
-                           point.y + SCALE_PX(2, scale) - m_center,
-                           point1.x - point.x,
-                           m_charHeight);
-#endif
-          pos1++;
-          pos2 = pos1;
-        }
-
-        dc.SetLogicalFunction(wxCOPY);
-      }
-
-      //
-      // Matching parens
-      //
-      else if (m_paren1 != -1 && m_paren2 != -1)
-      {
-#if defined(__WXMAC__)
-        dc.SetLogicalFunction(wxXOR);
-#else
-        dc.SetLogicalFunction(wxAND);
-#endif
-        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-        dc.SetPen(*wxLIGHT_GREY_PEN);
-        wxPoint point = PositionToPoint(parser, m_paren1);
-        int width, height;
-        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        dc.DrawRectangle(point.x + SCALE_PX(2, scale),
-                         point.y  + SCALE_PX(2, scale) - m_center,
-                         width, height);
-        point = PositionToPoint(parser, m_paren2);
-        dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        dc.DrawRectangle(point.x + SCALE_PX(2, scale),
-                         point.y  + SCALE_PX(2, scale) - m_center,
-                         width, height);
-        dc.SetLogicalFunction(wxCOPY);
-      }
+      dc.SetLogicalFunction(wxCOPY); // set back to wxCOPY (default behaviour)
     }
+    
     UnsetPen(parser);
-  }
+    
+  } // if (DrawThisCell(parser, point) && !m_isHidden)
   MathCell::Draw(parser, point1, fontsize, all);
 }
 
@@ -485,6 +484,15 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_RETURN:
+    if (m_selectionStart != -1) // we have a selection, delete it, then proceed
+    {
+      long start = MIN(m_selectionEnd, m_selectionStart);
+      long end = MAX(m_selectionEnd, m_selectionStart);
+      m_text = m_text.SubString(0, start - 1) +
+               m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;
+      m_selectionEnd = m_selectionStart = -1;
+    }
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              wxT("\n") +
              m_text.SubString(m_positionOfCaret, m_text.Length());
