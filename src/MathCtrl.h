@@ -64,7 +64,6 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  GroupCell* CreateGCAfter(GroupCell *afterThisGC, wxString contents);
   void Recalculate(bool scroll = true);
   void RecalculateForce();
   void RecalculateWidths();
@@ -161,7 +160,7 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
-  void PrependCell(int id, wxString value, bool refresh, bool prepend = true);
+  void PrependGroup(int id, wxString value, bool refresh, bool prepend = true);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
