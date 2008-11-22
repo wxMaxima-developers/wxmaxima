@@ -818,9 +818,14 @@ void wxMaxima::ReadPrompt()
           m_lastPrompt = o;
           wxYield();  // Let's redraw the output windows so that we get new positions!
           m_console->SetSelection(tmp);
-          if (!m_console->SelectNextInput())
+          if (!m_console->SelectNextInput()) {
             m_console->SetSelection(NULL);
-          m_console->GetLastPrompt()->SetValue(o);
+            DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+            if (FindFocus() == m_console)
+              m_console->SelectLastInput();
+          }
+          else
+            m_console->GetLastPrompt()->SetValue(o);
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
@@ -3250,7 +3255,7 @@ void wxMaxima::HandleCellEvent(wxCommandEvent& event)
   if (tmp == NULL)
     return ;
 
-  if (tmp->GetType() == MC_TYPE_INPUT)
+  if (tmp->GetType() == MC_TYPE_INPUT && event.GetId() == deactivate_cell_ok)
     tmp->AddEnding();
 
   m_console->SetSelection(tmp);

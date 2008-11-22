@@ -110,6 +110,11 @@ void GroupCell::AppendInput(MathCell *cell)
   else {
     if (m_input->m_next == NULL)
       m_input->AppendCell(cell);
+    else if (m_input->m_next->GetValue().Length() == 0) {
+      delete m_input->m_next;
+      m_input->m_next = m_input->m_nextToDraw = NULL;
+      m_input->AppendCell(cell);
+    }
     else
       AppendOutput(cell);
   }
