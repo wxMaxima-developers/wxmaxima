@@ -1305,6 +1305,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             SetSelection(m_hCaretPosition);
             PrependGroup(MC_TYPE_INPUT, txt, false, false);
             SelectNextInput();
+            ((EditorCell *)m_activeCell)->CaretToEnd();
           }
           else {
             SetSelection(m_tree);
