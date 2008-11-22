@@ -256,7 +256,7 @@ void MathCell::DrawBoundingBox(wxDC& dc, bool all)
   wxRect rect = GetRect(all);
   int x = rect.GetX(), y = rect.GetY();
   int width = rect.GetWidth(), height = rect.GetHeight();
-  dc.DrawRectangle(x - 1, y - 1, width + 2, height + 2);
+  dc.DrawRectangle(x, y, width, height);
 }
 
 /***
