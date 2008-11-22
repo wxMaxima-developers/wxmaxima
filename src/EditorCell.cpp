@@ -159,7 +159,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
   if (DrawThisCell(parser, point) && !m_isHidden)
   {
     dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
-    
+
     if (m_isActive) // draw selection or matching parens
     {
       //
@@ -170,8 +170,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
 #if defined(__WXMAC__)
         wxRect rect = GetRect(); // rectangle representing the cell
 #endif
-        dc.SetPen(wxNullPen); // no border on rectangles 
-        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  )); //highlight c. 
+        dc.SetPen(wxNullPen); // no border on rectangles
+        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  )); //highlight c.
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -182,7 +182,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         {
           while (pos1 < end && m_text.GetChar(pos1) != '\n')
             pos1++;
-            
+
           point = PositionToPoint(parser, pos2);  // left  point
           point1 = PositionToPoint(parser, pos1); // right point
           long selectionWidth = point1.x - point.x;
@@ -198,14 +198,14 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
           pos2 = pos1;
         }
       } // if (m_selectionStart > -1)
-      
+
       //
       // Matching parens - draw only if we dont have selection
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 
-        dc.SetPen(wxNullPen); // no border on rectangles 
+        dc.SetPen(wxNullPen); // no border on rectangles
         dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  ));
 
         wxPoint point = PositionToPoint(parser, m_paren1);
@@ -221,17 +221,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
                          width - 1, height - 1);
       } // else if (m_paren1 != -1 && m_paren2 != -1)
     } // if (m_isActive)
-      
+
     //
     // Draw the text
-    //  
+    //
     SetBackground(parser, point1);
     SetForeground(parser);
     SetPen(parser);
     SetFont(parser, fontsize);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
-    
+
     while (newLinePos < m_text.Length())
     {
       while (newLinePos < m_text.Length())
@@ -263,7 +263,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       wxString line = GetLineString(caretInLine, 0, caretInColumn);
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
-      
+
       dc.SetLogicalFunction(wxXOR);
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
@@ -279,9 +279,9 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
 #endif
       dc.SetLogicalFunction(wxCOPY); // set back to wxCOPY (default behaviour)
     }
-    
+
     UnsetPen(parser);
-    
+
   } // if (DrawThisCell(parser, point) && !m_isHidden)
   MathCell::Draw(parser, point1, fontsize, all);
 }
@@ -756,6 +756,7 @@ bool EditorCell::AddEnding()
   wxString text = m_text.Trim();
   if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
     m_text += wxT(";");
+    m_width = -1;
     return true;
   }
   return false;
