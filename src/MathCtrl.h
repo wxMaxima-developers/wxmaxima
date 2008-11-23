@@ -161,9 +161,13 @@ public:
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
   void PrependGroup(int id, wxString value, bool refresh, bool prepend = true);
+  bool SelectionInLastGroup() { return m_selectionStart != NULL && m_selectionStart->GetParent() == m_last; }
+  void SetWorkingGroup(GroupCell *group);
+  bool IsSelectionInWorking();
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
+  void OpenHCaret(wxString txt = wxEmptyString);
   void GetMaxPoint(int* width, int* height);
   void BreakLines();
   void OnTimer(wxTimerEvent& event);
@@ -196,6 +200,7 @@ protected:
   bool m_forceUpdate;
   GroupCell *m_tree;
   GroupCell *m_last;
+  GroupCell *m_workingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
   GroupCell *m_insertPoint;

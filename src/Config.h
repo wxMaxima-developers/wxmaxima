@@ -134,7 +134,6 @@ protected:
 #endif
   wxStaticText* label_12;
   wxSpinCtrl* m_defaultPort;
-  wxCheckBox* m_activateSelection;
   ExamplePanel* label_11;
   // end wxGlade
   style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,

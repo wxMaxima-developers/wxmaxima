@@ -209,7 +209,9 @@ public:
   }
   bool IsEditable(bool input = false)
   {
-    return m_type == MC_TYPE_INPUT || (!input && IsComment());
+    return (m_type == MC_TYPE_INPUT  &&
+            m_previous != NULL && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
+         || (!input && IsComment());
   }
   virtual void ProcessEvent(wxKeyEvent& event)
   { }

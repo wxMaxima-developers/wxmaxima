@@ -23,6 +23,7 @@
 GroupCell::GroupCell() : MathCell()
 {
   m_input = new TextCell(wxT(">>"));
+  m_input->SetType(MC_TYPE_MAIN_PROMPT);
   m_output = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
@@ -34,6 +35,7 @@ GroupCell::GroupCell() : MathCell()
   m_type = MC_TYPE_GROUP;
   m_indent = MC_BASE_INDENT;
   m_hide = false;
+  m_working = false;
 }
 
 GroupCell::~GroupCell()
@@ -262,21 +264,19 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
 
     MathCell *editable = GetEditable();
-    if (editable != NULL && editable->IsActive()) {
-      wxPen active(wxT("coral"), 2);
-      dc.SetPen(active);
-    }
-    else if (m_hide) {
-      wxPen hidden(wxT("grey"), 2);
-      dc.SetPen(hidden);
-    }
+    if (editable != NULL && editable->IsActive())
+      dc.SetPen(wxPen(wxT("coral"), 2));
+    else if (m_working)
+      dc.SetPen(wxPen(wxT("dark green"), 2));
+    else if (m_hide)
+      dc.SetPen(wxPen(wxT("grey"), 2));
     else
       dc.SetPen(*wxGREY_PEN);
     // top horizontal
     dc.DrawLine(point.x, point.y - m_center - 1,
                 point.x - SCALE_PX(10, scale), point.y - m_center - 1);
     dc.DrawLine(point.x, point.y - m_center - 1,
-                point.x - SCALE_PX(10, scale), point.y - m_center + SCALE_PX(8, scale));
+                point.x - SCALE_PX(10, scale), point.y - m_center -1 + SCALE_PX(10, scale));
     // vertical
     dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center - 1,
                 point.x - SCALE_PX(10, scale), point.y - m_center + m_height);

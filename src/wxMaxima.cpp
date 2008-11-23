@@ -260,6 +260,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
 
   if (type != MC_TYPE_ERROR)
     SetStatusText(_("Parsing output"), 1);
+
   if (type == MC_TYPE_TEXT)
   {
     while (s.Length() > 0)
@@ -301,10 +302,12 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
       }
     }
   }
+
   else if (type == MC_TYPE_INPUT)
   {
     wxMessageBox(wxT("Should not be here!!!"));
   }
+
   else if (type == MC_TYPE_PROMPT)
   {
     SetStatusText(_("Ready for user input"), 1);
@@ -325,10 +328,12 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
                     type, true);
   }
+
   else if (type == MC_TYPE_ERROR)
   {
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
   }
+
   else
   {
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
@@ -796,15 +801,16 @@ void wxMaxima::ReadPrompt()
           m_console->SetInsertPoint(NULL);
           m_lastPrompt = o;
           m_console->SetSelection(tmp);
-          if (m_console->SelectNextInput(true)) {
+          if (m_console->SelectNextInput(true) && !m_console->SelectionInLastGroup()) {
             m_console->Refresh();
             m_console->EnableEdit();
             ReEvaluate();
           }
           else {
+            m_inReevalMode = false;
             m_console->SetSelection(NULL);
             m_console->SetScrollTo(-1);
-            m_inReevalMode = false;
+            m_console->SetWorkingGroup(NULL);
             m_console->GetLastPrompt()->SetValue(o);
           }
         }
@@ -816,7 +822,6 @@ void wxMaxima::ReadPrompt()
           m_console->SetScrollTo(-1);
           m_inInsertMode = false;
           m_lastPrompt = o;
-          wxYield();  // Let's redraw the output windows so that we get new positions!
           m_console->SetSelection(tmp);
           if (!m_console->SelectNextInput()) {
             m_console->SetSelection(NULL);
@@ -824,8 +829,10 @@ void wxMaxima::ReadPrompt()
             if (FindFocus() == m_console)
               m_console->SelectLastInput();
           }
-          else
+          else {
+            m_console->SetWorkingGroup(NULL);
             m_console->GetLastPrompt()->SetValue(o);
+          }
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
@@ -833,15 +840,17 @@ void wxMaxima::ReadPrompt()
         else
           HandleMainPrompt(o);
 
+        m_console->SetWorkingGroup(NULL);
         m_console->EnableEdit();
       }
-      else
-      {
+
+      else {
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
         else
           DoRawConsoleAppend(o, MC_TYPE_PROMPT);
       }
+
       if (o.StartsWith(wxT("\nMAXIMA>")))
         m_inLispMode = true;
       else
@@ -3300,7 +3309,7 @@ void wxMaxima::ReEvaluate()
     m_console->SetSelection(tmp);
   }
 
-  if (!m_console->CanEdit())
+  if (!m_console->CanEdit() && !m_console->IsSelectionInWorking())
     return ;
 
   ResetTitle(false);
@@ -3320,12 +3329,15 @@ void wxMaxima::ReEvaluate()
     m_console->GetViewStart(&x, &y);
     m_console->SetScrollTo(y);
 
-    group->RemoveOutput();
-    m_console->Recalculate(false);
+    if (!m_console->IsSelectionInWorking()) {
+      group->RemoveOutput();
+      m_console->Recalculate(false);
+    }
 
     m_console->SetInsertPoint(group);
 
     group->GetPrompt()->SetValue(m_lastPrompt);
+    m_console->SetWorkingGroup(group);
 
     SendMaxima(text, true, false, true, false);
   }

@@ -73,6 +73,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   m_animate = false;
+  m_workingGroup = NULL;
   AdjustSize(false);
 }
 
@@ -227,21 +228,36 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
  */
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 
+  SetActiveCell(NULL);
+
   GroupCell *tmp = m_insertPoint;
-  if (m_hCaretActive)
+  if (m_hCaretActive && newCell->GetType() != MC_TYPE_ERROR)
     tmp = m_hCaretPosition;
 
   if (tmp == NULL)
     tmp = m_last;
 
+  if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT) {
+    GroupCell *newGroup = new GroupCell;
+    TextCell *prompt = new TextCell;
+    prompt->SetValue(wxT("!!"));
+    prompt->SetType(MC_TYPE_MAIN_PROMPT);
+    newGroup->SetInput(prompt);
+    newGroup->SetSpecial(true);
+    tmp = m_tree = m_last = newGroup;
+  }
+
   newCell->ForceBreakLine(forceNewLine);
 
   if (newCell->GetType() == MC_TYPE_MAIN_PROMPT) {
+    SetWorkingGroup(NULL);
     GroupCell *newGroup = new GroupCell;
     newGroup->SetInput(newCell);
-    EditorCell *input = new EditorCell();
-    input->SetType(MC_TYPE_INPUT);
-    newGroup->AppendInput(input);
+    if (newCell->GetValue() != wxT("/*")) {
+      EditorCell *input = new EditorCell();
+      input->SetType(MC_TYPE_INPUT);
+      newGroup->AppendInput(input);
+    }
     if (m_last == NULL) {
       m_last = m_tree = newGroup;
     }
@@ -254,6 +270,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 
   else if (newCell->GetType() == MC_TYPE_INPUT) {
     tmp->AppendInput(newCell);
+    SetWorkingGroup(tmp);
   }
 
   else {
@@ -262,6 +279,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
         newCell->GetType() == MC_TYPE_COMMENT)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
+    if (newCell->GetType() == MC_TYPE_PROMPT && FindFocus() == this)
+      OpenHCaret();
   }
 
   while (newCell != NULL) {
@@ -652,13 +671,9 @@ void MathCtrl::SelectRect() {
 
   if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
       && m_selectionStart->IsEditable()) {
-    bool activate = true;
-    wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-    if (activate) {
-      SetActiveCell(m_selectionStart);
-      wxClientDC dc(this);
-      m_activeCell->SelectRectText(dc, m_down, m_up);
-    }
+    SetActiveCell(m_selectionStart);
+    wxClientDC dc(this);
+    m_activeCell->SelectRectText(dc, m_down, m_up);
   }
 
   m_hCaretActive = false;
@@ -730,18 +745,16 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     return;
   }
 
-  /*
-  else if (point.y > (m_last->GetRect()).GetBottom()) // clicked below last groupcell
+  // clicked below last groupcell
+  else if (point.y > (m_last->GetRect()).GetBottom())
   {
-    if (m_selectionStart != NULL) {
-      m_selectionStart = NULL;
-      m_selectionEnd = NULL;
+    MathCell *input = m_last->GetInput();
+    if (input != NULL) {
+      SetActiveCell(input);
+      return;
     }
-    m_hCaretActive = true;
-    m_hCaretPosition = (GroupCell *) m_last;
-    Refresh();
-    return;
-  }*/
+  }
+
 
   // We did no select anything.
   if (tmp == NULL) {
@@ -767,13 +780,9 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     tr = tmp->GetInput();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-      bool activate = true;
-      wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-      if (activate) {
-        SetActiveCell(tr);
-        wxClientDC dc(this);
-        m_activeCell->SelectPointText(dc, m_down);
-      }
+      SetActiveCell(tr);
+      wxClientDC dc(this);
+      m_activeCell->SelectPointText(dc, m_down);
     }
   }
 
@@ -783,13 +792,9 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
       if (tr->IsEditable()) {
-        bool activate = true;
-        wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-        if (activate) {
-          SetActiveCell(tr);
-          wxClientDC dc(this);
-          m_activeCell->SelectPointText(dc, m_down);
-        }
+        SetActiveCell(tr);
+        wxClientDC dc(this);
+        m_activeCell->SelectPointText(dc, m_down);
       }
     }
   }
@@ -992,6 +997,42 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   Refresh();
 }
 
+void MathCtrl::OpenHCaret(wxString txt)
+{
+  if (m_workingGroup != NULL) {
+    EditorCell *newInput = new EditorCell;
+    newInput->SetType(MC_TYPE_INPUT);
+    newInput->SetValue(txt);
+    newInput->CaretToEnd();
+
+    m_workingGroup->AppendOutput(newInput);
+    newInput->SetParent(m_workingGroup, false);
+    SetActiveCell(newInput);
+
+    Recalculate();
+    Refresh();
+
+    return;
+  }
+
+  if (!m_hCaretActive)
+    return;
+
+  if (m_hCaretPosition != NULL) {
+      SetSelection(m_hCaretPosition);
+      PrependGroup(MC_TYPE_INPUT, txt, false, false);
+      SelectNextInput();
+      ((EditorCell *)m_activeCell)->CaretToEnd();
+    }
+    else {
+      SetSelection(m_tree);
+      PrependGroup(MC_TYPE_INPUT, txt, false, true);
+      SelectPrevInput();
+      if (m_activeCell != NULL)
+        ((EditorCell *)m_activeCell)->CaretToEnd();
+    }
+}
+
 /***
  * Support for copying and deleting with keyboard
  */
@@ -1035,6 +1076,19 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         m_activeCell->PasteFromClipboard();
         RecalculateForce();
         Refresh();
+      }
+      else if (m_hCaretActive) {
+        if (wxTheClipboard->Open())
+        {
+          if (wxTheClipboard->IsSupported(wxDF_TEXT))
+          {
+            wxTextDataObject obj;
+            wxTheClipboard->GetData(obj);
+            wxString txt = obj.GetText();
+            OpenHCaret(txt);
+          }
+          wxTheClipboard->Close();
+        }
       }
       break;
 
@@ -1181,7 +1235,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
 
     ShowPoint(point);
-
   }
 
   else { // m_activeCell == NULL
@@ -1227,7 +1280,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               SetActiveCell(editor);
               m_hCaretActive = false;
               ((EditorCell *)m_activeCell)->CaretToStart();
-
             } else { // else jump over
               m_hCaretPosition = (GroupCell *)m_tree;
               Refresh();
@@ -1302,26 +1354,14 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         break;
 
       default:
-        if (m_hCaretActive)
+        if (m_hCaretActive || m_workingGroup != NULL)
         {
 #if wxUSE_UNICODE
           wxString txt(event.GetUnicodeKey());
 #else
           wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
 #endif
-          if (m_hCaretPosition != NULL) {
-            SetSelection(m_hCaretPosition);
-            PrependGroup(MC_TYPE_INPUT, txt, false, false);
-            SelectNextInput();
-            ((EditorCell *)m_activeCell)->CaretToEnd();
-          }
-          else {
-            SetSelection(m_tree);
-            PrependGroup(MC_TYPE_INPUT, txt, false, true);
-            SelectPrevInput();
-            if (m_activeCell != NULL)
-              ((EditorCell *)m_activeCell)->CaretToEnd();
-          }
+          OpenHCaret(txt);
         }
         event.Skip();
     }
@@ -1477,6 +1517,8 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
  * Destroy the tree
  */
 void MathCtrl::DestroyTree() {
+  m_hCaretActive = false;
+  m_hCaretPosition = NULL;
   DestroyTree(m_tree);
   m_tree = m_last = NULL;
 }
@@ -2079,6 +2121,12 @@ bool MathCtrl::CanEdit() {
   if (!m_selectionStart->IsEditable())
     return false;
 
+  if (m_selectionStart->m_previous == NULL)
+    return false;
+
+  if (m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
+    return false;
+
   return true;
 }
 
@@ -2145,12 +2193,8 @@ bool MathCtrl::SelectPrevInput() {
   m_selectionStart = m_selectionEnd = inpt;
   ScrollToSelectionStart(true);
 
-  bool activate = true;
-  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-  if (activate) {
-    SetActiveCell(m_selectionStart);
-    ((EditorCell *)m_activeCell)->CaretToEnd();
-  }
+  SetActiveCell(m_selectionStart);
+  ((EditorCell *)m_activeCell)->CaretToEnd();
 
   Refresh();
 
@@ -2178,7 +2222,10 @@ bool MathCtrl::SelectNextInput(bool input) {
 
   MathCell *inpt = NULL;
   while (tmp != NULL && inpt == NULL) {
-    inpt = tmp->GetEditable();
+    if (input)
+      inpt = tmp->GetInput();
+    else
+      inpt = tmp->GetEditable();
     if (inpt == NULL)
       tmp = (GroupCell *)tmp->m_next;
   }
@@ -2189,9 +2236,7 @@ bool MathCtrl::SelectNextInput(bool input) {
   m_selectionStart = m_selectionEnd = inpt;
   ScrollToSelectionStart(false);
 
-  bool activate = true;
-  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-  if (activate) {
+  if (FindFocus() == this) {
     SetActiveCell(m_selectionStart);
     ((EditorCell *)m_activeCell)->CaretToStart();
   }
@@ -2221,13 +2266,8 @@ bool MathCtrl::SelectLastInput() {
 
   ScrollToSelectionStart();
 
-  bool activate = true;
-  wxConfig::Get()->Read(wxT("activateOnSelect"), &activate);
-
-  if (activate) {
-    SetActiveCell(m_selectionStart);
-    ((EditorCell *)m_activeCell)->CaretToStart();
-  }
+  SetActiveCell(m_selectionStart);
+  ((EditorCell *)m_activeCell)->CaretToStart();
 
   return true;
 }
@@ -2390,15 +2430,13 @@ void MathCtrl::SelectAll() {
 }
 
 void MathCtrl::OnSetFocus(wxFocusEvent& event) {
-  if (m_activeCell != NULL)
-    m_activeCell->SetFocus(true);
+
 }
 
 void MathCtrl::OnKillFocus(wxFocusEvent& event) {
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
-  if (m_activeCell != NULL)
-    m_activeCell->SetFocus(false);
+  SetActiveCell(NULL);
   Refresh();
 }
 
@@ -2444,6 +2482,27 @@ void MathCtrl::Animate(bool run) {
     else
       m_animate = false;
   }
+}
+
+void MathCtrl::SetWorkingGroup(GroupCell *group) {
+  if (m_workingGroup != NULL)
+    m_workingGroup->SetWorking(false);
+  m_workingGroup = group;
+  if (m_workingGroup != NULL)
+    m_workingGroup->SetWorking(group);
+}
+
+bool MathCtrl::IsSelectionInWorking() {
+  if (m_selectionStart == NULL)
+    return false;
+
+  if (m_workingGroup == NULL)
+    return false;
+
+  if (m_selectionStart->GetParent() != m_workingGroup)
+    return false;
+
+  return true;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

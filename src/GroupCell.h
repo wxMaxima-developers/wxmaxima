@@ -63,12 +63,14 @@ public:
   void UnBreakUpCells();
   void SetParent(MathCell *parent, bool all);
   void SwitchHide() { m_hide = !m_hide && (m_output != NULL); }
+  void SetWorking(bool working) { m_working = working; }
   wxRect HideRect();
 protected:
   void DestroyOutput();
   MathCell *m_input, *m_output;
   bool m_special;
   bool m_hide;
+  bool m_working;
   int m_indent;
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
