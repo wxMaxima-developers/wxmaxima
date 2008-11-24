@@ -3,11 +3,9 @@ AM_CXXFLAGS = -DPREFIX=\"$(prefix)\"
 bin_PROGRAMS = wxmaxima
 
 wxmaxima_SOURCES = \
-	CommandLine.cpp    CommandLine.h    \
 	Config.cpp         Config.h         \
 	DragNDrop.cpp      DragNDrop.h      \
 	main.cpp                            \
-	TextInput.cpp      TextInput.h      \
 	wxMaxima.cpp       wxMaxima.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \
 	SubstituteWiz.cpp  SubstituteWiz.h  \

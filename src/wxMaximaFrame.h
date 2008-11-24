@@ -26,7 +26,6 @@
 #include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
 
-#include "CommandLine.h"
 #include "MathCtrl.h"
 #include "Setup.h"
 
@@ -36,7 +35,6 @@ enum {
   plot_slider_id,
   input_line_id,
   menu_open_id,
-  menu_read_id,
   menu_batch_id,
   menu_save_id,
   menu_save_as_id,
@@ -136,7 +134,6 @@ enum {
   button_product,
   button_button_constant,
   button_factor,
-  button_long_input,
   button_subst,
   button_plot2,
   button_plot3,
@@ -152,15 +149,12 @@ enum {
   menu_add_path,
   menu_reeval_all,
   menu_show_tip,
-  menu_select_file,
-  menu_monitor_file,
   menu_clear_screen,
   menu_copy_from_console,
   menu_copy_tex_from_console,
   menu_copy_input_from_console,
   menu_cut_input_from_console,
   menu_delete_selection,
-  menu_goto_input,
   menu_logcontract,
   menu_logexpand,
   menu_to_fact,
@@ -172,7 +166,6 @@ enum {
   menu_copy_as_bitmap,
   menu_copy_to_file,
   menu_export_html,
-  menu_selection_to_input,
   menu_change_var,
   menu_nouns,
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -189,15 +182,12 @@ enum {
   tb_animation_start,
   tb_animation_stop,
 #endif
-  menu_edit_input,
   menu_reeval_input,
-  menu_long_input,
   menu_add_comment,
   menu_add_section,
   menu_add_title,
   menu_insert_input,
   menu_select_last,
-  menu_goto_output,
   activate_cell,
   deactivate_cell_ok,
   deactivate_cell_cancel,
@@ -228,10 +218,6 @@ protected:
   wxMenuBar* frame_1_menubar;
   wxPanel *panel;
   MathCtrl* m_console;
-  wxStaticText* label_1;
-  CommandLine* m_inputLine;
-  wxBitmapButton* button_0;
-  wxBitmapButton* button_1;
   wxButton* button_2;
   wxButton* button_3;
   wxButton* button_4;

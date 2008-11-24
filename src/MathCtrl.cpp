@@ -115,8 +115,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   SetBackgroundColour(wxTheColourDatabase->Find(bgColStr));
 
   dcm.SelectObject(*m_memory);
-  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(),
-      wxSOLID)));
+  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
   dcm.Clear();
   PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);
@@ -150,30 +149,30 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       tmp = tmp->m_next;
     }
-    
+
     // Draw selection
     if (m_selectionStart != NULL)
     {
       MathCell* tmp = m_selectionStart;
-      
+
       dcm.SetLogicalFunction(wxXOR);
       dcm.SetBrush(*wxWHITE_BRUSH);
       dcm.SetPen(wxNullPen);
-              
+
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
       {
         while (tmp != NULL)
         {
-          
+
           wxRect rect = tmp->GetRect();
           // TODO globally define x coordinates of the left GC brackets
           dcm.DrawRectangle( 1, rect.GetTop() - 2, 13, rect.GetHeight() + 4);
-          
+
           if (tmp == m_selectionEnd)
               break;
           tmp = tmp->m_next;
         }
-      
+
       }
       else {
 
@@ -221,10 +220,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   {
     dcm.SetLogicalFunction(wxXOR);
     dcm.SetPen(*wxLIGHT_GREY_PEN);
+
     if (m_hCaretPosition == NULL)
-    {
       dcm.DrawLine( 0, 5, 1000, 5);
-    } else {
+    else {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
       int pad = ((int) MC_GROUP_SKIP) / 2;
       dcm.DrawLine( 0, currentGCRect.GetBottom() + pad, 3000,  currentGCRect.GetBottom() + pad);
@@ -295,8 +294,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
         newCell->GetType() == MC_TYPE_COMMENT)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
-    if (newCell->GetType() == MC_TYPE_PROMPT && FindFocus() == this)
+    if (newCell->GetType() == MC_TYPE_PROMPT) {
+      m_workingGroup = tmp;
       OpenHCaret();
+    }
   }
 
   while (newCell != NULL) {
@@ -518,8 +519,6 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
         popupMenu->Append(popid_copy_image, _("Copy as image"),
             wxEmptyString, wxITEM_NORMAL);
 #endif
-	popupMenu->Append(popid_copy_to_input, _("Copy to input"), wxEmptyString, wxITEM_NORMAL);
-
         if (CanDeleteSelection())
           popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);
 
@@ -685,15 +684,18 @@ void MathCtrl::SelectRect() {
     }
   }
 
-  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
-      && m_selectionStart->IsEditable()) {
+  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
+      m_workingGroup == NULL && m_selectionStart->IsEditable()) {
     SetActiveCell(m_selectionStart);
-    wxClientDC dc(this);
-    m_activeCell->SelectRectText(dc, m_down, m_up);
+    if (m_activeCell != NULL) {
+      wxClientDC dc(this);
+      m_activeCell->SelectRectText(dc, m_down, m_up);
+    }
   }
 
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
+
   // Refresh only if the selection has changed
   if (st != m_selectionStart || en != m_selectionEnd)
     Refresh();
@@ -771,7 +773,6 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     }
   }
 
-
   // We did no select anything.
   if (tmp == NULL) {
     if (m_selectionStart != NULL) {
@@ -796,9 +797,11 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     tr = tmp->GetInput();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-      SetActiveCell(tr);
-      wxClientDC dc(this);
-      m_activeCell->SelectPointText(dc, m_down);
+      if (m_workingGroup == NULL) {
+        SetActiveCell(tr);
+        wxClientDC dc(this);
+        m_activeCell->SelectPointText(dc, m_down);
+      }
     }
   }
 
@@ -943,8 +946,8 @@ bool MathCtrl::CopyInput() {
  * Can delete selection - we can't delete the last prompt!
  */
 bool MathCtrl::CanDeleteSelection() {
-  if (m_selectionStart == NULL || m_selectionEnd == NULL || m_insertPoint
-      != NULL)
+  if (m_selectionStart == NULL || m_selectionEnd == NULL ||
+      m_insertPoint != NULL || m_workingGroup != NULL)
     return false;
 
   GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
@@ -1256,6 +1259,9 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   }
 
   else { // m_activeCell == NULL
+    wxClientDC dc(this);
+    CellParser parser(dc);
+
     switch (event.GetKeyCode()) {
 
       case WXK_UP:
@@ -1263,13 +1269,14 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           if (m_hCaretPosition != NULL)
           {
             MathCell * editor = m_hCaretPosition->GetEditable();
-            if( editor != NULL)
+            if(editor != NULL && m_workingGroup == NULL)
             {
               SetActiveCell(editor);
               m_hCaretActive = false;
               ((EditorCell *)m_activeCell)->CaretToEnd();
+              ShowPoint(m_activeCell->PositionToPoint(parser));
             }
-            else { // can't get editor.. jump over cell..
+            else { // can't get editor... jump over cell..
               m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_previous;
               Refresh();
             }
@@ -1292,13 +1299,15 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         {
           if (m_hCaretPosition == NULL)
           {
-            if ( ((GroupCell *)m_tree)->GetEditable() != NULL ) // try to edit the first cell
+            MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
+            if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
             {
-              MathCell * editor = ((GroupCell *)m_tree)->GetEditable();
               SetActiveCell(editor);
               m_hCaretActive = false;
               ((EditorCell *)m_activeCell)->CaretToStart();
-            } else { // else jump over
+              ShowPoint(m_activeCell->PositionToPoint(parser));
+            }
+            else { // else jump over
               m_hCaretPosition = (GroupCell *)m_tree;
               Refresh();
             }
@@ -1306,12 +1315,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
           else if (m_hCaretPosition->m_next != NULL)
           {
-            MathCell * editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
-            if( editor != NULL)
+            MathCell *editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
+            if( editor != NULL && m_workingGroup == NULL)
             {
               SetActiveCell(editor);
               m_hCaretActive = false;
               ((EditorCell *)m_activeCell)->CaretToStart();
+              ShowPoint(m_activeCell->PositionToPoint(parser));
             }
             else { // can't get editor.. jump over cell..
               m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_next;
@@ -2033,13 +2043,15 @@ bool MathCtrl::ExportToMAC(wxString file) {
     if (!tmp->IsSpecial()) {
       MathCell *txt = tmp->GetInput();
       if (txt != NULL) {
-        AddLineToFile(output, wxEmptyString, false);
-        if (wxm)
-          AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
         wxString input = txt->ToString(false);
-        AddLineToFile(output, input, false);
-        if (wxm)
-          AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
+        if (input.Length()>0) {
+          AddLineToFile(output, wxEmptyString, false);
+          if (wxm)
+            AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
+          AddLineToFile(output, input, false);
+          if (wxm)
+            AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
+        }
       }
     }
 
@@ -2291,10 +2303,16 @@ bool MathCtrl::SelectLastInput() {
 }
 
 bool MathCtrl::SelectFirstInput() {
-  if (m_tree == NULL)
+  GroupCell *tmp = m_tree;
+  if (tmp == NULL)
       return false;
 
-  MathCell *input = m_tree->GetInput();
+  MathCell *input = tmp->GetInput();
+  while (tmp != NULL && input == NULL) {
+    tmp = (GroupCell *)tmp->m_next;
+    input = tmp->GetInput();
+  }
+
   if (input == NULL)
     return false;
 
@@ -2362,9 +2380,8 @@ void MathCtrl::ScrollToSelectionStart(bool top) {
 }
 
 void MathCtrl::SetActiveCell(MathCell *cell) {
-  if (m_activeCell != NULL) {
+  if (m_activeCell != NULL)
     m_activeCell->ActivateCell();
-  }
 
   m_activeCell = cell;
 
@@ -2377,7 +2394,6 @@ void MathCtrl::SetActiveCell(MathCell *cell) {
     m_activeCell->SetMatchParens(match);
     m_switchDisplayCaret = false;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
-
   }
 
   if (cell != NULL)

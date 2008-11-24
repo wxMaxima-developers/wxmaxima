@@ -66,15 +66,14 @@ public:
   {
     m_openFile = file;
   }
-  void SendMaxima(wxString s, bool clear = true, bool out = true,
-                  bool silent = true,   // sends input to maxima, also add to command
-                  bool split = true);   // history...
+  void SendMaxima(wxString s,
+                  bool out = true,      // send s to console?
+                  bool silent = true,   // for initial setup
+                  bool split = true);   // add new-line characters
   bool ReadBatchFile(wxString file);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
-  void EnterCommand(wxCommandEvent& event);        // enter in the command line
-
   void FileMenu(wxCommandEvent& event);            //
   void MaximaMenu(wxCommandEvent& event);          //
   void AlgebraMenu(wxCommandEvent& event);         //
@@ -87,8 +86,6 @@ protected:
   void EditMenu(wxCommandEvent& event);            //
   void Interrupt(wxCommandEvent& event);           //
   void OnMonitorFile(wxCommandEvent& event);       //
-  void OnActivate(wxActivateEvent& event);         //
-  void OnSetFocus(wxFocusEvent& event);            //
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
@@ -111,9 +108,7 @@ protected:
   void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
-  void ReEvaluate();
-
-  void HandleMainPrompt(wxString prompt);
+  void ReEvaluateSelection();
 
   wxString SplitInput(wxString input);
 
@@ -162,7 +157,7 @@ protected:
   bool m_readingPrompt;
   bool m_dispReadOut;               // what is displayed in statusbar
   bool m_inLispMode;                // don't add ; in lisp mode
-  bool m_inPrompt;
+//  bool m_inPrompt;
   bool m_inInsertMode;
   bool m_inReevalMode;
   wxString m_lastPrompt;
@@ -181,7 +176,6 @@ protected:
   unsigned int m_batchFilePosition;
   bool m_fileSaved;
   bool m_variablesOK;
-  bool m_fileRead;
   wxString m_helpFile;
 #if defined (__WXMSW__)
   wxCHMHelpController m_helpCtrl;

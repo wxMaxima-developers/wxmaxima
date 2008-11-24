@@ -21,15 +21,8 @@
 
 #include <wx/artprov.h>
 #include <wx/config.h>
+#include <wx/image.h>
 
-#ifndef __WXMSW__
- #include "../art/maximaicon.xpm"
-#else
- #include <wx/image.h>
-#endif
-
-#include "../art/ok.xpm"
-#include "../art/multiline.xpm"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
@@ -38,17 +31,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 {
   panel = new wxPanel(this, -1);
 
-  // input line
-  label_1 = new wxStaticText(panel, -1, _("INPUT:"));
-  m_inputLine = new CommandLine(panel, input_line_id, wxEmptyString,
-                                wxDefaultPosition, wxDefaultSize,
-                                wxTE_PROCESS_ENTER | wxTE_PROCESS_TAB |
-                                wxTE_RICH);
-  m_inputLine->SetSkipTab(false);
-  button_0 = new wxBitmapButton(panel, button_enter,
-                                wxBitmap(ok_xpm));
-  button_1 = new wxBitmapButton(panel, button_long_input,
-                                wxBitmap(multiline_xpm));
   // buttons
   int panelSize = 1;
   wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
@@ -130,8 +112,6 @@ void wxMaximaFrame::set_properties()
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
   m_console->SetMinSize(wxSize(100, 100));
-  button_0->SetToolTip(_("Enter command"));
-  button_1->SetToolTip(_("Multiline input"));
   frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
 }
 
@@ -153,8 +133,6 @@ void wxMaximaFrame::do_layout()
     grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
   else
     grid_sizer_2 = new wxGridSizer(2, 6, 0, 0);
-
-  wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(1, 4, 0, 0);
 
   // buttons
   if (panelSize == 2)
@@ -196,21 +174,8 @@ void wxMaximaFrame::do_layout()
     grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
   }
 
-  // input line
-  sizer_3->Add(label_1, 0, wxALL | wxALIGN_CENTER_HORIZONTAL |
-               wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(m_inputLine, 0, wxALL | wxEXPAND | wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_0, 0, wxALL | wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->Add(button_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 2);
-  sizer_3->AddGrowableCol(1);
-
   // all
   grid_sizer_1->Add(m_console, 1, wxALL | wxEXPAND, 0);
-#if defined __WXMAC__
-  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 3);
-#else
-  grid_sizer_1->Add(sizer_3, 1, wxALL | wxEXPAND, 0);
-#endif
 
   if (panelSize > 0)
     grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
@@ -251,9 +216,6 @@ void wxMaximaFrame::SetupMenu()
 #endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
                    _("Open session from a file"), wxT("gtk-open"));
-  wxglade_tmp_menu_1->Append(menu_read_id, _("&Read file"),
-                             _("Read session from a file"),
-                             wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save session to a file"), wxT("gtk-save"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save as"),
@@ -264,13 +226,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a maxima file using batch command"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export"),
                    _("Export document output to HTML file"), wxT("stock_export"));
-  wxglade_tmp_menu_1->AppendSeparator();
-  wxglade_tmp_menu_1->Append(menu_select_file, _("Select &file"),
-                             _("Select a file (copy filename to input line)"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_1->Append(menu_monitor_file, _("&Monitor file"),
-                             _("Autoload a file when it is updated"),
-                             wxITEM_NORMAL);
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print\tCtrl-P"),
@@ -306,15 +261,6 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from document to a file"),
                              wxITEM_NORMAL);
-#if defined (__WXMAC__)
-  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tCtrl-Shift-E"),
-                               _("Copy selection from document to input line"),
-                               wxITEM_NORMAL);
-#else
-  wxglade_tmp_menu_2->Append(menu_selection_to_input, _("Selection to input\tF5"),
-                             _("Copy selection from document to input line"),
-                             wxITEM_NORMAL);
-#endif
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
   wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy groups"),
                                   _("Copy groups from document"),
@@ -327,10 +273,6 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(wxNewId(), _("Group"), wxglade_tmp_menu_2_sub1, _("Input"));
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_long_input, _("Long input\tCtrl-I"),
-                             _("Open multiline input dialog"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_edit_input, _("&Edit input\tCtrl-E"),
-                             _("Edit selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
                              _("Re-evaluate selected input"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_reeval_all, _("Re-evaluate all\tCtrl-Shift-R"),
@@ -354,22 +296,8 @@ void wxMaximaFrame::SetupMenu()
                    _("Increase fontsize in document"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                    _("Decrease fontsize in document"), wxT("gtk-zoom-out"));
-#if defined __WXMAC__
-  wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tCtrl-Shift-D"),
-                             _("Set focus to the input line"), wxITEM_NORMAL);
-#else
-  wxglade_tmp_menu_2->Append(menu_goto_input, _("Go to input\tF4"),
-                             _("Set focus to the input line"), wxITEM_NORMAL);
-#endif
-  wxglade_tmp_menu_2->Append(menu_goto_output, _("Go to output window\tF3"),
-                             _("Set focus to the output window"), wxITEM_NORMAL);
-#if defined __WXMAC__
-  wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tCtrl-D"),
-			     _("Select last input in the colsole!"));
-#else
   wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tF2"),
                              _("Select last input in the document!"));
-#endif
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));

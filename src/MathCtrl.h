@@ -31,7 +31,6 @@ enum {
   popid_paste,
   popid_select_all,
   popid_copy_image,
-  popid_copy_to_input,
   popid_delete,
   popid_simplify,
   popid_expand,
@@ -161,7 +160,9 @@ public:
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
   void PrependGroup(int id, wxString value, bool refresh, bool prepend = true);
-  bool SelectionInLastGroup() { return m_selectionStart != NULL && m_selectionStart->GetParent() == m_last; }
+  bool IsActiveInLast() {
+    return m_activeCell != NULL && m_activeCell->GetParent() == m_last;
+  }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
 protected:

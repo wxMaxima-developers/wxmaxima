@@ -19,7 +19,6 @@
 
 #include "wxMaxima.h"
 #include "Config.h"
-#include "TextInput.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
 #include "LimitWiz.h"
@@ -95,7 +94,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
 #endif
 
-  m_inputLine->SetFocus();
   m_closing = false;
   m_openFile = wxEmptyString;
   m_inInsertMode = false;
@@ -105,14 +103,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_variablesOK = false;
 
   m_batchFilePosition = 0;
-  m_fileRead = false;
-  wxConfig::Get()->Read(wxT("readFileOnStart"), &m_fileRead);
 
   m_helpFile = wxEmptyString;
 
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
+
+  m_console->SetFocus();
 }
 
 wxMaxima::~wxMaxima()
@@ -194,13 +192,19 @@ void wxMaxima::FirstOutput(wxString s)
   int start = s.Find(m_firstPrompt);
   m_console->ClearWindow();
 
-  if (showHeader)
-  {
+  if (showHeader) {
     DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
     ConsoleAppend(s.SubString(0, start - 1), MC_TYPE_TEXT);
   }
 
-  HandleMainPrompt(m_firstPrompt);
+  if (m_batchFileLines.GetCount()>0) {
+    PrintFile();
+    ResetTitle(true);
+  }
+
+  DoRawConsoleAppend(m_firstPrompt, MC_TYPE_MAIN_PROMPT);
+
+  m_lastPrompt = wxT("(%i1) ");
 }
 
 /***
@@ -213,8 +217,7 @@ bool wxMaxima::ReadBatchFile(wxString file)
   wxTextFile inputFile(file);
   m_batchFileLines.Clear();
 
-  if (!inputFile.Open())
-  {
+  if (!inputFile.Open()) {
     wxMessageBox(_("Error opening file"), _("Error"));
     return false;
   }
@@ -229,8 +232,7 @@ bool wxMaxima::ReadBatchFile(wxString file)
   wxString line;
   for (line = inputFile.GetFirstLine();
        !inputFile.Eof();
-       line = inputFile.GetNextLine())
-  {
+       line = inputFile.GetNextLine()) {
     m_batchFileLines.Add(line);
   }
   m_batchFileLines.Add(line);
@@ -246,9 +248,12 @@ bool wxMaxima::ReadBatchFile(wxString file)
 ///  Appending stuff to output
 ///--------------------------------------------------------------------------------
 
+/***
+ * ConsoleAppend adds a new line s of type to the console window. It will call
+ * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
+ */
 void wxMaxima::ConsoleAppend(wxString s, int type)
 {
-  m_inPrompt = false;
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
 
@@ -266,8 +271,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     while (s.Length() > 0)
     {
       int start = s.Find(wxT("<mth"));
-      if (start == -1)
-      {
+      if (start == -1) {
         t = s;
         t.Trim();
         t.Trim(false);
@@ -275,8 +279,8 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
           DoRawConsoleAppend(s, MC_TYPE_TEXT);
         s = wxEmptyString;
       }
-      else
-      {
+
+      else {
         wxString pre = s.SubString(0, start - 1);
         wxString pre1(pre);
         pre1.Trim();
@@ -287,14 +291,13 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         else
           end += 5;
         wxString rest = s.SubString(start, end);
-        if (pre1.Length())
-        {
+
+        if (pre1.Length()) {
           DoRawConsoleAppend(pre, MC_TYPE_TEXT);
           DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
-        else
-        {
+        else {
           DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
@@ -303,42 +306,24 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     }
   }
 
-  else if (type == MC_TYPE_INPUT)
-  {
-    wxMessageBox(wxT("Should not be here!!!"));
-  }
-
-  else if (type == MC_TYPE_PROMPT)
-  {
+  else if (type == MC_TYPE_PROMPT) {
     SetStatusText(_("Ready for user input"), 1);
     m_lastPrompt = s;
-    if (s.StartsWith(wxT("(%i")) || s == m_commentPrefix)
-    {
-      wxMessageBox(wxT("Should not be here!!! (1)"));
-      m_inPrompt = true;
-      type = MC_TYPE_MAIN_PROMPT;
-    }
-    else if (s.StartsWith(wxT("MAXIMA> ")))
-    {
-      m_inPrompt = true;
+
+    if (s.StartsWith(wxT("MAXIMA> "))) {
       s = s.Right(8);
     }
     else
       s = s + wxT(" ");
-    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
-                    type, true);
+
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, true);
   }
 
   else if (type == MC_TYPE_ERROR)
-  {
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
-  }
 
   else
-  {
-    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"),
-                    type, false);
-  }
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
 }
 
 void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
@@ -365,8 +350,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 {
   if (type == MC_TYPE_INPUT || type == MC_TYPE_COMMENT ||
-      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE)
-  {
+      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE) {
     ResetTitle(false);
 
     EditorCell* cell = new EditorCell();
@@ -376,8 +360,8 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 
     m_console->InsertLine(cell, newLine);
   }
-  else
-  {
+
+  else {
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
     while (tokens.HasMoreTokens())
@@ -398,16 +382,14 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   }
 }
 
-void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool split)
+void wxMaxima::SendMaxima(wxString s, bool out, bool silent, bool split)
 {
-  if (!m_isConnected)
-  {
+  if (!m_isConnected) {
     ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
     return ;
   }
 
-  if (!m_variablesOK)
-  {
+  if (!m_variablesOK) {
     m_variablesOK = true;
     SetupVariables();
   }
@@ -417,26 +399,23 @@ void wxMaxima::SendMaxima(wxString s, bool clear, bool out, bool silent, bool sp
   s.Replace(wxT("\x00B3"), wxT("^3"));
 #endif
 
-  if (s.StartsWith(wxT("<ml>")))
-  {
+  if (s.StartsWith(wxT("<ml>"))) {
     s = s.SubString(4, s.Length());
     s.Replace(wxT("<nl>"), wxT("\n"));
   }
-  if (clear)
-    m_inputLine->SetValue(wxEmptyString);
-  if (out)
-  {
+
+  if (out) {
     wxString s1(s);
     if (split)
       s1 = SplitInput(s);
     DoRawConsoleAppend(s1, MC_TYPE_INPUT, false);
   }
-  if (silent)
-  {
-    m_inputLine->AddToHistory(s);
+
+  if (silent) {
     SetStatusText(_("Maxima is calculating"), 1);
     m_dispReadOut = false;
   }
+
   s.Replace(wxT("\n"), wxEmptyString);
   s.Append(wxT("\n"));
   m_console->EnableEdit(false);
@@ -488,12 +467,17 @@ wxString wxMaxima::SplitInput(wxString input)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
+/***
+ * Client event is triggered when there is something we can read from
+ * the socket.
+ */
 void wxMaxima::ClientEvent(wxSocketEvent& event)
 {
   char buffer[SOCKET_SIZE + 1];
   int read;
   switch (event.GetSocketEvent())
   {
+
   case wxSOCKET_INPUT:
     m_client->Read(buffer, SOCKET_SIZE);
     if (!m_client->Error())
@@ -502,8 +486,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       buffer[read] = 0;
       m_currentOutput += wxString(buffer, *wxConvCurrent);
 
-      if (!m_dispReadOut && m_currentOutput != wxT("\n"))
-      {
+      if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
         SetStatusText(_("Reading maxima output"), 1);
         m_dispReadOut = true;
       }
@@ -518,6 +501,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       ReadLispError();
     }
     break;
+
   case wxSOCKET_LOST:
     if (!m_closing)
       ConsoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
@@ -529,15 +513,20 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_client = NULL;
     m_isConnected = false;
     break;
+
   default:
     break;
   }
 }
 
+/***
+ * ServerEvent is triggered when maxima connects to the socket server.
+ */
 void wxMaxima::ServerEvent(wxSocketEvent& event)
 {
   switch (event.GetSocketEvent())
   {
+
   case wxSOCKET_CONNECTION :
     {
       if (m_isConnected) {
@@ -555,6 +544,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
 #endif
     }
     break;
+
   case wxSOCKET_LOST:
     if (!m_closing)
       ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
@@ -563,6 +553,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_isConnected = false;
+
   default:
     break;
   }
@@ -698,9 +689,9 @@ void wxMaxima::KillMaxima()
   if (m_pid < 0)
   {
     if (m_inLispMode)
-      SendMaxima(wxT("($quit)"), false, false);
+      SendMaxima(wxT("($quit)"), false);
     else
-      SendMaxima(wxT("quit();"), false, false);
+      SendMaxima(wxT("quit();"), false);
     return ;
   }
   wxProcess::Kill(m_pid, wxSIGKILL);
@@ -760,6 +751,7 @@ void wxMaxima::ReadFirstPrompt()
 void wxMaxima::ReadMath()
 {
   int end = m_currentOutput.Find(m_promptPrefix);
+
   while (end > -1)
   {
     m_readingPrompt = true;
@@ -769,8 +761,10 @@ void wxMaxima::ReadMath()
                       m_currentOutput.Length());
     end = m_currentOutput.Find(m_promptPrefix);
   }
+
   if (m_readingPrompt)
     return ;
+
   wxString mth = wxT("</mth>");
   end = m_currentOutput.Find(mth);
   while (end > -1)
@@ -794,17 +788,18 @@ void wxMaxima::ReadPrompt()
     {
       if (o.StartsWith(wxT("(%i")))
       {
+        m_lastPrompt = o;
 
+        // We selected "Reeval all" from menus.
         if (m_inReevalMode) {
           MathCell *tmp = m_console->GetInsertPoint();
           m_inInsertMode = false;
           m_console->SetInsertPoint(NULL);
-          m_lastPrompt = o;
           m_console->SetSelection(tmp);
-          if (m_console->SelectNextInput(true) && !m_console->SelectionInLastGroup()) {
+          if (m_console->SelectNextInput(true) && !m_console->IsActiveInLast()) {
             m_console->Refresh();
             m_console->EnableEdit();
-            ReEvaluate();
+            ReEvaluateSelection();
           }
           else {
             m_inReevalMode = false;
@@ -815,19 +810,18 @@ void wxMaxima::ReadPrompt()
           }
         }
 
+        // We are sending input from console.
         else if (m_inInsertMode)
         {
           MathCell* tmp = m_console->GetInsertPoint();
           m_console->SetInsertPoint(NULL);
           m_console->SetScrollTo(-1);
           m_inInsertMode = false;
-          m_lastPrompt = o;
           m_console->SetSelection(tmp);
           if (!m_console->SelectNextInput()) {
             m_console->SetSelection(NULL);
             DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-            if (FindFocus() == m_console)
-              m_console->SelectLastInput();
+            m_console->SelectLastInput();
           }
           else {
             m_console->SetWorkingGroup(NULL);
@@ -837,10 +831,10 @@ void wxMaxima::ReadPrompt()
           SetStatusText(_("Ready for user input"), 1);
         }
 
+        // We added something from menus.
         else
-          HandleMainPrompt(o);
+          DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
 
-        m_console->SetWorkingGroup(NULL);
         m_console->EnableEdit();
       }
 
@@ -856,6 +850,7 @@ void wxMaxima::ReadPrompt()
       else
         m_inLispMode = false;
     }
+
     SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                       m_currentOutput.Length());
@@ -863,125 +858,7 @@ void wxMaxima::ReadPrompt()
 }
 
 /***
- * This is used when we are batching wxMaxima files
- * - if we still have something to send to maxima we send it (and before that append comments!)
- * - mostly we just append the prompt!
- */
-void wxMaxima::HandleMainPrompt(wxString o)
-{
-  m_lastPrompt = o;
-  if (m_batchFileLines.IsEmpty())
-  {
-    DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-    m_inPrompt = true;
-  }
-  else if (m_fileRead)
-  {
-    PrintFile();
-    DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-    ResetTitle(true);
-    m_inPrompt = true;
-  }
-  else
-  {
-    bool done = false;
-    wxString line;
-    while (!done && m_batchFilePosition < m_batchFileLines.GetCount())
-    {
-      line = m_batchFileLines[m_batchFilePosition++];
-      if (line == wxT("/* [wxMaxima: comment start ]"))
-      {
-        DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
-        line = m_batchFileLines[m_batchFilePosition++];
-        bool newline = false;
-        wxString input;
-        while (line != wxT("   [wxMaxima: comment end   ] */") &&
-               m_batchFilePosition < m_batchFileLines.GetCount()) {
-          if (newline)
-            input = input + wxT("\n") + line;
-          else
-          {
-            input = line;
-            newline = true;
-          }
-          line = m_batchFileLines[m_batchFilePosition++];
-        }
-        DoRawConsoleAppend(input, MC_TYPE_COMMENT, true);
-      }
-      else if (line == wxT("/* [wxMaxima: section start ]"))
-      {
-        DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
-        line = m_batchFileLines[m_batchFilePosition++];
-        bool newline = false;
-        wxString input;
-        while (line != wxT("   [wxMaxima: section end   ] */") &&
-               m_batchFilePosition < m_batchFileLines.GetCount()) {
-          if (newline)
-            input = input + wxT("\n") + line;
-          else
-          {
-            input = line;
-            newline = true;
-          }
-          line = m_batchFileLines[m_batchFilePosition++];
-        }
-        DoRawConsoleAppend(input, MC_TYPE_SECTION, true);
-      }
-      else if (line == wxT("/* [wxMaxima: title   start ]"))
-      {
-        DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
-        line = m_batchFileLines[m_batchFilePosition++];
-        bool newline = false;
-        wxString input;
-        while (line != wxT("   [wxMaxima: title   end   ] */") &&
-               m_batchFilePosition < m_batchFileLines.GetCount()) {
-          if (newline)
-            input = input + wxT("\n") + line;
-          else
-          {
-            input = line;
-            newline = true;
-          }
-          line = m_batchFileLines[m_batchFilePosition++];
-        }
-        DoRawConsoleAppend(input, MC_TYPE_TITLE, true);
-      }
-      else if (line == wxT("/* [wxMaxima: input   start ] */"))
-      {
-        line = m_batchFileLines[m_batchFilePosition++];
-        DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-        bool newline = false;
-        wxString input;
-        while (line != wxT("/* [wxMaxima: input   end   ] */") &&
-               m_batchFilePosition < m_batchFileLines.GetCount())
-        {
-          if (newline)
-            input = input + wxT("\n") + line;
-          else
-          {
-            input = line;
-            newline = true;
-          }
-          line = m_batchFileLines[m_batchFilePosition++];
-        }
-        SendMaxima(input, true, true, true, false);
-        done = true;
-      }
-    }
-    if (!done)
-      DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-
-    if (m_batchFileLines.GetCount() <= m_batchFilePosition)
-    {
-      ResetTitle(true);
-      m_batchFilePosition = 0;
-      m_batchFileLines.Clear();
-    }
-  }
-}
-
-/***
- * This function displays a session file without evaluating inputs.
+ * This function displays a session file in the console without evaluating inputs.
  */
 void wxMaxima::PrintFile()
 {
@@ -1003,6 +880,7 @@ void wxMaxima::PrintFile()
       }
       DoRawConsoleAppend(line, MC_TYPE_TITLE);
     }
+
     // Print section
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: section start ]"))
     {
@@ -1019,6 +897,7 @@ void wxMaxima::PrintFile()
       }
       DoRawConsoleAppend(line, MC_TYPE_SECTION);
     }
+
     // Print comment
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: comment start ]"))
     {
@@ -1035,6 +914,7 @@ void wxMaxima::PrintFile()
       }
       DoRawConsoleAppend(line, MC_TYPE_COMMENT);
     }
+
     // Print input
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: input   start ] */"))
     {
@@ -1089,35 +969,39 @@ void wxMaxima::ReadProcessOutput()
               wxT(VERSION)
               wxT(" http://wxmaxima.sourceforge.net\n") +
               o.SubString(st, o.Length() - 1));
-  m_inPrompt = true;
+//  m_inPrompt = true;
   SetStatusText(_("Ready for user input"), 1);
 }
 #endif
 
+/***
+ * This method is called once when maxima starts. It loads wxmathml.lisp
+ * and sets some option variables.
+ */
 void wxMaxima::SetupVariables()
 {
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix +
-             wxT("\")"), false, false, false);
+             wxT("\")"), false, false);
   SendMaxima(wxT(":lisp-quiet (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxT("\")"), false, false, false);
-  SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"), false, false, false);
-  SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"), false, false, false);
+             wxT("\")"), false, false);
+  SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"), false, false);
+  SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"), false, false);
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"),
-             false, false, false);
+             false, false);
 #elif defined (__WXMAC__)
   wxString cwd = wxGetCwd();
   cwd = cwd + wxT("/") + wxT(MACPREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"),
-             false, false, false);
+             false, false);
 #else
   wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
-             wxT("/share/wxMaxima/wxmathml\")"), false, false, false);
+             wxT("/share/wxMaxima/wxmathml\")"), false, false);
 #endif
 }
 
@@ -1347,37 +1231,6 @@ void wxMaxima::DumpProcessOutput()
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::EnterCommand(wxCommandEvent& event)
-{
-  wxString input = m_inputLine->GetValue();
-  input.Trim();
-  input.Trim(false);
-  if (input.StartsWith(wxT("? ")))
-  {
-    ShowHelp(input.Mid(2));
-    m_inputLine->Clear();
-    return ;
-  }
-  if (input == wxT("?"))
-  {
-    ShowHelp();
-    m_inputLine->Clear();
-    return ;
-  }
-  if (input == wxT("wxmaxima_debug_dump_output"))
-  {
-    DumpProcessOutput();
-    m_inputLine->Clear();
-    return ;
-  }
-  if (!m_inLispMode &&
-          (input.Length() == 0 || (input.Last() != ';' && input.Last() != '$')))
-    input.Append(';');
-  SendMaxima(input);
-  m_inputLine->Clear();
-  m_inputLine->SetFocus();
-}
-
 #if WXM_PRINT
 
 void wxMaxima::PrintMenu(wxCommandEvent& event)
@@ -1422,17 +1275,14 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 {
   wxMenuBar* menubar = GetMenuBar();
-  menubar->Enable(menu_copy_from_console, m_console->CanCopy(true) || m_inputLine->CanCopy());
-  menubar->Enable(menu_cut, m_console->CanCut() || m_inputLine->CanCut());
-  menubar->Enable(menu_paste, m_inputLine->CanPaste());
+  menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
+  menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_input_from_console, m_console->CanCopy());
   menubar->Enable(menu_cut_input_from_console, m_console->CanCopy());
-  menubar->Enable(menu_selection_to_input, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
-  menubar->Enable(menu_edit_input, m_console->CanEdit());
   menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
                                      m_console->GetActiveCell() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
@@ -1459,7 +1309,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   wxToolBar * toolbar = GetToolBar();
-  toolbar->EnableTool(tb_copy,  m_console->CanCopy(true) || m_inputLine->CanCopy());
+  toolbar->EnableTool(tb_copy,  m_console->CanCopy(true));
   toolbar->EnableTool(tb_delete, m_console->CanDeleteSelection());
   toolbar->EnableTool(tb_save, !m_fileSaved);
   if (m_pid > 0)
@@ -1486,15 +1336,9 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 
 wxString wxMaxima::GetDefaultEntry()
 {
-  wxString s = m_inputLine->GetValue();
-  if (s.Length() == 0)
-  {
-    if (m_console->CanCopy(true))
-      s = m_console->GetString();
-    else
-      s = wxT("%");
-  }
-  return s;
+  if (m_console->CanCopy(true))
+    return m_console->GetString();
+  return wxT("%");
 }
 
 void wxMaxima::OnMonitorFile(wxCommandEvent& event)
@@ -1514,40 +1358,6 @@ void wxMaxima::OnMonitorFile(wxCommandEvent& event)
     m_monitorTime = wxFileModificationTime(file);
     SetStatusText(wxT("Monitoring file ") + m_monitorFile);
   }
-}
-
-void wxMaxima::OnActivate(wxActivateEvent& event)
-{
-  if (m_monitorFile.Length() != 0)
-  {
-    if (m_monitorTime != wxFileModificationTime(m_monitorFile))
-    {
-      if (m_inPrompt)
-      {
-        SendMaxima(wxT("load(\"") + m_monitorFile + wxT("\");"));
-        SetStatusText(wxT("Reloaded file ") + m_monitorFile);
-        m_monitorTime = wxFileModificationTime(m_monitorFile);
-      }
-    }
-  }
-  event.Skip();
-}
-
-void wxMaxima::OnSetFocus(wxFocusEvent& event)
-{
-  if (m_monitorFile.Length() != 0)
-  {
-    if (m_monitorTime != wxFileModificationTime(m_monitorFile))
-    {
-      if (m_inPrompt)
-      {
-        SendMaxima(wxT("load(\"") + m_monitorFile + wxT("\");"));
-        SetStatusText(wxT("Reloaded file ") + m_monitorFile);
-        m_monitorTime = wxFileModificationTime(m_monitorFile);
-      }
-    }
-  }
-  event.Skip();
 }
 
 void wxMaxima::OpenFile(wxString file, wxString cmd)
@@ -1574,7 +1384,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else if (file.Right(4) == wxT(".sav"))
     {
       m_console->DestroyTree();
-      SendMaxima(wxT("loadsession(\"") + unixFilename + wxT("\")$"), false, false, false);
+      SendMaxima(wxT("loadsession(\"") + unixFilename + wxT("\")$"), false, false);
     }
     else if (file.Right(4) == wxT(".dem"))
       SendMaxima(wxT("demo(\"") + unixFilename + wxT("\")$"));
@@ -1611,28 +1421,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima session (*.wxm)|*.wxm"),
                                      wxFD_OPEN);
-      m_fileRead = false;
       OpenFile(file);
-    }
-    break;
-  case menu_read_id:
-    {
-      if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                                 _("Close document?"),
-                                 wxOK|wxCANCEL);
-        if (close != wxOK)
-          return;
-      }
-
-      wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
-                                    wxEmptyString, wxEmptyString,
-                                    _("wxMaxima session (*.wxm)|*.wxm"),
-                                    wxFD_OPEN);
-      m_fileRead = true;
-      OpenFile(file);
-      m_fileSaved = false;
-      ResetTitle(true);
     }
     break;
   case menu_save_as_id:
@@ -1733,26 +1522,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       OpenFile(file, wxT("batch"));
     }
     break;
-  case menu_select_file:
-    {
-      wxString file = wxFileSelector(_("Select a file"), m_lastPath,
-                                     wxEmptyString, wxEmptyString,
-                                     _("All|*|"
-                                       "Maxima package (*.mac)|*.mac|"
-                                       "Demo file (*.dem)|*.dem|"
-                                       "Lisp file (*.lisp)|*.lisp"),
-                                     wxFD_OPEN);
-      if (file.Length())
-      {
-        m_lastPath = wxPathOnly(file);
-#if defined __WXMSW__
-        file.Replace(b, f);
-#endif
-        m_inputLine->WriteText(file);
-        return ;
-      }
-    }
-    break;
   case wxID_EXIT:
     Close();
     break;
@@ -1773,10 +1542,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 {
   switch (event.GetId())
   {
-  case menu_goto_output:
-    m_console->SetFocus();
-    return;
-    break;
   case wxID_PREFERENCES:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_pref:
@@ -1788,7 +1553,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       {
         bool match = true;
         wxConfig::Get()->Read(wxT("matchParens"), &match);
-        m_inputLine->SetMatchParens(match);
         m_console->RecalculateForce();
         m_console->Refresh();
       }
@@ -1805,8 +1569,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_copy_from_console:
     if (m_console->CanCopy())
       m_console->Copy();
-    else if (m_inputLine->CanCopy())
-      m_inputLine->Copy();
     break;
   case menu_copy_input_from_console:
     if (m_console->CanCopy())
@@ -1821,14 +1583,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
-    else if (m_inputLine->CanCut())
-      m_inputLine->Cut();
     break;
   case menu_paste:
     if (m_console->CanPaste())
       m_console->PasteFromClipboard();
-    else if (m_inputLine->CanPaste())
-      m_inputLine->Paste();
     break;
   case menu_copy_tex_from_console:
     if (m_console->CanCopy())
@@ -1837,12 +1595,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_copy_as_bitmap:
     if (m_console->CanCopy())
       m_console->CopyBitmap();
-    break;
-  case menu_selection_to_input:
-  case popid_copy_to_input:
-    if (m_console->CanCopy())
-      m_inputLine->WriteText((m_console->GetString()).Trim(false));
-    return ;
     break;
   case menu_copy_to_file:
     {
@@ -1950,7 +1702,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
@@ -1998,7 +1749,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       if (choice.Length())
       {
         cmd = wxT("set_display('") + choice + wxT(")$");
-        SendMaxima(cmd, false);
+        SendMaxima(cmd);
       }
     }
     break;
@@ -2008,7 +1759,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_time:
     cmd = wxT("if showtime#false then showtime:false else showtime:all$");
-    SendMaxima(cmd, false);
+    SendMaxima(cmd);
     break;
   case menu_fun_def:
     cmd = GetTextFromUser(_("Show the definition of function:"),
@@ -2040,7 +1791,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->SetActiveCell(NULL);
     if (m_console->SelectFirstInput()) {
       m_inReevalMode = true;
-      ReEvaluate();
+      ReEvaluateSelection();
     }
     break;
   case menu_clear_var:
@@ -2075,33 +1826,9 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
-  case menu_long_input:
-  case button_long_input:
-    {
-      TextInput *wiz = new TextInput(this);
-      if (expr.StartsWith(wxT("<ml>")))
-      {
-        expr = expr.SubString(4, expr.Length());
-        expr.Replace(wxT("<nl>"), wxT("\n"));
-      }
-      wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        val.Trim();
-        val.Trim(false);
-        if (!m_inLispMode && val.Last() != ';' && val.Last() != '$')
-          val += wxT("$");
-        SendMaxima(val);
-      }
-      wiz->Destroy();
-    }
-    break;
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::EquationsMenu(wxCommandEvent& event)
@@ -2313,7 +2040,6 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::AlgebraMenu(wxCommandEvent& event)
@@ -2478,7 +2204,6 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::SimplifyMenu(wxCommandEvent& event)
@@ -2608,7 +2333,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::CalculusMenu(wxCommandEvent& event)
@@ -2865,7 +2589,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::PlotMenu(wxCommandEvent& event)
@@ -2916,7 +2639,6 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::NumericalMenu(wxCommandEvent& event)
@@ -2935,7 +2657,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
     break;
   case menu_num_out:
     cmd = wxT("if numer#false then numer:false else numer:true;");
-    SendMaxima(cmd, false);
+    SendMaxima(cmd);
     break;
   case menu_set_precision:
     cmd = GetTextFromUser(_("Enter new precision:"), _("Precision"),
@@ -2949,7 +2671,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
   default:
     break;
   }
-  m_inputLine->SetFocus();
 }
 
 void wxMaxima::HelpMenu(wxCommandEvent& event)
@@ -2999,10 +2720,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       cmd = GetTextFromUser(_("Show the description of command/variable:"),
                             _("Describe"), wxEmptyString, this);
     else
-    {
       cmd = expr;
-      m_inputLine->SetValue(wxEmptyString);
-    }
     if (cmd.Length())
       ShowHelp(cmd);
     break;
@@ -3011,14 +2729,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
                             wxEmptyString, this);
     else
-    {
       cmd = expr;
-      m_inputLine->SetValue(wxEmptyString);
-    }
     if (cmd.Length())
     {
       cmd = wxT("example(") + cmd + wxT(");");
-      SendMaxima(cmd, false);
+      SendMaxima(cmd);
     }
     break;
   case menu_apropos:
@@ -3026,24 +2741,21 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       cmd = GetTextFromUser(_("Show all commands similar to:"), _("Apropos"),
                             wxEmptyString, this);
     else
-    {
       cmd = expr;
-      m_inputLine->SetValue(wxEmptyString);
-    }
     if (cmd.Length())
     {
       cmd = wxT("apropos(\"") + cmd + wxT("\");");
-      SendMaxima(cmd, false);
+      SendMaxima(cmd);
     }
     break;
   case menu_show_tip:
     ShowTip(true);
     break;
   case menu_build_info:
-    SendMaxima(wxT("build_info()$"), false);
+    SendMaxima(wxT("build_info()$"));
     break;
   case menu_bug_report:
-    SendMaxima(wxT("bug_report()$"), false);
+    SendMaxima(wxT("bug_report()$"));
     break;
   default:
     break;
@@ -3295,10 +3007,10 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
 void wxMaxima::ReEvaluateEvent(wxCommandEvent& event)
 {
-  ReEvaluate();
+  ReEvaluateSelection();
 }
 
-void wxMaxima::ReEvaluate()
+void wxMaxima::ReEvaluateSelection()
 {
   MathCell* tmp = m_console->GetActiveCell();
   if (tmp != NULL)
@@ -3339,7 +3051,7 @@ void wxMaxima::ReEvaluate()
     group->GetPrompt()->SetValue(m_lastPrompt);
     m_console->SetWorkingGroup(group);
 
-    SendMaxima(text, true, false, true, false);
+    SendMaxima(text, false, true, false);
   }
 }
 
@@ -3444,7 +3156,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
-  EVT_MENU(popid_copy_to_input, wxMaxima::EditMenu)
   EVT_MENU(popid_delete, wxMaxima::EditMenu)
   EVT_MENU(popid_simplify, wxMaxima::PopupMenu)
   EVT_MENU(popid_factor, wxMaxima::PopupMenu)
@@ -3462,7 +3173,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 #if defined __WXMSW__
   EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
 #endif
-  EVT_TEXT_ENTER(input_line_id, wxMaxima::EnterCommand)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_solve, wxMaxima::EquationsMenu)
@@ -3477,14 +3187,12 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(button_trigreduce, wxMaxima::SimplifyMenu)
   EVT_BUTTON(button_trigsimp, wxMaxima::SimplifyMenu)
   EVT_BUTTON(button_product, wxMaxima::CalculusMenu)
-  EVT_BUTTON(button_long_input, wxMaxima::MaximaMenu)
   EVT_BUTTON(button_radcan, wxMaxima::SimplifyMenu)
   EVT_BUTTON(button_subst, wxMaxima::MaximaMenu)
   EVT_BUTTON(button_plot2, wxMaxima::PlotMenu)
   EVT_BUTTON(button_plot3, wxMaxima::PlotMenu)
   EVT_BUTTON(button_map, wxMaxima::AlgebraMenu)
   EVT_BUTTON(button_rectform, wxMaxima::SimplifyMenu)
-  EVT_BUTTON(button_enter, wxMaxima::EnterCommand)
   EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_restart_id, wxMaxima::MaximaMenu)
 #ifndef __WXMAC__
@@ -3494,8 +3202,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_save_id, wxMaxima::FileMenu)
   EVT_MENU(menu_save_as_id, wxMaxima::FileMenu)
   EVT_MENU(menu_load_id, wxMaxima::FileMenu)
-  EVT_MENU(menu_monitor_file, wxMaxima::OnMonitorFile)
-  EVT_MENU(menu_select_file, wxMaxima::FileMenu)
   EVT_MENU(menu_functions, wxMaxima::MaximaMenu)
   EVT_MENU(menu_variables, wxMaxima::MaximaMenu)
   EVT_MENU(wxID_PREFERENCES, wxMaxima::EditMenu)
@@ -3506,7 +3212,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
   EVT_MENU(menu_open_id, wxMaxima::FileMenu)
-  EVT_MENU(menu_read_id, wxMaxima::FileMenu)
   EVT_MENU(menu_batch_id, wxMaxima::FileMenu)
   EVT_MENU(menu_ratsimp, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_radsimp, wxMaxima::SimplifyMenu)
@@ -3596,11 +3301,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
-  EVT_MENU(menu_goto_input, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
-  EVT_MENU(menu_goto_output, wxMaxima::EditMenu)
 #if WXM_PRINT
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
  #if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
@@ -3611,7 +3314,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
-  EVT_MENU(menu_selection_to_input, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_input_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_cut_input_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
@@ -3640,7 +3342,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_cut_input_from_console, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_edit_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
@@ -3652,16 +3353,11 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_selection_to_input, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
-  EVT_ACTIVATE(wxMaxima::OnActivate)
-  EVT_SET_FOCUS(wxMaxima::OnSetFocus)
   EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
   EVT_MENU(popid_reeval, wxMaxima::ReEvaluateEvent)
-  EVT_MENU(menu_edit_input, wxMaxima::EditInputMenu)
   EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluateEvent)
-  EVT_MENU(menu_long_input, wxMaxima::MaximaMenu)
   EVT_MENU(menu_add_comment, wxMaxima::PrependCell)
   EVT_MENU(menu_add_section, wxMaxima::PrependCell)
   EVT_MENU(menu_add_title, wxMaxima::PrependCell)
