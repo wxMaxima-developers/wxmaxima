@@ -202,9 +202,10 @@ void wxMaxima::FirstOutput(wxString s)
     ResetTitle(true);
   }
 
-  DoRawConsoleAppend(m_firstPrompt, MC_TYPE_MAIN_PROMPT);
-
   m_lastPrompt = wxT("(%i1) ");
+
+  DoRawConsoleAppend(m_firstPrompt, MC_TYPE_MAIN_PROMPT);
+  m_console->SelectLastInput();
 }
 
 /***
@@ -732,18 +733,22 @@ void wxMaxima::ReadFirstPrompt()
 
   int s = m_currentOutput.Find(wxT("pid=")) + 4;
   int t = s + m_currentOutput.SubString(s, m_currentOutput.Length()).Find(wxT("\n"));
+
   if (s < t)
     m_currentOutput.SubString(s, t).ToLong(&m_pid);
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
+
   m_first = false;
   m_inLispMode = false;
   SetStatusText(_("Ready for user input"), 1);
+
   if (m_openFile.Length())
   {
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
+
   m_currentOutput = wxEmptyString;
   m_console->EnableEdit(true);
 }
@@ -972,17 +977,17 @@ void wxMaxima::ReadProcessOutput()
 {
   wxString o;
   while (m_process->IsInputAvailable())
-  {
     o += m_input->GetC();
-  }
+
   int st = o.Find(wxT("Maxima"));
   if (st == -1)
     st = 0;
+
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
               wxT(" http://wxmaxima.sourceforge.net\n") +
               o.SubString(st, o.Length() - 1));
-//  m_inPrompt = true;
+
   SetStatusText(_("Ready for user input"), 1);
 }
 #endif
