@@ -1187,7 +1187,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     bool hasHeightChanged = false;
 
     if (event.GetKeyCode() == WXK_UP &&
-        ((EditorCell *)m_activeCell)->CaretAtStart()) {
+        ((EditorCell *)m_activeCell)->CaretAtStart() &&
+        !event.ShiftDown()) { // don't exit the cell if we are making a selection
       m_hCaretPosition = (GroupCell *)(m_activeCell->GetParent())->m_previous;
       m_hCaretActive = true;
       SetActiveCell(NULL);
@@ -1195,7 +1196,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
 
     if (event.GetKeyCode() == WXK_DOWN &&
-        ((EditorCell *)m_activeCell)->CaretAtEnd()) {
+        ((EditorCell *)m_activeCell)->CaretAtEnd() &&
+        !event.ShiftDown()) {
       MathCell *tmp = m_activeCell->GetParent();
       if (tmp != m_last) {
         m_hCaretPosition = (GroupCell *)tmp;
