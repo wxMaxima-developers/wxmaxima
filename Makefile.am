@@ -1,13 +1,14 @@
 SUBDIRS = src locales data
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
-             art/ok.xpm art/multiline.xpm                    \
              art/readme.txt art/license.txt                  \
              art/toolbar/configure.png art/toolbar/cut.png   \
              art/toolbar/input.png art/toolbar/print.png     \
              art/toolbar/stop.png art/toolbar/copy.png       \
              art/toolbar/help.png art/toolbar/open.png       \
              art/toolbar/save.png art/toolbar/text.png       \
+             art/toolbar/playback-start.png                  \
+             art/toolbar/playback-stop.png                   \
              art/maximaicon.ico art/wxmac.icns
 
 docdir = ${datadir}/wxMaxima
