@@ -150,17 +150,32 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       tmp = tmp->m_next;
     }
-
+    
     // Draw selection
     if (m_selectionStart != NULL)
     {
-
       MathCell* tmp = m_selectionStart;
-
+      
       dcm.SetLogicalFunction(wxXOR);
       dcm.SetBrush(*wxWHITE_BRUSH);
       dcm.SetPen(wxNullPen);
-
+              
+      if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
+      {
+        while (tmp != NULL)
+        {
+          
+          wxRect rect = tmp->GetRect();
+          // TODO globally define x coordinates of the left GC brackets
+          dcm.DrawRectangle( 1, rect.GetTop() - 2, 13, rect.GetHeight() + 4);
+          
+          if (tmp == m_selectionEnd)
+              break;
+          tmp = tmp->m_next;
+        }
+      
+      }
+      else {
 
       // We have a selection with click
       if (m_selectWholeLine) {
@@ -196,6 +211,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             break;
         }
       }
+    }
     }
   }
   //
