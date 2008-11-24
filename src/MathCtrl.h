@@ -165,6 +165,7 @@ public:
   }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
+  void SetHCaret(MathCell *where, bool active = true);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

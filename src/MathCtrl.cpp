@@ -52,7 +52,7 @@ enum
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   wxScrolledWindow(parent, id, position, size,
-  wxVSCROLL | wxHSCROLL | wxSUNKEN_BORDER | wxWANTS_CHARS) {
+  wxVSCROLL | wxHSCROLL | wxWANTS_CHARS) {
   m_scrollTo = -1;
   m_tree = NULL;
   m_memory = NULL;
@@ -1008,8 +1008,11 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   }
 
 
-  if (newSelection != NULL)
-    m_selectionStart =  m_selectionEnd = newSelection->GetEditable();
+  if (newSelection != NULL) {
+    m_selectionStart = m_selectionEnd = NULL;
+    m_hCaretPosition = (GroupCell *)newSelection->m_previous;
+    m_hCaretActive = true;
+  }
 
   Recalculate(false);
   AdjustSize(false);
@@ -2537,6 +2540,18 @@ bool MathCtrl::IsSelectionInWorking() {
     return false;
 
   return true;
+}
+
+void MathCtrl::SetHCaret(MathCell *where, bool active) {
+  if (active) {
+    SetActiveCell(NULL);
+    m_hCaretPosition = (GroupCell *)where;
+    m_hCaretActive = true;
+  }
+  else {
+    m_hCaretPosition = NULL;
+    m_hCaretActive = false;
+  }
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

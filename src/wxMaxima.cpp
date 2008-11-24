@@ -748,6 +748,9 @@ void wxMaxima::ReadFirstPrompt()
   m_console->EnableEdit(true);
 }
 
+/***
+ * Checks if maxima displayed a new chunk of math
+ */
 void wxMaxima::ReadMath()
 {
   int end = m_currentOutput.Find(m_promptPrefix);
@@ -777,6 +780,9 @@ void wxMaxima::ReadMath()
   }
 }
 
+/***
+ * Checks if maxima displayed a new prompt.
+ */
 void wxMaxima::ReadPrompt()
 {
   int end = m_currentOutput.Find(m_promptSuffix);
@@ -786,6 +792,7 @@ void wxMaxima::ReadPrompt()
     wxString o = m_currentOutput.Left(end);
     if (o != wxT("\n") && o.Length())
     {
+      // Maxima displayed a new main prompt
       if (o.StartsWith(wxT("(%i")))
       {
         m_lastPrompt = o;
@@ -818,15 +825,20 @@ void wxMaxima::ReadPrompt()
           m_console->SetScrollTo(-1);
           m_inInsertMode = false;
           m_console->SetSelection(tmp);
+
+          // if evaluating m_console->m_last then add prompt and select its input
           if (!m_console->SelectNextInput()) {
             m_console->SetSelection(NULL);
             DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
             m_console->SelectLastInput();
           }
+          // if we are not evaluating m_console->m_last then show hCaret
           else {
+            m_console->SetHCaret(tmp);
             m_console->SetWorkingGroup(NULL);
             m_console->GetLastPrompt()->SetValue(o);
           }
+
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
@@ -838,6 +850,7 @@ void wxMaxima::ReadPrompt()
         m_console->EnableEdit();
       }
 
+      // We have a question
       else {
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
@@ -1789,6 +1802,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_reeval_all:
     m_console->SetActiveCell(NULL);
+    m_console->SetHCaret(NULL, false);
     if (m_console->SelectFirstInput()) {
       m_inReevalMode = true;
       ReEvaluateSelection();
