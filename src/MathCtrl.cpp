@@ -230,11 +230,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     dcm.SetPen(*wxLIGHT_GREY_PEN);
 
     if (m_hCaretPosition == NULL)
-      dcm.DrawLine( 0, 5, 1000, 5);
+      dcm.DrawLine( 0, 5, 3000, 5);
     else {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
-      int pad = ((int) MC_GROUP_SKIP) / 2;
-      dcm.DrawLine( 0, currentGCRect.GetBottom() + pad, 3000,  currentGCRect.GetBottom() + pad);
+      int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom();
+      dcm.DrawLine( 0, caretY, 3000,  caretY);
     }
 
   }
@@ -603,6 +603,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   // default when clicking
   m_selectionType = SELECTION_TYPE_NONE;
   m_selectionStart = m_selectionEnd = NULL;
+	m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
   SetActiveCell(NULL);
