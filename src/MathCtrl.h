@@ -54,6 +54,13 @@ enum {
   popid_image,
 };
 
+enum {
+  SELECTION_TYPE_NONE,
+  SELECTION_TYPE_GROUP,
+  SELECTION_TYPE_INPUT,
+  SELECTION_TYPE_OUTPUT
+};
+
 class MathCtrl: public wxScrolledWindow
 {
 public:
@@ -206,6 +213,8 @@ protected:
   GroupCell *m_workingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
+  int m_selectionType;
+  GroupCell *m_selectionInGC;
   GroupCell *m_insertPoint;
   MathCell *m_activeCell;
   CellParser *m_selectionParser;

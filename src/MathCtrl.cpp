@@ -40,6 +40,7 @@
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
+#define LEFT_BORDER 13
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
@@ -62,6 +63,8 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_memory = NULL;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
+  m_selectionType = SELECTION_TYPE_NONE;
+  m_selectionInGC = NULL;
   m_last = NULL;
   m_insertPoint = NULL;
   m_hCaretActive = false;
@@ -581,13 +584,43 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
 }
 
 /***
- * Left mouse - selection handling
+ * Left mouse button down - selection handling
+ *
+ * Sets m_selectionType and m_selectionInGC according to what we clicked,
+ * and selects appropriately.
+ * m_selectionType is used in SelectRect when click-draging to determine what kind of selection
+ * behaviour we want.
+ *
+ * - check in which GroupCell it falls
+ * - if it falls between groupCells activate caret and SELECTION_TYPE_GROUP
+ * - if it falls within a groupcell investigate where did it fall (input or output)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
-  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_animate = false;
+  m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
+  
+  // default when clicking
+  m_selectionType = SELECTION_TYPE_NONE;
+  m_selectionStart = m_selectionEnd = NULL;
+  m_hCaretPosition = NULL;
+  m_hCaretActive = false;
+  SetActiveCell(NULL);
+  // If we have active cell handle it special. // TODO unify
+/*  if (m_activeCell != NULL) {
+    if (m_activeCell->ContainsPoint(m_down)) {
+      wxClientDC dc(this);
+      m_activeCell->SelectPointText(dc, m_down);
+      m_switchDisplayCaret = false;
+      Refresh();
+      return;
+    } else {
+      SetActiveCell(NULL);
+    }
+  }
+  */
 
+/*
 #if wxUSE_DRAG_AND_DROP && WXM_DND
   if (m_selectionStart != NULL)
   {
@@ -611,14 +644,107 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 #else
   m_leftDown = true;
 #endif
+*/
+  GroupCell * tmp = (GroupCell *) m_tree;
+  wxRect rect;
+  GroupCell * clickedBeforeGC = NULL;
+  GroupCell * clickedInGC = NULL;
+  while (tmp != NULL) { // go through all groupcells
+    rect = tmp->GetRect();
+    if (m_down.y < rect.GetTop() )
+    {
+      clickedBeforeGC = (GroupCell *)tmp;
+      break;
+    }
+    else if (m_down.y <= rect.GetBottom() )
+    {
+      clickedInGC = (GroupCell *)tmp;
+      break;
+    }
+    tmp = (GroupCell *)tmp->m_next;
+  }
+
+  if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
+    m_hCaretPosition = (GroupCell *)tmp->m_previous; // can also be NULL
+    m_hCaretActive = true;
+    m_selectionType = SELECTION_TYPE_GROUP;
+  } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
+  
+  else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
+
+    if (m_down.x <= LEFT_BORDER) { // we clicked in left bracket area
+      if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
+      {  
+        clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
+        clickedInGC->ResetData();
+        Recalculate(false);
+        m_selectionType = SELECTION_TYPE_NONE; // ignore drag-select
+      }
+      else {
+        m_selectionType = SELECTION_TYPE_GROUP;
+        m_selectionStart = m_selectionEnd = (MathCell *)clickedInGC;
+      }
+    } // end we clicked in left bracket area
+
+    else { // we didn't click in left bracket space
+      MathCell * editor = clickedInGC->GetEditable();
+      if (editor != NULL) {
+        rect = editor->GetRect();
+        if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
+          SetActiveCell(editor);
+          wxClientDC dc(this);
+          m_activeCell->SelectPointText(dc, m_down);
+          m_switchDisplayCaret = false;
+          m_selectionType = SELECTION_TYPE_INPUT;
+          Refresh();
+          return;
+        }
+      }
+      // what if we tried to select something in output, select it (or if editor, activate it)
+      if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
+        wxRect rect2(m_down.x, m_down.y, 1,1);
+        wxPoint mmm(m_down.x + 1, m_down.y +1);
+        clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
+                                        &m_selectionStart, &m_selectionEnd);
+        if (m_selectionStart != NULL) {
+          if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
+               && (clickedInGC == m_workingGroup)) // if we clicked an editor in output - activate it if working!
+          {
+            SetActiveCell(m_selectionStart);
+            wxClientDC dc(this);
+            m_activeCell->SelectPointText(dc, m_down);
+            m_switchDisplayCaret = false;
+            m_selectionType = SELECTION_TYPE_INPUT;
+            Refresh();
+            return;
+          }
+          else {
+            m_selectionType = SELECTION_TYPE_OUTPUT;
+            m_selectionInGC = clickedInGC;
+          }
+        }
+      }
+      
+    } // end we didn't click in left bracket space
+    
+  } // end if (clickedInGC != NULL) // we clicked in a groupcell, find out where
+
+  else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
+    // set hCaret (or activate last cell?)
+    m_hCaretPosition = (GroupCell *)m_last; // can also be NULL
+    m_hCaretActive = true;
+    m_selectionType = SELECTION_TYPE_GROUP;
+  }
+  Refresh();
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
   m_animate = false;
-  if (!m_mouseDrag)
-    SelectPoint(m_down);
+  //if (!m_mouseDrag)
+  //  SelectPoint(m_down);
   m_leftDown = false;
   m_mouseDrag = false;
+  m_selectionInGC = NULL; // pointer to NULL to prevent crashes if the cell is deleted
   CheckUnixCopy();
   SetFocus();
 }
@@ -637,9 +763,21 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
 }
 
 /***
- * Select the rectangle sorounded by point one and two.
+ * Select the rectangle surounded by m_down and m_up. Called from OnMouseMotion.
+ *
+ * The method decides what to do, based on the value of m_selectionType which
+ * was set previously in OnMouseLeftDown. This enables different selection behaviours
+ * depending on where we first clicked. If m_selectionType equals
+ * SELECTION_TYPE_NONE - click-draging does not result in a selection (we clicked in hideRect for instance)
+ * SELECTION_TYPE_GROUP - we are selecting full groupcells only. Only y-coordinate matters.
+ * SELECTION_TYPE_INPUT - we clicked in an editor (GroupCell::GetEditable()) and draging 
+ *   results in selecting text in EditorCell
+ * SELECTION_TYPE_OUTPUT - we clicked in an output, we want selection to be confined to that
+ *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method 
+ *   into m_selectionInGC pointer.
  */
 void MathCtrl::SelectRect() {
+/*
   if (m_tree == NULL)
     return;
 
@@ -647,8 +785,12 @@ void MathCtrl::SelectRect() {
     if (!m_activeCell->GetParent()->ContainsPoint(m_down))
       SetActiveCell(NULL);
   }
+*/
+  if (m_selectionType == SELECTION_TYPE_NONE)
+    return;
 
   // If we have an active cell handle it
+  if (m_selectionType == SELECTION_TYPE_INPUT)
   if (m_activeCell != NULL) {
       wxClientDC dc(this);
       m_activeCell->SelectRectText(dc, m_down, m_up);
@@ -660,9 +802,68 @@ void MathCtrl::SelectRect() {
   }
 
   MathCell *st = m_selectionStart, *en = m_selectionEnd;
-  m_selectionStart = m_selectionEnd = NULL;
   wxRect rect;
+  
+  if (m_selectionType == SELECTION_TYPE_GROUP) {
+    m_selectionStart = m_selectionEnd = NULL;
+    int ytop    = MIN( m_down.y, m_up.y );
+    int ybottom = MAX( m_down.y, m_up.y );
+    // find out group cells between ytop and ybottom (including these two points)
+    GroupCell * tmp = (GroupCell *) m_tree;
+    while (tmp != NULL) {
+      rect = tmp->GetRect();
+      if (ytop <= rect.GetBottom()) {
+        m_selectionStart = tmp;
+        break;
+      }
+      tmp = (GroupCell *)tmp->m_next;
+    }
+    
+    if (tmp == NULL) { // below last cell, handle with care
+      m_hCaretActive = true;
+      m_hCaretPosition = (GroupCell *)m_last;
+      m_selectionStart = m_selectionEnd = NULL;
+      if (st != m_selectionStart || en != m_selectionEnd)
+        Refresh();
+      return;
+    }
+  
 
+    tmp = (GroupCell *) m_tree;
+    while (tmp != NULL) {
+      rect = tmp->GetRect();
+      if (ybottom < rect.GetTop()) {
+        m_selectionEnd = tmp->m_previous;
+        break;
+      }
+      tmp = (GroupCell *)tmp->m_next;
+    }
+    if (tmp == NULL)
+      m_selectionEnd = m_last;
+    if (m_selectionEnd == (m_selectionStart->m_previous)) {
+    m_hCaretActive = true;
+    m_hCaretPosition = (GroupCell *)m_selectionEnd;
+    m_selectionStart = m_selectionEnd = NULL;
+    }
+    else {
+      m_hCaretActive = false;
+      m_hCaretPosition = NULL;
+    }
+
+  } // end  SELECTION_TYPE_GROUP
+  
+  if (m_selectionType == SELECTION_TYPE_OUTPUT) {
+    m_selectionStart = m_selectionEnd = NULL;
+    rect.x = MIN(m_down.x, m_up.x);
+    rect.y = MIN(m_down.y, m_up.y);
+    rect.width = MAX(ABS(m_down.x - m_up.x), 1);
+    rect.height = MAX(ABS(m_down.y - m_up.y), 1);
+  
+    if (m_selectionInGC != NULL)
+      m_selectionInGC->SelectRectInOutput(rect, m_down, m_up, &m_selectionStart, &m_selectionEnd);
+  
+  } // end  SELECTION_TYPE_OUTPUT
+/*
   rect.x = MIN(m_down.x, m_up.x);
   rect.y = MIN(m_down.y, m_up.y);
   rect.width = MAX(ABS(m_down.x - m_up.x), 1);
@@ -690,18 +891,16 @@ void MathCtrl::SelectRect() {
     }
   }
 
-  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-      m_workingGroup == NULL && m_selectionStart->IsEditable()) {
+  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
+      && m_selectionStart->IsEditable()) {
     SetActiveCell(m_selectionStart);
-    if (m_activeCell != NULL) {
-      wxClientDC dc(this);
-      m_activeCell->SelectRectText(dc, m_down, m_up);
-    }
+    wxClientDC dc(this);
+    m_activeCell->SelectRectText(dc, m_down, m_up);
   }
 
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
-
+*/
   // Refresh only if the selection has changed
   if (st != m_selectionStart || en != m_selectionEnd)
     Refresh();
