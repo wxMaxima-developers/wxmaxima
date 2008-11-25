@@ -195,6 +195,7 @@ protected:
   wxPoint m_mousePoint;
   bool m_hCaretActive; // horizontal caret
   GroupCell *m_hCaretPosition;
+  GroupCell *m_hCaretPositionStart, *m_hCaretPositionEnd; // selection with caret
   bool m_leftDown;
   bool m_mouseDrag;
   bool m_selectWholeLine;

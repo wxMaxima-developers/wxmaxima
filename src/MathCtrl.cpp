@@ -52,7 +52,11 @@ enum
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   wxScrolledWindow(parent, id, position, size,
-  wxVSCROLL | wxHSCROLL | wxWANTS_CHARS) {
+  wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
+#ifndef __WXMAC__
+  | wxSUNKEN_BORDER
+#endif
+  ) {
   m_scrollTo = -1;
   m_tree = NULL;
   m_memory = NULL;
@@ -216,7 +220,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   // Draw horizontal caret
   //
-  if (m_hCaretActive)
+  if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
     dcm.SetLogicalFunction(wxXOR);
     dcm.SetPen(*wxLIGHT_GREY_PEN);
@@ -579,6 +583,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
  * Left mouse - selection handling
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_animate = false;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
@@ -970,6 +975,8 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
       m_insertPoint != NULL)
     return;
 
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+
   GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
   GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
 
@@ -1172,14 +1179,16 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
 
-      else {
+      else {/*
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
         (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-        /*
-        m_hCaretPosition = (GroupCell *)m_activeCell->GetParent();
-        SetActiveCell(NULL);
-        m_hCaretActive = true;
         */
+        MathCell *parent = m_activeCell->GetParent();
+        if (parent != m_last) {
+          m_hCaretPosition = (GroupCell *)parent;
+          SetActiveCell(NULL);
+          m_hCaretActive = true;
+        }
       }
       break;
     default:
@@ -1265,28 +1274,49 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     wxClientDC dc(this);
     CellParser parser(dc);
 
+    if (!event.ShiftDown())
+      m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+
     switch (event.GetKeyCode()) {
 
       case WXK_UP:
         if (m_hCaretActive) {
-          if (m_hCaretPosition != NULL)
-          {
-            MathCell * editor = m_hCaretPosition->GetEditable();
-            if(editor != NULL && m_workingGroup == NULL)
-            {
-              SetActiveCell(editor);
-              m_hCaretActive = false;
-              ((EditorCell *)m_activeCell)->CaretToEnd();
-              ShowPoint(m_activeCell->PositionToPoint(parser));
+
+          if (event.ShiftDown()) {
+            if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
+              if (m_hCaretPosition != NULL)
+                m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
             }
-            else { // can't get editor... jump over cell..
-              m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_previous;
-              Refresh();
+            else {
+              if (m_hCaretPositionEnd->m_previous != NULL) {
+                if (m_hCaretPosition->m_next == m_hCaretPositionEnd)
+                  m_hCaretPositionStart = (GroupCell *)m_hCaretPositionStart->m_previous;
+                m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_previous;
+              }
             }
           }
-          else
-            event.Skip();
+
+          else {
+            if (m_hCaretPosition != NULL)
+            {
+              MathCell * editor = m_hCaretPosition->GetEditable();
+              if(editor != NULL && m_workingGroup == NULL)
+              {
+                SetActiveCell(editor);
+                m_hCaretActive = false;
+                ((EditorCell *)m_activeCell)->CaretToEnd();
+                ShowPoint(m_activeCell->PositionToPoint(parser));
+              }
+              else { // can't get editor... jump over cell..
+                m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_previous;
+                Refresh();
+              }
+            }
+            else
+              event.Skip();
+          }
         }
+
         else {
           if (!SelectPrevInput())
             event.Skip();
@@ -1300,35 +1330,54 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         //
         if (m_hCaretActive)
         {
-          if (m_hCaretPosition == NULL)
-          {
-            MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
-            if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
-            {
-              SetActiveCell(editor);
-              m_hCaretActive = false;
-              ((EditorCell *)m_activeCell)->CaretToStart();
-              ShowPoint(m_activeCell->PositionToPoint(parser));
+
+          if (event.ShiftDown()) {
+            if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
+              if (m_hCaretPosition == NULL)
+                m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
+              else if (m_hCaretPosition->m_next != m_last)
+                m_hCaretPositionStart = m_hCaretPositionEnd = (GroupCell *)m_hCaretPosition->m_next;
             }
-            else { // else jump over
-              m_hCaretPosition = (GroupCell *)m_tree;
-              Refresh();
+            else {
+              if (m_hCaretPositionEnd->m_next != m_last) {
+                if (m_hCaretPosition == m_hCaretPositionEnd)
+                  m_hCaretPositionStart = (GroupCell *)m_hCaretPositionStart->m_next;
+                m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_next;
+              }
             }
           }
 
-          else if (m_hCaretPosition->m_next != NULL)
-          {
-            MathCell *editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
-            if( editor != NULL && m_workingGroup == NULL)
+          else {
+            if (m_hCaretPosition == NULL)
             {
-              SetActiveCell(editor);
-              m_hCaretActive = false;
-              ((EditorCell *)m_activeCell)->CaretToStart();
-              ShowPoint(m_activeCell->PositionToPoint(parser));
+              MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
+              if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
+              {
+                SetActiveCell(editor);
+                m_hCaretActive = false;
+                ((EditorCell *)m_activeCell)->CaretToStart();
+                ShowPoint(m_activeCell->PositionToPoint(parser));
+              }
+              else { // else jump over
+                m_hCaretPosition = (GroupCell *)m_tree;
+                Refresh();
+              }
             }
-            else { // can't get editor.. jump over cell..
-              m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_next;
-              Refresh();
+
+            else if (m_hCaretPosition->m_next != NULL)
+            {
+              MathCell *editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
+              if( editor != NULL && m_workingGroup == NULL)
+              {
+                SetActiveCell(editor);
+                m_hCaretActive = false;
+                ((EditorCell *)m_activeCell)->CaretToStart();
+                ShowPoint(m_activeCell->PositionToPoint(parser));
+              }
+              else { // can't get editor.. jump over cell..
+                m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_next;
+                Refresh();
+              }
             }
           }
         }
@@ -1343,6 +1392,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         break;
 
       case WXK_LEFT:
+        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+
         if (m_selectionStart != NULL) {
           GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
           if (m_selectionStart->GetType() == MC_TYPE_INPUT && group->m_previous != NULL) {
@@ -1367,6 +1418,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         break;
 
       case WXK_RIGHT:
+        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+
         if (m_selectionStart != NULL) {
           GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
           if (m_selectionStart->GetType() == MC_TYPE_TEXT && group->m_next != NULL) {
@@ -1385,6 +1438,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         break;
 
       default:
+        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+
         if (m_hCaretActive || m_workingGroup != NULL)
         {
 #if wxUSE_UNICODE
@@ -1395,6 +1450,19 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           OpenHCaret(txt);
         }
         event.Skip();
+    }
+
+    if (m_hCaretPositionStart != NULL && m_hCaretPositionEnd != NULL) {
+      if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
+        m_selectionStart = m_hCaretPositionStart;
+        m_selectionEnd = m_hCaretPositionEnd;
+      }
+      else {
+        m_selectionStart = m_hCaretPositionEnd;
+        m_selectionEnd = m_hCaretPositionStart;
+      }
+
+      Refresh();
     }
   }
 }
