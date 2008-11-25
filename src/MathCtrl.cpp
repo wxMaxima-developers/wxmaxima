@@ -66,6 +66,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_insertPoint = NULL;
   m_hCaretActive = false;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_activeCell = NULL;
   m_leftDown = false;
   m_mouseDrag = false;
@@ -771,10 +772,12 @@ void MathCtrl::SelectPoint(wxPoint& point) {
   // clicked below last groupcell
   else if (point.y > (m_last->GetRect()).GetBottom())
   {
-    MathCell *input = m_last->GetInput();
-    if (input != NULL) {
-      SetActiveCell(input);
-      return;
+    if (m_workingGroup == NULL) {
+      MathCell *input = m_last->GetInput();
+      if (input != NULL) {
+        SetActiveCell(input);
+        return;
+      }
     }
   }
 
@@ -815,7 +818,7 @@ void MathCtrl::SelectPoint(wxPoint& point) {
     tr = tmp->GetLabel();
     if (tr != NULL && tr->ContainsPoint(point)) {
       m_selectionStart = m_selectionEnd = tr;
-      if (tr->IsEditable()) {
+      if (tr->IsEditable() && m_workingGroup == NULL) {
         SetActiveCell(tr);
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
