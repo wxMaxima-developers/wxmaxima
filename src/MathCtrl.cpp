@@ -599,7 +599,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   m_animate = false;
   m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
-  
+
   // default when clicking
   m_selectionType = SELECTION_TYPE_NONE;
   m_selectionStart = m_selectionEnd = NULL;
@@ -632,12 +632,12 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     m_hCaretActive = true;
     m_selectionType = SELECTION_TYPE_GROUP;
   } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
-  
+
   else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
 
     if (m_down.x <= LEFT_BORDER) { // we clicked in left bracket area
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
-      {  
+      {
         clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
         clickedInGC->ResetData();
         Recalculate(false);
@@ -687,9 +687,9 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
           }
         }
       }
-      
+
     } // end we didn't click in left bracket space
-    
+
   } // end if (clickedInGC != NULL) // we clicked in a groupcell, find out where
 
   else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
@@ -709,8 +709,6 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
   m_animate = false;
-  //if (!m_mouseDrag)
-  //  SelectPoint(m_down);
   m_leftDown = false;
   m_mouseDrag = false;
   m_selectionInGC = NULL; // pointer to NULL to prevent crashes if the cell is deleted
@@ -739,22 +737,14 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
  * depending on where we first clicked. If m_selectionType equals
  * SELECTION_TYPE_NONE - click-draging does not result in a selection (we clicked in hideRect for instance)
  * SELECTION_TYPE_GROUP - we are selecting full groupcells only. Only y-coordinate matters.
- * SELECTION_TYPE_INPUT - we clicked in an editor (GroupCell::GetEditable()) and draging 
+ * SELECTION_TYPE_INPUT - we clicked in an editor (GroupCell::GetEditable()) and draging
  *   results in selecting text in EditorCell
  * SELECTION_TYPE_OUTPUT - we clicked in an output, we want selection to be confined to that
- *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method 
+ *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method
  *   into m_selectionInGC pointer.
  */
 void MathCtrl::SelectRect() {
-/*
-  if (m_tree == NULL)
-    return;
 
-  if (m_activeCell != NULL) {
-    if (!m_activeCell->GetParent()->ContainsPoint(m_down))
-      SetActiveCell(NULL);
-  }
-*/
   if (m_selectionType == SELECTION_TYPE_NONE)
     return;
 
@@ -772,7 +762,7 @@ void MathCtrl::SelectRect() {
 
   MathCell *st = m_selectionStart, *en = m_selectionEnd;
   wxRect rect;
-  
+
   if (m_selectionType == SELECTION_TYPE_GROUP) {
     m_selectionStart = m_selectionEnd = NULL;
     int ytop    = MIN( m_down.y, m_up.y );
@@ -787,7 +777,7 @@ void MathCtrl::SelectRect() {
       }
       tmp = (GroupCell *)tmp->m_next;
     }
-    
+
     if (tmp == NULL) { // below last cell, handle with care
       m_hCaretActive = true;
       m_hCaretPosition = (GroupCell *)m_last;
@@ -796,7 +786,7 @@ void MathCtrl::SelectRect() {
         Refresh();
       return;
     }
-  
+
 
     tmp = (GroupCell *) m_tree;
     while (tmp != NULL) {
@@ -820,17 +810,17 @@ void MathCtrl::SelectRect() {
     }
 
   } // end  SELECTION_TYPE_GROUP
-  
+
   if (m_selectionType == SELECTION_TYPE_OUTPUT) {
     m_selectionStart = m_selectionEnd = NULL;
     rect.x = MIN(m_down.x, m_up.x);
     rect.y = MIN(m_down.y, m_up.y);
     rect.width = MAX(ABS(m_down.x - m_up.x), 1);
     rect.height = MAX(ABS(m_down.y - m_up.y), 1);
-  
+
     if (m_selectionInGC != NULL)
       m_selectionInGC->SelectRectInOutput(rect, m_down, m_up, &m_selectionStart, &m_selectionEnd);
-  
+
   } // end  SELECTION_TYPE_OUTPUT
 
   // Refresh only if the selection has changed
@@ -1423,7 +1413,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             }
             else {
               if (m_hCaretPositionEnd->m_previous != NULL) {
-                if (m_hCaretPosition->m_next == m_hCaretPositionEnd)
+                if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
                   m_hCaretPositionStart = (GroupCell *)m_hCaretPositionStart->m_previous;
                 m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_previous;
               }
@@ -1473,7 +1463,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 m_hCaretPositionStart = m_hCaretPositionEnd = (GroupCell *)m_hCaretPosition->m_next;
             }
             else {
-              if (m_hCaretPositionEnd->m_next != m_last) {
+              if (m_hCaretPositionEnd->m_next != NULL) {
                 if (m_hCaretPosition == m_hCaretPositionEnd)
                   m_hCaretPositionStart = (GroupCell *)m_hCaretPositionStart->m_next;
                 m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_next;
