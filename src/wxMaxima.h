@@ -25,7 +25,6 @@
 
 #include <wx/socket.h>
 #include <wx/config.h>
-#include <wx/dnd.h>
 #include <wx/process.h>
 
 #if defined (__WXMSW__)

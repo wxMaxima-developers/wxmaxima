@@ -4,7 +4,6 @@ bin_PROGRAMS = wxmaxima
 
 wxmaxima_SOURCES = \
 	Config.cpp         Config.h         \
-	DragNDrop.cpp      DragNDrop.h      \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \

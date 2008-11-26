@@ -33,10 +33,6 @@
 #include <wx/textfile.h>
 #include <wx/tokenzr.h>
 
-#if wxUSE_DRAG_AND_DROP && WXM_DND
-#include <wx/dnd.h>
-#endif
-
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300

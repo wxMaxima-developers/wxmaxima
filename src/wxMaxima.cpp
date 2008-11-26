@@ -32,7 +32,6 @@
 #include "Gen4Wiz.h"
 #include "BC2Wiz.h"
 #include "MatWiz.h"
-#include "DragNDrop.h"
 #include "SystemWiz.h"
 #include "MathPrintout.h"
 #include "MyTipProvider.h"
@@ -83,10 +82,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   wxConfig::Get()->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
-
-#if wxUSE_DRAG_AND_DROP && WXM_DND
-  m_console->SetDropTarget(new FileDrop(this));
-#endif
 
 #if WXM_PRINT
   CheckForPrintingSupport();
