@@ -603,49 +603,11 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   // default when clicking
   m_selectionType = SELECTION_TYPE_NONE;
   m_selectionStart = m_selectionEnd = NULL;
-	m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
   SetActiveCell(NULL);
-  // If we have active cell handle it special. // TODO unify
-/*  if (m_activeCell != NULL) {
-    if (m_activeCell->ContainsPoint(m_down)) {
-      wxClientDC dc(this);
-      m_activeCell->SelectPointText(dc, m_down);
-      m_switchDisplayCaret = false;
-      Refresh();
-      return;
-    } else {
-      SetActiveCell(NULL);
-    }
-  }
-  */
 
-/*
-#if wxUSE_DRAG_AND_DROP && WXM_DND
-  if (m_selectionStart != NULL)
-  {
-    MathCell *tmp = NULL;
-    for (tmp = m_selectionStart; tmp != NULL && tmp != m_selectionEnd; tmp = tmp->m_next)
-    if (tmp->ContainsPoint(m_down))
-    break;
-    if (tmp != NULL && (tmp != m_selectionEnd ||
-            (tmp == m_selectionEnd && tmp->ContainsPoint(m_down))))
-    {
-      wxDropSource dragSource(this);
-      wxTextDataObject my_data(GetString());
-      dragSource.SetData( my_data );
-      dragSource.DoDragDrop(true);
-    }
-    else
-    m_leftDown = true;
-  }
-  else
-  m_leftDown = true;
-#else
-  m_leftDown = true;
-#endif
-*/
   GroupCell * tmp = (GroupCell *) m_tree;
   wxRect rect;
   GroupCell * clickedBeforeGC = NULL;
@@ -732,9 +694,15 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
-    m_hCaretPosition = (GroupCell *)m_last; // can also be NULL
+    /*m_hCaretPosition = (GroupCell *)m_last; // can also be NULL
     m_hCaretActive = true;
     m_selectionType = SELECTION_TYPE_GROUP;
+    */
+    SetActiveCell( m_last->GetEditable()  );
+    wxClientDC dc(this);
+    ((EditorCell *) m_activeCell)->CaretToEnd();
+    m_switchDisplayCaret = false;
+    m_selectionType = SELECTION_TYPE_INPUT;
   }
   Refresh();
 }
@@ -864,44 +832,7 @@ void MathCtrl::SelectRect() {
       m_selectionInGC->SelectRectInOutput(rect, m_down, m_up, &m_selectionStart, &m_selectionEnd);
   
   } // end  SELECTION_TYPE_OUTPUT
-/*
-  rect.x = MIN(m_down.x, m_up.x);
-  rect.y = MIN(m_down.y, m_up.y);
-  rect.width = MAX(ABS(m_down.x - m_up.x), 1);
-  rect.height = MAX(ABS(m_down.y - m_up.y), 1);
 
-  // find the first group in selection
-  GroupCell *tmp = (GroupCell *)m_tree;
-  while (tmp != NULL && !rect.Intersects(tmp->GetRect()) &&
-      !rect.Intersects(tmp->HideRect()))
-    tmp = (GroupCell *)tmp->m_next;
-
-  // find the last group in selection
-  m_selectionStart = tmp;
-  m_selectionEnd = tmp;
-  while (tmp != NULL) {
-    if (rect.Intersects(tmp->GetRect()) || rect.Intersects(tmp->HideRect()))
-      m_selectionEnd = tmp;
-    tmp = (GroupCell *)tmp->m_next;
-  }
-
-  if (m_selectionStart != NULL && m_selectionEnd != NULL) {
-    if (m_selectionStart == m_selectionEnd) {
-      GroupCell *group = (GroupCell *)m_selectionStart;
-      group->SelectRectGroup(rect, m_down, m_up, &m_selectionStart, &m_selectionEnd);
-    }
-  }
-
-  if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd
-      && m_selectionStart->IsEditable()) {
-    SetActiveCell(m_selectionStart);
-    wxClientDC dc(this);
-    m_activeCell->SelectRectText(dc, m_down, m_up);
-  }
-
-  m_hCaretActive = false;
-  m_hCaretPosition = NULL;
-*/
   // Refresh only if the selection has changed
   if (st != m_selectionStart || en != m_selectionEnd)
     Refresh();
