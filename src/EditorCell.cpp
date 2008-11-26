@@ -204,9 +204,12 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
-
+#if defined __WXMAC__
         dc.SetPen(wxNullPen); // no border on rectangles
-        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  ));
+#else
+        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT) )); // no border on rectangles
+#endif
+        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
@@ -264,7 +267,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-      dc.SetLogicalFunction(wxXOR);
+      dc.SetPen(*wxBLACK_PEN);
+      dc.SetLogicalFunction(wxCOPY);
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
