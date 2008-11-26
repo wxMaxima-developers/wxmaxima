@@ -264,25 +264,43 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
 
     MathCell *editable = GetEditable();
-    if (editable != NULL && editable->IsActive())
-      dc.SetPen(wxPen(wxT("coral"), 2));
-    else if (m_working)
-      dc.SetPen(wxPen(wxT("dark green"), 2));
-    else if (m_hide)
-      dc.SetPen(wxPen(wxT("grey"), 2));
+    if (editable != NULL && editable->IsActive()) {
+      dc.SetPen(*wxMEDIUM_GREY_PEN);
+      dc.SetBrush(*wxMEDIUM_GREY_BRUSH);
+    }
+    else if (m_working) {
+      dc.SetPen(wxPen(wxT("black"), 2));
+      dc.SetBrush(*wxBLACK_BRUSH);
+    }
     else
-      dc.SetPen(*wxGREY_PEN);
+    {
+      dc.SetPen(*wxBLACK_PEN);
+      dc.SetBrush(*wxBLACK_BRUSH);
+    }
+    if (!m_hide) {
+      dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    }
+
+    
+    wxPoint * points = new wxPoint[3];
+    points[0].x = point.x - SCALE_PX(10, scale);
+    points[0].y = point.y - m_center;
+    points[1].x = point.x - SCALE_PX(10, scale);
+    points[1].y = point.y - m_center + SCALE_PX(10, scale);
+    points[2].x = point.x;
+    points[2].y = point.y - m_center;
+    dc.DrawPolygon(3, points);
+    delete(points);
+    
     // top horizontal
-    dc.DrawLine(point.x, point.y - m_center - 1,
-                point.x - SCALE_PX(10, scale), point.y - m_center - 1);
-    dc.DrawLine(point.x, point.y - m_center - 1,
-                point.x - SCALE_PX(10, scale), point.y - m_center -1 + SCALE_PX(10, scale));
+    //dc.DrawLine(point.x, point.y - m_center,
+    //            point.x - SCALE_PX(10, scale), point.y - m_center);
     // vertical
-    dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center - 1,
+    dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
                 point.x - SCALE_PX(10, scale), point.y - m_center + m_height);
     // bottom horizontal
     dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
-                point.x - SCALE_PX(4, scale), point.y - m_center + m_height);
+                point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
     // middle horizontal
     if (!IsSpecial() && m_output != NULL && !m_hide) {
       dc.DrawLine(point.x - SCALE_PX(6, scale),
