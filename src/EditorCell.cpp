@@ -747,6 +747,7 @@ bool EditorCell::ActivateCell()
   m_hasFocus = true;
 
   m_selectionEnd = m_selectionStart = -1;
+  m_paren1 = m_paren2 = -1;
 
   return true;
 }
