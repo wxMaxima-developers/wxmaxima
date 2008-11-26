@@ -281,7 +281,6 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
 
-    
     wxPoint * points = new wxPoint[3];
     points[0].x = point.x - SCALE_PX(10, scale);
     points[0].y = point.y - m_center;
@@ -291,10 +290,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     points[2].y = point.y - m_center;
     dc.DrawPolygon(3, points);
     delete(points);
-    
-    // top horizontal
-    //dc.DrawLine(point.x, point.y - m_center,
-    //            point.x - SCALE_PX(10, scale), point.y - m_center);
+
     // vertical
     dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
                 point.x - SCALE_PX(10, scale), point.y - m_center + m_height);
