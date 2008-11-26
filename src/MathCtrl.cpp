@@ -600,6 +600,9 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
+  if (m_tree == NULL)
+    return ;
+
   // default when clicking
   m_selectionType = SELECTION_TYPE_NONE;
   m_selectionStart = m_selectionEnd = NULL;
