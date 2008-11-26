@@ -54,7 +54,7 @@ enum
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   wxScrolledWindow(parent, id, position, size,
   wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
-#ifndef __WXMAC__
+#if defined __WXMSW__
   | wxSUNKEN_BORDER
 #endif
   ) {
@@ -226,8 +226,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
-    dcm.SetLogicalFunction(wxXOR);
-    dcm.SetPen(*wxLIGHT_GREY_PEN);
+    dcm.SetLogicalFunction(wxCOPY);
+    dcm.SetPen(*wxBLACK_PEN);
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);
