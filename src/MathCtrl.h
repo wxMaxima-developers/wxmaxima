@@ -154,6 +154,7 @@ public:
   bool SelectNextInput(bool input = false);
   bool SelectPrompt();
   void ScrollToSelectionStart(bool top = true);
+  void ScrollToCell(MathCell *cell, bool top = true);
   bool SelectLastInput();
   bool SelectFirstInput();
   void SetActiveCell(MathCell *cell);

@@ -1417,6 +1417,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_previous;
               }
             }
+            if (m_hCaretPositionEnd != NULL)
+              ScrollToCell(m_hCaretPositionEnd, true);
           }
 
           else {
@@ -1468,6 +1470,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 m_hCaretPositionEnd = (GroupCell *)m_hCaretPositionEnd->m_next;
               }
             }
+            if (m_hCaretPositionEnd != NULL)
+              ScrollToCell(m_hCaretPositionEnd, false);
           }
 
           else {
@@ -2540,10 +2544,15 @@ bool MathCtrl::SelectPrompt() {
 }
 
 void MathCtrl::ScrollToSelectionStart(bool top) {
-  if (m_selectionStart == NULL)
+  ScrollToCell(m_selectionStart, top);
+}
+
+void MathCtrl::ScrollToCell(MathCell *cell, bool top)
+{
+  if (cell == NULL)
     return;
 
-  MathCell *tmp = m_selectionStart->GetParent();
+  MathCell *tmp = cell->GetParent();
   if (tmp == NULL)
     return;
 
@@ -2552,8 +2561,8 @@ void MathCtrl::ScrollToSelectionStart(bool top) {
   if (cellY == -1)
     return;
 
-  int cellDrop = m_selectionStart->GetDrop();
-  int cellCenter = m_selectionStart->GetCenter();
+  int cellDrop = tmp->GetDrop();
+  int cellCenter = tmp->GetCenter();
 
   int view_x, view_y;
   int height, width;
