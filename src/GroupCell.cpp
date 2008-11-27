@@ -265,8 +265,8 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     MathCell *editable = GetEditable();
     if (editable != NULL && editable->IsActive()) {
-      dc.SetPen(wxPen(wxT("dark green"), 2));
-      dc.SetBrush(*wxMEDIUM_GREY_BRUSH);
+      dc.SetPen(wxPen(wxT("red"), 2));
+      dc.SetBrush(*wxRED_BRUSH);
     }
     else if (m_working) {
       dc.SetPen(wxPen(wxT("black"), 2));
