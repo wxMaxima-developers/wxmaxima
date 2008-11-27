@@ -267,8 +267,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-      dc.SetPen(*wxBLACK_PEN);
-      dc.SetLogicalFunction(wxCOPY);
+      dc.SetPen(*wxWHITE_PEN);
+      dc.SetLogicalFunction(wxXOR);
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,

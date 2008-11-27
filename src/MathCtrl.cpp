@@ -222,14 +222,14 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
-    dcm.SetLogicalFunction(wxCOPY);
-    dcm.SetPen(*wxBLACK_PEN);
+    dcm.SetLogicalFunction(wxXOR);
+    dcm.SetPen(*wxWHITE_PEN);
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);
     else {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
-      int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom();
+      int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom() + 1;
       dcm.DrawLine( 0, caretY, 3000,  caretY);
     }
 
