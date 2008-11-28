@@ -37,9 +37,10 @@ public:
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
   void SetBackground(CellParser& parser, wxPoint& point);
-  void SetValue(wxString& text)
+  void SetValue(wxString text)
   {
     m_text = text;
+    m_positionOfCaret = 0;
   }
   wxString GetValue()
   {

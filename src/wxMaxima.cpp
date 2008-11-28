@@ -3047,6 +3047,24 @@ void wxMaxima::ReEvaluateSelection()
   if (beginInput->GetType() == MC_TYPE_INPUT)
   {
     wxString text = m_console->GetString(true);
+
+    if (text.StartsWith(wxT("? "))) {
+      beginInput->SetValue(wxEmptyString);
+
+      m_console->SetActiveCell(beginInput);
+      ShowHelp(text.SubString(2, text.Length()-2));
+
+      return ;
+    }
+    else if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
+      beginInput->SetValue(wxEmptyString);
+
+      m_console->SetActiveCell(beginInput);
+      DumpProcessOutput();
+
+      return ;
+    }
+
     GroupCell* group = (GroupCell *)beginInput->GetParent();
 
     m_inInsertMode = true;
