@@ -2737,15 +2737,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case tb_help:
 #endif
     ShowHelp(helpSearchString);
-    return ;
-  case menu_describe:
-    if (expr == wxT("%"))
-      cmd = GetTextFromUser(_("Show the description of command/variable:"),
-                            _("Describe"), wxEmptyString, this);
-    else
-      cmd = expr;
-    if (cmd.Length())
-      ShowHelp(cmd);
     break;
   case menu_example:
     if (expr == wxT("%"))
@@ -3288,7 +3279,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_bvp, wxMaxima::EquationsMenu)
   EVT_MENU(menu_bvp, wxMaxima::EquationsMenu)
   EVT_MENU(menu_fun_def, wxMaxima::MaximaMenu)
-  EVT_MENU(menu_describe, wxMaxima::HelpMenu)
   EVT_MENU(menu_divide, wxMaxima::CalculusMenu)
   EVT_MENU(menu_gcd, wxMaxima::CalculusMenu)
   EVT_MENU(menu_lcm, wxMaxima::CalculusMenu)

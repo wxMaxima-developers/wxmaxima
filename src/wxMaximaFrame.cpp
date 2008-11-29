@@ -590,8 +590,6 @@ void wxMaximaFrame::SetupMenu()
   wxMenu* wxglade_tmp_menu_7 = new wxMenu;
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("Maxima &help\tF1"),
                    _("Show maxima help"), wxT("gtk-help"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_describe, _("&Describe\tCtrl-H"),
-                   _("Show the description of a command"), wxT("gtk-help"));
   wxglade_tmp_menu_7->Append(menu_example, _("&Example"),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);
