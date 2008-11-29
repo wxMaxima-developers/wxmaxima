@@ -250,8 +250,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
   SetActiveCell(NULL);
 
   GroupCell *tmp = m_insertPoint;
-  if (m_hCaretActive && newCell->GetType() != MC_TYPE_ERROR)
-    tmp = m_hCaretPosition;
+  //if (m_hCaretActive && newCell->GetType() != MC_TYPE_ERROR)
+  //  tmp = m_hCaretPosition;
 
   if (tmp == NULL)
     tmp = m_last;
@@ -276,6 +276,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
       EditorCell *input = new EditorCell();
       input->SetType(MC_TYPE_INPUT);
       newGroup->AppendInput(input);
+      SetActiveCell(input);
     }
     if (m_last == NULL) {
       m_last = m_tree = newGroup;
@@ -1171,18 +1172,18 @@ void MathCtrl::OpenHCaret(wxString txt)
     return;
 
   if (m_hCaretPosition != NULL) {
-      SetSelection(m_hCaretPosition);
-      PrependGroup(MC_TYPE_INPUT, txt, false, false);
-      SelectNextInput();
+    SetSelection(m_hCaretPosition);
+    PrependGroup(MC_TYPE_INPUT, txt, false, false);
+    SelectNextInput();
+    ((EditorCell *)m_activeCell)->CaretToEnd();
+  }
+  else {
+    SetSelection(m_tree);
+    PrependGroup(MC_TYPE_INPUT, txt, false, true);
+    SelectPrevInput();
+    if (m_activeCell != NULL)
       ((EditorCell *)m_activeCell)->CaretToEnd();
-    }
-    else {
-      SetSelection(m_tree);
-      PrependGroup(MC_TYPE_INPUT, txt, false, true);
-      SelectPrevInput();
-      if (m_activeCell != NULL)
-        ((EditorCell *)m_activeCell)->CaretToEnd();
-    }
+  }
 }
 
 /***
