@@ -1651,9 +1651,11 @@ void MathCtrl::AdjustSize(bool scroll) {
   GetClientSize(&clientWidth, &clientHeight);
   if (m_tree != NULL)
     GetMaxPoint(&width, &height);
-  virtualHeight = MAX(clientHeight, height) + 10;
+  // when window is scrolled all the way down, document occupies top 1/8 of clientHeight 
+  height += clientHeight - (int)(1.0/8.0*(float)clientHeight); 
+  virtualHeight = MAX(clientHeight  + 10 , height); // ensure we always have VSCROLL active
 
-  SetVirtualSize(width + 9, virtualHeight + 9);
+  SetVirtualSize(width + 9, virtualHeight);
   SetScrollRate(SCROLL_UNIT, SCROLL_UNIT);
   if (scroll && height > clientHeight) {
     if (m_scrollTo > -1)
