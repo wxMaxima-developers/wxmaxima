@@ -82,7 +82,7 @@ public:
   }
   bool CanPaste()
   {
-    return m_activeCell != NULL;
+    return (m_activeCell != NULL) || (m_hCaretActive);
   }
   bool CanCut()
   {

@@ -2644,13 +2644,28 @@ bool MathCtrl::CutToClipboard() {
   return true;
 }
 
+/****
+ * PasteFromClipboard
+ * Pastes text into activeCell or opens a new cell
+ * if hCaretActive == true
+ */
 void MathCtrl::PasteFromClipboard() {
-  if (m_activeCell == NULL)
-    return;
+  if (m_activeCell != NULL) {
+    m_activeCell->PasteFromClipboard();
+    Recalculate(false);
+    Refresh();
+  }
+  else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
+    if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+      wxTextDataObject obj;
+      wxTheClipboard->GetData(obj);
+      wxString txt = obj.GetText();
 
-  m_activeCell->PasteFromClipboard();
-  Recalculate(false);
-  Refresh();
+      OpenHCaret(txt);
+      Refresh();
+    }
+    wxTheClipboard->Close();
+  }
 }
 
 void MathCtrl::SelectAll() {
