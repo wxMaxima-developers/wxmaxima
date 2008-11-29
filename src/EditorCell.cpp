@@ -904,6 +904,51 @@ void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
   }
 }
 
+/***
+ * SelectWordUnderCaret
+ * - called from MathCtrl::OnDoubleClick and wxMaxima::HelpMenu
+ * Selects word under cursor (aA-zZ, 0-9 counts) or
+ * the inside of brackets using m_paren1 and m_paren2 if available.
+ * Returns the selected string if selected a word succesfully - used for F1 help.
+ */
+wxString EditorCell::SelectWordUnderCaret()
+{
+  if ((m_paren1 != -1) && (m_paren2 != -1)) {
+    m_selectionStart = MIN(m_paren1,m_paren2) + 1;
+    m_selectionEnd = MAX(m_paren1, m_paren2);
+    m_positionOfCaret = m_selectionEnd;
+    return wxT("%");
+  }
+  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUXYVZabcdefghijklmnopqrstuvxyz1234567890");
+  
+  long left = m_positionOfCaret, right = m_positionOfCaret;
+  while (left > 0)
+  {
+    if(wordChars.Find(m_text.GetChar(left)) == -1) { 
+      left++;
+      break;
+    }
+    left--;
+  }
+  
+  while (right < m_text.length() )
+  {
+    if(wordChars.Find(m_text.GetChar(right)) == -1)
+      break;
+    right++;
+  }
+  
+  if (left != right)
+  {
+    m_selectionStart = left;
+    m_selectionEnd = right;
+    m_positionOfCaret = m_selectionEnd;
+    return m_text.SubString(m_selectionStart, m_selectionEnd - 1);
+  }
+
+  return wxString(wxT("%"));
+}
+
 bool EditorCell::CopyToClipboard()
 {
   if (m_selectionStart == -1)

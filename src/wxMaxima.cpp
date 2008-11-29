@@ -2691,6 +2691,15 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 {
   wxString expr = GetDefaultEntry();
   wxString cmd;
+  wxString helpSearchString = wxT("%");
+  if (m_console->CanCopy(true))
+    helpSearchString = m_console->GetString();
+  else if (m_console->GetActiveCell() != NULL) {
+    helpSearchString = ((EditorCell *)m_console->GetActiveCell())->SelectWordUnderCaret();
+  }
+  if (helpSearchString == wxT(""))
+    helpSearchString = wxT("%");
+
   switch (event.GetId())
   {
   case wxID_ABOUT:
@@ -2727,7 +2736,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:
 #endif
-    ShowHelp(expr);
+    ShowHelp(helpSearchString);
     return ;
   case menu_describe:
     if (expr == wxT("%"))

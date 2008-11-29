@@ -55,6 +55,7 @@ public:
   wxPoint PositionToPoint(CellParser& parser, int pos = -1);
   void SelectPointText(wxDC &dc, wxPoint& point);
   void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two);
+  wxString SelectWordUnderCaret();
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard();

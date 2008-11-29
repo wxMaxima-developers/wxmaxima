@@ -2378,14 +2378,9 @@ MathCell* MathCtrl::GetLastPrompt() {
 }
 
 void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
-  if (CanEdit()) {
-    if (event.ControlDown()) {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
-      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-    } else {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_edit);
-      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-    }
+  if (m_activeCell != NULL) {
+  ((EditorCell *) m_activeCell)->SelectWordUnderCaret();
+  Refresh();
   }
 }
 
