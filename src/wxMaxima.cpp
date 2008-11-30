@@ -2709,6 +2709,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
+    info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
     info.AddTranslator(wxT("Alexey Beshenov (ru)"));
     info.AddTranslator(wxT("Istvan Blahota (hu)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
