@@ -255,9 +255,6 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
-                   _("&Delete selection"),
-                   _("Delete selected input/output group"), wxT("gtk-delete"));
   wxglade_tmp_menu_2->Append(menu_select_all,
                              _("Select all\tCtrl-A"),
                              _("Select all"),
@@ -275,6 +272,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste cells"),
                              _("Paste cells to document"),
                              wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_delete_selection,
+                   _("&Delete cells"),
+                   _("Delete selected cells"), wxT("gtk-delete"));
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate cell\tShift-Enter"),
                              _("Evaluate selected cell"), wxITEM_NORMAL);
@@ -303,9 +303,15 @@ void wxMaximaFrame::SetupMenu()
 
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu;
+#if defined (__WXMAC__)
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
+                   _("&Interrupt\tCtrl-."), // command-. interrupts (mac standard)
+                   _("Interrupt current computation"), wxT("gtk-stop"));
+#else
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
                    _("&Interrupt\tCtrl-G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
+#endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_restart_id,
                    _("&Restart maxima"), _("Restart maxima"), wxT("gtk-refresh"));
   wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Clear memory"),
