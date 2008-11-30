@@ -239,7 +239,10 @@ void wxMaximaFrame::SetupMenu()
 
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu;
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy"),
+  wxglade_tmp_menu_2->Append(menu_cut, _("Cut\tCtrl-X"),
+                             _("Cut selection from document"),
+                             wxITEM_NORMAL);
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy\tCtrl-C"),
                    _("Copy selection from document"), wxT("gtk-copy"));
   wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy TeX"),
                                   _("Copy selection from document in TeX format"),
@@ -249,10 +252,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from document as image"),
                              wxITEM_NORMAL);
 #endif
-  wxglade_tmp_menu_2->Append(menu_cut, _("Cut"),
-                             _("Cut selection from document"),
-                             wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_paste, _("Paste"),
+  wxglade_tmp_menu_2->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
@@ -266,33 +266,31 @@ void wxMaximaFrame::SetupMenu()
                              _("Copy selection from document to a file"),
                              wxITEM_NORMAL);
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy groups"),
-                                  _("Copy groups from document"),
+  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut cells"),
+                                  _("Cut selected cells"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut groups"),
-                                  _("Cut groups from document"),
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy cells"),
+                                  _("Copy selected cells"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste groups"),
-                             _("Paste groups to document"),
+  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste cells"),
+                             _("Paste cells to document"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Group"), wxglade_tmp_menu_2_sub1, _("Input"));
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_reeval_input, _("Evaluate cell\tShift-Enter"),
-                             _("Revaluate selected cell"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Evaluate all\tCtrl-Shift-R"),
+  wxglade_tmp_menu_2_sub1->AppendSeparator();
+  wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate cell\tShift-Enter"),
+                             _("Evaluate selected cell"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_reeval_all, _("Evaluate all cells\tCtrl-Shift-R"),
                                _("Evaluate all cells"), wxITEM_NORMAL);
-  wxMenu* wxglade_tmp_menu_2_sub2 = new wxMenu;
-  wxglade_tmp_menu_2_sub2->Append(menu_insert_input, _("&Cell\tF7"),
-                             _("Insert new cell"));
-  wxglade_tmp_menu_2_sub2->Append(menu_add_comment, _("&Text\tF6"),
-                             _("Insert text cell"));
-  wxglade_tmp_menu_2_sub2->Append(menu_add_section, _("&Section\tCtrl-F6"),
-                             _("Insert section cell"));
-  wxglade_tmp_menu_2_sub2->Append(menu_add_title, _("T&itle\tCtrl-Shift-F6"),
-                             _("Insert title before selected input"));
-  wxglade_tmp_menu_2->Append(wxNewId(), _("I&nsert"),
-                             wxglade_tmp_menu_2_sub2,
-                             _("Insert"));
+  wxglade_tmp_menu_2_sub1->AppendSeparator();
+  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New input &cell\tF7"),
+                             _("Insert new input cell"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("New &text cell\tF6"),
+                             _("Insert new text cell"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("New &section cell\tCtrl-F6"),
+                             _("Insert new section cell"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New t&itle cell\tCtrl-Shift-F6"),
+                             _("Insert new title cell"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
+
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &in\tAlt-I"),
                    _("Increase fontsize in document"), wxT("gtk-zoom-in"));
