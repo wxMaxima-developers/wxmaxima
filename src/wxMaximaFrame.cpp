@@ -258,6 +258,10 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_delete_selection,
                    _("&Delete selection"),
                    _("Delete selected input/output group"), wxT("gtk-delete"));
+  wxglade_tmp_menu_2->Append(menu_select_all,
+                             _("Select all\tCtrl-A"),
+                             _("Select all"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
                              _("Copy selection from document to a file"),
                              wxITEM_NORMAL);
@@ -290,8 +294,6 @@ void wxMaximaFrame::SetupMenu()
                              wxglade_tmp_menu_2_sub2,
                              _("Insert"));
   wxglade_tmp_menu_2->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_clear_screen, _("C&lear screen"),
-                   _("Delete the contents of document."), wxT("gtk-clear"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &in\tAlt-I"),
                    _("Increase fontsize in document"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),

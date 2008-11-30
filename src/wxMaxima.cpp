@@ -1546,11 +1546,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       configW->Destroy();
     }
     break;
-  case menu_clear_screen:
-    m_console->ClearWindow();
-    //DoRawConsoleAppend(m_lastPrompt, MC_TYPE_MAIN_PROMPT);
-    m_console->ActivateHCaret(true);
-    break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_copy:
 #endif
@@ -1571,6 +1566,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
+    break;
+  case menu_select_all:
+    m_console->SelectAll();
     break;
   case menu_paste:
     if (m_console->CanPaste())
@@ -3279,7 +3277,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_display, wxMaxima::MaximaMenu)
   EVT_MENU(menu_pade, wxMaxima::CalculusMenu)
   EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
-  EVT_MENU(menu_clear_screen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
@@ -3298,6 +3295,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_input_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_cut_input_from_console, wxMaxima::EditMenu)
+  EVT_MENU(menu_select_all, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)

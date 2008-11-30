@@ -2475,26 +2475,36 @@ void MathCtrl::PasteFromClipboard() {
   }
 }
 
-void MathCtrl::SelectAll() {
-  if (m_activeCell == NULL)
-    return;
+void MathCtrl::SelectAll()
+{
+  if (m_activeCell == NULL && m_tree != NULL)
+  {
+    m_selectionStart = m_tree;
+    m_selectionEnd = m_last;
+    m_selectionType = SELECTION_TYPE_GROUP;
+    m_hCaretActive = false;
+  }
+  else
+    m_activeCell->SelectAll();
 
-  m_activeCell->SelectAll();
   Refresh();
 }
 
-void MathCtrl::OnSetFocus(wxFocusEvent& event) {
+void MathCtrl::OnSetFocus(wxFocusEvent& event)
+{
 
 }
 
-void MathCtrl::OnKillFocus(wxFocusEvent& event) {
+void MathCtrl::OnKillFocus(wxFocusEvent& event)
+{
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
   SetActiveCell(NULL);
   Refresh();
 }
 
-void MathCtrl::CheckUnixCopy() {
+void MathCtrl::CheckUnixCopy()
+{
   bool copy = false;
   wxConfig::Get()->Read(wxT("unixCopy"), &copy);
 
