@@ -946,17 +946,15 @@ bool MathCtrl::CopyInput() {
 }
 
 /***
- * Can delete selection - we can't delete the last prompt!
+ * CanDeleteSelection
+ * Returns true if we have a selection of groupcells and we have no working group! 
  */
 bool MathCtrl::CanDeleteSelection() {
   if (m_selectionStart == NULL || m_selectionEnd == NULL ||
       m_insertPoint != NULL || m_workingGroup != NULL)
     return false;
 
-  GroupCell *start = (GroupCell *)m_selectionStart->GetParent();
-  GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
-
-  if (start == NULL || end == NULL)
+  if ((m_selectionStart->GetType() != MC_TYPE_GROUP) || (m_selectionEnd->GetType() != MC_TYPE_GROUP))
     return false;
 
   return true;
