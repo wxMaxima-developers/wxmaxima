@@ -26,7 +26,7 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-($put '$wxmaxima `((mlist simp) 0 7 6) '$version)
+($put '$wxmaxima `((mlist simp) 0 8 0) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 
@@ -1106,6 +1106,10 @@
 
 (defun $with_slider_draw (&rest args)
   (apply #'$wxanimate_draw args))
+
+(defun draw-transform (arg trans)
+  (declare (ignore trans))
+  arg)
 
 (defun $wxanimate_draw (a a-range &rest args)
   (let (images)
