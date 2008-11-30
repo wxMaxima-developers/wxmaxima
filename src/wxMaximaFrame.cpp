@@ -273,17 +273,17 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(wxNewId(), _("Group"), wxglade_tmp_menu_2_sub1, _("Input"));
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_reeval_input, _("&Re-evaluate input\tCtrl-R"),
-                             _("Re-evaluate selected input"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Re-evaluate all\tCtrl-Shift-R"),
-                               _("Re-evaluate all input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_reeval_input, _("Evaluate cell\tShift-Enter"),
+                             _("Revaluate selected cell"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_reeval_all, _("Evaluate all\tCtrl-Shift-R"),
+                               _("Evaluate all cells"), wxITEM_NORMAL);
   wxMenu* wxglade_tmp_menu_2_sub2 = new wxMenu;
-  wxglade_tmp_menu_2_sub2->Append(menu_insert_input, _("&Input\tF7"),
-                             _("Insert new input before selected input"));
+  wxglade_tmp_menu_2_sub2->Append(menu_insert_input, _("&Cell\tF7"),
+                             _("Insert new cell"));
   wxglade_tmp_menu_2_sub2->Append(menu_add_comment, _("&Text\tF6"),
-                             _("Insert text before selected input"));
+                             _("Insert text cell"));
   wxglade_tmp_menu_2_sub2->Append(menu_add_section, _("&Section\tCtrl-F6"),
-                             _("Insert section before selected input"));
+                             _("Insert section cell"));
   wxglade_tmp_menu_2_sub2->Append(menu_add_title, _("T&itle\tCtrl-Shift-F6"),
                              _("Insert title before selected input"));
   wxglade_tmp_menu_2->Append(wxNewId(), _("I&nsert"),
@@ -296,8 +296,6 @@ void wxMaximaFrame::SetupMenu()
                    _("Increase fontsize in document"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                    _("Decrease fontsize in document"), wxT("gtk-zoom-out"));
-  wxglade_tmp_menu_2->Append(menu_select_last, _("Select last input\tF2"),
-                             _("Select last input in the document!"));
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
@@ -596,8 +594,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_7->Append(menu_apropos, _("&Apropos"),
                              _("Show commands similar to"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_show_tip, _("Show &tip"),
-                   _("Show a tip"), wxART_TIP);
+//  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_show_tip, _("Show &tip"),
+//                   _("Show a tip"), wxART_TIP);
   wxglade_tmp_menu_7->AppendSeparator();
   wxglade_tmp_menu_7->Append(menu_build_info, _("Build &info"),
                              _("Info about maxima build"), wxITEM_NORMAL);

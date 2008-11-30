@@ -153,15 +153,15 @@ void MyApp::NewWindow(wxString file)
   SetTopWindow(frame);
   frame->Show(true);
   frame->InitSession();
-  if (!frame->IsIconized())
-    frame->ShowTip(false);
+//  if (!frame->IsIconized())
+//    frame->ShowTip(false);
 
 }
 
 #if defined (__WXMAC__)
 
 void MyApp::OnFileMenu(wxCommandEvent &ev)
-{  
+{
   switch(ev.GetId())
     {
     case mac_newId:
@@ -196,7 +196,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 	  //}
 	}
 	if (quit)
-	  wxExit();	    	    
+	  wxExit();
 #else
 	wxWindow *frame = GetTopWindow();
 	if (frame == NULL)

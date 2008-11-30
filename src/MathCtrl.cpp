@@ -932,7 +932,7 @@ bool MathCtrl::CopyInput() {
 
 /***
  * CanDeleteSelection
- * Returns true if we have a selection of groupcells and we have no working group! 
+ * Returns true if we have a selection of groupcells and we have no working group!
  */
 bool MathCtrl::CanDeleteSelection() {
   if (m_selectionStart == NULL || m_selectionEnd == NULL ||
@@ -1008,7 +1008,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   Refresh();
 }
 
-void MathCtrl::OpenHCaret(wxString txt)
+void MathCtrl::OpenHCaret(wxString txt, int type)
 {
   if (m_workingGroup != NULL) {
     EditorCell *newInput = new EditorCell;
@@ -1041,14 +1041,14 @@ void MathCtrl::OpenHCaret(wxString txt)
 
   if (m_hCaretPosition != NULL) {
     SetSelection(m_hCaretPosition);
-    GroupCell *group = PrependGroup(MC_TYPE_INPUT, txt, false, false);
+    GroupCell *group = PrependGroup(type, txt, false, false);
     SetActiveCell(group->GetEditable());
     ((EditorCell *)m_activeCell)->CaretToEnd();
     ScrollToCell(group);
   }
   else {
     SetSelection(m_tree);
-    GroupCell *group = PrependGroup(MC_TYPE_INPUT, txt, false, true);
+    GroupCell *group = PrependGroup(type, txt, false, true);
     SetActiveCell(group->GetEditable());
     ((EditorCell *)m_activeCell)->CaretToEnd();
     ScrollToCell(group);
@@ -1175,6 +1175,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         }
       }
       break;
+
     default:
       event.Skip();
   }

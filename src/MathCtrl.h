@@ -171,7 +171,7 @@ public:
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetHCaret(MathCell *where, bool active = true);
-  void OpenHCaret(wxString txt = wxEmptyString);
+  void OpenHCaret(wxString txt = wxEmptyString, int type = MC_TYPE_INPUT);
   void ActivateHCaret(bool active) { m_hCaretActive = active; m_hCaretPosition = NULL; }
 protected:
   MathCell* CopySelection();

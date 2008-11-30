@@ -1044,7 +1044,7 @@ wxString wxMaxima::GetCommand(bool params)
 ///--------------------------------------------------------------------------------
 ///  Tips and help
 ///--------------------------------------------------------------------------------
-
+/*
 void wxMaxima::ShowTip(bool force)
 {
   bool ShowTips = true;
@@ -1083,6 +1083,7 @@ void wxMaxima::ShowTip(bool force)
                  _("Error"), wxICON_ERROR | wxOK);
   }
 }
+*/
 
 wxString wxMaxima::GetHelpFile()
 {
@@ -1615,13 +1616,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       return;
     }
     break;
-  case menu_select_last:
-    if (m_console->ActivateLastInput())
-    {
-      m_console->SetFocus();
-      return ;
-    }
-    break;
   case menu_inc_fontsize:
     {
       int fontSize = 12;
@@ -1677,7 +1671,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           }
 
           for (int i=0; i<inp.Count(); i++)
-            DoPrependCell(tb_insert_input, inp[i], i==0);
+            PrependGroup(inp[i], i==0);
 
           m_console->ActivatePrevInput();
           m_console->ScrollToSelectionStart();
@@ -2737,9 +2731,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       MenuCommand(cmd);
     }
     break;
-  case menu_show_tip:
-    ShowTip(true);
-    break;
+//  case menu_show_tip:
+//    ShowTip(true);
+//    break;
   case menu_build_info:
     MenuCommand(wxT("build_info()$"));
     break;
@@ -3054,17 +3048,10 @@ void wxMaxima::ReEvaluateSelection()
   }
 }
 
-void wxMaxima::PrependCell(wxCommandEvent& event)
+void wxMaxima::InsertMenu(wxCommandEvent& event)
 {
-  DoPrependCell(event.GetId());
-
-  m_console->ActivatePrevInput();
-}
-
-void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
-
   int type = 0;
-  switch (id)
+  switch (event.GetId())
   {
   case popid_insert_input:
   case menu_insert_input:
@@ -3088,8 +3075,11 @@ void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {
     break;
   }
 
-  m_console->PrependGroup(type, value, refresh);
-  m_console->SetFocus();
+  m_console->OpenHCaret(wxEmptyString, type);
+}
+
+void wxMaxima::PrependGroup(wxString value, bool refresh) {
+  m_console->PrependGroup(MC_TYPE_INPUT, value, refresh);
 }
 
 void wxMaxima::ResetTitle(bool saved)
@@ -3268,7 +3258,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_example, wxMaxima::HelpMenu)
   EVT_MENU(menu_apropos, wxMaxima::HelpMenu)
-  EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)
+//  EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)
   EVT_MENU(menu_trigrat, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_solve_de, wxMaxima::EquationsMenu)
   EVT_MENU(menu_atvalue, wxMaxima::EquationsMenu)
@@ -3318,8 +3308,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_delete, wxMaxima::EditMenu)
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
-  EVT_TOOL(tb_insert_input, wxMaxima::PrependCell)
-  EVT_TOOL(tb_insert_text, wxMaxima::PrependCell)
+  EVT_TOOL(tb_insert_input, wxMaxima::InsertMenu)
+  EVT_TOOL(tb_insert_text, wxMaxima::InsertMenu)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
   EVT_TOOL(tb_animation_start, wxMaxima::FileMenu)
@@ -3353,13 +3343,12 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
   EVT_MENU(popid_reeval, wxMaxima::ReEvaluateEvent)
   EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluateEvent)
-  EVT_MENU(menu_add_comment, wxMaxima::PrependCell)
-  EVT_MENU(menu_add_section, wxMaxima::PrependCell)
-  EVT_MENU(menu_add_title, wxMaxima::PrependCell)
-  EVT_MENU(popid_add_comment, wxMaxima::PrependCell)
-  EVT_MENU(menu_insert_input, wxMaxima::PrependCell)
-  EVT_MENU(popid_insert_input, wxMaxima::PrependCell)
-  EVT_MENU(menu_select_last, wxMaxima::EditMenu)
+  EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
+  EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
+  EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
+  EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
+  EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(activate_cell, wxMaxima::HandleCellEvent)
   EVT_MENU(deactivate_cell_cancel, wxMaxima::HandleCellEvent)
   EVT_MENU(deactivate_cell_ok, wxMaxima::HandleCellEvent)

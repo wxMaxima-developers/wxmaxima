@@ -57,7 +57,7 @@ public:
   wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
-  void ShowTip(bool force);
+//  void ShowTip(bool force);
   wxString GetHelpFile();
   void ShowHelp(wxString keyword = wxEmptyString);
   void InitSession();
@@ -100,8 +100,8 @@ protected:
 
   void EditInputMenu(wxCommandEvent& event);       //
   void ReEvaluateEvent(wxCommandEvent& event);     //
-  void PrependCell(wxCommandEvent& event);         //
-  void DoPrependCell(int id, wxString value = wxEmptyString, bool refresh = false);
+  void InsertMenu(wxCommandEvent& event);         //
+  void PrependGroup(wxString value = wxEmptyString, bool refresh = false);
   void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
