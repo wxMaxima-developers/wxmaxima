@@ -2376,10 +2376,11 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   GetSize(&width, &height);
 
   view_y *= SCROLL_UNIT;
-  if (cellY - cellCenter - SCROLL_UNIT < view_y)
-    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
-  else if (cellY + cellDrop + SCROLL_UNIT > view_y + height - height / 10)
+
+  if (cellY + cellDrop + SCROLL_UNIT > view_y + height - height / 10)
     Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/SCROLL_UNIT + 4, 0));
+  else if (cellY - cellCenter - SCROLL_UNIT < view_y && cellDrop + cellCenter < height)
+    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
 
   Refresh();
 }
