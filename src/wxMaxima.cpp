@@ -198,9 +198,6 @@ void wxMaxima::FirstOutput(wxString s)
   }
 
   m_lastPrompt = wxT("(%i1) ");
-
-  DoRawConsoleAppend(m_firstPrompt, MC_TYPE_MAIN_PROMPT);
-  m_console->SelectLastInput();
 }
 
 /***
@@ -826,26 +823,18 @@ void wxMaxima::ReadPrompt()
           m_inInsertMode = false;
           m_console->SetSelection(tmp);
 
-          // if evaluating m_console->m_last then add prompt and select its input
-          if (!m_console->SelectNextInput()) {
-            m_console->SetSelection(NULL);
-            DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
-            m_console->SelectLastInput();
-          }
-          // if we are not evaluating m_console->m_last then show hCaret
-          else {
             m_console->SetHCaret(tmp);
             m_console->SetWorkingGroup(NULL);
-            m_console->GetLastPrompt()->SetValue(o);
-          }
+            m_console->SetSelection(NULL);
+
 
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
 
         // We added something from menus.
-        else
-          DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
+//        else
+//          DoRawConsoleAppend(o, MC_TYPE_MAIN_PROMPT);
 
         m_console->EnableEdit();
       }

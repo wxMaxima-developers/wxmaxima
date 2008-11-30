@@ -178,6 +178,7 @@ protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void OpenHCaret(wxString txt = wxEmptyString);
+  GroupCell* AppendGroup(GroupCell *where, int type, wxString value);
   void GetMaxPoint(int* width, int* height);
   void BreakLines();
   void OnTimer(wxTimerEvent& event);

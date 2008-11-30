@@ -63,7 +63,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_selectionInGC = NULL;
   m_last = NULL;
   m_insertPoint = NULL;
-  m_hCaretActive = false;
+  m_hCaretActive = true;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_activeCell = NULL;
@@ -317,6 +317,70 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 
   Refresh();
 }
+
+/***
+ * Append a GroupCell - called from OpenHCaret
+ */
+GroupCell* MathCtrl::AppendGroup(GroupCell *where, int type, wxString value) {
+
+  GroupCell *newGroup = new GroupCell;
+
+  TextCell *prompt = new TextCell;
+
+
+  prompt->SetValue(wxT(">> "));
+  prompt->SetType(MC_TYPE_MAIN_PROMPT);
+
+  newGroup->SetInput(prompt);
+
+  EditorCell *newCell = new EditorCell;
+  newCell->SetType(type);
+  newCell->SetValue(value);
+
+  newGroup->AppendInput(newCell);
+
+  newGroup->SetParent(newGroup, false);
+
+  if ((where == NULL) && (m_last == NULL)) { // first cell inserted into document
+    m_tree = m_last = newGroup;
+  }
+  else if (where == NULL) { // at the beginning
+    newGroup->m_next = m_tree;
+    newGroup->m_nextToDraw = m_tree;
+    m_tree->m_previous = newGroup;
+    m_tree->m_previousToDraw = newGroup;
+    m_tree = newGroup;
+  }
+  else if (where == m_last) { // at the end
+    newGroup->m_next =       NULL;
+    newGroup->m_nextToDraw = NULL;
+    newGroup->m_previous =       m_last;
+    newGroup->m_previousToDraw = m_last;
+    m_last->m_next = newGroup;
+    m_last->m_nextToDraw = newGroup;
+    m_last = newGroup;
+  }
+  else { //between
+    newGroup->m_previous = where;
+    newGroup->m_previousToDraw = where;
+    newGroup->m_next = where->m_next;
+    newGroup->m_nextToDraw = where->m_next;
+
+    where->m_next->m_previous = newGroup;
+    where->m_next->m_previousToDraw = newGroup;
+    
+    where->m_next = newGroup;
+    where->m_nextToDraw = newGroup;
+
+  }
+
+  Recalculate(false);
+  SetActiveCell(NULL);
+  ScrollToSelectionStart(false);
+  
+  return newGroup;
+}
+
 
 /***
  * Prepend a new cell
@@ -694,15 +758,9 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
-    /*m_hCaretPosition = (GroupCell *)m_last; // can also be NULL
+    m_hCaretPosition = (GroupCell *)m_last; // can also be NULL
     m_hCaretActive = true;
     m_selectionType = SELECTION_TYPE_GROUP;
-    */
-    SetActiveCell( m_last->GetEditable()  );
-    wxClientDC dc(this);
-    ((EditorCell *) m_activeCell)->CaretToEnd();
-    m_switchDisplayCaret = false;
-    m_selectionType = SELECTION_TYPE_INPUT;
   }
   Refresh();
 }
@@ -1170,7 +1228,7 @@ void MathCtrl::OpenHCaret(wxString txt)
 
   if (!m_hCaretActive)
     return;
-
+/*
   if (m_hCaretPosition != NULL) {
     SetSelection(m_hCaretPosition);
     PrependGroup(MC_TYPE_INPUT, txt, false, false);
@@ -1184,6 +1242,15 @@ void MathCtrl::OpenHCaret(wxString txt)
     if (m_activeCell != NULL)
       ((EditorCell *)m_activeCell)->CaretToEnd();
   }
+  
+  */
+  
+  GroupCell *newgroup = AppendGroup(m_hCaretPosition, MC_TYPE_INPUT, txt);
+  MathCell *editor = newgroup->GetEditable();
+  SetActiveCell(editor);
+  ((EditorCell *)editor)->CaretToEnd();
+  
+  Refresh();
 }
 
 /***
@@ -1338,13 +1405,9 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         ((EditorCell *)m_activeCell)->CaretAtEnd() &&
         !event.ShiftDown()) {
       MathCell *tmp = m_activeCell->GetParent();
-      if (tmp != m_last) {
-        m_hCaretPosition = (GroupCell *)tmp;
-        m_hCaretActive = true;
-        SetActiveCell(NULL);
-      }
-      else
-        event.Skip();
+      m_hCaretPosition = (GroupCell *)tmp;
+      m_hCaretActive = true;
+      SetActiveCell(NULL);
       return;
     }
 
