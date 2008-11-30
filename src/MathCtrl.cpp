@@ -1280,7 +1280,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           }
 
           else {
-            if (m_hCaretPosition != NULL)
+            if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
+              SetHCaret(m_selectionStart->m_previous, true);
+              m_selectionStart = m_selectionEnd = NULL;
+            }
+            else if (m_hCaretPosition != NULL)
             {
               MathCell * editor = m_hCaretPosition->GetEditable();
               if(editor != NULL && m_workingGroup == NULL)
@@ -1301,7 +1305,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         }
 
         else {
-          if (!ActivatePrevInput())
+          if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
+              SetHCaret(m_selectionStart->m_previous, true);
+              m_selectionStart = m_selectionEnd = NULL;
+            }
+          else if (!ActivatePrevInput())
             event.Skip();
           else
             Refresh();
@@ -1333,7 +1341,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           }
 
           else {
-            if (m_hCaretPosition == NULL)
+            if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
+              SetHCaret(m_selectionEnd, true);
+              m_selectionStart = m_selectionEnd = NULL;
+            }
+            else if (m_hCaretPosition == NULL)
             {
               MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
               if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
@@ -1371,7 +1383,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         }
 
         else {
-          if (!ActivateNextInput())
+          if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
+              SetHCaret(m_selectionEnd, true);
+              m_selectionStart = m_selectionEnd = NULL;
+            }
+          else if (!ActivateNextInput())
             event.Skip();
           else
             Refresh();
