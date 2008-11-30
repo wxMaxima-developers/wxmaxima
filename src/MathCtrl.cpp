@@ -53,8 +53,8 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 #if defined __WXMSW__
   | wxSUNKEN_BORDER
 #endif
-  ) {
-  m_scrollTo = -1;
+  )
+{
   m_tree = NULL;
   m_memory = NULL;
   m_selectionStart = NULL;
@@ -78,7 +78,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   m_animate = false;
   m_workingGroup = NULL;
-  AdjustSize(false);
+  AdjustSize();
 }
 
 MathCtrl::~MathCtrl() {
@@ -247,8 +247,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 /***
  * Add a new line
  */
-void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
-
+void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
+{
   SetActiveCell(NULL);
 
   GroupCell *tmp = m_insertPoint;
@@ -306,7 +306,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
 
-  Recalculate(true);
+  Recalculate();
+  ScrollToCell(tmp);
 
   Refresh();
 }
@@ -398,7 +399,7 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
 
   SetActiveCell(NULL);
 
-  Recalculate(false);
+  Recalculate();
 
   if (refresh)
     Refresh();
@@ -412,7 +413,7 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
 void MathCtrl::RecalculateForce() {
   if (m_tree != NULL) {
     m_forceUpdate = true;
-    Recalculate(false);
+    Recalculate();
     m_forceUpdate = false;
   }
 }
@@ -420,13 +421,13 @@ void MathCtrl::RecalculateForce() {
 /***
  * Recalculate size of this line
  */
-void MathCtrl::Recalculate(bool scroll) {
+void MathCtrl::Recalculate() {
   UnBreakUpCells();
   RecalculateWidths();
   BreakUpCells();
   BreakLines();
   RecalculateSize();
-  AdjustSize(scroll);
+  AdjustSize();
 }
 
 /***
@@ -489,7 +490,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    Recalculate(false);
+    Recalculate();
   }
 
   Refresh();
@@ -507,7 +508,7 @@ void MathCtrl::ClearWindow() {
     m_last = NULL;
     DestroyTree();
   }
-  AdjustSize();
+  Recalculate();
   Refresh();
   Scroll(0, 0);
 }
@@ -641,7 +642,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
       {
         clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
         clickedInGC->ResetData();
-        Recalculate(false);
+        Recalculate();
         m_selectionType = SELECTION_TYPE_NONE; // ignore drag-select
       }
       else {
@@ -1003,8 +1004,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
     m_hCaretPosition = m_last;
   m_hCaretActive = true;
 
-  Recalculate(false);
-  AdjustSize(false);
+  Recalculate();
   Refresh();
 }
 
@@ -1238,7 +1238,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
 
     if (hasHeightChanged) {
-      Recalculate(false);
+      Recalculate();
       Refresh();
     }
     else {
@@ -1504,7 +1504,7 @@ void MathCtrl::BreakLines() {
 /***
  * Adjust the virtual size and scrollbars.
  */
-void MathCtrl::AdjustSize(bool scroll) {
+void MathCtrl::AdjustSize() {
   int width= MC_BASE_INDENT, height= MC_BASE_INDENT;
   int clientWidth, clientHeight, virtualHeight;
 
@@ -1517,12 +1517,6 @@ void MathCtrl::AdjustSize(bool scroll) {
 
   SetVirtualSize(width, virtualHeight);
   SetScrollRate(SCROLL_UNIT, SCROLL_UNIT);
-  if (scroll && height > clientHeight) {
-    if (m_scrollTo > -1)
-      Scroll(0, m_scrollTo);
-    else
-      Scroll(0, height);
-  }
 }
 
 /***
@@ -2452,7 +2446,7 @@ bool MathCtrl::CutToClipboard() {
     return false;
 
   m_activeCell->CutToClipboard();
-  Recalculate(false);
+  Recalculate();
   Refresh();
   return true;
 }
@@ -2465,7 +2459,7 @@ bool MathCtrl::CutToClipboard() {
 void MathCtrl::PasteFromClipboard() {
   if (m_activeCell != NULL) {
     m_activeCell->PasteFromClipboard();
-    Recalculate(false);
+    Recalculate();
     Refresh();
   }
   else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
@@ -2521,12 +2515,6 @@ void MathCtrl::CheckUnixCopy() {
 bool MathCtrl::IsSelected(int type) {
   return m_selectionStart != NULL && m_selectionStart == m_selectionEnd
       && m_selectionStart->GetType() == type;
-}
-
-void MathCtrl::ScrollToBottom() {
-  int width = -1, height = -1;
-  GetVirtualSize(&width, &height);
-  Scroll(-1, height/SCROLL_UNIT);
 }
 
 void MathCtrl::Animate(bool run) {

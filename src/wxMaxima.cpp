@@ -796,7 +796,6 @@ void wxMaxima::ReadPrompt()
           else {
             m_inReevalMode = false;
             m_console->SetSelection(NULL);
-            m_console->SetScrollTo(-1);
             m_console->SetWorkingGroup(NULL);
             m_console->SetHCaret(tmp);
           }
@@ -807,7 +806,6 @@ void wxMaxima::ReadPrompt()
         {
           MathCell* tmp = m_console->GetInsertPoint();
           m_console->SetInsertPoint(NULL);
-          m_console->SetScrollTo(-1);
           m_inInsertMode = false;
 
           m_console->SetSelection(NULL);
@@ -1611,7 +1609,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       ResetTitle(false);
       m_console->DeleteSelection();
-      m_console->Recalculate(false);
+      m_console->Recalculate();
       m_console->Refresh();
       return;
     }
@@ -1624,7 +1622,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       {
         fontSize++;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
-        m_console->Recalculate(false);
+        m_console->Recalculate();
         m_console->Refresh();
       }
     }
@@ -1637,7 +1635,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       {
         fontSize--;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
-        m_console->Recalculate(false);
+        m_console->Recalculate();
         m_console->Refresh();
       }
     }
@@ -3032,11 +3030,10 @@ void wxMaxima::ReEvaluateSelection()
 
     int x, y;
     m_console->GetViewStart(&x, &y);
-    m_console->SetScrollTo(y);
 
     if (!m_console->IsSelectionInWorking()) {
       group->RemoveOutput();
-      m_console->Recalculate(false);
+      m_console->Recalculate();
     }
 
     m_console->SetInsertPoint(group);

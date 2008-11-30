@@ -70,7 +70,7 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  void Recalculate(bool scroll = true);
+  void Recalculate();
   void RecalculateForce();
   void RecalculateWidths();
   void RecalculateSize();
@@ -138,11 +138,6 @@ public:
   {
     m_selectionStart = m_selectionEnd = sel;
   }
-  void SetScrollTo(int to)
-  {
-    m_scrollTo = to;
-  }
-  void ScrollToBottom();
   bool CanEdit();
   void EnableEdit(bool enable = true)
   {
@@ -191,7 +186,7 @@ protected:
   void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
   void SelectRect();
-  void AdjustSize(bool scroll = false);
+  void AdjustSize();
   void OnEraseBackground(wxEraseEvent& event)
   { }
   void CheckUnixCopy();
@@ -218,7 +213,6 @@ protected:
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
   bool m_editingEnabled;
-  int m_scrollTo;
   wxTimer m_timer, m_caretTimer, m_animationTimer;
   bool m_animate;
   wxBitmap *m_memory;
