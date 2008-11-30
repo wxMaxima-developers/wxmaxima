@@ -314,19 +314,18 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 /***
  * Prepend a new cell
  */
-GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend) {
+GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend)
+{
   GroupCell *where;
 
-  if (m_selectionStart != NULL)
-    where = (GroupCell *)m_selectionStart->GetParent();
-
-  else if (m_hCaretActive) {
+  if (m_hCaretActive) {
     if (m_hCaretPosition == NULL)
       where = m_tree;
     else
       where = m_hCaretPosition;
   }
-
+  else if (m_selectionStart != NULL)
+    where = (GroupCell *)m_selectionStart->GetParent();
   else
     where = m_last;
 
@@ -524,8 +523,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
     if (m_editingEnabled == false)
       return;
 
-    if (IsSelected(MC_TYPE_IMAGE))
-    {
+    if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
 #if defined __WXMSW__
       popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
 #endif
@@ -544,20 +542,6 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
           popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);
 
         popupMenu->AppendSeparator();
-      }
-
-      if (CanEdit()) {
-        if (m_selectionStart->GetType() == MC_TYPE_INPUT) {
-          popupMenu->Append(popid_edit, _("Edit input"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_reeval, _("Re-evaluate input"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
-        } else {
-          popupMenu->Append(popid_edit, _("Edit text"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_reeval, _("Re-evaluate input"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_insert_input, _("Insert input"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_add_comment, _("Insert text"), wxEmptyString, wxITEM_NORMAL);
-        }
       }
 
       else {
@@ -580,6 +564,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
     }
   }
 
+  // popup menu in active cell
   else {
     popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_cut, _("Cut"), wxEmptyString, wxITEM_NORMAL);
@@ -1153,18 +1138,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_RETURN:
-
-      if (CanEdit()) {
-        if (event.ControlDown() || event.ShiftDown()) {
-          if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_INPUT)
-            m_selectionStart->AddEnding();
-          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
-          (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-        } else
-          SetActiveCell(m_selectionStart);
-      }
-
-      else if (m_activeCell != NULL) {
+      if (m_activeCell != NULL) {
         if (event.ControlDown() || event.ShiftDown()) {
           if (m_activeCell->GetType() == MC_TYPE_INPUT)
             m_activeCell->AddEnding();
@@ -1176,7 +1150,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
       else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT) {
         PrependGroup(MC_TYPE_INPUT, GetString(), true, false);
-        SelectNextInput();
+        ActivateNextInput();
       }
 
       else
@@ -1326,7 +1300,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         }
 
         else {
-          if (!SelectPrevInput())
+          if (!ActivatePrevInput())
             event.Skip();
           else
             Refresh();
@@ -1396,7 +1370,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         }
 
         else {
-          if (!SelectNextInput())
+          if (!ActivateNextInput())
             event.Skip();
           else
             Refresh();
@@ -2246,25 +2220,6 @@ bool MathCtrl::CanEdit() {
   return true;
 }
 
-MathCell* MathCtrl::GetLastCell() {
-  if (m_last == NULL)
-    m_last = m_tree;
-  if (m_last == NULL)
-    return NULL;
-  while (m_last->m_next)
-    m_last = (GroupCell *)m_last->m_next;
-  return m_last;
-}
-
-MathCell* MathCtrl::GetLastPrompt() {
-  GroupCell *tmp = m_last;
-
-  if (tmp == NULL)
-    return NULL;
-
-  return tmp->GetPrompt();
-}
-
 void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   if (m_activeCell != NULL) {
   ((EditorCell *) m_activeCell)->SelectWordUnderCaret();
@@ -2272,7 +2227,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   }
 }
 
-bool MathCtrl::SelectPrevInput() {
+bool MathCtrl::ActivatePrevInput() {
   if (m_selectionStart == NULL && m_activeCell == NULL)
     return false;
 
@@ -2301,10 +2256,9 @@ bool MathCtrl::SelectPrevInput() {
   if (inpt == NULL)
     return false;
 
-  m_selectionStart = m_selectionEnd = inpt;
-  ScrollToSelectionStart();
+  ScrollToCell(inpt);
 
-  SetActiveCell(m_selectionStart);
+  SetActiveCell(inpt);
   ((EditorCell *)m_activeCell)->CaretToEnd();
 
   Refresh();
@@ -2312,7 +2266,7 @@ bool MathCtrl::SelectPrevInput() {
   return true;
 }
 
-bool MathCtrl::SelectNextInput(bool input) {
+bool MathCtrl::ActivateNextInput(bool input) {
   if (m_selectionStart == NULL && m_activeCell == NULL)
     return false;
 
@@ -2344,20 +2298,17 @@ bool MathCtrl::SelectNextInput(bool input) {
   if (inpt == NULL)
     return false;
 
-  m_selectionStart = m_selectionEnd = inpt;
-  ScrollToSelectionStart();
+  ScrollToCell(inpt);
 
-  if (FindFocus() == this) {
-    SetActiveCell(m_selectionStart);
-    ((EditorCell *)m_activeCell)->CaretToStart();
-  }
+  SetActiveCell(inpt);
+  ((EditorCell *)m_activeCell)->CaretToStart();
 
   Refresh();
 
   return true;
 }
 
-bool MathCtrl::SelectLastInput() {
+bool MathCtrl::ActivateLastInput() {
   if (m_last == NULL)
     return false;
 
@@ -2373,17 +2324,15 @@ bool MathCtrl::SelectLastInput() {
   if (inpt == NULL)
     return false;
 
-  m_selectionStart = m_selectionEnd = inpt;
+  ScrollToCell(inpt);
 
-  ScrollToSelectionStart();
-
-  SetActiveCell(m_selectionStart);
+  SetActiveCell(inpt);
   ((EditorCell *)m_activeCell)->CaretToStart();
 
   return true;
 }
 
-bool MathCtrl::SelectFirstInput() {
+bool MathCtrl::ActivateFirstInput() {
   GroupCell *tmp = m_tree;
   if (tmp == NULL)
       return false;
@@ -2397,30 +2346,8 @@ bool MathCtrl::SelectFirstInput() {
   if (input == NULL)
     return false;
 
-  m_selectionStart = m_selectionEnd = input;
-  Refresh();
-
-  return true;
-}
-
-bool MathCtrl::SelectPrompt() {
-  GroupCell *tmp = m_last;
-
-  if (m_selectionStart != NULL)
-    tmp = (GroupCell *)m_selectionStart->GetParent();
-  else if (m_activeCell != NULL)
-    tmp = (GroupCell *)m_activeCell->GetParent();
-  else if (m_hCaretActive) {
-    if (m_hCaretPosition == NULL)
-      tmp = (GroupCell *)m_tree;
-    else
-      tmp = (GroupCell *)m_hCaretPosition->GetParent()->m_next;
-  }
-
-  if (tmp == NULL)
-    return false;
-
-  m_selectionStart = m_selectionEnd = tmp;
+  ScrollToCell(input);
+  SetActiveCell(input);
   Refresh();
 
   return true;

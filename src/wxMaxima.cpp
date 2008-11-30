@@ -375,7 +375,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
   }
 }
 
-void wxMaxima::SendMaxima(wxString s, bool out, bool silent, bool split)
+void wxMaxima::SendMaxima(wxString s)
 {
   if (!m_isConnected) {
     ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
@@ -392,22 +392,8 @@ void wxMaxima::SendMaxima(wxString s, bool out, bool silent, bool split)
   s.Replace(wxT("\x00B3"), wxT("^3"));
 #endif
 
-  if (s.StartsWith(wxT("<ml>"))) {
-    s = s.SubString(4, s.Length());
-    s.Replace(wxT("<nl>"), wxT("\n"));
-  }
-
-  if (out) {
-    wxString s1(s);
-    if (split)
-      s1 = SplitInput(s);
-    DoRawConsoleAppend(s1, MC_TYPE_INPUT, false);
-  }
-
-  if (silent) {
-    SetStatusText(_("Maxima is calculating"), 1);
-    m_dispReadOut = false;
-  }
+  SetStatusText(_("Maxima is calculating"), 1);
+  m_dispReadOut = false;
 
   s.Replace(wxT("\n"), wxEmptyString);
   s.Append(wxT("\n"));
@@ -682,9 +668,9 @@ void wxMaxima::KillMaxima()
   if (m_pid < 0)
   {
     if (m_inLispMode)
-      SendMaxima(wxT("($quit)"), false);
+      SendMaxima(wxT("($quit)"));
     else
-      SendMaxima(wxT("quit();"), false);
+      SendMaxima(wxT("quit();"));
     return ;
   }
   wxProcess::Kill(m_pid, wxSIGKILL);
@@ -802,7 +788,7 @@ void wxMaxima::ReadPrompt()
           m_inInsertMode = false;
           m_console->SetInsertPoint(NULL);
           m_console->SetSelection(tmp);
-          if (m_console->SelectNextInput(true)) {
+          if (m_console->ActivateNextInput(true)) {
             m_console->Refresh();
             m_console->EnableEdit();
             ReEvaluateSelection();
@@ -985,26 +971,24 @@ void wxMaxima::SetupVariables()
 {
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix +
-             wxT("\")"), false, false);
+             wxT("\")"));
   SendMaxima(wxT(":lisp-quiet (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxT("\")"), false, false);
-  SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"), false, false);
-  SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"), false, false);
+             wxT("\")"));
+  SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"));
+  SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"));
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"),
-             false, false);
+  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"));
 #elif defined (__WXMAC__)
   wxString cwd = wxGetCwd();
   cwd = cwd + wxT("/") + wxT(MACPREFIX);
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"),
-             false, false);
+  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"));
 #else
   wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
-             wxT("/share/wxMaxima/wxmathml\")"), false, false);
+             wxT("/share/wxMaxima/wxmathml\")"));
 #endif
 }
 
@@ -1632,7 +1616,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
   case menu_select_last:
-    if (m_console->SelectLastInput())
+    if (m_console->ActivateLastInput())
     {
       m_console->SetFocus();
       return ;
@@ -1666,8 +1650,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_paste_input:
     {
-      if (!m_console->SelectPrompt())
-        break;
       if (wxTheClipboard->Open()) {
         if (wxTheClipboard->IsSupported( wxDF_TEXT ))
         {
@@ -1697,7 +1679,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           for (int i=0; i<inp.Count(); i++)
             DoPrependCell(tb_insert_input, inp[i], i==0);
 
-          m_console->SelectPrevInput();
+          m_console->ActivatePrevInput();
           m_console->ScrollToSelectionStart();
 
         }
@@ -1795,7 +1777,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   case menu_reeval_all:
     m_console->SetActiveCell(NULL);
     m_console->SetHCaret(NULL, false);
-    if (m_console->SelectFirstInput()) {
+    if (m_console->ActivateFirstInput()) {
       m_inReevalMode = true;
       ReEvaluateSelection();
     }
@@ -3068,18 +3050,15 @@ void wxMaxima::ReEvaluateSelection()
     group->GetPrompt()->SetValue(m_lastPrompt);
     m_console->SetWorkingGroup(group);
 
-    SendMaxima(text, false, true, false);
+    SendMaxima(text);
   }
 }
 
 void wxMaxima::PrependCell(wxCommandEvent& event)
 {
-  if (!m_console->SelectPrompt())
-    return ;
-
   DoPrependCell(event.GetId());
 
-  m_console->SelectPrevInput();
+  m_console->ActivatePrevInput();
 }
 
 void wxMaxima::DoPrependCell(int id, wxString value, bool refresh) {

@@ -115,8 +115,6 @@ public:
   void BreakUpCells();
   void BreakUpCells(MathCell *cell);
   void UnBreakUpCells();
-  MathCell* GetLastCell();
-  MathCell* GetLastPrompt();
   void SetInsertPoint(MathCell* insert)
   {
     if (insert == NULL)
@@ -150,13 +148,12 @@ public:
   {
     m_editingEnabled = enable;
   }
-  bool SelectPrevInput();
-  bool SelectNextInput(bool input = false);
-  bool SelectPrompt();
+  bool ActivatePrevInput();
+  bool ActivateNextInput(bool input = false);
   void ScrollToSelectionStart();
   void ScrollToCell(MathCell *cell);
-  bool SelectLastInput();
-  bool SelectFirstInput();
+  bool ActivateLastInput();
+  bool ActivateFirstInput();
   void SetActiveCell(MathCell *cell);
   MathCell* GetActiveCell()
   {

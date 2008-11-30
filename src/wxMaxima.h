@@ -65,10 +65,7 @@ public:
   {
     m_openFile = file;
   }
-  void SendMaxima(wxString s,
-                  bool out = true,      // send s to console?
-                  bool silent = true,   // for initial setup
-                  bool split = true);   // add new-line characters
+  void SendMaxima(wxString s);
   bool ReadBatchFile(wxString file);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
