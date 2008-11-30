@@ -63,7 +63,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_selectionInGC = NULL;
   m_last = NULL;
   m_insertPoint = NULL;
-  m_hCaretActive = true;
+  m_hCaretActive = false;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_activeCell = NULL;
@@ -126,7 +126,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
   // Draw content
-  if (m_tree != NULL) {
+  if (m_tree != NULL)
+  {
     wxPoint point;
     point.x = MC_BASE_INDENT;
     point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
@@ -136,7 +137,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     CellParser parser(dcm);
     parser.SetBouns(top, bottom);
 
-    while (tmp != NULL) {
+    while (tmp != NULL)
+    {
       tmp->m_currentPoint.x = point.x;
       tmp->m_currentPoint.y = point.y;
       if (tmp->DrawThisCell(parser, point))
@@ -180,41 +182,41 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       else {
 
-      // We have a selection with click
-      if (m_selectWholeLine) {
-        if (m_selectionStart == m_selectionEnd) {
-          if (m_selectionStart->GetType() != MC_TYPE_SLIDE && m_activeCell != tmp)
-            m_selectionStart->DrawBoundingBox(dcm);
-        } else {
-          while (tmp != NULL && tmp->m_isBroken)
-            tmp = tmp->m_nextToDraw;
-          if (tmp != NULL)
-            tmp->DrawBoundingBox(dcm, true);
-          while (tmp != NULL) {
+        // We have a selection with click
+        if (m_selectWholeLine) {
+          if (m_selectionStart == m_selectionEnd) {
+            if (m_selectionStart->GetType() != MC_TYPE_SLIDE && m_activeCell != tmp)
+              m_selectionStart->DrawBoundingBox(dcm);
+          } else {
+            while (tmp != NULL && tmp->m_isBroken)
+              tmp = tmp->m_nextToDraw;
+            if (tmp != NULL)
+              tmp->DrawBoundingBox(dcm, true);
+            while (tmp != NULL) {
+              tmp = tmp->m_nextToDraw;
+              if (tmp == NULL)
+                break;
+              if (tmp->BreakLineHere() && !tmp->m_isBroken)
+                tmp->DrawBoundingBox(dcm, true);
+              if (tmp == m_selectionEnd)
+                break;
+            }
+          }
+        }
+        // We have a selection by dragging
+        else {
+          while (1) {
+            if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
+                m_activeCell != tmp)
+              tmp->DrawBoundingBox(dcm, false);
+            if (tmp == m_selectionEnd)
+              break;
             tmp = tmp->m_nextToDraw;
             if (tmp == NULL)
-              break;
-            if (tmp->BreakLineHere() && !tmp->m_isBroken)
-              tmp->DrawBoundingBox(dcm, true);
-            if (tmp == m_selectionEnd)
               break;
           }
         }
       }
-      // We have a selection by dragging
-      else {
-        while (1) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
-              m_activeCell != tmp)
-            tmp->DrawBoundingBox(dcm, false);
-          if (tmp == m_selectionEnd)
-            break;
-          tmp = tmp->m_nextToDraw;
-          if (tmp == NULL)
-            break;
-        }
-      }
-    }
     }
   }
   //
@@ -250,8 +252,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
   SetActiveCell(NULL);
 
   GroupCell *tmp = m_insertPoint;
-  //if (m_hCaretActive && newCell->GetType() != MC_TYPE_ERROR)
-  //  tmp = m_hCaretPosition;
 
   if (tmp == NULL)
     tmp = m_last;
@@ -269,15 +269,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
   newCell->ForceBreakLine(forceNewLine);
 
   if (newCell->GetType() == MC_TYPE_MAIN_PROMPT) {
-    SetWorkingGroup(NULL);
     GroupCell *newGroup = new GroupCell;
     newGroup->SetInput(newCell);
-    if (newCell->GetValue() != wxT("/*")) {
-      EditorCell *input = new EditorCell();
-      input->SetType(MC_TYPE_INPUT);
-      newGroup->AppendInput(input);
-      SetActiveCell(input);
-    }
     if (m_last == NULL) {
       m_last = m_tree = newGroup;
     }
@@ -290,7 +283,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 
   else if (newCell->GetType() == MC_TYPE_INPUT) {
     tmp->AppendInput(newCell);
-    SetWorkingGroup(tmp);
   }
 
   else {
@@ -301,6 +293,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
     tmp->AppendOutput(newCell);
     if (newCell->GetType() == MC_TYPE_PROMPT) {
       m_workingGroup = tmp;
+      ScrollToCell(tmp->GetParent());
       OpenHCaret();
     }
   }
@@ -319,80 +312,13 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine) {
 }
 
 /***
- * Append a GroupCell - called from OpenHCaret
- */
-GroupCell* MathCtrl::AppendGroup(GroupCell *where, int type, wxString value) {
-
-  GroupCell *newGroup = new GroupCell;
-
-  TextCell *prompt = new TextCell;
-
-
-  prompt->SetValue(wxT(">> "));
-  prompt->SetType(MC_TYPE_MAIN_PROMPT);
-
-  newGroup->SetInput(prompt);
-
-  EditorCell *newCell = new EditorCell;
-  newCell->SetType(type);
-  newCell->SetValue(value);
-
-  newGroup->AppendInput(newCell);
-
-  newGroup->SetParent(newGroup, false);
-
-  if ((where == NULL) && (m_last == NULL)) { // first cell inserted into document
-    m_tree = m_last = newGroup;
-  }
-  else if (where == NULL) { // at the beginning
-    newGroup->m_next = m_tree;
-    newGroup->m_nextToDraw = m_tree;
-    m_tree->m_previous = newGroup;
-    m_tree->m_previousToDraw = newGroup;
-    m_tree = newGroup;
-  }
-  else if (where == m_last) { // at the end
-    newGroup->m_next =       NULL;
-    newGroup->m_nextToDraw = NULL;
-    newGroup->m_previous =       m_last;
-    newGroup->m_previousToDraw = m_last;
-    m_last->m_next = newGroup;
-    m_last->m_nextToDraw = newGroup;
-    m_last = newGroup;
-  }
-  else { //between
-    newGroup->m_previous = where;
-    newGroup->m_previousToDraw = where;
-    newGroup->m_next = where->m_next;
-    newGroup->m_nextToDraw = where->m_next;
-
-    where->m_next->m_previous = newGroup;
-    where->m_next->m_previousToDraw = newGroup;
-    
-    where->m_next = newGroup;
-    where->m_nextToDraw = newGroup;
-
-  }
-
-  Recalculate(false);
-  SetActiveCell(NULL);
-  ScrollToSelectionStart(false);
-  
-  return newGroup;
-}
-
-
-/***
  * Prepend a new cell
  */
-void MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend) {
+GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend) {
   GroupCell *where;
 
-  if (m_selectionStart != NULL) {
+  if (m_selectionStart != NULL)
     where = (GroupCell *)m_selectionStart->GetParent();
-    if (!prepend && where->m_next != NULL)
-      where = (GroupCell *)where->m_next;
-  }
 
   else if (m_hCaretActive) {
     if (m_hCaretPosition == NULL)
@@ -428,35 +354,57 @@ void MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend
 
   newGroup->SetParent(newGroup, false);
 
-  if (where == m_tree) {
-    newGroup->m_next = m_tree;
-    newGroup->m_nextToDraw = m_tree;
-    m_tree->m_previous = newGroup;
-    m_tree->m_previousToDraw = newGroup;
-    m_tree = newGroup;
-
-    Recalculate(false);
+  if (m_tree == NULL) {
+    m_tree = m_last = newGroup;
   }
-
   else {
-    where->m_previous->m_next = newGroup;
-    where->m_previous->m_nextToDraw = newGroup;
-    newGroup->m_previous = where->m_previous;
-    newGroup->m_previousToDraw = where->m_previous;
+    if (where == m_tree && prepend) {
+      newGroup->m_next = m_tree;
+      newGroup->m_nextToDraw = m_tree;
+      m_tree->m_previous = newGroup;
+      m_tree->m_previousToDraw = newGroup;
+      m_tree = newGroup;
+    }
 
-    newGroup->m_next = where;
-    newGroup->m_nextToDraw = where;
-    where->m_previous = newGroup;
-    where->m_previousToDraw = newGroup;
+    else {
+      if (prepend) {
+        where->m_previous->m_next = newGroup;
+        where->m_previous->m_nextToDraw = newGroup;
+        newGroup->m_previous = where->m_previous;
+        newGroup->m_previousToDraw = where->m_previous;
 
-    Recalculate(false);
+        newGroup->m_next = where;
+        newGroup->m_nextToDraw = where;
+        where->m_previous = newGroup;
+        where->m_previousToDraw = newGroup;
+      }
+      else {
+        if (where->m_next != NULL)
+          where->m_next->m_previous = newGroup;
+        if (where->m_nextToDraw != NULL)
+          where->m_next->m_previousToDraw = newGroup;
+        newGroup->m_next = where->m_next;
+        newGroup->m_nextToDraw = where->m_nextToDraw;
+
+        newGroup->m_previous = where;
+        newGroup->m_previousToDraw = where;
+        where->m_next = newGroup;
+        where->m_nextToDraw = newGroup;
+
+        if (where == m_last)
+          m_last = newGroup;
+      }
+    }
   }
 
   SetActiveCell(NULL);
-  ScrollToSelectionStart(false);
+
+  Recalculate(false);
 
   if (refresh)
     Refresh();
+
+  return newGroup;
 }
 
 /***
@@ -516,7 +464,10 @@ void MathCtrl::RecalculateSize() {
 
   wxPoint point;
   point.x = MC_BASE_INDENT;
-  point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
+  point.y = MC_BASE_INDENT ;
+
+  if (tmp != NULL)
+    point.y += m_tree->GetMaxCenter();
 
   while (tmp != NULL) {
     tmp->m_currentPoint.x = point.x;
@@ -557,6 +508,7 @@ void MathCtrl::ClearWindow() {
     m_last = NULL;
     DestroyTree();
   }
+  AdjustSize();
   Refresh();
   Scroll(0, 0);
 }
@@ -887,142 +839,6 @@ void MathCtrl::SelectRect() {
 }
 
 /***
- * Do selection when selecting by click
- */
-void MathCtrl::SelectPoint(wxPoint& point) {
-  if (m_tree == NULL)
-    return;
-
-  // If we have active cell handle it special.
-  if (m_activeCell != NULL) {
-    if (m_activeCell->ContainsPoint(m_down)) {
-      wxClientDC dc(this);
-      m_activeCell->SelectPointText(dc, m_down);
-      m_switchDisplayCaret = false;
-      Refresh();
-      return;
-    } else {
-      SetActiveCell(NULL);
-    }
-  }
-
-  GroupCell* tmp = NULL;
-  m_selectWholeLine = true;
-
-  //
-  // Which cell did we select.
-  //
-  tmp = m_tree;
-  wxRect rect;
-  GroupCell * clickedBeforeGC = NULL;
-  while (tmp != NULL) { // go through all groupcells
-
-    if (tmp->ContainsPoint(point) || (tmp->HideRect()).Contains(point))
-      break;
-
-    rect = tmp->GetRect();
-    if (point.y < rect.GetTop() )
-    {
-      clickedBeforeGC = (GroupCell *)tmp;
-      break;
-    }
-
-    tmp = (GroupCell *)tmp->m_next;
-  }
-
-  m_hCaretActive = false;
-  m_hCaretPosition = NULL;
-
-  if (clickedBeforeGC != NULL) // clicked between groupcells
-  {
-    if (m_selectionStart != NULL) {
-      m_selectionStart = NULL;
-      m_selectionEnd = NULL;
-    }
-    m_hCaretPosition = (GroupCell *) clickedBeforeGC->m_previous;
-    if (m_hCaretPosition != m_last)
-      m_hCaretActive = true;
-    else
-      m_hCaretPosition = NULL;
-    Refresh();
-    return;
-  }
-
-  // clicked below last groupcell
-  else if (point.y > (m_last->GetRect()).GetBottom())
-  {
-    if (m_workingGroup == NULL) {
-      MathCell *input = m_last->GetInput();
-      if (input != NULL) {
-        SetActiveCell(input);
-        return;
-      }
-    }
-  }
-
-  // We did no select anything.
-  if (tmp == NULL) {
-    if (m_selectionStart != NULL) {
-      m_selectionStart = NULL;
-      m_selectionEnd = NULL;
-      Refresh();
-    }
-    return;
-  }
-
-  m_selectionStart = m_selectionEnd = NULL;
-  MathCell *tr;
-  tr = tmp->GetPrompt();
-
-  // Check if we clicked on prompt.
-  if (tr != NULL && tr->ContainsPoint(point)) {
-    m_selectionStart = m_selectionEnd = tr;
-  }
-
-  // Check if we cliked on input.
-  if (m_selectionStart == NULL) {
-    tr = tmp->GetInput();
-    if (tr != NULL && tr->ContainsPoint(point)) {
-      m_selectionStart = m_selectionEnd = tr;
-      if (m_workingGroup == NULL) {
-        SetActiveCell(tr);
-        wxClientDC dc(this);
-        m_activeCell->SelectPointText(dc, m_down);
-      }
-    }
-  }
-
-  // Check if we clicked on label.
-  if (m_selectionStart == NULL) {
-    tr = tmp->GetLabel();
-    if (tr != NULL && tr->ContainsPoint(point)) {
-      m_selectionStart = m_selectionEnd = tr;
-      if (tr->IsEditable() && m_workingGroup == NULL) {
-        SetActiveCell(tr);
-        wxClientDC dc(this);
-        m_activeCell->SelectPointText(dc, m_down);
-      }
-    }
-  }
-
-  // Check if we clicked on the hide box
-  if (tmp->HideRect().Contains(m_down)) {
-    tmp->SwitchHide();
-    tmp->ResetData();
-    Recalculate(false);
-  }
-
-  // Check if we clicked on output.
-  if (m_selectionStart == NULL) {
-    if ((tmp->GetOutputRect()).Contains(point)) {
-      tmp->SelectOutput(&m_selectionStart, &m_selectionEnd);
-    }
-  }
-
-  Refresh();
-}
-
-/***
  * Get the string representation of the selection
  */
 wxString MathCtrl::GetString(bool lb) {
@@ -1143,9 +959,6 @@ bool MathCtrl::CanDeleteSelection() {
   if (start == NULL || end == NULL)
     return false;
 
-  if (end->m_next == NULL)
-    return false;
-
   return true;
 }
 
@@ -1171,16 +984,18 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   GroupCell *newSelection = (GroupCell *)end->m_next;
 
-  if (end->m_next == NULL)
-    return;
+  if (end == m_last)
+    m_last = (GroupCell *)start->m_previous;
 
   if (start == m_tree) {
     if (end->m_previous != NULL) {
       end->m_previous->m_nextToDraw = NULL;
       end->m_previous->m_next = NULL;
     }
-    end->m_next->m_previous = NULL;
-    end->m_next->m_previousToDraw = NULL;
+    if (end->m_next != NULL) {
+      end->m_next->m_previous = NULL;
+      end->m_next->m_previousToDraw = NULL;
+    }
 
     m_tree = (GroupCell *)end->m_next;
     end->m_next = NULL;
@@ -1190,18 +1005,20 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   else {
     start->m_previous->m_next = end->m_next;
     start->m_previous->m_nextToDraw = end->m_next;
-    end->m_next->m_previous = start->m_previous;
-    end->m_next->m_previousToDraw = start->m_previous;
-    end->m_next = NULL;
+    if (end->m_next != NULL) {
+      end->m_next->m_previous = start->m_previous;
+      end->m_next->m_previousToDraw = start->m_previous;
+      end->m_next = NULL;
+    }
     DestroyTree(start);
   }
 
-
-  if (newSelection != NULL) {
-    m_selectionStart = m_selectionEnd = NULL;
+  m_selectionStart = m_selectionEnd = NULL;
+  if (newSelection != NULL)
     m_hCaretPosition = (GroupCell *)newSelection->m_previous;
-    m_hCaretActive = true;
-  }
+  else
+    m_hCaretPosition = m_last;
+  m_hCaretActive = true;
 
   Recalculate(false);
   AdjustSize(false);
@@ -1226,30 +1043,34 @@ void MathCtrl::OpenHCaret(wxString txt)
     return;
   }
 
-  if (!m_hCaretActive)
-    return;
-/*
+  if (m_activeCell != NULL) {
+    m_hCaretPosition = (GroupCell *)m_activeCell->GetParent();
+    m_hCaretActive = true;
+    SetActiveCell(NULL);
+  }
+
+  if (!m_hCaretActive) {
+    if (m_last == NULL)
+      return;
+    m_hCaretPosition = (GroupCell *)m_last;
+    m_hCaretActive = true;
+  }
+
   if (m_hCaretPosition != NULL) {
     SetSelection(m_hCaretPosition);
-    PrependGroup(MC_TYPE_INPUT, txt, false, false);
-    SelectNextInput();
+    GroupCell *group = PrependGroup(MC_TYPE_INPUT, txt, false, false);
+    SetActiveCell(group->GetEditable());
     ((EditorCell *)m_activeCell)->CaretToEnd();
+    ScrollToCell(group);
   }
   else {
     SetSelection(m_tree);
-    PrependGroup(MC_TYPE_INPUT, txt, false, true);
-    SelectPrevInput();
-    if (m_activeCell != NULL)
-      ((EditorCell *)m_activeCell)->CaretToEnd();
+    GroupCell *group = PrependGroup(MC_TYPE_INPUT, txt, false, true);
+    SetActiveCell(group->GetEditable());
+    ((EditorCell *)m_activeCell)->CaretToEnd();
+    ScrollToCell(group);
   }
-  
-  */
-  
-  GroupCell *newgroup = AppendGroup(m_hCaretPosition, MC_TYPE_INPUT, txt);
-  MathCell *editor = newgroup->GetEditable();
-  SetActiveCell(editor);
-  ((EditorCell *)editor)->CaretToEnd();
-  
+
   Refresh();
 }
 
@@ -1482,7 +1303,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               }
             }
             if (m_hCaretPositionEnd != NULL)
-              ScrollToCell(m_hCaretPositionEnd, true);
+              ScrollToCell(m_hCaretPositionEnd);
           }
 
           else {
@@ -1524,7 +1345,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
               if (m_hCaretPosition == NULL)
                 m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
-              else if (m_hCaretPosition->m_next != m_last)
+              else if (m_hCaretPosition->m_next != NULL)
                 m_hCaretPositionStart = m_hCaretPositionEnd = (GroupCell *)m_hCaretPosition->m_next;
             }
             else {
@@ -1535,7 +1356,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               }
             }
             if (m_hCaretPositionEnd != NULL)
-              ScrollToCell(m_hCaretPositionEnd, false);
+              ScrollToCell(m_hCaretPositionEnd);
           }
 
           else {
@@ -1570,6 +1391,9 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 Refresh();
               }
             }
+
+            else
+              event.Skip();
           }
         }
 
@@ -1601,7 +1425,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             if (input != NULL)
               m_selectionStart = m_selectionEnd = input;
           }
-          ScrollToSelectionStart(true);
+          ScrollToSelectionStart();
           Refresh();
         }
         else
@@ -1621,7 +1445,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           } else {
             group->SelectOutput(&m_selectionStart, &m_selectionEnd);
           }
-          ScrollToSelectionStart(false);
+          ScrollToSelectionStart();
           Refresh();
         }
         else
@@ -1714,11 +1538,11 @@ void MathCtrl::AdjustSize(bool scroll) {
   GetClientSize(&clientWidth, &clientHeight);
   if (m_tree != NULL)
     GetMaxPoint(&width, &height);
-  // when window is scrolled all the way down, document occupies top 1/8 of clientHeight 
-  height += clientHeight - (int)(1.0/8.0*(float)clientHeight); 
+  // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
+  height += clientHeight - (int)(1.0/8.0*(float)clientHeight);
   virtualHeight = MAX(clientHeight  + 10 , height); // ensure we always have VSCROLL active
 
-  SetVirtualSize(width + 9, virtualHeight);
+  SetVirtualSize(width, virtualHeight);
   SetScrollRate(SCROLL_UNIT, SCROLL_UNIT);
   if (scroll && height > clientHeight) {
     if (m_scrollTo > -1)
@@ -2480,7 +2304,7 @@ bool MathCtrl::SelectPrevInput() {
     return false;
 
   m_selectionStart = m_selectionEnd = inpt;
-  ScrollToSelectionStart(true);
+  ScrollToSelectionStart();
 
   SetActiveCell(m_selectionStart);
   ((EditorCell *)m_activeCell)->CaretToEnd();
@@ -2523,7 +2347,7 @@ bool MathCtrl::SelectNextInput(bool input) {
     return false;
 
   m_selectionStart = m_selectionEnd = inpt;
-  ScrollToSelectionStart(false);
+  ScrollToSelectionStart();
 
   if (FindFocus() == this) {
     SetActiveCell(m_selectionStart);
@@ -2604,11 +2428,11 @@ bool MathCtrl::SelectPrompt() {
   return true;
 }
 
-void MathCtrl::ScrollToSelectionStart(bool top) {
-  ScrollToCell(m_selectionStart, top);
+void MathCtrl::ScrollToSelectionStart() {
+  ScrollToCell(m_selectionStart);
 }
 
-void MathCtrl::ScrollToCell(MathCell *cell, bool top)
+void MathCtrl::ScrollToCell(MathCell *cell)
 {
   if (cell == NULL)
     return;
@@ -2632,14 +2456,11 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool top)
   GetSize(&width, &height);
 
   view_y *= SCROLL_UNIT;
+  if (cellY - cellCenter - SCROLL_UNIT < view_y)
+    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
+  else if (cellY + cellDrop + SCROLL_UNIT > view_y + height - height / 10)
+    Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/SCROLL_UNIT + 4, 0));
 
-  if ((cellY - cellCenter - SCROLL_UNIT < view_y) || (cellY + cellDrop
-      + SCROLL_UNIT > view_y + height)) {
-    if (top)
-      Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
-    else
-      Scroll(-1, MAX((cellY - height + cellDrop)/SCROLL_UNIT + 4, 0));
-  }
   Refresh();
 }
 

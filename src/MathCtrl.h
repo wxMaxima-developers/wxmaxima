@@ -153,8 +153,8 @@ public:
   bool SelectPrevInput();
   bool SelectNextInput(bool input = false);
   bool SelectPrompt();
-  void ScrollToSelectionStart(bool top = true);
-  void ScrollToCell(MathCell *cell, bool top = true);
+  void ScrollToSelectionStart();
+  void ScrollToCell(MathCell *cell);
   bool SelectLastInput();
   bool SelectFirstInput();
   void SetActiveCell(MathCell *cell);
@@ -167,18 +167,18 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
-  void PrependGroup(int id, wxString value, bool refresh, bool prepend = true);
+  GroupCell *PrependGroup(int id, wxString value, bool refresh, bool prepend = true);
   bool IsActiveInLast() {
     return m_activeCell != NULL && m_activeCell->GetParent() == m_last;
   }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetHCaret(MathCell *where, bool active = true);
+  void OpenHCaret(wxString txt = wxEmptyString);
+  void ActivateHCaret(bool active) { m_hCaretActive = active; m_hCaretPosition = NULL; }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
-  void OpenHCaret(wxString txt = wxEmptyString);
-  GroupCell* AppendGroup(GroupCell *where, int type, wxString value);
   void GetMaxPoint(int* width, int* height);
   void BreakLines();
   void OnTimer(wxTimerEvent& event);
@@ -193,7 +193,6 @@ protected:
   void OnDoubleClick(wxMouseEvent& event);
   void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
-  void SelectPoint(wxPoint& point);
   void SelectRect();
   void AdjustSize(bool scroll = false);
   void OnEraseBackground(wxEraseEvent& event)

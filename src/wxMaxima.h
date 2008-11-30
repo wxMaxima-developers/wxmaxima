@@ -73,6 +73,7 @@ public:
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
+  void MenuCommand(wxString cmd);                  //
   void FileMenu(wxCommandEvent& event);            //
   void MaximaMenu(wxCommandEvent& event);          //
   void AlgebraMenu(wxCommandEvent& event);         //
