@@ -1273,7 +1273,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
           else {
             if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionStart->m_previous);
+              SetHCaret(m_selectionStart->GetParent()->m_previous);
             }
             else if (m_hCaretPosition != NULL)
             {
@@ -1297,7 +1297,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
         else {
           if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-            SetHCaret(m_selectionStart->m_previous);
+            SetHCaret(m_selectionStart->GetParent()->m_previous);
           }
           else if (!ActivatePrevInput())
             event.Skip();
@@ -1332,7 +1332,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
           else {
             if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionEnd);
+              SetHCaret(m_selectionEnd->GetParent());
             }
             else if (m_hCaretPosition == NULL)
             {
@@ -1373,60 +1373,14 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
         else {
           if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionEnd);
-            }
+            SetHCaret(m_selectionEnd->GetParent());
+          }
           else if (!ActivateNextInput())
             event.Skip();
           else
             Refresh();
         }
 
-        break;
-
-      case WXK_LEFT:
-        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
-        if (m_selectionStart != NULL) {
-          GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
-          if (m_selectionStart->GetType() == MC_TYPE_INPUT && group->m_previous != NULL) {
-            group = (GroupCell *)group->m_previous;
-            MathCell *start, *end;
-            group->SelectOutput(&start, &end);
-            if (start != NULL && end != NULL) {
-              m_selectionStart = start;
-              m_selectionEnd = end;
-            }
-          }
-          else {
-            MathCell *input = group->GetInput();
-            if (input != NULL)
-              m_selectionStart = m_selectionEnd = input;
-          }
-          ScrollToSelectionStart();
-          Refresh();
-        }
-        else
-          event.Skip();
-        break;
-
-      case WXK_RIGHT:
-        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
-        if (m_selectionStart != NULL) {
-          GroupCell *group = (GroupCell *)m_selectionStart->GetParent();
-          if (m_selectionStart->GetType() == MC_TYPE_TEXT && group->m_next != NULL) {
-            group = (GroupCell *)group->m_next;
-            MathCell *input = group->GetInput();
-            if (input != NULL)
-              m_selectionStart = m_selectionEnd = input;
-          } else {
-            group->SelectOutput(&m_selectionStart, &m_selectionEnd);
-          }
-          ScrollToSelectionStart();
-          Refresh();
-        }
-        else
-          event.Skip();
         break;
 
       default:
