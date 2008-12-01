@@ -771,8 +771,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
       }
 
       if (tmp == NULL) { // below last cell, handle with care
-        m_hCaretActive = true;
-        m_hCaretPosition = (GroupCell *)m_last;
+        SetHCaret(m_last);
         m_selectionStart = m_selectionEnd = NULL;
         if (st != m_selectionStart || en != m_selectionEnd)
           Refresh();
@@ -791,8 +790,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
       if (tmp == NULL)
         m_selectionEnd = m_last;
       if (m_selectionEnd == (m_selectionStart->m_previous)) {
-      m_hCaretActive = true;
-      m_hCaretPosition = (GroupCell *)m_selectionEnd;
+      SetHCaret(m_selectionEnd);
       m_selectionStart = m_selectionEnd = NULL;
       }
       else {
@@ -996,10 +994,9 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   m_selectionStart = m_selectionEnd = NULL;
   if (newSelection != NULL)
-    m_hCaretPosition = (GroupCell *)newSelection->m_previous;
+    SetHCaret(newSelection->m_previous);
   else
-    m_hCaretPosition = m_last;
-  m_hCaretActive = true;
+    SetHCaret(m_last);
 
   Recalculate();
   Refresh();
@@ -1031,8 +1028,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   if (!m_hCaretActive) {
     if (m_last == NULL)
       return;
-    m_hCaretPosition = (GroupCell *)m_last;
-    m_hCaretActive = true;
+    SetHCaret(m_last);
   }
 
   if (m_hCaretPosition != NULL) {
@@ -1094,11 +1090,9 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
 
-      else {
-        m_hCaretPosition = (GroupCell *)m_activeCell->GetParent();
-        SetActiveCell(NULL);
-        m_hCaretActive = true;
-      }
+      else
+        SetHCaret(m_activeCell->GetParent());
+
       break;
 
     default:
@@ -1114,19 +1108,14 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     if (event.GetKeyCode() == WXK_UP &&
         ((EditorCell *)m_activeCell)->CaretAtStart() &&
         !event.ShiftDown()) { // don't exit the cell if we are making a selection
-      m_hCaretPosition = (GroupCell *)(m_activeCell->GetParent())->m_previous;
-      m_hCaretActive = true;
-      SetActiveCell(NULL);
+      SetHCaret((m_activeCell->GetParent())->m_previous);
       return;
     }
 
     if (event.GetKeyCode() == WXK_DOWN &&
         ((EditorCell *)m_activeCell)->CaretAtEnd() &&
         !event.ShiftDown()) {
-      MathCell *tmp = m_activeCell->GetParent();
-      m_hCaretPosition = (GroupCell *)tmp;
-      m_hCaretActive = true;
-      SetActiveCell(NULL);
+      SetHCaret(m_activeCell->GetParent());
       return;
     }
 
