@@ -614,28 +614,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       break;
 
     m_isDirty = true;
-
+    bool insertLetter = true;
+    // if we have a selection either put parens around it (and don't write the letter afterwards)
+    // od delete selection and write letter (insertLetter = true).
     if (m_selectionStart > -1) {
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
-      m_text = m_text.SubString(0, start - 1) +
-               m_text.SubString(end, m_text.Length());
-      m_positionOfCaret = start;
-      m_selectionEnd = m_selectionStart = -1;
-    }
-
-    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-#if wxUSE_UNICODE
-             event.GetUnicodeKey() +
-#else
-             wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
-#endif
-             m_text.SubString(m_positionOfCaret, m_text.Length());
-
-    m_positionOfCaret++;
-
-    if (m_matchParens)
-    {
 #if wxUSE_UNICODE
       switch (event.GetUnicodeKey())
 #else
@@ -643,24 +627,90 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 #endif
       {
       case '(':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 wxT(")") +
-                 m_text.SubString(m_positionOfCaret, m_text.Length());
-        break;
-      case '[':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 wxT("]") +
-                 m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+                 m_text.SubString(start, end - 1) + wxT(")") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;  insertLetter = false;
         break;
       case '{':
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 wxT("}") +
-                 m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+                 m_text.SubString(start, end - 1) + wxT("}") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;  insertLetter = false;
+        break;
+      case '[':
+        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+                 m_text.SubString(start, end - 1) + wxT("]") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;  insertLetter = false;
+        break;
+      case ')':
+        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+                 m_text.SubString(start, end - 1) + wxT(")") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = end + 2; insertLetter = false;
+        break;
+      case '}':
+        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+                 m_text.SubString(start, end - 1) + wxT("}") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = end + 2; insertLetter = false;
+        break;
+      case ']':
+        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+                 m_text.SubString(start, end - 1) + wxT("]") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = end + 2; insertLetter = false;
+        break;
+      default: // delete selection
+        m_text = m_text.SubString(0, start - 1) +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;
         break;
       }
-    }
+      m_selectionEnd = m_selectionStart = -1; // reset selection
+    } // end if (m_selectionStart > -1)
+
+// insert letter if we didnt insert brackets around selection
+  if (insertLetter) {
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+#if wxUSE_UNICODE
+               event.GetUnicodeKey() +
+#else
+               wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
+#endif
+               m_text.SubString(m_positionOfCaret, m_text.Length());
+
+      m_positionOfCaret++;
+
+      if (m_matchParens)
+      {
+#if wxUSE_UNICODE
+        switch (event.GetUnicodeKey())
+#else
+        switch (event.GetKeyCode())
+#endif
+        {
+        case '(':
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   wxT(")") +
+                   m_text.SubString(m_positionOfCaret, m_text.Length());
+          break;
+        case '[':
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   wxT("]") +
+                   m_text.SubString(m_positionOfCaret, m_text.Length());
+          break;
+        case '{':
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   wxT("}") +
+                   m_text.SubString(m_positionOfCaret, m_text.Length());
+          break;
+        }
+      }
+    } // end if (insertLetter)
     break;
-  }
+  } // end switch (event.GetKeyCode())
 
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
