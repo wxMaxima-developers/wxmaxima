@@ -104,8 +104,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
-
-  m_console->SetFocus();
 }
 
 wxMaxima::~wxMaxima()
@@ -1333,25 +1331,6 @@ wxString wxMaxima::GetDefaultEntry()
   return wxT("%");
 }
 
-void wxMaxima::OnMonitorFile(wxCommandEvent& event)
-{
-  wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
-                                 wxEmptyString, wxEmptyString,
-                                 _("Maxima package (*.mac)|*.mac|"
-                                   "Lisp package (*.lisp)|*.lisp|All|*"),
-                                 wxFD_OPEN);
-  if (file.Length() != 0)
-  {
-    m_monitorFile = file;
-#if defined __WXMSW__
-    m_monitorFile.Replace(wxT("\\"), wxT("/"));
-#endif
-
-    m_monitorTime = wxFileModificationTime(file);
-    SetStatusText(wxT("Monitoring file ") + m_monitorFile);
-  }
-}
-
 void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length())
@@ -1667,11 +1646,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           }
 
           for (int i=0; i<inp.Count(); i++)
-            PrependGroup(inp[i], i==0);
-
-          m_console->ActivatePrevInput();
-          m_console->ScrollToSelectionStart();
-
+            m_console->OpenHCaret(inp[i]);
         }
         wxTheClipboard->Close();
       }
@@ -1766,7 +1741,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_reeval_all:
     m_console->SetActiveCell(NULL);
-    m_console->SetHCaret(NULL, false);
     if (m_console->ActivateFirstInput()) {
       m_inReevalMode = true;
       ReEvaluateSelection();
@@ -3071,10 +3045,6 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   }
 
   m_console->OpenHCaret(wxEmptyString, type);
-}
-
-void wxMaxima::PrependGroup(wxString value, bool refresh) {
-  m_console->PrependGroup(MC_TYPE_INPUT, value, refresh);
 }
 
 void wxMaxima::ResetTitle(bool saved)

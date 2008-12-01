@@ -82,7 +82,6 @@ protected:
   void HelpMenu(wxCommandEvent& event);            //
   void EditMenu(wxCommandEvent& event);            //
   void Interrupt(wxCommandEvent& event);           //
-  void OnMonitorFile(wxCommandEvent& event);       //
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
@@ -100,8 +99,7 @@ protected:
 
   void EditInputMenu(wxCommandEvent& event);       //
   void ReEvaluateEvent(wxCommandEvent& event);     //
-  void InsertMenu(wxCommandEvent& event);         //
-  void PrependGroup(wxString value = wxEmptyString, bool refresh = false);
+  void InsertMenu(wxCommandEvent& event);          //
   void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
@@ -154,12 +152,9 @@ protected:
   bool m_readingPrompt;
   bool m_dispReadOut;               // what is displayed in statusbar
   bool m_inLispMode;                // don't add ; in lisp mode
-//  bool m_inPrompt;
   bool m_inInsertMode;
   bool m_inReevalMode;
   wxString m_lastPrompt;
-  wxString m_monitorFile;
-  time_t m_monitorTime;
   wxString m_lastPath;
   MathParser m_MParser;
   wxPrintData* m_printData;

@@ -1280,8 +1280,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
           else {
             if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionStart->m_previous, true);
-              m_selectionStart = m_selectionEnd = NULL;
+              SetHCaret(m_selectionStart->m_previous);
             }
             else if (m_hCaretPosition != NULL)
             {
@@ -1305,9 +1304,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
         else {
           if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionStart->m_previous, true);
-              m_selectionStart = m_selectionEnd = NULL;
-            }
+            SetHCaret(m_selectionStart->m_previous);
+          }
           else if (!ActivatePrevInput())
             event.Skip();
           else
@@ -1341,8 +1339,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
           else {
             if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionEnd, true);
-              m_selectionStart = m_selectionEnd = NULL;
+              SetHCaret(m_selectionEnd);
             }
             else if (m_hCaretPosition == NULL)
             {
@@ -1383,8 +1380,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
         else {
           if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionEnd, true);
-              m_selectionStart = m_selectionEnd = NULL;
+              SetHCaret(m_selectionEnd);
             }
           else if (!ActivateNextInput())
             event.Skip();
@@ -2578,16 +2574,11 @@ bool MathCtrl::IsSelectionInWorking() {
   return true;
 }
 
-void MathCtrl::SetHCaret(MathCell *where, bool active) {
-  if (active) {
-    SetActiveCell(NULL);
-    m_hCaretPosition = (GroupCell *)where;
-    m_hCaretActive = true;
-  }
-  else {
-    m_hCaretPosition = NULL;
-    m_hCaretActive = false;
-  }
+void MathCtrl::SetHCaret(MathCell *where) {
+  m_selectionStart = m_selectionEnd = NULL;
+  SetActiveCell(NULL);
+  m_hCaretPosition = (GroupCell *)where;
+  m_hCaretActive = true;
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
