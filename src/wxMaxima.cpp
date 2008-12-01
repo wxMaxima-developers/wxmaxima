@@ -1529,7 +1529,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case tb_copy:
 #endif
   case menu_copy_from_console:
-    if (m_console->CanCopy())
+    if (m_console->CanCopy(true))
       m_console->Copy();
     break;
   case menu_copy_input_from_console:
