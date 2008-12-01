@@ -29,7 +29,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
-  m_indent = MC_BASE_INDENT;
+  m_indent = MC_GROUP_LEFT_INDENT;
 
   ReadStyle();
 }

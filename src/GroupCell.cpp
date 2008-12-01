@@ -33,7 +33,7 @@ GroupCell::GroupCell() : MathCell()
   m_forceBreakLine = true;
   m_special = false;
   m_type = MC_TYPE_GROUP;
-  m_indent = MC_BASE_INDENT;
+  m_indent = MC_GROUP_LEFT_INDENT;
   m_hide = false;
   m_working = false;
 }
