@@ -104,6 +104,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
+
+  m_console->SetFocus();
 }
 
 wxMaxima::~wxMaxima()
@@ -1192,6 +1194,7 @@ void wxMaxima::ShowHelp(wxString keyword)
 
 void wxMaxima::MenuCommand(wxString cmd)
 {
+  m_console->SetFocus();
   m_console->OpenHCaret(cmd);
   ReEvaluateSelection();
 }
