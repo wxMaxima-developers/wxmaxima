@@ -30,7 +30,8 @@
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 2
 
-#define MC_GROUP_SKIP 25
+#define MC_GROUP_SKIP 20
+#define MC_GROUP_LEFT_INDENT 15
 
 #if defined __WXMAC__
  #define MC_EXP_INDENT 2

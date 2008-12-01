@@ -36,7 +36,6 @@
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
-#define LEFT_BORDER 13
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
@@ -129,7 +128,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   if (m_tree != NULL)
   {
     wxPoint point;
-    point.x = MC_BASE_INDENT;
+    point.x = MC_GROUP_LEFT_INDENT;
     point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
     // Draw tree
     MathCell* tmp = m_tree;
@@ -145,7 +144,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
       if (tmp->m_next != NULL) {
         if (tmp->m_next->BreakLineHere()) {
-          point.x = MC_BASE_INDENT;
+          point.x = MC_GROUP_LEFT_INDENT;
           point.y += drop + tmp->m_next->GetMaxCenter();
           if (tmp->m_bigSkip)
             point.y += MC_GROUP_SKIP;
@@ -172,7 +171,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
           wxRect rect = tmp->GetRect();
           // TODO globally define x coordinates of the left GC brackets
-          dcm.DrawRectangle( 1, rect.GetTop() - 2, 13, rect.GetHeight() + 4);
+          dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
 
           if (tmp == m_selectionEnd)
               break;
@@ -636,7 +635,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
 
-    if (m_down.x <= LEFT_BORDER) { // we clicked in left bracket area
+    if (m_down.x <= MC_GROUP_LEFT_INDENT) { // we clicked in left bracket area
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
       {
         clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
