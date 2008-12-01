@@ -398,13 +398,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   switch (event.GetKeyCode())
   {
 
-  case WXK_ESCAPE:
-    {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
-      (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-    }
-    break;
-
   case WXK_LEFT:
     if (event.ShiftDown())
     {
@@ -920,24 +913,24 @@ wxString EditorCell::SelectWordUnderCaret()
     return wxT("%");
   }
   wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUXYVZabcdefghijklmnopqrstuvxyz1234567890");
-  
+
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
   {
-    if(wordChars.Find(m_text.GetChar(left)) == -1) { 
+    if(wordChars.Find(m_text.GetChar(left)) == -1) {
       left++;
       break;
     }
     left--;
   }
-  
+
   while (right < m_text.length() )
   {
     if(wordChars.Find(m_text.GetChar(right)) == -1)
       break;
     right++;
   }
-  
+
   if (left != right)
   {
     m_selectionStart = left;

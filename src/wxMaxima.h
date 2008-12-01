@@ -100,7 +100,6 @@ protected:
   void EditInputMenu(wxCommandEvent& event);       //
   void ReEvaluateEvent(wxCommandEvent& event);     //
   void InsertMenu(wxCommandEvent& event);          //
-  void HandleCellEvent(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
   void ReEvaluateSelection();

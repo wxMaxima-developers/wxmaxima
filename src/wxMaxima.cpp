@@ -2921,30 +2921,6 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   }
 }
 
-void wxMaxima::HandleCellEvent(wxCommandEvent& event)
-{
-  ResetTitle(false);
-  MathCell* tmp = m_console->GetActiveCell();
-
-  if (tmp == NULL)
-    return ;
-
-  if (tmp->GetType() == MC_TYPE_INPUT && event.GetId() == deactivate_cell_ok)
-    tmp->AddEnding();
-
-  m_console->SetSelection(tmp);
-
-  m_console->SetActiveCell(NULL);
-
-  if (event.GetId() == deactivate_cell_ok && tmp->GetType() == MC_TYPE_INPUT)
-  {
-    wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_reeval);
-    ProcessEvent(ev);
-  }
-  else
-    m_console->Refresh();
-}
-
 void wxMaxima::EditInputMenu(wxCommandEvent& event)
 {
   if (!m_console->CanEdit())
@@ -3306,7 +3282,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
-  EVT_MENU(popid_reeval, wxMaxima::ReEvaluateEvent)
   EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluateEvent)
   EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
@@ -3314,9 +3289,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
-  EVT_MENU(activate_cell, wxMaxima::HandleCellEvent)
-  EVT_MENU(deactivate_cell_cancel, wxMaxima::HandleCellEvent)
-  EVT_MENU(deactivate_cell_ok, wxMaxima::HandleCellEvent)
   EVT_MENU(menu_cut, wxMaxima::EditMenu)
   EVT_MENU(menu_paste, wxMaxima::EditMenu)
   EVT_MENU(menu_paste_input, wxMaxima::EditMenu)

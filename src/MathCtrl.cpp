@@ -541,11 +541,10 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
 #endif
         if (CanDeleteSelection())
           popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);
-
-        popupMenu->AppendSeparator();
       }
 
-      else {
+      if (IsSelected(MC_TYPE_TEXT) || IsSelected(MC_TYPE_LABEL)) {
+        popupMenu->AppendSeparator();
         popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_solve, _("Solve ..."), wxEmptyString, wxITEM_NORMAL);
@@ -1141,7 +1140,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         if (event.ControlDown() || event.ShiftDown()) {
           if (m_activeCell->GetType() == MC_TYPE_INPUT)
             m_activeCell->AddEnding();
-          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_ok);
+          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_reeval_input);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else
           event.Skip();
@@ -1162,16 +1161,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         Refresh();
       }
 
-      else {/*
-        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, deactivate_cell_cancel);
-        (wxGetApp().GetTopWindow())->ProcessEvent(ev);
-        */
-        MathCell *parent = m_activeCell->GetParent();
-        if (parent != m_last) {
-          m_hCaretPosition = (GroupCell *)parent;
-          SetActiveCell(NULL);
-          m_hCaretActive = true;
-        }
+      else {
+        m_hCaretPosition = (GroupCell *)m_activeCell->GetParent();
+        SetActiveCell(NULL);
+        m_hCaretActive = true;
       }
       break;
 

@@ -44,7 +44,6 @@ enum {
   popid_plot3d,
   popid_float,
   popid_edit,
-  popid_reeval,
   popid_add_comment,
   popid_insert_input,
   popid_copy_tex,
