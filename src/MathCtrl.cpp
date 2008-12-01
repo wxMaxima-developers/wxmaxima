@@ -1026,11 +1026,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     return;
   }
 
-  if (m_activeCell != NULL) {
-    m_hCaretPosition = (GroupCell *)m_activeCell->GetParent();
-    m_hCaretActive = true;
-    SetActiveCell(NULL);
-  }
+  if (m_activeCell != NULL)
+    SetHCaret(m_activeCell->GetParent());
+  else if (m_selectionStart != NULL)
+    SetHCaret(m_selectionStart->GetParent());
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
