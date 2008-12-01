@@ -2509,15 +2509,14 @@ void MathCtrl::SelectAll()
 
 void MathCtrl::OnSetFocus(wxFocusEvent& event)
 {
-
+  if (m_activeCell != NULL)
+    m_activeCell->SetFocus(true);
 }
 
 void MathCtrl::OnKillFocus(wxFocusEvent& event)
 {
-  m_hCaretActive = false;
-  m_hCaretPosition = NULL;
-  SetActiveCell(NULL);
-  Refresh();
+  if (m_activeCell != NULL)
+    m_activeCell->SetFocus(false);
 }
 
 void MathCtrl::CheckUnixCopy()
