@@ -54,10 +54,10 @@ enum {
 };
 
 enum {
-  SELECTION_TYPE_NONE,
-  SELECTION_TYPE_GROUP,
-  SELECTION_TYPE_INPUT,
-  SELECTION_TYPE_OUTPUT
+  CLICK_TYPE_NONE,
+  CLICK_TYPE_GROUP_SELECTION,
+  CLICK_TYPE_INPUT_SELECTION,
+  CLICK_TYPE_OUTPUT_SELECTION
 };
 
 class MathCtrl: public wxScrolledWindow
@@ -184,7 +184,7 @@ protected:
   void OnDoubleClick(wxMouseEvent& event);
   void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
-  void SelectRect();
+  void ClickNDrag(wxPoint down, wxPoint up);
   void AdjustSize();
   void OnEraseBackground(wxEraseEvent& event)
   { }
@@ -205,8 +205,8 @@ protected:
   GroupCell *m_workingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
-  int m_selectionType;
-  GroupCell *m_selectionInGC;
+  int m_clickType;
+  GroupCell *m_clickInGC;
   GroupCell *m_insertPoint;
   MathCell *m_activeCell;
   CellParser *m_selectionParser;
