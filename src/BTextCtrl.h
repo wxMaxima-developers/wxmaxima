@@ -44,7 +44,7 @@ private:
   bool m_matchParens;
   bool m_skipTab;
   bool MatchParenthesis(int code);
-  void CloseParenthesis(wxString open, wxString close);
+  void CloseParenthesis(wxString open, wxString close, bool fromOpen);
   void OnChar(wxKeyEvent& event);
   DECLARE_EVENT_TABLE()
 };

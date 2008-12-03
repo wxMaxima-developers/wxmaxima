@@ -67,19 +67,31 @@ bool BTextCtrl::MatchParenthesis(int code)
   switch (code)
   {
   case '(':
-    CloseParenthesis(wxT("("), wxT(")"));
+    CloseParenthesis(wxT("("), wxT(")"), true);
+    skip = false;
+    break;
+  case ')':
+    CloseParenthesis(wxT("("), wxT(")"), false);
     skip = false;
     break;
   case '[':
-    CloseParenthesis(wxT("["), wxT("]"));
+    CloseParenthesis(wxT("["), wxT("]"), true);
+    skip = false;
+    break;
+  case ']':
+    CloseParenthesis(wxT("["), wxT("]"), false);
     skip = false;
     break;
   case '{':
-    CloseParenthesis(wxT("{"), wxT("}"));
+    CloseParenthesis(wxT("{"), wxT("}"), true);
+    skip = false;
+    break;
+  case '}':
+    CloseParenthesis(wxT("{"), wxT("}"), false);
     skip = false;
     break;
   case '"':
-    CloseParenthesis(wxT("\""), wxT("\""));
+    CloseParenthesis(wxT("\""), wxT("\""), true);
     skip = false;
     break;
   case WXK_UP:
@@ -93,7 +105,7 @@ bool BTextCtrl::MatchParenthesis(int code)
   return skip;
 }
 
-void BTextCtrl::CloseParenthesis(wxString open, wxString close)
+void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 {
   long from, to;
   GetSelection(&from, &to);
@@ -109,7 +121,10 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close)
     WriteText(close);
     SetInsertionPoint(from);
     WriteText(open);
-    SetInsertionPoint(to + 1);
+    if (fromOpen)
+      SetInsertionPoint(from);
+    else
+      SetInsertionPoint(to+2);
   }
 }
 
