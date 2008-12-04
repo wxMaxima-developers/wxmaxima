@@ -167,11 +167,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       if (m_selectionStart > -1)
       {
-#if defined(__WXMAC__)
+#if defined __WXMSW__
+        dc.SetPen(*wxLIGHT_GREY_PEN);
+        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
+#elif defined(__WXMAC__)
         wxRect rect = GetRect(); // rectangle representing the cell
-#endif
         dc.SetPen(wxNullPen); // no border on rectangles
-        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)  )); //highlight c.
+        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+#else
+        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
+        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+#endif
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -204,12 +210,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
-#if defined __WXMAC__
+#if defined __WXMSW__
+        dc.SetPen(*wxLIGHT_GREY_PEN);
+        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
+#elif defined(__WXMAC__)
+        wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
+        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #else
-        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT) )); // no border on rectangles
+        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
+        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #endif
-        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
