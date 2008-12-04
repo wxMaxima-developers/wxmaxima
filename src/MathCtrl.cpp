@@ -739,7 +739,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
 
   MathCell *st = m_selectionStart, *en = m_selectionEnd;
   wxRect rect;
-  
+
   switch (m_clickType)
   {
     case CLICK_TYPE_NONE:
@@ -756,6 +756,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
         return;
       }
     case CLICK_TYPE_GROUP_SELECTION:
+    {
       m_selectionStart = m_selectionEnd = NULL;
       int ytop    = MIN( down.y, up.y );
       int ybottom = MAX( down.y, up.y );
@@ -790,14 +791,15 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
       if (tmp == NULL)
         m_selectionEnd = m_last;
       if (m_selectionEnd == (m_selectionStart->m_previous)) {
-      SetHCaret(m_selectionEnd);
-      m_selectionStart = m_selectionEnd = NULL;
+        SetHCaret(m_selectionEnd);
+        m_selectionStart = m_selectionEnd = NULL;
       }
       else {
         m_hCaretActive = false;
         m_hCaretPosition = NULL;
       }
       break;
+    }
 
     case CLICK_TYPE_OUTPUT_SELECTION:
       m_selectionStart = m_selectionEnd = NULL;
