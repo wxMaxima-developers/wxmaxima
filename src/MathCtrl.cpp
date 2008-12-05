@@ -1310,7 +1310,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       default:
         m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
 
-        if (m_hCaretActive || m_workingGroup != NULL)
+        if ((m_hCaretActive || m_workingGroup != NULL) &&
+            event.GetKeyCode() != WXK_PAGEUP &&
+            event.GetKeyCode() != WXK_PAGEDOWN &&
+            event.GetKeyCode() != WXK_HOME &&
+            event.GetKeyCode() != WXK_END)
         {
 #if wxUSE_UNICODE
           wxString txt(event.GetUnicodeKey());
