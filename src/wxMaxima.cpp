@@ -486,6 +486,9 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       ConsoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
                         "Restart maxima with 'Maxima->Restart maxima'.\n"),
                     MC_TYPE_ERROR);
+    m_console->SetWorkingGroup(NULL);
+    m_console->SetSelection(NULL);
+    m_console->SetActiveCell(NULL);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_client->Destroy();
@@ -728,8 +731,9 @@ void wxMaxima::ReadFirstPrompt()
   }
 
   m_currentOutput = wxEmptyString;
-  m_console->EnableEdit(true);
   m_console->ActivateHCaret(true);
+  m_console->EnableEdit(true);
+  m_console->SetInsertPoint(NULL);
   m_console->Refresh();
 }
 
@@ -1278,6 +1282,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
                                      m_console->GetActiveCell() != NULL);
+  menubar->Enable(menu_reeval_all, m_console->GetTree() != NULL &&
+                                   !m_inReevalMode &&
+                                   !m_inInsertMode);
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -3272,6 +3279,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_cut_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_reeval_all, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
