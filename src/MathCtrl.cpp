@@ -1310,20 +1310,30 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       default:
         m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
 
-        if ((m_hCaretActive || m_workingGroup != NULL) &&
-            event.GetKeyCode() != WXK_PAGEUP &&
-            event.GetKeyCode() != WXK_PAGEDOWN &&
-            event.GetKeyCode() != WXK_HOME &&
-            event.GetKeyCode() != WXK_END)
+        switch (event.GetKeyCode())
         {
+          // keycodes which are ignored
+          case WXK_PAGEUP:
+          case WXK_PAGEDOWN:
+          case WXK_HOME:
+          case WXK_END:
+            event.Skip();
+            break;
+          // keycodes which open empty hCaret
+          case WXK_RETURN:
+            OpenHCaret(wxEmptyString);
+            break;
+          // keycodes which open hCaret with initial content
+          default:
+          {
 #if wxUSE_UNICODE
-          wxString txt(event.GetUnicodeKey());
+            wxString txt(event.GetUnicodeKey());
 #else
-          wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
+            wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
 #endif
-          OpenHCaret(txt);
+            OpenHCaret(txt);
+          }
         }
-        event.Skip();
     }
 
     if (m_hCaretPositionStart != NULL && m_hCaretPositionEnd != NULL) {
@@ -2103,8 +2113,8 @@ bool MathCtrl::CanEdit() {
 
 void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   if (m_activeCell != NULL) {
-  ((EditorCell *) m_activeCell)->SelectWordUnderCaret();
-  Refresh();
+    ((EditorCell *) m_activeCell)->SelectWordUnderCaret();
+    Refresh();
   }
 }
 
