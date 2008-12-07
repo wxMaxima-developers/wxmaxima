@@ -1317,6 +1317,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           case WXK_PAGEDOWN:
           case WXK_HOME:
           case WXK_END:
+          case WXK_BACK:
+          case WXK_DELETE:
             event.Skip();
             break;
           // keycodes which open empty hCaret
