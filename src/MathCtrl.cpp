@@ -1327,9 +1327,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             break;
           case WXK_HOME: // TODO: if shift down, select.
 						SetHCaret(NULL);
+						if (m_tree != NULL)
+						  ScrollToCell(m_tree);
 						break;
           case WXK_END:
 						SetHCaret(m_last);
+						if (m_last != NULL)
+						  ScrollToCell(m_last);
 						break;
 					// keycodes which open hCaret with initial content
           default:
