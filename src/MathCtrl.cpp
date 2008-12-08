@@ -1315,17 +1315,23 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           // keycodes which are ignored
           case WXK_PAGEUP:
           case WXK_PAGEDOWN:
-          case WXK_HOME:
-          case WXK_END:
           case WXK_BACK:
           case WXK_DELETE:
+					case WXK_LEFT:
+					case WXK_RIGHT:
             event.Skip();
             break;
           // keycodes which open empty hCaret
           case WXK_RETURN:
             OpenHCaret(wxEmptyString);
             break;
-          // keycodes which open hCaret with initial content
+          case WXK_HOME: // TODO: if shift down, select.
+						SetHCaret(NULL);
+						break;
+          case WXK_END:
+						SetHCaret(m_last);
+						break;
+					// keycodes which open hCaret with initial content
           default:
           {
 #if wxUSE_UNICODE
