@@ -1258,7 +1258,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
               SetHCaret(m_selectionEnd->GetParent());
             }
-            else if (m_hCaretPosition == NULL)
+            else if (m_tree != NULL && m_hCaretPosition == NULL)
             {
               MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
               if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
@@ -1274,7 +1274,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               }
             }
 
-            else if (m_hCaretPosition->m_next != NULL)
+            else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL)
             {
               MathCell *editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
               if( editor != NULL && m_workingGroup == NULL)
