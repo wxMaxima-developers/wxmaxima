@@ -17,7 +17,6 @@ doc_DATA = README COPYING
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
 	mkdir -p wxMaxima.app/Contents/Resources
-	cp data/tips*.txt wxMaxima.app/Contents/Resources
 	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp art/wxmac.icns wxMaxima.app/Contents/Resources
 	cp data/Info.plist wxMaxima.app/Contents
