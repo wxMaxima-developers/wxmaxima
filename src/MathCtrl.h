@@ -197,7 +197,6 @@ protected:
   GroupCell *m_hCaretPositionStart, *m_hCaretPositionEnd; // selection with caret
   bool m_leftDown;
   bool m_mouseDrag;
-  bool m_selectWholeLine;
   bool m_mouseOutside;
   bool m_forceUpdate;
   GroupCell *m_tree;

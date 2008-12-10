@@ -183,42 +183,15 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         }
 
       }
-      else {
-
-        // We have a selection with click
-        if (m_selectWholeLine) {
-          if (m_selectionStart == m_selectionEnd) {
-            if (m_selectionStart->GetType() != MC_TYPE_SLIDE && m_activeCell != tmp)
-              m_selectionStart->DrawBoundingBox(dcm);
-          } else {
-            while (tmp != NULL && tmp->m_isBroken)
-              tmp = tmp->m_nextToDraw;
-            if (tmp != NULL)
-              tmp->DrawBoundingBox(dcm, true);
-            while (tmp != NULL) {
-              tmp = tmp->m_nextToDraw;
-              if (tmp == NULL)
-                break;
-              if (tmp->BreakLineHere() && !tmp->m_isBroken)
-                tmp->DrawBoundingBox(dcm, true);
-              if (tmp == m_selectionEnd)
-                break;
-            }
-          }
-        }
-        // We have a selection by dragging
-        else {
-          while (1) {
-            if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
-                m_activeCell != tmp)
-              tmp->DrawBoundingBox(dcm, false);
-            if (tmp == m_selectionEnd)
-              break;
-            tmp = tmp->m_nextToDraw;
-            if (tmp == NULL)
-              break;
-          }
-        }
+      else {  // We have a selection of output
+        while (tmp != NULL) {
+          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
+              m_activeCell != tmp)
+            tmp->DrawBoundingBox(dcm, false);
+          if (tmp == m_selectionEnd)
+            break;
+          tmp = tmp->m_nextToDraw;
+        } // end while (1)
       }
     }
   }
@@ -716,7 +689,6 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
   if (m_tree == NULL || !m_leftDown)
     return;
   m_mouseDrag = true;
-  m_selectWholeLine = false;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_up.x, &m_up.y);
   if (m_mouseOutside) {
     m_mousePoint.x = event.GetX();
