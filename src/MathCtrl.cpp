@@ -162,7 +162,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
       dcm.SetLogicalFunction(wxXOR);
       dcm.SetBrush(*wxWHITE_BRUSH);
-      dcm.SetPen(wxNullPen);
+#if defined(__WXMAC__)
+      dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+      dcm.SetPen(*wxWHITE_PEN);
+#endif
 
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
       {
