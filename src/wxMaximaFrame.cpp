@@ -215,11 +215,11 @@ void wxMaximaFrame::SetupMenu()
 			     _("Open a new window"));
 #endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open\tCtrl-O"),
-                   _("Open session from a file"), wxT("gtk-open"));
+                   _("Open a document"), wxT("gtk-open"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
-                   _("Save session to a file"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save as"),
-                   _("Save session to a file"), wxT("gtk-save"));
+                   _("Save this document"), wxT("gtk-save"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As ..."),
+                   _("Save this document"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load package\tCtrl-L"),
                              _("Load a maxima package file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch file\tCtrl-B"),
@@ -636,10 +636,10 @@ void wxMaximaFrame::SetupToolBar()
 
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            IMAGE("open.png"),
-			                     _("Open session"));
+			                     _("Open a document"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            IMAGE("save.png"),
-                           _("Save session"));
+                           _("Save document"));
   frame_1_toolbar->AddSeparator();
 #if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
