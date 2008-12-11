@@ -169,22 +169,16 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       {
 
 #if defined __WXMSW__
-
         dc.SetPen(*wxLIGHT_GREY_PEN);
-
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
 #elif defined(__WXMAC__)
         wxRect rect = GetRect(); // rectangle representing the cell
-
         dc.SetPen(wxNullPen); // no border on rectangles
-
         dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #else
         dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
-
         dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #endif
-
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -218,27 +212,15 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 #if defined __WXMSW__
-
         dc.SetPen(*wxLIGHT_GREY_PEN);
-
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-
 #elif defined(__WXMAC__)
-
-        wxRect rect = GetRect(); // rectangle representing the cell
-
         dc.SetPen(wxNullPen); // no border on rectangles
-
         dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
-
 #else
-
         dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
-
         dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
-
 #endif
-
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
@@ -636,6 +618,15 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                m_text.SubString(m_positionOfCaret, m_text.Length());
       m_positionOfCaret += ins.Length();
     }
+    break;
+  case WXK_SPACE:
+    if (event.ShiftDown())
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") +
+               m_text.SubString(m_positionOfCaret, m_text.Length());
+    else
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
+               m_text.SubString(m_positionOfCaret, m_text.Length());
+    m_positionOfCaret++;
     break;
 
   default:
