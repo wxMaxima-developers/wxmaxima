@@ -1243,7 +1243,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      wxString title(_("wxMaxima document"));
+      wxString title(_("wxMaxima session"));
       if (m_currentFile.Length())
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, NULL);
       MathPrintout printout(title);
@@ -1393,9 +1393,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           return;
       }
 
-      wxString file = wxFileSelector(_("Open"), m_lastPath,
+      wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima document (*.wxm)|*.wxm"),
+                                     _("wxMaxima session (*.wxm)|*.wxm"),
                                      wxFD_OPEN);
       OpenFile(file);
     }
@@ -1405,9 +1405,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file(_("untitled"));
       if (m_currentFile.Length() >0)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Save As"), m_lastPath,
+      file = wxFileSelector(_("Save to file"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
-                            _("wxMaxima document (*.wxm)|*.wxm|"
+                            _("wxMaxima session (*.wxm)|*.wxm|"
                                "Maxima batch file (*.mac)|*.mac|"
                                "All|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1431,9 +1431,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = m_currentFile;
       if (m_currentFile.Length() == 0)
       {
-        file = wxFileSelector(_("Save"), m_lastPath,
+        file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
-                              _("wxMaxima document (*.wxm)|*.wxm|"
+                              _("wxMaxima session (*.wxm)|*.wxm|"
                                 "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
                               wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1454,7 +1454,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file(_("untitled"));
       if (m_currentFile.Length() >0)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Export"), m_lastPath,
+      file = wxFileSelector(_("Export to HTML file"), m_lastPath,
                             file + wxT(".html"), wxT("html"),
                             _("HTML file (*.html)|*.html|"
                               "pdfLaTeX file (*.tex)|*.tex|"
