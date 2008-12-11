@@ -167,17 +167,24 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       if (m_selectionStart > -1)
       {
+
 #if defined __WXMSW__
+
         dc.SetPen(*wxLIGHT_GREY_PEN);
+
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
 #elif defined(__WXMAC__)
         wxRect rect = GetRect(); // rectangle representing the cell
+
         dc.SetPen(wxNullPen); // no border on rectangles
+
         dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #else
         dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
+
         dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #endif
+
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -211,16 +218,27 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 #if defined __WXMSW__
+
         dc.SetPen(*wxLIGHT_GREY_PEN);
+
         dc.SetBrush(*wxLIGHT_GREY_BRUSH);
+
 #elif defined(__WXMAC__)
+
         wxRect rect = GetRect(); // rectangle representing the cell
+
         dc.SetPen(wxNullPen); // no border on rectangles
+
         dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+
 #else
+
         dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
+
         dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+
 #endif
+
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
@@ -973,7 +991,7 @@ wxString EditorCell::SelectWordUnderCaret()
     m_positionOfCaret = m_selectionEnd;
     return wxT("%");
   }
-  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUXYVZabcdefghijklmnopqrstuvxyz1234567890");
+  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_");
 
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
