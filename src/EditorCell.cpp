@@ -246,7 +246,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
 
     unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
     if (parser.GetChangeAsterisk())  // replace "*" with centerdot for the time of drawing
-      m_text.Replace(wxT("*"), wxT("\x00B7"));
+      m_text.Replace(wxT("*"), wxT("\xB7"));
     while (newLinePos < m_text.Length())
     {
       while (newLinePos < m_text.Length())
@@ -265,7 +265,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       numberOfLines++;
     }
     if (parser.GetChangeAsterisk()) // replace centerdot with "*"
-      m_text.Replace(wxT("\x00B7"),wxT("*"));
+      m_text.Replace(wxT("\xB7"), wxT("*"));
     //
     // Draw the caret
     //

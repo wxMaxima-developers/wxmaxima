@@ -112,7 +112,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
-  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Display \x0B7 insead of *"));
+  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Display \xB7 insead of *"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
@@ -188,7 +188,7 @@ void Config::set_properties()
   m_getGreekFont->SetToolTip(_("Font used for displaying greek characters in console."));
   m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
-  m_changeAsterisk->SetToolTip(_("In document, display '\x00B7' instead of '*'."));
+  m_changeAsterisk->SetToolTip(_("In document, display \xB7 instead of *."));
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
 #endif
