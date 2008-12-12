@@ -1033,7 +1033,11 @@ wxString wxMaxima::GetCommand(bool params)
   //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
+#if defined (__WXMAC__)
+    command = wxT("/usr/local/bin/maxima");
+#else
     command = wxT("maxima");
+#endif
     config->Write(wxT("maxima"), command);
   }
 
