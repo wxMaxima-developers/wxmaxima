@@ -135,6 +135,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     drop = tmp->GetMaxDrop();
     CellParser parser(dcm);
     parser.SetBouns(top, bottom);
+    bool changeAsterisk = false;
+    config->Read(wxT("changeAsterisk"), &changeAsterisk);
+    parser.SetChangeAsterisk(changeAsterisk);
 
     while (tmp != NULL)
     {

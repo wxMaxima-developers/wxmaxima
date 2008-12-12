@@ -30,7 +30,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_bottom = -1;
   m_forceUpdate = false;
   m_indent = MC_GROUP_LEFT_INDENT;
-
+  m_changeAsterisk = false;
   ReadStyle();
 }
 
@@ -41,6 +41,7 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_bottom = -1;
   m_haveGreekFont = false;
   m_greekFontAdj = 0;
+  m_changeAsterisk = false;
   ReadStyle();
 }
 

@@ -112,6 +112,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
+  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Display \x0B7 insead of *"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
@@ -187,6 +188,7 @@ void Config::set_properties()
   m_getGreekFont->SetToolTip(_("Font used for displaying greek characters in console."));
   m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
+  m_changeAsterisk->SetToolTip(_("In document, display '\x00B7' instead of '*'."));
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
 #endif
@@ -195,7 +197,7 @@ void Config::set_properties()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true;
-  bool showHeader = false, fixedFontTC = true, readFile = false;
+  bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
@@ -208,6 +210,7 @@ void Config::set_properties()
   config->Read(wxT("language"), &lang);
   config->Read(wxT("showHeader"), &showHeader);
   config->Read(wxT("unixCopy"), &unixCopy);
+  config->Read(wxT("changeAsterisk"), &changeAsterisk);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
 
@@ -253,6 +256,7 @@ void Config::set_properties()
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
   m_unixCopy->SetValue(unixCopy);
+  m_changeAsterisk->SetValue(changeAsterisk);
   m_fixedFontInTC->SetValue(fixedFontTC);
 
 #if defined __WXMSW__
@@ -306,6 +310,7 @@ void Config::do_layout()
   sizer_6->Add(m_showLong, 0, wxALL, 3);
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_6->Add(m_unixCopy, 0, wxALL, 3);
+  sizer_6->Add(m_changeAsterisk, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
   notebook_1_pane_1->SetAutoLayout(true);
@@ -386,6 +391,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
+  config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   if (m_saveSize->GetValue())

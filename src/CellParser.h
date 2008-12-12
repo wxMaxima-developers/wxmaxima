@@ -92,6 +92,14 @@ public:
   {
     return m_fontEncoding;
   }
+  bool GetChangeAsterisk()
+  {
+    return m_changeAsterisk;
+  }
+  void SetChangeAsterisk(bool changeAsterisk)
+  {
+    m_changeAsterisk = changeAsterisk;
+  }
   int GetIndent() { return m_indent; }
   void SetIndent(int indent) { m_indent = indent; }
 private:
@@ -107,6 +115,7 @@ private:
   int m_greekFontAdj;
   bool m_haveGreekFont;
   bool m_forceUpdate;
+  bool m_changeAsterisk;
   wxFontEncoding m_fontEncoding;
   style m_styles[14];
 };
