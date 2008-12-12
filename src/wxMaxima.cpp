@@ -181,7 +181,7 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  bool showHeader = true;
+  bool showHeader = false;
   wxConfig::Get()->Read(wxT("showHeader"), &showHeader);
 
   int start = s.Find(m_firstPrompt);

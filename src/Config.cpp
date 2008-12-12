@@ -110,7 +110,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
-  m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show maxima header"));
+  m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
@@ -179,7 +179,7 @@ void Config::set_properties()
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima console."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
-  m_showHeader->SetToolTip(_("Show initial header with maxima system information."));
+  m_showHeader->SetToolTip(_("Show initial header with Maxima system information."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in console."));
@@ -195,7 +195,7 @@ void Config::set_properties()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true;
-  bool showHeader = true, fixedFontTC = true, readFile = false;
+  bool showHeader = false, fixedFontTC = true, readFile = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
