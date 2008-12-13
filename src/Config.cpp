@@ -112,7 +112,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
-  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Display \xB7 insead of *"));
+  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Use centered dot character for multiplication"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
