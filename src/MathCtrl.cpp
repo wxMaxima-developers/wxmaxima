@@ -238,7 +238,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT) {
     GroupCell *newGroup = new GroupCell;
     TextCell *prompt = new TextCell;
-    prompt->SetValue(wxT("!!"));
+    prompt->SetValue(wxEmptyString);
     prompt->SetType(MC_TYPE_MAIN_PROMPT);
     newGroup->SetInput(prompt);
     newGroup->SetSpecial(true);
@@ -316,7 +316,7 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
     prompt->SetValue(wxT(">> "));
   else {
     newGroup->SetSpecial(true);
-    prompt->SetValue(wxT("/*"));
+    prompt->SetValue(wxEmptyString);
   }
   prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
@@ -1048,8 +1048,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_RETURN:
       if (m_activeCell != NULL) {
         if (event.ControlDown() || event.ShiftDown()) {
-          if (m_activeCell->GetType() == MC_TYPE_INPUT)
-            m_activeCell->AddEnding();
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_reeval_input);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else

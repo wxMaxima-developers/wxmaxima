@@ -146,8 +146,6 @@ protected:
   wxString m_promptSuffix;
   wxString m_promptPrefix;
   wxString m_firstPrompt;
-  wxString m_commentPrefix;
-  wxString m_newInput;
   bool m_readingPrompt;
   bool m_dispReadOut;               // what is displayed in statusbar
   bool m_inLispMode;                // don't add ; in lisp mode

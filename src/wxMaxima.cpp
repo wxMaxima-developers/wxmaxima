@@ -71,8 +71,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isRunning = false;
   m_promptSuffix = wxT("<PROMPT-S/>");
   m_promptPrefix = wxT("<PROMPT-P/>");
-  m_commentPrefix = wxT("/*");
-  m_newInput = wxT(">> ");
   GetMenuBar()->Enable(menu_interrupt_id, false);
 
   m_firstPrompt = wxT("(%i1) ");
@@ -188,7 +186,7 @@ void wxMaxima::FirstOutput(wxString s)
   m_console->ClearWindow();
 
   if (showHeader) {
-    DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+    DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
     ConsoleAppend(s.SubString(0, start - 1), MC_TYPE_TEXT);
   }
 
@@ -351,6 +349,12 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
     cell->SetValue(s);
     cell->SetType(type);
 
+    m_console->InsertLine(cell, newLine);
+  }
+
+  else if (type == MC_TYPE_MAIN_PROMPT) {
+    TextCell* cell = new TextCell(s);
+    cell->SetType(type);
     m_console->InsertLine(cell, newLine);
   }
 
@@ -855,7 +859,7 @@ void wxMaxima::PrintFile()
     // Print title
     if (m_batchFileLines[i] == wxT("/* [wxMaxima: title   start ]"))
     {
-      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: title   end   ] */"))
@@ -872,7 +876,7 @@ void wxMaxima::PrintFile()
     // Print section
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: section start ]"))
     {
-      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: section end   ] */"))
@@ -889,7 +893,7 @@ void wxMaxima::PrintFile()
     // Print comment
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: comment start ]"))
     {
-      DoRawConsoleAppend(wxT("/*"), MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: comment end   ] */"))
@@ -2959,7 +2963,7 @@ void wxMaxima::ReEvaluateSelection()
   if (tmp != NULL)
   {
     m_console->SetActiveCell(NULL);
-    if (tmp->GetType() == MC_TYPE_INPUT)
+    if (tmp->GetType() == MC_TYPE_INPUT && !m_inLispMode)
       tmp->AddEnding();
     m_console->SetSelection(tmp);
   }
