@@ -686,7 +686,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
     wxXmlDocument xml;
     wxStringInputStream xmlStream(s);
 
-    xml.Load(xmlStream);
+    xml.Load(xmlStream, wxLocale::GetSystemEncodingName());
 
     wxXmlNode *doc = xml.GetRoot();
 
