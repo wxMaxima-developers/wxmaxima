@@ -1081,11 +1081,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
 void MathCtrl::OnChar(wxKeyEvent& event) {
 
-  if (event.GetModifiers() == wxMOD_ALT) {
-    event.Skip();
-    return;
-  }
-
   if (m_activeCell != NULL) { // we are in an active cell
     bool hasHeightChanged = false;
 
