@@ -107,9 +107,9 @@ void GroupCell::AppendInput(MathCell *cell)
   m_hide = false;
   if (m_input == NULL) {
     m_input = cell;
-    m_input->m_group = this;
   }
-  else {
+  else
+  {
     if (m_input->m_next == NULL)
       m_input->AppendCell(cell);
     else if (m_input->m_next->GetValue().Length() == 0) {
@@ -145,7 +145,6 @@ void GroupCell::AppendOutput(MathCell *cell)
   m_hide = false;
   if (m_output == NULL) {
     m_output = cell;
-    m_output->m_group = this;
   }
   else {
     MathCell *tmp = m_output;
@@ -185,7 +184,12 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_indent = parser.GetIndent();
 
   if (m_output != NULL && !m_hide) {
-    m_output->RecalculateSize(parser, fontsize, true);
+    MathCell *tmp = m_output;
+    while (tmp != NULL) {
+      tmp->RecalculateSize(parser, fontsize, false);
+      tmp = tmp->m_next;
+    }
+
     m_outputRect.x = m_currentPoint.x;
     m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
     m_outputRect.width = 0;
@@ -193,7 +197,7 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = m_input->GetMaxHeight();
     m_width = m_input->GetFullWidth(scale);
 
-    MathCell *tmp = m_output;
+    tmp = m_output;
     while (tmp != NULL) {
       if (tmp->BreakLineHere() || tmp == m_output) {
         m_width = MAX(m_width, tmp->GetLineWidth(scale));
