@@ -188,7 +188,7 @@ void Config::set_properties()
   m_getGreekFont->SetToolTip(_("Font used for displaying greek characters in console."));
   m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in console."));
-  m_changeAsterisk->SetToolTip(_("In document, display \xB7 instead of *."));
+  m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in console."));
 #endif
