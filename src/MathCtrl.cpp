@@ -2372,7 +2372,7 @@ void MathCtrl::SelectAll()
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     m_hCaretActive = false;
   }
-  else
+  else if (m_activeCell != NULL)
     m_activeCell->SelectAll();
 
   Refresh();
