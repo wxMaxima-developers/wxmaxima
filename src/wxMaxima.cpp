@@ -187,7 +187,7 @@ void wxMaxima::FirstOutput(wxString s)
 
   if (showHeader) {
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
-    ConsoleAppend(s.SubString(0, start - 1), MC_TYPE_TEXT);
+    DoRawConsoleAppend(s.SubString(0, start - 2), MC_TYPE_COMMENT);
   }
 
   if (m_batchFileLines.GetCount()>0) {
