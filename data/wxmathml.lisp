@@ -26,7 +26,7 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-($put '$wxmaxima `((mlist simp) 0 8 0) '$version)
+($put '$wxmaxima `((mlist simp) 0 8 1) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 
