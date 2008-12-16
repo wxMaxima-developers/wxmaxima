@@ -1645,23 +1645,30 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           wxTheClipboard->GetData(data);
           wxString inputs(data.GetText());
           wxStringTokenizer lines(inputs, wxT("\n"));
-          wxString input;
+          wxString input, line;
           wxArrayString inp;
 
           while (lines.HasMoreTokens()) {
-            wxString i = lines.GetNextToken();
-            if (i == wxT("<wxmaxima-input>")) {
-              if (input.Length() > 0) {
+            do {
+              line = lines.GetNextToken();
+            } while (lines.HasMoreTokens() &&
+                     line != wxT("/* [wxMaxima: input   start ] */"));
+
+            do {
+              line = lines.GetNextToken();
+              if (line != wxT("/* [wxMaxima: input   end   ] */"))
+              {
+                if (input.Length()>0)
+                  input = input + wxT("\n") + line;
+                else
+                  input = line;
+              }
+              else {
                 inp.Add(input);
                 input = wxEmptyString;
               }
-            }
-            else {
-              if (input.Length()>0)
-                input = input + wxT("\n") + i;
-              else
-                input = i;
-            }
+            } while (lines.HasMoreTokens() &&
+                     line != wxT("/* [wxMaxima: input   end   ] */"));
           }
 
           for (int i=0; i<inp.Count(); i++)

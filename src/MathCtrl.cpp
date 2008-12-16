@@ -886,17 +886,19 @@ bool MathCtrl::CopyInput() {
   wxString s;
   GroupCell *tmp = (GroupCell *)m_selectionStart->GetParent();
   GroupCell *end = (GroupCell *)m_selectionEnd->GetParent();
-  MathCell *input;
 
   while (tmp != NULL) {
-    input = tmp->GetInput();
-    if (input != NULL)
-      s += wxT("<wxmaxima-input>\n") + input->ToString(false) + wxT("\n");
+
+    if (!tmp->IsSpecial())
+    {
+      s += wxT("/* [wxMaxima: input   start ] */\n");
+      s += tmp->GetInput()->ToString(false) + wxT("\n");
+      s += wxT("/* [wxMaxima: input   end   ] */\n");
+    }
     if (tmp == end)
       break;
     tmp = (GroupCell *)tmp->m_next;
   }
-  s += wxT("<wxmaxima-input>");
 
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
