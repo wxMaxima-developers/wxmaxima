@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-15 19:37+0100\n"
-"PO-Revision-Date: 2008-11-15 00:48+0100\n"
+"PO-Revision-Date: 2008-12-17 17:40+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -76,18 +76,16 @@ msgid "&Continued fraction"
 msgstr "Frazione &continua"
 
 #: ../src/wxMaximaFrame.cpp:245
-#, fuzzy
 msgid "&Copy\tCtrl-C"
-msgstr "&Apri\tCtrl-A"
+msgstr "&Copia\tCtrl-C"
 
 #: ../src/IntegrateWiz.cpp:42
 msgid "&Definite integration"
 msgstr "Integrazione &definita"
 
 #: ../src/wxMaximaFrame.cpp:276
-#, fuzzy
 msgid "&Delete cells"
-msgstr "&Elimina la selezione"
+msgstr "&Elimina celle"
 
 #: ../src/wxMaximaFrame.cpp:543
 msgid "&Demoivre"
@@ -162,9 +160,8 @@ msgid "&Integrate ..."
 msgstr "&Integra ..."
 
 #: ../src/wxMaximaFrame.cpp:308
-#, fuzzy
 msgid "&Interrupt\tCtrl-."
-msgstr "&Interrompi\tCtrl-G"
+msgstr "&Interrompi\tCtrl-."
 
 #: ../src/wxMaximaFrame.cpp:312
 msgid "&Interrupt\tCtrl-G"
@@ -448,7 +445,7 @@ msgstr "Annulla"
 
 #: ../src/wxMaximaFrame.cpp:292
 msgid "Cell"
-msgstr ""
+msgstr "Cella"
 
 #: ../src/wxMaximaFrame.cpp:337
 msgid "Change &2d display"
@@ -612,38 +609,32 @@ msgid "Copy as image"
 msgstr "Copia come immagine"
 
 #: ../src/wxMaximaFrame.cpp:269
-#, fuzzy
 msgid "Copy cells"
-msgstr "Copia TeX"
+msgstr "Copia celle"
 
 #: ../src/wxMaximaFrame.cpp:270
-#, fuzzy
 msgid "Copy selected cells"
-msgstr "Copia la selezione"
+msgstr "Copia celle selezionate"
 
 #: ../src/wxMaximaFrame.cpp:655 ../src/wxMaximaFrame.cpp:718
 msgid "Copy selection"
 msgstr "Copia la selezione"
 
 #: ../src/wxMaximaFrame.cpp:246
-#, fuzzy
 msgid "Copy selection from document"
-msgstr "Copia la selezione dalla console"
+msgstr "Copia la selezione dal documento"
 
 #: ../src/wxMaximaFrame.cpp:252
-#, fuzzy
 msgid "Copy selection from document as image"
-msgstr "Copia la selezione dalla console come immagine"
+msgstr "Copia la selezione dal documento come immagine"
 
 #: ../src/wxMaximaFrame.cpp:248
-#, fuzzy
 msgid "Copy selection from document in TeX format"
-msgstr "Copia la selezione dalla console in formato TeX"
+msgstr "Copia la selezione dal documento in formato TeX"
 
 #: ../src/wxMaximaFrame.cpp:263
-#, fuzzy
 msgid "Copy selection from document to a file"
-msgstr "Copia la selezione dalla console su file"
+msgstr "Copia la selezione dal documento su file"
 
 #: ../src/Config.cpp:190
 msgid "Copy selection to clipboard when selection is made in console."
@@ -658,31 +649,28 @@ msgid "Cut"
 msgstr "Taglia"
 
 #: ../src/wxMaximaFrame.cpp:242
-#, fuzzy
 msgid "Cut\tCtrl-X"
-msgstr "&Esci\tCtrl-Q"
+msgstr "Taglia\tCtrl-X"
 
 #: ../src/wxMaximaFrame.cpp:266
 msgid "Cut cells"
-msgstr ""
+msgstr "Taglia celle"
 
 #: ../src/wxMaximaFrame.cpp:267
 msgid "Cut selected cells"
-msgstr ""
+msgstr "Taglia le celle selezionate"
 
 #: ../src/wxMaximaFrame.cpp:243
-#, fuzzy
 msgid "Cut selection from document"
-msgstr "Taglia la selezione dalla console"
+msgstr "Taglia la selezione dal documento"
 
 #: ../src/wxMaximaFrame.cpp:467
 msgid "Decompose rational function to partial fractions"
 msgstr "Decomponi la funzione razionale in frazioni parziali"
 
 #: ../src/wxMaximaFrame.cpp:298
-#, fuzzy
 msgid "Decrease fontsize in document"
-msgstr "Rimpicciolisci il carattere nella finestra console"
+msgstr "Rimpicciolisci il carattere nel documento"
 
 #: ../src/Config.cpp:116
 msgid "Default font:"
@@ -718,9 +706,8 @@ msgid "Delete function(s):"
 msgstr "Elimina le funzioni:"
 
 #: ../src/wxMaximaFrame.cpp:277
-#, fuzzy
 msgid "Delete selected cells"
-msgstr "Elimina la selezione"
+msgstr "Elimina celle selezionate"
 
 #: ../src/MathCtrl.cpp:522 ../src/wxMaximaFrame.cpp:658
 #: ../src/wxMaximaFrame.cpp:722
@@ -917,28 +904,24 @@ msgid "Evaluate &noun forms"
 msgstr "Valuta le forme &nominali"
 
 #: ../src/wxMaximaFrame.cpp:282
-#, fuzzy
 msgid "Evaluate all cells"
-msgstr "Ri-elabora tutto l'ingresso"
+msgstr "Elabora tutte le celle"
 
 #: ../src/wxMaximaFrame.cpp:281
-#, fuzzy
 msgid "Evaluate all cells\tCtrl-Shift-R"
-msgstr "&Ri-elabora tutto l'ingresso\tCtrl-Maiusc-R"
+msgstr "Elabora tutto le celle\tCtrl-Maiusc-R"
 
 #: ../src/wxMaximaFrame.cpp:557
 msgid "Evaluate all noun forms in expression"
 msgstr "Valuta tutte le forme nominali nell'espressione"
 
 #: ../src/wxMaximaFrame.cpp:279
-#, fuzzy
 msgid "Evaluate cell\tShift-Enter"
-msgstr "&Ri-elabora tutto l'ingresso\tCtrl-Maiusc-R"
+msgstr "Elabora cella\tMaiusc-Invio"
 
 #: ../src/wxMaximaFrame.cpp:280
-#, fuzzy
 msgid "Evaluate selected cell"
-msgstr "Ri-elabora l'ingresso selezionato"
+msgstr "Elabora le celle selezionate"
 
 #: ../src/wxMaxima.cpp:2700
 msgid "Example"
@@ -977,9 +960,8 @@ msgid "Expand trigonometric expression"
 msgstr "Espandi l'espressione trigonometrica"
 
 #: ../src/wxMaximaFrame.cpp:228
-#, fuzzy
 msgid "Export document output to HTML file"
-msgstr "Esporta l'uscita della console in un file HTML"
+msgstr "Esporta il documento in uscita in un file HTML"
 
 #: ../src/wxMaxima.cpp:1465
 msgid "Export to HTML file"
@@ -1237,9 +1219,8 @@ msgid "IC2"
 msgstr "IC2"
 
 #: ../src/wxMaximaFrame.cpp:296
-#, fuzzy
 msgid "Increase fontsize in document"
-msgstr "Ingrandisci il carattere nella finestra console"
+msgstr "Ingrandisci il carattere nel documento"
 
 #: ../src/wxMaximaFrame.cpp:607
 msgid "Info about maxima build"
@@ -1260,26 +1241,23 @@ msgstr "Ingresso"
 #: ../src/wxMaximaFrame.cpp:663 ../src/wxMaximaFrame.cpp:665
 #: ../src/wxMaximaFrame.cpp:728 ../src/wxMaximaFrame.cpp:731
 msgid "Insert input group"
-msgstr "Inserimento gruppo in ingresso"
+msgstr "Inserisci gruppo in ingresso"
 
 #: ../src/wxMaximaFrame.cpp:285
-#, fuzzy
 msgid "Insert new input cell"
-msgstr "Inserimento ingresso"
+msgstr "Inserisci nuova cella di ingresso"
 
 #: ../src/wxMaximaFrame.cpp:289
-#, fuzzy
 msgid "Insert new section cell"
-msgstr "Inserisci nuova precisione:"
+msgstr "Inserisci nuova cella di selezione"
 
 #: ../src/wxMaximaFrame.cpp:287
-#, fuzzy
 msgid "Insert new text cell"
-msgstr "Inserisci testo"
+msgstr "Inserisci nuova cella testo"
 
 #: ../src/wxMaximaFrame.cpp:291
 msgid "Insert new title cell"
-msgstr ""
+msgstr "Inserisci nuova cella titolo"
 
 #: ../src/wxMaximaFrame.cpp:660 ../src/wxMaximaFrame.cpp:662
 #: ../src/wxMaximaFrame.cpp:724 ../src/wxMaximaFrame.cpp:727
@@ -1499,22 +1477,20 @@ msgid "Modulus"
 msgstr "Modulo"
 
 #: ../src/wxMaximaFrame.cpp:288
-#, fuzzy
 msgid "New &section cell\tCtrl-F6"
-msgstr "&Sezione\tCtrl-F6"
+msgstr "Nuova cella &sezione\tCtrl-F6"
 
 #: ../src/wxMaximaFrame.cpp:286
 msgid "New &text cell\tF6"
-msgstr ""
+msgstr "Nuova cella &testo\tF6"
 
 #: ../src/wxMaximaFrame.cpp:284
 msgid "New input &cell\tF7"
-msgstr ""
+msgstr "Nuova cella di ingresso\tF7"
 
 #: ../src/wxMaximaFrame.cpp:290
-#, fuzzy
 msgid "New t&itle cell\tCtrl-Shift-F6"
-msgstr "T&itolo\tCtrl-Maiusc-F6"
+msgstr "Nuova cella t&itolo\tCtrl-Maiusc-F6"
 
 #: ../src/SubstituteWiz.cpp:33
 msgid "New value:"
@@ -1643,18 +1619,16 @@ msgid "Paste"
 msgstr "Incolla"
 
 #: ../src/wxMaximaFrame.cpp:255
-#, fuzzy
 msgid "Paste\tCtrl-V"
-msgstr "&Salva\tCtrl-S"
+msgstr "Incolla\tCtrl-V"
 
 #: ../src/wxMaximaFrame.cpp:272
-#, fuzzy
 msgid "Paste cells"
-msgstr "Incolla"
+msgstr "Incolla celle"
 
 #: ../src/wxMaximaFrame.cpp:273
 msgid "Paste cells to document"
-msgstr ""
+msgstr "Incolla celle nel documento"
 
 #: ../src/wxMaximaFrame.cpp:256
 msgid "Paste text from clipboard"
@@ -1867,9 +1841,8 @@ msgid "Select all"
 msgstr "Seleziona tutto"
 
 #: ../src/wxMaximaFrame.cpp:259
-#, fuzzy
 msgid "Select all\tCtrl-A"
-msgstr "Seleziona tutto"
+msgstr "Seleziona tutto\tCtrl-A"
 
 #: ../src/main.cpp:172 ../src/wxMaxima.cpp:1404
 msgid "Select file to open"
@@ -1941,9 +1914,8 @@ msgid "Show &variables"
 msgstr "Mostra le &variabili"
 
 #: ../src/Config.cpp:113
-#, fuzzy
 msgid "Show Maxima header"
-msgstr "Mostra l'intestazione di maxima"
+msgstr "Mostra l'intestazione di Maxima"
 
 #: ../src/wxMaxima.cpp:2712
 msgid "Show all commands similar to:"
@@ -1974,9 +1946,8 @@ msgid "Show definition of a function"
 msgstr "Mostra la definizione di una funzione"
 
 #: ../src/Config.cpp:183
-#, fuzzy
 msgid "Show initial header with Maxima system information."
-msgstr "Mostra intestazione iniziale con le informazioni di sistema di maxima"
+msgstr "Mostra intestazione iniziale con le informazioni di sistema di maxima."
 
 #: ../src/Config.cpp:112
 msgid "Show long expressions"
@@ -2306,7 +2277,7 @@ msgstr "Usa l'algoritmo di Gosper"
 
 #: ../src/Config.cpp:115 ../src/Config.cpp:191
 msgid "Use centered dot character for multiplication"
-msgstr ""
+msgstr "Usa il carattere punto centrato per la moltiplicazione"
 
 #: ../src/Config.cpp:187
 msgid "Use greek font to display greek characters."
@@ -2774,344 +2745,3 @@ msgstr "giallo"
 #: ../src/Config.cpp:152
 msgid "yellow green"
 msgstr "giallo verde"
-
-#~ msgid "&Copy"
-#~ msgstr "&Copia"
-
-#~ msgid "&Describe\tCtrl-H"
-#~ msgstr "&Descrivi\tCtrl-H"
-
-#~ msgid "&Edit input\tCtrl-E"
-#~ msgstr "Modifica l'ingr&esso\tCtrl-E"
-
-#~ msgid "&Input\tF7"
-#~ msgstr "&Ingresso\tF7"
-
-#~ msgid "&Monitor file"
-#~ msgstr "Co&ntrolla file"
-
-#~ msgid "&Re-evaluate input\tCtrl-R"
-#~ msgstr "&Ri-elabora l'ingresso\tCtrl-R"
-
-#~ msgid "&Read file"
-#~ msgstr "Leggi il &file"
-
-#~ msgid "&Text\tF6"
-#~ msgstr "&Testo\tF6"
-
-#~ msgid ""
-#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
-#~ "lisp)|*.lisp"
-#~ msgstr ""
-#~ "Tutti|*|Pacchetto Maxima (*.mac)|*.mac|File demo (*.dem)|*.dem|File lisp "
-#~ "(*.lisp)|*.lisp"
-
-#~ msgid "Autoload a file when it is updated"
-#~ msgstr "Autocaricamento del file se modificato"
-
-#~ msgid "C&lear screen"
-#~ msgstr "Cancel&la lo schermo"
-
-#~ msgid "Copy input"
-#~ msgstr "Copia ingresso"
-
-#~ msgid "Copy input from console"
-#~ msgstr "Copia ingresso dalla console"
-
-#~ msgid "Copy selection from console to input line"
-#~ msgstr "Copia la selezione dalla console sulla riga d'ingresso"
-
-#~ msgid "Copy to input"
-#~ msgstr "Copia sull'ingresso"
-
-#~ msgid "Delete selected input/output group"
-#~ msgstr "Elimina i gruppi di ingresso/uscita selezionati"
-
-#~ msgid "Delete the contents of console."
-#~ msgstr "Elimina il contenuto della console."
-
-#~ msgid "Describe"
-#~ msgstr "Descrivi"
-
-#~ msgid "Edit input"
-#~ msgstr "Modifica l'ingresso"
-
-#~ msgid "Edit selected input"
-#~ msgstr "Modifica l'ingresso selezionato"
-
-#~ msgid "Edit text"
-#~ msgstr "Modifica il testo"
-
-#~ msgid "Enter command"
-#~ msgstr "Inserire comando"
-
-#~ msgid "Go to input\tCtrl-Shift-D"
-#~ msgstr "Vai all'ingresso\tCtrl-Maiusc-D"
-
-#~ msgid "Go to input\tF4"
-#~ msgstr "Riga di ingresso\tF4"
-
-#~ msgid "Go to output window\tF3"
-#~ msgstr "Vai alla finestra di uscita\tF3"
-
-#~ msgid "I&nsert"
-#~ msgstr "I&nserisci"
-
-#~ msgid "INPUT:"
-#~ msgstr "Ingresso:"
-
-#~ msgid ""
-#~ "If you want to input more than one line at a time, use the 'Multiline "
-#~ "input' button at the right of the input line."
-#~ msgstr ""
-#~ "Se si vuole inserire più di una riga alla volta, usare il tasto "
-#~ "\"Ingresso multiriga\" alla destra della riga di ingresso."
-
-#~ msgid "Insert"
-#~ msgstr "Inserimento"
-
-#~ msgid "Insert new input before selected input"
-#~ msgstr "Inserisci il nuovo ingresso prima dell'ingresso selezionato"
-
-#~ msgid "Insert section before selected input"
-#~ msgstr "Inserisci la sezione prima dell'ingresso selezionato"
-
-#~ msgid "Insert text before selected input"
-#~ msgstr "Inserisci il testo prima dell'ingresso selezionato"
-
-#~ msgid "Insert title before selected input"
-#~ msgstr "Inserisci il titolo prima dell'ingresso selezionato"
-
-#~ msgid ""
-#~ "Instead of typing a long pathname of a file to input line, you can select "
-#~ "that file using 'File->Select file'."
-#~ msgstr ""
-#~ "Invece di battere un lungo percorso di un file nella riga di ingresso è "
-#~ "possibile selezionare il file da usare con \"File->Seleziona file\"."
-
-#~ msgid "Long input\tCtrl-I"
-#~ msgstr "Ingresso lungo\tCtrl-I"
-
-#~ msgid ""
-#~ "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f"
-#~ "(x) := x^2;')."
-#~ msgstr ""
-#~ "Maxima usa \":\" per impostare i valori (\"a : 3;\") e \":=\" per "
-#~ "definire le funzioni (\"f(x) := x^2;\")."
-
-#~ msgid "Multiline input"
-#~ msgstr "Ingresso multiriga"
-
-#~ msgid "Open multiline input dialog"
-#~ msgstr "Apri finestra di ingresso multiriga"
-
-#~ msgid "Paste input"
-#~ msgstr "Incolla ingresso"
-
-#~ msgid "Paste input to console"
-#~ msgstr "Incolla ingresso su console"
-
-#~ msgid "Re-evaluate input"
-#~ msgstr "Ri-elabora l'ingresso"
-
-#~ msgid "Read file from command line"
-#~ msgstr "Leggi il file dalla riga di comando"
-
-#~ msgid "Read file from command line instead of executing it."
-#~ msgstr "Leggi il file dalla riga di comando invece che eseguirla."
-
-#~ msgid "Read session from a file"
-#~ msgstr "Leggi la sessione da un file"
-
-#~ msgid "Select &file"
-#~ msgstr "Seleziona &file"
-
-#~ msgid "Select a file"
-#~ msgstr "Seleziona un file"
-
-#~ msgid "Select a file (copy filename to input line)"
-#~ msgstr "Seleziona un file (copia il nome del file nella riga d'ingresso)"
-
-#~ msgid "Select last input\tCtrl-D"
-#~ msgstr "Seleziona l'ultimo ingresso\tCtrl-D"
-
-#~ msgid "Select last input\tF2"
-#~ msgstr "Seleziona l'ultimo ingresso\tF2"
-
-#~ msgid "Select last input in the colsole!"
-#~ msgstr "Seleziona l'ultimo ingresso in console!"
-
-#~ msgid "Select last input in the console!"
-#~ msgstr "Seleziona l'ultimo ingresso in console!"
-
-#~ msgid "Selection to input\tCtrl-Shift-E"
-#~ msgstr "Selezione su ingresso\tCtrl-Maiusc-E"
-
-#~ msgid "Selection to input\tF5"
-#~ msgstr "Selezione su ingresso\tF5"
-
-#~ msgid "Set focus to the input line"
-#~ msgstr "Imposta il focus sulla riga d'ingresso"
-
-#~ msgid "Set focus to the output window"
-#~ msgstr "Imposta il focus sulla finestra d'uscita"
-
-#~ msgid "Show &tip"
-#~ msgstr "Mostra suggerimen&ti"
-
-#~ msgid "Show a tip"
-#~ msgstr "Mostra un suggerimento"
-
-#~ msgid "Show the description of a command"
-#~ msgstr "Mostra la descrizione di un comando"
-
-#~ msgid "Show the description of command/variable:"
-#~ msgstr "Mostra la descrizione di un comando/variabile:"
-
-#~ msgid ""
-#~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
-#~ "matrix' from menus."
-#~ msgstr ""
-#~ "Per immettere una matrice A, battere \"A : \" nella riga di ingresso e "
-#~ "selezionare \"Algebra->Inserire la matrice\" dai menu."
-
-#~ msgid ""
-#~ "To plot in polar coordinates, select 'set polar' in the Options entry for "
-#~ "Plot2d dialog. You can also plot in spherical and cylindrical coordinates "
-#~ "in 3D."
-#~ msgstr ""
-#~ "Per disegnare un grafico in coordinate polari selezionare \"imposta polari"
-#~ "\" nella voce Opzioni della finestra di dialogo Grafico2D. È anche "
-#~ "possibile fare grafici in coordinate sferiche e cilindriche in 3D."
-
-#~ msgid ""
-#~ "To put parenthesis around an expression you previously typed into the "
-#~ "input line, select the expression with mouse and then type '('."
-#~ msgstr ""
-#~ "Per mettere le parentesi attorno ad un'espressione battuta in precedenza "
-#~ "nella riga di ingresso, selezionare l'espressione con il mouse e premere "
-#~ "\"(\"."
-
-#~ msgid ""
-#~ "To repeat a long command you previously entered in the input line, type "
-#~ "in the first few letters to the input line and then pres tab key."
-#~ msgstr ""
-#~ "Per ripetere un lungo comando che si era battuto in precedenza nella riga "
-#~ "di ingresso, battere i primi caratteri dello stesso e premere il tasto di "
-#~ "tabulazione."
-
-#~ msgid ""
-#~ "To save the size and position of wxMaxima windows between session, use "
-#~ "'Edit->Configure' dialog."
-#~ msgstr ""
-#~ "Per salvare l'ampiezza e posizione della finestra di wxMaxima tra le "
-#~ "sessioni, usare la finestra \"Modifica->Configura\"."
-
-#~ msgid ""
-#~ "When applying functions with one argument from menus, the default "
-#~ "argument is '%'. To apply the function to some other value, enter it into "
-#~ "the input line. You can also select a previous (sub)expression for this "
-#~ "value."
-#~ msgstr ""
-#~ "Applicando le funzioni da un'argomento da menu, l'argomento predefinito è "
-#~ "\"%\". Per applicare le funzioni ad altri valori, inserirli nella riga "
-#~ "d'ingresso. Per questo valore è possibile selezionare anche una "
-#~ "precedente (sotto)espressione."
-
-#~ msgid ""
-#~ "You can access the last output using the variable '%'. You can access the "
-#~ "output of previous commands using variables '%on' where n is the number "
-#~ "of output."
-#~ msgstr ""
-#~ "Puoi accedere all'ultimo risultato usando la variabile \"%\". Per "
-#~ "accedere ai risultati dei comandi precedenti usare le variabili \"%on\" "
-#~ "dove n è il numero del risultato."
-
-#~ msgid ""
-#~ "You can delete output/input group if you select the input label and "
-#~ "choose 'Edit->Delete selection' from menus."
-#~ msgstr ""
-#~ "Puoi cancellare un'insieme di equazioni immesse o risultanti selezionando "
-#~ "le etichette e scegliendo dai menu \"Modifica->Elimina selezione\"."
-
-#~ msgid ""
-#~ "You can hide the output by clicking on the output label. Clicking on the "
-#~ "input label hides input and output. Clicking on the label again, shows "
-#~ "hidden expressions."
-#~ msgstr ""
-#~ "Puoi nascondere i risultati facendo clic sull'etichetta del risultato. "
-#~ "Facendo clic sull'etichetta dell'ingresso nascondi sia l'ingresso che il "
-#~ "risultato. Facendo clic nuovamente vengono mostrate le equazioni nascoste "
-#~ "precedentemente."
-
-#~ msgid ""
-#~ "You can load a file into maxima by dragging it from a file browser to the "
-#~ "console window."
-#~ msgstr ""
-#~ "Puoi caricare un file in maxima trascinandolo dal navigatore file nella "
-#~ "finestra console."
-
-#~ msgid ""
-#~ "You can load files into maxima if you drop them on the console window. "
-#~ "You can select a custom function for loading your file. If your custom "
-#~ "function is 'A:read_matrix(%file%, csv)', then %file% will be replaced "
-#~ "with the filename of your file."
-#~ msgstr ""
-#~ "Puoi caricare i file in maxima anche trascinandoli sulla finestra "
-#~ "console. È anche possibile selezionare una funzione personalizzata per "
-#~ "caricare il file. Se la funzione personalizzata è \"A:read_matrix(%file%, "
-#~ "CSV) allora %file% verrà sostituito con il nome del file."
-
-#~ msgid ""
-#~ "You can select the output of maxima in wxMaxima console with mouse and "
-#~ "copy it to the clipboard with 'Edit->copy'."
-#~ msgstr ""
-#~ "Puoi selezionare il risultato di maxima nella console wxMaxima con il "
-#~ "mouse e copiarlo negli appunti con \"Modifica->Copia\"."
-
-#~ msgid ""
-#~ "You can use the maxima tex command to print the expression in TeX form. "
-#~ "Then you can copy it to text editor to include it in you paper."
-#~ msgstr ""
-#~ "Puoi usare il comando tex maxima per stampare l'espressione in formato "
-#~ "TeX. Poi si può copiarlo in un editor di testi per inserirlo in uno "
-#~ "scritto."
-
-#~ msgid ""
-#~ "wxMaxima could not find tip files.\n"
-#~ "\n"
-#~ "Please check your installation."
-#~ msgstr ""
-#~ "wxMaxima non riesce a trovare i file dei suggerimenti.\n"
-#~ "\n"
-#~ "Controllare l'installazione."
-
-#~ msgid ""
-#~ "wxMaxima dialogs set default values for inputs entries, one of which is "
-#~ "'%'. To change this argument to some other value, enter it to the input "
-#~ "line or select an expression in the console window."
-#~ msgstr ""
-#~ "wxMaxima imposta le finestre di ingresso dati ai valori predefiniti, uno "
-#~ "dei quali è \"%\". Per cambiare questo argomento in un'altro valore, "
-#~ "inserirlo nella riga d'ingresso o selezionare un'espressione nella "
-#~ "finestra di console."
-
-#~ msgid ""
-#~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
-#~ "commands, access them using command history and then push the plot button."
-#~ msgstr ""
-#~ "wxMaxima ha delle utili finestre di inserimento dati per la stampa dei "
-#~ "diagrammi. Se si vuole modificare la stampa precedente basta usare la "
-#~ "cronologia dei comandi e premere il tasto diagrammi."
-
-#~ msgid "wxMaxima input"
-#~ msgstr "Ingresso wxMaxima"
-
-#~ msgid ""
-#~ "wxMaxima's input line has command history available using up and down "
-#~ "keys and command completion based on previous input available using the "
-#~ "tab key."
-#~ msgstr ""
-#~ "La riga d'ingresso di wxMaxima mantiene la cronologia dei comandi. Essa è "
-#~ "accessibile tramite i tasti freccia in su e freccia in giu oppure con il "
-#~ "completamento automatico della riga usando il tasto di tabulazione."
