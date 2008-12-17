@@ -778,6 +778,7 @@ void wxMaxima::ReadMath()
  */
 void wxMaxima::ReadPrompt()
 {
+  bool ready = true;
   int end = m_currentOutput.Find(m_promptSuffix);
   if (end > -1)
   {
@@ -799,6 +800,7 @@ void wxMaxima::ReadPrompt()
           if (m_console->ActivateNextInput(true)) {
             m_console->Refresh();
             m_console->EnableEdit();
+            ready = false;
             ReEvaluateSelection();
           }
           else {
@@ -842,7 +844,8 @@ void wxMaxima::ReadPrompt()
         m_inLispMode = false;
     }
 
-    SetStatusText(_("Ready for user input"), 1);
+    if (ready)
+      SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                       m_currentOutput.Length());
   }
