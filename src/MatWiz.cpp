@@ -169,6 +169,9 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
                                wxSize(150, -1), 4,
                                combo_box_1_choices,
                                wxCB_DROPDOWN | wxCB_READONLY);
+  label_0 = new wxStaticText(this, -1, _("Name:"));
+  text_ctrl_0 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+                              wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -201,13 +204,15 @@ void MatDim::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 0, 0);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
   grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(combo_box_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(label_0, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(text_ctrl_0, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxALL, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);

@@ -69,11 +69,17 @@ public:
   {
     return text_ctrl_2->GetValue();
   }
+  wxString GetValue0()
+  {
+    return text_ctrl_0->GetValue();
+  }
   int GetMatrixType();
 private:
   void set_properties();
   void do_layout();
 protected:
+  wxStaticText* label_0;
+  BTextCtrl* text_ctrl_0;
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;
