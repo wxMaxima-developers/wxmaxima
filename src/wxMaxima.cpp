@@ -2074,8 +2074,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        if (expr.Length() && expr != wxT("%"))
-          cmd = expr;
+        if (wiz->GetValue0() != wxEmptyString)
+          cmd = wiz->GetValue0() + wxT(": ");
         long w, h;
         int type = wiz->GetMatrixType();
         if (!(wiz->GetValue2()).ToLong(&w) ||
