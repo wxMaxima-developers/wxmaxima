@@ -2412,8 +2412,19 @@ void MathCtrl::CheckUnixCopy()
 }
 
 bool MathCtrl::IsSelected(int type) {
-  return m_selectionStart != NULL && m_selectionStart == m_selectionEnd
-      && m_selectionStart->GetType() == type;
+  if (m_selectionStart == NULL)
+    return false;
+
+  else if (type == MC_TYPE_IMAGE || type == MC_TYPE_SLIDE) {
+    if (m_selectionStart != m_selectionEnd || m_selectionStart->GetType() != type)
+      return false;
+    return true;
+  }
+
+  else if (m_selectionStart->GetType() != type)
+    return false;
+
+  return true;
 }
 
 void MathCtrl::Animate(bool run) {
