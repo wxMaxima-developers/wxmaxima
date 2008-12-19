@@ -230,15 +230,9 @@ bool Bitmap::ToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    if (wxTheClipboard->IsSupported(wxDF_BITMAP)) {
-      bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
-      wxTheClipboard->Close();
-      return res;
-    }
-    else {
-      wxTheClipboard->Close();
-      return false;
-    }
+    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
+    wxTheClipboard->Close();
+    return res;
   }
   return false;
 }
