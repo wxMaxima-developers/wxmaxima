@@ -1306,15 +1306,38 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           // keycodes which are ignored
           case WXK_PAGEUP:
           case WXK_PAGEDOWN:
-          case WXK_BACK:
-          case WXK_DELETE:
           case WXK_LEFT:
           case WXK_RIGHT:
             event.Skip();
             break;
+          // delete key and backspace select cell, so pressing key twice deletes the cell
+          case WXK_BACK:
+            if (m_hCaretPosition != NULL) {
+              SetSelection(m_hCaretPosition);
+              m_hCaretActive = false;
+              Refresh();
+              return;
+            }
+            break;
+          case WXK_DELETE:
+            if (m_hCaretPosition == NULL) {
+              if (m_tree != NULL) {
+                SetSelection(m_tree);
+                m_hCaretActive = false;
+                Refresh();
+                return;
+              }
+            }
+            else if (m_hCaretPosition->m_next != NULL) {
+              SetSelection(m_hCaretPosition->m_next);
+              m_hCaretActive = false;
+              Refresh();
+              return;
+            }
+            break;
           // keycodes which open empty hCaret
           case WXK_RETURN:
-            OpenHCaret(wxEmptyString);
+            OpenHCaret(wxT("\n"));
             break;
 					// keycodes which open hCaret with initial content
           default:
