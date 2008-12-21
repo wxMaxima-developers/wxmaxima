@@ -1019,6 +1019,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     GroupCell *group = PrependGroup(type, txt, false, false);
     SetActiveCell(group->GetEditable());
     ((EditorCell *)m_activeCell)->CaretToEnd();
+    ((EditorCell *)m_activeCell)->ClearUndo();
     ScrollToCell(group);
   }
   else {
@@ -1026,6 +1027,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     GroupCell *group = PrependGroup(type, txt, false, true);
     SetActiveCell(group->GetEditable());
     ((EditorCell *)m_activeCell)->CaretToEnd();
+    ((EditorCell *)m_activeCell)->ClearUndo();
     ScrollToCell(group);
   }
 
@@ -1335,7 +1337,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               return;
             }
             break;
-          // keycodes which open empty hCaret
           case WXK_RETURN:
             OpenHCaret(wxT("\n"));
             break;
@@ -2491,6 +2492,20 @@ void MathCtrl::SetHCaret(MathCell *where) {
   SetActiveCell(NULL);
   m_hCaretPosition = (GroupCell *)where;
   m_hCaretActive = true;
+}
+
+bool MathCtrl::CanUndo()
+{
+  if (m_activeCell == NULL)
+    return false;
+  return ((EditorCell *)m_activeCell)->CanUndo();
+}
+
+void MathCtrl::Undo()
+{
+  if (m_activeCell != NULL)
+    ((EditorCell *)m_activeCell)->Undo();
+  Refresh();
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

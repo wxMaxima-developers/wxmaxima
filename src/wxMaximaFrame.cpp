@@ -239,6 +239,10 @@ void wxMaximaFrame::SetupMenu()
 
   // Edit menu
   wxMenu* wxglade_tmp_menu_2 = new wxMenu;
+  wxglade_tmp_menu_2->Append(menu_undo, _("Undo\tCtrl-Z"),
+                             _("Undo last change"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_cut, _("Cut\tCtrl-X"),
                              _("Cut selection from document"),
                              wxITEM_NORMAL);
@@ -255,8 +259,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_select_all,
-                             _("Select all\tCtrl-A"),
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_select_all, _("Select all\tCtrl-A"),
                              _("Select all"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Selection to image"),
@@ -289,6 +293,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Insert new section cell"));
   wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New t&itle cell\tCtrl-Shift-F6"),
                              _("Insert new title cell"));
+  wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
 
   wxglade_tmp_menu_2->AppendSeparator();

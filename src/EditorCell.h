@@ -91,11 +91,19 @@ public:
   void CaretToStart() { m_positionOfCaret = 0; }
   bool CaretAtEnd() { return m_positionOfCaret == m_text.Length(); }
   void CaretToEnd() { m_positionOfCaret = m_text.Length(); }
+  void CaretToPosition(int pos) { m_positionOfCaret = pos; }
+  bool CanUndo() { return m_text != m_oldText; }
+  void SaveValue();
+  void Undo();
+  void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
 private:
   wxString m_text;
+  wxString m_oldText;
+  unsigned int m_oldPosition;
   unsigned int m_positionOfCaret;
   long m_selectionStart;
   long m_selectionEnd;
+  long m_oldStart, m_oldEnd;
   int m_numberOfLines;
   bool m_isActive;
   int m_fontSize;
@@ -111,6 +119,7 @@ private:
   bool m_underlined;
   wxString m_fontName;
   wxFontEncoding m_fontEncoding;
+  bool m_saveValue;
 };
 
 #endif

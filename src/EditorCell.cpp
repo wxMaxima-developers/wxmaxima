@@ -42,6 +42,9 @@ EditorCell::EditorCell() : MathCell()
   m_fontWeight = wxFONTWEIGHT_NORMAL;
   m_fontStyle = wxNORMAL;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
+  m_oldStart = -1;
+  m_oldEnd = -1;
+  m_saveValue = false;
 }
 
 EditorCell::~EditorCell()
@@ -565,6 +568,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                  m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       else
       {
+        SaveValue();
+        m_saveValue = true;
         long start = MIN(m_selectionEnd, m_selectionStart);
         long end = MAX(m_selectionEnd, m_selectionStart);
         m_text = m_text.SubString(0, start - 1) +
@@ -578,6 +583,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   case WXK_BACK:
     m_isDirty = true;
     if (m_selectionStart > -1) {
+      SaveValue();
+      m_saveValue = true;
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
       m_text = m_text.SubString(0, start - 1) +
@@ -637,6 +644,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
     m_isDirty = true;
     bool insertLetter = true;
+
+    if (m_saveValue) {
+      SaveValue();
+      m_saveValue = false;
+    }
     // if we have a selection either put parens around it (and don't write the letter afterwards)
     // od delete selection and write letter (insertLetter = true).
     if (m_selectionStart > -1) {
@@ -812,6 +824,8 @@ void EditorCell::FindMatchingParens()
 bool EditorCell::ActivateCell()
 {
   m_isActive = !m_isActive;
+  if (m_isActive)
+    SaveValue();
   m_displayCaret = true;
   m_hasFocus = true;
 
@@ -1035,6 +1049,8 @@ bool EditorCell::CutToClipboard()
   if (m_selectionStart == -1)
     return false;
 
+  SaveValue();
+  m_saveValue = true;
   CopyToClipboard();
 
   long start = MIN(m_selectionStart, m_selectionEnd);
@@ -1044,7 +1060,7 @@ bool EditorCell::CutToClipboard()
            m_text.SubString(end, m_text.Length());
 
   m_selectionEnd = m_selectionStart = -1;
-
+  m_paren1 = m_paren2 = -1;
   m_width = m_height = m_maxDrop = m_center = -1;
 
   return true;
@@ -1058,6 +1074,10 @@ void EditorCell::PasteFromClipboard()
     {
       wxTextDataObject obj;
       wxTheClipboard->GetData(obj);
+
+      SaveValue();
+      m_saveValue = true;
+
       if (m_selectionStart > -1)
       {
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -1116,3 +1136,23 @@ void EditorCell::SetBackground(CellParser& parser, wxPoint& point)
     }
   }
 }
+
+void EditorCell::Undo()
+{
+  m_text = m_oldText;
+  m_positionOfCaret = m_oldPosition;
+  m_selectionStart = m_oldStart;
+  m_selectionEnd = m_oldEnd;
+  m_paren1 = m_paren2 = -1;
+  m_isDirty = true;
+}
+
+void EditorCell::SaveValue()
+{
+  m_oldText = m_text;
+  m_oldPosition = m_positionOfCaret;
+  m_oldStart = m_selectionStart;
+  m_oldEnd = m_selectionEnd;
+}
+
+

@@ -1291,6 +1291,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
+  menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
                                      m_console->GetActiveCell() != NULL);
@@ -1574,6 +1575,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_paste:
     if (m_console->CanPaste())
       m_console->PasteFromClipboard();
+    break;
+  case menu_undo:
+    if (m_console->CanUndo())
+      m_console->Undo();
     break;
   case menu_copy_tex_from_console:
     if (m_console->CanCopy())
@@ -3253,6 +3258,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_pade, wxMaxima::CalculusMenu)
   EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
+  EVT_MENU(menu_undo, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
@@ -3300,6 +3306,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_reeval_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)

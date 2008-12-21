@@ -152,6 +152,7 @@ enum {
   menu_copy_tex_from_console,
   menu_copy_input_from_console,
   menu_cut_input_from_console,
+  menu_undo,
   menu_delete_selection,
   menu_select_all,
   menu_logcontract,

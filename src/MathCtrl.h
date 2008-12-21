@@ -167,6 +167,8 @@ public:
   void SetHCaret(MathCell *where);
   void OpenHCaret(wxString txt = wxEmptyString, int type = MC_TYPE_INPUT);
   void ActivateHCaret(bool active) { m_hCaretActive = active; m_hCaretPosition = m_last; }
+  bool CanUndo();
+  void Undo();
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
