@@ -1626,7 +1626,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       {
         fontSize++;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
-        m_console->Recalculate();
+        m_console->RecalculateForce();
         m_console->Refresh();
       }
     }
@@ -1639,7 +1639,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       {
         fontSize--;
         wxConfig::Get()->Write(wxT("fontSize"), fontSize);
-        m_console->Recalculate();
+        m_console->RecalculateForce();
         m_console->Refresh();
       }
     }
