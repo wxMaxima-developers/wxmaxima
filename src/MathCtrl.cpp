@@ -69,7 +69,6 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
-  m_forceUpdate = false;
   m_editingEnabled = true;
   m_switchDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
@@ -285,6 +284,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
 
+  tmp->ResetSize();
   Recalculate();
   ScrollToCell(tmp);
 
@@ -390,29 +390,11 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
  * Recalculate dimensions of cells
  */
 void MathCtrl::RecalculateForce() {
-  if (m_tree != NULL) {
-    m_forceUpdate = true;
-    Recalculate();
-    m_forceUpdate = false;
-  }
+  Recalculate(true);
 }
 
-/***
- * Recalculate size of this line
- */
-void MathCtrl::Recalculate() {
-  UnBreakUpCells();
-  RecalculateWidths();
-  BreakUpCells();
-  BreakLines();
-  RecalculateSize();
-  AdjustSize();
-}
+void MathCtrl::Recalculate(bool force) {
 
-/***
- * Recalculate widths of cells
- */
-void MathCtrl::RecalculateWidths() {
   MathCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
@@ -420,29 +402,11 @@ void MathCtrl::RecalculateWidths() {
 
   wxClientDC dc(this);
   CellParser parser(dc);
-  parser.SetForceUpdate(m_forceUpdate);
-
-  while (tmp != NULL) {
-    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-    tmp = tmp->m_next;
-  }
-}
-
-/***
- * Recalculate sizes of cells
- */
-void MathCtrl::RecalculateSize() {
-  MathCell *tmp = m_tree;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
-
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetForceUpdate(m_forceUpdate);
+  parser.SetForceUpdate(force);
+  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
   wxPoint point;
-  point.x = MC_BASE_INDENT;
+  point.x = MC_GROUP_LEFT_INDENT;
   point.y = MC_BASE_INDENT ;
 
   if (tmp != NULL)
@@ -451,6 +415,7 @@ void MathCtrl::RecalculateSize() {
   while (tmp != NULL) {
     tmp->m_currentPoint.x = point.x;
     tmp->m_currentPoint.y = point.y;
+    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
     tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
     point.y += tmp->GetMaxDrop();
     tmp = tmp->m_next;
@@ -458,6 +423,8 @@ void MathCtrl::RecalculateSize() {
       point.y += tmp->GetMaxCenter();
     point.y += MC_GROUP_SKIP;
   }
+
+  AdjustSize();
 }
 
 /***
@@ -469,7 +436,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    Recalculate();
+    RecalculateForce();
   }
 
   Refresh();
@@ -618,7 +585,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
       {
         clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
-        clickedInGC->ResetData();
+        clickedInGC->ResetSize();
         Recalculate();
         m_clickType = CLICK_TYPE_NONE; // ignore drag-select
       }
@@ -1112,6 +1079,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
     wxClientDC dc(this);
     CellParser parser(dc);
+    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
     wxPoint point = m_activeCell->PositionToPoint(parser);
 
@@ -1122,10 +1090,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
 
       m_activeCell->ResetData();
-      m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-      m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
-
       GroupCell *group = (GroupCell *)m_activeCell->GetParent();
+      group->ResetSize();
       group->ResetData();
       group->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
       group->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
@@ -1398,20 +1364,6 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
     tmp = tmp->m_next;
   }
 
-}
-
-/***
- * Break lines.
- */
-void MathCtrl::BreakLines() {
-  GroupCell *tmp = m_tree;
-  int fullWidth = GetClientSize().GetWidth() - 9;
-
-  while (tmp != NULL) {
-    tmp->ResetData();
-    tmp->BreakLines(fullWidth);
-    tmp = (GroupCell *)tmp->m_next;
-  }
 }
 
 /***
@@ -2079,35 +2031,6 @@ bool MathCtrl::ExportToMAC(wxString file) {
   return done;
 }
 
-void MathCtrl::BreakUpCells() {
-  if (m_tree != NULL)
-    BreakUpCells(m_tree);
-}
-
-void MathCtrl::BreakUpCells(MathCell *cell) {
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  int fontsize = 12;
-  GroupCell *tmp = (GroupCell *)cell;
-
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  int clientWidth = GetClientSize().GetWidth() - 9;
-  fontsize = MAX(fontsize, MC_MIN_SIZE);
-
-  while (tmp != NULL) {
-    tmp->BreakUpCells(dc, parser, fontsize, clientWidth);
-    tmp = (GroupCell *)tmp->m_next;
-  }
-}
-
-void MathCtrl::UnBreakUpCells() {
-  GroupCell *tmp = m_tree;
-  while (tmp != NULL) {
-    tmp->UnBreakUpCells();
-    tmp = (GroupCell *)tmp->m_next;
-  }
-}
-
 /**
  * CanEdit: we can edit the input if the we have the whole input in selection!
  */
@@ -2360,6 +2283,7 @@ bool MathCtrl::CutToClipboard() {
     return false;
 
   m_activeCell->CutToClipboard();
+  m_activeCell->GetParent()->ResetSize();
   Recalculate();
   Refresh();
   return true;
@@ -2373,6 +2297,7 @@ bool MathCtrl::CutToClipboard() {
 void MathCtrl::PasteFromClipboard() {
   if (m_activeCell != NULL) {
     m_activeCell->PasteFromClipboard();
+    m_activeCell->GetParent()->ResetSize();
     Recalculate();
     Refresh();
   }

@@ -42,7 +42,6 @@ public:
   void DestroyTree(MathCell* tree);
   void SetData(MathCell* tree);
   void SetupData();
-  void BreakLines();
   void BreakPages();
   void RecalculateSize();
   bool OnPrintPage(int num);
@@ -56,7 +55,6 @@ public:
   void RecalculateWidths();
   double GetPPIScale();
   void GetScreenScale(double *scaleX, double *scaleY);
-  void BreakUpCells();
 private:
   int m_numberOfPages;
   wxString m_title;

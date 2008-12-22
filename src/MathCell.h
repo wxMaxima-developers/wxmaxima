@@ -155,6 +155,7 @@ public:
   virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
   virtual void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void ResetData();
+  void ResetSize() { m_width = m_height = -1; }
 
   void SetSkip(bool skip)
   {

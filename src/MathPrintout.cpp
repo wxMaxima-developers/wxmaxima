@@ -120,31 +120,6 @@ bool MathPrintout::OnBeginDocument(int startPage, int endPage)
   return true;
 }
 
-void MathPrintout::BreakLines()
-{
-  int pageWidth, pageHeight;
-  int marginX, marginY;
-  double scale = GetPPIScale();
-
-  GetPageSizePixels(&pageWidth, &pageHeight);
-  GetPageMargins(&marginX, &marginY);
-
-  int fullWidth = pageWidth - marginX - marginY;
-  int currentWidth = marginX;
-
-  GroupCell* tmp = (GroupCell *)m_tree;
-
-  while (tmp != NULL)
-  {
-    if (!tmp->m_isBroken)
-    {
-      tmp->ResetData();
-      tmp->BreakLines(fullWidth);
-      tmp = (GroupCell *)tmp->m_next;
-    }
-  }
-}
-
 void MathPrintout::BreakPages()
 {
   if (m_tree == NULL)
@@ -191,8 +166,6 @@ void MathPrintout::BreakPages()
 void MathPrintout::SetupData()
 {
   RecalculateWidths();
-  BreakUpCells();
-  BreakLines();
   RecalculateSize();
   BreakPages();
 }
@@ -299,8 +272,15 @@ void MathPrintout::RecalculateWidths()
 
   wxDC *dc = GetDC();
   CellParser parser(*dc, scale);
+
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
+  int pageWidth, pageHeight;
+  GetPageSizePixels(&pageWidth, &pageHeight);
+
+  parser.SetClientWidth(pageWidth - marginX - marginY
+                        - SCALE_PX(MC_BASE_INDENT, scale));
+
   marginX += SCALE_PX(MC_BASE_INDENT, scale);
   parser.SetIndent(marginX);
 
@@ -353,34 +333,6 @@ void MathPrintout::DestroyTree(MathCell* tmp)
     tmp = tmp->m_next;
     tmp1->Destroy();
     delete tmp1;
-  }
-}
-
-void MathPrintout::BreakUpCells()
-{
-  GroupCell *tmp = (GroupCell *)m_tree;
-  int pageWidth, pageHeight;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
-  double scale = GetPPIScale();
-
-  wxDC *dc = GetDC();
-  CellParser parser(*dc, scale);
-  int marginX, marginY;
-  GetPageMargins(&marginX, &marginY);
-  marginX += SCALE_PX(MC_BASE_INDENT, scale);
-  parser.SetIndent(marginX);
-
-  GetPageSizePixels(&pageWidth, &pageHeight);
-  GetPageMargins(&marginX, &marginY);
-
-  int fullWidth = pageWidth - marginX;
-
-  while (tmp != NULL)
-  {
-    tmp->BreakUpCells(*dc, parser, fontsize, fullWidth);
-    tmp = (GroupCell *)tmp->m_next;
   }
 }
 

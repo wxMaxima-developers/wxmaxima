@@ -102,6 +102,8 @@ public:
   }
   int GetIndent() { return m_indent; }
   void SetIndent(int indent) { m_indent = indent; }
+  void SetClientWidth(int width) { m_clientWidth = width; }
+  int GetClientWidth() { return m_clientWidth; }
 private:
   int m_indent;
   double m_scale;
@@ -116,6 +118,7 @@ private:
   bool m_haveGreekFont;
   bool m_forceUpdate;
   bool m_changeAsterisk;
+  int m_clientWidth;
   wxFontEncoding m_fontEncoding;
   style m_styles[14];
 };

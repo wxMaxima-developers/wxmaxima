@@ -136,6 +136,7 @@ void GroupCell::SetOutput(MathCell *output)
 void GroupCell::RemoveOutput()
 {
   DestroyOutput();
+  ResetSize();
   m_output = NULL;
   m_hide = false;
 }
@@ -156,58 +157,69 @@ void GroupCell::AppendOutput(MathCell *cell)
 
 void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
-  double scale = parser.GetScale();
-  m_input->RecalculateWidths(parser, fontsize, true);
+  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
+  {
+    UnBreakUpCells();
 
-  if (m_output == NULL || m_hide) {
-    m_width = m_input->GetFullWidth(scale);
-  }
+    double scale = parser.GetScale();
+    m_input->RecalculateWidths(parser, fontsize, true);
 
-  else {
-    MathCell *tmp = m_output;
-    while (tmp != NULL) {
-      tmp->RecalculateWidths(parser, fontsize, false);
-      tmp = tmp->m_next;
+    if (m_output == NULL || m_hide) {
+      m_width = m_input->GetFullWidth(scale);
     }
-    // This is not correct, m_width will be computed correctly in RecalculateSize!
-    m_width = MAX(m_input->GetFullWidth(scale), m_output->GetFullWidth(scale));
+
+    else {
+      MathCell *tmp = m_output;
+      while (tmp != NULL) {
+        tmp->RecalculateWidths(parser, fontsize, false);
+        tmp = tmp->m_next;
+      }
+      // This is not correct, m_width will be computed correctly in RecalculateSize!
+      m_width = MAX(m_input->GetFullWidth(scale), m_output->GetFullWidth(scale));
+    }
+
+    BreakUpCells(parser, fontsize, parser.GetClientWidth());
+    BreakLines(parser.GetClientWidth());
   }
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
 
 void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
-  double scale = parser.GetScale();
-  m_input->RecalculateSize(parser, fontsize, true);
-  m_center = m_input->GetMaxCenter();
-  m_height = m_input->GetMaxHeight();
-  m_indent = parser.GetIndent();
-
-  if (m_output != NULL && !m_hide) {
-    MathCell *tmp = m_output;
-    while (tmp != NULL) {
-      tmp->RecalculateSize(parser, fontsize, false);
-      tmp = tmp->m_next;
-    }
-
-    m_outputRect.x = m_currentPoint.x;
-    m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
-    m_outputRect.width = 0;
-    m_outputRect.height = 0;
+  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
+  {
+    double scale = parser.GetScale();
+    m_input->RecalculateSize(parser, fontsize, true);
+    m_center = m_input->GetMaxCenter();
     m_height = m_input->GetMaxHeight();
-    m_width = m_input->GetFullWidth(scale);
+    m_indent = parser.GetIndent();
 
-    tmp = m_output;
-    while (tmp != NULL) {
-      if (tmp->BreakLineHere() || tmp == m_output) {
-        m_width = MAX(m_width, tmp->GetLineWidth(scale));
-        m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-        m_height += tmp->GetMaxHeight();
-        if (tmp->m_bigSkip)
-          m_height += MC_LINE_SKIP;
-        m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+    if (m_output != NULL && !m_hide) {
+      MathCell *tmp = m_output;
+      while (tmp != NULL) {
+        tmp->RecalculateSize(parser, fontsize, false);
+        tmp = tmp->m_next;
       }
-      tmp = tmp->m_nextToDraw;
+
+      m_outputRect.x = m_currentPoint.x;
+      m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
+      m_outputRect.width = 0;
+      m_outputRect.height = 0;
+      m_height = m_input->GetMaxHeight();
+      m_width = m_input->GetFullWidth(scale);
+
+      tmp = m_output;
+      while (tmp != NULL) {
+        if (tmp->BreakLineHere() || tmp == m_output) {
+          m_width = MAX(m_width, tmp->GetLineWidth(scale));
+          m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+          m_height += tmp->GetMaxHeight();
+          if (tmp->m_bigSkip)
+            m_height += MC_LINE_SKIP;
+          m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+        }
+        tmp = tmp->m_nextToDraw;
+      }
     }
   }
 
@@ -534,7 +546,7 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end)
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells(wxDC &dc, CellParser parser, int fontsize, int clientWidth)
+void GroupCell::BreakUpCells(CellParser parser, int fontsize, int clientWidth)
 {
   MathCell *tmp = m_output;
 

@@ -69,10 +69,8 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  void Recalculate();
+  void Recalculate(bool force = false);
   void RecalculateForce();
-  void RecalculateWidths();
-  void RecalculateSize();
   void ClearWindow();
   bool CanCopy(bool fromActive = false)
   {
@@ -111,9 +109,6 @@ public:
   {
     return m_tree;
   }
-  void BreakUpCells();
-  void BreakUpCells(MathCell *cell);
-  void UnBreakUpCells();
   void SetInsertPoint(MathCell* insert)
   {
     if (insert == NULL)
@@ -173,7 +168,6 @@ protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
-  void BreakLines();
   void OnTimer(wxTimerEvent& event);
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
@@ -200,7 +194,6 @@ protected:
   bool m_leftDown;
   bool m_mouseDrag;
   bool m_mouseOutside;
-  bool m_forceUpdate;
   GroupCell *m_tree;
   GroupCell *m_last;
   GroupCell *m_workingGroup;
