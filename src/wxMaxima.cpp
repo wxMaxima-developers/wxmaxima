@@ -128,8 +128,11 @@ void wxMaxima::CheckForPrintingSupport()
   m_supportPrinting = true;
 #elif defined __WXMAC__
   m_supportPrinting = true;
-#elif defined wxUSE_LIBGNOMEPRINT
- #if wxUSE_LIBGNOMEPRINT
+#elif defined __WXGTK__
+ #if wxCHECK_VERSION(2, 9, 0)
+  m_supportPrinting = true;
+ #elif defined wxUSE_LIBGNOMEPRINT
+  #if wxUSE_LIBGNOMEPRINT
   wxLogNull log;
   wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
   wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
@@ -139,12 +142,14 @@ void wxMaxima::CheckForPrintingSupport()
     m_supportPrinting = false;
   delete m_gnomep;
   delete m_gnomepui;
+  #else
+  m_supportPrinting = false;
+  #endif
  #else
   m_supportPrinting = false;
  #endif
-#else
-  m_supportPrinting = false;
 #endif
+  m_supportPrinting = true;
 }
 
 #endif

@@ -174,9 +174,9 @@ void MathPrintout::GetPageInfo(int* minPage, int* maxPage,
                                int* fromPage, int* toPage)
 {
   *minPage = 1;
-  *maxPage = 9999;
+  *maxPage = m_numberOfPages;
   *fromPage = 1;
-  *toPage = 9999;
+  *toPage = m_numberOfPages;
 }
 
 void MathPrintout::OnPreparePrinting()
