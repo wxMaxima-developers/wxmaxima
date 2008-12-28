@@ -2428,9 +2428,12 @@ bool MathCtrl::CanUndo()
 
 void MathCtrl::Undo()
 {
-  if (m_activeCell != NULL)
+  if (m_activeCell != NULL) {
     ((EditorCell *)m_activeCell)->Undo();
-  Refresh();
+    m_activeCell->GetParent()->ResetSize();
+    Recalculate();
+    Refresh();
+  }
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)

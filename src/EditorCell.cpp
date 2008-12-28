@@ -1145,6 +1145,7 @@ void EditorCell::Undo()
   m_selectionEnd = m_oldEnd;
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
+  m_width = m_height = m_maxDrop = m_center = -1;
 }
 
 void EditorCell::SaveValue()
