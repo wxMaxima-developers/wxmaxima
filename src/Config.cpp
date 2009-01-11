@@ -113,6 +113,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
   m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Use centered dot character for multiplication"));
+  m_enterEvaluates = new wxCheckBox(notebook_1_pane_1, -1, _("Enter evaluates cells"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
@@ -198,6 +199,7 @@ void Config::set_properties()
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true;
   bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false;
+  bool enterEvaluates = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
@@ -213,6 +215,7 @@ void Config::set_properties()
   config->Read(wxT("changeAsterisk"), &changeAsterisk);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
+  config->Read(wxT("enterEvaluates"), &enterEvaluates);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -257,6 +260,7 @@ void Config::set_properties()
   m_showHeader->SetValue(showHeader);
   m_unixCopy->SetValue(unixCopy);
   m_changeAsterisk->SetValue(changeAsterisk);
+  m_enterEvaluates->SetValue(enterEvaluates);
   m_fixedFontInTC->SetValue(fixedFontTC);
 
 #if defined __WXMSW__
@@ -311,6 +315,7 @@ void Config::do_layout()
   sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_6->Add(m_unixCopy, 0, wxALL, 3);
   sizer_6->Add(m_changeAsterisk, 0, wxALL, 3);
+  sizer_6->Add(m_enterEvaluates, 0, wxALL, 3);
   sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
 
   notebook_1_pane_1->SetAutoLayout(true);
@@ -392,6 +397,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
+  config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   if (m_saveSize->GetValue())

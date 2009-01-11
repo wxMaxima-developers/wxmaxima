@@ -280,7 +280,7 @@ void wxMaximaFrame::SetupMenu()
                    _("&Delete cells"),
                    _("Delete selected cells"), wxT("gtk-delete"));
   wxglade_tmp_menu_2_sub1->AppendSeparator();
-  wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate cell\tShift-Enter"),
+  wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate cell"),
                              _("Evaluate selected cell"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->Append(menu_reeval_all, _("Evaluate all cells\tCtrl-Shift-R"),
                                _("Evaluate all cells"), wxITEM_NORMAL);

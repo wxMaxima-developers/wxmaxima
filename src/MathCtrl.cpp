@@ -1018,7 +1018,11 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
     case WXK_RETURN:
       if (m_activeCell != NULL) {
-        if (event.ControlDown() || event.ShiftDown()) {
+        bool enterEvaluates = false;
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
+             enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
+        {
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_reeval_input);
           (wxGetApp().GetTopWindow())->ProcessEvent(ev);
         } else

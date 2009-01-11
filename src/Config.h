@@ -105,6 +105,7 @@ protected:
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_showHeader;
+  wxCheckBox* m_enterEvaluates;
   wxPanel* notebook_1_pane_1;
   wxStaticText* label_8;
   wxButton* m_getFont;
