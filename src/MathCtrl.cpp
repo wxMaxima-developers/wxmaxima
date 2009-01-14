@@ -1011,7 +1011,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_BACK:
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
-        (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+        GetParent()->ProcessEvent(ev);
       } else
         event.Skip();
       break;
@@ -1024,7 +1024,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
              enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
         {
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_reeval_input);
-          (wxGetApp().GetTopWindow())->ProcessEvent(ev);
+          GetParent()->ProcessEvent(ev);
         } else
           event.Skip();
       }
