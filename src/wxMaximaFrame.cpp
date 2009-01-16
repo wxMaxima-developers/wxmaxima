@@ -301,6 +301,9 @@ void wxMaximaFrame::SetupMenu()
                    _("Increase fontsize in document"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom ou&t\tAlt-O"),
                    _("Decrease fontsize in document"), wxT("gtk-zoom-out"));
+  wxglade_tmp_menu_2->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+                             _("Toggle full screen editing"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));

@@ -102,7 +102,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
-
+  
+  
   m_console->SetFocus();
 }
 
@@ -1647,6 +1648,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         m_console->RecalculateForce();
         m_console->Refresh();
       }
+    }
+    break;
+  case menu_fullscreen:
+    {
+      ShowFullScreen( !IsFullScreen() );
     }
     break;
   case menu_paste_input:
@@ -3277,6 +3283,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 #endif
   EVT_MENU(menu_inc_fontsize, wxMaxima::EditMenu)
   EVT_MENU(menu_dec_fontsize, wxMaxima::EditMenu)
+  EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_input_from_console, wxMaxima::EditMenu)
