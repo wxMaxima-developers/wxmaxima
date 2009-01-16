@@ -31,6 +31,7 @@ EditorCell::EditorCell() : MathCell()
   m_text = wxEmptyString;
   m_fontSize = -1;
   m_positionOfCaret = 0;
+  m_caretColumn = -1; // used when moving up/down between lines
   m_selectionStart = -1;
   m_selectionEnd = -1;
   m_isActive = false;
@@ -411,6 +412,12 @@ int ChangeNumpadToChar(int c)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
+  if ((event.GetKeyCode() != WXK_DOWN) &&
+      (event.GetKeyCode() != WXK_PAGEDOWN) &&
+      (event.GetKeyCode() != WXK_PAGEUP) &&
+      (event.GetKeyCode() != WXK_UP))
+      m_caretColumn = -1; // make caretColumn invalid
+
   switch (event.GetKeyCode())
   {
 
@@ -461,11 +468,17 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
       int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
+      if (m_caretColumn > -1)
+        column = m_caretColumn;
+      else
+        m_caretColumn = column;
 
       if (line < m_numberOfLines-1) // can we go down ?
         m_positionOfCaret = XYToPosition(column, line + 1);
-      else // we can't go down. move caret to the end
+      else { // we can't go down. move caret to the end
         m_positionOfCaret = m_text.Length();
+        m_caretColumn = -1; // make caretColumn invalid
+      }
 
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
@@ -485,11 +498,17 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
       int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
-
+      if (m_caretColumn > -1)
+        column = m_caretColumn;
+      else
+        m_caretColumn = column;
+      
       if (line > 0) // can we go up?
         m_positionOfCaret = XYToPosition(column, line - 1);
-      else // we can't move up, move to the beginning
+      else { // we can't move up, move to the beginning
         m_positionOfCaret = 0;
+        m_caretColumn = -1; // make caretColumn invalid
+      }
 
       if (event.ShiftDown())
         m_selectionEnd = m_positionOfCaret;
