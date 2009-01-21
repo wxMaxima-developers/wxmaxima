@@ -983,6 +983,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   m_positionOfCaret = MIN(m_positionOfCaret, m_text.Length());
 
   m_displayCaret = true;
+  m_caretColumn = -1;
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }
@@ -995,6 +996,7 @@ void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
   m_selectionEnd = m_positionOfCaret;
   m_selectionStart = start;
   m_paren2 = m_paren1 = -1;
+  m_caretColumn = -1;
   if (m_selectionStart == m_selectionEnd)
   {
     m_selectionStart = -1;
