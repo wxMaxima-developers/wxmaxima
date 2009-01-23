@@ -59,7 +59,8 @@ enum {
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
   MC_TYPE_SLIDE,
-  MC_TYPE_GROUP
+  MC_TYPE_GROUP,
+  MC_TYPE_HEADER
 };
 
 class MathCell

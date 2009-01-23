@@ -331,6 +331,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
     m_fontWeight = wxFONTWEIGHT_BOLD;
     m_underlined = true;
   case MC_TYPE_COMMENT:
+  case MC_TYPE_HEADER:
     m_fontEncoding = parser.GetFontEncoding();
     break;
   default:
@@ -358,6 +359,7 @@ void EditorCell::SetForeground(CellParser& parser)
   case MC_TYPE_COMMENT:
   case MC_TYPE_SECTION:
   case MC_TYPE_TITLE:
+  case MC_TYPE_HEADER:
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
     break;
   default:
@@ -502,7 +504,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         column = m_caretColumn;
       else
         m_caretColumn = column;
-      
+
       if (line > 0) // can we go up?
         m_positionOfCaret = XYToPosition(column, line - 1);
       else { // we can't move up, move to the beginning

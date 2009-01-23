@@ -102,8 +102,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
-  
-  
+
+
   m_console->SetFocus();
 }
 
@@ -193,15 +193,15 @@ void wxMaxima::FirstOutput(wxString s)
 
   if (showHeader) {
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
-    DoRawConsoleAppend(s.SubString(0, start - 2), MC_TYPE_COMMENT);
+    DoRawConsoleAppend(s.SubString(0, start - 2), MC_TYPE_HEADER);
   }
 
   if (m_batchFileLines.GetCount()>0) {
     PrintFile();
-    ResetTitle(true);
   }
 
   m_lastPrompt = wxT("(%i1) ");
+  m_console->SetSaved(true);
 }
 
 /***
@@ -347,8 +347,8 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 {
   if (type == MC_TYPE_INPUT || type == MC_TYPE_COMMENT ||
-      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE) {
-    ResetTitle(false);
+      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE ||
+      type == MC_TYPE_HEADER) {
 
     EditorCell* cell = new EditorCell();
 
@@ -622,7 +622,7 @@ bool wxMaxima::StartMaxima()
       {
         command = files[0];
         command.Append(wxString::Format(
-                         wxT(" -eval \"(maxima::start-server %d)\" -eval \"(run)\" -f"),
+                         wxT(" -eval \"(maxima::start-client %d)\" -eval \"(run)\" -f"),
                          m_port
                        ));
       }
@@ -631,7 +631,7 @@ bool wxMaxima::StartMaxima()
       command.Append(wxString::Format(wxT(" -s %d"), m_port));
     wxSetEnv(wxT("home"), wxGetHomeDir());
 #else
-    command.Append(wxString::Format(wxT(" -r \":lisp (setup-server %d)\""),
+    command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
                                     m_port));
 #endif
 
@@ -935,6 +935,7 @@ void wxMaxima::PrintFile()
   }
   m_batchFileLines.Clear();
   m_console->Scroll(0,0);
+  m_console->SetSaved(true);
 
   m_console->Thaw();
 }
@@ -1210,6 +1211,19 @@ void wxMaxima::ShowHelp(wxString keyword)
 }
 
 ///--------------------------------------------------------------------------------
+///  Idle event
+///--------------------------------------------------------------------------------
+
+/***
+ * On idle event we check if the document is saved.
+ */
+void wxMaxima::OnIdle(wxIdleEvent& event)
+{
+  ResetTitle(m_console->IsSaved());
+  event.Skip();
+}
+
+///--------------------------------------------------------------------------------
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
@@ -1438,7 +1452,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_currentFile = file;
         m_console->ExportToMAC(file);
         m_fileSaved = false;
-        ResetTitle(true);
       }
     }
     break;
@@ -1464,7 +1477,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac"))
           file = file + wxT(".wxm");
         m_console->ExportToMAC(file);
-        ResetTitle(true);
       }
     }
     break;
@@ -1617,7 +1629,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case popid_delete:
     if (m_console->CanDeleteSelection())
     {
-      ResetTitle(false);
       m_console->DeleteSelection();
       m_console->Recalculate();
       m_console->Refresh();
@@ -1718,7 +1729,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
           return;
     }
     m_currentFile = wxEmptyString;
-    ResetTitle(true);
     StartMaxima();
     break;
   case menu_soft_restart:
@@ -2998,8 +3008,6 @@ void wxMaxima::ReEvaluateSelection()
   if (!m_console->CanEdit() && !m_console->IsSelectionInWorking())
     return ;
 
-  ResetTitle(false);
-
   MathCell* beginInput = m_console->GetSelectionStart();
   if (beginInput == NULL)
     return ;
@@ -3070,23 +3078,26 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
 
 void wxMaxima::ResetTitle(bool saved)
 {
-  m_fileSaved = saved;
-  if (m_currentFile.Length() == 0) {
-    if (saved)
-      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
-    else
-      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
-  }
-  else
+  if (saved != m_fileSaved)
   {
-    wxString name, ext;
-    wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
-    if (m_fileSaved)
-      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
+    m_fileSaved = saved;
+    if (m_currentFile.Length() == 0) {
+      if (saved)
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
+      else
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
+    }
     else
-      SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
-               wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
+    {
+      wxString name, ext;
+      wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
+      if (m_fileSaved)
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
+                 wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
+      else
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
+                 wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
+    }
   }
 }
 
@@ -3346,4 +3357,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
   EVT_MENU(menu_reeval_all, wxMaxima::MaximaMenu)
+  EVT_IDLE(wxMaxima::OnIdle)
 END_EVENT_TABLE()

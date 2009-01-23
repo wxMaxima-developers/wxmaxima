@@ -76,6 +76,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   m_animate = false;
   m_workingGroup = NULL;
+  m_saved = true;
   AdjustSize();
 }
 
@@ -229,6 +230,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
   SetActiveCell(NULL);
 
+  m_saved = false;
+
   GroupCell *tmp = m_insertPoint;
 
   if (tmp == NULL)
@@ -266,7 +269,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   else {
     if (newCell->GetType() == MC_TYPE_TITLE ||
         newCell->GetType() == MC_TYPE_SECTION ||
-        newCell->GetType() == MC_TYPE_COMMENT)
+        newCell->GetType() == MC_TYPE_COMMENT ||
+        newCell->GetType() == MC_TYPE_HEADER)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
     if (newCell->GetType() == MC_TYPE_PROMPT) {
@@ -438,6 +442,8 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
     m_selectionEnd = NULL;
     RecalculateForce();
   }
+  else
+    AdjustSize();
 
   Refresh();
   wxScrolledWindow::OnSize(event);
@@ -907,6 +913,8 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   if (start == NULL || end == NULL)
     return;
 
+  m_saved = false;
+
   SetActiveCell(NULL);
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
@@ -954,6 +962,8 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
+  m_saved = false;
+
   if (m_workingGroup != NULL) {
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
@@ -1088,6 +1098,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     wxPoint point = m_activeCell->PositionToPoint(parser);
 
     if (m_activeCell->IsDirty()) {
+      m_saved = false;
+
       int height = m_activeCell->GetHeight();
 
       int fontsize = 12;
@@ -1936,7 +1948,8 @@ bool MathCtrl::ExportToTeX(wxString file) {
   return done;
 }
 
-bool MathCtrl::ExportToMAC(wxString file) {
+bool MathCtrl::ExportToMAC(wxString file)
+{
 
   bool wxm = false;
   if (file.Right(4) == wxT(".wxm"))
@@ -1949,6 +1962,8 @@ bool MathCtrl::ExportToMAC(wxString file) {
     output.Clear();
   } else if (!output.Create(file))
     return false;
+
+  m_saved = true;
 
   if (wxm) {
     AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
@@ -1995,6 +2010,8 @@ bool MathCtrl::ExportToMAC(wxString file) {
           case MC_TYPE_TITLE:
             AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
             break;
+          default:
+            AddLineToFile(output, wxT("/*"), false);
         }
       }
       else
@@ -2014,6 +2031,8 @@ bool MathCtrl::ExportToMAC(wxString file) {
           case MC_TYPE_TITLE:
             AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
             break;
+          default:
+            AddLineToFile(output, wxT("*/"), false);
         }
       }
       else

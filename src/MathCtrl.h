@@ -164,6 +164,8 @@ public:
   void ActivateHCaret(bool active) { m_hCaretActive = active; m_hCaretPosition = m_last; }
   bool CanUndo();
   void Undo();
+  bool IsSaved() { return m_saved; }
+  void SetSaved(bool saved) { m_saved = saved; }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -209,6 +211,7 @@ protected:
   wxTimer m_timer, m_caretTimer, m_animationTimer;
   bool m_animate;
   wxBitmap *m_memory;
+  bool m_saved;
   DECLARE_EVENT_TABLE()
 };
 
