@@ -41,7 +41,9 @@ enum {
   font_family,
   panel_size,
   language_id,
-  unicode_glyphs
+  unicode_glyphs,
+  save_id,
+  load_id
 };
 
 class ExamplePanel : public wxPanel
@@ -127,6 +129,7 @@ protected:
   wxStaticText* label_10;
   wxSpinCtrl* m_greekFontAdj;
   wxString m_greekFontName;
+  wxButton *m_saveStyle, *m_loadStyle;
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxStaticText* m_unicodeGlyphs;
   wxButton* m_getUnicodeFont;
@@ -162,11 +165,12 @@ protected:
   void OnChangeWarning(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
   void OnCheckGreek(wxCommandEvent& event);
-  void ReadStyles();
-  void WriteStyles();
+  void ReadStyles(wxString file = wxEmptyString);
+  void WriteStyles(wxString file = wxEmptyString);
   void SetupFontList();
   void UpdateExample();
   void OnChangeFontFamily(wxCommandEvent& event);
+  void LoadSave(wxCommandEvent& event);
   int m_fontSize;
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()

@@ -21,8 +21,11 @@
 #include "MathCell.h"
 
 #include <wx/config.h>
+#include <wx/fileconf.h>
 #include <wx/font.h>
 #include <wx/fontdlg.h>
+#include <wx/wfstream.h>
+#include <wx/sstream.h>
 
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
@@ -168,6 +171,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
   label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(250, 60));
+  m_loadStyle = new wxButton(notebook_1_pane_2, load_id, _("Load"));
+  m_saveStyle = new wxButton(notebook_1_pane_2, save_id, _("Save"));
 #if defined __WXMSW__
   m_button1 = new wxButton(this, wxID_OK, _("OK"));
   m_button2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -300,6 +305,7 @@ void Config::do_layout()
   wxStaticBoxSizer* sizer_4 = new wxStaticBoxSizer(sizer_4_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* sizer_10 = new wxBoxSizer(wxHORIZONTAL);
 
   // TAB 1
   // Maxima options box
@@ -362,6 +368,9 @@ void Config::do_layout()
   grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
+  sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_10->Add(m_saveStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_8->Add(sizer_10, 1, wxALL | wxEXPAND, 3);
 
   // Tab 2
   notebook_1_pane_2->SetAutoLayout(true);
@@ -510,9 +519,15 @@ void Config::OnChangeUnicodeFont(wxCommandEvent& event)
 }
 #endif
 
-void Config::ReadStyles()
+void Config::ReadStyles(wxString file)
 {
-  wxConfigBase* config = wxConfig::Get();
+  wxConfigBase* config;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else {
+    wxFileInputStream str(file);
+    config = new wxFileConfig(str);
+  }
 
   int adj = 0;
   bool greekOk = false;
@@ -721,11 +736,20 @@ void Config::ReadStyles()
   m_boldCB->SetValue(m_styleVariable.bold);
   m_italicCB->SetValue(m_styleVariable.italic);
   m_underlinedCB->SetValue(m_styleVariable.underlined);
+
+  if (file != wxEmptyString)
+    delete config;
 }
 
-void Config::WriteStyles()
+void Config::WriteStyles(wxString file)
 {
-  wxConfig *config = (wxConfig *)wxConfig::Get();
+  wxConfigBase* config;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else {
+    wxStringInputStream str(wxEmptyString);
+    config = new wxFileConfig(str);
+  }
 
   config->Write(wxT("Style/Background/color"),
                 m_styleBackground.color);
@@ -856,6 +880,14 @@ void Config::WriteStyles()
                 m_styleFunction.underlined);
 
   config->Flush();
+
+  if (file != wxEmptyString)
+  {
+    wxFile fl(file, wxFile::write);
+    wxFileOutputStream str(fl);
+    ((wxFileConfig *)config)->Save(str);
+    delete config;
+  }
 }
 
 void Config::OnChangeColor(wxCommandEvent& event)
@@ -998,6 +1030,30 @@ void Config::UpdateExample()
   label_11->Refresh();
 }
 
+void Config::LoadSave(wxCommandEvent& event)
+{
+  if (event.GetId() == save_id)
+  {
+    wxString file = wxFileSelector(_("Save style to file"),
+        wxEmptyString, wxT("style.ini"), wxT("ini"),
+        _("Config file (*.ini)|*.ini"),
+        wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if (file != wxEmptyString)
+      WriteStyles(file);
+  }
+  else {
+    wxString file = wxFileSelector(_("Load style from file"),
+        wxEmptyString, wxT("style.ini"), wxT("ini"),
+        _("Config file (*.ini)|*.ini"),
+        wxFD_OPEN);
+    if (file != wxEmptyString)
+    {
+      ReadStyles(file);
+      UpdateExample();
+    }
+  }
+}
+
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
@@ -1014,6 +1070,8 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_greek, Config::OnCheckGreek)
+  EVT_BUTTON(save_id, Config::LoadSave)
+  EVT_BUTTON(load_id, Config::LoadSave)
 END_EVENT_TABLE()
 
 void ExamplePanel::OnPaint(wxPaintEvent& event)
