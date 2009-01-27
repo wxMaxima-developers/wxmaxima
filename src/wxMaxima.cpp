@@ -191,7 +191,7 @@ void wxMaxima::FirstOutput(wxString s)
   wxConfig::Get()->Read(wxT("showHeader"), &showHeader);
 
   int start = s.Find(m_firstPrompt);
-  m_console->ClearWindow();
+  //m_console->ClearWindow(); // we don't want to clear document when restarting maxima
 
   if (showHeader) {
     DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
@@ -203,7 +203,7 @@ void wxMaxima::FirstOutput(wxString s)
   }
 
   m_lastPrompt = wxT("(%i1) ");
-  m_console->SetSaved(true);
+  //m_console->SetSaved(true);
 }
 
 /***
@@ -741,7 +741,8 @@ void wxMaxima::ReadFirstPrompt()
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
-
+  
+  m_closing = false; // when restarting maxima this is temporarily true
   m_currentOutput = wxEmptyString;
   m_console->ActivateHCaret(true);
   m_console->EnableEdit(true);
@@ -1853,14 +1854,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case menu_restart_id:
-    if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                                 _("Close document?"),
-                                 wxOK|wxCANCEL);
-        if (close != wxOK)
-          return;
-    }
-    m_currentFile = wxEmptyString;
+    m_closing = true;
+    m_console->ResetInputPrompts();
     StartMaxima();
     break;
   case menu_soft_restart:

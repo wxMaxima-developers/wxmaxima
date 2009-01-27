@@ -72,6 +72,7 @@ public:
   void Recalculate(bool force = false);
   void RecalculateForce();
   void ClearWindow();
+  void ResetInputPrompts();
   bool CanCopy(bool fromActive = false)
   {
     return m_selectionStart != NULL ||

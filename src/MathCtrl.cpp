@@ -470,6 +470,23 @@ void MathCtrl::ClearWindow() {
 }
 
 /***
+ * Reset all input promts to ">> "
+ * Called when Restart Maxima is called from Maxima menu
+ */
+void MathCtrl::ResetInputPrompts() {
+  MathCell* tmp = m_tree;
+
+  while (tmp != NULL)
+  {
+    if ( ((GroupCell*)tmp)->GetInput() != NULL) {
+      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(wxT(">> "));
+    }
+    tmp = tmp->m_next;
+  }
+
+}
+
+/***
  * Right mouse - popup-menu
  */
 void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
