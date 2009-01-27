@@ -30,7 +30,7 @@
 #include "Setup.h"
 
 enum {
-  combobox_colour,
+  color_id,
   combobox_styleFor,
   checkbox_bold,
   checkbox_italic,
@@ -113,7 +113,7 @@ protected:
   wxButton* m_getFont;
   wxFontEncoding m_fontEncoding;
   wxComboBox* m_styleFor;
-  wxComboBox* m_styleColor;
+  wxButton* m_styleColor;
   wxCheckBox* m_boldCB;
   wxCheckBox* m_italicCB;
   wxCheckBox* m_underlinedCB;

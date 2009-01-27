@@ -163,23 +163,15 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   switch(m_textStyle)
   {
   case TS_SPECIAL_CONSTANT:
-    if (parser.HaveGreekFont() && m_text == wxT("%pi"))
-      dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
-                        wxMODERN,
-                        parser.IsItalic(TS_GREEK_CONSTANT),
-                        parser.IsBold(TS_GREEK_CONSTANT),
-                        parser.IsUnderlined(TS_GREEK_CONSTANT),
-                        parser.GetGreekFontName(),
-                        parser.GetGreekFontEncoding()));
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-    else if (m_text == wxT("inf"))
+    if (m_text == wxT("inf"))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_DEFAULT),
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
                         parser.GetSymbolFontName()));
-#endif
     else
+#endif
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
@@ -205,33 +197,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontEncoding()));
     break;
   default:
-    switch(m_type)
-    {
-    case MC_TYPE_MAIN_PROMPT:
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_MAIN_PROMPT),
-                        parser.IsBold(TS_MAIN_PROMPT),
-                        parser.IsUnderlined(TS_MAIN_PROMPT),
-                        parser.GetFontName(),
-                        parser.GetFontEncoding()));
-      break;
-    case MC_TYPE_PROMPT:
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_OTHER_PROMPT),
-                        parser.IsBold(TS_OTHER_PROMPT),
-                        parser.IsUnderlined(TS_OTHER_PROMPT),
-                        parser.GetFontName(),
-                        parser.GetFontEncoding()));
-      break;
-    case MC_TYPE_LABEL:
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_LABEL),
-                        parser.IsBold(TS_LABEL),
-                        parser.IsUnderlined(TS_LABEL),
-                        parser.GetFontName(),
-                        parser.GetFontEncoding()));
-      break;
-    default:
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     if (m_text == wxT("->") ||
         m_text == wxT(">=") || m_text == wxT("<="))
@@ -242,13 +207,12 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetSymbolFontName()));
     else
 #endif
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(m_textStyle),
-                        parser.IsBold(m_textStyle),
-                        parser.IsUnderlined(m_textStyle),
-                        parser.GetFontName(),
-                        parser.GetFontEncoding()));
-    }
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      parser.IsItalic(m_textStyle),
+                      parser.IsBold(m_textStyle),
+                      parser.IsUnderlined(m_textStyle),
+                      parser.GetFontName(),
+                      parser.GetFontEncoding()));
   }
 }
 

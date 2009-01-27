@@ -490,29 +490,33 @@ void MathCell::CopyData(MathCell* s, MathCell* t)
 
 void MathCell::SetForeground(CellParser& parser)
 {
+  wxString color;
   wxDC& dc = parser.GetDC();
   if (m_highlight)
   {
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_HIGHLIGHT)));
-    return ;
+    color = parser.GetColor(TS_HIGHLIGHT);
   }
-  switch (m_type)
-  {
-  case MC_TYPE_PROMPT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_OTHER_PROMPT)));
-    break;
-  case MC_TYPE_MAIN_PROMPT:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_MAIN_PROMPT)));
-    break;
-  case MC_TYPE_ERROR:
-    dc.SetTextForeground(wxTheColourDatabase->Find(wxT("red")));
-    break;
-  case MC_TYPE_LABEL:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_LABEL)));
-    break;
-  default:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(m_textStyle)));
-    break;
+  else {
+    switch (m_type)
+    {
+    case MC_TYPE_PROMPT:
+      color = parser.GetColor(TS_OTHER_PROMPT);
+      break;
+    case MC_TYPE_MAIN_PROMPT:
+      color = parser.GetColor(TS_MAIN_PROMPT);
+      break;
+    case MC_TYPE_ERROR:
+      color = wxT("red");
+      break;
+    case MC_TYPE_LABEL:
+      color = parser.GetColor(TS_LABEL);
+      break;
+    default:
+      color = parser.GetColor(m_textStyle);
+      break;
+    }
   }
+
+  dc.SetTextForeground(wxColour(color));
 }
 

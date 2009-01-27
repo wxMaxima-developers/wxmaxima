@@ -26,6 +26,7 @@
 #include <wx/fontdlg.h>
 #include <wx/wfstream.h>
 #include <wx/sstream.h>
+#include <wx/colordlg.h>
 
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
@@ -47,30 +48,6 @@ const int langs[] =
   };
 
 #define LANGUAGE_NUMBER 11
-
-const wxString colorlist[] =
-  {
-    wxT("aquamarine"), wxT("black"), wxT("blue"), wxT("blue violet"),
-    wxT("brown"), wxT("cadet blue"), wxT("coral"), wxT("cornflower blue"),
-    wxT("cyan"), wxT("dark grey"), wxT("dark green"), wxT("dark olive green"),
-    wxT("dark orchid"), wxT("dark slate blue"), wxT("dark slate grey"),
-    wxT("dark turquoise"), wxT("dim grey"), wxT("firebrick"), wxT("forest green"),
-    wxT("gold"), wxT("goldenrod"), wxT("grey"), wxT("green"), wxT("green yellow"),
-    wxT("indian red"), wxT("khaki"), wxT("light blue"), wxT("light grey"),
-    wxT("light steel blue"), wxT("lime green"), wxT("magenta"), wxT("maroon"),
-    wxT("medium aquamarine"), wxT("medium blue"), wxT("medium forrest green"),
-    wxT("medium goldenrod"), wxT("medium orchid"), wxT("medium sea green"),
-    wxT("medium slate blue"), wxT("medium spring green"), wxT("medium turquoise"),
-    wxT("medium violet red"), wxT("midnight blue"), wxT("navy"), wxT("orange"),
-    wxT("orange red"), wxT("orchid"), wxT("pale green"), wxT("pink"), wxT("plum"),
-    wxT("purple"), wxT("red"), wxT("salmon"), wxT("sea green"), wxT("sienna"),
-    wxT("sky blue"), wxT("slate blue"), wxT("spring green"), wxT("steel blue"),
-    wxT("tan"), wxT("thistle"), wxT("turquoise"), wxT("violet"),
-    wxT("violet red"), wxT("wheat"), wxT("white"), wxT("yellow"),
-    wxT("yellow green")
-  };
-
-#define COLORLIST_LENGTH 68
 
 Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
@@ -166,7 +143,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
       _("wheat"), _("white"), _("yellow"), _("yellow green")
     };
-  m_styleColor = new wxComboBox(notebook_1_pane_2, combobox_colour, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 68, m_styleColor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleColor = new wxButton(notebook_1_pane_2, color_id, _("Choose color"), wxDefaultPosition, wxSize(150, -1));
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -306,6 +283,7 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer* sizer_10 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
 
   // TAB 1
   // Maxima options box
@@ -364,13 +342,13 @@ void Config::do_layout()
   sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
-  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
-  grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
+  sizer_12->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3);
+  sizer_11->Add(sizer_12, 1, wxALIGN_CENTER, 3);
   sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
   sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_10->Add(m_saveStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_8->Add(sizer_10, 1, wxALL | wxEXPAND, 3);
+  sizer_8->Add(sizer_10, 1, wxALIGN_RIGHT, 3);
 
   // Tab 2
   notebook_1_pane_2->SetAutoLayout(true);
@@ -728,11 +706,6 @@ void Config::ReadStyles(wxString file)
 
   // Set values in dialog
   m_styleFor->SetSelection(0);
-  int i = 0;
-  for (i = 0; i < COLORLIST_LENGTH; i++)
-    if (m_styleVariable.color == colorlist[i])
-      break;
-  m_styleColor->SetSelection(i);
   m_boldCB->SetValue(m_styleVariable.bold);
   m_italicCB->SetValue(m_styleVariable.italic);
   m_underlinedCB->SetValue(m_styleVariable.underlined);
@@ -893,11 +866,12 @@ void Config::WriteStyles(wxString file)
 void Config::OnChangeColor(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
-
-  int i = m_styleColor->GetSelection();
-  tmp->color = colorlist[i];
-
-  UpdateExample();
+  wxColour col = wxGetColourFromUser(this, tmp->color);
+  if (col.IsOk())
+  {
+    tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
+    UpdateExample();
+  }
 }
 
 void Config::OnChangeStyle(wxCommandEvent& event)
@@ -906,12 +880,6 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   int st = m_styleFor->GetSelection();
 
   m_styleColor->Enable(true);
-  int i = 0;
-  for (i = 0; i < COLORLIST_LENGTH; i++)
-    if (colorlist[i] == tmp->color)
-      break;
-  if (i < COLORLIST_LENGTH)
-    m_styleColor->SetSelection(i);
 
   // Background color only
   if (st == 13 || st == 14)
@@ -1062,7 +1030,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
 #endif
-  EVT_COMBOBOX(combobox_colour, Config::OnChangeColor)
+  EVT_BUTTON(color_id, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
   EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
@@ -1084,7 +1052,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 
   GetClientSize(&panel_width, &panel_height);
 
-  dc.SetTextForeground(wxTheColourDatabase->Find(m_fgColor));
+  dc.SetTextForeground(wxColour(m_fgColor));
 
   if (m_bold)
     bold = wxBOLD;
