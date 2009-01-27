@@ -273,7 +273,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   else {
     if (newCell->GetType() == MC_TYPE_TITLE ||
         newCell->GetType() == MC_TYPE_SECTION ||
-        newCell->GetType() == MC_TYPE_COMMENT ||
+        newCell->GetType() == MC_TYPE_TEXT ||
         newCell->GetType() == MC_TYPE_HEADER)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
@@ -516,7 +516,7 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
           popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);
       }
 
-      if (IsSelected(MC_TYPE_TEXT) || IsSelected(MC_TYPE_LABEL)) {
+      if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL)) {
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
@@ -1060,7 +1060,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
           event.Skip();
       }
 
-      else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_TEXT) {
+      else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_DEFAULT) {
         PrependGroup(MC_TYPE_INPUT, GetString(), true, false);
         ActivateNextInput();
       }
@@ -1531,17 +1531,11 @@ MathCell* MathCtrl::CopyTree() {
   tmp = tmp1->Copy(false);
   copy = tmp;
 
-  if (tmp1->m_isFolded)
-    tmp1 = tmp1->m_next;
-  else
-    tmp1 = tmp1->m_next;
+  tmp1 = tmp1->m_next;
   while (tmp1 != NULL) {
     tmp->AppendCell(tmp1->Copy(false));
     tmp = tmp->m_next;
-    if (tmp1->m_isFolded)
-      tmp1 = tmp1->m_next;
-    else
-      tmp1 = tmp1->m_next;
+    tmp1 = tmp1->m_next;
   }
   return copy;
 }
@@ -1873,7 +1867,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     else {
       if (tmp->IsSpecial()) {
         switch(out->GetType()) {
-          case MC_TYPE_COMMENT:
+          case MC_TYPE_TEXT:
             AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
             break;
           case MC_TYPE_SECTION:
@@ -2023,7 +2017,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
       if (wxm) {
         switch (txt->GetType()) {
-          case MC_TYPE_COMMENT:
+          case MC_TYPE_TEXT:
             AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
             break;
           case MC_TYPE_SECTION:
@@ -2044,7 +2038,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
       if (wxm) {
         switch (txt->GetType()) {
-          case MC_TYPE_COMMENT:
+          case MC_TYPE_TEXT:
             AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
             break;
           case MC_TYPE_SECTION:
@@ -2121,7 +2115,7 @@ bool MathCtrl::ExportToWDR(wxString file)
       // Write text
       MathCell *txt = tmp->GetLabel();
       switch (txt->GetType()) {
-        case MC_TYPE_COMMENT:
+        case MC_TYPE_TEXT:
           output << wxT("<comment>\n");
           break;
         case MC_TYPE_SECTION:
@@ -2134,7 +2128,7 @@ bool MathCtrl::ExportToWDR(wxString file)
       wxString comment = txt->ToString(false);
       output << comment;
       switch (txt->GetType()) {
-        case MC_TYPE_COMMENT:
+        case MC_TYPE_TEXT:
           output << wxT("\n</comment>\n");
           break;
         case MC_TYPE_SECTION:

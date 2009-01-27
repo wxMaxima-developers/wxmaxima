@@ -318,8 +318,8 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
 
   m_fontName = parser.GetFontName();
   m_fontEncoding = parser.GetFontEncoding();
-  m_fontStyle = parser.IsItalic(TS_NORMAL_TEXT);
-  m_fontWeight = parser.IsBold(TS_NORMAL_TEXT);
+  m_fontStyle = parser.IsItalic(TS_DEFAULT);
+  m_fontWeight = parser.IsBold(TS_DEFAULT);
 
   switch(m_type)
   {
@@ -330,7 +330,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
     fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
     m_fontWeight = wxFONTWEIGHT_BOLD;
     m_underlined = true;
-  case MC_TYPE_COMMENT:
+  case MC_TYPE_TEXT:
   case MC_TYPE_HEADER:
     m_fontEncoding = parser.GetFontEncoding();
     break;
@@ -356,11 +356,11 @@ void EditorCell::SetForeground(CellParser& parser)
 
   switch (m_type)
   {
-  case MC_TYPE_COMMENT:
+  case MC_TYPE_TEXT:
   case MC_TYPE_SECTION:
   case MC_TYPE_TITLE:
   case MC_TYPE_HEADER:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_NORMAL_TEXT)));
+    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_DEFAULT)));
     break;
   default:
     dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));

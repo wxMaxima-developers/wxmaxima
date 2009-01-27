@@ -407,9 +407,9 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else if (tagName == wxT("t"))
       {          // Other text
         if (cell == NULL)
-          cell = ParseText(node->GetChildren(), TS_NORMAL_TEXT);
+          cell = ParseText(node->GetChildren(), TS_DEFAULT);
         else
-          cell->AppendCell(ParseText(node->GetChildren(), TS_NORMAL_TEXT));
+          cell->AppendCell(ParseText(node->GetChildren(), TS_DEFAULT));
       }
       else if (tagName == wxT("n"))
       {          // Numbers

@@ -109,7 +109,6 @@ protected:
   wxPanel* notebook_1_pane_1;
   wxStaticText* label_8;
   wxButton* m_getFont;
-  wxString m_fontFamily;
   wxFontEncoding m_fontEncoding;
   wxComboBox* m_styleFor;
   wxComboBox* m_styleColor;
@@ -137,10 +136,21 @@ protected:
   wxSpinCtrl* m_defaultPort;
   ExamplePanel* label_11;
   // end wxGlade
-  style m_styleNormalText, m_styleHiddenText, m_styleMainPrompt,
-  m_styleOtherPrompt, m_styleLabel, m_styleSpecial, m_styleInput,
-  m_styleBackground, m_styleNumber, m_styleString, m_styleGreek,
-  m_styleVariable, m_styleHighlight, m_styleTextBackground, m_styleFunction;
+  style m_styleDefault,
+        m_styleVariable,
+        m_styleFunction,
+        m_styleNumber,
+        m_styleSpecial,
+        m_styleGreek,
+        m_styleString,
+        m_styleInput,
+        m_styleMainPrompt,
+        m_styleOtherPrompt,
+        m_styleLabel,
+        m_styleHighlight,
+        m_styleText,
+        m_styleTextBackground,
+        m_styleBackground;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)

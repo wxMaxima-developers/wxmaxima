@@ -75,31 +75,18 @@ void CellParser::ReadStyle()
 #endif
 
   // Normal text
-  m_styles[TS_NORMAL_TEXT].color = wxT("black");
-  m_styles[TS_NORMAL_TEXT].bold = false;
-  m_styles[TS_NORMAL_TEXT].italic = true;
-  m_styles[TS_NORMAL_TEXT].underlined = false;
+  m_styles[TS_DEFAULT].color = wxT("black");
+  m_styles[TS_DEFAULT].bold = false;
+  m_styles[TS_DEFAULT].italic = true;
+  m_styles[TS_DEFAULT].underlined = false;
   config->Read(wxT("Style/NormalText/color"),
-               &m_styles[TS_NORMAL_TEXT].color);
+               &m_styles[TS_DEFAULT].color);
   config->Read(wxT("Style/NormalText/bold"),
-               &m_styles[TS_NORMAL_TEXT].bold);
+               &m_styles[TS_DEFAULT].bold);
   config->Read(wxT("Style/NormalText/italic"),
-               &m_styles[TS_NORMAL_TEXT].italic);
+               &m_styles[TS_DEFAULT].italic);
   config->Read(wxT("Style/NormalText/underlined"),
-               &m_styles[TS_NORMAL_TEXT].underlined);
-
-  // Hidden groups
-  m_styles[TS_HIDDEN_GROUP].bold = false;
-  m_styles[TS_HIDDEN_GROUP].italic = true;
-  m_styles[TS_HIDDEN_GROUP].underlined = true;
-  config->Read(wxT("Style/HiddenText/color"),
-               &m_styles[TS_HIDDEN_GROUP].color);
-  config->Read(wxT("Style/HiddenText/bold"),
-               &m_styles[TS_HIDDEN_GROUP].bold);
-  config->Read(wxT("Style/HiddenText/italic"),
-               &m_styles[TS_HIDDEN_GROUP].italic);
-  config->Read(wxT("Style/HiddenText/underlined"),
-               &m_styles[TS_HIDDEN_GROUP].underlined);
+               &m_styles[TS_DEFAULT].underlined);
 
   // Main prompt
   m_styles[TS_MAIN_PROMPT].color = wxT("red");
@@ -144,7 +131,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_LABEL].underlined);
 
   // Special
-  m_styles[TS_SPECIAL_CONSTANT].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_SPECIAL_CONSTANT].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_SPECIAL_CONSTANT].bold = false;
   m_styles[TS_SPECIAL_CONSTANT].italic = false;
   m_styles[TS_SPECIAL_CONSTANT].underlined = false;
@@ -172,7 +159,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_INPUT].underlined);
 
   // Number
-  m_styles[TS_NUMBER].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_NUMBER].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_NUMBER].bold = false;
   m_styles[TS_NUMBER].italic = false;
   m_styles[TS_NUMBER].underlined = false;
@@ -186,7 +173,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_NUMBER].underlined);
 
   // String
-  m_styles[TS_STRING].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_STRING].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_STRING].bold = false;
   m_styles[TS_STRING].italic = true;
   m_styles[TS_STRING].underlined = false;
@@ -200,7 +187,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_STRING].underlined);
 
   // Greek
-  m_styles[TS_GREEK_CONSTANT].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_GREEK_CONSTANT].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_GREEK_CONSTANT].bold = false;
   m_styles[TS_GREEK_CONSTANT].italic = false;
   m_styles[TS_GREEK_CONSTANT].underlined = false;
@@ -214,7 +201,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_GREEK_CONSTANT].underlined);
 
   // Variables
-  m_styles[TS_VARIABLE].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_VARIABLE].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_VARIABLE].bold = false;
   m_styles[TS_VARIABLE].italic = true;
   m_styles[TS_VARIABLE].underlined = false;
@@ -228,7 +215,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_VARIABLE].underlined);
 
   // FUNCTIONS
-  m_styles[TS_FUNCTION].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_FUNCTION].color = m_styles[TS_DEFAULT].color;
   m_styles[TS_FUNCTION].bold = false;
   m_styles[TS_FUNCTION].italic = false;
   m_styles[TS_FUNCTION].underlined = false;
@@ -242,7 +229,7 @@ void CellParser::ReadStyle()
                &m_styles[TS_FUNCTION].underlined);
 
   // Highlight
-  m_styles[TS_HIGHLIGHT].color = m_styles[TS_NORMAL_TEXT].color;
+  m_styles[TS_HIGHLIGHT].color = m_styles[TS_DEFAULT].color;
   config->Read(wxT("Style/Highlight/color"),
                &m_styles[TS_HIGHLIGHT].color);
 
@@ -253,7 +240,7 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/TextBackground/color"),
                &m_styles[TS_TEXT_BACKGROUND].color);
 
-  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_NORMAL_TEXT].color, 1, wxSOLID)));
+  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxSOLID)));
 }
 
 wxFontWeight CellParser::IsBold(int st)

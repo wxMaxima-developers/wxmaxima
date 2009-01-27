@@ -20,8 +20,6 @@
 #include "TextCell.h"
 #include "Setup.h"
 
-wxString g_foldText(_(" << Unfold >>"));
-
 TextCell::TextCell() : MathCell()
 {
   m_text = wxEmptyString;
@@ -55,7 +53,6 @@ MathCell* TextCell::Copy(bool all)
   CopyData(this, tmp);
   tmp->m_text = wxString(m_text);
   tmp->m_forceBreakLine = m_forceBreakLine;
-  tmp->m_isFolded = m_isFolded;
   tmp->m_bigSkip = m_bigSkip;
   tmp->m_isHidden = m_isHidden;
   tmp->m_textStyle = m_textStyle;
@@ -163,14 +160,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
-  if (m_isFolded)
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      parser.IsItalic(TS_HIDDEN_GROUP),
-                      parser.IsBold(TS_HIDDEN_GROUP),
-                      parser.IsUnderlined(TS_HIDDEN_GROUP),
-                      parser.GetFontName(),
-                      parser.GetFontEncoding()));
-  else
   switch(m_textStyle)
   {
   case TS_SPECIAL_CONSTANT:
@@ -185,9 +174,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf"))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_NORMAL_TEXT),
-                        parser.IsBold(TS_NORMAL_TEXT),
-                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
                         parser.GetSymbolFontName()));
 #endif
     else
@@ -247,9 +236,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     if (m_text == wxT("->") ||
         m_text == wxT(">=") || m_text == wxT("<="))
       dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_NORMAL_TEXT),
-                        parser.IsBold(TS_NORMAL_TEXT),
-                        parser.IsUnderlined(TS_NORMAL_TEXT),
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
                         parser.GetSymbolFontName()));
     else
 #endif
@@ -346,16 +335,6 @@ bool TextCell::IsShortNum()
   else if (m_text.Length() < 4)
     return true;
   return false;
-}
-
-void TextCell::Fold(bool fold)
-{
-  m_isFolded = fold;
-  m_width = -1;
-  if (fold)
-    m_text = m_text + wxGetTranslation(g_foldText);
-  else
-    m_text = m_text.Left(m_text.Length() - wxStrlen(wxGetTranslation(g_foldText)));
 }
 
 wxString TextCell::GetSymbolString(CellParser& parser)

@@ -265,7 +265,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   if (type != MC_TYPE_ERROR)
     SetStatusText(_("Parsing output"), 1);
 
-  if (type == MC_TYPE_TEXT)
+  if (type == MC_TYPE_DEFAULT)
   {
     while (s.Length() > 0)
     {
@@ -275,7 +275,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         t.Trim();
         t.Trim(false);
         if (t.Length())
-          DoRawConsoleAppend(s, MC_TYPE_TEXT);
+          DoRawConsoleAppend(s, MC_TYPE_DEFAULT);
         s = wxEmptyString;
       }
 
@@ -292,7 +292,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         wxString rest = s.SubString(start, end);
 
         if (pre1.Length()) {
-          DoRawConsoleAppend(pre, MC_TYPE_TEXT);
+          DoRawConsoleAppend(pre, MC_TYPE_DEFAULT);
           DoConsoleAppend(wxT("<span>") + rest +
                           wxT("</span>"), type, false);
         }
@@ -348,7 +348,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
 {
-  if (type == MC_TYPE_INPUT || type == MC_TYPE_COMMENT ||
+  if (type == MC_TYPE_INPUT || type == MC_TYPE_TEXT ||
       type == MC_TYPE_SECTION || type == MC_TYPE_TITLE ||
       type == MC_TYPE_HEADER) {
 
@@ -761,7 +761,7 @@ void wxMaxima::ReadMath()
   {
     m_readingPrompt = true;
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o, MC_TYPE_TEXT);
+    ConsoleAppend(o, MC_TYPE_DEFAULT);
     m_currentOutput = m_currentOutput.SubString(end + m_promptPrefix.Length(),
                       m_currentOutput.Length());
     end = m_currentOutput.Find(m_promptPrefix);
@@ -775,7 +775,7 @@ void wxMaxima::ReadMath()
   while (end > -1)
   {
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o + mth, MC_TYPE_TEXT);
+    ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
     m_currentOutput = m_currentOutput.SubString(end + mth.Length(),
                       m_currentOutput.Length());
     end = m_currentOutput.Find(mth);
@@ -916,7 +916,7 @@ void wxMaxima::PrintFile()
           line += wxT("\n") + m_batchFileLines[i];
         ++i;
       }
-      DoRawConsoleAppend(line, MC_TYPE_COMMENT);
+      DoRawConsoleAppend(line, MC_TYPE_TEXT);
     }
 
     // Print input
@@ -1013,7 +1013,7 @@ void wxMaxima::ReadXmlFile(wxString file)
         content += xml[i];
       }
       DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
-      DoRawConsoleAppend(content, MC_TYPE_COMMENT);
+      DoRawConsoleAppend(content, MC_TYPE_TEXT);
     }
 
     else if (xml[i] == _T("<input>")) {
@@ -1032,7 +1032,7 @@ void wxMaxima::ReadXmlFile(wxString file)
       wxString content = _T("<mth>");
       while (xml[++i] != _T("</mth>"))
         content += xml[i] + _T("\n");
-      ConsoleAppend(content + _T("</mth>"), MC_TYPE_TEXT );
+      ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT );
     }
   }
 
@@ -1054,7 +1054,7 @@ void wxMaxima::ReadLispError()
     m_readingPrompt = false;
     m_inLispMode = true;
     wxString o = m_currentOutput.Left(end);
-    ConsoleAppend(o, MC_TYPE_TEXT);
+    ConsoleAppend(o, MC_TYPE_DEFAULT);
     ConsoleAppend(lispError, MC_TYPE_PROMPT);
     SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = wxEmptyString;
@@ -3190,7 +3190,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_insert_text:
 #endif
-    type = MC_TYPE_COMMENT;
+    type = MC_TYPE_TEXT;
     break;
   case menu_add_title:
     type = MC_TYPE_TITLE;

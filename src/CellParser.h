@@ -120,7 +120,7 @@ private:
   bool m_changeAsterisk;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;
-  style m_styles[14];
+  style m_styles[STYLE_NUM];
 };
 
 #endif

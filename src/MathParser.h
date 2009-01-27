@@ -30,11 +30,11 @@ class MathParser
 public:
   MathParser();
   ~MathParser();
-  MathCell* ParseLine(wxString s, int style = MC_TYPE_TEXT);
+  MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
 private:
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
   MathCell* ParseFracTag(wxXmlNode* node);
-  MathCell* ParseText(wxXmlNode* node, int style = TS_NORMAL_TEXT);
+  MathCell* ParseText(wxXmlNode* node, int style = TS_DEFAULT);
   MathCell* ParseSupTag(wxXmlNode* node);
   MathCell* ParseSubTag(wxXmlNode* node);
   MathCell* ParseAbsTag(wxXmlNode* node);

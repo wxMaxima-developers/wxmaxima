@@ -113,9 +113,9 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
-                    parser.IsItalic(TS_NORMAL_TEXT),
-                    parser.IsBold(TS_NORMAL_TEXT),
-                    parser.IsUnderlined(TS_NORMAL_TEXT),
+                    parser.IsItalic(TS_DEFAULT),
+                    parser.IsBold(TS_DEFAULT),
+                    parser.IsUnderlined(TS_DEFAULT),
                     parser.GetSymbolFontName()));
   dc.GetTextExtent(wxT(PAREN_LEFT_TOP), &m_charWidth, &m_charHeight);
   m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;

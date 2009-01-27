@@ -40,18 +40,9 @@ public:
 	wxString ToXml(bool all);	// new!
   wxString GetDiffPart();
   bool IsOperator();
-  wxString GetValue()
-  {
-    return m_text;
-  }
-  void SetStyle(int style)
-  {
-    m_textStyle = style;
-  }
-  int GetStyle()
-  {
-    return m_textStyle;
-  }
+  wxString GetValue() { return m_text; }
+  void SetStyle(int style) { m_textStyle = style; }
+  int GetStyle() { return m_textStyle; }
   wxString GetSymbolString(CellParser& parser);
   wxString GetGreekString(CellParser& parser);
 #if defined (__WXGTK20__) || defined (__WXMAC__)
@@ -60,7 +51,6 @@ public:
   wxString GetGreekStringIso();
 #endif
   bool IsShortNum();
-  void Fold(bool fold);
 protected:
   wxString m_text;
   int m_realCenter;

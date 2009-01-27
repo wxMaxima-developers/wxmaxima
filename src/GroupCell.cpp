@@ -539,7 +539,7 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end)
 
   *end = *start;
 
-  while (*end != NULL && (*end)->GetType() == MC_TYPE_TEXT && (*end)->m_nextToDraw != NULL)
+  while (*end != NULL && (*end)->GetType() == MC_TYPE_DEFAULT && (*end)->m_nextToDraw != NULL)
     *end = (*end)->m_nextToDraw;
 
   if (*end == NULL || *start == NULL)

@@ -26,6 +26,7 @@ struct style
     bold(false), italic(false), underlined(false)
     {  };
   wxString color;
+  wxString font;
   bool bold;
   bool italic;
   bool underlined;
@@ -33,24 +34,25 @@ struct style
 
 enum
 {
-  TS_NORMAL_TEXT = 0,
-  TS_HIDDEN_GROUP,
+  TS_DEFAULT = 0,
+  TS_VARIABLE,
+  TS_FUNCTION,
+  TS_NUMBER,
+  TS_GREEK_CONSTANT,
+  TS_SPECIAL_CONSTANT,
+  TS_STRING,
   TS_MAIN_PROMPT,
   TS_OTHER_PROMPT,
   TS_LABEL,
   TS_INPUT,
-  TS_SPECIAL_CONSTANT,
-  TS_NUMBER,
-  TS_STRING,
-  TS_GREEK_CONSTANT,
-  TS_VARIABLE,
-  TS_FUNCTION,
   TS_HIGHLIGHT,
   TS_TEXT_BACKGROUND,
-  TS_COMMENT_TEXT,
-  TS_SECTION_TEXT,
-  TS_TITLE_TEXT,
-  TS_ERROR_TEXT
+  TS_TEXT,
+  TS_SECTION,
+  TS_TITLE,
+  TS_ERROR
 };
+
+#define STYLE_NUM 17
 
 #endif

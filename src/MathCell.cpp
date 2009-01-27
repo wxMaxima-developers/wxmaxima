@@ -37,12 +37,11 @@ MathCell::MathCell()
   m_breakPage = false;
   m_forceBreakLine = false;
   m_bigSkip = true;
-  m_isFolded = false;
   m_isHidden = false;
   m_isBroken = false;
   m_highlight = false;
-  m_type = MC_TYPE_TEXT;
-  m_textStyle = TS_NORMAL_TEXT;
+  m_type = MC_TYPE_DEFAULT;
+  m_textStyle = TS_DEFAULT;
 }
 
 /***
@@ -69,19 +68,19 @@ void MathCell::SetType(int type)
 			m_textStyle = TS_INPUT;
 			break;
 		case MC_TYPE_ERROR:
-			m_textStyle = TS_ERROR_TEXT;
+			m_textStyle = TS_ERROR;
 			break;
-		case MC_TYPE_COMMENT:
-			m_textStyle = TS_COMMENT_TEXT;
+		case MC_TYPE_TEXT:
+			m_textStyle = TS_TEXT;
 			break;
 		case MC_TYPE_SECTION:
-			m_textStyle = TS_SECTION_TEXT;
+			m_textStyle = TS_SECTION;
 			break;
 		case MC_TYPE_TITLE:
-			m_textStyle = TS_TITLE_TEXT;
+			m_textStyle = TS_TITLE;
 			break;
 		default:	//  MC_TYPE_IMAGE, MC_TYPE_SLIDE, MC_TYPE_GROUP?????
-			m_textStyle = TS_NORMAL_TEXT;
+			m_textStyle = TS_DEFAULT;
 	}
 
 }
@@ -445,12 +444,9 @@ void MathCell::Unbreak(bool all)
 {
   ResetData();
   m_isBroken = false;
-  if (!m_isFolded)
-  {
-    m_nextToDraw = m_next;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = this;
-  }
+  m_nextToDraw = m_next;
+  if (m_nextToDraw != NULL)
+    m_nextToDraw->m_previousToDraw = this;
   if (all && m_next != NULL)
     m_next->Unbreak(all);
 }
@@ -479,7 +475,7 @@ void MathCell::UnsetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_NORMAL_TEXT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
                 1, wxSOLID)));
 }
 

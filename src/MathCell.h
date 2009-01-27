@@ -48,13 +48,13 @@
 #include "TextStyle.h"
 
 enum {
-  MC_TYPE_TEXT,
+  MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT,
   MC_TYPE_PROMPT,
   MC_TYPE_LABEL,
   MC_TYPE_INPUT,
   MC_TYPE_ERROR,
-  MC_TYPE_COMMENT,
+  MC_TYPE_TEXT,
   MC_TYPE_SECTION,
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
@@ -73,27 +73,12 @@ public:
 
   void AppendCell(MathCell *p_next);
 
-  void BreakLine(bool breakLine)
-  {
-    m_breakLine = breakLine;
-  }
-  void BreakPage(bool breakPage)
-  {
-    m_breakPage = breakPage;
-  }
+  void BreakLine(bool breakLine) { m_breakLine = breakLine; }
+  void BreakPage(bool breakPage) { m_breakPage = breakPage; }
   bool BreakLineHere();
-  bool ForceBreakLineHere()
-  {
-    return m_forceBreakLine;
-  }
-  bool BreakPageHere()
-  {
-    return m_breakPage;
-  }
-  virtual bool BreakUp()
-  {
-    return false;
-  }
+  bool ForceBreakLineHere() { return m_forceBreakLine; }
+  bool BreakPageHere() { return m_breakPage; }
+  virtual bool BreakUp() { return false; }
 
   bool ContainsRect(wxRect& big, bool all = true);
   bool ContainsPoint(wxPoint& point)
@@ -110,46 +95,20 @@ public:
   void DrawBoundingBox(wxDC& dc, bool all = false);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 
-  void ForceBreakLine(bool force)
-  {
-    m_forceBreakLine = m_breakLine = force;
-  }
-  virtual void Fold(bool fold)
-  { }
+  void ForceBreakLine(bool force) { m_forceBreakLine = m_breakLine = force; }
 
-  int GetHeight()
-  {
-    return m_height;
-  }
-  int GetWidth()
-  {
-    return m_width;
-  }
-  int GetCenter()
-  {
-    return m_center;
-  }
-  int GetDrop()
-  {
-    return m_height - m_center;
-  }
-  int GetType()
-  {
-    return m_type;
-  }
+  int GetHeight() { return m_height; }
+  int GetWidth() { return m_width; }
+  int GetCenter() { return m_center; }
+  int GetDrop() { return m_height - m_center; }
+  int GetType() { return m_type; }
   int GetMaxDrop();
   int GetMaxCenter();
   int GetMaxHeight();
   int GetFullWidth(double scale);
   int GetLineWidth(double scale);
-  int GetCurrentX()
-  {
-    return m_currentPoint.x;
-  }
-  int GetCurrentY()
-  {
-    return m_currentPoint.y;
-  }
+  int GetCurrentX() { return m_currentPoint.x; }
+  int GetCurrentY() { return m_currentPoint.y; }
   virtual wxRect GetRect(bool all = false);
   virtual wxString GetDiffPart();
 
@@ -158,27 +117,15 @@ public:
   void ResetData();
   void ResetSize() { m_width = m_height = -1; }
 
-  void SetSkip(bool skip)
-  {
-    m_bigSkip = skip;
-  }
+  void SetSkip(bool skip) { m_bigSkip = skip; }
   void SetType(int type);
-//  {
-//    m_type = type;
-//  }
   int GetStyle(){ return m_textStyle; }	//l'ho aggiunto io
 
   void SetPen(CellParser& parser);
-  void SetHighlight(bool highlight)
-  {
-    m_highlight = highlight;
-  }
-  virtual void SetExponentFlag()
-  { }
-  virtual void SetValue(wxString text)
-  { }
-  virtual wxString GetValue()
-  { return wxEmptyString; }
+  void SetHighlight(bool highlight) { m_highlight = highlight; }
+  virtual void SetExponentFlag() { }
+  virtual void SetValue(wxString text) { }
+  virtual wxString GetValue() { return wxEmptyString; }
 
   void SelectRect(wxRect& rect, MathCell** first, MathCell** last);
   void SelectFirst(wxRect& rect, MathCell** first);
@@ -187,10 +134,7 @@ public:
 
   virtual bool IsOperator();
   bool IsCompound();
-  virtual bool IsShortNum()
-  {
-    return false;
-  }
+  virtual bool IsShortNum() { return false; }
 
   MathCell* GetParent();
 
@@ -205,12 +149,11 @@ public:
   MathCell *m_nextToDraw, *m_previousToDraw;
   wxPoint m_currentPoint;  // Current point in console (the center of the cell)
   bool m_bigSkip;
-  bool m_isFolded;
   bool m_isBroken;
   bool m_isHidden;
   bool IsComment()
   {
-    return m_type == MC_TYPE_COMMENT || m_type == MC_TYPE_SECTION ||
+    return m_type == MC_TYPE_TEXT || m_type == MC_TYPE_SECTION ||
            m_type == MC_TYPE_TITLE;
   }
   bool IsEditable(bool input = false)
@@ -219,42 +162,21 @@ public:
             m_previous != NULL && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
          || (!input && IsComment());
   }
-  virtual void ProcessEvent(wxKeyEvent& event)
-  { }
-  virtual bool ActivateCell()
-  {
-    return false;
-  }
-  virtual bool AddEnding()
-  { }
-  virtual void SelectPointText(wxDC &dc, wxPoint& point)
-  { }
-  virtual void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
-  { }
-  virtual void PasteFromClipboard()
-  { }
-  virtual bool CopyToClipboard()
-  { return false; }
-  virtual bool CutToClipboard()
-  { return false; }
-  virtual void SelectAll()
-  { }
-  virtual bool CanCopy()
-  {
-    return false;
-  }
-  virtual void SetMatchParens(bool match)
-  { }
-  virtual wxPoint PositionToPoint(CellParser& parser, int pos = -1)
-  { return wxPoint(-1, -1); }
-  virtual bool IsDirty()
-  {
-    return false;
-  }
-  virtual void SwitchCaretDisplay()
-  { }
-  virtual void SetFocus(bool focus)
-  { }
+  virtual void ProcessEvent(wxKeyEvent& event) { }
+  virtual bool ActivateCell() { return false; }
+  virtual bool AddEnding() { }
+  virtual void SelectPointText(wxDC &dc, wxPoint& point) { }
+  virtual void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two) { }
+  virtual void PasteFromClipboard() { }
+  virtual bool CopyToClipboard() { return false; }
+  virtual bool CutToClipboard() { return false; }
+  virtual void SelectAll() { }
+  virtual bool CanCopy() { return false; }
+  virtual void SetMatchParens(bool match) { }
+  virtual wxPoint PositionToPoint(CellParser& parser, int pos = -1) { return wxPoint(-1, -1); }
+  virtual bool IsDirty() { return false; }
+  virtual void SwitchCaretDisplay() { }
+  virtual void SetFocus(bool focus) { }
   void SetForeground(CellParser& parser);
   virtual bool IsActive() { return false; }
   virtual void SetParent(MathCell *parent, bool all);
