@@ -160,6 +160,14 @@ wxString SqrtCell::ToTeX(bool all)
          MathCell::ToTeX(all);
 }
 
+wxString SqrtCell::ToXml(bool all)
+{
+	if (m_isBroken)
+		return wxEmptyString;
+	return _T("<q>") + m_innerCell->ToXml(true) + _T("</q>") +
+		MathCell::ToXml(all);
+}
+
 void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

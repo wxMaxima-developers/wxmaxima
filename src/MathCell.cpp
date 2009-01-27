@@ -51,6 +51,41 @@ MathCell::MathCell()
 MathCell::~MathCell()
 {}
 
+void MathCell::SetType(int type)
+{
+	m_type = type;
+
+	switch( m_type ){
+		case MC_TYPE_MAIN_PROMPT:
+			m_textStyle = TS_MAIN_PROMPT;
+			break;
+		case MC_TYPE_PROMPT:
+			m_textStyle = TS_OTHER_PROMPT;
+			break;
+		case MC_TYPE_LABEL:
+			m_textStyle = TS_LABEL;
+			break;
+		case MC_TYPE_INPUT:
+			m_textStyle = TS_INPUT;
+			break;
+		case MC_TYPE_ERROR:
+			m_textStyle = TS_ERROR_TEXT;
+			break;
+		case MC_TYPE_COMMENT:
+			m_textStyle = TS_COMMENT_TEXT;
+			break;
+		case MC_TYPE_SECTION:
+			m_textStyle = TS_SECTION_TEXT;
+			break;
+		case MC_TYPE_TITLE:
+			m_textStyle = TS_TITLE_TEXT;
+			break;
+		default:	//  MC_TYPE_IMAGE, MC_TYPE_SLIDE, MC_TYPE_GROUP?????
+			m_textStyle = TS_NORMAL_TEXT;
+	}
+
+}
+
 void MathCell::SetParent(MathCell *parent, bool all)
 {
   m_group = parent;
@@ -296,6 +331,16 @@ wxString MathCell::ToTeX(bool all)
 {
   if (all && m_next != NULL)
     return m_next->ToTeX(all);
+  return wxEmptyString;
+}
+
+wxString MathCell::ToXml(bool all)
+{
+  if (all && m_next != NULL) {
+    if (m_next->ForceBreakLineHere())
+      return wxT("\n") + m_next->ToXml(all);
+    return m_next->ToXml(all);
+  }
   return wxEmptyString;
 }
 

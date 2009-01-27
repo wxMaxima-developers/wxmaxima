@@ -33,6 +33,10 @@
 #include <wx/textfile.h>
 #include <wx/tokenzr.h>
 
+#include <wx/zipstrm.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
+
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
@@ -1950,6 +1954,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
+  m_saved = true;
 
   bool wxm = false;
   if (file.Right(4) == wxT(".wxm"))
@@ -2052,6 +2057,95 @@ bool MathCtrl::ExportToMAC(wxString file)
   output.Close();
 
   return done;
+}
+
+bool MathCtrl::ExportToWDR(wxString file)
+{
+  m_saved = true;
+
+  if(wxFileExists(file))
+    if(!wxRemoveFile(file))
+      return false;
+
+  wxFFileOutputStream out(file);
+  wxZipOutputStream zip(out);
+  wxTextOutputStream output(zip);
+
+  zip.PutNextEntry(_T("out"));
+  output << _T("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+  output << _T("<wxMaxima>\n");
+
+  GroupCell* tmp = (GroupCell *)m_tree;
+  // Write contents //
+  while (tmp != NULL) {
+    // Write input
+    if (!tmp->IsSpecial()) {
+      MathCell *txt = tmp->GetInput();
+      if (txt != NULL) {
+        wxString input = txt->ToString(false);
+        if (input.Length()>0) {
+          output << wxT("<input>\n");
+          output << input;
+          output << wxT("\n</input>\n");
+        }
+      }
+	    // Write output
+      txt = tmp->GetLabel();
+      if (txt != NULL) {
+        wxString out = txt->ToXml(true);
+        if (out.Length()>0) {
+          output << wxT("<mth>\n");
+          output << out;
+          output << wxT("\n</mth>\n");
+        }
+      }
+    }
+    else {
+      // Write text
+      MathCell *txt = tmp->GetLabel();
+      switch (txt->GetType()) {
+        case MC_TYPE_COMMENT:
+          output << wxT("<comment>\n");
+          break;
+        case MC_TYPE_SECTION:
+         output << wxT("<section>\n");
+          break;
+        case MC_TYPE_TITLE:
+          output << wxT("<title>\n");
+          break;
+      }
+      wxString comment = txt->ToString(false);
+      output << comment;
+      switch (txt->GetType()) {
+        case MC_TYPE_COMMENT:
+          output << wxT("\n</comment>\n");
+          break;
+        case MC_TYPE_SECTION:
+         output << wxT("\n</section>\n");
+          break;
+        case MC_TYPE_TITLE:
+          output << wxT("\n</title>\n");
+          break;
+      }
+    }
+    tmp = (GroupCell *)tmp->m_next;
+  }
+  output << _T("</wxMaxima>");
+
+  wxString images = _T("image");
+  int i = 1;
+  images<<i++;
+  while( wxFileExists(images) ){
+    zip.PutNextEntry(images);
+    wxFileInputStream png(images);
+    while(!png.Eof())
+      png.Read(zip);
+    wxRemoveFile(images);
+    images = _T("image");
+    images<<i++;
+  }
+
+  return true;
 }
 
 /**

@@ -287,6 +287,18 @@ wxString FracCell::ToTeX(bool all)
   return s;
 }
 
+wxString FracCell::ToXml(bool all)
+{
+	if( m_isBroken )
+		return wxEmptyString;
+	wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )? 
+					_T("f"): _T("f line = \"no\"");
+	return _T("<") + s + _T("><r>") + 
+			m_num->ToXml(true) + _T("</r><r>") +
+			m_denom->ToXml(true) + _T("</r></f>") + 
+			MathCell::ToXml(all);
+}
+
 void FracCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

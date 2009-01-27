@@ -201,6 +201,15 @@ wxString ExptCell::GetDiffPart()
   return s;
 }
 
+wxString ExptCell::ToXml(bool all)
+{
+	if (m_isBroken)
+		return wxEmptyString;
+	return _T("<e><r>") + m_baseCell->ToXml(true) + _T("</r><r>") +
+			m_powCell->ToXml(true) + _T("</r></e>") + 
+			MathCell::ToXml(all);
+}
+
 void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;

@@ -51,6 +51,7 @@ public:
   void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
+	wxString ToXml(bool all);	//new!
   void SetExponentFlag();
   bool BreakUp();
   void SetupBreakUps();

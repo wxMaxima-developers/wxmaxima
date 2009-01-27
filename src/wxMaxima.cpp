@@ -51,6 +51,9 @@
 #include <wx/artprov.h>
 #include <wx/aboutdlg.h>
 
+#include <wx/zipstrm.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 
 enum {
   maxima_process_id
@@ -102,7 +105,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
   m_inReevalMode = false;
-
 
   m_console->SetFocus();
 }
@@ -940,6 +942,105 @@ void wxMaxima::PrintFile()
   m_console->Thaw();
 }
 
+/*
+* This function reads a .wdr file
+*/
+void wxMaxima::ReadXmlFile(wxString file)
+{
+	m_console->Freeze();
+	wxBeginBusyCursor();
+
+	wxArrayString xml;
+	wxZipEntry* entry;
+  wxFFileInputStream in(file);
+  wxZipInputStream zip(in);
+
+	for (int i = 0; i < zip.GetTotalEntries(); i++)
+	{
+    entry = zip.GetNextEntry();
+    wxString name = entry->GetName();
+
+    if (name != _T("out")) {
+      wxImage img;
+      if (img.LoadFile(zip, wxBITMAP_TYPE_PNG))
+        img.SaveFile(name, wxBITMAP_TYPE_PNG);
+    }
+
+    else{
+      wxTextInputStream in(zip);
+      in.SetStringSeparators(wxT("\n"));
+      while(!zip.Eof())
+        xml.Add(in.ReadWord());
+    }
+
+    delete entry;
+	}
+
+  for(int i = 2; i < xml.GetCount(); i++ )
+  {
+
+    if (xml[i] == _T("<title>")) {
+      wxString content = wxEmptyString;
+      while (xml[++i] != _T("</title>"))
+      {
+        if (content.Length() > 0)
+          content += wxT("\n");
+        content += xml[i];
+      }
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(content, MC_TYPE_TITLE);
+    }
+
+    else if (xml[i] == _T("<section>")) {
+      wxString content = wxEmptyString;
+      while (xml[++i] != _T("</section>"))
+      {
+        if (content.Length() > 0)
+          content += wxT("\n");
+        content += xml[i];
+      }
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(content, MC_TYPE_SECTION);
+    }
+
+    else if (xml[i] == _T("<comment>")) {
+      wxString content = wxEmptyString;
+      while (xml[++i] != _T("</comment>"))
+      {
+        if (content.Length() > 0)
+          content += wxT("\n");
+        content += xml[i];
+      }
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(content, MC_TYPE_COMMENT);
+    }
+
+    else if (xml[i] == _T("<input>")) {
+      wxString content = wxEmptyString;
+      while (xml[++i] != _T("</input>"))
+      {
+        if (content.Length() > 0)
+          content += wxT("\n");
+        content += xml[i];
+      }
+      DoRawConsoleAppend(wxT(">>"), MC_TYPE_MAIN_PROMPT );
+      DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
+    }
+
+    else if (xml[i] == _T("<mth>")) {
+      wxString content = _T("<mth>");
+      while (xml[++i] != _T("</mth>"))
+        content += xml[i] + _T("\n");
+      ConsoleAppend(content + _T("</mth>"), MC_TYPE_TEXT );
+    }
+  }
+
+  m_currentFile = file;
+
+	wxEndBusyCursor();
+	m_console->Thaw();
+}
+
 /***
  * This works only for gcl by default - other lisps have different prompts.
  */
@@ -1388,6 +1489,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     {
       MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
     }
+
     else if (file.Right(4) == wxT(".wxm"))
     {
       if (!ReadBatchFile(file))
@@ -1395,8 +1497,17 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       else
         StartMaxima();
     }
+
+    else if (file.Right(4) == wxT(".wdr"))
+    {
+      m_console->ClearWindow();
+      ReadXmlFile(file);
+      m_console->SetSaved(true);
+    }
+
     else if (file.Right(4) == wxT(".dem"))
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
+
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
   }
@@ -1428,11 +1539,13 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima session (*.wxm)|*.wxm"),
+                                     _("wxMaxima session (*.wxm)|*.wxm|"
+                                       "wxMaxima xml session (*.wdr)|*.wdr"),
                                      wxFD_OPEN);
       OpenFile(file);
     }
     break;
+
   case menu_save_as_id:
     {
       wxString file(_("untitled"));
@@ -1441,20 +1554,26 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       file = wxFileSelector(_("Save to file"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
                             _("wxMaxima session (*.wxm)|*.wxm|"
-                               "Maxima batch file (*.mac)|*.mac|"
-                               "All|*"),
+                              "wxMaxima xml session (*.wdr)|*.wdr|"
+                              "Maxima batch file (*.mac)|*.mac|"
+                              "All|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
-        m_lastPath = wxPathOnly(file);
-        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac"))
+        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac") &&
+            file.Right(4) != wxT(".wdr"))
           file = file + wxT(".wxm");
+
+        m_lastPath = wxPathOnly(file);
         m_currentFile = file;
-        m_console->ExportToMAC(file);
-        m_fileSaved = false;
+        if (file.Right(4) == wxT(".wdr"))
+          m_console->ExportToWDR(file);
+        else
+          m_console->ExportToMAC(file);
       }
     }
     break;
+
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_save:
 #endif
@@ -1466,20 +1585,27 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
                               _("wxMaxima session (*.wxm)|*.wxm|"
+                                "wxMaxima xml session (*.wdr)|*.wdr|"
                                 "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
                               wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       }
       if (file.Length())
       {
+        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac")
+            && file.Right(4) != wxT(".wdr"))
+          file = file + wxT(".wxm");
+
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
-        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac"))
-          file = file + wxT(".wxm");
-        m_console->ExportToMAC(file);
+        if (file.Right(4) == wxT(".wdr"))
+          m_console->ExportToWDR(file);
+        else
+          m_console->ExportToMAC(file);
       }
     }
     break;
+
   case menu_export_html:
     {
       wxString file(_("untitled"));
@@ -1510,6 +1636,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
     break;
+
   case menu_load_id:
     {
       wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
@@ -1520,6 +1647,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       OpenFile(file, wxT("load"));
     }
     break;
+
   case menu_batch_id:
     {
       wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
@@ -1529,17 +1657,21 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       OpenFile(file, wxT("batch"));
     }
     break;
+
   case wxID_EXIT:
     Close();
     break;
+
   case tb_animation_start:
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
     break;
+
   case tb_animation_stop:
     if (m_console->CanAnimate() && m_console->AnimationRunning())
       m_console->Animate(false);
     break;
+
   default:
     break;
   }

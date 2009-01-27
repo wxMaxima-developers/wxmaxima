@@ -134,6 +134,7 @@ protected:
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
   void PrintFile();
+	void ReadXmlFile( wxString file );	// new!!
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;

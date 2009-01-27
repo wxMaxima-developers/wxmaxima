@@ -172,3 +172,18 @@ wxString ImgCell::ToTeX(bool all)
   return wxT(" << Graphics >> ") +
          MathCell::ToTeX(all);
 }
+
+wxString ImgCell::ToXml(bool all)
+{
+	wxImage image = m_bitmap->ConvertToImage();
+	wxString filename;
+	int i = 1;
+	do {
+		filename = wxT("./image");
+		filename << i++;
+	} while( wxFileExists(filename) );
+	if(image.SaveFile( filename, wxBITMAP_TYPE_PNG))
+		return wxT("<img>") + filename + wxT("</img>") + MathCell::ToXml(all);
+	else
+		return wxEmptyString + MathCell::ToXml(all);
+}

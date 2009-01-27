@@ -162,10 +162,12 @@ public:
   {
     m_bigSkip = skip;
   }
-  void SetType(int type)
-  {
-    m_type = type;
-  }
+  void SetType(int type);
+//  {
+//    m_type = type;
+//  }
+  int GetStyle(){ return m_textStyle; }	//l'ho aggiunto io
+
   void SetPen(CellParser& parser);
   void SetHighlight(bool highlight)
   {
@@ -194,6 +196,7 @@ public:
 
   virtual wxString ToString(bool all);
   virtual wxString ToTeX(bool all);
+	virtual wxString ToXml(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);

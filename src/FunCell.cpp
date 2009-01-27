@@ -138,6 +138,14 @@ wxString FunCell::ToTeX(bool all)
   return s;
 }
 
+wxString FunCell::ToXml(bool all)
+{
+	if (m_isBroken)
+		return wxEmptyString;
+	return _T("<fn>") + m_nameCell->ToXml(true) +
+				m_argCell->ToXml(true) + _T("</fn>") + MathCell::ToXml(all);
+}
+
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

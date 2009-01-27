@@ -151,6 +151,13 @@ wxString AtCell::ToTeX(bool all)
   return s;
 }
 
+wxString AtCell::ToXml(bool all)
+{
+	return wxT("<at><r>") + m_baseCell->ToXml(true) + wxT("</r><r>") +
+						m_indexCell->ToXml(true) + wxT("</r></at>") +
+						MathCell::ToXml(all);
+}
+
 void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

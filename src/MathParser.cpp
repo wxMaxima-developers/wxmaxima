@@ -606,7 +606,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("img"))
+      else if (tagName == wxT("img") || tagName == wxT("img-zip"))
       {
         wxString filename(node->GetChildren()->GetContent());
 
@@ -617,7 +617,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         else
           cell->AppendCell(tmp);
       }
-      else if (tagName == wxT("slide"))
+      else if (tagName == wxT("slide") || tagName == wxT("slide-zip"))
       {
         SlideShow *tmp = new SlideShow;
         wxString str(node->GetChildren()->GetContent());

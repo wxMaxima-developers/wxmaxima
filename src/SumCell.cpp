@@ -290,6 +290,14 @@ wxString SumCell::ToTeX(bool all)
   return s;
 }
 
+wxString SumCell::ToXml(bool all)
+{
+	return _T("<sm><r>") + m_under->ToXml(true) + _T("</r><r>") +
+			m_over->ToXml(true) + _T("</r><r>") +
+			m_base->ToXml(true) + _T("</r></sm>") +
+			MathCell::ToXml(all);
+}
+
 void SumCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

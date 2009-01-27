@@ -187,3 +187,24 @@ wxString SlideShow::ToTeX(bool all)
   return wxT(" << Graphics >> ") +
          MathCell::ToTeX(all);
 }
+
+wxString SlideShow::ToXml(bool all)
+{
+  wxString images, s = wxEmptyString;
+  int j = 1;
+  do {
+    images = wxT("./image");
+    images << j++;
+  } while(wxFileExists(images));
+
+  for (int i=0; i<m_size; i++) {
+    wxBitmap* bitmap = m_bitmaps[i];
+    if(bitmap->SaveFile(images, wxBITMAP_TYPE_PNG))
+      s += images + wxT(";");
+    images = wxT("./image");
+    images << j++;
+  }
+
+  return wxT("\n<slide>") + s + wxT("</slide>") +
+         MathCell::ToXml(all);
+}

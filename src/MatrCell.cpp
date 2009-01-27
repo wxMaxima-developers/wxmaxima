@@ -228,6 +228,18 @@ wxString MatrCell::ToTeX(bool all)
   return s;
 }
 
+wxString MatrCell::ToXml(bool all)
+{
+	wxString s = wxEmptyString;
+	for (int i = 0; i < m_matHeight; i++){
+		s += _T("<mtr>");
+		for (int j = 0; j < m_matWidth; j++)
+			s += _T("<mtd>") + m_cells[i * m_matWidth + j]->ToXml(true) + _T("</mtd>");
+		s += wxT("</mtr>");
+	}
+	return _T("<tb>") + s + _T("</tb>") + MathCell::ToXml(all);
+}
+
 void MatrCell::SetDimension()
 {
   if (m_matHeight != 0)

@@ -42,6 +42,8 @@ protected:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
+
+  wxString ToXml(bool all);	//new!!!
 };
 
 #endif //_ABSCELL_H_
