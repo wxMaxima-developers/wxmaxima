@@ -150,7 +150,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(250, 40));
+  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(350, 40));
   m_loadStyle = new wxButton(notebook_1_pane_2, load_id, _("Load"));
   m_saveStyle = new wxButton(notebook_1_pane_2, save_id, _("Save"));
 #if defined __WXMSW__
@@ -1127,7 +1127,7 @@ void Config::UpdateExample()
     color = m_styleVariable.color;
 
   int fontsize = m_fontSize;
-  if (tmp == &m_styleTitle || tmp == &m_styleSection || tmp == &m_styleTitle)
+  if (tmp == &m_styleText || tmp == &m_styleSection || tmp == &m_styleTitle)
   {
     fontsize = tmp->fontSize;
     font = tmp->font;
@@ -1137,7 +1137,8 @@ void Config::UpdateExample()
   label_11->SetFontSize(fontsize);
 
   label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
-  if (tmp == &m_styleTextBackground)
+  if (tmp == &m_styleTextBackground ||
+      tmp == &m_styleText || tmp == &m_styleSection || tmp == &m_styleTitle)
     label_11->SetBackgroundColour(wxColour(m_styleTextBackground.color));
   else
     label_11->SetBackgroundColour(wxColour(m_styleBackground.color));
