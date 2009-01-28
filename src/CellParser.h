@@ -106,6 +106,12 @@ public:
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
   int GetClientWidth() { return m_clientWidth; }
+  int GetFontSize(int st)
+  {
+    if (st == TS_TEXT || st == TS_SECTION || st == TS_TITLE)
+      return m_styles[st].fontSize;
+    return 0;
+  }
 private:
   int m_indent;
   double m_scale;

@@ -93,6 +93,9 @@ void CellParser::ReadStyle()
   m_styles[TS_TEXT].bold = false;
   m_styles[TS_TEXT].italic = false;
   m_styles[TS_TEXT].underlined = false;
+  m_styles[TS_TEXT].fontSize = 0;
+  config->Read(wxT("Style/Text/fontsize"),
+               &m_styles[TS_TEXT].fontSize);
   config->Read(wxT("Style/Text/fontname"),
                &m_styles[TS_TEXT].font);
   config->Read(wxT("Style/Text/color"),
@@ -109,6 +112,9 @@ void CellParser::ReadStyle()
   m_styles[TS_SECTION].bold = true;
   m_styles[TS_SECTION].italic = true;
   m_styles[TS_SECTION].underlined = false;
+  m_styles[TS_SECTION].fontSize = 18;
+  config->Read(wxT("Style/Section/fontsize"),
+               &m_styles[TS_SECTION].fontSize);
   config->Read(wxT("Style/Section/fontname"),
                &m_styles[TS_SECTION].font);
   config->Read(wxT("Style/Section/color"),
@@ -125,6 +131,9 @@ void CellParser::ReadStyle()
   m_styles[TS_TITLE].bold = true;
   m_styles[TS_TITLE].italic = false;
   m_styles[TS_TITLE].underlined = true;
+  m_styles[TS_TITLE].fontSize = 24;
+  config->Read(wxT("Style/Title/fontsize"),
+               &m_styles[TS_TITLE].fontSize);
   config->Read(wxT("Style/Title/fontname"),
                &m_styles[TS_TITLE].font);
   config->Read(wxT("Style/Title/color"),

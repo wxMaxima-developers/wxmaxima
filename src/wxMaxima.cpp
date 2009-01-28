@@ -741,7 +741,7 @@ void wxMaxima::ReadFirstPrompt()
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
-  
+
   m_closing = false; // when restarting maxima this is temporarily true
   m_currentOutput = wxEmptyString;
   m_console->ActivateHCaret(true);
@@ -866,6 +866,7 @@ void wxMaxima::ReadPrompt()
 void wxMaxima::PrintFile()
 {
   m_console->Freeze();
+  m_console->ClearWindow();
   for (int i=0; i<m_batchFileLines.GetCount(); i++)
   {
     // Print title

@@ -473,7 +473,16 @@ void Config::OnGreekBrowse(wxCommandEvent& event)
 void Config::OnChangeFontFamily(wxCommandEvent& event)
 {
   wxFont font;
-  font = wxGetFontFromUser(this, wxFont(m_fontSize,
+  int fontsize = m_fontSize;
+  style *tmp = GetStylePointer();
+
+  if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSection)
+  {
+    if (tmp->fontSize != 0)
+      fontsize = tmp->fontSize;
+  }
+
+  font = wxGetFontFromUser(this, wxFont(fontsize,
                                         wxNORMAL, wxNORMAL, wxNORMAL,
                                         false, m_styleDefault.font,
                                         m_fontEncoding));
@@ -490,8 +499,9 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
     }
     else
     {
-      style *tmp = GetStylePointer();
       tmp->font = font.GetFaceName();
+      tmp->fontSize = font.GetPointSize();
+      tmp->fontSize = MAX(tmp->fontSize, MC_MIN_SIZE);
     }
     UpdateExample();
   }
@@ -725,6 +735,9 @@ void Config::ReadStyles(wxString file)
   m_styleText.italic = false;
   m_styleText.underlined = false;
   m_styleText.font = m_styleDefault.font;
+  m_styleText.fontSize = m_fontSize;
+  config->Read(wxT("Style/Text/fontsize"),
+                 &m_styleText.fontSize);
   config->Read(wxT("Style/Text/fontname"),
                &m_styleText.font);
   config->Read(wxT("Style/Text/color"),
@@ -742,6 +755,9 @@ void Config::ReadStyles(wxString file)
   m_styleSection.italic = true;
   m_styleSection.underlined = false;
   m_styleSection.font = m_styleDefault.font;
+  m_styleSection.fontSize = 18;
+  config->Read(wxT("Style/Section/fontsize"),
+                 &m_styleSection.fontSize);
   config->Read(wxT("Style/Section/fontname"),
                &m_styleSection.font);
   config->Read(wxT("Style/Section/color"),
@@ -759,6 +775,9 @@ void Config::ReadStyles(wxString file)
   m_styleTitle.italic = false;
   m_styleTitle.underlined = true;
   m_styleTitle.font = m_styleDefault.font;
+  m_styleTitle.fontSize = 24;
+  config->Read(wxT("Style/Title/fontsize"),
+                 &m_styleTitle.fontSize);
   config->Read(wxT("Style/Title/fontname"),
                &m_styleTitle.font);
   config->Read(wxT("Style/Title/color"),
@@ -910,6 +929,7 @@ void Config::WriteStyles(wxString file)
 
   // Text
   config->Write(wxT("Style/Text/fontname"), m_styleText.font);
+  config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
   config->Write(wxT("Style/Text/color"),
                 m_styleText.color);
   config->Write(wxT("Style/Text/bold"),
@@ -921,6 +941,7 @@ void Config::WriteStyles(wxString file)
 
   // Section
   config->Write(wxT("Style/Section/fontname"), m_styleSection.font);
+  config->Write(wxT("Style/Section/fontsize"), m_styleSection.fontSize);
   config->Write(wxT("Style/Section/color"),
                 m_styleSection.color);
   config->Write(wxT("Style/Section/bold"),
@@ -932,6 +953,7 @@ void Config::WriteStyles(wxString file)
 
   // Title
   config->Write(wxT("Style/Title/fontname"), m_styleTitle.font);
+  config->Write(wxT("Style/Title/fontsize"), m_styleTitle.fontSize);
   config->Write(wxT("Style/Title/color"),
                 m_styleTitle.color);
   config->Write(wxT("Style/Title/bold"),
@@ -1100,8 +1122,14 @@ void Config::UpdateExample()
   if (tmp == &m_styleBackground || tmp == &m_styleTextBackground)
     color = m_styleVariable.color;
 
+  int fontsize = m_fontSize;
   if (tmp == &m_styleTitle || tmp == &m_styleSection || tmp == &m_styleTitle)
-    font = tmp->font;
+  {
+    fontsize = tmp->fontSize;
+    if (fontsize == 0)
+      fontsize = m_fontSize;
+  }
+  label_11->SetFontSize(fontsize);
 
   label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
   if (tmp == &m_styleTextBackground)

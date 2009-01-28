@@ -24,8 +24,6 @@
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 
-#define INCREASE_SIZE 6
-
 EditorCell::EditorCell() : MathCell()
 {
   m_text = wxEmptyString;
@@ -312,28 +310,23 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
 
-  m_fontSize = fontsize;
-  int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
+  int fontsize1 = parser.GetFontSize(m_textStyle);
+  if (fontsize1 == 0)
+    fontsize1 = fontsize;
+  m_fontSize = fontsize1;
+
+  fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
   m_fontName = parser.GetFontName(m_textStyle);
   m_fontEncoding = parser.GetFontEncoding();
-  m_fontStyle = parser.IsItalic(TS_DEFAULT);
-  m_fontWeight = parser.IsBold(TS_DEFAULT);
+  m_fontStyle = parser.IsItalic(m_textStyle);
+  m_fontWeight = parser.IsBold(m_textStyle);
+  m_underlined = parser.IsUnderlined(m_textStyle);
+  m_fontEncoding = parser.GetFontEncoding();
 
-  switch(m_type)
-  {
-  case MC_TYPE_TITLE:
-    fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
-  case MC_TYPE_SECTION:
-    fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
-  default:
-    m_fontStyle = parser.IsItalic(m_textStyle);
-    m_fontWeight = parser.IsBold(m_textStyle);
-    m_underlined = parser.IsUnderlined(m_textStyle);
-    m_fontEncoding = parser.GetFontEncoding();
-    break;
-  }
+  fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
+  fontsize1 = MAX(fontsize1, 1);
 
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     m_fontStyle,
@@ -943,11 +936,6 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 {
   wxString s;
   int fontsize1 = m_fontSize;
-
-  if (m_type == MC_TYPE_TITLE)
-    fontsize1 += 2*INCREASE_SIZE;
-  else if (m_type == MC_TYPE_SECTION)
-    fontsize1 += INCREASE_SIZE;
 
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     m_fontStyle,

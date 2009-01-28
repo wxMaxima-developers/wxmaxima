@@ -27,6 +27,7 @@ struct style
     {  };
   wxString color;
   wxString font;
+  int fontSize;
   bool bold;
   bool italic;
   bool underlined;

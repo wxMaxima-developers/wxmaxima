@@ -69,6 +69,7 @@ public:
     m_underlined = underlined;
     m_font = font;
   }
+  void SetFontSize(int size) { m_size = size; }
 private:
   void OnPaint(wxPaintEvent& event);
   wxString m_fgColor;
