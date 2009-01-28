@@ -297,6 +297,20 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/TextBackground/color"),
                &m_styles[TS_TEXT_BACKGROUND].color);
 
+  // Cell bracket colors
+  config->Read(wxT("Style/CellBracket/color"),
+               &m_styles[TS_CELL_BRACKET].color);
+  config->Read(wxT("Style/ActiveCellBracket/color"),
+               &m_styles[TS_ACTIVE_CELL_BRACKET].color);
+
+  // Cursor (hcaret in MathCtrl and caret in EditorCell)
+  config->Read(wxT("Style/Cursor/color"),
+               &m_styles[TS_CURSOR].color);
+
+  // Selection color 
+  config->Read(wxT("Style/Selection/color"),
+               &m_styles[TS_SELECTION].color);
+
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxSOLID)));
 }
 

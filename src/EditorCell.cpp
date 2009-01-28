@@ -18,7 +18,6 @@
 ///
 
 #include <wx/clipbrd.h>
-#include <wx/settings.h>
 
 #include "EditorCell.h"
 #include "wxMaxima.h"
@@ -144,10 +143,10 @@ void EditorCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 ///////////////////////////
 // EditorCell::Draw
 // Draws the editor cell in the following order:
-// 1. draw selection (wxCOPY)
-// 2. mark matching parenthesis (wxCOPY)
+// 1. draw selection (wxCOPY), TS_SELECTION color
+// 2. mark matching parenthesis (wxCOPY), TS_SELECTION color
 // 3. draw text (wxCOPY)
-// 4. draw caret (wxXOR)
+// 4. draw caret (wxCOPY), TS_CURSOR color
 ////////////////////////////
 void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all)
 {
@@ -169,18 +168,13 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       if (m_selectionStart > -1)
       {
-
-#if defined __WXMSW__
-        dc.SetPen(*wxLIGHT_GREY_PEN);
-        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-#elif defined(__WXMAC__)
+#if defined(__WXMAC__)
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
-        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #else
-        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
-        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+        dc.SetPen( *(wxThePenList->FindOrCreatePen( wxColour(parser.GetColor(TS_SELECTION)) )  )); // window linux, set a pen
 #endif
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush( wxColour( parser.GetColor(TS_SELECTION) )  )  )); //highlight c.
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -213,16 +207,13 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
-#if defined __WXMSW__
-        dc.SetPen(*wxLIGHT_GREY_PEN);
-        dc.SetBrush(*wxLIGHT_GREY_BRUSH);
-#elif defined(__WXMAC__)
+#if defined(__WXMAC__)
+        wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
-        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
 #else
-        dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)));
-        dc.SetBrush(wxBrush( wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT))); //highlight c.
+        dc.SetPen( *(wxThePenList->FindOrCreatePen( wxColour(parser.GetColor(TS_SELECTION)) )  )); // window linux, set a pen
 #endif
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush( wxColour( parser.GetColor(TS_SELECTION) )  )  )); //highlight c.
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
@@ -282,8 +273,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-      dc.SetPen(*wxWHITE_PEN);
-      dc.SetLogicalFunction(wxXOR);
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(wxColour( parser.GetColor(TS_CURSOR) ), 1, wxSOLID))); // TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
@@ -296,7 +286,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
                   point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #endif
-      dc.SetLogicalFunction(wxCOPY); // set back to wxCOPY (default behaviour)
     }
 
     UnsetPen(parser);

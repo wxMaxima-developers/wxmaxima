@@ -119,7 +119,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   // Prepare memory DC
   wxString bgColStr= wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
-  SetBackgroundColour(wxTheColourDatabase->Find(bgColStr));
+  SetBackgroundColour(wxColour(bgColStr));
 
   dcm.SelectObject(*m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
@@ -128,52 +128,26 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
+  CellParser parser(dcm);
+  parser.SetBouns(top, bottom);
+
   // Draw content
   if (m_tree != NULL)
   {
-    wxPoint point;
-    point.x = MC_GROUP_LEFT_INDENT;
-    point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
-    // Draw tree
-    MathCell* tmp = m_tree;
-    drop = tmp->GetMaxDrop();
-    CellParser parser(dcm);
-    parser.SetBouns(top, bottom);
-    bool changeAsterisk = false;
-    config->Read(wxT("changeAsterisk"), &changeAsterisk);
-    parser.SetChangeAsterisk(changeAsterisk);
-
-    while (tmp != NULL)
-    {
-      tmp->m_currentPoint.x = point.x;
-      tmp->m_currentPoint.y = point.y;
-      if (tmp->DrawThisCell(parser, point))
-        tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
-      if (tmp->m_next != NULL) {
-        if (tmp->m_next->BreakLineHere()) {
-          point.x = MC_GROUP_LEFT_INDENT;
-          point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += MC_GROUP_SKIP;
-          drop = tmp->m_next->GetMaxDrop();
-        } else
-          point.x += tmp->GetWidth() + MC_CELL_SKIP;
-      }
-      tmp = tmp->m_next;
-    }
-
-    // Draw selection
+    //
+    // First draw selection under content with wxCOPY and selection brush/color
+    //
     if (m_selectionStart != NULL)
     {
       MathCell* tmp = m_selectionStart;
 
-      dcm.SetLogicalFunction(wxXOR);
-      dcm.SetBrush(*wxWHITE_BRUSH);
+      dcm.SetLogicalFunction(wxCOPY);
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*wxWHITE_PEN);
+      dcm.SetPen( *(wxThePenList->FindOrCreatePen( wxColour(parser.GetColor(TS_SELECTION)) )  )); // window linux, set a pen
 #endif
+      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush( wxColour( parser.GetColor(TS_SELECTION) )  )  )); //highlight c.
 
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
       {
@@ -201,14 +175,43 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         } // end while (1)
       }
     }
+    // draw content over selection
+    wxPoint point;
+    point.x = MC_GROUP_LEFT_INDENT;
+    point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
+    // Draw tree
+    MathCell* tmp = m_tree;
+    drop = tmp->GetMaxDrop();
+    bool changeAsterisk = false;
+    config->Read(wxT("changeAsterisk"), &changeAsterisk);
+    parser.SetChangeAsterisk(changeAsterisk);
+
+    while (tmp != NULL)
+    {
+      tmp->m_currentPoint.x = point.x;
+      tmp->m_currentPoint.y = point.y;
+      if (tmp->DrawThisCell(parser, point))
+        tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
+      if (tmp->m_next != NULL) {
+        if (tmp->m_next->BreakLineHere()) {
+          point.x = MC_GROUP_LEFT_INDENT;
+          point.y += drop + tmp->m_next->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += MC_GROUP_SKIP;
+          drop = tmp->m_next->GetMaxDrop();
+        } else
+          point.x += tmp->GetWidth() + MC_CELL_SKIP;
+      }
+      tmp = tmp->m_next;
+    }
+
   }
   //
   // Draw horizontal caret
   //
   if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
-    dcm.SetLogicalFunction(wxXOR);
-    dcm.SetPen(*wxWHITE_PEN);
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(wxColour( parser.GetColor(TS_CURSOR) ), 1, wxSOLID))); // TODO is there more efficient way to do this?
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);

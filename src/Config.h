@@ -158,7 +158,11 @@ protected:
         m_styleSection,
         m_styleTitle,
         m_styleTextBackground,
-        m_styleBackground;
+        m_styleBackground,
+        m_styleCellBracket,
+        m_styleActiveCellBracket,
+        m_styleCursor,
+        m_styleSelection;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)

@@ -27,6 +27,7 @@
 #include <wx/wfstream.h>
 #include <wx/sstream.h>
 #include <wx/colordlg.h>
+#include <wx/settings.h>
 
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
@@ -122,9 +123,13 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Section"),
       _("Title"),
       _("Text background"),
-      _("Background")
+      _("Background"),
+      _("Cell bracket"),
+      _("Active cell bracket"),
+      _("Cursor"),
+      _("Selection")
     };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 17, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 21, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
   const wxString m_styleColor_choices[] =
     {
       _("aquamarine"), _("black"), _("blue"), _("blue violet"),
@@ -567,17 +572,44 @@ void Config::ReadStyles(wxString file)
   m_getGreekFont->Enable(greekOk);
   m_greekFontAdj->Enable(greekOk);
 
+  // Document background color
   m_styleBackground.color = wxT("white");
   config->Read(wxT("Style/Background/color"),
                &m_styleBackground.color);
 
+  // Text background
   m_styleTextBackground.color = wxT("light blue");
   config->Read(wxT("Style/TextBackground/color"),
                &m_styleTextBackground.color);
 
+  // Highlighting color
   m_styleHighlight.color = wxT("red");
   config->Read(wxT("Style/Highlight/color"),
                &m_styleHighlight.color);
+
+  // Groupcell bracket color
+  m_styleCellBracket.color = wxT("rgb(0,0,0)");
+  config->Read(wxT("Style/CellBracket/color"),
+               &m_styleCellBracket.color);
+
+  // Active groupcell bracket color
+  m_styleActiveCellBracket.color = wxT("rgb(255,0,0)");
+  config->Read(wxT("Style/ActiveCellBracket/color"),
+               &m_styleActiveCellBracket.color);
+
+  // Horizontal caret color/ cursor color
+  m_styleCursor.color = wxT("rgb(0,0,0)");
+  config->Read(wxT("Style/Cursor/color"),
+               &m_styleCursor.color);
+
+  // Selection color defaults to light grey on windows
+#if defined __WXMSW__
+  m_styleSelection.color = wxT("light grey");
+#else
+  m_styleSelection.color = (wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)).GetAsString(wxC2S_CSS_SYNTAX);
+#endif
+  config->Read(wxT("Style/Selection/color"),
+               &m_styleSelection.color);
 
   // Text in math output
   m_styleDefault.color = wxT("black");
@@ -819,6 +851,14 @@ void Config::WriteStyles(wxString file)
                 m_styleHighlight.color);
   config->Write(wxT("Style/TextBackground/color"),
                 m_styleTextBackground.color);
+  config->Write(wxT("Style/CellBracket/color"),
+                m_styleCellBracket.color);
+  config->Write(wxT("Style/ActiveCellBracket/color"),
+                m_styleActiveCellBracket.color);
+  config->Write(wxT("Style/Cursor/color"),
+                m_styleCursor.color);
+  config->Write(wxT("Style/Selection/color"),
+                m_styleSelection.color);
 
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
@@ -1109,6 +1149,18 @@ style* Config::GetStylePointer()
     break;
   case 16:
     tmp = &m_styleBackground;
+    break;
+  case 17:
+    tmp = &m_styleCellBracket;
+    break;
+  case 18:
+    tmp = &m_styleActiveCellBracket;
+    break;
+  case 19:
+    tmp = &m_styleCursor;
+    break;
+  case 20:
+    tmp = &m_styleSelection;
     break;
   }
   return tmp;
