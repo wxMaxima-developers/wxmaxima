@@ -475,16 +475,20 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
   wxFont font;
   int fontsize = m_fontSize;
   style *tmp = GetStylePointer();
+  wxString fontName;
 
   if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSection)
   {
     if (tmp->fontSize != 0)
       fontsize = tmp->fontSize;
+    fontName = tmp->font;
   }
+  else
+    fontName = m_styleDefault.font;
 
   font = wxGetFontFromUser(this, wxFont(fontsize,
                                         wxNORMAL, wxNORMAL, wxNORMAL,
-                                        false, m_styleDefault.font,
+                                        false, fontName,
                                         m_fontEncoding));
   if (font.Ok())
   {
@@ -1126,6 +1130,7 @@ void Config::UpdateExample()
   if (tmp == &m_styleTitle || tmp == &m_styleSection || tmp == &m_styleTitle)
   {
     fontsize = tmp->fontSize;
+    font = tmp->font;
     if (fontsize == 0)
       fontsize = m_fontSize;
   }
