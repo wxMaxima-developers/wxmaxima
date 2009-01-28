@@ -298,16 +298,20 @@ void CellParser::ReadStyle()
                &m_styles[TS_TEXT_BACKGROUND].color);
 
   // Cell bracket colors
+  m_styles[TS_CELL_BRACKET].color = wxT("rgb(0,0,0)");
   config->Read(wxT("Style/CellBracket/color"),
                &m_styles[TS_CELL_BRACKET].color);
+  m_styles[TS_ACTIVE_CELL_BRACKET].color = wxT("rgb(255,0,0)");
   config->Read(wxT("Style/ActiveCellBracket/color"),
                &m_styles[TS_ACTIVE_CELL_BRACKET].color);
 
   // Cursor (hcaret in MathCtrl and caret in EditorCell)
+  m_styles[TS_CURSOR].color = wxT("rgb(0,0,0)");
   config->Read(wxT("Style/Cursor/color"),
                &m_styles[TS_CURSOR].color);
 
   // Selection color 
+  m_styles[TS_SELECTION].color = wxT("light grey"); // on mac should default to system selection color
   config->Read(wxT("Style/Selection/color"),
                &m_styles[TS_SELECTION].color);
 
