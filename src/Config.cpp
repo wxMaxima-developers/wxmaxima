@@ -119,10 +119,12 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Labels"),
       _("Highlight"),
       _("Text"),
+      _("Section"),
+      _("Title"),
       _("Text background"),
       _("Background")
     };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 15, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 17, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
   const wxString m_styleColor_choices[] =
     {
       _("aquamarine"), _("black"), _("blue"), _("blue violet"),
@@ -143,11 +145,12 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
       _("wheat"), _("white"), _("yellow"), _("yellow green")
     };
+  m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
   m_styleColor = new wxButton(notebook_1_pane_2, color_id, _("Choose color"), wxDefaultPosition, wxSize(150, -1));
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(250, 60));
+  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(250, 40));
   m_loadStyle = new wxButton(notebook_1_pane_2, load_id, _("Load"));
   m_saveStyle = new wxButton(notebook_1_pane_2, save_id, _("Save"));
 #if defined __WXMSW__
@@ -256,6 +259,8 @@ void Config::set_properties()
   m_enterEvaluates->SetValue(enterEvaluates);
   m_fixedFontInTC->SetValue(fixedFontTC);
 
+  m_getStyleFont->Enable(false);
+
 #if defined __WXMSW__
   m_button1->SetDefault();
 #else
@@ -336,11 +341,13 @@ void Config::do_layout()
 
   // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
   sizer_12->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3);
@@ -472,12 +479,20 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
                                         m_fontEncoding));
   if (font.Ok())
   {
-    m_styleDefault.font = font.GetFaceName();
-    m_fontEncoding = font.GetEncoding();
-    m_fontSize = font.GetPointSize();
-    m_fontSize = MIN(m_fontSize, MC_MAX_SIZE);
-    m_fontSize = MAX(m_fontSize, MC_MIN_SIZE);
-    m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
+    if (event.GetId() == font_family)
+    {
+      m_styleDefault.font = font.GetFaceName();
+      m_fontEncoding = font.GetEncoding();
+      m_fontSize = font.GetPointSize();
+      m_fontSize = MIN(m_fontSize, MC_MAX_SIZE);
+      m_fontSize = MAX(m_fontSize, MC_MIN_SIZE);
+      m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
+    }
+    else
+    {
+      style *tmp = GetStylePointer();
+      tmp->font = font.GetFaceName();
+    }
     UpdateExample();
   }
 }
@@ -704,6 +719,57 @@ void Config::ReadStyles(wxString file)
   config->Read(wxT("Style/Function/underlined"),
                &m_styleFunction.underlined);
 
+  // Text
+  m_styleText.color = wxT("black");
+  m_styleText.bold = false;
+  m_styleText.italic = false;
+  m_styleText.underlined = false;
+  m_styleText.font = m_styleDefault.font;
+  config->Read(wxT("Style/Text/fontname"),
+               &m_styleText.font);
+  config->Read(wxT("Style/Text/color"),
+               &m_styleText.color);
+  config->Read(wxT("Style/Text/bold"),
+               &m_styleText.bold);
+  config->Read(wxT("Style/Text/italic"),
+               &m_styleText.italic);
+  config->Read(wxT("Style/Text/underlined"),
+               &m_styleText.underlined);
+
+  // Section
+  m_styleSection.color = wxT("black");
+  m_styleSection.bold = true;
+  m_styleSection.italic = true;
+  m_styleSection.underlined = false;
+  m_styleSection.font = m_styleDefault.font;
+  config->Read(wxT("Style/Section/fontname"),
+               &m_styleSection.font);
+  config->Read(wxT("Style/Section/color"),
+               &m_styleSection.color);
+  config->Read(wxT("Style/Section/bold"),
+               &m_styleSection.bold);
+  config->Read(wxT("Style/Section/italic"),
+               &m_styleSection.italic);
+  config->Read(wxT("Style/Section/underlined"),
+               &m_styleSection.underlined);
+
+  // Title
+  m_styleTitle.color = wxT("black");
+  m_styleTitle.bold = true;
+  m_styleTitle.italic = false;
+  m_styleTitle.underlined = true;
+  m_styleTitle.font = m_styleDefault.font;
+  config->Read(wxT("Style/Title/fontname"),
+               &m_styleTitle.font);
+  config->Read(wxT("Style/Title/color"),
+               &m_styleTitle.color);
+  config->Read(wxT("Style/Title/bold"),
+               &m_styleTitle.bold);
+  config->Read(wxT("Style/Title/italic"),
+               &m_styleTitle.italic);
+  config->Read(wxT("Style/Title/underlined"),
+               &m_styleTitle.underlined);
+
   // Set values in dialog
   m_styleFor->SetSelection(0);
   m_boldCB->SetValue(m_styleVariable.bold);
@@ -744,13 +810,13 @@ void Config::WriteStyles(wxString file)
 
   // Normal text
   config->Write(wxT("Style/NormalText/color"),
-                m_styleVariable.color);
+                m_styleDefault.color);
   config->Write(wxT("Style/NormalText/bold"),
-                m_styleVariable.bold);
+                m_styleDefault.bold);
   config->Write(wxT("Style/NormalText/italic"),
-                m_styleVariable.italic);
+                m_styleDefault.italic);
   config->Write(wxT("Style/NormalText/underlined"),
-                m_styleVariable.underlined);
+                m_styleDefault.underlined);
 
   // Main prompt
   config->Write(wxT("Style/MainPrompt/color"),
@@ -842,6 +908,39 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/Variable/underlined"),
                 m_styleVariable.underlined);
 
+  // Text
+  config->Write(wxT("Style/Text/fontname"), m_styleText.font);
+  config->Write(wxT("Style/Text/color"),
+                m_styleText.color);
+  config->Write(wxT("Style/Text/bold"),
+                m_styleText.bold);
+  config->Write(wxT("Style/Text/italic"),
+                m_styleText.italic);
+  config->Write(wxT("Style/Text/underlined"),
+                m_styleText.underlined);
+
+  // Section
+  config->Write(wxT("Style/Section/fontname"), m_styleSection.font);
+  config->Write(wxT("Style/Section/color"),
+                m_styleSection.color);
+  config->Write(wxT("Style/Section/bold"),
+                m_styleSection.bold);
+  config->Write(wxT("Style/Section/italic"),
+                m_styleSection.italic);
+  config->Write(wxT("Style/Section/underlined"),
+                m_styleSection.underlined);
+
+  // Title
+  config->Write(wxT("Style/Title/fontname"), m_styleTitle.font);
+  config->Write(wxT("Style/Title/color"),
+                m_styleTitle.color);
+  config->Write(wxT("Style/Title/bold"),
+                m_styleTitle.bold);
+  config->Write(wxT("Style/Title/italic"),
+                m_styleTitle.italic);
+  config->Write(wxT("Style/Title/underlined"),
+                m_styleTitle.underlined);
+
   // Function names
   config->Write(wxT("Style/Function/color"),
                 m_styleFunction.color);
@@ -881,8 +980,13 @@ void Config::OnChangeStyle(wxCommandEvent& event)
 
   m_styleColor->Enable(true);
 
+  if (st >= 12 && st <= 14)
+    m_getStyleFont->Enable(true);
+  else
+    m_getStyleFont->Enable(false);
+
   // Background color only
-  if (st == 13 || st == 14)
+  if (st == 15 || st == 16)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
@@ -969,9 +1073,15 @@ style* Config::GetStylePointer()
     tmp = &m_styleText;
     break;
   case 13:
-    tmp = &m_styleTextBackground;
+    tmp = &m_styleSection;
     break;
   case 14:
+    tmp = &m_styleTitle;
+    break;
+  case 15:
+    tmp = &m_styleTextBackground;
+    break;
+  case 16:
     tmp = &m_styleBackground;
     break;
   }
@@ -983,17 +1093,21 @@ void Config::UpdateExample()
   style *tmp = GetStylePointer();
   wxString example = _("Example text");
   wxString color(tmp->color);
+  wxString font(m_styleDefault.font);
 
 //  wxClientDC dc(label_11);
 
   if (tmp == &m_styleBackground || tmp == &m_styleTextBackground)
     color = m_styleVariable.color;
 
-  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, m_styleDefault.font);
+  if (tmp == &m_styleTitle || tmp == &m_styleSection || tmp == &m_styleTitle)
+    font = tmp->font;
+
+  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
   if (tmp == &m_styleTextBackground)
-    label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleTextBackground.color));
+    label_11->SetBackgroundColour(wxColour(m_styleTextBackground.color));
   else
-    label_11->SetBackgroundColour(wxTheColourDatabase->Find(m_styleBackground.color));
+    label_11->SetBackgroundColour(wxColour(m_styleBackground.color));
 
   label_11->Refresh();
 }
@@ -1040,6 +1154,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_CHECKBOX(checkbox_greek, Config::OnCheckGreek)
   EVT_BUTTON(save_id, Config::LoadSave)
   EVT_BUTTON(load_id, Config::LoadSave)
+  EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
 END_EVENT_TABLE()
 
 void ExamplePanel::OnPaint(wxPaintEvent& event)

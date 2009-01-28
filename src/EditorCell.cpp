@@ -316,7 +316,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
   fontsize1 = MAX(fontsize1, 1);
 
-  m_fontName = parser.GetFontName();
+  m_fontName = parser.GetFontName(m_textStyle);
   m_fontEncoding = parser.GetFontEncoding();
   m_fontStyle = parser.IsItalic(TS_DEFAULT);
   m_fontWeight = parser.IsBold(TS_DEFAULT);
@@ -325,19 +325,12 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   {
   case MC_TYPE_TITLE:
     fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
-    m_fontStyle = wxFONTSTYLE_SLANT;
   case MC_TYPE_SECTION:
     fontsize1 += SCALE_PX(INCREASE_SIZE, scale);
-    m_fontWeight = wxFONTWEIGHT_BOLD;
-    m_underlined = true;
-  case MC_TYPE_TEXT:
-  case MC_TYPE_HEADER:
-    m_fontEncoding = parser.GetFontEncoding();
-    break;
   default:
-    m_fontStyle = parser.IsItalic(TS_INPUT);
-    m_fontWeight = parser.IsBold(TS_INPUT);
-    m_underlined = parser.IsUnderlined(TS_INPUT);
+    m_fontStyle = parser.IsItalic(m_textStyle);
+    m_fontWeight = parser.IsBold(m_textStyle);
+    m_underlined = parser.IsUnderlined(m_textStyle);
     m_fontEncoding = parser.GetFontEncoding();
     break;
   }
@@ -353,19 +346,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
 void EditorCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-
-  switch (m_type)
-  {
-  case MC_TYPE_TEXT:
-  case MC_TYPE_SECTION:
-  case MC_TYPE_TITLE:
-  case MC_TYPE_HEADER:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_DEFAULT)));
-    break;
-  default:
-    dc.SetTextForeground(wxTheColourDatabase->Find(parser.GetColor(TS_INPUT)));
-    break;
-  }
+  dc.SetTextForeground(wxColour(parser.GetColor(m_textStyle)));
 }
 
 #ifndef WX_USE_UNICODE

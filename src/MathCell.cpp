@@ -54,7 +54,8 @@ void MathCell::SetType(int type)
 {
 	m_type = type;
 
-	switch( m_type ){
+	switch (m_type)
+	{
 		case MC_TYPE_MAIN_PROMPT:
 			m_textStyle = TS_MAIN_PROMPT;
 			break;
@@ -79,7 +80,7 @@ void MathCell::SetType(int type)
 		case MC_TYPE_TITLE:
 			m_textStyle = TS_TITLE;
 			break;
-		default:	//  MC_TYPE_IMAGE, MC_TYPE_SLIDE, MC_TYPE_GROUP?????
+		default:
 			m_textStyle = TS_DEFAULT;
 	}
 

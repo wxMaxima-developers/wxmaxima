@@ -88,6 +88,54 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/NormalText/underlined"),
                &m_styles[TS_DEFAULT].underlined);
 
+  // Text
+  m_styles[TS_TEXT].color = wxT("black");
+  m_styles[TS_TEXT].bold = false;
+  m_styles[TS_TEXT].italic = false;
+  m_styles[TS_TEXT].underlined = false;
+  config->Read(wxT("Style/Text/fontname"),
+               &m_styles[TS_TEXT].font);
+  config->Read(wxT("Style/Text/color"),
+               &m_styles[TS_TEXT].color);
+  config->Read(wxT("Style/Text/bold"),
+               &m_styles[TS_TEXT].bold);
+  config->Read(wxT("Style/Text/italic"),
+               &m_styles[TS_TEXT].italic);
+  config->Read(wxT("Style/Text/underlined"),
+               &m_styles[TS_TEXT].underlined);
+
+  // Section
+  m_styles[TS_SECTION].color = wxT("black");
+  m_styles[TS_SECTION].bold = true;
+  m_styles[TS_SECTION].italic = true;
+  m_styles[TS_SECTION].underlined = false;
+  config->Read(wxT("Style/Section/fontname"),
+               &m_styles[TS_SECTION].font);
+  config->Read(wxT("Style/Section/color"),
+               &m_styles[TS_SECTION].color);
+  config->Read(wxT("Style/Section/bold"),
+               &m_styles[TS_SECTION].bold);
+  config->Read(wxT("Style/Section/italic"),
+               &m_styles[TS_SECTION].italic);
+  config->Read(wxT("Style/Section/underlined"),
+               &m_styles[TS_SECTION].underlined);
+
+  // Title
+  m_styles[TS_TITLE].color = wxT("black");
+  m_styles[TS_TITLE].bold = true;
+  m_styles[TS_TITLE].italic = false;
+  m_styles[TS_TITLE].underlined = true;
+  config->Read(wxT("Style/Title/fontname"),
+               &m_styles[TS_TITLE].font);
+  config->Read(wxT("Style/Title/color"),
+               &m_styles[TS_TITLE].color);
+  config->Read(wxT("Style/Title/bold"),
+               &m_styles[TS_TITLE].bold);
+  config->Read(wxT("Style/Title/italic"),
+               &m_styles[TS_TITLE].italic);
+  config->Read(wxT("Style/Title/underlined"),
+               &m_styles[TS_TITLE].underlined);
+
   // Main prompt
   m_styles[TS_MAIN_PROMPT].color = wxT("red");
   m_styles[TS_MAIN_PROMPT].bold = false;

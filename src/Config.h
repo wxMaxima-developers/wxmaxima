@@ -39,6 +39,7 @@ enum {
   button_greek,
   checkbox_greek,
   font_family,
+  style_font_family,
   panel_size,
   language_id,
   unicode_glyphs,
@@ -111,6 +112,7 @@ protected:
   wxPanel* notebook_1_pane_1;
   wxStaticText* label_8;
   wxButton* m_getFont;
+  wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;
   wxComboBox* m_styleFor;
   wxButton* m_styleColor;
@@ -152,6 +154,8 @@ protected:
         m_styleLabel,
         m_styleHighlight,
         m_styleText,
+        m_styleSection,
+        m_styleTitle,
         m_styleTextBackground,
         m_styleBackground;
   void OnOk(wxCommandEvent& event);

@@ -54,8 +54,10 @@ public:
   {
     return m_bottom;
   }
-  wxString GetFontName()
+  wxString GetFontName(int type = TS_DEFAULT)
   {
+    if (type == TS_TITLE || type == TS_SECTION || type == TS_TEXT)
+      return m_styles[type].font;
     return m_fontName;
   }
   wxString GetSymbolFontName();
