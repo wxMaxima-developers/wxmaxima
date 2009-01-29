@@ -3162,12 +3162,13 @@ void wxMaxima::ReEvaluateSelection()
 
     if (!m_console->IsSelectionInWorking()) {
       group->RemoveOutput();
-      m_console->Recalculate();
     }
 
     m_console->SetInsertPoint(group);
 
     group->GetPrompt()->SetValue(m_lastPrompt);
+    m_console->Recalculate();
+
     m_console->SetWorkingGroup(group);
 
     SendMaxima(text);

@@ -164,6 +164,11 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     double scale = parser.GetScale();
     m_input->RecalculateWidths(parser, fontsize, true);
 
+    // recalculate the position of input in ReEvaluateSelection!
+    if (m_input->m_next != NULL) {
+      m_input->m_next->m_currentPoint.x = m_currentPoint.x + m_input->GetWidth() + MC_CELL_SKIP;
+    }
+
     if (m_output == NULL || m_hide) {
       m_width = m_input->GetFullWidth(scale);
     }
