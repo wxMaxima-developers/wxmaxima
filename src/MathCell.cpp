@@ -491,7 +491,7 @@ void MathCell::CopyData(MathCell* s, MathCell* t)
 
 void MathCell::SetForeground(CellParser& parser)
 {
-  wxString color;
+  wxColour color;
   wxDC& dc = parser.GetDC();
   if (m_highlight)
   {
@@ -507,7 +507,7 @@ void MathCell::SetForeground(CellParser& parser)
       color = parser.GetColor(TS_MAIN_PROMPT);
       break;
     case MC_TYPE_ERROR:
-      color = wxT("red");
+      color = wxColour(wxT("red"));
       break;
     case MC_TYPE_LABEL:
       color = parser.GetColor(TS_LABEL);
@@ -518,6 +518,6 @@ void MathCell::SetForeground(CellParser& parser)
     }
   }
 
-  dc.SetTextForeground(wxColour(color));
+  dc.SetTextForeground(color);
 }
 

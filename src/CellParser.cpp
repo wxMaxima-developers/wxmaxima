@@ -74,10 +74,10 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Unicode/fontname"), &m_unicodeSymbolsFont);
 #endif
 
-  wxString tmpCol;
+  wxString tmp;
 
 #define READ_STYLES(type, where)                                    \
-  config->Read(wxT(where "color"), &m_styles[type].color);          \
+  if (config->Read(wxT(where "color"), &tmp)) m_styles[type].color.Set(tmp);          \
   config->Read(wxT(where "bold"), &m_styles[type].bold);            \
   config->Read(wxT(where "italic"), &m_styles[type].italic);        \
   config->Read(wxT(where "underlined"), &m_styles[type].underlined);
@@ -197,33 +197,34 @@ void CellParser::ReadStyle()
 
   // Highlight
   m_styles[TS_HIGHLIGHT].color = m_styles[TS_DEFAULT].color;
-  config->Read(wxT("Style/Highlight/color"),
-               &m_styles[TS_HIGHLIGHT].color);
+  if (config->Read(wxT("Style/Highlight/color"),
+                   &tmp)) m_styles[TS_HIGHLIGHT].color.Set(tmp);
 
   // Text background
-  m_styles[TS_TEXT_BACKGROUND].color = wxT("white");
-  config->Read(wxT("Style/Background/color"),
-               &m_styles[TS_TEXT_BACKGROUND].color);
-  config->Read(wxT("Style/TextBackground/color"),
-               &m_styles[TS_TEXT_BACKGROUND].color);
+  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("white"));
+  if (config->Read(wxT("Style/Background/color"),
+                   &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
+  if (config->Read(wxT("Style/TextBackground/color"),
+                   &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
 
   // Cell bracket colors
-  m_styles[TS_CELL_BRACKET].color = wxT("rgb(0,0,0)");
-  config->Read(wxT("Style/CellBracket/color"),
-               &m_styles[TS_CELL_BRACKET].color);
+  m_styles[TS_CELL_BRACKET].color = wxColour(wxT("rgb(0,0,0)"));
+  if (config->Read(wxT("Style/CellBracket/color"),
+                   &tmp)) m_styles[TS_CELL_BRACKET].color.Set(tmp);
+
   m_styles[TS_ACTIVE_CELL_BRACKET].color = wxT("rgb(255,0,0)");
-  config->Read(wxT("Style/ActiveCellBracket/color"),
-               &m_styles[TS_ACTIVE_CELL_BRACKET].color);
+  if (config->Read(wxT("Style/ActiveCellBracket/color"),
+                   &tmp)) m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
 
   // Cursor (hcaret in MathCtrl and caret in EditorCell)
   m_styles[TS_CURSOR].color = wxT("rgb(0,0,0)");
-  config->Read(wxT("Style/Cursor/color"),
-               &m_styles[TS_CURSOR].color);
+  if (config->Read(wxT("Style/Cursor/color"),
+                   &tmp)) m_styles[TS_CURSOR].color.Set(tmp);
 
   // Selection color
   m_styles[TS_SELECTION].color = wxT("light grey"); // on mac should default to system selection color
-  config->Read(wxT("Style/Selection/color"),
-               &m_styles[TS_SELECTION].color);
+  if (config->Read(wxT("Style/Selection/color"),
+                   &tmp)) m_styles[TS_SELECTION].color.Set(tmp);
 
 #undef READ_STYLES
 

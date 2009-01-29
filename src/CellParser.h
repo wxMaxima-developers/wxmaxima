@@ -74,7 +74,7 @@ public:
   {
     return m_haveGreekFont;
   }
-  wxString GetColor(int st)
+  wxColour GetColor(int st)
   {
     return m_styles[st].color;
   }

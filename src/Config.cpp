@@ -572,48 +572,48 @@ void Config::ReadStyles(wxString file)
   m_getGreekFont->Enable(greekOk);
   m_greekFontAdj->Enable(greekOk);
 
+  wxString tmp;
   // Document background color
   m_styleBackground.color = wxT("white");
-  config->Read(wxT("Style/Background/color"),
-               &m_styleBackground.color);
+  if (config->Read(wxT("Style/Background/color"),
+                   &tmp)) m_styleBackground.color.Set(tmp);
 
   // Text background
   m_styleTextBackground.color = wxT("light blue");
-  config->Read(wxT("Style/TextBackground/color"),
-               &m_styleTextBackground.color);
+  if (config->Read(wxT("Style/TextBackground/color"),
+                   &tmp)) m_styleTextBackground.color.Set(tmp);
 
   // Highlighting color
   m_styleHighlight.color = wxT("red");
-  config->Read(wxT("Style/Highlight/color"),
-               &m_styleHighlight.color);
+  if (config->Read(wxT("Style/Highlight/color"),
+                   &tmp)) m_styleHighlight.color.Set(tmp);
 
   // Groupcell bracket color
   m_styleCellBracket.color = wxT("rgb(0,0,0)");
-  config->Read(wxT("Style/CellBracket/color"),
-               &m_styleCellBracket.color);
+  if (config->Read(wxT("Style/CellBracket/color"),
+                   &tmp)) m_styleCellBracket.color.Set(tmp);
 
   // Active groupcell bracket color
   m_styleActiveCellBracket.color = wxT("rgb(255,0,0)");
-  config->Read(wxT("Style/ActiveCellBracket/color"),
-               &m_styleActiveCellBracket.color);
+  if (config->Read(wxT("Style/ActiveCellBracket/color"),
+                   &tmp)) m_styleActiveCellBracket.color.Set(tmp);
 
   // Horizontal caret color/ cursor color
   m_styleCursor.color = wxT("rgb(0,0,0)");
-  config->Read(wxT("Style/Cursor/color"),
-               &m_styleCursor.color);
+  if (config->Read(wxT("Style/Cursor/color"),
+                   &tmp)) m_styleCursor.color.Set(tmp);
 
   // Selection color defaults to light grey on windows
 #if defined __WXMSW__
-  m_styleSelection.color = wxT("light grey");
+  m_styleSelection.color = wxColour(wxT("light grey"));
 #else
-  m_styleSelection.color = (wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)).GetAsString(wxC2S_CSS_SYNTAX);
+  m_styleSelection.color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
 #endif
-  config->Read(wxT("Style/Selection/color"),
-               &m_styleSelection.color);
+  if (config->Read(wxT("Style/Selection/color"),
+                   &tmp)) m_styleSelection.color.Set(tmp);
 
 #define READ_STYLE(style, where)        \
-  config->Read(wxT(where "color"),      \
-               &style.color);           \
+  if (config->Read(wxT(where "color"), &tmp)) style.color.Set(tmp); \
   config->Read(wxT(where "bold"),       \
                &style.bold);            \
   config->Read(wxT(where "italic"),     \
@@ -682,7 +682,7 @@ void Config::ReadStyles(wxString file)
   m_styleGreek.bold = false;
   m_styleGreek.italic = false;
   m_styleGreek.underlined = false;
-  READ_STYLE(m_styleMainPrompt, "Style/Greek/")
+  READ_STYLE(m_styleGreek, "Style/Greek/")
 
   // Variable
   m_styleVariable.color = m_styleVariable.color;
@@ -760,19 +760,19 @@ void Config::WriteStyles(wxString file)
   }
 
   config->Write(wxT("Style/Background/color"),
-                m_styleBackground.color);
+                m_styleBackground.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Highlight/color"),
-                m_styleHighlight.color);
+                m_styleHighlight.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/TextBackground/color"),
-                m_styleTextBackground.color);
+                m_styleTextBackground.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/CellBracket/color"),
-                m_styleCellBracket.color);
+                m_styleCellBracket.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/ActiveCellBracket/color"),
-                m_styleActiveCellBracket.color);
+                m_styleActiveCellBracket.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Cursor/color"),
-                m_styleCursor.color);
+                m_styleCursor.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Selection/color"),
-                m_styleSelection.color);
+                m_styleSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
 
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
@@ -786,7 +786,7 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/GreekFont/adj"), m_greekFontAdj->GetValue());
 
 #define WRITE_STYLE(style, where)                   \
-  config->Write(wxT(where "color"), style.color);   \
+  config->Write(wxT(where "color"), style.color.GetAsString(wxC2S_CSS_SYNTAX));   \
   config->Write(wxT(where "bold"), style.bold);     \
   config->Write(wxT(where "italic"), style.italic); \
   config->Write(wxT(where "underlined"), style.underlined);
@@ -992,7 +992,7 @@ void Config::UpdateExample()
 {
   style *tmp = GetStylePointer();
   wxString example = _("Example text");
-  wxString color(tmp->color);
+  wxColour color(tmp->color);
   wxString font(m_styleDefault.font);
 
 //  wxClientDC dc(label_11);
@@ -1013,9 +1013,9 @@ void Config::UpdateExample()
   label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
   if (tmp == &m_styleTextBackground ||
       tmp == &m_styleText || tmp == &m_styleSection || tmp == &m_styleTitle)
-    label_11->SetBackgroundColour(wxColour(m_styleTextBackground.color));
+    label_11->SetBackgroundColour(m_styleTextBackground.color);
   else
-    label_11->SetBackgroundColour(wxColour(m_styleBackground.color));
+    label_11->SetBackgroundColour(m_styleBackground.color);
 
   label_11->Refresh();
 }
@@ -1075,7 +1075,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 
   GetClientSize(&panel_width, &panel_height);
 
-  dc.SetTextForeground(wxColour(m_fgColor));
+  dc.SetTextForeground(m_fgColor);
 
   if (m_bold)
     bold = wxBOLD;

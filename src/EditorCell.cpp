@@ -172,9 +172,9 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen( *(wxThePenList->FindOrCreatePen( wxColour(parser.GetColor(TS_SELECTION)) )  )); // window linux, set a pen
+        dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION))) ); // window linux, set a pen
 #endif
-        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush( wxColour( parser.GetColor(TS_SELECTION) )  )  )); //highlight c.
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
         wxPoint point, point1;
         long start = MIN(m_selectionStart, m_selectionEnd);
@@ -211,9 +211,9 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen( *(wxThePenList->FindOrCreatePen( wxColour(parser.GetColor(TS_SELECTION)) )  )); // window linux, set a pen
+        dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION)))  ); // window linux, set a pen
 #endif
-        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush( wxColour( parser.GetColor(TS_SELECTION) )  )  )); //highlight c.
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
@@ -273,7 +273,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(wxColour( parser.GetColor(TS_CURSOR) ), 1, wxSOLID))); // TODO is there more efficient way to do this?
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxSOLID))); // TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
@@ -328,7 +328,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
 void EditorCell::SetForeground(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
-  dc.SetTextForeground(wxColour(parser.GetColor(m_textStyle)));
+  dc.SetTextForeground(parser.GetColor(m_textStyle));
 }
 
 #ifndef WX_USE_UNICODE
@@ -1123,9 +1123,9 @@ void EditorCell::SetBackground(CellParser& parser, wxPoint& point)
     int y = rect.GetY();
 
     if (m_height > 0 && m_width > 0 && y>=0) {
-       wxBrush br(wxColor(parser.GetColor(TS_TEXT_BACKGROUND)));
+       wxBrush br(parser.GetColor(TS_TEXT_BACKGROUND));
        dc.SetBrush(br);
-       wxPen pen(wxColor(parser.GetColor(TS_TEXT_BACKGROUND)));
+       wxPen pen(parser.GetColor(TS_TEXT_BACKGROUND));
        dc.SetPen(pen);
        int height = rect.GetHeight();
        dc.DrawRectangle(0, y - 1, 10000, height + 2);

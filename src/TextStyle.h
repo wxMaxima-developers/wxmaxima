@@ -25,7 +25,7 @@ struct style
   style() :
     bold(false), italic(false), underlined(false)
     {  };
-  wxString color;
+  wxColour color;
   wxString font;
   int fontSize;
   bool bold;

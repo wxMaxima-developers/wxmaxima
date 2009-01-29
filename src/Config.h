@@ -61,7 +61,7 @@ public:
 #endif
 
   };
-  void SetStyle(wxString fg_color, bool italic, bool bold, bool underlined, wxString font)
+  void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
   {
     m_fgColor = fg_color;
     m_italic = italic;
@@ -72,7 +72,7 @@ public:
   void SetFontSize(int size) { m_size = size; }
 private:
   void OnPaint(wxPaintEvent& event);
-  wxString m_fgColor;
+  wxColour m_fgColor;
   bool m_italic, m_bold, m_underlined;
   wxString m_font;
   int m_size;
