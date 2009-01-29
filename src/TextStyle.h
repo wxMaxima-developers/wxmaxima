@@ -58,6 +58,6 @@ enum
   TS_SELECTION
 };
 
-#define STYLE_NUM 21 
+#define STYLE_NUM 21
 
 #endif

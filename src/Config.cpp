@@ -611,159 +611,92 @@ void Config::ReadStyles(wxString file)
   config->Read(wxT("Style/Selection/color"),
                &m_styleSelection.color);
 
+#define READ_STYLE(style, where)        \
+  config->Read(wxT(where "color"),      \
+               &style.color);           \
+  config->Read(wxT(where "bold"),       \
+               &style.bold);            \
+  config->Read(wxT(where "italic"),     \
+               &style.italic);          \
+  config->Read(wxT(where "underlined"), \
+               &style.underlined);
+
   // Text in math output
   m_styleDefault.color = wxT("black");
   m_styleDefault.bold = false;
   m_styleDefault.italic = false;
   m_styleDefault.underlined = false;
-  config->Read(wxT("Style/NormalText/color"),
-               &m_styleDefault.color);
-  config->Read(wxT("Style/NormalText/bold"),
-               &m_styleDefault.bold);
-  config->Read(wxT("Style/NormalText/italic"),
-               &m_styleDefault.italic);
-  config->Read(wxT("Style/NormalText/underlined"),
-               &m_styleDefault.underlined);
+  READ_STYLE(m_styleDefault, "Style/NormalText/")
 
   // Main prompt
   m_styleMainPrompt.color = wxT("red");
   m_styleMainPrompt.bold = false;
   m_styleMainPrompt.italic = false;
   m_styleMainPrompt.underlined = false;
-  config->Read(wxT("Style/MainPrompt/color"),
-               &m_styleMainPrompt.color);
-  config->Read(wxT("Style/MainPrompt/bold"),
-               &m_styleMainPrompt.bold);
-  config->Read(wxT("Style/MainPrompt/italic"),
-               &m_styleMainPrompt.italic);
-  config->Read(wxT("Style/MainPrompt/underlined"),
-               &m_styleMainPrompt.underlined);
+  READ_STYLE(m_styleMainPrompt, "Style/MainPrompt/")
 
   // Other prompt
   m_styleOtherPrompt.color = wxT("red");
   m_styleOtherPrompt.bold = false;
   m_styleOtherPrompt.italic = true;
   m_styleOtherPrompt.underlined = false;
-  config->Read(wxT("Style/OtherPrompt/color"),
-               &m_styleOtherPrompt.color);
-  config->Read(wxT("Style/OtherPrompt/bold"),
-               &m_styleOtherPrompt.bold);
-  config->Read(wxT("Style/OtherPrompt/italic"),
-               &m_styleOtherPrompt.italic);
-  config->Read(wxT("Style/OtherPrompt/underlined"),
-               &m_styleOtherPrompt.underlined);
+  READ_STYLE(m_styleOtherPrompt, "Style/OtherPrompt/")
 
   // Labels
   m_styleLabel.color = wxT("brown");
   m_styleLabel.bold = false;
   m_styleLabel.italic = false;
   m_styleLabel.underlined = false;
-  config->Read(wxT("Style/Label/color"),
-               &m_styleLabel.color);
-  config->Read(wxT("Style/Label/bold"),
-               &m_styleLabel.bold);
-  config->Read(wxT("Style/Label/italic"),
-               &m_styleLabel.italic);
-  config->Read(wxT("Style/Label/underlined"),
-               &m_styleLabel.underlined);
+  READ_STYLE(m_styleLabel, "Style/Label/")
 
   // Special
   m_styleSpecial.color = m_styleDefault.color;
   m_styleSpecial.bold = false;
   m_styleSpecial.italic = false;
   m_styleSpecial.underlined = false;
-  config->Read(wxT("Style/Special/color"),
-               &m_styleSpecial.color);
-  config->Read(wxT("Style/Special/bold"),
-               &m_styleSpecial.bold);
-  config->Read(wxT("Style/Special/italic"),
-               &m_styleSpecial.italic);
-  config->Read(wxT("Style/Special/underlined"),
-               &m_styleSpecial.underlined);
+  READ_STYLE(m_styleSpecial, "Style/Special/")
 
   // Input
   m_styleInput.color = wxT("blue");
   m_styleInput.bold = false;
   m_styleInput.italic = false;
   m_styleInput.underlined = false;
-  config->Read(wxT("Style/Input/color"),
-               &m_styleInput.color);
-  config->Read(wxT("Style/Input/bold"),
-               &m_styleInput.bold);
-  config->Read(wxT("Style/Input/italic"),
-               &m_styleInput.italic);
-  config->Read(wxT("Style/Input/underlined"),
-               &m_styleInput.underlined);
+  READ_STYLE(m_styleInput, "Style/Input/")
 
   // Number
   m_styleNumber.color = m_styleDefault.color;
   m_styleNumber.bold = false;
   m_styleNumber.italic = false;
   m_styleNumber.underlined = false;
-  config->Read(wxT("Style/Number/color"),
-               &m_styleNumber.color);
-  config->Read(wxT("Style/Number/bold"),
-               &m_styleNumber.bold);
-  config->Read(wxT("Style/Number/italic"),
-               &m_styleNumber.italic);
-  config->Read(wxT("Style/Number/underlined"),
-               &m_styleNumber.underlined);
+  READ_STYLE(m_styleNumber, "Style/Number/")
 
   // String
   m_styleString.color = m_styleDefault.color;
   m_styleString.bold = false;
   m_styleString.italic = true;
   m_styleString.underlined = false;
-  config->Read(wxT("Style/String/color"),
-               &m_styleString.color);
-  config->Read(wxT("Style/String/bold"),
-               &m_styleString.bold);
-  config->Read(wxT("Style/String/italic"),
-               &m_styleString.italic);
-  config->Read(wxT("Style/String/underlined"),
-               &m_styleString.underlined);
+  READ_STYLE(m_styleString, "Style/String/")
 
   // Greek
   m_styleGreek.color = m_styleDefault.color;
   m_styleGreek.bold = false;
   m_styleGreek.italic = false;
   m_styleGreek.underlined = false;
-  config->Read(wxT("Style/Greek/color"),
-               &m_styleGreek.color);
-  config->Read(wxT("Style/Greek/bold"),
-               &m_styleGreek.bold);
-  config->Read(wxT("Style/Greek/italic"),
-               &m_styleGreek.italic);
-  config->Read(wxT("Style/Greek/underlined"),
-               &m_styleGreek.underlined);
+  READ_STYLE(m_styleMainPrompt, "Style/Greek/")
 
   // Variable
   m_styleVariable.color = m_styleVariable.color;
   m_styleVariable.bold = false;
   m_styleVariable.italic = true;
   m_styleVariable.underlined = false;
-  config->Read(wxT("Style/Variable/color"),
-               &m_styleVariable.color);
-  config->Read(wxT("Style/Variable/bold"),
-               &m_styleVariable.bold);
-  config->Read(wxT("Style/Variable/italic"),
-               &m_styleVariable.italic);
-  config->Read(wxT("Style/Variable/underlined"),
-               &m_styleVariable.underlined);
+  READ_STYLE(m_styleVariable, "Style/Variable/")
 
   // Function
   m_styleFunction.color = m_styleVariable.color;
   m_styleFunction.bold = false;
   m_styleFunction.italic = false;
   m_styleFunction.underlined = false;
-  config->Read(wxT("Style/Function/color"),
-               &m_styleFunction.color);
-  config->Read(wxT("Style/Function/bold"),
-               &m_styleFunction.bold);
-  config->Read(wxT("Style/Function/italic"),
-               &m_styleFunction.italic);
-  config->Read(wxT("Style/Function/underlined"),
-               &m_styleFunction.underlined);
+  READ_STYLE(m_styleFunction, "Style/Function/")
 
   // Text
   m_styleText.color = wxT("black");
@@ -776,14 +709,7 @@ void Config::ReadStyles(wxString file)
                  &m_styleText.fontSize);
   config->Read(wxT("Style/Text/fontname"),
                &m_styleText.font);
-  config->Read(wxT("Style/Text/color"),
-               &m_styleText.color);
-  config->Read(wxT("Style/Text/bold"),
-               &m_styleText.bold);
-  config->Read(wxT("Style/Text/italic"),
-               &m_styleText.italic);
-  config->Read(wxT("Style/Text/underlined"),
-               &m_styleText.underlined);
+  READ_STYLE(m_styleText, "Style/Text/")
 
   // Section
   m_styleSection.color = wxT("black");
@@ -796,14 +722,7 @@ void Config::ReadStyles(wxString file)
                  &m_styleSection.fontSize);
   config->Read(wxT("Style/Section/fontname"),
                &m_styleSection.font);
-  config->Read(wxT("Style/Section/color"),
-               &m_styleSection.color);
-  config->Read(wxT("Style/Section/bold"),
-               &m_styleSection.bold);
-  config->Read(wxT("Style/Section/italic"),
-               &m_styleSection.italic);
-  config->Read(wxT("Style/Section/underlined"),
-               &m_styleSection.underlined);
+  READ_STYLE(m_styleSection, "Style/Section/")
 
   // Title
   m_styleTitle.color = wxT("black");
@@ -816,14 +735,9 @@ void Config::ReadStyles(wxString file)
                  &m_styleTitle.fontSize);
   config->Read(wxT("Style/Title/fontname"),
                &m_styleTitle.font);
-  config->Read(wxT("Style/Title/color"),
-               &m_styleTitle.color);
-  config->Read(wxT("Style/Title/bold"),
-               &m_styleTitle.bold);
-  config->Read(wxT("Style/Title/italic"),
-               &m_styleTitle.italic);
-  config->Read(wxT("Style/Title/underlined"),
-               &m_styleTitle.underlined);
+  READ_STYLE(m_styleTitle, "Style/Title/")
+
+#undef READ_STYLE
 
   // Set values in dialog
   m_styleFor->SetSelection(0);
@@ -871,151 +785,59 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/GreekFont/fontname"), m_greekFontName);
   config->Write(wxT("Style/GreekFont/adj"), m_greekFontAdj->GetValue());
 
+#define WRITE_STYLE(style, where)                   \
+  config->Write(wxT(where "color"), style.color);   \
+  config->Write(wxT(where "bold"), style.bold);     \
+  config->Write(wxT(where "italic"), style.italic); \
+  config->Write(wxT(where "underlined"), style.underlined);
+
   // Normal text
-  config->Write(wxT("Style/NormalText/color"),
-                m_styleDefault.color);
-  config->Write(wxT("Style/NormalText/bold"),
-                m_styleDefault.bold);
-  config->Write(wxT("Style/NormalText/italic"),
-                m_styleDefault.italic);
-  config->Write(wxT("Style/NormalText/underlined"),
-                m_styleDefault.underlined);
+  WRITE_STYLE(m_styleDefault, "Style/NormalText/")
 
   // Main prompt
-  config->Write(wxT("Style/MainPrompt/color"),
-                m_styleMainPrompt.color);
-  config->Write(wxT("Style/MainPrompt/bold"),
-                m_styleMainPrompt.bold);
-  config->Write(wxT("Style/MainPrompt/italic"),
-                m_styleMainPrompt.italic);
-  config->Write(wxT("Style/MainPrompt/underlined"),
-                m_styleMainPrompt.underlined);
+  WRITE_STYLE(m_styleMainPrompt, "Style/MainPrompt/")
 
   // Other prompt
-  config->Write(wxT("Style/OtherPrompt/color"),
-                m_styleOtherPrompt.color);
-  config->Write(wxT("Style/OtherPrompt/bold"),
-                m_styleOtherPrompt.bold);
-  config->Write(wxT("Style/OtherPrompt/italic"),
-                m_styleOtherPrompt.italic);
-  config->Write(wxT("Style/OtherPrompt/underlined"),
-                m_styleOtherPrompt.underlined);
+  WRITE_STYLE(m_styleOtherPrompt, "Style/OtherPrompt/")
 
   // Label
-  config->Write(wxT("Style/Label/color"),
-                m_styleLabel.color);
-  config->Write(wxT("Style/Label/bold"),
-                m_styleLabel.bold);
-  config->Write(wxT("Style/Label/italic"),
-                m_styleLabel.italic);
-  config->Write(wxT("Style/Label/underlined"),
-                m_styleLabel.underlined);
+  WRITE_STYLE(m_styleLabel, "Style/Label/")
 
   // Special
-  config->Write(wxT("Style/Special/color"),
-                m_styleSpecial.color);
-  config->Write(wxT("Style/Special/bold"),
-                m_styleSpecial.bold);
-  config->Write(wxT("Style/Special/italic"),
-                m_styleSpecial.italic);
-  config->Write(wxT("Style/Special/underlined"),
-                m_styleSpecial.underlined);
+  WRITE_STYLE(m_styleSpecial, "Style/Special/")
 
   // Input
-  config->Write(wxT("Style/Input/color"),
-                m_styleInput.color);
-  config->Write(wxT("Style/Input/bold"),
-                m_styleInput.bold);
-  config->Write(wxT("Style/Input/italic"),
-                m_styleInput.italic);
-  config->Write(wxT("Style/Input/underlined"),
-                m_styleInput.underlined);
+  WRITE_STYLE(m_styleInput, "Style/Input/")
 
   // Number
-  config->Write(wxT("Style/Number/color"),
-                m_styleNumber.color);
-  config->Write(wxT("Style/Number/bold"),
-                m_styleNumber.bold);
-  config->Write(wxT("Style/Number/italic"),
-                m_styleNumber.italic);
-  config->Write(wxT("Style/Number/underlined"),
-                m_styleNumber.underlined);
+  WRITE_STYLE(m_styleNumber, "Style/Number/")
 
   // Greek
-  config->Write(wxT("Style/Greek/color"),
-                m_styleGreek.color);
-  config->Write(wxT("Style/Greek/bold"),
-                m_styleGreek.bold);
-  config->Write(wxT("Style/Greek/italic"),
-                m_styleGreek.italic);
-  config->Write(wxT("Style/Greek/underlined"),
-                m_styleGreek.underlined);
+  WRITE_STYLE(m_styleGreek, "Style/Greek/")
 
   // String
-  config->Write(wxT("Style/String/color"),
-                m_styleString.color);
-  config->Write(wxT("Style/String/bold"),
-                m_styleString.bold);
-  config->Write(wxT("Style/String/italic"),
-                m_styleString.italic);
-  config->Write(wxT("Style/String/underlined"),
-                m_styleString.underlined);
+  WRITE_STYLE(m_styleString, "Style/String/")
 
   // Variable
-  config->Write(wxT("Style/Variable/color"),
-                m_styleVariable.color);
-  config->Write(wxT("Style/Variable/bold"),
-                m_styleVariable.bold);
-  config->Write(wxT("Style/Variable/italic"),
-                m_styleVariable.italic);
-  config->Write(wxT("Style/Variable/underlined"),
-                m_styleVariable.underlined);
+  WRITE_STYLE(m_styleVariable, "Style/Variable/")
 
   // Text
   config->Write(wxT("Style/Text/fontname"), m_styleText.font);
   config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
-  config->Write(wxT("Style/Text/color"),
-                m_styleText.color);
-  config->Write(wxT("Style/Text/bold"),
-                m_styleText.bold);
-  config->Write(wxT("Style/Text/italic"),
-                m_styleText.italic);
-  config->Write(wxT("Style/Text/underlined"),
-                m_styleText.underlined);
+  WRITE_STYLE(m_styleText, "Style/Text/")
 
   // Section
   config->Write(wxT("Style/Section/fontname"), m_styleSection.font);
   config->Write(wxT("Style/Section/fontsize"), m_styleSection.fontSize);
-  config->Write(wxT("Style/Section/color"),
-                m_styleSection.color);
-  config->Write(wxT("Style/Section/bold"),
-                m_styleSection.bold);
-  config->Write(wxT("Style/Section/italic"),
-                m_styleSection.italic);
-  config->Write(wxT("Style/Section/underlined"),
-                m_styleSection.underlined);
+  WRITE_STYLE(m_styleSection, "Style/Section/")
 
   // Title
   config->Write(wxT("Style/Title/fontname"), m_styleTitle.font);
   config->Write(wxT("Style/Title/fontsize"), m_styleTitle.fontSize);
-  config->Write(wxT("Style/Title/color"),
-                m_styleTitle.color);
-  config->Write(wxT("Style/Title/bold"),
-                m_styleTitle.bold);
-  config->Write(wxT("Style/Title/italic"),
-                m_styleTitle.italic);
-  config->Write(wxT("Style/Title/underlined"),
-                m_styleTitle.underlined);
+  WRITE_STYLE(m_styleTitle, "Style/Title/")
 
   // Function names
-  config->Write(wxT("Style/Function/color"),
-                m_styleFunction.color);
-  config->Write(wxT("Style/Function/bold"),
-                m_styleFunction.bold);
-  config->Write(wxT("Style/Function/italic"),
-                m_styleFunction.italic);
-  config->Write(wxT("Style/Function/underlined"),
-                m_styleFunction.underlined);
+  WRITE_STYLE(m_styleFunction, "Style/Function/")
 
   config->Flush();
 
