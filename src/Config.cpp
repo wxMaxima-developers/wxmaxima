@@ -874,7 +874,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
     m_getStyleFont->Enable(false);
 
   // Background color only
-  if (st == 15 || st == 16)
+  if (st >= 15)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
