@@ -314,9 +314,6 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   m_underlined = parser.IsUnderlined(m_textStyle);
   m_fontEncoding = parser.GetFontEncoding();
 
-  fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
-  fontsize1 = MAX(fontsize1, 1);
-
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     m_fontStyle,
                     m_fontWeight,
