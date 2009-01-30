@@ -79,12 +79,15 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
+
+
 class Config: public wxDialog
 {
 public:
   Config(wxWindow* parent, int id, const wxString& title,
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  void OnChangeColor(); // called from class ColorPanel
 private:
   // begin wxGlade: Config::methods
   void set_properties();
@@ -116,7 +119,7 @@ protected:
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;
   wxComboBox* m_styleFor;
-  wxButton* m_styleColor;
+  wxPanel* m_styleColor;
   wxCheckBox* m_boldCB;
   wxCheckBox* m_italicCB;
   wxCheckBox* m_underlinedCB;
@@ -170,7 +173,6 @@ protected:
 #endif
   void OnGreekBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
-  void OnChangeColor(wxCommandEvent& event);
   void OnChangeWarning(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
   void OnCheckGreek(wxCommandEvent& event);
@@ -182,6 +184,22 @@ protected:
   void LoadSave(wxCommandEvent& event);
   int m_fontSize;
   style* GetStylePointer();
+  DECLARE_EVENT_TABLE()
+};
+
+class ColorPanel : public wxPanel
+{
+public:
+  ColorPanel(Config * conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id, pos, size, style)
+  {
+     config = conf;
+     SetBackgroundColour(wxColour(0,0,0));
+  };
+  void ColorPanel::OnClick(wxMouseEvent &event) {
+      config->OnChangeColor();
+  }
+private:
+  Config * config;
   DECLARE_EVENT_TABLE()
 };
 

@@ -151,7 +151,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("wheat"), _("white"), _("yellow"), _("yellow green")
     };
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-  m_styleColor = new wxButton(notebook_1_pane_2, color_id, _("Choose color"), wxDefaultPosition, wxSize(150, -1));
+  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(30, 30), wxSUNKEN_BORDER);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -283,7 +283,7 @@ void Config::do_layout()
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(4, 1, 3, 3);
   wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(2, 2, 2, 7);
+  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(1, 3, 2, 7); // 2 2 2 7 original
   wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
@@ -346,9 +346,8 @@ void Config::do_layout()
 
   // Styles box
   grid_sizer_4->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_4->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -850,7 +849,7 @@ void Config::WriteStyles(wxString file)
   }
 }
 
-void Config::OnChangeColor(wxCommandEvent& event)
+void Config::OnChangeColor()
 {
   style* tmp = GetStylePointer();
   wxColour col = wxGetColourFromUser(this, tmp->color);
@@ -858,6 +857,7 @@ void Config::OnChangeColor(wxCommandEvent& event)
   {
     tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
     UpdateExample();
+    m_styleColor->SetBackgroundColour(tmp->color);
   }
 }
 
@@ -866,7 +866,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   style* tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
 
-  m_styleColor->Enable(true);
+  m_styleColor->SetBackgroundColour(tmp->color);
 
   if (st >= 12 && st <= 14)
     m_getStyleFont->Enable(true);
@@ -1052,7 +1052,6 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
 #endif
-  EVT_BUTTON(color_id, Config::OnChangeColor)
   EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
   EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
@@ -1064,6 +1063,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(load_id, Config::LoadSave)
   EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
 END_EVENT_TABLE()
+
 
 void ExamplePanel::OnPaint(wxPaintEvent& event)
 {
@@ -1092,4 +1092,8 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 
 BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
   EVT_PAINT(ExamplePanel::OnPaint)
+END_EVENT_TABLE()
+
+BEGIN_EVENT_TABLE(ColorPanel, wxPanel)
+  EVT_LEFT_UP(ColorPanel::OnClick)
 END_EVENT_TABLE()
