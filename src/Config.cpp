@@ -167,6 +167,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
 #endif
 
   set_properties();
+  m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
   do_layout();
   UpdateExample();
 }
