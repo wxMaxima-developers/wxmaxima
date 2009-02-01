@@ -151,11 +151,11 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("wheat"), _("white"), _("yellow"), _("yellow green")
     };
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(30, 30), wxSUNKEN_BORDER);
+  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(350, 40));
+  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(350, 60));
   m_loadStyle = new wxButton(notebook_1_pane_2, load_id, _("Load"));
   m_saveStyle = new wxButton(notebook_1_pane_2, save_id, _("Save"));
 #if defined __WXMSW__
@@ -282,8 +282,8 @@ void Config::do_layout()
   wxFlexGridSizer* sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(4, 1, 3, 3);
-  wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(1, 3, 2, 7); // 2 2 2 7 original
+  wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxHORIZONTAL);
+  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(4, 1, 2, 7);
   wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
@@ -293,7 +293,6 @@ void Config::do_layout()
   wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
   wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer* sizer_10 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
 
   // TAB 1
   // Maxima options box
@@ -345,17 +344,16 @@ void Config::do_layout()
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
   // Styles box
-  grid_sizer_4->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_4->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
+  grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3); // example panel
+
+  sizer_11->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
-  sizer_12->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3); // example panel
-  sizer_11->Add(sizer_12, 1, wxALIGN_CENTER, 3);
   sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
   // load save buttons
   sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
