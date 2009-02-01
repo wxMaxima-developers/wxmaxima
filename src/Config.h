@@ -31,7 +31,7 @@
 
 enum {
   color_id,
-  combobox_styleFor,
+  listbox_styleFor,
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
@@ -118,7 +118,7 @@ protected:
   wxButton* m_getFont;
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;
-  wxComboBox* m_styleFor;
+  wxListBox* m_styleFor;
   wxPanel* m_styleColor;
   wxCheckBox* m_boldCB;
   wxCheckBox* m_italicCB;

@@ -129,7 +129,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Cursor"),
       _("Selection")
     };
-  m_styleFor = new wxComboBox(notebook_1_pane_2, combobox_styleFor, wxEmptyString, wxDefaultPosition, wxSize(150, -1), 21, m_styleFor_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(150, -1), 21, m_styleFor_choices, wxLB_SINGLE);
   const wxString m_styleColor_choices[] =
     {
       _("aquamarine"), _("black"), _("blue"), _("blue violet"),
@@ -167,7 +167,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
 #endif
 
   set_properties();
-  m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
   do_layout();
   UpdateExample();
 }
@@ -355,9 +354,10 @@ void Config::do_layout()
   grid_sizer_4->Add(20, 20, 0, wxALL, 0);
   grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
   sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
-  sizer_12->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3);
+  sizer_12->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3); // example panel
   sizer_11->Add(sizer_12, 1, wxALIGN_CENTER, 3);
   sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
+  // load save buttons
   sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_10->Add(m_saveStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_8->Add(sizer_10, 1, wxALIGN_RIGHT, 3);
@@ -741,6 +741,7 @@ void Config::ReadStyles(wxString file)
 
   // Set values in dialog
   m_styleFor->SetSelection(0);
+  m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
   m_boldCB->SetValue(m_styleVariable.bold);
   m_italicCB->SetValue(m_styleVariable.italic);
   m_underlinedCB->SetValue(m_styleVariable.underlined);
@@ -1053,7 +1054,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
 #endif
-  EVT_COMBOBOX(combobox_styleFor, Config::OnChangeStyle)
+  EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
   EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
