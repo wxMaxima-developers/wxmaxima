@@ -19,6 +19,7 @@
 
 #include "GroupCell.h"
 #include "TextCell.h"
+#include "Bitmap.h"
 
 GroupCell::GroupCell() : MathCell()
 {
@@ -351,7 +352,7 @@ wxString GroupCell::ToString(bool all)
   return str + MathCell::ToString(all);
 }
 
-wxString GroupCell::ToTeX(bool all)
+wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
   if (!IsSpecial()) {
@@ -360,11 +361,11 @@ wxString GroupCell::ToTeX(bool all)
   if (m_output != NULL && !m_hide) {
     if (IsSpecial()) {
       str = m_output->ToString(true);
-      switch (m_output->GetType()) {
-        case MC_TYPE_TITLE:
+      switch (m_output->GetStyle()) {
+        case TS_TITLE:
           str = wxT("\n\\section{") + str + wxT("}\n");
           break;
-        case MC_TYPE_SECTION:
+        case TS_SECTION:
           str = wxT("\n\\subsection{") + str + wxT("}\n");
           break;
         default:
@@ -376,17 +377,38 @@ wxString GroupCell::ToTeX(bool all)
       }
     }
     else {
-      str += wxT("$$");
+      str += wxT("$$\n");
       wxString label;
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        if (tmp->GetType() == MC_TYPE_LABEL)
-          label = tmp->ToTeX(false);
+        if (tmp->GetType() == MC_TYPE_IMAGE || tmp->GetType() == MC_TYPE_SLIDE) {
+          MathCell *copy = tmp->Copy(false);
+          (*imgCounter)++;
+          wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
+          wxString file = imgDir + wxT("/") + image;
+
+          Bitmap bmp;
+          bmp.SetData(copy);
+
+          if (!wxDirExists(imgDir))
+            if (!wxMkdir(imgDir))
+              continue;
+
+          if (bmp.ToFile(file))
+            str += wxT("\\includegraphics[width=9cm]{") +
+                filename + wxT("_img/") + image + wxT("}\n");
+        }
+        else if (tmp->GetStyle() == TS_LABEL)
+        {
+          if (str.Right(3) != wxT("$$\n"))
+            str += label + wxT("\n$$\n$$\n");
+          label = wxT("\\leqno{\\tt ") + tmp->ToTeX(false) + wxT(" }");
+        }
         else
           str += tmp->ToTeX(false);
         tmp = tmp->m_nextToDraw;
       }
-      str += label + wxT("$$\n");
+      str += label + wxT("\n$$\n");
     }
   }
   return str + MathCell::ToTeX(all);

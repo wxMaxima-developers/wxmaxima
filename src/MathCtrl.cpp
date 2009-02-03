@@ -1923,11 +1923,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
 bool MathCtrl::ExportToTeX(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
-  MathCell *tmp = m_tree, *start= NULL, *end= NULL;
+  GroupCell *tmp = (GroupCell *)m_tree;
   int count = 0;
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
+  int imgCounter = 0;
 
   wxTextFile output(file);
   if (output.Exists()) {
@@ -1950,9 +1951,9 @@ bool MathCtrl::ExportToTeX(wxString file) {
   //
 
   while (tmp != NULL) {
-    wxString s = tmp->ToTeX(false);
+    wxString s = tmp->ToTeX(false, imgDir, filename, &imgCounter);
     AddLineToFile(output, s);
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
   }
 
   //

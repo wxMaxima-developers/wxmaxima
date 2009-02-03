@@ -65,6 +65,7 @@ public:
   void SwitchHide() { m_hide = !m_hide && (m_output != NULL); }
   void SetWorking(bool working) { m_working = working; }
   wxRect HideRect();
+  wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
 protected:
   void DestroyOutput();
   MathCell *m_input, *m_output;
@@ -75,7 +76,6 @@ protected:
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
-  wxString ToTeX(bool all);
 };
 
 #endif /* GROUPCELL_H_ */
