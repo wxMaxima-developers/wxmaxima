@@ -670,7 +670,7 @@ void wxMaximaFrame::SetupToolBar()
                            _("Insert text"));
   frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
                            IMAGE("input.png"),
-                           _("Insert input group"));
+                           _("Insert input cell"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            IMAGE("stop.png"),
@@ -733,10 +733,10 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxART_NORMAL_FILE,
                                                     wxART_TOOLBAR),
                            _("Insert text"));
-  frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
+  frame_1_toolbar->AddTool(tb_insert_input, _("Insert input cell"),
                            wxArtProvider::GetBitmap(wxART_EXECUTABLE_FILE,
                                                     wxART_TOOLBAR),
-                           _("Insert input group"));
+                           _("Insert input cell"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            wxArtProvider::GetBitmap(wxT("gtk-stop"),
