@@ -195,7 +195,7 @@ public:
      config = conf;
      SetBackgroundColour(wxColour(0,0,0));
   };
-  void ColorPanel::OnClick(wxMouseEvent &event) {
+  void OnClick(wxMouseEvent &event) {
       config->OnChangeColor();
   }
 private:
