@@ -2,8 +2,8 @@
 # This file is based on the corresponding file for the poedit program
 #
 
-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl
-WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl
+WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW
+WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW
 
 localedir = $(datadir)/locale
 
@@ -98,6 +98,8 @@ transcoded:
 	$(MSGFMT) transcoded/hu.po -o transcoded/hu.mo
 	cat pl.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utf-8 -t iso8859-2 > transcoded/pl.po
 	$(MSGFMT) transcoded/pl.po -o transcoded/pl.mo
+	cp zh_TW.po transcoded
+	$(MSGFMT) transcoded/zh_TW.po -o transcoded/zh_TW.po
 
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
@@ -109,6 +111,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     ru.po hu.mo wxwin/hu.mo \
 	     ru.po uk.mo wxwin/uk.mo \
 	     pl.po pl.mo wxwin/pl.mo \
+	     zh_TW.po zh_TW.mo wxwin/zh_TW.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE

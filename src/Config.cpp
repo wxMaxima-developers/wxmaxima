@@ -36,6 +36,7 @@
 const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
+    wxLANGUAGE_CHINESE_TRADITIONAL,
     wxLANGUAGE_ENGLISH,
     wxLANGUAGE_FRENCH,
     wxLANGUAGE_GERMAN,
@@ -48,7 +49,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 11
+#define LANGUAGE_NUMBER 12
 
 Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
@@ -73,9 +74,18 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
   const wxString m_language_choices[] =
     {
-      _("(Use default language)"), _("English"),
-      _("French"), _("German"), _("Hungarian"), _("Italian"), _("Polish"), _("Portuguese (Brazilian)"),
-      _("Russian"), _("Spanish"), _("Ukrainian")
+      _("(Use default language)"),
+      _("Chinese traditional"),
+      _("English"),
+      _("French"),
+      _("German"),
+      _("Hungarian"),
+      _("Italian"),
+      _("Polish"),
+      _("Portuguese (Brazilian)"),
+      _("Russian"),
+      _("Spanish"),
+      _("Ukrainian")
     };
   m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
