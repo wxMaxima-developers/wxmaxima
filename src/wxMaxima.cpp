@@ -1685,6 +1685,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     Close();
     break;
 
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_animation_start:
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
@@ -1694,6 +1695,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     if (m_console->CanAnimate() && m_console->AnimationRunning())
       m_console->Animate(false);
     break;
+#endif
 
   default:
     break;
