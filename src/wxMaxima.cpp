@@ -346,11 +346,12 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
   m_console->InsertLine(cell, newLine || cell->BreakLineHere());
 }
 
-void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
+void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
 {
   if (type == MC_TYPE_INPUT || type == MC_TYPE_TEXT ||
       type == MC_TYPE_SECTION || type == MC_TYPE_TITLE ||
-      type == MC_TYPE_HEADER) {
+      type == MC_TYPE_HEADER)
+  {
 
     EditorCell* cell = new EditorCell();
 
@@ -360,13 +361,15 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine)
     m_console->InsertLine(cell, newLine);
   }
 
-  else if (type == MC_TYPE_MAIN_PROMPT) {
+  else if (type == MC_TYPE_MAIN_PROMPT)
+  {
     TextCell* cell = new TextCell(s);
     cell->SetType(type);
-    m_console->InsertLine(cell, newLine);
+    m_console->InsertLine(cell, newLine, hide);
   }
 
-  else {
+  else
+  {
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
     while (tokens.HasMoreTokens())
@@ -867,12 +870,16 @@ void wxMaxima::PrintFile()
 {
   m_console->Freeze();
   m_console->ClearWindow();
+  bool hide = false;
   for (int i=0; i<m_batchFileLines.GetCount(); i++)
   {
+    if (m_batchFileLines[i] == wxT("/* [wxMaxima: hide output   ] */"))
+      hide = true;
+
     // Print title
-    if (m_batchFileLines[i] == wxT("/* [wxMaxima: title   start ]"))
+    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: title   start ]"))
     {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: title   end   ] */"))
@@ -884,12 +891,13 @@ void wxMaxima::PrintFile()
         ++i;
       }
       DoRawConsoleAppend(line, MC_TYPE_TITLE);
+      hide = false;
     }
 
     // Print section
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: section start ]"))
     {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: section end   ] */"))
@@ -901,12 +909,13 @@ void wxMaxima::PrintFile()
         ++i;
       }
       DoRawConsoleAppend(line, MC_TYPE_SECTION);
+      hide = false;
     }
 
     // Print comment
     else if (m_batchFileLines[i] == wxT("/* [wxMaxima: comment start ]"))
     {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       ++i;
       wxString line;
       while (m_batchFileLines[i] != wxT("   [wxMaxima: comment end   ] */"))
@@ -918,6 +927,7 @@ void wxMaxima::PrintFile()
         ++i;
       }
       DoRawConsoleAppend(line, MC_TYPE_TEXT);
+      hide = false;
     }
 
     // Print input
@@ -935,6 +945,7 @@ void wxMaxima::PrintFile()
         ++i;
       }
       DoRawConsoleAppend(line, MC_TYPE_INPUT, false);
+      hide = false;
     }
   }
   m_batchFileLines.Clear();

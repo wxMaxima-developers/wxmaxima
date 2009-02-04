@@ -96,7 +96,8 @@ protected:
   void DoConsoleAppend(wxString s, int type,       //
                        bool newLine = true, bool bigSkip = true);
   void DoRawConsoleAppend(wxString s, int type,    //
-                          bool newLine = true);    //
+                          bool newLine = true,     //
+                          bool hide = false);      //
 
   void EditInputMenu(wxCommandEvent& event);       //
   void ReEvaluateEvent(wxCommandEvent& event);     //

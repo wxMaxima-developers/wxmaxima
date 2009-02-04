@@ -66,6 +66,8 @@ public:
   void SetWorking(bool working) { m_working = working; }
   wxRect HideRect();
   wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
+  bool IsHidden() { return m_hide; }
+  void Hide(bool hide) { m_hide = hide; }
 protected:
   void DestroyOutput();
   MathCell *m_input, *m_output;

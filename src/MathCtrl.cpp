@@ -233,7 +233,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 /***
  * Add a new line
  */
-void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
+void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 {
   SetActiveCell(NULL);
 
@@ -244,7 +244,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if (tmp == NULL)
     tmp = m_last;
 
-  if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT) {
+  if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT)
+  {
     GroupCell *newGroup = new GroupCell;
     TextCell *prompt = new TextCell;
     prompt->SetValue(wxEmptyString);
@@ -256,8 +257,11 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   newCell->ForceBreakLine(forceNewLine);
 
-  if (newCell->GetType() == MC_TYPE_MAIN_PROMPT) {
+  if (newCell->GetType() == MC_TYPE_MAIN_PROMPT)
+  {
     GroupCell *newGroup = new GroupCell;
+    if (hide)
+      newGroup->Hide(true);
     newGroup->SetInput(newCell);
     if (m_last == NULL) {
       m_last = m_tree = newGroup;
@@ -269,25 +273,29 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     tmp = newGroup;
   }
 
-  else if (newCell->GetType() == MC_TYPE_INPUT) {
+  else if (newCell->GetType() == MC_TYPE_INPUT)
+  {
     tmp->AppendInput(newCell);
   }
 
-  else {
+  else
+  {
     if (newCell->GetType() == MC_TYPE_TITLE ||
         newCell->GetType() == MC_TYPE_SECTION ||
         newCell->GetType() == MC_TYPE_TEXT ||
         newCell->GetType() == MC_TYPE_HEADER)
       tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
-    if (newCell->GetType() == MC_TYPE_PROMPT) {
+    if (newCell->GetType() == MC_TYPE_PROMPT)
+    {
       m_workingGroup = tmp;
       ScrollToCell(tmp->GetParent());
       OpenHCaret();
     }
   }
 
-  while (newCell != NULL) {
+  while (newCell != NULL)
+  {
     newCell->SetParent(tmp, false);
     newCell = newCell->m_next;
   }
@@ -1998,13 +2006,20 @@ bool MathCtrl::ExportToMAC(wxString file)
   //
   while (tmp != NULL) {
 
+    if (tmp->IsHidden())
+    {
+      AddLineToFile(output, wxEmptyString, false);
+      AddLineToFile(output, wxT("/* [wxMaxima: hide output   ] */"), false);
+    }
+    else
+      AddLineToFile(output, wxEmptyString, false);
+
     // Write input
     if (!tmp->IsSpecial()) {
       MathCell *txt = tmp->GetInput();
       if (txt != NULL) {
         wxString input = txt->ToString(false);
         if (input.Length()>0) {
-          AddLineToFile(output, wxEmptyString, false);
           if (wxm)
             AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
           AddLineToFile(output, input, false);
@@ -2016,7 +2031,6 @@ bool MathCtrl::ExportToMAC(wxString file)
 
     // Write text
     else {
-      AddLineToFile(output, wxEmptyString, false);
       MathCell *txt = tmp->GetLabel();
 
       if (wxm) {

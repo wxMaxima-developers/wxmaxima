@@ -68,7 +68,7 @@ public:
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
-  void InsertLine(MathCell *newLine, bool forceNewLine = false);
+  void InsertLine(MathCell *newLine, bool forceNewLine = false, bool hide = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
   void ClearWindow();
