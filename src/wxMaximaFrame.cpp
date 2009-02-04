@@ -22,6 +22,7 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 #include <wx/image.h>
+#include <wx/filename.h>
 
 
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
@@ -802,11 +803,15 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
     if (i-menu_recent_document_0 < m_recentDocuments.Count())
     {
+      wxFileName filename(m_recentDocuments[i - menu_recent_document_0]);
+      wxString path(filename.GetPath()), fullname(filename.GetFullName());
+      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+
       if (item == NULL)
-        m_recentDocumentsMenu->Append(i, m_recentDocuments[i - menu_recent_document_0]);
+        m_recentDocumentsMenu->Append(i, label);
       else
       {
-        item->SetItemLabel(m_recentDocuments[i - menu_recent_document_0]);
+        item->SetItemLabel(label);
         m_recentDocumentsMenu->Append(item);
       }
     }
