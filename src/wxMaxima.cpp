@@ -106,6 +106,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isRunning = false;
   m_inReevalMode = false;
 
+
+  LoadRecentDocuments();
+  UpdateRecentDocuments();
+
   m_console->SetFocus();
 }
 
@@ -1492,6 +1496,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length())
   {
+    AddRecentDocument(file);
+
     m_lastPath = wxPathOnly(file);
     wxString unixFilename(file);
 #if defined __WXMSW__
@@ -1583,6 +1589,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           m_console->ExportToWDR(file);
         else
           m_console->ExportToMAC(file);
+
+        AddRecentDocument(file);
       }
     }
     break;
@@ -1615,6 +1623,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           m_console->ExportToWDR(file);
         else
           m_console->ExportToMAC(file);
+
+        AddRecentDocument(file);
       }
     }
     break;
@@ -3115,6 +3125,20 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   }
 }
 
+void wxMaxima::OnRecentDocument(wxCommandEvent& event)
+{
+  if (!m_fileSaved) {
+    int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
+                             _("Close document?"),
+                             wxOK|wxCANCEL);
+    if (close != wxOK)
+      return;
+  }
+
+  wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
+  OpenFile(file);
+}
+
 void wxMaxima::EditInputMenu(wxCommandEvent& event)
 {
   if (!m_console->CanEdit())
@@ -3498,4 +3522,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
   EVT_MENU(menu_reeval_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
+  EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_5, wxMaxima::OnRecentDocument)
 END_EVENT_TABLE()

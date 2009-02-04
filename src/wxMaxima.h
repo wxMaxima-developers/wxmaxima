@@ -70,6 +70,7 @@ public:
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
+  void OnRecentDocument(wxCommandEvent& event);
   void OnIdle(wxIdleEvent& event);
   void MenuCommand(wxString cmd);                  //
   void FileMenu(wxCommandEvent& event);            //

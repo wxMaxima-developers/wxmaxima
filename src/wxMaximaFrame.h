@@ -25,6 +25,7 @@
 #include <wx/dirctrl.h>
 #include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
+#include <wx/arrstr.h>
 
 #include "MathCtrl.h"
 #include "Setup.h"
@@ -193,8 +194,15 @@ enum {
   menu_fullscreen,
 #if defined (__WXMAC__)
   mac_newId,
-  mac_openId
+  mac_openId,
 #endif
+  menu_recent_documents,
+  menu_recent_document_0,
+  menu_recent_document_1,
+  menu_recent_document_2,
+  menu_recent_document_3,
+  menu_recent_document_4,
+  menu_recent_document_5
 };
 
 class wxMaximaFrame: public wxFrame
@@ -204,6 +212,9 @@ public:
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
+  void UpdateRecentDocuments();
+  void AddRecentDocument(wxString file);
+  wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
 private:
   void set_properties();
   void do_layout();
@@ -212,6 +223,8 @@ private:
 #endif
   void SetupMenu();
 protected:
+  void LoadRecentDocuments();
+  void SaveRecentDocuments();
   wxMenuBar* frame_1_menubar;
   wxPanel *panel;
   MathCtrl* m_console;
@@ -238,6 +251,8 @@ protected:
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;
+  wxArrayString m_recentDocuments;
+  wxMenu* m_recentDocumentsMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

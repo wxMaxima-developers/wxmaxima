@@ -226,6 +226,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a maxima file using batch command"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export"),
                    _("Export document output to HTML file"), wxT("stock_export"));
+  wxglade_tmp_menu_1->AppendSeparator();
+  m_recentDocumentsMenu = new wxMenu();
+  wxglade_tmp_menu_1->Append(menu_recent_documents, _("Recent"), m_recentDocumentsMenu);
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print\tCtrl-P"),
@@ -763,3 +766,59 @@ void wxMaximaFrame::SetupToolBar()
 }
 
 #endif
+
+void wxMaximaFrame::LoadRecentDocuments()
+{
+  wxConfigBase *config = wxConfig::Get();
+  m_recentDocuments.Clear();
+
+  for (int i=0; i<=5; i++)
+  {
+    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
+    wxString file;
+    if (config->Read(recent, &file))
+      m_recentDocuments.Add(file);
+  }
+}
+
+void wxMaximaFrame::SaveRecentDocuments()
+{
+  wxConfigBase *config = wxConfig::Get();
+
+  for (int i=0; i<m_recentDocuments.Count(); i++)
+  {
+    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
+    config->Write(recent, m_recentDocuments[i]);
+  }
+}
+
+void wxMaximaFrame::UpdateRecentDocuments()
+{
+  wxMenu* fileMenu = GetMenuBar()->GetMenu(GetMenuBar()->FindMenu(_("&File")));
+
+  for (int i=menu_recent_document_0; i<= menu_recent_document_5; i++)
+  {
+    wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
+
+    if (i-menu_recent_document_0 < m_recentDocuments.Count())
+    {
+      if (item == NULL)
+        m_recentDocumentsMenu->Append(i, m_recentDocuments[i - menu_recent_document_0]);
+      else
+      {
+        item->SetItemLabel(m_recentDocuments[i - menu_recent_document_0]);
+        m_recentDocumentsMenu->Append(item);
+      }
+    }
+  }
+
+  SaveRecentDocuments();
+}
+
+void wxMaximaFrame::AddRecentDocument(wxString file)
+{
+  m_recentDocuments.Remove(file);
+  m_recentDocuments.Insert(file, 0);
+
+  UpdateRecentDocuments();
+}
