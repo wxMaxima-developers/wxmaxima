@@ -168,6 +168,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 #if defined __WXMSW__
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
+    SetForeground(parser);
     if (m_height < (3*m_charHeight)/2)
     {
       fontsize1 = (int) ((fontsize * scale + 0.5));
@@ -185,7 +186,6 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     else
     {
-      SetForeground(parser);
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         false,
                         false,
@@ -228,6 +228,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
 #elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
+    SetForeground(parser);
     if (m_height < (3*m_charHeight)/2)
     {
       fontsize1 = (int) ((fontsize * scale + 0.5));
@@ -245,7 +246,6 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     else if (m_height < (5*m_charHeight)/2)
     {
-      SetForeground(parser);
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         false,
                         false,
@@ -266,7 +266,6 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     else
     {
-      SetForeground(parser);
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         false,
                         false,
