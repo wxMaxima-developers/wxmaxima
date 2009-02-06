@@ -93,16 +93,12 @@ bool MathPrintout::OnPrintPage(int num)
     while (tmp != NULL)
     {
       tmp->Draw(parser, point, fontsize, false);
-      if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
-      {
+      if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        if (tmp->m_bigSkip)
-          point.y += SCALE_PX(5, ppiScale);
+        point.y += SCALE_PX(MC_GROUP_SKIP, ppiScale);
         drop = tmp->m_next->GetMaxDrop();
       }
-      else
-        point.x += (tmp->GetWidth() + SCALE_PX(2, ppiScale));
 
       tmp = tmp->m_next;
       if (tmp == NULL || tmp->BreakPageHere())
@@ -299,7 +295,7 @@ double MathPrintout::GetPPIScale()
   GetPPIScreen(&ppiScreenX, &ppiScreenY);
   GetPPIPrinter(&ppiPrinterX, &ppiPrinterY);
 
-  return ((double)ppiPrinterX) / ((double)ppiScreenX);
+  return ((double)ppiPrinterY) / ((double)ppiScreenY);
 }
 
 void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)

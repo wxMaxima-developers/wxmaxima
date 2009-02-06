@@ -193,14 +193,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       if (tmp->DrawThisCell(parser, point))
         tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
       if (tmp->m_next != NULL) {
-        if (tmp->m_next->BreakLineHere()) {
-          point.x = MC_GROUP_LEFT_INDENT;
-          point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += MC_GROUP_SKIP;
-          drop = tmp->m_next->GetMaxDrop();
-        } else
-          point.x += tmp->GetWidth() + MC_CELL_SKIP;
+        point.x = MC_GROUP_LEFT_INDENT;
+        point.y += drop + tmp->m_next->GetMaxCenter();
+        point.y += MC_GROUP_SKIP;
+        drop = tmp->m_next->GetMaxDrop();
       }
       tmp = tmp->m_next;
     }
