@@ -1007,8 +1007,8 @@ void Config::UpdateExample()
 
 //  wxClientDC dc(label_11);
 
-  if (tmp == &m_styleBackground || tmp == &m_styleTextBackground)
-    color = m_styleVariable.color;
+  if (tmp == &m_styleBackground)
+      color = m_styleInput.color;
 
   int fontsize = m_fontSize;
   if (tmp == &m_styleText || tmp == &m_styleSection || tmp == &m_styleTitle)
@@ -1018,9 +1018,15 @@ void Config::UpdateExample()
     if (fontsize == 0)
       fontsize = m_fontSize;
   }
-  label_11->SetFontSize(fontsize);
 
-  label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
+  if (tmp == &m_styleTextBackground) {
+      label_11->SetFontSize(m_styleText.fontSize);
+      label_11->SetStyle(m_styleText.color, m_styleText.italic, m_styleText.bold, m_styleText.underlined, m_styleText.font); }
+  else {
+      label_11->SetFontSize(fontsize);
+      label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
+  }
+
   if (tmp == &m_styleTextBackground ||
       tmp == &m_styleText || tmp == &m_styleSection || tmp == &m_styleTitle)
     label_11->SetBackgroundColour(m_styleTextBackground.color);
