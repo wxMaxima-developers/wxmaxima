@@ -145,7 +145,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION)))); // window linux, set a pen
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))); 
+// window linux, set a pen
 #endif
       dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION)))); //highlight c.
 

@@ -99,8 +99,8 @@ public:
 private:
   wxString m_text;
   wxString m_oldText;
-  unsigned int m_oldPosition;
-  unsigned int m_positionOfCaret;
+  int m_oldPosition;
+  int m_positionOfCaret;
   int m_caretColumn;
   long m_selectionStart;
   long m_selectionEnd;
