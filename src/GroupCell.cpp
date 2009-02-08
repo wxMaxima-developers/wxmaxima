@@ -181,7 +181,7 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
         tmp = tmp->m_next;
       }
       // This is not correct, m_width will be computed correctly in RecalculateSize!
-      m_width = MAX(m_input->GetFullWidth(scale), m_output->GetFullWidth(scale));
+      m_width = m_input->GetFullWidth(scale);
     }
 
     BreakUpCells(parser, fontsize, parser.GetClientWidth());
