@@ -144,7 +144,8 @@ void GroupCell::RemoveOutput()
 
 void GroupCell::AppendOutput(MathCell *cell)
 {
-//  m_hide = false;
+  ResetSize();
+
   if (m_output == NULL) {
     m_output = cell;
   }
