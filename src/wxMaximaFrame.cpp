@@ -285,7 +285,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate Cell"),
                              _("Evaluate selected cell"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_reeval_all, _("Evaluate All Cells\tCtrl-Shift-R"),
+  wxglade_tmp_menu_2_sub1->Append(menu_reeval_all, _("Evaluate All Cells\tCtrl-R"),
                                _("Evaluate all cells"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF7"),
