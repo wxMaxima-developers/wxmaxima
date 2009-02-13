@@ -243,6 +243,26 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   }
   if (DrawThisCell(parser, point))
   {
+    //
+    // Paint background if we have section, title, text
+    //
+    MathCell * editor = GetEditable();
+    if (editor != NULL)
+    if (editor->GetType() != MC_TYPE_INPUT) {
+      wxRect rect = GetRect(false);
+      int y = rect.GetY();
+
+      if (m_height > 0 && m_width > 0 && y>=0) {
+        wxBrush br(parser.GetColor(TS_TEXT_BACKGROUND));
+        dc.SetBrush(br);
+        wxPen pen(parser.GetColor(TS_TEXT_BACKGROUND));
+        dc.SetPen(pen);
+        dc.DrawRectangle(0, y , 10000, rect.GetHeight());
+      }
+    }
+    //
+    // Draw input and output
+    //
     SetPen(parser);
     wxPoint in(point);
     m_input->Draw(parser, in, fontsize, true);
