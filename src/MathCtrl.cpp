@@ -1087,17 +1087,20 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         event.Skip();
       break;
 
-    case WXK_RETURN: {
-      bool enterEvaluates = false;
-      wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-      if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
-          enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
-      { // shift-enter pressed === menu_evaluate event
-        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
-        GetParent()->ProcessEvent(ev);
-      } else
-        event.Skip();
-                     }
+    case WXK_RETURN: 
+      if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
+        event.Skip(); // if enter pressed in text, title, section cell, pass the event
+      else {
+        bool enterEvaluates = false;
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
+            enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
+        { // shift-enter pressed === menu_evaluate event
+          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
+          GetParent()->ProcessEvent(ev);
+        } else
+          event.Skip();
+      }
       break;
 
     case WXK_ESCAPE:
@@ -2360,6 +2363,7 @@ void MathCtrl::AddDocumentToEvaluationQueue()
       m_evaluationQueue->AddToQueue((GroupCell*) tmp);
     tmp = (GroupCell *)tmp->m_next;
   }
+  SetHCaret(m_last);
 }
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
@@ -2374,10 +2378,12 @@ void MathCtrl::AddSelectionToEvaluationQueue()
       break;
     tmp = (GroupCell *)tmp->m_next;
   }
+  SetHCaret(m_selectionEnd);
 }
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
     m_evaluationQueue->AddToQueue((GroupCell*) gc);
+    SetHCaret((MathCell *) gc);
 }
 void MathCtrl::ClearEvaluationQueue()
 {
@@ -2615,6 +2621,7 @@ bool MathCtrl::IsSelectionInWorking() {
 
 void MathCtrl::SetHCaret(MathCell *where) {
   m_selectionStart = m_selectionEnd = NULL;
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   SetActiveCell(NULL);
   m_hCaretPosition = (GroupCell *)where;
   m_hCaretActive = true;

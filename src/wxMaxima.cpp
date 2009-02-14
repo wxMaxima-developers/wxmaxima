@@ -811,10 +811,7 @@ void wxMaxima::ReadPrompt()
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
-          m_console->SetSelection(NULL);
-          m_console->SetHCaret(tmp); // hcaret to the last working group
           m_console->SetWorkingGroup(NULL);
-          m_console->ScrollToCell(tmp);
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
