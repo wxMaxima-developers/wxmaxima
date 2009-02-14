@@ -81,6 +81,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_animate = false;
   m_workingGroup = NULL;
   m_saved = true;
+  m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
 }
 
@@ -176,7 +177,26 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         } // end while (1)
       }
     }
-    // draw content over selection
+    //
+    // Mark groupcells currently in queue. TODO better in gc::draw?
+    //
+    if (m_evaluationQueue->GetFirst() != NULL) {
+      MathCell* tmp = m_tree;
+      dcm.SetLogicalFunction(wxCOPY);
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
+      dcm.SetBrush(*wxTRANSPARENT_BRUSH);
+      while (tmp != NULL)
+      {
+        if (m_evaluationQueue->IsInQueue((GroupCell *)tmp)) {
+          wxRect rect = tmp->GetRect();
+          dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+        }
+        tmp = tmp->m_next;
+      }
+    }
+    //
+    // Draw content over
+    //
     wxPoint point;
     point.x = MC_GROUP_LEFT_INDENT;
     point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
@@ -922,6 +942,18 @@ bool MathCtrl::CanDeleteSelection() {
 
   if ((m_selectionStart->GetType() != MC_TYPE_GROUP) || (m_selectionEnd->GetType() != MC_TYPE_GROUP))
     return false;
+  else { // a fine selection of groupcells
+    MathCell* tmp = m_selectionStart;
+    while (tmp != NULL)
+    {
+      if (m_evaluationQueue->IsInQueue((GroupCell *)tmp))
+        return false;
+
+      if (tmp == m_selectionEnd)
+        break;
+      tmp = tmp->m_next;
+    }
+  }
 
   return true;
 }

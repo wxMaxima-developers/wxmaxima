@@ -3181,6 +3181,7 @@ void wxMaxima::ReEvaluateSelection()
   {
     wxString text = m_console->GetString(true);
 
+    // override evaluation when input equals wxmaxima_debug_dump_output
     if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
       beginInput->SetValue(wxEmptyString);
 
@@ -3191,6 +3192,8 @@ void wxMaxima::ReEvaluateSelection()
     }
 
     GroupCell* group = (GroupCell *)beginInput->GetParent();
+    // TODO added line below
+    m_console->m_evaluationQueue->AddToQueue(group);
 
     m_inInsertMode = true;
 

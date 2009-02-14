@@ -60,6 +60,70 @@ enum {
   CLICK_TYPE_OUTPUT_SELECTION
 };
 
+class EvaluationQueueElement {
+  public:
+    EvaluationQueueElement(GroupCell* gr) {
+      group = gr;
+      next = NULL;
+    }
+    ~EvaluationQueueElement() {
+    }
+    GroupCell* group;
+    EvaluationQueueElement* next;
+};
+
+// A simple FIFO queue with manual removal of elements
+class EvaluationQueue
+{
+  public:
+    EvaluationQueue() {
+      m_queue = NULL;
+      m_last = NULL;
+    }
+    ~EvaluationQueue() {
+    }
+
+    bool IsInQueue(GroupCell* gr) {
+      EvaluationQueueElement* tmp = m_queue; 
+      while (tmp != NULL) {
+        if (tmp->group == gr)
+          return true;
+        tmp = tmp->next;
+      }
+      return false;
+    }
+
+    void AddToQueue(GroupCell* gr) {
+      //if (gr->GetType() != MC_TYPE_GROUP) // dont add cells which can't be evaluated
+        //return;
+      EvaluationQueueElement* newelement = new EvaluationQueueElement(gr);
+      if (m_last == NULL)
+        m_queue = m_last = newelement;
+      else {
+        m_last->next = newelement;
+        m_last = newelement;
+      }
+    }
+
+    void RemoveFirst() {
+      if (m_queue == NULL)
+        return; // shouldn't happen
+      EvaluationQueueElement* tmp = m_queue;
+      m_queue = m_queue->next;
+      delete tmp;
+    }
+
+    GroupCell* GetFirst() {
+    if (m_queue != NULL)
+      return m_queue->group;
+    else
+      return NULL; // queu is empty
+    }
+  protected:
+    EvaluationQueueElement* m_queue; 
+    EvaluationQueueElement* m_last; 
+};
+
 class MathCtrl: public wxScrolledWindow
 {
 public:
@@ -168,6 +232,7 @@ public:
   void Undo();
   bool IsSaved() { return m_saved; }
   void SetSaved(bool saved) { m_saved = saved; }
+  EvaluationQueue* m_evaluationQueue;
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
