@@ -128,6 +128,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
+  dcm.SetLogicalFunction(wxCOPY);
 
   CellParser parser(dcm);
   parser.SetBouns(top, bottom);
@@ -142,7 +143,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     {
       MathCell* tmp = m_selectionStart;
 
-      dcm.SetLogicalFunction(wxCOPY);
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
@@ -182,7 +182,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     //
     if (m_evaluationQueue->GetFirst() != NULL) {
       MathCell* tmp = m_tree;
-      dcm.SetLogicalFunction(wxCOPY);
       dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
@@ -203,6 +202,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     // Draw tree
     MathCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
+
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxSOLID)));
+    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_DEFAULT))));
+
     bool changeAsterisk = false;
     config->Read(wxT("changeAsterisk"), &changeAsterisk);
     parser.SetChangeAsterisk(changeAsterisk);
