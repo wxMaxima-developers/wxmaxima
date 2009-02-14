@@ -2359,6 +2359,41 @@ bool MathCtrl::ActivateFirstInput() {
   return true;
 }
 
+//
+// methods related to evaluation queue
+//
+void MathCtrl::AddDocumentToEvaluationQueue()
+{
+  GroupCell* tmp = m_tree;
+  while (tmp != NULL) {
+      m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    tmp = (GroupCell *)tmp->m_next;
+  }
+}
+void MathCtrl::AddSelectionToEvaluationQueue()
+{
+  if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
+    return;
+  if (m_selectionStart->GetType() != MC_TYPE_GROUP)
+    return;
+  GroupCell* tmp = (GroupCell *)m_selectionStart;
+  while (tmp != NULL) {
+      m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    if (tmp == m_selectionEnd)
+      break;
+    tmp = (GroupCell *)tmp->m_next;
+  }
+}
+void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
+{
+    m_evaluationQueue->AddToQueue((GroupCell*) gc);
+}
+void MathCtrl::ClearEvaluationQueue()
+{
+  while (m_evaluationQueue->GetFirst() != NULL)
+    m_evaluationQueue->RemoveFirst();
+}
+
 void MathCtrl::ScrollToSelectionStart() {
   ScrollToCell(m_selectionStart);
 }

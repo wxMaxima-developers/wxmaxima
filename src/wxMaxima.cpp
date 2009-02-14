@@ -806,6 +806,7 @@ void wxMaxima::ReadPrompt()
       if (o.StartsWith(wxT("(%i")))
       {
         m_lastPrompt = o;
+        m_console->m_evaluationQueue->RemoveFirst();
 
         // We selected "Reeval all" from menus.
         if (m_inReevalMode) {
@@ -1879,6 +1880,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   {
   case menu_restart_id:
     m_closing = true;
+    m_console->ClearEvaluationQueue();
     m_console->ResetInputPrompts();
     StartMaxima();
     break;
@@ -1947,10 +1949,11 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_reeval_all:
     m_console->SetActiveCell(NULL);
-    if (m_console->ActivateFirstInput()) {
-      m_inReevalMode = true;
-      ReEvaluateSelection();
-    }
+    m_console->AddDocumentToEvaluationQueue();
+    //if (m_console->ActivateFirstInput()) {
+    //  m_inReevalMode = true;
+    //  ReEvaluateSelection();
+    //}
     break;
   case menu_clear_var:
     cmd = GetTextFromUser(_("Delete variable(s):"), _("Delete"),

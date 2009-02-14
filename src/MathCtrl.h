@@ -94,8 +94,8 @@ class EvaluationQueue
     }
 
     void AddToQueue(GroupCell* gr) {
-      //if (gr->GetType() != MC_TYPE_GROUP) // dont add cells which can't be evaluated
-        //return;
+      if (gr->GetEditable()->GetType() != MC_TYPE_INPUT) // dont add cells which can't be evaluated
+        return;
       EvaluationQueueElement* newelement = new EvaluationQueueElement(gr);
       if (m_last == NULL)
         m_queue = m_last = newelement;
@@ -109,7 +109,12 @@ class EvaluationQueue
       if (m_queue == NULL)
         return; // shouldn't happen
       EvaluationQueueElement* tmp = m_queue;
+      if (m_queue == m_last) {
+        m_queue = m_last = NULL;
+      }
+      else
       m_queue = m_queue->next;
+
       delete tmp;
     }
 
@@ -232,6 +237,11 @@ public:
   void Undo();
   bool IsSaved() { return m_saved; }
   void SetSaved(bool saved) { m_saved = saved; }
+  // methods related to evaluation queue
+  void AddDocumentToEvaluationQueue();
+  void AddSelectionToEvaluationQueue();
+  void AddCellToEvaluationQueue(GroupCell* gc);
+  void ClearEvaluationQueue();
   EvaluationQueue* m_evaluationQueue;
 protected:
   MathCell* CopySelection();
