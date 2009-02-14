@@ -91,7 +91,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
 #if defined __WXMSW__
   wxAcceleratorEntry entries[0];
-  entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_reeval_input);
+  entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
   wxAcceleratorTable accel(1, entries);
   SetAcceleratorTable(accel);
 #endif
