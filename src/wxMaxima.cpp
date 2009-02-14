@@ -819,48 +819,11 @@ void wxMaxima::ReadPrompt()
           SetStatusText(_("Ready for user input"), 1);
         }
         else { // we don't have an empty queue
-          m_console->SetActiveCell(m_console->m_evaluationQueue->GetFirst()->GetInput());
           m_console->Refresh();
           m_console->EnableEdit();
           ready = false;
-          ReEvaluateSelection();
+          TryEvaluateNextInQueue();
         }
-
- //       // We selected "Reeval all" from menus.
- //       if (m_inReevalMode) {
- //         MathCell *tmp = m_console->GetInsertPoint();
- //         m_inInsertMode = false;
- //         m_console->SetInsertPoint(NULL);
- //         m_console->SetSelection(tmp);
- //         if (m_console->ActivateNextInput(true)) {
- //           m_console->Refresh();
- //           m_console->EnableEdit();
- //           ready = false;
- //           ReEvaluateSelection();
- //         }
- //         else {
- //           m_inReevalMode = false;
- //           m_console->SetSelection(NULL);
- //           m_console->SetWorkingGroup(NULL);
- //           m_console->SetHCaret(tmp);
- //         }
- //       }
-
- //       // We are sending input from console.
- //       else if (m_inInsertMode)
- //       {
- //         MathCell* tmp = m_console->GetInsertPoint();
- //         m_console->SetInsertPoint(NULL);
- //         m_inInsertMode = false;
-
- //         m_console->SetSelection(NULL);
- //         m_console->SetHCaret(tmp);
- //         m_console->SetWorkingGroup(NULL);
- //         m_console->ScrollToCell(tmp);
-
- //         m_console->Refresh();
- //         SetStatusText(_("Ready for user input"), 1);
- //       }
 
         m_console->EnableEdit();
       }
@@ -1368,7 +1331,8 @@ void wxMaxima::MenuCommand(wxString cmd)
 {
   m_console->SetFocus();
   m_console->OpenHCaret(cmd);
-  ReEvaluateSelection();
+  m_console->AddCellToEvaluationQueue((GroupCell*)m_console->GetActiveCell()->GetParent());
+  TryEvaluateNextInQueue();
 }
 
 void wxMaxima::DumpProcessOutput()
@@ -1450,8 +1414,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
-  menubar->Enable(menu_evaluate, m_console->CanEdit() ||
-                                     m_console->GetActiveCell() != NULL);
+  if (m_console->GetSelectionStart() != NULL)
+    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
+  else
+    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
+
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL &&
                                     !m_inInsertMode);
   menubar->Enable(menu_save_id, !m_fileSaved);
@@ -1965,14 +1932,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     }
     break;
   case menu_evaluate_all:
-    m_console->SetActiveCell(NULL);
     m_console->AddDocumentToEvaluationQueue();
-    m_console->SetActiveCell(m_console->m_evaluationQueue->GetFirst()->GetInput());
-          ReEvaluateSelection();
-    //if (m_console->ActivateFirstInput()) {
-    //  m_inReevalMode = true;
-    //  ReEvaluateSelection();
-    //}
+    TryEvaluateNextInQueue();
     break;
   case menu_clear_var:
     cmd = GetTextFromUser(_("Delete variable(s):"), _("Delete"),
@@ -3176,11 +3137,70 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
   m_console->SetActiveCell(tmp);
 }
 
+// EvaluateEvent
+// User tried to evaluate, find out what is the case
+// Normally just add the respective groupcells to evaluationqueue
+// If there is a special case - eg sending from output section
+// of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
-  ReEvaluateSelection();
+  MathCell* tmp = m_console->GetActiveCell();
+  if (tmp != NULL) // we have an active cell
+  {
+    if (tmp->GetType() == MC_TYPE_INPUT && !m_inLispMode)
+      tmp->AddEnding();
+    // if active cell is part of a working group, we have a special
+    // case - answering a question. Manually send answer to Maxima.
+    if ((GroupCell *)tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
+      SendMaxima(tmp->ToString(false));
+
+    }
+    else { // normally just add to queue
+    m_console->AddCellToEvaluationQueue((GroupCell *)tmp->GetParent());
+    TryEvaluateNextInQueue();
+    }
+  }
+  else { // no evaluate has been called on no active cell?
+    m_console->AddSelectionToEvaluationQueue();
+    TryEvaluateNextInQueue();
+  }
+}
+// TryEvaluateNextInQueue
+// Tries to evaluate next group cell in queue
+// Calling this function should not do anything dangerous
+void wxMaxima::TryEvaluateNextInQueue()
+{
+  GroupCell * group = m_console->m_evaluationQueue->GetFirst();
+  if (group == NULL)
+    return; //empty queue
+
+  group->GetInput()->AddEnding();
+  wxString text = group->GetInput()->ToString(false);
+
+  // override evaluation when input equals wxmaxima_debug_dump_output
+  if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
+    m_console->m_evaluationQueue->RemoveFirst();
+    DumpProcessOutput();
+    return;
+  }
+
+  m_inInsertMode = true;
+
+  //if (!m_console->IsSelectionInWorking()) {
+  group->RemoveOutput();
+  //}
+
+  m_console->SetInsertPoint(group);
+  group->GetPrompt()->SetValue(m_lastPrompt);
+  m_console->Recalculate();
+  m_console->SetWorkingGroup(group);
+  m_console->Refresh();
+
+  SendMaxima(text);
+
 }
 
+/*
 void wxMaxima::ReEvaluateSelection()
 {
   MathCell* tmp = m_console->GetActiveCell();
@@ -3234,6 +3254,7 @@ void wxMaxima::ReEvaluateSelection()
     SendMaxima(text);
   }
 }
+*/
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
 {

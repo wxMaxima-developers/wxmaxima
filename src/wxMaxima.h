@@ -105,7 +105,7 @@ protected:
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
-  void ReEvaluateSelection();
+  void TryEvaluateNextInQueue();
 
   wxString SplitInput(wxString input);
 

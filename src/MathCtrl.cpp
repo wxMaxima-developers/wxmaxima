@@ -1087,26 +1087,17 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         event.Skip();
       break;
 
-    case WXK_RETURN:
-      if (m_activeCell != NULL) {
-        bool enterEvaluates = false;
-        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
-             enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
-        {
-          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
-          GetParent()->ProcessEvent(ev);
-        } else
-          event.Skip();
-      }
-
-      else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_DEFAULT) {
-        PrependGroup(MC_TYPE_INPUT, GetString(), true, false);
-        ActivateNextInput();
-      }
-
-      else
+    case WXK_RETURN: {
+      bool enterEvaluates = false;
+      wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+      if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
+          enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
+      { // shift-enter pressed === menu_evaluate event
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
+        GetParent()->ProcessEvent(ev);
+      } else
         event.Skip();
+                     }
       break;
 
     case WXK_ESCAPE:
