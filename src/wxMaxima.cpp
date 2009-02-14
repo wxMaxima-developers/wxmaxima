@@ -104,7 +104,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_isConnected = false;
   m_isRunning = false;
-  m_inReevalMode = false;
 
 
   LoadRecentDocuments();
@@ -806,43 +805,62 @@ void wxMaxima::ReadPrompt()
       if (o.StartsWith(wxT("(%i")))
       {
         m_lastPrompt = o;
-        m_console->m_evaluationQueue->RemoveFirst();
+        m_console->SetInsertPoint(NULL);
+        m_inInsertMode = false;
+        GroupCell* tmp = m_console->m_evaluationQueue->GetFirst(); // last working group
+        m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
-        // We selected "Reeval all" from menus.
-        if (m_inReevalMode) {
-          MathCell *tmp = m_console->GetInsertPoint();
-          m_inInsertMode = false;
-          m_console->SetInsertPoint(NULL);
-          m_console->SetSelection(tmp);
-          if (m_console->ActivateNextInput(true)) {
-            m_console->Refresh();
-            m_console->EnableEdit();
-            ready = false;
-            ReEvaluateSelection();
-          }
-          else {
-            m_inReevalMode = false;
-            m_console->SetSelection(NULL);
-            m_console->SetWorkingGroup(NULL);
-            m_console->SetHCaret(tmp);
-          }
-        }
-
-        // We are sending input from console.
-        else if (m_inInsertMode)
-        {
-          MathCell* tmp = m_console->GetInsertPoint();
-          m_console->SetInsertPoint(NULL);
-          m_inInsertMode = false;
-
+        if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
           m_console->SetSelection(NULL);
-          m_console->SetHCaret(tmp);
+          m_console->SetHCaret(tmp); // hcaret to the last working group
           m_console->SetWorkingGroup(NULL);
           m_console->ScrollToCell(tmp);
-
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
         }
+        else { // we don't have an empty queue
+          m_console->SetActiveCell(m_console->m_evaluationQueue->GetFirst()->GetInput());
+          m_console->Refresh();
+          m_console->EnableEdit();
+          ready = false;
+          ReEvaluateSelection();
+        }
+
+ //       // We selected "Reeval all" from menus.
+ //       if (m_inReevalMode) {
+ //         MathCell *tmp = m_console->GetInsertPoint();
+ //         m_inInsertMode = false;
+ //         m_console->SetInsertPoint(NULL);
+ //         m_console->SetSelection(tmp);
+ //         if (m_console->ActivateNextInput(true)) {
+ //           m_console->Refresh();
+ //           m_console->EnableEdit();
+ //           ready = false;
+ //           ReEvaluateSelection();
+ //         }
+ //         else {
+ //           m_inReevalMode = false;
+ //           m_console->SetSelection(NULL);
+ //           m_console->SetWorkingGroup(NULL);
+ //           m_console->SetHCaret(tmp);
+ //         }
+ //       }
+
+ //       // We are sending input from console.
+ //       else if (m_inInsertMode)
+ //       {
+ //         MathCell* tmp = m_console->GetInsertPoint();
+ //         m_console->SetInsertPoint(NULL);
+ //         m_inInsertMode = false;
+
+ //         m_console->SetSelection(NULL);
+ //         m_console->SetHCaret(tmp);
+ //         m_console->SetWorkingGroup(NULL);
+ //         m_console->ScrollToCell(tmp);
+
+ //         m_console->Refresh();
+ //         SetStatusText(_("Ready for user input"), 1);
+ //       }
 
         m_console->EnableEdit();
       }
@@ -1432,11 +1450,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
-  menubar->Enable(menu_reeval_input, m_console->CanEdit() ||
+  menubar->Enable(menu_evaluate, m_console->CanEdit() ||
                                      m_console->GetActiveCell() != NULL);
-  menubar->Enable(menu_reeval_all, m_console->GetTree() != NULL &&
-                                   !m_inReevalMode &&
-                                   !m_inInsertMode);
+  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL &&
+                                    !m_inInsertMode);
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -1947,9 +1964,11 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_reeval_all:
+  case menu_evaluate_all:
     m_console->SetActiveCell(NULL);
     m_console->AddDocumentToEvaluationQueue();
+    m_console->SetActiveCell(m_console->m_evaluationQueue->GetFirst()->GetInput());
+          ReEvaluateSelection();
     //if (m_console->ActivateFirstInput()) {
     //  m_inReevalMode = true;
     //  ReEvaluateSelection();
@@ -3157,7 +3176,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
   m_console->SetActiveCell(tmp);
 }
 
-void wxMaxima::ReEvaluateEvent(wxCommandEvent& event)
+void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
   ReEvaluateSelection();
 }
@@ -3195,8 +3214,6 @@ void wxMaxima::ReEvaluateSelection()
     }
 
     GroupCell* group = (GroupCell *)beginInput->GetParent();
-    // TODO added line below
-    m_console->m_evaluationQueue->AddToQueue(group);
 
     m_inInsertMode = true;
 
@@ -3498,8 +3515,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_cut_input_from_console, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_reeval_input, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_reeval_all, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_evaluate, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -3515,7 +3532,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
-  EVT_MENU(menu_reeval_input, wxMaxima::ReEvaluateEvent)
+  EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
   EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
@@ -3528,7 +3545,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_cut, wxMaxima::PopupMenu)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
-  EVT_MENU(menu_reeval_all, wxMaxima::MaximaMenu)
+  EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_5, wxMaxima::OnRecentDocument)
 END_EVENT_TABLE()

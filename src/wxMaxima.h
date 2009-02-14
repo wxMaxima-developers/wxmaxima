@@ -101,7 +101,7 @@ protected:
                           bool hide = false);      //
 
   void EditInputMenu(wxCommandEvent& event);       //
-  void ReEvaluateEvent(wxCommandEvent& event);     //
+  void EvaluateEvent(wxCommandEvent& event);     //
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
   void DumpProcessOutput();
@@ -154,7 +154,6 @@ protected:
   bool m_dispReadOut;               // what is displayed in statusbar
   bool m_inLispMode;                // don't add ; in lisp mode
   bool m_inInsertMode;
-  bool m_inReevalMode;
   wxString m_lastPrompt;
   wxString m_lastPath;
   MathParser m_MParser;

@@ -147,7 +147,7 @@ enum {
   menu_build_info,
   menu_bug_report,
   menu_add_path,
-  menu_reeval_all,
+  menu_evaluate_all,
 //  menu_show_tip,
   menu_copy_from_console,
   menu_copy_tex_from_console,
@@ -183,7 +183,7 @@ enum {
   tb_animation_start,
   tb_animation_stop,
 #endif
-  menu_reeval_input,
+  menu_evaluate,
   menu_add_comment,
   menu_add_section,
   menu_add_title,

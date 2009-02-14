@@ -1094,7 +1094,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
              enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
         {
-          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_reeval_input);
+          wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
           GetParent()->ProcessEvent(ev);
         } else
           event.Skip();

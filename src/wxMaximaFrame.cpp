@@ -283,10 +283,10 @@ void wxMaximaFrame::SetupMenu()
                    _("&Delete Cell(s)"),
                    _("Delete selected cell(s)"), wxT("gtk-delete"));
   wxglade_tmp_menu_2_sub1->AppendSeparator();
-  wxglade_tmp_menu_2_sub1->Append(menu_reeval_input, _("Evaluate Cell"),
-                             _("Evaluate selected cell"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_reeval_all, _("Evaluate All Cells\tCtrl-R"),
-                               _("Evaluate all cells"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_evaluate, _("Evaluate Cell(s)"),
+                             _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
+                               _("Evaluate all cells in the document"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF7"),
                              _("Insert a new input cell"));
