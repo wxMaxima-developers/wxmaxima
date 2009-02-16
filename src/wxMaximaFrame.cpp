@@ -273,10 +273,10 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut Cell(s)"),
                                   _("Cut selected cell(s)"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy Cell(s)"),
+  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy Cell(s)\tCtrl-Shift-C"),
                                   _("Copy selected cell(s)"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste Cell(s)"),
+  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste Cell(s)\tCtrl-Shift-V"),
                              _("Paste cell(s) to document"),
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_delete_selection,
