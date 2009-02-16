@@ -184,14 +184,22 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     //
     if (m_evaluationQueue->GetFirst() != NULL) {
       MathCell* tmp = m_tree;
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
-        if (m_evaluationQueue->IsInQueue((GroupCell *)tmp)) {
-          wxRect rect = tmp->GetRect();
-          dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
-        }
+        if (m_evaluationQueue->IsInQueue((GroupCell *)tmp)) 
+          if (m_evaluationQueue->GetFirst() == ((GroupCell *)tmp))
+          {
+            wxRect rect = tmp->GetRect();
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxSOLID)));
+            dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+          }
+          else
+          {
+            wxRect rect = tmp->GetRect();
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
+            dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+          }
         tmp = tmp->m_next;
       }
     }

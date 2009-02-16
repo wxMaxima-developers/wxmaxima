@@ -311,10 +311,6 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxSOLID))); // window linux, set a pen
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
     }
-    else if (m_working) {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxSOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_CELL_BRACKET)))); //highlight c.
-    }
     else
     {
       dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID))); // window linux, set a pen
