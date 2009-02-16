@@ -92,7 +92,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_closing = false;
   m_openFile = wxEmptyString;
-  m_inInsertMode = false;
   m_currentFile = wxEmptyString;
   m_fileSaved = true;
 
@@ -752,7 +751,6 @@ void wxMaxima::ReadFirstPrompt()
   m_currentOutput = wxEmptyString;
   m_console->ActivateHCaret(true);
   m_console->EnableEdit(true);
-  m_console->SetInsertPoint(NULL);
   m_console->Refresh();
 }
 
@@ -805,8 +803,6 @@ void wxMaxima::ReadPrompt()
       if (o.StartsWith(wxT("(%i")))
       {
         m_lastPrompt = o;
-        m_console->SetInsertPoint(NULL);
-        m_inInsertMode = false;
         GroupCell* tmp = m_console->m_evaluationQueue->GetFirst(); // last working group
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
@@ -1416,8 +1412,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   else
     menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
 
-  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL &&
-                                    !m_inInsertMode);
+  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -3153,8 +3148,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 
     }
     else { // normally just add to queue
-    m_console->AddCellToEvaluationQueue((GroupCell *)tmp->GetParent());
-    TryEvaluateNextInQueue();
+      m_console->AddCellToEvaluationQueue((GroupCell *)tmp->GetParent());
+      TryEvaluateNextInQueue();
     }
   }
   else { // no evaluate has been called on no active cell?
@@ -3181,77 +3176,15 @@ void wxMaxima::TryEvaluateNextInQueue()
     return;
   }
 
-  m_inInsertMode = true;
-
-  //if (!m_console->IsSelectionInWorking()) {
   group->RemoveOutput();
-  //}
 
-  m_console->SetInsertPoint(group);
+  m_console->SetWorkingGroup(group);
   group->GetPrompt()->SetValue(m_lastPrompt);
   m_console->Recalculate();
-  m_console->SetWorkingGroup(group);
-  m_console->Refresh();
+  m_console->ScrollToCell(group);
 
   SendMaxima(text);
-
 }
-
-/*
-void wxMaxima::ReEvaluateSelection()
-{
-  MathCell* tmp = m_console->GetActiveCell();
-  if (tmp != NULL)
-  {
-    m_console->SetActiveCell(NULL);
-    if (tmp->GetType() == MC_TYPE_INPUT && !m_inLispMode)
-      tmp->AddEnding();
-    m_console->SetSelection(tmp);
-  }
-
-  if (!m_console->CanEdit() && !m_console->IsSelectionInWorking())
-    return ;
-
-  MathCell* beginInput = m_console->GetSelectionStart();
-  if (beginInput == NULL)
-    return ;
-
-  if (beginInput->GetType() == MC_TYPE_INPUT)
-  {
-    wxString text = m_console->GetString(true);
-
-    // override evaluation when input equals wxmaxima_debug_dump_output
-    if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-      beginInput->SetValue(wxEmptyString);
-
-      m_console->SetActiveCell(beginInput);
-      DumpProcessOutput();
-
-      return ;
-    }
-
-    GroupCell* group = (GroupCell *)beginInput->GetParent();
-
-    m_inInsertMode = true;
-
-    int x, y;
-    m_console->GetViewStart(&x, &y);
-
-    if (!m_console->IsSelectionInWorking()) {
-      group->RemoveOutput();
-    }
-
-    m_console->SetInsertPoint(group);
-
-    group->GetPrompt()->SetValue(m_lastPrompt);
-    m_console->Recalculate();
-
-    m_console->SetWorkingGroup(group);
-
-    SendMaxima(text);
-  }
-}
-*/
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
 {

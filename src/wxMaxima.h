@@ -153,7 +153,6 @@ protected:
   bool m_readingPrompt;
   bool m_dispReadOut;               // what is displayed in statusbar
   bool m_inLispMode;                // don't add ; in lisp mode
-  bool m_inInsertMode;
   wxString m_lastPrompt;
   wxString m_lastPath;
   MathParser m_MParser;

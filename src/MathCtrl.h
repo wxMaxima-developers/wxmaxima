@@ -84,7 +84,7 @@ class EvaluationQueue
     }
 
     bool IsInQueue(GroupCell* gr) {
-      EvaluationQueueElement* tmp = m_queue; 
+      EvaluationQueueElement* tmp = m_queue;
       while (tmp != NULL) {
         if (tmp->group == gr)
           return true;
@@ -125,8 +125,8 @@ class EvaluationQueue
       return NULL; // queu is empty
     }
   protected:
-    EvaluationQueueElement* m_queue; 
-    EvaluationQueueElement* m_last; 
+    EvaluationQueueElement* m_queue;
+    EvaluationQueueElement* m_last;
 };
 
 class MathCtrl: public wxScrolledWindow
@@ -179,21 +179,6 @@ public:
   MathCell* GetTree()
   {
     return m_tree;
-  }
-  void SetInsertPoint(MathCell* insert)
-  {
-    if (insert == NULL)
-      m_insertPoint = NULL;
-    else
-      m_insertPoint = (GroupCell *)insert;
-  }
-  MathCell* GetInsertPoint()
-  {
-    return m_insertPoint;
-  }
-  void ClearInsertPoint()
-  {
-    m_insertPoint = NULL;
   }
   MathCell* GetSelectionStart()
   {
@@ -280,7 +265,6 @@ protected:
   MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
-  GroupCell *m_insertPoint;
   MathCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;

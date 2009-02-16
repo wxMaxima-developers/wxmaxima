@@ -65,7 +65,6 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_last = NULL;
-  m_insertPoint = NULL;
   m_hCaretActive = false;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
@@ -187,7 +186,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
-        if (m_evaluationQueue->IsInQueue((GroupCell *)tmp)) 
+        if (m_evaluationQueue->IsInQueue((GroupCell *)tmp))
           if (m_evaluationQueue->GetFirst() == ((GroupCell *)tmp))
           {
             wxRect rect = tmp->GetRect();
@@ -269,7 +268,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 
   m_saved = false;
 
-  GroupCell *tmp = m_insertPoint;
+  GroupCell *tmp = m_workingGroup;
 
   if (tmp == NULL)
     tmp = m_last;
@@ -950,7 +949,7 @@ bool MathCtrl::CopyInput() {
  */
 bool MathCtrl::CanDeleteSelection() {
   if (m_selectionStart == NULL || m_selectionEnd == NULL ||
-      m_insertPoint != NULL || m_workingGroup != NULL)
+      m_workingGroup != NULL)
     return false;
 
   if ((m_selectionStart->GetType() != MC_TYPE_GROUP) || (m_selectionEnd->GetType() != MC_TYPE_GROUP))
@@ -976,7 +975,7 @@ bool MathCtrl::CanDeleteSelection() {
  */
 void MathCtrl::DeleteSelection(bool deletePrompt) {
   if (m_selectionStart == NULL || m_selectionEnd == NULL ||
-      m_insertPoint != NULL)
+      m_workingGroup != NULL)
     return;
 
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
@@ -1100,7 +1099,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         event.Skip();
       break;
 
-    case WXK_RETURN: 
+    case WXK_RETURN:
       if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
         event.Skip(); // if enter pressed in text, title, section cell, pass the event
       else {
@@ -2218,7 +2217,7 @@ bool MathCtrl::ExportToWDR(wxString file)
  */
 bool MathCtrl::CanEdit() {
   if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart
-      || m_insertPoint != NULL || m_editingEnabled == false)
+      || m_workingGroup != NULL || m_editingEnabled == false)
     return false;
 
   if (!m_selectionStart->IsEditable())
