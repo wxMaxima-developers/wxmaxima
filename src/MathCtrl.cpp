@@ -89,6 +89,8 @@ MathCtrl::~MathCtrl() {
     DestroyTree();
   if (m_memory != NULL)
     delete m_memory;
+
+  delete m_evaluationQueue;
 }
 
 /***
