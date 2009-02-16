@@ -92,7 +92,7 @@ public:
   void CopyData(MathCell *s, MathCell *t);
 
   virtual void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
-  void DrawBoundingBox(wxDC& dc, bool all = false);
+  void DrawBoundingBox(wxDC& dc, bool all = false, int border = 0);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 
   void ForceBreakLine(bool force) { m_forceBreakLine = m_breakLine = force; }

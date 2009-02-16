@@ -168,9 +168,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       else {  // We have a selection of output
         while (tmp != NULL) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && tmp->GetType() != MC_TYPE_SLIDE &&
-              m_activeCell != tmp)
-            tmp->DrawBoundingBox(dcm, false);
+          if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp)
+            if ((tmp->GetType() == MC_TYPE_IMAGE) || (tmp->GetType() == MC_TYPE_SLIDE))
+              tmp->DrawBoundingBox(dcm, false, 5); // draw 5 pixels of border for img/slide cells
+            else
+              tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;

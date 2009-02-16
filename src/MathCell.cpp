@@ -286,12 +286,12 @@ wxRect MathCell::GetRect(bool all)
  * Draws a box around this cell - if all is true draws a box around the whole
  * line.
  */
-void MathCell::DrawBoundingBox(wxDC& dc, bool all)
+void MathCell::DrawBoundingBox(wxDC& dc, bool all, int border)
 {
   wxRect rect = GetRect(all);
   int x = rect.GetX(), y = rect.GetY();
   int width = rect.GetWidth(), height = rect.GetHeight();
-  dc.DrawRectangle(x, y, width, height);
+  dc.DrawRectangle(x - border, y - border, width + 2*border, height + 2*border);
 }
 
 /***
