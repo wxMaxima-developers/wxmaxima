@@ -270,7 +270,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut Cell(s)"),
+  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut Cell(s)\tCtrl-Shift-X"),
                                   _("Cut selected cell(s)"),
                                   wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy Cell(s)\tCtrl-Shift-C"),

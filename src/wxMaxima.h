@@ -107,8 +107,6 @@ protected:
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
 
-  wxString SplitInput(wxString input);
-
 #if WXM_PRINT
   void CheckForPrintingSupport();
   void PrintMenu(wxCommandEvent& event);

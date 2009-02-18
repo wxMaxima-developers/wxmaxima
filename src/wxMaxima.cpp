@@ -434,32 +434,6 @@ void wxMaxima::SendMaxima(wxString s)
 }
 
 ///--------------------------------------------------------------------------------
-///  Modifying strings
-///--------------------------------------------------------------------------------
-
-wxString wxMaxima::SplitInput(wxString input)
-{
-  wxString seps(wxT(" +-"));
-  wxString newInput;
-  int col = 0;
-
-  for (unsigned int i=0; i<input.Length(); i++)
-  {
-    if (col > 80 && seps.Find(input.GetChar(i)) > -1)
-    {
-      newInput += wxT("\n ");
-      col = 0;
-    }
-    col++;
-    newInput += input.GetChar(i);
-    if (input.GetChar(i) == '\n')
-      col = 0;
-  }
-
-  return newInput;
-}
-
-///--------------------------------------------------------------------------------
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
@@ -1709,11 +1683,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_copy_input_from_console:
     if (m_console->CanCopy())
-      m_console->CopyInput();
+      m_console->CopyCells();
     break;
   case menu_cut_input_from_console:
     if (m_console->CanCopy())
-      m_console->CopyInput();
+      m_console->CopyCells();
     if (m_console->CanDeleteSelection())
       m_console->DeleteSelection();
     break;
@@ -1812,31 +1786,71 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
           wxString input, line;
           wxArrayString inp;
 
-          while (lines.HasMoreTokens()) {
+          // Read the content from clipboard
+          while (lines.HasMoreTokens())
+          {
+            // Go to the begining of the cell
             do {
               line = lines.GetNextToken();
             } while (lines.HasMoreTokens() &&
-                     line != wxT("/* [wxMaxima: input   start ] */"));
+                     line != wxT("/* [wxMaxima: input   start ] */") &&
+                     line != wxT("/* [wxMaxima: comment start ] */") &&
+                     line != wxT("/* [wxMaxima: section start ] */") &&
+                     line != wxT("/* [wxMaxima: title   start ] */"));
 
+            // Read the cell content
             do {
               line = lines.GetNextToken();
-              if (line != wxT("/* [wxMaxima: input   end   ] */"))
+              if (line == wxT("/* [wxMaxima: input   end   ] */"))
+              {
+                inp.Add(wxT("input"));
+                inp.Add(input);
+                input = wxEmptyString;
+              }
+              else if (line == wxT("/* [wxMaxima: comment end   ] */"))
+              {
+                inp.Add(wxT("comment"));
+                inp.Add(input);
+                input = wxEmptyString;
+              }
+              else if (line == wxT("/* [wxMaxima: section end   ] */"))
+              {
+                inp.Add(wxT("section"));
+                inp.Add(input);
+                input = wxEmptyString;
+              }
+              else if (line == wxT("/* [wxMaxima: title   end   ] */"))
+              {
+                inp.Add(wxT("title"));
+                inp.Add(input);
+                input = wxEmptyString;
+              }
+              else
               {
                 if (input.Length()>0)
                   input = input + wxT("\n") + line;
                 else
                   input = line;
               }
-              else {
-                inp.Add(input);
-                input = wxEmptyString;
-              }
             } while (lines.HasMoreTokens() &&
-                     line != wxT("/* [wxMaxima: input   end   ] */"));
+                     line != wxT("/* [wxMaxima: input   end   ] */") &&
+                     line != wxT("/* [wxMaxima: comment end   ] */") &&
+                     line != wxT("/* [wxMaxima: section end   ] */") &&
+                     line != wxT("/* [wxMaxima: title   end   ] */"));
           }
 
-          for (int i=0; i<inp.Count(); i++)
-            m_console->OpenHCaret(inp[i]);
+          // Paste the content into the document
+          for (int i=0; i<inp.Count(); i = i+2)
+          {
+            if (inp[i] == wxT("input"))
+              m_console->OpenHCaret(inp[i+1]);
+            else if (inp[i] == wxT("comment"))
+              m_console->OpenHCaret(inp[i+1], MC_TYPE_TEXT);
+            else if (inp[i] == wxT("section"))
+              m_console->OpenHCaret(inp[i+1], MC_TYPE_SECTION);
+            else if (inp[i] == wxT("title"))
+              m_console->OpenHCaret(inp[i+1], MC_TYPE_TITLE);
+          }
         }
         wxTheClipboard->Close();
       }

@@ -915,7 +915,8 @@ bool MathCtrl::CopyTeX() {
   return false;
 }
 
-bool MathCtrl::CopyInput() {
+bool MathCtrl::CopyCells()
+{
   if (m_selectionStart == NULL)
       return false;
 
@@ -930,6 +931,27 @@ bool MathCtrl::CopyInput() {
       s += wxT("/* [wxMaxima: input   start ] */\n");
       s += tmp->GetInput()->ToString(false) + wxT("\n");
       s += wxT("/* [wxMaxima: input   end   ] */\n");
+    }
+    else
+    {
+      switch (tmp->GetLabel()->GetStyle())
+      {
+        case TS_TEXT:
+          s += wxT("/* [wxMaxima: comment start ] */\n");
+          s += tmp->GetLabel()->ToString(false) + wxT("\n");
+          s += wxT("/* [wxMaxima: comment end   ] */\n");
+          break;
+        case TS_SECTION:
+          s += wxT("/* [wxMaxima: section start ] */\n");
+          s += tmp->GetLabel()->ToString(false) + wxT("\n");
+          s += wxT("/* [wxMaxima: section end   ] */\n");
+          break;
+        case TS_TITLE:
+          s += wxT("/* [wxMaxima: title   start ] */\n");
+          s += tmp->GetLabel()->ToString(false) + wxT("\n");
+          s += wxT("/* [wxMaxima: title   end   ] */\n");
+          break;
+      }
     }
     if (tmp == end)
       break;
