@@ -237,7 +237,7 @@ protected:
   void OnMouseEnter(wxMouseEvent& event);
   void OnPaint(wxPaintEvent& event);
   void OnSize(wxSizeEvent& event);
-  void OnMouseRightUp(wxMouseEvent& event);
+  void OnMouseRightDown(wxMouseEvent& event);
   void OnMouseLeftUp(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
   void OnMouseMotion(wxMouseEvent& event);

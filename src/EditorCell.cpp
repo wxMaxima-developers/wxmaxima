@@ -977,6 +977,50 @@ void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
   }
 }
 
+// IsPointInSelection
+// Return true if coordinates "point" fall into selection
+// If they don't or there is no selection it returns false
+bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
+{
+  if ((m_selectionStart == -1) || (m_selectionEnd == -1) || (m_isActive == false))
+    return false;
+
+  wxRect rect = GetRect();
+  if (!rect.Contains(point))
+    return false;
+
+  wxString s;
+  int fontsize1 = m_fontSize;
+
+  dc.SetFont(wxFont(fontsize1, wxMODERN,
+                    m_fontStyle,
+                    m_fontWeight,
+                    m_underlined,
+                    m_fontName,
+                    m_fontEncoding));
+  wxPoint translate(point);
+  translate.x -= m_currentPoint.x - 2;
+  translate.y -= m_currentPoint.y - 2 - m_center;
+  int lin = translate.y / m_charHeight;
+  int width, height;
+  int lineStart = XYToPosition(0, lin);
+  int positionOfCaret = lineStart;
+  while (m_text.GetChar(positionOfCaret) != '\n' && positionOfCaret < m_text.Length())
+  {
+    s = m_text.SubString(lineStart, positionOfCaret);
+    dc.GetTextExtent(m_text.SubString(lineStart, positionOfCaret),
+                                      &width, &height);
+    if (width > translate.x)
+      break;
+    positionOfCaret++;
+  }
+  positionOfCaret = MIN(positionOfCaret, m_text.Length());
+
+  if ((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret))
+    return false;
+
+  return true;
+}
 /***
  * SelectWordUnderCaret
  * - called from MathCtrl::OnDoubleClick and wxMaxima::HelpMenu

@@ -55,13 +55,14 @@ public:
   void SelectPointText(wxDC &dc, wxPoint& point);
   void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two);
   wxString SelectWordUnderCaret();
+  bool IsPointInSelection(wxDC& dc, wxPoint point);
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard();
   void SelectAll()
   {
     m_selectionStart = 0;
-    m_selectionEnd = m_text.Length();
+    m_selectionEnd = m_positionOfCaret = m_text.Length();
   }
   bool CanCopy()
   {

@@ -531,9 +531,55 @@ void MathCtrl::ResetInputPrompts() {
 /***
  * Right mouse - popup-menu
  */
-void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
+void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
   wxMenu* popupMenu = new wxMenu();
 
+  int downx, downy;
+
+  // find out if clicked into existing selection, if not, reselect with leftdown
+  //
+  bool clickInSelection = false;
+  CalcUnscrolledPosition(event.GetX(), event.GetY(), &downx, &downy);
+  if ((m_selectionStart != NULL) && (m_selectionEnd != NULL)) {
+    // SELECTION OF GROUPCELLS
+    if (m_selectionStart->GetType() == MC_TYPE_GROUP) { //a selection of groups
+      if ( downx <= MC_GROUP_LEFT_INDENT) {
+        wxRect rectStart = m_selectionStart->GetRect();
+        wxRect rectEnd = m_selectionEnd->GetRect();
+        if (((downy >= rectStart.GetTop()) && (downy <= rectEnd.GetBottom())) ||
+            ((downy >= rectEnd.GetTop()) && (downy <= rectStart.GetBottom())))
+          clickInSelection = true;
+      }
+    }
+    // SELECTION OF OUTPUT
+    else {
+      MathCell * tmp = m_selectionStart;
+      wxRect rect;
+      while (tmp != NULL) {
+        rect = tmp->GetRect();
+        if (rect.Contains(downx,downy))
+          clickInSelection = true;
+
+        if (tmp == m_selectionEnd)
+          break;
+        tmp = tmp->m_next;
+      }
+
+    }
+  }
+  // SELECTION IN EDITORCELL
+  else if (m_activeCell != NULL) {
+    wxClientDC dc(this);
+    if (((EditorCell *)m_activeCell)->IsPointInSelection(dc, wxPoint(downx, downy)))
+      clickInSelection = true;
+  }
+
+  if (!clickInSelection)
+    OnMouseLeftDown(event);
+  m_leftDown = false;
+
+  // open a menu appropriate to what we have
+  //
   if (m_activeCell == NULL) {
     /* If we have no selection or we are not in editing mode don't popup a menu!*/
     if (m_editingEnabled == false)
@@ -591,8 +637,9 @@ void MathCtrl::OnMouseRightUp(wxMouseEvent& event) {
     popupMenu->Enable(popid_cut, m_activeCell->CanCopy());
   }
 
-  PopupMenu(popupMenu);
-
+  // create menu if we have any items
+  if (popupMenu->GetMenuItemCount() > 0 )
+    PopupMenu(popupMenu);
   delete popupMenu;
 }
 
@@ -2684,8 +2731,8 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
-  EVT_RIGHT_UP(MathCtrl::OnMouseRightUp)
   EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
+  EVT_RIGHT_DOWN(MathCtrl::OnMouseRightDown)
   EVT_LEFT_DCLICK(MathCtrl::OnDoubleClick)
   EVT_MOTION(MathCtrl::OnMouseMotion)
   EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
