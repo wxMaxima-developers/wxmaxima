@@ -543,7 +543,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
   if ((m_selectionStart != NULL) && (m_selectionEnd != NULL)) {
     // SELECTION OF GROUPCELLS
     if (m_selectionStart->GetType() == MC_TYPE_GROUP) { //a selection of groups
-      if ( downx <= MC_GROUP_LEFT_INDENT) {
+      if ( downx <= MC_GROUP_LEFT_INDENT + 3) {
         wxRect rectStart = m_selectionStart->GetRect();
         wxRect rectEnd = m_selectionEnd->GetRect();
         if (((downy >= rectStart.GetTop()) && (downy <= rectEnd.GetBottom())) ||
@@ -578,57 +578,80 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     OnMouseLeftDown(event);
   m_leftDown = false;
 
-  // open a menu appropriate to what we have
+  // construct a menu appropriate to what we have
   //
+  /* If we have no selection or we are not in editing mode don't popup a menu!*/
+  if (m_editingEnabled == false) {
+    delete popupMenu;
+    return;
+  }
   if (m_activeCell == NULL) {
-    /* If we have no selection or we are not in editing mode don't popup a menu!*/
-    if (m_editingEnabled == false)
-      return;
 
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
 #if defined __WXMSW__
       popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
 #endif
-      popupMenu->Append(popid_image, _("Save image"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_image, _("Save Image..."), wxEmptyString, wxITEM_NORMAL);
+    }
+
+    else if (m_selectionStart != NULL)
+      if (m_selectionStart->GetType() == MC_TYPE_GROUP) {
+
+        if (CanCopy()) {
+          popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
+#if defined __WXMSW__
+          popupMenu->Append(popid_copy_image, _("Copy As Image"),
+              wxEmptyString, wxITEM_NORMAL);
+#endif
+          if (CanDeleteSelection())
+            popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
+        }
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
+      }
+
+    else if (m_hCaretActive == true) {
+      // TODO pasting cells, paste?
     }
 
     else {
       if (CanCopy()) {
         popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_copy_tex, _("Copy TeX"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
 #if defined __WXMSW__
-        popupMenu->Append(popid_copy_image, _("Copy as image"),
+        popupMenu->Append(popid_copy_image, _("Copy As Image"),
             wxEmptyString, wxITEM_NORMAL);
 #endif
         if (CanDeleteSelection())
-          popupMenu->Append(popid_delete, _("Delete selection"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
       }
 
       if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL)) {
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_float, _("To float"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_float, _("To Float"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_solve, _("Solve ..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_solve_num, _("Find root ..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_solve, _("Solve..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_solve_num, _("Find Root..."), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_simplify, _("Simplify expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_factor, _("Factor expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_expand, _("Expand expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_subst, _("Substitute ..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_simplify, _("Simplify Expression"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_factor, _("Factor Expression"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_expand, _("Expand Expression"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_subst, _("Substitute..."), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_integrate, _("Integrate ..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_diff, _("Differentiate ..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_integrate, _("Integrate..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_diff, _("Differentiate..."), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_plot2d, _("Plot 2d ..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_plot3d, _("Plot 3d ..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_plot2d, _("Plot 2d..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
       }
     }
   }
 
   // popup menu in active cell
   else {
-    popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_cut, _("Cut"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
     popupMenu->Append(popid_select_all, _("Select all"), wxEmptyString, wxITEM_NORMAL);

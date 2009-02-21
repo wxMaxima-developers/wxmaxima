@@ -51,6 +51,7 @@ enum {
   popid_image_copy,
 #endif
   popid_image,
+  popid_evaluate
 };
 
 enum {

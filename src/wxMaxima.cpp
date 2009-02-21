@@ -3113,6 +3113,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->CopyBitmap();
     break;
 #endif
+  case popid_evaluate:
+    m_console->AddSelectionToEvaluationQueue();
+    TryEvaluateNextInQueue();
+    break;
   }
 }
 
@@ -3510,6 +3514,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_cut, wxMaxima::PopupMenu)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
+  EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_5, wxMaxima::OnRecentDocument)
