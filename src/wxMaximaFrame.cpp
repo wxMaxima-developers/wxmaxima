@@ -777,7 +777,7 @@ void wxMaximaFrame::LoadRecentDocuments()
   wxConfigBase *config = wxConfig::Get();
   m_recentDocuments.Clear();
 
-  for (int i=0; i<=5; i++)
+  for (int i=0; i<10; i++)
   {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     wxString file;
@@ -801,7 +801,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
 {
   wxMenu* fileMenu = GetMenuBar()->GetMenu(GetMenuBar()->FindMenu(_("&File")));
 
-  for (int i=menu_recent_document_0; i<= menu_recent_document_5; i++)
+  for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
   {
     wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
 

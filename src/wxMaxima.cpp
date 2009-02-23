@@ -1794,9 +1794,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
               line = lines.GetNextToken();
             } while (lines.HasMoreTokens() &&
                      line != wxT("/* [wxMaxima: input   start ] */") &&
-                     line != wxT("/* [wxMaxima: comment start ] */") &&
-                     line != wxT("/* [wxMaxima: section start ] */") &&
-                     line != wxT("/* [wxMaxima: title   start ] */"));
+                     line != wxT("/* [wxMaxima: comment start ]") &&
+                     line != wxT("/* [wxMaxima: section start ]") &&
+                     line != wxT("/* [wxMaxima: title   start ]"));
 
             // Read the cell content
             do {
@@ -1807,19 +1807,19 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                 inp.Add(input);
                 input = wxEmptyString;
               }
-              else if (line == wxT("/* [wxMaxima: comment end   ] */"))
+              else if (line == wxT("   [wxMaxima: comment end   ] */"))
               {
                 inp.Add(wxT("comment"));
                 inp.Add(input);
                 input = wxEmptyString;
               }
-              else if (line == wxT("/* [wxMaxima: section end   ] */"))
+              else if (line == wxT("   [wxMaxima: section end   ] */"))
               {
                 inp.Add(wxT("section"));
                 inp.Add(input);
                 input = wxEmptyString;
               }
-              else if (line == wxT("/* [wxMaxima: title   end   ] */"))
+              else if (line == wxT("   [wxMaxima: title   end   ] */"))
               {
                 inp.Add(wxT("title"));
                 inp.Add(input);
@@ -1834,12 +1834,13 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
               }
             } while (lines.HasMoreTokens() &&
                      line != wxT("/* [wxMaxima: input   end   ] */") &&
-                     line != wxT("/* [wxMaxima: comment end   ] */") &&
-                     line != wxT("/* [wxMaxima: section end   ] */") &&
-                     line != wxT("/* [wxMaxima: title   end   ] */"));
+                     line != wxT("   [wxMaxima: comment end   ] */") &&
+                     line != wxT("   [wxMaxima: section end   ] */") &&
+                     line != wxT("   [wxMaxima: title   end   ] */"));
           }
 
           // Paste the content into the document
+          m_console->Freeze();
           for (int i=0; i<inp.Count(); i = i+2)
           {
             if (inp[i] == wxT("input"))
@@ -1851,6 +1852,8 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
             else if (inp[i] == wxT("title"))
               m_console->OpenHCaret(inp[i+1], MC_TYPE_TITLE);
           }
+          m_console->Thaw();
+
         }
         wxTheClipboard->Close();
       }
@@ -3517,5 +3520,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
-  EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_5, wxMaxima::OnRecentDocument)
+  EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
 END_EVENT_TABLE()

@@ -1007,19 +1007,19 @@ bool MathCtrl::CopyCells()
       switch (tmp->GetLabel()->GetStyle())
       {
         case TS_TEXT:
-          s += wxT("/* [wxMaxima: comment start ] */\n");
+          s += wxT("/* [wxMaxima: comment start ]\n");
           s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("/* [wxMaxima: comment end   ] */\n");
+          s += wxT("   [wxMaxima: comment end   ] */\n");
           break;
         case TS_SECTION:
-          s += wxT("/* [wxMaxima: section start ] */\n");
+          s += wxT("/* [wxMaxima: section start ]\n");
           s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("/* [wxMaxima: section end   ] */\n");
+          s += wxT("   [wxMaxima: section end   ] */\n");
           break;
         case TS_TITLE:
-          s += wxT("/* [wxMaxima: title   start ] */\n");
+          s += wxT("/* [wxMaxima: title   start ]\n");
           s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("/* [wxMaxima: title   end   ] */\n");
+          s += wxT("   [wxMaxima: title   end   ] */\n");
           break;
       }
     }
@@ -1481,7 +1481,10 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             }
             break;
           case WXK_RETURN:
-            OpenHCaret(wxT("\n"));
+            if (m_selectionStart == NULL || m_selectionEnd == NULL)
+              OpenHCaret(wxT("\n"));
+            else
+              OpenHCaret(GetString());
             break;
 					// keycodes which open hCaret with initial content
           default:
