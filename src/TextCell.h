@@ -45,7 +45,7 @@ public:
   int GetStyle() { return m_textStyle; }
   wxString GetSymbolString(CellParser& parser);
   wxString GetGreekString(CellParser& parser);
-#if defined (__WXGTK20__) || defined (__WXMAC__)
+#if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
   wchar_t* GetGreekStringUnicode();
 #else
   wxString GetGreekStringIso();

@@ -417,17 +417,7 @@ void wxMaxima::SendMaxima(wxString s)
   m_console->EnableEdit(false);
 
 #if wxUSE_UNICODE
- #if wxCHECK_VERSION(2,9,0)
-  char *buf = s.char_str();
-  m_client->Write(buf, strlen(buf));
-  //free(buf);
- #else
-  char *buf;
-  wxWX2MBbuf tmp = wxConvertWX2MB(s.wx_str());
-  buf = strdup(tmp);
-  m_client->Write(buf, strlen(buf));
-  free(buf);
- #endif
+  m_client->Write(s.utf8_str(), s.Length());
 #else
   m_client->Write(s.c_str(), s.Length());
 #endif
@@ -454,7 +444,12 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     {
       read = m_client->LastCount();
       buffer[read] = 0;
+
+#if wxUSE_UNICODE
+      m_currentOutput += wxString(buffer, wxConvUTF8);
+#else
       m_currentOutput += wxString(buffer, *wxConvCurrent);
+#endif
 
       if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
         SetStatusText(_("Reading maxima output"), 1);

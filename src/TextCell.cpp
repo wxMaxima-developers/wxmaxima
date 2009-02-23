@@ -332,14 +332,14 @@ wxString TextCell::GetSymbolString(CellParser& parser)
 
 wxString TextCell::GetGreekString(CellParser& parser)
 {
-#if defined (__WXGTK20__) || defined (__WXMAC__)
+#if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
   return wxConvLocal.cWC2WX(GetGreekStringUnicode());
 #else
   return GetGreekStringIso();
 #endif
 }
 
-#if defined (__WXGTK20__) || defined (__WXMAC__)
+#if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
 
 wchar_t* TextCell::GetGreekStringUnicode()
 {
