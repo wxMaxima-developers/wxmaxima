@@ -1051,7 +1051,7 @@
     (append l (list (format nil "<~a>~a</~a>" tag name tag)) r)))
 
 
-(defmvar $wxplot_size '((mlist simp) 400 250))
+(defmvar $wxplot_size '((mlist simp) 500 300))
 (defmvar $wxplot_old_gnuplot nil)
 
 (defvar *image-counter* 0)
