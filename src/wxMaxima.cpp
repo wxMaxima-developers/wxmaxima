@@ -533,7 +533,12 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
+#ifndef __WXMAC__
+  addr.LocalHost();
+#else
   addr.AnyAddress();
+#endif
+
   addr.Service(m_port);
 
   m_server = new wxSocketServer(addr);
