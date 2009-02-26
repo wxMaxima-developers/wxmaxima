@@ -417,7 +417,7 @@ void wxMaxima::SendMaxima(wxString s)
   m_console->EnableEdit(false);
 
 #if wxUSE_UNICODE
-  m_client->Write(s.utf8_str(), s.Length());
+  m_client->Write(s.char_str(), strlen(s.char_str()));
 #else
   m_client->Write(s.c_str(), s.Length());
 #endif
