@@ -2736,6 +2736,17 @@ void MathCtrl::SetHCaret(MathCell *where) {
   m_hCaretActive = true;
 }
 
+void MathCtrl::ShowHCaret()
+{
+  if (m_workingGroup != NULL)
+    m_hCaretPosition = m_workingGroup;
+  else if (m_last != NULL)
+    m_hCaretPosition = m_last;
+  else m_hCaretPosition = NULL;
+
+  m_hCaretActive = true;
+}
+
 bool MathCtrl::CanUndo()
 {
   if (m_activeCell == NULL)

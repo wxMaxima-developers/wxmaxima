@@ -417,7 +417,7 @@ void wxMaxima::SendMaxima(wxString s)
   m_console->EnableEdit(false);
 
 #if wxUSE_UNICODE
-  m_client->Write(s.char_str(), strlen(s.char_str()));
+  m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
 #else
   m_client->Write(s.c_str(), s.Length());
 #endif
@@ -723,7 +723,7 @@ void wxMaxima::ReadFirstPrompt()
 
   m_closing = false; // when restarting maxima this is temporarily true
   m_currentOutput = wxEmptyString;
-  m_console->ActivateHCaret(true);
+  m_console->ShowHCaret();
   m_console->EnableEdit(true);
   m_console->Refresh();
 }
@@ -781,6 +781,7 @@ void wxMaxima::ReadPrompt()
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
+          m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
           SetStatusText(_("Ready for user input"), 1);
@@ -3166,7 +3167,6 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     // case - answering a question. Manually send answer to Maxima.
     if ((GroupCell *)tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
       SendMaxima(tmp->ToString(false));
-
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue((GroupCell *)tmp->GetParent());

@@ -218,7 +218,7 @@ public:
   bool IsSelectionInWorking();
   void SetHCaret(MathCell *where);
   void OpenHCaret(wxString txt = wxEmptyString, int type = MC_TYPE_INPUT);
-  void ActivateHCaret(bool active) { m_hCaretActive = active; m_hCaretPosition = m_last; }
+  void ShowHCaret();
   bool CanUndo();
   void Undo();
   bool IsSaved() { return m_saved; }
@@ -254,7 +254,7 @@ protected:
   wxPoint m_up;
   wxPoint m_mousePoint;
   bool m_hCaretActive; // horizontal caret
-  GroupCell *m_hCaretPosition;
+  GroupCell *m_hCaretPosition; // group above hcaret, NULL for the top
   GroupCell *m_hCaretPositionStart, *m_hCaretPositionEnd; // selection with caret
   bool m_leftDown;
   bool m_mouseDrag;
