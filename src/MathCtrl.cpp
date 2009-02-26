@@ -1228,7 +1228,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 void MathCtrl::OnChar(wxKeyEvent& event) {
 
   if (m_activeCell != NULL) { // we are in an active cell
-    bool hasHeightChanged = false;
+    bool needRecalculate = false;
 
     if (event.GetKeyCode() == WXK_UP &&
         ((EditorCell *)m_activeCell)->CaretAtStart() &&
@@ -1256,8 +1256,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     CellParser parser(dc);
     parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-    wxPoint point = m_activeCell->PositionToPoint(parser);
-
     if (m_activeCell->IsDirty()) {
       m_saved = false;
 
@@ -1273,11 +1271,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       group->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
       group->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
 
-      if (height != m_activeCell->GetHeight())
-        hasHeightChanged = true;
+      if (height != m_activeCell->GetHeight() ||
+          group->GetWidth() >=
+            GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT)
+        needRecalculate = true;
     }
 
-    if (hasHeightChanged) {
+    if (needRecalculate) {
       Recalculate();
       Refresh();
     }
@@ -1288,6 +1288,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       RefreshRect(rect);
     }
 
+    wxPoint point = m_activeCell->PositionToPoint(parser);
     ShowPoint(point);
   }
 
