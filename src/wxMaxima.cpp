@@ -3135,7 +3135,12 @@ void wxMaxima::OnRecentDocument(wxCommandEvent& event)
   }
 
   wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
-  OpenFile(file);
+  if (wxFileExists(file))
+    OpenFile(file);
+  else {
+    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
+    RemoveRecentDocument(file);
+  }
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent& event)

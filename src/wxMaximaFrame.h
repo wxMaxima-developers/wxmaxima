@@ -218,6 +218,7 @@ public:
                 long style = wxDEFAULT_FRAME_STYLE);
   void UpdateRecentDocuments();
   void AddRecentDocument(wxString file);
+  void RemoveRecentDocument(wxString file);
   wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
 private:
   void set_properties();

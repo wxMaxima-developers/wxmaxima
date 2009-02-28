@@ -831,3 +831,10 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
 
   UpdateRecentDocuments();
 }
+
+void wxMaximaFrame::RemoveRecentDocument(wxString file)
+{
+  m_recentDocuments.Remove(file);
+
+  UpdateRecentDocuments();
+}
