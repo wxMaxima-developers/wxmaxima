@@ -153,9 +153,6 @@ void MyApp::NewWindow(wxString file)
   SetTopWindow(frame);
   frame->Show(true);
   frame->InitSession();
-//  if (!frame->IsIconized())
-//    frame->ShowTip(false);
-
 }
 
 #if defined (__WXMAC__)
@@ -163,50 +160,46 @@ void MyApp::NewWindow(wxString file)
 void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch(ev.GetId())
-    {
+  {
     case mac_newId:
       NewWindow();
       break;
     case mac_openId:
       {
-	wxString file = wxFileSelector(_("Select file to open"), wxEmptyString,
-				       wxEmptyString, wxEmptyString,
-				       _("wxMaxima session (*.wxm)|*.wxm"),
-				       wxOPEN);
-	if (file.Length() > 0)
-	  NewWindow(file);
+        wxString file = wxFileSelector(_("Select file to open"), wxEmptyString,
+            wxEmptyString, wxEmptyString,
+            _("wxMaxima session (*.wxm)|*.wxm"),
+            wxOPEN);
+        if (file.Length() > 0)
+          NewWindow(file);
       }
       break;
     case wxID_EXIT:
       {
 #if defined __WXMAC__
-	bool quit = true;
-	wxWindowList::compatibility_iterator node = topLevelWindows.GetFirst();
-	while (node) {
-	  wxWindow *frame = node->GetData();
-	  node = node->GetNext();
-	  frame->Raise();
-	  if (!frame->Close()) {
-	    quit = false;
-	    break;
-	  }
-	  // else {
-	  //  wxWindowList::compatibility_iterator tmp = node;
-	  // topLevelWindows.Erase(tmp);
-	  //}
-	}
-	if (quit)
-	  wxExit();
+        bool quit = true;
+        wxWindowList::compatibility_iterator node = topLevelWindows.GetFirst();
+        while (node) {
+          wxWindow *frame = node->GetData();
+          node = node->GetNext();
+          frame->Raise();
+          if (!frame->Close()) {
+            quit = false;
+            break;
+          }
+        }
+        if (quit)
+          wxExit();
 #else
-	wxWindow *frame = GetTopWindow();
-	if (frame == NULL)
-	  wxExit();
-	else if (frame->Close())
-	  wxExit();
+        wxWindow *frame = GetTopWindow();
+        if (frame == NULL)
+          wxExit();
+        else if (frame->Close())
+          wxExit();
 #endif
       }
       break;
-    }
+  }
 }
 
 void MyApp::MacNewFile()

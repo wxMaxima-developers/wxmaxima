@@ -242,6 +242,7 @@ bool wxMaxima::ReadBatchFile(wxString file)
   m_batchFilePosition = 0;
   m_currentFile = file;
 
+  AddRecentDocument(file);
   return true;
 }
 
