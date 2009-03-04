@@ -21,6 +21,7 @@
 #include "ImgCell.h"
 
 #include <wx/file.h>
+#include <wx/filename.h>
 
 SlideShow::SlideShow() : MathCell()
 {
@@ -44,23 +45,20 @@ void SlideShow::LoadImages(wxArrayString images)
   {
     bool loadedImage = false;
 
+    if (!wxFileExists(images[i]))
+      images[i] = wxFileName::GetTempDir() + images[i];
+
     if (wxFileExists(images[i]))
     {
-      wxFile imageFile(images[i]);
-
-      if (imageFile.Length())
+      wxBitmap *bitmap = new wxBitmap;
+      if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
       {
-        wxBitmap *bitmap = new wxBitmap;
-        if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
-        {
-          loadedImage = true;
-          m_bitmaps.push_back(bitmap);
-        }
-        else
-          delete bitmap;
+        loadedImage = true;
+        m_bitmaps.push_back(bitmap);
       }
+      else
+        delete bitmap;
 
-      imageFile.Close();
       wxRemoveFile(images[i]);
     }
 
@@ -191,20 +189,30 @@ wxString SlideShow::ToTeX(bool all)
 wxString SlideShow::ToXml(bool all)
 {
   wxString images, s = wxEmptyString;
+  wxString filename;
   int j = 1;
   do {
-    images = wxT("./image");
+    images = wxT("image");
     images << j++;
-  } while(wxFileExists(images));
+    filename = wxFileName::GetTempDir() + images;
+  } while (wxFileExists(filename));
 
   for (int i=0; i<m_size; i++) {
     wxBitmap* bitmap = m_bitmaps[i];
-    if(bitmap->SaveFile(images, wxBITMAP_TYPE_PNG))
+    filename = wxFileName::GetTempDir() + images;
+    if(bitmap->SaveFile(filename, wxBITMAP_TYPE_PNG))
       s += images + wxT(";");
-    images = wxT("./image");
+    images = wxT("image");
     images << j++;
   }
 
   return wxT("\n<slide>") + s + wxT("</slide>") +
          MathCell::ToXml(all);
+}
+
+bool SlideShow::ToImageFile(wxString file)
+{
+  wxImage image = m_bitmaps[m_displayed]->ConvertToImage();
+
+  return image.SaveFile(file, wxBITMAP_TYPE_PNG);
 }

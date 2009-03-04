@@ -29,13 +29,14 @@ public:
   ImgCell();
   ~ImgCell();
   void Destroy();
-  void LoadImage(wxString image);
+  void LoadImage(wxString image, bool remove = true);
   MathCell* Copy(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   {
     *first = *last = this;
   }
   friend class SlideShow;
+  bool ToImageFile(wxString filename);
 protected:
   wxBitmap *m_bitmap;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);

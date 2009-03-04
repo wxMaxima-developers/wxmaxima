@@ -298,6 +298,8 @@ void wxMaximaFrame::SetupMenu()
                              _("Insert a new title cell"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
+  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove output"),
+                            _("Remove output from input cells"), wxITEM_NORMAL);
 
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &In\tAlt-I"),

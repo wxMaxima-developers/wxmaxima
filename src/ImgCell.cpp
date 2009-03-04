@@ -20,6 +20,7 @@
 #include "ImgCell.h"
 
 #include <wx/file.h>
+#include <wx/filename.h>
 
 ImgCell::ImgCell() : MathCell()
 {
@@ -35,30 +36,30 @@ ImgCell::~ImgCell()
     delete m_next;
 }
 
-void ImgCell::LoadImage(wxString image)
+void ImgCell::LoadImage(wxString image, bool remove)
 {
   if (m_bitmap != NULL)
     delete m_bitmap;
 
   bool loadedImage = false;
 
+  if (!wxFileExists(image))
+  {
+    image = wxFileName::GetTempDir() + image;
+  }
+
   if (wxFileExists(image))
   {
-    wxFile imageFile(image);
+    wxImage pngImage(image, wxBITMAP_TYPE_PNG);
 
-    if (imageFile.Length())
+    if (pngImage.Ok())
     {
-      wxImage pngImage(image, wxBITMAP_TYPE_PNG);
-
-      if (pngImage.Ok())
-      {
-        loadedImage = true;
-        m_bitmap = new wxBitmap(pngImage);
-      }
+      loadedImage = true;
+      m_bitmap = new wxBitmap(pngImage);
     }
 
-    imageFile.Close();
-    wxRemoveFile(image);
+    if (remove)
+      wxRemoveFile(image);
   }
 
   if (!loadedImage)
@@ -173,17 +174,27 @@ wxString ImgCell::ToTeX(bool all)
          MathCell::ToTeX(all);
 }
 
+bool ImgCell::ToImageFile(wxString file)
+{
+  wxImage image = m_bitmap->ConvertToImage();
+
+  return image.SaveFile(file, wxBITMAP_TYPE_PNG);
+}
+
 wxString ImgCell::ToXml(bool all)
 {
 	wxImage image = m_bitmap->ConvertToImage();
-	wxString filename;
+	wxString filename, basename;
 	int i = 1;
 	do {
-		filename = wxT("./image");
-		filename << i++;
+		basename = wxT("image");
+		basename << i++;
+		filename = wxFileName::GetTempDir() + basename;
 	} while( wxFileExists(filename) );
 	if(image.SaveFile( filename, wxBITMAP_TYPE_PNG))
-		return wxT("<img>") + filename + wxT("</img>") + MathCell::ToXml(all);
+	{
+		return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXml(all);
+	}
 	else
 		return wxEmptyString + MathCell::ToXml(all);
 }

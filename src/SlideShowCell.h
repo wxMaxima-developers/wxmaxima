@@ -42,6 +42,7 @@ public:
   int GetDisplayedIndex() { return m_displayed; }
   void SetDisplayedIndex(int ind);
   int Length() { return m_size; }
+  bool ToImageFile(wxString filename);
 protected:
   int m_size;
   int m_displayed;

@@ -282,7 +282,7 @@ wxString TextCell::ToXml(bool all)
 					( m_textStyle == TS_VARIABLE )? _T("v") :
 					( m_textStyle == TS_NUMBER )? _T("n") :
 					( m_textStyle == TS_STRING )? _T("st") :
-					( m_type == MC_TYPE_LABEL)? _T("lbl") : _T("t");
+					( m_textStyle == TS_LABEL)? _T("lbl") : _T("t");
 	return _T("<") + tag + _T(">") + m_text + _T("</") + tag + _T(">") +
 				MathCell::ToXml(all);
 }

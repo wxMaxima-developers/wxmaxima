@@ -609,7 +609,12 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         wxString filename(node->GetChildren()->GetContent());
 
         ImgCell *tmp = new ImgCell;
-        tmp->LoadImage(filename);
+
+        if (node->GetProperties() != NULL)
+          tmp->LoadImage(filename, false);
+        else
+          tmp->LoadImage(filename);
+
         if (cell == NULL)
           cell = tmp;
         else

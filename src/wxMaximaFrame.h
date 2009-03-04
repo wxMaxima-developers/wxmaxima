@@ -192,6 +192,7 @@ enum {
   menu_paste,
   menu_paste_input,
   menu_fullscreen,
+  menu_remove_output,
 #if defined (__WXMAC__)
   mac_newId,
   mac_openId,

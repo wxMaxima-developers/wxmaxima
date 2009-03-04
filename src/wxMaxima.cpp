@@ -911,7 +911,7 @@ void wxMaxima::PrintFile()
 }
 
 /*
-* This function reads a .wdr file
+* This function reads a .wxmx file
 */
 void wxMaxima::ReadXmlFile(wxString file)
 {
@@ -931,7 +931,11 @@ void wxMaxima::ReadXmlFile(wxString file)
     if (name != _T("out")) {
       wxImage img;
       if (img.LoadFile(zip, wxBITMAP_TYPE_PNG))
-        img.SaveFile(name, wxBITMAP_TYPE_PNG);
+      {
+        wxString basename;
+        wxFileName::SplitPath(name, NULL, NULL, &basename, NULL);
+        img.SaveFile(wxFileName::GetTempDir() + basename, wxBITMAP_TYPE_PNG);
+      }
     }
 
     else{
@@ -1470,7 +1474,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
         StartMaxima();
     }
 
-    else if (file.Right(4) == wxT(".wdr"))
+    else if (file.Right(5) == wxT(".wxmx"))
     {
       m_console->ClearWindow();
       ReadXmlFile(file);
@@ -1512,7 +1516,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima session (*.wxm)|*.wxm|"
-                                       "wxMaxima xml session (*.wdr)|*.wdr"),
+                                       "wxMaxima xml session (*.wxmx)|*.wxmx"),
                                      wxFD_OPEN);
       OpenFile(file);
     }
@@ -1526,20 +1530,20 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       file = wxFileSelector(_("Save to file"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
                             _("wxMaxima session (*.wxm)|*.wxm|"
-                              "wxMaxima xml session (*.wdr)|*.wdr|"
+                              "wxMaxima xml session (*.wxmx)|*.wxmx|"
                               "Maxima batch file (*.mac)|*.mac|"
                               "All|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac") &&
-            file.Right(4) != wxT(".wdr"))
+            file.Right(5) != wxT(".wxmx"))
           file = file + wxT(".wxm");
 
         m_lastPath = wxPathOnly(file);
         m_currentFile = file;
-        if (file.Right(4) == wxT(".wdr"))
-          m_console->ExportToWDR(file);
+        if (file.Right(5) == wxT(".wxmx"))
+          m_console->ExportToWXMX(file);
         else
           m_console->ExportToMAC(file);
 
@@ -1559,7 +1563,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         file = wxFileSelector(_("Save to file"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
                               _("wxMaxima session (*.wxm)|*.wxm|"
-                                "wxMaxima xml session (*.wdr)|*.wdr|"
+                                "wxMaxima xml session (*.wxmx)|*.wxmx|"
                                 "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
                               wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1567,13 +1571,13 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (file.Length())
       {
         if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac")
-            && file.Right(4) != wxT(".wdr"))
+            && file.Right(5) != wxT(".wxmx"))
           file = file + wxT(".wxm");
 
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
-        if (file.Right(4) == wxT(".wdr"))
-          m_console->ExportToWDR(file);
+        if (file.Right(5) == wxT(".wxmx"))
+          m_console->ExportToWXMX(file);
         else
           m_console->ExportToMAC(file);
 
@@ -1775,6 +1779,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       ShowFullScreen( !IsFullScreen() );
     }
+    break;
+  case menu_remove_output:
+    m_console->RemoveAllOutput();
     break;
   case menu_paste_input:
     {
@@ -3526,5 +3533,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
+  EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
 END_EVENT_TABLE()

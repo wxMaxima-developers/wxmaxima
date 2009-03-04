@@ -25,6 +25,7 @@
 #include "EditorCell.h"
 #include "GroupCell.h"
 #include "SlideShowCell.h"
+#include "ImgCell.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -1697,12 +1698,26 @@ bool MathCtrl::CopyBitmap() {
 }
 
 bool MathCtrl::CopyToFile(wxString file) {
-  MathCell* tmp = CopySelection();
 
-  Bitmap bmp;
-  bmp.SetData(tmp);
+  if (m_selectionStart != NULL &&
+      m_selectionStart == m_selectionEnd &&
+      (m_selectionStart->GetType() == MC_TYPE_IMAGE ||
+       m_selectionStart->GetType() == MC_TYPE_SLIDE))
+  {
+    if (m_selectionStart->GetType() == MC_TYPE_IMAGE)
+      return ((ImgCell *)m_selectionStart)->ToImageFile(file);
+    else
+      return ((SlideShow *)m_selectionStart)->ToImageFile(file);
+  }
+  else
+  {
+    MathCell* tmp = CopySelection();
 
-  return bmp.ToFile(file);
+    Bitmap bmp;
+    bmp.SetData(tmp);
+
+    return bmp.ToFile(file);
+  }
 }
 
 bool MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
@@ -2221,7 +2236,7 @@ bool MathCtrl::ExportToMAC(wxString file)
   return done;
 }
 
-bool MathCtrl::ExportToWDR(wxString file)
+bool MathCtrl::ExportToWXMX(wxString file)
 {
   m_saved = true;
 
@@ -2294,7 +2309,7 @@ bool MathCtrl::ExportToWDR(wxString file)
   }
   output << _T("</wxMaxima>");
 
-  wxString images = _T("image");
+  wxString images = wxFileName::GetTempDir() + _T("image");
   int i = 1;
   images<<i++;
   while( wxFileExists(images) ){
@@ -2303,7 +2318,7 @@ bool MathCtrl::ExportToWDR(wxString file)
     while(!png.Eof())
       png.Read(zip);
     wxRemoveFile(images);
-    images = _T("image");
+    images = wxFileName::GetTempDir() + _T("image");
     images<<i++;
   }
 
@@ -2763,6 +2778,20 @@ void MathCtrl::Undo()
     Recalculate();
     Refresh();
   }
+}
+
+void MathCtrl::RemoveAllOutput()
+{
+  GroupCell *tmp = (GroupCell *)m_tree;
+
+  while (tmp != NULL)
+  {
+    if (!tmp->IsSpecial())
+      tmp->RemoveOutput();
+    tmp = (GroupCell *)tmp->m_next;
+  }
+
+  Recalculate();
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
