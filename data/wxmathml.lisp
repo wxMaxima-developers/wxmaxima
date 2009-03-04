@@ -1047,8 +1047,11 @@
 
 (defun wxxml-tag (x l r)
   (let ((name (cadr x))
-	(tag (caddr x)))
-    (append l (list (format nil "<~a>~a</~a>" tag name tag)) r)))
+	(tag (caddr x))
+	(prop (cadddr x)))
+    (if prop
+	(append l (list (format nil "<~a ~a>~a</~a>" tag prop name tag)) r)
+	(append l (list (format nil "<~a>~a</~a>" tag name tag)) r))))
 
 
 (defmvar $wxplot_size '((mlist simp) 500 300))
@@ -1260,6 +1263,9 @@
 
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
+
+(defun $show_image (file)
+ ($ldisp `((wxxmltag simp) ,file "img" "del=\"no\"")))
 
 ;;
 ;; Port of Barton Willis's texput function.
