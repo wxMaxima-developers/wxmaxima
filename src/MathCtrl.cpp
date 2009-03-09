@@ -972,6 +972,8 @@ bool MathCtrl::CopyTeX() {
   }
   while (tmp != NULL) {
     s += tmp->ToTeX(false);
+    if (tmp == m_selectionEnd)
+      break;
     tmp = tmp->m_next;
   }
   if (inMath == true)
