@@ -1866,15 +1866,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString font;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
-  wxString colorMain(wxT("black"));
+  wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black"));
   wxString colorTextBg(wxT("white"));
   bool italicInput = false;
   bool boldInput = false;
   bool italicPrompt = false;
   bool boldPrompt = false;
-  bool italicHidden = false;
-  bool boldHidden = false;
-  bool underlinedHidden = false;
   bool boldString = false;
   bool italicString = false;
   int fontSize = 12;
@@ -1883,7 +1880,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/fontname"), &font);
   config->Read(wxT("Style/Input/color"), &colorInput);
   config->Read(wxT("Style/MainPrompt/color"), &colorPrompt);
-  config->Read(wxT("Style/NormalText/color"), &colorMain);
+  config->Read(wxT("Style/Text/color"), &colorText);
+  config->Read(wxT("Style/Section/color"), &colorSection);
+  config->Read(wxT("Style/Title/color"), &colorTitle);
   config->Read(wxT("fontSize"), &fontSize);
   config->Read(wxT("Style/Input/bold"), &boldInput);
   config->Read(wxT("Style/String/bold"), &boldString);
@@ -1891,9 +1890,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/String/italic"), &italicString);
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
-  config->Read(wxT("Style/HiddenText/bold"), &boldHidden);
-  config->Read(wxT("Style/HiddenText/italic"), &italicHidden);
-  config->Read(wxT("Style/HiddenText/underlined"), &underlinedHidden);
   config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
 
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
@@ -1903,12 +1899,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (font.Length()) {
     AddLineToFile(output, wxT("  font-family: ") +
     font +
-    wxT(";"));
-  }
-  if (colorMain.Length()) {
-    wxColour color(colorMain);
-    AddLineToFile(output, wxT("  color: ") +
-    wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
   AddLineToFile(output, wxT("}"));
@@ -1929,8 +1919,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   // COMMENT STYLE
   AddLineToFile(output, wxT(".comment {"));
-  if (colorMain.Length()) {
-    wxColour color(colorMain);
+  if (colorText.Length()) {
+    wxColour color(colorText);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
@@ -1943,9 +1933,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
   }
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
+
+  // SECTION STYLE
   AddLineToFile(output, wxT(".section {"));
-  if (colorMain.Length()) {
-    wxColour color(colorMain);
+  if (colorSection.Length()) {
+    wxColour color(colorSection);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
@@ -1961,9 +1953,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
   AddLineToFile(output, wxT("  font-size: 1.5em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
+
+  // TITLE STYLE
   AddLineToFile(output, wxT(".title {"));
-  if (colorMain.Length()) {
-    wxColour color(colorMain);
+  if (colorTitle.Length()) {
+    wxColour color(colorTitle);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
@@ -1995,22 +1989,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
     AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
 
-  // HIDDEN STYLE
-  AddLineToFile(output, wxT(".hidden {"));
-  if (colorPrompt.Length()) {
-    wxColour color(colorPrompt);
-    AddLineToFile(output, wxT("  color: ") +
-    wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-    wxT(";"));
-  }
-  if (boldHidden)
-    AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicHidden)
-    AddLineToFile(output, wxT("  font-style: italic;"));
-  if (underlinedHidden)
-    AddLineToFile(output, wxT("  text-decoration: underline;"));
-  AddLineToFile(output, wxT("}"));
-
   AddLineToFile(output, wxT("  </STYLE>"));
   AddLineToFile(output, wxT(" </HEAD>"));
   AddLineToFile(output, wxT(" <BODY>"));
@@ -2028,49 +2006,59 @@ bool MathCtrl::ExportToHTML(wxString file) {
   while (tmp != NULL) {
     AddLineToFile(output, wxT("\n\n<!-- Input/Output group -->\n\n"));
 
-    MathCell *prompt = tmp->GetPrompt();
-    if (prompt != NULL && tmp->GetGroupType() == GC_TYPE_CODE) {
+    if (tmp->GetGroupType() == GC_TYPE_CODE)
+    {
+      MathCell *prompt = tmp->GetPrompt();
       AddLineToFile(output, wxT("<P>"));
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
       AddLineToFile(output, prompt->ToString(false));
       AddLineToFile(output, wxT("  </SPAN>"));
-    }
 
-    MathCell *input = tmp->GetInput();
-    if (input != NULL) {
-      AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
-      AddLineToFile(output, PrependNBSP(input->ToString(false)));
-      AddLineToFile(output, wxT("  </SPAN>"));
+      MathCell *input = tmp->GetInput();
+      if (input != NULL) {
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
+        AddLineToFile(output, PrependNBSP(input->ToString(false)));
+        AddLineToFile(output, wxT("  </SPAN>"));
+      }
     }
 
     MathCell *out = tmp->GetLabel();
-    if (out == NULL) {
+    if (out == NULL)
       AddLineToFile(output, wxEmptyString);
+    else if (tmp->GetGroupType() != GC_TYPE_CODE)
+    {
+      switch(tmp->GetGroupType()) {
+        case GC_TYPE_TEXT:
+          AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
+          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          break;
+        case GC_TYPE_SECTION:
+          AddLineToFile(output, wxT("<P CLASS=\"section\">"));
+          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          break;
+        case GC_TYPE_TITLE:
+          AddLineToFile(output, wxT("<P CLASS=\"title\">"));
+          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          break;
+        case GC_TYPE_IMAGE:
+        {
+          AddLineToFile(output, wxT("<P>"));
+          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
+          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+              filename +
+              wxString::Format(wxT("_%d.png\">"), count));
+          count++;
+        }
+        break;
+      }
     }
     else {
-      if (tmp->GetGroupType() != GC_TYPE_CODE)
-      {
-        switch(tmp->GetGroupType()) {
-          case GC_TYPE_TEXT:
-            AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-            break;
-          case GC_TYPE_SECTION:
-            AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-            break;
-          case GC_TYPE_TITLE:
-            AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-            break;
-        }
-        AddLineToFile(output, PrependNBSP(out->ToString(false)));
-      }
-      else {
-        CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-        AddLineToFile(output, wxT("  <BR>"));
-        AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-            filename +
-            wxString::Format(wxT("_%d.png\">"), count));
-        count++;
-      }
+      CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
+      AddLineToFile(output, wxT("  <BR>"));
+      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+          filename +
+          wxString::Format(wxT("_%d.png\">"), count));
+      count++;
     }
 
     AddLineToFile(output, wxT("</P>"));
