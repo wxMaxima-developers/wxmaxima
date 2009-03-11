@@ -50,7 +50,7 @@ void ImgCell::LoadImage(wxString image, bool remove)
 
   if (wxFileExists(image))
   {
-    wxImage pngImage(image, wxBITMAP_TYPE_PNG);
+    wxImage pngImage(image);
 
     if (pngImage.Ok())
     {
