@@ -207,7 +207,8 @@ enum {
   menu_recent_document_6,
   menu_recent_document_7,
   menu_recent_document_8,
-  menu_recent_document_9
+  menu_recent_document_9,
+  menu_insert_image
 };
 
 class wxMaximaFrame: public wxFrame

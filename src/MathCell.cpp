@@ -467,6 +467,9 @@ void MathCell::SetPen(CellParser& parser)
   else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
                 1, wxSOLID)));
+  else
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
+                    1, wxSOLID)));
 }
 
 /***

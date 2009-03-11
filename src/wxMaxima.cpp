@@ -355,7 +355,6 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
       type == MC_TYPE_SECTION || type == MC_TYPE_TITLE ||
       type == MC_TYPE_HEADER)
   {
-
     EditorCell* cell = new EditorCell();
 
     cell->SetValue(s);
@@ -778,7 +777,6 @@ void wxMaxima::ReadPrompt()
       if (o.StartsWith(wxT("(%i")))
       {
         m_lastPrompt = o;
-        GroupCell* tmp = m_console->m_evaluationQueue->GetFirst(); // last working group
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
@@ -999,6 +997,14 @@ void wxMaxima::ReadXmlFile(wxString file)
       DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
     }
 
+    else if (xml[i] == _T("<image>")) {
+      wxString content = wxEmptyString;
+      while (xml[++i] != _T("</image>"))
+        content += xml[i];
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
+    }
+
     else if (xml[i] == _T("<mth>")) {
       wxString content = _T("<mth>");
       while (xml[++i] != _T("</mth>"))
@@ -1011,6 +1017,9 @@ void wxMaxima::ReadXmlFile(wxString file)
 
 	wxEndBusyCursor();
 	m_console->Thaw();
+
+	m_fileSaved = false;
+	ResetTitle(true);
 }
 
 /***
@@ -1855,11 +1864,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
             if (inp[i] == wxT("input"))
               m_console->OpenHCaret(inp[i+1]);
             else if (inp[i] == wxT("comment"))
-              m_console->OpenHCaret(inp[i+1], MC_TYPE_TEXT);
+              m_console->OpenHCaret(inp[i+1], GC_TYPE_TEXT);
             else if (inp[i] == wxT("section"))
-              m_console->OpenHCaret(inp[i+1], MC_TYPE_SECTION);
+              m_console->OpenHCaret(inp[i+1], GC_TYPE_SECTION);
             else if (inp[i] == wxT("title"))
-              m_console->OpenHCaret(inp[i+1], MC_TYPE_TITLE);
+              m_console->OpenHCaret(inp[i+1], GC_TYPE_TITLE);
           }
           m_console->Thaw();
 
@@ -3200,24 +3209,32 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (group == NULL)
     return; //empty queue
 
-  group->GetInput()->AddEnding();
-  wxString text = group->GetInput()->ToString(false);
+  if (group->GetInput()->GetValue() != wxEmptyString)
+  {
+    group->GetInput()->AddEnding();
+    wxString text = group->GetInput()->ToString(false);
 
-  // override evaluation when input equals wxmaxima_debug_dump_output
-  if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-    m_console->m_evaluationQueue->RemoveFirst();
-    DumpProcessOutput();
-    return;
+    // override evaluation when input equals wxmaxima_debug_dump_output
+    if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
+      m_console->m_evaluationQueue->RemoveFirst();
+      DumpProcessOutput();
+      return;
+    }
+
+    group->RemoveOutput();
+
+    m_console->SetWorkingGroup(group);
+    group->GetPrompt()->SetValue(m_lastPrompt);
+    m_console->Recalculate();
+    m_console->ScrollToCell(group);
+
+    SendMaxima(text);
   }
-
-  group->RemoveOutput();
-
-  m_console->SetWorkingGroup(group);
-  group->GetPrompt()->SetValue(m_lastPrompt);
-  m_console->Recalculate();
-  m_console->ScrollToCell(group);
-
-  SendMaxima(text);
+  else
+  {
+    m_console->m_evaluationQueue->RemoveFirst();
+    TryEvaluateNextInQueue();
+  }
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
@@ -3230,20 +3247,34 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_insert_input:
 #endif
-    type = MC_TYPE_INPUT;
+    type = GC_TYPE_CODE;
     break;
   case menu_add_comment:
   case popid_add_comment:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_insert_text:
 #endif
-    type = MC_TYPE_TEXT;
+    type = GC_TYPE_TEXT;
     break;
   case menu_add_title:
-    type = MC_TYPE_TITLE;
+    type = GC_TYPE_TITLE;
     break;
   case menu_add_section:
-    type = MC_TYPE_SECTION;
+    type = GC_TYPE_SECTION;
+    break;
+  case menu_insert_image:
+    {
+      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+                                     wxEmptyString, wxEmptyString,
+                                     _("PNG image (*.png)|*.png|"
+                                       "JPEG image (*.jpg)|*.jpg|"
+                                       "Windows bitmap (*.bmp)|*.bmp|"
+                                       "X pixmap (*.xpm)|*.xpm"),
+                                     wxFD_OPEN);
+      if (file != wxEmptyString)
+        m_console->OpenHCaret(file, GC_TYPE_IMAGE);
+      return ;
+    }
     break;
   }
 
@@ -3535,4 +3566,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
+  EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
 END_EVENT_TABLE()

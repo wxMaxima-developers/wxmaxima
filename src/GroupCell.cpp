@@ -21,7 +21,7 @@
 #include "TextCell.h"
 #include "Bitmap.h"
 
-GroupCell::GroupCell() : MathCell()
+GroupCell::GroupCell(int groupType) : MathCell()
 {
   m_input = new TextCell(wxT(">>"));
   m_input->SetType(MC_TYPE_MAIN_PROMPT);
@@ -32,11 +32,11 @@ GroupCell::GroupCell() : MathCell()
   m_outputRect.height = 0;
   m_group = this;
   m_forceBreakLine = true;
-  m_special = false;
   m_type = MC_TYPE_GROUP;
   m_indent = MC_GROUP_LEFT_INDENT;
   m_hide = false;
   m_working = false;
+  m_groupType = groupType;
 }
 
 GroupCell::~GroupCell()
@@ -72,7 +72,7 @@ void GroupCell::DestroyOutput()
 
 MathCell* GroupCell::Copy(bool all)
 {
-  GroupCell* tmp = new GroupCell;
+  GroupCell* tmp = new GroupCell(m_groupType);
   CopyData(this, tmp);
   tmp->SetInput(m_input->Copy(true));
   if (m_output != NULL)
@@ -148,6 +148,22 @@ void GroupCell::AppendOutput(MathCell *cell)
 
   if (m_output == NULL) {
     m_output = cell;
+    // If there is no output yet and we add text/section/title/image cell
+    // we set m_groupType. This is to support loading wxmx files.
+    switch (cell->GetType()) {
+      case MC_TYPE_TEXT:
+        m_groupType = GC_TYPE_TEXT;
+        break;
+      case MC_TYPE_SECTION:
+        m_groupType = GC_TYPE_SECTION;
+        break;
+      case MC_TYPE_TITLE:
+        m_groupType = GC_TYPE_TITLE;
+        break;
+      case MC_TYPE_IMAGE: // Images produced with plot commands will have labels!
+        m_groupType = GC_TYPE_IMAGE;
+        break;
+    }
   }
   else {
     MathCell *tmp = m_output;
@@ -337,7 +353,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
                 point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
     // middle horizontal
-    if (!IsSpecial() && m_output != NULL && !m_hide) {
+    if (m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
       dc.DrawLine(point.x - SCALE_PX(6, scale),
                   point.y - m_center + m_input->GetMaxHeight(),
                   point.x - SCALE_PX(10, scale),
@@ -372,11 +388,11 @@ wxString GroupCell::ToString(bool all)
 wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
-  if (!IsSpecial()) {
+  if (m_groupType == GC_TYPE_CODE) {
     str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
   }
   if (m_output != NULL && !m_hide) {
-    if (IsSpecial()) {
+    if (m_groupType != GC_TYPE_CODE) {
       str = m_output->ToString(true);
       switch (m_output->GetStyle()) {
         case TS_TITLE:
@@ -542,7 +558,9 @@ void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
 
 MathCell *GroupCell::GetEditable()
 {
-  if (IsSpecial())
+  if (m_groupType == GC_TYPE_IMAGE)
+    return NULL;
+  if (m_groupType != GC_TYPE_CODE)
     return GetLabel();
   return GetInput();
 }

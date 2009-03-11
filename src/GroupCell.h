@@ -28,13 +28,14 @@ enum
   GC_TYPE_TITLE,
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
-  GC_TYPE_TEXT
+  GC_TYPE_TEXT,
+  GC_TYPE_IMAGE
 };
 
 class GroupCell: public MathCell
 {
 public:
-  GroupCell();
+  GroupCell(int type);
   ~GroupCell();
   void Destroy();
   void SetInput(MathCell *input);
@@ -51,8 +52,6 @@ public:
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   MathCell* GetEditable();
   wxRect GetOutputRect() { return m_outputRect; }
-  bool IsSpecial() { return m_special; }
-  void SetSpecial(bool special) { m_special = special; }
   void RemoveOutput();
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
@@ -68,10 +67,11 @@ public:
   wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
   bool IsHidden() { return m_hide; }
   void Hide(bool hide) { m_hide = hide; }
+  int GetGroupType() { return m_groupType; }
 protected:
+  int m_groupType;
   void DestroyOutput();
   MathCell *m_input, *m_output;
-  bool m_special;
   bool m_hide;
   bool m_working;
   int m_indent;

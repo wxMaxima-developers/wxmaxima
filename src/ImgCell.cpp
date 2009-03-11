@@ -143,6 +143,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     double scale = parser.GetScale();
     scale = MAX(scale, 1.0);
 
+    SetPen(parser);
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     if (scale != 1.0)

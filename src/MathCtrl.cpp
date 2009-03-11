@@ -278,12 +278,11 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 
   if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT)
   {
-    GroupCell *newGroup = new GroupCell;
+    GroupCell *newGroup = new GroupCell(GC_TYPE_TEXT);
     TextCell *prompt = new TextCell;
     prompt->SetValue(wxEmptyString);
     prompt->SetType(MC_TYPE_MAIN_PROMPT);
     newGroup->SetInput(prompt);
-    newGroup->SetSpecial(true);
     tmp = m_tree = m_last = newGroup;
   }
 
@@ -291,7 +290,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 
   if (newCell->GetType() == MC_TYPE_MAIN_PROMPT)
   {
-    GroupCell *newGroup = new GroupCell;
+    GroupCell *newGroup = new GroupCell(GC_TYPE_CODE);
     if (hide)
       newGroup->Hide(true);
     newGroup->SetInput(newCell);
@@ -312,11 +311,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 
   else
   {
-    if (newCell->GetType() == MC_TYPE_TITLE ||
-        newCell->GetType() == MC_TYPE_SECTION ||
-        newCell->GetType() == MC_TYPE_TEXT ||
-        newCell->GetType() == MC_TYPE_HEADER)
-      tmp->SetSpecial(true);
     tmp->AppendOutput(newCell);
     if (newCell->GetType() == MC_TYPE_PROMPT)
     {
@@ -360,74 +354,96 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
   else
     where = m_last;
 
-  GroupCell *newGroup = new GroupCell;
+  GroupCell *newGroup = new GroupCell(type);
 
   TextCell *prompt = new TextCell;
-  if (type == MC_TYPE_INPUT)
+  if (type == GC_TYPE_CODE)
     prompt->SetValue(wxT(">> "));
   else {
-    newGroup->SetSpecial(true);
     prompt->SetValue(wxEmptyString);
   }
   prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
   newGroup->SetInput(prompt);
 
-  EditorCell *newCell = new EditorCell;
-  newCell->SetType(type);
-  newCell->SetValue(value);
+  if (type == GC_TYPE_IMAGE)
+  {
+    ImgCell * image = new ImgCell;
 
-  if (type != MC_TYPE_INPUT)
-    newGroup->AppendOutput(newCell);
+    image->LoadImage(value, false);
+
+    newGroup->AppendOutput(image);
+  }
   else
-    newGroup->AppendInput(newCell);
+  {
+    EditorCell *newCell = new EditorCell;
+    switch (type) {
+      case GC_TYPE_CODE:
+        newCell->SetType(MC_TYPE_INPUT);
+        break;
+      case GC_TYPE_TEXT:
+        newCell->SetType(MC_TYPE_TEXT);
+        break;
+      case GC_TYPE_SECTION:
+        newCell->SetType(MC_TYPE_SECTION);
+        break;
+      case GC_TYPE_TITLE:
+        newCell->SetType(MC_TYPE_TITLE);
+        break;
+    }
+    newCell->SetValue(value);
+
+    if (type != GC_TYPE_CODE)
+      newGroup->AppendOutput(newCell);
+    else
+      newGroup->AppendInput(newCell);
+  }
 
   newGroup->SetParent(newGroup, false);
 
   if (m_tree == NULL) {
     m_tree = m_last = newGroup;
   }
+
+  else if (where == m_tree && prepend) {
+    newGroup->m_next = m_tree;
+    newGroup->m_nextToDraw = m_tree;
+    m_tree->m_previous = newGroup;
+    m_tree->m_previousToDraw = newGroup;
+    m_tree = newGroup;
+  }
+
+  else if (prepend) {
+    where->m_previous->m_next = newGroup;
+    where->m_previous->m_nextToDraw = newGroup;
+    newGroup->m_previous = where->m_previous;
+    newGroup->m_previousToDraw = where->m_previous;
+
+    newGroup->m_next = where;
+    newGroup->m_nextToDraw = where;
+    where->m_previous = newGroup;
+    where->m_previousToDraw = newGroup;
+  }
+
   else {
-    if (where == m_tree && prepend) {
-      newGroup->m_next = m_tree;
-      newGroup->m_nextToDraw = m_tree;
-      m_tree->m_previous = newGroup;
-      m_tree->m_previousToDraw = newGroup;
-      m_tree = newGroup;
-    }
+    if (where->m_next != NULL)
+      where->m_next->m_previous = newGroup;
+    if (where->m_nextToDraw != NULL)
+      where->m_next->m_previousToDraw = newGroup;
+    newGroup->m_next = where->m_next;
+    newGroup->m_nextToDraw = where->m_nextToDraw;
 
-    else {
-      if (prepend) {
-        where->m_previous->m_next = newGroup;
-        where->m_previous->m_nextToDraw = newGroup;
-        newGroup->m_previous = where->m_previous;
-        newGroup->m_previousToDraw = where->m_previous;
+    newGroup->m_previous = where;
+    newGroup->m_previousToDraw = where;
+    where->m_next = newGroup;
+    where->m_nextToDraw = newGroup;
 
-        newGroup->m_next = where;
-        newGroup->m_nextToDraw = where;
-        where->m_previous = newGroup;
-        where->m_previousToDraw = newGroup;
-      }
-      else {
-        if (where->m_next != NULL)
-          where->m_next->m_previous = newGroup;
-        if (where->m_nextToDraw != NULL)
-          where->m_next->m_previousToDraw = newGroup;
-        newGroup->m_next = where->m_next;
-        newGroup->m_nextToDraw = where->m_nextToDraw;
-
-        newGroup->m_previous = where;
-        newGroup->m_previousToDraw = where;
-        where->m_next = newGroup;
-        where->m_nextToDraw = newGroup;
-
-        if (where == m_last)
-          m_last = newGroup;
-      }
-    }
+    if (where == m_last)
+      m_last = newGroup;
   }
 
   SetActiveCell(NULL);
+  SetSelection(NULL);
 
   Recalculate();
 
@@ -999,39 +1015,36 @@ bool MathCtrl::CopyCells()
 
   while (tmp != NULL) {
 
-    if (!tmp->IsSpecial())
+    switch (tmp->GetType())
     {
-      s += wxT("/* [wxMaxima: input   start ] */\n");
-      s += tmp->GetInput()->ToString(false) + wxT("\n");
-      s += wxT("/* [wxMaxima: input   end   ] */\n");
-    }
-    else
-    {
-      switch (tmp->GetLabel()->GetStyle())
-      {
-        case TS_TEXT:
-          s += wxT("/* [wxMaxima: comment start ]\n");
-          s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("   [wxMaxima: comment end   ] */\n");
-          break;
-        case TS_SECTION:
-          s += wxT("/* [wxMaxima: section start ]\n");
-          s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("   [wxMaxima: section end   ] */\n");
-          break;
-        case TS_TITLE:
-          s += wxT("/* [wxMaxima: title   start ]\n");
-          s += tmp->GetLabel()->ToString(false) + wxT("\n");
-          s += wxT("   [wxMaxima: title   end   ] */\n");
-          break;
-      }
+      case GC_TYPE_CODE:
+        s += wxT("/* [wxMaxima: input   start ] */\n");
+        s += tmp->GetInput()->ToString(false) + wxT("\n");
+        s += wxT("/* [wxMaxima: input   end   ] */\n");
+        break;
+      case TS_TEXT:
+        s += wxT("/* [wxMaxima: comment start ]\n");
+        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += wxT("   [wxMaxima: comment end   ] */\n");
+        break;
+      case TS_SECTION:
+        s += wxT("/* [wxMaxima: section start ]\n");
+        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += wxT("   [wxMaxima: section end   ] */\n");
+        break;
+      case TS_TITLE:
+        s += wxT("/* [wxMaxima: title   start ]\n");
+        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += wxT("   [wxMaxima: title   end   ] */\n");
+        break;
     }
     if (tmp == end)
       break;
     tmp = (GroupCell *)tmp->m_next;
   }
 
-  if (wxTheClipboard->Open()) {
+  if (wxTheClipboard->Open())
+  {
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -1134,6 +1147,9 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
 {
   m_saved = false;
 
+  if (type == GC_TYPE_IMAGE && m_workingGroup != NULL)
+    return;
+
   if (m_workingGroup != NULL) {
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
@@ -1164,17 +1180,23 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   if (m_hCaretPosition != NULL) {
     SetSelection(m_hCaretPosition);
     GroupCell *group = PrependGroup(type, txt, false, false);
-    SetActiveCell(group->GetEditable());
-    ((EditorCell *)m_activeCell)->CaretToEnd();
-    ((EditorCell *)m_activeCell)->ClearUndo();
+    if (type != GC_TYPE_IMAGE)
+    {
+      SetActiveCell(group->GetEditable());
+      ((EditorCell *)m_activeCell)->CaretToEnd();
+      ((EditorCell *)m_activeCell)->ClearUndo();
+    }
     ScrollToCell(group);
   }
   else {
     SetSelection(m_tree);
     GroupCell *group = PrependGroup(type, txt, false, true);
-    SetActiveCell(group->GetEditable());
-    ((EditorCell *)m_activeCell)->CaretToEnd();
-    ((EditorCell *)m_activeCell)->ClearUndo();
+    if (type != GC_TYPE_IMAGE)
+    {
+      SetActiveCell(group->GetEditable());
+      ((EditorCell *)m_activeCell)->CaretToEnd();
+      ((EditorCell *)m_activeCell)->ClearUndo();
+    }
     ScrollToCell(group);
   }
 
@@ -1486,7 +1508,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             break;
           case WXK_RETURN:
             if (m_selectionStart == NULL || m_selectionEnd == NULL)
-              OpenHCaret(wxT("\n"));
+              OpenHCaret(wxEmptyString);
             else
               OpenHCaret(GetString());
             break;
@@ -2007,7 +2029,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     AddLineToFile(output, wxT("\n\n<!-- Input/Output group -->\n\n"));
 
     MathCell *prompt = tmp->GetPrompt();
-    if (prompt != NULL && !tmp->IsSpecial()) {
+    if (prompt != NULL && tmp->GetGroupType() == GC_TYPE_CODE) {
       AddLineToFile(output, wxT("<P>"));
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
       AddLineToFile(output, prompt->ToString(false));
@@ -2026,15 +2048,16 @@ bool MathCtrl::ExportToHTML(wxString file) {
       AddLineToFile(output, wxEmptyString);
     }
     else {
-      if (tmp->IsSpecial()) {
-        switch(out->GetType()) {
-          case MC_TYPE_TEXT:
+      if (tmp->GetGroupType() != GC_TYPE_CODE)
+      {
+        switch(tmp->GetGroupType()) {
+          case GC_TYPE_TEXT:
             AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
             break;
-          case MC_TYPE_SECTION:
+          case GC_TYPE_SECTION:
             AddLineToFile(output, wxT("<P CLASS=\"section\">"));
             break;
-          case MC_TYPE_TITLE:
+          case GC_TYPE_TITLE:
             AddLineToFile(output, wxT("<P CLASS=\"title\">"));
             break;
         }
@@ -2165,7 +2188,7 @@ bool MathCtrl::ExportToMAC(wxString file)
       AddLineToFile(output, wxEmptyString, false);
 
     // Write input
-    if (!tmp->IsSpecial()) {
+    if (tmp->GetGroupType() == GC_TYPE_CODE) {
       MathCell *txt = tmp->GetInput();
       if (txt != NULL) {
         wxString input = txt->ToString(false);
@@ -2257,8 +2280,9 @@ bool MathCtrl::ExportToWXMX(wxString file)
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
   while (tmp != NULL) {
+
     // Write input
-    if (!tmp->IsSpecial()) {
+    if (tmp->GetGroupType() == GC_TYPE_CODE) {
       MathCell *txt = tmp->GetInput();
       if (txt != NULL) {
         wxString input = txt->ToString(false);
@@ -2279,6 +2303,16 @@ bool MathCtrl::ExportToWXMX(wxString file)
         }
       }
     }
+
+    else if (tmp->GetGroupType() == GC_TYPE_IMAGE) {
+      MathCell * img = tmp->GetLabel();
+      if (img != NULL) {
+        output << wxT("<image>\n");
+        output << img->ToXml(true);
+        output << wxT("\n</image>\n");
+      }
+    }
+
     else {
       // Write text
       MathCell *txt = tmp->GetLabel();
@@ -2307,6 +2341,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
           break;
       }
     }
+
     tmp = (GroupCell *)tmp->m_next;
   }
   output << _T("</wxMaxima>");
@@ -2788,7 +2823,7 @@ void MathCtrl::RemoveAllOutput()
 
   while (tmp != NULL)
   {
-    if (!tmp->IsSpecial())
+    if (tmp->GetGroupType() == GC_TYPE_CODE)
       tmp->RemoveOutput();
     tmp = (GroupCell *)tmp->m_next;
   }
