@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 13:23+0100\n"
+"POT-Creation-Date: 2009-03-12 19:25+0100\n"
 "PO-Revision-Date: 2009-01-23 11:53+0300\n"
 "Last-Translator: Alexey Beshenov <al@beshenov.ru>\n"
 "MIME-Version: 1.0\n"
@@ -373,7 +373,7 @@ msgstr "Добавить равенство к упрощателю рациональных выражений"
 msgid "Add to &Path..."
 msgstr "Добавить к пути"
 
-#: ../src/Config.cpp:189
+#: ../src/Config.cpp:169
 msgid "Additional parameters for maxima (e.g. -l clisp)."
 msgstr "Дополнительные параметры команды maxima (например, -l clisp)"
 
@@ -381,7 +381,7 @@ msgstr "Дополнительные параметры команды maxima (например, -l clisp)"
 msgid "Additional parameters:"
 msgstr "Дополнительные параметры:"
 
-#: ../src/Config.cpp:201
+#: ../src/Config.cpp:181
 msgid "Adjustment for the size of greek font."
 msgstr "Корректировка размера греческого шрифта."
 
@@ -389,7 +389,7 @@ msgstr "Корректировка размера греческого шрифта."
 msgid "Adjustment:"
 msgstr "Корректировка:"
 
-#: ../src/Config.cpp:450
+#: ../src/Config.cpp:430
 msgid "All|*"
 msgstr "Все|*"
 
@@ -425,7 +425,7 @@ msgstr "BC2"
 msgid "Basic"
 msgstr "Обычная"
 
-#: ../src/Config.cpp:445
+#: ../src/Config.cpp:425
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Пакетные файлы (*.bat)|*.bat|Все|*"
 
@@ -434,7 +434,7 @@ msgstr "Пакетные файлы (*.bat)|*.bat|Все|*"
 msgid "Batch File"
 msgstr "Выполнить пакетный файл\tCtrl-S"
 
-#: ../src/Config.cpp:165
+#: ../src/Config.cpp:145
 msgid "Bold"
 msgstr "Жирный"
 
@@ -492,8 +492,8 @@ msgstr "Вычислить произведения"
 msgid "Calculate sums"
 msgstr "Вычислить суммы"
 
-#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46 ../src/Config.cpp:173
-#: ../src/Config.cpp:175 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
+#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46 ../src/Config.cpp:153
+#: ../src/Config.cpp:155 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
 #: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:44 ../src/Gen3Wiz.cpp:49
 #: ../src/Gen3Wiz.cpp:51 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:57
 #: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61
@@ -544,7 +544,7 @@ msgid "Chinese traditional"
 msgstr ""
 
 #: ../src/Config.cpp:109 ../src/Config.cpp:111 ../src/Config.cpp:116
-#: ../src/Config.cpp:163
+#: ../src/Config.cpp:143
 msgid "Choose font"
 msgstr "Выбор шрифта"
 
@@ -598,11 +598,11 @@ msgstr ""
 "Вычислить наменьший общий множитель (выполните load(functs) перед "
 "использованием)"
 
-#: ../src/Config.cpp:1045 ../src/Config.cpp:1053
+#: ../src/Config.cpp:1025 ../src/Config.cpp:1033
 msgid "Config file (*.ini)|*.ini"
 msgstr ""
 
-#: ../src/Config.cpp:925
+#: ../src/Config.cpp:905
 msgid "Configuration warning"
 msgstr "Предупреждение о настройке"
 
@@ -732,7 +732,7 @@ msgstr "Копировать выделение в документе как изображение"
 msgid "Copy selection from document in LaTeX format"
 msgstr "Копировать выделение из документа в формате TeX"
 
-#: ../src/Config.cpp:202
+#: ../src/Config.cpp:182
 #, fuzzy
 msgid "Copy selection to clipboard when selection is made in document."
 msgstr ""
@@ -989,7 +989,7 @@ msgstr "Введите новый формат графиков:"
 msgid "Enter new precision:"
 msgstr "Введите новую точность:"
 
-#: ../src/Config.cpp:188
+#: ../src/Config.cpp:168
 msgid "Enter the path to the maxima executable."
 msgstr "Введите путь к исполняемому файлу maxima."
 
@@ -1011,7 +1011,7 @@ msgstr "Уравнение:"
 msgid "Equations:"
 msgstr "Уравнения:"
 
-#: ../src/Config.cpp:459 ../src/ImgCell.cpp:71 ../src/wxMaxima.cpp:222
+#: ../src/Config.cpp:439 ../src/ImgCell.cpp:71 ../src/wxMaxima.cpp:222
 #: ../src/wxMaxima.cpp:343 ../src/wxMaxima.cpp:1282
 msgid "Error"
 msgstr "Ошибка"
@@ -1063,7 +1063,7 @@ msgstr "Вычислить все невычисляемые (noun) формы в выражении"
 msgid "Example"
 msgstr "Пример"
 
-#: ../src/Config.cpp:1004 ../src/Config.cpp:1086
+#: ../src/Config.cpp:984 ../src/Config.cpp:1066
 msgid "Example text"
 msgstr "Текст примера"
 
@@ -1220,17 +1220,17 @@ msgstr ""
 msgid "Fixed font in text controls"
 msgstr "Фиксированный шрифт в элементах управления"
 
-#: ../src/Config.cpp:198
+#: ../src/Config.cpp:178
 #, fuzzy
 msgid "Font used for display in document."
 msgstr "Шрифт, используемый в консоли."
 
-#: ../src/Config.cpp:200
+#: ../src/Config.cpp:180
 #, fuzzy
 msgid "Font used for displaying greek characters in document."
 msgstr "Шрифт для изображения греческих букв в консоли."
 
-#: ../src/Config.cpp:205
+#: ../src/Config.cpp:185
 #, fuzzy
 msgid "Font used for displaying unicode glyphs in document."
 msgstr "Шрифт для изображения символов юникода в консоли."
@@ -1493,7 +1493,7 @@ msgstr "Прервать"
 msgid "Interrupt current computation"
 msgstr "Прервать текущее вычисление"
 
-#: ../src/Config.cpp:458
+#: ../src/Config.cpp:438
 msgid ""
 "Invalid entry for maxima program.\n"
 "\n"
@@ -1516,7 +1516,7 @@ msgstr "Обратное преобразование Лапласа ..."
 msgid "Italian"
 msgstr "Итальянский"
 
-#: ../src/Config.cpp:166
+#: ../src/Config.cpp:146
 msgid "Italic"
 msgstr "Курсив"
 
@@ -1524,7 +1524,7 @@ msgstr "Курсив"
 msgid "LCM"
 msgstr "НОК"
 
-#: ../src/Config.cpp:194
+#: ../src/Config.cpp:174
 msgid "Language used for wxMaxima GUI."
 msgstr "Язык, используемый в интерфейсе wxMaxima."
 
@@ -1558,7 +1558,7 @@ msgstr "Предел ..."
 msgid "List:"
 msgstr "Список:"
 
-#: ../src/Config.cpp:169
+#: ../src/Config.cpp:149
 msgid "Load"
 msgstr ""
 
@@ -1577,7 +1577,7 @@ msgstr "Загрузить программу для maxima при помощи команды batch"
 msgid "Load a Maxima package file"
 msgstr "Загрузить пакет Maxima"
 
-#: ../src/Config.cpp:1051
+#: ../src/Config.cpp:1031
 #, fuzzy
 msgid "Load style from file"
 msgstr "Прочитать сессию из файла"
@@ -1742,8 +1742,8 @@ msgstr "Число уравнений:"
 msgid "Numbers"
 msgstr "Числа"
 
-#: ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:172
-#: ../src/Config.cpp:176 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
+#: ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:152
+#: ../src/Config.cpp:156 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
 #: ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:48
 #: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:54 ../src/Gen4Wiz.cpp:58
 #: ../src/IntegrateWiz.cpp:58 ../src/IntegrateWiz.cpp:62
@@ -1794,7 +1794,7 @@ msgstr ""
 msgid "Open document"
 msgstr "Напечатать документ"
 
-#: ../src/Config.cpp:381 ../src/wxMaximaFrame.cpp:669
+#: ../src/Config.cpp:361 ../src/wxMaximaFrame.cpp:669
 #: ../src/wxMaximaFrame.cpp:730
 msgid "Options"
 msgstr "Опции"
@@ -1871,7 +1871,7 @@ msgstr "Вставить текст из буфера обмена"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Настройте wxMaxima при помощи команды 'Правка->Настройка'."
 
-#: ../src/Config.cpp:924
+#: ../src/Config.cpp:904
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Перезапустите wxMaxima, чтобы изменения вступили в силу!"
 
@@ -2040,7 +2040,7 @@ msgstr "Строки:"
 msgid "Russian"
 msgstr "Русский"
 
-#: ../src/Config.cpp:170 ../src/wxMaximaFrame.cpp:660
+#: ../src/Config.cpp:150 ../src/wxMaximaFrame.cpp:660
 #: ../src/wxMaximaFrame.cpp:719
 msgid "Save"
 msgstr "Сохранить"
@@ -2093,7 +2093,7 @@ msgstr "Копировать выделение из документа в файл"
 msgid "Save selection to file"
 msgstr "Сохранить выделение в файле"
 
-#: ../src/Config.cpp:1043
+#: ../src/Config.cpp:1023
 #, fuzzy
 msgid "Save style to file"
 msgstr "Сохранить график в файл"
@@ -2102,7 +2102,7 @@ msgstr "Сохранить график в файл"
 msgid "Save wxMaxima window size/position"
 msgstr "Сохранить положение и размер окна wxMaxima"
 
-#: ../src/Config.cpp:191
+#: ../src/Config.cpp:171
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "Запоминать положение и размер окна wxMaxima между сессиями"
 
@@ -2133,7 +2133,7 @@ msgstr "Выбрать файл для ввода"
 msgid "Select math display algorithm"
 msgstr "Выбрать способ отображения"
 
-#: ../src/Config.cpp:443 ../src/Config.cpp:448
+#: ../src/Config.cpp:423 ../src/Config.cpp:428
 msgid "Select maxima program"
 msgstr "Выбрать программу Maxima"
 
@@ -2164,7 +2164,7 @@ msgstr "Установить точность..."
 msgid "Set bigfloat precision"
 msgstr "Установить точность вычислений с плавающей точкой"
 
-#: ../src/Config.cpp:196 ../src/Config.cpp:197
+#: ../src/Config.cpp:176 ../src/Config.cpp:177
 msgid "Set fixed font in text controls."
 msgstr "Установить фиксированный шрифт в элементах ввода."
 
@@ -2233,7 +2233,7 @@ msgstr "Показать определенные переменные"
 msgid "Show definition of a function"
 msgstr "Показать определение функции"
 
-#: ../src/Config.cpp:195
+#: ../src/Config.cpp:175
 msgid "Show initial header with Maxima system information."
 msgstr "Показывать начальный заголовок с информацией о Maxima."
 
@@ -2241,7 +2241,7 @@ msgstr "Показывать начальный заголовок с информацией о Maxima."
 msgid "Show long expressions"
 msgstr "Показывать длинные выражения"
 
-#: ../src/Config.cpp:193
+#: ../src/Config.cpp:173
 #, fuzzy
 msgid "Show long expressions in wxMaxima document."
 msgstr "Показывать длинные выражения в консоли wxMaxima."
@@ -2418,7 +2418,7 @@ msgstr ""
 msgid "Strings"
 msgstr "Строки"
 
-#: ../src/Config.cpp:382
+#: ../src/Config.cpp:362
 msgid "Style"
 msgstr "Стиль"
 
@@ -2462,7 +2462,7 @@ msgstr "&Удалить поля"
 msgid "Text cell background"
 msgstr "Фон текста"
 
-#: ../src/Config.cpp:207
+#: ../src/Config.cpp:187
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "Порт, используемый по умолчанию для связи программ Maxima и wxMaxima."
 
@@ -2553,7 +2553,7 @@ msgstr "Тип:"
 msgid "Ukrainian"
 msgstr "Украинский"
 
-#: ../src/Config.cpp:167
+#: ../src/Config.cpp:147
 msgid "Underlined"
 msgstr "Подчеркивание"
 
@@ -2578,11 +2578,11 @@ msgstr "Верхняя граница:"
 msgid "Use Gosper algorithm"
 msgstr "Использовать алгоритм Госпера"
 
-#: ../src/Config.cpp:106 ../src/Config.cpp:203
+#: ../src/Config.cpp:106 ../src/Config.cpp:183
 msgid "Use centered dot character for multiplication"
 msgstr ""
 
-#: ../src/Config.cpp:199
+#: ../src/Config.cpp:179
 msgid "Use greek font to display greek characters."
 msgstr "Использовать греческий шрифт для отображения греческих букв"
 
@@ -2629,7 +2629,7 @@ msgstr "Добро пожаловать в wxMaxima"
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../src/Config.cpp:192
+#: ../src/Config.cpp:172
 msgid "Write matching parenthesis in text controls."
 msgstr "Писать соответствующие скобки в текстовых элементах управления."
 
@@ -2655,73 +2655,9 @@ msgstr "[ не сохранено* ]"
 msgid "antisymmetric"
 msgstr "антисимметричная"
 
-#: ../src/Config.cpp:145
-msgid "aquamarine"
-msgstr "аквамарин"
-
-#: ../src/Config.cpp:145
-msgid "black"
-msgstr "черный"
-
-#: ../src/Config.cpp:145
-msgid "blue"
-msgstr "синий"
-
-#: ../src/Config.cpp:145
-msgid "blue violet"
-msgstr "сине-фиолетовый"
-
 #: ../src/LimitWiz.cpp:39
 msgid "both sides"
 msgstr "двусторонний"
-
-#: ../src/Config.cpp:146
-msgid "brown"
-msgstr "коричневый"
-
-#: ../src/Config.cpp:146
-msgid "cadet blue"
-msgstr "кадетский синий"
-
-#: ../src/Config.cpp:146
-msgid "coral"
-msgstr "коралловый"
-
-#: ../src/Config.cpp:146
-msgid "cornflower blue"
-msgstr "васильковый"
-
-#: ../src/Config.cpp:147
-msgid "cyan"
-msgstr "голубой"
-
-#: ../src/Config.cpp:147
-msgid "dark green"
-msgstr "темно-зеленый"
-
-#: ../src/Config.cpp:147
-msgid "dark grey"
-msgstr "темно-серый"
-
-#: ../src/Config.cpp:147
-msgid "dark olive green"
-msgstr "темно-оливковый"
-
-#: ../src/Config.cpp:148
-msgid "dark orchid"
-msgstr "темная орхидея"
-
-#: ../src/Config.cpp:148
-msgid "dark slate blue"
-msgstr "темный серовато-синий"
-
-#: ../src/Config.cpp:148
-msgid "dark slate grey"
-msgstr "темный сероватый"
-
-#: ../src/Config.cpp:149
-msgid "dark turquoise"
-msgstr "темно-бирюзовый"
 
 #: ../src/Plot2dWiz.cpp:71 ../src/Plot2dWiz.cpp:368 ../src/Plot3dWiz.cpp:72
 #: ../src/Plot3dWiz.cpp:388
@@ -2732,45 +2668,9 @@ msgstr "по умолчанию"
 msgid "diagonal"
 msgstr "диагональная"
 
-#: ../src/Config.cpp:149
-msgid "dim grey"
-msgstr "тускло-серый"
-
-#: ../src/Config.cpp:149
-msgid "firebrick"
-msgstr "кирпичный"
-
-#: ../src/Config.cpp:149
-msgid "forest green"
-msgstr "лесной зеленый"
-
 #: ../src/MatWiz.cpp:163
 msgid "general"
 msgstr "общая"
-
-#: ../src/Config.cpp:150
-msgid "gold"
-msgstr "золотой"
-
-#: ../src/Config.cpp:150
-msgid "goldenrod"
-msgstr "золотистый"
-
-#: ../src/Config.cpp:150
-msgid "green"
-msgstr "зеленый"
-
-#: ../src/Config.cpp:150
-msgid "green yellow"
-msgstr "зелено-желтый"
-
-#: ../src/Config.cpp:150
-msgid "grey"
-msgstr "серый"
-
-#: ../src/Config.cpp:151
-msgid "indian red"
-msgstr "индийский красный"
 
 #: ../src/Plot2dWiz.cpp:72 ../src/Plot2dWiz.cpp:197 ../src/Plot2dWiz.cpp:368
 #: ../src/Plot2dWiz.cpp:389 ../src/Plot3dWiz.cpp:73 ../src/Plot3dWiz.cpp:205
@@ -2778,165 +2678,17 @@ msgstr "индийский красный"
 msgid "inline"
 msgstr "встроенный"
 
-#: ../src/Config.cpp:151
-msgid "khaki"
-msgstr "хаки"
-
 #: ../src/LimitWiz.cpp:40 ../src/LimitWiz.cpp:121
 msgid "left"
 msgstr "слева"
-
-#: ../src/Config.cpp:151
-msgid "light blue"
-msgstr "светло-синий"
-
-#: ../src/Config.cpp:151
-msgid "light grey"
-msgstr "светло-серый"
-
-#: ../src/Config.cpp:152
-msgid "light steel blue"
-msgstr "светло-стальной"
-
-#: ../src/Config.cpp:152
-msgid "lime green"
-msgstr "зеленый лайм"
-
-#: ../src/Config.cpp:152
-msgid "magenta"
-msgstr "пурпурный"
-
-#: ../src/Config.cpp:152
-msgid "maroon"
-msgstr "каштановый"
-
-#: ../src/Config.cpp:153
-msgid "medium aquamarine"
-msgstr "средний аквамарин"
-
-#: ../src/Config.cpp:153
-msgid "medium blue"
-msgstr "средний синий"
-
-#: ../src/Config.cpp:153
-msgid "medium forrest green"
-msgstr "средний лесной зеленый"
-
-#: ../src/Config.cpp:154
-msgid "medium goldenrod"
-msgstr "средний золотистый"
-
-#: ../src/Config.cpp:154
-msgid "medium orchid"
-msgstr "средняя орхидея"
-
-#: ../src/Config.cpp:154
-msgid "medium sea green"
-msgstr "средняя морская зелень"
-
-#: ../src/Config.cpp:155
-msgid "medium slate blue"
-msgstr "средний серовато-синий"
-
-#: ../src/Config.cpp:155
-msgid "medium spring green"
-msgstr "средняя весенняя зелень"
-
-#: ../src/Config.cpp:155
-msgid "medium turquoise"
-msgstr "средний бирюзовый"
-
-#: ../src/Config.cpp:156
-msgid "medium violet red"
-msgstr "средний фиолетово-красный"
-
-#: ../src/Config.cpp:156
-msgid "midnight blue"
-msgstr "полночный синий"
-
-#: ../src/Config.cpp:156
-msgid "navy"
-msgstr "морской"
-
-#: ../src/Config.cpp:156
-msgid "orange"
-msgstr "оранжевый"
-
-#: ../src/Config.cpp:157
-msgid "orange red"
-msgstr "оранжево-красный"
-
-#: ../src/Config.cpp:157
-msgid "orchid"
-msgstr "орхидея"
-
-#: ../src/Config.cpp:157
-msgid "pale green"
-msgstr "бледно-зеленый"
-
-#: ../src/Config.cpp:157
-msgid "pink"
-msgstr "розовый"
-
-#: ../src/Config.cpp:157
-msgid "plum"
-msgstr "сливовый"
-
-#: ../src/Config.cpp:158
-msgid "purple"
-msgstr "пурпурный"
-
-#: ../src/Config.cpp:158
-msgid "red"
-msgstr "красный"
 
 #: ../src/LimitWiz.cpp:41 ../src/LimitWiz.cpp:123
 msgid "right"
 msgstr "справа"
 
-#: ../src/Config.cpp:158
-msgid "salmon"
-msgstr "семга"
-
-#: ../src/Config.cpp:158
-msgid "sea green"
-msgstr "морской зеленый"
-
-#: ../src/Config.cpp:158
-msgid "sienna"
-msgstr "сиена"
-
-#: ../src/Config.cpp:159
-msgid "sky blue"
-msgstr "небесно-голубой"
-
-#: ../src/Config.cpp:159
-msgid "slate blue"
-msgstr "серовато-голубой"
-
-#: ../src/Config.cpp:159
-msgid "spring green"
-msgstr "весенний зеленый"
-
-#: ../src/Config.cpp:159
-msgid "steel blue"
-msgstr "стальной"
-
 #: ../src/MatWiz.cpp:165
 msgid "symmetric"
 msgstr "симметричная"
-
-#: ../src/Config.cpp:160
-msgid "tan"
-msgstr "желто-коричневый"
-
-#: ../src/Config.cpp:160
-msgid "thistle"
-msgstr "чертополох"
-
-#: ../src/Config.cpp:160
-msgid "turquoise"
-msgstr "бирюзовый"
 
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1599
 msgid "untitled"
@@ -2945,22 +2697,6 @@ msgstr "без названия"
 #: ../src/wxMaxima.cpp:1572
 msgid "untitled.wxm"
 msgstr "untitled.wxm"
-
-#: ../src/Config.cpp:160
-msgid "violet"
-msgstr "фиолетовый"
-
-#: ../src/Config.cpp:160
-msgid "violet red"
-msgstr "фиолетово-красный"
-
-#: ../src/Config.cpp:161
-msgid "wheat"
-msgstr "пшеничный"
-
-#: ../src/Config.cpp:161
-msgid "white"
-msgstr "белый"
 
 #: ../src/main.cpp:131 ../src/wxMaxima.cpp:2867
 msgid "wxMaxima"
@@ -2972,7 +2708,7 @@ msgstr "wxMaxima"
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
 
-#: ../src/Config.cpp:186 ../src/wxMaxima.cpp:1679
+#: ../src/Config.cpp:166 ../src/wxMaxima.cpp:1679
 msgid "wxMaxima configuration"
 msgstr "Конфигурация wxMaxima"
 
@@ -3051,13 +2787,209 @@ msgstr "Опции wxMaxima"
 msgid "wxMaxima session (*.wxm)|*.wxm"
 msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
 
-#: ../src/Config.cpp:161
-msgid "yellow"
-msgstr "желтый"
+#~ msgid "aquamarine"
+#~ msgstr "аквамарин"
 
-#: ../src/Config.cpp:161
-msgid "yellow green"
-msgstr "желто-зеленый"
+#~ msgid "black"
+#~ msgstr "черный"
+
+#~ msgid "blue"
+#~ msgstr "синий"
+
+#~ msgid "blue violet"
+#~ msgstr "сине-фиолетовый"
+
+#~ msgid "brown"
+#~ msgstr "коричневый"
+
+#~ msgid "cadet blue"
+#~ msgstr "кадетский синий"
+
+#~ msgid "coral"
+#~ msgstr "коралловый"
+
+#~ msgid "cornflower blue"
+#~ msgstr "васильковый"
+
+#~ msgid "cyan"
+#~ msgstr "голубой"
+
+#~ msgid "dark green"
+#~ msgstr "темно-зеленый"
+
+#~ msgid "dark grey"
+#~ msgstr "темно-серый"
+
+#~ msgid "dark olive green"
+#~ msgstr "темно-оливковый"
+
+#~ msgid "dark orchid"
+#~ msgstr "темная орхидея"
+
+#~ msgid "dark slate blue"
+#~ msgstr "темный серовато-синий"
+
+#~ msgid "dark slate grey"
+#~ msgstr "темный сероватый"
+
+#~ msgid "dark turquoise"
+#~ msgstr "темно-бирюзовый"
+
+#~ msgid "dim grey"
+#~ msgstr "тускло-серый"
+
+#~ msgid "firebrick"
+#~ msgstr "кирпичный"
+
+#~ msgid "forest green"
+#~ msgstr "лесной зеленый"
+
+#~ msgid "gold"
+#~ msgstr "золотой"
+
+#~ msgid "goldenrod"
+#~ msgstr "золотистый"
+
+#~ msgid "green"
+#~ msgstr "зеленый"
+
+#~ msgid "green yellow"
+#~ msgstr "зелено-желтый"
+
+#~ msgid "grey"
+#~ msgstr "серый"
+
+#~ msgid "indian red"
+#~ msgstr "индийский красный"
+
+#~ msgid "khaki"
+#~ msgstr "хаки"
+
+#~ msgid "light blue"
+#~ msgstr "светло-синий"
+
+#~ msgid "light grey"
+#~ msgstr "светло-серый"
+
+#~ msgid "light steel blue"
+#~ msgstr "светло-стальной"
+
+#~ msgid "lime green"
+#~ msgstr "зеленый лайм"
+
+#~ msgid "magenta"
+#~ msgstr "пурпурный"
+
+#~ msgid "maroon"
+#~ msgstr "каштановый"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "средний аквамарин"
+
+#~ msgid "medium blue"
+#~ msgstr "средний синий"
+
+#~ msgid "medium forrest green"
+#~ msgstr "средний лесной зеленый"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "средний золотистый"
+
+#~ msgid "medium orchid"
+#~ msgstr "средняя орхидея"
+
+#~ msgid "medium sea green"
+#~ msgstr "средняя морская зелень"
+
+#~ msgid "medium slate blue"
+#~ msgstr "средний серовато-синий"
+
+#~ msgid "medium spring green"
+#~ msgstr "средняя весенняя зелень"
+
+#~ msgid "medium turquoise"
+#~ msgstr "средний бирюзовый"
+
+#~ msgid "medium violet red"
+#~ msgstr "средний фиолетово-красный"
+
+#~ msgid "midnight blue"
+#~ msgstr "полночный синий"
+
+#~ msgid "navy"
+#~ msgstr "морской"
+
+#~ msgid "orange"
+#~ msgstr "оранжевый"
+
+#~ msgid "orange red"
+#~ msgstr "оранжево-красный"
+
+#~ msgid "orchid"
+#~ msgstr "орхидея"
+
+#~ msgid "pale green"
+#~ msgstr "бледно-зеленый"
+
+#~ msgid "pink"
+#~ msgstr "розовый"
+
+#~ msgid "plum"
+#~ msgstr "сливовый"
+
+#~ msgid "purple"
+#~ msgstr "пурпурный"
+
+#~ msgid "red"
+#~ msgstr "красный"
+
+#~ msgid "salmon"
+#~ msgstr "семга"
+
+#~ msgid "sea green"
+#~ msgstr "морской зеленый"
+
+#~ msgid "sienna"
+#~ msgstr "сиена"
+
+#~ msgid "sky blue"
+#~ msgstr "небесно-голубой"
+
+#~ msgid "slate blue"
+#~ msgstr "серовато-голубой"
+
+#~ msgid "spring green"
+#~ msgstr "весенний зеленый"
+
+#~ msgid "steel blue"
+#~ msgstr "стальной"
+
+#~ msgid "tan"
+#~ msgstr "желто-коричневый"
+
+#~ msgid "thistle"
+#~ msgstr "чертополох"
+
+#~ msgid "turquoise"
+#~ msgstr "бирюзовый"
+
+#~ msgid "violet"
+#~ msgstr "фиолетовый"
+
+#~ msgid "violet red"
+#~ msgstr "фиолетово-красный"
+
+#~ msgid "wheat"
+#~ msgstr "пшеничный"
+
+#~ msgid "white"
+#~ msgstr "белый"
+
+#~ msgid "yellow"
+#~ msgstr "желтый"
+
+#~ msgid "yellow green"
+#~ msgstr "желто-зеленый"
 
 #~ msgid " << Unfold >>"
 #~ msgstr "<< Развернуть >>"

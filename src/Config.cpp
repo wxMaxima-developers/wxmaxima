@@ -140,26 +140,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Selection")
     };
   m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(150, -1), 21, m_styleFor_choices, wxLB_SINGLE);
-  const wxString m_styleColor_choices[] =
-    {
-      _("aquamarine"), _("black"), _("blue"), _("blue violet"),
-      _("brown"), _("cadet blue"), _("coral"), _("cornflower blue"),
-      _("cyan"), _("dark grey"), _("dark green"), _("dark olive green"),
-      _("dark orchid"), _("dark slate blue"), _("dark slate grey"),
-      _("dark turquoise"), _("dim grey"), _("firebrick"), _("forest green"),
-      _("gold"), _("goldenrod"), _("grey"), _("green"), _("green yellow"),
-      _("indian red"), _("khaki"), _("light blue"), _("light grey"),
-      _("light steel blue"), _("lime green"), _("magenta"), _("maroon"),
-      _("medium aquamarine"), _("medium blue"), _("medium forrest green"),
-      _("medium goldenrod"), _("medium orchid"), _("medium sea green"),
-      _("medium slate blue"), _("medium spring green"), _("medium turquoise"),
-      _("medium violet red"), _("midnight blue"), _("navy"), _("orange"),
-      _("orange red"), _("orchid"), _("pale green"), _("pink"), _("plum"),
-      _("purple"), _("red"), _("salmon"), _("sea green"), _("sienna"),
-      _("sky blue"), _("slate blue"), _("spring green"), _("steel blue"),
-      _("tan"), _("thistle"), _("turquoise"), _("violet"), _("violet red"),
-      _("wheat"), _("white"), _("yellow"), _("yellow green")
-    };
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
   m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));

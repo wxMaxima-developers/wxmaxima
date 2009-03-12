@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 13:23+0100\n"
+"POT-Creation-Date: 2009-03-12 19:25+0100\n"
 "PO-Revision-Date: 2009-01-30 11:58+0800\n"
 "Last-Translator: 洪信安 <rabbit@ctu.edu.tw>\n"
 "Language-Team: Traditional Chinese Translation Team <zh-l10n@linux.org.tw>\n"
@@ -367,7 +367,7 @@ msgstr "新增等式到有理化簡功能"
 msgid "Add to &Path..."
 msgstr "加入路徑(&p)"
 
-#: ../src/Config.cpp:189
+#: ../src/Config.cpp:169
 msgid "Additional parameters for maxima (e.g. -l clisp)."
 msgstr "其他 maxima 參數(如 -l clisp)."
 
@@ -375,7 +375,7 @@ msgstr "其他 maxima 參數(如 -l clisp)."
 msgid "Additional parameters:"
 msgstr "其他參數:"
 
-#: ../src/Config.cpp:201
+#: ../src/Config.cpp:181
 msgid "Adjustment for the size of greek font."
 msgstr "調整希臘字型的大小."
 
@@ -383,7 +383,7 @@ msgstr "調整希臘字型的大小."
 msgid "Adjustment:"
 msgstr "調整:"
 
-#: ../src/Config.cpp:450
+#: ../src/Config.cpp:430
 msgid "All|*"
 msgstr "所有|*"
 
@@ -419,7 +419,7 @@ msgstr "邊界條件2"
 msgid "Basic"
 msgstr "基礎"
 
-#: ../src/Config.cpp:445
+#: ../src/Config.cpp:425
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批次檔(*.bat)|*.bat|所有|*"
 
@@ -428,7 +428,7 @@ msgstr "批次檔(*.bat)|*.bat|所有|*"
 msgid "Batch File"
 msgstr "批次檔(&B)\tCtrl-B"
 
-#: ../src/Config.cpp:165
+#: ../src/Config.cpp:145
 msgid "Bold"
 msgstr "粗體"
 
@@ -486,8 +486,8 @@ msgstr "計算乘積"
 msgid "Calculate sums"
 msgstr "計算總和"
 
-#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46 ../src/Config.cpp:173
-#: ../src/Config.cpp:175 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
+#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46 ../src/Config.cpp:153
+#: ../src/Config.cpp:155 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
 #: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:44 ../src/Gen3Wiz.cpp:49
 #: ../src/Gen3Wiz.cpp:51 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:57
 #: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61
@@ -538,7 +538,7 @@ msgid "Chinese traditional"
 msgstr ""
 
 #: ../src/Config.cpp:109 ../src/Config.cpp:111 ../src/Config.cpp:116
-#: ../src/Config.cpp:163
+#: ../src/Config.cpp:143
 msgid "Choose font"
 msgstr "選取字型"
 
@@ -590,11 +590,11 @@ msgstr "求反矩陣"
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "求最小公倍數 (先執行 load(functs) )"
 
-#: ../src/Config.cpp:1045 ../src/Config.cpp:1053
+#: ../src/Config.cpp:1025 ../src/Config.cpp:1033
 msgid "Config file (*.ini)|*.ini"
 msgstr ""
 
-#: ../src/Config.cpp:925
+#: ../src/Config.cpp:905
 msgid "Configuration warning"
 msgstr "設定情形之警告"
 
@@ -717,7 +717,7 @@ msgstr "用影像格式複製文件之選取區域"
 msgid "Copy selection from document in LaTeX format"
 msgstr "用 TeX 格式複製文件之選取區域"
 
-#: ../src/Config.cpp:202
+#: ../src/Config.cpp:182
 #, fuzzy
 msgid "Copy selection to clipboard when selection is made in document."
 msgstr "當輸出入顯示區有選取區域時，將其複製到剪貼簿."
@@ -974,7 +974,7 @@ msgstr "輸入新的繪圖格式:"
 msgid "Enter new precision:"
 msgstr "輸入新的精確度:"
 
-#: ../src/Config.cpp:188
+#: ../src/Config.cpp:168
 msgid "Enter the path to the maxima executable."
 msgstr "輸入 maxima 的可執行路徑"
 
@@ -996,7 +996,7 @@ msgstr "方程式:"
 msgid "Equations:"
 msgstr "方程式:"
 
-#: ../src/Config.cpp:459 ../src/ImgCell.cpp:71 ../src/wxMaxima.cpp:222
+#: ../src/Config.cpp:439 ../src/ImgCell.cpp:71 ../src/wxMaxima.cpp:222
 #: ../src/wxMaxima.cpp:343 ../src/wxMaxima.cpp:1282
 msgid "Error"
 msgstr "錯誤"
@@ -1048,7 +1048,7 @@ msgstr "計算數式中的所有 '名詞' 型式"
 msgid "Example"
 msgstr "範例"
 
-#: ../src/Config.cpp:1004 ../src/Config.cpp:1086
+#: ../src/Config.cpp:984 ../src/Config.cpp:1066
 msgid "Example text"
 msgstr "範例文字"
 
@@ -1205,17 +1205,17 @@ msgstr "求根"
 msgid "Fixed font in text controls"
 msgstr "於文字控制時固定字型"
 
-#: ../src/Config.cpp:198
+#: ../src/Config.cpp:178
 #, fuzzy
 msgid "Font used for display in document."
 msgstr "輸出入顯示區的字型."
 
-#: ../src/Config.cpp:200
+#: ../src/Config.cpp:180
 #, fuzzy
 msgid "Font used for displaying greek characters in document."
 msgstr "輸出入顯示區希臘字元的字型."
 
-#: ../src/Config.cpp:205
+#: ../src/Config.cpp:185
 #, fuzzy
 msgid "Font used for displaying unicode glyphs in document."
 msgstr "用於顯示輸出入顯示區的萬國碼 '字形' 的字型."
@@ -1478,7 +1478,7 @@ msgstr "中斷"
 msgid "Interrupt current computation"
 msgstr "中斷現在的計算"
 
-#: ../src/Config.cpp:458
+#: ../src/Config.cpp:438
 msgid ""
 "Invalid entry for maxima program.\n"
 "\n"
@@ -1501,7 +1501,7 @@ msgstr "Laplace 反轉換(&r) ..."
 msgid "Italian"
 msgstr "義大利語"
 
-#: ../src/Config.cpp:166
+#: ../src/Config.cpp:146
 msgid "Italic"
 msgstr "斜體"
 
@@ -1509,7 +1509,7 @@ msgstr "斜體"
 msgid "LCM"
 msgstr "最小公倍數"
 
-#: ../src/Config.cpp:194
+#: ../src/Config.cpp:174
 msgid "Language used for wxMaxima GUI."
 msgstr "用於 wxMaxima 圖形化使用者介面的語言."
 
@@ -1543,7 +1543,7 @@ msgstr "極限..."
 msgid "List:"
 msgstr "產生列表(&l) ..."
 
-#: ../src/Config.cpp:169
+#: ../src/Config.cpp:149
 msgid "Load"
 msgstr ""
 
@@ -1562,7 +1562,7 @@ msgstr "用批次命令載入 maxima 檔案"
 msgid "Load a Maxima package file"
 msgstr "載入 maxima 程式集檔案"
 
-#: ../src/Config.cpp:1051
+#: ../src/Config.cpp:1031
 msgid "Load style from file"
 msgstr ""
 
@@ -1727,8 +1727,8 @@ msgstr "方程式個數:"
 msgid "Numbers"
 msgstr "數字"
 
-#: ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:172
-#: ../src/Config.cpp:176 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
+#: ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:152
+#: ../src/Config.cpp:156 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
 #: ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:48
 #: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:54 ../src/Gen4Wiz.cpp:58
 #: ../src/IntegrateWiz.cpp:58 ../src/IntegrateWiz.cpp:62
@@ -1779,7 +1779,7 @@ msgstr "開啟新視窗"
 msgid "Open document"
 msgstr "列印文件"
 
-#: ../src/Config.cpp:381 ../src/wxMaximaFrame.cpp:669
+#: ../src/Config.cpp:361 ../src/wxMaximaFrame.cpp:669
 #: ../src/wxMaximaFrame.cpp:730
 msgid "Options"
 msgstr "選項"
@@ -1856,7 +1856,7 @@ msgstr "從剪貼簿貼上文字"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "請用 '編輯->設定' 來設定 wxMaxima."
 
-#: ../src/Config.cpp:924
+#: ../src/Config.cpp:904
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "請重新啟動 wxMaxima, 使設定變更生效!"
 
@@ -2025,7 +2025,7 @@ msgstr "列:"
 msgid "Russian"
 msgstr "俄語"
 
-#: ../src/Config.cpp:170 ../src/wxMaximaFrame.cpp:660
+#: ../src/Config.cpp:150 ../src/wxMaximaFrame.cpp:660
 #: ../src/wxMaximaFrame.cpp:719
 msgid "Save"
 msgstr "儲存"
@@ -2078,7 +2078,7 @@ msgstr "複製文件之選取區域到檔案"
 msgid "Save selection to file"
 msgstr "儲存選取區域到檔案"
 
-#: ../src/Config.cpp:1043
+#: ../src/Config.cpp:1023
 #, fuzzy
 msgid "Save style to file"
 msgstr "儲存繪圖到檔案"
@@ -2087,7 +2087,7 @@ msgstr "儲存繪圖到檔案"
 msgid "Save wxMaxima window size/position"
 msgstr "儲存 wxMaxima 視窗大小/位置"
 
-#: ../src/Config.cpp:191
+#: ../src/Config.cpp:171
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "儲存會話間的 wxMaxima 視窗大小/位置"
 
@@ -2118,7 +2118,7 @@ msgstr "選擇欲開啟的檔案"
 msgid "Select math display algorithm"
 msgstr "選擇數學顯示之演算法"
 
-#: ../src/Config.cpp:443 ../src/Config.cpp:448
+#: ../src/Config.cpp:423 ../src/Config.cpp:428
 msgid "Select maxima program"
 msgstr "選擇 maxima 程式"
 
@@ -2149,7 +2149,7 @@ msgstr "設定精確度(&p) ..."
 msgid "Set bigfloat precision"
 msgstr "設定浮點數之精確度"
 
-#: ../src/Config.cpp:196 ../src/Config.cpp:197
+#: ../src/Config.cpp:176 ../src/Config.cpp:177
 msgid "Set fixed font in text controls."
 msgstr "於文字控制時設定固定字型."
 
@@ -2218,7 +2218,7 @@ msgstr "顯示已定義之變數"
 msgid "Show definition of a function"
 msgstr "顯示函數之定義"
 
-#: ../src/Config.cpp:195
+#: ../src/Config.cpp:175
 msgid "Show initial header with Maxima system information."
 msgstr "利用 maxima 的系統資訊顯示初始標頭."
 
@@ -2226,7 +2226,7 @@ msgstr "利用 maxima 的系統資訊顯示初始標頭."
 msgid "Show long expressions"
 msgstr "顯示較長的數式"
 
-#: ../src/Config.cpp:193
+#: ../src/Config.cpp:173
 #, fuzzy
 msgid "Show long expressions in wxMaxima document."
 msgstr "在 wxMaxima 輸出入顯示區顯示較長的數式."
@@ -2401,7 +2401,7 @@ msgstr "動畫結束"
 msgid "Strings"
 msgstr "字串"
 
-#: ../src/Config.cpp:382
+#: ../src/Config.cpp:362
 msgid "Style"
 msgstr "樣式"
 
@@ -2445,7 +2445,7 @@ msgstr "剪下單元"
 msgid "Text cell background"
 msgstr "文字背景"
 
-#: ../src/Config.cpp:207
+#: ../src/Config.cpp:187
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "Maxima 與 wxMaxima 之間預設的通訊埠."
 
@@ -2536,7 +2536,7 @@ msgstr "類型:"
 msgid "Ukrainian"
 msgstr "烏克蘭語"
 
-#: ../src/Config.cpp:167
+#: ../src/Config.cpp:147
 msgid "Underlined"
 msgstr "加底線"
 
@@ -2561,11 +2561,11 @@ msgstr "上界:"
 msgid "Use Gosper algorithm"
 msgstr "用 Gosper 演算法"
 
-#: ../src/Config.cpp:106 ../src/Config.cpp:203
+#: ../src/Config.cpp:106 ../src/Config.cpp:183
 msgid "Use centered dot character for multiplication"
 msgstr "用置中的逗號字元作為乘號"
 
-#: ../src/Config.cpp:199
+#: ../src/Config.cpp:179
 msgid "Use greek font to display greek characters."
 msgstr "用希臘字型來顯示希臘字元."
 
@@ -2612,7 +2612,7 @@ msgstr "歡迎使用 wxMaxima"
 msgid "Width:"
 msgstr "寬度:"
 
-#: ../src/Config.cpp:192
+#: ../src/Config.cpp:172
 msgid "Write matching parenthesis in text controls."
 msgstr "在文字控制時填寫匹配的括號"
 
@@ -2638,73 +2638,9 @@ msgstr "[ 未儲存* ]"
 msgid "antisymmetric"
 msgstr "反對稱"
 
-#: ../src/Config.cpp:145
-msgid "aquamarine"
-msgstr "水綠"
-
-#: ../src/Config.cpp:145
-msgid "black"
-msgstr "黑"
-
-#: ../src/Config.cpp:145
-msgid "blue"
-msgstr "藍"
-
-#: ../src/Config.cpp:145
-msgid "blue violet"
-msgstr "藍紫羅蘭"
-
 #: ../src/LimitWiz.cpp:39
 msgid "both sides"
 msgstr "兩邊"
-
-#: ../src/Config.cpp:146
-msgid "brown"
-msgstr "棕"
-
-#: ../src/Config.cpp:146
-msgid "cadet blue"
-msgstr "軍校生藍"
-
-#: ../src/Config.cpp:146
-msgid "coral"
-msgstr "珊瑚紅"
-
-#: ../src/Config.cpp:146
-msgid "cornflower blue"
-msgstr "矢車菊藍"
-
-#: ../src/Config.cpp:147
-msgid "cyan"
-msgstr "青綠"
-
-#: ../src/Config.cpp:147
-msgid "dark green"
-msgstr "深綠"
-
-#: ../src/Config.cpp:147
-msgid "dark grey"
-msgstr "深灰"
-
-#: ../src/Config.cpp:147
-msgid "dark olive green"
-msgstr "深橄欖綠"
-
-#: ../src/Config.cpp:148
-msgid "dark orchid"
-msgstr "深淡紫"
-
-#: ../src/Config.cpp:148
-msgid "dark slate blue"
-msgstr "深藍灰"
-
-#: ../src/Config.cpp:148
-msgid "dark slate grey"
-msgstr "暗灰藍"
-
-#: ../src/Config.cpp:149
-msgid "dark turquoise"
-msgstr "深藍綠"
 
 #: ../src/Plot2dWiz.cpp:71 ../src/Plot2dWiz.cpp:368 ../src/Plot3dWiz.cpp:72
 #: ../src/Plot3dWiz.cpp:388
@@ -2715,45 +2651,9 @@ msgstr "預設"
 msgid "diagonal"
 msgstr "對角的"
 
-#: ../src/Config.cpp:149
-msgid "dim grey"
-msgstr "黯淡灰"
-
-#: ../src/Config.cpp:149
-msgid "firebrick"
-msgstr "耐火磚"
-
-#: ../src/Config.cpp:149
-msgid "forest green"
-msgstr "森林綠"
-
 #: ../src/MatWiz.cpp:163
 msgid "general"
 msgstr "一般"
-
-#: ../src/Config.cpp:150
-msgid "gold"
-msgstr "金色"
-
-#: ../src/Config.cpp:150
-msgid "goldenrod"
-msgstr "菊色"
-
-#: ../src/Config.cpp:150
-msgid "green"
-msgstr "綠"
-
-#: ../src/Config.cpp:150
-msgid "green yellow"
-msgstr "綠黃色"
-
-#: ../src/Config.cpp:150
-msgid "grey"
-msgstr "灰色"
-
-#: ../src/Config.cpp:151
-msgid "indian red"
-msgstr "印地安紅"
 
 #: ../src/Plot2dWiz.cpp:72 ../src/Plot2dWiz.cpp:197 ../src/Plot2dWiz.cpp:368
 #: ../src/Plot2dWiz.cpp:389 ../src/Plot3dWiz.cpp:73 ../src/Plot3dWiz.cpp:205
@@ -2761,165 +2661,17 @@ msgstr "印地安紅"
 msgid "inline"
 msgstr "列在一起"
 
-#: ../src/Config.cpp:151
-msgid "khaki"
-msgstr "卡其色"
-
 #: ../src/LimitWiz.cpp:40 ../src/LimitWiz.cpp:121
 msgid "left"
 msgstr "左"
-
-#: ../src/Config.cpp:151
-msgid "light blue"
-msgstr "淺藍"
-
-#: ../src/Config.cpp:151
-msgid "light grey"
-msgstr "淺灰"
-
-#: ../src/Config.cpp:152
-msgid "light steel blue"
-msgstr "淺鋼青色"
-
-#: ../src/Config.cpp:152
-msgid "lime green"
-msgstr "淡黃綠"
-
-#: ../src/Config.cpp:152
-msgid "magenta"
-msgstr "洋紅"
-
-#: ../src/Config.cpp:152
-msgid "maroon"
-msgstr "粟色"
-
-#: ../src/Config.cpp:153
-msgid "medium aquamarine"
-msgstr "中水綠色"
-
-#: ../src/Config.cpp:153
-msgid "medium blue"
-msgstr "中藍"
-
-#: ../src/Config.cpp:153
-msgid "medium forrest green"
-msgstr "中森林綠"
-
-#: ../src/Config.cpp:154
-msgid "medium goldenrod"
-msgstr "中菊"
-
-#: ../src/Config.cpp:154
-msgid "medium orchid"
-msgstr "中淡紫色"
-
-#: ../src/Config.cpp:154
-msgid "medium sea green"
-msgstr "中海綠"
-
-#: ../src/Config.cpp:155
-msgid "medium slate blue"
-msgstr "中灰藍色"
-
-#: ../src/Config.cpp:155
-msgid "medium spring green"
-msgstr "中春綠色"
-
-#: ../src/Config.cpp:155
-msgid "medium turquoise"
-msgstr "中藍綠色"
-
-#: ../src/Config.cpp:156
-msgid "medium violet red"
-msgstr "中紫羅蘭紅"
-
-#: ../src/Config.cpp:156
-msgid "midnight blue"
-msgstr "藍黑色"
-
-#: ../src/Config.cpp:156
-msgid "navy"
-msgstr "海軍"
-
-#: ../src/Config.cpp:156
-msgid "orange"
-msgstr "橙黃"
-
-#: ../src/Config.cpp:157
-msgid "orange red"
-msgstr "橙紅"
-
-#: ../src/Config.cpp:157
-msgid "orchid"
-msgstr "淡紫色"
-
-#: ../src/Config.cpp:157
-msgid "pale green"
-msgstr "淡綠"
-
-#: ../src/Config.cpp:157
-msgid "pink"
-msgstr "粉紅"
-
-#: ../src/Config.cpp:157
-msgid "plum"
-msgstr "青紫色"
-
-#: ../src/Config.cpp:158
-msgid "purple"
-msgstr "紫"
-
-#: ../src/Config.cpp:158
-msgid "red"
-msgstr "紅"
 
 #: ../src/LimitWiz.cpp:41 ../src/LimitWiz.cpp:123
 msgid "right"
 msgstr "右"
 
-#: ../src/Config.cpp:158
-msgid "salmon"
-msgstr "淺橙色"
-
-#: ../src/Config.cpp:158
-msgid "sea green"
-msgstr "海綠"
-
-#: ../src/Config.cpp:158
-msgid "sienna"
-msgstr "黃褐色"
-
-#: ../src/Config.cpp:159
-msgid "sky blue"
-msgstr "天藍"
-
-#: ../src/Config.cpp:159
-msgid "slate blue"
-msgstr "灰藍"
-
-#: ../src/Config.cpp:159
-msgid "spring green"
-msgstr "春綠色"
-
-#: ../src/Config.cpp:159
-msgid "steel blue"
-msgstr "鋼青色"
-
 #: ../src/MatWiz.cpp:165
 msgid "symmetric"
 msgstr "對稱"
-
-#: ../src/Config.cpp:160
-msgid "tan"
-msgstr "棕褐色"
-
-#: ../src/Config.cpp:160
-msgid "thistle"
-msgstr "薊"
-
-#: ../src/Config.cpp:160
-msgid "turquoise"
-msgstr "藍綠色"
 
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1599
 msgid "untitled"
@@ -2928,22 +2680,6 @@ msgstr "無標題"
 #: ../src/wxMaxima.cpp:1572
 msgid "untitled.wxm"
 msgstr "無標題.wxm"
-
-#: ../src/Config.cpp:160
-msgid "violet"
-msgstr "紫蘿蘭"
-
-#: ../src/Config.cpp:160
-msgid "violet red"
-msgstr "紫蘿蘭紅"
-
-#: ../src/Config.cpp:161
-msgid "wheat"
-msgstr "小麥"
-
-#: ../src/Config.cpp:161
-msgid "white"
-msgstr "白"
 
 #: ../src/main.cpp:131 ../src/wxMaxima.cpp:2867
 msgid "wxMaxima"
@@ -2955,7 +2691,7 @@ msgstr "wxMaxima"
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: ../src/Config.cpp:186 ../src/wxMaxima.cpp:1679
+#: ../src/Config.cpp:166 ../src/wxMaxima.cpp:1679
 msgid "wxMaxima configuration"
 msgstr "wxMaxima 設定"
 
@@ -3034,13 +2770,209 @@ msgstr "wxMaxima 選項"
 msgid "wxMaxima session (*.wxm)|*.wxm"
 msgstr "wxMaxima 會話 (*.wxm)|*.wxm"
 
-#: ../src/Config.cpp:161
-msgid "yellow"
-msgstr "黃色"
+#~ msgid "aquamarine"
+#~ msgstr "水綠"
 
-#: ../src/Config.cpp:161
-msgid "yellow green"
-msgstr "黃綠色"
+#~ msgid "black"
+#~ msgstr "黑"
+
+#~ msgid "blue"
+#~ msgstr "藍"
+
+#~ msgid "blue violet"
+#~ msgstr "藍紫羅蘭"
+
+#~ msgid "brown"
+#~ msgstr "棕"
+
+#~ msgid "cadet blue"
+#~ msgstr "軍校生藍"
+
+#~ msgid "coral"
+#~ msgstr "珊瑚紅"
+
+#~ msgid "cornflower blue"
+#~ msgstr "矢車菊藍"
+
+#~ msgid "cyan"
+#~ msgstr "青綠"
+
+#~ msgid "dark green"
+#~ msgstr "深綠"
+
+#~ msgid "dark grey"
+#~ msgstr "深灰"
+
+#~ msgid "dark olive green"
+#~ msgstr "深橄欖綠"
+
+#~ msgid "dark orchid"
+#~ msgstr "深淡紫"
+
+#~ msgid "dark slate blue"
+#~ msgstr "深藍灰"
+
+#~ msgid "dark slate grey"
+#~ msgstr "暗灰藍"
+
+#~ msgid "dark turquoise"
+#~ msgstr "深藍綠"
+
+#~ msgid "dim grey"
+#~ msgstr "黯淡灰"
+
+#~ msgid "firebrick"
+#~ msgstr "耐火磚"
+
+#~ msgid "forest green"
+#~ msgstr "森林綠"
+
+#~ msgid "gold"
+#~ msgstr "金色"
+
+#~ msgid "goldenrod"
+#~ msgstr "菊色"
+
+#~ msgid "green"
+#~ msgstr "綠"
+
+#~ msgid "green yellow"
+#~ msgstr "綠黃色"
+
+#~ msgid "grey"
+#~ msgstr "灰色"
+
+#~ msgid "indian red"
+#~ msgstr "印地安紅"
+
+#~ msgid "khaki"
+#~ msgstr "卡其色"
+
+#~ msgid "light blue"
+#~ msgstr "淺藍"
+
+#~ msgid "light grey"
+#~ msgstr "淺灰"
+
+#~ msgid "light steel blue"
+#~ msgstr "淺鋼青色"
+
+#~ msgid "lime green"
+#~ msgstr "淡黃綠"
+
+#~ msgid "magenta"
+#~ msgstr "洋紅"
+
+#~ msgid "maroon"
+#~ msgstr "粟色"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "中水綠色"
+
+#~ msgid "medium blue"
+#~ msgstr "中藍"
+
+#~ msgid "medium forrest green"
+#~ msgstr "中森林綠"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "中菊"
+
+#~ msgid "medium orchid"
+#~ msgstr "中淡紫色"
+
+#~ msgid "medium sea green"
+#~ msgstr "中海綠"
+
+#~ msgid "medium slate blue"
+#~ msgstr "中灰藍色"
+
+#~ msgid "medium spring green"
+#~ msgstr "中春綠色"
+
+#~ msgid "medium turquoise"
+#~ msgstr "中藍綠色"
+
+#~ msgid "medium violet red"
+#~ msgstr "中紫羅蘭紅"
+
+#~ msgid "midnight blue"
+#~ msgstr "藍黑色"
+
+#~ msgid "navy"
+#~ msgstr "海軍"
+
+#~ msgid "orange"
+#~ msgstr "橙黃"
+
+#~ msgid "orange red"
+#~ msgstr "橙紅"
+
+#~ msgid "orchid"
+#~ msgstr "淡紫色"
+
+#~ msgid "pale green"
+#~ msgstr "淡綠"
+
+#~ msgid "pink"
+#~ msgstr "粉紅"
+
+#~ msgid "plum"
+#~ msgstr "青紫色"
+
+#~ msgid "purple"
+#~ msgstr "紫"
+
+#~ msgid "red"
+#~ msgstr "紅"
+
+#~ msgid "salmon"
+#~ msgstr "淺橙色"
+
+#~ msgid "sea green"
+#~ msgstr "海綠"
+
+#~ msgid "sienna"
+#~ msgstr "黃褐色"
+
+#~ msgid "sky blue"
+#~ msgstr "天藍"
+
+#~ msgid "slate blue"
+#~ msgstr "灰藍"
+
+#~ msgid "spring green"
+#~ msgstr "春綠色"
+
+#~ msgid "steel blue"
+#~ msgstr "鋼青色"
+
+#~ msgid "tan"
+#~ msgstr "棕褐色"
+
+#~ msgid "thistle"
+#~ msgstr "薊"
+
+#~ msgid "turquoise"
+#~ msgstr "藍綠色"
+
+#~ msgid "violet"
+#~ msgstr "紫蘿蘭"
+
+#~ msgid "violet red"
+#~ msgstr "紫蘿蘭紅"
+
+#~ msgid "wheat"
+#~ msgstr "小麥"
+
+#~ msgid "white"
+#~ msgstr "白"
+
+#~ msgid "yellow"
+#~ msgstr "黃色"
+
+#~ msgid "yellow green"
+#~ msgstr "黃綠色"
 
 #~ msgid " << Unfold >>"
 #~ msgstr "<< 展開 >>"
