@@ -1357,7 +1357,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      wxString title(_("wxMaxima session"));
+      wxString title(_("wxMaxima document"));
       if (m_currentFile.Length())
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, NULL);
       MathPrintout printout(title);
@@ -1522,10 +1522,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           return;
       }
 
-      wxString file = wxFileSelector(_("Select file to open"), m_lastPath,
+      wxString file = wxFileSelector(_("Open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima session (*.wxm)|*.wxm|"
-                                       "wxMaxima xml session (*.wxmx)|*.wxmx"),
+                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
                                      wxFD_OPEN);
       OpenFile(file);
     }
@@ -1536,10 +1535,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file(_("untitled"));
       if (m_currentFile.Length() >0)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Save to file"), m_lastPath,
+      file = wxFileSelector(_("Save As"), m_lastPath,
                             file + wxT(".wxm"), wxT("wxm"),
-                            _("wxMaxima session (*.wxm)|*.wxm|"
-                              "wxMaxima xml session (*.wxmx)|*.wxmx|"
+                            _("wxMaxima document (*.wxm)|*.wxm|"
+                              "wxMaxima xml document (*.wxmx)|*.wxmx|"
                               "Maxima batch file (*.mac)|*.mac|"
                               "All|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1569,10 +1568,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file = m_currentFile;
       if (m_currentFile.Length() == 0)
       {
-        file = wxFileSelector(_("Save to file"), m_lastPath,
+        file = wxFileSelector(_("Save As"), m_lastPath,
                               _("untitled.wxm"), wxT("wxm"),
-                              _("wxMaxima session (*.wxm)|*.wxm|"
-                                "wxMaxima xml session (*.wxmx)|*.wxmx|"
+                              _("wxMaxima document (*.wxm)|*.wxm|"
+                                "wxMaxima xml document (*.wxmx)|*.wxmx|"
                                 "Maxima batch file (*.mac)|*.mac|"
                                 "All|*"),
                               wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1600,7 +1599,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString file(_("untitled"));
       if (m_currentFile.Length() >0)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Export to HTML file"), m_lastPath,
+      file = wxFileSelector(_("Export"), m_lastPath,
                             file + wxT(".html"), wxT("html"),
                             _("HTML file (*.html)|*.html|"
                               "pdfLaTeX file (*.tex)|*.tex|"
@@ -1628,7 +1627,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case menu_load_id:
     {
-      wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
+      wxString file = wxFileSelector(_("Load Package"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac|"
                                        "Lisp package (*.lisp)|*.lisp|All|*"),
@@ -1639,7 +1638,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case menu_batch_id:
     {
-      wxString file = wxFileSelector(_("Select package to load"), m_lastPath,
+      wxString file = wxFileSelector(_("Batch File"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac"),
                                      wxFD_OPEN);
@@ -1731,7 +1730,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_copy_to_file:
     {
-      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+      wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
                                      wxT("image.png"), wxT("png"),
                                      _("PNG image (*.png)|*.png|"
                                        "JPEG image (*.jpg)|*.jpg|"
@@ -3264,12 +3263,9 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     break;
   case menu_insert_image:
     {
-      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+      wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("PNG image (*.png)|*.png|"
-                                       "JPEG image (*.jpg)|*.jpg|"
-                                       "Windows bitmap (*.bmp)|*.bmp|"
-                                       "X pixmap (*.xpm)|*.xpm"),
+                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
         m_console->OpenHCaret(file, GC_TYPE_IMAGE);

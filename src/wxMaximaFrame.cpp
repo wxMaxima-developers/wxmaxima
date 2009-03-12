@@ -221,7 +221,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_1->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As..."),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
                    _("Save document as ..."), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
                              _("Load a Maxima package file"), wxITEM_NORMAL);
@@ -298,9 +298,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Insert a new title cell"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
-  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove Output"),
+  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Outputs"),
                             _("Remove output from input cells"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image"),
+  wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                               _("Insert image"), wxITEM_NORMAL);
 
   wxglade_tmp_menu_2->AppendSeparator();
