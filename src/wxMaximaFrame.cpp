@@ -794,8 +794,14 @@ void wxMaximaFrame::SaveRecentDocuments()
 {
   wxConfigBase *config = wxConfig::Get();
 
-  for (int i=0; i<m_recentDocuments.Count(); i++)
-  {
+  // Delete previous recent documents
+  for (int i=0; i<10; i++) {
+    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
+    config->DeleteEntry(recent);
+  }
+
+  // Save new recent documents
+  for (int i=0; i<m_recentDocuments.Count(); i++) {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     config->Write(recent, m_recentDocuments[i]);
   }
