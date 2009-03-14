@@ -193,7 +193,7 @@ wxString SlideShow::ToXml(bool all)
   int j = 1;
   do {
     images = wxT("image");
-    images << j++;
+    images << j++ << wxT(".png");
     filename = wxFileName::GetTempDir() + images;
   } while (wxFileExists(filename));
 
@@ -203,7 +203,7 @@ wxString SlideShow::ToXml(bool all)
     if(bitmap->SaveFile(filename, wxBITMAP_TYPE_PNG))
       s += images + wxT(";");
     images = wxT("image");
-    images << j++;
+    images << j++ << wxT(".png");
   }
 
   return wxT("\n<slide>") + s + wxT("</slide>") +

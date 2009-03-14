@@ -189,7 +189,7 @@ wxString ImgCell::ToXml(bool all)
 	int i = 1;
 	do {
 		basename = wxT("image");
-		basename << i++;
+		basename << i++ << wxT(".png");
 		filename = wxFileName::GetTempDir() + basename;
 	} while( wxFileExists(filename) );
 	if(image.SaveFile( filename, wxBITMAP_TYPE_PNG))

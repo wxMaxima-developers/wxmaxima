@@ -926,13 +926,14 @@ void wxMaxima::ReadXmlFile(wxString file)
     entry = zip.GetNextEntry();
     wxString name = entry->GetName();
 
-    if (name != _T("out")) {
+    if (name != _T("document.xml")) {
       wxImage img;
       if (img.LoadFile(zip, wxBITMAP_TYPE_PNG))
       {
-        wxString basename;
-        wxFileName::SplitPath(name, NULL, NULL, &basename, NULL);
-        img.SaveFile(wxFileName::GetTempDir() + basename, wxBITMAP_TYPE_PNG);
+        wxString basename, suffix;
+        wxFileName::SplitPath(name, NULL, NULL, &basename, &suffix);
+        img.SaveFile(wxFileName::GetTempDir() + basename + wxT(".") + suffix,
+            wxBITMAP_TYPE_PNG);
       }
     }
 

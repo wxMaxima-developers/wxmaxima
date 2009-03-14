@@ -2261,7 +2261,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
 
-  zip.PutNextEntry(_T("out"));
+  zip.PutNextEntry(_T("document.xml"));
   output << _T("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
   output << _T("<wxMaxima>\n");
 
@@ -2336,15 +2336,16 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   wxString images = wxFileName::GetTempDir() + _T("image");
   int i = 1;
-  images<<i++;
-  while( wxFileExists(images) ){
+  images << i++ << wxT(".png");
+  while( wxFileExists(images) )
+  {
     zip.PutNextEntry(images);
     wxFileInputStream png(images);
     while(!png.Eof())
       png.Read(zip);
     wxRemoveFile(images);
     images = wxFileName::GetTempDir() + _T("image");
-    images<<i++;
+    images << i++ << wxT(".png");
   }
 
   return true;
