@@ -139,7 +139,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Cursor"),
       _("Selection")
     };
-  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(150, -1), 21, m_styleFor_choices, wxLB_SINGLE);
+  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 21, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
   m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
