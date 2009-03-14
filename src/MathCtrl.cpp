@@ -2334,18 +2334,20 @@ bool MathCtrl::ExportToWXMX(wxString file)
   }
   output << _T("</wxMaxima>");
 
-  wxString images = wxFileName::GetTempDir() + _T("image");
+  wxString name = _T("image1.png");
+  wxString fullname = wxFileName::GetTempDir() + name;
   int i = 1;
-  images << i++ << wxT(".png");
-  while( wxFileExists(images) )
+  while( wxFileExists(fullname) )
   {
-    zip.PutNextEntry(images);
-    wxFileInputStream png(images);
-    while(!png.Eof())
-      png.Read(zip);
-    wxRemoveFile(images);
-    images = wxFileName::GetTempDir() + _T("image");
-    images << i++ << wxT(".png");
+    zip.PutNextEntry(name);
+    wxFileInputStream imagefile(fullname);
+    while(!imagefile.Eof())
+      imagefile.Read(zip);
+    wxRemoveFile(fullname);
+    i++; // next file
+    name = _T("image");
+    name << i << wxT(".png");
+    fullname = wxFileName::GetTempDir() + name;
   }
 
   return true;
