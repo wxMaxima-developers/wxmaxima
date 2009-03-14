@@ -34,13 +34,32 @@
             <array>
                 <string>wxm</string>
             </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>wxm.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-wxm</string>
                 <string>text/x-po</string>
             </array>
             <key>CFBundleTypeName</key>
-            <string>wxMaxima</string>
+            <string>wxMaxima Document</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>wxmx</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>wxmx.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-wxm</string>
+                <string>text/x-po</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>wxMaxima XML Document</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
         </dict>
