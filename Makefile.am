@@ -9,6 +9,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/toolbar/save.png art/toolbar/text.png       \
              art/toolbar/playback-start.png                  \
              art/toolbar/playback-stop.png                   \
+             art/wxm.icns art/wxmx.icns                      \
              art/maximaicon.ico art/wxmac.icns
 
 docdir = ${datadir}/wxMaxima
@@ -19,6 +20,8 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources
 	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp art/wxmac.icns wxMaxima.app/Contents/Resources
+	cp art/wxm.icns wxMaxima.app/Contents/Resources
+	cp art/wxmx.icns wxMaxima.app/Contents/Resources
 	cp data/Info.plist wxMaxima.app/Contents
 	cp data/PkgInfo wxMaxima.app/Contents
 	cp src/wxmaxima wxMaxima.app/Contents/MacOS
