@@ -2262,12 +2262,15 @@ bool MathCtrl::ExportToWXMX(wxString file)
   wxTextOutputStream output(zip);
 
   zip.PutNextEntry(_T("document.xml"));
-  output << _T("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+  output << _T("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
   output << _T("<wxMaxima>\n");
 
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
   while (tmp != NULL) {
+
+    if (tmp->IsHidden())
+      output << wxT("<hide-group/>\n");
 
     // Write input
     if (tmp->GetGroupType() == GC_TYPE_CODE) {

@@ -273,6 +273,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     while (s.Length() > 0)
     {
       int start = s.Find(wxT("<mth"));
+
       if (start == -1) {
         t = s;
         t.Trim();
@@ -947,6 +948,8 @@ void wxMaxima::ReadXmlFile(wxString file)
     delete entry;
 	}
 
+	bool hide = false;
+
   for(int i = 2; i < xml.GetCount(); i++ )
   {
 
@@ -958,8 +961,9 @@ void wxMaxima::ReadXmlFile(wxString file)
           content += wxT("\n");
         content += xml[i];
       }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       DoRawConsoleAppend(content, MC_TYPE_TITLE);
+      hide = false;
     }
 
     else if (xml[i] == _T("<section>")) {
@@ -970,8 +974,9 @@ void wxMaxima::ReadXmlFile(wxString file)
           content += wxT("\n");
         content += xml[i];
       }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       DoRawConsoleAppend(content, MC_TYPE_SECTION);
+      hide = false;
     }
 
     else if (xml[i] == _T("<comment>")) {
@@ -982,8 +987,9 @@ void wxMaxima::ReadXmlFile(wxString file)
           content += wxT("\n");
         content += xml[i];
       }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
       DoRawConsoleAppend(content, MC_TYPE_TEXT);
+      hide = false;
     }
 
     else if (xml[i] == _T("<input>")) {
@@ -994,23 +1000,30 @@ void wxMaxima::ReadXmlFile(wxString file)
           content += wxT("\n");
         content += xml[i];
       }
-      DoRawConsoleAppend(wxT(">>"), MC_TYPE_MAIN_PROMPT );
+      DoRawConsoleAppend(wxT(">>"), MC_TYPE_MAIN_PROMPT, true, hide);
       DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
+      hide = false;
     }
 
     else if (xml[i] == _T("<image>")) {
       wxString content = wxEmptyString;
       while (xml[++i] != _T("</image>"))
         content += xml[i];
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
+      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, hide);
       ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
+      hide = false;
     }
 
     else if (xml[i] == _T("<mth>")) {
       wxString content = _T("<mth>");
       while (xml[++i] != _T("</mth>"))
         content += xml[i] + _T("\n");
-      ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT );
+      ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT);
+      hide = false;
+    }
+
+    else if (xml[i] == _T("<hide-group/>")) {
+      hide = true;
     }
   }
 

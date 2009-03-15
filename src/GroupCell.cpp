@@ -105,7 +105,6 @@ void GroupCell::SetInput(MathCell *input)
 
 void GroupCell::AppendInput(MathCell *cell)
 {
-  m_hide = false;
   if (m_input == NULL) {
     m_input = cell;
   }
@@ -118,14 +117,15 @@ void GroupCell::AppendInput(MathCell *cell)
       m_input->m_next = m_input->m_nextToDraw = NULL;
       m_input->AppendCell(cell);
     }
-    else
+    else {
       AppendOutput(cell);
+      m_hide = false;
+    }
   }
 }
 
 void GroupCell::SetOutput(MathCell *output)
 {
-  m_hide = false;
   if (output == NULL)
     return ;
   if (m_output != NULL)
