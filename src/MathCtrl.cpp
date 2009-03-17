@@ -1015,7 +1015,7 @@ bool MathCtrl::CopyCells()
 
   while (tmp != NULL) {
 
-    switch (tmp->GetType())
+    switch (tmp->GetGroupType())
     {
       case GC_TYPE_CODE:
         s += wxT("/* [wxMaxima: input   start ] */\n");
