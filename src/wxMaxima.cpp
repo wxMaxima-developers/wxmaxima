@@ -1163,7 +1163,7 @@ wxString wxMaxima::GetCommand(bool params)
 ///--------------------------------------------------------------------------------
 ///  Tips and help
 ///--------------------------------------------------------------------------------
-/*
+
 void wxMaxima::ShowTip(bool force)
 {
   bool ShowTips = true;
@@ -1202,7 +1202,6 @@ void wxMaxima::ShowTip(bool force)
                  _("Error"), wxICON_ERROR | wxOK);
   }
 }
-*/
 
 wxString wxMaxima::GetHelpFile()
 {
@@ -2939,9 +2938,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       MenuCommand(cmd);
     }
     break;
-//  case menu_show_tip:
-//    ShowTip(true);
-//    break;
+  case menu_show_tip:
+    ShowTip(true);
+    break;
   case menu_build_info:
     MenuCommand(wxT("build_info()$"));
     break;
@@ -3479,7 +3478,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_example, wxMaxima::HelpMenu)
   EVT_MENU(menu_apropos, wxMaxima::HelpMenu)
-//  EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)
+  EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)
   EVT_MENU(menu_trigrat, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_solve_de, wxMaxima::EquationsMenu)
   EVT_MENU(menu_atvalue, wxMaxima::EquationsMenu)

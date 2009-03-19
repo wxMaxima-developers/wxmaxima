@@ -57,7 +57,7 @@ public:
   wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
-//  void ShowTip(bool force);
+  void ShowTip(bool force);
   wxString GetHelpFile();
   void ShowHelp(wxString keyword = wxEmptyString);
   void InitSession();
