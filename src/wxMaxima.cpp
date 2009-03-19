@@ -906,6 +906,9 @@ void wxMaxima::PrintFile()
   m_console->Scroll(0,0);
   m_console->SetSaved(true);
 
+  m_fileSaved = false;
+  ResetTitle(true);
+
   m_console->Thaw();
 }
 
