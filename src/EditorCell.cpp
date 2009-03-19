@@ -172,7 +172,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1)) ); 
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1)) );
 // window linux, set a pen
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
@@ -212,7 +212,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))  
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))
 ); // window linux, set a pen
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
@@ -610,6 +610,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret += ins.Length();
     }
     break;
+
   case WXK_SPACE:
     if (event.ShiftDown())
       m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\x00B7")
@@ -617,6 +618,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     else
       m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
                m_text.SubString(m_positionOfCaret, m_text.Length());
+    m_isDirty = true;
     m_positionOfCaret++;
     break;
 
