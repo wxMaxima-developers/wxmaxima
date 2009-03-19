@@ -196,7 +196,7 @@ int MathPrintout::GetHeaderHeight()
 
   dc->SetFont(wxFont((int)((double)10*ppiScale + 0.5),
                      wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
-  dc->GetTextExtent(wxT("wxMaxima session"), &width, &height);
+  dc->GetTextExtent(GetTitle(), &width, &height);
   return height + SCALE_PX(12, ppiScale);
 }
 
@@ -220,13 +220,13 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 
   dc->SetFont(wxFont(MAX((int)(10.0*ppiScale + 0.5), 1),
                      wxMODERN, wxNORMAL, wxNORMAL));
-  dc->GetTextExtent(wxT("wxMaxima session"), &width, &height);
+  dc->GetTextExtent(GetTitle(), &width, &height);
   wxString page = wxString::Format(wxT("%d / %d"), pageNum, m_numberOfPages);
   dc->GetTextExtent(page, &pages_width, &pages_height);
 
   dc->SetFont(wxFont(MAX((int)(10.0*scale + 0.5), 1),
                      wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
-  dc->DrawText(wxT("wxMaxima session"), marginX, marginY);
+  dc->DrawText(GetTitle(), marginX, marginY);
   dc->DrawText(page, pageWidth - pages_width - marginX, marginY);
 
   dc->DrawLine(marginX, marginY + height + SCALE_PX(3, scale),

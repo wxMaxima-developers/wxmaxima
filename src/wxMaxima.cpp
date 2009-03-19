@@ -1374,9 +1374,15 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     {
       wxPrintDialogData printDialogData(*m_printData);
       wxPrinter printer(&printDialogData);
-      wxString title(_("wxMaxima document"));
+      wxString title(_("wxMaxima document")), suffix;
+
       if (m_currentFile.Length())
-        wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, NULL);
+      {
+        wxString suffix;
+        wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, &suffix);
+        title << wxT(".") << suffix;
+      }
+
       MathPrintout printout(title);
       MathCell* copy = m_console->CopyTree();
       printout.SetData(copy);
