@@ -1,4 +1,4 @@
 wxmaximadatadir = ${datadir}/wxMaxima
-wxmaximadata_DATA = wxmathml.lisp wxmaxima.png
+wxmaximadata_DATA = tips.txt wxmathml.lisp wxmaxima.png
 
-EXTRA_DIST = wxmathml.lisp wxmaxima.png Info.plist.in PkgInfo
+EXTRA_DIST = tips.txt wxmathml.lisp wxmaxima.png Info.plist.in PkgInfo
