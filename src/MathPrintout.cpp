@@ -130,7 +130,7 @@ void MathPrintout::BreakPages()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   int currentHeight = marginY;
-  int skip = SCALE_PX(5, scale);
+  int skip = SCALE_PX(MC_GROUP_SKIP, scale);;
 
   MathCell* tmp = m_tree;
   m_pages.push_back(tmp);
@@ -139,22 +139,17 @@ void MathPrintout::BreakPages()
   while (tmp != NULL)
   {
     tmp->BreakPage(false);
-    if (tmp->BreakLineHere())
+
+    if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY)
     {
-      if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY)
-      {
-        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
-        tmp->BreakPage(true);
-        m_pages.push_back(tmp);
-        m_numberOfPages++;
-      }
-      else
-        currentHeight += tmp->GetMaxHeight() + skip;
-      if (tmp->m_bigSkip)
-        skip = SCALE_PX(5, scale);
-      else
-        skip = 0;
+      currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+      tmp->BreakPage(true);
+      m_pages.push_back(tmp);
+      m_numberOfPages++;
     }
+    else
+      currentHeight += tmp->GetMaxHeight() + skip;
+
     tmp = tmp->m_next;
   }
 }
@@ -295,7 +290,11 @@ double MathPrintout::GetPPIScale()
   GetPPIScreen(&ppiScreenX, &ppiScreenY);
   GetPPIPrinter(&ppiPrinterX, &ppiPrinterY);
 
+#if defined __WXMAC__
+  return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
+#else
   return ((double)ppiPrinterY) / ((double)ppiScreenY);
+#endif
 }
 
 void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
