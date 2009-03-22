@@ -73,6 +73,7 @@ void GroupCell::DestroyOutput()
 MathCell* GroupCell::Copy(bool all)
 {
   GroupCell* tmp = new GroupCell(m_groupType);
+  tmp->Hide(m_hide);
   CopyData(this, tmp);
   tmp->SetInput(m_input->Copy(true));
   if (m_output != NULL)
