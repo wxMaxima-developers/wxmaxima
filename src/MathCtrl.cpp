@@ -1022,17 +1022,17 @@ bool MathCtrl::CopyCells()
         s += tmp->GetInput()->ToString(false) + wxT("\n");
         s += wxT("/* [wxMaxima: input   end   ] */\n");
         break;
-      case TS_TEXT:
+      case GC_TYPE_TEXT:
         s += wxT("/* [wxMaxima: comment start ]\n");
         s += tmp->GetLabel()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: comment end   ] */\n");
         break;
-      case TS_SECTION:
+      case GC_TYPE_SECTION:
         s += wxT("/* [wxMaxima: section start ]\n");
         s += tmp->GetLabel()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: section end   ] */\n");
         break;
-      case TS_TITLE:
+      case GC_TYPE_TITLE:
         s += wxT("/* [wxMaxima: title   start ]\n");
         s += tmp->GetLabel()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: title   end   ] */\n");
