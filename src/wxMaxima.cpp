@@ -1003,7 +1003,7 @@ void wxMaxima::ReadXmlFile(wxString file)
           content += wxT("\n");
         content += xml[i];
       }
-      DoRawConsoleAppend(wxT(">>"), MC_TYPE_MAIN_PROMPT, true, hide);
+      DoRawConsoleAppend(wxT(">>" ), MC_TYPE_MAIN_PROMPT, true, hide);
       DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
       hide = false;
     }
@@ -1037,6 +1037,7 @@ void wxMaxima::ReadXmlFile(wxString file)
 
 	m_fileSaved = false;
 	ResetTitle(true);
+  SetStatusText(_("Ready for user input"), 1);
 }
 
 /***
