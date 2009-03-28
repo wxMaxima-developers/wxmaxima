@@ -160,7 +160,9 @@ void Bitmap::Draw()
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
 
-  dc.SetBackground(wxBrush(wxT("white"), wxSOLID));
+  wxString bgColStr = wxT("white");
+  wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
+  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxSOLID)));
   dc.Clear();
 
   if (tmp != NULL)
