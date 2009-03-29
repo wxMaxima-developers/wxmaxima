@@ -1202,6 +1202,9 @@
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
 
+
+(setf (get '$draw 'autoload) "draw")
+
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
 	 (list (cons '($gr2d) (draw-transform args '$draw2d_transform)))))
