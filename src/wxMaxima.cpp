@@ -917,7 +917,7 @@ void wxMaxima::PrintFile()
 */
 void wxMaxima::ReadXmlFile(wxString file)
 {
-	m_console->Freeze();
+  m_console->Freeze();
 	wxBeginBusyCursor();
 
 	wxArrayString xml;
@@ -925,8 +925,8 @@ void wxMaxima::ReadXmlFile(wxString file)
   wxFFileInputStream in(file);
   wxZipInputStream zip(in);
 
-	for (int i = 0; i < zip.GetTotalEntries(); i++)
-	{
+  for (int i = 0; i < zip.GetTotalEntries(); i++)
+  {
     entry = zip.GetNextEntry();
     wxString name = entry->GetName();
 
@@ -949,9 +949,9 @@ void wxMaxima::ReadXmlFile(wxString file)
     }
 
     delete entry;
-	}
+  }
 
-	bool hide = false;
+  bool hide = false;
 
   for(int i = 2; i < xml.GetCount(); i++ )
   {
@@ -1032,11 +1032,11 @@ void wxMaxima::ReadXmlFile(wxString file)
 
   m_currentFile = file;
 
-	wxEndBusyCursor();
-	m_console->Thaw();
+  wxEndBusyCursor();
+  m_console->Thaw();
 
-	m_fileSaved = false;
-	ResetTitle(true);
+  m_fileSaved = false;
+  ResetTitle(true);
   SetStatusText(_("Ready for user input"), 1);
 }
 
