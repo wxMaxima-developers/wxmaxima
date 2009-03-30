@@ -146,11 +146,11 @@ wxString SubCell::ToTeX(bool all)
   return s;
 }
 
-wxString SubCell::ToXml(bool all)
+wxString SubCell::ToXML(bool all)
 {
-	return _T("<i><r>") + m_baseCell->ToXml(true) + _T("</r><r>") +
-			m_indexCell->ToXml(true) + _T("</r></i>") +
-			MathCell::ToXml(all);
+	return _T("<i><r>") + m_baseCell->ToXML(true) + _T("</r><r>") +
+			m_indexCell->ToXML(true) + _T("</r></i>") +
+			MathCell::ToXML(all);
 }
 
 void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

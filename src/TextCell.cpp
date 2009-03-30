@@ -276,7 +276,7 @@ wxString TextCell::ToTeX(bool all)
   return text + MathCell::ToTeX(all);
 }
 
-wxString TextCell::ToXml(bool all)
+wxString TextCell::ToXML(bool all)
 {
 	wxString tag = ( m_isHidden )? _T("h") :
 					( m_textStyle == TS_GREEK_CONSTANT )? _T("g") :
@@ -286,7 +286,7 @@ wxString TextCell::ToXml(bool all)
 					( m_textStyle == TS_STRING )? _T("st") :
 					( m_textStyle == TS_LABEL)? _T("lbl") : _T("t");
 	return _T("<") + tag + _T(">") + m_text + _T("</") + tag + _T(">") +
-				MathCell::ToXml(all);
+				MathCell::ToXML(all);
 }
 
 wxString TextCell::GetDiffPart()

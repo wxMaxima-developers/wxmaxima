@@ -182,7 +182,7 @@ bool ImgCell::ToImageFile(wxString file)
   return image.SaveFile(file, wxBITMAP_TYPE_PNG);
 }
 
-wxString ImgCell::ToXml(bool all)
+wxString ImgCell::ToXML(bool all)
 {
 	wxImage image = m_bitmap->ConvertToImage();
 	wxString filename, basename;
@@ -194,8 +194,8 @@ wxString ImgCell::ToXml(bool all)
 	} while( wxFileExists(filename) );
 	if(image.SaveFile( filename, wxBITMAP_TYPE_PNG))
 	{
-		return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXml(all);
+		return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXML(all);
 	}
 	else
-		return wxEmptyString + MathCell::ToXml(all);
+		return wxEmptyString + MathCell::ToXML(all);
 }

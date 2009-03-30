@@ -334,12 +334,12 @@ wxString MathCell::ToTeX(bool all)
   return wxEmptyString;
 }
 
-wxString MathCell::ToXml(bool all)
+wxString MathCell::ToXML(bool all)
 {
   if (all && m_next != NULL) {
     if (m_next->ForceBreakLineHere())
-      return wxT("\n") + m_next->ToXml(all);
-    return m_next->ToXml(all);
+      return wxT("\n") + m_next->ToXML(all);
+    return m_next->ToXML(all);
   }
   return wxEmptyString;
 }

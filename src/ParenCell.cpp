@@ -368,13 +368,13 @@ wxString ParenCell::ToTeX(bool all)
   return s;
 }
 
-wxString ParenCell::ToXml(bool all)
+wxString ParenCell::ToXML(bool all)
 {
 	if( m_isBroken )
 		return wxEmptyString;
-	wxString s = m_innerCell->ToXml(true);
+	wxString s = m_innerCell->ToXML(true);
 	return ( ( m_print )? _T("<p>") + s + _T("</p>") : s ) +
-			MathCell::ToXml(all);
+			MathCell::ToXML(all);
 }
 
 void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

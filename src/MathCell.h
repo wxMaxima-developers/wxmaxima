@@ -136,7 +136,7 @@ public:
 
   virtual wxString ToString(bool all);
   virtual wxString ToTeX(bool all);
-	virtual wxString ToXml(bool all);
+	virtual wxString ToXML(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);

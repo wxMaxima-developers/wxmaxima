@@ -138,11 +138,11 @@ wxString DiffCell::ToTeX(bool all)
   return s;
 }
 
-wxString DiffCell::ToXml(bool all)
+wxString DiffCell::ToXML(bool all)
 {
-	return _T("<d>") + m_baseCell->ToXml(true) +
-				m_diffCell->ToXml(true) + _T("</d>") +
-				MathCell::ToXml(all);
+	return _T("<d>") + m_baseCell->ToXML(true) +
+				m_diffCell->ToXML(true) + _T("</d>") +
+				MathCell::ToXML(all);
 }
 
 void DiffCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

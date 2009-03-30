@@ -2286,7 +2286,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
 	    // Write output
       txt = tmp->GetLabel();
       if (txt != NULL) {
-        wxString out = txt->ToXml(true);
+        wxString out = txt->ToXML(true);
         if (out.Length()>0) {
           output << wxT("<mth>\n");
           output << out;
@@ -2299,7 +2299,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
       MathCell * img = tmp->GetLabel();
       if (img != NULL) {
         output << wxT("<image>\n");
-        output << img->ToXml(true);
+        output << img->ToXML(true);
         output << wxT("\n</image>\n");
       }
     }

@@ -186,7 +186,7 @@ wxString SlideShow::ToTeX(bool all)
          MathCell::ToTeX(all);
 }
 
-wxString SlideShow::ToXml(bool all)
+wxString SlideShow::ToXML(bool all)
 {
   wxString images, s = wxEmptyString;
   wxString filename;
@@ -207,7 +207,7 @@ wxString SlideShow::ToXml(bool all)
   }
 
   return wxT("\n<slide>") + s + wxT("</slide>") +
-         MathCell::ToXml(all);
+         MathCell::ToXML(all);
 }
 
 bool SlideShow::ToImageFile(wxString file)

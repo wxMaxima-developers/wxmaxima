@@ -352,26 +352,26 @@ wxString IntCell::ToTeX(bool all)
   return s;
 }
 
-wxString IntCell::ToXml(bool all)
+wxString IntCell::ToXML(bool all)
 {
 	MathCell* tmp = m_base;
-	wxString base = _T("<r>") + tmp->ToXml(true) + _T("</r>");
+	wxString base = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
 	tmp = m_var;
 	wxString var = ( tmp == NULL )? wxEmptyString : _T("<r>");
-   	var += tmp->ToXml(true);
+   	var += tmp->ToXML(true);
 	var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
 
 	tmp = m_under;
-	wxString from = _T("<r>") + tmp->ToXml(true) + _T("</r>");
+	wxString from = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
 	tmp = m_over;
-	wxString to = _T("<r>") + tmp->ToXml(true) + _T("</r>");
+	wxString to = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
 	return _T("<in>") + ( ( m_intStyle == INT_DEF )?
 					from + to + base + var :
 					base + var ) + _T("</in>") + 
-					MathCell::ToXml(all);
+					MathCell::ToXML(all);
 }
 
 void IntCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

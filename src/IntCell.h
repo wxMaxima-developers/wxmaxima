@@ -48,7 +48,7 @@ public:
   }
   wxString ToString(bool all);
   wxString ToTeX(bool all);
-  wxString ToXml(bool all);
+  wxString ToXML(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent, bool all);
 protected:

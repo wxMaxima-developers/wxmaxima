@@ -38,7 +38,7 @@ public:
   void Unbreak(bool all);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
-	wxString ToXml(bool all);	//new!!
+	wxString ToXML(bool all);	//new!!
   void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_innerCell;

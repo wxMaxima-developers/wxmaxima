@@ -138,10 +138,10 @@ wxString AbsCell::ToTeX(bool all)
          MathCell::ToTeX(all);
 }
 
-wxString AbsCell::ToXml(bool all)
+wxString AbsCell::ToXML(bool all)
 {
-	return wxT("<a>") + m_innerCell->ToXml(true) + wxT("</a>") + 
-         MathCell::ToXml(all);
+	return wxT("<a>") + m_innerCell->ToXML(true) + wxT("</a>") + 
+         MathCell::ToXML(all);
 }
 
 void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
