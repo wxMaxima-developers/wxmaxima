@@ -140,10 +140,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
     dc.DrawText(wxT("\xB7"),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#endif
     else
       dc.DrawText(m_text,
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
