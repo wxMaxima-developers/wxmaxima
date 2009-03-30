@@ -546,23 +546,26 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_DELETE:
-    m_isDirty = true;
-    if (m_positionOfCaret < m_text.Length())
+    if (m_selectionStart == -1)
     {
-      if (m_selectionStart == -1)
+      if (m_positionOfCaret < m_text.Length())
+      {
+        m_isDirty = true;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
                  m_text.SubString(m_positionOfCaret + 1, m_text.Length());
-      else
-      {
-        SaveValue();
-        m_saveValue = true;
-        long start = MIN(m_selectionEnd, m_selectionStart);
-        long end = MAX(m_selectionEnd, m_selectionStart);
-        m_text = m_text.SubString(0, start - 1) +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;
-        m_selectionEnd = m_selectionStart = -1;
       }
+    }
+    else
+    {
+      m_isDirty = true;
+      SaveValue();
+      m_saveValue = true;
+      long start = MIN(m_selectionEnd, m_selectionStart);
+      long end = MAX(m_selectionEnd, m_selectionStart);
+      m_text = m_text.SubString(0, start - 1) +
+               m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;
+      m_selectionEnd = m_selectionStart = -1;
     }
     break;
 
