@@ -952,6 +952,31 @@ void wxMaxima::ReadXmlFile(wxString file)
   }
 
   // read document version and complain
+  double version = 1.0;
+  int j = 1;
+  while (xml[j] != _T("<documentversion>"))
+    j++;
+  if (xml[j+1].ToDouble(&version)) {
+    int version_major = int(version);
+    int version_minor = int(10* (version - double(version_major))); 
+
+    if (version_major > DOCUMENT_VERSION_MAJOR) {
+      wxEndBusyCursor();
+      m_console->Thaw();
+      wxMessageBox(_("Document ") + file +
+          _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
+          _("Error"), wxOK | wxICON_EXCLAMATION);
+      SetStatusText(_("Ready for user input"), 1);
+      return;
+    }
+    if (version_minor > DOCUMENT_VERSION_MINOR) {
+      wxEndBusyCursor();
+      wxMessageBox(_("Document ") + file +
+          _(" was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
+          _("Warning"), wxOK | wxICON_EXCLAMATION);
+      wxBeginBusyCursor();
+    }
+  }
   // read document
 
   int i = 1;
