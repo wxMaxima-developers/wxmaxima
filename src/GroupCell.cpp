@@ -448,6 +448,86 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
   return str + MathCell::ToTeX(all);
 }
 
+// ToXML
+// writes a groupcell in the form of
+// <cell type="code" hide="true">
+// --contents--
+// </cell>
+wxString GroupCell::ToXML(bool all)
+{
+  wxString str;
+  str = wxT("<cell"); // start opening tag
+  // write "type" according to m_groupType
+  switch (m_groupType) {
+    case GC_TYPE_CODE:
+      str += wxT(" type=\"code\"");
+      break;
+    case GC_TYPE_IMAGE:
+      str += wxT(" type=\"image\"");
+      break;
+    case GC_TYPE_TEXT:
+      str += wxT(" type=\"text\"");
+      break;
+    case GC_TYPE_TITLE:
+      str += wxT(" type=\"title\"");
+      break;
+    case GC_TYPE_SECTION:
+      str += wxT(" type=\"section\"");
+      break;
+    case GC_TYPE_SUBSECTION:
+      str += wxT(" type=\"subsection\"");
+      break;
+    default:
+      str += wxT(" type=\"unknown\"");
+      break;
+  }
+
+  // write hidden status
+  if (m_hide)
+    str += wxT(" hide=\"true\"");
+
+  // close opening tag
+  str += wxT(">\n");
+
+  MathCell *input = GetInput();
+  MathCell *output = GetLabel();
+  // write contents
+  switch (m_groupType) {
+    case GC_TYPE_CODE:
+      if (input != NULL) {
+        str += wxT("<input>\n");
+        str += input->ToString(false);
+        str += wxT("\n</input>\n");
+      }
+      if (output != NULL) {
+        str += wxT("<output>\n");
+        str += output->ToXML(true);
+        str += wxT("\n</output>\n");
+      }
+      break;
+    case GC_TYPE_IMAGE:
+      if (output != NULL)
+        str += output->ToXML(true);
+      str += wxT("\n");
+      break;
+    case GC_TYPE_TEXT:
+    case GC_TYPE_TITLE:
+    case GC_TYPE_SECTION:
+    case GC_TYPE_SUBSECTION:
+      if (output != NULL)
+        str += output->ToString(false);
+      str += wxT("\n");
+      break;
+    default:
+      break;
+  }
+
+  // write closing tag, end of story
+  str += wxT("</cell>\n");
+
+  return str + MathCell::ToXML(all);
+}
+
 void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
     MathCell **first, MathCell **last)
 {

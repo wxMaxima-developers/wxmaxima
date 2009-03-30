@@ -951,83 +951,80 @@ void wxMaxima::ReadXmlFile(wxString file)
     delete entry;
   }
 
-  bool hide = false;
+  // read document version and complain
+  // read document
 
-  for(int i = 2; i < xml.GetCount(); i++ )
+  int i = 1;
+  while ((xml[i] != _T("<document>")) && (i < xml.GetCount()))
+    i++;
+  if (i == xml.GetCount())
+    wxMessageBox(_("wxMaxima could not load the file!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
+
+  i++; // first cell hopefully
+
+  while ((xml[i] != _T("</document>")) && (i < xml.GetCount()))
   {
+    if (!xml[i].Contains(_T("<cell")))
+      i++;
+    else { // we have a cell!!
+      bool hide = false;
+      if (xml[i].Contains(_T("hide=\"true\""))) // read hide status for <cell .. >
+        hide = true;
 
-    if (xml[i] == _T("<title>")) {
-      wxString content = wxEmptyString;
-      while (xml[++i] != _T("</title>"))
+// --------------------------------------------------- GC_TYPE_CODE
+      if (xml[i].Contains(_T("type=\"code\"")))
       {
-        if (content.Length() > 0)
-          content += wxT("\n");
-        content += xml[i];
+        if (xml[++i] == _T("<input>")) {
+          wxString content = wxEmptyString;
+          while (xml[++i] != _T("</input>"))
+          {
+            if (content.Length() > 0)
+              content += wxT("\n");
+            content += xml[i];
+          }
+          DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
+          DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
+        }
+        else { // no <input> ? wierd
+          DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
+          DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false );
+        }
+        if (xml[++i] == _T("<output>")) {
+          wxString content = _T("<mth>");
+          while (xml[++i] != _T("</output>"))
+            content += xml[i] + _T("\n");
+          ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT);
+        }
       }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      DoRawConsoleAppend(content, MC_TYPE_TITLE);
-      hide = false;
-    }
-
-    else if (xml[i] == _T("<section>")) {
-      wxString content = wxEmptyString;
-      while (xml[++i] != _T("</section>"))
+// --------------------------------------------------- GC_TYPE_IMAGE
+      else if (xml[i].Contains(_T("type=\"image\"")))
       {
-        if (content.Length() > 0)
-          content += wxT("\n");
-        content += xml[i];
-      }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      DoRawConsoleAppend(content, MC_TYPE_SECTION);
-      hide = false;
-    }
-
-    else if (xml[i] == _T("<comment>")) {
       wxString content = wxEmptyString;
-      while (xml[++i] != _T("</comment>"))
-      {
-        if (content.Length() > 0)
-          content += wxT("\n");
-        content += xml[i];
-      }
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      DoRawConsoleAppend(content, MC_TYPE_TEXT);
-      hide = false;
-    }
-
-    else if (xml[i] == _T("<input>")) {
-      wxString content = wxEmptyString;
-      while (xml[++i] != _T("</input>"))
-      {
-        if (content.Length() > 0)
-          content += wxT("\n");
-        content += xml[i];
-      }
-      DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
-      DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
-      hide = false;
-    }
-
-    else if (xml[i] == _T("<image>")) {
-      wxString content = wxEmptyString;
-      while (xml[++i] != _T("</image>"))
+      while (xml[++i] != _T("</cell>"))
         content += xml[i];
       DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, hide);
       ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
-      hide = false;
+      }
+// --------------------------------------------------- text based types and unknown type
+      else {
+        int type = MC_TYPE_TEXT; // dump into text cell if not title or section
+        if (xml[i].Contains(_T("type=\"title\"")))
+          type = MC_TYPE_TITLE;
+        else if (xml[i].Contains(_T("type=\"section\"")))
+          type = MC_TYPE_SECTION;
+
+        wxString content = wxEmptyString;
+        while (xml[++i] != _T("</cell>"))
+        {
+          if (content.Length() > 0)
+            content += wxT("\n");
+          content += xml[i];
+        }
+        DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
+        DoRawConsoleAppend(content, type);
+      }
     }
 
-    else if (xml[i] == _T("<mth>")) {
-      wxString content = _T("<mth>");
-      while (xml[++i] != _T("</mth>"))
-        content += xml[i] + _T("\n");
-      ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT);
-      hide = false;
-    }
-
-    else if (xml[i] == _T("<hide-group/>")) {
-      hide = true;
-    }
   }
 
   m_currentFile = file;

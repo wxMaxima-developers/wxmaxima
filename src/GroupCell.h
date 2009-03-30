@@ -65,6 +65,7 @@ public:
   void SetWorking(bool working) { m_working = working; }
   wxRect HideRect();
   wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToXML(bool all);
   bool IsHidden() { return m_hide; }
   void Hide(bool hide) { m_hide = hide; }
   int GetGroupType() { return m_groupType; }

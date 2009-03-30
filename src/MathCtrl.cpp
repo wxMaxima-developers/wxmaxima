@@ -2263,79 +2263,21 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   zip.PutNextEntry(_T("document.xml"));
   output << _T("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  output << _T("<wxMaxima>\n");
+  // write document version
+  output << _T("<documentversion>\n");
+  output << _T("1.0\n");
+  output << _T("</documentversion>\n");
+  // write document
+  output << _T("<document>\n");
 
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
   while (tmp != NULL) {
-
-    if (tmp->IsHidden())
-      output << wxT("<hide-group/>\n");
-
-    // Write input
-    if (tmp->GetGroupType() == GC_TYPE_CODE) {
-      MathCell *txt = tmp->GetInput();
-      if (txt != NULL) {
-        wxString input = txt->ToString(false);
-        if (input.Length()>0) {
-          output << wxT("<input>\n");
-          output << input;
-          output << wxT("\n</input>\n");
-        }
-      }
-	    // Write output
-      txt = tmp->GetLabel();
-      if (txt != NULL) {
-        wxString out = txt->ToXML(true);
-        if (out.Length()>0) {
-          output << wxT("<mth>\n");
-          output << out;
-          output << wxT("\n</mth>\n");
-        }
-      }
-    }
-
-    else if (tmp->GetGroupType() == GC_TYPE_IMAGE) {
-      MathCell * img = tmp->GetLabel();
-      if (img != NULL) {
-        output << wxT("<image>\n");
-        output << img->ToXML(true);
-        output << wxT("\n</image>\n");
-      }
-    }
-
-    else {
-      // Write text
-      MathCell *txt = tmp->GetLabel();
-      switch (txt->GetType()) {
-        case MC_TYPE_TEXT:
-          output << wxT("<comment>\n");
-          break;
-        case MC_TYPE_SECTION:
-         output << wxT("<section>\n");
-          break;
-        case MC_TYPE_TITLE:
-          output << wxT("<title>\n");
-          break;
-      }
-      wxString comment = txt->ToString(false);
-      output << comment;
-      switch (txt->GetType()) {
-        case MC_TYPE_TEXT:
-          output << wxT("\n</comment>\n");
-          break;
-        case MC_TYPE_SECTION:
-         output << wxT("\n</section>\n");
-          break;
-        case MC_TYPE_TITLE:
-          output << wxT("\n</title>\n");
-          break;
-      }
-    }
-
+    output << tmp->ToXML(false);
     tmp = (GroupCell *)tmp->m_next;
   }
-  output << _T("</wxMaxima>");
+ 
+  output << _T("</document>");
 
   wxString name = _T("image1.png");
   wxString fullname = wxFileName::GetTempDir() + name;
