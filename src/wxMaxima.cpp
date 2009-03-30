@@ -955,10 +955,16 @@ void wxMaxima::ReadXmlFile(wxString file)
   // read document
 
   int i = 1;
-  while ((xml[i] != _T("<document>")) && (i < xml.GetCount()))
+  while (xml[i] != _T("<document>")){
     i++;
-  if (i == xml.GetCount())
-    wxMessageBox(_("wxMaxima could not load the file!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
+    if (i >= xml.GetCount()) {
+      wxEndBusyCursor();
+      m_console->Thaw();
+      wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+      SetStatusText(_("Ready for user input"), 1);
+      return;
+    }
+  }
 
   i++; // first cell hopefully
 
@@ -984,12 +990,13 @@ void wxMaxima::ReadXmlFile(wxString file)
           }
           DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
           DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
+          i++;
         }
         else { // no <input> ? wierd
           DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
           DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false );
         }
-        if (xml[++i] == _T("<output>")) {
+        if (xml[i] == _T("<output>")) {
           wxString content = _T("<mth>");
           while (xml[++i] != _T("</output>"))
             content += xml[i] + _T("\n");
@@ -999,11 +1006,11 @@ void wxMaxima::ReadXmlFile(wxString file)
 // --------------------------------------------------- GC_TYPE_IMAGE
       else if (xml[i].Contains(_T("type=\"image\"")))
       {
-      wxString content = wxEmptyString;
-      while (xml[++i] != _T("</cell>"))
-        content += xml[i];
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, hide);
-      ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
+        wxString content = wxEmptyString;
+        while (xml[++i] != _T("</cell>"))
+          content += xml[i];
+        DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, hide);
+        ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
       }
 // --------------------------------------------------- text based types and unknown type
       else {
