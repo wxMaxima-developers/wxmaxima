@@ -282,10 +282,19 @@ wxString TextCell::ToXML(bool all)
 					( m_textStyle == TS_GREEK_CONSTANT )? _T("g") :
 					( m_textStyle == TS_SPECIAL_CONSTANT )? _T("s") :
 					( m_textStyle == TS_VARIABLE )? _T("v") :
+					( m_textStyle == TS_FUNCTION )? _T("fnm") :
 					( m_textStyle == TS_NUMBER )? _T("n") :
 					( m_textStyle == TS_STRING )? _T("st") :
 					( m_textStyle == TS_LABEL)? _T("lbl") : _T("t");
-	return _T("<") + tag + _T(">") + m_text + _T("</") + tag + _T(">") +
+  wxString xmlstring = m_text;
+  // convert it, so that the XML parser doesn't fail
+  xmlstring.Replace(wxT("&"),  wxT("&amp;"));
+  xmlstring.Replace(wxT("<"),  wxT("&lt;"));
+  xmlstring.Replace(wxT(">"),  wxT("&gt;"));
+  xmlstring.Replace(wxT("'"),  wxT("&apos;"));
+  xmlstring.Replace(wxT("\""), wxT("&quot;"));
+
+	return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">") +
 				MathCell::ToXML(all);
 }
 
