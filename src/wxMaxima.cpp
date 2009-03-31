@@ -1005,9 +1005,9 @@ void wxMaxima::ReadXmlFile(wxString file)
 // --------------------------------------------------- GC_TYPE_CODE
       if (xml[i].Contains(_T("type=\"code\"")))
       {
-        if (xml[++i] == _T("<input>")) {
+        if (xml[++i].Contains(_T("<input>"))) {
           wxString content = wxEmptyString;
-          while (xml[++i] != _T("</input>"))
+          while (!(xml[++i].Contains(_T("</input>"))))
           {
             if (content.Length() > 0)
               content += wxT("\n");
@@ -1046,7 +1046,7 @@ void wxMaxima::ReadXmlFile(wxString file)
           type = MC_TYPE_SECTION;
 
         wxString content = wxEmptyString;
-        while (xml[++i] != _T("</cell>"))
+        while (!(xml[++i].Contains(_T("</cell>"))))
         {
           if (content.Length() > 0)
             content += wxT("\n");

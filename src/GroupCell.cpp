@@ -486,44 +486,41 @@ wxString GroupCell::ToXML(bool all)
   if (m_hide)
     str += wxT(" hide=\"true\"");
 
-  // close opening tag
-  str += wxT(">\n");
-
   MathCell *input = GetInput();
   MathCell *output = GetLabel();
   // write contents
   switch (m_groupType) {
     case GC_TYPE_CODE:
+      str += wxT(">\n"); // close <cell >
       if (input != NULL) {
-        str += wxT("<input>\n");
+        str += wxT("<input><![CDATA[\n");
         str += input->ToString(false);
-        str += wxT("\n</input>\n");
+        str += wxT("\n]]></input>\n");
       }
       if (output != NULL) {
         str += wxT("<output>\n");
         str += output->ToXML(true);
         str += wxT("\n</output>\n");
       }
+      str += wxT("</cell>\n");
       break;
     case GC_TYPE_IMAGE:
+      str += wxT(">\n"); // close <cell >
       if (output != NULL)
         str += output->ToXML(true);
-      str += wxT("\n");
+      str += wxT("\n</cell>\n");
       break;
     case GC_TYPE_TEXT:
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
+    default:
+      str += wxT("><![CDATA[\n");
       if (output != NULL)
         str += output->ToString(false);
-      str += wxT("\n");
-      break;
-    default:
+      str += wxT("\n]]></cell>\n");
       break;
   }
-
-  // write closing tag, end of story
-  str += wxT("</cell>\n");
 
   return str + MathCell::ToXML(all);
 }

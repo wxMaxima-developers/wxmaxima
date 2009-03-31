@@ -2265,8 +2265,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
   output << _T("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
   // write document version
   output << _T("<documentversion>\n");
-  output << DOCUMENT_MAJOR_VERSION << _T(".");
-  output << DOCUMENT_MINOR_VERSION << _T("\n");
+  output << DOCUMENT_VERSION_MAJOR << _T(".");
+  output << DOCUMENT_VERSION_MINOR << _T("\n");
   output << _T("</documentversion>\n");
   // write document
   output << _T("<document>\n");
