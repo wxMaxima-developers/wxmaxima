@@ -86,6 +86,20 @@ wxString EditorCell::ToTeX(bool all)
   return text + MathCell::ToTeX(all);
 }
 
+wxString EditorCell::ToXML(bool all)
+{
+  wxString xmlstring = m_text;
+  // convert it, so that the XML parser doesn't fail
+  xmlstring.Replace(wxT("&"),  wxT("&amp;"));
+  xmlstring.Replace(wxT("<"),  wxT("&lt;"));
+  xmlstring.Replace(wxT(">"),  wxT("&gt;"));
+  xmlstring.Replace(wxT("'"),  wxT("&apos;"));
+  xmlstring.Replace(wxT("\""), wxT("&quot;"));
+
+	return _T("<t>") + xmlstring + _T("</t>") +
+				MathCell::ToXML(all);
+}
+
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   m_isDirty = false;
