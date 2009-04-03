@@ -173,7 +173,7 @@ void GroupCell::AppendOutput(MathCell *cell)
         break;
     }
 
-    if (m_groupType == GC_TYPE_CODE)
+    if (m_groupType == GC_TYPE_CODE && m_input->m_next != NULL)
       ((EditorCell *)(m_input->m_next))->ContainsChanges(false);
 
     m_lastInOutput = m_output;
@@ -303,7 +303,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxPoint in(point);
     parser.Outdated(false);
     m_input->Draw(parser, in, fontsize, true);
-    if (m_groupType == GC_TYPE_CODE)
+    if (m_groupType == GC_TYPE_CODE && m_input->m_next)
       parser.Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
     if (m_output != NULL && !m_hide) {

@@ -95,7 +95,8 @@ class EvaluationQueue
     }
 
     void AddToQueue(GroupCell* gr) {
-      if (gr->GetGroupType() != GC_TYPE_CODE) // dont add cells which can't be evaluated
+      if (gr->GetGroupType() != GC_TYPE_CODE
+          || gr->GetEditable() == NULL) // dont add cells which can't be evaluated
         return;
       EvaluationQueueElement* newelement = new EvaluationQueueElement(gr);
       if (m_last == NULL)

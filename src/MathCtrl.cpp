@@ -2464,6 +2464,7 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   }
   SetHCaret(m_last);
 }
+
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
   if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
@@ -2479,6 +2480,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
   }
   SetHCaret(m_selectionEnd);
 }
+
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
     m_evaluationQueue->AddToQueue((GroupCell*) gc);
@@ -2718,7 +2720,8 @@ bool MathCtrl::IsSelectionInWorking() {
   return true;
 }
 
-void MathCtrl::SetHCaret(MathCell *where) {
+void MathCtrl::SetHCaret(MathCell *where)
+{
   m_selectionStart = m_selectionEnd = NULL;
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   SetActiveCell(NULL);
