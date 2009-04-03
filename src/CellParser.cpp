@@ -31,6 +31,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_forceUpdate = false;
   m_indent = MC_GROUP_LEFT_INDENT;
   m_changeAsterisk = false;
+  m_outdated = false;
   ReadStyle();
 }
 
@@ -224,6 +225,12 @@ void CellParser::ReadStyle()
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp)) m_styles[TS_SELECTION].color.Set(tmp);
 
+  // Outdated cells
+  m_styles[TS_OUTDATED].color = wxT("rgb(153,153,153)");
+  if (config->Read(wxT("Style/Outdated/color"),
+                     &tmp)) m_styles[TS_OUTDATED].color.Set(tmp);
+
+
 #undef READ_STYLES
 
   m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxSOLID)));
@@ -259,6 +266,13 @@ wxString CellParser::GetSymbolFontName()
 #else
   return m_fontName;
 #endif
+}
+
+wxColour CellParser::GetColor(int st)
+{
+  if (m_outdated)
+    return m_styles[TS_OUTDATED].color;
+  return m_styles[st].color;
 }
 
 wxFontEncoding CellParser::GetGreekFontEncoding()

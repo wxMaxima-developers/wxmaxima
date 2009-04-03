@@ -165,7 +165,8 @@ protected:
         m_styleCellBracket,
         m_styleActiveCellBracket,
         m_styleCursor,
-        m_styleSelection;
+        m_styleSelection,
+        m_styleOutdated;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)

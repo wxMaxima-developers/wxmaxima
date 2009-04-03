@@ -43,6 +43,7 @@ EditorCell::EditorCell() : MathCell()
   m_oldStart = -1;
   m_oldEnd = -1;
   m_saveValue = false;
+  m_containsChanges = false;
 }
 
 EditorCell::~EditorCell()
@@ -55,6 +56,7 @@ MathCell *EditorCell::Copy(bool all)
 {
   EditorCell *tmp = new EditorCell();
   tmp->SetValue(m_text);
+  tmp->m_containsChanges = m_containsChanges;
   CopyData(this, tmp);
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
@@ -511,6 +513,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
              m_text.SubString(m_positionOfCaret, m_text.Length());
     m_positionOfCaret++;
     m_isDirty = true;
+    m_containsChanges = true;
     break;
 
   case WXK_END:
@@ -565,6 +568,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       if (m_positionOfCaret < m_text.Length())
       {
         m_isDirty = true;
+        m_containsChanges = true;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
                  m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       }
@@ -572,6 +576,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     else
     {
       m_isDirty = true;
+      m_containsChanges = true;
       SaveValue();
       m_saveValue = true;
       long start = MIN(m_selectionEnd, m_selectionStart);
@@ -584,10 +589,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_BACK:
-    m_isDirty = true;
     if (m_selectionStart > -1) {
       SaveValue();
       m_saveValue = true;
+      m_containsChanges = true;
+      m_isDirty = true;
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
       m_text = m_text.SubString(0, start - 1) +
@@ -598,6 +604,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     else if (m_positionOfCaret > 0)
     {
+      m_containsChanges = true;
+      m_isDirty = true;
       m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                m_text.SubString(m_positionOfCaret, m_text.Length());
       m_positionOfCaret--;
@@ -606,6 +614,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_TAB:
     m_isDirty = true;
+    m_containsChanges = true;
     {
       if (m_selectionStart > -1) {
         long start = MIN(m_selectionEnd, m_selectionStart);
@@ -640,6 +649,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
                m_text.SubString(m_positionOfCaret, m_text.Length());
     m_isDirty = true;
+    m_containsChanges = true;
     m_positionOfCaret++;
     break;
 
@@ -648,6 +658,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       break;
 
     m_isDirty = true;
+    m_containsChanges = true;
     bool insertLetter = true;
 
     if (m_saveValue) {
@@ -1112,6 +1123,7 @@ bool EditorCell::CutToClipboard()
 
   SaveValue();
   m_saveValue = true;
+  m_containsChanges = true;
   CopyToClipboard();
 
   long start = MIN(m_selectionStart, m_selectionEnd);
@@ -1138,6 +1150,7 @@ void EditorCell::PasteFromClipboard()
 
       SaveValue();
       m_saveValue = true;
+      m_containsChanges = true;
 
       if (m_selectionStart > -1)
       {

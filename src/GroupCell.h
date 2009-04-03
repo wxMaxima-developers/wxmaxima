@@ -76,6 +76,7 @@ protected:
   bool m_hide;
   bool m_working;
   int m_indent;
+  MathCell *m_lastInOutput;
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);

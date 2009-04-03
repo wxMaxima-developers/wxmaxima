@@ -1307,7 +1307,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       Refresh();
     }
     else {
-      wxRect rect = m_activeCell->GetRect();
+      wxRect rect = m_activeCell->GetParent()->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       rect.width = GetSize().x;
       RefreshRect(rect);
@@ -2277,7 +2277,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
     output << tmp->ToXML(false);
     tmp = (GroupCell *)tmp->m_next;
   }
- 
+
   output << _T("</document>");
 
   wxString name = _T("image1.png");

@@ -74,10 +74,7 @@ public:
   {
     return m_haveGreekFont;
   }
-  wxColour GetColor(int st)
-  {
-    return m_styles[st].color;
-  }
+  wxColour GetColor(int st);
   wxFontWeight IsBold(int st);
   int IsItalic(int st);
   int IsUnderlined(int st);
@@ -112,6 +109,7 @@ public:
       return m_styles[st].fontSize;
     return 0;
   }
+  void Outdated(bool outdated) { m_outdated = outdated; }
 private:
   int m_indent;
   double m_scale;
@@ -126,6 +124,7 @@ private:
   bool m_haveGreekFont;
   bool m_forceUpdate;
   bool m_changeAsterisk;
+  bool m_outdated;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];

@@ -137,9 +137,10 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Cell bracket"),
       _("Active cell bracket"),
       _("Cursor"),
-      _("Selection")
+      _("Selection"),
+      _("Outdated cells")
     };
-  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 21, m_styleFor_choices, wxLB_SINGLE);
+  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 22, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
   m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER);
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
@@ -591,6 +592,11 @@ void Config::ReadStyles(wxString file)
   if (config->Read(wxT("Style/Cursor/color"),
                    &tmp)) m_styleCursor.color.Set(tmp);
 
+  // Outdated cells
+  m_styleOutdated.color = wxT("rgb(153,153,153)");
+  if (config->Read(wxT("Style/Outdated/color"),
+                   &tmp)) m_styleOutdated.color.Set(tmp);
+
   // Selection color defaults to light grey on windows
 #if defined __WXMSW__
   m_styleSelection.color = wxColour(wxT("light grey"));
@@ -762,6 +768,8 @@ void Config::WriteStyles(wxString file)
                 m_styleCursor.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Selection/color"),
                 m_styleSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
+  config->Write(wxT("Style/Outdated/color"),
+                m_styleOutdated.color.GetAsString(wxC2S_CSS_SYNTAX));
 
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
@@ -973,6 +981,9 @@ style* Config::GetStylePointer()
     break;
   case 20:
     tmp = &m_styleSelection;
+    break;
+  case 21:
+    tmp = &m_styleOutdated;
     break;
   }
   return tmp;

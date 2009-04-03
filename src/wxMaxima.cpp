@@ -958,7 +958,7 @@ void wxMaxima::ReadXmlFile(wxString file)
     j++;
   if (xml[j+1].ToDouble(&version)) {
     int version_major = int(version);
-    int version_minor = int(10* (version - double(version_major))); 
+    int version_minor = int(10* (version - double(version_major)));
 
     if (version_major > DOCUMENT_VERSION_MAJOR) {
       wxEndBusyCursor();
@@ -1602,6 +1602,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
         m_lastPath = wxPathOnly(file);
         m_currentFile = file;
+        m_fileSaved = false;
         if (file.Right(5) == wxT(".wxmx"))
           m_console->ExportToWXMX(file);
         else

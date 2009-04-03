@@ -19,6 +19,7 @@
 
 #include "GroupCell.h"
 #include "TextCell.h"
+#include "EditorCell.h"
 #include "Bitmap.h"
 
 GroupCell::GroupCell(int groupType) : MathCell()
@@ -37,6 +38,7 @@ GroupCell::GroupCell(int groupType) : MathCell()
   m_hide = false;
   m_working = false;
   m_groupType = groupType;
+  m_lastInOutput = NULL;
 }
 
 GroupCell::~GroupCell()
@@ -131,8 +133,13 @@ void GroupCell::SetOutput(MathCell *output)
     return ;
   if (m_output != NULL)
     DestroyOutput();
+
   m_output = output;
   m_output->m_group = this;
+
+  m_lastInOutput = m_output;
+  while (m_lastInOutput->m_next != NULL)
+    m_lastInOutput = m_lastInOutput->m_next;
 }
 
 void GroupCell::RemoveOutput()
@@ -165,9 +172,21 @@ void GroupCell::AppendOutput(MathCell *cell)
         m_groupType = GC_TYPE_IMAGE;
         break;
     }
+
+    if (m_groupType == GC_TYPE_CODE)
+      ((EditorCell *)(m_input->m_next))->ContainsChanges(false);
+
+    m_lastInOutput = m_output;
+    while (m_lastInOutput->m_next != NULL)
+      m_lastInOutput = m_lastInOutput->m_next;
+
   }
+
   else {
-    MathCell *tmp = m_output;
+    MathCell *tmp = m_lastInOutput;
+    if (tmp == NULL)
+      tmp = m_output;
+
     while (tmp->m_next != NULL)
       tmp = tmp->m_next;
     tmp->AppendCell(cell);
@@ -282,7 +301,10 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     //
     SetPen(parser);
     wxPoint in(point);
+    parser.Outdated(false);
     m_input->Draw(parser, in, fontsize, true);
+    if (m_groupType == GC_TYPE_CODE)
+      parser.Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
@@ -323,16 +345,17 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       }
     }
 
+    parser.Outdated(false);
     MathCell *editable = GetEditable();
     if (editable != NULL && editable->IsActive()) {
       dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxSOLID))); // window linux, set a pen
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
     }
-    else
-    {
+    else {
       dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID))); // window linux, set a pen
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_CELL_BRACKET)))); //highlight c.
     }
+
     if (!m_hide) {
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
