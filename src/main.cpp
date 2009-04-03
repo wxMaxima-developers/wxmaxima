@@ -153,6 +153,7 @@ void MyApp::NewWindow(wxString file)
   SetTopWindow(frame);
   frame->Show(true);
   frame->InitSession();
+  frame->ShowTip(false);
 }
 
 #if defined (__WXMAC__)
