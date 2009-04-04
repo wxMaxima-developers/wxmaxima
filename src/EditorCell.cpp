@@ -88,7 +88,7 @@ wxString EditorCell::ToTeX(bool all)
   return text + MathCell::ToTeX(all);
 }
 
-wxString EditorCell::ToXML(bool all, bool omitEditorTag)
+wxString EditorCell::ToXML(bool all)
 {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
@@ -99,10 +99,25 @@ wxString EditorCell::ToXML(bool all, bool omitEditorTag)
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
   xmlstring.Replace(wxT("\n"), wxT("</line>\n<line>"));
   xmlstring = wxT("<line>") + xmlstring + wxT("</line>\n");
-  if (omitEditorTag)
-    return xmlstring + MathCell::ToXML(all);
-  else
-    return wxT("<editor>\n") + xmlstring + wxT("</editor>\n") + MathCell::ToXML(all);
+  wxString head = wxT("<editor");
+  switch (m_type) {
+    case MC_TYPE_TEXT:
+      head += wxT(" type=\"text\"");
+      break;
+    case MC_TYPE_TITLE:
+      head += wxT(" type=\"title\"");
+      break;
+    case MC_TYPE_SECTION:
+      head += wxT(" type=\"section\"");
+      break;
+    case MC_TYPE_INPUT:
+    default:
+      head += wxT(" type=\"input\"");
+      break;
+  }
+  head += wxT(">\n");
+
+  return head + xmlstring + wxT("</editor>\n") + MathCell::ToXML(all);
 }
 
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)

@@ -988,94 +988,30 @@ void wxMaxima::ReadXmlFile(wxString file)
     }
   }
 
-  MathCell *documenttree = NULL;
   MathParser mp;
-  documenttree = mp.ParseTag(xmldoc.GetRoot()->GetChildren());
-  m_console->SetTree((GroupCell *)documenttree);
-
-/*
-  // read document
-
-  int i = 1;
-  while (xml[i] != _T("<document>")){
-    i++;
-    if (i >= xml.GetCount()) {
-      wxEndBusyCursor();
-      m_console->Thaw();
-      wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-      SetStatusText(_("Ready for user input"), 1);
-      return;
+  MathCell *tree = NULL;
+  MathCell *last = NULL;
+  wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
+  if (xmlcells) {
+    last = tree = mp.ParseTag(xmlcells, false); // first cell
+    while (xmlcells->GetNext()) {
+      xmlcells = xmlcells->GetNext();
+      MathCell *cell = mp.ParseTag(xmlcells, false);
+      last->m_next = cell;
+      last->m_nextToDraw = cell;
+      last->m_next->m_previous = last;
+      last->m_next->m_previousToDraw = last;
+      last = last->m_next;
     }
   }
+  m_console->SetTree((GroupCell *)tree);
+  m_console->SetLast((GroupCell *)last);
+  m_console->SetActiveCell(NULL);
+  m_console->SetSelection(NULL);
 
-  i++; // first cell hopefully
+  m_console->Recalculate();
+  m_console->Refresh();
 
-  while ((xml[i] != _T("</document>")) && (i < xml.GetCount()))
-  {
-    if (!xml[i].Contains(_T("<cell")))
-      i++;
-    else { // we have a cell!!
-      bool hide = false;
-      if (xml[i].Contains(_T("hide=\"true\""))) // read hide status for <cell .. >
-        hide = true;
-
-// --------------------------------------------------- GC_TYPE_CODE
-      if (xml[i].Contains(_T("type=\"code\"")))
-      {
-        if (xml[++i].Contains(_T("<input>"))) {
-          wxString content = wxEmptyString;
-          while (!(xml[++i].Contains(_T("</input>"))))
-          {
-            if (content.Length() > 0)
-              content += wxT("\n");
-            content += xml[i];
-          }
-          DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
-          DoRawConsoleAppend(content, MC_TYPE_INPUT, false );
-          i++;
-        }
-        else { // no <input> ? wierd
-          DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT, true, hide);
-          DoRawConsoleAppend(wxEmptyString, MC_TYPE_INPUT, false );
-        }
-        if (xml[i] == _T("<output>")) {
-          wxString content = _T("<mth>");
-          while (xml[++i] != _T("</output>"))
-            content += xml[i] + _T("\n");
-          ConsoleAppend(content + _T("</mth>"), MC_TYPE_DEFAULT);
-        }
-      }
-// --------------------------------------------------- GC_TYPE_IMAGE
-      else if (xml[i].Contains(_T("type=\"image\"")))
-      {
-        wxString content = wxEmptyString;
-        while (xml[++i] != _T("</cell>"))
-          content += xml[i];
-        DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, hide);
-        ConsoleAppend(_T("<mth>") + content + _T("</mth>"), MC_TYPE_DEFAULT);
-      }
-// --------------------------------------------------- text based types and unknown type
-      else {
-        int type = MC_TYPE_TEXT; // dump into text cell if not title or section
-        if (xml[i].Contains(_T("type=\"title\"")))
-          type = MC_TYPE_TITLE;
-        else if (xml[i].Contains(_T("type=\"section\"")))
-          type = MC_TYPE_SECTION;
-
-        wxString content = wxEmptyString;
-        while (!(xml[++i].Contains(_T("</cell>"))))
-        {
-          if (content.Length() > 0)
-            content += wxT("\n");
-          content += xml[i];
-        }
-        DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-        DoRawConsoleAppend(content, type);
-      }
-    }
-
-  }
-*/
   m_currentFile = file;
 
   wxEndBusyCursor();

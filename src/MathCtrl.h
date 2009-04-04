@@ -189,6 +189,24 @@ public:
       DestroyTree();
     m_tree = newtree;
   }
+  void SetLast(GroupCell* last = NULL)
+  {
+    if (last) {
+      m_last = last;
+      return;
+    }
+    else {
+      if (m_tree == NULL) {
+        m_last = NULL;
+        return;
+      }
+      GroupCell *tmp = m_tree;
+      while (tmp->m_next != NULL) {
+        tmp = (GroupCell *)tmp->m_next;
+      }
+      m_last = tmp;
+    }
+  }
   MathCell* GetSelectionStart()
   {
     return m_selectionStart;

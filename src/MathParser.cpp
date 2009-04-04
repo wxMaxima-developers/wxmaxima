@@ -61,71 +61,74 @@ MathParser::~MathParser()
 MathCell* MathParser::ParseCellTag(wxXmlNode* node)
 {
   GroupCell *group = NULL;
+  TextCell *prompt = new TextCell;
+  prompt->SetType(MC_TYPE_MAIN_PROMPT);
+
   // read hide status
-  wxString hideprop = node->GetPropVal(wxT("hide"), wxT("false"));
-  bool hide = (hideprop == wxT("true")) ? true : false;
+  bool hide = (node->GetPropVal(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
 
   // read (group)cell type
   wxString type = node->GetPropVal(wxT("type"), wxT("text"));
 
   if (type == wxT("code")) {
     group = new GroupCell(GC_TYPE_CODE);
+    prompt->SetValue(wxT(">> "));
+    group->SetInput(prompt);
     wxXmlNode *children = node->GetChildren();
-    EditorCell * editor = new EditorCell();
-    editor->SetType(MC_TYPE_INPUT);
-    wxString text = wxEmptyString;
     if (children->GetName() == wxT("input")) {
-      wxXmlNode *lines = children->GetChildren();
-      while (lines != NULL) {
-        if (lines->GetName() == wxT("line")) {
-          if (text.Length() == 0)
-            text += lines->GetContent();
-          else
-            text += wxT("\n") + lines->GetContent();
-        }
-        lines = lines->GetNext();
-      } // end while
+      group->AppendInput(ParseTag(children->GetChildren()));
     }
-    editor->SetValue(text);
-    group->AppendInput(editor);
-  }
-  else if (type == wxT("image")) {
-    group = new GroupCell(GC_TYPE_IMAGE);
-  }
-  else if (type == wxT("title")) {
-    group = new GroupCell(GC_TYPE_TITLE);
-  }
-  else if (type == wxT("section")) {
-    group = new GroupCell(GC_TYPE_SECTION);
-  }
-  else if (type == wxT("text")) {
-    group = new GroupCell(GC_TYPE_TEXT);
+    if (children->GetNext() != NULL)
+      group->AppendOutput(ParseTag(children->GetNext()->GetChildren()));
   }
   else {
-    group = new GroupCell(GC_TYPE_TEXT);
+    // type
+    if (type == wxT("image"))
+      group = new GroupCell(GC_TYPE_IMAGE);
+    else if (type == wxT("title"))
+      group = new GroupCell(GC_TYPE_TITLE);
+    else if (type == wxT("section"))
+      group = new GroupCell(GC_TYPE_SECTION);
+    else if (type == wxT("text"))
+      group = new GroupCell(GC_TYPE_TEXT);
+    else
+      group = new GroupCell(GC_TYPE_TEXT);
+
+    prompt->SetValue(wxEmptyString);
+    group->SetInput(prompt);
+    group->AppendOutput(ParseTag(node->GetChildren()));
   }
 
+  group->SetParent(group, false);
   group->Hide(hide);
-  return ((MathCell *)group);
+  return group;
 }
 
 MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
 {
   EditorCell *editor = new EditorCell();
-  editor->SetType(MC_TYPE_INPUT);
+  wxString type = node->GetPropVal(wxT("type"), wxT("input"));
+  if (type == wxT("input"))
+    editor->SetType(MC_TYPE_INPUT);
+  else if (type == wxT("text"))
+    editor->SetType(MC_TYPE_TEXT);
+  else if (type == wxT("title"))
+    editor->SetType(MC_TYPE_TITLE);
+  else if (type == wxT("section"))
+    editor->SetType(MC_TYPE_SECTION);
+
   wxString text = wxEmptyString;
-  wxXmlNode *children = node->GetChildren();
-  while (children != NULL) {
-    if (children->GetName() == wxT("line")) {
-      if (text.Length() == 0)
-        text += children->GetContent();
-      else
-        text += wxT("\n") + children->GetContent();
+  wxXmlNode *line = node->GetChildren();
+  while (line) {
+    if (line->GetName() == wxT("line")) {
+      if (!text.IsEmpty())
+        text += wxT("\n");
+      text += line->GetContent();
     }
-    children = children->GetNext();
+    line = line->GetNext();
   } // end while
   editor->SetValue(text);
-  return ((MathCell *)editor);
+  return editor;
 }
 
 MathCell* MathParser::ParseFracTag(wxXmlNode* node)

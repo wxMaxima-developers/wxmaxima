@@ -517,11 +517,11 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_CODE:
       if (input != NULL) {
         str += wxT("<input>\n");
-        str += ((EditorCell*)input)->ToXML(false, true);
-        str += wxT("\n</input>\n");
+        str += input->ToXML(false);
+        str += wxT("</input>");
       }
       if (output != NULL) {
-        str += wxT("<output>\n");
+        str += wxT("\n<output>\n");
         str += output->ToXML(true);
         str += wxT("\n</output>");
       }
@@ -536,7 +536,7 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_SUBSECTION:
     default:
       if (output != NULL)
-        str += ((EditorCell *)output)->ToXML(false, true); // true - omit <editor></editor>
+        str += output->ToXML(false);
       break;
   }
   str += wxT("\n</cell>\n");
