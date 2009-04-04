@@ -34,7 +34,7 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
   wxString ToTeX(bool all);
-  wxString ToXML(bool all);
+  wxString ToXML(bool all, bool omitEditorTag = false);
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
   void SetValue(wxString text)

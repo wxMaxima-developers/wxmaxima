@@ -183,6 +183,12 @@ public:
   {
     return m_tree;
   }
+  void SetTree(GroupCell* newtree)
+  {
+    if (m_tree != NULL)
+      DestroyTree();
+    m_tree = newtree;
+  }
   MathCell* GetSelectionStart()
   {
     return m_selectionStart;

@@ -920,7 +920,7 @@ void wxMaxima::ReadXmlFile(wxString file)
   m_console->Freeze();
 	wxBeginBusyCursor();
 
-	wxArrayString xml;
+  wxXmlDocument xmldoc;
 	wxZipEntry* entry;
   wxFFileInputStream in(file);
   wxZipInputStream zip(in);
@@ -930,7 +930,7 @@ void wxMaxima::ReadXmlFile(wxString file)
     entry = zip.GetNextEntry();
     wxString name = entry->GetName();
 
-    if (name != _T("document.xml")) {
+    if (name != wxT("content.xml")) {
       wxImage img;
       if (img.LoadFile(zip, wxBITMAP_TYPE_PNG))
       {
@@ -941,22 +941,32 @@ void wxMaxima::ReadXmlFile(wxString file)
       }
     }
 
-    else{
-      wxTextInputStream in(zip);
-      in.SetStringSeparators(wxT("\n"));
-      while(!zip.Eof())
-        xml.Add(in.ReadWord());
+    else {
+      if (!xmldoc.Load(zip)) {
+        wxEndBusyCursor();
+        m_console->Thaw();
+        wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+        SetStatusText(_("Ready for user input"), 1);
+        return;
+      }
     }
 
     delete entry;
   }
 
+  // start processing the XML file
+  if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
+    wxEndBusyCursor();
+    m_console->Thaw();
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    SetStatusText(_("Ready for user input"), 1);
+    return;
+  }
+
   // read document version and complain
+  wxString docversion = xmldoc.GetRoot()->GetPropVal(wxT("version"),wxT("1.0"));
   double version = 1.0;
-  int j = 1;
-  while (xml[j] != _T("<documentversion>"))
-    j++;
-  if (xml[j+1].ToDouble(&version)) {
+  if (docversion.ToDouble(&version)) {
     int version_major = int(version);
     int version_minor = int(10* (version - double(version_major)));
 
@@ -977,6 +987,13 @@ void wxMaxima::ReadXmlFile(wxString file)
       wxBeginBusyCursor();
     }
   }
+
+  MathCell *documenttree = NULL;
+  MathParser mp;
+  documenttree = mp.ParseTag(xmldoc.GetRoot()->GetChildren());
+  m_console->SetTree((GroupCell *)documenttree);
+
+/*
   // read document
 
   int i = 1;
@@ -1058,7 +1075,7 @@ void wxMaxima::ReadXmlFile(wxString file)
     }
 
   }
-
+*/
   m_currentFile = file;
 
   wxEndBusyCursor();

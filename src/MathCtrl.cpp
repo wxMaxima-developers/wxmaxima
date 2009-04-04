@@ -2251,8 +2251,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
 bool MathCtrl::ExportToWXMX(wxString file)
 {
-  m_saved = true;
-
+  // delete file if it already exists
   if(wxFileExists(file))
     if(!wxRemoveFile(file))
       return false;
@@ -2261,15 +2260,17 @@ bool MathCtrl::ExportToWXMX(wxString file)
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
 
-  zip.PutNextEntry(_T("document.xml"));
-  output << _T("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  // write document version
-  output << _T("<documentversion>\n");
-  output << DOCUMENT_VERSION_MAJOR << _T(".");
-  output << DOCUMENT_VERSION_MINOR << _T("\n");
-  output << _T("</documentversion>\n");
+  // first zip entry is "content.xml", xml of m_tree
+  zip.PutNextEntry(wxT("content.xml"));
+  output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+  // TODO write DOCTYPE
+  output << wxT("\n<!--   Created by wxMaxima ") << wxT(VERSION) << wxT("   -->");
+  output << wxT("\n<!--http://wxmaxima.sourceforge.net-->\n");
+  
   // write document
-  output << _T("<document>\n");
+  output << wxT("\n<wxMaximaDocument version=\"");
+  output << DOCUMENT_VERSION_MAJOR << wxT(".");
+  output << DOCUMENT_VERSION_MINOR << wxT("\">\n");
 
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
@@ -2278,9 +2279,9 @@ bool MathCtrl::ExportToWXMX(wxString file)
     tmp = (GroupCell *)tmp->m_next;
   }
 
-  output << _T("</document>");
+  output << wxT("\n</wxMaximaDocument>");
 
-  wxString name = _T("image1.png");
+  wxString name = wxT("image1.png");
   wxString fullname = wxFileName::GetTempDir() + name;
   int i = 1;
   while( wxFileExists(fullname) )
@@ -2291,11 +2292,12 @@ bool MathCtrl::ExportToWXMX(wxString file)
       imagefile.Read(zip);
     wxRemoveFile(fullname);
     i++; // next file
-    name = _T("image");
+    name = wxT("image");
     name << i << wxT(".png");
     fullname = wxFileName::GetTempDir() + name;
   }
 
+  m_saved = true;
   return true;
 }
 

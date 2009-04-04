@@ -24,7 +24,7 @@
 
 GroupCell::GroupCell(int groupType) : MathCell()
 {
-  m_input = new TextCell(wxT(">>"));
+  m_input = new TextCell(wxT(">> "));
   m_input->SetType(MC_TYPE_MAIN_PROMPT);
   m_output = NULL;
   m_outputRect.x = -1;
@@ -479,7 +479,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 wxString GroupCell::ToXML(bool all)
 {
   wxString str;
-  str = wxT("<cell"); // start opening tag
+  str = wxT("\n<cell"); // start opening tag
   // write "type" according to m_groupType
   switch (m_groupType) {
     case GC_TYPE_CODE:
@@ -508,42 +508,38 @@ wxString GroupCell::ToXML(bool all)
   // write hidden status
   if (m_hide)
     str += wxT(" hide=\"true\"");
+  str += wxT(">\n");
 
   MathCell *input = GetInput();
   MathCell *output = GetLabel();
   // write contents
   switch (m_groupType) {
     case GC_TYPE_CODE:
-      str += wxT(">\n"); // close <cell >
       if (input != NULL) {
-        str += wxT("<input><![CDATA[\n");
-        str += input->ToString(false);
-        str += wxT("\n]]></input>\n");
+        str += wxT("<input>\n");
+        str += ((EditorCell*)input)->ToXML(false, true);
+        str += wxT("\n</input>\n");
       }
       if (output != NULL) {
         str += wxT("<output>\n");
         str += output->ToXML(true);
-        str += wxT("\n</output>\n");
+        str += wxT("\n</output>");
       }
-      str += wxT("</cell>\n");
       break;
     case GC_TYPE_IMAGE:
-      str += wxT(">\n"); // close <cell >
       if (output != NULL)
         str += output->ToXML(true);
-      str += wxT("\n</cell>\n");
       break;
     case GC_TYPE_TEXT:
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
     default:
-      str += wxT("><![CDATA[\n");
       if (output != NULL)
-        str += output->ToString(false);
-      str += wxT("\n]]></cell>\n");
+        str += ((EditorCell *)output)->ToXML(false, true); // true - omit <editor></editor>
       break;
   }
+  str += wxT("\n</cell>\n");
 
   return str + MathCell::ToXML(all);
 }

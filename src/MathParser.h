@@ -31,8 +31,10 @@ public:
   MathParser();
   ~MathParser();
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
-private:
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
+private:
+  MathCell* ParseCellTag(wxXmlNode* node);
+  MathCell* ParseEditorTag(wxXmlNode* node);
   MathCell* ParseFracTag(wxXmlNode* node);
   MathCell* ParseText(wxXmlNode* node, int style = TS_DEFAULT);
   MathCell* ParseSupTag(wxXmlNode* node);

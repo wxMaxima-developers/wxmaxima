@@ -42,6 +42,7 @@
 #include "ImgCell.h"
 #include "SubSupCell.h"
 #include "SlideShowCell.h"
+#include "GroupCell.h"
 
 #define MAXLENGTH 50000
 
@@ -50,6 +51,82 @@ MathParser::MathParser()
 
 MathParser::~MathParser()
 {}
+
+// ParseCellTag
+// This function is responsible for creating
+// a tree of groupcells when loading XML document.
+// Any changes in GroupCell structure or methods
+// has to be reflected here in order to ensure proper
+// loading of WXMX files.
+MathCell* MathParser::ParseCellTag(wxXmlNode* node)
+{
+  GroupCell *group = NULL;
+  // read hide status
+  wxString hideprop = node->GetPropVal(wxT("hide"), wxT("false"));
+  bool hide = (hideprop == wxT("true")) ? true : false;
+
+  // read (group)cell type
+  wxString type = node->GetPropVal(wxT("type"), wxT("text"));
+
+  if (type == wxT("code")) {
+    group = new GroupCell(GC_TYPE_CODE);
+    wxXmlNode *children = node->GetChildren();
+    EditorCell * editor = new EditorCell();
+    editor->SetType(MC_TYPE_INPUT);
+    wxString text = wxEmptyString;
+    if (children->GetName() == wxT("input")) {
+      wxXmlNode *lines = children->GetChildren();
+      while (lines != NULL) {
+        if (lines->GetName() == wxT("line")) {
+          if (text.Length() == 0)
+            text += lines->GetContent();
+          else
+            text += wxT("\n") + lines->GetContent();
+        }
+        lines = lines->GetNext();
+      } // end while
+    }
+    editor->SetValue(text);
+    group->AppendInput(editor);
+  }
+  else if (type == wxT("image")) {
+    group = new GroupCell(GC_TYPE_IMAGE);
+  }
+  else if (type == wxT("title")) {
+    group = new GroupCell(GC_TYPE_TITLE);
+  }
+  else if (type == wxT("section")) {
+    group = new GroupCell(GC_TYPE_SECTION);
+  }
+  else if (type == wxT("text")) {
+    group = new GroupCell(GC_TYPE_TEXT);
+  }
+  else {
+    group = new GroupCell(GC_TYPE_TEXT);
+  }
+
+  group->Hide(hide);
+  return ((MathCell *)group);
+}
+
+MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
+{
+  EditorCell *editor = new EditorCell();
+  editor->SetType(MC_TYPE_INPUT);
+  wxString text = wxEmptyString;
+  wxXmlNode *children = node->GetChildren();
+  while (children != NULL) {
+    if (children->GetName() == wxT("line")) {
+      if (text.Length() == 0)
+        text += children->GetContent();
+      else
+        text += wxT("\n") + children->GetContent();
+    }
+    children = children->GetNext();
+  } // end while
+  editor->SetValue(text);
+  return ((MathCell *)editor);
+}
 
 MathCell* MathParser::ParseFracTag(wxXmlNode* node)
 {
@@ -636,6 +713,20 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
           cell = tmp;
         else
           cell->AppendCell(tmp);
+      }
+      else if (tagName == wxT("editor"))
+      {
+        if (cell == NULL)
+          cell = ParseEditorTag(node);
+        else
+          cell->AppendCell(ParseEditorTag(node));
+      }
+      else if (tagName == wxT("cell"))
+      {
+        if (cell == NULL)
+          cell = ParseCellTag(node);
+        else
+          cell->AppendCell(ParseCellTag(node));
       }
       else if (node->GetChildren())
       {

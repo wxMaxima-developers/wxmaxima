@@ -88,7 +88,7 @@ wxString EditorCell::ToTeX(bool all)
   return text + MathCell::ToTeX(all);
 }
 
-wxString EditorCell::ToXML(bool all)
+wxString EditorCell::ToXML(bool all, bool omitEditorTag)
 {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
@@ -97,9 +97,12 @@ wxString EditorCell::ToXML(bool all)
   xmlstring.Replace(wxT(">"),  wxT("&gt;"));
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
-
-	return _T("<t>") + xmlstring + _T("</t>") +
-				MathCell::ToXML(all);
+  xmlstring.Replace(wxT("\n"), wxT("</line>\n<line>"));
+  xmlstring = wxT("<line>") + xmlstring + wxT("</line>\n");
+  if (omitEditorTag)
+    return xmlstring + MathCell::ToXML(all);
+  else
+    return wxT("<editor>\n") + xmlstring + wxT("</editor>\n") + MathCell::ToXML(all);
 }
 
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
@@ -255,7 +258,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
     SetFont(parser, fontsize);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0, numberOfLines = 0;
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__ || wxUSE_UNICODE
     if (parser.GetChangeAsterisk())  // replace "*" with centerdot for the time of drawing
       m_text.Replace(wxT("*"), wxT("\xB7"));
 #endif
@@ -276,7 +279,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       prevNewLinePos = newLinePos;
       numberOfLines++;
     }
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__ || wxUSE_UNICODE
     if (parser.GetChangeAsterisk()) // replace centerdot with "*"
       m_text.Replace(wxT("\xB7"), wxT("*"));
 #endif
