@@ -1416,11 +1416,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 #endif
   int fontSize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontSize);
-  if (fontSize < 20)
+  if (fontSize < MC_MAX_SIZE)
     menubar->Enable(menu_inc_fontsize, true);
   else
     menubar->Enable(menu_inc_fontsize, false);
-  if (fontSize > 8)
+  if (fontSize > MC_MIN_SIZE)
     menubar->Enable(menu_dec_fontsize, true);
   else
     menubar->Enable(menu_dec_fontsize, false);

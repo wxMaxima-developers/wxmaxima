@@ -75,11 +75,14 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     prompt->SetValue(wxT(">> "));
     group->SetInput(prompt);
     wxXmlNode *children = node->GetChildren();
-    if (children->GetName() == wxT("input")) {
-      group->AppendInput(ParseTag(children->GetChildren()));
+    while (children) {
+      if (children->GetName() == wxT("input")) {
+        group->AppendInput(ParseTag(children->GetChildren()));
+      }
+      if (children->GetName() == wxT("output"))
+        group->AppendOutput(ParseTag(children->GetChildren()));
+      children = children->GetNext();
     }
-    if (children->GetNext() != NULL)
-      group->AppendOutput(ParseTag(children->GetNext()->GetChildren()));
   }
   else {
     // type
@@ -123,7 +126,7 @@ MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
     if (line->GetName() == wxT("line")) {
       if (!text.IsEmpty())
         text += wxT("\n");
-      text += line->GetContent();
+      text += line->GetNodeContent();
     }
     line = line->GetNext();
   } // end while

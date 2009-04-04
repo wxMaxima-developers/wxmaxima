@@ -36,11 +36,11 @@
 #if defined __WXMAC__
  #define MC_EXP_INDENT 2
  #define MC_MIN_SIZE 10
- #define MC_MAX_SIZE 20
+ #define MC_MAX_SIZE 36
 #else
  #define MC_EXP_INDENT 4
  #define MC_MIN_SIZE 8
- #define MC_MAX_SIZE 20
+ #define MC_MAX_SIZE 36
 #endif
 
 #include <wx/wx.h>
