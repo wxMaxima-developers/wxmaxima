@@ -299,7 +299,7 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
 
   Recalculate();
   Refresh();
-  m_saved = false;
+  m_saved = false; // document has been modified
 }
 
 /***
@@ -319,10 +319,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
   if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT)
   {
     GroupCell *newGroup = new GroupCell(GC_TYPE_TEXT);
-    /*TextCell *prompt = new TextCell;
-    prompt->SetValue(wxEmptyString);
-    prompt->SetType(MC_TYPE_MAIN_PROMPT);
-    newGroup->SetInput(prompt);*/
     tmp = m_tree = m_last = newGroup;
   }
 
@@ -374,78 +370,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
   ScrollToCell(tmp);
 
   Refresh();
-}
-
-/***
- * Prepend a new cell
- */
-GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool prepend)
-{
-  GroupCell *where;
-
-  if (m_hCaretActive) {
-    if (m_hCaretPosition == NULL)
-      where = m_tree;
-    else
-      where = m_hCaretPosition;
-  }
-  else if (m_selectionStart != NULL)
-    where = (GroupCell *)m_selectionStart->GetParent();
-  else
-    where = m_last;
-
-  GroupCell *newGroup = new GroupCell(type, value);
-
-  if (m_tree == NULL) {
-    m_tree = m_last = newGroup;
-  }
-
-  else if (where == m_tree && prepend) {
-    newGroup->m_next = m_tree;
-    newGroup->m_nextToDraw = m_tree;
-    m_tree->m_previous = newGroup;
-    m_tree->m_previousToDraw = newGroup;
-    m_tree = newGroup;
-  }
-
-  else if (prepend) {
-    where->m_previous->m_next = newGroup;
-    where->m_previous->m_nextToDraw = newGroup;
-    newGroup->m_previous = where->m_previous;
-    newGroup->m_previousToDraw = where->m_previous;
-
-    newGroup->m_next = where;
-    newGroup->m_nextToDraw = where;
-    where->m_previous = newGroup;
-    where->m_previousToDraw = newGroup;
-  }
-
-  else {
-    if (where->m_next != NULL)
-      where->m_next->m_previous = newGroup;
-    if (where->m_nextToDraw != NULL)
-      where->m_next->m_previousToDraw = newGroup;
-    newGroup->m_next = where->m_next;
-    newGroup->m_nextToDraw = where->m_nextToDraw;
-
-    newGroup->m_previous = where;
-    newGroup->m_previousToDraw = where;
-    where->m_next = newGroup;
-    where->m_nextToDraw = newGroup;
-
-    if (where == m_last)
-      m_last = newGroup;
-  }
-
-  SetActiveCell(NULL);
-  SetSelection(NULL);
-
-  Recalculate();
-
-  if (refresh)
-    Refresh();
-
-  return newGroup;
 }
 
 /***

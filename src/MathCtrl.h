@@ -145,7 +145,6 @@ public:
   void RecalculateForce();
   void ClearWindow();
   void ResetInputPrompts();
-  void InsertImage(wxString filename);
   bool CanCopy(bool fromActive = false)
   {
     return m_selectionStart != NULL ||
@@ -213,7 +212,6 @@ public:
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
-  GroupCell *PrependGroup(int type, wxString value, bool refresh, bool prepend = true);
   bool IsActiveInLast() {
     return m_activeCell != NULL && m_activeCell->GetParent() == m_last;
   }
