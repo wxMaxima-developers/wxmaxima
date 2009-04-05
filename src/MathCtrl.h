@@ -220,6 +220,7 @@ public:
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetHCaret(MathCell *where);
+  GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();
   bool CanUndo();

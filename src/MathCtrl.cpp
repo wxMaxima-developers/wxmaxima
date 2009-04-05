@@ -299,6 +299,7 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
 
   Recalculate();
   Refresh();
+  m_saved = false;
 }
 
 /***
@@ -2715,6 +2716,17 @@ bool MathCtrl::IsSelectionInWorking() {
     return false;
 
   return true;
+}
+
+GroupCell *MathCtrl::GetHCaret()
+{
+  if (m_hCaretActive)
+    return m_hCaretPosition;
+
+  if (m_activeCell)
+    return (GroupCell *)m_activeCell->GetParent();
+
+  return m_last;
 }
 
 void MathCtrl::SetHCaret(MathCell *where)

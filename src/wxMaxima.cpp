@@ -3273,8 +3273,12 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
                                      wxEmptyString, wxEmptyString,
                                      _("Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"),
                                      wxFD_OPEN);
-      if (file != wxEmptyString)
-        m_console->OpenHCaret(file, GC_TYPE_IMAGE);
+      if (file != wxEmptyString) {
+        GroupCell *group = new GroupCell(GC_TYPE_IMAGE, file);
+        m_console->InsertGroupCells(group, m_console->GetHCaret());
+        m_console->SetHCaret(group);
+        m_console->ScrollToCell(group);
+      }
       return ;
     }
     break;
