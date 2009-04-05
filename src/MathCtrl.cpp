@@ -1141,11 +1141,14 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
-  m_saved = false;
-
-  if (type == GC_TYPE_IMAGE && m_workingGroup != NULL)
+  // image cells shouldn't be inserted via openhcaret
+  // though it can be done easily
+  if (type == GC_TYPE_IMAGE)
     return;
 
+  // if we have a working group, bypass normal behaviour
+  // and insert an EditorCell into the output
+  // of the working group.
   if (m_workingGroup != NULL) {
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
@@ -1162,6 +1165,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     return;
   }
 
+  // set m_hCaretPosition to a sensible value
   if (m_activeCell != NULL)
     SetHCaret(m_activeCell->GetParent());
   else if (m_selectionStart != NULL)
@@ -1173,28 +1177,14 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     SetHCaret(m_last);
   }
 
-  if (m_hCaretPosition != NULL) {
-    SetSelection(m_hCaretPosition);
-    GroupCell *group = PrependGroup(type, txt, false, false);
-    if (type != GC_TYPE_IMAGE)
-    {
-      SetActiveCell(group->GetEditable());
-      ((EditorCell *)m_activeCell)->CaretToEnd();
-      ((EditorCell *)m_activeCell)->ClearUndo();
-    }
-    ScrollToCell(group);
-  }
-  else {
-    SetSelection(m_tree);
-    GroupCell *group = PrependGroup(type, txt, false, true);
-    if (type != GC_TYPE_IMAGE)
-    {
-      SetActiveCell(group->GetEditable());
-      ((EditorCell *)m_activeCell)->CaretToEnd();
-      ((EditorCell *)m_activeCell)->ClearUndo();
-    }
-    ScrollToCell(group);
-  }
+  // insert a new group cell
+  GroupCell *group = new GroupCell(type, txt);
+  InsertGroupCells(group, m_hCaretPosition);
+
+  // activate editor
+  SetActiveCell(group->GetEditable());
+  ((EditorCell *)m_activeCell)->ClearUndo();
+  ScrollToCell(group);
 
   Refresh();
 }
