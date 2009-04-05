@@ -338,7 +338,7 @@ wxString MathCell::ToXML(bool all)
 {
   if (all && m_next != NULL) {
     if (m_next->ForceBreakLineHere())
-      return wxT("\n") + m_next->ToXML(all);
+      return wxT("</mth>\n<mth>") + m_next->ToXML(all);
     return m_next->ToXML(all);
   }
   return wxEmptyString;

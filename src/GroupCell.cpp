@@ -561,7 +561,7 @@ wxString GroupCell::ToXML(bool all)
       }
       if (output != NULL) {
         str += wxT("\n<output>\n");
-        str += output->ToXML(true);
+        str += wxT("<mth>") + output->ToXML(true) + wxT("</mth>");
         str += wxT("\n</output>");
       }
       break;
