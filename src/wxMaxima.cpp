@@ -997,15 +997,16 @@ void wxMaxima::ReadXmlFile(wxString file)
     while (xmlcells->GetNext()) {
       xmlcells = xmlcells->GetNext();
       MathCell *cell = mp.ParseTag(xmlcells, false);
-      last->m_next = cell;
-      last->m_nextToDraw = cell;
-      last->m_next->m_previous = last;
-      last->m_next->m_previousToDraw = last;
+
+      last->m_next = last->m_nextToDraw = cell;
+      last->m_next->m_previous = last->m_next->m_previousToDraw = last;
+
       last = last->m_next;
     }
   }
-  m_console->SetTree((GroupCell *)tree);
-  m_console->SetLast((GroupCell *)last);
+  m_console->DestroyTree();
+  m_console->InsertGroupCells((GroupCell *)tree);
+
   m_console->SetActiveCell(NULL);
   m_console->SetSelection(NULL);
 

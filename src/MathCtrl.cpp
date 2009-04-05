@@ -280,8 +280,10 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
 
   if (where)
     next = (GroupCell *)where->m_next;
-  else
+  else {
     next = m_tree; // where == NULL
+    m_tree = tree;
+  }
   prev = where;
 
   tree->m_previous = tree->m_previousToDraw = where;
@@ -291,6 +293,12 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
     prev->m_next     = prev->m_nextToDraw     = tree;
   if (next)
     next->m_previous = next->m_previousToDraw = last;
+  // make sure m_last is correct!!
+  if (!next) // if there were no further cells
+    m_last = last;
+
+  Recalculate();
+  Refresh();
 }
 
 /***
