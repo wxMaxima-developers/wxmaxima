@@ -20,6 +20,7 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
+#include "ImgCell.h"
 #include "Bitmap.h"
 
 GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
@@ -69,6 +70,13 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       delete(editor);
       break;
   }
+  // when creating an image cell, if a string is provided
+  // it loads an image (without deleting it)
+  if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0)) {
+    ImgCell *ic = new ImgCell(initString, false);
+    AppendOutput(ic);
+  }
+
   SetParent(this, false);
 }
 
@@ -684,11 +692,10 @@ void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
   }
 }
 
-bool GroupCell::SetUserInput(wxString text)
+bool GroupCell::SetEditableContent(wxString text)
 {
   if (GetEditable()) {
     GetEditable()->SetValue(text);
-    ((EditorCell *)GetEditable())->CaretToEnd();
     return true;
   }
   else

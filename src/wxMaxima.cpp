@@ -196,8 +196,8 @@ void wxMaxima::FirstOutput(wxString s)
   //m_console->ClearWindow(); // we don't want to clear document when restarting maxima
 
   if (showHeader) {
-    DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT);
-    DoRawConsoleAppend(s.SubString(0, start - 2), MC_TYPE_HEADER);
+    GroupCell *header = new GroupCell(GC_TYPE_TEXT, s.SubString(0, start - 2));
+    m_console->InsertGroupCells(header);
   }
 
   if (m_batchFileLines.GetCount()>0) {
@@ -353,8 +353,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
 {
   if (type == MC_TYPE_INPUT || type == MC_TYPE_TEXT ||
-      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE ||
-      type == MC_TYPE_HEADER)
+      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE)
   {
     EditorCell* cell = new EditorCell();
 

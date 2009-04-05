@@ -50,7 +50,7 @@ public:
   void SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   // methods for manipulating GroupCell
-  bool SetUserInput(wxString text);
+  bool SetEditableContent(wxString text);
   MathCell* GetEditable(); // returns pointer to editor (if there is one)
   void AppendOutput(MathCell *cell);
   void RemoveOutput();

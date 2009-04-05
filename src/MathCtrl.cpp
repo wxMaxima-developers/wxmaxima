@@ -393,17 +393,7 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
   else
     where = m_last;
 
-  GroupCell *newGroup = new GroupCell(type);
-
-  if (type == GC_TYPE_IMAGE)
-  {
-    ImgCell * image = new ImgCell(value, false);
-    newGroup->AppendOutput(image);
-  }
-  else
-    newGroup->SetUserInput(value);
-
-  newGroup->SetParent(newGroup, false);
+  GroupCell *newGroup = new GroupCell(type, value);
 
   if (m_tree == NULL) {
     m_tree = m_last = newGroup;
@@ -811,6 +801,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
   m_leftDown = false;
   m_mouseDrag = false;
   m_clickInGC = NULL; // pointer to NULL to prevent crashes if the cell is deleted
+  m_clickType = CLICK_TYPE_NONE;
   CheckUnixCopy();
   SetFocus();
 }

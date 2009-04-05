@@ -78,7 +78,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     while (children) {
       if (children->GetName() == wxT("input")) {
         MathCell *editor = ParseTag(node->GetChildren());
-        group->SetUserInput(editor->GetValue());
+        group->SetEditableContent(editor->GetValue());
         delete editor;
       }
       if (children->GetName() == wxT("output"))
@@ -102,7 +102,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       return NULL;
 
     MathCell *editor = ParseTag(node->GetChildren());
-    group->SetUserInput(editor->GetValue());
+    group->SetEditableContent(editor->GetValue());
     delete editor;
   }
 
