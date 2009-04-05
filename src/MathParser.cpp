@@ -47,7 +47,11 @@
 #define MAXLENGTH 50000
 
 MathParser::MathParser()
-{}
+{
+  m_ParserStyle = MC_TYPE_DEFAULT;
+  m_FracStyle = FC_NORMAL;
+  m_highlight = false;
+}
 
 MathParser::~MathParser()
 {}
