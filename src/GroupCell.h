@@ -35,40 +35,48 @@ enum
 class GroupCell: public MathCell
 {
 public:
-  GroupCell(int type);
+  GroupCell(int groupType); // a constructor which produces the right inner structure
   ~GroupCell();
+  MathCell* Copy(bool all);
   void Destroy();
+  // general methods
+  int GetGroupType() { return m_groupType; }
+  void SetParent(MathCell *parent, bool all); // setting parent for all mathcells in GC
+  void SetWorking(bool working) { m_working = working; }
+  // selection methods
+  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+  void SelectPoint(wxPoint& rect, MathCell** first, MathCell** last);
+  void SelectOutput(MathCell **start, MathCell **end);
+  void SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
+  void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
+  // methods for manipulating GroupCell
+  bool SetUserInput(wxString text);
+  MathCell* GetEditable(); // returns pointer to editor (if there is one)
+  void AppendOutput(MathCell *cell);
+  void RemoveOutput();
+  // exporting
+  wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToXML(bool all);
+  // hide status
+  bool IsHidden() { return m_hide; }
+  void Hide(bool hide) { m_hide = hide; }
+  void SwitchHide() { m_hide = !m_hide && (m_output != NULL); }
+  wxRect HideRect();
+  // raw manipulation of GC (should be protected)
   void SetInput(MathCell *input);
   void SetOutput(MathCell *output);
   void AppendInput(MathCell *cell);
-  void AppendOutput(MathCell *cell);
-  MathCell* Copy(bool all);
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-  void SelectPoint(wxPoint& rect, MathCell** first, MathCell** last);
-  void BreakLines(int fullWidth);
   MathCell* GetPrompt() { return m_input; }
   MathCell* GetInput() { return m_input->m_next; }
   MathCell* GetLabel() { return m_output; }
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
-  MathCell* GetEditable();
+  //
   wxRect GetOutputRect() { return m_outputRect; }
-  void RemoveOutput();
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-  void SelectOutput(MathCell **start, MathCell **end);
-  void SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
-  void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
-  void SetParent(MathCell *parent, bool all);
-  void SwitchHide() { m_hide = !m_hide && (m_output != NULL); }
-  void SetWorking(bool working) { m_working = working; }
-  wxRect HideRect();
-  wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
-  wxString ToXML(bool all);
-  bool IsHidden() { return m_hide; }
-  void Hide(bool hide) { m_hide = hide; }
-  int GetGroupType() { return m_groupType; }
+  void BreakLines(int fullWidth);
 protected:
   int m_groupType;
   void DestroyOutput();

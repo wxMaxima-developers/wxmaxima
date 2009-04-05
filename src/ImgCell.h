@@ -27,6 +27,7 @@ class ImgCell : public MathCell
 {
 public:
   ImgCell();
+  ImgCell(wxString image, bool remove = true);
   ~ImgCell();
   void Destroy();
   void LoadImage(wxString image, bool remove = true);

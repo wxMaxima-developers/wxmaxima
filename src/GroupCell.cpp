@@ -24,8 +24,7 @@
 
 GroupCell::GroupCell(int groupType) : MathCell()
 {
-  m_input = new TextCell(wxT(">> "));
-  m_input->SetType(MC_TYPE_MAIN_PROMPT);
+  m_input = NULL;
   m_output = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
@@ -39,6 +38,37 @@ GroupCell::GroupCell(int groupType) : MathCell()
   m_working = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
+  // set up cell depending on groupType, so we have a working cell
+  if (groupType == GC_TYPE_CODE)
+    m_input = new TextCell(wxT(">> "));
+  else
+    m_input = new TextCell(wxEmptyString);
+  m_input->SetType(MC_TYPE_MAIN_PROMPT);
+  EditorCell *editor = new EditorCell();
+
+  switch (groupType) {
+    case GC_TYPE_CODE:
+      editor->SetType(MC_TYPE_INPUT);
+      AppendInput(editor);
+      break;
+    case GC_TYPE_TEXT:
+      editor->SetType(MC_TYPE_TEXT);
+      AppendOutput(editor);
+      break;
+    case GC_TYPE_TITLE:
+      editor->SetType(MC_TYPE_TITLE);
+      AppendOutput(editor);
+      break;
+    case GC_TYPE_SECTION:
+      editor->SetType(MC_TYPE_SECTION);
+      AppendOutput(editor);
+      break;
+    case GC_TYPE_IMAGE:
+    default:
+      delete(editor);
+      break;
+  }
+  SetParent(this, false);
 }
 
 GroupCell::~GroupCell()
@@ -651,6 +681,17 @@ void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
     if (*first == *last)
       (*first)->SelectInner(rect, first, last);
   }
+}
+
+bool GroupCell::SetUserInput(wxString text)
+{
+  if (GetEditable()) {
+    GetEditable()->SetValue(text);
+    ((EditorCell *)GetEditable())->CaretToEnd();
+    return true;
+  }
+  else
+    return false;
 }
 
 MathCell *GroupCell::GetEditable()

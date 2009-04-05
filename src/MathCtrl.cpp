@@ -356,7 +356,7 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
 
   GroupCell *newGroup = new GroupCell(type);
 
-  TextCell *prompt = new TextCell;
+  /*TextCell *prompt = new TextCell;
   if (type == GC_TYPE_CODE)
     prompt->SetValue(wxT(">> "));
   else {
@@ -365,18 +365,16 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
   prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
   newGroup->SetInput(prompt);
+  */
 
   if (type == GC_TYPE_IMAGE)
   {
-    ImgCell * image = new ImgCell;
-
-    image->LoadImage(value, false);
-
+    ImgCell * image = new ImgCell(value, false);
     newGroup->AppendOutput(image);
   }
   else
   {
-    EditorCell *newCell = new EditorCell;
+/*    EditorCell *newCell = new EditorCell;
     switch (type) {
       case GC_TYPE_CODE:
         newCell->SetType(MC_TYPE_INPUT);
@@ -397,6 +395,8 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
       newGroup->AppendOutput(newCell);
     else
       newGroup->AppendInput(newCell);
+      */
+    newGroup->SetUserInput(value);
   }
 
   newGroup->SetParent(newGroup, false);

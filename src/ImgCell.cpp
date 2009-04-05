@@ -28,6 +28,14 @@ ImgCell::ImgCell() : MathCell()
   m_type = MC_TYPE_IMAGE;
 }
 
+// constructor which load image
+ImgCell::ImgCell(wxString image, bool remove) : MathCell()
+{
+  m_bitmap = NULL;
+  m_type = MC_TYPE_IMAGE;
+  LoadImage(image, remove);
+}
+
 ImgCell::~ImgCell()
 {
   if (m_bitmap != NULL)

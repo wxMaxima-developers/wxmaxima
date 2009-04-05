@@ -88,22 +88,26 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       children = children->GetNext();
     }
   }
+  else if (type == wxT("image")) {
+    group = new GroupCell(GC_TYPE_IMAGE);
+    group->AppendOutput(ParseTag(node->GetChildren()));
+  }
   else {
-    // type
-    if (type == wxT("image"))
-      group = new GroupCell(GC_TYPE_IMAGE);
-    else if (type == wxT("title"))
+    // text types
+    if (type == wxT("title"))
       group = new GroupCell(GC_TYPE_TITLE);
     else if (type == wxT("section"))
       group = new GroupCell(GC_TYPE_SECTION);
     else if (type == wxT("text"))
       group = new GroupCell(GC_TYPE_TEXT);
     else
-      group = new GroupCell(GC_TYPE_TEXT);
+      return NULL;
 
-    prompt->SetValue(wxEmptyString);
-    group->SetInput(prompt);
-    group->AppendOutput(ParseTag(node->GetChildren()));
+    MathCell *editor = ParseTag(node->GetChildren());
+    wxString text = ((EditorCell *)editor)->GetValue();
+    if (group->GetEditable())
+      group->GetEditable()->SetValue(text);
+    delete editor;
   }
 
   group->SetParent(group, false);
