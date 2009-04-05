@@ -261,6 +261,37 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       0, rect.GetTop());
 }
 
+// InsertGroupCells
+// inserts groupcells after position "where" (NULL = top of the document)
+// Multiple groupcells can be inserted when tree->m_next != NULL
+void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
+{
+  if (!tree)
+    return; // nothing to insert
+  GroupCell *next; // next gc to insertion point
+  GroupCell *prev;
+  // last in the tree to insert
+  GroupCell* last = tree;
+  while (last->m_next)
+    last = (GroupCell *)last->m_next;
+
+  if (m_tree == NULL)
+    where = NULL;
+
+  if (where)
+    next = (GroupCell *)where->m_next;
+  else
+    next = m_tree; // where == NULL
+  prev = where;
+
+  tree->m_previous = tree->m_previousToDraw = where;
+  last->m_next     = last->m_nextToDraw     = next;
+
+  if (prev)
+    prev->m_next     = prev->m_nextToDraw     = tree;
+  if (next)
+    next->m_previous = next->m_previousToDraw = last;
+}
 
 /***
  * Add a new line
@@ -279,10 +310,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
   if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT)
   {
     GroupCell *newGroup = new GroupCell(GC_TYPE_TEXT);
-    TextCell *prompt = new TextCell;
+    /*TextCell *prompt = new TextCell;
     prompt->SetValue(wxEmptyString);
     prompt->SetType(MC_TYPE_MAIN_PROMPT);
-    newGroup->SetInput(prompt);
+    newGroup->SetInput(prompt);*/
     tmp = m_tree = m_last = newGroup;
   }
 
@@ -356,48 +387,13 @@ GroupCell* MathCtrl::PrependGroup(int type, wxString value, bool refresh, bool p
 
   GroupCell *newGroup = new GroupCell(type);
 
-  /*TextCell *prompt = new TextCell;
-  if (type == GC_TYPE_CODE)
-    prompt->SetValue(wxT(">> "));
-  else {
-    prompt->SetValue(wxEmptyString);
-  }
-  prompt->SetType(MC_TYPE_MAIN_PROMPT);
-
-  newGroup->SetInput(prompt);
-  */
-
   if (type == GC_TYPE_IMAGE)
   {
     ImgCell * image = new ImgCell(value, false);
     newGroup->AppendOutput(image);
   }
   else
-  {
-/*    EditorCell *newCell = new EditorCell;
-    switch (type) {
-      case GC_TYPE_CODE:
-        newCell->SetType(MC_TYPE_INPUT);
-        break;
-      case GC_TYPE_TEXT:
-        newCell->SetType(MC_TYPE_TEXT);
-        break;
-      case GC_TYPE_SECTION:
-        newCell->SetType(MC_TYPE_SECTION);
-        break;
-      case GC_TYPE_TITLE:
-        newCell->SetType(MC_TYPE_TITLE);
-        break;
-    }
-    newCell->SetValue(value);
-
-    if (type != GC_TYPE_CODE)
-      newGroup->AppendOutput(newCell);
-    else
-      newGroup->AppendInput(newCell);
-      */
     newGroup->SetUserInput(value);
-  }
 
   newGroup->SetParent(newGroup, false);
 
@@ -2266,7 +2262,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // TODO write DOCTYPE
   output << wxT("\n<!--   Created by wxMaxima ") << wxT(VERSION) << wxT("   -->");
   output << wxT("\n<!--http://wxmaxima.sourceforge.net-->\n");
-  
+
   // write document
   output << wxT("\n<wxMaximaDocument version=\"");
   output << DOCUMENT_VERSION_MAJOR << wxT(".");

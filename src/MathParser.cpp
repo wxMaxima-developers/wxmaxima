@@ -65,8 +65,6 @@ MathParser::~MathParser()
 MathCell* MathParser::ParseCellTag(wxXmlNode* node)
 {
   GroupCell *group = NULL;
-  TextCell *prompt = new TextCell;
-  prompt->SetType(MC_TYPE_MAIN_PROMPT);
 
   // read hide status
   bool hide = (node->GetPropVal(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
@@ -76,12 +74,12 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
 
   if (type == wxT("code")) {
     group = new GroupCell(GC_TYPE_CODE);
-    prompt->SetValue(wxT(">> "));
-    group->SetInput(prompt);
     wxXmlNode *children = node->GetChildren();
     while (children) {
       if (children->GetName() == wxT("input")) {
-        group->AppendInput(ParseTag(children->GetChildren()));
+        MathCell *editor = ParseTag(node->GetChildren());
+        group->SetUserInput(editor->GetValue());
+        delete editor;
       }
       if (children->GetName() == wxT("output"))
         group->AppendOutput(ParseTag(children->GetChildren()));
@@ -104,9 +102,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       return NULL;
 
     MathCell *editor = ParseTag(node->GetChildren());
-    wxString text = ((EditorCell *)editor)->GetValue();
-    if (group->GetEditable())
-      group->GetEditable()->SetValue(text);
+    group->SetUserInput(editor->GetValue());
     delete editor;
   }
 

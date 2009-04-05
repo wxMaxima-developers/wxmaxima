@@ -22,7 +22,7 @@
 #include "EditorCell.h"
 #include "Bitmap.h"
 
-GroupCell::GroupCell(int groupType) : MathCell()
+GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
   m_input = NULL;
   m_output = NULL;
@@ -45,6 +45,7 @@ GroupCell::GroupCell(int groupType) : MathCell()
     m_input = new TextCell(wxEmptyString);
   m_input->SetType(MC_TYPE_MAIN_PROMPT);
   EditorCell *editor = new EditorCell();
+  editor->SetValue(initString);
 
   switch (groupType) {
     case GC_TYPE_CODE:

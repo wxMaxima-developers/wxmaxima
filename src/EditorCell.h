@@ -40,7 +40,7 @@ public:
   void SetValue(wxString text)
   {
     m_text = text;
-    m_positionOfCaret = 0;
+    m_positionOfCaret = m_text.Length();
   }
   wxString GetValue()
   {

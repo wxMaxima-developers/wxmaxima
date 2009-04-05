@@ -35,7 +35,7 @@ enum
 class GroupCell: public MathCell
 {
 public:
-  GroupCell(int groupType); // a constructor which produces the right inner structure
+  GroupCell(int groupType, wxString initString = wxEmptyString);
   ~GroupCell();
   MathCell* Copy(bool all);
   void Destroy();

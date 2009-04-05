@@ -139,6 +139,7 @@ public:
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
+  void InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
   void InsertLine(MathCell *newLine, bool forceNewLine = false, bool hide = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
