@@ -774,7 +774,7 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
 
-#if !defined __WXMW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);
 #endif
 
