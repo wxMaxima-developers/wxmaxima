@@ -1219,7 +1219,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     else {
       wxRect rect = m_activeCell->GetParent()->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      rect.width = GetSize().x;
       RefreshRect(rect);
     }
 
@@ -2692,6 +2691,7 @@ void MathCtrl::RemoveAllOutput()
   }
 
   Recalculate();
+  Refresh();
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
