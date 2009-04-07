@@ -103,7 +103,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 void wxMaximaFrame::set_properties()
 {
 #if defined (__WXMSW__)
-  SetIcon(wxICON(maximaicon));
+  SetIcon(wxICON(icon0));
 #elif defined (__WXGTK__)
   wxString icon(wxT(PREFIX));
   icon += wxT("/share/wxMaxima/wxmaxima.png");
