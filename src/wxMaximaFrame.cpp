@@ -814,6 +814,8 @@ void wxMaximaFrame::UpdateRecentDocuments()
   for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
   {
     wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
+    delete item;
+    item = NULL;
 
     if (i-menu_recent_document_0 < m_recentDocuments.Count())
     {
@@ -821,13 +823,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
       wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
 
-      if (item == NULL)
-        m_recentDocumentsMenu->Append(i, label);
-      else
-      {
-        item->SetItemLabel(label);
-        m_recentDocumentsMenu->Append(item);
-      }
+      m_recentDocumentsMenu->Append(i, label);
     }
   }
 
