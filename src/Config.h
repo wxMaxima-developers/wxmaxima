@@ -119,7 +119,11 @@ protected:
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;
   wxListBox* m_styleFor;
+#ifndef __WXMSW__
   wxPanel* m_styleColor;
+#else
+  wxButton* m_styleColor;
+#endif
   wxCheckBox* m_boldCB;
   wxCheckBox* m_italicCB;
   wxCheckBox* m_underlinedCB;
@@ -172,6 +176,9 @@ protected:
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   void OnChangeUnicodeFont(wxCommandEvent& event);
 #endif
+#if defined __WXMSW__
+  void OnColorButton(wxCommandEvent& event);
+#endif
   void OnGreekBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeWarning(wxCommandEvent& event);
@@ -187,7 +194,7 @@ protected:
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };
-
+#ifndef __WXMSW__
 class ColorPanel : public wxPanel
 {
 public:
@@ -203,5 +210,6 @@ private:
   Config * config;
   DECLARE_EVENT_TABLE()
 };
+#endif // __WXMSW__
 
 #endif // CONFIG_H

@@ -142,7 +142,11 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     };
   m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 22, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER);
+#ifndef __WXMSW__
+  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
+#else
+  m_styleColor = new wxButton(notebook_1_pane_2, color_id, wxEmptyString, wxDefaultPosition, wxSize(150, -1));
+#endif
   m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
@@ -1051,6 +1055,13 @@ void Config::LoadSave(wxCommandEvent& event)
   }
 }
 
+#if defined __WXMSW__
+void Config::OnColorButton(wxCommandEvent &event)
+{
+  OnChangeColor();
+}
+#endif
+
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
@@ -1058,6 +1069,9 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
 #if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
+#endif
+#if defined __WXMSW__
+  EVT_BUTTON(color_id, Config::OnColorButton)
 #endif
   EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
@@ -1101,6 +1115,8 @@ BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
   EVT_PAINT(ExamplePanel::OnPaint)
 END_EVENT_TABLE()
 
+#ifndef __WXMSW__
 BEGIN_EVENT_TABLE(ColorPanel, wxPanel)
   EVT_LEFT_UP(ColorPanel::OnClick)
 END_EVENT_TABLE()
+#endif
