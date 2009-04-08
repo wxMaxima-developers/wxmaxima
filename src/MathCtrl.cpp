@@ -1218,11 +1218,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
     else {
       wxRect rect;
-      if (((EditorCell *)m_activeCell)->CheckChanges())
+      if (((EditorCell *)m_activeCell)->CheckChanges()) {
         rect = m_activeCell->GetParent()->GetRect();
+        rect.width = GetVirtualSize().x;
+      }
       else {
         rect = m_activeCell->GetRect();
-        rect.width = GetSize().x;
+        rect.width = GetVirtualSize().x;
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);

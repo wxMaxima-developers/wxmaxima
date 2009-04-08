@@ -99,6 +99,7 @@ public:
   void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
   bool ContainsChanges() { return m_containsChanges; }
   void ContainsChanges(bool changes) { m_containsChanges = changes; }
+  bool CheckChanges();
 private:
   wxString m_text;
   wxString m_oldText;
@@ -125,6 +126,7 @@ private:
   wxFontEncoding m_fontEncoding;
   bool m_saveValue;
   bool m_containsChanges;
+  bool m_containsChangesCheck;
 };
 
 #endif

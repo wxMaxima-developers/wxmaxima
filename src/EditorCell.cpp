@@ -44,6 +44,7 @@ EditorCell::EditorCell() : MathCell()
   m_oldEnd = -1;
   m_saveValue = false;
   m_containsChanges = false;
+  m_containsChangesCheck = false;
 }
 
 EditorCell::~EditorCell()
@@ -1230,4 +1231,12 @@ void EditorCell::SaveValue()
   m_oldEnd = m_selectionEnd;
 }
 
+bool EditorCell::CheckChanges()
+{
+  if (m_containsChanges != m_containsChangesCheck) {
+    m_containsChangesCheck = m_containsChanges;
+    return true;
+  }
 
+  return false;
+}

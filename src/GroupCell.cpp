@@ -322,8 +322,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     // Paint background if we have section, title, text
     //
     MathCell * editor = GetEditable();
-    if (editor != NULL)
-    if (editor->GetType() != MC_TYPE_INPUT) {
+    if (editor != NULL && editor->GetType() != MC_TYPE_INPUT) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
 
