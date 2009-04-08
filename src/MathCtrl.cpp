@@ -1200,24 +1200,30 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
 
       m_activeCell->ResetData();
-      GroupCell *group = (GroupCell *)m_activeCell->GetParent();
-      group->ResetSize();
-      group->ResetData();
-      group->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-      group->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+      m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+      m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
 
       if (height != m_activeCell->GetHeight() ||
-          group->GetWidth() >=
+          m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
             GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT)
         needRecalculate = true;
     }
 
     if (needRecalculate) {
+      GroupCell *group = (GroupCell *)m_activeCell->GetParent();
+      group->ResetSize();
+      group->ResetData();
       Recalculate();
       Refresh();
     }
     else {
-      wxRect rect = m_activeCell->GetParent()->GetRect();
+      wxRect rect;
+      if (((EditorCell *)m_activeCell)->CheckChanges())
+        rect = m_activeCell->GetParent()->GetRect();
+      else {
+        rect = m_activeCell->GetRect();
+        rect.width = GetSize().x;
+      }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
     }
