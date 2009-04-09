@@ -2690,6 +2690,7 @@ void MathCtrl::Undo()
 void MathCtrl::RemoveAllOutput()
 {
   GroupCell *tmp = (GroupCell *)m_tree;
+  SetSelection(NULL); // TODO only setselection NULL when selection is in the output
 
   while (tmp != NULL)
   {
