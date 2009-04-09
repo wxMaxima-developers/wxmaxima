@@ -53,7 +53,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
     button_15 = new wxButton(panel, button_integrate, _("Integrate..."));
     button_16 = new wxButton(panel, button_limit, _("Limit..."));
     button_17 = new wxButton(panel, button_taylor, _("Series..."));
-    button_18 = new wxButton(panel, button_subst, _("Substitute..."));
+    button_18 = new wxButton(panel, button_subst, _("Subst..."));
     button_19 = new wxButton(panel, button_map, _("Map..."));
     button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
     button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
