@@ -23,6 +23,8 @@
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
+#include <wx/cmdline.h>
+#include <wx/fileconf.h>
 
 #include "wxMaxima.h"
 
@@ -43,8 +45,16 @@ bool MyApp::OnInit()
 {
   int lang = wxLANGUAGE_UNKNOWN;
 
-  wxConfig *config = new wxConfig(wxT("wxMaxima"));
-  wxConfig::Set(config);
+  wxCmdLineParser cmdLineParser(argc, argv);
+  cmdLineParser.AddOption(wxT("f"),wxT("ini"),wxT("use ini file"),wxCMD_LINE_VAL_STRING);
+  cmdLineParser.Parse();
+  wxString ini;
+  if (cmdLineParser.Found(wxT("f"),&ini))
+    wxConfig::Set(new wxFileConfig(ini));
+  else
+    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+
+  wxConfigBase *config = wxConfig::Get();
   config->Read(wxT("language"), &lang);
 
   wxImage::AddHandler(new wxPNGHandler);
@@ -63,7 +73,8 @@ bool MyApp::OnInit()
 
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
-  wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
+  if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
+    wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
 #elif defined (__WXMAC__)
   m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
