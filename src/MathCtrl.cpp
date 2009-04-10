@@ -2574,16 +2574,10 @@ void MathCtrl::CheckUnixCopy()
   wxConfig::Get()->Read(wxT("unixCopy"), &copy);
 
   if (copy) {
-#if defined __WXGTK__
-    wxTheClipboard->UsePrimarySelection(true);
-#endif
     if (CanCopy(true) && wxTheClipboard->Open()) {
       wxTheClipboard->SetData(new wxTextDataObject(GetString()));
       wxTheClipboard->Close();
     }
-#if defined __WXGTK__
-    wxTheClipboard->UsePrimarySelection(false);
-#endif
   }
 }
 
