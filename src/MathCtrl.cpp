@@ -2577,7 +2577,7 @@ void MathCtrl::CheckUnixCopy()
 #if defined __WXGTK__
     wxTheClipboard->UsePrimarySelection(true);
 #endif
-    if (CanCopy() && wxTheClipboard->Open()) {
+    if (CanCopy(true) && wxTheClipboard->Open()) {
       wxTheClipboard->SetData(new wxTextDataObject(GetString()));
       wxTheClipboard->Close();
     }
