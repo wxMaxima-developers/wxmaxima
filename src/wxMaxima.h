@@ -167,8 +167,6 @@ protected:
   bool m_closing;
   wxString m_openFile;
   wxString m_currentFile;
-  wxArrayString m_batchFileLines;
-  unsigned int m_batchFilePosition;
   bool m_fileSaved;
   bool m_variablesOK;
   wxString m_helpFile;

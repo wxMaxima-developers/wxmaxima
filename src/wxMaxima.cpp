@@ -97,8 +97,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_variablesOK = false;
 
-  m_batchFilePosition = 0;
-
   m_helpFile = wxEmptyString;
 
   m_isConnected = false;
@@ -193,19 +191,13 @@ void wxMaxima::FirstOutput(wxString s)
   wxConfig::Get()->Read(wxT("showHeader"), &showHeader);
 
   int start = s.Find(m_firstPrompt);
-  //m_console->ClearWindow(); // we don't want to clear document when restarting maxima
 
   if (showHeader) {
     GroupCell *header = new GroupCell(GC_TYPE_TEXT, s.SubString(0, start - 2));
     m_console->InsertGroupCells(header);
   }
 
-  //if (m_batchFileLines.GetCount()>0) {
-    //PrintFile();
-  //}
-
   m_lastPrompt = wxT("(%i1) ");
-  //m_console->SetSaved(true);
 }
 
 ///--------------------------------------------------------------------------------
@@ -789,8 +781,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   wxTextFile inputFile(file);
   wxArrayString *wxmLines = new wxArrayString();
 
-  //m_batchFileLines.Clear();
-
   if (!inputFile.Open()) {
     wxMessageBox(_("Error opening file"), _("Error"));
     return false;
@@ -937,6 +927,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   if (clearDocument) {
     m_currentFile = file;
+    document->SetSaved(true);
     m_fileSaved = true;
   }
   else
@@ -1542,19 +1533,10 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     }
 
     else if (file.Right(4) == wxT(".wxm"))
-    {
       OpenWXMFile(file, m_console);
-      /*if (!ReadBatchFile(file))
-        MenuCommand(wxT("batch(\"") + unixFilename + wxT("\")$"));
-      else
-        StartMaxima();*/
-    }
 
     else if (file.Right(5) == wxT(".wxmx"))
-    {
       OpenWXMXFile(file, m_console); // clearDocument = true
-      m_console->SetSaved(true);
-    }
 
     else if (file.Right(4) == wxT(".dem"))
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
