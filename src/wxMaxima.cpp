@@ -200,50 +200,12 @@ void wxMaxima::FirstOutput(wxString s)
     m_console->InsertGroupCells(header);
   }
 
-  if (m_batchFileLines.GetCount()>0) {
-    PrintFile();
-  }
+  //if (m_batchFileLines.GetCount()>0) {
+    //PrintFile();
+  //}
 
   m_lastPrompt = wxT("(%i1) ");
   //m_console->SetSaved(true);
-}
-
-/***
- * This reads the file as a wxMaxima batch file. If the file is OK we
- * setup inputs and comments and return true. If not we return false - wxMaxima
- * then uses batch to load the file!
- */
-bool wxMaxima::ReadBatchFile(wxString file)
-{
-  wxTextFile inputFile(file);
-  m_batchFileLines.Clear();
-
-  if (!inputFile.Open()) {
-    wxMessageBox(_("Error opening file"), _("Error"));
-    return false;
-  }
-
-  if (inputFile.GetFirstLine() !=
-      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
-  {
-    inputFile.Close();
-    return false;
-  }
-
-  wxString line;
-  for (line = inputFile.GetFirstLine();
-       !inputFile.Eof();
-       line = inputFile.GetNextLine()) {
-    m_batchFileLines.Add(line);
-  }
-  m_batchFileLines.Add(line);
-
-  inputFile.Close();
-  m_batchFilePosition = 0;
-  m_currentFile = file;
-
-  AddRecentDocument(file);
-  return true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -816,108 +778,79 @@ void wxMaxima::ReadPrompt()
   }
 }
 
-/***
- * This function displays a session file in the console without evaluating inputs.
- */
-void wxMaxima::PrintFile()
+// OpenWXM(X)File
+// Clear document (if clearDocument == true), then insert file
+bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
-  m_console->Freeze();
-  m_console->ClearWindow();
-  bool hide = false;
-  for (int i=0; i<m_batchFileLines.GetCount(); i++)
-  {
-    if (m_batchFileLines[i] == wxT("/* [wxMaxima: hide output   ] */"))
-      hide = true;
+	wxBeginBusyCursor();
+  document->Freeze();
 
-    // Print title
-    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: title   start ]"))
-    {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      ++i;
-      wxString line;
-      while (m_batchFileLines[i] != wxT("   [wxMaxima: title   end   ] */"))
-      {
-        if (line.Length() == 0)
-          line = m_batchFileLines[i];
-        else
-          line += wxT("\n") + m_batchFileLines[i];
-        ++i;
-      }
-      DoRawConsoleAppend(line, MC_TYPE_TITLE);
-      hide = false;
-    }
+  // open wxm file
+  wxTextFile inputFile(file);
+  wxArrayString *wxmLines = new wxArrayString();
 
-    // Print section
-    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: section start ]"))
-    {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      ++i;
-      wxString line;
-      while (m_batchFileLines[i] != wxT("   [wxMaxima: section end   ] */"))
-      {
-        if (line.Length() == 0)
-          line = m_batchFileLines[i];
-        else
-          line += wxT("\n") + m_batchFileLines[i];
-        ++i;
-      }
-      DoRawConsoleAppend(line, MC_TYPE_SECTION);
-      hide = false;
-    }
+  //m_batchFileLines.Clear();
 
-    // Print comment
-    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: comment start ]"))
-    {
-      DoRawConsoleAppend(wxEmptyString, MC_TYPE_MAIN_PROMPT, true, hide);
-      ++i;
-      wxString line;
-      while (m_batchFileLines[i] != wxT("   [wxMaxima: comment end   ] */"))
-      {
-        if (line.Length() == 0)
-          line = m_batchFileLines[i];
-        else
-          line += wxT("\n") + m_batchFileLines[i];
-        ++i;
-      }
-      DoRawConsoleAppend(line, MC_TYPE_TEXT);
-      hide = false;
-    }
-
-    // Print input
-    else if (m_batchFileLines[i] == wxT("/* [wxMaxima: input   start ] */"))
-    {
-      wxString line;
-      DoRawConsoleAppend(wxT(">> "), MC_TYPE_MAIN_PROMPT);
-      ++i;
-      while (m_batchFileLines[i] != wxT("/* [wxMaxima: input   end   ] */"))
-      {
-        if (line.Length() == 0)
-          line = m_batchFileLines[i];
-        else
-          line += wxT("\n") + m_batchFileLines[i];
-        ++i;
-      }
-      DoRawConsoleAppend(line, MC_TYPE_INPUT, false);
-      hide = false;
-    }
+  if (!inputFile.Open()) {
+    wxMessageBox(_("Error opening file"), _("Error"));
+    return false;
   }
-  m_batchFileLines.Clear();
-  m_console->Scroll(0,0);
-  m_console->SetSaved(true);
 
-  m_fileSaved = false;
+  if (inputFile.GetFirstLine() !=
+      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
+  {
+    inputFile.Close();
+    return false;
+  }
+
+  wxString line;
+  for (line = inputFile.GetFirstLine();
+       !inputFile.Eof();
+       line = inputFile.GetNextLine()) {
+    wxmLines->Add(line);
+  }
+  wxmLines->Add(line);
+
+  inputFile.Close();
+
+  GroupCell *tree = CreateTreeFromWXMCode(wxmLines);
+
+  delete wxmLines;
+
+  if (clearDocument)
+    document->ClearWindow();
+
+  document->InsertGroupCells(tree);
+
+  document->SetActiveCell(NULL);
+  document->SetSelection(NULL);
+
+  document->Recalculate();
+  document->Refresh();
+
+  if (clearDocument) {
+    m_currentFile = file;
+    document->SetSaved(true);
+    m_fileSaved = true;
+  }
+  else
+    m_fileSaved = false;
+
+  wxEndBusyCursor();
+  document->Thaw();
+
   ResetTitle(true);
+  SetStatusText(_("Ready for user input"), 1);
 
-  m_console->Thaw();
+
+  return true;
 }
 
-/*
-* This function reads a .wxmx file
-*/
-void wxMaxima::ReadXmlFile(wxString file)
+bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
-  m_console->Freeze();
 	wxBeginBusyCursor();
+  document->Freeze();
+
 
   wxXmlDocument xmldoc;
 	wxZipEntry* entry;
@@ -943,10 +876,10 @@ void wxMaxima::ReadXmlFile(wxString file)
     else {
       if (!xmldoc.Load(zip)) {
         wxEndBusyCursor();
-        m_console->Thaw();
+        document->Thaw();
         wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
         SetStatusText(_("Ready for user input"), 1);
-        return;
+        return false;
       }
     }
 
@@ -956,10 +889,10 @@ void wxMaxima::ReadXmlFile(wxString file)
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
     wxEndBusyCursor();
-    m_console->Thaw();
+    document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     SetStatusText(_("Ready for user input"), 1);
-    return;
+    return false;
   }
 
   // read document version and complain
@@ -971,12 +904,12 @@ void wxMaxima::ReadXmlFile(wxString file)
 
     if (version_major > DOCUMENT_VERSION_MAJOR) {
       wxEndBusyCursor();
-      m_console->Thaw();
+      document->Thaw();
       wxMessageBox(_("Document ") + file +
           _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
           _("Error"), wxOK | wxICON_EXCLAMATION);
       SetStatusText(_("Ready for user input"), 1);
-      return;
+      return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR) {
       wxEndBusyCursor();
@@ -987,10 +920,43 @@ void wxMaxima::ReadXmlFile(wxString file)
     }
   }
 
+  wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
+
+  GroupCell *tree = CreateTreeFromXMLNode(xmlcells);
+
+  if (clearDocument)
+    document->ClearWindow();
+
+  document->InsertGroupCells(tree);
+
+  document->SetActiveCell(NULL);
+  document->SetSelection(NULL);
+
+  document->Recalculate();
+  document->Refresh();
+
+  if (clearDocument) {
+    m_currentFile = file;
+    m_fileSaved = true;
+  }
+  else
+    m_fileSaved = false;
+
+  wxEndBusyCursor();
+  document->Thaw();
+
+  ResetTitle(true);
+  SetStatusText(_("Ready for user input"), 1);
+
+  return true;
+}
+
+GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells)
+{
   MathParser mp;
   MathCell *tree = NULL;
   MathCell *last = NULL;
-  wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
+
   if (xmlcells) {
     last = tree = mp.ParseTag(xmlcells, false); // first cell
     while (xmlcells->GetNext()) {
@@ -1003,23 +969,118 @@ void wxMaxima::ReadXmlFile(wxString file)
       last = last->m_next;
     }
   }
-  m_console->DestroyTree();
-  m_console->InsertGroupCells((GroupCell *)tree);
 
-  m_console->SetActiveCell(NULL);
-  m_console->SetSelection(NULL);
+  return ((GroupCell *)tree);
+}
 
-  m_console->Recalculate();
-  m_console->Refresh();
+GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
+{
+  bool hide = false;
+  GroupCell* tree = NULL;
+  GroupCell* last = NULL;
+  GroupCell* cell = NULL;
 
-  m_currentFile = file;
+  for (int i=0; i<wxmLines->GetCount(); i++)
+  {
+    if (wxmLines->Item(i) == wxT("/* [wxMaxima: hide output   ] */"))
+      hide = true;
 
-  wxEndBusyCursor();
-  m_console->Thaw();
+    // Print title
+    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: title   start ]"))
+    {
+      ++i;
+      wxString line;
+      while (wxmLines->Item(i) != wxT("   [wxMaxima: title   end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(i);
+        else
+          line += wxT("\n") + wxmLines->Item(i);
+        ++i;
+      }
+      cell = new GroupCell(GC_TYPE_TITLE, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
 
-  m_fileSaved = false;
-  ResetTitle(true);
-  SetStatusText(_("Ready for user input"), 1);
+    // Print section
+    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: section start ]"))
+    {
+      ++i;
+      wxString line;
+      while (wxmLines->Item(i) != wxT("   [wxMaxima: section end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(i);
+        else
+          line += wxT("\n") + wxmLines->Item(i);
+        ++i;
+      }
+      cell = new GroupCell(GC_TYPE_SECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print comment
+    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: comment start ]"))
+    {
+      ++i;
+      wxString line;
+      while (wxmLines->Item(i) != wxT("   [wxMaxima: comment end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(i);
+        else
+          line += wxT("\n") + wxmLines->Item(i);
+        ++i;
+      }
+      cell = new GroupCell(GC_TYPE_TEXT, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print input
+    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: input   start ] */"))
+    {
+      wxString line;
+      ++i;
+      while (wxmLines->Item(i) != wxT("/* [wxMaxima: input   end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(i);
+        else
+          line += wxT("\n") + wxmLines->Item(i);
+        ++i;
+      }
+      cell = new GroupCell(GC_TYPE_CODE, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    if (cell) { // if we have created a cell in this pass
+      if (!tree)
+        tree = last = cell;
+      else {
+
+        last->m_next = last->m_nextToDraw = ((MathCell *)cell);
+        last->m_next->m_previous = last->m_next->m_previousToDraw = ((MathCell *)last);
+
+        last = (GroupCell *)last->m_next;
+
+      }
+      cell = NULL;
+    }
+  }
+
+  return tree;
 }
 
 /***
@@ -1482,16 +1543,16 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4) == wxT(".wxm"))
     {
-      if (!ReadBatchFile(file))
+      OpenWXMFile(file, m_console);
+      /*if (!ReadBatchFile(file))
         MenuCommand(wxT("batch(\"") + unixFilename + wxT("\")$"));
       else
-        StartMaxima();
+        StartMaxima();*/
     }
 
     else if (file.Right(5) == wxT(".wxmx"))
     {
-      m_console->ClearWindow();
-      ReadXmlFile(file);
+      OpenWXMXFile(file, m_console); // clearDocument = true
       m_console->SetSaved(true);
     }
 

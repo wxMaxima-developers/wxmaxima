@@ -68,7 +68,6 @@ public:
     m_openFile = file;
   }
   void SendMaxima(wxString s);
-  bool ReadBatchFile(wxString file);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
@@ -135,8 +134,13 @@ protected:
   void KillMaxima();                 // kills the maxima process
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
-  void PrintFile();
-	void ReadXmlFile( wxString file );	// new!!
+
+  // loading functions
+  bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells);
+  GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
+
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;

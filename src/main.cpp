@@ -148,13 +148,7 @@ void MyApp::NewWindow(wxString file)
     frame->Maximize(true);
 
   if (file.Length() > 0) {
-    if (file.Right(4) == wxT(".wxm"))
-    {
-      if (!frame->ReadBatchFile(file))
-        frame->SetOpenFile(file);
-    }
-    else
-      frame->SetOpenFile(file);
+    frame->SetOpenFile(file);
   }
 
 #if defined __WXMAC__
