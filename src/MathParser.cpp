@@ -130,7 +130,13 @@ MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
     if (line->GetName() == wxT("line")) {
       if (!text.IsEmpty())
         text += wxT("\n");
+#if wxUSE_UNICODE
       text += line->GetNodeContent();
+#else
+      wxString str = line->GetNodeContent();
+      wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
+      text += str1;
+#endif
     }
     line = line->GetNext();
   } // end while
@@ -303,6 +309,10 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
   wxString str;
   if (node != NULL && (str = node->GetContent()) != wxEmptyString)
   {
+#if !wxUSE_UNICODE
+    wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
+    str = str1;
+#endif
     if (style == TS_NUMBER)
     {
       if (str.Length() > 100) // This could be made configurable.
@@ -787,10 +797,17 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
   if (s.Length() < MAXLENGTH || showLong)
   {
-    wxXmlDocument xml;
-    wxStringInputStream xmlStream(s);
 
-    xml.Load(xmlStream, wxLocale::GetSystemEncodingName());
+    wxXmlDocument xml;
+
+#if wxUSE_UNICODE
+    wxStringInputStream xmlStream(s);
+#else
+    wxString su(s.wc_str(*wxConvCurrent), wxConvUTF8);
+    wxStringInputStream xmlStream(su);
+#endif
+
+    xml.Load(xmlStream);
 
     wxXmlNode *doc = xml.GetRoot();
 

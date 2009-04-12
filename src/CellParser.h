@@ -117,7 +117,7 @@ private:
   int m_top, m_bottom;
   wxString m_fontName;
   wxString m_greekFontName;
-#if wxUSE_UNICODE
+#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxString m_unicodeSymbolsFont;
 #endif
   int m_greekFontAdj;

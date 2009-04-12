@@ -2166,6 +2166,16 @@ bool MathCtrl::ExportToMAC(wxString file)
   return done;
 }
 
+wxString ConvertToUnicode(wxString str)
+{
+#if wxUSE_UNICODE
+  return str;
+#else
+  wxString str1(str.wc_str(*wxConvCurrent), wxConvUTF8);
+  return str1;
+#endif
+}
+
 bool MathCtrl::ExportToWXMX(wxString file)
 {
   // delete file if it already exists
@@ -2192,7 +2202,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
   while (tmp != NULL) {
-    output << tmp->ToXML(false);
+    output << ConvertToUnicode(tmp->ToXML(false));
     tmp = (GroupCell *)tmp->m_next;
   }
 
@@ -2696,6 +2706,8 @@ void MathCtrl::RemoveAllOutput()
   Recalculate();
   Refresh();
 }
+
+
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)

@@ -70,7 +70,7 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/GreekFont/adj"), &m_greekFontAdj);
   config->Read(wxT("Style/GreekFont/ok"), &m_haveGreekFont);
 
-#if wxUSE_UNICODE
+#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   m_unicodeSymbolsFont = wxT("Sans");
   config->Read(wxT("Style/Unicode/fontname"), &m_unicodeSymbolsFont);
 #endif
@@ -261,7 +261,7 @@ wxString CellParser::GetSymbolFontName()
 {
 #if defined __WXMSW__
   return wxT("Symbol");
-#elif wxUSE_UNICODE
+#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   return m_unicodeSymbolsFont;
 #else
   return m_fontName;
@@ -279,11 +279,9 @@ wxFontEncoding CellParser::GetGreekFontEncoding()
 {
 #if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
   return wxFONTENCODING_DEFAULT;
-#else
- #if defined __WXMSW__
+#elif defined __WXMSW__
   return wxFONTENCODING_CP1253;
- #else
+#else
   return wxFONTENCODING_ISO8859_7;
- #endif
 #endif
 }

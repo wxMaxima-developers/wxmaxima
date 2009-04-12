@@ -1517,7 +1517,7 @@ wxString wxMaxima::GetDefaultEntry()
 
 void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
-  if (file.Length())
+  if (file.Length() && wxFileExists(file))
   {
     AddRecentDocument(file);
 

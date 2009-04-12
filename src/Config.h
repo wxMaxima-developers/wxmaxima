@@ -140,7 +140,7 @@ protected:
   wxSpinCtrl* m_greekFontAdj;
   wxString m_greekFontName;
   wxButton *m_saveStyle, *m_loadStyle;
-#if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxStaticText* m_unicodeGlyphs;
   wxButton* m_getUnicodeFont;
   wxString m_unicodeFont;
@@ -173,7 +173,7 @@ protected:
         m_styleOutdated;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
-#if !defined __WXMSW__ && (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   void OnChangeUnicodeFont(wxCommandEvent& event);
 #endif
 #if defined __WXMSW__
