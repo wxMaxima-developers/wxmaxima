@@ -98,7 +98,7 @@ public:
   void Undo();
   void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
   bool ContainsChanges() { return m_containsChanges; }
-  void ContainsChanges(bool changes) { m_containsChanges = changes; }
+  void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
 private:
   wxString m_text;
