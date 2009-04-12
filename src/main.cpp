@@ -46,9 +46,10 @@ bool MyApp::OnInit()
   int lang = wxLANGUAGE_UNKNOWN;
 
   wxCmdLineParser cmdLineParser(argc, argv);
-  cmdLineParser.AddOption(wxT("f"),wxT("ini"),wxT("use ini file"),wxCMD_LINE_VAL_STRING);
+  cmdLineParser.AddOption(wxT("f"), wxT("ini"), wxT("use ini file"),wxCMD_LINE_VAL_STRING);
+  cmdLineParser.AddOption(wxT("o"), wxT("open"), wxT("open file"), wxCMD_LINE_VAL_STRING);
   cmdLineParser.Parse();
-  wxString ini;
+  wxString ini, file;
   if (cmdLineParser.Found(wxT("f"),&ini))
     wxConfig::Set(new wxFileConfig(ini));
   else
@@ -98,8 +99,8 @@ bool MyApp::OnInit()
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
-  if (argc == 2)
-    NewWindow(wxString(argv[1]));
+  if (cmdLineParser.Found(wxT("o"), &file))
+    NewWindow(wxString(file));
   else
     NewWindow();
 
@@ -147,7 +148,7 @@ void MyApp::NewWindow(wxString file)
   if (m == 1)
     frame->Maximize(true);
 
-  if (file.Length() > 0) {
+  if (file.Length() > 0 && wxFileExists(file)) {
     frame->SetOpenFile(file);
   }
 
