@@ -173,10 +173,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       break;
     case mac_openId:
       {
-        wxString file = wxFileSelector(_("Select file to open"), wxEmptyString,
-            wxEmptyString, wxEmptyString,
-            _("wxMaxima session (*.wxm)|*.wxm"),
-            wxOPEN);
+        wxString file = wxFileSelector(_("Open"), wxEmptyString,
+                                      wxEmptyString, wxEmptyString,
+                                      _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
+                                      wxFD_OPEN);
         if (file.Length() > 0)
           NewWindow(file);
       }
