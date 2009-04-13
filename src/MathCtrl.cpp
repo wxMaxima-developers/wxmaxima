@@ -381,7 +381,7 @@ void MathCtrl::RecalculateForce() {
 
 void MathCtrl::Recalculate(bool force) {
 
-  MathCell *tmp = m_tree;
+  MathCell *tmp = NULL;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
@@ -395,8 +395,13 @@ void MathCtrl::Recalculate(bool force) {
   point.x = MC_GROUP_LEFT_INDENT;
   point.y = MC_BASE_INDENT ;
 
-  if (tmp != NULL)
+
+  if (m_tree != NULL) {
+    m_tree->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    m_tree->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    tmp = m_tree->m_next;
     point.y += m_tree->GetMaxCenter();
+  }
 
   while (tmp != NULL) {
     tmp->m_currentPoint.x = point.x;

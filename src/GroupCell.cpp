@@ -33,6 +33,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_outputRect.height = 0;
   m_group = this;
   m_forceBreakLine = true;
+  m_breakLine = true;
   m_type = MC_TYPE_GROUP;
   m_indent = MC_GROUP_LEFT_INDENT;
   m_hide = false;
