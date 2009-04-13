@@ -366,9 +366,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 
   tmp->ResetSize();
   Recalculate();
-  ScrollToCell(tmp);
-
-  Refresh();
+  ScrollToCell(tmp); // also refreshes
 }
 
 /***
@@ -433,8 +431,6 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
  * Called when opening a new file into existing MathCtrl.
  */
 void MathCtrl::ClearDocument() {
-  if (m_tree == NULL)
-    return;
 
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
@@ -446,17 +442,15 @@ void MathCtrl::ClearDocument() {
   m_activeCell = NULL;
   m_workingGroup = NULL;
 
+  ClearEvaluationQueue(); 
+
   DestroyTree();
 
-  m_last = NULL;
   m_editingEnabled = true;
   m_switchDisplayCaret = true;
   m_animate = false;
   m_saved = true;
-  // do something with evaluation queue??
-  // it might contain pointers to deleted groupcells
 
-  //SetActiveCell(NULL); // ??
   Recalculate();
   Scroll(0, 0);
 }
@@ -1342,7 +1336,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
               {
                 SetActiveCell(editor, false);
-                m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
                 Refresh();
@@ -1359,7 +1352,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               if( editor != NULL && m_workingGroup == NULL)
               {
                 SetActiveCell(editor, false);
-                m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
                 Refresh();

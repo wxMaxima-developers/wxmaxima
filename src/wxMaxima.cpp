@@ -668,18 +668,19 @@ void wxMaxima::ReadFirstPrompt()
   m_first = false;
   m_inLispMode = false;
   SetStatusText(_("Ready for user input"), 1);
+  m_closing = false; // when restarting maxima this is temporarily true
+  m_currentOutput = wxEmptyString;
+  m_console->EnableEdit(true);
 
   if (m_openFile.Length())
   {
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
-
-  m_closing = false; // when restarting maxima this is temporarily true
-  m_currentOutput = wxEmptyString;
-  m_console->ShowHCaret();
-  m_console->EnableEdit(true);
-  m_console->Refresh();
+  else {
+    m_console->ShowHCaret();
+    m_console->Refresh();
+  }
 }
 
 /***
@@ -737,7 +738,6 @@ void wxMaxima::ReadPrompt()
           m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
-          SetStatusText(_("Ready for user input"), 1);
         }
         else { // we don't have an empty queue
           m_console->Refresh();
