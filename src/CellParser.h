@@ -23,6 +23,8 @@
 #include <wx/wx.h>
 #include "TextStyle.h"
 
+#include "Setup.h"
+
 class CellParser
 {
 public:
