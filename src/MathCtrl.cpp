@@ -298,7 +298,6 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
     m_last = last;
 
   Recalculate();
-  Refresh();
   m_saved = false; // document has been modified
 }
 
@@ -437,18 +436,37 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
 }
 
 /***
- * Clear the window
+ * Clear document
+ * Basicly set everything to the state as if MathCtrl
+ * was just created, so there is a blank document.
+ * Called when opening a new file into existing MathCtrl.
  */
-void MathCtrl::ClearWindow() {
-  if (m_tree != NULL) {
-    SetActiveCell(NULL);
-    m_selectionStart = NULL;
-    m_selectionEnd = NULL;
-    m_last = NULL;
-    DestroyTree();
-  }
+void MathCtrl::ClearDocument() {
+  if (m_tree == NULL)
+    return;
+
+  m_selectionStart = NULL;
+  m_selectionEnd = NULL;
+  m_clickType = CLICK_TYPE_NONE;
+  m_clickInGC = NULL;
+  m_hCaretActive = false;
+  m_hCaretPosition = NULL; // horizontal caret at the top of document
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+  m_activeCell = NULL;
+  m_workingGroup = NULL;
+
+  DestroyTree();
+
+  m_last = NULL;
+  m_editingEnabled = true;
+  m_switchDisplayCaret = true;
+  m_animate = false;
+  m_saved = true;
+  // do something with evaluation queue??
+  // it might contain pointers to deleted groupcells
+
+  //SetActiveCell(NULL); // ??
   Recalculate();
-  Refresh();
   Scroll(0, 0);
 }
 

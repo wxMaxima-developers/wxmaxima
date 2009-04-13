@@ -143,7 +143,7 @@ public:
   void InsertLine(MathCell *newLine, bool forceNewLine = false, bool hide = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
-  void ClearWindow();
+  void ClearDocument(); // used when opening new file in wxMaxima.cpp
   void ResetInputPrompts();
   bool CanCopy(bool fromActive = false)
   {

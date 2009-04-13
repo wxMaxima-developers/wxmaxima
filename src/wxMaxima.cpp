@@ -774,15 +774,19 @@ void wxMaxima::ReadPrompt()
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
+  SetStatusText(_("Opening file"), 1);
 	wxBeginBusyCursor();
   document->Freeze();
 
   // open wxm file
   wxTextFile inputFile(file);
-  wxArrayString *wxmLines = new wxArrayString();
+  wxArrayString *wxmLines = NULL;
 
   if (!inputFile.Open()) {
-    wxMessageBox(_("Error opening file"), _("Error"));
+    wxEndBusyCursor();
+    document->Thaw();
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    SetStatusText(_("Ready for user input"), 1);
     return false;
   }
 
@@ -790,9 +794,14 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
   {
     inputFile.Close();
+    wxEndBusyCursor();
+    document->Thaw();
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    SetStatusText(_("Ready for user input"), 1);
     return false;
   }
 
+  wxmLines = new wxArrayString();
   wxString line;
   for (line = inputFile.GetFirstLine();
        !inputFile.Eof();
@@ -807,41 +816,36 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   delete wxmLines;
 
+  // from here on code is identical for wxm and wxmx
   if (clearDocument)
-    document->ClearWindow();
+    document->ClearDocument();
 
-  document->InsertGroupCells(tree);
-
-  document->SetActiveCell(NULL);
-  document->SetSelection(NULL);
-
-  document->Recalculate();
-  document->Refresh();
+  document->InsertGroupCells(tree); // this also recalculates
 
   if (clearDocument) {
     m_currentFile = file;
+    m_fileSaved = false; // to force reset title to update
+    ResetTitle(true);
     document->SetSaved(true);
-    m_fileSaved = true;
   }
   else
-    m_fileSaved = false;
+    ResetTitle(false);
 
-  wxEndBusyCursor();
   document->Thaw();
+  document->Refresh(); // redraw document outside Freeze-Thaw
 
-  ResetTitle(true);
   SetStatusText(_("Ready for user input"), 1);
-
-
+  wxEndBusyCursor();
   return true;
 }
 
 bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
+  SetStatusText(_("Opening file"), 1);
 	wxBeginBusyCursor();
   document->Freeze();
 
-
+  // open wxmx file
   wxXmlDocument xmldoc;
 	wxZipEntry* entry;
   wxFFileInputStream in(file);
@@ -914,31 +918,26 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   GroupCell *tree = CreateTreeFromXMLNode(xmlcells);
 
+  // from here on code is identical for wxm and wxmx
   if (clearDocument)
-    document->ClearWindow();
+    document->ClearDocument();
 
-  document->InsertGroupCells(tree);
-
-  document->SetActiveCell(NULL);
-  document->SetSelection(NULL);
-
-  document->Recalculate();
-  document->Refresh();
+  document->InsertGroupCells(tree); // this also recalculates
 
   if (clearDocument) {
     m_currentFile = file;
+    m_fileSaved = false; // to force reset title to update
+    ResetTitle(true);
     document->SetSaved(true);
-    m_fileSaved = true;
   }
   else
-    m_fileSaved = false;
+    ResetTitle(false);
 
-  wxEndBusyCursor();
   document->Thaw();
+  document->Refresh(); // redraw document outside Freeze-Thaw
 
-  ResetTitle(true);
   SetStatusText(_("Ready for user input"), 1);
-
+  wxEndBusyCursor();
   return true;
 }
 
