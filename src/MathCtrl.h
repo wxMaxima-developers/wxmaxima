@@ -198,11 +198,7 @@ public:
   }
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
-  void ScrollToSelectionStart();
   void ScrollToCell(MathCell *cell);
-  bool ActivateLastInput();
-  bool ActivateFirstInput();
-  void SetActiveCell(MathCell *cell);
   MathCell* GetActiveCell()
   {
     return m_activeCell;
@@ -217,7 +213,8 @@ public:
   }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
-  void SetHCaret(MathCell *where);
+  void SetActiveCell(MathCell *cell, bool callRefresh = true);
+  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
   GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();

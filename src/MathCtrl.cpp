@@ -306,7 +306,7 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
  */
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
 {
-  SetActiveCell(NULL);
+  SetActiveCell(NULL, false);
 
   m_saved = false;
 
@@ -651,7 +651,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
-  SetActiveCell(NULL);
+  SetActiveCell(NULL, false);
 
   GroupCell * tmp = (GroupCell *) m_tree;
   wxRect rect;
@@ -673,7 +673,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   }
 
   if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
-    SetHCaret(tmp->m_previous);
+    SetHCaret(tmp->m_previous, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
   } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
 
@@ -698,7 +698,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
       if (editor != NULL) {
         rect = editor->GetRect();
         if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
-          SetActiveCell(editor);
+          SetActiveCell(editor, false); // do not refresh
           wxClientDC dc(this);
           m_activeCell->SelectPointText(dc, m_down);
           m_switchDisplayCaret = false;
@@ -717,7 +717,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
           if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
                && (clickedInGC == m_workingGroup)) // if we clicked an editor in output - activate it if working!
           {
-            SetActiveCell(m_selectionStart);
+            SetActiveCell(m_selectionStart, false);
             wxClientDC dc(this);
             m_activeCell->SelectPointText(dc, m_down);
             m_switchDisplayCaret = false;
@@ -738,7 +738,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
-    SetHCaret(m_last);
+    SetHCaret(m_last, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
   }
   Refresh();
@@ -817,10 +817,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
       }
 
       if (tmp == NULL) { // below last cell, handle with care
-        SetHCaret(m_last);
-        m_selectionStart = m_selectionEnd = NULL;
-        if (st != m_selectionStart || en != m_selectionEnd)
-          Refresh();
+        SetHCaret(m_last); // also refreshes
         return;
       }
 
@@ -836,8 +833,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
       if (tmp == NULL)
         m_selectionEnd = m_last;
       if (m_selectionEnd == (m_selectionStart->m_previous)) {
-        SetHCaret(m_selectionEnd);
-        m_selectionStart = m_selectionEnd = NULL;
+        SetHCaret(m_selectionEnd, false); // will refresh at the end of function
       }
       else {
         m_hCaretActive = false;
@@ -1041,7 +1037,7 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   m_saved = false;
 
-  SetActiveCell(NULL);
+  SetActiveCell(NULL, false);
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
 
@@ -1078,9 +1074,9 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   m_selectionStart = m_selectionEnd = NULL;
   if (newSelection != NULL)
-    SetHCaret(newSelection->m_previous);
+    SetHCaret(newSelection->m_previous, false);
   else
-    SetHCaret(m_last);
+    SetHCaret(m_last, false);
 
   Recalculate();
   Refresh();
@@ -1104,7 +1100,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
 
     m_workingGroup->AppendOutput(newInput);
     newInput->SetParent(m_workingGroup, false);
-    SetActiveCell(newInput);
+    SetActiveCell(newInput, false);
 
     Recalculate();
     Refresh();
@@ -1114,14 +1110,14 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
 
   // set m_hCaretPosition to a sensible value
   if (m_activeCell != NULL)
-    SetHCaret(m_activeCell->GetParent());
+    SetHCaret(m_activeCell->GetParent(), false);
   else if (m_selectionStart != NULL)
-    SetHCaret(m_selectionStart->GetParent());
+    SetHCaret(m_selectionStart->GetParent(), false);
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
       return;
-    SetHCaret(m_last);
+    SetHCaret(m_last, false);
   }
 
   // insert a new group cell
@@ -1129,7 +1125,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   InsertGroupCells(group, m_hCaretPosition);
 
   // activate editor
-  SetActiveCell(group->GetEditable());
+  SetActiveCell(group->GetEditable(), false);
   ((EditorCell *)m_activeCell)->ClearUndo();
   ScrollToCell(group);
 
@@ -1174,7 +1170,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       }
 
       else
-        SetHCaret(m_activeCell->GetParent());
+        SetHCaret(m_activeCell->GetParent()); // also refreshes
 
       break;
 
@@ -1294,10 +1290,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               MathCell * editor = m_hCaretPosition->GetEditable();
               if(editor != NULL && m_workingGroup == NULL)
               {
-                SetActiveCell(editor);
+                SetActiveCell(editor, false);
                 m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToEnd();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                Refresh();
               }
               else { // can't get editor... jump over cell..
                 m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_previous;
@@ -1353,10 +1350,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               MathCell *editor = ((GroupCell *)m_tree)->GetEditable();
               if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
               {
-                SetActiveCell(editor);
+                SetActiveCell(editor, false);
                 m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                Refresh();
               }
               else { // else jump over
                 m_hCaretPosition = (GroupCell *)m_tree;
@@ -1369,10 +1367,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               MathCell *editor = ((GroupCell *)m_hCaretPosition->m_next)->GetEditable();
               if( editor != NULL && m_workingGroup == NULL)
               {
-                SetActiveCell(editor);
+                SetActiveCell(editor, false);
                 m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                Refresh();
               }
               else { // can't get editor.. jump over cell..
                 m_hCaretPosition = (GroupCell *) m_hCaretPosition->m_next;
@@ -2309,7 +2308,7 @@ bool MathCtrl::ActivatePrevInput() {
 
   ScrollToCell(inpt);
 
-  SetActiveCell(inpt);
+  SetActiveCell(inpt, false);
   ((EditorCell *)m_activeCell)->CaretToEnd();
 
   Refresh();
@@ -2351,7 +2350,7 @@ bool MathCtrl::ActivateNextInput(bool input) {
 
   ScrollToCell(inpt);
 
-  SetActiveCell(inpt);
+  SetActiveCell(inpt, false);
   ((EditorCell *)m_activeCell)->CaretToStart();
 
   Refresh();
@@ -2359,52 +2358,7 @@ bool MathCtrl::ActivateNextInput(bool input) {
   return true;
 }
 
-bool MathCtrl::ActivateLastInput() {
-  if (m_last == NULL)
-    return false;
-
-  GroupCell *tmp = (GroupCell *)m_last;
-
-  MathCell *inpt = NULL;
-  while (tmp != NULL && inpt == NULL) {
-    inpt = tmp->GetEditable();
-    if (inpt == NULL)
-      tmp = (GroupCell *)tmp->m_previous;
-  }
-
-  if (inpt == NULL)
-    return false;
-
-  ScrollToCell(inpt);
-
-  SetActiveCell(inpt);
-  ((EditorCell *)m_activeCell)->CaretToStart();
-
-  return true;
-}
-
-bool MathCtrl::ActivateFirstInput() {
-  GroupCell *tmp = m_tree;
-  if (tmp == NULL)
-      return false;
-
-  MathCell *input = tmp->GetInput();
-  while (tmp != NULL && input == NULL) {
-    tmp = (GroupCell *)tmp->m_next;
-    input = tmp->GetInput();
-  }
-
-  if (input == NULL)
-    return false;
-
-  ScrollToCell(input);
-  SetActiveCell(input);
-  Refresh();
-
-  return true;
-}
-
-//
+/////////////////////////////////////////////////////////////
 // methods related to evaluation queue
 //
 void MathCtrl::AddDocumentToEvaluationQueue()
@@ -2443,10 +2397,7 @@ void MathCtrl::ClearEvaluationQueue()
   while (m_evaluationQueue->GetFirst() != NULL)
     m_evaluationQueue->RemoveFirst();
 }
-
-void MathCtrl::ScrollToSelectionStart() {
-  ScrollToCell(m_selectionStart);
-}
+//////// end of EvaluationQueue related stuff ////////////////
 
 void MathCtrl::ScrollToCell(MathCell *cell)
 {
@@ -2481,7 +2432,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   Refresh();
 }
 
-void MathCtrl::SetActiveCell(MathCell *cell) {
+void MathCtrl::SetActiveCell(MathCell *cell, bool callRefresh) {
   if (m_activeCell != NULL)
     m_activeCell->ActivateCell();
 
@@ -2501,7 +2452,8 @@ void MathCtrl::SetActiveCell(MathCell *cell) {
   if (cell != NULL)
     m_hCaretActive = false; // we have activeted a cell .. disable caret
 
-  Refresh();
+  if (callRefresh) // = true default
+    Refresh();
 }
 
 void MathCtrl::ShowPoint(wxPoint point) {
@@ -2677,13 +2629,16 @@ GroupCell *MathCtrl::GetHCaret()
   return m_last;
 }
 
-void MathCtrl::SetHCaret(MathCell *where)
+void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
 {
   m_selectionStart = m_selectionEnd = NULL;
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  SetActiveCell(NULL);
+  SetActiveCell(NULL, false);
   m_hCaretPosition = (GroupCell *)where;
   m_hCaretActive = true;
+
+  if (callRefresh) // = true default
+    Refresh();
 }
 
 void MathCtrl::ShowHCaret()
