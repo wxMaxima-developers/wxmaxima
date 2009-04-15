@@ -23,8 +23,11 @@
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
+
+#if defined __WXMSW__
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
+#endif
 
 #include "wxMaxima.h"
 
@@ -45,6 +48,7 @@ bool MyApp::OnInit()
 {
   int lang = wxLANGUAGE_UNKNOWN;
 
+#if defined __WXMSW__
   wxCmdLineParser cmdLineParser(argc, argv);
   cmdLineParser.AddOption(wxT("f"), wxT("ini"), wxT("use ini file"),wxCMD_LINE_VAL_STRING);
   cmdLineParser.AddOption(wxT("o"), wxT("open"), wxT("open file"), wxCMD_LINE_VAL_STRING);
@@ -54,6 +58,9 @@ bool MyApp::OnInit()
     wxConfig::Set(new wxFileConfig(ini));
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+#else
+  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+#endif
 
   wxConfigBase *config = wxConfig::Get();
   config->Read(wxT("language"), &lang);
@@ -99,10 +106,17 @@ bool MyApp::OnInit()
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
+#if defined __WXMSW__
   if (cmdLineParser.Found(wxT("o"), &file))
     NewWindow(wxString(file));
   else
     NewWindow();
+#else
+  if (acgc==2)
+    NewWindow(wxString(argv[1]));
+  else
+    NewWindow();
+#endif
 
   return true;
 }
