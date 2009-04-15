@@ -182,7 +182,7 @@ void wxMaxima::InitSession()
   if (!server)
     SetStatusText(_("Starting server failed"));
   else if (!StartMaxima())
-    SetStatusText(_("Starting maxima process failed"), 1);
+    SetStatusText(_("Starting Maxima process failed"), 1);
 }
 
 void wxMaxima::FirstOutput(wxString s)
@@ -349,7 +349,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
 void wxMaxima::SendMaxima(wxString s)
 {
   if (!m_isConnected) {
-    ConsoleAppend(wxT("\nNot connected to maxima!\n"), MC_TYPE_ERROR);
+    ConsoleAppend(wxT("\nNot connected to Maxima!\n"), MC_TYPE_ERROR);
     return ;
   }
 
@@ -406,7 +406,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 #endif
 
       if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
-        SetStatusText(_("Reading maxima output"), 1);
+        SetStatusText(_("Reading Maxima output"), 1);
         m_dispReadOut = true;
       }
 
@@ -424,7 +424,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   case wxSOCKET_LOST:
     if (!m_closing)
       ConsoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
-                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                        "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                     MC_TYPE_ERROR);
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
@@ -470,7 +470,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   case wxSOCKET_LOST:
     if (!m_closing)
       ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                        "Restart maxima with 'Maxima->Restart maxima'.\n"),
+                        "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                     MC_TYPE_ERROR);
     m_pid = -1;
     GetMenuBar()->Enable(menu_interrupt_id, false);
@@ -579,7 +579,7 @@ bool wxMaxima::StartMaxima()
     m_first = true;
     GetMenuBar()->Enable(menu_interrupt_id, false);
     m_pid = -1;
-    SetStatusText(_("Starting maxima..."), 1);
+    SetStatusText(_("Starting Maxima..."), 1);
     wxExecute(command, wxEXEC_ASYNC, m_process);
     m_input = m_process->GetInputStream();
     SetStatusText(_("Maxima started. Waiting for connection..."), 1);
@@ -1159,9 +1159,9 @@ wxString wxMaxima::GetCommand(bool params)
     config->Read(wxT("maxima"), &maxima);
     if (!wxFileExists(maxima))
     {
-      wxMessageBox(_("wxMaxima could not find maxima!\n\n"
+      wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
                      "Please configure wxMaxima with 'Edit->Configure'.\n"
-                     "Then start maxima with 'Maxima->Restart maxima'."), _("Warning"),
+                     "Then start Maxima with 'Maxima->Restart Maxima'."), _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
       return wxEmptyString;

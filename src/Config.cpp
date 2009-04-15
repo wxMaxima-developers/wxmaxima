@@ -170,8 +170,8 @@ void Config::set_properties()
 {
   SetTitle(_("wxMaxima configuration"));
 
-  m_maximaProgram->SetToolTip(_("Enter the path to the maxima executable."));
-  m_additionalParameters->SetToolTip(_("Additional parameters for maxima"
+  m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
+  m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -425,12 +425,12 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   wxString dd;
   config->Read(wxT("maxima"), &dd);
 #if defined __WXMSW__
-  wxString file = wxFileSelector(_("Select maxima program"),
+  wxString file = wxFileSelector(_("Select Maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
                                  wxEmptyString, _("Bat files (*.bat)|*.bat|All|*"),
                                  wxFD_OPEN);
 #else
-  wxString file = wxFileSelector(_("Select maxima program"),
+  wxString file = wxFileSelector(_("Select Maxima program"),
                                  wxPathOnly(dd), wxFileNameFromPath(dd),
                                  wxEmptyString, _("All|*"),
                                  wxFD_OPEN);
@@ -440,7 +440,7 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   {
     if (file.Right(8) == wxT("wxmaxima") || file.Right(12) == wxT("wxmaxima.exe") ||
         file.Right(12) == wxT("wxMaxima.exe"))
-      wxMessageBox(_("Invalid entry for maxima program.\n\nPlease enter the path to maxima program again."),
+      wxMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter the path to Maxima program again."),
                    _("Error"),
                    wxOK|wxICON_ERROR);
     else
