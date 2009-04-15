@@ -2668,7 +2668,20 @@ void MathCtrl::RemoveAllOutput()
   Refresh();
 }
 
+void MathCtrl::OnMiddleClick(wxMouseEvent& event)
+{
+  CheckUnixPaste();
+}
 
+void MathCtrl::CheckUnixPaste()
+{
+  bool paste = false;
+  wxConfig::Get()->Read(wxT("unixCopy"), &paste);
+
+  if (paste) {
+    PasteFromClipboard();
+  }
+}
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
@@ -2688,4 +2701,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
   EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
+  EVT_MIDDLE_UP(MathCtrl::OnMiddleClick)
 END_EVENT_TABLE()
