@@ -250,8 +250,7 @@ protected:
   void OnEraseBackground(wxEraseEvent& event)
   { }
   void CheckUnixCopy();
-  void CheckUnixPaste();
-  void OnMiddleClick(wxMouseEvent& event);
+  void OnMouseMiddleUp(wxMouseEvent& event);
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;

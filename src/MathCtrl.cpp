@@ -442,7 +442,7 @@ void MathCtrl::ClearDocument() {
   m_activeCell = NULL;
   m_workingGroup = NULL;
 
-  ClearEvaluationQueue(); 
+  ClearEvaluationQueue();
 
   DestroyTree();
 
@@ -2668,18 +2668,16 @@ void MathCtrl::RemoveAllOutput()
   Refresh();
 }
 
-void MathCtrl::OnMiddleClick(wxMouseEvent& event)
-{
-  CheckUnixPaste();
-}
-
-void MathCtrl::CheckUnixPaste()
+void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
 {
   bool paste = false;
   wxConfig::Get()->Read(wxT("unixCopy"), &paste);
 
   if (paste) {
-    PasteFromClipboard();
+    OnMouseLeftDown(event);
+    if (m_clickType != CLICK_TYPE_NONE)
+      PasteFromClipboard();
+    m_clickType = CLICK_TYPE_NONE;
   }
 }
 
@@ -2701,5 +2699,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
   EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
-  EVT_MIDDLE_UP(MathCtrl::OnMiddleClick)
+  EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
 END_EVENT_TABLE()
