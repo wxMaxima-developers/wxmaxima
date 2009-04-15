@@ -112,7 +112,7 @@ bool MyApp::OnInit()
   else
     NewWindow();
 #else
-  if (acgc==2)
+  if (argc==2)
     NewWindow(wxString(argv[1]));
   else
     NewWindow();
