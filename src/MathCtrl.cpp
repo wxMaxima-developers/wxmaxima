@@ -518,9 +518,12 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
       clickInSelection = true;
   }
 
-  if (!clickInSelection)
+  // emulate a left click to set the cursor
+  if (!clickInSelection) {
     OnMouseLeftDown(event);
-  m_leftDown = false;
+    m_leftDown = false;
+    m_clickType = CLICK_TYPE_NONE;
+  }
 
   // construct a menu appropriate to what we have
   //
@@ -2675,6 +2678,7 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
 
   if (paste) {
     OnMouseLeftDown(event);
+    m_leftDown = false;
     if (m_clickType != CLICK_TYPE_NONE)
       PasteFromClipboard();
     m_clickType = CLICK_TYPE_NONE;
