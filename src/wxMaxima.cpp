@@ -847,44 +847,28 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   // open wxmx file
   wxXmlDocument xmldoc;
-	wxZipEntry* entry;
-  wxFFileInputStream in(file);
-  wxZipInputStream zip(in);
 
-  for (int i = 0; i < zip.GetTotalEntries(); i++)
-  {
-    entry = zip.GetNextEntry();
-    wxString name = entry->GetName();
+  wxFileSystem fs;
+  wxFSFile *fsfile = fs.OpenFile(wxT("file:") + file + wxT("#zip:content.xml"));
 
-    if (name != wxT("content.xml")) {
-      wxImage img;
-      if (img.LoadFile(zip, wxBITMAP_TYPE_PNG))
-      {
-        wxString basename, suffix;
-        wxFileName::SplitPath(name, NULL, NULL, &basename, &suffix);
-        img.SaveFile(wxFileName::GetTempDir() + basename + wxT(".") + suffix,
-            wxBITMAP_TYPE_PNG);
-      }
-    }
-
-    else {
-      if (!xmldoc.Load(zip)) {
-        wxEndBusyCursor();
-        document->Thaw();
-        wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-        SetStatusText(_("Ready for user input"), 1);
-        return false;
-      }
-    }
-
-    delete entry;
+  if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
+    wxEndBusyCursor();
+    document->Thaw();
+    delete fsfile;
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
+        wxOK | wxICON_EXCLAMATION);
+    SetStatusText(_("Ready for user input"), 1);
+    return false;
   }
+
+  delete fsfile;
 
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
     wxEndBusyCursor();
     document->Thaw();
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
+        wxOK | wxICON_EXCLAMATION);
     SetStatusText(_("Ready for user input"), 1);
     return false;
   }
@@ -916,7 +900,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
 
-  GroupCell *tree = CreateTreeFromXMLNode(xmlcells);
+  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -941,9 +925,9 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   return true;
 }
 
-GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells)
+GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename)
 {
-  MathParser mp;
+  MathParser mp(wxmxfilename);
   MathCell *tree = NULL;
   MathCell *last = NULL;
 

@@ -23,10 +23,11 @@
 #include <wx/file.h>
 #include <wx/filename.h>
 
-SlideShow::SlideShow() : MathCell()
+SlideShow::SlideShow(wxFileSystem *filesystem) : MathCell()
 {
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
+  m_fileSystem = filesystem; // NULL when not loading from wxmx
 }
 
 SlideShow::~SlideShow()
@@ -41,48 +42,88 @@ void SlideShow::LoadImages(wxArrayString images)
 {
   m_size = images.GetCount();
 
-  for (int i=0; i<m_size; i++)
-  {
-    bool loadedImage = false;
-
-    if (!wxFileExists(images[i]))
-      images[i] = wxFileName::GetTempDir() + images[i];
-
-    if (wxFileExists(images[i]))
+  if (m_fileSystem) {
+    for (int i=0; i<m_size; i++)
     {
-      wxBitmap *bitmap = new wxBitmap;
-      if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
+      bool loadedImage = false;
+
+      wxFSFile *fsfile = m_fileSystem->OpenFile(images[i]);
+      if (fsfile) { // open sucessful
+
+        wxInputStream *istream = fsfile->GetStream();
+        wxImage pngImage(*istream);
+        if (pngImage.Ok())
+        {
+          loadedImage = true;
+          m_bitmaps.push_back(new wxBitmap(pngImage));
+        }
+        delete fsfile;
+      }
+
+      if (!loadedImage)
       {
-        loadedImage = true;
+        wxBitmap *bitmap = new wxBitmap;
+        bitmap->Create(400, 250);
+
+        wxString error = wxString::Format(_("Error %d"), i);
+
+        wxMemoryDC dc;
+        dc.SelectObject(*bitmap);
+
+        int width = 0, height = 0;
+        dc.GetTextExtent(error, &width, &height);
+
+        dc.DrawRectangle(0, 0, 400, 250);
+        dc.DrawLine(0, 0,   400, 250);
+        dc.DrawLine(0, 250, 400, 0);
+        dc.DrawText(error, 200 - width/2, 125 - height/2);
+
         m_bitmaps.push_back(bitmap);
       }
-      else
-        delete bitmap;
-
-      wxRemoveFile(images[i]);
     }
 
-    if (!loadedImage)
-    {
-      wxBitmap *bitmap = new wxBitmap;
-      bitmap->Create(400, 250);
-
-      wxString error = wxString::Format(_("Error %d"), i);
-
-      wxMemoryDC dc;
-      dc.SelectObject(*bitmap);
-
-      int width = 0, height = 0;
-      dc.GetTextExtent(error, &width, &height);
-
-      dc.DrawRectangle(0, 0, 400, 250);
-      dc.DrawLine(0, 0,   400, 250);
-      dc.DrawLine(0, 250, 400, 0);
-      dc.DrawText(error, 200 - width/2, 125 - height/2);
-
-      m_bitmaps.push_back(bitmap);
-    }
+    m_fileSystem = NULL;
   }
+  else
+    for (int i=0; i<m_size; i++)
+    {
+      bool loadedImage = false;
+
+      if (wxFileExists(images[i]))
+      {
+        wxBitmap *bitmap = new wxBitmap;
+        if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
+        {
+          loadedImage = true;
+          m_bitmaps.push_back(bitmap);
+        }
+        else
+          delete bitmap;
+
+        wxRemoveFile(images[i]);
+      }
+
+      if (!loadedImage)
+      {
+        wxBitmap *bitmap = new wxBitmap;
+        bitmap->Create(400, 250);
+
+        wxString error = wxString::Format(_("Error %d"), i);
+
+        wxMemoryDC dc;
+        dc.SelectObject(*bitmap);
+
+        int width = 0, height = 0;
+        dc.GetTextExtent(error, &width, &height);
+
+        dc.DrawRectangle(0, 0, 400, 250);
+        dc.DrawLine(0, 0,   400, 250);
+        dc.DrawLine(0, 250, 400, 0);
+        dc.DrawText(error, 200 - width/2, 125 - height/2);
+
+        m_bitmaps.push_back(bitmap);
+      }
+    }
 
   m_displayed = 0;
 }

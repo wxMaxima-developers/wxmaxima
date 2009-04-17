@@ -23,11 +23,14 @@
 #include "MathCell.h"
 #include <wx/image.h>
 
+#include <wx/filesys.h>
+#include <wx/fs_arc.h>
+
 class ImgCell : public MathCell
 {
 public:
   ImgCell();
-  ImgCell(wxString image, bool remove = true);
+  ImgCell(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
   ~ImgCell();
   void Destroy();
   void LoadImage(wxString image, bool remove = true);
@@ -40,6 +43,7 @@ public:
   bool ToImageFile(wxString filename);
 protected:
   wxBitmap *m_bitmap;
+  wxFileSystem *m_fileSystem;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);

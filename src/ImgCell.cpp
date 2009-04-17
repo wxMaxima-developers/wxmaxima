@@ -26,13 +26,15 @@ ImgCell::ImgCell() : MathCell()
 {
   m_bitmap = NULL;
   m_type = MC_TYPE_IMAGE;
+  m_fileSystem = NULL;
 }
 
 // constructor which load image
-ImgCell::ImgCell(wxString image, bool remove) : MathCell()
+ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCell()
 {
   m_bitmap = NULL;
   m_type = MC_TYPE_IMAGE;
+  m_fileSystem = filesystem; // != NULL when loading from wxmx
   LoadImage(image, remove);
 }
 
@@ -51,23 +53,35 @@ void ImgCell::LoadImage(wxString image, bool remove)
 
   bool loadedImage = false;
 
-  if (!wxFileExists(image))
-  {
-    image = wxFileName::GetTempDir() + image;
-  }
+  if (m_fileSystem) {
+    wxFSFile *fsfile = m_fileSystem->OpenFile(image);
+    if (fsfile) { // open sucessful
 
-  if (wxFileExists(image))
-  {
-    wxImage pngImage(image);
-
-    if (pngImage.Ok())
-    {
-      loadedImage = true;
-      m_bitmap = new wxBitmap(pngImage);
+      wxInputStream *istream = fsfile->GetStream();
+      wxImage pngImage(*istream);
+      if (pngImage.Ok())
+      {
+        loadedImage = true;
+        m_bitmap = new wxBitmap(pngImage);
+      }
+      delete fsfile;
     }
+    m_fileSystem = NULL;
+  }
+  else {
+    if (wxFileExists(image))
+    {
+      wxImage pngImage(image);
 
-    if (remove)
-      wxRemoveFile(image);
+      if (pngImage.Ok())
+      {
+        loadedImage = true;
+        m_bitmap = new wxBitmap(pngImage);
+      }
+
+      if (remove)
+        wxRemoveFile(image);
+    }
   }
 
   if (!loadedImage)
@@ -88,6 +102,10 @@ void ImgCell::LoadImage(wxString image, bool remove)
     dc.DrawLine(0, 0,   400, 250);
     dc.DrawLine(0, 250, 400, 0);
     dc.DrawText(error, 200 - width/2, 125 - height/2);
+
+    dc.GetTextExtent(image, &width, &height);
+    dc.DrawText(image, 200 - width/2, 150 - height/2);
+
   }
 }
 

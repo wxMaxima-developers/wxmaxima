@@ -138,7 +138,7 @@ protected:
   // loading functions
   bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
-  GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells);
+  GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
 
   wxSocketBase *m_client;

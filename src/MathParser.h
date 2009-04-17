@@ -22,13 +22,16 @@
 
 #include <wx/xml/xml.h>
 
+#include <wx/filesys.h>
+#include <wx/fs_arc.h>
+
 #include "MathCell.h"
 #include "TextCell.h"
 
 class MathParser
 {
 public:
-  MathParser();
+  MathParser(wxString zipfile = wxEmptyString);
   ~MathParser();
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
@@ -54,6 +57,7 @@ private:
   int m_ParserStyle;
   int m_FracStyle;
   bool m_highlight;
+  wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>
 };
 
 #endif //_MATHPARSER_H_

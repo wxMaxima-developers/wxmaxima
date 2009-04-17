@@ -46,15 +46,24 @@
 
 #define MAXLENGTH 50000
 
-MathParser::MathParser()
+MathParser::MathParser(wxString zipfile)
 {
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FC_NORMAL;
   m_highlight = false;
+  if (zipfile.Length() > 0) {
+    m_fileSystem = new wxFileSystem();
+    m_fileSystem->ChangePathTo(wxT("file:") + zipfile + wxT("#zip:/"), true);
+  }
+  else
+    m_fileSystem = NULL;
 }
 
 MathParser::~MathParser()
-{}
+{
+  if (m_fileSystem)
+    delete m_fileSystem;
+}
 
 // ParseCellTag
 // This function is responsible for creating
@@ -705,12 +714,14 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       {
         wxString filename(node->GetChildren()->GetContent());
 
-        ImgCell *tmp = new ImgCell;
+        ImgCell *tmp;
 
-        if (node->GetProperties() != NULL)
-          tmp->LoadImage(filename, false);
+        if (m_fileSystem) // loading from zip
+          tmp = new ImgCell(filename, false, m_fileSystem);
+        else if (node->GetPropVal(wxT("del"), wxT("yes")) != wxT("no"))
+          tmp = new ImgCell(filename, true, NULL);
         else
-          tmp->LoadImage(filename);
+          tmp = new ImgCell(filename, false, NULL);
 
         if (cell == NULL)
           cell = tmp;
@@ -719,7 +730,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
       else if (tagName == wxT("slide"))
       {
-        SlideShow *tmp = new SlideShow;
+        SlideShow *tmp = new SlideShow(m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
         wxStringTokenizer tokens(str, wxT(";"));

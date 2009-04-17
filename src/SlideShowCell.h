@@ -23,6 +23,9 @@
 #include "MathCell.h"
 #include <wx/image.h>
 
+#include <wx/filesys.h>
+#include <wx/fs_arc.h>
+
 #include <vector>
 
 using namespace std;
@@ -30,7 +33,7 @@ using namespace std;
 class SlideShow : public MathCell
 {
 public:
-  SlideShow();
+  SlideShow(wxFileSystem *filesystem = NULL);
   ~SlideShow();
   void Destroy();
   void LoadImages(wxArrayString images);
@@ -46,6 +49,7 @@ public:
 protected:
   int m_size;
   int m_displayed;
+  wxFileSystem *m_fileSystem;
   vector<wxBitmap*> m_bitmaps;
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
