@@ -240,6 +240,12 @@ void Config::set_properties()
     else
       m_maximaProgram->SetValue(wxT("maxima.bat"));
   }
+#elif defined __WXMAC__
+  if (mp.Length())
+    m_maximaProgram->SetValue(mp);
+  else
+    // this is where the mac installer installs maxima
+    m_maximaProgram->SetValue(wxT("/usr/local/maxima/bin/maxima"));
 #else
   if (mp.Length())
     m_maximaProgram->SetValue(mp);
