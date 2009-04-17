@@ -1118,6 +1118,10 @@ void wxMaxima::SetupVariables()
   wxString cwd = wxGetCwd();
   cwd = cwd + wxT("/") + wxT(MACPREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"));
+  // check for Gnuplot.app - use it if it exists
+  wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
+  if (wxFileExists(gnuplotbin))
+    SendMaxima(wxT(":lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")"));
 #else
   wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
