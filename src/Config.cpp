@@ -245,7 +245,7 @@ void Config::set_properties()
     m_maximaProgram->SetValue(mp);
   else
     // this is where the mac installer installs maxima
-    m_maximaProgram->SetValue(wxT("/usr/local/maxima/bin/maxima"));
+    m_maximaProgram->SetValue(wxT("/Applications/Maxima.app"));
 #else
   if (mp.Length())
     m_maximaProgram->SetValue(mp);

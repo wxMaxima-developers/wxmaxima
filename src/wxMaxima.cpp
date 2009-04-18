@@ -1169,12 +1169,17 @@ wxString wxMaxima::GetCommand(bool params)
   if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
 #if defined (__WXMAC__)
-    command = wxT("/usr/local/bin/maxima");
+    command = wxT("/Applications/Maxima.app");
 #else
     command = wxT("maxima");
 #endif
     config->Write(wxT("maxima"), command);
   }
+
+#if defined (__WXMAC__)
+  if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
+    command.Append(wxT("/Contents/Resources/bin/maxima"));
+#endif
 
   config->Read(wxT("parameters"), &parameters);
   command = wxT("\"") + command + wxT("\" ") + parameters;
