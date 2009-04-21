@@ -361,6 +361,8 @@ void wxMaxima::SendMaxima(wxString s)
 #if wxUSE_UNICODE
   s.Replace(wxT("\x00B2"), wxT("^2"));
   s.Replace(wxT("\x00B3"), wxT("^3"));
+  s.Replace(wxT("\x00BD"), wxT("(1/2)"));
+  s.Replace(wxT("\x221A"), wxT("sqrt"));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);

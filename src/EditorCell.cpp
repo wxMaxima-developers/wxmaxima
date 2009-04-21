@@ -23,6 +23,8 @@
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 
+#define ESC_CHAR wxT('\xA6')
+
 EditorCell::EditorCell() : MathCell()
 {
   m_text = wxEmptyString;
@@ -672,6 +674,38 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     m_positionOfCaret++;
     break;
 
+  case WXK_ESCAPE:
+#if wxUSE_UNICODE
+    {
+    // TODO: search only a few positions back for an escchar (10? and not over newlines)
+    bool insertescchar = false;
+    int esccharpos = m_text.Left(m_positionOfCaret).Find(ESC_CHAR, true);
+    if (esccharpos > -1) { // we have a match, check for insertion
+      wxString greek = InterpretEscapeString(m_text.SubString(esccharpos + 1, m_positionOfCaret - 1));
+      if (greek.Length() > 0 ) {
+        m_text = m_text.SubString(0, esccharpos - 1) + greek +
+          m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_positionOfCaret = esccharpos + greek.Length();
+        m_isDirty = true;
+        m_containsChanges = true;
+      }
+      else
+        insertescchar = true;
+    }
+    else
+      insertescchar = true;
+
+    if (insertescchar) {
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
+        m_text.SubString(m_positionOfCaret, m_text.Length());
+      m_isDirty = true;
+      m_containsChanges = true;
+      m_positionOfCaret++;
+    }
+    }
+#endif
+    break;
+
   default:
     if (event.ControlDown())
       break;
@@ -870,6 +904,121 @@ void EditorCell::FindMatchingParens()
   if (m_paren1 < 0 || m_paren1 >= (int)m_text.Length())
     m_paren1 = m_paren2 = -1;
 }
+
+#if wxUSE_UNICODE
+wxString EditorCell::InterpretEscapeString(wxString txt)
+{
+  if ((txt == wxT("a")) || (txt == wxT("alpha")))
+    return L"\x03B1";
+  else if ((txt == wxT("b")) || (txt == wxT("beta")))
+    return L"\x03B2";
+  else if ((txt == wxT("g")) || (txt == wxT("gamma")))
+    return L"\x03B3";
+  else if ((txt == wxT("d")) || (txt == wxT("delta")))
+    return L"\x03B4";
+  else if ((txt == wxT("e")) || (txt == wxT("epsilon")))
+    return L"\x03B5";
+  else if ((txt == wxT("z")) || (txt == wxT("zeta")))
+    return L"\x03B6";
+  else if ((txt == wxT("h")) || (txt == wxT("eta")))
+    return L"\x03B7";
+  else if ((txt == wxT("q")) || (txt == wxT("theta")))
+    return L"\x03B8";
+  else if ((txt == wxT("i")) || (txt == wxT("iota")))
+    return L"\x03B9";
+  else if ((txt == wxT("k")) || (txt == wxT("kappa")))
+    return L"\x03BA";
+  else if ((txt == wxT("l")) || (txt == wxT("lambda")))
+    return L"\x03BB";
+  else if ((txt == wxT("m")) || (txt == wxT("mu")))
+    return L"\x03BC";
+  else if ((txt == wxT("n")) || (txt == wxT("nu")))
+    return L"\x03BD";
+  else if ((txt == wxT("x")) || (txt == wxT("xi")))
+    return L"\x03BE";
+  else if ((txt == wxT("om")) || (txt == wxT("omicron")))
+    return L"\x03BF";
+  else if ((txt == wxT("p")) || (txt == wxT("pi")))
+    return L"\x03C0";
+  else if ((txt == wxT("r")) || (txt == wxT("rho")))
+    return L"\x03C1";
+  else if ((txt == wxT("s")) || (txt == wxT("sigma")))
+    return L"\x03C3";
+  else if ((txt == wxT("t")) || (txt == wxT("tau")))
+    return L"\x03C4";
+  else if ((txt == wxT("u")) || (txt == wxT("upsilon")))
+    return L"\x03C5";
+  else if ((txt == wxT("f")) || (txt == wxT("phi")))
+    return L"\x03C6";
+  else if ((txt == wxT("c")) || (txt == wxT("chi")))
+    return L"\x03C7";
+  else if ((txt == wxT("y")) || (txt == wxT("psi")))
+    return L"\x03C8";
+  else if ((txt == wxT("o")) || (txt == wxT("omega")))
+    return L"\x03C9";
+  else if (txt == wxT("Alpha"))
+    return L"\x0391";
+  else if (txt == wxT("Beta"))
+    return L"\x0392";
+  else if (txt == wxT("Gamma"))
+    return L"\x0393";
+  else if (txt == wxT("Delta"))
+    return L"\x0394";
+  else if (txt == wxT("Epsilon"))
+    return L"\x0395";
+  else if (txt == wxT("Zeta"))
+    return L"\x0396";
+  else if (txt == wxT("Eta"))
+    return L"\x0397";
+  else if (txt == wxT("Theta"))
+    return L"\x0398";
+  else if (txt == wxT("Iota"))
+    return L"\x0399";
+  else if (txt == wxT("Kappa"))
+    return L"\x039A";
+  else if (txt == wxT("Lambda"))
+    return L"\x039B";
+  else if (txt == wxT("Mu"))
+    return L"\x039C";
+  else if (txt == wxT("Nu"))
+    return L"\x039D";
+  else if (txt == wxT("Xi"))
+    return L"\x039E";
+  else if (txt == wxT("Omicron"))
+    return L"\x039F";
+  else if (txt == wxT("Pi"))
+    return L"\x03A0";
+  else if (txt == wxT("Rho"))
+    return L"\x03A1";
+  else if (txt == wxT("Sigma"))
+    return L"\x03A3";
+  else if (txt == wxT("Tau"))
+    return L"\x03A4";
+  else if (txt == wxT("Upsilon"))
+    return L"\x03A5";
+  else if (txt == wxT("Phi"))
+    return L"\x03A6";
+  else if (txt == wxT("Chi"))
+    return L"\x03A7";
+  else if (txt == wxT("Psi"))
+    return L"\x03A8";
+  else if (txt == wxT("Omega"))
+    return L"\x03A9";
+  //////////////////////////
+  else if (txt == wxT("2"))
+    return L"\x00B2";
+  else if (txt == wxT("3"))
+    return L"\x00B3";
+  else if (txt == wxT("/2"))
+    return L"\x00BD";
+  else if (txt == wxT("sq"))
+    return L"\x221A";
+
+  /////////////////////////
+  else
+    return wxEmptyString;
+}
+#endif
 
 bool EditorCell::ActivateCell()
 {

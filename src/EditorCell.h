@@ -101,6 +101,9 @@ public:
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
 private:
+#if wxUSE_UNICODE
+  wxString InterpretEscapeString(wxString txt);
+#endif
   wxString m_text;
   wxString m_oldText;
   int m_oldPosition;

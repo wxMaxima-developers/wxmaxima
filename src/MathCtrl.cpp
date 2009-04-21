@@ -1151,6 +1151,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       }
       break;
 
+#ifndef wxUSE_UNICODE
     case WXK_ESCAPE:
       if (m_activeCell == NULL) {
         SetSelection(NULL);
@@ -1161,6 +1162,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         SetHCaret(m_activeCell->GetParent()); // also refreshes
 
       break;
+#endif
 
     default:
       event.Skip();
@@ -1437,6 +1439,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             else
               OpenHCaret(GetString());
             break;
+#if wxUSE_UNICODE
+            // don't open hcaret with esc
+          case WXK_ESCAPE:
+            break;
+#endif
 					// keycodes which open hCaret with initial content
           default:
           {
