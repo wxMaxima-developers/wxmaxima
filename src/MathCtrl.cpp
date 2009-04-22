@@ -1411,7 +1411,6 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           case WXK_WINDOWS_MENU:
           case WXK_COMMAND:
           case WXK_START:
-            break;
             event.Skip();
             break;
 
