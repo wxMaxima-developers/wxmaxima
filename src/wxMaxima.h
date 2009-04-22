@@ -35,7 +35,7 @@
 
 #define SOCKET_SIZE 1024
 #define DOCUMENT_VERSION_MAJOR 1
-#define DOCUMENT_VERSION_MINOR 0
+#define DOCUMENT_VERSION_MINOR 1
 
 class MyApp : public wxApp
 {

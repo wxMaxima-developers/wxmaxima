@@ -597,10 +597,13 @@ wxString GroupCell::ToXML(bool all)
       if (output != NULL)
         str += output->ToXML(true);
       break;
-    case GC_TYPE_TEXT:
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
+      if (input)
+        str += input->ToXML(false);
+      break;
+    case GC_TYPE_TEXT:
     default:
       if (output != NULL)
         str += output->ToXML(false);

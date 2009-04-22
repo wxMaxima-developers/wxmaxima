@@ -105,6 +105,8 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       group = new GroupCell(GC_TYPE_TITLE);
     else if (type == wxT("section"))
       group = new GroupCell(GC_TYPE_SECTION);
+    else if (type == wxT("subsection"))
+      group = new GroupCell(GC_TYPE_SUBSECTION);
     else if (type == wxT("text"))
       group = new GroupCell(GC_TYPE_TEXT);
     else
@@ -132,6 +134,8 @@ MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
     editor->SetType(MC_TYPE_TITLE);
   else if (type == wxT("section"))
     editor->SetType(MC_TYPE_SECTION);
+  else if (type == wxT("subsection"))
+    editor->SetType(MC_TYPE_SUBSECTION);
 
   wxString text = wxEmptyString;
   wxXmlNode *line = node->GetChildren();
