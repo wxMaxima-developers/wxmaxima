@@ -976,22 +976,22 @@ bool MathCtrl::CopyCells()
     {
       case GC_TYPE_CODE:
         s += wxT("/* [wxMaxima: input   start ] */\n");
-        s += tmp->GetInput()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString(false) + wxT("\n");
         s += wxT("/* [wxMaxima: input   end   ] */\n");
         break;
       case GC_TYPE_TEXT:
         s += wxT("/* [wxMaxima: comment start ]\n");
-        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: comment end   ] */\n");
         break;
       case GC_TYPE_SECTION:
         s += wxT("/* [wxMaxima: section start ]\n");
-        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: section end   ] */\n");
         break;
       case GC_TYPE_TITLE:
         s += wxT("/* [wxMaxima: title   start ]\n");
-        s += tmp->GetLabel()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: title   end   ] */\n");
         break;
     }
