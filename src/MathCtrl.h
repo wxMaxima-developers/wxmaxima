@@ -139,7 +139,7 @@ public:
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
-  void InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
+  GroupCell *InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
   void InsertLine(MathCell *newLine, bool forceNewLine = false, bool hide = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
@@ -229,6 +229,11 @@ public:
   void AddCellToEvaluationQueue(GroupCell* gc);
   void ClearEvaluationQueue();
   EvaluationQueue* m_evaluationQueue;
+  // methods for folding
+  bool ToggleFold(GroupCell *which);
+  bool Fold(GroupCell *which);
+  bool Unfold(GroupCell *which);
+  GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -252,6 +257,7 @@ protected:
   void CheckUnixCopy();
   void OnMouseMiddleUp(wxMouseEvent& event);
   void NumberSections();
+  bool IsLesserGCType(int type, int comparedTo);
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;

@@ -81,7 +81,15 @@ public:
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
   void BreakLines(int fullWidth);
+  // folding and unfolding
+  bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
+                              (m_groupType == GC_TYPE_TITLE) || 
+                              (m_groupType == GC_TYPE_SUBSECTION)); }
+  GroupCell *GetHiddenTree() { return m_hiddenTree; }
+  bool HideTree(GroupCell *tree);
+  GroupCell *UnhideTree();
 protected:
+  GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   int m_groupType;
   void DestroyOutput();
   MathCell *m_input, *m_output;

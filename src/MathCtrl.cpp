@@ -264,16 +264,27 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 // InsertGroupCells
 // inserts groupcells after position "where" (NULL = top of the document)
 // Multiple groupcells can be inserted when tree->m_next != NULL
-void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
+// Returns the pointer to the last inserted group cell to have fun with
+GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
 {
   if (!tree)
-    return; // nothing to insert
+    return NULL; // nothing to insert
+  bool renumbersections = false; // only renumber when true
   GroupCell *next; // next gc to insertion point
   GroupCell *prev;
   // last in the tree to insert
   GroupCell* last = tree;
-  while (last->m_next)
+  int gtype = last->GetGroupType();
+  if ((gtype == GC_TYPE_TITLE) || (gtype == GC_TYPE_SECTION) || (gtype == GC_TYPE_SUBSECTION))
+    renumbersections = true;
+  while (last->m_next) {
     last = (GroupCell *)last->m_next;
+    if (last) {
+      gtype = last->GetGroupType();
+      if ((gtype == GC_TYPE_TITLE) || (gtype == GC_TYPE_SECTION) || (gtype == GC_TYPE_SUBSECTION))
+        renumbersections = true;
+    }
+  }
 
   if (m_tree == NULL)
     where = NULL;
@@ -297,9 +308,11 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
   if (!next) // if there were no further cells
     m_last = last;
 
-  NumberSections(); // TODO only when inserting sections or subsections or titles
+  if (renumbersections)
+    NumberSections();
   Recalculate();
   m_saved = false; // document has been modified
+  return last;
 }
 
 /***
@@ -473,6 +486,9 @@ void MathCtrl::ResetInputPrompts() {
 
 }
 
+//
+// support for numbered sections with hiding
+//
 void MathCtrl::NumberSections() {
   MathCell* tmp = m_tree;
   int section = 0;
@@ -487,19 +503,126 @@ void MathCtrl::NumberSections() {
     else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SECTION) {
       section++;
       subsection = 0;
-      wxString num = wxT("  ");
+      wxString num = wxT(" ");
       num << section << wxT(". ");
       ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
     }
     else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SUBSECTION) {
       subsection++;
-      wxString num = wxT("   ");
+      wxString num = wxT("  ");
       num << section << wxT(".") << subsection << wxT(" ");
       ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
     }
 
     tmp = tmp->m_next;
   }
+}
+
+bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
+  switch (type) {
+    case GC_TYPE_CODE:
+    case GC_TYPE_TEXT:
+    case GC_TYPE_IMAGE:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
+          (comparedTo == GC_TYPE_SUBSECTION))
+        return true;
+      else
+        return false;
+    case GC_TYPE_SUBSECTION:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION))
+        return true;
+      else
+        return false;
+    case GC_TYPE_SECTION:
+      if (comparedTo == GC_TYPE_TITLE)
+        return true;
+      else
+        return false;
+    case GC_TYPE_TITLE:
+      return false;
+    default:
+      return false;
+  }
+}
+
+bool MathCtrl::ToggleFold(GroupCell *which) {
+  if (!which)
+    return false;
+  if (which->GetHiddenTree())
+    return Unfold(which);
+  else
+    return Fold(which);
+}
+
+bool MathCtrl::Fold(GroupCell *which) {
+  if (!which)
+    return false;
+  int gctype = which->GetGroupType();
+  if (!(which->IsFoldable()))
+    return false;
+  if (which->GetHiddenTree()) // already folded?? shouldn't happen
+    return false;
+  GroupCell *tmp = which;
+  if (!(tmp->m_next))
+    return false;
+  // when folding one has to be careful not to fold selection
+  // or active cell - strange things may happen
+  // also horizontal caret
+  SetSelection(NULL);
+  SetActiveCell(NULL, false);
+  SetHCaret(which, false);
+
+  tmp = (GroupCell *)tmp->m_next;
+  GroupCell *start = tmp; // first to fold
+  
+  while (tmp->m_next) {
+    if ((gctype == tmp->GetGroupType()) || IsLesserGCType(gctype, tmp->GetGroupType()))
+      break;
+    tmp = (GroupCell *)tmp->m_next;
+  }
+
+  if (start == tmp)
+    return false;
+  else {
+    if (tmp->m_next)
+      return which->HideTree(TearOutTree(start,(GroupCell *)tmp->m_previous));
+    else // include last cell in document
+      return which->HideTree(TearOutTree(start,tmp));
+  }
+}
+
+bool MathCtrl::Unfold(GroupCell *which) {
+  if (!which)
+    return false;
+  if (!(which->IsFoldable()))
+    return false;
+  if (!(which->GetHiddenTree()))
+    return false;
+  GroupCell *tree = which->UnhideTree();
+  SetHCaret(InsertGroupCells(tree, which));
+  return true;
+}
+
+// Returns the tree from start to end and connets the pointers the right way
+// so that m_tree stays 'correct'
+GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end) {
+  if ((!start) || (!end))
+    return NULL;
+  MathCell *prev = start->m_previous;
+  MathCell *next = end->m_next;
+
+  end->m_next = end->m_nextToDraw = NULL;
+  start->m_previous = start->m_previousToDraw = NULL;
+
+  if (prev)
+    prev->m_next = prev->m_nextToDraw = next;
+  if (next)
+    next->m_previous = next->m_previousToDraw = prev;
+  // fix m_last if we tore it
+  if (end == m_last)
+    m_last = (GroupCell *)prev;
+
+  return start;
 }
 
 /***
@@ -700,10 +823,16 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     if (m_down.x <= MC_GROUP_LEFT_INDENT) { // we clicked in left bracket area
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
       {
-        clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
-        clickedInGC->ResetSize();
-        Recalculate();
-        m_clickType = CLICK_TYPE_NONE; // ignore drag-select
+        if (clickedInGC->IsFoldable()) {
+          ToggleFold(clickedInGC);
+          Recalculate();
+        }
+        else {
+          clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
+          clickedInGC->ResetSize();
+          Recalculate();
+          m_clickType = CLICK_TYPE_NONE; // ignore drag-select
+        }
       }
       else {
         m_clickType = CLICK_TYPE_GROUP_SELECTION;
@@ -1140,6 +1269,13 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
 
   // insert a new group cell
   GroupCell *group = new GroupCell(type, txt);
+  // check how much to unfold for this type
+  if (m_hCaretPosition) {
+    while (IsLesserGCType(type, m_hCaretPosition->GetGroupType())) {
+      if (!Unfold(m_hCaretPosition)) // assumes that unfold sets hcaret to the end of unfolded cells
+        break; // unfold returns false when it cannot unfold
+    }
+  }
   InsertGroupCells(group, m_hCaretPosition);
 
   // activate editor

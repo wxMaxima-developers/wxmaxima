@@ -27,6 +27,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
   m_input = NULL;
   m_output = NULL;
+  m_hiddenTree = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
   m_outputRect.width = 0;
@@ -95,6 +96,8 @@ GroupCell::~GroupCell()
   if (m_input != NULL)
     delete m_input;
   DestroyOutput();
+  if (m_hiddenTree)
+    delete m_hiddenTree;
 }
 
 void GroupCell::SetParent(MathCell *parent, bool all)
@@ -403,7 +406,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_CELL_BRACKET)))); //highlight c.
     }
 
-    if (!m_hide) {
+    if ((!m_hide) && (!m_hiddenTree)) {
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
 
@@ -818,4 +821,23 @@ void GroupCell::UnBreakUpCells()
     }
     tmp = tmp->m_next;
   }
+}
+
+//
+// support for folding sections
+//
+bool GroupCell::HideTree(GroupCell *tree)
+{
+  if (m_hiddenTree)
+    return false;
+  m_hiddenTree = tree;
+  return true;
+
+}
+
+GroupCell *GroupCell::UnhideTree()
+{
+  GroupCell *tree = m_hiddenTree;
+  m_hiddenTree = NULL;
+  return tree;
 }
