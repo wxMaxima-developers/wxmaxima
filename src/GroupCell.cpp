@@ -45,7 +45,9 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     m_input = new TextCell(wxT(">> "));
   else
     m_input = new TextCell(wxEmptyString);
+
   m_input->SetType(MC_TYPE_MAIN_PROMPT);
+
   EditorCell *editor = new EditorCell();
   editor->SetValue(initString);
 
@@ -59,12 +61,19 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendOutput(editor);
       break;
     case GC_TYPE_TITLE:
+      m_input->SetType(MC_TYPE_TITLE);
       editor->SetType(MC_TYPE_TITLE);
-      AppendOutput(editor);
+      AppendInput(editor);
       break;
     case GC_TYPE_SECTION:
+      m_input->SetType(MC_TYPE_SECTION);
       editor->SetType(MC_TYPE_SECTION);
-      AppendOutput(editor);
+      AppendInput(editor);
+      break;
+    case GC_TYPE_SUBSECTION:
+      m_input->SetType(MC_TYPE_SECTION);
+      editor->SetType(MC_TYPE_SECTION);
+      AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
     default:
@@ -320,10 +329,9 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   if (DrawThisCell(parser, point))
   {
     //
-    // Paint background if we have section, title, text
+    // Paint background if we have a text cell
     //
-    MathCell * editor = GetEditable();
-    if (editor != NULL && editor->GetType() != MC_TYPE_INPUT) {
+    if (m_groupType == GC_TYPE_TEXT) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
 
@@ -399,15 +407,31 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
 
-    wxPoint * points = new wxPoint[3];
-    points[0].x = point.x - SCALE_PX(10, scale);
-    points[0].y = point.y - m_center;
-    points[1].x = point.x - SCALE_PX(10, scale);
-    points[1].y = point.y - m_center + SCALE_PX(10, scale);
-    points[2].x = point.x;
-    points[2].y = point.y - m_center;
-    dc.DrawPolygon(3, points);
-    delete(points);
+    if ((m_groupType == GC_TYPE_TITLE) ||
+        (m_groupType == GC_TYPE_SECTION) ||
+        (m_groupType == GC_TYPE_SUBSECTION)) { // draw a square
+      wxPoint *points = new wxPoint[4];
+      points[0].x = point.x - SCALE_PX(10, scale);
+      points[0].y = point.y - m_center;
+      points[1].x = point.x - SCALE_PX(10, scale);
+      points[1].y = point.y - m_center + SCALE_PX(10, scale);
+      points[2].x = point.x;
+      points[2].y = point.y - m_center + SCALE_PX(10, scale);
+      points[3].x = point.x;
+      points[3].y = point.y - m_center;
+      dc.DrawPolygon(4, points);
+      delete(points);
+    }
+    else { // draw a triangle and line
+      wxPoint *points = new wxPoint[3];
+      points[0].x = point.x - SCALE_PX(10, scale);
+      points[0].y = point.y - m_center;
+      points[1].x = point.x - SCALE_PX(10, scale);
+      points[1].y = point.y - m_center + SCALE_PX(10, scale);
+      points[2].x = point.x;
+      points[2].y = point.y - m_center;
+      dc.DrawPolygon(3, points);
+      delete(points);
 
     // vertical
     dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
@@ -421,6 +445,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_center + m_input->GetMaxHeight(),
                   point.x - SCALE_PX(10, scale),
                   point.y - m_center + m_input->GetMaxHeight());
+    }
     }
 
     UnsetPen(parser);
@@ -704,11 +729,20 @@ bool GroupCell::SetEditableContent(wxString text)
 
 MathCell *GroupCell::GetEditable()
 {
-  if (m_groupType == GC_TYPE_IMAGE)
-    return NULL;
-  if (m_groupType != GC_TYPE_CODE)
-    return GetLabel();
-  return GetInput();
+  switch (m_groupType) {
+    case GC_TYPE_CODE:
+      return GetInput();
+    case GC_TYPE_IMAGE:
+      return NULL;
+    case GC_TYPE_TEXT:
+      return GetLabel();
+    case GC_TYPE_TITLE:
+      return GetInput();
+    case GC_TYPE_SECTION:
+      return GetInput();
+    case GC_TYPE_SUBSECTION:
+      return GetInput();
+  }
 }
 
 void GroupCell::BreakLines(int fullWidth)

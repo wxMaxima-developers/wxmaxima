@@ -251,6 +251,7 @@ protected:
   { }
   void CheckUnixCopy();
   void OnMouseMiddleUp(wxMouseEvent& event);
+  void NumberSections();
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;

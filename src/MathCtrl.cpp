@@ -297,6 +297,7 @@ void MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
   if (!next) // if there were no further cells
     m_last = last;
 
+  NumberSections(); // TODO only when inserting sections or subsections or titles
   Recalculate();
   m_saved = false; // document has been modified
 }
@@ -470,6 +471,35 @@ void MathCtrl::ResetInputPrompts() {
     tmp = tmp->m_next;
   }
 
+}
+
+void MathCtrl::NumberSections() {
+  MathCell* tmp = m_tree;
+  int section = 0;
+  int subsection = 0;
+
+  while (tmp != NULL)
+  {
+    if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_TITLE) {
+      section = 0; // reset count upon new title
+      subsection = 0;
+    }
+    else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SECTION) {
+      section++;
+      subsection = 0;
+      wxString num = wxT("  ");
+      num << section << wxT(". ");
+      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
+    }
+    else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SUBSECTION) {
+      subsection++;
+      wxString num = wxT("   ");
+      num << section << wxT(".") << subsection << wxT(" ");
+      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
+    }
+
+    tmp = tmp->m_next;
+  }
 }
 
 /***

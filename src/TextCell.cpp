@@ -160,6 +160,13 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   double scale = parser.GetScale();
 
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
+
+  if ((m_textStyle == TS_TITLE) ||
+      (m_textStyle == TS_SECTION) /*||
+      (m_textStyle == TS_SUBSECTION)*/) {
+    fontsize1 = parser.GetFontSize(m_textStyle);
+  }
+
   fontsize1 = MAX(fontsize1, 1);
 
   switch(m_textStyle)
@@ -213,7 +220,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsItalic(m_textStyle),
                       parser.IsBold(m_textStyle),
                       parser.IsUnderlined(m_textStyle),
-                      parser.GetFontName(),
+                      parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
   }
 }

@@ -350,7 +350,6 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   fontsize1 = MAX(fontsize1, 1);
 
   m_fontName = parser.GetFontName(m_textStyle);
-  m_fontEncoding = parser.GetFontEncoding();
   m_fontStyle = parser.IsItalic(m_textStyle);
   m_fontWeight = parser.IsBold(m_textStyle);
   m_underlined = parser.IsUnderlined(m_textStyle);
@@ -1021,6 +1020,10 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x00BD";
   else if (txt == wxT("sq"))
     return L"\x221A";
+  else if (txt == wxT("ii"))
+    return L"\x2148";
+  else if (txt == wxT("ee"))
+    return L"\x2147";
 
   /////////////////////////
   else
