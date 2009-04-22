@@ -288,13 +288,15 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
                                _("Evaluate all cells in the document"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->AppendSeparator();
-  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF7"),
+  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF5"),
                              _("Insert a new input cell"));
   wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("New &Text Cell\tF6"),
                              _("Insert a new text cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("New &Section Cell\tCtrl-F6"),
+  wxglade_tmp_menu_2_sub1->Append(menu_add_subsection, _("New S&ubsection Cell\tF7"),
+                             _("Insert a new subsection cell"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("New &Section Cell\tF8"),
                              _("Insert a new section cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New T&itle Cell\tCtrl-Shift-F6"),
+  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New T&itle Cell\tF9"),
                              _("Insert a new title cell"));
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));

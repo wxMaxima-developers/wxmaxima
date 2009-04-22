@@ -162,8 +162,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
 
   if ((m_textStyle == TS_TITLE) ||
-      (m_textStyle == TS_SECTION) /*||
-      (m_textStyle == TS_SUBSECTION)*/) {
+      (m_textStyle == TS_SECTION) ||
+      (m_textStyle == TS_SUBSECTION)) {
     fontsize1 = parser.GetFontSize(m_textStyle);
   }
 

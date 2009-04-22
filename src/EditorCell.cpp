@@ -113,6 +113,9 @@ wxString EditorCell::ToXML(bool all)
     case MC_TYPE_SECTION:
       head += wxT(" type=\"section\"");
       break;
+    case MC_TYPE_SUBSECTION:
+      head += wxT(" type=\"subsection\"");
+      break;
     case MC_TYPE_INPUT:
     default:
       head += wxT(" type=\"input\"");

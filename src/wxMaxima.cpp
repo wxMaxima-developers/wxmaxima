@@ -3304,6 +3304,9 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_add_section:
     type = GC_TYPE_SECTION;
     break;
+  case menu_add_subsection:
+    type = GC_TYPE_SUBSECTION;
+    break;
   case menu_insert_image:
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
@@ -3594,6 +3597,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
   EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
+  EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)

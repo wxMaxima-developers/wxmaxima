@@ -71,8 +71,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSECTION:
-      m_input->SetType(MC_TYPE_SECTION);
-      editor->SetType(MC_TYPE_SECTION);
+      m_input->SetType(MC_TYPE_SUBSECTION);
+      editor->SetType(MC_TYPE_SUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
@@ -488,6 +488,9 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           break;
         case TS_SECTION:
           str = wxT("\n\\subsection{") + str + wxT("}\n");
+          break;
+        case TS_SUBSECTION:
+          str = wxT("\n\\subsubsection{") + str + wxT("}\n");
           break;
         default:
           if (!str.StartsWith(wxT("TeX:")))

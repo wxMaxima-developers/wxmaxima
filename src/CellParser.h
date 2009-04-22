@@ -58,7 +58,7 @@ public:
   }
   wxString GetFontName(int type = TS_DEFAULT)
   {
-    if (type == TS_TITLE || type == TS_SECTION || type == TS_TEXT)
+    if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SECTION || type == TS_TEXT)
       return m_styles[type].font;
     return m_fontName;
   }
@@ -107,7 +107,7 @@ public:
   int GetClientWidth() { return m_clientWidth; }
   int GetFontSize(int st)
   {
-    if (st == TS_TEXT || st == TS_SECTION || st == TS_TITLE)
+    if (st == TS_TEXT || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return m_styles[st].fontSize;
     return 0;
   }

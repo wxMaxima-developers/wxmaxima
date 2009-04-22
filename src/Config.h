@@ -162,6 +162,7 @@ protected:
         m_styleLabel,
         m_styleHighlight,
         m_styleText,
+        m_styleSubsection,
         m_styleSection,
         m_styleTitle,
         m_styleTextBackground,

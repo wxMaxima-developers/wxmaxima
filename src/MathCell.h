@@ -55,6 +55,7 @@ enum {
   MC_TYPE_INPUT,
   MC_TYPE_ERROR,
   MC_TYPE_TEXT,
+  MC_TYPE_SUBSECTION,
   MC_TYPE_SECTION,
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
@@ -149,7 +150,7 @@ public:
   bool IsComment()
   {
     return m_type == MC_TYPE_TEXT || m_type == MC_TYPE_SECTION ||
-           m_type == MC_TYPE_TITLE;
+           m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_TITLE;
   }
   bool IsEditable(bool input = false)
   {

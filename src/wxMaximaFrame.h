@@ -185,6 +185,7 @@ enum {
 #endif
   menu_evaluate,
   menu_add_comment,
+  menu_add_subsection,
   menu_add_section,
   menu_add_title,
   menu_insert_input,

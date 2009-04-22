@@ -49,6 +49,7 @@ enum
   TS_HIGHLIGHT,
   TS_TEXT_BACKGROUND,
   TS_TEXT,
+  TS_SUBSECTION,
   TS_SECTION,
   TS_TITLE,
   TS_ERROR,
@@ -59,6 +60,6 @@ enum
   TS_OUTDATED
 };
 
-#define STYLE_NUM 22
+#define STYLE_NUM 23
 
 #endif

@@ -102,6 +102,18 @@ void CellParser::ReadStyle()
                &m_styles[TS_TEXT].font);
   READ_STYLES(TS_TEXT, "Style/Text/")
 
+  // Subsection
+  m_styles[TS_SUBSECTION].color = wxT("black");
+  m_styles[TS_SUBSECTION].bold = true;
+  m_styles[TS_SUBSECTION].italic = false;
+  m_styles[TS_SUBSECTION].underlined = false;
+  m_styles[TS_SUBSECTION].fontSize = 16;
+  config->Read(wxT("Style/Subsection/fontsize"),
+               &m_styles[TS_SUBSECTION].fontSize);
+  config->Read(wxT("Style/Subsection/fontname"),
+               &m_styles[TS_SUBSECTION].font);
+  READ_STYLES(TS_SUBSECTION, "Style/Subsection/")
+
   // Section
   m_styles[TS_SECTION].color = wxT("black");
   m_styles[TS_SECTION].bold = true;
