@@ -706,6 +706,14 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 #endif
     break;
 
+    /* Ignored keys */
+  case WXK_WINDOWS_LEFT:
+  case WXK_WINDOWS_RIGHT:
+  case WXK_WINDOWS_MENU:
+  case WXK_COMMAND:
+  case WXK_START:
+    break;
+
   default:
     if (event.ControlDown())
       break;

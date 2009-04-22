@@ -1406,8 +1406,15 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
           case WXK_PAGEDOWN:
           case WXK_LEFT:
           case WXK_RIGHT:
+          case WXK_WINDOWS_LEFT:
+          case WXK_WINDOWS_RIGHT:
+          case WXK_WINDOWS_MENU:
+          case WXK_COMMAND:
+          case WXK_START:
+            break;
             event.Skip();
             break;
+
           // delete key and backspace select cell, so pressing key twice deletes the cell
           case WXK_BACK:
             if (m_hCaretPosition != NULL) {
@@ -1417,6 +1424,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               return;
             }
             break;
+
           case WXK_DELETE:
             if (m_hCaretPosition == NULL) {
               if (m_tree != NULL) {
@@ -1433,18 +1441,21 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
               return;
             }
             break;
+
           case WXK_RETURN:
             if (m_selectionStart == NULL || m_selectionEnd == NULL)
               OpenHCaret(wxEmptyString);
             else
               OpenHCaret(GetString());
             break;
+
 #if wxUSE_UNICODE
             // don't open hcaret with esc
           case WXK_ESCAPE:
             break;
 #endif
-					// keycodes which open hCaret with initial content
+
+            // keycodes which open hCaret with initial content
           default:
           {
 #if wxUSE_UNICODE
