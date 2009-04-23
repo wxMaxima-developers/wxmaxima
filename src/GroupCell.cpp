@@ -45,7 +45,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   if (groupType == GC_TYPE_CODE)
     m_input = new TextCell(wxT(">> "));
   else
-    m_input = new TextCell(wxEmptyString);
+    m_input = new TextCell(wxT(" "));
 
   m_input->SetType(MC_TYPE_MAIN_PROMPT);
 
@@ -58,8 +58,9 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendInput(editor);
       break;
     case GC_TYPE_TEXT:
+      m_input->SetType(MC_TYPE_TEXT);
       editor->SetType(MC_TYPE_TEXT);
-      AppendOutput(editor);
+      AppendInput(editor);
       break;
     case GC_TYPE_TITLE:
       m_input->SetType(MC_TYPE_TITLE);
@@ -208,22 +209,6 @@ void GroupCell::AppendOutput(MathCell *cell)
 
   if (m_output == NULL) {
     m_output = cell;
-    // If there is no output yet and we add text/section/title/image cell
-    // we set m_groupType. This is to support loading wxmx files.
-    switch (cell->GetType()) {
-      case MC_TYPE_TEXT:
-        m_groupType = GC_TYPE_TEXT;
-        break;
-      case MC_TYPE_SECTION:
-        m_groupType = GC_TYPE_SECTION;
-        break;
-      case MC_TYPE_TITLE:
-        m_groupType = GC_TYPE_TITLE;
-        break;
-      case MC_TYPE_IMAGE: // Images produced with plot commands will have labels!
-        m_groupType = GC_TYPE_IMAGE;
-        break;
-    }
 
     if (m_groupType == GC_TYPE_CODE && m_input->m_next != NULL)
       ((EditorCell *)(m_input->m_next))->ContainsChanges(false);
@@ -410,9 +395,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
 
-    if ((m_groupType == GC_TYPE_TITLE) ||
-        (m_groupType == GC_TYPE_SECTION) ||
-        (m_groupType == GC_TYPE_SUBSECTION)) { // draw a square
+    if (IsFoldable()) { // draw a square
       wxPoint *points = new wxPoint[4];
       points[0].x = point.x - SCALE_PX(10, scale);
       points[0].y = point.y - m_center;
@@ -436,19 +419,19 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       dc.DrawPolygon(3, points);
       delete(points);
 
-    // vertical
-    dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
-                point.x - SCALE_PX(10, scale), point.y - m_center + m_height);
-    // bottom horizontal
-    dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
-                point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
-    // middle horizontal
-    if (m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
-      dc.DrawLine(point.x - SCALE_PX(6, scale),
-                  point.y - m_center + m_input->GetMaxHeight(),
-                  point.x - SCALE_PX(10, scale),
-                  point.y - m_center + m_input->GetMaxHeight());
-    }
+      // vertical
+      dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
+          point.x - SCALE_PX(10, scale), point.y - m_center + m_height);
+      // bottom horizontal
+      dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
+          point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
+      // middle horizontal
+      if (m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
+        dc.DrawLine(point.x - SCALE_PX(6, scale),
+            point.y - m_center + m_input->GetMaxHeight(),
+            point.x - SCALE_PX(10, scale),
+            point.y - m_center + m_input->GetMaxHeight());
+      }
     }
 
     UnsetPen(parser);
@@ -603,10 +586,10 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
+    case GC_TYPE_TEXT:
       if (input)
         str += input->ToXML(false);
       break;
-    case GC_TYPE_TEXT:
     default:
       if (output != NULL)
         str += output->ToXML(false);
@@ -744,7 +727,7 @@ MathCell *GroupCell::GetEditable()
     case GC_TYPE_IMAGE:
       return NULL;
     case GC_TYPE_TEXT:
-      return GetLabel();
+      return GetInput();
     case GC_TYPE_TITLE:
       return GetInput();
     case GC_TYPE_SECTION:
@@ -821,6 +804,32 @@ void GroupCell::UnBreakUpCells()
     }
     tmp = tmp->m_next;
   }
+}
+
+// support for hiding text, code cells
+
+void GroupCell::Hide(bool hide) {
+  if (IsFoldable())
+    return;
+
+  if (m_hide == hide)
+    return;
+  else
+    if (m_hide == false) {
+      if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
+        ((EditorCell *)GetEditable())->SetFirstLineOnly(true);
+      m_hide = true;
+    }
+    else {
+      if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
+        ((EditorCell *)GetEditable())->SetFirstLineOnly(false);
+      m_hide = false;
+    }
+
+}
+
+void GroupCell::SwitchHide() {
+  Hide(!m_hide);
 }
 
 //

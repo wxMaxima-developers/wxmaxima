@@ -59,12 +59,8 @@ public:
   wxString ToXML(bool all);
   // hide status
   bool IsHidden() { return m_hide; }
-  void Hide(bool hide) {
-    if ((m_groupType != GC_TYPE_TITLE) && (m_groupType != GC_TYPE_SECTION) && (m_groupType != GC_TYPE_SUBSECTION))
-    m_hide = hide; }
-  void SwitchHide() {
-    if ((m_groupType != GC_TYPE_TITLE) && (m_groupType != GC_TYPE_SECTION) && (m_groupType != GC_TYPE_SUBSECTION))
-    m_hide = !m_hide && (m_output != NULL); }
+  void Hide(bool hide);
+  void SwitchHide();
   wxRect HideRect();
   // raw manipulation of GC (should be protected)
   void SetInput(MathCell *input);

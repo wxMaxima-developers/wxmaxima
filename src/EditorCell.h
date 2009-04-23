@@ -87,6 +87,8 @@ public:
   {
     m_hasFocus = focus;
   }
+  void SetFirstLineOnly(bool show = true) {
+    if (m_firstLineOnly != show) { m_width = m_height = -1; m_firstLineOnly = show; }}
   bool IsActive() { return m_isActive; }
   bool CaretAtStart() { return m_positionOfCaret == 0; }
   void CaretToStart() { m_positionOfCaret = 0; }
@@ -130,6 +132,7 @@ private:
   bool m_saveValue;
   bool m_containsChanges;
   bool m_containsChangesCheck;
+  bool m_firstLineOnly;
 };
 
 #endif

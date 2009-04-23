@@ -47,6 +47,7 @@ EditorCell::EditorCell() : MathCell()
   m_saveValue = false;
   m_containsChanges = false;
   m_containsChangesCheck = false;
+  m_firstLineOnly = false;
 }
 
 EditorCell::~EditorCell()
@@ -163,6 +164,10 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
       prevNewLinePos = newLinePos;
     }
+
+    // new
+    if (m_firstLineOnly)
+      m_numberOfLines = 1;
 
     if (m_text == wxEmptyString)
       width = m_charWidth;
@@ -283,22 +288,45 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
     if (parser.GetChangeAsterisk())  // replace "*" with centerdot for the time of drawing
       m_text.Replace(wxT("*"), wxT("\xB7"));
 #endif
-    while (newLinePos < m_text.Length())
-    {
+    if (!m_firstLineOnly) // draw whole text
       while (newLinePos < m_text.Length())
       {
-        if (m_text.GetChar(newLinePos) == '\n')
-          break;
+        while (newLinePos < m_text.Length())
+        {
+          if (m_text.GetChar(newLinePos) == '\n')
+            break;
+          newLinePos++;
+        }
+
+        dc.DrawText(m_text.SubString(prevNewLinePos, newLinePos - 1),
+            point.x + SCALE_PX(2, scale),
+            point.y - m_center + SCALE_PX(2, scale) + m_charHeight * numberOfLines);
+
         newLinePos++;
+        prevNewLinePos = newLinePos;
+        numberOfLines++;
       }
+    else { // draw only first line (+ some info)
+      wxString firstline;
+      while (newLinePos < m_text.Length())
+      {
+        while (newLinePos < m_text.Length())
+        {
+          if (m_text.GetChar(newLinePos) == '\n')
+            break;
+          newLinePos++;
+        }
 
-      dc.DrawText(m_text.SubString(prevNewLinePos, newLinePos - 1),
-                  point.x + SCALE_PX(2, scale),
-                  point.y - m_center + SCALE_PX(2, scale) + m_charHeight * numberOfLines);
+        if (numberOfLines == 0)
+          firstline = m_text.SubString(0, newLinePos - 1); 
 
-      newLinePos++;
-      prevNewLinePos = newLinePos;
-      numberOfLines++;
+        newLinePos++;
+        numberOfLines++;
+      }
+      firstline << wxT("... (") << numberOfLines - 1 << wxT(" ") << _("lines hidden") << wxT(")");
+      dc.DrawText(firstline,
+          point.x + SCALE_PX(2, scale),
+          point.y - m_center + SCALE_PX(2, scale));
     }
 #if defined __WXMSW__ || wxUSE_UNICODE
     if (parser.GetChangeAsterisk()) // replace centerdot with "*"
@@ -1044,6 +1072,12 @@ bool EditorCell::ActivateCell()
 
   m_selectionEnd = m_selectionStart = -1;
   m_paren1 = m_paren2 = -1;
+
+  // upon activation unhide the parent groupcell
+  if (m_isActive) {
+    m_firstLineOnly = false;
+    ((GroupCell *)GetParent())->Hide(false);
+  }
 
   return true;
 }
