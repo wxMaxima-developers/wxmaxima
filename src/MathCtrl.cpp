@@ -575,7 +575,7 @@ bool MathCtrl::Fold(GroupCell *which) {
   tmp = (GroupCell *)tmp->m_next;
   GroupCell *start = tmp; // first to fold
   
-  while (tmp->m_next) {
+  while (tmp) {
     if ((gctype == tmp->GetGroupType()) || IsLesserGCType(gctype, tmp->GetGroupType()))
       break;
     tmp = (GroupCell *)tmp->m_next;
@@ -584,10 +584,10 @@ bool MathCtrl::Fold(GroupCell *which) {
   if (start == tmp)
     return false;
   else {
-    if (tmp->m_next)
+    if (tmp)
       return which->HideTree(TearOutTree(start,(GroupCell *)tmp->m_previous));
     else // include last cell in document
-      return which->HideTree(TearOutTree(start,tmp));
+      return which->HideTree(TearOutTree(start, m_last));
   }
 }
 
