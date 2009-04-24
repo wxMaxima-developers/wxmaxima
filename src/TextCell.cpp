@@ -188,6 +188,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontName(),
                         parser.GetFontEncoding()));
     break;
+
   case TS_GREEK_CONSTANT:
     if (parser.HaveGreekFont())
       dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
@@ -205,6 +206,18 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetFontName(),
                         parser.GetFontEncoding()));
     break;
+
+  case TS_SECTION:
+  case TS_SUBSECTION:
+  case TS_TITLE:
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      parser.IsItalic(m_textStyle),
+                      parser.IsBold(m_textStyle),
+                      false,
+                      parser.GetFontName(m_textStyle),
+                      parser.GetFontEncoding()));
+    break;
+
   default:
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     if (m_text == wxT("->") ||
@@ -219,7 +232,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                       parser.IsItalic(m_textStyle),
                       parser.IsBold(m_textStyle),
-                      parser.IsUnderlined(m_textStyle),
+                      false, //parser.IsUnderlined(m_textStyle),
                       parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
   }
