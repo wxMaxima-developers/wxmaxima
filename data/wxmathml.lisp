@@ -938,7 +938,7 @@
          (append l
                  (if (cadr x)
                      (list
-		      (format nil "<lbl>(~A) </lbl>"
+		      (format nil "<lbl>~A: </lbl>"
 			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))))
 		     nil))
          r 'mparen 'mparen))

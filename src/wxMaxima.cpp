@@ -197,7 +197,7 @@ void wxMaxima::FirstOutput(wxString s)
     m_console->InsertGroupCells(header);
   }
 
-  m_lastPrompt = wxT("(%i1) ");
+  m_lastPrompt = wxT("%i1: ");
 }
 
 ///--------------------------------------------------------------------------------
@@ -722,7 +722,8 @@ void wxMaxima::ReadPrompt()
       // Maxima displayed a new main prompt
       if (o.StartsWith(wxT("(%i")))
       {
-        m_lastPrompt = o;
+        m_lastPrompt = o.Mid(1,o.Length()-1);
+        m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?

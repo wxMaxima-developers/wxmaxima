@@ -76,7 +76,10 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
+      dc.GetTextExtent(wxT("XXXXXX"), &m_width, &m_height);
+    }
+    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
@@ -125,7 +128,32 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetFont(parser, fontsize);
     SetForeground(parser);
 
-    if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
+      int width, height;
+      int fs = m_fontSize;
+      dc.SetFont(wxFont(fs, wxMODERN,
+                      false,
+                      false,
+                      false, //parser.IsUnderlined(m_textStyle),
+                      parser.GetFontName(m_textStyle),
+                      parser.GetFontEncoding()));
+      dc.GetTextExtent(m_text, &width, &height);
+      while (width >= m_width) {
+        dc.SetFont(wxFont(--fs, wxMODERN,
+              false,
+              false,
+              false, //parser.IsUnderlined(m_textStyle),
+              parser.GetFontName(m_textStyle),
+              parser.GetFontEncoding()));
+        dc.GetTextExtent(m_text, &width, &height);
+      }
+      m_fontSize = fs;
+      
+      dc.DrawText(m_text,
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale) + (m_width - width),
+                  point.y - m_realCenter /*+ SCALE_PX(MC_TEXT_PADDING, scale)*/ + (m_height - height)/2);
+    }
+    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));

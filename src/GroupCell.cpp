@@ -43,7 +43,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_lastInOutput = NULL;
   // set up cell depending on groupType, so we have a working cell
   if (groupType == GC_TYPE_CODE)
-    m_input = new TextCell(wxT(">> "));
+    m_input = new TextCell(wxT("-->  "));
   else
     m_input = new TextCell(wxT(" "));
 
