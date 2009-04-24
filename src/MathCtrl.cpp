@@ -316,9 +316,9 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
 }
 
 /***
- * Add a new line
+ * Add a new line to working group or m_last
  */
-void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
+void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
   SetActiveCell(NULL, false);
 
@@ -329,44 +329,14 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine, bool hide)
   if (tmp == NULL)
     tmp = m_last;
 
-  if (tmp == NULL && newCell->GetType() != MC_TYPE_MAIN_PROMPT)
-  {
-    GroupCell *newGroup = new GroupCell(GC_TYPE_TEXT);
-    tmp = m_tree = m_last = newGroup;
-  }
-
   newCell->ForceBreakLine(forceNewLine);
 
-  if (newCell->GetType() == MC_TYPE_MAIN_PROMPT)
+  tmp->AppendOutput(newCell);
+  if (newCell->GetType() == MC_TYPE_PROMPT)
   {
-    GroupCell *newGroup = new GroupCell(GC_TYPE_CODE);
-    if (hide)
-      newGroup->Hide(true);
-    newGroup->SetInput(newCell);
-    if (m_last == NULL) {
-      m_last = m_tree = newGroup;
-    }
-    else {
-      m_last->AppendCell(newGroup);
-      m_last = newGroup;
-    }
-    tmp = newGroup;
-  }
-
-  else if (newCell->GetType() == MC_TYPE_INPUT)
-  {
-    tmp->AppendInput(newCell);
-  }
-
-  else
-  {
-    tmp->AppendOutput(newCell);
-    if (newCell->GetType() == MC_TYPE_PROMPT)
-    {
-      m_workingGroup = tmp;
-      ScrollToCell(tmp->GetParent());
-      OpenHCaret();
-    }
+    m_workingGroup = tmp;
+    ScrollToCell(tmp->GetParent());
+    OpenHCaret();
   }
 
   while (newCell != NULL)
@@ -474,16 +444,15 @@ void MathCtrl::ClearDocument() {
  * Called when Restart Maxima is called from Maxima menu
  */
 void MathCtrl::ResetInputPrompts() {
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = (GroupCell *)m_tree;
 
-  while (tmp != NULL)
+  while (tmp)
   {
-    if ( ((GroupCell*)tmp)->GetInput() != NULL) {
-      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(wxT(">> "));
+    if (tmp->GetGroupType() == GC_TYPE_CODE) {
+      ((TextCell*)(tmp->GetPrompt()))->SetValue(wxT(">> "));
     }
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
   }
-
 }
 
 //

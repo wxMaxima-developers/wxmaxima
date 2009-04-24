@@ -304,24 +304,13 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
   m_console->InsertLine(cell, newLine || cell->BreakLineHere());
 }
 
-void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
+void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
-  if (type == MC_TYPE_INPUT || type == MC_TYPE_TEXT ||
-      type == MC_TYPE_SECTION || type == MC_TYPE_TITLE)
-  {
-    EditorCell* cell = new EditorCell();
-
-    cell->SetValue(s);
-    cell->SetType(type);
-
-    m_console->InsertLine(cell, newLine);
-  }
-
-  else if (type == MC_TYPE_MAIN_PROMPT)
+  if (type == MC_TYPE_MAIN_PROMPT)
   {
     TextCell* cell = new TextCell(s);
     cell->SetType(type);
-    m_console->InsertLine(cell, newLine, hide);
+    m_console->InsertLine(cell, true);
   }
 
   else
@@ -338,7 +327,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type, bool newLine, bool hide)
         cell->SetSkip(false);
 
       if (count == 0)
-        m_console->InsertLine(cell, newLine);
+        m_console->InsertLine(cell, true);
       else
         m_console->InsertLine(cell, true);
       count++;
@@ -2939,7 +2928,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #endif
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2008 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2009 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
 #if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));

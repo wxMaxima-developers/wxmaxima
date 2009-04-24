@@ -97,9 +97,7 @@ protected:
   void ConsoleAppend(wxString s, int type);        // append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
                        bool newLine = true, bool bigSkip = true);
-  void DoRawConsoleAppend(wxString s, int type,    //
-                          bool newLine = true,     //
-                          bool hide = false);      //
+  void DoRawConsoleAppend(wxString s, int type);      //
 
   void EditInputMenu(wxCommandEvent& event);       //
   void EvaluateEvent(wxCommandEvent& event);     //

@@ -140,7 +140,7 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   GroupCell *InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
-  void InsertLine(MathCell *newLine, bool forceNewLine = false, bool hide = false);
+  void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
   void ClearDocument(); // used when opening new file in wxMaxima.cpp
