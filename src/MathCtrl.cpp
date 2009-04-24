@@ -1120,6 +1120,11 @@ bool MathCtrl::CopyCells()
         s += tmp->GetEditable()->ToString(false) + wxT("\n");
         s += wxT("   [wxMaxima: section end   ] */\n");
         break;
+      case GC_TYPE_SUBSECTION:
+        s += wxT("/* [wxMaxima: subsect start ]\n");
+        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += wxT("   [wxMaxima: subsect end   ] */\n");
+        break;
       case GC_TYPE_TITLE:
         s += wxT("/* [wxMaxima: title   start ]\n");
         s += tmp->GetEditable()->ToString(false) + wxT("\n");

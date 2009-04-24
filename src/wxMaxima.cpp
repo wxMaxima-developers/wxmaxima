@@ -1876,6 +1876,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                      line != wxT("/* [wxMaxima: input   start ] */") &&
                      line != wxT("/* [wxMaxima: comment start ]") &&
                      line != wxT("/* [wxMaxima: section start ]") &&
+                     line != wxT("/* [wxMaxima: subsect start ]") &&
                      line != wxT("/* [wxMaxima: title   start ]"));
 
             // Read the cell content
@@ -1899,6 +1900,12 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                 inp.Add(input);
                 input = wxEmptyString;
               }
+              else if (line == wxT("   [wxMaxima: subsect end   ] */"))
+              {
+                inp.Add(wxT("subsection"));
+                inp.Add(input);
+                input = wxEmptyString;
+              }
               else if (line == wxT("   [wxMaxima: title   end   ] */"))
               {
                 inp.Add(wxT("title"));
@@ -1916,6 +1923,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                      line != wxT("/* [wxMaxima: input   end   ] */") &&
                      line != wxT("   [wxMaxima: comment end   ] */") &&
                      line != wxT("   [wxMaxima: section end   ] */") &&
+                     line != wxT("   [wxMaxima: subsect end   ] */") &&
                      line != wxT("   [wxMaxima: title   end   ] */"));
           }
 
@@ -1929,6 +1937,8 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
               m_console->OpenHCaret(inp[i+1], GC_TYPE_TEXT);
             else if (inp[i] == wxT("section"))
               m_console->OpenHCaret(inp[i+1], GC_TYPE_SECTION);
+            else if (inp[i] == wxT("subsection"))
+              m_console->OpenHCaret(inp[i+1], GC_TYPE_SUBSECTION);
             else if (inp[i] == wxT("title"))
               m_console->OpenHCaret(inp[i+1], GC_TYPE_TITLE);
           }
