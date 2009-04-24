@@ -815,6 +815,7 @@ void GroupCell::Hide(bool hide) {
   if (m_hide == hide)
     return;
   else
+  {
     if (m_hide == false) {
       if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
         ((EditorCell *)GetEditable())->SetFirstLineOnly(true);
@@ -826,6 +827,9 @@ void GroupCell::Hide(bool hide) {
       m_hide = false;
     }
 
+    ResetSize();
+    GetEditable()->ResetSize();
+  }
 }
 
 void GroupCell::SwitchHide() {

@@ -574,7 +574,7 @@ bool MathCtrl::Fold(GroupCell *which) {
 
   tmp = (GroupCell *)tmp->m_next;
   GroupCell *start = tmp; // first to fold
-  
+
   while (tmp) {
     if ((gctype == tmp->GetGroupType()) || IsLesserGCType(gctype, tmp->GetGroupType()))
       break;
@@ -850,6 +850,8 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
           m_activeCell->SelectPointText(dc, m_down);
           m_switchDisplayCaret = false;
           m_clickType = CLICK_TYPE_INPUT_SELECTION;
+          if (editor->GetWidth() == -1)
+            Recalculate();
           Refresh();
           return;
         }
@@ -1450,6 +1452,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 m_hCaretActive = false;
                 ((EditorCell *)m_activeCell)->CaretToEnd();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                if (editor->GetWidth() == -1)
+                  Recalculate();
                 Refresh();
               }
               else { // can't get editor... jump over cell..
@@ -1509,6 +1513,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 SetActiveCell(editor, false);
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                if (editor->GetWidth() == -1)
+                  Recalculate();
                 Refresh();
               }
               else { // else jump over
@@ -1525,6 +1531,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
                 SetActiveCell(editor, false);
                 ((EditorCell *)m_activeCell)->CaretToStart();
                 ShowPoint(m_activeCell->PositionToPoint(parser));
+                if (editor->GetWidth() == -1)
+                  Recalculate();
                 Refresh();
               }
               else { // can't get editor.. jump over cell..
