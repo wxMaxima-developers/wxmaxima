@@ -1832,6 +1832,24 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       SetStatusText(message);
     }
     break;
+  case menu_zoom_80:
+    m_console->SetZoomFactor(0.8);
+    break;
+  case menu_zoom_100:
+    m_console->SetZoomFactor(1.0);
+    break;
+  case menu_zoom_120:
+    m_console->SetZoomFactor(1.2);
+    break;
+  case menu_zoom_150:
+    m_console->SetZoomFactor(1.5);
+    break;
+  case menu_zoom_200:
+    m_console->SetZoomFactor(2.0);
+    break;
+  case menu_zoom_300:
+    m_console->SetZoomFactor(3.0);
+    break;
   case menu_fullscreen:
     {
       ShowFullScreen( !IsFullScreen() );
@@ -3559,8 +3577,14 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_print, wxMaxima::PrintMenu)
  #endif
 #endif
-  EVT_MENU(menu_zoom_in, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_in,  wxMaxima::EditMenu)
   EVT_MENU(menu_zoom_out, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_80,  wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_100, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_120, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_150, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_200, wxMaxima::EditMenu)
+  EVT_MENU(menu_zoom_300, wxMaxima::EditMenu)
   EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)

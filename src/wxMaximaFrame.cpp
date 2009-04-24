@@ -310,6 +310,18 @@ void wxMaximaFrame::SetupMenu()
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
+  // zoom submenu
+  wxMenu* edit_zoom_sub = new wxMenu;
+  edit_zoom_sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
+  edit_zoom_sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
+  edit_zoom_sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
+  edit_zoom_sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
+  edit_zoom_sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
+  edit_zoom_sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
+
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Set Zoom"), edit_zoom_sub, _("Set Zoom"));
+
+
   wxglade_tmp_menu_2->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
