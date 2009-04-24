@@ -81,6 +81,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_animate = false;
   m_workingGroup = NULL;
   m_saved = true;
+  m_zoomFactor = 1.0; // set zoom to 100%
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
 }
@@ -104,8 +105,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
   // Get the font size
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
 
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
@@ -134,6 +133,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
   CellParser parser(dcm);
   parser.SetBouns(top, bottom);
+  parser.SetZoomFactor(m_zoomFactor);
+  int fontsize = parser.GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
   // Draw content
   if (m_tree != NULL)
@@ -364,13 +365,13 @@ void MathCtrl::Recalculate(bool force) {
 
   MathCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
 
   wxClientDC dc(this);
   CellParser parser(dc);
+  parser.SetZoomFactor(m_zoomFactor);
   parser.SetForceUpdate(force);
   parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+  int fontsize = parser.GetDefaultFontSize();
 
   wxPoint point;
   point.x = MC_GROUP_LEFT_INDENT;
@@ -1347,8 +1348,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
       int height = m_activeCell->GetHeight();
 
-      int fontsize = 12;
-      wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+      int fontsize = parser.GetDefaultFontSize();
 
       m_activeCell->ResetData();
       m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);

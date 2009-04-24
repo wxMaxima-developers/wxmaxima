@@ -234,6 +234,10 @@ public:
   bool Fold(GroupCell *which);
   bool Unfold(GroupCell *which);
   GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
+  // methods for zooming the document in and out
+  double GetZoomFactor() { return m_zoomFactor; }
+  void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
+    if (recalc) {RecalculateForce(); Refresh();} }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -282,6 +286,7 @@ protected:
   bool m_animate;
   wxBitmap *m_memory;
   bool m_saved;
+  double m_zoomFactor;
   DECLARE_EVENT_TABLE()
 };
 

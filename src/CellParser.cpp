@@ -26,6 +26,7 @@
 CellParser::CellParser(wxDC& dc) : m_dc(dc)
 {
   m_scale = 1.0;
+  m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
@@ -38,6 +39,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
 CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
 {
   m_scale = scale;
+  m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
   m_haveGreekFont = false;
@@ -55,6 +57,10 @@ void CellParser::ReadStyle()
 
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
+
+  // Default fontsize
+  m_defaultFontSize = 12;
+  config->Read(wxT("fontSize"), &m_defaultFontSize);
 
   // Encogind - used only for comments
   m_fontEncoding = wxFONTENCODING_DEFAULT;

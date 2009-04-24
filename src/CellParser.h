@@ -31,6 +31,7 @@ public:
   CellParser(wxDC& dc);
   CellParser(wxDC& dc, double scale);
   ~CellParser();
+  void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
   void SetScale(double scale)
   {
     m_scale = scale;
@@ -105,19 +106,22 @@ public:
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
   int GetClientWidth() { return m_clientWidth; }
+  int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
   int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].fontSize;
+      return int(m_zoomFactor * double(m_styles[st].fontSize));
     return 0;
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
 private:
   int m_indent;
   double m_scale;
+  double m_zoomFactor;
   wxDC& m_dc;
   int m_top, m_bottom;
   wxString m_fontName;
+  int m_defaultFontSize;
   wxString m_greekFontName;
 #if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
   wxString m_unicodeSymbolsFont;

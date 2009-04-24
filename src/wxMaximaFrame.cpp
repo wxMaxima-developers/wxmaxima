@@ -306,10 +306,10 @@ void wxMaximaFrame::SetupMenu()
                               _("Insert image"), wxITEM_NORMAL);
 
   wxglade_tmp_menu_2->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_inc_fontsize, _("Zoom &In\tAlt-I"),
-                   _("Increase fontsize in document"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_dec_fontsize, _("Zoom Ou&t\tAlt-O"),
-                   _("Decrease fontsize in document"), wxT("gtk-zoom-out"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_in, _("Zoom &In\tAlt-I"),
+                   _("Zoom in 10%"), wxT("gtk-zoom-in"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
+                   _("Zoom out 10%"), wxT("gtk-zoom-out"));
   wxglade_tmp_menu_2->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
