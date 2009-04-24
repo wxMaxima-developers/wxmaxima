@@ -2376,7 +2376,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // write document
   output << wxT("\n<wxMaximaDocument version=\"");
   output << DOCUMENT_VERSION_MAJOR << wxT(".");
-  output << DOCUMENT_VERSION_MINOR << wxT("\">\n");
+  output << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
+  output << int(100.0 * m_zoomFactor) << wxT("\">\n");
 
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //

@@ -889,13 +889,21 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     }
   }
 
+  // read zoom factor
+  wxString doczoom = xmldoc.GetRoot()->GetPropVal(wxT("zoom"),wxT("100"));
+
   wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
 
   GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
 
   // from here on code is identical for wxm and wxmx
-  if (clearDocument)
+  if (clearDocument) {
     document->ClearDocument();
+    long int zoom = 100;
+    if (!(doczoom.ToLong(&zoom)))
+      zoom = 100;
+    document->SetZoomFactor( double(zoom) / 100.0, false); // Set zoom if opening, dont recalculate
+  }
 
   document->InsertGroupCells(tree); // this also recalculates
 
