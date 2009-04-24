@@ -1001,6 +1001,26 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       }
     }
 
+    // Print section
+    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: subsect start ]"))
+    {
+      ++i;
+      wxString line;
+      while (wxmLines->Item(i) != wxT("   [wxMaxima: subsect end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(i);
+        else
+          line += wxT("\n") + wxmLines->Item(i);
+        ++i;
+      }
+      cell = new GroupCell(GC_TYPE_SUBSECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
     // Print comment
     else if (wxmLines->Item(i) == wxT("/* [wxMaxima: comment start ]"))
     {

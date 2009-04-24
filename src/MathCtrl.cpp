@@ -2293,7 +2293,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
     // Write input
     if (tmp->GetGroupType() == GC_TYPE_CODE) {
-      MathCell *txt = tmp->GetInput();
+      MathCell *txt = tmp->GetEditable();
       if (txt != NULL) {
         wxString input = txt->ToString(false);
         if (input.Length()>0) {
@@ -2308,7 +2308,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
     // Write text
     else {
-      MathCell *txt = tmp->GetLabel();
+      MathCell *txt = tmp->GetEditable();
 
       if (wxm) {
         switch (txt->GetType()) {
@@ -2317,6 +2317,9 @@ bool MathCtrl::ExportToMAC(wxString file)
             break;
           case MC_TYPE_SECTION:
             AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
+            break;
+          case MC_TYPE_SUBSECTION:
+            AddLineToFile(output, wxT("/* [wxMaxima: subsect start ]"), false);
             break;
           case MC_TYPE_TITLE:
             AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
@@ -2338,6 +2341,9 @@ bool MathCtrl::ExportToMAC(wxString file)
             break;
           case MC_TYPE_SECTION:
             AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
+            break;
+          case MC_TYPE_SUBSECTION:
+            AddLineToFile(output, wxT("   [wxMaxima: subsect end   ] */"), false);
             break;
           case MC_TYPE_TITLE:
             AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
