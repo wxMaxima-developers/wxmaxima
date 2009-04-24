@@ -896,7 +896,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
 
   m_styleColor->SetBackgroundColour(tmp->color);
 
-  if (st >= 12 && st <= 14)
+  if (st >= 12 && st <= 15)
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
