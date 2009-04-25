@@ -77,6 +77,7 @@ public:
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
   void BreakLines(int fullWidth);
+  void ResetInputLabel(bool all = false); // if !all only this GC is reset
   // folding and unfolding
   bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
                               (m_groupType == GC_TYPE_TITLE) || 

@@ -23,6 +23,8 @@
 #include "ImgCell.h"
 #include "Bitmap.h"
 
+#define EMPTY_INPUT_LABEL wxT("-->  ")
+
 GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
   m_input = NULL;
@@ -43,7 +45,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_lastInOutput = NULL;
   // set up cell depending on groupType, so we have a working cell
   if (groupType == GC_TYPE_CODE)
-    m_input = new TextCell(wxT("-->  "));
+    m_input = new TextCell(EMPTY_INPUT_LABEL);
   else
     m_input = new TextCell(wxT(" "));
 
@@ -123,6 +125,23 @@ void GroupCell::DestroyOutput()
     delete tmp1;
   }
   m_output = NULL;
+}
+
+// when all=false (default) only reset input label of the current (code) cell
+// if all = true, then also reset next cells and folded cells
+void GroupCell::ResetInputLabel(bool all)
+{
+  if (m_groupType == GC_TYPE_CODE) {
+    if (m_input)
+      m_input->SetValue(EMPTY_INPUT_LABEL);
+  }
+  // if all, also reset input labels in the folded cells
+  else if (all && IsFoldable() && m_hiddenTree)
+    m_hiddenTree->ResetInputLabel(true);
+
+  // reset the next cell
+  if (all && m_next)
+    ((GroupCell *)m_next)->ResetInputLabel(true);
 }
 
 MathCell* GroupCell::Copy(bool all)

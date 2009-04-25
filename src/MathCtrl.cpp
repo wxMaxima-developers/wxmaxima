@@ -441,19 +441,13 @@ void MathCtrl::ClearDocument() {
 }
 
 /***
- * Reset all input promts to ">> "
+ * Reset all input promts to "-->  "
  * Called when Restart Maxima is called from Maxima menu
  */
 void MathCtrl::ResetInputPrompts() {
   GroupCell* tmp = (GroupCell *)m_tree;
-
-  while (tmp)
-  {
-    if (tmp->GetGroupType() == GC_TYPE_CODE) {
-      ((TextCell*)(tmp->GetPrompt()))->SetValue(wxT(">> "));
-    }
-    tmp = (GroupCell *)tmp->m_next;
-  }
+  if (tmp)
+    tmp->ResetInputLabel(true); // recursivly reset prompts
 }
 
 //
