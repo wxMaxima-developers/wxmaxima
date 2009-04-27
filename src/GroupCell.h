@@ -85,6 +85,11 @@ public:
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
   bool HideTree(GroupCell *tree);
   GroupCell *UnhideTree();
+  GroupCell *Fold(); // returns pointer to this or NULL if not successful
+  GroupCell *Unfold(); // return pointer to last cell that unfolded
+  GroupCell *FoldAll(bool all = false);
+  GroupCell *UnfoldAll(bool all = false);
+  bool IsLesserGCType(int comparedTo);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   int m_groupType;

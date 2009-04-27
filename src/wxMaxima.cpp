@@ -1822,7 +1822,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->SetZoomFactor(m_console->GetZoomFactor() + 0.1);
       wxString message = _("Zoom set to ");
       message << int(100.0 * m_console->GetZoomFactor()) << wxT("%");
-      SetStatusText(message);
+      SetStatusText(message, 1);
     }
     break;
   case menu_zoom_out:
@@ -1830,7 +1830,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->SetZoomFactor(m_console->GetZoomFactor() - 0.1);
       wxString message = _("Zoom set to ");
       message << int(100.0 * m_console->GetZoomFactor()) << wxT("%");
-      SetStatusText(message);
+      SetStatusText(message, 1);
     }
     break;
   case menu_zoom_80:

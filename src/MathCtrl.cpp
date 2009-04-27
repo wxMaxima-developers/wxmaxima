@@ -275,16 +275,12 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
   GroupCell *prev;
   // last in the tree to insert
   GroupCell* last = tree;
-  int gtype = last->GetGroupType();
-  if ((gtype == GC_TYPE_TITLE) || (gtype == GC_TYPE_SECTION) || (gtype == GC_TYPE_SUBSECTION))
+  if (last->IsFoldable())
     renumbersections = true;
   while (last->m_next) {
     last = (GroupCell *)last->m_next;
-    if (last) {
-      gtype = last->GetGroupType();
-      if ((gtype == GC_TYPE_TITLE) || (gtype == GC_TYPE_SECTION) || (gtype == GC_TYPE_SUBSECTION))
-        renumbersections = true;
-    }
+    if (last->IsFoldable())
+      renumbersections = true;
   }
 
   if (m_tree == NULL)
@@ -314,6 +310,25 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
   Recalculate();
   m_saved = false; // document has been modified
   return last;
+}
+
+// this goes through m_tree with m_next, to set the correct m_last
+// you can call this after folding, unfolding cells to make sure
+// m_last is correct
+GroupCell *MathCtrl::UpdateMLast()
+{
+  if (!m_tree) {
+    m_last = NULL;
+    return NULL;
+  }
+
+  GroupCell *tmp = m_tree;
+  while (tmp->m_next)
+    tmp = (GroupCell *)tmp->m_next;
+
+  m_last = tmp;
+
+  return m_last;
 }
 
 /***
@@ -445,40 +460,39 @@ void MathCtrl::ClearDocument() {
  * Called when Restart Maxima is called from Maxima menu
  */
 void MathCtrl::ResetInputPrompts() {
-  GroupCell* tmp = (GroupCell *)m_tree;
-  if (tmp)
-    tmp->ResetInputLabel(true); // recursivly reset prompts
+  if (m_tree)
+    m_tree->ResetInputLabel(true); // recursivly reset prompts
 }
 
 //
 // support for numbered sections with hiding
 //
 void MathCtrl::NumberSections() {
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = m_tree;
   int section = 0;
   int subsection = 0;
 
   while (tmp != NULL)
   {
-    if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_TITLE) {
+    if (tmp->GetGroupType() == GC_TYPE_TITLE) {
       section = 0; // reset count upon new title
       subsection = 0;
     }
-    else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SECTION) {
+    else if (tmp->GetGroupType() == GC_TYPE_SECTION) {
       section++;
       subsection = 0;
       wxString num = wxT(" ");
       num << section << wxT(". ");
-      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
+      ((TextCell*) (tmp->GetPrompt() ))->SetValue(num);
     }
-    else if ( ((GroupCell*)tmp)->GetGroupType() == GC_TYPE_SUBSECTION) {
+    else if (tmp->GetGroupType() == GC_TYPE_SUBSECTION) {
       subsection++;
       wxString num = wxT("  ");
       num << section << wxT(".") << subsection << wxT(" ");
-      ((TextCell*) ( ((GroupCell*)tmp)->GetPrompt() ))->SetValue(num);
+      ((TextCell*) (tmp->GetPrompt() ))->SetValue(num);
     }
 
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 
@@ -509,66 +523,63 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
   }
 }
 
-bool MathCtrl::ToggleFold(GroupCell *which) {
+GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   if (!which)
-    return false;
-  if (which->GetHiddenTree())
-    return Unfold(which);
+    return NULL;
+
+  GroupCell *result = NULL;
+  if (which->IsFoldable())
+    if (which->GetHiddenTree())
+      result = which->Unfold();
+    else
+      result = which->Fold();
   else
-    return Fold(which);
+    return NULL;
+
+  if (result) // something has folded/unfolded
+    UpdateMLast();
+
+  return result;
 }
 
-bool MathCtrl::Fold(GroupCell *which) {
+GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
   if (!which)
-    return false;
-  int gctype = which->GetGroupType();
-  if (!(which->IsFoldable()))
-    return false;
-  if (which->GetHiddenTree()) // already folded?? shouldn't happen
-    return false;
-  GroupCell *tmp = which;
-  if (!(tmp->m_next))
-    return false;
-  // when folding one has to be careful not to fold selection
-  // or active cell - strange things may happen
-  // also horizontal caret
-  SetSelection(NULL);
-  SetActiveCell(NULL, false);
-  SetHCaret(which, false);
+    return NULL;
 
-  tmp = (GroupCell *)tmp->m_next;
-  GroupCell *start = tmp; // first to fold
+  GroupCell *result = NULL;
+  if (which->IsFoldable())
+    if (which->GetHiddenTree())
+      result = which->UnfoldAll(false);
+    else
+      result = which->FoldAll(false);
+  else
+    return NULL;
 
-  while (tmp) {
-    if ((gctype == tmp->GetGroupType()) || IsLesserGCType(gctype, tmp->GetGroupType()))
-      break;
-    tmp = (GroupCell *)tmp->m_next;
-  }
+  if (result) // something has folded/unfolded
+    UpdateMLast();
 
-  if (start == tmp)
-    return false;
-  else {
-    if (tmp)
-      return which->HideTree(TearOutTree(start,(GroupCell *)tmp->m_previous));
-    else // include last cell in document
-      return which->HideTree(TearOutTree(start, m_last));
-  }
+  return result;
 }
 
-bool MathCtrl::Unfold(GroupCell *which) {
-  if (!which)
-    return false;
-  if (!(which->IsFoldable()))
-    return false;
-  if (!(which->GetHiddenTree()))
-    return false;
-  GroupCell *tree = which->UnhideTree();
-  SetHCaret(InsertGroupCells(tree, which));
-  return true;
+// FoldAll()
+// Folds whole document
+void MathCtrl::FoldAll() {
+  if (m_tree) {
+    m_tree->FoldAll(true);
+    UpdateMLast();
+  }
+}
+// UnfoldAll()
+// Unfolds whole document
+void MathCtrl::UnfoldAll() {
+  if (m_tree) {
+    m_tree->UnfoldAll(true);
+    UpdateMLast();
+  }
 }
 
 // Returns the tree from start to end and connets the pointers the right way
-// so that m_tree stays 'correct'
+// so that m_tree stays 'correct' - also works in hidden trees
 GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end) {
   if ((!start) || (!end))
     return NULL;
@@ -788,7 +799,10 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
       {
         if (clickedInGC->IsFoldable()) {
-          ToggleFold(clickedInGC);
+          if (event.ShiftDown())
+            ToggleFoldAll(clickedInGC);
+          else
+            ToggleFold(clickedInGC);
           Recalculate();
         }
         else {
@@ -1243,8 +1257,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // check how much to unfold for this type
   if (m_hCaretPosition) {
     while (IsLesserGCType(type, m_hCaretPosition->GetGroupType())) {
-      if (!Unfold(m_hCaretPosition)) // assumes that unfold sets hcaret to the end of unfolded cells
-        break; // unfold returns false when it cannot unfold
+      GroupCell *result = m_hCaretPosition->Unfold();
+      if (result == NULL) // assumes that unfold sets hcaret to the end of unfolded cells
+        break; // unfold returns NULL when it cannot unfold
+      SetHCaret(result, false);
     }
   }
   InsertGroupCells(group, m_hCaretPosition);

@@ -230,9 +230,11 @@ public:
   void ClearEvaluationQueue();
   EvaluationQueue* m_evaluationQueue;
   // methods for folding
-  bool ToggleFold(GroupCell *which);
-  bool Fold(GroupCell *which);
-  bool Unfold(GroupCell *which);
+  GroupCell *UpdateMLast();
+  GroupCell *ToggleFold(GroupCell *which);
+  GroupCell *ToggleFoldAll(GroupCell *which);
+  void FoldAll();
+  void UnfoldAll();
   GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
   // methods for zooming the document in and out
   double GetZoomFactor() { return m_zoomFactor; }

@@ -856,7 +856,7 @@ void GroupCell::SwitchHide() {
 }
 
 //
-// support for folding sections
+// support for folding/unfolding sections
 //
 bool GroupCell::HideTree(GroupCell *tree)
 {
@@ -872,4 +872,120 @@ GroupCell *GroupCell::UnhideTree()
   GroupCell *tree = m_hiddenTree;
   m_hiddenTree = NULL;
   return tree;
+}
+
+GroupCell *GroupCell::Fold() {
+  if (!IsFoldable() || m_hiddenTree) // already folded?? shouldn't happen
+    return NULL;
+  if (m_next == NULL)
+    return NULL;
+  int nextgct = ((GroupCell *)m_next)->GetGroupType(); // groupType of the next cell
+  if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
+    return NULL; // if the next gc shouldn't be folded, exit
+
+  // now there is at least one cell to fold (at least m_next)
+  GroupCell *end = (GroupCell *)m_next;
+  GroupCell *start = end; // first to fold
+
+  while (end) {
+    GroupCell *tmp = (GroupCell *)end->m_next;
+    if (tmp == NULL)
+      break;
+    if ((m_groupType == tmp->GetGroupType()) || IsLesserGCType(tmp->GetGroupType()))
+      break; // the next one of the end is not suitable for folding, break
+    end = tmp;
+  }
+
+  // cell(s) to fold are between start and end (including these two)
+
+  MathCell *next = end->m_next;
+  m_next = m_nextToDraw = next; // may be NULL, it's ok
+  if (next)
+    next->m_previous = next->m_previousToDraw = this;
+
+  start->m_previous = start->m_previousToDraw = NULL;
+  end->m_next = end->m_nextToDraw = NULL;
+  m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  return this;
+}
+
+// unfolds the m_hiddenTree beneath this cell
+// be careful to update m_last if this happens in the main tree in MathCtrl
+GroupCell *GroupCell::Unfold() {
+  if (!IsFoldable() || !m_hiddenTree)
+    return NULL;
+
+  MathCell *next = m_next;
+
+  // sew together this cell with m_hiddenTree
+  m_next = m_nextToDraw = m_hiddenTree;
+  m_hiddenTree->m_previous = m_hiddenTree->m_previousToDraw = this;
+
+  MathCell *tmp = m_hiddenTree;
+  while (tmp->m_next)
+    tmp = tmp->m_next;
+  // tmp holds the last element of m_hiddenTree
+  tmp->m_next = tmp->m_nextToDraw = next;
+  if (next)
+    next->m_previous = next->m_previousToDraw = tmp;
+
+  m_hiddenTree = NULL;
+  return (GroupCell *)tmp;
+}
+
+GroupCell *GroupCell::FoldAll(bool all) {
+  GroupCell *result = this;
+  if (IsFoldable() && !m_hiddenTree) {
+    Fold();
+    if (m_hiddenTree)
+      m_hiddenTree->FoldAll(true);
+  }
+  else
+    result = NULL;
+
+  if (all && m_next)
+    return ((GroupCell *)m_next)->FoldAll(true);
+  else
+    return result;
+}
+
+// unfolds recursivly its contents
+// if (all) then also calls it on it's m_next
+GroupCell *GroupCell::UnfoldAll(bool all) {
+  if (all && m_next)
+    ((GroupCell *)m_next)->UnfoldAll(true);
+
+  if (!IsFoldable() || !m_hiddenTree)
+    return NULL;
+
+  m_hiddenTree->UnfoldAll(true);
+
+  return Unfold();
+}
+
+bool GroupCell::IsLesserGCType(int comparedTo) {
+  switch (m_groupType) {
+    case GC_TYPE_CODE:
+    case GC_TYPE_TEXT:
+    case GC_TYPE_IMAGE:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
+          (comparedTo == GC_TYPE_SUBSECTION))
+        return true;
+      else
+        return false;
+    case GC_TYPE_SUBSECTION:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION))
+        return true;
+      else
+        return false;
+    case GC_TYPE_SECTION:
+      if (comparedTo == GC_TYPE_TITLE)
+        return true;
+      else
+        return false;
+    case GC_TYPE_TITLE:
+      return false;
+    default:
+      return false;
+  }
 }
