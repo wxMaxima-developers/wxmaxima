@@ -31,7 +31,6 @@
 #include <wx/config.h>
 #include <wx/settings.h>
 #include <wx/filename.h>
-#include <wx/textfile.h>
 #include <wx/tokenzr.h>
 
 #include <wx/zipstrm.h>
@@ -2236,31 +2235,9 @@ bool MathCtrl::ExportToTeX(wxString file) {
   return done;
 }
 
-bool MathCtrl::ExportToMAC(wxString file)
+void MathCtrl::ExportToMac(wxTextFile& output, MathCell *tree, bool wxm)
 {
-  m_saved = true;
-
-  bool wxm = false;
-  if (file.Right(4) == wxT(".wxm"))
-    wxm = true;
-
-  wxTextFile output(file);
-  if (output.Exists()) {
-    if (!output.Open(file))
-      return false;
-    output.Clear();
-  } else if (!output.Create(file))
-    return false;
-
-  m_saved = true;
-
-  if (wxm) {
-    AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
-    wxString version(wxT(VERSION));
-    AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
-  }
-
-  GroupCell* tmp = (GroupCell *)m_tree;
+  GroupCell* tmp = (GroupCell *)tree;
 
   //
   // Write contents
@@ -2340,8 +2317,47 @@ bool MathCtrl::ExportToMAC(wxString file)
         AddLineToFile(output, wxT("*/"), false);
     }
 
+    if (tmp->GetHiddenTree() != NULL)
+    {
+      AddLineToFile(output, wxEmptyString);
+      AddLineToFile(output, wxT("/* [wxMaxima: fold    start ] */"));
+      ExportToMac(output, tmp->GetHiddenTree(), wxm);
+      AddLineToFile(output, wxEmptyString);
+      AddLineToFile(output, wxT("/* [wxMaxima: fold    end   ] */"));
+    }
+
     tmp = (GroupCell *)tmp->m_next;
   }
+
+}
+
+bool MathCtrl::ExportToMAC(wxString file)
+{
+  m_saved = true;
+
+  bool wxm = false;
+  if (file.Right(4) == wxT(".wxm"))
+    wxm = true;
+
+  wxTextFile output(file);
+  if (output.Exists())
+  {
+    if (!output.Open(file))
+      return false;
+    output.Clear();
+  }
+  else if (!output.Create(file))
+    return false;
+
+  m_saved = true;
+
+  if (wxm) {
+    AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
+    wxString version(wxT(VERSION));
+    AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
+  }
+
+  ExportToMac(output, m_tree, wxm);
 
   AddLineToFile(output, wxEmptyString, false);
   if (wxm) {

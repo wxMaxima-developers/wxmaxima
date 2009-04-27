@@ -954,24 +954,27 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
   GroupCell* last = NULL;
   GroupCell* cell = NULL;
 
-  for (int i=0; i<wxmLines->GetCount(); i++)
+  while (wxmLines->GetCount()>0)
   {
-    if (wxmLines->Item(i) == wxT("/* [wxMaxima: hide output   ] */"))
+    if (wxmLines->Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
       hide = true;
 
     // Print title
-    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: title   start ]"))
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: title   start ]"))
     {
-      ++i;
+      wxmLines->RemoveAt(0);
+
       wxString line;
-      while (wxmLines->Item(i) != wxT("   [wxMaxima: title   end   ] */"))
+      while (wxmLines->Item(0) != wxT("   [wxMaxima: title   end   ] */"))
       {
         if (line.Length() == 0)
-          line = wxmLines->Item(i);
+          line = wxmLines->Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(i);
-        ++i;
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
       }
+
       cell = new GroupCell(GC_TYPE_TITLE, line);
       if (hide) {
         cell->Hide(true);
@@ -980,18 +983,21 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
     }
 
     // Print section
-    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: section start ]"))
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: section start ]"))
     {
-      ++i;
+      wxmLines->RemoveAt(0);
+
       wxString line;
-      while (wxmLines->Item(i) != wxT("   [wxMaxima: section end   ] */"))
+      while (wxmLines->Item(0) != wxT("   [wxMaxima: section end   ] */"))
       {
         if (line.Length() == 0)
-          line = wxmLines->Item(i);
+          line = wxmLines->Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(i);
-        ++i;
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
       }
+
       cell = new GroupCell(GC_TYPE_SECTION, line);
       if (hide) {
         cell->Hide(true);
@@ -1000,18 +1006,21 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
     }
 
     // Print section
-    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: subsect start ]"))
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsect start ]"))
     {
-      ++i;
+      wxmLines->RemoveAt(0);
+
       wxString line;
-      while (wxmLines->Item(i) != wxT("   [wxMaxima: subsect end   ] */"))
+      while (wxmLines->Item(0) != wxT("   [wxMaxima: subsect end   ] */"))
       {
         if (line.Length() == 0)
-          line = wxmLines->Item(i);
+          line = wxmLines->Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(i);
-        ++i;
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
       }
+
       cell = new GroupCell(GC_TYPE_SUBSECTION, line);
       if (hide) {
         cell->Hide(true);
@@ -1020,18 +1029,21 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
     }
 
     // Print comment
-    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: comment start ]"))
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: comment start ]"))
     {
-      ++i;
+      wxmLines->RemoveAt(0);
+
       wxString line;
-      while (wxmLines->Item(i) != wxT("   [wxMaxima: comment end   ] */"))
+      while (wxmLines->Item(0) != wxT("   [wxMaxima: comment end   ] */"))
       {
         if (line.Length() == 0)
-          line = wxmLines->Item(i);
+          line = wxmLines->Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(i);
-        ++i;
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
       }
+
       cell = new GroupCell(GC_TYPE_TEXT, line);
       if (hide) {
         cell->Hide(true);
@@ -1040,23 +1052,40 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
     }
 
     // Print input
-    else if (wxmLines->Item(i) == wxT("/* [wxMaxima: input   start ] */"))
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: input   start ] */"))
     {
+      wxmLines->RemoveAt(0);
+
       wxString line;
-      ++i;
-      while (wxmLines->Item(i) != wxT("/* [wxMaxima: input   end   ] */"))
+      while (wxmLines->Item(0) != wxT("/* [wxMaxima: input   end   ] */"))
       {
         if (line.Length() == 0)
-          line = wxmLines->Item(i);
+          line = wxmLines->Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(i);
-        ++i;
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
       }
+
       cell = new GroupCell(GC_TYPE_CODE, line);
       if (hide) {
         cell->Hide(true);
         hide = false;
       }
+    }
+
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      last->HideTree(CreateTreeFromWXMCode(wxmLines));
+    }
+
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    end   ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      break;
     }
 
     if (cell) { // if we have created a cell in this pass
@@ -1072,6 +1101,8 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       }
       cell = NULL;
     }
+
+    wxmLines->RemoveAt(0);
   }
 
   return tree;

@@ -21,6 +21,7 @@
 #define _MATHCTRL_H_
 
 #include <wx/wx.h>
+#include <wx/textfile.h>
 
 #include "MathCell.h"
 #include "GroupCell.h"
@@ -175,6 +176,7 @@ public:
   bool CopyToFile(wxString file);
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
   bool ExportToHTML(wxString file);
+  void ExportToMac(wxTextFile& output, MathCell *tree, bool wxm);
   bool ExportToMAC(wxString file);
 	bool ExportToWXMX(wxString file);	//export to xml compatible file
   bool ExportToTeX(wxString file);
