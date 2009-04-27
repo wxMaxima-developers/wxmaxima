@@ -274,11 +274,11 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
   GroupCell *prev;
   // last in the tree to insert
   GroupCell* last = tree;
-  if (last->IsFoldable())
+  if (last->IsFoldable() || (last->GetGroupType() == GC_TYPE_IMAGE))
     renumbersections = true;
   while (last->m_next) {
     last = (GroupCell *)last->m_next;
-    if (last->IsFoldable())
+    if (last->IsFoldable() || (last->GetGroupType() == GC_TYPE_IMAGE))
       renumbersections = true;
   }
 
@@ -467,32 +467,10 @@ void MathCtrl::ResetInputPrompts() {
 // support for numbered sections with hiding
 //
 void MathCtrl::NumberSections() {
-  GroupCell* tmp = m_tree;
-  int section = 0;
-  int subsection = 0;
-
-  while (tmp != NULL)
-  {
-    if (tmp->GetGroupType() == GC_TYPE_TITLE) {
-      section = 0; // reset count upon new title
-      subsection = 0;
-    }
-    else if (tmp->GetGroupType() == GC_TYPE_SECTION) {
-      section++;
-      subsection = 0;
-      wxString num = wxT(" ");
-      num << section << wxT(". ");
-      ((TextCell*) (tmp->GetPrompt() ))->SetValue(num);
-    }
-    else if (tmp->GetGroupType() == GC_TYPE_SUBSECTION) {
-      subsection++;
-      wxString num = wxT("  ");
-      num << section << wxT(".") << subsection << wxT(" ");
-      ((TextCell*) (tmp->GetPrompt() ))->SetValue(num);
-    }
-
-    tmp = (GroupCell *)tmp->m_next;
-  }
+  int s, sub, i;
+  s = sub = i = 0;
+  if (m_tree)
+    m_tree->Number(s, sub, i);
 }
 
 bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
@@ -1215,11 +1193,6 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
-  // image cells shouldn't be inserted via openhcaret
-  // though it can be done easily
-  if (type == GC_TYPE_IMAGE)
-    return;
-
   // if we have a working group, bypass normal behaviour
   // and insert an EditorCell into the output
   // of the working group.

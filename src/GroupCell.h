@@ -90,6 +90,7 @@ public:
   GroupCell *FoldAll(bool all = false);
   GroupCell *UnfoldAll(bool all = false);
   bool IsLesserGCType(int comparedTo);
+  void Number(int &section, int &subsection, int &image);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   int m_groupType;

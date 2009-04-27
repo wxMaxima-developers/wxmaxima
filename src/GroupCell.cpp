@@ -80,6 +80,11 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
+      m_input->SetType(MC_TYPE_TEXT);
+      editor->SetType(MC_TYPE_TEXT);
+      editor->SetValue(wxEmptyString);
+      AppendInput(editor);
+      break;
     default:
       delete(editor);
       break;
@@ -744,7 +749,7 @@ MathCell *GroupCell::GetEditable()
     case GC_TYPE_CODE:
       return GetInput();
     case GC_TYPE_IMAGE:
-      return NULL;
+      return GetInput();
     case GC_TYPE_TEXT:
       return GetInput();
     case GC_TYPE_TITLE:
@@ -988,4 +993,45 @@ bool GroupCell::IsLesserGCType(int comparedTo) {
     default:
       return false;
   }
+}
+
+void GroupCell::Number(int &section, int &subsection, int &image) {
+  switch (m_groupType) {
+    case GC_TYPE_TITLE:
+      section = subsection = 0;
+      break;
+    case GC_TYPE_SECTION:
+      section++;
+      subsection = 0;
+      {
+        wxString num = wxT(" ");
+        num << section << wxT(". ");
+        ((TextCell*)m_input)->SetValue(num);
+      }
+      break;
+    case GC_TYPE_SUBSECTION:
+      subsection++;
+      {
+        wxString num = wxT("  ");
+        num << section << wxT(".") << subsection << wxT(" ");
+        ((TextCell*)m_input)->SetValue(num);
+      }
+      break;
+    case GC_TYPE_IMAGE:
+      image++;
+      {
+        wxString num = _("Figure");
+        num << wxT(" ") << image << wxT(":");
+        ((TextCell*)m_input)->SetValue(num);
+      }
+      break;
+    default:
+      break;
+  }
+
+  if (IsFoldable() && m_hiddenTree)
+    m_hiddenTree->Number(section, subsection, image);
+
+  if (m_next)
+    ((GroupCell *)m_next)->Number(section, subsection, image);
 }
