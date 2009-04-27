@@ -109,6 +109,12 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       children = children->GetNext();
     }
   }
+  else if (type == wxT("text")) {
+    group = new GroupCell(GC_TYPE_TEXT);
+    MathCell *editor = ParseTag(node->GetChildren());
+    group->SetEditableContent(editor->GetValue());
+    delete editor;
+  }
   else {
     // text types
     if (type == wxT("title"))
@@ -117,14 +123,37 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       group = new GroupCell(GC_TYPE_SECTION);
     else if (type == wxT("subsection"))
       group = new GroupCell(GC_TYPE_SUBSECTION);
-    else if (type == wxT("text"))
-      group = new GroupCell(GC_TYPE_TEXT);
     else
       return NULL;
 
-    MathCell *editor = ParseTag(node->GetChildren());
-    group->SetEditableContent(editor->GetValue());
-    delete editor;
+    wxXmlNode *children = node->GetChildren();
+    while (children) {
+      if (children->GetName() == wxT("editor")) {
+        MathCell *ed = ParseEditorTag(children);
+        group->SetEditableContent(ed->GetValue());
+        delete ed;
+      }
+      else if (children->GetName() == wxT("fold")) { // we have folded groupcells
+        wxXmlNode *xmlcells = children->GetChildren();
+        MathCell *tree = NULL;
+        MathCell *last = NULL;
+        if (xmlcells) {
+          last = tree = ParseTag(xmlcells, false); // first cell
+          while (xmlcells->GetNext()) {
+            xmlcells = xmlcells->GetNext();
+            MathCell *cell = ParseTag(xmlcells, false);
+
+            last->m_next = last->m_nextToDraw = cell;
+            last->m_next->m_previous = last->m_next->m_previousToDraw = last;
+
+            last = last->m_next;
+          }
+          if (tree)
+            group->HideTree((GroupCell *)tree);
+        }
+      }
+      children = children->GetNext();
+    }
   }
 
   group->SetParent(group, false);

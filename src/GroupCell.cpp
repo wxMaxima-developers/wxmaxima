@@ -609,12 +609,24 @@ wxString GroupCell::ToXML(bool all)
       if (output != NULL)
         str += output->ToXML(true);
       break;
-    case GC_TYPE_TITLE:
-    case GC_TYPE_SECTION:
-    case GC_TYPE_SUBSECTION:
     case GC_TYPE_TEXT:
       if (input)
         str += input->ToXML(false);
+      break;
+    case GC_TYPE_TITLE:
+    case GC_TYPE_SECTION:
+    case GC_TYPE_SUBSECTION:
+      if (input)
+        str += input->ToXML(false);
+      if (m_hiddenTree) {
+        str += wxT("<fold>");
+        GroupCell *tmp = m_hiddenTree;
+        while (tmp) {
+          str += tmp->ToXML(false);
+          tmp = (GroupCell *)tmp->m_next;
+        }
+        str += wxT("</fold>");
+      }
       break;
     default:
       if (output != NULL)
