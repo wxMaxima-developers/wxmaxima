@@ -1146,9 +1146,21 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
 
   m_saved = false;
 
+  bool renumber = false;
+
   SetActiveCell(NULL, false);
   m_hCaretActive = false;
   m_hCaretPosition = NULL;
+
+  // check for renumbering
+  GroupCell *tmp = start;
+  while (tmp) {
+    if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE))
+      renumber = true;
+    if (tmp == end)
+      break;
+    tmp = (GroupCell *)tmp->m_next;
+  }
 
   GroupCell *newSelection = (GroupCell *)end->m_next;
 
@@ -1186,6 +1198,9 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
     SetHCaret(newSelection->m_previous, false);
   else
     SetHCaret(m_last, false);
+
+  if (renumber)
+    NumberSections();
 
   Recalculate();
   Refresh();
