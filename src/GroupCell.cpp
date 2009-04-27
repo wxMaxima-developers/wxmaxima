@@ -23,8 +23,6 @@
 #include "ImgCell.h"
 #include "Bitmap.h"
 
-#define EMPTY_INPUT_LABEL wxT("-->  ")
-
 GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
   m_input = NULL;

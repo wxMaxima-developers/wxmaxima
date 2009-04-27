@@ -22,6 +22,8 @@
 
 #include "MathCell.h"
 
+#define EMPTY_INPUT_LABEL wxT("-->  ")
+
 enum
 {
   GC_TYPE_CODE,
@@ -80,7 +82,7 @@ public:
   void ResetInputLabel(bool all = false); // if !all only this GC is reset
   // folding and unfolding
   bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
-                              (m_groupType == GC_TYPE_TITLE) || 
+                              (m_groupType == GC_TYPE_TITLE) ||
                               (m_groupType == GC_TYPE_SUBSECTION)); }
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
   bool HideTree(GroupCell *tree);
