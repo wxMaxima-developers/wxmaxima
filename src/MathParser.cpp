@@ -86,7 +86,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     wxXmlNode *children = node->GetChildren();
     while (children) {
       if (children->GetName() == wxT("input")) {
-        MathCell *editor = ParseTag(node->GetChildren());
+        MathCell *editor = ParseTag(children->GetChildren());
         group->SetEditableContent(editor->GetValue());
         delete editor;
       }
@@ -97,7 +97,17 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
   }
   else if (type == wxT("image")) {
     group = new GroupCell(GC_TYPE_IMAGE);
-    group->AppendOutput(ParseTag(node->GetChildren()));
+    wxXmlNode *children = node->GetChildren();
+    while (children) {
+      if (children->GetName() == wxT("editor")) {
+        MathCell *ed = ParseEditorTag(children);
+        group->SetEditableContent(ed->GetValue());
+        delete ed;
+      }
+      else
+        group->AppendOutput(ParseTag(children));
+      children = children->GetNext();
+    }
   }
   else {
     // text types

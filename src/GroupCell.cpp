@@ -604,6 +604,8 @@ wxString GroupCell::ToXML(bool all)
       }
       break;
     case GC_TYPE_IMAGE:
+      if (input != NULL)
+        str += input->ToXML(false);
       if (output != NULL)
         str += output->ToXML(true);
       break;
