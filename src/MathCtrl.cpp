@@ -1370,7 +1370,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       wxRect rect;
       if (((EditorCell *)m_activeCell)->CheckChanges()) {
         GroupCell *group = (GroupCell *) (m_activeCell->GetParent());
-        if (group->GetGroupType() == GC_TYPE_CODE)
+        if ((group->GetGroupType() == GC_TYPE_CODE) &&
+            (m_activeCell == group->GetEditable()))
           group->GetPrompt()->SetValue(EMPTY_INPUT_LABEL);
         rect = group->GetRect();
         rect.width = GetVirtualSize().x;
