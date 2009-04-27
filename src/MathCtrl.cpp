@@ -1155,8 +1155,10 @@ void MathCtrl::DeleteSelection(bool deletePrompt) {
   // check for renumbering
   GroupCell *tmp = start;
   while (tmp) {
-    if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE))
+    if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE)) {
       renumber = true;
+      break;
+    }
     if (tmp == end)
       break;
     tmp = (GroupCell *)tmp->m_next;
