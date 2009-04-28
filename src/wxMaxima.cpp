@@ -352,6 +352,9 @@ void wxMaxima::SendMaxima(wxString s)
   s.Replace(wxT("\x00B3"), wxT("^3"));
   s.Replace(wxT("\x00BD"), wxT("(1/2)"));
   s.Replace(wxT("\x221A"), wxT("sqrt"));
+  s.Replace(wxT("\x03C0"), wxT("%pi"));
+  s.Replace(wxT("\x2148"), wxT("%i"));
+  s.Replace(wxT("\x2147"), wxT("%e"));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);
