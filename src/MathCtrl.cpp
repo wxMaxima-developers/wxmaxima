@@ -2421,8 +2421,6 @@ bool MathCtrl::ExportToWXMX(wxString file)
   while (true) {
     fsfile = fsystem->OpenFile(name);
     if (fsfile) {
-      wxMessageBox(fullname + wxT(" found"), wxT("Debug"));
-
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
       while (!(imagefile->Eof()))
