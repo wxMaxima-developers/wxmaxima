@@ -323,6 +323,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         newLinePos++;
         numberOfLines++;
       }
+      if (numberOfLines < 1)
+        numberOfLines = 1;
       firstline << wxT("... (") << numberOfLines - 1 << wxT(" ") << _("lines hidden") << wxT(")");
       dc.DrawText(firstline,
           point.x + SCALE_PX(2, scale),
