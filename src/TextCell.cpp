@@ -132,23 +132,23 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       int width, height;
       int fs = m_fontSize;
       dc.SetFont(wxFont(fs, wxMODERN,
-                      false,
-                      false,
+                      parser.IsItalic(m_textStyle),
+                      parser.IsBold(m_textStyle),
                       false, //parser.IsUnderlined(m_textStyle),
                       parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
       dc.GetTextExtent(m_text, &width, &height);
       while (width >= m_width) {
         dc.SetFont(wxFont(--fs, wxMODERN,
-              false,
-              false,
+              parser.IsItalic(m_textStyle),
+              parser.IsBold(m_textStyle),
               false, //parser.IsUnderlined(m_textStyle),
               parser.GetFontName(m_textStyle),
               parser.GetFontEncoding()));
         dc.GetTextExtent(m_text, &width, &height);
       }
       m_fontSize = fs;
-      
+
       dc.DrawText(m_text,
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale) + (m_width - width),
                   point.y - m_realCenter /*+ SCALE_PX(MC_TEXT_PADDING, scale)*/ + (m_height - height)/2);
