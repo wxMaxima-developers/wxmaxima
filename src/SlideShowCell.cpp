@@ -22,6 +22,8 @@
 
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/filesys.h>
+#include <wx/fs_mem.h>
 
 SlideShow::SlideShow(wxFileSystem *filesystem) : MathCell()
 {
@@ -229,25 +231,19 @@ wxString SlideShow::ToTeX(bool all)
 
 wxString SlideShow::ToXML(bool all)
 {
-  wxString images, s = wxEmptyString;
-  wxString filename;
-  int j = 1;
-  do {
-    images = wxT("image");
-    images << j++ << wxT(".png");
-    filename = wxFileName::GetTempDir() + images;
-  } while (wxFileExists(filename));
+  wxString images;
 
   for (int i=0; i<m_size; i++) {
-    wxBitmap* bitmap = m_bitmaps[i];
-    filename = wxFileName::GetTempDir() + images;
-    if(bitmap->SaveFile(filename, wxBITMAP_TYPE_PNG))
-      s += images + wxT(";");
-    images = wxT("image");
-    images << j++ << wxT(".png");
+    wxImage image = m_bitmaps[i]->ConvertToImage();
+    wxString basename = ImgCell::WXMXGetNewFileName();
+
+    // add to memory
+    wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
+
+    images += basename + wxT(";");
   }
 
-  return wxT("\n<slide>") + s + wxT("</slide>") +
+  return wxT("\n<slide>") + images + wxT("</slide>") +
          MathCell::ToXML(all);
 }
 

@@ -2401,6 +2401,9 @@ bool MathCtrl::ExportToWXMX(wxString file)
   output << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
   output << int(100.0 * m_zoomFactor) << wxT("\">\n");
 
+  // Reset image counter
+  ImgCell::WXMXResetCounter();
+
   GroupCell* tmp = (GroupCell *)m_tree;
   // Write contents //
   while (tmp != NULL) {
@@ -2411,33 +2414,27 @@ bool MathCtrl::ExportToWXMX(wxString file)
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
-  wxString name = wxT("image1.png");
-  wxString fullname = wxT("memory:") + name;
-  int i = 1;
-  wxFSFile *fsfile = NULL;
   wxFileSystem *fsystem = new wxFileSystem();
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
-  while (true) {
-    fsfile = fsystem->OpenFile(name);
+
+  for (int i=1; i<=ImgCell::WXMXImageCount(); i++)
+  {
+    wxString name = wxT("image");
+    name << i << wxT(".png");
+
+    wxFSFile *fsfile = fsystem->OpenFile(name);
+
     if (fsfile) {
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
+
       while (!(imagefile->Eof()))
         imagefile->Read(zip);
 
       delete imagefile;
-      delete fsfile;
-      fsfile = NULL;
       wxMemoryFSHandler::RemoveFile(name);
-
-      i++; // next file
-      name = wxT("image");
-      name << i << wxT(".png");
-      fullname = wxT("memory:") + name;
     }
-    else
-      break;
   }
 
   delete fsystem;

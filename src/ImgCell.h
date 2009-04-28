@@ -41,6 +41,11 @@ public:
   }
   friend class SlideShow;
   bool ToImageFile(wxString filename);
+  // These methods should only be used for saving wxmx files
+  // and are shared with SlideShowCell.
+  static void WXMXResetCounter() { s_counter = 0; }
+  static wxString WXMXGetNewFileName();
+  static int WXMXImageCount() { return s_counter; }
 protected:
   wxBitmap *m_bitmap;
   wxFileSystem *m_fileSystem;
@@ -50,6 +55,7 @@ protected:
   wxString ToString(bool all);
   wxString ToTeX(bool all);
 	wxString ToXML(bool all);
+	static int s_counter;
 };
 
 #endif //_ABSCELL_H_

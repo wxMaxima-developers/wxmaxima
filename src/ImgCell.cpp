@@ -31,6 +31,8 @@ ImgCell::ImgCell() : MathCell()
   m_fileSystem = NULL;
 }
 
+int ImgCell::s_counter = 0;
+
 // constructor which load image
 ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCell()
 {
@@ -213,31 +215,17 @@ bool ImgCell::ToImageFile(wxString file)
 wxString ImgCell::ToXML(bool all)
 {
 	wxImage image = m_bitmap->ConvertToImage();
-	wxString filename, basename;
+	wxString basename = ImgCell::WXMXGetNewFileName();
 
-  wxFileSystem *fsystem = new wxFileSystem();
-  fsystem->AddHandler(new wxMemoryFSHandler);
-  wxFSFile *fsfile = NULL;
-
-	int i = 1;
-	while (true) {
-		basename = wxT("image");
-		basename << i++ << wxT(".png");
-		filename = wxT("memory:") + basename;
-
-    fsfile = fsystem->OpenFile(filename);
-    if (fsfile) {
-      delete fsfile;
-      fsfile = NULL;
-    }
-    else
-      break;
-	};
-
-  // add to memory
+	// add to memory
   wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
 
-  delete fsystem;
-
   return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXML(all);
+}
+
+wxString ImgCell::WXMXGetNewFileName()
+{
+   wxString file(wxT("image"));
+   file << (++s_counter) << wxT(".png");
+   return file;
 }
