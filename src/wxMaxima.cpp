@@ -54,6 +54,7 @@
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <wx/fs_mem.h>
 
 enum {
   maxima_process_id
@@ -102,6 +103,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
 
+  wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
 
   LoadRecentDocuments();
   UpdateRecentDocuments();

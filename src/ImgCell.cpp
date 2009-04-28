@@ -21,6 +21,8 @@
 
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/filesys.h>
+#include <wx/fs_mem.h>
 
 ImgCell::ImgCell() : MathCell()
 {
@@ -212,16 +214,30 @@ wxString ImgCell::ToXML(bool all)
 {
 	wxImage image = m_bitmap->ConvertToImage();
 	wxString filename, basename;
+
+  wxFileSystem *fsystem = new wxFileSystem();
+  fsystem->AddHandler(new wxMemoryFSHandler);
+  wxFSFile *fsfile = NULL;
+
 	int i = 1;
-	do {
+	while (true) {
 		basename = wxT("image");
 		basename << i++ << wxT(".png");
-		filename = wxFileName::GetTempDir() + basename;
-	} while( wxFileExists(filename) );
-	if(image.SaveFile( filename, wxBITMAP_TYPE_PNG))
-	{
-		return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXML(all);
-	}
-	else
-		return wxEmptyString + MathCell::ToXML(all);
+		filename = wxT("memory:") + basename;
+
+    fsfile = fsystem->OpenFile(filename);
+    if (fsfile) {
+      delete fsfile;
+      fsfile = NULL;
+    }
+    else
+      break;
+	};
+
+  // add to memory
+  wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
+
+  delete fsystem;
+
+  return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXML(all);
 }

@@ -36,6 +36,8 @@
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <wx/filesys.h>
+#include <wx/fs_mem.h>
 
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
@@ -2408,22 +2410,39 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   output << wxT("\n</wxMaximaDocument>");
 
+  // save images from memory to zip file
   wxString name = wxT("image1.png");
-  wxString fullname = wxFileName::GetTempDir() + name;
+  wxString fullname = wxT("memory:") + name;
   int i = 1;
-  while( wxFileExists(fullname) )
-  {
-    zip.PutNextEntry(name);
-    wxFileInputStream imagefile(fullname);
-    while(!imagefile.Eof())
-      imagefile.Read(zip);
-    wxRemoveFile(fullname);
-    i++; // next file
-    name = wxT("image");
-    name << i << wxT(".png");
-    fullname = wxFileName::GetTempDir() + name;
+  wxFSFile *fsfile = NULL;
+  wxFileSystem *fsystem = new wxFileSystem();
+  fsystem->AddHandler(new wxMemoryFSHandler);
+  fsystem->ChangePathTo(wxT("memory:"), true);
+  while (true) {
+    fsfile = fsystem->OpenFile(name);
+    if (fsfile) {
+      wxMessageBox(fullname + wxT(" found"), wxT("Debug"));
+
+      zip.PutNextEntry(name);
+      wxInputStream *imagefile = fsfile->GetStream();
+      while (!(imagefile->Eof()))
+        imagefile->Read(zip);
+
+      delete imagefile;
+      delete fsfile;
+      fsfile = NULL;
+      wxMemoryFSHandler::RemoveFile(name);
+
+      i++; // next file
+      name = wxT("image");
+      name << i << wxT(".png");
+      fullname = wxT("memory:") + name;
+    }
+    else
+      break;
   }
 
+  delete fsystem;
   m_saved = true;
   return true;
 }
