@@ -98,6 +98,7 @@ public:
   bool CanUndo() { return m_text != m_oldText; }
   void SaveValue();
   void Undo();
+  wxString DivideAtCaret();
   void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
   bool ContainsChanges() { return m_containsChanges; }
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }

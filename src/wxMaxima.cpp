@@ -3101,6 +3101,9 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case popid_select_all:
     m_console->SelectAll();
     break;
+  case popid_divide_cell:
+    m_console->DivideCell();
+    break;
   case popid_copy_image:
     if (m_console->CanCopy())
       m_console->CopyBitmap();
@@ -3250,6 +3253,9 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case popid_evaluate:
     m_console->AddSelectionToEvaluationQueue();
     TryEvaluateNextInQueue();
+    break;
+  case popid_merge_cells:
+    m_console->MergeCells();
     break;
   }
 }
@@ -3682,7 +3688,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_cut, wxMaxima::PopupMenu)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
+  EVT_MENU(popid_divide_cell, wxMaxima::PopupMenu)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
+  EVT_MENU(popid_merge_cells, wxMaxima::PopupMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)

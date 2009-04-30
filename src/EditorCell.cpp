@@ -1273,6 +1273,20 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
 
   return true;
 }
+
+// DivideAtCaret
+// returns the string from caret to end and
+// modifies the m_text so it contains only the string
+// from beginning to caret
+// Used for 'Divide Cell', called from MathCtrl
+wxString EditorCell::DivideAtCaret()
+{
+  wxString original = m_text;
+  m_containsChanges = true;
+  m_text = m_text.SubString(0, m_positionOfCaret - 1);
+  return original.SubString(m_positionOfCaret, original.Length());
+}
+
 /***
  * SelectWordUnderCaret
  * - called from MathCtrl::OnDoubleClick and wxMaxima::HelpMenu

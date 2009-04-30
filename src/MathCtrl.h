@@ -31,6 +31,7 @@ enum {
   popid_cut,
   popid_paste,
   popid_select_all,
+  popid_divide_cell,
   popid_copy_image,
   popid_delete,
   popid_simplify,
@@ -52,7 +53,8 @@ enum {
   popid_image_copy,
 #endif
   popid_image,
-  popid_evaluate
+  popid_evaluate,
+  popid_merge_cells
 };
 
 enum {
@@ -167,6 +169,8 @@ public:
   }
   void Animate(bool run);
   void DeleteSelection(bool deletePrompt = true);
+  void DivideCell();
+  void MergeCells();
   bool CutToClipboard();
   void PasteFromClipboard();
   bool Copy();

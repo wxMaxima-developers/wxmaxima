@@ -663,6 +663,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         }
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
+
+        if (m_selectionStart != m_selectionEnd) 
+          popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
       }
 
     else if (m_hCaretActive == true) {
@@ -708,7 +711,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
-    popupMenu->Append(popid_select_all, _("Select all"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->AppendSeparator();
+    popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
 
     popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
     popupMenu->Enable(popid_cut, m_activeCell->CanCopy());
@@ -2731,6 +2736,60 @@ void MathCtrl::SelectAll()
     m_activeCell->SelectAll();
 
   Refresh();
+}
+
+void MathCtrl::DivideCell()
+{
+  if (m_activeCell == NULL)
+    return;
+
+  GroupCell *parent = (GroupCell *)m_activeCell->GetParent();
+  if (parent->GetEditable() != m_activeCell)
+    return;
+
+  int gctype = parent->GetGroupType();
+  if (gctype == GC_TYPE_IMAGE)
+    return;
+
+  if (((EditorCell *)m_activeCell)->CaretAtStart() || ((EditorCell *)m_activeCell)->CaretAtEnd())
+    return;
+
+  wxString newcellstring = ((EditorCell *)m_activeCell)->DivideAtCaret();
+
+  SetHCaret(parent, false);
+  OpenHCaret(newcellstring, gctype);
+  if (m_activeCell)
+    ((EditorCell *)m_activeCell)->CaretToStart();
+
+}
+
+void MathCtrl::MergeCells()
+{
+  wxString newcell = wxEmptyString;
+  MathCell *tmp = m_selectionStart;
+  if (!tmp)
+    return;
+  if (tmp->GetType() != MC_TYPE_GROUP)
+    return; // should not happen
+
+  while (tmp) {
+    if (newcell.Length() > 0)
+      newcell += wxT("\n");
+    newcell += ((GroupCell *)tmp)->GetEditable()->GetValue();
+
+    if (tmp == m_selectionEnd)
+      break;
+    tmp = tmp->m_next;
+  }
+
+  MathCell *editor = ((GroupCell *)m_selectionStart)->GetEditable();
+  editor->SetValue(newcell);
+
+  m_selectionStart = m_selectionStart->m_next;
+  DeleteSelection();
+  editor->GetParent()->ResetSize();
+  Recalculate();
+  SetActiveCell(editor, true);
 }
 
 void MathCtrl::OnSetFocus(wxFocusEvent& event)
