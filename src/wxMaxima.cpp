@@ -3102,14 +3102,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->SelectAll();
     break;
   case popid_comment_selection:
-    if (m_console->GetActiveCell())
-    {
-      EditorCell *active = (EditorCell *)m_console->GetActiveCell();
-      active->CommentSelection();
-      active->ResetSize();
-      active->GetParent()->ResetSize();
-      m_console->Recalculate();
-    }
+    m_console->CommentSelection();
     break;
   case popid_divide_cell:
     m_console->DivideCell();

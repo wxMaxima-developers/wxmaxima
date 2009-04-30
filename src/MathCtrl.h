@@ -247,6 +247,7 @@ public:
   double GetZoomFactor() { return m_zoomFactor; }
   void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
     if (recalc) {RecalculateForce(); Refresh();} }
+  void CommentSelection();
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

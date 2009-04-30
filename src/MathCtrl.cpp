@@ -2953,6 +2953,18 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
   }
 }
 
+void MathCtrl::CommentSelection()
+{
+  if (GetActiveCell())
+  {
+    EditorCell *active = (EditorCell *)GetActiveCell();
+    active->CommentSelection();
+    active->ResetSize();
+    active->GetParent()->ResetSize();
+    Recalculate();
+  }
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
