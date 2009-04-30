@@ -664,7 +664,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
 
-        if (m_selectionStart != m_selectionEnd) 
+        if (m_selectionStart != m_selectionEnd)
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
       }
 
@@ -2788,6 +2788,7 @@ void MathCtrl::MergeCells()
   m_selectionStart = m_selectionStart->m_next;
   DeleteSelection();
   editor->GetParent()->ResetSize();
+  editor->ResetSize();
   Recalculate();
   SetActiveCell(editor, true);
 }
