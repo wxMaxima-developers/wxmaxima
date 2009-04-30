@@ -1287,6 +1287,19 @@ wxString EditorCell::DivideAtCaret()
   return original.SubString(m_positionOfCaret, original.Length());
 }
 
+void EditorCell::CommentSelection()
+{
+  if ((m_selectionStart == -1) || (m_selectionEnd == -1))
+    return;
+  m_containsChanges = true;
+  m_isDirty = true;
+  m_text = m_text.SubString(0, m_selectionStart - 1) + wxT("/*")
+    + m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxT("*/")
+    + m_text.SubString(m_selectionEnd, m_text.Length());
+  m_positionOfCaret = MIN(m_selectionEnd + 4, m_text.Length());
+  m_selectionStart = m_selectionEnd = -1;
+}
+
 /***
  * SelectWordUnderCaret
  * - called from MathCtrl::OnDoubleClick and wxMaxima::HelpMenu

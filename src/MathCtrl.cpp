@@ -712,8 +712,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
     popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
-    popupMenu->AppendSeparator();
-    popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
+    if ((clickInSelection) && ((GroupCell *)(m_activeCell->GetParent()))->GetGroupType() == GC_TYPE_CODE)
+      popupMenu->Append(popid_comment_selection, _("Comment Selection"), wxEmptyString, wxITEM_NORMAL);
+    if (!clickInSelection)
+      popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
 
     popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
     popupMenu->Enable(popid_cut, m_activeCell->CanCopy());

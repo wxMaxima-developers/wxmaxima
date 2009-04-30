@@ -99,6 +99,7 @@ public:
   void SaveValue();
   void Undo();
   wxString DivideAtCaret();
+  void CommentSelection();
   void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
   bool ContainsChanges() { return m_containsChanges; }
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }

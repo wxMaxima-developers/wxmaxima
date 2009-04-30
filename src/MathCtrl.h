@@ -31,6 +31,7 @@ enum {
   popid_cut,
   popid_paste,
   popid_select_all,
+  popid_comment_selection,
   popid_divide_cell,
   popid_copy_image,
   popid_delete,

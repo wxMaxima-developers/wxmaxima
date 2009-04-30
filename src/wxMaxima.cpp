@@ -3101,6 +3101,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case popid_select_all:
     m_console->SelectAll();
     break;
+  case popid_comment_selection:
+    if (m_console->GetActiveCell())
+      ((EditorCell *)m_console->GetActiveCell())->CommentSelection();
+    break;
   case popid_divide_cell:
     m_console->DivideCell();
     break;
@@ -3688,6 +3692,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_cut, wxMaxima::PopupMenu)
   EVT_MENU(popid_paste, wxMaxima::PopupMenu)
   EVT_MENU(popid_select_all, wxMaxima::PopupMenu)
+  EVT_MENU(popid_comment_selection, wxMaxima::PopupMenu)
   EVT_MENU(popid_divide_cell, wxMaxima::PopupMenu)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(popid_merge_cells, wxMaxima::PopupMenu)
