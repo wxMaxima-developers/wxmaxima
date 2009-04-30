@@ -318,7 +318,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         }
 
         if (numberOfLines == 0)
-          firstline = m_text.SubString(0, newLinePos - 1); 
+          firstline = m_text.SubString(0, newLinePos - 1);
 
         newLinePos++;
         numberOfLines++;
@@ -709,31 +709,31 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   case WXK_ESCAPE:
 #if wxUSE_UNICODE
     {
-    // TODO: search only a few positions back for an escchar (10? and not over newlines)
-    bool insertescchar = false;
-    int esccharpos = m_text.Left(m_positionOfCaret).Find(ESC_CHAR, true);
-    if (esccharpos > -1) { // we have a match, check for insertion
-      wxString greek = InterpretEscapeString(m_text.SubString(esccharpos + 1, m_positionOfCaret - 1));
-      if (greek.Length() > 0 ) {
-        m_text = m_text.SubString(0, esccharpos - 1) + greek +
-          m_text.SubString(m_positionOfCaret, m_text.Length());
-        m_positionOfCaret = esccharpos + greek.Length();
-        m_isDirty = true;
-        m_containsChanges = true;
+      // TODO: search only a few positions back for an escchar (10? and not over newlines)
+      bool insertescchar = false;
+      int esccharpos = m_text.Left(m_positionOfCaret).Find(ESC_CHAR, true);
+      if (esccharpos > -1) { // we have a match, check for insertion
+        wxString greek = InterpretEscapeString(m_text.SubString(esccharpos + 1, m_positionOfCaret - 1));
+        if (greek.Length() > 0 ) {
+          m_text = m_text.SubString(0, esccharpos - 1) + greek +
+            m_text.SubString(m_positionOfCaret, m_text.Length());
+          m_positionOfCaret = esccharpos + greek.Length();
+          m_isDirty = true;
+          m_containsChanges = true;
+        }
+        else
+          insertescchar = true;
       }
       else
         insertescchar = true;
-    }
-    else
-      insertescchar = true;
 
-    if (insertescchar) {
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
-        m_text.SubString(m_positionOfCaret, m_text.Length());
-      m_isDirty = true;
-      m_containsChanges = true;
-      m_positionOfCaret++;
-    }
+      if (insertescchar) {
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
+          m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_isDirty = true;
+        m_containsChanges = true;
+        m_positionOfCaret++;
+      }
     }
 #endif
     break;
