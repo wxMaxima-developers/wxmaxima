@@ -49,6 +49,7 @@ wxmaxima_SOURCES = \
 	SubSupCell.cpp     SubSupCell.h     \
 	SlideShowCell.cpp  SlideShowCell.h  \
 	GroupCell.cpp      GroupCell.h      \
+	EvaluationQueue.cpp EvaluationQueue.h \
 	TextStyle.h
 
 wxmaxima_LDFLAGS =
