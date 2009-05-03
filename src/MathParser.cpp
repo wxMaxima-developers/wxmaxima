@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2008 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -370,6 +370,27 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
       if (str.Length() > 100) // This could be made configurable.
         str = str.Left(30) + wxString::Format(wxT("[%d digits]"), str.Length() - 60) + str.Right(30);
     }
+    cell->SetValue(str);
+    cell->SetType(m_ParserStyle);
+    cell->SetStyle(style);
+    cell->SetHighlight(m_highlight);
+  }
+  return cell;
+}
+
+MathCell* MathParser::ParseCharCode(wxXmlNode* node, int style)
+{
+  TextCell* cell = new TextCell;
+  wxString str;
+  if (node != NULL && (str = node->GetContent()) != wxEmptyString)
+  {
+    long code;
+    if (str.ToLong(&code))
+      str = wxString::Format(wxT("%c"), code);
+#if !wxUSE_UNICODE
+    wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
+    str = str1;
+#endif
     cell->SetValue(str);
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);
@@ -801,6 +822,13 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
           cell = ParseCellTag(node);
         else
           cell->AppendCell(ParseCellTag(node));
+      }
+      else if (tagName == wxT("ascii"))
+      {
+        if (cell == NULL)
+          cell = ParseCharCode(node->GetChildren());
+        else
+          cell->AppendCell(ParseCharCode(node->GetChildren()));
       }
       else if (node->GetChildren())
       {

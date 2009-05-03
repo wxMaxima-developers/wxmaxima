@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2008 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ private:
   MathCell* ParseEditorTag(wxXmlNode* node);
   MathCell* ParseFracTag(wxXmlNode* node);
   MathCell* ParseText(wxXmlNode* node, int style = TS_DEFAULT);
+  MathCell* ParseCharCode(wxXmlNode* node, int style = TS_DEFAULT);
   MathCell* ParseSupTag(wxXmlNode* node);
   MathCell* ParseSubTag(wxXmlNode* node);
   MathCell* ParseAbsTag(wxXmlNode* node);
