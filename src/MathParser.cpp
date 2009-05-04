@@ -560,6 +560,8 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
   //  wxYield();
   MathCell* tmp = NULL;
   MathCell* cell = NULL;
+  bool warning = all;
+
   while (node)
   {
     // Parse tags
@@ -849,10 +851,19 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     if (!all)
       break;
 
-    if (tmp == NULL)
-      tmp = cell;
-    else
-      cell = cell->m_next;
+    if (cell != NULL)
+    {
+      if (tmp == NULL)
+        tmp = cell;
+      else
+        cell = cell->m_next;
+    }
+    else if (warning)
+    {
+      wxMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
+        wxOK | wxICON_WARNING);
+      warning = false;
+    }
 
     node = node->GetNext();
   }

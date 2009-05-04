@@ -936,16 +936,27 @@ GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
   MathCell *tree = NULL;
   MathCell *last = NULL;
 
+  bool warning = true;
+
   if (xmlcells) {
     last = tree = mp.ParseTag(xmlcells, false); // first cell
     while (xmlcells->GetNext()) {
       xmlcells = xmlcells->GetNext();
       MathCell *cell = mp.ParseTag(xmlcells, false);
 
-      last->m_next = last->m_nextToDraw = cell;
-      last->m_next->m_previous = last->m_next->m_previousToDraw = last;
+      if (cell != NULL)
+      {
+        last->m_next = last->m_nextToDraw = cell;
+        last->m_next->m_previous = last->m_next->m_previousToDraw = last;
 
-      last = last->m_next;
+        last = last->m_next;
+      }
+      else if (warning)
+      {
+        wxMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
+          wxOK | wxICON_WARNING);
+        warning = false;
+      }
     }
   }
 
