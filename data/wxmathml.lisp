@@ -204,9 +204,9 @@
 		     (if $stardisp
 			 "<t>*</t>"
 			 "<h>*</h>"))
-	       ((eq (get op 'dimension) 'dimension-nary)
-		(wxxml-dissym-to-string (get op 'dissym)))
-	       ((wxxmlsym op))))
+		     ((wxxmlsym op))
+		     ((eq (get op 'dimension) 'dimension-nary)
+		      (wxxml-dissym-to-string (get op 'dissym)))))
          (y (cdr x))
          (ext-lop lop)
          (ext-rop rop))
