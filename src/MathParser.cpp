@@ -779,6 +779,10 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else if (tagName == wxT("img"))
       {
         wxString filename(node->GetChildren()->GetContent());
+#if !wxUSE_UNICODE
+        wxString filename1(filename.wc_str(wxConvUTF8), *wxConvCurrent);
+        filename = filename1;
+#endif
 
         ImgCell *tmp;
 
@@ -803,7 +807,13 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         while (tokens.HasMoreTokens()) {
           wxString token = tokens.GetNextToken();
           if (token.Length())
+          {
+#if !wxUSE_UNICODE
+            wxString token1(token.wc_str(wxConvUTF8), *wxConvCurrent);
+            token = token1;
+#endif
             images.Add(token);
+          }
         }
         tmp->LoadImages(images);
         if (cell == NULL)
