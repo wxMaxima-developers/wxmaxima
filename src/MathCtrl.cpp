@@ -1322,6 +1322,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 
 void MathCtrl::OnChar(wxKeyEvent& event) {
 
+#if defined __WXMSW__
+  if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
+    return;
+  }
+#endif
+
   if (m_activeCell != NULL) { // we are in an active cell
     bool needRecalculate = false;
 
