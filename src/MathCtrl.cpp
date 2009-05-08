@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///            (C) 2008-2009 Ziga Lenarcic    <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1977,6 +1978,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
            colorSubSec(wxT("black"));
   wxString colorTextBg(wxT("white"));
+  wxString colorBg(wxT("white"));
   bool italicInput = false;
   bool boldInput = false;
   bool italicPrompt = false;
@@ -2001,6 +2003,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
   config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
+  config->Read(wxT("Style/Background/color"), &colorBg);
 
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
 
@@ -2009,6 +2012,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (font.Length()) {
     AddLineToFile(output, wxT("  font-family: ") +
     font +
+    wxT(";"));
+  }
+  if (colorBg.Length()) {
+    wxColour color(colorBg);
+    AddLineToFile(output, wxT("  background-color: ") +
+    wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
   AddLineToFile(output, wxT("}"));
@@ -2038,6 +2047,17 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
     AddLineToFile(output, wxT("  background-color: ") +
+    wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+    wxT(";"));
+  }
+  AddLineToFile(output, wxT("  padding: 2mm;"));
+  AddLineToFile(output, wxT("}"));
+
+  // IMAGE STYLE
+  AddLineToFile(output, wxT(".image {"));
+  if (colorText.Length()) {
+    wxColour color(colorText);
+    AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
@@ -2117,10 +2137,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
 //////////////////////////////////////////////
 
   while (tmp != NULL) {
-    AddLineToFile(output, wxT("\n\n<!-- Input/Output group -->\n\n"));
-
     if (tmp->GetGroupType() == GC_TYPE_CODE)
     {
+      AddLineToFile(output, wxT("\n\n<!-- Code cell -->\n\n"));
       MathCell *prompt = tmp->GetPrompt();
       AddLineToFile(output, wxT("<P>"));
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
@@ -2153,25 +2172,34 @@ bool MathCtrl::ExportToHTML(wxString file) {
     {
       switch(tmp->GetGroupType()) {
         case GC_TYPE_TEXT:
+          AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
           AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_SECTION:
+          AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) + tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_SUBSECTION:
+          AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) + tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_TITLE:
+          AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"title\">"));
           AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_IMAGE:
         {
+          AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
           MathCell *out = tmp->GetLabel();
-          AddLineToFile(output, wxT("<P>"));
+          AddLineToFile(output, wxT("<P CLASS=\"image\">"));
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) +
+                                            wxT(" ") +
+                                            tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, wxT("<BR>"));
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
           AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
               filename +
