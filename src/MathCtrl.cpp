@@ -1974,7 +1974,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString font;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
-  wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black"));
+  wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
+           colorSubSec(wxT("black"));
   wxString colorTextBg(wxT("white"));
   bool italicInput = false;
   bool boldInput = false;
@@ -1990,6 +1991,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/MainPrompt/color"), &colorPrompt);
   config->Read(wxT("Style/Text/color"), &colorText);
   config->Read(wxT("Style/Section/color"), &colorSection);
+  config->Read(wxT("Style/Subsection/color"), &colorSubSec);
   config->Read(wxT("Style/Title/color"), &colorTitle);
   config->Read(wxT("fontSize"), &fontSize);
   config->Read(wxT("Style/Input/bold"), &boldInput);
@@ -2050,15 +2052,24 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  if (colorTextBg.Length()) {
-    wxColour color(colorTextBg);
-    AddLineToFile(output, wxT("  background-color: ") +
+  AddLineToFile(output, wxT("  font-weight: bold;"));
+  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  AddLineToFile(output, wxT("  font-size: 1.5em;"));
+  AddLineToFile(output, wxT("  padding: 2mm;"));
+  AddLineToFile(output, wxT("}"));
+
+
+  // SUBSECTION STYLE
+  AddLineToFile(output, wxT(".subsect {"));
+  if (colorSubSec.Length()) {
+    wxColour color(colorSubSec);
+    AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
   AddLineToFile(output, wxT("  font-weight: bold;"));
   AddLineToFile(output, wxT("  text-decoration: underline;"));
-  AddLineToFile(output, wxT("  font-size: 1.5em;"));
+  AddLineToFile(output, wxT("  font-size: 1.2em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
 
@@ -2067,12 +2078,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
     AddLineToFile(output, wxT("  color: ") +
-    wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-    wxT(";"));
-  }
-  if (colorTextBg.Length()) {
-    wxColour color(colorTextBg);
-    AddLineToFile(output, wxT("  background-color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
@@ -2128,28 +2133,44 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, PrependNBSP(input->ToString(false)));
         AddLineToFile(output, wxT("  </SPAN>"));
       }
+
+      MathCell *out = tmp->GetLabel();
+
+      if (out == NULL) {
+        AddLineToFile(output, wxEmptyString);
+      }
+      else {
+        CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
+        AddLineToFile(output, wxT("  <BR>"));
+        AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+            filename +
+            wxString::Format(wxT("_%d.png\">"), count));
+        count++;
+      }
     }
 
-    MathCell *out = tmp->GetLabel();
-    if (out == NULL)
-      AddLineToFile(output, wxEmptyString);
-    else if (tmp->GetGroupType() != GC_TYPE_CODE)
+    else
     {
       switch(tmp->GetGroupType()) {
         case GC_TYPE_TEXT:
           AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_SECTION:
           AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
+          break;
+        case GC_TYPE_SUBSECTION:
+          AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_TITLE:
           AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-          AddLineToFile(output, PrependNBSP(out->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
         case GC_TYPE_IMAGE:
         {
+          MathCell *out = tmp->GetLabel();
           AddLineToFile(output, wxT("<P>"));
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
           AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
@@ -2159,14 +2180,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
         }
         break;
       }
-    }
-    else {
-      CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-      AddLineToFile(output, wxT("  <BR>"));
-      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-          filename +
-          wxString::Format(wxT("_%d.png\">"), count));
-      count++;
     }
 
     AddLineToFile(output, wxT("</P>"));
@@ -2178,6 +2191,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Footer
 //////////////////////////////////////////////
 
+  AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT(" <HR>"));
   AddLineToFile(output, wxT(" <SMALL> Created with")
   wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
@@ -2244,7 +2258,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   return done;
 }
 
-void MathCtrl::ExportToMac(wxTextFile& output, MathCell *tree, bool wxm)
+void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm)
 {
   GroupCell* tmp = (GroupCell *)tree;
 
@@ -2330,7 +2344,7 @@ void MathCtrl::ExportToMac(wxTextFile& output, MathCell *tree, bool wxm)
     {
       AddLineToFile(output, wxEmptyString);
       AddLineToFile(output, wxT("/* [wxMaxima: fold    start ] */"));
-      ExportToMac(output, tmp->GetHiddenTree(), wxm);
+      ExportToMAC(output, tmp->GetHiddenTree(), wxm);
       AddLineToFile(output, wxEmptyString);
       AddLineToFile(output, wxT("/* [wxMaxima: fold    end   ] */"));
     }
@@ -2366,7 +2380,7 @@ bool MathCtrl::ExportToMAC(wxString file)
     AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
-  ExportToMac(output, m_tree, wxm);
+  ExportToMAC(output, m_tree, wxm);
 
   AddLineToFile(output, wxEmptyString, false);
   if (wxm) {

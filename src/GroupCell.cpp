@@ -484,35 +484,43 @@ wxString GroupCell::ToString(bool all)
 wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
-  if (m_groupType == GC_TYPE_CODE) {
-    str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
-  }
-  if (m_output != NULL && !m_hide) {
-    if (m_groupType != GC_TYPE_CODE) {
-      str = m_output->ToString(true);
-      switch (m_output->GetStyle()) {
-        case TS_TITLE:
-          str = wxT("\n\\section{") + str + wxT("}\n");
-          break;
-        case TS_SECTION:
-          str = wxT("\n\\subsection{") + str + wxT("}\n");
-          break;
-        case TS_SUBSECTION:
-          str = wxT("\n\\subsubsection{") + str + wxT("}\n");
-          break;
-        default:
-          if (!str.StartsWith(wxT("TeX:")))
-            str = wxT("\n\\begin{verbatim}\n") + str + wxT("\n\\end{verbatim}\n");
-          else
-            str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
-          break;
-      }
+
+  // IMAGE CELLS
+  if (m_groupType == GC_TYPE_IMAGE) {
+    MathCell *copy = m_output->Copy(false);
+    (*imgCounter)++;
+    wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
+    wxString file = imgDir + wxT("/") + image;
+
+    Bitmap bmp;
+    bmp.SetData(copy);
+
+    if (!wxDirExists(imgDir))
+      wxMkdir(imgDir);
+
+    if (bmp.ToFile(file))
+    {
+      str << wxT("\\begin{figure}[htb]\n")
+          << wxT("  \\begin{center}\n")
+          << wxT("    \\includegraphics{")
+          << filename << wxT("_img/") << image << wxT("}\n")
+          << wxT("  \\caption{") << m_input->m_next->GetValue() << wxT("}\n")
+          << wxT("  \\end{center}\n")
+          << wxT("\\end{figure}");
     }
-    else {
+  }
+
+  // CODE CELLS
+  else if (m_groupType == GC_TYPE_CODE) {
+    str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
+
+    if (m_output != NULL) {
       str += wxT("$$\n");
       wxString label;
       MathCell *tmp = m_output;
+
       while (tmp != NULL) {
+
         if (tmp->GetType() == MC_TYPE_IMAGE || tmp->GetType() == MC_TYPE_SLIDE) {
           MathCell *copy = tmp->Copy(false);
           (*imgCounter)++;
@@ -530,19 +538,45 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
             str += wxT("\\includegraphics[width=9cm]{") +
                 filename + wxT("_img/") + image + wxT("}\n");
         }
+
         else if (tmp->GetStyle() == TS_LABEL)
         {
           if (str.Right(3) != wxT("$$\n"))
             str += label + wxT("\n$$\n$$\n");
           label = wxT("\\leqno{\\tt ") + tmp->ToTeX(false) + wxT(" }");
         }
+
         else
           str += tmp->ToTeX(false);
+
         tmp = tmp->m_nextToDraw;
       }
       str += label + wxT("\n$$\n");
     }
   }
+
+  // TITLES, SECTIONS, SUBSECTIONS, TEXT
+  else if (GetEditable() != NULL && !m_hide) {
+    str = GetEditable()->ToTeX(true);
+    switch (GetEditable()->GetStyle()) {
+      case TS_TITLE:
+        str = wxT("\n\\section{") + str + wxT("}\n");
+        break;
+      case TS_SECTION:
+        str = wxT("\n\\subsection{") + str + wxT("}\n");
+        break;
+      case TS_SUBSECTION:
+        str = wxT("\n\\subsubsection{") + str + wxT("}\n");
+        break;
+      default:
+        if (!str.StartsWith(wxT("TeX:")))
+          str = wxT("\n\\begin{verbatim}\n") + str + wxT("\n\\end{verbatim}\n");
+        else
+          str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
+        break;
+    }
+  }
+
   return str + MathCell::ToTeX(all);
 }
 
