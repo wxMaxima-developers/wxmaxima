@@ -2259,8 +2259,11 @@ bool MathCtrl::ExportToTeX(wxString file) {
 
   AddLineToFile(output, wxT("\\documentclass{article}"));
   AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("%% Created with wxMaxima"));
+  AddLineToFile(output, wxT("%% Created with wxMaxima " VERSION ));
   AddLineToFile(output, wxEmptyString);
+  AddLineToFile(output, wxT("\\setlength{\\parskip}{\\medskipamount}"));
+  AddLineToFile(output, wxT("\\setlength{\\parindent}{0pt}"));
+  AddLineToFile(output, wxT("\\usepackage[utf8]{inputenc}"));
   AddLineToFile(output, wxT("\\usepackage{graphicx}"));
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("\\begin{document}"));

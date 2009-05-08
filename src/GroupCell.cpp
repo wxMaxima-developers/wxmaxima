@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///            (C) 2008-2009 Ziga Lenarcic    <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -560,13 +561,15 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
     str = GetEditable()->ToTeX(true);
     switch (GetEditable()->GetStyle()) {
       case TS_TITLE:
-        str = wxT("\n\\section{") + str + wxT("}\n");
+        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
+        str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
+        str += wxT("\\setcounter{figure}{0}\n");
         break;
       case TS_SECTION:
-        str = wxT("\n\\subsection{") + str + wxT("}\n");
+        str = wxT("\n\\section{") + str + wxT("}\n");
         break;
       case TS_SUBSECTION:
-        str = wxT("\n\\subsubsection{") + str + wxT("}\n");
+        str = wxT("\n\\subsection{") + str + wxT("}\n");
         break;
       default:
         if (!str.StartsWith(wxT("TeX:")))
