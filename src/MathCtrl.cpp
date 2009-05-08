@@ -1972,38 +1972,71 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Write styles
 //////////////////////////////////////////////
 
-  wxString font;
+  wxString font, fontTitle, fontSection, fontSubsection, fontText;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
   wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
            colorSubSec(wxT("black"));
   wxString colorTextBg(wxT("white"));
   wxString colorBg(wxT("white"));
+
+  // bold and italic
+  bool   boldInput = false;
   bool italicInput = false;
-  bool boldInput = false;
+  bool   boldPrompt = false;
   bool italicPrompt = false;
-  bool boldPrompt = false;
-  bool boldString = false;
+  bool   boldString = false;
   bool italicString = false;
+
+  bool   boldTitle = false;
+  bool italicTitle = false;
+  bool  underTitle = false;
+  bool   boldSection = false;
+  bool italicSection = false;
+  bool  underSection = false;
+  bool   boldSubsection = false;
+  bool italicSubsection = false;
+  bool  underSubsection = false;
+
   int fontSize = 12;
   wxConfigBase* config= wxConfig::Get();
+  // main fontsize
+  config->Read(wxT("fontSize"), &fontSize);
 
+  // read fonts
   config->Read(wxT("Style/fontname"), &font);
+  config->Read(wxT("Style/Title/fontname"), &fontTitle);
+  config->Read(wxT("Style/Section/fontname"), &fontSection);
+  config->Read(wxT("Style/Subsection/fontname"), &fontSubsection);
+  config->Read(wxT("Style/Text/fontname"), &fontText);
+
+  // read colors
   config->Read(wxT("Style/Input/color"), &colorInput);
   config->Read(wxT("Style/MainPrompt/color"), &colorPrompt);
   config->Read(wxT("Style/Text/color"), &colorText);
   config->Read(wxT("Style/Section/color"), &colorSection);
   config->Read(wxT("Style/Subsection/color"), &colorSubSec);
   config->Read(wxT("Style/Title/color"), &colorTitle);
-  config->Read(wxT("fontSize"), &fontSize);
+  config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
+  config->Read(wxT("Style/Background/color"), &colorBg);
+
+  // read bold and italic
   config->Read(wxT("Style/Input/bold"), &boldInput);
   config->Read(wxT("Style/String/bold"), &boldString);
   config->Read(wxT("Style/Input/italic"), &italicInput);
   config->Read(wxT("Style/String/italic"), &italicString);
   config->Read(wxT("Style/MainPrompt/bold"), &boldPrompt);
   config->Read(wxT("Style/MainPrompt/italic"), &italicPrompt);
-  config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
-  config->Read(wxT("Style/Background/color"), &colorBg);
+
+  config->Read(wxT("Style/Title/bold"),     &boldTitle);
+  config->Read(wxT("Style/Title/italic"), &italicTitle);
+  config->Read(wxT("Style/Title/underlined"), &underTitle);
+  config->Read(wxT("Style/Section/bold"),     &boldSection);
+  config->Read(wxT("Style/Section/italic"), &italicSection);
+  config->Read(wxT("Style/Section/underlined"), &underSection);
+  config->Read(wxT("Style/Subsection/bold"),     &boldSubsection);
+  config->Read(wxT("Style/Subsection/italic"), &italicSubsection);
+  config->Read(wxT("Style/Subsection/underlined"), &underSubsection);
 
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
 
@@ -2030,14 +2063,17 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  if (boldInput)
-    AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicInput)
-    AddLineToFile(output, wxT("  font-style: italic;"));
+  if   (boldInput) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if (italicInput) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
 
   // COMMENT STYLE
   AddLineToFile(output, wxT(".comment {"));
+  if (fontText.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+    fontText +
+    wxT(";"));
+  }
   if (colorText.Length()) {
     wxColour color(colorText);
     AddLineToFile(output, wxT("  color: ") +
@@ -2055,6 +2091,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   // IMAGE STYLE
   AddLineToFile(output, wxT(".image {"));
+  if (fontText.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+    fontText + wxT(";"));
+  }
   if (colorText.Length()) {
     wxColour color(colorText);
     AddLineToFile(output, wxT("  color: ") +
@@ -2066,14 +2106,19 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   // SECTION STYLE
   AddLineToFile(output, wxT(".section {"));
+  if (fontSection.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+    fontSection + wxT(";"));
+  }
   if (colorSection.Length()) {
     wxColour color(colorSection);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  AddLineToFile(output, wxT("  font-weight: bold;"));
-  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if   (boldSection) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if  (underSection) AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if (italicSection) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("  font-size: 1.5em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
@@ -2081,29 +2126,38 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   // SUBSECTION STYLE
   AddLineToFile(output, wxT(".subsect {"));
+  if (fontSubsection.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+    fontSubsection + wxT(";"));
+  }
   if (colorSubSec.Length()) {
     wxColour color(colorSubSec);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  AddLineToFile(output, wxT("  font-weight: bold;"));
-  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if   (boldSubsection) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if  (underSubsection) AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if (italicSubsection) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("  font-size: 1.2em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
 
   // TITLE STYLE
   AddLineToFile(output, wxT(".title {"));
+  if (fontTitle.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+    fontTitle + wxT(";"));
+  }
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
     AddLineToFile(output, wxT("  color: ") +
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  AddLineToFile(output, wxT("  font-weight: bold;"));
-  AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if   (boldTitle) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if  (underTitle) AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if (italicTitle) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("  font-size: 2em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
@@ -2116,10 +2170,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
     wxT(";"));
   }
-  if (boldPrompt)
-    AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicPrompt)
-    AddLineToFile(output, wxT("  font-style: italic;"));
+  if   (boldPrompt) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if (italicPrompt) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
 
   AddLineToFile(output, wxT("  </STYLE>"));
