@@ -614,7 +614,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
 
         if (tmp == m_selectionEnd)
           break;
-        tmp = tmp->m_next;
+        tmp = tmp->m_nextToDraw;
       }
 
     }
@@ -1887,7 +1887,7 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
     if (asData)
       tmp = tmp->m_next;
     else
-      tmp = tmp->m_next;
+      tmp = tmp->m_nextToDraw;
   }
 
   return tmp1;
