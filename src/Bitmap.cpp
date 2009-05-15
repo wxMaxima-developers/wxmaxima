@@ -273,6 +273,6 @@ void Bitmap::BreakUpCells()
         tmp->RecalculateSize(parser, fontsize, false);
       }
     }
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
