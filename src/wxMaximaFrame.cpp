@@ -162,7 +162,7 @@ void wxMaximaFrame::do_layout()
                       PaneBorder(false));
 
 #define ADD_PANE(grid, box, panel, name, caption)  \
-  box->Add(grid, 0, wxEXPAND);                     \
+  box->Add(grid, 0, wxEXPAND | wxALL, 3);          \
   panel->SetSizer(box);                            \
   box->Fit(panel);                                 \
   box->SetSizeHints(panel);                        \
@@ -172,6 +172,8 @@ void wxMaximaFrame::do_layout()
                       Show(false).                 \
                       TopDockable(false).          \
                       BottomDockable(false).       \
+                      PaneBorder(true).            \
+                      Fixed().                     \
                       Left());
 
   ADD_PANE(simpGrid, simpBox, m_simpPanel, wxT("simplify"), _("Simplify"));
