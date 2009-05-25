@@ -26,6 +26,7 @@
 #include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
 #include <wx/arrstr.h>
+#include <wx/aui/aui.h>
 
 #include "MathCtrl.h"
 #include "Setup.h"
@@ -128,6 +129,7 @@ enum {
   button_trigsimp,
   button_trigexpand,
   button_trigreduce,
+  button_trigrat,
   button_integrate,
   button_diff,
   button_sum,
@@ -215,7 +217,12 @@ enum {
   menu_recent_document_7,
   menu_recent_document_8,
   menu_recent_document_9,
-  menu_insert_image
+  menu_insert_image,
+  menu_palette_simplify,
+  menu_palette_trig,
+  menu_palette_calc,
+  menu_palette_solve,
+  menu_palette_plot,
 };
 
 class wxMaximaFrame: public wxFrame
@@ -225,10 +232,13 @@ public:
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
+  ~wxMaximaFrame();
   void UpdateRecentDocuments();
   void AddRecentDocument(wxString file);
   void RemoveRecentDocument(wxString file);
   wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
+  bool IsPaletteDisplayed(int id);
+  void ShowPalette(int id, bool hide);
 private:
   void set_properties();
   void do_layout();
@@ -239,8 +249,15 @@ private:
 protected:
   void LoadRecentDocuments();
   void SaveRecentDocuments();
+  wxAuiManager m_manager;
   wxMenuBar* frame_1_menubar;
-  wxPanel *panel;
+  // AUI PANELS
+  wxPanel *m_simpPanel;
+  wxPanel *m_solvePanel;
+  wxPanel *m_calcPanel;
+  wxPanel *m_trigPanel;
+  wxPanel *m_plotPanel;
+  //
   MathCtrl* m_console;
   wxButton* button_2;
   wxButton* button_3;
@@ -262,6 +279,7 @@ protected:
   wxButton* button_19;
   wxButton* button_20;
   wxButton* button_21;
+  wxButton* button_22;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;

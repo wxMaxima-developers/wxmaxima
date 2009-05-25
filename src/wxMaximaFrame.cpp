@@ -30,52 +30,39 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              long style):
     wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
-  panel = new wxPanel(this, -1);
+  m_manager.SetManagedWindow(this);
 
-  // buttons
-  int panelSize = 1;
-  wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
-  if (panelSize == 2)
-  {
-    button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
-    button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
-    button_4 = new wxButton(panel, button_factor, _("Factor"));
-    button_5 = new wxButton(panel, button_expand, _("Expand"));
-    button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
-    button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
-    button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
-    button_9 = new wxButton(panel, button_rectform, _("Rectform"));
-    button_10 = new wxButton(panel, button_sum, _("Sum..."));
-    button_11 = new wxButton(panel, button_product, _("Product..."));
-    button_12 = new wxButton(panel, button_solve, _("Solve..."));
-    button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
-    button_14 = new wxButton(panel, button_diff, _("Diff..."));
-    button_15 = new wxButton(panel, button_integrate, _("Integrate..."));
-    button_16 = new wxButton(panel, button_limit, _("Limit..."));
-    button_17 = new wxButton(panel, button_taylor, _("Series..."));
-    button_18 = new wxButton(panel, button_subst, _("Subst..."));
-    button_19 = new wxButton(panel, button_map, _("Map..."));
-    button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
-    button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
-  }
-  else if (panelSize == 1)
-  {
-    button_2 = new wxButton(panel, button_ratsimp, _("Simplify"));
-    button_3 = new wxButton(panel, button_radcan, _("Simplify (r)"));
-    button_4 = new wxButton(panel, button_factor, _("Factor"));
-    button_5 = new wxButton(panel, button_expand, _("Expand"));
-    button_12 = new wxButton(panel, button_solve, _("Solve..."));
-    button_20 = new wxButton(panel, button_plot2, _("Plot 2D..."));
-    button_6 = new wxButton(panel, button_trigsimp, _("Simplify (tr)"));
-    button_7 = new wxButton(panel, button_trigexpand, _("Expand (tr)"));
-    button_8 = new wxButton(panel, button_trigreduce, _("Reduce (tr)"));
-    button_9 = new wxButton(panel, button_rectform, _("Rectform"));
-    button_13 = new wxButton(panel, button_solve_ode, _("Solve ODE..."));
-    button_21 = new wxButton(panel, button_plot3, _("Plot 3D..."));
-  }
+//  m_consolePanel = new wxPanel(this, -1);
+  m_simpPanel = new wxPanel(this, -1);
+  m_trigPanel = new wxPanel(this, -1);
+  m_solvePanel = new wxPanel(this, -1);
+  m_calcPanel = new wxPanel(this, -1);
+  m_plotPanel = new wxPanel(this, -1);
+
+  button_2 = new wxButton(m_simpPanel, button_ratsimp, _("Simplify"));
+  button_3 = new wxButton(m_simpPanel, button_radcan, _("Simplify (r)"));
+  button_4 = new wxButton(m_simpPanel, button_factor, _("Factor"));
+  button_5 = new wxButton(m_simpPanel, button_expand, _("Expand"));
+  button_6 = new wxButton(m_trigPanel, button_trigsimp, _("Simplify"));
+  button_7 = new wxButton(m_trigPanel, button_trigexpand, _("Expand"));
+  button_8 = new wxButton(m_trigPanel, button_trigreduce, _("Reduce"));
+  button_22 = new wxButton(m_trigPanel, button_trigrat, _("Cannonical"));
+  button_9 = new wxButton(m_simpPanel, button_rectform, _("Rectform"));
+//  button_10 = new wxButton(m_othrPanel, button_sum, _("Sum..."));
+//  button_11 = new wxButton(m_othrPanel, button_product, _("Product..."));
+  button_12 = new wxButton(m_solvePanel, button_solve, _("Solve..."));
+  button_13 = new wxButton(m_solvePanel, button_solve_ode, _("Solve ODE..."));
+  button_14 = new wxButton(m_calcPanel, button_diff, _("Diff..."));
+  button_15 = new wxButton(m_calcPanel, button_integrate, _("Integrate..."));
+  button_16 = new wxButton(m_calcPanel, button_limit, _("Limit..."));
+  button_17 = new wxButton(m_calcPanel, button_taylor, _("Series..."));
+  button_18 = new wxButton(m_simpPanel, button_subst, _("Subst..."));
+  //button_19 = new wxButton(m_othrPanel, button_map, _("Map..."));
+  button_20 = new wxButton(m_plotPanel, button_plot2, _("Plot 2D..."));
+  button_21 = new wxButton(m_plotPanel, button_plot3, _("Plot 3D..."));
 
   // console
-  m_console = new MathCtrl(panel, -1, wxDefaultPosition, wxDefaultSize);
+  m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
 
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -98,6 +85,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
+
+  m_console->SetFocus();
+}
+
+wxMaximaFrame::~wxMaximaFrame()
+{
+  wxString perspective = m_manager.SavePerspective();
+
+  wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
+
+  m_manager.UnInit();
 }
 
 void wxMaximaFrame::set_properties()
@@ -118,80 +116,79 @@ void wxMaximaFrame::set_properties()
 
 void wxMaximaFrame::do_layout()
 {
-  int panelSize = 1;
-  wxConfig::Get()->Read(wxT("panelSize"), &panelSize);
+  wxGridSizer* simpGrid = new wxGridSizer(2, 3);
+  wxBoxSizer* simpBox = new wxBoxSizer(wxVERTICAL);
 
-  wxFlexGridSizer* grid_sizer_1;
-  if (panelSize > 1)
-    grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  wxGridSizer* trigGrid = new wxGridSizer(2, 2);
+  wxBoxSizer* trigBox = new wxBoxSizer(wxVERTICAL);
+
+  wxGridSizer* solveGrid = new wxGridSizer(2, 1);
+  wxBoxSizer* solveBox = new wxBoxSizer(wxVERTICAL);
+
+  wxGridSizer* calcGrid = new wxGridSizer(2, 2);
+  wxBoxSizer* calcBox = new wxBoxSizer(wxVERTICAL);
+
+  wxGridSizer* plotGrid = new wxGridSizer(2, 1);
+  wxBoxSizer* plotBox = new wxBoxSizer(wxVERTICAL);
+
+  int style = wxALL | wxEXPAND;
+  simpGrid->Add(button_2, 0, style, 0);
+  simpGrid->Add(button_3, 0, style, 0);
+  simpGrid->Add(button_4, 0, style, 0);
+  simpGrid->Add(button_5, 0, style, 0);
+  trigGrid->Add(button_6, 0, style, 0);
+  trigGrid->Add(button_7, 0, style, 0);
+  trigGrid->Add(button_8, 0, style, 0);
+  trigGrid->Add(button_22, 0, style, 0);
+  simpGrid->Add(button_9, 0, style, 0);
+//  grid_sizer_2->Add(button_10, 0, style, 0);
+//  grid_sizer_2->Add(button_11, 0, style, 0);
+  solveGrid->Add(button_12, 0, style, 0);
+  solveGrid->Add(button_13, 0, style, 0);
+  calcGrid->Add(button_14, 0, style, 0);
+  calcGrid->Add(button_15, 0, style, 0);
+  calcGrid->Add(button_16, 0, style, 0);
+  calcGrid->Add(button_17, 0, style, 0);
+  simpGrid->Add(button_18, 0, style, 0);
+//  grid_sizer_2->Add(button_19, 0, style, 0);
+  plotGrid->Add(button_20, 0, style, 0);
+  plotGrid->Add(button_21, 0, style, 0);
+
+  m_manager.AddPane(m_console,
+      wxAuiPaneInfo().Name(wxT("console")).
+                      Center().
+                      CloseButton(false).
+                      CaptionVisible(false).
+                      PaneBorder(false));
+
+#define ADD_PANE(grid, box, panel, name, caption)  \
+  box->Add(grid, 0, wxEXPAND);                     \
+  panel->SetSizer(box);                            \
+  box->Fit(panel);                                 \
+  box->SetSizeHints(panel);                        \
+  m_manager.AddPane(panel,                         \
+      wxAuiPaneInfo().Name(name).                  \
+                      Caption(caption).            \
+                      Show(false).                 \
+                      TopDockable(false).          \
+                      BottomDockable(false).       \
+                      Left());
+
+  ADD_PANE(simpGrid, simpBox, m_simpPanel, wxT("simplify"), _("Simplify"));
+  ADD_PANE(calcGrid, calcBox, m_calcPanel, wxT("calc"), _("Calculus"));
+  ADD_PANE(solveGrid, solveBox, m_solvePanel, wxT("solve"), _("Solve"));
+  ADD_PANE(trigGrid, trigBox, m_trigPanel, wxT("trig"), _("Trigonometry"));
+  ADD_PANE(plotGrid, plotBox, m_plotPanel, wxT("plot"), _("Plot"));
+
+#undef ADD_PANE
+
+  wxString perspective;
+  wxConfigBase *config = wxConfig::Get();
+
+  if (config->Read(wxT("AUI/perspective"), &perspective))
+    m_manager.LoadPerspective(perspective);
   else
-    grid_sizer_1 = new wxFlexGridSizer(2, 1, 0, 0);
-
-  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-
-  wxGridSizer* grid_sizer_2;
-  if (panelSize == 2)
-    grid_sizer_2 = new wxGridSizer(2, 10, 0, 0);
-  else
-    grid_sizer_2 = new wxGridSizer(2, 6, 0, 0);
-
-  // buttons
-  if (panelSize == 2)
-  {
-    grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_4, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_5, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_6, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_7, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_8, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_9, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_10, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_11, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_12, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_13, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_14, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_15, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_16, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_17, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_18, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_19, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
-  }
-  else if (panelSize == 1)
-  {
-    grid_sizer_2->Add(button_2, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_3, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_4, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_5, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_12, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_20, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_6, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_7, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_8, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_9, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_13, 0, wxALL | wxEXPAND, 0);
-    grid_sizer_2->Add(button_21, 0, wxALL | wxEXPAND, 0);
-  }
-
-  // all
-  grid_sizer_1->Add(m_console, 1, wxALL | wxEXPAND, 0);
-
-  if (panelSize > 0)
-    grid_sizer_1->Add(grid_sizer_2, 1, wxALL, 2);
-
-  panel->SetAutoLayout(true);
-  panel->SetSizer(grid_sizer_1);
-  grid_sizer_1->Fit(panel);
-  grid_sizer_1->SetSizeHints(panel);
-  grid_sizer_1->AddGrowableRow(0);
-  grid_sizer_1->AddGrowableCol(0);
-
-  sizer_1->Add(panel, 1, wxEXPAND, 0);
-  SetAutoLayout(true);
-  SetSizer(sizer_1);
-  Layout();
+    m_manager.Update();
 }
 
 void wxMaximaFrame::SetupMenu()
@@ -299,11 +296,23 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New T&itle Cell\tF9"),
                              _("Insert a new title cell"));
   wxglade_tmp_menu_2->AppendSeparator();
+
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
   wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Outputs"),
                             _("Remove output from input cells"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                               _("Insert image"), wxITEM_NORMAL);
+
+  wxglade_tmp_menu_2->AppendSeparator();
+
+  // palettes
+  wxMenu *wxglade_tmp_menu_2_sub2 = new wxMenu;
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_simplify, _("Simplify palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_trig, _("Trigonometry palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_solve, _("Solve palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_calc, _("Calculus palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_plot, _("Plot palette"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Palettes"), wxglade_tmp_menu_2_sub2);
 
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_in, _("Zoom &In\tAlt-I"),
@@ -645,7 +654,7 @@ void wxMaximaFrame::SetupMenu()
 #else
           _("About wxMaxima"),
 #endif
-                   _("About wxMaxima"), wxT("stock_about"));
+          _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
 
   SetMenuBar(frame_1_menubar);
@@ -857,4 +866,52 @@ void wxMaximaFrame::RemoveRecentDocument(wxString file)
   m_recentDocuments.Remove(file);
 
   UpdateRecentDocuments();
+}
+
+bool wxMaximaFrame::IsPaletteDisplayed(int id)
+{
+  bool displayed = false;
+
+  switch (id) {
+    case menu_palette_simplify:
+      displayed = m_manager.GetPane(wxT("simplify")).IsShown();
+      break;
+    case menu_palette_trig:
+      displayed = m_manager.GetPane(wxT("trig")).IsShown();
+      break;
+    case menu_palette_calc:
+      displayed = m_manager.GetPane(wxT("calc")).IsShown();
+      break;
+    case menu_palette_solve:
+      displayed = m_manager.GetPane(wxT("solve")).IsShown();
+      break;
+    case menu_palette_plot:
+      displayed = m_manager.GetPane(wxT("plot")).IsShown();
+      break;
+  }
+
+  return displayed;
+}
+
+void wxMaximaFrame::ShowPalette(int id, bool show)
+{
+  switch (id) {
+    case menu_palette_simplify:
+      m_manager.GetPane(wxT("simplify")).Show(show);
+      break;
+    case menu_palette_trig:
+       m_manager.GetPane(wxT("trig")).Show(show);
+       break;
+    case menu_palette_solve:
+       m_manager.GetPane(wxT("solve")).Show(show);
+       break;
+    case menu_palette_calc:
+       m_manager.GetPane(wxT("calc")).Show(show);
+       break;
+    case menu_palette_plot:
+      m_manager.GetPane(wxT("plot")).Show(show);
+      break;
+  }
+
+  m_manager.Update();
 }

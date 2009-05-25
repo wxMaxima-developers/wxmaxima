@@ -88,6 +88,7 @@ protected:
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
+  void ShowPalette(wxCommandEvent& event);         //
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
 

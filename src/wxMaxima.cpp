@@ -1519,6 +1519,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
+  for (int id = menu_palette_simplify; id<=menu_palette_plot; id++)
+    menubar->Check(id, IsPaletteDisplayed(id));
+
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
     menubar->Enable(wxID_PRINT, true);
@@ -2572,6 +2575,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
     MenuCommand(cmd);
     break;
   case menu_trigrat:
+  case button_trigrat:
     cmd = wxT("trigrat(") + expr + wxT(");");
     MenuCommand(cmd);
     break;
@@ -3474,6 +3478,13 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   }
 }
 
+void wxMaxima::ShowPalette(wxCommandEvent &ev)
+{
+  int id = ev.GetId();
+
+  wxMaximaFrame::ShowPalette(id, !IsPaletteDisplayed(id));
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
@@ -3515,6 +3526,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(button_plot3, wxMaxima::PlotMenu)
   EVT_BUTTON(button_map, wxMaxima::AlgebraMenu)
   EVT_BUTTON(button_rectform, wxMaxima::SimplifyMenu)
+  EVT_BUTTON(button_trigrat, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_restart_id, wxMaxima::MaximaMenu)
 #ifndef __WXMAC__
@@ -3711,4 +3723,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
   EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
+  EVT_MENU_RANGE(menu_palette_simplify, menu_palette_plot, wxMaxima::ShowPalette)
 END_EVENT_TABLE()

@@ -40,7 +40,6 @@ enum {
   checkbox_greek,
   font_family,
   style_font_family,
-  panel_size,
   language_id,
   unicode_glyphs,
   save_id,
@@ -106,8 +105,6 @@ protected:
   wxTextCtrl* m_additionalParameters;
   wxStaticText* label_4;
   wxComboBox* m_language;
-  wxStaticText* label_9;
-  wxComboBox* m_panelSize;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
@@ -195,6 +192,7 @@ protected:
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };
+
 #ifndef __WXMSW__
 class ColorPanel : public wxPanel
 {

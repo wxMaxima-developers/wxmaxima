@@ -88,15 +88,9 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Ukrainian")
     };
   m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
-  label_9 = new wxStaticText(notebook_1_pane_1, -1, _("Button panel:"));
-  const wxString m_panelSize_choices[] =
-    {
-      _("Off"), _("Basic"), _("Full")
-    };
   label_12 = new wxStaticText(notebook_1_pane_1, -1, _("Default port:"));
   m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
   m_defaultPort->SetValue(defaultPort);
-  m_panelSize = new wxComboBox(notebook_1_pane_1, panel_size, wxEmptyString, wxDefaultPosition, wxSize(230, -1), 3, m_panelSize_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
@@ -223,8 +217,6 @@ void Config::set_properties()
   else
     m_language->SetSelection(0);
 
-  m_panelSize->SetSelection(panelSize);
-
 #if defined __WXMSW__
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
@@ -309,8 +301,6 @@ void Config::do_layout()
   // wxMaxima options box
   grid_sizer_5->Add(label_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(label_9, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(m_panelSize, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(label_12, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_5->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
@@ -408,7 +398,6 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
-  config->Write(wxT("panelSize"), m_panelSize->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
@@ -1104,7 +1093,6 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
 #endif
   EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
   EVT_COMBOBOX(language_id, Config::OnChangeWarning)
-  EVT_COMBOBOX(panel_size, Config::OnChangeWarning)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
