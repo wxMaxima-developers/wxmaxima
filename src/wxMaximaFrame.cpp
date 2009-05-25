@@ -46,7 +46,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   button_6 = new wxButton(m_trigPanel, button_trigsimp, _("Simplify"));
   button_7 = new wxButton(m_trigPanel, button_trigexpand, _("Expand"));
   button_8 = new wxButton(m_trigPanel, button_trigreduce, _("Reduce"));
-  button_22 = new wxButton(m_trigPanel, button_trigrat, _("Cannonical"));
+  button_22 = new wxButton(m_trigPanel, button_trigrat, _("Canonical"));
   button_9 = new wxButton(m_simpPanel, button_rectform, _("Rectform"));
 //  button_10 = new wxButton(m_othrPanel, button_sum, _("Sum..."));
 //  button_11 = new wxButton(m_othrPanel, button_product, _("Product..."));
