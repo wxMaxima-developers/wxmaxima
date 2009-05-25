@@ -104,6 +104,7 @@ protected:
   void EvaluateEvent(wxCommandEvent& event);     //
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
+  void HistoryDClick(wxCommandEvent& event);
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
 

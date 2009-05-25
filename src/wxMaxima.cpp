@@ -366,6 +366,9 @@ void wxMaxima::SendMaxima(wxString s)
   s.Append(wxT("\n"));
   m_console->EnableEdit(false);
 
+  if (!s.StartsWith(wxT(":lisp-quiet")))
+    AddToHistory(s);
+
 #if wxUSE_UNICODE
   m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
 #else
@@ -3485,6 +3488,11 @@ void wxMaxima::ShowPalette(wxCommandEvent &ev)
   wxMaximaFrame::ShowPalette(id, !IsPaletteDisplayed(id));
 }
 
+void wxMaxima::HistoryDClick(wxCommandEvent& ev)
+{
+  MenuCommand(ev.GetString());
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
@@ -3724,4 +3732,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
   EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
   EVT_MENU_RANGE(menu_palette_simplify, menu_palette_plot, wxMaxima::ShowPalette)
+  EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
 END_EVENT_TABLE()

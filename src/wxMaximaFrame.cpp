@@ -64,6 +64,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
 
+  // history
+  m_history = new History(this, -1);
+
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   SetupToolBar();
@@ -175,6 +178,16 @@ void wxMaximaFrame::do_layout()
                       PaneBorder(true).            \
                       Fixed().                     \
                       Left());
+
+  m_manager.AddPane(m_history,
+      wxAuiPaneInfo().Name(wxT("history")).
+                      Caption(_("History")).
+                      Show(false).
+                      TopDockable(false).
+                      BottomDockable(false).
+                      PaneBorder(true).
+                      Right());
+
 
   ADD_PANE(simpGrid, simpBox, m_simpPanel, wxT("simplify"), _("Simplify"));
   ADD_PANE(calcGrid, calcBox, m_calcPanel, wxT("calc"), _("Calculus"));
@@ -304,18 +317,6 @@ void wxMaximaFrame::SetupMenu()
                             _("Remove output from input cells"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                               _("Insert image"), wxITEM_NORMAL);
-
-  wxglade_tmp_menu_2->AppendSeparator();
-
-  // palettes
-  wxMenu *wxglade_tmp_menu_2_sub2 = new wxMenu;
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_simplify, _("Simplify palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_trig, _("Trigonometry palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_solve, _("Solve palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_calc, _("Calculus palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_plot, _("Plot palette"));
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Palettes"), wxglade_tmp_menu_2_sub2);
-
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
@@ -343,6 +344,20 @@ void wxMaximaFrame::SetupMenu()
 
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu;
+
+  // palettes
+  wxMenu *wxglade_tmp_menu_2_sub2 = new wxMenu;
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_simplify, _("Simplify palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_trig, _("Trigonometry palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_solve, _("Solve palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_calc, _("Calculus palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_plot, _("Plot palette"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_history, _("History"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Palettes"), wxglade_tmp_menu_2_sub2);
+
+  wxglade_tmp_menu_2->AppendSeparator();
+
+
 #if defined (__WXMAC__)
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
                    _("&Interrupt\tCtrl-."), // command-. interrupts (mac standard)
@@ -358,6 +373,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &Path..."),
                    _("Add a directory to search path"), wxT("gtk-add"));
+
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_functions, _("Show &Functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
@@ -370,6 +386,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Delete a function"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_clear_var, _("Delete V&ariable..."),
                              _("Delete a variable"), wxITEM_NORMAL);
+
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_time, _("Toggle &Time Display"),
                              _("Display time used for evaluation"),
@@ -890,6 +907,9 @@ bool wxMaximaFrame::IsPaletteDisplayed(int id)
     case menu_palette_plot:
       displayed = m_manager.GetPane(wxT("plot")).IsShown();
       break;
+    case menu_palette_history:
+      displayed = m_manager.GetPane(wxT("history")).IsShown();
+      break;
   }
 
   return displayed;
@@ -912,6 +932,9 @@ void wxMaximaFrame::ShowPalette(int id, bool show)
        break;
     case menu_palette_plot:
       m_manager.GetPane(wxT("plot")).Show(show);
+      break;
+    case menu_palette_history:
+      m_manager.GetPane(wxT("history")).Show(show);
       break;
   }
 

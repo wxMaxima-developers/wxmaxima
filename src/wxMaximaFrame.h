@@ -30,6 +30,7 @@
 
 #include "MathCtrl.h"
 #include "Setup.h"
+#include "History.h"
 
 enum {
   socket_client_id = wxID_HIGHEST,
@@ -222,6 +223,7 @@ enum {
   menu_palette_trig,
   menu_palette_calc,
   menu_palette_solve,
+  menu_palette_history,
   menu_palette_plot,
 };
 
@@ -239,6 +241,7 @@ public:
   wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
   bool IsPaletteDisplayed(int id);
   void ShowPalette(int id, bool hide);
+  void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
 private:
   void set_properties();
   void do_layout();
@@ -280,6 +283,7 @@ protected:
   wxButton* button_20;
   wxButton* button_21;
   wxButton* button_22;
+  History * m_history;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;
