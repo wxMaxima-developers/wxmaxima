@@ -347,13 +347,13 @@ void wxMaximaFrame::SetupMenu()
 
   // palettes
   wxMenu *wxglade_tmp_menu_2_sub2 = new wxMenu;
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_simplify, _("Simplify palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_trig, _("Trigonometry palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_solve, _("Solve palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_calc, _("Calculus palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_plot, _("Plot palette"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_history, _("History"));
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Palettes"), wxglade_tmp_menu_2_sub2);
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_simplify, _("Simplify\tAlt-Shift-S"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_trig, _("Trigonometry\tAlt-Shift-T"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_solve, _("Solve\tAlt-Shift-S"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_calc, _("Calculus\tAlt-Shift-C"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_plot, _("Plot\tAlt-Shift-P"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_palette_history, _("History\tAlt-Shift-H"));
+  wxglade_tmp_menu_2->Append(wxNewId(), _("Panes"), wxglade_tmp_menu_2_sub2);
 
   wxglade_tmp_menu_2->AppendSeparator();
 
