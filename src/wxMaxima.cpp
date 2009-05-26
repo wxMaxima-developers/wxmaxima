@@ -362,12 +362,12 @@ void wxMaxima::SendMaxima(wxString s)
   SetStatusText(_("Maxima is calculating"), 1);
   m_dispReadOut = false;
 
+  if (!s.StartsWith(wxT(":lisp-quiet")))
+    AddToHistory(s);
+
   s.Replace(wxT("\n"), wxEmptyString);
   s.Append(wxT("\n"));
   m_console->EnableEdit(false);
-
-  if (!s.StartsWith(wxT(":lisp-quiet")))
-    AddToHistory(s);
 
 #if wxUSE_UNICODE
   m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
@@ -3490,7 +3490,8 @@ void wxMaxima::ShowPalette(wxCommandEvent &ev)
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 {
-  MenuCommand(ev.GetString());
+  m_console->OpenHCaret(ev.GetString(), GC_TYPE_CODE);
+  m_console->SetFocus();
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)

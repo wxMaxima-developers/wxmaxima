@@ -23,7 +23,8 @@
 #define HISYORY_H
 
 enum {
-  history_ctrl_id
+  history_ctrl_id,
+  history_regex_id
 };
 
 class History : public wxPanel
@@ -32,9 +33,13 @@ public:
   History(wxWindow* parent, int id);
   ~History();
   void AddToHistory(wxString cmd);
+  void OnRegExEvent(wxCommandEvent &ev);
+  void UpdateDisplay();
 private:
   wxListBox *m_history;
+  wxTextCtrl *m_regex;
   wxArrayString commands;
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

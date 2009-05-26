@@ -20,15 +20,20 @@
 #include "History.h"
 
 #include <wx/sizer.h>
+#include <wx/tokenzr.h>
+#include <wx/regex.h>
 
 History::History(wxWindow* parent, int id) : wxPanel(parent, id)
 {
   m_history = new wxListBox(this, history_ctrl_id);
+  m_regex = new wxTextCtrl(this, history_regex_id);
   wxFlexGridSizer * box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
 
   box->Add(m_history, 0, wxEXPAND | wxALL, 0);
+  box->Add(m_regex, 0, wxEXPAND | wxALL, 1);
+
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
@@ -41,6 +46,51 @@ History::~History()
 
 void History::AddToHistory(wxString cmd)
 {
-  commands.Insert(cmd, 0);
-  m_history->Set(commands);
+  wxStringTokenizer cmds(cmd, wxT(";$"));
+
+  while (cmds.HasMoreTokens())
+  {
+    wxString curr = cmds.GetNextToken().Trim(false).Trim(true);
+
+    if (curr != wxEmptyString)
+      commands.Insert(curr, 0);
+  }
+
+  UpdateDisplay();
 }
+
+void History::UpdateDisplay()
+{
+  wxLogNull disableWarnings;
+
+  wxString regex = m_regex->GetValue();
+  wxArrayString display;
+  wxRegEx matcher;
+
+  if (regex != wxEmptyString)
+    matcher.Compile(regex);
+
+  for (int i=0; i<commands.Count(); i++)
+  {
+    wxString curr = commands.Item(i);
+
+    if (regex.Length()>0 && matcher.IsValid())
+    {
+      if (matcher.Matches(curr))
+        display.Add(curr);
+    }
+    else
+      display.Add(curr);
+  }
+
+  m_history->Set(display);
+}
+
+void History::OnRegExEvent(wxCommandEvent &ev)
+{
+  UpdateDisplay();
+}
+
+BEGIN_EVENT_TABLE(History, wxPanel)
+  EVT_TEXT(history_regex_id, History::OnRegExEvent)
+END_EVENT_TABLE()
