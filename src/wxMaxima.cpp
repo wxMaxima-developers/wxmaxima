@@ -199,7 +199,7 @@ void wxMaxima::FirstOutput(wxString s)
     m_console->InsertGroupCells(header);
   }
 
-  m_lastPrompt = wxT("%i1: ");
+  m_lastPrompt = wxT("(%i1) ");
 }
 
 ///--------------------------------------------------------------------------------
@@ -730,8 +730,9 @@ void wxMaxima::ReadPrompt()
       // Maxima displayed a new main prompt
       if (o.StartsWith(wxT("(%i")))
       {
-        m_lastPrompt = o.Mid(1,o.Length()-1);
-        m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
+        //m_lastPrompt = o.Mid(1,o.Length()-1);
+        //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
+        m_lastPrompt = o;
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
@@ -1522,8 +1523,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
-  for (int id = menu_palette_simplify; id<=menu_palette_plot; id++)
-    menubar->Check(id, IsPaletteDisplayed(id));
+  for (int id = menu_pane_math; id<=menu_pane_stats; id++)
+    menubar->Check(id, IsPaneDisplayed(id));
 
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -1576,6 +1577,8 @@ wxString wxMaxima::GetDefaultEntry()
 {
   if (m_console->CanCopy(true))
     return m_console->GetString();
+  if (m_console->GetActiveCell() != NULL)
+    return m_console->GetActiveCell()->ToString(false);
   return wxT("%");
 }
 
@@ -2139,6 +2142,10 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     cmd = wxT("allroots(") + expr + wxT(");");
     MenuCommand(cmd);
     break;
+  case menu_bfallroots:
+    cmd = wxT("bfallroots(") + expr + wxT(");");
+    MenuCommand(cmd);
+    break;
   case menu_realroots:
     cmd = wxT("realroots(") + expr + wxT(");");
     MenuCommand(cmd);
@@ -2386,6 +2393,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     }
     break;
   case menu_enter_mat:
+  case menu_stats_enterm:
     {
       MatDim *wiz = new MatDim(this, -1, _("Matrix"));
       wiz->Centre(wxBOTH);
@@ -2853,6 +2861,24 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
+  case menu_lbfgs:
+    Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"),
+                               _("Variables:"),
+                               _("Initial Estimates:"),
+                               _("Epsilon:"),
+                               expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
+                               this, -1, _("Find minimum"));
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("lbfgs(") + wiz->GetValue1() + wxT(", [") +
+            wiz->GetValue2() + wxT("], [") +
+            wiz->GetValue3() + wxT("], ") +
+            wiz->GetValue4() + wxT(", [-1,0]);");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
   case button_sum:
   case menu_sum:
     {
@@ -3058,6 +3084,206 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     MenuCommand(wxT("bug_report()$"));
     break;
   default:
+    break;
+  }
+}
+
+void wxMaxima::StatsMenu(wxCommandEvent &ev)
+{
+  wxString expr = GetDefaultEntry();
+
+  switch (ev.GetId())
+  {
+    case menu_stats_histogram:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
+                                 expr, wxT("10"), this, -1, _("Histogram"), false);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString cmd = wxT("wxhistogram(") + wiz->GetValue1() + wxT(", nclasses=") +
+                       wiz->GetValue2() + wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_stats_scatterplot:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
+                                 expr, wxT("10"), this, -1, _("Scatterplot"), false);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString cmd = wxT("wxscatterplot(") + wiz->GetValue1() + wxT(", nclasses=") +
+                       wiz->GetValue2() + wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_stats_barsplot:
+    {
+      wxString cmd = wxT("wxbarsplot(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_boxplot:
+    {
+      wxString cmd = wxT("wxboxplot(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_piechart:
+    {
+      wxString cmd = wxT("wxpiechart(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_mean:
+    {
+      wxString cmd = wxT("mean(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_median:
+    {
+      wxString cmd = wxT("median(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_var:
+    {
+      wxString cmd = wxT("var(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_dev:
+    {
+      wxString cmd = wxT("std(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_tt1:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Sample:"), _("Mean:"),
+                                 expr, wxT("0"), this, -1, _("One sample t-test"), false);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString cmd = wxT("test_mean(") + wiz->GetValue1() + wxT(", mean=") +
+                       wiz->GetValue2() + wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_stats_tt2:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Sample 1:"), _("Sample 2:"),
+                                 wxEmptyString, wxEmptyString, this, -1,
+                                 _("Two sample t-test"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString cmd = wxT("test_means_difference(") + wiz->GetValue1() + wxT(", ") +
+                       wiz->GetValue2() + wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_stats_tnorm:
+    {
+      wxString cmd = wxT("test_normality(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_linreg:
+    {
+      wxString cmd = wxT("simple_linear_regression(" + expr + wxT(");"));
+      MenuCommand(cmd);
+    }
+    break;
+    case menu_stats_lsquares:
+    {
+      Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Col. names:"),
+                                 _("Equation:"), _("Variables:"),
+                                 expr, wxT("x,y"), wxT("y=A*x+B"), wxT("A,B"),
+                                 this, -1, _("Lest Squares Fit"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString cmd = wxT("lsquares_estimates(") + wiz->GetValue1() + wxT(", [") +
+              wiz->GetValue2() + wxT("], ") +
+              wiz->GetValue3() + wxT(", [") +
+              wiz->GetValue4() + wxT("], iprint=[-1,0]);");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+    case menu_stats_readm:
+    {
+      wxString file = wxFileSelector(_("Open matrix"), m_lastPath,
+                                     wxEmptyString, wxEmptyString,
+                                     _("Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"),
+                                     wxFD_OPEN);
+      if (file != wxEmptyString) {
+        m_lastPath = wxPathOnly(file);
+
+        wxString name = wxGetTextFromUser(wxT("Enter matrix name:"), wxT("Marix name"));
+        wxString cmd;
+
+        if (name != wxEmptyString)
+          cmd << name << wxT(": ");
+
+        wxString format;
+        if (file.EndsWith(wxT(".csv")))
+          format = wxT("csv");
+        else if (file.EndsWith(wxT(".tab")))
+          format = wxT("tab");
+
+        if (format != wxEmptyString)
+          MenuCommand(cmd + wxT("read_matrix(\"") + file + wxT("\", '") + format + wxT(");"));
+        else
+          MenuCommand(cmd + wxT("read_matrix(\"") + file + wxT("\");"));
+      }
+    }
+    break;
+    case menu_stats_subsample:
+    {
+      Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Condition:"),
+                                 _("Include columns:"), _("Matrix name:"),
+                                 expr, wxT("col[1]#'NA"),
+                                 wxEmptyString, wxEmptyString,
+                                 this, -1, _("Select Subsample"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        wxString name = wiz->GetValue4();
+
+        wxString cmd;
+
+        if (name != wxEmptyString)
+          cmd << name << wxT(": ");
+
+        cmd += wxT("subsample(\n   ") + wiz->GetValue1() + wxT(",\n   ") +
+              wxT("lambda([col], is( ");
+
+        if (wiz->GetValue2() != wxEmptyString)
+          cmd += wiz->GetValue2() + wxT(" ))");
+        else
+          cmd += wxT("true ))");
+
+        if (wiz->GetValue3() != wxEmptyString)
+          cmd += wxT(",\n   ") + wiz->GetValue3();
+
+        cmd += wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
     break;
   }
 }
@@ -3481,11 +3707,11 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   }
 }
 
-void wxMaxima::ShowPalette(wxCommandEvent &ev)
+void wxMaxima::ShowPane(wxCommandEvent &ev)
 {
   int id = ev.GetId();
 
-  wxMaximaFrame::ShowPalette(id, !IsPaletteDisplayed(id));
+  wxMaximaFrame::ShowPane(id, !IsPaneDisplayed(id));
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
@@ -3581,6 +3807,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_tellrat, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_modulus, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_allroots, wxMaxima::EquationsMenu)
+  EVT_MENU(menu_bfallroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_realroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve_num, wxMaxima::EquationsMenu)
@@ -3610,6 +3837,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_diff, wxMaxima::CalculusMenu)
   EVT_MENU(menu_series, wxMaxima::CalculusMenu)
   EVT_MENU(menu_limit, wxMaxima::CalculusMenu)
+  EVT_MENU(menu_lbfgs, wxMaxima::CalculusMenu)
   EVT_MENU(menu_gen_mat, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_map, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
@@ -3696,12 +3924,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_simplify, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_trig, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_calc, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_solve, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_plot, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_palette_simplify, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_math, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_stats, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
@@ -3738,6 +3963,23 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
   EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
-  EVT_MENU_RANGE(menu_palette_simplify, menu_palette_plot, wxMaxima::ShowPalette)
+  EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
   EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
+  EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_scatterplot, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_barsplot, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_boxplot, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_mean, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_median, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_var, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_dev, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_tt1, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_tt2, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_tnorm, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_linreg, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_lsquares, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_readm, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_stats_enterm, wxMaxima::AlgebraMenu)
+  EVT_BUTTON(menu_stats_subsample, wxMaxima::StatsMenu)
 END_EVENT_TABLE()

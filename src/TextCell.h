@@ -55,6 +55,8 @@ protected:
   wxString m_text;
   int m_realCenter;
   int m_fontSize;
+  int m_fontSizeLabel;
+  int m_labelWidth, m_labelHeight;
 };
 
 #endif //_TEXTCELL_H_

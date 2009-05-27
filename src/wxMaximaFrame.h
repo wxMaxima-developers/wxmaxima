@@ -48,6 +48,7 @@ enum {
   menu_solve,
   menu_solve_num,
   menu_allroots,
+  menu_bfallroots,
   menu_realroots,
   menu_solve_lin,
   menu_solve_algsys,
@@ -102,6 +103,7 @@ enum {
   menu_partfrac,
   menu_sum,
   menu_limit,
+  menu_lbfgs,
   menu_series,
   menu_pade,
   menu_map,
@@ -219,12 +221,27 @@ enum {
   menu_recent_document_8,
   menu_recent_document_9,
   menu_insert_image,
-  menu_palette_simplify,
-  menu_palette_trig,
-  menu_palette_calc,
-  menu_palette_solve,
-  menu_palette_history,
-  menu_palette_plot,
+  menu_pane_hideall,
+  menu_pane_math,
+  menu_pane_history,
+  menu_pane_stats,
+  menu_stats_mean,
+  menu_stats_median,
+  menu_stats_var,
+  menu_stats_dev,
+  menu_stats_tt1,
+  menu_stats_tt2,
+  menu_stats_tnorm,
+  menu_stats_linreg,
+  menu_stats_lsquares,
+  menu_stats_histogram,
+  menu_stats_scatterplot,
+  menu_stats_barsplot,
+  menu_stats_piechart,
+  menu_stats_boxplot,
+  menu_stats_readm,
+  menu_stats_enterm,
+  menu_stats_subsample
 };
 
 class wxMaximaFrame: public wxFrame
@@ -239,8 +256,8 @@ public:
   void AddRecentDocument(wxString file);
   void RemoveRecentDocument(wxString file);
   wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
-  bool IsPaletteDisplayed(int id);
-  void ShowPalette(int id, bool hide);
+  bool IsPaneDisplayed(int id);
+  void ShowPane(int id, bool hide);
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
 private:
   void set_properties();
@@ -249,40 +266,15 @@ private:
   void SetupToolBar();
 #endif
   void SetupMenu();
+  wxPanel *CreateStatPane();
+  wxPanel *CreateMathPane();
 protected:
   void LoadRecentDocuments();
   void SaveRecentDocuments();
   wxAuiManager m_manager;
   wxMenuBar* frame_1_menubar;
-  // AUI PANELS
-  wxPanel *m_simpPanel;
-  wxPanel *m_solvePanel;
-  wxPanel *m_calcPanel;
-  wxPanel *m_trigPanel;
-  wxPanel *m_plotPanel;
-  //
+
   MathCtrl* m_console;
-  wxButton* button_2;
-  wxButton* button_3;
-  wxButton* button_4;
-  wxButton* button_5;
-  wxButton* button_6;
-  wxButton* button_7;
-  wxButton* button_8;
-  wxButton* button_9;
-  wxButton* button_10;
-  wxButton* button_11;
-  wxButton* button_12;
-  wxButton* button_13;
-  wxButton* button_14;
-  wxButton* button_15;
-  wxButton* button_16;
-  wxButton* button_17;
-  wxButton* button_18;
-  wxButton* button_19;
-  wxButton* button_20;
-  wxButton* button_21;
-  wxButton* button_22;
   History * m_history;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;

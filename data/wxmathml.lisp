@@ -29,6 +29,7 @@
 ($put '$wxmaxima `((mlist simp) 0 8 3) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
+(setf (get '$outchar 'assign) 'neverset)
 
 (defvar *var-tag* '("<v>" "</v>"))
 
@@ -938,7 +939,7 @@
          (append l
                  (if (cadr x)
                      (list
-		      (format nil "<lbl>~A: </lbl>"
+		      (format nil "<lbl>(~A) </lbl>"
 			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))))
 		     nil))
          r 'mparen 'mparen))
@@ -1307,3 +1308,49 @@
 	 (putprop e  s 'wxxmlsym)
          (putprop e lbp 'wxxml-lbp))
         (t (merror "Improper arguments to `wxxmlput'."))))
+
+;;;;;;;;;;;;;
+;; Auto-loaded functions
+;;;;
+
+(setf (get '$lbfgs 'autoload) "lbfgs")
+(setf (get '$lcm 'autoload) "functs")
+
+;;;;;;;;;;;;;
+;; Statistics functions
+;;;;
+
+(defvar $draw_compound t)
+
+(defmacro create-statistics-wrapper (fun wxfun)
+  `(defun ,wxfun (&rest args)
+     (let (($draw_compound nil) res)
+       (declare (special $draw_compound))
+       (setq res ($apply ',fun (cons '(mlist simp) args)))
+       ($apply '$wxdraw2d res))))
+
+(create-statistics-wrapper $histogram $wxhistogram)
+(create-statistics-wrapper $scatterplot $wxscatterplot)
+(create-statistics-wrapper $barsplot $wxbarsplot)
+(create-statistics-wrapper $piechart $wxpiechart)
+(create-statistics-wrapper $boxplot $wxboxplot)
+
+(dolist (fun '($histogram
+	       $scatterplot
+	       $barsplot
+	       $piechart
+	       $boxplot))
+  (setf (get fun 'autoload) "descriptive"))
+
+(dolist (fun '($mean
+	       $median
+	       $var
+	       $std
+	       $test_mean
+	       $test_means_difference
+	       $test_normality
+	       $simple_linear_regression
+	       $subsample))
+  (setf (get fun 'autoload) "stats"))
+
+(setf (get '$lsquares_estimates 'autoload) "lsquares")

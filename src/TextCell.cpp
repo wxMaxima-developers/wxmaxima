@@ -77,22 +77,39 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     SetFont(parser, fontsize);
 
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
-      dc.GetTextExtent(wxT("XXXXXX"), &m_width, &m_height);
+      dc.GetTextExtent(wxT("XXXXXXX"), &m_width, &m_height);
+      m_fontSizeLabel = m_fontSize;
+      dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
+      while (m_labelWidth >= m_width) {
+        int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
+        dc.SetFont(wxFont(fontsize1, wxMODERN,
+              parser.IsItalic(m_textStyle),
+              parser.IsBold(m_textStyle),
+              false, //parser.IsUnderlined(m_textStyle),
+              parser.GetFontName(m_textStyle),
+              parser.GetFontEncoding()));
+        dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
+      }
     }
+
     else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
 #endif
+
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+
     else if (m_text == wxEmptyString)
     {
       dc.GetTextExtent(wxT("X"), &m_width, &m_height);
       m_width = 0;
     }
+
     else
       dc.GetTextExtent(m_text, &m_width, &m_height);
 
@@ -129,34 +146,17 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetForeground(parser);
 
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
-      int width, height;
-      int fs = m_fontSize;
-      dc.SetFont(wxFont(fs, wxMODERN,
-                      parser.IsItalic(m_textStyle),
-                      parser.IsBold(m_textStyle),
-                      false, //parser.IsUnderlined(m_textStyle),
-                      parser.GetFontName(m_textStyle),
-                      parser.GetFontEncoding()));
-      dc.GetTextExtent(m_text, &width, &height);
-      while (width >= m_width) {
-        dc.SetFont(wxFont(--fs, wxMODERN,
-              parser.IsItalic(m_textStyle),
-              parser.IsBold(m_textStyle),
-              false, //parser.IsUnderlined(m_textStyle),
-              parser.GetFontName(m_textStyle),
-              parser.GetFontEncoding()));
-        dc.GetTextExtent(m_text, &width, &height);
-      }
-      m_fontSize = fs;
-
+      SetFont(parser, m_fontSizeLabel);
       dc.DrawText(m_text,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale) + (m_width - width),
-                  point.y - m_realCenter /*+ SCALE_PX(MC_TEXT_PADDING, scale)*/ + (m_height - height)/2);
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale) + (m_width - m_labelWidth),
+                  point.y - m_realCenter + (m_height - m_labelHeight)/2);
     }
+
     else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+
 #if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
@@ -164,16 +164,19 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
+
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+
 #if defined __WXMSW__ || wxUSE_UNICODE
     else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
     dc.DrawText(wxT("\xB7"),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
+
     else
       dc.DrawText(m_text,
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),

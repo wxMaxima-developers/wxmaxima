@@ -88,9 +88,10 @@ protected:
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
-  void ShowPalette(wxCommandEvent& event);         //
+  void ShowPane(wxCommandEvent& event);         //
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
+  void StatsMenu(wxCommandEvent& event);
 
   void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
   void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
