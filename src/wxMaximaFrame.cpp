@@ -129,9 +129,9 @@ void wxMaximaFrame::do_layout()
   wxString perspective;
   wxConfigBase *config = wxConfig::Get();
 
-  if (config->Read(wxT("AUI/perspective"), &perspective))
-    m_manager.LoadPerspective(perspective);
-  else
+//  if (config->Read(wxT("AUI/perspective"), &perspective))
+//    m_manager.LoadPerspective(perspective);
+//  else
     m_manager.Update();
 }
 
@@ -907,14 +907,19 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   wxPanel *panel = new wxPanel(this, -1);
 
   int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
+  int border = 0;
+#else
   int border = 1;
+#endif
+  int sizerBorder = 2;
 
   grid1->Add(new wxButton(panel, menu_stats_mean, wxT("Mean")), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_median, wxT("Median")), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_var, wxT("Variance")), 0, style, border);
   grid1->Add(new wxButton(panel, menu_stats_dev, wxT("Deviation")), 0, style, border);
 
-  box->Add(grid1, 0, style, 2*border);
+  box->Add(grid1, 0, style, sizerBorder);
 
   box1->Add(new wxButton(panel, menu_stats_tt1, wxT("Mean Test...")), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_tt2, wxT("Mean Difference Test...")), 0, style, border);
@@ -922,7 +927,7 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   box1->Add(new wxButton(panel, menu_stats_linreg, wxT("Linear Regression")), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_lsquares, wxT("Least Squares Fit...")), 0, style, border);
 
-  box->Add(box1, 0, style, 2*border);
+  box->Add(box1, 0, style, sizerBorder);
 
   grid2->Add(new wxButton(panel, menu_stats_histogram, wxT("Histogram...")), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_scatterplot, wxT("Scatterplot...")), 0, style, border);
@@ -930,16 +935,16 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   grid2->Add(new wxButton(panel, menu_stats_piechart, wxT("Piechart")), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_boxplot, wxT("Boxplot")), 0, style, border);
 
-  box->Add(grid2, 0, style, 2*border);
+  box->Add(grid2, 0, style, sizerBorder);
 
   grid3->Add(new wxButton(panel, menu_stats_readm, wxT("Read Matrix...")), 0, style, border);
   grid3->Add(new wxButton(panel, menu_stats_enterm, wxT("Enter Matrix...")), 0, style, border);
 
-  box->Add(grid3, 0, style, 2*border);
+  box->Add(grid3, 0, style, sizerBorder);
 
   box3->Add(new wxButton(panel, menu_stats_subsample, wxT("Subsample...")), 0, style, border);
 
-  box->Add(box3, 0, style, 2*border);
+  box->Add(box3, 0, style, sizerBorder);
 
   panel->SetSizer(box);
   box->Fit(panel);

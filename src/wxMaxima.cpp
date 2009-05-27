@@ -3232,6 +3232,10 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
       if (file != wxEmptyString) {
         m_lastPath = wxPathOnly(file);
 
+#if defined __WXMSW__
+        file.Replace(wxT("\\"), wxT("/"));
+#endif
+
         wxString name = wxGetTextFromUser(wxT("Enter matrix name:"), wxT("Marix name"));
         wxString cmd;
 
