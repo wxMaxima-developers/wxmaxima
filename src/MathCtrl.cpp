@@ -2243,6 +2243,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
           AddLineToFile(output, wxT("<P CLASS=\"title\">"));
           AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
           break;
+        case GC_TYPE_PAGEBREAK:
+          AddLineToFile(output, wxT("\n\n<!-- Page break cell -->\n\n"));
+          AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
+          AddLineToFile(output, wxT("<hr/>"));
+          break;
         case GC_TYPE_IMAGE:
         {
           AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
@@ -2371,6 +2376,10 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm)
             AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
         }
       }
+    }
+
+    else if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK) {
+      AddLineToFile(output, wxT("/* [wxMaxima: page break    ] */"), false);
     }
 
     // Write text

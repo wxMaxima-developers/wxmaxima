@@ -1095,6 +1095,13 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       }
     }
 
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: page break    ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      cell = new GroupCell(GC_TYPE_PAGEBREAK);
+    }
+
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
     {
       wxmLines->RemoveAt(0);

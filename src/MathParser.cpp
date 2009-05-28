@@ -109,6 +109,9 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
       children = children->GetNext();
     }
   }
+  else if (type == wxT("pagebreak")) {
+    group = new GroupCell(GC_TYPE_PAGEBREAK);
+  }
   else if (type == wxT("text")) {
     group = new GroupCell(GC_TYPE_TEXT);
     MathCell *editor = ParseTag(node->GetChildren());
