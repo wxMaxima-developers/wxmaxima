@@ -92,6 +92,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
   m_defaultPort->SetValue(defaultPort);
   m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
+  m_savePanes = new wxCheckBox(notebook_1_pane_1, -1, _("Save panes layout"));
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
@@ -169,6 +170,7 @@ void Config::set_properties()
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
+  m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
@@ -188,7 +190,7 @@ void Config::set_properties()
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
-  bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true;
+  bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true, savePanes = false;
   bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false;
   bool enterEvaluates = false;
   int rs = 0;
@@ -197,6 +199,7 @@ void Config::set_properties()
 
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
+  config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
@@ -250,6 +253,7 @@ void Config::set_properties()
     m_saveSize->SetValue(true);
   else
     m_saveSize->SetValue(false);
+  m_savePanes->SetValue(savePanes);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_showHeader->SetValue(showHeader);
@@ -305,6 +309,7 @@ void Config::do_layout()
   grid_sizer_5->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
   sizer_6->Add(m_saveSize, 0, wxALL, 3);
+  sizer_6->Add(m_savePanes, 0, wxALL, 3);
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
   sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
   sizer_6->Add(m_showLong, 0, wxALL, 3);
@@ -399,6 +404,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
+  config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

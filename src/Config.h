@@ -106,6 +106,7 @@ protected:
   wxStaticText* label_4;
   wxComboBox* m_language;
   wxCheckBox* m_saveSize;
+  wxCheckBox* m_savePanes;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_showHeader;

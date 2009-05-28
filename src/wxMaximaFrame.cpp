@@ -128,10 +128,12 @@ void wxMaximaFrame::do_layout()
 
   wxString perspective;
   wxConfigBase *config = wxConfig::Get();
+  bool loadPanes = false;
+  config->Read(wxT("AUI/savePanes"), &loadPanes);
 
-//  if (config->Read(wxT("AUI/perspective"), &perspective))
-//    m_manager.LoadPerspective(perspective);
-//  else
+  if (loadPanes && config->Read(wxT("AUI/perspective"), &perspective))
+    m_manager.LoadPerspective(perspective);
+  else
     m_manager.Update();
 }
 
