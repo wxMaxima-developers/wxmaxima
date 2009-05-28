@@ -199,6 +199,7 @@ enum {
   menu_add_subsection,
   menu_add_section,
   menu_add_title,
+  menu_add_pagebreak,
   menu_insert_input,
   menu_cut,
   menu_paste,

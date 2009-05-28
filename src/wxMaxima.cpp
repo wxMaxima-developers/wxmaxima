@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -3637,6 +3638,14 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_add_subsection:
     type = GC_TYPE_SUBSECTION;
     break;
+  case menu_add_pagebreak:
+    {
+      m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
+          m_console->GetHCaret());
+      m_console->Refresh();
+      return;
+    }
+    break;
   case menu_insert_image:
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
@@ -3951,6 +3960,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
+  EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)

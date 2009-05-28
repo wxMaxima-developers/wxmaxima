@@ -1,6 +1,6 @@
 ///
 ///  Copyright (C) 2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
-///            (C) 2008-2009 Ziga Lenarcic    <zigalenarcic@users.sourceforge.net>
+///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -43,12 +43,14 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_groupType = groupType;
   m_lastInOutput = NULL;
   // set up cell depending on groupType, so we have a working cell
-  if (groupType == GC_TYPE_CODE)
-    m_input = new TextCell(EMPTY_INPUT_LABEL);
-  else
-    m_input = new TextCell(wxT(" "));
+  if (groupType != GC_TYPE_PAGEBREAK) {
+    if (groupType == GC_TYPE_CODE)
+      m_input = new TextCell(EMPTY_INPUT_LABEL);
+    else
+      m_input = new TextCell(wxT(" "));
 
-  m_input->SetType(MC_TYPE_MAIN_PROMPT);
+    m_input->SetType(MC_TYPE_MAIN_PROMPT);
+  }
 
   EditorCell *editor = new EditorCell();
   editor->SetValue(initString);
@@ -153,7 +155,8 @@ MathCell* GroupCell::Copy(bool all)
   GroupCell* tmp = new GroupCell(m_groupType);
   tmp->Hide(m_hide);
   CopyData(this, tmp);
-  tmp->SetInput(m_input->Copy(true));
+  if (m_input)
+    tmp->SetInput(m_input->Copy(true));
   if (m_output != NULL)
     tmp->SetOutput(m_output->Copy(true));
   if (all && m_next != NULL)
@@ -257,6 +260,14 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
   {
+    // special case of 'line cell'
+    if (m_groupType == GC_TYPE_PAGEBREAK) {
+      m_width = 10;
+      m_height = 2;
+      MathCell::RecalculateWidths(parser, fontsize, all);
+      return;
+    }
+
     UnBreakUpCells();
 
     double scale = parser.GetScale();
@@ -291,6 +302,16 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
   {
+    // special case
+    if (m_groupType == GC_TYPE_PAGEBREAK) {
+      m_width = 10;
+      m_height = 2;
+      m_center = 0;
+      m_indent = 0;
+      MathCell::RecalculateWidths(parser, fontsize, all);
+      return;
+    }
+
     double scale = parser.GetScale();
     m_input->RecalculateSize(parser, fontsize, true);
     m_center = m_input->GetMaxCenter();
@@ -339,6 +360,18 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   }
   if (DrawThisCell(parser, point))
   {
+    // draw a thick line for 'page break'
+    // and return
+    if (m_groupType == GC_TYPE_PAGEBREAK) {
+      wxRect rect = GetRect(false);
+      int y = rect.GetY();
+      wxPen pen(parser.GetColor(TS_CURSOR), 1, wxDOT);
+      dc.SetPen(pen);
+      dc.DrawLine(0, y , 10000, y);
+      MathCell::Draw(parser, point, fontsize, all);
+      return;
+    }
+
     //
     // Paint background if we have a text cell
     //
@@ -469,14 +502,17 @@ wxRect GroupCell::HideRect()
 
 wxString GroupCell::ToString(bool all)
 {
-  wxString str = m_input->ToString(true);
-  if (m_output != NULL && !m_hide) {
-    MathCell *tmp = m_output;
-    while (tmp != NULL) {
-      if (tmp->ForceBreakLineHere() && str.Length()>0)
-        str += wxT("\n");
-      str += tmp->ToString(false);
-      tmp = tmp->m_nextToDraw;
+  wxString str;
+  if (GetEditable()) {
+    str = m_input->ToString(true);
+    if (m_output != NULL && !m_hide) {
+      MathCell *tmp = m_output;
+      while (tmp != NULL) {
+        if (tmp->ForceBreakLineHere() && str.Length()>0)
+          str += wxT("\n");
+        str += tmp->ToString(false);
+        tmp = tmp->m_nextToDraw;
+      }
     }
   }
   return str + MathCell::ToString(all);
@@ -486,8 +522,12 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 {
   wxString str;
 
+  // pagebreak
+  if (m_groupType == GC_TYPE_PAGEBREAK) {
+    str = wxT("\\pagebreak\n");
+  }
   // IMAGE CELLS
-  if (m_groupType == GC_TYPE_IMAGE) {
+  else if (m_groupType == GC_TYPE_IMAGE) {
     MathCell *copy = m_output->Copy(false);
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
@@ -612,6 +652,12 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_SUBSECTION:
       str += wxT(" type=\"subsection\"");
       break;
+    case GC_TYPE_PAGEBREAK:
+      {
+        str += wxT(" type=\"pagebreak\"/>");
+        return str + MathCell::ToXML(all);
+      }
+      break;
     default:
       str += wxT(" type=\"unknown\"");
       break;
@@ -679,7 +725,7 @@ void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
   *first = NULL;
   *last = NULL;
 
-  if (m_input->ContainsRect(rect))
+  if ((m_input) && (m_input->ContainsRect(rect)))
     m_input->SelectRect(rect, first, last);
   else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
@@ -807,6 +853,8 @@ MathCell *GroupCell::GetEditable()
       return GetInput();
     case GC_TYPE_SUBSECTION:
       return GetInput();
+    case GC_TYPE_PAGEBREAK:
+      return NULL;
   }
 }
 
@@ -1021,6 +1069,7 @@ bool GroupCell::IsLesserGCType(int comparedTo) {
   switch (m_groupType) {
     case GC_TYPE_CODE:
     case GC_TYPE_TEXT:
+    case GC_TYPE_PAGEBREAK:
     case GC_TYPE_IMAGE:
       if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
           (comparedTo == GC_TYPE_SUBSECTION))
@@ -1054,7 +1103,7 @@ void GroupCell::Number(int &section, int &subsection, int &image) {
       subsection = 0;
       {
         wxString num = wxT(" ");
-        num << section << wxT(". ");
+        num << section << wxT(" ");
         ((TextCell*)m_input)->SetValue(num);
       }
       break;

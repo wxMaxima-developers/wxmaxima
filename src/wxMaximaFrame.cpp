@@ -239,6 +239,8 @@ void wxMaximaFrame::SetupMenu()
                              _("Insert a new section cell"));
   wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New T&itle Cell\tF9"),
                              _("Insert a new title cell"));
+  wxglade_tmp_menu_2_sub1->Append(menu_add_pagebreak, _("Insert Page Break\tF10"),
+                             _("Insert a page break"));
   wxglade_tmp_menu_2->AppendSeparator();
 
   wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));

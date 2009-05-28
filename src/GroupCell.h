@@ -31,7 +31,8 @@ enum
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
   GC_TYPE_TEXT,
-  GC_TYPE_IMAGE
+  GC_TYPE_IMAGE,
+  GC_TYPE_PAGEBREAK
 };
 
 class GroupCell: public MathCell
