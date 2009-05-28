@@ -2862,22 +2862,24 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     }
     break;
   case menu_lbfgs:
-    Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"),
-                               _("Variables:"),
-                               _("Initial Estimates:"),
-                               _("Epsilon:"),
-                               expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
-                               this, -1, _("Find minimum"));
-    wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
     {
-      cmd = wxT("lbfgs(") + wiz->GetValue1() + wxT(", [") +
-            wiz->GetValue2() + wxT("], [") +
-            wiz->GetValue3() + wxT("], ") +
-            wiz->GetValue4() + wxT(", [-1,0]);");
-      MenuCommand(cmd);
+      Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"),
+                                 _("Variables:"),
+                                 _("Initial Estimates:"),
+                                 _("Epsilon:"),
+                                 expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
+                                 this, -1, _("Find minimum"));
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("lbfgs(") + wiz->GetValue1() + wxT(", [") +
+              wiz->GetValue2() + wxT("], [") +
+              wiz->GetValue3() + wxT("], ") +
+              wiz->GetValue4() + wxT(", [-1,0]);");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
     }
-    wiz->Destroy();
     break;
   case button_sum:
   case menu_sum:
