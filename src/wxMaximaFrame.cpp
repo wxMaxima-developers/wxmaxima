@@ -126,6 +126,16 @@ void wxMaximaFrame::do_layout()
                       Fixed().
                       Left());
 
+  m_manager.AddPane(CreateFormatPane(),
+      wxAuiPaneInfo().Name(wxT("format")).
+                      Caption(_("Insert")).
+                      Show(false).
+                      TopDockable(false).
+                      BottomDockable(false).
+                      PaneBorder(true).
+                      Fixed().
+                      Left());
+
   wxString perspective;
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = false;
@@ -283,8 +293,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub2->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all paned"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub2->AppendSeparator();
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   wxglade_tmp_menu_2->Append(wxNewId(), _("Panes"), wxglade_tmp_menu_2_sub2);
 
   wxglade_tmp_menu_2->AppendSeparator();
@@ -657,13 +668,6 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("cut.png"),
                            _("Delete selection"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_insert_text, _("Insert text"),
-                           IMAGE("text.png"),
-                           _("Insert text"));
-  frame_1_toolbar->AddTool(tb_insert_input, _("Insert input group"),
-                           IMAGE("input.png"),
-                           _("Insert input cell"));
-  frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            IMAGE("stop.png"),
                            _("Interrupt current computation"));
@@ -720,15 +724,6 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxT("gtk-cut"),
                                                     wxART_TOOLBAR),
                            _("Delete selection"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_insert_text, _("Insert text"),
-                           wxArtProvider::GetBitmap(wxART_NORMAL_FILE,
-                                                    wxART_TOOLBAR),
-                           _("Insert text"));
-  frame_1_toolbar->AddTool(tb_insert_input, _("Insert input cell"),
-                           wxArtProvider::GetBitmap(wxART_EXECUTABLE_FILE,
-                                                    wxART_TOOLBAR),
-                           _("Insert input cell"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            wxArtProvider::GetBitmap(wxT("gtk-stop"),
@@ -839,6 +834,9 @@ bool wxMaximaFrame::IsPaneDisplayed(int id)
     case menu_pane_stats:
       displayed = m_manager.GetPane(wxT("stats")).IsShown();
       break;
+    case menu_pane_format:
+      displayed = m_manager.GetPane(wxT("format")).IsShown();
+      break;
   }
 
   return displayed;
@@ -855,6 +853,9 @@ void wxMaximaFrame::ShowPane(int id, bool show)
       break;
     case menu_pane_stats:
       m_manager.GetPane(wxT("stats")).Show(show);
+      break;
+    case menu_pane_format:
+      m_manager.GetPane(wxT("format")).Show(show);
       break;
     case menu_pane_hideall:
       m_manager.GetPane(wxT("math")).Show(false);
@@ -953,6 +954,28 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   panel->SetSizer(box);
   box->Fit(panel);
   box->SetSizeHints(panel);
+
+  return panel;
+}
+
+wxPanel *wxMaximaFrame::CreateFormatPane()
+{
+  wxGridSizer *grid = new wxGridSizer(2);
+  wxPanel *panel = new wxPanel(this, -1);
+
+  int style = wxALL | wxEXPAND;
+  int border = 1;
+
+  grid->Add(new wxButton(panel, menu_format_text, _("Text")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_title, _("Title")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_subsection, _("Subsection")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_section, _("Section")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_image, _("Image")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_pagebreak, _("Pagebreak")), 0, style, border);
+
+  panel->SetSizer(grid);
+  grid->Fit(panel);
+  grid->SetSizeHints(panel);
 
   return panel;
 }

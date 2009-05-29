@@ -189,8 +189,6 @@ enum {
   tb_pref,
   tb_interrupt,
   tb_help,
-  tb_insert_text,
-  tb_insert_input,
   tb_animation_start,
   tb_animation_stop,
 #endif
@@ -225,6 +223,7 @@ enum {
   menu_pane_hideall,
   menu_pane_math,
   menu_pane_history,
+  menu_pane_format,
   menu_pane_stats,
   menu_stats_mean,
   menu_stats_median,
@@ -242,8 +241,18 @@ enum {
   menu_stats_boxplot,
   menu_stats_readm,
   menu_stats_enterm,
-  menu_stats_subsample
+  menu_stats_subsample,
+  menu_format_code,
+  menu_format_text,
+  menu_format_subsection,
+  menu_format_section,
+  menu_format_title,
+  menu_format_image,
+  menu_format_pagebreak
 };
+
+#define FIRST_PANE menu_pane_hideall
+#define LAST_PANE  menu_pane_stats
 
 class wxMaximaFrame: public wxFrame
 {
@@ -269,6 +278,7 @@ private:
   void SetupMenu();
   wxPanel *CreateStatPane();
   wxPanel *CreateMathPane();
+  wxPanel *CreateFormatPane();
 protected:
   void LoadRecentDocuments();
   void SaveRecentDocuments();

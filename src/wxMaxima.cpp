@@ -3624,36 +3624,35 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_insert_input:
-#endif
     type = GC_TYPE_CODE;
     break;
   case menu_add_comment:
   case popid_add_comment:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_insert_text:
-#endif
+  case menu_format_text:
     type = GC_TYPE_TEXT;
     break;
   case menu_add_title:
+  case menu_format_title:
     type = GC_TYPE_TITLE;
     break;
   case menu_add_section:
+  case menu_format_section:
     type = GC_TYPE_SECTION;
     break;
   case menu_add_subsection:
+  case menu_format_subsection:
     type = GC_TYPE_SUBSECTION;
     break;
   case menu_add_pagebreak:
-    {
-      m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
-          m_console->GetHCaret());
-      m_console->Refresh();
-      return;
-    }
+  case menu_format_pagebreak:
+    m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
+        m_console->GetHCaret());
+    m_console->Refresh();
+    m_console->SetFocus();
+    return;
     break;
   case menu_insert_image:
+  case menu_format_image:
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
@@ -3662,11 +3661,13 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
       if (file != wxEmptyString) {
         m_console->OpenHCaret(file, GC_TYPE_IMAGE);
       }
+      m_console->SetFocus();
       return ;
     }
     break;
   }
 
+  m_console->SetFocus();
   m_console->OpenHCaret(wxEmptyString, type);
 }
 
@@ -3923,8 +3924,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_delete, wxMaxima::EditMenu)
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
-  EVT_TOOL(tb_insert_input, wxMaxima::InsertMenu)
-  EVT_TOOL(tb_insert_text, wxMaxima::InsertMenu)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
   EVT_TOOL(tb_animation_start, wxMaxima::FileMenu)
@@ -3946,9 +3945,11 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_hideall, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_math, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_stats, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
@@ -4005,4 +4006,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(menu_stats_readm, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_enterm, wxMaxima::AlgebraMenu)
   EVT_BUTTON(menu_stats_subsample, wxMaxima::StatsMenu)
+  EVT_BUTTON(menu_format_title, wxMaxima::InsertMenu)
+  EVT_BUTTON(menu_format_text, wxMaxima::InsertMenu)
+  EVT_BUTTON(menu_format_subsection, wxMaxima::InsertMenu)
+  EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)
+  EVT_BUTTON(menu_format_pagebreak, wxMaxima::InsertMenu)
+  EVT_BUTTON(menu_format_image, wxMaxima::InsertMenu)
 END_EVENT_TABLE()
