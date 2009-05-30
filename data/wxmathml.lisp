@@ -587,7 +587,7 @@
 ;; easily extended to union, intersect, otherops
 
 (defun wxxml-lsum(x l r)
-  (let ((op "<sm><r>")
+  (let ((op "<sm type=\"lsum\"><r>")
 	;; gotta be one of those above
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"

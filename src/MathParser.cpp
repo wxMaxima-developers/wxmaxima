@@ -461,7 +461,8 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
 {
   SumCell *sum = new SumCell;
   wxXmlNode* child = node->GetChildren();
-  if (node->GetProperties() != NULL)
+  wxString type = node->GetPropVal(wxT("type"), wxT("sum"));
+  if (type == wxT("prod"))
     sum->SetSumStyle(SM_PROD);
   sum->SetHighlight(m_highlight);
   if (child)
@@ -470,7 +471,8 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
     child = child->GetNext();
     if (child)
     {
-      sum->SetOver(ParseTag(child, false));
+      if (type != wxT("lsum"))
+        sum->SetOver(ParseTag(child, false));
       child = child->GetNext();
       if (child)
       {
