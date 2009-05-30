@@ -3709,7 +3709,8 @@ void wxMaxima::ResetTitle(bool saved)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-
+  if (m_plotSlider == NULL)
+    return;
   if (m_console->IsSelected(MC_TYPE_SLIDE))
   {
     if (!m_console->AnimationRunning())

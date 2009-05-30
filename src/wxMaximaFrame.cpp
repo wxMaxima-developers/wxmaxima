@@ -754,6 +754,7 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Show Maxima help"));
   frame_1_toolbar->Realize();
+
   SetToolBar(frame_1_toolbar);
 }
 
@@ -998,6 +999,7 @@ void wxMaximaFrame::ShowToolBar(bool show)
     wxToolBar *tbar = GetToolBar();
     if (tbar != NULL) {
       delete tbar;
+      m_plotSlider = NULL;
       SetToolBar(NULL);
     }
   }
