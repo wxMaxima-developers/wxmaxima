@@ -1590,7 +1590,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 wxString wxMaxima::GetDefaultEntry()
 {
   if (m_console->CanCopy(true))
-    return m_console->GetString();
+    return (m_console->GetString()).Trim().Trim(false);
   if (m_console->GetActiveCell() != NULL)
     return m_console->GetActiveCell()->ToString(false);
   return wxT("%");
