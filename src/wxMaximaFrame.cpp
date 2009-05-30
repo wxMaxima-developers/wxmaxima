@@ -870,6 +870,7 @@ void wxMaximaFrame::ShowPane(int id, bool show)
       m_manager.GetPane(wxT("math")).Show(false);
       m_manager.GetPane(wxT("history")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
+      m_manager.GetPane(wxT("format")).Show(false);
       break;
   }
 
