@@ -68,6 +68,7 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
+  wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar() != NULL));
 
   m_manager.UnInit();
 }
@@ -136,13 +137,18 @@ void wxMaximaFrame::do_layout()
                       Fixed().
                       Left());
 
-  wxString perspective;
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = false;
   config->Read(wxT("AUI/savePanes"), &loadPanes);
 
-  if (loadPanes && config->Read(wxT("AUI/perspective"), &perspective))
-    m_manager.LoadPerspective(perspective);
+  if (loadPanes) {
+    wxString perspective;
+    bool toolbar = true;
+    if (config->Read(wxT("AUI/perspective"), &perspective))
+      m_manager.LoadPerspective(perspective);
+    config->Read(wxT("AUI/toolbar"), &toolbar);
+    ShowToolBar(toolbar);
+  }
   else
     m_manager.Update();
 }
@@ -296,6 +302,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  wxglade_tmp_menu_2_sub2->AppendSeparator();
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
   wxglade_tmp_menu_2->Append(wxNewId(), _("Panes"), wxglade_tmp_menu_2_sub2);
 
   wxglade_tmp_menu_2->AppendSeparator();
@@ -912,7 +920,7 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   wxPanel *panel = new wxPanel(this, -1);
 
   int style = wxALL | wxEXPAND;
-#if defined __WXMSW__
+#ifndef __WXMAC__
   int border = 0;
 #else
   int border = 1;
@@ -979,3 +987,19 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
   return panel;
 }
+
+void wxMaximaFrame::ShowToolBar(bool show)
+{
+  if (show) {
+    if (GetToolBar() == NULL)
+      SetupToolBar();
+  }
+  else {
+    wxToolBar *tbar = GetToolBar();
+    if (tbar != NULL) {
+      delete tbar;
+      SetToolBar(NULL);
+    }
+  }
+}
+

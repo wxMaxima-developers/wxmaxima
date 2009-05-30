@@ -248,7 +248,8 @@ enum {
   menu_format_section,
   menu_format_title,
   menu_format_image,
-  menu_format_pagebreak
+  menu_format_pagebreak,
+  menu_show_toolbar
 };
 
 #define FIRST_PANE menu_pane_hideall
@@ -269,6 +270,7 @@ public:
   bool IsPaneDisplayed(int id);
   void ShowPane(int id, bool hide);
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
+  void ShowToolBar(bool show);
 private:
   void set_properties();
   void do_layout();

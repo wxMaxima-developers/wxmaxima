@@ -1535,6 +1535,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(id));
 
+  if (GetToolBar() != NULL)
+    menubar->Check(menu_show_toolbar, true);
+  else
+    menubar->Check(menu_show_toolbar, false);
+
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
     menubar->Enable(wxID_PRINT, true);
@@ -1917,12 +1922,13 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->SetZoomFactor(3.0);
     break;
   case menu_fullscreen:
-    {
-      ShowFullScreen( !IsFullScreen() );
-    }
+    ShowFullScreen( !IsFullScreen() );
     break;
   case menu_remove_output:
     m_console->RemoveAllOutput();
+    break;
+  case menu_show_toolbar:
+    ShowToolBar(!(GetToolBar() != NULL));
     break;
   case menu_paste_input:
     {
@@ -3961,6 +3967,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
   EVT_CLOSE(wxMaxima::OnClose)
   EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
   EVT_MENU(popid_edit, wxMaxima::EditInputMenu)
@@ -3989,6 +3996,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
   EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
   EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
+  EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
   EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
   EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
