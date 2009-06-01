@@ -86,6 +86,7 @@ void Bitmap::RecalculateWidths()
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
   CellParser parser(dc);
+  parser.SetClientWidth(BM_FULL_WIDTH);
 
   while (tmp != NULL)
   {
