@@ -366,8 +366,14 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
 
-  tmp->ResetSize();
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  parser.SetZoomFactor(m_zoomFactor);
+  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+
+  tmp->RecalculateAppended(parser);
   Recalculate();
+
   ScrollToCell(tmp); // also refreshes
 }
 
@@ -378,8 +384,8 @@ void MathCtrl::RecalculateForce() {
   Recalculate(true);
 }
 
-void MathCtrl::Recalculate(bool force) {
-
+void MathCtrl::Recalculate(bool force)
+{
   MathCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
 
@@ -1661,24 +1667,13 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
   bool bigSkip = false;
 
   while (tmp != NULL) {
-    if (!tmp->m_isBroken) {
-      if (tmp->BreakLineHere()) {
-        currentHeight += tmp->GetMaxHeight();
-        if (bigSkip)
-          currentHeight += MC_GROUP_SKIP;
-        *height = currentHeight;
-        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
-        *width = MAX(currentWidth + MC_BASE_INDENT, *width);
-      }
-      else {
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
-      }
-      bigSkip = tmp->m_bigSkip;
-    }
+    currentHeight += tmp->GetMaxHeight();
+    currentHeight += MC_GROUP_SKIP;
+    *height = currentHeight;
+    currentWidth = MC_BASE_INDENT + tmp->GetWidth();
+    *width = MAX(currentWidth + MC_BASE_INDENT, *width);
     tmp = tmp->m_next;
   }
-
 }
 
 /***

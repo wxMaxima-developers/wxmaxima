@@ -78,8 +78,10 @@ public:
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
+  void BreakUpCells(MathCell *cell, CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
   void BreakLines(int fullWidth);
+  void BreakLines(MathCell *cell, int fullWidth);
   void ResetInputLabel(bool all = false); // if !all only this GC is reset
   // folding and unfolding
   bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
@@ -94,6 +96,7 @@ public:
   GroupCell *UnfoldAll(bool all = false);
   bool IsLesserGCType(int comparedTo);
   void Number(int &section, int &subsection, int &image);
+  void RecalculateAppended(CellParser& parser);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   int m_groupType;
@@ -102,7 +105,9 @@ protected:
   bool m_hide;
   bool m_working;
   int m_indent;
+  int m_fontSize;
   MathCell *m_lastInOutput;
+  MathCell *m_appendedCells;
   wxRect m_outputRect;
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);

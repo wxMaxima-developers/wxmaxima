@@ -42,6 +42,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_working = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
+  m_appendedCells = NULL;
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
@@ -217,8 +218,11 @@ void GroupCell::SetOutput(MathCell *output)
   m_output->m_group = this;
 
   m_lastInOutput = m_output;
+
   while (m_lastInOutput->m_next != NULL)
     m_lastInOutput = m_lastInOutput->m_next;
+
+  //m_appendedCells = output;
 }
 
 void GroupCell::RemoveOutput()
@@ -226,13 +230,13 @@ void GroupCell::RemoveOutput()
   DestroyOutput();
   ResetSize();
   m_output = NULL;
+  m_lastInOutput = NULL;
+  m_appendedCells = NULL;
   m_hide = false;
 }
 
 void GroupCell::AppendOutput(MathCell *cell)
 {
-  ResetSize();
-
   if (m_output == NULL) {
     m_output = cell;
 
@@ -240,6 +244,7 @@ void GroupCell::AppendOutput(MathCell *cell)
       ((EditorCell *)(m_input->m_next))->ContainsChanges(false);
 
     m_lastInOutput = m_output;
+
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
 
@@ -252,14 +257,22 @@ void GroupCell::AppendOutput(MathCell *cell)
 
     while (tmp->m_next != NULL)
       tmp = tmp->m_next;
+
     tmp->AppendCell(cell);
+
+    while (m_lastInOutput->m_next != NULL)
+      m_lastInOutput = m_lastInOutput->m_next;
   }
+
+  m_appendedCells = cell;
 }
 
 void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
   {
+    m_fontSize = fontsize;
+
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       m_width = 10;
@@ -348,6 +361,50 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   }
 
   MathCell::RecalculateSize(parser, fontsize, all);
+}
+
+// We assume that appended cells will be in a new line!
+void GroupCell::RecalculateAppended(CellParser& parser)
+{
+  if (m_appendedCells == NULL)
+    return;
+
+  MathCell *tmp = m_appendedCells;
+  int fontsize = m_fontSize;
+  double scale = parser.GetScale();
+
+  // Recalculate widths of cells
+  while (tmp != NULL) {
+    tmp->RecalculateWidths(parser, fontsize, false);
+    tmp = tmp->m_next;
+  }
+
+  // Breakup cells and break lines
+  BreakUpCells(m_appendedCells, parser, fontsize, parser.GetClientWidth());
+  BreakLines(m_appendedCells, parser.GetClientWidth());
+
+  // Recalculate size of cells
+  tmp = m_appendedCells;
+  while (tmp != NULL) {
+    tmp->RecalculateSize(parser, fontsize, false);
+    tmp = tmp->m_next;
+  }
+
+  // Update widths
+  tmp = m_appendedCells;
+  while (tmp != NULL) {
+    if (tmp->BreakLineHere() || tmp == m_appendedCells) {
+      m_width = MAX(m_width, tmp->GetLineWidth(scale));
+      m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+      m_height += tmp->GetMaxHeight();
+      if (tmp->m_bigSkip)
+        m_height += MC_LINE_SKIP;
+      m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+    }
+    tmp = tmp->m_nextToDraw;
+  }
+
+  m_appendedCells = NULL;
 }
 
 void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
@@ -860,9 +917,14 @@ MathCell *GroupCell::GetEditable()
 
 void GroupCell::BreakLines(int fullWidth)
 {
+  BreakLines(m_output, fullWidth);
+}
+
+void GroupCell::BreakLines(MathCell *cell, int fullWidth)
+{
   int currentWidth = m_indent;
 
-  MathCell *tmp = m_output;
+  MathCell *tmp = cell;
 
   while (tmp != NULL && !m_hide) {
     tmp->ResetData();
@@ -903,7 +965,12 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end)
 
 void GroupCell::BreakUpCells(CellParser parser, int fontsize, int clientWidth)
 {
-  MathCell *tmp = m_output;
+  BreakUpCells(m_output, parser, fontsize, clientWidth);
+}
+
+void GroupCell::BreakUpCells(MathCell *cell, CellParser parser, int fontsize, int clientWidth)
+{
+  MathCell *tmp = cell;
 
   while (tmp != NULL && !m_hide) {
     if (tmp->GetWidth() > clientWidth) {
