@@ -46,6 +46,7 @@ enum {
   menu_interrupt_id,
   menu_restart_id,
   menu_solve,
+  menu_solve_to_poly,
   menu_solve_num,
   menu_allroots,
   menu_bfallroots,

@@ -1357,3 +1357,5 @@
   (setf (get fun 'autoload) "stats"))
 
 (setf (get '$lsquares_estimates 'autoload) "lsquares")
+
+(setf (get '$to_poly_solve 'autoload) "to_poly_solver")

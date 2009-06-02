@@ -2180,6 +2180,20 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
+  case menu_solve_to_poly:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
+                                 expr, wxT("x"), this, -1, _("Solve"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("to_poly_solve([") + wiz->GetValue1() + wxT("], [") +
+              wiz->GetValue2() + wxT("]);");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
   case menu_solve_num:
     {
       if (expr.StartsWith(wxT("%")))
@@ -3841,6 +3855,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_bfallroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_realroots, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve, wxMaxima::EquationsMenu)
+  EVT_MENU(menu_solve_to_poly, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve_num, wxMaxima::EquationsMenu)
   EVT_MENU(menu_solve_ode, wxMaxima::EquationsMenu)
   EVT_MENU(menu_map_mat, wxMaxima::AlgebraMenu)
