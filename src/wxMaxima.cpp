@@ -320,6 +320,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   {
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
+    MathCell *tmp = NULL, *lst = NULL;
     while (tokens.HasMoreTokens())
     {
       TextCell* cell = new TextCell(tokens.GetNextToken());
@@ -329,12 +330,17 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
       if (tokens.HasMoreTokens())
         cell->SetSkip(false);
 
-      if (count == 0)
-        m_console->InsertLine(cell, true);
-      else
-        m_console->InsertLine(cell, true);
+      if (lst == NULL)
+        tmp = lst = cell;
+      else {
+        lst->AppendCell(cell);
+        cell->ForceBreakLine(true);
+        lst = cell;
+      }
+
       count++;
     }
+    m_console->InsertLine(tmp, true);
   }
 }
 
