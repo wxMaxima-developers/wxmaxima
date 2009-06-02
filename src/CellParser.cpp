@@ -220,7 +220,7 @@ void CellParser::ReadStyle()
                    &tmp)) m_styles[TS_HIGHLIGHT].color.Set(tmp);
 
   // Text background
-  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("white"));
+  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("light blue"));
   if (config->Read(wxT("Style/TextBackground/color"),
                    &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
 
@@ -238,8 +238,12 @@ void CellParser::ReadStyle()
   if (config->Read(wxT("Style/Cursor/color"),
                    &tmp)) m_styles[TS_CURSOR].color.Set(tmp);
 
-  // Selection color
-  m_styles[TS_SELECTION].color = wxT("light grey"); // on mac should default to system selection color
+  // Selection color defaults to light grey on windows
+#if defined __WXMSW__
+  m_styles[TS_SELECTION].color = wxColour(wxT("light grey"));
+#else
+  m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
+#endif
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp)) m_styles[TS_SELECTION].color.Set(tmp);
 
