@@ -26,6 +26,9 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
+;;; Muffle compiler-notes globally
+#+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
+
 ($put '$wxmaxima `((mlist simp) 0 8 3) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
