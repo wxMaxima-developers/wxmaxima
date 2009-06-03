@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -897,7 +898,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
     m_getStyleFont->Enable(false);
 
   // Background color only
-  if (st >= 15)
+  if (st >= 16)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
