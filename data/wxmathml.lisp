@@ -1082,6 +1082,8 @@
 
 (defun $wxanimate (a a-range expr &rest args)
   (let (images)
+    (when (integerp a-range)
+      (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
       (let ((preamble ($wxplot_preamble))
 	    (system-preamble (get-plot-option-string '$gnuplot_preamble 2))
@@ -1117,6 +1119,8 @@
 
 (defun $wxanimate_draw (a a-range &rest args)
   (let (images)
+    (when (integerp a-range)
+      (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
@@ -1147,6 +1151,8 @@
 
 (defun $wxanimate_draw3d (a a-range &rest args)
   (let (images)
+    (when (integerp a-range)
+      (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
