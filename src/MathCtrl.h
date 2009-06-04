@@ -179,6 +179,7 @@ public:
   void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
     if (recalc) {RecalculateForce(); Refresh();} }
   void CommentSelection();
+  void OnMouseWheel(wxMouseEvent &ev);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

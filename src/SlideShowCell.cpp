@@ -157,6 +157,8 @@ void SlideShow::SetDisplayedIndex(int ind)
 {
   if (ind >= 0 && ind < m_size)
     m_displayed = ind;
+  else
+    m_displayed = m_size - 1;
 }
 
 void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)

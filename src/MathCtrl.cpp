@@ -3072,6 +3072,28 @@ void MathCtrl::CommentSelection()
   }
 }
 
+void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
+{
+  if (m_selectionStart == NULL || m_selectionStart != m_selectionEnd ||
+      m_selectionStart->GetType() != MC_TYPE_SLIDE || m_animate)
+    ev.Skip();
+  else
+  {
+    int rot = ev.GetWheelRotation();
+
+    SlideShow *tmp = (SlideShow *)m_selectionStart;
+
+    if (rot > 0)
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+    else
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
+
+    wxRect rect = m_selectionStart->GetRect();
+    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+    RefreshRect(rect);
+  }
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
@@ -3091,4 +3113,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
   EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
+  EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
 END_EVENT_TABLE()
