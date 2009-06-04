@@ -76,3 +76,8 @@ Inspector::Inspector(wxWindow* parent, int id) : wxPanel(parent, id)
 Inspector::~Inspector()
 {
 }
+
+void Inspector::SetValues(wxArrayString arrstr)
+{
+  m_listbox->Set(arrstr);
+}

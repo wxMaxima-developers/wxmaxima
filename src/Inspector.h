@@ -34,6 +34,7 @@ class Inspector : public wxPanel
 public:
   Inspector(wxWindow* parent, int id);
   ~Inspector();
+  void SetValues(wxArrayString arrstr);
 private:
   //wxSplitterWindow *m_splitter;
   wxListBox *m_listbox;

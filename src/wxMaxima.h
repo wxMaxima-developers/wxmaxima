@@ -108,6 +108,7 @@ protected:
   void HistoryDClick(wxCommandEvent& event);
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
+  void TryUpdateInspector();
 
 #if WXM_PRINT
   void CheckForPrintingSupport();
@@ -126,6 +127,7 @@ protected:
   // setsup m_pid
   void ReadPrompt();                 // reads prompts
   void ReadMath();                   // reads output other than prompts
+  void ReadInspector();              // reads inspector info
   void ReadLispError();              // lisp errors (no prompt prefix/suffix)
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
@@ -170,6 +172,7 @@ protected:
   wxString m_currentFile;
   bool m_fileSaved;
   bool m_variablesOK;
+  bool m_updateInspector;
   wxString m_helpFile;
 #if defined (__WXMSW__)
   wxCHMHelpController m_helpCtrl;

@@ -104,6 +104,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isConnected = false;
   m_isRunning = false;
 
+  m_updateInspector = false;
+
   wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
 
   LoadRecentDocuments();
@@ -419,6 +421,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
         ReadFirstPrompt();
 
+      ReadInspector();
+
       ReadMath();
 
       ReadPrompt();
@@ -721,6 +725,26 @@ void wxMaxima::ReadMath()
   }
 }
 
+void wxMaxima::ReadInspector()
+{
+  int start = m_currentOutput.Find(wxT("<values>"));
+
+  if (start > 0) {
+    wxString str = m_currentOutput.SubString(start+8,
+          m_currentOutput.Find(wxT("</values>")) - 1);
+
+    wxArrayString variables;
+    wxStringTokenizer tokens(str, wxT(";"));
+    while (tokens.HasMoreTokens()) {
+      wxString token = tokens.GetNextToken();
+      if (token.Length())
+        variables.Add(token);
+    }
+    m_inspector->SetValues(variables);
+  }
+
+}
+
 /***
  * Checks if maxima displayed a new prompt.
  */
@@ -746,6 +770,7 @@ void wxMaxima::ReadPrompt()
           m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
+          TryUpdateInspector();
         }
         else { // we don't have an empty queue
           m_console->Refresh();
@@ -3636,11 +3661,27 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_console->ScrollToCell(group);
 
     SendMaxima(text);
+    m_updateInspector = true;
   }
   else
   {
     m_console->m_evaluationQueue->RemoveFirst();
     TryEvaluateNextInQueue();
+  }
+}
+
+// This is called after evaluation queue is
+// emptied and sends maxima the necessary
+// commands to get the information for the
+// Inspector pane
+void wxMaxima::TryUpdateInspector()
+{
+  if (!m_manager.GetPane(wxT("inspector")).IsShown())
+    return;
+
+  if (m_updateInspector) {
+    m_updateInspector = false;
+    SendMaxima(wxT(":lisp (inspector-values);"));
   }
 }
 

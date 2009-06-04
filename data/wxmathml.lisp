@@ -1365,3 +1365,20 @@
 (setf (get '$lsquares_estimates 'autoload) "lsquares")
 
 (setf (get '$to_poly_solve 'autoload) "to_poly_solver")
+
+;; Inspector pane related functions
+;;
+
+(defun inspector-values ()
+  (let* ((vals (rest $values))
+         (strings (mapcar #'mystripdollar vals)))
+    (format nil "<values>~{~a~^;~}</values>" strings)))
+
+(defun mystripdollar (sym)
+    (subseq (maybe-invert-string-case (symbol-name sym)) 1))
+
+(defun inspector-get-value (var)
+  (if (and (symbolp var) (boundp var))
+    (format nil "<inspector>~{~a~}</inspector>"
+      (wxxml (symbol-value var) nil nil 'lbp 'rbp))
+    "<inspector></inspector>"))
