@@ -39,7 +39,9 @@ MiniMathCtrl::MiniMathCtrl(wxWindow* parent, int id, wxPoint position, wxSize si
 #endif
   )
 {
-  m_tree = NULL;
+  m_defaultText = new TextCell(_("<< Nothing to display >>"));
+  m_defaultText->SetStyle(TS_OUTDATED);
+  m_tree = m_defaultText;
   m_memory = NULL;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;

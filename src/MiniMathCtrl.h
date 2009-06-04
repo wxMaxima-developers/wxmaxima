@@ -17,12 +17,13 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MINIMATHCTRL_H_
-#define _MINIMATHCTRL_H_
+#ifndef MINIMATHCTRL_H
+#define MINIMATHCTRL_H
 
 #include <wx/wx.h>
 
 #include "MathCell.h"
+#include "TextCell.h"
 
 class MiniMathCtrl: public wxScrolledWindow
 {
@@ -90,6 +91,7 @@ protected:
   bool m_leftDown;
   bool m_mouseDrag;
   bool m_mouseOutside;
+  TextCell *m_defaultText; // display this textcell by default
   MathCell *m_tree;
   MathCell *m_last;
   MathCell *m_selectionStart;
@@ -99,4 +101,4 @@ protected:
   DECLARE_EVENT_TABLE()
 };
 
-#endif //_MINIMATHCTRL_H_
+#endif // MINIMATHCTRL_H
