@@ -31,6 +31,7 @@
 #include "MathCtrl.h"
 #include "Setup.h"
 #include "History.h"
+#include "Inspector.h"
 
 enum {
   socket_client_id = wxID_HIGHEST,
@@ -224,6 +225,7 @@ enum {
   menu_pane_hideall,
   menu_pane_math,
   menu_pane_history,
+  menu_pane_inspector,
   menu_pane_format,
   menu_pane_stats,
   menu_stats_mean,
@@ -290,6 +292,7 @@ protected:
 
   MathCtrl* m_console;
   History * m_history;
+  Inspector * m_inspector;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;

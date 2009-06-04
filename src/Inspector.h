@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -17,29 +17,28 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#include <wx/wx.h>
+#ifndef INSPECTOR_H
+#define INSPECTOR_H
 
-#ifndef HISTORY_H
-#define HISYORY_H
+#include <wx/wx.h>
+#include <wx/splitter.h>
+
+#include "MiniMathCtrl.h"
 
 enum {
-  history_ctrl_id,
-  history_regex_id
+  inspector_listbox_id
 };
 
-class History : public wxPanel
+class Inspector : public wxPanel
 {
 public:
-  History(wxWindow* parent, int id);
-  ~History();
-  void AddToHistory(wxString cmd);
-  void OnRegExEvent(wxCommandEvent &ev);
-  void UpdateDisplay();
+  Inspector(wxWindow* parent, int id);
+  ~Inspector();
 private:
-  wxListBox *m_history;
-  wxTextCtrl *m_regex;
-  wxArrayString commands;
-  DECLARE_EVENT_TABLE()
+  //wxSplitterWindow *m_splitter;
+  wxListBox *m_listbox;
+  MiniMathCtrl *m_minimathctrl;
+  //DECLARE_EVENT_TABLE()
 };
 
-#endif
+#endif // INSPECTOR_H
