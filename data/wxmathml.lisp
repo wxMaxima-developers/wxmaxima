@@ -1369,16 +1369,47 @@
 ;; Inspector pane related functions
 ;;
 
-(defun inspector-values ()
+(defun inspector-list-vars ()
   (let* ((vals (rest $values))
          (strings (mapcar #'mystripdollar vals)))
-    (format nil "<values>~{~a~^;~}</values>" strings)))
+    (format nil "<insp><varlist>~{~a~^;~}</varlist></insp>" strings)))
 
 (defun mystripdollar (sym)
     (subseq (maybe-invert-string-case (symbol-name sym)) 1))
 
-(defun inspector-get-value (var)
-  (if (and (symbolp var) (boundp var))
-    (format nil "<inspector>~{~a~}</inspector>"
-      (wxxml (symbol-value var) nil nil 'lbp 'rbp))
-    "<inspector></inspector>"))
+;;(defun inspector-get-value (var)
+;;  (if (and (symbolp var) (boundp var))
+;;    (format nil "<inspector>~{~a~}</inspector>"
+;;      (wxxml (symbol-value var) nil nil 'lbp 'rbp))
+;;    "<inspector></inspector>"))
+
+;; prints out a string for Inspector
+;;  to display in MiniMathCtrl
+(defun inspector-get-vars (&rest args)
+  (let ((ans nil))
+    (dolist (sym args)
+      (when (symbolp sym)
+        (let ((symstring (wxxml-stripdollar sym))
+              (valstring
+                (if (boundp sym)
+                  (format nil "~{~a~}"
+                    (wxxml (symbol-value sym) nil nil 'lbp 'rbp))
+                  "<st> &lt;&lt; Not bound &gt;&gt;</st>")))
+
+        (push (concatenate 'string symstring "<t>:</t>" valstring) ans))))
+    (format nil "<insp><vars>~{<line>~a</line>~}</vars></insp>" (nreverse ans))))
+
+(defun inspector-list-funs ()
+  (let ((strings (mapcar #'(lambda (x)
+                             (let ((fun-name (mystripdollar (caar x)))
+                                   (arg-name (mapcar #'mystripdollar
+                                                     (rest x))))
+                               (format nil "~a(~{~a~^,~})" fun-name arg-name)))
+                         (rest $functions))))
+    (format nil "<insp><funlist>~{~a~^;~}</funlist></insp>" strings)))
+
+(defun inspector-get-funs (&rest args)
+  ;(consfundef fun-name nil nil)
+  args
+  "<insp></insp>"
+  )

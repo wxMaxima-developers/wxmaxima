@@ -26,7 +26,13 @@
 #include "MiniMathCtrl.h"
 
 enum {
-  inspector_listbox_id
+  inspector_listbox_id,
+  inspector_combo_id
+};
+
+enum {
+  INSPECTOR_VARIABLES,
+  INSPECTOR_FUNCTIONS
 };
 
 class Inspector : public wxPanel
@@ -35,11 +41,18 @@ public:
   Inspector(wxWindow* parent, int id);
   ~Inspector();
   void SetValues(wxArrayString arrstr);
+  wxString GetMaximaCommand();
+  void ParseMaximaResult(wxString result);
+  int m_category;
 private:
+  void OnCombo(wxCommandEvent &ev);
   //wxSplitterWindow *m_splitter;
+  wxComboBox *m_combo;
   wxListBox *m_listbox;
   MiniMathCtrl *m_minimathctrl;
-  //DECLARE_EVENT_TABLE()
+  wxArrayString m_lbStrings;
+  bool m_wantListUpdate;
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // INSPECTOR_H

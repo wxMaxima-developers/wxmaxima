@@ -727,22 +727,23 @@ void wxMaxima::ReadMath()
 
 void wxMaxima::ReadInspector()
 {
-  int start = m_currentOutput.Find(wxT("<values>"));
+  int start = m_currentOutput.Find(wxT("<insp>"));
 
-  if (start > 0) {
-    wxString str = m_currentOutput.SubString(start+8,
-          m_currentOutput.Find(wxT("</values>")) - 1);
+  if (start > -1) {
+    int end = m_currentOutput.Find(wxT("</insp>"));
+    while (end > -1)
+    {
+      wxString str = m_currentOutput.SubString(start+6, end - 1);
+      m_inspector->ParseMaximaResult(str);
+      //ConsoleAppend(str, MC_TYPE_DEFAULT); // DEBUG
 
-    wxArrayString variables;
-    wxStringTokenizer tokens(str, wxT(";"));
-    while (tokens.HasMoreTokens()) {
-      wxString token = tokens.GetNextToken();
-      if (token.Length())
-        variables.Add(token);
+      m_currentOutput = m_currentOutput.SubString(0,start-1) +
+        m_currentOutput.SubString(end + 7,
+            m_currentOutput.Length());
+      start = m_currentOutput.Find(wxT("<insp>"));
+      end = m_currentOutput.Find(wxT("</insp>"));
     }
-    m_inspector->SetValues(variables);
   }
-
 }
 
 /***
@@ -3681,7 +3682,10 @@ void wxMaxima::TryUpdateInspector()
 
   if (m_updateInspector) {
     m_updateInspector = false;
-    SendMaxima(wxT(":lisp (inspector-values);"));
+    if (m_inspector->m_category == INSPECTOR_VARIABLES)
+      SendMaxima(wxT(":lisp (inspector-list-vars);"));
+    else if (m_inspector->m_category == INSPECTOR_FUNCTIONS)
+      SendMaxima(wxT(":lisp (inspector-list-funs);"));
   }
 }
 
@@ -3810,6 +3814,26 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 {
   m_console->OpenHCaret(ev.GetString(), GC_TYPE_CODE);
   m_console->SetFocus();
+}
+
+// User has selected something in the Inspector
+// listbox. Send the appropriate Maxima command
+// to update Inspector.
+void wxMaxima::OnInspectorLBEvent(wxCommandEvent& ev)
+{
+  if (!ev.IsSelection()) // we get 2 events (deselection, selection)
+    return;
+  // if evaluationqueue is not empty, don't do
+  // anything
+  if (m_console->m_evaluationQueue->GetFirst())
+    return;
+
+  // Maxima is waiting, send the appropriate command
+  wxString maxcmd = m_inspector->GetMaximaCommand();
+
+  if (maxcmd.Length() > 0)
+    //ConsoleAppend(maxcmd, MC_TYPE_DEFAULT); // DEBUG 
+    SendMaxima(maxcmd);
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
@@ -4062,6 +4086,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
   EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
   EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
+  EVT_LISTBOX(inspector_listbox_id, wxMaxima::OnInspectorLBEvent)
   EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_scatterplot, wxMaxima::StatsMenu)

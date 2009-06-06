@@ -106,6 +106,7 @@ protected:
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
   void HistoryDClick(wxCommandEvent& event);
+  void OnInspectorLBEvent(wxCommandEvent& ev);
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
   void TryUpdateInspector();

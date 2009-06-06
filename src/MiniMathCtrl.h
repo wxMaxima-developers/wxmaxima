@@ -30,6 +30,7 @@ class MiniMathCtrl: public wxScrolledWindow
 public:
   MiniMathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
   ~MiniMathCtrl();
+  void SetTree(MathCell* newtree);
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();

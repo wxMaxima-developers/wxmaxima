@@ -41,11 +41,10 @@ MiniMathCtrl::MiniMathCtrl(wxWindow* parent, int id, wxPoint position, wxSize si
 {
   m_defaultText = new TextCell(_("<< Nothing to display >>"));
   m_defaultText->SetStyle(TS_OUTDATED);
-  m_tree = m_defaultText;
+  m_tree = m_last = m_defaultText;
   m_memory = NULL;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
-  m_last = NULL;
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
@@ -57,6 +56,26 @@ MiniMathCtrl::~MiniMathCtrl() {
     DestroyTree();
   if (m_memory != NULL)
     delete m_memory;
+}
+
+// sets the tree
+void MiniMathCtrl::SetTree(MathCell* newtree)
+{
+  if (!newtree)
+    return;
+
+  if (m_tree != (MathCell *)m_defaultText)
+    DestroyTree();
+
+  m_tree = m_last = newtree;
+  // set the correct m_last:
+  MathCell* tmp = m_tree->m_next;
+  while (tmp) {
+    m_last = tmp;
+    tmp = tmp->m_next;
+  }
+  Recalculate();
+  Refresh();
 }
 
 /***
@@ -148,17 +167,31 @@ void MiniMathCtrl::OnPaint(wxPaintEvent& event) {
 
     while (tmp != NULL)
     {
-      tmp->m_currentPoint.x = point.x;
-      tmp->m_currentPoint.y = point.y;
-      if (tmp->DrawThisCell(parser, point))
-        tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
-      if (tmp->m_next != NULL) {
-        point.x = MC_GROUP_LEFT_INDENT;
-        point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += MC_GROUP_SKIP;
-        drop = tmp->m_next->GetMaxDrop();
+      if (!tmp->m_isBroken) {
+        tmp->m_currentPoint.x = point.x;
+        tmp->m_currentPoint.y = point.y;
+        if (tmp->DrawThisCell(parser, point))
+          tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE), false);
+        if (tmp->m_nextToDraw != NULL) {
+          if (tmp->m_nextToDraw->BreakLineHere()) {
+            point.x = MC_BASE_INDENT;
+            point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+            if (tmp->m_bigSkip)
+              point.y += MC_LINE_SKIP;
+            drop = tmp->m_nextToDraw->GetMaxDrop();
+          } else
+            point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+        }
+      } else {
+        if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+          point.x = MC_BASE_INDENT;
+          point.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+          if (tmp->m_bigSkip)
+            point.y += MC_LINE_SKIP;
+          drop = tmp->m_nextToDraw->GetMaxDrop();
+        }
       }
-      tmp = tmp->m_next;
+      tmp = tmp->m_nextToDraw;
     }
 
   }
@@ -187,10 +220,10 @@ void MiniMathCtrl::Recalculate(bool force) {
   wxClientDC dc(this);
   CellParser parser(dc);
   parser.SetForceUpdate(force);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+  parser.SetClientWidth(GetClientSize().GetWidth() - MC_BASE_INDENT);
 
   wxPoint point;
-  point.x = MC_GROUP_LEFT_INDENT;
+  point.x = MC_BASE_INDENT;
   point.y = MC_BASE_INDENT ;
 
   if (tmp != NULL)
@@ -230,14 +263,17 @@ void MiniMathCtrl::OnSize(wxSizeEvent& event) {
 }
 
 /***
- * Clear the window
+ * Clear the window - and set to defaultText
  */
 void MiniMathCtrl::ClearWindow() {
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
-    m_last = NULL;
-    DestroyTree();
+    if (m_tree != (MathCell *)m_defaultText) {
+      m_last = NULL;
+      DestroyTree();
+      m_tree = m_last = m_defaultText;
+    }
   }
   Recalculate();
   Refresh();

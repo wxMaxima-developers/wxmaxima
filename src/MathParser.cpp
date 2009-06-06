@@ -740,7 +740,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         else
           cell->AppendCell(ParseTableTag(node));
       }
-      else if (tagName == wxT("mth"))
+      else if ((tagName == wxT("mth")) || (tagName == wxT("line")))
       {
         MathCell *tmp = ParseTag(node->GetChildren());
         if (tmp != NULL)
