@@ -1239,6 +1239,12 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     newInput->SetParent(m_workingGroup, false);
     SetActiveCell(newInput, false);
 
+    wxClientDC dc(this);
+    CellParser parser(dc);
+    parser.SetZoomFactor(m_zoomFactor);
+    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+    m_workingGroup->RecalculateAppended(parser);
+
     Recalculate();
     Refresh();
 
