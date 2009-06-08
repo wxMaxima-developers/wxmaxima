@@ -77,7 +77,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     SetFont(parser, fontsize);
 
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
-      dc.GetTextExtent(wxT("XXXXXXX"), &m_width, &m_height);
+      dc.GetTextExtent(wxT("(\%oXXX)"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       while (m_labelWidth >= m_width) {
