@@ -30,7 +30,6 @@ Inspector::Inspector(wxWindow* parent, int id) : wxPanel(parent, id)
   //m_splitter = new wxSplitterWindow(this, -1);
   //m_splitter->SetSashGravity(0.5);
 
-  m_category = INSPECTOR_VARIABLES;
   //listbox
   m_listbox = new wxListBox(this, inspector_listbox_id,
       wxDefaultPosition, wxDefaultSize,
@@ -132,7 +131,8 @@ wxString Inspector::GetMaximaCommand()
   if (m_wantListUpdate) {
     if ((m_tVars->GetValue()) ||
         (m_tFuns->GetValue()) ||
-        (m_tLabs->GetValue())) {
+        (m_tLabs->GetValue()) ||
+        (m_tOpts->GetValue())) {
 
       wxString ans = wxT(":lisp (inspector-list '(");
       if (m_tVars->GetValue())

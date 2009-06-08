@@ -37,11 +37,6 @@ enum {
   inspector_combo_id
 };
 
-enum {
-  INSPECTOR_VARIABLES = 0,
-  INSPECTOR_FUNCTIONS
-};
-
 class Inspector : public wxPanel
 {
 public:
@@ -50,7 +45,6 @@ public:
   void SetList(wxArrayString arrstr);
   wxString GetMaximaCommand();
   void ParseMaximaResult(wxString result);
-  int m_category;
   void OutdateList();
 private:
   wxString LispSymbolString(wxString maximastring);
