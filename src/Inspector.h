@@ -21,17 +21,24 @@
 #define INSPECTOR_H
 
 #include <wx/wx.h>
+#include <wx/tglbtn.h>
 #include <wx/splitter.h>
 
 #include "MiniMathCtrl.h"
 
 enum {
+  inspector_vars_id, //togglebuttons id-s
+  inspector_funs_id,
+  inspector_labs_id,
+  inspector_opts_id,
+
+  inspector_update_id,
   inspector_listbox_id,
   inspector_combo_id
 };
 
 enum {
-  INSPECTOR_VARIABLES,
+  INSPECTOR_VARIABLES = 0,
   INSPECTOR_FUNCTIONS
 };
 
@@ -40,18 +47,29 @@ class Inspector : public wxPanel
 public:
   Inspector(wxWindow* parent, int id);
   ~Inspector();
-  void SetValues(wxArrayString arrstr);
+  void SetList(wxArrayString arrstr);
   wxString GetMaximaCommand();
   void ParseMaximaResult(wxString result);
   int m_category;
+  void OutdateList();
 private:
-  void OnCombo(wxCommandEvent &ev);
+  wxString LispSymbolString(wxString maximastring);
+  void OnToggleButton(wxCommandEvent &ev);
+  void OnListBox(wxCommandEvent &ev);
   //wxSplitterWindow *m_splitter;
-  wxComboBox *m_combo;
+
+  // Togglebuttons
+  wxToggleButton *m_tVars;
+  wxToggleButton *m_tFuns;
+  wxToggleButton *m_tLabs;
+  wxToggleButton *m_tOpts;
+
   wxListBox *m_listbox;
   MiniMathCtrl *m_minimathctrl;
+
   wxArrayString m_lbStrings;
   bool m_wantListUpdate;
+
   DECLARE_EVENT_TABLE()
 };
 

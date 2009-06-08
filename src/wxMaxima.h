@@ -67,7 +67,7 @@ public:
   {
     m_openFile = file;
   }
-  void SendMaxima(wxString s);
+  void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
@@ -106,7 +106,7 @@ protected:
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
   void HistoryDClick(wxCommandEvent& event);
-  void OnInspectorLBEvent(wxCommandEvent& ev);
+  void OnInspectorEvent(wxCommandEvent& ev);
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
   void TryUpdateInspector();

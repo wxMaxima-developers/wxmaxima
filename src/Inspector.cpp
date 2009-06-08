@@ -30,15 +30,6 @@ Inspector::Inspector(wxWindow* parent, int id) : wxPanel(parent, id)
   //m_splitter = new wxSplitterWindow(this, -1);
   //m_splitter->SetSashGravity(0.5);
 
-  // combo
-  const wxString m_combochoices[] =
-    {
-      _("Variables"),
-      _("Functions")
-    };
-  m_combo = new wxComboBox(this, inspector_combo_id, wxEmptyString,
-      wxDefaultPosition, wxDefaultSize, 2, m_combochoices, wxCB_DROPDOWN | wxCB_READONLY);
-  m_combo->SetValue(_("Variables"));
   m_category = INSPECTOR_VARIABLES;
   //listbox
   m_listbox = new wxListBox(this, inspector_listbox_id,
@@ -51,9 +42,28 @@ Inspector::Inspector(wxWindow* parent, int id) : wxPanel(parent, id)
   // LAYOUT
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vboxleft = new wxBoxSizer(wxVERTICAL);
+  wxGridSizer *buttonbox = new wxGridSizer(1, 4, 0,0);
 
+  // toggle buttons
+  m_tVars = new wxToggleButton(this, inspector_vars_id, wxT("x"), wxDefaultPosition, wxSize(30,20));
+  m_tFuns = new wxToggleButton(this, inspector_funs_id, wxT("f(x)"), wxDefaultPosition, wxSize(30,20));
+  m_tLabs = new wxToggleButton(this, inspector_labs_id, wxT("\%i1"), wxDefaultPosition, wxSize(30,20));
+  m_tOpts = new wxToggleButton(this, inspector_labs_id, wxT("Opt"), wxDefaultPosition, wxSize(30,20));
+
+  m_tVars->SetValue(true); // default - show variables
+  m_tFuns->SetValue(true); // default - show functions
+
+  m_tVars->SetToolTip(_("Variables"));
+  m_tFuns->SetToolTip(_("Functions and macros"));
+  m_tLabs->SetToolTip(_("Labels"));
+  m_tOpts->SetToolTip(_("Options"));
+
+  buttonbox->Add(m_tVars,0,wxEXPAND,0);
+  buttonbox->Add(m_tFuns,0,wxEXPAND,0);
+  buttonbox->Add(m_tLabs,0,wxEXPAND,0);
+  buttonbox->Add(m_tOpts,0,wxEXPAND,0);
   // left side
-  vboxleft->Add(m_combo, 0, wxTOP | wxLEFT, 10);
+  vboxleft->Add(buttonbox, 0, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 5);
   vboxleft->Add(m_listbox, 1, wxEXPAND | wxALL, 5);
 
   hbox->Add(vboxleft, 2, wxEXPAND, 0); // left side
@@ -72,10 +82,33 @@ Inspector::~Inspector()
 {
 }
 
-void Inspector::SetValues(wxArrayString arrstr)
+void Inspector::SetList(wxArrayString arrstr)
 {
+  // make sure the same items are selected!
+  wxArrayInt selections;
+  wxArrayString selnames;
+  bool update = false;
+  int numsel = m_listbox->GetSelections(selections);
+  if (numsel > 0)
+    for (int i = 0; i < numsel; i++) {
+      selnames.Add(m_lbStrings[selections[i]]);
+    }
+
   m_lbStrings = arrstr;
   m_listbox->Set(arrstr);
+
+  if (numsel > 0)
+    for (int i = 0; i < numsel; i++) {
+      update |= m_listbox->SetStringSelection(selnames[i]);
+  }
+
+  m_listbox->Enable();
+
+  if (update) {
+    m_wantListUpdate = false;
+    wxCommandEvent mev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+    (wxTheApp->GetTopWindow())->ProcessEvent(mev);
+  }
 }
 
 int sortingfunc(int* a, int* b)
@@ -97,16 +130,26 @@ wxString Inspector::GetMaximaCommand()
 {
 
   if (m_wantListUpdate) {
-    switch (m_category){
-      case INSPECTOR_VARIABLES:
-        return wxT(":lisp (inspector-list-vars)");
-        break;
-      case INSPECTOR_FUNCTIONS:
-        return wxT(":lisp (inspector-list-funs)");
-        break;
-      default:
-        return wxEmptyString;
+    if ((m_tVars->GetValue()) ||
+        (m_tFuns->GetValue()) ||
+        (m_tLabs->GetValue())) {
+
+      wxString ans = wxT(":lisp (inspector-list '(");
+      if (m_tVars->GetValue())
+        ans << wxT(" vars");
+      if (m_tFuns->GetValue())
+        ans << wxT(" funs");
+      if (m_tLabs->GetValue())
+        ans << wxT(" labs");
+      if (m_tOpts->GetValue())
+        ans << wxT(" opts");
+
+      ans << wxT("));");
+
+      return ans;
     }
+    else
+      return wxEmptyString;
   }
   else { // we want to update minimathctrl
     wxString ans = wxEmptyString;
@@ -116,21 +159,21 @@ wxString Inspector::GetMaximaCommand()
       return wxEmptyString;
     selections.Sort(&sortingfunc);
 
-    if (m_category == INSPECTOR_VARIABLES) {
-      ans = wxT(":lisp (inspector-get-vars");
-      for (int i = 0; i < numsel; i++) {
-        ans << wxT(" '$") << m_lbStrings[selections[i]];
+    ans = wxT(":lisp (inspector-get");
+
+    for (int i = 0; i < numsel; i++) {
+      wxString name = m_lbStrings[selections[i]];
+      int bracket = name.Find(wxT("("));
+      if (bracket > -1) { // we have a function
+        name = name.SubString(0,bracket-1);
+        ans << wxT(" '(") << LispSymbolString(name) << wxT(")");
       }
-      ans << wxT(")");
+      else // we have a variable
+        ans << wxT(" '") << LispSymbolString(name);
     }
-    else if (m_category == INSPECTOR_FUNCTIONS) {
-      ans = wxT(":lisp (inspector-get-funs");
-      for (int i = 0; i < numsel; i++) {
-        wxString funname = m_lbStrings[selections[i]];
-        ans << wxT(" '$") << funname.SubString(0,funname.Find(wxT("("))-1);
-      }
-      ans << wxT(")");
-    }
+
+    ans << wxT(");");
+
     return ans;
   }
 
@@ -141,40 +184,25 @@ wxString Inspector::GetMaximaCommand()
 // Maxima's output.
 void Inspector::ParseMaximaResult(wxString result)
 {
-  if (result.Left(9) == wxT("<varlist>"))
-  {
-    result = result.SubString(9,
-          result.Find(wxT("</varlist>")) - 1);
-
-    wxArrayString list;
-    wxStringTokenizer tokens(result, wxT(";"));
-    while (tokens.HasMoreTokens()) {
-      wxString token = tokens.GetNextToken();
-      if (token.Length())
-        list.Add(token);
-    }
-    m_wantListUpdate = false;
-    SetValues(list);
-  }
-  else if (result.Left(9) == wxT("<funlist>"))
-  {
-    result = result.SubString(9,
-          result.Find(wxT("</funlist>")) - 1);
-
-    wxArrayString list;
-    wxStringTokenizer tokens(result, wxT(";"));
-    while (tokens.HasMoreTokens()) {
-      wxString token = tokens.GetNextToken();
-      if (token.Length())
-        list.Add(token);
-    }
-    m_wantListUpdate = false;
-    SetValues(list);
-  }
-  else if (result.Left(6) == wxT("<vars>"))
+  if (result.Left(6) == wxT("<list>"))
   {
     result = result.SubString(6,
-          result.Find(wxT("</vars>")) - 1);
+          result.Find(wxT("</list>")) - 1);
+
+    wxArrayString list;
+    wxStringTokenizer tokens(result, wxT(";"));
+    while (tokens.HasMoreTokens()) {
+      wxString token = tokens.GetNextToken();
+      if (token.Length())
+        list.Add(token);
+    }
+    m_wantListUpdate = false;
+    SetList(list);
+  }
+  else if (result.Left(8) == wxT("<values>"))
+  {
+    result = result.SubString(8,
+          result.Find(wxT("</values>")) - 1);
     if (result.Length() > 0)
     {
       MathParser mp;
@@ -182,47 +210,67 @@ void Inspector::ParseMaximaResult(wxString result)
       m_minimathctrl->SetTree(res);
     }
   }
-  else if (result.Left(6) == wxT("<funs>"))
-  {
-
-
-  }
 
 }
 
-void Inspector::OnCombo(wxCommandEvent &ev)
+// handle toggle buttons
+void Inspector::OnToggleButton(wxCommandEvent &ev)
 {
-  wxString newcombo = m_combo->GetValue();
-  if (newcombo == _("Variables")) {
-    if (m_category == INSPECTOR_VARIABLES)
-      return;
-    else {
-      m_category = INSPECTOR_VARIABLES;
-      wxArrayString empty;
-      SetValues(empty);
-      m_wantListUpdate = true;
-      m_minimathctrl->ClearWindow();
+  OutdateList();
+  /*
+  m_listbox->Disable();
+  m_minimathctrl->ClearWindow();
+  m_wantListUpdate = true;
 
-      wxCommandEvent ev(wxEVT_COMMAND_LISTBOX_SELECTED, inspector_listbox_id);
-      (wxTheApp->GetTopWindow())->ProcessEvent(ev);
-    }
-  }
-  else if (newcombo == _("Functions")) {
-    if (m_category == INSPECTOR_FUNCTIONS)
-      return;
-    else {
-      m_category = INSPECTOR_FUNCTIONS;
-      wxArrayString empty;
-      SetValues(empty);
-      m_wantListUpdate = true;
-      m_minimathctrl->ClearWindow();
+  // send an event to wxmaxima
+  wxCommandEvent mev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+  (wxTheApp->GetTopWindow())->ProcessEvent(mev);
+  */
+}
 
-      wxCommandEvent ev(wxEVT_COMMAND_LISTBOX_SELECTED, inspector_listbox_id);
-      (wxTheApp->GetTopWindow())->ProcessEvent(ev);
-    }
-  }
+void Inspector::OnListBox(wxCommandEvent &ev)
+{
+  if (!ev.IsSelection())
+    return;
+
+  m_wantListUpdate = false;
+  wxCommandEvent mev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+  (wxTheApp->GetTopWindow())->ProcessEvent(mev);
+}
+
+// this is called from wxMaxima, when evaluation queue is emptied
+void Inspector::OutdateList()
+{
+  m_listbox->Disable();
+  m_minimathctrl->ClearWindow();
+  m_wantListUpdate = true;
+
+  // send an event to wxmaxima
+  wxCommandEvent ev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+  (wxTheApp->GetTopWindow())->ProcessEvent(ev);
+}
+
+// convert maxima string like "abc"
+// into " '$abc"
+wxString Inspector::LispSymbolString(wxString maximastring)
+{
+  // we have to obey strange lisp conventions
+  // pass: 'abc' as $abc
+  // 'ABC' as |$abc| and 'AbC' as |$AbC|
+  wxString ans = wxEmptyString;
+  if (maximastring == maximastring.Lower())
+    ans << wxT("$") << maximastring;
+  else if (maximastring == maximastring.Upper())
+    ans << wxT("|$") << maximastring.Lower() << wxT("|");
+  else
+    ans << wxT("|$") << maximastring << wxT("|");
+  return ans;
 }
 
 BEGIN_EVENT_TABLE(Inspector, wxPanel)
-  EVT_COMBOBOX(inspector_combo_id, Inspector::OnCombo)
+  EVT_LISTBOX(inspector_listbox_id, Inspector::OnListBox)
+  EVT_TOGGLEBUTTON(inspector_vars_id, Inspector::OnToggleButton)
+  EVT_TOGGLEBUTTON(inspector_funs_id, Inspector::OnToggleButton)
+  EVT_TOGGLEBUTTON(inspector_labs_id, Inspector::OnToggleButton)
+  EVT_TOGGLEBUTTON(inspector_opts_id, Inspector::OnToggleButton)
 END_EVENT_TABLE()

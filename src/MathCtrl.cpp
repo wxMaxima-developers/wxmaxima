@@ -3010,7 +3010,9 @@ void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
 
 void MathCtrl::ShowHCaret()
 {
-  if (m_workingGroup != NULL)
+  if (m_hCaretPosition != NULL)
+    m_hCaretPosition = m_hCaretPosition;
+  else if (m_workingGroup != NULL)
     m_hCaretPosition = m_workingGroup;
   else if (m_last != NULL)
     m_hCaretPosition = m_last;

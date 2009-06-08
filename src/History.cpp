@@ -46,7 +46,11 @@ History::~History()
 
 void History::AddToHistory(wxString cmd)
 {
-  wxStringTokenizer cmds(cmd, wxT(";$"));
+  wxString lineends = wxT(";$");
+  if (cmd.StartsWith(wxT(":lisp")))
+    lineends = wxT(";");
+
+  wxStringTokenizer cmds(cmd, lineends);
 
   while (cmds.HasMoreTokens())
   {
