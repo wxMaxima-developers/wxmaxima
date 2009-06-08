@@ -30,10 +30,14 @@
  #define PAREN_FONT_SIZE 12
 #endif
 
-#define PAREN_OPEN1 "\xB0"
-#define PAREN_CLOSE1 "\xD1"
-#define PAREN_OPEN2 "\xD2"
-#define PAREN_CLOSE2 "\xD3"
+#define PAREN_OPEN "\xB0"
+#define PAREN_CLOSE "\xD1"
+#define PAREN_OPEN_TOP "\x30"
+#define PAREN_OPEN_EXTEND "\x42"
+#define PAREN_OPEN_BOTTOM "\x40"
+#define PAREN_CLOSE_TOP "\x31"
+#define PAREN_CLOSE_EXTEND "\x43"
+#define PAREN_CLOSE_BOTTOM "\x41"
 
 #define TRANSFORM_SIZE(type, size) \
   (type == 0 ? size:                \
@@ -135,24 +139,37 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     else
       m_bigParenType = 2;
 
-    m_parentFontsize = fontsize;
-    int fontsize1 = (int) ((m_parentFontsize * scale + 0.5));
-
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-               false, false, false,
-               m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
-    dc.GetTextExtent(wxT(PAREN_OPEN1), &m_signWidth, &m_signSize);
-
-    while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size))
+    if (m_bigParenType < 2)
     {
-      int fontsize1 = (int) ((m_parentFontsize++ * scale + 0.5));
+      m_parenFontSize = fontsize;
+      int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
+
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                  false, false, false,
                  m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
-      dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
-                       m_bigParenType == 1 ? wxT(PAREN_OPEN1) :
-                                             wxT(PAREN_OPEN2),
-                       &m_signWidth, &m_signSize);
+      dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
+
+      while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size))
+      {
+        int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
+        dc.SetFont(wxFont(fontsize1, wxMODERN,
+                   false, false, false,
+                   m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
+        dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
+                         m_bigParenType == 1 ? wxT(PAREN_OPEN) :
+                                               wxT(PAREN_OPEN_TOP),
+                         &m_signWidth, &m_signSize);
+      }
+    }
+    else
+    {
+      m_parenFontSize = fontsize;
+      int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
+
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                 false, false, false,
+                 m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
+      dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
     }
 
     m_signTop = m_signSize / 5;
@@ -273,22 +290,53 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     if (parser.CheckTeXFonts())
     {
       SetForeground(parser);
-      int fontsize1 = (int) ((m_parentFontsize * scale + 0.5));
+      int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                  false, false, false,
                  m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
-      dc.DrawText(m_bigParenType == 0 ? wxT("(") :
-                  m_bigParenType == 1 ? wxT(PAREN_OPEN1) :
-                                        wxT(PAREN_OPEN2),
-                  point.x,
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                  (m_bigParenType > 0 ? m_signTop : 0));
-      dc.DrawText(m_bigParenType == 0 ? wxT(")") :
-                  m_bigParenType == 1 ? wxT(PAREN_CLOSE1) :
-                                        wxT(PAREN_CLOSE2),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                  (m_bigParenType > 0 ? m_signTop : 0));
+      if (m_bigParenType < 2)
+      {
+        dc.DrawText(m_bigParenType == 0 ? wxT("(") :
+                                          wxT(PAREN_OPEN),
+                    point.x,
+                    point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
+                    (m_bigParenType > 0 ? m_signTop : 0));
+        dc.DrawText(m_bigParenType == 0 ? wxT(")") :
+                                          wxT(PAREN_CLOSE),
+                    point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                    point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
+                    (m_bigParenType > 0 ? m_signTop : 0));
+      }
+      else {
+        int top = point.y - m_center - m_signTop;
+        int bottom = point.y + m_height - m_center - m_signTop - m_signSize / 2;
+        dc.DrawText(wxT(PAREN_OPEN_TOP),
+                    point.x,
+                    top);
+        dc.DrawText(wxT(PAREN_CLOSE_TOP),
+                    point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                    top);
+        dc.DrawText(wxT(PAREN_OPEN_BOTTOM),
+                    point.x,
+                    bottom);
+        dc.DrawText(wxT(PAREN_CLOSE_BOTTOM),
+                    point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                    bottom);
+        top = top + m_signSize / 2;
+        if (top <= bottom)
+        {
+          while (top < bottom)
+          {
+            dc.DrawText(wxT(PAREN_OPEN_EXTEND),
+                          point.x,
+                          top-1);
+            dc.DrawText(wxT(PAREN_CLOSE_EXTEND),
+                          point.x + m_width - m_signWidth,
+                          top-1);
+            top += m_signSize / 10;
+          }
+        }
+      }
     }
     else
     {

@@ -53,7 +53,7 @@ protected:
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
 #endif
-  int m_parentFontsize, m_signTop, m_signSize, m_signWidth;
+  int m_parenFontSize, m_signTop, m_signSize, m_signWidth;
   int m_bigParenType;
 };
 
