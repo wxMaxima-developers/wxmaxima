@@ -20,19 +20,12 @@
 #include "IntCell.h"
 #include "TextCell.h"
 
-
 #if defined __WXMSW__
   #define INTEGRAL_TOP "\xF3"
   #define INTEGRAL_BOTTOM "\xF5"
   #define INTEGRAL_EXTEND "\xF4"
   #define INTEGRAL_FONT_SIZE 12
-#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  #define INTEGRAL_TOP "\x2320"
-  #define INTEGRAL_BOTTOM "\x2321"
-  #define INTEGRAL_EXTEND "\x23AE"
-  #define INTEGRAL_FONT_SIZE fontsize
 #endif
-
 
 IntCell::IntCell() : MathCell()
 {
@@ -42,7 +35,6 @@ IntCell::IntCell() : MathCell()
   m_var = NULL;
   m_signSize = 50;
   m_signWidth = 18;
-  m_signMiddle = 9;
   m_intStyle = INT_IDEF;
 }
 
@@ -147,7 +139,6 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
   m_signSize = SCALE_PX(50, scale);
   m_signWidth = SCALE_PX(18, scale);
-  m_signMiddle = SCALE_PX(9, scale);
 
   m_base->RecalculateWidths(parser, fontsize, true);
   m_var->RecalculateWidths(parser, fontsize, true);
@@ -158,28 +149,45 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_over = new TextCell;
   m_over->RecalculateWidths(parser, MAX(8, fontsize - 5), true);
 
-  m_signMiddle = MAX(m_signMiddle,
-                     MAX(m_under->GetFullWidth(scale) / 2 + SCALE_PX(4, scale),
-			 m_over->GetFullWidth(scale) / 2 - SCALE_PX(4, scale)));
-
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     false, false, false,
                     parser.GetSymbolFontName()));
-  dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
+  dc.GetTextExtent(wxT(INTEGRAL_SIGN), &m_signWidth, &m_signSize);
+
+  m_width = m_signWidth +
+            m_base->GetFullWidth(scale) +
+            MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
+            m_var->GetFullWidth(scale) +
+            SCALE_PX(4, scale);
+#else
+  if (parser.CheckTeXFonts()) {
+    wxDC& dc = parser.GetDC();
+    int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      false, false, false,
+                      parser.GetTeXCMEX()));
+    dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
+
+    m_signTop = m_signSize / 2;
+    m_signSize = (85 * m_signSize) / 100;
+
+    m_width = m_signWidth +
+              MAX(m_over->GetFullWidth(scale) + m_signWidth, m_under->GetFullWidth(scale)) +
+              m_base->GetFullWidth(scale) +
+              m_var->GetFullWidth(scale) +
+              SCALE_PX(4, scale);
+  }
+  else {
+    m_width = m_signWidth +
+              m_base->GetFullWidth(scale) +
+              MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
+              m_var->GetFullWidth(scale) +
+              SCALE_PX(4, scale);
+  }
 #endif
-  int signOver = MAX(SCALE_PX(10, scale),
-                     m_over->GetFullWidth(scale) / 2 + SCALE_PX(4, scale));
-
-  m_signWidth = m_signMiddle +
-    MAX(m_signMiddle,
-	MAX(m_over->GetFullWidth(scale) / 2 + SCALE_PX(4, scale),
-	    m_under->GetFullWidth(scale) / 2 - SCALE_PX(4, scale)));
-
-  m_width = m_signWidth + m_base->GetFullWidth(scale) +
-            m_var->GetFullWidth(scale) + SCALE_PX(2, scale);
 
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -195,11 +203,22 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
   if (m_intStyle == INT_DEF)
   {
-    m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
-		   m_base->GetMaxCenter());
-    m_height = m_center +
-      MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
-	  m_base->GetMaxDrop());
+    if (parser.CheckTeXFonts())
+    {
+      m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2 - m_signSize / 3,
+                     m_base->GetMaxCenter());
+      m_height = m_center +
+                 MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2 - m_signSize / 3,
+                     m_base->GetMaxDrop());
+    }
+    else
+    {
+      m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+                     m_base->GetMaxCenter());
+      m_height = m_center +
+                 MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+                     m_base->GetMaxDrop());
+    }
   }
   else
   {
@@ -220,87 +239,100 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
-    if (m_intStyle == INT_DEF)
-    {
-      under.x += m_signMiddle - m_under->GetFullWidth(scale) / 2 -
-                 SCALE_PX(4, scale);
-      under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale);
-      m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
-
-      over.x += m_signMiddle - m_over->GetFullWidth(scale) / 2 +
-                SCALE_PX(4, scale);
-      over.y = point.y - m_signSize/2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
-      m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
-    }
-
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__
     SetForeground(parser);
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxMODERN,
-               false, false, false,
-               parser.GetSymbolFontName()));
-    dc.DrawText(wxT(INTEGRAL_TOP),
-                sign.x + m_signMiddle - m_charWidth / 2,
-                sign.y - (m_signSize + 1) / 2);
-    dc.DrawText(wxT(INTEGRAL_BOTTOM),
-                sign.x + m_signMiddle - m_charWidth / 2,
-                sign.y + (m_signSize + 1) / 2 - m_charHeight);
-    int top, bottom;
-    top = sign.y - (m_signSize + 1) / 2 + m_charHeight / 2;
-    bottom = sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2;
-    if (top <= bottom)
-    {
-      while (top < bottom)
-      {
-        dc.DrawText(wxT(INTEGRAL_EXTEND),
-                      point.x + m_signMiddle - m_charWidth / 2,
-                      top);
-        top += (2*m_charHeight)/3;
-      }
-      dc.DrawText(wxT(INTEGRAL_EXTEND),
-                      point.x + m_signMiddle - m_charWidth / 2,
-                      sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
-    }
+                      false, false, false,
+                      parser.GetSymbolFontName()));
+    dc.SetTextBackground(wxColour(wxT("red")));
+    dc.DrawText(wxT(INTEGRAL_SIGN),
+                sign.x,
+                sign.y - m_signSize / 2);
 #else
-    SetPen(parser);
-    // top decoration
-    dc.DrawLine(sign.x + m_signMiddle,
-                sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
-                sign.x + m_signMiddle + SCALE_PX(3, scale),
-                sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale));
-    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(3, scale),
-                sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale),
-                sign.x + m_signMiddle + SCALE_PX(6, scale),
-                sign.y - (m_signSize + 1) / 2);
-    dc.DrawLine(sign.x + m_signMiddle + SCALE_PX(6, scale),
-                sign.y - (m_signSize + 1) / 2,
-                sign.x + m_signMiddle + SCALE_PX(9, scale),
-                sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale));
-    // bottom decoration
-    dc.DrawLine(sign.x + m_signMiddle,
-                sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1,
-                sign.x + m_signMiddle - SCALE_PX(3, scale),
-                sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale));
-    dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(3, scale),
-                sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale),
-                sign.x + m_signMiddle - SCALE_PX(6, scale),
-                sign.y + (m_signSize + 1) / 2);
-    dc.DrawLine(sign.x + m_signMiddle - SCALE_PX(6, scale),
-                sign.y + (m_signSize + 1) / 2,
-                sign.x + m_signMiddle - SCALE_PX(9, scale),
-                sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale));
-    // line
-    dc.DrawLine(sign.x + m_signMiddle,
-                sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
-                sign.x + m_signMiddle,
-                sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1);
+    if (parser.CheckTeXFonts())
+    {
+      SetForeground(parser);
+      int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false, false, false,
+                        parser.GetTeXCMEX()));
+      dc.DrawText(wxT("\x5A"),
+                  sign.x,
+                  sign.y - m_signTop);
+    }
+    else
+    {
+      SetPen(parser);
+      // top decoration
+      int m_signWCenter = m_signWidth / 2;
+      dc.DrawLine(sign.x + m_signWCenter,
+                  sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
+                  sign.x + m_signWCenter + SCALE_PX(3, scale),
+                  sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale));
+      dc.DrawLine(sign.x + m_signWCenter + SCALE_PX(3, scale),
+                  sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale),
+                  sign.x + m_signWCenter + SCALE_PX(6, scale),
+                  sign.y - (m_signSize + 1) / 2);
+      dc.DrawLine(sign.x + m_signWCenter + SCALE_PX(6, scale),
+                  sign.y - (m_signSize + 1) / 2,
+                  sign.x + m_signWCenter + SCALE_PX(9, scale),
+                  sign.y - (m_signSize + 1) / 2 + SCALE_PX(3, scale));
+      // bottom decoration
+      dc.DrawLine(sign.x + m_signWCenter,
+                  sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1,
+                  sign.x + m_signWCenter - SCALE_PX(3, scale),
+                  sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale));
+      dc.DrawLine(sign.x + m_signWCenter - SCALE_PX(3, scale),
+                  sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale),
+                  sign.x + m_signWCenter - SCALE_PX(6, scale),
+                  sign.y + (m_signSize + 1) / 2);
+      dc.DrawLine(sign.x + m_signWCenter - SCALE_PX(6, scale),
+                  sign.y + (m_signSize + 1) / 2,
+                  sign.x + m_signWCenter - SCALE_PX(9, scale),
+                  sign.y + (m_signSize + 1) / 2 - SCALE_PX(3, scale));
+      // line
+      dc.DrawLine(sign.x + m_signWCenter,
+                  sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
+                  sign.x + m_signWCenter,
+                  sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1);
+    }
     UnsetPen(parser);
 #endif
-    base.x += m_signWidth + SCALE_PX(2, scale);
+
+    if (m_intStyle == INT_DEF)
+    {
+      under.x += m_signWidth;
+      under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale) -
+                m_signSize / 3;
+      m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
+
+      if (parser.CheckTeXFonts())
+        over.x += 2*m_signWidth;
+      else
+        over.x += m_signWidth;
+
+      over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale) +
+               m_signSize / 3;
+      m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
+
+      if (parser.CheckTeXFonts())
+      {
+        base.x += m_signWidth +
+                  MAX(m_over->GetFullWidth(scale) + m_signWidth, m_under->GetFullWidth(scale));
+      }
+      else
+        base.x += m_signWidth +
+                  MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale));
+      }
+    else if (parser.CheckTeXFonts())
+      base.x += 2*m_signWidth;
+    else
+      base.x += m_signWidth;
+
     m_base->Draw(parser, base, fontsize, true);
 
-    var.x += m_signWidth + m_base->GetFullWidth(scale) + SCALE_PX(2, scale);
-    var.y += m_var->GetMaxCenter() - m_var->GetMaxHeight() / 2;
+    var.x = base.x + m_base->GetFullWidth(scale);
     m_var->Draw(parser, var, fontsize, true);
   }
 
@@ -370,7 +402,7 @@ wxString IntCell::ToXML(bool all)
 
 	return _T("<in>") + ( ( m_intStyle == INT_DEF )?
 					from + to + base + var :
-					base + var ) + _T("</in>") + 
+					base + var ) + _T("</in>") +
 					MathCell::ToXML(all);
 }
 

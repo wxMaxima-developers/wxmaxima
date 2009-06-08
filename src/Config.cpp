@@ -107,10 +107,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_getGreekFont = new wxButton(notebook_1_pane_2, button_greek, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
   m_greekFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, -4, 4, adj);
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  m_unicodeGlyphs = new wxStaticText(notebook_1_pane_2, -1, _("Unicode glyphs:"));
-  m_getUnicodeFont = new wxButton(notebook_1_pane_2, unicode_glyphs, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-#endif
   const wxString m_styleFor_choices[] =
     {
       _("Default"),
@@ -184,9 +180,6 @@ void Config::set_properties()
   m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  m_getUnicodeFont->SetToolTip(_("Font used for displaying unicode glyphs in document."));
-#endif
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
@@ -334,10 +327,6 @@ void Config::do_layout()
   grid_sizer_1->Add(m_getGreekFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_greekFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  grid_sizer_1->Add(m_unicodeGlyphs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_getUnicodeFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-#endif
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
@@ -512,21 +501,6 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
   }
 }
 
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-void Config::OnChangeUnicodeFont(wxCommandEvent& event)
-{
-  wxFont font;
-  font = wxGetFontFromUser(this, wxFont(m_fontSize,
-                                        wxNORMAL, wxNORMAL, wxNORMAL,
-                                        false, m_unicodeFont));
-  if (font.Ok())
-  {
-    m_unicodeFont = font.GetFaceName();
-    m_getUnicodeFont->SetLabel(m_unicodeFont);
-  }
-}
-#endif
-
 void Config::ReadStyles(wxString file)
 {
   wxConfigBase* config;
@@ -545,13 +519,6 @@ void Config::ReadStyles(wxString file)
   config->Read(wxT("Style/fontname"), &m_styleDefault.font);
   if (m_styleDefault.font.Length())
     m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
-
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  m_unicodeFont = m_styleDefault.font;
-  config->Read(wxT("Style/Unicode/fontname"), &m_unicodeFont);
-  if (m_unicodeFont.Length())
-    m_getUnicodeFont->SetLabel(m_unicodeFont);
-#endif
 
   int encoding = wxFONTENCODING_DEFAULT;
   config->Read(wxT("fontEncoding"), &encoding);
@@ -794,10 +761,6 @@ void Config::WriteStyles(wxString file)
 
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
-
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  config->Write(wxT("Style/Unicode/fontname"), m_unicodeFont);
-#endif
 
   config->Write(wxT("Style/GreekFont/ok"), m_greekFontOk->GetValue());
   config->Write(wxT("Style/GreekFont/fontname"), m_greekFontName);
@@ -1092,9 +1055,6 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
   EVT_BUTTON(button_greek, Config::OnGreekBrowse)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  EVT_BUTTON(unicode_glyphs, Config::OnChangeUnicodeFont)
-#endif
 #if defined __WXMSW__
   EVT_BUTTON(color_id, Config::OnColorButton)
 #endif

@@ -28,15 +28,17 @@
  #define PAREN_LEFT_EXTEND "\xE7"
  #define PAREN_RIGHT_EXTEND "\xF7"
  #define PAREN_FONT_SIZE 12
-#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
- #define PAREN_LEFT_TOP "\x239B"
- #define PAREN_LEFT_BOTTOM "\x239D"
- #define PAREN_RIGHT_TOP "\x239E"
- #define PAREN_RIGHT_BOTTOM "\x23A0"
- #define PAREN_LEFT_EXTEND "\x239C"
- #define PAREN_RIGHT_EXTEND "\x239F"
- #define PAREN_FONT_SIZE fontsize
 #endif
+
+#define PAREN_OPEN1 "\xB0"
+#define PAREN_CLOSE1 "\xD1"
+#define PAREN_OPEN2 "\xD2"
+#define PAREN_CLOSE2 "\xD3"
+
+#define TRANSFORM_SIZE(type, size) \
+  (type == 0 ? size:                \
+  type == 1 ? 2*size:              \
+      (3*size)/2)
 
 ParenCell::ParenCell() : MathCell()
 {
@@ -109,7 +111,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
   m_innerCell->RecalculateWidths(parser, fontsize, true);
 
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -120,7 +122,44 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   dc.GetTextExtent(wxT(PAREN_LEFT_TOP), &m_charWidth, &m_charHeight);
   m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;
 #else
-  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
+  if (parser.CheckTeXFonts())
+  {
+    wxDC& dc = parser.GetDC();
+    m_innerCell->RecalculateSize(parser, fontsize, true);
+    int size = m_innerCell->GetMaxHeight();
+
+    if (size < 2*fontsize)
+      m_bigParenType = 0;
+    else if (size < 4*fontsize)
+      m_bigParenType = 1;
+    else
+      m_bigParenType = 2;
+
+    m_parentFontsize = fontsize;
+    int fontsize1 = (int) ((m_parentFontsize * scale + 0.5));
+
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+               false, false, false,
+               m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
+    dc.GetTextExtent(wxT(PAREN_OPEN1), &m_signWidth, &m_signSize);
+
+    while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size))
+    {
+      int fontsize1 = (int) ((m_parentFontsize++ * scale + 0.5));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                 false, false, false,
+                 m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
+      dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
+                       m_bigParenType == 1 ? wxT(PAREN_OPEN1) :
+                                             wxT(PAREN_OPEN2),
+                       &m_signWidth, &m_signSize);
+    }
+
+    m_signTop = m_signSize / 5;
+    m_width = m_innerCell->GetFullWidth(scale) + 2*m_signWidth;
+  }
+  else
+    m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
 #endif
 
   m_open->RecalculateWidths(parser, fontsize, false);
@@ -135,7 +174,7 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__
   wxDC& dc = parser.GetDC();
   int fontsize1 = (int) ((fontsize * scale + 0.5));
   dc.SetFont(wxFont(fontsize1, wxMODERN,
@@ -159,10 +198,13 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     wxPoint in(point);
 
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+#if defined __WXMSW__
     in.x += m_charWidth;
 #else
-    in.x = point.x + SCALE_PX(6, scale);
+    if (parser.CheckTeXFonts())
+      in.x = point.x + m_signWidth;
+    else
+      in.x = point.x + SCALE_PX(6, scale);
 #endif
     m_innerCell->Draw(parser, in, fontsize, true);
 
@@ -226,115 +268,59 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                       point.y + m_height - m_center - (3*m_charHeight)/2);
       }
     }
-#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-    int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
-    SetForeground(parser);
-    if (m_height < (3*m_charHeight)/2)
+
+#else
+    if (parser.CheckTeXFonts())
     {
-      fontsize1 = (int) ((fontsize * scale + 0.5));
+      SetForeground(parser);
+      int fontsize1 = (int) ((m_parentFontsize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        false,
-                        false,
-                        false,
-                        parser.GetFontName()));
-      dc.DrawText(wxT("("),
-                  point.x + m_charWidth - m_charWidth1,
-                  point.y - m_charHeight1 / 2);
-      dc.DrawText(wxT(")"),
-                  point.x + m_width - m_charWidth,
-                  point.y - m_charHeight1 / 2);
-    }
-    else if (m_height < (5*m_charHeight)/2)
-    {
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        false,
-                        false,
-                        false,
-                        parser.GetSymbolFontName()));
-      dc.DrawText(wxT(PAREN_LEFT_TOP),
+                 false, false, false,
+                 m_bigParenType < 1 ? parser.GetTeXCMRI() : parser.GetTeXCMEX()));
+      dc.DrawText(m_bigParenType == 0 ? wxT("(") :
+                  m_bigParenType == 1 ? wxT(PAREN_OPEN1) :
+                                        wxT(PAREN_OPEN2),
                   point.x,
-                  point.y - MIN(m_center, m_charHeight));
-      dc.DrawText(wxT(PAREN_LEFT_BOTTOM),
-                  point.x,
-                  point.y - MAX(0, m_charHeight - m_center));
-      dc.DrawText(wxT(PAREN_RIGHT_TOP),
-                  point.x + m_width - m_charWidth,
-                  point.y - MIN(m_center, m_charHeight));
-      dc.DrawText(wxT(PAREN_RIGHT_BOTTOM),
-                  point.x + m_width - m_charWidth,
-                  point.y- MAX(0, m_charHeight - m_center));
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
+                  (m_bigParenType > 0 ? m_signTop : 0));
+      dc.DrawText(m_bigParenType == 0 ? wxT(")") :
+                  m_bigParenType == 1 ? wxT(PAREN_CLOSE1) :
+                                        wxT(PAREN_CLOSE2),
+                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
+                  (m_bigParenType > 0 ? m_signTop : 0));
     }
     else
     {
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        false,
-                        false,
-                        false,
-                        parser.GetSymbolFontName()));
-      dc.DrawText(wxT(PAREN_LEFT_TOP),
-                  point.x,
-                  point.y - m_center);
-      dc.DrawText(wxT(PAREN_LEFT_BOTTOM),
-                  point.x,
-                  point.y + m_height - m_center - m_charHeight);
-      dc.DrawText(wxT(PAREN_RIGHT_TOP),
-                  point.x + m_width - m_charWidth,
-                  point.y - m_center);
-      dc.DrawText(wxT(PAREN_RIGHT_BOTTOM),
-                  point.x + m_width - m_charWidth,
-                  point.y + m_height - m_center - m_charHeight);
-      int top, bottom;
-      top = point.y - m_center + (2*m_charHeight)/3;
-      bottom = point.y + m_height - m_center - (5*m_charHeight)/3;
-      if (top <= bottom)
-      {
-        while (top < bottom)
-        {
-          dc.DrawText(wxT(PAREN_LEFT_EXTEND),
-                        point.x,
-                        top);
-          dc.DrawText(wxT(PAREN_RIGHT_EXTEND),
-                        point.x + m_width - m_charWidth,
-                        top);
-          top += (2*m_charHeight)/3;
-        }
-        dc.DrawText(wxT(PAREN_LEFT_EXTEND),
-                        point.x,
-                        point.y + m_height - m_center - (5*m_charHeight)/3);
-        dc.DrawText(wxT(PAREN_RIGHT_EXTEND),
-                      point.x + m_width - m_charWidth,
-                      point.y + m_height - m_center - (5*m_charHeight)/3);
-      }
+      SetPen(parser);
+      // left
+      dc.DrawLine(point.x + SCALE_PX(5, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
+                  point.x + SCALE_PX(2, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
+      dc.DrawLine(point.x + SCALE_PX(2, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
+                  point.x + SCALE_PX(2, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
+      dc.DrawLine(point.x + SCALE_PX(2, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
+                  point.x + SCALE_PX(5, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
+      // right
+      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
+                  point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
+                  point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
+                  point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
+      UnsetPen(parser);
     }
-#else
-    SetPen(parser);
-    // left
-    dc.DrawLine(point.x + SCALE_PX(5, scale),
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
-                point.x + SCALE_PX(2, scale),
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
-    dc.DrawLine(point.x + SCALE_PX(2, scale),
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
-                point.x + SCALE_PX(2, scale),
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
-    dc.DrawLine(point.x + SCALE_PX(2, scale),
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
-                point.x + SCALE_PX(5, scale),
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
-    // right
-    dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
-                point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
-                point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
-                point.x + m_width - SCALE_PX(5, scale) - 1,
-                point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
-    UnsetPen(parser);
 #endif
   }
   MathCell::Draw(parser, point, fontsize, all);

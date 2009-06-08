@@ -56,7 +56,8 @@ protected:
   int m_signSize;
   int m_signWidth;
   int m_sumStyle;
-  int m_signCenter;
+  int m_signWCenter;
+  int m_signTop;
 };
 
 #endif //_UNDERCELL_H_

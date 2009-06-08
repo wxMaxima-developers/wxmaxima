@@ -654,7 +654,7 @@
     (case (fifth x)
       ($plus
        (append l `("<lm><fnm>lim</fnm><r>"
-		   ,@subfun "<t>+</t></r><r>"
+		   ,@subfun "<t> + </t></r><r>"
 		   ,@s1 "</r></lm>") r))
       ($minus
        (append l `("<lm><fnm>lim</fnm><r>"
@@ -699,7 +699,7 @@
 
 (defun wxxml-mplus (x l r)
   (cond ((member 'trunc (car x) :test #'eq)
-	 (setq r (cons "<t>+</t><t>...</t>" r))))
+	 (setq r (cons "<t> + </t><t>...</t>" r))))
   (cond ((null (cddr x))
          (if (null (cdr x))
              (wxxml-function x l r)
@@ -709,19 +709,19 @@
            (do ((nl l)  (dissym))
                ((null (cdr x))
                 (if (mmminusp (car x)) (setq l (cadar x) dissym
-                                             (list "<t>-</t>"))
-		    (setq l (car x) dissym (list "<t>+</t>")))
+                                             (list "<t> - </t>"))
+		    (setq l (car x) dissym (list "<t> + </t>")))
                 (setq r (wxxml l dissym r 'mplus rop))
                 (append nl r))
 	     (if (mmminusp (car x)) (setq l (cadar x) dissym
-					  (list "<t>-</t>"))
-                 (setq l (car x) dissym (list "<t>+</t>")))
+					  (list "<t> - </t>"))
+                 (setq l (car x) dissym (list "<t> + </t>")))
 	     (setq nl (append nl (wxxml l dissym nil 'mplus 'mplus))
 		   x (cdr x))))))
 
 (defprop mminus wxxml-prefix wxxml)
 (defprop mminus ("-") wxxmlsym)
-(defprop mminus "<t>-</t>" wxxmlword)
+(defprop mminus "<t> - </t>" wxxmlword)
 (defprop mminus 101. wxxml-rbp)
 (defprop mminus 101. wxxml-lbp)
 
@@ -738,8 +738,8 @@
 (defprop min 80. wxxml-rbp)
 
 (defprop mequal wxxml-infix wxxml)
-(defprop mequal ("<t>=</t>") wxxmlsym)
-(defprop mequal "<t>=</t>" wxxmlword)
+(defprop mequal ("<t> = </t>") wxxmlsym)
+(defprop mequal "<t> = </t>" wxxmlword)
 (defprop mequal 80. wxxml-lbp)
 (defprop mequal 80. wxxml-rbp)
 
@@ -1402,7 +1402,7 @@
 (defun inspector-list-funs ()
   (let ((strings (mapcar #'(lambda (x)
                              (let ((fun-name (mystripdollar (caar x)))
-                                   (arg-name (mapcar #'mystripdollar
+                                   (arg-name (mapcar #'(lambda (arg) (mfuncall '$string arg))
                                                      (rest x))))
                                (format nil "~a(~{~a~^,~})" fun-name arg-name)))
                          (rest $functions))))

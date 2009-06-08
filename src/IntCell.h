@@ -58,9 +58,9 @@ protected:
   MathCell *m_var;
   int m_signSize;
   int m_signWidth;
-  int m_signMiddle;
   int m_intStyle;
-#if defined __WXMSW__ || (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
+  int m_signTop;
+#if defined __WXMSW__
   int m_charHeight, m_charWidth;
 #endif
 };

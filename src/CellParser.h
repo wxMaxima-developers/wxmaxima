@@ -21,6 +21,8 @@
 #define _CELLPARSER_H
 
 #include <wx/wx.h>
+#include <wx/fontenum.h>
+
 #include "TextStyle.h"
 
 #include "Setup.h"
@@ -32,20 +34,10 @@ public:
   CellParser(wxDC& dc, double scale);
   ~CellParser();
   void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
-  void SetScale(double scale)
-  {
-    m_scale = scale;
-  }
-  double GetScale()
-  {
-    return m_scale;
-  }
-  wxDC& GetDC()
-  {
-    return m_dc;
-  }
-  void SetBouns(int top, int bottom)
-  {
+  void SetScale(double scale) { m_scale = scale; }
+  double GetScale() { return m_scale; }
+  wxDC& GetDC() { return m_dc; }
+  void SetBouns(int top, int bottom) {
     m_top = top;
     m_bottom = bottom;
   }
@@ -114,6 +106,11 @@ public:
     return 0;
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
+  bool CheckTeXFonts() { return m_TeXFonts; }
+  wxString GetTeXCMRI() { return m_fontCMRI; }
+  wxString GetTeXCMSY() { return m_fontCMSY; }
+  wxString GetTeXCMEX() { return m_fontCMEX; }
+  wxString GetTeXCMMI() { return m_fontCMMI; }
 private:
   int m_indent;
   double m_scale;
@@ -123,14 +120,13 @@ private:
   wxString m_fontName;
   int m_defaultFontSize;
   wxString m_greekFontName;
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  wxString m_unicodeSymbolsFont;
-#endif
   int m_greekFontAdj;
   bool m_haveGreekFont;
   bool m_forceUpdate;
   bool m_changeAsterisk;
   bool m_outdated;
+  bool m_TeXFonts;
+  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];

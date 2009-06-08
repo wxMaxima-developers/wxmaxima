@@ -128,6 +128,10 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   {
     wxDC& dc = parser.GetDC();
     int width, height;
+    int fontsize1 = (int) (((double)(fontsize-2)) * scale + 0.5);
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                            false, false, false,
+                            parser.GetFontName(TS_DEFAULT)));
     dc.GetTextExtent(wxT("/"), &width, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + width;
   }
@@ -188,13 +192,18 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     {
       int width, height;
       double scale = parser.GetScale();
-      dc.GetTextExtent(wxT("/"), &width, &height);
+
       num.x = point.x;
       num.y = point.y;
       denom.x = point.x + m_num->GetFullWidth(scale) + width;
       denom.y = num.y;
 
+      int fontsize1 = (int) (((double)(fontsize-2)) * scale + 0.5);
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                false, false, false,
+                parser.GetFontName(TS_DEFAULT)));
       dc.GetTextExtent(wxT("/"), &width, &height);
+
       m_num->Draw(parser, num, MAX(MC_MIN_SIZE, fontsize - 2), true);
       m_denom->Draw(parser, denom, MAX(MC_MIN_SIZE, fontsize - 2), true);
       dc.DrawText(wxT("/"),
@@ -273,8 +282,8 @@ wxString FracCell::ToTeX(bool all)
   {
     if (m_fracStyle == FC_CHOOSE)
     {
-      s = wxT("\\pmatrix{") + m_num->ToTeX(true) + wxT("\\cr ") +
-          m_denom->ToTeX(true) + wxT("}");
+      s = wxT("\\begin{pmatrix}") + m_num->ToTeX(true) + wxT("\\cr ") +
+          m_denom->ToTeX(true) + wxT("\\end{pmatrix}");
     }
     else
     {
@@ -291,11 +300,11 @@ wxString FracCell::ToXML(bool all)
 {
 	if( m_isBroken )
 		return wxEmptyString;
-	wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )? 
+	wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )?
 					_T("f"): _T("f line = \"no\"");
-	return _T("<") + s + _T("><r>") + 
+	return _T("<") + s + _T("><r>") +
 			m_num->ToXML(true) + _T("</r><r>") +
-			m_denom->ToXML(true) + _T("</r></f>") + 
+			m_denom->ToXML(true) + _T("</r></f>") +
 			MathCell::ToXML(all);
 }
 

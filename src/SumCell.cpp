@@ -20,6 +20,9 @@
 #include "SumCell.h"
 #include "TextCell.h"
 
+#define SUM_SIGN "\x58"
+#define PROD_SIGN "\x59"
+
 SumCell::SumCell() : MathCell()
 {
   m_base = NULL;
@@ -27,7 +30,7 @@ SumCell::SumCell() : MathCell()
   m_over = NULL;
   m_signSize = 50;
   m_signWidth = 30;
-  m_signCenter = 15;
+  m_signWCenter = 15;
   m_sumStyle = SM_SUM;
 }
 
@@ -115,7 +118,7 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
   m_signSize = SCALE_PX(50, scale);
   m_signWidth = SCALE_PX(30, scale);
-  m_signCenter = SCALE_PX(15, scale);
+  m_signWCenter = SCALE_PX(15, scale);
 
   m_base->RecalculateWidths(parser, fontsize, true);
   m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
@@ -123,9 +126,21 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_over = new TextCell;
   m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
-  m_signCenter = MAX(m_signCenter, m_under->GetFullWidth(scale) / 2);
-  m_signCenter = MAX(m_signCenter, m_over->GetFullWidth(scale) / 2);
-  m_width = 2 * m_signCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
+  if (parser.CheckTeXFonts())
+  {
+    wxDC& dc = parser.GetDC();
+    int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      false, false, false,
+                      parser.GetTeXCMEX()));
+    dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
+    m_signWCenter = m_signWidth / 2;
+    m_signTop = (2* m_signSize) / 5;
+    m_signSize = (2 * m_signSize) / 5;
+  }
+  m_signWCenter = MAX(m_signWCenter, m_under->GetFullWidth(scale) / 2);
+  m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth(scale) / 2);
+  m_width = 2 * m_signWCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
 
   MathCell::RecalculateWidths(parser, fontsize, all);
 }
@@ -154,88 +169,102 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
 
-    wxPoint base(point), under(point), over(point);
+    wxPoint base(point), under(point), over(point), sign(point);
 
-    under.x += m_signCenter - m_under->GetFullWidth(scale) / 2;
+    under.x += m_signWCenter - m_under->GetFullWidth(scale) / 2;
     under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale);
     m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
-    over.x += m_signCenter - m_over->GetFullWidth(scale) / 2;
+    over.x += m_signWCenter - m_over->GetFullWidth(scale) / 2;
     over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
     m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
-    SetPen(parser);
-    if (m_sumStyle == SM_SUM)
+    if (parser.CheckTeXFonts())
     {
-      //DRAW SUM SIGN
-      // Upper part
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 6,
-                  point.y,
-                  point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2 + 1);
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2);
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2 + 1,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2 + 1);
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2 + SCALE_PX(5, scale));
-      // Lower part
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 6,
-                  point.y,
-                  point.x + m_signCenter - m_signWidth / 2,
-                  point.y + m_signSize / 2 - 1);
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y + m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y + m_signSize / 2);
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y + m_signSize / 2 - 1,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y + m_signSize / 2 - 1);
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 2,
-                  point.y + m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y + m_signSize / 2 - SCALE_PX(5, scale));
+      SetForeground(parser);
+      int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                 false, false, false,
+                 parser.GetTeXCMEX()));
+      dc.DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
+                  sign.x + m_signWCenter - m_signWidth / 2,
+                  sign.y - m_signTop);
     }
     else
     {
-      // DRAW PRODUCT SIGN
-      // Vertical lines
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 6,
-                  point.y + m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 6,
-                  point.y - m_signSize / 2 + SCALE_PX(4, scale));
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 6,
-                  point.y + m_signSize / 2,
-                  point.x + m_signCenter - m_signWidth / 6,
-                  point.y - m_signSize / 2 + SCALE_PX(4, scale));
-      // Horizonral line (double)
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2);
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2 + 1,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2 + 1);
-      // Ticks on horizontal line
-      dc.DrawLine(point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2,
-                  point.x + m_signCenter - m_signWidth / 2,
-                  point.y - m_signSize / 2 + SCALE_PX(5, scale));
-      dc.DrawLine(point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2,
-                  point.x + m_signCenter + m_signWidth / 2,
-                  point.y - m_signSize / 2 + SCALE_PX(5, scale));
+      SetPen(parser);
+      if (m_sumStyle == SM_SUM)
+      {
+        //DRAW SUM SIGN
+        // Upper part
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+                    point.y,
+                    point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2 + 1);
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2);
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2 + 1,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2 + 1);
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2 + SCALE_PX(5, scale));
+        // Lower part
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+                    point.y,
+                    point.x + m_signWCenter - m_signWidth / 2,
+                    point.y + m_signSize / 2 - 1);
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y + m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y + m_signSize / 2);
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y + m_signSize / 2 - 1,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y + m_signSize / 2 - 1);
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+                    point.y + m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y + m_signSize / 2 - SCALE_PX(5, scale));
+      }
+      else
+      {
+        // DRAW PRODUCT SIGN
+        // Vertical lines
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+                    point.y + m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 6,
+                    point.y - m_signSize / 2 + SCALE_PX(4, scale));
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 6,
+                    point.y + m_signSize / 2,
+                    point.x + m_signWCenter - m_signWidth / 6,
+                    point.y - m_signSize / 2 + SCALE_PX(4, scale));
+        // Horizonral line (double)
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2);
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2 + 1,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2 + 1);
+        // Ticks on horizontal line
+        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2,
+                    point.x + m_signWCenter - m_signWidth / 2,
+                    point.y - m_signSize / 2 + SCALE_PX(5, scale));
+        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2,
+                    point.x + m_signWCenter + m_signWidth / 2,
+                    point.y - m_signSize / 2 + SCALE_PX(5, scale));
+      }
+      UnsetPen(parser);
     }
-    UnsetPen(parser);
-    base.x += (2 * m_signCenter + SCALE_PX(4, scale));
+    base.x += (2 * m_signWCenter + SCALE_PX(4, scale));
     m_base->Draw(parser, base, fontsize, true);
   }
 

@@ -33,6 +33,15 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_indent = MC_GROUP_LEFT_INDENT;
   m_changeAsterisk = false;
   m_outdated = false;
+  m_TeXFonts = false;
+
+  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")))
+  {
+    m_TeXFonts = true;
+  }
   ReadStyle();
 }
 
@@ -75,11 +84,6 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/GreekFont/fontname"), &m_greekFontName);
   config->Read(wxT("Style/GreekFont/adj"), &m_greekFontAdj);
   config->Read(wxT("Style/GreekFont/ok"), &m_haveGreekFont);
-
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  m_unicodeSymbolsFont = wxT("Sans");
-  config->Read(wxT("Style/Unicode/fontname"), &m_unicodeSymbolsFont);
-#endif
 
   wxString tmp;
 
@@ -283,11 +287,8 @@ wxString CellParser::GetSymbolFontName()
 {
 #if defined __WXMSW__
   return wxT("Symbol");
-#elif (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  return m_unicodeSymbolsFont;
-#else
-  return m_fontName;
 #endif
+  return m_fontName;
 }
 
 wxColour CellParser::GetColor(int st)

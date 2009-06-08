@@ -41,7 +41,6 @@ enum {
   font_family,
   style_font_family,
   language_id,
-  unicode_glyphs,
   save_id,
   load_id
 };
@@ -138,11 +137,6 @@ protected:
   wxSpinCtrl* m_greekFontAdj;
   wxString m_greekFontName;
   wxButton *m_saveStyle, *m_loadStyle;
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  wxStaticText* m_unicodeGlyphs;
-  wxButton* m_getUnicodeFont;
-  wxString m_unicodeFont;
-#endif
   wxStaticText* label_12;
   wxSpinCtrl* m_defaultPort;
   ExamplePanel* label_11;
@@ -172,9 +166,6 @@ protected:
         m_styleOutdated;
   void OnOk(wxCommandEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
-#if (wxUSE_UNICODE && WXM_UNICODE_GLYPHS)
-  void OnChangeUnicodeFont(wxCommandEvent& event);
-#endif
 #if defined __WXMSW__
   void OnColorButton(wxCommandEvent& event);
 #endif

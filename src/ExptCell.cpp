@@ -206,7 +206,7 @@ wxString ExptCell::ToXML(bool all)
 	if (m_isBroken)
 		return wxEmptyString;
 	return _T("<e><r>") + m_baseCell->ToXML(true) + _T("</r><r>") +
-			m_powCell->ToXML(true) + _T("</r></e>") + 
+			m_powCell->ToXML(true) + _T("</r></e>") +
 			MathCell::ToXML(all);
 }
 
