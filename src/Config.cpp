@@ -454,6 +454,7 @@ void Config::OnMathBrowse(wxCommandEvent& event)
     m_mathFontName = math.GetFaceName();
     m_mathFontSize = math.GetPointSize();
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
+    UpdateExample();
   }
 }
 
@@ -969,8 +970,6 @@ void Config::UpdateExample()
   wxColour color(tmp->color);
   wxString font(m_styleDefault.font);
 
-//  wxClientDC dc(label_11);
-
   if (tmp == &m_styleBackground)
       color = m_styleInput.color;
 
@@ -981,6 +980,12 @@ void Config::UpdateExample()
     font = tmp->font;
     if (fontsize == 0)
       fontsize = m_fontSize;
+  }
+  else if (tmp == &m_styleVariable || tmp == &m_styleNumber || tmp == &m_styleFunction ||
+      tmp == &m_styleSpecial)
+  {
+    fontsize = m_mathFontSize;
+    font = m_mathFontName;
   }
 
   if (tmp == &m_styleTextBackground) {
