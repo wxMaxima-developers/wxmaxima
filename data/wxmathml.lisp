@@ -1380,7 +1380,7 @@
     (when (member 'funs which) ;; include $functions and $macros
       (push (format nil "~{~a;~}" (mapcar #'(lambda (x)
                              (let ((fun-name (mystripdollar (caar x)))
-                                   (arg-name (mapcar #'mystripdollar
+                                   (arg-name (mapcar #'inspector-funarg-to-string
                                                      (rest x))))
                                (format nil "~a(~{~a~^,~})" fun-name arg-name)))
                          `(,@(rest $functions) ,@(rest $macros)))) ans))
@@ -1389,6 +1389,15 @@
     (when (member 'opts which) ;; include $myoptions
       (push (format nil "~{~a;~}" (mapcar #'mystripdollar (rest $myoptions))) ans))
     (format nil "<insp><list>~{~a~}</list></insp>" (nreverse ans))))
+
+;; converts function argument to string
+(defun inspector-funarg-to-string (arg)
+  (cond ((symbolp arg) (mystripdollar arg))
+        ((listp arg) (if (eq (caar arg) 'mquote)
+                       (format nil "'~a" (mystripdollar (second arg)))
+                       (format nil "[~a]" (mystripdollar (second arg)))
+                       ))
+        (t "")))
 
 ;; returns xml to be inserted into the minimathctrl
 ;; distinguish between ordinary symbols and functions with list
