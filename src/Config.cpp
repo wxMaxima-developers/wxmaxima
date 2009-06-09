@@ -106,6 +106,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_mathFont = new wxStaticText(notebook_1_pane_2, -1, _("Math font:"));
   m_getMathFont = new wxButton(notebook_1_pane_2, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_useJSMath = new wxCheckBox(notebook_1_pane_2, -1, _("Use jsMath fonts"));
   const wxString m_styleFor_choices[] =
     {
       _("Default"),
@@ -183,7 +184,7 @@ void Config::set_properties()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true, savePanes = false;
-  bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false;
+  bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false, usejsmath = true;
   bool enterEvaluates = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -202,6 +203,7 @@ void Config::set_properties()
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
+  config->Read(wxT("usejsmath"), &usejsmath);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -253,6 +255,7 @@ void Config::set_properties()
   m_changeAsterisk->SetValue(changeAsterisk);
   m_enterEvaluates->SetValue(enterEvaluates);
   m_fixedFontInTC->SetValue(fixedFontTC);
+  m_useJSMath->SetValue(usejsmath);
 
   m_getStyleFont->Enable(false);
 
@@ -261,6 +264,13 @@ void Config::set_properties()
 #else
   m_button2->SetDefault();
 #endif
+
+  if (!wxFontEnumerator::IsValidFacename(wxT("jsMath-cmex10")) ||
+      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmsy10")) ||
+      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmr10")) ||
+      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmmi10")) ||
+      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmti10")))
+    m_useJSMath->Enable(false);
 
   ReadStyles();
 }
@@ -323,6 +333,8 @@ void Config::do_layout()
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(10, 10);
+  grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
@@ -392,6 +404,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
+  config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
