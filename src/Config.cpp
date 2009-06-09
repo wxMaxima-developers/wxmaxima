@@ -38,6 +38,7 @@ const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
     wxLANGUAGE_CHINESE_TRADITIONAL,
+    wxLANGUAGE_DANISH,
     wxLANGUAGE_ENGLISH,
     wxLANGUAGE_FRENCH,
     wxLANGUAGE_GERMAN,
@@ -50,15 +51,14 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 12
+#define LANGUAGE_NUMBER 13
 
 Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
-  int defaultPort = 4010, adj = 0;
+  int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
-  wxConfig::Get()->Read(wxT("Style/GreekFont/adj"), &adj);
 
   notebook_1 = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize, 0);
   notebook_1_pane_2 = new wxPanel(notebook_1, -1);
@@ -77,6 +77,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     {
       _("(Use default language)"),
       _("Chinese traditional"),
+      _("Danish"),
       _("English"),
       _("French"),
       _("German"),
@@ -103,10 +104,8 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_enterEvaluates = new wxCheckBox(notebook_1_pane_1, -1, _("Enter evaluates cells"));
   label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
   m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  m_greekFontOk = new wxCheckBox(notebook_1_pane_2, checkbox_greek, _("Use greek font:"));
-  m_getGreekFont = new wxButton(notebook_1_pane_2, button_greek, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  label_10 = new wxStaticText(notebook_1_pane_2, -1, _("Adjustment:"));
-  m_greekFontAdj = new wxSpinCtrl(notebook_1_pane_2, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, -4, 4, adj);
+  m_mathFont = new wxStaticText(notebook_1_pane_2, -1, _("Math font:"));
+  m_getMathFont = new wxButton(notebook_1_pane_2, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   const wxString m_styleFor_choices[] =
     {
       _("Default"),
@@ -175,9 +174,8 @@ void Config::set_properties()
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
-  m_greekFontOk->SetToolTip(_("Use greek font to display greek characters."));
-  m_getGreekFont->SetToolTip(_("Font used for displaying greek characters in document."));
-  m_greekFontAdj->SetToolTip(_("Adjustment for the size of greek font."));
+  m_mathFont->SetToolTip(_("Use greek font to display math characters."));
+  m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
@@ -323,10 +321,8 @@ void Config::do_layout()
   // Font box
   grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_greekFontOk, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_getGreekFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(label_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_greekFontAdj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
   sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
 
@@ -386,6 +382,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("maxima"), m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize);
+  config->Write(wxT("mathFontsize"), m_mathFontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   config->Write(wxT("showLong"), m_showLong->GetValue());
   config->Write(wxT("showHeader"), m_showHeader->GetValue());
@@ -440,23 +437,23 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   }
 }
 
-void Config::OnGreekBrowse(wxCommandEvent& event)
+void Config::OnMathBrowse(wxCommandEvent& event)
 {
-  wxFont greek;
+  wxFont math;
 #if defined __WXMSW__
-  greek = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                         false, m_greekFontName,
-                                         wxFONTENCODING_CP1253));
+  math = wxGetFontFromUser(this, wxFont(m_mathFontsize, wxNORMAL, wxNORMAL, wxNORMAL,
+                                        false, m_mathFontName,
+                                        wxFONTENCODING_CP1253));
 #else
-  greek = wxGetFontFromUser(this, wxFont(12, wxNORMAL, wxNORMAL, wxNORMAL,
-                                         false, m_greekFontName,
-                                         wxFONTENCODING_ISO8859_7));
+  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxNORMAL, wxNORMAL, wxNORMAL,
+                                        false, m_mathFontName));
 #endif
 
-  if (greek.Ok())
+  if (math.Ok())
   {
-    m_greekFontName = greek.GetFaceName();
-    m_getGreekFont->SetLabel(m_greekFontName);
+    m_mathFontName = math.GetFaceName();
+    m_mathFontSize = math.GetPointSize();
+    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
   }
 }
 
@@ -511,11 +508,9 @@ void Config::ReadStyles(wxString file)
     config = new wxFileConfig(str);
   }
 
-  int adj = 0;
-  bool greekOk = false;
-
-  m_fontSize = 12;
+  m_fontSize = m_mathFontSize = 12;
   config->Read(wxT("fontsize"), &m_fontSize);
+  config->Read(wxT("mathfontsize"), &m_mathFontSize);
   config->Read(wxT("Style/fontname"), &m_styleDefault.font);
   if (m_styleDefault.font.Length())
     m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
@@ -524,16 +519,10 @@ void Config::ReadStyles(wxString file)
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding)encoding;
 
-  m_greekFontName = wxEmptyString;
-  config->Read(wxT("Style/GreekFont/ok"), &greekOk);
-  config->Read(wxT("Style/GreekFont/fontname"), &m_greekFontName);
-  config->Read(wxT("Style/GreekFont/adj"), &adj);
-  m_greekFontAdj->SetValue(adj);
-  m_greekFontOk->SetValue(greekOk);
-  if (m_greekFontName.Length() > 0)
-    m_getGreekFont->SetLabel(m_greekFontName);
-  m_getGreekFont->Enable(greekOk);
-  m_greekFontAdj->Enable(greekOk);
+  m_mathFontName = wxEmptyString;
+  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
+  if (m_mathFontName.Length() > 0)
+    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
 
   wxString tmp;
   // Document background color
@@ -762,9 +751,7 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/fontname"), m_styleDefault.font);
   config->Write(wxT("fontEncoding"), (int)m_fontEncoding);
 
-  config->Write(wxT("Style/GreekFont/ok"), m_greekFontOk->GetValue());
-  config->Write(wxT("Style/GreekFont/fontname"), m_greekFontName);
-  config->Write(wxT("Style/GreekFont/adj"), m_greekFontAdj->GetValue());
+  config->Write(wxT("Style/Math/fontname"), m_mathFontName);
 
 #define WRITE_STYLE(style, where)                   \
   config->Write(wxT(where "color"), style.color.GetAsString(wxC2S_CSS_SYNTAX));   \
@@ -794,7 +781,7 @@ void Config::WriteStyles(wxString file)
   WRITE_STYLE(m_styleNumber, "Style/Number/")
 
   // Greek
-  WRITE_STYLE(m_styleGreek, "Style/Greek/")
+  WRITE_STYLE(m_styleGreek, "Style/Math/")
 
   // String
   WRITE_STYLE(m_styleString, "Style/String/")
@@ -888,12 +875,6 @@ void Config::OnCheckbox(wxCommandEvent& event)
   tmp->underlined = m_underlinedCB->GetValue();
 
   UpdateExample();
-}
-
-void Config::OnCheckGreek(wxCommandEvent& event)
-{
-  m_getGreekFont->Enable(m_greekFontOk->GetValue());
-  m_greekFontAdj->Enable(m_greekFontOk->GetValue());
 }
 
 void Config::OnChangeWarning(wxCommandEvent &event)
@@ -1053,7 +1034,7 @@ void Config::OnColorButton(wxCommandEvent &event)
 BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(wxID_OK, Config::OnOk)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
-  EVT_BUTTON(button_greek, Config::OnGreekBrowse)
+  EVT_BUTTON(button_mathFont, Config::OnMathBrowse)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
 #if defined __WXMSW__
   EVT_BUTTON(color_id, Config::OnColorButton)
@@ -1063,7 +1044,6 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
   EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
-  EVT_CHECKBOX(checkbox_greek, Config::OnCheckGreek)
   EVT_BUTTON(save_id, Config::LoadSave)
   EVT_BUTTON(load_id, Config::LoadSave)
   EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)

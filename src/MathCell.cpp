@@ -41,7 +41,7 @@ MathCell::MathCell()
   m_isBroken = false;
   m_highlight = false;
   m_type = MC_TYPE_DEFAULT;
-  m_textStyle = TS_DEFAULT;
+  m_textStyle = TS_VARIABLE;
 }
 
 /***
@@ -528,3 +528,12 @@ void MathCell::SetForeground(CellParser& parser)
   dc.SetTextForeground(color);
 }
 
+bool MathCell::IsMath()
+{
+  if (m_textStyle == TS_VARIABLE ||
+      m_textStyle == TS_NUMBER ||
+      m_textStyle == TS_GREEK_CONSTANT ||
+      m_textStyle == TS_SPECIAL_CONSTANT)
+    return true;
+  return false;
+}

@@ -43,6 +43,8 @@ public:
 protected:
   MathCell *m_innerCell;
   MathCell *m_open, *m_close, *m_last;
+  int m_signWidth;
+  int m_signTop;
 };
 
 #endif //_SQRTCELL_H_

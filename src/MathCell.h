@@ -176,6 +176,8 @@ public:
   void SetForeground(CellParser& parser);
   virtual bool IsActive() { return false; }
   virtual void SetParent(MathCell *parent, bool all);
+  void SetStyle(int style) { m_textStyle = style; }
+  bool IsMath();
 protected:
   int m_height;
   int m_width;

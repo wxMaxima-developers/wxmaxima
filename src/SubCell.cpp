@@ -19,6 +19,8 @@
 
 #include "SubCell.h"
 
+#define SUB_DEC 2
+
 SubCell::SubCell() : MathCell()
 {
   m_baseCell = NULL;
@@ -89,7 +91,7 @@ void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) -
             SCALE_PX(2, parser.GetScale());
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -98,7 +100,7 @@ void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void SubCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser.GetScale());
   m_center = m_baseCell->GetCenter();
@@ -120,7 +122,7 @@ void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - 3), true);
+    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
   }
 
   MathCell::Draw(parser, point, fontsize, all);

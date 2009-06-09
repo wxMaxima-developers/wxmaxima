@@ -267,12 +267,19 @@ void GroupCell::AppendOutput(MathCell *cell)
   m_appendedCells = cell;
 }
 
+void GroupCell::Recalculate(CellParser& parser, int d_fontsize, int m_fontsize)
+{
+  m_fontSize = d_fontsize;
+  m_mathFontSize = m_fontsize;
+
+  RecalculateWidths(parser, d_fontsize, false);
+  RecalculateSize(parser, d_fontsize, false);
+}
+
 void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
   {
-    m_fontSize = fontsize;
-
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       m_width = 10;
@@ -298,17 +305,17 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     else {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateWidths(parser, fontsize, false);
+        tmp->RecalculateWidths(parser, tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
         tmp = tmp->m_next;
       }
       // This is not correct, m_width will be computed correctly in RecalculateSize!
       m_width = m_input->GetFullWidth(scale);
     }
 
-    BreakUpCells(parser, fontsize, parser.GetClientWidth());
+    BreakUpCells(parser, m_fontSize, parser.GetClientWidth());
     BreakLines(parser.GetClientWidth());
   }
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  MathCell::RecalculateWidths(parser, m_fontSize, all);
 }
 
 void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
@@ -334,7 +341,7 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateSize(parser, fontsize, false);
+        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
         tmp = tmp->m_next;
       }
 
@@ -375,7 +382,7 @@ void GroupCell::RecalculateAppended(CellParser& parser)
 
   // Recalculate widths of cells
   while (tmp != NULL) {
-    tmp->RecalculateWidths(parser, fontsize, false);
+    tmp->RecalculateWidths(parser, tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
     tmp = tmp->m_next;
   }
 
@@ -386,7 +393,7 @@ void GroupCell::RecalculateAppended(CellParser& parser)
   // Recalculate size of cells
   tmp = m_appendedCells;
   while (tmp != NULL) {
-    tmp->RecalculateSize(parser, fontsize, false);
+    tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
     tmp = tmp->m_next;
   }
 
@@ -467,7 +474,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
           tmp->m_currentPoint.x = in.x;
           tmp->m_currentPoint.y = in.y;
           if (tmp->DrawThisCell(parser, in))
-            tmp->Draw(parser, in, MAX(fontsize, MC_MIN_SIZE), false);
+            tmp->Draw(parser, in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE), false);
           if (tmp->m_nextToDraw != NULL) {
             if (tmp->m_nextToDraw->BreakLineHere()) {
               in.x = m_indent;
@@ -975,8 +982,8 @@ void GroupCell::BreakUpCells(MathCell *cell, CellParser parser, int fontsize, in
   while (tmp != NULL && !m_hide) {
     if (tmp->GetWidth() > clientWidth) {
       if (tmp->BreakUp()) {
-        tmp->RecalculateWidths(parser, fontsize, false);
-        tmp->RecalculateSize(parser, fontsize, false);
+        tmp->RecalculateWidths(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
+        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
       }
     }
     tmp = tmp->m_nextToDraw;

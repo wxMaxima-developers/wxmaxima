@@ -19,6 +19,8 @@
 
 #include "SubSupCell.h"
 
+#define SUBSUP_DEC 3
+
 SubSupCell::SubSupCell() : MathCell()
 {
   m_baseCell = NULL;
@@ -106,8 +108,8 @@ void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
-  m_exptCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
+  m_exptCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
   m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
             SCALE_PX(2, parser.GetScale());
@@ -119,8 +121,8 @@ void SubSupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   double scale = parser.GetScale();
 
   m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
-  m_exptCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
+  m_exptCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
@@ -147,12 +149,12 @@ void SubSupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - 3), true);
+    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
 
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_exptCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - 3), true);
+    m_exptCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
   }
 
   MathCell::Draw(parser, point, fontsize, all);

@@ -36,8 +36,7 @@ enum {
   checkbox_italic,
   checkbox_underlined,
   checkbox_header,
-  button_greek,
-  checkbox_greek,
+  button_mathFont,
   font_family,
   style_font_family,
   language_id,
@@ -131,11 +130,10 @@ protected:
   wxNotebook* notebook_1;
   wxButton* m_button1;
   wxButton* m_button2;
-  wxCheckBox* m_greekFontOk;
-  wxButton* m_getGreekFont;
+  wxStaticText* m_mathFont;
+  wxButton* m_getMathFont;
   wxStaticText* label_10;
-  wxSpinCtrl* m_greekFontAdj;
-  wxString m_greekFontName;
+  wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxStaticText* label_12;
   wxSpinCtrl* m_defaultPort;
@@ -169,18 +167,17 @@ protected:
 #if defined __WXMSW__
   void OnColorButton(wxCommandEvent& event);
 #endif
-  void OnGreekBrowse(wxCommandEvent& event);
+  void OnMathBrowse(wxCommandEvent& event);
   void OnChangeStyle(wxCommandEvent& event);
   void OnChangeWarning(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
-  void OnCheckGreek(wxCommandEvent& event);
   void ReadStyles(wxString file = wxEmptyString);
   void WriteStyles(wxString file = wxEmptyString);
   void SetupFontList();
   void UpdateExample();
   void OnChangeFontFamily(wxCommandEvent& event);
   void LoadSave(wxCommandEvent& event);
-  int m_fontSize;
+  int m_fontSize, m_mathFontSize;
   style* GetStylePointer();
   DECLARE_EVENT_TABLE()
 };

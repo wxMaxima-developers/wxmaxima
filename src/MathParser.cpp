@@ -217,6 +217,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
         frac->SetFracStyle(FC_CHOOSE);
       }
       frac->SetType(m_ParserStyle);
+      frac->SetStyle(TS_VARIABLE);
       frac->SetupBreakUps();
       return frac;
     }
@@ -240,6 +241,7 @@ MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
     {
       diff->SetBase(ParseTag(child, true));
       diff->SetType(m_ParserStyle);
+      diff->SetStyle(TS_VARIABLE);
       return diff;
     }
   }
@@ -263,6 +265,7 @@ MathCell* MathParser::ParseSupTag(wxXmlNode* node)
       power->SetExponentFlag();
       expt->SetPower(power);
       expt->SetType(m_ParserStyle);
+      expt->SetStyle(TS_VARIABLE);
       return expt;
     }
   }
@@ -290,6 +293,7 @@ MathCell* MathParser::ParseSubSupTag(wxXmlNode* node)
         power->SetExponentFlag();
         subsup->SetExponent(power);
         subsup->SetType(m_ParserStyle);
+        subsup->SetStyle(TS_VARIABLE);
         return subsup;
       }
     }
@@ -312,6 +316,7 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
       index->SetExponentFlag();
       sub->SetIndex(index);
       sub->SetType(m_ParserStyle);
+      sub->SetStyle(TS_VARIABLE);
       return sub;
     }
   }
@@ -332,6 +337,7 @@ MathCell* MathParser::ParseAtTag(wxXmlNode* node)
     {
       at->SetIndex(ParseTag(child, false));
       at->SetType(m_ParserStyle);
+      at->SetStyle(TS_VARIABLE);
       return at;
     }
   }
@@ -350,6 +356,7 @@ MathCell* MathParser::ParseFunTag(wxXmlNode* node)
     if (child)
     {
       fun->SetType(m_ParserStyle);
+      fun->SetStyle(TS_VARIABLE);
       fun->SetArg(ParseTag(child, false));
       return fun;
     }
@@ -408,6 +415,7 @@ MathCell* MathParser::ParseSqrtTag(wxXmlNode* node)
   SqrtCell* cell = new SqrtCell;
   cell->SetInner(ParseTag(child, true));
   cell->SetType(m_ParserStyle);
+  cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
   return cell;
 }
@@ -418,6 +426,7 @@ MathCell* MathParser::ParseAbsTag(wxXmlNode* node)
   AbsCell* cell = new AbsCell;
   cell->SetInner(ParseTag(child, true));
   cell->SetType(m_ParserStyle);
+  cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
   return cell;
 }
@@ -428,6 +437,7 @@ MathCell* MathParser::ParseParenTag(wxXmlNode* node)
   ParenCell* cell = new ParenCell;
   cell->SetInner(ParseTag(child, true), m_ParserStyle);
   cell->SetHighlight(m_highlight);
+  cell->SetStyle(TS_VARIABLE);
   if (node->GetProperties() != NULL)
     cell->SetPrint(false);
   return cell;
@@ -449,6 +459,7 @@ MathCell* MathParser::ParseLimitTag(wxXmlNode* node)
       {
         limit->SetBase(ParseTag(child, false));
         limit->SetType(m_ParserStyle);
+        limit->SetStyle(TS_VARIABLE);
         return limit;
       }
     }
@@ -478,6 +489,7 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
       {
         sum->SetBase(ParseTag(child, false));
         sum->SetType(m_ParserStyle);
+        sum->SetStyle(TS_VARIABLE);
         return sum;
       }
     }
@@ -510,6 +522,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
           {
             in->SetVar(ParseTag(child, true));
             in->SetType(m_ParserStyle);
+            in->SetStyle(TS_VARIABLE);
             return in;
           }
         }
@@ -526,6 +539,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
       {
         in->SetVar(ParseTag(child, true));
         in->SetType(m_ParserStyle);
+        in->SetStyle(TS_VARIABLE);
         return in;
       }
     }
@@ -556,6 +570,7 @@ MathCell* MathParser::ParseTableTag(wxXmlNode* node)
     rows = rows->GetNext();
   }
   matrix->SetType(m_ParserStyle);
+  matrix->SetStyle(TS_VARIABLE);
   matrix->SetDimension();
   return matrix;
 }

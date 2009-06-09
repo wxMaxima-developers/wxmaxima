@@ -41,8 +41,6 @@ public:
   wxString GetDiffPart();
   bool IsOperator();
   wxString GetValue() { return m_text; }
-  void SetStyle(int style) { m_textStyle = style; }
-  int GetStyle() { return m_textStyle; }
   wxString GetSymbolString(CellParser& parser);
   wxString GetGreekString(CellParser& parser);
   wxString GetGreekStringUnicode();
@@ -52,6 +50,7 @@ protected:
   wxString m_text;
   int m_realCenter;
   int m_fontSize;
+  int m_fontSizeTeX;
   int m_fontSizeLabel;
   int m_labelWidth, m_labelHeight;
 };

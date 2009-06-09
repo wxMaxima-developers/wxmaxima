@@ -49,26 +49,8 @@ public:
   {
     return m_bottom;
   }
-  wxString GetFontName(int type = TS_DEFAULT)
-  {
-    if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SECTION || type == TS_TEXT)
-      return m_styles[type].font;
-    return m_fontName;
-  }
+  wxString GetFontName(int type = TS_DEFAULT);
   wxString GetSymbolFontName();
-  wxString GetGreekFontName()
-  {
-    return m_greekFontName;
-  }
-  wxFontEncoding GetGreekFontEncoding();
-  int GetGreekFontAdj()
-  {
-    return m_greekFontAdj;
-  }
-  bool HaveGreekFont()
-  {
-    return m_haveGreekFont;
-  }
   wxColour GetColor(int st);
   wxFontWeight IsBold(int st);
   int IsItalic(int st);
@@ -99,6 +81,7 @@ public:
   void SetClientWidth(int width) { m_clientWidth = width; }
   int GetClientWidth() { return m_clientWidth; }
   int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
+  int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
   int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
@@ -111,6 +94,7 @@ public:
   wxString GetTeXCMSY() { return m_fontCMSY; }
   wxString GetTeXCMEX() { return m_fontCMEX; }
   wxString GetTeXCMMI() { return m_fontCMMI; }
+  wxString GetTeXCMTI() { return m_fontCMTI; }
 private:
   int m_indent;
   double m_scale;
@@ -118,15 +102,13 @@ private:
   wxDC& m_dc;
   int m_top, m_bottom;
   wxString m_fontName;
-  int m_defaultFontSize;
-  wxString m_greekFontName;
-  int m_greekFontAdj;
-  bool m_haveGreekFont;
+  int m_defaultFontSize, m_mathFontSize;
+  wxString m_mathFontName;
   bool m_forceUpdate;
   bool m_changeAsterisk;
   bool m_outdated;
   bool m_TeXFonts;
-  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI;
+  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];

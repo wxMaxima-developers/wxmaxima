@@ -77,6 +77,7 @@ public:
   wxRect GetOutputRect() { return m_outputRect; }
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void Recalculate(CellParser& parser, int d_fontsize, int m_fontsize);
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
   void BreakUpCells(MathCell *cell, CellParser parser, int fontsize, int clientWidth);
   void UnBreakUpCells();
@@ -106,6 +107,7 @@ protected:
   bool m_working;
   int m_indent;
   int m_fontSize;
+  int m_mathFontSize;
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
   wxRect m_outputRect;

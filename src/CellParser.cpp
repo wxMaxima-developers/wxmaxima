@@ -38,7 +38,8 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")))
+      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
   {
     m_TeXFonts = true;
   }
@@ -51,14 +52,22 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
-  m_haveGreekFont = false;
-  m_greekFontAdj = 0;
   m_changeAsterisk = false;
   ReadStyle();
 }
 
 CellParser::~CellParser()
 {}
+
+wxString CellParser::GetFontName(int type)
+{
+  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SECTION || type == TS_TEXT)
+    return m_styles[type].font;
+  else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
+      type == TS_SPECIAL_CONSTANT)
+    return m_mathFontName;
+  return m_fontName;
+}
 
 void CellParser::ReadStyle()
 {
@@ -70,6 +79,8 @@ void CellParser::ReadStyle()
   // Default fontsize
   m_defaultFontSize = 12;
   config->Read(wxT("fontSize"), &m_defaultFontSize);
+  m_mathFontSize = m_defaultFontSize;
+  config->Read(wxT("mathfontsize"), &m_mathFontSize);
 
   // Encogind - used only for comments
   m_fontEncoding = wxFONTENCODING_DEFAULT;
@@ -77,13 +88,9 @@ void CellParser::ReadStyle()
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding)encoding;
 
-  // Greek font
-  m_haveGreekFont = false;
-  m_greekFontAdj = 0;
-  m_greekFontName = wxEmptyString;
-  config->Read(wxT("Style/GreekFont/fontname"), &m_greekFontName);
-  config->Read(wxT("Style/GreekFont/adj"), &m_greekFontAdj);
-  config->Read(wxT("Style/GreekFont/ok"), &m_haveGreekFont);
+  // Math font
+  m_mathFontName = wxEmptyString;
+  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 
   wxString tmp;
 
@@ -298,6 +305,7 @@ wxColour CellParser::GetColor(int st)
   return m_styles[st].color;
 }
 
+/*
 wxFontEncoding CellParser::GetGreekFontEncoding()
 {
 #if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -308,3 +316,4 @@ wxFontEncoding CellParser::GetGreekFontEncoding()
   return wxFONTENCODING_ISO8859_7;
 #endif
 }
+*/

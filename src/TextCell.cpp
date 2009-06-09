@@ -71,7 +71,8 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
   {
-    m_fontSize = fontsize;
+    m_fontSize = m_fontSizeTeX = fontsize;
+
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
@@ -91,9 +92,6 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
         dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       }
     }
-
-    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
-      dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
 
 #if defined __WXMSW__
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
@@ -164,11 +162,6 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_realCenter + (m_height - m_labelHeight)/2);
     }
 
-    else if (m_textStyle == TS_SPECIAL_CONSTANT && parser.HaveGreekFont() && m_text == wxT("%pi"))
-      dc.DrawText(GetGreekString(parser),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
 #if defined __WXMSW__
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
@@ -183,7 +176,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
-    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -209,6 +202,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   double scale = parser.GetScale();
 
   int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
+  int fontsize1TeX = (int) (((double)m_fontSizeTeX) * scale + 0.5);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
@@ -231,36 +225,26 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     else
 #endif
     if (m_text == wxT("inf") && parser.CheckTeXFonts())
-    {
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetTeXCMSY()));
-    }
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                        parser.GetFontName(),
+                        parser.GetFontName(m_textStyle),
                         parser.GetFontEncoding()));
     break;
 
   case TS_GREEK_CONSTANT:
     if (parser.CheckTeXFonts())
-      dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
+      dc.SetFont(wxFont(fontsize1TeX,
                         wxMODERN,
                         false, false, false,
                         parser.GetTeXCMMI()));
-    else if (parser.HaveGreekFont())
-      dc.SetFont(wxFont(fontsize1 + parser.GetGreekFontAdj(),
-                        wxMODERN,
-                        parser.IsItalic(TS_GREEK_CONSTANT),
-                        parser.IsBold(TS_GREEK_CONSTANT),
-                        parser.IsUnderlined(TS_GREEK_CONSTANT),
-                        parser.GetGreekFontName(),
-                        parser.GetGreekFontEncoding()));
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -295,7 +279,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     if (parser.CheckTeXFonts() &&
         (m_text == wxT("->") ||
          m_text == wxT(">=") || m_text == wxT("<=")))
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
                  parser.IsItalic(TS_DEFAULT),
                  parser.IsBold(TS_DEFAULT),
                  parser.IsUnderlined(TS_DEFAULT),

@@ -195,7 +195,7 @@ void MiniMathCtrl::OnPaint(wxPaintEvent& event) {
     }
 
   }
-  
+
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,

@@ -22,6 +22,7 @@
 
 #define SUM_SIGN "\x58"
 #define PROD_SIGN "\x59"
+#define SUM_DEC 2
 
 SumCell::SumCell() : MathCell()
 {
@@ -121,10 +122,10 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_signWCenter = SCALE_PX(15, scale);
 
   m_base->RecalculateWidths(parser, fontsize, true);
-  m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
   if (m_over == NULL)
     m_over = new TextCell;
-  m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
 
   if (parser.CheckTeXFonts())
   {
@@ -149,8 +150,8 @@ void SumCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
 
-  m_under->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
-  m_over->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_under->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
+  m_over->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
   m_base->RecalculateSize(parser, fontsize, true);
 
   m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
@@ -173,11 +174,11 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     under.x += m_signWCenter - m_under->GetFullWidth(scale) / 2;
     under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale);
-    m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
+    m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
 
     over.x += m_signWCenter - m_over->GetFullWidth(scale) / 2;
     over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
-    m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
+    m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
 
     if (parser.CheckTeXFonts())
     {

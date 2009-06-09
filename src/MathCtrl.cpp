@@ -386,7 +386,7 @@ void MathCtrl::RecalculateForce() {
 
 void MathCtrl::Recalculate(bool force)
 {
-  MathCell *tmp = m_tree;
+  GroupCell *tmp = m_tree;
   wxConfig *config = (wxConfig *)wxConfig::Get();
 
   wxClientDC dc(this);
@@ -394,20 +394,22 @@ void MathCtrl::Recalculate(bool force)
   parser.SetZoomFactor(m_zoomFactor);
   parser.SetForceUpdate(force);
   parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-  int fontsize = parser.GetDefaultFontSize();
+  int d_fontsize = parser.GetDefaultFontSize();
+  int m_fontsize = parser.GetMathFontSize();
 
   wxPoint point;
   point.x = MC_GROUP_LEFT_INDENT;
   point.y = MC_BASE_INDENT ;
 
   while (tmp != NULL) {
-    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-    tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    tmp->Recalculate(parser, d_fontsize, m_fontsize);
+//    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+//    tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
     point.y += tmp->GetMaxCenter();
     tmp->m_currentPoint.x = point.x;
     tmp->m_currentPoint.y = point.y;
     point.y += tmp->GetMaxDrop();
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
     point.y += MC_GROUP_SKIP;
   }
 
