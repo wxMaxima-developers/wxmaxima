@@ -93,26 +93,21 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       }
     }
 
-#if defined __WXMSW__
-    else if (m_text == wxT("inf") || m_text == wxT("->") ||
-             m_text == wxT(">=") || m_text == wxT("<="))
-      dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
-#else
     else if (parser.CheckTeXFonts() && (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<=")))
     {
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
       m_height = m_height / 2;
     }
-#endif
 
 #if defined __WXMSW__
-    else if (m_textStyle == TS_GREEK_CONSTANT)
-      dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-#else
+    else if (m_text == wxT("inf") || m_text == wxT("->") ||
+             m_text == wxT(">=") || m_text == wxT("<="))
+      dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
+#endif
+
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
-#endif
 
     else if (m_text == wxEmptyString)
     {
@@ -162,6 +157,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_realCenter + (m_height - m_labelHeight)/2);
     }
 
+    else if (parser.CheckTeXFonts() && (m_text == wxT("inf") || m_text == wxT("->") ||
+                 m_text == wxT(">=") || m_text == wxT("<=")))
+      dc.DrawText(GetSymbolString(parser),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+
 #if defined __WXMSW__
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
@@ -170,16 +171,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
 
-    else if (parser.CheckTeXFonts() && (m_text == wxT("inf") || m_text == wxT("->") ||
-                 m_text == wxT(">=") || m_text == wxT("<=")))
-      dc.DrawText(GetSymbolString(parser),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
       dc.DrawText(GetGreekString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+
 
 #if defined __WXMSW__ || wxUSE_UNICODE
     else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
@@ -266,15 +263,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     break;
 
   default:
-#if defined __WXMSW__
-    if (m_text == wxT("->") ||
-        m_text == wxT(">=") || m_text == wxT("<="))
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_DEFAULT),
-                        parser.IsBold(TS_DEFAULT),
-                        parser.IsUnderlined(TS_DEFAULT),
-                        parser.GetSymbolFontName()));
-#else
     if (parser.CheckTeXFonts() &&
         (m_text == wxT("->") ||
          m_text == wxT(">=") || m_text == wxT("<=")))
@@ -283,7 +271,17 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                  parser.IsBold(TS_DEFAULT),
                  parser.IsUnderlined(TS_DEFAULT),
                  parser.GetTeXCMSY()));
+
+#if defined __WXMSW__
+    else if (m_text == wxT("->") ||
+        m_text == wxT(">=") || m_text == wxT("<="))
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
+                        parser.GetSymbolFontName()));
 #endif
+
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(m_textStyle),
@@ -390,18 +388,6 @@ bool TextCell::IsShortNum()
 
 wxString TextCell::GetSymbolString(CellParser& parser)
 {
-#if defined __WXMSW__
-  if (m_text == wxT("inf"))
-    return wxT("\xA5");
-  else if (m_text == wxT("->"))
-    return wxT("\xAE");
-  else if (m_text == wxT(">="))
-    return wxT("\xB3");
-  else if (m_text == wxT("<="))
-    return wxT("\xA3");
-  else
-    return m_text;
-#endif
   if (parser.CheckTeXFonts())
   {
     if (m_text == wxT("inf"))
@@ -415,16 +401,24 @@ wxString TextCell::GetSymbolString(CellParser& parser)
     else
       return m_text;
   }
+#if defined __WXMSW__
+  else if (m_text == wxT("inf"))
+    return wxT("\xA5");
+  else if (m_text == wxT("->"))
+    return wxT("\xAE");
+  else if (m_text == wxT(">="))
+    return wxT("\xB3");
+  else if (m_text == wxT("<="))
+    return wxT("\xA3");
+#endif
   return m_text;
 }
 
 wxString TextCell::GetGreekString(CellParser& parser)
 {
-#if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
-  return GetGreekStringUnicode();
-#else
+  if (parser.CheckTeXFonts())
+    return GetGreekStringUnicode();
   return GetGreekStringIso();
-#endif
 }
 
 wxString TextCell::GetGreekStringUnicode()
@@ -432,9 +426,9 @@ wxString TextCell::GetGreekStringUnicode()
   if (m_text == wxT("gamma"))
     return wxT("\x0D");
   else if (m_text == wxT("zeta"))
-    return wxT("\x11");
+    return wxT("\xB0");
   else if (m_text == wxT("psi"))
-    return wxT("\x20");
+    return wxT("\xC9");
 
   wxString txt(m_text);
   if (txt[0] != '%')
@@ -451,7 +445,7 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%epsilon"))
     return wxT("\xCF");
   else if (txt == wxT("%zeta"))
-    return wxT("\xD0");
+    return wxT("\xB0");
   else if (txt == wxT("%eta"))
     return wxT("\xD1");
   else if (txt == wxT("%theta"))
@@ -465,7 +459,7 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%mu"))
     return wxT("\xD6");
   else if (txt == wxT("%nu"))
-    return wxT("\xD7");
+    return wxT("\xB7");
   else if (txt == wxT("%xi"))
     return wxT("\xD8");
   else if (txt == wxT("%pi"))
@@ -479,7 +473,9 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%chi"))
     return wxT("\xDF");
   else if (txt == wxT("%psi"))
-    return wxT("\x20");
+    return wxT("\xEF");
+  else if (txt == wxT("%phi"))
+    return wxT("\x27");
   else if (txt == wxT("%omega"))
     return wxT("\x21");
   else if (txt == wxT("%Alpha"))
