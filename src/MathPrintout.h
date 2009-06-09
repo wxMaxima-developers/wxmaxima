@@ -43,7 +43,7 @@ public:
   void SetData(MathCell* tree);
   void SetupData();
   void BreakPages();
-  void RecalculateSize();
+  void Recalculate();
   bool OnPrintPage(int num);
   bool HasPage(int num);
   void GetPageInfo(int* minPage, int* maxPage, int* pageFrom, int* pageTo);
@@ -52,7 +52,6 @@ public:
   void GetPageMargins(int* horizontal, int* vertical);
   int GetHeaderHeight();
   void PrintHeader(int pageNum, wxDC* dc, double scale);
-  void RecalculateWidths();
   double GetPPIScale();
   void GetScreenScale(double *scaleX, double *scaleY);
 private:

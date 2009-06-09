@@ -156,8 +156,7 @@ void MathPrintout::BreakPages()
 
 void MathPrintout::SetupData()
 {
-  RecalculateWidths();
-  RecalculateSize();
+  Recalculate();
   BreakPages();
 }
 
@@ -230,13 +229,13 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxSOLID));
 }
-
+/*
 void MathPrintout::RecalculateSize()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = m_tree;
   double scale = GetPPIScale();
 
   wxDC *dc = GetDC();
@@ -252,13 +251,15 @@ void MathPrintout::RecalculateSize()
     tmp = tmp->m_next;
   }
 }
-
-void MathPrintout::RecalculateWidths()
+*/
+void MathPrintout::Recalculate()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   int fontsize = 12;
   config->Read(wxT("fontSize"), &fontsize);
-  MathCell* tmp = m_tree;
+  int mfontsize = fontsize;
+  config->Read(wxT("mathfontsize"), &mfontsize);
+  GroupCell* tmp = (GroupCell *)m_tree;
   double scale = GetPPIScale();
 
   wxDC *dc = GetDC();
@@ -277,8 +278,8 @@ void MathPrintout::RecalculateWidths()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(parser, fontsize, false);
-    tmp = tmp->m_next;
+    tmp->Recalculate(parser, fontsize, mfontsize);
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 
