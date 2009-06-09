@@ -441,7 +441,7 @@ void Config::OnMathBrowse(wxCommandEvent& event)
 {
   wxFont math;
 #if defined __WXMSW__
-  math = wxGetFontFromUser(this, wxFont(m_mathFontsize, wxNORMAL, wxNORMAL, wxNORMAL,
+  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxNORMAL, wxNORMAL, wxNORMAL,
                                         false, m_mathFontName,
                                         wxFONTENCODING_CP1253));
 #else

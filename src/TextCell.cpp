@@ -107,7 +107,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 #endif
 
 #if defined __WXMSW__
-    else if (m_textStyle == TS_GREEK_CONSTANT && parser.HaveGreekFont())
+    else if (m_textStyle == TS_GREEK_CONSTANT)
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
 #else
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
@@ -274,7 +274,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
                         parser.GetSymbolFontName()));
-    else
 #else
     if (parser.CheckTeXFonts() &&
         (m_text == wxT("->") ||

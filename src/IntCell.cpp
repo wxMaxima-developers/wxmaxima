@@ -155,7 +155,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   dc.SetFont(wxFont(fontsize1, wxMODERN,
                     false, false, false,
                     parser.GetSymbolFontName()));
-  dc.GetTextExtent(wxT(INTEGRAL_SIGN), &m_signWidth, &m_signSize);
+  dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
 
   m_width = m_signWidth +
             m_base->GetFullWidth(scale) +
@@ -242,13 +242,33 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 #if defined __WXMSW__
     SetForeground(parser);
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
+    int m_signWCenter = m_signWidth / 2;
+
     dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      false, false, false,
-                      parser.GetSymbolFontName()));
-    dc.SetTextBackground(wxColour(wxT("red")));
-    dc.DrawText(wxT(INTEGRAL_SIGN),
-                sign.x,
-                sign.y - m_signSize / 2);
+               false, false, false,
+               parser.GetSymbolFontName()));
+    dc.DrawText(wxT(INTEGRAL_TOP),
+                sign.x + m_signWCenter - m_charWidth / 2,
+                sign.y - (m_signSize + 1) / 2);
+    dc.DrawText(wxT(INTEGRAL_BOTTOM),
+                sign.x + m_signWCenter - m_charWidth / 2,
+                sign.y + (m_signSize + 1) / 2 - m_charHeight);
+    int top, bottom;
+    top = sign.y - (m_signSize + 1) / 2 + m_charHeight / 2;
+    bottom = sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2;
+    if (top <= bottom)
+    {
+      while (top < bottom)
+      {
+        dc.DrawText(wxT(INTEGRAL_EXTEND),
+                      point.x + m_signWCenter - m_charWidth / 2,
+                      top);
+        top += (2*m_charHeight)/3;
+      }
+      dc.DrawText(wxT(INTEGRAL_EXTEND),
+                      point.x + m_signWCenter - m_charWidth / 2,
+                      sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
+    }
 #else
     if (parser.CheckTeXFonts())
     {
