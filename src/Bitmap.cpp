@@ -19,6 +19,7 @@
 
 #include "Bitmap.h"
 #include "CellParser.h"
+#include "GroupCell.h"
 
 #include <wx/config.h>
 #include <wx/clipbrd.h>
@@ -47,10 +48,30 @@ void Bitmap::SetData(MathCell* tree)
 
 void Bitmap::Layout()
 {
-  RecalculateWidths();
-  BreakUpCells();
-  BreakLines();
-  RecalculateSize();
+  if (m_tree->GetType() != MC_TYPE_GROUP)
+  {
+    RecalculateWidths();
+    BreakUpCells();
+    BreakLines();
+    RecalculateSize();
+  }
+  else {
+    int fontsize = 12;
+    wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+    int mfontsize = fontsize;
+    wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
+    GroupCell* tmp = (GroupCell *)m_tree;
+
+    wxMemoryDC dc;
+    dc.SelectObject(m_bmp);
+    CellParser parser(dc);
+
+    while (tmp != NULL)
+    {
+      tmp->Recalculate(parser, fontsize, mfontsize);
+      tmp = (GroupCell *)tmp->m_next;
+    }
+  }
 
   int width, height;
   GetMaxPoint(&width, &height);
@@ -63,6 +84,8 @@ void Bitmap::RecalculateSize()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  int mfontsize = fontsize;
+  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
   MathCell* tmp = m_tree;
 
   wxMemoryDC dc;
@@ -71,7 +94,7 @@ void Bitmap::RecalculateSize()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateSize(parser, fontsize, false);
+    tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize, false);
     tmp = tmp->m_next;
   }
 }
@@ -80,6 +103,8 @@ void Bitmap::RecalculateWidths()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  int mfontsize = fontsize;
+  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
   MathCell* tmp = m_tree;
 
@@ -90,7 +115,7 @@ void Bitmap::RecalculateWidths()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(parser, fontsize, false);
+    tmp->RecalculateWidths(parser,  tmp->IsMath() ? mfontsize : fontsize, false);
     tmp = tmp->m_next;
   }
 }
@@ -174,7 +199,9 @@ void Bitmap::Draw()
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
 
-    wxConfig::Get()->Read(wxT("fontsize"), &fontsize);
+    wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+    int mfontsize = fontsize;
+    wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
     CellParser parser(dc);
 
@@ -182,7 +209,7 @@ void Bitmap::Draw()
     {
       if (!tmp->m_isBroken)
       {
-        tmp->Draw(parser, point, fontsize, false);
+        tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize, false);
         if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = 0;
@@ -260,7 +287,7 @@ void Bitmap::BreakUpCells()
 {
   MathCell *tmp = m_tree;
   int fontsize = 12;
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  wxConfig::Get()->Read(wxT("mathfontsize"), &fontsize);
   wxMemoryDC dc;
   CellParser parser(dc);
 
