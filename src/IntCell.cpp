@@ -171,18 +171,18 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   }
   else {
 #if defined __WXMSW__
-  wxDC& dc = parser.GetDC();
-  int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
-  dc.SetFont(wxFont(fontsize1, wxMODERN,
-                    false, false, false,
-                    parser.GetSymbolFontName()));
-  dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
+    wxDC& dc = parser.GetDC();
+    int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
+    dc.SetFont(wxFont(fontsize1, wxMODERN,
+                      false, false, false,
+                      parser.GetSymbolFontName()));
+    dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
 
-  m_width = m_signWidth +
-            m_base->GetFullWidth(scale) +
-            MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
-            m_var->GetFullWidth(scale) +
-            SCALE_PX(4, scale);
+    m_width = m_signWidth +
+              m_base->GetFullWidth(scale) +
+              MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
+              m_var->GetFullWidth(scale) +
+              SCALE_PX(4, scale);
 #else
     m_width = m_signWidth +
               m_base->GetFullWidth(scale) +
@@ -320,7 +320,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   sign.y - (m_signSize + 1) / 2 + SCALE_PX(12, scale) - 1,
                   sign.x + m_signWCenter,
                   sign.y + (m_signSize + 1) / 2 - SCALE_PX(12, scale) + 1);
-    UnsetPen(parser);
+      UnsetPen(parser);
 #endif
     }
 
@@ -348,7 +348,8 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       else
         base.x += m_signWidth +
                   MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale));
-      }
+    }
+
     else if (parser.CheckTeXFonts())
       base.x += 2*m_signWidth;
     else

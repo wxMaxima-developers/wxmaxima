@@ -121,9 +121,11 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_innerCell->RecalculateSize(parser, fontsize, true);
     int size = m_innerCell->GetMaxHeight();
 
-    if (size < 2*fontsize)
+    int fontsize1 = (int) ((fontsize * scale + 0.5));
+
+    if (size < 2*fontsize1)
       m_bigParenType = 0;
-    else if (size < 4*fontsize)
+    else if (size < 4*fontsize1)
       m_bigParenType = 1;
     else
       m_bigParenType = 2;
@@ -131,7 +133,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     if (m_bigParenType < 2)
     {
       m_parenFontSize = fontsize;
-      int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
+      fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
 
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                  false, false, false,
@@ -153,7 +155,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     else
     {
       m_parenFontSize = fontsize;
-      int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
+      fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
 
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                  false, false, false,

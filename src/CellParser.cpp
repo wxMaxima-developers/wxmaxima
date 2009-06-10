@@ -44,6 +44,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
     m_TeXFonts = true;
     wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
   }
+
   ReadStyle();
 }
 
@@ -54,6 +55,17 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_top = -1;
   m_bottom = -1;
   m_changeAsterisk = false;
+
+  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
+  {
+    m_TeXFonts = true;
+    wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
+  }
+
   ReadStyle();
 }
 
