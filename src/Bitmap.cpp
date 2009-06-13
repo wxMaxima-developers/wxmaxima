@@ -65,6 +65,7 @@ void Bitmap::Layout()
     wxMemoryDC dc;
     dc.SelectObject(m_bmp);
     CellParser parser(dc);
+    parser.SetClientWidth(BM_FULL_WIDTH);
 
     while (tmp != NULL)
     {
@@ -287,7 +288,9 @@ void Bitmap::BreakUpCells()
 {
   MathCell *tmp = m_tree;
   int fontsize = 12;
-  wxConfig::Get()->Read(wxT("mathfontsize"), &fontsize);
+  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
+  int mfontsize = fontsize;
+  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
   wxMemoryDC dc;
   CellParser parser(dc);
 
@@ -297,8 +300,8 @@ void Bitmap::BreakUpCells()
     {
       if (tmp->BreakUp())
       {
-        tmp->RecalculateWidths(parser, fontsize, false);
-        tmp->RecalculateSize(parser, fontsize, false);
+        tmp->RecalculateWidths(parser, tmp->IsMath() ? mfontsize : fontsize, false);
+        tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize, false);
       }
     }
     tmp = tmp->m_nextToDraw;
