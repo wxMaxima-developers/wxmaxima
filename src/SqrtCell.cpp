@@ -20,6 +20,8 @@
 #include "SqrtCell.h"
 #include "TextCell.h"
 
+#define SIGN_FONT_SCALE 1.8
+
 SqrtCell::SqrtCell() : MathCell()
 {
   m_innerCell = NULL;
@@ -85,8 +87,51 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
   m_innerCell->RecalculateWidths(parser, fontsize, true);
-  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
-            3 * SCALE_PX(1, scale) + 1;
+  if (parser.CheckTeXFonts())
+  {
+    wxDC& dc = parser.GetDC();
+    m_innerCell->RecalculateSize(parser, fontsize, true);
+
+    m_signFontScale = 1.0;
+    int fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+
+    dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
+    dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    m_signTop = m_signSize / 5;
+    m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
+
+    int size = m_innerCell->GetMaxHeight();
+
+    if  (size <= (m_signSize) / 5)  {
+      m_signType = 1;
+      m_signFontScale = (5.0 * size) / (1.5 * m_signSize);
+    }
+    else if (size <= (2*m_signSize) / 5) {
+      m_signType = 2;
+      m_signFontScale = (5.0 * size) / (2.2 * m_signSize);
+    }
+    else if (size <= (3*m_signSize) / 5) {
+      m_signType = 3;
+      m_signFontScale = (5.0 * size) / (3.0 * m_signSize);
+    }
+    else if (size <= (4*m_signSize) / 5 ) {
+      m_signType = 4;
+      m_signFontScale = (5.0 * size) / (3.8 * m_signSize);
+    }
+    else {
+      m_signType = 5;
+      m_signFontScale = 1.0;
+    }
+
+    fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+    dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
+    dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    m_signTop = m_signSize / 5;
+    m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
+  }
+  else
+    m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
+              3 * SCALE_PX(1, scale) + 1;
   m_open->RecalculateWidths(parser, fontsize, all);
   m_close->RecalculateWidths(parser, fontsize, all);
   MathCell::RecalculateWidths(parser, fontsize, all);
@@ -111,35 +156,79 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     double scale = parser.GetScale();
 
     wxPoint in(point);
-    in.x += SCALE_PX(10, scale) + SCALE_PX(1, scale) + 1;
-    m_innerCell->Draw(parser, in, fontsize, true);
 
-    SetPen(parser);
-    dc.DrawLine(point.x,
-                point.y,
-                point.x + SCALE_PX(3, scale),
-                point.y - SCALE_PX(1, scale));
-    dc.DrawLine(point.x + SCALE_PX(3, scale),
-                point.y - SCALE_PX(1, scale),
-                point.x + SCALE_PX(7, scale),
-                point.y + m_height - m_center - SCALE_PX(4, scale));
-    dc.DrawLine(point.x + SCALE_PX(3, scale) + 1,
-                point.y - SCALE_PX(1, scale),
-                point.x + SCALE_PX(7, scale) + 1,
-                point.y + m_height - m_center - SCALE_PX(4, scale));
-    dc.DrawLine(point.x + SCALE_PX(7, scale) + 1,
-                point.y + m_height - m_center - SCALE_PX(4, scale),
-                point.x + SCALE_PX(10, scale),
-                point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + SCALE_PX(10, scale),
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale),
-                point.y - m_center + SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(1, scale),
-                point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(1, scale),
-                point.y - m_center + SCALE_PX(6, scale));
-    UnsetPen(parser);
+    if (parser.CheckTeXFonts())
+    {
+      in.x += m_signWidth;
+
+      int fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+
+      dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
+      SetForeground(parser);
+      if (m_signType < 4) {
+        dc.DrawText(
+            m_signType == 1 ? wxT("p") :
+              m_signType == 2 ? wxT("q") :
+                m_signType == 3 ? wxT("r") : wxT("s"),
+          point.x,
+          point.y - m_innerCell->GetMaxCenter() - m_signTop);
+      }
+      else {
+        int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2*m_signTop;
+        int yTop = point.y - m_innerCell->GetMaxCenter() - m_signTop;
+        int dy = m_signSize / 10;
+        dc.DrawText(wxT("t"),
+            point.x,
+            yBottom);
+        dc.DrawText(wxT("v"),
+            point.x,
+            yTop);
+        while (yTop < yBottom) {
+          yTop += dy;
+          dc.DrawText(wxT("u"),
+                      point.x,
+                      yTop);
+        }
+      }
+
+      dc.DrawLine(point.x + m_signWidth,
+                  point.y - m_innerCell->GetMaxCenter(),
+                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                  point.y - m_innerCell->GetMaxCenter());
+    }
+    else
+    {
+      in.x += SCALE_PX(10, scale) + SCALE_PX(1, scale) + 1;
+
+      SetPen(parser);
+      dc.DrawLine(point.x,
+                  point.y,
+                  point.x + SCALE_PX(3, scale),
+                  point.y - SCALE_PX(1, scale));
+      dc.DrawLine(point.x + SCALE_PX(3, scale),
+                  point.y - SCALE_PX(1, scale),
+                  point.x + SCALE_PX(7, scale),
+                  point.y + m_height - m_center - SCALE_PX(4, scale));
+      dc.DrawLine(point.x + SCALE_PX(3, scale) + 1,
+                  point.y - SCALE_PX(1, scale),
+                  point.x + SCALE_PX(7, scale) + 1,
+                  point.y + m_height - m_center - SCALE_PX(4, scale));
+      dc.DrawLine(point.x + SCALE_PX(7, scale) + 1,
+                  point.y + m_height - m_center - SCALE_PX(4, scale),
+                  point.x + SCALE_PX(10, scale),
+                  point.y - m_center + SCALE_PX(2, scale));
+      dc.DrawLine(point.x + SCALE_PX(10, scale),
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + m_width - SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(2, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(2, scale),
+                  point.x + m_width - SCALE_PX(1, scale),
+                  point.y - m_center + SCALE_PX(6, scale));
+      UnsetPen(parser);
+    }
+
+    m_innerCell->Draw(parser, in, fontsize, true);
   }
   MathCell::Draw(parser, point, fontsize, all);
 }
