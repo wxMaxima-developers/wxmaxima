@@ -20,7 +20,7 @@
 #include "SqrtCell.h"
 #include "TextCell.h"
 
-#define SIGN_FONT_SCALE 1.8
+#define SIGN_FONT_SCALE 2.0
 
 SqrtCell::SqrtCell() : MathCell()
 {
@@ -90,10 +90,11 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (parser.CheckTeXFonts())
   {
     wxDC& dc = parser.GetDC();
+    double scale = parser.GetScale();
     m_innerCell->RecalculateSize(parser, fontsize, true);
 
     m_signFontScale = 1.0;
-    int fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+    int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
 
     dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -123,7 +124,7 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_signFontScale = 1.0;
     }
 
-    fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+    fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -160,8 +161,9 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     if (parser.CheckTeXFonts())
     {
       in.x += m_signWidth;
+      double scale = parser.GetScale();
 
-      int fontsize1 = (int)(SIGN_FONT_SCALE*fontsize*m_signFontScale + 0.5);
+      int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
 
       dc.SetFont(wxFont(fontsize1, wxMODERN, false, false, false, parser.GetTeXCMEX()));
       SetForeground(parser);
