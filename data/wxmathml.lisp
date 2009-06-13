@@ -485,7 +485,7 @@
    ;; The exponent part
     (setq r (if (mmminusp xexp)
                 ;; the change in base-line makes parens unnecessary
-                (wxxml (cadr xexp) '("</r><r>-")
+                (wxxml (cadr xexp) '("</r><r><v>-</v>")
                        (cons "</r></ie>" r) 'mparen 'mparen)
 		(if (and (integerp xexp) (< xexp 10))
 		    (wxxml xexp nil
@@ -503,7 +503,7 @@
                    nil lop (caar x))
           r (if (mmminusp (setq x (nformat (caddr x))))
                 ;; the change in base-line makes parens unnecessary
-                (wxxml (cadr x) '("</r><r>-")
+                (wxxml (cadr x) '("</r><r><v>-</v>")
                        (cons "</r></e>" r) 'mminus 'mminus)
 		(if (and (integerp x) (< x 10))
 		    (wxxml x (list "</r>")
@@ -654,7 +654,7 @@
     (case (fifth x)
       ($plus
        (append l `("<lm><fnm>lim</fnm><r>"
-		   ,@subfun "<t>+</t></r><r>"
+		   ,@subfun "<v>+</v></r><r>"
 		   ,@s1 "</r></lm>") r))
       ($minus
        (append l `("<lm><fnm>lim</fnm><r>"
@@ -699,7 +699,7 @@
 
 (defun wxxml-mplus (x l r)
   (cond ((member 'trunc (car x) :test #'eq)
-	 (setq r (cons "<t>+</t><t>...</t>" r))))
+	 (setq r (cons "<v>+</v><t>...</t>" r))))
   (cond ((null (cddr x))
          (if (null (cdr x))
              (wxxml-function x l r)
@@ -709,19 +709,19 @@
            (do ((nl l)  (dissym))
                ((null (cdr x))
                 (if (mmminusp (car x)) (setq l (cadar x) dissym
-                                             (list "<t>-</t>"))
-		    (setq l (car x) dissym (list "<t>+</t>")))
+                                             (list "<v>-</v>"))
+		    (setq l (car x) dissym (list "<v>+</v>")))
                 (setq r (wxxml l dissym r 'mplus rop))
                 (append nl r))
 	     (if (mmminusp (car x)) (setq l (cadar x) dissym
-					  (list "<t>-</t>"))
-                 (setq l (car x) dissym (list "<t>+</t>")))
+					  (list "<v>-</v>"))
+                 (setq l (car x) dissym (list "<v>+</v>")))
 	     (setq nl (append nl (wxxml l dissym nil 'mplus 'mplus))
 		   x (cdr x))))))
 
 (defprop mminus wxxml-prefix wxxml)
-(defprop mminus ("-") wxxmlsym)
-(defprop mminus "<t>-</t>" wxxmlword)
+(defprop mminus ("<v>-</v>") wxxmlsym)
+(defprop mminus "<v>-</v>" wxxmlword)
 (defprop mminus 101. wxxml-rbp)
 (defprop mminus 101. wxxml-lbp)
 
