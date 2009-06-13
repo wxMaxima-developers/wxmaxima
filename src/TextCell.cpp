@@ -100,6 +100,10 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_height = m_height / 2;
     }
 
+
+    else if (parser.CheckTeXFonts() && m_text == wxT("-"))
+      dc.GetTextExtent(wxT("\x7B"), &m_width, &m_height);
+
 #if defined __WXMSW__
     else if (m_text == wxT("inf") || m_text == wxT("->") ||
              m_text == wxT(">=") || m_text == wxT("<="))
@@ -171,6 +175,11 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
 
+
+    else if (parser.CheckTeXFonts() && m_text == wxT("-"))
+      dc.DrawText(wxT("\x7B"),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
       dc.DrawText(GetGreekString(parser),
@@ -281,6 +290,13 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_DEFAULT),
                         parser.GetSymbolFontName()));
 #endif
+
+    else if (parser.CheckTeXFonts() && (m_text == wxT("-") || m_text == wxT("+")))
+      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
+                 parser.IsItalic(TS_DEFAULT),
+                 parser.IsBold(TS_DEFAULT),
+                 parser.IsUnderlined(TS_DEFAULT),
+                 parser.GetTeXCMRI()));
 
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
