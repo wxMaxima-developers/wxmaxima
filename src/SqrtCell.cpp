@@ -160,6 +160,8 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     if (parser.CheckTeXFonts())
     {
+      SetPen(parser);
+
       in.x += m_signWidth;
       double scale = parser.GetScale();
 
@@ -197,6 +199,8 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.y - m_innerCell->GetMaxCenter(),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                   point.y - m_innerCell->GetMaxCenter());
+
+      UnsetPen(parser);
     }
     else
     {
