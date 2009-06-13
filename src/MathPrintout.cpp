@@ -56,7 +56,7 @@ bool MathPrintout::OnPrintPage(int num)
 {
   double screenScaleX, screenScaleY;
   double ppiScale;
-  MathCell* tmp = m_tree;
+  GroupCell* tmp;
   wxDC* dc = GetDC();
 
   int marginX, marginY;
@@ -71,11 +71,16 @@ bool MathPrintout::OnPrintPage(int num)
   dc->SetUserScale(screenScaleX, screenScaleY);
 
   // Go to current page
-  tmp = m_pages[num - 1];
+  tmp = (GroupCell *)m_pages[num - 1];
 
   // Print page
   if (tmp != NULL)
   {
+    if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
+      tmp = (GroupCell *)tmp->m_next;
+    if (tmp == NULL)
+      return true;
+
     wxPoint point;
     point.x = marginX;
     point.y = marginY + tmp->GetMaxCenter() + GetHeaderHeight();
@@ -87,6 +92,9 @@ bool MathPrintout::OnPrintPage(int num)
 
     PrintHeader(num, dc, ppiScale);
     CellParser parser(*dc, ppiScale);
+
+    if (tmp->BreakPageHere())
+      return true;
 
     parser.SetIndent(marginX);
 
@@ -100,7 +108,7 @@ bool MathPrintout::OnPrintPage(int num)
         drop = tmp->m_next->GetMaxDrop();
       }
 
-      tmp = tmp->m_next;
+      tmp = (GroupCell *)tmp->m_next;
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
@@ -132,7 +140,7 @@ void MathPrintout::BreakPages()
   int currentHeight = marginY;
   int skip = SCALE_PX(MC_GROUP_SKIP, scale);;
 
-  MathCell* tmp = m_tree;
+  GroupCell* tmp = (GroupCell *)m_tree;
   m_pages.push_back(tmp);
 
   m_numberOfPages = 1;
@@ -140,9 +148,11 @@ void MathPrintout::BreakPages()
   {
     tmp->BreakPage(false);
 
-    if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY)
+    if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY ||
+        tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
     {
-      currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+      if (tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
+        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
       tmp->BreakPage(true);
       m_pages.push_back(tmp);
       m_numberOfPages++;
@@ -150,7 +160,7 @@ void MathPrintout::BreakPages()
     else
       currentHeight += tmp->GetMaxHeight() + skip;
 
-    tmp = tmp->m_next;
+    tmp = (GroupCell *)tmp->m_next;
   }
 }
 

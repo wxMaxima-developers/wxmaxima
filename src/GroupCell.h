@@ -98,6 +98,7 @@ public:
   bool IsLesserGCType(int comparedTo);
   void Number(int &section, int &subsection, int &image);
   void RecalculateAppended(CellParser& parser);
+  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   int m_groupType;
@@ -111,7 +112,6 @@ protected:
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
   wxRect m_outputRect;
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString(bool all);
 };
 
