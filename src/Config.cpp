@@ -133,7 +133,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Selection"),
       _("Outdated cells")
     };
-  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 22, m_styleFor_choices, wxLB_SINGLE);
+  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 23, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
 #ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
