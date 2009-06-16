@@ -64,6 +64,7 @@ protected:
   MathCell *m_last1, *m_last2;
   bool m_exponent;
   int m_fracStyle;
+  int m_expDivideWidth;
 };
 
 #endif //_FRACCELL_H_

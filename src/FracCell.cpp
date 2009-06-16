@@ -129,13 +129,13 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (m_exponent && !m_isBroken)
   {
     wxDC& dc = parser.GetDC();
-    int width, height;
+    int height;
     int fontsize1 = (int) (((double)(fontsize-FRAC_DEC)) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                             false, false, false,
                             parser.GetFontName(TS_DEFAULT)));
-    dc.GetTextExtent(wxT("/"), &width, &height);
-    m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + width;
+    dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
+    m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
   else
   {
@@ -192,25 +192,18 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     if (m_exponent && !m_isBroken)
     {
-      int width, height;
       double scale = parser.GetScale();
 
       num.x = point.x;
       num.y = point.y;
-      denom.x = point.x + m_num->GetFullWidth(scale) + width;
+      denom.x = point.x + m_num->GetFullWidth(scale) + m_expDivideWidth;
       denom.y = num.y;
-
-      int fontsize1 = (int) (((double)(fontsize-FRAC_DEC)) * scale + 0.5);
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                false, false, false,
-                parser.GetFontName(TS_DEFAULT)));
-      dc.GetTextExtent(wxT("/"), &width, &height);
 
       m_num->Draw(parser, num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
       m_denom->Draw(parser, denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
-                  point.y - m_num->GetMaxCenter() + SCALE_PX(2, scale));
+                  point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));
     }
     else
     {
