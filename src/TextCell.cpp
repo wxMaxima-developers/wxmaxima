@@ -291,7 +291,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.GetSymbolFontName()));
 #endif
 
-    else if (parser.CheckTeXFonts() && (m_text == wxT("-") || m_text == wxT("+")))
+    else if (parser.CheckTeXFonts() &&
+        (m_text == wxT("-") || m_text == wxT("+") || m_text == wxT("=")))
       dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
                  parser.IsItalic(TS_DEFAULT),
                  parser.IsBold(TS_DEFAULT),
