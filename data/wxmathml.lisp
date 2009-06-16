@@ -738,8 +738,8 @@
 (defprop min 80. wxxml-rbp)
 
 (defprop mequal wxxml-infix wxxml)
-(defprop mequal ("<t>=</t>") wxxmlsym)
-(defprop mequal "<t>=</t>" wxxmlword)
+(defprop mequal ("<v>=</v>") wxxmlsym)
+(defprop mequal "<v>=</v>" wxxmlword)
 (defprop mequal 80. wxxml-lbp)
 (defprop mequal 80. wxxml-rbp)
 
@@ -1012,16 +1012,10 @@
 		  (setq p (make-list n :initial-element "'")))
 		 (t
 		  (setq p (list "(" n ")"))))
-	   (cond ((eq rop 'mexpt)
-		  (append l (list "<p><e><r>")
-                          (wxxml (cadr x) nil nil lop rop)
-			  (list "</r><r>") p
-                          (list "</r></e>") (list "</p>") r))
-		 (t
-		  (append (append l '("<e><r>"))
-                          (wxxml (cadr x) nil nil lop rop)
-			  (list "</r><r>") p
-                          (list "</r></e>")  r)))))
+	   (append (append l '("<r>"))
+		   (let ((*var-tag* (list "<fnm>" "</fnm>"))) (wxxml (cadr x) nil nil lop rop))
+		   p
+		   (list "</r>")  r)))
 
 	((and $pdiff_uses_named_subscripts_for_derivatives
 	      (< (apply #'+ (cddr x)) $pdiff_prime_limit))
