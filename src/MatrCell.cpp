@@ -211,7 +211,7 @@ wxString MatrCell::ToString(bool all)
 
 wxString MatrCell::ToTeX(bool all)
 {
-  wxString s = wxT("\\pmatrix{");
+  wxString s = wxT("\\begin{pmatrix}");
   for (int i = 0; i < m_matHeight; i++)
   {
     for (int j = 0; j < m_matWidth; j++)
@@ -223,7 +223,7 @@ wxString MatrCell::ToTeX(bool all)
     if (i < m_matHeight - 1)
       s += wxT("\\cr ");
   }
-  s += wxT("}");
+  s += wxT("\\end{pmatrix}");
   s += MathCell::ToTeX(all);
   return s;
 }
