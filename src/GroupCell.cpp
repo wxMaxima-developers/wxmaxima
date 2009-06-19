@@ -264,7 +264,8 @@ void GroupCell::AppendOutput(MathCell *cell)
       m_lastInOutput = m_lastInOutput->m_next;
   }
 
-  m_appendedCells = cell;
+  if (m_appendedCells == NULL)
+    m_appendedCells = cell;
 }
 
 void GroupCell::Recalculate(CellParser& parser, int d_fontsize, int m_fontsize)
