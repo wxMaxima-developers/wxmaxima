@@ -221,21 +221,20 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   switch(m_textStyle)
   {
   case TS_SPECIAL_CONSTANT:
-#if defined __WXMSW__
-    if (m_text == wxT("inf"))
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_DEFAULT),
-                        parser.IsBold(TS_DEFAULT),
-                        parser.IsUnderlined(TS_DEFAULT),
-                        parser.GetSymbolFontName()));
-    else
-#endif
     if (m_text == wxT("inf") && parser.CheckTeXFonts())
       dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetTeXCMSY()));
+#if defined __WXMSW__
+    else if (m_text == wxT("inf"))
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
+                        parser.GetSymbolFontName()));
+#endif
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
