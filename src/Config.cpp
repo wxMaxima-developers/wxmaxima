@@ -175,7 +175,6 @@ void Config::set_properties()
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
-  m_mathFont->SetToolTip(_("Use greek font to display math characters."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
   m_unixCopy->SetToolTip(_("Copy selection to clipboard when selection is made in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
@@ -453,14 +452,8 @@ void Config::OnMpBrowse(wxCommandEvent& event)
 void Config::OnMathBrowse(wxCommandEvent& event)
 {
   wxFont math;
-#if defined __WXMSW__
-  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxNORMAL, wxNORMAL, wxNORMAL,
-                                        false, m_mathFontName,
-                                        wxFONTENCODING_CP1253));
-#else
   math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxNORMAL, wxNORMAL, wxNORMAL,
                                         false, m_mathFontName));
-#endif
 
   if (math.Ok())
   {
