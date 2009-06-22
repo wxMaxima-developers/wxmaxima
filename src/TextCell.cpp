@@ -440,7 +440,7 @@ wxString TextCell::GetGreekString(CellParser& parser)
 wxString TextCell::GetGreekStringUnicode()
 {
   if (m_text == wxT("gamma"))
-    return wxT("\x0D");
+    return wxT("\xC0");
   else if (m_text == wxT("zeta"))
     return wxT("\xB0");
   else if (m_text == wxT("psi"))
