@@ -116,7 +116,7 @@ void FracCell::SetDenom(MathCell *denom)
 void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  if (m_isBroken)
+  if (m_isBroken || m_exponent)
   {
     m_num->RecalculateWidths(parser, fontsize, true);
     m_denom->RecalculateWidths(parser, fontsize, true);
@@ -130,10 +130,10 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   {
     wxDC& dc = parser.GetDC();
     int height;
-    int fontsize1 = (int) (((double)(fontsize-FRAC_DEC)) * scale + 0.5);
+    int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxMODERN,
                             false, false, false,
-                            parser.GetFontName(TS_DEFAULT)));
+                            parser.GetFontName(TS_VARIABLE)));
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
@@ -152,7 +152,7 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 {
   double scale = parser.GetScale();
-  if (m_isBroken)
+  if (m_isBroken || m_exponent)
   {
     m_num->RecalculateSize(parser, fontsize, true);
     m_denom->RecalculateSize(parser, fontsize, true);
@@ -199,8 +199,13 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       denom.x = point.x + m_num->GetFullWidth(scale) + m_expDivideWidth;
       denom.y = num.y;
 
-      m_num->Draw(parser, num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
-      m_denom->Draw(parser, denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
+      m_num->Draw(parser, num, fontsize, true);
+      m_denom->Draw(parser, denom, fontsize, true);
+
+      int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                              false, false, false,
+                              parser.GetFontName(TS_VARIABLE)));
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
                   point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));
