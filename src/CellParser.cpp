@@ -77,7 +77,7 @@ wxString CellParser::GetFontName(int type)
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SECTION || type == TS_TEXT)
     return m_styles[type].font;
   else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT)
+      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
     return m_mathFontName;
   return m_fontName;
 }
