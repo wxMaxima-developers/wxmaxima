@@ -1467,6 +1467,7 @@ void wxMaxima::MenuCommand(wxString cmd)
 {
   m_console->SetFocus();
   m_console->SetSelection(NULL);
+  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue((GroupCell*)m_console->GetActiveCell()->GetParent());
   TryEvaluateNextInQueue();
@@ -3828,7 +3829,7 @@ void wxMaxima::OnInspectorEvent(wxCommandEvent& ev)
   wxString maxcmd = m_inspector->GetMaximaCommand();
 
   if (maxcmd.Length() > 0) {
-    //ConsoleAppend(maxcmd, MC_TYPE_DEFAULT); // DEBUG 
+    //ConsoleAppend(maxcmd, MC_TYPE_DEFAULT); // DEBUG
     SendMaxima(maxcmd);
   }
 }
