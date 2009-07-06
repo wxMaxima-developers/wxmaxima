@@ -736,10 +736,14 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxT("gtk-copy"),
                                                     wxART_TOOLBAR),
                            _("Copy selection"));
-  frame_1_toolbar->AddTool(tb_delete, _("Delete"),
+  frame_1_toolbar->AddTool(tb_cut, _("Cut"),
                            wxArtProvider::GetBitmap(wxT("gtk-cut"),
                                                     wxART_TOOLBAR),
                            _("Delete selection"));
+  frame_1_toolbar->AddTool(tb_paste, _("Paste"),
+                           wxArtProvider::GetBitmap(wxT("gtk-paste"),
+                                                    wxART_TOOLBAR),
+                           _("Paste from clipboard"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            wxArtProvider::GetBitmap(wxT("gtk-stop"),
@@ -897,7 +901,11 @@ wxPanel* wxMaximaFrame::CreateMathPane()
   wxPanel *panel = new wxPanel(this, -1);
 
   int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
   int border = 1;
+#else
+  int border = 0;
+#endif
 
   grid->Add(new wxButton(panel, button_ratsimp, _("Simplify")), 0, style, border);
   grid->Add(new wxButton(panel, button_radcan, _("Simplify (r)")), 0, style, border);
@@ -936,10 +944,10 @@ wxPanel* wxMaximaFrame::CreateStatPane()
   wxPanel *panel = new wxPanel(this, -1);
 
   int style = wxALL | wxEXPAND;
-#ifndef __WXMAC__
-  int border = 0;
-#else
+#if defined __WXMSW__
   int border = 1;
+#else
+  int border = 0;
 #endif
   int sizerBorder = 2;
 
@@ -988,7 +996,11 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
   wxPanel *panel = new wxPanel(this, -1);
 
   int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
   int border = 1;
+#else
+  int border = 0;
+#endif
 
   grid->Add(new wxButton(panel, menu_format_text, _("Text")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_title, _("Title")), 0, style, border);
