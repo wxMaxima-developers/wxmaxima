@@ -1551,10 +1551,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
-  menubar->Enable(menu_copy_input_from_console, m_console->CanCopy());
-  menubar->Enable(menu_cut_input_from_console, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
+  menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
@@ -1596,7 +1595,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   wxToolBar * toolbar = GetToolBar();
   toolbar->EnableTool(tb_copy,  m_console->CanCopy(true));
-  toolbar->EnableTool(tb_delete, m_console->CanDeleteSelection());
+  toolbar->EnableTool(tb_cut, m_console->CanCut());
   toolbar->EnableTool(tb_save, !m_fileSaved);
   if (m_pid > 0)
     toolbar->EnableTool(tb_interrupt, true);
@@ -1858,16 +1857,13 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     if (m_console->CanCopy(true))
       m_console->Copy();
     break;
-  case menu_copy_input_from_console:
-    if (m_console->CanCopy())
-      m_console->CopyCells();
+  case menu_copy_text_from_console:
+    if (m_console->CanCopy(true))
+      m_console->Copy(true);
     break;
-  case menu_cut_input_from_console:
-    if (m_console->CanCopy())
-      m_console->CopyCells();
-    if (m_console->CanDeleteSelection())
-      m_console->DeleteSelection();
-    break;
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case tb_cut:
+#endif
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
@@ -1875,6 +1871,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_select_all:
     m_console->SelectAll();
     break;
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case tb_paste:
+#endif
   case menu_paste:
     if (m_console->CanPaste())
       m_console->PasteFromClipboard();
@@ -1907,9 +1906,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       }
     }
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_delete:
-#endif
   case menu_delete_selection:
   case popid_delete:
     if (m_console->CanDeleteSelection())
@@ -1962,102 +1958,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_show_toolbar:
     ShowToolBar(!(GetToolBar() != NULL));
-    break;
-  case menu_paste_input:
-    {
-      if (wxTheClipboard->Open()) {
-        if (wxTheClipboard->IsSupported( wxDF_TEXT ))
-        {
-          wxTextDataObject data;
-          wxTheClipboard->GetData(data);
-          wxString inputs(data.GetText());
-          wxStringTokenizer lines(inputs, wxT("\n"));
-          wxString input, line;
-          wxArrayString inp;
-
-          // Read the content from clipboard
-          while (lines.HasMoreTokens())
-          {
-            // Go to the begining of the cell
-            do {
-              line = lines.GetNextToken();
-            } while (lines.HasMoreTokens() &&
-                     line != wxT("/* [wxMaxima: input   start ] */") &&
-                     line != wxT("/* [wxMaxima: comment start ]") &&
-                     line != wxT("/* [wxMaxima: section start ]") &&
-                     line != wxT("/* [wxMaxima: subsect start ]") &&
-                     line != wxT("/* [wxMaxima: title   start ]"));
-
-            // Read the cell content
-            do {
-              line = lines.GetNextToken();
-              if (line == wxT("/* [wxMaxima: input   end   ] */"))
-              {
-                inp.Add(wxT("input"));
-                inp.Add(input);
-                input = wxEmptyString;
-              }
-              else if (line == wxT("   [wxMaxima: comment end   ] */"))
-              {
-                inp.Add(wxT("comment"));
-                inp.Add(input);
-                input = wxEmptyString;
-              }
-              else if (line == wxT("   [wxMaxima: section end   ] */"))
-              {
-                inp.Add(wxT("section"));
-                inp.Add(input);
-                input = wxEmptyString;
-              }
-              else if (line == wxT("   [wxMaxima: subsect end   ] */"))
-              {
-                inp.Add(wxT("subsection"));
-                inp.Add(input);
-                input = wxEmptyString;
-              }
-              else if (line == wxT("   [wxMaxima: title   end   ] */"))
-              {
-                inp.Add(wxT("title"));
-                inp.Add(input);
-                input = wxEmptyString;
-              }
-              else
-              {
-                if (input.Length()>0)
-                  input = input + wxT("\n") + line;
-                else
-                  input = line;
-              }
-            } while (lines.HasMoreTokens() &&
-                     line != wxT("/* [wxMaxima: input   end   ] */") &&
-                     line != wxT("   [wxMaxima: comment end   ] */") &&
-                     line != wxT("   [wxMaxima: section end   ] */") &&
-                     line != wxT("   [wxMaxima: subsect end   ] */") &&
-                     line != wxT("   [wxMaxima: title   end   ] */"));
-          }
-
-          // Paste the content into the document
-          m_console->Freeze();
-          for (int i=0; i<inp.Count(); i = i+2)
-          {
-            if (inp[i] == wxT("input"))
-              m_console->OpenHCaret(inp[i+1]);
-            else if (inp[i] == wxT("comment"))
-              m_console->OpenHCaret(inp[i+1], GC_TYPE_TEXT);
-            else if (inp[i] == wxT("section"))
-              m_console->OpenHCaret(inp[i+1], GC_TYPE_SECTION);
-            else if (inp[i] == wxT("subsection"))
-              m_console->OpenHCaret(inp[i+1], GC_TYPE_SUBSECTION);
-            else if (inp[i] == wxT("title"))
-              m_console->OpenHCaret(inp[i+1], GC_TYPE_TITLE);
-          }
-          m_console->Thaw();
-
-        }
-        wxTheClipboard->Close();
-      }
-    }
-    return;
     break;
   }
 }
@@ -3983,8 +3883,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_pade, wxMaxima::CalculusMenu)
   EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
   EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
-  EVT_MENU(menu_undo, wxMaxima::EditMenu)
+  EVT_MENU(menu_copy_text_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
+  EVT_MENU(menu_undo, wxMaxima::EditMenu)
   EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
@@ -4006,15 +3907,14 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
-  EVT_MENU(menu_copy_input_from_console, wxMaxima::EditMenu)
-  EVT_MENU(menu_cut_input_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_select_all, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
-  EVT_TOOL(tb_delete, wxMaxima::EditMenu)
+  EVT_TOOL(tb_paste, wxMaxima::EditMenu)
+  EVT_TOOL(tb_cut, wxMaxima::EditMenu)
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
@@ -4025,14 +3925,13 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(plot_slider_id, wxMaxima::UpdateSlider)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_copy_text_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_zoom_in, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_zoom_out, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_copy_input_from_console, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(menu_cut_input_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_evaluate, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
@@ -4046,7 +3945,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_delete, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(tb_cut, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_animation_start, wxMaxima::UpdateToolBar)

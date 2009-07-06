@@ -222,7 +222,10 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy\tCtrl-C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy LaTeX"),
+  wxglade_tmp_menu_2->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl-Shift-C"),
+                             _("Copy selection from document as text"),
+                             wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
                                   _("Copy selection from document in LaTeX format"),
                                   wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
@@ -241,19 +244,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_cut_input_from_console, _("Cut Cell(s)\tCtrl-Shift-X"),
-                                  _("Cut selected cell(s)"),
-                                  wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_copy_input_from_console, _("Copy Cell(s)\tCtrl-Shift-C"),
-                                  _("Copy selected cell(s)"),
-                                  wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_paste_input, _("Paste Cell(s)\tCtrl-Shift-V"),
-                             _("Paste cell(s) to document"),
-                             wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2_sub1, menu_delete_selection,
-                   _("&Delete Cell(s)"),
-                   _("Delete selected cell(s)"), wxT("gtk-delete"));
-  wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
@@ -687,9 +677,12 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_copy, _("Copy"),
                            IMAGE("copy.png"),
                            _("Copy selection"));
-  frame_1_toolbar->AddTool(tb_delete, _("Delete"),
+  frame_1_toolbar->AddTool(tb_cut, _("Cut"),
                            IMAGE("cut.png"),
-                           _("Delete selection"));
+                           _("Cut selection"));
+  frame_1_toolbar->AddTool(tb_paste, _("Paste"),
+                           IMAGE("paste.png"),
+                           _("Paste from clipboard"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            IMAGE("stop.png"),

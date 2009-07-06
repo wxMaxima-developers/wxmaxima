@@ -1012,21 +1012,26 @@ wxString MathCtrl::GetString(bool lb) {
 /***
  * Copy selection to clipboard.
  */
-bool MathCtrl::Copy() {
+bool MathCtrl::Copy(bool astext) {
   if (m_activeCell != NULL) {
     return m_activeCell->CopyToClipboard();
   }
 
   if (m_selectionStart == NULL)
     return false;
-  wxString s = GetString(true);
 
-  if (wxTheClipboard->Open()) {
-    wxTheClipboard->SetData(new wxTextDataObject(s));
-    wxTheClipboard->Close();
-    return true;
+  if (!astext && m_selectionStart->GetType() == MC_TYPE_GROUP)
+    CopyCells();
+  else {
+    wxString s = GetString(true);
+
+    if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(s));
+      wxTheClipboard->Close();
+      return true;
+    }
+    return false;
   }
-  return false;
 }
 
 bool MathCtrl::CopyTeX() {
@@ -2805,38 +2810,151 @@ void MathCtrl::ShowPoint(wxPoint point) {
 }
 
 bool MathCtrl::CutToClipboard() {
-  if (m_activeCell == NULL)
-    return false;
-
-  m_activeCell->CutToClipboard();
-  m_activeCell->GetParent()->ResetSize();
-  Recalculate();
-  Refresh();
-  return true;
+  if (m_activeCell != NULL)
+  {
+    m_activeCell->CutToClipboard();
+    m_activeCell->GetParent()->ResetSize();
+    Recalculate();
+    Refresh();
+    return true;
+  }
+  else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP)
+  {
+    CopyCells();
+    DeleteSelection();
+  }
 }
 
 /****
  * PasteFromClipboard
- * Pastes text into activeCell or opens a new cell
- * if hCaretActive == true
+ * Checks if we have cell structure in the clipboard.
+ * If not, then pastes text into activeCell or opens a new cell
+ * if hCaretActive == true. If yes, copies the cell structure.
  */
 void MathCtrl::PasteFromClipboard() {
-  if (m_activeCell != NULL) {
-    m_activeCell->PasteFromClipboard();
-    m_activeCell->GetParent()->ResetSize();
-    Recalculate();
-    Refresh();
-  }
-  else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
-    if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
-      wxTextDataObject obj;
-      wxTheClipboard->GetData(obj);
-      wxString txt = obj.GetText();
 
-      OpenHCaret(txt);
+  bool cells = false;
+
+  /* Check for cell structure */
+  if (wxTheClipboard->Open())
+  {
+    if (wxTheClipboard->IsSupported( wxDF_TEXT ))
+    {
+      wxTextDataObject data;
+      wxTheClipboard->GetData(data);
+      wxString inputs(data.GetText());
+
+      if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
+      {
+        cells = true;
+
+        wxStringTokenizer lines(inputs, wxT("\n"));
+        wxString input, line;
+        wxArrayString inp;
+
+        // Read the content from clipboard
+        while (lines.HasMoreTokens())
+        {
+          // Go to the begining of the cell
+          do {
+            line = lines.GetNextToken();
+          } while (lines.HasMoreTokens() &&
+                   line != wxT("/* [wxMaxima: input   start ] */") &&
+                   line != wxT("/* [wxMaxima: comment start ]") &&
+                   line != wxT("/* [wxMaxima: section start ]") &&
+                   line != wxT("/* [wxMaxima: subsect start ]") &&
+                   line != wxT("/* [wxMaxima: title   start ]"));
+
+          // Read the cell content
+          do {
+            line = lines.GetNextToken();
+            if (line == wxT("/* [wxMaxima: input   end   ] */"))
+            {
+              inp.Add(wxT("input"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
+            else if (line == wxT("   [wxMaxima: comment end   ] */"))
+            {
+              inp.Add(wxT("comment"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
+            else if (line == wxT("   [wxMaxima: section end   ] */"))
+            {
+              inp.Add(wxT("section"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
+            else if (line == wxT("   [wxMaxima: subsect end   ] */"))
+            {
+              inp.Add(wxT("subsection"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
+            else if (line == wxT("   [wxMaxima: title   end   ] */"))
+            {
+              inp.Add(wxT("title"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
+            else
+            {
+              if (input.Length()>0)
+                input = input + wxT("\n") + line;
+              else
+                input = line;
+            }
+          } while (lines.HasMoreTokens() &&
+                   line != wxT("/* [wxMaxima: input   end   ] */") &&
+                   line != wxT("   [wxMaxima: comment end   ] */") &&
+                   line != wxT("   [wxMaxima: section end   ] */") &&
+                   line != wxT("   [wxMaxima: subsect end   ] */") &&
+                   line != wxT("   [wxMaxima: title   end   ] */"));
+        }
+
+        // Paste the content into the document
+        Freeze();
+        for (int i=0; i<inp.Count(); i = i+2)
+        {
+          if (inp[i] == wxT("input"))
+            OpenHCaret(inp[i+1]);
+          else if (inp[i] == wxT("comment"))
+            OpenHCaret(inp[i+1], GC_TYPE_TEXT);
+          else if (inp[i] == wxT("section"))
+            OpenHCaret(inp[i+1], GC_TYPE_SECTION);
+          else if (inp[i] == wxT("subsection"))
+            OpenHCaret(inp[i+1], GC_TYPE_SUBSECTION);
+          else if (inp[i] == wxT("title"))
+            OpenHCaret(inp[i+1], GC_TYPE_TITLE);
+        }
+        Thaw();
+      }
+      wxTheClipboard->Close();
+    }
+  }
+
+  /* Clipboard does not have the cell structure. */
+  if (!cells)
+  {
+    if (m_activeCell != NULL) {
+      m_activeCell->PasteFromClipboard();
+      m_activeCell->GetParent()->ResetSize();
+      Recalculate();
       Refresh();
     }
-    wxTheClipboard->Close();
+
+    else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
+      if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+        wxTextDataObject obj;
+        wxTheClipboard->GetData(obj);
+        wxString txt = obj.GetText();
+
+        OpenHCaret(txt);
+        Refresh();
+      }
+      wxTheClipboard->Close();
+    }
   }
 }
 

@@ -91,7 +91,8 @@ public:
   }
   bool CanCut()
   {
-    return m_activeCell != NULL && m_activeCell->CanCopy();
+    return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
+           (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
   void SelectAll();
   bool CanDeleteSelection();
@@ -105,7 +106,7 @@ public:
   void MergeCells();
   bool CutToClipboard();
   void PasteFromClipboard();
-  bool Copy();
+  bool Copy(bool astext = false);
   bool CopyCells();
   bool CopyTeX();
   bool CopyBitmap();
