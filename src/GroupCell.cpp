@@ -950,21 +950,22 @@ void GroupCell::BreakLines(MathCell *cell, int fullWidth)
 
 void GroupCell::SelectOutput(MathCell **start, MathCell **end)
 {
-
   if (m_hide)
     return;
 
   *start = m_output;
 
-  while (*start != NULL && (*start)->GetType() != MC_TYPE_LABEL)
+  while (*start != NULL && (*start)->GetStyle() != TS_LABEL)
     *start = (*start)->m_nextToDraw;
+
 
   if (*start != NULL)
     *start = (*start)->m_nextToDraw;
 
   *end = *start;
 
-  while (*end != NULL && (*end)->GetType() == MC_TYPE_DEFAULT && (*end)->m_nextToDraw != NULL)
+  while (*end != NULL &&
+         (*end)->m_nextToDraw != NULL)
     *end = (*end)->m_nextToDraw;
 
   if (*end == NULL || *start == NULL)

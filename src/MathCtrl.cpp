@@ -2594,6 +2594,11 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
     ((EditorCell *) m_activeCell)->SelectWordUnderCaret();
     Refresh();
   }
+  else if (m_selectionStart != NULL) {
+    GroupCell *parent = (GroupCell *)m_selectionStart->GetParent();
+    parent->SelectOutput(&m_selectionStart, &m_selectionEnd);
+    Refresh();
+  }
 }
 
 bool MathCtrl::ActivatePrevInput() {
