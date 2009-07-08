@@ -44,10 +44,10 @@ Inspector::Inspector(wxWindow* parent, int id) : wxPanel(parent, id)
   wxGridSizer *buttonbox = new wxGridSizer(1, 4, 0,0);
 
   // toggle buttons
-  m_tVars = new wxToggleButton(this, inspector_vars_id, wxT("x"), wxDefaultPosition, wxSize(30,20));
-  m_tFuns = new wxToggleButton(this, inspector_funs_id, wxT("f(x)"), wxDefaultPosition, wxSize(30,20));
-  m_tLabs = new wxToggleButton(this, inspector_labs_id, wxT("\%i1"), wxDefaultPosition, wxSize(30,20));
-  m_tOpts = new wxToggleButton(this, inspector_labs_id, wxT("Opt"), wxDefaultPosition, wxSize(30,20));
+  m_tVars = new wxToggleButton(this, inspector_vars_id, wxT("x"), wxDefaultPosition, wxDefaultSize);
+  m_tFuns = new wxToggleButton(this, inspector_funs_id, wxT("f(x)"), wxDefaultPosition, wxDefaultSize);
+  m_tLabs = new wxToggleButton(this, inspector_labs_id, wxT("\%i1"), wxDefaultPosition, wxDefaultSize);
+  m_tOpts = new wxToggleButton(this, inspector_labs_id, wxT("Opt"), wxDefaultPosition, wxDefaultSize);
 
   m_tVars->SetValue(true); // default - show variables
   m_tFuns->SetValue(true); // default - show functions
