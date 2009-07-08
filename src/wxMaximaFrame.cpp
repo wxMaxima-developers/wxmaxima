@@ -674,12 +674,12 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("configure.png"),
                            _("Configure wxMaxima"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
-                           IMAGE("copy.png"),
-                           _("Copy selection"));
   frame_1_toolbar->AddTool(tb_cut, _("Cut"),
                            IMAGE("cut.png"),
                            _("Cut selection"));
+  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+                           IMAGE("copy.png"),
+                           _("Copy selection"));
   frame_1_toolbar->AddTool(tb_paste, _("Paste"),
                            IMAGE("paste.png"),
                            _("Paste from clipboard"));
@@ -732,14 +732,14 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Configure wxMaxima"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
-                           wxArtProvider::GetBitmap(wxT("gtk-copy"),
-                                                    wxART_TOOLBAR),
-                           _("Copy selection"));
   frame_1_toolbar->AddTool(tb_cut, _("Cut"),
                            wxArtProvider::GetBitmap(wxT("gtk-cut"),
                                                     wxART_TOOLBAR),
                            _("Delete selection"));
+  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+                           wxArtProvider::GetBitmap(wxT("gtk-copy"),
+                                                    wxART_TOOLBAR),
+                           _("Copy selection"));
   frame_1_toolbar->AddTool(tb_paste, _("Paste"),
                            wxArtProvider::GetBitmap(wxT("gtk-paste"),
                                                     wxART_TOOLBAR),
@@ -951,35 +951,35 @@ wxPanel* wxMaximaFrame::CreateStatPane()
 #endif
   int sizerBorder = 2;
 
-  grid1->Add(new wxButton(panel, menu_stats_mean, wxT("Mean")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_median, wxT("Median")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_var, wxT("Variance")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_dev, wxT("Deviation")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_mean, _("Mean")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_median, _("Median")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_var, _("Variance")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_dev, _("Deviation")), 0, style, border);
 
   box->Add(grid1, 0, style, sizerBorder);
 
-  box1->Add(new wxButton(panel, menu_stats_tt1, wxT("Mean Test...")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_tt2, wxT("Mean Difference Test...")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_tnorm, wxT("Normality Test")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_linreg, wxT("Linear Regression")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_lsquares, wxT("Least Squares Fit...")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_tt1, _("Mean Test...")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_tt2, _("Mean Difference Test...")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_tnorm, _("Normality Test")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_linreg, _("Linear Regression")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_lsquares, _("Least Squares Fit...")), 0, style, border);
 
   box->Add(box1, 0, style, sizerBorder);
 
-  grid2->Add(new wxButton(panel, menu_stats_histogram, wxT("Histogram...")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_scatterplot, wxT("Scatterplot...")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_barsplot, wxT("Barsplot")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_piechart, wxT("Piechart")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_boxplot, wxT("Boxplot")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_histogram, _("Histogram...")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_scatterplot, _("Scatterplot...")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_barsplot, _("Barsplot")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_piechart, _("Piechart")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_boxplot, _("Boxplot")), 0, style, border);
 
   box->Add(grid2, 0, style, sizerBorder);
 
-  grid3->Add(new wxButton(panel, menu_stats_readm, wxT("Read Matrix...")), 0, style, border);
-  grid3->Add(new wxButton(panel, menu_stats_enterm, wxT("Enter Matrix...")), 0, style, border);
+  grid3->Add(new wxButton(panel, menu_stats_readm, _("Read Matrix...")), 0, style, border);
+  grid3->Add(new wxButton(panel, menu_stats_enterm, _("Enter Matrix...")), 0, style, border);
 
   box->Add(grid3, 0, style, sizerBorder);
 
-  box3->Add(new wxButton(panel, menu_stats_subsample, wxT("Subsample...")), 0, style, border);
+  box3->Add(new wxButton(panel, menu_stats_subsample, _("Subsample...")), 0, style, border);
 
   box->Add(box3, 0, style, sizerBorder);
 
