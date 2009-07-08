@@ -1663,6 +1663,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 {
   wxString expr = GetDefaultEntry();
   wxString cmd;
+  bool forceSave = false;
 #if defined __WXMSW__
   wxString b = wxT("\\");
   wxString f = wxT("/");
@@ -1692,35 +1693,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
 
   case menu_save_as_id:
-    {
-      wxString file(_("untitled"));
-      if (m_currentFile.Length() >0)
-        wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Save As"), m_lastPath,
-                            file + wxT(".wxm"), wxT("wxm"),
-                            _("wxMaxima document (*.wxm)|*.wxm|"
-                              "wxMaxima xml document (*.wxmx)|*.wxmx|"
-                              "Maxima batch file (*.mac)|*.mac|"
-                              "All|*"),
-                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (file.Length())
-      {
-        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac") &&
-            file.Right(5) != wxT(".wxmx"))
-          file = file + wxT(".wxm");
-
-        m_lastPath = wxPathOnly(file);
-        m_currentFile = file;
-        m_fileSaved = false;
-        if (file.Right(5) == wxT(".wxmx"))
-          m_console->ExportToWXMX(file);
-        else
-          m_console->ExportToMAC(file);
-
-        AddRecentDocument(file);
-      }
-    }
-    break;
+    forceSave = true;
+    m_fileSaved = false;
 
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_save:
@@ -1728,21 +1702,48 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_save_id:
     {
       wxString file = m_currentFile;
-      if (m_currentFile.Length() == 0)
+      wxString fileExt;
+      int ext = -1;
+
+      if (file.Length() == 0 || forceSave)
       {
-        file = wxFileSelector(_("Save As"), m_lastPath,
-                              _("untitled.wxm"), wxT("wxm"),
-                              _("wxMaxima document (*.wxm)|*.wxm|"
-                                "wxMaxima xml document (*.wxmx)|*.wxmx|"
-                                "Maxima batch file (*.mac)|*.mac|"
-                                "All|*"),
-                              wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+        if (file.Length() == 0)
+          file = _("untitled");
+        else
+          wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
+
+        wxFileDialog fileDialog(this,
+                                _("Save As"), m_lastPath,
+                                file,
+                                _("wxMaxima document (*.wxm)|*.wxm|"
+                                  "wxMaxima xml document (*.wxmx)|*.wxmx|"
+                                  "Maxima batch file (*.mac)|*.mac"),
+                                wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+        if (fileExt == wxT("wxm"))
+          fileDialog.SetFilterIndex(0);
+        else if (fileExt == wxT("wxmx"))
+          fileDialog.SetFilterIndex(1);
+        else if (fileExt == wxT("mac"))
+          fileDialog.SetFilterIndex(2);
+
+        if (fileDialog.ShowModal() == wxID_OK)
+        {
+          file = fileDialog.GetPath();
+          ext = fileDialog.GetFilterIndex();
+        }
+        else
+          return;
       }
+
       if (file.Length())
       {
-        if (file.Right(4) != wxT(".wxm") && file.Right(4) != wxT(".mac")
-            && file.Right(5) != wxT(".wxmx"))
-          file = file + wxT(".wxm");
+        if (ext == 0 && file.Right(4) != wxT(".wxm"))
+          file += wxT(".wxm");
+        else if (ext == 1 && file.Right(5) != wxT(".wxmx"))
+          file += wxT(".wxmx");
+        else if (ext == 2 && file.Right(4) != wxT(".mac"))
+          file += wxT(".mac");
 
         m_currentFile = file;
         m_lastPath = wxPathOnly(file);
