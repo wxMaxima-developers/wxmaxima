@@ -93,12 +93,9 @@ bool MathPrintout::OnPrintPage(int num)
     PrintHeader(num, dc, ppiScale);
     CellParser parser(*dc, ppiScale);
 
-    if (tmp->BreakPageHere())
-      return true;
-
     parser.SetIndent(marginX);
 
-    while (tmp != NULL)
+    while (tmp != NULL && !tmp->BreakPageHere())
     {
       tmp->Draw(parser, point, fontsize, false);
       if (tmp->m_next != NULL) {
