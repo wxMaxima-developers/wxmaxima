@@ -62,5 +62,6 @@ wxMaxima.app: all
 	cp locales/wxwin/uk.mo wxMaxima.app/Contents/Resources/locale/uk/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/pl.mo wxMaxima.app/Contents/Resources/locale/pl/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/zh_TW.mo wxMaxima.app/Contents/Resources/locale/zh_TW/LC_MESSAGES/wxMaxima-wxstd.mo
+	cp locales/wxwin/da.mo wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
 

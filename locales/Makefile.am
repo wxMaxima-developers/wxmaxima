@@ -112,7 +112,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     ru.po uk.mo wxwin/uk.mo \
 	     pl.po pl.mo wxwin/pl.mo \
 	     zh_TW.po zh_TW.mo wxwin/zh_TW.mo \
-	     da.po da.mo \
+	     da.po da.mo wxwin/da.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE
