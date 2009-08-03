@@ -217,10 +217,10 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     }
     else
     {
-      m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+      m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxCenter());
       m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
+                 MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxDrop());
     }
   }
