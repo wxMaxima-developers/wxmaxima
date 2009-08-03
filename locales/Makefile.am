@@ -3,7 +3,7 @@
 #
 
 WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da
-WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW
+WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da
 
 localedir = $(datadir)/locale
 
