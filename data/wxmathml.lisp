@@ -485,7 +485,7 @@
    ;; The exponent part
     (setq r (if (mmminusp xexp)
                 ;; the change in base-line makes parens unnecessary
-                (wxxml (cadr xexp) '("</r><r><v>-</v>")
+                (wxxml (cadr xexp) '("<r><v>-</v>")
                        (cons "</r></ie>" r) 'mparen 'mparen)
 		(if (and (integerp xexp) (< xexp 10))
 		    (wxxml xexp nil
