@@ -214,6 +214,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION)) {
     fontsize1 = parser.GetFontSize(m_textStyle);
+    fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
   }
 
   fontsize1 = MAX(fontsize1, 1);

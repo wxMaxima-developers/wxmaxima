@@ -95,7 +95,7 @@ bool MathPrintout::OnPrintPage(int num)
 
     parser.SetIndent(marginX);
 
-    while (tmp != NULL && !tmp->BreakPageHere())
+    while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
       tmp->Draw(parser, point, fontsize, false);
       if (tmp->m_next != NULL) {
