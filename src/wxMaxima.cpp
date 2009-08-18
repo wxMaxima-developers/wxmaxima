@@ -374,7 +374,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   if (history)
     AddToHistory(s);
 
-  s.Replace(wxT("\n"), wxEmptyString);
+  s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
   m_console->EnableEdit(false);
 
