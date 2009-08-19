@@ -51,6 +51,7 @@
 #include <wx/filename.h>
 #include <wx/artprov.h>
 #include <wx/aboutdlg.h>
+#include <wx/utils.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -3048,6 +3049,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_bug_report:
     MenuCommand(wxT("bug_report()$"));
     break;
+  case menu_help_tutorials:
+    wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/wiki/index.php/Tutorials"));
+    break;
   default:
     break;
   }
@@ -3792,6 +3796,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_sconsole_id, wxMaxima::FileMenu)
   EVT_MENU(menu_export_html, wxMaxima::FileMenu)
   EVT_MENU(wxID_HELP, wxMaxima::HelpMenu)
+  EVT_MENU(menu_help_tutorials, wxMaxima::HelpMenu)
   EVT_MENU(menu_bug_report, wxMaxima::HelpMenu)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)

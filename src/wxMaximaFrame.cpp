@@ -622,6 +622,9 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
   wxglade_tmp_menu_7->AppendSeparator();
+  wxglade_tmp_menu_7->Append(menu_help_tutorials, _("Tutorials"),
+                             _("Online tutorials"), wxITEM_NORMAL);
+  wxglade_tmp_menu_7->AppendSeparator();
   wxglade_tmp_menu_7->Append(menu_build_info, _("Build &Info"),
                              _("Info about Maxima build"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug Report"),

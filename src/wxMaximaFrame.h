@@ -252,6 +252,7 @@ enum {
   menu_format_title,
   menu_format_image,
   menu_format_pagebreak,
+  menu_help_tutorials,
   menu_show_toolbar
 };
 
