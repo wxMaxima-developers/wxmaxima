@@ -44,7 +44,7 @@ public:
   wxString GetSymbolString(CellParser& parser);
   wxString GetGreekString(CellParser& parser);
   wxString GetGreekStringUnicode();
-  wxString GetGreekStringIso();
+  wxString GetGreekStringSymbol();
   bool IsShortNum();
 protected:
   wxString m_text;

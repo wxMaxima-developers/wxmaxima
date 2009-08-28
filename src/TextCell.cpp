@@ -113,6 +113,11 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     else if (m_textStyle == TS_GREEK_CONSTANT && parser.CheckTeXFonts())
       dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
 
+#if defined __WXMSW__
+    else if (m_textStyle == TS_GREEK_CONSTANT)
+      dc.GetTextExtent(GetGreekString(parser), &m_width, &m_height);
+#endif
+
     else if (m_text == wxEmptyString)
     {
       dc.GetTextExtent(wxT("X"), &m_width, &m_height);
@@ -186,6 +191,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
+#if defined __WXMSW__
+    else if (m_textStyle == TS_GREEK_CONSTANT)
+      dc.DrawText(GetGreekString(parser),
+          point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+          point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#endif
 
 #if defined __WXMSW__ || wxUSE_UNICODE
     else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
@@ -251,6 +262,14 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         wxMODERN,
                         false, false, false,
                         parser.GetTeXCMMI()));
+#if defined __WXMSW__
+    else
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                              parser.IsItalic(TS_SPECIAL_CONSTANT),
+                              parser.IsBold(TS_SPECIAL_CONSTANT),
+                              parser.IsUnderlined(TS_SPECIAL_CONSTANT),
+                              parser.GetSymbolFontName()));
+#else
     else
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
@@ -258,6 +277,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName(),
                         parser.GetFontEncoding()));
+#endif
     break;
 
   case TS_SECTION:
@@ -435,7 +455,7 @@ wxString TextCell::GetGreekString(CellParser& parser)
 {
   if (parser.CheckTeXFonts())
     return GetGreekStringUnicode();
-  return GetGreekStringIso();
+  return GetGreekStringSymbol();
 }
 
 wxString TextCell::GetGreekStringUnicode()
@@ -479,6 +499,8 @@ wxString TextCell::GetGreekStringUnicode()
     return wxT("\xB7");
   else if (txt == wxT("%xi"))
     return wxT("\xD8");
+  else if (txt == wxT("%omicron"))
+    return wxT("o");
   else if (txt == wxT("%pi"))
     return wxT("\xD9");
   else if (txt == wxT("%rho"))
@@ -487,6 +509,8 @@ wxString TextCell::GetGreekStringUnicode()
     return wxT("\xDB");
   else if (txt == wxT("%tau"))
     return wxT("\xDC");
+  else if (txt == wxT("%upsilon"))
+    return wxT("\xB5");
   else if (txt == wxT("%chi"))
     return wxT("\xDF");
   else if (txt == wxT("%psi"))
@@ -508,7 +532,7 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%Zeta"))
     return wxT("Z");
   else if (txt == wxT("%Eta"))
-    return wxT("E");
+    return wxT("H");
   else if (txt == wxT("%Theta"))
     return wxT("\xC2");
   else if (txt == wxT("%Iota"))
@@ -547,115 +571,115 @@ wxString TextCell::GetGreekStringUnicode()
   return wxEmptyString;
 }
 
-wxString TextCell::GetGreekStringIso()
+wxString TextCell::GetGreekStringSymbol()
 {
   if (m_text == wxT("gamma"))
-    return wxT("\xC3");
+    return wxT("\x47");
   else if (m_text == wxT("zeta"))
-    return wxT("\xE6");
+    return wxT("\x7A");
   else if (m_text == wxT("psi"))
-    return wxT("\xD8");
+    return wxT("\x59");
 
   wxString txt(m_text);
   if (txt[0] != '%')
     txt = wxT("%") + txt;
 
   if (txt == wxT("%alpha"))
-    return wxT("\xE1");
+    return wxT("\x61");
   else if (txt == wxT("%beta"))
-    return wxT("\xE2");
+    return wxT("\x62");
   else if (txt == wxT("%gamma"))
-    return wxT("\xE3");
+    return wxT("\x67");
   else if (txt == wxT("%delta"))
-    return wxT("\xE4");
+    return wxT("\x64");
   else if (txt == wxT("%epsilon"))
-    return wxT("\xE5");
+    return wxT("\x65");
   else if (txt == wxT("%zeta"))
-    return wxT("\xE6");
+    return wxT("\x7A");
   else if (txt == wxT("%eta"))
-    return wxT("\xE7");
+    return wxT("\x68");
   else if (txt == wxT("%theta"))
-    return wxT("\xE8");
+    return wxT("\x71");
   else if (txt == wxT("%iota"))
-    return wxT("\xE9");
+    return wxT("\x69");
   else if (txt == wxT("%kappa"))
-    return wxT("\xEA");
+    return wxT("\x6B");
   else if (txt == wxT("%lambda"))
-    return wxT("\xEB");
+    return wxT("\x6C");
   else if (txt == wxT("%mu"))
-    return wxT("\xEC");
+    return wxT("\x6D");
   else if (txt == wxT("%nu"))
-    return wxT("\xED");
+    return wxT("\x6E");
   else if (txt == wxT("%xi"))
-    return wxT("\xEE");
+    return wxT("\x78");
   else if (txt == wxT("%omicron"))
-    return wxT("\xEF");
+    return wxT("\x6F");
   else if (txt == wxT("%pi"))
-    return wxT("\xF0");
+    return wxT("\x70");
   else if (txt == wxT("%rho"))
-    return wxT("\xF1");
+    return wxT("\x72");
   else if (txt == wxT("%sigma"))
-    return wxT("\xF3");
+    return wxT("\x73");
   else if (txt == wxT("%tau"))
-    return wxT("\xF4");
+    return wxT("\x74");
   else if (txt == wxT("%upsilon"))
-    return wxT("\xF5");
+    return wxT("\x75");
   else if (txt == wxT("%phi"))
-    return wxT("\xF6");
+    return wxT("\x66");
   else if (txt == wxT("%chi"))
-    return wxT("\xF7");
+    return wxT("\x63");
   else if (txt == wxT("%psi"))
-    return wxT("\xF8");
+    return wxT("\x79");
   else if (txt == wxT("%omega"))
-    return wxT("\xF9");
+    return wxT("\x77");
   else if (txt == wxT("%Alpha"))
-    return wxT("\xC1");
+    return wxT("\x41");
   else if (txt == wxT("%Beta"))
-    return wxT("\xC2");
+    return wxT("\x42");
   else if (txt == wxT("%Gamma"))
-    return wxT("\xC3");
+    return wxT("\x47");
   else if (txt == wxT("%Delta"))
-    return wxT("\xC4");
+    return wxT("\x44");
   else if (txt == wxT("%Epsilon"))
-    return wxT("\xC5");
+    return wxT("\x45");
   else if (txt == wxT("%Zeta"))
-    return wxT("\xC6");
+    return wxT("\x5A");
   else if (txt == wxT("%Eta"))
-    return wxT("\xC7");
+    return wxT("\x48");
   else if (txt == wxT("%Theta"))
-    return wxT("\xC8");
+    return wxT("\x51");
   else if (txt == wxT("%Iota"))
-    return wxT("\xC9");
+    return wxT("\x49");
   else if (txt == wxT("%Kappa"))
-    return wxT("\xCA");
+    return wxT("\x4B");
   else if (txt == wxT("%Lambda"))
-    return wxT("\xCB");
+    return wxT("\x4C");
   else if (txt == wxT("%Mu"))
-    return wxT("\xCC");
+    return wxT("\x4D");
   else if (txt == wxT("%Nu"))
-    return wxT("\xCD");
+    return wxT("\x4E");
   else if (txt == wxT("%Xi"))
-    return wxT("\xCE");
+    return wxT("\x58");
   else if (txt == wxT("%Omicron"))
-    return wxT("\xCF");
+    return wxT("\x4F");
   else if (txt == wxT("%Pi"))
-    return wxT("\xD0");
+    return wxT("\x50");
   else if (txt == wxT("%Rho"))
-    return wxT("\xD1");
+    return wxT("\x52");
   else if (txt == wxT("%Sigma"))
-    return wxT("\xD3");
+    return wxT("\x53");
   else if (txt == wxT("%Tau"))
-    return wxT("\xD4");
+    return wxT("\x54");
   else if (txt == wxT("%Upsilon"))
-    return wxT("\xD5");
+    return wxT("\x55");
   else if (txt == wxT("%Phi"))
-    return wxT("\xD6");
+    return wxT("\x46");
   else if (txt == wxT("%Chi"))
-    return wxT("\xD7");
+    return wxT("\x43");
   else if (txt == wxT("%Psi"))
-    return wxT("\xD8");
+    return wxT("\x59");
   else if (txt == wxT("%Omega"))
-    return wxT("\xD9");
+    return wxT("\x57");
 
   return m_text;
 }
