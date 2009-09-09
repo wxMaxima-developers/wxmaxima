@@ -152,9 +152,9 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (parser.CheckTeXFonts()) {
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      false, false, false,
-                      parser.GetTeXCMEX()));
+    dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                                                 false, false, false,
+                                                 parser.GetTeXCMEX())));
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
 
 #if defined __WXMSW__
@@ -173,9 +173,9 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 #if defined __WXMSW__
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
-                      false, false, false,
-                      parser.GetSymbolFontName()));
+    dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                                                 false, false, false,
+                                                 parser.GetSymbolFontName())));
     dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
 
     m_width = m_signWidth +
@@ -247,9 +247,9 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     {
       SetForeground(parser);
       int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        false, false, false,
-                        parser.GetTeXCMEX()));
+      dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                                                   false, false, false,
+                                                   parser.GetTeXCMEX())));
       dc.DrawText(wxT("\x5A"),
                   sign.x,
                   sign.y - m_signTop);
@@ -261,15 +261,16 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
       int m_signWCenter = m_signWidth / 2;
 
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                 false, false, false,
-                 parser.GetSymbolFontName()));
+      dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                                                   false, false, false,
+                                                   parser.GetSymbolFontName())));
       dc.DrawText(wxT(INTEGRAL_TOP),
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signSize + 1) / 2);
       dc.DrawText(wxT(INTEGRAL_BOTTOM),
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y + (m_signSize + 1) / 2 - m_charHeight);
+
       int top, bottom;
       top = sign.y - (m_signSize + 1) / 2 + m_charHeight / 2;
       bottom = sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2;

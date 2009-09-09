@@ -234,98 +234,108 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   {
   case TS_SPECIAL_CONSTANT:
     if (m_text == wxT("inf") && parser.CheckTeXFonts())
-      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
+      dc.SetFont(
+          *(wxTheFontList->FindOrCreateFont(fontsize1TeX, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                        parser.GetTeXCMSY()));
+                        parser.GetTeXCMSY())));
 #if defined __WXMSW__
     else if (m_text == wxT("inf"))
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(
+          *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_DEFAULT),
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
-                        parser.GetSymbolFontName()));
+                        parser.GetSymbolFontName())));
 #endif
     else
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(
+          *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_SPECIAL_CONSTANT),
                         parser.IsBold(TS_SPECIAL_CONSTANT),
                         parser.IsUnderlined(TS_SPECIAL_CONSTANT),
                         parser.GetFontName(m_textStyle),
-                        parser.GetFontEncoding()));
+                        parser.GetFontEncoding())));
     break;
 
   case TS_GREEK_CONSTANT:
     if (parser.CheckTeXFonts())
-      dc.SetFont(wxFont(fontsize1TeX,
-                        wxMODERN,
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1TeX, wxMODERN,
                         false, false, false,
-                        parser.GetTeXCMMI()));
+                        parser.GetTeXCMMI())));
 #if defined __WXMSW__
     else
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                              parser.IsItalic(TS_SPECIAL_CONSTANT),
-                              parser.IsBold(TS_SPECIAL_CONSTANT),
-                              parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                              parser.GetSymbolFontName()));
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                              parser.IsItalic(TS_GREEK_CONSTANT),
+                              parser.IsBold(TS_GREEK_CONSTANT),
+                              parser.IsUnderlined(TS_GREEK_CONSTANT),
+                              parser.GetSymbolFontName())));
 #else
     else
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
-                        parser.IsItalic(TS_SPECIAL_CONSTANT),
-                        parser.IsBold(TS_SPECIAL_CONSTANT),
-                        parser.IsUnderlined(TS_SPECIAL_CONSTANT),
-                        parser.GetFontName(),
-                        parser.GetFontEncoding()));
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
+                             parser.IsItalic(TS_GREEK_CONSTANT),
+                             parser.IsBold(TS_GREEK_CONSTANT),
+                             parser.IsUnderlined(TS_GREEK_CONSTANT),
+                             parser.GetFontName(),
+                             parser.GetFontEncoding())));
 #endif
     break;
 
   case TS_SECTION:
   case TS_SUBSECTION:
   case TS_TITLE:
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(
+              *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
                       parser.IsItalic(m_textStyle),
                       parser.IsBold(m_textStyle),
                       false,
                       parser.GetFontName(m_textStyle),
-                      parser.GetFontEncoding()));
+                      parser.GetFontEncoding())));
     break;
 
   default:
     if (parser.CheckTeXFonts() &&
         (m_text == wxT("->") ||
          m_text == wxT(">=") || m_text == wxT("<=")))
-      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
-                 parser.IsItalic(TS_DEFAULT),
-                 parser.IsBold(TS_DEFAULT),
-                 parser.IsUnderlined(TS_DEFAULT),
-                 parser.GetTeXCMSY()));
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1TeX, wxMODERN,
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
+                        parser.GetTeXCMSY())));
 
 #if defined __WXMSW__
     else if (m_text == wxT("->") ||
         m_text == wxT(">=") || m_text == wxT("<="))
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
                         parser.IsItalic(TS_DEFAULT),
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
-                        parser.GetSymbolFontName()));
+                        parser.GetSymbolFontName())));
 #endif
 
     else if (parser.CheckTeXFonts() &&
         (m_text == wxT("-") || m_text == wxT("+") || m_text == wxT("=")))
-      dc.SetFont(wxFont(fontsize1TeX, wxMODERN,
-                 parser.IsItalic(TS_DEFAULT),
-                 parser.IsBold(TS_DEFAULT),
-                 parser.IsUnderlined(TS_DEFAULT),
-                 parser.GetTeXCMRI()));
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1TeX, wxMODERN,
+                        parser.IsItalic(TS_DEFAULT),
+                        parser.IsBold(TS_DEFAULT),
+                        parser.IsUnderlined(TS_DEFAULT),
+                        parser.GetTeXCMRI())));
 
     else
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(
+                *(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
                         parser.IsItalic(m_textStyle),
                         parser.IsBold(m_textStyle),
                         false,
                         parser.GetFontName(m_textStyle),
-                        parser.GetFontEncoding()));
+                        parser.GetFontEncoding())));
   }
 }
 
