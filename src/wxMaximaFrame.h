@@ -193,6 +193,7 @@ enum {
   tb_help,
   tb_animation_start,
   tb_animation_stop,
+  tb_find,
 #endif
   menu_evaluate,
   menu_add_comment,

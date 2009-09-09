@@ -743,7 +743,7 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_cut, _("Cut"),
                            wxArtProvider::GetBitmap(wxT("gtk-cut"),
                                                     wxART_TOOLBAR),
-                           _("Delete selection"));
+                           _("Cut selection"));
   frame_1_toolbar->AddTool(tb_copy, _("Copy"),
                            wxArtProvider::GetBitmap(wxT("gtk-copy"),
                                                     wxART_TOOLBAR),
@@ -752,6 +752,11 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxT("gtk-paste"),
                                                     wxART_TOOLBAR),
                            _("Paste from clipboard"));
+  frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_find, _("Find"),
+                           wxArtProvider::GetBitmap(wxT("gtk-find"),
+                                                    wxART_TOOLBAR),
+                           _("Find and replace"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            wxArtProvider::GetBitmap(wxT("gtk-stop"),

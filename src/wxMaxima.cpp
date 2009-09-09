@@ -1964,6 +1964,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     ShowToolBar(!(GetToolBar() != NULL));
     break;
   case menu_edit_find:
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case tb_find:
+#endif
     if ( m_findDialog != NULL )
     {
       delete m_findDialog;
@@ -3974,6 +3977,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_help, wxMaxima::HelpMenu)
   EVT_TOOL(tb_animation_start, wxMaxima::FileMenu)
   EVT_TOOL(tb_animation_stop, wxMaxima::FileMenu)
+  EVT_TOOL(tb_find, wxMaxima::EditMenu)
 #endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
