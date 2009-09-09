@@ -692,6 +692,10 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("paste.png"),
                            _("Paste from clipboard"));
   frame_1_toolbar->AddSeparator();
+  frame_1_toolbar->AddTool(tb_find, _("Find"),
+                             IMAGE("find.png"),
+                             _("Find and replace"));
+  frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
                            IMAGE("stop.png"),
                            _("Interrupt current computation"));
