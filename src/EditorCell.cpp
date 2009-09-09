@@ -206,6 +206,10 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
   {
     dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
 
+    // Need correct m_currentPoint before we call MathCell::Draw!
+    m_currentPoint.x = point.x;
+    m_currentPoint.y = point.y;
+
     if (m_isActive) // draw selection or matching parens
     {
       //
@@ -257,8 +261,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))
-); // window linux, set a pen
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))); // window linux, set a pen
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
