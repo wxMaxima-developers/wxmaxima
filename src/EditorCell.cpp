@@ -1466,3 +1466,47 @@ bool EditorCell::CheckChanges()
 
   return false;
 }
+
+int EditorCell::ReplaceAll(wxString oldString, wxString newString)
+{
+  SaveValue();
+  int count = m_text.Replace(oldString, newString);
+  if (count > 0)
+  {
+    m_containsChanges = true;
+    m_selectionStart = m_selectionEnd = -1;
+  }
+  return count;
+}
+
+bool EditorCell::FindNext(wxString str)
+{
+  int start = 0;
+  if (m_selectionStart >= 0)
+    start = m_selectionStart + 1;
+
+  int strStart = m_text.find(str, start);
+
+  if (strStart != wxNOT_FOUND)
+  {
+    m_selectionStart = strStart;
+    m_selectionEnd = strStart + str.Length();
+    return true;
+  }
+  return false;
+}
+
+bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
+{
+  if (m_selectionStart > -1 &&
+      m_text.SubString(m_selectionStart, m_selectionEnd - 1) == oldStr)
+  {
+    m_text = m_text.SubString(0, m_selectionStart - 1) +
+             newStr +
+             m_text.SubString(m_selectionEnd, m_text.Length());
+    m_containsChanges = -1;
+    m_positionOfCaret = m_selectionEnd = m_selectionStart + newStr.Length();
+    return true;
+  }
+  return false;
+}

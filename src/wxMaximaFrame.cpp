@@ -236,6 +236,10 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
+
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
+
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_select_all, _("Select All\tCtrl-A"),
                              _("Select all"),
@@ -243,6 +247,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Save Selection to Image..."),
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
+
   wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
   wxglade_tmp_menu_2_sub1->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
@@ -598,7 +603,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_6 = new wxMenu;
   wxglade_tmp_menu_6->Append(menu_num_out, _("Toggle &Numeric Output"),
                              _("Toggle numeric output"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_float, _("To &Float\tCtrl-F"),
+  wxglade_tmp_menu_6->Append(menu_to_float, _("To &Float"),
                              _("Calculate float value of the last result"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &Bigfloat"),

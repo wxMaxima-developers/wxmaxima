@@ -104,6 +104,18 @@ public:
   bool ContainsChanges() { return m_containsChanges; }
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
+  int ReplaceAll(wxString oldString, wxString newString);
+  bool FindNext(wxString str);
+  void SetSelection(int start, int end)
+  {
+    m_selectionStart = start;
+    m_positionOfCaret = m_selectionEnd = end;
+  }
+  void GetSelection(int *start, int *end)
+  {
+    *start = m_selectionStart; *end = m_selectionEnd;
+  }
+  bool ReplaceSelection(wxString oldStr, wxString newString);
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);

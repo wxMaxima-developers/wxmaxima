@@ -112,6 +112,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   LoadRecentDocuments();
   UpdateRecentDocuments();
 
+  m_findDialog = NULL;
+
   m_console->SetFocus();
 }
 
@@ -1961,7 +1963,53 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_show_toolbar:
     ShowToolBar(!(GetToolBar() != NULL));
     break;
+  case menu_edit_find:
+    if ( m_findDialog != NULL )
+    {
+      delete m_findDialog;
+      m_findDialog = NULL;
+    }
+    else
+    {
+      m_findDialog = new wxFindReplaceDialog(
+                             this,
+                             &m_findData,
+                             wxT("Find and replace dialog"),
+                             wxFR_REPLACEDIALOG |
+                               wxFR_NOUPDOWN |
+                               wxFR_NOWHOLEWORD |
+                               wxFR_NOMATCHCASE);
+      m_findDialog->Show(true);
+    }
+    break;
   }
+}
+
+void wxMaxima::OnFind(wxFindDialogEvent& event)
+{
+  if (!m_console->FindNext(event.GetFindString()))
+    wxMessageBox(_("No matches found!"));
+}
+
+void wxMaxima::OnFindClose(wxFindDialogEvent& event)
+{
+  m_findDialog->Destroy();
+  m_findDialog = NULL;
+}
+
+void wxMaxima::OnReplace(wxFindDialogEvent& event)
+{
+  m_console->Replace(event.GetFindString(), event.GetReplaceString());
+
+  if (!m_console->FindNext(event.GetFindString()))
+    wxMessageBox(_("No matches found!"));
+}
+
+void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
+{
+  int count = m_console->ReplaceAll(event.GetFindString(), event.GetReplaceString());
+
+  wxMessageBox(wxString::Format(_("Replaced %d occurences."), count));
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
@@ -4013,4 +4061,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)
   EVT_BUTTON(menu_format_pagebreak, wxMaxima::InsertMenu)
   EVT_BUTTON(menu_format_image, wxMaxima::InsertMenu)
+  EVT_MENU(menu_edit_find, wxMaxima::EditMenu)
+  EVT_FIND(wxID_ANY, wxMaxima::OnFind)
+  EVT_FIND_NEXT(wxID_ANY, wxMaxima::OnFind)
+  EVT_FIND_REPLACE(wxID_ANY, wxMaxima::OnReplace)
+  EVT_FIND_REPLACE_ALL(wxID_ANY, wxMaxima::OnReplaceAll)
+  EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
 END_EVENT_TABLE()

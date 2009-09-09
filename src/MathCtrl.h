@@ -181,6 +181,9 @@ public:
     if (recalc) {RecalculateForce(); Refresh();} }
   void CommentSelection();
   void OnMouseWheel(wxMouseEvent &ev);
+  bool FindNext(wxString str);
+  void Replace(wxString oldString, wxString newString);
+  int ReplaceAll(wxString oldString, wxString newString);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

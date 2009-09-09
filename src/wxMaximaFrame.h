@@ -253,7 +253,8 @@ enum {
   menu_format_image,
   menu_format_pagebreak,
   menu_help_tutorials,
-  menu_show_toolbar
+  menu_show_toolbar,
+  menu_edit_find
 };
 
 #define FIRST_PANE menu_pane_hideall

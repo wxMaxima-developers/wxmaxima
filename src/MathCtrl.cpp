@@ -3227,6 +3227,90 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
   }
 }
 
+bool MathCtrl::FindNext(wxString str)
+{
+  if (m_tree == NULL)
+    return false;
+
+  GroupCell *tmp = (GroupCell *)m_tree;
+  if (m_activeCell != NULL)
+    tmp = (GroupCell *)(m_activeCell->GetParent());
+
+  while (tmp != NULL)
+  {
+    EditorCell *editor = (EditorCell *)(tmp->GetEditable());
+
+    if (editor != NULL)
+    {
+      bool found = editor->FindNext(str);
+
+      if (found)
+      {
+        ScrollToCell(editor);
+        int start, end;
+        editor->GetSelection(&start, &end);
+        SetActiveCell(editor);
+        editor->SetSelection(start, end);
+        Refresh();
+        return true;
+      }
+    }
+
+    tmp = (GroupCell *)(tmp->m_next);
+  }
+
+  return false;
+}
+
+void MathCtrl::Replace(wxString oldString, wxString newString)
+{
+  if (m_activeCell != NULL)
+  {
+    if (((EditorCell *)m_activeCell)->ReplaceSelection(oldString, newString))
+    {
+      ((GroupCell *)m_activeCell->GetParent())->ResetInputLabel();
+      RecalculateForce();
+      Refresh();
+    }
+  }
+}
+
+int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
+{
+  if (m_tree == NULL)
+    return 0;
+
+  int count = 0;
+
+  GroupCell *tmp = (GroupCell *)m_tree;
+
+  while (tmp != NULL)
+  {
+    EditorCell *editor = (EditorCell *)(tmp->GetEditable());
+
+    if (editor != NULL)
+    {
+      int replaced = editor->ReplaceAll(oldString, newString);
+      if (replaced > 0)
+      {
+        count += replaced;
+        tmp->ResetInputLabel();
+      }
+      count += editor->ReplaceAll(oldString, newString);
+    }
+
+    tmp = (GroupCell *)(tmp->m_next);
+  }
+
+  if (count > 0)
+  {
+    RecalculateForce();
+    Refresh();
+  }
+
+  return count;
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)

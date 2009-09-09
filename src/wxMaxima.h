@@ -26,6 +26,7 @@
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
+#include <wx/fdrepdlg.h>
 
 #if defined (__WXMSW__)
  #include <wx/msw/helpchm.h>
@@ -88,10 +89,15 @@ protected:
   void UpdateMenus(wxUpdateUIEvent& event);        //
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
-  void ShowPane(wxCommandEvent& event);         //
+  void ShowPane(wxCommandEvent& event);            //
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
-  void StatsMenu(wxCommandEvent& event);
+  void StatsMenu(wxCommandEvent& event);           //
+
+  void OnFind(wxFindDialogEvent& event);
+  void OnFindClose(wxFindDialogEvent& event);
+  void OnReplace(wxFindDialogEvent& event);
+  void OnReplaceAll(wxFindDialogEvent& event);
 
   void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
   void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
@@ -99,10 +105,10 @@ protected:
   void ConsoleAppend(wxString s, int type);        // append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
                        bool newLine = true, bool bigSkip = true);
-  void DoRawConsoleAppend(wxString s, int type);      //
+  void DoRawConsoleAppend(wxString s, int type);   //
 
   void EditInputMenu(wxCommandEvent& event);       //
-  void EvaluateEvent(wxCommandEvent& event);     //
+  void EvaluateEvent(wxCommandEvent& event);       //
   void InsertMenu(wxCommandEvent& event);          //
   void SliderEvent(wxScrollEvent& event);
   void HistoryDClick(wxCommandEvent& event);
@@ -180,6 +186,8 @@ protected:
 #else
   wxHtmlHelpController m_helpCtrl;
 #endif
+  wxFindReplaceDialog *m_findDialog;
+  wxFindReplaceData m_findData;
   DECLARE_EVENT_TABLE()
 };
 
