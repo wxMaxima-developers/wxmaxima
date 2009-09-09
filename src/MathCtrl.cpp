@@ -3268,6 +3268,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString)
   {
     if (((EditorCell *)m_activeCell)->ReplaceSelection(oldString, newString))
     {
+      m_saved = false;
       ((GroupCell *)m_activeCell->GetParent())->ResetInputLabel();
       RecalculateForce();
       Refresh();
@@ -3304,6 +3305,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
 
   if (count > 0)
   {
+    m_saved = false;
     RecalculateForce();
     Refresh();
   }
