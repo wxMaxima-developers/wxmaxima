@@ -1492,6 +1492,8 @@ bool EditorCell::FindNext(wxString str, bool down)
     else
       start = m_selectionStart - 1;
   }
+  else
+    start = m_positionOfCaret;
 
   if (!down && m_selectionStart == 0)
     return false;

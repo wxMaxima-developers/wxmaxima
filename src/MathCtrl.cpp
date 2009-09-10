@@ -3242,6 +3242,19 @@ bool MathCtrl::FindNext(wxString str, bool down)
   if (m_activeCell != NULL)
     tmp = (GroupCell *)(m_activeCell->GetParent());
 
+  else if (m_hCaretActive)
+  {
+    if (down)
+    {
+      if (m_hCaretPosition != NULL)
+        tmp = (GroupCell *)(m_hCaretPosition->m_next);
+    }
+    else
+    {
+      tmp = m_hCaretPosition;
+    }
+  }
+
   while (tmp != NULL)
   {
     EditorCell *editor = (EditorCell *)(tmp->GetEditable());
