@@ -181,7 +181,7 @@ public:
     if (recalc) {RecalculateForce(); Refresh();} }
   void CommentSelection();
   void OnMouseWheel(wxMouseEvent &ev);
-  bool FindNext(wxString str);
+  bool FindNext(wxString str, bool forward);
   void Replace(wxString oldString, wxString newString);
   int ReplaceAll(wxString oldString, wxString newString);
 protected:

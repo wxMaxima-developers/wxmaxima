@@ -1482,13 +1482,25 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-bool EditorCell::FindNext(wxString str)
+bool EditorCell::FindNext(wxString str, bool down)
 {
-  int start = 0;
+  int start = down ? 0 : m_text.Length();
   if (m_selectionStart >= 0)
-    start = m_selectionStart + 1;
+  {
+    if (down)
+      start = m_selectionStart + 1;
+    else
+      start = m_selectionStart - 1;
+  }
 
-  int strStart = m_text.find(str, start);
+  if (!down && m_selectionStart == 0)
+    return false;
+
+  int strStart = wxNOT_FOUND;
+  if (down)
+    strStart = m_text.find(str, start);
+  else
+    strStart = m_text.rfind(str, start);
 
   if (strStart != wxNOT_FOUND)
   {

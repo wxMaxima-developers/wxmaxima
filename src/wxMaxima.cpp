@@ -113,6 +113,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   UpdateRecentDocuments();
 
   m_findDialog = NULL;
+  m_findData.SetFlags(wxFR_DOWN);
 
   m_console->SetFocus();
 }
@@ -1979,7 +1980,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                              &m_findData,
                              wxT("Find and replace dialog"),
                              wxFR_REPLACEDIALOG |
-                               wxFR_NOUPDOWN |
                                wxFR_NOWHOLEWORD |
                                wxFR_NOMATCHCASE);
       m_findDialog->Show(true);
@@ -1990,7 +1990,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 
 void wxMaxima::OnFind(wxFindDialogEvent& event)
 {
-  if (!m_console->FindNext(event.GetFindString()))
+  if (!m_console->FindNext(event.GetFindString(), event.GetFlags() & wxFR_DOWN))
     wxMessageBox(_("No matches found!"));
 }
 
@@ -2004,7 +2004,7 @@ void wxMaxima::OnReplace(wxFindDialogEvent& event)
 {
   m_console->Replace(event.GetFindString(), event.GetReplaceString());
 
-  if (!m_console->FindNext(event.GetFindString()))
+  if (!m_console->FindNext(event.GetFindString(), event.GetFlags() & wxFR_DOWN))
     wxMessageBox(_("No matches found!"));
 }
 

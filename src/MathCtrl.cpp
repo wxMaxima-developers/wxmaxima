@@ -658,6 +658,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     }
 
     else if (m_selectionStart != NULL)
+    {
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) {
 
         if (CanCopy()) {
@@ -677,40 +678,42 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
       }
 
-    else if (m_hCaretActive == true) {
-      // TODO pasting cells, paste?
+      else {
+        if (CanCopy()) {
+          popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
+#if defined __WXMSW__
+          popupMenu->Append(popid_copy_image, _("Copy As Image"),
+              wxEmptyString, wxITEM_NORMAL);
+#endif
+          if (CanDeleteSelection())
+            popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
+        }
+
+        if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL)) {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_float, _("To Float"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_solve, _("Solve..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_solve_num, _("Find Root..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_simplify, _("Simplify Expression"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_factor, _("Factor Expression"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_expand, _("Expand Expression"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_subst, _("Substitute..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_integrate, _("Integrate..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_diff, _("Differentiate..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_plot2d, _("Plot 2d..."), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
+        }
+      }
     }
 
-    else {
-      if (CanCopy()) {
-        popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
-#if defined __WXMSW__
-        popupMenu->Append(popid_copy_image, _("Copy As Image"),
-            wxEmptyString, wxITEM_NORMAL);
-#endif
-        if (CanDeleteSelection())
-          popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
-      }
-
-      if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL)) {
-        popupMenu->AppendSeparator();
-        popupMenu->Append(popid_float, _("To Float"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->AppendSeparator();
-        popupMenu->Append(popid_solve, _("Solve..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_solve_num, _("Find Root..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->AppendSeparator();
-        popupMenu->Append(popid_simplify, _("Simplify Expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_factor, _("Factor Expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_expand, _("Expand Expression"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_subst, _("Substitute..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->AppendSeparator();
-        popupMenu->Append(popid_integrate, _("Integrate..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_diff, _("Differentiate..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->AppendSeparator();
-        popupMenu->Append(popid_plot2d, _("Plot 2d..."), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
-      }
+    else if (m_hCaretActive == true) {
+      popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 
@@ -3227,12 +3230,15 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
   }
 }
 
-bool MathCtrl::FindNext(wxString str)
+bool MathCtrl::FindNext(wxString str, bool down)
 {
   if (m_tree == NULL)
     return false;
 
   GroupCell *tmp = (GroupCell *)m_tree;
+  if (!down)
+    tmp = m_last;
+
   if (m_activeCell != NULL)
     tmp = (GroupCell *)(m_activeCell->GetParent());
 
@@ -3242,7 +3248,7 @@ bool MathCtrl::FindNext(wxString str)
 
     if (editor != NULL)
     {
-      bool found = editor->FindNext(str);
+      bool found = editor->FindNext(str, down);
 
       if (found)
       {
@@ -3256,7 +3262,10 @@ bool MathCtrl::FindNext(wxString str)
       }
     }
 
-    tmp = (GroupCell *)(tmp->m_next);
+    if (down)
+      tmp = (GroupCell *)(tmp->m_next);
+    else
+      tmp = (GroupCell *)(tmp->m_previous);
   }
 
   return false;
