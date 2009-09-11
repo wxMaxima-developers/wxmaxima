@@ -951,6 +951,8 @@ void EditorCell::FindMatchingParens()
 #if wxUSE_UNICODE
 wxString EditorCell::InterpretEscapeString(wxString txt)
 {
+  long int unicodeval = -1;
+
   if ((txt == wxT("a")) || (txt == wxT("alpha")))
     return L"\x03B1";
   else if ((txt == wxT("b")) || (txt == wxT("beta")))
@@ -1060,6 +1062,23 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x2148";
   else if (txt == wxT("ee"))
     return L"\x2147";
+  else if (txt == wxT("hb"))
+    return L"\x210F";
+  else if (txt == wxT("in"))
+    return L"\x2208";
+  else if (txt == wxT("impl"))
+    return L"\x21D2";
+  else if (txt == wxT("inf"))
+    return L"\x221e";
+  else if (txt == wxT("empty"))
+    return L"\x2205";
+  else if (txt == wxT("TB"))
+    return L"\x25b6";
+  else if (txt == wxT("tb"))
+    return L"\x25b8";
+  /////////////////////////
+  else if (txt.ToLong(&unicodeval, 16))
+    return wxString::Format(wxT("%c"), unicodeval);
 
   /////////////////////////
   else

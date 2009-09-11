@@ -370,6 +370,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x03C0"), wxT("%pi"));
   s.Replace(wxT("\x2148"), wxT("%i"));
   s.Replace(wxT("\x2147"), wxT("%e"));
+  s.Replace(wxT("\x221E"), wxT("inf"));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);
