@@ -387,7 +387,6 @@ void MathCtrl::RecalculateForce() {
 void MathCtrl::Recalculate(bool force)
 {
   GroupCell *tmp = m_tree;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
 
   wxClientDC dc(this);
   CellParser parser(dc);
@@ -1024,7 +1023,7 @@ bool MathCtrl::Copy(bool astext) {
     return false;
 
   if (!astext && m_selectionStart->GetType() == MC_TYPE_GROUP)
-    CopyCells();
+    return CopyCells();
   else {
     wxString s = GetString(true);
 
@@ -1048,7 +1047,6 @@ bool MathCtrl::CopyTeX() {
   MathCell* tmp = m_selectionStart;
 
   bool inMath = false;
-  bool inVerbatim = false;
   wxString label;
 
   if (tmp->GetType() != MC_TYPE_GROUP) {
@@ -1680,7 +1678,6 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
   int currentWidth= MC_BASE_INDENT;
   *width = MC_BASE_INDENT;
   *height = MC_BASE_INDENT;
-  bool bigSkip = false;
 
   while (tmp != NULL) {
     currentHeight += tmp->GetMaxHeight();
@@ -2311,7 +2308,6 @@ bool MathCtrl::ExportToTeX(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
   GroupCell *tmp = (GroupCell *)m_tree;
-  int count = 0;
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
@@ -2830,7 +2826,9 @@ bool MathCtrl::CutToClipboard() {
   {
     CopyCells();
     DeleteSelection();
+    return true;
   }
+  return false;
 }
 
 /****
@@ -2923,7 +2921,7 @@ void MathCtrl::PasteFromClipboard() {
 
         // Paste the content into the document
         Freeze();
-        for (int i=0; i<inp.Count(); i = i+2)
+        for (unsigned int i=0; i<inp.Count(); i = i+2)
         {
           if (inp[i] == wxT("input"))
             OpenHCaret(inp[i+1]);

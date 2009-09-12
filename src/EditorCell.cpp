@@ -486,7 +486,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     else
       m_selectionEnd = m_selectionStart = -1;
 
-    if (m_positionOfCaret < m_text.Length())
+    if (m_positionOfCaret < (signed)m_text.Length())
       m_positionOfCaret++;
 
     if (event.ShiftDown())
@@ -515,7 +515,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       if (line < m_numberOfLines-1) // can we go down ?
         m_positionOfCaret = XYToPosition(column, line + 1);
       else { // we can't go down. move caret to the end
-        m_positionOfCaret = m_text.Length();
+        m_positionOfCaret = (signed)m_text.Length();
         m_caretColumn = -1; // make caretColumn invalid
       }
 
@@ -582,10 +582,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown())
-      m_positionOfCaret = m_text.Length();
+      m_positionOfCaret = (signed)m_text.Length();
     else
     {
-      while (m_positionOfCaret < m_text.Length() &&
+      while (m_positionOfCaret < (signed)m_text.Length() &&
              m_text.GetChar(m_positionOfCaret) != '\n')
         m_positionOfCaret++;
     }
@@ -621,7 +621,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   case WXK_DELETE:
     if (m_selectionStart == -1)
     {
-      if (m_positionOfCaret < m_text.Length())
+      if (m_positionOfCaret < (signed)m_text.Length())
       {
         m_isDirty = true;
         m_containsChanges = true;
@@ -1216,7 +1216,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
 
-  while (m_text.GetChar(m_positionOfCaret) != '\n' && m_positionOfCaret < m_text.Length())
+  while (m_text.GetChar(m_positionOfCaret) != '\n' && m_positionOfCaret < (signed)m_text.Length())
   {
     s = m_text.SubString(lineStart, m_positionOfCaret);
     dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),
@@ -1227,7 +1227,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
     m_positionOfCaret++;
   }
 
-  m_positionOfCaret = MIN(m_positionOfCaret, m_text.Length());
+  m_positionOfCaret = MIN(m_positionOfCaret, (signed)m_text.Length());
 
   m_displayCaret = true;
   m_caretColumn = -1;
@@ -1279,7 +1279,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
-  while (m_text.GetChar(positionOfCaret) != '\n' && positionOfCaret < m_text.Length())
+  while (m_text.GetChar(positionOfCaret) != '\n' && positionOfCaret < (signed)m_text.Length())
   {
     s = m_text.SubString(lineStart, positionOfCaret);
     dc.GetTextExtent(m_text.SubString(lineStart, positionOfCaret),
@@ -1288,7 +1288,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
       break;
     positionOfCaret++;
   }
-  positionOfCaret = MIN(positionOfCaret, m_text.Length());
+  positionOfCaret = MIN(positionOfCaret, (signed)m_text.Length());
 
   if ((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret))
     return false;
@@ -1318,7 +1318,7 @@ void EditorCell::CommentSelection()
   m_text = m_text.SubString(0, m_selectionStart - 1) + wxT("/*")
     + m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxT("*/")
     + m_text.SubString(m_selectionEnd, m_text.Length());
-  m_positionOfCaret = MIN(m_selectionEnd + 4, m_text.Length());
+  m_positionOfCaret = MIN(m_selectionEnd + 4, (signed)m_text.Length());
   m_selectionStart = m_selectionEnd = -1;
 }
 
@@ -1349,7 +1349,7 @@ wxString EditorCell::SelectWordUnderCaret()
     left--;
   }
 
-  while (right < m_text.length() )
+  while (right < (signed)m_text.length() )
   {
     if(wordChars.Find(m_text.GetChar(right)) == -1)
       break;

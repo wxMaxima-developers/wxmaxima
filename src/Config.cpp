@@ -182,8 +182,8 @@ void Config::set_properties()
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
-  bool match = true, showLongExpr = false, unixCopy = false, activateSelection = true, savePanes = false;
-  bool showHeader = false, fixedFontTC = true, readFile = false, changeAsterisk = false, usejsmath = true;
+  bool match = true, showLongExpr = false, unixCopy = false, savePanes = false;
+  bool showHeader = false, fixedFontTC = true, changeAsterisk = false, usejsmath = true;
   bool enterEvaluates = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;

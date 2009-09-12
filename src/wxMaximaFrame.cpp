@@ -808,13 +808,13 @@ void wxMaximaFrame::SaveRecentDocuments()
   wxConfigBase *config = wxConfig::Get();
 
   // Delete previous recent documents
-  for (int i=0; i<10; i++) {
+  for (unsigned int i=0; i<10; i++) {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     config->DeleteEntry(recent);
   }
 
   // Save new recent documents
-  for (int i=0; i<m_recentDocuments.Count(); i++) {
+  for (unsigned int i=0; i<m_recentDocuments.Count(); i++) {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     config->Write(recent, m_recentDocuments[i]);
   }
@@ -822,15 +822,13 @@ void wxMaximaFrame::SaveRecentDocuments()
 
 void wxMaximaFrame::UpdateRecentDocuments()
 {
-  wxMenu* fileMenu = GetMenuBar()->GetMenu(GetMenuBar()->FindMenu(_("&File")));
-
   for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
   {
     wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
     delete item;
     item = NULL;
 
-    if (i-menu_recent_document_0 < m_recentDocuments.Count())
+    if (i-menu_recent_document_0 < (signed)m_recentDocuments.Count())
     {
       wxFileName filename(m_recentDocuments[i - menu_recent_document_0]);
       wxString path(filename.GetPath()), fullname(filename.GetFullName());

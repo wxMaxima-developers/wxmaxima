@@ -769,7 +769,6 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
       else if (tagName == wxT("lbl"))
       {
-        int oldPS = m_ParserStyle;
         MathCell* tmp = ParseText(node->GetChildren(), TS_LABEL);
         tmp->ForceBreakLine(true);
         if (cell == NULL)

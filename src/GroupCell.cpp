@@ -919,6 +919,7 @@ MathCell *GroupCell::GetEditable()
     case GC_TYPE_SUBSECTION:
       return GetInput();
     case GC_TYPE_PAGEBREAK:
+    default:
       return NULL;
   }
 }

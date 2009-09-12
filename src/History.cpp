@@ -74,7 +74,7 @@ void History::UpdateDisplay()
   if (regex != wxEmptyString)
     matcher.Compile(regex);
 
-  for (int i=0; i<commands.Count(); i++)
+  for (unsigned int i=0; i<commands.Count(); i++)
   {
     wxString curr = commands.Item(i);
 

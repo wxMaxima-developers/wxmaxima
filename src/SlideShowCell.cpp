@@ -193,10 +193,9 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
   if (DrawThisCell(parser, point) && m_bitmaps[m_displayed] != NULL)
   {
+    wxDC& dc = parser.GetDC();
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
     scale = MAX(scale, 1.0);

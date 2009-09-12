@@ -399,7 +399,6 @@ bool MiniMathCtrl::CopyTeX() {
   MathCell* tmp = m_selectionStart;
 
   bool inMath = false;
-  bool inVerbatim = false;
   wxString label;
 
   if (tmp->GetType() != MC_TYPE_GROUP) {
@@ -511,7 +510,7 @@ void MiniMathCtrl::GetMaxPoint(int* width, int* height) {
  */
 void MiniMathCtrl::AdjustSize() {
   int width= MC_BASE_INDENT, height= MC_BASE_INDENT;
-  int clientWidth, clientHeight, virtualHeight;
+  int clientWidth, clientHeight;
 
   GetClientSize(&clientWidth, &clientHeight);
   if (m_tree != NULL)
