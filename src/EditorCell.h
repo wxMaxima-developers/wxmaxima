@@ -105,7 +105,7 @@ public:
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
   int ReplaceAll(wxString oldString, wxString newString);
-  bool FindNext(wxString str, bool down);
+  bool FindNext(wxString str, bool down, bool ignoreCase);
   void SetSelection(int start, int end)
   {
     m_selectionStart = start;

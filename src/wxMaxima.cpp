@@ -1981,8 +1981,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                              &m_findData,
                              wxT("Find and replace dialog"),
                              wxFR_REPLACEDIALOG |
-                               wxFR_NOWHOLEWORD |
-                               wxFR_NOMATCHCASE);
+                               wxFR_NOWHOLEWORD);
       m_findDialog->Show(true);
     }
     break;
@@ -1991,7 +1990,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 
 void wxMaxima::OnFind(wxFindDialogEvent& event)
 {
-  if (!m_console->FindNext(event.GetFindString(), event.GetFlags() & wxFR_DOWN))
+  if (!m_console->FindNext(event.GetFindString(),
+                           event.GetFlags() & wxFR_DOWN,
+                           !(event.GetFlags() & wxFR_MATCHCASE)))
     wxMessageBox(_("No matches found!"));
 }
 
@@ -2005,7 +2006,9 @@ void wxMaxima::OnReplace(wxFindDialogEvent& event)
 {
   m_console->Replace(event.GetFindString(), event.GetReplaceString());
 
-  if (!m_console->FindNext(event.GetFindString(), event.GetFlags() & wxFR_DOWN))
+  if (!m_console->FindNext(event.GetFindString(),
+                           event.GetFlags() & wxFR_DOWN,
+                           !(event.GetFlags() & wxFR_MATCHCASE)))
     wxMessageBox(_("No matches found!"));
 }
 

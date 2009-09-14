@@ -3228,7 +3228,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
   }
 }
 
-bool MathCtrl::FindNext(wxString str, bool down)
+bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
 {
   if (m_tree == NULL)
     return false;
@@ -3259,7 +3259,7 @@ bool MathCtrl::FindNext(wxString str, bool down)
 
     if (editor != NULL)
     {
-      bool found = editor->FindNext(str, down);
+      bool found = editor->FindNext(str, down, ignoreCase);
 
       if (found)
       {

@@ -1501,9 +1501,17 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-bool EditorCell::FindNext(wxString str, bool down)
+bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
 {
   int start = down ? 0 : m_text.Length();
+  wxString text(m_text);
+
+  if (ignoreCase)
+  {
+    str.MakeLower();
+    text.MakeLower();
+  }
+
   if (m_selectionStart >= 0)
   {
     if (down)
@@ -1519,9 +1527,9 @@ bool EditorCell::FindNext(wxString str, bool down)
 
   int strStart = wxNOT_FOUND;
   if (down)
-    strStart = m_text.find(str, start);
+    strStart = text.find(str, start);
   else
-    strStart = m_text.rfind(str, start);
+    strStart = text.rfind(str, start);
 
   if (strStart != wxNOT_FOUND)
   {
