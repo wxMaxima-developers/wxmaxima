@@ -21,11 +21,11 @@ msgstr "<< Wyrażenie jest zbyt długie aby je wyświetlić >>"
 
 #: ../src/wxMaxima.cpp:930
 msgid " was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."
-msgstr ""
+msgstr "został zapisany z użyciem nowszej wersji wxMaximy przez co może nie zostać wczytany poprawnie. Zaleca się aktualizację wxMaximy."
 
 #: ../src/wxMaxima.cpp:922
 msgid " was saved using a newer version of wxMaxima. Please update your wxMaxima."
-msgstr ""
+msgstr "został zapisany z użyciem nowszej wersji wxMaximy. Zaleca się aktualizację wxMaximy."
 
 #: ../src/wxMaximaFrame.cpp:439
 msgid "&Algebra"
@@ -114,7 +114,7 @@ msgstr "&Wprowadź macierz"
 
 #: ../src/wxMaximaFrame.cpp:616
 msgid "&Example..."
-msgstr "&Przykład"
+msgstr "&Przykład..."
 
 #: ../src/wxMaximaFrame.cpp:505
 msgid "&Expand Expression"
@@ -332,7 +332,7 @@ msgstr "Macierz &dołączona"
 
 #: ../src/wxMaximaFrame.cpp:580
 msgid "Add Algebraic E&quality..."
-msgstr "Dodaj algebraiczną równość"
+msgstr "Tellrat"
 
 #: ../src/wxMaximaFrame.cpp:329
 msgid "Add a directory to search path"
@@ -558,7 +558,7 @@ msgstr "Zamknąć dokument?"
 
 #: ../src/wxMaxima.cpp:3179
 msgid "Col. names:"
-msgstr ""
+msgstr "Nazwy kolumn:"
 
 #: ../src/MatWiz.cpp:157
 msgid "Columns:"
@@ -578,7 +578,7 @@ msgstr "Przecinek oddziela kolejne współrzędne na osi OY"
 
 #: ../src/MathCtrl.cpp:725
 msgid "Comment Selection"
-msgstr ""
+msgstr "Zakomentuj zaznaczenie"
 
 #: ../src/wxMaximaFrame.cpp:489
 msgid "Compute continued fraction of a value"
@@ -610,7 +610,7 @@ msgstr "Znajdź najmniejszą wspólną wielokrotność (NWW) (przed użyciem wyk
 
 #: ../src/wxMaxima.cpp:3229
 msgid "Condition:"
-msgstr ""
+msgstr "Warunek:"
 
 #: ../src/Config.cpp:1020
 #: ../src/Config.cpp:1028
@@ -931,7 +931,7 @@ msgstr "Podziel komórki"
 
 #: ../src/wxMaximaFrame.cpp:483
 msgid "Divide numbers or polynomials"
-msgstr ""
+msgstr "Podziel liczby lub wielomiany"
 
 #: ../src/wxMaxima.cpp:920
 #: ../src/wxMaxima.cpp:928
@@ -985,11 +985,11 @@ msgstr "Wartości własne"
 
 #: ../src/wxMaxima.cpp:2218
 msgid "Eliminate"
-msgstr ""
+msgstr "Wyznacz"
 
 #: ../src/wxMaximaFrame.cpp:379
 msgid "Eliminate a variable from a system of equations"
-msgstr ""
+msgstr "Wyznacz zmienną z układu rownań"
 
 #: ../src/Config.cpp:81
 msgid "English"
@@ -1029,7 +1029,7 @@ msgstr "Wprowadź nową dokładność:"
 
 #: ../src/Config.cpp:166
 msgid "Enter the path to the Maxima executable."
-msgstr ""
+msgstr "Wprowadź ścieżkę do programu Maxima"
 
 #: ../src/wxMaxima.cpp:2833
 msgid "Epsilon:"
@@ -1110,7 +1110,7 @@ msgstr "Błąd!"
 
 #: ../src/wxMaximaFrame.cpp:575
 msgid "Evaluate &Noun Forms"
-msgstr ""
+msgstr "Oblicz wyrażenie &nominalne"
 
 #: ../src/wxMaximaFrame.cpp:249
 msgid "Evaluate All Cells\tCtrl-R"
@@ -1131,7 +1131,7 @@ msgstr "Wykonaj wszystkie komórki w dokumencie"
 
 #: ../src/wxMaximaFrame.cpp:576
 msgid "Evaluate all noun forms in expression"
-msgstr ""
+msgstr "Oblicz wszystkie wyrażenie nominalne"
 
 #: ../src/wxMaxima.cpp:3021
 msgid "Example"
@@ -1397,15 +1397,15 @@ msgstr "Funkcje i makra"
 
 #: ../src/wxMaximaFrame.cpp:570
 msgid "Functions for complex simplification"
-msgstr ""
+msgstr "Funkcje do uproszczeń zespolonych"
 
 #: ../src/wxMaximaFrame.cpp:530
 msgid "Functions for simplifying factorials and gamma function"
-msgstr ""
+msgstr "Funkcje do uproszczeń silni i funkcji gamma"
 
 #: ../src/wxMaximaFrame.cpp:547
 msgid "Functions for simplifying trigonometric expressions"
-msgstr ""
+msgstr "Funkcje do uproszczeń trygonometrycznych"
 
 #: ../src/wxMaxima.cpp:2671
 msgid "GCD"
@@ -1544,7 +1544,7 @@ msgstr "Pliki graficzne (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
 #: ../src/wxMaxima.cpp:3230
 msgid "Include columns:"
-msgstr ""
+msgstr "Załącz kolumny:"
 
 #: ../src/wxMaximaFrame.cpp:629
 msgid "Info about Maxima build"
@@ -1828,7 +1828,7 @@ msgstr "Macierz"
 
 #: ../src/wxMaxima.cpp:2348
 msgid "Matrix map"
-msgstr ""
+msgstr "Mapuj macierz"
 
 #: ../src/wxMaxima.cpp:3230
 msgid "Matrix name:"
@@ -2128,7 +2128,7 @@ msgstr "Przybliżenie Pade"
 
 #: ../src/wxMaximaFrame.cpp:463
 msgid "Pade approximation of a Taylor series"
-msgstr ""
+msgstr "Przybliżenie Pade"
 
 #: ../src/wxMaximaFrame.cpp:1013
 msgid "Pagebreak"
@@ -2335,7 +2335,7 @@ msgstr "Wczytaj macierz..."
 
 #: ../src/wxMaxima.cpp:418
 msgid "Reading Maxima output"
-msgstr ""
+msgstr "Przetwarzanie wyników zwróconych przez Maxime"
 
 #: ../src/wxMaxima.cpp:272
 #: ../src/wxMaxima.cpp:680
@@ -2382,7 +2382,7 @@ msgstr "Usuń wszytskie komórki wyjściowe"
 
 #: ../src/wxMaximaFrame.cpp:268
 msgid "Remove output from input cells"
-msgstr ""
+msgstr "Usuń wyjście z wszystkich komórek wejściowych"
 
 #: ../src/wxMaximaFrame.cpp:631
 msgid "Report bug"
@@ -2422,7 +2422,7 @@ msgstr "Przykład 2:"
 
 #: ../src/wxMaxima.cpp:3138
 msgid "Sample:"
-msgstr "Przykład:"
+msgstr "Próbka:"
 
 #: ../src/Config.cpp:148
 #: ../src/wxMaximaFrame.cpp:664
