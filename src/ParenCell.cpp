@@ -135,21 +135,21 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
 
-      dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
-                                                   false, false, false,
-                                                   m_bigParenType < 1 ?
-                                                       parser.GetTeXCMRI() :
-                                                         parser.GetTeXCMEX())));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false, false, false,
+                        m_bigParenType < 1 ?
+                          parser.GetTeXCMRI() :
+                            parser.GetTeXCMEX()));
       dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
 
       while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size))
       {
         int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
-        dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
-                                                     false, false, false,
-                                                     m_bigParenType < 1 ?
-                                                         parser.GetTeXCMRI() :
-                                                           parser.GetTeXCMEX())));
+        dc.SetFont(wxFont(fontsize1, wxMODERN,
+                          false, false, false,
+                          m_bigParenType < 1 ?
+                             parser.GetTeXCMRI() :
+                               parser.GetTeXCMEX()));
         dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
                          m_bigParenType == 1 ? wxT(PAREN_OPEN) :
                                                wxT(PAREN_OPEN_TOP),
@@ -160,11 +160,11 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     {
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
-                                                   false, false, false,
-                                                   m_bigParenType < 1 ?
-                                                       parser.GetTeXCMRI() :
-                                                         parser.GetTeXCMEX())));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false, false, false,
+                        m_bigParenType < 1 ?
+                          parser.GetTeXCMRI() :
+                            parser.GetTeXCMEX()));
       dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
     }
 
@@ -232,11 +232,11 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       in.x = point.x + m_signWidth;
       SetForeground(parser);
       int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      dc.SetFont(*(wxTheFontList->FindOrCreateFont(fontsize1, wxMODERN,
-                                                   false, false, false,
-                                                   m_bigParenType < 1 ?
-                                                       parser.GetTeXCMRI() :
-                                                         parser.GetTeXCMEX())));
+      dc.SetFont(wxFont(fontsize1, wxMODERN,
+                        false, false, false,
+                        m_bigParenType < 1 ?
+                          parser.GetTeXCMRI() :
+                            parser.GetTeXCMEX()));
       if (m_bigParenType < 2)
       {
         dc.DrawText(m_bigParenType == 0 ? wxT("(") :
