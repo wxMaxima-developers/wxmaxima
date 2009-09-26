@@ -201,6 +201,10 @@ void wxMaxima::FirstOutput(wxString s)
 
   int start = s.Find(m_firstPrompt);
 
+  int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
+  int startHTTP = s.find(wxT("http"), startMaxima);
+  m_maximaVersion = s.SubString(startMaxima+7, startHTTP - 1);
+
   if (showHeader) {
     GroupCell *header = new GroupCell(GC_TYPE_TEXT, s.SubString(0, start - 2));
     m_console->InsertGroupCells(header);
@@ -643,6 +647,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
     SetStatusText(_("Maxima process terminated."), 1);
+
+  m_maximaVersion = wxEmptyString;
 
 //  delete m_process;
 //  m_process = NULL;
@@ -3037,16 +3043,35 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case wxID_ABOUT:
   {
     wxAboutDialogInfo info;
+    wxString description;
+
 #if defined __WXMSW__ || defined __WXMAC__
     info.SetIcon(GetIcon());
-    info.SetDescription(_("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets."));
+    description = _("wxMaxima is a graphical user interface for the\ncomputer algebra system Maxima based on wxWidgets.");
 #else
-    info.SetDescription(_("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."));
+    description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
 #endif
+
+    description += wxString::Format(
+                      _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
+                      wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
+ #if wxUSE_UNICODE
+                      _("yes")
+ #else
+                      _("no")
+ #endif
+                   );
+    if (m_maximaVersion != wxEmptyString)
+      description += _("\nMaxima version: ") + m_maximaVersion;
+    else
+      description += _("\nNot connected.");
+
+    info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
     info.SetCopyright(wxT("(C) 2004-2009 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
+
 #if !defined __WXMSW__ && !defined __WXMAC__
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
@@ -3062,6 +3087,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
     info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
 #endif
+
     wxAboutBox(info);
   }
   break;

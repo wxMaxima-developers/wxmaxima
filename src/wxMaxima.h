@@ -181,6 +181,7 @@ protected:
   bool m_variablesOK;
   bool m_updateInspector;
   wxString m_helpFile;
+  wxString m_maximaVersion;
 #if defined (__WXMSW__)
   wxCHMHelpController m_helpCtrl;
 #else
