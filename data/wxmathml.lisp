@@ -208,7 +208,7 @@
 		     (if $stardisp
 			 "<t>*</t>"
 			 "<h>*</h>"))
-		     ((wxxmlsym op))
+		     ;((wxxmlsym op))
 		     ((eq (get op 'dimension) 'dimension-nary)
 		      (wxxml-dissym-to-string (get op 'dissym)))))
          (y (cdr x))
@@ -222,7 +222,7 @@
                   (rop op (if (null (cdr y)) ext-rop op)))
                  ((null (cdr y))
                   (setq nl (nconc nl (wxxml (car y) l r lop rop))) nl)
-	       (setq nl (nconc nl (wxxml (car y)  l (list sym)   lop rop))
+	       (setq nl (nconc nl (wxxml (car y) l (list sym) lop rop))
 		     y (cdr y)
 		     l nil))))))
 
