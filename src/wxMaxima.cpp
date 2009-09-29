@@ -679,10 +679,11 @@ void wxMaxima::ReadFirstPrompt()
 #endif // __WXMSW__
 
   int s = m_currentOutput.Find(wxT("pid=")) + 4;
-  int t = s + m_currentOutput.SubString(s, m_currentOutput.Length()).Find(wxT("\n"));
+  int t = s + m_currentOutput.SubString(s, m_currentOutput.Length()).Find(wxT("\n")) - 1;
 
   if (s < t)
     m_currentOutput.SubString(s, t).ToLong(&m_pid);
+
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
 

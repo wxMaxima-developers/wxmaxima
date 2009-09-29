@@ -27,6 +27,10 @@
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
 
+#if !wxCHECK_VERSION(2,9,0)
+  typedef wxScrolledWindow wxScrolledCanvas;
+#endif
+
 enum {
   popid_copy,
   popid_cut,
@@ -66,7 +70,7 @@ enum {
   CLICK_TYPE_OUTPUT_SELECTION
 };
 
-class MathCtrl: public wxScrolledWindow
+class MathCtrl: public wxScrolledCanvas
 {
 public:
   MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);

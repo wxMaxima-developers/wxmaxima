@@ -292,8 +292,8 @@ wxFontWeight CellParser::IsBold(int st)
 int CellParser::IsItalic(int st)
 {
   if (m_styles[st].italic)
-    return wxSLANT;
-  return wxNORMAL;
+    return wxFONTSTYLE_SLANT;
+  return wxFONTSTYLE_NORMAL;
 }
 
 int CellParser::IsUnderlined(int st)

@@ -106,7 +106,11 @@ void Inspector::SetList(wxArrayString arrstr)
   if (update) {
     m_wantListUpdate = false;
     wxCommandEvent mev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+#if wxCHECK_VERSION(2,9,0)
+    (wxTheApp->GetTopWindow())->ProcessEventHere(mev);
+#else
     (wxTheApp->GetTopWindow())->ProcessEvent(mev);
+#endif
   }
 }
 
@@ -235,7 +239,11 @@ void Inspector::OnListBox(wxCommandEvent &ev)
 
   m_wantListUpdate = false;
   wxCommandEvent mev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+#if wxCHECK_VERSION(2,9,0)
+  (wxTheApp->GetTopWindow())->ProcessEventHere(mev);
+#else
   (wxTheApp->GetTopWindow())->ProcessEvent(mev);
+#endif
 }
 
 // this is called from wxMaxima, when evaluation queue is emptied
@@ -247,7 +255,11 @@ void Inspector::OutdateList()
 
   // send an event to wxmaxima
   wxCommandEvent ev(wxEVT_COMMAND_BUTTON_CLICKED, inspector_update_id);
+#if wxCHECK_VERSION(2,9,0)
+  (wxTheApp->GetTopWindow())->ProcessEventHere(ev);
+#else
   (wxTheApp->GetTopWindow())->ProcessEvent(ev);
+#endif
 }
 
 // convert maxima string like "abc"

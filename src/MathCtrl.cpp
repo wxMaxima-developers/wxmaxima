@@ -54,10 +54,11 @@ enum
 };
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
-  wxScrolledWindow(parent, id, position, size,
-  wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
+  wxScrolledCanvas(
+      parent, id, position, size,
+      wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
-  | wxSUNKEN_BORDER
+      | wxSUNKEN_BORDER
 #endif
   )
 {
@@ -430,7 +431,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
     AdjustSize();
 
   Refresh();
-  wxScrolledWindow::OnSize(event);
+  //wxScrolledCanvas::OnSize(event);
 }
 
 /***
@@ -1302,7 +1303,11 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_BACK:
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessEventHere(ev);
+#else
         GetParent()->ProcessEvent(ev);
+#endif
       } else
         event.Skip();
       break;
@@ -1317,7 +1322,11 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
         { // shift-enter pressed === menu_evaluate event
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
-          GetParent()->ProcessEvent(ev);
+#if wxCHECK_VERSION(2,9,0)
+          GetParent()->ProcessEventHere(ev);
+#else
+	  GetParent()->ProcessEvent(ev);
+#endif
         } else
           event.Skip();
       }
@@ -3333,7 +3342,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-BEGIN_EVENT_TABLE(MathCtrl, wxScrolledWindow)
+BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)

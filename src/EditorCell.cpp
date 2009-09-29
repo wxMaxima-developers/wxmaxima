@@ -391,7 +391,7 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   m_underlined = parser.IsUnderlined(m_textStyle);
   m_fontEncoding = parser.GetFontEncoding();
 
-  dc.SetFont(wxFont(fontsize1, wxMODERN,
+  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,
@@ -696,7 +696,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret += ins.Length();
     }
     break;
-
+/*
   case WXK_SPACE:
     if (event.ShiftDown())
       m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\x00B7")
@@ -708,7 +708,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     m_containsChanges = true;
     m_positionOfCaret++;
     break;
-
+*/
   case WXK_ESCAPE:
 #if wxUSE_UNICODE
     {
