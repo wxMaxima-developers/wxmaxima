@@ -94,7 +94,11 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     }
 
     else if (parser.CheckTeXFonts() && (m_text == wxT("inf") || m_text == wxT("->") ||
-             m_text == wxT(">=") || m_text == wxT("<=")))
+             m_text == wxT(">=") || m_text == wxT("<=") ||
+             m_text == wxT(" and ") || m_text == wxT(" or ") ||
+             m_text == wxT(" nand ") || m_text == wxT(" nor ") ||
+             m_text == wxT(" implies ") || m_text == wxT(" eq ") ||
+             m_text == wxT("not") || m_text == wxT(" xor ")))
     {
       dc.GetTextExtent(GetSymbolString(parser), &m_width, &m_height);
       m_height = m_height / 2;
@@ -167,7 +171,11 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
 
     else if (parser.CheckTeXFonts() && (m_text == wxT("inf") || m_text == wxT("->") ||
-                 m_text == wxT(">=") || m_text == wxT("<=")))
+                 m_text == wxT(">=") || m_text == wxT("<=") ||
+                 m_text == wxT(" and ") || m_text == wxT(" or ") ||
+                 m_text == wxT(" nand ") || m_text == wxT(" nor ") ||
+                 m_text == wxT(" implies ") || m_text == wxT(" eq ") ||
+                 m_text == wxT("not") || m_text == wxT(" xor ")))
       dc.DrawText(GetSymbolString(parser),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -293,9 +301,13 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   default:
     if (parser.CheckTeXFonts() &&
         (m_text == wxT("->") ||
-         m_text == wxT(">=") || m_text == wxT("<=")))
+         m_text == wxT(">=") || m_text == wxT("<=") ||
+         m_text == wxT(" and ") || m_text == wxT(" or ") ||
+         m_text == wxT(" nand ") || m_text == wxT(" nor ") ||
+         m_text == wxT(" implies ") || m_text == wxT(" eq ") ||
+         m_text == wxT("not") || m_text == wxT(" xor ")))
       dc.SetFont(wxFont(fontsize1TeX, wxFONTFAMILY_MODERN,
-                        parser.IsItalic(TS_DEFAULT),
+                        wxFONTSTYLE_NORMAL,
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
                         parser.GetTeXCMSY()));
@@ -434,6 +446,22 @@ wxString TextCell::GetSymbolString(CellParser& parser)
       return wxT("\xD5");
     else if (m_text == wxT("<="))
       return wxT("\xD4");
+    else if (m_text == wxT(" and "))
+      return wxT(" \x5E ");
+    else if (m_text == wxT(" or "))
+      return wxT(" \x5F ");
+    else if (m_text == wxT(" nand "))
+      return wxT(" \x22 ");
+    else if (m_text == wxT(" nor "))
+      return wxT(" \x23 ");
+    else if (m_text == wxT(" eq "))
+      return wxT(" \x2C ");
+    else if (m_text == wxT(" implies "))
+      return wxT(" \x29 ");
+    else if (m_text == wxT("not"))
+      return wxT("\x3A");
+    else if (m_text == wxT(" xor "))
+      return wxT("\xC8");
     else
       return m_text;
   }
