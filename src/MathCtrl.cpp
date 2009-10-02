@@ -69,7 +69,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_last = NULL;
-  m_hCaretActive = false;
+  m_hCaretActive = true;
   m_hCaretPosition = NULL; // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_activeCell = NULL;

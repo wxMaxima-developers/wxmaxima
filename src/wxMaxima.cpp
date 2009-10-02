@@ -356,11 +356,6 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 
 void wxMaxima::SendMaxima(wxString s, bool history)
 {
-  if (!m_isConnected) {
-    ConsoleAppend(wxT("\nNot connected to Maxima!\n"), MC_TYPE_ERROR);
-    return ;
-  }
-
   if (!m_variablesOK) {
     m_variablesOK = true;
     SetupVariables();
@@ -3626,6 +3621,24 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {
+  if (!m_isConnected) {
+    wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
+
+    if (m_console->m_evaluationQueue->GetFirst())
+    {
+      if (m_console->m_evaluationQueue->GetFirst()->GetInput()->ToString(false) ==
+        wxT("wxmaxima_debug_dump_output;"))
+      DumpProcessOutput();
+    }
+
+    while (m_console->m_evaluationQueue->GetFirst())
+      m_console->m_evaluationQueue->RemoveFirst();
+
+    m_console->Refresh();
+
+    return ;
+  }
+
   GroupCell * group = m_console->m_evaluationQueue->GetFirst();
   if (group == NULL)
     return; //empty queue

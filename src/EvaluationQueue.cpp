@@ -65,7 +65,7 @@ void EvaluationQueue::RemoveFirst()
     m_queue = m_last = NULL;
   }
   else
-  m_queue = m_queue->next;
+    m_queue = m_queue->next;
 
   delete tmp;
 }
