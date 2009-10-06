@@ -18,6 +18,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+#include <wx/config.h>
+
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
@@ -43,6 +45,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_groupType = groupType;
   m_lastInOutput = NULL;
   m_appendedCells = NULL;
+
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
@@ -53,8 +56,10 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     m_input->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
+  bool match = true;
+  wxConfig::Get()->Read(wxT("matchParens"), &match);
   EditorCell *editor = new EditorCell();
-  editor->SetValue(initString);
+  editor->SetMatchParens(match);
 
   switch (groupType) {
     case GC_TYPE_CODE:
@@ -88,9 +93,14 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendInput(editor);
       break;
     default:
-      delete(editor);
+      delete editor;
+      editor = NULL;
       break;
   }
+
+  if (editor != NULL)
+    editor->SetValue(initString);
+
   // when creating an image cell, if a string is provided
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0)) {

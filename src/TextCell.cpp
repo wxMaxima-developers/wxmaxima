@@ -325,7 +325,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     else if (parser.CheckTeXFonts() &&
         (m_text == wxT("-") || m_text == wxT("+") || m_text == wxT("=")))
       dc.SetFont(wxFont(fontsize1TeX, wxFONTFAMILY_MODERN,
-                        parser.IsItalic(TS_DEFAULT),
+                        wxFONTSTYLE_NORMAL,
                         parser.IsBold(TS_DEFAULT),
                         parser.IsUnderlined(TS_DEFAULT),
                         parser.GetTeXCMRI()));

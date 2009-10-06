@@ -37,11 +37,7 @@ public:
   wxString ToXML(bool all);
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
-  void SetValue(wxString text)
-  {
-    m_text = text;
-    m_positionOfCaret = m_text.Length();
-  }
+  void SetValue(wxString text);
   wxString GetValue()
   {
     return m_text;

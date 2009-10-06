@@ -1101,6 +1101,7 @@ bool EditorCell::ActivateCell()
   if (m_isActive) {
     m_firstLineOnly = false;
     ((GroupCell *)GetParent())->Hide(false);
+    FindMatchingParens();
   }
 
   return true;
@@ -1477,6 +1478,34 @@ void EditorCell::SaveValue()
   m_oldPosition = m_positionOfCaret;
   m_oldStart = m_selectionStart;
   m_oldEnd = m_selectionEnd;
+}
+
+void EditorCell::SetValue(wxString text)
+{
+  if (m_type == MC_TYPE_INPUT && m_matchParens)
+  {
+    if (text == wxT("(")) {
+      m_text = wxT("()");
+      m_positionOfCaret = m_text.Length() - 1;
+    }
+    else if (text == wxT("[")) {
+      m_text = wxT("[]");
+      m_positionOfCaret = m_text.Length() - 1;
+    }
+    else if (text == wxT("{")) {
+      m_text = wxT("{}");
+      m_positionOfCaret = m_text.Length() - 1;
+    }
+    else {
+      m_text = text;
+      m_positionOfCaret = m_text.Length();
+    }
+  }
+  else
+  {
+    m_text = text;
+    m_positionOfCaret = m_text.Length();
+  }
 }
 
 bool EditorCell::CheckChanges()
