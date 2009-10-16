@@ -694,10 +694,6 @@ void wxMaxima::ReadFirstPrompt()
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
-  else {
-    m_console->ShowHCaret();
-    m_console->Refresh();
-  }
 }
 
 /***
