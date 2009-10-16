@@ -1313,6 +1313,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_RETURN:
+    case WXK_NUMPAD_ENTER:
       if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
         event.Skip(); // if enter pressed in text, title, section cell, pass the event
       else {
