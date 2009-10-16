@@ -38,6 +38,7 @@ const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
     wxLANGUAGE_CHINESE_TRADITIONAL,
+    wxLANGUAGE_CZECH,
     wxLANGUAGE_DANISH,
     wxLANGUAGE_ENGLISH,
     wxLANGUAGE_FRENCH,
@@ -51,7 +52,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 13
+#define LANGUAGE_NUMBER 14
 
 Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
@@ -77,6 +78,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
     {
       _("(Use default language)"),
       _("Chinese traditional"),
+      _("Czech"),
       _("Danish"),
       _("English"),
       _("French"),

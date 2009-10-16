@@ -2,7 +2,7 @@
 # This file is based on the corresponding file for the poedit program
 #
 
-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da
+WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs
 WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da
 
 localedir = $(datadir)/locale
@@ -80,6 +80,8 @@ stats:
 
 transcoded:
 	mkdir -p transcoded
+	cat da.po | sed -e "s/utf-8/ISO-8859-1/" | iconv -f utf-8 -t iso8859-1 > transcoded/da.po
+	$(MSGFMT) transcoded/da.po -o transcoded/da.mo
 	cat de.po | sed -e "s/UTF-8/ISO-8859-15/" | iconv -f utf-8 -t iso8859-15 > transcoded/de.po
 	$(MSGFMT) transcoded/de.po -o transcoded/de.mo
 	cp es.po transcoded
