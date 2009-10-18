@@ -3691,6 +3691,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   {
   case popid_insert_input:
   case menu_insert_input:
+  case menu_insert_previous_input:
     type = GC_TYPE_CODE;
     break;
   case menu_add_comment:
@@ -3735,7 +3736,15 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   }
 
   m_console->SetFocus();
-  m_console->OpenHCaret(wxEmptyString, type);
+
+  if (event.GetId() == menu_insert_previous_input)
+  {
+    wxString input = m_console->GetInputAboveCaret();
+    if (input != wxEmptyString)
+      m_console->OpenHCaret(m_console->GetInputAboveCaret(), type);
+  }
+  else
+    m_console->OpenHCaret(wxEmptyString, type);
 }
 
 void wxMaxima::ResetTitle(bool saved)
@@ -4061,6 +4070,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
+  EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_cut, wxMaxima::EditMenu)

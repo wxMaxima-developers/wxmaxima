@@ -188,6 +188,7 @@ public:
   bool FindNext(wxString str, bool down, bool ignoreCase);
   void Replace(wxString oldString, wxString newString);
   int ReplaceAll(wxString oldString, wxString newString);
+  wxString GetInputAboveCaret();
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

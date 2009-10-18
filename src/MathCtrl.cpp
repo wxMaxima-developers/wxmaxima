@@ -3238,6 +3238,18 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
   }
 }
 
+wxString MathCtrl::GetInputAboveCaret()
+{
+  if (!m_hCaretActive || m_hCaretPosition == NULL)
+    return wxEmptyString;
+
+  MathCell *editor = m_hCaretPosition->GetEditable();
+
+  if (editor != NULL)
+    return editor->ToString(false);
+  return wxEmptyString;
+}
+
 bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
 {
   if (m_tree == NULL)
