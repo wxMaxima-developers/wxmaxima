@@ -182,6 +182,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
+    /// Change asterisk
+    else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
+      dc.DrawText(wxT("\xB7"),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+
     /// This is the default.
     else
       dc.DrawText(m_text,
