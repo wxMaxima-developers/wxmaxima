@@ -55,7 +55,7 @@ protected:
   void SetAltText();
   wxString m_text;
   wxString m_altText, m_altJsText;
-  wxString m_fontname;
+  wxString m_fontname, m_texFontname;
   bool m_alt, m_altJs;
   int m_realCenter;
   int m_fontSize;

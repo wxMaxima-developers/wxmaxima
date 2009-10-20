@@ -107,7 +107,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     {
       dc.GetTextExtent(m_altJsText, &m_width, &m_height);
 
-      if (m_textStyle != TS_GREEK_CONSTANT)
+      if (m_texFontname == wxT("jsMath-cmsy10"))
         m_height = m_height / 2;
     }
 
@@ -215,13 +215,13 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
 
   // Use jsMath
   if (m_altJs && parser.CheckTeXFonts())
+  {
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
                       parser.IsBold(m_textStyle),
                       parser.IsUnderlined(m_textStyle),
-                      m_textStyle == TS_GREEK_CONSTANT ?
-                          parser.GetTeXCMMI() :
-                            parser.GetTeXCMSY()));
+                      m_texFontname));
+  }
 
   // We have an alternative symbol
   else if (m_alt)
@@ -344,6 +344,7 @@ void TextCell::SetAltText()
   {
     m_altJs = true;
     m_altJsText = GetGreekStringTeX();
+    m_texFontname = wxT("jsMath-cmmi10");
 
 #if wxUSE_UNICODE
     m_alt = true;
@@ -359,7 +360,13 @@ void TextCell::SetAltText()
   else {
     m_altJsText = GetSymbolTeX();
     if (m_altJsText != wxEmptyString)
+    {
+      if (m_text == wxT("+") || m_text == wxT("-") || m_text == wxT("="))
+        m_texFontname = wxT("jsMath-cmr10");
+      else
+        m_texFontname = wxT("jsMath-cmsy10");
       m_altJs = true;
+    }
 #if wxUSE_UNICODE
     m_altText = GetSymbolUnicode();
     if (m_altText != wxEmptyString)
@@ -491,7 +498,13 @@ wxString TextCell::GetGreekStringUnicode()
 
 wxString TextCell::GetSymbolUnicode()
 {
-  if (m_text == wxT("inf"))
+  if (m_text == wxT("+"))
+    return wxT("+");
+  else if (m_text == wxT("-"))
+    return wxT("-");
+  else if (m_text == wxT("="))
+    return wxT("=");
+  else if (m_text == wxT("inf"))
     return wxString(L"\x221E");
   else if (m_text == wxT("<="))
     return wxString(L"\x2264");
@@ -767,6 +780,12 @@ wxString TextCell::GetSymbolTeX()
 {
   if (m_text == wxT("inf"))
     return wxT("\x31");
+  else if (m_text == wxT("+"))
+    return wxT("+");
+  else if (m_text == wxT("-"))
+    return wxT("\x7B");
+  else if (m_text == wxT("="))
+    return wxT("=");
   else if (m_text == wxT("->"))
     return wxT("\x21");
   else if (m_text == wxT(">="))
