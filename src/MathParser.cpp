@@ -380,10 +380,10 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
       if (str.Length() > 100) // This could be made configurable.
         str = str.Left(30) + wxString::Format(wxT("[%d digits]"), str.Length() - 60) + str.Right(30);
     }
-    cell->SetValue(str);
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);
     cell->SetHighlight(m_highlight);
+    cell->SetValue(str);
   }
   return cell;
 }

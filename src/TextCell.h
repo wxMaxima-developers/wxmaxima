@@ -41,13 +41,22 @@ public:
   wxString GetDiffPart();
   bool IsOperator();
   wxString GetValue() { return m_text; }
-  wxString GetSymbolString(CellParser& parser);
-  wxString GetGreekString(CellParser& parser);
+  wxString GetGreekStringTeX();
+  wxString GetSymbolTeX();
+#if wxUSE_UNICODE
   wxString GetGreekStringUnicode();
+  wxString GetSymbolUnicode();
+#elif defined __WXMSW__
   wxString GetGreekStringSymbol();
+  wxString GetSymbolSymbol();
+#endif
   bool IsShortNum();
 protected:
+  void SetAltText();
   wxString m_text;
+  wxString m_altText, m_altJsText;
+  wxString m_fontname;
+  bool m_alt, m_altJs;
   int m_realCenter;
   int m_fontSize;
   int m_fontSizeTeX;
