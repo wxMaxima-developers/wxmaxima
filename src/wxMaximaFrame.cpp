@@ -256,6 +256,8 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
                                   _("Create a new cell with previous input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2_sub1->Append(menu_autocomplete, _("Autocomplete\tCtrl-K"),
+                             _("Autocomplete"), wxITEM_NORMAL);
   wxglade_tmp_menu_2_sub1->AppendSeparator();
   wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF5"),
                              _("Insert a new input cell"));

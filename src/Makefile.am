@@ -51,6 +51,7 @@ wxmaxima_SOURCES = \
 	GroupCell.cpp      GroupCell.h      \
 	EvaluationQueue.cpp EvaluationQueue.h \
 	History.cpp        History.h        \
+	Autocomplete.cpp   Autocomplete.h   \
 	MiniMathCtrl.cpp   MiniMathCtrl.h   \
 	Inspector.cpp      Inspector.h      \
 	TextStyle.h

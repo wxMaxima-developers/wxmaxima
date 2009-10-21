@@ -203,6 +203,7 @@ enum {
   menu_add_pagebreak,
   menu_insert_input,
   menu_insert_previous_input,
+  menu_autocomplete,
   menu_cut,
   menu_paste,
   menu_paste_input,

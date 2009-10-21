@@ -3355,7 +3355,60 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
+bool MathCtrl::Autocomplete()
+{
+  if (m_activeCell == NULL)
+    return false;
+
+  EditorCell *editor = (EditorCell *)m_activeCell;
+
+  editor->SelectWordUnderCaret();
+
+  wxString partial = editor->GetSelectionString();
+
+  m_completions = m_autocomplete.CompleteFunction(partial);
+
+  if (m_completions.GetCount() == 0)
+    return false;
+
+  wxMenu *popup = new wxMenu();
+
+  for (int i=0; i<m_completions.GetCount() && i<20; i++)
+    popup->Append(popid_complete_00 + i, m_completions[i]);
+
+  // Find the position for the popup menu
+  wxClientDC dc(this);
+  CellParser parser(dc);
+
+  wxPoint pos = editor->PositionToPoint(parser, -1);
+
+  // Show popup menu
+  PopupMenu(popup, pos.x, pos.y);
+
+  delete popup;
+
+  return true;
+}
+
+void MathCtrl::OnComplete(wxCommandEvent &event)
+{
+  if (m_activeCell == NULL)
+    return;
+
+  EditorCell *editor = (EditorCell *)m_activeCell;
+
+  editor->ReplaceSelection(editor->GetSelectionString(),
+      m_completions[event.GetId() - popid_complete_00]);
+
+  editor->ClearSelection();
+
+  // TODO: be more efficient here!
+  RecalculateForce();
+  Refresh();
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
+  EVT_MENU_RANGE(popid_complete_00, popid_complete_19, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)

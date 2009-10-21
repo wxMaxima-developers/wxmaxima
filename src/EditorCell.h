@@ -112,6 +112,8 @@ public:
     *start = m_selectionStart; *end = m_selectionEnd;
   }
   bool ReplaceSelection(wxString oldStr, wxString newString);
+  wxString GetSelectionString();
+  void ClearSelection();
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);

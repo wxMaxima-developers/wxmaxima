@@ -1338,15 +1338,13 @@ wxString EditorCell::SelectWordUnderCaret()
     m_positionOfCaret = m_selectionEnd;
     return wxT("%");
   }
-  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_");
+  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_%");
 
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
   {
-    if(wordChars.Find(m_text.GetChar(left)) == -1) {
-      left++;
+    if (wordChars.Find(m_text.GetChar(left-1)) == -1)
       break;
-    }
     left--;
   }
 
@@ -1582,4 +1580,20 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
     return true;
   }
   return false;
+}
+
+wxString EditorCell::GetSelectionString()
+{
+  if (m_selectionStart == -1 || m_selectionEnd == -1)
+    return wxEmptyString;
+  return m_text.SubString(m_selectionStart, m_selectionEnd-1);
+}
+
+void EditorCell::ClearSelection()
+{
+  if (m_selectionStart == -1 || m_selectionEnd == -1)
+    return;
+
+  m_positionOfCaret = m_selectionEnd;
+  m_selectionStart = m_selectionEnd = -1;
 }

@@ -26,6 +26,7 @@
 #include "MathCell.h"
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
+#include "Autocomplete.h"
 
 #if !wxCHECK_VERSION(2,9,0)
   typedef wxScrolledWindow wxScrolledCanvas;
@@ -60,7 +61,27 @@ enum {
 #endif
   popid_image,
   popid_evaluate,
-  popid_merge_cells
+  popid_merge_cells,
+  popid_complete_00,
+  popid_complete_01,
+  popid_complete_02,
+  popid_complete_03,
+  popid_complete_04,
+  popid_complete_05,
+  popid_complete_06,
+  popid_complete_07,
+  popid_complete_08,
+  popid_complete_09,
+  popid_complete_10,
+  popid_complete_11,
+  popid_complete_12,
+  popid_complete_13,
+  popid_complete_14,
+  popid_complete_15,
+  popid_complete_16,
+  popid_complete_17,
+  popid_complete_18,
+  popid_complete_19
 };
 
 enum {
@@ -189,6 +210,8 @@ public:
   void Replace(wxString oldString, wxString newString);
   int ReplaceAll(wxString oldString, wxString newString);
   wxString GetInputAboveCaret();
+  bool LoadFunctions(wxString file) { m_autocomplete.LoadFunctions(file); }
+  bool Autocomplete();
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
@@ -213,6 +236,7 @@ protected:
   void OnMouseMiddleUp(wxMouseEvent& event);
   void NumberSections();
   bool IsLesserGCType(int type, int comparedTo);
+  void OnComplete(wxCommandEvent &event);
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
@@ -238,6 +262,8 @@ protected:
   wxBitmap *m_memory;
   bool m_saved;
   double m_zoomFactor;
+  AutoComplete m_autocomplete;
+  wxArrayString m_completions;
   DECLARE_EVENT_TABLE()
 };
 

@@ -211,6 +211,11 @@ void wxMaxima::FirstOutput(wxString s)
   }
 
   m_lastPrompt = wxT("(%i1) ");
+
+  /// READ FUNCTIONS FOR AUTOCOMPLETION
+  wxString index = GetHelpFile();
+  index.Replace(wxT("header.hhp"), wxT("index.hhk"));
+  m_console->LoadFunctions(index);
 }
 
 ///--------------------------------------------------------------------------------
@@ -3694,6 +3699,10 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_insert_previous_input:
     type = GC_TYPE_CODE;
     break;
+  case menu_autocomplete:
+    m_console->Autocomplete();
+    return ;
+    break;
   case menu_add_comment:
   case popid_add_comment:
   case menu_format_text:
@@ -4071,6 +4080,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
+  EVT_MENU(menu_autocomplete, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_cut, wxMaxima::EditMenu)
