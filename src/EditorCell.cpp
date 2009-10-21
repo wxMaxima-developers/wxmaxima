@@ -1577,6 +1577,9 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
              m_text.SubString(m_selectionEnd, m_text.Length());
     m_containsChanges = -1;
     m_positionOfCaret = m_selectionEnd = m_selectionStart + newStr.Length();
+
+    FindMatchingParens();
+
     return true;
   }
   return false;
