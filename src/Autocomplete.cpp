@@ -26,6 +26,9 @@
 /// |   <param name="Name" value="function"></object>|
 bool AutoComplete::LoadFunctions(wxString file)
 {
+  if (!wxFileExists(file))
+    return false;
+
   wxString line;
   wxString rest, function;
   wxTextFile index(file);

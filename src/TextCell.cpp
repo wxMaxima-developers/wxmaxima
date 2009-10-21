@@ -376,7 +376,7 @@ void TextCell::SetAltText()
     if (m_altText != wxEmptyString)
     {
       m_alt = true;
-      m_fontmane = wxT("Symbol");
+      m_fontname = wxT("Symbol");
     }
 #endif
   }
@@ -657,6 +657,22 @@ wxString TextCell::GetSymbolSymbol()
     return wxT("\xB3");
   else if (m_text == wxT("<="))
     return wxT("\xA3");
+  else if (m_text == wxT(" and "))
+    return wxT("\xD9");
+  else if (m_text == wxT(" or "))
+    return wxT("\xDA");
+  else if (m_text == wxT("not"))
+    return wxT("\xD8");
+  else if (m_text == wxT(" nand "))
+    return wxT("\xAD");
+  else if (m_text == wxT(" nor "))
+    return wxT("\xAF");
+  else if (m_text == wxT(" implies "))
+    return wxT("\xDE");
+  else if (m_text == wxT(" eq "))
+    return wxT("\xDB");
+  else if (m_text == wxT(" xor "))
+    return wxT("\xC5");
 
   return wxEmptyString;
 }

@@ -214,7 +214,11 @@ void wxMaxima::FirstOutput(wxString s)
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
   wxString index = GetHelpFile();
+#if defined __WXMSW__
+  index.Replace(wxT("maxima.chm"), wxT("index.hhk"));
+#else
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
+#endif
   m_console->LoadFunctions(index);
 }
 
