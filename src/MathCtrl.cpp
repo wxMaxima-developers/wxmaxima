@@ -3382,6 +3382,8 @@ bool MathCtrl::Autocomplete()
 
   wxPoint pos = editor->PositionToPoint(parser, -1);
 
+  CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
+
   // Show popup menu
   PopupMenu(popup, pos.x, pos.y);
 
