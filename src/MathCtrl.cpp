@@ -3362,7 +3362,7 @@ bool MathCtrl::Autocomplete()
 
   EditorCell *editor = (EditorCell *)m_activeCell;
 
-  editor->SelectWordUnderCaret();
+  editor->SelectWordUnderCaret(false);
 
   wxString partial = editor->GetSelectionString();
 

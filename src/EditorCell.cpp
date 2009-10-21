@@ -1325,14 +1325,16 @@ void EditorCell::CommentSelection()
 
 /***
  * SelectWordUnderCaret
- * - called from MathCtrl::OnDoubleClick and wxMaxima::HelpMenu
- * Selects word under cursor (aA-zZ, 0-9 counts) or
- * the inside of brackets using m_paren1 and m_paren2 if available.
- * Returns the selected string if selected a word succesfully - used for F1 help.
+ * - called from MathCtrl::OnDoubleClick, MathCtrl::Autocomplete and wxMaxima::HelpMenu
+ * Selects word under cursor (aA-zZ, 0-9, %, _, count) or
+ * the inside of brackets using m_paren1 and m_paren2 if available and selectParens is true.
+ * Returns the selected string if selected a word succesfully - used for F1 help and
+ * MathCtrl::Autocomplete.
  */
-wxString EditorCell::SelectWordUnderCaret()
+
+wxString EditorCell::SelectWordUnderCaret(bool selectParens)
 {
-  if ((m_paren1 != -1) && (m_paren2 != -1)) {
+  if (selectParens && (m_paren1 != -1) && (m_paren2 != -1)) {
     m_selectionStart = MIN(m_paren1,m_paren2) + 1;
     m_selectionEnd = MAX(m_paren1, m_paren2);
     m_positionOfCaret = m_selectionEnd;
