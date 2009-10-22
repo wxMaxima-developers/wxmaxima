@@ -3368,26 +3368,46 @@ bool MathCtrl::Autocomplete()
 
   m_completions = m_autocomplete.CompleteFunction(partial);
 
+  /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)
+  {
+    editor->ClearSelection();
     return false;
+  }
 
-  wxMenu *popup = new wxMenu();
+  /// If there is only one completion, use it
+  if (m_completions.GetCount() == 1)
+  {
+    editor->ReplaceSelection(editor->GetSelectionString(),
+        m_completions[0]);
 
-  for (int i=0; i<m_completions.GetCount() && i<20; i++)
-    popup->Append(popid_complete_00 + i, m_completions[i]);
+    editor->ClearSelection();
 
-  // Find the position for the popup menu
-  wxClientDC dc(this);
-  CellParser parser(dc);
+    // TODO: be more efficient here!
+    RecalculateForce();
+    Refresh();
+  }
 
-  wxPoint pos = editor->PositionToPoint(parser, -1);
+  /// If there are more than one completions, popup a menu
+  else {
+    wxMenu *popup = new wxMenu();
 
-  CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
+    for (int i=0; i<m_completions.GetCount() && i<20; i++)
+      popup->Append(popid_complete_00 + i, m_completions[i]);
 
-  // Show popup menu
-  PopupMenu(popup, pos.x, pos.y);
+    // Find the position for the popup menu
+    wxClientDC dc(this);
+    CellParser parser(dc);
 
-  delete popup;
+    wxPoint pos = editor->PositionToPoint(parser, -1);
+
+    CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
+
+    // Show popup menu
+    PopupMenu(popup, pos.x, pos.y);
+
+    delete popup;
+  }
 
   return true;
 }
