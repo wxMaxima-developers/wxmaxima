@@ -46,6 +46,29 @@ bool AutoComplete::LoadFunctions(wxString file)
     m_functionList.Add(function);
   }
 
+  /// Add wxMaxima functions
+  m_functionList.Add(wxT("set_display"));
+  m_functionList.Add(wxT("wxplot2d"));
+  m_functionList.Add(wxT("wxplot3d"));
+  m_functionList.Add(wxT("wximplicit_plot"));
+  m_functionList.Add(wxT("wxcontour_plot"));
+  m_functionList.Add(wxT("wxanimate"));
+  m_functionList.Add(wxT("wxanimate_draw"));
+  m_functionList.Add(wxT("wxanimate_draw2d"));
+  m_functionList.Add(wxT("wxanimate_draw3d"));
+  m_functionList.Add(wxT("with_slider"));
+  m_functionList.Add(wxT("with_slider_draw"));
+  m_functionList.Add(wxT("with_slider_draw3d"));
+  m_functionList.Add(wxT("wxdraw"));
+  m_functionList.Add(wxT("wxdraw2d"));
+  m_functionList.Add(wxT("wxdraw3d"));
+  m_functionList.Add(wxT("wxhistogram"));
+  m_functionList.Add(wxT("wxhistogram"));
+  m_functionList.Add(wxT("wxscatterplot"));
+  m_functionList.Add(wxT("wxbarsplot"));
+  m_functionList.Add(wxT("wxpiechart"));
+  m_functionList.Add(wxT("wxboxplot"));
+
   m_functionList.Sort();
 
   index.Close();
