@@ -213,10 +213,11 @@ void wxMaxima::FirstOutput(wxString s)
   m_lastPrompt = wxT("(%i1) ");
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-  wxString index = GetHelpFile();
 #if defined __WXMSW__
-  index.Replace(wxT("maxima.chm"), wxT("index.hhk"));
+  wxString index = wxGetCwd();
+  index += wxT("\\data\\index.hhk");
 #else
+  wxString index = GetHelpFile();
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
 #endif
   m_console->LoadFunctions(index);
