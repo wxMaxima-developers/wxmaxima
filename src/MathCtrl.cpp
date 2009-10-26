@@ -3366,7 +3366,7 @@ bool MathCtrl::Autocomplete()
 
   wxString partial = editor->GetSelectionString();
 
-  m_completions = m_autocomplete.CompleteFunction(partial);
+  m_completions = m_autocomplete.CompleteSymbol(partial);
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)

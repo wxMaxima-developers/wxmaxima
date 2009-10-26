@@ -191,6 +191,7 @@ protected:
   wxFindReplaceDialog *m_findDialog;
   wxFindReplaceData m_findData;
   wxRegEx m_funRegEx;
+  wxRegEx m_varRegEx;
   DECLARE_EVENT_TABLE()
 };
 

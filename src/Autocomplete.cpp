@@ -24,13 +24,13 @@
 /// This functions loads functions/variables from maxima documentation.
 /// It reads the file index.hhk and looks for lines like
 /// |   <param name="Name" value="function"></object>|
-bool AutoComplete::LoadFunctions(wxString file)
+bool AutoComplete::LoadSymbols(wxString file)
 {
   if (!wxFileExists(file))
     return false;
 
-  if (m_functionList.GetCount() > 0)
-    m_functionList.Empty();
+  if (m_symbolList.GetCount() > 0)
+    m_symbolList.Empty();
 
   wxString line;
   wxString rest, function;
@@ -46,33 +46,33 @@ bool AutoComplete::LoadFunctions(wxString file)
     if (!rest.EndsWith(wxT("\"></object>"), &function))
       continue;
 
-    m_functionList.Add(function);
+    m_symbolList.Add(function);
   }
 
   /// Add wxMaxima functions
-  m_functionList.Add(wxT("set_display"));
-  m_functionList.Add(wxT("wxplot2d"));
-  m_functionList.Add(wxT("wxplot3d"));
-  m_functionList.Add(wxT("wximplicit_plot"));
-  m_functionList.Add(wxT("wxcontour_plot"));
-  m_functionList.Add(wxT("wxanimate"));
-  m_functionList.Add(wxT("wxanimate_draw"));
-  m_functionList.Add(wxT("wxanimate_draw2d"));
-  m_functionList.Add(wxT("wxanimate_draw3d"));
-  m_functionList.Add(wxT("with_slider"));
-  m_functionList.Add(wxT("with_slider_draw"));
-  m_functionList.Add(wxT("with_slider_draw3d"));
-  m_functionList.Add(wxT("wxdraw"));
-  m_functionList.Add(wxT("wxdraw2d"));
-  m_functionList.Add(wxT("wxdraw3d"));
-  m_functionList.Add(wxT("wxhistogram"));
-  m_functionList.Add(wxT("wxhistogram"));
-  m_functionList.Add(wxT("wxscatterplot"));
-  m_functionList.Add(wxT("wxbarsplot"));
-  m_functionList.Add(wxT("wxpiechart"));
-  m_functionList.Add(wxT("wxboxplot"));
+  m_symbolList.Add(wxT("set_display"));
+  m_symbolList.Add(wxT("wxplot2d"));
+  m_symbolList.Add(wxT("wxplot3d"));
+  m_symbolList.Add(wxT("wximplicit_plot"));
+  m_symbolList.Add(wxT("wxcontour_plot"));
+  m_symbolList.Add(wxT("wxanimate"));
+  m_symbolList.Add(wxT("wxanimate_draw"));
+  m_symbolList.Add(wxT("wxanimate_draw2d"));
+  m_symbolList.Add(wxT("wxanimate_draw3d"));
+  m_symbolList.Add(wxT("with_slider"));
+  m_symbolList.Add(wxT("with_slider_draw"));
+  m_symbolList.Add(wxT("with_slider_draw3d"));
+  m_symbolList.Add(wxT("wxdraw"));
+  m_symbolList.Add(wxT("wxdraw2d"));
+  m_symbolList.Add(wxT("wxdraw3d"));
+  m_symbolList.Add(wxT("wxhistogram"));
+  m_symbolList.Add(wxT("wxhistogram"));
+  m_symbolList.Add(wxT("wxscatterplot"));
+  m_symbolList.Add(wxT("wxbarsplot"));
+  m_symbolList.Add(wxT("wxpiechart"));
+  m_symbolList.Add(wxT("wxboxplot"));
 
-  m_functionList.Sort();
+  m_symbolList.Sort();
 
   index.Close();
 
@@ -80,21 +80,21 @@ bool AutoComplete::LoadFunctions(wxString file)
 }
 
 /// Returns a string array with functions which start with partial.
-wxArrayString AutoComplete::CompleteFunction(wxString partial)
+wxArrayString AutoComplete::CompleteSymbol(wxString partial)
 {
   wxArrayString completions;
 
-  for (int i=0; i<m_functionList.GetCount(); i++)
+  for (int i=0; i<m_symbolList.GetCount(); i++)
   {
-    if (m_functionList[i].StartsWith(partial))
-      completions.Add(m_functionList[i]);
+    if (m_symbolList[i].StartsWith(partial))
+      completions.Add(m_symbolList[i]);
   }
 
   return completions;
 }
 
-void AutoComplete::AddFunction(wxString fun)
+void AutoComplete::AddSymbol(wxString fun)
 {
-  if (m_functionList.Index(fun, true, true) == wxNOT_FOUND)
-    m_functionList.Add(fun);
+  if (m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
+    m_symbolList.Add(fun);
 }

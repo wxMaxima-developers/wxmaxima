@@ -118,7 +118,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetFocus();
 
   /// RegEx for function definitions
-  m_funRegEx.Compile(wxT("^ *([[:alnum:],%_]+) *\\([[:alnum:], _%]*\\) *:="));
+  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\([[:alnum:], _%]*\\) *:="));
+  // RegEx for variable definitions
+  m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
 }
 
 wxMaxima::~wxMaxima()
@@ -223,7 +225,7 @@ void wxMaxima::FirstOutput(wxString s)
   wxString index = GetHelpFile();
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
 #endif
-  m_console->LoadFunctions(index);
+  m_console->LoadSymbols(index);
 }
 
 ///--------------------------------------------------------------------------------
@@ -392,18 +394,21 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   if (history)
     AddToHistory(s);
 
-  /// Check for function definitions
-  wxStringTokenizer lines(s, wxT("\n"));
-  wxString line;
-  while (lines.HasMoreTokens())
-  {
-    line = lines.GetNextToken();
-    if (m_funRegEx.Matches(line))
-      m_console->AddACFunction(m_funRegEx.GetMatch(line, 1));
-  }
-
   s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
+
+  /// Check for function/variable definitions
+  wxStringTokenizer commands(s, wxT(";$"));
+  while (commands.HasMoreTokens())
+  {
+    wxString line = commands.GetNextToken();
+    if (m_varRegEx.Matches(line))
+      m_console->AddSymbol(m_varRegEx.GetMatch(line, 1));
+
+    if (m_funRegEx.Matches(line))
+      m_console->AddSymbol(m_funRegEx.GetMatch(line, 1));
+  }
+
   m_console->EnableEdit(false);
 
 #if wxUSE_UNICODE

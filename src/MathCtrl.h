@@ -210,9 +210,9 @@ public:
   void Replace(wxString oldString, wxString newString);
   int ReplaceAll(wxString oldString, wxString newString);
   wxString GetInputAboveCaret();
-  bool LoadFunctions(wxString file) { m_autocomplete.LoadFunctions(file); }
+  bool LoadSymbols(wxString file) { m_autocomplete.LoadSymbols(file); }
   bool Autocomplete();
-  void AddACFunction(wxString fun) { m_autocomplete.AddFunction(fun); }
+  void AddSymbol(wxString fun) { m_autocomplete.AddSymbol(fun); }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

@@ -26,11 +26,11 @@
 class AutoComplete
 {
 public:
-  bool LoadFunctions(wxString file);
-  void AddFunction(wxString fun);
-  wxArrayString CompleteFunction(wxString partial);
+  bool LoadSymbols(wxString file);
+  void AddSymbol(wxString fun);
+  wxArrayString CompleteSymbol(wxString partial);
 private:
-  wxArrayString m_functionList;
+  wxArrayString m_symbolList;
 };
 
 #endif
