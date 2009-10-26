@@ -528,6 +528,8 @@ wxString TextCell::GetSymbolUnicode()
     return wxString(L"\x00AC");
   else if (m_text == wxT("->"))
     return wxString(L"\x2192");
+  else if (m_textStyle == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
+    return wxString(L"\x2202");
 
   return wxEmptyString;
 }
