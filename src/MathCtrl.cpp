@@ -87,6 +87,9 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_zoomFactor = 1.0; // set zoom to 100%
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
+
+  // hack to workaround problems in RtL locales, http://bugzilla.redhat.com/455863
+  SetLayoutDirection(wxLayout_LeftToRight);
 }
 
 MathCtrl::~MathCtrl() {
