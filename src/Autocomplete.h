@@ -27,6 +27,7 @@ class AutoComplete
 {
 public:
   bool LoadFunctions(wxString file);
+  void AddFunction(wxString fun);
   wxArrayString CompleteFunction(wxString partial);
 private:
   wxArrayString m_functionList;

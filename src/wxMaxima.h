@@ -27,6 +27,7 @@
 #include <wx/config.h>
 #include <wx/process.h>
 #include <wx/fdrepdlg.h>
+#include <wx/regex.h>
 
 #if defined (__WXMSW__)
  #include <wx/msw/helpchm.h>
@@ -189,6 +190,7 @@ protected:
 #endif
   wxFindReplaceDialog *m_findDialog;
   wxFindReplaceData m_findData;
+  wxRegEx m_funRegEx;
   DECLARE_EVENT_TABLE()
 };
 

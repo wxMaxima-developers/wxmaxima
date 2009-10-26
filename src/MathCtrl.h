@@ -212,6 +212,7 @@ public:
   wxString GetInputAboveCaret();
   bool LoadFunctions(wxString file) { m_autocomplete.LoadFunctions(file); }
   bool Autocomplete();
+  void AddACFunction(wxString fun) { m_autocomplete.AddFunction(fun); }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

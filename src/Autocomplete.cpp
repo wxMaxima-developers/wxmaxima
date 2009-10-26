@@ -29,6 +29,9 @@ bool AutoComplete::LoadFunctions(wxString file)
   if (!wxFileExists(file))
     return false;
 
+  if (m_functionList.GetCount() > 0)
+    m_functionList.Empty();
+
   wxString line;
   wxString rest, function;
   wxTextFile index(file);
@@ -88,4 +91,10 @@ wxArrayString AutoComplete::CompleteFunction(wxString partial)
   }
 
   return completions;
+}
+
+void AutoComplete::AddFunction(wxString fun)
+{
+  if (m_functionList.Index(fun, true, true) == wxNOT_FOUND)
+    m_functionList.Add(fun);
 }

@@ -116,6 +116,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_findData.SetFlags(wxFR_DOWN);
 
   m_console->SetFocus();
+
+  /// RegEx for function definitions
+  m_funRegEx.Compile(wxT("^ *([[:alnum:],%_]+) *\\([[:alnum:], _%]*\\) *:="));
 }
 
 wxMaxima::~wxMaxima()
@@ -385,8 +388,19 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   SetStatusText(_("Maxima is calculating"), 1);
   m_dispReadOut = false;
 
+  /// Add this command to history
   if (history)
     AddToHistory(s);
+
+  /// Check for function definitions
+  wxStringTokenizer lines(s, wxT("\n"));
+  wxString line;
+  while (lines.HasMoreTokens())
+  {
+    line = lines.GetNextToken();
+    if (m_funRegEx.Matches(line))
+      m_console->AddACFunction(m_funRegEx.GetMatch(line, 1));
+  }
 
   s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
@@ -3035,13 +3049,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   if (m_console->CanCopy(true))
     helpSearchString = m_console->GetString();
   else if (m_console->GetActiveCell() != NULL) {
-    helpSearchString = ((EditorCell *)m_console->GetActiveCell())->SelectWordUnderCaret();
+    helpSearchString = ((EditorCell *)m_console->GetActiveCell())->SelectWordUnderCaret(false);
   }
   if (helpSearchString == wxT(""))
     helpSearchString = wxT("%");
 
   switch (event.GetId())
   {
+
   case wxID_ABOUT:
   {
     wxAboutDialogInfo info;
@@ -3093,12 +3108,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     wxAboutBox(info);
   }
   break;
+
   case wxID_HELP:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:
 #endif
     ShowHelp(helpSearchString);
     break;
+
   case menu_example:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
@@ -3111,6 +3128,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       MenuCommand(cmd);
     }
     break;
+
   case menu_apropos:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show all commands similar to:"), _("Apropos"),
@@ -3123,18 +3141,23 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       MenuCommand(cmd);
     }
     break;
+
   case menu_show_tip:
     ShowTip(true);
     break;
+
   case menu_build_info:
     MenuCommand(wxT("build_info()$"));
     break;
+
   case menu_bug_report:
     MenuCommand(wxT("bug_report()$"));
     break;
+
   case menu_help_tutorials:
     wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/wiki/index.php/Tutorials"));
     break;
+
   default:
     break;
   }
