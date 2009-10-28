@@ -118,7 +118,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetFocus();
 
   /// RegEx for function definitions
-  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\([[:alnum:], _%]*\\) *:="));
+  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\([[:alnum:]%_, ]*\\) *:="));
   // RegEx for variable definitions
   m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
 }

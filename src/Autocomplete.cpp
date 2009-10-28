@@ -49,6 +49,8 @@ bool AutoComplete::LoadSymbols(wxString file)
     m_symbolList.Add(function);
   }
 
+  index.Close();
+
   /// Add wxMaxima functions
   m_symbolList.Add(wxT("set_display"));
   m_symbolList.Add(wxT("wxplot2d"));
@@ -72,9 +74,31 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxpiechart"));
   m_symbolList.Add(wxT("wxboxplot"));
 
-  m_symbolList.Sort();
 
-  index.Close();
+  /// Load private symbol list (do something different on Windows).
+  wxString privateList;
+#if defined __WXMSW__
+  privateList = wxGetHomeDir() + wxT("\\wxmax.ac");
+#else
+  privateList = wxGetHomeDir() + wxT("/.wxmaxima.ac");
+#endif
+
+  if (wxFileExists(privateList))
+  {
+    wxTextFile priv(privateList);
+
+    priv.Open();
+
+    for(line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+    {
+      if (line != wxEmptyString && m_symbolList.Index(line) == wxNOT_FOUND)
+        m_symbolList.Add(line);
+    }
+
+    priv.Close();
+  }
+
+  m_symbolList.Sort();
 
   return false;
 }
