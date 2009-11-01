@@ -1076,6 +1076,23 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x25b6";
   else if (txt == wxT("tb"))
     return L"\x25b8";
+  else if (txt == wxT("and"))
+    return L"\x22C0";
+  else if (txt == wxT("or"))
+    return L"\x22C1";
+  else if (txt == wxT("xor"))
+    return L"\x22BB";
+  else if (txt == wxT("nand"))
+    return L"\x22BC";
+  else if (txt == wxT("nor"))
+    return L"\x22BD";
+  else if (txt == wxT("implies"))
+    return L"\x21D2";
+  else if (txt == wxT("eq"))
+    return L"\x21D4";
+  else if (txt == wxT("not"))
+    return L"\x00AC";
+
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))
     return wxString::Format(wxT("%c"), unicodeval);
@@ -1332,7 +1349,7 @@ void EditorCell::CommentSelection()
  * MathCtrl::Autocomplete.
  */
 
-wxString EditorCell::SelectWordUnderCaret(bool selectParens)
+wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
 {
   if (selectParens && (m_paren1 != -1) && (m_paren2 != -1)) {
     m_selectionStart = MIN(m_paren1,m_paren2) + 1;
@@ -1350,11 +1367,14 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens)
     left--;
   }
 
-  while (right < (signed)m_text.length() )
+  if (toRight)
   {
-    if(wordChars.Find(m_text.GetChar(right)) == -1)
-      break;
-    right++;
+    while (right < (signed)m_text.length() )
+    {
+      if(wordChars.Find(m_text.GetChar(right)) == -1)
+        break;
+      right++;
+    }
   }
 
   if (left != right)

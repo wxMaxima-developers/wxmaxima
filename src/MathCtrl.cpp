@@ -3365,7 +3365,7 @@ bool MathCtrl::Autocomplete()
 
   EditorCell *editor = (EditorCell *)m_activeCell;
 
-  editor->SelectWordUnderCaret(false);
+  editor->SelectWordUnderCaret(false, false);
 
   wxString partial = editor->GetSelectionString();
 

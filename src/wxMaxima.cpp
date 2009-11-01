@@ -385,6 +385,14 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x2148"), wxT("%i"));
   s.Replace(wxT("\x2147"), wxT("%e"));
   s.Replace(wxT("\x221E"), wxT("inf"));
+  s.Replace(wxT("\x22C0"), wxT(" and "));
+  s.Replace(wxT("\x22C1"), wxT(" or "));
+  s.Replace(wxT("\x22BB"), wxT(" xor "));
+  s.Replace(wxT("\x22BC"), wxT(" nand "));
+  s.Replace(wxT("\x22BD"), wxT(" nor "));
+  s.Replace(wxT("\x21D2"), wxT(" implies "));
+  s.Replace(wxT("\x21D4"), wxT(" eq "));
+  s.Replace(wxT("\x00AC"), wxT(" not "));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);
