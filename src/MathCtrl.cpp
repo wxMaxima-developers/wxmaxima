@@ -1649,8 +1649,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
             break;
 
 #if wxUSE_UNICODE
-            // don't open hcaret with esc
+            // ESCAPE is handled by the new cell
           case WXK_ESCAPE:
+            OpenHCaret(wxEmptyString);
+            if (m_activeCell != NULL)
+              ((EditorCell *)m_activeCell)->ProcessEvent(event);
             break;
 #endif
 
