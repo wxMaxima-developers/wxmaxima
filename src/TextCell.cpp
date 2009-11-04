@@ -810,6 +810,7 @@ wxString TextCell::GetSymbolTeX()
     return wxT("\xD5");
   else if (m_text == wxT("<="))
     return wxT("\xD4");
+/*
   else if (m_text == wxT(" and "))
     return wxT(" \x5E ");
   else if (m_text == wxT(" or "))
@@ -826,6 +827,7 @@ wxString TextCell::GetSymbolTeX()
     return wxT("\x3A");
   else if (m_text == wxT(" xor "))
     return wxT("\xC8");
+*/
 
   return wxEmptyString;
 }

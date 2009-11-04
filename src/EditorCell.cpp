@@ -877,7 +877,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     FindMatchingParens();
 
   if (m_isDirty)
-    m_width = m_maxDrop = -1;
+    m_height = m_width = m_maxDrop = -1;
 
   m_displayCaret = true;
 }
@@ -1324,6 +1324,8 @@ wxString EditorCell::DivideAtCaret()
   wxString original = m_text;
   m_containsChanges = true;
   m_text = m_text.SubString(0, m_positionOfCaret - 1);
+  ResetSize();
+  GetParent()->ResetSize();
   return original.SubString(m_positionOfCaret, original.Length());
 }
 
@@ -1526,6 +1528,8 @@ void EditorCell::SetValue(wxString text)
     m_text = text;
     m_positionOfCaret = m_text.Length();
   }
+
+  m_containsChanges = true;
 }
 
 bool EditorCell::CheckChanges()

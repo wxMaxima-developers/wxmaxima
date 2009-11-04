@@ -1354,6 +1354,13 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   }
 }
 
+/*****
+ * OnChar handles key events. If we have an active cell, sends the
+ * event to the active cell, else moves the cursor between groups.
+ *
+ * TODO: this function is should be reimplemented so that it is more
+ *  readable!
+ */
 void MathCtrl::OnChar(wxKeyEvent& event) {
 
 #if defined __WXMSW__
@@ -1408,13 +1415,20 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         needRecalculate = true;
     }
 
+    /// If we need to recalculate then refresh the window
     if (needRecalculate) {
       GroupCell *group = (GroupCell *)m_activeCell->GetParent();
       group->ResetSize();
       group->ResetData();
+      if (((EditorCell *)m_activeCell)->CheckChanges() &&
+          (group->GetGroupType() == GC_TYPE_CODE) &&
+          (m_activeCell == group->GetEditable()))
+        group->GetPrompt()->SetValue(EMPTY_INPUT_LABEL);
       Recalculate();
       Refresh();
     }
+
+    /// Otherwise refresh only the active cell
     else {
       wxRect rect;
       if (((EditorCell *)m_activeCell)->CheckChanges()) {
@@ -3045,6 +3059,7 @@ void MathCtrl::MergeCells()
   m_selectionStart = m_selectionStart->m_next;
   DeleteSelection();
   editor->GetParent()->ResetSize();
+  ((GroupCell *)editor->GetParent())->ResetInputLabel();
   editor->ResetSize();
   Recalculate();
   SetActiveCell(editor, true);
