@@ -37,7 +37,7 @@ public:
   void SetScale(double scale) { m_scale = scale; }
   double GetScale() { return m_scale; }
   wxDC& GetDC() { return m_dc; }
-  void SetBouns(int top, int bottom) {
+  void SetBounds(int top, int bottom) {
     m_top = top;
     m_bottom = bottom;
   }

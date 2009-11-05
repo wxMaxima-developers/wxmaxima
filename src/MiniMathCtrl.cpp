@@ -117,7 +117,7 @@ void MiniMathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetLogicalFunction(wxCOPY);
 
   CellParser parser(dcm);
-  parser.SetBouns(top, bottom);
+  parser.SetBounds(top, bottom);
 
   // Draw content
   if (m_tree != NULL)

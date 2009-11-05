@@ -138,7 +138,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetLogicalFunction(wxCOPY);
 
   CellParser parser(dcm);
-  parser.SetBouns(top, bottom);
+  parser.SetBounds(top, bottom);
   parser.SetZoomFactor(m_zoomFactor);
   int fontsize = parser.GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
@@ -1329,7 +1329,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 #if wxCHECK_VERSION(2,9,0)
           GetParent()->ProcessEventHere(ev);
 #else
-	  GetParent()->ProcessEvent(ev);
+          GetParent()->ProcessEvent(ev);
 #endif
         } else
           event.Skip();
@@ -1423,7 +1423,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       if (((EditorCell *)m_activeCell)->CheckChanges() &&
           (group->GetGroupType() == GC_TYPE_CODE) &&
           (m_activeCell == group->GetEditable()))
-        group->GetPrompt()->SetValue(EMPTY_INPUT_LABEL);
+        group->ResetInputLabel();
       Recalculate();
       Refresh();
     }
@@ -1435,7 +1435,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         GroupCell *group = (GroupCell *) (m_activeCell->GetParent());
         if ((group->GetGroupType() == GC_TYPE_CODE) &&
             (m_activeCell == group->GetEditable()))
-          group->GetPrompt()->SetValue(EMPTY_INPUT_LABEL);
+          group->ResetInputLabel();
         rect = group->GetRect();
         rect.width = GetVirtualSize().x;
       }

@@ -3688,6 +3688,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (group->GetInput()->GetValue() != wxEmptyString)
   {
     group->GetInput()->AddEnding();
+    ((EditorCell *)(group->GetInput()))->ContainsChanges(false);
     wxString text = group->GetInput()->ToString(false);
 
     // override evaluation when input equals wxmaxima_debug_dump_output

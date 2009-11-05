@@ -877,7 +877,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     FindMatchingParens();
 
   if (m_isDirty)
-    m_height = m_width = m_maxDrop = -1;
+    m_width = m_maxDrop = -1;
 
   m_displayCaret = true;
 }
