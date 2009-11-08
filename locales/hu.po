@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 10:59+0100\n"
-"PO-Revision-Date: 2009-11-08 14:55+0100\n"
+"POT-Creation-Date: 2009-11-08 21:45+0100\n"
+"PO-Revision-Date: 2009-11-08 21:47+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -622,7 +622,7 @@ msgid "Compute continued fraction of a value"
 msgstr "Egy lista lánctörtté alakítása"
 
 #: ../src/wxMaximaFrame.cpp:437
-msgid "Compute the adjoint maxrix"
+msgid "Compute the adjoint matrix"
 msgstr "Mátrix adjungáltjának kiszámolása"
 
 #: ../src/wxMaximaFrame.cpp:426
@@ -1179,7 +1179,7 @@ msgid "Export"
 msgstr "Exportálás"
 
 #: ../src/wxMaximaFrame.cpp:202
-msgid "Export document to a HTML or LaTeX file"
+msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Dokumentum exportálása HTML vagy pdfLaTeX formátumba"
 
 #: ../src/wxMaxima.cpp:1824
@@ -1265,7 +1265,6 @@ msgid "File:"
 msgstr "Fájl:"
 
 #: ../src/wxMaximaFrame.cpp:700
-#: ../src/wxMaximaFrame.cpp:765
 msgid "Find"
 msgstr "Keresés..."
 
@@ -1305,6 +1304,10 @@ msgstr "Polinom összes gyökének meghatározása"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Polinom összes gyökének meghatározása"
 
+#: ../src/wxMaxima.cpp:2017
+msgid "Find and Replace"
+msgstr "Keresés és csere"
+
 #: ../src/wxMaximaFrame.cpp:241
 #: ../src/wxMaximaFrame.cpp:702
 #: ../src/wxMaximaFrame.cpp:768
@@ -1331,6 +1334,10 @@ msgstr "Polinom valós gyökeinek meghatározása"
 #: ../src/wxMaxima.cpp:3484
 msgid "Find root"
 msgstr "Megoldás numerikusan"
+
+#: ../src/wxMaximaFrame.cpp:765
+msgid "Find..."
+msgstr "Keresés..."
 
 #: ../src/Config.cpp:101
 msgid "Fixed font in text controls"
@@ -1718,13 +1725,13 @@ msgstr "L&aplace-transzformáció..."
 msgid "Least Common Multiple..."
 msgstr "Legkisebb közös többszörös..."
 
+#: ../src/wxMaxima.cpp:3307
+msgid "Least Squares Fit"
+msgstr "Legkisebb négyzetes közelítés"
+
 #: ../src/wxMaximaFrame.cpp:985
 msgid "Least Squares Fit..."
 msgstr "Legkisebb négyzetes közelítés..."
-
-#: ../src/wxMaxima.cpp:3307
-msgid "Lest Squares Fit"
-msgstr "Legkisebb négyzetes közelítés"
 
 #: ../src/wxMaxima.cpp:2907
 #: ../src/LimitWiz.cpp:66
@@ -2394,8 +2401,8 @@ msgid "Save document"
 msgstr "Dokumentum mentése"
 
 #: ../src/wxMaximaFrame.cpp:196
-msgid "Save document as ..."
-msgstr "Mentés másként"
+msgid "Save document as..."
+msgstr "Mentés másként..."
 
 #: ../src/Config.cpp:99
 msgid "Save panes layout"
@@ -3323,7 +3330,7 @@ msgid ""
 "wxMaxima is a graphical user interface for the\n"
 "computer algebra system Maxima based on wxWidgets."
 msgstr ""
-"A wxMaxima egy wxWidgeteks-en alapuló grafikus felhasználói\n"
+"A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói\n"
 "felület a Maxima komputeralgebrai rendszer számára."
 
 #: ../src/wxMaxima.cpp:3082
