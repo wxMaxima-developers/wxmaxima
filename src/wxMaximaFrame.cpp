@@ -193,13 +193,13 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
-                   _("Save document as ..."), wxT("gtk-save"));
+                   _("Save document as..."), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
                              _("Load a Maxima package file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export..."),
-                   _("Export document to a HTML or LaTeX file"), wxT("stock_export"));
+                   _("Export document to a HTML or pdfLaTeX file"), wxT("stock_export"));
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
@@ -434,7 +434,7 @@ void wxMaximaFrame::SetupMenu()
                              _("Find eigenvectors of a matrix"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
-                             _("Compute the adjoint maxrix"), wxITEM_NORMAL);
+                             _("Compute the adjoint matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_transpose, _("&Transpose Matrix"),
                              _("Transpose a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->AppendSeparator();
@@ -762,7 +762,7 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Paste from clipboard"));
   frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_find, _("Find"),
+  frame_1_toolbar->AddTool(tb_find, _("Find..."),
                            wxArtProvider::GetBitmap(wxT("gtk-find"),
                                                     wxART_TOOLBAR),
                            _("Find and replace"));

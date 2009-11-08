@@ -790,7 +790,7 @@ void Config::WriteStyles(wxString file)
   WRITE_STYLE(m_styleNumber, "Style/Number/")
 
   // Greek
-  WRITE_STYLE(m_styleGreek, "Style/Math/")
+  WRITE_STYLE(m_styleGreek, "Style/Greek/")
 
   // String
   WRITE_STYLE(m_styleString, "Style/String/")

@@ -2014,7 +2014,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_findDialog = new wxFindReplaceDialog(
                              this,
                              &m_findData,
-                             wxT("Find and replace dialog"),
+                             _("Find and Replace"),
                              wxFR_REPLACEDIALOG |
                                wxFR_NOWHOLEWORD);
       m_findDialog->Show(true);
@@ -3304,7 +3304,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
       Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Col. names:"),
                                  _("Equation:"), _("Variables:"),
                                  expr, wxT("x,y"), wxT("y=A*x+B"), wxT("A,B"),
-                                 this, -1, _("Lest Squares Fit"), true);
+                                 this, -1, _("Least Squares Fit"), true);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
