@@ -59,6 +59,7 @@ public:
   void RemoveOutput();
   // exporting
   wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeX(bool all);
   wxString ToXML(bool all);
   // hide status
   bool IsHidden() { return m_hide; }

@@ -593,6 +593,11 @@ wxString GroupCell::ToString(bool all)
   return str + MathCell::ToString(all);
 }
 
+wxString GroupCell::ToTeX(bool all)
+{
+  return ToTeX(all, wxEmptyString, wxEmptyString, NULL);
+}
+
 wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
@@ -601,8 +606,9 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
   if (m_groupType == GC_TYPE_PAGEBREAK) {
     str = wxT("\\pagebreak\n");
   }
+
   // IMAGE CELLS
-  else if (m_groupType == GC_TYPE_IMAGE) {
+  else if (m_groupType == GC_TYPE_IMAGE && imgDir != wxEmptyString) {
     MathCell *copy = m_output->Copy(false);
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
@@ -625,6 +631,8 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           << wxT("\\end{figure}");
     }
   }
+  else if (m_groupType == GC_TYPE_IMAGE)
+    str << wxT("\n\\vert|<<GRAPHICS>>|\n");
 
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
@@ -637,22 +645,28 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
       while (tmp != NULL) {
 
-        if (tmp->GetType() == MC_TYPE_IMAGE || tmp->GetType() == MC_TYPE_SLIDE) {
-          MathCell *copy = tmp->Copy(false);
-          (*imgCounter)++;
-          wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
-          wxString file = imgDir + wxT("/") + image;
+        if (tmp->GetType() == MC_TYPE_IMAGE || tmp->GetType() == MC_TYPE_SLIDE)
+        {
+          if (imgDir != wxEmptyString)
+          {
+            MathCell *copy = tmp->Copy(false);
+            (*imgCounter)++;
+            wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
+            wxString file = imgDir + wxT("/") + image;
 
-          Bitmap bmp;
-          bmp.SetData(copy);
+            Bitmap bmp;
+            bmp.SetData(copy);
 
-          if (!wxDirExists(imgDir))
-            if (!wxMkdir(imgDir))
-              continue;
+            if (!wxDirExists(imgDir))
+              if (!wxMkdir(imgDir))
+                continue;
 
-          if (bmp.ToFile(file))
-            str += wxT("\\includegraphics[width=9cm]{") +
-                filename + wxT("_img/") + image + wxT("}\n");
+            if (bmp.ToFile(file))
+              str += wxT("\\includegraphics[width=9cm]{") +
+                  filename + wxT("_img/") + image + wxT("}\n");
+          }
+          else
+            str << wxT("\n\\verb|<<GRAPHICS>>|\n");
         }
 
         else if (tmp->GetStyle() == TS_LABEL)
