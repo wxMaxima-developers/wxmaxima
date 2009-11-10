@@ -426,9 +426,10 @@ wxString IntCell::ToXML(bool all)
 	tmp = m_over;
 	wxString to = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
-	return _T("<in>") + ( ( m_intStyle == INT_DEF )?
-					from + to + base + var :
-					base + var ) + _T("</in>") +
+	if (m_intStyle == INT_DEF)
+	  return wxT("<in>") + from + to + base + var + wxT("</in>") + MathCell::ToXML(all);
+	else
+	  return wxT("<in def=\"false\">") + base + var  + wxT("</in>") +
 					MathCell::ToXML(all);
 }
 
