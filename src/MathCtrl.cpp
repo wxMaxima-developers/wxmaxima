@@ -1057,12 +1057,14 @@ bool MathCtrl::CopyTeX() {
     inMath = true;
     s = wxT("$$");
   }
+
   while (tmp != NULL) {
     s += tmp->ToTeX(false);
     if (tmp == m_selectionEnd)
       break;
     tmp = tmp->m_next;
   }
+
   if (inMath == true)
     s += wxT("$$");
 

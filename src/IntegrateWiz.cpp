@@ -213,8 +213,8 @@ void IntegrateWiz::OnButton(wxCommandEvent& event)
   {
   case special_from:
     {
-      wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
-                            wxT("- Infinity")};
+      wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
+                            _("- Infinity")};
       wxString choice = wxGetSingleChoice(_("Select a constant"),
                                           _("Constant"), 4, choices, this);
       if (choice.Length())
@@ -223,17 +223,17 @@ void IntegrateWiz::OnButton(wxCommandEvent& event)
           text_ctrl_3->SetValue(wxT("%pi"));
         else if (choice == wxT("E"))
           text_ctrl_3->SetValue(wxT("%e"));
-        else if (choice == wxT("Infinity"))
+        else if (choice == _("Infinity"))
           text_ctrl_3->SetValue(wxT("inf"));
-        else if (choice == wxT("- Infinity"))
+        else if (choice == _("- Infinity"))
           text_ctrl_3->SetValue(wxT("minf"));
       }
     }
     break;
   case special_to:
     {
-      wxString choices[] = {wxT("Pi"), wxT("E"), wxT("Infinity"),
-                            wxT("- Infinity")};
+      wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
+                            _("- Infinity")};
       wxString choice = wxGetSingleChoice(_("Select a constant"),
                                           _("Constant"), 4, choices, this);
       if (choice.Length())
@@ -242,9 +242,9 @@ void IntegrateWiz::OnButton(wxCommandEvent& event)
           text_ctrl_4->SetValue(wxT("%pi"));
         else if (choice == wxT("E"))
           text_ctrl_4->SetValue(wxT("%e"));
-        else if (choice == wxT("Infinity"))
+        else if (choice == _("Infinity"))
           text_ctrl_4->SetValue(wxT("inf"));
-        else if (choice == wxT("- Infinity"))
+        else if (choice == _("- Infinity"))
           text_ctrl_4->SetValue(wxT("minf"));
       }
     }
