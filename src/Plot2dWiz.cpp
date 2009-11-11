@@ -41,7 +41,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
 {
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                              wxSize(250, -1));
+                              wxSize(300, -1));
   button_3 = new wxButton(this, special, _("&Special"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
@@ -52,6 +52,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
+  check_box_1 = new wxCheckBox(this, -1, _("logscale"));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
                               wxSize(40, -1), wxTE_READONLY);
@@ -59,6 +60,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_8 = new wxStaticText(this, -1, _("To:"));
+  check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
@@ -82,12 +84,10 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
       wxT("set zeroaxis;"),
       wxT("set size ratio 1; set zeroaxis;"),
       wxT("set grid;"),
-      wxT("set polar; set zeroaxis;"),
-      wxT("set logscale y; set grid;"),
-      wxT("set logscale x; set grid;")
+      wxT("set polar; set zeroaxis;")
     };
   combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
-                               wxSize(280, -1), 6,
+                               wxSize(280, -1), 4,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("File:"));
   text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -128,9 +128,15 @@ void Plot2DWiz::set_properties()
 
   int selection = 1;
   bool sendRanges = false;
+  bool logx = false, logy = false;
 
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/format"), &selection);
   wxConfig::Get()->Read(wxT("Wiz/Plot2D/sendRanges"), &sendRanges);
+  wxConfig::Get()->Read(wxT("Wiz/Plot2D/logx"), &logx);
+  wxConfig::Get()->Read(wxT("Wiz/Plot2D/logy"), &logy);
+
+  check_box_1->SetValue(logx);
+  check_box_2->SetValue(logy);
 
   combo_box_1->SetSelection(selection);
 
@@ -157,6 +163,7 @@ void Plot2DWiz::do_layout()
   sizer_3->Add(text_ctrl_3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer_3->Add(label_5, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   sizer_3->Add(text_ctrl_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_3->Add(check_box_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(sizer_3, 1, 0, 0);
   grid_sizer_2->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_4->Add(text_ctrl_5, 0, wxALL, 5);
@@ -164,6 +171,7 @@ void Plot2DWiz::do_layout()
   sizer_4->Add(text_ctrl_6, 0, wxALL, 5);
   sizer_4->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_4->Add(text_ctrl_7, 0, wxALL, 5);
+  sizer_4->Add(check_box_2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(sizer_4, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_9, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_8, 0, wxALL, 5);
@@ -207,6 +215,9 @@ void Plot2DWiz::Parse(wxString s)
   int depth = 0;
   unsigned int i = 0;
   wxString curr;
+
+  check_box_1->SetValue(false);
+  check_box_2->SetValue(false);
 
   s = s.SubString(7, s.Length());
   // Function to plot
@@ -265,7 +276,7 @@ void Plot2DWiz::Parse(wxString s)
     {
       i++;
       curr = wxEmptyString;
-      while (i < s.Length() && s.GetChar(i) != ',')
+      while (i < s.Length() && s.GetChar(i) != ',' && s.GetChar(i) != ']')
       {
         curr += s.GetChar(i);
         i++;
@@ -331,6 +342,18 @@ void Plot2DWiz::Parse(wxString s)
         }
         text_ctrl_8->SetValue(curr);
       }
+      else if (curr == wxT("logx"))
+      {
+        check_box_1->SetValue(true);
+        while (i < s.Length() && s.GetChar(i) != ']')
+          i++;
+      }
+      else if (curr == wxT("logy"))
+      {
+        check_box_2->SetValue(true);
+        while (i < s.Length() && s.GetChar(i) != ']')
+          i++;
+      }
     }
     i++;
   }
@@ -340,7 +363,7 @@ wxString Plot2DWiz::GetValue()
 {
   wxString f = combo_box_1->GetValue();     // format
   wxString p = combo_box_2->GetValue();     // preamble
-  wxString s = wxT("plot2d([");             // result
+  wxString s;                               // result
   wxString x1 = text_ctrl_3->GetValue();
   wxString x2 = text_ctrl_4->GetValue();
   wxString y1 = text_ctrl_6->GetValue();
@@ -348,8 +371,11 @@ wxString Plot2DWiz::GetValue()
   int t = text_ctrl_8->GetValue();          // Number of ticks
   wxString file = text_ctrl_9->GetValue();  // plot to file
 
-  s += text_ctrl_1->GetValue();
+  // Expression
+  s = wxT("plot2d([") + text_ctrl_1->GetValue();
   s += wxT("], [");
+
+  // x-range
   s += text_ctrl_2->GetValue();
   s += wxT(",");
   if (x1 != wxT("0") || x2 != wxT("0"))
@@ -359,14 +385,21 @@ wxString Plot2DWiz::GetValue()
   else
     s += wxT("-5,5");
   s += wxT("]");
+
+  // y-range
   if (y1 != wxT("0") || y2 != wxT("0"))
   {
     s += wxT(", [");
     s += text_ctrl_5->GetValue();
     s += wxT(",") + y1 + wxT(",") + y2 + wxT("]");
   }
+
+  // plot format
   if (f != _("default") && f != _("inline"))
     s += wxT(",\n [plot_format, ") + f + wxT("]");
+
+
+  // gnuplot_preamble
   if (p.Length() > 0)
     s += wxT(",\n [gnuplot_preamble, \"") + p + wxT("\"]");
   if (t != 10)
@@ -375,6 +408,14 @@ wxString Plot2DWiz::GetValue()
     s += wxString::Format(wxT("%d"), t);
     s += wxT("]");
   }
+
+  // check for logscales
+  if (check_box_1->IsChecked())
+    s += wxT(", [logx]");
+  if (check_box_2->IsChecked())
+    s += wxT(", [logy]");
+
+  // plot to file
   if (file.Length())
   {
     s += wxT(", [gnuplot_term, ps]");
@@ -386,12 +427,16 @@ wxString Plot2DWiz::GetValue()
       file = file + wxT(".eps");
     s += wxT(",\n [gnuplot_out_file, \"") + file + wxT("\"]");
   }
+  // inline?
   else if (f == _("inline"))
     s = wxT("wx") + s;
 
   s += wxT(")$");
 
   wxConfig::Get()->Write(wxT("Wiz/Plot2D/format"), combo_box_1->GetSelection());
+  wxConfig::Get()->Write(wxT("Wiz/Plot2D/logx"), check_box_1->GetValue());
+  wxConfig::Get()->Write(wxT("Wiz/Plot2D/logy"), check_box_2->GetValue());
+
   return s;
 }
 
