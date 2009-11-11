@@ -43,6 +43,7 @@
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
+#define AC_MENU_LENGTH 25
 
 void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
 
@@ -3415,7 +3416,7 @@ bool MathCtrl::Autocomplete()
   else {
     wxMenu *popup = new wxMenu();
 
-    for (int i=0; i<m_completions.GetCount() && i<20; i++)
+    for (int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
       popup->Append(popid_complete_00 + i, m_completions[i]);
 
     // Find the position for the popup menu
@@ -3453,7 +3454,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
-  EVT_MENU_RANGE(popid_complete_00, popid_complete_19, MathCtrl::OnComplete)
+  EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
