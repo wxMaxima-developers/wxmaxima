@@ -710,7 +710,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 */
   case WXK_ESCAPE:
+    if (m_selectionStart != -1)
+    {
+      m_positionOfCaret = m_selectionEnd;
+      m_selectionStart = m_selectionEnd = -1;
+    }
 #if wxUSE_UNICODE
+    else
     {
       // TODO: search only a few positions back for an escchar (10? and not over newlines)
       bool insertescchar = false;
