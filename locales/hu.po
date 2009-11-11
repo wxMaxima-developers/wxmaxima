@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 21:45+0100\n"
-"PO-Revision-Date: 2009-11-08 21:47+0100\n"
+"POT-Creation-Date: 2009-11-11 14:44+0100\n"
+"PO-Revision-Date: 2009-11-11 14:50+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -331,6 +331,15 @@ msgstr "&pm3d"
 msgid "(Use default language)"
 msgstr "(Alapértelmezett nyelv)"
 
+#: ../src/IntegrateWiz.cpp:217
+#: ../src/IntegrateWiz.cpp:228
+#: ../src/IntegrateWiz.cpp:236
+#: ../src/IntegrateWiz.cpp:247
+#: ../src/LimitWiz.cpp:133
+#: ../src/LimitWiz.cpp:144
+msgid "- Infinity"
+msgstr "- Végtelen"
+
 #: ../src/MiniMathCtrl.cpp:42
 msgid "<< Nothing to display >>"
 msgstr "<< Nincs mit megjeleníteni >>"
@@ -613,7 +622,7 @@ msgstr "Vesszővel válassza el az x koordinátákat"
 msgid "Comma separated y coordinates"
 msgstr "Vesszővel válassza el az y koordinátákat"
 
-#: ../src/MathCtrl.cpp:731
+#: ../src/MathCtrl.cpp:732
 msgid "Comment Selection"
 msgstr "Megjegyzés kiválasztása"
 
@@ -729,20 +738,20 @@ msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítá
 
 #: ../src/wxMaximaFrame.cpp:693
 #: ../src/wxMaximaFrame.cpp:756
-#: ../src/MathCtrl.cpp:658
-#: ../src/MathCtrl.cpp:668
-#: ../src/MathCtrl.cpp:686
-#: ../src/MathCtrl.cpp:726
+#: ../src/MathCtrl.cpp:659
+#: ../src/MathCtrl.cpp:669
+#: ../src/MathCtrl.cpp:687
+#: ../src/MathCtrl.cpp:727
 msgid "Copy"
 msgstr "Másolás"
 
-#: ../src/MathCtrl.cpp:671
-#: ../src/MathCtrl.cpp:689
+#: ../src/MathCtrl.cpp:672
+#: ../src/MathCtrl.cpp:690
 msgid "Copy As Image"
 msgstr "Másolás képként"
 
-#: ../src/MathCtrl.cpp:669
-#: ../src/MathCtrl.cpp:687
+#: ../src/MathCtrl.cpp:670
+#: ../src/MathCtrl.cpp:688
 msgid "Copy LaTeX"
 msgstr "Másolás LaTeX-be"
 
@@ -798,7 +807,7 @@ msgstr "Kurzor"
 
 #: ../src/wxMaximaFrame.cpp:690
 #: ../src/wxMaximaFrame.cpp:752
-#: ../src/MathCtrl.cpp:725
+#: ../src/MathCtrl.cpp:726
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -859,8 +868,8 @@ msgstr "Törlés"
 msgid "Delete F&unction..."
 msgstr "Fü&ggvény törlése..."
 
-#: ../src/MathCtrl.cpp:675
-#: ../src/MathCtrl.cpp:693
+#: ../src/MathCtrl.cpp:676
+#: ../src/MathCtrl.cpp:694
 msgid "Delete Selection"
 msgstr "Kijelölt rész törlése"
 
@@ -921,7 +930,7 @@ msgstr "Differenciálás"
 msgid "Differentiate expression"
 msgstr "Kifejezés differenciálása"
 
-#: ../src/MathCtrl.cpp:709
+#: ../src/MathCtrl.cpp:710
 msgid "Differentiate..."
 msgstr "Differenciálás..."
 
@@ -954,7 +963,7 @@ msgstr "Megjeleníti mennyi idő alatt fut le az eljárás"
 msgid "Divide"
 msgstr "Osztás"
 
-#: ../src/MathCtrl.cpp:733
+#: ../src/MathCtrl.cpp:734
 msgid "Divide Cell"
 msgstr "Cella kettéosztása"
 
@@ -1121,7 +1130,7 @@ msgid "Evaluate All Cells\tCtrl-R"
 msgstr "Minden cella újraszámolása\tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:252
-#: ../src/MathCtrl.cpp:678
+#: ../src/MathCtrl.cpp:679
 msgid "Evaluate Cell(s)"
 msgstr "Cellák újraszámolása"
 
@@ -1158,7 +1167,7 @@ msgstr "Felbont"
 msgid "Expand (tr)"
 msgstr "Felbont (tr)"
 
-#: ../src/MathCtrl.cpp:705
+#: ../src/MathCtrl.cpp:706
 msgid "Expand Expression"
 msgstr "Kifejezés felbontása"
 
@@ -1224,7 +1233,7 @@ msgstr "Faktorizál"
 msgid "Factor Complex"
 msgstr "Komplex faktorizáció"
 
-#: ../src/MathCtrl.cpp:704
+#: ../src/MathCtrl.cpp:705
 msgid "Factor Expression"
 msgstr "Kifejezés faktorizálása"
 
@@ -1244,7 +1253,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: ../src/GroupCell.cpp:1208
+#: ../src/GroupCell.cpp:1222
 msgid "Figure"
 msgstr "Ábra"
 
@@ -1280,7 +1289,7 @@ msgstr "&Határérték számolása..."
 msgid "Find Minimum..."
 msgstr "Minimum keresése..."
 
-#: ../src/MathCtrl.cpp:701
+#: ../src/MathCtrl.cpp:702
 msgid "Find Root..."
 msgstr "Megoldás numerikusan..."
 
@@ -1552,6 +1561,15 @@ msgstr "Kép fájlok (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgid "Include columns:"
 msgstr "Tartalmazott oszlopok:"
 
+#: ../src/IntegrateWiz.cpp:216
+#: ../src/IntegrateWiz.cpp:226
+#: ../src/IntegrateWiz.cpp:235
+#: ../src/IntegrateWiz.cpp:245
+#: ../src/LimitWiz.cpp:132
+#: ../src/LimitWiz.cpp:142
+msgid "Infinity"
+msgstr "Végtelen"
+
 #: ../src/wxMaximaFrame.cpp:639
 msgid "Info about Maxima build"
 msgstr "Információ a Maxima fordításáról"
@@ -1655,7 +1673,7 @@ msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
 #: ../src/wxMaximaFrame.cpp:943
-#: ../src/MathCtrl.cpp:708
+#: ../src/MathCtrl.cpp:709
 msgid "Integrate..."
 msgstr "Integrál..."
 
@@ -1897,7 +1915,7 @@ msgstr "Átlag:"
 msgid "Median"
 msgstr "Medián"
 
-#: ../src/MathCtrl.cpp:681
+#: ../src/MathCtrl.cpp:682
 msgid "Merge Cells"
 msgstr "Cellák egyesítése"
 
@@ -2134,8 +2152,8 @@ msgstr "A dokumentum egyes részei nem töltődtek be!"
 
 #: ../src/wxMaximaFrame.cpp:696
 #: ../src/wxMaximaFrame.cpp:760
-#: ../src/MathCtrl.cpp:718
-#: ../src/MathCtrl.cpp:727
+#: ../src/MathCtrl.cpp:719
+#: ../src/MathCtrl.cpp:728
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -2188,7 +2206,7 @@ msgstr "Kétdimenziós ábrázolás"
 msgid "Plot 2D..."
 msgstr "2D..."
 
-#: ../src/MathCtrl.cpp:711
+#: ../src/MathCtrl.cpp:712
 msgid "Plot 2d..."
 msgstr "2d-s ábrázolás..."
 
@@ -2202,7 +2220,7 @@ msgstr "Háromdimenziós ábrázolás"
 msgid "Plot 3D..."
 msgstr "3D..."
 
-#: ../src/MathCtrl.cpp:712
+#: ../src/MathCtrl.cpp:713
 msgid "Plot 3d..."
 msgstr "3d-s ábrázolás..."
 
@@ -2382,7 +2400,7 @@ msgstr "Mentés másként"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Mentés másként...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:660
+#: ../src/MathCtrl.cpp:661
 msgid "Save Image..."
 msgstr "Kép mentése..."
 
@@ -2453,8 +2471,8 @@ msgstr "Fejezet"
 msgid "Section cell"
 msgstr "Fejezetcella"
 
-#: ../src/MathCtrl.cpp:719
-#: ../src/MathCtrl.cpp:729
+#: ../src/MathCtrl.cpp:720
+#: ../src/MathCtrl.cpp:730
 msgid "Select All"
 msgstr "Cellatartalom kijelölése"
 
@@ -2650,7 +2668,7 @@ msgstr "Egysz. (r)"
 msgid "Simplify (tr)"
 msgstr "Egysz. (tr)"
 
-#: ../src/MathCtrl.cpp:703
+#: ../src/MathCtrl.cpp:704
 msgid "Simplify Expression"
 msgstr "Kifejezés egyszerűsítése"
 
@@ -2722,7 +2740,7 @@ msgstr "Diff.egy...."
 #: ../src/wxMaxima.cpp:2322
 #: ../src/wxMaxima.cpp:2333
 msgid "Solve algebraic system"
-msgstr "Algebrai egyenletrendszer megoldása"
+msgstr "Algebrai egyenletrendszer"
 
 #: ../src/wxMaximaFrame.cpp:386
 msgid "Solve algebraic system of equations"
@@ -2751,7 +2769,7 @@ msgstr "Kezdetiérték-probléma megoldása másodrendű közönséges differenc
 #: ../src/wxMaxima.cpp:2346
 #: ../src/wxMaxima.cpp:2357
 msgid "Solve linear system"
-msgstr "Lineáris egyenletrendszer megoldása"
+msgstr "Lineáris egyenletrendszer"
 
 #: ../src/wxMaximaFrame.cpp:383
 msgid "Solve linear system of equations"
@@ -2766,7 +2784,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
 #: ../src/wxMaximaFrame.cpp:940
-#: ../src/MathCtrl.cpp:700
+#: ../src/MathCtrl.cpp:701
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -2857,7 +2875,7 @@ msgid "Substitute"
 msgstr "Behelyettesítés"
 
 #: ../src/wxMaximaFrame.cpp:582
-#: ../src/MathCtrl.cpp:706
+#: ../src/MathCtrl.cpp:707
 msgid "Substitute..."
 msgstr "Behelyettesítés..."
 
@@ -2938,7 +2956,7 @@ msgstr "&Hosszú tizedestört"
 msgid "To &Float"
 msgstr "Tizedestört"
 
-#: ../src/MathCtrl.cpp:698
+#: ../src/MathCtrl.cpp:699
 msgid "To Float"
 msgstr "Tizedestört"
 
