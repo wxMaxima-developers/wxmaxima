@@ -87,10 +87,10 @@ public:
     if (m_firstLineOnly != show) { m_width = m_height = -1; m_firstLineOnly = show; }}
   bool IsActive() { return m_isActive; }
   bool CaretAtStart() { return m_positionOfCaret == 0; }
-  void CaretToStart() { m_positionOfCaret = 0; }
+  void CaretToStart();
   bool CaretAtEnd() { return m_positionOfCaret == (signed)m_text.Length(); }
-  void CaretToEnd() { m_positionOfCaret = m_text.Length(); }
-  void CaretToPosition(int pos) { m_positionOfCaret = pos; }
+  void CaretToEnd();
+  void CaretToPosition(int pos);
   bool CanUndo() { return m_text != m_oldText; }
   void SaveValue();
   void Undo();

@@ -1144,7 +1144,7 @@ bool EditorCell::AddEnding()
   wxString text = m_text.Trim();
   if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
     m_text += wxT(";");
-    m_width = -1;
+    m_paren1 = m_paren2 = m_width = -1;
     return true;
   }
   return false;
@@ -1659,4 +1659,22 @@ bool EditorCell::FindNextTemplate()
     return true;
   }
   return false;
+}
+
+void EditorCell::CaretToEnd()
+{
+  m_positionOfCaret = m_text.Length();
+  FindMatchingParens();
+}
+
+void EditorCell::CaretToStart()
+{
+  m_positionOfCaret = 0;
+  FindMatchingParens();
+}
+
+void EditorCell::CaretToPosition(int pos)
+{
+  m_positionOfCaret = pos;
+  FindMatchingParens();
 }
