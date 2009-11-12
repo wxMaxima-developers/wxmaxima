@@ -225,7 +225,15 @@ void wxMaxima::FirstOutput(wxString s)
   wxString index = GetHelpFile();
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
 #endif
+
+#if defined __WXMAC__
   m_console->LoadSymbols(wxGetCwd() + wxT("/") + wxT(MACPREFIX) + wxT("/autocomplete.txt"));
+#elif defined __WXMSW__
+  m_console->LoadSymbols(wxGetCwd() + wxT("\\data\\autocomplete.txt"));
+#else
+  wxString prefix(wxT(PREFIX));
+  m_console->LoadSymbols(prefix + wxT("/share/wxMaxima/autocomplete.txt"));
+#endif
 }
 
 ///--------------------------------------------------------------------------------
