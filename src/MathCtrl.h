@@ -193,7 +193,7 @@ public:
   int ReplaceAll(wxString oldString, wxString newString);
   wxString GetInputAboveCaret();
   bool LoadSymbols(wxString file) { m_autocomplete.LoadSymbols(file); }
-  bool Autocomplete();
+  bool Autocomplete(bool templates = false);
   void AddSymbol(wxString fun) { m_autocomplete.AddSymbol(fun); }
 protected:
   MathCell* CopySelection();
@@ -247,6 +247,7 @@ protected:
   double m_zoomFactor;
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
+  bool m_autocompleteTemplates;
   DECLARE_EVENT_TABLE()
 };
 

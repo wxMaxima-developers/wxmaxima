@@ -3379,10 +3379,12 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-bool MathCtrl::Autocomplete()
+bool MathCtrl::Autocomplete(bool templates)
 {
   if (m_activeCell == NULL)
     return false;
+
+  m_autocompleteTemplates = templates;
 
   EditorCell *editor = (EditorCell *)m_activeCell;
 
@@ -3390,7 +3392,7 @@ bool MathCtrl::Autocomplete()
 
   wxString partial = editor->GetSelectionString();
 
-  m_completions = m_autocomplete.CompleteSymbol(partial);
+  m_completions = m_autocomplete.CompleteSymbol(partial, templates);
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)
@@ -3402,10 +3404,25 @@ bool MathCtrl::Autocomplete()
   /// If there is only one completion, use it
   if (m_completions.GetCount() == 1)
   {
+    int start, end;
+    editor->GetSelection(&start, &end);
+
     editor->ReplaceSelection(editor->GetSelectionString(),
         m_completions[0]);
 
-    editor->ClearSelection();
+    if (templates)
+    {
+      editor->CaretToPosition(start);
+      // If we can't fine the template then go over the selection
+      if (!editor->FindNextTemplate())
+      {
+        editor->ClearSelection();
+        editor->CaretToPosition(start + m_completions[0].Length());
+      }
+    }
+    else
+      editor->ClearSelection();
+
 
     // TODO: be more efficient here!
     RecalculateForce();
@@ -3442,11 +3459,22 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
     return;
 
   EditorCell *editor = (EditorCell *)m_activeCell;
+  int caret = editor->GetCaretPosition();
 
   editor->ReplaceSelection(editor->GetSelectionString(),
       m_completions[event.GetId() - popid_complete_00]);
 
+  int sel_start, sel_end;
+  editor->GetSelection(&sel_start, &sel_end);
+
   editor->ClearSelection();
+
+  if (m_autocompleteTemplates)
+  {
+    editor->CaretToPosition(caret);
+    if (!editor->FindNextTemplate())
+      editor->CaretToPosition(sel_start + m_completions[event.GetId() - popid_complete_00].Length());
+  }
 
   // TODO: be more efficient here!
   RecalculateForce();

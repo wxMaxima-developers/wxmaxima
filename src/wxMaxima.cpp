@@ -225,7 +225,7 @@ void wxMaxima::FirstOutput(wxString s)
   wxString index = GetHelpFile();
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
 #endif
-  m_console->LoadSymbols(index);
+  m_console->LoadSymbols(wxGetCwd() + wxT("/") + wxT(MACPREFIX) + wxT("/autocomplete.txt"));
 }
 
 ///--------------------------------------------------------------------------------
@@ -3751,6 +3751,10 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     m_console->Autocomplete();
     return ;
     break;
+  case menu_autocomplete_templates:
+    m_console->Autocomplete(true);
+    return ;
+    break;
   case menu_add_comment:
   case popid_add_comment:
   case menu_format_text:
@@ -4129,6 +4133,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_autocomplete, wxMaxima::InsertMenu)
+  EVT_MENU(menu_autocomplete_templates, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_cut, wxMaxima::EditMenu)

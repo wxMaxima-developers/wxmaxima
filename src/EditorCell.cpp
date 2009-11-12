@@ -18,6 +18,7 @@
 ///
 
 #include <wx/clipbrd.h>
+#include <wx/regex.h>
 
 #include "EditorCell.h"
 #include "wxMaxima.h"
@@ -670,30 +671,33 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_TAB:
     m_isDirty = true;
-    m_containsChanges = true;
+    if (!FindNextTemplate())
     {
-      if (m_selectionStart > -1) {
-        long start = MIN(m_selectionEnd, m_selectionStart);
-        long end = MAX(m_selectionEnd, m_selectionStart);
-        m_text = m_text.SubString(0, start - 1) +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;
-        m_selectionEnd = m_selectionStart = -1;
-        break;
+      m_containsChanges = true;
+      {
+        if (m_selectionStart > -1) {
+          long start = MIN(m_selectionEnd, m_selectionStart);
+          long end = MAX(m_selectionEnd, m_selectionStart);
+          m_text = m_text.SubString(0, start - 1) +
+                   m_text.SubString(end, m_text.Length());
+          m_positionOfCaret = start;
+          m_selectionEnd = m_selectionStart = -1;
+          break;
+        }
+
+        int col, line;
+        PositionToXY(m_positionOfCaret, &col, &line);
+        wxString ins;
+        do {
+          col++;
+          ins += wxT(" ");
+        } while (col%4 != 0);
+
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                 ins +
+                 m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_positionOfCaret += ins.Length();
       }
-
-      int col, line;
-      PositionToXY(m_positionOfCaret, &col, &line);
-      wxString ins;
-      do {
-        col++;
-        ins += wxT(" ");
-      } while (col%4 != 0);
-
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-               ins +
-               m_text.SubString(m_positionOfCaret, m_text.Length());
-      m_positionOfCaret += ins.Length();
     }
     break;
 /*
@@ -856,6 +860,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         case '{':
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
                    wxT("}") +
+                   m_text.SubString(m_positionOfCaret, m_text.Length());
+          break;
+        case '"':
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   wxT("\"") +
                    m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case ')': // jump over ')'
@@ -1631,4 +1640,23 @@ void EditorCell::ClearSelection()
 
   m_positionOfCaret = m_selectionEnd;
   m_selectionStart = m_selectionEnd = -1;
+}
+
+bool EditorCell::FindNextTemplate()
+{
+  wxRegEx varsRegex;
+  varsRegex.Compile(wxT("(<[a-zA-Z0-9_% ]+>)"));
+
+  wxString rest = m_text.Mid(m_positionOfCaret);
+
+  size_t start, length;
+
+  if (varsRegex.Matches(rest))
+  {
+    varsRegex.GetMatch(&start, &length, 1);
+    m_positionOfCaret = m_selectionStart = m_positionOfCaret + start;
+    m_selectionEnd = m_selectionStart + length;
+    return true;
+  }
+  return false;
 }

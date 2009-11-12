@@ -31,6 +31,8 @@ bool AutoComplete::LoadSymbols(wxString file)
 
   if (m_symbolList.GetCount() > 0)
     m_symbolList.Empty();
+  if (m_templateList.GetCount() > 0)
+    m_templateList.Empty();
 
   wxString line;
   wxString rest, function;
@@ -40,13 +42,11 @@ bool AutoComplete::LoadSymbols(wxString file)
 
   for(line = index.GetFirstLine(); !index.Eof(); line = index.GetNextLine())
   {
-    if (!line.StartsWith(wxT("   <param name=\"Name\" value=\""), &rest))
-      continue;
-
-    if (!rest.EndsWith(wxT("\"></object>"), &function))
-      continue;
-
-    m_symbolList.Add(function);
+    if (line.StartsWith(wxT("FUNCTION: ")) ||
+        line.StartsWith(wxT("OPTION  : ")))
+      m_symbolList.Add(line.Mid(10));
+    else if (line.StartsWith(wxT("TEMPLATE: ")))
+      m_templateList.Add(line.Mid(10));
   }
 
   index.Close();
@@ -91,7 +91,12 @@ bool AutoComplete::LoadSymbols(wxString file)
 
     for(line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
     {
-      if (line != wxEmptyString && m_symbolList.Index(line) == wxNOT_FOUND)
+      if (line.StartsWith(wxT("FUNCTION: ")) ||
+          line.StartsWith(wxT("OPTION  : ")))
+        m_symbolList.Add(line.Mid(10));
+      else if (line.StartsWith(wxT("TEMPLATE: ")))
+        m_templateList.Add(line.Mid(10));
+      else
         m_symbolList.Add(line);
     }
 
@@ -104,15 +109,25 @@ bool AutoComplete::LoadSymbols(wxString file)
 }
 
 /// Returns a string array with functions which start with partial.
-wxArrayString AutoComplete::CompleteSymbol(wxString partial)
+wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
 {
   wxArrayString completions;
 
-  for (int i=0; i<m_symbolList.GetCount(); i++)
-  {
-    if (m_symbolList[i].StartsWith(partial))
-      completions.Add(m_symbolList[i]);
+  if (!templates) {
+    for (int i=0; i<m_symbolList.GetCount(); i++)
+    {
+      if (m_symbolList[i].StartsWith(partial))
+        completions.Add(m_symbolList[i]);
+    }
   }
+  else {
+    for (int i=0; i<m_templateList.GetCount(); i++)
+    {
+      if (m_templateList[i].StartsWith(partial))
+        completions.Add(m_templateList[i]);
+    }
+  }
+
 
   return completions;
 }

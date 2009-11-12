@@ -204,6 +204,7 @@ enum {
   menu_insert_input,
   menu_insert_previous_input,
   menu_autocomplete,
+  menu_autocomplete_templates,
   menu_cut,
   menu_paste,
   menu_paste_input,
