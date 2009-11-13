@@ -194,7 +194,7 @@ public:
   wxString GetInputAboveCaret();
   bool LoadSymbols(wxString file) { m_autocomplete.LoadSymbols(file); }
   bool Autocomplete(bool templates = false);
-  void AddSymbol(wxString fun) { m_autocomplete.AddSymbol(fun); }
+  void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

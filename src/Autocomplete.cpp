@@ -132,8 +132,10 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
   return completions;
 }
 
-void AutoComplete::AddSymbol(wxString fun)
+void AutoComplete::AddSymbol(wxString fun, bool templ)
 {
-  if (m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
+  if (!templ && m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
     m_symbolList.Add(fun);
+  if (templ && m_templateList.Index(fun, true, true) == wxNOT_FOUND)
+    m_templateList.Add(fun);
 }

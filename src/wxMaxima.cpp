@@ -118,7 +118,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetFocus();
 
   /// RegEx for function definitions
-  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\([[:alnum:]%_, ]*\\) *:="));
+  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_, ]*)\\) *:="));
   // RegEx for variable definitions
   m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
 }
@@ -422,7 +422,28 @@ void wxMaxima::SendMaxima(wxString s, bool history)
       m_console->AddSymbol(m_varRegEx.GetMatch(line, 1));
 
     if (m_funRegEx.Matches(line))
-      m_console->AddSymbol(m_funRegEx.GetMatch(line, 1));
+    {
+      wxString funName = m_funRegEx.GetMatch(line, 1);
+      m_console->AddSymbol(funName);
+
+      /// Create a template from the input
+      wxString args = m_funRegEx.GetMatch(line, 2);
+      wxStringTokenizer argTokens(args, wxT(","));
+      funName << wxT("(");
+      int count = 0;
+      while (argTokens.HasMoreTokens()) {
+        if (count > 0)
+          funName << wxT(",");
+        wxString a = argTokens.GetNextToken().Trim().Trim(false);
+        if (a != wxEmptyString)
+        {
+          funName << wxT("<") << a << wxT(">");
+          count++;
+        }
+      }
+      funName << wxT(")");
+      m_console->AddSymbol(funName, true);
+    }
   }
 
   m_console->EnableEdit(false);

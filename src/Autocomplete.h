@@ -27,7 +27,7 @@ class AutoComplete
 {
 public:
   bool LoadSymbols(wxString file);
-  void AddSymbol(wxString fun);
+  void AddSymbol(wxString fun, bool templ = false);
   wxArrayString CompleteSymbol(wxString partial, bool templates = false);
 private:
   wxArrayString m_symbolList;
