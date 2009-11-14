@@ -137,6 +137,7 @@ protected:
   void ReadMath();                   // reads output other than prompts
   void ReadInspector();              // reads inspector info
   void ReadLispError();              // lisp errors (no prompt prefix/suffix)
+  void ReadLoadSymbols();
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
 #endif

@@ -493,6 +493,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       ReadInspector();
 
+      ReadLoadSymbols();
+
       ReadMath();
 
       ReadPrompt();
@@ -791,6 +793,25 @@ void wxMaxima::ReadMath()
     m_currentOutput = m_currentOutput.SubString(end + mth.Length(),
                       m_currentOutput.Length());
     end = m_currentOutput.Find(mth);
+  }
+}
+
+void wxMaxima::ReadLoadSymbols()
+{
+  int start = m_currentOutput.Find(wxT("<wxxml-symbols>"));
+  if (start > -1)
+  {
+    int end = m_currentOutput.Find(wxT("</wxxml-symbols>"));
+    if (end > -1)
+    {
+      wxString symbols = m_currentOutput.SubString(start + 15, end - 1);
+      m_currentOutput = m_currentOutput.SubString(0, start-1) +
+                        m_currentOutput.SubString(end + 16, m_currentOutput.Length());
+
+      wxStringTokenizer templates(symbols, wxT("$"));
+      while (templates.HasMoreTokens())
+        m_console->AddSymbol(templates.GetNextToken());
+    }
   }
 }
 

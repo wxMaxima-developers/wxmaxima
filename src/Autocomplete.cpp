@@ -134,6 +134,18 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
 
 void AutoComplete::AddSymbol(wxString fun, bool templ)
 {
+  /// Check for function of template
+  if (fun.StartsWith(wxT("FUNCTION: ")))
+  {
+    fun = fun.Mid(10);
+    templ = false;
+  }
+  else if (fun.StartsWith(wxT("TEMPLATE: ")))
+  {
+    fun = fun.Mid(10);
+    templ = true;
+  }
+
   if (!templ && m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
     m_symbolList.Add(fun);
   if (templ && m_templateList.Index(fun, true, true) == wxNOT_FOUND)
