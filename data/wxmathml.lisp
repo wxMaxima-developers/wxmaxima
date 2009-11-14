@@ -28,8 +28,15 @@
 
 ;;; Muffle compiler-notes globally
 #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
+(defmacro no-warning (form)
+  #+sbcl `(handler-bind
+	     ((style-warning #'muffle-warning)
+	      #+sbcl (sb-ext:compiler-note #'muffle-warning))
+	   ,form)
+  #-sbcl `(progn
+	    ,form))
 
-($put '$wxmaxima `((mlist simp) 0 8 3) '$version)
+($put '$wxmaxima `((mlist simp) 0 8 4) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 (setf (get '$outchar 'assign) 'neverset)
@@ -1358,8 +1365,46 @@
 
 (setf (get '$lsquares_estimates 'autoload) "lsquares")
 
-(setf (get '$to_poly_solve 'autoload) "to_poly_solver")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Redefine load so that it prints the list of functions
+;; used for autocompletion.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun symbol-to-string (s)
+  (maybe-invert-string-case (symbol-name (stripdollar s))))
 
+(defun $print_function (fun)
+  (let ((fun-name (symbol-to-string (caar fun)))
+	(args (mapcar (lambda (u)
+			(symbol-to-string (if (atom u) u (cadr u))))
+		      (cdr fun))))
+    (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
+
+;;;
+;;; Rewrite of the function load (maxima/src/mload.lisp)
+;;; (displays functions after loading a maxima package
+;;;
+(no-warning
+ (defun $load (filename)
+   (let ((searched-for
+	  ($file_search1 filename
+			 '((mlist) $file_search_maxima $file_search_lisp  )))
+	 type)
+     (setq type ($file_type searched-for))
+     (case type
+       (($maxima)
+	($batchload searched-for)
+	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function (cdr $functions))))
+       (($lisp $object)
+	;; do something about handling errors
+	;; during loading. Foobar fail act errors.
+	(load-and-tell searched-for))
+       (t
+	(merror "Maxima bug: Unknown file type ~M" type)))
+     searched-for)))
+
+;;
 ;; Inspector pane related functions
 ;;
 
