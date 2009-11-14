@@ -153,8 +153,23 @@ void AutoComplete::AddSymbol(wxString fun, bool templ)
     templ = true;
   }
 
+  /// Add symbols
   if (!templ && m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
     m_symbolList.Add(fun);
-  if (templ && m_templateList.Index(fun, true, true) == wxNOT_FOUND)
-    m_templateList.Add(fun);
+
+  /// Add templates - for given function and given argument count we
+  /// only add one template. We count the arguments by counting '<'
+  if (templ)
+  {
+    wxString funName = fun.SubString(0, fun.Find(wxT("(")));
+    int count = fun.Freq('<'), i=0;
+    for (i=0; i<m_templateList.GetCount(); i++)
+    {
+      wxString t = m_templateList[i];
+      if (t.StartsWith(funName) && t.Freq('<') == count)
+        break;
+    }
+    if (i == m_templateList.GetCount())
+      m_templateList.Add(fun);
+  }
 }
