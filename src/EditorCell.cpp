@@ -663,8 +663,16 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     {
       m_containsChanges = true;
       m_isDirty = true;
+
+      /// If deleting ( in () then delete both.
+      int right = m_positionOfCaret;
+      if ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
+          (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
+          (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
+          (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"'))
+        right++;
       m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-               m_text.SubString(m_positionOfCaret, m_text.Length());
+               m_text.SubString(right, m_text.Length());
       m_positionOfCaret--;
     }
     break;
@@ -1523,15 +1531,19 @@ void EditorCell::SetValue(wxString text)
   {
     if (text == wxT("(")) {
       m_text = wxT("()");
-      m_positionOfCaret = m_text.Length() - 1;
+      m_positionOfCaret = 1;
     }
     else if (text == wxT("[")) {
       m_text = wxT("[]");
-      m_positionOfCaret = m_text.Length() - 1;
+      m_positionOfCaret = 1;
     }
     else if (text == wxT("{")) {
       m_text = wxT("{}");
-      m_positionOfCaret = m_text.Length() - 1;
+      m_positionOfCaret = 1;
+    }
+    else if (text == wxT("\"")) {
+      m_text = wxT("\"\"");
+      m_positionOfCaret = 1;
     }
     else {
       m_text = text;
