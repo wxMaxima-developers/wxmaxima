@@ -112,6 +112,7 @@ bool AutoComplete::LoadSymbols(wxString file)
 wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
 {
   wxArrayString completions;
+  wxArrayString perfectCompletions;
 
   if (!templates) {
     for (int i=0; i<m_symbolList.GetCount(); i++)
@@ -123,12 +124,18 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
   else {
     for (int i=0; i<m_templateList.GetCount(); i++)
     {
-      if (m_templateList[i].StartsWith(partial))
-        completions.Add(m_templateList[i]);
+      wxString templ = m_templateList[i];
+      if (templ.StartsWith(partial))
+      {
+        completions.Add(templ);
+        if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial)
+          perfectCompletions.Add(templ);
+      }
     }
   }
 
-
+  if (perfectCompletions.Count() > 0)
+    return perfectCompletions;
   return completions;
 }
 
