@@ -137,23 +137,31 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
       dc.SetFont(wxFont(fontsize1, wxMODERN,
                         false, false, false,
-                        m_bigParenType < 1 ?
+                        m_bigParenType == 0 ?
                           parser.GetTeXCMRI() :
                             parser.GetTeXCMEX()));
-      dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
+      dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
+                       m_bigParenType == 1 ? wxT(PAREN_OPEN) :
+                                             wxT(PAREN_OPEN_TOP),
+                       &m_signWidth, &m_signSize);
 
-      while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size))
+      /// BUG 2897415: Exporting equations to HTML locks up on Mac
+      ///  there is something wrong with what dc.GetTextExtent returns,
+      ///  make sure there is no infinite loop!
+      int i=0;
+      while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
       {
         int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
         dc.SetFont(wxFont(fontsize1, wxMODERN,
                           false, false, false,
-                          m_bigParenType < 1 ?
+                          m_bigParenType == 0 ?
                              parser.GetTeXCMRI() :
                                parser.GetTeXCMEX()));
         dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
                          m_bigParenType == 1 ? wxT(PAREN_OPEN) :
                                                wxT(PAREN_OPEN_TOP),
                          &m_signWidth, &m_signSize);
+        i++;
       }
     }
     else
