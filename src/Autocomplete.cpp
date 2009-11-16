@@ -26,9 +26,6 @@ AutoComplete::AutoComplete()
   m_args.Compile(wxT("[[]<([^>]*)>[]]"));
 }
 
-/// This functions loads functions/variables from maxima documentation.
-/// It reads the file index.hhk and looks for lines like
-/// |   <param name="Name" value="function"></object>|
 bool AutoComplete::LoadSymbols(wxString file)
 {
   if (!wxFileExists(file))
