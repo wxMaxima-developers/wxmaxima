@@ -1657,7 +1657,7 @@ void EditorCell::ClearSelection()
 bool EditorCell::FindNextTemplate()
 {
   wxRegEx varsRegex;
-  varsRegex.Compile(wxT("(<[a-zA-Z0-9_% ]+>)"));
+  varsRegex.Compile(wxT("(<[a-zA-Z0-9_%[[.].] ]+>)"));
 
   wxString rest = m_text.Mid(m_positionOfCaret);
 
