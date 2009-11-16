@@ -1377,7 +1377,10 @@
 (defun $print_function (fun)
   (let ((fun-name (symbol-to-string (caar fun)))
 	(args (mapcar (lambda (u)
-			(symbol-to-string (if (atom u) u (cadr u))))
+			(cond ((atom u) (symbol-to-string u))
+			      ((eq (caar u) 'mlist)
+			       ($concat "[" (symbol-to-string (cadr u)) "]"))
+			      (t (symbol-to-string (cadr u)))))
 		      (cdr fun))))
     (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
 
@@ -1403,6 +1406,9 @@
        (t
 	(merror "Maxima bug: Unknown file type ~M" type)))
      searched-for)))
+
+;; Load the initial functions (from mac-init.mac)
+(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function (cdr $functions)))
 
 ;;
 ;; Inspector pane related functions
