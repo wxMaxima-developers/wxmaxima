@@ -21,6 +21,11 @@
 
 #include <wx/textfile.h>
 
+AutoComplete::AutoComplete()
+{
+  m_args.Compile(wxT("[[]<([^>]*)>[]]"));
+}
+
 /// This functions loads functions/variables from maxima documentation.
 /// It reads the file index.hhk and looks for lines like
 /// |   <param name="Name" value="function"></object>|
@@ -46,7 +51,7 @@ bool AutoComplete::LoadSymbols(wxString file)
         line.StartsWith(wxT("OPTION  : ")))
       m_symbolList.Add(line.Mid(10));
     else if (line.StartsWith(wxT("TEMPLATE: ")))
-      m_templateList.Add(line.Mid(10));
+      m_templateList.Add(FixTemplate(line.Mid(10)));
   }
 
   index.Close();
@@ -54,7 +59,9 @@ bool AutoComplete::LoadSymbols(wxString file)
   /// Add wxMaxima functions
   m_symbolList.Add(wxT("set_display"));
   m_symbolList.Add(wxT("wxplot2d"));
+  m_templateList.Add(wxT("wxplot2d(<expr>,<x_range>)"));
   m_symbolList.Add(wxT("wxplot3d"));
+  m_templateList.Add(wxT("wxplot3d(<expr>,<x_range>,<y_range>)"));
   m_symbolList.Add(wxT("wximplicit_plot"));
   m_symbolList.Add(wxT("wxcontour_plot"));
   m_symbolList.Add(wxT("wxanimate"));
@@ -62,12 +69,12 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxanimate_draw2d"));
   m_symbolList.Add(wxT("wxanimate_draw3d"));
   m_symbolList.Add(wxT("with_slider"));
+  m_templateList.Add(wxT("with_slider(<a_var>,<a_list>,<expr>,<x_range>)"));
   m_symbolList.Add(wxT("with_slider_draw"));
   m_symbolList.Add(wxT("with_slider_draw3d"));
   m_symbolList.Add(wxT("wxdraw"));
   m_symbolList.Add(wxT("wxdraw2d"));
   m_symbolList.Add(wxT("wxdraw3d"));
-  m_symbolList.Add(wxT("wxhistogram"));
   m_symbolList.Add(wxT("wxhistogram"));
   m_symbolList.Add(wxT("wxscatterplot"));
   m_symbolList.Add(wxT("wxbarsplot"));
@@ -95,7 +102,7 @@ bool AutoComplete::LoadSymbols(wxString file)
           line.StartsWith(wxT("OPTION  : ")))
         m_symbolList.Add(line.Mid(10));
       else if (line.StartsWith(wxT("TEMPLATE: ")))
-        m_templateList.Add(line.Mid(10));
+        m_templateList.Add(FixTemplate(line.Mid(10)));
       else
         m_symbolList.Add(line);
     }
@@ -161,6 +168,7 @@ void AutoComplete::AddSymbol(wxString fun, bool templ)
   /// only add one template. We count the arguments by counting '<'
   if (templ)
   {
+    fun = FixTemplate(fun);
     wxString funName = fun.SubString(0, fun.Find(wxT("(")));
     int count = fun.Freq('<'), i=0;
     for (i=0; i<m_templateList.GetCount(); i++)
@@ -172,4 +180,15 @@ void AutoComplete::AddSymbol(wxString fun, bool templ)
     if (i == m_templateList.GetCount())
       m_templateList.Add(fun);
   }
+}
+
+wxString AutoComplete::FixTemplate(wxString templ)
+{
+  templ.Replace(wxT(" "), wxEmptyString);
+  templ.Replace(wxT(",..."), wxEmptyString);
+
+  /// This will change optional arguments
+  m_args.ReplaceAll(&templ, wxT("<[\\1]>"));
+
+  return templ;
 }

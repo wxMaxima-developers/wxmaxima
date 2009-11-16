@@ -22,16 +22,20 @@
 
 #include <wx/wx.h>
 #include <wx/arrstr.h>
+#include <wx/regex.h>
 
 class AutoComplete
 {
 public:
+  AutoComplete();
   bool LoadSymbols(wxString file);
   void AddSymbol(wxString fun, bool templ = false);
   wxArrayString CompleteSymbol(wxString partial, bool templates = false);
+  wxString FixTemplate(wxString templ);
 private:
   wxArrayString m_symbolList;
   wxArrayString m_templateList;
+  wxRegEx m_args;
 };
 
 #endif
