@@ -118,7 +118,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetFocus();
 
   /// RegEx for function definitions
-  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_, ]*)\\) *:="));
+  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
   // RegEx for variable definitions
   m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
 }
@@ -437,7 +437,10 @@ void wxMaxima::SendMaxima(wxString s, bool history)
         wxString a = argTokens.GetNextToken().Trim().Trim(false);
         if (a != wxEmptyString)
         {
-          funName << wxT("<") << a << wxT(">");
+          if (a[0]=='[')
+            funName << wxT("[<") << a.SubString(1, a.Length()-2) << wxT(">]");
+          else
+            funName << wxT("<") << a << wxT(">");
           count++;
         }
       }
