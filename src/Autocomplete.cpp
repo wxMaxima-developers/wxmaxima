@@ -63,7 +63,6 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxcontour_plot"));
   m_symbolList.Add(wxT("wxanimate"));
   m_symbolList.Add(wxT("wxanimate_draw"));
-  m_symbolList.Add(wxT("wxanimate_draw2d"));
   m_symbolList.Add(wxT("wxanimate_draw3d"));
   m_symbolList.Add(wxT("with_slider"));
   m_templateList.Add(wxT("with_slider(<a_var>,<a_list>,<expr>,<x_range>)"));
@@ -77,7 +76,6 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxbarsplot"));
   m_symbolList.Add(wxT("wxpiechart"));
   m_symbolList.Add(wxT("wxboxplot"));
-
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
