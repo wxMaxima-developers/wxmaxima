@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 13:23+0100\n"
-"PO-Revision-Date: 2009-11-18 13:55+0100\n"
+"POT-Creation-Date: 2009-11-18 17:16+0100\n"
+"PO-Revision-Date: 2009-11-18 17:17+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -1903,7 +1903,7 @@ msgstr "Maxima kérdései"
 
 #: ../src/wxMaxima.cpp:670
 msgid "Maxima started. Waiting for connection..."
-msgstr "A Maxima elindult. Várakozás a kapcsolatra..."
+msgstr "A Maxima elindult és vár a kapcsolatra..."
 
 #: ../data/tips.txt:3
 msgid "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f(x) := x^2;')."
@@ -2443,7 +2443,7 @@ msgid "Save document"
 msgstr "Dokumentum mentése"
 
 #: ../src/wxMaximaFrame.cpp:196
-msgid "Save document as..."
+msgid "Save document as"
 msgstr "Mentés másként"
 
 #: ../src/Config.cpp:99
@@ -2954,15 +2954,15 @@ msgstr ""
 " \n"
 " Kérem jelentse a hibát."
 
-#: ../src/SlideShowCell.cpp:286
+#: ../src/SlideShowCell.cpp:284
 msgid ""
 "There was and error during GIF export!\n"
 "\n"
-"Make sure ImageMagic is installed and wxMaxima can find the convert program."
+"Make sure ImageMagick is installed and wxMaxima can find the convert program."
 msgstr ""
-"Hiba történt a GIF kép létrehozása során!\n"
+"Hiba történt a GIF képfájl létrehozása során!\n"
 "\n"
-"Ellenőrizze, hogy az ImageMagic telepítve van, valamint elérhető a wxMaxima számára."
+"Ellenőrizze, hogy az ImageMagick telepítve van, valamint elérhető a wxMaxima számára!"
 
 #: ../src/Plot2dWiz.cpp:66
 #: ../src/Plot2dWiz.cpp:554
