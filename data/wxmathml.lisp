@@ -1078,6 +1078,16 @@
 	    ($first $wxplot_size)
 	    ($second $wxplot_size))))
 
+(defun $int_range (lo &optional hi)
+  (unless (integerp lo)
+    ($error "int_range: first argument is not an integer."))
+  (unless (or (null hi) (integerp hi))
+    ($error "int_range: second argument is not an integer."))
+  (when (null hi)
+    (setq hi lo)
+    (setq lo 1))
+  (cons '(mlist simp) (loop for i from lo to hi collect i)))
+
 (defun $with_slider (&rest args)
   (apply #'$wxanimate args))
 
@@ -1090,11 +1100,6 @@
 	    (system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	    (filename (wxplot-filename))
 	    (expr (maxima-substitute aval a expr)))
-	(setq preamble
-	      (format nil "set title '~a=~a'~%~a"
-		      (stripdollar (maybe-invert-string-case (symbol-name a)))
-		      (mfuncall '$string aval)
-		      preamble))
 	(setq preamble (format nil "~a; ~a" preamble system-preamble))
 	(dolist (arg args)
 	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
@@ -1125,11 +1130,6 @@
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
-	     (args (cons `((mequal simp) $title
-			   ,(format nil "~a=~a"
-				   (stripdollar (maybe-invert-string-case (symbol-name a)))
-				   (mfuncall '$string aval)))
-			 args))
 	     (args (cons '($gr2d)
 			 (draw-transform
 			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
@@ -1157,11 +1157,6 @@
     (dolist (aval (reverse (cdr a-range)))
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
-	     (args (cons `((mequal simp) $title
-			   ,(format nil "~a=~a"
-				   (stripdollar (maybe-invert-string-case (symbol-name a)))
-				   (mfuncall '$string aval)))
-			 args))
 	     (args (cons '($gr3d)
 			 (draw-transform
 			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
@@ -1364,6 +1359,8 @@
   (setf (get fun 'autoload) "stats"))
 
 (setf (get '$lsquares_estimates 'autoload) "lsquares")
+
+(setf (get '$to_poly_solve 'autoload) "to_poly_solver")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
