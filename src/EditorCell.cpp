@@ -1141,7 +1141,8 @@ bool EditorCell::ActivateCell()
   if (m_isActive) {
     m_firstLineOnly = false;
     ((GroupCell *)GetParent())->Hide(false);
-    FindMatchingParens();
+    if (GetType() == MC_TYPE_INPUT)
+      FindMatchingParens();
   }
 
   return true;
@@ -1631,7 +1632,8 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
     m_containsChanges = -1;
     m_positionOfCaret = m_selectionEnd = m_selectionStart + newStr.Length();
 
-    FindMatchingParens();
+    if (GetType() == MC_TYPE_INPUT)
+      FindMatchingParens();
 
     return true;
   }
@@ -1657,7 +1659,7 @@ void EditorCell::ClearSelection()
 bool EditorCell::FindNextTemplate()
 {
   wxRegEx varsRegex;
-  varsRegex.Compile(wxT("(<[a-zA-Z0-9_%[[.].] ]+>)"));
+  varsRegex.Compile(wxT("(<[^>]+>)"));
 
   wxString rest = m_text.Mid(m_positionOfCaret);
 
@@ -1676,17 +1678,20 @@ bool EditorCell::FindNextTemplate()
 void EditorCell::CaretToEnd()
 {
   m_positionOfCaret = m_text.Length();
-  FindMatchingParens();
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
 }
 
 void EditorCell::CaretToStart()
 {
   m_positionOfCaret = 0;
-  FindMatchingParens();
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
 }
 
 void EditorCell::CaretToPosition(int pos)
 {
   m_positionOfCaret = pos;
-  FindMatchingParens();
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
 }
