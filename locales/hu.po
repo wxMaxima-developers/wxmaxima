@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-13 15:15+0100\n"
-"PO-Revision-Date: 2009-11-13 15:21+0100\n"
+"POT-Creation-Date: 2009-11-18 13:23+0100\n"
+"PO-Revision-Date: 2009-11-18 13:55+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/wxMaxima.cpp:3115
+#: ../src/wxMaxima.cpp:3160
 #, c-format
 msgid ""
 "\n"
@@ -30,7 +30,7 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "Unicode támogatás: %s"
 
-#: ../src/wxMaxima.cpp:3124
+#: ../src/wxMaxima.cpp:3169
 msgid ""
 "\n"
 "Maxima version: "
@@ -38,7 +38,7 @@ msgstr ""
 "\n"
 "Maxima verzió:"
 
-#: ../src/wxMaxima.cpp:3702
+#: ../src/wxMaxima.cpp:3761
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -46,7 +46,7 @@ msgstr ""
 "\n"
 "Nem csatlakozott a Maximához!\n"
 
-#: ../src/wxMaxima.cpp:3126
+#: ../src/wxMaxima.cpp:3171
 msgid ""
 "\n"
 "Not connected."
@@ -58,23 +58,23 @@ msgstr ""
 msgid " << Expression too long to display! >>"
 msgstr "<< A kifejezés túl hosszú a megjelenítéshez! >>"
 
-#: ../src/wxMaxima.cpp:998
+#: ../src/wxMaxima.cpp:1022
 msgid " was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."
 msgstr " a wxMaxima egy újabb verziójával lett elmentve, ezért nem biztos hogy tökéletesen töltődik be. Kérem frissítse a wxMaximát!"
 
-#: ../src/wxMaxima.cpp:990
+#: ../src/wxMaxima.cpp:1014
 msgid " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr " a wxMaxima egy újabb verziójával lett elmentve. Kérem frissítse a wxMaximát!"
 
-#: ../src/wxMaximaFrame.cpp:451
+#: ../src/wxMaximaFrame.cpp:454
 msgid "&Algebra"
 msgstr "&Algebra"
 
-#: ../src/wxMaximaFrame.cpp:445
+#: ../src/wxMaximaFrame.cpp:448
 msgid "&Apply to List..."
 msgstr "&Alkalmazás listán..."
 
-#: ../src/wxMaximaFrame.cpp:631
+#: ../src/wxMaximaFrame.cpp:634
 msgid "&Apropos..."
 msgstr "&Apropó..."
 
@@ -86,19 +86,19 @@ msgstr "&Batch fájl...\tCtrl-B"
 msgid "&Boundary Value Problem..."
 msgstr "Pe&remérték probléma..."
 
-#: ../src/wxMaximaFrame.cpp:642
+#: ../src/wxMaximaFrame.cpp:645
 msgid "&Bug Report"
 msgstr "&Hibabejelentés"
 
-#: ../src/wxMaximaFrame.cpp:503
+#: ../src/wxMaximaFrame.cpp:506
 msgid "&Calculus"
 msgstr "Ana&lízis"
 
-#: ../src/wxMaximaFrame.cpp:554
+#: ../src/wxMaximaFrame.cpp:557
 msgid "&Canonical Form"
 msgstr "&Kanonikus alak"
 
-#: ../src/wxMaximaFrame.cpp:427
+#: ../src/wxMaximaFrame.cpp:430
 msgid "&Characteristic Polynomial..."
 msgstr "&Karakterisztikus polinom..."
 
@@ -106,15 +106,15 @@ msgstr "&Karakterisztikus polinom..."
 msgid "&Clear Memory"
 msgstr "M&emória törlése"
 
-#: ../src/wxMaximaFrame.cpp:537
+#: ../src/wxMaximaFrame.cpp:540
 msgid "&Combine Factorials"
 msgstr "&Számolás faktoriálisokkal"
 
-#: ../src/wxMaximaFrame.cpp:580
+#: ../src/wxMaximaFrame.cpp:583
 msgid "&Complex Simplification"
 msgstr "Kom&plex átalakítás"
 
-#: ../src/wxMaximaFrame.cpp:500
+#: ../src/wxMaximaFrame.cpp:503
 msgid "&Continued Fraction"
 msgstr "Lán&ctörtté alakítás"
 
@@ -126,15 +126,15 @@ msgstr "&Másolás\tCtrl-O"
 msgid "&Definite integration"
 msgstr "&Határozott integrál"
 
-#: ../src/wxMaximaFrame.cpp:574
+#: ../src/wxMaximaFrame.cpp:577
 msgid "&Demoivre"
 msgstr "&Demoivre"
 
-#: ../src/wxMaximaFrame.cpp:430
+#: ../src/wxMaximaFrame.cpp:433
 msgid "&Determinant"
 msgstr "&Determináns"
 
-#: ../src/wxMaximaFrame.cpp:463
+#: ../src/wxMaximaFrame.cpp:466
 msgid "&Differentiate..."
 msgstr "&Differenciálás..."
 
@@ -146,23 +146,23 @@ msgstr "S&zerkesztés"
 msgid "&Eliminate Variable..."
 msgstr "&Változó kiküszöbölése..."
 
-#: ../src/wxMaximaFrame.cpp:422
+#: ../src/wxMaximaFrame.cpp:425
 msgid "&Enter Matrix..."
 msgstr "Má&trix bevitele..."
 
-#: ../src/wxMaximaFrame.cpp:628
+#: ../src/wxMaximaFrame.cpp:631
 msgid "&Example..."
 msgstr "&Példa..."
 
-#: ../src/wxMaximaFrame.cpp:517
+#: ../src/wxMaximaFrame.cpp:520
 msgid "&Expand Expression"
 msgstr "Kifejezé&s felbontása"
 
-#: ../src/wxMaximaFrame.cpp:551
+#: ../src/wxMaximaFrame.cpp:554
 msgid "&Expand Trigonometric"
 msgstr "Tr&igonometrikus felbontás"
 
-#: ../src/wxMaximaFrame.cpp:577
+#: ../src/wxMaximaFrame.cpp:580
 msgid "&Exponentialize"
 msgstr "E&xponenciálissá alakítás"
 
@@ -170,7 +170,7 @@ msgstr "E&xponenciálissá alakítás"
 msgid "&Export..."
 msgstr "E&xportálás..."
 
-#: ../src/wxMaximaFrame.cpp:512
+#: ../src/wxMaximaFrame.cpp:515
 msgid "&Factor Expression"
 msgstr "Kife&jezés faktorizálása"
 
@@ -184,17 +184,17 @@ msgstr "M&egoldás numerikusan..."
 
 #: ../src/wxMaximaFrame.cpp:419
 msgid "&Generate Matrix..."
-msgstr "&Mátrix generálás..."
+msgstr "&Mátrix generálása sorozatból..."
 
-#: ../src/wxMaximaFrame.cpp:487
+#: ../src/wxMaximaFrame.cpp:490
 msgid "&Greatest Common Divisor..."
 msgstr "&Legnagyobb közös osztó..."
 
-#: ../src/wxMaximaFrame.cpp:654
+#: ../src/wxMaximaFrame.cpp:657
 msgid "&Help"
 msgstr "&Segítség"
 
-#: ../src/wxMaximaFrame.cpp:455
+#: ../src/wxMaximaFrame.cpp:458
 msgid "&Integrate..."
 msgstr "&Integrálás..."
 
@@ -206,7 +206,7 @@ msgstr "&Megszakítás\tCtrl-G"
 msgid "&Interrupt\tCtrl-G"
 msgstr "&Megszakítás\tCtrl-G"
 
-#: ../src/wxMaximaFrame.cpp:424
+#: ../src/wxMaximaFrame.cpp:427
 msgid "&Invert Matrix"
 msgstr "Mát&rix invertálás"
 
@@ -214,7 +214,7 @@ msgstr "Mát&rix invertálás"
 msgid "&Load Package...\tCtrl-L"
 msgstr "&Csomag betöltése...\tCtrl-L"
 
-#: ../src/wxMaximaFrame.cpp:447
+#: ../src/wxMaximaFrame.cpp:450
 msgid "&Map to List..."
 msgstr "Leké&pezés listába..."
 
@@ -222,11 +222,11 @@ msgstr "Leké&pezés listába..."
 msgid "&Maxima"
 msgstr "&Maxima"
 
-#: ../src/wxMaximaFrame.cpp:595
+#: ../src/wxMaximaFrame.cpp:598
 msgid "&Modulus Computation..."
 msgstr "&Modulus beállítása..."
 
-#: ../src/main.cpp:99
+#: ../src/main.cpp:105
 msgid "&New\tCtrl-N"
 msgstr "&Új\tCtrl-N"
 
@@ -234,7 +234,7 @@ msgstr "&Új\tCtrl-N"
 msgid "&New Window\tCtrl-N"
 msgstr "&Új ablak\tCtrl-N"
 
-#: ../src/wxMaximaFrame.cpp:622
+#: ../src/wxMaximaFrame.cpp:625
 msgid "&Numeric"
 msgstr "&Numerikus"
 
@@ -246,7 +246,7 @@ msgstr "&Numerikus integrálás"
 msgid "&Nusum"
 msgstr "&Numerikus összegzés"
 
-#: ../src/main.cpp:100
+#: ../src/main.cpp:106
 msgid "&Open\tCtrl-O"
 msgstr "&Megnyitás\tCtrl-O"
 
@@ -254,7 +254,7 @@ msgstr "&Megnyitás\tCtrl-O"
 msgid "&Open...\tCtrl-O"
 msgstr "&Megnyitás...\tCtrl-O"
 
-#: ../src/wxMaximaFrame.cpp:607
+#: ../src/wxMaximaFrame.cpp:610
 msgid "&Plot"
 msgstr "Á&brázolás"
 
@@ -270,7 +270,7 @@ msgstr "&Nyomtatás...\tCtrl-P"
 msgid "&Rational"
 msgstr "&Értelemszerűen (nem formálisan)"
 
-#: ../src/wxMaximaFrame.cpp:548
+#: ../src/wxMaximaFrame.cpp:551
 msgid "&Reduce Trigonometric"
 msgstr "T&rigonometrikus redukálás"
 
@@ -286,20 +286,20 @@ msgstr "P&olinom valós gyökei"
 msgid "&Save\tCtrl-S"
 msgstr "M&entés\tCtrl-S"
 
-#: ../src/wxMaximaFrame.cpp:597
+#: ../src/wxMaximaFrame.cpp:600
 #: ../src/SumWiz.cpp:42
 msgid "&Simplify"
 msgstr "E&gyszerűsítés"
 
-#: ../src/wxMaximaFrame.cpp:507
+#: ../src/wxMaximaFrame.cpp:510
 msgid "&Simplify Expression"
 msgstr "&Kifejezés egyszerűsítése"
 
-#: ../src/wxMaximaFrame.cpp:534
+#: ../src/wxMaximaFrame.cpp:537
 msgid "&Simplify Factorials"
 msgstr "F&aktoriális egyszerűsítés"
 
-#: ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:548
 msgid "&Simplify Trigonometric"
 msgstr "&Trigonometrikus egyszerűsítés"
 
@@ -315,11 +315,11 @@ msgstr "&Különleges"
 msgid "&Taylor series"
 msgstr "Taylor-sor használatával"
 
-#: ../src/wxMaximaFrame.cpp:440
+#: ../src/wxMaximaFrame.cpp:443
 msgid "&Transpose Matrix"
 msgstr "Mátri&x transzponálás"
 
-#: ../src/wxMaximaFrame.cpp:557
+#: ../src/wxMaximaFrame.cpp:560
 msgid "&Trigonometric Simplification"
 msgstr "&Trigonometrikus átalakítás"
 
@@ -356,12 +356,12 @@ msgstr "A wxMaxima 0.8.2-es verziójában új dokumentumformátumot vezettek be,
 msgid "A&t Value..."
 msgstr "Ér&tékadás..."
 
-#: ../src/wxMaximaFrame.cpp:649
+#: ../src/wxMaximaFrame.cpp:652
 msgid "About"
 msgstr "Névjegy"
 
-#: ../src/wxMaximaFrame.cpp:651
-#: ../src/wxMaximaFrame.cpp:653
+#: ../src/wxMaximaFrame.cpp:654
+#: ../src/wxMaximaFrame.cpp:656
 msgid "About wxMaxima"
 msgstr "Névjegy: wxMaxima"
 
@@ -369,11 +369,11 @@ msgstr "Névjegy: wxMaxima"
 msgid "Active cell bracket"
 msgstr "Aktív cella zárójele"
 
-#: ../src/wxMaximaFrame.cpp:438
+#: ../src/wxMaximaFrame.cpp:441
 msgid "Ad&joint Matrix"
 msgstr "Mátr&ix adjungálás"
 
-#: ../src/wxMaximaFrame.cpp:592
+#: ../src/wxMaximaFrame.cpp:595
 msgid "Add Algebraic E&quality..."
 msgstr "Alg&ebrai egyenlet hozzáadása..."
 
@@ -381,11 +381,11 @@ msgstr "Alg&ebrai egyenlet hozzáadása..."
 msgid "Add a directory to search path"
 msgstr "Könyvtár hozzáadása a keresési úthoz"
 
-#: ../src/wxMaxima.cpp:2150
+#: ../src/wxMaxima.cpp:2174
 msgid "Add dir to path:"
 msgstr "Könyvtár hozzáadása az elérési úthoz:"
 
-#: ../src/wxMaximaFrame.cpp:593
+#: ../src/wxMaximaFrame.cpp:596
 msgid "Add equality to the rational simplifier"
 msgstr "Egyenlőség hozzáadása racionális egyszerűsítéshez"
 
@@ -405,52 +405,36 @@ msgstr "Paraméterek:"
 msgid "All|*"
 msgstr "Minden fájl|*"
 
-#: ../src/wxMaximaFrame.cpp:777
+#: ../src/wxMaximaFrame.cpp:780
 msgid "Animation"
 msgstr "Animáció"
 
-#: ../src/wxMaxima.cpp:2582
+#: ../src/wxMaxima.cpp:2627
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: ../src/wxMaximaFrame.cpp:446
+#: ../src/wxMaximaFrame.cpp:449
 msgid "Apply function to a list"
 msgstr "Függvény alkalmazása a listára"
 
-#: ../src/wxMaxima.cpp:3182
+#: ../src/wxMaxima.cpp:3227
 msgid "Apropos"
 msgstr "Apropó"
 
-#: ../src/wxMaxima.cpp:2529
+#: ../src/wxMaxima.cpp:2553
 msgid "Array:"
 msgstr "Sorozat:"
 
-#: ../src/wxMaxima.cpp:2415
+#: ../src/wxMaxima.cpp:2439
 msgid "At value"
 msgstr "Értékadás"
 
-#: ../src/wxMaximaFrame.cpp:260
-msgid "Autocomplete"
-msgstr "Automatikus kiegészítés"
-
-#: ../src/wxMaximaFrame.cpp:259
-msgid "Autocomplete\tCtrl-K"
-msgstr "Automatikus kiegészítés\tCtrl-K"
-
-#: ../src/wxMaximaFrame.cpp:261
-msgid "Autocomplete Template\tCtrl-Shift-K"
-msgstr "Automatikus kiegészítés sablonnal\tCtrl-Shift-K"
-
-#: ../src/wxMaximaFrame.cpp:262
-msgid "Autocomplete with templates"
-msgstr "Automatikus kiegészítés sablonnal"
-
-#: ../src/wxMaxima.cpp:2322
+#: ../src/wxMaxima.cpp:2346
 #: ../src/BC2Wiz.cpp:57
 msgid "BC2"
 msgstr "Peremérték probléma"
 
-#: ../src/wxMaximaFrame.cpp:993
+#: ../src/wxMaximaFrame.cpp:996
 msgid "Barsplot"
 msgstr "Oszlopdiagram"
 
@@ -458,7 +442,7 @@ msgstr "Oszlopdiagram"
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch fájlok (*.bat)|*.bat|Minden fájl|*"
 
-#: ../src/wxMaxima.cpp:1873
+#: ../src/wxMaxima.cpp:1897
 msgid "Batch File"
 msgstr "Batch fájl"
 
@@ -466,7 +450,7 @@ msgstr "Batch fájl"
 msgid "Bold"
 msgstr "Félkövér"
 
-#: ../src/wxMaximaFrame.cpp:995
+#: ../src/wxMaximaFrame.cpp:998
 msgid "Boxplot"
 msgstr "Doboz ábra"
 
@@ -475,7 +459,7 @@ msgstr "Doboz ábra"
 msgid "Browse"
 msgstr "Böngészés"
 
-#: ../src/wxMaximaFrame.cpp:640
+#: ../src/wxMaximaFrame.cpp:643
 msgid "Build &Info"
 msgstr "&Verzióinformációk"
 
@@ -483,7 +467,7 @@ msgstr "&Verzióinformációk"
 msgid "By default Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands."
 msgstr "A Shift-Enter billentyűkombinációval alapértelmezés szerint az aktuális parancs hajtódik végre, míg az Enter-t a többsoros bemenetre használjuk. Mindez megváltoztatható a 'Szerkesztés->Beállítások' ablakban, kipipálva 'A parancsok Enter-re hajtódnak végre' tulajdonságot, amely felcseréli a két billentyűparancs hatását."
 
-#: ../src/wxMaximaFrame.cpp:460
+#: ../src/wxMaximaFrame.cpp:463
 msgid "C&hange Variable..."
 msgstr "&Változócsere..."
 
@@ -491,31 +475,31 @@ msgstr "&Változócsere..."
 msgid "C&onfigure"
 msgstr "B&eállítás"
 
-#: ../src/wxMaximaFrame.cpp:479
+#: ../src/wxMaximaFrame.cpp:482
 msgid "Calculate &Product..."
 msgstr "&Szorzat számítása..."
 
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:480
 msgid "Calculate Su&m..."
 msgstr "Öss&zeg számítása..."
 
-#: ../src/wxMaximaFrame.cpp:617
+#: ../src/wxMaximaFrame.cpp:620
 msgid "Calculate bigfloat value of the last result"
 msgstr "Szám hosszú tizedes tört alakja"
 
-#: ../src/wxMaximaFrame.cpp:614
+#: ../src/wxMaximaFrame.cpp:617
 msgid "Calculate float value of the last result"
 msgstr "Szám tizedes tört alakja"
 
-#: ../src/wxMaxima.cpp:2715
+#: ../src/wxMaxima.cpp:2760
 msgid "Calculate modulus:"
 msgstr "Modulus értékének beállítása:"
 
-#: ../src/wxMaximaFrame.cpp:480
+#: ../src/wxMaximaFrame.cpp:483
 msgid "Calculate products"
 msgstr "Szorzat számítása"
 
-#: ../src/wxMaximaFrame.cpp:478
+#: ../src/wxMaximaFrame.cpp:481
 msgid "Calculate sums"
 msgstr "Összeg számítása"
 
@@ -558,7 +542,7 @@ msgstr "Összeg számítása"
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: ../src/wxMaximaFrame.cpp:938
+#: ../src/wxMaximaFrame.cpp:941
 msgid "Canonical (tr)"
 msgstr "Kanonikus (tr)"
 
@@ -578,15 +562,15 @@ msgstr "&2d-s megjelenítés változtatása"
 msgid "Change the 2d display algorithm used to display math output"
 msgstr "Matematikai jelek 2d-s megjelenítési algoritmusának megváltoztatása"
 
-#: ../src/wxMaxima.cpp:2739
+#: ../src/wxMaxima.cpp:2784
 msgid "Change variable"
 msgstr "Változócsere"
 
-#: ../src/wxMaximaFrame.cpp:461
+#: ../src/wxMaximaFrame.cpp:464
 msgid "Change variable in integral or sum"
 msgstr "Változócsere integrálban vagy összegben"
 
-#: ../src/wxMaxima.cpp:2516
+#: ../src/wxMaxima.cpp:2540
 msgid "Char poly"
 msgstr "Karakterisztikus polinom"
 
@@ -600,17 +584,17 @@ msgstr "Tradícionális kínai"
 msgid "Choose font"
 msgstr "Betűtípus választás"
 
-#: ../src/wxMaxima.cpp:3222
-#: ../src/wxMaxima.cpp:3236
+#: ../src/wxMaxima.cpp:3267
+#: ../src/wxMaxima.cpp:3281
 msgid "Classes:"
 msgstr "Osztályok:"
 
-#: ../src/wxMaxima.cpp:1750
-#: ../src/wxMaxima.cpp:3641
+#: ../src/wxMaxima.cpp:1774
+#: ../src/wxMaxima.cpp:3700
 msgid "Close document?"
 msgstr "Bezárja a dokumentumot?"
 
-#: ../src/wxMaxima.cpp:3333
+#: ../src/wxMaxima.cpp:3378
 msgid "Col. names:"
 msgstr "Oszlopok nevei:"
 
@@ -618,7 +602,7 @@ msgstr "Oszlopok nevei:"
 msgid "Columns:"
 msgstr "Oszlopok:"
 
-#: ../src/wxMaximaFrame.cpp:538
+#: ../src/wxMaximaFrame.cpp:541
 msgid "Combine factorials in an expression"
 msgstr "Faktoriálisokkal számol egy kifejezésben"
 
@@ -630,39 +614,47 @@ msgstr "Vesszővel válassza el az x koordinátákat"
 msgid "Comma separated y coordinates"
 msgstr "Vesszővel válassza el az y koordinátákat"
 
-#: ../src/MathCtrl.cpp:732
+#: ../src/MathCtrl.cpp:734
 msgid "Comment Selection"
 msgstr "Megjegyzés kiválasztása"
 
-#: ../src/wxMaximaFrame.cpp:501
+#: ../src/wxMaximaFrame.cpp:259
+msgid "Complete Word\tCtrl-K"
+msgstr "Szó kiegészítése\tCtrl-K"
+
+#: ../src/wxMaximaFrame.cpp:260
+msgid "Complete word"
+msgstr "Szó automatikus kiegészítése"
+
+#: ../src/wxMaximaFrame.cpp:504
 msgid "Compute continued fraction of a value"
 msgstr "Egy lista lánctörtté alakítása"
 
-#: ../src/wxMaximaFrame.cpp:439
+#: ../src/wxMaximaFrame.cpp:442
 msgid "Compute the adjoint matrix"
 msgstr "Mátrix adjungáltjának kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:428
+#: ../src/wxMaximaFrame.cpp:431
 msgid "Compute the characteristic polynomial of a matrix"
 msgstr "Mátrix karakterisztikus polinomjának kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:431
+#: ../src/wxMaximaFrame.cpp:434
 msgid "Compute the determinant of a matrix"
 msgstr "Mátrix determinánsának kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:488
+#: ../src/wxMaximaFrame.cpp:491
 msgid "Compute the greatest common divisor"
 msgstr "Legnagyobb közös osztó kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:425
+#: ../src/wxMaximaFrame.cpp:428
 msgid "Compute the inverse of a matrix"
 msgstr "Mátrix inverzének kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:491
+#: ../src/wxMaximaFrame.cpp:494
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "Legkisebb közös többszörös kiszámolása (használata előtt hajtsd végre a load(functs) parancsot)"
 
-#: ../src/wxMaxima.cpp:3383
+#: ../src/wxMaxima.cpp:3428
 msgid "Condition:"
 msgstr "Feltétel:"
 
@@ -676,8 +668,8 @@ msgid "Configuration warning"
 msgstr "Figyelmeztetés a beállításokkal kapcsolatban"
 
 #: ../src/wxMaximaFrame.cpp:305
-#: ../src/wxMaximaFrame.cpp:690
-#: ../src/wxMaximaFrame.cpp:752
+#: ../src/wxMaximaFrame.cpp:693
+#: ../src/wxMaximaFrame.cpp:755
 msgid "Configure wxMaxima"
 msgstr "A wxMaxima beállítása"
 
@@ -688,78 +680,78 @@ msgstr "A wxMaxima beállítása"
 msgid "Constant"
 msgstr "Állandó"
 
-#: ../src/wxMaximaFrame.cpp:522
+#: ../src/wxMaximaFrame.cpp:525
 msgid "Contract Logarithms"
 msgstr "Logaritmikus összevonás"
 
-#: ../src/wxMaximaFrame.cpp:578
+#: ../src/wxMaximaFrame.cpp:581
 msgid "Conver trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvényt exponenciális alakra hoz"
 
-#: ../src/wxMaximaFrame.cpp:529
+#: ../src/wxMaximaFrame.cpp:532
 msgid "Convert binomials, beta and gamma function to factorials"
 msgstr "Binomiális-, béta- és gamma-függvények faktoriálissá alakítása"
 
-#: ../src/wxMaximaFrame.cpp:532
+#: ../src/wxMaximaFrame.cpp:535
 msgid "Convert binomials, factorials and beta function to gamma function"
 msgstr "Binomiális-, faktoriális- és béta-függvényeket gamma-függvénnyé alakít"
 
-#: ../src/wxMaximaFrame.cpp:566
+#: ../src/wxMaximaFrame.cpp:569
 msgid "Convert complex expression to polar form"
 msgstr "Komplex kifejezés exponenciálissá alakítása"
 
-#: ../src/wxMaximaFrame.cpp:563
+#: ../src/wxMaximaFrame.cpp:566
 msgid "Convert complex expression to rect form"
 msgstr "Komplex kifejezés algebraivá alakítása"
 
-#: ../src/wxMaximaFrame.cpp:575
+#: ../src/wxMaximaFrame.cpp:578
 msgid "Convert exponential function of imaginary argument to trigonometric form"
 msgstr "Komplex exponenciális függvényt trigonometrikus alakúra konvertálása"
 
-#: ../src/wxMaximaFrame.cpp:520
+#: ../src/wxMaximaFrame.cpp:523
 msgid "Convert logarithm of product to sum of logarithms"
 msgstr "Szorzat logaritmusának logaritmusok összegévé való alakítása"
 
-#: ../src/wxMaximaFrame.cpp:523
+#: ../src/wxMaximaFrame.cpp:526
 msgid "Convert sum of logarithms to logarithm of product"
 msgstr "Logaritmusok összegének szorzat logaritmusává való alakítása"
 
-#: ../src/wxMaximaFrame.cpp:528
+#: ../src/wxMaximaFrame.cpp:531
 msgid "Convert to &Factorials"
 msgstr "&Faktoriálisokká alakítás"
 
-#: ../src/wxMaximaFrame.cpp:531
+#: ../src/wxMaximaFrame.cpp:534
 msgid "Convert to &Gamma"
 msgstr "&Gamma-függvénnyé alakítás"
 
-#: ../src/wxMaximaFrame.cpp:565
+#: ../src/wxMaximaFrame.cpp:568
 msgid "Convert to &Polarform"
 msgstr "&Exponenciálissá alakítás"
 
-#: ../src/wxMaximaFrame.cpp:562
+#: ../src/wxMaximaFrame.cpp:565
 msgid "Convert to &Rectform"
 msgstr "&Algebraivá alakítás"
 
-#: ../src/wxMaximaFrame.cpp:555
+#: ../src/wxMaximaFrame.cpp:558
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítása"
 
-#: ../src/wxMaximaFrame.cpp:695
-#: ../src/wxMaximaFrame.cpp:758
+#: ../src/wxMaximaFrame.cpp:698
+#: ../src/wxMaximaFrame.cpp:761
 #: ../src/MathCtrl.cpp:659
-#: ../src/MathCtrl.cpp:669
-#: ../src/MathCtrl.cpp:687
-#: ../src/MathCtrl.cpp:727
+#: ../src/MathCtrl.cpp:671
+#: ../src/MathCtrl.cpp:689
+#: ../src/MathCtrl.cpp:729
 msgid "Copy"
 msgstr "Másolás"
 
-#: ../src/MathCtrl.cpp:672
-#: ../src/MathCtrl.cpp:690
+#: ../src/MathCtrl.cpp:674
+#: ../src/MathCtrl.cpp:692
 msgid "Copy As Image"
 msgstr "Másolás képként"
 
-#: ../src/MathCtrl.cpp:670
-#: ../src/MathCtrl.cpp:688
+#: ../src/MathCtrl.cpp:672
+#: ../src/MathCtrl.cpp:690
 msgid "Copy LaTeX"
 msgstr "Másolás LaTeX-be"
 
@@ -780,8 +772,8 @@ msgid "Copy as Text\tCtrl-Shift-C"
 msgstr "Szöveg másolása\tCtrl-Shift-C"
 
 #: ../src/wxMaximaFrame.cpp:224
-#: ../src/wxMaximaFrame.cpp:697
-#: ../src/wxMaximaFrame.cpp:761
+#: ../src/wxMaximaFrame.cpp:700
+#: ../src/wxMaximaFrame.cpp:764
 msgid "Copy selection"
 msgstr "Kijelölt rész másolása"
 
@@ -813,9 +805,9 @@ msgstr "Létrehoz egy új cellát az előző bemenet tartalmának bemásolásáv
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: ../src/wxMaximaFrame.cpp:692
-#: ../src/wxMaximaFrame.cpp:754
-#: ../src/MathCtrl.cpp:726
+#: ../src/wxMaximaFrame.cpp:695
+#: ../src/wxMaximaFrame.cpp:757
+#: ../src/MathCtrl.cpp:728
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -824,8 +816,8 @@ msgid "Cut\tCtrl-X"
 msgstr "&Kivágás\tCtrl-X"
 
 #: ../src/wxMaximaFrame.cpp:221
-#: ../src/wxMaximaFrame.cpp:694
-#: ../src/wxMaximaFrame.cpp:757
+#: ../src/wxMaximaFrame.cpp:697
+#: ../src/wxMaximaFrame.cpp:760
 msgid "Cut selection"
 msgstr "Kijelölt rész másolása"
 
@@ -837,21 +829,21 @@ msgstr "Cseh"
 msgid "Danish"
 msgstr "Dán"
 
-#: ../src/wxMaxima.cpp:3333
-#: ../src/wxMaxima.cpp:3383
+#: ../src/wxMaxima.cpp:3378
+#: ../src/wxMaxima.cpp:3428
 msgid "Data Matrix:"
 msgstr "Adat mátrix:"
 
-#: ../src/wxMaxima.cpp:3353
+#: ../src/wxMaxima.cpp:3398
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr " Adat fájlok (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
-#: ../src/wxMaxima.cpp:3222
-#: ../src/wxMaxima.cpp:3236
+#: ../src/wxMaxima.cpp:3267
+#: ../src/wxMaxima.cpp:3281
 msgid "Data:"
 msgstr "Adat:"
 
-#: ../src/wxMaximaFrame.cpp:498
+#: ../src/wxMaximaFrame.cpp:501
 msgid "Decompose rational function to partial fractions"
 msgstr "Racionális törtfüggvény parciális törtekre bontása"
 
@@ -867,8 +859,8 @@ msgstr "Alapértelmezett betűtípus:"
 msgid "Default port:"
 msgstr "Alapértelmezett port:"
 
-#: ../src/wxMaxima.cpp:2168
-#: ../src/wxMaxima.cpp:2177
+#: ../src/wxMaxima.cpp:2192
+#: ../src/wxMaxima.cpp:2201
 msgid "Delete"
 msgstr "Törlés"
 
@@ -876,8 +868,8 @@ msgstr "Törlés"
 msgid "Delete F&unction..."
 msgstr "Fü&ggvény törlése..."
 
-#: ../src/MathCtrl.cpp:676
-#: ../src/MathCtrl.cpp:694
+#: ../src/MathCtrl.cpp:678
+#: ../src/MathCtrl.cpp:696
 msgid "Delete Selection"
 msgstr "Kijelölt rész törlése"
 
@@ -897,15 +889,15 @@ msgstr "Változó törlése"
 msgid "Delete all values from memory"
 msgstr "Minden tartalom törlése a memóriából"
 
-#: ../src/wxMaxima.cpp:2177
+#: ../src/wxMaxima.cpp:2201
 msgid "Delete function(s):"
 msgstr "Függvény(ek) törlése:"
 
-#: ../src/wxMaxima.cpp:2168
+#: ../src/wxMaxima.cpp:2192
 msgid "Delete variable(s):"
 msgstr "Változó(k) törlése:"
 
-#: ../src/wxMaxima.cpp:2755
+#: ../src/wxMaxima.cpp:2800
 msgid "Denom. deg:"
 msgstr "Nevező foka:"
 
@@ -913,32 +905,32 @@ msgstr "Nevező foka:"
 msgid "Depth:"
 msgstr "Fokszám:"
 
-#: ../src/wxMaxima.cpp:2306
+#: ../src/wxMaxima.cpp:2330
 msgid "Derivative:"
 msgstr "Derivált:"
 
-#: ../src/wxMaximaFrame.cpp:979
+#: ../src/wxMaximaFrame.cpp:982
 msgid "Deviation"
 msgstr "Szórás"
 
-#: ../src/wxMaximaFrame.cpp:494
+#: ../src/wxMaximaFrame.cpp:497
 msgid "Di&vide Polynomials..."
 msgstr "P&olinomok osztása..."
 
-#: ../src/wxMaximaFrame.cpp:944
+#: ../src/wxMaximaFrame.cpp:947
 msgid "Diff..."
 msgstr "Differenciál..."
 
-#: ../src/wxMaxima.cpp:2898
-#: ../src/wxMaxima.cpp:3543
+#: ../src/wxMaxima.cpp:2943
+#: ../src/wxMaxima.cpp:3588
 msgid "Differentiate"
 msgstr "Differenciálás"
 
-#: ../src/wxMaximaFrame.cpp:464
+#: ../src/wxMaximaFrame.cpp:467
 msgid "Differentiate expression"
 msgstr "Kifejezés differenciálása"
 
-#: ../src/MathCtrl.cpp:710
+#: ../src/MathCtrl.cpp:712
 msgid "Differentiate..."
 msgstr "Differenciálás..."
 
@@ -955,7 +947,7 @@ msgstr "Diszkrét pontok"
 msgid "Display Te&X Form"
 msgstr "Me&gjelenítés TeX formátumban"
 
-#: ../src/wxMaxima.cpp:2117
+#: ../src/wxMaxima.cpp:2141
 msgid "Display algorithm"
 msgstr "Megjelenítő algoritmus"
 
@@ -967,20 +959,20 @@ msgstr "Kifejezés megjelenítése TeX formátumban"
 msgid "Display time used for evaluation"
 msgstr "Megjeleníti mennyi idő alatt fut le az eljárás"
 
-#: ../src/wxMaxima.cpp:2805
+#: ../src/wxMaxima.cpp:2850
 msgid "Divide"
 msgstr "Osztás"
 
-#: ../src/MathCtrl.cpp:734
+#: ../src/MathCtrl.cpp:736
 msgid "Divide Cell"
 msgstr "Cella kettéosztása"
 
-#: ../src/wxMaximaFrame.cpp:495
+#: ../src/wxMaximaFrame.cpp:498
 msgid "Divide numbers or polynomials"
 msgstr "Számok vagy polinomok osztása"
 
-#: ../src/wxMaxima.cpp:989
-#: ../src/wxMaxima.cpp:997
+#: ../src/wxMaxima.cpp:1013
+#: ../src/wxMaxima.cpp:1021
 msgid "Document "
 msgstr "Dokumentum"
 
@@ -988,8 +980,8 @@ msgstr "Dokumentum"
 msgid "Document background"
 msgstr "Szöveg háttere"
 
-#: ../src/wxMaxima.cpp:1749
-#: ../src/wxMaxima.cpp:3640
+#: ../src/wxMaxima.cpp:1773
+#: ../src/wxMaxima.cpp:3699
 msgid ""
 "Document not saved!\n"
 "\n"
@@ -999,7 +991,7 @@ msgstr ""
 "\n"
 "Bezárja a dokumentumot, elveszítve a változásokat?"
 
-#: ../src/wxMaxima.cpp:3421
+#: ../src/wxMaxima.cpp:3466
 msgid ""
 "Document not saved!\n"
 "\n"
@@ -1017,15 +1009,15 @@ msgstr "&Egyenletek"
 msgid "E&xit\tCtrl-Q"
 msgstr "&Kilépés\tCtrl-Q"
 
-#: ../src/wxMaximaFrame.cpp:435
+#: ../src/wxMaximaFrame.cpp:438
 msgid "Eige&nvectors"
 msgstr "Saját&vektorok"
 
-#: ../src/wxMaximaFrame.cpp:433
+#: ../src/wxMaximaFrame.cpp:436
 msgid "Eigen&values"
 msgstr "&Sajátértékek"
 
-#: ../src/wxMaxima.cpp:2337
+#: ../src/wxMaxima.cpp:2361
 msgid "Eliminate"
 msgstr "Kiküszöbölés"
 
@@ -1037,15 +1029,15 @@ msgstr "Változó kiküszöbölése egyenletrendszerből"
 msgid "English"
 msgstr "Angol"
 
-#: ../src/wxMaximaFrame.cpp:1000
+#: ../src/wxMaximaFrame.cpp:1003
 msgid "Enter Matrix..."
 msgstr "Mátrix bevitele..."
 
-#: ../src/wxMaximaFrame.cpp:423
+#: ../src/wxMaximaFrame.cpp:426
 msgid "Enter a matrix"
 msgstr "Mátrix bevitele"
 
-#: ../src/wxMaxima.cpp:2706
+#: ../src/wxMaxima.cpp:2751
 msgid "Enter an equation for rational simplification:"
 msgstr "Írja be a listába felvenni kívánt algebrai egyenletet:"
 
@@ -1057,15 +1049,15 @@ msgstr "A változókat vesszővel válassza el egymástól."
 msgid "Enter evaluates cells"
 msgstr "A parancsok az Enter lenyomására hajtódnak végre"
 
-#: ../src/wxMaxima.cpp:2499
+#: ../src/wxMaxima.cpp:2523
 msgid "Enter matrix"
 msgstr "Mátrix bevitele"
 
-#: ../src/wxMaxima.cpp:3040
+#: ../src/wxMaxima.cpp:3085
 msgid "Enter new plot format:"
 msgstr "Új ábrázolási mód bevitele:"
 
-#: ../src/wxMaxima.cpp:3073
+#: ../src/wxMaxima.cpp:3118
 msgid "Enter new precision:"
 msgstr "Új pontosság bevitele:"
 
@@ -1073,7 +1065,7 @@ msgstr "Új pontosság bevitele:"
 msgid "Enter the path to the Maxima executable."
 msgstr "A Maxima elérési útjának beírása."
 
-#: ../src/wxMaxima.cpp:2952
+#: ../src/wxMaxima.cpp:2997
 msgid "Epsilon:"
 msgstr "Epszilon:"
 
@@ -1082,54 +1074,54 @@ msgstr "Epszilon:"
 msgid "Equation %d:"
 msgstr "Egyenlet %d:"
 
-#: ../src/wxMaxima.cpp:2225
-#: ../src/wxMaxima.cpp:2239
-#: ../src/wxMaxima.cpp:2398
-#: ../src/wxMaxima.cpp:3496
+#: ../src/wxMaxima.cpp:2249
+#: ../src/wxMaxima.cpp:2263
+#: ../src/wxMaxima.cpp:2422
+#: ../src/wxMaxima.cpp:3541
 msgid "Equation(s):"
 msgstr "Egyenlet(ek):"
 
-#: ../src/wxMaxima.cpp:2255
-#: ../src/wxMaxima.cpp:2274
-#: ../src/wxMaxima.cpp:2737
-#: ../src/wxMaxima.cpp:3334
-#: ../src/wxMaxima.cpp:3510
+#: ../src/wxMaxima.cpp:2279
+#: ../src/wxMaxima.cpp:2298
+#: ../src/wxMaxima.cpp:2782
+#: ../src/wxMaxima.cpp:3379
+#: ../src/wxMaxima.cpp:3555
 msgid "Equation:"
 msgstr "Egyenlet:"
 
-#: ../src/wxMaxima.cpp:2335
+#: ../src/wxMaxima.cpp:2359
 msgid "Equations:"
 msgstr "Egyenletek:"
 
 #: ../src/wxMaxima.cpp:334
-#: ../src/wxMaxima.cpp:891
-#: ../src/wxMaxima.cpp:902
-#: ../src/wxMaxima.cpp:961
-#: ../src/wxMaxima.cpp:973
-#: ../src/wxMaxima.cpp:991
-#: ../src/wxMaxima.cpp:1409
-#: ../src/wxMaxima.cpp:1505
-#: ../src/wxMaxima.cpp:3702
+#: ../src/wxMaxima.cpp:915
+#: ../src/wxMaxima.cpp:926
+#: ../src/wxMaxima.cpp:985
+#: ../src/wxMaxima.cpp:997
+#: ../src/wxMaxima.cpp:1015
+#: ../src/wxMaxima.cpp:1433
+#: ../src/wxMaxima.cpp:1529
+#: ../src/wxMaxima.cpp:3761
 #: ../src/Config.cpp:447
 #: ../src/ImgCell.cpp:97
 msgid "Error"
 msgstr "Hiba"
 
-#: ../src/SlideShowCell.cpp:70
-#: ../src/SlideShowCell.cpp:113
+#: ../src/SlideShowCell.cpp:71
+#: ../src/SlideShowCell.cpp:114
 #, c-format
 msgid "Error %d"
 msgstr "Hiba %d"
 
-#: ../src/wxMaxima.cpp:1848
-#: ../src/wxMaxima.cpp:1853
-#: ../src/wxMaxima.cpp:2358
+#: ../src/wxMaxima.cpp:1872
+#: ../src/wxMaxima.cpp:1877
 #: ../src/wxMaxima.cpp:2382
-#: ../src/wxMaxima.cpp:2493
+#: ../src/wxMaxima.cpp:2406
+#: ../src/wxMaxima.cpp:2517
 msgid "Error!"
 msgstr "Hiba!"
 
-#: ../src/wxMaximaFrame.cpp:587
+#: ../src/wxMaximaFrame.cpp:590
 msgid "Evaluate &Noun Forms"
 msgstr "K&iértékeletlen formák kiértékelése"
 
@@ -1138,7 +1130,7 @@ msgid "Evaluate All Cells\tCtrl-R"
 msgstr "Minden cella újraszámolása\tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:252
-#: ../src/MathCtrl.cpp:679
+#: ../src/MathCtrl.cpp:681
 msgid "Evaluate Cell(s)"
 msgstr "Cellák újraszámolása"
 
@@ -1150,11 +1142,11 @@ msgstr "Kijelölt cellák újraszámolása"
 msgid "Evaluate all cells in the document"
 msgstr "A dokumentum összes cellájának újraszámolása"
 
-#: ../src/wxMaximaFrame.cpp:588
+#: ../src/wxMaximaFrame.cpp:591
 msgid "Evaluate all noun forms in expression"
 msgstr "Nem kiértékelésre szánt formákat is kiértékel"
 
-#: ../src/wxMaxima.cpp:3169
+#: ../src/wxMaxima.cpp:3214
 msgid "Example"
 msgstr "Példa"
 
@@ -1167,31 +1159,31 @@ msgstr "Példaszöveg"
 msgid "Exit wxMaxima"
 msgstr "Kilépés a wxMaximából"
 
-#: ../src/wxMaximaFrame.cpp:935
+#: ../src/wxMaximaFrame.cpp:938
 msgid "Expand"
 msgstr "Felbont"
 
-#: ../src/wxMaximaFrame.cpp:940
+#: ../src/wxMaximaFrame.cpp:943
 msgid "Expand (tr)"
 msgstr "Felbont (tr)"
 
-#: ../src/MathCtrl.cpp:706
+#: ../src/MathCtrl.cpp:708
 msgid "Expand Expression"
 msgstr "Kifejezés felbontása"
 
-#: ../src/wxMaximaFrame.cpp:519
+#: ../src/wxMaximaFrame.cpp:522
 msgid "Expand Logarithms"
 msgstr "Logaritmikus felbontás"
 
-#: ../src/wxMaximaFrame.cpp:518
+#: ../src/wxMaximaFrame.cpp:521
 msgid "Expand an expression"
 msgstr "Egy kifejezés felbontása"
 
-#: ../src/wxMaximaFrame.cpp:552
+#: ../src/wxMaximaFrame.cpp:555
 msgid "Expand trigonometric expression"
 msgstr "Trigonometrikus kifejezés felbontása"
 
-#: ../src/wxMaxima.cpp:1834
+#: ../src/wxMaxima.cpp:1858
 msgid "Export"
 msgstr "Exportálás"
 
@@ -1199,11 +1191,11 @@ msgstr "Exportálás"
 msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Dokumentum exportálása HTML vagy pdfLaTeX formátumba"
 
-#: ../src/wxMaxima.cpp:1853
+#: ../src/wxMaxima.cpp:1877
 msgid "Exporting to HTML failed!"
 msgstr "A HTML-be való exportálás meghiúsult!"
 
-#: ../src/wxMaxima.cpp:1848
+#: ../src/wxMaxima.cpp:1872
 msgid "Exporting to TeX failed!"
 msgstr "A TeX-be való exportálás meghiúsult!"
 
@@ -1218,42 +1210,42 @@ msgstr "Függvény(ek):"
 #: ../src/IntegrateWiz.cpp:36
 #: ../src/SeriesWiz.cpp:32
 #: ../src/SubstituteWiz.cpp:27
-#: ../src/wxMaxima.cpp:2413
-#: ../src/wxMaxima.cpp:2562
-#: ../src/wxMaxima.cpp:2818
-#: ../src/wxMaxima.cpp:2833
-#: ../src/wxMaxima.cpp:2862
-#: ../src/wxMaxima.cpp:2879
-#: ../src/wxMaxima.cpp:2896
-#: ../src/wxMaxima.cpp:2949
-#: ../src/wxMaxima.cpp:2984
-#: ../src/wxMaxima.cpp:3541
+#: ../src/wxMaxima.cpp:2437
+#: ../src/wxMaxima.cpp:2607
+#: ../src/wxMaxima.cpp:2863
+#: ../src/wxMaxima.cpp:2878
+#: ../src/wxMaxima.cpp:2907
+#: ../src/wxMaxima.cpp:2924
+#: ../src/wxMaxima.cpp:2941
+#: ../src/wxMaxima.cpp:2994
+#: ../src/wxMaxima.cpp:3029
+#: ../src/wxMaxima.cpp:3586
 #: ../src/LimitWiz.cpp:26
 #: ../src/SumWiz.cpp:30
 msgid "Expression:"
 msgstr "Kifejezés:"
 
-#: ../src/wxMaximaFrame.cpp:934
+#: ../src/wxMaximaFrame.cpp:937
 msgid "Factor"
 msgstr "Faktorizál"
 
-#: ../src/wxMaximaFrame.cpp:514
+#: ../src/wxMaximaFrame.cpp:517
 msgid "Factor Complex"
 msgstr "Komplex faktorizáció"
 
-#: ../src/MathCtrl.cpp:705
+#: ../src/MathCtrl.cpp:707
 msgid "Factor Expression"
 msgstr "Kifejezés faktorizálása"
 
-#: ../src/wxMaximaFrame.cpp:513
+#: ../src/wxMaximaFrame.cpp:516
 msgid "Factor an expression"
 msgstr "Kifejezés faktorizálása"
 
-#: ../src/wxMaximaFrame.cpp:515
+#: ../src/wxMaximaFrame.cpp:518
 msgid "Factor an expression in Gaussian numbers"
 msgstr "Kifejezés faktorizálása Gauss-egészekre"
 
-#: ../src/wxMaximaFrame.cpp:540
+#: ../src/wxMaximaFrame.cpp:543
 msgid "Factorials and &Gamma"
 msgstr "&Faktoriális- és gamma-függvény"
 
@@ -1265,15 +1257,15 @@ msgstr "Végzetes hiba"
 msgid "Figure"
 msgstr "Ábra"
 
-#: ../src/main.cpp:101
+#: ../src/main.cpp:107
 msgid "File"
 msgstr "Fájl"
 
-#: ../src/wxMaxima.cpp:3651
+#: ../src/wxMaxima.cpp:3710
 msgid "File not found"
 msgstr "A fájl nem található"
 
-#: ../src/wxMaxima.cpp:3651
+#: ../src/wxMaxima.cpp:3710
 msgid "File you tried to open does not exist."
 msgstr "A megnyitni próbált fájl nem található."
 
@@ -1281,7 +1273,7 @@ msgstr "A megnyitni próbált fájl nem található."
 msgid "File:"
 msgstr "Fájl:"
 
-#: ../src/wxMaximaFrame.cpp:702
+#: ../src/wxMaximaFrame.cpp:705
 msgid "Find"
 msgstr "Keresés..."
 
@@ -1289,23 +1281,23 @@ msgstr "Keresés..."
 msgid "Find\tCtrl-F"
 msgstr "Keresés...\tCtrl-F"
 
-#: ../src/wxMaximaFrame.cpp:465
+#: ../src/wxMaximaFrame.cpp:468
 msgid "Find &Limit..."
 msgstr "&Határérték számolása..."
 
-#: ../src/wxMaximaFrame.cpp:468
+#: ../src/wxMaximaFrame.cpp:471
 msgid "Find Minimum..."
 msgstr "Minimum keresése..."
 
-#: ../src/MathCtrl.cpp:702
+#: ../src/MathCtrl.cpp:704
 msgid "Find Root..."
 msgstr "Megoldás numerikusan..."
 
-#: ../src/wxMaximaFrame.cpp:469
+#: ../src/wxMaximaFrame.cpp:472
 msgid "Find a (unconstrained) minimum of an expression"
 msgstr "Kifejezés minimumának meghatározása"
 
-#: ../src/wxMaximaFrame.cpp:466
+#: ../src/wxMaximaFrame.cpp:469
 msgid "Find a limit of an expression"
 msgstr "Kifejezés határértékének számolása"
 
@@ -1321,25 +1313,25 @@ msgstr "Polinom összes gyökének meghatározása"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Polinom összes gyökének meghatározása"
 
-#: ../src/wxMaxima.cpp:2046
+#: ../src/wxMaxima.cpp:2070
 msgid "Find and Replace"
 msgstr "Keresés és csere"
 
 #: ../src/wxMaximaFrame.cpp:241
-#: ../src/wxMaximaFrame.cpp:704
-#: ../src/wxMaximaFrame.cpp:770
+#: ../src/wxMaximaFrame.cpp:707
+#: ../src/wxMaximaFrame.cpp:773
 msgid "Find and replace"
 msgstr "Keresés és csere"
 
-#: ../src/wxMaximaFrame.cpp:434
+#: ../src/wxMaximaFrame.cpp:437
 msgid "Find eigenvalues of a matrix"
 msgstr "Mátrix sajátértékeinek kiszámolása"
 
-#: ../src/wxMaximaFrame.cpp:436
+#: ../src/wxMaximaFrame.cpp:439
 msgid "Find eigenvectors of a matrix"
 msgstr "Mátrix sajátvektorainak kiszámolása"
 
-#: ../src/wxMaxima.cpp:2954
+#: ../src/wxMaxima.cpp:2999
 msgid "Find minimum"
 msgstr "Minimum keresése"
 
@@ -1347,12 +1339,12 @@ msgstr "Minimum keresése"
 msgid "Find real roots of a polynomial"
 msgstr "Polinom valós gyökeinek meghatározása"
 
-#: ../src/wxMaxima.cpp:2258
-#: ../src/wxMaxima.cpp:3513
+#: ../src/wxMaxima.cpp:2282
+#: ../src/wxMaxima.cpp:3558
 msgid "Find root"
 msgstr "Megoldás numerikusan"
 
-#: ../src/wxMaximaFrame.cpp:767
+#: ../src/wxMaximaFrame.cpp:770
 msgid "Find..."
 msgstr "Keresés..."
 
@@ -1382,8 +1374,8 @@ msgid "French"
 msgstr "Francia"
 
 #: ../src/IntegrateWiz.cpp:43
-#: ../src/wxMaxima.cpp:2563
-#: ../src/wxMaxima.cpp:2984
+#: ../src/wxMaxima.cpp:2608
+#: ../src/wxMaxima.cpp:3029
 #: ../src/SumWiz.cpp:36
 #: ../src/Plot3dWiz.cpp:46
 #: ../src/Plot3dWiz.cpp:55
@@ -1397,7 +1389,7 @@ msgstr "Mettől:"
 msgid "Full Screen\tAlt-Enter"
 msgstr "Teljes képernyő\tAlt-Enter"
 
-#: ../src/wxMaxima.cpp:2139
+#: ../src/wxMaxima.cpp:2163
 msgid "Function"
 msgstr "Függvény"
 
@@ -1405,14 +1397,14 @@ msgstr "Függvény"
 msgid "Function names"
 msgstr "Függvénynevek"
 
-#: ../src/wxMaxima.cpp:2398
+#: ../src/wxMaxima.cpp:2422
 msgid "Function(s):"
 msgstr "Függvény(ek):"
 
-#: ../src/wxMaxima.cpp:2274
-#: ../src/wxMaxima.cpp:2465
-#: ../src/wxMaxima.cpp:2547
-#: ../src/wxMaxima.cpp:2580
+#: ../src/wxMaxima.cpp:2298
+#: ../src/wxMaxima.cpp:2489
+#: ../src/wxMaxima.cpp:2592
+#: ../src/wxMaxima.cpp:2625
 msgid "Function:"
 msgstr "Függvény:"
 
@@ -1420,21 +1412,25 @@ msgstr "Függvény:"
 msgid "Functions and macros"
 msgstr "Függvények és makrók"
 
-#: ../src/wxMaximaFrame.cpp:582
+#: ../src/wxMaximaFrame.cpp:585
 msgid "Functions for complex simplification"
 msgstr "Eljárások komplex átalakításokra"
 
-#: ../src/wxMaximaFrame.cpp:542
+#: ../src/wxMaximaFrame.cpp:545
 msgid "Functions for simplifying factorials and gamma function"
 msgstr "Eljárások faktoriális- és gamma-függvény átalakításokra"
 
-#: ../src/wxMaximaFrame.cpp:559
+#: ../src/wxMaximaFrame.cpp:562
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Eljárások trigonometrikus átalakításokra"
 
-#: ../src/wxMaxima.cpp:2790
+#: ../src/wxMaxima.cpp:2835
 msgid "GCD"
 msgstr "Legnagyobb közös osztó"
+
+#: ../src/wxMaxima.cpp:3671
+msgid "GIF image (*.gif)|*.gif"
+msgstr "GIF képfájl (*.gif)|*.gif"
 
 #: ../src/wxMaximaFrame.cpp:134
 msgid "General Math"
@@ -1444,47 +1440,56 @@ msgstr "Általános matematika"
 msgid "General Math\tAlt-Shift-M"
 msgstr "Általános matematika\tAlt-Shift-M"
 
-#: ../src/wxMaxima.cpp:2531
+#: ../src/wxMaxima.cpp:2555
+#: ../src/wxMaxima.cpp:2574
 msgid "Generate Matrix"
-msgstr "Mátrix generálás"
+msgstr "Mátrix generálása"
+
+#: ../src/wxMaximaFrame.cpp:422
+msgid "Generate Matrix from Expression..."
+msgstr "&Mátrix generálása kifejezésből..."
 
 #: ../src/wxMaximaFrame.cpp:420
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Mátrix generálása kétdimenziós sorozatból"
 
+#: ../src/wxMaximaFrame.cpp:423
+msgid "Generate a matrix from a lambda expression"
+msgstr "Mátrix generálása kétdimenziós kifejezésből"
+
 #: ../src/Config.cpp:85
 msgid "German"
 msgstr "Német"
 
-#: ../src/wxMaximaFrame.cpp:571
+#: ../src/wxMaximaFrame.cpp:574
 msgid "Get &Imaginary Part"
 msgstr "&Képzetes rész"
 
-#: ../src/wxMaximaFrame.cpp:471
+#: ../src/wxMaximaFrame.cpp:474
 msgid "Get &Series..."
 msgstr "&Taylor- és hatványsor..."
 
-#: ../src/wxMaximaFrame.cpp:482
+#: ../src/wxMaximaFrame.cpp:485
 msgid "Get Laplace transformation of an expression"
 msgstr "Kifejezés Laplace-transzformáltja"
 
-#: ../src/wxMaximaFrame.cpp:568
+#: ../src/wxMaximaFrame.cpp:571
 msgid "Get Real P&art"
 msgstr "&Valós rész"
 
-#: ../src/wxMaximaFrame.cpp:485
+#: ../src/wxMaximaFrame.cpp:488
 msgid "Get inverse Laplace transformation of an expression"
 msgstr "Kifejezés inverz Laplace-transzformáltja"
 
-#: ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:475
 msgid "Get the Taylor or power series of expression"
 msgstr "Függvény Taylor- és hatványsora"
 
-#: ../src/wxMaximaFrame.cpp:572
+#: ../src/wxMaximaFrame.cpp:575
 msgid "Get the imaginary part of complex expression"
 msgstr "Komplex kifejezés képzetes része"
 
-#: ../src/wxMaximaFrame.cpp:569
+#: ../src/wxMaximaFrame.cpp:572
 msgid "Get the real part of complex expression"
 msgstr "Komplex kifejezés valós része"
 
@@ -1496,16 +1501,17 @@ msgstr "Görög betűk"
 msgid "Grid:"
 msgstr "Háló:"
 
-#: ../src/wxMaxima.cpp:1836
+#: ../src/wxMaxima.cpp:1860
 msgid "HTML file (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 msgstr "HTML fájl (*.html)|*.html|pdfLaTeX fájl (*.tex)|*.tex|Minden fájl|*"
 
-#: ../src/wxMaxima.cpp:2529
+#: ../src/wxMaxima.cpp:2553
+#: ../src/wxMaxima.cpp:2572
 msgid "Height:"
 msgstr "Oszlopok:"
 
-#: ../src/wxMaximaFrame.cpp:721
-#: ../src/wxMaximaFrame.cpp:788
+#: ../src/wxMaximaFrame.cpp:724
+#: ../src/wxMaximaFrame.cpp:791
 msgid "Help"
 msgstr "Segítség"
 
@@ -1521,11 +1527,11 @@ msgstr "Összes panel elrejtése"
 msgid "Highlight (dpart)"
 msgstr "Kiemelés"
 
-#: ../src/wxMaxima.cpp:3223
+#: ../src/wxMaxima.cpp:3268
 msgid "Histogram"
 msgstr "Hisztogram"
 
-#: ../src/wxMaximaFrame.cpp:991
+#: ../src/wxMaximaFrame.cpp:994
 msgid "Histogram..."
 msgstr "Hisztogram..."
 
@@ -1545,11 +1551,11 @@ msgstr "A vízszintes kurzor normál kurzorként működik, csak éppen hatása 
 msgid "Hungarian"
 msgstr "Magyar"
 
-#: ../src/wxMaxima.cpp:2292
+#: ../src/wxMaxima.cpp:2316
 msgid "IC1"
 msgstr "Kezdetiérték-probléma (1)"
 
-#: ../src/wxMaxima.cpp:2308
+#: ../src/wxMaxima.cpp:2332
 msgid "IC2"
 msgstr "Kezdetiérték-probléma (2)"
 
@@ -1557,15 +1563,15 @@ msgstr "Kezdetiérték-probléma (2)"
 msgid "If your calculation is taking too long to evaluate, you can try 'Maxima->Interrupt' or 'Maxima->Restart Maxima' menu commands."
 msgstr "Ha egy számítás elvégzése túl sokáig tart, megpróbálhatjuk a 'Maxima->Megszakítás' vagy a 'Maxima->A Maxima újraindítása' menüparancsok használatát."
 
-#: ../src/wxMaximaFrame.cpp:1031
+#: ../src/wxMaximaFrame.cpp:1034
 msgid "Image"
 msgstr "Kép"
 
-#: ../src/wxMaxima.cpp:3817
+#: ../src/wxMaxima.cpp:3876
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Kép fájlok (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
-#: ../src/wxMaxima.cpp:3384
+#: ../src/wxMaxima.cpp:3429
 msgid "Include columns:"
 msgstr "Tartalmazott oszlopok:"
 
@@ -1578,11 +1584,11 @@ msgstr "Tartalmazott oszlopok:"
 msgid "Infinity"
 msgstr "Végtelen"
 
-#: ../src/wxMaximaFrame.cpp:641
+#: ../src/wxMaximaFrame.cpp:644
 msgid "Info about Maxima build"
 msgstr "Információ a Maxima fordításáról"
 
-#: ../src/wxMaxima.cpp:2951
+#: ../src/wxMaxima.cpp:2996
 msgid "Initial Estimates:"
 msgstr "Kezdeti becslések:"
 
@@ -1610,7 +1616,7 @@ msgstr "Beszúrás"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "Cella beillesztése\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:3815
+#: ../src/wxMaxima.cpp:3874
 msgid "Insert Image"
 msgstr "Kép beszúrása"
 
@@ -1658,42 +1664,42 @@ msgstr "Ellenőr"
 msgid "Inspector\tAlt-Shift-I"
 msgstr "Ellenőr\tAlt-Shift-I"
 
-#: ../src/wxMaxima.cpp:2736
+#: ../src/wxMaxima.cpp:2781
 msgid "Integral/Sum:"
 msgstr "Integrál/összeg:"
 
 #: ../src/IntegrateWiz.cpp:72
-#: ../src/wxMaxima.cpp:2849
-#: ../src/wxMaxima.cpp:3528
+#: ../src/wxMaxima.cpp:2894
+#: ../src/wxMaxima.cpp:3573
 msgid "Integrate"
 msgstr "Integrál"
 
-#: ../src/wxMaxima.cpp:2835
+#: ../src/wxMaxima.cpp:2880
 msgid "Integrate (risch)"
 msgstr "Integrál (Risch)"
 
-#: ../src/wxMaximaFrame.cpp:456
+#: ../src/wxMaximaFrame.cpp:459
 msgid "Integrate expression"
 msgstr "Függvény integrálása"
 
-#: ../src/wxMaximaFrame.cpp:458
+#: ../src/wxMaximaFrame.cpp:461
 msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
-#: ../src/wxMaximaFrame.cpp:945
-#: ../src/MathCtrl.cpp:709
+#: ../src/wxMaximaFrame.cpp:948
+#: ../src/MathCtrl.cpp:711
 msgid "Integrate..."
 msgstr "Integrál..."
 
-#: ../src/wxMaximaFrame.cpp:706
-#: ../src/wxMaximaFrame.cpp:772
+#: ../src/wxMaximaFrame.cpp:709
+#: ../src/wxMaximaFrame.cpp:775
 msgid "Interrupt"
 msgstr "Megszakítás"
 
 #: ../src/wxMaximaFrame.cpp:330
 #: ../src/wxMaximaFrame.cpp:334
-#: ../src/wxMaximaFrame.cpp:708
-#: ../src/wxMaximaFrame.cpp:775
+#: ../src/wxMaximaFrame.cpp:711
+#: ../src/wxMaximaFrame.cpp:778
 msgid "Interrupt current computation"
 msgstr "Jelenlegi számítás megszakítása"
 
@@ -1707,11 +1713,11 @@ msgstr ""
 "\n"
 "Írja be a Maxima futtatható fájl elérési útját újra."
 
-#: ../src/wxMaxima.cpp:2881
+#: ../src/wxMaxima.cpp:2926
 msgid "Inverse Laplace"
 msgstr "Inverz Laplace"
 
-#: ../src/wxMaximaFrame.cpp:484
+#: ../src/wxMaximaFrame.cpp:487
 msgid "Inverse Laplace T&ransform..."
 msgstr "I&nverz Laplace-transzformáció..."
 
@@ -1723,7 +1729,7 @@ msgstr "Olasz"
 msgid "Italic"
 msgstr "Dőlt"
 
-#: ../src/wxMaxima.cpp:2775
+#: ../src/wxMaxima.cpp:2820
 msgid "LCM"
 msgstr "Legkisebb közös többszörös"
 
@@ -1739,41 +1745,41 @@ msgstr "A wxMaxima grafikus felület nyelve."
 msgid "Language:"
 msgstr "Nyelv:"
 
-#: ../src/wxMaxima.cpp:2864
+#: ../src/wxMaxima.cpp:2909
 msgid "Laplace"
 msgstr "Laplace"
 
-#: ../src/wxMaximaFrame.cpp:481
+#: ../src/wxMaximaFrame.cpp:484
 msgid "Laplace &Transform..."
 msgstr "L&aplace-transzformáció..."
 
-#: ../src/wxMaximaFrame.cpp:490
+#: ../src/wxMaximaFrame.cpp:493
 msgid "Least Common Multiple..."
 msgstr "Legkisebb közös többszörös..."
 
-#: ../src/wxMaxima.cpp:3336
+#: ../src/wxMaxima.cpp:3381
 msgid "Least Squares Fit"
 msgstr "Legkisebb négyzetes közelítés"
 
-#: ../src/wxMaximaFrame.cpp:987
+#: ../src/wxMaximaFrame.cpp:990
 msgid "Least Squares Fit..."
 msgstr "Legkisebb négyzetes közelítés..."
 
-#: ../src/wxMaxima.cpp:2936
+#: ../src/wxMaxima.cpp:2981
 #: ../src/LimitWiz.cpp:66
 msgid "Limit"
 msgstr "Határérték"
 
-#: ../src/wxMaximaFrame.cpp:946
+#: ../src/wxMaximaFrame.cpp:949
 msgid "Limit..."
 msgstr "Határérték..."
 
-#: ../src/wxMaximaFrame.cpp:986
+#: ../src/wxMaximaFrame.cpp:989
 msgid "Linear Regression"
 msgstr "Lineáris regresszió"
 
-#: ../src/wxMaxima.cpp:2547
-#: ../src/wxMaxima.cpp:2580
+#: ../src/wxMaxima.cpp:2592
+#: ../src/wxMaxima.cpp:2625
 msgid "List:"
 msgstr "Erre a listára:"
 
@@ -1781,7 +1787,7 @@ msgstr "Erre a listára:"
 msgid "Load"
 msgstr "Betöltés"
 
-#: ../src/wxMaxima.cpp:1862
+#: ../src/wxMaxima.cpp:1886
 msgid "Load Package"
 msgstr "Csomag betöltése"
 
@@ -1797,40 +1803,40 @@ msgstr "Maxima csomagfájl betöltése"
 msgid "Load style from file"
 msgstr "Stílusfájl betöltése"
 
-#: ../src/wxMaxima.cpp:2256
-#: ../src/wxMaxima.cpp:3511
+#: ../src/wxMaxima.cpp:2280
+#: ../src/wxMaxima.cpp:3556
 msgid "Lower bound:"
 msgstr "Alsó végpont:"
 
-#: ../src/wxMaximaFrame.cpp:449
+#: ../src/wxMaximaFrame.cpp:452
 msgid "Ma&p to Matrix..."
 msgstr "Mátrix leképe&zése..."
 
-#: ../src/wxMaximaFrame.cpp:443
+#: ../src/wxMaximaFrame.cpp:446
 msgid "Make &List..."
 msgstr "&Lista készítése..."
 
-#: ../src/wxMaxima.cpp:2565
+#: ../src/wxMaxima.cpp:2610
 msgid "Make list"
 msgstr "Lista készítése"
 
-#: ../src/wxMaximaFrame.cpp:444
+#: ../src/wxMaximaFrame.cpp:447
 msgid "Make list from expression"
 msgstr "Lista készítése kifejezésből"
 
-#: ../src/wxMaximaFrame.cpp:585
+#: ../src/wxMaximaFrame.cpp:588
 msgid "Make substitution in expression"
 msgstr "Behelyettesítés kifejezésbe"
 
-#: ../src/wxMaxima.cpp:2549
+#: ../src/wxMaxima.cpp:2594
 msgid "Map"
 msgstr "Leképezés"
 
-#: ../src/wxMaximaFrame.cpp:448
+#: ../src/wxMaximaFrame.cpp:451
 msgid "Map function to a list"
 msgstr "Lista leképezése listába"
 
-#: ../src/wxMaximaFrame.cpp:450
+#: ../src/wxMaximaFrame.cpp:453
 msgid "Map function to a matrix"
 msgstr "Mátrix leképezése mátrixba"
 
@@ -1842,24 +1848,24 @@ msgstr "Nyitó zárójelek párjának automatikus beírása"
 msgid "Math font:"
 msgstr "Matematika betűtípus:"
 
-#: ../src/wxMaxima.cpp:2481
+#: ../src/wxMaxima.cpp:2505
 msgid "Matrix"
 msgstr "Mátrix"
 
-#: ../src/wxMaxima.cpp:2467
+#: ../src/wxMaxima.cpp:2491
 msgid "Matrix map"
 msgstr "Mátrix leképezés"
 
-#: ../src/wxMaxima.cpp:3384
+#: ../src/wxMaxima.cpp:3429
 msgid "Matrix name:"
 msgstr "Mátrix neve:"
 
-#: ../src/wxMaxima.cpp:2465
-#: ../src/wxMaxima.cpp:2514
+#: ../src/wxMaxima.cpp:2489
+#: ../src/wxMaxima.cpp:2538
 msgid "Matrix:"
 msgstr "Mátrix:"
 
-#: ../src/wxMaximaFrame.cpp:626
+#: ../src/wxMaximaFrame.cpp:629
 msgid "Maxima &Help\tF1"
 msgstr "&Maxima súgó\tF1"
 
@@ -1875,15 +1881,15 @@ msgstr "A Maxima számol"
 msgid "Maxima options"
 msgstr "Maxima opciói"
 
-#: ../src/wxMaxima.cpp:1875
+#: ../src/wxMaxima.cpp:1899
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Maxima csomag (*.mac)|*.mac|"
 
-#: ../src/wxMaxima.cpp:1864
+#: ../src/wxMaxima.cpp:1888
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Maxima csomag (*.mac)|*.mac|Lisp csomag (*.lisp)|*.lisp|Minden fájl|*"
 
-#: ../src/wxMaxima.cpp:710
+#: ../src/wxMaxima.cpp:715
 msgid "Maxima process terminated."
 msgstr "A Maxima eljárásának futása megszakadt."
 
@@ -1895,7 +1901,7 @@ msgstr "Maxima program:"
 msgid "Maxima questions"
 msgstr "Maxima kérdései"
 
-#: ../src/wxMaxima.cpp:665
+#: ../src/wxMaxima.cpp:670
 msgid "Maxima started. Waiting for connection..."
 msgstr "A Maxima elindult. Várakozás a kapcsolatra..."
 
@@ -1903,27 +1909,27 @@ msgstr "A Maxima elindult. Várakozás a kapcsolatra..."
 msgid "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f(x) := x^2;')."
 msgstr "A Maxima a ':' jelet használja változó értékadására ('a : 3;') és a ':=' jelet függvény definiálására ('f(x) := x^2;'). "
 
-#: ../src/wxMaximaFrame.cpp:976
+#: ../src/wxMaximaFrame.cpp:979
 msgid "Mean"
 msgstr "Átlag"
 
-#: ../src/wxMaximaFrame.cpp:984
+#: ../src/wxMaximaFrame.cpp:987
 msgid "Mean Difference Test..."
 msgstr "Kétmintás t-próba..."
 
-#: ../src/wxMaximaFrame.cpp:983
+#: ../src/wxMaximaFrame.cpp:986
 msgid "Mean Test..."
 msgstr "Egymintás t-próba..."
 
-#: ../src/wxMaxima.cpp:3292
+#: ../src/wxMaxima.cpp:3337
 msgid "Mean:"
 msgstr "Átlag:"
 
-#: ../src/wxMaximaFrame.cpp:977
+#: ../src/wxMaximaFrame.cpp:980
 msgid "Median"
 msgstr "Medián"
 
-#: ../src/MathCtrl.cpp:682
+#: ../src/MathCtrl.cpp:684
 msgid "Merge Cells"
 msgstr "Cellák egyesítése"
 
@@ -1931,10 +1937,12 @@ msgstr "Cellák egyesítése"
 msgid "Method:"
 msgstr "Eljárás:"
 
-#: ../src/wxMaxima.cpp:2716
+#: ../src/wxMaxima.cpp:2761
 msgid "Modulus"
 msgstr "Modulus"
 
+#: ../src/wxMaxima.cpp:2553
+#: ../src/wxMaxima.cpp:2572
 #: ../src/MatWiz.cpp:172
 msgid "Name:"
 msgstr "Név:"
@@ -1963,36 +1971,36 @@ msgstr "Új &címcella\tF9"
 msgid "New value:"
 msgstr "Új érték:"
 
-#: ../src/wxMaxima.cpp:2737
-#: ../src/wxMaxima.cpp:2863
-#: ../src/wxMaxima.cpp:2880
+#: ../src/wxMaxima.cpp:2782
+#: ../src/wxMaxima.cpp:2908
+#: ../src/wxMaxima.cpp:2925
 msgid "New variable:"
 msgstr "Új változó:"
 
-#: ../src/wxMaxima.cpp:2060
-#: ../src/wxMaxima.cpp:2076
+#: ../src/wxMaxima.cpp:2084
+#: ../src/wxMaxima.cpp:2100
 msgid "No matches found!"
 msgstr "A kifejezés nem található"
 
-#: ../src/wxMaximaFrame.cpp:985
+#: ../src/wxMaximaFrame.cpp:988
 msgid "Normality Test"
 msgstr "Normalitás vizsgálat"
 
-#: ../src/wxMaxima.cpp:2493
+#: ../src/wxMaxima.cpp:2517
 msgid "Not a valid matrix dimension!"
 msgstr "Hibás mátrixdimenzió!"
 
-#: ../src/wxMaxima.cpp:2358
 #: ../src/wxMaxima.cpp:2382
+#: ../src/wxMaxima.cpp:2406
 msgid "Not a valid number of equations!"
 msgstr "Az egyenletek száma hibás!"
 
-#: ../src/wxMaxima.cpp:2754
+#: ../src/wxMaxima.cpp:2799
 msgid "Num. deg:"
 msgstr "Számláló foka:"
 
-#: ../src/wxMaxima.cpp:2350
 #: ../src/wxMaxima.cpp:2374
+#: ../src/wxMaxima.cpp:2398
 msgid "Number of equations:"
 msgstr "Egyenletek száma:"
 
@@ -2043,25 +2051,25 @@ msgstr "OK"
 msgid "Old value:"
 msgstr "Régi érték:"
 
-#: ../src/wxMaxima.cpp:2736
-#: ../src/wxMaxima.cpp:2862
-#: ../src/wxMaxima.cpp:2879
+#: ../src/wxMaxima.cpp:2781
+#: ../src/wxMaxima.cpp:2907
+#: ../src/wxMaxima.cpp:2924
 msgid "Old variable:"
 msgstr "Régi változó:"
 
-#: ../src/wxMaxima.cpp:3293
+#: ../src/wxMaxima.cpp:3338
 msgid "One sample t-test"
 msgstr "Egymintás t-próba"
 
-#: ../src/wxMaximaFrame.cpp:638
+#: ../src/wxMaximaFrame.cpp:641
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
-#: ../src/wxMaximaFrame.cpp:676
-#: ../src/wxMaximaFrame.cpp:734
-#: ../src/wxMaxima.cpp:1756
+#: ../src/wxMaximaFrame.cpp:679
+#: ../src/wxMaximaFrame.cpp:737
+#: ../src/wxMaxima.cpp:1780
 #: ../src/Config.cpp:73
-#: ../src/main.cpp:190
+#: ../src/main.cpp:196
 msgid "Open"
 msgstr "Megnyitás"
 
@@ -2077,22 +2085,22 @@ msgstr "Dokumentum megnyitása"
 msgid "Open a new window"
 msgstr "Új ablak"
 
-#: ../src/wxMaximaFrame.cpp:678
-#: ../src/wxMaximaFrame.cpp:737
+#: ../src/wxMaximaFrame.cpp:681
+#: ../src/wxMaximaFrame.cpp:740
 msgid "Open document"
 msgstr "Dokumentum megnyitása"
 
-#: ../src/wxMaxima.cpp:3351
+#: ../src/wxMaxima.cpp:3396
 msgid "Open matrix"
 msgstr "Mátrix megnyitása"
 
-#: ../src/wxMaxima.cpp:880
-#: ../src/wxMaxima.cpp:947
+#: ../src/wxMaxima.cpp:904
+#: ../src/wxMaxima.cpp:971
 msgid "Opening file"
 msgstr "Fájl megnyitása"
 
-#: ../src/wxMaximaFrame.cpp:688
-#: ../src/wxMaximaFrame.cpp:749
+#: ../src/wxMaximaFrame.cpp:691
+#: ../src/wxMaximaFrame.cpp:752
 #: ../src/Inspector.cpp:58
 #: ../src/Config.cpp:367
 msgid "Options"
@@ -2111,24 +2119,24 @@ msgstr "Elavult cellák"
 msgid "Output labels"
 msgstr "Kimeneti címkék"
 
-#: ../src/wxMaximaFrame.cpp:474
+#: ../src/wxMaximaFrame.cpp:477
 msgid "P&ade Approximation..."
 msgstr "Padé-appro&ximáció..."
 
-#: ../src/wxMaxima.cpp:1967
-#: ../src/wxMaxima.cpp:3610
+#: ../src/wxMaxima.cpp:1991
+#: ../src/wxMaxima.cpp:3655
 msgid "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|X pixmap (*.xpm)|*.xpm"
 msgstr "PNG képfájl (*.png)|*.png|JPEG képfájl (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|X pixmap (*.xpm)|*.xpm"
 
-#: ../src/wxMaxima.cpp:2756
+#: ../src/wxMaxima.cpp:2801
 msgid "Pade approximation"
 msgstr "Padé-approximáció"
 
-#: ../src/wxMaximaFrame.cpp:475
+#: ../src/wxMaximaFrame.cpp:478
 msgid "Pade approximation of a Taylor series"
 msgstr "Taylor-sor Padé-approximációja"
 
-#: ../src/wxMaximaFrame.cpp:1032
+#: ../src/wxMaximaFrame.cpp:1035
 msgid "Pagebreak"
 msgstr "Laptörés"
 
@@ -2145,23 +2153,23 @@ msgstr "Paraméteres ábrázolás"
 msgid "Parsing output"
 msgstr "Kimenet elemzése"
 
-#: ../src/wxMaximaFrame.cpp:497
+#: ../src/wxMaximaFrame.cpp:500
 msgid "Partial &Fractions..."
 msgstr "&Parciális törtek..."
 
-#: ../src/wxMaxima.cpp:2820
+#: ../src/wxMaxima.cpp:2865
 msgid "Partial fractions"
 msgstr "Parciális törtek"
 
-#: ../src/wxMaxima.cpp:1062
+#: ../src/wxMaxima.cpp:1086
 #: ../src/MathParser.cpp:892
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "A dokumentum egyes részei nem töltődtek be!"
 
-#: ../src/wxMaximaFrame.cpp:698
-#: ../src/wxMaximaFrame.cpp:762
-#: ../src/MathCtrl.cpp:719
-#: ../src/MathCtrl.cpp:728
+#: ../src/wxMaximaFrame.cpp:701
+#: ../src/wxMaximaFrame.cpp:765
+#: ../src/MathCtrl.cpp:721
+#: ../src/MathCtrl.cpp:730
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -2169,8 +2177,8 @@ msgstr "Beillesztés"
 msgid "Paste\tCtrl-V"
 msgstr "Beillesztés\tCtrl-V"
 
-#: ../src/wxMaximaFrame.cpp:700
-#: ../src/wxMaximaFrame.cpp:765
+#: ../src/wxMaximaFrame.cpp:703
+#: ../src/wxMaximaFrame.cpp:768
 msgid "Paste from clipboard"
 msgstr "Szöveg beillesztése vágólapról"
 
@@ -2178,11 +2186,11 @@ msgstr "Szöveg beillesztése vágólapról"
 msgid "Paste text from clipboard"
 msgstr "Szöveg beillesztése vágólapról"
 
-#: ../src/wxMaximaFrame.cpp:994
+#: ../src/wxMaximaFrame.cpp:997
 msgid "Piechart"
 msgstr "Tortadiagram"
 
-#: ../src/wxMaxima.cpp:1334
+#: ../src/wxMaxima.cpp:1358
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítások' menüpontban."
 
@@ -2190,57 +2198,57 @@ msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítások' menüp
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "A változások életbelépéséhez indítsa újra a wxMaximát!"
 
-#: ../src/wxMaximaFrame.cpp:601
+#: ../src/wxMaximaFrame.cpp:604
 msgid "Plot &2d..."
 msgstr "&2d-s ábrázolás..."
 
-#: ../src/wxMaximaFrame.cpp:603
+#: ../src/wxMaximaFrame.cpp:606
 msgid "Plot &3d..."
 msgstr "&3d-s ábrázolás..."
 
-#: ../src/wxMaximaFrame.cpp:605
+#: ../src/wxMaximaFrame.cpp:608
 msgid "Plot &Format..."
 msgstr "Á&brázolási mód..."
 
-#: ../src/wxMaxima.cpp:3027
-#: ../src/wxMaxima.cpp:3579
+#: ../src/wxMaxima.cpp:3072
+#: ../src/wxMaxima.cpp:3624
 #: ../src/Plot2dWiz.cpp:116
 #: ../src/Plot2dWiz.cpp:462
 #: ../src/Plot2dWiz.cpp:476
 msgid "Plot 2D"
 msgstr "Kétdimenziós ábrázolás"
 
-#: ../src/wxMaximaFrame.cpp:948
+#: ../src/wxMaximaFrame.cpp:951
 msgid "Plot 2D..."
 msgstr "2D..."
 
-#: ../src/MathCtrl.cpp:712
+#: ../src/MathCtrl.cpp:714
 msgid "Plot 2d..."
 msgstr "2d-s ábrázolás..."
 
-#: ../src/wxMaxima.cpp:3013
-#: ../src/wxMaxima.cpp:3592
+#: ../src/wxMaxima.cpp:3058
+#: ../src/wxMaxima.cpp:3637
 #: ../src/Plot3dWiz.cpp:118
 msgid "Plot 3D"
 msgstr "Háromdimenziós ábrázolás"
 
-#: ../src/wxMaximaFrame.cpp:949
+#: ../src/wxMaximaFrame.cpp:952
 msgid "Plot 3D..."
 msgstr "3D..."
 
-#: ../src/MathCtrl.cpp:713
+#: ../src/MathCtrl.cpp:715
 msgid "Plot 3d..."
 msgstr "3d-s ábrázolás..."
 
-#: ../src/wxMaxima.cpp:3041
+#: ../src/wxMaxima.cpp:3086
 msgid "Plot format"
 msgstr "Ábrázolási mód"
 
-#: ../src/wxMaximaFrame.cpp:602
+#: ../src/wxMaximaFrame.cpp:605
 msgid "Plot in 2 dimensions"
 msgstr "Ábrázolás két dimenzióban"
 
-#: ../src/wxMaximaFrame.cpp:604
+#: ../src/wxMaximaFrame.cpp:607
 msgid "Plot in 3 dimensions"
 msgstr "Ábrázolás három dimenzióban"
 
@@ -2249,9 +2257,9 @@ msgid "Plot to file:"
 msgstr "Ábrázolás fájlba:"
 
 #: ../src/SeriesWiz.cpp:38
-#: ../src/wxMaxima.cpp:2290
-#: ../src/wxMaxima.cpp:2305
-#: ../src/wxMaxima.cpp:2413
+#: ../src/wxMaxima.cpp:2314
+#: ../src/wxMaxima.cpp:2329
+#: ../src/wxMaxima.cpp:2437
 #: ../src/LimitWiz.cpp:32
 #: ../src/BC2Wiz.cpp:29
 #: ../src/BC2Wiz.cpp:35
@@ -2262,15 +2270,15 @@ msgstr "Hely:"
 msgid "Polish"
 msgstr "Lengyel"
 
-#: ../src/wxMaxima.cpp:2773
-#: ../src/wxMaxima.cpp:2788
-#: ../src/wxMaxima.cpp:2803
+#: ../src/wxMaxima.cpp:2818
+#: ../src/wxMaxima.cpp:2833
+#: ../src/wxMaxima.cpp:2848
 msgid "Polynomial 1:"
 msgstr "1. polinom:"
 
-#: ../src/wxMaxima.cpp:2773
-#: ../src/wxMaxima.cpp:2788
-#: ../src/wxMaxima.cpp:2803
+#: ../src/wxMaxima.cpp:2818
+#: ../src/wxMaxima.cpp:2833
+#: ../src/wxMaxima.cpp:2848
 msgid "Polynomial 2:"
 msgstr "2. polinom:"
 
@@ -2283,61 +2291,61 @@ msgstr "Portugál (Brazil)"
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript fájl (*.eps)|*.eps|Minden fájl|*"
 
-#: ../src/wxMaxima.cpp:3073
+#: ../src/wxMaxima.cpp:3118
 msgid "Precision"
 msgstr "Pontosság"
 
-#: ../src/wxMaximaFrame.cpp:684
-#: ../src/wxMaximaFrame.cpp:744
+#: ../src/wxMaximaFrame.cpp:687
+#: ../src/wxMaximaFrame.cpp:747
 msgid "Print"
 msgstr "Nyomtatás"
 
 #: ../src/wxMaximaFrame.cpp:206
-#: ../src/wxMaximaFrame.cpp:686
-#: ../src/wxMaximaFrame.cpp:747
+#: ../src/wxMaximaFrame.cpp:689
+#: ../src/wxMaximaFrame.cpp:750
 msgid "Print document"
 msgstr "Dokumentum nyomtatása"
 
-#: ../src/wxMaxima.cpp:2986
+#: ../src/wxMaxima.cpp:3031
 msgid "Product"
 msgstr "Szorzat"
 
-#: ../src/wxMaxima.cpp:3422
+#: ../src/wxMaxima.cpp:3467
 msgid "Quit?"
 msgstr "Kilép?"
 
-#: ../src/wxMaximaFrame.cpp:999
+#: ../src/wxMaximaFrame.cpp:1002
 msgid "Read Matrix..."
 msgstr "Mátrix beolvasása..."
 
-#: ../src/wxMaxima.cpp:487
+#: ../src/wxMaxima.cpp:490
 msgid "Reading Maxima output"
 msgstr "Maxima kimenetelének olvasása"
 
 #: ../src/wxMaxima.cpp:303
-#: ../src/wxMaxima.cpp:753
-#: ../src/wxMaxima.cpp:870
-#: ../src/wxMaxima.cpp:892
-#: ../src/wxMaxima.cpp:903
-#: ../src/wxMaxima.cpp:940
-#: ../src/wxMaxima.cpp:963
-#: ../src/wxMaxima.cpp:975
-#: ../src/wxMaxima.cpp:992
-#: ../src/wxMaxima.cpp:1034
-#: ../src/wxMaxima.cpp:1254
-#: ../src/wxMaxima.cpp:1275
+#: ../src/wxMaxima.cpp:758
+#: ../src/wxMaxima.cpp:894
+#: ../src/wxMaxima.cpp:916
+#: ../src/wxMaxima.cpp:927
+#: ../src/wxMaxima.cpp:964
+#: ../src/wxMaxima.cpp:987
+#: ../src/wxMaxima.cpp:999
+#: ../src/wxMaxima.cpp:1016
+#: ../src/wxMaxima.cpp:1058
+#: ../src/wxMaxima.cpp:1278
+#: ../src/wxMaxima.cpp:1299
 msgid "Ready for user input"
 msgstr "Bemeneti adatok fogadása"
 
-#: ../src/wxMaximaFrame.cpp:936
+#: ../src/wxMaximaFrame.cpp:939
 msgid "Rectform"
 msgstr "Alg.-i alak"
 
-#: ../src/wxMaximaFrame.cpp:941
+#: ../src/wxMaximaFrame.cpp:944
 msgid "Reduce (tr)"
 msgstr "Redukál (tr)"
 
-#: ../src/wxMaximaFrame.cpp:549
+#: ../src/wxMaximaFrame.cpp:552
 msgid "Reduce trigonometric expression"
 msgstr "Trigonometrikus kifejezés redukált alakra hozása"
 
@@ -2349,12 +2357,12 @@ msgstr "Az összes kimenet eltávolítása"
 msgid "Remove output from input cells"
 msgstr "A kimenet eltávolítása a bemeneti cellákból"
 
-#: ../src/wxMaxima.cpp:2083
+#: ../src/wxMaxima.cpp:2107
 #, c-format
 msgid "Replaced %d occurences."
 msgstr "%d egyezés kicserélve"
 
-#: ../src/wxMaximaFrame.cpp:643
+#: ../src/wxMaximaFrame.cpp:646
 msgid "Report bug"
 msgstr "Rendszerinformációk hiba bejelentéséhez"
 
@@ -2362,7 +2370,7 @@ msgstr "Rendszerinformációk hiba bejelentéséhez"
 msgid "Restart Maxima"
 msgstr "A Maxima újraindítása"
 
-#: ../src/wxMaximaFrame.cpp:457
+#: ../src/wxMaximaFrame.cpp:460
 msgid "Risch Integration..."
 msgstr "Risch-integrálás..."
 
@@ -2382,25 +2390,29 @@ msgstr "Sorok:"
 msgid "Russian"
 msgstr "Orosz"
 
-#: ../src/wxMaxima.cpp:3306
+#: ../src/wxMaxima.cpp:3351
 msgid "Sample 1:"
 msgstr "1. Példa:"
 
-#: ../src/wxMaxima.cpp:3306
+#: ../src/wxMaxima.cpp:3351
 msgid "Sample 2:"
 msgstr "2. Példa:"
 
-#: ../src/wxMaxima.cpp:3292
+#: ../src/wxMaxima.cpp:3337
 msgid "Sample:"
 msgstr "Példa:"
 
-#: ../src/wxMaximaFrame.cpp:679
-#: ../src/wxMaximaFrame.cpp:738
+#: ../src/wxMaximaFrame.cpp:682
+#: ../src/wxMaximaFrame.cpp:741
 #: ../src/Config.cpp:150
 msgid "Save"
 msgstr "Mentés"
 
-#: ../src/wxMaxima.cpp:1785
+#: ../src/MathCtrl.cpp:663
+msgid "Save Animation..."
+msgstr "Animáció mentése..."
+
+#: ../src/wxMaxima.cpp:1809
 msgid "Save As"
 msgstr "Mentés másként"
 
@@ -2412,7 +2424,7 @@ msgstr "Mentés másként...\tShift-Ctrl-S"
 msgid "Save Image..."
 msgstr "Kép mentése..."
 
-#: ../src/wxMaxima.cpp:1965
+#: ../src/wxMaxima.cpp:1989
 msgid "Save Selection to Image"
 msgstr "Kijelölés mentése képbe"
 
@@ -2420,15 +2432,19 @@ msgstr "Kijelölés mentése képbe"
 msgid "Save Selection to Image..."
 msgstr "Kijelölés mentése képbe..."
 
+#: ../src/wxMaxima.cpp:3669
+msgid "Save animation to file"
+msgstr "Animáció mentése fájlba"
+
 #: ../src/wxMaximaFrame.cpp:194
-#: ../src/wxMaximaFrame.cpp:681
-#: ../src/wxMaximaFrame.cpp:741
+#: ../src/wxMaximaFrame.cpp:684
+#: ../src/wxMaximaFrame.cpp:744
 msgid "Save document"
 msgstr "Dokumentum mentése"
 
 #: ../src/wxMaximaFrame.cpp:196
 msgid "Save document as..."
-msgstr "Mentés másként..."
+msgstr "Mentés másként"
 
 #: ../src/Config.cpp:99
 msgid "Save panes layout"
@@ -2447,7 +2463,7 @@ msgstr "Kép mentése fájlba"
 msgid "Save selection from document to an image file"
 msgstr "Kijelölt rész fájlba másolása a dokumentumból"
 
-#: ../src/wxMaxima.cpp:3608
+#: ../src/wxMaxima.cpp:3653
 msgid "Save selection to file"
 msgstr "Kijelölt rész mentése fájlba"
 
@@ -2463,15 +2479,15 @@ msgstr "Ablak méret/pozíció mentése"
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "wxMaxima ablak méret/pozíció mentése."
 
-#: ../src/wxMaxima.cpp:3237
+#: ../src/wxMaxima.cpp:3282
 msgid "Scatterplot"
 msgstr "Szóródási pont"
 
-#: ../src/wxMaximaFrame.cpp:992
+#: ../src/wxMaximaFrame.cpp:995
 msgid "Scatterplot..."
 msgstr "Szóródási pont..."
 
-#: ../src/wxMaximaFrame.cpp:1030
+#: ../src/wxMaximaFrame.cpp:1033
 msgid "Section"
 msgstr "Fejezet"
 
@@ -2479,8 +2495,8 @@ msgstr "Fejezet"
 msgid "Section cell"
 msgstr "Fejezetcella"
 
-#: ../src/MathCtrl.cpp:720
-#: ../src/MathCtrl.cpp:730
+#: ../src/MathCtrl.cpp:722
+#: ../src/MathCtrl.cpp:732
 msgid "Select All"
 msgstr "Cellatartalom kijelölése"
 
@@ -2493,7 +2509,7 @@ msgstr "Minden kiválasztása\tCtrl-A"
 msgid "Select Maxima program"
 msgstr "A Maxima program kiválasztása"
 
-#: ../src/wxMaxima.cpp:3387
+#: ../src/wxMaxima.cpp:3432
 msgid "Select Subsample"
 msgstr "Részminta kiválasztása"
 
@@ -2508,7 +2524,7 @@ msgstr "Állandó kiválasztása"
 msgid "Select all"
 msgstr "Minden kiválasztása"
 
-#: ../src/wxMaxima.cpp:2116
+#: ../src/wxMaxima.cpp:2140
 msgid "Select math display algorithm"
 msgstr "Matematikai megjelenítés algoritmusának kiválasztása"
 
@@ -2521,19 +2537,19 @@ msgid "Selection"
 msgstr "Kijelölt rész másolása"
 
 #: ../src/SeriesWiz.cpp:61
-#: ../src/wxMaxima.cpp:2922
+#: ../src/wxMaxima.cpp:2967
 msgid "Series"
 msgstr "Taylor- és hatványsor"
 
-#: ../src/wxMaximaFrame.cpp:947
+#: ../src/wxMaximaFrame.cpp:950
 msgid "Series..."
 msgstr "Hatv.sor..."
 
-#: ../src/wxMaxima.cpp:588
+#: ../src/wxMaxima.cpp:593
 msgid "Server started"
 msgstr "A kiszolgáló elindult"
 
-#: ../src/wxMaximaFrame.cpp:619
+#: ../src/wxMaximaFrame.cpp:622
 msgid "Set &Precision..."
 msgstr "&Pontosság állítása..."
 
@@ -2541,7 +2557,7 @@ msgstr "&Pontosság állítása..."
 msgid "Set Zoom"
 msgstr "Nagyítás beállítása"
 
-#: ../src/wxMaximaFrame.cpp:620
+#: ../src/wxMaximaFrame.cpp:623
 msgid "Set bigfloat precision"
 msgstr "Lebegőpontos műveletek pontosságának állítása"
 
@@ -2550,7 +2566,7 @@ msgstr "Lebegőpontos műveletek pontosságának állítása"
 msgid "Set fixed font in text controls."
 msgstr "Rögzített szélességű betűtípus beállítása a bemeneti sorban."
 
-#: ../src/wxMaximaFrame.cpp:606
+#: ../src/wxMaximaFrame.cpp:609
 msgid "Set plot format"
 msgstr "Ábrázolás módjának állítása"
 
@@ -2582,7 +2598,7 @@ msgstr "Nagyítás beállítása 80%-ra"
 msgid "Setup atvalues for solving ODE with Laplace transformation"
 msgstr "Laplace-transzformációval megoldani próbált kezdetiérték-probléma kezdeti helyének és értékének beállítása"
 
-#: ../src/wxMaximaFrame.cpp:596
+#: ../src/wxMaximaFrame.cpp:599
 msgid "Setup modulus computation"
 msgstr "Modulus értékének beállítása"
 
@@ -2594,7 +2610,7 @@ msgstr "&Definíció..."
 msgid "Show &Functions"
 msgstr "&Függvények"
 
-#: ../src/wxMaximaFrame.cpp:634
+#: ../src/wxMaximaFrame.cpp:637
 msgid "Show &Tips..."
 msgstr "&Tippek..."
 
@@ -2606,29 +2622,33 @@ msgstr "&Változók"
 msgid "Show Maxima header"
 msgstr "A Maxima fejlécének megjelenítése"
 
-#: ../src/wxMaximaFrame.cpp:627
-#: ../src/wxMaximaFrame.cpp:723
-#: ../src/wxMaximaFrame.cpp:791
+#: ../src/wxMaximaFrame.cpp:630
+#: ../src/wxMaximaFrame.cpp:726
+#: ../src/wxMaximaFrame.cpp:794
 msgid "Show Maxima help"
 msgstr "Maxima súgó"
 
-#: ../src/wxMaximaFrame.cpp:635
+#: ../src/wxMaximaFrame.cpp:261
+msgid "Show Template\tCtrl-Shift-K"
+msgstr "Kiegészítés sablonnal\tCtrl-Shift-K"
+
+#: ../src/wxMaximaFrame.cpp:638
 msgid "Show a tip"
 msgstr "Tippet mutat"
 
-#: ../src/wxMaxima.cpp:3182
+#: ../src/wxMaxima.cpp:3227
 msgid "Show all commands similar to:"
 msgstr "Megmutat minden parancsot, ami hasonlít erre:"
 
-#: ../src/wxMaxima.cpp:3169
+#: ../src/wxMaxima.cpp:3214
 msgid "Show an example for the command:"
 msgstr "Példa az alábbi parancsra:"
 
-#: ../src/wxMaximaFrame.cpp:629
+#: ../src/wxMaximaFrame.cpp:632
 msgid "Show an example of usage"
 msgstr "Példa a parancs használatára"
 
-#: ../src/wxMaximaFrame.cpp:632
+#: ../src/wxMaximaFrame.cpp:635
 msgid "Show commands similar to"
 msgstr "Megmutat minden parancsot, ami hasonlít erre"
 
@@ -2644,6 +2664,10 @@ msgstr "Megmutatja a definiált változókat"
 msgid "Show definition of a function"
 msgstr "Megmutatja a függvény definícióját"
 
+#: ../src/wxMaximaFrame.cpp:262
+msgid "Show function template"
+msgstr "Függvény automatikus kiegészítése sablonnal"
+
 #: ../src/Config.cpp:176
 msgid "Show initial header with Maxima system information."
 msgstr "A Maxima rendszer információs fejlécének megjelenítése."
@@ -2656,39 +2680,39 @@ msgstr "Hosszú kifejezések megjelenítése"
 msgid "Show long expressions in wxMaxima document."
 msgstr "A wxMaxima konzolja megjeleníti a hosszú kifejezéseket."
 
-#: ../src/wxMaxima.cpp:2138
+#: ../src/wxMaxima.cpp:2162
 msgid "Show the definition of function:"
 msgstr "Megmutatja a függvény definícióját:"
 
-#: ../src/wxMaximaFrame.cpp:932
+#: ../src/wxMaximaFrame.cpp:935
 msgid "Simplify"
 msgstr "Egyszerűsít"
 
-#: ../src/wxMaximaFrame.cpp:509
+#: ../src/wxMaximaFrame.cpp:512
 msgid "Simplify &Radicals"
 msgstr "&Gyökös egyszerűsítés"
 
-#: ../src/wxMaximaFrame.cpp:933
+#: ../src/wxMaximaFrame.cpp:936
 msgid "Simplify (r)"
 msgstr "Egysz. (r)"
 
-#: ../src/wxMaximaFrame.cpp:939
+#: ../src/wxMaximaFrame.cpp:942
 msgid "Simplify (tr)"
 msgstr "Egysz. (tr)"
 
-#: ../src/MathCtrl.cpp:704
+#: ../src/MathCtrl.cpp:706
 msgid "Simplify Expression"
 msgstr "Kifejezés egyszerűsítése"
 
-#: ../src/wxMaximaFrame.cpp:535
+#: ../src/wxMaximaFrame.cpp:538
 msgid "Simplify an expression containing factorials"
 msgstr "Faktoriálisokat tartalmazó kifejezések egyszerűsítése"
 
-#: ../src/wxMaximaFrame.cpp:510
+#: ../src/wxMaximaFrame.cpp:513
 msgid "Simplify expression containing radicals"
 msgstr "Gyököket tartalmazó kifejezések egyszerűsítése"
 
-#: ../src/wxMaximaFrame.cpp:508
+#: ../src/wxMaximaFrame.cpp:511
 msgid "Simplify rational expression"
 msgstr "Racionális kifejezések egyszerűsítése"
 
@@ -2696,7 +2720,7 @@ msgstr "Racionális kifejezések egyszerűsítése"
 msgid "Simplify the sum"
 msgstr "Egyszerűsíti az összeget"
 
-#: ../src/wxMaximaFrame.cpp:546
+#: ../src/wxMaximaFrame.cpp:549
 msgid "Simplify trigonometric expression"
 msgstr "Trigonometrikus kifejezést egyszerűbb alakra hoz"
 
@@ -2704,15 +2728,15 @@ msgstr "Trigonometrikus kifejezést egyszerűbb alakra hoz"
 msgid "Since wxMaxima 0.8.2 you can also insert images into your documents. Use 'Edit->Insert Image...' menu command. Note that you have to save your document in 'wxMaxima XML document' format if you want the image to be saved along with your document."
 msgstr "A wxMaxima 0.8.2-es változatától már képeket is be lehet illeszteni a dokumentumba. Használjuk a 'Szerkesztés->Kép beszúrása...' menüparancsot. Megjegyezzük, hogy ahhoz, hogy a kép is mentve legyen, a dokumentumot 'wxMaxima XML dokumentum' formátumban kell menteni."
 
-#: ../src/wxMaxima.cpp:2290
-#: ../src/wxMaxima.cpp:2305
+#: ../src/wxMaxima.cpp:2314
+#: ../src/wxMaxima.cpp:2329
 #: ../src/BC2Wiz.cpp:26
 msgid "Solution:"
 msgstr "Egyenlet:"
 
-#: ../src/wxMaxima.cpp:2226
-#: ../src/wxMaxima.cpp:2240
-#: ../src/wxMaxima.cpp:3497
+#: ../src/wxMaxima.cpp:2250
+#: ../src/wxMaxima.cpp:2264
+#: ../src/wxMaxima.cpp:3542
 msgid "Solve"
 msgstr "Megoldás"
 
@@ -2732,8 +2756,8 @@ msgstr "&Differenciálegyenlet megoldása..."
 msgid "Solve (to_poly)..."
 msgstr "Megoldás (to_poly)..."
 
-#: ../src/wxMaxima.cpp:2276
-#: ../src/wxMaxima.cpp:2400
+#: ../src/wxMaxima.cpp:2300
+#: ../src/wxMaxima.cpp:2424
 msgid "Solve ODE"
 msgstr "Differenciálegyenlet megoldása"
 
@@ -2741,12 +2765,12 @@ msgstr "Differenciálegyenlet megoldása"
 msgid "Solve ODE with Lapla&ce..."
 msgstr "D&ifferenciálegyenlet megoldása (Laplace)..."
 
-#: ../src/wxMaximaFrame.cpp:943
+#: ../src/wxMaximaFrame.cpp:946
 msgid "Solve ODE..."
 msgstr "Diff.egy...."
 
-#: ../src/wxMaxima.cpp:2351
-#: ../src/wxMaxima.cpp:2362
+#: ../src/wxMaxima.cpp:2375
+#: ../src/wxMaxima.cpp:2386
 msgid "Solve algebraic system"
 msgstr "Algebrai egyenletrendszer"
 
@@ -2774,8 +2798,8 @@ msgstr "Kezdetiérték-probléma megoldása elsőrendű közönséges differenci
 msgid "Solve initial value problem for second degree ODE"
 msgstr "Kezdetiérték-probléma megoldása másodrendű közönséges differenciálegyenlet esetén"
 
-#: ../src/wxMaxima.cpp:2375
-#: ../src/wxMaxima.cpp:2386
+#: ../src/wxMaxima.cpp:2399
+#: ../src/wxMaxima.cpp:2410
 msgid "Solve linear system"
 msgstr "Lineáris egyenletrendszer"
 
@@ -2791,8 +2815,8 @@ msgstr "Legfeljebb másodrendű közönséges differenciálegyenlet megoldása"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
-#: ../src/wxMaximaFrame.cpp:942
-#: ../src/MathCtrl.cpp:701
+#: ../src/wxMaximaFrame.cpp:945
+#: ../src/MathCtrl.cpp:703
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -2811,8 +2835,8 @@ msgstr "Különleges"
 msgid "Special constants"
 msgstr "Különleges állandó"
 
-#: ../src/wxMaximaFrame.cpp:710
-#: ../src/wxMaximaFrame.cpp:712
+#: ../src/wxMaximaFrame.cpp:713
+#: ../src/wxMaximaFrame.cpp:715
 msgid "Start animation"
 msgstr "Animáció indítása"
 
@@ -2820,16 +2844,16 @@ msgstr "Animáció indítása"
 msgid "Starting Maxima process failed"
 msgstr "A Maxima folyamat leállt"
 
-#: ../src/wxMaxima.cpp:662
+#: ../src/wxMaxima.cpp:667
 msgid "Starting Maxima..."
 msgstr "Indul a Maxima..."
 
 #: ../src/wxMaxima.cpp:197
-#: ../src/wxMaxima.cpp:585
+#: ../src/wxMaxima.cpp:590
 msgid "Starting server failed"
 msgstr "A szerver leállt"
 
-#: ../src/wxMaxima.cpp:566
+#: ../src/wxMaxima.cpp:571
 #, c-format
 msgid "Starting server on port %d"
 msgstr "A szerver elindult és az alábbi porton figyel %d"
@@ -2842,9 +2866,9 @@ msgstr "Statisztika"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "Statisztika\tAlt-Shift-S"
 
-#: ../src/wxMaximaFrame.cpp:713
-#: ../src/wxMaximaFrame.cpp:715
-#: ../src/wxMaximaFrame.cpp:780
+#: ../src/wxMaximaFrame.cpp:716
+#: ../src/wxMaximaFrame.cpp:718
+#: ../src/wxMaximaFrame.cpp:783
 msgid "Stop animation"
 msgstr "Animáció leállítása"
 
@@ -2860,11 +2884,11 @@ msgstr "Stílus"
 msgid "Styles"
 msgstr "Stílusok"
 
-#: ../src/wxMaximaFrame.cpp:1004
+#: ../src/wxMaximaFrame.cpp:1007
 msgid "Subsample..."
 msgstr "Részminta..."
 
-#: ../src/wxMaximaFrame.cpp:1029
+#: ../src/wxMaximaFrame.cpp:1032
 msgid "Subsection"
 msgstr "Alfejezet"
 
@@ -2872,35 +2896,35 @@ msgstr "Alfejezet"
 msgid "Subsection cell"
 msgstr "Alfejezetcella"
 
-#: ../src/wxMaximaFrame.cpp:937
+#: ../src/wxMaximaFrame.cpp:940
 msgid "Subst..."
 msgstr "Behelyet...."
 
 #: ../src/SubstituteWiz.cpp:53
-#: ../src/wxMaxima.cpp:2188
-#: ../src/wxMaxima.cpp:3566
+#: ../src/wxMaxima.cpp:2212
+#: ../src/wxMaxima.cpp:3611
 msgid "Substitute"
 msgstr "Behelyettesítés"
 
-#: ../src/wxMaximaFrame.cpp:584
-#: ../src/MathCtrl.cpp:707
+#: ../src/wxMaximaFrame.cpp:587
+#: ../src/MathCtrl.cpp:709
 msgid "Substitute..."
 msgstr "Behelyettesítés..."
 
-#: ../src/wxMaxima.cpp:2970
+#: ../src/wxMaxima.cpp:3015
 #: ../src/SumWiz.cpp:61
 msgid "Sum"
 msgstr "Összeg"
 
-#: ../src/wxMaxima.cpp:2754
+#: ../src/wxMaxima.cpp:2799
 msgid "Taylor series:"
 msgstr "Taylor-sor:"
 
-#: ../src/wxMaxima.cpp:2707
+#: ../src/wxMaxima.cpp:2752
 msgid "Tellrat"
 msgstr "'tellrat' eljárás"
 
-#: ../src/wxMaximaFrame.cpp:1027
+#: ../src/wxMaximaFrame.cpp:1030
 msgid "Text"
 msgstr "Szöveg"
 
@@ -2930,13 +2954,23 @@ msgstr ""
 " \n"
 " Kérem jelentse a hibát."
 
+#: ../src/SlideShowCell.cpp:286
+msgid ""
+"There was and error during GIF export!\n"
+"\n"
+"Make sure ImageMagic is installed and wxMaxima can find the convert program."
+msgstr ""
+"Hiba történt a GIF kép létrehozása során!\n"
+"\n"
+"Ellenőrizze, hogy az ImageMagic telepítve van, valamint elérhető a wxMaxima számára."
+
 #: ../src/Plot2dWiz.cpp:66
 #: ../src/Plot2dWiz.cpp:554
 msgid "Ticks:"
 msgstr "Törésvonalak:"
 
-#: ../src/wxMaxima.cpp:2897
-#: ../src/wxMaxima.cpp:3542
+#: ../src/wxMaxima.cpp:2942
+#: ../src/wxMaxima.cpp:3587
 msgid "Times:"
 msgstr "Ennyiszer:"
 
@@ -2944,7 +2978,7 @@ msgstr "Ennyiszer:"
 msgid "Tips not available, sorry!"
 msgstr "Sajnos nem tudok tippeket mutatni!"
 
-#: ../src/wxMaximaFrame.cpp:1028
+#: ../src/wxMaximaFrame.cpp:1031
 msgid "Title"
 msgstr "Cím"
 
@@ -2956,15 +2990,15 @@ msgstr "Címcella"
 msgid "Title, section and subsection cells can be folded to hide their contents. To fold or unfold, click in the square next to the cell. If you shift-click, all sublevels of that cell will also fold/unfold."
 msgstr "A cím- , fejezet- és alfejezetcellák tartalma elrejthető/megjeleníthető, ha rákattint a sor elején látható négyzetre. A Shift+kattintás kombinációval az adott cella alatti összes tartalom láthatóvá válik."
 
-#: ../src/wxMaximaFrame.cpp:616
+#: ../src/wxMaximaFrame.cpp:619
 msgid "To &Bigfloat"
 msgstr "&Hosszú tizedestört"
 
-#: ../src/wxMaximaFrame.cpp:613
+#: ../src/wxMaximaFrame.cpp:616
 msgid "To &Float"
 msgstr "Tizedestört"
 
-#: ../src/MathCtrl.cpp:699
+#: ../src/MathCtrl.cpp:701
 msgid "To Float"
 msgstr "Tizedestört"
 
@@ -2985,8 +3019,8 @@ msgid "To start using wxMaxima right away, start typing your command. An input c
 msgstr "A wxMaxima használatához csak el kell kezdeni gépelni a végrehajtani kívánt parancsot. Az első billentyű leütésekor egy bemeneti cella fog megjelenni. A parancs végrehajtásához nyomjunk Shift-Enter-t."
 
 #: ../src/IntegrateWiz.cpp:47
-#: ../src/wxMaxima.cpp:2563
-#: ../src/wxMaxima.cpp:2985
+#: ../src/wxMaxima.cpp:2608
+#: ../src/wxMaxima.cpp:3030
 #: ../src/SumWiz.cpp:39
 #: ../src/Plot3dWiz.cpp:49
 #: ../src/Plot3dWiz.cpp:58
@@ -2996,11 +3030,11 @@ msgstr "A wxMaxima használatához csak el kell kezdeni gépelni a végrehajtani
 msgid "To:"
 msgstr "Meddig:"
 
-#: ../src/wxMaximaFrame.cpp:590
+#: ../src/wxMaximaFrame.cpp:593
 msgid "Toggle &Algebraic Flag"
 msgstr "&Az 'algebrai' kapcsoló állítása"
 
-#: ../src/wxMaximaFrame.cpp:611
+#: ../src/wxMaximaFrame.cpp:614
 msgid "Toggle &Numeric Output"
 msgstr "&Numerikus kimenet kapcsoló"
 
@@ -3008,7 +3042,7 @@ msgstr "&Numerikus kimenet kapcsoló"
 msgid "Toggle &Time Display"
 msgstr "&Időkapcsoló"
 
-#: ../src/wxMaximaFrame.cpp:591
+#: ../src/wxMaximaFrame.cpp:594
 msgid "Toggle algebraic flag"
 msgstr "Az 'algebrai' kapcsoló állítása"
 
@@ -3016,7 +3050,7 @@ msgstr "Az 'algebrai' kapcsoló állítása"
 msgid "Toggle full screen editing"
 msgstr "Teljes képernyős üzemmód"
 
-#: ../src/wxMaximaFrame.cpp:612
+#: ../src/wxMaximaFrame.cpp:615
 msgid "Toggle numeric output"
 msgstr "Numerikus kimenet kapcsoló"
 
@@ -3024,15 +3058,15 @@ msgstr "Numerikus kimenet kapcsoló"
 msgid "Toolbar\tAlt-Shift-T"
 msgstr "Eszközök\tAlt-Shift-T"
 
-#: ../src/wxMaximaFrame.cpp:441
+#: ../src/wxMaximaFrame.cpp:444
 msgid "Transpose a matrix"
 msgstr "Mátrix transzponálás"
 
-#: ../src/wxMaximaFrame.cpp:637
+#: ../src/wxMaximaFrame.cpp:640
 msgid "Tutorials"
 msgstr "Ismertetők"
 
-#: ../src/wxMaxima.cpp:3308
+#: ../src/wxMaxima.cpp:3353
 msgid "Two sample t-test"
 msgstr "Kétmintás t-próba"
 
@@ -3056,8 +3090,8 @@ msgstr "&Visszavonás\tCtrl-Z"
 msgid "Undo last change"
 msgstr "Utolsó változtatás visszavonása"
 
-#: ../src/wxMaxima.cpp:2256
-#: ../src/wxMaxima.cpp:3511
+#: ../src/wxMaxima.cpp:2280
+#: ../src/wxMaxima.cpp:3556
 msgid "Upper bound:"
 msgstr "Felső végpont:"
 
@@ -3074,32 +3108,32 @@ msgstr "Középre helyezett pont használata szorzásjelként"
 msgid "Use jsMath fonts"
 msgstr "jsMath betűk használata"
 
-#: ../src/wxMaxima.cpp:2290
-#: ../src/wxMaxima.cpp:2306
-#: ../src/wxMaxima.cpp:2414
+#: ../src/wxMaxima.cpp:2314
+#: ../src/wxMaxima.cpp:2330
+#: ../src/wxMaxima.cpp:2438
 #: ../src/BC2Wiz.cpp:32
 #: ../src/BC2Wiz.cpp:38
 msgid "Value:"
 msgstr "Érték:"
 
-#: ../src/wxMaxima.cpp:2225
-#: ../src/wxMaxima.cpp:2239
-#: ../src/wxMaxima.cpp:2896
-#: ../src/wxMaxima.cpp:3496
+#: ../src/wxMaxima.cpp:2249
+#: ../src/wxMaxima.cpp:2263
+#: ../src/wxMaxima.cpp:2941
 #: ../src/wxMaxima.cpp:3541
+#: ../src/wxMaxima.cpp:3586
 msgid "Variable(s):"
 msgstr "Változó(k):"
 
 #: ../src/IntegrateWiz.cpp:39
 #: ../src/SeriesWiz.cpp:35
-#: ../src/wxMaxima.cpp:2255
-#: ../src/wxMaxima.cpp:2274
-#: ../src/wxMaxima.cpp:2514
-#: ../src/wxMaxima.cpp:2562
-#: ../src/wxMaxima.cpp:2818
-#: ../src/wxMaxima.cpp:2833
-#: ../src/wxMaxima.cpp:2984
-#: ../src/wxMaxima.cpp:3510
+#: ../src/wxMaxima.cpp:2279
+#: ../src/wxMaxima.cpp:2298
+#: ../src/wxMaxima.cpp:2538
+#: ../src/wxMaxima.cpp:2607
+#: ../src/wxMaxima.cpp:2863
+#: ../src/wxMaxima.cpp:2878
+#: ../src/wxMaxima.cpp:3029
+#: ../src/wxMaxima.cpp:3555
 #: ../src/LimitWiz.cpp:29
 #: ../src/SumWiz.cpp:33
 #: ../src/Plot3dWiz.cpp:43
@@ -3115,20 +3149,20 @@ msgstr "Változó:"
 msgid "Variables"
 msgstr "Változók"
 
-#: ../src/wxMaxima.cpp:2336
-#: ../src/wxMaxima.cpp:2950
-#: ../src/wxMaxima.cpp:3334
+#: ../src/wxMaxima.cpp:2360
+#: ../src/wxMaxima.cpp:2995
+#: ../src/wxMaxima.cpp:3379
 #: ../src/SystemWiz.cpp:72
 msgid "Variables:"
 msgstr "Változók:"
 
-#: ../src/wxMaximaFrame.cpp:978
+#: ../src/wxMaximaFrame.cpp:981
 msgid "Variance"
 msgstr "Szórásnégyzet"
 
-#: ../src/wxMaxima.cpp:999
-#: ../src/wxMaxima.cpp:1062
-#: ../src/wxMaxima.cpp:1332
+#: ../src/wxMaxima.cpp:1023
+#: ../src/wxMaxima.cpp:1086
+#: ../src/wxMaxima.cpp:1356
 #: ../src/MathParser.cpp:892
 msgid "Warning"
 msgstr "Figyelmeztetés"
@@ -3141,7 +3175,8 @@ msgstr "A wxMaxima üdvözli Önt!"
 msgid "When applying functions with one argument from menus, the default argument is '%'. To apply the function to some other value, select it in the document before executing a menu command."
 msgstr "Ha egy egy bemeneti értékkel működő függvényt választunk ki a menük közül, annak argumentuma a '%' lesz. Ha mást szeretnénk bemeneti értékként, jelöljük ki azt a parancs végrehajtása előtt."
 
-#: ../src/wxMaxima.cpp:2529
+#: ../src/wxMaxima.cpp:2553
+#: ../src/wxMaxima.cpp:2572
 msgid "Width:"
 msgstr "Sorok:"
 
@@ -3189,17 +3224,17 @@ msgstr "Nagyítás 10%-kal"
 msgid "Zoom out 10%"
 msgstr "Kicsinyítés 10%-kal"
 
-#: ../src/wxMaxima.cpp:1992
-#: ../src/wxMaxima.cpp:2000
+#: ../src/wxMaxima.cpp:2016
+#: ../src/wxMaxima.cpp:2024
 msgid "Zoom set to "
 msgstr "Nagyítás beállítása "
 
 #: ../src/wxMaximaFrame.cpp:88
-#: ../src/wxMaxima.cpp:3847
+#: ../src/wxMaxima.cpp:3906
 msgid "[ unsaved ]"
 msgstr "[ mentetlen ]"
 
-#: ../src/wxMaxima.cpp:3849
+#: ../src/wxMaxima.cpp:3908
 msgid "[ unsaved* ]"
 msgstr "[ mentetlen* ]"
 
@@ -3251,7 +3286,11 @@ msgstr "sor elrejtve"
 msgid "logscale"
 msgstr "logaritmikus skála"
 
-#: ../src/wxMaxima.cpp:3120
+#: ../src/wxMaxima.cpp:2572
+msgid "matrix[i,j]:"
+msgstr "matrix[i,j]:"
+
+#: ../src/wxMaxima.cpp:3165
 msgid "no"
 msgstr "nem"
 
@@ -3264,31 +3303,31 @@ msgstr "jobbról"
 msgid "symmetric"
 msgstr "szimmetrikus"
 
-#: ../src/wxMaxima.cpp:1780
-#: ../src/wxMaxima.cpp:1831
+#: ../src/wxMaxima.cpp:1804
+#: ../src/wxMaxima.cpp:1855
 msgid "untitled"
 msgstr "névtelen"
 
-#: ../src/wxMaxima.cpp:3129
-#: ../src/main.cpp:157
+#: ../src/wxMaxima.cpp:3174
+#: ../src/main.cpp:163
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
 #: ../src/wxMaximaFrame.cpp:88
-#: ../src/wxMaxima.cpp:3847
-#: ../src/wxMaxima.cpp:3849
-#: ../src/wxMaxima.cpp:3856
-#: ../src/wxMaxima.cpp:3859
+#: ../src/wxMaxima.cpp:3906
+#: ../src/wxMaxima.cpp:3908
+#: ../src/wxMaxima.cpp:3915
+#: ../src/wxMaxima.cpp:3918
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: ../src/wxMaxima.cpp:1911
+#: ../src/wxMaxima.cpp:1935
 #: ../src/Config.cpp:166
 msgid "wxMaxima configuration"
 msgstr "A wxMaxima beállítása"
 
-#: ../src/wxMaxima.cpp:1330
+#: ../src/wxMaxima.cpp:1354
 msgid ""
 "wxMaxima could not find Maxima!\n"
 "\n"
@@ -3300,7 +3339,7 @@ msgstr ""
 "Kérem adja meg az elérési útját a 'Szerkesztés->Beállítások' menüpont alatt.\n"
 "Ezután indítsa el a Maximát a 'Maxima->Maxima újraindítása' segítségével."
 
-#: ../src/wxMaxima.cpp:1503
+#: ../src/wxMaxima.cpp:1527
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
@@ -3310,7 +3349,7 @@ msgstr ""
 " \n"
 "Kérem ellenőrizze a wxMaxima telepítését."
 
-#: ../src/wxMaxima.cpp:1407
+#: ../src/wxMaxima.cpp:1431
 msgid ""
 "wxMaxima could not find tip files.\n"
 "\n"
@@ -3336,27 +3375,27 @@ msgstr ""
 msgid "wxMaxima dialogs set default values for inputs entries, one of which is '%'. If you have made a selection in your document, the selection will be used instead of '%'."
 msgstr "A wxMaxima menüparancsai bemenetekkel hajtódnak végre, ezek egyike a '%'. Ha kijelölünk egy részt a dokumentumunkban, a menüparancs ezt fogja argumentumként használni a '%' helyett."
 
-#: ../src/wxMaxima.cpp:1585
+#: ../src/wxMaxima.cpp:1609
 msgid "wxMaxima document"
 msgstr "wxMaxima dokumentum"
 
-#: ../src/wxMaxima.cpp:1787
+#: ../src/wxMaxima.cpp:1811
 msgid "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|Maxima batch file (*.mac)|*.mac"
 msgstr "wxMaxima dokumentum (*.wxm)|*.wxm|wxMaxima xml dokumentum (*.wxmx)|*.wxmx|Maxima batch fájl (*.mac)|*.mac"
 
-#: ../src/wxMaxima.cpp:1758
-#: ../src/main.cpp:192
+#: ../src/wxMaxima.cpp:1782
+#: ../src/main.cpp:198
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
-#: ../src/wxMaxima.cpp:891
-#: ../src/wxMaxima.cpp:902
-#: ../src/wxMaxima.cpp:961
-#: ../src/wxMaxima.cpp:973
+#: ../src/wxMaxima.cpp:915
+#: ../src/wxMaxima.cpp:926
+#: ../src/wxMaxima.cpp:985
+#: ../src/wxMaxima.cpp:997
 msgid "wxMaxima encountered an error loading "
 msgstr "A wxMaxima nem tudta betölteni a következő fájlt:"
 
-#: ../src/wxMaxima.cpp:3109
+#: ../src/wxMaxima.cpp:3154
 msgid ""
 "wxMaxima is a graphical user interface for the\n"
 "computer algebra system Maxima based on wxWidgets."
@@ -3364,7 +3403,7 @@ msgstr ""
 "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói\n"
 "felület a Maxima komputeralgebrai rendszer számára."
 
-#: ../src/wxMaxima.cpp:3111
+#: ../src/wxMaxima.cpp:3156
 msgid "wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets."
 msgstr "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a Maxima komputeralgebrai rendszer számára."
 
@@ -3372,10 +3411,14 @@ msgstr "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a 
 msgid "wxMaxima options"
 msgstr "wxMaxima opciói"
 
-#: ../src/wxMaxima.cpp:3118
+#: ../src/wxMaxima.cpp:3163
 msgid "yes"
 msgstr "igen"
 
+#~ msgid "Autocomplete"
+#~ msgstr "Automatikus kiegészítés"
+#~ msgid "Autocomplete with templates"
+#~ msgstr "Automatikus kiegészítés sablonnal"
 #~ msgid "Delete selection"
 #~ msgstr "Kijelölt rész törlése"
 #~ msgid "To &Float\tCtrl-F"
@@ -3571,8 +3614,6 @@ msgstr "igen"
 #~ msgstr "türkiz"
 #~ msgid "violet"
 #~ msgstr "ibolya"
-#~ msgid "violet red"
-#~ msgstr "ibolyavörös"
 #~ msgid "wheat"
 #~ msgstr "búza"
 #~ msgid "white"
