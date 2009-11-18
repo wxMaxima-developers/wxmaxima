@@ -60,6 +60,7 @@ enum {
   popid_image_copy,
 #endif
   popid_image,
+  popid_image_animate,
   popid_evaluate,
   popid_merge_cells,
   // popid_complete_00 should be the last id

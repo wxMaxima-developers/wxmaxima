@@ -46,6 +46,7 @@ public:
   void SetDisplayedIndex(int ind);
   int Length() { return m_size; }
   bool ToImageFile(wxString filename);
+  bool ToGif(wxString filename);
 protected:
   int m_size;
   int m_displayed;

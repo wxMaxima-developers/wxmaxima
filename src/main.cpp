@@ -91,6 +91,12 @@ bool MyApp::OnInit()
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
+#if defined __WXMAC__
+  wxString path;
+  wxGetEnv(wxT("PATH"), &path);
+  wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
+#endif
+
 
 #if defined (__WXMAC__)
   wxApp::SetExitOnFrameDelete(false);

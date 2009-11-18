@@ -3643,6 +3643,20 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       }
     }
     break;
+  case popid_image_animate:
+    {
+      wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
+                                     wxT("animation.gif"), wxT("gif"),
+                                     _("GIF image (*.gif)|*.gif"),
+                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+      if (file.Length())
+      {
+        MathCell *selection = m_console->GetSelectionStart();
+        if (selection != NULL && selection->GetType() == MC_TYPE_SLIDE)
+          ((SlideShow *)(selection))->ToGif(file);
+      }
+    }
+    break;
 #if defined __WXMSW__
   case popid_image_copy:
     m_console->CopyBitmap();
@@ -3971,6 +3985,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_image_animate, wxMaxima::PopupMenu)
 #if defined __WXMSW__
   EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
 #endif

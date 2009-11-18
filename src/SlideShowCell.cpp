@@ -24,6 +24,7 @@
 #include <wx/filename.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
+#include <wx/utils.h>
 
 SlideShow::SlideShow(wxFileSystem *filesystem) : MathCell()
 {
@@ -253,4 +254,45 @@ bool SlideShow::ToImageFile(wxString file)
   wxImage image = m_bitmaps[m_displayed]->ConvertToImage();
 
   return image.SaveFile(file, wxBITMAP_TYPE_PNG);
+}
+
+bool SlideShow::ToGif(wxString file)
+{
+  wxArrayString which;
+  bool retval = true;
+
+  wxString convert(wxT("convert -delay 40 "));
+  wxString convertArgs;
+
+  wxString tmpdir = wxFileName::GetTempDir();
+
+  for (int i=0; i<m_size; i++)
+  {
+    wxString imgname = tmpdir;
+    imgname << wxT("wxmaxima_animation") << i << wxT(".png");
+
+    wxImage image = m_bitmaps[i]->ConvertToImage();
+
+    image.SaveFile(imgname, wxBITMAP_TYPE_PNG);
+
+    convert << wxT(" ") << imgname;
+  }
+
+  convert << wxT(" ") << file;
+
+  if (wxExecute(convert, wxEXEC_SYNC) != 0)
+  {
+    retval = false;
+    wxMessageBox(_("There was and error during GIF export!\n\nMake sure ImageMagic is installed and wxMaxima can find the convert program."),
+        wxT("Error"), wxICON_ERROR);
+  }
+
+  for (int i=0; i<m_size; i++)
+  {
+    wxString imgname = tmpdir;
+    imgname << wxT("/") << wxT("wxmaxima_animation") << i << wxT(".png");
+    wxRemoveFile(imgname);
+  }
+
+  return retval;
 }
