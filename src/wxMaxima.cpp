@@ -2550,8 +2550,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     break;
   case menu_gen_mat:
     {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Array:"), _("Width:"), _("Height:"),
-                                 expr, wxT("3"), wxT("3"),
+      Gen4Wiz *wiz = new Gen4Wiz(_("Array:"), _("Width:"), _("Height:"), _("Name:"),
+                                 expr, wxT("3"), wxT("3"), wxEmptyString,
                                  this, -1, _("Generate Matrix"));
       wiz->SetValue(expr);
       wiz->Centre(wxBOTH);
@@ -2560,6 +2560,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
         wxString val = wxT("genmatrix(") + wiz->GetValue1() +
                        wxT(", ") + wiz->GetValue2() +
                        wxT(", ") + wiz->GetValue3() + wxT(");");
+        if (wiz->GetValue4() != wxEmptyString)
+          val = wiz->GetValue4() + wxT(": ") + val;
         MenuCommand(val);
       }
       wiz->Destroy();
