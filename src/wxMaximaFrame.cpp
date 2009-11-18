@@ -419,6 +419,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_4->Append(menu_gen_mat, _("&Generate Matrix..."),
                              _("Generate a matrix from a 2-dimensional array"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_4->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
+                               _("Generate a matrix from a lambda expression"),
+                               wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_enter_mat, _("&Enter Matrix..."),
                              _("Enter a matrix"), wxITEM_NORMAL);
   wxglade_tmp_menu_4->Append(menu_invert_mat, _("&Invert Matrix"),

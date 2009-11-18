@@ -2567,6 +2567,25 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
       wiz->Destroy();
     }
     break;
+  case menu_gen_mat_lambda:
+      {
+        Gen4Wiz *wiz = new Gen4Wiz(_("matrix[i,j]:"), _("Width:"), _("Height:"), _("Name:"),
+                                   expr, wxT("3"), wxT("3"), wxEmptyString,
+                                   this, -1, _("Generate Matrix"));
+        wiz->SetValue(expr);
+        wiz->Centre(wxBOTH);
+        if (wiz->ShowModal() == wxID_OK)
+        {
+          wxString val = wxT("genmatrix(lambda([i,j], ") + wiz->GetValue1() +
+                         wxT("), ") + wiz->GetValue2() +
+                         wxT(", ") + wiz->GetValue3() + wxT(");");
+          if (wiz->GetValue4() != wxEmptyString)
+            val = wiz->GetValue4() + wxT(": ") + val;
+          MenuCommand(val);
+        }
+        wiz->Destroy();
+      }
+      break;
   case button_map:
   case menu_map:
     {
@@ -4091,6 +4110,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_limit, wxMaxima::CalculusMenu)
   EVT_MENU(menu_lbfgs, wxMaxima::CalculusMenu)
   EVT_MENU(menu_gen_mat, wxMaxima::AlgebraMenu)
+  EVT_MENU(menu_gen_mat_lambda, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_map, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
   EVT_MENU(menu_example, wxMaxima::HelpMenu)

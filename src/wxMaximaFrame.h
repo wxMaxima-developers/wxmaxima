@@ -60,6 +60,7 @@ enum {
   menu_ivp_2,
   menu_bvp,
   menu_gen_mat,
+  menu_gen_mat_lambda,
   menu_enter_mat,
   menu_invert_mat,
   menu_cpoly,
