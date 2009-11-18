@@ -268,17 +268,15 @@ bool SlideShow::ToGif(wxString file)
 
   for (int i=0; i<m_size; i++)
   {
-    wxString imgname = tmpdir;
-    imgname << wxT("wxmaxima_animation") << i << wxT(".png");
+    wxFileName imgname(tmpdir, wxString::Format(wxT("wxm_anim%d.png"), i));
 
     wxImage image = m_bitmaps[i]->ConvertToImage();
+    image.SaveFile(imgname.GetFullPath(), wxBITMAP_TYPE_PNG);
 
-    image.SaveFile(imgname, wxBITMAP_TYPE_PNG);
-
-    convert << wxT(" ") << imgname;
+    convert << wxT(" \"") << imgname.GetFullPath() << wxT("\"");
   }
 
-  convert << wxT(" ") << file;
+  convert << wxT(" \"") << file << wxT("\"");
 
   if (wxExecute(convert, wxEXEC_SYNC) != 0)
   {
@@ -289,9 +287,8 @@ bool SlideShow::ToGif(wxString file)
 
   for (int i=0; i<m_size; i++)
   {
-    wxString imgname = tmpdir;
-    imgname << wxT("/") << wxT("wxmaxima_animation") << i << wxT(".png");
-    wxRemoveFile(imgname);
+    wxFileName imgname(tmpdir, wxString::Format(wxT("wxm_anim%d.png"), i));
+    wxRemoveFile(imgname.GetFullPath());
   }
 
   return retval;
