@@ -100,7 +100,6 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
-  m_showHeader = new wxCheckBox(notebook_1_pane_1, -1, _("Show Maxima header"));
   m_unixCopy = new wxCheckBox(notebook_1_pane_1, -1, _("Copy to clipboard on select"));
   m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Use centered dot character for multiplication"));
   m_enterEvaluates = new wxCheckBox(notebook_1_pane_1, -1, _("Enter evaluates cells"));
@@ -173,8 +172,6 @@ void Config::set_properties()
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
-  m_showHeader->SetToolTip(_("Show initial header with Maxima system information."));
-  m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
@@ -185,7 +182,7 @@ void Config::set_properties()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, unixCopy = false, savePanes = false;
-  bool showHeader = false, fixedFontTC = true, changeAsterisk = false, usejsmath = true;
+  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true;
   bool enterEvaluates = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -198,7 +195,6 @@ void Config::set_properties()
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
-  config->Read(wxT("showHeader"), &showHeader);
   config->Read(wxT("unixCopy"), &unixCopy);
   config->Read(wxT("changeAsterisk"), &changeAsterisk);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
@@ -251,7 +247,6 @@ void Config::set_properties()
   m_savePanes->SetValue(savePanes);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
-  m_showHeader->SetValue(showHeader);
   m_unixCopy->SetValue(unixCopy);
   m_changeAsterisk->SetValue(changeAsterisk);
   m_enterEvaluates->SetValue(enterEvaluates);
@@ -316,7 +311,6 @@ void Config::do_layout()
   sizer_6->Add(m_matchParens, 0, wxALL, 3);
   sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
   sizer_6->Add(m_showLong, 0, wxALL, 3);
-  sizer_6->Add(m_showHeader, 0, wxALL, 3);
   sizer_6->Add(m_unixCopy, 0, wxALL, 3);
   sizer_6->Add(m_changeAsterisk, 0, wxALL, 3);
   sizer_6->Add(m_enterEvaluates, 0, wxALL, 3);
@@ -398,7 +392,6 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("mathFontsize"), m_mathFontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   config->Write(wxT("showLong"), m_showLong->GetValue());
-  config->Write(wxT("showHeader"), m_showHeader->GetValue());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("unixCopy"), m_unixCopy->GetValue());
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());

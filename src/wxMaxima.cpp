@@ -201,19 +201,11 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  bool showHeader = false;
-  wxConfig::Get()->Read(wxT("showHeader"), &showHeader);
-
   int start = s.Find(m_firstPrompt);
 
   int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
   int startHTTP = s.find(wxT("http"), startMaxima);
   m_maximaVersion = s.SubString(startMaxima+7, startHTTP - 1);
-
-  if (showHeader) {
-    GroupCell *header = new GroupCell(GC_TYPE_TEXT, s.SubString(0, start - 2));
-    m_console->InsertGroupCells(header);
-  }
 
   m_lastPrompt = wxT("(%i1) ");
 
