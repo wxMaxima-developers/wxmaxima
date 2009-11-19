@@ -138,6 +138,7 @@ OPTION  : %i
 OPTION  : false
 OPTION  : ind
 OPTION  : inf
+OPTION  : infinity
 OPTION  : minf
 OPTION  : %phi
 OPTION  : %pi
@@ -514,7 +515,7 @@ FUNCTION: atvalue
 TEMPLATE: atvalue(<expr>, [<x_1> = <a_1>, ..., <x_m> = <a_m>], <c>)
 TEMPLATE: atvalue(<expr>, <x_1> = <a_1>, <c>)
 FUNCTION: cartan
-TEMPLATE: cartan -
+TEMPLATE: cartan-
 FUNCTION: del
 TEMPLATE: del(<x>)
 FUNCTION: delta
@@ -2081,6 +2082,7 @@ TEMPLATE: defint(<expr>, <x>, <a>, <b>)
 OPTION  : erfflag
 FUNCTION: ilt
 TEMPLATE: ilt(<expr>, <s>, <t>)
+OPTION  : intanalysis
 FUNCTION: integrate
 TEMPLATE: integrate(<expr>, <x>)
 TEMPLATE: integrate(<expr>, <x>, <a>, <b>)
@@ -2384,6 +2386,7 @@ FUNCTION: vandermonde_matrix
 TEMPLATE: vandermonde_matrix([<x_1>, ..., <x_n>])
 FUNCTION: zerofor
 TEMPLATE: zerofor(<M>)
+TEMPLATE: zerofor(<M>, <fld>)
 FUNCTION: zeromatrixp
 TEMPLATE: zeromatrixp(<M>)
 FUNCTION: append
@@ -2725,6 +2728,8 @@ TEMPLATE: random_permutation(<a>)
 FUNCTION: rreduce
 TEMPLATE: rreduce(<F>, <s>)
 TEMPLATE: rreduce(<F>, <s>, @var{s_@{n + 1@}})
+FUNCTION: setdifference
+TEMPLATE: setdifference(<a>, <b>)
 FUNCTION: setequalp
 TEMPLATE: setequalp(<a>, <b>)
 FUNCTION: setify
