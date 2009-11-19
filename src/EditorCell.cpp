@@ -1115,6 +1115,18 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x21D4";
   else if (txt == wxT("not"))
     return L"\x00AC";
+  else if (txt == wxT("union"))
+    return L"\x22C3";
+  else if (txt == wxT("inter"))
+    return L"\x22C2";
+  else if (txt == wxT("subseteq"))
+    return L"\x2286";
+  else if (txt == wxT("subset"))
+    return L"\x2282";
+  else if (txt == wxT("notsubseteq"))
+    return L"\x2288";
+  else if (txt == wxT("notsubset"))
+    return L"\x2284";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))
