@@ -1381,6 +1381,10 @@
 		      (cdr fun))))
     (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
 
+(defun $add_function_template (&rest functs)
+  (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function functs))
+  (cons '(mlist simp) functs))
+
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
 ;;; (displays functions after loading a maxima package
@@ -1395,7 +1399,8 @@
      (case type
        (($maxima)
 	($batchload searched-for)
-	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function (cdr $functions))))
+	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
+		(mapcar #'$print_function (cdr ($append $functions $macros)))))
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
@@ -1405,7 +1410,8 @@
      searched-for)))
 
 ;; Load the initial functions (from mac-init.mac)
-(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function (cdr $functions)))
+(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
+	(mapcar #'$print_function (cdr ($append $functions $macros))))
 
 ;;
 ;; Inspector pane related functions
@@ -1517,3 +1523,6 @@
                                                            (cdr (cadadr fun)))
                                                      body))))
                                   (caddr (cadr fun)))))))))
+
+(when ($file_search "wxmaxima-init")
+  ($load "wxmaxima-init"))
