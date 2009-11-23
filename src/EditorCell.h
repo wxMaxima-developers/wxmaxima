@@ -115,7 +115,7 @@ public:
   wxString GetSelectionString();
   void ClearSelection();
   int GetCaretPosition() { return m_positionOfCaret; }
-  bool FindNextTemplate();
+  bool FindNextTemplate(bool left = false);
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);

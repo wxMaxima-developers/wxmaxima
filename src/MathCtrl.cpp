@@ -3409,22 +3409,12 @@ bool MathCtrl::Autocomplete(bool templates)
     int start, end;
     editor->GetSelection(&start, &end);
 
-    editor->ReplaceSelection(editor->GetSelectionString(),
-        m_completions[0]);
+    editor->ReplaceSelection(editor->GetSelectionString(), m_completions[0]);
+    editor->ClearSelection();
+    editor->CaretToPosition(start);
 
-    if (templates)
-    {
-      editor->CaretToPosition(start);
-      // If we can't fine the template then go over the selection
-      if (!editor->FindNextTemplate())
-      {
-        editor->ClearSelection();
-        editor->CaretToPosition(start + m_completions[0].Length());
-      }
-    }
-    else
-      editor->ClearSelection();
-
+    if (!templates || !editor->FindNextTemplate())
+      editor->CaretToPosition(start + m_completions[0].Length());
 
     // TODO: be more efficient here!
     RecalculateForce();
@@ -3464,7 +3454,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   int caret = editor->GetCaretPosition();
 
   editor->ReplaceSelection(editor->GetSelectionString(),
-      m_completions[event.GetId() - popid_complete_00]);
+    m_completions[event.GetId() - popid_complete_00]);
 
   int sel_start, sel_end;
   editor->GetSelection(&sel_start, &sel_end);

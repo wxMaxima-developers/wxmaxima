@@ -679,7 +679,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_TAB:
     m_isDirty = true;
-    if (!FindNextTemplate())
+    if (!FindNextTemplate(event.ShiftDown()))
     {
       m_containsChanges = true;
       {
@@ -1668,22 +1668,60 @@ void EditorCell::ClearSelection()
   m_selectionStart = m_selectionEnd = -1;
 }
 
-bool EditorCell::FindNextTemplate()
+bool EditorCell::FindNextTemplate(bool left)
 {
   wxRegEx varsRegex;
-  varsRegex.Compile(wxT("(<[^>]+>)"));
 
-  wxString rest = m_text.Mid(m_positionOfCaret);
+  if (left)
+    varsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$"));
+  else
+    varsRegex.Compile(wxT("(<[^> \n]+>)"));
+
+  int positionOfCaret = m_positionOfCaret;
+  if (!left && m_selectionEnd != -1)
+    positionOfCaret = m_selectionEnd;
+
+
+  // Splits the string into first (from caret in the direction of search)
+  // and second (the rest of the string)
+  wxString first, second;
+  if (left)
+  {
+    first = m_text.Mid(0, positionOfCaret);
+    second = m_text.Mid(positionOfCaret);
+  }
+  else
+  {
+    first = m_text.Mid(positionOfCaret);
+    second = m_text.Mid(0, positionOfCaret);
+  }
 
   size_t start, length;
 
-  if (varsRegex.Matches(rest))
+  // First search in the direction of search
+  if (varsRegex.Matches(first))
   {
     varsRegex.GetMatch(&start, &length, 1);
-    m_positionOfCaret = m_selectionStart = m_positionOfCaret + start;
+    if (left)
+      m_positionOfCaret = m_selectionStart = start;
+    else
+      m_positionOfCaret = m_selectionStart = positionOfCaret + start;
     m_selectionEnd = m_selectionStart + length;
     return true;
   }
+
+  // Then in the rest of the string
+  if (varsRegex.Matches(second))
+  {
+    varsRegex.GetMatch(&start, &length, 1);
+    if (!left)
+      m_positionOfCaret = m_selectionStart = start;
+    else
+      m_positionOfCaret = m_selectionStart = positionOfCaret + start;
+    m_selectionEnd = m_selectionStart + length;
+    return true;
+  }
+
   return false;
 }
 
