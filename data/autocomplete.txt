@@ -3517,25 +3517,19 @@ FUNCTION: gcfac
 TEMPLATE: gcfac(<expr>)
 FUNCTION: sqrtdenest
 TEMPLATE: sqrtdenest(<expr>)
-FUNCTION: harmonic_number
-TEMPLATE: harmonic_number(<n>)
-FUNCTION: gen_harmonic_number
-TEMPLATE: gen_harmonic_number(<ord>, <n>)
-FUNCTION: simplify_sum
-TEMPLATE: simplify_sum(<expr>)
-FUNCTION: split_sum
-TEMPLATE: split_sum(<expr>)
-FUNCTION: summand_to_rec
-TEMPLATE: summand_to_rec(<summand>, <k>, <n>)
-TEMPLATE: summand_to_rec(<summand>, [<k>, <lo>, <hi>], <n>)
 FUNCTION: reduce_order
 TEMPLATE: reduce_order(<rec>, <sol>, <var>)
 OPTION  : simplify_products
+FUNCTION: simplify_sum
+TEMPLATE: simplify_sum(<expr>)
 FUNCTION: solve_rec
 TEMPLATE: solve_rec(<eqn>, <var>, [<init>])
 FUNCTION: solve_rec_rat
 TEMPLATE: solve_rec_rat(<eqn>, <var>, [<init>])
 OPTION  : product_use_gamma
+FUNCTION: summand_to_rec
+TEMPLATE: summand_to_rec(<summand>, <k>, <n>)
+TEMPLATE: summand_to_rec(<summand>, [<k>, <lo>, <hi>], <n>)
 FUNCTION: bessel_j
 TEMPLATE: bessel_j(<v>, <z>)
 FUNCTION: bessel_y
@@ -4054,3 +4048,108 @@ OPTION  : modular_linear_solver
 OPTION  : ev_point
 OPTION  : mod_big_prime
 OPTION  : mod_threshold
+FUNCTION: days360
+TEMPLATE: days360(<year1>,<month1>,<day1>,<year2>,<month2>,<day2>)
+FUNCTION: fv
+TEMPLATE: fv(<rate>,<PV>,<num>)
+FUNCTION: pv
+TEMPLATE: pv(<rate>,<FV>,<num>)
+FUNCTION: graph_flow
+TEMPLATE: graph_flow(<val>)
+FUNCTION: annuity_pv
+TEMPLATE: annuity_pv(<rate>,<PV>,<num>)
+FUNCTION: annuity_fv
+TEMPLATE: annuity_fv(<rate>,<FV>,<num>)
+FUNCTION: geo_annuity_pv
+TEMPLATE: geo_annuity_pv(<rate>,<growing_rate>,<PV>,<num>)
+FUNCTION: geo_annuity_fv
+TEMPLATE: geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)
+FUNCTION: geo_annuity_fv
+TEMPLATE: geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)
+FUNCTION: amortization
+TEMPLATE: amortization(<rate>,<ammount>,<num>)
+FUNCTION: arit_amortization
+TEMPLATE: arit_amortization(<rate>,<increment>,<ammount>,<num>)
+FUNCTION: geo_amortization
+TEMPLATE: geo_amortization(<rate>,<growing_rate>,<ammount>,<num>)
+FUNCTION: saving
+TEMPLATE: saving(<rate>,<ammount>,<num>)
+FUNCTION: npv
+TEMPLATE: npv(<rate>,<val>)
+FUNCTION: irr
+TEMPLATE: irr(<val>,<IO>)
+FUNCTION: benefit_cost
+TEMPLATE: benefit_cost(<rate>,<input>,<output>)
+FUNCTION: sierpinskiale
+TEMPLATE: sierpinskiale(<n>)
+FUNCTION: treefale
+TEMPLATE: treefale(<n>)
+FUNCTION: fernfale
+TEMPLATE: fernfale(<n>)
+FUNCTION: mandelbrot_set
+TEMPLATE: mandelbrot_set(<x>, <y>)
+FUNCTION: julia_set
+TEMPLATE: julia_set(<x>, <y>)
+OPTION  : julia_parameter
+FUNCTION: julia_sin
+TEMPLATE: julia_sin(<x>, <y>)
+FUNCTION: snowmap
+TEMPLATE: snowmap(<ent>, <nn>)
+FUNCTION: hilbertmap
+TEMPLATE: hilbertmap(<nn>)
+FUNCTION: sierpinskimap
+TEMPLATE: sierpinskimap(<nn>)
+OPTION  : extra_integration_methods
+OPTION  : extra_definite_integration_methods
+FUNCTION: intfugudu
+TEMPLATE: intfugudu(<e>, <x>)
+FUNCTION: signum_to_abs
+TEMPLATE: signum_to_abs(<e>)
+FUNCTION: convert_to_signum
+TEMPLATE: convert_to_signum(<e>)
+FUNCTION: complex_number_p
+TEMPLATE: complex_number_p(<x>)
+FUNCTION: compose_functions
+TEMPLATE: compose_functions(<l>)
+FUNCTION: dfloat
+TEMPLATE: dfloat(<x>)
+FUNCTION: elim
+TEMPLATE: elim(<l>, <x>)
+FUNCTION: elim_allbut
+TEMPLATE: elim_allbut(<l>, <x>)
+FUNCTION: eliminate_using
+TEMPLATE: eliminate_using(<l>, <e>, <x>)
+FUNCTION: fourier_elim
+TEMPLATE: fourier_elim([<eq1>, <eq2>, ...], [<var1>, <var>, ...])
+FUNCTION: isreal_p
+TEMPLATE: isreal_p(<e>)
+FUNCTION: new_variable
+TEMPLATE: new_variable(<type>)
+FUNCTION: parg
+TEMPLATE: parg(<x>)
+FUNCTION: real_imagpart_to_conjugate
+TEMPLATE: real_imagpart_to_conjugate(<e>)
+FUNCTION: rectform_log_if_constant
+TEMPLATE: rectform_log_if_constant(<e>)
+FUNCTION: simp_inequality
+TEMPLATE: simp_inequality(<e>)
+FUNCTION: standardize_inverse_trig
+TEMPLATE: standardize_inverse_trig(<e>)
+FUNCTION: subst_parallel
+TEMPLATE: subst_parallel(<l>, <e>)
+FUNCTION: to_poly
+TEMPLATE: to_poly(<e>, <l>)
+FUNCTION: to_poly_solve
+TEMPLATE: to_poly_solve(<e>, <l>, <[options]>)
+FUNCTION: metricexpandall
+TEMPLATE: metricexpandall(<x>)
+OPTION  : %unitexpand
+FUNCTION: functionname
+TEMPLATE: functionname(<arg1>, <arg2>, ..., <argn>)
+OPTION  : variablename
+FUNCTION: transmogrify
+TEMPLATE: transmogrify(<foo>, <bar>)
+OPTION  : frotz
+FUNCTION: transmogrify
+TEMPLATE: transmogrify(<foo>, <bar>)
+OPTION  : frotz
