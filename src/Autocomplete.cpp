@@ -119,18 +119,22 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
   if (!templates) {
     for (int i=0; i<m_symbolList.GetCount(); i++)
     {
-      if (m_symbolList[i].StartsWith(partial))
+      if (m_symbolList[i].StartsWith(partial) &&
+          completions.Index(m_symbolList[i]) == wxNOT_FOUND)
         completions.Add(m_symbolList[i]);
     }
   }
+
   else {
     for (int i=0; i<m_templateList.GetCount(); i++)
     {
       wxString templ = m_templateList[i];
       if (templ.StartsWith(partial))
       {
-        completions.Add(templ);
-        if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial)
+        if (completions.Index(templ) == wxNOT_FOUND)
+          completions.Add(templ);
+        if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial &&
+            perfectCompletions.Index(templ) == wxNOT_FOUND)
           perfectCompletions.Add(templ);
       }
     }
