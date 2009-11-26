@@ -1088,11 +1088,19 @@
     (setq lo 1))
   (cons '(mlist simp) (loop for i from lo to hi collect i)))
 
-(defun $with_slider (&rest args)
-  (apply #'$wxanimate args))
+(defmspec $with_slider (scene)
+  (wxanimate scene))
 
-(defun $wxanimate (a a-range expr &rest args)
-  (let (images)
+(defmspec $wxanimate (scene)
+  (wxanimate scene))
+
+(defun wxanimate (scene)
+  (let* ((scene (cdr scene))
+	 (a (car scene))
+	 (a-range (meval (cadr scene)))
+	 (expr (caddr scene))
+	 (args (cdddr scene))
+	 (images ()))
     (when (integerp a-range)
       (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
@@ -1105,7 +1113,7 @@
 	  (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	      (setq preamble (format nil "~a; ~a"
 				     preamble (caddr arg)))))
-	(apply #'$plot2d `(,expr ,@args
+	(apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
 			   ((mlist simp) $plot_format $gnuplot)
 			   ((mlist simp) $gnuplot_preamble ,preamble)
 			   ((mlist simp) $gnuplot_term $png)
@@ -1114,17 +1122,25 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
-(defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defun $with_slider_draw (&rest args)
-  (apply #'$wxanimate_draw args))
+(defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 (defun draw-transform (arg trans)
   (declare (ignore trans))
   arg)
 
-(defun $wxanimate_draw (a a-range &rest args)
-  (let (images)
+(defmspec $wxanimate_draw (scene)
+  (wxanimate-draw scene))
+
+(defmspec $with_slider_draw (scene)
+  (wxanimate-draw scene))
+
+(defun wxanimate-draw (scene)
+  (let* ((scene (cdr scene))
+	 (a (meval (car scene)))
+	 (a-range (meval (cadr scene)))
+	 (args (cddr scene))
+	 (images ()))
     (when (integerp a-range)
       (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
@@ -1132,7 +1148,7 @@
 	     (*windows-OS* t)
 	     (args (cons '($gr2d)
 			 (draw-transform
-			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
+			  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
 				  args)
 			  '$draw2d_transform))))
 	(setq images (cons (format nil "~a.png" filename) images))
@@ -1147,11 +1163,18 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
-(defun $with_slider_draw3d (&rest args)
-  (apply #'$wxanimate_draw3d args))
+(defmspec $with_slider_draw3d (scene)
+  (wxanimate-draw3d scene))
 
-(defun $wxanimate_draw3d (a a-range &rest args)
-  (let (images)
+(defmspec $wxanimate_draw3d (scene)
+  (wxanimate-draw3d scene))
+
+(defun wxanimate-draw3d (scene)
+  (let* ((scene (cdr scene))
+	 (a (meval (car scene)))
+	 (a-range (meval (cadr scene)))
+	 (args (cddr scene))
+	 (images ()))
     (when (integerp a-range)
       (setq a-range (mfuncall '$makelist 'i 'i 1 a-range)))
     (dolist (aval (reverse (cdr a-range)))
@@ -1159,7 +1182,7 @@
 	     (*windows-OS* t)
 	     (args (cons '($gr3d)
 			 (draw-transform
-			  (mapcar #'(lambda (arg) (maxima-substitute aval a arg))
+			  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
 				  args)
 			  '$draw3d_transform))))
 	(setq images (cons (format nil "~a.png" filename) images))
