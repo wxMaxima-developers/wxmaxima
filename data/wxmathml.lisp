@@ -1088,12 +1088,6 @@
     (setq lo 1))
   (cons '(mlist simp) (loop for i from lo to hi collect i)))
 
-(defmspec $with_slider (scene)
-  (wxanimate scene))
-
-(defmspec $wxanimate (scene)
-  (wxanimate scene))
-
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
 	 (a (car scene))
@@ -1122,18 +1116,17 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
+(defmspec $with_slider (scene)
+  (wxanimate scene))
+
+(defmspec $wxanimate (scene)
+  (wxanimate scene))
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 (defun draw-transform (arg trans)
   (declare (ignore trans))
   arg)
-
-(defmspec $wxanimate_draw (scene)
-  (wxanimate-draw scene))
-
-(defmspec $with_slider_draw (scene)
-  (wxanimate-draw scene))
 
 (defun wxanimate-draw (scene)
   (let* ((scene (cdr scene))
@@ -1163,11 +1156,11 @@
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
 
-(defmspec $with_slider_draw3d (scene)
-  (wxanimate-draw3d scene))
+(defmspec $wxanimate_draw (scene)
+  (wxanimate-draw scene))
 
-(defmspec $wxanimate_draw3d (scene)
-  (wxanimate-draw3d scene))
+(defmspec $with_slider_draw (scene)
+  (wxanimate-draw scene))
 
 (defun wxanimate-draw3d (scene)
   (let* ((scene (cdr scene))
@@ -1196,6 +1189,12 @@
 		 (list args)))))
     ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
   "")
+
+(defmspec $with_slider_draw3d (scene)
+  (wxanimate-draw3d scene))
+
+(defmspec $wxanimate_draw3d (scene)
+  (wxanimate-draw3d scene))
 
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))
