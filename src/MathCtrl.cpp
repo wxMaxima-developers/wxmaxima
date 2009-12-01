@@ -2882,7 +2882,7 @@ void MathCtrl::PasteFromClipboard(bool primary) {
   /* Check for cell structure */
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->UsePrimarySelection(primary);
     if (wxTheClipboard->IsSupported( wxDF_TEXT ))
     {
       wxTextDataObject data;
