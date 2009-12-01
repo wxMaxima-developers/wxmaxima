@@ -239,7 +239,6 @@ void wxMaximaFrame::SetupMenu()
 
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
-
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_select_all, _("Select All\tCtrl-A"),
                              _("Select all"),
@@ -248,38 +247,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
 
-  wxMenu* wxglade_tmp_menu_2_sub1 = new wxMenu;
-  wxglade_tmp_menu_2_sub1->Append(menu_evaluate, _("Evaluate Cell(s)"),
-                             _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
-                               _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->AppendSeparator();
-  wxglade_tmp_menu_2_sub1->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
-                                  _("Create a new cell with previous input"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
-                             _("Complete word"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
-                             _("Show function template"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub1->AppendSeparator();
-  wxglade_tmp_menu_2_sub1->Append(menu_insert_input, _("New Input &Cell\tF5"),
-                             _("Insert a new input cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_comment, _("New &Text Cell\tF6"),
-                             _("Insert a new text cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_subsection, _("New S&ubsection Cell\tF7"),
-                             _("Insert a new subsection cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_section, _("New &Section Cell\tF8"),
-                             _("Insert a new section cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_title, _("New T&itle Cell\tF9"),
-                             _("Insert a new title cell"));
-  wxglade_tmp_menu_2_sub1->Append(menu_add_pagebreak, _("Insert Page Break\tF10"),
-                             _("Insert a page break"));
-  wxglade_tmp_menu_2->AppendSeparator();
-
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Cell"), wxglade_tmp_menu_2_sub1, _("Input"));
-  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Outputs"),
-                            _("Remove output from input cells"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
-                              _("Insert image"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
@@ -295,8 +262,6 @@ void wxMaximaFrame::SetupMenu()
   edit_zoom_sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
   wxglade_tmp_menu_2->Append(wxNewId(), _("Set Zoom"), edit_zoom_sub, _("Set Zoom"));
-
-
   wxglade_tmp_menu_2->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
@@ -304,6 +269,38 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
+
+  // Cell menu
+  wxglade_tmp_menu_2 = new wxMenu;
+  wxglade_tmp_menu_2->Append(menu_evaluate, _("Evaluate Cell(s)"),
+                             _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
+                               _("Evaluate all cells in the document"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Output"),
+                            _("Remove output from input cells"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
+                                  _("Create a new cell with previous input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
+                             _("Complete word"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
+                             _("Show function template"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert Input &Cell\tF5"),
+                             _("Insert a new input cell"));
+  wxglade_tmp_menu_2->Append(menu_add_comment, _("Insert &Text Cell\tF6"),
+                             _("Insert a new text cell"));
+  wxglade_tmp_menu_2->Append(menu_add_subsection, _("Insert S&ubsection Cell\tF7"),
+                             _("Insert a new subsection cell"));
+  wxglade_tmp_menu_2->Append(menu_add_section, _("Insert &Section Cell\tF8"),
+                             _("Insert a new section cell"));
+  wxglade_tmp_menu_2->Append(menu_add_title, _("Insert T&itle Cell\tF9"),
+                             _("Insert a new title cell"));
+  wxglade_tmp_menu_2->Append(menu_add_pagebreak, _("Insert Page Break\tF10"),
+                             _("Insert a page break"));
+  wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
+                              _("Insert image"), wxITEM_NORMAL);
+  frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Cell"));
 
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu;
