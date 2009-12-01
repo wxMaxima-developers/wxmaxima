@@ -1432,7 +1432,7 @@ bool EditorCell::CopyToClipboard()
     return false;
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->UsePrimarySelection(false);
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd) - 1;
     wxString s = m_text.SubString(start, end);

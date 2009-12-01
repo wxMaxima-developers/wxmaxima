@@ -1035,7 +1035,7 @@ bool MathCtrl::Copy(bool astext) {
     wxString s = GetString(true);
 
     if (wxTheClipboard->Open()) {
-      wxTheClipboard->UsePrimarySelection(true);
+      wxTheClipboard->UsePrimarySelection(false);
       wxTheClipboard->SetData(new wxTextDataObject(s));
       wxTheClipboard->Close();
       return true;
@@ -1073,7 +1073,7 @@ bool MathCtrl::CopyTeX() {
     s += wxT("$$");
 
   if (wxTheClipboard->Open()) {
-    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->UsePrimarySelection(false);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -1128,7 +1128,7 @@ bool MathCtrl::CopyCells()
 
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->UsePrimarySelection(false);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
