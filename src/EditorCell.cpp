@@ -1432,6 +1432,7 @@ bool EditorCell::CopyToClipboard()
     return false;
   if (wxTheClipboard->Open())
   {
+    wxTheClipboard->UsePrimarySelection(true);
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd) - 1;
     wxString s = m_text.SubString(start, end);
@@ -1465,10 +1466,11 @@ bool EditorCell::CutToClipboard()
   return true;
 }
 
-void EditorCell::PasteFromClipboard()
+void EditorCell::PasteFromClipboard(bool primary)
 {
   if (wxTheClipboard->Open())
   {
+    wxTheClipboard->UsePrimarySelection(primary);
     if (wxTheClipboard->IsSupported(wxDF_TEXT))
     {
       wxTextDataObject obj;

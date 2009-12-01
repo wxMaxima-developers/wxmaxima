@@ -1035,6 +1035,7 @@ bool MathCtrl::Copy(bool astext) {
     wxString s = GetString(true);
 
     if (wxTheClipboard->Open()) {
+      wxTheClipboard->UsePrimarySelection(true);
       wxTheClipboard->SetData(new wxTextDataObject(s));
       wxTheClipboard->Close();
       return true;
@@ -1072,6 +1073,7 @@ bool MathCtrl::CopyTeX() {
     s += wxT("$$");
 
   if (wxTheClipboard->Open()) {
+    wxTheClipboard->UsePrimarySelection(true);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -1126,6 +1128,7 @@ bool MathCtrl::CopyCells()
 
   if (wxTheClipboard->Open())
   {
+    wxTheClipboard->UsePrimarySelection(true);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -2872,13 +2875,14 @@ bool MathCtrl::CutToClipboard() {
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void MathCtrl::PasteFromClipboard() {
+void MathCtrl::PasteFromClipboard(bool primary) {
 
   bool cells = false;
 
   /* Check for cell structure */
   if (wxTheClipboard->Open())
   {
+    wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->IsSupported( wxDF_TEXT ))
     {
       wxTextDataObject data;
@@ -2979,13 +2983,13 @@ void MathCtrl::PasteFromClipboard() {
   if (!cells)
   {
     if (m_activeCell != NULL) {
-      m_activeCell->PasteFromClipboard();
+      m_activeCell->PasteFromClipboard(primary);
       m_activeCell->GetParent()->ResetSize();
       Recalculate();
       Refresh();
     }
-
     else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
+      wxTheClipboard->UsePrimarySelection(primary);
       if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
         wxTextDataObject obj;
         wxTheClipboard->GetData(obj);
@@ -3084,15 +3088,13 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
 
 void MathCtrl::CheckUnixCopy()
 {
-  bool copy = false;
-  wxConfig::Get()->Read(wxT("unixCopy"), &copy);
-
-  if (copy) {
-    if (CanCopy(true) && wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(GetString()));
-      wxTheClipboard->Close();
-    }
+#if defined __WXGTK__
+  if (CanCopy(true) && wxTheClipboard->Open()) {
+    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+    wxTheClipboard->Close();
   }
+#endif
 }
 
 bool MathCtrl::IsSelected(int type) {
@@ -3218,16 +3220,13 @@ void MathCtrl::RemoveAllOutput()
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
 {
-  bool paste = false;
-  wxConfig::Get()->Read(wxT("unixCopy"), &paste);
-
-  if (paste) {
-    OnMouseLeftDown(event);
-    m_leftDown = false;
-    if (m_clickType != CLICK_TYPE_NONE)
-      PasteFromClipboard();
-    m_clickType = CLICK_TYPE_NONE;
-  }
+#if defined __WXGTK__
+  OnMouseLeftDown(event);
+  m_leftDown = false;
+  if (m_clickType != CLICK_TYPE_NONE)
+    PasteFromClipboard(true);
+  m_clickType = CLICK_TYPE_NONE;
+#endif
 }
 
 void MathCtrl::CommentSelection()

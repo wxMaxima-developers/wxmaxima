@@ -113,7 +113,7 @@ public:
   void DivideCell();
   void MergeCells();
   bool CutToClipboard();
-  void PasteFromClipboard();
+  void PasteFromClipboard(bool primary = false);
   bool Copy(bool astext = false);
   bool CopyCells();
   bool CopyTeX();

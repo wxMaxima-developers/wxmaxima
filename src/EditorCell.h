@@ -55,7 +55,7 @@ public:
   bool IsPointInSelection(wxDC& dc, wxPoint point);
   bool CopyToClipboard();
   bool CutToClipboard();
-  void PasteFromClipboard();
+  void PasteFromClipboard(bool primary = false);
   void SelectAll()
   {
     m_selectionStart = 0;
