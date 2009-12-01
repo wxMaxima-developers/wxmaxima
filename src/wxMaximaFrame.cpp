@@ -198,8 +198,8 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a Maxima package file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_export_html, _("&Export..."),
-                   _("Export document to a HTML or pdfLaTeX file"), wxT("stock_export"));
+  wxglade_tmp_menu_1->Append(menu_export_html, _("&Export..."),
+                   _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
