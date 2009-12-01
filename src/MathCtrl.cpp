@@ -2975,8 +2975,8 @@ void MathCtrl::PasteFromClipboard(bool primary) {
         }
         Thaw();
       }
-      wxTheClipboard->Close();
     }
+    wxTheClipboard->Close();
   }
 
   /* Clipboard does not have the cell structure. */
