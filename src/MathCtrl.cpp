@@ -655,9 +655,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
   if (m_activeCell == NULL) {
 
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
-#if defined __WXMSW__
-      popupMenu->Append(popid_image_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-#endif
+      popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_image, _("Save Image..."), wxEmptyString, wxITEM_NORMAL);
       if (IsSelected(MC_TYPE_SLIDE))
         popupMenu->Append(popid_image_animate, _("Save Animation..."), wxEmptyString, wxITEM_NORMAL);
@@ -670,10 +668,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
-#if defined __WXMSW__
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
               wxEmptyString, wxITEM_NORMAL);
-#endif
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
         }
@@ -688,10 +684,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
-#if defined __WXMSW__
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
               wxEmptyString, wxITEM_NORMAL);
-#endif
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
         }
@@ -1031,6 +1025,16 @@ bool MathCtrl::Copy(bool astext) {
 
   if (!astext && m_selectionStart->GetType() == MC_TYPE_GROUP)
     return CopyCells();
+  /// If the selection is IMAGE or SLIDESHOW, copy it to clipboard
+  /// as image.
+  else if (m_selectionStart == m_selectionEnd &&
+      m_selectionStart->GetType() == MC_TYPE_IMAGE) {
+    ((ImgCell *)m_selectionStart)->CopyToClipboard();
+  }
+  else if (m_selectionStart == m_selectionEnd &&
+        m_selectionStart->GetType() == MC_TYPE_SLIDE) {
+    ((SlideShow *)m_selectionStart)->CopyToClipboard();
+  }
   else {
     wxString s = GetString(true);
 
@@ -2976,7 +2980,15 @@ void MathCtrl::PasteFromClipboard(bool primary) {
         Thaw();
       }
     }
-    wxTheClipboard->Close();
+    else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
+    {
+      wxTheClipboard->Close();
+      OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
+    }
+
+    // Make sure the clipboard is closed!
+    if (wxTheClipboard->IsOpened())
+      wxTheClipboard->Close();
   }
 
   /* Clipboard does not have the cell structure. */

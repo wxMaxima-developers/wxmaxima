@@ -23,6 +23,7 @@
 #include <wx/filename.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
+#include <wx/clipbrd.h>
 
 ImgCell::ImgCell() : MathCell()
 {
@@ -39,7 +40,8 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
   m_bitmap = NULL;
   m_type = MC_TYPE_IMAGE;
   m_fileSystem = filesystem; // != NULL when loading from wxmx
-  LoadImage(image, remove);
+  if (image != wxEmptyString)
+    LoadImage(image, remove);
 }
 
 ImgCell::~ImgCell()
@@ -111,6 +113,15 @@ void ImgCell::LoadImage(wxString image, bool remove)
     dc.DrawText(image, 200 - width/2, 150 - height/2);
 
   }
+}
+
+void ImgCell::SetBitmap(wxBitmap bitmap)
+{
+  if (m_bitmap != NULL)
+    delete m_bitmap;
+
+  m_width = m_height = -1;
+  m_bitmap = new wxBitmap(bitmap);
 }
 
 MathCell* ImgCell::Copy(bool all)
@@ -228,4 +239,16 @@ wxString ImgCell::WXMXGetNewFileName()
    wxString file(wxT("image"));
    file << (++s_counter) << wxT(".png");
    return file;
+}
+
+bool ImgCell::CopyToClipboard()
+{
+  if (wxTheClipboard->Open())
+  {
+    wxTheClipboard->UsePrimarySelection(false);
+    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(*m_bitmap));
+    wxTheClipboard->Close();
+    return res;
+  }
+  return false;
 }

@@ -3670,11 +3670,6 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       }
     }
     break;
-#if defined __WXMSW__
-  case popid_image_copy:
-    m_console->CopyBitmap();
-    break;
-#endif
   case popid_evaluate:
     m_console->AddSelectionToEvaluationQueue();
     TryEvaluateNextInQueue();
@@ -3999,9 +3994,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
   EVT_MENU(popid_image_animate, wxMaxima::PopupMenu)
-#if defined __WXMSW__
-  EVT_MENU(popid_image_copy, wxMaxima::PopupMenu)
-#endif
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_solve, wxMaxima::EquationsMenu)

@@ -41,6 +41,8 @@ public:
   }
   friend class SlideShow;
   bool ToImageFile(wxString filename);
+  void SetBitmap(wxBitmap bitmap);
+  bool CopyToClipboard();
   // These methods should only be used for saving wxmx files
   // and are shared with SlideShowCell.
   static void WXMXResetCounter() { s_counter = 0; }

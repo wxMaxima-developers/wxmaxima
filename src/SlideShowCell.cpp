@@ -25,6 +25,7 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <wx/utils.h>
+#include <wx/clipbrd.h>
 
 SlideShow::SlideShow(wxFileSystem *filesystem) : MathCell()
 {
@@ -293,3 +294,16 @@ bool SlideShow::ToGif(wxString file)
 
   return retval;
 }
+
+bool SlideShow::CopyToClipboard()
+{
+  if (wxTheClipboard->Open())
+  {
+    wxTheClipboard->UsePrimarySelection(false);
+    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(*m_bitmaps[m_displayed]));
+    wxTheClipboard->Close();
+    return res;
+  }
+  return false;
+}
+

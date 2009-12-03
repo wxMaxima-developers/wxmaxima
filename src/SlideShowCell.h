@@ -47,6 +47,7 @@ public:
   int Length() { return m_size; }
   bool ToImageFile(wxString filename);
   bool ToGif(wxString filename);
+  bool CopyToClipboard();
 protected:
   int m_size;
   int m_displayed;
