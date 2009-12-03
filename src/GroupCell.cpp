@@ -108,9 +108,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     ImgCell *ic = new ImgCell(initString, false);
     AppendOutput(ic);
   }
-  /// If initString is empty and groupType is IMAGE, then check if there
-  /// is an image in the clipboard
-  else if ((groupType == GC_TYPE_IMAGE) && initString.Length() == 0) {
+  /// Check if there is an image in the clipboard
+  else if ((groupType == GC_TYPE_IMAGE) && initString == wxT("COPY-FROM-CLIPBOARD")) {
     if (wxTheClipboard->Open()) {
       wxTheClipboard->UsePrimarySelection(false);
       if (wxTheClipboard->IsSupported(wxDF_BITMAP)) {

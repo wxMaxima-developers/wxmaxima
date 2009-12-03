@@ -2983,7 +2983,7 @@ void MathCtrl::PasteFromClipboard(bool primary) {
     else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
     {
       wxTheClipboard->Close();
-      OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
+      OpenHCaret(wxT("COPY-FROM-CLIPBOARD"), GC_TYPE_IMAGE);
     }
 
     // Make sure the clipboard is closed!
