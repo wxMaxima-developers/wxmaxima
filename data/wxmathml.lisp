@@ -1241,6 +1241,8 @@
   (apply #'$wxdraw
 	 (list (cons '($gr3d) (draw-transform args '$draw3d_transform)))))
 
+(defvar $display_graphics t)
+
 (defun $wxdraw (&rest args)
   (let* ((filename (wxplot-filename nil))
 	 (*windows-OS* t)
@@ -1253,8 +1255,15 @@
 			((mequal simp) $pic_height ,($second $wxplot_size))
 			((mequal simp) $file_name ,filename))
 		      args)))
-    ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+    (if $display_graphics
+	($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+	(setf res `((wxxmltag simp) ,(format nil "~a.png" filename) "img")))
     res))
+
+(defmspec $wxdraw_list (args)
+  (let (($display_graphics nil))
+    ($ldisp (cons '(mlist simp) (mapcar #'meval (cdr args)))))
+  '$done)
 
 (defun $wximplicit_plot (&rest args)
   (let ((preamble ($wxplot_preamble))
