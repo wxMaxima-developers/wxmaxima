@@ -48,6 +48,7 @@ public:
   static void WXMXResetCounter() { s_counter = 0; }
   static wxString WXMXGetNewFileName();
   static int WXMXImageCount() { return s_counter; }
+  void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 protected:
   wxBitmap *m_bitmap;
   wxFileSystem *m_fileSystem;
@@ -58,6 +59,7 @@ protected:
   wxString ToTeX(bool all);
 	wxString ToXML(bool all);
 	static int s_counter;
+	bool m_drawRectangle;
 };
 
 #endif //_ABSCELL_H_

@@ -2989,14 +2989,12 @@ void MathCtrl::PasteFromClipboard(bool primary) {
       OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
       GroupCell *group = (GroupCell *)m_activeCell->GetParent();
 
-      // Pretend we have the cells structure.
-      //cells = true;
-
       if (group != NULL)
       {
         wxBitmapDataObject bitmap;
         wxTheClipboard->GetData(bitmap);
         ImgCell *ic = new ImgCell(wxEmptyString, false);
+        ic->DrawRectangle(false);
         ic->SetBitmap(bitmap.GetBitmap());
 
         group->AppendOutput(ic);

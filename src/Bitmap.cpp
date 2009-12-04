@@ -24,7 +24,7 @@
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
-#define BM_FULL_WIDTH 600
+#define BM_FULL_WIDTH 800
 
 Bitmap::Bitmap()
 {

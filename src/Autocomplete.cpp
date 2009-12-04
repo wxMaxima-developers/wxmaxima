@@ -76,6 +76,8 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxbarsplot"));
   m_symbolList.Add(wxT("wxpiechart"));
   m_symbolList.Add(wxT("wxboxplot"));
+  m_symbolList.Add(wxT("wxplot_size"));
+  m_symbolList.Add(wxT("wxdraw_list"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;

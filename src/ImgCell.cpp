@@ -30,6 +30,7 @@ ImgCell::ImgCell() : MathCell()
   m_bitmap = NULL;
   m_type = MC_TYPE_IMAGE;
   m_fileSystem = NULL;
+  m_drawRectangle = true;
 }
 
 int ImgCell::s_counter = 0;
@@ -40,6 +41,7 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
   m_bitmap = NULL;
   m_type = MC_TYPE_IMAGE;
   m_fileSystem = filesystem; // != NULL when loading from wxmx
+  m_drawRectangle = true;
   if (image != wxEmptyString)
     LoadImage(image, remove);
 }
@@ -185,7 +187,8 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     scale = MAX(scale, 1.0);
 
     SetPen(parser);
-    dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    if (m_drawRectangle)
+      dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     if (scale != 1.0)
     {
