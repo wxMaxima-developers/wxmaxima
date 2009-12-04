@@ -108,20 +108,6 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     ImgCell *ic = new ImgCell(initString, false);
     AppendOutput(ic);
   }
-  /// Check if there is an image in the clipboard
-  else if ((groupType == GC_TYPE_IMAGE) && initString == wxT("COPY-FROM-CLIPBOARD")) {
-    if (wxTheClipboard->Open()) {
-      wxTheClipboard->UsePrimarySelection(false);
-      if (wxTheClipboard->IsSupported(wxDF_BITMAP)) {
-        wxBitmapDataObject bitmap;
-        wxTheClipboard->GetData(bitmap);
-        ImgCell *ic = new ImgCell(wxEmptyString, false);
-        ic->SetBitmap(bitmap.GetBitmap());
-        AppendOutput(ic);
-      }
-      wxTheClipboard->Close();
-    }
-  }
 
   SetParent(this, false);
 }

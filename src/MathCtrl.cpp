@@ -2883,10 +2883,12 @@ void MathCtrl::PasteFromClipboard(bool primary) {
 
   bool cells = false;
 
-  /* Check for cell structure */
+  // Check for cell structure
   if (wxTheClipboard->Open())
   {
     wxTheClipboard->UsePrimarySelection(primary);
+
+    // Check if the clipboard contains text.
     if (wxTheClipboard->IsSupported( wxDF_TEXT ))
     {
       wxTextDataObject data;
@@ -2962,7 +2964,7 @@ void MathCtrl::PasteFromClipboard(bool primary) {
                    line != wxT("   [wxMaxima: title   end   ] */"));
         }
 
-        // Paste the content into the document
+        // Paste the content into the document.
         Freeze();
         for (unsigned int i=0; i<inp.Count(); i = i+2)
         {
@@ -2980,18 +2982,32 @@ void MathCtrl::PasteFromClipboard(bool primary) {
         Thaw();
       }
     }
+
+    // Check if the clipboard contains an image.
     else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
     {
-      wxTheClipboard->Close();
-      OpenHCaret(wxT("COPY-FROM-CLIPBOARD"), GC_TYPE_IMAGE);
+      OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
+      GroupCell *group = (GroupCell *)m_activeCell->GetParent();
+
+      // Pretend we have the cells structure.
+      //cells = true;
+
+      if (group != NULL)
+      {
+        wxBitmapDataObject bitmap;
+        wxTheClipboard->GetData(bitmap);
+        ImgCell *ic = new ImgCell(wxEmptyString, false);
+        ic->SetBitmap(bitmap.GetBitmap());
+
+        group->AppendOutput(ic);
+      }
     }
 
     // Make sure the clipboard is closed!
-    if (wxTheClipboard->IsOpened())
-      wxTheClipboard->Close();
+    wxTheClipboard->Close();
   }
 
-  /* Clipboard does not have the cell structure. */
+  // Clipboard does not have the cell structure.
   if (!cells)
   {
     if (m_activeCell != NULL) {
