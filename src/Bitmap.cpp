@@ -150,10 +150,10 @@ void Bitmap::BreakLines()
 void Bitmap::GetMaxPoint(int* width, int* height)
 {
   MathCell* tmp = m_tree;
-  int currentHeight = MC_BASE_INDENT;
-  int currentWidth = MC_BASE_INDENT;
-  *width = MC_BASE_INDENT;
-  *height = MC_BASE_INDENT;
+  int currentHeight = 0;
+  int currentWidth = 0;
+  *width = 0;
+  *height = 0;
   bool bigSkip = false;
   bool firstCell = true;
   while (tmp != NULL)
@@ -167,8 +167,8 @@ void Bitmap::GetMaxPoint(int* width, int* height)
         if (bigSkip)
           currentHeight += MC_LINE_SKIP;
         *height = currentHeight;
-        currentWidth = MC_BASE_INDENT + tmp->GetWidth();
-        *width = MAX(currentWidth + MC_BASE_INDENT, *width);
+        currentWidth = tmp->GetWidth();
+        *width = MAX(currentWidth, *width);
       }
       else
       {
