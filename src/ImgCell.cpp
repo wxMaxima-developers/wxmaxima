@@ -130,11 +130,13 @@ MathCell* ImgCell::Copy(bool all)
 {
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
+  tmp->m_drawRectangle = m_drawRectangle;
 
   tmp->m_bitmap = new wxBitmap(*m_bitmap);
 
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
+
   return tmp;
 }
 
@@ -234,7 +236,8 @@ wxString ImgCell::ToXML(bool all)
 	// add to memory
   wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
 
-  return wxT("<img>") + basename + wxT("</img>") + MathCell::ToXML(all);
+  return (m_drawRectangle ? wxT("<img>") : wxT("<img rect=\"false\">")) +
+         basename + wxT("</img>") + MathCell::ToXML(all);
 }
 
 wxString ImgCell::WXMXGetNewFileName()

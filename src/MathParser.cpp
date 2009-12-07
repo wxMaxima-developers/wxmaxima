@@ -21,6 +21,7 @@
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
+#include <wx/regex.h>
 
 #include "MathParser.h"
 
@@ -812,6 +813,9 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         else
           tmp = new ImgCell(filename, false, NULL);
 
+        if (node->GetPropVal(wxT("rect"), wxT("true")) == wxT("false"))
+          tmp->DrawRectangle(false);
+
         if (cell == NULL)
           cell = tmp;
         else
@@ -916,6 +920,14 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   wxConfigBase* config = wxConfig::Get();
   bool showLong = false;
   config->Read(wxT("showLong"), &showLong);
+
+  wxRegEx graph(wxT("[[:cntrl:]]"));
+
+#if wxUSE_UNICODE
+  graph.Replace(&s, wxT("\xFFFD"));
+#else
+  graph.Replace(&s, wxT("?"));
+#endif
 
   if (s.Length() < MAXLENGTH || showLong)
   {
