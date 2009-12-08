@@ -3,7 +3,7 @@
 #
 
 WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs
-WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da
+WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs
 
 localedir = $(datadir)/locale
 
@@ -98,10 +98,14 @@ transcoded:
 	$(MSGFMT) transcoded/uk.po -o transcoded/uk.mo
 	cat hu.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utf-8 -t iso8859-2 > transcoded/hu.po
 	$(MSGFMT) transcoded/hu.po -o transcoded/hu.mo
-	cat pl.po | sed -e "s/UTF-8/ISO-8859-2/" | iconv -f utf-8 -t iso8859-2 > transcoded/pl.po
+	cp pl.po transcoded
 	$(MSGFMT) transcoded/pl.po -o transcoded/pl.mo
 	cp zh_TW.po transcoded
 	$(MSGFMT) transcoded/zh_TW.po -o transcoded/zh_TW.po
+	cp da.po transcoded
+	$(MSGFMT) transcoded/da.po -o transcoded/da.po
+	cp cs.po transcoded
+	$(MSGFMT) transcoded/cs.po -o transcoded/cs.po
 
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
