@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-11 15:09-0300\n"
+"POT-Creation-Date: 2009-12-08 22:56+0100\n"
 "PO-Revision-Date: 2009-10-11 15:09-0300\n"
 "Last-Translator: Eduardo M Kalinowski <ekalin@bol.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/wxMaxima.cpp:3052
+#: ../src/wxMaxima.cpp:3156
 #, c-format
 msgid ""
 "\n"
@@ -29,7 +29,14 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "Suporte a Unicode: %s"
 
-#: ../src/wxMaxima.cpp:3061
+#: ../src/wxMaxima.cpp:3169
+#, fuzzy
+msgid ""
+"\n"
+"Lisp: "
+msgstr "Lista:"
+
+#: ../src/wxMaxima.cpp:3165
 msgid ""
 "\n"
 "Maxima version: "
@@ -37,7 +44,7 @@ msgstr ""
 "\n"
 "Versão do Maxima: "
 
-#: ../src/wxMaxima.cpp:3625
+#: ../src/wxMaxima.cpp:3754
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -45,7 +52,7 @@ msgstr ""
 "\n"
 "Não conectado ao Maxima!\n"
 
-#: ../src/wxMaxima.cpp:3063
+#: ../src/wxMaxima.cpp:3167
 msgid ""
 "\n"
 "Not connected."
@@ -53,11 +60,11 @@ msgstr ""
 "\n"
 "Não conectado."
 
-#: ../src/MathParser.cpp:941
+#: ../src/MathParser.cpp:953
 msgid " << Expression too long to display! >>"
 msgstr " << Expressão longa demais para ser exibida! >>"
 
-#: ../src/wxMaxima.cpp:936
+#: ../src/wxMaxima.cpp:1018
 msgid ""
 " was saved using a newer version of wxMaxima so it may not load correctly. "
 "Please update your wxMaxima."
@@ -65,22 +72,22 @@ msgstr ""
 " foi salvo com uma versão mais nova do wxMaxima e talvez não seja carregado "
 "corretamente. Por favor atualize seu wxMaxima."
 
-#: ../src/wxMaxima.cpp:928
+#: ../src/wxMaxima.cpp:1010
 msgid ""
 " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr ""
 " foi salvo com uma versão mais nova do wxMaxima. Por favor atualize seu "
 "wxMaxima."
 
-#: ../src/wxMaximaFrame.cpp:444
+#: ../src/wxMaximaFrame.cpp:451
 msgid "&Algebra"
 msgstr "Á&lgebra"
 
-#: ../src/wxMaximaFrame.cpp:438
+#: ../src/wxMaximaFrame.cpp:445
 msgid "&Apply to List..."
 msgstr "&Aplicar a lista..."
 
-#: ../src/wxMaximaFrame.cpp:624
+#: ../src/wxMaximaFrame.cpp:631
 msgid "&Apropos..."
 msgstr "&Apropos"
 
@@ -88,39 +95,44 @@ msgstr "&Apropos"
 msgid "&Batch File...\tCtrl-B"
 msgstr "Carregar arquivo &batch...\tCtrl-B"
 
-#: ../src/wxMaximaFrame.cpp:398
+#: ../src/wxMaximaFrame.cpp:402
 msgid "&Boundary Value Problem..."
 msgstr "Problema de valor de &fronteira..."
 
-#: ../src/wxMaximaFrame.cpp:635
+#: ../src/wxMaximaFrame.cpp:642
 msgid "&Bug Report"
 msgstr "Relatar &bug"
 
-#: ../src/wxMaximaFrame.cpp:496
+#: ../src/wxMaximaFrame.cpp:503
 msgid "&Calculus"
 msgstr "&Cálculo"
 
-#: ../src/wxMaximaFrame.cpp:547
+#: ../src/wxMaximaFrame.cpp:554
 msgid "&Canonical Form"
 msgstr "Forma &canônica"
 
-#: ../src/wxMaximaFrame.cpp:420
+#: ../src/wxMaximaFrame.cpp:303
+#, fuzzy
+msgid "&Cell"
+msgstr "Célula"
+
+#: ../src/wxMaximaFrame.cpp:427
 msgid "&Characteristic Polynomial..."
 msgstr "Polinômio característico..."
 
-#: ../src/wxMaximaFrame.cpp:331
+#: ../src/wxMaximaFrame.cpp:335
 msgid "&Clear Memory"
 msgstr "&Limpar memória"
 
-#: ../src/wxMaximaFrame.cpp:530
+#: ../src/wxMaximaFrame.cpp:537
 msgid "&Combine Factorials"
 msgstr "&Combinar fatoriais"
 
-#: ../src/wxMaximaFrame.cpp:573
+#: ../src/wxMaximaFrame.cpp:580
 msgid "&Complex Simplification"
 msgstr "Simplificação &complexa"
 
-#: ../src/wxMaximaFrame.cpp:493
+#: ../src/wxMaximaFrame.cpp:500
 msgid "&Continued Fraction"
 msgstr "Fração &contínua"
 
@@ -132,43 +144,43 @@ msgstr "&Copiar\tCtrl-C"
 msgid "&Definite integration"
 msgstr "Integração &definida"
 
-#: ../src/wxMaximaFrame.cpp:567
+#: ../src/wxMaximaFrame.cpp:574
 msgid "&Demoivre"
 msgstr "&Demoivre"
 
-#: ../src/wxMaximaFrame.cpp:423
+#: ../src/wxMaximaFrame.cpp:430
 msgid "&Determinant"
 msgstr "&Determinante"
 
-#: ../src/wxMaximaFrame.cpp:456
+#: ../src/wxMaximaFrame.cpp:463
 msgid "&Differentiate..."
 msgstr "&Diferenciar..."
 
-#: ../src/wxMaximaFrame.cpp:299
+#: ../src/wxMaximaFrame.cpp:271
 msgid "&Edit"
 msgstr "&Editar"
 
-#: ../src/wxMaximaFrame.cpp:383
+#: ../src/wxMaximaFrame.cpp:387
 msgid "&Eliminate Variable..."
 msgstr "&Eliminar variável..."
 
-#: ../src/wxMaximaFrame.cpp:415
+#: ../src/wxMaximaFrame.cpp:422
 msgid "&Enter Matrix..."
 msgstr "&Introduzir matriz..."
 
-#: ../src/wxMaximaFrame.cpp:621
+#: ../src/wxMaximaFrame.cpp:628
 msgid "&Example..."
 msgstr "&Exemplo..."
 
-#: ../src/wxMaximaFrame.cpp:510
+#: ../src/wxMaximaFrame.cpp:517
 msgid "&Expand Expression"
 msgstr "&Expandir expressão"
 
-#: ../src/wxMaximaFrame.cpp:544
+#: ../src/wxMaximaFrame.cpp:551
 msgid "&Expand Trigonometric"
 msgstr "&Expandir trigonométricas"
 
-#: ../src/wxMaximaFrame.cpp:570
+#: ../src/wxMaximaFrame.cpp:577
 msgid "&Exponentialize"
 msgstr "&Exponencializar"
 
@@ -176,7 +188,7 @@ msgstr "&Exponencializar"
 msgid "&Export..."
 msgstr "&Exportar..."
 
-#: ../src/wxMaximaFrame.cpp:505
+#: ../src/wxMaximaFrame.cpp:512
 msgid "&Factor Expression"
 msgstr "&Fatorar expressão"
 
@@ -184,35 +196,35 @@ msgstr "&Fatorar expressão"
 msgid "&File"
 msgstr "&Arquivo"
 
-#: ../src/wxMaximaFrame.cpp:366
+#: ../src/wxMaximaFrame.cpp:370
 msgid "&Find Root..."
 msgstr "Encontrar &raiz..."
 
-#: ../src/wxMaximaFrame.cpp:412
+#: ../src/wxMaximaFrame.cpp:416
 msgid "&Generate Matrix..."
 msgstr "&Gerar matriz..."
 
-#: ../src/wxMaximaFrame.cpp:480
+#: ../src/wxMaximaFrame.cpp:487
 msgid "&Greatest Common Divisor..."
 msgstr "Máximo &divisor comum..."
 
-#: ../src/wxMaximaFrame.cpp:647
+#: ../src/wxMaximaFrame.cpp:654
 msgid "&Help"
 msgstr "Aj&uda"
 
-#: ../src/wxMaximaFrame.cpp:448
+#: ../src/wxMaximaFrame.cpp:455
 msgid "&Integrate..."
 msgstr "&Integrar..."
 
-#: ../src/wxMaximaFrame.cpp:322
+#: ../src/wxMaximaFrame.cpp:326
 msgid "&Interrupt\tCtrl-."
 msgstr "&Interromper\tCtrl-."
 
-#: ../src/wxMaximaFrame.cpp:326
+#: ../src/wxMaximaFrame.cpp:330
 msgid "&Interrupt\tCtrl-G"
 msgstr "&Interromper\tCtrl-G"
 
-#: ../src/wxMaximaFrame.cpp:417
+#: ../src/wxMaximaFrame.cpp:424
 msgid "&Invert Matrix"
 msgstr "&Inverter matriz"
 
@@ -220,19 +232,19 @@ msgstr "&Inverter matriz"
 msgid "&Load Package...\tCtrl-L"
 msgstr "&Carregar pacote...\tCtrl-L"
 
-#: ../src/wxMaximaFrame.cpp:440
+#: ../src/wxMaximaFrame.cpp:447
 msgid "&Map to List..."
 msgstr "&Mapear a lista..."
 
-#: ../src/wxMaximaFrame.cpp:358
+#: ../src/wxMaximaFrame.cpp:362
 msgid "&Maxima"
 msgstr "&Maxima"
 
-#: ../src/wxMaximaFrame.cpp:588
+#: ../src/wxMaximaFrame.cpp:595
 msgid "&Modulus Computation..."
 msgstr "Cálculo com &módulo..."
 
-#: ../src/main.cpp:99
+#: ../src/main.cpp:105
 msgid "&New\tCtrl-N"
 msgstr "&Novo\tCtrl-N"
 
@@ -240,7 +252,7 @@ msgstr "&Novo\tCtrl-N"
 msgid "&New Window\tCtrl-N"
 msgstr "&Nova janela\tCtrl-N"
 
-#: ../src/wxMaximaFrame.cpp:615
+#: ../src/wxMaximaFrame.cpp:622
 msgid "&Numeric"
 msgstr "&Numérico"
 
@@ -252,7 +264,7 @@ msgstr "Integração &numérica"
 msgid "&Nusum"
 msgstr "&Nusum"
 
-#: ../src/main.cpp:100
+#: ../src/main.cpp:106
 msgid "&Open\tCtrl-O"
 msgstr "&Abrir\tCtrl-O"
 
@@ -260,7 +272,7 @@ msgstr "&Abrir\tCtrl-O"
 msgid "&Open...\tCtrl-O"
 msgstr "&Abrir...\tCtrl-O"
 
-#: ../src/wxMaximaFrame.cpp:600
+#: ../src/wxMaximaFrame.cpp:607
 msgid "&Plot"
 msgstr "&Gráfico"
 
@@ -276,15 +288,15 @@ msgstr "&Imprimir...\tCtrl-P"
 msgid "&Rational"
 msgstr "&Racional"
 
-#: ../src/wxMaximaFrame.cpp:541
+#: ../src/wxMaximaFrame.cpp:548
 msgid "&Reduce Trigonometric"
 msgstr "&Reduzir trigonometricas"
 
-#: ../src/wxMaximaFrame.cpp:330
+#: ../src/wxMaximaFrame.cpp:334
 msgid "&Restart Maxima"
 msgstr "&Reiniciar Maxima"
 
-#: ../src/wxMaximaFrame.cpp:374
+#: ../src/wxMaximaFrame.cpp:378
 msgid "&Roots of Polynomial (Real)"
 msgstr "&Raízes do polinômio (real)"
 
@@ -292,23 +304,23 @@ msgstr "&Raízes do polinômio (real)"
 msgid "&Save\tCtrl-S"
 msgstr "&Salvar\tCtrl-S"
 
-#: ../src/wxMaximaFrame.cpp:590 ../src/SumWiz.cpp:42
+#: ../src/SumWiz.cpp:42 ../src/wxMaximaFrame.cpp:597
 msgid "&Simplify"
 msgstr "&Simplificar"
 
-#: ../src/wxMaximaFrame.cpp:500
+#: ../src/wxMaximaFrame.cpp:507
 msgid "&Simplify Expression"
 msgstr "&Simplificar expressão"
 
-#: ../src/wxMaximaFrame.cpp:527
+#: ../src/wxMaximaFrame.cpp:534
 msgid "&Simplify Factorials"
 msgstr "&Simplificar fatoriais"
 
-#: ../src/wxMaximaFrame.cpp:538
+#: ../src/wxMaximaFrame.cpp:545
 msgid "&Simplify Trigonometric"
 msgstr "&Simplificar trigonométricas"
 
-#: ../src/wxMaximaFrame.cpp:362
+#: ../src/wxMaximaFrame.cpp:366
 msgid "&Solve..."
 msgstr "&Resolver..."
 
@@ -320,11 +332,11 @@ msgstr "E&special"
 msgid "&Taylor series"
 msgstr "Série de &Taylor"
 
-#: ../src/wxMaximaFrame.cpp:433
+#: ../src/wxMaximaFrame.cpp:440
 msgid "&Transpose Matrix"
 msgstr "&Transpor matriz"
 
-#: ../src/wxMaximaFrame.cpp:550
+#: ../src/wxMaximaFrame.cpp:557
 msgid "&Trigonometric Simplification"
 msgstr "Simplificação &trigonométrica"
 
@@ -332,9 +344,15 @@ msgstr "Simplificação &trigonométrica"
 msgid "&pm3d"
 msgstr "&pm3d"
 
-#: ../src/Config.cpp:78
+#: ../src/Config.cpp:79
 msgid "(Use default language)"
 msgstr "(Usar idioma padrão)"
+
+#: ../src/IntegrateWiz.cpp:217 ../src/IntegrateWiz.cpp:228
+#: ../src/IntegrateWiz.cpp:236 ../src/IntegrateWiz.cpp:247
+#: ../src/LimitWiz.cpp:133 ../src/LimitWiz.cpp:144
+msgid "- Infinity"
+msgstr ""
 
 #: ../src/MiniMathCtrl.cpp:42
 msgid "<< Nothing to display >>"
@@ -361,15 +379,15 @@ msgstr ""
 "só a entrada e os comentários textuais, mas também as saídas dos cálculos. "
 "Quando salvar o documento, selecione o formato 'Documento XML do wxMaxima'."
 
-#: ../src/wxMaximaFrame.cpp:405
+#: ../src/wxMaximaFrame.cpp:409
 msgid "A&t Value..."
 msgstr "Valor no pon&to..."
 
-#: ../src/wxMaximaFrame.cpp:642
+#: ../src/wxMaximaFrame.cpp:649
 msgid "About"
 msgstr "Sobre"
 
-#: ../src/wxMaximaFrame.cpp:644 ../src/wxMaximaFrame.cpp:646
+#: ../src/wxMaximaFrame.cpp:651 ../src/wxMaximaFrame.cpp:653
 msgid "About wxMaxima"
 msgstr "Sobre o wxMaxima"
 
@@ -377,27 +395,27 @@ msgstr "Sobre o wxMaxima"
 msgid "Active cell bracket"
 msgstr "Marcador da célula ativa"
 
-#: ../src/wxMaximaFrame.cpp:431
+#: ../src/wxMaximaFrame.cpp:438
 msgid "Ad&joint Matrix"
 msgstr "Matriz ad&junta"
 
-#: ../src/wxMaximaFrame.cpp:585
+#: ../src/wxMaximaFrame.cpp:592
 msgid "Add Algebraic E&quality..."
 msgstr "Adicionar &igualdade algébrica..."
 
-#: ../src/wxMaximaFrame.cpp:334
+#: ../src/wxMaximaFrame.cpp:338
 msgid "Add a directory to search path"
 msgstr "Adicionar um diretório ao caminho de busca"
 
-#: ../src/wxMaxima.cpp:2088
+#: ../src/wxMaxima.cpp:2170
 msgid "Add dir to path:"
 msgstr "Adicionar diretório ao caminho:"
 
-#: ../src/wxMaximaFrame.cpp:586
+#: ../src/wxMaximaFrame.cpp:593
 msgid "Add equality to the rational simplifier"
 msgstr "Adicionar igualdade ao simplificador racional"
 
-#: ../src/wxMaximaFrame.cpp:333
+#: ../src/wxMaximaFrame.cpp:337
 msgid "Add to &Path..."
 msgstr "Adicionar ao &caminho..."
 
@@ -405,51 +423,51 @@ msgstr "Adicionar ao &caminho..."
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Parâmetros adicionais para o Maxima (p.ex. -l clisp)."
 
-#: ../src/Config.cpp:73
+#: ../src/Config.cpp:74
 msgid "Additional parameters:"
 msgstr "Parâmetros adicionais:"
 
-#: ../src/Config.cpp:436
+#: ../src/Config.cpp:425
 msgid "All|*"
 msgstr "Todos|*"
 
-#: ../src/wxMaximaFrame.cpp:770
+#: ../src/wxMaximaFrame.cpp:777
 msgid "Animation"
 msgstr "Animação"
 
-#: ../src/wxMaxima.cpp:2520
+#: ../src/wxMaxima.cpp:2623
 msgid "Apply"
 msgstr "Aplicar"
 
-#: ../src/wxMaximaFrame.cpp:439
+#: ../src/wxMaximaFrame.cpp:446
 msgid "Apply function to a list"
 msgstr "Aplicar função a uma lista"
 
-#: ../src/wxMaxima.cpp:3110
+#: ../src/wxMaxima.cpp:3225
 msgid "Apropos"
 msgstr "Apropos"
 
-#: ../src/wxMaxima.cpp:2467
+#: ../src/wxMaxima.cpp:2549
 msgid "Array:"
 msgstr "Matriz:"
 
-#: ../src/wxMaxima.cpp:2353
+#: ../src/wxMaxima.cpp:2435
 msgid "At value"
 msgstr "Valor no ponto"
 
-#: ../src/BC2Wiz.cpp:57 ../src/wxMaxima.cpp:2260
+#: ../src/BC2Wiz.cpp:57 ../src/wxMaxima.cpp:2342
 msgid "BC2"
 msgstr "CC2"
 
-#: ../src/wxMaximaFrame.cpp:986
+#: ../src/wxMaximaFrame.cpp:993
 msgid "Barsplot"
 msgstr ""
 
-#: ../src/Config.cpp:431
+#: ../src/Config.cpp:420
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Arquivos de lote (*.bat)|*.bat|Todos|*"
 
-#: ../src/wxMaxima.cpp:1811
+#: ../src/wxMaxima.cpp:1893
 msgid "Batch File"
 msgstr "Arquivo batch (de lote)"
 
@@ -457,15 +475,15 @@ msgstr "Arquivo batch (de lote)"
 msgid "Bold"
 msgstr "Negrito"
 
-#: ../src/wxMaximaFrame.cpp:988
+#: ../src/wxMaximaFrame.cpp:995
 msgid "Boxplot"
 msgstr ""
 
-#: ../src/Plot3dWiz.cpp:124 ../src/Plot2dWiz.cpp:122
+#: ../src/Plot2dWiz.cpp:122 ../src/Plot3dWiz.cpp:124
 msgid "Browse"
 msgstr "Procurar"
 
-#: ../src/wxMaximaFrame.cpp:633
+#: ../src/wxMaximaFrame.cpp:640
 msgid "Build &Info"
 msgstr "&Informações do build"
 
@@ -481,91 +499,88 @@ msgstr ""
 "'Editar->Configurações' marcando 'Enter calcula células'. Essa opção inverte "
 "as ações das duas teclas."
 
-#: ../src/wxMaximaFrame.cpp:453
+#: ../src/wxMaximaFrame.cpp:460
 msgid "C&hange Variable..."
 msgstr "&Mudar variável..."
 
-#: ../src/wxMaximaFrame.cpp:297
+#: ../src/wxMaximaFrame.cpp:269
 msgid "C&onfigure"
 msgstr "C&onfigurações"
 
-#: ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:479
 msgid "Calculate &Product..."
 msgstr "Calcular &produto..."
 
-#: ../src/wxMaximaFrame.cpp:470
+#: ../src/wxMaximaFrame.cpp:477
 msgid "Calculate Su&m..."
 msgstr "Calcular &soma..."
 
-#: ../src/wxMaximaFrame.cpp:610
+#: ../src/wxMaximaFrame.cpp:617
 msgid "Calculate bigfloat value of the last result"
 msgstr "Valor bigfloat do último resultado"
 
-#: ../src/wxMaximaFrame.cpp:607
+#: ../src/wxMaximaFrame.cpp:614
 msgid "Calculate float value of the last result"
 msgstr "Valor float do último resultado"
 
-#: ../src/wxMaxima.cpp:2653
+#: ../src/wxMaxima.cpp:2756
 msgid "Calculate modulus:"
 msgstr "Calcular módulo:"
 
-#: ../src/wxMaximaFrame.cpp:473
+#: ../src/wxMaximaFrame.cpp:480
 msgid "Calculate products"
 msgstr "Calcular produtos"
 
-#: ../src/wxMaximaFrame.cpp:471
+#: ../src/wxMaximaFrame.cpp:478
 msgid "Calculate sums"
 msgstr "Calcular somas"
 
-#: ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:49 ../src/LimitWiz.cpp:51
-#: ../src/LimitWiz.cpp:53 ../src/SeriesWiz.cpp:48 ../src/SeriesWiz.cpp:50
-#: ../src/MatWiz.cpp:39 ../src/MatWiz.cpp:41 ../src/MatWiz.cpp:178
-#: ../src/MatWiz.cpp:180 ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46
-#: ../src/Gen3Wiz.cpp:49 ../src/Gen3Wiz.cpp:51 ../src/Plot3dWiz.cpp:103
-#: ../src/Plot3dWiz.cpp:105 ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:44
-#: ../src/Config.cpp:151 ../src/Config.cpp:153 ../src/SubstituteWiz.cpp:40
-#: ../src/SubstituteWiz.cpp:42 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
-#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:516
-#: ../src/Plot2dWiz.cpp:518 ../src/Plot2dWiz.cpp:611 ../src/Plot2dWiz.cpp:613
-#: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61 ../src/Gen4Wiz.cpp:55
-#: ../src/Gen4Wiz.cpp:57 ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:39
+#: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:46 ../src/Config.cpp:151
+#: ../src/Config.cpp:153 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
+#: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:44 ../src/Gen3Wiz.cpp:49
+#: ../src/Gen3Wiz.cpp:51 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:57
+#: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61
+#: ../src/LimitWiz.cpp:51 ../src/LimitWiz.cpp:53 ../src/MatWiz.cpp:39
+#: ../src/MatWiz.cpp:41 ../src/MatWiz.cpp:178 ../src/MatWiz.cpp:180
+#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:561
+#: ../src/Plot2dWiz.cpp:563 ../src/Plot2dWiz.cpp:656 ../src/Plot2dWiz.cpp:658
+#: ../src/Plot3dWiz.cpp:103 ../src/Plot3dWiz.cpp:105 ../src/SeriesWiz.cpp:48
+#: ../src/SeriesWiz.cpp:50 ../src/SubstituteWiz.cpp:40
+#: ../src/SubstituteWiz.cpp:42 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:49
+#: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:39
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/wxMaximaFrame.cpp:931
+#: ../src/wxMaximaFrame.cpp:938
 msgid "Canonical (tr)"
 msgstr "Forma canônica (tr)"
-
-#: ../src/wxMaximaFrame.cpp:271
-msgid "Cell"
-msgstr "Célula"
 
 #: ../src/Config.cpp:130
 msgid "Cell bracket"
 msgstr "Marcador da célula"
 
-#: ../src/wxMaximaFrame.cpp:353
+#: ../src/wxMaximaFrame.cpp:357
 msgid "Change &2d Display"
 msgstr "Alterar exibição &2d"
 
-#: ../src/wxMaximaFrame.cpp:354
+#: ../src/wxMaximaFrame.cpp:358
 msgid "Change the 2d display algorithm used to display math output"
 msgstr ""
 "Alterar a algoritmo de exibição 2d usado para mostrar a saída matemática"
 
-#: ../src/wxMaxima.cpp:2677
+#: ../src/wxMaxima.cpp:2780
 msgid "Change variable"
 msgstr "Mudar variável"
 
-#: ../src/wxMaximaFrame.cpp:454
+#: ../src/wxMaximaFrame.cpp:461
 msgid "Change variable in integral or sum"
 msgstr "Mudar variável em integral ou soma"
 
-#: ../src/wxMaxima.cpp:2454
+#: ../src/wxMaxima.cpp:2536
 msgid "Char poly"
 msgstr "Polinômio característico"
 
-#: ../src/Config.cpp:79
+#: ../src/Config.cpp:80
 msgid "Chinese traditional"
 msgstr "Chinês (tradicional)"
 
@@ -573,15 +588,15 @@ msgstr "Chinês (tradicional)"
 msgid "Choose font"
 msgstr "Escolher fonte"
 
-#: ../src/wxMaxima.cpp:3145 ../src/wxMaxima.cpp:3159
+#: ../src/wxMaxima.cpp:3265 ../src/wxMaxima.cpp:3279
 msgid "Classes:"
 msgstr "Classes:"
 
-#: ../src/wxMaxima.cpp:1688 ../src/wxMaxima.cpp:3564
+#: ../src/wxMaxima.cpp:1770 ../src/wxMaxima.cpp:3693
 msgid "Close document?"
 msgstr "Fechar documento?"
 
-#: ../src/wxMaxima.cpp:3256
+#: ../src/wxMaxima.cpp:3376
 msgid "Col. names:"
 msgstr "Nomes das colunas:"
 
@@ -589,15 +604,15 @@ msgstr "Nomes das colunas:"
 msgid "Columns:"
 msgstr "Colunas:"
 
-#: ../src/wxMaximaFrame.cpp:531
+#: ../src/wxMaximaFrame.cpp:538
 msgid "Combine factorials in an expression"
 msgstr "Combinar fatoriais numa expressão"
 
-#: ../src/Plot2dWiz.cpp:630
+#: ../src/Plot2dWiz.cpp:675
 msgid "Comma separated x coordinates"
 msgstr "Coordenadas x separadas por vírgulas."
 
-#: ../src/Plot2dWiz.cpp:631
+#: ../src/Plot2dWiz.cpp:676
 msgid "Comma separated y coordinates"
 msgstr "Coordenadas y separadas por vírgulas."
 
@@ -605,128 +620,141 @@ msgstr "Coordenadas y separadas por vírgulas."
 msgid "Comment Selection"
 msgstr "Comentar seleção"
 
-#: ../src/wxMaximaFrame.cpp:494
+#: ../src/wxMaximaFrame.cpp:284
+msgid "Complete Word\tCtrl-K"
+msgstr ""
+
+#: ../src/wxMaximaFrame.cpp:285
+msgid "Complete word"
+msgstr ""
+
+#: ../src/wxMaximaFrame.cpp:501
 msgid "Compute continued fraction of a value"
 msgstr "Calcular a fração contínua de um valor"
 
-#: ../src/wxMaximaFrame.cpp:432
-msgid "Compute the adjoint maxrix"
+#: ../src/wxMaximaFrame.cpp:439
+#, fuzzy
+msgid "Compute the adjoint matrix"
 msgstr "Calcular a matriz adjunta"
 
-#: ../src/wxMaximaFrame.cpp:421
+#: ../src/wxMaximaFrame.cpp:428
 msgid "Compute the characteristic polynomial of a matrix"
 msgstr "Calcular o polinômio característico de uma matriz"
 
-#: ../src/wxMaximaFrame.cpp:424
+#: ../src/wxMaximaFrame.cpp:431
 msgid "Compute the determinant of a matrix"
 msgstr "Calcular o determinante de uma matriz"
 
-#: ../src/wxMaximaFrame.cpp:481
+#: ../src/wxMaximaFrame.cpp:488
 msgid "Compute the greatest common divisor"
 msgstr "Calcular o máximo divisor comum"
 
-#: ../src/wxMaximaFrame.cpp:418
+#: ../src/wxMaximaFrame.cpp:425
 msgid "Compute the inverse of a matrix"
 msgstr "Calcular a inversa de uma matriz"
 
-#: ../src/wxMaximaFrame.cpp:484
+#: ../src/wxMaximaFrame.cpp:491
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "Calcular o mínimo múltiplo comum (faça load(functs) antes de usar)"
 
-#: ../src/wxMaxima.cpp:3306
+#: ../src/wxMaxima.cpp:3426
 msgid "Condition:"
 msgstr "Condição:"
 
-#: ../src/Config.cpp:1020 ../src/Config.cpp:1028
+#: ../src/Config.cpp:1009 ../src/Config.cpp:1017
 msgid "Config file (*.ini)|*.ini"
 msgstr "Arquivo de configuração (*.ini)|*.ini"
 
-#: ../src/Config.cpp:890
+#: ../src/Config.cpp:879
 msgid "Configuration warning"
 msgstr "Aviso da configuração"
 
-#: ../src/wxMaximaFrame.cpp:298 ../src/wxMaximaFrame.cpp:683
-#: ../src/wxMaximaFrame.cpp:745
+#: ../src/wxMaximaFrame.cpp:270 ../src/wxMaximaFrame.cpp:690
+#: ../src/wxMaximaFrame.cpp:752
 msgid "Configure wxMaxima"
 msgstr "Configurar o wxMaxima"
 
-#: ../src/LimitWiz.cpp:135 ../src/SeriesWiz.cpp:109
 #: ../src/IntegrateWiz.cpp:219 ../src/IntegrateWiz.cpp:238
+#: ../src/LimitWiz.cpp:135 ../src/SeriesWiz.cpp:109
 msgid "Constant"
 msgstr "Constante"
 
-#: ../src/wxMaximaFrame.cpp:515
+#: ../src/wxMaximaFrame.cpp:522
 msgid "Contract Logarithms"
 msgstr "Contrair logaritmos"
 
-#: ../src/wxMaximaFrame.cpp:571
+#: ../src/wxMaximaFrame.cpp:578
 msgid "Conver trigonometric functions to exponential form"
 msgstr "Converter funções trigonométricas para a forma exponencial"
 
-#: ../src/wxMaximaFrame.cpp:522
+#: ../src/wxMaximaFrame.cpp:529
 msgid "Convert binomials, beta and gamma function to factorials"
 msgstr "Converter binômios e as funções beta e gama para fatoriais"
 
-#: ../src/wxMaximaFrame.cpp:525
+#: ../src/wxMaximaFrame.cpp:532
 msgid "Convert binomials, factorials and beta function to gamma function"
 msgstr "Converter binômios, fatoriais e a função beta para a função gama"
 
-#: ../src/wxMaximaFrame.cpp:559
+#: ../src/wxMaximaFrame.cpp:566
 msgid "Convert complex expression to polar form"
 msgstr "Converter expressões complexas para a forma polar"
 
-#: ../src/wxMaximaFrame.cpp:556
+#: ../src/wxMaximaFrame.cpp:563
 msgid "Convert complex expression to rect form"
 msgstr "Converter expressões complexas para a forma retangular"
 
-#: ../src/wxMaximaFrame.cpp:568
+#: ../src/wxMaximaFrame.cpp:575
 msgid ""
 "Convert exponential function of imaginary argument to trigonometric form"
 msgstr ""
 "Converter função exponencial de argumento imaginário para a forma "
 "trigonométrica"
 
-#: ../src/wxMaximaFrame.cpp:513
+#: ../src/wxMaximaFrame.cpp:520
 msgid "Convert logarithm of product to sum of logarithms"
 msgstr "Converter logaritmo de um produto para soma de logaritmos"
 
-#: ../src/wxMaximaFrame.cpp:516
+#: ../src/wxMaximaFrame.cpp:523
 msgid "Convert sum of logarithms to logarithm of product"
 msgstr "Converter soma de logaritmos para logaritmos de um produto"
 
-#: ../src/wxMaximaFrame.cpp:521
+#: ../src/wxMaximaFrame.cpp:528
 msgid "Convert to &Factorials"
 msgstr "Converter para &fatoriais"
 
-#: ../src/wxMaximaFrame.cpp:524
+#: ../src/wxMaximaFrame.cpp:531
 msgid "Convert to &Gamma"
 msgstr "Converter para &gama"
 
-#: ../src/wxMaximaFrame.cpp:558
+#: ../src/wxMaximaFrame.cpp:565
 msgid "Convert to &Polarform"
 msgstr "Converter para forma &polar"
 
-#: ../src/wxMaximaFrame.cpp:555
+#: ../src/wxMaximaFrame.cpp:562
 msgid "Convert to &Rectform"
 msgstr "Converter para forma &retangular"
 
-#: ../src/wxMaximaFrame.cpp:548
+#: ../src/wxMaximaFrame.cpp:555
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr "Converter expressão trigonométrica para forma canônica quasilinear"
 
-#: ../src/wxMaximaFrame.cpp:688 ../src/wxMaximaFrame.cpp:751
-#: ../src/MathCtrl.cpp:655 ../src/MathCtrl.cpp:665 ../src/MathCtrl.cpp:683
-#: ../src/MathCtrl.cpp:723
+#: ../src/MathCtrl.cpp:658 ../src/MathCtrl.cpp:669 ../src/MathCtrl.cpp:685
+#: ../src/MathCtrl.cpp:723 ../src/wxMaximaFrame.cpp:695
+#: ../src/wxMaximaFrame.cpp:758
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../src/MathCtrl.cpp:668 ../src/MathCtrl.cpp:686
+#: ../src/MathCtrl.cpp:671 ../src/MathCtrl.cpp:687
 msgid "Copy As Image"
 msgstr "Copiar como imagem"
 
-#: ../src/MathCtrl.cpp:666 ../src/MathCtrl.cpp:684
+#: ../src/MathCtrl.cpp:670 ../src/MathCtrl.cpp:686
 msgid "Copy LaTeX"
 msgstr "Copiar LaTeX"
+
+#: ../src/wxMaximaFrame.cpp:282
+msgid "Copy Previous Input\tCtrl-I"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:232
 msgid "Copy as Image"
@@ -740,8 +768,8 @@ msgstr "Copiar como LaTeX"
 msgid "Copy as Text\tCtrl-Shift-C"
 msgstr "&Copiar como texto\tCtrl-Shift-C"
 
-#: ../src/wxMaximaFrame.cpp:224 ../src/wxMaximaFrame.cpp:690
-#: ../src/wxMaximaFrame.cpp:754
+#: ../src/wxMaximaFrame.cpp:224 ../src/wxMaximaFrame.cpp:697
+#: ../src/wxMaximaFrame.cpp:761
 msgid "Copy selection"
 msgstr "Copiar seleção"
 
@@ -757,22 +785,16 @@ msgstr "Copiar seleção do documento como texto"
 msgid "Copy selection from document in LaTeX format"
 msgstr "Copiar seleção do documento no formato LaTeX"
 
-#: ../src/Config.cpp:179
-msgid "Copy selection to clipboard when selection is made in document."
+#: ../src/wxMaximaFrame.cpp:283
+msgid "Create a new cell with previous input"
 msgstr ""
-"Copiar seleção para a área de transferência quando algo é selecionado no "
-"documento."
-
-#: ../src/Config.cpp:102
-msgid "Copy to clipboard on select"
-msgstr "Copiar para a área de transferência ao selecionar"
 
 #: ../src/Config.cpp:132
 msgid "Cursor"
 msgstr "Cursor"
 
-#: ../src/wxMaximaFrame.cpp:685 ../src/wxMaximaFrame.cpp:747
-#: ../src/MathCtrl.cpp:722
+#: ../src/MathCtrl.cpp:722 ../src/wxMaximaFrame.cpp:692
+#: ../src/wxMaximaFrame.cpp:754
 msgid "Cut"
 msgstr "Recortar"
 
@@ -780,28 +802,32 @@ msgstr "Recortar"
 msgid "Cut\tCtrl-X"
 msgstr "Cortar\tCtrl-X"
 
-#: ../src/wxMaximaFrame.cpp:221 ../src/wxMaximaFrame.cpp:687
-#: ../src/wxMaximaFrame.cpp:750
+#: ../src/wxMaximaFrame.cpp:221 ../src/wxMaximaFrame.cpp:694
+#: ../src/wxMaximaFrame.cpp:757
 msgid "Cut selection"
 msgstr "Cortar seleção"
 
-#: ../src/Config.cpp:80
+#: ../src/Config.cpp:81
+msgid "Czech"
+msgstr ""
+
+#: ../src/Config.cpp:82
 msgid "Danish"
 msgstr "Dinamarquês"
 
-#: ../src/wxMaxima.cpp:3256 ../src/wxMaxima.cpp:3306
+#: ../src/wxMaxima.cpp:3376 ../src/wxMaxima.cpp:3426
 msgid "Data Matrix:"
 msgstr "Matriz de dados:"
 
-#: ../src/wxMaxima.cpp:3276
+#: ../src/wxMaxima.cpp:3396
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "Arquivo de dados (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
-#: ../src/wxMaxima.cpp:3145 ../src/wxMaxima.cpp:3159
+#: ../src/wxMaxima.cpp:3265 ../src/wxMaxima.cpp:3279
 msgid "Data:"
 msgstr "Dados:"
 
-#: ../src/wxMaximaFrame.cpp:491
+#: ../src/wxMaximaFrame.cpp:498
 msgid "Decompose rational function to partial fractions"
 msgstr "Decompor função racional em frações parciais"
 
@@ -813,47 +839,47 @@ msgstr "Padrão"
 msgid "Default font:"
 msgstr "Fonte padrão:"
 
-#: ../src/Config.cpp:93
+#: ../src/Config.cpp:95
 msgid "Default port:"
 msgstr "Porta padrão:"
 
-#: ../src/wxMaxima.cpp:2106 ../src/wxMaxima.cpp:2115
+#: ../src/wxMaxima.cpp:2188 ../src/wxMaxima.cpp:2197
 msgid "Delete"
 msgstr "Apagar"
 
-#: ../src/wxMaximaFrame.cpp:344
+#: ../src/wxMaximaFrame.cpp:348
 msgid "Delete F&unction..."
 msgstr "Apagar f&unção..."
 
-#: ../src/MathCtrl.cpp:672 ../src/MathCtrl.cpp:690
+#: ../src/MathCtrl.cpp:674 ../src/MathCtrl.cpp:690
 msgid "Delete Selection"
 msgstr "Apagar seleção"
 
-#: ../src/wxMaximaFrame.cpp:346
+#: ../src/wxMaximaFrame.cpp:350
 msgid "Delete V&ariable..."
 msgstr "&Apagar variável..."
 
-#: ../src/wxMaximaFrame.cpp:345
+#: ../src/wxMaximaFrame.cpp:349
 msgid "Delete a function"
 msgstr "Apagar uma função"
 
-#: ../src/wxMaximaFrame.cpp:347
+#: ../src/wxMaximaFrame.cpp:351
 msgid "Delete a variable"
 msgstr "Apagar uma variável"
 
-#: ../src/wxMaximaFrame.cpp:332
+#: ../src/wxMaximaFrame.cpp:336
 msgid "Delete all values from memory"
 msgstr "Apagar todos os valores da memória"
 
-#: ../src/wxMaxima.cpp:2115
+#: ../src/wxMaxima.cpp:2197
 msgid "Delete function(s):"
 msgstr "Apagar função(ões):"
 
-#: ../src/wxMaxima.cpp:2106
+#: ../src/wxMaxima.cpp:2188
 msgid "Delete variable(s):"
 msgstr "Apagar variável(is):"
 
-#: ../src/wxMaxima.cpp:2693
+#: ../src/wxMaxima.cpp:2796
 msgid "Denom. deg:"
 msgstr "Grau denom.:"
 
@@ -861,27 +887,27 @@ msgstr "Grau denom.:"
 msgid "Depth:"
 msgstr "Grau máximo:"
 
-#: ../src/wxMaxima.cpp:2244
+#: ../src/wxMaxima.cpp:2326
 msgid "Derivative:"
 msgstr "Derivada:"
 
-#: ../src/wxMaximaFrame.cpp:972
+#: ../src/wxMaximaFrame.cpp:979
 msgid "Deviation"
 msgstr "Desvio"
 
-#: ../src/wxMaximaFrame.cpp:487
+#: ../src/wxMaximaFrame.cpp:494
 msgid "Di&vide Polynomials..."
 msgstr "Di&vidir polinômios..."
 
-#: ../src/wxMaximaFrame.cpp:937
+#: ../src/wxMaximaFrame.cpp:944
 msgid "Diff..."
 msgstr "Derivar..."
 
-#: ../src/wxMaxima.cpp:2836 ../src/wxMaxima.cpp:3466
+#: ../src/wxMaxima.cpp:2939 ../src/wxMaxima.cpp:3586
 msgid "Differentiate"
 msgstr "Diferenciar"
 
-#: ../src/wxMaximaFrame.cpp:457
+#: ../src/wxMaximaFrame.cpp:464
 msgid "Differentiate expression"
 msgstr "Diferenciar expressão"
 
@@ -893,27 +919,27 @@ msgstr "Diferenciar..."
 msgid "Direction:"
 msgstr "Direção:"
 
-#: ../src/Plot2dWiz.cpp:403 ../src/Plot2dWiz.cpp:623
+#: ../src/Plot2dWiz.cpp:448 ../src/Plot2dWiz.cpp:668
 msgid "Discrete plot"
 msgstr "Gráfico discreto"
 
-#: ../src/wxMaximaFrame.cpp:356
+#: ../src/wxMaximaFrame.cpp:360
 msgid "Display Te&X Form"
 msgstr "Mostar forma Te&X"
 
-#: ../src/wxMaxima.cpp:2055
+#: ../src/wxMaxima.cpp:2137
 msgid "Display algorithm"
 msgstr "Algoritmo de exibição"
 
-#: ../src/wxMaximaFrame.cpp:357
+#: ../src/wxMaximaFrame.cpp:361
 msgid "Display last result in TeX form"
 msgstr "Exibir último resultado na forma Te&X"
 
-#: ../src/wxMaximaFrame.cpp:351
+#: ../src/wxMaximaFrame.cpp:355
 msgid "Display time used for evaluation"
 msgstr "Exibir tempo usado para execução"
 
-#: ../src/wxMaxima.cpp:2743
+#: ../src/wxMaxima.cpp:2846
 msgid "Divide"
 msgstr "Dividir"
 
@@ -921,11 +947,11 @@ msgstr "Dividir"
 msgid "Divide Cell"
 msgstr "Dividir célula"
 
-#: ../src/wxMaximaFrame.cpp:488
+#: ../src/wxMaximaFrame.cpp:495
 msgid "Divide numbers or polynomials"
 msgstr "Dividir números ou polinômios"
 
-#: ../src/wxMaxima.cpp:927 ../src/wxMaxima.cpp:935
+#: ../src/wxMaxima.cpp:1009 ../src/wxMaxima.cpp:1017
 msgid "Document "
 msgstr "Documento "
 
@@ -933,7 +959,7 @@ msgstr "Documento "
 msgid "Document background"
 msgstr "Fundo do documento"
 
-#: ../src/wxMaxima.cpp:1687 ../src/wxMaxima.cpp:3563
+#: ../src/wxMaxima.cpp:1769 ../src/wxMaxima.cpp:3692
 msgid ""
 "Document not saved!\n"
 "\n"
@@ -943,7 +969,7 @@ msgstr ""
 "\n"
 "Fechar o documento atual e perder todas as modificações?"
 
-#: ../src/wxMaxima.cpp:3344
+#: ../src/wxMaxima.cpp:3464
 msgid ""
 "Document not saved!\n"
 "\n"
@@ -953,7 +979,7 @@ msgstr ""
 "\n"
 "Sair do wxMaxima e perder todas as modificações?"
 
-#: ../src/wxMaximaFrame.cpp:408
+#: ../src/wxMaximaFrame.cpp:412
 msgid "E&quations"
 msgstr "E&quações"
 
@@ -961,35 +987,35 @@ msgstr "E&quações"
 msgid "E&xit\tCtrl-Q"
 msgstr "Sai&r\tCtrl-Q"
 
-#: ../src/wxMaximaFrame.cpp:428
+#: ../src/wxMaximaFrame.cpp:435
 msgid "Eige&nvectors"
 msgstr "Autov&etores"
 
-#: ../src/wxMaximaFrame.cpp:426
+#: ../src/wxMaximaFrame.cpp:433
 msgid "Eigen&values"
 msgstr "Auto&valores"
 
-#: ../src/wxMaxima.cpp:2275
+#: ../src/wxMaxima.cpp:2357
 msgid "Eliminate"
 msgstr "Eliminar"
 
-#: ../src/wxMaximaFrame.cpp:384
+#: ../src/wxMaximaFrame.cpp:388
 msgid "Eliminate a variable from a system of equations"
 msgstr "Eliminar uma variável de um sistema de equações"
 
-#: ../src/Config.cpp:81
+#: ../src/Config.cpp:83
 msgid "English"
 msgstr "Inglês"
 
-#: ../src/wxMaximaFrame.cpp:993
+#: ../src/wxMaximaFrame.cpp:1000
 msgid "Enter Matrix..."
 msgstr "&Introduzir matriz..."
 
-#: ../src/wxMaximaFrame.cpp:416
+#: ../src/wxMaximaFrame.cpp:423
 msgid "Enter a matrix"
 msgstr "Introduza uma matriz"
 
-#: ../src/wxMaxima.cpp:2644
+#: ../src/wxMaxima.cpp:2747
 msgid "Enter an equation for rational simplification:"
 msgstr "Informe uma equação para simplificação racional:"
 
@@ -1001,15 +1027,15 @@ msgstr "Informa uma lista de variáveis separadas por vírgulas."
 msgid "Enter evaluates cells"
 msgstr "Enter calcula células"
 
-#: ../src/wxMaxima.cpp:2437
+#: ../src/wxMaxima.cpp:2519
 msgid "Enter matrix"
 msgstr "Informe uma matriz"
 
-#: ../src/wxMaxima.cpp:2978
+#: ../src/wxMaxima.cpp:3081
 msgid "Enter new plot format:"
 msgstr "Informe novo formato para gráficos:"
 
-#: ../src/wxMaxima.cpp:3011
+#: ../src/wxMaxima.cpp:3114
 msgid "Enter new precision:"
 msgstr "Informe a nova precisão:"
 
@@ -1017,7 +1043,7 @@ msgstr "Informe a nova precisão:"
 msgid "Enter the path to the Maxima executable."
 msgstr "Informe o caminho para o executável Maxima."
 
-#: ../src/wxMaxima.cpp:2890
+#: ../src/wxMaxima.cpp:2993
 msgid "Epsilon:"
 msgstr "Epsilon:"
 
@@ -1026,66 +1052,66 @@ msgstr "Epsilon:"
 msgid "Equation %d:"
 msgstr "Equação %d:"
 
-#: ../src/wxMaxima.cpp:2163 ../src/wxMaxima.cpp:2177 ../src/wxMaxima.cpp:2336
-#: ../src/wxMaxima.cpp:3419
+#: ../src/wxMaxima.cpp:2245 ../src/wxMaxima.cpp:2259 ../src/wxMaxima.cpp:2418
+#: ../src/wxMaxima.cpp:3539
 msgid "Equation(s):"
 msgstr "Equação(ões):"
 
-#: ../src/wxMaxima.cpp:2193 ../src/wxMaxima.cpp:2212 ../src/wxMaxima.cpp:2675
-#: ../src/wxMaxima.cpp:3257 ../src/wxMaxima.cpp:3433
+#: ../src/wxMaxima.cpp:2275 ../src/wxMaxima.cpp:2294 ../src/wxMaxima.cpp:2778
+#: ../src/wxMaxima.cpp:3377 ../src/wxMaxima.cpp:3553
 msgid "Equation:"
 msgstr "Equação:"
 
-#: ../src/wxMaxima.cpp:2273
+#: ../src/wxMaxima.cpp:2355
 msgid "Equations:"
 msgstr "Equações:"
 
-#: ../src/ImgCell.cpp:97 ../src/wxMaxima.cpp:311 ../src/wxMaxima.cpp:829
-#: ../src/wxMaxima.cpp:840 ../src/wxMaxima.cpp:899 ../src/wxMaxima.cpp:911
-#: ../src/wxMaxima.cpp:929 ../src/wxMaxima.cpp:1347 ../src/wxMaxima.cpp:1443
-#: ../src/wxMaxima.cpp:3625 ../src/Config.cpp:445
+#: ../src/Config.cpp:434 ../src/ImgCell.cpp:101 ../src/wxMaxima.cpp:330
+#: ../src/wxMaxima.cpp:911 ../src/wxMaxima.cpp:922 ../src/wxMaxima.cpp:981
+#: ../src/wxMaxima.cpp:993 ../src/wxMaxima.cpp:1011 ../src/wxMaxima.cpp:1429
+#: ../src/wxMaxima.cpp:1525 ../src/wxMaxima.cpp:3754
 msgid "Error"
 msgstr "Erro"
 
-#: ../src/SlideShowCell.cpp:70 ../src/SlideShowCell.cpp:113
+#: ../src/SlideShowCell.cpp:72 ../src/SlideShowCell.cpp:115
 #, c-format
 msgid "Error %d"
 msgstr "Erro %d"
 
-#: ../src/wxMaxima.cpp:1786 ../src/wxMaxima.cpp:1791 ../src/wxMaxima.cpp:2296
-#: ../src/wxMaxima.cpp:2320 ../src/wxMaxima.cpp:2431
+#: ../src/wxMaxima.cpp:1868 ../src/wxMaxima.cpp:1873 ../src/wxMaxima.cpp:2378
+#: ../src/wxMaxima.cpp:2402 ../src/wxMaxima.cpp:2513
 msgid "Error!"
 msgstr "Erro!"
 
-#: ../src/wxMaximaFrame.cpp:580
+#: ../src/wxMaximaFrame.cpp:587
 msgid "Evaluate &Noun Forms"
 msgstr "Avaliar formas substa&ntivas"
 
-#: ../src/wxMaximaFrame.cpp:254
+#: ../src/wxMaximaFrame.cpp:277
 msgid "Evaluate All Cells\tCtrl-R"
 msgstr "Avaliar todas as células\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:252 ../src/MathCtrl.cpp:675
+#: ../src/MathCtrl.cpp:677 ../src/wxMaximaFrame.cpp:275
 msgid "Evaluate Cell(s)"
 msgstr "Avaliar célula(s)"
 
-#: ../src/wxMaximaFrame.cpp:253
+#: ../src/wxMaximaFrame.cpp:276
 msgid "Evaluate active or selected cell(s)"
 msgstr "Avaliar célula ativa ou selecionada"
 
-#: ../src/wxMaximaFrame.cpp:255
+#: ../src/wxMaximaFrame.cpp:278
 msgid "Evaluate all cells in the document"
 msgstr "Avaliar todas as células no documento"
 
-#: ../src/wxMaximaFrame.cpp:581
+#: ../src/wxMaximaFrame.cpp:588
 msgid "Evaluate all noun forms in expression"
 msgstr "Avaliar todas as formas substa&ntivas na expressão"
 
-#: ../src/wxMaxima.cpp:3098
+#: ../src/wxMaxima.cpp:3212
 msgid "Example"
 msgstr "Exemplo"
 
-#: ../src/Config.cpp:975 ../src/Config.cpp:1066
+#: ../src/Config.cpp:964 ../src/Config.cpp:1055
 msgid "Example text"
 msgstr "Texto de exemplo"
 
@@ -1093,11 +1119,11 @@ msgstr "Texto de exemplo"
 msgid "Exit wxMaxima"
 msgstr "Sair do wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:928
+#: ../src/wxMaximaFrame.cpp:935
 msgid "Expand"
 msgstr "Expandir"
 
-#: ../src/wxMaximaFrame.cpp:933
+#: ../src/wxMaximaFrame.cpp:940
 msgid "Expand (tr)"
 msgstr "Expandir (tr)"
 
@@ -1105,31 +1131,32 @@ msgstr "Expandir (tr)"
 msgid "Expand Expression"
 msgstr "Expandir expressão"
 
-#: ../src/wxMaximaFrame.cpp:512
+#: ../src/wxMaximaFrame.cpp:519
 msgid "Expand Logarithms"
 msgstr "Expandir logaritmos"
 
-#: ../src/wxMaximaFrame.cpp:511
+#: ../src/wxMaximaFrame.cpp:518
 msgid "Expand an expression"
 msgstr "Expandir uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:552
 msgid "Expand trigonometric expression"
 msgstr "Expandir expressão trigonométrica"
 
-#: ../src/wxMaxima.cpp:1772
+#: ../src/wxMaxima.cpp:1854
 msgid "Export"
 msgstr "Exportar"
 
 #: ../src/wxMaximaFrame.cpp:202
-msgid "Export document to a HTML or LaTeX file"
+#, fuzzy
+msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Exportar documento para o formato HTML ou LaTeX"
 
-#: ../src/wxMaxima.cpp:1791
+#: ../src/wxMaxima.cpp:1873
 msgid "Exporting to HTML failed!"
 msgstr "Exportação para HTML falhou!"
 
-#: ../src/wxMaxima.cpp:1786
+#: ../src/wxMaxima.cpp:1868
 msgid "Exporting to TeX failed!"
 msgstr "Exportação para TeX falhou!"
 
@@ -1141,20 +1168,19 @@ msgstr "Expressão"
 msgid "Expression(s):"
 msgstr "Expressão(ões):"
 
-#: ../src/SumWiz.cpp:30 ../src/LimitWiz.cpp:26 ../src/SeriesWiz.cpp:32
-#: ../src/wxMaxima.cpp:2351 ../src/wxMaxima.cpp:2500 ../src/wxMaxima.cpp:2756
-#: ../src/wxMaxima.cpp:2771 ../src/wxMaxima.cpp:2800 ../src/wxMaxima.cpp:2817
-#: ../src/wxMaxima.cpp:2834 ../src/wxMaxima.cpp:2887 ../src/wxMaxima.cpp:2922
-#: ../src/wxMaxima.cpp:3464 ../src/SubstituteWiz.cpp:27
-#: ../src/IntegrateWiz.cpp:36
+#: ../src/IntegrateWiz.cpp:36 ../src/LimitWiz.cpp:26 ../src/SeriesWiz.cpp:32
+#: ../src/SubstituteWiz.cpp:27 ../src/SumWiz.cpp:30 ../src/wxMaxima.cpp:2433
+#: ../src/wxMaxima.cpp:2603 ../src/wxMaxima.cpp:2859 ../src/wxMaxima.cpp:2874
+#: ../src/wxMaxima.cpp:2903 ../src/wxMaxima.cpp:2920 ../src/wxMaxima.cpp:2937
+#: ../src/wxMaxima.cpp:2990 ../src/wxMaxima.cpp:3025 ../src/wxMaxima.cpp:3584
 msgid "Expression:"
 msgstr "Expressão:"
 
-#: ../src/wxMaximaFrame.cpp:927
+#: ../src/wxMaximaFrame.cpp:934
 msgid "Factor"
 msgstr "Fatorar"
 
-#: ../src/wxMaximaFrame.cpp:507
+#: ../src/wxMaximaFrame.cpp:514
 msgid "Factor Complex"
 msgstr "Fatorar complexo"
 
@@ -1162,35 +1188,35 @@ msgstr "Fatorar complexo"
 msgid "Factor Expression"
 msgstr "Fatorar expressão"
 
-#: ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:513
 msgid "Factor an expression"
 msgstr "Fatorar uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:508
+#: ../src/wxMaximaFrame.cpp:515
 msgid "Factor an expression in Gaussian numbers"
 msgstr "Fatorar uma expressão em números gaussianos"
 
-#: ../src/wxMaximaFrame.cpp:533
+#: ../src/wxMaximaFrame.cpp:540
 msgid "Factorials and &Gamma"
 msgstr "Fatoriais e &gama"
 
-#: ../src/wxMaxima.cpp:185
+#: ../src/wxMaxima.cpp:190
 msgid "Fatal error"
 msgstr "Erro fatal"
 
-#: ../src/GroupCell.cpp:1208
+#: ../src/GroupCell.cpp:1223
 msgid "Figure"
 msgstr "Figura"
 
-#: ../src/main.cpp:101
+#: ../src/main.cpp:107
 msgid "File"
 msgstr "Arquivo"
 
-#: ../src/wxMaxima.cpp:3574
+#: ../src/wxMaxima.cpp:3703
 msgid "File not found"
 msgstr "Arquivo não encontrado"
 
-#: ../src/wxMaxima.cpp:3574
+#: ../src/wxMaxima.cpp:3703
 msgid "File you tried to open does not exist."
 msgstr "O arquivo que você tentou abrir não existe."
 
@@ -1198,7 +1224,7 @@ msgstr "O arquivo que você tentou abrir não existe."
 msgid "File:"
 msgstr "Arquivo:"
 
-#: ../src/wxMaximaFrame.cpp:695 ../src/wxMaximaFrame.cpp:760
+#: ../src/wxMaximaFrame.cpp:702
 msgid "Find"
 msgstr "Localizar"
 
@@ -1206,11 +1232,11 @@ msgstr "Localizar"
 msgid "Find\tCtrl-F"
 msgstr "Localizar\tCtrl-F"
 
-#: ../src/wxMaximaFrame.cpp:458
+#: ../src/wxMaximaFrame.cpp:465
 msgid "Find &Limit..."
 msgstr "Encontrar &limite..."
 
-#: ../src/wxMaximaFrame.cpp:461
+#: ../src/wxMaximaFrame.cpp:468
 msgid "Find Minimum..."
 msgstr "Encontrar mínimo..."
 
@@ -1218,86 +1244,96 @@ msgstr "Encontrar mínimo..."
 msgid "Find Root..."
 msgstr "Encontrar raiz..."
 
-#: ../src/wxMaximaFrame.cpp:462
+#: ../src/wxMaximaFrame.cpp:469
 msgid "Find a (unconstrained) minimum of an expression"
 msgstr "Encontrar um mínimo (sem restrição) de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:459
+#: ../src/wxMaximaFrame.cpp:466
 msgid "Find a limit of an expression"
 msgstr "Encontrar o limite de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:367
+#: ../src/wxMaximaFrame.cpp:371
 msgid "Find a root of an equation on an interval"
 msgstr "Encontrar uma raíz de uma equação num intervalo"
 
-#: ../src/wxMaximaFrame.cpp:369
+#: ../src/wxMaximaFrame.cpp:373
 msgid "Find all roots of a polynomial"
 msgstr "Encontrar todas as raízes de um polinômio"
 
-#: ../src/wxMaximaFrame.cpp:372
+#: ../src/wxMaximaFrame.cpp:376
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Encontrar todas as raízes de um polinômio (bfloat)"
 
-#: ../src/wxMaximaFrame.cpp:241 ../src/wxMaximaFrame.cpp:697
-#: ../src/wxMaximaFrame.cpp:763
+#: ../src/wxMaxima.cpp:2066
+#, fuzzy
+msgid "Find and Replace"
+msgstr "Localizar e substituir"
+
+#: ../src/wxMaximaFrame.cpp:241 ../src/wxMaximaFrame.cpp:704
+#: ../src/wxMaximaFrame.cpp:770
 msgid "Find and replace"
 msgstr "Localizar e substituir"
 
-#: ../src/wxMaximaFrame.cpp:427
+#: ../src/wxMaximaFrame.cpp:434
 msgid "Find eigenvalues of a matrix"
 msgstr "Encontrar os autovalores de uma matriz"
 
-#: ../src/wxMaximaFrame.cpp:429
+#: ../src/wxMaximaFrame.cpp:436
 msgid "Find eigenvectors of a matrix"
 msgstr "Encontrar os autovetores de uma matriz"
 
-#: ../src/wxMaxima.cpp:2892
+#: ../src/wxMaxima.cpp:2995
 msgid "Find minimum"
 msgstr "Encontrar mínimo"
 
-#: ../src/wxMaximaFrame.cpp:375
+#: ../src/wxMaximaFrame.cpp:379
 msgid "Find real roots of a polynomial"
 msgstr "Encontrar as raízes reais de um polinômio"
 
-#: ../src/wxMaxima.cpp:2196 ../src/wxMaxima.cpp:3436
+#: ../src/wxMaxima.cpp:2278 ../src/wxMaxima.cpp:3556
 msgid "Find root"
 msgstr "Encontrar raiz"
 
-#: ../src/Config.cpp:99
+#: ../src/wxMaximaFrame.cpp:767
+#, fuzzy
+msgid "Find..."
+msgstr "Encontrar raiz..."
+
+#: ../src/Config.cpp:101
 msgid "Fixed font in text controls"
 msgstr "Fonte monoespaçada nos controles de texto"
 
-#: ../src/Config.cpp:177
+#: ../src/Config.cpp:175
 msgid "Font used for display in document."
 msgstr "Fonte usada para exibir o documento."
 
-#: ../src/Config.cpp:178
+#: ../src/Config.cpp:176
 msgid "Font used for displaying math characters in document."
 msgstr "Fonte usada para exibir caracteres matemáticos no documento."
 
-#: ../src/Config.cpp:68
+#: ../src/Config.cpp:69
 msgid "Fonts"
 msgstr "Fontes"
 
-#: ../src/Plot3dWiz.cpp:69 ../src/Plot2dWiz.cpp:68
+#: ../src/Plot2dWiz.cpp:70 ../src/Plot3dWiz.cpp:69
 msgid "Format:"
 msgstr "Formato:"
 
-#: ../src/Config.cpp:82
+#: ../src/Config.cpp:84
 msgid "French"
 msgstr "Francês"
 
-#: ../src/SumWiz.cpp:36 ../src/wxMaxima.cpp:2501 ../src/wxMaxima.cpp:2922
-#: ../src/Plot3dWiz.cpp:46 ../src/Plot3dWiz.cpp:55 ../src/Plot2dWiz.cpp:49
-#: ../src/Plot2dWiz.cpp:58 ../src/Plot2dWiz.cpp:503 ../src/IntegrateWiz.cpp:43
+#: ../src/IntegrateWiz.cpp:43 ../src/Plot2dWiz.cpp:49 ../src/Plot2dWiz.cpp:59
+#: ../src/Plot2dWiz.cpp:548 ../src/Plot3dWiz.cpp:46 ../src/Plot3dWiz.cpp:55
+#: ../src/SumWiz.cpp:36 ../src/wxMaxima.cpp:2604 ../src/wxMaxima.cpp:3025
 msgid "From:"
 msgstr "De:"
 
-#: ../src/wxMaximaFrame.cpp:293
+#: ../src/wxMaximaFrame.cpp:265
 msgid "Full Screen\tAlt-Enter"
 msgstr "Tela cheia\tAlt-Enter"
 
-#: ../src/wxMaxima.cpp:2077
+#: ../src/wxMaxima.cpp:2159
 msgid "Function"
 msgstr "Função"
 
@@ -1305,12 +1341,12 @@ msgstr "Função"
 msgid "Function names"
 msgstr "Nomes de funções"
 
-#: ../src/wxMaxima.cpp:2336
+#: ../src/wxMaxima.cpp:2418
 msgid "Function(s):"
 msgstr "Função(ões):"
 
-#: ../src/wxMaxima.cpp:2212 ../src/wxMaxima.cpp:2403 ../src/wxMaxima.cpp:2485
-#: ../src/wxMaxima.cpp:2518
+#: ../src/wxMaxima.cpp:2294 ../src/wxMaxima.cpp:2485 ../src/wxMaxima.cpp:2588
+#: ../src/wxMaxima.cpp:2621
 msgid "Function:"
 msgstr "Função:"
 
@@ -1318,71 +1354,85 @@ msgstr "Função:"
 msgid "Functions and macros"
 msgstr "Funções e macros"
 
-#: ../src/wxMaximaFrame.cpp:575
+#: ../src/wxMaximaFrame.cpp:582
 msgid "Functions for complex simplification"
 msgstr "Funções para simplificação complexa"
 
-#: ../src/wxMaximaFrame.cpp:535
+#: ../src/wxMaximaFrame.cpp:542
 msgid "Functions for simplifying factorials and gamma function"
 msgstr "Funções para simplificar fatoriais e a função gama"
 
-#: ../src/wxMaximaFrame.cpp:552
+#: ../src/wxMaximaFrame.cpp:559
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Funções para simplificar expressões trigonométricas"
 
-#: ../src/wxMaxima.cpp:2728
+#: ../src/wxMaxima.cpp:2831
 msgid "GCD"
 msgstr "MDC"
+
+#: ../src/wxMaxima.cpp:3669
+msgid "GIF image (*.gif)|*.gif"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:134
 msgid "General Math"
 msgstr "Matemática Geral"
 
-#: ../src/wxMaximaFrame.cpp:308
+#: ../src/wxMaximaFrame.cpp:312
 msgid "General Math\tAlt-Shift-M"
 msgstr "Matemática Geral\tAlt-Shift-M"
 
-#: ../src/wxMaxima.cpp:2469
+#: ../src/wxMaxima.cpp:2551 ../src/wxMaxima.cpp:2570
 msgid "Generate Matrix"
 msgstr "Gerar matriz"
 
-#: ../src/wxMaximaFrame.cpp:413
+#: ../src/wxMaximaFrame.cpp:419
+#, fuzzy
+msgid "Generate Matrix from Expression..."
+msgstr "&Gerar matriz..."
+
+#: ../src/wxMaximaFrame.cpp:417
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Gerar uma matriz de uma array bidimensional"
 
-#: ../src/Config.cpp:83
+#: ../src/wxMaximaFrame.cpp:420
+#, fuzzy
+msgid "Generate a matrix from a lambda expression"
+msgstr "Gerar uma matriz de uma array bidimensional"
+
+#: ../src/Config.cpp:85
 msgid "German"
 msgstr "Alemão"
 
-#: ../src/wxMaximaFrame.cpp:564
+#: ../src/wxMaximaFrame.cpp:571
 msgid "Get &Imaginary Part"
 msgstr "Obter parte &imaginária"
 
-#: ../src/wxMaximaFrame.cpp:464
+#: ../src/wxMaximaFrame.cpp:471
 msgid "Get &Series..."
 msgstr "Obter &série..."
 
-#: ../src/wxMaximaFrame.cpp:475
+#: ../src/wxMaximaFrame.cpp:482
 msgid "Get Laplace transformation of an expression"
 msgstr "Obter transformada de Laplace de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:561
+#: ../src/wxMaximaFrame.cpp:568
 msgid "Get Real P&art"
 msgstr "Obter parte re&al"
 
-#: ../src/wxMaximaFrame.cpp:478
+#: ../src/wxMaximaFrame.cpp:485
 msgid "Get inverse Laplace transformation of an expression"
 msgstr "Obter transformada inversa de Laplace de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:465
+#: ../src/wxMaximaFrame.cpp:472
 msgid "Get the Taylor or power series of expression"
 msgstr "Obter série de Taylor ou de potências de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:565
+#: ../src/wxMaximaFrame.cpp:572
 msgid "Get the imaginary part of complex expression"
 msgstr "Obter a parte imaginária de uma expressão complexa"
 
-#: ../src/wxMaximaFrame.cpp:562
+#: ../src/wxMaximaFrame.cpp:569
 msgid "Get the real part of complex expression"
 msgstr "Obter a parte eral de uma expressão complexa"
 
@@ -1394,23 +1444,23 @@ msgstr "Constantes gregas"
 msgid "Grid:"
 msgstr "Grade:"
 
-#: ../src/wxMaxima.cpp:1774
+#: ../src/wxMaxima.cpp:1856
 msgid "HTML file (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 msgstr "Arquivo HTML (*.html)|*.html|Arquivo pdfLaTeX (*.tex)|*.tex|Todos|*"
 
-#: ../src/wxMaxima.cpp:2467
+#: ../src/wxMaxima.cpp:2549 ../src/wxMaxima.cpp:2568
 msgid "Height:"
 msgstr "Altura:"
 
-#: ../src/wxMaximaFrame.cpp:714 ../src/wxMaximaFrame.cpp:781
+#: ../src/wxMaximaFrame.cpp:721 ../src/wxMaximaFrame.cpp:788
 msgid "Help"
 msgstr "Ajuda"
 
-#: ../src/wxMaximaFrame.cpp:306
+#: ../src/wxMaximaFrame.cpp:310
 msgid "Hide All\tAlt-Shift--"
 msgstr "Esconder todos\tAlt-Shift--"
 
-#: ../src/wxMaximaFrame.cpp:306
+#: ../src/wxMaximaFrame.cpp:310
 msgid "Hide all panes"
 msgstr "Esconder todos os painéis"
 
@@ -1418,11 +1468,11 @@ msgstr "Esconder todos os painéis"
 msgid "Highlight (dpart)"
 msgstr "Destaque (dpart)"
 
-#: ../src/wxMaxima.cpp:3146
+#: ../src/wxMaxima.cpp:3266
 msgid "Histogram"
 msgstr "Histograma"
 
-#: ../src/wxMaximaFrame.cpp:984
+#: ../src/wxMaximaFrame.cpp:991
 msgid "Histogram..."
 msgstr "Histograma..."
 
@@ -1430,7 +1480,7 @@ msgstr "Histograma..."
 msgid "History"
 msgstr "Histórico"
 
-#: ../src/wxMaximaFrame.cpp:310
+#: ../src/wxMaximaFrame.cpp:314
 msgid "History\tAlt-Shift-H"
 msgstr "Histórico\tAlt-Shift-H"
 
@@ -1446,15 +1496,15 @@ msgstr ""
 "Shift enquanto move para selecionar células; pressione Backspace ou Delete "
 "duas vezes apaga a célula próxima ao cursor."
 
-#: ../src/Config.cpp:84
+#: ../src/Config.cpp:86
 msgid "Hungarian"
 msgstr "Húngaro"
 
-#: ../src/wxMaxima.cpp:2230
+#: ../src/wxMaxima.cpp:2312
 msgid "IC1"
 msgstr "CI1"
 
-#: ../src/wxMaxima.cpp:2246
+#: ../src/wxMaxima.cpp:2328
 msgid "IC2"
 msgstr "CI2"
 
@@ -1466,37 +1516,39 @@ msgstr ""
 "Se seu cálculo está demorando de mais para executar, você pode tentar os "
 "menus 'Maxima->Interromper' ou 'Maxima->Reiniciar o Maxima'."
 
-#: ../src/wxMaximaFrame.cpp:1024
+#: ../src/wxMaximaFrame.cpp:1031
 msgid "Image"
 msgstr "Imagem"
 
-#: ../src/wxMaxima.cpp:3730
+#: ../src/wxMaxima.cpp:3869
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Imagens (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
-#: ../src/wxMaxima.cpp:3307
+#: ../src/wxMaxima.cpp:3427
 msgid "Include columns:"
 msgstr "Incluir colunas:"
 
-#: ../src/wxMaximaFrame.cpp:634
+#: ../src/IntegrateWiz.cpp:216 ../src/IntegrateWiz.cpp:226
+#: ../src/IntegrateWiz.cpp:235 ../src/IntegrateWiz.cpp:245
+#: ../src/LimitWiz.cpp:132 ../src/LimitWiz.cpp:142
+msgid "Infinity"
+msgstr ""
+
+#: ../src/wxMaximaFrame.cpp:641
 msgid "Info about Maxima build"
 msgstr "Informações sobre a versão do maxima"
 
-#: ../src/wxMaxima.cpp:2889
+#: ../src/wxMaxima.cpp:2992
 msgid "Initial Estimates:"
 msgstr "Estimativas iniciais:"
 
-#: ../src/wxMaximaFrame.cpp:392
+#: ../src/wxMaximaFrame.cpp:396
 msgid "Initial Value Problem (&1)..."
 msgstr "Problema de valor inicial (&1)..."
 
-#: ../src/wxMaximaFrame.cpp:395
+#: ../src/wxMaximaFrame.cpp:399
 msgid "Initial Value Problem (&2)..."
 msgstr "Problema de valor inicial (&2)..."
-
-#: ../src/wxMaximaFrame.cpp:271
-msgid "Input"
-msgstr "Entrada"
 
 #: ../src/Config.cpp:120
 msgid "Input labels"
@@ -1506,47 +1558,72 @@ msgstr "Rótulos de entrada"
 msgid "Insert"
 msgstr "Inserir"
 
-#: ../src/wxMaximaFrame.cpp:312
+#: ../src/wxMaximaFrame.cpp:295
+#, fuzzy
+msgid "Insert &Section Cell\tF8"
+msgstr "Nova célula de &seleção\tF8"
+
+#: ../src/wxMaximaFrame.cpp:291
+#, fuzzy
+msgid "Insert &Text Cell\tF6"
+msgstr "Nova célula de &texto\tF6"
+
+#: ../src/wxMaximaFrame.cpp:316
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "Inserir Célula\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:3728
+#: ../src/wxMaxima.cpp:3867
 msgid "Insert Image"
 msgstr "Inserir imagem"
 
-#: ../src/wxMaximaFrame.cpp:274
+#: ../src/wxMaximaFrame.cpp:301
 msgid "Insert Image..."
 msgstr "Inserir imagem..."
 
-#: ../src/wxMaximaFrame.cpp:267
+#: ../src/wxMaximaFrame.cpp:289
+#, fuzzy
+msgid "Insert Input &Cell\tF5"
+msgstr "Nova &célula de entrada\tF5"
+
+#: ../src/wxMaximaFrame.cpp:299
 msgid "Insert Page Break\tF10"
 msgstr "Inserir quebra de página\tF10"
 
-#: ../src/wxMaximaFrame.cpp:258
+#: ../src/wxMaximaFrame.cpp:293
+#, fuzzy
+msgid "Insert S&ubsection Cell\tF7"
+msgstr "Nova célula de s&ubseção\tF7"
+
+#: ../src/wxMaximaFrame.cpp:297
+#, fuzzy
+msgid "Insert T&itle Cell\tF9"
+msgstr "Nova célula de tít&ulo\tF9"
+
+#: ../src/wxMaximaFrame.cpp:290
 msgid "Insert a new input cell"
 msgstr "Inserir nova célula de entrada"
 
-#: ../src/wxMaximaFrame.cpp:264
+#: ../src/wxMaximaFrame.cpp:296
 msgid "Insert a new section cell"
 msgstr "Inserir nova célula de seleção"
 
-#: ../src/wxMaximaFrame.cpp:262
+#: ../src/wxMaximaFrame.cpp:294
 msgid "Insert a new subsection cell"
 msgstr "Inserir nova célula de subseção"
 
-#: ../src/wxMaximaFrame.cpp:260
+#: ../src/wxMaximaFrame.cpp:292
 msgid "Insert a new text cell"
 msgstr "Inserir nova célula de texto"
 
-#: ../src/wxMaximaFrame.cpp:266
+#: ../src/wxMaximaFrame.cpp:298
 msgid "Insert a new title cell"
 msgstr "Inserir nova célula de título"
 
-#: ../src/wxMaximaFrame.cpp:268
+#: ../src/wxMaximaFrame.cpp:300
 msgid "Insert a page break"
 msgstr "Inserir uma quebra de página"
 
-#: ../src/wxMaximaFrame.cpp:275
+#: ../src/wxMaximaFrame.cpp:302
 msgid "Insert image"
 msgstr "Inserir imagem"
 
@@ -1554,45 +1631,45 @@ msgstr "Inserir imagem"
 msgid "Inspector"
 msgstr "Inspetor"
 
-#: ../src/wxMaximaFrame.cpp:311
+#: ../src/wxMaximaFrame.cpp:315
 msgid "Inspector\tAlt-Shift-I"
 msgstr "Inspetor\tAlt-Shift-I"
 
-#: ../src/wxMaxima.cpp:2674
+#: ../src/wxMaxima.cpp:2777
 msgid "Integral/Sum:"
 msgstr "Integral/soma:"
 
-#: ../src/wxMaxima.cpp:2787 ../src/wxMaxima.cpp:3451
-#: ../src/IntegrateWiz.cpp:72
+#: ../src/IntegrateWiz.cpp:72 ../src/wxMaxima.cpp:2890
+#: ../src/wxMaxima.cpp:3571
 msgid "Integrate"
 msgstr "Integrar"
 
-#: ../src/wxMaxima.cpp:2773
+#: ../src/wxMaxima.cpp:2876
 msgid "Integrate (risch)"
 msgstr "Integrar (risch)"
 
-#: ../src/wxMaximaFrame.cpp:449
+#: ../src/wxMaximaFrame.cpp:456
 msgid "Integrate expression"
 msgstr "Integrar expressão"
 
-#: ../src/wxMaximaFrame.cpp:451
+#: ../src/wxMaximaFrame.cpp:458
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integrar expressão com o algoritmo Risch"
 
-#: ../src/wxMaximaFrame.cpp:938 ../src/MathCtrl.cpp:705
+#: ../src/MathCtrl.cpp:705 ../src/wxMaximaFrame.cpp:945
 msgid "Integrate..."
 msgstr "Integrar..."
 
-#: ../src/wxMaximaFrame.cpp:699 ../src/wxMaximaFrame.cpp:765
+#: ../src/wxMaximaFrame.cpp:706 ../src/wxMaximaFrame.cpp:772
 msgid "Interrupt"
 msgstr "Interromper"
 
-#: ../src/wxMaximaFrame.cpp:323 ../src/wxMaximaFrame.cpp:327
-#: ../src/wxMaximaFrame.cpp:701 ../src/wxMaximaFrame.cpp:768
+#: ../src/wxMaximaFrame.cpp:327 ../src/wxMaximaFrame.cpp:331
+#: ../src/wxMaximaFrame.cpp:708 ../src/wxMaximaFrame.cpp:775
 msgid "Interrupt current computation"
 msgstr "Interromper cálculo atual"
 
-#: ../src/Config.cpp:444
+#: ../src/Config.cpp:433
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -1602,15 +1679,15 @@ msgstr ""
 "\n"
 "Por favor informe o caminho do programa Maxima novamente."
 
-#: ../src/wxMaxima.cpp:2819
+#: ../src/wxMaxima.cpp:2922
 msgid "Inverse Laplace"
 msgstr "Inversa de Laplace"
 
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:484
 msgid "Inverse Laplace T&ransform..."
 msgstr "T&ransformada inversa de Laplace..."
 
-#: ../src/Config.cpp:85
+#: ../src/Config.cpp:87
 msgid "Italian"
 msgstr "Italiano"
 
@@ -1618,7 +1695,7 @@ msgstr "Italiano"
 msgid "Italic"
 msgstr "Itálico"
 
-#: ../src/wxMaxima.cpp:2713
+#: ../src/wxMaxima.cpp:2816
 msgid "LCM"
 msgstr "MMC"
 
@@ -1630,43 +1707,44 @@ msgstr "Rótulos"
 msgid "Language used for wxMaxima GUI."
 msgstr "Idioma usada para a interface do wxMaxima."
 
-#: ../src/Config.cpp:75
+#: ../src/Config.cpp:76
 msgid "Language:"
 msgstr "Idioma:"
 
-#: ../src/wxMaxima.cpp:2802
+#: ../src/wxMaxima.cpp:2905
 msgid "Laplace"
 msgstr "Laplace"
 
-#: ../src/wxMaximaFrame.cpp:474
+#: ../src/wxMaximaFrame.cpp:481
 msgid "Laplace &Transform..."
 msgstr "&Transformada de Laplace..."
 
-#: ../src/wxMaximaFrame.cpp:483
+#: ../src/wxMaximaFrame.cpp:490
 msgid "Least Common Multiple..."
 msgstr "Mínimo múltiplo comum..."
 
-#: ../src/wxMaximaFrame.cpp:980
+#: ../src/wxMaxima.cpp:3379
+#, fuzzy
+msgid "Least Squares Fit"
+msgstr "Mínimos quadrados"
+
+#: ../src/wxMaximaFrame.cpp:987
 msgid "Least Squares Fit..."
 msgstr "Mínimos quadrados..."
 
-#: ../src/wxMaxima.cpp:3259
-msgid "Lest Squares Fit"
-msgstr "Mínimos quadrados"
-
-#: ../src/LimitWiz.cpp:66 ../src/wxMaxima.cpp:2874
+#: ../src/LimitWiz.cpp:66 ../src/wxMaxima.cpp:2977
 msgid "Limit"
 msgstr "Limite"
 
-#: ../src/wxMaximaFrame.cpp:939
+#: ../src/wxMaximaFrame.cpp:946
 msgid "Limit..."
 msgstr "Limite..."
 
-#: ../src/wxMaximaFrame.cpp:979
+#: ../src/wxMaximaFrame.cpp:986
 msgid "Linear Regression"
 msgstr "Regressão linear"
 
-#: ../src/wxMaxima.cpp:2485 ../src/wxMaxima.cpp:2518
+#: ../src/wxMaxima.cpp:2588 ../src/wxMaxima.cpp:2621
 msgid "List:"
 msgstr "Lista:"
 
@@ -1674,7 +1752,7 @@ msgstr "Lista:"
 msgid "Load"
 msgstr "Carregar"
 
-#: ../src/wxMaxima.cpp:1800
+#: ../src/wxMaxima.cpp:1882
 msgid "Load Package"
 msgstr "Carregar pacote"
 
@@ -1686,47 +1764,47 @@ msgstr "Carregar um arquivo do Maxima usando o comando batch"
 msgid "Load a Maxima package file"
 msgstr "Carregar um arquivo de pacote Maxima"
 
-#: ../src/Config.cpp:1026
+#: ../src/Config.cpp:1015
 msgid "Load style from file"
 msgstr "Ler estilo de um arquivo"
 
-#: ../src/wxMaxima.cpp:2194 ../src/wxMaxima.cpp:3434
+#: ../src/wxMaxima.cpp:2276 ../src/wxMaxima.cpp:3554
 msgid "Lower bound:"
 msgstr "Limite inferior:"
 
-#: ../src/wxMaximaFrame.cpp:442
+#: ../src/wxMaximaFrame.cpp:449
 msgid "Ma&p to Matrix..."
 msgstr "Ma&pear a uma matriz..."
 
-#: ../src/wxMaximaFrame.cpp:436
+#: ../src/wxMaximaFrame.cpp:443
 msgid "Make &List..."
 msgstr "Criar &lista..."
 
-#: ../src/wxMaxima.cpp:2503
+#: ../src/wxMaxima.cpp:2606
 msgid "Make list"
 msgstr "Criar lista"
 
-#: ../src/wxMaximaFrame.cpp:437
+#: ../src/wxMaximaFrame.cpp:444
 msgid "Make list from expression"
 msgstr "Criar lista de uma expressão"
 
-#: ../src/wxMaximaFrame.cpp:578
+#: ../src/wxMaximaFrame.cpp:585
 msgid "Make substitution in expression"
 msgstr "Fazer substituição numa expressão"
 
-#: ../src/wxMaxima.cpp:2487
+#: ../src/wxMaxima.cpp:2590
 msgid "Map"
 msgstr "Mapear"
 
-#: ../src/wxMaximaFrame.cpp:441
+#: ../src/wxMaximaFrame.cpp:448
 msgid "Map function to a list"
 msgstr "Mapear função a uma lista"
 
-#: ../src/wxMaximaFrame.cpp:443
+#: ../src/wxMaximaFrame.cpp:450
 msgid "Map function to a matrix"
 msgstr "Mapear função a uma matriz"
 
-#: ../src/Config.cpp:98
+#: ../src/Config.cpp:100
 msgid "Match parenthesis in text controls"
 msgstr "Parêntesis aos pares nos controles de texto"
 
@@ -1734,23 +1812,23 @@ msgstr "Parêntesis aos pares nos controles de texto"
 msgid "Math font:"
 msgstr "Fonte matemática:"
 
-#: ../src/wxMaxima.cpp:2419
+#: ../src/wxMaxima.cpp:2501
 msgid "Matrix"
 msgstr "Matriz"
 
-#: ../src/wxMaxima.cpp:2405
+#: ../src/wxMaxima.cpp:2487
 msgid "Matrix map"
 msgstr "Mapear a matriz"
 
-#: ../src/wxMaxima.cpp:3307
+#: ../src/wxMaxima.cpp:3427
 msgid "Matrix name:"
 msgstr "Nome da matriz:"
 
-#: ../src/wxMaxima.cpp:2403 ../src/wxMaxima.cpp:2452
+#: ../src/wxMaxima.cpp:2485 ../src/wxMaxima.cpp:2534
 msgid "Matrix:"
 msgstr "Matriz:"
 
-#: ../src/wxMaximaFrame.cpp:619
+#: ../src/wxMaximaFrame.cpp:626
 msgid "Maxima &Help\tF1"
 msgstr "&Ajuda do Maxima\tF1"
 
@@ -1758,27 +1836,27 @@ msgstr "&Ajuda do Maxima\tF1"
 msgid "Maxima input"
 msgstr "Entrada do Maxima"
 
-#: ../src/wxMaxima.cpp:375
+#: ../src/wxMaxima.cpp:402
 msgid "Maxima is calculating"
 msgstr "Maxima está calculando"
 
-#: ../src/Config.cpp:67
+#: ../src/Config.cpp:68
 msgid "Maxima options"
 msgstr "Opções do Maxima"
 
-#: ../src/wxMaxima.cpp:1813
+#: ../src/wxMaxima.cpp:1895
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Pacote Maxima (*.mac)|*.mac"
 
-#: ../src/wxMaxima.cpp:1802
+#: ../src/wxMaxima.cpp:1884
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Pacote Maxima (*.mac)|*.mac|Pacote Lisp (*.lisp)|*.lisp|Todos|*"
 
-#: ../src/wxMaxima.cpp:644
+#: ../src/wxMaxima.cpp:711
 msgid "Maxima process terminated."
 msgstr "Maxima terminado."
 
-#: ../src/Config.cpp:70
+#: ../src/Config.cpp:71
 msgid "Maxima program:"
 msgstr "Programa Maxima:"
 
@@ -1786,7 +1864,7 @@ msgstr "Programa Maxima:"
 msgid "Maxima questions"
 msgstr "Questões do Maxima"
 
-#: ../src/wxMaxima.cpp:599
+#: ../src/wxMaxima.cpp:666
 msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima iniciado. Aguardando conexão..."
 
@@ -1798,27 +1876,27 @@ msgstr ""
 "O Maxima usa ':' para atribuir valores ('a : 3;') e ':=' para definir "
 "funções ('f(x) := x^2;')."
 
-#: ../src/wxMaximaFrame.cpp:969
+#: ../src/wxMaximaFrame.cpp:976
 msgid "Mean"
 msgstr "Média"
 
-#: ../src/wxMaximaFrame.cpp:977
+#: ../src/wxMaximaFrame.cpp:984
 msgid "Mean Difference Test..."
 msgstr "Teste de diferença entre médias..."
 
-#: ../src/wxMaximaFrame.cpp:976
+#: ../src/wxMaximaFrame.cpp:983
 msgid "Mean Test..."
 msgstr "Teste de média..."
 
-#: ../src/wxMaxima.cpp:3215
+#: ../src/wxMaxima.cpp:3335
 msgid "Mean:"
 msgstr "Média:"
 
-#: ../src/wxMaximaFrame.cpp:970
+#: ../src/wxMaximaFrame.cpp:977
 msgid "Median"
 msgstr "Mediana"
 
-#: ../src/MathCtrl.cpp:678
+#: ../src/MathCtrl.cpp:680
 msgid "Merge Cells"
 msgstr "Mesclar células"
 
@@ -1826,63 +1904,43 @@ msgstr "Mesclar células"
 msgid "Method:"
 msgstr "Método:"
 
-#: ../src/wxMaxima.cpp:2654
+#: ../src/wxMaxima.cpp:2757
 msgid "Modulus"
 msgstr "Módulo"
 
-#: ../src/MatWiz.cpp:172
+#: ../src/MatWiz.cpp:172 ../src/wxMaxima.cpp:2549 ../src/wxMaxima.cpp:2568
 msgid "Name:"
 msgstr "Nome:"
-
-#: ../src/wxMaximaFrame.cpp:263
-msgid "New &Section Cell\tF8"
-msgstr "Nova célula de &seleção\tF8"
-
-#: ../src/wxMaximaFrame.cpp:259
-msgid "New &Text Cell\tF6"
-msgstr "Nova célula de &texto\tF6"
-
-#: ../src/wxMaximaFrame.cpp:257
-msgid "New Input &Cell\tF5"
-msgstr "Nova &célula de entrada\tF5"
-
-#: ../src/wxMaximaFrame.cpp:261
-msgid "New S&ubsection Cell\tF7"
-msgstr "Nova célula de s&ubseção\tF7"
-
-#: ../src/wxMaximaFrame.cpp:265
-msgid "New T&itle Cell\tF9"
-msgstr "Nova célula de tít&ulo\tF9"
 
 #: ../src/SubstituteWiz.cpp:33
 msgid "New value:"
 msgstr "Valor novo:"
 
-#: ../src/wxMaxima.cpp:2675 ../src/wxMaxima.cpp:2801 ../src/wxMaxima.cpp:2818
+#: ../src/wxMaxima.cpp:2778 ../src/wxMaxima.cpp:2904 ../src/wxMaxima.cpp:2921
 msgid "New variable:"
 msgstr "Nova variável:"
 
-#: ../src/wxMaxima.cpp:1998 ../src/wxMaxima.cpp:2014
+#: ../src/wxMaxima.cpp:2080 ../src/wxMaxima.cpp:2096
 msgid "No matches found!"
 msgstr "Nenhuma correspondência encontrada!"
 
-#: ../src/wxMaximaFrame.cpp:978
+#: ../src/wxMaximaFrame.cpp:985
 msgid "Normality Test"
 msgstr "Teste de normalidade"
 
-#: ../src/wxMaxima.cpp:2431
+#: ../src/wxMaxima.cpp:2513
 msgid "Not a valid matrix dimension!"
 msgstr "Dimensão inválida para matriz!"
 
-#: ../src/wxMaxima.cpp:2296 ../src/wxMaxima.cpp:2320
+#: ../src/wxMaxima.cpp:2378 ../src/wxMaxima.cpp:2402
 msgid "Not a valid number of equations!"
 msgstr "Número de equações inválido!"
 
-#: ../src/wxMaxima.cpp:2692
+#: ../src/wxMaxima.cpp:2795
 msgid "Num. deg:"
 msgstr "Grau num.:"
 
-#: ../src/wxMaxima.cpp:2288 ../src/wxMaxima.cpp:2312
+#: ../src/wxMaxima.cpp:2370 ../src/wxMaxima.cpp:2394
 msgid "Number of equations:"
 msgstr "Número de equações:"
 
@@ -1890,18 +1948,19 @@ msgstr "Número de equações:"
 msgid "Numbers"
 msgstr "Números"
 
-#: ../src/SumWiz.cpp:46 ../src/SumWiz.cpp:50 ../src/LimitWiz.cpp:50
-#: ../src/LimitWiz.cpp:54 ../src/SeriesWiz.cpp:47 ../src/SeriesWiz.cpp:51
-#: ../src/MatWiz.cpp:38 ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:177
-#: ../src/MatWiz.cpp:181 ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47
-#: ../src/Gen3Wiz.cpp:48 ../src/Gen3Wiz.cpp:52 ../src/Plot3dWiz.cpp:102
-#: ../src/Plot3dWiz.cpp:106 ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45
-#: ../src/Config.cpp:150 ../src/Config.cpp:154 ../src/SubstituteWiz.cpp:39
-#: ../src/SubstituteWiz.cpp:43 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
-#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:515
-#: ../src/Plot2dWiz.cpp:519 ../src/Plot2dWiz.cpp:610 ../src/Plot2dWiz.cpp:614
-#: ../src/IntegrateWiz.cpp:58 ../src/IntegrateWiz.cpp:62 ../src/Gen4Wiz.cpp:54
-#: ../src/Gen4Wiz.cpp:58 ../src/SystemWiz.cpp:36 ../src/SystemWiz.cpp:40
+#: ../src/BC2Wiz.cpp:43 ../src/BC2Wiz.cpp:47 ../src/Config.cpp:150
+#: ../src/Config.cpp:154 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
+#: ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45 ../src/Gen3Wiz.cpp:48
+#: ../src/Gen3Wiz.cpp:52 ../src/Gen4Wiz.cpp:54 ../src/Gen4Wiz.cpp:58
+#: ../src/IntegrateWiz.cpp:58 ../src/IntegrateWiz.cpp:62
+#: ../src/LimitWiz.cpp:50 ../src/LimitWiz.cpp:54 ../src/MatWiz.cpp:38
+#: ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:177 ../src/MatWiz.cpp:181
+#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:560
+#: ../src/Plot2dWiz.cpp:564 ../src/Plot2dWiz.cpp:655 ../src/Plot2dWiz.cpp:659
+#: ../src/Plot3dWiz.cpp:102 ../src/Plot3dWiz.cpp:106 ../src/SeriesWiz.cpp:47
+#: ../src/SeriesWiz.cpp:51 ../src/SubstituteWiz.cpp:39
+#: ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:46 ../src/SumWiz.cpp:50
+#: ../src/SystemWiz.cpp:36 ../src/SystemWiz.cpp:40
 msgid "OK"
 msgstr "OK"
 
@@ -1909,20 +1968,20 @@ msgstr "OK"
 msgid "Old value:"
 msgstr "Valor antigo:"
 
-#: ../src/wxMaxima.cpp:2674 ../src/wxMaxima.cpp:2800 ../src/wxMaxima.cpp:2817
+#: ../src/wxMaxima.cpp:2777 ../src/wxMaxima.cpp:2903 ../src/wxMaxima.cpp:2920
 msgid "Old variable:"
 msgstr "Variável antiga:"
 
-#: ../src/wxMaxima.cpp:3216
+#: ../src/wxMaxima.cpp:3336
 msgid "One sample t-test"
 msgstr "Teste t com uma amostra"
 
-#: ../src/wxMaximaFrame.cpp:631
+#: ../src/wxMaximaFrame.cpp:638
 msgid "Online tutorials"
 msgstr "Tutoriais online"
 
-#: ../src/wxMaximaFrame.cpp:669 ../src/wxMaximaFrame.cpp:727
-#: ../src/main.cpp:190 ../src/wxMaxima.cpp:1694 ../src/Config.cpp:72
+#: ../src/Config.cpp:73 ../src/main.cpp:196 ../src/wxMaxima.cpp:1776
+#: ../src/wxMaximaFrame.cpp:676 ../src/wxMaximaFrame.cpp:734
 msgid "Open"
 msgstr "Abrir"
 
@@ -1938,24 +1997,24 @@ msgstr "Abrir um documento"
 msgid "Open a new window"
 msgstr "Abrir uma nova janela"
 
-#: ../src/wxMaximaFrame.cpp:671 ../src/wxMaximaFrame.cpp:730
+#: ../src/wxMaximaFrame.cpp:678 ../src/wxMaximaFrame.cpp:737
 msgid "Open document"
 msgstr "Abrir documento"
 
-#: ../src/wxMaxima.cpp:3274
+#: ../src/wxMaxima.cpp:3394
 msgid "Open matrix"
 msgstr "Abrir matriz"
 
-#: ../src/wxMaxima.cpp:818 ../src/wxMaxima.cpp:885
+#: ../src/wxMaxima.cpp:900 ../src/wxMaxima.cpp:967
 msgid "Opening file"
 msgstr "Abrindo arquivo"
 
-#: ../src/wxMaximaFrame.cpp:681 ../src/wxMaximaFrame.cpp:742
-#: ../src/Config.cpp:365 ../src/Inspector.cpp:58
+#: ../src/Config.cpp:356 ../src/Inspector.cpp:58 ../src/wxMaximaFrame.cpp:688
+#: ../src/wxMaximaFrame.cpp:749
 msgid "Options"
 msgstr "Opções"
 
-#: ../src/Plot3dWiz.cpp:80 ../src/Plot2dWiz.cpp:79
+#: ../src/Plot2dWiz.cpp:81 ../src/Plot3dWiz.cpp:80
 msgid "Options:"
 msgstr "Opções:"
 
@@ -1967,11 +2026,11 @@ msgstr "Células desatualizadas"
 msgid "Output labels"
 msgstr "Rótulos de saída"
 
-#: ../src/wxMaximaFrame.cpp:467
+#: ../src/wxMaximaFrame.cpp:474
 msgid "P&ade Approximation..."
 msgstr "Aproximação de P&adé..."
 
-#: ../src/wxMaxima.cpp:1905 ../src/wxMaxima.cpp:3533
+#: ../src/wxMaxima.cpp:1987 ../src/wxMaxima.cpp:3653
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|X pixmap (*.xpm)|*.xpm"
@@ -1979,44 +2038,44 @@ msgstr ""
 "Imagem PNG (*.png)|*.png|Imagem JPEG (*.jpg)|*.jpg|Bitmap do Windows (*.bmp)|"
 "*.bmp|Pixmap X (*.xpm)|*.xpm"
 
-#: ../src/wxMaxima.cpp:2694
+#: ../src/wxMaxima.cpp:2797
 msgid "Pade approximation"
 msgstr "Aproximação de Padé"
 
-#: ../src/wxMaximaFrame.cpp:468
+#: ../src/wxMaximaFrame.cpp:475
 msgid "Pade approximation of a Taylor series"
 msgstr "Aproximação de Padé de uma série de Taylor"
 
-#: ../src/wxMaximaFrame.cpp:1025
+#: ../src/wxMaximaFrame.cpp:1032
 msgid "Pagebreak"
 msgstr "Quebra de página"
 
-#: ../src/wxMaximaFrame.cpp:315
+#: ../src/wxMaximaFrame.cpp:319
 msgid "Panes"
 msgstr "Painéis"
 
-#: ../src/Plot2dWiz.cpp:402 ../src/Plot2dWiz.cpp:528
+#: ../src/Plot2dWiz.cpp:447 ../src/Plot2dWiz.cpp:573
 msgid "Parametric plot"
 msgstr "Gráfico paramétrico"
 
-#: ../src/wxMaxima.cpp:236
+#: ../src/wxMaxima.cpp:255
 msgid "Parsing output"
 msgstr "Interpretando saída"
 
-#: ../src/wxMaximaFrame.cpp:490
+#: ../src/wxMaximaFrame.cpp:497
 msgid "Partial &Fractions..."
 msgstr "&Frações parciais..."
 
-#: ../src/wxMaxima.cpp:2758
+#: ../src/wxMaxima.cpp:2861
 msgid "Partial fractions"
 msgstr "Frações parciais"
 
-#: ../src/MathParser.cpp:892 ../src/wxMaxima.cpp:1000
+#: ../src/MathParser.cpp:896 ../src/wxMaxima.cpp:1082
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Partes do documento não serão carregadas corretamente!"
 
-#: ../src/wxMaximaFrame.cpp:691 ../src/wxMaximaFrame.cpp:755
 #: ../src/MathCtrl.cpp:715 ../src/MathCtrl.cpp:724
+#: ../src/wxMaximaFrame.cpp:698 ../src/wxMaximaFrame.cpp:762
 msgid "Paste"
 msgstr "Colar"
 
@@ -2024,7 +2083,7 @@ msgstr "Colar"
 msgid "Paste\tCtrl-V"
 msgstr "Colar\tCtrl-V"
 
-#: ../src/wxMaximaFrame.cpp:693 ../src/wxMaximaFrame.cpp:758
+#: ../src/wxMaximaFrame.cpp:700 ../src/wxMaximaFrame.cpp:765
 msgid "Paste from clipboard"
 msgstr "Colar da área de transferência"
 
@@ -2032,36 +2091,36 @@ msgstr "Colar da área de transferência"
 msgid "Paste text from clipboard"
 msgstr "Colar texto da área de transferência"
 
-#: ../src/wxMaximaFrame.cpp:987
+#: ../src/wxMaximaFrame.cpp:994
 msgid "Piechart"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1272
+#: ../src/wxMaxima.cpp:1354
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Queira configurar o wxMaxima com 'Editar->Configurações'."
 
-#: ../src/Config.cpp:889
+#: ../src/Config.cpp:878
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Queira reiniciar o wxMaxima para as mudanças terem efeito!"
 
-#: ../src/wxMaximaFrame.cpp:594
+#: ../src/wxMaximaFrame.cpp:601
 msgid "Plot &2d..."
 msgstr "Gráfico &2d..."
 
-#: ../src/wxMaximaFrame.cpp:596
+#: ../src/wxMaximaFrame.cpp:603
 msgid "Plot &3d..."
 msgstr "Gráfico &3d..."
 
-#: ../src/wxMaximaFrame.cpp:598
+#: ../src/wxMaximaFrame.cpp:605
 msgid "Plot &Format..."
 msgstr "&Formato do gráfico..."
 
-#: ../src/wxMaxima.cpp:2965 ../src/wxMaxima.cpp:3502 ../src/Plot2dWiz.cpp:116
-#: ../src/Plot2dWiz.cpp:417 ../src/Plot2dWiz.cpp:431
+#: ../src/Plot2dWiz.cpp:116 ../src/Plot2dWiz.cpp:462 ../src/Plot2dWiz.cpp:476
+#: ../src/wxMaxima.cpp:3068 ../src/wxMaxima.cpp:3622
 msgid "Plot 2D"
 msgstr "Gráfico 2D"
 
-#: ../src/wxMaximaFrame.cpp:941
+#: ../src/wxMaximaFrame.cpp:948
 msgid "Plot 2D..."
 msgstr "Gráfico 2D..."
 
@@ -2069,11 +2128,11 @@ msgstr "Gráfico 2D..."
 msgid "Plot 2d..."
 msgstr "Gráfico 2d..."
 
-#: ../src/wxMaxima.cpp:2951 ../src/wxMaxima.cpp:3515 ../src/Plot3dWiz.cpp:118
+#: ../src/Plot3dWiz.cpp:118 ../src/wxMaxima.cpp:3054 ../src/wxMaxima.cpp:3635
 msgid "Plot 3D"
 msgstr "Gráfico 3D"
 
-#: ../src/wxMaximaFrame.cpp:942
+#: ../src/wxMaximaFrame.cpp:949
 msgid "Plot 3D..."
 msgstr "Gráfico 3D..."
 
@@ -2081,15 +2140,15 @@ msgstr "Gráfico 3D..."
 msgid "Plot 3d..."
 msgstr "Gráfico 3d..."
 
-#: ../src/wxMaxima.cpp:2979
+#: ../src/wxMaxima.cpp:3082
 msgid "Plot format"
 msgstr "Formato do gráfico"
 
-#: ../src/wxMaximaFrame.cpp:595
+#: ../src/wxMaximaFrame.cpp:602
 msgid "Plot in 2 dimensions"
 msgstr "Gráfico bidimensional"
 
-#: ../src/wxMaximaFrame.cpp:597
+#: ../src/wxMaximaFrame.cpp:604
 msgid "Plot in 3 dimensions"
 msgstr "Gráfico tridimensional"
 
@@ -2097,110 +2156,111 @@ msgstr "Gráfico tridimensional"
 msgid "Plot to file:"
 msgstr "Gráfico para arquivo:"
 
-#: ../src/LimitWiz.cpp:32 ../src/SeriesWiz.cpp:38 ../src/BC2Wiz.cpp:29
-#: ../src/BC2Wiz.cpp:35 ../src/wxMaxima.cpp:2228 ../src/wxMaxima.cpp:2243
-#: ../src/wxMaxima.cpp:2351
+#: ../src/BC2Wiz.cpp:29 ../src/BC2Wiz.cpp:35 ../src/LimitWiz.cpp:32
+#: ../src/SeriesWiz.cpp:38 ../src/wxMaxima.cpp:2310 ../src/wxMaxima.cpp:2325
+#: ../src/wxMaxima.cpp:2433
 msgid "Point:"
 msgstr "Ponto:"
 
-#: ../src/Config.cpp:86
+#: ../src/Config.cpp:88
 msgid "Polish"
 msgstr "Polonês"
 
-#: ../src/wxMaxima.cpp:2711 ../src/wxMaxima.cpp:2726 ../src/wxMaxima.cpp:2741
+#: ../src/wxMaxima.cpp:2814 ../src/wxMaxima.cpp:2829 ../src/wxMaxima.cpp:2844
 msgid "Polynomial 1:"
 msgstr "Polinômio 1:"
 
-#: ../src/wxMaxima.cpp:2711 ../src/wxMaxima.cpp:2726 ../src/wxMaxima.cpp:2741
+#: ../src/wxMaxima.cpp:2814 ../src/wxMaxima.cpp:2829 ../src/wxMaxima.cpp:2844
 msgid "Polynomial 2:"
 msgstr "Polinômio 2:"
 
-#: ../src/Config.cpp:87
+#: ../src/Config.cpp:89
 msgid "Portuguese (Brazilian)"
 msgstr "Português (Brasileiro)"
 
-#: ../src/Plot3dWiz.cpp:461 ../src/Plot2dWiz.cpp:470
+#: ../src/Plot2dWiz.cpp:515 ../src/Plot3dWiz.cpp:461
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Arquivo Postscript (*.eps)|*.eps|Todos|*"
 
-#: ../src/wxMaxima.cpp:3011
+#: ../src/wxMaxima.cpp:3114
 msgid "Precision"
 msgstr "Precisão"
 
-#: ../src/wxMaximaFrame.cpp:677 ../src/wxMaximaFrame.cpp:737
+#: ../src/wxMaximaFrame.cpp:684 ../src/wxMaximaFrame.cpp:744
 msgid "Print"
 msgstr "Imprimir"
 
-#: ../src/wxMaximaFrame.cpp:206 ../src/wxMaximaFrame.cpp:679
-#: ../src/wxMaximaFrame.cpp:740
+#: ../src/wxMaximaFrame.cpp:206 ../src/wxMaximaFrame.cpp:686
+#: ../src/wxMaximaFrame.cpp:747
 msgid "Print document"
 msgstr "Imprimir documento"
 
-#: ../src/wxMaxima.cpp:2924
+#: ../src/wxMaxima.cpp:3027
 msgid "Product"
 msgstr "Produto"
 
-#: ../src/wxMaxima.cpp:3345
+#: ../src/wxMaxima.cpp:3465
 msgid "Quit?"
 msgstr "Sair?"
 
-#: ../src/wxMaximaFrame.cpp:992
+#: ../src/wxMaximaFrame.cpp:999
 msgid "Read Matrix..."
 msgstr "Ler matriz..."
 
-#: ../src/wxMaxima.cpp:421
+#: ../src/wxMaxima.cpp:486
 msgid "Reading Maxima output"
 msgstr "Lendo saída do Maxima"
 
-#: ../src/wxMaxima.cpp:280 ../src/wxMaxima.cpp:687 ../src/wxMaxima.cpp:808
-#: ../src/wxMaxima.cpp:830 ../src/wxMaxima.cpp:841 ../src/wxMaxima.cpp:878
-#: ../src/wxMaxima.cpp:901 ../src/wxMaxima.cpp:913 ../src/wxMaxima.cpp:930
-#: ../src/wxMaxima.cpp:972 ../src/wxMaxima.cpp:1192 ../src/wxMaxima.cpp:1213
+#: ../src/wxMaxima.cpp:299 ../src/wxMaxima.cpp:754 ../src/wxMaxima.cpp:890
+#: ../src/wxMaxima.cpp:912 ../src/wxMaxima.cpp:923 ../src/wxMaxima.cpp:960
+#: ../src/wxMaxima.cpp:983 ../src/wxMaxima.cpp:995 ../src/wxMaxima.cpp:1012
+#: ../src/wxMaxima.cpp:1054 ../src/wxMaxima.cpp:1274 ../src/wxMaxima.cpp:1295
 msgid "Ready for user input"
 msgstr "Pronto para entrada do usuário"
 
-#: ../src/wxMaximaFrame.cpp:929
+#: ../src/wxMaximaFrame.cpp:936
 msgid "Rectform"
 msgstr "Forma ret"
 
-#: ../src/wxMaximaFrame.cpp:934
+#: ../src/wxMaximaFrame.cpp:941
 msgid "Reduce (tr)"
 msgstr "Reduzir (tr)"
 
-#: ../src/wxMaximaFrame.cpp:542
+#: ../src/wxMaximaFrame.cpp:549
 msgid "Reduce trigonometric expression"
 msgstr "Reduzir expressão trigonométrica"
 
-#: ../src/wxMaximaFrame.cpp:272
-msgid "Remove All Outputs"
+#: ../src/wxMaximaFrame.cpp:279
+#, fuzzy
+msgid "Remove All Output"
 msgstr "Remover todas as saídas"
 
-#: ../src/wxMaximaFrame.cpp:273
+#: ../src/wxMaximaFrame.cpp:280
 msgid "Remove output from input cells"
 msgstr "Remover saídas das células de entrada"
 
-#: ../src/wxMaxima.cpp:2021
+#: ../src/wxMaxima.cpp:2103
 #, c-format
 msgid "Replaced %d occurences."
 msgstr "Substituídas %d ocorrências."
 
-#: ../src/wxMaximaFrame.cpp:636
+#: ../src/wxMaximaFrame.cpp:643
 msgid "Report bug"
 msgstr "Relatar bug"
 
-#: ../src/wxMaximaFrame.cpp:330
+#: ../src/wxMaximaFrame.cpp:334
 msgid "Restart Maxima"
 msgstr "Reiniciar Maxima"
 
-#: ../src/wxMaximaFrame.cpp:450
+#: ../src/wxMaximaFrame.cpp:457
 msgid "Risch Integration..."
 msgstr "Integração Risch..."
 
-#: ../src/wxMaximaFrame.cpp:368
+#: ../src/wxMaximaFrame.cpp:372
 msgid "Roots of &Polynomial"
 msgstr "Raízes de &polinômio"
 
-#: ../src/wxMaximaFrame.cpp:371
+#: ../src/wxMaximaFrame.cpp:375
 msgid "Roots of Polynomial (bfloat)"
 msgstr "Raízes do polinômio (bfloat)"
 
@@ -2208,28 +2268,33 @@ msgstr "Raízes do polinômio (bfloat)"
 msgid "Rows:"
 msgstr "Linas:"
 
-#: ../src/Config.cpp:88
+#: ../src/Config.cpp:90
 msgid "Russian"
 msgstr "Russo"
 
-#: ../src/wxMaxima.cpp:3229
+#: ../src/wxMaxima.cpp:3349
 msgid "Sample 1:"
 msgstr "Amostra 1:"
 
-#: ../src/wxMaxima.cpp:3229
+#: ../src/wxMaxima.cpp:3349
 msgid "Sample 2:"
 msgstr "Amostra 2:"
 
-#: ../src/wxMaxima.cpp:3215
+#: ../src/wxMaxima.cpp:3335
 msgid "Sample:"
 msgstr "Amostra:"
 
-#: ../src/wxMaximaFrame.cpp:672 ../src/wxMaximaFrame.cpp:731
-#: ../src/Config.cpp:148
+#: ../src/Config.cpp:148 ../src/wxMaximaFrame.cpp:679
+#: ../src/wxMaximaFrame.cpp:738
 msgid "Save"
 msgstr "Salvar"
 
-#: ../src/wxMaxima.cpp:1723
+#: ../src/MathCtrl.cpp:661
+#, fuzzy
+msgid "Save Animation..."
+msgstr "Aproximação de P&adé..."
+
+#: ../src/wxMaxima.cpp:1805
 msgid "Save As"
 msgstr "Salvar como"
 
@@ -2237,28 +2302,34 @@ msgstr "Salvar como"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Salvar como...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:657
+#: ../src/MathCtrl.cpp:659
 msgid "Save Image..."
 msgstr "Salvar imagem..."
 
-#: ../src/wxMaxima.cpp:1903
+#: ../src/wxMaxima.cpp:1985
 msgid "Save Selection to Image"
 msgstr "Salvar seleção para imagem"
 
-#: ../src/wxMaximaFrame.cpp:247
+#: ../src/wxMaximaFrame.cpp:246
 msgid "Save Selection to Image..."
 msgstr "Salvar seleção para imagem..."
 
-#: ../src/wxMaximaFrame.cpp:194 ../src/wxMaximaFrame.cpp:674
-#: ../src/wxMaximaFrame.cpp:734
+#: ../src/wxMaxima.cpp:3667
+#, fuzzy
+msgid "Save animation to file"
+msgstr "Salvar seleção para arquivo"
+
+#: ../src/wxMaximaFrame.cpp:194 ../src/wxMaximaFrame.cpp:681
+#: ../src/wxMaximaFrame.cpp:741
 msgid "Save document"
 msgstr "Salvar documento"
 
 #: ../src/wxMaximaFrame.cpp:196
-msgid "Save document as ..."
-msgstr "Salvar documento como..."
+#, fuzzy
+msgid "Save document as"
+msgstr "Salvar documento"
 
-#: ../src/Config.cpp:97
+#: ../src/Config.cpp:99
 msgid "Save panes layout"
 msgstr "Salver layout dos painéis"
 
@@ -2266,23 +2337,23 @@ msgstr "Salver layout dos painéis"
 msgid "Save panes layout between sessions."
 msgstr "Salvar layout dos painéis entre sessões."
 
-#: ../src/Plot3dWiz.cpp:459 ../src/Plot2dWiz.cpp:468
+#: ../src/Plot2dWiz.cpp:513 ../src/Plot3dWiz.cpp:459
 msgid "Save plot to file"
 msgstr "Salvar gráfico para um arquivo"
 
-#: ../src/wxMaximaFrame.cpp:248
+#: ../src/wxMaximaFrame.cpp:247
 msgid "Save selection from document to an image file"
 msgstr "Salvar seleção do documento para uma imagem"
 
-#: ../src/wxMaxima.cpp:3531
+#: ../src/wxMaxima.cpp:3651
 msgid "Save selection to file"
 msgstr "Salvar seleção para arquivo"
 
-#: ../src/Config.cpp:1018
+#: ../src/Config.cpp:1007
 msgid "Save style to file"
 msgstr "Salvar estilo para um arquivo"
 
-#: ../src/Config.cpp:96
+#: ../src/Config.cpp:98
 msgid "Save wxMaxima window size/position"
 msgstr "Salvar posição/tamanho da janela do wxMaxima"
 
@@ -2290,15 +2361,15 @@ msgstr "Salvar posição/tamanho da janela do wxMaxima"
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "Salvar posição/tamanho da janela do wxMaxima entre sessões."
 
-#: ../src/wxMaxima.cpp:3160
+#: ../src/wxMaxima.cpp:3280
 msgid "Scatterplot"
 msgstr "Gráfico de dispersão"
 
-#: ../src/wxMaximaFrame.cpp:985
+#: ../src/wxMaximaFrame.cpp:992
 msgid "Scatterplot..."
 msgstr "Gráfico de dispersão..."
 
-#: ../src/wxMaximaFrame.cpp:1023
+#: ../src/wxMaximaFrame.cpp:1030
 msgid "Section"
 msgstr "Seção"
 
@@ -2310,28 +2381,28 @@ msgstr "Selecionar célula"
 msgid "Select All"
 msgstr "Selecionar tudo"
 
-#: ../src/wxMaximaFrame.cpp:244
+#: ../src/wxMaximaFrame.cpp:243
 msgid "Select All\tCtrl-A"
 msgstr "Selecionar tudo\tCtrl-A"
 
-#: ../src/Config.cpp:429 ../src/Config.cpp:434
+#: ../src/Config.cpp:418 ../src/Config.cpp:423
 msgid "Select Maxima program"
 msgstr "Selecione o programa Maxima"
 
-#: ../src/wxMaxima.cpp:3310
+#: ../src/wxMaxima.cpp:3430
 msgid "Select Subsample"
 msgstr "Selecione a subamostra"
 
-#: ../src/LimitWiz.cpp:134 ../src/SeriesWiz.cpp:108
 #: ../src/IntegrateWiz.cpp:218 ../src/IntegrateWiz.cpp:237
+#: ../src/LimitWiz.cpp:134 ../src/SeriesWiz.cpp:108
 msgid "Select a constant"
 msgstr "Selecione uma constante"
 
-#: ../src/wxMaximaFrame.cpp:245
+#: ../src/wxMaximaFrame.cpp:244
 msgid "Select all"
 msgstr "Selecionar tudo"
 
-#: ../src/wxMaxima.cpp:2054
+#: ../src/wxMaxima.cpp:2136
 msgid "Select math display algorithm"
 msgstr "Selecione o algoritmo de exibição de fórmulas"
 
@@ -2347,133 +2418,135 @@ msgstr ""
 msgid "Selection"
 msgstr "Seleção"
 
-#: ../src/SeriesWiz.cpp:61 ../src/wxMaxima.cpp:2860
+#: ../src/SeriesWiz.cpp:61 ../src/wxMaxima.cpp:2963
 msgid "Series"
 msgstr "Série"
 
-#: ../src/wxMaximaFrame.cpp:940
+#: ../src/wxMaximaFrame.cpp:947
 msgid "Series..."
 msgstr "Série..."
 
-#: ../src/wxMaxima.cpp:522
+#: ../src/wxMaxima.cpp:589
 msgid "Server started"
 msgstr "Servidor iniciado"
 
-#: ../src/wxMaximaFrame.cpp:612
+#: ../src/wxMaximaFrame.cpp:619
 msgid "Set &Precision..."
 msgstr "Ajustar &precisão..."
 
-#: ../src/wxMaximaFrame.cpp:290
+#: ../src/wxMaximaFrame.cpp:264
 msgid "Set Zoom"
 msgstr "Ajustar zoom"
 
-#: ../src/wxMaximaFrame.cpp:613
+#: ../src/wxMaximaFrame.cpp:620
 msgid "Set bigfloat precision"
 msgstr "Ajustar a precisão de ponto flutuante"
 
-#: ../src/Config.cpp:175 ../src/Config.cpp:176
+#: ../src/Config.cpp:174
 msgid "Set fixed font in text controls."
 msgstr "Usa fonte monoespaçada nos controles de texto."
 
-#: ../src/wxMaximaFrame.cpp:599
+#: ../src/wxMaximaFrame.cpp:606
 msgid "Set plot format"
 msgstr "Ajustar formato do gráfico"
 
-#: ../src/wxMaximaFrame.cpp:284
+#: ../src/wxMaximaFrame.cpp:258
 msgid "Set zoom to 100%"
 msgstr "Definir zoom em 100%"
 
-#: ../src/wxMaximaFrame.cpp:285
+#: ../src/wxMaximaFrame.cpp:259
 msgid "Set zoom to 120%"
 msgstr "Definir zoom em 120%"
 
-#: ../src/wxMaximaFrame.cpp:286
+#: ../src/wxMaximaFrame.cpp:260
 msgid "Set zoom to 150%"
 msgstr "Definir zoom em 150%"
 
-#: ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:261
 msgid "Set zoom to 200%"
 msgstr "Definir zoom em 200%"
 
-#: ../src/wxMaximaFrame.cpp:288
+#: ../src/wxMaximaFrame.cpp:262
 msgid "Set zoom to 300%"
 msgstr "Definir zoom em 300%"
 
-#: ../src/wxMaximaFrame.cpp:283
+#: ../src/wxMaximaFrame.cpp:257
 msgid "Set zoom to 80%"
 msgstr "Definir zoom em 80%"
 
-#: ../src/wxMaximaFrame.cpp:406
+#: ../src/wxMaximaFrame.cpp:410
 msgid "Setup atvalues for solving ODE with Laplace transformation"
 msgstr ""
 "Configurar valores em pontos para resolver EDO com transformada de Laplace"
 
-#: ../src/wxMaximaFrame.cpp:589
+#: ../src/wxMaximaFrame.cpp:596
 msgid "Setup modulus computation"
 msgstr "Configurar cálculos com módulo"
 
-#: ../src/wxMaximaFrame.cpp:339
+#: ../src/wxMaximaFrame.cpp:343
 msgid "Show &Definition..."
 msgstr "Mostar &definição..."
 
-#: ../src/wxMaximaFrame.cpp:337
+#: ../src/wxMaximaFrame.cpp:341
 msgid "Show &Functions"
 msgstr "Mostrar &funções"
 
-#: ../src/wxMaximaFrame.cpp:627
+#: ../src/wxMaximaFrame.cpp:634
 msgid "Show &Tips..."
 msgstr "&Mostar dicas..."
 
-#: ../src/wxMaximaFrame.cpp:342
+#: ../src/wxMaximaFrame.cpp:346
 msgid "Show &Variables"
 msgstr "Mostrar &variáveis"
 
-#: ../src/Config.cpp:101
-msgid "Show Maxima header"
-msgstr "Mostrar cabeçalho do Maxima"
-
-#: ../src/wxMaximaFrame.cpp:620 ../src/wxMaximaFrame.cpp:716
-#: ../src/wxMaximaFrame.cpp:784
+#: ../src/wxMaximaFrame.cpp:627 ../src/wxMaximaFrame.cpp:723
+#: ../src/wxMaximaFrame.cpp:791
 msgid "Show Maxima help"
 msgstr "Mostrar ajuda do Maxima"
 
-#: ../src/wxMaximaFrame.cpp:628
+#: ../src/wxMaximaFrame.cpp:286
+#, fuzzy
+msgid "Show Template\tCtrl-Shift-K"
+msgstr "&Copiar como texto\tCtrl-Shift-C"
+
+#: ../src/wxMaximaFrame.cpp:635
 msgid "Show a tip"
 msgstr "Mostrar uma dica"
 
-#: ../src/wxMaxima.cpp:3110
+#: ../src/wxMaxima.cpp:3225
 msgid "Show all commands similar to:"
 msgstr "Mostrar todos os comandos semelhantes a:"
 
-#: ../src/wxMaxima.cpp:3098
+#: ../src/wxMaxima.cpp:3212
 msgid "Show an example for the command:"
 msgstr "Mostrar um exemplo para o comando:"
 
-#: ../src/wxMaximaFrame.cpp:622
+#: ../src/wxMaximaFrame.cpp:629
 msgid "Show an example of usage"
 msgstr "Mostrar um exemplo de uso"
 
-#: ../src/wxMaximaFrame.cpp:625
+#: ../src/wxMaximaFrame.cpp:632
 msgid "Show commands similar to"
 msgstr "Mostrar os comandos semelhantes a"
 
-#: ../src/wxMaximaFrame.cpp:338
+#: ../src/wxMaximaFrame.cpp:342
 msgid "Show defined functions"
 msgstr "Mostrar funções definidas"
 
-#: ../src/wxMaximaFrame.cpp:343
+#: ../src/wxMaximaFrame.cpp:347
 msgid "Show defined variables"
 msgstr "Mostrar variáveis definidas"
 
-#: ../src/wxMaximaFrame.cpp:340
+#: ../src/wxMaximaFrame.cpp:344
 msgid "Show definition of a function"
 msgstr "Mostrar definição de uma função"
 
-#: ../src/Config.cpp:174
-msgid "Show initial header with Maxima system information."
-msgstr "Mostrar cabeçalho inicial com informações de sistema do Maxima."
+#: ../src/wxMaximaFrame.cpp:287
+#, fuzzy
+msgid "Show function template"
+msgstr "Mostrar &funções"
 
-#: ../src/Config.cpp:100
+#: ../src/Config.cpp:102
 msgid "Show long expressions"
 msgstr "Mostrar expressões longas"
 
@@ -2481,23 +2554,23 @@ msgstr "Mostrar expressões longas"
 msgid "Show long expressions in wxMaxima document."
 msgstr "Mostrar expressões grandes no documento do wxMaxima."
 
-#: ../src/wxMaxima.cpp:2076
+#: ../src/wxMaxima.cpp:2158
 msgid "Show the definition of function:"
 msgstr "Mostrar a definição da função:"
 
-#: ../src/wxMaximaFrame.cpp:925
+#: ../src/wxMaximaFrame.cpp:932
 msgid "Simplify"
 msgstr "Simplificar"
 
-#: ../src/wxMaximaFrame.cpp:502
+#: ../src/wxMaximaFrame.cpp:509
 msgid "Simplify &Radicals"
 msgstr "Simplificar &radicais"
 
-#: ../src/wxMaximaFrame.cpp:926
+#: ../src/wxMaximaFrame.cpp:933
 msgid "Simplify (r)"
 msgstr "Simplificar (r)"
 
-#: ../src/wxMaximaFrame.cpp:932
+#: ../src/wxMaximaFrame.cpp:939
 msgid "Simplify (tr)"
 msgstr "Simplificar (tr)"
 
@@ -2505,15 +2578,15 @@ msgstr "Simplificar (tr)"
 msgid "Simplify Expression"
 msgstr "Simplificar expressão"
 
-#: ../src/wxMaximaFrame.cpp:528
+#: ../src/wxMaximaFrame.cpp:535
 msgid "Simplify an expression containing factorials"
 msgstr "Simplificar uma expressão envolvendo fatoriais"
 
-#: ../src/wxMaximaFrame.cpp:503
+#: ../src/wxMaximaFrame.cpp:510
 msgid "Simplify expression containing radicals"
 msgstr "Simplificar uma expressão envolvendo radicais"
 
-#: ../src/wxMaximaFrame.cpp:501
+#: ../src/wxMaximaFrame.cpp:508
 msgid "Simplify rational expression"
 msgstr "Simplificar uma expressão racional"
 
@@ -2521,7 +2594,7 @@ msgstr "Simplificar uma expressão racional"
 msgid "Simplify the sum"
 msgstr "Simplificar a soma"
 
-#: ../src/wxMaximaFrame.cpp:539
+#: ../src/wxMaximaFrame.cpp:546
 msgid "Simplify trigonometric expression"
 msgstr "Simplificar uma expressão trigonométrica"
 
@@ -2537,96 +2610,96 @@ msgstr ""
 "formato 'Documento XML do wxMaxima' para que a imagem seja salva junto com o "
 "documento."
 
-#: ../src/BC2Wiz.cpp:26 ../src/wxMaxima.cpp:2228 ../src/wxMaxima.cpp:2243
+#: ../src/BC2Wiz.cpp:26 ../src/wxMaxima.cpp:2310 ../src/wxMaxima.cpp:2325
 msgid "Solution:"
 msgstr "Solução:"
 
-#: ../src/wxMaxima.cpp:2164 ../src/wxMaxima.cpp:2178 ../src/wxMaxima.cpp:3420
+#: ../src/wxMaxima.cpp:2246 ../src/wxMaxima.cpp:2260 ../src/wxMaxima.cpp:3540
 msgid "Solve"
 msgstr "Resolver"
 
-#: ../src/wxMaximaFrame.cpp:380
+#: ../src/wxMaximaFrame.cpp:384
 msgid "Solve &Algebraic System..."
 msgstr "Resolver sistema &algébrico..."
 
-#: ../src/wxMaximaFrame.cpp:377
+#: ../src/wxMaximaFrame.cpp:381
 msgid "Solve &Linear System..."
 msgstr "Resolver sistema &linear..."
 
-#: ../src/wxMaximaFrame.cpp:388
+#: ../src/wxMaximaFrame.cpp:392
 msgid "Solve &ODE..."
 msgstr "Resolver ED&O..."
 
-#: ../src/wxMaximaFrame.cpp:364
+#: ../src/wxMaximaFrame.cpp:368
 msgid "Solve (to_poly)..."
 msgstr "Resolver (to_poly)..."
 
-#: ../src/wxMaxima.cpp:2214 ../src/wxMaxima.cpp:2338
+#: ../src/wxMaxima.cpp:2296 ../src/wxMaxima.cpp:2420
 msgid "Solve ODE"
 msgstr "Resolver EDO ..."
 
-#: ../src/wxMaximaFrame.cpp:402
+#: ../src/wxMaximaFrame.cpp:406
 msgid "Solve ODE with Lapla&ce..."
 msgstr "Resolver EDO com Laplace..."
 
-#: ../src/wxMaximaFrame.cpp:936
+#: ../src/wxMaximaFrame.cpp:943
 msgid "Solve ODE..."
 msgstr "Resolver EDO..."
 
-#: ../src/wxMaxima.cpp:2289 ../src/wxMaxima.cpp:2300
+#: ../src/wxMaxima.cpp:2371 ../src/wxMaxima.cpp:2382
 msgid "Solve algebraic system"
 msgstr "Resolver sistema algébrico"
 
-#: ../src/wxMaximaFrame.cpp:381
+#: ../src/wxMaximaFrame.cpp:385
 msgid "Solve algebraic system of equations"
 msgstr "Resolver sistema de equações algébricas"
 
-#: ../src/wxMaximaFrame.cpp:399
+#: ../src/wxMaximaFrame.cpp:403
 msgid "Solve boundary value problem for second degree ODE"
 msgstr "Resolver problema de contorno para EDO de segunda ordem"
 
-#: ../src/wxMaximaFrame.cpp:363
+#: ../src/wxMaximaFrame.cpp:367
 msgid "Solve equation(s)"
 msgstr "Resolver equação(ões)"
 
-#: ../src/wxMaximaFrame.cpp:365
+#: ../src/wxMaximaFrame.cpp:369
 msgid "Solve equation(s) with to_poly_solver"
 msgstr "Resolver equação(ões) como to_poly_solver"
 
-#: ../src/wxMaximaFrame.cpp:393
+#: ../src/wxMaximaFrame.cpp:397
 msgid "Solve initial value problem for first degree ODE"
 msgstr "Resolver problema de valor inicial para EDO de primeira ordem"
 
-#: ../src/wxMaximaFrame.cpp:396
+#: ../src/wxMaximaFrame.cpp:400
 msgid "Solve initial value problem for second degree ODE"
 msgstr "Resolver problema de valor inicial para EDO de segunda ordem"
 
-#: ../src/wxMaxima.cpp:2313 ../src/wxMaxima.cpp:2324
+#: ../src/wxMaxima.cpp:2395 ../src/wxMaxima.cpp:2406
 msgid "Solve linear system"
 msgstr "Resolver sistema linear"
 
-#: ../src/wxMaximaFrame.cpp:378
+#: ../src/wxMaximaFrame.cpp:382
 msgid "Solve linear system of equations"
 msgstr "Resolver sistema de equações lineares"
 
-#: ../src/wxMaximaFrame.cpp:389
+#: ../src/wxMaximaFrame.cpp:393
 msgid "Solve ordinary differential equation of maximum degree 2"
 msgstr "Resolver equação diferencial ordinário de grau máximo 2"
 
-#: ../src/wxMaximaFrame.cpp:403
+#: ../src/wxMaximaFrame.cpp:407
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Resolver equação diferencial ordinário com transformada de Laplace"
 
-#: ../src/wxMaximaFrame.cpp:935 ../src/MathCtrl.cpp:697
+#: ../src/MathCtrl.cpp:697 ../src/wxMaximaFrame.cpp:942
 msgid "Solve..."
 msgstr "Resolver..."
 
-#: ../src/Config.cpp:89
+#: ../src/Config.cpp:91
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: ../src/LimitWiz.cpp:35 ../src/SeriesWiz.cpp:41 ../src/IntegrateWiz.cpp:46
-#: ../src/IntegrateWiz.cpp:50
+#: ../src/IntegrateWiz.cpp:46 ../src/IntegrateWiz.cpp:50
+#: ../src/LimitWiz.cpp:35 ../src/SeriesWiz.cpp:41
 msgid "Special"
 msgstr "Especial"
 
@@ -2634,23 +2707,23 @@ msgstr "Especial"
 msgid "Special constants"
 msgstr "Constantes especiais"
 
-#: ../src/wxMaximaFrame.cpp:703 ../src/wxMaximaFrame.cpp:705
+#: ../src/wxMaximaFrame.cpp:710 ../src/wxMaximaFrame.cpp:712
 msgid "Start animation"
 msgstr "Iniciar animação"
 
-#: ../src/wxMaxima.cpp:194
+#: ../src/wxMaxima.cpp:199
 msgid "Starting Maxima process failed"
 msgstr "Falha ao iniciar o Maxima"
 
-#: ../src/wxMaxima.cpp:596
+#: ../src/wxMaxima.cpp:663
 msgid "Starting Maxima..."
 msgstr "Iniciando Maxima..."
 
-#: ../src/wxMaxima.cpp:192 ../src/wxMaxima.cpp:519
+#: ../src/wxMaxima.cpp:197 ../src/wxMaxima.cpp:586
 msgid "Starting server failed"
 msgstr "Falha ao iniciar o servidor"
 
-#: ../src/wxMaxima.cpp:500
+#: ../src/wxMaxima.cpp:567
 #, c-format
 msgid "Starting server on port %d"
 msgstr "Iniciando servidor na porta %d"
@@ -2659,12 +2732,12 @@ msgstr "Iniciando servidor na porta %d"
 msgid "Statistics"
 msgstr "Estatísticas"
 
-#: ../src/wxMaximaFrame.cpp:309
+#: ../src/wxMaximaFrame.cpp:313
 msgid "Statistics\tAlt-Shift-S"
 msgstr "Estatísticas\tAlt-Shift-S"
 
-#: ../src/wxMaximaFrame.cpp:706 ../src/wxMaximaFrame.cpp:708
-#: ../src/wxMaximaFrame.cpp:773
+#: ../src/wxMaximaFrame.cpp:713 ../src/wxMaximaFrame.cpp:715
+#: ../src/wxMaximaFrame.cpp:780
 msgid "Stop animation"
 msgstr "Parar animação"
 
@@ -2672,19 +2745,19 @@ msgstr "Parar animação"
 msgid "Strings"
 msgstr "Cadeias de caracteres"
 
-#: ../src/Config.cpp:366
+#: ../src/Config.cpp:357
 msgid "Style"
 msgstr "Estilo"
 
-#: ../src/Config.cpp:69
+#: ../src/Config.cpp:70
 msgid "Styles"
 msgstr "Estilos"
 
-#: ../src/wxMaximaFrame.cpp:997
+#: ../src/wxMaximaFrame.cpp:1004
 msgid "Subsample..."
 msgstr "Subamostra..."
 
-#: ../src/wxMaximaFrame.cpp:1022
+#: ../src/wxMaximaFrame.cpp:1029
 msgid "Subsection"
 msgstr "Subseção"
 
@@ -2692,32 +2765,32 @@ msgstr "Subseção"
 msgid "Subsection cell"
 msgstr "Célula de subseção"
 
-#: ../src/wxMaximaFrame.cpp:930
+#: ../src/wxMaximaFrame.cpp:937
 msgid "Subst..."
 msgstr "Substituir..."
 
-#: ../src/wxMaxima.cpp:2126 ../src/wxMaxima.cpp:3489
-#: ../src/SubstituteWiz.cpp:53
+#: ../src/SubstituteWiz.cpp:53 ../src/wxMaxima.cpp:2208
+#: ../src/wxMaxima.cpp:3609
 msgid "Substitute"
 msgstr "Substituir"
 
-#: ../src/wxMaximaFrame.cpp:577 ../src/MathCtrl.cpp:703
+#: ../src/MathCtrl.cpp:703 ../src/wxMaximaFrame.cpp:584
 msgid "Substitute..."
 msgstr "Substituir..."
 
-#: ../src/SumWiz.cpp:61 ../src/wxMaxima.cpp:2908
+#: ../src/SumWiz.cpp:61 ../src/wxMaxima.cpp:3011
 msgid "Sum"
 msgstr "Soma"
 
-#: ../src/wxMaxima.cpp:2692
+#: ../src/wxMaxima.cpp:2795
 msgid "Taylor series:"
 msgstr "Série de Taylor:"
 
-#: ../src/wxMaxima.cpp:2645
+#: ../src/wxMaxima.cpp:2748
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1020
+#: ../src/wxMaximaFrame.cpp:1027
 msgid "Text"
 msgstr "Texto"
 
@@ -2729,7 +2802,7 @@ msgstr "Célula de texto"
 msgid "Text cell background"
 msgstr "Fundo da célula de texto"
 
-#: ../src/Config.cpp:181
+#: ../src/Config.cpp:178
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "A porta padrão usada para comunicação entre o Maxima e o wxMaxima."
 
@@ -2743,7 +2816,7 @@ msgstr ""
 "wxmaxima.sourceforge.net/wiki/index.php/Tutorials para mais informações "
 "sobre o uso do wxMaxima e do Maxima."
 
-#: ../src/wxMaxima.cpp:310
+#: ../src/wxMaxima.cpp:329
 msgid ""
 "There was an error in generated XML!\n"
 "\n"
@@ -2753,11 +2826,18 @@ msgstr ""
 "\n"
 "Favor relatar isso como um bug."
 
-#: ../src/Plot2dWiz.cpp:64 ../src/Plot2dWiz.cpp:509
+#: ../src/SlideShowCell.cpp:285
+msgid ""
+"There was and error during GIF export!\n"
+"\n"
+"Make sure ImageMagick is installed and wxMaxima can find the convert program."
+msgstr ""
+
+#: ../src/Plot2dWiz.cpp:66 ../src/Plot2dWiz.cpp:554
 msgid "Ticks:"
 msgstr "Marcações:"
 
-#: ../src/wxMaxima.cpp:2835 ../src/wxMaxima.cpp:3465
+#: ../src/wxMaxima.cpp:2938 ../src/wxMaxima.cpp:3585
 msgid "Times:"
 msgstr "Vezes:"
 
@@ -2765,7 +2845,7 @@ msgstr "Vezes:"
 msgid "Tips not available, sorry!"
 msgstr "Dicas não disponíveis, desculpe!"
 
-#: ../src/wxMaximaFrame.cpp:1021
+#: ../src/wxMaximaFrame.cpp:1028
 msgid "Title"
 msgstr "Título"
 
@@ -2784,11 +2864,11 @@ msgstr ""
 "você segurar Shift enquanto clica, todos os subníveis daquela célula também "
 "serão recolhidos/expandidos."
 
-#: ../src/wxMaximaFrame.cpp:609
+#: ../src/wxMaximaFrame.cpp:616
 msgid "To &Bigfloat"
 msgstr "Para &bigfloat"
 
-#: ../src/wxMaximaFrame.cpp:606
+#: ../src/wxMaximaFrame.cpp:613
 msgid "To &Float"
 msgstr "Para &float"
 
@@ -2830,49 +2910,49 @@ msgstr ""
 "Para iniciar a usar o wxMaxima, digite o seu comando. Uma célula de entrada "
 "deve aparecer. Aperte Shift-Enter para executar seu comando."
 
-#: ../src/SumWiz.cpp:39 ../src/wxMaxima.cpp:2501 ../src/wxMaxima.cpp:2923
-#: ../src/Plot3dWiz.cpp:49 ../src/Plot3dWiz.cpp:58 ../src/Plot2dWiz.cpp:52
-#: ../src/Plot2dWiz.cpp:61 ../src/Plot2dWiz.cpp:506 ../src/IntegrateWiz.cpp:47
+#: ../src/IntegrateWiz.cpp:47 ../src/Plot2dWiz.cpp:52 ../src/Plot2dWiz.cpp:62
+#: ../src/Plot2dWiz.cpp:551 ../src/Plot3dWiz.cpp:49 ../src/Plot3dWiz.cpp:58
+#: ../src/SumWiz.cpp:39 ../src/wxMaxima.cpp:2604 ../src/wxMaxima.cpp:3026
 msgid "To:"
 msgstr "Até:"
 
-#: ../src/wxMaximaFrame.cpp:583
+#: ../src/wxMaximaFrame.cpp:590
 msgid "Toggle &Algebraic Flag"
 msgstr "Alternar flag &algébrico"
 
-#: ../src/wxMaximaFrame.cpp:604
+#: ../src/wxMaximaFrame.cpp:611
 msgid "Toggle &Numeric Output"
 msgstr "Alternar saída &numérica"
 
-#: ../src/wxMaximaFrame.cpp:350
+#: ../src/wxMaximaFrame.cpp:354
 msgid "Toggle &Time Display"
 msgstr "Alternar exibição do &tempo"
 
-#: ../src/wxMaximaFrame.cpp:584
+#: ../src/wxMaximaFrame.cpp:591
 msgid "Toggle algebraic flag"
 msgstr "Alternar flag algébrico"
 
-#: ../src/wxMaximaFrame.cpp:294
+#: ../src/wxMaximaFrame.cpp:266
 msgid "Toggle full screen editing"
 msgstr "Alternar edição em tela cheia"
 
-#: ../src/wxMaximaFrame.cpp:605
+#: ../src/wxMaximaFrame.cpp:612
 msgid "Toggle numeric output"
 msgstr "Alternar saída numérica"
 
-#: ../src/wxMaximaFrame.cpp:314
+#: ../src/wxMaximaFrame.cpp:318
 msgid "Toolbar\tAlt-Shift-T"
 msgstr "Barra de ferramentas\tAlt-Shift-T"
 
-#: ../src/wxMaximaFrame.cpp:434
+#: ../src/wxMaximaFrame.cpp:441
 msgid "Transpose a matrix"
 msgstr "Transposta de uma matriz"
 
-#: ../src/wxMaximaFrame.cpp:630
+#: ../src/wxMaximaFrame.cpp:637
 msgid "Tutorials"
 msgstr "Tutoriais"
 
-#: ../src/wxMaxima.cpp:3231
+#: ../src/wxMaxima.cpp:3351
 msgid "Two sample t-test"
 msgstr "Teste t com duas amostras"
 
@@ -2880,7 +2960,7 @@ msgstr "Teste t com duas amostras"
 msgid "Type:"
 msgstr "Tipo:"
 
-#: ../src/Config.cpp:90
+#: ../src/Config.cpp:92
 msgid "Ukrainian"
 msgstr "Ucraniano"
 
@@ -2896,7 +2976,7 @@ msgstr "&Desfazer\tCtrl-Z"
 msgid "Undo last change"
 msgstr "Desfazer última alteração"
 
-#: ../src/wxMaxima.cpp:2194 ../src/wxMaxima.cpp:3434
+#: ../src/wxMaxima.cpp:2276 ../src/wxMaxima.cpp:3554
 msgid "Upper bound:"
 msgstr "Limite superior:"
 
@@ -2904,7 +2984,7 @@ msgstr "Limite superior:"
 msgid "Use Gosper algorithm"
 msgstr "User algoritmo Gosper"
 
-#: ../src/Config.cpp:103 ../src/Config.cpp:180
+#: ../src/Config.cpp:103 ../src/Config.cpp:177
 msgid "Use centered dot character for multiplication"
 msgstr "Usar um ponto centralizado para indicar multiplicação"
 
@@ -2912,22 +2992,22 @@ msgstr "Usar um ponto centralizado para indicar multiplicação"
 msgid "Use jsMath fonts"
 msgstr "Usar fontes do jsMath"
 
-#: ../src/BC2Wiz.cpp:32 ../src/BC2Wiz.cpp:38 ../src/wxMaxima.cpp:2228
-#: ../src/wxMaxima.cpp:2244 ../src/wxMaxima.cpp:2352
+#: ../src/BC2Wiz.cpp:32 ../src/BC2Wiz.cpp:38 ../src/wxMaxima.cpp:2310
+#: ../src/wxMaxima.cpp:2326 ../src/wxMaxima.cpp:2434
 msgid "Value:"
 msgstr "Valor:"
 
-#: ../src/wxMaxima.cpp:2163 ../src/wxMaxima.cpp:2177 ../src/wxMaxima.cpp:2834
-#: ../src/wxMaxima.cpp:3419 ../src/wxMaxima.cpp:3464
+#: ../src/wxMaxima.cpp:2245 ../src/wxMaxima.cpp:2259 ../src/wxMaxima.cpp:2937
+#: ../src/wxMaxima.cpp:3539 ../src/wxMaxima.cpp:3584
 msgid "Variable(s):"
 msgstr "Variável(is):"
 
-#: ../src/SumWiz.cpp:33 ../src/LimitWiz.cpp:29 ../src/SeriesWiz.cpp:35
-#: ../src/wxMaxima.cpp:2193 ../src/wxMaxima.cpp:2212 ../src/wxMaxima.cpp:2452
-#: ../src/wxMaxima.cpp:2500 ../src/wxMaxima.cpp:2756 ../src/wxMaxima.cpp:2771
-#: ../src/wxMaxima.cpp:2922 ../src/wxMaxima.cpp:3433 ../src/Plot3dWiz.cpp:43
-#: ../src/Plot3dWiz.cpp:52 ../src/Plot2dWiz.cpp:46 ../src/Plot2dWiz.cpp:55
-#: ../src/Plot2dWiz.cpp:500 ../src/IntegrateWiz.cpp:39
+#: ../src/IntegrateWiz.cpp:39 ../src/LimitWiz.cpp:29 ../src/Plot2dWiz.cpp:46
+#: ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:545 ../src/Plot3dWiz.cpp:43
+#: ../src/Plot3dWiz.cpp:52 ../src/SeriesWiz.cpp:35 ../src/SumWiz.cpp:33
+#: ../src/wxMaxima.cpp:2275 ../src/wxMaxima.cpp:2294 ../src/wxMaxima.cpp:2534
+#: ../src/wxMaxima.cpp:2603 ../src/wxMaxima.cpp:2859 ../src/wxMaxima.cpp:2874
+#: ../src/wxMaxima.cpp:3025 ../src/wxMaxima.cpp:3553
 msgid "Variable:"
 msgstr "Variável:"
 
@@ -2935,17 +3015,17 @@ msgstr "Variável:"
 msgid "Variables"
 msgstr "Variáveis"
 
-#: ../src/wxMaxima.cpp:2274 ../src/wxMaxima.cpp:2888 ../src/wxMaxima.cpp:3257
-#: ../src/SystemWiz.cpp:72
+#: ../src/SystemWiz.cpp:72 ../src/wxMaxima.cpp:2356 ../src/wxMaxima.cpp:2991
+#: ../src/wxMaxima.cpp:3377
 msgid "Variables:"
 msgstr "Variáveis:"
 
-#: ../src/wxMaximaFrame.cpp:971
+#: ../src/wxMaximaFrame.cpp:978
 msgid "Variance"
 msgstr "Variância:"
 
-#: ../src/MathParser.cpp:892 ../src/wxMaxima.cpp:937 ../src/wxMaxima.cpp:1000
-#: ../src/wxMaxima.cpp:1270
+#: ../src/MathParser.cpp:896 ../src/wxMaxima.cpp:1019 ../src/wxMaxima.cpp:1082
+#: ../src/wxMaxima.cpp:1352
 msgid "Warning"
 msgstr "Aviso"
 
@@ -2963,7 +3043,7 @@ msgstr ""
 "'%'. Para aplicar a função a um outro valor, selecione-o do documento antes "
 "de executar o comando do menu."
 
-#: ../src/wxMaxima.cpp:2467
+#: ../src/wxMaxima.cpp:2549 ../src/wxMaxima.cpp:2568
 msgid "Width:"
 msgstr "Largura:"
 
@@ -3032,31 +3112,31 @@ msgstr ""
 "segure Shift enquanto move o cursor horizontal - e então operar na seleção. "
 "Isso é útil quando você quer apagar ou calcular múltiplas células."
 
-#: ../src/wxMaximaFrame.cpp:277
+#: ../src/wxMaximaFrame.cpp:251
 msgid "Zoom &In\tAlt-I"
 msgstr "Aprox&imar\tAlt-I"
 
-#: ../src/wxMaximaFrame.cpp:279
+#: ../src/wxMaximaFrame.cpp:253
 msgid "Zoom Ou&t\tAlt-O"
 msgstr "Afas&tar\tAlt-O"
 
-#: ../src/wxMaximaFrame.cpp:278
+#: ../src/wxMaximaFrame.cpp:252
 msgid "Zoom in 10%"
 msgstr "Aproximar em 10%"
 
-#: ../src/wxMaximaFrame.cpp:280
+#: ../src/wxMaximaFrame.cpp:254
 msgid "Zoom out 10%"
 msgstr "Afastar em 10%"
 
-#: ../src/wxMaxima.cpp:1930 ../src/wxMaxima.cpp:1938
+#: ../src/wxMaxima.cpp:2012 ../src/wxMaxima.cpp:2020
 msgid "Zoom set to "
 msgstr "Zoom definido em "
 
-#: ../src/wxMaximaFrame.cpp:88 ../src/wxMaxima.cpp:3752
+#: ../src/wxMaxima.cpp:3899 ../src/wxMaximaFrame.cpp:88
 msgid "[ unsaved ]"
 msgstr "[ não salvo ]"
 
-#: ../src/wxMaxima.cpp:3754
+#: ../src/wxMaxima.cpp:3901
 msgid "[ unsaved* ]"
 msgstr "[ não salvo* ]"
 
@@ -3068,8 +3148,8 @@ msgstr "antisimétrica"
 msgid "both sides"
 msgstr "bilateral"
 
-#: ../src/Plot3dWiz.cpp:72 ../src/Plot3dWiz.cpp:388 ../src/Plot2dWiz.cpp:71
-#: ../src/Plot2dWiz.cpp:368
+#: ../src/Plot2dWiz.cpp:73 ../src/Plot2dWiz.cpp:398 ../src/Plot3dWiz.cpp:72
+#: ../src/Plot3dWiz.cpp:388
 msgid "default"
 msgstr "padrão"
 
@@ -3081,9 +3161,9 @@ msgstr "diagonal"
 msgid "general"
 msgstr "geral"
 
-#: ../src/Plot3dWiz.cpp:73 ../src/Plot3dWiz.cpp:205 ../src/Plot3dWiz.cpp:388
-#: ../src/Plot3dWiz.cpp:419 ../src/Plot2dWiz.cpp:72 ../src/Plot2dWiz.cpp:197
-#: ../src/Plot2dWiz.cpp:368 ../src/Plot2dWiz.cpp:389
+#: ../src/Plot2dWiz.cpp:74 ../src/Plot2dWiz.cpp:205 ../src/Plot2dWiz.cpp:398
+#: ../src/Plot2dWiz.cpp:431 ../src/Plot3dWiz.cpp:73 ../src/Plot3dWiz.cpp:205
+#: ../src/Plot3dWiz.cpp:388 ../src/Plot3dWiz.cpp:419
 msgid "inline"
 msgstr "embutido"
 
@@ -3091,11 +3171,20 @@ msgstr "embutido"
 msgid "left"
 msgstr "esquerda"
 
-#: ../src/EditorCell.cpp:331
+#: ../src/EditorCell.cpp:332
 msgid "lines hidden"
 msgstr "linhas escondidas"
 
-#: ../src/wxMaxima.cpp:3057
+#: ../src/Plot2dWiz.cpp:55 ../src/Plot2dWiz.cpp:63
+msgid "logscale"
+msgstr ""
+
+#: ../src/wxMaxima.cpp:2568
+#, fuzzy
+msgid "matrix[i,j]:"
+msgstr "Matriz:"
+
+#: ../src/wxMaxima.cpp:3161
 msgid "no"
 msgstr "não"
 
@@ -3107,25 +3196,25 @@ msgstr "direita"
 msgid "symmetric"
 msgstr "simétrica"
 
-#: ../src/wxMaxima.cpp:1718 ../src/wxMaxima.cpp:1769
+#: ../src/wxMaxima.cpp:1800 ../src/wxMaxima.cpp:1851
 msgid "untitled"
 msgstr "sem título"
 
-#: ../src/main.cpp:157 ../src/wxMaxima.cpp:3066
+#: ../src/main.cpp:163 ../src/wxMaxima.cpp:3172
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:88 ../src/wxMaxima.cpp:3752
-#: ../src/wxMaxima.cpp:3754 ../src/wxMaxima.cpp:3761 ../src/wxMaxima.cpp:3764
+#: ../src/wxMaxima.cpp:3899 ../src/wxMaxima.cpp:3901 ../src/wxMaxima.cpp:3908
+#: ../src/wxMaxima.cpp:3911 ../src/wxMaximaFrame.cpp:88
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: ../src/wxMaxima.cpp:1849 ../src/Config.cpp:164
+#: ../src/Config.cpp:164 ../src/wxMaxima.cpp:1931
 msgid "wxMaxima configuration"
 msgstr "Configuração do wxMaxima"
 
-#: ../src/wxMaxima.cpp:1268
+#: ../src/wxMaxima.cpp:1350
 msgid ""
 "wxMaxima could not find Maxima!\n"
 "\n"
@@ -3137,7 +3226,7 @@ msgstr ""
 "Queira configurar o wxMaxima com 'Editar->Configurações.\n"
 "Então inicie o Maxima com 'Maxima->Reiniciar maxima'."
 
-#: ../src/wxMaxima.cpp:1441
+#: ../src/wxMaxima.cpp:1523
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
@@ -3147,7 +3236,7 @@ msgstr ""
 "\n"
 "Queira verificar sua instalação."
 
-#: ../src/wxMaxima.cpp:1345
+#: ../src/wxMaxima.cpp:1427
 msgid ""
 "wxMaxima could not find tip files.\n"
 "\n"
@@ -3157,7 +3246,7 @@ msgstr ""
 "\n"
 "Queira verificar sua instalação."
 
-#: ../src/wxMaxima.cpp:182
+#: ../src/wxMaxima.cpp:187
 msgid ""
 "wxMaxima could not start the server.\n"
 "\n"
@@ -3179,11 +3268,11 @@ msgstr ""
 "'%'. Se você selecionou algo no documento, a seleção será usada no lugar de "
 "'%'."
 
-#: ../src/wxMaxima.cpp:1523
+#: ../src/wxMaxima.cpp:1605
 msgid "wxMaxima document"
 msgstr "Documento do wxMaxima"
 
-#: ../src/wxMaxima.cpp:1725
+#: ../src/wxMaxima.cpp:1807
 msgid ""
 "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|Maxima "
 "batch file (*.mac)|*.mac"
@@ -3191,16 +3280,16 @@ msgstr ""
 "Documento wxMaxima (*.wxm)|*.wxm|Documento xml wxMaxima (*.wxmx)|*.wxmx|"
 "Arquivo batch Maxima (*.mac)|*.mac"
 
-#: ../src/main.cpp:192 ../src/wxMaxima.cpp:1696
+#: ../src/main.cpp:198 ../src/wxMaxima.cpp:1778
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "Documento do wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
-#: ../src/wxMaxima.cpp:829 ../src/wxMaxima.cpp:840 ../src/wxMaxima.cpp:899
-#: ../src/wxMaxima.cpp:911
+#: ../src/wxMaxima.cpp:911 ../src/wxMaxima.cpp:922 ../src/wxMaxima.cpp:981
+#: ../src/wxMaxima.cpp:993
 msgid "wxMaxima encountered an error loading "
 msgstr "o wxMaxima encontrou um erro carregando "
 
-#: ../src/wxMaxima.cpp:3046
+#: ../src/wxMaxima.cpp:3150
 msgid ""
 "wxMaxima is a graphical user interface for the\n"
 "computer algebra system Maxima based on wxWidgets."
@@ -3209,7 +3298,7 @@ msgstr ""
 "wxWidgets para o sistema de álgebra\n"
 "computacional MAXIMA."
 
-#: ../src/wxMaxima.cpp:3048
+#: ../src/wxMaxima.cpp:3152
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
@@ -3217,10 +3306,30 @@ msgstr ""
 "O wxMaxima é uma interface baseada no wxWidgets para o sistema de álgebra "
 "computacional MAXIMA."
 
-#: ../src/Config.cpp:66
+#: ../src/Config.cpp:67
 msgid "wxMaxima options"
 msgstr "Opções do wxMaxima"
 
-#: ../src/wxMaxima.cpp:3055
+#: ../src/wxMaxima.cpp:3159
 msgid "yes"
 msgstr "sim"
+
+#~ msgid "Copy selection to clipboard when selection is made in document."
+#~ msgstr ""
+#~ "Copiar seleção para a área de transferência quando algo é selecionado no "
+#~ "documento."
+
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Copiar para a área de transferência ao selecionar"
+
+#~ msgid "Input"
+#~ msgstr "Entrada"
+
+#~ msgid "Save document as ..."
+#~ msgstr "Salvar documento como..."
+
+#~ msgid "Show Maxima header"
+#~ msgstr "Mostrar cabeçalho do Maxima"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Mostrar cabeçalho inicial com informações de sistema do Maxima."
