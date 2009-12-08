@@ -207,6 +207,10 @@ void wxMaxima::FirstOutput(wxString s)
   int startHTTP = s.find(wxT("http"), startMaxima);
   m_maximaVersion = s.SubString(startMaxima+7, startHTTP - 1);
 
+  wxRegEx lisp(wxT("using Lisp ([^\n]*)\n"));
+  if (lisp.Matches(s))
+    m_lispVersion = lisp.GetMatch(s, 1);
+
   m_lastPrompt = wxT("(%i1) ");
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
@@ -3161,6 +3165,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       description += _("\nMaxima version: ") + m_maximaVersion;
     else
       description += _("\nNot connected.");
+    if (m_lispVersion != wxEmptyString)
+      description += _("\nLisp: ") + m_lispVersion;
 
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));

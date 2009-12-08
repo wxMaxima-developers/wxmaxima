@@ -184,6 +184,7 @@ protected:
   bool m_updateInspector;
   wxString m_helpFile;
   wxString m_maximaVersion;
+  wxString m_lispVersion;
 #if defined (__WXMSW__)
   wxCHMHelpController m_helpCtrl;
 #else
