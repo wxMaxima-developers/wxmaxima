@@ -135,9 +135,8 @@ protected:
   // setsup m_pid
   void ReadPrompt();                 // reads prompts
   void ReadMath();                   // reads output other than prompts
-  void ReadInspector();              // reads inspector info
   void ReadLispError();              // lisp errors (no prompt prefix/suffix)
-  void ReadLoadSymbols();
+  void ReadLoadSymbols();            // functions after load command
 #ifndef __WXMSW__
   void ReadProcessOutput();          // reads output of maxima command
 #endif
@@ -181,7 +180,6 @@ protected:
   wxString m_currentFile;
   bool m_fileSaved;
   bool m_variablesOK;
-  bool m_updateInspector;
   wxString m_helpFile;
   wxString m_maximaVersion;
   wxString m_lispVersion;

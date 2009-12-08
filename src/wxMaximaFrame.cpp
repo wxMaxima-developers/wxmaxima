@@ -38,9 +38,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // history
   m_history = new History(this, -1);
 
-  // inspector
-  m_inspector = new Inspector(this, -1);
-
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   SetupToolBar();
@@ -109,15 +106,6 @@ void wxMaximaFrame::do_layout()
                       BottomDockable(false).
                       PaneBorder(true).
                       Right());
-
-  m_manager.AddPane(m_inspector,
-      wxAuiPaneInfo().Name(wxT("inspector")).
-                      Caption(_("Inspector")).
-                      Show(false).
-                      TopDockable(true).
-                      BottomDockable(true).
-                      PaneBorder(true).
-                      Top());
 
   m_manager.AddPane(CreateStatPane(),
       wxAuiPaneInfo().Name(wxT("stats")).
@@ -312,7 +300,6 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_inspector, _("Inspector\tAlt-Shift-I"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   wxglade_tmp_menu_2_sub2->AppendSeparator();
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
@@ -874,9 +861,6 @@ bool wxMaximaFrame::IsPaneDisplayed(int id)
     case menu_pane_history:
       displayed = m_manager.GetPane(wxT("history")).IsShown();
       break;
-    case menu_pane_inspector:
-      displayed = m_manager.GetPane(wxT("inspector")).IsShown();
-      break;
     case menu_pane_stats:
       displayed = m_manager.GetPane(wxT("stats")).IsShown();
       break;
@@ -896,9 +880,6 @@ void wxMaximaFrame::ShowPane(int id, bool show)
       break;
     case menu_pane_history:
       m_manager.GetPane(wxT("history")).Show(show);
-      break;
-    case menu_pane_inspector:
-      m_manager.GetPane(wxT("inspector")).Show(show);
       break;
     case menu_pane_stats:
       m_manager.GetPane(wxT("stats")).Show(show);

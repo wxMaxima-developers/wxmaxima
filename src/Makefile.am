@@ -52,8 +52,6 @@ wxmaxima_SOURCES = \
 	EvaluationQueue.cpp EvaluationQueue.h \
 	History.cpp        History.h        \
 	Autocomplete.cpp   Autocomplete.h   \
-	MiniMathCtrl.cpp   MiniMathCtrl.h   \
-	Inspector.cpp      Inspector.h      \
 	TextStyle.h
 
 wxmaxima_LDFLAGS =

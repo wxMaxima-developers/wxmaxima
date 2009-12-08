@@ -1444,116 +1444,5 @@
 (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
 	(mapcar #'$print_function (cdr ($append $functions $macros))))
 
-;;
-;; Inspector pane related functions
-;;
-
-;; returns a string - to fill
-;; the listbox of inspector
-;; 'which' specifys which
-;; categories to include e.g. '(vars funs)
-(defun inspector-list (which)
-  (let ((ans nil))
-    (when (member 'vars which) ;; include $values
-      (push (format nil "~{~a;~}" (mapcar #'mystripdollar (rest $values))) ans))
-    (when (member 'funs which) ;; include $functions and $macros
-      (push (format nil "~{~a;~}" (mapcar #'(lambda (x)
-                             (let ((fun-name (mystripdollar (caar x)))
-                                   (arg-name (mapcar #'inspector-funarg-to-string
-                                                     (rest x))))
-                               (format nil "~a(~{~a~^,~})" fun-name arg-name)))
-                         `(,@(rest $functions) ,@(rest $macros)))) ans))
-    (when (member 'labs which) ;; include $labels
-      (push (format nil "~{~a;~}" (mapcar #'mystripdollar (rest $labels))) ans))
-    (when (member 'opts which) ;; include $myoptions
-      (push (format nil "~{~a;~}" (mapcar #'mystripdollar (rest $myoptions))) ans))
-    (format nil "<insp><list>~{~a~}</list></insp>" (nreverse ans))))
-
-;; converts function argument to string
-(defun inspector-funarg-to-string (arg)
-  (cond ((symbolp arg) (mystripdollar arg))
-        ((listp arg) (if (eq (caar arg) 'mquote)
-                       (format nil "'~a" (mystripdollar (second arg)))
-                       (format nil "[~a]" (mystripdollar (second arg)))
-                       ))
-        (t "")))
-
-;; returns xml to be inserted into the minimathctrl
-;; distinguish between ordinary symbols and functions with list
-;; (inspector-get '$a '($f)) to get symbol a and function f
-(defun inspector-get (&rest args)
-  (let ((ans nil))
-    (dolist (sym args)
-      (cond ((symbolp sym) ;; a variable
-             (push (inspector-get-var sym) ans))
-            ((listp sym) ;; a function/macro
-             (push (inspector-get-fun (first sym)) ans))))
-    ;; print all strings
-    (format nil "<insp><values>~{~a~}</values></insp>" (nreverse ans))))
-
-(defun mystripdollar (sym)
-    (subseq (maybe-invert-string-case (symbol-name sym)) 1))
-
-;; prints out a string for Inspector
-;;  to display in MiniMathCtrl
-(defun inspector-get-vars (&rest args)
-  (let ((ans nil))
-    (dolist (sym args)
-      (when (symbolp sym)
-        (push (format nil "~{~a~}"
-          (wxxml `((msetq simp)
-                   ,sym 
-                   ,(if (boundp sym) (symbol-value sym) " << Not bound >>"))
-                 nil nil 'lbp 'rbp))
-              ans)))
-    (format nil "<insp><vars>~{<line>~a</line>~}</vars></insp>" (nreverse ans))))
-
-;; for a single variable
-(defun inspector-get-var (sym)
-  (format nil "<line>~{~a~}</line>" (wxxml `((msetq simp)
-                   ,sym 
-                   ,(if (boundp sym) (symbol-value sym) " << Not bound >>"))
-                 nil nil 'lbp 'rbp)))
-
-(defun inspector-get-fun (sym)
-  (format nil "<line>~{~a~}</line>" (wxxml (myconsfundef sym) nil nil 'lbp 'rbp)))
-
-(defun inspector-get-funs (&rest args)
-  (let ((ans nil))
-    (dolist (sym args)
-      (when (symbolp sym)
-        (push (format nil "~{~a~}" (wxxml (myconsfundef sym) nil nil 'lbp 'rbp))
-              ans)))
-    (format nil "<insp><funs>~{<line>~a</line>~}</funs></insp>" (nreverse ans))))
-
-(defun myconsfundef (x)
-  (prog (arryp name fun)
-        (setq arryp (and (not (atom x)) (not (eq (caar x) 'mqapply)) (member 'array (cdar x) :test #'eq)))
-
-        (cond ((atom x) (setq name ($verbify x)
-                              fun (or (mgetl name '(mexpr mmacro)) (mgetl name '(aexpr)))
-                              ))
-              (arryp (setq fun (meval1 (setq name (cons (list ($verbify (caar x)) 'array) (cdr x)))))
-                     (if (or (atom fun) (not (eq (caar fun) 'lambda))) (setq fun nil))))
-
-        (cond ((not fun) (return `((msetq simp) ,x " << Not defined >>")))
-              ((and (not arryp) (mfilep (cadr fun)))
-               (setq fun (list (car fun) (dskget (cadadr fun) (car (cddadr fun)) (car fun) nil)))))
-
-        (return
-          (cons (if (eq (car fun) 'mmacro) '(mdefmacro simp) '(mdefine simp))
-                (cond (arryp (cons (cons '(mqapply) (cons name (cdadr fun))) (cddr fun)))
-                      (t (funcall #'(lambda (body)
-                                      (cond ((and (eq (car fun) 'aexpr) (not (atom body))
-                                                  (eq (caar body) 'lambda))
-                                             (list (cons '(mqapply) (cons (cons (cons name '(array))
-                                                                                (cdr (cadadr fun)))
-                                                                          (cdadr body)))
-                                                   (caddr body)))
-                                            (t (list (cons (cons name (if (eq (car fun) 'aexpr) '(array)))
-                                                           (cdr (cadadr fun)))
-                                                     body))))
-                                  (caddr (cadr fun)))))))))
-
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
