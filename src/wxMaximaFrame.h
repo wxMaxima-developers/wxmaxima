@@ -31,7 +31,6 @@
 #include "MathCtrl.h"
 #include "Setup.h"
 #include "History.h"
-#include "Inspector.h"
 
 enum {
   socket_client_id = wxID_HIGHEST,
@@ -299,7 +298,6 @@ protected:
 
   MathCtrl* m_console;
   History * m_history;
-  Inspector * m_inspector;
   wxStatusBar* frame_1_statusbar;
   wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;
