@@ -33,8 +33,8 @@
 	     ((style-warning #'muffle-warning)
 	      #+sbcl (sb-ext:compiler-note #'muffle-warning))
 	   ,form)
-  #-sbcl `(progn
-	    ,form))
+  #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
+  #-(or sbcl clisp) `(progn ,form))
 
 ($put '$wxmaxima `((mlist simp) 0 8 4) '$version)
 
