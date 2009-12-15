@@ -259,9 +259,6 @@ enum {
   menu_help_tutorials,
   menu_show_toolbar,
   menu_edit_find
-#ifndef __WXGTK__
-  , about_html_window
-#endif
 };
 
 #define FIRST_PANE menu_pane_hideall

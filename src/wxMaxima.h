@@ -56,6 +56,17 @@ public:
 
 DECLARE_APP(MyApp)
 
+#ifndef __WXGTK__
+class MyAboutDialog : public wxDialog
+{
+public:
+  MyAboutDialog(wxWindow *parent, int id, const wxString title, wxString description);
+  ~MyAboutDialog() {};
+  void OnLinkClicked(wxHtmlLinkEvent& event);
+  DECLARE_EVENT_TABLE()
+};
+#endif
+
 class wxMaxima : public wxMaximaFrame
 {
 public:
@@ -74,7 +85,6 @@ public:
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
 protected:
-  void OnLinkClicked(wxHtmlLinkEvent& event);
   void OnRecentDocument(wxCommandEvent& event);
   void OnIdle(wxIdleEvent& event);
   void MenuCommand(wxString cmd);                  //
