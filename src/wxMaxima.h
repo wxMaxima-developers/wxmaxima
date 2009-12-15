@@ -28,6 +28,7 @@
 #include <wx/process.h>
 #include <wx/fdrepdlg.h>
 #include <wx/regex.h>
+#include <wx/html/htmlwin.h>
 
 #if defined (__WXMSW__)
  #include <wx/msw/helpchm.h>

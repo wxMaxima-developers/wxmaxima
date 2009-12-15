@@ -3168,12 +3168,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   }
 #else
   {
-    wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
-    wxHtmlWindow *html;
+    wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
     wxDialog dlg(this, wxID_ANY, wxString(_("About")));
 
-    html = new wxHtmlWindow(&dlg, about_html_window, wxDefaultPosition, wxSize(380, 460));
-    html -> SetBorders(0);
+    wxHtmlWindow* html_top = new wxHtmlWindow(&dlg, -1, wxDefaultPosition, wxSize(380, 250), wxHW_SCROLLBAR_NEVER);
+    html_top->SetBorders(5);
+
+    wxHtmlWindow* html_bottom = new wxHtmlWindow(&dlg, -1, wxDefaultPosition, wxSize(380, 280));
+    html_bottom->SetBorders(5);
 
     wxString description;
 
@@ -3185,9 +3187,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       description += _("<br>Lisp: ") + m_lispVersion;
 
     wxString cwd = wxGetCwd();
-    cwd = cwd + wxT("/") + wxT(MACPREFIX) + wxT("/");
+#if defined __WXMAC
+    cwd += wxT("/") + wxT(MACPREFIX) + wxT("/");
+#else
+    cwd.Replace(wxT("\\"), wxT("/"));
+    cwd += wxT("/data/");
+#endif
 
-    wxString page = wxString::Format(
+    wxString page_top = wxString::Format(
 wxT("<html>"
 "<head>"
 "</head>"
@@ -3197,7 +3204,19 @@ wxT("<html>"
 "<img src=\"%swxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
-"<p><small>(C) 2004 - 2009 Andrej Vodopivec</small></p>"
+"<p><small>(C) 2004 - 2009 Andrej Vodopivec</small><br></p>"
+"</center>"
+"</body>"
+"</html>"),
+    cwd.c_str(),
+    wxT(VERSION));
+
+    wxString page_bottom = wxString::Format(
+wxT("<html>"
+"<head>"
+"</head>"
+"<body>"
+"<center>"
 "<p>"
 "%s"
 "</p>"
@@ -3243,8 +3262,6 @@ wxT("<html>"
 "</center>"
 "</body>"
 "</html>"),
-  cwd.c_str(),
-  wxT(VERSION),
   _("wxMaxima is a graphical user interface for the computer algebra system MAXIMA based on wxWidgets."),
   _("System info"),
   wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
@@ -3261,11 +3278,21 @@ wxT("<html>"
   _("Menu icons"),
   _("Translated by"));
 
-    html->SetPage(page);
+    html_top->SetPage(page_top);
+    html_bottom->SetPage(page_bottom);
 
-    topsizer -> Add(html, 1, wxALL, 0);
-    topsizer -> Fit(&dlg);
+    html_top->SetSize(wxDefaultCoord,
+        html_top->GetInternalRepresentation()->GetHeight());
 
+    sizer->Add(html_top, 0, wxALL, 0);
+    sizer->Add(html_bottom, 0, wxALL, 0);
+
+    dlg.SetSizer(sizer);
+    sizer->Fit(&dlg);
+    sizer->SetSizeHints(&dlg);
+
+    dlg.SetAutoLayout(true);
+    dlg.Layout();
     dlg.Center();
     dlg.ShowModal();
   }
