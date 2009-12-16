@@ -962,8 +962,9 @@
 (defprop spaceout wxxml-spaceout wxxml)
 
 (defun mydispla (x)
-  (mapc #'princ
-	(wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
+  (let ((*print-circle* nil))
+    (mapc #'princ
+	  (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
 
 (setf *alt-display2d* 'mydispla)
 
@@ -1414,6 +1415,7 @@
 
 (defun $print_function (fun)
   (let ((fun-name (symbol-to-string (caar fun)))
+	(*print-circle* nil)
 	(args (mapcar (lambda (u)
 			(cond ((atom u) (symbol-to-string u))
 			      ((eq (caar u) 'mlist)
@@ -1423,8 +1425,9 @@
     (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
 
 (defun $add_function_template (&rest functs)
-  (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function functs))
-  (cons '(mlist simp) functs))
+  (let ((*print-circle* nil))
+    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function functs))
+    (cons '(mlist simp) functs)))
 
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
@@ -1451,8 +1454,9 @@
      searched-for)))
 
 ;; Load the initial functions (from mac-init.mac)
-(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
-	(mapcar #'$print_function (cdr ($append $functions $macros))))
+(let ((*print-circle* nil))
+  (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
+	  (mapcar #'$print_function (cdr ($append $functions $macros)))))
 
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
