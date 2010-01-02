@@ -707,6 +707,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
     SetStatusText(_("Maxima process terminated."), 1);
 
   m_maximaVersion = wxEmptyString;
+  m_lispVersion = wxEmptyString;
 
 //  delete m_process;
 //  m_process = NULL;
@@ -714,6 +715,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 
 void wxMaxima::CleanUp()
 {
+  if (m_client)
+    m_client->Notify(false);
   if (m_isConnected)
     KillMaxima();
   if (m_isRunning)
@@ -3112,11 +3115,11 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
   html_bottom->SetBorders(5);
 
   wxString cwd = wxGetCwd();
-#if defined __WXMAC
-  cwd += wxT("/") + wxT(MACPREFIX) + wxT("/");
+#if defined __WXMAC__
+  cwd = cwd + wxT("/") + wxT(MACPREFIX);
 #else
   cwd.Replace(wxT("\\"), wxT("/"));
-  cwd += wxT("/data/");
+  cwd = cwd + wxT("/data/");
 #endif
 
   wxString page_top = wxString::Format(
