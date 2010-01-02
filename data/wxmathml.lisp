@@ -26,6 +26,8 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
+#+ccl (setf *print-circle* nil)
+
 ;;; Muffle compiler-notes globally
 #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
 (defmacro no-warning (form)
