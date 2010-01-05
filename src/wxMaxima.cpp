@@ -3172,21 +3172,24 @@ wxT("<html>"
 "<h4>%s</h4>"
 "<p>"
 "Josef Barak (cs)<br>"
-"Alexey Beshenov (ru)<br>"
+"Jens Thostrup (da)<br>"
+"Harald Geyer (de)<br>"
+"Dieter Kaiser (de)<br>"
+"Mario Rodriguez Riotorto (es)<br>"
+"Antonio Ullan (es)<br>"
+"Eric Delevaux (fr)<br>"
+"Michele Gosse (fr)<br>"
+"Alkis Akritas (gr)<br>"
+"Evgenia Kelepesi-Akritas (gr)<br>"
+"Kostantinos Derekas (gr)<br>"
 "Istvan Blahota (hu)<br>"
 "Marco Ciampa (it)<br>"
-"Eric Delevaux (fr)<br>"
-"Harald Geyer (de)<br>"
-"Michele Gosse (fr)<br>"
-"Dieter Kaiser (de)<br>"
-"Eduardo M. Kalinowski (pt_br)<br>"
-"Mario Rodriguez Riotorto (es)<br>"
-"Sergey Semerikov (uk)<br>"
-"Jens Thostrup (da)<br>"
 "Rafal Topolnicki (pl)<br>"
-"Antonio Ullan (es)<br>"
-"Frank Weng (zh_TW)<br>"
-"Vadim V. Zhytnikov (ru)"
+"Eduardo M. Kalinowski (pt_br)<br>"
+"Alexey Beshenov (ru)<br>"
+"Vadim V. Zhytnikov (ru)<br>"
+"Sergey Semerikov (uk)<br>"
+"Frank Weng (zh_TW)"
 "  </p>"
 "</center>"
 "</body>"
@@ -3284,21 +3287,24 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
-    info.AddTranslator(wxT("Alexey Beshenov (ru)"));
-    info.AddTranslator(wxT("Istvan Blahota (hu)"));
-    info.AddTranslator(wxT("Marco Ciampa (it)"));
-    info.AddTranslator(wxT("Eric Delevaux (fr)"));
-    info.AddTranslator(wxT("Harald Geyer (de)"));
-    info.AddTranslator(wxT("Michele Gosse (fr)"));
-    info.AddTranslator(wxT("Dieter Kaiser (de)"));
-    info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
-    info.AddTranslator(wxT("Mario Rodriguez Riotorto (es)"));
-    info.AddTranslator(wxT("Sergey Semerikov (uk)"));
     info.AddTranslator(wxT("Jens Thostrup (da)"));
-    info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
+    info.AddTranslator(wxT("Harald Geyer (de)"));
+    info.AddTranslator(wxT("Dieter Kaiser (de)"));
+    info.AddTranslator(wxT("Mario Rodriguez Riotorto (es)"));
     info.AddTranslator(wxT("Antonio Ullan (es)"));
-    info.AddTranslator(wxT("Frank Weng (zh_TW)"));
+    info.AddTranslator(wxT("Eric Delevaux (fr)"));
+    info.AddTranslator(wxT("Michele Gosse (fr)"));
+    info.AddTranslator(wxT("Alkis Akritas (gr)"));
+    info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (gr)"));
+    info.AddTranslator(wxT("Kostantinos Derekas (gr)"));
+    info.AddTranslator(wxT("Marco Ciampa (it)"));
+    info.AddTranslator(wxT("Istvan Blahota (hu)"));
+    info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
+    info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
+    info.AddTranslator(wxT("Alexey Beshenov (ru)"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
+    info.AddTranslator(wxT("Sergey Semerikov (uk)"));
+    info.AddTranslator(wxT("Frank Weng (zh_TW)"));
     info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
 
     wxAboutBox(info);
