@@ -3175,13 +3175,13 @@ wxT("<html>"
 "Jens Thostrup (da)<br>"
 "Harald Geyer (de)<br>"
 "Dieter Kaiser (de)<br>"
+"Alkis Akritas (el)<br>"
+"Evgenia Kelepesi-Akritas (el)<br>"
+"Kostantinos Derekas (el)<br>"
 "Mario Rodriguez Riotorto (es)<br>"
 "Antonio Ullan (es)<br>"
 "Eric Delevaux (fr)<br>"
 "Michele Gosse (fr)<br>"
-"Alkis Akritas (gr)<br>"
-"Evgenia Kelepesi-Akritas (gr)<br>"
-"Kostantinos Derekas (gr)<br>"
 "Istvan Blahota (hu)<br>"
 "Marco Ciampa (it)<br>"
 "Rafal Topolnicki (pl)<br>"
@@ -3290,13 +3290,13 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Jens Thostrup (da)"));
     info.AddTranslator(wxT("Harald Geyer (de)"));
     info.AddTranslator(wxT("Dieter Kaiser (de)"));
+    info.AddTranslator(wxT("Alkis Akritas (el)"));
+    info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (el)"));
+    info.AddTranslator(wxT("Kostantinos Derekas (el)"));
     info.AddTranslator(wxT("Mario Rodriguez Riotorto (es)"));
     info.AddTranslator(wxT("Antonio Ullan (es)"));
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
     info.AddTranslator(wxT("Michele Gosse (fr)"));
-    info.AddTranslator(wxT("Alkis Akritas (gr)"));
-    info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (gr)"));
-    info.AddTranslator(wxT("Kostantinos Derekas (gr)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
     info.AddTranslator(wxT("Istvan Blahota (hu)"));
     info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
