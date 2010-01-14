@@ -45,6 +45,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES
+	mkdir -p wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
 	cp locales/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima.mo
 	cp locales/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima.mo
@@ -59,6 +60,7 @@ wxMaxima.app: all
 	cp locales/da.mo wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES/wxMaxima.mo
 	cp locales/cs.mo wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES/wxMaxima.mo
 	cp locales/el.mo wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES/wxMaxima.mo
+	cp locales/ja.mo wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES/wxMaxima.mo
 	cp locales/wxwin/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima-wxstd.mo
@@ -72,5 +74,6 @@ wxMaxima.app: all
 	cp locales/wxwin/da.mo wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/cs.mo wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/el.mo wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES/wxMaxima-wxstd.mo
+	cp locales/wxwin/ja.mo wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
 

@@ -46,6 +46,7 @@ const int langs[] =
     wxLANGUAGE_GREEK,
     wxLANGUAGE_HUNGARIAN,
     wxLANGUAGE_ITALIAN,
+    wxLANGUAGE_JAPANESE,
     wxLANGUAGE_POLISH,
     wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_RUSSIAN,
@@ -53,7 +54,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 15
+#define LANGUAGE_NUMBER 16
 
 Config::Config(wxWindow* parent, int id, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
@@ -87,6 +88,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
       _("Greek"),
       _("Hungarian"),
       _("Italian"),
+      _("Japanese"),
       _("Polish"),
       _("Portuguese (Brazilian)"),
       _("Russian"),
