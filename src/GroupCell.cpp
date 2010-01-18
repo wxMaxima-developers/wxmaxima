@@ -640,7 +640,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
     str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
 
     if (m_output != NULL) {
-      str += wxT("$$\n");
+      str += wxT("\\[\n");
       wxString label;
       MathCell *tmp = m_output;
 
@@ -672,8 +672,8 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
         else if (tmp->GetStyle() == TS_LABEL)
         {
-          if (str.Right(3) != wxT("$$\n"))
-            str += label + wxT("\n$$\n$$\n");
+          if (str.Right(3) != wxT("\\[\n"))
+            str += label + wxT("\n\\]\n\\[\n");
           label = wxT("\\leqno{\\tt ") + tmp->ToTeX(false) + wxT(" }");
         }
 
@@ -682,7 +682,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
         tmp = tmp->m_nextToDraw;
       }
-      str += label + wxT("\n$$\n");
+      str += label + wxT("\n\\]\n");
     }
   }
 

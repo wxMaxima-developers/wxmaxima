@@ -1162,6 +1162,9 @@ bool EditorCell::ActivateCell()
 
 bool EditorCell::AddEnding()
 {
+  if (m_text.Left(5) == wxT(":lisp"))
+    return false;
+
   wxString text = m_text.Trim();
   if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
     m_text += wxT(";");

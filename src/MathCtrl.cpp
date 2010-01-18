@@ -1063,7 +1063,7 @@ bool MathCtrl::CopyTeX() {
 
   if (tmp->GetType() != MC_TYPE_GROUP) {
     inMath = true;
-    s = wxT("$$");
+    s = wxT("\\[");
   }
 
   while (tmp != NULL) {
@@ -1074,7 +1074,7 @@ bool MathCtrl::CopyTeX() {
   }
 
   if (inMath == true)
-    s += wxT("$$");
+    s += wxT("\\]");
 
   if (wxTheClipboard->Open()) {
     wxTheClipboard->UsePrimarySelection(false);
@@ -2371,6 +2371,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\setlength{\\parindent}{0pt}"));
   AddLineToFile(output, wxT("\\usepackage[utf8]{inputenc}"));
   AddLineToFile(output, wxT("\\usepackage{graphicx}"));
+  AddLineToFile(output, wxT("\\usepackage{amsmath}"));
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("\\begin{document}"));
 
