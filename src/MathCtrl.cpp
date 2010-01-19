@@ -2371,7 +2371,10 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\setlength{\\parindent}{0pt}"));
   AddLineToFile(output, wxT("\\usepackage[utf8]{inputenc}"));
   AddLineToFile(output, wxT("\\usepackage{graphicx}"));
+  AddLineToFile(output, wxT("\\usepackage{color}"));
   AddLineToFile(output, wxT("\\usepackage{amsmath}"));
+  AddLineToFile(output, wxEmptyString);
+  AddLineToFile(output, wxT("\\definecolor{labelcolor}{RGB}{100,0,0}"));
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("\\begin{document}"));
 

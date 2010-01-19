@@ -637,7 +637,20 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
-    str = wxT("\n\\begin{verbatim}\n") + m_input->ToString(true) + wxT("\n\\end{verbatim}\n");
+    // Input cells
+    str = wxT("\n\\begin{minipage}[t]{1.5cm}{\\color{red}\\bf\n")
+          wxT("\\begin{verbatim}\n") +
+          m_input->ToString(false) +
+          wxT("\\end{verbatim}}\n\\end{minipage}");
+
+    if (m_input->m_next!=NULL)
+    {
+      str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}") +
+             m_input->m_next->ToString(true) +
+             wxT("\\end{verbatim}}\n\\end{minipage}");
+    }
+
+    str += wxT("\n");
 
     if (m_output != NULL) {
       str += wxT("\\[\n");
@@ -674,7 +687,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         {
           if (str.Right(3) != wxT("\\[\n"))
             str += label + wxT("\n\\]\n\\[\n");
-          label = wxT("\\leqno{\\tt ") + tmp->ToTeX(false) + wxT(" }");
+          label = wxT("\\leqno{\\color{labelcolor}\\tt ") + tmp->ToTeX(false) + wxT(" }");
         }
 
         else
@@ -693,19 +706,26 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
       case TS_TITLE:
         str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
-        str += wxT("\\setcounter{figure}{0}\n");
+        str += wxT("\\setcounter{figure}{0}\n\n");
         break;
       case TS_SECTION:
-        str = wxT("\n\\section{") + str + wxT("}\n");
+        str = wxT("\n\\section{") + str + wxT("}\n\n");
         break;
       case TS_SUBSECTION:
-        str = wxT("\n\\subsection{") + str + wxT("}\n");
+        str = wxT("\n\\subsection{") + str + wxT("}\n\n");
         break;
       default:
-        if (!str.StartsWith(wxT("TeX:")))
-          str = wxT("\n\\begin{verbatim}\n") + str + wxT("\n\\end{verbatim}\n");
-        else
-          str = wxT("\n") + str.SubString(5, str.Length()-1) + wxT("\n");
+        if (str.StartsWith(wxT("TeX:")))
+          str = str.Mid(5, str.Length());
+        else {
+          str.Replace(wxT("\\"), wxT("\\verb|\\|"));
+          str.Replace(wxT("_"), wxT("\\_"));
+          str.Replace(wxT("%"), wxT("\\%"));
+          str.Replace(wxT("{"), wxT("\\{"));
+          str.Replace(wxT("}"), wxT("\\}"));
+          str.Replace(wxT("["), wxT("\\["));
+          str.Replace(wxT("]"), wxT("\\]"));
+        }
         break;
     }
   }
