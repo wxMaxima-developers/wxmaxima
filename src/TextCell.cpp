@@ -291,8 +291,10 @@ wxString TextCell::ToTeX(bool all)
   }
   else
   {
-    text = m_text;
-    text.Replace(wxT("\\"), wxT("\\\\"));
+    if (m_textStyle == TS_FUNCTION)
+      text = wxT("\\mathrm{") + m_text + wxT("}");
+    else
+      text = m_text;
     text.Replace(wxT("^"), wxT("\\^"));
     text.Replace(wxT("_"), wxT("\\_"));
     text.Replace(wxT("%"), wxT("\\%"));

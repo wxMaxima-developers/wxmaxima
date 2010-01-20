@@ -638,21 +638,27 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
     // Input cells
-    str = wxT("\n\\begin{minipage}[t]{1.5cm}{\\color{red}\\bf\n")
+    str = wxT("\n%%%%%%%%%%%%%%%\n")
+          wxT("%%% INPUT:\n")
+          wxT("\\begin{minipage}[t]{1.5cm}{\\color{red}\\bf\n")
           wxT("\\begin{verbatim}\n") +
           m_input->ToString(false) +
-          wxT("\\end{verbatim}}\n\\end{minipage}");
+          wxT("\n\\end{verbatim}}\n\\end{minipage}");
 
     if (m_input->m_next!=NULL)
     {
-      str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}") +
+      str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}\n") +
              m_input->m_next->ToString(true) +
-             wxT("\\end{verbatim}}\n\\end{minipage}");
+             wxT("\n\\end{verbatim}}\n\\end{minipage}");
     }
 
     str += wxT("\n");
 
     if (m_output != NULL) {
+      str += wxT("%%% OUTPUT:\n");
+      // Need to define labelcolor if this is Copy as LaTeX!
+      if (imgCounter == NULL)
+        str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
       str += wxT("\\[\n");
       wxString label;
       MathCell *tmp = m_output;
@@ -695,7 +701,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
         tmp = tmp->m_nextToDraw;
       }
-      str += label + wxT("\n\\]\n");
+      str += label + wxT("\n\\]\n%%%%%%%%%%%%%%%\n");
     }
   }
 
@@ -704,14 +710,29 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
     str = GetEditable()->ToTeX(true);
     switch (GetEditable()->GetStyle()) {
       case TS_TITLE:
+        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
+        str.Replace(wxT("_"), wxT("\\_"));
+        str.Replace(wxT("%"), wxT("\\%"));
+        str.Replace(wxT("{"), wxT("\\{"));
+        str.Replace(wxT("}"), wxT("\\}"));
         str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
         str += wxT("\\setcounter{figure}{0}\n\n");
         break;
       case TS_SECTION:
+        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
+        str.Replace(wxT("_"), wxT("\\_"));
+        str.Replace(wxT("%"), wxT("\\%"));
+        str.Replace(wxT("{"), wxT("\\{"));
+        str.Replace(wxT("}"), wxT("\\}"));
         str = wxT("\n\\section{") + str + wxT("}\n\n");
         break;
       case TS_SUBSECTION:
+        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
+        str.Replace(wxT("_"), wxT("\\_"));
+        str.Replace(wxT("%"), wxT("\\%"));
+        str.Replace(wxT("{"), wxT("\\{"));
+        str.Replace(wxT("}"), wxT("\\}"));
         str = wxT("\n\\subsection{") + str + wxT("}\n\n");
         break;
       default:
@@ -723,8 +744,6 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           str.Replace(wxT("%"), wxT("\\%"));
           str.Replace(wxT("{"), wxT("\\{"));
           str.Replace(wxT("}"), wxT("\\}"));
-          str.Replace(wxT("["), wxT("\\["));
-          str.Replace(wxT("]"), wxT("\\]"));
         }
         break;
     }
