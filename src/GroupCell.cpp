@@ -638,7 +638,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
     // Input cells
-    str = wxT("\n%%%%%%%%%%%%%%%\n")
+    str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
           wxT("%%% INPUT:\n")
           wxT("\\begin{minipage}[t]{1.5cm}{\\color{red}\\bf\n")
           wxT("\\begin{verbatim}\n") +
