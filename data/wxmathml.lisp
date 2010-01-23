@@ -946,13 +946,16 @@
 (defprop mtext wxxml-matchfix-np wxxml)
 (defprop mtext (("")"") wxxmlsym)
 
+(defvar *wxxml-mratp* nil)
+
 (defun wxxml-mlable (x l r)
   (wxxml (caddr x)
          (append l
                  (if (cadr x)
                      (list
-		      (format nil "<lbl>(~A) </lbl>"
-			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))))
+		      (format nil "<lbl>(~A)~A </lbl>"
+			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))
+				  *wxxml-mratp*))
 		     nil))
          r 'mparen 'mparen))
 
@@ -964,9 +967,10 @@
 (defprop spaceout wxxml-spaceout wxxml)
 
 (defun mydispla (x)
-  (let ((*print-circle* nil))
-    (mapc #'princ
-	  (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
+  (let ((*print-circle* nil)
+	    (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
+	(mapc #'princ
+		(wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
 
 (setf *alt-display2d* 'mydispla)
 
