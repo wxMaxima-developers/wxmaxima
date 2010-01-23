@@ -84,10 +84,14 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    /// Labels and prompts are fixed widht - adjust font size so that
+    /// Labels and prompts are fixed width - adjust font size so that
     /// they fit in
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
-      dc.GetTextExtent(wxT("(\%oXXX)"), &m_width, &m_height);
+	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
+      if (m_text.Right(2) != wxT("/ "))
+        dc.GetTextExtent(wxT("(\%oXXX)"), &m_width, &m_height);
+      else
+        dc.GetTextExtent(wxT("(\%oXXX)/R/"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       while (m_labelWidth >= m_width) {
