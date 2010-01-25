@@ -2224,6 +2224,15 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (italicPrompt) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("}"));
 
+  // TABLES
+  AddLineToFile(output, wxT("table {"));
+  AddLineToFile(output, wxT("  border: 0px;"));
+  AddLineToFile(output, wxT("}"));
+  AddLineToFile(output, wxT("td {"));
+  AddLineToFile(output, wxT("  vertical-align: top;"));
+  AddLineToFile(output, wxT("  padding: 1mm;"));
+  AddLineToFile(output, wxT("}"));
+
   AddLineToFile(output, wxT("  </STYLE>"));
   AddLineToFile(output, wxT(" </HEAD>"));
   AddLineToFile(output, wxT(" <BODY>"));
@@ -2243,17 +2252,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
     {
       AddLineToFile(output, wxT("\n\n<!-- Code cell -->\n\n"));
       MathCell *prompt = tmp->GetPrompt();
-      AddLineToFile(output, wxT("<P>"));
+      AddLineToFile(output, wxT("<P><TABLE><TR><TD>"));
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
       AddLineToFile(output, prompt->ToString(false));
-      AddLineToFile(output, wxT("  </SPAN>"));
+      AddLineToFile(output, wxT("  </SPAN></TD>"));
 
       MathCell *input = tmp->GetInput();
       if (input != NULL) {
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"input\">"));
+        AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
         AddLineToFile(output, PrependNBSP(input->ToString(false)));
-        AddLineToFile(output, wxT("  </SPAN>"));
+        AddLineToFile(output, wxT("  </SPAN></TD>"));
       }
+      AddLineToFile(output, wxT("</TR></TABLE>"));
 
       MathCell *out = tmp->GetLabel();
 
