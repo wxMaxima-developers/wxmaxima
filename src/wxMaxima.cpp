@@ -2048,7 +2048,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_history_next:
     {
-      wxString command = m_history->GetCommand(false);
+      wxString command = m_history->GetCommand(true);
       if (command != wxEmptyString)
         m_console->SetActiveCellText(command);
     }
