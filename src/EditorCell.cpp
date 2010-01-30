@@ -1574,6 +1574,7 @@ void EditorCell::SetValue(wxString text)
     m_positionOfCaret = m_text.Length();
   }
 
+  FindMatchingParens();
   m_containsChanges = true;
 }
 

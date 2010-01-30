@@ -37,6 +37,7 @@ History::History(wxWindow* parent, int id) : wxPanel(parent, id)
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
+  m_current = 0;
 }
 
 History::~History()
@@ -59,6 +60,8 @@ void History::AddToHistory(wxString cmd)
     if (curr != wxEmptyString)
       commands.Insert(curr, 0);
   }
+
+  m_current = commands.GetCount();
 
   UpdateDisplay();
 }
@@ -93,6 +96,27 @@ void History::UpdateDisplay()
 void History::OnRegExEvent(wxCommandEvent &ev)
 {
   UpdateDisplay();
+}
+
+wxString History::GetCommand(bool next)
+{
+  if (commands.GetCount() == 0)
+    return wxEmptyString;
+
+  else if (next)
+  {
+    --m_current;
+    if (m_current < 0)
+      m_current = commands.GetCount()-1;
+    return commands[m_current];
+  }
+  else
+  {
+    ++m_current;
+    if (m_current >= commands.GetCount())
+      m_current = 0;
+    return commands[m_current];
+  }
 }
 
 BEGIN_EVENT_TABLE(History, wxPanel)

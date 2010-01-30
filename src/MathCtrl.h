@@ -193,6 +193,7 @@ public:
   bool LoadSymbols(wxString file) { m_autocomplete.LoadSymbols(file); }
   bool Autocomplete(bool templates = false);
   void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
+  void SetActiveCellText(wxString text);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

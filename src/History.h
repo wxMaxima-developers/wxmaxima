@@ -35,10 +35,12 @@ public:
   void AddToHistory(wxString cmd);
   void OnRegExEvent(wxCommandEvent &ev);
   void UpdateDisplay();
+  wxString GetCommand(bool next);
 private:
   wxListBox *m_history;
   wxTextCtrl *m_regex;
   wxArrayString commands;
+  int m_current;
   DECLARE_EVENT_TABLE()
 };
 

@@ -2046,6 +2046,20 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_findDialog->Show(true);
     }
     break;
+  case menu_history_next:
+    {
+      wxString command = m_history->GetCommand(false);
+      if (command != wxEmptyString)
+        m_console->SetActiveCellText(command);
+    }
+    break;
+  case menu_history_previous:
+    {
+      wxString command = m_history->GetCommand(false);
+      if (command != wxEmptyString)
+        m_console->SetActiveCellText(command);
+    }
+    break;
   }
 }
 
@@ -4307,6 +4321,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_autocomplete_templates, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
   EVT_MENU(popid_insert_input, wxMaxima::InsertMenu)
+  EVT_MENU(menu_history_previous, wxMaxima::EditMenu)
+  EVT_MENU(menu_history_next, wxMaxima::EditMenu)
   EVT_MENU(menu_cut, wxMaxima::EditMenu)
   EVT_MENU(menu_paste, wxMaxima::EditMenu)
   EVT_MENU(menu_paste_input, wxMaxima::EditMenu)

@@ -258,7 +258,9 @@ enum {
   menu_format_pagebreak,
   menu_help_tutorials,
   menu_show_toolbar,
-  menu_edit_find
+  menu_edit_find,
+  menu_history_previous,
+  menu_history_next
 };
 
 #define FIRST_PANE menu_pane_hideall

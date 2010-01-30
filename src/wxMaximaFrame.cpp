@@ -287,7 +287,13 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_add_pagebreak, _("Insert Page Break\tF10"),
                              _("Insert a page break"));
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
-                              _("Insert image"), wxITEM_NORMAL);
+                             _("Insert image"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_history_previous, _("Previous command\tAlt-Up"),
+                             _("Recall previous command from history"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_history_previous, _("Next command\tAlt-Down"),
+                             _("Recall next command from history"), wxITEM_NORMAL);
+
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Cell"));
 
   // Maxima menu

@@ -3512,6 +3512,26 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   Refresh();
 }
 
+void MathCtrl::SetActiveCellText(wxString text)
+{
+  EditorCell* active = (EditorCell *)m_activeCell;
+  if (active != NULL)
+  {
+    active->SaveValue();
+    active->SetValue(text);
+    active->ResetSize();
+    active->ResetData();
+    GroupCell *parent = (GroupCell *)active->GetParent();
+    parent->ResetSize();
+    parent->ResetData();
+    parent->ResetInputLabel();
+    Recalculate();
+    Refresh();
+  }
+  else
+    OpenHCaret(text);
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
