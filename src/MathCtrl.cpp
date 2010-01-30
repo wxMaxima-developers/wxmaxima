@@ -3517,16 +3517,20 @@ void MathCtrl::SetActiveCellText(wxString text)
   EditorCell* active = (EditorCell *)m_activeCell;
   if (active != NULL)
   {
-    active->SaveValue();
-    active->SetValue(text);
-    active->ResetSize();
-    active->ResetData();
     GroupCell *parent = (GroupCell *)active->GetParent();
-    parent->ResetSize();
-    parent->ResetData();
-    parent->ResetInputLabel();
-    Recalculate();
-    Refresh();
+    if (parent->GetGroupType() == GC_TYPE_CODE &&
+        parent->IsMainInput(active))
+    {
+      active->SaveValue();
+      active->SetValue(text);
+      active->ResetSize();
+      active->ResetData();
+      parent->ResetSize();
+      parent->ResetData();
+      parent->ResetInputLabel();
+      Recalculate();
+      Refresh();
+    }
   }
   else
     OpenHCaret(text);

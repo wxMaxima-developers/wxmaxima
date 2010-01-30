@@ -1274,3 +1274,11 @@ void GroupCell::Number(int &section, int &subsection, int &image) {
   if (m_next)
     ((GroupCell *)m_next)->Number(section, subsection, image);
 }
+
+bool GroupCell::IsMainInput(MathCell *active)
+{
+  if (m_input->m_next == NULL)
+    return false;
+
+  return (active == m_input->m_next);
+}

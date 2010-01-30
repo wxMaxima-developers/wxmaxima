@@ -97,6 +97,7 @@ public:
   GroupCell *FoldAll(bool all = false);
   GroupCell *UnfoldAll(bool all = false);
   bool IsLesserGCType(int comparedTo);
+  bool IsMainInput(MathCell *active);
   void Number(int &section, int &subsection, int &image);
   void RecalculateAppended(CellParser& parser);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
