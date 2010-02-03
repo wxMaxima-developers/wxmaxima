@@ -1879,12 +1879,15 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     Close();
     break;
 
+  case popid_animation_start:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_animation_start:
+#endif
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
     break;
 
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_animation_stop:
     if (m_console->CanAnimate() && m_console->AnimationRunning())
       m_console->Animate(false);
@@ -3804,7 +3807,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       }
     }
     break;
-  case popid_image_animate:
+  case popid_animation_save:
     {
       wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
                                      wxT("animation.gif"), wxT("gif"),
@@ -4105,7 +4108,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_float, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_tex, wxMaxima::PopupMenu)
   EVT_MENU(popid_image, wxMaxima::PopupMenu)
-  EVT_MENU(popid_image_animate, wxMaxima::PopupMenu)
+  EVT_MENU(popid_animation_save, wxMaxima::PopupMenu)
+  EVT_MENU(popid_animation_start, wxMaxima::FileMenu)
   EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
   EVT_BUTTON(button_solve, wxMaxima::EquationsMenu)

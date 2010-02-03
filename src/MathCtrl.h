@@ -57,7 +57,8 @@ enum {
   popid_insert_input,
   popid_copy_tex,
   popid_image,
-  popid_image_animate,
+  popid_animation_save,
+  popid_animation_start,
   popid_evaluate,
   popid_merge_cells,
   // popid_complete_00 should be the last id

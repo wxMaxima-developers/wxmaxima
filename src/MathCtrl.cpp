@@ -657,8 +657,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
       popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_image, _("Save Image..."), wxEmptyString, wxITEM_NORMAL);
-      if (IsSelected(MC_TYPE_SLIDE))
-        popupMenu->Append(popid_image_animate, _("Save Animation..."), wxEmptyString, wxITEM_NORMAL);
+      if (IsSelected(MC_TYPE_SLIDE)) {
+        popupMenu->Append(popid_animation_save, _("Save Animation..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_animation_start, _("Start Animation"), wxEmptyString, wxITEM_NORMAL);
+      }
     }
 
     else if (m_selectionStart != NULL)
