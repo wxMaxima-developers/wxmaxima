@@ -64,6 +64,7 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_isHidden = m_isHidden;
   tmp->m_textStyle = m_textStyle;
   tmp->m_highlight = m_highlight;
+  tmp->SetAltText();
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -534,9 +535,10 @@ wxString TextCell::GetSymbolUnicode()
     return wxString(L"\x00AC");
   else if (m_text == wxT("->"))
     return wxString(L"\x2192");
+ /*
   else if (m_textStyle == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
     return wxString(L"\x2202");
-
+  */
   return wxEmptyString;
 }
 
