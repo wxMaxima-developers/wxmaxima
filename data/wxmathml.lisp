@@ -841,13 +841,13 @@
   ;; sort of like a quotient times the deriva-dand.
   (let*
       (($simp t)
-       (dsym '((wxxmltag simp) "d" "s"))
        (arg (cadr x)) ;; the function being differentiated
        (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
        (ords (odds difflist 0)) ;; e.g. (1 2)
        (ords (cond ((null ords) '(1))
                    (t ords)))
        (vars (odds difflist 1)) ;; e.g. (x y)
+       (dsym `((wxxmltag simp) "d" "s"))
        (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
        (denom (cons '(mtimes)
                     (mapcan #'(lambda(b e)
@@ -1244,7 +1244,8 @@
   "")
 
 
-(setf (get '$draw 'autoload) "draw")
+(dolist (fun '($draw $draw2d $draw3d $set_draw_defaults))
+  (setf (get fun 'autoload) "draw"))
 
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
@@ -1300,6 +1301,7 @@
 
 (defun $wxcontour_plot (&rest args)
   (let ((preamble ($wxplot_preamble))
+	($plot_options $plot_options)
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))
     (when (string= system-preamble "false")
@@ -1308,9 +1310,9 @@
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
+    ($set_plot_option `((mlist simp) $gnuplot_preamble ,preamble))
     (apply #'$contour_plot `(,@args
 			     ((mlist simp) $plot_format $gnuplot)
-			     ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_term $png)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
 
@@ -1466,3 +1468,5 @@
 
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
+
+(setq *mread-prompt* nil)
