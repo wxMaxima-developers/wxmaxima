@@ -260,7 +260,8 @@ enum {
   menu_show_toolbar,
   menu_edit_find,
   menu_history_previous,
-  menu_history_next
+  menu_history_next,
+  menu_check_updates
 };
 
 #define FIRST_PANE menu_pane_hideall

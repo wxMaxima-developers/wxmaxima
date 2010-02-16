@@ -58,6 +58,9 @@
 #include <wx/txtstrm.h>
 #include <wx/fs_mem.h>
 
+#include <wx/url.h>
+#include <wx/sstream.h>
+
 enum {
   maxima_process_id
 };
@@ -3394,6 +3397,10 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/wiki/index.php/Tutorials"));
     break;
 
+  case menu_check_updates:
+    CheckForUpdates(true);
+    break;
+
   default:
     break;
   }
@@ -4090,7 +4097,85 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
   m_console->SetFocus();
 }
 
+long *VersionToInt(wxString version)
+{
+  long *intV = new long[3];
+
+  wxStringTokenizer tokens(version, wxT("."));
+
+  for (int i=0; i<3 && tokens.HasMoreTokens(); i++)
+    tokens.GetNextToken().ToLong(&intV[i]);
+
+  return intV;
+}
+
+/***
+ * Checks the file http://wxmaxima.sourceforge.net/version.html to
+ * see if there is a newer version available.
+ */
+void wxMaxima::CheckForUpdates(bool reportUpToDate)
+{
+  wxHTTP connection;
+  connection.SetHeader(wxT("Content-type"), wxT("text/html; charset=utf-8"));
+  connection.SetTimeout(2);
+
+  if (!connection.Connect(wxT("wxmaxima.sourceforge.net")))
+  {
+    wxMessageBox(_("Can not connect to the web server."), _("Error"),
+            wxOK | wxICON_ERROR);
+    return;
+  }
+
+  wxInputStream *inputStream = connection.GetInputStream(_T("/version.html"));
+
+  if (connection.GetError() == wxPROTO_NOERR)
+  {
+    wxString version;
+    wxStringOutputStream outputStream(&version);
+    inputStream->Read(outputStream);
+
+    if (version.StartsWith(wxT("wxmaxima = "))) {
+      version = version.Mid(11, version.Length()).Trim();
+      long *myVersion = VersionToInt(wxT(VERSION));
+      long *currVersion = VersionToInt(version);
+
+      bool upgrade = myVersion[0] < currVersion[0] ||
+                     (myVersion[0] == currVersion[0] && myVersion[1]<currVersion[1]) ||
+                     (myVersion[0] == currVersion[0] &&
+                         myVersion[1] == currVersion[1] &&
+                         myVersion[2] < currVersion[2]);
+
+      if (upgrade) {
+        bool visit = wxMessageBox(wxString::Format(
+            _("You have version %s. Current version is %s.\n\n"
+              "Select OK to visit the wxMaxima webpage."),
+            wxT(VERSION), version.c_str()),
+            _("Upgrade"),
+            wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
+
+        if (visit)
+          wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/"));
+      }
+      else if (reportUpToDate)
+        wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
+            wxOK | wxICON_INFORMATION);
+
+      delete myVersion;
+      delete currVersion;
+    }
+  }
+  else
+  {
+    wxMessageBox(_("Can not connect to the web server."), _("Error"),
+        wxOK | wxICON_ERROR);
+  }
+
+  wxDELETE(inputStream);
+  connection.Close();
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
+  EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)

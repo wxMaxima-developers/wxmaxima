@@ -644,7 +644,12 @@ void wxMaximaFrame::SetupMenu()
           _("About wxMaxima"),
 #endif
           _("About wxMaxima"), wxT("stock_about"));
+  wxglade_tmp_menu_7->AppendSeparator();
+  wxglade_tmp_menu_7->Append(menu_check_updates, _("Check for Updates"),
+                             _("Check if a newer version of wxMaxima/Maxima exist."),
+                             wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
+
 
   SetMenuBar(frame_1_menubar);
 
