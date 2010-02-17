@@ -195,43 +195,34 @@ int MathPrintout::GetHeaderHeight()
   double ppiScale = GetPPIScale();
   int width, height;
 
-  dc->SetFont(wxFont((int)((double)10*ppiScale + 0.5),
-                     wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
+  dc->SetFont(wxFont(SCALE_PX(10, ppiScale), wxMODERN, wxNORMAL, wxNORMAL));
   dc->GetTextExtent(GetTitle(), &width, &height);
   return height + SCALE_PX(12, ppiScale);
 }
 
 void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 {
+  int page_width, page_height;
+  int title_width, title_height;
   int marginX, marginY;
   int pageWidth, pageHeight;
-  int width, height;
-  int pages_width, pages_height;
 
   GetPageMargins(&marginX, &marginY);
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  double ppiScale = GetPPIScale();
-  double screenScaleX, screenScaleY;
-  GetScreenScale(&screenScaleX, &screenScaleY);
-  scale = ppiScale * screenScaleX;
-
   dc->SetTextForeground(wxColour(wxT("grey")));
   dc->SetPen(wxPen(wxT("light grey"), 1, wxSOLID));
 
-  dc->SetFont(wxFont(MAX((int)(10.0*ppiScale + 0.5), 1),
-                     wxMODERN, wxNORMAL, wxNORMAL));
-  dc->GetTextExtent(GetTitle(), &width, &height);
+  dc->SetFont(wxFont(SCALE_PX(10, scale), wxMODERN, wxNORMAL, wxNORMAL));
+  dc->GetTextExtent(GetTitle(), &title_width, &title_height);
   wxString page = wxString::Format(wxT("%d / %d"), pageNum, m_numberOfPages);
-  dc->GetTextExtent(page, &pages_width, &pages_height);
+  dc->GetTextExtent(page, &page_width, &page_height);
 
-  dc->SetFont(wxFont(MAX((int)(10.0*scale + 0.5), 1),
-                     wxMODERN, wxNORMAL, wxNORMAL, 0, wxT("Courier")));
   dc->DrawText(GetTitle(), marginX, marginY);
-  dc->DrawText(page, pageWidth - pages_width - marginX, marginY);
+  dc->DrawText(page, pageWidth - page_width - marginX, marginY);
 
-  dc->DrawLine(marginX, marginY + height + SCALE_PX(3, scale),
-               pageWidth - marginX, marginY + height + SCALE_PX(3, scale));
+  dc->DrawLine(marginX, marginY + title_height + SCALE_PX(3, scale),
+               pageWidth - marginX, marginY + title_height + SCALE_PX(3, scale));
 
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxSOLID));
