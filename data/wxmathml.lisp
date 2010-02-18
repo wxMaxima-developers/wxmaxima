@@ -847,7 +847,7 @@
        (ords (cond ((null ords) '(1))
                    (t ords)))
        (vars (odds difflist 1)) ;; e.g. (x y)
-       (dsym `((wxxmltag simp) "d" "s"))
+       (dsym '((wxxmltag simp) "d" "s"))
        (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
        (denom (cons '(mtimes)
                     (mapcan #'(lambda(b e)
@@ -1452,7 +1452,8 @@
        (($maxima)
 	($batchload searched-for)
 	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
-		(mapcar #'$print_function (cdr ($append $functions $macros)))))
+		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
+			(mapcar #'symbol-to-string (cdr $values)))))
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
