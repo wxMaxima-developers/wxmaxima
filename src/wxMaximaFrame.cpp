@@ -634,6 +634,10 @@ void wxMaximaFrame::SetupMenu()
                              _("Info about Maxima build"), wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug Report"),
                              _("Report bug"), wxITEM_NORMAL);
+  wxglade_tmp_menu_7->AppendSeparator();
+  wxglade_tmp_menu_7->Append(menu_check_updates, _("Check for Updates"),
+                             _("Check if a newer version of wxMaxima/Maxima exist."),
+                             wxITEM_NORMAL);
 #ifndef __WXMAC__
   wxglade_tmp_menu_7->AppendSeparator();
 #endif
@@ -644,10 +648,6 @@ void wxMaximaFrame::SetupMenu()
           _("About wxMaxima"),
 #endif
           _("About wxMaxima"), wxT("stock_about"));
-  wxglade_tmp_menu_7->AppendSeparator();
-  wxglade_tmp_menu_7->Append(menu_check_updates, _("Check for Updates"),
-                             _("Check if a newer version of wxMaxima/Maxima exist."),
-                             wxITEM_NORMAL);
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
 
 
