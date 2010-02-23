@@ -659,8 +659,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
       // Need to define labelcolor if this is Copy as LaTeX!
       if (imgCounter == NULL)
         str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
-      str += wxT("\\[\n");
-      wxString label;
+      str += wxT("\\begin{math}\\displaystyle\n");
       MathCell *tmp = m_output;
 
       while (tmp != NULL) {
@@ -691,9 +690,9 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
         else if (tmp->GetStyle() == TS_LABEL)
         {
-          if (str.Right(3) != wxT("\\[\n"))
-            str += label + wxT("\n\\]\n\\[\n");
-          label = wxT("\\leqno{\\color{labelcolor}\\tt ") + tmp->ToTeX(false) + wxT(" }");
+          if (str.Right(13) != wxT("displaystyle\n"))
+            str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
+          str += wxT("\\mathrm{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\\quad");
         }
 
         else
@@ -701,7 +700,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
         tmp = tmp->m_nextToDraw;
       }
-      str += label + wxT("\n\\]\n%%%%%%%%%%%%%%%\n");
+      str += wxT("\n\\end{math}\n%%%%%%%%%%%%%%%\n");
     }
   }
 
@@ -715,6 +714,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         str.Replace(wxT("%"), wxT("\\%"));
         str.Replace(wxT("{"), wxT("\\{"));
         str.Replace(wxT("}"), wxT("\\}"));
+        str.Replace(wxT("^"), wxT("\\^"));
         str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
         str += wxT("\\setcounter{figure}{0}\n\n");
@@ -725,6 +725,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         str.Replace(wxT("%"), wxT("\\%"));
         str.Replace(wxT("{"), wxT("\\{"));
         str.Replace(wxT("}"), wxT("\\}"));
+        str.Replace(wxT("^"), wxT("\\^"));
         str = wxT("\n\\section{") + str + wxT("}\n\n");
         break;
       case TS_SUBSECTION:
@@ -733,6 +734,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         str.Replace(wxT("%"), wxT("\\%"));
         str.Replace(wxT("{"), wxT("\\{"));
         str.Replace(wxT("}"), wxT("\\}"));
+        str.Replace(wxT("^"), wxT("\\^"));
         str = wxT("\n\\subsection{") + str + wxT("}\n\n");
         break;
       default:
@@ -744,6 +746,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           str.Replace(wxT("%"), wxT("\\%"));
           str.Replace(wxT("{"), wxT("\\{"));
           str.Replace(wxT("}"), wxT("\\}"));
+          str.Replace(wxT("^"), wxT("\\^"));
         }
         break;
     }
