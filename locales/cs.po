@@ -1,22 +1,25 @@
+# translation of cs.po to
 # wxMaxima Czech po translation.
-# 
+#
 # Copyright (c) Josef Barák <josefbarak@seznam.cz>, 2009.
-# 
+#
+# Robert Marik <maarik@mendelu.cz>, 2010.
 # This file is distributed under the same license as the wxMaxima package.
 msgid ""
 msgstr ""
-"Project-Id-Version: wxMaxima\n"
+"Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-08 23:21+0100\n"
-"PO-Revision-Date: 2009-10-12 19:34+0100\n"
-"Last-Translator: \n"
-"Language-Team: Josef Barák <josefbarak@seznam.cz>\n"
+"PO-Revision-Date: 2010-03-10 14:21+0100\n"
+"Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
+"Language-Team:  <cs@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/wxMaxima.cpp:3130
 #, c-format
@@ -26,32 +29,42 @@ msgid ""
 "wxWidgets: %d.%d.%d\n"
 "Unicode support: %s"
 msgstr ""
+"\n"
+"\n"
+"wxWidgets: %d.%d.%d\n"
+"podpora Unicode: %s"
 
 #: ../src/wxMaxima.cpp:3143
-#, fuzzy
 msgid ""
 "\n"
 "Lisp: "
-msgstr "Seznam:"
+msgstr ""
+"\n"
+"Lisp: "
 
 #: ../src/wxMaxima.cpp:3139
-#, fuzzy
 msgid ""
 "\n"
 "Maxima version: "
-msgstr "Nastavení programu Maxima"
+msgstr ""
+"\n"
+"Verze programu Maxima: "
 
 #: ../src/wxMaxima.cpp:3728
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
 msgstr ""
+"\n"
+"Není připojeno k programu Maxima!\n"
 
 #: ../src/wxMaxima.cpp:3141
 msgid ""
 "\n"
 "Not connected."
 msgstr ""
+"\n"
+"Není připojeno."
 
 #: ../src/MathParser.cpp:953
 msgid " << Expression too long to display! >>"
@@ -66,8 +79,7 @@ msgstr ""
 "načteno. Prosím proveďte update programu."
 
 #: ../src/wxMaxima.cpp:984
-msgid ""
-" was saved using a newer version of wxMaxima. Please update your wxMaxima."
+msgid " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr ""
 "bylo uloženo v novější verzi programu wxMaxima. Prosím proveďte update "
 "programu."
@@ -90,7 +102,7 @@ msgstr "Dávkový sou&bor...\tCtrl-B"
 
 #: ../src/wxMaximaFrame.cpp:389
 msgid "&Boundary Value Problem..."
-msgstr "Okrajový pro&blém..."
+msgstr "Okrajová &úloha..."
 
 #: ../src/wxMaximaFrame.cpp:629
 msgid "&Bug Report"
@@ -98,7 +110,7 @@ msgstr "Hlášení o chy&bě"
 
 #: ../src/wxMaximaFrame.cpp:490
 msgid "&Calculus"
-msgstr "&Kalkul"
+msgstr "&Analýza"
 
 #: ../src/wxMaximaFrame.cpp:541
 msgid "&Canonical Form"
@@ -106,7 +118,7 @@ msgstr "&Kanonická forma"
 
 #: ../src/wxMaximaFrame.cpp:291
 msgid "&Cell"
-msgstr ""
+msgstr "&Pole"
 
 #: ../src/wxMaximaFrame.cpp:414
 msgid "&Characteristic Polynomial..."
@@ -182,7 +194,7 @@ msgstr "&Export..."
 
 #: ../src/wxMaximaFrame.cpp:499
 msgid "&Factor Expression"
-msgstr "&Faktorizovat výraz"
+msgstr "Na součin"
 
 #: ../src/wxMaximaFrame.cpp:200
 msgid "&File"
@@ -344,7 +356,7 @@ msgstr "(Původní jazykové nastavení)"
 #: ../src/IntegrateWiz.cpp:236 ../src/IntegrateWiz.cpp:247
 #: ../src/LimitWiz.cpp:133 ../src/LimitWiz.cpp:144
 msgid "- Infinity"
-msgstr ""
+msgstr "- Nekonečno"
 
 #: ../data/tips.txt:11
 msgid ""
@@ -482,7 +494,7 @@ msgid ""
 "multiline input. This behaviour can be changed in 'Edit->Configure' dialog "
 "by checking 'Enter evaluates cells'. This switches the roles of these two "
 "key commands."
-msgstr ""
+msgstr "Ve výchozím nastavení je pro vyhodnocení přikazů použit příkaz Shift-Enter, zatímco klávesa Enter je určena pro víceřádkový vstup. Toto nastavení je možno změnit v Editovat -> Nastavení zaškrtnutím volby 'Enter vyhodnocuje výraz'. Toto nastavení prohodí výše uvedené příkazy."
 
 #: ../src/wxMaximaFrame.cpp:447
 msgid "C&hange Variable..."
@@ -582,9 +594,8 @@ msgid "Close document?"
 msgstr "Zavřít dokument?"
 
 #: ../src/wxMaxima.cpp:3350
-#, fuzzy
 msgid "Col. names:"
-msgstr "Sloupce:"
+msgstr "Jména sloupců:"
 
 #: ../src/MatWiz.cpp:157
 msgid "Columns:"
@@ -603,24 +614,22 @@ msgid "Comma separated y coordinates"
 msgstr "Zadejte y-ové souřadnice oddělené čárkou"
 
 #: ../src/MathCtrl.cpp:728
-#, fuzzy
 msgid "Comment Selection"
-msgstr "Vystřihnout výběr"
+msgstr "Zakomentovat výběr"
 
 #: ../src/wxMaximaFrame.cpp:272
 msgid "Complete Word\tCtrl-K"
-msgstr ""
+msgstr "Doplnit slovo\tCtrl-K"
 
 #: ../src/wxMaximaFrame.cpp:273
 msgid "Complete word"
-msgstr ""
+msgstr "Doplnit slovo"
 
 #: ../src/wxMaximaFrame.cpp:488
 msgid "Compute continued fraction of a value"
 msgstr "Výpočet celé části hodnoty"
 
 #: ../src/wxMaximaFrame.cpp:426
-#, fuzzy
 msgid "Compute the adjoint matrix"
 msgstr "Výpočet adjungované matice"
 
@@ -645,9 +654,8 @@ msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "Výpočet nejmenšího společného násobku (před tím proveďte load(functs))"
 
 #: ../src/wxMaxima.cpp:3400
-#, fuzzy
 msgid "Condition:"
-msgstr "Animace"
+msgstr "Podmínka:"
 
 #: ../src/Config.cpp:1009 ../src/Config.cpp:1017
 msgid "Config file (*.ini)|*.ini"
@@ -681,8 +689,7 @@ msgstr "Převod binomických koeficientů, beta a gama funkcí na faktoriály"
 
 #: ../src/wxMaximaFrame.cpp:519
 msgid "Convert binomials, factorials and beta function to gamma function"
-msgstr ""
-"Převod binomických koeficientů, faktoriálů a beta funkcí na gama funkce"
+msgstr "Převod binomických koeficientů, faktoriálů a beta funkcí na gama funkce"
 
 #: ../src/wxMaximaFrame.cpp:553
 msgid "Convert complex expression to polar form"
@@ -693,10 +700,8 @@ msgid "Convert complex expression to rect form"
 msgstr "Převod komplexního výrazu na standardní tvar"
 
 #: ../src/wxMaximaFrame.cpp:562
-msgid ""
-"Convert exponential function of imaginary argument to trigonometric form"
-msgstr ""
-"Převod exponenciální funkce imaginárního argumentu na trigonometrický tvar"
+msgid "Convert exponential function of imaginary argument to trigonometric form"
+msgstr "Převod exponenciální funkce imaginárního argumentu na trigonometrický tvar"
 
 #: ../src/wxMaximaFrame.cpp:507
 msgid "Convert logarithm of product to sum of logarithms"
@@ -742,20 +747,19 @@ msgstr "Kopírovat do LaTeXu"
 
 #: ../src/wxMaximaFrame.cpp:270
 msgid "Copy Previous Input\tCtrl-I"
-msgstr ""
+msgstr "Kopírovat předchozí vstup\tCtrl-I"
 
 #: ../src/wxMaximaFrame.cpp:220
 msgid "Copy as Image"
 msgstr "Kopírovat jako obrázek"
 
 #: ../src/wxMaximaFrame.cpp:216
-#, fuzzy
 msgid "Copy as LaTeX"
-msgstr "Kopírovat do LaTeXu"
+msgstr "Kopírovat jako LaTeX"
 
 #: ../src/wxMaximaFrame.cpp:213
 msgid "Copy as Text\tCtrl-Shift-C"
-msgstr ""
+msgstr "Kopírovat jako text\tCtrl-Shift-C"
 
 #: ../src/wxMaximaFrame.cpp:212 ../src/wxMaximaFrame.cpp:684
 #: ../src/wxMaximaFrame.cpp:748
@@ -767,9 +771,8 @@ msgid "Copy selection from document as an image"
 msgstr "Kopírovat výběr z dokumentu jako obrázek"
 
 #: ../src/wxMaximaFrame.cpp:214
-#, fuzzy
 msgid "Copy selection from document as text"
-msgstr "Kopírovat výběr z dokumentu jako obrázek"
+msgstr "Kopírovat výběr z dokumentu jako text"
 
 #: ../src/wxMaximaFrame.cpp:217
 msgid "Copy selection from document in LaTeX format"
@@ -777,7 +780,7 @@ msgstr "Kopírovat výběr z dokumentu jako kód LaTeXu"
 
 #: ../src/wxMaximaFrame.cpp:271
 msgid "Create a new cell with previous input"
-msgstr ""
+msgstr "Vytvořit vstupní pole s předchozím vstupem"
 
 #: ../src/Config.cpp:132
 msgid "Cursor"
@@ -799,25 +802,23 @@ msgstr "Vystřihnout výběr"
 
 #: ../src/Config.cpp:81
 msgid "Czech"
-msgstr ""
+msgstr "Česky"
 
 #: ../src/Config.cpp:82
-#, fuzzy
 msgid "Danish"
-msgstr "Španělský"
+msgstr "Dánsky"
 
 #: ../src/wxMaxima.cpp:3350 ../src/wxMaxima.cpp:3400
-#, fuzzy
 msgid "Data Matrix:"
-msgstr "Matice:"
+msgstr "Matice dat:"
 
 #: ../src/wxMaxima.cpp:3370
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
-msgstr ""
+msgstr "Datový soubor (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
 #: ../src/wxMaxima.cpp:3239 ../src/wxMaxima.cpp:3253
 msgid "Data:"
-msgstr ""
+msgstr "Data:"
 
 #: ../src/wxMaximaFrame.cpp:485
 msgid "Decompose rational function to partial fractions"
@@ -884,9 +885,8 @@ msgid "Derivative:"
 msgstr "Derivace:"
 
 #: ../src/wxMaximaFrame.cpp:960
-#, fuzzy
 msgid "Deviation"
-msgstr "Animace"
+msgstr "Deviace"
 
 #: ../src/wxMaximaFrame.cpp:481
 msgid "Di&vide Polynomials..."
@@ -937,9 +937,8 @@ msgid "Divide"
 msgstr "Dělit"
 
 #: ../src/MathCtrl.cpp:730
-#, fuzzy
 msgid "Divide Cell"
-msgstr "Dělit"
+msgstr "Rozdělit pole"
 
 #: ../src/wxMaximaFrame.cpp:482
 msgid "Divide numbers or polynomials"
@@ -1002,9 +1001,8 @@ msgid "English"
 msgstr "Anglický"
 
 #: ../src/wxMaximaFrame.cpp:981
-#, fuzzy
 msgid "Enter Matrix..."
-msgstr "Zadání matic&e..."
+msgstr "Vložte matici..."
 
 #: ../src/wxMaximaFrame.cpp:410
 msgid "Enter a matrix"
@@ -1020,7 +1018,7 @@ msgstr "Zadejte seznam proměnných oddělených čárkami."
 
 #: ../src/Config.cpp:104
 msgid "Enter evaluates cells"
-msgstr ""
+msgstr "Enter vyhodnocuje výraz"
 
 #: ../src/wxMaxima.cpp:2493
 msgid "Enter matrix"
@@ -1039,9 +1037,8 @@ msgid "Enter the path to the Maxima executable."
 msgstr "Zadejte cestu ke spustitelnému souboru programu Maxima."
 
 #: ../src/wxMaxima.cpp:2967
-#, fuzzy
 msgid "Epsilon:"
-msgstr "Výraz:"
+msgstr "Epsilon:"
 
 #: ../src/SystemWiz.cpp:68
 #, c-format
@@ -1081,27 +1078,27 @@ msgstr "Chyba!"
 
 #: ../src/wxMaximaFrame.cpp:574
 msgid "Evaluate &Noun Forms"
-msgstr ""
+msgstr "Vyhodnotit nevyhodnocené funkce"
 
 #: ../src/wxMaximaFrame.cpp:265
 msgid "Evaluate All Cells\tCtrl-R"
-msgstr ""
+msgstr "Vyhodnotit všechna vstupní pole\tCtrl-R"
 
 #: ../src/MathCtrl.cpp:677 ../src/wxMaximaFrame.cpp:263
 msgid "Evaluate Cell(s)"
-msgstr ""
+msgstr "Vyhodnotit vstupní pole"
 
 #: ../src/wxMaximaFrame.cpp:264
 msgid "Evaluate active or selected cell(s)"
-msgstr ""
+msgstr "Vyhodnotit aktivní nebo vybraná vstupní pole"
 
 #: ../src/wxMaximaFrame.cpp:266
 msgid "Evaluate all cells in the document"
-msgstr ""
+msgstr "Vyhodnotit všechna vstupní pole v dokumentu"
 
 #: ../src/wxMaximaFrame.cpp:575
 msgid "Evaluate all noun forms in expression"
-msgstr ""
+msgstr "Vyhodnotit všechny nevyhodnocené funkce ve výrazu"
 
 #: ../src/wxMaxima.cpp:3186
 msgid "Example"
@@ -1144,9 +1141,8 @@ msgid "Export"
 msgstr "Export"
 
 #: ../src/wxMaximaFrame.cpp:190
-#, fuzzy
 msgid "Export document to a HTML or pdfLaTeX file"
-msgstr "Export dokumentu do HTML nebo LaTeXu"
+msgstr "Export dokumentu do HTML nebo pdfLaTeXu"
 
 #: ../src/wxMaxima.cpp:1847
 msgid "Exporting to HTML failed!"
@@ -1174,7 +1170,7 @@ msgstr "Výraz:"
 
 #: ../src/wxMaximaFrame.cpp:915
 msgid "Factor"
-msgstr "Faktorizovat"
+msgstr "Na součin"
 
 #: ../src/wxMaximaFrame.cpp:501
 msgid "Factor Complex"
@@ -1201,9 +1197,8 @@ msgid "Fatal error"
 msgstr "Závažná chyba"
 
 #: ../src/GroupCell.cpp:1223
-#, fuzzy
 msgid "Figure"
-msgstr "Nastavení"
+msgstr "Obrázek"
 
 #: ../src/main.cpp:107
 msgid "File"
@@ -1222,32 +1217,28 @@ msgid "File:"
 msgstr "Soubor:"
 
 #: ../src/wxMaximaFrame.cpp:689
-#, fuzzy
 msgid "Find"
-msgstr "Najdi kořen"
+msgstr "Najdi"
 
 #: ../src/wxMaximaFrame.cpp:229
-#, fuzzy
 msgid "Find\tCtrl-F"
-msgstr "Undo\tCtrl-Z"
+msgstr "Najdi\tCtrl-F"
 
 #: ../src/wxMaximaFrame.cpp:452
 msgid "Find &Limit..."
 msgstr "Najít &limitu..."
 
 #: ../src/wxMaximaFrame.cpp:455
-#, fuzzy
 msgid "Find Minimum..."
-msgstr "Najít &limitu..."
+msgstr "Najít minimum..."
 
 #: ../src/MathCtrl.cpp:698
 msgid "Find Root..."
 msgstr "Najít kořen..."
 
 #: ../src/wxMaximaFrame.cpp:456
-#, fuzzy
 msgid "Find a (unconstrained) minimum of an expression"
-msgstr "Najít limitu výrazu"
+msgstr "Najít minimum výrazu"
 
 #: ../src/wxMaximaFrame.cpp:453
 msgid "Find a limit of an expression"
@@ -1262,18 +1253,17 @@ msgid "Find all roots of a polynomial"
 msgstr "Najít všechny kořeny polynomu"
 
 #: ../src/wxMaximaFrame.cpp:363
-#, fuzzy
 msgid "Find all roots of a polynomial (bfloat)"
-msgstr "Najít všechny kořeny polynomu"
+msgstr "Najít všechny kořeny polynomu (bfloat)"
 
 #: ../src/wxMaxima.cpp:2040
 msgid "Find and Replace"
-msgstr ""
+msgstr "Najdi a nahraď"
 
 #: ../src/wxMaximaFrame.cpp:229 ../src/wxMaximaFrame.cpp:691
 #: ../src/wxMaximaFrame.cpp:757
 msgid "Find and replace"
-msgstr ""
+msgstr "Najdi a nahraď"
 
 #: ../src/wxMaximaFrame.cpp:421
 msgid "Find eigenvalues of a matrix"
@@ -1285,7 +1275,7 @@ msgstr "Nаjít vlastní vektory matice"
 
 #: ../src/wxMaxima.cpp:2969
 msgid "Find minimum"
-msgstr ""
+msgstr "Najít minimum"
 
 #: ../src/wxMaximaFrame.cpp:366
 msgid "Find real roots of a polynomial"
@@ -1296,9 +1286,8 @@ msgid "Find root"
 msgstr "Najdi kořen"
 
 #: ../src/wxMaximaFrame.cpp:754
-#, fuzzy
 msgid "Find..."
-msgstr "Najít kořen..."
+msgstr "Najít ..."
 
 #: ../src/Config.cpp:101
 msgid "Fixed font in text controls"
@@ -1309,9 +1298,8 @@ msgid "Font used for display in document."
 msgstr "Font použitý pro zobrazení v dokumentu."
 
 #: ../src/Config.cpp:176
-#, fuzzy
 msgid "Font used for displaying math characters in document."
-msgstr "Font pro zobrazení řeckých symbolů v dokumentu."
+msgstr "Font pro zobrazení matematických symbolů v dokumentu."
 
 #: ../src/Config.cpp:69
 msgid "Fonts"
@@ -1370,34 +1358,31 @@ msgstr "Největší společný dělitel"
 
 #: ../src/wxMaxima.cpp:3643
 msgid "GIF image (*.gif)|*.gif"
-msgstr ""
+msgstr "GIF image (*.gif)|*.gif"
 
 #: ../src/wxMaximaFrame.cpp:122
-#, fuzzy
 msgid "General Math"
-msgstr "Vytvořit matici"
+msgstr "Matematické operace"
 
 #: ../src/wxMaximaFrame.cpp:300
 msgid "General Math\tAlt-Shift-M"
-msgstr ""
+msgstr "Matematické operace\tAlt-Shift-M"
 
 #: ../src/wxMaxima.cpp:2525 ../src/wxMaxima.cpp:2544
 msgid "Generate Matrix"
 msgstr "Vytvořit matici"
 
 #: ../src/wxMaximaFrame.cpp:406
-#, fuzzy
 msgid "Generate Matrix from Expression..."
-msgstr "&Generovat matici..."
+msgstr "Generovat matici z výrazu..."
 
 #: ../src/wxMaximaFrame.cpp:404
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Vytvořit matici z 2D pole"
 
 #: ../src/wxMaximaFrame.cpp:407
-#, fuzzy
 msgid "Generate a matrix from a lambda expression"
-msgstr "Vytvořit matici z 2D pole"
+msgstr "Vytvořit matici z lambda výrazu"
 
 #: ../src/Config.cpp:85
 msgid "German"
@@ -1457,11 +1442,11 @@ msgstr "Nápověda"
 
 #: ../src/wxMaximaFrame.cpp:298
 msgid "Hide All\tAlt-Shift--"
-msgstr ""
+msgstr "Skrýt vše\tAlt-Shift--"
 
 #: ../src/wxMaximaFrame.cpp:298
 msgid "Hide all panes"
-msgstr ""
+msgstr "Skrýt panely nástrojů"
 
 #: ../src/Config.cpp:123
 msgid "Highlight (dpart)"
@@ -1469,19 +1454,19 @@ msgstr "Zvýraznění (dpart)"
 
 #: ../src/wxMaxima.cpp:3240
 msgid "Histogram"
-msgstr ""
+msgstr "Histogram"
 
 #: ../src/wxMaximaFrame.cpp:972
 msgid "Histogram..."
-msgstr ""
+msgstr "Histogram..."
 
 #: ../src/wxMaximaFrame.cpp:103
 msgid "History"
-msgstr ""
+msgstr "History"
 
 #: ../src/wxMaximaFrame.cpp:302
 msgid "History\tAlt-Shift-H"
-msgstr ""
+msgstr "History\tAlt-Shift-H"
 
 #: ../data/tips.txt:12
 msgid ""
@@ -1489,7 +1474,7 @@ msgid ""
 "press up or down arrow to move it, holding down Shift while moving will "
 "select cells, pressing backspace or delete twice will delete a cell next to "
 "it."
-msgstr ""
+msgstr "Vodorovný kurzor se chová stejně jako kurzor klasický, ale je použit u polí: stiskněte šipku nahoru nebo dolů pro posun, pro označování stiskněte navíc shift. Stisk klávesy Backspace nebo dvojí stisk klávesy Delete vymaže sousední pole."
 
 #: ../src/Config.cpp:86
 msgid "Hungarian"
@@ -1513,7 +1498,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1012
 msgid "Image"
-msgstr ""
+msgstr "Obraz"
 
 #: ../src/wxMaxima.cpp:3826
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
@@ -1527,7 +1512,7 @@ msgstr ""
 #: ../src/IntegrateWiz.cpp:235 ../src/IntegrateWiz.cpp:245
 #: ../src/LimitWiz.cpp:132 ../src/LimitWiz.cpp:142
 msgid "Infinity"
-msgstr ""
+msgstr "Nekonečno"
 
 #: ../src/wxMaximaFrame.cpp:628
 msgid "Info about Maxima build"
@@ -1535,7 +1520,7 @@ msgstr "Informace o programu Maxima"
 
 #: ../src/wxMaxima.cpp:2966
 msgid "Initial Estimates:"
-msgstr ""
+msgstr "Počáteční odhady:"
 
 #: ../src/wxMaximaFrame.cpp:383
 msgid "Initial Value Problem (&1)..."
@@ -1547,24 +1532,23 @@ msgstr "Počáteční podmínka (&2) ..."
 
 #: ../src/Config.cpp:120
 msgid "Input labels"
-msgstr ""
+msgstr "Značka pro vstup"
 
 #: ../src/wxMaximaFrame.cpp:132
-#, fuzzy
 msgid "Insert"
-msgstr "Vložit text"
+msgstr "Vložit"
 
 #: ../src/wxMaximaFrame.cpp:283
 msgid "Insert &Section Cell\tF8"
-msgstr ""
+msgstr "Vložit pole s kapitolou\tF8"
 
 #: ../src/wxMaximaFrame.cpp:279
 msgid "Insert &Text Cell\tF6"
-msgstr ""
+msgstr "Vložit textové pole\tF6"
 
 #: ../src/wxMaximaFrame.cpp:303
 msgid "Insert Cell\tAlt-Shift-C"
-msgstr ""
+msgstr "Vložit pole\tAlt-Shift-C"
 
 #: ../src/wxMaxima.cpp:3824
 msgid "Insert Image"
@@ -1575,47 +1559,44 @@ msgid "Insert Image..."
 msgstr "Vložit obrázek..."
 
 #: ../src/wxMaximaFrame.cpp:277
-#, fuzzy
 msgid "Insert Input &Cell\tF5"
-msgstr "Zadat skupinu"
+msgstr "Vložit vstupní pole\tF5"
 
 #: ../src/wxMaximaFrame.cpp:287
-#, fuzzy
 msgid "Insert Page Break\tF10"
-msgstr "Vložit obrázek"
+msgstr "Vložit zlom stránky\tF10"
 
 #: ../src/wxMaximaFrame.cpp:281
 msgid "Insert S&ubsection Cell\tF7"
-msgstr ""
+msgstr "Vložit pole s podkapitolou\tF8"
 
 #: ../src/wxMaximaFrame.cpp:285
 msgid "Insert T&itle Cell\tF9"
-msgstr ""
+msgstr "Vložit pole s nadpisem\tF9"
 
 #: ../src/wxMaximaFrame.cpp:278
 msgid "Insert a new input cell"
-msgstr ""
+msgstr "Vložit nové vstupní pole"
 
 #: ../src/wxMaximaFrame.cpp:284
 msgid "Insert a new section cell"
-msgstr ""
+msgstr "Vložit pole s novou kapitolou"
 
 #: ../src/wxMaximaFrame.cpp:282
 msgid "Insert a new subsection cell"
-msgstr ""
+msgstr "Vložit pole s novou podkapitolou"
 
 #: ../src/wxMaximaFrame.cpp:280
 msgid "Insert a new text cell"
-msgstr ""
+msgstr "Vložit nové textové pole"
 
 #: ../src/wxMaximaFrame.cpp:286
 msgid "Insert a new title cell"
-msgstr ""
+msgstr "Vložit pole s novým nadpisem"
 
 #: ../src/wxMaximaFrame.cpp:288
-#, fuzzy
 msgid "Insert a page break"
-msgstr "Vložit obrázek"
+msgstr "Vložit zlom stránky"
 
 #: ../src/wxMaximaFrame.cpp:290
 msgid "Insert image"
@@ -1707,11 +1688,11 @@ msgstr "Nejmenší společný násobek..."
 
 #: ../src/wxMaxima.cpp:3353
 msgid "Least Squares Fit"
-msgstr ""
+msgstr "Metoda nejmenších čtverců"
 
 #: ../src/wxMaximaFrame.cpp:968
 msgid "Least Squares Fit..."
-msgstr ""
+msgstr "Metoda nejmenších čtverců..."
 
 #: ../src/LimitWiz.cpp:66 ../src/wxMaxima.cpp:2951
 msgid "Limit"
@@ -1722,9 +1703,8 @@ msgid "Limit..."
 msgstr "Limita..."
 
 #: ../src/wxMaximaFrame.cpp:967
-#, fuzzy
 msgid "Linear Regression"
-msgstr "Integrovat výraz"
+msgstr "LIneární regrese"
 
 #: ../src/wxMaxima.cpp:2562 ../src/wxMaxima.cpp:2595
 msgid "List:"
@@ -1748,7 +1728,7 @@ msgstr "Načíst Maxima balíček"
 
 #: ../src/Config.cpp:1015
 msgid "Load style from file"
-msgstr ""
+msgstr "Načíst styl ze souboru"
 
 #: ../src/wxMaxima.cpp:2250 ../src/wxMaxima.cpp:3528
 msgid "Lower bound:"
@@ -1791,9 +1771,8 @@ msgid "Match parenthesis in text controls"
 msgstr "Kontrola závorek v textovém vstupu"
 
 #: ../src/Config.cpp:107
-#, fuzzy
 msgid "Math font:"
-msgstr "Implicitní font:"
+msgstr "Matematický font:"
 
 #: ../src/wxMaxima.cpp:2475
 msgid "Matrix"
@@ -1804,9 +1783,8 @@ msgid "Matrix map"
 msgstr "Použít na matici"
 
 #: ../src/wxMaxima.cpp:3401
-#, fuzzy
 msgid "Matrix name:"
-msgstr "Matice:"
+msgstr "Název matice:"
 
 #: ../src/wxMaxima.cpp:2459 ../src/wxMaxima.cpp:2508
 msgid "Matrix:"
@@ -1846,7 +1824,7 @@ msgstr "Program Maxima:"
 
 #: ../src/Config.cpp:121
 msgid "Maxima questions"
-msgstr ""
+msgstr "Otázka programu Maxima"
 
 #: ../src/wxMaxima.cpp:662
 msgid "Maxima started. Waiting for connection..."
@@ -1862,7 +1840,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:957
 msgid "Mean"
-msgstr ""
+msgstr "Průměr"
 
 #: ../src/wxMaximaFrame.cpp:965
 #, fuzzy
@@ -1876,15 +1854,15 @@ msgstr "Vytvořit seznam..."
 
 #: ../src/wxMaxima.cpp:3309
 msgid "Mean:"
-msgstr ""
+msgstr "Průměr:"
 
 #: ../src/wxMaximaFrame.cpp:958
 msgid "Median"
-msgstr ""
+msgstr "Medián"
 
 #: ../src/MathCtrl.cpp:680
 msgid "Merge Cells"
-msgstr ""
+msgstr "Spojit pole"
 
 #: ../src/IntegrateWiz.cpp:52
 msgid "Method:"
@@ -1912,7 +1890,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:966
 msgid "Normality Test"
-msgstr ""
+msgstr "Test normality"
 
 #: ../src/wxMaxima.cpp:2487
 msgid "Not a valid matrix dimension!"
@@ -1964,9 +1942,8 @@ msgid "One sample t-test"
 msgstr "Text příkladu"
 
 #: ../src/wxMaximaFrame.cpp:625
-#, fuzzy
 msgid "Online tutorials"
-msgstr "&Sloučit faktoriály"
+msgstr "Online tutoriály"
 
 #: ../src/Config.cpp:73 ../src/main.cpp:196 ../src/wxMaxima.cpp:1750
 #: ../src/wxMaximaFrame.cpp:663 ../src/wxMaximaFrame.cpp:721
@@ -1990,9 +1967,9 @@ msgid "Open document"
 msgstr "Otevřít dokument"
 
 #: ../src/wxMaxima.cpp:3368
-#, fuzzy
+#,fuzzy
 msgid "Open matrix"
-msgstr "Zadejte matici"
+msgstr "Otevřít matici"
 
 #: ../src/wxMaxima.cpp:874 ../src/wxMaxima.cpp:941
 msgid "Opening file"
@@ -2013,7 +1990,7 @@ msgstr ""
 
 #: ../src/Config.cpp:122
 msgid "Output labels"
-msgstr ""
+msgstr "Značky výstupů"
 
 #: ../src/wxMaximaFrame.cpp:461
 msgid "P&ade Approximation..."
@@ -2037,11 +2014,11 @@ msgstr "Padého aproximace Taylorovy řady"
 
 #: ../src/wxMaximaFrame.cpp:1013
 msgid "Pagebreak"
-msgstr ""
+msgstr "Zlom stránky"
 
 #: ../src/wxMaximaFrame.cpp:306
 msgid "Panes"
-msgstr ""
+msgstr "Panely nástrojů"
 
 #: ../src/Plot2dWiz.cpp:447 ../src/Plot2dWiz.cpp:573
 msgid "Parametric plot"
@@ -2061,7 +2038,7 @@ msgstr "Parciální zlomky"
 
 #: ../src/MathParser.cpp:896 ../src/wxMaxima.cpp:1056
 msgid "Parts of the document will not be loaded correctly!"
-msgstr ""
+msgstr "Část dokumentu nebude otevřena korektně!"
 
 #: ../src/MathCtrl.cpp:715 ../src/MathCtrl.cpp:724
 #: ../src/wxMaximaFrame.cpp:685 ../src/wxMaximaFrame.cpp:749
@@ -2073,9 +2050,8 @@ msgid "Paste\tCtrl-V"
 msgstr "Vložit\tCtrl-V"
 
 #: ../src/wxMaximaFrame.cpp:687 ../src/wxMaximaFrame.cpp:752
-#, fuzzy
 msgid "Paste from clipboard"
-msgstr "Vložit text z clipboardu"
+msgstr "Vložit ze schránky"
 
 #: ../src/wxMaximaFrame.cpp:225
 msgid "Paste text from clipboard"
@@ -2083,7 +2059,7 @@ msgstr "Vložit text z clipboardu"
 
 #: ../src/wxMaximaFrame.cpp:975
 msgid "Piechart"
-msgstr ""
+msgstr "Koláčový graf"
 
 #: ../src/wxMaxima.cpp:1328
 msgid "Please configure wxMaxima with 'Edit->Configure'."
@@ -2222,18 +2198,17 @@ msgid "Reduce trigonometric expression"
 msgstr "Zjednodušení trigonometrických výrazů"
 
 #: ../src/wxMaximaFrame.cpp:267
-#, fuzzy
 msgid "Remove All Output"
-msgstr "Vymazat všechny výsledky"
+msgstr "Vymazat všechny výsledky výpočtů"
 
 #: ../src/wxMaximaFrame.cpp:268
 msgid "Remove output from input cells"
-msgstr "Odstranit výsledky ze vstupních buněk"
+msgstr "Odstranit výsledky ze vstupních polí"
 
 #: ../src/wxMaxima.cpp:2077
 #, c-format
 msgid "Replaced %d occurences."
-msgstr ""
+msgstr "Nahrazeno %d výskytů"
 
 #: ../src/wxMaximaFrame.cpp:630
 msgid "Report bug"
@@ -2252,9 +2227,8 @@ msgid "Roots of &Polynomial"
 msgstr "Kořeny &polynomu"
 
 #: ../src/wxMaximaFrame.cpp:362
-#, fuzzy
 msgid "Roots of Polynomial (bfloat)"
-msgstr "Kořeny polynomu (&reálné)"
+msgstr "Kořeny polynomu (bfloat)"
 
 #: ../src/MatWiz.cpp:154
 msgid "Rows:"
@@ -2265,19 +2239,16 @@ msgid "Russian"
 msgstr "Ruský"
 
 #: ../src/wxMaxima.cpp:3323
-#, fuzzy
 msgid "Sample 1:"
-msgstr "Příklad"
+msgstr "Příklad 1:"
 
 #: ../src/wxMaxima.cpp:3323
-#, fuzzy
 msgid "Sample 2:"
-msgstr "Příklad"
+msgstr "Příklad 2:"
 
 #: ../src/wxMaxima.cpp:3309
-#, fuzzy
 msgid "Sample:"
-msgstr "Příklad"
+msgstr "Příklad:"
 
 #: ../src/Config.cpp:148 ../src/wxMaximaFrame.cpp:666
 #: ../src/wxMaximaFrame.cpp:725
@@ -2285,9 +2256,8 @@ msgid "Save"
 msgstr "Uložit"
 
 #: ../src/MathCtrl.cpp:661
-#, fuzzy
 msgid "Save Animation..."
-msgstr "P&adého aproximace..."
+msgstr "Uložit animaci..."
 
 #: ../src/wxMaxima.cpp:1779
 msgid "Save As"
@@ -2310,9 +2280,8 @@ msgid "Save Selection to Image..."
 msgstr "Uložit výběr jako obrázek..."
 
 #: ../src/wxMaxima.cpp:3641
-#, fuzzy
 msgid "Save animation to file"
-msgstr "Uložit označené do souboru"
+msgstr "Uložit animaci do souboru"
 
 #: ../src/wxMaximaFrame.cpp:182 ../src/wxMaximaFrame.cpp:668
 #: ../src/wxMaximaFrame.cpp:728
@@ -2320,18 +2289,16 @@ msgid "Save document"
 msgstr "Uložit dokument"
 
 #: ../src/wxMaximaFrame.cpp:184
-#, fuzzy
 msgid "Save document as"
-msgstr "Uložit dokument"
+msgstr "Uložit dokument jako"
 
 #: ../src/Config.cpp:99
 msgid "Save panes layout"
-msgstr ""
+msgstr "Uložit nastavení panelů"
 
 #: ../src/Config.cpp:170
-#, fuzzy
 msgid "Save panes layout between sessions."
-msgstr "Uložit velikost/pozici okna wxMaxima mezi sessions."
+msgstr "Uložit velikost/pozici oken mezi sezeními"
 
 #: ../src/Plot2dWiz.cpp:513 ../src/Plot3dWiz.cpp:459
 msgid "Save plot to file"
@@ -2347,7 +2314,7 @@ msgstr "Uložit označené do souboru"
 
 #: ../src/Config.cpp:1007
 msgid "Save style to file"
-msgstr ""
+msgstr "Uložit styl do souboru"
 
 #: ../src/Config.cpp:98
 msgid "Save wxMaxima window size/position"
@@ -2366,16 +2333,14 @@ msgid "Scatterplot..."
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1011
-#, fuzzy
 msgid "Section"
-msgstr "Výběr"
+msgstr "Sekce"
 
 #: ../src/Config.cpp:126
 msgid "Section cell"
-msgstr ""
+msgstr "Pole kapitoly"
 
 #: ../src/MathCtrl.cpp:716 ../src/MathCtrl.cpp:726
-#, fuzzy
 msgid "Select All"
 msgstr "Vybrat vše"
 
@@ -2409,7 +2374,7 @@ msgstr "Vybrat způsob zobrazení"
 msgid ""
 "Selecting a part of output and right-clicking on the selection will bring up "
 "a menu with convenient functions that will operate on the selection."
-msgstr ""
+msgstr "Výběrem části výstupu a použitím pravého tlačítka myši obrdržíte menu obsahující funkce vhodné pro práci s právě vybraným výrazem."
 
 #: ../src/Config.cpp:133
 msgid "Selection"
@@ -2432,9 +2397,8 @@ msgid "Set &Precision..."
 msgstr "Nastavit &přesnost..."
 
 #: ../src/wxMaximaFrame.cpp:252
-#, fuzzy
 msgid "Set Zoom"
-msgstr "Nastavit formát grafu"
+msgstr "Nastavit zvětšení"
 
 #: ../src/wxMaximaFrame.cpp:607
 msgid "Set bigfloat precision"
@@ -2450,27 +2414,27 @@ msgstr "Nastavit formát grafu"
 
 #: ../src/wxMaximaFrame.cpp:246
 msgid "Set zoom to 100%"
-msgstr ""
+msgstr "Nastavit zvětšení na 100%"
 
 #: ../src/wxMaximaFrame.cpp:247
 msgid "Set zoom to 120%"
-msgstr ""
+msgstr "Nastavit zvětšení na 120%"
 
 #: ../src/wxMaximaFrame.cpp:248
 msgid "Set zoom to 150%"
-msgstr ""
+msgstr "Nastavit zvětšení na 150%"
 
 #: ../src/wxMaximaFrame.cpp:249
 msgid "Set zoom to 200%"
-msgstr ""
+msgstr "Nastavit zvětšení na 200%"
 
 #: ../src/wxMaximaFrame.cpp:250
 msgid "Set zoom to 300%"
-msgstr ""
+msgstr "Nastavit zvětšení na 300%"
 
 #: ../src/wxMaximaFrame.cpp:245
 msgid "Set zoom to 80%"
-msgstr ""
+msgstr "Nastavit zvětšení na 80%"
 
 #: ../src/wxMaximaFrame.cpp:397
 msgid "Setup atvalues for solving ODE with Laplace transformation"
@@ -2503,7 +2467,7 @@ msgstr "Zobrazit nápovědu programu Maxima"
 
 #: ../src/wxMaximaFrame.cpp:274
 msgid "Show Template\tCtrl-Shift-K"
-msgstr ""
+msgstr "Ukázat vzor\tCtrl-Shift-K"
 
 #: ../src/wxMaximaFrame.cpp:622
 msgid "Show a tip"
@@ -2538,9 +2502,8 @@ msgid "Show definition of a function"
 msgstr "Zobrazit definici funkcí"
 
 #: ../src/wxMaximaFrame.cpp:275
-#, fuzzy
 msgid "Show function template"
-msgstr "Zobrazit &funkce"
+msgstr ""
 
 #: ../src/Config.cpp:102
 msgid "Show long expressions"
@@ -2626,9 +2589,8 @@ msgid "Solve &ODE..."
 msgstr "Řešit &ODR..."
 
 #: ../src/wxMaximaFrame.cpp:355
-#, fuzzy
 msgid "Solve (to_poly)..."
-msgstr "Řešit..."
+msgstr "Řešit (to_poly)..."
 
 #: ../src/wxMaxima.cpp:2270 ../src/wxMaxima.cpp:2394
 msgid "Solve ODE"
@@ -2659,9 +2621,8 @@ msgid "Solve equation(s)"
 msgstr "Řešit rovnici/rovnice"
 
 #: ../src/wxMaximaFrame.cpp:356
-#, fuzzy
 msgid "Solve equation(s) with to_poly_solver"
-msgstr "Řešit rovnici/rovnice"
+msgstr "Řešit rovnici/rovnice pomocí to_poly_solve"
 
 #: ../src/wxMaximaFrame.cpp:384
 msgid "Solve initial value problem for first degree ODE"
@@ -2726,13 +2687,12 @@ msgid "Starting server on port %d"
 msgstr "Spouštím server na portu %d"
 
 #: ../src/wxMaximaFrame.cpp:112
-#, fuzzy
 msgid "Statistics"
-msgstr "antisymetrická"
+msgstr "Statistika"
 
 #: ../src/wxMaximaFrame.cpp:301
 msgid "Statistics\tAlt-Shift-S"
-msgstr ""
+msgstr "Statistika\tAlt-Shift-S"
 
 #: ../src/wxMaximaFrame.cpp:700 ../src/wxMaximaFrame.cpp:702
 #: ../src/wxMaximaFrame.cpp:767
@@ -2757,13 +2717,12 @@ msgid "Subsample..."
 msgstr "Subst..."
 
 #: ../src/wxMaximaFrame.cpp:1010
-#, fuzzy
 msgid "Subsection"
-msgstr "Výběr"
+msgstr "Podkapitola"
 
 #: ../src/Config.cpp:125
 msgid "Subsection cell"
-msgstr ""
+msgstr "Pole podkapitoly"
 
 #: ../src/wxMaximaFrame.cpp:918
 msgid "Subst..."
@@ -2792,15 +2751,15 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1008
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: ../src/Config.cpp:124
 msgid "Text cell"
-msgstr ""
+msgstr "Textové pole"
 
 #: ../src/Config.cpp:128
 msgid "Text cell background"
-msgstr ""
+msgstr "Pozadí textového pole"
 
 #: ../src/Config.cpp:178
 msgid "The default port used for communication between Maxima and wxMaxima."
@@ -2832,6 +2791,9 @@ msgid ""
 "\n"
 "Make sure ImageMagick is installed and wxMaxima can find the convert program."
 msgstr ""
+"Chyba pří exportu do formátu GIF\n"
+"\n"
+"Ujistěte se, že máte nainstalovaný program ImageMagick a wxMaxima je schopna najít program convert."
 
 #: ../src/Plot2dWiz.cpp:66 ../src/Plot2dWiz.cpp:554
 msgid "Ticks:"
@@ -2846,29 +2808,27 @@ msgid "Tips not available, sorry!"
 msgstr "Tipy nejsou bohužel k dispozici!"
 
 #: ../src/wxMaximaFrame.cpp:1009
-#, fuzzy
 msgid "Title"
-msgstr "Soubor"
+msgstr "Název"
 
 #: ../src/Config.cpp:127
 msgid "Title cell"
-msgstr ""
+msgstr "Pole nadpisu"
 
 #: ../data/tips.txt:7
 msgid ""
 "Title, section and subsection cells can be folded to hide their contents. To "
 "fold or unfold, click in the square next to the cell. If you shift-click, "
 "all sublevels of that cell will also fold/unfold."
-msgstr ""
+msgstr "Pole s názvem, kapitolou a podkapitolou mohou být sbalena. Pro jejich sbalení nebo rozbalení klikněte na čtvereček vedle pole. Kliknutí s tlačítkem Shift sbalí/rozbalí také všechny podčásti."
 
 #: ../src/wxMaximaFrame.cpp:603
 msgid "To &Bigfloat"
 msgstr "Přesnost &bigfloat"
 
 #: ../src/wxMaximaFrame.cpp:600
-#, fuzzy
 msgid "To &Float"
-msgstr "Float (plovoucí řádová čárka)"
+msgstr "převést na &Float (plovoucí řádová čárka)"
 
 #: ../src/MathCtrl.cpp:695
 msgid "To Float"
@@ -2887,7 +2847,7 @@ msgstr ""
 msgid ""
 "To put parenthesis around an expression, select it, and press '(' or ')' "
 "depending on where you want the cursor to appear afterwards."
-msgstr ""
+msgstr "Pro vložení závorky okolo výrazu tento výraz označte a stiskněte '(' nebo ')', podle toho, kde chcete následně umístit kurzor."
 
 #: ../data/tips.txt:21
 msgid ""
@@ -2901,7 +2861,7 @@ msgstr ""
 msgid ""
 "To start using wxMaxima right away, start typing your command. An input cell "
 "should appear. Then press Shift-Enter to evaluate your command."
-msgstr ""
+msgstr "Pro okamžité používání programu Maxima začněte psát příkaz. Vstupní pole se objeví automaticky. Pro vyhodnocení příkazu použijte Shift-Enter."
 
 #: ../src/IntegrateWiz.cpp:47 ../src/Plot2dWiz.cpp:52 ../src/Plot2dWiz.cpp:62
 #: ../src/Plot2dWiz.cpp:551 ../src/Plot3dWiz.cpp:49 ../src/Plot3dWiz.cpp:58
@@ -2935,7 +2895,7 @@ msgstr "Přepnout numerický výstup"
 
 #: ../src/wxMaximaFrame.cpp:305
 msgid "Toolbar\tAlt-Shift-T"
-msgstr ""
+msgstr "Panel nástrojů\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:428
 msgid "Transpose a matrix"
@@ -2943,7 +2903,7 @@ msgstr "Transponovat matici"
 
 #: ../src/wxMaximaFrame.cpp:624
 msgid "Tutorials"
-msgstr ""
+msgstr "Tutoriál"
 
 #: ../src/wxMaxima.cpp:3325
 #, fuzzy
@@ -2964,11 +2924,11 @@ msgstr "Podtržení"
 
 #: ../src/wxMaximaFrame.cpp:204
 msgid "Undo\tCtrl-Z"
-msgstr "Undo\tCtrl-Z"
+msgstr "Zpět\tCtrl-Z"
 
 #: ../src/wxMaximaFrame.cpp:205
 msgid "Undo last change"
-msgstr "Undo poslední změny"
+msgstr "Zpět poslední změnu"
 
 #: ../src/wxMaxima.cpp:2250 ../src/wxMaxima.cpp:3528
 msgid "Upper bound:"
@@ -2984,7 +2944,7 @@ msgstr "Použít centrovanou tečku jako symbol násobení"
 
 #: ../src/Config.cpp:109
 msgid "Use jsMath fonts"
-msgstr ""
+msgstr "Použít jsMath"
 
 #: ../src/BC2Wiz.cpp:32 ../src/BC2Wiz.cpp:38 ../src/wxMaxima.cpp:2284
 #: ../src/wxMaxima.cpp:2300 ../src/wxMaxima.cpp:2408
@@ -3015,9 +2975,8 @@ msgid "Variables:"
 msgstr "Proměnné:"
 
 #: ../src/wxMaximaFrame.cpp:959
-#, fuzzy
 msgid "Variance"
-msgstr "Proměnná:"
+msgstr "Rozptyl"
 
 #: ../src/MathParser.cpp:896 ../src/wxMaxima.cpp:993 ../src/wxMaxima.cpp:1056
 #: ../src/wxMaxima.cpp:1326
@@ -3033,7 +2992,7 @@ msgid ""
 "When applying functions with one argument from menus, the default argument "
 "is '%'. To apply the function to some other value, select it in the document "
 "before executing a menu command."
-msgstr ""
+msgstr "Při aplikaci funkcejedné proměnné pomocí menu je výchozí přednastavený argument '%'. Pro aplikaci funkce na jiný argument musíte tento před volbou v menu označit."
 
 #: ../src/wxMaxima.cpp:2523 ../src/wxMaxima.cpp:2542
 msgid "Width:"
@@ -3057,7 +3016,7 @@ msgid ""
 "You can evaluate your whole document by using 'Edit->Cell->Evaluate All "
 "Cells' menu command or the apropriate key shortcut. The cells will be "
 "evaluated in the order they appear in the document."
-msgstr ""
+msgstr "Můžete vyhodnotit všechny funkce volbou Pole -> Vyhodnotit všechna pole v menu, nebo příslušnou klávesovou zkratkou. Pole budou vyhodnocena v pořadí, ve kterém vystupují v dokumentu."
 
 #: ../data/tips.txt:10
 msgid ""
@@ -3073,14 +3032,14 @@ msgstr ""
 msgid ""
 "You can hide output part of cells by clicking in the triangle on the left "
 "side of cells. This works on text cells also."
-msgstr ""
+msgstr "Výstup můžete skrýt kliknutím na trojúhelníček nalevo od pole. Tuto operaci můžete použít i u textových polí."
 
 #: ../data/tips.txt:5
 msgid ""
 "You can insert different types of 'cells' in wxMaxima document using the "
 "'Edit->Cell' submenu. Note that only 'input cells' can be evaluated, while "
 "other are used for commenting and structuring your calculations."
-msgstr ""
+msgstr "Pomocí menu 'Pole' můžete do dokumentu vložit různé druhy polí. Pouze 'vstupní pole' jsou vyhodnocována programem Maxima. Ostatní pole slouží pro strukturování a komentování výpočtu."
 
 #: ../data/tips.txt:14
 msgid ""
@@ -3089,7 +3048,7 @@ msgid ""
 "down Shift while moving the horizontal cursor - and then operate on "
 "selection. This comes in handy when you want to delete or evaluate multiple "
 "cells."
-msgstr ""
+msgstr "Pomocí myši (tažením a pohybem) nebo pohybem vodorovného kurzoru (s klávesou Shift) můžete vybratvíce polí a pracovat s nimi. Toto je vhodné, pokud chcete vymazat nebo vyhodnotit více polí."
 
 #: ../src/wxMaximaFrame.cpp:239
 msgid "Zoom &In\tAlt-I"
@@ -3101,15 +3060,15 @@ msgstr "Zmenšit\tAlt-O"
 
 #: ../src/wxMaximaFrame.cpp:240
 msgid "Zoom in 10%"
-msgstr ""
+msgstr "Zvětšit o 10%"
 
 #: ../src/wxMaximaFrame.cpp:242
 msgid "Zoom out 10%"
-msgstr ""
+msgstr "Zmenšit o 10%"
 
 #: ../src/wxMaxima.cpp:1986 ../src/wxMaxima.cpp:1994
 msgid "Zoom set to "
-msgstr ""
+msgstr "Zvětšení nastaveno na"
 
 #: ../src/wxMaxima.cpp:3856 ../src/wxMaximaFrame.cpp:85
 msgid "[ unsaved ]"
@@ -3152,20 +3111,19 @@ msgstr "zleva"
 
 #: ../src/EditorCell.cpp:332
 msgid "lines hidden"
-msgstr ""
+msgstr "skryté řádky"
 
 #: ../src/Plot2dWiz.cpp:55 ../src/Plot2dWiz.cpp:63
 msgid "logscale"
-msgstr ""
+msgstr "logaritmické měřítko"
 
 #: ../src/wxMaxima.cpp:2542
-#, fuzzy
 msgid "matrix[i,j]:"
-msgstr "Matice:"
+msgstr "matice[i,j]:"
 
 #: ../src/wxMaxima.cpp:3135
 msgid "no"
-msgstr ""
+msgstr "ne"
 
 #: ../src/LimitWiz.cpp:41 ../src/LimitWiz.cpp:123
 msgid "right"
@@ -3242,20 +3200,19 @@ msgid ""
 "wxMaxima dialogs set default values for inputs entries, one of which is '%'. "
 "If you have made a selection in your document, the selection will be used "
 "instead of '%'."
-msgstr ""
+msgstr "Dialog programu wxMaxima nastaví vstupní hodnoty, z nichž jedna je '%'. Pokud v dokumentu vyberete část textu, je místo toho použit tento výběr."
 
 #: ../src/wxMaxima.cpp:1579
 msgid "wxMaxima document"
 msgstr "wxMaxima dokument"
 
 #: ../src/wxMaxima.cpp:1781
-#, fuzzy
 msgid ""
 "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|Maxima "
 "batch file (*.mac)|*.mac"
 msgstr ""
-"wxMaxima dokument (*.wxm)|wxMaxima XML dokument (*.wxm)|Dávkový soubor "
-"Maxima (*.mac)|*.mac|Vše|*"
+"wxMaxima dokument (*.wxm)|wxMaxima XML dokument (*.wxm)|*.wxmx|Dávkový soubor "
+"Maxima (*.mac)|*.mac"
 
 #: ../src/main.cpp:198 ../src/wxMaxima.cpp:1752
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
@@ -3285,83 +3242,6 @@ msgid "wxMaxima options"
 msgstr "Nastavení programu wxMaxima"
 
 #: ../src/wxMaxima.cpp:3133
-#, fuzzy
 msgid "yes"
-msgstr "Styly"
+msgstr "ano"
 
-#, fuzzy
-#~ msgid "<< Nothing to display >>"
-#~ msgstr " << Výraz je příliš dlouhý pro zobrazení! >>"
-
-#, fuzzy
-#~ msgid "Functions and macros"
-#~ msgstr "Názvy funkcí"
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Kopírovat výběr do schránky"
-
-#~ msgid "Input"
-#~ msgstr "Vstup"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Uložit dokument jako ..."
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Zobrazit hlavičku programu Maxima"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Zobrazit inicializační hlavičku s informací o programu Maxima."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Korekce rozměrů řeckého fontu."
-
-#~ msgid "Adjustment:"
-#~ msgstr "Korekce:"
-
-#~ msgid "Basic"
-#~ msgstr "Základní"
-
-#~ msgid "Button panel:"
-#~ msgstr "Panel:"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Zmenšit velikost fontu v dokumentu"
-
-#~ msgid "Delete selection"
-#~ msgstr "Zrušit výběr"
-
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr "Font pro zobrazení symbolů unicode v dokumentu."
-
-#~ msgid "Full"
-#~ msgstr "Úplný"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Zvětšit velikost fontu v dokumentu"
-
-#~ msgid "Map..."
-#~ msgstr "Použít na prvky..."
-
-#~ msgid "Off"
-#~ msgstr "Vypnutý"
-
-#~ msgid "Product..."
-#~ msgstr "Součin..."
-
-#~ msgid "Sum..."
-#~ msgstr "Určit sumu..."
-
-#~ msgid "To &Float\tCtrl-F"
-#~ msgstr "Přesnost &float\tCtrl-F"
-
-#~ msgid "Unicode glyphs:"
-#~ msgstr "Symboly Unicode:"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr "Použít řecký font pro zobrazení řeckých znaků."
-
-#~ msgid "Use greek font:"
-#~ msgstr "Použít řecký font:"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "untitled.wxm"
