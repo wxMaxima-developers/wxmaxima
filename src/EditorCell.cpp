@@ -558,6 +558,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   case WXK_RETURN:
     if (m_selectionStart != -1) // we have a selection, delete it, then proceed
     {
+      SaveValue();
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
       m_text = m_text.SubString(0, start - 1) +
@@ -684,6 +685,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_containsChanges = true;
       {
         if (m_selectionStart > -1) {
+          SaveValue();
           long start = MIN(m_selectionEnd, m_selectionStart);
           long end = MAX(m_selectionEnd, m_selectionStart);
           m_text = m_text.SubString(0, start - 1) +
@@ -782,6 +784,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     // if we have a selection either put parens around it (and don't write the letter afterwards)
     // od delete selection and write letter (insertLetter = true).
     if (m_selectionStart > -1) {
+      SaveValue();
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
 #if wxUSE_UNICODE
@@ -1674,6 +1677,11 @@ void EditorCell::ClearSelection()
   m_selectionStart = m_selectionEnd = -1;
 }
 
+/***
+ * FindNextTemplate selects the next template
+ * of moves the cursor behind the first closing
+ * paren in the current line.
+ */
 bool EditorCell::FindNextTemplate(bool left)
 {
   wxRegEx varsRegex;
@@ -1728,6 +1736,24 @@ bool EditorCell::FindNextTemplate(bool left)
     return true;
   }
 
+  // No template - find a closing paren in the same line.
+  int pos = m_positionOfCaret;
+  while (m_text[pos] != '\n' && pos>0) {
+    // We have a '(' in the current line - jump over the first ')'
+    if (m_text[pos] == '(') {
+      pos = m_positionOfCaret;
+      while (m_text[pos] != '\n' && pos < m_text.Length()) {
+        if (m_text[pos] == ')') {
+          m_positionOfCaret = pos+1;
+          return true;
+        }
+        pos++;
+      }
+      return false;
+    }
+    pos--;
+  }
+  // No '(' was found in the current line - regular TAB.
   return false;
 }
 
