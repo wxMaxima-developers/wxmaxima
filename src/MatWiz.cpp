@@ -53,21 +53,27 @@ void MatWiz::set_properties()
   if (m_matrixType == MATRIX_ANTISYMETRIC)
   {
     for (int i = 0; i < m_height; i++)
-      for (int j = 0; j <= i; j++)
+      for (int j = 0; j <= i; j++) {
+        m_inputs[i*m_width + j]->SetValue(wxEmptyString);
         m_inputs[i*m_width + j]->Enable(false);
+      }
   }
   else if (m_matrixType == MATRIX_SYMETRIC)
   {
     for (int i = 0; i < m_height; i++)
-      for (int j = 0; j < i; j++)
+      for (int j = 0; j < i; j++) {
+        m_inputs[i*m_width + j]->SetValue(wxEmptyString);
         m_inputs[i*m_width + j]->Enable(false);
+      }
   }
   else if (m_matrixType == MATRIX_DIAGONAL)
   {
     for (int i = 0; i < m_height; i++)
       for (int j = 0; j < m_width; j++)
-        if (i != j)
+        if (i != j) {
+          m_inputs[i*m_width + j]->SetValue(wxEmptyString);
           m_inputs[i*m_width + j]->Enable(false);
+        }
   }
 #if defined __WXMSW__
   button_1->SetDefault();
