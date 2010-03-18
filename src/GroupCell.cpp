@@ -538,7 +538,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       points[3].x = point.x;
       points[3].y = point.y - m_center;
       dc.DrawPolygon(4, points);
-      delete(points);
+      delete [] points;
     }
     else { // draw a triangle and line
       wxPoint *points = new wxPoint[3];
@@ -549,7 +549,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       points[2].x = point.x;
       points[2].y = point.y - m_center;
       dc.DrawPolygon(3, points);
-      delete(points);
+      delete [] points;
 
       // vertical
       dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
