@@ -50,7 +50,7 @@ void MatWiz::set_properties()
 {
   button_1->SetDefault();
 
-  if (m_matrixType == MATRIX_ANTISYMETRIC)
+  if (m_matrixType == MATRIX_ANTISYMMETRIC)
   {
     for (int i = 0; i < m_height; i++)
       for (int j = 0; j <= i; j++) {
@@ -58,7 +58,7 @@ void MatWiz::set_properties()
         m_inputs[i*m_width + j]->Enable(false);
       }
   }
-  else if (m_matrixType == MATRIX_SYMETRIC)
+  else if (m_matrixType == MATRIX_SYMMETRIC)
   {
     for (int i = 0; i < m_height; i++)
       for (int j = 0; j < i; j++) {
@@ -131,12 +131,16 @@ wxString MatWiz::GetValue()
     for (int j = 0; j < m_width; j++)
     {
 
-      if (m_matrixType == MATRIX_SYMETRIC && i > j)
+      if (m_matrixType == MATRIX_SYMMETRIC && i > j)
         cmd += m_inputs[j * m_width + i]->GetValue();
-      else if (m_matrixType == MATRIX_ANTISYMETRIC && i > j)
+      else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)
         cmd += wxT("-(") + m_inputs[j * m_width + i]->GetValue() + wxT(")");
-      else
-        cmd += m_inputs[i * m_width + j]->GetValue();
+      else {
+        wxString entry = m_inputs[i * m_width + j]->GetValue();
+        if (entry == wxEmptyString)
+          entry = wxT("0");
+        cmd += entry;
+      }
 
       if (j < m_width - 1)
         cmd += wxT(",");
@@ -239,6 +243,6 @@ int MatDim::GetMatrixType()
   if (type == 1)
     return MATRIX_DIAGONAL;
   if (type == 2)
-    return MATRIX_SYMETRIC;
-  return MATRIX_ANTISYMETRIC;
+    return MATRIX_SYMMETRIC;
+  return MATRIX_ANTISYMMETRIC;
 }
