@@ -60,6 +60,7 @@ public:
   // exporting
   wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
   wxString ToTeX(bool all);
+  wxString PrepareForTeX(wxString text);
   wxString ToXML(bool all);
   // hide status
   bool IsHidden() { return m_hide; }

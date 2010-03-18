@@ -594,6 +594,20 @@ wxString GroupCell::ToString(bool all)
   return str + MathCell::ToString(all);
 }
 
+wxString GroupCell::PrepareForTeX(wxString str)
+{
+  str.Replace(wxT("\\"), wxT("\\verb|\\|"));
+  str.Replace(wxT("_"), wxT("\\_"));
+  str.Replace(wxT("%"), wxT("\\%"));
+  str.Replace(wxT("{"), wxT("\\{"));
+  str.Replace(wxT("}"), wxT("\\}"));
+  str.Replace(wxT("^"), wxT("\\verb|^|"));
+  str.Replace(wxT(">"), wxT("\\verb|>|"));
+  str.Replace(wxT("<"), wxT("\\verb|<|"));
+
+  return str;
+}
+
 wxString GroupCell::ToTeX(bool all)
 {
   return ToTeX(all, wxEmptyString, wxEmptyString, NULL);
@@ -627,7 +641,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           << wxT("  \\begin{center}\n")
           << wxT("    \\includegraphics{")
           << filename << wxT("_img/") << image << wxT("}\n")
-          << wxT("  \\caption{") << m_input->m_next->GetValue() << wxT("}\n")
+          << wxT("  \\caption{") << PrepareForTeX(m_input->m_next->GetValue()) << wxT("}\n")
           << wxT("  \\end{center}\n")
           << wxT("\\end{figure}");
     }
@@ -709,44 +723,21 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
     str = GetEditable()->ToTeX(true);
     switch (GetEditable()->GetStyle()) {
       case TS_TITLE:
-        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
-        str.Replace(wxT("_"), wxT("\\_"));
-        str.Replace(wxT("%"), wxT("\\%"));
-        str.Replace(wxT("{"), wxT("\\{"));
-        str.Replace(wxT("}"), wxT("\\}"));
-        str.Replace(wxT("^"), wxT("\\^"));
-        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
+        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + PrepareForTeX(str) + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
         str += wxT("\\setcounter{figure}{0}\n\n");
         break;
       case TS_SECTION:
-        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
-        str.Replace(wxT("_"), wxT("\\_"));
-        str.Replace(wxT("%"), wxT("\\%"));
-        str.Replace(wxT("{"), wxT("\\{"));
-        str.Replace(wxT("}"), wxT("\\}"));
-        str.Replace(wxT("^"), wxT("\\^"));
-        str = wxT("\n\\section{") + str + wxT("}\n\n");
+        str = wxT("\n\\section{") + PrepareForTeX(str) + wxT("}\n\n");
         break;
       case TS_SUBSECTION:
-        str.Replace(wxT("\\"), wxT("\\verb|\\|"));
-        str.Replace(wxT("_"), wxT("\\_"));
-        str.Replace(wxT("%"), wxT("\\%"));
-        str.Replace(wxT("{"), wxT("\\{"));
-        str.Replace(wxT("}"), wxT("\\}"));
-        str.Replace(wxT("^"), wxT("\\^"));
-        str = wxT("\n\\subsection{") + str + wxT("}\n\n");
+        str = wxT("\n\\subsection{") + PrepareForTeX(str) + wxT("}\n\n");
         break;
       default:
         if (str.StartsWith(wxT("TeX:")))
           str = str.Mid(5, str.Length());
         else {
-          str.Replace(wxT("\\"), wxT("\\verb|\\|"));
-          str.Replace(wxT("_"), wxT("\\_"));
-          str.Replace(wxT("%"), wxT("\\%"));
-          str.Replace(wxT("{"), wxT("\\{"));
-          str.Replace(wxT("}"), wxT("\\}"));
-          str.Replace(wxT("^"), wxT("\\^"));
+          str = PrepareForTeX(str);
         }
         break;
     }
