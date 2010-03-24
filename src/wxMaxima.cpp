@@ -118,7 +118,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_console->SetFocus();
 
+#if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new MyDropTarget(this));
+#endif
 
   /// RegEx for function definitions
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
