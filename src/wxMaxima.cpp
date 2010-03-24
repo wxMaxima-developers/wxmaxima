@@ -118,6 +118,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_console->SetFocus();
 
+  m_console->SetDropTarget(new MyDropTarget(this));
+
   /// RegEx for function definitions
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
   // RegEx for variable definitions
@@ -133,6 +135,31 @@ wxMaxima::~wxMaxima()
   delete m_printData;
 #endif
 }
+
+
+#if wxUSE_DRAG_AND_DROP
+
+bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files) {
+  if (files.GetCount() != 1)
+    return true;
+  else {
+    if (!m_wxmax->DocumentSaved() &&
+        (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
+    {
+      int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
+                               _("Close document?"),
+                               wxOK|wxCANCEL);
+      if (close == wxOK)
+        m_wxmax->OpenFile(files[0]);
+    }
+    else
+      m_wxmax->OpenFile(files[0]);
+
+    return true;
+  }
+}
+
+#endif
 
 ///--------------------------------------------------------------------------------
 ///  Startup

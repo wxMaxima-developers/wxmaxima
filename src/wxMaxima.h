@@ -29,6 +29,7 @@
 #include <wx/fdrepdlg.h>
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
+#include <wx/dnd.h>
 
 #if defined (__WXMSW__)
  #include <wx/msw/helpchm.h>
@@ -84,6 +85,7 @@ public:
   void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
+  bool DocumentSaved() { return m_fileSaved; }
 protected:
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
@@ -207,5 +209,18 @@ protected:
   wxRegEx m_varRegEx;
   DECLARE_EVENT_TABLE()
 };
+
+#if wxUSE_DRAG_AND_DROP
+
+class MyDropTarget : public wxFileDropTarget
+{
+public:
+  MyDropTarget(wxMaxima * wxmax) { m_wxmax = wxmax; }
+  bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files);
+private:
+  wxMaxima *m_wxmax;
+};
+
+#endif
 
 #endif //_WXMAXIM_H_
