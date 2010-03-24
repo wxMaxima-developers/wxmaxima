@@ -86,6 +86,7 @@ public:
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
   bool DocumentSaved() { return m_fileSaved; }
+  void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 protected:
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);

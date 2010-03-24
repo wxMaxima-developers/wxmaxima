@@ -145,7 +145,11 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
   if (files.GetCount() != 1)
     return true;
   else {
-    if (!m_wxmax->DocumentSaved() &&
+    if (files[0].Right(4) == wxT(".png")  ||
+        files[0].Right(5) == wxT(".jpeg") ||
+        files[0].Right(4) == wxT(".jpg"))
+      m_wxmax->LoadImage(files[0]);
+    else if (!m_wxmax->DocumentSaved() &&
         (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
     {
       int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
