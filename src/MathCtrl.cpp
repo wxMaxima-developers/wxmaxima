@@ -1321,7 +1321,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
 #if wxCHECK_VERSION(2,9,0)
-        GetParent()->ProcessEventHere(ev);
+        GetParent()->ProcessWindowEvent(ev);
 #else
         GetParent()->ProcessEvent(ev);
 #endif
@@ -1341,7 +1341,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         { // shift-enter pressed === menu_evaluate event
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
 #if wxCHECK_VERSION(2,9,0)
-          GetParent()->ProcessEventHere(ev);
+          GetParent()->ProcessWindowEvent(ev);
 #else
           GetParent()->ProcessEvent(ev);
 #endif
