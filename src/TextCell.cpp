@@ -258,6 +258,8 @@ bool TextCell::IsOperator()
 wxString TextCell::ToString(bool all)
 {
   wxString text = m_text;
+  if (m_textStyle == TS_STRING)
+    text = wxT("\"") + text + wxT("\"");
   return text + MathCell::ToString(all);
 }
 
