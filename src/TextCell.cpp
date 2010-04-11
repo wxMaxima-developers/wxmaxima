@@ -271,12 +271,38 @@ wxString TextCell::ToTeX(bool all)
   else if (m_textStyle == TS_GREEK_CONSTANT)
   {
     if (m_text[0] != '%')
-      text = wxT("\\") + m_text;
+      text = wxT("%") + m_text;
     else
-    {
       text = m_text;
-      text.Replace(wxT("%"), wxT("\\"));
-    }
+
+    if (text == wxT("%Alpha"))
+      text = wxT("A");
+    else if (text == wxT("%Beta"))
+      text = wxT("B");
+    else if (text == wxT("%Epsilon"))
+      text = wxT("E");
+    else if (text == wxT("%Zeta"))
+      text = wxT("Z");
+    else if (text == wxT("%Eta"))
+      text = wxT("H");
+    else if (text == wxT("%Iota"))
+      text = wxT("I");
+    else if (text == wxT("%Kappa"))
+      text = wxT("K");
+    else if (text == wxT("%Mu"))
+      text = wxT("M");
+    else if (text == wxT("%Nu"))
+      text = wxT("N");
+    else if (text == wxT("%Omicron"))
+      text = wxT("O");
+    else if (text == wxT("%Rho"))
+      text = wxT("P");
+    else if (text == wxT("%Tau"))
+      text = wxT("T");
+    else if (text == wxT("%Chi"))
+      text = wxT("X");
+    else
+      text = wxT("\\") + text.Mid(1);
   }
   else if (m_textStyle == TS_SPECIAL_CONSTANT)
   {
