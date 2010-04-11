@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2010 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -54,11 +54,14 @@ public:
   wxString ToTeX(bool all);
 	wxString ToXML(bool all);	// new!!
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
+  void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
   void SetParent(MathCell *parent, bool all);
+  void RowNames(bool rn) { m_rowNames = rn; }
+  void ColNames(bool cn) { m_colNames = cn; }
 protected:
   int m_matWidth;
   int m_matHeight;
-  bool m_specialMatrix;
+  bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
   vector<MathCell*> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;

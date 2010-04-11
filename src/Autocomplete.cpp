@@ -78,6 +78,9 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxboxplot"));
   m_symbolList.Add(wxT("wxplot_size"));
   m_symbolList.Add(wxT("wxdraw_list"));
+  m_symbolList.Add(wxT("table_form"));
+  m_templateList.Add(wxT("table_form(<data>)"));
+  m_templateList.Add(wxT("table_form(<data>,<[options]>)"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;

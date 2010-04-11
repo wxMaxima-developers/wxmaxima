@@ -572,9 +572,15 @@
               (null (cdadr x)))
          (append l `("<fn><fnm>matrix</fnm><p><t>[</t><t>]</t></p></fn>") r))
         (t
-         (append l (if (find 'inference (car x))
-		       (list "<tb inference='t'>")
-		       (list "<tb>"))
+         (append l (cond
+		     ((find 'inference (car x))
+		      (list "<tb inference=\"true\">"))
+		     ((find 'special (car x))
+		      (list (format nil "<tb special=\"true\" rownames=~s colnames=~s>"
+				    (if (find 'rownames (car x)) "true" "false")
+				    (if (find 'colnames (car x)) "true" "false"))))
+		     (t
+		       (list "<tb>")))
                  (mapcan #'(lambda (y)
 			     (cond ((null (cdr y))
 				    (list "<mtr><mtd><mspace/></mtd></mtr>"))
@@ -1462,6 +1468,52 @@
 	(merror "Maxima bug: Unknown file type ~M" type)))
      searched-for)))
 
+;;;;;;;;;;;;;;;;;;;;;
+;; table_form implementation
+
+(defun make-zeros (n)
+  (cons '(mlist simp) (loop for i from 1 to n collect "")))
+(defun take-first (l n)
+  (if (= n 0) nil (cons (first l) (take-first (rest l) (- n 1)))))
+
+(defun $table_form (mat &rest opts)
+  (when (mapatom mat)
+    ($error "table_form: the argument should not be an atom."))
+  (setq mat ($args mat))
+  (unless (every #'$listp (cdr mat))
+    ($error "table_form: data can not be displayed as a table."))
+  (setq opts (cons '(mlist simp) opts))
+  (let ((row-names ($assoc '$row_names opts))
+	(col-names ($assoc '$column_names opts))
+	(m (apply #'max (mapcar '$length (cdr mat))))
+	(n (length (cdr mat)))
+	(mtrx '(special)))
+    (when (eq row-names '$auto)
+      (setq row-names (cons '(mlist simp) (loop for i from 1 to n collect i))))
+    (when (eq col-names '$auto)
+      (setq col-names (cons '(mlist simp) (loop for i from 1 to m collect i))))
+    (when row-names
+      (setq row-names ($append row-names (make-zeros (- n ($length row-names)))))
+      (setq row-names (cons '(mlist simp) (take-first (cdr row-names) n))))
+    (when col-names
+      (setq col-names ($append col-names (make-zeros (- m ($length col-names)))))
+      (setq col-names (cons '(mlist simp) (take-first (cdr col-names) m))))
+    (when (and row-names col-names)
+      (setq col-names ($cons "" col-names)))
+    (setq mat (cons '(mlist simp) (mapcar
+				   (lambda (r) ($append r (make-zeros (- m ($length r)))))
+				   (cdr mat))))
+    (setq mat ($apply '$matrix mat))
+    (when row-names
+      (setq mat (cons '($matrix simp)
+		      (mapcar #'$append (cdr ($transpose row-names)) (cdr mat))))
+      (setq mtrx (cons 'rownames mtrx)))
+    (when col-names
+      (setq mat (cons '(matrix simp)
+		      (cons col-names (cdr mat))))
+      (setq mtrx (cons 'colnames mtrx)))
+    (cons (append '($matrix simp) mtrx) (cdr mat))))
+
 ;; Load the initial functions (from mac-init.mac)
 (let ((*print-circle* nil))
   (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
@@ -1469,5 +1521,3 @@
 
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
-
-(setq *mread-prompt* nil)

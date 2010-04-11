@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2010 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -554,8 +554,17 @@ MathCell* MathParser::ParseTableTag(wxXmlNode* node)
   MatrCell *matrix = new MatrCell;
   matrix->SetHighlight(m_highlight);
 
-  if (node->GetProperties() != NULL)
+  if (node->GetPropVal(wxT("special"), wxT("false")) == wxT("true"))
     matrix->SetSpecialFlag(true);
+  if (node->GetPropVal(wxT("inference"), wxT("false")) == wxT("true"))
+  {
+    matrix->SetInferenceFlag(true);
+    matrix->SetSpecialFlag(true);
+  }
+  if (node->GetPropVal(wxT("colnames"), wxT("false")) == wxT("true"))
+    matrix->ColNames(true);
+  if (node->GetPropVal(wxT("rownames"), wxT("false")) == wxT("true"))
+    matrix->RowNames(true);
 
   wxXmlNode* rows = node->GetChildren();
   while (rows)

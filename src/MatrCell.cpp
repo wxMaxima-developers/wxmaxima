@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2004-2010 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ MatrCell::MatrCell() : MathCell()
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
+  m_inferenceMatrix = false;
+  m_rowNames = m_colNames = false;
 }
 
 MatrCell::~MatrCell()
@@ -52,6 +54,10 @@ MathCell* MatrCell::Copy(bool all)
 {
   MatrCell *tmp = new MatrCell;
   CopyData(this, tmp);
+  tmp->m_specialMatrix = m_specialMatrix;
+  tmp->m_inferenceMatrix = m_inferenceMatrix;
+  tmp->m_rowNames = m_rowNames;
+  tmp->m_colNames = m_colNames;
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
@@ -150,10 +156,25 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     SetPen(parser);
     if (m_specialMatrix)
-      dc.DrawLine(point.x + SCALE_PX(1, scale),
-                  point.y - m_center + SCALE_PX(2, scale),
-                  point.x + SCALE_PX(1, scale),
-                  point.y + m_center - SCALE_PX(2, scale));
+    {
+      if (m_inferenceMatrix)
+        dc.DrawLine(point.x + SCALE_PX(1, scale),
+                    point.y - m_center + SCALE_PX(2, scale),
+                    point.x + SCALE_PX(1, scale),
+                    point.y + m_center - SCALE_PX(2, scale));
+      else {
+        if (m_rowNames)
+          dc.DrawLine(point.x + m_widths[0] + 2*SCALE_PX(5, scale),
+                      point.y - m_center + SCALE_PX(2, scale),
+                      point.x + m_widths[0] + 2*SCALE_PX(5, scale),
+                      point.y + m_center - SCALE_PX(2, scale));
+        if (m_colNames)
+          dc.DrawLine(point.x + SCALE_PX(1, scale),
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2*SCALE_PX(5, scale),
+                      point.x + SCALE_PX(1, scale) + m_width,
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2*SCALE_PX(5, scale));
+      }
+    }
     else
     {
       // left bracket
@@ -231,13 +252,24 @@ wxString MatrCell::ToTeX(bool all)
 wxString MatrCell::ToXML(bool all)
 {
 	wxString s = wxEmptyString;
-	for (int i = 0; i < m_matHeight; i++){
-		s += _T("<mtr>");
+	if (m_specialMatrix)
+    s = wxString::Format(
+            wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
+            m_inferenceMatrix ? wxT("true") : wxT("false"),
+            m_rowNames ? wxT("true") : wxT("false"),
+            m_colNames ? wxT("true") : wxT("false"));
+  else
+    s = wxT("<tb>");
+	for (int i = 0; i < m_matHeight; i++)
+	{
+	  s += wxT("<mtr>");
 		for (int j = 0; j < m_matWidth; j++)
-			s += _T("<mtd>") + m_cells[i * m_matWidth + j]->ToXML(true) + _T("</mtd>");
+			s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ToXML(true) + wxT("</mtd>");
 		s += wxT("</mtr>");
 	}
-	return _T("<tb>") + s + _T("</tb>") + MathCell::ToXML(all);
+	s += wxT("</tb>");
+
+	return s + MathCell::ToXML(all);
 }
 
 void MatrCell::SetDimension()
