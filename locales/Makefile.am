@@ -102,10 +102,12 @@ transcoded:
 	$(MSGFMT) transcoded/pl.po -o transcoded/pl.mo
 	cp zh_TW.po transcoded
 	$(MSGFMT) transcoded/zh_TW.po -o transcoded/zh_TW.mo
-	cp da.po transcoded
-	$(MSGFMT) transcoded/da.po -o transcoded/da.mo
 	cp cs.po transcoded
 	$(MSGFMT) transcoded/cs.po -o transcoded/cs.mo
+	cp el.po transcoded
+	$(MSGFMT) transcoded/el.po -o transcoded/el.mo
+	cp ja transcoded
+	$(MSGFMT) transcoded/ja.po -o transcoded/ja.mo
 
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
