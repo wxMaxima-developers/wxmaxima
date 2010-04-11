@@ -106,7 +106,7 @@ transcoded:
 	$(MSGFMT) transcoded/cs.po -o transcoded/cs.mo
 	cp el.po transcoded
 	$(MSGFMT) transcoded/el.po -o transcoded/el.mo
-	cp ja transcoded
+	cp ja.po transcoded
 	$(MSGFMT) transcoded/ja.po -o transcoded/ja.mo
 
 
