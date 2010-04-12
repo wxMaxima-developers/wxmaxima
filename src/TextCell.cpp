@@ -243,7 +243,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       parser.IsItalic(m_textStyle),
                       parser.IsBold(m_textStyle),
-                      false,
+                      parser.IsUnderlined(m_textStyle),
                       parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
 }
@@ -398,6 +398,8 @@ void TextCell::SetAltText()
     {
       if (m_text == wxT("+") || m_text == wxT("-") || m_text == wxT("="))
         m_texFontname = wxT("jsMath-cmr10");
+      else if (m_text == wxT("%pi"))
+        m_texFontname = wxT("jsMath-cmmi10");
       else
         m_texFontname = wxT("jsMath-cmsy10");
       m_altJs = true;
@@ -838,6 +840,8 @@ wxString TextCell::GetSymbolTeX()
     return wxT("+");
   else if (m_text == wxT("-"))
     return wxT("\x7B");
+  else if (m_text == wxT("%pi"))
+    return wxT("\xD9");
   else if (m_text == wxT("="))
     return wxT("=");
   else if (m_text == wxT("->"))
