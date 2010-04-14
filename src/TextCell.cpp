@@ -543,6 +543,8 @@ wxString TextCell::GetSymbolUnicode()
     return wxT("=");
   else if (m_text == wxT("inf"))
     return wxString(L"\x221E");
+  else if (m_text == wxT("%pi"))
+    return wxString(L"\x03C0");
   else if (m_text == wxT("<="))
     return wxString(L"\x2264");
   else if (m_text == wxT(">="))
@@ -691,6 +693,8 @@ wxString TextCell::GetSymbolSymbol()
 {
   if (m_text == wxT("inf"))
     return wxT("\xA5");
+  else if (m_text == wxT("%pi"))
+    return wxT("\x70");
   else if (m_text == wxT("->"))
     return wxT("\xAE");
   else if (m_text == wxT(">="))
