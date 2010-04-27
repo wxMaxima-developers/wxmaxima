@@ -815,11 +815,20 @@
 
 (defun wxxml-derivative (x l r)
   (if $derivabbrev
-      (append l
-	      (wxxml-d-abbrev x)
-	      r)
+      (append l (wxxml-d-abbrev x) r)
       (wxxml (wxxml-d x) (append l '("<d>"))
 	     (append '("</d>") r) 'mparen 'mparen)))
+
+(defun $derivabbrev (a)
+  (if a
+      (progn
+	(defprop %derivative 130. wxxml-lbp)
+	(defprop %derivative 129. wxxml-rbp)
+	(setq $derivabbrev t))
+      (progn
+	(defprop %derivative 120. wxxml-lbp)
+	(defprop %derivative 119. wxxml-rbp)
+	(setq $derivabbrev nil))))
 
 (defun wxxml-d-abbrev-subscript (l_vars l_ords &aux var_xml)
   (let ((sub ()))
