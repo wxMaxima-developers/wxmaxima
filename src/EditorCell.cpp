@@ -471,9 +471,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown()) {
-      while (m_positionOfCaret > 0 && m_text[m_positionOfCaret - 1] == ' ')
+      wxString chars = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%");
+      while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret - 1]) == wxNOT_FOUND)
         m_positionOfCaret--;
-      while (m_positionOfCaret > 0 && m_text[m_positionOfCaret - 1] != ' ')
+      while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret - 1]) != wxNOT_FOUND)
         m_positionOfCaret--;
     }
     else if (m_positionOfCaret > 0)
@@ -494,11 +495,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown()) {
+      wxString chars = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%");
       while (m_positionOfCaret < (signed)m_text.Length() &&
-          m_text[m_positionOfCaret] == ' ')
+          chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
         m_positionOfCaret++;
-      while (m_positionOfCaret < (signed)m_text.Length()
-          && m_text[m_positionOfCaret] != ' ')
+      while (m_positionOfCaret < (signed)m_text.Length() &&
+          chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
         m_positionOfCaret++;
     }
     else if (m_positionOfCaret < (signed)m_text.Length())

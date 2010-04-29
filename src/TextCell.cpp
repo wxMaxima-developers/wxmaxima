@@ -19,7 +19,6 @@
 
 #include "TextCell.h"
 #include "Setup.h"
-#include <wx/config.h>
 
 TextCell::TextCell() : MathCell()
 {
