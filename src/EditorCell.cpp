@@ -470,7 +470,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     else
       m_selectionEnd = m_selectionStart = -1;
 
-    if (m_positionOfCaret > 0)
+    if (event.ControlDown()) {
+      while (m_positionOfCaret > 0 && m_text[m_positionOfCaret - 1] == ' ')
+        m_positionOfCaret--;
+      while (m_positionOfCaret > 0 && m_text[m_positionOfCaret - 1] != ' ')
+        m_positionOfCaret--;
+    }
+    else if (m_positionOfCaret > 0)
       m_positionOfCaret--;
 
     if (event.ShiftDown())
@@ -487,7 +493,15 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     else
       m_selectionEnd = m_selectionStart = -1;
 
-    if (m_positionOfCaret < (signed)m_text.Length())
+    if (event.ControlDown()) {
+      while (m_positionOfCaret < (signed)m_text.Length() &&
+          m_text[m_positionOfCaret] == ' ')
+        m_positionOfCaret++;
+      while (m_positionOfCaret < (signed)m_text.Length()
+          && m_text[m_positionOfCaret] != ' ')
+        m_positionOfCaret++;
+    }
+    else if (m_positionOfCaret < (signed)m_text.Length())
       m_positionOfCaret++;
 
     if (event.ShiftDown())
