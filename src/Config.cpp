@@ -111,6 +111,7 @@ Config::Config(wxWindow* parent, int id, const wxString& title,
   m_mathFont = new wxStaticText(notebook_1_pane_2, -1, _("Math font:"));
   m_getMathFont = new wxButton(notebook_1_pane_2, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_useJSMath = new wxCheckBox(notebook_1_pane_2, -1, _("Use jsMath fonts"));
+  m_keepPercentWithSpecials = new wxCheckBox(notebook_1_pane_2, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
   const wxString m_styleFor_choices[] =
     {
       _("Default"),
@@ -184,7 +185,7 @@ void Config::set_properties()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
   bool match = true, showLongExpr = false, savePanes = false;
-  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true;
+  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -202,6 +203,7 @@ void Config::set_properties()
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
   config->Read(wxT("usejsmath"), &usejsmath);
+  config->Read(wxT("keepPercent"), &keepPercent);
 
   int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
@@ -252,6 +254,7 @@ void Config::set_properties()
   m_enterEvaluates->SetValue(enterEvaluates);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
+  m_keepPercentWithSpecials->SetValue(keepPercent);
 
   m_getStyleFont->Enable(false);
 
@@ -278,7 +281,8 @@ void Config::do_layout()
   wxFlexGridSizer* sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(4, 1, 3, 3);
-  wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxHORIZONTAL);
+  wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
+  wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(4, 1, 2, 7);
   wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
@@ -341,8 +345,10 @@ void Config::do_layout()
   grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
   grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3); // example panel
 
-  sizer_11->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_11->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
+  sizer_12->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
+  sizer_12->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
+  sizer_11->Add(m_keepPercentWithSpecials, 0, wxALL | wxALIGN_TOP, 3);
+  sizer_11->Add(sizer_12, 0, wxALL | wxEXPAND, 3);
   sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
   // load save buttons
   sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
@@ -397,6 +403,7 @@ void Config::OnOk(wxCommandEvent& event)
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
+  config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

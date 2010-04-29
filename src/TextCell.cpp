@@ -19,6 +19,7 @@
 
 #include "TextCell.h"
 #include "Setup.h"
+#include <wx/config.h>
 
 TextCell::TextCell() : MathCell()
 {
@@ -34,8 +35,6 @@ TextCell::TextCell(wxString text) : MathCell()
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_highlight = false;
   m_altJs = m_alt = false;
-
-  SetAltText();
 }
 
 TextCell::~TextCell()
@@ -50,8 +49,6 @@ void TextCell::SetValue(wxString text)
   m_width = -1;
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_alt = m_altJs = false;
-
-  SetAltText();
 }
 
 MathCell* TextCell::Copy(bool all)
@@ -64,7 +61,6 @@ MathCell* TextCell::Copy(bool all)
   tmp->m_isHidden = m_isHidden;
   tmp->m_textStyle = m_textStyle;
   tmp->m_highlight = m_highlight;
-  tmp->SetAltText();
   if (all && m_next != NULL)
     tmp->AppendCell(m_next->Copy(all));
   return tmp;
@@ -77,6 +73,8 @@ void TextCell::Destroy()
 
 void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
+  SetAltText(parser);
+
   if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
   {
     m_fontSize = fontsize;
@@ -372,8 +370,10 @@ bool TextCell::IsShortNum()
   return false;
 }
 
-void TextCell::SetAltText()
+void TextCell::SetAltText(CellParser& parser)
 {
+  m_altJs = m_alt = false;
+
   /// Greek characters are defined in jsMath, Windows and Unicode
   if (m_textStyle == TS_GREEK_CONSTANT)
   {
@@ -405,11 +405,11 @@ void TextCell::SetAltText()
       m_altJs = true;
     }
 #if wxUSE_UNICODE
-    m_altText = GetSymbolUnicode();
+    m_altText = GetSymbolUnicode(parser.CheckKeepPercent());
     if (m_altText != wxEmptyString)
       m_alt = true;
 #elif defined __WXMSW__
-    m_altText = GetSymbolSymbol();
+    m_altText = GetSymbolSymbol(parser.CheckKeepPercent());
     if (m_altText != wxEmptyString)
     {
       m_alt = true;
@@ -533,7 +533,7 @@ wxString TextCell::GetGreekStringUnicode()
   return wxEmptyString;
 }
 
-wxString TextCell::GetSymbolUnicode()
+wxString TextCell::GetSymbolUnicode(bool keepPercent)
 {
   if (m_text == wxT("+"))
     return wxT("+");
@@ -571,6 +571,14 @@ wxString TextCell::GetSymbolUnicode()
   else if (m_textStyle == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
     return wxString(L"\x2202");
   */
+
+  if (!keepPercent) {
+    if (m_text == wxT("%e"))
+      return wxString(L"e");
+    else if (m_text == wxT("%i"))
+      return wxString(L"i");
+  }
+
   return wxEmptyString;
 }
 
@@ -689,7 +697,7 @@ wxString TextCell::GetGreekStringSymbol()
   return wxEmptyString;
 }
 
-wxString TextCell::GetSymbolSymbol()
+wxString TextCell::GetSymbolSymbol(bool keepPercent)
 {
   if (m_text == wxT("inf"))
     return wxT("\xA5");
@@ -717,6 +725,13 @@ wxString TextCell::GetSymbolSymbol()
     return wxT("\xDB");
   else if (m_text == wxT(" xor "))
     return wxT("\xC5");
+
+  if (!keepPercent) {
+    if (m_text == wxT("%e"))
+      return wxString(L"e");
+    else if (m_text == wxT("%i"))
+      return wxString(L"i");
+  }
 
   return wxEmptyString;
 }

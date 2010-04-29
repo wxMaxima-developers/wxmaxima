@@ -45,14 +45,14 @@ public:
   wxString GetSymbolTeX();
 #if wxUSE_UNICODE
   wxString GetGreekStringUnicode();
-  wxString GetSymbolUnicode();
+  wxString GetSymbolUnicode(bool keepPercent);
 #elif defined __WXMSW__
   wxString GetGreekStringSymbol();
-  wxString GetSymbolSymbol();
+  wxString GetSymbolSymbol(bool keepPercent);
 #endif
   bool IsShortNum();
 protected:
-  void SetAltText();
+  void SetAltText(CellParser& parser);
   wxString m_text;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;

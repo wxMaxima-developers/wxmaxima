@@ -90,6 +90,7 @@ public:
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
   bool CheckTeXFonts() { return m_TeXFonts; }
+  bool CheckKeepPercent() { return m_keepPercent; }
   wxString GetTeXCMRI() { return m_fontCMRI; }
   wxString GetTeXCMSY() { return m_fontCMSY; }
   wxString GetTeXCMEX() { return m_fontCMEX; }
@@ -108,6 +109,7 @@ private:
   bool m_changeAsterisk;
   bool m_outdated;
   bool m_TeXFonts;
+  bool m_keepPercent;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;

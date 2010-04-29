@@ -125,6 +125,7 @@ protected:
   wxCheckBox* m_unixCopy;
   wxCheckBox* m_changeAsterisk;
   wxCheckBox* m_useJSMath;
+  wxCheckBox* m_keepPercentWithSpecials;
   wxPanel* notebook_1_pane_2;
   wxNotebook* notebook_1;
   wxButton* m_button1;

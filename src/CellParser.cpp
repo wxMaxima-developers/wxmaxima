@@ -45,6 +45,9 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
     wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
+  m_keepPercent = true;
+  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
+
   ReadStyle();
 }
 
@@ -54,7 +57,11 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
+  m_forceUpdate = false;
+  m_indent = MC_GROUP_LEFT_INDENT;
   m_changeAsterisk = false;
+  m_outdated = false;
+  m_TeXFonts = false;
 
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
@@ -65,6 +72,9 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
     m_TeXFonts = true;
     wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
   }
+
+  m_keepPercent = true;
+  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
   ReadStyle();
 }
