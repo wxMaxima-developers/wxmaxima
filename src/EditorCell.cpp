@@ -453,7 +453,7 @@ int ChangeNumpadToChar(int c)
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   static const wxString chars(wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%"));
-  static const wxString delim(wxT("()[]{},.;?/*"));
+  static const wxString delim(wxT("()[]{},.;?/*:="));
 
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
