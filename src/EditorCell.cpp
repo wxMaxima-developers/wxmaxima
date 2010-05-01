@@ -452,6 +452,9 @@ int ChangeNumpadToChar(int c)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
+  static const wxString chars(wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%"));
+  static const wxString delim(wxT("()[]{},.;?/*"));
+
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
@@ -471,12 +474,32 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown()) {
-      wxString chars = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%");
-      while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret - 1]) == wxNOT_FOUND)
-        m_positionOfCaret--;
-      while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret - 1]) != wxNOT_FOUND)
-        m_positionOfCaret--;
+      if (m_positionOfCaret > 1 &&
+          (chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
+              chars.Find(m_text[m_positionOfCaret-2]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret-2] == wxNOT_FOUND))) {
+        while (m_positionOfCaret > 0 &&
+              chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND)
+          m_positionOfCaret--;
+      }
+      else {
+        while (m_positionOfCaret > 0 &&
+            chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
+            delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND)
+          m_positionOfCaret--;
+        if (chars.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND) {
+          while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND)
+            m_positionOfCaret--;
+        }
+        else {
+          while (m_positionOfCaret > 0 && delim.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND)
+            m_positionOfCaret--;
+        }
+      }
     }
+
     else if (m_positionOfCaret > 0)
       m_positionOfCaret--;
 
@@ -495,14 +518,34 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown()) {
-      wxString chars = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%");
-      while (m_positionOfCaret < (signed)m_text.Length() &&
-          chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
-        m_positionOfCaret++;
-      while (m_positionOfCaret < (signed)m_text.Length() &&
-          chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-        m_positionOfCaret++;
+      if (m_positionOfCaret < (signed)m_text.Length()-1 &&
+          (chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
+              chars.Find(m_text[m_positionOfCaret+1]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret+1] == wxNOT_FOUND))) {
+        while (m_positionOfCaret > 0 &&
+              chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
+              delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
+          m_positionOfCaret++;
+      }
+      else {
+        while (m_positionOfCaret < (signed)m_text.Length() &&
+            chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
+            delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
+          m_positionOfCaret++;
+        if (chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND) {
+          while (m_positionOfCaret < (signed)m_text.Length() &&
+              chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
+            m_positionOfCaret++;
+        }
+        else {
+          while (m_positionOfCaret < (signed)m_text.Length() &&
+              delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
+            m_positionOfCaret++;
+        }
+      }
     }
+
     else if (m_positionOfCaret < (signed)m_text.Length())
       m_positionOfCaret++;
 
