@@ -706,7 +706,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         {
           if (str.Right(13) != wxT("displaystyle\n"))
             str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
-          str += wxT("\\mathrm{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\\quad");
+          str += wxT("\\mathrm{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\\quad\n");
         }
 
         else
