@@ -1572,9 +1572,7 @@ void EditorCell::PasteFromClipboard(bool primary)
       m_text = m_text.SubString(0, m_positionOfCaret - 1) +
                data +
                m_text.SubString(m_positionOfCaret, m_text.Length());
-      m_selectionStart = m_positionOfCaret;
       m_positionOfCaret += data.Length();
-      m_selectionEnd = m_positionOfCaret;
     }
     wxTheClipboard->Close();
   }
