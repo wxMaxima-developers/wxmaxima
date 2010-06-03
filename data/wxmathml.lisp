@@ -1004,6 +1004,10 @@
      (setq tp '$unknown)))
   tp)
 
+;;
+;; inference_result from the stats package
+;;
+
 (defun wxxml-inference (x l r)
   (let ((name (cadr x))
 	(values (caddr x))
@@ -1020,6 +1024,10 @@
 
 (defprop $inference_result wxxml-inference wxxml)
 
+;;
+;; orthopoly functions
+;;
+
 (defun wxxml-pochhammer (x l r)
   (let ((n (cadr x))
 	(k (caddr x)))
@@ -1030,6 +1038,70 @@
 	    (wxxml k nil nil 'mparen 'mparen)
 	    (list "</r></i>")
 	    r)))
+
+(defprop $pochhammer wxxml-pochhammer wxxml)
+
+(defun wxxml-orthopoly (x l r)
+  (let* ((fun-name (caar x))
+	 (disp-name (get fun-name 'wxxml-orthopoly-disp))
+	 (args (cdr x)))
+    (append l
+	    (list (format nil "<fn altCopy=\"~{~a~}\">" (mstring x)))
+	    (if (nth 2 disp-name)
+		(list (format nil "<ie><fnm>~a</fnm><r>" (car disp-name)))
+		(list (format nil "<i><fnm>~a</fnm><r>" (car disp-name))))
+	    (wxxml (nth (nth 1 disp-name) args) nil nil 'mparen 'mparen)
+	    (when (nth 2 disp-name)
+	      (append (list "</r><r>")
+		      (when (nth 3 disp-name) (list "<p>"))
+		      (wxxml-list (or (nth 5 disp-name)
+				      (mapcar (lambda (i) (nth i args)) (nth 2 disp-name)))
+				  nil nil ",")
+		      (when (nth 3 disp-name) (list "</p>"))
+		      (list "</r>")))
+	    (if (nth 2 disp-name)
+		(list "</ie>")
+		(list "</r></i>"))
+	    (list "<p>")
+	    (wxxml-list (mapcar (lambda (i) (nth i args)) (nth 4 disp-name)) nil nil ",")
+	    (list "</p></fn>")
+	    r)))
+
+(dolist (ortho-pair
+	  '(($laguerre "L" 0 nil nil (1))
+	    (%laguerre "L" 0 nil nil (1))
+	    ($legendre_p "P" 0 nil nil (1))
+	    (%legendre_p "P" 0 nil nil (1))
+	    ($legendre_q "Q" 0 nil nil (1))
+	    (%legendre_q "Q" 0 nil nil (1))
+	    ($chebyshev_t "T" 0 nil nil (1))
+	    (%chebyshev_t "T" 0 nil nil (1))
+	    ($chebyshev_u "U" 0 nil nil (1))
+	    (%chebyshev_u "U" 0 nil nil (1))
+	    ($hermite "H" 0 nil nil (1))
+	    (%hermite "H" 0 nil nil (1))
+	    ($spherical_bessel_j "J" 0 nil nil (1))
+	    (%spherical_bessel_j "J" 0 nil nil (1))
+	    ($spherical_bessel_y "Y" 0 nil nil (1))
+	    (%spherical_bessel_y "Y" 0 nil nil (1))
+	    ($assoc_legendre_p "P" 0 (1) nil (2))
+	    (%assoc_legendre_p "P" 0 (1) nil (2))
+	    ($assoc_legendre_q "Q" 0 (1) nil (2))
+	    (%assoc_legendre_q "Q" 0 (1) nil (2))
+	    ($jacobi_p "P" 0 (1 2) t (3))
+	    (%jacobi_p "P" 0 (1 2) t (3))
+	    ($gen_laguerre "L" 0 (1) t (2))
+	    (%gen_laguerre "L" 0 (1) t (2))
+	    ($spherical_harmonic "Y" 0 (1) nil (2 3))
+	    (%spherical_harmonic "Y" 0 (1) nil (2 3))
+	    ($ultraspherical "C" 0 (1) t (2))
+	    (%ultraspherical "C" 0 (1) t (2))
+	    ($spherical_hankel1 "H" 0 t t (1) (1))
+	    (%spherical_hankel1 "H" 0 t t (1) (1))
+	    ($spherical_hankel2 "H" 0 t t (1) (2))
+	    (%spherical_hankel2 "H" 0 t t (1) (2))))
+  (setf (get (car ortho-pair) 'wxxml) 'wxxml-orthopoly)
+  (setf (get (car ortho-pair) 'wxxml-orthopoly-disp) (cdr ortho-pair)))
 
 ;;;
 ;;; This is the display support only - copy/paste will not work
