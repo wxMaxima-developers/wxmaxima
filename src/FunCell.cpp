@@ -125,7 +125,7 @@ wxString FunCell::ToString(bool all)
   if (m_isBroken)
     return wxEmptyString;
   if (m_altCopyText)
-    return m_altCopyText;
+    return m_altCopyText + MathCell::ToString(all);
   wxString s = m_nameCell->ToString(true) + m_argCell->ToString(true);
   s += MathCell::ToString(all);
   return s;
