@@ -591,6 +591,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
   MathCell* tmp = NULL;
   MathCell* cell = NULL;
   bool warning = all;
+  wxString altCopy;
 
   while (node)
   {
@@ -906,6 +907,9 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         wxOK | wxICON_WARNING);
       warning = false;
     }
+
+    if (node->GetPropVal(wxT("altCopy"), &altCopy))
+      cell->SetAltCopyText(altCopy);
 
     node = node->GetNext();
   }

@@ -178,6 +178,7 @@ public:
   virtual void SetParent(MathCell *parent, bool all);
   void SetStyle(int style) { m_textStyle = style; }
   bool IsMath();
+  void SetAltCopyText(wxString text) { m_altCopyText = text; }
 protected:
   int m_height;
   int m_width;
@@ -192,6 +193,7 @@ protected:
   bool m_breakLine;
   bool m_forceBreakLine;
   bool m_highlight;
+  wxString m_altCopyText; // m_altCopyText is not check in all cells!
 };
 
 #endif //_MATHCELL_H_

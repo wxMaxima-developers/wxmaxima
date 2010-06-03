@@ -130,6 +130,10 @@ void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
 wxString SubCell::ToString(bool all)
 {
+  if (m_altCopyText != wxEmptyString) {
+    return m_altCopyText + MathCell::ToString(all);
+  }
+
   wxString s;
   if (m_baseCell->IsCompound())
     s += wxT("(") + m_baseCell->ToString(true) + wxT(")");
