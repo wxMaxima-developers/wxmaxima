@@ -235,8 +235,6 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  int start = s.Find(m_firstPrompt);
-
   int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
   int startHTTP = s.find(wxT("http"), startMaxima);
   m_maximaVersion = s.SubString(startMaxima+7, startHTTP - 1);
