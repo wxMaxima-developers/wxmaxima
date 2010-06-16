@@ -1032,10 +1032,12 @@ bool MathCtrl::Copy(bool astext) {
   else if (m_selectionStart == m_selectionEnd &&
       m_selectionStart->GetType() == MC_TYPE_IMAGE) {
     ((ImgCell *)m_selectionStart)->CopyToClipboard();
+	return true;
   }
   else if (m_selectionStart == m_selectionEnd &&
         m_selectionStart->GetType() == MC_TYPE_SLIDE) {
     ((SlideShow *)m_selectionStart)->CopyToClipboard();
+	return true;
   }
   else {
     wxString s = GetString(true);
@@ -1382,6 +1384,22 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     return;
   }
 #endif
+
+  // Some key combinations are shortcuts and should be ignored
+  if (event.CmdDown()) {
+    switch (event.GetKeyCode())
+    {
+      case 'Z':
+      case 'z':
+      case 'C':
+      case 'c':
+      case 'S':
+      case 's':
+        return;
+      default:
+        break;
+    }
+  }
 
   if (m_activeCell != NULL) { // we are in an active cell
     bool needRecalculate = false;
