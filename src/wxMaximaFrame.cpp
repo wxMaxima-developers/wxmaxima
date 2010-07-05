@@ -289,9 +289,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                              _("Insert image"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_history_previous, _("Previous command\tAlt-Up"),
+  wxglade_tmp_menu_2->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
                              _("Recall previous command from history"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_history_next, _("Next command\tAlt-Down"),
+  wxglade_tmp_menu_2->Append(menu_history_next, _("Next Command\tAlt-Down"),
                              _("Recall next command from history"), wxITEM_NORMAL);
 
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Cell"));
