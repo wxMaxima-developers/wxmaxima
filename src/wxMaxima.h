@@ -208,6 +208,9 @@ protected:
   wxFindReplaceData m_findData;
   wxRegEx m_funRegEx;
   wxRegEx m_varRegEx;
+#if wxUSE_DRAG_AND_DROP
+  friend class MyDropTarget;
+#endif
   DECLARE_EVENT_TABLE()
 };
 

@@ -195,6 +195,7 @@ public:
   bool Autocomplete(bool templates = false);
   void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
   void SetActiveCellText(wxString text);
+  bool InsertText(wxString text);
 protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);

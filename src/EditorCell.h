@@ -116,6 +116,7 @@ public:
   void ClearSelection();
   int GetCaretPosition() { return m_positionOfCaret; }
   bool FindNextTemplate(bool left = false);
+  void InsertText(wxString text);
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);

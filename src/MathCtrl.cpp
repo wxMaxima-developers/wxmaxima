@@ -3556,6 +3556,21 @@ void MathCtrl::SetActiveCellText(wxString text)
     OpenHCaret(text);
 }
 
+bool MathCtrl::InsertText(wxString text)
+{
+  if (m_workingGroup != NULL)
+    return false;
+
+  if (m_activeCell == NULL)
+    OpenHCaret(text);
+  else {
+    ((EditorCell *)m_activeCell)->InsertText(text);
+    Refresh();
+  }
+
+  return true;
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)

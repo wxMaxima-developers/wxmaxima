@@ -145,23 +145,39 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
   if (files.GetCount() != 1)
     return true;
   else {
-    if (files[0].Right(4) == wxT(".png")  ||
-        files[0].Right(5) == wxT(".jpeg") ||
-        files[0].Right(4) == wxT(".jpg"))
-      m_wxmax->LoadImage(files[0]);
-    else if (!m_wxmax->DocumentSaved() &&
-        (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
-    {
-      int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                               _("Close document?"),
-                               wxOK|wxCANCEL);
-      if (close == wxOK)
-        m_wxmax->OpenFile(files[0]);
+    if (wxGetKeyState(WXK_SHIFT)) {
+      m_wxmax->m_console->InsertText(files[0]);
+      return true;
     }
-    else
-      m_wxmax->OpenFile(files[0]);
+    else if (files[0].Right(4) != wxT(".png") &&
+             files[0].Right(5) != wxT(".jpeg") &&
+             files[0].Right(4) != wxT(".jpg") &&
+             files[0].Right(4) != wxT(".wxm") &&
+             files[0].Right(5) != wxT(".wxmx") &&
+             files[0].Right(4) != wxT(".mac"))
+    {
+      m_wxmax->m_console->InsertText(files[0]);
+      return true;
+    }
+    else {
+      if (files[0].Right(4) == wxT(".png")  ||
+          files[0].Right(5) == wxT(".jpeg") ||
+          files[0].Right(4) == wxT(".jpg"))
+        m_wxmax->LoadImage(files[0]);
+      else if (!m_wxmax->DocumentSaved() &&
+          (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
+      {
+        int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
+                                 _("Close document?"),
+                                 wxOK|wxCANCEL);
+        if (close == wxOK)
+          m_wxmax->OpenFile(files[0]);
+      }
+      else
+        m_wxmax->OpenFile(files[0]);
 
-    return true;
+      return true;
+    }
   }
 }
 
@@ -3475,44 +3491,52 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
     break;
     case menu_stats_barsplot:
     {
-      wxString cmd = wxT("wxbarsplot(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("wxbarsplot(") + data + wxT(");"));
     }
     break;
     case menu_stats_boxplot:
     {
-      wxString cmd = wxT("wxboxplot(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("wxboxplot([") + data + wxT("]);"));
     }
     break;
     case menu_stats_piechart:
     {
-      wxString cmd = wxT("wxpiechart(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("wxpiechart(") + data + wxT(");"));
     }
     break;
     case menu_stats_mean:
     {
-      wxString cmd = wxT("mean(" + expr + wxT(");"));
-      MenuCommand(cmd);
+
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("mean(") + data + wxT(");"));
     }
     break;
     case menu_stats_median:
     {
-      wxString cmd = wxT("median(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("median(") + data + wxT(");"));
     }
     break;
     case menu_stats_var:
     {
-      wxString cmd = wxT("var(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("var(") + data + wxT(");"));
     }
     break;
     case menu_stats_dev:
     {
-      wxString cmd = wxT("std(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("std(") + data + wxT(");"));
     }
     break;
     case menu_stats_tt1:
@@ -3546,14 +3570,17 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
     break;
     case menu_stats_tnorm:
     {
-      wxString cmd = wxT("test_normality(" + expr + wxT(");"));
-      MenuCommand(cmd);
+      wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("test_normality(") + data + wxT(");"));
     }
     break;
     case menu_stats_linreg:
     {
-      wxString cmd = wxT("simple_linear_regression(" + expr + wxT(");"));
-      MenuCommand(cmd);
+
+      wxString data = GetTextFromUser(_("Data Matrix:"), _("Enter Data"), expr, this);
+      if (data.Length() > 0)
+        MenuCommand(wxT("simple_linear_regression(") + data + wxT(");"));
     }
     break;
     case menu_stats_lsquares:

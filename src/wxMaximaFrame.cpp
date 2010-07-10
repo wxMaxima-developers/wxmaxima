@@ -965,26 +965,26 @@ wxPanel* wxMaximaFrame::CreateStatPane()
 #endif
   int sizerBorder = 2;
 
-  grid1->Add(new wxButton(panel, menu_stats_mean, _("Mean")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_median, _("Median")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_var, _("Variance")), 0, style, border);
-  grid1->Add(new wxButton(panel, menu_stats_dev, _("Deviation")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_mean, _("Mean...")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_median, _("Median...")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_var, _("Variance...")), 0, style, border);
+  grid1->Add(new wxButton(panel, menu_stats_dev, _("Deviation...")), 0, style, border);
 
   box->Add(grid1, 0, style, sizerBorder);
 
   box1->Add(new wxButton(panel, menu_stats_tt1, _("Mean Test...")), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_tt2, _("Mean Difference Test...")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_tnorm, _("Normality Test")), 0, style, border);
-  box1->Add(new wxButton(panel, menu_stats_linreg, _("Linear Regression")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_tnorm, _("Normality Test...")), 0, style, border);
+  box1->Add(new wxButton(panel, menu_stats_linreg, _("Linear Regression...")), 0, style, border);
   box1->Add(new wxButton(panel, menu_stats_lsquares, _("Least Squares Fit...")), 0, style, border);
 
   box->Add(box1, 0, style, sizerBorder);
 
   grid2->Add(new wxButton(panel, menu_stats_histogram, _("Histogram...")), 0, style, border);
   grid2->Add(new wxButton(panel, menu_stats_scatterplot, _("Scatterplot...")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_barsplot, _("Barsplot")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_piechart, _("Piechart")), 0, style, border);
-  grid2->Add(new wxButton(panel, menu_stats_boxplot, _("Boxplot")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_barsplot, _("Barsplot...")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_piechart, _("Piechart...")), 0, style, border);
+  grid2->Add(new wxButton(panel, menu_stats_boxplot, _("Boxplot...")), 0, style, border);
 
   box->Add(grid2, 0, style, sizerBorder);
 

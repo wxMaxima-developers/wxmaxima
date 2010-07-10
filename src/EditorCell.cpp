@@ -1546,6 +1546,28 @@ bool EditorCell::CutToClipboard()
   return true;
 }
 
+void EditorCell::InsertText(wxString text)
+{
+  SaveValue();
+  m_saveValue = true;
+  m_containsChanges = true;
+
+  if (m_selectionStart > -1)
+  {
+    long start = MIN(m_selectionStart, m_selectionEnd);
+    long end = MAX(m_selectionStart, m_selectionEnd);
+    m_positionOfCaret = start;
+    m_text = m_text.SubString(0, start - 1) +
+             m_text.SubString(end, m_text.Length());
+  }
+  m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+           text +
+           m_text.SubString(m_positionOfCaret, m_text.Length());
+  m_positionOfCaret += text.Length();
+
+  m_width = m_height = m_maxDrop = m_center = -1;
+}
+
 void EditorCell::PasteFromClipboard(bool primary)
 {
   if (wxTheClipboard->Open())
@@ -1555,29 +1577,10 @@ void EditorCell::PasteFromClipboard(bool primary)
     {
       wxTextDataObject obj;
       wxTheClipboard->GetData(obj);
-
-      SaveValue();
-      m_saveValue = true;
-      m_containsChanges = true;
-
-      if (m_selectionStart > -1)
-      {
-        long start = MIN(m_selectionStart, m_selectionEnd);
-        long end = MAX(m_selectionStart, m_selectionEnd);
-        m_positionOfCaret = start;
-        m_text = m_text.SubString(0, start - 1) +
-                 m_text.SubString(end, m_text.Length());
-      }
-      wxString data = obj.GetText();
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-               data +
-               m_text.SubString(m_positionOfCaret, m_text.Length());
-      m_positionOfCaret += data.Length();
+      InsertText(obj.GetText());
     }
     wxTheClipboard->Close();
   }
-
-  m_width = m_height = m_maxDrop = m_center = -1;
 }
 
 wxString EditorCell::GetLineString(int line, int start, int end)
