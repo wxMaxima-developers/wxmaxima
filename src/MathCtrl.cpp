@@ -1331,14 +1331,30 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         event.Skip();
       break;
 
-    case WXK_RETURN:
     case WXK_NUMPAD_ENTER:
+      if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
+      {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      }
+      else if (m_hCaretActive)
+        OpenHCaret(wxT("%"));
+      else
+        event.Skip();
+      break;
+
+    case WXK_RETURN:
       if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
         event.Skip(); // if enter pressed in text, title, section cell, pass the event
       else {
         bool enterEvaluates = false;
         wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if (!enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
+        if (
+            !enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
             enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
         { // shift-enter pressed === menu_evaluate event
           wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, menu_evaluate);
