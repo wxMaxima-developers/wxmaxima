@@ -144,10 +144,10 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_var->RecalculateWidths(parser, fontsize, true);
   if (m_under == NULL)
     m_under = new TextCell;
-  m_under->RecalculateWidths(parser, MAX(8, fontsize - 5), true);
+  m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
   if (m_over == NULL)
     m_over = new TextCell;
-  m_over->RecalculateWidths(parser, MAX(8, fontsize - 5), true);
+  m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
 
   if (parser.CheckTeXFonts()) {
     wxDC& dc = parser.GetDC();
