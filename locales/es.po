@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-15 18:53+0200\n"
+"POT-Creation-Date: 2010-07-19 23:59+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <es@li.org>\n"
@@ -700,10 +700,6 @@ msgstr "Constante"
 msgid "Contract Logarithms"
 msgstr "C&ontraer logaritmos"
 
-#: ../src/wxMaximaFrame.cpp:571
-msgid "Conver trigonometric functions to exponential form"
-msgstr "Convertir funciones trigonométricas a forma exponencial"
-
 #: ../src/wxMaximaFrame.cpp:522
 msgid "Convert binomials, beta and gamma function to factorials"
 msgstr "Convertir binomiales, funciones beta y gamma a factoriales"
@@ -753,6 +749,10 @@ msgstr "Convertir a forma &cartesiana"
 #: ../src/wxMaximaFrame.cpp:548
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr "Convertir expresión trigonométrica a forma canónica casi lineal"
+
+#: ../src/wxMaximaFrame.cpp:571
+msgid "Convert trigonometric functions to exponential form"
+msgstr "Convertir funciones trigonométricas a forma exponencial"
 
 #: ../src/wxMaximaFrame.cpp:693 ../src/wxMaximaFrame.cpp:756
 #: ../src/MathCtrl.cpp:658 ../src/MathCtrl.cpp:671 ../src/MathCtrl.cpp:687
@@ -2631,12 +2631,12 @@ msgstr "Simplificar una expresión trigonométrica"
 #: ../data/tips.txt:22
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
-"'Edit->Insert Image...' menu command. Note that you have to save your "
+"'Cell->Insert Image...' menu command. Note that you have to save your "
 "document in 'wxMaxima XML document' format if you want the image to be saved "
 "along with your document."
 msgstr ""
 "Desde wxMaxima 0.8.2 se pueden insertar imágenes en los documentos. "
-"Seleccione 'Editar->Insertar imagen' en el menú. Tenga en cuenta que debe "
+"Seleccione 'Celda->Insertar imagen' en el menú. Téngase en cuenta que debe "
 "guardar el documento en formato 'Documento xml wxMaxima' si quiere que se "
 "almacene la imagen junto con el resto del documento."
 
@@ -3127,11 +3127,11 @@ msgstr ""
 
 #: ../data/tips.txt:15
 msgid ""
-"You can evaluate your whole document by using 'Edit->Cell->Evaluate All "
-"Cells' menu command or the apropriate key shortcut. The cells will be "
-"evaluated in the order they appear in the document."
+"You can evaluate your whole document by using 'Cell->Evaluate All Cells' "
+"menu command or the apropriate key shortcut. The cells will be evaluated in "
+"the order they appear in the document."
 msgstr ""
-"Puede evaluar el documento completo seleccionando 'Editar->Celda-> Evaluar "
+"Puede evaluar el documento completo seleccionando 'Celda-> Evaluar "
 "todas las celdas' en el menú. Las celdas se evaluarán en el orden en que "
 "aparecen en el documento."
 
@@ -3156,11 +3156,11 @@ msgstr ""
 #: ../data/tips.txt:5
 msgid ""
 "You can insert different types of 'cells' in wxMaxima document using the "
-"'Edit->Cell' submenu. Note that only 'input cells' can be evaluated, while "
-"other are used for commenting and structuring your calculations."
+"'Cell' menu. Note that only 'input cells' can be evaluated, while other are "
+"used for commenting and structuring your calculations."
 msgstr ""
 "Se pueden incluir diferentes tipos de celdas en un documento de wxMaxima "
-"seleccionando el submenú 'Editar->Celda'. Téngase en cuenta que sólo se "
+"seleccionando el menú 'Celda'. Téngase en cuenta que sólo se "
 "pueden evaluar celdas de entrada, mientras que el resto se utilizan para "
 "comentarios y estructuración del documento."
 
