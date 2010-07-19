@@ -181,7 +181,7 @@ void wxMaximaFrame::SetupMenu()
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
-                   _("Save document as"), wxT("gtk-save"));
+		   _("Save document as"), wxT("gtk-save"));
   wxglade_tmp_menu_1->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
                              _("Load a Maxima package file"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
@@ -568,7 +568,7 @@ void wxMaximaFrame::SetupMenu()
                                   _("Convert exponential function of imaginary argument to trigonometric form"),
 				  wxITEM_NORMAL);
   wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
-                                  _("Conver trigonometric functions to exponential form"),
+                                  _("Convert trigonometric functions to exponential form"),
 				  wxITEM_NORMAL);
   wxglade_tmp_menu_5->Append(wxNewId(), _("&Complex Simplification"),
                              wxglade_tmp_menu_5_sub3,
