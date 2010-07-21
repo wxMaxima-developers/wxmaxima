@@ -506,6 +506,20 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       }
     }
 
+    else if (event.AltDown())
+    {
+      int count=0;
+
+      while (m_positionOfCaret > 0 && count >= 0)
+      {
+        m_positionOfCaret--;
+        if (m_text[m_positionOfCaret]=='(' || m_text[m_positionOfCaret]=='[')
+          count--;
+        else if (m_text[m_positionOfCaret]==')' || m_text[m_positionOfCaret]==']')
+          count++;
+      }
+    }
+
     else if (m_positionOfCaret > 0)
       m_positionOfCaret--;
 
@@ -558,6 +572,20 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
               delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
             m_positionOfCaret++;
         }
+      }
+    }
+
+    else if (event.AltDown())
+    {
+      int count=0;
+
+      while (m_positionOfCaret < (signed)m_text.Length() && count >= 0)
+      {
+        m_positionOfCaret++;
+        if (m_text[m_positionOfCaret-1]=='(' || m_text[m_positionOfCaret-1]=='[')
+          count++;
+        else if (m_text[m_positionOfCaret-1]==')' || m_text[m_positionOfCaret-1]==']')
+          count--;
       }
     }
 
@@ -1811,24 +1839,6 @@ bool EditorCell::FindNextTemplate(bool left)
     return true;
   }
 
-  // No template - find a closing paren in the same line.
-  int pos = m_positionOfCaret;
-  while (m_text[pos] != '\n' && pos>0) {
-    // We have a '(' in the current line - jump over the first ')'
-    if (m_text[pos] == '(') {
-      pos = m_positionOfCaret;
-      while (m_text[pos] != '\n' && pos < m_text.Length()) {
-        if (m_text[pos] == ')') {
-          m_positionOfCaret = pos+1;
-          return true;
-        }
-        pos++;
-      }
-      return false;
-    }
-    pos--;
-  }
-  // No '(' was found in the current line - regular TAB.
   return false;
 }
 
