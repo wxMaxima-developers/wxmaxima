@@ -847,7 +847,7 @@ void wxMaxima::ReadMath()
 void wxMaxima::ReadLoadSymbols()
 {
   int start = m_currentOutput.Find(wxT("<wxxml-symbols>"));
-  if (start > -1)
+  while (start > -1)
   {
     int end = m_currentOutput.Find(wxT("</wxxml-symbols>"));
     if (end > -1)
@@ -859,7 +859,11 @@ void wxMaxima::ReadLoadSymbols()
       wxStringTokenizer templates(symbols, wxT("$"));
       while (templates.HasMoreTokens())
         m_console->AddSymbol(templates.GetNextToken());
+
+      start = m_currentOutput.Find(wxT("<wxxml-symbols>"));
     }
+    else
+      start = -1;
   }
 }
 
