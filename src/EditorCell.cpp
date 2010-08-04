@@ -1593,6 +1593,9 @@ void EditorCell::InsertText(wxString text)
            m_text.SubString(m_positionOfCaret, m_text.Length());
   m_positionOfCaret += text.Length();
 
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
+
   m_width = m_height = m_maxDrop = m_center = -1;
 }
 
