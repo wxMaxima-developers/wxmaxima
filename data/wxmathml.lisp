@@ -38,7 +38,7 @@
   #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
   #-(or sbcl clisp) `(progn ,form))
 
-($put '$wxmaxima `((mlist simp) 0 8 4) '$version)
+($put '$wxmaxima `((mlist simp) 0 8 6) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 (setf (get '$outchar 'assign) 'neverset)
@@ -96,10 +96,9 @@
 (defun wxxml-atom (x l r &aux tmp-x)
   (append l
           (list (cond ((numberp x) (wxxmlnumformat x))
-                      ((typep x 'structure-object)
-		       (format nil "<v>Structure [~A]</v>" (type-of x)))
-		      ((hash-table-p x)
-		       (format nil "<v>HashTable</v>"))
+                      ((and (symbolp x) (get x 'wxxmlword)))
+                      ((and (symbolp x) (get x 'reversealias))
+                       (wxxml-stripdollar (get x 'reversealias)))
 		      ((stringp x)
 		       (setq tmp-x (wxxml-fix-string x))
 		       (if (and (boundp '$stringdisp) $stringdisp)
@@ -108,14 +107,16 @@
 		      ((arrayp x)
 		       (format nil "<v>Lisp array [~{~a~^,~}]</v>"
 			       (array-dimensions x)))
-                      ((and (symbolp x) (get x 'wxxmlword)))
-                      ((and (symbolp x) (get x 'reversealias))
-                       (wxxml-stripdollar (get x 'reversealias)))
 		      ((streamp x)
 		       (format nil "<v>Stream [~A]</v>"
 			       (stream-element-type x)))
-                      (t (wxxml-stripdollar x))
-		      ))
+		      ((member (type-of x) '(GRAPH DIGRAPH))
+		       (format nil "<v>~a</v>" x))
+                      ((typep x 'structure-object)
+		       (format nil "<v>Structure [~A]</v>" (type-of x)))
+		      ((hash-table-p x)
+		       (format nil "<v>HashTable</v>"))
+                      (t (wxxml-stripdollar x))))
 	  r))
 
 (defun wxxmlnumformat (atom)
