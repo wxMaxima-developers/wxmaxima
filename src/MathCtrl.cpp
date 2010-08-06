@@ -3491,8 +3491,10 @@ bool MathCtrl::Autocomplete(bool templates)
     if (!templates || !editor->FindNextTemplate())
       editor->CaretToPosition(start + m_completions[0].Length());
 
-    // TODO: be more efficient here!
-    RecalculateForce();
+    editor->ResetSize();
+    editor->GetParent()->ResetSize();
+    Recalculate();
+
     Refresh();
   }
 
@@ -3543,8 +3545,10 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
       editor->CaretToPosition(sel_start + m_completions[event.GetId() - popid_complete_00].Length());
   }
 
-  // TODO: be more efficient here!
-  RecalculateForce();
+  editor->ResetSize();
+  editor->GetParent()->ResetSize();
+  Recalculate();
+
   Refresh();
 }
 
