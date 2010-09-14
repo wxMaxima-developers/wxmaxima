@@ -478,7 +478,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           (chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
               chars.Find(m_text[m_positionOfCaret-2]) == wxNOT_FOUND &&
               delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret-2] == wxNOT_FOUND))) {
+	      delim.Find(m_text[m_positionOfCaret-2]) == wxNOT_FOUND)) {
         while (m_positionOfCaret > 0 &&
               chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
               delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND)
@@ -542,7 +542,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           (chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
               chars.Find(m_text[m_positionOfCaret+1]) == wxNOT_FOUND &&
               delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret+1] == wxNOT_FOUND))) {
+	      delim.Find(m_text[m_positionOfCaret+1]) == wxNOT_FOUND)) {
         while (m_positionOfCaret < (signed)m_text.Length() &&
               chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
               delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
