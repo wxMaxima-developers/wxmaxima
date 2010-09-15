@@ -395,7 +395,7 @@ void TextCell::SetAltText(CellParser& parser)
     m_altJsText = GetSymbolTeX();
     if (m_altJsText != wxEmptyString)
     {
-      if (m_text == wxT("+") || m_text == wxT("-") || m_text == wxT("="))
+      if (m_text == wxT("+") || m_text == wxT("="))
         m_texFontname = wxT("jsMath-cmr10");
       else if (m_text == wxT("%pi"))
         m_texFontname = wxT("jsMath-cmmi10");
@@ -536,8 +536,6 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
 {
   if (m_text == wxT("+"))
     return wxT("+");
-  else if (m_text == wxT("-"))
-    return wxT("-");
   else if (m_text == wxT("="))
     return wxT("=");
   else if (m_text == wxT("inf"))
@@ -856,8 +854,6 @@ wxString TextCell::GetSymbolTeX()
     return wxT("\x31");
   else if (m_text == wxT("+"))
     return wxT("+");
-  else if (m_text == wxT("-"))
-    return wxT("\x7B");
   else if (m_text == wxT("%pi"))
     return wxT("\xD9");
   else if (m_text == wxT("="))
