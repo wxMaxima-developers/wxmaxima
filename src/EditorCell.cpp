@@ -559,7 +559,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
               chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
             m_positionOfCaret++;
         }
-        else if (delim.Find(m_text[m_positionOfCaret] != wxNOT_FOUND))
+        else if (delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
         {
           while (m_positionOfCaret < (signed)m_text.Length() &&
               delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
