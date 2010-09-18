@@ -167,11 +167,19 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
       else if (!m_wxmax->DocumentSaved() &&
           (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
       {
-        int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                                 _("Close document?"),
-                                 wxOK|wxCANCEL);
-        if (close == wxOK)
-          m_wxmax->OpenFile(files[0]);
+        int close = wxMessageBox(_("Save changes before closing?"),
+                                 _("Save changes?"),
+                                 wxYES_NO|wxCANCEL);
+
+        if (close == wxCANCEL)
+          return false;
+
+        if (close == wxYES) {
+          if (!m_wxmax->SaveFile())
+            return false;
+        }
+
+        m_wxmax->OpenFile(files[0]);
       }
       else
         m_wxmax->OpenFile(files[0]);
@@ -1779,6 +1787,67 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   }
 }
 
+bool wxMaxima::SaveFile(bool forceSave)
+{
+  wxString file = m_currentFile;
+  wxString fileExt;
+  int ext = -1;
+
+  if (file.Length() == 0 || forceSave)
+  {
+    if (file.Length() == 0)
+      file = _("untitled");
+    else
+      wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
+
+    wxFileDialog fileDialog(this,
+        _("Save As"), m_lastPath,
+        file,
+        _("wxMaxima document (*.wxm)|*.wxm|"
+            "wxMaxima xml document (*.wxmx)|*.wxmx|"
+            "Maxima batch file (*.mac)|*.mac"),
+            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (fileExt == wxT("wxm"))
+      fileDialog.SetFilterIndex(0);
+    else if (fileExt == wxT("wxmx"))
+      fileDialog.SetFilterIndex(1);
+    else if (fileExt == wxT("mac"))
+      fileDialog.SetFilterIndex(2);
+
+    if (fileDialog.ShowModal() == wxID_OK)
+    {
+      file = fileDialog.GetPath();
+      ext = fileDialog.GetFilterIndex();
+    }
+    else
+      return false;
+  }
+
+  if (file.Length())
+  {
+    if (ext == 0 && file.Right(4) != wxT(".wxm"))
+      file += wxT(".wxm");
+    else if (ext == 1 && file.Right(5) != wxT(".wxmx"))
+      file += wxT(".wxmx");
+    else if (ext == 2 && file.Right(4) != wxT(".mac"))
+      file += wxT(".mac");
+
+    m_currentFile = file;
+    m_lastPath = wxPathOnly(file);
+    if (file.Right(5) == wxT(".wxmx"))
+      m_console->ExportToWXMX(file);
+    else
+      m_console->ExportToMAC(file);
+
+    AddRecentDocument(file);
+
+    return true;
+  }
+
+  return false;
+}
+
 void wxMaxima::FileMenu(wxCommandEvent& event)
 {
   wxString expr = GetDefaultEntry();
@@ -1797,17 +1866,24 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_open_id:
     {
       if (!m_fileSaved) {
-        int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                                 _("Close document?"),
-                                 wxOK|wxCANCEL);
-        if (close != wxOK)
+        int close = wxMessageBox(_("Save changes before closing?"),
+                                 _("Save changes?"),
+                                 wxYES_NO|wxCANCEL);
+
+        if (close == wxCANCEL)
           return;
+
+        if (close == wxYES) {
+          if (!SaveFile())
+            return;
+        }
       }
 
       wxString file = wxFileSelector(_("Open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
                                      _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
                                      wxFD_OPEN);
+
       OpenFile(file);
     }
     break;
@@ -1820,61 +1896,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case tb_save:
 #endif
   case menu_save_id:
-    {
-      wxString file = m_currentFile;
-      wxString fileExt;
-      int ext = -1;
-
-      if (file.Length() == 0 || forceSave)
-      {
-        if (file.Length() == 0)
-          file = _("untitled");
-        else
-          wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
-
-        wxFileDialog fileDialog(this,
-                                _("Save As"), m_lastPath,
-                                file,
-                                _("wxMaxima document (*.wxm)|*.wxm|"
-                                  "wxMaxima xml document (*.wxmx)|*.wxmx|"
-                                  "Maxima batch file (*.mac)|*.mac"),
-                                wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-        if (fileExt == wxT("wxm"))
-          fileDialog.SetFilterIndex(0);
-        else if (fileExt == wxT("wxmx"))
-          fileDialog.SetFilterIndex(1);
-        else if (fileExt == wxT("mac"))
-          fileDialog.SetFilterIndex(2);
-
-        if (fileDialog.ShowModal() == wxID_OK)
-        {
-          file = fileDialog.GetPath();
-          ext = fileDialog.GetFilterIndex();
-        }
-        else
-          return;
-      }
-
-      if (file.Length())
-      {
-        if (ext == 0 && file.Right(4) != wxT(".wxm"))
-          file += wxT(".wxm");
-        else if (ext == 1 && file.Right(5) != wxT(".wxmx"))
-          file += wxT(".wxmx");
-        else if (ext == 2 && file.Right(4) != wxT(".mac"))
-          file += wxT(".mac");
-
-        m_currentFile = file;
-        m_lastPath = wxPathOnly(file);
-        if (file.Right(5) == wxT(".wxmx"))
-          m_console->ExportToWXMX(file);
-        else
-          m_console->ExportToMAC(file);
-
-        AddRecentDocument(file);
-      }
-    }
+    SaveFile(forceSave);
     break;
 
   case menu_export_html:
@@ -3677,14 +3699,23 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
   if (!m_fileSaved && event.CanVeto()) {
-    int close = wxMessageBox(_("Document not saved!\n\nQuit wxMaxima and lose all changes?"),
-                             _("Quit?"),
-                             wxOK|wxCANCEL);
-    if (close != wxOK) {
+    int close = wxMessageBox(_("Save changes before closing?"),
+                             _("Save changes?"),
+                             wxYES_NO|wxCANCEL, this);
+
+    if (close == wxCANCEL) {
       event.Veto();
       return;
     }
+
+    if (close == wxYES) {
+      if (!SaveFile()) {
+        event.Veto();
+        return;
+      }
+    }
   }
+
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxSize size = GetSize();
   wxPoint pos = GetPosition();
@@ -3905,11 +3936,16 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
   if (!m_fileSaved) {
-    int close = wxMessageBox(_("Document not saved!\n\nClose current document and lose all changes?"),
-                             _("Close document?"),
-                             wxOK|wxCANCEL);
-    if (close != wxOK)
+    int close = wxMessageBox(_("Save changes before closing?"),
+                             _("Save changes?"),
+                             wxYES_NO|wxCANCEL);
+    if (close == wxCANCEL)
       return;
+
+    if (close == wxYES) {
+      if (!SaveFile())
+        return;
+    }
   }
 
   wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
@@ -4110,6 +4146,11 @@ void wxMaxima::ResetTitle(bool saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
     }
+#if defined __WXMAC__
+#if wxCHECK_VERSION(2,9,0)
+    OSXSetModified(!saved);
+#endif
+#endif
   }
 }
 
