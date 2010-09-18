@@ -31,17 +31,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
     wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
   m_manager.SetManagedWindow(this);
-
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
 
   // history
   m_history = new History(this, -1);
 
+  m_plotSlider = NULL;
+
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   SetupToolBar();
 #endif
+
 
   frame_1_statusbar = CreateStatusBar(2);
   int widths[] =
@@ -720,6 +722,7 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("help.png"),
                            _("Show Maxima help"));
   frame_1_toolbar->Realize();
+
   SetToolBar(frame_1_toolbar);
 }
 
@@ -829,9 +832,12 @@ void wxMaximaFrame::UpdateRecentDocuments()
 {
   for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
   {
-    wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
-    delete item;
-    item = NULL;
+    if (m_recentDocumentsMenu->FindItem(i) != NULL)
+    {
+      wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
+      delete item;
+      item = NULL;
+    }
 
     if (i-menu_recent_document_0 < (signed)m_recentDocuments.Count())
     {
