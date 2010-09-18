@@ -306,11 +306,9 @@ int CellParser::IsItalic(int st)
   return wxFONTSTYLE_NORMAL;
 }
 
-int CellParser::IsUnderlined(int st)
+bool CellParser::IsUnderlined(int st)
 {
-  if (m_styles[st].underlined)
-    return 1;
-  return 0;
+  return m_styles[st].underlined;
 }
 
 wxString CellParser::GetSymbolFontName()

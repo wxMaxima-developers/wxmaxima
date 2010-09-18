@@ -54,7 +54,7 @@ public:
   wxColour GetColor(int st);
   wxFontWeight IsBold(int st);
   int IsItalic(int st);
-  int IsUnderlined(int st);
+  bool IsUnderlined(int st);
   void ReadStyle();
   void SetForceUpdate(bool force)
   {
