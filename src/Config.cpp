@@ -280,12 +280,12 @@ void Config::do_layout()
   // begin wxGlade: Config::do_layout
   wxFlexGridSizer* sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(4, 1, 3, 3);
+  wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(5, 1, 3, 3);
   wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
   wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(4, 1, 2, 7);
   wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(2, 2, 2, 2);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 2, 2, 2);
   wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
   wxStaticBoxSizer* sizer_6 = new wxStaticBoxSizer(sizer_6_staticbox, wxVERTICAL);
   wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(2, 2, 2, 2);
@@ -321,9 +321,9 @@ void Config::do_layout()
 
   notebook_1_pane_1->SetAutoLayout(true);
   notebook_1_pane_1->SetSizer(sizer_3);
+  sizer_3->AddGrowableCol(0);
   sizer_3->Fit(notebook_1_pane_1);
   sizer_3->SetSizeHints(notebook_1_pane_1);
-  sizer_3->AddGrowableCol(0);
 
   // TAB 2
   // Font box
