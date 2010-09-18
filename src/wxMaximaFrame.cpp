@@ -84,7 +84,11 @@ void wxMaximaFrame::set_properties()
   icon += wxT("/share/wxMaxima/wxmaxima.png");
   SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
 #endif
+#ifndef __WXMAC__
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
+#else
+  SetTitle(_("unsaved"));
+#endif
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
   m_console->SetMinSize(wxSize(100, 100));

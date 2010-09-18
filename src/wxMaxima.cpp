@@ -66,7 +66,8 @@ enum {
 };
 
 #if defined (__WXMAC__)
-  #define MACPREFIX "wxMaxima.app/Contents/Resources/"
+#include <Carbon/Carbon.h>
+#define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
@@ -1684,14 +1685,14 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
-  menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
+//  menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   if (m_console->GetSelectionStart() != NULL)
     menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
   else
     menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
-
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
+
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(id));
 
@@ -4130,25 +4131,35 @@ void wxMaxima::ResetTitle(bool saved)
   {
     m_fileSaved = saved;
     if (m_currentFile.Length() == 0) {
+#ifndef __WXMAC__
       if (saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
       else
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
+#else
+      SetTitle(_("unsaved"));
+#endif
     }
     else
     {
       wxString name, ext;
       wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
+#ifndef __WXMAC__
       if (m_fileSaved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
       else
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
+#else
+      SetTitle(name + wxT(".") + ext);
+#endif
     }
 #if defined __WXMAC__
 #if wxCHECK_VERSION(2,9,0)
     OSXSetModified(!saved);
+#else
+    SetWindowModified((WindowRef)MacGetTopLevelWindowRef(),!saved);
 #endif
 #endif
   }

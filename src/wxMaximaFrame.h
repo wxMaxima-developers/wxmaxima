@@ -229,7 +229,6 @@ enum {
   menu_pane_hideall,
   menu_pane_math,
   menu_pane_history,
-  menu_pane_inspector,
   menu_pane_format,
   menu_pane_stats,
   menu_stats_mean,

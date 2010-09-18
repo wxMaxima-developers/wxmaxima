@@ -167,6 +167,7 @@ protected:
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
   GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
+  bool SaveFile(bool forceSave = false);
 
   wxSocketBase *m_client;
   wxSocketServer *m_server;
