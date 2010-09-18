@@ -168,6 +168,7 @@ protected:
   GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
   bool SaveFile(bool forceSave = false);
+  int SaveDocumentP();
 
   wxSocketBase *m_client;
   wxSocketServer *m_server;

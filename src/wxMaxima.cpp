@@ -168,9 +168,7 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
       else if (!m_wxmax->DocumentSaved() &&
           (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
       {
-        int close = wxMessageBox(_("Save changes before closing?"),
-                                 _("Save changes?"),
-                                 wxYES_NO|wxCANCEL);
+        int close = m_wxmax->SaveDocumentP();
 
         if (close == wxCANCEL)
           return false;
@@ -1867,9 +1865,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_open_id:
     {
       if (!m_fileSaved) {
-        int close = wxMessageBox(_("Save changes before closing?"),
-                                 _("Save changes?"),
-                                 wxYES_NO|wxCANCEL);
+        int close = SaveDocumentP();
 
         if (close == wxCANCEL)
           return;
@@ -3700,9 +3696,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
   if (!m_fileSaved && event.CanVeto()) {
-    int close = wxMessageBox(_("Save changes before closing?"),
-                             _("Save changes?"),
-                             wxYES_NO|wxCANCEL, this);
+    int close = SaveDocumentP();
 
     if (close == wxCANCEL) {
       event.Veto();
@@ -3937,9 +3931,8 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
   if (!m_fileSaved) {
-    int close = wxMessageBox(_("Save changes before closing?"),
-                             _("Save changes?"),
-                             wxYES_NO|wxCANCEL);
+    int close = SaveDocumentP();
+
     if (close == wxCANCEL)
       return;
 
@@ -4288,6 +4281,41 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
   wxDELETE(inputStream);
   connection.Close();
+}
+
+int wxMaxima::SaveDocumentP()
+{
+  wxString file, ext;
+  if (m_currentFile == wxEmptyString)
+    file = _("unsaved");
+  else {
+    wxString ext;
+    wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
+    file += wxT(".") + ext;
+  }
+
+#if wxCHECK_VERSION(2,9,1)
+  wxMessageDialog dialog(this,
+       _("Do you want to save the changes you made in the document \"") +
+       file + wxT("\"?"),
+			 wxEmptyString, wxCENTER | wxYES_NO | wxCANCEL);
+
+  dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
+  dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
+
+  return dialog.ShowModal();
+#else
+#if defined __WXMAC__
+  return wxMessageBox(_("Your changes will be lost if you don't save them."),
+		                  _("Do you want to save the changes you made in the document \"") +
+		                  file + wxT("\"?"),
+		                  wxYES_NO|wxCANCEL);
+#else
+  return wxMessageBox(_("Save changes before closing?"),
+                      _("Save changes?"),
+                      wxYES_NO|wxCANCEL);
+#endif
+#endif
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
