@@ -87,6 +87,7 @@ public:
   Config(wxWindow* parent);
   ~Config();
   void OnChangeColor(); // called from class ColorPanel
+  void WriteSettings();
 private:
   // begin wxGlade: Config::methods
   void SetProperties();

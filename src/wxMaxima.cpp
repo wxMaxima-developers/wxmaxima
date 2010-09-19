@@ -1983,9 +1983,12 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       Config *configW = new Config(this);
       configW->Centre(wxBOTH);
-      configW->ShowModal();
-      m_console->RecalculateForce();
-      m_console->Refresh();
+      if (configW->ShowModal() == wxID_OK)
+      {
+        configW->WriteSettings();
+        m_console->RecalculateForce();
+        m_console->Refresh();
+      }
       configW->Destroy();
     }
     break;

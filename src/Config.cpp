@@ -60,20 +60,22 @@ const int langs[] =
 Config::Config(wxWindow* parent)
 {
 #if defined __WXMAC__
-  SetSheetStyle(wxPROPSHEET_SHRINKTOFIT | wxPROPSHEET_TREEBOOK);
+  SetSheetStyle(wxPROPSHEET_LISTBOOK | wxPROPSHEET_SHRINKTOFIT);
 #else
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
 #endif
-  SetSheetInnerBorder(0);
-  SetSheetOuterBorder(0);
+  SetSheetInnerBorder(3);
+  SetSheetOuterBorder(3);
+
 #if defined __WXMAC__
-#define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
+  #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
 #elif defined __WXMSW__
-#define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
+  #define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
 #else
   wxString prefix = wxT(PREFIX);
-#define IMAGE(img) wxImage(prefix + wxT("/share/wxMaxima/") + wxT(img))
+  #define IMAGE(img) wxImage(prefix + wxT("/share/wxMaxima/") + wxT(img))
 #endif
+
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);
   m_imageList->Add(IMAGE("options.png"));
@@ -90,6 +92,10 @@ Config::Config(wxWindow* parent)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
+
+#ifndef __WXMAC__
+  CreateButtons(wxOK | wxCANCEL);
+#endif
 
   LayoutDialog();
 
@@ -402,6 +408,15 @@ wxPanel* Config::CreateStylePanel()
 
 void Config::OnClose(wxCloseEvent& event)
 {
+#if defined __WXMAC__
+  EndModal(wxID_OK);
+#else
+  EndModal(wxID_CANCEL);
+#endif
+}
+
+void Config::WriteSettings()
+{
   int i = 0;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
@@ -430,8 +445,6 @@ void Config::OnClose(wxCloseEvent& event)
 
   WriteStyles();
   config->Flush();
-
-  EndModal(wxOK);
 }
 
 void Config::OnMpBrowse(wxCommandEvent& event)
