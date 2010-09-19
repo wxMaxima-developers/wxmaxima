@@ -59,12 +59,18 @@ const int langs[] =
 
 Config::Config(wxWindow* parent)
 {
-  SetSheetStyle(wxPROPSHEET_SHRINKTOFIT | wxPROPSHEET_BUTTONTOOLBOOK);
+#if defined __WXMAC__
+  SetSheetStyle(wxPROPSHEET_SHRINKTOFIT | wxPROPSHEET_TREEBOOK);
+#else
+  SetSheetStyle(wxPROPSHEET_LISTBOOK);
+#endif
   SetSheetInnerBorder(0);
   SetSheetOuterBorder(0);
-
+#if defined __WXMAC__
 #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
-
+#elif defined __WXMSW__
+#define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
+#endif
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);
   m_imageList->Add(IMAGE("options.png"));
@@ -203,7 +209,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
-  wxBoxSizer* vbox_sizer = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(9,1,5,5);
 
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
@@ -249,18 +255,19 @@ wxPanel* Config::CreateOptionsPanel()
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  vbox_sizer->Add(grid_sizer, 1, wxEXPAND, 5);
-  vbox_sizer->Add(m_saveSize, 0, wxALL, 5);
-  vbox_sizer->Add(m_savePanes, 0, wxALL, 5);
-  vbox_sizer->Add(m_matchParens, 0, wxALL, 5);
-  vbox_sizer->Add(m_fixedFontInTC, 0, wxALL, 5);
-  vbox_sizer->Add(m_showLong, 0, wxALL, 5);
-  vbox_sizer->Add(m_changeAsterisk, 0, wxALL, 5);
-  vbox_sizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
-  vbox_sizer->Add(m_enterEvaluates, 0, wxALL, 5);
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+  vsizer->Add(m_saveSize, 0, wxALL, 5);
+  vsizer->Add(m_savePanes, 0, wxALL, 5);
+  vsizer->Add(m_matchParens, 0, wxALL, 5);
+  vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
+  vsizer->Add(m_showLong, 0, wxALL, 5);
+  vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
+  vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
+  vsizer->Add(m_enterEvaluates, 0, wxALL, 5);
 
-  panel->SetSizer(vbox_sizer);
-  vbox_sizer->Fit(panel);
+  vsizer->AddGrowableRow(9);
+  panel->SetSizer(vsizer);
+  vsizer->Fit(panel);
 
   return panel;
 }
