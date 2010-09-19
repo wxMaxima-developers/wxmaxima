@@ -70,6 +70,9 @@ Config::Config(wxWindow* parent)
 #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
 #elif defined __WXMSW__
 #define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
+#else
+  wxString prefix = wxT(PREFIX);
+#define IMAGE(img) wxImage(prefix + wxT("/share/wxMaxima/") + wxT(img))
 #endif
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);

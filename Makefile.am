@@ -19,7 +19,8 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/maximaicon.ico
 
 docdir = ${datadir}/wxMaxima
-doc_DATA = README COPYING
+doc_DATA = README COPYING art/config/options.png art/config/maxima.png \
+	art/config/styles.png
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
