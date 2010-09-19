@@ -56,115 +56,45 @@ const int langs[] =
 
 #define LANGUAGE_NUMBER 16
 
-Config::Config(wxWindow* parent, int id, const wxString& title,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+
+Config::Config(wxWindow* parent)
 {
-  int defaultPort = 4010;
-  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
+  SetSheetStyle(wxPROPSHEET_SHRINKTOFIT | wxPROPSHEET_BUTTONTOOLBOOK);
+  SetSheetInnerBorder(0);
+  SetSheetOuterBorder(0);
 
-  notebook_1 = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize, 0);
-  notebook_1_pane_2 = new wxPanel(notebook_1, -1);
-  notebook_1_pane_1 = new wxPanel(notebook_1, -1);
-  sizer_6_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("wxMaxima options"));
-  sizer_4_staticbox = new wxStaticBox(notebook_1_pane_1, -1, _("Maxima options"));
-  sizer_9_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Fonts"));
-  sizer_11_staticbox = new wxStaticBox(notebook_1_pane_2, -1, _("Styles"));
-  label_5 = new wxStaticText(notebook_1_pane_1, -1, _("Maxima program:"));
-  m_maximaProgram = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
-  m_mpBrowse = new wxButton(notebook_1_pane_1, wxID_OPEN, _("Open"));
-  label_6 = new wxStaticText(notebook_1_pane_1, -1, _("Additional parameters:"));
-  m_additionalParameters = new wxTextCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
-  label_4 = new wxStaticText(notebook_1_pane_1, -1, _("Language:"));
-  const wxString m_language_choices[] =
-    {
-      _("(Use default language)"),
-      _("Chinese traditional"),
-      _("Czech"),
-      _("Danish"),
-      _("English"),
-      _("French"),
-      _("German"),
-      _("Greek"),
-      _("Hungarian"),
-      _("Italian"),
-      _("Japanese"),
-      _("Polish"),
-      _("Portuguese (Brazilian)"),
-      _("Russian"),
-      _("Spanish"),
-      _("Ukrainian")
-    };
-  m_language = new wxComboBox(notebook_1_pane_1, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
-  label_12 = new wxStaticText(notebook_1_pane_1, -1, _("Default port:"));
-  m_defaultPort = new wxSpinCtrl(notebook_1_pane_1, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
-  m_defaultPort->SetValue(defaultPort);
-  m_saveSize = new wxCheckBox(notebook_1_pane_1, -1, _("Save wxMaxima window size/position"));
-  m_savePanes = new wxCheckBox(notebook_1_pane_1, -1, _("Save panes layout"));
-  m_matchParens = new wxCheckBox(notebook_1_pane_1, -1, _("Match parenthesis in text controls"));
-  m_fixedFontInTC = new wxCheckBox(notebook_1_pane_1, -1, _("Fixed font in text controls"));
-  m_showLong = new wxCheckBox(notebook_1_pane_1, -1, _("Show long expressions"));
-  m_changeAsterisk = new wxCheckBox(notebook_1_pane_1, -1, _("Use centered dot character for multiplication"));
-  m_enterEvaluates = new wxCheckBox(notebook_1_pane_1, -1, _("Enter evaluates cells"));
-  label_8 = new wxStaticText(notebook_1_pane_2, -1, _("Default font:"));
-  m_getFont = new wxButton(notebook_1_pane_2, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  m_mathFont = new wxStaticText(notebook_1_pane_2, -1, _("Math font:"));
-  m_getMathFont = new wxButton(notebook_1_pane_2, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  m_useJSMath = new wxCheckBox(notebook_1_pane_2, -1, _("Use jsMath fonts"));
-  m_keepPercentWithSpecials = new wxCheckBox(notebook_1_pane_2, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
-  const wxString m_styleFor_choices[] =
-    {
-      _("Default"),
-      _("Variables"),
-      _("Numbers"),
-      _("Function names"),
-      _("Special constants"),
-      _("Greek constants"),
-      _("Strings"),
-      _("Maxima input"),
-      _("Input labels"),
-      _("Maxima questions"),
-      _("Output labels"),
-      _("Highlight (dpart)"),
-      _("Text cell"),
-      _("Subsection cell"),
-      _("Section cell"),
-      _("Title cell"),
-      _("Text cell background"),
-      _("Document background"),
-      _("Cell bracket"),
-      _("Active cell bracket"),
-      _("Cursor"),
-      _("Selection"),
-      _("Outdated cells")
-    };
-  m_styleFor = new wxListBox(notebook_1_pane_2, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 23, m_styleFor_choices, wxLB_SINGLE);
-  m_getStyleFont = new wxButton(notebook_1_pane_2, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-#ifndef __WXMSW__
-  m_styleColor = new ColorPanel(this, notebook_1_pane_2, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
-#else
-  m_styleColor = new wxButton(notebook_1_pane_2, color_id, wxEmptyString, wxDefaultPosition, wxSize(150, -1));
-#endif
-  m_boldCB = new wxCheckBox(notebook_1_pane_2, checkbox_bold, _("Bold"));
-  m_italicCB = new wxCheckBox(notebook_1_pane_2, checkbox_italic, _("Italic"));
-  m_underlinedCB = new wxCheckBox(notebook_1_pane_2, checkbox_underlined, _("Underlined"));
-  label_11 = new ExamplePanel(notebook_1_pane_2, -1, wxDefaultPosition, wxSize(350, 60));
-  m_loadStyle = new wxButton(notebook_1_pane_2, load_id, _("Load"));
-  m_saveStyle = new wxButton(notebook_1_pane_2, save_id, _("Save"));
-#if defined __WXMSW__
-  m_button1 = new wxButton(this, wxID_OK, _("OK"));
-  m_button2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-#else
-  m_button1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  m_button2 = new wxButton(this, wxID_OK, _("OK"));
-#endif
+#define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
 
-  set_properties();
-  do_layout();
+  wxSize imageSize(32, 32);
+  m_imageList = new wxImageList(32, 32);
+  m_imageList->Add(IMAGE("options.png"));
+  m_imageList->Add(IMAGE("maxima.png"));
+  m_imageList->Add(IMAGE("styles.png"));
+
+  Create(parent, wxID_ANY, _("wxMaxima configuration"),
+      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+
+  m_notebook = GetBookCtrl();
+
+  m_notebook->SetImageList(m_imageList);
+
+  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), true, 0);
+  m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
+  m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
+
+  LayoutDialog();
+
+  SetProperties();
   UpdateExample();
 }
 
-void Config::set_properties()
+Config::~Config()
+{
+  if (m_imageList != NULL)
+    delete m_imageList;
+}
+
+void Config::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
@@ -258,12 +188,6 @@ void Config::set_properties()
 
   m_getStyleFont->Enable(false);
 
-#if defined __WXMSW__
-  m_button1->SetDefault();
-#else
-  m_button2->SetDefault();
-#endif
-
   if (!wxFontEnumerator::IsValidFacename(wxT("jsMath-cmex10")) ||
       !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmsy10")) ||
       !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmr10")) ||
@@ -274,117 +198,199 @@ void Config::set_properties()
   ReadStyles();
 }
 
-
-void Config::do_layout()
+wxPanel* Config::CreateOptionsPanel()
 {
-  // begin wxGlade: Config::do_layout
-  wxFlexGridSizer* sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* sizer_8 = new wxFlexGridSizer(5, 1, 3, 3);
-  wxStaticBoxSizer* sizer_11 = new wxStaticBoxSizer(sizer_11_staticbox, wxVERTICAL);
-  wxBoxSizer* sizer_12 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(4, 1, 2, 7);
-  wxStaticBoxSizer* sizer_9 = new wxStaticBoxSizer(sizer_9_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 2, 2, 2);
-  wxFlexGridSizer* sizer_3 = new wxFlexGridSizer(2, 1, 3, 3);
-  wxStaticBoxSizer* sizer_6 = new wxStaticBoxSizer(sizer_6_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(2, 2, 2, 2);
-  wxStaticBoxSizer* sizer_4 = new wxStaticBoxSizer(sizer_4_staticbox, wxVERTICAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 3, 3, 3);
-  wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_10 = new wxBoxSizer(wxHORIZONTAL);
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+  wxBoxSizer* vbox_sizer = new wxBoxSizer(wxVERTICAL);
+
+  int defaultPort = 4010;
+  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
+
+  wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
+  const wxString m_language_choices[] =
+    {
+      _("(Use default language)"),
+      _("Chinese traditional"),
+      _("Czech"),
+      _("Danish"),
+      _("English"),
+      _("French"),
+      _("German"),
+      _("Greek"),
+      _("Hungarian"),
+      _("Italian"),
+      _("Japanese"),
+      _("Polish"),
+      _("Portuguese (Brazilian)"),
+      _("Russian"),
+      _("Spanish"),
+      _("Ukrainian")
+    };
+  m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  wxStaticText* dp = new wxStaticText(panel, -1, _("Default port:"));
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
+  m_defaultPort->SetValue(defaultPort);
+  m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
+  m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
+  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
+  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
+  m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
+  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
+  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
+  m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
 
   // TAB 1
   // Maxima options box
-  grid_sizer_2->Add(label_5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(label_6, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_2->Add(m_additionalParameters, 0, wxALL, 3);
-  sizer_4->Add(grid_sizer_2, 1, wxALL | wxEXPAND, 3);
-  sizer_3->Add(sizer_4, 1, wxALL | wxEXPAND, 3);
 
   // wxMaxima options box
-  grid_sizer_5->Add(label_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(label_12, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_5->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_6->Add(grid_sizer_5, 1, wxEXPAND, 0);
-  sizer_6->Add(m_saveSize, 0, wxALL, 3);
-  sizer_6->Add(m_savePanes, 0, wxALL, 3);
-  sizer_6->Add(m_matchParens, 0, wxALL, 3);
-  sizer_6->Add(m_fixedFontInTC, 0, wxALL, 3);
-  sizer_6->Add(m_showLong, 0, wxALL, 3);
-  sizer_6->Add(m_changeAsterisk, 0, wxALL, 3);
-  sizer_6->Add(m_enterEvaluates, 0, wxALL, 3);
-  sizer_3->Add(sizer_6, 1, wxALL | wxEXPAND, 3);
+  grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vbox_sizer->Add(grid_sizer, 1, wxEXPAND, 5);
+  vbox_sizer->Add(m_saveSize, 0, wxALL, 5);
+  vbox_sizer->Add(m_savePanes, 0, wxALL, 5);
+  vbox_sizer->Add(m_matchParens, 0, wxALL, 5);
+  vbox_sizer->Add(m_fixedFontInTC, 0, wxALL, 5);
+  vbox_sizer->Add(m_showLong, 0, wxALL, 5);
+  vbox_sizer->Add(m_changeAsterisk, 0, wxALL, 5);
+  vbox_sizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
+  vbox_sizer->Add(m_enterEvaluates, 0, wxALL, 5);
 
-  notebook_1_pane_1->SetAutoLayout(true);
-  notebook_1_pane_1->SetSizer(sizer_3);
-  sizer_3->AddGrowableCol(0);
-  sizer_3->Fit(notebook_1_pane_1);
-  sizer_3->SetSizeHints(notebook_1_pane_1);
+  panel->SetSizer(vbox_sizer);
+  vbox_sizer->Fit(panel);
 
-  // TAB 2
-  // Font box
-  grid_sizer_1->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_1->Add(10, 10);
-  grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_9->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 3);
-  sizer_8->Add(sizer_9, 1, wxALL | wxEXPAND, 3);
-
-  // Styles box
-  grid_sizer_4->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_5->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  grid_sizer_4->Add(sizer_5, 1, wxALL | wxEXPAND, 3);
-  grid_sizer_4->Add(label_11, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 3); // example panel
-
-  sizer_12->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_12->Add(grid_sizer_4, 1, wxALL | wxEXPAND, 3);
-  sizer_11->Add(m_keepPercentWithSpecials, 0, wxALL | wxALIGN_TOP, 3);
-  sizer_11->Add(sizer_12, 0, wxALL | wxEXPAND, 3);
-  sizer_8->Add(sizer_11, 1, wxALL | wxEXPAND, 3);
-  // load save buttons
-  sizer_10->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_10->Add(m_saveStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
-  sizer_8->Add(sizer_10, 1, wxALIGN_RIGHT, 3);
-
-  // Tab 2
-  notebook_1_pane_2->SetAutoLayout(true);
-  notebook_1_pane_2->SetSizer(sizer_8);
-  sizer_8->Fit(notebook_1_pane_2);
-  sizer_8->SetSizeHints(notebook_1_pane_2);
-  sizer_8->AddGrowableCol(0);
-
-  // Add tabs to notebook and
-  notebook_1->AddPage(notebook_1_pane_1, _("Options"));
-  notebook_1->AddPage(notebook_1_pane_2, _("Style"));
-
-  // Add notebook to dialog
-  sizer_1->Add(notebook_1, 1, wxEXPAND | wxALL, 2);
-
-  // OK and cancel buttons
-  sizer_2->Add(m_button1, 0, wxALL, 5);
-  sizer_2->Add(m_button2, 0, wxALL, 5);
-  sizer_1->Add(sizer_2, 1, wxALIGN_RIGHT, 0);
-
-  SetAutoLayout(true);
-  SetSizer(sizer_1);
-  sizer_1->Fit(this);
-  sizer_1->SetSizeHints(this);
-  sizer_1->AddGrowableRow(1);
-  sizer_1->AddGrowableCol(0);
-  Layout();
-  // end wxGlade
+  return panel;
 }
 
-void Config::OnOk(wxCommandEvent& event)
+wxPanel* Config::CreateMaximaPanel()
+{
+  wxPanel* panel = new wxPanel(m_notebook, -1);
+
+  wxFlexGridSizer* sizer = new wxFlexGridSizer(5, 2, 0, 0);
+
+  wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
+  m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
+  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters:"));
+  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+
+  sizer->Add(mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(10, 10);
+  sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(10, 10);
+  sizer->Add(10, 10);
+  sizer->Add(ap, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(10, 10);
+  sizer->Add(m_additionalParameters, 0, wxALL, 5);
+
+  panel->SetSizer(sizer);
+  sizer->Fit(panel);
+
+  return panel;
+}
+
+wxPanel* Config::CreateStylePanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+
+  wxStaticBox* fonts = new wxStaticBox(panel, -1, _("Fonts"));
+  wxStaticBox* styles = new wxStaticBox(panel, -1, _("Styles"));
+
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(3,1,5,5);
+  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 2, 2, 2);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 1, 3, 3);
+  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(4, 1, 2, 7);
+  wxStaticBoxSizer* sb_sizer_1 = new wxStaticBoxSizer(fonts, wxVERTICAL);
+  wxStaticBoxSizer* sb_sizer_2 = new wxStaticBoxSizer(styles, wxVERTICAL);
+  wxBoxSizer* hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* hbox_sizer_3 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer* vbox_sizer = new wxBoxSizer(wxVERTICAL);
+
+  wxStaticText* df = new wxStaticText(panel, -1, _("Default font:"));
+  m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
+  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
+  const wxString m_styleFor_choices[] =
+    {
+      _("Default"),
+      _("Variables"),
+      _("Numbers"),
+      _("Function names"),
+      _("Special constants"),
+      _("Greek constants"),
+      _("Strings"),
+      _("Maxima input"),
+      _("Input labels"),
+      _("Maxima questions"),
+      _("Output labels"),
+      _("Highlight (dpart)"),
+      _("Text cell"),
+      _("Subsection cell"),
+      _("Section cell"),
+      _("Title cell"),
+      _("Text cell background"),
+      _("Document background"),
+      _("Cell bracket"),
+      _("Active cell bracket"),
+      _("Cursor"),
+      _("Selection"),
+      _("Outdated cells")
+    };
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 23, m_styleFor_choices, wxLB_SINGLE);
+  m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
+#ifndef __WXMSW__
+  m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
+#else
+  m_styleColor = new wxButton(panel, color_id, wxEmptyString, wxDefaultPosition, wxSize(150, -1));
+#endif
+  m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"));
+  m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"));
+  m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"));
+  m_examplePanel = new ExamplePanel(panel, -1, wxDefaultPosition, wxSize(250, 60));
+  m_loadStyle = new wxButton(panel, load_id, _("Load"));
+  m_saveStyle = new wxButton(panel, save_id, _("Save"));
+
+  grid_sizer_1->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(10, 10);
+  grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+  sb_sizer_1->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 0);
+  vsizer->Add(sb_sizer_1, 1, wxALL | wxEXPAND, 3);
+
+  vbox_sizer->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vbox_sizer->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_1->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_1->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_1->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vbox_sizer->Add(hbox_sizer_1, 1, wxALL | wxEXPAND, 0);
+  vbox_sizer->Add(m_examplePanel, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 5);
+  hbox_sizer_2->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_2->Add(vbox_sizer, 1, wxALL | wxEXPAND, 0);
+  sb_sizer_2->Add(hbox_sizer_2, 0, wxALL | wxEXPAND, 0);
+
+  vsizer->Add(sb_sizer_2, 1, wxALL | wxEXPAND, 3);
+
+  // load save buttons
+  hbox_sizer_3->Add(m_loadStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_3->Add(m_saveStyle, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vsizer->Add(hbox_sizer_3, 1, wxALIGN_RIGHT, 3);
+
+  panel->SetSizer(vsizer);
+  vsizer->Fit(panel);
+
+  return panel;
+}
+
+void Config::OnClose(wxCloseEvent& event)
 {
   int i = 0;
   wxString search = wxT("maxima-htmldir");
@@ -410,14 +416,12 @@ void Config::OnOk(wxCommandEvent& event)
     config->Write(wxT("pos-restore"), 0);
   i = m_language->GetSelection();
   if (i > -1 && i < LANGUAGE_NUMBER)
-  {
     config->Write(wxT("language"), langs[i]);
-  }
 
   WriteStyles();
   config->Flush();
 
-  EndModal(wxID_OK);
+  EndModal(wxOK);
 }
 
 void Config::OnMpBrowse(wxCommandEvent& event)
@@ -995,20 +999,21 @@ void Config::UpdateExample()
   }
 
   if (tmp == &m_styleTextBackground) {
-      label_11->SetFontSize(m_styleText.fontSize);
-      label_11->SetStyle(m_styleText.color, m_styleText.italic, m_styleText.bold, m_styleText.underlined, m_styleText.font); }
+    m_examplePanel->SetFontSize(m_styleText.fontSize);
+    m_examplePanel->SetStyle(m_styleText.color, m_styleText.italic, m_styleText.bold, m_styleText.underlined, m_styleText.font);
+  }
   else {
-      label_11->SetFontSize(fontsize);
-      label_11->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
+    m_examplePanel->SetFontSize(fontsize);
+    m_examplePanel->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
   }
 
   if (tmp == &m_styleTextBackground ||
       tmp == &m_styleText)
-    label_11->SetBackgroundColour(m_styleTextBackground.color);
+    m_examplePanel->SetBackgroundColour(m_styleTextBackground.color);
   else
-    label_11->SetBackgroundColour(m_styleBackground.color);
+    m_examplePanel->SetBackgroundColour(m_styleBackground.color);
 
-  label_11->Refresh();
+  m_examplePanel->Refresh();
 }
 
 void Config::LoadSave(wxCommandEvent& event)
@@ -1042,8 +1047,7 @@ void Config::OnColorButton(wxCommandEvent &event)
 }
 #endif
 
-BEGIN_EVENT_TABLE(Config, wxDialog)
-  EVT_BUTTON(wxID_OK, Config::OnOk)
+BEGIN_EVENT_TABLE(Config, wxPropertySheetDialog)
   EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
   EVT_BUTTON(button_mathFont, Config::OnMathBrowse)
   EVT_BUTTON(font_family, Config::OnChangeFontFamily)
@@ -1058,6 +1062,7 @@ BEGIN_EVENT_TABLE(Config, wxDialog)
   EVT_BUTTON(save_id, Config::LoadSave)
   EVT_BUTTON(load_id, Config::LoadSave)
   EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
+  EVT_CLOSE(Config::OnClose)
 END_EVENT_TABLE()
 
 

@@ -20,8 +20,14 @@
 #include <wx/wx.h>
 #include <wx/image.h>
 
+#include <wx/propdlg.h>
+#include <wx/generic/propdlg.h>
 #include <wx/spinctrl.h>
 #include <wx/notebook.h>
+
+#include <wx/imaglist.h>
+#include <wx/bookctrl.h>
+#include <wx/artprov.h>
 
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -75,40 +81,30 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-
-
-class Config: public wxDialog
+class Config: public wxPropertySheetDialog
 {
 public:
-  Config(wxWindow* parent, int id, const wxString& title,
-         const wxPoint& pos = wxDefaultPosition,
-         const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  Config(wxWindow* parent);
+  ~Config();
   void OnChangeColor(); // called from class ColorPanel
 private:
   // begin wxGlade: Config::methods
-  void set_properties();
-  void do_layout();
+  void SetProperties();
+  wxPanel* CreateOptionsPanel();
+  wxPanel* CreateStylePanel();
+  wxPanel* CreateMaximaPanel();
   // end wxGlade
 protected:
   // begin wxGlade: Config::attributes
-  wxStaticBox* sizer_11_staticbox;
-  wxStaticBox* sizer_9_staticbox;
-  wxStaticBox* sizer_6_staticbox;
-  wxStaticBox* sizer_4_staticbox;
-  wxStaticText* label_5;
   wxTextCtrl* m_maximaProgram;
   wxButton* m_mpBrowse;
-  wxStaticText* label_6;
   wxTextCtrl* m_additionalParameters;
-  wxStaticText* label_4;
   wxComboBox* m_language;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_savePanes;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_enterEvaluates;
-  wxPanel* notebook_1_pane_1;
-  wxStaticText* label_8;
   wxButton* m_getFont;
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;
@@ -126,18 +122,13 @@ protected:
   wxCheckBox* m_changeAsterisk;
   wxCheckBox* m_useJSMath;
   wxCheckBox* m_keepPercentWithSpecials;
-  wxPanel* notebook_1_pane_2;
-  wxNotebook* notebook_1;
-  wxButton* m_button1;
-  wxButton* m_button2;
+  wxBookCtrlBase* m_notebook;
   wxStaticText* m_mathFont;
   wxButton* m_getMathFont;
-  wxStaticText* label_10;
   wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
-  wxStaticText* label_12;
   wxSpinCtrl* m_defaultPort;
-  ExamplePanel* label_11;
+  ExamplePanel* m_examplePanel;
   // end wxGlade
   style m_styleDefault,
         m_styleVariable,
@@ -162,7 +153,7 @@ protected:
         m_styleCursor,
         m_styleSelection,
         m_styleOutdated;
-  void OnOk(wxCommandEvent& event);
+  void OnClose(wxCloseEvent& event);
   void OnMpBrowse(wxCommandEvent& event);
 #if defined __WXMSW__
   void OnColorButton(wxCommandEvent& event);
@@ -179,6 +170,7 @@ protected:
   void LoadSave(wxCommandEvent& event);
   int m_fontSize, m_mathFontSize;
   style* GetStylePointer();
+  wxImageList *m_imageList;
   DECLARE_EVENT_TABLE()
 };
 

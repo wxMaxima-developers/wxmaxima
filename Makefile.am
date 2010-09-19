@@ -11,6 +11,9 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/toolbar/playback-stop.png                   \
 	     art/toolbar/paste.png                           \
 	     art/toolbar/find.png                            \
+	     art/config/options.png                          \
+	     art/config/maxima.png                           \
+	     arg/config/styles.png                           \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
              art/maximaicon.ico
@@ -47,6 +50,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
+	mkdir -p wxMaxima.app/Contents/Resources/config
 	cp locales/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima.mo
 	cp locales/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima.mo
 	cp locales/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima.mo
@@ -76,4 +80,5 @@ wxMaxima.app: all
 	cp locales/wxwin/el.mo wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp locales/wxwin/ja.mo wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
+	cp art/config/*.png wxMaxima.app/Contents/Resources/config
 

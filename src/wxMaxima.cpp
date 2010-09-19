@@ -1981,15 +1981,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case tb_pref:
 #endif
     {
-      Config *configW = new Config(this, -1, _("wxMaxima configuration"));
+      Config *configW = new Config(this);
       configW->Centre(wxBOTH);
-      if (configW->ShowModal() == wxID_OK)
-      {
-        bool match = true;
-        wxConfig::Get()->Read(wxT("matchParens"), &match);
-        m_console->RecalculateForce();
-        m_console->Refresh();
-      }
+      configW->ShowModal();
+      m_console->RecalculateForce();
+      m_console->Refresh();
       configW->Destroy();
     }
     break;
