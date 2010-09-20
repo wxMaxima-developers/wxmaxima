@@ -3260,6 +3260,7 @@ wxT("<html>"
 "</p>"
 "<h4>%s</h4>"
 "<p>"
+"cw.ahbong (zh_TW)<br>"
 "Josef Barak (cs)<br>"
 "Robert Marik (cs)<br>"
 "Jens Thostrup (da)<br>"
@@ -3376,6 +3377,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
+    info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
     info.AddTranslator(wxT("Robert Marik (cs)"));
     info.AddTranslator(wxT("Jens Thostrup (da)"));
