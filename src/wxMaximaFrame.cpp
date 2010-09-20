@@ -194,6 +194,11 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_export_html, _("&Export..."),
                    _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
+#if defined __WXMAC__
+  wxglade_tmp_menu_1->AppendSeparator();
+  wxglade_tmp_menu_1->Append(mac_closeId, _("Close Window\tCtrl-W"),
+			     _("Close window"), wxITEM_NORMAL);
+#endif
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
@@ -717,11 +722,13 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
 			   IMAGE("playback-stop.png"),
 			   _("Stop animation"));
+#if !wxCHECK_VERSION(2, 9, 1)
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   frame_1_toolbar->AddControl(m_plotSlider);
   frame_1_toolbar->AddSeparator();
+#endif
   frame_1_toolbar->AddTool(tb_help, _("Help"),
                            IMAGE("help.png"),
                            _("Show Maxima help"));

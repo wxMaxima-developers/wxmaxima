@@ -203,7 +203,7 @@ void wxMaxima::CheckForPrintingSupport()
 #elif defined __WXMAC__
   m_supportPrinting = true;
 #elif defined __WXGTK__
- #if wxCHECK_VERSION(2, 9, 0)
+ #if wxCHECK_VERSION(2,9,0)
   m_supportPrinting = true;
  #elif defined wxUSE_LIBGNOMEPRINT
   #if wxUSE_LIBGNOMEPRINT
@@ -1035,7 +1035,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
 
   // read document version and complain
+#if wxCHECK_VERSION(2,9,0)
+  wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
+#else
   wxString docversion = xmldoc.GetRoot()->GetPropVal(wxT("version"),wxT("1.0"));
+#endif
   double version = 1.0;
   if (docversion.ToDouble(&version)) {
     int version_major = int(version);
@@ -1060,7 +1064,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
 
   // read zoom factor
+#if wxCHECK_VERSION(2,9,0)
+  wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"),wxT("100"));
+#else
   wxString doczoom = xmldoc.GetRoot()->GetPropVal(wxT("zoom"),wxT("100"));
+#endif
 
   wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
 
@@ -1859,6 +1867,11 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   switch (event.GetId())
   {
+#if defined __WXMAC__
+  case mac_closeId:
+    Close();
+    break;
+#endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_open:
 #endif
@@ -4295,7 +4308,7 @@ int wxMaxima::SaveDocumentP()
     file += wxT(".") + ext;
   }
 
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,0)
   wxMessageDialog dialog(this,
        _("Do you want to save the changes you made in the document \"") +
        file + wxT("\"?"),
@@ -4320,6 +4333,9 @@ int wxMaxima::SaveDocumentP()
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
+#if defined __WXMAC__
+  EVT_MENU(mac_closeId, wxMaxima::FileMenu)
+#endif
   EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
