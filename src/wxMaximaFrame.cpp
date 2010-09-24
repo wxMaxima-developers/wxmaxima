@@ -87,7 +87,7 @@ void wxMaximaFrame::set_properties()
 #ifndef __WXMAC__
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
 #else
-  SetTitle(_("unsaved"));
+  SetTitle(_("untitled"));
 #endif
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));

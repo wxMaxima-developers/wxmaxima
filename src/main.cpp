@@ -174,6 +174,8 @@ void MyApp::NewWindow(wxString file)
 
 #if defined __WXMAC__
   topLevelWindows.Append(frame);
+  if (topLevelWindows.GetCount()>1)
+    frame->SetTitle(wxString::Format(_("untitled %d"), topLevelWindows.GetCount()));
 #endif
 
   SetTopWindow(frame);

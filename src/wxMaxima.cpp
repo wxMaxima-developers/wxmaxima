@@ -61,14 +61,20 @@
 #include <wx/url.h>
 #include <wx/sstream.h>
 
+#if defined __WXMAC__
+ #if !wxCHECK_VERSION(2,9,0)
+  #include <wx/mac/private.h>
+  #include <Carbon/Carbon.h>
+ #elif defined __WXOSX_CARBON__
+  #include <wx/osx/carbon/private.h>
+  #include <Carbon/Carbon.h>
+ #endif
+#define MACPREFIX "wxMaxima.app/Contents/Resources/"
+#endif
+
 enum {
   maxima_process_id
 };
-
-#if defined (__WXMAC__)
-#include <Carbon/Carbon.h>
-#define MACPREFIX "wxMaxima.app/Contents/Resources/"
-#endif
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
@@ -170,10 +176,10 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
       {
         int close = m_wxmax->SaveDocumentP();
 
-        if (close == wxCANCEL)
+        if (close == wxID_CANCEL)
           return false;
 
-        if (close == wxYES) {
+        if (close == wxID_YES) {
           if (!m_wxmax->SaveFile())
             return false;
         }
@@ -1880,10 +1886,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (!m_fileSaved) {
         int close = SaveDocumentP();
 
-        if (close == wxCANCEL)
+        if (close == wxID_CANCEL)
           return;
 
-        if (close == wxYES) {
+        if (close == wxID_YES) {
           if (!SaveFile())
             return;
         }
@@ -3712,12 +3718,12 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   if (!m_fileSaved && event.CanVeto()) {
     int close = SaveDocumentP();
 
-    if (close == wxCANCEL) {
+    if (close == wxID_CANCEL) {
       event.Veto();
       return;
     }
 
-    if (close == wxYES) {
+    if (close == wxID_YES) {
       if (!SaveFile()) {
         event.Veto();
         return;
@@ -3947,10 +3953,10 @@ void wxMaxima::OnRecentDocument(wxCommandEvent& event)
   if (!m_fileSaved) {
     int close = SaveDocumentP();
 
-    if (close == wxCANCEL)
+    if (close == wxID_CANCEL)
       return;
 
-    if (close == wxYES) {
+    if (close == wxID_YES) {
       if (!SaveFile())
         return;
     }
@@ -4143,8 +4149,6 @@ void wxMaxima::ResetTitle(bool saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
       else
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
-#else
-      SetTitle(_("unsaved"));
 #endif
     }
     else
@@ -4163,11 +4167,20 @@ void wxMaxima::ResetTitle(bool saved)
 #endif
     }
 #if defined __WXMAC__
-#if wxCHECK_VERSION(2,9,0)
+ #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-#else
-    SetWindowModified((WindowRef)MacGetTopLevelWindowRef(),!saved);
-#endif
+    //    if (m_currentFile != wxEmptyString)
+    //      OSXSetProxyIconFile(m_currentFile);
+ #else
+    WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
+    SetWindowModified(win,!saved);
+    if (m_currentFile != wxEmptyString)
+    {
+      FSRef fsref;
+      wxMacPathToFSRef(m_currentFile, &fsref);
+      HIWindowSetProxyFSRef(win, &fsref);
+    }
+ #endif
 #endif
   }
 }
@@ -4301,7 +4314,13 @@ int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
   if (m_currentFile == wxEmptyString)
+  {
+#if defined __WXMAC__
+    file = GetTitle();
+#else
     file = _("unsaved");
+#endif
+  }
   else {
     wxString ext;
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
