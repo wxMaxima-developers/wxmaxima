@@ -235,6 +235,17 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                           m_fontname : parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
 
+  // Titles, sections, subsections - don't underline
+  else if ((m_textStyle == TS_TITLE) ||
+           (m_textStyle == TS_SECTION) ||
+           (m_textStyle == TS_SUBSECTION))
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                      parser.IsItalic(m_textStyle),
+                      parser.IsBold(m_textStyle),
+                      false,
+                      parser.GetFontName(m_textStyle),
+                      parser.GetFontEncoding()));
+
   // Default
   else
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
