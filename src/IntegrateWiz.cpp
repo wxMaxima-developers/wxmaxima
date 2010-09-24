@@ -93,9 +93,9 @@ void IntegrateWiz::set_properties()
 
 void IntegrateWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(3, 1, 0, 0);
   wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(5, 2, 0, 0);
+  wxFlexGridSizer* grid_sizer_4 = new wxFlexGridSizer(7, 2, 0, 0);
   wxFlexGridSizer* grid_sizer_6 = new wxFlexGridSizer(1, 2, 0, 0);
   wxFlexGridSizer* grid_sizer_5 = new wxFlexGridSizer(1, 2, 0, 0);
   grid_sizer_4->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
