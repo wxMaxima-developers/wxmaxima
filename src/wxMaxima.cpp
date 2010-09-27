@@ -1708,10 +1708,14 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(id));
 
+#if defined __WXMAC__
+  menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
+#else
   if (GetToolBar() != NULL)
     menubar->Check(menu_show_toolbar, true);
   else
     menubar->Check(menu_show_toolbar, false);
+#endif
 
 #if WXM_PRINT
   if (m_console->GetTree() != NULL && m_supportPrinting)
@@ -2118,7 +2122,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->RemoveAllOutput();
     break;
   case menu_show_toolbar:
-    ShowToolBar(!(GetToolBar() != NULL));
+#if defined __WXMAC__
+    ShowToolBar(!(GetToolBar()->IsShown()));
+#else
+   ShowToolBar(!(GetToolBar() != NULL));
+#endif
     break;
   case menu_edit_find:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

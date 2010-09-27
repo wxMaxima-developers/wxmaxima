@@ -1049,6 +1049,10 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
+#if defined __WXMAC__
+  wxToolBar *tbar = GetToolBar();
+  tbar->Show(show);
+#else
   if (show) {
     if (GetToolBar() == NULL)
       SetupToolBar();
@@ -1061,5 +1065,6 @@ void wxMaximaFrame::ShowToolBar(bool show)
       SetToolBar(NULL);
     }
   }
+#endif
 }
 
