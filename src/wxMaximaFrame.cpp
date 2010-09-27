@@ -70,7 +70,11 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
+#if defined __WXMAC__
+  wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar()->IsShown()));
+#else
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar() != NULL));
+#endif
 
   m_manager.UnInit();
 }
