@@ -751,9 +751,9 @@ void Config::ReadStyles(wxString file)
   // Set values in dialog
   m_styleFor->SetSelection(0);
   m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
-  m_boldCB->SetValue(m_styleVariable.bold);
-  m_italicCB->SetValue(m_styleVariable.italic);
-  m_underlinedCB->SetValue(m_styleVariable.underlined);
+  m_boldCB->SetValue(m_styleDefault.bold);
+  m_italicCB->SetValue(m_styleDefault.italic);
+  m_underlinedCB->SetValue(m_styleDefault.underlined);
 
   if (file != wxEmptyString)
     delete config;
