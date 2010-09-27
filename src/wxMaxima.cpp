@@ -4169,8 +4169,8 @@ void wxMaxima::ResetTitle(bool saved)
 #if defined __WXMAC__
  #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-    //    if (m_currentFile != wxEmptyString)
-    //      OSXSetProxyIconFile(m_currentFile);
+    //if (m_currentFile != wxEmptyString)
+    //  OSXSetProxyIconFile(m_currentFile);
  #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win,!saved);
@@ -4310,6 +4310,20 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   connection.Close();
 }
 
+#if !wxCHECK_VERSION(2,9,0)
+int change_return_code(int code)
+{
+  if (code == wxOK)
+    return wxID_OK;
+  else if (code == wxYES)
+    return wxID_YES;
+  else if (code == wxNO)
+    return wxID_NO;
+  else
+    return wxID_CANCEL;
+}
+#endif
+
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
@@ -4339,14 +4353,16 @@ int wxMaxima::SaveDocumentP()
   return dialog.ShowModal();
 #else
 #if defined __WXMAC__
-  return wxMessageBox(_("Your changes will be lost if you don't save them."),
-		                  _("Do you want to save the changes you made in the document \"") +
-		                  file + wxT("\"?"),
-		                  wxYES_NO|wxCANCEL);
+  return change_return_code(
+	   wxMessageBox(_("Your changes will be lost if you don't save them."),
+			_("Do you want to save the changes you made in the document \"") +
+			file + wxT("\"?"),
+			wxYES_NO|wxCANCEL));
 #else
-  return wxMessageBox(_("Save changes before closing?"),
-                      _("Save changes?"),
-                      wxYES_NO|wxCANCEL);
+  return change_return_code(
+           wxMessageBox(_("Save changes before closing?"),
+			_("Save changes?"),
+			wxYES_NO|wxCANCEL));
 #endif
 #endif
 }
