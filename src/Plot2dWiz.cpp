@@ -60,9 +60,9 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_8 = new wxStaticText(this, -1, _("To:"));
-  check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
+  check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(70, -1), wxSP_ARROW_KEYS, 0, 1000, 10);
