@@ -1138,7 +1138,7 @@ GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
     }
   }
 
-  return ((GroupCell *)tree);
+  return dynamic_cast<GroupCell*>(tree);
 }
 
 GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
@@ -1610,7 +1610,7 @@ void wxMaxima::MenuCommand(wxString cmd)
   m_console->SetSelection(NULL);
   m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
-  m_console->AddCellToEvaluationQueue((GroupCell*)m_console->GetActiveCell()->GetParent());
+  m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
   TryEvaluateNextInQueue();
 }
 
@@ -1697,11 +1697,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
-//  menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
-  if (m_console->GetSelectionStart() != NULL)
-    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
-  else
-    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
+  menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
+//  if (m_console->GetSelectionStart() != NULL)
+//    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
+//  else
+//    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
@@ -2125,7 +2125,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #if defined __WXMAC__
     ShowToolBar(!(GetToolBar()->IsShown()));
 #else
-   ShowToolBar(!(GetToolBar() != NULL));
+    ShowToolBar(!(GetToolBar() != NULL));
 #endif
     break;
   case menu_edit_find:
@@ -3364,7 +3364,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   if (m_console->CanCopy(true))
     helpSearchString = m_console->GetString();
   else if (m_console->GetActiveCell() != NULL) {
-    helpSearchString = ((EditorCell *)m_console->GetActiveCell())->SelectWordUnderCaret(false);
+    helpSearchString = m_console->GetActiveCell()->SelectWordUnderCaret(false);
   }
   if (helpSearchString == wxT(""))
     helpSearchString = wxT("%");
@@ -3984,7 +3984,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
   if (!m_console->CanEdit())
     return ;
 
-  MathCell* tmp = m_console->GetSelectionStart();
+  EditorCell* tmp = dynamic_cast<EditorCell*>(m_console->GetSelectionStart());
 
   if (tmp == NULL)
     return ;
@@ -4006,11 +4006,11 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering a question. Manually send answer to Maxima.
-    if ((GroupCell *)tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
+    if (tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
       SendMaxima(tmp->ToString(false), true);
     }
     else { // normally just add to queue
-      m_console->AddCellToEvaluationQueue((GroupCell *)tmp->GetParent());
+      m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));
       TryEvaluateNextInQueue();
     }
   }
@@ -4046,11 +4046,11 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (group == NULL)
     return; //empty queue
 
-  if (group->GetInput()->GetValue() != wxEmptyString)
+  if (group->GetEditable()->GetValue() != wxEmptyString)
   {
-    group->GetInput()->AddEnding();
-    ((EditorCell *)(group->GetInput()))->ContainsChanges(false);
-    wxString text = group->GetInput()->ToString(false);
+    group->GetEditable()->AddEnding();
+    group->GetEditable()->ContainsChanges(false);
+    wxString text = group->GetEditable()->ToString(false);
 
     // override evaluation when input equals wxmaxima_debug_dump_output
     if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {

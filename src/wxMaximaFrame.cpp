@@ -45,7 +45,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 #endif
 
 
-  frame_1_statusbar = CreateStatusBar(2);
+  CreateStatusBar(2);
   int widths[] =
     {
       -1, 300
@@ -96,7 +96,7 @@ void wxMaximaFrame::set_properties()
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
   m_console->SetMinSize(wxSize(100, 100));
-  frame_1_statusbar->SetStatusText(_("Welcome to wxMaxima"), 0);
+  SetStatusText(_("Welcome to wxMaxima"), 0);
 }
 
 void wxMaximaFrame::do_layout()
@@ -165,7 +165,7 @@ void wxMaximaFrame::do_layout()
 
 void wxMaximaFrame::SetupMenu()
 {
-  frame_1_menubar = new wxMenuBar();
+  wxMenuBar *frame_1_menubar = new wxMenuBar();
 
 #if defined __WXGTK20__
   wxMenuItem *tmp_menu_item;
@@ -665,7 +665,6 @@ void wxMaximaFrame::SetupMenu()
           _("About wxMaxima"), wxT("stock_about"));
   frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
 
-
   SetMenuBar(frame_1_menubar);
 
 #undef APPEND_MENU_ITEM
@@ -726,13 +725,11 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
 			   IMAGE("playback-stop.png"),
 			   _("Stop animation"));
-#if !wxCHECK_VERSION(2, 9, 1)
   m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   frame_1_toolbar->AddControl(m_plotSlider);
   frame_1_toolbar->AddSeparator();
-#endif
   frame_1_toolbar->AddTool(tb_help, _("Help"),
                            IMAGE("help.png"),
                            _("Show Maxima help"));

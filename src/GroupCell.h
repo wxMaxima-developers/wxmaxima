@@ -21,6 +21,7 @@
 #define GROUPCELL_H_
 
 #include "MathCell.h"
+#include "EditorCell.h"
 
 #define EMPTY_INPUT_LABEL wxT("-->  ")
 
@@ -54,7 +55,7 @@ public:
   void SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two, MathCell **first, MathCell **last);
   // methods for manipulating GroupCell
   bool SetEditableContent(wxString text);
-  MathCell* GetEditable(); // returns pointer to editor (if there is one)
+  EditorCell* GetEditable(); // returns pointer to editor (if there is one)
   void AppendOutput(MathCell *cell);
   void RemoveOutput();
   // exporting

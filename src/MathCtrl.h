@@ -24,6 +24,7 @@
 #include <wx/textfile.h>
 
 #include "MathCell.h"
+#include "EditorCell.h"
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
@@ -144,7 +145,7 @@ public:
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
   void ScrollToCell(MathCell *cell);
-  MathCell* GetActiveCell()
+  EditorCell* GetActiveCell()
   {
     return m_activeCell;
   }
@@ -158,7 +159,7 @@ public:
   }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
-  void SetActiveCell(MathCell *cell, bool callRefresh = true);
+  void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
   GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
@@ -237,7 +238,7 @@ protected:
   MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
-  MathCell *m_activeCell;
+  EditorCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
   bool m_editingEnabled;

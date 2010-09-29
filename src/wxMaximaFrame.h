@@ -297,12 +297,9 @@ protected:
   void LoadRecentDocuments();
   void SaveRecentDocuments();
   wxAuiManager m_manager;
-  wxMenuBar* frame_1_menubar;
 
   MathCtrl* m_console;
   History * m_history;
-  wxStatusBar* frame_1_statusbar;
-  wxToolBar* frame_1_toolbar;
   wxSlider* m_plotSlider;
   wxArrayString m_recentDocuments;
   wxMenu* m_recentDocumentsMenu;

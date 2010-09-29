@@ -159,7 +159,7 @@ void GroupCell::ResetInputLabel(bool all)
 
   // reset the next cell
   if (all && m_next)
-    ((GroupCell *)m_next)->ResetInputLabel(true);
+    dynamic_cast<GroupCell*>(m_next)->ResetInputLabel(true);
 }
 
 MathCell* GroupCell::Copy(bool all)
@@ -839,7 +839,7 @@ wxString GroupCell::ToXML(bool all)
         GroupCell *tmp = m_hiddenTree;
         while (tmp) {
           str += tmp->ToXML(false);
-          tmp = (GroupCell *)tmp->m_next;
+          tmp = dynamic_cast<GroupCell*>(tmp->m_next);
         }
         str += wxT("</fold>");
       }
@@ -973,22 +973,17 @@ bool GroupCell::SetEditableContent(wxString text)
     return false;
 }
 
-MathCell *GroupCell::GetEditable()
+EditorCell *GroupCell::GetEditable()
 {
   switch (m_groupType) {
     case GC_TYPE_CODE:
-      return GetInput();
     case GC_TYPE_IMAGE:
-      return GetInput();
     case GC_TYPE_TEXT:
-      return GetInput();
     case GC_TYPE_TITLE:
-      return GetInput();
     case GC_TYPE_SECTION:
-      return GetInput();
     case GC_TYPE_SUBSECTION:
-      return GetInput();
     case GC_TYPE_PAGEBREAK:
+      return dynamic_cast<EditorCell*>(GetInput());
     default:
       return NULL;
   }
@@ -1086,12 +1081,12 @@ void GroupCell::Hide(bool hide) {
   {
     if (m_hide == false) {
       if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-        ((EditorCell *)GetEditable())->SetFirstLineOnly(true);
+        GetEditable()->SetFirstLineOnly(true);
       m_hide = true;
     }
     else {
       if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-        ((EditorCell *)GetEditable())->SetFirstLineOnly(false);
+        GetEditable()->SetFirstLineOnly(false);
       m_hide = false;
     }
 
@@ -1128,16 +1123,16 @@ GroupCell *GroupCell::Fold() {
     return NULL;
   if (m_next == NULL)
     return NULL;
-  int nextgct = ((GroupCell *)m_next)->GetGroupType(); // groupType of the next cell
+  int nextgct = dynamic_cast<GroupCell*>(m_next)->GetGroupType(); // groupType of the next cell
   if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
     return NULL; // if the next gc shouldn't be folded, exit
 
   // now there is at least one cell to fold (at least m_next)
-  GroupCell *end = (GroupCell *)m_next;
+  GroupCell *end = dynamic_cast<GroupCell*>(m_next);
   GroupCell *start = end; // first to fold
 
   while (end) {
-    GroupCell *tmp = (GroupCell *)end->m_next;
+    GroupCell *tmp = dynamic_cast<GroupCell*>(end->m_next);
     if (tmp == NULL)
       break;
     if ((m_groupType == tmp->GetGroupType()) || IsLesserGCType(tmp->GetGroupType()))
@@ -1179,7 +1174,7 @@ GroupCell *GroupCell::Unfold() {
     next->m_previous = next->m_previousToDraw = tmp;
 
   m_hiddenTree = NULL;
-  return (GroupCell *)tmp;
+  return dynamic_cast<GroupCell*>(tmp);
 }
 
 GroupCell *GroupCell::FoldAll(bool all) {
@@ -1193,7 +1188,7 @@ GroupCell *GroupCell::FoldAll(bool all) {
     result = NULL;
 
   if (all && m_next)
-    return ((GroupCell *)m_next)->FoldAll(true);
+    return dynamic_cast<GroupCell*>(m_next)->FoldAll(true);
   else
     return result;
 }
@@ -1202,7 +1197,7 @@ GroupCell *GroupCell::FoldAll(bool all) {
 // if (all) then also calls it on it's m_next
 GroupCell *GroupCell::UnfoldAll(bool all) {
   if (all && m_next)
-    ((GroupCell *)m_next)->UnfoldAll(true);
+    dynamic_cast<GroupCell*>(m_next)->UnfoldAll(true);
 
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
@@ -1278,7 +1273,7 @@ void GroupCell::Number(int &section, int &subsection, int &image) {
     m_hiddenTree->Number(section, subsection, image);
 
   if (m_next)
-    ((GroupCell *)m_next)->Number(section, subsection, image);
+    dynamic_cast<GroupCell*>(m_next)->Number(section, subsection, image);
 }
 
 bool GroupCell::IsMainInput(MathCell *active)
