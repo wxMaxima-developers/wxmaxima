@@ -1232,7 +1232,8 @@
 			   ((mlist simp) $gnuplot_term $png)
 			   ((mlist simp) $gnuplot_out_file ,filename)))
 	(setq images (cons filename images))))
-    ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
+    (when images
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
   "")
 
 (defmspec $with_slider (scene)
@@ -1272,7 +1273,8 @@
 		   ((mequal simp) $pic_height ,($second $wxplot_size))
 		   ((mequal simp) $file_name ,filename))
 		 (list args)))))
-    ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
+    (when images
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
   "")
 
 (defmspec $wxanimate_draw (scene)
@@ -1306,7 +1308,8 @@
 		   ((mequal simp) $pic_height ,($second $wxplot_size))
 		   ((mequal simp) $file_name ,filename))
 		 (list args)))))
-    ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))
+    (when images
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
   "")
 
 (defmspec $with_slider_draw3d (scene)
