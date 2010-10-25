@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-05 11:01+0200\n"
-"PO-Revision-Date: 2010-10-05 11:02+0100\n"
+"POT-Creation-Date: 2010-10-25 09:14+0200\n"
+"PO-Revision-Date: 2010-10-25 09:16+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -86,7 +87,7 @@ msgstr "&Alkalmazás listán..."
 msgid "&Apropos..."
 msgstr "&Apropó..."
 
-#: ../src/wxMaximaFrame.cpp:197
+#: ../src/wxMaximaFrame.cpp:202
 msgid "&Batch File...\tCtrl-B"
 msgstr "&Batch fájl...\tCtrl-B"
 
@@ -178,7 +179,7 @@ msgstr "Tr&igonometrikus felbontás"
 msgid "&Exponentialize"
 msgstr "E&xponenciálissá alakítás"
 
-#: ../src/wxMaximaFrame.cpp:199
+#: ../src/wxMaximaFrame.cpp:204
 msgid "&Export..."
 msgstr "E&xportálás..."
 
@@ -222,7 +223,7 @@ msgstr "&Megszakítás\tCtrl-G"
 msgid "&Invert Matrix"
 msgstr "Mát&rix invertálás"
 
-#: ../src/wxMaximaFrame.cpp:195
+#: ../src/wxMaximaFrame.cpp:200
 msgid "&Load Package...\tCtrl-L"
 msgstr "&Csomag betöltése...\tCtrl-L"
 
@@ -241,10 +242,6 @@ msgstr "&Modulus beállítása..."
 #: ../src/main.cpp:105
 msgid "&New\tCtrl-N"
 msgstr "&Új\tCtrl-N"
-
-#: ../src/wxMaximaFrame.cpp:184
-msgid "&New Window\tCtrl-N"
-msgstr "&Új ablak\tCtrl-N"
 
 #: ../src/wxMaximaFrame.cpp:630
 msgid "&Numeric"
@@ -294,7 +291,7 @@ msgstr "&A Maxima újraindítása"
 msgid "&Roots of Polynomial (Real)"
 msgstr "Poli&nom valós gyökei"
 
-#: ../src/wxMaximaFrame.cpp:191
+#: ../src/wxMaximaFrame.cpp:196
 msgid "&Save\tCtrl-S"
 msgstr "M&entés\tCtrl-S"
 
@@ -614,11 +611,11 @@ msgstr "Betűtípus választás"
 msgid "Classes:"
 msgstr "Osztályok:"
 
-#: ../src/wxMaximaFrame.cpp:203
-msgid "Close Window\tCtrl-W"
-msgstr "Ablak bezárása\tCtrl-W"
+#: ../src/wxMaximaFrame.cpp:193
+msgid "Close\tCtrl-W"
+msgstr "Bezárás\tCtrl-W"
 
-#: ../src/wxMaximaFrame.cpp:204
+#: ../src/wxMaximaFrame.cpp:194
 msgid "Close window"
 msgstr "Ablak bezárása"
 
@@ -1218,7 +1215,7 @@ msgstr "Trigonometrikus kifejezés felbontása"
 msgid "Export"
 msgstr "Exportálás"
 
-#: ../src/wxMaximaFrame.cpp:200
+#: ../src/wxMaximaFrame.cpp:205
 msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Dokumentum exportálása HTML vagy pdfLaTeX formátumba"
 
@@ -1285,8 +1282,9 @@ msgid "Fatal error"
 msgstr "Végzetes hiba"
 
 #: ../src/GroupCell.cpp:1263
-msgid "Figure"
-msgstr "Ábra"
+#, c-format
+msgid "Figure %d:"
+msgstr "%d. ábra:"
 
 #: ../src/main.cpp:107
 msgid "File"
@@ -1835,11 +1833,11 @@ msgstr "Betöltés"
 msgid "Load Package"
 msgstr "Csomag betöltése"
 
-#: ../src/wxMaximaFrame.cpp:198
+#: ../src/wxMaximaFrame.cpp:203
 msgid "Load a Maxima file using the batch command"
 msgstr "Batch parancsokat használó Maxima fájl betöltése"
 
-#: ../src/wxMaximaFrame.cpp:196
+#: ../src/wxMaximaFrame.cpp:201
 msgid "Load a Maxima package file"
 msgstr "Maxima csomagfájl betöltése"
 
@@ -1995,6 +1993,10 @@ msgstr "Modulus"
 msgid "Name:"
 msgstr "Név:"
 
+#: ../src/wxMaximaFrame.cpp:184
+msgid "New\tCtrl-N"
+msgstr "Ú&j\tCtrl-N"
+
 #: ../src/SubstituteWiz.cpp:33
 msgid "New value:"
 msgstr "Új érték:"
@@ -2102,7 +2104,7 @@ msgstr "Online ismertetők"
 #: ../src/Config.cpp:296
 #: ../src/wxMaximaFrame.cpp:688
 #: ../src/wxMaximaFrame.cpp:747
-#: ../src/main.cpp:198
+#: ../src/main.cpp:202
 #: ../src/wxMaxima.cpp:1902
 msgid "Open"
 msgstr "Megnyitás"
@@ -2458,7 +2460,7 @@ msgstr "Animáció mentése..."
 msgid "Save As"
 msgstr "Mentés másként"
 
-#: ../src/wxMaximaFrame.cpp:193
+#: ../src/wxMaximaFrame.cpp:198
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Men&tés másként...\tShift-Ctrl-S"
 
@@ -2486,13 +2488,13 @@ msgstr "Bezárás előtt menti a változásokat?"
 msgid "Save changes?"
 msgstr "Menti a változásokat?"
 
-#: ../src/wxMaximaFrame.cpp:192
+#: ../src/wxMaximaFrame.cpp:197
 #: ../src/wxMaximaFrame.cpp:693
 #: ../src/wxMaximaFrame.cpp:754
 msgid "Save document"
 msgstr "Dokumentum mentése"
 
-#: ../src/wxMaximaFrame.cpp:194
+#: ../src/wxMaximaFrame.cpp:199
 msgid "Save document as"
 msgstr "Mentés másként"
 
@@ -3402,12 +3404,12 @@ msgstr "mentetlen"
 msgid "untitled"
 msgstr "névtelen"
 
-#: ../src/main.cpp:178
+#: ../src/main.cpp:182
 #, c-format
 msgid "untitled %d"
 msgstr "névtelen %d"
 
-#: ../src/main.cpp:163
+#: ../src/main.cpp:167
 #: ../src/wxMaxima.cpp:3400
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -3482,7 +3484,7 @@ msgstr "wxMaxima dokumentum"
 msgid "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|Maxima batch file (*.mac)|*.mac"
 msgstr "wxMaxima dokumentum (*.wxm)|*.wxm|wxMaxima xml dokumentum (*.wxmx)|*.wxmx|Maxima batch fájl (*.mac)|*.mac"
 
-#: ../src/main.cpp:200
+#: ../src/main.cpp:204
 #: ../src/wxMaxima.cpp:1904
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx"
@@ -3510,6 +3512,8 @@ msgstr "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a 
 msgid "yes"
 msgstr "igen"
 
+#~ msgid "&New Window\tCtrl-N"
+#~ msgstr "&Új ablak\tCtrl-N"
 #~ msgid "Close document?"
 #~ msgstr "Bezárja a dokumentumot?"
 #~ msgid ""

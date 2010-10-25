@@ -3300,7 +3300,7 @@ wxT("<html>"
 "Antonio Ullan (es)<br>"
 "Eric Delevaux (fr)<br>"
 "Michele Gosse (fr)<br>"
-"Blahota Istvan (hu)<br>"
+"Blahota István (hu)<br>"
 "Marco Ciampa (it)<br>"
 "Rafal Topolnicki (pl)<br>"
 "Eduardo M. Kalinowski (pt_br)<br>"
@@ -3418,7 +3418,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
     info.AddTranslator(wxT("Michele Gosse (fr)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
-    info.AddTranslator(wxT("Blahota Istvan (hu)"));
+    info.AddTranslator(wxT("Blahota István (hu)"));
     info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
     info.AddTranslator(wxT("Alexey Beshenov (ru)"));
