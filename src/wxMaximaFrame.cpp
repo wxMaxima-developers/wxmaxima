@@ -181,13 +181,18 @@ void wxMaximaFrame::SetupMenu()
   // File menu
   wxMenu* wxglade_tmp_menu_1 = new wxMenu;
 #if defined __WXMAC__
-  wxglade_tmp_menu_1->Append(mac_newId, _("&New Window\tCtrl-N"),
+  wxglade_tmp_menu_1->Append(mac_newId, _("New\tCtrl-N"),
 			     _("Open a new window"));
 #endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open...\tCtrl-O"),
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
   wxglade_tmp_menu_1->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
+#if defined __WXMAC__
+  wxglade_tmp_menu_1->AppendSeparator();
+  wxglade_tmp_menu_1->Append(mac_closeId, _("Close\tCtrl-W"),
+           _("Close window"), wxITEM_NORMAL);
+#endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
@@ -198,11 +203,6 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_export_html, _("&Export..."),
                    _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
-#if defined __WXMAC__
-  wxglade_tmp_menu_1->AppendSeparator();
-  wxglade_tmp_menu_1->Append(mac_closeId, _("Close Window\tCtrl-W"),
-			     _("Close window"), wxITEM_NORMAL);
-#endif
 #if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
