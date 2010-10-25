@@ -1260,8 +1260,7 @@ void GroupCell::Number(int &section, int &subsection, int &image) {
     case GC_TYPE_IMAGE:
       image++;
       {
-        wxString num = _("Figure");
-        num << wxT(" ") << image << wxT(":");
+        wxString num = wxString::Format(_("Figure %d:"), image);
         ((TextCell*)m_input)->SetValue(num);
       }
       break;
