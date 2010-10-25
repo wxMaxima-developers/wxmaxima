@@ -127,6 +127,10 @@ bool MyApp::OnInit()
   return true;
 }
 
+#if defined __WXMAC__
+int window_counter = 0;
+#endif
+
 void MyApp::NewWindow(wxString file)
 {
   int x = 40, y = 40, h = 650, w = 950, m = 0;
@@ -175,7 +179,7 @@ void MyApp::NewWindow(wxString file)
 #if defined __WXMAC__
   topLevelWindows.Append(frame);
   if (topLevelWindows.GetCount()>1)
-    frame->SetTitle(wxString::Format(_("untitled %d"), topLevelWindows.GetCount()));
+    frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
 #endif
 
   SetTopWindow(frame);
