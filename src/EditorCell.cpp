@@ -1214,9 +1214,9 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x22BC";
   else if (txt == wxT("nor"))
     return L"\x22BD";
-  else if (txt == wxT("implies"))
+  else if (txt == wxT("implies") || txt == wxT("=>"))
     return L"\x21D2";
-  else if (txt == wxT("eq"))
+  else if (txt == wxT("eq") || txt == wxT("<=>"))
     return L"\x21D4";
   else if (txt == wxT("not"))
     return L"\x00AC";
