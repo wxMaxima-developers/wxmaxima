@@ -666,7 +666,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
     // Input cells
     str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
           wxT("%%% INPUT:\n")
-          wxT("\\begin{minipage}[t]{1.5cm}{\\color{red}\\bf\n")
+          wxT("\\begin{minipage}[t]{8ex}{\\color{red}\\bf\n")
           wxT("\\begin{verbatim}\n") +
           m_input->ToString(false) +
           wxT("\n\\end{verbatim}}\n\\end{minipage}");
@@ -708,7 +708,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
             if (bmp.ToFile(file))
               str += wxT("\\includegraphics[width=9cm]{") +
-                  filename + wxT("_img/") + image + wxT("}\n");
+                  filename + wxT("_img/") + image + wxT("}");
           }
           else
             str << wxT("\n\\verb|<<GRAPHICS>>|\n");
@@ -718,7 +718,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         {
           if (str.Right(13) != wxT("displaystyle\n"))
             str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
-          str += wxT("\\mathrm{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\\quad\n");
+          str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\n");
         }
 
         else
