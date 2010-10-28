@@ -804,7 +804,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
             ToggleFoldAll(clickedInGC);
           else
             ToggleFold(clickedInGC);
-          Recalculate();
+          Recalculate(true);
         }
         else {
           clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
