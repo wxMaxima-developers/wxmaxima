@@ -3287,7 +3287,7 @@ wxT("<html>"
 "</p>"
 "<h4>%s</h4>"
 "<p>"
-"cw.ahbong (zh_TW)<br>"
+"Innocent De Marchi (ca)<br>"
 "Josef Barak (cs)<br>"
 "Robert Marik (cs)<br>"
 "Jens Thostrup (da)<br>"
@@ -3307,7 +3307,8 @@ wxT("<html>"
 "Alexey Beshenov (ru)<br>"
 "Vadim V. Zhytnikov (ru)<br>"
 "Sergey Semerikov (uk)<br>"
-"Frank Weng (zh_TW)"
+"Frank Weng (zh_TW)<br>"
+"cw.ahbong (zh_TW)"
 "  </p>"
 "</center>"
 "</body>"
@@ -3404,7 +3405,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
-    info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
+
+    info.AddTranslator(wxT("Innocent de Marchi (ca)"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
     info.AddTranslator(wxT("Robert Marik (cs)"));
     info.AddTranslator(wxT("Jens Thostrup (da)"));
@@ -3425,6 +3427,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
     info.AddTranslator(wxT("Sergey Semerikov (uk)"));
     info.AddTranslator(wxT("Frank Weng (zh_TW)"));
+    info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
+
     info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
 
     wxAboutBox(info);

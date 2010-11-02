@@ -37,6 +37,7 @@
 const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
+    wxLANGUAGE_CATALAN,
     wxLANGUAGE_CHINESE_TRADITIONAL,
     wxLANGUAGE_CZECH,
     wxLANGUAGE_DANISH,
@@ -54,7 +55,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 16
+#define LANGUAGE_NUMBER 17
 
 
 Config::Config(wxWindow* parent)
@@ -231,6 +232,7 @@ wxPanel* Config::CreateOptionsPanel()
   const wxString m_language_choices[] =
     {
       _("(Use default language)"),
+      _("Catalan"),
       _("Chinese traditional"),
       _("Czech"),
       _("Danish"),
