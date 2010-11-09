@@ -971,7 +971,7 @@
                      (list
 		      (format nil "<lbl>(~A)~A </lbl>"
 			      (stripdollar (maybe-invert-string-case (symbol-name (cadr x))))
-				  *wxxml-mratp*))
+                              *wxxml-mratp*))
 		     nil))
          r 'mparen 'mparen))
 
@@ -984,9 +984,9 @@
 
 (defun mydispla (x)
   (let ((*print-circle* nil)
-	    (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
-	(mapc #'princ
-		(wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
+        (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
+    (mapc #'princ
+          (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
 
 (setf *alt-display2d* 'mydispla)
 
@@ -1383,7 +1383,9 @@
 			((mequal simp) $file_name ,filename))
 		      args)))
     (if $display_graphics
-	($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+	(progn
+          ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+          (setq res ""))
 	(setf res `((wxxmltag simp) ,(format nil "~a.png" filename) "img")))
     res))
 
