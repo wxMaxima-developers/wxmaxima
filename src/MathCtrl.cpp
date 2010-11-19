@@ -2033,7 +2033,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
       wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"));
   AddLineToFile(output, wxT("<HTML>"));
   AddLineToFile(output, wxT(" <HEAD>"));
-  AddLineToFile(output, wxT("  <TITLE>wxMaxima HTML export</TITLE>"));
+  AddLineToFile(output, wxT("  <TITLE>") + filename + wxT("</TITLE>"));
   AddLineToFile(output, wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">"));
   AddLineToFile(
       output,
