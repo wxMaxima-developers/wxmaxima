@@ -85,6 +85,7 @@ void MatrCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   {
     m_cells[i]->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
+  m_widths.clear();
   for (int i = 0; i < m_matWidth; i++)
   {
     m_widths.push_back(0);
@@ -111,6 +112,8 @@ void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   {
     m_cells[i]->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
   }
+  m_centers.clear();
+  m_drops.clear();
   for (int i = 0; i < m_matHeight; i++)
   {
     m_centers.push_back(0);
