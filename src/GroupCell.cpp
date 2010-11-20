@@ -982,8 +982,8 @@ EditorCell *GroupCell::GetEditable()
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
-    case GC_TYPE_PAGEBREAK:
       return dynamic_cast<EditorCell*>(GetInput());
+    case GC_TYPE_PAGEBREAK:
     default:
       return NULL;
   }
