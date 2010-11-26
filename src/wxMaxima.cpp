@@ -1698,6 +1698,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
+  menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
 //  if (m_console->GetSelectionStart() != NULL)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
 //  else
@@ -4592,6 +4593,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_pane_stats, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_remove_output, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
   EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)

@@ -3265,8 +3265,12 @@ void MathCtrl::Undo()
 
 void MathCtrl::RemoveAllOutput()
 {
+  if (m_workingGroup != NULL)
+    return;
+
   GroupCell *tmp = m_tree;
   SetSelection(NULL); // TODO only setselection NULL when selection is in the output
+  SetActiveCell(NULL);
 
   while (tmp != NULL)
   {
