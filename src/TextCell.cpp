@@ -383,6 +383,8 @@ bool TextCell::IsShortNum()
 void TextCell::SetAltText(CellParser& parser)
 {
   m_altJs = m_alt = false;
+  if (m_textStyle == TS_DEFAULT)
+    return ;
 
   /// Greek characters are defined in jsMath, Windows and Unicode
   if (m_textStyle == TS_GREEK_CONSTANT)
