@@ -1244,11 +1244,8 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defun draw-transform (arg trans)
-  (declare (ignore trans))
-  arg)
-
 (defun wxanimate-draw (scene)
+  (unless ($get '$draw '$version) ($load "draw"))
   (let* ((scene (cdr scene))
 	 (a (meval (car scene)))
 	 (a-range (meval (cadr scene)))
@@ -1260,19 +1257,21 @@
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
 	     (args (cons '($gr2d)
-			 (draw-transform
-			  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-				  args)
-			  '$draw2d_transform))))
+                         (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+                                 args))))
 	(setq images (cons (format nil "~a.png" filename) images))
 	($apply '$draw
-		(append
-		 `((mlist simp)
-		   ((mequal simp) $terminal $png)
-		   ((mequal simp) $pic_width ,($first $wxplot_size))
-		   ((mequal simp) $pic_height ,($second $wxplot_size))
-		   ((mequal simp) $file_name ,filename))
-		 (list args)))))
+                (append
+                 `((mlist simp)
+                   ((mequal simp) $terminal $png)
+                   ((mequal simp) $file_name ,filename))
+                 (cond
+                   ((= ($get '$draw '$version) 1)
+                    `(((mequal simp) $pic_width ,($first $wxplot_size))
+                      ((mequal simp) $pic_height ,($second $wxplot_size))))
+                   (t
+                    `(((mequal simp) $dimensions ,$wxplot_size))))
+                 (list args)))))
     (when images
       ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
   "")
@@ -1284,6 +1283,7 @@
   (wxanimate-draw scene))
 
 (defun wxanimate-draw3d (scene)
+  (unless ($get '$draw '$version) ($load "draw"))
   (let* ((scene (cdr scene))
 	 (a (meval (car scene)))
 	 (a-range (meval (cadr scene)))
@@ -1295,19 +1295,21 @@
       (let* ((filename (wxplot-filename nil))
 	     (*windows-OS* t)
 	     (args (cons '($gr3d)
-			 (draw-transform
 			  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-				  args)
-			  '$draw3d_transform))))
+				  args))))
 	(setq images (cons (format nil "~a.png" filename) images))
 	($apply '$draw
-		(append
-		 `((mlist simp)
-		   ((mequal simp) $terminal $png)
-		   ((mequal simp) $pic_width ,($first $wxplot_size))
-		   ((mequal simp) $pic_height ,($second $wxplot_size))
-		   ((mequal simp) $file_name ,filename))
-		 (list args)))))
+                (append
+                 `((mlist simp)
+                   ((mequal simp) $terminal $png)
+                   ((mequal simp) $file_name ,filename))
+                 (cond
+                   ((= ($get '$draw '$version) 1)
+                    `(((mequal simp) $pic_width ,($first $wxplot_size))
+                      ((mequal simp) $pic_height ,($second $wxplot_size))))
+                   (t
+                    `(((mequal simp) $dimensions ,$wxplot_size))))
+                 (list args)))))
     (when images
       ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
   "")
@@ -1357,31 +1359,33 @@
   "")
 
 
-(dolist (fun '($draw $draw2d $draw3d $set_draw_defaults))
-  (setf (get fun 'autoload) "draw"))
-
 (defun $wxdraw2d (&rest args)
   (apply #'$wxdraw
-	 (list (cons '($gr2d) (draw-transform args '$draw2d_transform)))))
+	 (list (cons '($gr2d) args))))
 
 (defun $wxdraw3d (&rest args)
   (apply #'$wxdraw
-	 (list (cons '($gr3d) (draw-transform args '$draw3d_transform)))))
+	 (list (cons '($gr3d) args))))
 
 (defvar $display_graphics t)
 
 (defun $wxdraw (&rest args)
+  (unless ($get '$draw '$version) ($load "draw"))
   (let* ((filename (wxplot-filename nil))
 	 (*windows-OS* t)
 	 res)
     (setq res ($apply '$draw
-		     (append
-		      `((mlist simp)
-			((mequal simp) $terminal $png)
-			((mequal simp) $pic_width ,($first $wxplot_size))
-			((mequal simp) $pic_height ,($second $wxplot_size))
-			((mequal simp) $file_name ,filename))
-		      args)))
+                      (append
+                       `((mlist simp)
+                         ((mequal simp) $terminal $png)
+                         ((mequal simp) $file_name ,filename))
+                       (cond
+                         ((= ($get '$draw '$version) 1)
+                          `(((mequal simp) $pic_width ,($first $wxplot_size))
+                            ((mequal simp) $pic_height ,($second $wxplot_size))))
+                         (t
+                          `(((mequal simp) $dimensions ,$wxplot_size))))
+                       args)))
     (if $display_graphics
 	(progn
           ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
@@ -1390,6 +1394,7 @@
     res))
 
 (defmspec $wxdraw_list (args)
+  (unless ($get '$draw '$version) ($load "draw"))
   (let (($display_graphics nil))
     ($ldisp (cons '(mlist simp) (mapcar #'meval (cdr args)))))
   '$done)
