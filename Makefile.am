@@ -13,7 +13,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
 	     art/toolbar/find.png                            \
 	     art/config/options.png                          \
 	     art/config/maxima.png                           \
-	     arg/config/styles.png                           \
+	     art/config/styles.png                           \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
              art/maximaicon.ico
