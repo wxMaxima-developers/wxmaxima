@@ -33,12 +33,12 @@
 (defmacro no-warning (form)
   #+sbcl `(handler-bind
 	     ((style-warning #'muffle-warning)
-	      #+sbcl (sb-ext:compiler-note #'muffle-warning))
+              (sb-ext:compiler-note #'muffle-warning))
 	   ,form)
   #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
   #-(or sbcl clisp) `(progn ,form))
 
-($put '$wxmaxima `((mlist simp) 0 8 6) '$version)
+($put '$wxmaxima `((mlist simp) 0 8 7) '$version)
 
 (setf (get '$inchar 'assign) 'neverset)
 (setf (get '$outchar 'assign) 'neverset)
@@ -1195,7 +1195,7 @@
 	    ($first $wxplot_size)
 	    ($second $wxplot_size))))
 
-(defun $int_range (lo &optional hi)
+(defun $int_range (lo &optional hi (st 1))
   (unless (integerp lo)
     ($error "int_range: first argument is not an integer."))
   (unless (or (null hi) (integerp hi))
@@ -1203,7 +1203,7 @@
   (when (null hi)
     (setq hi lo)
     (setq lo 1))
-  (cons '(mlist simp) (loop for i from lo to hi collect i)))
+  (cons '(mlist simp) (loop :for i :from lo :to hi :by st :collect i)))
 
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
