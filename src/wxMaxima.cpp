@@ -1882,6 +1882,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case mac_closeId:
     Close();
     break;
+#else
+  case menu_new_id:
+    wxExecute(wxTheApp->argv[0]);
+    break;
 #endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_open:
@@ -4444,6 +4448,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_bug_report, wxMaxima::HelpMenu)
   EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
   EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
+  EVT_MENU(menu_new_id, wxMaxima::FileMenu)
   EVT_MENU(menu_open_id, wxMaxima::FileMenu)
   EVT_MENU(menu_batch_id, wxMaxima::FileMenu)
   EVT_MENU(menu_ratsimp, wxMaxima::SimplifyMenu)

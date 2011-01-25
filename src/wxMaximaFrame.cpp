@@ -183,6 +183,9 @@ void wxMaximaFrame::SetupMenu()
 #if defined __WXMAC__
   wxglade_tmp_menu_1->Append(mac_newId, _("New\tCtrl-N"),
 			     _("Open a new window"));
+#else
+  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_new_id, _("New\tCtrl-N"),
+		   _("Open a new window"), wxT("gtk-new"));
 #endif
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open...\tCtrl-O"),
                    _("Open a document"), wxT("gtk-open"));
