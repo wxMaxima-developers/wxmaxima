@@ -1630,7 +1630,8 @@
       (setq mat (cons '(matrix simp)
 		      (cons col-names (cdr mat))))
       (setq mtrx (cons 'colnames mtrx)))
-    (cons (append '($matrix simp) mtrx) (cdr mat))))
+    ($ldisp (cons (append '($matrix simp) mtrx) (cdr mat)))
+    '$done))
 
 ;; Load the initial functions (from mac-init.mac)
 (let ((*print-circle* nil))
