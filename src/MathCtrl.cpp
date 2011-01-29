@@ -3489,6 +3489,9 @@ bool MathCtrl::Autocomplete(bool templates)
 
   /// If there are more than one completions, popup a menu
   else {
+
+    m_completions.Sort();
+
     wxMenu *popup = new wxMenu();
 
     for (int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
