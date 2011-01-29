@@ -178,11 +178,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       else {  // We have a selection of output
         while (tmp != NULL) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp)
+          if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp) {
             if ((tmp->GetType() == MC_TYPE_IMAGE) || (tmp->GetType() == MC_TYPE_SLIDE))
               tmp->DrawBoundingBox(dcm, false, 5); // draw 5 pixels of border for img/slide cells
             else
               tmp->DrawBoundingBox(dcm, false);
+          }
           if (tmp == m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
@@ -197,7 +198,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
-        if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp)))
+        if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
           if (m_evaluationQueue->GetFirst() == tmp)
           {
             wxRect rect = tmp->GetRect();
@@ -210,6 +211,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           }
+        }
         tmp = tmp->m_next;
       }
     }
@@ -1320,6 +1322,43 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   switch (event.GetKeyCode()) {
 
     case WXK_DELETE:
+      if (event.ShiftDown()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      } else if (CanDeleteSelection()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      } else
+        event.Skip();
+      break;
+
+    case WXK_INSERT:
+      if (event.ControlDown()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_copy);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      } else if (event.ShiftDown()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_paste);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      } else
+        event.Skip();
+      break;
+
     case WXK_BACK:
       if (CanDeleteSelection())
         dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(popid_delete);
@@ -1341,10 +1380,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         event.Skip(); // if enter pressed in text, title, section cell, pass the event
       else {
         bool enterEvaluates = false;
+        bool controlOrShift = event.ControlDown() || event.ShiftDown();
         wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if (
-            !enterEvaluates &&  (event.ControlDown() || event.ShiftDown()) ||
-            enterEvaluates && !(event.ControlDown() || event.ShiftDown()))
+        if ((!enterEvaluates &&  controlOrShift) ||
+            ( enterEvaluates && !controlOrShift) )
         { // shift-enter pressed === menu_evaluate event
           dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(menu_evaluate);
         } else
