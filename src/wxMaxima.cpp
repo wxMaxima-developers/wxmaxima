@@ -2002,6 +2002,11 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
+  if (m_findDialog != NULL) {
+    event.Skip();
+    return;
+  }
+
   switch (event.GetId())
   {
   case wxID_PREFERENCES:
