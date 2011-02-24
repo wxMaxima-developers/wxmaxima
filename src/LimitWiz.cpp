@@ -42,7 +42,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
     };
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(130, -1), 3,
-                               combo_box_1_choices, wxCB_DROPDOWN);
+                               combo_box_1_choices, wxCB_DROPDOWN | wxCB_READONLY);
   checkbox_1 = new wxCheckBox(this, -1, _("&Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
 
