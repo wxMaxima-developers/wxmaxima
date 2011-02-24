@@ -146,6 +146,19 @@ void LimitWiz::OnButton(wxCommandEvent& event)
   }
 }
 
+void LimitWiz::OnIdle(wxIdleEvent& ev)
+{
+  if (text_ctrl_3->GetValue() == wxT("inf") ||
+      text_ctrl_3->GetValue() == wxT("-inf") ||
+      text_ctrl_3->GetValue() == wxT("minf")) {
+    combo_box_1->SetSelection(0);
+    combo_box_1->Enable(false);
+  }
+  else
+    combo_box_1->Enable(true);
+}
+
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
   EVT_BUTTON(special, LimitWiz::OnButton)
+  EVT_IDLE(LimitWiz::OnIdle)
 END_EVENT_TABLE()

@@ -44,6 +44,7 @@ public:
   wxString GetValue();
 private:
   void OnButton(wxCommandEvent& event);
+  void OnIdle(wxIdleEvent& event);
   void set_properties();
   void do_layout();
 protected:
