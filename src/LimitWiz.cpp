@@ -148,9 +148,11 @@ void LimitWiz::OnButton(wxCommandEvent& event)
 
 void LimitWiz::OnIdle(wxIdleEvent& ev)
 {
-  if (text_ctrl_3->GetValue() == wxT("inf") ||
-      text_ctrl_3->GetValue() == wxT("-inf") ||
-      text_ctrl_3->GetValue() == wxT("minf")) {
+  wxString point = text_ctrl_3->GetValue();
+
+  if (point == wxT("inf") ||
+      point == wxT("-inf") ||
+      point == wxT("minf")) {
     combo_box_1->SetSelection(0);
     combo_box_1->Enable(false);
   }
