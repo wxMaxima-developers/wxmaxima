@@ -150,14 +150,18 @@ void LimitWiz::OnIdle(wxIdleEvent& ev)
 {
   wxString point = text_ctrl_3->GetValue();
 
-  if (point == wxT("inf") ||
-      point == wxT("-inf") ||
-      point == wxT("minf")) {
-    combo_box_1->SetSelection(0);
+  if (point == wxT("inf") || point == wxT("-inf") || point == wxT("+inf") ||
+      point == wxT("minf") || point == wxT("-minf") || point == wxT("+minf"))
+  {
+    combo_box_1->SetValue(wxEmptyString);
     combo_box_1->Enable(false);
   }
-  else
+  else if (combo_box_1->IsEnabled() == false)
+  {
     combo_box_1->Enable(true);
+    if (combo_box_1->GetValue() == wxEmptyString)
+      combo_box_1->SetValue(_("both sides"));
+  }
 }
 
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
