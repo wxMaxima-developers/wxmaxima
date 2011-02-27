@@ -1638,5 +1638,9 @@
   (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
 	  (mapcar #'$print_function (cdr ($append $functions $macros)))))
 
+(defun mredef-check (fnname)
+  (declare (ignore fnname))
+  t)
+
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
