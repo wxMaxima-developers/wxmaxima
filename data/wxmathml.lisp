@@ -1449,15 +1449,27 @@
 (defun $wxxmlput (e s &optional tx lbp rbp)
   (cond (($listp s)
 	 (setq s (margs s)))
-	(t
-	 (setq s (list ($sconcat s)))))
-  (setq s (mapcar #'wxxml-stripdollar s))
+	((atom s)
+	 (setq s (list (wxxml-stripdollar ($sconcat s))))))
   (cond ((or (null lbp) (not (integerp lbp)))
          (setq lbp 180)))
   (cond ((or (null rbp) (not (integerp rbp)))
          (setq rbp 180)))
   (cond ((null tx)
-	 (putprop e (nth 0 s) 'wxxmlword))
+         (if (stringp (nth 0 s))
+             (putprop e (nth 0 s) 'wxxmlword)
+             (let ((fun-name (gensym))
+                   (fun-body
+                    `(append l
+                             (list
+                              (let ((f-x (mfuncall ',s x)))
+                                (if (stringp f-x)
+                                    f-x
+                                    (merror "wxxml: function ~s did not return a string.~%"
+                                            ($sconcat ',(nth 0 s))))))
+                             r)))
+               (setf (symbol-function fun-name) (coerce `(lambda (x l r) ,fun-body) 'function))
+               (setf (get e 'wxxml) fun-name))))
 	((eq tx '$matchfix)
 	 (putprop e 'wxxml-matchfix 'wxxml)
 	 (cond ((< (length s) 2)
