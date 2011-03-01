@@ -1457,6 +1457,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       return;
     }
 
+    if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
+        m_activeCell->GetValue() == wxEmptyString) {
+      m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
+      DeleteSelection();
+      return;
+    }
+
     m_activeCell->ProcessEvent(event);
 
     // CTRL+"s deactivates on MAC
