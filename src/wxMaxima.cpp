@@ -4351,6 +4351,12 @@ int wxMaxima::SaveDocumentP()
   wxString file, ext;
   if (m_currentFile == wxEmptyString)
   {
+    // Check if we want to save modified untitled documents on exit
+    bool save = true;
+    wxConfig::Get()->Read(wxT("saveUntitled"), &save);
+    if (!save)
+      return change_return_code(wxNO);
+
 #if defined __WXMAC__
     file = GetTitle();
 #else
