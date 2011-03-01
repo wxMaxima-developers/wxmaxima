@@ -1440,6 +1440,34 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
   }
 
+#if defined __WXMSW__
+  if (event.AltDown()) {
+    switch (event.GetKeyCode())
+    {
+    case 'f':
+    case 'F':
+    case 'e':
+    case 'E':
+    case 'm':
+    case 'M':
+    case 'q':
+    case 'Q':
+    case 'a':
+    case 'A':
+    case 'c':
+    case 'C':
+    case 's':
+    case 'S':
+    case 'p':
+    case 'P':
+    case 'h':
+    case 'H':
+      event.Skip();
+      return;
+    }
+  }
+#endif
+
   if (m_activeCell != NULL) { // we are in an active cell
     bool needRecalculate = false;
 
