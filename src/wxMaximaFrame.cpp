@@ -147,9 +147,19 @@ void wxMaximaFrame::do_layout()
                       Fixed().
                       Left());
 
+  m_manager.AddPane(CreateDocumentTree(),
+      wxAuiPaneInfo().Name(wxT("doctree")).
+                      Caption(_("Document tree")).
+                      Show(true).
+                      TopDockable(false).
+                      BottomDockable(false).
+                      PaneBorder(true).
+                      Fixed().
+                      Left());
+
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = false;
-  config->Read(wxT("AUI/savePanes"), &loadPanes);
+  //config->Read(wxT("AUI/savePanes"), &loadPanes);
 
   if (loadPanes) {
     wxString perspective;
@@ -899,6 +909,9 @@ bool wxMaximaFrame::IsPaneDisplayed(int id)
     case menu_pane_format:
       displayed = m_manager.GetPane(wxT("format")).IsShown();
       break;
+    case menu_pane_doctree:
+      displayed = m_manager.GetPane(wxT("doctree")).IsShown();
+      break;
   }
 
   return displayed;
@@ -918,6 +931,9 @@ void wxMaximaFrame::ShowPane(int id, bool show)
       break;
     case menu_pane_format:
       m_manager.GetPane(wxT("format")).Show(show);
+      break;
+    case menu_pane_doctree:
+      m_manager.GetPane(wxT("doctree")).Show(show);
       break;
     case menu_pane_hideall:
       m_manager.GetPane(wxT("math")).Show(false);
@@ -1049,6 +1065,68 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
   grid->SetSizeHints(panel);
 
   return panel;
+}
+
+wxPanel *wxMaximaFrame::CreateDocumentTree()
+{
+  wxPanel *panel = new wxPanel(this, -1);
+  wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+
+  m_documentTree = new wxTreeCtrl(panel, -1, wxDefaultPosition, wxSize(200, 400));
+
+  wxTreeItemId root = m_documentTree->AddRoot(_("unsaved"));
+
+  int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
+  int border = 1;
+#else
+  int border = 0;
+#endif
+
+  sizer->Add(m_documentTree, 0, style, border);
+
+  panel->SetSizer(sizer);
+  sizer->Fit(panel);
+  sizer->SetSizeHints(panel);
+
+  return panel;
+}
+
+void wxMaximaFrame::UpdateDocumentTree(wxString file)
+{
+  wxString filename, ext;
+  GroupCell *tree = (GroupCell *)(m_console->GetTree());
+  wxTreeItemId root, title, section;
+
+  m_documentTree->DeleteAllItems();
+
+  if (file == wxEmptyString)
+    filename = _("unsaved");
+  else {
+    wxFileName::SplitPath(file, NULL, &filename, &ext);
+    filename = filename + wxT(".") + ext;
+  }
+
+  root = title = section = m_documentTree->AddRoot(filename);
+
+  while (tree != NULL) {
+    switch (tree->GetGroupType()) {
+      case GC_TYPE_TITLE:
+        title = m_documentTree->AppendItem(root, tree->GetInput()->GetValue());
+        if (section == root)
+          section = title;
+        break;
+      case GC_TYPE_SECTION:
+        section = m_documentTree->AppendItem(title, tree->GetInput()->GetValue());
+        break;
+      case GC_TYPE_SUBSECTION:
+        m_documentTree->AppendItem(section, tree->GetInput()->GetValue());
+        break;
+    }
+    tree = (GroupCell *)(tree->m_next);
+  }
+
+  m_documentTree->ExpandAll();
 }
 
 void wxMaximaFrame::ShowToolBar(bool show)

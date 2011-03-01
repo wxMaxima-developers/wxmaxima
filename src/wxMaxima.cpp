@@ -1803,6 +1803,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
   }
+
+  UpdateDocumentTree();
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
@@ -4158,6 +4160,8 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   }
   else
     m_console->OpenHCaret(wxEmptyString, type);
+
+  UpdateDocumentTree();
 }
 
 void wxMaxima::ResetTitle(bool saved)

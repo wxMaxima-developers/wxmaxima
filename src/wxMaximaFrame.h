@@ -233,6 +233,7 @@ enum {
   menu_pane_history,
   menu_pane_format,
   menu_pane_stats,
+  menu_pane_doctree,
   menu_stats_mean,
   menu_stats_median,
   menu_stats_var,
@@ -284,6 +285,7 @@ public:
   void ShowPane(int id, bool hide);
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
   void ShowToolBar(bool show);
+  void UpdateDocumentTree(wxString filename);
 private:
   void set_properties();
   void do_layout();
@@ -294,6 +296,7 @@ private:
   wxPanel *CreateStatPane();
   wxPanel *CreateMathPane();
   wxPanel *CreateFormatPane();
+  wxPanel *CreateDocumentTree();
 protected:
   void LoadRecentDocuments();
   void SaveRecentDocuments();
@@ -304,6 +307,7 @@ protected:
   wxSlider* m_plotSlider;
   wxArrayString m_recentDocuments;
   wxMenu* m_recentDocumentsMenu;
+  wxTreeCtrl* m_documentTree;
 };
 
 #endif // WXMAXIMAFRAME_H

@@ -223,6 +223,7 @@ protected:
   void NumberSections();
   bool IsLesserGCType(int type, int comparedTo);
   void OnComplete(wxCommandEvent &event);
+  void UpdateDocumentTree(bool force = false);
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;

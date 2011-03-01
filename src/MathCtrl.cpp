@@ -522,16 +522,19 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
     return NULL;
 
   GroupCell *result = NULL;
-  if (which->IsFoldable())
+  if (which->IsFoldable()) {
     if (which->GetHiddenTree())
       result = which->Unfold();
     else
       result = which->Fold();
+  }
   else
     return NULL;
 
-  if (result) // something has folded/unfolded
+  if (result) {// something has folded/unfolded
     UpdateMLast();
+    UpdateDocumentTree();
+  }
 
   return result;
 }
@@ -541,16 +544,19 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
     return NULL;
 
   GroupCell *result = NULL;
-  if (which->IsFoldable())
+  if (which->IsFoldable()) {
     if (which->GetHiddenTree())
       result = which->UnfoldAll(false);
     else
       result = which->FoldAll(false);
+  }
   else
     return NULL;
 
-  if (result) // something has folded/unfolded
+  if (result) {// something has folded/unfolded
     UpdateMLast();
+    UpdateDocumentTree();
+  }
 
   return result;
 }
@@ -561,6 +567,7 @@ void MathCtrl::FoldAll() {
   if (m_tree) {
     m_tree->FoldAll(true);
     UpdateMLast();
+    UpdateDocumentTree();
   }
 }
 // UnfoldAll()
@@ -569,10 +576,11 @@ void MathCtrl::UnfoldAll() {
   if (m_tree) {
     m_tree->UnfoldAll(true);
     UpdateMLast();
+    UpdateDocumentTree();
   }
 }
 
-// Returns the tree from start to end and connets the pointers the right way
+// Returns the tree from start to end and connects the pointers the right way
 // so that m_tree stays 'correct' - also works in hidden trees
 GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end) {
   if ((!start) || (!end))
@@ -1520,6 +1528,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
     wxPoint point = m_activeCell->PositionToPoint(parser);
     ShowPoint(point);
+
+    UpdateDocumentTree();
   }
 
   else { // m_activeCell == NULL
@@ -3620,6 +3630,29 @@ bool MathCtrl::InsertText(wxString text)
   }
 
   return true;
+}
+
+void MathCtrl::UpdateDocumentTree(bool force)
+{
+  if (force == false)
+  {
+    if (m_activeCell == NULL)
+      return;
+
+    GroupCell* parent = ((GroupCell *)(m_activeCell->GetParent()));
+
+    switch (parent->GetGroupType()) {
+      case GC_TYPE_TITLE:
+      case GC_TYPE_SECTION:
+      case GC_TYPE_SUBSECTION:
+        ((wxMaxima *)GetParent())->UpdateDocumentTree();
+        break;
+      default:
+        break;
+    }
+  }
+  else
+    ((wxMaxima *)GetParent())->UpdateDocumentTree();
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
