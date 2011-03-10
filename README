@@ -1,160 +1,94 @@
 WXMAXIMA
 =========
 
-wxMaxima is an interface for the computer algebra system maxima. For
-more information about maxima, go to
+wxMaxima is a document based interface for the computer algebra system Maxima.
+For more information about Maxima, visit http://maxima.sourceforge.net/.
+wxMaxima uses wxWidgets and runs natively on Windows, X11 and Mac OS X.
+wxMaxima provides menus and dialogs for many common maxima commands,
+autocompletion, inline plots and simple animations. wxMaxima is distributed
+under the GPL license.
 
-  http://maxima.sourceforge.net/
-
-wxMaxima can be found at
-
-  http://wxmaxima.sourceforge.net/
-
-wxMaxima uses wxWidgets and runs natively on Linux and Windows. It
-provides nicely formatted display of maxima output.
-
+wxMaxima is included with the Windows installer for Maxima. Packages are
+available for many Linux distributions. If you wish to compile wxMaxima from
+source, read the instructions below.
 
 
-LICENCE
-========
+BUILDING WXMAXIMA FROM SOURCE
+==============================
 
-wxMaxima is licenced under GPL. See the file COPYING.
+To build wxMaxima from sources you need to have a c++ compiler and the
+wxWidgets library installed.
 
+Compiling on Mac OS X
+----------------------
 
+On Mac OS X you should install XCode. To build wxMaxima open the Terminal
+application and follow the instructions for building with gnu autotools.
+It is recommended that you compile you own version of wxMac. See the section
+about compiling wxWidgets.
 
-INSTALLATION
-=============
+Compiling on Windows
+---------------------
 
+On Windows install MinGW (http://sourceforge.net/projects/mingw/). In the
+installation process make sure you select g++, "MSYS Basic System" and
+"MinGW Developer ToolKit" in the "Select components" page of the installer.
+Then run MinGW Shell and follow the instructions for compiling wxWidgets and
+wxMaxima with autotools.
 
-BINARY INSTALLATION
---------------------
+Compiling wxWidgets on Mac OS X and Windows
+--------------------------------------------
 
-Binaries for Windows are provided at wxMaxima homepage.
+Before compiling wxMaxima you need to compile the wxWidgets library. Download
+the source, unarchive and in the source directory execute
 
-Windows binaries come with an installer. You should install wxMaxima
-in a subdirectory of maxima installation directory (see section
-CONFIGURATION). Binaries for some Linux distributions are contributed
-by wxMaxima users and are available from the download section of
-wxMaxima homepage.
+  mkdir build
+  cd build
 
+On Mac OS X configure wxWidgets with
 
-SOURCE INSTALLATION
---------------------
+  ../configure --disable-shared --enable-unicode
 
-** Linux
+and on Windows with
 
-Download and install wxWidgets library from
+  ../configure --disable-shared
 
-  http://www.wxwidgets.org/
+Now build wxWidgets with
 
-Go to the source directory and do
+  make
+
+You do not need to install the library with make install. You will need to
+specify a path to wx-config when configuring wxMaxima. There are two files in
+build/lib/wx/config. The correct file to use is
+inplace-msw-ansi-release-static-2.8 on Windows and
+implace-mac-unicode-release-static-2.8 on Mac OS X. You will also need to copy
+the file wxwin.m4 to acinclude.m4 in the wxMaxima source directory.
+
+Compiling with autotools
+-------------------------
+
+If you are building from git, execute ./bootstrap first.
+
+To build wxMaxima on Linux execute
 
   ./configure
   make
-  make install
+  sudo make install
 
+To build wxMaxima on Mac OS X and Windows first execute
 
-** Windows
-
-I build the windows binaries using Dev-CPP. Dev-CPP can be downloaded
-from
-
-  http://www.bloodshed.net
-
-You will also need to install the wxWidgets devpack (and its
-dependencies), which can also be found at the web-page. In Dev-CPP
-create a new wxWidgets project and import all the sources of wxMaxima.
-
-** Mac OS X
-
-Support for Mac OS X is experimental. To build wxMaxima first make
-sure you have wxWidgets (it is possible that the static build is
-required) installed on your system. Then build wxMaxima with
-
-  ./configure --with-wx-config=<path to your wx-config>
-  make
-  make wxMaxima.app
-
-This should create a working wxMaxima.app. This has been tested with
-wxWidgets version 2.8.7.
-
-wxMaxima has been tested with maxima compiled with cmucl. If you use a
-different lisp and wxMaxima does not work, recompile maxima using
-cmucl.
-
-** Building from SVN (Linux)
-
-To build wxMaxima from SVN, first checkout the SVN tree. For details
-see
-
-  http://sourceforge.net/svn/?group_id=126731
-
-Then build wxMaxima with
-
-  ./bootstrap
-  ./configure
+  ./configure --with-wx-config=<path to wx-config>
   make
   cd locales
   make allmo
   cd ..
-  make install
 
+On Mac OS X you should build an application bundle:
 
+  make wxMaxima.app
 
-CONFIGURATION
-==============
+On Windows execute
 
+  make wxMaxima.win
 
-** Linux
-
-wxMaxima does not need any configuration if maxima is in your path. If
-not, configure wxMaxima with Maxima->Configure.
-
-** Windows
-
-To automatically configure wxMaxima, wxMaxima must be installed in a
-subdirectory of maxima installation directory. For example:
-
-  maxima installation:   C:\Program Files\maxima-5.17.0
-  wxMaxima installation: C:\Program Files\maxima-5.17.0\wxMaxima
-
-If you install in some other directory, you must configure wxMaxima
-with Maxima->Configure.
-
-
-
-PRINTING
-=========
-
-
-** Linux
-
-The default Postscript driver used for printing on Linux can not print
-wxMaxima session properly (it has problems in finding out how much
-space is needed to print a string).
-
-Starting with version 2.5.4 wxGTK can be compiled with support for
-libgnomeprint (and libgnomeprintui) which has much better support for
-printing. Using this driver, wxMaxima can print correctly. So printing
-on Linux is only available if wxGTK has been compiled with support for
-libgnomeprint and libgnomeprint is found when wxMaxima is started.
-
-
-
-UPDATING
-=========
-
-
-** Linux
-
-When you update maxima or wxMaxima, you should delete the file
-.wxMaxima in your home directory.
-
-** Windows
-
-To update maxima or wxMaxima, you should:
- - uninstall wxMaxima
- - uninstall maxima (if updating maxima)
- - install maxima   (if updating maxima)
- - install wxMaxima (in a subdirectory of maxima, see section CONFIGURATION)
-
+which builds the directory structure necessary for running wxMaxima.
