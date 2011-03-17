@@ -705,6 +705,7 @@ bool wxMaxima::StartMaxima()
     else
       command.Append(wxString::Format(wxT(" -s %d"), m_port));
     wxSetEnv(wxT("home"), wxGetHomeDir());
+    wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
 #else
     command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
                                     m_port));
