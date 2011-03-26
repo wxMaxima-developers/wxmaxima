@@ -1387,7 +1387,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
 
-  while (m_text.GetChar(m_positionOfCaret) != '\n' && m_positionOfCaret < (signed)m_text.Length())
+  while (m_positionOfCaret < (signed)m_text.Length() && m_text.GetChar(m_positionOfCaret) != '\n')
   {
     s = m_text.SubString(lineStart, m_positionOfCaret);
     dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),
