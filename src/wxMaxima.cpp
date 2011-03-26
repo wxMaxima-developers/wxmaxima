@@ -456,7 +456,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x22BC"), wxT(" nand "));
   s.Replace(wxT("\x22BD"), wxT(" nor "));
   s.Replace(wxT("\x21D2"), wxT(" implies "));
-  s.Replace(wxT("\x21D4"), wxT(" eq "));
+  s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
 #endif
 

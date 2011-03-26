@@ -571,7 +571,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L" \x22BD ");
   else if (m_text == wxT(" implies "))
     return wxString(L" \x21D2 ");
-  else if (m_text == wxT(" eq "))
+  else if (m_text == wxT(" equiv "))
     return wxString(L" \x21D4 ");
   else if (m_text == wxT("not"))
     return wxString(L"\x00AC");
@@ -731,7 +731,7 @@ wxString TextCell::GetSymbolSymbol(bool keepPercent)
     return wxT("\xAF");
   else if (m_text == wxT(" implies "))
     return wxT("\xDE");
-  else if (m_text == wxT(" eq "))
+  else if (m_text == wxT(" equiv "))
     return wxT("\xDB");
   else if (m_text == wxT(" xor "))
     return wxT("\xC5");
