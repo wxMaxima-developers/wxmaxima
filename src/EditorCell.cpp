@@ -1017,15 +1017,14 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 void EditorCell::FindMatchingParens()
 {
   m_paren2 = m_positionOfCaret;
-  if (m_paren2 >= m_text.Length())
-    m_paren2 = m_text.Length()-1;
   if (m_paren2 < 0)
   {
     m_paren1 = m_paren2 = -1;
     return;
   }
 
-  if (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+  if (m_paren2 == m_text.Length() ||
+      wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
   {
     m_paren2--;
     if (m_paren2 < 0 ||
