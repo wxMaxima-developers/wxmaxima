@@ -669,7 +669,7 @@ bool wxMaxima::StartMaxima()
   }
 
   m_variablesOK = false;
-  wxString command = GetCommand();
+  wxString command = GetCommand();;
 
   if (command.Length() > 0)
   {
@@ -1431,7 +1431,7 @@ wxString wxMaxima::GetCommand(bool params)
 
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
-    command.Append(wxT("/Contents/Resources/bin/maxima"));
+    command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
 
   config->Read(wxT("parameters"), &parameters);
