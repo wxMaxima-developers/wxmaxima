@@ -214,7 +214,7 @@ void wxMaxima::CheckForPrintingSupport()
  #elif defined wxUSE_LIBGNOMEPRINT
   #if wxUSE_LIBGNOMEPRINT
   wxLogNull log;
-  wxDynamicLibrary* m_gnomep = newnew wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
+  wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
   wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
   if (m_gnomep->IsLoaded() && m_gnomepui->IsLoaded())
     m_supportPrinting = true;
