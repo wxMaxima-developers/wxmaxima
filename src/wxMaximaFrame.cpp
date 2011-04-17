@@ -688,9 +688,14 @@ void wxMaximaFrame::SetupToolBar()
 
   frame_1_toolbar->SetToolBitmapSize(wxSize(22, 22));
 
+#if defined __WXMSW__
+  frame_1_toolbar->AddTool(tb_new, _("New"),
+                           IMAGE("new.png"),
+			               _("New document"));
+#endif
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            IMAGE("open.png"),
-			                     _("Open document"));
+			               _("Open document"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            IMAGE("save.png"),
                            _("Save document"));
@@ -746,6 +751,11 @@ void wxMaximaFrame::SetupToolBar()
 void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
+
+  frame_1_toolbar->AddTool(tb_new, _("New"),
+                           wxArtProvider::GetBitmap(wxT("gtk-new"),
+                                                    wxART_TOOLBAR),
+                           _("New document"));
 
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            wxArtProvider::GetBitmap(wxT("gtk-open"),

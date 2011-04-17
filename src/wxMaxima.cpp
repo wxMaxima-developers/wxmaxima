@@ -214,7 +214,7 @@ void wxMaxima::CheckForPrintingSupport()
  #elif defined wxUSE_LIBGNOMEPRINT
   #if wxUSE_LIBGNOMEPRINT
   wxLogNull log;
-  wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
+  wxDynamicLibrary* m_gnomep = newnew wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
   wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
   if (m_gnomep->IsLoaded() && m_gnomepui->IsLoaded())
     m_supportPrinting = true;
@@ -1883,8 +1883,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case mac_closeId:
     Close();
     break;
-#else
+#elif defined __WXMSW__ || defined __WXGTK20__
   case menu_new_id:
+  case tb_new:
     wxExecute(wxTheApp->argv[0]);
     break;
 #endif
@@ -4585,6 +4586,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_select_all, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
+#if defined (__WXMSW__) || defined (__WXGTK20__)
+  EVT_TOOL(tb_new, wxMaxima::FileMenu)
+#endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)

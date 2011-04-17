@@ -182,6 +182,9 @@ enum {
   menu_export_html,
   menu_change_var,
   menu_nouns,
+#if defined (__WXMSW__) || defined (__WXGTK20__) 
+  tb_new,
+#endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   tb_open,
   tb_save,
