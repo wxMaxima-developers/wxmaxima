@@ -292,17 +292,17 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
                              _("Show function template"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert Input &Cell\tF5"),
+  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert Input &Cell"),
                              _("Insert a new input cell"));
-  wxglade_tmp_menu_2->Append(menu_add_comment, _("Insert &Text Cell\tF6"),
+  wxglade_tmp_menu_2->Append(menu_add_comment, _("Insert &Text Cell\tCtrl-1"),
                              _("Insert a new text cell"));
-  wxglade_tmp_menu_2->Append(menu_add_subsection, _("Insert S&ubsection Cell\tF7"),
-                             _("Insert a new subsection cell"));
-  wxglade_tmp_menu_2->Append(menu_add_section, _("Insert &Section Cell\tF8"),
-                             _("Insert a new section cell"));
-  wxglade_tmp_menu_2->Append(menu_add_title, _("Insert T&itle Cell\tF9"),
+  wxglade_tmp_menu_2->Append(menu_add_title, _("Insert T&itle Cell\tCtrl-2"),
                              _("Insert a new title cell"));
-  wxglade_tmp_menu_2->Append(menu_add_pagebreak, _("Insert Page Break\tF10"),
+  wxglade_tmp_menu_2->Append(menu_add_section, _("Insert &Section Cell\tCtrl-3"),
+                             _("Insert a new section cell"));
+  wxglade_tmp_menu_2->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
+                             _("Insert a new subsection cell"));
+  wxglade_tmp_menu_2->Append(menu_add_pagebreak, _("Insert Page Break"),
                              _("Insert a page break"));
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                              _("Insert image"), wxITEM_NORMAL);
