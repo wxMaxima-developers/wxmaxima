@@ -312,7 +312,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_history_next, _("Next Command\tAlt-Down"),
                              _("Recall next command from history"), wxITEM_NORMAL);
 
-  frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Cell"));
+  frame_1_menubar->Append(wxglade_tmp_menu_2, _("Ce&ll"));
 
   // Maxima menu
   wxglade_tmp_menu_2 = new wxMenu;
