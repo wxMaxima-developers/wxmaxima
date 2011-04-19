@@ -4120,18 +4120,22 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_add_comment:
   case popid_add_comment:
   case menu_format_text:
+  case popid_insert_text:
     type = GC_TYPE_TEXT;
     break;
   case menu_add_title:
   case menu_format_title:
+  case popid_insert_title:
     type = GC_TYPE_TITLE;
     break;
   case menu_add_section:
   case menu_format_section:
+  case popid_insert_section:
     type = GC_TYPE_SECTION;
     break;
   case menu_add_subsection:
   case menu_format_subsection:
+  case popid_insert_subsection:
     type = GC_TYPE_SUBSECTION;
     break;
   case menu_add_pagebreak:
@@ -4413,6 +4417,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_insert_text, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_title, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_section, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_subsection, wxMaxima::InsertMenu)
   EVT_MENU(popid_delete, wxMaxima::EditMenu)
   EVT_MENU(popid_simplify, wxMaxima::PopupMenu)
   EVT_MENU(popid_factor, wxMaxima::PopupMenu)

@@ -718,6 +718,11 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     else if (m_hCaretActive == true) {
       popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_insert_text, _("Insert Text Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_title, _("Insert Title Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_section, _("Insert Section Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 
