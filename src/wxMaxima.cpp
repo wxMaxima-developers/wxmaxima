@@ -1707,7 +1707,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
-  for (int id = menu_pane_math; id<=menu_pane_stats; id++)
+  for (int id = menu_pane_math; id<=menu_pane_doctree; id++)
     menubar->Check(id, IsPaneDisplayed(id));
 
 #if defined __WXMAC__
@@ -4421,8 +4421,11 @@ void wxMaxima::OnDocumentTreeClick(wxTreeEvent& ev)
   while (tree != NULL && tree->GetId() != id)
     tree = tree->m_next;
 
-  if (tree != NULL)
-    m_console->SetActiveCell(((GroupCell *)tree)->GetEditable());
+  if (tree != NULL) {
+    EditorCell *editor = dynamic_cast<GroupCell*>(tree)->GetEditable();
+    m_console->SetActiveCell(editor);
+    m_console->ScrollToCell(tree);
+  }
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
@@ -4647,6 +4650,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_pane_stats, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_doctree, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_remove_output, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
@@ -4691,7 +4695,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
   EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
-  EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
+  EVT_MENU_RANGE(menu_pane_hideall, menu_pane_doctree, wxMaxima::ShowPane)
   EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
   EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
   EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)

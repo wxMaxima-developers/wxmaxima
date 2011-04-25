@@ -335,6 +335,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_doctree, _("Document Tree\tAlt-Shift-D"));
   wxglade_tmp_menu_2_sub2->AppendSeparator();
   wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
   wxglade_tmp_menu_2->Append(wxNewId(), _("Panes"), wxglade_tmp_menu_2_sub2);
@@ -950,6 +951,7 @@ void wxMaximaFrame::ShowPane(int id, bool show)
       m_manager.GetPane(wxT("history")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
+      m_manager.GetPane(wxT("doctree")).Show(false);
       break;
   }
 
