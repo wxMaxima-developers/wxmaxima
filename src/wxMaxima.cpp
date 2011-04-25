@@ -4413,7 +4413,20 @@ int wxMaxima::SaveDocumentP()
 #endif
 }
 
+void wxMaxima::OnDocumentTreeClick(wxTreeEvent& ev)
+{
+  MathCell* tree = m_console->GetTree();
+  wxTreeItemId id = ev.GetItem();
+
+  while (tree != NULL && tree->GetId() != id)
+    tree = tree->m_next;
+
+  if (tree != NULL)
+    m_console->SetActiveCell(((GroupCell *)tree)->GetEditable());
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
+  EVT_TREE_ITEM_ACTIVATED(panes_document_tree, wxMaxima::OnDocumentTreeClick)
 #if defined __WXMAC__
   EVT_MENU(mac_closeId, wxMaxima::FileMenu)
 #endif

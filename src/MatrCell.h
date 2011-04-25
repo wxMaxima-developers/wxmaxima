@@ -59,6 +59,7 @@ public:
   void RowNames(bool rn) { m_rowNames = rn; }
   void ColNames(bool cn) { m_colNames = cn; }
 protected:
+  wxTreeItemId m_treeId;
   int m_matWidth;
   int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;

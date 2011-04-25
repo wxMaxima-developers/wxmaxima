@@ -1082,7 +1082,7 @@ wxPanel *wxMaximaFrame::CreateDocumentTree()
   wxPanel *panel = new wxPanel(this, -1);
   wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
-  m_documentTree = new wxTreeCtrl(panel, -1, wxDefaultPosition, wxSize(200, 400));
+  m_documentTree = new wxTreeCtrl(panel, panes_document_tree, wxDefaultPosition, wxSize(200, 400));
 
   wxTreeItemId root = m_documentTree->AddRoot(_("unsaved"));
 
@@ -1123,14 +1123,16 @@ void wxMaximaFrame::UpdateDocumentTree(wxString file)
     switch (tree->GetGroupType()) {
       case GC_TYPE_TITLE:
         title = m_documentTree->AppendItem(root, tree->GetInput()->GetValue());
+        tree->SetId(title);
         if (section == root)
           section = title;
         break;
       case GC_TYPE_SECTION:
         section = m_documentTree->AppendItem(title, tree->GetInput()->GetValue());
+        tree->SetId(section);
         break;
       case GC_TYPE_SUBSECTION:
-        m_documentTree->AppendItem(section, tree->GetInput()->GetValue());
+        tree->SetId(m_documentTree->AppendItem(section, tree->GetInput()->GetValue()));
         break;
     }
     tree = (GroupCell *)(tree->m_next);

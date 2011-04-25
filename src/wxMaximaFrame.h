@@ -266,7 +266,8 @@ enum {
   menu_edit_find,
   menu_history_previous,
   menu_history_next,
-  menu_check_updates
+  menu_check_updates,
+  panes_document_tree
 };
 
 #define FIRST_PANE menu_pane_hideall

@@ -420,6 +420,7 @@ void MathCtrl::Recalculate(bool force)
   }
 
   AdjustSize();
+  UpdateDocumentTree();
 }
 
 /***
@@ -533,7 +534,6 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
 
   if (result) {// something has folded/unfolded
     UpdateMLast();
-    UpdateDocumentTree();
   }
 
   return result;
@@ -555,7 +555,6 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
 
   if (result) {// something has folded/unfolded
     UpdateMLast();
-    UpdateDocumentTree();
   }
 
   return result;
@@ -567,7 +566,6 @@ void MathCtrl::FoldAll() {
   if (m_tree) {
     m_tree->FoldAll(true);
     UpdateMLast();
-    UpdateDocumentTree();
   }
 }
 // UnfoldAll()
@@ -576,7 +574,6 @@ void MathCtrl::UnfoldAll() {
   if (m_tree) {
     m_tree->UnfoldAll(true);
     UpdateMLast();
-    UpdateDocumentTree();
   }
 }
 
@@ -1548,8 +1545,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
     wxPoint point = m_activeCell->PositionToPoint(parser);
     ShowPoint(point);
-
-    UpdateDocumentTree();
+    UpdateDocumentTree(false);
   }
 
   else { // m_activeCell == NULL

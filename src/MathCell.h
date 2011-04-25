@@ -44,6 +44,8 @@
 #endif
 
 #include <wx/wx.h>
+#include <wx/treebase.h>
+
 #include "CellParser.h"
 #include "TextStyle.h"
 
@@ -179,7 +181,10 @@ public:
   void SetStyle(int style) { m_textStyle = style; }
   bool IsMath();
   void SetAltCopyText(wxString text) { m_altCopyText = text; }
+  void SetId(wxTreeItemId id) { m_treeId = id; }
+  wxTreeItemId GetId() { return m_treeId; }
 protected:
+  wxTreeItemId m_treeId;
   int m_height;
   int m_width;
   int m_fullWidth;
