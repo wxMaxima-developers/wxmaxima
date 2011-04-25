@@ -11,6 +11,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/toolbar/playback-stop.png                   \
 	     art/toolbar/paste.png                           \
 	     art/toolbar/find.png                            \
+		 art/toolbar/new.png                             \
 	     art/config/options.png                          \
 	     art/config/maxima.png                           \
 	     art/config/styles.png                           \
@@ -21,6 +22,8 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
 docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING art/config/options.png art/config/maxima.png \
 	art/config/styles.png
+
+LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
@@ -36,53 +39,30 @@ wxMaxima.app: all
 	cp data/Info.plist wxMaxima.app/Contents
 	cp data/PkgInfo wxMaxima.app/Contents
 	cp src/wxmaxima wxMaxima.app/Contents/MacOS
-	mkdir -p wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/pt_BR/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/ru/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/hu/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/uk/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/pl/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/zh_TW/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES
-	mkdir -p wxMaxima.app/Contents/Resources/locale/ca/LC_MESSAGES
+	for i in $(LANGS) ; do \
+		mkdir -p wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES ; \
+		cp locales/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+	done
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
 	mkdir -p wxMaxima.app/Contents/Resources/config
-	cp locales/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima.mo
-	cp locales/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima.mo
-	cp locales/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima.mo
-	cp locales/de.mo wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES/wxMaxima.mo
-	cp locales/pt_BR.mo wxMaxima.app/Contents/Resources/locale/pt_BR/LC_MESSAGES/wxMaxima.mo
-	cp locales/ru.mo wxMaxima.app/Contents/Resources/locale/ru/LC_MESSAGES/wxMaxima.mo
-	cp locales/hu.mo wxMaxima.app/Contents/Resources/locale/hu/LC_MESSAGES/wxMaxima.mo
-	cp locales/uk.mo wxMaxima.app/Contents/Resources/locale/uk/LC_MESSAGES/wxMaxima.mo
-	cp locales/pl.mo wxMaxima.app/Contents/Resources/locale/pl/LC_MESSAGES/wxMaxima.mo
-	cp locales/zh_TW.mo wxMaxima.app/Contents/Resources/locale/zh_TW/LC_MESSAGES/wxMaxima.mo
-	cp locales/da.mo wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES/wxMaxima.mo
-	cp locales/cs.mo wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES/wxMaxima.mo
-	cp locales/el.mo wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES/wxMaxima.mo
-	cp locales/ja.mo wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES/wxMaxima.mo
-	cp locales/ca.mo wxMaxima.app/Contents/Resources/locale/ca/LC_MESSAGES/wxMaxima.mo
-	cp locales/wxwin/es.mo wxMaxima.app/Contents/Resources/locale/es/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/fr.mo wxMaxima.app/Contents/Resources/locale/fr/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/it.mo wxMaxima.app/Contents/Resources/locale/it/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/de.mo wxMaxima.app/Contents/Resources/locale/de/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/pt_BR.mo wxMaxima.app/Contents/Resources/locale/pt_BR/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/ru.mo wxMaxima.app/Contents/Resources/locale/ru/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/hu.mo wxMaxima.app/Contents/Resources/locale/hu/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/uk.mo wxMaxima.app/Contents/Resources/locale/uk/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/pl.mo wxMaxima.app/Contents/Resources/locale/pl/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/zh_TW.mo wxMaxima.app/Contents/Resources/locale/zh_TW/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/da.mo wxMaxima.app/Contents/Resources/locale/da/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/cs.mo wxMaxima.app/Contents/Resources/locale/cs/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/el.mo wxMaxima.app/Contents/Resources/locale/el/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/ja.mo wxMaxima.app/Contents/Resources/locale/ja/LC_MESSAGES/wxMaxima-wxstd.mo
-	cp locales/wxwin/ca.mo wxMaxima.app/Contents/Resources/locale/ca/LC_MESSAGES/wxMaxima-wxstd.mo
 	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
 	cp art/config/*.png wxMaxima.app/Contents/Resources/config
 
+wxMaxima.win: all
+	mkdir -p wxMaxima/art
+	mkdir -p wxMaxima/data
+	cp data/wxmathml.lisp wxMaxima/data
+	cp data/wxmaxima.png wxMaxima/data
+	cp data/autocomplete.txt wxMaxima/data
+	cp data/tips*.txt wxMaxima/data
+	mkdir -p wxMaxima/art/toolbar
+	cp art/toolbar/*.png wxMaxima/art/toolbar
+	mkdir -p wxMaxima/art/config
+	cp art/config/*.png wxMaxima/art/config
+	for i in $(LANGS) ; do \
+		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
+		cp locales/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+	done
+	cp src/wxmaxima.exe wxMaxima/

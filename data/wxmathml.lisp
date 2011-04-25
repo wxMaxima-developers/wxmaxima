@@ -789,7 +789,7 @@
 (defprop mleqp 80. wxxml-rbp)
 
 (defprop mnot wxxml-prefix wxxml)
-(defprop mnot ("<fnm>not</fnm>") wxxmlsym)
+(defprop mnot ("<fnm altCopy=\"not \">not</fnm>") wxxmlsym)
 (defprop mnot "<fnm>not</fnm>" wxxmlword)
 (defprop mnot 70. wxxml-rbp)
 

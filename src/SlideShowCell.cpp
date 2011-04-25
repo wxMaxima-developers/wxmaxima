@@ -279,7 +279,11 @@ bool SlideShow::ToGif(wxString file)
 
   convert << wxT(" \"") << file << wxT("\"");
 
+#if defined __WXMSW__
+  if (!wxShell(convert))
+#else
   if (wxExecute(convert, wxEXEC_SYNC) != 0)
+#endif
   {
     retval = false;
     wxMessageBox(_("There was and error during GIF export!\n\nMake sure ImageMagick is installed and wxMaxima can find the convert program."),

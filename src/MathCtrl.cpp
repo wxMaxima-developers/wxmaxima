@@ -726,6 +726,11 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     else if (m_hCaretActive == true) {
       popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->AppendSeparator();
+      popupMenu->Append(popid_insert_text, _("Insert Text Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_title, _("Insert Title Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_section, _("Insert Section Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 
@@ -1448,6 +1453,14 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
   }
 
+#if defined __WXMSW__
+  if (event.GetModifiers() == wxMOD_ALT)
+  {
+    event.Skip();
+    return;
+  }
+#endif
+
   if (m_activeCell != NULL) { // we are in an active cell
     bool needRecalculate = false;
 
@@ -1462,6 +1475,13 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
         m_activeCell->CaretAtEnd() &&
         !event.ShiftDown()) {
       SetHCaret(m_activeCell->GetParent());
+      return;
+    }
+
+    if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
+        m_activeCell->GetValue() == wxEmptyString) {
+      m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
+      DeleteSelection();
       return;
     }
 

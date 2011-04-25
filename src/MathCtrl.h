@@ -62,6 +62,10 @@ enum {
   popid_animation_start,
   popid_evaluate,
   popid_merge_cells,
+  popid_insert_text,
+  popid_insert_title,
+  popid_insert_section,
+  popid_insert_subsection,
   // popid_complete_00 should be the last id
   popid_complete_00
 };

@@ -456,7 +456,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x22BC"), wxT(" nand "));
   s.Replace(wxT("\x22BD"), wxT(" nor "));
   s.Replace(wxT("\x21D2"), wxT(" implies "));
-  s.Replace(wxT("\x21D4"), wxT(" eq "));
+  s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
 #endif
 
@@ -669,7 +669,7 @@ bool wxMaxima::StartMaxima()
   }
 
   m_variablesOK = false;
-  wxString command = GetCommand();
+  wxString command = GetCommand();;
 
   if (command.Length() > 0)
   {
@@ -705,6 +705,7 @@ bool wxMaxima::StartMaxima()
     else
       command.Append(wxString::Format(wxT(" -s %d"), m_port));
     wxSetEnv(wxT("home"), wxGetHomeDir());
+    wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
 #else
     command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
                                     m_port));
@@ -798,7 +799,7 @@ void wxMaxima::ReadFirstPrompt()
     start = 0;
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
-              wxT(" http://wxmaxima.sourceforge.net\n") +
+              wxT(" http://andrejv.github.com/wxmaxima/\n") +
               m_currentOutput.SubString(start, m_currentOutput.Length() - 1));
 #endif // __WXMSW__
 
@@ -1341,7 +1342,7 @@ void wxMaxima::ReadProcessOutput()
 
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
-              wxT(" http://wxmaxima.sourceforge.net\n") +
+              wxT(" http://andrejv.github.com/wxmaxima/\n") +
               o.SubString(st, o.Length() - 1));
 
   SetStatusText(_("Ready for user input"), 1);
@@ -1430,7 +1431,7 @@ wxString wxMaxima::GetCommand(bool params)
 
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
-    command.Append(wxT("/Contents/Resources/bin/maxima"));
+    command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
 
   config->Read(wxT("parameters"), &parameters);
@@ -1884,8 +1885,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case mac_closeId:
     Close();
     break;
-#else
+#elif defined __WXMSW__ || defined __WXGTK20__
   case menu_new_id:
+  case tb_new:
     wxExecute(wxTheApp->argv[0]);
     break;
 #endif
@@ -3276,8 +3278,8 @@ wxT("<html>"
 "<p>"
 "%s"
 "</p>"
-"<p><a href=\"http://wxmaxima.sf.net\">http://wxmaxima.sf.net/</a><br>"
-"   <a href=\"http://maxima.sf.net\">http://maxima.sf.net/</a></p>"
+"<p><a href=\"http://andrejv.github.com/wxmaxima/\">wxMaxima</a><br>"
+"   <a href=\"http://maxima.sourceforge.net/\">Maxima</a></p>"
 "<h4>%s</h4>"
 "<p>"
 "wxWidgets: %d.%d.%d<br>"
@@ -3312,7 +3314,11 @@ wxT("<html>"
 "Antonio Ullan (es)<br>"
 "Eric Delevaux (fr)<br>"
 "Michele Gosse (fr)<br>"
+#if wxUSE_UNICODE
 "Blahota István (hu)<br>"
+#else
+"Blahota Istvan (hu)<br>"
+#endif
 "Marco Ciampa (it)<br>"
 "Rafal Topolnicki (pl)<br>"
 "Eduardo M. Kalinowski (pt_br)<br>"
@@ -3413,7 +3419,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
     info.SetCopyright(wxT("(C) 2004-2010 Andrej Vodopivec"));
-    info.SetWebSite(wxT("http://wxmaxima.sourceforge.net/"));
+    info.SetWebSite(wxT("http://andrejv.github.com/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
@@ -3432,7 +3438,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
     info.AddTranslator(wxT("Michele Gosse (fr)"));
     info.AddTranslator(wxT("Marco Ciampa (it)"));
+#if wxUSE_UNICODE
     info.AddTranslator(wxT("Blahota István (hu)"));
+#else
+    info.AddTranslator(wxT("Blahota Istvan (hu)"));
+#endif
     info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
     info.AddTranslator(wxT("Alexey Beshenov (ru)"));
@@ -3510,7 +3520,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     break;
 
   case menu_help_tutorials:
-    wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/wiki/index.php/Tutorials"));
+    wxLaunchDefaultBrowser(wxT("http://andrejv.github.com/wxmaxima/help.html"));
     break;
 
   case menu_check_updates:
@@ -4112,18 +4122,22 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_add_comment:
   case popid_add_comment:
   case menu_format_text:
+  case popid_insert_text:
     type = GC_TYPE_TEXT;
     break;
   case menu_add_title:
   case menu_format_title:
+  case popid_insert_title:
     type = GC_TYPE_TITLE;
     break;
   case menu_add_section:
   case menu_format_section:
+  case popid_insert_section:
     type = GC_TYPE_SECTION;
     break;
   case menu_add_subsection:
   case menu_format_subsection:
+  case popid_insert_subsection:
     type = GC_TYPE_SUBSECTION;
     break;
   case menu_add_pagebreak:
@@ -4272,7 +4286,7 @@ long *VersionToInt(wxString version)
 }
 
 /***
- * Checks the file http://wxmaxima.sourceforge.net/version.html to
+ * Checks the file http://andrejv.github.com/wxmaxima/version.txt to
  * see if there is a newer version available.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate)
@@ -4281,14 +4295,14 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   connection.SetHeader(wxT("Content-type"), wxT("text/html; charset=utf-8"));
   connection.SetTimeout(2);
 
-  if (!connection.Connect(wxT("wxmaxima.sourceforge.net")))
+  if (!connection.Connect(wxT("andrejv.github.com")))
   {
     wxMessageBox(_("Can not connect to the web server."), _("Error"),
             wxOK | wxICON_ERROR);
     return;
   }
 
-  wxInputStream *inputStream = connection.GetInputStream(_T("/version.html"));
+  wxInputStream *inputStream = connection.GetInputStream(_T("/wxmaxima/version.txt"));
 
   if (connection.GetError() == wxPROTO_NOERR)
   {
@@ -4316,7 +4330,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
             wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)
-          wxLaunchDefaultBrowser(wxT("http://wxmaxima.sourceforge.net/"));
+          wxLaunchDefaultBrowser(wxT("http://andrejv.github.com/wxmaxima/"));
       }
       else if (reportUpToDate)
         wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
@@ -4328,7 +4342,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   }
   else
   {
-    wxMessageBox(_("Can not connect to the web server."), _("Error"),
+    wxMessageBox(_("Can not download version info."), _("Error"),
         wxOK | wxICON_ERROR);
   }
 
@@ -4355,6 +4369,12 @@ int wxMaxima::SaveDocumentP()
   wxString file, ext;
   if (m_currentFile == wxEmptyString)
   {
+    // Check if we want to save modified untitled documents on exit
+    bool save = true;
+    wxConfig::Get()->Read(wxT("saveUntitled"), &save);
+    if (!save)
+      return change_return_code(wxNO);
+
 #if defined __WXMAC__
     file = GetTitle();
 #else
@@ -4401,6 +4421,10 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(popid_copy_image, wxMaxima::PopupMenu)
+  EVT_MENU(popid_insert_text, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_title, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_section, wxMaxima::InsertMenu)
+  EVT_MENU(popid_insert_subsection, wxMaxima::InsertMenu)
   EVT_MENU(popid_delete, wxMaxima::EditMenu)
   EVT_MENU(popid_simplify, wxMaxima::PopupMenu)
   EVT_MENU(popid_factor, wxMaxima::PopupMenu)
@@ -4574,6 +4598,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_select_all, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
+#if defined (__WXMSW__) || defined (__WXGTK20__)
+  EVT_TOOL(tb_new, wxMaxima::FileMenu)
+#endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_open, wxMaxima::FileMenu)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)

@@ -769,10 +769,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
       /// If deleting ( in () then delete both.
       int right = m_positionOfCaret;
-      if ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
-          (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
-          (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
-          (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"'))
+      if (m_positionOfCaret < m_text.Length() &&
+          ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
+              (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
+              (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
+              (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
         right++;
       m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                m_text.SubString(right, m_text.Length());
@@ -981,17 +982,20 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                    m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case ')': // jump over ')'
-          if (m_text.GetChar(m_positionOfCaret) == ')')
+          if (m_positionOfCaret < m_text.Length() &&
+              m_text.GetChar(m_positionOfCaret) == ')')
             m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                        m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case ']': // jump over ']'
-          if (m_text.GetChar(m_positionOfCaret) == ']')
+          if (m_positionOfCaret < m_text.Length() &&
+              m_text.GetChar(m_positionOfCaret) == ']')
             m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                        m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case '}': // jump over '}'
-          if (m_text.GetChar(m_positionOfCaret) == '}')
+          if (m_positionOfCaret < m_text.Length() &&
+              m_text.GetChar(m_positionOfCaret) == '}')
             m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                        m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
@@ -1013,10 +1017,18 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 void EditorCell::FindMatchingParens()
 {
   m_paren2 = m_positionOfCaret;
-  if (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+  if (m_paren2 < 0)
+  {
+    m_paren1 = m_paren2 = -1;
+    return;
+  }
+
+  if (m_paren2 == m_text.Length() ||
+      wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
   {
     m_paren2--;
-    if (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
+    if (m_paren2 < 0 ||
+        wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
     {
       m_paren1 = m_paren2 = -1;
       return ;
@@ -1216,7 +1228,7 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x22BD";
   else if (txt == wxT("implies") || txt == wxT("=>"))
     return L"\x21D2";
-  else if (txt == wxT("eq") || txt == wxT("<=>"))
+  else if (txt == wxT("equiv") || txt == wxT("<=>"))
     return L"\x21D4";
   else if (txt == wxT("not"))
     return L"\x00AC";
@@ -1378,7 +1390,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
 
-  while (m_text.GetChar(m_positionOfCaret) != '\n' && m_positionOfCaret < (signed)m_text.Length())
+  while (m_positionOfCaret < (signed)m_text.Length() && m_text.GetChar(m_positionOfCaret) != '\n')
   {
     s = m_text.SubString(lineStart, m_positionOfCaret);
     dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),
