@@ -1244,81 +1244,81 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defun wxanimate-draw (scene)
+(defun get-file-name-opt (scene)
+  (let (opts filename)
+    (loop for opt in scene do
+         (if (and (not (atom opt))
+                  (eq (caar opt) 'mequal)
+                  (eq (cadr opt) '$file_name))
+             (setq filename (caddr opt))
+             (setq opts (cons opt opts))))
+    (values (reverse opts) filename)))
+
+(defun get-pic-size-opt ()
+  (cond
+    ((= ($get '$draw '$version) 1)
+     `(((mequal simp) $pic_width ,($first $wxplot_size))
+       ((mequal simp) $pic_height ,($second $wxplot_size))))
+    (t
+     `(((mequal simp) $dimensions ,$wxplot_size)))))
+
+(defun wxanimate-draw (scenes scene-head)
   (unless ($get '$draw '$version) ($load "draw"))
-  (let* ((scene (cdr scene))
-	 (a (meval (car scene)))
-	 (a-range (meval (cadr scene)))
-	 (args (cddr scene))
-	 (images ()))
-    (when (integerp a-range)
-      (setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
-    (dolist (aval (reverse (cdr a-range)))
-      (let* ((filename (wxplot-filename nil))
-	     (*windows-OS* t)
-	     (args (cons '($gr2d)
-                         (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-                                 args))))
-	(setq images (cons (format nil "~a.png" filename) images))
-	($apply '$draw
-                (append
-                 `((mlist simp)
-                   ((mequal simp) $terminal $png)
-                   ((mequal simp) $file_name ,filename))
-                 (cond
-                   ((= ($get '$draw '$version) 1)
-                    `(((mequal simp) $pic_width ,($first $wxplot_size))
-                      ((mequal simp) $pic_height ,($second $wxplot_size))))
-                   (t
-                    `(((mequal simp) $dimensions ,$wxplot_size))))
-                 (list args)))))
-    (when images
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
-  "")
+  (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
+    (let* ((a (meval (car scene)))
+           (a-range (meval (cadr scene)))
+           (*windows-OS* t)
+           (args (cddr scene))
+           (images ()))
+      (when (integerp a-range)
+        (setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
+      (if file-name
+          ;; If file_name is set, draw the animation into gif using gnuplot
+          (let (imgs)
+            (dolist (aval (reverse (cdr a-range)))
+              (setq imgs (cons
+                          (cons scene-head
+                                (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+                                        args))
+                          imgs)))
+            ($apply '$draw
+                    (append
+                     `((mlist simp)
+                       ((mequal simp) $terminal $animated_gif)
+                       ((mequal simp) $file_name ,file-name))
+                     (get-pic-size-opt)
+                     imgs))
+            "")
+          ;; If file_name is not set, show the animation in wxMaxima
+          (progn
+            (dolist (aval (reverse (cdr a-range)))
+              (let* ((filename (wxplot-filename nil))
+                     (args (cons scene-head
+                                 (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+                                         args))))
+                (setq images (cons (format nil "~a.png" filename) images))
+                ($apply '$draw
+                        (append
+                         `((mlist simp)
+                           ((mequal simp) $terminal $png)
+                           ((mequal simp) $file_name ,filename))
+                         (get-pic-size-opt)
+                         (list args)))))
+            (when images
+              ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))))
+      "")))
 
 (defmspec $wxanimate_draw (scene)
-  (wxanimate-draw scene))
+  (wxanimate-draw scene '($gr2d)))
 
 (defmspec $with_slider_draw (scene)
-  (wxanimate-draw scene))
-
-(defun wxanimate-draw3d (scene)
-  (unless ($get '$draw '$version) ($load "draw"))
-  (let* ((scene (cdr scene))
-	 (a (meval (car scene)))
-	 (a-range (meval (cadr scene)))
-	 (args (cddr scene))
-	 (images ()))
-    (when (integerp a-range)
-      (setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
-    (dolist (aval (reverse (cdr a-range)))
-      (let* ((filename (wxplot-filename nil))
-	     (*windows-OS* t)
-	     (args (cons '($gr3d)
-			  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-				  args))))
-	(setq images (cons (format nil "~a.png" filename) images))
-	($apply '$draw
-                (append
-                 `((mlist simp)
-                   ((mequal simp) $terminal $png)
-                   ((mequal simp) $file_name ,filename))
-                 (cond
-                   ((= ($get '$draw '$version) 1)
-                    `(((mequal simp) $pic_width ,($first $wxplot_size))
-                      ((mequal simp) $pic_height ,($second $wxplot_size))))
-                   (t
-                    `(((mequal simp) $dimensions ,$wxplot_size))))
-                 (list args)))))
-    (when images
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
-  "")
+  (wxanimate-draw scene '($gr2d)))
 
 (defmspec $with_slider_draw3d (scene)
-  (wxanimate-draw3d scene))
+  (wxanimate-draw scene '($gr3d)))
 
 (defmspec $wxanimate_draw3d (scene)
-  (wxanimate-draw3d scene))
+  (wxanimate-draw scene '($gr3d)))
 
 (defun $wxplot2d (&rest args)
   (let ((preamble ($wxplot_preamble))
