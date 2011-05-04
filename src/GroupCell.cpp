@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2009 Andrej Vodopivec <andrejv@users.sourceforge.net>
+///  Copyright (C) 2008-2011 Andrej Vodopivec <andrejv@users.sourceforge.net>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
