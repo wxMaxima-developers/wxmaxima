@@ -52,6 +52,7 @@ wxmaxima_SOURCES = \
 	EvaluationQueue.cpp EvaluationQueue.h \
 	History.cpp        History.h        \
 	Autocomplete.cpp   Autocomplete.h   \
+	PlotFormatWiz.cpp  PlotFormatWiz.h  \
 	TextStyle.h
 
 wxmaxima_LDFLAGS =

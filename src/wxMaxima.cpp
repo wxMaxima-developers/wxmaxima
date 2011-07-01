@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -38,6 +39,7 @@
 #include "MyTipProvider.h"
 #include "EditorCell.h"
 #include "SlideShowCell.h"
+#include "PlotFormatWiz.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -3183,14 +3185,20 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
     break;
   case menu_plot_format:
     {
-      wxString format = GetTextFromUser(_("Enter new plot format:"),
+      PlotFormatWiz *wiz = new PlotFormatWiz(this, -1, _("Plot format"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+	MenuCommand(wiz->GetValue());
+      }
+      wiz->Destroy();
+      /*wxString format = GetTextFromUser(_("Enter new plot format:"),
                                         _("Plot format"),
                                         wxT("gnuplot"), this);
       if (format.Length())
       {
         MenuCommand(wxT("set_plot_option(['plot_format, '") + format +
                    wxT("])$"));
-      }
+      }*/
     }
   default:
     break;
