@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///                2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -53,7 +54,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetStatusWidths(2, widths);
 
 #if defined __WXMSW__
-  wxAcceleratorEntry entries[0];
+  wxAcceleratorEntry entries[1];
   entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
   wxAcceleratorTable accel(1, entries);
   SetAcceleratorTable(accel);
