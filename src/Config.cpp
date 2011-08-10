@@ -288,7 +288,7 @@ wxPanel* Config::CreateOptionsPanel()
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
   vsizer->Add(m_openHCaret, 0, wxALL, 5);
 
-  vsizer->AddGrowableRow(9);
+  vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
 
