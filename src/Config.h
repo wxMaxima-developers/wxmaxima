@@ -107,6 +107,7 @@ protected:
   wxCheckBox* m_showLong;
   wxCheckBox* m_enterEvaluates;
   wxCheckBox* m_saveUntitled;
+  wxCheckBox* m_openHCaret;
   wxButton* m_getFont;
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;

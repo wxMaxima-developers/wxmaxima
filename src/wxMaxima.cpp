@@ -826,6 +826,13 @@ void wxMaxima::ReadFirstPrompt()
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
+  else
+  {
+    bool open = false;
+    wxConfig::Get()->Read(wxT("openHCaret"), &open);
+    if (open)
+      m_console->OpenHCaret();
+  }
 }
 
 /***
@@ -917,6 +924,11 @@ void wxMaxima::ReadPrompt()
         }
 
         m_console->EnableEdit();
+
+        bool open = false;
+        wxConfig::Get()->Read(wxT("openHCaret"), &open);
+        if (open)
+          m_console->OpenHCaret();
       }
 
       // We have a question
