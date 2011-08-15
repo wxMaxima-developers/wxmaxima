@@ -44,6 +44,7 @@ class EvaluationQueue
     void AddToQueue(GroupCell* gr);
     void RemoveFirst();
     GroupCell* GetFirst();
+    bool Empty() { return m_queue == NULL; }
   private:
     EvaluationQueueElement* m_queue;
     EvaluationQueueElement* m_last;

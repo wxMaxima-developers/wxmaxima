@@ -3642,6 +3642,22 @@ bool MathCtrl::InsertText(wxString text)
   return true;
 }
 
+void MathCtrl::OpenNextOrCreateCell()
+{
+  if (m_hCaretPosition)
+  {
+    if (m_hCaretPosition->m_next)
+    {
+      m_selectionStart = m_selectionEnd = m_hCaretPosition;
+      ActivateNextInput();
+    }
+    else
+      OpenHCaret();
+  }
+  else
+    OpenHCaret();
+}
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)

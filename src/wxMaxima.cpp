@@ -826,12 +826,12 @@ void wxMaxima::ReadFirstPrompt()
     OpenFile(m_openFile);
     m_openFile = wxEmptyString;
   }
-  else
+  else if (m_console->m_evaluationQueue->Empty())
   {
     bool open = false;
     wxConfig::Get()->Read(wxT("openHCaret"), &open);
     if (open)
-      m_console->OpenHCaret();
+      m_console->OpenNextOrCreateCell();
   }
 }
 
@@ -911,7 +911,7 @@ void wxMaxima::ReadPrompt()
         m_lastPrompt = o;
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
-        if (m_console->m_evaluationQueue->GetFirst() == NULL) { // queue empty?
+        if (m_console->m_evaluationQueue->Empty()) { // queue empty?
           m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
@@ -925,10 +925,13 @@ void wxMaxima::ReadPrompt()
 
         m_console->EnableEdit();
 
-        bool open = false;
-        wxConfig::Get()->Read(wxT("openHCaret"), &open);
-        if (open)
-          m_console->OpenHCaret();
+        if (m_console->m_evaluationQueue->Empty())
+        {
+          bool open = false;
+          wxConfig::Get()->Read(wxT("openHCaret"), &open);
+          if (open)
+            m_console->OpenNextOrCreateCell();
+        }
       }
 
       // We have a question
@@ -4071,14 +4074,14 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (!m_isConnected) {
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
-    if (m_console->m_evaluationQueue->GetFirst())
+    if (!m_console->m_evaluationQueue->Empty())
     {
       if (m_console->m_evaluationQueue->GetFirst()->GetInput()->ToString(false) ==
         wxT("wxmaxima_debug_dump_output;"))
       DumpProcessOutput();
     }
 
-    while (m_console->m_evaluationQueue->GetFirst())
+    while (!m_console->m_evaluationQueue->Empty())
       m_console->m_evaluationQueue->RemoveFirst();
 
     m_console->Refresh();
