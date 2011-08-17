@@ -4091,7 +4091,10 @@ void wxMaxima::TryEvaluateNextInQueue()
 
   GroupCell * group = m_console->m_evaluationQueue->GetFirst();
   if (group == NULL)
+  {
+    m_console->SetWorkingGroup(NULL);
     return; //empty queue
+  }
 
   if (group->GetEditable()->GetValue() != wxEmptyString)
   {
