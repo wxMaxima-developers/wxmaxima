@@ -1,14 +1,14 @@
 # wxMaxima italian po translation
-# Copyright (C) 2005 Marco Ciampa
+# Copyright (C) 2005-2011 Marco Ciampa
 # This file is distributed under the same license as the wxMaxima package.
-# Marco Ciampa <ciampix@libero.it>, 2005-2008,2010.
+# Marco Ciampa <ciampix@libero.it>, 2005-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-04 12:30+0100\n"
-"PO-Revision-Date: 2010-11-15 00:14+0100\n"
+"PO-Revision-Date: 2011-09-10 22:39+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -461,9 +461,8 @@ msgid "BC2"
 msgstr "BC2"
 
 #: ../src/wxMaximaFrame.cpp:1003
-#, fuzzy
 msgid "Barsplot..."
-msgstr "Grafico a barre"
+msgstr "Grafico a barre..."
 
 #: ../src/Config.cpp:464
 msgid "Bat files (*.bat)|*.bat|All|*"
@@ -478,9 +477,8 @@ msgid "Bold"
 msgstr "Grassetto"
 
 #: ../src/wxMaximaFrame.cpp:1005
-#, fuzzy
 msgid "Boxplot..."
-msgstr "Blocco diagramma"
+msgstr "Grafico a blocchi..."
 
 #: ../src/Plot2dWiz.cpp:122 ../src/Plot3dWiz.cpp:124
 msgid "Browse"
@@ -564,9 +562,8 @@ msgid "Canonical (tr)"
 msgstr "Canonica (tr)"
 
 #: ../src/Config.cpp:235
-#, fuzzy
 msgid "Catalan"
-msgstr "Italiano"
+msgstr "Catalano"
 
 #: ../src/Config.cpp:361
 msgid "Cell bracket"
@@ -614,13 +611,12 @@ msgid "Classes:"
 msgstr "Classi:"
 
 #: ../src/wxMaximaFrame.cpp:193
-#, fuzzy
 msgid "Close\tCtrl-W"
-msgstr "&Copia\tCtrl-C"
+msgstr "Chiudi\tCtrl-W"
 
 #: ../src/wxMaximaFrame.cpp:194
 msgid "Close window"
-msgstr ""
+msgstr "Chiudi la finestra"
 
 #: ../src/wxMaxima.cpp:3644
 msgid "Col. names:"
@@ -762,9 +758,8 @@ msgstr ""
 "Converti l'espressione trigonometrica nella forma canonica quasilineare"
 
 #: ../src/wxMaximaFrame.cpp:586
-#, fuzzy
 msgid "Convert trigonometric functions to exponential form"
-msgstr "Converti le funzioni trigonometriche in forma esponenziale"
+msgstr "Converti le funzioni trigonometriche nella forma esponenziale"
 
 #: ../src/MathCtrl.cpp:658 ../src/MathCtrl.cpp:671 ../src/MathCtrl.cpp:687
 #: ../src/MathCtrl.cpp:725 ../src/wxMaximaFrame.cpp:707
@@ -923,9 +918,8 @@ msgid "Derivative:"
 msgstr "Derivata:"
 
 #: ../src/wxMaximaFrame.cpp:989
-#, fuzzy
 msgid "Deviation..."
-msgstr "Deviazione"
+msgstr "Deviazione..."
 
 #: ../src/wxMaximaFrame.cpp:502
 msgid "Di&vide Polynomials..."
@@ -985,7 +979,7 @@ msgstr "Dividi i numeri o i polinomiali"
 
 #: ../src/wxMaxima.cpp:4359 ../src/wxMaxima.cpp:4371
 msgid "Do you want to save the changes you made in the document \""
-msgstr ""
+msgstr "Salvare i cambiamenti effettuati nel documento \""
 
 #: ../src/wxMaxima.cpp:1057 ../src/wxMaxima.cpp:1065
 msgid "Document "
@@ -997,7 +991,7 @@ msgstr "Sfondo del documento"
 
 #: ../src/wxMaxima.cpp:4364
 msgid "Don't save"
-msgstr ""
+msgstr "Non salvare"
 
 #: ../src/wxMaximaFrame.cpp:420
 msgid "E&quations"
@@ -1030,9 +1024,8 @@ msgstr "Inglese"
 #: ../src/wxMaxima.cpp:3550 ../src/wxMaxima.cpp:3557 ../src/wxMaxima.cpp:3564
 #: ../src/wxMaxima.cpp:3572 ../src/wxMaxima.cpp:3579 ../src/wxMaxima.cpp:3586
 #: ../src/wxMaxima.cpp:3593 ../src/wxMaxima.cpp:3629 ../src/wxMaxima.cpp:3637
-#, fuzzy
 msgid "Enter Data"
-msgstr "Inserire la matrice"
+msgstr "Inserire i dati"
 
 #: ../src/wxMaximaFrame.cpp:1010
 msgid "Enter Matrix..."
@@ -1232,9 +1225,9 @@ msgid "Fatal error"
 msgstr "Errore fatale"
 
 #: ../src/GroupCell.cpp:1263
-#, fuzzy, c-format
+#, c-format
 msgid "Figure %d:"
-msgstr "Figura"
+msgstr "Figura %d:"
 
 #: ../src/main.cpp:107
 msgid "File"
@@ -1757,9 +1750,8 @@ msgid "Limit..."
 msgstr "Limite..."
 
 #: ../src/wxMaximaFrame.cpp:996
-#, fuzzy
 msgid "Linear Regression..."
-msgstr "Regressione lineare"
+msgstr "Regressione lineare..."
 
 #: ../src/wxMaxima.cpp:2682 ../src/wxMaxima.cpp:2715
 msgid "List:"
@@ -1846,9 +1838,8 @@ msgid "Matrix:"
 msgstr "Matrice:"
 
 #: ../src/Config.cpp:98
-#, fuzzy
 msgid "Maxima"
-msgstr "&Maxima"
+msgstr "Maxima"
 
 #: ../src/wxMaximaFrame.cpp:634
 msgid "Maxima &Help\tF1"
@@ -1907,18 +1898,16 @@ msgid "Mean Test..."
 msgstr "Test della media..."
 
 #: ../src/wxMaximaFrame.cpp:986
-#, fuzzy
 msgid "Mean..."
-msgstr "Test della media..."
+msgstr "Media..."
 
 #: ../src/wxMaxima.cpp:3600
 msgid "Mean:"
 msgstr "Media:"
 
 #: ../src/wxMaximaFrame.cpp:987
-#, fuzzy
 msgid "Median..."
-msgstr "Mediana"
+msgstr "Mediana..."
 
 #: ../src/MathCtrl.cpp:682
 msgid "Merge Cells"
@@ -1937,9 +1926,8 @@ msgid "Name:"
 msgstr "Nome:"
 
 #: ../src/wxMaximaFrame.cpp:184
-#, fuzzy
 msgid "New\tCtrl-N"
-msgstr "&Apri\tCtrl-N"
+msgstr "Nuovo\tCtrl-N"
 
 #: ../src/SubstituteWiz.cpp:33
 msgid "New value:"
@@ -1958,9 +1946,8 @@ msgid "No matches found!"
 msgstr "Nessuna corrispondenza trovata!"
 
 #: ../src/wxMaximaFrame.cpp:995
-#, fuzzy
 msgid "Normality Test..."
-msgstr "Test di normalità"
+msgstr "Test di normalità..."
 
 #: ../src/wxMaxima.cpp:2607
 msgid "Not a valid matrix dimension!"
@@ -2129,9 +2116,8 @@ msgid "Paste text from clipboard"
 msgstr "Incolla testo dagli appunti"
 
 #: ../src/wxMaximaFrame.cpp:1004
-#, fuzzy
 msgid "Piechart..."
-msgstr "Diagramma a torta"
+msgstr "Diagramma a torta..."
 
 #: ../src/wxMaxima.cpp:1406
 msgid "Please configure wxMaxima with 'Edit->Configure'."
@@ -2364,12 +2350,11 @@ msgstr "Salva l'animazione su file"
 
 #: ../src/wxMaxima.cpp:4376
 msgid "Save changes before closing?"
-msgstr ""
+msgstr "Salvare i cambiamenti prima di chiudere?"
 
 #: ../src/wxMaxima.cpp:4377
-#, fuzzy
 msgid "Save changes?"
-msgstr "Salva immagine..."
+msgstr "Salvare i cambiamenti?"
 
 #: ../src/wxMaximaFrame.cpp:197 ../src/wxMaximaFrame.cpp:693
 #: ../src/wxMaximaFrame.cpp:754
@@ -2649,17 +2634,12 @@ msgid "Simplify trigonometric expression"
 msgstr "Semplifica espressione trigonometrica"
 
 #: ../data/tips.txt:22
-#, fuzzy
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
 "'Cell->Insert Image...' menu command. Note that you have to save your "
 "document in 'wxMaxima XML document' format if you want the image to be saved "
 "along with your document."
-msgstr ""
-"Dalla versione 0.8.2 di wxMaxima è possibile inserire immagini nei "
-"documenti. Usare il comando dal menu \"Modifica->Inserisci immagine...\". "
-"Notare bene che è necessario salvare il documento in formato \"documento XML "
-"wxMaxima\" se si desidera che l'immagine venga salvata assieme al documento."
+msgstr "Dalla versione 0.8.2 di wxMaxima è possibile inserire immagini nei documenti. Usare il comando dal menu \"Cella->Inserisci immagine...\". Notare bene che è necessario salvare il documento in formato \"documento XML wxMaxima\" se si desidera che l'immagine venga salvata assieme al documento."
 
 #: ../src/BC2Wiz.cpp:26 ../src/wxMaxima.cpp:2404 ../src/wxMaxima.cpp:2419
 msgid "Solution:"
@@ -3101,9 +3081,8 @@ msgid "Variables:"
 msgstr "Variabili:"
 
 #: ../src/wxMaximaFrame.cpp:988
-#, fuzzy
 msgid "Variance..."
-msgstr "Varianza"
+msgstr "Varianza..."
 
 #: ../src/MathParser.cpp:961 ../src/wxMaxima.cpp:1067 ../src/wxMaxima.cpp:1134
 #: ../src/wxMaxima.cpp:1404
@@ -3147,15 +3126,11 @@ msgstr ""
 "n è il numero del risultato."
 
 #: ../data/tips.txt:15
-#, fuzzy
 msgid ""
 "You can evaluate your whole document by using 'Cell->Evaluate All Cells' "
 "menu command or the apropriate key shortcut. The cells will be evaluated in "
 "the order they appear in the document."
-msgstr ""
-"Si può elaborare l'intero documento usando il comando da menu \"Modifica-"
-">Celle->Elabora tutte le celle\" o tramite l'appropriata scorciatoia da "
-"tastiera. Le celle saranno valutate nell'ordine di apparizione nel documento."
+msgstr "Si può elaborare l'intero documento usando il comando da menu \"Celle->Elabora tutte le celle\" o tramite l'appropriata scorciatoia da tastiera. Le celle saranno valutate nell'ordine di apparizione nel documento."
 
 #: ../data/tips.txt:10
 msgid ""
@@ -3177,16 +3152,11 @@ msgstr ""
 "celle di testo."
 
 #: ../data/tips.txt:5
-#, fuzzy
 msgid ""
 "You can insert different types of 'cells' in wxMaxima document using the "
 "'Cell' menu. Note that only 'input cells' can be evaluated, while other are "
 "used for commenting and structuring your calculations."
-msgstr ""
-"Nei documenti di wxMaxima si può inserire differenti tipi di \"celle\" "
-"usando il comando nel sottomenu \"Modifica->Cella\". Da notare che solo le "
-"\"celle d'ingresso\" possono essere valutate, mentre le altre vengono usate "
-"per commentare e strutturare i propri calcoli."
+msgstr "Nei documenti di wxMaxima si può inserire differenti tipi di \"celle\" usando il menu \"Cella\". Da notare che solo le \"celle d'ingresso\" possono essere valutate, mentre le altre vengono usate per commentare e strutturare i propri calcoli."
 
 #: ../data/tips.txt:14
 msgid ""
@@ -3215,7 +3185,7 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:4363 ../src/wxMaxima.cpp:4370
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "I cambiamenti andranno persi se non vengono salvati."
 
 #: ../src/wxMaxima.cpp:4309
 msgid "Your version of wxMaxima is up to date."
@@ -3305,9 +3275,8 @@ msgid "symmetric"
 msgstr "simmetrica"
 
 #: ../src/wxMaxima.cpp:4348
-#, fuzzy
 msgid "unsaved"
-msgstr "[ non salvato ]"
+msgstr "non salvato"
 
 #: ../src/wxMaxima.cpp:1817 ../src/wxMaxima.cpp:1925
 #: ../src/wxMaximaFrame.cpp:94
@@ -3315,9 +3284,9 @@ msgid "untitled"
 msgstr "senzanome"
 
 #: ../src/main.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "untitled %d"
-msgstr "senzanome"
+msgstr "senzanome %d"
 
 #: ../src/main.cpp:167 ../src/wxMaxima.cpp:3402
 msgid "wxMaxima"
@@ -3430,40 +3399,4 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:3389
 msgid "yes"
-msgstr "Sì"
-
-#~ msgid "&New Window\tCtrl-N"
-#~ msgstr "&Nuova finestra\tCtrl-N"
-
-#~ msgid "Close document?"
-#~ msgstr "Chiudere il documento?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Close current document and lose all changes?"
-#~ msgstr ""
-#~ "Documento non salvato!\n"
-#~ "\n"
-#~ "Chiudere il documento corrente e perdere tutti i cambiamenti?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Quit wxMaxima and lose all changes?"
-#~ msgstr ""
-#~ "Documento non salvato!\n"
-#~ "\n"
-#~ "Uscire da wxMaxima e perdere tutti i cambiamenti?"
-
-#~ msgid "Maxima options"
-#~ msgstr "Opzioni di Maxima"
-
-#~ msgid "Mean"
-#~ msgstr "Media"
-
-#~ msgid "Quit?"
-#~ msgstr "Uscire?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "Opzioni wxMaxima"
+msgstr "sì"
