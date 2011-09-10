@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 19:54+0800\n"
+"POT-Creation-Date: 2011-09-10 23:07+0200\n"
 "PO-Revision-Date: 2011-09-09 19:56+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -71,7 +71,8 @@ msgstr " << 數式過長不易顯示 >>"
 msgid ""
 " was saved using a newer version of wxMaxima so it may not load correctly. "
 "Please update your wxMaxima."
-msgstr " 是以新版的 wxMaxima 儲存，所以可能無法正確的讀取。請更新您的 wxMaxima。"
+msgstr ""
+" 是以新版的 wxMaxima 儲存，所以可能無法正確的讀取。請更新您的 wxMaxima。"
 
 #: ../src/wxMaxima.cpp:1076
 msgid ""
@@ -338,9 +339,9 @@ msgstr "pm3d(&P)"
 msgid "(Use default language)"
 msgstr "( 使用預設語言 )"
 
-#: ../src/IntegrateWiz.cpp:217 ../src/IntegrateWiz.cpp:228
-#: ../src/IntegrateWiz.cpp:236 ../src/IntegrateWiz.cpp:247
-#: ../src/LimitWiz.cpp:133 ../src/LimitWiz.cpp:144
+#: ../src/LimitWiz.cpp:133 ../src/LimitWiz.cpp:144 ../src/IntegrateWiz.cpp:217
+#: ../src/IntegrateWiz.cpp:228 ../src/IntegrateWiz.cpp:236
+#: ../src/IntegrateWiz.cpp:247
 msgid "- Infinity"
 msgstr "負無限大"
 
@@ -371,7 +372,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "定點設值(T)..."
 
-#: ../src/wxMaxima.cpp:3490 ../src/wxMaximaFrame.cpp:665
+#: ../src/wxMaximaFrame.cpp:665 ../src/wxMaxima.cpp:3490
 msgid "About"
 msgstr "關於"
 
@@ -538,19 +539,20 @@ msgstr "無法連線至網路伺服器。"
 msgid "Can not download version info."
 msgstr "無法下載版本資訊。"
 
+#: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:39 ../src/LimitWiz.cpp:51
+#: ../src/LimitWiz.cpp:53 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:49
+#: ../src/MatWiz.cpp:39 ../src/MatWiz.cpp:41 ../src/MatWiz.cpp:188
+#: ../src/MatWiz.cpp:190 ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61
+#: ../src/Gen3Wiz.cpp:49 ../src/Gen3Wiz.cpp:51 ../src/BC2Wiz.cpp:44
+#: ../src/BC2Wiz.cpp:46 ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:57
 #: ../src/SubstituteWiz.cpp:40 ../src/SubstituteWiz.cpp:42
-#: ../src/SeriesWiz.cpp:48 ../src/SeriesWiz.cpp:50 ../src/BC2Wiz.cpp:44
-#: ../src/BC2Wiz.cpp:46 ../src/Gen1Wiz.cpp:34 ../src/Gen1Wiz.cpp:36
-#: ../src/Plot2dWiz.cpp:101 ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:561
-#: ../src/Plot2dWiz.cpp:563 ../src/Plot2dWiz.cpp:656 ../src/Plot2dWiz.cpp:658
-#: ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:49 ../src/wxMaxima.cpp:4419
-#: ../src/IntegrateWiz.cpp:59 ../src/IntegrateWiz.cpp:61
-#: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:39 ../src/MatWiz.cpp:39
-#: ../src/MatWiz.cpp:41 ../src/MatWiz.cpp:188 ../src/MatWiz.cpp:190
-#: ../src/Gen4Wiz.cpp:55 ../src/Gen4Wiz.cpp:57 ../src/Gen3Wiz.cpp:49
-#: ../src/Gen3Wiz.cpp:51 ../src/Plot3dWiz.cpp:103 ../src/Plot3dWiz.cpp:105
-#: ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:44 ../src/LimitWiz.cpp:51
-#: ../src/LimitWiz.cpp:53
+#: ../src/SeriesWiz.cpp:48 ../src/SeriesWiz.cpp:50 ../src/Gen1Wiz.cpp:34
+#: ../src/Gen1Wiz.cpp:36 ../src/wxMaxima.cpp:4419 ../src/Plot2dWiz.cpp:101
+#: ../src/Plot2dWiz.cpp:103 ../src/Plot2dWiz.cpp:561 ../src/Plot2dWiz.cpp:563
+#: ../src/Plot2dWiz.cpp:656 ../src/Plot2dWiz.cpp:658 ../src/Gen2Wiz.cpp:42
+#: ../src/Gen2Wiz.cpp:44 ../src/PlotFormatWiz.cpp:41
+#: ../src/PlotFormatWiz.cpp:43 ../src/Plot3dWiz.cpp:103
+#: ../src/Plot3dWiz.cpp:105
 msgid "Cancel"
 msgstr "取消"
 
@@ -699,8 +701,8 @@ msgstr "設定值警告"
 msgid "Configure wxMaxima"
 msgstr "設定 wxMaxima"
 
-#: ../src/SeriesWiz.cpp:109 ../src/IntegrateWiz.cpp:219
-#: ../src/IntegrateWiz.cpp:238 ../src/LimitWiz.cpp:135
+#: ../src/LimitWiz.cpp:135 ../src/IntegrateWiz.cpp:219
+#: ../src/IntegrateWiz.cpp:238 ../src/SeriesWiz.cpp:109
 msgid "Constant"
 msgstr "常數"
 
@@ -1082,11 +1084,11 @@ msgstr "方程式："
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/Config.cpp:488 ../src/wxMaxima.cpp:393 ../src/wxMaxima.cpp:973
-#: ../src/wxMaxima.cpp:984 ../src/wxMaxima.cpp:1043 ../src/wxMaxima.cpp:1055
-#: ../src/wxMaxima.cpp:1077 ../src/wxMaxima.cpp:1499 ../src/wxMaxima.cpp:1595
-#: ../src/wxMaxima.cpp:4075 ../src/wxMaxima.cpp:4322 ../src/wxMaxima.cpp:4367
-#: ../src/ImgCell.cpp:101
+#: ../src/ImgCell.cpp:101 ../src/Config.cpp:488 ../src/wxMaxima.cpp:393
+#: ../src/wxMaxima.cpp:973 ../src/wxMaxima.cpp:984 ../src/wxMaxima.cpp:1043
+#: ../src/wxMaxima.cpp:1055 ../src/wxMaxima.cpp:1077 ../src/wxMaxima.cpp:1499
+#: ../src/wxMaxima.cpp:1595 ../src/wxMaxima.cpp:4075 ../src/wxMaxima.cpp:4322
+#: ../src/wxMaxima.cpp:4367
 msgid "Error"
 msgstr "錯誤"
 
@@ -1184,11 +1186,12 @@ msgstr "數式"
 msgid "Expression(s):"
 msgstr "數式："
 
-#: ../src/SubstituteWiz.cpp:27 ../src/SeriesWiz.cpp:32 ../src/SumWiz.cpp:30
+#: ../src/LimitWiz.cpp:26 ../src/SumWiz.cpp:30 ../src/IntegrateWiz.cpp:36
+#: ../src/SubstituteWiz.cpp:27 ../src/SeriesWiz.cpp:32
 #: ../src/wxMaxima.cpp:2555 ../src/wxMaxima.cpp:2725 ../src/wxMaxima.cpp:2981
 #: ../src/wxMaxima.cpp:2996 ../src/wxMaxima.cpp:3025 ../src/wxMaxima.cpp:3042
 #: ../src/wxMaxima.cpp:3059 ../src/wxMaxima.cpp:3112 ../src/wxMaxima.cpp:3147
-#: ../src/wxMaxima.cpp:3901 ../src/IntegrateWiz.cpp:36 ../src/LimitWiz.cpp:26
+#: ../src/wxMaxima.cpp:3901
 msgid "Expression:"
 msgstr "數式："
 
@@ -1338,9 +1341,9 @@ msgstr "格式："
 msgid "French"
 msgstr "French"
 
-#: ../src/Plot2dWiz.cpp:49 ../src/Plot2dWiz.cpp:59 ../src/Plot2dWiz.cpp:548
-#: ../src/SumWiz.cpp:36 ../src/wxMaxima.cpp:2726 ../src/wxMaxima.cpp:3147
-#: ../src/IntegrateWiz.cpp:43 ../src/Plot3dWiz.cpp:46 ../src/Plot3dWiz.cpp:55
+#: ../src/SumWiz.cpp:36 ../src/IntegrateWiz.cpp:43 ../src/wxMaxima.cpp:2726
+#: ../src/wxMaxima.cpp:3147 ../src/Plot2dWiz.cpp:49 ../src/Plot2dWiz.cpp:59
+#: ../src/Plot2dWiz.cpp:548 ../src/Plot3dWiz.cpp:46 ../src/Plot3dWiz.cpp:55
 msgid "From:"
 msgstr "從："
 
@@ -1540,9 +1543,9 @@ msgstr "圖片檔 (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgid "Include columns:"
 msgstr "包含欄位："
 
-#: ../src/IntegrateWiz.cpp:216 ../src/IntegrateWiz.cpp:226
-#: ../src/IntegrateWiz.cpp:235 ../src/IntegrateWiz.cpp:245
-#: ../src/LimitWiz.cpp:132 ../src/LimitWiz.cpp:142
+#: ../src/LimitWiz.cpp:132 ../src/LimitWiz.cpp:142 ../src/IntegrateWiz.cpp:216
+#: ../src/IntegrateWiz.cpp:226 ../src/IntegrateWiz.cpp:235
+#: ../src/IntegrateWiz.cpp:245
 msgid "Infinity"
 msgstr "無限大"
 
@@ -1654,8 +1657,8 @@ msgstr "插入圖片"
 msgid "Integral/Sum:"
 msgstr "積分／加總："
 
-#: ../src/wxMaxima.cpp:3012 ../src/wxMaxima.cpp:3888
-#: ../src/IntegrateWiz.cpp:72
+#: ../src/IntegrateWiz.cpp:72 ../src/wxMaxima.cpp:3012
+#: ../src/wxMaxima.cpp:3888
 msgid "Integrate"
 msgstr "積分"
 
@@ -1751,7 +1754,7 @@ msgstr "最小平方法"
 msgid "Least Squares Fit..."
 msgstr "最小平方法..."
 
-#: ../src/wxMaxima.cpp:3099 ../src/LimitWiz.cpp:66
+#: ../src/LimitWiz.cpp:66 ../src/wxMaxima.cpp:3099
 msgid "Limit"
 msgstr "極限"
 
@@ -1931,7 +1934,7 @@ msgstr "方法："
 msgid "Modulus"
 msgstr "模運算"
 
-#: ../src/wxMaxima.cpp:2671 ../src/wxMaxima.cpp:2690 ../src/MatWiz.cpp:182
+#: ../src/MatWiz.cpp:182 ../src/wxMaxima.cpp:2671 ../src/wxMaxima.cpp:2690
 msgid "Name:"
 msgstr "命名："
 
@@ -1991,18 +1994,19 @@ msgstr "方程式數量："
 msgid "Numbers"
 msgstr "數字"
 
-#: ../src/SubstituteWiz.cpp:39 ../src/SubstituteWiz.cpp:43
-#: ../src/SeriesWiz.cpp:47 ../src/SeriesWiz.cpp:51 ../src/BC2Wiz.cpp:43
-#: ../src/BC2Wiz.cpp:47 ../src/Gen1Wiz.cpp:33 ../src/Gen1Wiz.cpp:37
-#: ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:560
-#: ../src/Plot2dWiz.cpp:564 ../src/Plot2dWiz.cpp:655 ../src/Plot2dWiz.cpp:659
-#: ../src/SumWiz.cpp:46 ../src/SumWiz.cpp:50 ../src/IntegrateWiz.cpp:58
-#: ../src/IntegrateWiz.cpp:62 ../src/SystemWiz.cpp:36 ../src/SystemWiz.cpp:40
+#: ../src/SystemWiz.cpp:36 ../src/SystemWiz.cpp:40 ../src/LimitWiz.cpp:50
+#: ../src/LimitWiz.cpp:54 ../src/SumWiz.cpp:46 ../src/SumWiz.cpp:50
 #: ../src/MatWiz.cpp:38 ../src/MatWiz.cpp:42 ../src/MatWiz.cpp:187
-#: ../src/MatWiz.cpp:191 ../src/Gen4Wiz.cpp:54 ../src/Gen4Wiz.cpp:58
-#: ../src/Gen3Wiz.cpp:48 ../src/Gen3Wiz.cpp:52 ../src/Plot3dWiz.cpp:102
-#: ../src/Plot3dWiz.cpp:106 ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45
-#: ../src/LimitWiz.cpp:50 ../src/LimitWiz.cpp:54
+#: ../src/MatWiz.cpp:191 ../src/IntegrateWiz.cpp:58 ../src/IntegrateWiz.cpp:62
+#: ../src/Gen3Wiz.cpp:48 ../src/Gen3Wiz.cpp:52 ../src/BC2Wiz.cpp:43
+#: ../src/BC2Wiz.cpp:47 ../src/Gen4Wiz.cpp:54 ../src/Gen4Wiz.cpp:58
+#: ../src/SubstituteWiz.cpp:39 ../src/SubstituteWiz.cpp:43
+#: ../src/SeriesWiz.cpp:47 ../src/SeriesWiz.cpp:51 ../src/Gen1Wiz.cpp:33
+#: ../src/Gen1Wiz.cpp:37 ../src/Plot2dWiz.cpp:100 ../src/Plot2dWiz.cpp:104
+#: ../src/Plot2dWiz.cpp:560 ../src/Plot2dWiz.cpp:564 ../src/Plot2dWiz.cpp:655
+#: ../src/Plot2dWiz.cpp:659 ../src/Gen2Wiz.cpp:41 ../src/Gen2Wiz.cpp:45
+#: ../src/PlotFormatWiz.cpp:40 ../src/PlotFormatWiz.cpp:44
+#: ../src/Plot3dWiz.cpp:102 ../src/Plot3dWiz.cpp:106
 msgid "OK"
 msgstr "確認"
 
@@ -2022,8 +2026,8 @@ msgstr "單樣本 t-檢驗"
 msgid "Online tutorials"
 msgstr "線上教材"
 
-#: ../src/Config.cpp:306 ../src/main.cpp:202 ../src/wxMaxima.cpp:1926
 #: ../src/wxMaximaFrame.cpp:697 ../src/wxMaximaFrame.cpp:761
+#: ../src/main.cpp:202 ../src/Config.cpp:306 ../src/wxMaxima.cpp:1926
 msgid "Open"
 msgstr "開啟"
 
@@ -2055,8 +2059,8 @@ msgstr "開啟矩陣"
 msgid "Opening file"
 msgstr "正在開啟檔案"
 
-#: ../src/Config.cpp:97 ../src/wxMaximaFrame.cpp:709
-#: ../src/wxMaximaFrame.cpp:776
+#: ../src/wxMaximaFrame.cpp:709 ../src/wxMaximaFrame.cpp:776
+#: ../src/Config.cpp:97
 msgid "Options"
 msgstr "選項"
 
@@ -2161,8 +2165,8 @@ msgstr "三維繪圖(&3)..."
 msgid "Plot &Format..."
 msgstr "繪圖格式(&F)..."
 
-#: ../src/Plot2dWiz.cpp:116 ../src/Plot2dWiz.cpp:462 ../src/Plot2dWiz.cpp:476
-#: ../src/wxMaxima.cpp:3190 ../src/wxMaxima.cpp:3939
+#: ../src/wxMaxima.cpp:3190 ../src/wxMaxima.cpp:3939 ../src/Plot2dWiz.cpp:116
+#: ../src/Plot2dWiz.cpp:462 ../src/Plot2dWiz.cpp:476
 msgid "Plot 2D"
 msgstr "二維繪圖"
 
@@ -2202,9 +2206,9 @@ msgstr "三維繪圖"
 msgid "Plot to file:"
 msgstr "繪圖存檔："
 
-#: ../src/SeriesWiz.cpp:38 ../src/BC2Wiz.cpp:29 ../src/BC2Wiz.cpp:35
-#: ../src/wxMaxima.cpp:2432 ../src/wxMaxima.cpp:2447 ../src/wxMaxima.cpp:2555
-#: ../src/LimitWiz.cpp:32
+#: ../src/LimitWiz.cpp:32 ../src/BC2Wiz.cpp:29 ../src/BC2Wiz.cpp:35
+#: ../src/SeriesWiz.cpp:38 ../src/wxMaxima.cpp:2432 ../src/wxMaxima.cpp:2447
+#: ../src/wxMaxima.cpp:2555
 msgid "Point:"
 msgstr "點："
 
@@ -2337,8 +2341,8 @@ msgstr "樣本 2："
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/Config.cpp:387 ../src/wxMaxima.cpp:4419 ../src/wxMaximaFrame.cpp:700
-#: ../src/wxMaximaFrame.cpp:765
+#: ../src/wxMaximaFrame.cpp:700 ../src/wxMaximaFrame.cpp:765
+#: ../src/Config.cpp:387 ../src/wxMaxima.cpp:4419
 msgid "Save"
 msgstr "儲存"
 
@@ -2451,8 +2455,8 @@ msgstr "選擇 Maxima 程式"
 msgid "Select Subsample"
 msgstr "選取子樣本"
 
-#: ../src/SeriesWiz.cpp:108 ../src/IntegrateWiz.cpp:218
-#: ../src/IntegrateWiz.cpp:237 ../src/LimitWiz.cpp:134
+#: ../src/LimitWiz.cpp:134 ../src/IntegrateWiz.cpp:218
+#: ../src/IntegrateWiz.cpp:237 ../src/SeriesWiz.cpp:108
 msgid "Select a constant"
 msgstr "選擇常數"
 
@@ -2468,7 +2472,8 @@ msgstr "選擇用於顯示數學的演算法"
 msgid ""
 "Selecting a part of output and right-clicking on the selection will bring up "
 "a menu with convenient functions that will operate on the selection."
-msgstr "選取輸出並點擊右鍵會顯示功能表，其中含有一些供您方便操作所選區域的函數。"
+msgstr ""
+"選取輸出並點擊右鍵會顯示功能表，其中含有一些供您方便操作所選區域的函數。"
 
 #: ../src/Config.cpp:372
 msgid "Selection"
@@ -2750,8 +2755,8 @@ msgstr "求解..."
 msgid "Spanish"
 msgstr "Spanish"
 
-#: ../src/SeriesWiz.cpp:41 ../src/IntegrateWiz.cpp:46
-#: ../src/IntegrateWiz.cpp:50 ../src/LimitWiz.cpp:35
+#: ../src/LimitWiz.cpp:35 ../src/IntegrateWiz.cpp:46
+#: ../src/IntegrateWiz.cpp:50 ../src/SeriesWiz.cpp:41
 msgid "Special"
 msgstr "特殊"
 
@@ -2951,7 +2956,8 @@ msgstr ""
 msgid ""
 "To put parenthesis around an expression, select it, and press '(' or ')' "
 "depending on where you want the cursor to appear afterwards."
-msgstr "欲在數式外側加上括號，請先選取它，再依照您想要游標出現的位置按「(」或「)」。"
+msgstr ""
+"欲在數式外側加上括號，請先選取它，再依照您想要游標出現的位置按「(」或「)」。"
 
 #: ../data/tips.txt:21
 msgid ""
@@ -2969,9 +2975,9 @@ msgstr ""
 "欲立即使用 wxMaxima，請開始輸入命令，此時應該會出現一個輸入單元，然後按 "
 "Shift-Enter 鍵評算您的命令。"
 
-#: ../src/Plot2dWiz.cpp:52 ../src/Plot2dWiz.cpp:62 ../src/Plot2dWiz.cpp:551
-#: ../src/SumWiz.cpp:39 ../src/wxMaxima.cpp:2726 ../src/wxMaxima.cpp:3148
-#: ../src/IntegrateWiz.cpp:47 ../src/Plot3dWiz.cpp:49 ../src/Plot3dWiz.cpp:58
+#: ../src/SumWiz.cpp:39 ../src/IntegrateWiz.cpp:47 ../src/wxMaxima.cpp:2726
+#: ../src/wxMaxima.cpp:3148 ../src/Plot2dWiz.cpp:52 ../src/Plot2dWiz.cpp:62
+#: ../src/Plot2dWiz.cpp:551 ../src/Plot3dWiz.cpp:49 ../src/Plot3dWiz.cpp:58
 msgid "To:"
 msgstr "到："
 
@@ -3077,12 +3083,12 @@ msgstr "值："
 msgid "Variable(s):"
 msgstr "變數："
 
-#: ../src/SeriesWiz.cpp:35 ../src/Plot2dWiz.cpp:46 ../src/Plot2dWiz.cpp:56
-#: ../src/Plot2dWiz.cpp:545 ../src/SumWiz.cpp:33 ../src/wxMaxima.cpp:2397
-#: ../src/wxMaxima.cpp:2416 ../src/wxMaxima.cpp:2656 ../src/wxMaxima.cpp:2725
-#: ../src/wxMaxima.cpp:2981 ../src/wxMaxima.cpp:2996 ../src/wxMaxima.cpp:3147
-#: ../src/wxMaxima.cpp:3870 ../src/IntegrateWiz.cpp:39 ../src/Plot3dWiz.cpp:43
-#: ../src/Plot3dWiz.cpp:52 ../src/LimitWiz.cpp:29
+#: ../src/LimitWiz.cpp:29 ../src/SumWiz.cpp:33 ../src/IntegrateWiz.cpp:39
+#: ../src/SeriesWiz.cpp:35 ../src/wxMaxima.cpp:2397 ../src/wxMaxima.cpp:2416
+#: ../src/wxMaxima.cpp:2656 ../src/wxMaxima.cpp:2725 ../src/wxMaxima.cpp:2981
+#: ../src/wxMaxima.cpp:2996 ../src/wxMaxima.cpp:3147 ../src/wxMaxima.cpp:3870
+#: ../src/Plot2dWiz.cpp:46 ../src/Plot2dWiz.cpp:56 ../src/Plot2dWiz.cpp:545
+#: ../src/Plot3dWiz.cpp:43 ../src/Plot3dWiz.cpp:52
 msgid "Variable:"
 msgstr "變數："
 
@@ -3090,8 +3096,8 @@ msgstr "變數："
 msgid "Variables"
 msgstr "變數"
 
-#: ../src/wxMaxima.cpp:2478 ../src/wxMaxima.cpp:3113 ../src/wxMaxima.cpp:3687
-#: ../src/SystemWiz.cpp:72
+#: ../src/SystemWiz.cpp:72 ../src/wxMaxima.cpp:2478 ../src/wxMaxima.cpp:3113
+#: ../src/wxMaxima.cpp:3687
 msgid "Variables:"
 msgstr "變數："
 
@@ -3224,7 +3230,7 @@ msgstr "將顯示比例縮小 10%"
 msgid "Zoom set to "
 msgstr "設定顯示比例為"
 
-#: ../src/wxMaxima.cpp:4211 ../src/wxMaximaFrame.cpp:93
+#: ../src/wxMaximaFrame.cpp:93 ../src/wxMaxima.cpp:4211
 msgid "[ unsaved ]"
 msgstr "[ 未儲存 ]"
 
@@ -3291,8 +3297,8 @@ msgstr "對稱"
 msgid "unsaved"
 msgstr "未儲存"
 
-#: ../src/wxMaxima.cpp:1835 ../src/wxMaxima.cpp:1948
-#: ../src/wxMaximaFrame.cpp:95
+#: ../src/wxMaximaFrame.cpp:95 ../src/wxMaxima.cpp:1835
+#: ../src/wxMaxima.cpp:1948
 msgid "untitled"
 msgstr "未命名"
 
@@ -3305,8 +3311,8 @@ msgstr "未命名 %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:4211 ../src/wxMaxima.cpp:4213 ../src/wxMaxima.cpp:4222
-#: ../src/wxMaxima.cpp:4225 ../src/wxMaximaFrame.cpp:93
+#: ../src/wxMaximaFrame.cpp:93 ../src/wxMaxima.cpp:4211
+#: ../src/wxMaxima.cpp:4213 ../src/wxMaxima.cpp:4222 ../src/wxMaxima.cpp:4225
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
