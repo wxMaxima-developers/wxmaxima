@@ -1378,8 +1378,8 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (setf $IN_NETMATH nil)"));
-  SendMaxima(wxT(":lisp-quiet (setf $SHOW_OPENPLOT t)"));
+  SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)"));
+  SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)"));
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
