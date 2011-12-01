@@ -4384,6 +4384,11 @@ int change_return_code(int code)
   else
     return wxID_CANCEL;
 }
+#else
+int change_return_code(int code)
+{
+  return code;
+}
 #endif
 
 int wxMaxima::SaveDocumentP()
