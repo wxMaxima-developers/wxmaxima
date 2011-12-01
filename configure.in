@@ -61,6 +61,29 @@ AC_ARG_ENABLE(static-wx,
      	 esac],
 	[static_wx=false])
 
+AC_ARG_WITH(macosx-sdk,
+[  --with-macosx-sdk=PATH  use an OS X SDK at PATH],
+   [MACOSX_SDK=$withval])
+AC_MSG_RESULT([$MACOSX_SDK])
+
+
+if test "x$MACOSX_SDK" != "x"; then 
+    eval "CC=\"$CC -isysroot $MACOSX_SDK\""
+    eval "CXX=\"$CXX -isysroot $MACOSX_SDK\""
+    eval "LD=\"$LD -isysroot $MACOSX_SDK\""
+fi
+
+AC_ARG_WITH(macosx-version-min,
+[  --with-macosx-version-min=VER   build binaries which require at least this OS X version],
+	[MACOSX_VERSION_MIN=$withval])
+AC_MSG_RESULT([$MACOSX_VERSION_MIN])
+
+if test "x$MACOSX_VERSION_MIN" != "x"; then
+    eval "CC=\"$CC -mmacosx-version-min=$MACOSX_VERSION_MIN\""
+    eval "CXX=\"$CXX -mmacosx-version-min=$MACOSX_VERSION_MIN\""
+    eval "LD=\"$LD -mmacosx-version-min=$MACOSX_VERSION_MIN\""
+fi
+
 AM_PATH_WXCONFIG([2.8.4], [wxWin=1], [wxWin=0], [adv,xml,html,aui,core,net,base])
 
 if test "$wxWin" != 1; then
