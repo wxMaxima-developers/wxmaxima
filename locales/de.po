@@ -450,7 +450,7 @@ msgstr "Bildmaterial von"
 
 #: ../src/Config.cpp:268
 msgid "Ask to save untitled documents"
-msgstr ""
+msgstr "Frage nach, wenn Dokumente nicht gespeichert sind"
 
 #: ../src/wxMaxima.cpp:2557
 msgid "At value"
@@ -539,11 +539,11 @@ msgstr "Summen berechnen"
 
 #: ../src/wxMaxima.cpp:4322
 msgid "Can not connect to the web server."
-msgstr "Keine Verbinung mit dem Webserver."
+msgstr "Keine Verbindung mit dem Webserver."
 
 #: ../src/wxMaxima.cpp:4367
 msgid "Can not download version info."
-msgstr ""
+msgstr "Kann Information zur Version nicht laden."
 
 #: ../src/SystemWiz.cpp:37 ../src/SystemWiz.cpp:39 ../src/LimitWiz.cpp:51
 #: ../src/LimitWiz.cpp:53 ../src/SumWiz.cpp:47 ../src/SumWiz.cpp:49
@@ -567,13 +567,12 @@ msgid "Canonical (tr)"
 msgstr "Trigrat"
 
 #: ../src/Config.cpp:239
-#, fuzzy
 msgid "Catalan"
-msgstr "Italienisch"
+msgstr "Katalanisch"
 
 #: ../src/wxMaximaFrame.cpp:316
 msgid "Ce&ll"
-msgstr ""
+msgstr "Ze&llen"
 
 #: ../src/Config.cpp:369
 msgid "Cell bracket"
@@ -605,9 +604,8 @@ msgstr "Prüfe auf Aktualisierungen"
 
 #: ../src/wxMaximaFrame.cpp:658
 msgid "Check if a newer version of wxMaxima/Maxima exist."
-msgstr ""
-"Prüfen Sie bitte, ob Sie eine aktuelle Version von wxMaxima oder Maxima "
-"erhalten können."
+msgstr "Prüfen Sie bitte, ob Sie eine aktuelle Version von wxMaxima "
+"oder Maxima erhalten können."
 
 #: ../src/Config.cpp:240
 msgid "Chinese traditional"
@@ -618,22 +616,20 @@ msgid "Choose font"
 msgstr "Schriftart wählen"
 
 #: ../src/PlotFormatWiz.cpp:27
-#, fuzzy
 msgid "Choose new plot format:"
-msgstr "Das neue Plot-Format eingeben:"
+msgstr "Neues Plot-Format eingeben:"
 
 #: ../src/wxMaxima.cpp:3564 ../src/wxMaxima.cpp:3578
 msgid "Classes:"
 msgstr "Klassen:"
 
 #: ../src/wxMaximaFrame.cpp:197
-#, fuzzy
 msgid "Close\tCtrl-W"
-msgstr "&Kopieren\tCtrl-C"
+msgstr "Schließen\tCtrl-W"
 
 #: ../src/wxMaximaFrame.cpp:198
 msgid "Close window"
-msgstr ""
+msgstr "Schließe Fenster"
 
 #: ../src/wxMaxima.cpp:3686
 msgid "Col. names:"
@@ -693,8 +689,7 @@ msgstr "Inverse einer Matrix berechnen"
 
 #: ../src/wxMaximaFrame.cpp:503
 msgid "Compute the least common multiple (do load(functs) before using)"
-msgstr ""
-"Kleinste gemeinsames Vielfache berechnen (vorher load(functs) ausführen)"
+msgstr "Kleinste gemeinsames Vielfache berechnen (vorher load(functs) ausführen)"
 
 #: ../src/wxMaxima.cpp:3736
 msgid "Condition:"
@@ -728,8 +723,7 @@ msgstr "Ersetze Binomial-, Beta- und Gammafunktionen durch Fakultäten"
 
 #: ../src/wxMaximaFrame.cpp:544
 msgid "Convert binomials, factorials and beta function to gamma function"
-msgstr ""
-"Ersetze Binomialfunktionen, Fakultäten und Betafunktionen durch "
+msgstr "Ersetze Binomialfunktionen, Fakultäten und Betafunktionen durch "
 "Gammafunktionen"
 
 #: ../src/wxMaximaFrame.cpp:578
@@ -996,7 +990,7 @@ msgstr "Dividiere Zahlen oder Polynome"
 
 #: ../src/wxMaxima.cpp:4414 ../src/wxMaxima.cpp:4426
 msgid "Do you want to save the changes you made in the document \""
-msgstr ""
+msgstr "Wollen Sie Änderungen im Dokument speichern \""
 
 #: ../src/wxMaxima.cpp:1075 ../src/wxMaxima.cpp:1083
 msgid "Document "
@@ -1008,7 +1002,7 @@ msgstr "Hintergrundfarbe Dokument"
 
 #: ../src/wxMaxima.cpp:4419
 msgid "Don't save"
-msgstr ""
+msgstr "Nicht speichern"
 
 #: ../src/wxMaximaFrame.cpp:424
 msgid "E&quations"
@@ -1239,9 +1233,8 @@ msgid "Fatal error"
 msgstr "Fataler Fehler"
 
 #: ../src/GroupCell.cpp:1263
-#, fuzzy, c-format
 msgid "Figure %d:"
-msgstr "Figure"
+msgstr "Figure %d:"
 
 #: ../src/main.cpp:107
 msgid "File"
@@ -1297,8 +1290,7 @@ msgstr "Alle Nullstellen eines Polynoms suchen"
 
 #: ../src/wxMaximaFrame.cpp:388
 msgid "Find all roots of a polynomial (bfloat)"
-msgstr ""
-"Alle Nullstellen eines Polynoms mit langer Gleitkommagenauigkeit suchen"
+msgstr "Alle Nullstellen eines Polynoms mit langer Gleitkommagenauigkeit suchen"
 
 #: ../src/wxMaxima.cpp:2174
 msgid "Find and Replace"
@@ -1593,14 +1585,12 @@ msgid "Insert"
 msgstr "Zellen Einfügen"
 
 #: ../src/wxMaximaFrame.cpp:302
-#, fuzzy
 msgid "Insert &Section Cell\tCtrl-3"
-msgstr "Neue &Kapitelzelle\tF8"
+msgstr "Neue &Kapitelzelle\tCtrl-3"
 
 #: ../src/wxMaximaFrame.cpp:298
-#, fuzzy
 msgid "Insert &Text Cell\tCtrl-1"
-msgstr "Neue &Textzelle\tF6"
+msgstr "Neue &Textzelle\tCtrl-1"
 
 #: ../src/wxMaximaFrame.cpp:328
 msgid "Insert Cell\tAlt-Shift-C"
@@ -1615,44 +1605,36 @@ msgid "Insert Image..."
 msgstr "Bild einfügen ..."
 
 #: ../src/wxMaximaFrame.cpp:296
-#, fuzzy
 msgid "Insert Input &Cell"
-msgstr "Neue &Eingabezelle\tF5"
+msgstr "Neue &Eingabezelle"
 
 #: ../src/wxMaximaFrame.cpp:306
-#, fuzzy
 msgid "Insert Page Break"
-msgstr "Seitenumbruch einfügen\tF10"
+msgstr "Seitenumbruch einfügen"
 
 #: ../src/wxMaximaFrame.cpp:304
-#, fuzzy
 msgid "Insert S&ubsection Cell\tCtrl-4"
-msgstr "Neue &Unterkapitelzelle\tF7"
+msgstr "Neue &Unterkapitelzelle\tCtrl-4"
 
 #: ../src/MathCtrl.cpp:724
-#, fuzzy
 msgid "Insert Section Cell"
-msgstr "Neue &Kapitelzelle\tF8"
+msgstr "Neue &Kapitelzelle"
 
 #: ../src/MathCtrl.cpp:725
-#, fuzzy
 msgid "Insert Subsection Cell"
-msgstr "Neue &Unterkapitelzelle\tF7"
+msgstr "Neue &Unterkapitelzelle"
 
 #: ../src/wxMaximaFrame.cpp:300
-#, fuzzy
 msgid "Insert T&itle Cell\tCtrl-2"
-msgstr "Neue T&itelzelle\tF9"
+msgstr "Neue T&itelzelle\tCtrl-2"
 
 #: ../src/MathCtrl.cpp:722
-#, fuzzy
 msgid "Insert Text Cell"
-msgstr "Neue &Textzelle\tF6"
+msgstr "Neue &Textzelle"
 
 #: ../src/MathCtrl.cpp:723
-#, fuzzy
 msgid "Insert Title Cell"
-msgstr "Neue T&itelzelle\tF9"
+msgstr "Neue T&itelzelle"
 
 #: ../src/wxMaximaFrame.cpp:297
 msgid "Insert a new input cell"
@@ -1880,9 +1862,8 @@ msgid "Matrix:"
 msgstr "Matrix"
 
 #: ../src/Config.cpp:98
-#, fuzzy
 msgid "Maxima"
-msgstr "&Maxima"
+msgstr "Maxima"
 
 #: ../src/wxMaximaFrame.cpp:638
 msgid "Maxima &Help\tF1"
@@ -1971,17 +1952,15 @@ msgstr "Name:"
 
 #: ../src/wxMaximaFrame.cpp:693 ../src/wxMaximaFrame.cpp:756
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: ../src/wxMaximaFrame.cpp:185 ../src/wxMaximaFrame.cpp:188
-#, fuzzy
 msgid "New\tCtrl-N"
-msgstr "&Neu\tCtrl-N"
+msgstr "Neu\tCtrl-N"
 
 #: ../src/wxMaximaFrame.cpp:695 ../src/wxMaximaFrame.cpp:759
-#, fuzzy
 msgid "New document"
-msgstr "Dokument öffnen"
+msgstr "Neues Dokument"
 
 #: ../src/SubstituteWiz.cpp:33
 msgid "New value:"
@@ -2070,7 +2049,7 @@ msgstr "Zuletzt geöffnet"
 
 #: ../src/Config.cpp:269
 msgid "Open a cell when Maxima expects input"
-msgstr ""
+msgstr "Öffne eine Zelle, wenn Maxima eine Eingabe erwartet"
 
 #: ../src/wxMaximaFrame.cpp:192
 msgid "Open a document"
@@ -2409,12 +2388,11 @@ msgstr "Sichere Animation in Datei"
 
 #: ../src/wxMaxima.cpp:4431
 msgid "Save changes before closing?"
-msgstr ""
+msgstr "Änderungen vor dem Schließen speichern?"
 
 #: ../src/wxMaxima.cpp:4432
-#, fuzzy
 msgid "Save changes?"
-msgstr "Bild speichern ..."
+msgstr "Änderungen speichern?"
 
 #: ../src/wxMaximaFrame.cpp:201 ../src/wxMaximaFrame.cpp:702
 #: ../src/wxMaximaFrame.cpp:768
@@ -3175,8 +3153,7 @@ msgstr "Breite:"
 
 #: ../src/Config.cpp:126
 msgid "Write matching parenthesis in text controls."
-msgstr ""
-"Beim Öffnen einer Klammer wird automatisch eine schließende Klammer erzeugt."
+msgstr "Beim Öffnen einer Klammer wird automatisch eine schließende Klammer erzeugt."
 
 #: ../src/wxMaxima.cpp:3365
 msgid "Written by"
@@ -3260,7 +3237,7 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:4418 ../src/wxMaxima.cpp:4425
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Nicht gespeicherte Änderungen gehen verloren."
 
 #: ../src/wxMaxima.cpp:4358
 msgid "Your version of wxMaxima is up to date."
@@ -3350,9 +3327,8 @@ msgid "symmetric"
 msgstr "symmetrisch"
 
 #: ../src/wxMaxima.cpp:4403
-#, fuzzy
 msgid "unsaved"
-msgstr "[ nicht gespeichert ]"
+msgstr "nicht gespeichert"
 
 #: ../src/wxMaximaFrame.cpp:95 ../src/wxMaxima.cpp:1835
 #: ../src/wxMaxima.cpp:1948
@@ -3360,9 +3336,8 @@ msgid "untitled"
 msgstr "unbenannt"
 
 #: ../src/main.cpp:182
-#, fuzzy, c-format
 msgid "untitled %d"
-msgstr "unbenannt"
+msgstr "unbenannt %d"
 
 #: ../src/main.cpp:167 ../src/wxMaxima.cpp:3440
 msgid "wxMaxima"
