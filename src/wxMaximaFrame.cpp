@@ -273,8 +273,13 @@ void wxMaximaFrame::SetupMenu()
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
+#if defined __WXMAC__
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("Preferences...\tCTRL+,"),
+                   _("Configure wxMaxima"), wxT("gtk-preferences"));
+#else
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
+#endif
   frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
 
   // Cell menu
