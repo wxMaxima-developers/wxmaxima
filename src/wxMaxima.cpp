@@ -3201,6 +3201,7 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
   case menu_plot_format:
     {
       PlotFormatWiz *wiz = new PlotFormatWiz(this, -1, _("Plot format"));
+      wiz->Center(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
 	MenuCommand(wiz->GetValue());
