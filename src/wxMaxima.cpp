@@ -676,7 +676,11 @@ bool wxMaxima::StartMaxima()
   if (command.Length() > 0)
   {
 #if defined(__WXMSW__)
+ #if wxCHECK_VERSION(2, 9, 0)
+    if (wxGetOsVersion() == wxOS_WINDOWS_9X)
+ #else
     if (wxGetOsVersion() == wxWIN95)
+ #endif
     {
       wxString maximaPrefix = command.SubString(1, command.Length() - 3);
       wxString sysPath;
