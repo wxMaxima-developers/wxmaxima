@@ -42,7 +42,11 @@
 #endif
 
 
+#if wxCHECK_VERSION(2, 9, 0)
 wxIMPLEMENT_APP(MyApp);
+#else
+IMPLEMENT_APP(MyApp);
+#endif
 
 bool MyApp::OnInit()
 {
