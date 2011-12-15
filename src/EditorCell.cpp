@@ -977,9 +977,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                    m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case '"':
-          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                   wxT("\"") +
-                   m_text.SubString(m_positionOfCaret, m_text.Length());
+          if (m_positionOfCaret < m_text.Length() &&
+              m_text.GetChar(m_positionOfCaret) == '"')
+            m_text = m_text.SubString(0, m_positionOfCaret - 2)+
+                      m_text.SubString(m_positionOfCaret, m_text.Length());
+          else
+            m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                       wxT("\"") + m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
         case ')': // jump over ')'
           if (m_positionOfCaret < m_text.Length() &&
