@@ -1365,8 +1365,14 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_BACK:
-      if (CanDeleteSelection())
-        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(popid_delete);
+      if (CanDeleteSelection()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
+#if wxCHECK_VERSION(2,9,0)
+        GetParent()->ProcessWindowEvent(ev);
+#else
+        GetParent()->ProcessEvent(ev);
+#endif
+      }
       else
         event.Skip();
       break;

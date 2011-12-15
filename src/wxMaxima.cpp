@@ -1709,8 +1709,8 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 #endif
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
-{
-  wxMenuBar* menubar = GetMenuBar();
+{ wxMenuBar* menubar = GetMenuBar();
+
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
@@ -1719,7 +1719,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
-  menubar->Enable(menu_delete_selection, m_console->CanDeleteSelection());
   menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
 //  if (m_console->GetSelectionStart() != NULL)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
@@ -1730,7 +1729,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(id));
-
 #if defined __WXMAC__
   menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
 #else
@@ -1755,6 +1753,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(menu_zoom_out, true);
   else
     menubar->Enable(menu_zoom_out, false);
+
 }
 
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined(__WXMAC__)
@@ -2104,7 +2103,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_delete_selection:
   case popid_delete:
     if (m_console->CanDeleteSelection())
     {
@@ -4236,8 +4234,8 @@ void wxMaxima::ResetTitle(bool saved)
 #if defined __WXMAC__
  #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-    //if (m_currentFile != wxEmptyString)
-    //  OSXSetProxyIconFile(m_currentFile);
+    if (m_currentFile != wxEmptyString)
+      OSXSetRepresentedFilename(m_currentFile);
  #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win,!saved);
@@ -4607,7 +4605,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_text_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_undo, wxMaxima::EditMenu)
-  EVT_MENU(menu_delete_selection, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)

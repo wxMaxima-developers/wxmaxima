@@ -34,7 +34,7 @@
 #endif
 
 enum {
-  popid_copy,
+  popid_copy = wxID_HIGHEST + 500,
   popid_cut,
   popid_paste,
   popid_select_all,
