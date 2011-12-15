@@ -20,7 +20,7 @@
 #include <wx/wx.h>
 
 #ifndef HISTORY_H
-#define HISYORY_H
+#define HISTORY_H
 
 enum {
   history_ctrl_id,
