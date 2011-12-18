@@ -152,7 +152,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (parser.CheckTeXFonts()) {
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       false, false, false,
                       parser.GetTeXCMEX()));
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
@@ -173,7 +173,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 #if defined __WXMSW__
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       false, false, false,
                       parser.GetSymbolFontName()));
     dc.GetTextExtent(wxT(INTEGRAL_TOP), &m_charWidth, &m_charHeight);
@@ -247,7 +247,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     {
       SetForeground(parser);
       int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         parser.GetTeXCMEX()));
       dc.DrawText(wxT("\x5A"),
@@ -261,7 +261,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
       int m_signWCenter = m_signWidth / 2;
 
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         parser.GetSymbolFontName()));
       dc.DrawText(wxT(INTEGRAL_TOP),

@@ -195,7 +195,7 @@ int MathPrintout::GetHeaderHeight()
   double ppiScale = GetPPIScale();
   int width, height;
 
-  dc->SetFont(wxFont(SCALE_PX(10, ppiScale), wxMODERN, wxNORMAL, wxNORMAL));
+  dc->SetFont(wxFont(SCALE_PX(10, ppiScale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &width, &height);
   return height + SCALE_PX(12, ppiScale);
 }
@@ -213,7 +213,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
   dc->SetTextForeground(wxColour(wxT("grey")));
   dc->SetPen(wxPen(wxT("light grey"), 1, wxSOLID));
 
-  dc->SetFont(wxFont(SCALE_PX(10, scale), wxMODERN, wxNORMAL, wxNORMAL));
+  dc->SetFont(wxFont(SCALE_PX(10, scale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
   wxString page = wxString::Format(wxT("%d / %d"), pageNum, m_numberOfPages);
   dc->GetTextExtent(page, &page_width, &page_height);

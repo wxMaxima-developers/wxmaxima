@@ -131,7 +131,7 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   {
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       false, false, false,
                       parser.GetTeXCMEX()));
     dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
@@ -184,7 +184,7 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     {
       SetForeground(parser);
       int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         parser.GetTeXCMEX()));
       dc.DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),

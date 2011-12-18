@@ -37,11 +37,11 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   if (fixedFont)
   {
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
-    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+    SetFont(wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString));
 #elif defined (__WXMAC__)
-    SetFont(wxFont(12, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+    SetFont(wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString));
 #else
-    SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, 0, wxEmptyString));
+    SetFont(wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString));
 #endif
   }
 }

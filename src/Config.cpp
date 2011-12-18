@@ -495,7 +495,8 @@ void Config::OnMpBrowse(wxCommandEvent& event)
 void Config::OnMathBrowse(wxCommandEvent& event)
 {
   wxFont math;
-  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxNORMAL, wxNORMAL, wxNORMAL,
+  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
+                                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                                         false, m_mathFontName));
 
   if (math.Ok())
@@ -524,7 +525,8 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
     fontName = m_styleDefault.font;
 
   font = wxGetFontFromUser(this, wxFont(fontsize,
-                                        wxNORMAL, wxNORMAL, wxNORMAL,
+                                        wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                                        wxFONTWEIGHT_NORMAL,
                                         false, fontName,
                                         m_fontEncoding));
   if (font.Ok())
@@ -1111,7 +1113,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
   wxPaintDC dc(this);
   int panel_width, panel_height;
   int text_width, text_height;
-  int bold = wxNORMAL, italic = wxNORMAL, underlined = 0;
+  int bold = wxFONTWEIGHT_NORMAL, italic = wxFONTSTYLE_NORMAL, underlined = 0;
 
   GetClientSize(&panel_width, &panel_height);
 
@@ -1123,7 +1125,7 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
     italic = wxSLANT;
   if (m_underlined)
     underlined = 1;
-  dc.SetFont(wxFont(m_size, wxMODERN, italic, bold, underlined, m_font));
+  dc.SetFont(wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font));
   dc.GetTextExtent(example, &text_width, &text_height);
 
   dc.DrawText(example, (panel_width - text_width) / 2,

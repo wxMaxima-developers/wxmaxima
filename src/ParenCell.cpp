@@ -135,7 +135,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
 
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         m_bigParenType == 0 ?
                           parser.GetTeXCMRI() :
@@ -152,7 +152,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
       {
         int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
-        dc.SetFont(wxFont(fontsize1, wxMODERN,
+        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                           false, false, false,
                           m_bigParenType == 0 ?
                              parser.GetTeXCMRI() :
@@ -168,7 +168,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     {
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         m_bigParenType < 1 ?
                           parser.GetTeXCMRI() :
@@ -184,7 +184,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 #if defined __WXMSW__
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       parser.IsItalic(TS_DEFAULT),
                       parser.IsBold(TS_DEFAULT),
                       parser.IsUnderlined(TS_DEFAULT),
@@ -213,7 +213,7 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   {
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((fontsize * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxMODERN,
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       false,
                       false,
                       false,
@@ -240,7 +240,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       in.x = point.x + m_signWidth;
       SetForeground(parser);
       int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxMODERN,
+      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         false, false, false,
                         m_bigParenType < 1 ?
                           parser.GetTeXCMRI() :
@@ -298,7 +298,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       if (m_height < (3*m_charHeight)/2)
       {
         fontsize1 = (int) ((fontsize * scale + 0.5));
-        dc.SetFont(wxFont(fontsize1, wxMODERN,
+        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                           false,
                           false,
                           false,
@@ -312,7 +312,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       }
       else
       {
-        dc.SetFont(wxFont(fontsize1, wxMODERN,
+        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                           false,
                           false,
                           false,

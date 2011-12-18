@@ -41,7 +41,7 @@ EditorCell::EditorCell() : MathCell()
   m_hasFocus = false;
   m_underlined = false;
   m_fontWeight = wxFONTWEIGHT_NORMAL;
-  m_fontStyle = wxNORMAL;
+  m_fontStyle = wxFONTSTYLE_NORMAL;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_oldStart = -1;
   m_oldEnd = -1;
@@ -1376,7 +1376,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   wxString s;
   int fontsize1 = m_fontSize;
 
-  dc.SetFont(wxFont(fontsize1, wxMODERN,
+  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,
@@ -1444,7 +1444,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   wxString s;
   int fontsize1 = m_fontSize;
 
-  dc.SetFont(wxFont(fontsize1, wxMODERN,
+  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,
