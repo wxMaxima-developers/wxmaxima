@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([wxMaxima], [11.08.0], [andrej.vodopivec@gmail.com])
+AC_INIT(wxMaxima)
 AC_CONFIG_SRCDIR([src/wxMaxima.h])
 
 AM_CONFIG_HEADER(src/Setup.h)
@@ -17,7 +17,7 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AM_INIT_AUTOMAKE([wxMaxima], [11.08.0])
+AM_INIT_AUTOMAKE(wxMaxima, 11.08.0)
 
 dnl check for host
 case "$host" in
@@ -64,8 +64,6 @@ AC_ARG_ENABLE(static-wx,
 AC_ARG_WITH(macosx-sdk,
 [  --with-macosx-sdk=PATH  use an OS X SDK at PATH],
    [MACOSX_SDK=$withval])
-AC_MSG_RESULT([$MACOSX_SDK])
-
 
 if test "x$MACOSX_SDK" != "x"; then 
     eval "CC=\"$CC -isysroot $MACOSX_SDK\""
@@ -76,12 +74,24 @@ fi
 AC_ARG_WITH(macosx-version-min,
 [  --with-macosx-version-min=VER   build binaries which require at least this OS X version],
 	[MACOSX_VERSION_MIN=$withval])
-AC_MSG_RESULT([$MACOSX_VERSION_MIN])
 
 if test "x$MACOSX_VERSION_MIN" != "x"; then
     eval "CC=\"$CC -mmacosx-version-min=$MACOSX_VERSION_MIN\""
     eval "CXX=\"$CXX -mmacosx-version-min=$MACOSX_VERSION_MIN\""
     eval "LD=\"$LD -mmacosx-version-min=$MACOSX_VERSION_MIN\""
+fi
+
+AC_ARG_WITH(macosx-arch,
+[  --with-macosx-arch=ARCH build for the specified architecture],
+[MACOSX_ARCH=$withval])
+
+if test "x$MACOSX_ARCH" != "x"; then
+    eval "CFLAGS=\"$CFLAGS -arch $MACOSX_ARCH\""
+    eval "CXXFLAGS=\"$CXXFLAGS -arch $MACOSX_ARCH\""
+    eval "CPPFLAGS=\"$CPPFLAGS -arch $MACOSX_ARCH\""
+    eval "LDFLAGS=\"$LDFLAGS -arch $MACOSX_ARCH\""
+    eval "OBJCFLAGS=\"$OBJFLAGS -arch $MACOSX_ARCH\""
+    eval "OBJXXFLAGS=\"$OBJXXFLAGS -arch $MACOSX_ARCH\""
 fi
 
 AM_PATH_WXCONFIG([2.8.4], [wxWin=1], [wxWin=0], [adv,xml,html,aui,core,net,base])
@@ -149,6 +159,7 @@ AC_SUBST(CATALOGS_TO_INSTALL)
 AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
+
 
 # Checks for libraries.
 
