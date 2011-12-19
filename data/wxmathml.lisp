@@ -295,6 +295,12 @@
 (defprop mbox wxxml-mbox wxxml)
 (defprop mlabox wxxml-mbox wxxml)
 
+(defprop mbox 10. wxxml-rbp)
+(defprop mbox 10. wxxml-lbp)
+
+(defprop mlabbox 10. wxxml-rbp)
+(defprop mlabbox 10. wxxml-lbp)
+
 (defun wxxml-mbox (x l r)
   (setq l (wxxml (cadr x) (append l '("<hl>")) nil 'mparen 'mparen)
         r (append '("</hl>") r))
