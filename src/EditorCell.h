@@ -22,6 +22,8 @@
 
 #include "MathCell.h"
 
+#include <vector>
+
 class EditorCell : public MathCell
 {
 public:
@@ -91,12 +93,14 @@ public:
   bool CaretAtEnd() { return m_positionOfCaret == (signed)m_text.Length(); }
   void CaretToEnd();
   void CaretToPosition(int pos);
-  bool CanUndo() { return m_text != m_oldText; }
-  void SaveValue();
+  bool CanUndo();
   void Undo();
+  bool CanRedo();
+  void Redo();
+  void SaveValue();
   wxString DivideAtCaret();
   void CommentSelection();
-  void ClearUndo() { m_oldText = wxEmptyString; m_oldPosition = 0; }
+  void ClearUndo();
   bool ContainsChanges() { return m_containsChanges; }
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
@@ -122,13 +126,17 @@ private:
   wxString InterpretEscapeString(wxString txt);
 #endif
   wxString m_text;
-  wxString m_oldText;
-  int m_oldPosition;
+  wxArrayString m_textHistory;
+  std::vector<int> m_positionHistory;
+  std::vector<int> m_startHistory;
+  std::vector<int> m_endHistory;
+  size_t m_historyPosition;
+//  int m_oldPosition;
   int m_positionOfCaret;
   int m_caretColumn;
   long m_selectionStart;
   long m_selectionEnd;
-  long m_oldStart, m_oldEnd;
+//  long m_oldStart, m_oldEnd;
   int m_numberOfLines;
   bool m_isActive;
   int m_fontSize;

@@ -223,6 +223,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_undo, _("Undo\tCtrl-Z"),
                              _("Undo last change"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
+                             _("Redo last change"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_cut, _("Cut\tCtrl-X"),
                              _("Cut selection"),

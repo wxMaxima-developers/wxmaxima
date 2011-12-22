@@ -1719,6 +1719,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
+  menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
 //  if (m_console->GetSelectionStart() != NULL)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
@@ -2078,6 +2079,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_undo:
     if (m_console->CanUndo())
       m_console->Undo();
+    break;
+  case menu_redo:
+    if (m_console->CanRedo())
+      m_console->Redo();
     break;
   case menu_copy_tex_from_console:
     if (m_console->CanCopy())
@@ -4605,6 +4610,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_copy_text_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
   EVT_MENU(menu_undo, wxMaxima::EditMenu)
+  EVT_MENU(menu_redo, wxMaxima::EditMenu)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)

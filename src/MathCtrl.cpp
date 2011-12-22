@@ -3328,6 +3328,29 @@ void MathCtrl::Undo()
   }
 }
 
+bool MathCtrl::CanRedo()
+{
+  if (m_activeCell == NULL)
+    return false;
+  return m_activeCell->CanRedo();
+}
+
+void MathCtrl::Redo()
+{
+  if (m_activeCell != NULL) {
+    m_activeCell->Redo();
+    m_activeCell->GetParent()->ResetSize();
+    Recalculate();
+    Refresh();
+  }
+}
+
+void MathCtrl::SaveValue()
+{
+  if (m_activeCell != NULL)
+    m_activeCell->SaveValue();
+}
+
 void MathCtrl::RemoveAllOutput()
 {
   if (m_workingGroup != NULL)

@@ -43,12 +43,11 @@ EditorCell::EditorCell() : MathCell()
   m_fontWeight = wxFONTWEIGHT_NORMAL;
   m_fontStyle = wxFONTSTYLE_NORMAL;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
-  m_oldStart = -1;
-  m_oldEnd = -1;
   m_saveValue = false;
   m_containsChanges = false;
   m_containsChangesCheck = false;
   m_firstLineOnly = false;
+  m_historyPosition = -1;
 }
 
 EditorCell::~EditorCell()
@@ -465,6 +464,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   {
 
   case WXK_LEFT:
+    SaveValue();
     if (event.ShiftDown())
     {
       if (m_selectionStart == -1)
@@ -529,6 +529,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_RIGHT:
+    SaveValue();
     if (event.ShiftDown())
     {
       if (m_selectionStart == -1)
@@ -599,6 +600,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_PAGEDOWN:
   case WXK_DOWN:
+    SaveValue();
     {
       if (event.ShiftDown())
       {
@@ -629,6 +631,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_PAGEUP:
   case WXK_UP:
+    SaveValue();
     {
       if (event.ShiftDown())
       {
@@ -658,6 +661,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_RETURN:
+    SaveValue();
     if (m_selectionStart != -1) // we have a selection, delete it, then proceed
     {
       SaveValue();
@@ -677,6 +681,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_END:
+    SaveValue();
     if (event.ShiftDown())
     {
       if (m_selectionStart == -1)
@@ -699,6 +704,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_HOME:
+    SaveValue();
     {
       if (event.ShiftDown())
       {
@@ -723,6 +729,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_DELETE:
+    SaveValue();
     if (m_selectionStart == -1)
     {
       if (m_positionOfCaret < (signed)m_text.Length())
@@ -749,6 +756,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_BACK:
+    SaveValue();
     if (m_selectionStart > -1) {
       SaveValue();
       m_saveValue = true;
@@ -884,6 +892,16 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       SaveValue();
       m_saveValue = false;
     }
+
+    if (m_historyPosition != -1) {
+      int len = m_textHistory.GetCount() - m_historyPosition;
+      m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
+      m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
+      m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
+      m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
+      m_historyPosition = -1;
+    }
+
     // if we have a selection either put parens around it (and don't write the letter afterwards)
     // od delete selection and write letter (insertLetter = true).
     if (m_selectionStart > -1) {
@@ -1649,23 +1667,95 @@ wxString EditorCell::GetLineString(int line, int start, int end)
   return m_text.SubString(posStart, posEnd - 1);
 }
 
+
+bool EditorCell::CanUndo()
+{
+  return m_textHistory.GetCount()>0 && m_historyPosition != 0;
+}
+
 void EditorCell::Undo()
 {
-  m_text = m_oldText;
-  m_positionOfCaret = m_oldPosition;
-  m_selectionStart = m_oldStart;
-  m_selectionEnd = m_oldEnd;
+  if (m_historyPosition == -1) {
+    m_historyPosition = m_textHistory.GetCount()-1;
+    m_textHistory.Add(m_text);
+    m_startHistory.push_back(m_selectionStart);
+    m_endHistory.push_back(m_selectionEnd);
+    m_positionHistory.push_back(m_positionOfCaret);
+  }
+  else
+    m_historyPosition--;
+
+  if (m_historyPosition == -1)
+    return ;
+
+  m_text = m_textHistory.Item(m_historyPosition);
+  m_positionOfCaret = m_positionHistory[m_historyPosition];
+  m_selectionStart = m_startHistory[m_historyPosition];
+  m_selectionEnd = m_endHistory[m_historyPosition];
+
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
   m_width = m_height = m_maxDrop = m_center = -1;
 }
 
+
+bool EditorCell::CanRedo()
+{
+  return m_textHistory.GetCount()>0 &&
+    m_historyPosition >= 0 &&
+    m_historyPosition < m_textHistory.GetCount()-1;
+}
+
+void EditorCell::Redo()
+{
+  if (m_historyPosition == -1)
+    return;
+
+  m_historyPosition++;
+
+  if (m_historyPosition >= m_textHistory.GetCount())
+    return ;
+
+  m_text = m_textHistory.Item(m_historyPosition);
+  m_positionOfCaret = m_positionHistory[m_historyPosition];
+  m_selectionStart = m_startHistory[m_historyPosition];
+  m_selectionEnd = m_endHistory[m_historyPosition];
+
+  m_paren1 = m_paren2 = -1;
+  m_isDirty = true;
+  m_width = m_height = m_maxDrop = m_center = -1;
+}
+
+
 void EditorCell::SaveValue()
 {
-  m_oldText = m_text;
-  m_oldPosition = m_positionOfCaret;
-  m_oldStart = m_selectionStart;
-  m_oldEnd = m_selectionEnd;
+  if (m_textHistory.GetCount()>0) {
+    if (m_textHistory.Last() == m_text)
+      return ;
+  }
+
+  if (m_historyPosition != -1) {
+    int len = m_textHistory.GetCount() - m_historyPosition;
+    m_textHistory.RemoveAt(m_historyPosition, len);
+    m_startHistory.erase(m_startHistory.begin() + m_historyPosition, m_startHistory.end());
+    m_endHistory.erase(m_endHistory.begin() + m_historyPosition, m_endHistory.end());
+    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition, m_positionHistory.end());
+  }
+
+  m_textHistory.Add(m_text);
+  m_startHistory.push_back(m_selectionStart);
+  m_endHistory.push_back(m_selectionEnd);
+  m_positionHistory.push_back(m_positionOfCaret);
+  m_historyPosition = -1;
+}
+
+void EditorCell::ClearUndo()
+{
+  m_textHistory.Clear();
+  m_startHistory.clear();
+  m_endHistory.clear();
+  m_positionHistory.clear();
+  m_historyPosition = -1;
 }
 
 void EditorCell::SetValue(wxString text)

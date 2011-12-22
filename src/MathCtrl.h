@@ -169,7 +169,10 @@ public:
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();
   bool CanUndo();
+  bool CanRedo();
   void Undo();
+  void Redo();
+  void SaveValue();
   bool IsSaved() { return m_saved; }
   void SetSaved(bool saved) { m_saved = saved; }
   void RemoveAllOutput();
