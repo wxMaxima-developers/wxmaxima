@@ -1565,7 +1565,8 @@
 	(args (mapcar (lambda (u)
 			(cond ((atom u) (symbol-to-string u))
 			      ((eq (caar u) 'mlist)
-			       ($concat "[" (symbol-to-string (cadr u)) "]"))
+			       ($concat "[" (symbol-to-string
+                                             (if (atom (cadr u)) (cadr u) (cadadr u))) "]"))
 			      (t (symbol-to-string (cadr u)))))
 		      (cdr fun))))
     (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
