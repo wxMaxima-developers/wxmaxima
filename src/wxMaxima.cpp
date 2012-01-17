@@ -4240,7 +4240,7 @@ void wxMaxima::ResetTitle(bool saved)
  #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
     if (m_currentFile != wxEmptyString)
-      OSXSetRepresentedFilename(m_currentFile);
+      SetRepresentedFilename(m_currentFile);
  #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win,!saved);
