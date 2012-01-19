@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 08:56+0100\n"
-"PO-Revision-Date: 2011-12-23 08:57+0100\n"
+"POT-Creation-Date: 2012-01-19 12:10+0100\n"
+"PO-Revision-Date: 2012-01-19 12:23+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -291,8 +291,8 @@ msgstr "Poli&nom valós gyökei"
 msgid "&Save\tCtrl-S"
 msgstr "M&entés\tCtrl-S"
 
-#: ../src/wxMaximaFrame.cpp:617
 #: ../src/SumWiz.cpp:42
+#: ../src/wxMaximaFrame.cpp:617
 msgid "&Simplify"
 msgstr "E&gyszerűsítés"
 
@@ -361,10 +361,10 @@ msgstr "A wxMaxima 0.8.2-es verziójában új dokumentumformátumot vezettek be,
 msgid "A&t Value..."
 msgstr "Ér&tékadás..."
 
-#: ../src/wxMaximaFrame.cpp:678
 #: ../src/wxMaxima.cpp:3498
+#: ../src/wxMaximaFrame.cpp:678
 msgid "About"
-msgstr "&Névjegy"
+msgstr "Névjegy"
 
 #: ../src/wxMaximaFrame.cpp:680
 #: ../src/wxMaximaFrame.cpp:682
@@ -443,8 +443,8 @@ msgstr "Rákérdez név nélküli dokumentum mentésére"
 msgid "At value"
 msgstr "Értékadás"
 
-#: ../src/BC2Wiz.cpp:57
 #: ../src/wxMaxima.cpp:2471
+#: ../src/BC2Wiz.cpp:57
 msgid "BC2"
 msgstr "Peremérték probléma"
 
@@ -525,43 +525,43 @@ msgstr "Nem lehet a webszerverhez kapcsolódni"
 msgid "Can not download version info."
 msgstr "A verzióinformáció nem elérhető."
 
-#: ../src/IntegrateWiz.cpp:59
-#: ../src/IntegrateWiz.cpp:61
-#: ../src/SeriesWiz.cpp:48
-#: ../src/SeriesWiz.cpp:50
-#: ../src/MatWiz.cpp:39
-#: ../src/MatWiz.cpp:41
-#: ../src/MatWiz.cpp:188
-#: ../src/MatWiz.cpp:190
-#: ../src/PlotFormatWiz.cpp:41
-#: ../src/PlotFormatWiz.cpp:43
-#: ../src/BC2Wiz.cpp:44
-#: ../src/BC2Wiz.cpp:46
 #: ../src/Plot2dWiz.cpp:101
 #: ../src/Plot2dWiz.cpp:103
 #: ../src/Plot2dWiz.cpp:561
 #: ../src/Plot2dWiz.cpp:563
 #: ../src/Plot2dWiz.cpp:656
 #: ../src/Plot2dWiz.cpp:658
-#: ../src/Gen2Wiz.cpp:42
-#: ../src/Gen2Wiz.cpp:44
-#: ../src/Plot3dWiz.cpp:103
-#: ../src/Plot3dWiz.cpp:105
-#: ../src/SystemWiz.cpp:37
-#: ../src/SystemWiz.cpp:39
-#: ../src/Gen3Wiz.cpp:49
-#: ../src/Gen3Wiz.cpp:51
-#: ../src/Gen4Wiz.cpp:55
-#: ../src/Gen4Wiz.cpp:57
-#: ../src/LimitWiz.cpp:51
-#: ../src/LimitWiz.cpp:53
-#: ../src/SubstituteWiz.cpp:40
-#: ../src/SubstituteWiz.cpp:42
-#: ../src/wxMaxima.cpp:4432
 #: ../src/SumWiz.cpp:47
 #: ../src/SumWiz.cpp:49
+#: ../src/Gen4Wiz.cpp:55
+#: ../src/Gen4Wiz.cpp:57
+#: ../src/wxMaxima.cpp:4432
+#: ../src/MatWiz.cpp:39
+#: ../src/MatWiz.cpp:41
+#: ../src/MatWiz.cpp:188
+#: ../src/MatWiz.cpp:190
+#: ../src/Gen3Wiz.cpp:49
+#: ../src/Gen3Wiz.cpp:51
+#: ../src/PlotFormatWiz.cpp:41
+#: ../src/PlotFormatWiz.cpp:43
+#: ../src/SubstituteWiz.cpp:40
+#: ../src/SubstituteWiz.cpp:42
+#: ../src/SystemWiz.cpp:37
+#: ../src/SystemWiz.cpp:39
+#: ../src/Gen2Wiz.cpp:42
+#: ../src/Gen2Wiz.cpp:44
+#: ../src/IntegrateWiz.cpp:59
+#: ../src/IntegrateWiz.cpp:61
+#: ../src/Plot3dWiz.cpp:103
+#: ../src/Plot3dWiz.cpp:105
+#: ../src/BC2Wiz.cpp:44
+#: ../src/BC2Wiz.cpp:46
 #: ../src/Gen1Wiz.cpp:34
 #: ../src/Gen1Wiz.cpp:36
+#: ../src/LimitWiz.cpp:51
+#: ../src/LimitWiz.cpp:53
+#: ../src/SeriesWiz.cpp:48
+#: ../src/SeriesWiz.cpp:50
 msgid "Cancel"
 msgstr "Mégsem"
 
@@ -718,8 +718,8 @@ msgstr "A wxMaxima beállítása"
 
 #: ../src/IntegrateWiz.cpp:219
 #: ../src/IntegrateWiz.cpp:238
-#: ../src/SeriesWiz.cpp:109
 #: ../src/LimitWiz.cpp:135
+#: ../src/SeriesWiz.cpp:109
 msgid "Constant"
 msgstr "Állandó"
 
@@ -765,7 +765,7 @@ msgstr "&Gamma-függvénnyé alakítás"
 
 #: ../src/wxMaximaFrame.cpp:585
 msgid "Convert to &Polarform"
-msgstr "&Exponenciálissá alakítás"
+msgstr "Polárformává alakítás"
 
 #: ../src/wxMaximaFrame.cpp:582
 msgid "Convert to &Rectform"
@@ -779,12 +779,12 @@ msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítá
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvényt exponenciális alakra hoz"
 
+#: ../src/wxMaximaFrame.cpp:729
+#: ../src/wxMaximaFrame.cpp:798
 #: ../src/MathCtrl.cpp:660
 #: ../src/MathCtrl.cpp:673
 #: ../src/MathCtrl.cpp:689
 #: ../src/MathCtrl.cpp:732
-#: ../src/wxMaximaFrame.cpp:729
-#: ../src/wxMaximaFrame.cpp:798
 msgid "Copy"
 msgstr "Másolás"
 
@@ -840,9 +840,9 @@ msgstr "Létrehoz egy új cellát az előző bemenet tartalmának bemásolásáv
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: ../src/MathCtrl.cpp:731
 #: ../src/wxMaximaFrame.cpp:726
 #: ../src/wxMaximaFrame.cpp:794
+#: ../src/MathCtrl.cpp:731
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -1133,8 +1133,6 @@ msgstr "Egyenlet:"
 msgid "Equations:"
 msgstr "Egyenletek:"
 
-#: ../src/Config.cpp:488
-#: ../src/ImgCell.cpp:101
 #: ../src/wxMaxima.cpp:393
 #: ../src/wxMaxima.cpp:977
 #: ../src/wxMaxima.cpp:988
@@ -1146,6 +1144,8 @@ msgstr "Egyenletek:"
 #: ../src/wxMaxima.cpp:4083
 #: ../src/wxMaxima.cpp:4330
 #: ../src/wxMaxima.cpp:4375
+#: ../src/Config.cpp:488
+#: ../src/ImgCell.cpp:101
 msgid "Error"
 msgstr "Hiba"
 
@@ -1171,8 +1171,8 @@ msgstr "K&iértékeletlen formák kiértékelése"
 msgid "Evaluate All Cells\tCtrl-R"
 msgstr "&Minden cella újraszámolása\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:681
 #: ../src/wxMaximaFrame.cpp:290
+#: ../src/MathCtrl.cpp:681
 msgid "Evaluate Cell(s)"
 msgstr "C&ellák újraszámolása"
 
@@ -1249,10 +1249,7 @@ msgstr "Függvény:"
 msgid "Expression(s):"
 msgstr "Függvény(ek):"
 
-#: ../src/IntegrateWiz.cpp:36
-#: ../src/SeriesWiz.cpp:32
-#: ../src/LimitWiz.cpp:26
-#: ../src/SubstituteWiz.cpp:27
+#: ../src/SumWiz.cpp:30
 #: ../src/wxMaxima.cpp:2562
 #: ../src/wxMaxima.cpp:2732
 #: ../src/wxMaxima.cpp:2988
@@ -1263,7 +1260,10 @@ msgstr "Függvény(ek):"
 #: ../src/wxMaxima.cpp:3119
 #: ../src/wxMaxima.cpp:3154
 #: ../src/wxMaxima.cpp:3909
-#: ../src/SumWiz.cpp:30
+#: ../src/SubstituteWiz.cpp:27
+#: ../src/IntegrateWiz.cpp:36
+#: ../src/LimitWiz.cpp:26
+#: ../src/SeriesWiz.cpp:32
 msgid "Expression:"
 msgstr "Kifejezés:"
 
@@ -1416,15 +1416,15 @@ msgstr "Formátum:"
 msgid "French"
 msgstr "Francia"
 
-#: ../src/IntegrateWiz.cpp:43
 #: ../src/Plot2dWiz.cpp:49
 #: ../src/Plot2dWiz.cpp:59
 #: ../src/Plot2dWiz.cpp:548
-#: ../src/Plot3dWiz.cpp:46
-#: ../src/Plot3dWiz.cpp:55
+#: ../src/SumWiz.cpp:36
 #: ../src/wxMaxima.cpp:2733
 #: ../src/wxMaxima.cpp:3154
-#: ../src/SumWiz.cpp:36
+#: ../src/IntegrateWiz.cpp:43
+#: ../src/Plot3dWiz.cpp:46
+#: ../src/Plot3dWiz.cpp:55
 msgid "From:"
 msgstr "Mettől:"
 
@@ -1735,9 +1735,9 @@ msgstr "Kép beszúrása"
 msgid "Integral/Sum:"
 msgstr "Integrál/összeg:"
 
-#: ../src/IntegrateWiz.cpp:72
 #: ../src/wxMaxima.cpp:3019
 #: ../src/wxMaxima.cpp:3896
+#: ../src/IntegrateWiz.cpp:72
 msgid "Integrate"
 msgstr "Integrál"
 
@@ -1753,8 +1753,8 @@ msgstr "Függvény integrálása"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
-#: ../src/MathCtrl.cpp:709
 #: ../src/wxMaximaFrame.cpp:982
+#: ../src/MathCtrl.cpp:709
 msgid "Integrate..."
 msgstr "Integrál..."
 
@@ -1837,8 +1837,8 @@ msgstr "Legkisebb négyzetes közelítés"
 msgid "Least Squares Fit..."
 msgstr "Legkisebb négyzetes közelítés..."
 
-#: ../src/LimitWiz.cpp:66
 #: ../src/wxMaxima.cpp:3106
+#: ../src/LimitWiz.cpp:66
 msgid "Limit"
 msgstr "Határérték"
 
@@ -2021,9 +2021,9 @@ msgstr "Eljárás:"
 msgid "Modulus"
 msgstr "Modulus"
 
-#: ../src/MatWiz.cpp:182
 #: ../src/wxMaxima.cpp:2678
 #: ../src/wxMaxima.cpp:2697
+#: ../src/MatWiz.cpp:182
 msgid "Name:"
 msgstr "Név:"
 
@@ -2091,42 +2091,42 @@ msgstr "Egyenletek száma:"
 msgid "Numbers"
 msgstr "Számok"
 
-#: ../src/IntegrateWiz.cpp:58
-#: ../src/IntegrateWiz.cpp:62
-#: ../src/SeriesWiz.cpp:47
-#: ../src/SeriesWiz.cpp:51
-#: ../src/MatWiz.cpp:38
-#: ../src/MatWiz.cpp:42
-#: ../src/MatWiz.cpp:187
-#: ../src/MatWiz.cpp:191
-#: ../src/PlotFormatWiz.cpp:40
-#: ../src/PlotFormatWiz.cpp:44
-#: ../src/BC2Wiz.cpp:43
-#: ../src/BC2Wiz.cpp:47
 #: ../src/Plot2dWiz.cpp:100
 #: ../src/Plot2dWiz.cpp:104
 #: ../src/Plot2dWiz.cpp:560
 #: ../src/Plot2dWiz.cpp:564
 #: ../src/Plot2dWiz.cpp:655
 #: ../src/Plot2dWiz.cpp:659
-#: ../src/Gen2Wiz.cpp:41
-#: ../src/Gen2Wiz.cpp:45
-#: ../src/Plot3dWiz.cpp:102
-#: ../src/Plot3dWiz.cpp:106
-#: ../src/SystemWiz.cpp:36
-#: ../src/SystemWiz.cpp:40
-#: ../src/Gen3Wiz.cpp:48
-#: ../src/Gen3Wiz.cpp:52
-#: ../src/Gen4Wiz.cpp:54
-#: ../src/Gen4Wiz.cpp:58
-#: ../src/LimitWiz.cpp:50
-#: ../src/LimitWiz.cpp:54
-#: ../src/SubstituteWiz.cpp:39
-#: ../src/SubstituteWiz.cpp:43
 #: ../src/SumWiz.cpp:46
 #: ../src/SumWiz.cpp:50
+#: ../src/Gen4Wiz.cpp:54
+#: ../src/Gen4Wiz.cpp:58
+#: ../src/MatWiz.cpp:38
+#: ../src/MatWiz.cpp:42
+#: ../src/MatWiz.cpp:187
+#: ../src/MatWiz.cpp:191
+#: ../src/Gen3Wiz.cpp:48
+#: ../src/Gen3Wiz.cpp:52
+#: ../src/PlotFormatWiz.cpp:40
+#: ../src/PlotFormatWiz.cpp:44
+#: ../src/SubstituteWiz.cpp:39
+#: ../src/SubstituteWiz.cpp:43
+#: ../src/SystemWiz.cpp:36
+#: ../src/SystemWiz.cpp:40
+#: ../src/Gen2Wiz.cpp:41
+#: ../src/Gen2Wiz.cpp:45
+#: ../src/IntegrateWiz.cpp:58
+#: ../src/IntegrateWiz.cpp:62
+#: ../src/Plot3dWiz.cpp:102
+#: ../src/Plot3dWiz.cpp:106
+#: ../src/BC2Wiz.cpp:43
+#: ../src/BC2Wiz.cpp:47
 #: ../src/Gen1Wiz.cpp:33
 #: ../src/Gen1Wiz.cpp:37
+#: ../src/LimitWiz.cpp:50
+#: ../src/LimitWiz.cpp:54
+#: ../src/SeriesWiz.cpp:47
+#: ../src/SeriesWiz.cpp:51
 msgid "OK"
 msgstr "OK"
 
@@ -2148,10 +2148,10 @@ msgstr "Egymintás t-próba"
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
-#: ../src/Config.cpp:306
+#: ../src/wxMaxima.cpp:1930
 #: ../src/wxMaximaFrame.cpp:710
 #: ../src/wxMaximaFrame.cpp:774
-#: ../src/wxMaxima.cpp:1930
+#: ../src/Config.cpp:306
 #: ../src/main.cpp:202
 msgid "Open"
 msgstr "Megnyitás"
@@ -2187,9 +2187,9 @@ msgstr "Mátrix megnyitása"
 msgid "Opening file"
 msgstr "Fájl megnyitása"
 
-#: ../src/Config.cpp:97
 #: ../src/wxMaximaFrame.cpp:722
 #: ../src/wxMaximaFrame.cpp:789
+#: ../src/Config.cpp:97
 msgid "Options"
 msgstr "Beállítások"
 
@@ -2253,10 +2253,10 @@ msgstr "Parciális törtek"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "A dokumentum egyes részei nem töltődtek be!"
 
-#: ../src/MathCtrl.cpp:719
-#: ../src/MathCtrl.cpp:733
 #: ../src/wxMaximaFrame.cpp:732
 #: ../src/wxMaximaFrame.cpp:802
+#: ../src/MathCtrl.cpp:719
+#: ../src/MathCtrl.cpp:733
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -2313,9 +2313,9 @@ msgstr "2D..."
 msgid "Plot 2d..."
 msgstr "2d-s ábrázolás..."
 
-#: ../src/Plot3dWiz.cpp:118
 #: ../src/wxMaxima.cpp:3183
 #: ../src/wxMaxima.cpp:3960
+#: ../src/Plot3dWiz.cpp:118
 msgid "Plot 3D"
 msgstr "Háromdimenziós ábrázolás"
 
@@ -2343,13 +2343,13 @@ msgstr "Ábrázolás három dimenzióban"
 msgid "Plot to file:"
 msgstr "Ábrázolás fájlba:"
 
-#: ../src/SeriesWiz.cpp:38
-#: ../src/BC2Wiz.cpp:29
-#: ../src/BC2Wiz.cpp:35
-#: ../src/LimitWiz.cpp:32
 #: ../src/wxMaxima.cpp:2439
 #: ../src/wxMaxima.cpp:2454
 #: ../src/wxMaxima.cpp:2562
+#: ../src/BC2Wiz.cpp:29
+#: ../src/BC2Wiz.cpp:35
+#: ../src/LimitWiz.cpp:32
+#: ../src/SeriesWiz.cpp:38
 msgid "Point:"
 msgstr "Hely:"
 
@@ -2509,10 +2509,10 @@ msgstr "2. minta:"
 msgid "Sample:"
 msgstr "Minta:"
 
-#: ../src/Config.cpp:387
+#: ../src/wxMaxima.cpp:4432
 #: ../src/wxMaximaFrame.cpp:713
 #: ../src/wxMaximaFrame.cpp:778
-#: ../src/wxMaxima.cpp:4432
+#: ../src/Config.cpp:387
 msgid "Save"
 msgstr "Mentés"
 
@@ -2631,8 +2631,8 @@ msgstr "Részminta kiválasztása"
 
 #: ../src/IntegrateWiz.cpp:218
 #: ../src/IntegrateWiz.cpp:237
-#: ../src/SeriesWiz.cpp:108
 #: ../src/LimitWiz.cpp:134
+#: ../src/SeriesWiz.cpp:108
 msgid "Select a constant"
 msgstr "Állandó kiválasztása"
 
@@ -2652,8 +2652,8 @@ msgstr "A kimenetet egy részét kijelölve az egérrel és arra a jobb egérgom
 msgid "Selection"
 msgstr "Kijelölt rész másolása"
 
-#: ../src/SeriesWiz.cpp:61
 #: ../src/wxMaxima.cpp:3092
+#: ../src/SeriesWiz.cpp:61
 msgid "Series"
 msgstr "Taylor- és hatványsor"
 
@@ -2836,9 +2836,9 @@ msgstr "Trigonometrikus kifejezést egyszerűbb alakra hoz"
 msgid "Since wxMaxima 0.8.2 you can also insert images into your documents. Use 'Cell->Insert Image...' menu command. Note that you have to save your document in 'wxMaxima XML document' format if you want the image to be saved along with your document."
 msgstr "A wxMaxima 0.8.2-es változatától már képeket is be lehet illeszteni a dokumentumba. Használjuk a 'Cellák->Kép beszúrása...' menüparancsot. Megjegyezzük, hogy ahhoz, hogy a kép is mentve legyen, a dokumentumot 'wxMaxima XML dokumentum' formátumban kell menteni."
 
-#: ../src/BC2Wiz.cpp:26
 #: ../src/wxMaxima.cpp:2439
 #: ../src/wxMaxima.cpp:2454
+#: ../src/BC2Wiz.cpp:26
 msgid "Solution:"
 msgstr "Megoldás:"
 
@@ -2923,8 +2923,8 @@ msgstr "Legfeljebb másodrendű közönséges differenciálegyenlet megoldása"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
-#: ../src/MathCtrl.cpp:701
 #: ../src/wxMaximaFrame.cpp:979
+#: ../src/MathCtrl.cpp:701
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -2934,8 +2934,8 @@ msgstr "Spanyol"
 
 #: ../src/IntegrateWiz.cpp:46
 #: ../src/IntegrateWiz.cpp:50
-#: ../src/SeriesWiz.cpp:41
 #: ../src/LimitWiz.cpp:35
+#: ../src/SeriesWiz.cpp:41
 msgid "Special"
 msgstr "Különleges"
 
@@ -3012,19 +3012,19 @@ msgstr "Alfejezetcella"
 msgid "Subst..."
 msgstr "Behelyet...."
 
-#: ../src/SubstituteWiz.cpp:53
 #: ../src/wxMaxima.cpp:2337
 #: ../src/wxMaxima.cpp:3934
+#: ../src/SubstituteWiz.cpp:53
 msgid "Substitute"
 msgstr "Behelyettesítés"
 
-#: ../src/MathCtrl.cpp:707
 #: ../src/wxMaximaFrame.cpp:604
+#: ../src/MathCtrl.cpp:707
 msgid "Substitute..."
 msgstr "&Behelyettesítés..."
 
-#: ../src/wxMaxima.cpp:3140
 #: ../src/SumWiz.cpp:61
+#: ../src/wxMaxima.cpp:3140
 msgid "Sum"
 msgstr "Összeg"
 
@@ -3134,15 +3134,15 @@ msgstr "A wxMaxima ablak méretének és pozíciójának mentéséhez jelölje k
 msgid "To start using wxMaxima right away, start typing your command. An input cell should appear. Then press Shift-Enter to evaluate your command."
 msgstr "A wxMaxima használatához csak el kell kezdeni gépelni a végrehajtani kívánt parancsot. Az első billentyű leütésekor egy bemeneti cella fog megjelenni. A parancs végrehajtásához nyomjunk Shift-Enter-t."
 
-#: ../src/IntegrateWiz.cpp:47
 #: ../src/Plot2dWiz.cpp:52
 #: ../src/Plot2dWiz.cpp:62
 #: ../src/Plot2dWiz.cpp:551
-#: ../src/Plot3dWiz.cpp:49
-#: ../src/Plot3dWiz.cpp:58
+#: ../src/SumWiz.cpp:39
 #: ../src/wxMaxima.cpp:2733
 #: ../src/wxMaxima.cpp:3155
-#: ../src/SumWiz.cpp:39
+#: ../src/IntegrateWiz.cpp:47
+#: ../src/Plot3dWiz.cpp:49
+#: ../src/Plot3dWiz.cpp:58
 msgid "To:"
 msgstr "Meddig:"
 
@@ -3241,11 +3241,11 @@ msgstr "Középre helyezett pont használata szorzásjelként"
 msgid "Use jsMath fonts"
 msgstr "jsMath betűk használata"
 
-#: ../src/BC2Wiz.cpp:32
-#: ../src/BC2Wiz.cpp:38
 #: ../src/wxMaxima.cpp:2439
 #: ../src/wxMaxima.cpp:2455
 #: ../src/wxMaxima.cpp:2563
+#: ../src/BC2Wiz.cpp:32
+#: ../src/BC2Wiz.cpp:38
 msgid "Value:"
 msgstr "Érték:"
 
@@ -3257,14 +3257,10 @@ msgstr "Érték:"
 msgid "Variable(s):"
 msgstr "Változó(k):"
 
-#: ../src/IntegrateWiz.cpp:39
-#: ../src/SeriesWiz.cpp:35
 #: ../src/Plot2dWiz.cpp:46
 #: ../src/Plot2dWiz.cpp:56
 #: ../src/Plot2dWiz.cpp:545
-#: ../src/Plot3dWiz.cpp:43
-#: ../src/Plot3dWiz.cpp:52
-#: ../src/LimitWiz.cpp:29
+#: ../src/SumWiz.cpp:33
 #: ../src/wxMaxima.cpp:2404
 #: ../src/wxMaxima.cpp:2423
 #: ../src/wxMaxima.cpp:2663
@@ -3273,7 +3269,11 @@ msgstr "Változó(k):"
 #: ../src/wxMaxima.cpp:3003
 #: ../src/wxMaxima.cpp:3154
 #: ../src/wxMaxima.cpp:3878
-#: ../src/SumWiz.cpp:33
+#: ../src/IntegrateWiz.cpp:39
+#: ../src/Plot3dWiz.cpp:43
+#: ../src/Plot3dWiz.cpp:52
+#: ../src/LimitWiz.cpp:29
+#: ../src/SeriesWiz.cpp:35
 msgid "Variable:"
 msgstr "Változó:"
 
@@ -3281,10 +3281,10 @@ msgstr "Változó:"
 msgid "Variables"
 msgstr "Változók"
 
-#: ../src/SystemWiz.cpp:72
 #: ../src/wxMaxima.cpp:2485
 #: ../src/wxMaxima.cpp:3120
 #: ../src/wxMaxima.cpp:3695
+#: ../src/SystemWiz.cpp:72
 msgid "Variables:"
 msgstr "Változók:"
 
@@ -3385,8 +3385,8 @@ msgstr "Kicsinyítés 10%-kal"
 msgid "Zoom set to "
 msgstr "Nagyítás beállítása "
 
-#: ../src/wxMaximaFrame.cpp:93
 #: ../src/wxMaxima.cpp:4219
+#: ../src/wxMaximaFrame.cpp:93
 msgid "[ unsaved ]"
 msgstr "[ mentetlen ]"
 
@@ -3464,9 +3464,9 @@ msgstr "szimmetrikus"
 msgid "unsaved"
 msgstr "mentetlen"
 
-#: ../src/wxMaximaFrame.cpp:95
 #: ../src/wxMaxima.cpp:1839
 #: ../src/wxMaxima.cpp:1952
+#: ../src/wxMaximaFrame.cpp:95
 msgid "untitled"
 msgstr "névtelen"
 
@@ -3480,11 +3480,11 @@ msgstr "névtelen %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:93
 #: ../src/wxMaxima.cpp:4219
 #: ../src/wxMaxima.cpp:4221
 #: ../src/wxMaxima.cpp:4230
 #: ../src/wxMaxima.cpp:4233
+#: ../src/wxMaximaFrame.cpp:93
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
@@ -3578,41 +3578,3 @@ msgstr "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a 
 msgid "yes"
 msgstr "igen"
 
-#~ msgid "&Cell"
-#~ msgstr "&Cellák"
-
-#~ msgid "&New Window\tCtrl-N"
-#~ msgstr "&Új ablak\tCtrl-N"
-
-#~ msgid "Close document?"
-#~ msgstr "Bezárja a dokumentumot?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Close current document and lose all changes?"
-#~ msgstr ""
-#~ "A dokumentum nincs elmentve!\n"
-#~ "\n"
-#~ "Bezárja a dokumentumot, elveszítve a változásokat?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Quit wxMaxima and lose all changes?"
-#~ msgstr ""
-#~ "A dokumentum nincs elmentve!\n"
-#~ "\n"
-#~ "Kilép a wxMaximából, elveszítve a változásokat?"
-
-#~ msgid "Maxima options"
-#~ msgstr "Maxima opciói"
-
-#~ msgid "Quit?"
-#~ msgstr "Kilép?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "wxMaxima opciói"
-
-#~ msgid "Mean"
-#~ msgstr "Átlag"
