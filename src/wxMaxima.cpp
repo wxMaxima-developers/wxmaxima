@@ -89,7 +89,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isRunning = false;
   m_promptSuffix = wxT("<PROMPT-S/>");
   m_promptPrefix = wxT("<PROMPT-P/>");
-  GetMenuBar()->Enable(menu_interrupt_id, false);
 
   m_firstPrompt = wxT("(%i1) ");
 
@@ -130,6 +129,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 #if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
+
+  GetMenuBar()->Enable(menu_interrupt_id, false);
 
   /// RegEx for function definitions
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
@@ -572,7 +573,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
     m_pid = -1;
-    GetMenuBar()->Enable(menu_interrupt_id, false);
     m_client->Destroy();
     m_client = NULL;
     m_isConnected = false;
@@ -615,7 +615,6 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
                         "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                     MC_TYPE_ERROR);
     m_pid = -1;
-    GetMenuBar()->Enable(menu_interrupt_id, false);
     m_isConnected = false;
 
   default:
@@ -724,7 +723,6 @@ bool wxMaxima::StartMaxima()
     m_process = new wxProcess(this, maxima_process_id);
     m_process->Redirect();
     m_first = true;
-    GetMenuBar()->Enable(menu_interrupt_id, false);
     m_pid = -1;
     SetStatusText(_("Starting Maxima..."), 1);
     wxExecute(command, wxEXEC_ASYNC, m_process);
@@ -1709,7 +1707,8 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 #endif
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
-{ wxMenuBar* menubar = GetMenuBar();
+{
+  wxMenuBar* menubar = GetMenuBar();
 
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
@@ -1721,6 +1720,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
+  menubar->Enable(menu_interrupt_id, m_pid>0);
 //  if (m_console->GetSelectionStart() != NULL)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
 //  else
@@ -4651,6 +4651,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 #endif
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
+  EVT_UPDATE_UI(menu_interrupt_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(plot_slider_id, wxMaxima::UpdateSlider)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_text_from_console, wxMaxima::UpdateMenus)
