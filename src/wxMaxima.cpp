@@ -294,6 +294,7 @@ void wxMaxima::FirstOutput(wxString s)
   wxString prefix(wxT(PREFIX));
   m_console->LoadSymbols(prefix + wxT("/share/wxMaxima/autocomplete.txt"));
 #endif
+  m_console->SetFocus();
 }
 
 ///--------------------------------------------------------------------------------
