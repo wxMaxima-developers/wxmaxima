@@ -167,9 +167,9 @@ void Plot2DWiz::do_layout()
   grid_sizer_2->Add(sizer_3, 1, 0, 0);
   grid_sizer_2->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_4->Add(text_ctrl_5, 0, wxALL, 5);
-  sizer_4->Add(label_7, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  sizer_4->Add(label_7, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_4->Add(text_ctrl_6, 0, wxALL, 5);
-  sizer_4->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  sizer_4->Add(label_8, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_4->Add(text_ctrl_7, 0, wxALL, 5);
   sizer_4->Add(check_box_2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(sizer_4, 1, wxEXPAND, 0);
