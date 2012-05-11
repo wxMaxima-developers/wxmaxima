@@ -4367,8 +4367,8 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
         wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
             wxOK | wxICON_INFORMATION);
 
-      delete myVersion;
-      delete currVersion;
+      delete [] myVersion;
+      delete [] currVersion;
     }
   }
   else
