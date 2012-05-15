@@ -4137,8 +4137,11 @@ void wxMaxima::TryEvaluateNextInQueue()
 void wxMaxima::InsertMenu(wxCommandEvent& event)
 {
   int type = 0;
+  bool output = false;
   switch (event.GetId())
   {
+  case menu_insert_previous_output:
+    output = true;
   case popid_insert_input:
   case menu_insert_input:
   case menu_insert_previous_input:
@@ -4199,11 +4202,17 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
 
   m_console->SetFocus();
 
-  if (event.GetId() == menu_insert_previous_input)
+  if (event.GetId() == menu_insert_previous_input ||
+      event.GetId() == menu_insert_previous_output)
   {
-    wxString input = m_console->GetInputAboveCaret();
+    wxString input;
+
+    if (output == true) 
+      input = m_console->GetOutputAboveCaret(); 
+    else
+      input = m_console->GetInputAboveCaret();
     if (input != wxEmptyString)
-      m_console->OpenHCaret(m_console->GetInputAboveCaret(), type);
+      m_console->OpenHCaret(input, type);
   }
   else
     m_console->OpenHCaret(wxEmptyString, type);
@@ -4694,6 +4703,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
+  EVT_MENU(menu_insert_previous_output, wxMaxima::InsertMenu)
   EVT_MENU(menu_autocomplete, wxMaxima::InsertMenu)
   EVT_MENU(menu_autocomplete_templates, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)

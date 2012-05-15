@@ -199,6 +199,7 @@ public:
   void Replace(wxString oldString, wxString newString);
   int ReplaceAll(wxString oldString, wxString newString);
   wxString GetInputAboveCaret();
+  wxString GetOutputAboveCaret();
   bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }
   bool Autocomplete(bool templates = false);
   void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }

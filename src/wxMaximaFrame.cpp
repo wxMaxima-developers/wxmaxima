@@ -295,7 +295,9 @@ void wxMaximaFrame::SetupMenu()
                             _("Remove output from input cells"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
-                                  _("Create a new cell with previous input"), wxITEM_NORMAL);
+                             _("Create a new cell with previous input"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl-U"),
+                             _("Create a new cell with previous output"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
                              _("Complete word"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),

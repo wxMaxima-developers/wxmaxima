@@ -3429,6 +3429,22 @@ wxString MathCtrl::GetInputAboveCaret()
   return wxEmptyString;
 }
 
+wxString MathCtrl::GetOutputAboveCaret()
+{
+  if (!m_hCaretActive || m_hCaretPosition == NULL)
+    return wxEmptyString;
+
+  m_hCaretPosition->SelectOutput(&m_selectionStart, &m_selectionEnd);
+
+  wxString output = GetString();
+
+  m_selectionStart = m_selectionEnd = NULL;
+
+  Refresh();
+
+  return output;
+}
+
 bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
 {
   if (m_tree == NULL)

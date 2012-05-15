@@ -207,6 +207,7 @@ enum {
   menu_add_pagebreak,
   menu_insert_input,
   menu_insert_previous_input,
+  menu_insert_previous_output,
   menu_autocomplete,
   menu_autocomplete_templates,
   menu_cut,
