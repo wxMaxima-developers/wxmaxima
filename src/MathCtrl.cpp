@@ -1051,7 +1051,6 @@ bool MathCtrl::Copy(bool astext) {
     wxString s = GetString(true);
 
     if (wxTheClipboard->Open()) {
-      wxTheClipboard->UsePrimarySelection(false);
       wxTheClipboard->SetData(new wxTextDataObject(s));
       wxTheClipboard->Close();
       return true;
@@ -1089,7 +1088,6 @@ bool MathCtrl::CopyTeX() {
     s += wxT("\\]");
 
   if (wxTheClipboard->Open()) {
-    wxTheClipboard->UsePrimarySelection(false);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -1144,7 +1142,6 @@ bool MathCtrl::CopyCells()
 
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(false);
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -2983,11 +2980,12 @@ void MathCtrl::PasteFromClipboard(bool primary) {
 
   bool cells = false;
 
+  if (primary)
+    wxTheClipboard->UsePrimarySelection(true);
+
   // Check for cell structure
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(primary);
-
     // Check if the clipboard contains text.
     if (wxTheClipboard->IsSupported( wxDF_TEXT ))
     {
@@ -3109,13 +3107,12 @@ void MathCtrl::PasteFromClipboard(bool primary) {
   if (!cells)
   {
     if (m_activeCell != NULL) {
-      m_activeCell->PasteFromClipboard(primary);
+      m_activeCell->PasteFromClipboard();
       m_activeCell->GetParent()->ResetSize();
       Recalculate();
       Refresh();
     }
     else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
-      wxTheClipboard->UsePrimarySelection(primary);
       if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
         wxTextDataObject obj;
         wxTheClipboard->GetData(obj);
@@ -3127,6 +3124,8 @@ void MathCtrl::PasteFromClipboard(bool primary) {
       wxTheClipboard->Close();
     }
   }
+  if (primary)
+    wxTheClipboard->UsePrimarySelection(false);
 }
 
 void MathCtrl::SelectAll()
@@ -3214,11 +3213,14 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
 
 void MathCtrl::CheckUnixCopy()
 {
-#if defined __WXGTK__
-  if (CanCopy(true) && wxTheClipboard->Open()) {
+#if defined __WXGTK__ && wxCHECK_VERSION(2,9,0)
+  if (CanCopy(true)) {
     wxTheClipboard->UsePrimarySelection(true);
-    wxTheClipboard->SetData(new wxTextDataObject(GetString()));
-    wxTheClipboard->Close();
+    if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+      wxTheClipboard->Close();
+    }
+    wxTheClipboard->UsePrimarySelection(false);
   }
 #endif
 }

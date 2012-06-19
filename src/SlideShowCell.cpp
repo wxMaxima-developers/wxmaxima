@@ -303,7 +303,6 @@ bool SlideShow::CopyToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(false);
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(*m_bitmaps[m_displayed]));
     wxTheClipboard->Close();
     return res;

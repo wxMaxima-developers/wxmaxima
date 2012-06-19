@@ -251,7 +251,6 @@ bool ImgCell::CopyToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(false);
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(*m_bitmap));
     wxTheClipboard->Close();
     return res;

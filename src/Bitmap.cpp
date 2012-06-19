@@ -261,7 +261,6 @@ bool Bitmap::ToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->UsePrimarySelection(false);
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
     wxTheClipboard->Close();
     return res;
