@@ -130,8 +130,7 @@ else
                 AC_MSG_ERROR([Failed to compile a test program])])
    AC_LANG_RESTORE
    LIBS=$ac_save_LIBS
-   CXXFLAGS=$ac_save_CXXFLAGS
-   CPPFLAGS=$WX_CXXFLAGS
+   CXXFLAGS="$ac_save_CXXFLAGS $WX_CXXFLAGS"
 fi
 
 dnl
