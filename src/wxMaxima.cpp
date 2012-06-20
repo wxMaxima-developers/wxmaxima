@@ -3542,11 +3542,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     break;
 
   case menu_build_info:
-    MenuCommand(wxT("wxbuild_info();"));
+    MenuCommand(wxT("wxbuild_info()$"));
     break;
 
   case menu_bug_report:
-    MenuCommand(wxT("bug_report()$"));
+    MenuCommand(wxT("wxbug_report()$"));
     break;
 
   case menu_help_tutorials:

@@ -57,6 +57,18 @@
     (format t "Lisp implementation version: ~a~%" (lisp-implementation-version)))
   "")
 
+(defmfun $wxbug_report ()
+  (format t "~%The Maxima bug database is available at~%")
+  (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
+  (format t "Submit bug reports by following the 'Add new' link on that page.~%~%")
+  (format t "The wxMaxima bug database is available at~%")
+  (format t "    https://github.com/andrejv/wxmaxima/issues?direction=desc&sort=created&state=open~%")
+  (format t "Submit bug reports by following the 'New issue' link on that page.~%~%")
+  (format t "Please include the following information with your bug report:~%")
+  (format t "-------------------------------------------------------------~%")
+  ($wxbuild_info)
+  (format t "-------------------------------------------------------------~%"))
+
 (setf (get '$inchar 'assign) 'neverset)
 (setf (get '$outchar 'assign) 'neverset)
 
