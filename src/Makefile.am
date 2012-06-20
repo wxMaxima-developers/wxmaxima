@@ -21,7 +21,6 @@ wxmaxima_SOURCES = \
 	BC2Wiz.cpp         BC2Wiz.h         \
 	SystemWiz.cpp      SystemWiz.h      \
 	BTextCtrl.cpp      BTextCtrl.h      \
-	TextCtrl.cpp       TextCtrl.h       \
 	MatWiz.cpp         MatWiz.h         \
 	ExptCell.cpp       ExptCell.h       \
 	FracCell.cpp       FracCell.h       \
