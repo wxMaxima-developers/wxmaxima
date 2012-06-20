@@ -38,7 +38,24 @@
   #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
   #-(or sbcl clisp) `(progn ,form))
 
-($put '$wxmaxima `((mlist simp) 0 8 7) '$version)
+($put '$wxmaxima `((mlist simp) 12 4 1) '$version)
+
+(defun $wxbuild_info ()
+  (let ((wxmaxima-version (cdr ($get '$wxmaxima '$version)))
+        (year (sixth cl-user:*maxima-build-time*))
+        (month (fifth cl-user:*maxima-build-time*))
+        (day (fourth cl-user:*maxima-build-time*))
+        (hour (third cl-user:*maxima-build-time*))
+        (minute (second cl-user:*maxima-build-time*))
+        (seconds (first cl-user:*maxima-build-time*)))
+    (format t "wxMaxima version: ~{~d~^.~}~%" wxmaxima-version)
+    (format t "Maxima version: ~a~%" *autoconf-version*)
+    (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
+            year month day hour minute seconds)
+    (format t "Host type: ~a~%" *autoconf-host*)
+    (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
+    (format t "Lisp implementation version: ~a~%" (lisp-implementation-version)))
+  "")
 
 (setf (get '$inchar 'assign) 'neverset)
 (setf (get '$outchar 'assign) 'neverset)
@@ -65,6 +82,8 @@
          (wxxml-matchfix-dim x l r))
 	((equal (get (caar x) 'dimension) 'dimension-nary)
 	 (wxxml-nary x l r))
+        ((get (caar x) 'defstruct-template)
+         (wxxml-defstruct x l r))
         (t (wxxml-function x l r))))
 
 (defmacro make-tag (val tag)
@@ -186,6 +205,14 @@
         (setq nl (nconc nl (wxxml (car x)  l (list sym) 'mparen 'mparen))
               x (cdr x)
               l nil))))
+
+(defun wxxml-defstruct (x l r)
+  (let ((L1 (cdr (get (caar x) 'defstruct-template)))
+        (L2 (cdr x)))
+    (wxxml-function
+     (cons (car x)
+           (mapcar #'(lambda (e1 e2) (if (eq e1 e2) e1 `((mequal) ,e1 ,e2))) L1 L2))
+     l r)))
 
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
