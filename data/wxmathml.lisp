@@ -860,7 +860,9 @@
 (defprop %derivative 119. wxxml-rbp)
 
 (defun wxxml-derivative (x l r)
-  (if (and $derivabbrev (every #'integerp (odds (cddr x) 0)))
+  (if (and $derivabbrev
+           (every #'integerp (odds (cddr x) 0))
+           (every #'atom (odds (cddr x) 1)))
       (append l (wxxml-d-abbrev x) r)
       (wxxml (wxxml-d x) (append l '("<d>"))
 	     (append '("</d>") r) 'mparen 'mparen)))
