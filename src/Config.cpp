@@ -43,6 +43,7 @@ const int langs[] =
     wxLANGUAGE_DANISH,
     wxLANGUAGE_ENGLISH,
     wxLANGUAGE_FRENCH,
+    wxLANGUAGE_GALICIAN,
     wxLANGUAGE_GERMAN,
     wxLANGUAGE_GREEK,
     wxLANGUAGE_HUNGARIAN,
@@ -55,7 +56,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 17
+#define LANGUAGE_NUMBER 18
 
 
 Config::Config(wxWindow* parent)
@@ -242,6 +243,7 @@ wxPanel* Config::CreateOptionsPanel()
       _("Danish"),
       _("English"),
       _("French"),
+      _("Galician"),
       _("German"),
       _("Greek"),
       _("Hungarian"),
