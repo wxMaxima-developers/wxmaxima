@@ -23,7 +23,7 @@ docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING art/config/options.png art/config/maxima.png \
 	art/config/styles.png
 
-LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca
+LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
