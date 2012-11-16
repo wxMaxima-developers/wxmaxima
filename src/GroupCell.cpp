@@ -605,6 +605,7 @@ wxString GroupCell::PrepareForTeX(wxString str)
   str1.Replace(wxT("\\"), wxT("\\verb|\\|"));
   str1.Replace(wxT("_"), wxT("\\_"));
   str1.Replace(wxT("%"), wxT("\\%"));
+  str1.Replace(wxT("$"), wxT("\\$"));
   str1.Replace(wxT("{"), wxT("\\{"));
   str1.Replace(wxT("}"), wxT("\\}"));
   str1.Replace(wxT("^"), wxT("\\verb|^|"));
