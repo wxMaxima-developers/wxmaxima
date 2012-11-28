@@ -1023,6 +1023,7 @@
          r 'mparen 'mparen))
 
 (defprop mlable wxxml-mlable wxxml)
+(defprop mlabel wxxml-mlable wxxml)
 
 (defun wxxml-spaceout (x l r)
   (append l (list " " (make-string (cadr x) :initial-element #\.) "") r))
