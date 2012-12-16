@@ -155,6 +155,7 @@ enum {
   menu_build_info,
   menu_bug_report,
   menu_add_path,
+  menu_evaluate_all_visible,
   menu_evaluate_all,
   menu_show_tip,
   menu_copy_from_console,

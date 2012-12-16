@@ -1727,6 +1727,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 //  else
 //    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
+  menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
@@ -2311,6 +2312,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     }
     break;
   case menu_evaluate_all:
+    m_console->AddDocumentToEvaluationQueue();
+    TryEvaluateNextInQueue();
+    break;
+  case menu_evaluate_all_visible:
     m_console->AddDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;

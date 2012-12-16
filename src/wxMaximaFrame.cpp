@@ -289,7 +289,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2 = new wxMenu;
   wxglade_tmp_menu_2->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
+  wxglade_tmp_menu_2->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
+                               _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                                _("Evaluate all cells in the document"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Output"),
                             _("Remove output from input cells"), wxITEM_NORMAL);
