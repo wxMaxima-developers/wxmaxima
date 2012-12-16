@@ -1726,8 +1726,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
 //  else
 //    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
-  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
+  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
@@ -2311,11 +2311,11 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_evaluate_all:
+  case menu_evaluate_all_visible:
     m_console->AddDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
-  case menu_evaluate_all_visible:
+  case menu_evaluate_all:
     m_console->AddDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
@@ -4725,6 +4725,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_divide_cell, wxMaxima::PopupMenu)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(popid_merge_cells, wxMaxima::PopupMenu)
+  EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
