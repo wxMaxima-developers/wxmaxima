@@ -178,6 +178,7 @@ public:
   void RemoveAllOutput();
   // methods related to evaluation queue
   void AddDocumentToEvaluationQueue();
+  void AddEntireDocumentToEvaluationQueue();
   void AddSelectionToEvaluationQueue();
   void AddCellToEvaluationQueue(GroupCell* gc);
   void ClearEvaluationQueue();

@@ -2316,7 +2316,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     TryEvaluateNextInQueue();
     break;
   case menu_evaluate_all:
-    m_console->AddDocumentToEvaluationQueue();
+    m_console->AddEntireDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
   case menu_clear_var:

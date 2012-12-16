@@ -2833,6 +2833,21 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
+void MathCtrl::AddEntireDocumentToEvaluationQueue()
+{
+  GroupCell* tmp = m_tree;
+  while (tmp != NULL) {
+    GroupCell* hidden = tmp->GetHiddenTree();
+    if (hidden != NULL) {
+      m_evaluationQueue->AddToQueue((GroupCell*) hidden);
+    }
+
+    m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  SetHCaret(m_last);
+}
+
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
   if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
