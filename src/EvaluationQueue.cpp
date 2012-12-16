@@ -56,6 +56,19 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
   }
 }
 
+void EvaluationQueue::AddHiddenTreeToQueue(GroupCell* gr)
+{
+  if (gr == NULL)
+    return; // caller should check, but just in case
+
+  GroupCell* cell = gr->GetHiddenTree();
+  while (cell != NULL) {
+    AddToQueue((GroupCell*) cell);
+    AddHiddenTreeToQueue(cell);
+    cell = dynamic_cast<GroupCell*>(cell->m_next);
+  }
+}
+
 void EvaluationQueue::RemoveFirst()
 {
   if (m_queue == NULL)

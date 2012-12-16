@@ -42,6 +42,7 @@ class EvaluationQueue
     bool IsInQueue(GroupCell* gr);
 
     void AddToQueue(GroupCell* gr);
+    void AddHiddenTreeToQueue(GroupCell* gr);
     void RemoveFirst();
     GroupCell* GetFirst();
     bool Empty() { return m_queue == NULL; }
