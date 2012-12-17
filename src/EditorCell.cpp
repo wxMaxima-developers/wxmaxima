@@ -1065,26 +1065,21 @@ bool EditorCell::FindMatchingQuotes()
     }
   }
 
-  int index = 0;
   int count = 0;
-  while (index < (int)m_text.Length())
+  for (int i = 0; i < (int) m_text.Length(); ++i)
   {
-    if (m_text.GetChar(index) == '"')
+    if (m_text.GetChar(i) == '"' &&
+        ((i == 0) ||
+         (i >= 1 && m_text.GetChar(i-1) != '\\')))
     {
-      if (index >= 1 && m_text.GetChar(index-1) == '\\')  // ignore escaped quotes
-      {
-        ++index;
-        continue;
-      }
-
       ++count;
       if (count&1)
       {
-        m_paren1 = index;  // open quote here
+        m_paren1 = i;  // open quote here
       }
       else
       {
-        m_paren2 = index;  // close quote here
+        m_paren2 = i;  // close quote here
         if (m_paren1 == pos || m_paren2 == pos)
         {
           // found the pair of quotes under the cursor
@@ -1092,7 +1087,6 @@ bool EditorCell::FindMatchingQuotes()
         }
       }
     }
-    ++index;
   }
 
   // didn't find matching quotes; do not highlight quotes
