@@ -903,7 +903,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
 
     // if we have a selection either put parens around it (and don't write the letter afterwards)
-    // od delete selection and write letter (insertLetter = true).
+    // or delete selection and write letter (insertLetter = true).
     if (m_selectionStart > -1) {
       SaveValue();
       long start = MIN(m_selectionEnd, m_selectionStart);
@@ -1036,8 +1036,77 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   m_displayCaret = true;
 }
 
+/**
+ * For a given quotation mark ("), find a matching quote.
+ * Since there are no nested quotes, an odd-numbered, non-escaped quote
+ * is an opening quote, and an even-numbered non-escaped quote
+ * is a closing quote.
+ *
+ * @return true if matching quotation marks were found; false otherwise
+ */
+bool EditorCell::FindMatchingQuotes()
+{
+  int pos = m_positionOfCaret;
+  if (pos < 0)
+  {
+    m_paren1 = m_paren2 = -1;
+    return false;
+  }
+
+  if (pos == m_text.Length() ||
+      wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1)
+  {
+    pos--;
+    if (pos < 0 ||
+        wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1)
+    {
+      m_paren1 = m_paren2 = -1;
+      return false;
+    }
+  }
+
+  int index = 0;
+  int count = 0;
+  while (index < (int)m_text.Length())
+  {
+    if (m_text.GetChar(index) == '"')
+    {
+      if (index >= 1 && m_text.GetChar(index-1) == '\\')  // ignore escaped quotes
+      {
+        ++index;
+        continue;
+      }
+
+      ++count;
+      if (count&1)
+      {
+        m_paren1 = index;  // open quote here
+      }
+      else
+      {
+        m_paren2 = index;  // close quote here
+        if (m_paren1 == pos || m_paren2 == pos)
+        {
+          // found the pair of quotes under the cursor
+          return true;
+        }
+      }
+    }
+    ++index;
+  }
+
+  // didn't find matching quotes; do not highlight quotes
+  m_paren1 = m_paren2 = -1;
+  return false;
+}
+
 void EditorCell::FindMatchingParens()
 {
+  if (FindMatchingQuotes())
+  {
+    return;
+  }
+
   m_paren2 = m_positionOfCaret;
   if (m_paren2 < 0)
   {
