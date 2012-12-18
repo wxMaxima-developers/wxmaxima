@@ -110,10 +110,23 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
   long from, to;
   GetSelection(&from, &to);
 
-  if (from == to)
+  if (from == to)  // nothing selected
   {
-    WriteText(open + close);
-    SetInsertionPoint(GetInsertionPoint() - 1);
+    wxString text = this->GetValue();
+    wxString charHere = text.GetChar((size_t)GetInsertionPoint());
+
+    if (!fromOpen)
+    {
+      if (charHere == close)
+        SetInsertionPoint(GetInsertionPoint() + 1);
+      else
+        WriteText(close);
+    }
+    else
+    {
+      WriteText(open + close);
+      SetInsertionPoint(GetInsertionPoint() - 1);
+    }
   }
   else
   {
