@@ -4198,6 +4198,18 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
       return ;
     }
     break;
+  case menu_fold_all_cells:
+    m_console->FoldAll();
+    m_console->Recalculate(true);
+    // send cursor to the top
+    m_console->SetHCaret(NULL);
+    break;
+  case menu_unfold_all_cells:
+    m_console->UnfoldAll();
+    m_console->Recalculate(true);
+    // refresh without moving cursor
+    m_console->SetHCaret(m_console->GetHCaret());
+    break;
   }
 
   m_console->SetFocus();
@@ -4213,6 +4225,11 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
       input = m_console->GetInputAboveCaret();
     if (input != wxEmptyString)
       m_console->OpenHCaret(input, type);
+  }
+  else if (event.GetId() == menu_unfold_all_cells ||
+           event.GetId() == menu_fold_all_cells)
+  {
+    // don't do anything else
   }
   else
     m_console->OpenHCaret(wxEmptyString, type);
@@ -4701,6 +4718,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
   EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
+  EVT_MENU(menu_fold_all_cells, wxMaxima::InsertMenu)
+  EVT_MENU(menu_unfold_all_cells, wxMaxima::InsertMenu)
   EVT_MENU(popid_add_comment, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
   EVT_MENU(menu_insert_previous_output, wxMaxima::InsertMenu)
