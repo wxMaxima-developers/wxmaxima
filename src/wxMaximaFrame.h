@@ -206,6 +206,8 @@ enum {
   menu_add_section,
   menu_add_title,
   menu_add_pagebreak,
+  menu_fold_all_cells,
+  menu_unfold_all_cells,
   menu_insert_input,
   menu_insert_previous_input,
   menu_insert_previous_output,

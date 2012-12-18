@@ -320,6 +320,11 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
                              _("Insert image"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
+  wxglade_tmp_menu_2->Append(menu_fold_all_cells, _("Fold All\tCtrl-Alt-["),
+                              _("Fold all sections"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_unfold_all_cells, _("Unfold All\tCtrl-Alt-]"),
+                              _("Unfold all folded sections"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->AppendSeparator();
   wxglade_tmp_menu_2->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
                              _("Recall previous command from history"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_history_next, _("Next Command\tAlt-Down"),
