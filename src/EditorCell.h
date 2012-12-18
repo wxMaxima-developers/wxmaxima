@@ -71,6 +71,7 @@ public:
   {
     m_matchParens = match;
   }
+  bool FindMatchingQuotes();
   void FindMatchingParens();
   wxString GetLineString(int line, int start = 0, int end = -1);
   bool IsDirty()
