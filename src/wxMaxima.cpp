@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2004-2012 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 ///
@@ -3292,7 +3292,7 @@ wxT("<html>"
 "<img src=\"%swxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
-"<p><small>(C) 2004 - 2011 Andrej Vodopivec</small><br></p>"
+"<p><small>(C) 2004 - 2012 Andrej Vodopivec</small><br></p>"
 "</center>"
 "</body>"
 "</html>"),
