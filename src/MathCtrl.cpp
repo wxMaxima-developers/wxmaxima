@@ -1263,6 +1263,8 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // and insert an EditorCell into the output
   // of the working group.
   if (m_workingGroup != NULL) {
+    // TODO unfold working group
+
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
     newInput->SetValue(txt);

@@ -32,6 +32,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_input = NULL;
   m_output = NULL;
   m_hiddenTree = NULL;
+  m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
   m_outputRect.width = 0;
@@ -1108,13 +1109,14 @@ bool GroupCell::HideTree(GroupCell *tree)
   if (m_hiddenTree)
     return false;
   m_hiddenTree = tree;
+  m_hiddenTree->m_hiddenTreeParent = this;
   return true;
-
 }
 
 GroupCell *GroupCell::UnhideTree()
 {
   GroupCell *tree = m_hiddenTree;
+  m_hiddenTree->m_hiddenTreeParent = NULL;
   m_hiddenTree = NULL;
   return tree;
 }
@@ -1151,6 +1153,7 @@ GroupCell *GroupCell::Fold() {
   start->m_previous = start->m_previousToDraw = NULL;
   end->m_next = end->m_nextToDraw = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  m_hiddenTree->m_hiddenTreeParent = this; // let hidden tree know its parent GC
   return this;
 }
 
@@ -1174,6 +1177,7 @@ GroupCell *GroupCell::Unfold() {
   if (next)
     next->m_previous = next->m_previousToDraw = tmp;
 
+  m_hiddenTree->m_hiddenTreeParent = NULL;
   m_hiddenTree = NULL;
   return dynamic_cast<GroupCell*>(tmp);
 }

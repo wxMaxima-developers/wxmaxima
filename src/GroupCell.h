@@ -105,6 +105,7 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
+  GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
   void DestroyOutput();
   MathCell *m_input, *m_output;
