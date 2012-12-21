@@ -1121,6 +1121,20 @@ GroupCell *GroupCell::UnhideTree()
   return tree;
 }
 
+/**
+ * Unfold a tree from the bottom up, when a hidden cell needs to be seen.
+ *
+ * @return true if any cells were unfolded.
+ */
+bool GroupCell::RevealHidden()
+{
+  if (!m_hiddenTreeParent)
+    return false;
+  m_hiddenTreeParent->RevealHidden();
+  m_hiddenTreeParent->Unfold();
+  return true;
+}
+
 GroupCell *GroupCell::Fold() {
   if (!IsFoldable() || m_hiddenTree) // already folded?? shouldn't happen
     return NULL;

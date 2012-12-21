@@ -94,6 +94,7 @@ public:
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
   bool HideTree(GroupCell *tree);
   GroupCell *UnhideTree();
+  bool RevealHidden();
   GroupCell *Fold(); // returns pointer to this or NULL if not successful
   GroupCell *Unfold(); // return pointer to last cell that unfolded
   GroupCell *FoldAll(bool all = false);
