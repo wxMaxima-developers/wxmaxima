@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-///                2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
+///            (C) 2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -289,7 +290,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_2 = new wxMenu;
   wxglade_tmp_menu_2->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-R"),
+  wxglade_tmp_menu_2->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
+                               _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
+  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                                _("Evaluate all cells in the document"), wxITEM_NORMAL);
   wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Output"),
                             _("Remove output from input cells"), wxITEM_NORMAL);

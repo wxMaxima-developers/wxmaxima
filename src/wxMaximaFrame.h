@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -155,6 +156,7 @@ enum {
   menu_build_info,
   menu_bug_report,
   menu_add_path,
+  menu_evaluate_all_visible,
   menu_evaluate_all,
   menu_show_tip,
   menu_copy_from_console,
