@@ -3460,7 +3460,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
-    info.AddDeveloper(wxT("cw.ahbong <cw.ahbong@gmail.com>"));
     info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
 
     info.AddTranslator(wxT("Innocent de Marchi (ca)"));
