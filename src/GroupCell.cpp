@@ -1204,7 +1204,7 @@ GroupCell *GroupCell::Unfold() {
   if (next)
     next->m_previous = next->m_previousToDraw = tmp;
 
-  m_hiddenTree->SetHiddenTreeParent(m_hiddenTree);
+  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
   return dynamic_cast<GroupCell*>(tmp);
 }
