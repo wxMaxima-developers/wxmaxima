@@ -2836,6 +2836,9 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
+/**
+ * Add the entire document, including hidden cells, to the evaluation queue.
+ */
 void MathCtrl::AddEntireDocumentToEvaluationQueue()
 {
   GroupCell* tmp = m_tree;

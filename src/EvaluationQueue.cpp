@@ -56,6 +56,10 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
   }
 }
 
+/**
+ * Add the tree of hidden cells to the EQ by recursively adding cells'
+ * hidden branches to the EQ.
+ */
 void EvaluationQueue::AddHiddenTreeToQueue(GroupCell* gr)
 {
   if (gr == NULL)
