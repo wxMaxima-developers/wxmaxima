@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by

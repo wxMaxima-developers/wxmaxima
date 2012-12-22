@@ -2,6 +2,7 @@
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -3458,6 +3459,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
+    info.AddDeveloper(wxT("cw.ahbong <cw.ahbong@gmail.com>"));
+    info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
 
     info.AddTranslator(wxT("Innocent de Marchi (ca)"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
