@@ -232,7 +232,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(11,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(12,1,5,5);
 
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);

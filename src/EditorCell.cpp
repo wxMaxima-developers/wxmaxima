@@ -1027,6 +1027,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         // case '-': // this could mean negative.
         case '*':
         case '/':
+        case '^':
         case '=':
         case ',':
           wxChar key = event.GetKeyCode();
@@ -1873,6 +1874,7 @@ void EditorCell::SetValue(wxString text)
       if (text == wxT("+") ||
           text == wxT("*") ||
           text == wxT("/") ||
+          text == wxT("^") ||
           text == wxT("=") ||
           text == wxT(","))
       {
