@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2006-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1020,6 +1021,20 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
               m_text.GetChar(m_positionOfCaret) == '}')
             m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                        m_text.SubString(m_positionOfCaret, m_text.Length());
+          break;
+        case '+':
+        // case '-': // this could mean negative.
+        case '*':
+        case '/':
+        case '=':
+          wxChar key = event.GetKeyCode();
+          size_t len = m_text.Length();
+          if (len == 1 && m_positionOfCaret == 1)
+          {
+            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
+                     m_text.SubString(m_positionOfCaret - 1, m_text.Length());
+            m_positionOfCaret += 1;
+          }
           break;
         }
       }
