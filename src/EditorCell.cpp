@@ -1844,26 +1844,26 @@ void EditorCell::SetValue(wxString text)
   {
     if (m_matchParens)
     {
-    if (text == wxT("(")) {
-      m_text = wxT("()");
-      m_positionOfCaret = 1;
-    }
-    else if (text == wxT("[")) {
-      m_text = wxT("[]");
-      m_positionOfCaret = 1;
-    }
-    else if (text == wxT("{")) {
-      m_text = wxT("{}");
-      m_positionOfCaret = 1;
-    }
-    else if (text == wxT("\"")) {
-      m_text = wxT("\"\"");
-      m_positionOfCaret = 1;
-    }
-    else {
-      m_text = text;
-      m_positionOfCaret = m_text.Length();
-    }
+      if (text == wxT("(")) {
+        m_text = wxT("()");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("[")) {
+        m_text = wxT("[]");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("{")) {
+        m_text = wxT("{}");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("\"")) {
+        m_text = wxT("\"\"");
+        m_positionOfCaret = 1;
+      }
+      else {
+        m_text = text;
+        m_positionOfCaret = m_text.Length();
+      }
     }
 
     // if (m_insertAns) // TODO this is the option I would like to use for this feature
