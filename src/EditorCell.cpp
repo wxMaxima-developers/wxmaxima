@@ -1840,8 +1840,10 @@ void EditorCell::ClearUndo()
 
 void EditorCell::SetValue(wxString text)
 {
-  if (m_type == MC_TYPE_INPUT && m_matchParens)
+  if (m_type == MC_TYPE_INPUT)
   {
+    if (m_matchParens)
+    {
     if (text == wxT("(")) {
       m_text = wxT("()");
       m_positionOfCaret = 1;
@@ -1861,6 +1863,20 @@ void EditorCell::SetValue(wxString text)
     else {
       m_text = text;
       m_positionOfCaret = m_text.Length();
+    }
+    }
+
+    // if (m_insertAns) // TODO this is the option I would like to use for this feature
+    if (true)
+    {
+      if (text == wxT("+") ||
+          text == wxT("*") ||
+          text == wxT("/") ||
+          text == wxT("="))
+      {
+        m_text = wxT("%") + text;
+        m_positionOfCaret = m_text.Length();
+      }
     }
   }
   else
