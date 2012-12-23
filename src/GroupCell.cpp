@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2008-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -58,9 +59,12 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   }
 
   bool match = true;
+  bool insertAns = true;
   wxConfig::Get()->Read(wxT("matchParens"), &match);
+  wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
   EditorCell *editor = new EditorCell();
   editor->SetMatchParens(match);
+  editor->SetInsertAns(insertAns);
 
   switch (groupType) {
     case GC_TYPE_CODE:

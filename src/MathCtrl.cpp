@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -2903,10 +2904,15 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (m_activeCell != NULL) {
     SetSelection(NULL);
     bool match = false;
+    bool insertAns = false;
     if (m_activeCell->GetType() == MC_TYPE_INPUT)
+    {
       wxConfig::Get()->Read(wxT("matchParens"), &match);
+      wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
+    }
     m_activeCell->ActivateCell();
     m_activeCell->SetMatchParens(match);
+    m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = false;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
   }

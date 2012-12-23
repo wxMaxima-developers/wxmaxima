@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -108,6 +109,7 @@ protected:
   wxCheckBox* m_enterEvaluates;
   wxCheckBox* m_saveUntitled;
   wxCheckBox* m_openHCaret;
+  wxCheckBox* m_insertAns;
   wxButton* m_getFont;
   wxButton* m_getStyleFont;
   wxFontEncoding m_fontEncoding;

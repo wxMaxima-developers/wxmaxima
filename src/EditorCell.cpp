@@ -38,6 +38,7 @@ EditorCell::EditorCell() : MathCell()
   m_isActive = false;
   m_matchParens = true;
   m_paren1 = m_paren2 = -1;
+  m_insertAns = true;
   m_isDirty = false;
   m_hasFocus = false;
   m_underlined = false;
@@ -1030,7 +1031,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         case ',':
           wxChar key = event.GetKeyCode();
           size_t len = m_text.Length();
-          if (len == 1 && m_positionOfCaret == 1)
+          if (m_insertAns && len == 1 && m_positionOfCaret == 1)
           {
             m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
                      m_text.SubString(m_positionOfCaret - 1, m_text.Length());
@@ -1867,8 +1868,7 @@ void EditorCell::SetValue(wxString text)
       }
     }
 
-    // if (m_insertAns) // TODO this is the option I would like to use for this feature
-    if (true)
+    if (m_insertAns)
     {
       if (text == wxT("+") ||
           text == wxT("*") ||
