@@ -1027,6 +1027,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         case '*':
         case '/':
         case '=':
+        case ',':
           wxChar key = event.GetKeyCode();
           size_t len = m_text.Length();
           if (len == 1 && m_positionOfCaret == 1)
@@ -1872,7 +1873,8 @@ void EditorCell::SetValue(wxString text)
       if (text == wxT("+") ||
           text == wxT("*") ||
           text == wxT("/") ||
-          text == wxT("="))
+          text == wxT("=") ||
+          text == wxT(","))
       {
         m_text = wxT("%") + text;
         m_positionOfCaret = m_text.Length();
