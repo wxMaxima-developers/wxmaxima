@@ -1,6 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1263,6 +1264,9 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // and insert an EditorCell into the output
   // of the working group.
   if (m_workingGroup != NULL) {
+    if (m_workingGroup->RevealHidden())
+      Recalculate(true);
+
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
     newInput->SetValue(txt);
@@ -2828,6 +2832,20 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
       m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  SetHCaret(m_last);
+}
+
+/**
+ * Add the entire document, including hidden cells, to the evaluation queue.
+ */
+void MathCtrl::AddEntireDocumentToEvaluationQueue()
+{
+  GroupCell* tmp = m_tree;
+  while (tmp != NULL) {
+    m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    m_evaluationQueue->AddHiddenTreeToQueue((GroupCell*) tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   SetHCaret(m_last);

@@ -2,6 +2,7 @@
 ///  Copyright (C) 2004-2012 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1726,6 +1727,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 //    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
 //  else
 //    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
+  menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
@@ -2310,8 +2312,12 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
       }
     }
     break;
-  case menu_evaluate_all:
+  case menu_evaluate_all_visible:
     m_console->AddDocumentToEvaluationQueue();
+    TryEvaluateNextInQueue();
+    break;
+  case menu_evaluate_all:
+    m_console->AddEntireDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
   case menu_clear_var:
@@ -3320,6 +3326,7 @@ wxT("<html>"
 "<p>"
 "Andrej Vodopivec<br>"
 "Ziga Lenarcic<br>"
+"Doug Ilijev<br>"
 "</p>"
 "<h4>Patches</h4>"
 "Sandro Montanar (SF-patch 2537150)"
@@ -3453,6 +3460,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
+    info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
 
     info.AddTranslator(wxT("Innocent de Marchi (ca)"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
@@ -4739,6 +4747,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(popid_divide_cell, wxMaxima::PopupMenu)
   EVT_MENU(popid_evaluate, wxMaxima::PopupMenu)
   EVT_MENU(popid_merge_cells, wxMaxima::PopupMenu)
+  EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
