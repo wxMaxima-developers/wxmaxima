@@ -33,6 +33,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_input = NULL;
   m_output = NULL;
   m_hiddenTree = NULL;
+  m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
   m_outputRect.width = 0;
@@ -1112,15 +1113,43 @@ bool GroupCell::HideTree(GroupCell *tree)
   if (m_hiddenTree)
     return false;
   m_hiddenTree = tree;
+  m_hiddenTree->SetHiddenTreeParent(this);
   return true;
-
 }
 
 GroupCell *GroupCell::UnhideTree()
 {
   GroupCell *tree = m_hiddenTree;
+  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
   return tree;
+}
+
+/**
+ * Unfold a tree from the bottom up, when a hidden cell needs to be seen.
+ *
+ * @return true if any cells were unfolded.
+ */
+bool GroupCell::RevealHidden()
+{
+  if (!m_hiddenTreeParent)
+    return false;
+  m_hiddenTreeParent->RevealHidden();
+  m_hiddenTreeParent->Unfold();
+  return true;
+}
+
+/**
+ * For every cell in this GroupCell, set m_hiddenTreeParent to parent.
+ * This way, the field can be used to traverse up the tree no matter which
+ * child we are on. In other words, every child knows its parent node.
+ */
+void GroupCell::SetHiddenTreeParent(GroupCell* parent) {
+  GroupCell* cell = this;
+  while (cell) {
+    cell->m_hiddenTreeParent = parent;
+    cell = dynamic_cast<GroupCell*>(cell->m_next);
+  }
 }
 
 GroupCell *GroupCell::Fold() {
@@ -1155,6 +1184,7 @@ GroupCell *GroupCell::Fold() {
   start->m_previous = start->m_previousToDraw = NULL;
   end->m_next = end->m_nextToDraw = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }
 
@@ -1178,6 +1208,7 @@ GroupCell *GroupCell::Unfold() {
   if (next)
     next->m_previous = next->m_previousToDraw = tmp;
 
+  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
   return dynamic_cast<GroupCell*>(tmp);
 }

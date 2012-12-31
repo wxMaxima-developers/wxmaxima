@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -53,6 +54,23 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
   else {
     m_last->next = newelement;
     m_last = newelement;
+  }
+}
+
+/**
+ * Add the tree of hidden cells to the EQ by recursively adding cells'
+ * hidden branches to the EQ.
+ */
+void EvaluationQueue::AddHiddenTreeToQueue(GroupCell* gr)
+{
+  if (gr == NULL)
+    return; // caller should check, but just in case
+
+  GroupCell* cell = gr->GetHiddenTree();
+  while (cell != NULL) {
+    AddToQueue((GroupCell*) cell);
+    AddHiddenTreeToQueue(cell);
+    cell = dynamic_cast<GroupCell*>(cell->m_next);
   }
 }
 

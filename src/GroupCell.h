@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2008-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -94,6 +95,8 @@ public:
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
   bool HideTree(GroupCell *tree);
   GroupCell *UnhideTree();
+  bool RevealHidden();
+  void SetHiddenTreeParent(GroupCell* parent);
   GroupCell *Fold(); // returns pointer to this or NULL if not successful
   GroupCell *Unfold(); // return pointer to last cell that unfolded
   GroupCell *FoldAll(bool all = false);
@@ -105,6 +108,7 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
+  GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
   void DestroyOutput();
   MathCell *m_input, *m_output;
