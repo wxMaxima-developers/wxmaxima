@@ -2,6 +2,7 @@ _("To start using wxMaxima right away, start typing your command. An input cell 
 _("By default Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands.")
 _("Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f(x) := x^2;').")
 _("You can access the last output using the variable '%'. You can access the output of previous commands using variables '%on' where n is the number of output.")
+_("If you type an operator (i.e. +*/^=,) as the first character, % will be automatically inserted for you, as on a graphing calculator.")
 _("You can insert different types of 'cells' in wxMaxima document using the 'Cell' menu. Note that only 'input cells' can be evaluated, while other are used for commenting and structuring your calculations.")
 _("A new document format has been introduced in wxMaxima 0.8.2 that saves not only your input and text commentaries, but also the outputs of your calculations. When saving your document, select 'wxMaxima XML document' format.")
 _("Title, section and subsection cells can be folded to hide their contents. To fold or unfold, click in the square next to the cell. If you shift-click, all sublevels of that cell will also fold/unfold.")
