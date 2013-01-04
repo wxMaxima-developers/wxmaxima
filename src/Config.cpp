@@ -38,6 +38,7 @@ const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
     wxLANGUAGE_CATALAN,
+    wxLANGUAGE_CHINESE_SIMPLIFIED,
     wxLANGUAGE_CHINESE_TRADITIONAL,
     wxLANGUAGE_CZECH,
     wxLANGUAGE_DANISH,
@@ -238,6 +239,7 @@ wxPanel* Config::CreateOptionsPanel()
     {
       _("(Use default language)"),
       _("Catalan"),
+      _("Chinese Simplified"),
       _("Chinese traditional"),
       _("Czech"),
       _("Danish"),
