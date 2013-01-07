@@ -2921,10 +2921,15 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (m_activeCell != NULL) {
     SetSelection(NULL);
     bool match = false;
+    bool insertAns = false;
     if (m_activeCell->GetType() == MC_TYPE_INPUT)
+    {
       wxConfig::Get()->Read(wxT("matchParens"), &match);
+      wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
+    }
     m_activeCell->ActivateCell();
     m_activeCell->SetMatchParens(match);
+    m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = false;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
   }

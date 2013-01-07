@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2006-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -37,6 +38,7 @@ EditorCell::EditorCell() : MathCell()
   m_isActive = false;
   m_matchParens = true;
   m_paren1 = m_paren2 = -1;
+  m_insertAns = true;
   m_isDirty = false;
   m_hasFocus = false;
   m_underlined = false;
@@ -1021,6 +1023,22 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
             m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                        m_text.SubString(m_positionOfCaret, m_text.Length());
           break;
+        case '+':
+        // case '-': // this could mean negative.
+        case '*':
+        case '/':
+        case '^':
+        case '=':
+        case ',':
+          wxChar key = event.GetKeyCode();
+          size_t len = m_text.Length();
+          if (m_insertAns && len == 1 && m_positionOfCaret == 1)
+          {
+            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
+                     m_text.SubString(m_positionOfCaret - 1, m_text.Length());
+            m_positionOfCaret += 1;
+          }
+          break;
         }
       }
     } // end if (insertLetter)
@@ -1825,27 +1843,44 @@ void EditorCell::ClearUndo()
 
 void EditorCell::SetValue(wxString text)
 {
-  if (m_type == MC_TYPE_INPUT && m_matchParens)
+  if (m_type == MC_TYPE_INPUT)
   {
-    if (text == wxT("(")) {
-      m_text = wxT("()");
-      m_positionOfCaret = 1;
+    if (m_matchParens)
+    {
+      if (text == wxT("(")) {
+        m_text = wxT("()");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("[")) {
+        m_text = wxT("[]");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("{")) {
+        m_text = wxT("{}");
+        m_positionOfCaret = 1;
+      }
+      else if (text == wxT("\"")) {
+        m_text = wxT("\"\"");
+        m_positionOfCaret = 1;
+      }
+      else {
+        m_text = text;
+        m_positionOfCaret = m_text.Length();
+      }
     }
-    else if (text == wxT("[")) {
-      m_text = wxT("[]");
-      m_positionOfCaret = 1;
-    }
-    else if (text == wxT("{")) {
-      m_text = wxT("{}");
-      m_positionOfCaret = 1;
-    }
-    else if (text == wxT("\"")) {
-      m_text = wxT("\"\"");
-      m_positionOfCaret = 1;
-    }
-    else {
-      m_text = text;
-      m_positionOfCaret = m_text.Length();
+
+    if (m_insertAns)
+    {
+      if (text == wxT("+") ||
+          text == wxT("*") ||
+          text == wxT("/") ||
+          text == wxT("^") ||
+          text == wxT("=") ||
+          text == wxT(","))
+      {
+        m_text = wxT("%") + text;
+        m_positionOfCaret = m_text.Length();
+      }
     }
   }
   else
