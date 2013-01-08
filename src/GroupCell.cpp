@@ -60,9 +60,12 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   }
 
   bool match = true;
+  bool insertAns = true;
   wxConfig::Get()->Read(wxT("matchParens"), &match);
+  wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
   EditorCell *editor = new EditorCell();
   editor->SetMatchParens(match);
+  editor->SetInsertAns(insertAns);
 
   switch (groupType) {
     case GC_TYPE_CODE:

@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2006-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -70,6 +71,10 @@ public:
   void SetMatchParens(bool match)
   {
     m_matchParens = match;
+  }
+  void SetInsertAns(bool insertAns)
+  {
+    m_insertAns = insertAns;
   }
   bool FindMatchingQuotes();
   void FindMatchingParens();
@@ -145,6 +150,7 @@ private:
   int m_charHeight;
   bool m_matchParens;
   int m_paren1, m_paren2;
+  bool m_insertAns;
   bool m_isDirty;
   bool m_displayCaret;
   bool m_hasFocus;
