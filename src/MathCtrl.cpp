@@ -1,7 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -518,6 +518,23 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
   }
 }
 
+/**
+ * Call when a fold action was detected, to update the state in response
+ * to a fold occurring.
+ */
+void MathCtrl::FoldOccurred() {
+  SetSaved(false);
+  UpdateMLast();
+}
+
+/**
+ * Toggles the status of the fold for the given GroupCell.
+ * If the cell is folded, it will be unfolded; otherwise it will be folded.
+ *
+ * @param which   The GroupCell to fold or unfold.
+ * @return        A pointer to a GroupCell if the action succeeded;
+ *                NULL otherwise.
+ */
 GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   if (!which)
     return NULL;
@@ -532,11 +549,20 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
     return NULL;
 
   if (result) // something has folded/unfolded
-    UpdateMLast();
+    FoldOccurred();
 
   return result;
 }
 
+/**
+ * Toggles the status of the fold for the given GroupCell and its children.
+ * If the cell is folded, it will be recursively unfolded;
+ * otherwise it will be recursively folded.
+ *
+ * @param which   The GroupCell to recursively fold or unfold.
+ * @return        A pointer to a GroupCell if the action succeeded;
+ *                NULL otherwise.
+ */
 GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
   if (!which)
     return NULL;
@@ -551,25 +577,28 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
     return NULL;
 
   if (result) // something has folded/unfolded
-    UpdateMLast();
+    FoldOccurred();
 
   return result;
 }
 
-// FoldAll()
-// Folds whole document
+/**
+ * Recursively folds the whole document.
+ */
 void MathCtrl::FoldAll() {
   if (m_tree) {
     m_tree->FoldAll(true);
-    UpdateMLast();
+    FoldOccurred();
   }
 }
-// UnfoldAll()
-// Unfolds whole document
+
+/**
+ * Recursively unfolds the whole document.
+ */
 void MathCtrl::UnfoldAll() {
   if (m_tree) {
     m_tree->UnfoldAll(true);
-    UpdateMLast();
+    FoldOccurred();
   }
 }
 
@@ -1264,8 +1293,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // and insert an EditorCell into the output
   // of the working group.
   if (m_workingGroup != NULL) {
-    if (m_workingGroup->RevealHidden())
+    if (m_workingGroup->RevealHidden()) {
+      FoldOccurred();
       Recalculate(true);
+    }
 
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);

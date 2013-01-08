@@ -3298,7 +3298,7 @@ wxT("<html>"
 "<img src=\"%swxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
-"<p><small>(C) 2004 - 2012 Andrej Vodopivec</small><br></p>"
+"<p><small>(C) 2004 - 2013 Andrej Vodopivec</small><br></p>"
 "</center>"
 "</body>"
 "</html>"),
@@ -3455,7 +3455,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2012 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2013 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://andrejv.github.com/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
