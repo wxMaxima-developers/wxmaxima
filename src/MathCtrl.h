@@ -186,6 +186,7 @@ public:
   EvaluationQueue* m_evaluationQueue;
   // methods for folding
   GroupCell *UpdateMLast();
+  void FoldOccurred();
   GroupCell *ToggleFold(GroupCell *which);
   GroupCell *ToggleFoldAll(GroupCell *which);
   void FoldAll();

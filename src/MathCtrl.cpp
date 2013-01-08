@@ -518,6 +518,15 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
   }
 }
 
+/**
+ * Call when a fold action was detected, to update the state in response
+ * to a fold occurring.
+ */
+void MathCtrl::FoldOccurred() {
+  SetSaved(false);
+  UpdateMLast();
+}
+
 GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   if (!which)
     return NULL;
@@ -532,7 +541,7 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
     return NULL;
 
   if (result) // something has folded/unfolded
-    UpdateMLast();
+    FoldOccurred();
 
   return result;
 }
@@ -551,7 +560,7 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
     return NULL;
 
   if (result) // something has folded/unfolded
-    UpdateMLast();
+    FoldOccurred();
 
   return result;
 }
@@ -561,7 +570,7 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
 void MathCtrl::FoldAll() {
   if (m_tree) {
     m_tree->FoldAll(true);
-    UpdateMLast();
+    FoldOccurred();
   }
 }
 // UnfoldAll()
@@ -569,7 +578,7 @@ void MathCtrl::FoldAll() {
 void MathCtrl::UnfoldAll() {
   if (m_tree) {
     m_tree->UnfoldAll(true);
-    UpdateMLast();
+    FoldOccurred();
   }
 }
 
@@ -1264,8 +1273,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // and insert an EditorCell into the output
   // of the working group.
   if (m_workingGroup != NULL) {
-    if (m_workingGroup->RevealHidden())
+    if (m_workingGroup->RevealHidden()) {
+      FoldOccurred();
       Recalculate(true);
+    }
 
     EditorCell *newInput = new EditorCell;
     newInput->SetType(MC_TYPE_INPUT);
