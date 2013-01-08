@@ -124,8 +124,9 @@ public:
   bool CopyBitmap();
   bool CopyToFile(wxString file);
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
+  void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int>& cellMap);
   bool ExportToHTML(wxString file);
-  void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm);
+  void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, int &cellIndex, const std::vector<int>& cellMap);
   bool ExportToMAC(wxString file);
 	bool ExportToWXMX(wxString file);	//export to xml compatible file
   bool ExportToTeX(wxString file);
