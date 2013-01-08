@@ -2,7 +2,7 @@
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
-///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -1023,6 +1023,8 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   document->Thaw();
   document->Refresh(); // redraw document outside Freeze-Thaw
 
+  m_console->SetDefaultHCaret();
+  m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
   wxEndBusyCursor();
   return true;
@@ -1125,6 +1127,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   document->Thaw();
   document->Refresh(); // redraw document outside Freeze-Thaw
 
+  m_console->SetDefaultHCaret();
+  m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
   wxEndBusyCursor();
   return true;
