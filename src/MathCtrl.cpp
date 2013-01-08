@@ -3306,6 +3306,12 @@ GroupCell *MathCtrl::GetHCaret()
   return m_last;
 }
 
+/**
+ * Set the HCaret at the location of the given MathCell.
+ *
+ * @param where   The cell to place the cursor before.
+ * @param callRefresh   Call with false when manually refreshing.
+ */
 void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
 {
   m_selectionStart = m_selectionEnd = NULL;
