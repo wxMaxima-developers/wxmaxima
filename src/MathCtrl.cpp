@@ -1,7 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -527,6 +527,14 @@ void MathCtrl::FoldOccurred() {
   UpdateMLast();
 }
 
+/**
+ * Toggles the status of the fold for the given GroupCell.
+ * If the cell is folded, it will be unfolded; otherwise it will be folded.
+ *
+ * @param which   The GroupCell to fold or unfold.
+ * @return        A pointer to a GroupCell if the action succeeded;
+ *                NULL otherwise.
+ */
 GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   if (!which)
     return NULL;
@@ -546,6 +554,15 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   return result;
 }
 
+/**
+ * Toggles the status of the fold for the given GroupCell and its children.
+ * If the cell is folded, it will be recursively unfolded;
+ * otherwise it will be recursively folded.
+ *
+ * @param which   The GroupCell to recursively fold or unfold.
+ * @return        A pointer to a GroupCell if the action succeeded;
+ *                NULL otherwise.
+ */
 GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
   if (!which)
     return NULL;
@@ -565,16 +582,19 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
   return result;
 }
 
-// FoldAll()
-// Folds whole document
+/**
+ * Recursively folds the whole document.
+ */
 void MathCtrl::FoldAll() {
   if (m_tree) {
     m_tree->FoldAll(true);
     FoldOccurred();
   }
 }
-// UnfoldAll()
-// Unfolds whole document
+
+/**
+ * Recursively unfolds the whole document.
+ */
 void MathCtrl::UnfoldAll() {
   if (m_tree) {
     m_tree->UnfoldAll(true);
