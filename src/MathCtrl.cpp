@@ -2114,9 +2114,9 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
       //fprintf(stderr, ">%ls< >%ls<\n", prompt?prompt->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0", cell?cell->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0" );
 
       if (prompt && cell && cell->ToString(false).Len() > 0) {
-        wxString strindex = prompt->ToString(false); //(%i...)
+        wxString strindex = prompt->ToString(false).Trim(); //(%i...)
         long index;
-        if (strindex.Mid(3, strindex.Len()-5).ToLong(&index)){
+        if (strindex.Mid(3, strindex.Len()-4).ToLong(&index)){
           if (index >= cellMap.size()) cellMap.resize(index+1);
           cellMap[index] = cellIndex;
         }
