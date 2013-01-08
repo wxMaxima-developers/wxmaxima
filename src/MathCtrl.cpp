@@ -41,8 +41,6 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 
-#include <map>
-
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
