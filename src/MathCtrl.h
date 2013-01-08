@@ -165,6 +165,7 @@ public:
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
+  void SetDefaultHCaret();
   void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
   GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
