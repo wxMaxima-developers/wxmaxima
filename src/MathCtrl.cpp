@@ -1,7 +1,7 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -3304,6 +3304,14 @@ GroupCell *MathCtrl::GetHCaret()
     return dynamic_cast<GroupCell*>(m_activeCell->GetParent());
 
   return m_last;
+}
+
+/**
+ * Set the HCaret to its default location, at the end of the document.
+ */
+void MathCtrl::SetDefaultHCaret()
+{
+  SetHCaret(m_last);
 }
 
 /**

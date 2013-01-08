@@ -1023,7 +1023,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   document->Thaw();
   document->Refresh(); // redraw document outside Freeze-Thaw
 
-  m_console->SetHCaret(NULL);
+  m_console->SetDefaultHCaret();
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
   wxEndBusyCursor();
@@ -1127,7 +1127,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   document->Thaw();
   document->Refresh(); // redraw document outside Freeze-Thaw
 
-  m_console->SetHCaret(NULL);
+  m_console->SetDefaultHCaret();
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
   wxEndBusyCursor();

@@ -1,6 +1,6 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -165,6 +165,7 @@ public:
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
+  void SetDefaultHCaret();
   void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
   GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
