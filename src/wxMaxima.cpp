@@ -1794,31 +1794,32 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 
 #endif
 
+wxString ExtractFirstExpression(wxString entry)
+{
+  int semicolon = entry.Find(";");
+  int dollar = entry.Find("$");
+  bool semiFound = (semicolon != wxNOT_FOUND);
+  bool dollarFound = (dollar != wxNOT_FOUND);
+
+  int index;
+  if (semiFound && dollarFound)
+    index = MIN(semicolon, dollar);
+  else if (semiFound && !dollarFound)
+    index = semicolon;
+  else if (!semiFound && dollarFound)
+    index = dollar;
+  else // neither semicolon nor dollar found
+    index = entry.Length();
+
+  return entry.SubString(0, index - 1);
+}
+
 wxString wxMaxima::GetDefaultEntry()
 {
   if (m_console->CanCopy(true))
     return (m_console->GetString()).Trim().Trim(false);
   if (m_console->GetActiveCell() != NULL)
-  {
-    wxString entry = m_console->GetActiveCell()->ToString(false);
-
-    int semicolon = entry.Find(";");
-    int dollar = entry.Find("$");
-    bool semiFound = (semicolon != wxNOT_FOUND);
-    bool dollarFound = (dollar != wxNOT_FOUND);
-
-    int index;
-    if (semiFound && dollarFound)
-      index = MIN(semicolon, dollar);
-    else if (semiFound && !dollarFound)
-      index = semicolon;
-    else if (!semiFound && dollarFound)
-      index = dollar;
-    else // neither found
-      index = entry.Length();
-
-    return entry.SubString(0, index - 1);
-  }
+    return ExtractFirstExpression(m_console->GetActiveCell()->ToString(false));
   return wxT("%");
 }
 

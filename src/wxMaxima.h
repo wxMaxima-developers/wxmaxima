@@ -1,5 +1,6 @@
 ///
 ///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///            (C) 2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
@@ -139,6 +140,7 @@ protected:
   void PrintMenu(wxCommandEvent& event);
 #endif
 
+  wxString ExtractFirstExpression(wxString entry);
   wxString GetDefaultEntry();
   bool StartServer();                              // starts the server
   bool StartMaxima();                              // starts maxima (uses getCommand)
