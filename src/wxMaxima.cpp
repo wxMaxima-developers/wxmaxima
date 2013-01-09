@@ -1799,7 +1799,25 @@ wxString wxMaxima::GetDefaultEntry()
   if (m_console->CanCopy(true))
     return (m_console->GetString()).Trim().Trim(false);
   if (m_console->GetActiveCell() != NULL)
-    return m_console->GetActiveCell()->ToString(false);
+  {
+    wxString entry = m_console->GetActiveCell()->ToString(false);
+
+    int semicolon = entry.Find(";");
+    int dollar = entry.Find("$");
+    int index;
+    if (semicolon == wxNOT_FOUND)
+      if (dollar == wxNOT_FOUND)
+        index = entry.Length();
+      else
+        index = dollar;
+    else
+      if (dollar == wxNOT_FOUND)
+        index = semicolon;
+      else
+        index = MIN(semicolon, dollar);
+
+    return entry.SubString(0, index - 1);
+  }
   return wxT("%");
 }
 
