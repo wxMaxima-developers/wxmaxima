@@ -1804,17 +1804,18 @@ wxString wxMaxima::GetDefaultEntry()
 
     int semicolon = entry.Find(";");
     int dollar = entry.Find("$");
+    bool semiFound = (semicolon != wxNOT_FOUND);
+    bool dollarFound = (dollar != wxNOT_FOUND);
+
     int index;
-    if (semicolon == wxNOT_FOUND)
-      if (dollar == wxNOT_FOUND)
-        index = entry.Length();
-      else
-        index = dollar;
-    else
-      if (dollar == wxNOT_FOUND)
-        index = semicolon;
-      else
-        index = MIN(semicolon, dollar);
+    if (semiFound && dollarFound)
+      index = MIN(semicolon, dollar);
+    else if (semiFound && !dollarFound)
+      index = semicolon;
+    else if (!semiFound && dollarFound)
+      index = dollar;
+    else // neither found
+      index = entry.Length();
 
     return entry.SubString(0, index - 1);
   }
