@@ -1796,8 +1796,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 
 wxString wxMaxima::ExtractFirstExpression(wxString entry)
 {
-  int semicolon = entry.Find(";");
-  int dollar = entry.Find("$");
+  int semicolon = entry.Find(';');
+  int dollar = entry.Find('$');
   bool semiFound = (semicolon != wxNOT_FOUND);
   bool dollarFound = (dollar != wxNOT_FOUND);
 
