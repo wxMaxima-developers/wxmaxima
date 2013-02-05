@@ -396,7 +396,7 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
     str = str1;
 #endif
 #if wxUSE_UNICODE
-    str.Replace(wxT("-"), L"\u2212"); // unicode minus sign
+    str.Replace(wxT("-"), wxT("\x2212")); // unicode minus sign
 #endif
     if (style == TS_NUMBER)
     {
