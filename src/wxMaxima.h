@@ -117,6 +117,7 @@ protected:
   void OnReplace(wxFindDialogEvent& event);
   void OnReplaceAll(wxFindDialogEvent& event);
 
+  void SanitizeSocketBuffer(char *buffer, int length);  // fix early nulls
   void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
   void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
 
