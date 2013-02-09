@@ -526,6 +526,21 @@ void wxMaxima::SendMaxima(wxString s, bool history)
 ///--------------------------------------------------------------------------------
 
 /***
+ * Convert problematic characters in buffer into something sane,
+ * so that special character codes are not encountered unexpectedly
+ * (i.e. early).
+ */
+void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
+{
+  int i = 0;
+  for (int i = 0; i < length; i++)
+  {
+    if (buffer[i] == 0)
+      buffer[i] = ' ';  // convert null (x0) to space (x32)
+  }
+}
+
+/***
  * Client event is triggered when there is something we can read from
  * the socket.
  */
@@ -542,6 +557,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     {
       read = m_client->LastCount();
       buffer[read] = 0;
+
+      SanitizeSocketBuffer(buffer, read);
 
 #if wxUSE_UNICODE
       m_currentOutput += wxString(buffer, wxConvUTF8);
