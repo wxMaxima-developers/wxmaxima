@@ -66,7 +66,7 @@ void ImgCell::LoadImage(wxString image, bool remove)
     if (fsfile) { // open sucessful
 
       wxInputStream *istream = fsfile->GetStream();
-      wxImage pngImage(*istream);
+      wxImage pngImage(*istream, wxBITMAP_TYPE_PNG);
       if (pngImage.Ok())
       {
         loadedImage = true;
@@ -230,8 +230,8 @@ bool ImgCell::ToImageFile(wxString file)
 
 wxString ImgCell::ToXML(bool all)
 {
-	wxImage image = m_bitmap->ConvertToImage();
-	wxString basename = ImgCell::WXMXGetNewFileName();
+  wxImage image = m_bitmap->ConvertToImage();
+  wxString basename = ImgCell::WXMXGetNewFileName();
 
 	// add to memory
   wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
