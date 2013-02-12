@@ -26,6 +26,8 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
+(defvar $wxfilename "")
+
 #+ccl (setf *print-circle* nil)
 
 ;;; Muffle compiler-notes globally

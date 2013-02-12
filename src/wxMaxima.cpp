@@ -1043,6 +1043,11 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
+
+  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+             file +
+             wxT("\")"));
+
   wxEndBusyCursor();
   return true;
 }
@@ -1050,7 +1055,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   SetStatusText(_("Opening file"), 1);
-	wxBeginBusyCursor();
+  wxBeginBusyCursor();
   document->Freeze();
 
   // open wxmx file
@@ -1147,6 +1152,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
+
+  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+             file +
+             wxT("\")"));
+
   wxEndBusyCursor();
   return true;
 }
@@ -1422,6 +1432,13 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
              wxT("/share/wxMaxima/wxmathml\")"));
 #endif
+
+  if (m_currentFile != wxEmptyString)
+  {
+    SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+               m_currentFile +
+               wxT("\")"));
+  }
 }
 
 ///--------------------------------------------------------------------------------
