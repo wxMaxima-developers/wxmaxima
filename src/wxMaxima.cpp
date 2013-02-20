@@ -1047,6 +1047,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
+  SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + file + wxT("\"))"));
 
   wxEndBusyCursor();
   return true;
@@ -1156,6 +1157,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
+  SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + file + wxT("\"))"));
 
   wxEndBusyCursor();
   return true;
@@ -1438,6 +1440,7 @@ void wxMaxima::SetupVariables()
     SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
                m_currentFile +
                wxT("\")"));
+    SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + m_currentFile + wxT("\"))"));
   }
 }
 
