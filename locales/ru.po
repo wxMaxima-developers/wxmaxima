@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-10 23:07+0200\n"
-"PO-Revision-Date: 2013-03-13 10:03+0300\n"
+"PO-Revision-Date: 2013-03-13 10:20+0300\n"
 "Last-Translator: Max Musatov <m1kc@yandex.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -461,7 +461,7 @@ msgstr "Массив:"
 
 #: ../src/wxMaxima.cpp:3366
 msgid "Artwork by"
-msgstr ""
+msgstr "Изображения"
 
 #: ../src/Config.cpp:268
 msgid "Ask to save untitled documents"
@@ -839,19 +839,16 @@ msgid "Copy selection"
 msgstr "Копировать выделение"
 
 #: ../src/wxMaximaFrame.cpp:240
-#, fuzzy
 msgid "Copy selection from document as an image"
 msgstr "Копировать выделение в документе как изображение"
 
 #: ../src/wxMaximaFrame.cpp:233
-#, fuzzy
 msgid "Copy selection from document as text"
-msgstr "Копировать выделение в документе"
+msgstr "Копировать выделение в документе как текст"
 
 #: ../src/wxMaximaFrame.cpp:236
-#, fuzzy
 msgid "Copy selection from document in LaTeX format"
-msgstr "Копировать выделение из документа в формате TeX"
+msgstr "Копировать выделение из документа в формате LaTeX"
 
 #: ../src/wxMaximaFrame.cpp:290
 msgid "Create a new cell with previous input"
@@ -872,9 +869,8 @@ msgstr "Вырезать\tCtrl-X"
 
 #: ../src/wxMaximaFrame.cpp:228 ../src/wxMaximaFrame.cpp:715
 #: ../src/wxMaximaFrame.cpp:784
-#, fuzzy
 msgid "Cut selection"
-msgstr "Копировать выделение"
+msgstr "Вырезать выделение"
 
 #: ../src/Config.cpp:241
 msgid "Czech"
@@ -1448,9 +1444,8 @@ msgid "GIF image (*.gif)|*.gif"
 msgstr "Изображение в формате GIF (*.gif)|*.gif"
 
 #: ../src/wxMaximaFrame.cpp:133
-#, fuzzy
 msgid "General Math"
-msgstr "Создать матрицу"
+msgstr "Математика"
 
 #: ../src/wxMaximaFrame.cpp:325
 msgid "General Math\tAlt-Shift-M"
@@ -1626,7 +1621,7 @@ msgstr "Задача с начальным условием (&2) ..."
 
 #: ../src/Config.cpp:359
 msgid "Input labels"
-msgstr ""
+msgstr "Метки ввода"
 
 #: ../src/wxMaximaFrame.cpp:143
 msgid "Insert"
@@ -1926,9 +1921,8 @@ msgid "Maxima &Help\tF1"
 msgstr "Спра&вка по Maxima\tF1"
 
 #: ../src/Config.cpp:358
-#, fuzzy
 msgid "Maxima input"
-msgstr "Ввод wxMaxima"
+msgstr "Ввод Maxima"
 
 #: ../src/wxMaxima.cpp:465
 msgid "Maxima is calculating"
@@ -2100,9 +2094,8 @@ msgid "One sample t-test"
 msgstr "Текст примера"
 
 #: ../src/wxMaximaFrame.cpp:650
-#, fuzzy
 msgid "Online tutorials"
-msgstr "Объединить факториалы"
+msgstr "Обучающие материалы в интернете"
 
 #: ../src/wxMaximaFrame.cpp:697 ../src/wxMaximaFrame.cpp:761
 #: ../src/main.cpp:202 ../src/Config.cpp:306 ../src/wxMaxima.cpp:1926
@@ -2119,9 +2112,8 @@ msgid "Open a cell when Maxima expects input"
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:192
-#, fuzzy
 msgid "Open a document"
-msgstr "Напечатать документ"
+msgstr "Открыть документ"
 
 #: ../src/wxMaximaFrame.cpp:186 ../src/wxMaximaFrame.cpp:189
 msgid "Open a new window"
@@ -2137,9 +2129,8 @@ msgid "Open matrix"
 msgstr "Ввести матрицу"
 
 #: ../src/wxMaxima.cpp:962 ../src/wxMaxima.cpp:1029
-#, fuzzy
 msgid "Opening file"
-msgstr "Ошибка при открытии файла"
+msgstr "Открытие файла"
 
 #: ../src/wxMaximaFrame.cpp:709 ../src/wxMaximaFrame.cpp:776
 #: ../src/Config.cpp:97
@@ -2157,7 +2148,7 @@ msgstr "Копировать выделенные поля"
 
 #: ../src/Config.cpp:361
 msgid "Output labels"
-msgstr ""
+msgstr "Метки вывода"
 
 #: ../src/wxMaximaFrame.cpp:486
 #, fuzzy
@@ -2240,19 +2231,16 @@ msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Перезапустите wxMaxima, чтобы изменения вступили в силу!"
 
 #: ../src/wxMaximaFrame.cpp:613
-#, fuzzy
 msgid "Plot &2d..."
-msgstr "Двумерный график ..."
+msgstr "Двумерный график (&2D)..."
 
 #: ../src/wxMaximaFrame.cpp:615
-#, fuzzy
 msgid "Plot &3d..."
-msgstr "Трехмерный график ..."
+msgstr "Трёхмерный график (&3D)..."
 
 #: ../src/wxMaximaFrame.cpp:617
-#, fuzzy
 msgid "Plot &Format..."
-msgstr "Формат графика ..."
+msgstr "&Формат графиков..."
 
 #: ../src/wxMaxima.cpp:3190 ../src/wxMaxima.cpp:3939 ../src/Plot2dWiz.cpp:116
 #: ../src/Plot2dWiz.cpp:462 ../src/Plot2dWiz.cpp:476
@@ -2264,9 +2252,8 @@ msgid "Plot 2D..."
 msgstr "Двумерный график..."
 
 #: ../src/MathCtrl.cpp:712
-#, fuzzy
 msgid "Plot 2d..."
-msgstr "Двумерный график ..."
+msgstr "Двумерный график (2D)..."
 
 #: ../src/wxMaxima.cpp:3176 ../src/wxMaxima.cpp:3952 ../src/Plot3dWiz.cpp:118
 msgid "Plot 3D"
@@ -2277,9 +2264,8 @@ msgid "Plot 3D..."
 msgstr "Трехмерный график..."
 
 #: ../src/MathCtrl.cpp:713
-#, fuzzy
 msgid "Plot 3d..."
-msgstr "Трехмерный график ..."
+msgstr "Трёхмерный график (3D)..."
 
 #: ../src/wxMaxima.cpp:3203
 msgid "Plot format"
@@ -2350,7 +2336,6 @@ msgid "Read Matrix..."
 msgstr "&Ввести матрицу..."
 
 #: ../src/wxMaxima.cpp:549
-#, fuzzy
 msgid "Reading Maxima output"
 msgstr "Чтение вывода Maxima"
 
@@ -2399,7 +2384,6 @@ msgid "Report bug"
 msgstr "Сообщить об ошибке"
 
 #: ../src/wxMaximaFrame.cpp:346
-#, fuzzy
 msgid "Restart Maxima"
 msgstr "Перезапустить Maxima"
 
@@ -2447,9 +2431,8 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: ../src/MathCtrl.cpp:663
-#, fuzzy
 msgid "Save Animation..."
-msgstr "Аппроксимация Паде ..."
+msgstr "Сохранить анимацию..."
 
 #: ../src/wxMaxima.cpp:1840
 msgid "Save As"
@@ -2538,14 +2521,12 @@ msgid "Scatterplot..."
 msgstr "График рассеяния..."
 
 #: ../src/wxMaximaFrame.cpp:1054
-#, fuzzy
 msgid "Section"
-msgstr "Копировать выделение"
+msgstr "Раздел"
 
 #: ../src/Config.cpp:365
-#, fuzzy
 msgid "Section cell"
-msgstr "Выделить всё"
+msgstr "Раздел"
 
 #: ../src/MathCtrl.cpp:720 ../src/MathCtrl.cpp:735
 msgid "Select All"
@@ -2584,9 +2565,8 @@ msgid ""
 msgstr ""
 
 #: ../src/Config.cpp:372
-#, fuzzy
 msgid "Selection"
-msgstr "Копировать выделение"
+msgstr "Выделение"
 
 #: ../src/SeriesWiz.cpp:61 ../src/wxMaxima.cpp:3085
 msgid "Series"
@@ -2601,9 +2581,8 @@ msgid "Server started"
 msgstr "Сервер запущен..."
 
 #: ../src/wxMaximaFrame.cpp:631
-#, fuzzy
 msgid "Set &Precision..."
-msgstr "Установить точность..."
+msgstr "Установить &точность..."
 
 #: ../src/wxMaximaFrame.cpp:271
 msgid "Set Zoom"
@@ -2944,14 +2923,12 @@ msgid "Subsample..."
 msgstr "Пример"
 
 #: ../src/wxMaximaFrame.cpp:1053
-#, fuzzy
 msgid "Subsection"
-msgstr "Копировать выделение"
+msgstr "Подраздел"
 
 #: ../src/Config.cpp:364
-#, fuzzy
 msgid "Subsection cell"
-msgstr "Выделить всё"
+msgstr "Подраздел"
 
 #: ../src/wxMaximaFrame.cpp:961
 msgid "Subst..."
@@ -2987,14 +2964,12 @@ msgid "Text"
 msgstr "Текст"
 
 #: ../src/Config.cpp:363
-#, fuzzy
 msgid "Text cell"
-msgstr "&Удалить поля"
+msgstr "Комментарий"
 
 #: ../src/Config.cpp:367
-#, fuzzy
 msgid "Text cell background"
-msgstr "Фон текста"
+msgstr "Фон комментария"
 
 #: ../src/Config.cpp:133
 msgid "The default port used for communication between Maxima and wxMaxima."
@@ -3041,9 +3016,8 @@ msgid "Title"
 msgstr "Заголовок"
 
 #: ../src/Config.cpp:366
-#, fuzzy
 msgid "Title cell"
-msgstr "Вставить поля"
+msgstr "Заголовок"
 
 #: ../data/tips.txt:7
 msgid ""
@@ -3136,9 +3110,8 @@ msgid "Toolbar icons"
 msgstr "Иконки на панели инструментов"
 
 #: ../src/wxMaxima.cpp:3369
-#, fuzzy
 msgid "Translated by"
-msgstr "серовато-голубой"
+msgstr "Перевод"
 
 #: ../src/wxMaximaFrame.cpp:453
 msgid "Transpose a matrix"
@@ -3240,16 +3213,14 @@ msgid "Welcome to wxMaxima"
 msgstr "Добро пожаловать в wxMaxima"
 
 #: ../data/tips.txt:20
-#, fuzzy
 msgid ""
 "When applying functions with one argument from menus, the default argument "
 "is '%'. To apply the function to some other value, select it in the document "
 "before executing a menu command."
 msgstr ""
-"При применении функции с одним аргументом из меню, аргументом по умолчанию "
-"выбирается '%'.  Если нужно применить функцию к другому аргументу, "
-"необходимо ввести её в строке ввода.  В качестве аргумента функции можно "
-"выбрать любое предыдущее (под)выражение."
+"При применении функции с одним аргументом из меню аргументом по умолчанию "
+"выбирается '%'. Если нужно применить функцию к другому аргументу, необходимо "
+"выделить его в документе."
 
 #: ../src/wxMaxima.cpp:2671 ../src/wxMaxima.cpp:2690
 msgid "Width:"
@@ -3481,15 +3452,13 @@ msgstr ""
 "и попробуйте снова!"
 
 #: ../data/tips.txt:18
-#, fuzzy
 msgid ""
 "wxMaxima dialogs set default values for inputs entries, one of which is '%'. "
 "If you have made a selection in your document, the selection will be used "
 "instead of '%'."
 msgstr ""
-"Стандартные диалоги wxMaxima применяют команды со стандартными аргументами, "
-"обычно '%'. Если требуются другие аргументы, команду следует ввести вручную  "
-"в командной строке или выделить выражение в консоли."
+"Диалоги wxMaxima применяют команды со стандартными аргументами, обычно '%'. "
+"Если вы выделите текст в документе, то вместо '%' будет использован он."
 
 #: ../src/wxMaxima.cpp:1675
 msgid "wxMaxima document"
