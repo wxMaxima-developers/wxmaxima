@@ -40,7 +40,7 @@
   #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
   #-(or sbcl clisp) `(progn ,form))
 
-($put '$wxmaxima `((mlist simp) 12 4 1) '$version)
+($put '$wxmaxima `((mlist simp) 13 4 0) '$version)
 
 (defun $wxbuild_info ()
   (let ((wxmaxima-version (cdr ($get '$wxmaxima '$version)))
@@ -1238,9 +1238,10 @@
 		      (format nil "maxout_~d" *image-counter*))))
 
 (defun $wxplot_preamble ()
-  (let ((frmt (if $wxplot_old_gnuplot
-		  "set terminal png picsize ~d ~d; set zeroaxis;"
-		  "set terminal png size ~d,~d; set zeroaxis;")))
+  (let ((frmt 
+         (cond
+           ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
+           (t "set terminal png size ~d,~d; set zeroaxis;"))))
     (format nil frmt
 	    ($first $wxplot_size)
 	    ($second $wxplot_size))))
