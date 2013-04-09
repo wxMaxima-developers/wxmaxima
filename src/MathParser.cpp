@@ -395,6 +395,9 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
     wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
     str = str1;
 #endif
+#if wxUSE_UNICODE
+    str.Replace(wxT("-"), wxT("\x2212")); // unicode minus sign
+#endif
     if (style == TS_NUMBER)
     {
       if (str.Length() > 100) // This could be made configurable.

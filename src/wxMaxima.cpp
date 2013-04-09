@@ -463,6 +463,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x21D2"), wxT(" implies "));
   s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
+  s.Replace(wxT("\x2212"), wxT("-"));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);
