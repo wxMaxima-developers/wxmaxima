@@ -342,8 +342,6 @@ wxPanel* Config::CreateStylePanel()
 
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(3,1,5,5);
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 2, 2, 2);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 1, 3, 3);
-  wxFlexGridSizer* grid_sizer_3 = new wxFlexGridSizer(4, 1, 2, 7);
   wxStaticBoxSizer* sb_sizer_1 = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxStaticBoxSizer* sb_sizer_2 = new wxStaticBoxSizer(styles, wxVERTICAL);
   wxBoxSizer* hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);

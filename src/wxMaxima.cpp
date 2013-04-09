@@ -531,11 +531,10 @@ void wxMaxima::SendMaxima(wxString s, bool history)
  */
 void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
 {
-  int i = 0;
   for (int i = 0; i < length; i++)
   {
     if (buffer[i] == 0)
-      buffer[i] = ' ';  // convert null (x0) to space (x32)
+      buffer[i] = ' ';  // convert input null (0) to space (0x20)
   }
 }
 
