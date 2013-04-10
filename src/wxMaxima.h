@@ -83,6 +83,7 @@ public:
   {
     m_openFile = file;
   }
+  static void StripComments(wxString& s);
   void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file

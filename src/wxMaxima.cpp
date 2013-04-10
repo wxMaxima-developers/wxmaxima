@@ -439,6 +439,26 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   }
 }
 
+/**
+ * We need to remove any statement which would be considered empty
+ * and thus cause an error. Comments within non-empty expressions seem to
+ * be fine.
+ *
+ * What we need to remove is any statements which are any amount of whitespace
+ * and any amount of comments, in any order, ended by a semicolon,
+ * and nothing else.
+ *
+ * The most that should be left over is a single empty statement, ";".
+ *
+ * @param s The command string from which to remove comment expressions.
+ */
+void wxMaxima::StripComments(wxString& s)
+{
+  wxRegEx blankStatementRemoval;
+  blankStatementRemoval.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
+  blankStatementRemoval.Replace(&s, wxT(";"));
+}
+
 void wxMaxima::SendMaxima(wxString s, bool history)
 {
   if (!m_variablesOK) {
@@ -474,6 +494,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
 
   s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
+  StripComments(s);
 
   /// Check for function/variable definitions
   wxStringTokenizer commands(s, wxT(";$"));
