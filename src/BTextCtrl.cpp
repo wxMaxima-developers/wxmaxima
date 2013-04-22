@@ -112,32 +112,39 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 
   if (from == to)  // nothing selected
   {
-    wxString text = this->GetValue();
-    wxString charHere = text.GetChar((size_t)GetInsertionPoint());
+    wxString text = GetValue();
+    wxString charHere = wxT(" ");//text.GetChar((size_t)GetInsertionPoint());
+    size_t insp = GetInsertionPoint();
 
-    if (!fromOpen)
-    {
-      if (charHere == close)
-        SetInsertionPoint(GetInsertionPoint() + 1);
-      else
-        WriteText(close);
-    }
-    else
-    {
-      WriteText(open + close);
-      SetInsertionPoint(GetInsertionPoint() - 1);
+    if (!fromOpen && charHere == close)
+      SetInsertionPoint(insp + 1);
+    else {
+      wxString newtext = 
+        (insp > 0 ? text.SubString(0, insp-1) : wxT("")) +
+        (fromOpen ? open : wxT(""))  + close +
+        text.SubString(insp, text.length());
+      
+      ChangeValue(newtext);
+
+      SetInsertionPoint(insp + 1);
     }
   }
   else
   {
-    SetInsertionPoint(to);
-    WriteText(close);
-    SetInsertionPoint(from);
-    WriteText(open);
+    wxString text = GetValue();
+    size_t insp = GetInsertionPoint();
+
+    wxString newtext = 
+      (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
+      open + text.SubString(from, to - 1) + close +
+      text.SubString(to, text.length());
+
+    ChangeValue(newtext);
+
     if (fromOpen)
-      SetInsertionPoint(from);
+      SetInsertionPoint(from + 1);
     else
-      SetInsertionPoint(to+2);
+      SetInsertionPoint(to + 1);
   }
 }
 
