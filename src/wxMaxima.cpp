@@ -463,6 +463,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x21D2"), wxT(" implies "));
   s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
+  s.Replace(wxT("\x2212"), wxT("-"));
 #endif
 
   SetStatusText(_("Maxima is calculating"), 1);
@@ -531,11 +532,10 @@ void wxMaxima::SendMaxima(wxString s, bool history)
  */
 void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
 {
-  int i = 0;
   for (int i = 0; i < length; i++)
   {
     if (buffer[i] == 0)
-      buffer[i] = ' ';  // convert null (x0) to space (x32)
+      buffer[i] = ' ';  // convert input null (0) to space (0x20)
   }
 }
 
