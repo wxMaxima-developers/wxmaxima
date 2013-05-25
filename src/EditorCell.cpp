@@ -1868,17 +1868,21 @@ void EditorCell::SetValue(wxString text)
         m_positionOfCaret = m_text.Length();
       }
     }
+    else {
+      m_text = text;
+      m_positionOfCaret = m_text.Length();
+    }
 
     if (m_insertAns)
     {
-      if (text == wxT("+") ||
-          text == wxT("*") ||
-          text == wxT("/") ||
-          text == wxT("^") ||
-          text == wxT("=") ||
-          text == wxT(","))
+      if (m_text == wxT("+") ||
+          m_text == wxT("*") ||
+          m_text == wxT("/") ||
+          m_text == wxT("^") ||
+          m_text == wxT("=") ||
+          m_text == wxT(","))
       {
-        m_text = wxT("%") + text;
+        m_text = wxT("%") + m_text;
         m_positionOfCaret = m_text.Length();
       }
     }
