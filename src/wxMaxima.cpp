@@ -1044,11 +1044,14 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
 
+#if defined __WXMSW__
+  file.Replace(wxT("\\"), wxT("/"));
+#endif
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + file + wxT("\"))"));
-
+  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + file + wxT("\"))"));
+  
   wxEndBusyCursor();
   return true;
 }
@@ -1154,11 +1157,14 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   m_console->SetFocus();
   SetStatusText(_("Ready for user input"), 1);
 
+#if defined __WXMSW__
+  file.Replace(wxT("\\"), wxT("/"));
+#endif
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + file + wxT("\"))"));
-
+  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + file + wxT("\"))"));
+  
   wxEndBusyCursor();
   return true;
 }
@@ -1437,10 +1443,14 @@ void wxMaxima::SetupVariables()
 
   if (m_currentFile != wxEmptyString)
   {
+    wxString filename(m_currentFile);
+#if defined __WXMSW__
+    filename.Replace(wxT("\\"), wxT("/"));
+#endif
     SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-               m_currentFile +
+               filename +
                wxT("\")"));
-    SendMaxima(wxT(":lisp-quiet (xchdir ($pathname_directory \"") + m_currentFile + wxT("\"))"));
+    SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + filename + wxT("\"))"));
   }
 }
 

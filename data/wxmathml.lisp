@@ -28,6 +28,10 @@
 
 (defvar $wxfilename "")
 
+(defun tofiledir (file)
+  (let ((path (pathname file)))
+    (namestring (make-pathname :device (pathname-device path) :directory (pathname-directory path)))))
+
 #+ccl (setf *print-circle* nil)
 
 ;;; Muffle compiler-notes globally
