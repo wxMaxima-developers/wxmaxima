@@ -646,6 +646,9 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &Bigfloat"),
                              _("Calculate bigfloat value of the last result"),
                              wxITEM_NORMAL);
+  wxglade_tmp_menu_6->Append(menu_to_numer, _("To Numeri&c\tCTRL+SHIFT+N"),
+                             _("Calculate numeric value of the last result"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_set_precision, _("Set &Precision..."),
                              _("Set bigfloat precision"),
                              wxITEM_NORMAL);
