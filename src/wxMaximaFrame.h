@@ -91,6 +91,7 @@ enum {
   menu_num_out,
   menu_to_float,
   menu_to_bfloat,
+  menu_to_numer,
   menu_set_precision,
   menu_functions,
   menu_variables,
