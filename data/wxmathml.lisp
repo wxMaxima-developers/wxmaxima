@@ -1232,6 +1232,7 @@
 
 (defmvar $wxplot_size '((mlist simp) 500 300))
 (defmvar $wxplot_old_gnuplot nil)
+(defmvar $wxplot_pngcairo nil)
 
 (defvar *image-counter* 0)
 
@@ -1245,6 +1246,7 @@
   (let ((frmt 
          (cond
            ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
+           ($wxplot_pngcairo "set terminal pngcairo  transparent enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
            (t "set terminal png size ~d,~d; set zeroaxis;"))))
     (format nil frmt
 	    ($first $wxplot_size)
@@ -1282,10 +1284,10 @@
 	      (setq preamble (format nil "~a; ~a"
 				     preamble (meval (maxima-substitute aval a (caddr arg)))))))
 	(apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
-			   ((mlist simp) $plot_format $gnuplot)
-			   ((mlist simp) $gnuplot_preamble ,preamble)
-			   ((mlist simp) $gnuplot_term $png)
-			   ((mlist simp) $gnuplot_out_file ,filename)))
+                            ((mlist simp) $plot_format $gnuplot)
+                            ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                            ((mlist simp) $gnuplot_preamble ,preamble)
+                            ((mlist simp) $gnuplot_out_file ,filename)))
 	(setq images (cons filename images))))
     (when images
       ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
@@ -1388,8 +1390,8 @@
 				 preamble (caddr arg)))))
     (apply #'$plot2d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
+                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
-		       ((mlist simp) $gnuplot_term $png)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
@@ -1407,8 +1409,8 @@
 				 preamble (caddr arg)))))
     (apply #'$plot3d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
+                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
-		       ((mlist simp) $gnuplot_term $png)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
@@ -1467,8 +1469,8 @@
 				 preamble (caddr arg)))))
     ($apply '$implicit_plot `((mlist simp) ,@args
 			      ((mlist simp) $plot_format $gnuplot)
+                              ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
 			      ((mlist simp) $gnuplot_preamble ,preamble)
-			      ((mlist simp) $gnuplot_term $png)
 			      ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
   "")
@@ -1485,10 +1487,10 @@
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
-    ($set_plot_option `((mlist simp) $gnuplot_preamble ,preamble))
     (apply #'$contour_plot `(,@args
+                             ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
 			     ((mlist simp) $plot_format $gnuplot)
-			     ((mlist simp) $gnuplot_term $png)
+                             ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
 
     ($ldisp `((wxxmltag simp) ,filename "img")))
