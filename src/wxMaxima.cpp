@@ -3320,6 +3320,10 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
     cmd = wxT("bfloat(") + expr + wxT(");");
     MenuCommand(cmd);
     break;
+  case menu_to_numer:
+    cmd = expr + wxT(",numer;");
+    MenuCommand(cmd);
+    break;
   case menu_num_out:
     cmd = wxT("if numer#false then numer:false else numer:true;");
     MenuCommand(cmd);
@@ -4638,6 +4642,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_num_out, wxMaxima::NumericalMenu)
   EVT_MENU(menu_to_float, wxMaxima::NumericalMenu)
   EVT_MENU(menu_to_bfloat, wxMaxima::NumericalMenu)
+  EVT_MENU(menu_to_numer, wxMaxima::NumericalMenu)
   EVT_MENU(menu_exponentialize, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_invert_mat, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_determinant, wxMaxima::AlgebraMenu)
