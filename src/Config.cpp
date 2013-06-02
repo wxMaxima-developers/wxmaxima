@@ -141,6 +141,7 @@ void Config::SetProperties()
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false;
   bool insertAns = true;
+  bool fixReorderedIndices = false;
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
@@ -159,6 +160,7 @@ void Config::SetProperties()
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
+  config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
 
@@ -212,6 +214,7 @@ void Config::SetProperties()
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
+  m_fixReorderedIndices->SetValue(fixReorderedIndices);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
@@ -276,6 +279,7 @@ wxPanel* Config::CreateOptionsPanel()
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
   m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
+  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
 
   // TAB 1
   // Maxima options box
@@ -297,6 +301,7 @@ wxPanel* Config::CreateOptionsPanel()
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
   vsizer->Add(m_openHCaret, 0, wxALL, 5);
   vsizer->Add(m_insertAns, 0, wxALL, 5);
+  vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -458,6 +463,7 @@ void Config::WriteSettings()
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
+  config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());

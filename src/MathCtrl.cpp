@@ -2623,7 +2623,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   return done;
 }
 
-void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap)
+void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
 {
   GroupCell* tmp = dynamic_cast<GroupCell*>(tree);
 
@@ -2646,18 +2646,19 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
       if (txt != NULL) {
         wxString input = txt->ToString(false);
 
-        for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
-          if (*it == '%' && (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') && (it.pos == 0 || input[it.pos-1] != '%')){
-            it.pos += 2;
-            int startPos = it.pos;
-            int temp = 0;
-            for (; it.pos < input.Length() && (*it >= '0' && *it <= '9'); ++it.pos)
-              temp = temp * 10 + (*it - '0');
-            if (temp >= cellMap.size() || cellMap[temp] < 1) continue;
-            wxString tempstr; tempstr << cellMap[temp];
-            input.replace(startPos, it.pos - startPos, tempstr);
-            it.pos = startPos + tempstr.length();
-          }
+        if (fixReorderedIndices)
+          for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
+            if (*it == '%' && (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') && (it.pos == 0 || input[it.pos-1] != '%')){
+              it.pos += 2;
+              int startPos = it.pos;
+              int temp = 0;
+              for (; it.pos < input.Length() && (*it >= '0' && *it <= '9'); ++it.pos)
+                temp = temp * 10 + (*it - '0');
+              if (temp >= cellMap.size() || cellMap[temp] < 1) continue;
+              wxString tempstr; tempstr << cellMap[temp];
+              input.replace(startPos, it.pos - startPos, tempstr);
+              it.pos = startPos + tempstr.length();
+            }
 
 
         if (input.Length()>0) {
@@ -2728,7 +2729,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
     {
       AddLineToFile(output, wxEmptyString);
       AddLineToFile(output, wxT("/* [wxMaxima: fold    start ] */"));
-      ExportToMAC(output, tmp->GetHiddenTree(), wxm, cellMap);
+      ExportToMAC(output, tmp->GetHiddenTree(), wxm, cellMap, fixReorderedIndices);
       AddLineToFile(output, wxEmptyString);
       AddLineToFile(output, wxT("/* [wxMaxima: fold    end   ] */"));
     }
@@ -2764,10 +2765,14 @@ bool MathCtrl::ExportToMAC(wxString file)
     AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
-  int cellIndex = 1;
+  bool fixReorderedIndices;
+  wxConfig::Get()->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   std::vector<int> cellMap;
-  CalculateReorderedCellIndices(m_tree, cellIndex,  cellMap);
-  ExportToMAC(output, m_tree, wxm, cellMap);
+  if (fixReorderedIndices) {
+    int cellIndex = 1;
+    CalculateReorderedCellIndices(m_tree, cellIndex,  cellMap);
+  }
+  ExportToMAC(output, m_tree, wxm, cellMap, fixReorderedIndices);
 
   AddLineToFile(output, wxEmptyString, false);
   if (wxm) {
