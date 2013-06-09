@@ -137,6 +137,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
   // RegEx for variable definitions
   m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
+  // RegEx for blank statement removal
+  m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
 }
 
 wxMaxima::~wxMaxima()
@@ -454,9 +456,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
  */
 void wxMaxima::StripComments(wxString& s)
 {
-  wxRegEx blankStatementRemoval;
-  blankStatementRemoval.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
-  blankStatementRemoval.Replace(&s, wxT(";"));
+  m_blankStatementRegEx.Replace(&s, wxT(";"));
 }
 
 void wxMaxima::SendMaxima(wxString s, bool history)
