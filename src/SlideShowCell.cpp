@@ -286,7 +286,7 @@ bool SlideShow::ToGif(wxString file)
 #endif
   {
     retval = false;
-    wxMessageBox(_("There was and error during GIF export!\n\nMake sure ImageMagick is installed and wxMaxima can find the convert program."),
+    wxMessageBox(_("There was an error during GIF export!\n\nMake sure ImageMagick is installed and wxMaxima can find the convert program."),
         wxT("Error"), wxICON_ERROR);
   }
 
