@@ -2303,7 +2303,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
 {
   int count = m_console->ReplaceAll(event.GetFindString(), event.GetReplaceString());
 
-  wxMessageBox(wxString::Format(_("Replaced %d occurences."), count));
+  wxMessageBox(wxString::Format(_("Replaced %d occurrences."), count));
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
