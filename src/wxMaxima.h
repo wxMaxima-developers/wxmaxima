@@ -83,6 +83,7 @@ public:
   {
     m_openFile = file;
   }
+  void StripComments(wxString& s);
   void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
                 wxString command = wxEmptyString); // Open a file
@@ -213,6 +214,7 @@ protected:
   wxFindReplaceData m_findData;
   wxRegEx m_funRegEx;
   wxRegEx m_varRegEx;
+  wxRegEx m_blankStatementRegEx;
 #if wxUSE_DRAG_AND_DROP
   friend class MyDropTarget;
 #endif
