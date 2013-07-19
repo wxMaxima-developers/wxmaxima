@@ -424,7 +424,7 @@ void MathCtrl::Recalculate(bool force)
 }
 
 /***
- * Resize the controll
+ * Resize the control
  */
 void MathCtrl::OnSize(wxSizeEvent& event) {
   wxDELETE(m_memory);
@@ -443,7 +443,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
 
 /***
  * Clear document
- * Basicly set everything to the state as if MathCtrl
+ * Basically set everything to the state as if MathCtrl
  * was just created, so there is a blank document.
  * Called when opening a new file into existing MathCtrl.
  */
@@ -932,12 +932,12 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
 }
 
 /***
- * Select the rectangle surounded by down and up. Called from OnMouseMotion.
+ * Select the rectangle surrounded by down and up. Called from OnMouseMotion.
  *
  * The method decides what to do, based on the value of m_clickType which
  * was set previously in OnMouseLeftDown. This enables different selection behaviours
  * depending on where we first clicked. If m_clickType equals
- * CLICK_TYPE_NONE - click-draging does not result in a selection (we clicked in hideRect for instance)
+ * CLICK_TYPE_NONE - click-dragging does not result in a selection (we clicked in hideRect for instance)
  * CLICK_TYPE_GROUP_SELECTION - we are selecting full groupcells only. Only y-coordinate matters.
  * CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and draging
  *   results in selecting text in EditorCell
@@ -3177,7 +3177,7 @@ void MathCtrl::PasteFromClipboard(bool primary) {
         // Read the content from clipboard
         while (lines.HasMoreTokens())
         {
-          // Go to the begining of the cell
+          // Go to the beginning of the cell
           do {
             line = lines.GetNextToken();
           } while (lines.HasMoreTokens() &&
