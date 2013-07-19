@@ -961,7 +961,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1; // reset selection
     } // end if (m_selectionStart > -1)
 
-// insert letter if we didnt insert brackets around selection
+// insert letter if we didn't insert brackets around selection
   if (insertLetter) {
       m_text = m_text.SubString(0, m_positionOfCaret - 1) +
 #if wxUSE_UNICODE
@@ -1606,7 +1606,7 @@ void EditorCell::CommentSelection()
  * - called from MathCtrl::OnDoubleClick, MathCtrl::Autocomplete and wxMaxima::HelpMenu
  * Selects word under cursor (aA-zZ, 0-9, %, _, count) or
  * the inside of brackets using m_paren1 and m_paren2 if available and selectParens is true.
- * Returns the selected string if selected a word succesfully - used for F1 help and
+ * Returns the selected string if selected a word successfully - used for F1 help and
  * MathCtrl::Autocomplete.
  */
 

@@ -63,7 +63,7 @@ void ImgCell::LoadImage(wxString image, bool remove)
 
   if (m_fileSystem) {
     wxFSFile *fsfile = m_fileSystem->OpenFile(image);
-    if (fsfile) { // open sucessful
+    if (fsfile) { // open successful
 
       wxInputStream *istream = fsfile->GetStream();
       wxImage pngImage(*istream, wxBITMAP_TYPE_PNG);
