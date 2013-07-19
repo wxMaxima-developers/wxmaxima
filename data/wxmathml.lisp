@@ -128,7 +128,7 @@
       x))
 
 ;;; First we have the functions which are called directly by wxxml and its
-;;; descendents
+;;; descendants
 
 (defun wxxml-atom (x l r &aux tmp-x)
   (append l
