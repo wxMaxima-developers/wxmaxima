@@ -843,7 +843,7 @@ void wxMaxima::ReadFirstPrompt()
     start = 0;
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
-              wxT(" http://andrejv.github.com/wxmaxima/\n") +
+              wxT(" http://andrejv.github.io/wxmaxima/\n") +
               m_currentOutput.SubString(start, m_currentOutput.Length() - 1));
 #endif // __WXMSW__
 
@@ -1423,7 +1423,7 @@ void wxMaxima::ReadProcessOutput()
 
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
-              wxT(" http://andrejv.github.com/wxmaxima/\n") +
+              wxT(" http://andrejv.github.io/wxmaxima/\n") +
               o.SubString(st, o.Length() - 1));
 
   SetStatusText(_("Ready for user input"), 1);
@@ -3410,7 +3410,7 @@ wxT("<html>"
 "<p>"
 "%s"
 "</p>"
-"<p><a href=\"http://andrejv.github.com/wxmaxima/\">wxMaxima</a><br>"
+"<p><a href=\"http://andrejv.github.io/wxmaxima/\">wxMaxima</a><br>"
 "   <a href=\"http://maxima.sourceforge.net/\">Maxima</a></p>"
 "<h4>%s</h4>"
 "<p>"
@@ -3552,7 +3552,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
     info.SetCopyright(wxT("(C) 2004-2013 Andrej Vodopivec"));
-    info.SetWebSite(wxT("http://andrejv.github.com/wxmaxima/"));
+    info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
@@ -3654,7 +3654,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     break;
 
   case menu_help_tutorials:
-    wxLaunchDefaultBrowser(wxT("http://andrejv.github.com/wxmaxima/help.html"));
+    wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima/help.html"));
     break;
 
   case menu_check_updates:
@@ -4447,7 +4447,7 @@ long *VersionToInt(wxString version)
 }
 
 /***
- * Checks the file http://andrejv.github.com/wxmaxima/version.txt to
+ * Checks the file http://andrejv.github.io/wxmaxima/version.txt to
  * see if there is a newer version available.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate)
@@ -4456,7 +4456,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   connection.SetHeader(wxT("Content-type"), wxT("text/html; charset=utf-8"));
   connection.SetTimeout(2);
 
-  if (!connection.Connect(wxT("andrejv.github.com")))
+  if (!connection.Connect(wxT("andrejv.github.io")))
   {
     wxMessageBox(_("Can not connect to the web server."), _("Error"),
             wxOK | wxICON_ERROR);
@@ -4491,7 +4491,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
             wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)
-          wxLaunchDefaultBrowser(wxT("http://andrejv.github.com/wxmaxima/"));
+          wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima/"));
       }
       else if (reportUpToDate)
         wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
