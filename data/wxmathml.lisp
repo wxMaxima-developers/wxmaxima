@@ -80,6 +80,9 @@
 
 (defvar *var-tag* '("<v>" "</v>"))
 
+(defun wxxml-get (x p)
+  (if (symbolp x) (get x p)))
+
 (defun wxxml (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its
   ;; left, r to its right. lop and rop are the operators on the left
@@ -93,14 +96,14 @@
         ;; special check needed because macsyma notates arrays peculiarly
         ((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
         ;; dispatch for object-oriented wxxml-ifiying
-        ((get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
-        ((equal (get (caar x) 'dimension) 'dimension-infix)
+        ((wxxml-get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
+        ((equal (wxxml-get (caar x) 'dimension) 'dimension-infix)
          (wxxml-infix x l r))
-	((equal (get (caar x) 'dimension) 'dimension-match)
+	((equal (wxxml-get (caar x) 'dimension) 'dimension-match)
          (wxxml-matchfix-dim x l r))
-	((equal (get (caar x) 'dimension) 'dimension-nary)
+	((equal (wxxml-get (caar x) 'dimension) 'dimension-nary)
 	 (wxxml-nary x l r))
-        ((get (caar x) 'defstruct-template)
+        ((wxxml-get (caar x) 'defstruct-template)
          (wxxml-defstruct x l r))
         (t (wxxml-function x l r))))
 
@@ -957,11 +960,11 @@
 (defprop mdoin 30. wxxml-rbp)
 
 (defun wxxml-lbp (x)
-  (cond ((get x 'wxxml-lbp))
+  (cond ((wxxml-get x 'wxxml-lbp))
         (t(lbp x))))
 
 (defun wxxml-rbp (x)
-  (cond ((get x 'wxxml-rbp))
+  (cond ((wxxml-get x 'wxxml-rbp))
         (t(lbp x))))
 
 ;; these aren't quite right
