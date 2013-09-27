@@ -52,7 +52,7 @@ void SlideShow::LoadImages(wxArrayString images)
       bool loadedImage = false;
 
       wxFSFile *fsfile = m_fileSystem->OpenFile(images[i]);
-      if (fsfile) { // open sucessful
+      if (fsfile) { // open successful
 
         wxInputStream *istream = fsfile->GetStream();
         wxImage pngImage(*istream);
