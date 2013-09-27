@@ -713,7 +713,7 @@ void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
 
-  frame_1_toolbar->SetToolBitmapSize(wxSize(22, 22));
+  frame_1_toolbar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
   frame_1_toolbar->AddTool(tb_new, _("New"),
