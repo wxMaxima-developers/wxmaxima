@@ -370,7 +370,7 @@ msgstr ""
 "Mit wxMaxima 0.8.2 wurde ein neues Format für Dokumente eingeführt. Dieses "
 "sichert nicht nur die Eingaben, sondern auch die Ergebnisse der "
 "Berechnungen. Wenn Sie Ihr Dokument speichern, können Sie dazu das Format "
-"'wxMaxima XML Dokument auswählen."
+"'wxMaxima-XML-Dokument' auswählen."
 
 #: ../src/wxMaximaFrame.cpp:421
 msgid "A&t Value..."
@@ -495,7 +495,7 @@ msgid ""
 "by checking 'Enter evaluates cells'. This switches the roles of these two "
 "key commands."
 msgstr ""
-"Standardmäßig wird mit 'Umschalt-Eingabe' eine Zelle ausgewertet. Wogegen "
+"Standardmäßig wird mit 'Umschalt-Eingabe' eine Zelle ausgewertet, wogegen "
 "'Eingabe' die Eingabe mehrer Zeilen in einer Zelle erlaubt. Dieses Verhalten "
 "kann im Dialog 'Bearbeiten->Einstellungen' durch Markierung der Auswahl "
 "'Eingabe wertet die Zelle aus' geändert werden. Die Funktion der beiden "
@@ -1177,15 +1177,15 @@ msgstr "Exportieren"
 
 #: ../src/wxMaximaFrame.cpp:209
 msgid "Export document to a HTML or pdfLaTeX file"
-msgstr "Exportiere Dokument als HTML oder pdfLaTex Datei"
+msgstr "Exportiere Dokument als HTML oder pdfLaTex-Datei"
 
 #: ../src/wxMaxima.cpp:1970
 msgid "Exporting to HTML failed!"
-msgstr "Export als HTML Datei ist fehlgeschlagen!"
+msgstr "Export als HTML-Datei ist fehlgeschlagen!"
 
 #: ../src/wxMaxima.cpp:1965
 msgid "Exporting to TeX failed!"
-msgstr "Export als TeX Datei ist fehlgeschlagen!"
+msgstr "Export als TeX-Datei ist fehlgeschlagen!"
 
 #: ../src/Plot3dWiz.cpp:41
 msgid "Expression"
@@ -1470,7 +1470,7 @@ msgstr "Gitter:"
 
 #: ../src/wxMaxima.cpp:1953
 msgid "HTML file (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
-msgstr "HTML Datei (*.html)|*.html|pdfLaTex Datei (*.tex)|*.tex|Alle|*"
+msgstr "HTML-Datei (*.html)|*.html|pdfLaTex-Datei (*.tex)|*.tex|Alle|*"
 
 #: ../src/wxMaxima.cpp:2671 ../src/wxMaxima.cpp:2690
 msgid "Height:"
@@ -1517,7 +1517,7 @@ msgid ""
 msgstr ""
 "Der horizontale Cursor arbeitet wie ein normaler Cursor, der jedoch auf "
 "Zellen wirkt. Mit den Pfeilen abwärts und aufwärts wird der horizontale "
-"Cursur zwischen den Zellen bewegt. Wird dabei die Umschalt-Taste gehalten, "
+"Cursor zwischen den Zellen bewegt. Wird dabei die Umschalt-Taste gehalten, "
 "werden die Zellen markiert. Mit der Entf-Taste oder Rücktaste wird die "
 "nächste oder vorhergehende Zelle gelöscht."
 
@@ -1540,7 +1540,7 @@ msgid ""
 msgstr ""
 "Wenn Ihre Berechnung zu lange braucht, ohne dass Sie ein Ergebnis erhalten, "
 "können Sie mit dem Menübefehl 'Maxima->Unterbrechen' oder 'Maxima->Maxima "
-"neustarten' die Berechnung abrechen."
+"neustarten' die Berechnung abbrechen."
 
 #: ../src/wxMaximaFrame.cpp:1055
 msgid "Image"
@@ -2242,7 +2242,7 @@ msgstr "Portugiesisch (Brasilien)"
 
 #: ../src/Plot2dWiz.cpp:515 ../src/Plot3dWiz.cpp:461
 msgid "Postscript file (*.eps)|*.eps|All|*"
-msgstr "Postscript Datei (*.eps)|*.eps|Alle|*"
+msgstr "Postscript-Datei (*.eps)|*.eps|Alle|*"
 
 #: ../src/wxMaxima.cpp:3242
 msgid "Precision"
@@ -2429,11 +2429,11 @@ msgstr "Speichere Layout in eine Datei"
 
 #: ../src/Config.cpp:260
 msgid "Save wxMaxima window size/position"
-msgstr "Ort und Größe des wxMaxima Fensters speichern"
+msgstr "Ort und Größe des wxMaxima-Fensters speichern"
 
 #: ../src/Config.cpp:124
 msgid "Save wxMaxima window size/position between sessions."
-msgstr "Ort und Größe des wxMaxima Fensters zwischen Sitzungen speichern"
+msgstr "Ort und Größe des wxMaxima-Fensters zwischen Sitzungen speichern"
 
 #: ../src/wxMaxima.cpp:3579
 msgid "Scatterplot"
@@ -2486,7 +2486,7 @@ msgid ""
 "a menu with convenient functions that will operate on the selection."
 msgstr ""
 "Markieren Sie im Ausgabebereich der Zelle einen Bereich, dann erhalten mit "
-"einem Rechts-klick ein Kontextmenü, dass Funktionen zeigt, die auf die "
+"einem Rechtsklick ein Kontextmenü, dass Funktionen zeigt, die auf die "
 "Auswahl angewendet werden können."
 
 #: ../src/Config.cpp:372
@@ -2902,7 +2902,7 @@ msgid ""
 "\n"
 "Please report this as a bug."
 msgstr ""
-"Die erstellte XML Datei ist fehlerhaft!\n"
+"Die erstellte XML-Datei ist fehlerhaft!\n"
 "\n"
 "Bitte berichten Sie dies als Programmfehler."
 
@@ -2986,7 +2986,7 @@ msgid ""
 ">Configure' dialog."
 msgstr ""
 "Im Dialog 'Bearbeiten->Einstellungen' können Sie angeben, ob Ort und Größe "
-"des wxMaxima Fensters gespeichert werden sollen."
+"des wxMaxima-Fensters gespeichert werden sollen."
 
 #: ../data/tips.txt:1
 msgid ""
@@ -3187,16 +3187,16 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"Sie erhalten Hilfe zu einer Maxima Funktion, indem Sie die Funktion im "
-"Dokument markieren oder doppel-klicken und dann F1 drücken. wxMaxima öffnet "
-"das Maxima Manual und sucht im Index den markierten Begriff."
+"Sie erhalten Hilfe zu einer Maxima-Funktion, indem Sie die Funktion im "
+"Dokument markieren oder doppelklicken und dann F1 drücken. wxMaxima öffnet "
+"das Maxima-Manual und sucht im Index den markierten Begriff."
 
 #: ../data/tips.txt:8
 msgid ""
 "You can hide output part of cells by clicking in the triangle on the left "
 "side of cells. This works on text cells also."
 msgstr ""
-"Durch einen Klick in das linke obere Dreieck einer Zelle, könnnen Sie den "
+"Durch einen Klick in das linke obere Dreieck einer Zelle können Sie den "
 "Ausgabebereich der Zelle ausblenden. Das funktioniert auch für Textzellen."
 
 #: ../data/tips.txt:5
@@ -3205,10 +3205,10 @@ msgid ""
 "'Cell' menu. Note that only 'input cells' can be evaluated, while other are "
 "used for commenting and structuring your calculations."
 msgstr ""
-"Sie können verschiedene Zelltypen in ein wxMaxima Dokument einfügen. Diese "
+"Sie können verschiedene Zelltypen in ein wxMaxima-Dokument einfügen. Diese "
 "Typen finden Sie im Menü unter 'Bearbeiten->Zelle'. Beachten Sie, dass nur "
 "Eingabezellen von Maxima ausgewertet werden. Die anderen Zelltypen dienen "
-"dazu, das wxMaxima Dokument zu strukturieren und mit Kommentaren zu versehen."
+"dazu, das wxMaxima-Dokument zu strukturieren und mit Kommentaren zu versehen."
 
 #: ../data/tips.txt:14
 msgid ""
@@ -3219,7 +3219,7 @@ msgid ""
 "cells."
 msgstr ""
 "Sie können mehrere Zellen mit der Maus oder der Tastur auswählen. Ziehen Sie "
-"dazu mit links geklickte Maus über die linken Zellklammern oder halten Sie "
+"dazu mit gedrückter linker Maustaste über die linken Zellklammern oder halten Sie "
 "'Umschalt-Taste' fest und bewegen sich mit dem Cursor über die "
 "auszuwählenden Zellen. Dies ist nützlich, wenn Sie mehrere Zellen auf einmal "
 "löschen oder auswerten wollen."
@@ -3409,19 +3409,19 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:1675
 msgid "wxMaxima document"
-msgstr "wxMaxima Dokument"
+msgstr "wxMaxima-Dokument"
 
 #: ../src/wxMaxima.cpp:1842
 msgid ""
 "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|Maxima "
 "batch file (*.mac)|*.mac"
 msgstr ""
-"wxMaxima Dokument (*.wxm)|*.wxm|wxMaxima XML Dokument (*.wxmx)|*.wxmx|Maxima "
+"wxMaxima-Dokument (*.wxm)|*.wxm|wxMaxima-XML-Dokument (*.wxmx)|*.wxmx|Maxima "
 "Batch-Datei (*.mac)|*.mac|Alle|*"
 
 #: ../src/main.cpp:204 ../src/wxMaxima.cpp:1928
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
-msgstr "wxMaxima Dokument (*.wxm, *.wxmx)|*.wxm;*.wxmx"
+msgstr "wxMaxima-Dokument (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
 #: ../src/wxMaxima.cpp:973 ../src/wxMaxima.cpp:984 ../src/wxMaxima.cpp:1043
 #: ../src/wxMaxima.cpp:1055
