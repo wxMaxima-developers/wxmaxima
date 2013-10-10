@@ -1316,7 +1316,7 @@
 
 (defun get-pic-size-opt ()
   (cond
-    ((= ($get '$draw '$version) 1)
+    ((eq ($get '$draw '$version) 1)
      `(((mequal simp) $pic_width ,($first $wxplot_size))
        ((mequal simp) $pic_height ,($second $wxplot_size))))
     (t
@@ -1440,7 +1440,7 @@
                          ((mequal simp) $terminal $png)
                          ((mequal simp) $file_name ,filename))
                        (cond
-                         ((= ($get '$draw '$version) 1)
+                         ((eq ($get '$draw '$version) 1)
                           `(((mequal simp) $pic_width ,($first $wxplot_size))
                             ((mequal simp) $pic_height ,($second $wxplot_size))))
                          (t
