@@ -41,7 +41,7 @@ XARGS=xargs
 XGETTEXT_ARGS=-C -k_ -s -j
 
 # implicit rules
-.mo: .po
+.po.mo: .po
 	$(MSGFMT) -o $@ $<
 
 # a PO file must be updated to include new translations
