@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2004-2013 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
@@ -236,7 +236,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(12,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(13,1,5,5);
 
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
