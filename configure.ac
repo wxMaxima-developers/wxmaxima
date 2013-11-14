@@ -2,19 +2,23 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([wxMaxima], [13.04.2])
-AC_CONFIG_SRCDIR([src/wxMaxima.h])
+AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
 
-AM_CONFIG_HEADER(src/Setup.h)
+AC_CONFIG_HEADER(src/Setup.h)
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 
+AM_OPTIONS_WXCONFIG
+
 dnl Checks for programs.
-AC_PROG_CXX
-AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+AC_PROG_CXX
+AC_PROG_CXXCPP
+
+AC_LANG_CPLUSPLUS
 
 dnl check for host
 case "$host" in
@@ -46,17 +50,8 @@ else
    AC_DEFINE([WXM_PRINT], [0], ["Add printing support"])
 fi
 
-dnl check for wxWidgets
+dnl osx compile options
 
-AM_OPTIONS_WXCONFIG
-AC_ARG_ENABLE(static-wx,
-[  --enable-static-wx      Compile with static wx libraries.],
-     	[case "${enableval}" in
-          yes) static_wx=true ;;
-          no)  static_wx=false ;;
-	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-static-wx) ;;
-     	 esac],
-	[static_wx=false])
 
 AC_ARG_WITH(macosx-sdk,
 [  --with-macosx-sdk=PATH  use an OS X SDK at PATH],
@@ -91,7 +86,16 @@ if test "x$MACOSX_ARCH" != "x"; then
     eval "OBJXXFLAGS=\"$OBJXXFLAGS -arch $MACOSX_ARCH\""
 fi
 
-AM_PATH_WXCONFIG([2.8.4], [wxWin=1], [wxWin=0], [adv,xml,html,aui,core,net,base])
+AC_ARG_ENABLE(static-wx,
+[  --enable-static-wx      Compile with static wx libraries.],
+     	[case "${enableval}" in
+          yes) static_wx=true ;;
+          no)  static_wx=false ;;
+	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-static-wx) ;;
+     	 esac],
+	[static_wx=false])
+
+AM_PATH_WXCONFIG([2.8.4], [wxWin=1], [wxWin=0], [xml,html,adv,aui,core,net,base])
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
@@ -103,36 +107,26 @@ if test "$wxWin" != 1; then
           is in LD_LIBRARY_PATH or equivalent variable and
           wxWidgets version is 2.8.4 or above.
           ])
-else
-   if test x"${static_wx}" = x"true" ; then
-          WX_LIBS="$WX_LIBS_STATIC"
-   fi
-   dnl Quick hack until wx-config does it
-   ac_save_LIBS=$LIBS
-   ac_save_CXXFLAGS=$CXXFLAGS
-   LIBS=$WX_LIBS
-   CXXFLAGS=$WX_CXXFLAGS
-   AC_LANG_SAVE
-   AC_LANG_CPLUSPLUS
-   AC_MSG_CHECKING([if we can compile a wxWidgets program])
-   AC_TRY_LINK([#include <wx/wx.h>],
-               [wxString test=wxT("")],
-               [AC_MSG_RESULT([yes])],
-               [echo ""
-                echo ""
-                echo "*** The test program failed to compile or link. See the file config.log for the"
-                echo "*** exact error that occured. This usually means that wxWidgets library was"
-                echo "*** incorrectly installed."
-                echo ""
-                AC_MSG_ERROR([Failed to compile a test program])])
-   AC_LANG_RESTORE
-   LIBS=$ac_save_LIBS
-   CXXFLAGS="$ac_save_CXXFLAGS $WX_CXXFLAGS"
 fi
 
-dnl
+CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS"
+CXXFLAGS="$CXXFLAGS $WX_CXXFLAGS_ONLY"
+CFLAGS="$CFLAGS $WX_CFLAGS_ONLY"
+LIBS="$LIBS $WX_LIBS"
+
+AC_MSG_CHECKING([if we can compile a wxWidgets program])
+AC_TRY_LINK([#include <wx/wx.h>],
+            [wxString test=wxT("")],
+            [AC_MSG_RESULT([yes])],
+            [echo ""
+             echo ""
+             echo "*** The test program failed to compile or link. See the file config.log for the"
+             echo "*** exact error that occured. This usually means that wxWidgets library was"
+             echo "*** incorrectly installed."
+             echo ""
+             AC_MSG_ERROR([Failed to compile a test program])])
+
 dnl we have to setup rc compiling under Windows
-dnl
 if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
@@ -142,28 +136,20 @@ else
    WX_RC_PATH=""
 fi
 
-dnl
 dnl translations
-dnl
 CATALOGS_TO_INSTALL="install-wxmaxima-catalogs"
 
 if test x"${static_wx}" = x"true" ; then
     CATALOGS_TO_INSTALL="$CATALOGS_TO_INSTALL install-wxstd-catalogs"
 fi
 
+AC_SUBST(LDFLAGS)
+AC_SUBST(CFLAGS)
+AC_SUBST(CXXFLAGS)
 AC_SUBST(CATALOGS_TO_INSTALL)
 AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
-
-
-# Checks for libraries.
-
-# Checks for header files.
-
-# Checks for typedefs, structures, and compiler characteristics.
-
-# Checks for library functions.
 
 AC_CONFIG_FILES([
         Makefile

@@ -5,6 +5,8 @@
 WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
 WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
 
+SUFFIXES = .po .mo
+
 localedir = $(datadir)/locale
 
 install-data-local: @CATALOGS_TO_INSTALL@
@@ -39,11 +41,11 @@ XARGS=xargs
 XGETTEXT_ARGS=-C -k_ -s -j
 
 # implicit rules
-%.mo: %.po
+.mo: .po
 	$(MSGFMT) -o $@ $<
 
 # a PO file must be updated to include new translations
-%.po: $(srcdir)/wxMaxima.pot
+.po: $(srcdir)/wxMaxima.pot
 	touch $@
 	$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;
 
