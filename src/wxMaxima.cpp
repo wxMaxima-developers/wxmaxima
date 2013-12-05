@@ -1930,8 +1930,10 @@ bool wxMaxima::SaveFile(bool forceSave)
 
   if (file.Length() == 0 || forceSave)
   {
-    if (file.Length() == 0)
+    if (file.Length() == 0) {
       file = _("untitled");
+      wxConfig::Get()->Read(wxT("defaultExt"), &fileExt);
+    }
     else
       wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
 
@@ -1970,11 +1972,14 @@ bool wxMaxima::SaveFile(bool forceSave)
 
     m_currentFile = file;
     m_lastPath = wxPathOnly(file);
-    if (file.Right(5) == wxT(".wxmx"))
+    if (file.Right(5) == wxT(".wxmx")) {
       m_console->ExportToWXMX(file);
-    else
+      wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
+    }
+    else {
       m_console->ExportToMAC(file);
-
+      wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
+    }
     AddRecentDocument(file);
 
     return true;

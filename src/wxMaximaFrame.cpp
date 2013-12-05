@@ -906,7 +906,8 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::AddRecentDocument(wxString file)
 {
-  m_recentDocuments.Remove(file);
+  if (m_recentDocuments.Index(file) != wxNOT_FOUND)
+    m_recentDocuments.Remove(file);
   m_recentDocuments.Insert(file, 0);
 
   UpdateRecentDocuments();
