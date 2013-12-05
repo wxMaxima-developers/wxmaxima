@@ -123,8 +123,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   CalcUnscrolledPosition(0, rect.GetBottom(), &tmp, &bottom);
 
   // Thest if m_memory is NULL (resize event)
-  if (m_memory == NULL)
-    m_memory = new wxBitmap(sz.x, sz.y);
+  if (m_memory == NULL) {
+    m_memory = new wxBitmap();
+    m_memory->CreateScaled (sz.x, sz.y, -1, dc.GetContentScaleFactor ());
+  }
 
   // Prepare memory DC
   wxString bgColStr= wxT("white");
