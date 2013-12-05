@@ -136,7 +136,7 @@ private:
   std::vector<int> m_positionHistory;
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
-  size_t m_historyPosition;
+  int m_historyPosition;
 //  int m_oldPosition;
   int m_positionOfCaret;
   int m_caretColumn;

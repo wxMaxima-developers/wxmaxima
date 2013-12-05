@@ -1785,6 +1785,7 @@ void EditorCell::Undo()
 bool EditorCell::CanRedo()
 {
   return m_textHistory.GetCount()>0 &&
+    m_historyPosition >= 0 &&
     m_historyPosition < m_textHistory.GetCount()-1;
 }
 
