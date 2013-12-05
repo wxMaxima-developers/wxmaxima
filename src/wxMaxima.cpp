@@ -234,8 +234,9 @@ void wxMaxima::CheckForPrintingSupport()
  #else
   m_supportPrinting = false;
  #endif
+#else
+  m_supportPrinting = false;
 #endif
-  m_supportPrinting = true;
 }
 
 #endif
