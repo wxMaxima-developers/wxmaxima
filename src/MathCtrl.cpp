@@ -159,10 +159,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1)));
+      dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1)) );
 // window linux, set a pen
 #endif
-      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION)))); //highlight c.
+      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
       {
@@ -205,13 +205,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           if (m_evaluationQueue->GetFirst() == tmp)
           {
             wxRect rect = tmp->GetRect();
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxSOLID)));
+            dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2)) );
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           }
           else
           {
             wxRect rect = tmp->GetRect();
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
+            dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1)) );
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           }
         }
@@ -228,8 +228,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     MathCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxSOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_DEFAULT))));
+    dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1)) );
+    dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_DEFAULT))) );
 
     bool changeAsterisk = false;
     config->Read(wxT("changeAsterisk"), &changeAsterisk);
@@ -256,7 +256,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxSOLID))); // TODO is there more efficient way to do this?
+    dcm.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1)) ); // TODO is there more efficient way to do this?
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);
