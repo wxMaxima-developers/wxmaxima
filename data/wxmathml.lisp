@@ -1288,7 +1288,7 @@
 				     preamble (meval (maxima-substitute aval a (caddr arg)))))))
 	(apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
                             ((mlist simp) $plot_format $gnuplot)
-                            ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                            ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
                             ((mlist simp) $gnuplot_preamble ,preamble)
                             ((mlist simp) $gnuplot_out_file ,filename)))
 	(setq images (cons filename images))))
@@ -1389,11 +1389,10 @@
     (setq preamble (format nil "~a; ~a" preamble system-preamble))
     (dolist (arg args)
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
-	  (setq preamble (format nil "~a; ~a"
-				 preamble (caddr arg)))))
+	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
     (apply #'$plot2d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
-                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
@@ -1412,7 +1411,7 @@
 				 preamble (caddr arg)))))
     (apply #'$plot3d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
-                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
@@ -1472,7 +1471,7 @@
 				 preamble (caddr arg)))))
     ($apply '$implicit_plot `((mlist simp) ,@args
 			      ((mlist simp) $plot_format $gnuplot)
-                              ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                              ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 			      ((mlist simp) $gnuplot_preamble ,preamble)
 			      ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,filename "img")))
@@ -1491,7 +1490,7 @@
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
     (apply #'$contour_plot `(,@args
-                             ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo "pngcairo" "png"))
+                             ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 			     ((mlist simp) $plot_format $gnuplot)
                              ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
