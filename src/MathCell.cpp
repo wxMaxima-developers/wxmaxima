@@ -462,13 +462,17 @@ void MathCell::SetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
   if (m_highlight)
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_HIGHLIGHT), 1)) );
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_HIGHLIGHT),
+                1, wxSOLID)));
   else if (m_type == MC_TYPE_PROMPT)
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT), 1)) );
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
+                1, wxSOLID)));
   else if (m_type == MC_TYPE_INPUT)
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT), 1)) );
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
+                1, wxSOLID)));
   else
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1)) );
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
+                    1, wxSOLID)));
 }
 
 /***
@@ -478,7 +482,8 @@ void MathCell::UnsetPen(CellParser& parser)
 {
   wxDC& dc = parser.GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1)) );
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
+                1, wxSOLID)));
 }
 
 /***
