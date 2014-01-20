@@ -125,9 +125,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   // Thest if m_memory is NULL (resize event)
   if (m_memory == NULL) {
     m_memory = new wxBitmap();
+#if wxCHECK_VERSION(3,0,0)
     m_memory->CreateScaled (sz.x, sz.y, -1, dc.GetContentScaleFactor ());
+#else
+    m_memory->Create(sz.x, sz.y);
+#endif
   }
-
   // Prepare memory DC
   wxString bgColStr= wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
