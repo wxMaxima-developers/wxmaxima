@@ -718,11 +718,11 @@ void wxMaximaFrame::SetupToolBar()
 #if defined __WXMSW__
   frame_1_toolbar->AddTool(tb_new, _("New"),
                            IMAGE("new.png"),
-			               _("New document"));
+                           _("New document"));
 #endif
   frame_1_toolbar->AddTool(tb_open, _("Open"),
                            IMAGE("open.png"),
-			               _("Open document"));
+                           _("Open document"));
   frame_1_toolbar->AddTool(tb_save, _("Save"),
                            IMAGE("save.png"),
                            _("Save document"));

@@ -189,10 +189,10 @@ wxString SubSupCell::ToTeX(bool all)
 
 wxString SubSupCell::ToXML(bool all)
 {
-	return _T("<ie><r>") + m_baseCell->ToXML(true)
-       + _T("</r><r>") + m_indexCell->ToXML(true)
-       + _T("</r><r>") + m_exptCell->ToXML(true)
-       + _T("</r></ie>") + MathCell::ToXML(all);
+  return _T("<ie><r>") + m_baseCell->ToXML(true)
+    + _T("</r><r>") + m_indexCell->ToXML(true)
+    + _T("</r><r>") + m_exptCell->ToXML(true)
+    + _T("</r></ie>") + MathCell::ToXML(all);
 }
 
 void SubSupCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

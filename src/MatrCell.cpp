@@ -254,25 +254,26 @@ wxString MatrCell::ToTeX(bool all)
 
 wxString MatrCell::ToXML(bool all)
 {
-	wxString s = wxEmptyString;
-	if (m_specialMatrix)
+  wxString s = wxEmptyString;
+  if (m_specialMatrix)
     s = wxString::Format(
-            wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
-            m_inferenceMatrix ? wxT("true") : wxT("false"),
-            m_rowNames ? wxT("true") : wxT("false"),
-            m_colNames ? wxT("true") : wxT("false"));
+      wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
+      m_inferenceMatrix ? wxT("true") : wxT("false"),
+      m_rowNames ? wxT("true") : wxT("false"),
+      m_colNames ? wxT("true") : wxT("false"));
   else
     s = wxT("<tb>");
-	for (int i = 0; i < m_matHeight; i++)
-	{
-	  s += wxT("<mtr>");
-		for (int j = 0; j < m_matWidth; j++)
-			s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ToXML(true) + wxT("</mtd>");
-		s += wxT("</mtr>");
-	}
-	s += wxT("</tb>");
+  
+for (int i = 0; i < m_matHeight; i++)
+  {
+    s += wxT("<mtr>");
+    for (int j = 0; j < m_matWidth; j++)
+      s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ToXML(true) + wxT("</mtd>");
+    s += wxT("</mtr>");
+  }
+  s += wxT("</tb>");
 
-	return s + MathCell::ToXML(all);
+  return s + MathCell::ToXML(all);
 }
 
 void MatrCell::SetDimension()
