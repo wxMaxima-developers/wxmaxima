@@ -419,11 +419,11 @@ wxString ParenCell::ToTeX(bool all)
 
 wxString ParenCell::ToXML(bool all)
 {
-	if( m_isBroken )
-		return wxEmptyString;
-	wxString s = m_innerCell->ToXML(true);
-	return ( ( m_print )? _T("<p>") + s + _T("</p>") : s ) +
-			MathCell::ToXML(all);
+//  if( m_isBroken )
+//    return wxEmptyString;
+  wxString s = m_innerCell->ToXML(true);
+  return ( ( m_print )? _T("<p>") + s + _T("</p>") : s ) +
+    MathCell::ToXML(all);
 }
 
 void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

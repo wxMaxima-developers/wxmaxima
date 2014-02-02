@@ -329,10 +329,10 @@ wxString SumCell::ToXML(bool all)
   else if (m_over->ToString(false) == wxEmptyString)
     type = wxT("lsum");
 
-	return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ToXML(true) + _T("</r><r>") +
-			m_over->ToXML(true) + _T("</r><r>") +
-			m_base->ToXML(true) + _T("</r></sm>") +
-			MathCell::ToXML(all);
+  return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ToXML(true) + _T("</r><r>") +
+    m_over->ToXML(true) + _T("</r><r>") +
+    m_base->ToXML(true) + _T("</r></sm>") +
+    MathCell::ToXML(all);
 }
 
 void SumCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

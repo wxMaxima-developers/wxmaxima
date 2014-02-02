@@ -135,13 +135,13 @@ wxString AbsCell::ToString(bool all)
 wxString AbsCell::ToTeX(bool all)
 {
   return wxT("\\left| ") + m_innerCell->ToTeX(true) + wxT("\\right| ") +
-         MathCell::ToTeX(all);
+    MathCell::ToTeX(all);
 }
 
 wxString AbsCell::ToXML(bool all)
 {
-	return wxT("<a>") + m_innerCell->ToXML(true) + wxT("</a>") + 
-         MathCell::ToXML(all);
+  return wxT("<a>") + m_innerCell->ToXML(true) + wxT("</a>") + 
+    MathCell::ToXML(all);
 }
 
 void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

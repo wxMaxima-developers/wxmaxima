@@ -154,9 +154,9 @@ wxString SubCell::ToTeX(bool all)
 
 wxString SubCell::ToXML(bool all)
 {
-	return _T("<i><r>") + m_baseCell->ToXML(true) + _T("</r><r>") +
-			m_indexCell->ToXML(true) + _T("</r></i>") +
-			MathCell::ToXML(all);
+  return _T("<i><r>") + m_baseCell->ToXML(true) + _T("</r><r>") +
+    m_indexCell->ToXML(true) + _T("</r></i>") +
+    MathCell::ToXML(all);
 }
 
 void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

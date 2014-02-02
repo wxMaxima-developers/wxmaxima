@@ -192,10 +192,10 @@ wxString LimitCell::ToTeX(bool all)
 
 wxString LimitCell::ToXML(bool all)
 {
-	return _T("<lm><r>") + m_name->ToXML(true) + _T("</r><r>") +
-			m_base->ToXML(true) + _T("</r><r>") +
-			m_under->ToXML(true) + _T("</r></lm>") + 
-			MathCell::ToXML(all);
+  return _T("<lm><r>") + m_name->ToXML(true) + _T("</r><r>") +
+    m_base->ToXML(true) + _T("</r><r>") +
+    m_under->ToXML(true) + _T("</r></lm>") + 
+    MathCell::ToXML(all);
 }
 
 void LimitCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

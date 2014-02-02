@@ -412,25 +412,25 @@ wxString IntCell::ToTeX(bool all)
 
 wxString IntCell::ToXML(bool all)
 {
-	MathCell* tmp = m_base;
-	wxString base = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  MathCell* tmp = m_base;
+  wxString base = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
-	tmp = m_var;
-	wxString var = ( tmp == NULL )? wxEmptyString : _T("<r>");
-   	var += tmp->ToXML(true);
-	var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
+  tmp = m_var;
+  wxString var = ( tmp == NULL )? wxEmptyString : _T("<r>");
+  var += tmp->ToXML(true);
+  var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
 
-	tmp = m_under;
-	wxString from = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  tmp = m_under;
+  wxString from = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
-	tmp = m_over;
-	wxString to = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  tmp = m_over;
+  wxString to = _T("<r>") + tmp->ToXML(true) + _T("</r>");
 
-	if (m_intStyle == INT_DEF)
-	  return wxT("<in>") + from + to + base + var + wxT("</in>") + MathCell::ToXML(all);
-	else
-	  return wxT("<in def=\"false\">") + base + var  + wxT("</in>") +
-					MathCell::ToXML(all);
+  if (m_intStyle == INT_DEF)
+    return wxT("<in>") + from + to + base + var + wxT("</in>") + MathCell::ToXML(all);
+  else
+    return wxT("<in def=\"false\">") + base + var  + wxT("</in>") +
+      MathCell::ToXML(all);
 }
 
 void IntCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
