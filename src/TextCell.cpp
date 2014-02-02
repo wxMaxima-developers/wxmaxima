@@ -270,6 +270,9 @@ wxString TextCell::ToString(bool all)
     text = m_altCopyText;
   else
     text = m_text;
+#if wxUSE_UNICODE
+    text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+#endif
   if (m_textStyle == TS_STRING)
     text = wxT("\"") + text + wxT("\"");
   return text + MathCell::ToString(all);
@@ -343,6 +346,9 @@ wxString TextCell::ToTeX(bool all)
     text.Replace(wxT("^"), wxT("\\^"));
     text.Replace(wxT("_"), wxT("\\_"));
     text.Replace(wxT("%"), wxT("\\%"));
+#if wxUSE_UNICODE
+    text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+#endif
   }
 
   return text + MathCell::ToTeX(all);
@@ -350,14 +356,14 @@ wxString TextCell::ToTeX(bool all)
 
 wxString TextCell::ToXML(bool all)
 {
-	wxString tag = ( m_isHidden ) ? _T("h") :
-					( m_textStyle == TS_GREEK_CONSTANT ) ? _T("g") :
-					( m_textStyle == TS_SPECIAL_CONSTANT ) ? _T("s") :
-					( m_textStyle == TS_VARIABLE ) ? _T("v") :
-					( m_textStyle == TS_FUNCTION ) ? _T("fnm") :
-					( m_textStyle == TS_NUMBER ) ? _T("n") :
-					( m_textStyle == TS_STRING ) ? _T("st") :
-					( m_textStyle == TS_LABEL) ? _T("lbl") : _T("t");
+  wxString tag = ( m_isHidden ) ? _T("h") :
+    ( m_textStyle == TS_GREEK_CONSTANT ) ? _T("g") :
+    ( m_textStyle == TS_SPECIAL_CONSTANT ) ? _T("s") :
+    ( m_textStyle == TS_VARIABLE ) ? _T("v") :
+    ( m_textStyle == TS_FUNCTION ) ? _T("fnm") :
+    ( m_textStyle == TS_NUMBER ) ? _T("n") :
+    ( m_textStyle == TS_STRING ) ? _T("st") :
+    ( m_textStyle == TS_LABEL) ? _T("lbl") : _T("t");
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
   xmlstring.Replace(wxT("&"),  wxT("&amp;"));
@@ -365,9 +371,9 @@ wxString TextCell::ToXML(bool all)
   xmlstring.Replace(wxT(">"),  wxT("&gt;"));
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
-
-	return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">") +
-				MathCell::ToXML(all);
+  
+  return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">") +
+    MathCell::ToXML(all);
 }
 
 wxString TextCell::GetDiffPart()
