@@ -1,100 +1,106 @@
 body
 {
-	background-color:#ddd;
-	font-family: Verdana, sans-serif;
-  text-align: center;
+    background-color:#ddd;
+    font-family: Verdana, sans-serif;
+    text-align: center;
 }
 
 #container
 {
-	margin-left: auto;
-  margin-right: auto;
-	width: 600px;
-	background:#fff;
-  text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    background:#fff;
+    text-align: left;
+    border-radius: 15px 15px;
 }
 
 #header
 {
-	background:#844;
-	color:#fff;
-	padding: 20px;
+    background:#844;
+    color:#fff;
+    padding: 20px;
+    border-top-left-radius: 15px 15px;
+    border-top-right-radius: 15px 15px;
 }
 
 #header h1
 {
-	margin: 0;
-	font-variant: small-caps;
-	font-size: 300%;
+    margin: 0;
+    font-variant: small-caps;
+    font-size: 300%;
 }
 
 #navigation
 {
-	float: left;
-	width: 600px;
-	background:#333;
+    float: left;
+    width: 800px;
+    background:#555;
 }
 
 #navigation ul
 {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #navigation ul li
 {
-	list-style-type: none;
-	display: inline;
+    list-style-type: none;
+    display: inline;
 }
 
 #navigation li a
 {
-	display: block;
-	float: left;
-	padding: 5px 10px;
-	color:#fff;
-	text-decoration: none;
-	border-right: 1px solid#fff;
+    display: block;
+    float: left;
+    padding: 5px 10px;
+    background:#555;
+    color:#fff;
+    text-decoration: none;
+    border-right: 1px solid#fff;
 }
 
 #navigation li a:hover { background:#833; }
 
 #content
 {
-	clear: left;
-	padding: 20px;
-	min-height: 450px;
+    clear: left;
+    padding: 20px;
+    min-height: 450px;
 }
 
 #content h2
 {
-	color:#000;
-	font-size: 140%;
-	margin: 0 0 .5em;
+    color:#000;
+    font-size: 140%;
+    margin: 0 0 .5em;
 }
 
 #content a { color:#833; }
 
 #footer
 {
-	background-color:#999;
-	font-size: x-small;
-	text-align: center;
-	padding: 5px;
+    background-color:#999;
+    font-size: x-small;
+    text-align: center;
+    padding: 5px;
+    border-bottom-left-radius: 15px 15px;
+    border-bottom-right-radius: 15px 15px;
 }
 
 #screenshots
 {
-	margin-left: auto;
-	margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #screenshots img
 {
-	border-width: 0;
+    border-width: 0;
 }
 
 #screenshots td
 {
-	padding: 10px;
+    padding: 10px;
 }
