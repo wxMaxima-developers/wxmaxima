@@ -50,6 +50,8 @@ void FracCell::SetParent(MathCell *parent, bool all)
     m_open2->SetParent(parent, true);
   if (m_close2 != NULL)
     m_close2->SetParent(parent, true);
+  if (m_divide != NULL)
+    m_divide->SetParent(parent, true);
 
   MathCell::SetParent(parent, all);
 }
