@@ -998,6 +998,16 @@ void wxMaxima::ReadPrompt()
   }
 }
 
+void wxMaxima::SetCWD(wxString file)
+{
+  wxFileName filename(file);
+
+  if (filename.GetPath() == wxEmptyString)
+    filename.AssignDir(wxGetCwd());
+
+  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
+}
+
 // OpenWXM(X)File
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
@@ -1072,8 +1082,8 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + file + wxT("\"))"));
-  
+  SetCWD(file);
+
   wxEndBusyCursor();
   return true;
 }
@@ -1185,7 +1195,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
              file +
              wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + file + wxT("\"))"));
+  SetCWD(file);
   
   wxEndBusyCursor();
   return true;
@@ -1472,7 +1482,7 @@ void wxMaxima::SetupVariables()
     SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
                filename +
                wxT("\")"));
-    SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + filename + wxT("\"))"));
+    SetCWD(filename);
   }
 }
 

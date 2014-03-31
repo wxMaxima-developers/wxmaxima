@@ -173,6 +173,7 @@ protected:
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
   bool SaveFile(bool forceSave = false);
   int SaveDocumentP();
+  void SetCWD(wxString file);
 
   wxSocketBase *m_client;
   wxSocketServer *m_server;
