@@ -18,7 +18,7 @@
 ///
 
 #ifndef SYSWIZ_H
-#define SYSWIZ_H_H
+#define SYSWIZ_H
 
 #include <wx/wx.h>
 #include <wx/statline.h>

@@ -18,7 +18,7 @@
 ///
 
 #ifndef GEN4WIZ_H
-#define GTN4WIZ_H
+#define GEN4WIZ_H
 
 #include <wx/wx.h>
 #include <wx/statline.h>
