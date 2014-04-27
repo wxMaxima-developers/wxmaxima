@@ -90,6 +90,10 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
 
+#if wxCHECK_VERSION(2,9,1)
+  DisableKeyboardScrolling();
+#endif
+
   // hack to workaround problems in RtL locales, http://bugzilla.redhat.com/455863
   SetLayoutDirection(wxLayout_LeftToRight);
 }
