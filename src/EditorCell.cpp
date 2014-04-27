@@ -883,7 +883,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   default:
-    if (event.ControlDown())
+    if (event.ControlDown() && !event.AltDown())
       break;
 
     m_isDirty = true;

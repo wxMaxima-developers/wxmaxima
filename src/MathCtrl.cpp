@@ -1476,29 +1476,11 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   }
 #endif
 
-  // Some key combinations are shortcuts and should be ignored
-  if (event.CmdDown()) {
-    switch (event.GetKeyCode())
-    {
-      case 'Z':
-      case 'z':
-      case 'C':
-      case 'c':
-      case 'S':
-      case 's':
-        return;
-      default:
-        break;
-    }
-  }
-
-#if defined __WXMSW__
-  if (event.GetModifiers() == wxMOD_ALT)
-  {
+  if ((event.AltDown() && !event.CmdDown()) ||
+      (event.CmdDown() && !event.AltDown())) {
     event.Skip();
     return;
   }
-#endif
 
   if (m_activeCell != NULL) { // we are in an active cell
     bool needRecalculate = false;
