@@ -1476,8 +1476,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   }
 #endif
 
-  if ((event.AltDown() && !event.CmdDown()) ||
-      (event.CmdDown() && !event.AltDown())) {
+  if (event.CmdDown() && !event.AltDown()) {
     event.Skip();
     return;
   }
