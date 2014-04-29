@@ -1360,7 +1360,7 @@
                 ($apply '$draw
                         (append
                          `((mlist simp)
-                           ((mequal simp) $terminal $png)
+                           ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
                            ((mequal simp) $file_name ,filename))
                          (get-pic-size-opt)
                          (list args)))))
@@ -1436,7 +1436,7 @@
     (setq res ($apply '$draw
                       (append
                        `((mlist simp)
-                         ((mequal simp) $terminal $png)
+                         ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
                          ((mequal simp) $file_name ,filename))
                        (cond
                          ((eq ($get '$draw '$version) 1)
