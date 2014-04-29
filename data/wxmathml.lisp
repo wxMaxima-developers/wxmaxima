@@ -1249,7 +1249,7 @@
   (let ((frmt 
          (cond
            ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
-           ($wxplot_pngcairo "set terminal pngcairo background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
+           ($wxplot_pngcairo "set terminal pngcairo dashed background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
            (t "set terminal png size ~d,~d; set zeroaxis;"))))
     (format nil frmt
 	    ($first $wxplot_size)
