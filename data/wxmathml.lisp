@@ -1236,15 +1236,16 @@
 (defmvar $wxplot_size '((mlist simp) 500 300))
 (defmvar $wxplot_old_gnuplot nil)
 (defmvar $wxplot_pngcairo nil)
-(cond
-  ((like (simplify
-             (MFUNCTION-CALL $SYSTEM
-                 '"(gnuplot -e 'set term pngcairo')"))
-         0.)
-   (IF (NOT (BOUNDP '$WXPLOT_PNGCAIRO))
-       (ADD2LNC '$WXPLOT_PNGCAIRO $VALUES))
-   (SETQ $WXPLOT_PNGCAIRO T)))
- 
+
+(catch
+   (setq $wxplot_pngcairo t)
+  (cond
+   ((like (simplify
+	   (mfunction-call $system
+			   '"(gnuplot -e 'set term pngcairo')"))
+	  0.)
+    (setq $wxplot_pngcairo t)))
+  )
 
 (defvar *image-counter* 0)
 
