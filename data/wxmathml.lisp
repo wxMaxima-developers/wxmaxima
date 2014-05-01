@@ -1242,7 +1242,7 @@
   (cond
    ((like (simplify
 	   (mfunction-call $system
-			   '"(gnuplot -e 'set term pngcairo')"))
+			   '"(gnuplot -e 'set term pngcairo dashed')"))
 	  0.)
     (setq $wxplot_pngcairo t)))
   )
