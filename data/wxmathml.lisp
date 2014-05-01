@@ -1238,7 +1238,7 @@
 (defmvar $wxplot_pngcairo nil)
 
 (catch
-   (setq $wxplot_pngcairo t)
+   (setq $wxplot_pngcairo nil)
   (cond
    ((like (simplify
 	   (mfunction-call $system
