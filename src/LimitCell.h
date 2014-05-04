@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _LIMITCELL_H_
-#define _LIMITCELL_H_
+#ifndef LIMITCELL_H
+#define LIMITCELL_H
 
 #include "MathCell.h"
 
@@ -46,4 +46,4 @@ protected:
   MathCell *m_name;
 };
 
-#endif //_UNDERCELL_H_
+#endif // LIMITCELL_H

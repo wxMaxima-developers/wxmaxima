@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MATHCELL_H_
-#define _MATHCELL_H_
+#ifndef MATHCELL_H
+#define MATHCELL_H
 
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
@@ -196,4 +196,4 @@ protected:
   wxString m_altCopyText; // m_altCopyText is not check in all cells!
 };
 
-#endif //_MATHCELL_H_
+#endif // MATHCELL_H

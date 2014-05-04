@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _TEXTSTYLE_H
-#define _TEXTSTYLE_H
+#ifndef TEXTSTYLE_H
+#define TEXTSTYLE_H
 
 struct style
 {
@@ -62,4 +62,4 @@ enum
 
 #define STYLE_NUM 23
 
-#endif
+#endif // TEXTSTYLE_H

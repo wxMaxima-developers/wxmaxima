@@ -67,4 +67,4 @@ protected:
   wxButton* button_2;
 };
 
-#endif // DIFFWIZ_H
+#endif // GEN3WIZ_H

@@ -18,8 +18,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _EDITOR_CELL_H
-#define _EDITOR_CELL_H
+#ifndef EDITORCELL_H
+#define EDITORCELL_H
 
 #include "MathCell.h"
 
@@ -136,7 +136,7 @@ private:
   std::vector<int> m_positionHistory;
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
-  int m_historyPosition;
+  ptrdiff_t m_historyPosition;
 //  int m_oldPosition;
   int m_positionOfCaret;
   int m_caretColumn;
@@ -165,4 +165,4 @@ private:
   bool m_firstLineOnly;
 };
 
-#endif
+#endif // EDITORCELL_H

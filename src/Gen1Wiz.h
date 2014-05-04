@@ -54,4 +54,4 @@ private:
 wxString GetTextFromUser(wxString label, wxString title, wxString value,
                          wxWindow* parent);
 
-#endif // GEN2WIZ_H
+#endif // GEN1WIZ_H

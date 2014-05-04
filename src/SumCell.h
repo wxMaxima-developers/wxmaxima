@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _SUMCELL_H_
-#define _SUMCELL_H_
+#ifndef SUMCELL_H
+#define SUMCELL_H
 
 #include "MathCell.h"
 
@@ -60,4 +60,4 @@ protected:
   int m_signTop;
 };
 
-#endif //_UNDERCELL_H_
+#endif // SUMCELL_H

@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _BITMAP_H_
-#define _BITMAP_H_
+#ifndef BITMAP_H
+#define BITMAP_H
 
 #include "MathCell.h"
 
@@ -43,4 +43,4 @@ protected:
   wxBitmap m_bmp;
 };
 
-#endif
+#endif // BITMAP_H

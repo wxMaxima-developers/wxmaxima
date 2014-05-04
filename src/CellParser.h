@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _CELLPARSER_H
-#define _CELLPARSER_H
+#ifndef CELLPARSER_H
+#define CELLPARSER_H
 
 #include <wx/wx.h>
 #include <wx/fontenum.h>
@@ -116,4 +116,4 @@ private:
   style m_styles[STYLE_NUM];
 };
 
-#endif
+#endif // CELLPARSER_H

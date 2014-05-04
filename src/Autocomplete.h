@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _AUTOCOMPL_H_
-#define _AUTOCOMPL_H_
+#ifndef AUTOCOMPLETE_H
+#define AUTOCOMPLETE_H
 
 #include <wx/wx.h>
 #include <wx/arrstr.h>
@@ -38,4 +38,4 @@ private:
   wxRegEx m_args;
 };
 
-#endif
+#endif // AUTOCOMPLETE_H

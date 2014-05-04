@@ -19,8 +19,8 @@
 ///
 
 
-#ifndef EVALUATIONQUEUE_H_
-#define EVALUATIONQUEUE_H_
+#ifndef EVALUATIONQUEUE_H
+#define EVALUATIONQUEUE_H
 
 #include "GroupCell.h"
 
@@ -53,4 +53,4 @@ class EvaluationQueue
 };
 
 
-#endif /* EVALUATIONQUEUE_H_ */
+#endif /* EVALUATIONQUEUE_H */

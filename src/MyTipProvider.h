@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MYTIPPROVIDER_H_
-#define _MYTIPPROVIDER_H_
+#ifndef MYTIPPROVIDER_H
+#define MYTIPPROVIDER_H
 
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
@@ -38,4 +38,4 @@ private:
   wxTextFile m_file;
 };
 
-#endif
+#endif // MYTIPPROVIDER_H
