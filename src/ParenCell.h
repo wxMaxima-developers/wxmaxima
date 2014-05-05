@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _PARENCELL_H_
-#define _PARENCELL_H_
+#ifndef PARENCELL_H
+#define PARENCELL_H
 
 #include "MathCell.h"
 #include "Setup.h"
@@ -57,4 +57,4 @@ protected:
   int m_bigParenType;
 };
 
-#endif //_PARENCELL_H_
+#endif // PARENCELL_H

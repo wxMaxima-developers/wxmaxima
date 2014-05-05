@@ -44,4 +44,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-#endif
+#endif // HISTORY_H

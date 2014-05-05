@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MATHPRINTOUT_H
-#define _MATHPRINTOUT_H
+#ifndef MATHPRINTOUT_H
+#define MATHPRINTOUT_H
 
 #include "Setup.h"
 
@@ -61,6 +61,6 @@ private:
   vector<MathCell*> m_pages;
 };
 
-#endif
+#endif // WXM_PRINT
 
-#endif
+#endif // MATHPRINTOUT_H

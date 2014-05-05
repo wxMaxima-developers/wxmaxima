@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _IMGCELL_H_
-#define _IMGCELL_H_
+#ifndef IMGCELL_H
+#define IMGCELL_H
 
 #include "MathCell.h"
 #include <wx/image.h>
@@ -62,4 +62,4 @@ protected:
 	bool m_drawRectangle;
 };
 
-#endif //_ABSCELL_H_
+#endif // IMGCELL_H

@@ -18,8 +18,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _WXMAXIMA_H_
-#define _WXMAXIMA_H_
+#ifndef WXMAXIMA_H
+#define WXMAXIMA_H
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
@@ -235,4 +235,4 @@ private:
 
 #endif
 
-#endif //_WXMAXIM_H_
+#endif // WXMAXIMA_H

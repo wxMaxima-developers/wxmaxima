@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _BTEXTCTRL_H_
-#define _BTEXTCTRL_H_
+#ifndef BTEXTCTRL_H
+#define BTEXTCTRL_H
 
 #include <wx/wx.h>
 
@@ -49,4 +49,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-#endif //_TEXTCTRL_H_
+#endif // BTEXTCTRL_H

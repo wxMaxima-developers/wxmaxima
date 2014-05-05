@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _SQRTCELL_H_
-#define _SQRTCELL_H_
+#ifndef SQRTCELL_H
+#define SQRTCELL_H
 
 #include "MathCell.h"
 
@@ -48,4 +48,4 @@ protected:
   double m_signFontScale;
 };
 
-#endif //_SQRTCELL_H_
+#endif // SQRTCELL_H

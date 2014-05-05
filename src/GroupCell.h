@@ -18,8 +18,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef GROUPCELL_H_
-#define GROUPCELL_H_
+#ifndef GROUPCELL_H
+#define GROUPCELL_H
 
 #include "MathCell.h"
 #include "EditorCell.h"
@@ -123,4 +123,4 @@ protected:
   wxString ToString(bool all);
 };
 
-#endif /* GROUPCELL_H_ */
+#endif /* GROUPCELL_H */

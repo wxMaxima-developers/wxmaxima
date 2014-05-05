@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MATHPARSER_H_
-#define _MATHPARSER_H_
+#ifndef MATHPARSER_H
+#define MATHPARSER_H
 
 #include <wx/xml/xml.h>
 
@@ -61,4 +61,4 @@ private:
   wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>
 };
 
-#endif //_MATHPARSER_H_
+#endif // MATHPARSER_H

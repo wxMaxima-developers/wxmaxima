@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _FRACCELL_H_
-#define _FRACCELL_H_
+#ifndef FRACCELL_H
+#define FRACCELL_H
 
 #include "MathCell.h"
 
@@ -67,4 +67,4 @@ protected:
   int m_expDivideWidth;
 };
 
-#endif //_FRACCELL_H_
+#endif // FRACCELL_H

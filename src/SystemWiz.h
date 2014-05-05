@@ -17,8 +17,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef SYSWIZ_H
-#define SYSWIZ_H
+#ifndef SYSTEMWIZ_H
+#define SYSTEMWIZ_H
 
 #include <wx/wx.h>
 #include <wx/statline.h>
@@ -46,4 +46,4 @@ private:
   wxButton* button_2;
 };
 
-#endif // SYSWIZ_H
+#endif // SYSTEMWIZ_H

@@ -18,8 +18,8 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#ifndef _MATHCTRL_H_
-#define _MATHCTRL_H_
+#ifndef MATHCTRL_H
+#define MATHCTRL_H
 
 #include <wx/wx.h>
 #include <wx/textfile.h>
@@ -268,4 +268,4 @@ protected:
   DECLARE_EVENT_TABLE()
 };
 
-#endif //_MATHCTRL_H_
+#endif // MATHCTRL_H
