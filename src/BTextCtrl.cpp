@@ -149,5 +149,9 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 }
 
 BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
+#if defined __WXGTK__
   EVT_KEY_DOWN(BTextCtrl::OnChar)
+#else
+  EVT_CHAR(BTextCtrl::OnChar)
+#endif
 END_EVENT_TABLE()
