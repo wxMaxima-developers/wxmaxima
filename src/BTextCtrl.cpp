@@ -123,7 +123,7 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
         (insp > 0 ? text.SubString(0, insp-1) : wxT("")) +
         (fromOpen ? open : wxT(""))  + close +
         text.SubString(insp, text.length());
-      
+
       ChangeValue(newtext);
 
       SetInsertionPoint(insp + 1);
@@ -149,5 +149,5 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 }
 
 BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
-  EVT_CHAR(BTextCtrl::OnChar)
+  EVT_KEY_DOWN(BTextCtrl::OnChar)
 END_EVENT_TABLE()
