@@ -446,7 +446,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
-      wxPen pen(parser.GetColor(TS_CURSOR), 1, wxDOT);
+      wxPen pen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);
       dc.DrawLine(0, y , 10000, y);
       MathCell::Draw(parser, point, fontsize, all);
@@ -520,11 +520,11 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     parser.Outdated(false);
     MathCell *editable = GetEditable();
     if (editable != NULL && editable->IsActive()) {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxSOLID))); // window linux, set a pen
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
     }
     else {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID))); // window linux, set a pen
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_CELL_BRACKET)))); //highlight c.
     }
 

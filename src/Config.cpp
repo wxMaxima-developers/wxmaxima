@@ -709,14 +709,14 @@ void Config::ReadStyles(wxString file)
   READ_STYLE(m_styleGreek, "Style/Greek/")
 
   // Variable
-  m_styleVariable.color = m_styleVariable.color;
+  m_styleVariable.color = m_styleDefault.color;
   m_styleVariable.bold = false;
   m_styleVariable.italic = true;
   m_styleVariable.underlined = false;
   READ_STYLE(m_styleVariable, "Style/Variable/")
 
   // Function
-  m_styleFunction.color = m_styleVariable.color;
+  m_styleFunction.color = m_styleDefault.color;
   m_styleFunction.bold = false;
   m_styleFunction.italic = false;
   m_styleFunction.underlined = false;
@@ -1128,18 +1128,20 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
   wxPaintDC dc(this);
   int panel_width, panel_height;
   int text_width, text_height;
-  int bold = wxFONTWEIGHT_NORMAL, italic = wxFONTSTYLE_NORMAL, underlined = 0;
+  wxFontWeight bold = wxFONTWEIGHT_NORMAL;
+  wxFontStyle italic = wxFONTSTYLE_NORMAL;
+  bool underlined = false;
 
   GetClientSize(&panel_width, &panel_height);
 
   dc.SetTextForeground(m_fgColor);
 
   if (m_bold)
-    bold = wxBOLD;
+    bold = wxFONTWEIGHT_BOLD;
   if (m_italic)
-    italic = wxSLANT;
+    italic = wxFONTSTYLE_SLANT;
   if (m_underlined)
-    underlined = 1;
+    underlined = true;
   dc.SetFont(wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font));
   dc.GetTextExtent(example, &text_width, &text_height);
 

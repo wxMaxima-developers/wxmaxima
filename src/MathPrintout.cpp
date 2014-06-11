@@ -211,7 +211,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   dc->SetTextForeground(wxColour(wxT("grey")));
-  dc->SetPen(wxPen(wxT("light grey"), 1, wxSOLID));
+  dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
 
   dc->SetFont(wxFont(SCALE_PX(10, scale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
@@ -225,7 +225,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
                pageWidth - marginX, marginY + title_height + SCALE_PX(3, scale));
 
   dc->SetTextForeground(wxColour(wxT("black")));
-  dc->SetPen(wxPen(wxT("black"), 1, wxSOLID));
+  dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
 }
 /*
 void MathPrintout::RecalculateSize()

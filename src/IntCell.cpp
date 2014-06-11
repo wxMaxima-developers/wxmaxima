@@ -152,9 +152,9 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   if (parser.CheckTeXFonts()) {
     wxDC& dc = parser.GetDC();
     int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      false, false, false,
-                      parser.GetTeXCMEX()));
+    dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
+    				wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+    				parser.GetTeXCMEX()));
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
 
 #if defined __WXMSW__
@@ -248,7 +248,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       SetForeground(parser);
       int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        false, false, false,
+    		            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         parser.GetTeXCMEX()));
       dc.DrawText(wxT("\x5A"),
                   sign.x,

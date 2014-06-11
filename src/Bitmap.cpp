@@ -189,7 +189,7 @@ void Bitmap::Draw()
 
   wxString bgColStr = wxT("white");
   wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
-  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxSOLID)));
+  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxBRUSHSTYLE_SOLID)));
   dc.Clear();
 
   if (tmp != NULL)
