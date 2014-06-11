@@ -1128,19 +1128,21 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
   wxPaintDC dc(this);
   int panel_width, panel_height;
   int text_width, text_height;
-  int bold = wxFONTWEIGHT_NORMAL, italic = wxFONTSTYLE_NORMAL, underlined = 0;
+  wxFontWeight bold = wxFONTWEIGHT_NORMAL;
+  wxFontStyle italic = wxFONTSTYLE_NORMAL;
+  bool underlined = false;
 
   GetClientSize(&panel_width, &panel_height);
 
   dc.SetTextForeground(m_fgColor);
 
   if (m_bold)
-    bold = wxBOLD;
+    bold = wxFONTWEIGHT_BOLD;
   if (m_italic)
-    italic = wxSLANT;
+    italic = wxFONTSTYLE_SLANT;
   if (m_underlined)
-    underlined = 1;
-  dc.SetFont(wxFont(m_size, wxFONTFAMILY_MODERN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD, underlined, m_font));
+    underlined = true;
+  dc.SetFont(wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font));
   dc.GetTextExtent(example, &text_width, &text_height);
 
   dc.DrawText(example, (panel_width - text_width) / 2,
