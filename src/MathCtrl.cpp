@@ -141,7 +141,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   SetBackgroundColour(wxColour(bgColStr));
 
   dcm.SelectObject(*m_memory);
-  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
+  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dcm.Clear();
   PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);
@@ -212,13 +212,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           if (m_evaluationQueue->GetFirst() == tmp)
           {
             wxRect rect = tmp->GetRect();
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxSOLID)));
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           }
           else
           {
             wxRect rect = tmp->GetRect();
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxSOLID)));
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           }
         }
@@ -235,7 +235,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     MathCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxSOLID)));
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
     dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_DEFAULT))));
 
     bool changeAsterisk = false;
@@ -263,7 +263,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   if (m_hCaretActive && m_hCaretPositionStart == NULL)
   {
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxSOLID))); // TODO is there more efficient way to do this?
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); // TODO is there more efficient way to do this?
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);

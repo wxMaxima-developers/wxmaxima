@@ -353,7 +353,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
       int lineWidth, lineHeight;
       dc.GetTextExtent(line, &lineWidth, &lineHeight);
 
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxSOLID))); //TODO is there more efficient way to do this?
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); //TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,

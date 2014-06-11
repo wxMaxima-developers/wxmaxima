@@ -134,8 +134,8 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     int height;
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                            false, false, false,
-                            parser.GetFontName(TS_VARIABLE)));
+    		wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+    		parser.GetFontName(TS_VARIABLE)));
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
@@ -206,8 +206,8 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
       int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                              false, false, false,
-                              parser.GetFontName(TS_VARIABLE)));
+    		  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+    		  parser.GetFontName(TS_VARIABLE)));
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
                   point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));

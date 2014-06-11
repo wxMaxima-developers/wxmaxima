@@ -154,7 +154,7 @@ private:
   bool m_isDirty;
   bool m_displayCaret;
   bool m_hasFocus;
-  int m_fontStyle;
+  wxFontStyle m_fontStyle;
   wxFontWeight m_fontWeight;
   bool m_underlined;
   wxString m_fontName;

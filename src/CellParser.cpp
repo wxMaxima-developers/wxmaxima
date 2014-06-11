@@ -289,7 +289,7 @@ void CellParser::ReadStyle()
 
 #undef READ_STYLES
 
-  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxSOLID)));
+  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxPENSTYLE_SOLID)));
 }
 
 wxFontWeight CellParser::IsBold(int st)
@@ -299,7 +299,7 @@ wxFontWeight CellParser::IsBold(int st)
   return wxFONTWEIGHT_NORMAL;
 }
 
-int CellParser::IsItalic(int st)
+wxFontStyle CellParser::IsItalic(int st)
 {
   if (m_styles[st].italic)
     return wxFONTSTYLE_SLANT;
