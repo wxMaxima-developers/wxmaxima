@@ -21,7 +21,7 @@
 #ifndef MATHCTRL_H
 #define MATHCTRL_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/textfile.h>
 
 #include "MathCell.h"

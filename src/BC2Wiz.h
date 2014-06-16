@@ -20,7 +20,7 @@
 #ifndef BC2WIZ_H
 #define BC2WIZ_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"

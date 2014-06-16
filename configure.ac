@@ -6,6 +6,7 @@ AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADER(src/Setup.h)
+AC_CONFIG_HEADER([src/wx_inc.h:src/wx_inc.h.in])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
@@ -126,6 +127,23 @@ AC_TRY_LINK([#include <wx/wx.h>],
              echo ""
              AC_MSG_ERROR([Failed to compile a test program])])
 
+		
+AC_CHECK_TYPE([wxHatchStyle], 
+			[AC_DEFINE([HAVE_WX_HATCHSTYLE],[],[wxWidgets defines wxHatchStyle])], 
+			[], 
+			[[#include <wx/wx.h>]])
+
+AC_CHECK_TYPE([wxPenStyle], 
+			[AC_DEFINE([HAVE_WX_PENSTYLE],[],[wxWidgets defines wxPenStyle])], 
+			[], 
+			[[#include <wx/wx.h>]])
+
+AC_CHECK_TYPE([wxBrushStyle], 
+			[AC_DEFINE([HAVE_WX_BRUSHSTYLE],[],[wxWidgets defines wxBrushStyle])], 
+			[], 
+			[[#include <wx/wx.h>]])
+
+
 dnl we have to setup rc compiling under Windows
 if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
@@ -156,6 +174,8 @@ AC_CONFIG_FILES([
         src/Makefile
         locales/Makefile
         data/Makefile
+        wxmaxima.spec
+        data/Info.plist
 ])
 
-AC_OUTPUT(wxmaxima.spec data/Info.plist)
+AC_OUTPUT

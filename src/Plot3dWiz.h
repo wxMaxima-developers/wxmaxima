@@ -20,7 +20,7 @@
 #ifndef PLOT3DWIZ_H
 #define PLOT3DWIZ_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 #include <wx/bmpbuttn.h>

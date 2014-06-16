@@ -21,7 +21,7 @@
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 
 #include <wx/dirctrl.h>
 #include <wx/listbox.h>

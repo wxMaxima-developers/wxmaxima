@@ -21,7 +21,7 @@
 #ifndef PLOTFORMATWIZ_H
 #define PLOTFORMATWIZ_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/statline.h>
 
 class PlotFormatWiz: public wxDialog

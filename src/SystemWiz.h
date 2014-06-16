@@ -20,7 +20,7 @@
 #ifndef SYSTEMWIZ_H
 #define SYSTEMWIZ_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"

@@ -20,7 +20,7 @@
 #ifndef GEN3WIZ_H
 #define GEN3WIZ_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"
