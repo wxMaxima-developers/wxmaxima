@@ -135,8 +135,8 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
 
-      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        false, false, false,
+      dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         m_bigParenType == 0 ?
                           parser.GetTeXCMRI() :
                             parser.GetTeXCMEX()));
@@ -153,7 +153,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       {
         int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                          false, false, false,
+                          wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                           m_bigParenType == 0 ?
                              parser.GetTeXCMRI() :
                                parser.GetTeXCMEX()));
@@ -169,7 +169,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        false, false, false,
+    		  	  	  	wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         m_bigParenType < 1 ?
                           parser.GetTeXCMRI() :
                             parser.GetTeXCMEX()));
@@ -241,7 +241,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       SetForeground(parser);
       int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        false, false, false,
+    		            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         m_bigParenType < 1 ?
                           parser.GetTeXCMRI() :
                             parser.GetTeXCMEX()));

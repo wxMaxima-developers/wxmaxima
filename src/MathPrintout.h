@@ -24,7 +24,7 @@
 
 #if WXM_PRINT
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/print.h>
 
 #include <vector>

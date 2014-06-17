@@ -3,6 +3,7 @@ AM_CXXFLAGS = -DPREFIX=\"$(prefix)\"
 bin_PROGRAMS = wxmaxima
 
 wxmaxima_SOURCES = \
+	wx_inc.h                            \
 	Config.cpp         Config.h         \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \

@@ -20,7 +20,7 @@
 #ifndef MYTIPPROVIDER_H
 #define MYTIPPROVIDER_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/tipdlg.h>
 
 class MyTipProvider : public wxTipProvider

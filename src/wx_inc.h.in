@@ -1,0 +1,141 @@
+///
+///  Copyright (C) 2014 Johan Kristensen <github:DevJohan>
+///
+///  This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+///  the Free Software Foundation; either version 2 of the License, or
+///  (at your option) any later version.
+///
+///  This program is distributed in the hope that it will be useful,
+///  but WITHOUT ANY WARRANTY; without even the implied warranty of
+///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+///  GNU General Public License for more details.
+///
+///
+///  You should have received a copy of the GNU General Public License
+///  along with this program; if not, write to the Free Software
+///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+///
+///
+//////////////////////////////////////////////////////////////////////////////////
+/// File:    wx_inc.h
+///
+/// Older wxWidgets versions doesn't define wxPenStyle and
+/// wxBrushStyle which are used and recommended in newer
+/// wxWidgets versions.
+///
+/// This file contains the the definitions of needed enums
+/// from later wxWidgets source code
+///
+
+#ifndef WX_INC_H_
+#define WX_INC_H_
+
+#include <wx/wx.h>
+
+#undef HAVE_WX_HATCHSTYLE
+#undef HAVE_WX_PENSTYLE
+#undef HAVE_WX_BRUSHSTYLE
+
+#ifndef HAVE_WX_HATCHSTYLE
+// From:
+/*
+ *  Name:        wx/defs.h
+ *  Purpose:     Declarations/definitions common to all wx source files
+ *  Author:      Julian Smart and others
+ *  Modified by: Ryan Norton (Converted to C)
+ *  Created:     01/02/97
+ *  Copyright:   (c) Julian Smart
+ *  Licence:     wxWindows licence
+ */
+
+enum wxHatchStyle
+{
+    wxHATCHSTYLE_INVALID = -1,
+
+    wxHATCHSTYLE_FIRST = 111,
+    wxHATCHSTYLE_BDIAGONAL = wxHATCHSTYLE_FIRST,
+    wxHATCHSTYLE_CROSSDIAG,
+    wxHATCHSTYLE_FDIAGONAL,
+    wxHATCHSTYLE_CROSS,
+    wxHATCHSTYLE_HORIZONTAL,
+    wxHATCHSTYLE_VERTICAL,
+    wxHATCHSTYLE_LAST = wxHATCHSTYLE_VERTICAL
+};
+#endif /* HAVE_WX_HATCHSTYLE */
+
+
+#ifndef HAVE_WX_PENSTYLE
+// From:
+/////////////////////////////////////////////////////////////////////////////
+// Name:        wx/pen.h
+// Purpose:     Base header for wxPen
+// Author:      Julian Smart
+// Modified by:
+// Created:
+// Copyright:   (c) Julian Smart
+// Licence:     wxWindows Licence
+/////////////////////////////////////////////////////////////////////////////
+
+enum wxPenStyle
+{
+    wxPENSTYLE_INVALID = -1,
+
+    wxPENSTYLE_SOLID = wxSOLID,
+    wxPENSTYLE_DOT = wxDOT,
+    wxPENSTYLE_LONG_DASH = wxLONG_DASH,
+    wxPENSTYLE_SHORT_DASH = wxSHORT_DASH,
+    wxPENSTYLE_DOT_DASH = wxDOT_DASH,
+    wxPENSTYLE_USER_DASH = wxUSER_DASH,
+
+    wxPENSTYLE_TRANSPARENT = wxTRANSPARENT,
+
+    wxPENSTYLE_STIPPLE_MASK_OPAQUE = wxSTIPPLE_MASK_OPAQUE,
+    wxPENSTYLE_STIPPLE_MASK = wxSTIPPLE_MASK,
+    wxPENSTYLE_STIPPLE = wxSTIPPLE,
+
+    wxPENSTYLE_BDIAGONAL_HATCH = wxHATCHSTYLE_BDIAGONAL,
+    wxPENSTYLE_CROSSDIAG_HATCH = wxHATCHSTYLE_CROSSDIAG,
+    wxPENSTYLE_FDIAGONAL_HATCH = wxHATCHSTYLE_FDIAGONAL,
+    wxPENSTYLE_CROSS_HATCH = wxHATCHSTYLE_CROSS,
+    wxPENSTYLE_HORIZONTAL_HATCH = wxHATCHSTYLE_HORIZONTAL,
+    wxPENSTYLE_VERTICAL_HATCH = wxHATCHSTYLE_VERTICAL,
+    wxPENSTYLE_FIRST_HATCH = wxHATCHSTYLE_FIRST,
+    wxPENSTYLE_LAST_HATCH = wxHATCHSTYLE_LAST
+};
+#endif /* HAVE_WX_PENSTYLE */
+
+#ifndef HAVE_WX_BRUSHSTYLE
+// From :
+/////////////////////////////////////////////////////////////////////////////
+// Name:        wx/brush.h
+// Purpose:     Includes platform-specific wxBrush file
+// Author:      Julian Smart
+// Modified by:
+// Created:
+// Copyright:   Julian Smart
+// Licence:     wxWindows Licence
+/////////////////////////////////////////////////////////////////////////////
+
+// NOTE: these values cannot be combined together!
+enum wxBrushStyle
+{
+    wxBRUSHSTYLE_INVALID = -1,
+
+    wxBRUSHSTYLE_SOLID = wxSOLID,
+    wxBRUSHSTYLE_TRANSPARENT = wxTRANSPARENT,
+    wxBRUSHSTYLE_STIPPLE_MASK_OPAQUE = wxSTIPPLE_MASK_OPAQUE,
+    wxBRUSHSTYLE_STIPPLE_MASK = wxSTIPPLE_MASK,
+    wxBRUSHSTYLE_STIPPLE = wxSTIPPLE,
+    wxBRUSHSTYLE_BDIAGONAL_HATCH = wxHATCHSTYLE_BDIAGONAL,
+    wxBRUSHSTYLE_CROSSDIAG_HATCH = wxHATCHSTYLE_CROSSDIAG,
+    wxBRUSHSTYLE_FDIAGONAL_HATCH = wxHATCHSTYLE_FDIAGONAL,
+    wxBRUSHSTYLE_CROSS_HATCH = wxHATCHSTYLE_CROSS,
+    wxBRUSHSTYLE_HORIZONTAL_HATCH = wxHATCHSTYLE_HORIZONTAL,
+    wxBRUSHSTYLE_VERTICAL_HATCH = wxHATCHSTYLE_VERTICAL,
+    wxBRUSHSTYLE_FIRST_HATCH = wxHATCHSTYLE_FIRST,
+    wxBRUSHSTYLE_LAST_HATCH = wxHATCHSTYLE_LAST
+};
+#endif /* HAVE_WX_BRUSHSTYLE */
+
+#endif /* WX_INC_H_ */

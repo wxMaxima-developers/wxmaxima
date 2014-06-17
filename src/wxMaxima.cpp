@@ -1798,7 +1798,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
+#if defined __WXMSW__ || defined __WXMAC__
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
+#endif
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);

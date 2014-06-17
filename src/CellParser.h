@@ -20,7 +20,7 @@
 #ifndef CELLPARSER_H
 #define CELLPARSER_H
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
@@ -53,7 +53,7 @@ public:
   wxString GetSymbolFontName();
   wxColour GetColor(int st);
   wxFontWeight IsBold(int st);
-  int IsItalic(int st);
+  wxFontStyle IsItalic(int st);
   bool IsUnderlined(int st);
   void ReadStyle();
   void SetForceUpdate(bool force)

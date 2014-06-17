@@ -17,7 +17,7 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-#include <wx/wx.h>
+#include <wx_inc.h>
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
