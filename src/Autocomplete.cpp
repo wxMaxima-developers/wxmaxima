@@ -79,6 +79,7 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_symbolList.Add(wxT("wxplot_size"));
   m_symbolList.Add(wxT("wxdraw_list"));
   m_symbolList.Add(wxT("table_form"));
+  m_symbolList.Add(wxT("wxbuild_info"));
   m_templateList.Add(wxT("table_form(<data>)"));
   m_templateList.Add(wxT("table_form(<data>,<[options]>)"));
 
