@@ -282,7 +282,7 @@ wxString TextCell::ToTeX(bool all)
 {
   wxString text;
   if (m_isHidden)
-    text = wxT("\\,");
+    text = wxT("\\cdot ");
   else if (m_textStyle == TS_GREEK_CONSTANT)
   {
     if (m_text[0] != '%')
@@ -371,7 +371,7 @@ wxString TextCell::ToXML(bool all)
   xmlstring.Replace(wxT(">"),  wxT("&gt;"));
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
-  
+
   return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">") +
     MathCell::ToXML(all);
 }
