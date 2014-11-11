@@ -268,11 +268,12 @@ wxString TextCell::ToString(bool all)
   wxString text;
   if (m_altCopyText != wxEmptyString)
     text = m_altCopyText;
-  else
+  else {
     text = m_text;
 #if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
+  }
   if (m_textStyle == TS_STRING)
     text = wxT("\"") + text + wxT("\"");
   return text + MathCell::ToString(all);

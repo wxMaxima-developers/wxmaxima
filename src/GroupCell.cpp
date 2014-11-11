@@ -679,8 +679,13 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
     if (m_input->m_next!=NULL)
     {
+
+      wxString input = m_input->m_next->ToString(true);
+#if wxUSE_UNICODE
+      input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+#endif
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}\n") +
-             m_input->m_next->ToString(true) +
+             input +
              wxT("\n\\end{verbatim}}\n\\end{minipage}");
     }
 
