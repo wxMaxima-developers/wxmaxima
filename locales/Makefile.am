@@ -45,16 +45,16 @@ XGETTEXT_ARGS=-C -k_ -s -j
 	$(MSGFMT) -o $@ $<
 
 # a PO file must be updated to include new translations
-.po: $(srcdir)/wxMaxima.pot
+%.po: $(srcdir)/wxMaxima.pot
 	touch $@
 	$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;
 
 $(srcdir)/wxMaxima.pot:
 	touch $@
 	(cd $(srcdir) ; find ../src -name "*.cpp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
-	(cd $(srcdir) ; find ../data -name "*.txt" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
+	$(XGETTEXT) $(XGETTEXT_ARGS) ../data/tips.txt -o wxMaxima.pot
 
-allpo: force-update
+allpo: force-update wxMaxima.pot
 	@-for t in $(WXMAXIMA_LINGUAS); do $(MAKE) $(srcdir)/$$t.po; done
 
 allmo:
@@ -124,8 +124,8 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              de.po de.mo wxwin/de.mo  \
 	     pt_BR.po pt_BR.mo wxwin/pt_BR.mo \
 	     ru.po ru.mo wxwin/ru.mo \
-	     ru.po hu.mo wxwin/hu.mo \
-	     ru.po uk.mo wxwin/uk.mo \
+	     hu.po hu.mo wxwin/hu.mo \
+	     uk.po uk.mo wxwin/uk.mo \
 	     pl.po pl.mo wxwin/pl.mo \
 	     zh_TW.po zh_TW.mo wxwin/zh_TW.mo \
 	     da.po da.mo wxwin/da.mo \
