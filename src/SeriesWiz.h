@@ -20,7 +20,7 @@
 #ifndef SERIESWIZ_H
 #define SERIESWIZ_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/spinctrl.h>
 

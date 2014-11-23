@@ -20,7 +20,7 @@
 #ifndef PLOT2DWIZ_H
 #define PLOT2DWIZ_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/spinctrl.h>
 #include <wx/bmpbuttn.h>

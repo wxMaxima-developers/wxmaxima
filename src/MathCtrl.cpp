@@ -90,9 +90,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
 
-#if wxCHECK_VERSION(2,9,1)
   DisableKeyboardScrolling();
-#endif
 
   // hack to workaround problems in RtL locales, http://bugzilla.redhat.com/455863
   SetLayoutDirection(wxLayout_LeftToRight);
@@ -129,11 +127,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   // Thest if m_memory is NULL (resize event)
   if (m_memory == NULL) {
     m_memory = new wxBitmap();
-#if wxCHECK_VERSION(3,0,0)
     m_memory->CreateScaled (sz.x, sz.y, -1, dc.GetContentScaleFactor ());
-#else
-    m_memory->Create(sz.x, sz.y);
-#endif
   }
   // Prepare memory DC
   wxString bgColStr= wxT("white");
@@ -1370,18 +1364,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_DELETE:
       if (event.ShiftDown()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
-#if wxCHECK_VERSION(2,9,0)
         GetParent()->ProcessWindowEvent(ev);
-#else
-        GetParent()->ProcessEvent(ev);
-#endif
       } else if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
-#if wxCHECK_VERSION(2,9,0)
         GetParent()->ProcessWindowEvent(ev);
-#else
-        GetParent()->ProcessEvent(ev);
-#endif
       } else
         event.Skip();
       break;
@@ -1389,18 +1375,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_INSERT:
       if (event.ControlDown()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_copy);
-#if wxCHECK_VERSION(2,9,0)
         GetParent()->ProcessWindowEvent(ev);
-#else
-        GetParent()->ProcessEvent(ev);
-#endif
       } else if (event.ShiftDown()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_paste);
-#if wxCHECK_VERSION(2,9,0)
         GetParent()->ProcessWindowEvent(ev);
-#else
-        GetParent()->ProcessEvent(ev);
-#endif
       } else
         event.Skip();
       break;
@@ -1408,11 +1386,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     case WXK_BACK:
       if (CanDeleteSelection()) {
         wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
-#if wxCHECK_VERSION(2,9,0)
         GetParent()->ProcessWindowEvent(ev);
-#else
-        GetParent()->ProcessEvent(ev);
-#endif
       }
       else
         event.Skip();
@@ -3359,7 +3333,7 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
 
 void MathCtrl::CheckUnixCopy()
 {
-#if defined __WXGTK__ && wxCHECK_VERSION(2,9,0)
+#if defined __WXGTK__
   if (CanCopy(true)) {
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->Open()) {

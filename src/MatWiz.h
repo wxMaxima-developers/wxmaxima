@@ -20,7 +20,7 @@
 #ifndef MATWIZ_H
 #define MATWIZ_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"

@@ -6,7 +6,6 @@ AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADER(src/Setup.h)
-AC_CONFIG_HEADER([src/wx_inc.h:src/wx_inc.h.in])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
@@ -44,12 +43,6 @@ AC_ARG_ENABLE(printing,
 	  *) AC_MSG_ERROR(bad value ${enableval} for --enable-printing) ;;
      	 esac],
 	[wxm_print=true])
-
-if test x"${wxm_print}" = x"true" ; then
-   AC_DEFINE([WXM_PRINT], [1], ["Add printing support"])
-else
-   AC_DEFINE([WXM_PRINT], [0], ["Add printing support"])
-fi
 
 dnl osx compile options
 
@@ -96,7 +89,7 @@ AC_ARG_ENABLE(static-wx,
      	 esac],
 	[static_wx=false])
 
-AM_PATH_WXCONFIG([2.8.4], [wxWin=1], [wxWin=0], [xml,html,adv,aui,core,net,base])
+AM_PATH_WXCONFIG([3.0.0], [wxWin=1], [wxWin=0], [xml,html,adv,aui,core,net,base])
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
@@ -106,7 +99,7 @@ if test "$wxWin" != 1; then
           where wxWidgets libraries are installed (returned by
           'wx-config --libs' or 'wx-config --static --libs' command)
           is in LD_LIBRARY_PATH or equivalent variable and
-          wxWidgets version is 2.8.4 or above.
+          wxWidgets version is 3.0.0 or above.
           ])
 fi
 
@@ -126,22 +119,6 @@ AC_TRY_LINK([#include <wx/wx.h>],
              echo "*** incorrectly installed."
              echo ""
              AC_MSG_ERROR([Failed to compile a test program])])
-
-		
-AC_CHECK_TYPE([wxHatchStyle], 
-			[AC_DEFINE([HAVE_WX_HATCHSTYLE],[],[wxWidgets defines wxHatchStyle])], 
-			[], 
-			[[#include <wx/wx.h>]])
-
-AC_CHECK_TYPE([wxPenStyle], 
-			[AC_DEFINE([HAVE_WX_PENSTYLE],[],[wxWidgets defines wxPenStyle])], 
-			[], 
-			[[#include <wx/wx.h>]])
-
-AC_CHECK_TYPE([wxBrushStyle], 
-			[AC_DEFINE([HAVE_WX_BRUSHSTYLE],[],[wxWidgets defines wxBrushStyle])], 
-			[], 
-			[[#include <wx/wx.h>]])
 
 
 dnl we have to setup rc compiling under Windows

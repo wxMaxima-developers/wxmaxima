@@ -208,11 +208,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   wxglade_tmp_menu_1->Append(menu_export_html, _("&Export..."),
                    _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
-#if WXM_PRINT
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
-#endif
 
   wxglade_tmp_menu_1->AppendSeparator();
   APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_EXIT, _("E&xit\tCtrl-Q"),
@@ -727,11 +725,9 @@ void wxMaximaFrame::SetupToolBar()
                            IMAGE("save.png"),
                            _("Save document"));
   frame_1_toolbar->AddSeparator();
-#if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
                            IMAGE("print.png"),
                            _("Print document"));
-#endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
                            IMAGE("configure.png"),
                            _("Configure wxMaxima"));
@@ -793,12 +789,10 @@ void wxMaximaFrame::SetupToolBar()
                                                     wxART_TOOLBAR),
                            _("Save document"));
   frame_1_toolbar->AddSeparator();
-#if WXM_PRINT
   frame_1_toolbar->AddTool(tb_print, _("Print"),
                            wxArtProvider::GetBitmap(wxT("gtk-print"),
                                                     wxART_TOOLBAR),
                            _("Print document"));
-#endif
   frame_1_toolbar->AddTool(tb_pref, _("Options"),
                            wxArtProvider::GetBitmap(wxT("gtk-preferences"),
                                                     wxART_TOOLBAR),
