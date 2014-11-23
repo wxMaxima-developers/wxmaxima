@@ -1,119 +1,144 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- <link rel="icon" type="image/ico" href="favicon.ico" />
- <link rel="stylesheet" type="text/css" href="style.css" />
- <title>wxMaxima</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/ico" href="favicon.ico">
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>wxMaxima - help</title>
 </head>
 
 <body>
- <div id="container">
- 
- <div id="header">
-  <h1>wxMaxima</h1>
- </div>
- 
- <div id="navigation">
-   <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="screenshots.html">Screenshots</a></li>
-    <li><a href="help.html">Help</a></li>
-    <li><a href="develop.html">Develop</a></li>
-   </ul>
+
+  <div class="container">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="index.html">
+          wxMaxima
+        </a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li class="active"><a href="help.html">Help</a></li>
+          <li><a href="develop.html">Develop</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-header">
+      <h1>Getting help</h1>
+    </div>
+
+    <p class="lead">
+      To get support for using Maxima, use the
+      <a href="http://maxima.sourceforge.net/maximalist.html">mailing lists</a>.
+      Questions specific to wxMaxima can be posted to a
+      <a href="http://sourceforge.net/p/wxmaxima/discussion/435775/">forum</a>.
+      A lot of documentation can also be found at <a href="http://maxima.sf.net/documentation.html">maxima webpages</a>.
+    </p>
+
+    <h2>Math fonts</h2>
+
+    <p>
+      wxMaxima can use <a href="http://www.math.union.edu/~dpvc/jsMath/">jsMath TeX</a>
+      fonts to display math output. The fonts are used to display Greek
+      characters and math symbols (like the integral and sum
+      symbols). Follow
+      <a href="http://www.math.union.edu/~dpvc/jsMath/download/jsMath-fonts.html">these instructions</a>
+      to install jsMath fonts in your computer.
+    </p>
+
+    <h2>Tutorials</h2>
+
+    <p>
+      Here is a collection of tutorials contributed by wxMaxima
+      users. If you wish to contribute a tutorial, send it by
+      <a href="mailto:andrej.vodopivec@gmail.com">email</a>
+      and I will add it to the list.
+    </p>
+    
+    <ul>
+      <li><a href="tutorials/10minute.zip">10 minute (wx)Maxima tutorial</a>:
+        a quick introduction to wxMaxima and Maxima (by Žiga Lenarčič).
+        <ul>
+          <li><a href="tutorials/10minute_rus.zip">10 minute (Russian)</a> translation by Mikhantiev Eugene.</li>
+          <li><a href="http://sajangyang.blogspot.com/2010/05/10-minute-wxmaxima-tutorial-korean-10.html">10 minute (Korean)</a> translation by Sajang Yang.</li>
+          <li><a href="tutorials/10minute_es.zip">10 minute (Spanish)</a> translation by Nicolás Guarín.</li>
+          <li><a href="tutorials/10minute_it.zip">10 minute (Italian)</a> translation by Enrico Centenaro.</li>
+          <li><a href="tutorials/10minute_fr.zip">10 minute (French)</a> translation by Jean-Luc Joulin.</li>
+          <li><a href="tutorials/10_Minuten_Maxima.wxmx">10 minute (German)</a> translation by Helmut Albrecht.</li>
+          <li><a href="tutorials/10_minute_maxima_portuguese.wxmx">10 minute (Portuguese)</a> translation by Filipe Direito.</li>
+          <li><a href="tutorials/10_minute_gr.wxmx">10 minute (Greek)</a> translation by Makis Chourdakis</li>
+        </ul>  
+      </li>
+      <li><a href="tutorials/wxmaxima.zip">wxMaxima tutorial</a>:
+        learn how to quickly and efficiently use the wxMaxima GUI (by Žiga Lenarčič).
+        <ul>
+          <li><a href="tutorials/Using_wxMaxima_tutorial_gr.wxmx">wxMaxima tutorial (Greek)</a> translation by Makis Chourdakis</li>
+        </ul>
+      </li>
+      <li><a href="tutorials/wxplot2d_tutorial.zip">2D Plotting</a>: using wxplot functions (by Wilson Mixon).
+        <ul>
+          <li><a href="tutorials/wxplot2d_tutorial_es.zip">2D Plotting (Spanish)</a> translation by Nicolás Guarín.</li>
+          <li><a href="tutorials/wxMaxima_wxplot_Tutorial_gr.wxmx">2D Plotting (Greek)</a> translation by Makis Chourdakis</li>
+        </ul>
+      </li>
+      <li><a href="tutorials/Slider.zip">Slider.zip</a>: a tutorial on creating animations with wxMaxima (by Wilson Mixon).</li>
+      <li><a href="tutorials/WriteReadDataFiles.zip">Writing and reading data</a>:
+        writing and reading data using the numericalio package (by Wilson Mixon).</li>
+      <li><a href="tutorials/minimal-maxima.wxm.zip">Understanding Maxima Essentials</a>:
+        Maxima essentials based on Minimal-Maxima paper written by Robert Dodier (by David E. Miller).</li>
+      <li><a href="tutorials/calc-how-to.wxm.zip">Using wxMaxima as a Calculator</a>:
+        methods for using Maxima for numerical calculations (by David E. Miller).</li>
+      <li><a href="tutorials/CalcTutorial.zip">Calculus Tutorial</a> by Wilson Mixon.</li>
+      <li><a href="tutorials/sets-how-to.wxm.zip">Using wxMaxima for Basic Set Operations</a>:
+        methods for using Maxima for basic set object operations (by David E. Miller).</li>
+      <li><a href="tutorials/linear-eqns-how-to.wxm.zip">Using wxMaxima with Linear Equations</a>: methods for using Maxima for investigating linear equations (by David E. Miller).
+        <ul>
+          <li><a href="tutorials/leq-fr.zip">Linear Equations (French)</a> translation by Jean-Luc Joulin.</li>
+        </ul>
+      </li>
+      <li><a href="tutorials/completion.zip">Command completion</a></li>
+    </ul>
+
+    <h2>Other documents</h2>
+
+    <ul>
+      <li><a href="http://vimeo.com/maximajaj">Introducción a Maxima por Javier Arántegui</a>:
+        video tutorials in Spanish.</li>
+      <li><a href="http://www.youtube.com/watch?v=bxDilwpaCqU">Video introduction</a> to
+        wxMaxima in German by Karsten Kulach.</li>
+      <li><a href="http://facultyweb.berry.edu/wmixon/maxima/Typesetting/Intro.html">Preparing
+        LaTeX documents using wxMaxima</a></li>
+      <li><a href="http://andrejv.wordpress.com/">A blog</a> with short maxima demonstrations.
+        <li><a href="http://blog.goo.ne.jp/slide_271828/e/983b7f31830609abc2337d5ab1461485">Japanese blog posts</a> about wxMaxima.</li>
+        <li><a href="http://statmath.wu.ac.at/~leydold/maxima/">(wx)Maxima</a> tutorial with special focus on the mathematics needed in economics by Josef Leydold and Martin Petry.</li>
+        <li><a href="http://dilijev-wxmaxima.blogspot.com">wxMaxima Developer Blog</a> by Doug Ilijev.</li>
+    </ul>
   </div>
-  
-  <div id="content">
 
-  <h2>Getting help</h2>
-
-<p>
-To get support for using Maxima, use the
-<a href="http://maxima.sourceforge.net/maximalist.html">mailing lists</a>.
-Questions specific to wxMaxima can be posted to a
-<a href="http://sourceforge.net/projects/wxmaxima/forums/forum/435775">forum</a>.
-</p>
-
-  <h2>Math fonts</h2>
-
-<p>
-wxMaxima can use <a href="http://www.math.union.edu/~dpvc/jsMath/">jsMath TeX</a>
-fonts to display math output. The fonts are used to display Greek characters and math symbols
-(like the integral and sum symbols). Follow
-<a href="http://www.math.union.edu/~dpvc/jsMath/download/jsMath-fonts.html">these instructions</a>
-to install jsMath fonts in your computer.
-</p>
-
-  <h2>Tutorials</h2>
-
-<p>
-Here is a collection of tutorials contributed by wxMaxima users. If you wish to
-contribute a tutorial to the list, send it to <a href="mailto:andrej.vodopivec@gmail.com">me</a>
-and I will add it.
-</p>
-
-<ul>
-<li><a href="tutorials/10minute.zip">10 minute (wx)Maxima tutorial</a>:
-  a quick introduction to wxMaxima and Maxima (by Žiga Lenarčič).
-  <ul>
-    <li><a href="tutorials/10minute_rus.zip">10 minute (Russian)</a> translation by Mikhantiev Eugene.</li>
-    <li><a href="http://sajangyang.blogspot.com/2010/05/10-minute-wxmaxima-tutorial-korean-10.html">10 minute (Korean)</a> translation by Sajang Yang.</li>
-    <li><a href="tutorials/10minute_es.zip">10 minute (Spanish)</a> translation by Nicolás Guarín.</li>
-    <li><a href="tutorials/10minute_it.zip">10 minute (Italian)</a> translation by Enrico Centenaro.</li>
-    <li><a href="tutorials/10minute_fr.zip">10 minute (French)</a> translation by Jean-Luc Joulin.</li>
-    <li><a href="tutorials/10_Minuten_Maxima.wxmx">10 minute (German)</a> translation by Helmut Albrecht.</li>
-    <li><a href="tutorials/10_minute_maxima_portuguese.wxmx">10 minute (Portuguese)</a> translation by Filipe Direito.</li>
-    <li><a href="tutorials/10_minute_gr.wxmx">10 minute (Greek)</a> translation by Makis Chourdakis</li>
-  </ul>  
-</li>
-<li><a href="tutorials/wxmaxima.zip">wxMaxima tutorial</a>:
-  learn how to quickly and efficiently use the wxMaxima GUI (by Žiga Lenarčič).
-  <ul>
-    <li><a href="tutorials/Using_wxMaxima_tutorial_gr.wxmx">wxMaxima tutorial (Greek)</a> translation by Makis Chourdakis</li>
-  </ul>
-</li>
-<li><a href="tutorials/wxplot2d_tutorial.zip">2D Plotting</a>: using wxplot functions (by Wilson Mixon).
-  <ul>
-    <li><a href="tutorials/wxplot2d_tutorial_es.zip">2D Plotting (Spanish)</a> translation by Nicolás Guarín.</li>
-    <li><a href="tutorials/wxMaxima_wxplot_Tutorial_gr.wxmx">2D Plotting (Greek)</a> translation by Makis Chourdakis</li>
-  </ul>
-</li>
-<li><a href="tutorials/Slider.zip">Slider.zip</a>: a tutorial on creating animations with wxMaxima (by Wilson Mixon).</li>
-<li><a href="tutorials/WriteReadDataFiles.zip">Writing and reading data</a>:
-  writing and reading data using the numericalio package (by Wilson Mixon).</li>
-<li><a href="tutorials/minimal-maxima.wxm.zip">Understanding Maxima Essentials</a>:
-  Maxima essentials based on Minimal-Maxima paper written by Robert Dodier (by David E. Miller).</li>
-<li><a href="tutorials/calc-how-to.wxm.zip">Using wxMaxima as a Calculator</a>:
-  methods for using Maxima for numerical calculations (by David E. Miller).</li>
-<li><a href="tutorials/CalcTutorial.zip">Calculus Tutorial</a> by Wilson Mixon.</li>
-<li><a href="tutorials/sets-how-to.wxm.zip">Using wxMaxima for Basic Set Operations</a>:
-  methods for using Maxima for basic set object operations (by David E. Miller).</li>
-<li><a href="tutorials/linear-eqns-how-to.wxm.zip">Using wxMaxima with Linear Equations</a>: methods for using Maxima for investigating linear equations (by David E. Miller).
-  <ul>
-    <li><a href="tutorials/leq-fr.zip">Linear Equations (French)</a> translation by Jean-Luc Joulin.</li>
-  </ul>
-</li>
-<li><a href="tutorials/completion.zip">Command completion</a></li>
-
-
-</ul>
-
-  <h2>Other documents</h2>
-
-<ul>
- <li><a href="http://vimeo.com/maximajaj">Introducción a Maxima por Javier Arántegui</a>:
- 	video tutorials in Spanish.</li>
- <li><a href="http://www.youtube.com/watch?v=bxDilwpaCqU">Video introduction</a> to wxMaxima in German by Karsten Kulach.</li>
- <li><a href="http://facultyweb.berry.edu/wmixon/maxima/Typesetting/Intro.html">Preparing
- 	LaTeX documents using wxMaxima</a></li>
- <li><a href="http://andrejv.wordpress.com/">A blog</a> with short maxima demonstrations.
- <li><a href="http://blog.goo.ne.jp/slide_271828/e/983b7f31830609abc2337d5ab1461485">Japanese blog posts</a> about wxMaxima.</li>
- <li><a href="http://statmath.wu.ac.at/~leydold/maxima/">(wx)Maxima</a> tutorial with special focus on the mathematics needed in economics by Josef Leydold and Martin Petry.</li>
- <li><a href="http://dilijev-wxmaxima.blogspot.com">wxMaxima Developer Blog</a> by Doug Ilijev.</li>
-</ul>
-  </div>
-  <div id="footer">Copyright © 2011 Andrej Vodopivec</div>
- </div>
-<!-- Start of StatCounter Code -->
+  <!-- Start of StatCounter Code -->
 <script type="text/javascript">
 sc_project=318894; 
 sc_invisible=1; 

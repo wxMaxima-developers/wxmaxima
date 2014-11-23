@@ -1,47 +1,83 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- <link rel="icon" type="image/ico" href="favicon.ico" />
- <link rel="stylesheet" type="text/css" href="style.css" />
- <title>wxMaxima</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/ico" href="favicon.ico">
+  <title>wxMaxima - develop</title>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
- <div id="container">
- 
- <div id="header">
-  <h1>wxMaxima</h1>
- </div>
- 
- <div id="navigation">
-   <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="screenshots.html">Screenshots</a></li>
-    <li><a href="help.html">Help</a></li>
-    <li><a href="develop.html">Develop</a></li>
-   </ul>
-  </div>
+
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:999" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" class="hidden-xs"></a>
+
+<!-- <a href="https://github.com/andrejv/wxmaxima"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:999999" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" class="hidden-xs"></a>
+ -->
+
+  <div class="container">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="index.html">
+          wxMaxima
+        </a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="help.html">Help</a></li>
+          <li class="active"><a href="develop.html">Develop</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-header">
+      <h1>Develop</h1>
+    </div>
+
+    <p class="lead">
+      wxMaxima is written is C++ and uses <a href="http://wxwidgets.org/">wxWidgets</a>.
+      The sources are in git repository hosted at <a href="https://github.com/andrejv/wxmaxima">github</a>.
+    </p>
+    <h2>Trackers</h2>
   
-  <div id="content">
+    <p>
+      Use <a href="https://github.com/andrejv/wxmaxima/issues">github issues page</a>
+      to submit bug reports or feature requests.
+    </p>
 
-  <h2>Trackers</h2>
-  
-<p>
-Use <a href="https://github.com/andrejv/wxmaxima/issues">github issues page</a>
-to submit bug reports or feature requests.
-</p>
+    <h2>Git</h2>
 
-  <h2>Git</h2>
-
-<p>
-Current wxMaxima <a href="http://github.com/andrejv/wxmaxima/tarball/master">source code</a>
-is available in git repositories at
-<a href="http://sourceforge.net/scm/?type=git&group_id=126731">sourceforge</a>
-and <a href="http://github.com/andrejv/wxmaxima">github</a>.
-</p>
+    <p>
+      Current wxMaxima <a href="http://github.com/andrejv/wxmaxima/tarball/master">source code</a>
+      is available in git repositories at
+      <a href="http://sourceforge.net/scm/?type=git&group_id=126731">sourceforge</a>
+      and <a href="http://github.com/andrejv/wxmaxima">github</a>. Clone the repository with
+      <pre>git clone https://github.com/andrejv/wxmaxima</pre>
+    </p>
 
   </div>
-  <div id="footer">Copyright © 2011 Andrej Vodopivec</div>
+
  </div>
 <!-- Start of StatCounter Code -->
 <script type="text/javascript">

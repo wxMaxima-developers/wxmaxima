@@ -1,51 +1,81 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- <link rel="icon" type="image/ico" href="favicon.ico" />
- <link rel="stylesheet" type="text/css" href="style.css" />
- <title>wxMaxima</title>
- 
- <link rel="stylesheet" href="lightbox/css/lightbox.css" type="text/css" media="screen" />	
- <script src="lightbox/js/prototype.js" type="text/javascript"></script>
- <script src="lightbox/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
- <script src="lightbox/js/lightbox.js" type="text/javascript"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>wxMaxima - screenshots</title>
+  <link rel="icon" type="image/ico" href="favicon.ico">
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="lightbox/css/lightbox.css" type="text/css" media="screen">
+  <script src="lightbox/js/prototype.js" type="text/javascript"></script>
+  <script src="lightbox/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
+  <script src="lightbox/js/lightbox.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
- <div id="container">
- 
- <div id="header">
-  <h1>wxMaxima</h1>
- </div>
- 
- <div id="navigation">
-   <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="screenshots.html">Screenshots</a></li>
-    <li><a href="help.html">Help</a></li>
-    <li><a href="develop.html">Develop</a></li>
-   </ul>
-  </div>
-  
-  <div id="content">
 
-<table id="screenshots">
- <tr>
-  <td><a href="images/linux_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux"><img src="images/linux_1.jpg" alt="wxMaxima on Linux" width=150 height=100 /></a></td>
-  <td><a href="images/linux_2.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux"><img src="images/linux_2.jpg" alt="wxMaxima on Linux" width=150 height=100 /></a></td>
-  <td><a href="images/linux_3.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux"><img src="images/linux_3.jpg" alt="wxMaxima on Linux" width=150 height=100 /></a></td>
- </tr>
- <tr>
-  <td><a href="images/mac_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Mac OS X"><img src="images/mac_1.jpg" alt="wxMaxima on Mac OS X" width=150 height=100 /></a></td>
-  <td><a href="images/mac_2.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Mac OS X"><img src="images/mac_2.jpg" alt="wxMaxima on Mac OS X" width=150 height=100 /></a></td>
-  <td><a href="images/windows_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Windows"><img src="images/windows_1.jpg" alt="wxMaxima on Windows" width=150 height=100 /></a></td>
- </tr>
-</table>
+  <div class="container">
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
+        <a class="navbar-brand" href="index.html">
+          wxMaxima
+        </a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="help.html">Help</a></li>
+          <li><a href="develop.html">Develop</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="page-header">
+      <h1>Screenshots</h1>
+    </div>
+    <table id="screenshots" class="screenshots-table">
+      <tr>
+        <td><a href="images/linux_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux">
+          <img src="images/linux_1.jpg" alt="wxMaxima on Linux" width=150 class="img-responsive" ></a></td>
+        <td><a href="images/linux_2.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux">
+          <img src="images/linux_2.jpg" alt="wxMaxima on Linux" width=150 class="img-responsive"></a></td>
+        <td><a href="images/linux_3.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Linux">
+          <img src="images/linux_3.jpg" alt="wxMaxima on Linux" width=150 class="img-responsive" ></a></td>
+      </tr>
+      <tr>
+        <td><a href="images/mac_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Mac OS X">
+          <img src="images/mac_1.jpg" alt="wxMaxima on Mac OS X" width=150 class="img-responsive"></a></td>
+        <td><a href="images/mac_2.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Mac OS X">
+          <img src="images/mac_2.jpg" alt="wxMaxima on Mac OS X"  width=150 class="img-responsive"></a></td>
+        <td><a href="images/windows_1.jpg" rel="lightbox[wxMaxima]" title="wxMaxima on Windows">
+          <img src="images/windows_1.jpg" alt="wxMaxima on Windows" width=150 class="img-responsive"></a></td>
+      </tr>
+    </table>
+    
   </div>
-  <div id="footer">Copyright © 2011 Andrej Vodopivec</div>
  </div>
+
 <!-- Start of StatCounter Code -->
 <script type="text/javascript">
 sc_project=318894; 
@@ -56,4 +86,5 @@ sc_security="";
 
 <script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script><noscript><div class="statcounter"><a title="web counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank"><img class="statcounter" src="http://c2.statcounter.com/318894/0//1/" alt="web counter" style="border:0"></a></div></noscript>
 <!-- End of StatCounter Code -->
+
 </body>
