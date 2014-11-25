@@ -92,17 +92,13 @@ public:
   void RecalculateForce();
   void ClearDocument(); // used when opening new file in wxMaxima.cpp
   void ResetInputPrompts();
-  bool CanCopy(bool fromActive = false)
-  {
+  bool CanCopy(bool fromActive = false) {
     return m_selectionStart != NULL ||
            (fromActive && m_activeCell != NULL && m_activeCell->CanCopy());
   }
-  bool CanPaste()
-  {
-    return (m_activeCell != NULL) || (m_hCaretActive);
+  bool CanPaste() { return (m_activeCell != NULL) || (m_hCaretActive);
   }
-  bool CanCut()
-  {
+  bool CanCut() {
     return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
            (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
@@ -131,38 +127,21 @@ public:
 	bool ExportToWXMX(wxString file);	//export to xml compatible file
   bool ExportToTeX(wxString file);
   wxString GetString(bool lb = false);
-  MathCell* GetTree()
-  {
-    return m_tree;
-  }
-  MathCell* GetSelectionStart()
-  {
-    return m_selectionStart;
-  }
-  void SetSelection(MathCell* sel)
-  {
-    m_selectionStart = m_selectionEnd = sel;
-  }
+  MathCell* GetTree() { return m_tree; }
+  MathCell* GetSelectionStart() { return m_selectionStart; }
+  void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
   bool CanEdit();
-  void EnableEdit(bool enable = true)
-  {
-    m_editingEnabled = enable;
-  }
+  void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
   void ScrollToCell(MathCell *cell);
-  EditorCell* GetActiveCell()
-  {
-    return m_activeCell;
-  }
+  EditorCell* GetActiveCell() { return m_activeCell; }
   void ShowPoint(wxPoint point);
   void OnSetFocus(wxFocusEvent& event);
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
   bool AnimationRunning() { return m_animate; }
-  bool IsActiveInLast() {
-    return m_activeCell != NULL && m_activeCell->GetParent() == m_last;
-  }
+  bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
@@ -227,11 +206,14 @@ protected:
   void OnMouseMotion(wxMouseEvent& event);
   void OnDoubleClick(wxMouseEvent& event);
   void OnKeyDown(wxKeyEvent& event);
+  void OnCharInActive(wxKeyEvent& event);
+  void OnCharNoActive(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
+  void SelectEditable(EditorCell *editor, bool up);
+  void SelectWithChar(wxChar ccode);
   void ClickNDrag(wxPoint down, wxPoint up);
   void AdjustSize();
-  void OnEraseBackground(wxEraseEvent& event)
-  { }
+  void OnEraseBackground(wxEraseEvent& event) { }
   void CheckUnixCopy();
   void OnMouseMiddleUp(wxMouseEvent& event);
   void NumberSections();

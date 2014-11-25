@@ -1449,10 +1449,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         SetSelection(NULL);
         Refresh();
       }
-
       else
         SetHCaret(m_activeCell->GetParent()); // also refreshes
-
       break;
 #endif
 
@@ -1461,15 +1459,326 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   }
 }
 
+/****
+ * OnCharInActive is called when we have a wxKeyEvent and
+ * an EditorCell is active.
+ *
+ * OnCharInActive sends the event to the active EditorCell
+ * and then updates the window.
+ */
+void MathCtrl::OnCharInActive(wxKeyEvent& event) {
+  bool needRecalculate = false;
+
+  if (event.GetKeyCode() == WXK_UP &&
+      m_activeCell->CaretAtStart() &&
+      !event.ShiftDown()) { // don't exit the cell if we are making a selection
+    SetHCaret((m_activeCell->GetParent())->m_previous);
+    return;
+  }
+
+  if (event.GetKeyCode() == WXK_DOWN &&
+      m_activeCell->CaretAtEnd() &&
+      !event.ShiftDown()) {
+    SetHCaret(m_activeCell->GetParent());
+    return;
+  }
+
+  if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
+      m_activeCell->GetValue() == wxEmptyString) {
+    m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
+    DeleteSelection();
+    return;
+  }
+
+  ///
+  /// send event to active cell
+  ///
+  m_activeCell->ProcessEvent(event);
+
+  // CTRL+"s deactivates on MAC
+  if (m_activeCell == NULL)
+    return;
+
+  m_switchDisplayCaret = false;
+
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+
+  if (m_activeCell->IsDirty()) {
+    m_saved = false;
+
+    int height = m_activeCell->GetHeight();
+    int fontsize = parser.GetDefaultFontSize();
+
+    m_activeCell->ResetData();
+    m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+
+    if (height != m_activeCell->GetHeight() ||
+        m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
+        GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT)
+      needRecalculate = true;
+  }
+
+  /// If we need to recalculate then refresh the window
+  if (needRecalculate) {
+    GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    group->ResetSize();
+    group->ResetData();
+    if (m_activeCell->CheckChanges() &&
+        (group->GetGroupType() == GC_TYPE_CODE) &&
+        (m_activeCell == group->GetEditable()))
+      group->ResetInputLabel();
+    Recalculate();
+    Refresh();
+  }
+
+  /// Otherwise refresh only the active cell
+  else {
+    wxRect rect;
+    if (m_activeCell->CheckChanges()) {
+      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+      if ((group->GetGroupType() == GC_TYPE_CODE) &&
+          (m_activeCell == group->GetEditable()))
+        group->ResetInputLabel();
+      rect = group->GetRect();
+      rect.width = GetVirtualSize().x;
+    }
+    else {
+      rect = m_activeCell->GetRect();
+      rect.width = GetVirtualSize().x;
+    }
+    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+    RefreshRect(rect);
+  }
+  
+  wxPoint point = m_activeCell->PositionToPoint(parser);
+  ShowPoint(point);
+}
+
+/****
+ * We have a keypress with no active editor, shift is down and
+ * keycode (ccode) is WXK_UP/WXK_DOWN
+ */
+void MathCtrl::SelectWithChar(wxChar ccode) {
+  if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
+    if (m_hCaretPosition != NULL)
+      m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
+    else
+      m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
+
+    if (m_hCaretPositionStart == NULL)
+      return;
+    
+    if (ccode == WXK_DOWN && m_hCaretPositionStart->m_next != NULL)
+      m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+  }
+  else if (ccode == WXK_UP) {
+    if (m_hCaretPositionEnd->m_previous != NULL) {
+      if (m_hCaretPosition->m_next == m_hCaretPositionEnd)
+          m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
+      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
+    }
+    if (m_hCaretPositionEnd != NULL)
+      ScrollToCell(m_hCaretPositionEnd); 
+  }
+  else {
+    if (m_hCaretPositionEnd->m_next != NULL) {
+      if (m_hCaretPosition == m_hCaretPositionEnd)
+        m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
+      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
+    }
+    if (m_hCaretPositionEnd != NULL)
+      ScrollToCell(m_hCaretPositionEnd);
+  }
+
+  if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
+    m_selectionStart = m_hCaretPositionStart;
+    m_selectionEnd = m_hCaretPositionEnd;
+  }
+  else {
+    m_selectionStart = m_hCaretPositionEnd;
+    m_selectionEnd = m_hCaretPositionStart;
+  }
+  Refresh();
+}
+
+/****
+ * SelectEditable is called when a hCursor is active and
+ * we have receive a WXK_UP/WXK_DOWN
+ */
+void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
+  if(editor != NULL && m_workingGroup == NULL)
+  {
+    wxClientDC dc(this);
+    CellParser parser(dc);
+
+    SetActiveCell(editor, false);
+    m_hCaretActive = false;
+
+    if (top)
+      m_activeCell->CaretToStart();
+    else
+      m_activeCell->CaretToEnd();
+
+    ShowPoint(m_activeCell->PositionToPoint(parser));
+    if (editor->GetWidth() == -1)
+      Recalculate();
+    Refresh();
+  }
+  else { // can't get editor... jump over cell..
+    if (top)
+      m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_next);
+    else
+      m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous);
+    Refresh();
+  }
+}
+
+void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
+  wxChar ccode = event.GetKeyCode();
+  wxString txt; // Usually we open an Editor Cell with initial content txt
+
+  // If Shift is down we are selecting with WXK_UP and WXK_DOWN
+  if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {
+    SelectWithChar(ccode);
+    return;
+  }
+
+  // Remove selection with shift+WXK_UP/WXK_DOWN
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+  
+  switch (ccode) {
+    // These are ingored
+  case WXK_PAGEUP:
+  case WXK_PAGEDOWN:
+  case WXK_LEFT:
+  case WXK_RIGHT:
+  case WXK_WINDOWS_LEFT:
+  case WXK_WINDOWS_RIGHT:
+  case WXK_WINDOWS_MENU:
+  case WXK_COMMAND:
+  case WXK_START:
+    event.Skip();
+    break;
+
+  case WXK_HOME: // TODO: if shift down, select.
+    SetHCaret(NULL);
+    if (m_tree != NULL)
+      ScrollToCell(m_tree);
+    break;
+    
+  case WXK_END:
+    SetHCaret(m_last);
+    if (m_last != NULL)
+      ScrollToCell(m_last);
+    break;
+
+  case WXK_BACK:
+    if (m_hCaretPosition != NULL) {
+      SetSelection(m_hCaretPosition);
+      m_hCaretActive = false;
+      Refresh();
+      return;
+    }
+    break;
+      
+  case WXK_DELETE:
+    if (m_hCaretPosition == NULL) {
+      if (m_tree != NULL) {
+        SetSelection(m_tree);
+        m_hCaretActive = false;
+        Refresh();
+        return;
+      }
+    }
+    else if (m_hCaretPosition->m_next != NULL) {
+      SetSelection(m_hCaretPosition->m_next);
+      m_hCaretActive = false;
+      Refresh();
+      return;
+    }
+    break;
+
+  case WXK_UP:
+    if (m_hCaretActive) {
+      if (m_selectionStart != NULL) {
+        SetHCaret(m_selectionStart->GetParent()->m_previous);
+      }
+      else if (m_hCaretPosition != NULL) {
+        SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable(), false);
+      }
+      else
+        event.Skip();
+    }
+    else if (m_selectionStart != NULL) {
+      SetHCaret(m_selectionStart->GetParent()->m_previous);
+    }
+    else if (!ActivatePrevInput())
+      event.Skip();
+    else
+      Refresh();
+    break;
+
+  case WXK_DOWN:
+    if (m_hCaretActive) {
+      if (m_selectionEnd != NULL) {
+        SetHCaret(m_selectionEnd->GetParent());
+      }
+      else if (m_tree != NULL && m_hCaretPosition == NULL) {
+        SelectEditable(dynamic_cast<GroupCell*>(m_tree)->GetEditable(), true);
+      }
+      else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
+        SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable(), true);
+      }
+    }
+    else if (m_selectionEnd != NULL) {
+      SetHCaret(m_selectionEnd->GetParent());
+    }
+    else if (!ActivateNextInput())
+      event.Skip();
+    else
+      Refresh();
+    break;
+    
+  case WXK_RETURN:
+    if (m_selectionStart == NULL || m_selectionEnd == NULL)
+      OpenHCaret(wxEmptyString);
+    else
+      OpenHCaret(GetString());
+    break;
+      
+#if wxUSE_UNICODE
+    // ESCAPE is handled by the new cell
+  case WXK_ESCAPE:
+    OpenHCaret(wxEmptyString);
+    if (m_activeCell != NULL)
+      m_activeCell->ProcessEvent(event);
+    break;
+#endif
+
+    // keycodes which open hCaret with initial content
+  default:
+#if wxUSE_UNICODE
+    wxString txt(event.GetUnicodeKey());
+#else
+    wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
+#endif
+    OpenHCaret(txt);
+  }
+
+  Refresh();
+}
+
 /*****
  * OnChar handles key events. If we have an active cell, sends the
  * event to the active cell, else moves the cursor between groups.
  *
- * TODO: this function is should be reimplemented so that it is more
+ * TODO: this function should be reimplemented so that it is more
  *  readable!
  */
 void MathCtrl::OnChar(wxKeyEvent& event) {
-
 #if defined __WXMSW__
   if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
     return;
@@ -1481,341 +1790,10 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     return;
   }
 
-  if (m_activeCell != NULL) { // we are in an active cell
-    bool needRecalculate = false;
-
-    if (event.GetKeyCode() == WXK_UP &&
-        m_activeCell->CaretAtStart() &&
-        !event.ShiftDown()) { // don't exit the cell if we are making a selection
-      SetHCaret((m_activeCell->GetParent())->m_previous);
-      return;
-    }
-
-    if (event.GetKeyCode() == WXK_DOWN &&
-        m_activeCell->CaretAtEnd() &&
-        !event.ShiftDown()) {
-      SetHCaret(m_activeCell->GetParent());
-      return;
-    }
-
-    if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
-        m_activeCell->GetValue() == wxEmptyString) {
-      m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
-      DeleteSelection();
-      return;
-    }
-
-    m_activeCell->ProcessEvent(event);
-
-    // CTRL+"s deactivates on MAC
-    if (m_activeCell == NULL)
-      return;
-
-    m_switchDisplayCaret = false;
-
-    wxClientDC dc(this);
-    CellParser parser(dc);
-    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-
-    if (m_activeCell->IsDirty()) {
-      m_saved = false;
-
-      int height = m_activeCell->GetHeight();
-
-      int fontsize = parser.GetDefaultFontSize();
-
-      m_activeCell->ResetData();
-      m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-      m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
-
-      if (height != m_activeCell->GetHeight() ||
-          m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
-            GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT)
-        needRecalculate = true;
-    }
-
-    /// If we need to recalculate then refresh the window
-    if (needRecalculate) {
-      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-      group->ResetSize();
-      group->ResetData();
-      if (m_activeCell->CheckChanges() &&
-          (group->GetGroupType() == GC_TYPE_CODE) &&
-          (m_activeCell == group->GetEditable()))
-        group->ResetInputLabel();
-      Recalculate();
-      Refresh();
-    }
-
-    /// Otherwise refresh only the active cell
-    else {
-      wxRect rect;
-      if (m_activeCell->CheckChanges()) {
-        GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-        if ((group->GetGroupType() == GC_TYPE_CODE) &&
-            (m_activeCell == group->GetEditable()))
-          group->ResetInputLabel();
-        rect = group->GetRect();
-        rect.width = GetVirtualSize().x;
-      }
-      else {
-        rect = m_activeCell->GetRect();
-        rect.width = GetVirtualSize().x;
-      }
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RefreshRect(rect);
-    }
-
-    wxPoint point = m_activeCell->PositionToPoint(parser);
-    ShowPoint(point);
-  }
-
-  else { // m_activeCell == NULL
-    wxClientDC dc(this);
-    CellParser parser(dc);
-
-    if (!event.ShiftDown())
-      m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
-    switch (event.GetKeyCode()) {
-
-      case WXK_UP:
-        if (m_hCaretActive) {
-
-          if (event.ShiftDown()) {
-            if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
-              if (m_hCaretPosition != NULL)
-                m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
-            }
-            else {
-              if (m_hCaretPositionEnd->m_previous != NULL) {
-                if (m_hCaretPosition != NULL &&
-                    m_hCaretPosition->m_next == m_hCaretPositionEnd)
-                  m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
-                m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
-              }
-            }
-            if (m_hCaretPositionEnd != NULL)
-              ScrollToCell(m_hCaretPositionEnd);
-          }
-
-          else {
-            if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionStart->GetParent()->m_previous);
-            }
-            else if (m_hCaretPosition != NULL)
-            {
-              EditorCell * editor = m_hCaretPosition->GetEditable();
-              if(editor != NULL && m_workingGroup == NULL)
-              {
-                SetActiveCell(editor, false);
-                m_hCaretActive = false;
-                m_activeCell->CaretToEnd();
-                ShowPoint(m_activeCell->PositionToPoint(parser));
-                if (editor->GetWidth() == -1)
-                  Recalculate();
-                Refresh();
-              }
-              else { // can't get editor... jump over cell..
-                m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous);
-                Refresh();
-              }
-            }
-            else
-              event.Skip();
-          }
-        }
-
-        else {
-          if (m_selectionStart != NULL) { // if we have selection set hCaret at the top, deselect
-            SetHCaret(m_selectionStart->GetParent()->m_previous);
-          }
-          else if (!ActivatePrevInput())
-            event.Skip();
-          else
-            Refresh();
-        }
-
-        break;
-
-      case WXK_DOWN:
-        //
-        if (m_hCaretActive)
-        {
-
-          if (event.ShiftDown()) {
-            if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
-              if (m_hCaretPosition == NULL)
-                m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
-              else if (m_hCaretPosition->m_next != NULL)
-                m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
-            }
-            else {
-              if (m_hCaretPositionEnd->m_next != NULL) {
-                if (m_hCaretPosition == m_hCaretPositionEnd)
-                  m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
-                m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
-              }
-            }
-            if (m_hCaretPositionEnd != NULL)
-              ScrollToCell(m_hCaretPositionEnd);
-          }
-
-          else {
-            if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-              SetHCaret(m_selectionEnd->GetParent());
-            }
-            else if (m_tree != NULL && m_hCaretPosition == NULL)
-            {
-              EditorCell *editor = m_tree->GetEditable();
-              if (editor != NULL && m_workingGroup == NULL) // try to edit the first cell
-              {
-                SetActiveCell(editor, false);
-                m_activeCell->CaretToStart();
-                ShowPoint(m_activeCell->PositionToPoint(parser));
-                if (editor->GetWidth() == -1)
-                  Recalculate();
-                Refresh();
-              }
-              else { // else jump over
-                m_hCaretPosition = m_tree;
-                Refresh();
-              }
-            }
-
-            else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL)
-            {
-              EditorCell *editor = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable();
-              if( editor != NULL && m_workingGroup == NULL)
-              {
-                SetActiveCell(editor, false);
-                m_activeCell->CaretToStart();
-                ShowPoint(m_activeCell->PositionToPoint(parser));
-                if (editor->GetWidth() == -1)
-                  Recalculate();
-                Refresh();
-              }
-              else { // can't get editor.. jump over cell..
-                m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_next);
-                Refresh();
-              }
-            }
-
-            else
-              event.Skip();
-          }
-        }
-
-        else {
-          if (m_selectionEnd != NULL) { // if we have selection set hCaret at the top, deselect
-            SetHCaret(m_selectionEnd->GetParent());
-          }
-          else if (!ActivateNextInput())
-            event.Skip();
-          else
-            Refresh();
-        }
-
-        break;
-
-      case WXK_HOME: // TODO: if shift down, select.
-        SetHCaret(NULL);
-        if (m_tree != NULL)
-          ScrollToCell(m_tree);
-        break;
-
-      case WXK_END:
-        SetHCaret(m_last);
-        if (m_last != NULL)
-          ScrollToCell(m_last);
-        break;
-
-      default:
-        m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
-        switch (event.GetKeyCode())
-        {
-          // keycodes which are ignored
-          case WXK_PAGEUP:
-          case WXK_PAGEDOWN:
-          case WXK_LEFT:
-          case WXK_RIGHT:
-          case WXK_WINDOWS_LEFT:
-          case WXK_WINDOWS_RIGHT:
-          case WXK_WINDOWS_MENU:
-          case WXK_COMMAND:
-          case WXK_START:
-            event.Skip();
-            break;
-
-          // delete key and backspace select cell, so pressing key twice deletes the cell
-          case WXK_BACK:
-            if (m_hCaretPosition != NULL) {
-              SetSelection(m_hCaretPosition);
-              m_hCaretActive = false;
-              Refresh();
-              return;
-            }
-            break;
-
-          case WXK_DELETE:
-            if (m_hCaretPosition == NULL) {
-              if (m_tree != NULL) {
-                SetSelection(m_tree);
-                m_hCaretActive = false;
-                Refresh();
-                return;
-              }
-            }
-            else if (m_hCaretPosition->m_next != NULL) {
-              SetSelection(m_hCaretPosition->m_next);
-              m_hCaretActive = false;
-              Refresh();
-              return;
-            }
-            break;
-
-          case WXK_RETURN:
-            if (m_selectionStart == NULL || m_selectionEnd == NULL)
-              OpenHCaret(wxEmptyString);
-            else
-              OpenHCaret(GetString());
-            break;
-
-#if wxUSE_UNICODE
-            // ESCAPE is handled by the new cell
-          case WXK_ESCAPE:
-            OpenHCaret(wxEmptyString);
-            if (m_activeCell != NULL)
-              m_activeCell->ProcessEvent(event);
-            break;
-#endif
-
-            // keycodes which open hCaret with initial content
-          default:
-          {
-#if wxUSE_UNICODE
-            wxString txt(event.GetUnicodeKey());
-#else
-            wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
-#endif
-            OpenHCaret(txt);
-          }
-        }
-    }
-
-    if (m_hCaretPositionStart != NULL && m_hCaretPositionEnd != NULL) {
-      if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
-        m_selectionStart = m_hCaretPositionStart;
-        m_selectionEnd = m_hCaretPositionEnd;
-      }
-      else {
-        m_selectionStart = m_hCaretPositionEnd;
-        m_selectionEnd = m_hCaretPositionStart;
-      }
-
-      Refresh();
-    }
+  if (m_activeCell != NULL)
+    OnCharInActive(event);
+  else {
+    OnCharNoActive(event);
   }
 }
 
