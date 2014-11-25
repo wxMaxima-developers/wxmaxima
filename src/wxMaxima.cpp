@@ -1986,11 +1986,13 @@ bool wxMaxima::SaveFile(bool forceSave)
     m_currentFile = file;
     m_lastPath = wxPathOnly(file);
     if (file.Right(5) == wxT(".wxmx")) {
-      m_console->ExportToWXMX(file);
+      if (!m_console->ExportToWXMX(file))
+        return false;
       wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
     }
     else {
-      m_console->ExportToMAC(file);
+      if (!m_console->ExportToMAC(file))
+        return false;
       wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
     }
     AddRecentDocument(file);

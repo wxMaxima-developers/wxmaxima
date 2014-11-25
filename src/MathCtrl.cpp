@@ -2731,8 +2731,6 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
-  m_saved = true;
-
   bool wxm = false;
   if (file.Right(4) == wxT(".wxm"))
     wxm = true;
@@ -2794,6 +2792,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
       return false;
 
   wxFFileOutputStream out(file);
+  if (!out.IsOk())
+    return false;
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
 
