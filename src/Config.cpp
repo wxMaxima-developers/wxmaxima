@@ -266,7 +266,7 @@ wxPanel* Config::CreateOptionsPanel()
     };
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   wxStaticText* dp = new wxStaticText(panel, -1, _("Default port:"));
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(70, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
   m_defaultPort->SetValue(defaultPort);
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
