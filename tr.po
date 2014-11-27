@@ -282,7 +282,7 @@ msgstr "&Rasyonel"
 
 #: ../src/wxMaximaFrame.cpp:578
 msgid "&Reduce Trigonometric"
-msgstr "&Trigonometrik Sadeleştir"
+msgstr "&Trigonometrik İndirgeme"
 
 #: ../src/wxMaximaFrame.cpp:364
 msgid "&Restart Maxima"
@@ -367,45 +367,45 @@ msgid ""
 "calculations. When saving your document, select 'wxMaxima XML document' "
 "format."
 msgstr ""
-"S'ha introduït en wxMaxima 0.8.2 un nou format de document que permet desar "
-"les instruccions i comentaris de l'usuari i també els resultats. En desar el "
-"document, seleccioneu 'Document xml wxMaxima' "
+"wxMaxima 0.8.2 sürümünde yeni bir belge ilk defa kullanıldı.  "
+"Bu belge sadece veri olarak girdilerinizi ve metin olarak girdiğiniz yorumlarınızı değil aynı zamanda "
+"hesaplamalarınızın sonuçlarını da saklar. Belgenizi kaydederken 'wxMaxima XML document format' ı 'seçin "
 
 #: ../src/wxMaximaFrame.cpp:439
 msgid "A&t Value..."
-msgstr "&Condició inicial"
+msgstr "&Başlangıç Şartı"
 
 #: ../src/wxMaximaFrame.cpp:691 ../src/wxMaxima.cpp:3621
 msgid "About"
-msgstr "&Quant a..."
+msgstr "&Hakkında"
 
 #: ../src/wxMaximaFrame.cpp:693 ../src/wxMaximaFrame.cpp:695
 msgid "About wxMaxima"
-msgstr "Quant a wxMaxima"
+msgstr "wxMaxima hakkında"
 
 #: ../src/Config.cpp:383
 msgid "Active cell bracket"
-msgstr "﻿Claudàtor de cel·la activa"
+msgstr "Aktif hücre ayıracı"
 
 #: ../src/wxMaximaFrame.cpp:468
 msgid "Ad&joint Matrix"
-msgstr "Matriu ad&junta"
+msgstr "&Ek Matris"
 
 #: ../src/wxMaximaFrame.cpp:622
 msgid "Add Algebraic E&quality..."
-msgstr "Afegir &igualtat algebraica"
+msgstr "&Cebirsel Eşitlik Ekle"
 
 #: ../src/wxMaximaFrame.cpp:368
 msgid "Add a directory to search path"
-msgstr "Afegir un directori a la ruta de recerca"
+msgstr "Arama yoluna dizin ekle"
 
 #: ../src/wxMaxima.cpp:2412
 msgid "Add dir to path:"
-msgstr "Afegir dir. a la ruta:"
+msgstr "Yola dizin ekle :"
 
 #: ../src/wxMaximaFrame.cpp:623
 msgid "Add equality to the rational simplifier"
-msgstr "Afegir igualtat al simplificador racional"
+msgstr "Rasyonel sadeleştiriciye eşitlik ekle"
 
 #: ../src/wxMaximaFrame.cpp:367
 msgid "Add to &Path..."
@@ -413,47 +413,47 @@ msgstr "Afe&gir a la ruta"
 
 #: ../src/Config.cpp:125
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
-msgstr "Paràmetres addicionals per a Maxima (p. ex. -l clisp)"
+msgstr "Maxima için ek parametreler (p. ex. -l clisp)"
 
 #: ../src/Config.cpp:322
 msgid "Additional parameters:"
-msgstr "Paràmetres addicionals:"
+msgstr "Ek parametreler"
 
 #: ../src/Config.cpp:494
 msgid "All|*"
-msgstr "Tots|*"
+msgstr "Hepsi|*"
 
 #: ../src/wxMaximaFrame.cpp:830
 msgid "Animation"
-msgstr "Animació"
+msgstr "Animasyon"
 
 #: ../src/wxMaxima.cpp:2869
 msgid "Apply"
-msgstr "Aplicar"
+msgstr "Uygula"
 
 #: ../src/wxMaximaFrame.cpp:476
 msgid "Apply function to a list"
-msgstr "Aplicar funció a llista"
+msgstr "Fonksiyonu bir listeye uygula"
 
 #: ../src/wxMaxima.cpp:3651
 msgid "Apropos"
-msgstr "A propòsit"
+msgstr "Yerine"
 
 #: ../src/wxMaxima.cpp:2795
 msgid "Array:"
-msgstr "Vector:"
+msgstr "Dizin:"
 
 #: ../src/wxMaxima.cpp:3496
 msgid "Artwork by"
-msgstr "Il·lustració de"
+msgstr "Çizim:"
 
 #: ../src/Config.cpp:279
 msgid "Ask to save untitled documents"
-msgstr "Demanar per a desar documents sense títol"
+msgstr "İsim verilmemiş belgeyi kaydederken sor"
 
 #: ../src/wxMaxima.cpp:2681
 msgid "At value"
-msgstr "Condició inicial"
+msgstr "Başlangıç Değeri"
 
 #: ../src/BC2Wiz.cpp:57 ../src/wxMaxima.cpp:2588
 msgid "BC2"
@@ -461,31 +461,31 @@ msgstr "BC2"
 
 #: ../src/wxMaximaFrame.cpp:1044
 msgid "Barsplot..."
-msgstr "Diagrama de barres..."
+msgstr "Sütutn Diyagramı"
 
 #: ../src/Config.cpp:489
 msgid "Bat files (*.bat)|*.bat|All|*"
-msgstr "Arxius bat (*.bat)|*.bat|Tots|*"
+msgstr "bat Dosyaları (*.bat)|*.bat|Tots|*"
 
 #: ../src/wxMaxima.cpp:2107
 msgid "Batch File"
-msgstr "Arxiu per lots"
+msgstr "&Dosya Arşivi"
 
 #: ../src/Config.cpp:395
 msgid "Bold"
-msgstr "Negreta"
+msgstr "Kalın"
 
 #: ../src/wxMaximaFrame.cpp:1046
 msgid "Boxplot..."
-msgstr "Diagrama de caixes..."
+msgstr "Kutu Diyagramları"
 
 #: ../src/Plot2dWiz.cpp:122 ../src/Plot3dWiz.cpp:124
 msgid "Browse"
-msgstr "Navegar"
+msgstr "Göz at"
 
 #: ../src/wxMaximaFrame.cpp:678
 msgid "Build &Info"
-msgstr "&Informació de compilació"
+msgstr "&Oluşturma Bilgisi"
 
 #: ../data/tips.txt:2
 msgid ""
@@ -494,26 +494,29 @@ msgid ""
 "by checking 'Enter evaluates cells'. This switches the roles of these two "
 "key commands."
 msgstr ""
-"Per defecte, Shift-Enter es fa servir per avaluar instruccions, i Retorn per "
-"introduir línies múltiples. És possible canviar aquest comportament en "
-"'Editar->Preferències' seleccionant 'Tecla retorn avalúa cel·les', "
-"intercanviant la funcionalitat de les tecles."
+"Varsayılan olarak -enter- tuşu bir alt satıra geçmek için kullanılırken "
+"-Shift+Enter kullanıcı tarafından girilen komutların Maxima tarafından  "
+"değerlendirmeye alınması\ hesaplanması için kullanılır."
+"Değerlendirme için sadece -Enter- tuşu kullanılmak istenirse"
+"'Düzenle-> Yapılandır'a bastıktan sonra açılan pencerede "
+"'Enter tuşu komutları değerlendirir'sekmesi tıklanmalıdır."
+"Tersi için tekrar tıklanarak işaret kaldırılır."
 
 #: ../src/wxMaximaFrame.cpp:490
 msgid "C&hange Variable..."
-msgstr "C&anviar variable"
+msgstr "Değişkeni değiştir"
 
 #: ../src/wxMaximaFrame.cpp:284
 msgid "C&onfigure"
-msgstr "&Preferències"
+msgstr "&Yapılandır"
 
 #: ../src/wxMaximaFrame.cpp:509
 msgid "Calculate &Product..."
-msgstr "&Calcular producte"
+msgstr "&Çarpımı hesapla"
 
 #: ../src/wxMaximaFrame.cpp:507
 msgid "Calculate Su&m..."
-msgstr "Calcular su&ma"
+msgstr "&Toplamı hesapla"
 
 #: ../src/wxMaximaFrame.cpp:647
 msgid "Calculate bigfloat value of the last result"
