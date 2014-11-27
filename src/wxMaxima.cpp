@@ -1005,7 +1005,7 @@ void wxMaxima::SetCWD(wxString file)
   if (filename.GetPath() == wxEmptyString)
     filename.AssignDir(wxGetCwd());
 
-  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
+  SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
 }
 
 // OpenWXM(X)File
