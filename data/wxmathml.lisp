@@ -31,6 +31,11 @@
 (defun tofiledir (file)
   (let ((path (pathname file)))
     (namestring (make-pathname :device (pathname-device path) :directory (pathname-directory path)))))
+(defun $cd (dir)
+ (let ((dir (cond ((pathnamep dir) dir)
+                  ((stringp dir) (make-pathname :directory #+gcl (list dir) #-gcl dir))
+                  (t (error "cd(dir): dir must be a string or pathname.")))))
+       (and (xchdir dir) (setf *default-pathname-defaults* dir) (namestring dir))))
 
 #+ccl (setf *print-circle* nil)
 
