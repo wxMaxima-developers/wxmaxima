@@ -1996,9 +1996,8 @@ bool wxMaxima::SaveFile(bool forceSave)
       wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
     }
     AddRecentDocument(file);
-    wxFileName filename(file);
-    SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
-
+    SetCWD(file);
+    
     return true;
   }
 
