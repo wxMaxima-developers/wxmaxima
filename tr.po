@@ -3243,21 +3243,23 @@ msgid ""
 "is '%'. To apply the function to some other value, select it in the document "
 "before executing a menu command."
 msgstr ""
-"En aplicar funcions amb un argument del menú, l'argument pre-determinat és "
-"'%'. Per aplicar la funció a un altre valor, seleccioneu-lo en el document "
-"abans d'executar la instrucció del menú."
+"Menülerdeki tek argümanlı bir fonksiyonu tıkladığınızda, komut çizgisinde "
+"fonksiyonun işleme koyacağı argüman yerinde, varsayılan olarak, '%' belirir."
+"fonksiyonun argümanı olarak '%' yerine başka bir değer girebilir"
+"yada belgenizden bir ifadeyi seçebilirsiniz"
+"Ayrıca Maxima, '%'yı bir önceki ÇIKTI satırında olanları argüman olarak kabul eder."
 
 #: ../src/wxMaxima.cpp:2795 ../src/wxMaxima.cpp:2814
 msgid "Width:"
-msgstr "Amplada:"
+msgstr "Genişlik:"
 
 #: ../src/Config.cpp:129
 msgid "Write matching parenthesis in text controls."
-msgstr "Escriure parèntesi coincidents en els controls de text."
+msgstr "Metin kontrolünde parantez eşleştirmesini yaz"
 
 #: ../src/wxMaxima.cpp:3495
 msgid "Written by"
-msgstr "Escrit per"
+msgstr "Yazan:"
 
 #: ../data/tips.txt:4
 msgid ""
@@ -3265,9 +3267,10 @@ msgid ""
 "output of previous commands using variables '%on' where n is the number of "
 "output."
 msgstr ""
-"Podeu veure la darrera sortida fent servir la variable '%' . És possible "
-"veure la sortida de les ordres anteriors fent servir les variables '%on' on "
-"n és el número de la sortida."
+"Son ÇIKTI'ya '%' ı kullanarak ulaşabilirsiniz."
+"Herhangibir ÇIKTI satırındaki bir ÇIKTI'ya '%on'formülüyle ulaşabilirsiniz"
+"'%on' ifadesinde 'o' output=ÇİKTI 'n' de ÇIKTI satırı numarasıdır "
+"ÖRN: %o6 =Altıncı ÇIKTI satırı."
 
 #: ../data/tips.txt:16
 msgid ""
@@ -3275,9 +3278,10 @@ msgid ""
 "menu command or the appropriate key shortcut. The cells will be evaluated in "
 "the order they appear in the document."
 msgstr ""
-"Podeu avaluar el document complet seleccionant 'Cel·la->Avaluar totes les "
-"cel·les' en el menú o amb les tecles ràpides. Les cel·les s'avaluaran en "
-"l'ordre en què apareixen en el document."
+"Belgenizdeki tüm komutları 'Hücre->Bütün Hücreleri Değerlendir' i tıklayarak"
+" yada kısayolu kullanarak değerlendirme şlemini yapabilirsiniz."
+"Belgeenizdeki tüm -metin yada komut -hücreleri yazıldıkları sırayla değerlendirilir. "
+
 
 #: ../data/tips.txt:11
 msgid ""
@@ -3285,17 +3289,17 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"Podeu llegir informació sobre una funció de Maxima seleccionant o fent clic "
-"sobre el nom i polsant F1. wxMaxima mostrarà l'ajuda disponible de la "
-"paraula sota el cursor."
+"Bir Maxima fonksiyonunu fare ile  yada üstüne çift tıklayarak seçip"
+"F1'e bastığınızda wxMaxima, o komutla  ilgili yardım dosyasındaki  yere götürür."
+
 
 #: ../data/tips.txt:9
 msgid ""
 "You can hide output part of cells by clicking in the triangle on the left "
 "side of cells. This works on text cells also."
 msgstr ""
-"Podeu amagar la part del resultat d'una cel·la fent clic sobre el triangle a "
-"la seva esquerra. Això mateix podeu fer-ho a cel·les de text."
+"Solundaki üçgeni tıklayarak hücrelerin ÇIKTI kısımlarını gizleyebilirsiniz "
+"Bu durum metin hücreleri için de geçerlidir."
 
 #: ../data/tips.txt:6
 msgid ""
@@ -3316,11 +3320,12 @@ msgid ""
 "selection. This comes in handy when you want to delete or evaluate multiple "
 "cells."
 msgstr ""
-"Podeu seleccionar més d'una cel·la, amb el ratolí, fent clic i arrossegant "
-"entre cel·les o claudàtor de cel·les, amb el teclat, mantenint polsada la "
-"tecla de Majúscules a la vegada que es mou el cursor horitzontal, per a  "
-"operar sobre la selecció. Això serà d'utilitat en haver de suprimir o "
-"avaluar vàries cel·les simultàniament."
+"Belgenizde birden çok satırı şu yollarla seçebilirsiniz: "
+"1- Fare ile sol tıklayıp aşağıya soldaki parantezlerin" 
+"yada satırların üzerinden sürüyerek  "
+"2- Klavyeden aşağı-yukarı ok larını Shift e basıp" 
+"yatay imleçi hareket ettirerek." 
+"Seçtikten sonra Shift+Enter ile Değerlendir yapabilir yada silebilirsiniz"
 
 #: ../src/wxMaxima.cpp:4505
 #, c-format
@@ -3329,88 +3334,88 @@ msgid ""
 "\n"
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
-"La seva versió és %s. La versió actual és %s.\n"
+" %s sürümünü kullanıyorsunuz. Şimdiki %s sürümüdür.\n"
 "\n"
-"Seleccionau d'Acord per visitar la web de wxMaxima."
+"wxMaxima web sayfasını ziyaret için OK i seçin."
 
 #: ../src/wxMaxima.cpp:4580 ../src/wxMaxima.cpp:4587
 msgid "Your changes will be lost if you don't save them."
-msgstr "Els vostres canvis es perdran si no els desau."
+msgstr "Kaydetmezseniz yaptığınız değişiklikler kaybolabilir."
 
 #: ../src/wxMaxima.cpp:4515
 msgid "Your version of wxMaxima is up to date."
-msgstr "La vostra versió de wxMaxima està actualitzada."
+msgstr "Kullandığınız wxMaxima güncellenebilir."
 
 #: ../src/wxMaximaFrame.cpp:262
 msgid "Zoom &In\tAlt-I"
-msgstr "Ampl&ia\tAlt-I"
+msgstr "Yakınlaştır\tAlt-I"
 
 #: ../src/wxMaximaFrame.cpp:264
 msgid "Zoom Ou&t\tAlt-O"
-msgstr "&Redueix\tAlt-O"
+msgstr "Uzaklaştır\tAlt-O"
 
 #: ../src/wxMaximaFrame.cpp:263
 msgid "Zoom in 10%"
-msgstr "Redueix 10%"
+msgstr "%10 yakınlaştır"
 
 #: ../src/wxMaximaFrame.cpp:265
 msgid "Zoom out 10%"
-msgstr "Amplia 10%"
+msgstr "%10 uzaklaştır"
 
 #: ../src/wxMaxima.cpp:2236 ../src/wxMaxima.cpp:2244
 msgid "Zoom set to "
-msgstr "Estableix ampliació a "
+msgstr "Yakınlaştırmayı ayarla "
 
 #: ../src/wxMaximaFrame.cpp:94 ../src/wxMaxima.cpp:4368
 msgid "[ unsaved ]"
-msgstr "[sense desar]"
+msgstr "[Kaydedilmemiş]"
 
 #: ../src/wxMaxima.cpp:4370
 msgid "[ unsaved* ]"
-msgstr "[sense desar*]"
+msgstr "[Kaydedilmemiş*]"
 
 #: ../src/MatWiz.cpp:176
 msgid "antisymmetric"
-msgstr "anti-simètrica"
+msgstr "terrrrs simetrik"
 
 #: ../src/LimitWiz.cpp:39 ../src/LimitWiz.cpp:163
 msgid "both sides"
-msgstr "ambdós costats"
+msgstr "iki taraf"
 
 #: ../src/Plot2dWiz.cpp:73 ../src/Plot2dWiz.cpp:398 ../src/Plot3dWiz.cpp:72
 #: ../src/Plot3dWiz.cpp:388
 msgid "default"
-msgstr "pre-determinat"
+msgstr "varsayılan"
 
 #: ../src/MatWiz.cpp:174
 msgid "diagonal"
-msgstr "diagonal"
+msgstr "diyagonal"
 
 #: ../src/MatWiz.cpp:173
 msgid "general"
-msgstr "general"
+msgstr "genel"
 
 #: ../src/Plot2dWiz.cpp:74 ../src/Plot2dWiz.cpp:205 ../src/Plot2dWiz.cpp:398
 #: ../src/Plot2dWiz.cpp:431 ../src/Plot3dWiz.cpp:73 ../src/Plot3dWiz.cpp:205
 #: ../src/Plot3dWiz.cpp:388 ../src/Plot3dWiz.cpp:419
 msgid "inline"
-msgstr "en línia"
+msgstr "satır içi"
 
 #: ../src/LimitWiz.cpp:40 ../src/LimitWiz.cpp:121
 msgid "left"
-msgstr "esquerra"
+msgstr "sol"
 
 #: ../src/EditorCell.cpp:333
 msgid "lines hidden"
-msgstr "línies ocultes"
+msgstr "gizlenmiş satırlar"
 
 #: ../src/Plot2dWiz.cpp:55 ../src/Plot2dWiz.cpp:65
 msgid "logscale"
-msgstr "escala logarítmica"
+msgstr "logaritmik ölçek"
 
 #: ../src/wxMaxima.cpp:2814
 msgid "matrix[i,j]:"
-msgstr "matriu[i,j]:"
+msgstr "matris[i,j]:"
 
 #: ../src/wxMaxima.cpp:3559
 msgid "no"
@@ -3418,25 +3423,25 @@ msgstr "no"
 
 #: ../src/LimitWiz.cpp:41 ../src/LimitWiz.cpp:123
 msgid "right"
-msgstr "dreta"
+msgstr "sağ"
 
 #: ../src/MatWiz.cpp:175
 msgid "symmetric"
-msgstr "simètrica"
+msgstr "simetric"
 
 #: ../src/wxMaxima.cpp:4565
 msgid "unsaved"
-msgstr "sense desar"
+msgstr "kaydedilmemiş"
 
 #: ../src/wxMaximaFrame.cpp:96 ../src/wxMaxima.cpp:1947
 #: ../src/wxMaxima.cpp:2065
 msgid "untitled"
-msgstr "sense nom"
+msgstr "isimsiz"
 
 #: ../src/main.cpp:182
 #, c-format
 msgid "untitled %d"
-msgstr "sense nom %d"
+msgstr "isimsiz%d"
 
 #: ../src/main.cpp:167 ../src/wxMaxima.cpp:3570
 msgid "wxMaxima"
@@ -3450,7 +3455,7 @@ msgstr "wxMaxima %s "
 
 #: ../src/Config.cpp:93 ../src/Config.cpp:122
 msgid "wxMaxima configuration"
-msgstr "Configuració de wxMaxima"
+msgstr "wxMaxima'nın yapısı"
 
 #: ../src/wxMaxima.cpp:1507
 msgid ""
@@ -3459,10 +3464,10 @@ msgid ""
 "Please configure wxMaxima with 'Edit->Configure'.\n"
 "Then start Maxima with 'Maxima->Restart Maxima'."
 msgstr ""
-"wxMaxima no localitza Maxima!\n"
+"wxMaxima Maxima'yı bulamadı!\n"
 "\n"
-"Configureu wxMaxima amb 'Edita->Configura.\n"
-"A continuació engegueu Maxima amb 'Maxima->Re-engega maxima'."
+"Lütfen wxMaxima'yı 'Düzenle->Yapılandır' ile yapılandır.\n"
+"Sonra da Maxima'yı 'Maxima->Maxima'yı yeniden başlat' ile başlatın."
 
 #: ../src/wxMaxima.cpp:1680
 msgid ""
@@ -3470,8 +3475,8 @@ msgid ""
 "\n"
 "Please check your installation."
 msgstr ""
-"wxMaxima no troba els arxius d'ajuda.\n"
-"Comproveu la instal·lació."
+"wxMaxima yardım dosyalarını bulamadı.\n"
+"Kurulumunuzu kontrol edin lütfen."
 
 #: ../src/wxMaxima.cpp:1584
 msgid ""
@@ -3479,9 +3484,9 @@ msgid ""
 "\n"
 "Please check your installation."
 msgstr ""
-"wxMaxima no troba els arxius de suggeriments.\n"
+"wxMaxima Yaralı Bilig dosylarını bulamadı.\n"
 "\n"
-"Comproveu la instal·lació."
+"Kurulumunuzu kontrol edin lütfen."
 
 #: ../src/wxMaxima.cpp:257
 msgid ""
@@ -3490,10 +3495,9 @@ msgid ""
 "Please check you have network support\n"
 "enabled and try again!"
 msgstr ""
-"wxMaxima no pot engegar el servidor.\n"
+"wxMaxima sunucuyu başlatamadı.\n"
 "\n"
-"Comproveu si teniu el suport de xarxa\n"
-"activat i proveu de nou!"
+"Network desteğinizolup olmadığını kontrol edin ve tekrar deneyin\n"
 
 #: ../data/tips.txt:19
 msgid ""
