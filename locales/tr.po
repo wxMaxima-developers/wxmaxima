@@ -1,4 +1,3 @@
- translation of tr.po to Tufan Şirin
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
@@ -111,7 +110,7 @@ msgstr "&Kalkülüs"
 
 #: ../src/wxMaximaFrame.cpp:584
 msgid "&Canonical Form"
-msgstr "&Kanonik Form
+msgstr "&Kanonik Form"
 #: ../src/wxMaximaFrame.cpp:457
 msgid "&Characteristic Polynomial..."
 msgstr "&Karakteristik Polinom"
@@ -499,7 +498,7 @@ msgid ""
 msgstr ""
 "Varsayılan olarak -enter- tuşu bir alt satıra geçmek için kullanılırken "
 "-Shift+Enter kullanıcı tarafından girilen komutların Maxima tarafından  "
-"değerlendirmeye alınması\ hesaplanması için kullanılır."
+"değerlendirmeye alınması\\ hesaplanması için kullanılır."
 "Değerlendirme için sadece -Enter- tuşu kullanılmak istenirse"
 "'Düzenle-> Yapılandır'a bastıktan sonra açılan pencerede "
 "'Enter tuşu komutları değerlendirir'sekmesi tıklanmalıdır."
@@ -1978,8 +1977,8 @@ msgid ""
 "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions ('f"
 "(x) := x^2;')."
 msgstr ""
-"Maxima'da değişkene değer verirken ':' kullanılır ('a : 3;') ve 
-'fonksiyon yazılırken ':=' kullanılır.('f(x) := x^2;')."
+"Maxima'da değişkene değer verirken ':' kullanılır ('a : 3;') ve"
+"fonksiyon yazılırken ':=' kullanılır.('f(x) := x^2;')."
 
 #: ../src/wxMaxima.cpp:3615
 msgid "Maxima version: "
@@ -2515,11 +2514,11 @@ msgstr "Stili dosyaya Kaydet"
 
 #: ../src/Config.cpp:271
 msgid "Save wxMaxima window size/position"
-msgstr "wxMaxima penceresinin boyut\pozisyonunu kaydet"
+msgstr "wxMaxima penceresinin boyut\\pozisyonunu kaydet"
 
 #: ../src/Config.cpp:127
 msgid "Save wxMaxima window size/position between sessions."
-msgstr "wxMaxima penceresinin  boyut\pozisyonunu yeni oturumlar için Kaydet."
+msgstr "wxMaxima penceresinin  boyut\\pozisyonunu yeni oturumlar için Kaydet."
 
 #: ../src/wxMaxima.cpp:3710
 msgid "Scatterplot"
@@ -2595,7 +2594,7 @@ msgstr "Hassasiyeti Belirt"
 
 #: ../src/wxMaximaFrame.cpp:275
 msgid "Set Zoom"
-msgstr "Yakınlaştır\Uzaklaştır"
+msgstr "Yakınlaştır\\Uzaklaştır"
 
 #: ../src/wxMaximaFrame.cpp:653
 msgid "Set bigfloat precision"
@@ -3030,7 +3029,7 @@ msgid ""
 msgstr ""
 "Başlık, kısım ve alt kısım hücrelerinin içerikleri GİZLE ile gizlenebilir"
 "GİZLE yada GÖSTER için hüceriye bitişik kareyi tıklayın. Shift+tık yaparsanız "
-"o hücrenin bütün alt seviyeleri GİZLE\GÖSTER komutuna uyar."
+"o hücrenin bütün alt seviyeleri GİZLE\\GÖSTER komutuna uyar."
 
 
 #: ../src/wxMaximaFrame.cpp:646
@@ -3496,7 +3495,7 @@ msgid ""
 msgstr ""
 "wxMaxima sunucuyu başlatamadı.\n"
 "\n"
-"Network desteğiniz olup olmadığını kontrol edin ve tekrar deneyin\n"
+"Network desteğiniz olup olmadığını kontrol edin ve tekrar deneyin"
 
 #: ../data/tips.txt:19
 msgid ""
@@ -4006,7 +4005,7 @@ msgstr "evet"
 #~ msgstr "Kopyala- GİRDİ satırına "
 
 #~ msgid "Delete selected input/output group"
-#~ msgstr "Sil-GİRDİ\ÇIKTI dan Seçim Grubunu "
+#~ msgstr "Sil-GİRDİ\\ÇIKTI dan Seçim Grubunu "
 
 #~ msgid "Delete the contents of console."
 #~ msgstr "Konsol içeriğini sil."
@@ -4129,7 +4128,7 @@ msgstr "evet"
 #~ msgstr "Bir Komutun tanımını göster"
 
 #~ msgid "Show the description of command/variable:"
-#~ msgstr "Komutun\değişkenin tanımını göster:"
+#~ msgstr "Komutun\\değişkenin tanımını göster:"
 
 #~ msgid ""
 #~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
@@ -4156,7 +4155,7 @@ msgstr "evet"
 #~ "choose 'Edit->Delete selection' from menus."
 #~ msgstr ""
 #~ "Eğer GİRDİnin etiketini seçer ve menüden 'Düzenle-> Sil Seçileni'seçerseniz,"
-#~ "GİRDİ\ÇIKTI grubunu silebilirsiniz."
+#~ "GİRDİ\\ÇIKTI grubunu silebilirsiniz."
 
 #~ msgid ""
 #~ "You can hide the output by clicking on the output label. Clicking on the "
@@ -4181,7 +4180,7 @@ msgstr "evet"
 #~ msgstr ""
 #~ "Dosyalarınızı konsol penceresine bırakarak Maxima'ya yükleyebilirsiniz"
 #~ "Dosyanızı yüklemek için özel bir fonksiyon seçebilirsiniz:" 
-#~ "" Eğer özel fonksiyonunuz 'A:read_matrix(%file%, csv)', ise"
+#~ " Eğer özel fonksiyonunuz 'A:read_matrix(%file%, csv)', ise"
 #~ " o zaman dosyanızn adı ile %dosya% şeklinde GİRDİ satırna yerleştirlir."
 
 #~ msgid ""

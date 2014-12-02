@@ -55,10 +55,11 @@ const int langs[] =
     wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_RUSSIAN,
     wxLANGUAGE_SPANISH,
+    wxLANGUAGE_TURKISH,
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 18
+#define LANGUAGE_NUMBER 20
 
 
 Config::Config(wxWindow* parent)
@@ -262,6 +263,7 @@ wxPanel* Config::CreateOptionsPanel()
       _("Portuguese (Brazilian)"),
       _("Russian"),
       _("Spanish"),
+      _("Turkish"),
       _("Ukrainian")
     };
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
