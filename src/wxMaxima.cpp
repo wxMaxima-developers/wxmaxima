@@ -1005,7 +1005,16 @@ void wxMaxima::SetCWD(wxString file)
   if (filename.GetPath() == wxEmptyString)
     filename.AssignDir(wxGetCwd());
 
-  SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
+  // Escape all backslashes in the filename.
+ wxString FilenameEscaped= filename.GetFullPath();
+  size_t backslash_pos=0;
+  while((backslash_pos=FilenameEscaped.find('\\',backslash_pos))!=string::npos)
+    {
+      FilenameEscaped[backslash_pos]='/';
+      backslash_pos++;
+    }
+  
+  SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + FilenameEscaped + wxT("\"))"));
 }
 
 // OpenWXM(X)File
