@@ -1526,7 +1526,12 @@ wxString wxMaxima::GetCommand(bool params)
   if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
 #if defined (__WXMAC__)
-    command = wxT("/Applications/Maxima.app");
+    if (wxFileExists(wxT("/Applications/Maxima.app")))
+      command = wxT("/Applications/Maxima.app");
+    else if (wxFileExists(wxT("/usr/local/bin")))
+      command = wxT("/usr/local/bin/maxima");
+    else
+      command = wxT("maxima");
 #else
     command = wxT("maxima");
 #endif
