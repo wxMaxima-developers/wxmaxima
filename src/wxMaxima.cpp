@@ -3484,6 +3484,11 @@ wxT("<html>"
 "Alexey Beshenov (ru)<br>"
 "Vadim V. Zhytnikov (ru)<br>"
 "Sergey Semerikov (uk)<br>"
+#if wxUSE_UNICODE
+"Tufan Şirin (tr)<br>"
+#else
+"Tufan Sirin (tr)<br>"
+#endif
 "Frank Weng (zh_TW)<br>"
 "cw.ahbong (zh_TW)"
 "  </p>"
@@ -3607,6 +3612,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
     info.AddTranslator(wxT("Alexey Beshenov (ru)"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
+#if wxUSE_UNICODE
+    info.AddTranslator(wxT("Tufan Şirin (tr)"));
+#else
+    info.AddTranslator(wxT("Tufan Sirin (tr)"));
+#endif
     info.AddTranslator(wxT("Sergey Semerikov (uk)"));
     info.AddTranslator(wxT("Frank Weng (zh_TW)"));
     info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
