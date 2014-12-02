@@ -158,6 +158,7 @@ public:
   bool IsSaved() { return m_saved; }
   void SetSaved(bool saved) { m_saved = saved; }
   void RemoveAllOutput();
+  void RemoveAllOutput(GroupCell* cell);
   // methods related to evaluation queue
   void AddDocumentToEvaluationQueue();
   void AddEntireDocumentToEvaluationQueue();

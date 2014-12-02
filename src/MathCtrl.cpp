@@ -3481,6 +3481,7 @@ bool MathCtrl::CanUndo()
   return m_activeCell->CanUndo();
 }
 
+
 void MathCtrl::Undo()
 {
   if (m_activeCell != NULL) {
@@ -3519,19 +3520,29 @@ void MathCtrl::RemoveAllOutput()
   if (m_workingGroup != NULL)
     return;
 
-  GroupCell *tmp = m_tree;
   SetSelection(NULL); // TODO only setselection NULL when selection is in the output
   SetActiveCell(NULL);
 
-  while (tmp != NULL)
-  {
-    if (tmp->GetGroupType() == GC_TYPE_CODE)
-      tmp->RemoveOutput();
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-  }
+  RemoveAllOutput(m_tree);
 
   Recalculate();
   Refresh();
+}
+
+void MathCtrl::RemoveAllOutput(GroupCell *tree)
+{
+  if (tree == NULL)
+    tree = m_tree;
+
+  while (tree != NULL)
+  {
+    if (tree->GetGroupType() == GC_TYPE_CODE)
+      tree->RemoveOutput();
+    GroupCell *sub = tree->GetHiddenTree();
+    if (sub != NULL)
+      RemoveAllOutput(sub);
+    tree = dynamic_cast<GroupCell*>(tree->m_next);
+  }  
 }
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
