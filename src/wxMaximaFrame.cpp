@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
 ///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
