@@ -1576,14 +1576,14 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
 
     if (m_hCaretPositionStart == NULL)
       return;
-    
-    if (ccode == WXK_DOWN && m_hCaretPositionStart->m_next != NULL)
-      m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+
+    if (ccode == WXK_DOWN && m_hCaretPosition != NULL && m_hCaretPositionStart->m_next != NULL)
+      m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
   // extend/shorten selection up
   else if (ccode == WXK_UP) {
     if (m_hCaretPositionEnd->m_previous != NULL) {
-      if (m_hCaretPosition->m_next == m_hCaretPositionEnd)
+      if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
           m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
       m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
     }
