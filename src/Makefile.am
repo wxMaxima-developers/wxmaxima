@@ -1,4 +1,8 @@
-AM_CXXFLAGS = -DPREFIX=\"$(prefix)\"
+AM_CXXFLAGS = -DPREFIX=\"$(prefix)\" -DHTMLDIR=\"$(htmldir)\"
+
+if CHM
+AM_CXXFLAGS += -DCHM=true
+endif
 
 bin_PROGRAMS = wxmaxima
 

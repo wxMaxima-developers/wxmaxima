@@ -657,12 +657,15 @@ void wxMaximaFrame::SetupMenu()
   // Help menu
   wxMenu* wxglade_tmp_menu_7 = new wxMenu;
 #if defined __WXMAC__
-  wxglade_tmp_menu_7->Append(wxID_HELP, _("Maxima &Help\tCTRL+?"),
-                             _("Show Maxima help"), wxITEM_NORMAL);
+  wxglade_tmp_menu_7->Append(wxID_HELP, _("wxMaxima &Help\tCTRL+?"),
+                             _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("Maxima &Help\tF1"),
-                   _("Show Maxima help"), wxT("gtk-help"));
+  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("wxMaxima &Help\tF1"),
+                   _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
+  wxglade_tmp_menu_7->Append(menu_maximahelp, _("&Maxima help"),
+                             _("The offline manual of maxima"),
+                             wxITEM_NORMAL);
   wxglade_tmp_menu_7->Append(menu_example, _("&Example..."),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);

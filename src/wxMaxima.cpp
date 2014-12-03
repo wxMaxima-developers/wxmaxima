@@ -1673,28 +1673,42 @@ wxString wxMaxima::GetHelpFile()
 #endif
 }
 
-void wxMaxima::ShowHelp(wxString keyword)
+void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
+{
+  if (m_helpFile != helpfile)
+    {
+      m_helpCtrl.Initialize(helpfile);
+    }
+  
+  if (keyword == wxT("%"))
+    m_helpCtrl.DisplayContents();
+  else
+    m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+}
+
+void wxMaxima::ShowWxMaximaHelp()
+{
+  wxString htmldir=wxT(HTMLDIR);
+  #ifdef CHM
+  wxString helpfile=htmldir+wxT("/wxmaxima.chm");
+  #else
+  wxString helpfile=htmldir+wxT("/wxmaxima.html");
+  #endif
+  ShowHelp(helpfile,wxT("%"));
+}
+
+void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
   wxLogNull disableWarnings;
-
-  if (m_helpFile.Length() == 0)
-  {
-    m_helpFile = GetHelpFile();
-    if (m_helpFile.Length() == 0)
+  wxString MaximaHelpFile=GetHelpFile();
+    if (MaximaHelpFile.Length() == 0)
     {
       wxMessageBox(_("wxMaxima could not find help files."
                      "\n\nPlease check your installation."),
                    _("Error"), wxICON_ERROR | wxOK);
       return ;
     }
-
-    m_helpCtrl.Initialize(m_helpFile);
-  }
-
-  if (keyword == wxT("%"))
-    m_helpCtrl.DisplayContents();
-  else
-    m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+    ShowHelp(MaximaHelpFile,keyword);
 }
 
 ///--------------------------------------------------------------------------------
@@ -3648,7 +3662,14 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:
 #endif
-    ShowHelp(helpSearchString);
+    if(helpSearchString==wxT("%"))
+      ShowWxMaximaHelp();
+    else
+      ShowMaximaHelp(helpSearchString);
+    break;
+
+  case menu_maximahelp:
+      ShowMaximaHelp(expr);
     break;
 
   case menu_example:
@@ -4748,6 +4769,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_gen_mat_lambda, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_map, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
+  EVT_MENU(menu_maximahelp, wxMaxima::HelpMenu)
   EVT_MENU(menu_example, wxMaxima::HelpMenu)
   EVT_MENU(menu_apropos, wxMaxima::HelpMenu)
   EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)

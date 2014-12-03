@@ -1,0 +1,267 @@
+\input texinfo
+@setfilename  wxmaxima.info
+@finalout
+
+@c -*-texinfo-*-
+
+@c 
+@c Based on a file from the maxima sources that was created from
+@c Jim Van Zandt <jrv@vanzandt.mv.com>
+
+@c to update the menus do: 
+@c (texinfo-multiple-files-update "wxMaxima.texi" t t)
+@c
+@c texinfo-multiple-files-update will delete the detailed node listing!
+
+
+@c %**start of header
+@settitle wxMaxima Manual
+
+@synindex ky fn
+@synindex vr fn
+@synindex cp fn
+
+@setchapternewpage odd
+@c %**end of header
+
+@include category-macros.texi
+
+@ifinfo
+This is a Texinfo wxMaxima manual based on the maxima
+manual which is Copyright 1994,2001 William F. Schelter
+
+@format
+INFO-DIR-SECTION Math
+START-INFO-DIR-ENTRY
+* wxMaxima: (wxMaxima).     A gui for a computer algebra system.
+END-INFO-DIR-ENTRY
+@end format
+
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@titlepage
+@sp 10
+@comment The title is printed in a large font.
+@center @titlefont{wxMaxima Manual}
+@page
+@vskip 0pt plus 1filll
+Maxima is a computer algebra system that is actively developed and is
+sucessfully used in a variety of applications like maths, computer
+science and biochemistry.
+
+wxMaxima is a graphical user interface that allows to use all of
+maxima's functions providing convenient wizards for accessing the most
+commuoly used of them.
+@end titlepage
+
+@summarycontents
+@contents
+@node top
+@chapter Introduction to wxMaxima
+wxMaxima is a graphical user interface that allows to use all of
+maxima's functions providing convenient wizards for accessing the most
+commonly used of them. This manual attempts to describe the unique
+features that make this program one of the most popular GUIs for
+maxima.
+@section Maxima and wxMaxima
+In the open-source domain big systems are normally split into smaller
+projects that are easier to handle for small groups of developers.
+For example a CD burner program will consist of a command-line tool
+that actually burns the CD and a graphical user interface that allows
+the user to use it without having to learn about all the command-line
+switches and in fact without using the commandline at all. One
+advantage of this approach is that the developing work that
+was invested into the command-line program can be shared by many
+programs without having to re-invent the wheel: The same cd-burner
+command-line program can be used as a ``send-to-cd''-plug-in for a
+file manager application, for the ``burn to CD'' function of a music
+player and as the CD writer for a DVD backup tool. Another advantage
+is that splitting one big task into smaller parts allows to provide
+several user interfaces for the same program: A computer algebra
+system could be be the logic behind a arbitrary precision calculator
+application, it can do automatic transforms of formulas in the
+background of a bigger system (e.G. Sage
+@url{http://www.sagemath.org}) or actually used as a full-fledged
+computer algebra system (which is the case with wxMaxima).
+@subsection Maxima
+@cindex CAS
+@cindex Computer algebra System
+Maxima is a full-featured computer algebra system (CAS). In other
+words it is a program specialized in solving mathematical problems by
+rearranging formulas and finding a formula solving the problem as
+opposed to just outputting the numeric value of the result.  
+
+@ifnotinfo
+@image{maxima,6cm}
+@end ifnotinfo
+
+There is extensive documentation for maxima available in the internet
+part of which can be found in wxMaxima's help menu.
+@subsection wxMaxima
+wxMaxima is a graphical user interface that provides the full
+functionality and flexibility of maxima providing the user with a
+graphical display and many features that make working with maxima
+easier. For example wxMaxima allows to export any cell's contents (or,
+if that is needed, any part of a formula, as well) as text, as LaTeX
+or as MathML specification at a simple right-click.
+
+@ifnotinfo
+@image{wxMaximaWindow,12cm}
+@end ifnotinfo
+
+The calculations itself are done by the maxima command-line
+tool in the background.
+@section  Worksheet basics
+Most of wxMaxima should be self-explaining. One of the very few things
+that aren's standard ist that wxMaxima organizes the data for maxima in
+cells that are only evaluated (which means: sent to maxima) when the user
+request this. This approach might feel unfamiliar at the first sight. But
+it drastically eases work with big documents (where the user won't want
+every small change at the beginning automatically to trigger a full
+re-evaluation of the whole document) and is very handy for debugging.
+
+The cells wxMaxima automatically creates on typing some text are maxima
+input cells that will eventually be sent to maxima.
+
+@ifnotinfo
+@image{InputCell,12cm}
+@end ifnotinfo
+
+On evaluation of an input cell's contents the input cell maxima
+assigns a label to the input (by default shown in red and recognizable
+by the @code{%i}) by which it can be referenced lateron. The output
+maxima generates will be shown in a different style and preceded by maxima
+by a label beginning with @code{%o}.
+
+Besides the input cells wxMaxima allows for text cells for
+documentation, image cells, title cells, chapter
+cells and section cells; Every cell has it's own undo buffer so debugging
+by changing the values of several cells and then gradually reverting the
+unneeded changes is rather easy.
+
+@ifnotinfo
+@image{NoiseFilter,12cm}
+@end ifnotinfo
+
+@section  File Formats
+@subsection .mac
+@file{.mac} files are ordinary text files that can be read using
+maxima's read command:
+@example
+%i1 read("test.mac");
+@end example
+They can be used for writing own libraries but since they don't
+contain enough structural information they cannot be read back
+directly into wxMaxima.
+@subsection .wxm
+@file{.wxm} files contain the input for maxima, as well as any
+text cells, title cells and chapter or section cells the user typed
+in. Pictures and maxima's output aren't saved along with the
+@file{.wxm} file, though.
+@subsection .wxmx
+This xml-based file format saves all text and images the work sheet
+contains. It is the preferred file format now and due to the
+compression it uses normally still results in small files.
+
+@chapter Extensions to maxima
+wxMaxima aims to be but a graphical user interface for maxima. In some
+cases it adds functionality to Maxima, though. These cases are
+described here:
+@section Plotting
+@subsection Embedding a plot into the work sheet
+Maxima normally instructs the external program gnuplot to open a
+separate window for every diagram it creates. Since many times it is
+convenient to embed graphs into the work sheet instead wxMaxima
+provides its own set of plot functions that don't differ from the
+corresponding maxima functions save in their name: They are all
+prepended by a ``wx''. For example  @command{wxplot} corresponds to
+@command{plot}, @command{wxdraw} corresponds to @command{draw} and
+@command{wxhistogram} corresponds to @command{histogram}.
+@subsection Making embedded plots bigger or smaller
+The plotting routines of wxMaxima respect the variable
+@var{wxplot_size} that specifies the size of a plot in pixels.
+@example
+%i1 wxplot_size:[1200,800];
+%o1 [1200,800];
+
+%i2 wxdraw2d(
+        explicit(
+            sin(x),
+            x,1,10
+        )
+    );
+@end example
+@subsection Better quality plots
+Gnuplot doesn't seem to provide a portable way of determining is it
+supports the high-quality bitmap output the cairo library provides.
+On systems where it supports these the option @var{wxplot_pngcairo}
+enables support for antialiasing an additional line styles.
+@subsection Embedding animations into the spreadsheet
+The @code{with_slider_draw} command is a version of @code{wxdraw2d}
+that does prepare multiple plots and allows to switch between them
+by moving the slider on top of the screen. If ImageMagick is installed
+wxMaxima even allows to export this animation as an animated gif.
+
+The first two arguments for @code{with_slider_draw} are the name of
+the variable that is stepped between the plots and a list of the
+values of these variable. The arguments that follow are the ordinary
+arguments for @code{wxdraw2d}:
+@example
+with_slider_draw(
+    f,[1,2,3,4,5,6,7,10],
+    title=concat("f=",f,"Hz"),
+    explicit(
+        sin(2*%pi*f*x),
+        x,0,1
+    ),grid=true
+);
+@end example
+@section wxmaximarc
+@cindex Startup File
+If the maxima user directory there is a text file named @file{wxmaxima-init.mac}
+the contents of the file is passed to maxima automatically every time
+a new worksheet has been started.
+
+To find out which directory maxima uses as the user directory just
+type in the following lines:
+@example
+%i1 maxima_userdir;
+%o1 /home/username/.maxima
+@end example
+@chapter Troubleshooting
+@section Cannot connect to Maxima
+Since maxima (the program that does the actual mathematics) and
+wxMaxima (providing the easy-to-use user interface) are separate
+programs that communicate by the means of a local network connection
+the most probably case is that this connection is somehow not
+working. For example a firewall could be set up in a way that it
+doesn't only prevent against unauthorized connections from the
+internet and to the internet but also inter-process-communication
+inside the same computer. On Un*x computers another possible reason
+would be that the loopback network that provides network connections
+between two programs in the same computer isn't properly configured.
+@section How to save data from a broken .wxmx file
+Internally most modern xml-based formats are ordinary zip-files with
+one speciality: the first file in the archive is stored uncompressed
+and provides information about what type of program can open this
+file. If the zip signature at the end of the file is still intact
+after renaming a broken .wxmx file to .zip most operating systems will
+provide a way to extract any portion of information that is stored
+inside it.
+@section wxMaxima waits forever for data from maxima
+This might be caused by the fact that a closing brace, bracket,
+parenthesis or hyphenation mark is missing: In this case maxima waits
+until it gets the rest of its input. If that isn't the case the
+operating system normally provides a way to see, if maxima is really
+working forever trying to solve the current problem.
+@section I lost a cell contents and undo doesn't remember
+If you still have a way to find out what label maxima has assigned
+to the cell just type in the cell's label and it's contents will
+reappear. If you don't: Don't panic. Maxima contains a replay feature:
+@example
+%i1 playback();
+@end example
+@bye
