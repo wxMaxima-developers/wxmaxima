@@ -1,0 +1,57 @@
+#!/usr/bin/perl -w
+
+#
+# Creating contents.hhc ...
+#
+
+open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
+open(MAXIMA_TOC, "./maxima_toc.html") || die "Can't open maxima_toc.html";
+
+while (<MAXIMA_TOC>)  {
+
+    if ( m#.*<ul class="toc"># ) {
+        print CONTENTS "<ul>\n";
+    }
+
+    if ( m#.*</ul># ) {
+        print CONTENTS "</ul>\n";
+    } 
+
+    if ( m#.*?<li><a\sname="(.*?)"\shref="(.*?)">.*?\s(.*?)</a># ) {
+        print CONTENTS "<li><object type=\"text/sitemap\">\n";
+        print CONTENTS "   <param name=\"Local\" value=\"$2\">\n";
+        print CONTENTS "   <param name=\"Name\" value=\"$3\"></object>\n";
+    } 
+}
+
+close(MAXIMA_TOC);
+close(CONTENTS);
+
+#
+# Creating index.hhk ...
+#
+
+open(INDEX, ">./index.hhk") || die "Can't create index.hhk";
+
+$i = 1;
+%index_content = ();
+
+while (open(MAXIMA_N,"./maxima_$i.html")) {
+    while (<MAXIMA_N>)  {
+
+        if ( m#.*?"top"><a\shref="maxima_(.*?)"><code>(.*?)</code></a># ||
+             m#.*?"top"><a\shref="maxima_(.*?)">(.*?)</a># ) {
+            unless ( $index_content{$2} ) {
+                print INDEX "<li><object type=\"text/sitemap\">\n";
+                print INDEX "   <param name=\"Local\" value=\"maxima_$1\">\n";
+                print INDEX "   <param name=\"Name\" value=\"$2\"></object>\n";
+                $index_content{$2} = 1;
+            }
+        }
+
+    }
+    close(MAXIMA_N);
+    $i++;
+}
+
+close(INDEX);

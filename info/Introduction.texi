@@ -1,0 +1,26 @@
+Start Maxima with the command "wxMaxima".  Maxima will display version
+information and a prompt.  End each Maxima command with a semicolon.
+End the session with the command "quit();".  Here's a sample session:
+
+@example
+[wfs@@chromium]$ maxima
+Maxima 5.9.1 http://maxima.sourceforge.net
+Using Lisp CMU Common Lisp 19a
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+This is a development version of Maxima. The function bug_report()
+provides bug reporting information.
+(%i1) factor(10!);
+                            8  4  2
+(%o1)                      2  3  5  7
+(%i2) expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o2) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i3) factor (x^6 - 1);
+                              2            2
+(%o3)       (x - 1) (x + 1) (x  - x + 1) (x  + x + 1)
+(%i4) quit();
+[wfs@@chromium]$
+@end example
+
+

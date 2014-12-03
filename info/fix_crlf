@@ -1,0 +1,14 @@
+#!/bin/sh
+
+pattern=`printf "\r$"`
+bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$pattern"`
+
+[[ "x$bad_files" == "x" ]] && exit 0
+
+for f in $bad_files ; do
+    echo "Fixing CR-LF in $f"
+    rm -rf foo
+    perl -p -e 's/\r\n/\n/' < $f > foo
+    mv -f foo $f
+done
+

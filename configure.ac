@@ -161,6 +161,20 @@ if test x"${static_wx}" = x"true" ; then
     CATALOGS_TO_INSTALL="$CATALOGS_TO_INSTALL install-wxstd-catalogs"
 fi
 
+dnl Optionally build the windows CHM help files
+dnl default to false as requires win32 and Microsoft HTML Help Workshop
+AC_ARG_ENABLE(chm,
+  [  --enable-chm                 Build Windows CHM help files],
+  [case "${enableval}" in
+       		yes) chm=true ;;
+       		no)  chm=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-chm) ;;
+   esac],
+   [chm=false])
+AM_CONDITIONAL(CHM, test x$chm = xtrue)
+dnl hhc is the HTML Help Compiler for CHM documentation
+hhc_default_name=hhc$EXEEXT
+
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
@@ -174,6 +188,8 @@ AC_CONFIG_FILES([
         src/Makefile
         locales/Makefile
         data/Makefile
+        info/Makefile
+        info/include-wxmaxima.texi
         wxmaxima.spec
         data/Info.plist
 ])
