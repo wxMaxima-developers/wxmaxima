@@ -87,7 +87,7 @@ void wxMaximaFrame::set_properties()
   SetIcon(wxICON(icon0));
 #elif defined (__WXGTK__)
   wxString icon(wxT(PREFIX));
-  icon += wxT("/share/wxMaxima/wxmaxima.png");
+  icon += wxT("/share/wxMaxima/wxmaxima.svg");
   SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
 #endif
 #ifndef __WXMAC__
