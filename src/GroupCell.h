@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2008-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2008-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify

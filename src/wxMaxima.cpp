@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2012 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 ///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -1005,7 +1005,7 @@ void wxMaxima::SetCWD(wxString file)
   if (filename.GetPath() == wxEmptyString)
     filename.AssignDir(wxGetCwd());
 
-  SendMaxima(wxT(":lisp-quiet (xchdir (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
+  SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + filename.GetFullPath() + wxT("\"))"));
 }
 
 // OpenWXM(X)File
@@ -1526,7 +1526,12 @@ wxString wxMaxima::GetCommand(bool params)
   if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
 #if defined (__WXMAC__)
-    command = wxT("/Applications/Maxima.app");
+    if (wxFileExists(wxT("/Applications/Maxima.app")))
+      command = wxT("/Applications/Maxima.app");
+    else if (wxFileExists(wxT("/usr/local/bin")))
+      command = wxT("/usr/local/bin/maxima");
+    else
+      command = wxT("maxima");
 #else
     command = wxT("maxima");
 #endif
@@ -1996,7 +2001,8 @@ bool wxMaxima::SaveFile(bool forceSave)
       wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
     }
     AddRecentDocument(file);
-
+    SetCWD(file);
+    
     return true;
   }
 
@@ -3414,7 +3420,7 @@ wxT("<html>"
 "<img src=\"%swxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
-"<p><small>(C) 2004 - 2013 Andrej Vodopivec</small><br></p>"
+"<p><small>(C) 2004 - 2014 Andrej Vodopivec</small><br></p>"
 "</center>"
 "</body>"
 "</html>"),
@@ -3478,6 +3484,11 @@ wxT("<html>"
 "Alexey Beshenov (ru)<br>"
 "Vadim V. Zhytnikov (ru)<br>"
 "Sergey Semerikov (uk)<br>"
+#if wxUSE_UNICODE
+"Tufan Şirin (tr)<br>"
+#else
+"Tufan Sirin (tr)<br>"
+#endif
 "Frank Weng (zh_TW)<br>"
 "cw.ahbong (zh_TW)"
 "  </p>"
@@ -3571,7 +3582,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2013 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2014 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
@@ -3601,6 +3612,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
     info.AddTranslator(wxT("Alexey Beshenov (ru)"));
     info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
+#if wxUSE_UNICODE
+    info.AddTranslator(wxT("Tufan Şirin (tr)"));
+#else
+    info.AddTranslator(wxT("Tufan Sirin (tr)"));
+#endif
     info.AddTranslator(wxT("Sergey Semerikov (uk)"));
     info.AddTranslator(wxT("Frank Weng (zh_TW)"));
     info.AddTranslator(wxT("cw.ahbong (zh_TW)"));

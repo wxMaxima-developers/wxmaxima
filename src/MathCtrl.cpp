@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2004-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 ///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
@@ -166,7 +166,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1)));
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
       dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION)))); //highlight c.
@@ -1469,9 +1469,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   bool needRecalculate = false;
 
+  // don't exit the cell if we are making a selection
   if (event.GetKeyCode() == WXK_UP &&
       m_activeCell->CaretAtStart() &&
-      !event.ShiftDown()) { // don't exit the cell if we are making a selection
+      !event.ShiftDown()) {
     SetHCaret((m_activeCell->GetParent())->m_previous);
     return;
   }
@@ -1483,6 +1484,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     return;
   }
 
+  // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
       m_activeCell->GetValue() == wxEmptyString) {
     m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
@@ -1558,10 +1560,14 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 }
 
 /****
- * We have a keypress with no active editor, shift is down and
+ * We have a wxKeyEvent with no active editor, shift is down and
  * keycode (ccode) is WXK_UP/WXK_DOWN
  */
 void MathCtrl::SelectWithChar(wxChar ccode) {
+  // start making a selection
+  // m_hCaretPositionStart is the first group selected
+  // m_hCaretPositionEnd is tle last group selected
+  // we always move m_hCaretPosition
   if (m_hCaretPositionStart == NULL || m_hCaretPositionEnd == NULL) {
     if (m_hCaretPosition != NULL)
       m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
@@ -1570,19 +1576,21 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
 
     if (m_hCaretPositionStart == NULL)
       return;
-    
-    if (ccode == WXK_DOWN && m_hCaretPositionStart->m_next != NULL)
-      m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+
+    if (ccode == WXK_DOWN && m_hCaretPosition != NULL && m_hCaretPositionStart->m_next != NULL)
+      m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
+  // extend/shorten selection up
   else if (ccode == WXK_UP) {
     if (m_hCaretPositionEnd->m_previous != NULL) {
-      if (m_hCaretPosition->m_next == m_hCaretPositionEnd)
+      if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
           m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
       m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
     }
     if (m_hCaretPositionEnd != NULL)
       ScrollToCell(m_hCaretPositionEnd); 
   }
+  // extend/shorten selection down
   else {
     if (m_hCaretPositionEnd->m_next != NULL) {
       if (m_hCaretPosition == m_hCaretPositionEnd)
@@ -1593,6 +1601,7 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
       ScrollToCell(m_hCaretPositionEnd);
   }
 
+  // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
   if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
     m_selectionStart = m_hCaretPositionStart;
     m_selectionEnd = m_hCaretPositionEnd;
@@ -1606,7 +1615,7 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
 
 /****
  * SelectEditable is called when a hCursor is active and
- * we have receive a WXK_UP/WXK_DOWN
+ * we have a WXK_UP/WXK_DOWN event
  */
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
   if(editor != NULL && m_workingGroup == NULL)
@@ -1774,9 +1783,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 /*****
  * OnChar handles key events. If we have an active cell, sends the
  * event to the active cell, else moves the cursor between groups.
- *
- * TODO: this function should be reimplemented so that it is more
- *  readable!
  */
 void MathCtrl::OnChar(wxKeyEvent& event) {
 #if defined __WXMSW__
@@ -1792,9 +1798,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 
   if (m_activeCell != NULL)
     OnCharInActive(event);
-  else {
+  else
     OnCharNoActive(event);
-  }
 }
 
 /***
@@ -1853,63 +1858,63 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
 
 void MathCtrl::OnTimer(wxTimerEvent& event) {
   switch (event.GetId()) {
-    case TIMER_ID:
-      {
-        if (!m_leftDown || !m_mouseOutside)
-          return;
-        int dx = 0, dy = 0;
-        int currX, currY;
-
-        wxSize size = GetClientSize();
-        CalcUnscrolledPosition(0, 0, &currX, &currY);
-
-        if (m_mousePoint.x <= 0)
-          dx = -10;
-        else if (m_mousePoint.x >= size.GetWidth())
-          dx = 10;
-        if (m_mousePoint.y <= 0)
-          dy = -10;
-        else if (m_mousePoint.y >= size.GetHeight())
-          dy = 10;
-
-        Scroll((currX + dx) / 10, (currY + dy) / 10);
-        m_timer.Start(50, true);
+  case TIMER_ID:
+  {
+    if (!m_leftDown || !m_mouseOutside)
+      return;
+    int dx = 0, dy = 0;
+    int currX, currY;
+    
+    wxSize size = GetClientSize();
+    CalcUnscrolledPosition(0, 0, &currX, &currY);
+    
+    if (m_mousePoint.x <= 0)
+      dx = -10;
+    else if (m_mousePoint.x >= size.GetWidth())
+      dx = 10;
+    if (m_mousePoint.y <= 0)
+      dy = -10;
+    else if (m_mousePoint.y >= size.GetHeight())
+      dy = 10;
+    
+    Scroll((currX + dx) / 10, (currY + dy) / 10);
+    m_timer.Start(50, true);
+  }
+  break;
+  case ANIMATION_TIMER_ID:
+  {
+    if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
+        m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
+      
+      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+      
+      wxRect rect = m_selectionStart->GetRect();
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RefreshRect(rect);
+      
+      m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT);
+    }
+    else
+      m_animate = false;
+  }
+  break;
+  case CARET_TIMER_ID:
+  {
+    if (m_activeCell != NULL) {
+      if (m_switchDisplayCaret) {
+        m_activeCell->SwitchCaretDisplay();
+        
+        wxRect rect = m_activeCell->GetRect();
+        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+        RefreshRect(rect);
       }
-      break;
-    case ANIMATION_TIMER_ID:
-      {
-        if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-            m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
-
-          SlideShow *tmp = (SlideShow *)m_selectionStart;
-          tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-
-          wxRect rect = m_selectionStart->GetRect();
-          CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-          RefreshRect(rect);
-
-          m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT);
-        }
-        else
-          m_animate = false;
-      }
-      break;
-    case CARET_TIMER_ID:
-      {
-        if (m_activeCell != NULL) {
-          if (m_switchDisplayCaret) {
-            m_activeCell->SwitchCaretDisplay();
-
-            wxRect rect = m_activeCell->GetRect();
-            CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-            RefreshRect(rect);
-          }
-          m_switchDisplayCaret = true;
-          m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
-        }
-      }
-      break;
-   }
+      m_switchDisplayCaret = true;
+      m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
+    }
+  }
+  break;
+  }
 }
 
 /***
@@ -3476,6 +3481,7 @@ bool MathCtrl::CanUndo()
   return m_activeCell->CanUndo();
 }
 
+
 void MathCtrl::Undo()
 {
   if (m_activeCell != NULL) {
@@ -3514,19 +3520,29 @@ void MathCtrl::RemoveAllOutput()
   if (m_workingGroup != NULL)
     return;
 
-  GroupCell *tmp = m_tree;
   SetSelection(NULL); // TODO only setselection NULL when selection is in the output
   SetActiveCell(NULL);
 
-  while (tmp != NULL)
-  {
-    if (tmp->GetGroupType() == GC_TYPE_CODE)
-      tmp->RemoveOutput();
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-  }
+  RemoveAllOutput(m_tree);
 
   Recalculate();
   Refresh();
+}
+
+void MathCtrl::RemoveAllOutput(GroupCell *tree)
+{
+  if (tree == NULL)
+    tree = m_tree;
+
+  while (tree != NULL)
+  {
+    if (tree->GetGroupType() == GC_TYPE_CODE)
+      tree->RemoveOutput();
+    GroupCell *sub = tree->GetHiddenTree();
+    if (sub != NULL)
+      RemoveAllOutput(sub);
+    tree = dynamic_cast<GroupCell*>(tree->m_next);
+  }  
 }
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)

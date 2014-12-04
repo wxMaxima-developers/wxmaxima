@@ -1,5 +1,5 @@
 ///
-///  Copyright (C) 2006-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+///  Copyright (C) 2006-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
@@ -223,7 +223,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1)) );
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)) );
 // window linux, set a pen
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
@@ -263,7 +263,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
         wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, 1))); // window linux, set a pen
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
