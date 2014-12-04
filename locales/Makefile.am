@@ -116,6 +116,8 @@ transcoded:
 	$(MSGFMT) transcoded/gl.po -o transcoded/gl.mo
 	cp zh_CN.po transcoded
 	$(MSGFMT) transcoded/zh_CN.po -o transcoded/zh_CN.mo
+	cp tr.po transcoded
+	$(MSGFMT) transcoded/tr.po -o transcoded/tr.mo
 
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
@@ -135,6 +137,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     ca.po ca.mo wxwin/ca.mo \
 	     gl.po gl.mo wxwin/gl.mo \
              zh_CN.po zh_CN.mo wxwin/zh_CN.mo \
+             tr.po tr.mo wxwin/tr.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE
