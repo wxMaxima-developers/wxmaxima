@@ -14,13 +14,13 @@ pdffigures+=figures/wxMaximaWindow.pdf
 	gs -sOutputFile=$@ -sDEVICE=pdfwrite -dNOPAUSE $< -c quit 
 
 if CHM
-MAXIMA_CHM = wxmaxima.chm
+WXMAXIMA_CHM = wxmaxima.chm
 INSTALL_CHM = install-chm
 UNINSTALL_CHM = uninstall-chm
 CLEAN_CHM = clean-chm
 endif
 
-all-local: wxmaxima.info $(MAXIMA_CHM)
+all-local: wxmaxima.info $(WXMAXIMA_CHM)
 
 wxmaxima.info : wxmaxima.texi
 	makeinfo --split-size=1000000 $<
