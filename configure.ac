@@ -189,7 +189,7 @@ AC_CONFIG_FILES([
         locales/Makefile
         data/Makefile
         info/Makefile
-        info/include-wxmaxima.texi
+        info/wxmaxima.texi
         wxmaxima.spec
         data/Info.plist
 ])

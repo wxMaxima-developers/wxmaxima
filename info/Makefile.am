@@ -1,7 +1,7 @@
 SUBDIRS = $(DE_DIR)
 
 info_TEXINFOS = wxmaxima.texi
-wxmaxima_TEXINFOS = include-wxmaxima.texi
+wxmaxima_TEXINFOS = wxmaxima.texi
 
 figurefiles = 
 
