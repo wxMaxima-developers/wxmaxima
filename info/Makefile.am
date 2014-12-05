@@ -6,6 +6,8 @@ wxmaxima_TEXINFOS = wxmaxima.texi
 figurefiles = figures/NoiseFilter.png figures/maxima.png figures/InputCell.png
 figurefiles +=figures/wxMaximaWindow.png
 
+# install-data-local:install-html
+
 pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
 pdffigures+=figures/wxMaximaWindow.pdf
 .png.ps:
@@ -25,8 +27,6 @@ all-local: wxmaxima.info $(WXMAXIMA_CHM)
 
 wxmaxima.info : wxmaxima.texi
 	makeinfo --split-size=1000000 $<
-
-html: wxmaxima.html contents.hhc
 
 wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS)
 	sh extract_categories.sh wxmaxima
@@ -49,8 +49,8 @@ contents.hhc index.hhk: wxmaxima.html
 wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
-htmldir = $(dochtmldir)
-html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima*.html
+html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html wxmaxima*.html
+dist_html_data=$(html_DATA)
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
