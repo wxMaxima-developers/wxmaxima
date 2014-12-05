@@ -8,10 +8,10 @@ figurefiles +=figures/wxMaximaWindow.png
 
 pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
 pdffigures+=figures/wxMaximaWindow.pdf
-.ps.png:
-	pngtopnm $<|pnmtops -noturn >$@
+.png.ps:
+	pngtopnm $@|pnmtops -noturn >$<
 
-.pdf.ps:
+.ps.pdf:
 	gs -sOutputFile=$@ -sDEVICE=pdfwrite -dNOPAUSE $< -c quit 
 
 if CHM
