@@ -3,7 +3,8 @@ SUBDIRS = $(DE_DIR)
 info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
-figurefiles = 
+figurefiles = figures/NoiseFilter.png figures/maxima.png figures/InputCell.png
+figurefiles +=figures/wxMaximaWindow.png
 
 pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
 pdffigures+=figures/wxMaximaWindow.pdf
@@ -48,12 +49,8 @@ contents.hhc index.hhk: wxmaxima.html
 wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
-genericdir = $(dochtmldir)
-genericdirDATA = $(figurefiles) \
-contents.hhc index.hhk header.hhp wxmaxima.hhp
-
-htmlname = wxmaxima
-htmlinstdir = $(dochtmldir)
+htmldir = $(dochtmldir)
+html_DATA = $(figurefiles) contents.hhc index.hhk header.hhp wxmaxima.hhp wxmaxima*.html
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
