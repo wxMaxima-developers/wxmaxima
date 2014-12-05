@@ -9,7 +9,7 @@ figurefiles +=figures/wxMaximaWindow.png
 pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
 pdffigures+=figures/wxMaximaWindow.pdf
 .png.ps:
-	pngtopnm $@|pnmtops -noturn >$<
+	pngtopnm $<|pnmtops -noturn >$@
 
 .ps.pdf:
 	gs -sOutputFile=$@ -sDEVICE=pdfwrite -dNOPAUSE $< -c quit 
@@ -31,7 +31,7 @@ html: wxmaxima.html contents.hhc
 wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS)
 	sh extract_categories.sh wxmaxima
 
-wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures)
+wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
 	-rm wxmaxima.tp
 	-rm wxmaxima.pg
@@ -50,7 +50,7 @@ wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
 htmldir = $(dochtmldir)
-html_DATA = $(figurefiles) contents.hhc index.hhk header.hhp wxmaxima.hhp wxmaxima*.html
+html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima*.html
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
