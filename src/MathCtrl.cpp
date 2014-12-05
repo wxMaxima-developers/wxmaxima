@@ -2767,14 +2767,25 @@ wxString ConvertToUnicode(wxString str)
 #endif
 }
 
+/*
+  Save the data as wxmx file
+
+  First saves the data to a backup file ending in .wxmx~ so if anything goes 
+  horribly wrong in this stepp all that is lost is the data that was input 
+  since the last save. Then the original .wxmx file is replaced in a 
+  (hopefully) atomic operation.
+ */
 bool MathCtrl::ExportToWXMX(wxString file)
 {
-  // delete file if it already exists
-  if(wxFileExists(file))
-    if(!wxRemoveFile(file))
-      return false;
-
-  wxFFileOutputStream out(file);
+  // delete temp file if it already exists
+  wxString backupfile=file+wxT("~");
+  if(wxFileExists(backupfile))
+    {
+      if(!wxRemoveFile(backupfile))
+	return false;
+    }
+  
+  wxFFileOutputStream out(backupfile);
   if (!out.IsOk())
     return false;
   wxZipOutputStream zip(out);
@@ -2830,6 +2841,10 @@ bool MathCtrl::ExportToWXMX(wxString file)
   }
 
   delete fsystem;
+  // Now that all data is save we can overwrite the actual save file.
+  if(!wxRenameFile(backupfile,file,true))
+    return false;
+
   m_saved = true;
   return true;
 }
