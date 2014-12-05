@@ -26,8 +26,14 @@ wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS)
 
 wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
-	rm wxmaxima.fns wxmaxima.vr wxmaxima.tp wxmaxima.pg wxmaxima.ky wxmaxima.cp \
-	wxmaxima.toc wxmaxima.fn wxmaxima.aux wxmaxima.log
+	-rm wxmaxima.tp
+	-rm wxmaxima.pg
+	-rm wxmaxima.ky
+	-rm wxmaxima.cp
+	-rm wxmaxima.toc
+	-rm wxmaxima.fn
+	-rm wxmaxima.aux
+	-rm wxmaxima.log
 
 contents.hhc index.hhk: wxmaxima.html
 	perl ./create_index
@@ -46,21 +52,14 @@ htmlinstdir = $(dochtmldir)
 all-local: warn_texinfo
 dist-hook: check_texinfo html
 
-install-data-local: install-wxmaxima-index $(INSTALL_CHM)
-uninstall-local: uninstall-wxmaxima-index $(UNINSTALL_CHM)
+install-data-local: $(INSTALL_CHM)
+uninstall-local: $(UNINSTALL_CHM)
 
-install-wxmaxima-index: wxmaxima-index.lisp
-	test -z "$(infodir)" || mkdir -p -- "$(DESTDIR)$(infodir)"
-	$(INSTALL_DATA) wxmaxima-index.lisp "$(DESTDIR)$(infodir)/wxmaxima-index.lisp"
-
-uninstall-wxmaxima-index: wxmaxima-index.lisp
-	rm -f "$(DESTDIR)$(infodir)/wxmaxima-index.lisp"
 
 clean-local: clean-info clean-html $(CLEAN_CHM)
 
 clean-info:
 	rm -f wxmaxima.info*
-	rm -f wxmaxima-index.lisp
 
 clean-html:
 	rm -f wxmaxima*.html

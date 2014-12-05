@@ -20,6 +20,8 @@
 @setchapternewpage odd
 @c %**end of header
 
+@include category-macros.texi
+
 @ifinfo
 This is a Texinfo Maxima Manual based on the maxima
 manual which is Copyright 1994,2001 William F. Schelter
@@ -41,30 +43,17 @@ END-INFO-DIR-ENTRY
 @comment The title is printed in a large font.
 @center @titlefont{wxMaxima Manual}
 @page
+@iftex
 @vskip 0pt plus 1filll
-Maxima is a computer algebra system that is actively developed and is
-sucessfully used in a variety of applications like maths, computer
-science and biochemistry.
-
-wxMaxima is a graphical user interface that allows to use all of
-maxima's functions providing convenient wizards for accessing the most
-communly used of them.
+@include summary.texi
+@end iftex
 @end titlepage
 
 @summarycontents
 @contents
 
 @ifnottex
-@node Top, Introduction to wxMaxima, (dir), (dir)
-@top
-
-Maxima is a computer algebra system that is actively developed and is
-sucessfully used in a variety of applications like maths, computer
-science and biochemistry.
-
-wxMaxima is a graphical user interface that allows to use all of
-maxima's functions providing convenient wizards for accessing the most
-communly used of them.
+@include summary.texi
 @end ifnottex
 
 @menu
@@ -75,4 +64,5 @@ communly used of them.
 
 @end menu
 
+@include Introduction.texi
 @c end includes

@@ -5,9 +5,9 @@
 #
 
 open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
-open(MAXIMA_TOC, "./maxima_toc.html") || die "Can't open maxima_toc.html";
+open(WXMAXIMA_TOC, "./wxmaxima_toc.html") || die "Can't open wxmaxima_toc.html";
 
-while (<MAXIMA_TOC>)  {
+while (<WXMAXIMA_TOC>)  {
 
     if ( m#.*<ul class="toc"># ) {
         print CONTENTS "<ul>\n";
@@ -24,7 +24,7 @@ while (<MAXIMA_TOC>)  {
     } 
 }
 
-close(MAXIMA_TOC);
+close(WXMAXIMA_TOC);
 close(CONTENTS);
 
 #
@@ -36,21 +36,21 @@ open(INDEX, ">./index.hhk") || die "Can't create index.hhk";
 $i = 1;
 %index_content = ();
 
-while (open(MAXIMA_N,"./maxima_$i.html")) {
-    while (<MAXIMA_N>)  {
+while (open(WXMAXIMA_N,"./wxmaxima_$i.html")) {
+    while (<WXMAXIMA_N>)  {
 
-        if ( m#.*?"top"><a\shref="maxima_(.*?)"><code>(.*?)</code></a># ||
-             m#.*?"top"><a\shref="maxima_(.*?)">(.*?)</a># ) {
+        if ( m#.*?"top"><a\shref="wxmaxima_(.*?)"><code>(.*?)</code></a># ||
+             m#.*?"top"><a\shref="wxmaxima_(.*?)">(.*?)</a># ) {
             unless ( $index_content{$2} ) {
                 print INDEX "<li><object type=\"text/sitemap\">\n";
-                print INDEX "   <param name=\"Local\" value=\"maxima_$1\">\n";
+                print INDEX "   <param name=\"Local\" value=\"wxmaxima_$1\">\n";
                 print INDEX "   <param name=\"Name\" value=\"$2\"></object>\n";
                 $index_content{$2} = 1;
             }
         }
 
     }
-    close(MAXIMA_N);
+    close(WXMAXIMA_N);
     $i++;
 }
 
