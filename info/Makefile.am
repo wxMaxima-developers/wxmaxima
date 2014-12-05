@@ -5,7 +5,13 @@ wxmaxima_TEXINFOS = include-wxmaxima.texi
 
 figurefiles = 
 
-pdffigures = 
+pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
+pdffigures+=figures/wxMaximaWindow.pdf
+.ps.png:
+	pngtopnm $<|pnmtops -noturn >$@
+
+.pdf.ps:
+	gs -sOutputFile=$@ -sDEVICE=pdfwrite -dNOPAUSE $< -c quit 
 
 if CHM
 MAXIMA_CHM = wxmaxima.chm
@@ -24,7 +30,7 @@ html: wxmaxima.html contents.hhc
 wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS)
 	sh extract_categories.sh wxmaxima
 
-wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS)
+wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
 	-rm wxmaxima.tp
 	-rm wxmaxima.pg
@@ -79,6 +85,7 @@ clean-chm:
 	rm -f wxmaxima.chm
 	rm -rf chm
 endif
+
 
 EXTRA_DIST = texi2html manual.css texi2html.init \
     $(genericdirDATA) $(pdffigures) \

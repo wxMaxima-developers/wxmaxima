@@ -56,13 +56,7 @@ END-INFO-DIR-ENTRY
 @include summary.texi
 @end ifnottex
 
-@menu
-
-@b{wxMaxima infrastructure}
-
-* Introduction to wxMaxima::    Basic concepts about the program.
-
-@end menu
-
 @include Introduction.texi
+@include Extensions.texi
+@include Troubleshooting.texi
 @c end includes
