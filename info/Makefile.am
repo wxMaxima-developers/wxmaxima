@@ -49,7 +49,7 @@ contents.hhc index.hhk: wxmaxima.html
 wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
-html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html wxmaxima*.html
+html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html $(wildcard wxmaxima*.html)
 dist_html_data=$(html_DATA)
 
 all-local: warn_texinfo
