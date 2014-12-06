@@ -3664,6 +3664,11 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
       ShowMaximaHelp(helpSearchString);
     break;
 
+  case menu_maximahelp:
+      ShowMaximaHelp(expr);
+      std::cout<<"Maximahelp Called!\n";
+    break;
+
   case menu_example:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
@@ -4761,6 +4766,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_gen_mat_lambda, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_map, wxMaxima::AlgebraMenu)
   EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
+  EVT_MENU(menu_maximahelp, wxMaxima::HelpMenu)
   EVT_MENU(menu_example, wxMaxima::HelpMenu)
   EVT_MENU(menu_apropos, wxMaxima::HelpMenu)
   EVT_MENU(menu_show_tip, wxMaxima::HelpMenu)
