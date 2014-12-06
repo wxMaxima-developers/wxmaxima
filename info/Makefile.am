@@ -49,8 +49,10 @@ contents.hhc index.hhk: wxmaxima.html
 wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
-html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html $(wildcard wxmaxima*.html)
-dist_html_data=$(html_DATA)
+html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html
+html_DATA+= wxmaxima_1.html wxmaxima_2.html wxmaxima_3.html wxmaxima_4.html
+html_DATA+= wxmaxima_abt.html wxmaxima_ovr.html wxmaxima_toc.html
+#dist_html_data=$(html_DATA)
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
@@ -91,7 +93,7 @@ EXTRA_DIST = texi2html manual.css texi2html.init \
 
 check_texinfo:
 	pattern=`printf "\t"` ; \
-	bad_files=`find . -name '*.texi' -print | xargs $(EGREP) -l -e "$$pattern"` ; \
+	bad_files=`find . -name '*.texi' -print0 | xargs $(EGREP) -l -e "$$pattern"` ; \
 	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run make distclean and then /doc/info/fix_tab to fix the problem." ; exit 1 )
 
