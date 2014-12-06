@@ -1689,7 +1689,11 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 void wxMaxima::ShowWxMaximaHelp()
 {
   wxString htmldir=wxT(HTMLDIR);
+  #ifdef CHM
+  wxString helpfile=htmldir+wxT("/wxmaxima.chm");
+  #else
   wxString helpfile=htmldir+wxT("/wxmaxima.html");
+  #endif
   ShowHelp(helpfile,wxT("%"));
 }
 
