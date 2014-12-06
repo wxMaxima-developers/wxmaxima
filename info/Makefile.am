@@ -3,13 +3,13 @@ SUBDIRS = $(DE_DIR)
 info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
-figurefiles = figures/NoiseFilter.png figures/maxima.png figures/InputCell.png
-figurefiles +=figures/wxMaximaWindow.png
+figurefiles = NoiseFilter.png maxima.png InputCell.png
+figurefiles +=wxMaximaWindow.png
 
 # install-data-local:install-html
 
-pdffigures=figures/NoiseFilter.pdf figures/maxima.pdf figures/InputCell.pdf
-pdffigures+=figures/wxMaximaWindow.pdf
+pdffigures=NoiseFilter.pdf maxima.pdf InputCell.pdf
+pdffigures+=wxMaximaWindow.pdf
 .png.ps:
 	pngtopnm $<|pnmtops -noturn >$@
 
