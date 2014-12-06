@@ -1673,7 +1673,7 @@ wxString wxMaxima::GetHelpFile()
 #endif
 }
 
-void wxMaxima::ShowHelp(wxString keyword)
+void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
   wxLogNull disableWarnings;
 
@@ -3648,7 +3648,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case tb_help:
 #endif
-    ShowHelp(helpSearchString);
+    ShowMaximaHelp(helpSearchString);
     break;
 
   case menu_example:

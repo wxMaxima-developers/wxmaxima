@@ -77,7 +77,7 @@ public:
   ~wxMaxima();
   void ShowTip(bool force);
   wxString GetHelpFile();
-  void ShowHelp(wxString keyword = wxEmptyString);
+  void ShowMaximaHelp(wxString keyword = wxEmptyString);
   void InitSession();
   void SetOpenFile(wxString file)
   {
