@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pattern=`printf "\t"`
+bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$pattern"`
+
+echo $bad_files
+
