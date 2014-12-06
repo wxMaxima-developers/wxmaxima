@@ -78,6 +78,7 @@ public:
   void ShowTip(bool force);
   wxString GetHelpFile();
   void ShowMaximaHelp(wxString keyword = wxEmptyString);
+  void ShowWxMaximaHelp();
   void InitSession();
   void SetOpenFile(wxString file)
   {
@@ -90,6 +91,7 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 protected:
+  void ShowHelp(wxString helpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
   void OnIdle(wxIdleEvent& event);

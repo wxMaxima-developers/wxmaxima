@@ -184,6 +184,10 @@ AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 
+dnl These directory names are needed in order to find wxMaxima's own html documentation.
+AC_SUBST(DESTDIR)
+AC_SUBST(htmldir)
+
 AC_CONFIG_FILES([
         Makefile
         src/Makefile
