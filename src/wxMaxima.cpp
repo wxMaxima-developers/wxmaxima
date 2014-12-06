@@ -3666,7 +3666,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
   case menu_maximahelp:
       ShowMaximaHelp(expr);
-      std::cout<<"Maximahelp Called!\n";
     break;
 
   case menu_example:
