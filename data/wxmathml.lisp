@@ -1,7 +1,7 @@
 (in-package :maxima)
 
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
-;; Andrej Vodopivec, 2004-2007
+;; Andrej Vodopivec, 2004-2014
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
