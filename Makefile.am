@@ -17,7 +17,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
 	     art/config/styles.png                           \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
-             art/maximaicon.ico
+             art/wxmac-doc.ico art/maximaicon.ico
 
 docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING art/config/options.png art/config/maxima.png \
