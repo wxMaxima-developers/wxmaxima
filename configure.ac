@@ -2,7 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([wxMaxima], [14.09.0])
+# give autoconf the name of a file whose existence is a hint that
+# autoconf has been started from the right directory. 
 AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
+# tell autoconf where to put the temporary files it generates 
+AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADER(src/Setup.h)
@@ -18,6 +22,9 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_CXX
 AC_PROG_CXXCPP
+
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.19.2])
 
 AC_LANG_CPLUSPLUS
 
@@ -170,13 +177,22 @@ AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 
+AC_SUBST(PACKAGE)
+AC_SUBST(PACKAGE_VERSION)
+AC_SUBST(LOCALEDIR)
+AC_SUBST(POMAKEFILEDEPS)
+AC_SUBST(PACKAGE_BUGREPORT)
+AC_SUBST(GMOFILES)
+top_builddir=`pwd`
+AC_SUBST(top_builddir)
+
 AC_CONFIG_FILES([
         Makefile
         src/Makefile
-        locales/Makefile
         data/Makefile
         wxmaxima.spec
         data/Info.plist
+	po/Makefile.in
 ])
 
 AC_OUTPUT
