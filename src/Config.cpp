@@ -51,15 +51,16 @@ const int langs[] =
     wxLANGUAGE_HUNGARIAN,
     wxLANGUAGE_ITALIAN,
     wxLANGUAGE_JAPANESE,
+    wxLANGUAGE_NORWEGIAN_BOKMAL,
     wxLANGUAGE_POLISH,
     wxLANGUAGE_PORTUGUESE_BRAZILIAN,
     wxLANGUAGE_RUSSIAN,
-    wxLANGUAGE_SPANISH,
+    wxLANGUAGE_RUSSIAN,
     wxLANGUAGE_TURKISH,
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 20
+#define LANGUAGE_NUMBER 21
 
 
 Config::Config(wxWindow* parent)
@@ -259,6 +260,7 @@ wxPanel* Config::CreateOptionsPanel()
       _("Hungarian"),
       _("Italian"),
       _("Japanese"),
+      _("Norwegian"),
       _("Polish"),
       _("Portuguese (Brazilian)"),
       _("Russian"),
