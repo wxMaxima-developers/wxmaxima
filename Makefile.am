@@ -1,4 +1,4 @@
-SUBDIRS = src locales data
+SUBDIRS = src data po
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/readme.txt art/license.txt                  \
@@ -41,8 +41,8 @@ wxMaxima.app: all
 	cp src/wxmaxima wxMaxima.app/Contents/MacOS
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES ; \
-		cp locales/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
-		cp locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+		cp po/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp po/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
 	mkdir -p wxMaxima.app/Contents/Resources/config
@@ -62,7 +62,9 @@ wxMaxima.win: all
 	cp art/config/*.png wxMaxima/art/config
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
-		cp locales/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
-		cp locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+		cp po/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp po/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	cp src/wxmaxima.exe wxMaxima/
+
+ACLOCAL_AMFLAGS = -I m4
