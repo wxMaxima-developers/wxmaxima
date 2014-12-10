@@ -17,13 +17,13 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
 	     art/config/styles.png                           \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
-             art/maximaicon.ico
+             art/wxmac-doc.ico art/maximaicon.ico
 
 docdir = ${datadir}/wxMaxima
 doc_DATA = README COPYING art/config/options.png art/config/maxima.png \
 	art/config/styles.png
 
-LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr
+LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS

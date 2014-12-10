@@ -24,6 +24,7 @@ AC_LANG_CPLUSPLUS
 dnl check for host
 case "$host" in
         *mingw*)
+		AC_CHECK_TOOL(WINDRES, windres)
                 win32=true
                 ;;
         *cygwin*)
