@@ -177,6 +177,7 @@ AC_CONFIG_FILES([
         data/Makefile
         wxmaxima.spec
         data/Info.plist
+	data/wxMaxima.desktop
 ])
 
 AC_OUTPUT

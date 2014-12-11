@@ -3488,12 +3488,17 @@ wxT("<html>"
 "Antonio Ullan (es)<br>"
 "Eric Delevaux (fr)<br>"
 "Michele Gosse (fr)<br>"
+"Marco Ciampa (it)<br>"
 #if wxUSE_UNICODE
 "Blahota István (hu)<br>"
 #else
 "Blahota Istvan (hu)<br>"
 #endif
-"Marco Ciampa (it)<br>"
+#if wxUSE_UNICODE
+"Asbjørn Apeland (nb)<br>"
+#else
+"Asbjorn Apeland (nb)<br>"
+#endif
 "Rafal Topolnicki (pl)<br>"
 "Eduardo M. Kalinowski (pt_br)<br>"
 "Alexey Beshenov (ru)<br>"
@@ -3617,11 +3622,16 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Antonio Ullan (es)"));
     info.AddTranslator(wxT("Eric Delevaux (fr)"));
     info.AddTranslator(wxT("Michele Gosse (fr)"));
-    info.AddTranslator(wxT("Marco Ciampa (it)"));
 #if wxUSE_UNICODE
     info.AddTranslator(wxT("Blahota István (hu)"));
 #else
     info.AddTranslator(wxT("Blahota Istvan (hu)"));
+#endif
+    info.AddTranslator(wxT("Marco Ciampa (it)"));
+#if wxUSE_UNICODE
+    info.AddTranslator(wxT("Asbjørn Apeland (nb)"));
+#else
+    info.AddTranslator(wxT("Asbjorn Apeland (nb)"));
 #endif
     info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
     info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
