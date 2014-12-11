@@ -748,8 +748,14 @@ bool wxMaxima::StartMaxima()
                        ));
       }
     }
-    else
-      command.Append(wxString::Format(wxT(" -s %d"), m_port));
+    else {
+      wxString clisp = command.SubString(1, command.Length() - 3);
+      clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
+      if (wxFindFirstFile(clisp, wxDIR).empty())
+	command.Append(wxString::Format(wxT(" -s %d"), m_port));
+      else
+	command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
+    }
     wxSetEnv(wxT("home"), wxGetHomeDir());
     wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
 #else
@@ -1503,7 +1509,10 @@ wxString wxMaxima::GetCommand(bool params)
   wxString maxima = wxGetCwd();
   wxString parameters;
 
-  maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
+  if (maxima.Right(8) == wxT("wxMaxima"))
+    maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
+  else
+    maxima.Append("\\maxima.bat");
 
   if (!wxFileExists(maxima))
   {
