@@ -28,12 +28,7 @@
 
 (defvar $wxfilename "")
 
-(defun tofiledir (file)
-  (let ((path (pathname file)))
-    (make-pathname :device (pathname-device path)
-		   :directory (pathname-directory path))))
-
-(defun $cd (dir)
+(defun wx-cd (dir)
   (let ((dir (cond ((pathnamep dir) dir)
 		   ((stringp dir)
 		    (make-pathname :directory (pathname-directory dir)

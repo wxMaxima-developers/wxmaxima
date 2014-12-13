@@ -1012,12 +1012,12 @@ void wxMaxima::SetCWD(wxString file)
     filename.AssignDir(wxGetCwd());
 
   // Escape all backslashes in the filename if needed by the OS.
-  wxString Filenamestring= filename.GetFullPath();
-  #if defined __WXMSW__
-  Filenamestring.Replace(wxT("\\"),wxT("/"));
-  #endif
+  wxString filenamestring= filename.GetFullPath();
+#if defined __WXMSW__
+  filenamestring.Replace(wxT("\\"),wxT("/"));
+#endif
   
-  SendMaxima(wxT(":lisp-quiet ($cd (tofiledir \"") + Filenamestring + wxT("\"))"));
+  SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
 }
 
 // OpenWXM(X)File
@@ -1025,7 +1025,7 @@ void wxMaxima::SetCWD(wxString file)
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   SetStatusText(_("Opening file"), 1);
-	wxBeginBusyCursor();
+  wxBeginBusyCursor();
   document->Freeze();
 
   // open wxm file
