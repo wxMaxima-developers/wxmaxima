@@ -2791,10 +2791,41 @@ bool MathCtrl::ExportToWXMX(wxString file)
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
 
-  // first zip entry is "content.xml", xml of m_tree
+  /* The first zip entry is a file named "mimetype": This makes sure that the mimetype 
+     is always stored at the same position in the file. This is common practice. One 
+     example from an ePub file:
+
+	00000000  50 4b 03 04 14 00 00 08  00 00 cd bd 0a 43 6f 61  |PK...........Coa|
+	00000010  ab 2c 14 00 00 00 14 00  00 00 08 00 00 00 6d 69  |.,............mi|
+	00000020  6d 65 74 79 70 65 61 70  70 6c 69 63 61 74 69 6f  |metypeapplicatio|
+	00000030  6e 2f 65 70 75 62 2b 7a  69 70 50 4b 03 04 14 00  |n/epub+zipPK....|
+
+  */
+
+  // Make sure that the mime type is stored as plain text.
+  zip.SetLevel(0);
+  zip.PutNextEntry(wxT("mimetype"));
+  output << wxT("text/x-wxmaxima-batch");
+
+  /* We do want to compress the rest of this file, though.
+
+     TODO: Do we actually want to do that for all embedded files? 
+     The images contained in the file are already compressed an additional compression 
+     might not help.
+
+     TODO 2: If we compress content.xml we compress a file that is typically small.
+     hindering an version control system
+     from effectively handling the differences.
+
+     => An option to keep the compression at zero for augmentating the results of
+     an eventual version control?
+  */
+  zip.SetLevel(9);
+
+  // next zip entry is "content.xml", xml of m_tree
+
   zip.PutNextEntry(wxT("content.xml"));
   output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  // TODO write DOCTYPE
   output << wxT("\n<!--   Created by wxMaxima ") << wxT(VERSION) << wxT("   -->");
   output << wxT("\n<!--http://wxmaxima.sourceforge.net-->\n");
 
