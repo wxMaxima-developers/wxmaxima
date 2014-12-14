@@ -30,6 +30,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources
 	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp data/wxmaxima.png wxMaxima.app/Contents/Resources
+	cp data/wxmaxima.svg wxMaxima.app/Contents/Resources
 	cp data/autocomplete.txt wxMaxima.app/Contents/Resources
 	cp data/tips*.txt wxMaxima.app/Contents/Resources
 	cp art/wxmac.icns wxMaxima.app/Contents/Resources
@@ -54,6 +55,7 @@ wxMaxima.win: all
 	mkdir -p wxMaxima/data
 	cp data/wxmathml.lisp wxMaxima/data
 	cp data/wxmaxima.png wxMaxima/data
+	cp data/wxmaxima.svg wxMaxima/data
 	cp data/autocomplete.txt wxMaxima/data
 	cp data/tips*.txt wxMaxima/data
 	mkdir -p wxMaxima/art/toolbar
