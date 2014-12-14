@@ -1,4 +1,4 @@
-SUBDIRS = src locales data
+SUBDIRS = src locales data info
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/readme.txt art/license.txt                  \
