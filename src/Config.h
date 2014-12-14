@@ -104,6 +104,7 @@ protected:
   wxComboBox* m_language;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_savePanes;
+  wxCheckBox* m_UncompressedWXMX;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_enterEvaluates;

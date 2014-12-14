@@ -2807,20 +2807,23 @@ bool MathCtrl::ExportToWXMX(wxString file)
   zip.PutNextEntry(wxT("mimetype"));
   output << wxT("text/x-wxmaxima-batch");
 
-  /* We do want to compress the rest of this file, though.
+  /* We might want to compress the rest of this file, though, if the user doesn't 
+     use a version control system like git or svn:
 
-     TODO: Do we actually want to do that for all embedded files? 
-     The images contained in the file are already compressed an additional compression 
-     might not help.
+     Compressed files tend to completely change their structure if actually only 
+     a single line of the uncompressed file has been modified. This means that
+     changing a line of input might lead to git or svn having to deal with 
+     a file that has changes all over the place.
 
-     TODO 2: If we compress content.xml we compress a file that is typically small.
-     hindering an version control system
-     from effectively handling the differences.
-
-     => An option to keep the compression at zero for augmentating the results of
-     an eventual version control?
+     If we don't use compression the increase of the file size might be small:
+      - The images are saved in the png format and therefore are compressed and
+      - content.xml typically is small and therefore won't get much smaller during
+        compression.
   */
-  zip.SetLevel(9);
+  bool VcFriendlyWXMX=true;
+  wxConfig::Get()->Read(wxT("OptimizeForVersionControl"), &VcFriendlyWXMX);
+  if(!VcFriendlyWXMX)
+    zip.SetLevel(9);
 
   // next zip entry is "content.xml", xml of m_tree
 
