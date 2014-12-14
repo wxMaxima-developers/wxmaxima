@@ -1,0 +1,14 @@
+#!/bin/sh
+
+pattern=`printf "\t"`
+bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$pattern"`
+
+[[ "x$bad_files" == "x" ]] && exit 0
+
+for f in $bad_files ; do
+    echo "Fixing TAB in $f"
+    rm -rf foo
+    expand $f > foo
+    mv -f foo $f
+done
+
