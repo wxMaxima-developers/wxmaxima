@@ -185,6 +185,16 @@ AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 
+dnl Doxygen creates html code documentation from the comments in the code
+AC_CHECK_PROG(HAVE_DOXYGEN,doxygen,yes,no)
+AC_SUBST(HAVE_DOXYGEN)
+AM_CONDITIONAL(USE_DOXYGEN, test x$HAVE_DOXYGEN = xyes)
+
+dnl GraphViz makes nice diagrams for the doxygen documentation, if installed.
+AC_CHECK_PROG(HAVE_GRAPHVIZ,dot,yes,no)
+AC_SUBST(HAVE_GRAPHVIZ)
+AM_CONDITIONAL(USE_GRAPHVIZ, test x$HAVE_GRAPHVIZ = xyes)
+
 dnl These directory names are needed in order to find wxMaxima's own html documentation.
 AC_SUBST(DESTDIR)
 AC_SUBST(htmldir)
@@ -192,6 +202,8 @@ AC_SUBST(htmldir)
 AC_CONFIG_FILES([
         Makefile
         src/Makefile
+        Doxygen/Makefile
+        Doxygen/Doxyfile
         locales/Makefile
         data/Makefile
         info/Makefile

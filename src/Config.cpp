@@ -34,7 +34,11 @@
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
 
-// Should match whatever is put in the m_language
+/*! The enum that chooses the language in the language drop-down menu. 
+
+ \attention
+  - Should match whatever is put in the m_language.
+*/
 const int langs[] =
   {
     wxLANGUAGE_DEFAULT,
@@ -60,8 +64,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER 21
-
+#define LANGUAGE_NUMBER sizeof(langs)/sizeof(langs[1])
 
 Config::Config(wxWindow* parent)
 {
@@ -965,9 +968,6 @@ void Config::OnChangeWarning(wxCommandEvent &event)
                wxOK|wxICON_WARNING);
 }
 
-//
-// Should match whatever is put in m_styleFor
-//
 style* Config::GetStylePointer()
 {
   style* tmp = &m_styleDefault;
@@ -1134,7 +1134,6 @@ BEGIN_EVENT_TABLE(Config, wxPropertySheetDialog)
   EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
   EVT_CLOSE(Config::OnClose)
 END_EVENT_TABLE()
-
 
 void ExamplePanel::OnPaint(wxPaintEvent& event)
 {

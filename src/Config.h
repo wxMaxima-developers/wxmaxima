@@ -18,6 +18,14 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+/*!
+\file 
+The configuration dialog.
+
+This file contains the code for the preferences dialog. The preferences themself will
+be read directly using <code> config->Read </code>, instead, where needed.
+*/
+
 #include <wx_inc.h>
 #include <wx/image.h>
 
@@ -50,9 +58,14 @@ enum {
   load_id
 };
 
+/*! TheSample text that is shown by the style selector.
+
+This is a piece of text that shows the user how the selected style will look.
+*/
 class ExamplePanel : public wxPanel
 {
 public:
+  //! The constructor
   ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
   {
 #if defined (__WXGTK12__) && !defined (__WXGTK20__)
@@ -64,6 +77,8 @@ public:
 #endif
 
   };
+
+  //! Sets all user-changable elements of style of the example at once.
   void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
   {
     m_fgColor = fg_color;
@@ -72,28 +87,69 @@ public:
     m_underlined = underlined;
     m_font = font;
   }
+
+  //! Sets the font size of the example
   void SetFontSize(int size) { m_size = size; }
 private:
+  /*! Actually updates the formatting example
+
+    This function is called after Config::UpdateExample() changes the example's style.
+ */
   void OnPaint(wxPaintEvent& event);
+
+ private:
+  //! The foreground color of the currently selected item type
   wxColour m_fgColor;
-  bool m_italic, m_bold, m_underlined;
+  //! Is the currently selected item type displayed in italic?
+  bool m_italic;
+  //! Is the currently selected item type displayed in bold?
+  bool m_bold;
+  //! Is the currently selected item type displayed underlined?
+  bool m_underlined;
+  //! The font the currently selected item type is displayed with
   wxString m_font;
+  //! The size of the characters of the currently selected item type
   int m_size;
   DECLARE_EVENT_TABLE()
 };
 
+/*! The configuration dialog
+
+This class draws and handles the configuration dialog. 
+
+Code that needs to know the value of the preferences that are set here reads 
+them directly using <code> config->Read </code>, instead.
+ */
 class Config: public wxPropertySheetDialog
 {
 public:
+  //! The constructor
   Config(wxWindow* parent);
+  //! The destructor
   ~Config();
-  void OnChangeColor(); // called from class ColorPanel
+
+  /*! Called if the color of an item has been changed 
+
+    called from class ColorPanel
+  */
+  void OnChangeColor();
+  /*! Stores the settings from the configuration dialog.
+
+    wxWidgets knows how to store the settings to gconf, the registry or wherever the current 
+    system expects settings to be saved to.
+  */
   void WriteSettings();
 private:
-  // begin wxGlade: Config::methods
+  /*! begin wxGlade: Config::methods
+
+    This method sets the window title, the tool tips etc.
+   */
   void SetProperties();
+  //! The panel that allows to set checkbox-style options
   wxPanel* CreateOptionsPanel();
+  //! The panel that allows to change styles
   wxPanel* CreateStylePanel();
+  //! The panel that allows to change maxima-specific configurations.
   wxPanel* CreateMaximaPanel();
   // end wxGlade
 protected:
@@ -160,23 +216,43 @@ protected:
         m_styleCursor,
         m_styleSelection,
         m_styleOutdated;
+
+  //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent& event);
+  //! Starts the file chooser that allows selecting where the maxima binary lies
   void OnMpBrowse(wxCommandEvent& event);
 #if defined __WXMSW__
+  //! Is called when the color button is pressed.
   void OnColorButton(wxCommandEvent& event);
 #endif
+  //! Starts the font selector dialog for the math font
   void OnMathBrowse(wxCommandEvent& event);
+  //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent& event);
+  //! A message dialog that appears if a change cannot be applied now.
   void OnChangeWarning(wxCommandEvent& event);
+  //! Called if one of the checkboxes for bold, italic or underlined is toggled
   void OnCheckbox(wxCommandEvent& event);
+  //! Reads the style settings from a file
   void ReadStyles(wxString file = wxEmptyString);
+  //! Saves the style settings to a file.
   void WriteStyles(wxString file = wxEmptyString);
-  void SetupFontList();
+  //! Sets the style example's style on style changes.
   void UpdateExample();
+  //! Called if the font family is changed.
   void OnChangeFontFamily(wxCommandEvent& event);
+  //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent& event);
-  int m_fontSize, m_mathFontSize;
+  //! The size of the text font
+  int m_fontSize;
+  //! The size of the maths font.
+  int m_mathFontSize;
+  /*! A pointer to the style that is currently selected for being edited.
+    
+    \attention Should match whatever is put in m_styleFor
+  */
   style* GetStylePointer();
+  //! A list containing the pictograms for the tabs.
   wxImageList *m_imageList;
   DECLARE_EVENT_TABLE()
 };
