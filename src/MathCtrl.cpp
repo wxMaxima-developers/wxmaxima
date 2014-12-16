@@ -2543,6 +2543,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
   return done;
 }
 
+/*! Export the file as TeX code
+ */
 bool MathCtrl::ExportToTeX(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
@@ -2883,7 +2885,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   return true;
 }
 
-/**
+/**!
  * CanEdit: we can edit the input if the we have the whole input in selection!
  */
 bool MathCtrl::CanEdit() {
@@ -2903,6 +2905,7 @@ bool MathCtrl::CanEdit() {
   return true;
 }
 
+//! Is called on double click on a cell.
 void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   if (m_activeCell != NULL) {
     m_activeCell->SelectWordUnderCaret();
@@ -3084,6 +3087,9 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   Refresh();
 }
 
+/*! Mark a editor cell as the active one
+  
+ */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (m_activeCell != NULL)
     m_activeCell->ActivateCell();
@@ -3107,7 +3113,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   }
 
   if (cell != NULL)
-    m_hCaretActive = false; // we have activeted a cell .. disable caret
+    m_hCaretActive = false; // we have activated a cell .. disable caret
 
   if (callRefresh) // = true default
     Refresh();
@@ -3420,6 +3426,7 @@ void MathCtrl::CheckUnixCopy()
 #endif
 }
 
+//! Is this cell selected?
 bool MathCtrl::IsSelected(int type) {
   if (m_selectionStart == NULL)
     return false;
@@ -3436,6 +3443,7 @@ bool MathCtrl::IsSelected(int type) {
   return true;
 }
 
+//! Starts playing the animation of a cell generated with the with_slider_* commands
 void MathCtrl::Animate(bool run) {
   if (CanAnimate()) {
     if (run) {

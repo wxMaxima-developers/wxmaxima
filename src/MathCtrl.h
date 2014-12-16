@@ -78,10 +78,16 @@ enum {
   CLICK_TYPE_OUTPUT_SELECTION
 };
 
+/*! The canvas that contains the spreadsheet the whole program is about.
+
+This canvas contains all the math, title, image etc.- cells of the current session.
+ */
 class MathCtrl: public wxScrolledCanvas
 {
 public:
+  //! The constructor
   MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
+  //! The destructor
   ~MathCtrl();
   void DestroyTree();
   void DestroyTree(MathCell* tree);
@@ -124,7 +130,8 @@ public:
   bool ExportToHTML(wxString file);
   void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
   bool ExportToMAC(wxString file);
-	bool ExportToWXMX(wxString file);	//export to xml compatible file
+  //! export to xml compatible file
+  bool ExportToWXMX(wxString file);	
   bool ExportToTeX(wxString file);
   wxString GetString(bool lb = false);
   MathCell* GetTree() { return m_tree; }

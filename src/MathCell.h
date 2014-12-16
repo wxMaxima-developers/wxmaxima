@@ -59,7 +59,8 @@ enum {
   MC_TYPE_SECTION,
   MC_TYPE_TITLE,
   MC_TYPE_IMAGE,
-  MC_TYPE_SLIDE,
+  // An animation created by the with_slider_* maxima commands
+  MC_TYPE_SLIDE,   
   MC_TYPE_GROUP
 };
 
