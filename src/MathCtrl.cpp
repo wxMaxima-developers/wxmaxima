@@ -2875,6 +2875,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
   }
 
   delete fsystem;
+  
+  if(!zip.Close())return false;
   // Now that all data is save we can overwrite the actual save file.
   if(!wxRenameFile(backupfile,file,true))
     return false;
