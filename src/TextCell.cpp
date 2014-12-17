@@ -570,8 +570,9 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L"\x2264");
   else if (m_text == wxT(">="))
     return wxString(L"\x2265");
+#ifndef __WXMSW__
   else if (m_text == wxT(" and "))
-    return wxString(L" \x22C0 ");
+    return wxT(" \x22C0 ");
   else if (m_text == wxT(" or "))
     return wxString(L" \x22C1 ");
   else if (m_text == wxT(" xor "))
@@ -588,6 +589,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L"\x00AC");
   else if (m_text == wxT("->"))
     return wxString(L"\x2192");
+#endif
  /*
   else if (m_textStyle == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
     return wxString(L"\x2202");
@@ -721,31 +723,31 @@ wxString TextCell::GetGreekStringSymbol()
 wxString TextCell::GetSymbolSymbol(bool keepPercent)
 {
   if (m_text == wxT("inf"))
-    return wxT("\xA5");
+    return "\xA5";
   else if (m_text == wxT("%pi"))
-    return wxT("\x70");
+    return "\x70";
   else if (m_text == wxT("->"))
-    return wxT("\xAE");
+    return "\xAE";
   else if (m_text == wxT(">="))
-    return wxT("\xB3");
+    return "\xB3";
   else if (m_text == wxT("<="))
-    return wxT("\xA3");
+    return "\xA3";
   else if (m_text == wxT(" and "))
-    return wxT("\xD9");
+    return "\xD9";
   else if (m_text == wxT(" or "))
-    return wxT("\xDA");
+    return "\xDA";
   else if (m_text == wxT("not"))
-    return wxT("\xD8");
+    return "\xD8";
   else if (m_text == wxT(" nand "))
-    return wxT("\xAD");
+    return "\xAD";
   else if (m_text == wxT(" nor "))
-    return wxT("\xAF");
+    return "\xAF";
   else if (m_text == wxT(" implies "))
-    return wxT("\xDE");
+    return "\xDE";
   else if (m_text == wxT(" equiv "))
-    return wxT("\xDB");
+    return "\xDB";
   else if (m_text == wxT(" xor "))
-    return wxT("\xC5");
+    return "\xC5";
 
   if (!keepPercent) {
     if (m_text == wxT("%e"))
