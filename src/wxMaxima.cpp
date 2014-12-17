@@ -3446,16 +3446,16 @@ wxT("<html>"
 "<body>"
 "<center>"
 "<p>"
-"<img src=\"%swxmaxima.png\">"
+"<img src=\"%s/wxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
 "<p><small>(C) 2004 - 2014 Andrej Vodopivec</small><br></p>"
 "</center>"
 "</body>"
 "</html>"),
-  cwd.c_str(),
+  wxT(DATADIR),
   wxT(VERSION));
-
+  
   wxString page_bottom = wxString::Format(
 wxT("<html>"
 "<head>"
@@ -3613,6 +3613,9 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     if (m_lispVersion != wxEmptyString)
       description += _("\nLisp: ") + m_lispVersion;
 
+    wxString IconName=wxT(DATADIR);
+    IconName+=wxT("/wxmaxima.png");
+    info.SetIcon(wxIcon(IconName,wxBITMAP_TYPE_PNG));
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
@@ -3661,6 +3664,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
 
     info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
+    info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
 
     wxAboutBox(info);
   }

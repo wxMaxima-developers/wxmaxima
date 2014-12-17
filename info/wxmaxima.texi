@@ -21,7 +21,6 @@
 @synindex vr fn
 @synindex cp fn
 
-@setchapternewpage odd
 @c %**end of header
 
 @include category-macros.texi
@@ -61,6 +60,10 @@ commonly used of them.
 @contents
 @node top
 @chapter Introduction to wxMaxima
+@ifnotinfo
+@image{wxMaximaLogo,4cm}
+
+@end ifnotinfo
 wxMaxima is a graphical user interface that allows to use all of
 maxima's functions providing convenient wizards for accessing the most
 commonly used of them. This manual attempts to describe the unique
@@ -83,8 +86,8 @@ is that splitting one big task into smaller parts allows to provide
 several user interfaces for the same program: A computer algebra
 system could be be the logic behind a arbitrary precision calculator
 application, it can do automatic transforms of formulas in the
-background of a bigger system (e.G. Sage
-@url{http://www.sagemath.org}) or actually used as a full-fledged
+background of a bigger system (e.G.
+@uref{http://www.sagemath.org,  Sage}) or actually used as a full-fledged
 computer algebra system (which is the case with wxMaxima).
 @subsection Maxima
 @cindex CAS
@@ -95,11 +98,15 @@ rearranging formulas and finding a formula solving the problem as
 opposed to just outputting the numeric value of the result.  
 
 @ifnotinfo
-@image{maxima,6cm}
+@image{maxima_screenshot,6cm}
 @end ifnotinfo
 
 There is extensive documentation for maxima available in the internet
-part of which can be found in wxMaxima's help menu.
+part of which can be found in wxMaxima's help menu. To make access to
+the documentation easier if the @key{Help} key is pressed (on most systems
+that would be the @key{F1} key) wxmaxima's context-sensitive help feature
+will automatically jump to maxima's manual page for the command at the
+cursor.
 @subsection wxMaxima
 wxMaxima is a graphical user interface that provides the full
 functionality and flexibility of maxima providing the user with a
@@ -115,13 +122,17 @@ or as MathML specification at a simple right-click.
 The calculations itself are done by the maxima command-line
 tool in the background.
 @section  Worksheet basics
-Most of wxMaxima should be self-explaining. One of the very few things
-that aren's standard ist that wxMaxima organizes the data for maxima in
-cells that are only evaluated (which means: sent to maxima) when the user
-request this. This approach might feel unfamiliar at the first sight. But
-it drastically eases work with big documents (where the user won't want
-every small change at the beginning automatically to trigger a full
-re-evaluation of the whole document) and is very handy for debugging.
+Most of wxMaxima should be self-explaining. Therefore this manual will
+concentrate on describing facts that won't need more time to read about
+than to be actually explored.
+@subsection The worksheet approach
+One of the very few things that aren's standard ist that wxMaxima
+organizes the data for maxima in cells that are only evaluated (which
+means: sent to maxima) when the user request this. This approach might
+feel unfamiliar at the first sight. But it drastically eases work with
+big documents (where the user won't want every small change at the
+beginning automatically to trigger a full re-evaluation of the whole
+document) and is very handy for debugging. 
 
 The cells wxMaxima automatically creates on typing some text are maxima
 input cells that will eventually be sent to maxima.
@@ -145,7 +156,48 @@ unneeded changes is rather easy.
 @ifnotinfo
 @image{NoiseFilter,12cm}
 @end ifnotinfo
+@subsection Cells
+The worksheet is organized in cells that work like very much like the
+styles word processors offer. Each cell can contain one of the following
+types of content:
+@itemize @bullet
+@item one or more lines of maxima input
+@item an image
+@item a title, section or a subsection
+@item Output of or a question from maxima 
+@item normal a text block that can for example used for explaining the meaning
+      of the math cell's contents.
+@end itemize
+By default behavior of wxMaxima if text is input is to automatically
+create a math cell. Cells of other types can be created
+using the Cell menu or using the hotkeys shown there. 
+@subsection Horizontal and vertical cursors
+While it sometimes is both desirable to allow selecting multiple cells or
+only part of a cell for export or Drag-and-Drop beginning such an action
+in the middle of one cell and ending it in the middle of another will
+most certainly lead to unexpected results.
 
+wxMaxima works around this by defining two types of cursors wxMaxima
+will switch between automatically when needed:
+@itemize @bullet
+@item A vertical cursor that is able to select any number of whole
+      cells. This cursor is activated by moving the cursor between
+      two cells or by clicking on a space between two cells.
+@item And a vertical cursor that works inside a cell. This cursor is
+      activated by moving the cursor inside a cell using the mouse
+      pointer or the cursor keys.
+@end itemize 
+As long as the cursor is inside a cell search operations will limit
+ther scope to the current cell.
+@subsection Command autocompletion
+wxMaxima contains an autocompletion feature that is triggered via the menu
+(Cell/Complete Word) or alternatively by pressing the key combination
+@key{Ctrl}+@key{k}. Besides completing the current command's name the
+autocompletion feature is able to show a template for most of the
+commands indicating the type (and meaning) of the parameters this
+program expects. To activate this feature press
+@key{Shift}+@key{Ctrl}+@key{k} or select the respective menu item
+(Cell/Show Template).
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
@@ -163,14 +215,45 @@ in. Pictures and maxima's output aren't saved along with the
 @file{.wxm} file, though.
 @subsection .wxmx
 This xml-based file format saves all text and images the work sheet
-contains. It is the preferred file format now and due to the
-compression it uses normally still results in small files.
-
+contains. It is the preferred file format now and comes in two
+flavors:
+@itemize @bullet
+@item Files saved in the version-control friendly @file{.wxmx} format
+contain all images in a standard compressed format (@file{.png}) and
+a uncompressed copy of the xml tree that contains the structure of the
+document and the text typed in by the user. Since the images are
+compressed individually and the text is saved as text a version
+control system like bazaar, subversion, git or mercurial will only
+have to save the elements of the file that actually have changed since
+the last version.
+@item Files saved in disk space-optimized @file{.wxmx} format are
+compressed as a whole. If no version control system is used this will
+save disk space:
+@itemize @bullet
+@item The portion of the file that is pure xml data tends to get
+fundamentally smaller when being compressed
+@item and after the compression recurring data like image headers
+will use up only a fraction of the space they originally did.
+@end itemize
+This comes at the cost, though, that the change of even a single line
+of text in the uncompressed version tends to completely change the
+structure of the compressed version of a file. A version control 
+system that deals with such a file will - however optimized
+it might be on handling differences between binary files -
+will therefore have to track (and to store) a much higher number of
+differences  between two file versions than necessary;
+Since most version control systems compress the data they store on the 
+server the server space occupied by the initial version of both
+@file{.wxmx} flavors should be nearly identical in size.
+@end itemize
 @chapter Extensions to maxima
 wxMaxima aims to be but a graphical user interface for maxima. In some
 cases it adds functionality to Maxima, though. These cases are
-described here:
+described here.
 @section Plotting
+Plotting (having fundamentally to do with graphics) is a place where a
+graphical user interface will have to provide some extensions to the
+original program.
 @subsection Embedding a plot into the work sheet
 Maxima normally instructs the external program gnuplot to open a
 separate window for every diagram it creates. Since many times it is
@@ -219,6 +302,44 @@ with_slider_draw(
     ),grid=true
 );
 @end example
+The same functionality for 3d plots is accessible as @code{with_slider_draw3d}.
+
+There is a second set of functions making use of the slider
+@itemize @bullet
+@item @code{wxanimate_draw} and
+@item @code{wxanimate_draw3d}:
+@end itemize
+@example
+wxanimate_draw(
+    a, 3,
+    explicit(sin(a*x), x, -4, 4),
+    title=printf(false, "a=~a", a));
+@end example
+@subsection Opening multiple plot windows contemporarily
+While not being a provided by wxmaxima this feature of maxima (on
+setups that support it) sometimes comes in handily. The following
+example comes from a post from Mario Rodriguez to the maxima mailing
+list: 
+@example
+load(draw);
+
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+
+/* Paraboloid in window #3 */
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+@end example
+@section Embedding graphics
+if the @file{.wxmx} file format is being used embedding files in a
+wxMaxima project can be done as easily as per drag-and-drop. But
+sometimes (for example if an image's contents might change lateron)
+it is better to tell the file to load the image on evaluation:
+@example
+show_image("Mann.png");
+@end example
 @section wxmaximarc
 @cindex Startup File
 If the maxima user directory there is a text file named @file{wxmaxima-init.mac}
@@ -226,11 +347,43 @@ the contents of the file is passed to maxima automatically every time
 a new worksheet has been started.
 
 To find out which directory maxima uses as the user directory just
-type in the following lines:
+type in the following line:
 @example
-%i1 maxima_userdir;
+maxima_userdir;
+@end example
+The answer from Maxima will specify the name of the directory that the
+startup file can be placed in. 
+@example
 %o1 /home/username/.maxima
 @end example
+@section Special variables
+@itemize @bullet
+@item @var{wxfilename} This variable contains the name of the file
+%currently opened in wxMaxima.
+@item @var{wxplot_pngcairo} tells if wxMaxima tries to use gnuplot's
+pngcairo terminal that provides more line styles and a better overall
+graphics quality.
+@item @var{wxplot_size} defines the size of embedded plots.
+@end itemize
+@section Pretty-printing 2D output
+The function @code{(table_form)} displays a 2D list in a form that is
+more readable than the output maxima's default output routine.
+@example
+table_form(
+    [
+        [1,2],
+        [3,4]
+    ]
+)$
+@end example
+@section Bug reporting
+wxMaxima provides a few functions that gather bug reporting
+information about the current system:
+@itemize @bullet
+@item @code{wxbuild_info()} gathers information about the currently
+running version of wxMaxima
+@item @code{wxbug_report()} tells how and where to file bugs
+@end itemize
 @chapter Troubleshooting
 @section Cannot connect to Maxima
 Since maxima (the program that does the actual mathematics) and
@@ -247,10 +400,20 @@ between two programs in the same computer isn't properly configured.
 Internally most modern xml-based formats are ordinary zip-files with
 one speciality: the first file in the archive is stored uncompressed
 and provides information about what type of program can open this
-file. If the zip signature at the end of the file is still intact
-after renaming a broken .wxmx file to .zip most operating systems will
-provide a way to extract any portion of information that is stored
-inside it.
+file.
+
+If the zip signature at the end of the file is still intact
+after renaming a broken @file{.wxmx} file to @file{.zip} most operating
+systems will provide a way to extract any portion of information that
+is stored inside it. The can be done when there is the need of
+recovering the original image files from a text processor document.
+If the zip signature isn't intact that does not need to be the end
+of the world: If wxMaxima during saving detected that something went
+wrong there will be a @file{wxmx~} file whose contents might help and
+even if there isn't such a file: If the configuration option is set
+that @file{.wxmx} files have to be optimized for version control
+it is possible to rename the @file{.wxmx} file to a @file{.txt} file
+and to use a text editor to recover the file's contents.
 @section wxMaxima waits forever for data from maxima
 This might be caused by the fact that a closing brace, bracket,
 parenthesis or hyphenation mark is missing: In this case maxima waits

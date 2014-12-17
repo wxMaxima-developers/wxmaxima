@@ -3,18 +3,13 @@ SUBDIRS = $(DE_DIR)
 info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
-figurefiles = NoiseFilter.png maxima.png InputCell.png
-figurefiles +=wxMaximaWindow.png
+figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
+figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg
 
 # install-data-local:install-html
 
-pdffigures=NoiseFilter.pdf maxima.pdf InputCell.pdf
+pdffigures=NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf wxMaximaLogo.pdf
 pdffigures+=wxMaximaWindow.pdf
-.png.ps:
-	pngtopnm $<|pnmtops -noturn >$@
-
-.ps.pdf:
-	gs -sOutputFile=$@ -sDEVICE=pdfwrite -dNOPAUSE $< -c quit 
 
 if CHM
 WXMAXIMA_CHM = wxmaxima.chm
@@ -58,6 +53,10 @@ html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html
 html_DATA+= wxmaxima_1.html wxmaxima_2.html wxmaxima_3.html wxmaxima_4.html
 html_DATA+= wxmaxima_abt.html wxmaxima_ovr.html wxmaxima_toc.html
 #dist_html_data=$(html_DATA)
+
+wxmaxima_abt.html: wxmaxima.html
+wxmaxima_ovr.html: wxmaxima.html
+wxmaxima_toc.html: wxmaxima.html
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
