@@ -3,8 +3,8 @@ SUBDIRS = $(DE_DIR)
 info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
-figurefiles = NoiseFilter.png maxima.png InputCell.png
-figurefiles +=wxMaximaWindow.png
+figurefiles = NoiseFilter.png maxima.png InputCell.png wxMaximaWindow.png
+figurefiles+= NoiseFilter.jpg maxima.jpg InputCell.jpg wxMaximaWindow.jpg
 
 # install-data-local:install-html
 
