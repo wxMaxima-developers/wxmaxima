@@ -572,7 +572,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L"\x2265");
 #ifndef __WXMSW__
   else if (m_text == wxT(" and "))
-    return wxString(" \x22C0 ");
+    return wxString(L" \x22C0 ");
   else if (m_text == wxT(" or "))
     return wxString(L" \x22C1 ");
   else if (m_text == wxT(" xor "))
