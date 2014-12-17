@@ -87,8 +87,8 @@ is that splitting one big task into smaller parts allows to provide
 several user interfaces for the same program: A computer algebra
 system could be be the logic behind a arbitrary precision calculator
 application, it can do automatic transforms of formulas in the
-background of a bigger system (e.G. Sage
-@url{http://www.sagemath.org}) or actually used as a full-fledged
+background of a bigger system (e.G.
+@uref{http://www.sagemath.org,  Sage}) or actually used as a full-fledged
 computer algebra system (which is the case with wxMaxima).
 @subsection Maxima
 @cindex CAS
@@ -103,7 +103,11 @@ opposed to just outputting the numeric value of the result.
 @end ifnotinfo
 
 There is extensive documentation for maxima available in the internet
-part of which can be found in wxMaxima's help menu.
+part of which can be found in wxMaxima's help menu. To make access to
+the documentation easier if the @key{Help} key is pressed (on most systems
+that would be the @key{F1} key) wxmaxima's context-sensitive help feature
+will automatically jump to maxima's manual page for the command at the
+cursor.
 @subsection wxMaxima
 wxMaxima is a graphical user interface that provides the full
 functionality and flexibility of maxima providing the user with a
