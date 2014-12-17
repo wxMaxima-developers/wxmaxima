@@ -21,7 +21,6 @@
 @synindex vr fn
 @synindex cp fn
 
-@setchapternewpage odd
 @c %**end of header
 
 @include category-macros.texi
@@ -126,7 +125,7 @@ tool in the background.
 Most of wxMaxima should be self-explaining. Therefore this manual will
 concentrate on describing facts that won't need more time to read about
 than to be actually explored.
-
+@subsection The worksheet approach
 One of the very few things that aren's standard ist that wxMaxima
 organizes the data for maxima in cells that are only evaluated (which
 means: sent to maxima) when the user request this. This approach might
@@ -157,7 +156,48 @@ unneeded changes is rather easy.
 @ifnotinfo
 @image{NoiseFilter,12cm}
 @end ifnotinfo
+@subsection Cells
+The worksheet is organized in cells that work like very much like the
+styles word processors offer. Each cell can contain one of the following
+types of content:
+@itemize @bullet
+@item one or more lines of maxima input
+@item an image
+@item a title, section or a subsection
+@item Output of or a question from maxima 
+@item normal a text block that can for example used for explaining the meaning
+      of the math cell's contents.
+@end itemize
+By default behavior of wxMaxima if text is input is to automatically
+create a math cell. Cells of other types can be created
+using the Cell menu or using the hotkeys shown there. 
+@subsection Horizontal and vertical cursors
+While it sometimes is both desirable to allow selecting multiple cells or
+only part of a cell for export or Drag-and-Drop beginning such an action
+in the middle of one cell and ending it in the middle of another will
+most certainly lead to unexpected results.
 
+wxMaxima works around this by defining two types of cursors wxMaxima
+will switch between automatically when needed:
+@itemize @bullet
+@item A vertical cursor that is able to select any number of whole
+      cells. This cursor is activated by moving the cursor between
+      two cells or by clicking on a space between two cells.
+@item And a vertical cursor that works inside a cell. This cursor is
+      activated by moving the cursor inside a cell using the mouse
+      pointer or the cursor keys.
+@end itemize 
+As long as the cursor is inside a cell search operations will limit
+ther scope to the current cell.
+@subsection Command autocompletion
+wxMaxima contains an autocompletion feature that is triggered via the menu
+(Cell/Complete Word) or alternatively by pressing the key combination
+@key{Ctrl}+@key{k}. Besides completing the current command's name the
+autocompletion feature is able to show a template for most of the
+commands indicating the type (and meaning) of the parameters this
+program expects. To activate this feature press
+@key{Shift}+@key{Ctrl}+@key{k} or select the respective menu item
+(Cell/Show Template).
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
