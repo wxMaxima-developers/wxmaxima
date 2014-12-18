@@ -68,6 +68,13 @@ wxMaxima.win: all
 	cp data/wxmaxima.svg wxMaxima/data
 	cp data/autocomplete.txt wxMaxima/data
 	cp data/tips*.txt wxMaxima/data
+	mkdir -p wxMaxima/help
+	cp info/*.jpg  wxMaxima/help
+if CHM
+	cp info/*.chm  wxMaxima/
+else
+	cp info/*.html wxMaxima/help
+endif
 	mkdir -p wxMaxima/art/toolbar
 	cp art/toolbar/*.png wxMaxima/art/toolbar
 	mkdir -p wxMaxima/art/config

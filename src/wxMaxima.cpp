@@ -283,6 +283,7 @@ void wxMaxima::FirstOutput(wxString s)
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
 #if defined __WXMSW__
+  // On windows and mac computers wxMaxima the data is always to be found relative to the CWD
   wxString index = wxGetCwd();
   index += wxT("\\data\\index.hhk");
 #else
@@ -291,6 +292,7 @@ void wxMaxima::FirstOutput(wxString s)
 #endif
 
 #if defined __WXMAC__
+  // On windows and mac computers the cwd of wxMaxima is the installation directory.
   m_console->LoadSymbols(wxGetCwd() + wxT("/") + wxT(MACPREFIX) + wxT("/autocomplete.txt"));
 #elif defined __WXMSW__
   m_console->LoadSymbols(wxGetCwd() + wxT("\\data\\autocomplete.txt"));
@@ -1704,16 +1706,25 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 void wxMaxima::ShowWxMaximaHelp()
 {
 #if defined __WXMAC__
+  // We are on a mac => the help folder will be in a subfolder of our cwd.
   wxString htmldir = wxString(MACPREFIX) + wxT("/help/");
   wxString helpfile = htmldir + wxT("wxmaxima.hhp");
 #else
-  wxString htmldir=wxT(HTMLDIR);
+
+#if defined __WXMSW__
+  // We are on a windows computer => the help folder will be in a subfolder of our cwd.
+    wxString htmldir=wxGetCwd() + wxT("\\help\\")
 #ifdef CHM
-  wxString helpfile=htmldir+wxT("/wxmaxima.chm");
-#else
+  wxString helpfile=htmldir+wxT("wxmaxima.chm");
+#else // CHM
+  wxString helpfile=htmldir+wxT("wxmaxima.html");
+#endif // CHM
+#else // __WXMSW__
+  // This must be Linux. On linux HTMLDIR tells us where the help files are.
+  wxString htmldir=wxT(HTMLDIR);
   wxString helpfile=htmldir+wxT("/wxmaxima.html");
-#endif
-#endif
+#endif // __WXMSW__
+#endif // __WXMAX__
   ShowHelp(helpfile, wxT("%"));
 }
 
