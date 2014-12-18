@@ -53,6 +53,12 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources/config
 	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
 	cp art/config/*.png wxMaxima.app/Contents/Resources/config
+	mkdir -p wxMaxima.app/Contents/Resources/help
+	cp info/*.html wxMaxima.app/Contents/Resources/help
+	cp info/*.jpg  wxMaxima.app/Contents/Resources/help
+	cp info/index.hhk wxMaxima.app/Contents/Resources/help
+	cp info/contents.hhc wxMaxima.app/Contents/Resources/help
+	cp info/header.hhp wxMaxima.app/Contents/Resources/help
 
 wxMaxima.win: all
 	mkdir -p wxMaxima/art

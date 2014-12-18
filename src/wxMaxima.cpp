@@ -1691,9 +1691,9 @@ wxString wxMaxima::GetHelpFile()
 void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 {
   if (m_helpFile != helpfile)
-    {
-      m_helpCtrl.Initialize(helpfile);
-    }
+  {
+    m_helpCtrl.Initialize(helpfile);
+  }
   
   if (keyword == wxT("%"))
     m_helpCtrl.DisplayContents();
@@ -1703,27 +1703,32 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
+#if defined __WXMAC__
+  wxString htmldir = wxString(MACPREFIX) + wxT("/help/");
+  wxString helpfile = htmldir + wxT("header.hhp");
+#else
   wxString htmldir=wxT(HTMLDIR);
-  #ifdef CHM
+#ifdef CHM
   wxString helpfile=htmldir+wxT("/wxmaxima.chm");
-  #else
+#else
   wxString helpfile=htmldir+wxT("/wxmaxima.html");
-  #endif
-  ShowHelp(helpfile,wxT("%"));
+#endif
+#endif
+  ShowHelp(helpfile, wxT("%"));
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
   wxLogNull disableWarnings;
   wxString MaximaHelpFile=GetHelpFile();
-    if (MaximaHelpFile.Length() == 0)
-    {
-      wxMessageBox(_("wxMaxima could not find help files."
-                     "\n\nPlease check your installation."),
-                   _("Error"), wxICON_ERROR | wxOK);
-      return ;
-    }
-    ShowHelp(MaximaHelpFile,keyword);
+  if (MaximaHelpFile.Length() == 0)
+  {
+    wxMessageBox(_("wxMaxima could not find help files."
+                   "\n\nPlease check your installation."),
+                 _("Error"), wxICON_ERROR | wxOK);
+    return ;
+  }
+  ShowHelp(MaximaHelpFile,keyword);
 }
 
 ///--------------------------------------------------------------------------------
