@@ -58,7 +58,7 @@ wxMaxima.app: all
 	cp info/*.jpg  wxMaxima.app/Contents/Resources/help
 	cp info/index.hhk wxMaxima.app/Contents/Resources/help
 	cp info/contents.hhc wxMaxima.app/Contents/Resources/help
-	cp info/header.hhp wxMaxima.app/Contents/Resources/help
+	cp info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
 
 wxMaxima.win: all
 	mkdir -p wxMaxima/art

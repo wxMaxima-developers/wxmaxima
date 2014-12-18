@@ -1705,7 +1705,7 @@ void wxMaxima::ShowWxMaximaHelp()
 {
 #if defined __WXMAC__
   wxString htmldir = wxString(MACPREFIX) + wxT("/help/");
-  wxString helpfile = htmldir + wxT("header.hhp");
+  wxString helpfile = htmldir + wxT("wxmaxima.hhp");
 #else
   wxString htmldir=wxT(HTMLDIR);
 #ifdef CHM
