@@ -3458,7 +3458,7 @@ wxT("<html>"
 "</center>"
 "</body>"
 "</html>"),
-  wxT(DATADIR),
+  cwd,
   wxT(VERSION));
   
   wxString page_bottom = wxString::Format(
@@ -3618,8 +3618,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     if (m_lispVersion != wxEmptyString)
       description += _("\nLisp: ") + m_lispVersion;
 
-    wxString IconName=wxT(DATADIR);
-    IconName+=wxT("/wxmaxima.png");
+    wxString IconName = wxT(DATADIR);
+    IconName += wxT("/wxmaxima.png");
     info.SetIcon(wxIcon(IconName,wxBITMAP_TYPE_PNG));
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
