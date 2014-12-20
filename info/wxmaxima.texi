@@ -418,8 +418,41 @@ and to use a text editor to recover the file's contents.
 This might be caused by the fact that a closing brace, bracket,
 parenthesis or hyphenation mark is missing: In this case maxima waits
 until it gets the rest of its input. If that isn't the case the
-operating system normally provides a way to see, if maxima is really
-working forever trying to solve the current problem.
+operating system normally provides a way to see if maxima is actually
+really working forever trying to solve the current problem.
+@section Outputting animations doesn't work
+wxMaxima relies on a third-party tool
+(@uref{http://www.imagemagick.org/, ImageMagick}) to convert
+animations to the animated gif format. This will obviously only work
+if this package is installed and known to the system (on windows the path
+to ImageMagick's @file{convert.exe} has to be part of the @var{PATH} system
+variable to make the system find it).
+
+Another possible reason of not getting an animated gif is that this
+image would exceed the format's (or ImageMagick's) capabilities:
+@itemize @bullet
+@item @file{.gif} files only allow for a maximum of 256 frames
+@item @file{.gif} files can not exceed 65535x65535 pixels
+@item ImageMagick has to have access to enough memory to hold all frames in
+      their uncompressed form.
+@end itemize
+@section Plotting only shows an closed empty envelope with an error message
+This means that wxMaxima was unable to read the file maxima was supposed
+to instruct gnuplot to create.
+
+Possible reasons that might cause this are:
+@itemize @bullet
+@item The plotting command is part of a third-party package like
+      @code{implicit_plot} but this package wasn't loaded by maxima's
+      @code{load()} command before trying to plot.
+@item maxima tried to do something the currently installed version of
+      gnuplot isn't able to understand. In this case the file
+      @file{maxout.gnuplot} in the directory maxima's variable
+      @var{maxima_userdir} points to contains the instructions from
+      maxima to gnuplot. Most of the time this file's contents therefore is
+      helpful when debugging the problem.
+@item Gnuplot didn't output a valid @file{.png} file.
+@end itemize
 @section I lost a cell contents and undo doesn't remember
 If you still have a way to find out what label maxima has assigned
 to the cell just type in the cell's label and it's contents will
@@ -427,4 +460,9 @@ reappear. If you don't: Don't panic. Maxima contains a replay feature:
 @example
 %i1 playback();
 @end example
+@section wxMaxima starts up with the message ``Maxima process Terminated.''
+On possible reason is that maxima cannot be found in the location that is
+set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
+won't run at all. Setting the path to a working maxima binary should
+fix this problem.
 @bye
