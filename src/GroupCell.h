@@ -37,10 +37,18 @@ enum
   GC_TYPE_PAGEBREAK
 };
 
-/*! A compound cell grouping prompt,input,  label and output
+/*! A cell grouping a foldable item
 
-All components other than the input are obviously only displayed only 
-if they actually exist.
+Foldable items include
+ - sections
+ - chapters
+ - The prompt (if maxima outputs one) with the input cell, the output label maxima might 
+   generate and the output cell (if there is any output)
+ - A combination of image and title
+ - A combination of image and input cell
+
+ This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree.
+
  */
 class GroupCell: public MathCell
 {
