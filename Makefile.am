@@ -1,9 +1,5 @@
 SUBDIRS = src locales data info
 
-if USE_DOXYGEN
-SUBDIRS += Doxygen
-endif
-
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/readme.txt art/license.txt                  \
              art/toolbar/configure.png art/toolbar/cut.png   \

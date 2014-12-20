@@ -19,6 +19,11 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+/*\file
+
+The C code for the preferences dialog.
+*/
+
 #include "Config.h"
 #include "MathCell.h"
 

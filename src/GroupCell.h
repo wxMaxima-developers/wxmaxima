@@ -37,6 +37,19 @@ enum
   GC_TYPE_PAGEBREAK
 };
 
+/*! A cell grouping a foldable item
+
+Foldable items include
+ - sections
+ - chapters
+ - The prompt (if maxima outputs one) with the input cell, the output label maxima might 
+   generate and the output cell (if there is any output)
+ - A combination of image and title
+ - A combination of image and input cell
+
+ This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree.
+
+ */
 class GroupCell: public MathCell
 {
 public:
