@@ -1709,22 +1709,21 @@ void wxMaxima::ShowWxMaximaHelp()
   // We are on a mac => the help folder will be in a subfolder of our cwd.
   wxString htmldir = wxString(MACPREFIX) + wxT("/help/");
   wxString helpfile = htmldir + wxT("wxmaxima.hhp");
-#else
-
-#if defined __WXMSW__
+#elif defined __WXMSW__
   // We are on a windows computer => the help folder will be in a subfolder of our cwd.
-    wxString htmldir=wxGetCwd() + wxT("\\help\\")
-#ifdef CHM
-  wxString helpfile=htmldir+wxT("wxmaxima.chm");
-#else // CHM
-  wxString helpfile=htmldir+wxT("wxmaxima.html");
-#endif // CHM
+  wxString htmldir = wxGetCwd() + wxT("\\help\\");
+#if WXM_CHM
+  wxString helpfile = htmldir + wxT("wxmaxima.chm");
+#else
+  // TODO: this will not work - the help viewer on
+  //       windows expects a chm file.
+  wxString helpfile = htmldir + wxT("wxmaxima.html");
+#endif
 #else // __WXMSW__
   // This must be Linux. On linux HTMLDIR tells us where the help files are.
-  wxString htmldir=wxT(HTMLDIR);
-  wxString helpfile=htmldir+wxT("/wxmaxima.html");
-#endif // __WXMSW__
-#endif // __WXMAX__
+  wxString htmldir = wxT(PREFIX) + wxT("/share/doc/wxMaxima");
+  wxString helpfile = htmldir + wxT("/wxmaxima.html");
+#endif
   ShowHelp(helpfile, wxT("%"));
 }
 
@@ -3629,8 +3628,8 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     if (m_lispVersion != wxEmptyString)
       description += _("\nLisp: ") + m_lispVersion;
 
-    wxString IconName = wxT(DATADIR);
-    IconName += wxT("/wxmaxima.png");
+    wxString iconName = wxT(PREFIX);
+    iconName += wxT("/share/wxMaxima/wxmaxima.png");
     info.SetIcon(wxIcon(IconName,wxBITMAP_TYPE_PNG));
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));

@@ -1,4 +1,4 @@
-AM_CXXFLAGS = -DPREFIX=\"$(prefix)\" -DHTMLDIR=\"$(htmldir)\" -DDATADIR=\"${datadir}/wxMaxima\"
+AM_CXXFLAGS = -DPREFIX=\"$(prefix)\"
 
 if CHM
 AM_CXXFLAGS += -DCHM=true

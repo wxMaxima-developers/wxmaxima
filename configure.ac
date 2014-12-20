@@ -173,9 +173,40 @@ AC_ARG_ENABLE(chm,
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-chm) ;;
    esac],
    [chm=false])
-AM_CONDITIONAL(CHM, test x$chm = xtrue)
 dnl hhc is the HTML Help Compiler for CHM documentation
 hhc_default_name=hhc$EXEEXT
+AC_ARG_WITH(hhc,
+	[  --with-hhc=<prog>            Use HTML Help Compiler executable <prog> (default hhc)],
+	[chm=true
+	if test "$withval" = "yes"; then
+		HHC="${hhc_default_name}"
+	else
+		HHC="$withval"
+	fi],
+	[HHC="${hhc_default_name}"])
+
+# Check that hhc exists, using AC_CHECK_PROG
+if test x$chm = xtrue; then
+  if test -x "${HHC}"; then
+    # HHC was a path to the executable, and it existed, which is
+    # great! We still say something to the caller, since this is
+    # probably less confusing.
+    AC_MSG_CHECKING([for hhc])
+    AC_MSG_RESULT([yes])
+  else
+    AC_CHECK_PROG(hhc_found, ${HHC}, yes)
+    if test x"${hhc_found}" != x"yes"; then
+      AC_MSG_ERROR([HTML Help Compiler executable ${HHC} not found])
+    fi
+  fi
+fi
+AM_CONDITIONAL(CHM, test x$chm = xtrue)
+if test x"${chm}" = x"true" ; then
+   AC_DEFINE([WXM_CHM], [1], ["Using chm help"])
+else
+   AC_DEFINE([WXM_CHM], [0], ["Not using chm help"])
+fi
+
 
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
@@ -184,6 +215,7 @@ AC_SUBST(CATALOGS_TO_INSTALL)
 AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
+AC_SUBST(HHC)
 
 dnl Doxygen creates html code documentation from the comments in the code
 AC_CHECK_PROG(HAVE_DOXYGEN,doxygen,yes,no)
@@ -197,7 +229,6 @@ AM_CONDITIONAL(USE_GRAPHVIZ, test x$HAVE_GRAPHVIZ = xyes)
 
 dnl These directory names are needed in order to find wxMaxima's own html documentation.
 AC_SUBST(DESTDIR)
-AC_SUBST(htmldir)
 
 AC_CONFIG_FILES([
         Makefile
