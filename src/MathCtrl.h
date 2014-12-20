@@ -127,8 +127,11 @@ public:
   bool CopyToFile(wxString file);
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
   void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int>& cellMap);
+  //! Export the file to an html document
   bool ExportToHTML(wxString file);
+  //! Export a region of the  file to a text file maxima's load command can read
   void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
+  //! Export the file to a text file maxima's load command can read
   bool ExportToMAC(wxString file);
   //! export to xml compatible file
   bool ExportToWXMX(wxString file);	

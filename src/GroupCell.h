@@ -37,6 +37,11 @@ enum
   GC_TYPE_PAGEBREAK
 };
 
+/*! A compound cell grouping prompt,input,  label and output
+
+All components other than the input are obviously only displayed only 
+if they actually exist.
+ */
 class GroupCell: public MathCell
 {
 public:

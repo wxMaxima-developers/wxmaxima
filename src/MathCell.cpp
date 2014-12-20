@@ -45,7 +45,7 @@ MathCell::MathCell()
 }
 
 /***
- * Derived classes must test if m_next if not NULL end delete it!!!
+ * Derived classes must test if m_next equals NULL if it doesn't delete it!!!
  */
 MathCell::~MathCell()
 {}
@@ -487,7 +487,7 @@ void MathCell::UnsetPen(CellParser& parser)
 }
 
 /***
- * Copy all importatn data from s to t
+ * Copy all important data from s to t
  */
 void MathCell::CopyData(MathCell* s, MathCell* t)
 {

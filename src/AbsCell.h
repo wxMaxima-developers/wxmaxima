@@ -22,6 +22,14 @@
 
 #include "MathCell.h"
 
+/*! \file
+
+  This file defines the class for the cell type that represents an abs(x) block.
+ */
+
+/*! A cell that represents an abs(x) block
+
+ */
 class AbsCell : public MathCell
 {
 public:

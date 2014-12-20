@@ -64,6 +64,18 @@ enum {
   MC_TYPE_GROUP
 };
 
+/*!
+  The base class all cell types are derived from
+
+  Besides the cell types that are directly user visible there are cells for several
+  kinds of items that are displayed in a special way like abs() statements (displayed
+  as horizontal rules), subscripts, superscripts and exponents.
+  Another important cell type derived from the class is be the group cell that 
+  groups the maxima input with the output, the input prompt and the output label.
+
+  \attention Derived classes must test if m_next equals NULL and if it doesn't
+  they have to delete() it.
+ */
 class MathCell
 {
 public:
