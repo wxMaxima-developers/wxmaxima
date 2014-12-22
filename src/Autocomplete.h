@@ -20,7 +20,7 @@
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/arrstr.h>
 #include <wx/regex.h>
 

@@ -132,17 +132,13 @@ protected:
   void EditInputMenu(wxCommandEvent& event);       //
   void EvaluateEvent(wxCommandEvent& event);       //
   void InsertMenu(wxCommandEvent& event);          //
+  void PrintMenu(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
   void HistoryDClick(wxCommandEvent& event);
   void OnInspectorEvent(wxCommandEvent& ev);
   void DumpProcessOutput();
   void TryEvaluateNextInQueue();
   void TryUpdateInspector();
-
-#if WXM_PRINT
-  void CheckForPrintingSupport();
-  void PrintMenu(wxCommandEvent& event);
-#endif
 
   wxString ExtractFirstExpression(wxString entry);
   wxString GetDefaultEntry();
@@ -197,9 +193,6 @@ protected:
   wxString m_lastPath;
   MathParser m_MParser;
   wxPrintData* m_printData;
-#if WXM_PRINT
-  bool m_supportPrinting;
-#endif
   bool m_closing;
   wxString m_openFile;
   wxString m_currentFile;

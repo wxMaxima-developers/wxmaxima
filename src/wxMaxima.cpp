@@ -65,13 +65,6 @@
 #include <wx/sstream.h>
 
 #if defined __WXMAC__
- #if !wxCHECK_VERSION(2,9,0)
-  #include <wx/mac/private.h>
-  #include <Carbon/Carbon.h>
- #elif defined __WXOSX_CARBON__
-  #include <wx/osx/carbon/private.h>
-  #include <Carbon/Carbon.h>
- #endif
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
@@ -88,8 +81,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_inLispMode = false;
   m_first = true;
   m_isRunning = false;
-  m_promptSuffix = wxT("<PROMPT-S/>");
-  m_promptPrefix = wxT("<PROMPT-P/>");
+  m_promptSuffix = "<PROMPT-S/>";
+  m_promptPrefix = "<PROMPT-P/>";
 
   m_firstPrompt = wxT("(%i1) ");
 
@@ -98,12 +91,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   wxConfig::Get()->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
-
-#if WXM_PRINT
-  CheckForPrintingSupport();
-  m_printData = new wxPrintData;
-  m_printData->SetQuality(wxPRINT_QUALITY_HIGH);
-#endif
 
   m_closing = false;
   m_openFile = wxEmptyString;
@@ -146,9 +133,7 @@ wxMaxima::~wxMaxima()
   if (m_client != NULL)
     m_client->Destroy();
 
-#if WXM_PRINT
   delete m_printData;
-#endif
 }
 
 
@@ -205,42 +190,6 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
 ///--------------------------------------------------------------------------------
 ///  Startup
 ///--------------------------------------------------------------------------------
-
-#if WXM_PRINT
-
-void wxMaxima::CheckForPrintingSupport()
-{
-#if defined __WXMSW__
-  m_supportPrinting = true;
-#elif defined __WXMAC__
-  m_supportPrinting = true;
-#elif defined __WXGTK__
- #if wxCHECK_VERSION(2,9,0)
-  m_supportPrinting = true;
- #elif defined wxUSE_LIBGNOMEPRINT
-  #if wxUSE_LIBGNOMEPRINT
-  wxLogNull log;
-  wxDynamicLibrary* m_gnomep = new wxDynamicLibrary(wxT("libgnomeprint-2-2.so"));
-  wxDynamicLibrary* m_gnomepui = new wxDynamicLibrary(wxT("libgnomeprintui-2-2.so"));
-  if (m_gnomep->IsLoaded() && m_gnomepui->IsLoaded())
-    m_supportPrinting = true;
-  else
-    m_supportPrinting = false;
-  delete m_gnomep;
-  delete m_gnomepui;
-  #else
-  m_supportPrinting = false;
-  #endif
- #else
-  m_supportPrinting = false;
- #endif
-#else
-  m_supportPrinting = false;
-#endif
-}
-
-#endif
-
 void wxMaxima::InitSession()
 {
   bool server = false;
@@ -718,11 +667,7 @@ bool wxMaxima::StartMaxima()
   if (command.Length() > 0)
   {
 #if defined(__WXMSW__)
- #if wxCHECK_VERSION(2, 9, 0)
     if (wxGetOsVersion() == wxOS_WINDOWS_9X)
- #else
-    if (wxGetOsVersion() == wxWIN95)
- #endif
     {
       wxString maximaPrefix = command.SubString(1, command.Length() - 3);
       wxString sysPath;
@@ -1137,11 +1082,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
 
   // read document version and complain
-#if wxCHECK_VERSION(2,9,0)
   wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
-#else
-  wxString docversion = xmldoc.GetRoot()->GetPropVal(wxT("version"),wxT("1.0"));
-#endif
   double version = 1.0;
   if (docversion.ToDouble(&version)) {
     int version_major = int(version);
@@ -1166,14 +1107,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
 
   // read zoom factor
-#if wxCHECK_VERSION(2,9,0)
   wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"),wxT("100"));
-#else
-  wxString doczoom = xmldoc.GetRoot()->GetPropVal(wxT("zoom"),wxT("100"));
-#endif
-
   wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
-
   GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
 
   // from here on code is identical for wxm and wxmx
@@ -1543,9 +1478,9 @@ wxString wxMaxima::GetCommand(bool params)
   if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
   {
 #if defined (__WXMAC__)
-    if (wxFileExists(wxT("/Applications/Maxima.app")))
+    if (wxFileExists("/Applications/Maxima.app"))
       command = wxT("/Applications/Maxima.app");
-    else if (wxFileExists(wxT("/usr/local/bin")))
+    else if (wxFileExists("/usr/local/bin/maxima"))
       command = wxT("/usr/local/bin/maxima");
     else
       command = wxT("maxima");
@@ -1801,12 +1736,8 @@ void wxMaxima::DumpProcessOutput()
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
-#if WXM_PRINT
-
 void wxMaxima::PrintMenu(wxCommandEvent& event)
 {
-  if (!m_supportPrinting)
-    return ;
   switch (event.GetId())
   {
   case wxID_PRINT:
@@ -1846,8 +1777,6 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   }
 }
 
-#endif
-
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 {
   wxMenuBar* menubar = GetMenuBar();
@@ -1865,10 +1794,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
   menubar->Enable(menu_interrupt_id, m_pid>0);
-//  if (m_console->GetSelectionStart() != NULL)
-//    menubar->Enable(menu_evaluate, m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP);
-//  else
-//    menubar->Enable(menu_evaluate, m_console->GetActiveCell() != NULL);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
@@ -1884,12 +1809,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Check(menu_show_toolbar, false);
 #endif
 
-#if WXM_PRINT
-  if (m_console->GetTree() != NULL && m_supportPrinting)
+  if (m_console->GetTree() != NULL)
     menubar->Enable(wxID_PRINT, true);
   else
     menubar->Enable(wxID_PRINT, false);
-#endif
   double zf = m_console->GetZoomFactor();
   if (zf < 3.0)
     menubar->Enable(menu_zoom_in, true);
@@ -1914,12 +1837,10 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     toolbar->EnableTool(tb_interrupt, true);
   else
     toolbar->EnableTool(tb_interrupt, false);
-#if WXM_PRINT
-  if (m_console->GetTree() != NULL && m_supportPrinting)
+  if (m_console->GetTree() != NULL)
     toolbar->EnableTool(tb_print, true);
   else
     toolbar->EnableTool(tb_print, false);
-#endif
   if (m_console->CanAnimate() && !m_console->AnimationRunning())
     toolbar->EnableTool(tb_animation_start, true);
   else
@@ -4620,25 +4541,6 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   connection.Close();
 }
 
-#if !wxCHECK_VERSION(2,9,0)
-int change_return_code(int code)
-{
-  if (code == wxOK)
-    return wxID_OK;
-  else if (code == wxYES)
-    return wxID_YES;
-  else if (code == wxNO)
-    return wxID_NO;
-  else
-    return wxID_CANCEL;
-}
-#else
-int change_return_code(int code)
-{
-  return code;
-}
-#endif
-
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
@@ -4648,7 +4550,7 @@ int wxMaxima::SaveDocumentP()
     bool save = true;
     wxConfig::Get()->Read(wxT("saveUntitled"), &save);
     if (!save)
-      return change_return_code(wxNO);
+      return wxID_NO;
 
 #if defined __WXMAC__
     file = GetTitle();
@@ -4662,30 +4564,15 @@ int wxMaxima::SaveDocumentP()
     file += wxT(".") + ext;
   }
 
-#if wxCHECK_VERSION(2,9,0)
   wxMessageDialog dialog(this,
-       _("Do you want to save the changes you made in the document \"") +
-       file + wxT("\"?"),
+                         _("Do you want to save the changes you made in the document \"") +
+                         file + wxT("\"?"),
 			 wxEmptyString, wxCENTER | wxYES_NO | wxCANCEL);
 
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
   dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
 
   return dialog.ShowModal();
-#else
-#if defined __WXMAC__
-  return change_return_code(
-	   wxMessageBox(_("Your changes will be lost if you don't save them."),
-			_("Do you want to save the changes you made in the document \"") +
-			file + wxT("\"?"),
-			wxYES_NO|wxCANCEL));
-#else
-  return change_return_code(
-           wxMessageBox(_("Save changes before closing?"),
-			_("Save changes?"),
-			wxYES_NO|wxCANCEL));
-#endif
-#endif
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
@@ -4856,11 +4743,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
   EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
-#if WXM_PRINT
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
- #if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
+#if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
   EVT_TOOL(tb_print, wxMaxima::PrintMenu)
- #endif
 #endif
   EVT_MENU(menu_zoom_in,  wxMaxima::EditMenu)
   EVT_MENU(menu_zoom_out, wxMaxima::EditMenu)

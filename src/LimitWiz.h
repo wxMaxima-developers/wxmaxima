@@ -20,7 +20,7 @@
 #ifndef LIMITWIZ_H
 #define LIMITWIZ_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"

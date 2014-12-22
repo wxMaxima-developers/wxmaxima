@@ -20,7 +20,7 @@
 #ifndef CELLPARSER_H
 #define CELLPARSER_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"

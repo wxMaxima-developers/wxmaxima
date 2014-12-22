@@ -26,7 +26,7 @@ This file contains the code for the preferences dialog. The preferences themself
 be read directly using <code> config->Read </code>, instead, where needed.
 */
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/image.h>
 
 #include <wx/propdlg.h>

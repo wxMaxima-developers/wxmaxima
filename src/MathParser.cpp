@@ -77,17 +77,9 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
   GroupCell *group = NULL;
 
   // read hide status
-#if wxCHECK_VERSION(2,9,0)
   bool hide = (node->GetAttribute(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
-#else
-  bool hide = (node->GetPropVal(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
-#endif
   // read (group)cell type
-#if wxCHECK_VERSION(2,9,0)
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
-#else
-  wxString type = node->GetPropVal(wxT("type"), wxT("text"));
-#endif
 
   if (type == wxT("code")) {
     group = new GroupCell(GC_TYPE_CODE);
@@ -175,11 +167,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
 MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
 {
   EditorCell *editor = new EditorCell();
-#if wxCHECK_VERSION(2,9,0)
   wxString type = node->GetAttribute(wxT("type"), wxT("input"));
-#else
-  wxString type = node->GetPropVal(wxT("type"), wxT("input"));
-#endif
   if (type == wxT("input"))
     editor->SetType(MC_TYPE_INPUT);
   else if (type == wxT("text"))
@@ -224,11 +212,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
     if (child)
     {
       frac->SetDenom(ParseTag(child, false));
-#if wxCHECK_VERSION(2,9,0)
       if (node->GetAttributes() != NULL)
-#else
-      if (node->GetProperties() != NULL)
-#endif
       {
         frac->SetFracStyle(FC_CHOOSE);
       }
@@ -268,11 +252,7 @@ MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
 MathCell* MathParser::ParseSupTag(wxXmlNode* node)
 {
   ExptCell *expt = new ExptCell;
-#if wxCHECK_VERSION(2,9,0)
   if (node->GetAttributes() != NULL)
-#else
-  if (node->GetProperties() != NULL)
-#endif
     expt->IsMatrix(true);
   wxXmlNode* child = node->GetChildren();
   if (child)
@@ -461,13 +441,8 @@ MathCell* MathParser::ParseParenTag(wxXmlNode* node)
   cell->SetInner(ParseTag(child, true), m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
-#if wxCHECK_VERSION(2,9,0)
   if (node->GetAttributes() != NULL)
     cell->SetPrint(false);
-#else
-  if (node->GetProperties() != NULL)
-    cell->SetPrint(false);
-#endif
   return cell;
 }
 
@@ -500,11 +475,8 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
 {
   SumCell *sum = new SumCell;
   wxXmlNode* child = node->GetChildren();
-#if wxCHECK_VERSION(2,9,0)
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
-#else
-  wxString type = node->GetPropVal(wxT("type"), wxT("sum"));
-#endif
+
   if (type == wxT("prod"))
     sum->SetSumStyle(SM_PROD);
   sum->SetHighlight(m_highlight);
@@ -535,11 +507,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   IntCell *in = new IntCell;
   wxXmlNode* child = node->GetChildren();
   in->SetHighlight(m_highlight);
-#if wxCHECK_VERSION(2,9,0)
   if (node->GetAttributes() == NULL)
-#else
-  if (node->GetProperties() == NULL)
-#endif
   {
     in->SetIntStyle(INT_DEF);
     if (child)
@@ -589,7 +557,6 @@ MathCell* MathParser::ParseTableTag(wxXmlNode* node)
   MatrCell *matrix = new MatrCell;
   matrix->SetHighlight(m_highlight);
 
-#if wxCHECK_VERSION(2,9,0)
   if (node->GetAttribute(wxT("special"), wxT("false")) == wxT("true"))
     matrix->SetSpecialFlag(true);
   if (node->GetAttribute(wxT("inference"), wxT("false")) == wxT("true"))
@@ -601,19 +568,6 @@ MathCell* MathParser::ParseTableTag(wxXmlNode* node)
     matrix->ColNames(true);
   if (node->GetAttribute(wxT("rownames"), wxT("false")) == wxT("true"))
     matrix->RowNames(true);
-#else
-  if (node->GetPropVal(wxT("special"), wxT("false")) == wxT("true"))
-    matrix->SetSpecialFlag(true);
-  if (node->GetPropVal(wxT("inference"), wxT("false")) == wxT("true"))
-  {
-    matrix->SetInferenceFlag(true);
-    matrix->SetSpecialFlag(true);
-  }
-  if (node->GetPropVal(wxT("colnames"), wxT("false")) == wxT("true"))
-    matrix->ColNames(true);
-  if (node->GetPropVal(wxT("rownames"), wxT("false")) == wxT("true"))
-    matrix->RowNames(true);
-#endif
 
   wxXmlNode* rows = node->GetChildren();
   while (rows)
@@ -867,22 +821,13 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
 
         if (m_fileSystem) // loading from zip
           tmp = new ImgCell(filename, false, m_fileSystem);
-#if wxCHECK_VERSION(2,9,0)
         else if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
-#else
-        else if (node->GetPropVal(wxT("del"), wxT("yes")) != wxT("no"))
-#endif
           tmp = new ImgCell(filename, true, NULL);
         else
           tmp = new ImgCell(filename, false, NULL);
 
-#if wxCHECK_VERSION(2,9,0)
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           tmp->DrawRectangle(false);
-#else
-        if (node->GetPropVal(wxT("rect"), wxT("true")) == wxT("false"))
-          tmp->DrawRectangle(false);
-#endif
 
         if (cell == NULL)
           cell = tmp;
@@ -966,13 +911,8 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       warning = false;
     }
 
-#if wxCHECK_VERSION(2,9,0)
     if (node->GetAttribute(wxT("altCopy"), &altCopy))
       cell->SetAltCopyText(altCopy);
-#else
-    if (node->GetPropVal(wxT("altCopy"), &altCopy))
-      cell->SetAltCopyText(altCopy);
-#endif
 
     node = node->GetNext();
   }

@@ -74,11 +74,7 @@ const int langs[] =
 Config::Config(wxWindow* parent)
 {
 #if defined __WXMAC__
-#if wxCHECK_VERSION(2,9,1)
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
-#else
-  SetSheetStyle(wxPROPSHEET_LISTBOOK | wxPROPSHEET_SHRINKTOFIT);
-#endif
 #else
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
 #endif

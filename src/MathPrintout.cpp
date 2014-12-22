@@ -20,8 +20,6 @@
 #include "MathPrintout.h"
 #include "GroupCell.h"
 
-#if WXM_PRINT
-
 #include <wx/config.h>
 
 #define PRINT_MARGIN_HORIZONTAL 5
@@ -227,29 +225,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
 }
-/*
-void MathPrintout::RecalculateSize()
-{
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
-  GroupCell* tmp = m_tree;
-  double scale = GetPPIScale();
 
-  wxDC *dc = GetDC();
-  CellParser parser(*dc, scale);
-  int marginX, marginY;
-  GetPageMargins(&marginX, &marginY);
-  marginX += SCALE_PX(MC_BASE_INDENT, scale);
-  parser.SetIndent(marginX);
-
-  while (tmp != NULL)
-  {
-    tmp->RecalculateSize(parser, fontsize, false);
-    tmp = tmp->m_next;
-  }
-}
-*/
 void MathPrintout::Recalculate()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
@@ -329,5 +305,3 @@ void MathPrintout::DestroyTree(MathCell* tmp)
     delete tmp1;
   }
 }
-
-#endif

@@ -48,7 +48,7 @@
  #define MC_MAX_SIZE 36
 #endif
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include "CellParser.h"
 #include "TextStyle.h"
 

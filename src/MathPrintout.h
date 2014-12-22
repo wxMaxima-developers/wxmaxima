@@ -22,9 +22,7 @@
 
 #include "Setup.h"
 
-#if WXM_PRINT
-
-#include <wx_inc.h>
+#include <wx/wx.h>
 #include <wx/print.h>
 
 #include <vector>
@@ -60,7 +58,5 @@ private:
   MathCell* m_tree;
   vector<MathCell*> m_pages;
 };
-
-#endif // WXM_PRINT
 
 #endif // MATHPRINTOUT_H

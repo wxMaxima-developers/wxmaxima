@@ -20,7 +20,7 @@
 #ifndef BTEXTCTRL_H
 #define BTEXTCTRL_H
 
-#include <wx_inc.h>
+#include <wx/wx.h>
 
 class BTextCtrl: public wxTextCtrl
 {
