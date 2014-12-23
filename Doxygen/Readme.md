@@ -13,11 +13,12 @@ How to get documentation for the code?
    
  - cd into the Doxygen directory of the wxMaxima sources and type:
 
- make
+        make
 
 If your system is set up for compiling code and the project has
-already been compiled on the current system this should generate
-a file named index.html that will redirect to the documentation.
+already been compiled on the current system (see the file
+[INSTALL](../../INSTALL) for details) this should generate a file
+named index.html that will redirect to the documentation.
 
 Where to start reading?
 -----------------------
