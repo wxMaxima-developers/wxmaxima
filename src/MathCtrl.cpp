@@ -46,8 +46,6 @@
 #define ANIMATION_TIMER_TIMEOUT 300
 #define AC_MENU_LENGTH 25
 
-void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
-
 enum
 {
   TIMER_ID,
@@ -2012,7 +2010,7 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
  * Export content to a HTML file.
  */
 
-void AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
+void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
   else {
