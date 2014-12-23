@@ -78,9 +78,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 {
   m_port = 4010;
   m_pid = -1;
+  m_readingPrompt=false;
   m_inLispMode = false;
   m_first = true;
   m_isRunning = false;
+  m_dispReadOut = false;
   m_promptSuffix = "<PROMPT-S/>";
   m_promptPrefix = "<PROMPT-P/>";
 
