@@ -79,6 +79,8 @@ wxMaximaFrame::~wxMaximaFrame()
 #endif
 
   m_manager.UnInit();
+  delete m_history;
+  delete m_console;
 }
 
 void wxMaximaFrame::set_properties()
