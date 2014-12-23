@@ -96,6 +96,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_openFile = wxEmptyString;
   m_currentFile = wxEmptyString;
   m_fileSaved = true;
+  m_printData=NULL;
 
   m_variablesOK = false;
 
@@ -133,7 +134,8 @@ wxMaxima::~wxMaxima()
   if (m_client != NULL)
     m_client->Destroy();
 
-  delete m_printData;
+  if (m_printData != NULL)
+    delete m_printData;
 }
 
 
