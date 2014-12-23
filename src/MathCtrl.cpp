@@ -1213,7 +1213,7 @@ bool MathCtrl::CanDeleteSelection() {
 /***
  * Delete the selection
  */
-void MathCtrl::DeleteSelection(bool deletePrompt) {
+void MathCtrl::DeleteSelection() {
   if (m_selectionStart == NULL || m_selectionEnd == NULL ||
       m_workingGroup != NULL)
     return;

@@ -109,20 +109,31 @@ public:
            (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
   void SelectAll();
+  //! Is it possible to delete the currently selected cells?
   bool CanDeleteSelection();
   bool CanAnimate() {
     return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
       m_selectionStart->GetType() == MC_TYPE_SLIDE;
   }
   void Animate(bool run);
-  void DeleteSelection(bool deletePrompt = true);
+  //! Delete the currently selected cells
+  void DeleteSelection();
   void DivideCell();
   void MergeCells();
   bool CutToClipboard();
   void PasteFromClipboard(bool primary = false);
+  /*! Copy the current selection to the clipboard
+
+    \param astext
+     - true:  Copy the current selection as text
+     - false: Copy the current selection as they would appear in a .wxm file
+   */
   bool Copy(bool astext = false);
+  //! Copy the selection to the clipboard as it would appear in a .wxm file
   bool CopyCells();
+  //! Copy the TeX representation of the current selection to the clipboard
   bool CopyTeX();
+  //! Copy a bitmap of the the current selection to the clipboard
   bool CopyBitmap();
   bool CopyToFile(wxString file);
   bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
@@ -135,7 +146,14 @@ public:
   bool ExportToMAC(wxString file);
   //! export to xml compatible file
   bool ExportToWXMX(wxString file);	
+  //! export to a LaTeX file
   bool ExportToTeX(wxString file);
+  /*! Convert the current selection to a string
+
+    \param lb
+     - true:  Include linebreaks
+     - false: Remove linebreaks from the converted string
+   */
   wxString GetString(bool lb = false);
   MathCell* GetTree() { return m_tree; }
   MathCell* GetSelectionStart() { return m_selectionStart; }
