@@ -240,7 +240,6 @@ public:
  private:
   //! Add a line to a file.
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
- protected:
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
@@ -296,6 +295,7 @@ public:
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
+ protected:
   DECLARE_EVENT_TABLE()
 };
 
