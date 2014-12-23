@@ -24,11 +24,21 @@
 #include "MathCell.h"
 
 #include <vector>
+/*! \file
 
+  This file contains the definition of the class EditorCell
+ */
+
+/*! This class provides an interface for editing cells
+
+  One of the examples what this class does is to provide an undo buffer.
+ */
 class EditorCell : public MathCell
 {
 public:
+  //! The constructor
   EditorCell();
+  //! The destructor
   ~EditorCell();
   void Destroy();
   MathCell* Copy(bool all);
@@ -46,6 +56,7 @@ public:
     return m_text;
   }
   void Reset();
+  //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
   bool ActivateCell();
   bool AddEnding();
@@ -79,6 +90,7 @@ public:
   bool FindMatchingQuotes();
   void FindMatchingParens();
   wxString GetLineString(int line, int start = 0, int end = -1);
+  //! true, if this cell's width has to be recalculated.
   bool IsDirty()
   {
     return m_isDirty;
@@ -94,20 +106,32 @@ public:
   void SetFirstLineOnly(bool show = true) {
     if (m_firstLineOnly != show) { m_width = m_height = -1; m_firstLineOnly = show; }}
   bool IsActive() { return m_isActive; }
+  //! Is the cursor at the start of this cell?
   bool CaretAtStart() { return m_positionOfCaret == 0; }
+  //! Move the cursor to the start of this cell
   void CaretToStart();
+  //! Is the cursor at the end of this cell?
   bool CaretAtEnd() { return m_positionOfCaret == (signed)m_text.Length(); }
+  //! Move the cursor to the end of this cell
   void CaretToEnd();
+  //! Move the cursor to a certain position in the cell
   void CaretToPosition(int pos);
+  //! True, if there is undo information for this cell
   bool CanUndo();
+  //! Issue an undo command
   void Undo();
+  //! True, if a redo can be done for this cell.
   bool CanRedo();
+  //! Issu a redo command
   void Redo();
+  //! Save the current contents of this cell in the undo buffer.
   void SaveValue();
   wxString DivideAtCaret();
   void CommentSelection();
   void ClearUndo();
+  //! Query if this cell needs to be re-evaluated by maxima
   bool ContainsChanges() { return m_containsChanges; }
+  //! Set the information if this cell needs to be re-evaluated by maxima
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
   int ReplaceAll(wxString oldString, wxString newString);
@@ -121,9 +145,15 @@ public:
   {
     *start = m_selectionStart; *end = m_selectionEnd;
   }
+  /*! Replace the selection with a string
+
+    \todo This function sets the bool m_containsChanges to -1. I assume this should 
+    read false instead.
+   */
   bool ReplaceSelection(wxString oldStr, wxString newString);
   wxString GetSelectionString();
   void ClearSelection();
+  //! Get the cursor's current position inside the cell.
   int GetCaretPosition() { return m_positionOfCaret; }
   bool FindNextTemplate(bool left = false);
   void InsertText(wxString text);
@@ -151,6 +181,7 @@ private:
   bool m_matchParens;
   int m_paren1, m_paren2;
   bool m_insertAns;
+  //! Does this cell's size have to be recalculated?
   bool m_isDirty;
   bool m_displayCaret;
   bool m_hasFocus;
@@ -160,6 +191,7 @@ private:
   wxString m_fontName;
   wxFontEncoding m_fontEncoding;
   bool m_saveValue;
+  //! true, if this function has changed since the last evaluation by maxima
   bool m_containsChanges;
   bool m_containsChangesCheck;
   bool m_firstLineOnly;

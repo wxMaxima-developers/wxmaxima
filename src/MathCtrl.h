@@ -178,9 +178,26 @@ public:
   GroupCell *GetHCaret();
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();
+  /*! Is it possible to issue an undo in the currently selected cell? 
+
+    \return false if no cell is selected or there is no further undo information
+   */
   bool CanUndo();
+  /*! Is it possible to issue an undo in the currently selected cell?
+
+    \return false if no cell is selected or no redo can be executed.
+   */
   bool CanRedo();
+  /*! Issue an undo in the currently selected cell
+
+    \todo Currently the deletion of cells cannot be undone: If no cell is selected 
+          there is no undo.
+   */
   void Undo();
+  /*! Issue a redo in the currently selected cell
+    
+    This command is ignored if no cell is selected.
+  */
   void Redo();
   void SaveValue();
   bool IsSaved() { return m_saved; }

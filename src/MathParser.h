@@ -17,6 +17,11 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+/*! \file
+
+The header file for the xml cell parser
+ */
+
 #ifndef MATHPARSER_H
 #define MATHPARSER_H
 
@@ -28,6 +33,11 @@
 #include "MathCell.h"
 #include "TextCell.h"
 
+/*! This class handles parsing the xml representation of a cell tree.
+
+The xml representation of a cell tree can be found in the file contents.xml 
+inside a wxmx file
+ */
 class MathParser
 {
 public:
