@@ -2702,8 +2702,6 @@ bool MathCtrl::ExportToMAC(wxString file)
   else if (!output.Create(file))
     return false;
 
-  m_saved = true;
-
   if (wxm) {
     AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
     wxString version(wxT(VERSION));
@@ -2726,7 +2724,9 @@ bool MathCtrl::ExportToMAC(wxString file)
   }
 
   bool done = output.Write(wxTextFileType_None);
-  output.Close();
+  if(!output.Close())done=false;
+
+  if(done)m_saved = true;
 
   return done;
 }
