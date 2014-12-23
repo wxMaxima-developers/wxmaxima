@@ -1664,7 +1664,7 @@ void wxMaxima::ShowWxMaximaHelp()
      Adding the strings to the variable one-by-one is ugly *and* wastes 
      ressources.
   */
-  wxString htmldir = wxT(PREFIX "/share/doc/wxMaxima");
+  wxString htmldir = wxT(PREFIX "/share/doc/wxmaxima");
   wxString helpfile = htmldir + wxT("/wxmaxima.html");
 #endif
   ShowHelp(helpfile, wxT("%"));
