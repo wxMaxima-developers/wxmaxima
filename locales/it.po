@@ -1,14 +1,14 @@
 # wxMaxima italian po translation
 # Copyright (C) 2005-2011 Marco Ciampa
 # This file is distributed under the same license as the wxMaxima package.
-# Marco Ciampa <ciampix@libero.it>, 2005-2011.
+# Marco Ciampa <ciampix@libero.it>, 2005-2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-14 11:15+0100\n"
-"PO-Revision-Date: 2011-09-10 23:03+0200\n"
+"PO-Revision-Date: 2014-12-24 07:57+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -532,9 +532,8 @@ msgid "Calculate modulus:"
 msgstr "Calcola il modulo:"
 
 #: ../src/wxMaximaFrame.cpp:650
-#, fuzzy
 msgid "Calculate numeric value of the last result"
-msgstr "Calcola il valore dell'ultimo risultato in virgola mobile"
+msgstr "Calcola il valore numeric dell'ultimo risultato"
 
 #: ../src/wxMaximaFrame.cpp:510
 msgid "Calculate products"
@@ -616,7 +615,7 @@ msgstr "Controlla se esiste una versione più recente di wxMaxima/Maxima."
 
 #: ../src/Config.cpp:249
 msgid "Chinese Simplified"
-msgstr ""
+msgstr "Cinese semplificato"
 
 #: ../src/Config.cpp:250
 msgid "Chinese traditional"
@@ -804,9 +803,8 @@ msgid "Copy Previous Input\tCtrl-I"
 msgstr "Copia l'inserimento precedente\tCtrl-I"
 
 #: ../src/wxMaximaFrame.cpp:302
-#, fuzzy
 msgid "Copy Previous Output\tCtrl-U"
-msgstr "Copia l'inserimento precedente\tCtrl-I"
+msgstr "Copia il risultato precedente\tCtrl-U"
 
 #: ../src/wxMaximaFrame.cpp:243
 msgid "Copy as Image"
@@ -842,9 +840,8 @@ msgid "Create a new cell with previous input"
 msgstr "Crea una nuova cella con i dati inseriti precedentemente"
 
 #: ../src/wxMaximaFrame.cpp:303
-#, fuzzy
 msgid "Create a new cell with previous output"
-msgstr "Crea una nuova cella con i dati inseriti precedentemente"
+msgstr "Crea una nuova cella con il risultato precedente"
 
 #: ../src/Config.cpp:384
 msgid "Cursor"
@@ -1139,14 +1136,12 @@ msgid "Evaluate &Noun Forms"
 msgstr "Elabora le forme &nominali"
 
 #: ../src/wxMaximaFrame.cpp:295
-#, fuzzy
 msgid "Evaluate All Cells\tCtrl-Shift-R"
-msgstr "Elabora tutte le celle\tCtrl-R"
+msgstr "Elabora tutte le celle\tCtrl-Maiusc-R"
 
 #: ../src/wxMaximaFrame.cpp:293
-#, fuzzy
 msgid "Evaluate All Visible Cells\tCtrl-R"
-msgstr "Elabora tutte le celle\tCtrl-R"
+msgstr "Elabora tutte le celle visibili\tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:291 ../src/MathCtrl.cpp:720
 msgid "Evaluate Cell(s)"
@@ -1162,12 +1157,11 @@ msgstr "Elabora tutte le celle nel documento"
 
 #: ../src/wxMaximaFrame.cpp:618
 msgid "Evaluate all noun forms in expression"
-msgstr "Valuta tutte le forme nominali nell'espressione"
+msgstr "Elabora tutte le forme nominali nell'espressione"
 
 #: ../src/wxMaximaFrame.cpp:294
-#, fuzzy
 msgid "Evaluate all visible cells in the document"
-msgstr "Elabora tutte le celle nel documento"
+msgstr "Elabora tutte le celle visibili nel documento"
 
 #: ../src/wxMaxima.cpp:3638
 msgid "Example"
@@ -1363,20 +1357,19 @@ msgstr "Trova..."
 #: ../src/Config.cpp:282
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
-msgstr ""
+msgstr "Aggiusta gli indici di riferimento riordinati (di %i, %o) prima di salvare"
 
 #: ../src/Config.cpp:274
 msgid "Fixed font in text controls"
 msgstr "Carattere di ampiezza fissa nei controlli di testo."
 
 #: ../src/wxMaximaFrame.cpp:324
-#, fuzzy
 msgid "Fold All\tCtrl-Alt-["
-msgstr "Seleziona tutto\tCtrl-A"
+msgstr "Ripiega tutto\tCtrl-["
 
 #: ../src/wxMaximaFrame.cpp:325
 msgid "Fold all sections"
-msgstr ""
+msgstr "Ripiega tutte le sezioni"
 
 #: ../src/Config.cpp:133
 msgid "Font used for display in document."
@@ -1448,7 +1441,7 @@ msgstr "Immagine GIF (*.gif)|*.gif"
 
 #: ../src/Config.cpp:255
 msgid "Galician"
-msgstr ""
+msgstr "Galiziano"
 
 #: ../src/wxMaximaFrame.cpp:134
 msgid "General Math"
@@ -1591,15 +1584,13 @@ msgid ""
 "If you type an operator (one of +*/^=,) as the first symbol in an input "
 "cell, % will be automatically inserted before the operator, as on a graphing "
 "calculator. You can disable this feature from the 'Edit->Configure' dialog."
-msgstr ""
+msgstr "Se si batte un operatore (uno fra +*/^=,) come primo simbolo in una cella di ingresso, % verrà automaticamente inserito prima dell'operatore, come su un calcolatore grafico. È possibile disabilitare questa caratteristica tramite la finestra di dialogo 'Modifica->Configura'."
 
 #: ../data/tips.txt:17
 msgid ""
 "If your calculation is taking too long to evaluate, you can try 'Maxima-"
 ">Interrupt' or 'Maxima->Restart Maxima' menu commands."
-msgstr ""
-"Se il calcolo dura troppo tempo, si può provare ad arrestarlo con i comandi "
-"da menu \"Maxima->Interruzione\" o \"Maxima->Riavvia Maxima\"."
+msgstr "Se l'elaborazione di calcolo dura troppo tempo, si può provare ad arrestarla con i comandi da menu \"Maxima->Interruzione\" o \"Maxima->Riavvia Maxima\"."
 
 #: ../src/wxMaximaFrame.cpp:1082
 msgid "Image"
@@ -1645,7 +1636,7 @@ msgstr "Inserisci"
 
 #: ../src/Config.cpp:281
 msgid "Insert % before an operator at the beginning of a cell"
-msgstr ""
+msgstr "Inserire % prima di un operatore all'inizio di una cella"
 
 #: ../src/wxMaximaFrame.cpp:315
 msgid "Insert &Section Cell\tCtrl-3"
@@ -1930,9 +1921,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../src/wxMaximaFrame.cpp:660
-#, fuzzy
 msgid "Maxima &Help\tCTRL+?"
-msgstr "Guida di Maxima\tF1"
+msgstr "Guida di Maxima\tCtrl+?"
 
 #: ../src/wxMaximaFrame.cpp:663
 msgid "Maxima &Help\tF1"
@@ -2319,7 +2309,7 @@ msgstr "Precisione"
 
 #: ../src/wxMaximaFrame.cpp:281
 msgid "Preferences...\tCTRL+,"
-msgstr ""
+msgstr "Preferenze...\tCTRL+,"
 
 #: ../src/wxMaximaFrame.cpp:329
 msgid "Previous Command\tAlt-Up"
@@ -2366,14 +2356,12 @@ msgid "Rectform"
 msgstr "Formanorm"
 
 #: ../src/wxMaximaFrame.cpp:227
-#, fuzzy
 msgid "Redo\tCtrl-Shift-Z"
-msgstr "Annulla\tCtrl-Z"
+msgstr "Ripeti\tCtrl-Maiusc-Z"
 
 #: ../src/wxMaximaFrame.cpp:228
-#, fuzzy
 msgid "Redo last change"
-msgstr "Annulla l'ultima modifica"
+msgstr "Ripeti l'ultima modifica"
 
 #: ../src/wxMaximaFrame.cpp:992
 msgid "Reduce (tr)"
@@ -2972,15 +2960,11 @@ msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "La porta predefinita usata per la comunicazione tra Maxima e wxMaxima."
 
 #: ../data/tips.txt:10
-#, fuzzy
 msgid ""
 "There are many resources about Maxima and wxMaxima on the internet. Visit "
 "http://andrejv.github.com/wxmaxima/help.html for more information and to "
 "find tutorials on using wxMaxima and Maxima."
-msgstr ""
-"Ci sono molte risorse su Maxima e wxMaxima su Internet. Visitare http://"
-"wxmaxima.sourceforge.net/wiki/index.php/Tutorials per ottenere ulteriori "
-"informazioni sull'uso di wxMaxima e Maxima."
+msgstr "Ci sono molte risorse su Maxima e wxMaxima su Internet. Visitare http://andrejv.github.com/wxmaxima/help.html per ottenere ulteriori informazioni e per trovare tutorial sull'uso di wxMaxima e Maxima."
 
 #: ../src/SlideShowCell.cpp:289
 msgid ""
@@ -3048,7 +3032,7 @@ msgstr "In virgola mobile"
 
 #: ../src/wxMaximaFrame.cpp:649
 msgid "To Numeri&c\tCTRL+SHIFT+N"
-msgstr ""
+msgstr "In forma numeri&ca\tCtrl+Maiusc+N"
 
 #: ../data/tips.txt:18
 msgid ""
@@ -3160,13 +3144,12 @@ msgid "Undo last change"
 msgstr "Annulla l'ultima modifica"
 
 #: ../src/wxMaximaFrame.cpp:326
-#, fuzzy
 msgid "Unfold All\tCtrl-Alt-]"
-msgstr "Seleziona tutto\tCtrl-A"
+msgstr "Spiega tutto\tCtrl-Alt-]"
 
 #: ../src/wxMaximaFrame.cpp:327
 msgid "Unfold all folded sections"
-msgstr ""
+msgstr "Spiega tutte le sezioni ripiegate"
 
 #: ../src/wxMaxima.cpp:3488
 msgid "Unicode Support"
