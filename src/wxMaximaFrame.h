@@ -278,6 +278,8 @@ enum {
 #define FIRST_PANE menu_pane_hideall
 #define LAST_PANE  menu_pane_stats
 
+/*! The frame containing the menu
+ */
 class wxMaximaFrame: public wxFrame
 {
 public:
@@ -286,6 +288,7 @@ public:
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
   ~wxMaximaFrame();
+  //! Update the recent documents list
   void UpdateRecentDocuments();
   void AddRecentDocument(wxString file);
   void RemoveRecentDocument(wxString file);
@@ -295,6 +298,35 @@ public:
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
   void ShowToolBar(bool show);
 private:
+  //! The file menu.
+  wxMenu *FileMenu; 
+  //! The edit menu.
+  wxMenu *EditMenu; 
+  //! The zoom submenu
+  wxMenu *edit_zoom_sub;
+  //! The panes submenu
+  wxMenu *edit_panes_sub;
+  //! The equations menu.
+  wxMenu *EquationsMenu; 
+  //! The algebra menu.
+  wxMenu *AlgebraMenu;
+  //! The simplify menu
+  wxMenu *SimplifyMenu;
+  //! The factorials and gamma submenu
+  wxMenu *Simplify_Gamma_Sub;
+  //! The trigonometric submenu
+  wxMenu *Simplify_Trig_Sub;
+  //! The complex submenu
+  wxMenu *Simplify_Complex_Sub;
+  //! The calculus menu
+  wxMenu *CalculusMenu;
+  //! The plot menu
+  wxMenu *PlotMenu;
+  //! The numeric menu
+  wxMenu *NumericMenu;
+  //! The help menu
+  wxMenu *HelpMenu;
+  
   void set_properties();
   void do_layout();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

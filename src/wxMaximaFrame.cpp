@@ -32,6 +32,22 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              long style):
     wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  // Mark the menus as "still unallocated".
+  FileMenu=NULL;
+  EditMenu=NULL;
+  edit_zoom_sub=NULL;
+  edit_panes_sub=NULL;
+  EquationsMenu=NULL;
+  AlgebraMenu=NULL;
+  SimplifyMenu=NULL;
+  Simplify_Gamma_Sub=NULL;
+  Simplify_Trig_Sub=NULL;
+  Simplify_Complex_Sub=NULL;
+  CalculusMenu=NULL;
+  PlotMenu=NULL;
+  NumericMenu=NULL;
+  HelpMenu=NULL;
+  
   m_manager.SetManagedWindow(this);
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
@@ -69,6 +85,21 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
 wxMaximaFrame::~wxMaximaFrame()
 {
+  if(FileMenu)delete FileMenu;
+  if(EditMenu)delete EditMenu;
+  if(edit_zoom_sub)delete edit_zoom_sub;
+  if(edit_panes_sub)delete edit_panes_sub;
+  if(EquationsMenu)delete EquationsMenu;
+  if(AlgebraMenu)delete AlgebraMenu;
+  if(SimplifyMenu)delete SimplifyMenu;
+  if(Simplify_Gamma_Sub)delete Simplify_Gamma_Sub;
+  if(Simplify_Trig_Sub)delete Simplify_Trig_Sub;
+  if(Simplify_Complex_Sub)delete Simplify_Complex_Sub;
+  if(CalculusMenu)delete CalculusMenu;
+  if(PlotMenu)delete PlotMenu;
+  if(NumericMenu)delete NumericMenu;
+  if(HelpMenu)delete HelpMenu;
+  
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
@@ -183,88 +214,87 @@ void wxMaximaFrame::SetupMenu()
 #endif
 
   // File menu
-  wxMenu* wxglade_tmp_menu_1 = new wxMenu;
+  FileMenu = new wxMenu;
 #if defined __WXMAC__
-  wxglade_tmp_menu_1->Append(mac_newId, _("New\tCtrl-N"),
+  FileMenu->Append(mac_newId, _("New\tCtrl-N"),
 			     _("Open a new window"));
 #else
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_new_id, _("New\tCtrl-N"),
+  APPEND_MENU_ITEM(FileMenu, menu_new_id, _("New\tCtrl-N"),
 		   _("Open a new window"), wxT("gtk-new"));
 #endif
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_open_id, _("&Open...\tCtrl-O"),
+  APPEND_MENU_ITEM(FileMenu, menu_open_id, _("&Open...\tCtrl-O"),
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
-  wxglade_tmp_menu_1->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
+  FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
 #if defined __WXMAC__
-  wxglade_tmp_menu_1->AppendSeparator();
-  wxglade_tmp_menu_1->Append(mac_closeId, _("Close\tCtrl-W"),
+  FileMenu->AppendSeparator();
+  FileMenu->Append(mac_closeId, _("Close\tCtrl-W"),
            _("Close window"), wxITEM_NORMAL);
 #endif
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_id, _("&Save\tCtrl-S"),
+  APPEND_MENU_ITEM(FileMenu, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
+  APPEND_MENU_ITEM(FileMenu, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
 		   _("Save document as"), wxT("gtk-save"));
-  wxglade_tmp_menu_1->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
+  FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
                              _("Load a Maxima package file"), wxITEM_NORMAL);
-  wxglade_tmp_menu_1->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
+  FileMenu->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
-  wxglade_tmp_menu_1->Append(menu_export_html, _("&Export..."),
+  FileMenu->Append(menu_export_html, _("&Export..."),
                    _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
-  wxglade_tmp_menu_1->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_PRINT, _("&Print...\tCtrl-P"),
+  FileMenu->AppendSeparator();
+  APPEND_MENU_ITEM(FileMenu, wxID_PRINT, _("&Print...\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
 
-  wxglade_tmp_menu_1->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_1, wxID_EXIT, _("E&xit\tCtrl-Q"),
+  FileMenu->AppendSeparator();
+  APPEND_MENU_ITEM(FileMenu, wxID_EXIT, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
-  frame_1_menubar->Append(wxglade_tmp_menu_1, _("&File"));
+  frame_1_menubar->Append(FileMenu, _("&File"));
 
-  // Edit menu
-  wxMenu* wxglade_tmp_menu_2 = new wxMenu;
-  wxglade_tmp_menu_2->Append(menu_undo, _("Undo\tCtrl-Z"),
+  EditMenu = new wxMenu;
+  EditMenu->Append(menu_undo, _("Undo\tCtrl-Z"),
                              _("Undo last change"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
+  EditMenu->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
                              _("Redo last change"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_cut, _("Cut\tCtrl-X"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_cut, _("Cut\tCtrl-X"),
                              _("Cut selection"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_copy_from_console, _("&Copy\tCtrl-C"),
+  APPEND_MENU_ITEM(EditMenu, menu_copy_from_console, _("&Copy\tCtrl-C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  wxglade_tmp_menu_2->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl-Shift-C"),
+  EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl-Shift-C"),
                              _("Copy selection from document as text"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
+  EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
                                   _("Copy selection from document in LaTeX format"),
                                   wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
-  wxglade_tmp_menu_2->Append(menu_copy_as_bitmap, _("Copy as Image"),
+  EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
                              _("Copy selection from document as an image"),
                              wxITEM_NORMAL);
 #endif
-  wxglade_tmp_menu_2->Append(menu_paste, _("Paste\tCtrl-V"),
+  EditMenu->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
 
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_select_all, _("Select All\tCtrl-A"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_select_all, _("Select All\tCtrl-A"),
                              _("Select all"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_copy_to_file, _("Save Selection to Image..."),
+  EditMenu->Append(menu_copy_to_file, _("Save Selection to Image..."),
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
 
-  wxglade_tmp_menu_2->AppendSeparator();
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_in, _("Zoom &In\tAlt-I"),
+  EditMenu->AppendSeparator();
+  APPEND_MENU_ITEM(EditMenu, menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
+  APPEND_MENU_ITEM(EditMenu, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
-  wxMenu* edit_zoom_sub = new wxMenu;
+  edit_zoom_sub = new wxMenu;
   edit_zoom_sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
   edit_zoom_sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
   edit_zoom_sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
@@ -272,431 +302,431 @@ void wxMaximaFrame::SetupMenu()
   edit_zoom_sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
   edit_zoom_sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Set Zoom"), edit_zoom_sub, _("Set Zoom"));
-  wxglade_tmp_menu_2->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+  EditMenu->Append(wxNewId(), _("Set Zoom"), edit_zoom_sub, _("Set Zoom"));
+  EditMenu->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
+  EditMenu->AppendSeparator();
 #if defined __WXMAC__
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
+  APPEND_MENU_ITEM(EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #else
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
+  APPEND_MENU_ITEM(EditMenu, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #endif
-  frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Edit"));
+  frame_1_menubar->Append(EditMenu, _("&Edit"));
 
   // Cell menu
-  wxglade_tmp_menu_2 = new wxMenu;
-  wxglade_tmp_menu_2->Append(menu_evaluate, _("Evaluate Cell(s)"),
+  EditMenu = new wxMenu;
+  EditMenu->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
+  EditMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
                                _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
+  EditMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                                _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_remove_output, _("Remove All Output"),
+  EditMenu->Append(menu_remove_output, _("Remove All Output"),
                             _("Remove output from input cells"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
                              _("Create a new cell with previous input"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl-U"),
+  EditMenu->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl-U"),
                              _("Create a new cell with previous output"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
+  EditMenu->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
                              _("Complete word"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
+  EditMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
                              _("Show function template"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_insert_input, _("Insert Input &Cell"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_insert_input, _("Insert Input &Cell"),
                              _("Insert a new input cell"));
-  wxglade_tmp_menu_2->Append(menu_add_comment, _("Insert &Text Cell\tCtrl-1"),
+  EditMenu->Append(menu_add_comment, _("Insert &Text Cell\tCtrl-1"),
                              _("Insert a new text cell"));
-  wxglade_tmp_menu_2->Append(menu_add_title, _("Insert T&itle Cell\tCtrl-2"),
+  EditMenu->Append(menu_add_title, _("Insert T&itle Cell\tCtrl-2"),
                              _("Insert a new title cell"));
-  wxglade_tmp_menu_2->Append(menu_add_section, _("Insert &Section Cell\tCtrl-3"),
+  EditMenu->Append(menu_add_section, _("Insert &Section Cell\tCtrl-3"),
                              _("Insert a new section cell"));
-  wxglade_tmp_menu_2->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
+  EditMenu->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
                              _("Insert a new subsection cell"));
-  wxglade_tmp_menu_2->Append(menu_add_pagebreak, _("Insert Page Break"),
+  EditMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                              _("Insert a page break"));
-  wxglade_tmp_menu_2->Append(menu_insert_image, _("Insert Image..."),
+  EditMenu->Append(menu_insert_image, _("Insert Image..."),
                              _("Insert image"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_fold_all_cells, _("Fold All\tCtrl-Alt-["),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_fold_all_cells, _("Fold All\tCtrl-Alt-["),
                               _("Fold all sections"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_unfold_all_cells, _("Unfold All\tCtrl-Alt-]"),
+  EditMenu->Append(menu_unfold_all_cells, _("Unfold All\tCtrl-Alt-]"),
                               _("Unfold all folded sections"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
                              _("Recall previous command from history"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_history_next, _("Next Command\tAlt-Down"),
+  EditMenu->Append(menu_history_next, _("Next Command\tAlt-Down"),
                              _("Recall next command from history"), wxITEM_NORMAL);
 
-  frame_1_menubar->Append(wxglade_tmp_menu_2, _("Ce&ll"));
+  frame_1_menubar->Append(EditMenu, _("Ce&ll"));
 
   // Maxima menu
-  wxglade_tmp_menu_2 = new wxMenu;
+  EditMenu = new wxMenu;
 
   // panes
-  wxMenu *wxglade_tmp_menu_2_sub2 = new wxMenu;
-  wxglade_tmp_menu_2_sub2->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2_sub2->AppendSeparator();
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
-  wxglade_tmp_menu_2_sub2->AppendSeparator();
-  wxglade_tmp_menu_2_sub2->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
-  wxglade_tmp_menu_2->Append(wxNewId(), _("Panes"), wxglade_tmp_menu_2_sub2);
+  edit_panes_sub = new wxMenu;
+  edit_panes_sub->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
+  edit_panes_sub->AppendSeparator();
+  edit_panes_sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
+  edit_panes_sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+  edit_panes_sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
+  edit_panes_sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  edit_panes_sub->AppendSeparator();
+  edit_panes_sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
+  EditMenu->Append(wxNewId(), _("Panes"), edit_panes_sub);
 
-  wxglade_tmp_menu_2->AppendSeparator();
+  EditMenu->AppendSeparator();
 
 
 #if defined (__WXMAC__)
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
+  APPEND_MENU_ITEM(EditMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl-."), // command-. interrupts (mac standard)
                    _("Interrupt current computation"), wxT("gtk-stop"));
 #else
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_interrupt_id,
+  APPEND_MENU_ITEM(EditMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl-G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
 #endif
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_restart_id,
+  APPEND_MENU_ITEM(EditMenu, menu_restart_id,
                    _("&Restart Maxima"), _("Restart Maxima"), wxT("gtk-refresh"));
-  wxglade_tmp_menu_2->Append(menu_soft_restart, _("&Clear Memory"),
+  EditMenu->Append(menu_soft_restart, _("&Clear Memory"),
                              _("Delete all values from memory"), wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, menu_add_path, _("Add to &Path..."),
+  APPEND_MENU_ITEM(EditMenu, menu_add_path, _("Add to &Path..."),
                    _("Add a directory to search path"), wxT("gtk-add"));
 
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_functions, _("Show &Functions"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_functions, _("Show &Functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_fun_def, _("Show &Definition..."),
+  EditMenu->Append(menu_fun_def, _("Show &Definition..."),
                              _("Show definition of a function"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_variables, _("Show &Variables"),
+  EditMenu->Append(menu_variables, _("Show &Variables"),
                              _("Show defined variables"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_clear_fun, _("Delete F&unction..."),
+  EditMenu->Append(menu_clear_fun, _("Delete F&unction..."),
                              _("Delete a function"), wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_clear_var, _("Delete V&ariable..."),
+  EditMenu->Append(menu_clear_var, _("Delete V&ariable..."),
                              _("Delete a variable"), wxITEM_NORMAL);
 
-  wxglade_tmp_menu_2->AppendSeparator();
-  wxglade_tmp_menu_2->Append(menu_time, _("Toggle &Time Display"),
+  EditMenu->AppendSeparator();
+  EditMenu->Append(menu_time, _("Toggle &Time Display"),
                              _("Display time used for evaluation"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_display, _("Change &2d Display"),
+  EditMenu->Append(menu_display, _("Change &2d Display"),
                              _("Change the 2d display algorithm used to display math output"),
 			     wxITEM_NORMAL);
-  wxglade_tmp_menu_2->Append(menu_texform, _("Display Te&X Form"),
+  EditMenu->Append(menu_texform, _("Display Te&X Form"),
                              _("Display last result in TeX form"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_2, _("&Maxima"));
+  frame_1_menubar->Append(EditMenu, _("&Maxima"));
 
   // Equations menu
-  wxMenu* wxglade_tmp_menu_3 = new wxMenu;
-  wxglade_tmp_menu_3->Append(menu_solve, _("&Solve..."),
+  EquationsMenu = new wxMenu;
+  EquationsMenu->Append(menu_solve, _("&Solve..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
+  EquationsMenu->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
                              _("Solve equation(s) with to_poly_solve"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_num, _("&Find Root..."),
+  EquationsMenu->Append(menu_solve_num, _("&Find Root..."),
                              _("Find a root of an equation on an interval"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_allroots, _("Roots of &Polynomial"),
+  EquationsMenu->Append(menu_allroots, _("Roots of &Polynomial"),
                              _("Find all roots of a polynomial"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
+  EquationsMenu->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
                                _("Find all roots of a polynomial (bfloat)"),
                                wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
+  EquationsMenu->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
                              _("Find real roots of a polynomial"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_lin, _("Solve &Linear System..."),
+  EquationsMenu->Append(menu_solve_lin, _("Solve &Linear System..."),
                              _("Solve linear system of equations"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
+  EquationsMenu->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
                              _("Solve algebraic system of equations"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_eliminate, _("&Eliminate Variable..."),
+  EquationsMenu->Append(menu_eliminate, _("&Eliminate Variable..."),
                              _("Eliminate a variable from a system "
                                "of equations"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->AppendSeparator();
-  wxglade_tmp_menu_3->Append(menu_solve_ode, _("Solve &ODE..."),
+  EquationsMenu->AppendSeparator();
+  EquationsMenu->Append(menu_solve_ode, _("Solve &ODE..."),
                              _("Solve ordinary differential equation "
                                "of maximum degree 2"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_ivp_1, _("Initial Value Problem (&1)..."),
+  EquationsMenu->Append(menu_ivp_1, _("Initial Value Problem (&1)..."),
                              _("Solve initial value problem for first"
                                " degree ODE"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_ivp_2, _("Initial Value Problem (&2)..."),
+  EquationsMenu->Append(menu_ivp_2, _("Initial Value Problem (&2)..."),
                              _("Solve initial value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_bvp, _("&Boundary Value Problem..."),
+  EquationsMenu->Append(menu_bvp, _("&Boundary Value Problem..."),
                              _("Solve boundary value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->AppendSeparator();
-  wxglade_tmp_menu_3->Append(menu_solve_de, _("Solve ODE with Lapla&ce..."),
+  EquationsMenu->AppendSeparator();
+  EquationsMenu->Append(menu_solve_de, _("Solve ODE with Lapla&ce..."),
                              _("Solve ordinary differential equations "
                                "with Laplace transformation"), wxITEM_NORMAL);
-  wxglade_tmp_menu_3->Append(menu_atvalue, _("A&t Value..."),
+  EquationsMenu->Append(menu_atvalue, _("A&t Value..."),
                              _("Setup atvalues for solving ODE with "
                                "Laplace transformation"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_3, _("E&quations"));
+  frame_1_menubar->Append(EquationsMenu, _("E&quations"));
 
   // Algebra menu
-  wxMenu* wxglade_tmp_menu_4 = new wxMenu;
-  wxglade_tmp_menu_4->Append(menu_gen_mat, _("&Generate Matrix..."),
+  AlgebraMenu = new wxMenu;
+  AlgebraMenu->Append(menu_gen_mat, _("&Generate Matrix..."),
                              _("Generate a matrix from a 2-dimensional array"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
+  AlgebraMenu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
                                _("Generate a matrix from a lambda expression"),
                                wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_enter_mat, _("&Enter Matrix..."),
+  AlgebraMenu->Append(menu_enter_mat, _("&Enter Matrix..."),
                              _("Enter a matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_invert_mat, _("&Invert Matrix"),
+  AlgebraMenu->Append(menu_invert_mat, _("&Invert Matrix"),
                              _("Compute the inverse of a matrix"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_cpoly, _("&Characteristic Polynomial..."),
+  AlgebraMenu->Append(menu_cpoly, _("&Characteristic Polynomial..."),
                              _("Compute the characteristic polynomial "
                                "of a matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_determinant, _("&Determinant"),
+  AlgebraMenu->Append(menu_determinant, _("&Determinant"),
                              _("Compute the determinant of a matrix"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_eigen, _("Eigen&values"),
+  AlgebraMenu->Append(menu_eigen, _("Eigen&values"),
                              _("Find eigenvalues of a matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_eigvect, _("Eige&nvectors"),
+  AlgebraMenu->Append(menu_eigvect, _("Eige&nvectors"),
                              _("Find eigenvectors of a matrix"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
+  AlgebraMenu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
                              _("Compute the adjoint matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_transpose, _("&Transpose Matrix"),
+  AlgebraMenu->Append(menu_transpose, _("&Transpose Matrix"),
                              _("Transpose a matrix"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->AppendSeparator();
-  wxglade_tmp_menu_4->Append(menu_make_list, _("Make &List..."),
+  AlgebraMenu->AppendSeparator();
+  AlgebraMenu->Append(menu_make_list, _("Make &List..."),
                              _("Make list from expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_apply, _("&Apply to List..."),
+  AlgebraMenu->Append(menu_apply, _("&Apply to List..."),
                              _("Apply function to a list"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_map, _("&Map to List..."),
+  AlgebraMenu->Append(menu_map, _("&Map to List..."),
                              _("Map function to a list"), wxITEM_NORMAL);
-  wxglade_tmp_menu_4->Append(menu_map_mat, _("Ma&p to Matrix..."),
+  AlgebraMenu->Append(menu_map_mat, _("Ma&p to Matrix..."),
                              _("Map function to a matrix"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_4, _("&Algebra"));
+  frame_1_menubar->Append(AlgebraMenu, _("&Algebra"));
 
   // Calculus menu
-  wxMenu* wxglade_tmp_menu_6 = new wxMenu;
-  wxglade_tmp_menu_6->Append(menu_integrate, _("&Integrate..."),
+  CalculusMenu = new wxMenu;
+  CalculusMenu->Append(menu_integrate, _("&Integrate..."),
                              _("Integrate expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_risch, _("Risch Integration..."),
+  CalculusMenu->Append(menu_risch, _("Risch Integration..."),
                              _("Integrate expression with Risch algorithm"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_change_var, _("C&hange Variable..."),
+  CalculusMenu->Append(menu_change_var, _("C&hange Variable..."),
                              _("Change variable in integral or sum"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_diff, _("&Differentiate..."),
+  CalculusMenu->Append(menu_diff, _("&Differentiate..."),
                              _("Differentiate expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_limit, _("Find &Limit..."),
+  CalculusMenu->Append(menu_limit, _("Find &Limit..."),
                              _("Find a limit of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_lbfgs, _("Find Minimum..."),
+  CalculusMenu->Append(menu_lbfgs, _("Find Minimum..."),
                                _("Find a (unconstrained) minimum of an expression"),
                                wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_series, _("Get &Series..."),
+  CalculusMenu->Append(menu_series, _("Get &Series..."),
                              _("Get the Taylor or power series of expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_pade, _("P&ade Approximation..."),
+  CalculusMenu->Append(menu_pade, _("P&ade Approximation..."),
                              _("Pade approximation of a Taylor series"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_sum, _("Calculate Su&m..."),
+  CalculusMenu->Append(menu_sum, _("Calculate Su&m..."),
                              _("Calculate sums"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_product, _("Calculate &Product..."),
+  CalculusMenu->Append(menu_product, _("Calculate &Product..."),
                              _("Calculate products"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_laplace, _("Laplace &Transform..."),
+  CalculusMenu->Append(menu_laplace, _("Laplace &Transform..."),
                              _("Get Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_ilt, _("Inverse Laplace T&ransform..."),
+  CalculusMenu->Append(menu_ilt, _("Inverse Laplace T&ransform..."),
                              _("Get inverse Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_gcd, _("&Greatest Common Divisor..."),
+  CalculusMenu->Append(menu_gcd, _("&Greatest Common Divisor..."),
                              _("Compute the greatest common divisor"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_lcm, _("Least Common Multiple..."),
+  CalculusMenu->Append(menu_lcm, _("Least Common Multiple..."),
                              _("Compute the least common multiple "
                                "(do load(functs) before using)"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_divide, _("Di&vide Polynomials..."),
+  CalculusMenu->Append(menu_divide, _("Di&vide Polynomials..."),
                              _("Divide numbers or polynomials"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_partfrac, _("Partial &Fractions..."),
+  CalculusMenu->Append(menu_partfrac, _("Partial &Fractions..."),
                              _("Decompose rational function to partial fractions"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_continued_fraction, _("&Continued Fraction"),
+  CalculusMenu->Append(menu_continued_fraction, _("&Continued Fraction"),
                              _("Compute continued fraction of a value"),
                              wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Calculus"));
+  frame_1_menubar->Append(CalculusMenu, _("&Calculus"));
 
   // Simplify menu
-  wxMenu* wxglade_tmp_menu_5 = new wxMenu;
-  wxglade_tmp_menu_5->Append(menu_ratsimp, _("&Simplify Expression"),
+  SimplifyMenu = new wxMenu;
+  SimplifyMenu->Append(menu_ratsimp, _("&Simplify Expression"),
                              _("Simplify rational expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_radsimp, _("Simplify &Radicals"),
+  SimplifyMenu->Append(menu_radsimp, _("Simplify &Radicals"),
                              _("Simplify expression containing radicals"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_factor, _("&Factor Expression"),
+  SimplifyMenu->Append(menu_factor, _("&Factor Expression"),
                              _("Factor an expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_gfactor, _("Factor Complex"),
+  SimplifyMenu->Append(menu_gfactor, _("Factor Complex"),
                              _("Factor an expression in Gaussian numbers"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_expand, _("&Expand Expression"),
+  SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                              _("Expand an expression"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_logexpand, _("Expand Logarithms"),
+  SimplifyMenu->Append(menu_logexpand, _("Expand Logarithms"),
                              _("Convert logarithm of product to sum of logarithms"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_logcontract, _("Contract Logarithms"),
+  SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
                              _("Convert sum of logarithms to logarithm of product"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->AppendSeparator();
-  // Factorials and gamma
-  wxMenu* wxglade_tmp_menu_5_sub1 = new wxMenu;
-  wxglade_tmp_menu_5_sub1->Append(menu_to_fact, _("Convert to &Factorials"),
+  SimplifyMenu->AppendSeparator();
+  // Factorials and gamma 
+  wxMenu* Simplify_Gamma_Sub = new wxMenu;
+  Simplify_Gamma_Sub->Append(menu_to_fact, _("Convert to &Factorials"),
                                   _("Convert binomials, beta and gamma function to factorials"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub1->Append(menu_to_gamma, _("Convert to &Gamma"),
+  Simplify_Gamma_Sub->Append(menu_to_gamma, _("Convert to &Gamma"),
                                   _("Convert binomials, factorials and beta function to gamma function"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub1->Append(menu_factsimp, _("&Simplify Factorials"),
+  Simplify_Gamma_Sub->Append(menu_factsimp, _("&Simplify Factorials"),
                                   _("Simplify an expression containing factorials"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub1->Append(menu_factcomb, _("&Combine Factorials"),
+  Simplify_Gamma_Sub->Append(menu_factcomb, _("&Combine Factorials"),
                                   _("Combine factorials in an expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(wxNewId(), _("Factorials and &Gamma"),
-                             wxglade_tmp_menu_5_sub1,
+  SimplifyMenu->Append(wxNewId(), _("Factorials and &Gamma"),
+                             Simplify_Gamma_Sub,
                              _("Functions for simplifying factorials and gamma function"));
-  // Trigonometric
-  wxMenu* wxglade_tmp_menu_5_sub2 = new wxMenu;
-  wxglade_tmp_menu_5_sub2->Append(menu_trigsimp, _("&Simplify Trigonometric"),
+  // Trigonometric submenu
+  Simplify_Trig_Sub = new wxMenu;
+  Simplify_Trig_Sub->Append(menu_trigsimp, _("&Simplify Trigonometric"),
                                   _("Simplify trigonometric expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub2->Append(menu_trigreduce, _("&Reduce Trigonometric"),
+  Simplify_Trig_Sub->Append(menu_trigreduce, _("&Reduce Trigonometric"),
                                   _("Reduce trigonometric expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub2->Append(menu_trigexpand, _("&Expand Trigonometric"),
+  Simplify_Trig_Sub->Append(menu_trigexpand, _("&Expand Trigonometric"),
                                   _("Expand trigonometric expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub2->Append(menu_trigrat, _("&Canonical Form"),
+  Simplify_Trig_Sub->Append(menu_trigrat, _("&Canonical Form"),
                                   _("Convert trigonometric expression to canonical quasilinear form"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(wxNewId(), _("&Trigonometric Simplification"),
-                             wxglade_tmp_menu_5_sub2,
+  SimplifyMenu->Append(wxNewId(), _("&Trigonometric Simplification"),
+                             Simplify_Trig_Sub,
                              _("Functions for simplifying trigonometric expressions"));
-  // Complex
-  wxMenu* wxglade_tmp_menu_5_sub3 = new wxMenu;
-  wxglade_tmp_menu_5_sub3->Append(menu_rectform, _("Convert to &Rectform"),
+  // Complex submenu
+  Simplify_Complex_Sub = new wxMenu;
+  Simplify_Complex_Sub->Append(menu_rectform, _("Convert to &Rectform"),
                                   _("Convert complex expression to rect form"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub3->Append(menu_polarform, _("Convert to &Polarform"),
+  Simplify_Complex_Sub->Append(menu_polarform, _("Convert to &Polarform"),
                                   _("Convert complex expression to polar form"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub3->Append(menu_realpart, _("Get Real P&art"),
+  Simplify_Complex_Sub->Append(menu_realpart, _("Get Real P&art"),
                                   _("Get the real part of complex expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub3->Append(menu_imagpart, _("Get &Imaginary Part"),
+  Simplify_Complex_Sub->Append(menu_imagpart, _("Get &Imaginary Part"),
                                   _("Get the imaginary part of complex expression"),
                                   wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub3->Append(menu_demoivre, _("&Demoivre"),
+  Simplify_Complex_Sub->Append(menu_demoivre, _("&Demoivre"),
                                   _("Convert exponential function of imaginary argument to trigonometric form"),
 				  wxITEM_NORMAL);
-  wxglade_tmp_menu_5_sub3->Append(menu_exponentialize, _("&Exponentialize"),
+  Simplify_Complex_Sub->Append(menu_exponentialize, _("&Exponentialize"),
                                   _("Convert trigonometric functions to exponential form"),
 				  wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(wxNewId(), _("&Complex Simplification"),
-                             wxglade_tmp_menu_5_sub3,
+  SimplifyMenu->Append(wxNewId(), _("&Complex Simplification"),
+                             Simplify_Complex_Sub,
                              _("Functions for complex simplification"));
-  wxglade_tmp_menu_5->AppendSeparator();
-  wxglade_tmp_menu_5->Append(menu_subst, _("Substitute..."),
+  SimplifyMenu->AppendSeparator();
+  SimplifyMenu->Append(menu_subst, _("Substitute..."),
                              _("Make substitution in expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_nouns, _("Evaluate &Noun Forms"),
+  SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
                              _("Evaluate all noun forms in expression"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_talg, _("Toggle &Algebraic Flag"),
+  SimplifyMenu->Append(menu_talg, _("Toggle &Algebraic Flag"),
                              _("Toggle algebraic flag"), wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_tellrat, _("Add Algebraic E&quality..."),
+  SimplifyMenu->Append(menu_tellrat, _("Add Algebraic E&quality..."),
                              _("Add equality to the rational simplifier"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_5->Append(menu_modulus, _("&Modulus Computation..."),
+  SimplifyMenu->Append(menu_modulus, _("&Modulus Computation..."),
                              _("Setup modulus computation"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_5, _("&Simplify"));
+  frame_1_menubar->Append(SimplifyMenu, _("&Simplify"));
 
   // Plot menu
-  wxglade_tmp_menu_6 = new wxMenu;
-  wxglade_tmp_menu_6->Append(gp_plot2, _("Plot &2d..."),
+  PlotMenu = new wxMenu;
+  PlotMenu->Append(gp_plot2, _("Plot &2d..."),
                              _("Plot in 2 dimensions"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(gp_plot3, _("Plot &3d..."),
+  PlotMenu->Append(gp_plot3, _("Plot &3d..."),
                              _("Plot in 3 dimensions"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_plot_format, _("Plot &Format..."),
+  PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
                              _("Set plot format"), wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Plot"));
+  frame_1_menubar->Append(PlotMenu, _("&Plot"));
 
   // Numeric menu
-  wxglade_tmp_menu_6 = new wxMenu;
-  wxglade_tmp_menu_6->Append(menu_num_out, _("Toggle &Numeric Output"),
+  NumericMenu = new wxMenu;
+  NumericMenu->Append(menu_num_out, _("Toggle &Numeric Output"),
                              _("Toggle numeric output"), wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_float, _("To &Float"),
+  NumericMenu->Append(menu_to_float, _("To &Float"),
                              _("Calculate float value of the last result"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &Bigfloat"),
+  NumericMenu->Append(menu_to_bfloat, _("To &Bigfloat"),
                              _("Calculate bigfloat value of the last result"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_numer, _("To Numeri&c\tCtrl+Shift+N"),
+  NumericMenu->Append(menu_to_numer, _("To Numeri&c\tCtrl+Shift+N"),
                              _("Calculate numeric value of the last result"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_set_precision, _("Set &Precision..."),
+  NumericMenu->Append(menu_set_precision, _("Set &Precision..."),
                              _("Set bigfloat precision"),
                              wxITEM_NORMAL);
-  frame_1_menubar->Append(wxglade_tmp_menu_6, _("&Numeric"));
+  frame_1_menubar->Append(NumericMenu, _("&Numeric"));
 
   // Help menu
-  wxMenu* wxglade_tmp_menu_7 = new wxMenu;
+  HelpMenu = new wxMenu;
 #if defined __WXMAC__
-  wxglade_tmp_menu_7->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
+  HelpMenu->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
                              _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("wxMaxima &Help\tF1"),
+  APPEND_MENU_ITEM(HelpMenu, wxID_HELP, _("wxMaxima &Help\tF1"),
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
-  wxglade_tmp_menu_7->Append(menu_maximahelp, _("&Maxima help"),
+  HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
                              _("The offline manual of maxima"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_7->Append(menu_example, _("&Example..."),
+  HelpMenu->Append(menu_example, _("&Example..."),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_7->Append(menu_apropos, _("&Apropos..."),
+  HelpMenu->Append(menu_apropos, _("&Apropos..."),
                              _("Show commands similar to"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, menu_show_tip, _("Show &Tips..."),
+  APPEND_MENU_ITEM(HelpMenu, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
-  wxglade_tmp_menu_7->AppendSeparator();
-  wxglade_tmp_menu_7->Append(menu_help_tutorials, _("Tutorials"),
+  HelpMenu->AppendSeparator();
+  HelpMenu->Append(menu_help_tutorials, _("Tutorials"),
                              _("Online tutorials"), wxITEM_NORMAL);
-  wxglade_tmp_menu_7->AppendSeparator();
-  wxglade_tmp_menu_7->Append(menu_build_info, _("Build &Info"),
+  HelpMenu->AppendSeparator();
+  HelpMenu->Append(menu_build_info, _("Build &Info"),
                              _("Info about Maxima build"), wxITEM_NORMAL);
-  wxglade_tmp_menu_7->Append(menu_bug_report, _("&Bug Report"),
+  HelpMenu->Append(menu_bug_report, _("&Bug Report"),
                              _("Report bug"), wxITEM_NORMAL);
-  wxglade_tmp_menu_7->AppendSeparator();
-  wxglade_tmp_menu_7->Append(menu_check_updates, _("Check for Updates"),
+  HelpMenu->AppendSeparator();
+  HelpMenu->Append(menu_check_updates, _("Check for Updates"),
                              _("Check if a newer version of wxMaxima/Maxima exist."),
                              wxITEM_NORMAL);
 #ifndef __WXMAC__
-  wxglade_tmp_menu_7->AppendSeparator();
+  HelpMenu->AppendSeparator();
 #endif
-  APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_ABOUT,
+  APPEND_MENU_ITEM(HelpMenu, wxID_ABOUT,
 #ifndef __WXMAC__
           _("About"),
 #else
           _("About wxMaxima"),
 #endif
           _("About wxMaxima"), wxT("stock_about"));
-  frame_1_menubar->Append(wxglade_tmp_menu_7, _("&Help"));
+  frame_1_menubar->Append(HelpMenu, _("&Help"));
 
   SetMenuBar(frame_1_menubar);
 
