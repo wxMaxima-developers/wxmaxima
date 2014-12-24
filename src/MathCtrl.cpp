@@ -46,8 +46,6 @@
 #define ANIMATION_TIMER_TIMEOUT 300
 #define AC_MENU_LENGTH 25
 
-void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
-
 enum
 {
   TIMER_ID,
@@ -2012,7 +2010,7 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
  * Export content to a HTML file.
  */
 
-void AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
+void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
   else {
@@ -2704,8 +2702,6 @@ bool MathCtrl::ExportToMAC(wxString file)
   else if (!output.Create(file))
     return false;
 
-  m_saved = true;
-
   if (wxm) {
     AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
     wxString version(wxT(VERSION));
@@ -2728,7 +2724,9 @@ bool MathCtrl::ExportToMAC(wxString file)
   }
 
   bool done = output.Write(wxTextFileType_None);
-  output.Close();
+  if(!output.Close())done=false;
+
+  if(done)m_saved = true;
 
   return done;
 }

@@ -78,9 +78,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 {
   m_port = 4010;
   m_pid = -1;
+  m_readingPrompt=false;
   m_inLispMode = false;
   m_first = true;
   m_isRunning = false;
+  m_dispReadOut = false;
   m_promptSuffix = "<PROMPT-S/>";
   m_promptPrefix = "<PROMPT-P/>";
 
@@ -96,6 +98,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_openFile = wxEmptyString;
   m_currentFile = wxEmptyString;
   m_fileSaved = true;
+  m_printData=NULL;
 
   m_variablesOK = false;
 
@@ -133,7 +136,8 @@ wxMaxima::~wxMaxima()
   if (m_client != NULL)
     m_client->Destroy();
 
-  delete m_printData;
+  if (m_printData != NULL)
+    delete m_printData;
 }
 
 
@@ -1664,7 +1668,7 @@ void wxMaxima::ShowWxMaximaHelp()
      Adding the strings to the variable one-by-one is ugly *and* wastes 
      ressources.
   */
-  wxString htmldir = wxT(PREFIX "/share/doc/wxMaxima");
+  wxString htmldir = wxT(PREFIX "/share/doc/wxmaxima");
   wxString helpfile = htmldir + wxT("/wxmaxima.html");
 #endif
   ShowHelp(helpfile, wxT("%"));

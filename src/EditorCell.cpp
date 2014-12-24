@@ -104,6 +104,13 @@ wxString EditorCell::ToXML(bool all)
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
   xmlstring.Replace(wxT("\n"), wxT("</line>\n<line>"));
+  /* Still haven't found why sometimes pressing <ESC> when the search dialog
+     is open doesn't close this dialog but actually inserts an <ESC> character
+     into the worksheet.
+     But since this character makes the XML parser fail we should remove this
+     character during save as a workaround.
+  */ 
+  xmlstring.Replace(wxT("\x1b"), wxT(" "));
   xmlstring = wxT("<line>") + xmlstring + wxT("</line>\n");
   wxString head = wxT("<editor");
   switch (m_type) {
