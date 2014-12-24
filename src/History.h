@@ -20,7 +20,7 @@
 /*! \file
 
   This file contains the definition of the class History that handles the recently 
-  opened files.
+  issued commands for the history pane.
  */
 #include <wx/wx.h>
 
@@ -32,7 +32,7 @@ enum {
   history_regex_id
 };
 
-/*! This class handles the recently opened files.
+/*! This class generates a pane containing the last commands that were issued.
 
  */
 class History : public wxPanel
