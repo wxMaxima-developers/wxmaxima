@@ -276,7 +276,7 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   wxglade_tmp_menu_2->AppendSeparator();
 #if defined __WXMAC__
-  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("Preferences...\tCTRL+,"),
+  APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #else
   APPEND_MENU_ITEM(wxglade_tmp_menu_2, wxID_PREFERENCES, _("C&onfigure"),
@@ -644,7 +644,7 @@ void wxMaximaFrame::SetupMenu()
   wxglade_tmp_menu_6->Append(menu_to_bfloat, _("To &Bigfloat"),
                              _("Calculate bigfloat value of the last result"),
                              wxITEM_NORMAL);
-  wxglade_tmp_menu_6->Append(menu_to_numer, _("To Numeri&c\tCTRL+SHIFT+N"),
+  wxglade_tmp_menu_6->Append(menu_to_numer, _("To Numeri&c\tCtrl+Shift+N"),
                              _("Calculate numeric value of the last result"),
                              wxITEM_NORMAL);
   wxglade_tmp_menu_6->Append(menu_set_precision, _("Set &Precision..."),
@@ -655,7 +655,7 @@ void wxMaximaFrame::SetupMenu()
   // Help menu
   wxMenu* wxglade_tmp_menu_7 = new wxMenu;
 #if defined __WXMAC__
-  wxglade_tmp_menu_7->Append(wxID_HELP, _("wxMaxima &Help\tCTRL+?"),
+  wxglade_tmp_menu_7->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
                              _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
   APPEND_MENU_ITEM(wxglade_tmp_menu_7, wxID_HELP, _("wxMaxima &Help\tF1"),
