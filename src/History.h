@@ -17,6 +17,11 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
+/*! \file
+
+  This file contains the definition of the class History that handles the recently 
+  opened files.
+ */
 #include <wx/wx.h>
 
 #ifndef HISTORY_H
@@ -27,11 +32,19 @@ enum {
   history_regex_id
 };
 
+/*! This class handles the recently opened files.
+
+ */
 class History : public wxPanel
 {
 public:
   History(wxWindow* parent, int id);
+  /* The destructor
+
+     \todo Save the history on exit and reload it on loading a file?
+   */
   ~History();
+  //! Add a file to the recently opened files list.
   void AddToHistory(wxString cmd);
   void OnRegExEvent(wxCommandEvent &ev);
   void UpdateDisplay();
