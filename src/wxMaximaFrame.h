@@ -298,16 +298,22 @@ public:
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
   void ShowToolBar(bool show);
 private:
+  //! The menu bar
+  wxMenuBar *MenuBar;
   //! The file menu.
   wxMenu *FileMenu; 
   //! The edit menu.
   wxMenu *EditMenu; 
+  //! The cell menu.
+  wxMenu *CellMenu; 
   //! The zoom submenu
   wxMenu *edit_zoom_sub;
   //! The panes submenu
   wxMenu *edit_panes_sub;
   //! The equations menu.
   wxMenu *EquationsMenu; 
+  //! The maxima menu.
+  wxMenu *MaximaMenu; 
   //! The algebra menu.
   wxMenu *AlgebraMenu;
   //! The simplify menu
