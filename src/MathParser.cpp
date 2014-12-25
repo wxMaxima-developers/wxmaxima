@@ -508,7 +508,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   in->SetHighlight(m_highlight);
   if (node->GetAttributes() == NULL)
   {
-    in->SetIntStyle(INT_DEF);
+    in->SetIntStyle(IntCell::INT_DEF);
     if (child)
     {
       in->SetUnder(ParseTag(child, false));

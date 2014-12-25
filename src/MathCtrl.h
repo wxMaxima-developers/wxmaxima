@@ -50,6 +50,11 @@ public:
     the item with the lowest ID is we can assign dynamically.
   */
   enum PopIds{
+    /*! The "copy" popup menu item was clicked
+
+      This item is the first of the enum and is assigned a high enough number
+      that it won't collide with the numbers to be found in wxFrame::Event
+     */
     popid_copy = wxID_HIGHEST + 500,
     popid_cut,
     popid_paste,

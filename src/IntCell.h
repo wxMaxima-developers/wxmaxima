@@ -23,11 +23,10 @@
 #include "MathCell.h"
 #include "Setup.h"
 
-enum {
-  INT_DEF,
-  INT_IDEF
-};
+/*! This class represents an integral
 
+  This class represents an integral including the integral sign and its contents.
+ */
 class IntCell : public MathCell
 {
 public:
@@ -39,10 +38,18 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SetBase(MathCell* base);
+  //! Set the lower limit of the integral
   void SetUnder(MathCell* under);
+  //! Set the higher limit of the integral
   void SetOver(MathCell* name);
+  //! Set the integration variable 
   void SetVar(MathCell* var);
-  void SetIntStyle(int style)
+  enum IntegralType{
+    INT_DEF, //!< An definite integral, meaning an integral with limits.
+    INT_IDEF //!> An indefinite integral, meaning an integral without limits
+  };
+  //! Choose between definite and indefinite integrals
+  void SetIntStyle(IntegralType style)
   {
     m_intStyle = style;
   }
@@ -51,18 +58,30 @@ public:
   wxString ToXML(bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent, bool all);
-protected:
+
+ protected:
+  //! The part of the formula that is to be integrated.
   MathCell *m_base;
+  //! The lower limit of the integral
   MathCell *m_under;
+  //! The upper limit of the integral
   MathCell *m_over;
+  //! The integration variable
   MathCell *m_var;
+  //! The height of the integral sign
   int m_signSize;
+  //! The width of the integral sign
   int m_signWidth;
-  int m_intStyle;
+  //! Is this integral definitive?
+  IntegralType m_intStyle;
+  //! How far is the integral sign's center from the top of this cell?
   int m_signTop;
 #if defined __WXMSW__
   int m_charHeight, m_charWidth;
 #endif
+
+private:
+
 };
 
 #endif  // INTCELL_H

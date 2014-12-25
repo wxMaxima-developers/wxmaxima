@@ -42,9 +42,13 @@ public:
 
   /*! A list of all events the maxima frame can receive
 
-    wxwidgets uses this list to tell us what kind of events it has to inform us about.
-    Also this enum is used for assigning panels an ID that matches the ID of the event
-    that toggles them.
+    This list serves several purposes:
+     - wxwidgets uses this list to tell us what kind of events it has to inform us about.
+     - we use these events for inter process communication.\n
+       For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter,
+       depending on what option is set in the configuration).
+     - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
+       that toggles them which makes the handling of these IDs easier.
    */
   enum Event{
 

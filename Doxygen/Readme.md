@@ -41,6 +41,8 @@ Naming rules
 
 Keeping the code more or less homogenous increases the readability. In
 order to archieve that wxMaxima uses a few naming rules:
- - The names of member variables are prefixed with "m_".
+ - The names of member variables are prefixed with "m_" for "member".
  - The names of member functions (aka methods) are written in CamelCase.
- 
+ - The names of enums do not really matter as they are rarely used and if
+   they are they are used in context where it is opvious that they name an
+   enum type so there aren't any rules for the names of enums right now.
