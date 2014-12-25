@@ -21,6 +21,7 @@
 
 
 #include "wxMaxima.h"
+#include "wxMaximaFrame.h"
 #include "MathCtrl.h"
 #include "Bitmap.h"
 #include "Setup.h"
@@ -1391,9 +1392,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_NUMPAD_ENTER:
-      wxMaximaFrame::Event evaluateevent;
       if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
-        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(evaluateevent);
+        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
       else if (m_hCaretActive)
         OpenHCaret(wxT("%"));
       else
@@ -1410,8 +1410,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         if ((!enterEvaluates &&  controlOrShift) ||
             ( enterEvaluates && !controlOrShift) )
         { // shift-enter pressed === menu_evaluate event
-	  wxMaximaFrame::Event evaluateevent;
-          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(evaluateevent);
+          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
         } else
           event.Skip();
       }
