@@ -39,6 +39,9 @@ public:
   }
   wxString GetValue();
 private:
+  enum {
+    use_nusum_id
+  };
   void set_properties();
   void do_layout();
   void OnCheckbox(wxCommandEvent& event);

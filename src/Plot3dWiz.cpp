@@ -22,17 +22,6 @@
 #include <wx/config.h>
 #include <wx/artprov.h>
 
-enum {
-  combobox,
-  file_browse_3d
-};
-
-enum {
-  cartesian,
-  cylindrical,
-  spherical
-};
-
 Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
                      const wxString& title, const wxPoint& pos,
                      const wxSize& size, long style):

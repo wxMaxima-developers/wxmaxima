@@ -2746,7 +2746,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
           return ;
         }
         if (w != h)
-          type = MATRIX_GENERAL;
+          type = MatWiz::MATRIX_GENERAL;
         MatWiz *mwiz = new MatWiz(this, -1, _("Enter matrix"),
                                   type, w, h);
         mwiz->Centre(wxBOTH);

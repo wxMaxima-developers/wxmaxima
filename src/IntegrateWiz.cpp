@@ -21,13 +21,6 @@
 
 #include <wx/config.h>
 
-enum {
-  definite_id,
-  special_from,
-  special_to,
-  numeric_id
-};
-
 IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
                            const wxString& title, const wxPoint& pos,
                            const wxSize& size, long style):

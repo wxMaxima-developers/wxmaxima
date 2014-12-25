@@ -17,10 +17,6 @@
 ///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///
 
-enum {
-  use_nusum_id
-};
-
 #include "SumWiz.h"
 
 SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,

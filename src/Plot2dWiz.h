@@ -43,6 +43,20 @@ private:
   void OnFileBrowse(wxCommandEvent& event);
   void OnPopupMenu(wxCommandEvent& event);
   void Parse(wxString in);
+
+  enum {
+    special,
+    combobox,
+    file_browse_2d,
+    parametric_plot,
+    discrete_plot
+  };
+  
+  enum {
+    cartesian,
+    polar
+  };
+
 protected:
   int type;
   wxStaticText* label_2;

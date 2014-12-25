@@ -25,19 +25,19 @@
 
 #include "BTextCtrl.h"
 
-enum {
-  MATRIX_GENERAL,
-  MATRIX_DIAGONAL,
-  MATRIX_SYMMETRIC,
-  MATRIX_ANTISYMMETRIC
-};
-
 #include <vector>
 using namespace std;
 
 class MatWiz: public wxDialog
 {
 public:
+  enum MatrixType{
+    MATRIX_GENERAL,
+    MATRIX_DIAGONAL,
+    MATRIX_SYMMETRIC,
+    MATRIX_ANTISYMMETRIC
+  };
+
   MatWiz(wxWindow* parent, int id, const wxString& title, int type,
          int heigth, int width, const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);

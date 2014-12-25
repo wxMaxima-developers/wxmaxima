@@ -22,19 +22,6 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 
-enum {
-  special,
-  combobox,
-  file_browse_2d,
-  parametric_plot,
-  discrete_plot
-};
-
-enum {
-  cartesian,
-  polar
-};
-
 Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)

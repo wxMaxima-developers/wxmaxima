@@ -26,10 +26,6 @@
 #include "BTextCtrl.h"
 
 
-enum {
-  special
-};
-
 class LimitWiz: public wxDialog
 {
 public:
@@ -47,6 +43,11 @@ private:
   void OnIdle(wxIdleEvent& event);
   void set_properties();
   void do_layout();
+
+  enum {
+    special
+  };
+
 protected:
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;

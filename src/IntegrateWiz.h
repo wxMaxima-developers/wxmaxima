@@ -43,7 +43,15 @@ private:
   void do_layout();
   void OnButton(wxCommandEvent& event);
   void OnCheckbox(wxCommandEvent& event);
-protected:
+  //! An enum for the integral types we support.
+  enum IntegralType {
+    definite_id,
+    special_from,
+    special_to,
+    numeric_id
+  };
+
+ protected:
   wxStaticText* label_2;
   BTextCtrl* text_ctrl_1;
   wxStaticText* label_3;

@@ -239,10 +239,10 @@ int MatDim::GetMatrixType()
 {
   int type = combo_box_1->GetSelection();
   if (type == 0)
-    return MATRIX_GENERAL;
+    return MatWiz::MATRIX_GENERAL;
   if (type == 1)
-    return MATRIX_DIAGONAL;
+    return MatWiz::MATRIX_DIAGONAL;
   if (type == 2)
-    return MATRIX_SYMMETRIC;
-  return MATRIX_ANTISYMMETRIC;
+    return MatWiz::MATRIX_SYMMETRIC;
+  return MatWiz::MATRIX_ANTISYMMETRIC;
 }

@@ -38,6 +38,17 @@ public:
   void Parse(wxString s);
   wxString GetValue();
 private:
+  enum {
+    combobox,
+    file_browse_3d
+  };
+  
+  enum {
+    cartesian,
+    cylindrical,
+    spherical
+  };
+  
   void OnCombobox(wxCommandEvent& event);
   void OnFileBrowse(wxCommandEvent& event);
   void set_properties();
