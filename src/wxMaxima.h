@@ -107,10 +107,17 @@ protected:
   void HelpMenu(wxCommandEvent& event);            //
   void EditMenu(wxCommandEvent& event);            //
   void Interrupt(wxCommandEvent& event);           //
-  void UpdateMenus(wxUpdateUIEvent& event);        //
+  /* Make the menu item, toolbars and panes visible that should be visible right now.
+
+     \todo Didn't update the stats pane. I assume this was a bug.
+   */
+  void UpdateMenus(wxUpdateUIEvent& event);
   void UpdateToolBar(wxUpdateUIEvent& event);      //
   void UpdateSlider(wxUpdateUIEvent& event);       //
-  void ShowPane(wxCommandEvent& event);            //
+  /*! Toggle the visibility of a pane
+    \param event The event that triggered calling this function.
+   */
+  void ShowPane(wxCommandEvent& event);            
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
   void StatsMenu(wxCommandEvent& event);           //

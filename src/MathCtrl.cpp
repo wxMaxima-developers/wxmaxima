@@ -1391,8 +1391,9 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       break;
 
     case WXK_NUMPAD_ENTER:
+      wxMaximaFrame::Event evaluateevent;
       if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
-        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(menu_evaluate);
+        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(evaluateevent);
       else if (m_hCaretActive)
         OpenHCaret(wxT("%"));
       else
@@ -1409,7 +1410,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         if ((!enterEvaluates &&  controlOrShift) ||
             ( enterEvaluates && !controlOrShift) )
         { // shift-enter pressed === menu_evaluate event
-          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(menu_evaluate);
+	  wxMaximaFrame::Event evaluateevent;
+          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(evaluateevent);
         } else
           event.Skip();
       }

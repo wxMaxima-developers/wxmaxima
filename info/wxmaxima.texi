@@ -456,7 +456,11 @@ Possible reasons that might cause this are:
 @section I lost a cell contents and undo doesn't remember
 If you still have a way to find out what label maxima has assigned
 to the cell just type in the cell's label and it's contents will
-reappear. If you don't: Don't panic. Maxima contains a replay feature:
+reappear. If you don't: Don't panic. In the ``maxima'' menu there
+is a way to show a history pane that shows all maxima commands that
+have been issued recently.
+
+If nothing else helps maxima contains a replay feature:
 @example
 %i1 playback();
 @end example

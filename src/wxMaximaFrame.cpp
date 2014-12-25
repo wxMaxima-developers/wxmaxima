@@ -30,27 +30,9 @@
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
                              long style):
-    wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
+  wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
+
 {
-  // Mark the menus as "still unallocated".
-  FileMenu=NULL;
-  EditMenu=NULL;
-  CellMenu=NULL;
-  MaximaMenu=NULL;
-  edit_zoom_sub=NULL;
-  edit_panes_sub=NULL;
-  EquationsMenu=NULL;
-  AlgebraMenu=NULL;
-  SimplifyMenu=NULL;
-  Simplify_Gamma_Sub=NULL;
-  Simplify_Trig_Sub=NULL;
-  Simplify_Complex_Sub=NULL;
-  CalculusMenu=NULL;
-  PlotMenu=NULL;
-  NumericMenu=NULL;
-  HelpMenu=NULL;
-  MenuBar=NULL;
-  
   m_manager.SetManagedWindow(this);
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
@@ -937,7 +919,7 @@ void wxMaximaFrame::RemoveRecentDocument(wxString file)
   UpdateRecentDocuments();
 }
 
-bool wxMaximaFrame::IsPaneDisplayed(int id)
+bool wxMaximaFrame::IsPaneDisplayed(Event id)
 {
   bool displayed = false;
 
@@ -959,7 +941,7 @@ bool wxMaximaFrame::IsPaneDisplayed(int id)
   return displayed;
 }
 
-void wxMaximaFrame::ShowPane(int id, bool show)
+void wxMaximaFrame::ShowPane(Event id, bool show)
 {
   switch (id) {
     case menu_pane_math:

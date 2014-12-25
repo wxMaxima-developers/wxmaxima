@@ -1802,8 +1802,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_save_id, !m_fileSaved);
 
-  for (int id = menu_pane_math; id<=menu_pane_stats; id++)
-    menubar->Check(id, IsPaneDisplayed(id));
+  for (int id = menu_pane_math; id<=menu_pane_format; id++)
+    menubar->Check(id, IsPaneDisplayed(static_cast<wxMaximaFrame::Event>(id)));
 #if defined __WXMAC__
   menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
 #else
@@ -4459,7 +4459,8 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
 {
   int id = ev.GetId();
 
-  wxMaximaFrame::ShowPane(id, !IsPaneDisplayed(id));
+  wxMaximaFrame::ShowPane(static_cast<wxMaximaFrame::Event>(id),
+			  !IsPaneDisplayed(static_cast<wxMaximaFrame::Event>(id)));
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
