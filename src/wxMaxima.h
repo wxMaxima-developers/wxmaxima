@@ -1,4 +1,3 @@
-///
 ///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///

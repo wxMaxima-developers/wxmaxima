@@ -117,8 +117,18 @@ public:
   bool ForceBreakLineHere() { return m_forceBreakLine; }
   bool BreakPageHere() { return m_breakPage; }
   virtual bool BreakUp() { return false; }
+  /*! Is a part of this cell inside a certain rectangle?
 
+    \param big The rectangle to test for collision with this cell
+    \param all
+     - true means test this cell and the ones that are following it in the list
+     - false means test this cell only.
+   */
   bool ContainsRect(wxRect& big, bool all = true);
+  /*! Is a given point inside this cell?
+
+    \param point The point to test for collision with this cell
+   */
   bool ContainsPoint(wxPoint& point)
   {
     return GetRect().Contains(point);
@@ -172,11 +182,19 @@ public:
   int GetMaxHeight();
   int GetFullWidth(double scale);
   int GetLineWidth(double scale);
+  //! Get the x position of the top left of this cell
   int GetCurrentX() { return m_currentPoint.x; }
+  //! Get the y position of the top left of this cell
   int GetCurrentY() { return m_currentPoint.y; }
+  /*! Get the smallest rectangle this cell fits in
+
+    \param all
+      - true: Get the rectangle for this cell and the ones that follow it in the list of cells
+      - false: Get the rectangle for this cell only.
+   */
   virtual wxRect GetRect(bool all = false);
   virtual wxString GetDiffPart();
-
+  //! Recalculate the height of the cell and the difference between top and center
   virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
   //! Marks all widths as to be recalculated on query.
   virtual void RecalculateWidths(CellParser& parser, int fontsize, bool all);

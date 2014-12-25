@@ -413,9 +413,6 @@ bool MathCell::BreakLineHere()
   return (!m_isBroken && (m_breakLine || m_forceBreakLine));
 }
 
-/***
- * Does this cell contain a rectangle sm
- */
 bool MathCell::ContainsRect(wxRect& sm, bool all)
 {
   wxRect big = GetRect(all);

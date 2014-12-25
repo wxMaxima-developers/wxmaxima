@@ -1,4 +1,5 @@
-///
+/// \file
+/// \copyright
 ///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
@@ -30,6 +31,7 @@
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
 
+//! Ensure we have a scrolled canvas we can use as a worksheet
 #if !wxCHECK_VERSION(2,9,0)
   typedef wxScrolledWindow wxScrolledCanvas;
 #endif
