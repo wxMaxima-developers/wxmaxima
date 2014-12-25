@@ -1,6 +1,7 @@
 /// \file
-/// \copyright
-///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+/// This file defines the class MathCtl
+///
+/// \copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ///            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 ///
 ///  This program is free software; you can redistribute it and/or modify
