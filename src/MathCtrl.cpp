@@ -47,13 +47,6 @@
 #define ANIMATION_TIMER_TIMEOUT 300
 #define AC_MENU_LENGTH 25
 
-enum
-{
-  TIMER_ID,
-  CARET_TIMER_ID,
-  ANIMATION_TIMER_ID
-};
-
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   wxScrolledCanvas(
       parent, id, position, size,

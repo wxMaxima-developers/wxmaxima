@@ -34,50 +34,6 @@
   typedef wxScrolledWindow wxScrolledCanvas;
 #endif
 
-enum {
-  popid_copy = wxID_HIGHEST + 500,
-  popid_cut,
-  popid_paste,
-  popid_select_all,
-  popid_comment_selection,
-  popid_divide_cell,
-  popid_copy_image,
-  popid_delete,
-  popid_simplify,
-  popid_expand,
-  popid_factor,
-  popid_solve,
-  popid_solve_num,
-  popid_integrate,
-  popid_diff,
-  popid_subst,
-  popid_plot2d,
-  popid_plot3d,
-  popid_float,
-  popid_edit,
-  popid_add_comment,
-  popid_insert_input,
-  popid_copy_tex,
-  popid_image,
-  popid_animation_save,
-  popid_animation_start,
-  popid_evaluate,
-  popid_merge_cells,
-  popid_insert_text,
-  popid_insert_title,
-  popid_insert_section,
-  popid_insert_subsection,
-  // popid_complete_00 should be the last id
-  popid_complete_00
-};
-
-enum {
-  CLICK_TYPE_NONE,
-  CLICK_TYPE_GROUP_SELECTION,
-  CLICK_TYPE_INPUT_SELECTION,
-  CLICK_TYPE_OUTPUT_SELECTION
-};
-
 /*! The canvas that contains the spreadsheet the whole program is about.
 
 This canvas contains all the math, title, image etc.- cells of the current session.
@@ -85,6 +41,56 @@ This canvas contains all the math, title, image etc.- cells of the current sessi
 class MathCtrl: public wxScrolledCanvas
 {
 public:
+
+  /*! The ids for all popup menu items.
+
+    \attention popid_complete_00 has to stay the last event in this enum
+    Since we want to be able to dynamically add events to popups
+    (for example for autocompletion) we need to make sure we know what 
+    the item with the lowest ID is we can assign dynamically.
+  */
+  enum PopIds{
+    popid_copy = wxID_HIGHEST + 500,
+    popid_cut,
+    popid_paste,
+    popid_select_all,
+    popid_comment_selection,
+    popid_divide_cell,
+    popid_copy_image,
+    popid_delete,
+    popid_simplify,
+    popid_expand,
+    popid_factor,
+    popid_solve,
+    popid_solve_num,
+    popid_integrate,
+    popid_diff,
+    popid_subst,
+    popid_plot2d,
+    popid_plot3d,
+    popid_float,
+    popid_edit,
+    popid_add_comment,
+    popid_insert_input,
+    popid_copy_tex,
+    popid_image,
+    popid_animation_save,
+    popid_animation_start,
+    popid_evaluate,
+    popid_merge_cells,
+    popid_insert_text,
+    popid_insert_title,
+    popid_insert_section,
+    popid_insert_subsection,
+    /*! The first number that is open for dynamic ID assignment
+
+      If we want to add additional elements to a pop-up this is the 
+      lowest ID that is guaranteed to be free for this purpose.
+      \attention popid_must be the last id in this list
+     */
+    popid_complete_00
+  };
+  
   //! The constructor
   MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
   //! The destructor
@@ -238,6 +244,23 @@ public:
   GroupCell *GetWorkingGroup() { return m_workingGroup; }
   void OpenNextOrCreateCell();
  private:
+
+  //! An enum for all classes of items one can click on
+  enum ClickType { 
+    CLICK_TYPE_NONE,
+    CLICK_TYPE_GROUP_SELECTION,
+    CLICK_TYPE_INPUT_SELECTION,
+    CLICK_TYPE_OUTPUT_SELECTION
+  };
+
+  //! An enum of individual IDs for all timers we declare in this class
+  enum TimerIDs
+  {
+    TIMER_ID,
+    CARET_TIMER_ID,
+    ANIMATION_TIMER_ID
+  };
+
   //! Add a line to a file.
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
   MathCell* CopySelection();
