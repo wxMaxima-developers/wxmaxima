@@ -328,39 +328,39 @@ public:
   void ShowToolBar(bool show);
 private:
   //! The menu bar
-  wxMenuBar *MenuBar;
+  wxMenuBar *m_MenuBar;
   //! The file menu.
-  wxMenu *FileMenu; 
+  wxMenu *m_FileMenu; 
   //! The edit menu.
-  wxMenu *EditMenu; 
+  wxMenu *m_EditMenu; 
   //! The cell menu.
-  wxMenu *CellMenu; 
+  wxMenu *m_CellMenu; 
   //! The zoom submenu
-  wxMenu *edit_zoom_sub;
+  wxMenu *m_Edit_Zoom_Sub;
   //! The panes submenu
-  wxMenu *edit_panes_sub;
+  wxMenu *m_Maxima_Panes_Sub;
   //! The equations menu.
-  wxMenu *EquationsMenu; 
+  wxMenu *m_EquationsMenu; 
   //! The maxima menu.
-  wxMenu *MaximaMenu; 
+  wxMenu *m_MaximaMenu; 
   //! The algebra menu.
-  wxMenu *AlgebraMenu;
+  wxMenu *m_Algebra_Menu;
   //! The simplify menu
-  wxMenu *SimplifyMenu;
+  wxMenu *m_SimplifyMenu;
   //! The factorials and gamma submenu
-  wxMenu *Simplify_Gamma_Sub;
+  wxMenu *m_Simplify_Gamma_Sub;
   //! The trigonometric submenu
-  wxMenu *Simplify_Trig_Sub;
+  wxMenu *m_Simplify_Trig_Sub;
   //! The complex submenu
-  wxMenu *Simplify_Complex_Sub;
+  wxMenu *m_Simplify_Complex_Sub;
   //! The calculus menu
-  wxMenu *CalculusMenu;
+  wxMenu *m_CalculusMenu;
   //! The plot menu
-  wxMenu *PlotMenu;
+  wxMenu *m_PlotMenu;
   //! The numeric menu
-  wxMenu *NumericMenu;
+  wxMenu *m_NumericMenu;
   //! The help menu
-  wxMenu *HelpMenu;
+  wxMenu *m_HelpMenu;
   
   void set_properties();
   void do_layout();

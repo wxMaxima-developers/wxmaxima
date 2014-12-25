@@ -170,7 +170,7 @@ void wxMaximaFrame::do_layout()
 
 void wxMaximaFrame::SetupMenu()
 {
-  MenuBar = new wxMenuBar();
+  m_MenuBar = new wxMenuBar();
 
 #if defined __WXGTK20__
   wxMenuItem *tmp_menu_item;
@@ -184,521 +184,521 @@ void wxMaximaFrame::SetupMenu()
 #endif
 
   // File menu
-  FileMenu = new wxMenu;
+  m_FileMenu = new wxMenu;
 #if defined __WXMAC__
-  FileMenu->Append(mac_newId, _("New\tCtrl-N"),
+  m_FileMenu->Append(mac_newId, _("New\tCtrl-N"),
 			     _("Open a new window"));
 #else
-  APPEND_MENU_ITEM(FileMenu, menu_new_id, _("New\tCtrl-N"),
+  APPEND_MENU_ITEM(m_FileMenu, menu_new_id, _("New\tCtrl-N"),
 		   _("Open a new window"), wxT("gtk-new"));
 #endif
-  APPEND_MENU_ITEM(FileMenu, menu_open_id, _("&Open...\tCtrl-O"),
+  APPEND_MENU_ITEM(m_FileMenu, menu_open_id, _("&Open...\tCtrl-O"),
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
-  FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
+  m_FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
 #if defined __WXMAC__
-  FileMenu->AppendSeparator();
-  FileMenu->Append(mac_closeId, _("Close\tCtrl-W"),
+  m_FileMenu->AppendSeparator();
+  m_FileMenu->Append(mac_closeId, _("Close\tCtrl-W"),
            _("Close window"), wxITEM_NORMAL);
 #endif
-  APPEND_MENU_ITEM(FileMenu, menu_save_id, _("&Save\tCtrl-S"),
+  APPEND_MENU_ITEM(m_FileMenu, menu_save_id, _("&Save\tCtrl-S"),
                    _("Save document"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(FileMenu, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
+  APPEND_MENU_ITEM(m_FileMenu, menu_save_as_id, _("Save As...\tShift-Ctrl-S"),
 		   _("Save document as"), wxT("gtk-save"));
-  FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
+  m_FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl-L"),
                              _("Load a Maxima package file"), wxITEM_NORMAL);
-  FileMenu->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
+  m_FileMenu->Append(menu_batch_id, _("&Batch File...\tCtrl-B"),
                              _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
-  FileMenu->Append(menu_export_html, _("&Export..."),
+  m_FileMenu->Append(menu_export_html, _("&Export..."),
                    _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
-  FileMenu->AppendSeparator();
-  APPEND_MENU_ITEM(FileMenu, wxID_PRINT, _("&Print...\tCtrl-P"),
+  m_FileMenu->AppendSeparator();
+  APPEND_MENU_ITEM(m_FileMenu, wxID_PRINT, _("&Print...\tCtrl-P"),
                    _("Print document"), wxT("gtk-print"));
 
-  FileMenu->AppendSeparator();
-  APPEND_MENU_ITEM(FileMenu, wxID_EXIT, _("E&xit\tCtrl-Q"),
+  m_FileMenu->AppendSeparator();
+  APPEND_MENU_ITEM(m_FileMenu, wxID_EXIT, _("E&xit\tCtrl-Q"),
                    _("Exit wxMaxima"), wxT("gtk-quit"));
-  MenuBar->Append(FileMenu, _("&File"));
+  m_MenuBar->Append(m_FileMenu, _("&File"));
 
-  EditMenu = new wxMenu;
-  EditMenu->Append(menu_undo, _("Undo\tCtrl-Z"),
+  m_EditMenu = new wxMenu;
+  m_EditMenu->Append(menu_undo, _("Undo\tCtrl-Z"),
                              _("Undo last change"),
                              wxITEM_NORMAL);
-  EditMenu->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
+  m_EditMenu->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
                              _("Redo last change"),
                              wxITEM_NORMAL);
-  EditMenu->AppendSeparator();
-  EditMenu->Append(menu_cut, _("Cut\tCtrl-X"),
+  m_EditMenu->AppendSeparator();
+  m_EditMenu->Append(menu_cut, _("Cut\tCtrl-X"),
                              _("Cut selection"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(EditMenu, menu_copy_from_console, _("&Copy\tCtrl-C"),
+  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_console, _("&Copy\tCtrl-C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl-Shift-C"),
+  m_EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl-Shift-C"),
                              _("Copy selection from document as text"),
                              wxITEM_NORMAL);
-  EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
+  m_EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
                                   _("Copy selection from document in LaTeX format"),
                                   wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
-  EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
+  m_EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
                              _("Copy selection from document as an image"),
                              wxITEM_NORMAL);
 #endif
-  EditMenu->Append(menu_paste, _("Paste\tCtrl-V"),
+  m_EditMenu->Append(menu_paste, _("Paste\tCtrl-V"),
                              _("Paste text from clipboard"),
                              wxITEM_NORMAL);
 
-  EditMenu->AppendSeparator();
-  EditMenu->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
-  EditMenu->AppendSeparator();
-  EditMenu->Append(menu_select_all, _("Select All\tCtrl-A"),
+  m_EditMenu->AppendSeparator();
+  m_EditMenu->Append(menu_edit_find, _("Find\tCtrl-F"), _("Find and replace"), wxITEM_NORMAL);
+  m_EditMenu->AppendSeparator();
+  m_EditMenu->Append(menu_select_all, _("Select All\tCtrl-A"),
                              _("Select all"),
                              wxITEM_NORMAL);
-  EditMenu->Append(menu_copy_to_file, _("Save Selection to Image..."),
+  m_EditMenu->Append(menu_copy_to_file, _("Save Selection to Image..."),
                              _("Save selection from document to an image file"),
                              wxITEM_NORMAL);
 
-  EditMenu->AppendSeparator();
-  APPEND_MENU_ITEM(EditMenu, menu_zoom_in, _("Zoom &In\tAlt-I"),
+  m_EditMenu->AppendSeparator();
+  APPEND_MENU_ITEM(m_EditMenu, menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(EditMenu, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
+  APPEND_MENU_ITEM(m_EditMenu, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
-  edit_zoom_sub = new wxMenu;
-  edit_zoom_sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
-  edit_zoom_sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
-  edit_zoom_sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
-  edit_zoom_sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
-  edit_zoom_sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
-  edit_zoom_sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub = new wxMenu;
+  m_Edit_Zoom_Sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
-  EditMenu->Append(wxNewId(), _("Set Zoom"), edit_zoom_sub, _("Set Zoom"));
-  EditMenu->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+  m_EditMenu->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
+  m_EditMenu->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"),
                              wxITEM_NORMAL);
-  EditMenu->AppendSeparator();
+  m_EditMenu->AppendSeparator();
 #if defined __WXMAC__
-  APPEND_MENU_ITEM(EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
+  APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #else
-  APPEND_MENU_ITEM(EditMenu, wxID_PREFERENCES, _("C&onfigure"),
+  APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("C&onfigure"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #endif
-  MenuBar->Append(EditMenu, _("&Edit"));
+  m_MenuBar->Append(m_EditMenu, _("&Edit"));
 
   // Cell menu
-  CellMenu = new wxMenu;
-  CellMenu->Append(menu_evaluate, _("Evaluate Cell(s)"),
+  m_CellMenu = new wxMenu;
+  m_CellMenu->Append(menu_evaluate, _("Evaluate Cell(s)"),
                              _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-  CellMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
+  m_CellMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl-R"),
                                _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
-  CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
+  m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                                _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  CellMenu->Append(menu_remove_output, _("Remove All Output"),
+  m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
                             _("Remove output from input cells"), wxITEM_NORMAL);
-  CellMenu->AppendSeparator();
-  CellMenu->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
+  m_CellMenu->AppendSeparator();
+  m_CellMenu->Append(menu_insert_previous_input, _("Copy Previous Input\tCtrl-I"),
                              _("Create a new cell with previous input"), wxITEM_NORMAL);
-  CellMenu->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl-U"),
+  m_CellMenu->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl-U"),
                              _("Create a new cell with previous output"), wxITEM_NORMAL);
-  CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
+  m_CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl-K"),
                              _("Complete word"), wxITEM_NORMAL);
-  CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
+  m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl-Shift-K"),
                              _("Show function template"), wxITEM_NORMAL);
-  CellMenu->AppendSeparator();
-  CellMenu->Append(menu_insert_input, _("Insert Input &Cell"),
+  m_CellMenu->AppendSeparator();
+  m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell"),
                              _("Insert a new input cell"));
-  CellMenu->Append(menu_add_comment, _("Insert &Text Cell\tCtrl-1"),
+  m_CellMenu->Append(menu_add_comment, _("Insert &Text Cell\tCtrl-1"),
                              _("Insert a new text cell"));
-  CellMenu->Append(menu_add_title, _("Insert T&itle Cell\tCtrl-2"),
+  m_CellMenu->Append(menu_add_title, _("Insert T&itle Cell\tCtrl-2"),
                              _("Insert a new title cell"));
-  CellMenu->Append(menu_add_section, _("Insert &Section Cell\tCtrl-3"),
+  m_CellMenu->Append(menu_add_section, _("Insert &Section Cell\tCtrl-3"),
                              _("Insert a new section cell"));
-  CellMenu->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
+  m_CellMenu->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
                              _("Insert a new subsection cell"));
-  CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
+  m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                              _("Insert a page break"));
-  CellMenu->Append(menu_insert_image, _("Insert Image..."),
+  m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
                              _("Insert image"), wxITEM_NORMAL);
-  CellMenu->AppendSeparator();
-  CellMenu->Append(menu_fold_all_cells, _("Fold All\tCtrl-Alt-["),
+  m_CellMenu->AppendSeparator();
+  m_CellMenu->Append(menu_fold_all_cells, _("Fold All\tCtrl-Alt-["),
                               _("Fold all sections"), wxITEM_NORMAL);
-  CellMenu->Append(menu_unfold_all_cells, _("Unfold All\tCtrl-Alt-]"),
+  m_CellMenu->Append(menu_unfold_all_cells, _("Unfold All\tCtrl-Alt-]"),
                               _("Unfold all folded sections"), wxITEM_NORMAL);
-  CellMenu->AppendSeparator();
-  CellMenu->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
+  m_CellMenu->AppendSeparator();
+  m_CellMenu->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
                              _("Recall previous command from history"), wxITEM_NORMAL);
-  CellMenu->Append(menu_history_next, _("Next Command\tAlt-Down"),
+  m_CellMenu->Append(menu_history_next, _("Next Command\tAlt-Down"),
                              _("Recall next command from history"), wxITEM_NORMAL);
 
-  MenuBar->Append(CellMenu, _("Ce&ll"));
+  m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
 
   // Maxima menu
-  MaximaMenu = new wxMenu;
+  m_MaximaMenu = new wxMenu;
 
   // panes
-  edit_panes_sub = new wxMenu;
-  edit_panes_sub->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
-  edit_panes_sub->AppendSeparator();
-  edit_panes_sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
-  edit_panes_sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
-  edit_panes_sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
-  edit_panes_sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
-  edit_panes_sub->AppendSeparator();
-  edit_panes_sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
-  MaximaMenu->Append(wxNewId(), _("Panes"), edit_panes_sub);
+  m_Maxima_Panes_Sub = new wxMenu;
+  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
+  m_MaximaMenu->Append(wxNewId(), _("Panes"), m_Maxima_Panes_Sub);
 
-  MaximaMenu->AppendSeparator();
+  m_MaximaMenu->AppendSeparator();
 
 
 #if defined (__WXMAC__)
-  APPEND_MENU_ITEM(MaximaMenu, menu_interrupt_id,
+  APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl-."), // command-. interrupts (mac standard)
                    _("Interrupt current computation"), wxT("gtk-stop"));
 #else
-  APPEND_MENU_ITEM(MaximaMenu, menu_interrupt_id,
+  APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl-G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
 #endif
-  APPEND_MENU_ITEM(MaximaMenu, menu_restart_id,
+  APPEND_MENU_ITEM(m_MaximaMenu, menu_restart_id,
                    _("&Restart Maxima"), _("Restart Maxima"), wxT("gtk-refresh"));
-  MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
+  m_MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
                              _("Delete all values from memory"), wxITEM_NORMAL);
-  APPEND_MENU_ITEM(MaximaMenu, menu_add_path, _("Add to &Path..."),
+  APPEND_MENU_ITEM(m_MaximaMenu, menu_add_path, _("Add to &Path..."),
                    _("Add a directory to search path"), wxT("gtk-add"));
 
-  MaximaMenu->AppendSeparator();
-  MaximaMenu->Append(menu_functions, _("Show &Functions"),
+  m_MaximaMenu->AppendSeparator();
+  m_MaximaMenu->Append(menu_functions, _("Show &Functions"),
                              _("Show defined functions"), wxITEM_NORMAL);
-  MaximaMenu->Append(menu_fun_def, _("Show &Definition..."),
+  m_MaximaMenu->Append(menu_fun_def, _("Show &Definition..."),
                              _("Show definition of a function"),
                              wxITEM_NORMAL);
-  MaximaMenu->Append(menu_variables, _("Show &Variables"),
+  m_MaximaMenu->Append(menu_variables, _("Show &Variables"),
                              _("Show defined variables"), wxITEM_NORMAL);
-  MaximaMenu->Append(menu_clear_fun, _("Delete F&unction..."),
+  m_MaximaMenu->Append(menu_clear_fun, _("Delete F&unction..."),
                              _("Delete a function"), wxITEM_NORMAL);
-  MaximaMenu->Append(menu_clear_var, _("Delete V&ariable..."),
+  m_MaximaMenu->Append(menu_clear_var, _("Delete V&ariable..."),
                              _("Delete a variable"), wxITEM_NORMAL);
 
-  MaximaMenu->AppendSeparator();
-  MaximaMenu->Append(menu_time, _("Toggle &Time Display"),
+  m_MaximaMenu->AppendSeparator();
+  m_MaximaMenu->Append(menu_time, _("Toggle &Time Display"),
                              _("Display time used for evaluation"),
                              wxITEM_NORMAL);
-  MaximaMenu->Append(menu_display, _("Change &2d Display"),
+  m_MaximaMenu->Append(menu_display, _("Change &2d Display"),
                              _("Change the 2d display algorithm used to display math output"),
 			     wxITEM_NORMAL);
-  MaximaMenu->Append(menu_texform, _("Display Te&X Form"),
+  m_MaximaMenu->Append(menu_texform, _("Display Te&X Form"),
                              _("Display last result in TeX form"), wxITEM_NORMAL);
-  MenuBar->Append(MaximaMenu, _("&Maxima"));
+  m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu
-  EquationsMenu = new wxMenu;
-  EquationsMenu->Append(menu_solve, _("&Solve..."),
+  m_EquationsMenu = new wxMenu;
+  m_EquationsMenu->Append(menu_solve, _("&Solve..."),
                              _("Solve equation(s)"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
+  m_EquationsMenu->Append(menu_solve_to_poly, _("Solve (to_poly)..."),
                              _("Solve equation(s) with to_poly_solve"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_solve_num, _("&Find Root..."),
+  m_EquationsMenu->Append(menu_solve_num, _("&Find Root..."),
                              _("Find a root of an equation on an interval"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_allroots, _("Roots of &Polynomial"),
+  m_EquationsMenu->Append(menu_allroots, _("Roots of &Polynomial"),
                              _("Find all roots of a polynomial"),
                              wxITEM_NORMAL);
-  EquationsMenu->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
+  m_EquationsMenu->Append(menu_bfallroots, _("Roots of Polynomial (bfloat)"),
                                _("Find all roots of a polynomial (bfloat)"),
                                wxITEM_NORMAL);
-  EquationsMenu->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
+  m_EquationsMenu->Append(menu_realroots, _("&Roots of Polynomial (Real)"),
                              _("Find real roots of a polynomial"),
                              wxITEM_NORMAL);
-  EquationsMenu->Append(menu_solve_lin, _("Solve &Linear System..."),
+  m_EquationsMenu->Append(menu_solve_lin, _("Solve &Linear System..."),
                              _("Solve linear system of equations"),
                              wxITEM_NORMAL);
-  EquationsMenu->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
+  m_EquationsMenu->Append(menu_solve_algsys, _("Solve &Algebraic System..."),
                              _("Solve algebraic system of equations"),
                              wxITEM_NORMAL);
-  EquationsMenu->Append(menu_eliminate, _("&Eliminate Variable..."),
+  m_EquationsMenu->Append(menu_eliminate, _("&Eliminate Variable..."),
                              _("Eliminate a variable from a system "
                                "of equations"),
                              wxITEM_NORMAL);
-  EquationsMenu->AppendSeparator();
-  EquationsMenu->Append(menu_solve_ode, _("Solve &ODE..."),
+  m_EquationsMenu->AppendSeparator();
+  m_EquationsMenu->Append(menu_solve_ode, _("Solve &ODE..."),
                              _("Solve ordinary differential equation "
                                "of maximum degree 2"),
                              wxITEM_NORMAL);
-  EquationsMenu->Append(menu_ivp_1, _("Initial Value Problem (&1)..."),
+  m_EquationsMenu->Append(menu_ivp_1, _("Initial Value Problem (&1)..."),
                              _("Solve initial value problem for first"
                                " degree ODE"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_ivp_2, _("Initial Value Problem (&2)..."),
+  m_EquationsMenu->Append(menu_ivp_2, _("Initial Value Problem (&2)..."),
                              _("Solve initial value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_bvp, _("&Boundary Value Problem..."),
+  m_EquationsMenu->Append(menu_bvp, _("&Boundary Value Problem..."),
                              _("Solve boundary value problem for second "
                                "degree ODE"), wxITEM_NORMAL);
-  EquationsMenu->AppendSeparator();
-  EquationsMenu->Append(menu_solve_de, _("Solve ODE with Lapla&ce..."),
+  m_EquationsMenu->AppendSeparator();
+  m_EquationsMenu->Append(menu_solve_de, _("Solve ODE with Lapla&ce..."),
                              _("Solve ordinary differential equations "
                                "with Laplace transformation"), wxITEM_NORMAL);
-  EquationsMenu->Append(menu_atvalue, _("A&t Value..."),
+  m_EquationsMenu->Append(menu_atvalue, _("A&t Value..."),
                              _("Setup atvalues for solving ODE with "
                                "Laplace transformation"), wxITEM_NORMAL);
-  MenuBar->Append(EquationsMenu, _("E&quations"));
+  m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
 
   // Algebra menu
-  AlgebraMenu = new wxMenu;
-  AlgebraMenu->Append(menu_gen_mat, _("&Generate Matrix..."),
+  m_Algebra_Menu = new wxMenu;
+  m_Algebra_Menu->Append(menu_gen_mat, _("&Generate Matrix..."),
                              _("Generate a matrix from a 2-dimensional array"),
                              wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
+  m_Algebra_Menu->Append(menu_gen_mat_lambda, _("Generate Matrix from Expression..."),
                                _("Generate a matrix from a lambda expression"),
                                wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_enter_mat, _("&Enter Matrix..."),
+  m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                              _("Enter a matrix"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_invert_mat, _("&Invert Matrix"),
+  m_Algebra_Menu->Append(menu_invert_mat, _("&Invert Matrix"),
                              _("Compute the inverse of a matrix"),
                              wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_cpoly, _("&Characteristic Polynomial..."),
+  m_Algebra_Menu->Append(menu_cpoly, _("&Characteristic Polynomial..."),
                              _("Compute the characteristic polynomial "
                                "of a matrix"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_determinant, _("&Determinant"),
+  m_Algebra_Menu->Append(menu_determinant, _("&Determinant"),
                              _("Compute the determinant of a matrix"),
                              wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_eigen, _("Eigen&values"),
+  m_Algebra_Menu->Append(menu_eigen, _("Eigen&values"),
                              _("Find eigenvalues of a matrix"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_eigvect, _("Eige&nvectors"),
+  m_Algebra_Menu->Append(menu_eigvect, _("Eige&nvectors"),
                              _("Find eigenvectors of a matrix"),
                              wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
+  m_Algebra_Menu->Append(menu_adjoint_mat, _("Ad&joint Matrix"),
                              _("Compute the adjoint matrix"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_transpose, _("&Transpose Matrix"),
+  m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
                              _("Transpose a matrix"), wxITEM_NORMAL);
-  AlgebraMenu->AppendSeparator();
-  AlgebraMenu->Append(menu_make_list, _("Make &List..."),
+  m_Algebra_Menu->AppendSeparator();
+  m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
                              _("Make list from expression"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_apply, _("&Apply to List..."),
+  m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
                              _("Apply function to a list"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_map, _("&Map to List..."),
+  m_Algebra_Menu->Append(menu_map, _("&Map to List..."),
                              _("Map function to a list"), wxITEM_NORMAL);
-  AlgebraMenu->Append(menu_map_mat, _("Ma&p to Matrix..."),
+  m_Algebra_Menu->Append(menu_map_mat, _("Ma&p to Matrix..."),
                              _("Map function to a matrix"), wxITEM_NORMAL);
-  MenuBar->Append(AlgebraMenu, _("&Algebra"));
+  m_MenuBar->Append(m_Algebra_Menu, _("&Algebra"));
 
   // Calculus menu
-  CalculusMenu = new wxMenu;
-  CalculusMenu->Append(menu_integrate, _("&Integrate..."),
+  m_CalculusMenu = new wxMenu;
+  m_CalculusMenu->Append(menu_integrate, _("&Integrate..."),
                              _("Integrate expression"), wxITEM_NORMAL);
-  CalculusMenu->Append(menu_risch, _("Risch Integration..."),
+  m_CalculusMenu->Append(menu_risch, _("Risch Integration..."),
                              _("Integrate expression with Risch algorithm"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_change_var, _("C&hange Variable..."),
+  m_CalculusMenu->Append(menu_change_var, _("C&hange Variable..."),
                              _("Change variable in integral or sum"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_diff, _("&Differentiate..."),
+  m_CalculusMenu->Append(menu_diff, _("&Differentiate..."),
                              _("Differentiate expression"), wxITEM_NORMAL);
-  CalculusMenu->Append(menu_limit, _("Find &Limit..."),
+  m_CalculusMenu->Append(menu_limit, _("Find &Limit..."),
                              _("Find a limit of an expression"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_lbfgs, _("Find Minimum..."),
+  m_CalculusMenu->Append(menu_lbfgs, _("Find Minimum..."),
                                _("Find a (unconstrained) minimum of an expression"),
                                wxITEM_NORMAL);
-  CalculusMenu->Append(menu_series, _("Get &Series..."),
+  m_CalculusMenu->Append(menu_series, _("Get &Series..."),
                              _("Get the Taylor or power series of expression"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_pade, _("P&ade Approximation..."),
+  m_CalculusMenu->Append(menu_pade, _("P&ade Approximation..."),
                              _("Pade approximation of a Taylor series"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_sum, _("Calculate Su&m..."),
+  m_CalculusMenu->Append(menu_sum, _("Calculate Su&m..."),
                              _("Calculate sums"), wxITEM_NORMAL);
-  CalculusMenu->Append(menu_product, _("Calculate &Product..."),
+  m_CalculusMenu->Append(menu_product, _("Calculate &Product..."),
                              _("Calculate products"), wxITEM_NORMAL);
-  CalculusMenu->Append(menu_laplace, _("Laplace &Transform..."),
+  m_CalculusMenu->Append(menu_laplace, _("Laplace &Transform..."),
                              _("Get Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_ilt, _("Inverse Laplace T&ransform..."),
+  m_CalculusMenu->Append(menu_ilt, _("Inverse Laplace T&ransform..."),
                              _("Get inverse Laplace transformation of an expression"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_gcd, _("&Greatest Common Divisor..."),
+  m_CalculusMenu->Append(menu_gcd, _("&Greatest Common Divisor..."),
                              _("Compute the greatest common divisor"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_lcm, _("Least Common Multiple..."),
+  m_CalculusMenu->Append(menu_lcm, _("Least Common Multiple..."),
                              _("Compute the least common multiple "
                                "(do load(functs) before using)"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_divide, _("Di&vide Polynomials..."),
+  m_CalculusMenu->Append(menu_divide, _("Di&vide Polynomials..."),
                              _("Divide numbers or polynomials"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_partfrac, _("Partial &Fractions..."),
+  m_CalculusMenu->Append(menu_partfrac, _("Partial &Fractions..."),
                              _("Decompose rational function to partial fractions"),
                              wxITEM_NORMAL);
-  CalculusMenu->Append(menu_continued_fraction, _("&Continued Fraction"),
+  m_CalculusMenu->Append(menu_continued_fraction, _("&Continued Fraction"),
                              _("Compute continued fraction of a value"),
                              wxITEM_NORMAL);
-  MenuBar->Append(CalculusMenu, _("&Calculus"));
+  m_MenuBar->Append(m_CalculusMenu, _("&Calculus"));
 
   // Simplify menu
-  SimplifyMenu = new wxMenu;
-  SimplifyMenu->Append(menu_ratsimp, _("&Simplify Expression"),
+  m_SimplifyMenu = new wxMenu;
+  m_SimplifyMenu->Append(menu_ratsimp, _("&Simplify Expression"),
                              _("Simplify rational expression"), wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_radsimp, _("Simplify &Radicals"),
+  m_SimplifyMenu->Append(menu_radsimp, _("Simplify &Radicals"),
                              _("Simplify expression containing radicals"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_factor, _("&Factor Expression"),
+  m_SimplifyMenu->Append(menu_factor, _("&Factor Expression"),
                              _("Factor an expression"), wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_gfactor, _("Factor Complex"),
+  m_SimplifyMenu->Append(menu_gfactor, _("Factor Complex"),
                              _("Factor an expression in Gaussian numbers"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
+  m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                              _("Expand an expression"), wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_logexpand, _("Expand Logarithms"),
+  m_SimplifyMenu->Append(menu_logexpand, _("Expand Logarithms"),
                              _("Convert logarithm of product to sum of logarithms"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
+  m_SimplifyMenu->Append(menu_logcontract, _("Contract Logarithms"),
                              _("Convert sum of logarithms to logarithm of product"),
                              wxITEM_NORMAL);
-  SimplifyMenu->AppendSeparator();
+  m_SimplifyMenu->AppendSeparator();
   // Factorials and gamma 
-  Simplify_Gamma_Sub = new wxMenu;
-  Simplify_Gamma_Sub->Append(menu_to_fact, _("Convert to &Factorials"),
+  m_Simplify_Gamma_Sub = new wxMenu;
+  m_Simplify_Gamma_Sub->Append(menu_to_fact, _("Convert to &Factorials"),
                                   _("Convert binomials, beta and gamma function to factorials"),
                                   wxITEM_NORMAL);
-  Simplify_Gamma_Sub->Append(menu_to_gamma, _("Convert to &Gamma"),
+  m_Simplify_Gamma_Sub->Append(menu_to_gamma, _("Convert to &Gamma"),
                                   _("Convert binomials, factorials and beta function to gamma function"),
                                   wxITEM_NORMAL);
-  Simplify_Gamma_Sub->Append(menu_factsimp, _("&Simplify Factorials"),
+  m_Simplify_Gamma_Sub->Append(menu_factsimp, _("&Simplify Factorials"),
                                   _("Simplify an expression containing factorials"),
                                   wxITEM_NORMAL);
-  Simplify_Gamma_Sub->Append(menu_factcomb, _("&Combine Factorials"),
+  m_Simplify_Gamma_Sub->Append(menu_factcomb, _("&Combine Factorials"),
                                   _("Combine factorials in an expression"),
                                   wxITEM_NORMAL);
-  SimplifyMenu->Append(wxNewId(), _("Factorials and &Gamma"),
-                             Simplify_Gamma_Sub,
+  m_SimplifyMenu->Append(wxNewId(), _("Factorials and &Gamma"),
+                             m_Simplify_Gamma_Sub,
                              _("Functions for simplifying factorials and gamma function"));
   // Trigonometric submenu
-  Simplify_Trig_Sub = new wxMenu;
-  Simplify_Trig_Sub->Append(menu_trigsimp, _("&Simplify Trigonometric"),
+  m_Simplify_Trig_Sub = new wxMenu;
+  m_Simplify_Trig_Sub->Append(menu_trigsimp, _("&Simplify Trigonometric"),
                                   _("Simplify trigonometric expression"),
                                   wxITEM_NORMAL);
-  Simplify_Trig_Sub->Append(menu_trigreduce, _("&Reduce Trigonometric"),
+  m_Simplify_Trig_Sub->Append(menu_trigreduce, _("&Reduce Trigonometric"),
                                   _("Reduce trigonometric expression"),
                                   wxITEM_NORMAL);
-  Simplify_Trig_Sub->Append(menu_trigexpand, _("&Expand Trigonometric"),
+  m_Simplify_Trig_Sub->Append(menu_trigexpand, _("&Expand Trigonometric"),
                                   _("Expand trigonometric expression"),
                                   wxITEM_NORMAL);
-  Simplify_Trig_Sub->Append(menu_trigrat, _("&Canonical Form"),
+  m_Simplify_Trig_Sub->Append(menu_trigrat, _("&Canonical Form"),
                                   _("Convert trigonometric expression to canonical quasilinear form"),
                                   wxITEM_NORMAL);
-  SimplifyMenu->Append(wxNewId(), _("&Trigonometric Simplification"),
-                             Simplify_Trig_Sub,
+  m_SimplifyMenu->Append(wxNewId(), _("&Trigonometric Simplification"),
+                             m_Simplify_Trig_Sub,
                              _("Functions for simplifying trigonometric expressions"));
   // Complex submenu
-  Simplify_Complex_Sub = new wxMenu;
-  Simplify_Complex_Sub->Append(menu_rectform, _("Convert to &Rectform"),
+  m_Simplify_Complex_Sub = new wxMenu;
+  m_Simplify_Complex_Sub->Append(menu_rectform, _("Convert to &Rectform"),
                                   _("Convert complex expression to rect form"),
                                   wxITEM_NORMAL);
-  Simplify_Complex_Sub->Append(menu_polarform, _("Convert to &Polarform"),
+  m_Simplify_Complex_Sub->Append(menu_polarform, _("Convert to &Polarform"),
                                   _("Convert complex expression to polar form"),
                                   wxITEM_NORMAL);
-  Simplify_Complex_Sub->Append(menu_realpart, _("Get Real P&art"),
+  m_Simplify_Complex_Sub->Append(menu_realpart, _("Get Real P&art"),
                                   _("Get the real part of complex expression"),
                                   wxITEM_NORMAL);
-  Simplify_Complex_Sub->Append(menu_imagpart, _("Get &Imaginary Part"),
+  m_Simplify_Complex_Sub->Append(menu_imagpart, _("Get &Imaginary Part"),
                                   _("Get the imaginary part of complex expression"),
                                   wxITEM_NORMAL);
-  Simplify_Complex_Sub->Append(menu_demoivre, _("&Demoivre"),
+  m_Simplify_Complex_Sub->Append(menu_demoivre, _("&Demoivre"),
                                   _("Convert exponential function of imaginary argument to trigonometric form"),
 				  wxITEM_NORMAL);
-  Simplify_Complex_Sub->Append(menu_exponentialize, _("&Exponentialize"),
+  m_Simplify_Complex_Sub->Append(menu_exponentialize, _("&Exponentialize"),
                                   _("Convert trigonometric functions to exponential form"),
 				  wxITEM_NORMAL);
-  SimplifyMenu->Append(wxNewId(), _("&Complex Simplification"),
-                             Simplify_Complex_Sub,
+  m_SimplifyMenu->Append(wxNewId(), _("&Complex Simplification"),
+                             m_Simplify_Complex_Sub,
                              _("Functions for complex simplification"));
-  SimplifyMenu->AppendSeparator();
-  SimplifyMenu->Append(menu_subst, _("Substitute..."),
+  m_SimplifyMenu->AppendSeparator();
+  m_SimplifyMenu->Append(menu_subst, _("Substitute..."),
                              _("Make substitution in expression"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
+  m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
                              _("Evaluate all noun forms in expression"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_talg, _("Toggle &Algebraic Flag"),
+  m_SimplifyMenu->Append(menu_talg, _("Toggle &Algebraic Flag"),
                              _("Toggle algebraic flag"), wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_tellrat, _("Add Algebraic E&quality..."),
+  m_SimplifyMenu->Append(menu_tellrat, _("Add Algebraic E&quality..."),
                              _("Add equality to the rational simplifier"),
                              wxITEM_NORMAL);
-  SimplifyMenu->Append(menu_modulus, _("&Modulus Computation..."),
+  m_SimplifyMenu->Append(menu_modulus, _("&Modulus Computation..."),
                              _("Setup modulus computation"), wxITEM_NORMAL);
-  MenuBar->Append(SimplifyMenu, _("&Simplify"));
+  m_MenuBar->Append(m_SimplifyMenu, _("&Simplify"));
 
   // Plot menu
-  PlotMenu = new wxMenu;
-  PlotMenu->Append(gp_plot2, _("Plot &2d..."),
+  m_PlotMenu = new wxMenu;
+  m_PlotMenu->Append(gp_plot2, _("Plot &2d..."),
                              _("Plot in 2 dimensions"), wxITEM_NORMAL);
-  PlotMenu->Append(gp_plot3, _("Plot &3d..."),
+  m_PlotMenu->Append(gp_plot3, _("Plot &3d..."),
                              _("Plot in 3 dimensions"), wxITEM_NORMAL);
-  PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
+  m_PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
                              _("Set plot format"), wxITEM_NORMAL);
-  MenuBar->Append(PlotMenu, _("&Plot"));
+  m_MenuBar->Append(m_PlotMenu, _("&Plot"));
 
   // Numeric menu
-  NumericMenu = new wxMenu;
-  NumericMenu->Append(menu_num_out, _("Toggle &Numeric Output"),
+  m_NumericMenu = new wxMenu;
+  m_NumericMenu->Append(menu_num_out, _("Toggle &Numeric Output"),
                              _("Toggle numeric output"), wxITEM_NORMAL);
-  NumericMenu->Append(menu_to_float, _("To &Float"),
+  m_NumericMenu->Append(menu_to_float, _("To &Float"),
                              _("Calculate float value of the last result"),
                              wxITEM_NORMAL);
-  NumericMenu->Append(menu_to_bfloat, _("To &Bigfloat"),
+  m_NumericMenu->Append(menu_to_bfloat, _("To &Bigfloat"),
                              _("Calculate bigfloat value of the last result"),
                              wxITEM_NORMAL);
-  NumericMenu->Append(menu_to_numer, _("To Numeri&c\tCtrl+Shift+N"),
+  m_NumericMenu->Append(menu_to_numer, _("To Numeri&c\tCtrl+Shift+N"),
                              _("Calculate numeric value of the last result"),
                              wxITEM_NORMAL);
-  NumericMenu->Append(menu_set_precision, _("Set &Precision..."),
+  m_NumericMenu->Append(menu_set_precision, _("Set &Precision..."),
                              _("Set bigfloat precision"),
                              wxITEM_NORMAL);
-  MenuBar->Append(NumericMenu, _("&Numeric"));
+  m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
 
   // Help menu
-  HelpMenu = new wxMenu;
+  m_HelpMenu = new wxMenu;
 #if defined __WXMAC__
-  HelpMenu->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
+  m_HelpMenu->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
                              _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
-  APPEND_MENU_ITEM(HelpMenu, wxID_HELP, _("wxMaxima &Help\tF1"),
+  APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("wxMaxima &Help\tF1"),
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
-  HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
+  m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
                              _("The offline manual of maxima"),
                              wxITEM_NORMAL);
-  HelpMenu->Append(menu_example, _("&Example..."),
+  m_HelpMenu->Append(menu_example, _("&Example..."),
                              _("Show an example of usage"),
                              wxITEM_NORMAL);
-  HelpMenu->Append(menu_apropos, _("&Apropos..."),
+  m_HelpMenu->Append(menu_apropos, _("&Apropos..."),
                              _("Show commands similar to"),
                              wxITEM_NORMAL);
-  APPEND_MENU_ITEM(HelpMenu, menu_show_tip, _("Show &Tips..."),
+  APPEND_MENU_ITEM(m_HelpMenu, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
-  HelpMenu->AppendSeparator();
-  HelpMenu->Append(menu_help_tutorials, _("Tutorials"),
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->Append(menu_help_tutorials, _("Tutorials"),
                              _("Online tutorials"), wxITEM_NORMAL);
-  HelpMenu->AppendSeparator();
-  HelpMenu->Append(menu_build_info, _("Build &Info"),
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->Append(menu_build_info, _("Build &Info"),
                              _("Info about Maxima build"), wxITEM_NORMAL);
-  HelpMenu->Append(menu_bug_report, _("&Bug Report"),
+  m_HelpMenu->Append(menu_bug_report, _("&Bug Report"),
                              _("Report bug"), wxITEM_NORMAL);
-  HelpMenu->AppendSeparator();
-  HelpMenu->Append(menu_check_updates, _("Check for Updates"),
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
                              _("Check if a newer version of wxMaxima/Maxima exist."),
                              wxITEM_NORMAL);
 #ifndef __WXMAC__
-  HelpMenu->AppendSeparator();
+  m_HelpMenu->AppendSeparator();
 #endif
-  APPEND_MENU_ITEM(HelpMenu, wxID_ABOUT,
+  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
 #ifndef __WXMAC__
           _("About"),
 #else
           _("About wxMaxima"),
 #endif
           _("About wxMaxima"), wxT("stock_about"));
-  MenuBar->Append(HelpMenu, _("&Help"));
+  m_MenuBar->Append(m_HelpMenu, _("&Help"));
 
-  SetMenuBar(MenuBar);
+  SetMenuBar(m_MenuBar);
 
 #undef APPEND_MENU_ITEM
 

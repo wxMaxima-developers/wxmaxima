@@ -35,3 +35,12 @@ This naturally depends on what you want to archieve.
    are handled by the class wxMaxima.
 One of the most important concepts that are important to know is that
 everything that is displayed in 
+
+Naming rules
+------------
+
+Keeping the code more or less homogenous increases the readability. In
+order to archieve that wxMaxima uses a few naming rules:
+ - The names of member variables are prefixed with "m_".
+ - The names of member functions (aka methods) are written in CamelCase.
+ 
