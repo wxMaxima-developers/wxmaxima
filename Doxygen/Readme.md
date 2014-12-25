@@ -11,9 +11,9 @@ How to get documentation for the code?
  - make sure these two utilities are in the search path of your
    system
    
- - cd into the Doxygen directory of the wxMaxima sources and type:
+ - cd into the [Doxygen](../) directory of the [wxMaxima sources](../../) and type:
 
-    make
+        make
 
 If your system is set up for compiling code and the project has
 already been compiled on the current system (see the file
