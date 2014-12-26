@@ -22,17 +22,19 @@
 
 #include "MathCell.h"
 
-enum {
-  FC_NORMAL,
-  FC_CHOOSE,
-  FC_DIFF
-};
-
 class FracCell : public MathCell
 {
 public:
   FracCell();
   ~FracCell();
+
+  //! All types of fractions we supportx
+  enum FracType {
+    FC_NORMAL,
+    FC_CHOOSE,
+    FC_DIFF
+  };
+
   MathCell* Copy(bool all);
   void Destroy();
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
@@ -42,8 +44,11 @@ public:
   {
     m_fracStyle = style;
   }
+  //! Set the nummerator for the fraction
   void SetNum(MathCell* num);
+  //! Set the denominator of the fraction
   void SetDenom(MathCell* denom);
+  //! Answers the question if this is an operator by returning "true".
   bool IsOperator()
   {
     return true;
@@ -58,7 +63,9 @@ public:
   void Unbreak(bool all);
   void SetParent(MathCell *parent, bool all);
 protected:
+  //! The nummerator
   MathCell *m_num;
+  //! The denominator
   MathCell *m_denom;
   MathCell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
   MathCell *m_last1, *m_last2;

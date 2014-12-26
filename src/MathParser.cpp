@@ -49,7 +49,7 @@
 MathParser::MathParser(wxString zipfile)
 {
   m_ParserStyle = MC_TYPE_DEFAULT;
-  m_FracStyle = FC_NORMAL;
+  m_FracStyle = FracCell::FC_NORMAL;
   m_highlight = false;
   if (zipfile.Length() > 0) {
     m_fileSystem = new wxFileSystem();
@@ -213,7 +213,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
       frac->SetDenom(ParseTag(child, false));
       if (node->GetAttributes() != NULL)
       {
-        frac->SetFracStyle(FC_CHOOSE);
+        frac->SetFracStyle(FracCell::FC_CHOOSE);
       }
       frac->SetType(m_ParserStyle);
       frac->SetStyle(TS_VARIABLE);
@@ -232,7 +232,7 @@ MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
   if (child)
   {
     int fc = m_FracStyle;
-    m_FracStyle = FC_DIFF;
+    m_FracStyle = FracCell::FC_DIFF;
     diff->SetDiff(ParseTag(child, false));
     m_FracStyle = fc;
     child = child->GetNext();
@@ -928,7 +928,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
 MathCell* MathParser::ParseLine(wxString s, int style)
 {
   m_ParserStyle = style;
-  m_FracStyle = FC_NORMAL;
+  m_FracStyle = FracCell::FC_NORMAL;
   m_highlight = false;
   MathCell* cell = NULL;
 
