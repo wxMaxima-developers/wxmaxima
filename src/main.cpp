@@ -116,14 +116,13 @@ bool MyApp::OnInit()
   if (cmdLineParser.Found(wxT("o"), &file))
     NewWindow(wxString(file));
   else
-    NewWindow();
-#else
-  if (argc==2)
-    NewWindow(wxString(argv[1]));
-  else
-    NewWindow();
 #endif
-
+    {
+      if (argc==2)
+	NewWindow(wxString(argv[1]));
+      else
+	NewWindow();
+    }
   return true;
 }
 
