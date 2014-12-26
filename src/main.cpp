@@ -139,8 +139,8 @@ bool MyApp::OnInit()
     }
   else
     {
-      if (argc==2)
-	NewWindow(wxString(argv[1]));
+      if (cmdLineParser.GetParamCount()>0)
+	NewWindow(cmdLineParser.GetParam());
       else
 	NewWindow();
     }
