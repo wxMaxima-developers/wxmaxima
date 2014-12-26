@@ -85,7 +85,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_dispReadOut = false;
   m_promptSuffix = "<PROMPT-S/>";
   m_promptPrefix = "<PROMPT-P/>";
-
+  m_findDialog = NULL;
   m_firstPrompt = wxT("(%i1) ");
 
   m_client = NULL;
@@ -191,9 +191,9 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
 
 #endif
 
-///--------------------------------------------------------------------------------
-///  Startup
-///--------------------------------------------------------------------------------
+//!--------------------------------------------------------------------------------
+//  Startup
+//--------------------------------------------------------------------------------
 void wxMaxima::InitSession()
 {
   bool server = false;
@@ -260,8 +260,9 @@ void wxMaxima::FirstOutput(wxString s)
 ///  Appending stuff to output
 ///--------------------------------------------------------------------------------
 
-/***
- * ConsoleAppend adds a new line s of type to the console window. It will call
+/*! ConsoleAppend adds a new line s of type to the console window.
+ *
+ * It will call
  * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
  */
 void wxMaxima::ConsoleAppend(wxString s, int type)
@@ -397,7 +398,8 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   }
 }
 
-/**
+/*! Remove empty statements
+ *
  * We need to remove any statement which would be considered empty
  * and thus cause an error. Comments within non-empty expressions seem to
  * be fine.
@@ -502,9 +504,9 @@ void wxMaxima::SendMaxima(wxString s, bool history)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-/***
- * Convert problematic characters in buffer into something sane,
- * so that special character codes are not encountered unexpectedly
+/*! Convert problematic characters into something same
+ * 
+ * This makes sure that special character codes are not encountered unexpectedly
  * (i.e. early).
  */
 void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
@@ -516,9 +518,7 @@ void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
   }
 }
 
-/***
- * Client event is triggered when there is something we can read from
- * the socket.
+/*! Client event is triggered when there is something we can read from the socket.
  */
 void wxMaxima::ClientEvent(wxSocketEvent& event)
 {
@@ -579,7 +579,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   }
 }
 
-/***
+/*!
  * ServerEvent is triggered when maxima connects to the socket server.
  */
 void wxMaxima::ServerEvent(wxSocketEvent& event)
@@ -4185,8 +4185,8 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 
   m_console->SetActiveCell(tmp);
 }
-
-// EvaluateEvent
+//! Handle the evaluation event
+// 
 // User tried to evaluate, find out what is the case
 // Normally just add the respective groupcells to evaluationqueue
 // If there is a special case - eg sending from output section
@@ -4213,8 +4213,9 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     TryEvaluateNextInQueue();
   }
 }
-// TryEvaluateNextInQueue
-// Tries to evaluate next group cell in queue
+
+//! Tries to evaluate next group cell in queue
+//
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {

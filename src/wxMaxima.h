@@ -121,9 +121,13 @@ protected:
   void PopupMenu(wxCommandEvent& event);           //
   void StatsMenu(wxCommandEvent& event);           //
 
+  //! Is triggered when the "Find" button in the search dialog is pressed
   void OnFind(wxFindDialogEvent& event);
+  //! Is triggered when the "Close" button in the search dialog is pressed
   void OnFindClose(wxFindDialogEvent& event);
+  //! Is triggered when the "Replace" button in the search dialog is pressed
   void OnReplace(wxFindDialogEvent& event);
+  //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent& event);
 
   void SanitizeSocketBuffer(char *buffer, int length);  // fix early nulls

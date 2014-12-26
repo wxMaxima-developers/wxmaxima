@@ -137,7 +137,18 @@ public:
   //! Set the information if this cell needs to be re-evaluated by maxima
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
+  //! Replaces all occurrences of a given string
   int ReplaceAll(wxString oldString, wxString newString);
+  /*! Finds the next occurrences of a string
+
+    \param str The string to search for
+    \param down 
+     - true: search downwards
+     - false: search upwards
+    \param ignoreCase
+     - true: Case-insensitive search
+     - false: Case-sensitive search
+   */
   bool FindNext(wxString str, bool down, bool ignoreCase);
   void SetSelection(int start, int end)
   {
@@ -148,13 +159,15 @@ public:
   {
     *start = m_selectionStart; *end = m_selectionEnd;
   }
-  /*! Replace the selection with a string
+  /*! Replace the current selection with a string
 
     \todo This function sets the bool m_containsChanges to -1. I assume this should 
     read false instead.
    */
   bool ReplaceSelection(wxString oldStr, wxString newString);
+  //! Convert the current selection to a string
   wxString GetSelectionString();
+  //! Unselect everything
   void ClearSelection();
   //! Get the cursor's current position inside the cell.
   int GetCaretPosition() { return m_positionOfCaret; }

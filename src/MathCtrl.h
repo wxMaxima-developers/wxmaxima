@@ -239,8 +239,20 @@ public:
     if (recalc) {RecalculateForce(); Refresh();} }
   void CommentSelection();
   void OnMouseWheel(wxMouseEvent &ev);
+  /*! Find the next ocourrence of a string
+
+    Used by the find dialog.
+   */
   bool FindNext(wxString str, bool down, bool ignoreCase);
+  /*! Replace the current ocourrence of a string
+
+    Used by the find dialog.
+   */
   void Replace(wxString oldString, wxString newString);
+  /*! Replace all ocourrences of a string
+
+    Used by the find dialog.
+   */
   int ReplaceAll(wxString oldString, wxString newString);
   wxString GetInputAboveCaret();
   wxString GetOutputAboveCaret();

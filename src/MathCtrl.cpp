@@ -1409,16 +1409,18 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       }
       break;
 
-#ifndef wxUSE_UNICODE
     case WXK_ESCAPE:
+#ifndef wxUSE_UNICODE
       if (m_activeCell == NULL) {
         SetSelection(NULL);
         Refresh();
       }
       else
         SetHCaret(m_activeCell->GetParent()); // also refreshes
-      break;
+#else
+      event.Skip();
 #endif
+      break;
 
     default:
       event.Skip();
