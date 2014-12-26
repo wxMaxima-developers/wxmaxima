@@ -24,12 +24,12 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
-#if defined __WXMSW__
+#include <wx/msgout.h>
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
-#endif
 
 #include "wxMaxima.h"
+#include "Setup.h"
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of wxMaxima.
@@ -48,12 +48,23 @@ bool MyApp::OnInit()
 {
   int lang = wxLANGUAGE_UNKNOWN;
 
-#if defined __WXMSW__
   wxCmdLineParser cmdLineParser(argc, argv);
-  cmdLineParser.AddOption(wxT("f"), wxT("ini"), wxT("use ini file"),wxCMD_LINE_VAL_STRING);
-  cmdLineParser.AddOption(wxT("o"), wxT("open"), wxT("open file"), wxCMD_LINE_VAL_STRING);
+
+  static const wxCmdLineEntryDesc cmdLineDesc[] =
+    {
+      { wxCMD_LINE_SWITCH, "v", "version", "Output the version info" },
+      { wxCMD_LINE_OPTION, "o", "open", "open a file" },
+#if defined __WXMSW__
+      { wxCMD_LINE_OPTION, "f", "ini", "open an input file" },
+#endif
+      { wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+      { wxCMD_LINE_NONE }
+    };
+
+  cmdLineParser.SetDesc(cmdLineDesc);
   cmdLineParser.Parse();
   wxString ini, file;
+#if defined __WXMSW__
   if (cmdLineParser.Found(wxT("f"),&ini))
     wxConfig::Set(new wxFileConfig(ini));
   else
@@ -112,11 +123,21 @@ bool MyApp::OnInit()
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
-#if defined __WXMSW__
+  if (cmdLineParser.Found(wxT("v")))
+    {
+      wxMessageOutputStderr stderr;
+      {
+	stderr.Printf("wxMaxima Version %s\n",VERSION);
+	wxExit();
+      }
+    }
+
   if (cmdLineParser.Found(wxT("o"), &file))
-    NewWindow(wxString(file));
+    {
+      NewWindow(wxString(file));
+      return true;
+    }
   else
-#endif
     {
       if (argc==2)
 	NewWindow(wxString(argv[1]));
