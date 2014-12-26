@@ -214,6 +214,11 @@ public:
   void SelectRect(wxRect& rect, MathCell** first, MathCell** last);
   void SelectFirst(wxRect& rect, MathCell** first);
   void SelectLast(wxRect& rect, MathCell** last);
+  /*! Select a rectangle that is created by a cell inside this cell.
+
+    \attention This method has to be overridden by children of the 
+    MathCell class.
+  */
   virtual void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
 
   virtual bool IsOperator();

@@ -405,9 +405,6 @@ void MathCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   *last = this;
 }
 
-/***
- * Break line when the cell is not broken only.
- */
 bool MathCell::BreakLineHere()
 {
   return (!m_isBroken && (m_breakLine || m_forceBreakLine));
@@ -424,8 +421,13 @@ bool MathCell::ContainsRect(wxRect& sm, bool all)
   return false;
 }
 
-/***
- * Resets remembered data.
+/*!
+ Resets remembered data.
+
+ Resets cached data like width and the height of the current cell
+ as well as the vertical position of the center. Temporarily unbreaks all
+ lines until the widths are recalculated if there aren't any hard line 
+ breaks.
  */
 void MathCell::ResetData()
 {
@@ -438,7 +440,7 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-/***
+/*!
  * Unbreaks broken cells
  */
 void MathCell::Unbreak(bool all)
