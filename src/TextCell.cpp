@@ -1,21 +1,21 @@
-///
-///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-///
-///  This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
-///  the Free Software Foundation; either version 2 of the License, or
-///  (at your option) any later version.
-///
-///  This program is distributed in the hope that it will be useful,
-///  but WITHOUT ANY WARRANTY; without even the implied warranty of
-///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-///  GNU General Public License for more details.
-///
-///
-///  You should have received a copy of the GNU General Public License
-///  along with this program; if not, write to the Free Software
-///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-///
+//
+//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 
 #include "TextCell.h"
 #include "Setup.h"
@@ -82,8 +82,8 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    /// Labels and prompts are fixed width - adjust font size so that
-    /// they fit in
+    // Labels and prompts are fixed width - adjust font size so that
+    // they fit in
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
 	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
