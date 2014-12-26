@@ -1,21 +1,21 @@
-///
-///  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-///
-///  This program is free software; you can redistribute it and/or modify
-///  it under the terms of the GNU General Public License as published by
-///  the Free Software Foundation; either version 2 of the License, or
-///  (at your option) any later version.
-///
-///  This program is distributed in the hope that it will be useful,
-///  but WITHOUT ANY WARRANTY; without even the implied warranty of
-///  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-///  GNU General Public License for more details.
-///
-///
-///  You should have received a copy of the GNU General Public License
-///  along with this program; if not, write to the Free Software
-///  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-///
+//
+//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 
 /*!\file
   
@@ -229,8 +229,20 @@ public:
      - false convert only this cell.
    */
   virtual wxString ToString(bool all);
+  /*! Convert this cell to its LaTeX representation
+
+    \param all
+     - true  convert the whole list of cells starting with this one
+     - false convert only this cell.
+   */
   virtual wxString ToTeX(bool all);
-	virtual wxString ToXML(bool all);
+  /*! Convert this cell to an representation fit for saving in a .wxmx file
+
+    \param all
+     - true  convert the whole list of cells starting with this one
+     - false convert only this cell.
+   */
+  virtual wxString ToXML(bool all);
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);
