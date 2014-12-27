@@ -24,9 +24,9 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
-#include <wx/msgout.h>
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
+#include <iostream>
 
 #include "wxMaxima.h"
 #include "Setup.h"
@@ -53,6 +53,10 @@ bool MyApp::OnInit()
   static const wxCmdLineEntryDesc cmdLineDesc[] =
     {
       { wxCMD_LINE_SWITCH, "v", "version", "Output the version info" },
+      /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
+       * using a own window and we want the message on the command line. If a user enters a command
+       * line option, he expects probably a answer just on the command line... */
+      { wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE},
       { wxCMD_LINE_OPTION, "o", "open", "open a file" },
 #if defined __WXMSW__
       { wxCMD_LINE_OPTION, "f", "ini", "open an input file" },
@@ -125,11 +129,16 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("v")))
     {
-      wxMessageOutputStderr stderr;
-      {
-	stderr.Printf("wxMaxima Version %s\n",VERSION);
-	wxExit();
-      }
+      std::cout<<"wxMaxima ";
+      std::cout << VERSION;
+      std::cout<<"\n";
+      wxExit();
+    }
+  if (cmdLineParser.Found(wxT("h")))
+    {
+      std::cout<<"A feature-rich graphical user interface for the computer algebra system maxima\n";
+      std::cout<<cmdLineParser.GetUsageString();
+      wxExit();
     }
 
   if (cmdLineParser.Found(wxT("o"), &file))
