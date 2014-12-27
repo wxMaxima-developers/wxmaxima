@@ -32,11 +32,6 @@
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
 
-//! Ensure we have a scrolled canvas we can use as a worksheet
-#if !wxCHECK_VERSION(2,9,0)
-  typedef wxScrolledWindow wxScrolledCanvas;
-#endif
-
 /*! The canvas that contains the spreadsheet the whole program is about.
 
 This canvas contains all the math, title, image etc.- cells of the current session.
