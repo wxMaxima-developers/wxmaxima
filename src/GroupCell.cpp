@@ -826,8 +826,13 @@ wxString GroupCell::ToXML(bool all)
       }
       if (output != NULL) {
         str += wxT("\n<output>\n");
-        str += wxT("<mth>") + output->ToXML(true) + wxT("</mth>");
-        str += wxT("\n</output>");
+        str += wxT("<mth>");
+        MathCell *tmp = output;
+        while (tmp != NULL) {
+          str += tmp->ToXML(false);
+          tmp = tmp->m_next;
+        }
+        str += wxT("\n</mth></output>");
       }
       break;
     case GC_TYPE_IMAGE:
