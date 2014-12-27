@@ -117,13 +117,13 @@ bool MyApp::OnInit()
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
   wxMenu *fileMenu = new wxMenu;
-  fileMenu->Append(mac_newId, _("&New\tCtrl-N"));
-  fileMenu->Append(mac_openId, _("&Open\tCtrl-O"));
+  fileMenu->Append(wxMaxima::mac_newId, _("&New\tCtrl-N"));
+  fileMenu->Append(wxMaxima::mac_openId, _("&Open\tCtrl-O"));
   menuBar->Append(fileMenu, _("File"));
   wxMenuBar::MacSetCommonMenuBar(menuBar);
 
-  Connect(mac_newId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
-  Connect(mac_openId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
+  Connect(wxMaxima::mac_newId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
+  Connect(wxMaxima::mac_openId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
@@ -223,10 +223,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch(ev.GetId())
   {
-    case mac_newId:
+    case wxMaxima::mac_newId:
       NewWindow();
       break;
-    case mac_openId:
+    case wxMaxima::mac_openId:
       {
         wxString file = wxFileSelector(_("Open"), wxEmptyString,
                                       wxEmptyString, wxEmptyString,
