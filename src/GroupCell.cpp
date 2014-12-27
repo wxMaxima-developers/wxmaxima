@@ -856,9 +856,14 @@ wxString GroupCell::ToXML(bool all)
       }
       break;
     default:
-      if (output != NULL)
-        str += output->ToXML(false);
+    {
+      MathCell *tmp = output;
+      while (tmp != NULL) {
+        str += tmp->ToXML(false);
+        tmp = tmp->m_next;
+      }
       break;
+    }
   }
   str += wxT("\n</cell>\n");
 
