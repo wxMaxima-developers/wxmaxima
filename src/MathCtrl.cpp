@@ -458,7 +458,7 @@ void MathCtrl::ClearDocument() {
 
   DestroyTree();
 
-  m_editingEnabled = true;
+  EnableEdit(true);
   m_switchDisplayCaret = true;
   m_animate = false;
   m_saved = true;

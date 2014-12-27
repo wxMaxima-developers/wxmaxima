@@ -357,14 +357,21 @@ wxString TextCell::ToTeX(bool all)
 
 wxString TextCell::ToXML(bool all)
 {
-  wxString tag = ( m_isHidden ) ? _T("h") :
-    ( m_textStyle == TS_GREEK_CONSTANT ) ? _T("g") :
-    ( m_textStyle == TS_SPECIAL_CONSTANT ) ? _T("s") :
-    ( m_textStyle == TS_VARIABLE ) ? _T("v") :
-    ( m_textStyle == TS_FUNCTION ) ? _T("fnm") :
-    ( m_textStyle == TS_NUMBER ) ? _T("n") :
-    ( m_textStyle == TS_STRING ) ? _T("st") :
-    ( m_textStyle == TS_LABEL) ? _T("lbl") : _T("t");
+  wxString tag;
+  if(m_isHidden)tag=_T("h");
+    else
+      switch(m_textStyle)
+	{
+	case TS_GREEK_CONSTANT: tag=_T("g");break;
+	case TS_SPECIAL_CONSTANT: tag=_T("s");break;
+	case TS_VARIABLE: tag=_T("v");break;
+	case TS_FUNCTION: tag=_T("fnm");break;
+	case TS_NUMBER: tag=_T("n");break;
+	case TS_STRING: tag=_T("st");break;
+	case TS_LABEL: tag=_T("lbl");break;
+	default: tag=_T("t");
+	}
+  
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
   xmlstring.Replace(wxT("&"),  wxT("&amp;"));

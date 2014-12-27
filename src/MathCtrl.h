@@ -329,10 +329,15 @@ public:
   EditorCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
+  /*! Is editing enabled?
+
+    Editing is disabled while we are waiting for maxima.
+   */
   bool m_editingEnabled;
   wxTimer m_timer, m_caretTimer, m_animationTimer;
   bool m_animate;
   wxBitmap *m_memory;
+  //! True if no changes have to be saved.
   bool m_saved;
   double m_zoomFactor;
   AutoComplete m_autocomplete;
