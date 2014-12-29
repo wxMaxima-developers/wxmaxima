@@ -27,7 +27,7 @@ msgstr ""
 "\n"
 "\n"
 "wxWidgets: %d.%d.%d\n"
-"Soport unicode: %s"
+"Unicode Desteği: %s"
 
 #: ../src/wxMaxima.cpp:3567
 msgid ""
@@ -533,7 +533,6 @@ msgid "Calculate modulus:"
 msgstr "Modülleri Hesapla:"
 
 #: ../src/wxMaximaFrame.cpp:650
-#, fuzzy
 msgid "Calculate numeric value of the last result"
 msgstr "En son sonucun sayısal değerini hesapla "
 
@@ -841,7 +840,6 @@ msgid "Create a new cell with previous input"
 msgstr "Bir önceki girdi ile yeni bir hücre oluştur"
 
 #: ../src/wxMaximaFrame.cpp:303
-#, fuzzy
 msgid "Create a new cell with previous output"
 msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 
@@ -1138,14 +1136,13 @@ msgid "Evaluate &Noun Forms"
 msgstr "Değerlendir İsim formlarını "
 
 #: ../src/wxMaximaFrame.cpp:295
-#, fuzzy
+
 msgid "Evaluate All Cells\tCtrl-Shift-R"
-msgstr "Değerlendir Bütün hücreleri \tCtrl-R"
+msgstr "Bütün hücreleri Değerlendir \tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:293
-#, fuzzy
 msgid "Evaluate All Visible Cells\tCtrl-R"
-msgstr "Değerlendir Görünen bütün hücreleri \tCtrl-R"
+msgstr "Görünen bütün hücreleri Değerlendir \tCtrl-R"
 
 #: ../src/wxMaximaFrame.cpp:291 ../src/MathCtrl.cpp:720
 msgid "Evaluate Cell(s)"
@@ -1749,7 +1746,7 @@ msgstr "İfadenin İntegralini Al"
 
 #: ../src/wxMaximaFrame.cpp:488
 msgid "Integrate expression with Risch algorithm"
-msgstr "Integra expressió amb algoritme Risch"
+msgstr "Risch algoritmasıyla İntegralini al"
 
 #: ../src/wxMaximaFrame.cpp:996 ../src/MathCtrl.cpp:748
 msgid "Integrate..."
@@ -2342,7 +2339,7 @@ msgstr "Çarpım"
 
 #: ../src/wxMaximaFrame.cpp:1050
 msgid "Read Matrix..."
-msgstr "Matrisi Oku"
+msgstr "Matrisi Oku...."
 
 #: ../src/wxMaxima.cpp:591
 msgid "Reading Maxima output"
@@ -2370,7 +2367,7 @@ msgstr "Kartezyen Form"
 #: ../src/wxMaximaFrame.cpp:227
 #, fuzzy
 msgid "Redo\tCtrl-Shift-Z"
-msgstr "Yinele\tCtrl-Z"
+msgstr "Yinele\tCtrl-Shift-Z"
 
 #: ../src/wxMaximaFrame.cpp:228
 #, fuzzy
