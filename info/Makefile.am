@@ -4,12 +4,12 @@ info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
 figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
-figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg
+figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg
 
 # install-data-local:install-html
 
 pdffigures=NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf wxMaximaLogo.pdf
-pdffigures+=wxMaximaWindow.pdf
+pdffigures+=wxMaximaWindow.pdf SidePanes.pdf
 
 if CHM
 WXMAXIMA_CHM = wxmaxima.chm
