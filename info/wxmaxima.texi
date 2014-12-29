@@ -59,21 +59,6 @@ commonly used of them.
 @summarycontents
 @contents
 @node top
-@chapter Command-line arguments
-Most operating systems provide more complicated programs of
-starting programs than the command line so this possibility
-is only rarely used. wxMaxima still provides some
-command line switches, though.
-@itemize @bullet
-@item -v or --version: Output the version information
-@item -h or --help: Output a short help text
-@item -o or --open: Open the filename given as argument to this
-      command-line switch
-@item (Only on windows): -f or --ini: Use the init file that was
-      given as argument to this command-line switch
-@end itemize
-Instead of a minus some operating systems might use a dash in
-front of the command-line switches.
 @chapter Introduction to wxMaxima
 @ifnotinfo
 @image{wxMaximaLogo,4cm}
@@ -511,4 +496,19 @@ On possible reason is that maxima cannot be found in the location that is
 set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working maxima binary should
 fix this problem.
+@chapter Command-line arguments
+Most operating systems provide less complicated ways of
+starting programs than the command line so this possibility
+is only rarely used. wxMaxima still provides some
+command line switches, though.
+@itemize @bullet
+@item -v or --version: Output the version information
+@item -h or --help: Output a short help text
+@item -o or --open: Open the filename given as argument to this
+      command-line switch
+@item (Only on windows): -f or --ini: Use the init file that was
+      given as argument to this command-line switch
+@end itemize
+Instead of a minus some operating systems might use a dash in
+front of the command-line switches.
 @bye
