@@ -225,6 +225,14 @@ are displayed as the corresponding greek symbols.
 
 It is to note that a maxima running on a lisp without unicode support
 won't be able to open files containing special unicode characters.
+@subsection Side Panes
+@ifnotinfo
+@image{SidePanes,12cm}
+@end ifnotinfo
+
+Shortcuts to the most important maxima commands and a history of the last
+issued commands can be accessed using the side panes. They can be enabled
+using the ``Panes'' entry in the ``Maxima'' menu.
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
