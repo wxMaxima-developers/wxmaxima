@@ -418,8 +418,12 @@ information about the current system:
 @item @code{wxbuild_info()} gathers information about the currently
 running version of wxMaxima
 @item @code{wxbug_report()} tells how and where to file bugs
-@item Additional debugging information might be provided by the
-command @code{wxmaxima_debug_dump_output}.
+@item In special cases additional debugging information might be
+      obtimed by issuing the command @code{wxmaxima_debug_dump_output}:
+      Normally this command produces an empty dialog. If there is output
+      from maxima that isn't passed to wxMaxima through the network
+      connection (as it should be) the dialog is filled with this
+      information instead.
 @end itemize
 @chapter Troubleshooting
 @section Cannot connect to Maxima
