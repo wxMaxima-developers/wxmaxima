@@ -75,8 +75,10 @@ MathCell* IntCell::Copy(bool all)
   tmp->SetOver(m_over->Copy(true));
   tmp->SetVar(m_var->Copy(true));
   tmp->m_intStyle = m_intStyle;
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

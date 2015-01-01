@@ -138,9 +138,10 @@ MathCell* SlideShow::Copy(bool all)
   CopyData(this, tmp);
 
   tmp->m_bitmap = new wxBitmap(*m_bitmaps[m_displayed]);
+  
+  if (all)
+    tmp->CopyRestFrom(this);
 
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
   return tmp;
 }
 

@@ -60,8 +60,10 @@ MathCell* LimitCell::Copy(bool all)
   tmp->SetBase(m_base->Copy(true));
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetName(m_name->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(true));
+    
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

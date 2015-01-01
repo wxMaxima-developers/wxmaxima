@@ -57,8 +57,10 @@ MathCell* SqrtCell::Copy(bool all)
   SqrtCell* tmp = new SqrtCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

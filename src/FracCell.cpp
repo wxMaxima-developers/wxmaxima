@@ -65,8 +65,10 @@ MathCell* FracCell::Copy(bool all)
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->SetupBreakUps();
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+  
   return tmp;
 }
 

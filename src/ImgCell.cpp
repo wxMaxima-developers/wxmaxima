@@ -134,8 +134,8 @@ MathCell* ImgCell::Copy(bool all)
 
   tmp->m_bitmap = new wxBitmap(*m_bitmap);
 
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+  if (all)
+    tmp->CopyRestFrom(this);
 
   return tmp;
 }

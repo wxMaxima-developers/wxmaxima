@@ -89,6 +89,18 @@ void MathCell::SetType(int type)
 
 }
 
+MathCell* MathCell::CopyRestFrom(MathCell *src)
+{
+  MathCell *dest=this;
+  
+  while(src->m_next != NULL)
+    {
+      dest->AppendCell(src->m_next->Copy(false));
+      src =src ->m_next;
+      dest=dest->m_next;
+    }
+}
+
 void MathCell::SetParent(MathCell *parent, bool all)
 {
   m_group = parent;

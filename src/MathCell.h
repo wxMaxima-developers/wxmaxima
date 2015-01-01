@@ -99,6 +99,15 @@ class MathCell
 public:
   MathCell();
   virtual ~MathCell();
+  /*! Copy this cell (and, if requested, all following cells)
+    
+    \param all 
+     - true:  Copy this and all the following cells
+     - false: Copy this cell only
+
+    \return A copy of this cell with (if the parameter all was true) all 
+    following cells attached.
+   */
   virtual MathCell* Copy(bool all) = 0;
   virtual void Destroy() = 0;
 
@@ -310,6 +319,12 @@ public:
   bool IsMath();
   void SetAltCopyText(wxString text) { m_altCopyText = text; }
 protected:
+  /*! Attach a copy of the list of cells that follows this one to a cell
+    
+    Used by MathCell::Copy() when the parameter <code>all</code> is true.
+  */
+  MathCell* CopyRestFrom(MathCell *src);
+  
   //! The height of this cell
   int m_height;
   //! The width of this cell

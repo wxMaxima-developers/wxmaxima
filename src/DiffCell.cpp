@@ -51,8 +51,10 @@ MathCell* DiffCell::Copy(bool all)
   CopyData(this, tmp);
   tmp->SetDiff(m_diffCell->Copy(true));
   tmp->SetBase(m_baseCell->Copy(true));
-  if (all && m_next!= NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

@@ -52,17 +52,19 @@ void TextCell::SetValue(wxString text)
 
 MathCell* TextCell::Copy(bool all)
 {
-  TextCell *tmp = new TextCell(wxEmptyString);
-  CopyData(this, tmp);
-  tmp->m_text = wxString(m_text);
-  tmp->m_forceBreakLine = m_forceBreakLine;
-  tmp->m_bigSkip = m_bigSkip;
-  tmp->m_isHidden = m_isHidden;
-  tmp->m_textStyle = m_textStyle;
-  tmp->m_highlight = m_highlight;
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
-  return tmp;
+  TextCell *retval = new TextCell(wxEmptyString);
+  CopyData(this, retval);
+  retval->m_text = wxString(m_text);
+  retval->m_forceBreakLine = m_forceBreakLine;
+  retval->m_bigSkip = m_bigSkip;
+  retval->m_isHidden = m_isHidden;
+  retval->m_textStyle = m_textStyle;
+  retval->m_highlight = m_highlight;
+
+  if (all)
+    retval->CopyRestFrom(this);
+
+  return retval;
 }
 
 void TextCell::Destroy()

@@ -67,8 +67,10 @@ MathCell* SumCell::Copy(bool all)
   tmp->SetUnder(m_under->Copy(true));
   tmp->SetOver(m_over->Copy(true));
   tmp->m_sumStyle = m_sumStyle;
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+  
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

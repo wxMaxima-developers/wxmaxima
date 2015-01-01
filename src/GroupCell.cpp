@@ -176,8 +176,10 @@ MathCell* GroupCell::Copy(bool all)
     tmp->SetInput(m_input->Copy(true));
   if (m_output != NULL)
     tmp->SetOutput(m_output->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

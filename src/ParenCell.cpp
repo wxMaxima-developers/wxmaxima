@@ -80,8 +80,10 @@ MathCell* ParenCell::Copy(bool all)
   ParenCell *tmp = new ParenCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->Copy(true), m_type);
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

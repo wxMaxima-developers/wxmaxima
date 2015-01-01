@@ -51,8 +51,10 @@ MathCell* FunCell::Copy(bool all)
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->Copy(true));
   tmp->SetArg(m_argCell->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(true));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

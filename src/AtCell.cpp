@@ -51,8 +51,10 @@ MathCell* AtCell::Copy(bool all)
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->Copy(true));
   tmp->SetIndex(m_indexCell->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

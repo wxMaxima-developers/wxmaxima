@@ -62,8 +62,10 @@ MathCell* MatrCell::Copy(bool all)
   tmp->m_matHeight = m_matHeight;
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
     (tmp->m_cells).push_back(m_cells[i]->Copy(true));
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+  
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 

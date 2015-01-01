@@ -64,8 +64,10 @@ MathCell *EditorCell::Copy(bool all)
   tmp->SetValue(m_text);
   tmp->m_containsChanges = m_containsChanges;
   CopyData(this, tmp);
-  if (all && m_next != NULL)
-    tmp->AppendCell(m_next->Copy(all));
+
+  if (all)
+    tmp->CopyRestFrom(this);
+
   return tmp;
 }
 
