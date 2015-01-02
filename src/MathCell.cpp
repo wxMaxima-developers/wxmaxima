@@ -185,16 +185,15 @@ int MathCell::GetMaxDrop()
   return m_maxDrop;
 }
 
-/***
- * Get the maximum hight of cells in line.
- */
+//!  Get the maximum hight of cells in line.
 int MathCell::GetMaxHeight()
 {
   return GetMaxCenter() + GetMaxDrop();
 }
 
-/***
- * Get full width of this group.
+/*! Get full width of this group.
+
+  \todo Change not to use recursive function calls any more.
  */
 int MathCell::GetFullWidth(double scale)
 {
@@ -209,8 +208,7 @@ int MathCell::GetFullWidth(double scale)
   return m_fullWidth;
 }
 
-/***
- * Get the width of this line.
+/*! Get the width of this line.
  */
 int MathCell::GetLineWidth(double scale)
 {
@@ -227,9 +225,10 @@ int MathCell::GetLineWidth(double scale)
   return m_lineWidth;
 }
 
-/***
- * Draw this cell to dc (each derived class must draw the content of the cell
- * and then call MathCall::Draw(...).
+/*! Draw this cell to dc
+
+ To make this work each derived class must draw the content of the cell
+ and then call MathCall::Draw(...).
  */
 void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
@@ -255,12 +254,13 @@ void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_next->RecalculateSize(parser, fontsize, all);
 }
 
-/***
- * Recalculate widths of cells. (Used for changing font size - must recalculate
- * all size information).
- *
- * Should set: set m_width.
- */
+/*! Recalculate widths of cells. 
+
+  (Used for changing font size since in this case all size information has to be 
+  recalculated).
+  
+  Should set: set m_width.
+*/
 void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 {
   ResetData();
@@ -268,8 +268,7 @@ void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_next->RecalculateWidths(parser, fontsize, all);
 }
 
-/***
- * Is this cell visible in the window.
+/*! Is this cell currently visible in the window?.
  */
 bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
 {
@@ -282,9 +281,11 @@ bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
   return true;
 }
 
-/***
- * Get the rectangle around this cell - if all is true then return the rectangle
- * around the whole line.
+/*! Get the rectangle around this cell
+
+  \param all
+   - true  return the rectangle around the whole line.
+   - false return the rectangle around this cell. 
  */
 wxRect MathCell::GetRect(bool all)
 {

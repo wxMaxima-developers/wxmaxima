@@ -109,6 +109,15 @@ public:
     following cells attached.
    */
   virtual MathCell* Copy(bool all) = 0;
+  
+  /*! Free all memory directly referenced by the contents of this cell
+
+    This command (and the celltype-specific versions of the derived
+    classes) are internally used by the DestroyTree() functions that
+    free the complete list of cells.
+    \attention This function Doesn't free the other cells of the list
+    that is started by this cell.
+   */
   virtual void Destroy() = 0;
 
   /*! Add a cell to the end of the list this cell is part of
@@ -123,7 +132,9 @@ public:
   void BreakPage(bool breakPage) { m_breakPage = breakPage; }
   //! Are we allowed to break a line here?
   bool BreakLineHere();
+  //! Does this cell begin begin with a manual linebreak?
   bool ForceBreakLineHere() { return m_forceBreakLine; }
+  //! Does this cell begin begin with a manual page break?  
   bool BreakPageHere() { return m_breakPage; }
   virtual bool BreakUp() { return false; }
   /*! Is a part of this cell inside a certain rectangle?
@@ -346,7 +357,7 @@ protected:
   int m_maxDrop;
   int m_type;
   int m_textStyle;
-  //! Are we allowed to add a page break before this cell?
+  //! Does this cell begin with a forced page break?
   bool m_breakPage;
   //! Are we allowed to add a linee break before this cell?
   bool m_breakLine;
