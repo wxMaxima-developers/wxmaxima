@@ -936,6 +936,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_format:
       displayed = m_manager.GetPane(wxT("format")).IsShown();
       break;
+    default:
+      wxASSERT(false);
+      break;
   }
 
   return displayed;
@@ -961,6 +964,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("history")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
+      break;
+    default:
+      wxASSERT(false);
       break;
   }
 

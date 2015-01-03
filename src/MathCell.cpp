@@ -52,53 +52,53 @@ MathCell::~MathCell()
 
 void MathCell::SetType(int type)
 {
-	m_type = type;
+  m_type = type;
 
-	switch (m_type)
-	{
-		case MC_TYPE_MAIN_PROMPT:
-			m_textStyle = TS_MAIN_PROMPT;
-			break;
-		case MC_TYPE_PROMPT:
-			m_textStyle = TS_OTHER_PROMPT;
-			break;
-		case MC_TYPE_LABEL:
-			m_textStyle = TS_LABEL;
-			break;
-		case MC_TYPE_INPUT:
-			m_textStyle = TS_INPUT;
-			break;
-		case MC_TYPE_ERROR:
-			m_textStyle = TS_ERROR;
-			break;
-		case MC_TYPE_TEXT:
-			m_textStyle = TS_TEXT;
-			break;
-		case MC_TYPE_SUBSECTION:
-			m_textStyle = TS_SUBSECTION;
-			break;
-		case MC_TYPE_SECTION:
-			m_textStyle = TS_SECTION;
-			break;
-		case MC_TYPE_TITLE:
-			m_textStyle = TS_TITLE;
-			break;
-		default:
-			m_textStyle = TS_DEFAULT;
-	}
-
+  switch (m_type)
+  {
+  case MC_TYPE_MAIN_PROMPT:
+    m_textStyle = TS_MAIN_PROMPT;
+    break;
+  case MC_TYPE_PROMPT:
+    m_textStyle = TS_OTHER_PROMPT;
+    break;
+  case MC_TYPE_LABEL:
+    m_textStyle = TS_LABEL;
+    break;
+  case MC_TYPE_INPUT:
+    m_textStyle = TS_INPUT;
+    break;
+  case MC_TYPE_ERROR:
+    m_textStyle = TS_ERROR;
+    break;
+  case MC_TYPE_TEXT:
+    m_textStyle = TS_TEXT;
+    break;
+  case MC_TYPE_SUBSECTION:
+    m_textStyle = TS_SUBSECTION;
+    break;
+  case MC_TYPE_SECTION:
+    m_textStyle = TS_SECTION;
+    break;
+  case MC_TYPE_TITLE:
+    m_textStyle = TS_TITLE;
+    break;
+  default:
+    m_textStyle = TS_DEFAULT;
+    break;
+  }
 }
 
-MathCell* MathCell::CopyRestFrom(MathCell *src)
+void MathCell::CopyRestFrom(MathCell *src)
 {
   MathCell *dest=this;
   
   while(src->m_next != NULL)
-    {
-      dest->AppendCell(src->m_next->Copy(false));
-      src =src ->m_next;
-      dest=dest->m_next;
-    }
+  {
+    dest->AppendCell(src->m_next->Copy(false));
+    src =src ->m_next;
+    dest=dest->m_next;
+  }
 }
 
 void MathCell::SetParent(MathCell *parent, bool all)

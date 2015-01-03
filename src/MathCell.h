@@ -334,7 +334,7 @@ protected:
     
     Used by MathCell::Copy() when the parameter <code>all</code> is true.
   */
-  MathCell* CopyRestFrom(MathCell *src);
+  void CopyRestFrom(MathCell *src);
   
   //! The height of this cell
   int m_height;
