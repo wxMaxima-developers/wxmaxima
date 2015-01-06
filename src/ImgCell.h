@@ -55,9 +55,9 @@ protected:
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
-  wxString ToString(bool all);
-  wxString ToTeX(bool all);
-	wxString ToXML(bool all);
+  wxString ToString();
+  wxString ToTeX();
+  wxString ToXML();
 	static int s_counter;
 	bool m_drawRectangle;
 };

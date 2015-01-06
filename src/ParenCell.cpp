@@ -388,41 +388,38 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString ParenCell::ToString(bool all)
+wxString ParenCell::ToString()
 {
   wxString s;
   if (!m_isBroken)
   {
     if (m_print)
-      s = wxT("(") + m_innerCell->ToString(true) + wxT(")");
+      s = wxT("(") + m_innerCell->ListToString() + wxT(")");
     else
-      s = m_innerCell->ToString(true);
+      s = m_innerCell->ListToString();
   }
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString ParenCell::ToTeX(bool all)
+wxString ParenCell::ToTeX()
 {
   wxString s;
   if (!m_isBroken)
   {
     if (m_print)
-      s = wxT("\\left( ") + m_innerCell->ToTeX(true) + wxT("\\right) ");
+      s = wxT("\\left( ") + m_innerCell->ListToTeX() + wxT("\\right) ");
     else
-      s = m_innerCell->ToTeX(true);
+      s = m_innerCell->ListToTeX();
   }
-  s += MathCell::ToTeX(all);
   return s;
 }
 
-wxString ParenCell::ToXML(bool all)
+wxString ParenCell::ToXML()
 {
 //  if( m_isBroken )
 //    return wxEmptyString;
-  wxString s = m_innerCell->ToXML(true);
-  return ( ( m_print )? _T("<p>") + s + _T("</p>") : s ) +
-    MathCell::ToXML(all);
+  wxString s = m_innerCell->ListToXML();
+  return ( ( m_print )? _T("<p>") + s + _T("</p>") : s );
 }
 
 void ParenCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

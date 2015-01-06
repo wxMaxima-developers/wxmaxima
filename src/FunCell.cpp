@@ -122,32 +122,30 @@ void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString FunCell::ToString(bool all)
+wxString FunCell::ToString()
 {
   if (m_isBroken)
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
-    return m_altCopyText + MathCell::ToString(all);
-  wxString s = m_nameCell->ToString(true) + m_argCell->ToString(true);
-  s += MathCell::ToString(all);
+    return m_altCopyText + MathCell::ListToString();
+  wxString s = m_nameCell->ListToString() + m_argCell->ListToString();
   return s;
 }
 
-wxString FunCell::ToTeX(bool all)
+wxString FunCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = m_nameCell->ToTeX(true) + m_argCell->ToTeX(true);
-  s += MathCell::ToTeX(all);
+  wxString s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
   return s;
 }
 
-wxString FunCell::ToXML(bool all)
+wxString FunCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<fn>") + m_nameCell->ToXML(true) +
-    m_argCell->ToXML(true) + _T("</fn>") + MathCell::ToXML(all);
+  return _T("<fn>") + m_nameCell->ListToXML() +
+    m_argCell->ListToXML() + _T("</fn>");
 }
 
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

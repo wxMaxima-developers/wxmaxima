@@ -162,39 +162,37 @@ void SubSupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString SubSupCell::ToString(bool all)
+wxString SubSupCell::ToString()
 {
   wxString s;
   if (m_baseCell->IsCompound())
-    s += wxT("(") + m_baseCell->ToString(true) + wxT(")");
+    s += wxT("(") + m_baseCell->ListToString() + wxT(")");
   else
-    s += m_baseCell->ToString(true);
-  s += wxT("[") + m_indexCell->ToString(true) + wxT("]");
+    s += m_baseCell->ListToString();
+  s += wxT("[") + m_indexCell->ListToString() + wxT("]");
   s += wxT("^");
   if (m_exptCell->IsCompound())
     s += wxT("(");
-  s += m_exptCell->ToString(true);
+  s += m_exptCell->ListToString();
   if (m_exptCell->IsCompound())
     s += wxT(")");
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString SubSupCell::ToTeX(bool all)
+wxString SubSupCell::ToTeX()
 {
-  wxString s = wxT("{") + m_baseCell->ToTeX(true) + wxT("}_{") +
-               m_indexCell->ToTeX(true) + wxT("}^{") +
-               m_exptCell->ToTeX(true) + wxT("}");
-  s += MathCell::ToTeX(all);
+  wxString s = wxT("{") + m_baseCell->ListToTeX() + wxT("}_{") +
+               m_indexCell->ListToTeX() + wxT("}^{") +
+               m_exptCell->ListToTeX() + wxT("}");
   return s;
 }
 
-wxString SubSupCell::ToXML(bool all)
+wxString SubSupCell::ToXML()
 {
-  return _T("<ie><r>") + m_baseCell->ToXML(true)
-    + _T("</r><r>") + m_indexCell->ToXML(true)
-    + _T("</r><r>") + m_exptCell->ToXML(true)
-    + _T("</r></ie>") + MathCell::ToXML(all);
+  return _T("<ie><r>") + m_baseCell->ListToXML()
+    + _T("</r><r>") + m_indexCell->ListToXML()
+    + _T("</r><r>") + m_exptCell->ListToXML()
+    + _T("</r></ie>");
 }
 
 void SubSupCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

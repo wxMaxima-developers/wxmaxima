@@ -221,19 +221,17 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString SlideShow::ToString(bool all)
+wxString SlideShow::ToString()
 {
-  return wxT(" << Graphics >> ") +
-         MathCell::ToString(all);
+  return wxT(" << Graphics >> ");
 }
 
-wxString SlideShow::ToTeX(bool all)
+wxString SlideShow::ToTeX()
 {
-  return wxT(" << Graphics >> ") +
-         MathCell::ToTeX(all);
+  return wxT(" << Graphics >> ");
 }
 
-wxString SlideShow::ToXML(bool all)
+wxString SlideShow::ToXML()
 {
   wxString images;
 
@@ -247,8 +245,7 @@ wxString SlideShow::ToXML(bool all)
     images += basename + wxT(";");
   }
 
-  return wxT("\n<slide>") + images + wxT("</slide>") +
-         MathCell::ToXML(all);
+  return wxT("\n<slide>") + images + wxT("</slide>");
 }
 
 bool SlideShow::ToImageFile(wxString file)

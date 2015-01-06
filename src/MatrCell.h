@@ -50,9 +50,9 @@ public:
   }
   void SetDimension();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-  wxString ToString(bool all);
-  wxString ToTeX(bool all);
-	wxString ToXML(bool all);	// new!!
+  wxString ToString();
+  wxString ToTeX();
+  wxString ToXML();
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
   void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
   void SetParent(MathCell *parent, bool all);

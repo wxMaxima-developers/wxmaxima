@@ -128,22 +128,19 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString AbsCell::ToString(bool all)
+wxString AbsCell::ToString()
 {
-  return wxT("abs(") + m_innerCell->ToString(true) + wxT(")") +
-         MathCell::ToString(all);
+  return wxT("abs(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString AbsCell::ToTeX(bool all)
+wxString AbsCell::ToTeX()
 {
-  return wxT("\\left| ") + m_innerCell->ToTeX(true) + wxT("\\right| ") +
-    MathCell::ToTeX(all);
+  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
 
-wxString AbsCell::ToXML(bool all)
+wxString AbsCell::ToXML()
 {
-  return wxT("<a>") + m_innerCell->ToXML(true) + wxT("</a>") + 
-    MathCell::ToXML(all);
+  return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");
 }
 
 void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

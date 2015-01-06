@@ -265,7 +265,7 @@ bool TextCell::IsOperator()
   return false;
 }
 
-wxString TextCell::ToString(bool all)
+wxString TextCell::ToString()
 {
   wxString text;
   if (m_altCopyText != wxEmptyString)
@@ -278,10 +278,10 @@ wxString TextCell::ToString(bool all)
   }
   if (m_textStyle == TS_STRING)
     text = wxT("\"") + text + wxT("\"");
-  return text + MathCell::ToString(all);
+  return text;
 }
 
-wxString TextCell::ToTeX(bool all)
+wxString TextCell::ToTeX()
 {
   wxString text;
   if (m_isHidden)
@@ -354,10 +354,10 @@ wxString TextCell::ToTeX(bool all)
 #endif
   }
 
-  return text + MathCell::ToTeX(all);
+  return text;
 }
 
-wxString TextCell::ToXML(bool all)
+wxString TextCell::ToXML()
 {
   wxString tag;
   if(m_isHidden)tag=_T("h");
@@ -382,8 +382,7 @@ wxString TextCell::ToXML(bool all)
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
 
-  return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">") +
-    MathCell::ToXML(all);
+  return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">");
 }
 
 wxString TextCell::GetDiffPart()

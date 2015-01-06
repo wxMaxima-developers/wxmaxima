@@ -583,22 +583,22 @@ wxRect GroupCell::HideRect()
   return wxRect(m_currentPoint.x - 10, m_currentPoint.y - m_center, 10, 10);
 }
 
-wxString GroupCell::ToString(bool all)
+wxString GroupCell::ToString()
 {
   wxString str;
   if (GetEditable()) {
-    str = m_input->ToString(true);
+    str = m_input->ListToString();
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
         if (tmp->ForceBreakLineHere() && str.Length()>0)
           str += wxT("\n");
-        str += tmp->ToString(false);
+        str += tmp->ToString();
         tmp = tmp->m_nextToDraw;
       }
     }
   }
-  return str + MathCell::ToString(all);
+  return str;
 }
 
 wxString GroupCell::PrepareForTeX(wxString str)
@@ -628,12 +628,12 @@ wxString GroupCell::PrepareForTeX(wxString str)
   return str2;
 }
 
-wxString GroupCell::ToTeX(bool all)
+wxString GroupCell::ToTeX()
 {
-  return ToTeX(all, wxEmptyString, wxEmptyString, NULL);
+  return ToTeX(wxEmptyString, wxEmptyString, NULL);
 }
 
-wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter)
+wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
 
@@ -676,13 +676,13 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
           wxT("%%% INPUT:\n")
           wxT("\\begin{minipage}[t]{8ex}{\\color{red}\\bf\n")
           wxT("\\begin{verbatim}\n") +
-          m_input->ToString(false) +
+          m_input->ToString() +
           wxT("\n\\end{verbatim}}\n\\end{minipage}");
 
     if (m_input->m_next!=NULL)
     {
 
-      wxString input = m_input->m_next->ToString(true);
+      wxString input = m_input->m_next->ToString();
 #if wxUSE_UNICODE
       input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
@@ -731,11 +731,11 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         {
           if (str.Right(13) != wxT("displaystyle\n"))
             str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
-          str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX(false) + wxT("}\n");
+          str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX() + wxT("}\n");
         }
 
         else
-          str += tmp->ToTeX(false);
+          str += tmp->ToTeX();
 
         tmp = tmp->m_nextToDraw;
       }
@@ -745,7 +745,7 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
 
   // TITLES, SECTIONS, SUBSECTIONS, TEXT
   else if (GetEditable() != NULL && !m_hide) {
-    str = GetEditable()->ToTeX(true);
+    str = GetEditable()->ListToTeX();
     switch (GetEditable()->GetStyle()) {
       case TS_TITLE:
         str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + PrepareForTeX(str) + wxT("}}\n");
@@ -767,16 +767,11 @@ wxString GroupCell::ToTeX(bool all, wxString imgDir, wxString filename, int *img
         break;
     }
   }
-
-  return str + MathCell::ToTeX(all);
+    
+  return str;
 }
 
-// ToXML
-// writes a groupcell in the form of
-// <cell type="code" hide="true">
-// --contents--
-// </cell>
-wxString GroupCell::ToXML(bool all)
+wxString GroupCell::ToXML()
 {
   wxString str;
   str = wxT("\n<cell"); // start opening tag
@@ -803,7 +798,7 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_PAGEBREAK:
       {
         str += wxT(" type=\"pagebreak\"/>");
-        return str + MathCell::ToXML(all);
+        return str;
       }
       break;
     default:
@@ -823,42 +818,34 @@ wxString GroupCell::ToXML(bool all)
     case GC_TYPE_CODE:
       if (input != NULL) {
         str += wxT("<input>\n");
-        str += input->ToXML(false);
+        str += input->ListToXML();
         str += wxT("</input>");
       }
       if (output != NULL) {
         str += wxT("\n<output>\n");
         str += wxT("<mth>");
-        MathCell *tmp = output;
-        while (tmp != NULL) {
-          str += tmp->ToXML(false);
-          tmp = tmp->m_next;
-        }
+        str += output->ListToXML();
         str += wxT("\n</mth></output>");
       }
       break;
     case GC_TYPE_IMAGE:
       if (input != NULL)
-        str += input->ToXML(false);
+        str += input->ListToXML();
       if (output != NULL)
-        str += output->ToXML(true);
+        str += output->ListToXML();
       break;
     case GC_TYPE_TEXT:
       if (input)
-        str += input->ToXML(false);
+        str += input->ListToXML();
       break;
     case GC_TYPE_TITLE:
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
       if (input)
-        str += input->ToXML(false);
+        str += input->ListToXML();
       if (m_hiddenTree) {
         str += wxT("<fold>");
-        GroupCell *tmp = m_hiddenTree;
-        while (tmp) {
-          str += tmp->ToXML(false);
-          tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-        }
+        str+= m_hiddenTree->ListToXML();
         str += wxT("</fold>");
       }
       break;
@@ -866,7 +853,7 @@ wxString GroupCell::ToXML(bool all)
     {
       MathCell *tmp = output;
       while (tmp != NULL) {
-        str += tmp->ToXML(false);
+        str += tmp->ListToXML();
         tmp = tmp->m_next;
       }
       break;
@@ -874,7 +861,7 @@ wxString GroupCell::ToXML(bool all)
   }
   str += wxT("\n</cell>\n");
 
-  return str + MathCell::ToXML(all);
+  return str;
 }
 
 void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,

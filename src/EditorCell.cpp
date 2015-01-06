@@ -76,7 +76,7 @@ void EditorCell::Destroy()
   m_next = NULL;
 }
 
-wxString EditorCell::ToString(bool all)
+wxString EditorCell::ToString()
 {
   wxString text = m_text;
 
@@ -87,16 +87,16 @@ wxString EditorCell::ToString(bool all)
     text = m_text.SubString(start, end);
   }
 
-  return text + MathCell::ToString(all);
+  return text;
 }
 
-wxString EditorCell::ToTeX(bool all)
+wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
-  return text + MathCell::ToTeX(all);
+  return text;
 }
 
-wxString EditorCell::ToXML(bool all)
+wxString EditorCell::ToXML()
 {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
@@ -135,7 +135,7 @@ wxString EditorCell::ToXML(bool all)
   }
   head += wxT(">\n");
 
-  return head + xmlstring + wxT("</editor>\n") + MathCell::ToXML(all);
+  return head + xmlstring + wxT("</editor>\n");
 }
 
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)

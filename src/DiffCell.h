@@ -35,9 +35,9 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-  wxString ToString(bool all);
-  wxString ToTeX(bool all);
-	wxString ToXML(bool all);	//new!!
+  wxString ToString();
+  wxString ToTeX();
+  wxString ToXML();
   void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_baseCell;

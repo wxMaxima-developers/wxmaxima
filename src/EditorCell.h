@@ -46,11 +46,11 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   //! Convert the current cell to a string
-  wxString ToString(bool all);
+  wxString ToString();
   //! Convert the current cell to LaTeX code
-  wxString ToTeX(bool all);
+  wxString ToTeX();
   //! Convert the current cell to XML code for inclusion in a .wxmx file.
-  wxString ToXML(bool all);
+  wxString ToXML();
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
   void SetValue(wxString text);

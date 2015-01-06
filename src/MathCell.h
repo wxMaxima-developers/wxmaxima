@@ -247,27 +247,19 @@ public:
 
   MathCell* GetParent();
 
-  /*! Returns the cell's representation as a string.
+  //! Returns the cell's representation as a string.
+  virtual wxString ToString();
+  //! Convert this cell to its LaTeX representation
+  virtual wxString ToTeX();
+  //! Convert this cell to an representation fit for saving in a .wxmx file
+  virtual wxString ToXML();
 
-    \param all
-     - true  convert the whole list of cells starting with this one
-     - false convert only this cell.
-   */
-  virtual wxString ToString(bool all);
-  /*! Convert this cell to its LaTeX representation
-
-    \param all
-     - true  convert the whole list of cells starting with this one
-     - false convert only this cell.
-   */
-  virtual wxString ToTeX(bool all);
-  /*! Convert this cell to an representation fit for saving in a .wxmx file
-
-    \param all
-     - true  convert the whole list of cells starting with this one
-     - false convert only this cell.
-   */
-  virtual wxString ToXML(bool all);
+    //! Returns the list's representation as a string.
+  virtual wxString ListToString();
+  //! Convert this list to its LaTeX representation
+  virtual wxString ListToTeX();
+  //! Convert this list to an representation fit for saving in a .wxmx file
+  virtual wxString ListToXML();
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);
@@ -282,16 +274,45 @@ public:
     Reads NULL, if this is the first cell of the list.    
    */
   MathCell *m_previous;
-  /*! The group cell this list of cells belongs to.
+  /*! The GroupCell this list of cells belongs to.
     
     Reads NULL, if no parent cell has been set.    
    */
   MathCell *m_group;
-  MathCell *m_nextToDraw, *m_previousToDraw;
-  wxPoint m_currentPoint;  // Current point in console (the center of the cell)
+  /*! The next cell to draw
+    
+    Normally things are drawn in the order in which they appear in this list.
+    But in special cases (for example if a fraction is broken into several lines
+    and therefore cannot be displayed as a fraction) the order in which items are
+    drawn varies. Each cell is therefore part of a second list made up by 
+    m_nextToDraw and m_previousToDraw.
+   */
+  MathCell *m_nextToDraw;
+  /*! The previous cell to draw
+    
+    Normally things are drawn in the order in which they appear in this list.
+    But in special cases (for example if a fraction is broken into several lines
+    and therefore cannot be displayed as a fraction) the order in which items are
+    drawn varies. Each cell is therefore part of a second list made up by 
+    m_nextToDraw and m_previousToDraw.
+   */
+  MathCell *m_previousToDraw;
+  /*! The point in the work sheet at which this cell begins.
+
+    The begin of a cell is defined as 
+     - x=the left border of the cell
+     - y=the vertical center of the cell. Which (per example in the case of a fraction)
+       might not be the physical center but the vertical position of the horizontal line
+       between nummerator and denominator.
+  */
+  wxPoint m_currentPoint;  
   bool m_bigSkip;
   //! true means: Add a linebreak to the end of this cell.
   bool m_isBroken;
+  /*! True means: This cell isn't drawn.
+
+    Currently only the centered dots for multiplications fall in this category.
+   */
   bool m_isHidden;
   /*! Determine if this cell contains text that won't be passed to maxima
 

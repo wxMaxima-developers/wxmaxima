@@ -1882,7 +1882,7 @@ wxString wxMaxima::GetDefaultEntry()
   if (m_console->CanCopy(true))
     return (m_console->GetString()).Trim().Trim(false);
   if (m_console->GetActiveCell() != NULL)
-    return ExtractFirstExpression(m_console->GetActiveCell()->ToString(false));
+    return ExtractFirstExpression(m_console->GetActiveCell()->ToString());
   return wxT("%");
 }
 
@@ -4201,7 +4201,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     // if active cell is part of a working group, we have a special
     // case - answering a question. Manually send answer to Maxima.
     if (tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
-      SendMaxima(tmp->ToString(false), true);
+      SendMaxima(tmp->ToString(), true);
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));
@@ -4224,7 +4224,7 @@ void wxMaxima::TryEvaluateNextInQueue()
 
     if (!m_console->m_evaluationQueue->Empty())
     {
-      if (m_console->m_evaluationQueue->GetFirst()->GetInput()->ToString(false) ==
+      if (m_console->m_evaluationQueue->GetFirst()->GetInput()->ToString() ==
         wxT("wxmaxima_debug_dump_output;"))
       DumpProcessOutput();
     }
@@ -4248,7 +4248,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   {
     group->GetEditable()->AddEnding();
     group->GetEditable()->ContainsChanges(false);
-    wxString text = group->GetEditable()->ToString(false);
+    wxString text = group->GetEditable()->ToString();
 
     // override evaluation when input equals wxmaxima_debug_dump_output
     if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {

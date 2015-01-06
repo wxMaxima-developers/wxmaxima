@@ -18,6 +18,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+
+  This file defines the class GroupCell.
+ */
+
 #ifndef GROUPCELL_H
 #define GROUPCELL_H
 
@@ -48,7 +53,6 @@ Foldable items include
  - A combination of image and input cell
 
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree.
-
  */
 class GroupCell: public MathCell
 {
@@ -73,10 +77,10 @@ public:
   void AppendOutput(MathCell *cell);
   void RemoveOutput();
   // exporting
-  wxString ToTeX(bool all, wxString imgDir, wxString filename, int *imgCounter);
-  wxString ToTeX(bool all);
+  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeX();
   wxString PrepareForTeX(wxString text);
-  wxString ToXML(bool all);
+  wxString ToXML();
   // hide status
   bool IsHidden() { return m_hide; }
   void Hide(bool hide);
@@ -133,7 +137,7 @@ protected:
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
   wxRect m_outputRect;
-  wxString ToString(bool all);
+  wxString ToString();
 };
 
 #endif /* GROUPCELL_H */

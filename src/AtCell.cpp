@@ -135,29 +135,27 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString AtCell::ToString(bool all)
+wxString AtCell::ToString()
 {
   wxString s = wxT("at(");
-  s += m_baseCell->ToString(true);
-  s += wxT(",") + m_indexCell->ToString(true) + wxT(")");
-  s += MathCell::ToString(all);
+  s += m_baseCell->ListToString();
+  s += wxT(",") + m_indexCell->ListToString() + wxT(")");
   return s;
 }
 
-wxString AtCell::ToTeX(bool all)
+wxString AtCell::ToTeX()
 {
   wxString s = wxT("\\left. ");
-  s += m_baseCell->ToTeX(true);
-  s += wxT("\\right|_{") + m_indexCell->ToTeX(true) + wxT("}");
-  s += MathCell::ToTeX(all);
+  s += m_baseCell->ListToTeX();
+  s += wxT("\\right|_{") + m_indexCell->ListToTeX() + wxT("}");
   return s;
 }
 
-wxString AtCell::ToXML(bool all)
+wxString AtCell::ToXML()
 {
-  return wxT("<at><r>") + m_baseCell->ToXML(true) + wxT("</r><r>") +
-    m_indexCell->ToXML(true) + wxT("</r></at>") +
-    MathCell::ToXML(all);
+  return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
+    m_indexCell->ListToXML() + wxT("</r></at>") +
+    MathCell::ListToXML();
 }
 
 void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

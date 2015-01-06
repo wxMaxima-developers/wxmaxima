@@ -1031,7 +1031,7 @@ wxString MathCtrl::GetString(bool lb) {
     if (m_activeCell == NULL)
       return wxEmptyString;
     else
-      return m_activeCell->ToString(false);
+      return m_activeCell->ToString();
   }
 
   wxString s;
@@ -1039,7 +1039,7 @@ wxString MathCtrl::GetString(bool lb) {
   while (tmp != NULL) {
     if (lb && tmp->BreakLineHere() && s.Length() > 0)
       s += wxT("\n");
-    s += tmp->ToString(false);
+    s += tmp->ToString();
     if (tmp == m_selectionEnd)
       break;
     tmp = tmp->m_nextToDraw;
@@ -1103,7 +1103,7 @@ bool MathCtrl::CopyTeX() {
   }
 
   while (tmp != NULL) {
-    s += tmp->ToTeX(false);
+    s += tmp->ToTeX();
     if (tmp == m_selectionEnd)
       break;
     tmp = tmp->m_next;
@@ -1136,27 +1136,27 @@ bool MathCtrl::CopyCells()
     {
       case GC_TYPE_CODE:
         s += wxT("/* [wxMaxima: input   start ] */\n");
-        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString() + wxT("\n");
         s += wxT("/* [wxMaxima: input   end   ] */\n");
         break;
       case GC_TYPE_TEXT:
         s += wxT("/* [wxMaxima: comment start ]\n");
-        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString() + wxT("\n");
         s += wxT("   [wxMaxima: comment end   ] */\n");
         break;
       case GC_TYPE_SECTION:
         s += wxT("/* [wxMaxima: section start ]\n");
-        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString() + wxT("\n");
         s += wxT("   [wxMaxima: section end   ] */\n");
         break;
       case GC_TYPE_SUBSECTION:
         s += wxT("/* [wxMaxima: subsect start ]\n");
-        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString() + wxT("\n");
         s += wxT("   [wxMaxima: subsect end   ] */\n");
         break;
       case GC_TYPE_TITLE:
         s += wxT("/* [wxMaxima: title   start ]\n");
-        s += tmp->GetEditable()->ToString(false) + wxT("\n");
+        s += tmp->GetEditable()->ToString() + wxT("\n");
         s += wxT("   [wxMaxima: title   end   ] */\n");
         break;
     }
@@ -2087,7 +2087,7 @@ struct SimpleMathParserIterator{
 //returns the index in (%i...) or (%o...)
 int getMathCellIndex(MathCell* cell){
   if (!cell) return -1;
-  wxString strindex = cell->ToString(false).Trim(); //(%i...)
+  wxString strindex = cell->ToString().Trim(); //(%i...)
   long temp;
   if (!strindex.Mid(3, strindex.Len()-4).ToLong(&temp)) return -1;
   return temp;
@@ -2103,7 +2103,7 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
       //fprintf(stderr, ">%ls< >%ls<\n", prompt?prompt->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0", cell?cell->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0" );
       //fprintf(stderr, ">%ls< >%ls<\n", tmp->GetLabel()?tmp->GetLabel()->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0", tmp->GetOutput()?tmp->GetOutput()->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0" );
 
-      wxString input = cell->ToString(false);
+      wxString input = cell->ToString();
       if (prompt && cell && input.Len() > 0) {
         int outputExpressions = 0;
         int initialHiddenExpressions = 0;
@@ -2409,13 +2409,13 @@ bool MathCtrl::ExportToHTML(wxString file) {
       MathCell *prompt = tmp->GetPrompt();
       AddLineToFile(output, wxT("<P><TABLE><TR><TD>"));
       AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-      AddLineToFile(output, prompt->ToString(false));
+      AddLineToFile(output, prompt->ToString());
       AddLineToFile(output, wxT("  </SPAN></TD>"));
 
       MathCell *input = tmp->GetInput();
       if (input != NULL) {
         AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
-        AddLineToFile(output, PrependNBSP(input->ToString(false)));
+        AddLineToFile(output, PrependNBSP(input->ToString()));
         AddLineToFile(output, wxT("  </SPAN></TD>"));
       }
       AddLineToFile(output, wxT("</TR></TABLE>"));
@@ -2441,22 +2441,22 @@ bool MathCtrl::ExportToHTML(wxString file) {
         case GC_TYPE_TEXT:
           AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString()));
           break;
         case GC_TYPE_SECTION:
           AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) + tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()));
           break;
         case GC_TYPE_SUBSECTION:
           AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) + tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()));
           break;
         case GC_TYPE_TITLE:
           AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString(false)));
+          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString()));
           break;
         case GC_TYPE_PAGEBREAK:
           AddLineToFile(output, wxT("\n\n<!-- Page break cell -->\n\n"));
@@ -2468,9 +2468,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
           AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
           MathCell *out = tmp->GetLabel();
           AddLineToFile(output, wxT("<P CLASS=\"image\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString(false) +
+          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() +
                                             wxT(" ") +
-                                            tmp->GetEditable()->ToString(false)));
+                                            tmp->GetEditable()->ToString()));
           AddLineToFile(output, wxT("<BR>"));
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
           AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
@@ -2548,9 +2548,8 @@ bool MathCtrl::ExportToTeX(wxString file) {
   //
   // Write contents
   //
-
   while (tmp != NULL) {
-    wxString s = tmp->ToTeX(false, imgDir, filename, &imgCounter);
+    wxString s = tmp->ToTeX(imgDir, filename, &imgCounter);
     AddLineToFile(output, s);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
@@ -2587,7 +2586,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
     if (tmp->GetGroupType() == GC_TYPE_CODE) {
       MathCell *txt = tmp->GetEditable();
       if (txt != NULL) {
-        wxString input = txt->ToString(false);
+        wxString input = txt->ToString();
 
         if (fixReorderedIndices)
           for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
@@ -2643,7 +2642,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
       else
         AddLineToFile(output, wxT("/*"), false);
 
-      wxString comment = txt->ToString(false);
+      wxString comment = txt->ToString();
       AddLineToFile(output, comment, false);
 
       if (wxm) {
@@ -2810,14 +2809,11 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   // Reset image counter
   ImgCell::WXMXResetCounter();
-
-  GroupCell* tmp = m_tree;
-  // Write contents //
-  while (tmp != NULL) {
-    output << ConvertToUnicode(tmp->ToXML(false));
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-  }
-
+  
+  output << ConvertToUnicode(m_tree->ListToXML());
+  std::cerr << "Debug start\n";
+  std::cerr << ConvertToUnicode(m_tree->ListToXML());
+  std::cerr << "Debug end\n";
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
@@ -3629,7 +3625,7 @@ wxString MathCtrl::GetInputAboveCaret()
   MathCell *editor = m_hCaretPosition->GetEditable();
 
   if (editor != NULL)
-    return editor->ToString(false);
+    return editor->ToString();
   return wxEmptyString;
 }
 

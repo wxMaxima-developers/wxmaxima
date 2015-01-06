@@ -209,16 +209,14 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString ImgCell::ToString(bool all)
+wxString ImgCell::ToString()
 {
-  return wxT(" << Graphics >> ") +
-         MathCell::ToString(all);
+  return wxT(" << Graphics >> ");
 }
 
-wxString ImgCell::ToTeX(bool all)
+wxString ImgCell::ToTeX()
 {
-  return wxT(" << Graphics >> ") +
-         MathCell::ToTeX(all);
+  return wxT(" << Graphics >> ");
 }
 
 bool ImgCell::ToImageFile(wxString file)
@@ -228,7 +226,7 @@ bool ImgCell::ToImageFile(wxString file)
   return image.SaveFile(file, wxBITMAP_TYPE_PNG);
 }
 
-wxString ImgCell::ToXML(bool all)
+wxString ImgCell::ToXML()
 {
   wxImage image = m_bitmap->ConvertToImage();
   wxString basename = ImgCell::WXMXGetNewFileName();
@@ -237,7 +235,7 @@ wxString ImgCell::ToXML(bool all)
   wxMemoryFSHandler::AddFile(basename, image, wxBITMAP_TYPE_PNG);
 
   return (m_drawRectangle ? wxT("<img>") : wxT("<img rect=\"false\">")) +
-         basename + wxT("</img>") + MathCell::ToXML(all);
+         basename + wxT("</img>");
 }
 
 wxString ImgCell::WXMXGetNewFileName()

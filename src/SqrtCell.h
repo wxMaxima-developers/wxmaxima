@@ -36,9 +36,9 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   bool BreakUp();
   void Unbreak(bool all);
-  wxString ToString(bool all);
-  wxString ToTeX(bool all);
-	wxString ToXML(bool all);	//new!!
+  wxString ToString();
+  wxString ToTeX();
+  wxString ToXML();
   void SetParent(MathCell *parent, bool all);
 protected:
   MathCell *m_innerCell;

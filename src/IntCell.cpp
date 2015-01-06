@@ -369,72 +369,69 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString IntCell::ToString(bool all)
+wxString IntCell::ToString()
 {
   wxString s = wxT("integrate(");
 
-  s += m_base->ToString(true);
+  s += m_base->ListToString();
 
   MathCell* tmp = m_var;
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)
   {
-    var = tmp->ToString(true);
+    var = tmp->ListToString();
   }
 
-  wxString to = m_over->ToString(true);
-  wxString from = m_under->ToString(true);
+  wxString to = m_over->ListToString();
+  wxString from = m_under->ListToString();
 
   s += wxT(",") + var;
   if (m_intStyle == INT_DEF)
     s += wxT(",") + from + wxT(",") + to;
 
   s += wxT(")");
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString IntCell::ToTeX(bool all)
+wxString IntCell::ToTeX()
 {
   wxString s = wxT("\\int");
 
-  wxString to = m_over->ToTeX(true);
-  wxString from = m_under->ToTeX(true);
+  wxString to = m_over->ListToTeX();
+  wxString from = m_under->ListToTeX();
 
   if (m_intStyle == INT_DEF)
     s += wxT("_{") + from + wxT("}^{") + to + wxT("}");
   else
     s += wxT(" ");
 
-  s += m_base->ToTeX(true);
-  s += m_var->ToTeX(true);
+  s += m_base->ListToTeX();
+  s += m_var->ListToTeX();
 
-  s += MathCell::ToTeX(all);
   return s;
 }
 
-wxString IntCell::ToXML(bool all)
+wxString IntCell::ToXML()
 {
   MathCell* tmp = m_base;
-  wxString base = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  wxString base = _T("<r>") + tmp->ListToXML() + _T("</r>");
 
   tmp = m_var;
   wxString var = ( tmp == NULL )? wxEmptyString : _T("<r>");
-  var += tmp->ToXML(true);
+  var += tmp->ListToXML();
   var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
 
   tmp = m_under;
-  wxString from = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  wxString from = _T("<r>") + tmp->ListToXML() + _T("</r>");
 
   tmp = m_over;
-  wxString to = _T("<r>") + tmp->ToXML(true) + _T("</r>");
+  wxString to = _T("<r>") + tmp->ListToXML() + _T("</r>");
 
   if (m_intStyle == INT_DEF)
-    return wxT("<in>") + from + to + base + var + wxT("</in>") + MathCell::ToXML(all);
+    return wxT("<in>") + from + to + base + var + wxT("</in>");
   else
-    return wxT("<in def=\"false\">") + base + var  + wxT("</in>") +
-      MathCell::ToXML(all);
+    return wxT("<in def=\"false\">") + base + var  + wxT("</in>");
 }
 
 void IntCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

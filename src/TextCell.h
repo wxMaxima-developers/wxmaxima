@@ -35,9 +35,9 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SetFont(CellParser& parser, int fontsize);
-  wxString ToString(bool all);
-  wxString ToTeX(bool all);
-	wxString ToXML(bool all);	// new!
+  wxString ToString();
+  wxString ToTeX();
+  wxString ToXML();
   wxString GetDiffPart();
   bool IsOperator();
   wxString GetValue() { return m_text; }

@@ -169,28 +169,26 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString ExptCell::ToString(bool all)
+wxString ExptCell::ToString()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = m_baseCell->ToString(true) + wxT("^");
+  wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
     s += wxT("^");
   if (m_powCell->IsCompound())
-    s += wxT("(") + m_powCell->ToString(true) + wxT(")");
+    s += wxT("(") + m_powCell->ListToString() + wxT(")");
   else
-    s += m_powCell->ToString(true);
-  s += MathCell::ToString(all);
+    s += m_powCell->ListToString();
   return s;
 }
 
-wxString ExptCell::ToTeX(bool all)
+wxString ExptCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = wxT("{") + m_baseCell->ToTeX(true) + wxT("}^{") +
-               m_powCell->ToTeX(true) + wxT("}");
-  s += MathCell::ToTeX(all);
+  wxString s = wxT("{") + m_baseCell->ListToTeX() + wxT("}^{") +
+               m_powCell->ListToTeX() + wxT("}");
   return s;
 }
 
@@ -198,20 +196,19 @@ wxString ExptCell::GetDiffPart()
 {
   wxString s(wxT(","));
   if (m_baseCell != NULL)
-    s += m_baseCell->ToString(true);
+    s += m_baseCell->ListToString();
   s += wxT(",");
   if (m_powCell != NULL)
-    s += m_powCell->ToString(true);
+    s += m_powCell->ListToString();
   return s;
 }
 
-wxString ExptCell::ToXML(bool all)
+wxString ExptCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<e><r>") + m_baseCell->ToXML(true) + _T("</r><r>") +
-    m_powCell->ToXML(true) + _T("</r></e>") +
-    MathCell::ToXML(all);
+  return _T("<e><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
+    m_powCell->ListToXML() + _T("</r></e>");
 }
 
 void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

@@ -214,7 +214,7 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString MatrCell::ToString(bool all)
+wxString MatrCell::ToString()
 {
   wxString s = wxT("matrix(");
   for (int i = 0; i < m_matHeight; i++)
@@ -222,7 +222,7 @@ wxString MatrCell::ToString(bool all)
     s += wxT("[");
     for (int j = 0; j < m_matWidth; j++)
     {
-      s += m_cells[i * m_matWidth + j]->ToString(true);
+      s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
         s += wxT(",");
     }
@@ -231,18 +231,17 @@ wxString MatrCell::ToString(bool all)
       s += wxT(",");
   }
   s += wxT(")");
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString MatrCell::ToTeX(bool all)
+wxString MatrCell::ToTeX()
 {
   wxString s = wxT("\\begin{pmatrix}");
   for (int i = 0; i < m_matHeight; i++)
   {
     for (int j = 0; j < m_matWidth; j++)
     {
-      s += m_cells[i * m_matWidth + j]->ToTeX(true);
+      s += m_cells[i * m_matWidth + j]->ListToTeX();
       if (j < m_matWidth - 1)
         s += wxT(" & ");
     }
@@ -250,11 +249,10 @@ wxString MatrCell::ToTeX(bool all)
       s += wxT("\\cr ");
   }
   s += wxT("\\end{pmatrix}");
-  s += MathCell::ToTeX(all);
   return s;
 }
 
-wxString MatrCell::ToXML(bool all)
+wxString MatrCell::ToXML()
 {
   wxString s = wxEmptyString;
   if (m_specialMatrix)
@@ -270,12 +268,12 @@ for (int i = 0; i < m_matHeight; i++)
   {
     s += wxT("<mtr>");
     for (int j = 0; j < m_matWidth; j++)
-      s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ToXML(true) + wxT("</mtd>");
+      s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() + wxT("</mtd>");
     s += wxT("</mtr>");
   }
   s += wxT("</tb>");
 
-  return s + MathCell::ToXML(all);
+  return s;
 }
 
 void MatrCell::SetDimension()

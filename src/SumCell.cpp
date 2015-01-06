@@ -274,36 +274,35 @@ void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString SumCell::ToString(bool all)
+wxString SumCell::ToString()
 {
   wxString s;
   if (m_sumStyle == SM_SUM)
     s = wxT("sum(");
   else
     s = wxT("product(");
-  s += m_base->ToString(true);
+  s += m_base->ListToString();
 
   MathCell* tmp = m_under;
-  wxString var = tmp->ToString(false);
+  wxString var = tmp->ListToString();
   wxString from;
   tmp = tmp->m_next;
   if (tmp != NULL)
   {
     tmp = tmp->m_next;
     if (tmp != NULL)
-      from = tmp->ToString(true);
+      from = tmp->ListToString();
   }
-  wxString to = m_over->ToString(true);
+  wxString to = m_over->ListToString();
   s += wxT(",") + var + wxT(",") + from;
   if (to != wxEmptyString)
     s += wxT(",") + to + wxT(")");
   else
-    s = wxT("l") + s + wxT(")"),
-        s += MathCell::ToString(all);
+    s = wxT("l") + s + wxT(")");
   return s;
 }
 
-wxString SumCell::ToTeX(bool all)
+wxString SumCell::ToTeX()
 {
   wxString s;
   if (m_sumStyle == SM_SUM)
@@ -312,29 +311,26 @@ wxString SumCell::ToTeX(bool all)
     s = wxT("\\prod");
 
 
-  s += wxT("_{") + m_under->ToTeX(true) + wxT("}");
-  wxString to = m_over->ToTeX(true);
+  s += wxT("_{") + m_under->ListToTeX() + wxT("}");
+  wxString to = m_over->ListToTeX();
   if (to.Length())
     s += wxT("^{") + to + wxT("}");
-  s += m_base->ToTeX(true);
-
-  s += MathCell::ToTeX(all);
+  s += m_base->ListToTeX();
   return s;
 }
 
-wxString SumCell::ToXML(bool all)
+wxString SumCell::ToXML()
 {
   wxString type(wxT("sum"));
 
   if (m_sumStyle == SM_PROD)
     type = wxT("prod");
-  else if (m_over->ToString(false) == wxEmptyString)
+  else if (m_over->ListToString() == wxEmptyString)
     type = wxT("lsum");
 
-  return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ToXML(true) + _T("</r><r>") +
-    m_over->ToXML(true) + _T("</r><r>") +
-    m_base->ToXML(true) + _T("</r></sm>") +
-    MathCell::ToXML(all);
+  return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
+    m_over->ListToXML() + _T("</r><r>") +
+    m_base->ListToXML() + _T("</r></sm>");
 }
 
 void SumCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

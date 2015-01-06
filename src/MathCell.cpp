@@ -333,31 +333,61 @@ bool MathCell::IsOperator()
 /***
  * Return the string representation of cell.
  */
-wxString MathCell::ToString(bool all)
+wxString MathCell::ToString()
 {
-  if (all && m_next != NULL) {
-    if (m_next->ForceBreakLineHere())
-      return wxT("\n") + m_next->ToString(all);
-    return m_next->ToString(all);
-  }
   return wxEmptyString;
 }
 
-wxString MathCell::ToTeX(bool all)
+wxString MathCell::ListToString()
 {
-  if (all && m_next != NULL)
-    return m_next->ToTeX(all);
+  wxString retval="";
+  MathCell *tmp=this;
+  
+  while(tmp!=NULL)
+    {
+      retval+=tmp->ToString();
+      tmp=tmp->m_next;
+    }
+  
+  return retval;
+}
+
+wxString MathCell::ToTeX()
+{
   return wxEmptyString;
 }
 
-wxString MathCell::ToXML(bool all)
+wxString MathCell::ListToTeX()
 {
-  if (all && m_next != NULL) {
-    if (m_next->ForceBreakLineHere())
-      return wxT("</mth>\n<mth>") + m_next->ToXML(all);
-    return m_next->ToXML(all);
-  }
+  wxString retval="";
+  MathCell *tmp=this;
+  
+  while(tmp!=NULL)
+    {
+      retval+=tmp->ToTeX();
+      tmp=tmp->m_next;
+    }
+  
+  return retval;
+}
+
+wxString MathCell::ToXML()
+{
   return wxEmptyString;
+}
+
+wxString MathCell::ListToXML()
+{
+  wxString retval="";
+  MathCell *tmp=this;
+  
+  while(tmp!=NULL)
+    {
+      retval+=tmp->ToXML();
+      tmp=tmp->m_next;
+    }
+  
+  return retval;
 }
 
 /***

@@ -161,11 +161,11 @@ void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString LimitCell::ToString(bool all)
+wxString LimitCell::ToString()
 {
   wxString s(wxT("limit"));
-  wxString under = m_under->ToString(true);
-  wxString base = m_base->ToString(true);
+  wxString under = m_under->ListToString();
+  wxString base = m_base->ListToString();
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
@@ -175,29 +175,26 @@ wxString LimitCell::ToString(bool all)
     to = to.Left(to.Length() - 1) + wxT(",minus");
 
   s += wxT("(") + base + wxT(",") + var + wxT(",") + to + wxT(")");
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString LimitCell::ToTeX(bool all)
+wxString LimitCell::ToTeX()
 {
   wxString s = wxT("\\lim");
-  wxString under = m_under->ToTeX(true);
-  wxString base = m_base->ToTeX(true);
+  wxString under = m_under->ListToTeX();
+  wxString base = m_base->ListToTeX();
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
   s += wxT("_{") + var + wxT("\\to ") + to + wxT("}") + base;
-  s += MathCell::ToTeX(all);
   return s;
 }
 
-wxString LimitCell::ToXML(bool all)
+wxString LimitCell::ToXML()
 {
-  return _T("<lm><r>") + m_name->ToXML(true) + _T("</r><r>") +
-    m_base->ToXML(true) + _T("</r><r>") +
-    m_under->ToXML(true) + _T("</r></lm>") + 
-    MathCell::ToXML(all);
+  return _T("<lm><r>") + m_name->ListToXML() + _T("</r><r>") +
+    m_base->ListToXML() + _T("</r><r>") +
+    m_under->ListToXML() + _T("</r></lm>");
 }
 
 void LimitCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

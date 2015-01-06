@@ -241,28 +241,25 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString SqrtCell::ToString(bool all)
+wxString SqrtCell::ToString()
 {
   if (m_isBroken)
     return wxEmptyString;
-  return wxT("sqrt(") + m_innerCell->ToString(true) + wxT(")") +
-         MathCell::ToString(all);
+  return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString SqrtCell::ToTeX(bool all)
+wxString SqrtCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  return wxT("\\sqrt{") + m_innerCell->ToTeX(true) + wxT("}") +
-         MathCell::ToTeX(all);
+  return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString SqrtCell::ToXML(bool all)
+wxString SqrtCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<q>") + m_innerCell->ToXML(true) + _T("</q>") +
-    MathCell::ToXML(all);
+  return _T("<q>") + m_innerCell->ListToXML() + _T("</q>");
 }
 
 void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)

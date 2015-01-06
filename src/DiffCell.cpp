@@ -121,30 +121,27 @@ void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString DiffCell::ToString(bool all)
+wxString DiffCell::ToString()
 {
   MathCell* tmp = m_baseCell->m_next;
   wxString s = wxT("'diff(");
   if (tmp != NULL)
-    s += tmp->ToString(true);
-  s += m_diffCell->ToString(true);
+    s += tmp->ListToString();
+  s += m_diffCell->ListToString();
   s += wxT(")");
-  s += MathCell::ToString(all);
   return s;
 }
 
-wxString DiffCell::ToTeX(bool all)
+wxString DiffCell::ToTeX()
 {
-  wxString s = m_diffCell->ToTeX(true) + m_baseCell->ToTeX(true);
-  s += MathCell::ToTeX(all);
+  wxString s = m_diffCell->ListToTeX() + m_baseCell->ListToTeX();
   return s;
 }
 
-wxString DiffCell::ToXML(bool all)
+wxString DiffCell::ToXML()
 {
-  return _T("<d>") + m_baseCell->ToXML(true) +
-    m_diffCell->ToXML(true) + _T("</d>") +
-    MathCell::ToXML(all);
+  return _T("<d>") + m_baseCell->ListToXML() +
+    m_diffCell->ListToXML() + _T("</d>");
 }
 
 void DiffCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

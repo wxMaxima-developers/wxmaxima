@@ -234,7 +234,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   MathCell::Draw(parser, point, fontsize, all);
 }
 
-wxString FracCell::ToString(bool all)
+wxString FracCell::ToString()
 {
   wxString s;
   if (!m_isBroken)
@@ -242,18 +242,18 @@ wxString FracCell::ToString(bool all)
     if (m_fracStyle == FC_NORMAL)
     {
       if (m_num->IsCompound())
-        s += wxT("(") + m_num->ToString(true) + wxT(")/");
+        s += wxT("(") + m_num->ListToString() + wxT(")/");
       else
-        s += m_num->ToString(true) + wxT("/");
+        s += m_num->ListToString() + wxT("/");
       if (m_denom->IsCompound())
-        s += wxT("(") + m_denom->ToString(true) + wxT(")");
+        s += wxT("(") + m_denom->ListToString() + wxT(")");
       else
-        s += m_denom->ToString(true);
+        s += m_denom->ListToString();
     }
     else if (m_fracStyle == FC_CHOOSE)
     {
-      s = wxT("binomial(") + m_num->ToString(true) + wxT(",") +
-          m_denom->ToString(true) + wxT(")");
+      s = wxT("binomial(") + m_num->ListToString() + wxT(",") +
+          m_denom->ListToString() + wxT(")");
     }
     else
     {
@@ -275,41 +275,38 @@ wxString FracCell::ToString(bool all)
     }
   }
   if (m_fracStyle == FC_NORMAL)
-    s += MathCell::ToString(all);
   return s;
 }
 
-wxString FracCell::ToTeX(bool all)
+wxString FracCell::ToTeX()
 {
   wxString s;
   if (!m_isBroken)
   {
     if (m_fracStyle == FC_CHOOSE)
     {
-      s = wxT("\\begin{pmatrix}") + m_num->ToTeX(true) + wxT("\\cr ") +
-          m_denom->ToTeX(true) + wxT("\\end{pmatrix}");
+      s = wxT("\\begin{pmatrix}") + m_num->ListToTeX() + wxT("\\cr ") +
+          m_denom->ListToTeX() + wxT("\\end{pmatrix}");
     }
     else
     {
-      s = wxT("\\frac{") + m_num->ToTeX(true) + wxT("}{") +
-          m_denom->ToTeX(true) + wxT("}");
+      s = wxT("\\frac{") + m_num->ListToTeX() + wxT("}{") +
+          m_denom->ListToTeX() + wxT("}");
     }
   }
   if (m_fracStyle == FC_NORMAL)
-    s += MathCell::ToTeX(all);
   return s;
 }
 
-wxString FracCell::ToXML(bool all)
+wxString FracCell::ToXML()
 {
 //  if( m_isBroken )
 //    return wxEmptyString;
   wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )?
     _T("f"): _T("f line = \"no\"");
   return _T("<") + s + _T("><r>") +
-    m_num->ToXML(true) + _T("</r><r>") +
-    m_denom->ToXML(true) + _T("</r></f>") +
-    MathCell::ToXML(all);
+    m_num->ListToXML() + _T("</r><r>") +
+    m_denom->ListToXML() + _T("</r></f>");
 }
 
 void FracCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
