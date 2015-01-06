@@ -36,6 +36,11 @@ This naturally depends on what you want to archieve.
 One of the most important concepts that are important to know is that
 everything that is displayed in 
 
+Things you have to know
+-----------------------
+ - All methods that operate on lists expect to be applied to the first
+   element of the list they belong to.
+
 Naming rules
 ------------
 
