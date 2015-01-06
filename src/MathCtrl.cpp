@@ -1915,12 +1915,12 @@ MathCell* MathCtrl::CopyTree() {
   MathCell* tmp1 = m_tree;
   MathCell* tmp;
   MathCell* copy;
-  tmp = tmp1->Copy(false);
+  tmp = tmp1->Copy();
   copy = tmp;
 
   tmp1 = tmp1->m_next;
   while (tmp1 != NULL) {
-    tmp->AppendCell(tmp1->Copy(false));
+    tmp->AppendCell(tmp1->Copy());
     tmp = tmp->m_next;
     tmp1 = tmp1->m_next;
   }
@@ -1985,10 +1985,10 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
 
   while (tmp != NULL) {
     if (tmp1 == NULL) {
-      tmp1 = tmp->Copy(false);
+      tmp1 = tmp->Copy();
       tmp2 = tmp1;
     } else {
-      tmp2->AppendCell(tmp->Copy(false));
+      tmp2->AppendCell(tmp->Copy());
       tmp2 = tmp2->m_next;
     }
     if (tmp == end)

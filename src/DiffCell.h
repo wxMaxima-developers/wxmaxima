@@ -28,7 +28,7 @@ public:
 	DiffCell();
 	~DiffCell();
   void Destroy();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void SetBase(MathCell *base);
   void SetDiff(MathCell *diff);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);

@@ -37,7 +37,7 @@ public:
   ~AbsCell();
   void Destroy();
   void SetInner(MathCell *inner);
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();
   void Unbreak(bool all);

@@ -98,18 +98,7 @@ class MathCell
 {
 public:
   MathCell();
-  virtual ~MathCell();
-  /*! Copy this cell (and, if requested, all following cells)
-    
-    \param all 
-     - true:  Copy this and all the following cells
-     - false: Copy this cell only
-
-    \return A copy of this cell with (if the parameter all was true) all 
-    following cells attached.
-   */
-  virtual MathCell* Copy(bool all) = 0;
-  
+  virtual ~MathCell();  
   /*! Free all memory directly referenced by the contents of this cell
 
     This command (and the celltype-specific versions of the derived
@@ -247,19 +236,19 @@ public:
 
   MathCell* GetParent();
 
-  //! Returns the cell's representation as a string.
-  virtual wxString ToString();
-  //! Convert this cell to its LaTeX representation
-  virtual wxString ToTeX();
-  //! Convert this cell to an representation fit for saving in a .wxmx file
-  virtual wxString ToXML();
-
     //! Returns the list's representation as a string.
   virtual wxString ListToString();
   //! Convert this list to its LaTeX representation
   virtual wxString ListToTeX();
   //! Convert this list to an representation fit for saving in a .wxmx file
   virtual wxString ListToXML();
+  //! Returns the cell's representation as a string.
+  virtual wxString ToString();
+  //! Convert this cell to its LaTeX representation
+  virtual wxString ToTeX();
+  //! Convert this cell to an representation fit for saving in a .wxmx file
+  virtual wxString ToXML();
+  //! The height of this cell
 
   void UnsetPen(CellParser& parser);
   virtual void Unbreak(bool all);
@@ -350,14 +339,20 @@ public:
   void SetStyle(int style) { m_textStyle = style; }
   bool IsMath();
   void SetAltCopyText(wxString text) { m_altCopyText = text; }
-protected:
   /*! Attach a copy of the list of cells that follows this one to a cell
     
     Used by MathCell::Copy() when the parameter <code>all</code> is true.
   */
-  void CopyRestFrom(MathCell *src);
-  
-  //! The height of this cell
+  MathCell *CopyList();
+  /*! Copy this cell
+    
+    This method is used by CopyList() which creates a copy of a cell tree. 
+    
+    \return A copy of this cell without the rest of the list this cell is part 
+    from.
+  */
+  virtual MathCell* Copy() = 0;
+protected:
   int m_height;
   //! The width of this cell
   int m_width;

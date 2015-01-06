@@ -59,7 +59,7 @@ class GroupCell: public MathCell
 public:
   GroupCell(int groupType, wxString initString = wxEmptyString);
   ~GroupCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   // general methods
   int GetGroupType() { return m_groupType; }

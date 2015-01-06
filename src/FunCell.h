@@ -27,7 +27,7 @@ class FunCell : public MathCell
 public:
   FunCell();
   ~FunCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void SetName(MathCell *base);
   void SetArg(MathCell *index);

@@ -45,15 +45,12 @@ void AtCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* AtCell::Copy(bool all)
+MathCell* AtCell::Copy()
 {
   AtCell* tmp = new AtCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->Copy(true));
-  tmp->SetIndex(m_indexCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetBase(m_baseCell->CopyList());
+  tmp->SetIndex(m_indexCell->CopyList());
 
   return tmp;
 }

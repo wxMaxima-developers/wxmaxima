@@ -34,7 +34,7 @@ public:
   ~ImgCell();
   void Destroy();
   void LoadImage(wxString image, bool remove = true);
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   {
     *first = *last = this;

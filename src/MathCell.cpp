@@ -89,13 +89,14 @@ void MathCell::SetType(int type)
   }
 }
 
-void MathCell::CopyRestFrom(MathCell *src)
+MathCell *MathCell::CopyList()
 {
-  MathCell *dest=this;
+  MathCell *dest=Copy();
+  MathCell *src= this->m_next;
   
-  while(src->m_next != NULL)
+  while(src != NULL)
   {
-    dest->AppendCell(src->m_next->Copy(false));
+    dest->AppendCell(src->m_next->Copy());
     src =src ->m_next;
     dest=dest->m_next;
   }

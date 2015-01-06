@@ -53,17 +53,14 @@ void LimitCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* LimitCell::Copy(bool all)
+MathCell* LimitCell::Copy()
 {
   LimitCell* tmp = new LimitCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_base->Copy(true));
-  tmp->SetUnder(m_under->Copy(true));
-  tmp->SetName(m_name->Copy(true));
+  tmp->SetBase(m_base->CopyList());
+  tmp->SetUnder(m_under->CopyList());
+  tmp->SetName(m_name->CopyList());
     
-  if (all)
-    tmp->CopyRestFrom(this);
-
   return tmp;
 }
 

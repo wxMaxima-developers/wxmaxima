@@ -66,18 +66,15 @@ void IntCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* IntCell::Copy(bool all)
+MathCell* IntCell::Copy()
 {
   IntCell *tmp = new IntCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_base->Copy(true));
-  tmp->SetUnder(m_under->Copy(true));
-  tmp->SetOver(m_over->Copy(true));
-  tmp->SetVar(m_var->Copy(true));
+  tmp->SetBase(m_base->CopyList());
+  tmp->SetUnder(m_under->CopyList());
+  tmp->SetOver(m_over->CopyList());
+  tmp->SetVar(m_var->CopyList());
   tmp->m_intStyle = m_intStyle;
-
-  if (all)
-    tmp->CopyRestFrom(this);
 
   return tmp;
 }

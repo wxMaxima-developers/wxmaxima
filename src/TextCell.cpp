@@ -50,7 +50,7 @@ void TextCell::SetValue(wxString text)
   m_alt = m_altJs = false;
 }
 
-MathCell* TextCell::Copy(bool all)
+MathCell* TextCell::Copy()
 {
   TextCell *retval = new TextCell(wxEmptyString);
   CopyData(this, retval);
@@ -60,9 +60,6 @@ MathCell* TextCell::Copy(bool all)
   retval->m_isHidden = m_isHidden;
   retval->m_textStyle = m_textStyle;
   retval->m_highlight = m_highlight;
-
-  if (all)
-    retval->CopyRestFrom(this);
 
   return retval;
 }

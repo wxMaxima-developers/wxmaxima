@@ -126,16 +126,13 @@ void ImgCell::SetBitmap(wxBitmap bitmap)
   m_bitmap = new wxBitmap(bitmap);
 }
 
-MathCell* ImgCell::Copy(bool all)
+MathCell* ImgCell::Copy()
 {
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
   tmp->m_drawRectangle = m_drawRectangle;
 
   tmp->m_bitmap = new wxBitmap(*m_bitmap);
-
-  if (all)
-    tmp->CopyRestFrom(this);
 
   return tmp;
 }

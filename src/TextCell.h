@@ -28,7 +28,7 @@ public:
   TextCell();
   TextCell(wxString text);
   ~TextCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void SetValue(wxString text);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);

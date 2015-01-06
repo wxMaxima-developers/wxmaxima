@@ -49,14 +49,11 @@ void AbsCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* AbsCell::Copy(bool all)
+MathCell* AbsCell::Copy()
 {
   AbsCell* tmp = new AbsCell;
   CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetInner(m_innerCell->CopyList());
 
   return tmp;
 }

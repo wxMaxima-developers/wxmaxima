@@ -32,7 +32,7 @@ class IntCell : public MathCell
 public:
   IntCell();
   ~IntCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
   void RecalculateWidths(CellParser& parser, int fontsize, bool all);

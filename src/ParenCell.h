@@ -29,7 +29,7 @@ public:
   ParenCell();
   ~ParenCell();
   void Destroy();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void SetInner(MathCell *inner, int style);
   void SetPrint(bool print)
   {

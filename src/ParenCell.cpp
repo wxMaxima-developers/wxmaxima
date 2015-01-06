@@ -75,14 +75,11 @@ void ParenCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* ParenCell::Copy(bool all)
+MathCell* ParenCell::Copy()
 {
   ParenCell *tmp = new ParenCell;
   CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->Copy(true), m_type);
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetInner(m_innerCell->CopyList(), m_type);
 
   return tmp;
 }

@@ -27,7 +27,7 @@ class AtCell : public MathCell
 public:
   AtCell();
   ~AtCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void SetBase(MathCell *base);
   void SetIndex(MathCell *index);

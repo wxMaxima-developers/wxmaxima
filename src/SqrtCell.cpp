@@ -52,14 +52,11 @@ void SqrtCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* SqrtCell::Copy(bool all)
+MathCell* SqrtCell::Copy()
 {
   SqrtCell* tmp = new SqrtCell;
   CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetInner(m_innerCell->CopyList());
 
   return tmp;
 }

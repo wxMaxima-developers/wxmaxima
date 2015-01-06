@@ -56,18 +56,15 @@ void FracCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* FracCell::Copy(bool all)
+MathCell* FracCell::Copy()
 {
   FracCell* tmp = new FracCell;
   CopyData(this, tmp);
-  tmp->SetNum(m_num->Copy(true));
-  tmp->SetDenom(m_denom->Copy(true));
+  tmp->SetNum(m_num->CopyList());
+  tmp->SetDenom(m_denom->CopyList());
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->SetupBreakUps();
-
-  if (all)
-    tmp->CopyRestFrom(this);
   
   return tmp;
 }

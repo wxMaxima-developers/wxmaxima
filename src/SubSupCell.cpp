@@ -51,16 +51,13 @@ void SubSupCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* SubSupCell::Copy(bool all)
+MathCell* SubSupCell::Copy()
 {
   SubSupCell* tmp = new SubSupCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->Copy(true));
-  tmp->SetIndex(m_indexCell->Copy(true));
-  tmp->SetExponent(m_exptCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetBase(m_baseCell->CopyList());
+  tmp->SetIndex(m_indexCell->CopyList());
+  tmp->SetExponent(m_exptCell->CopyList());
 
   return tmp;
 }

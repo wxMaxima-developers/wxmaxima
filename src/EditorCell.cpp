@@ -58,15 +58,12 @@ EditorCell::~EditorCell()
     delete m_next;
 }
 
-MathCell *EditorCell::Copy(bool all)
+MathCell *EditorCell::Copy()
 {
   EditorCell *tmp = new EditorCell();
   tmp->SetValue(m_text);
   tmp->m_containsChanges = m_containsChanges;
   CopyData(this, tmp);
-
-  if (all)
-    tmp->CopyRestFrom(this);
 
   return tmp;
 }

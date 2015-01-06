@@ -47,15 +47,12 @@ void SubCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* SubCell::Copy(bool all)
+MathCell* SubCell::Copy()
 {
   SubCell* tmp = new SubCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->Copy(true));
-  tmp->SetIndex(m_indexCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetBase(m_baseCell->CopyList());
+  tmp->SetIndex(m_indexCell->CopyList());
 
   return tmp;
 }

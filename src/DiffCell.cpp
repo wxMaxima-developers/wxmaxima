@@ -45,15 +45,12 @@ void DiffCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* DiffCell::Copy(bool all)
+MathCell* DiffCell::Copy()
 {
   DiffCell* tmp = new DiffCell;
   CopyData(this, tmp);
-  tmp->SetDiff(m_diffCell->Copy(true));
-  tmp->SetBase(m_baseCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetDiff(m_diffCell->CopyList());
+  tmp->SetBase(m_baseCell->CopyList());
 
   return tmp;
 }

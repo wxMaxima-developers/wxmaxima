@@ -132,16 +132,13 @@ void SlideShow::LoadImages(wxArrayString images)
   m_displayed = 0;
 }
 
-MathCell* SlideShow::Copy(bool all)
+MathCell* SlideShow::Copy()
 {
   ImgCell* tmp = new ImgCell;
   CopyData(this, tmp);
 
   tmp->m_bitmap = new wxBitmap(*m_bitmaps[m_displayed]);
   
-  if (all)
-    tmp->CopyRestFrom(this);
-
   return tmp;
 }
 

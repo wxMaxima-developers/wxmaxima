@@ -27,7 +27,7 @@ class SubCell : public MathCell
 public:
   SubCell();
   ~SubCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void SetBase(MathCell *base);
   void SetIndex(MathCell *index);

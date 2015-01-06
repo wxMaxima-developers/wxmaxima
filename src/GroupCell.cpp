@@ -167,18 +167,15 @@ void GroupCell::ResetInputLabel(bool all)
     dynamic_cast<GroupCell*>(m_next)->ResetInputLabel(true);
 }
 
-MathCell* GroupCell::Copy(bool all)
+MathCell* GroupCell::Copy()
 {
   GroupCell* tmp = new GroupCell(m_groupType);
   tmp->Hide(m_hide);
   CopyData(this, tmp);
   if (m_input)
-    tmp->SetInput(m_input->Copy(true));
+    tmp->SetInput(m_input->CopyList());
   if (m_output != NULL)
-    tmp->SetOutput(m_output->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+    tmp->SetOutput(m_output->CopyList());
 
   return tmp;
 }
@@ -644,7 +641,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 
   // IMAGE CELLS
   else if (m_groupType == GC_TYPE_IMAGE && imgDir != wxEmptyString) {
-    MathCell *copy = m_output->Copy(false);
+    MathCell *copy = m_output->Copy();
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
     wxString file = imgDir + wxT("/") + image;
@@ -707,7 +704,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         {
           if (imgDir != wxEmptyString)
           {
-            MathCell *copy = tmp->Copy(false);
+            MathCell *copy = tmp->Copy();
             (*imgCounter)++;
             wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
             wxString file = imgDir + wxT("/") + image;

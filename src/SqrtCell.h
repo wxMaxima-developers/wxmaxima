@@ -27,7 +27,7 @@ class SqrtCell : public MathCell
 public:
   SqrtCell();
   ~SqrtCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   void SetInner(MathCell *inner);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);

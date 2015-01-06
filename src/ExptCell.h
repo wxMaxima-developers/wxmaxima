@@ -27,7 +27,7 @@ class ExptCell : public MathCell
 public:
   ExptCell();
   ~ExptCell();
-  MathCell* Copy(bool all);
+  MathCell* Copy();
   void Destroy();
   //! Set the mantissa
   void SetBase(MathCell *base);

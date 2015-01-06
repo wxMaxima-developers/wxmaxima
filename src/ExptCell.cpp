@@ -59,15 +59,12 @@ void ExptCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* ExptCell::Copy(bool all)
+MathCell* ExptCell::Copy()
 {
   ExptCell* tmp = new ExptCell;
   CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->Copy(true));
-  tmp->SetPower(m_powCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetBase(m_baseCell->CopyList());
+  tmp->SetPower(m_powCell->CopyList());
 
   return tmp;
 }

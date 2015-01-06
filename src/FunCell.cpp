@@ -45,15 +45,12 @@ void FunCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* FunCell::Copy(bool all)
+MathCell* FunCell::Copy()
 {
   FunCell* tmp = new FunCell;
   CopyData(this, tmp);
-  tmp->SetName(m_nameCell->Copy(true));
-  tmp->SetArg(m_argCell->Copy(true));
-
-  if (all)
-    tmp->CopyRestFrom(this);
+  tmp->SetName(m_nameCell->CopyList());
+  tmp->SetArg(m_argCell->CopyList());
 
   return tmp;
 }

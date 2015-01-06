@@ -50,7 +50,7 @@ void MatrCell::SetParent(MathCell *parent, bool all)
   MathCell::SetParent(parent, all);
 }
 
-MathCell* MatrCell::Copy(bool all)
+MathCell* MatrCell::Copy()
 {
   MatrCell *tmp = new MatrCell;
   CopyData(this, tmp);
@@ -61,11 +61,8 @@ MathCell* MatrCell::Copy(bool all)
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
-    (tmp->m_cells).push_back(m_cells[i]->Copy(true));
+    (tmp->m_cells).push_back(m_cells[i]->CopyList());
   
-  if (all)
-    tmp->CopyRestFrom(this);
-
   return tmp;
 }
 
