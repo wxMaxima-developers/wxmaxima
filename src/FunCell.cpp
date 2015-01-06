@@ -35,14 +35,13 @@ FunCell::~FunCell()
     delete m_next;
 }
 
-void FunCell::SetParent(MathCell *parent, bool all)
+void FunCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_nameCell != NULL)
-    m_nameCell->SetParent(parent, true);
+    m_nameCell->SetParentList(parent);
   if (m_argCell != NULL)
-    m_argCell->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_argCell->SetParentList(parent);
 }
 
 MathCell* FunCell::Copy()

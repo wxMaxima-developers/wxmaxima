@@ -44,7 +44,7 @@ public:
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
 protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;

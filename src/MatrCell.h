@@ -55,7 +55,7 @@ public:
   wxString ToXML();
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
   void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
   void RowNames(bool rn) { m_rowNames = rn; }
   void ColNames(bool cn) { m_colNames = cn; }
 protected:

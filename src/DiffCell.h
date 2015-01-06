@@ -38,7 +38,7 @@ public:
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;

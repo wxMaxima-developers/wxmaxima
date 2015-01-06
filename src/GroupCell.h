@@ -63,7 +63,7 @@ public:
   void Destroy();
   // general methods
   int GetGroupType() { return m_groupType; }
-  void SetParent(MathCell *parent, bool all); // setting parent for all mathcells in GC
+  void SetParent(MathCell *parent); // setting parent for all mathcells in GC
   void SetWorking(bool working) { m_working = working; }
   // selection methods
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);

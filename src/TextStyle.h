@@ -33,6 +33,7 @@ struct style
   bool underlined;
 };
 
+//! All text styles known to wxMaxima
 enum
 {
   TS_DEFAULT = 0,

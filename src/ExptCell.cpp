@@ -45,18 +45,17 @@ ExptCell::~ExptCell()
   delete m_close;
 }
 
-void ExptCell::SetParent(MathCell *parent, bool all)
+void ExptCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParent(parent, true);
+    m_baseCell->SetParentList(parent);
   if (m_powCell != NULL)
-    m_powCell->SetParent(parent, true);
+    m_powCell->SetParentList(parent);
   if (m_open != NULL)
-    m_open->SetParent(parent, true);
+    m_open->SetParentList(parent);
   if (m_close != NULL)
-    m_close->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_close->SetParentList(parent);
 }
 
 MathCell* ExptCell::Copy()

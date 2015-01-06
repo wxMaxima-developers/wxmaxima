@@ -52,18 +52,17 @@ IntCell::~IntCell()
     delete m_next;
 }
 
-void IntCell::SetParent(MathCell *parent, bool all)
+void IntCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_base != NULL)
-    m_base->SetParent(parent, true);
+    m_base->SetParentList(parent);
   if (m_under != NULL)
-    m_under->SetParent(parent, true);
+    m_under->SetParentList(parent);
   if (m_over != NULL)
-    m_over->SetParent(parent, true);
+    m_over->SetParentList(parent);
   if (m_var != NULL)
-    m_var->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_var->SetParentList(parent);
 }
 
 MathCell* IntCell::Copy()

@@ -158,7 +158,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     }
   }
 
-  group->SetParent(group, false);
+  group->SetParent(group);
   group->Hide(hide);
   return group;
 }

@@ -39,16 +39,15 @@ SubSupCell::~SubSupCell()
     delete m_next;
 }
 
-void SubSupCell::SetParent(MathCell *parent, bool all)
+void SubSupCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParent(parent, true);
+    m_baseCell->SetParentList(parent);
   if (m_indexCell != NULL)
-    m_indexCell->SetParent(parent, true);
+    m_indexCell->SetParentList(parent);
   if (m_exptCell != NULL)
-    m_exptCell->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_exptCell->SetParentList(parent);
 }
 
 MathCell* SubSupCell::Copy()

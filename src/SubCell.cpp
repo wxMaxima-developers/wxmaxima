@@ -37,14 +37,13 @@ SubCell::~SubCell()
     delete m_next;
 }
 
-void SubCell::SetParent(MathCell *parent, bool all)
+void SubCell::SetParent(MathCell *parent)
 {
+  m_group=parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParent(parent, true);
+    m_baseCell->SetParentList(parent);
   if (m_indexCell != NULL)
-    m_indexCell->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_indexCell->SetParentList(parent);
 }
 
 MathCell* SubCell::Copy()

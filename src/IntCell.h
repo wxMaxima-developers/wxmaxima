@@ -57,7 +57,7 @@ public:
   wxString ToTeX();
   wxString ToXML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
 
  protected:
   //! The part of the formula that is to be integrated.

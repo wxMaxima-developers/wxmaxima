@@ -360,11 +360,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     OpenHCaret();
   }
 
-  while (newCell != NULL)
-  {
-    newCell->SetParent(tmp, false);
-    newCell = newCell->m_next;
-  }
+  newCell->SetParentList(tmp);
 
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
@@ -1299,7 +1295,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     newInput->CaretToEnd();
 
     m_workingGroup->AppendOutput(newInput);
-    newInput->SetParent(m_workingGroup, false);
+    newInput->SetParent(m_workingGroup);
     SetActiveCell(newInput, false);
 
     wxClientDC dc(this);

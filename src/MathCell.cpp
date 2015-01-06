@@ -102,16 +102,19 @@ MathCell *MathCell::CopyList()
   }
 }
 
-void MathCell::SetParent(MathCell *parent, bool all)
-{
-  m_group = parent;
 
-  if (m_next != NULL && all)
-    m_next->SetParent(parent, all);
+void MathCell::SetParentList(MathCell *parent)
+{
+  MathCell *tmp=this;
+  while(tmp != NULL)
+  {
+    tmp->SetParent(parent);
+    tmp=tmp->m_next;
+  }
 }
 
 /***
- * Append new cell to the end of group.
+ * Append new cell to the end of this list.
  */
 void MathCell::AppendCell(MathCell *p_next)
 {
@@ -119,18 +122,24 @@ void MathCell::AppendCell(MathCell *p_next)
     return ;
   m_maxDrop = -1;
   m_maxCenter = -1;
-  if (m_next == NULL)
-  {
-    m_next = p_next;
-    m_next->m_previous = this;
-    MathCell *tmp = this;
-    while (tmp->m_nextToDraw != NULL)
-      tmp = tmp->m_nextToDraw;
-    tmp->m_nextToDraw = p_next;
-    p_next->m_previousToDraw = tmp;
-  }
-  else
-    m_next->AppendCell(p_next);
+
+  // Search the last cell in the list
+  MathCell *LastInList=this;
+  while(LastInList->m_next!=NULL)
+    LastInList=LastInList->m_next;
+
+  // Append this p_next to the list
+  LastInList->m_next = p_next;
+  LastInList->m_next->m_previous = LastInList;
+
+  // Search the last cell in the list that is sorted by the drawing order
+  MathCell *LastToDraw = LastInList;
+  while (LastToDraw->m_nextToDraw != NULL)
+    LastToDraw = LastToDraw->m_nextToDraw;
+
+  // Append p_next to this list.
+  LastToDraw->m_nextToDraw = p_next;
+  p_next->m_previousToDraw = LastToDraw;
 };
 
 

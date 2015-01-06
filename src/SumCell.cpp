@@ -47,16 +47,15 @@ SumCell::~SumCell()
     delete m_next;
 }
 
-void SumCell::SetParent(MathCell *parent, bool all)
+void SumCell::SetParent(MathCell *parent)
 {
+  m_group=parent;
   if (m_base != NULL)
-    m_base->SetParent(parent, true);
+    m_base->SetParentList(parent);
   if (m_under != NULL)
-    m_under->SetParent(parent, true);
+    m_under->SetParentList(parent);
   if (m_over != NULL)
-    m_over->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_over->SetParentList(parent);
 }
 
 MathCell* SumCell::Copy()

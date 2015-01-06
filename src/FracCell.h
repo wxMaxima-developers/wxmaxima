@@ -61,7 +61,7 @@ public:
   bool BreakUp();
   void SetupBreakUps();
   void Unbreak(bool all);
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
 protected:
   //! The nummerator
   MathCell *m_num;

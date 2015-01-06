@@ -41,16 +41,15 @@ LimitCell::~LimitCell()
     delete m_next;
 }
 
-void LimitCell::SetParent(MathCell *parent, bool all)
+void LimitCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_base != NULL)
-    m_base->SetParent(parent, true);
+    m_base->SetParentList(parent);
   if (m_under != NULL)
-    m_under->SetParent(parent, true);
+    m_under->SetParentList(parent);
   if (m_name != NULL)
-    m_name->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_name->SetParentList(parent);
 }
 
 MathCell* LimitCell::Copy()

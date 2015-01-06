@@ -40,16 +40,15 @@ SqrtCell::~SqrtCell()
   delete m_close;
 }
 
-void SqrtCell::SetParent(MathCell *parent, bool all)
+void SqrtCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_innerCell != NULL)
-    m_innerCell->SetParent(parent, true);
+    m_innerCell->SetParentList(parent);
   if (m_open != NULL)
-    m_open->SetParent(parent, true);
+    m_open->SetParentList(parent);
   if (m_close != NULL)
-    m_close->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_close->SetParentList(parent);
 }
 
 MathCell* SqrtCell::Copy()

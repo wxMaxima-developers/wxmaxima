@@ -35,14 +35,13 @@ DiffCell::~DiffCell()
     delete m_next;
 }
 
-void DiffCell::SetParent(MathCell *parent, bool all)
+void DiffCell::SetParent(MathCell *parent)
 {
+  m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParent(parent, true);
+    m_baseCell->SetParentList(parent);
   if (m_diffCell != NULL)
-    m_diffCell->SetParent(parent, true);
-
-  MathCell::SetParent(parent, all);
+    m_diffCell->SetParentList(parent);
 }
 
 MathCell* DiffCell::Copy()

@@ -335,7 +335,16 @@ public:
   virtual void SetFocus(bool focus) { }
   void SetForeground(CellParser& parser);
   virtual bool IsActive() { return false; }
-  virtual void SetParent(MathCell *parent, bool all);
+  /*! Define which GroupCell is the parent of this cell.
+    
+    If a derived class defines a cell type that does include sub-cells
+    (One example would be the argument of a sqrt() cell) the derived
+    class has to take care that the subCell's SetParent is called when
+    the cell's SetParent is called.
+   */
+  virtual void SetParent(MathCell *parent) {m_group = parent;};
+  //! Define which GroupCell is the parent of all cells in this list
+  void SetParentList(MathCell *parent);
   void SetStyle(int style) { m_textStyle = style; }
   bool IsMath();
   void SetAltCopyText(wxString text) { m_altCopyText = text; }

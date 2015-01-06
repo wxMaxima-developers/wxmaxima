@@ -86,7 +86,7 @@ public:
   void StripComments(wxString& s);
   void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
-                wxString command = wxEmptyString); // Open a file
+                wxString command = wxEmptyString); //< Open a file
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 protected:
@@ -99,7 +99,7 @@ protected:
   void MaximaMenu(wxCommandEvent& event);          //
   void AlgebraMenu(wxCommandEvent& event);         //
   void EquationsMenu(wxCommandEvent& event);       //
-  void CalculusMenu(wxCommandEvent& event);        // event handling for menus
+  void CalculusMenu(wxCommandEvent& event);        //< event handling for menus
   void SimplifyMenu(wxCommandEvent& event);        //
   void PlotMenu(wxCommandEvent& event);            //
   void NumericalMenu(wxCommandEvent& event);       //
@@ -130,11 +130,11 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent& event);
 
-  void SanitizeSocketBuffer(char *buffer, int length);  // fix early nulls
-  void ServerEvent(wxSocketEvent& event);          // server event: maxima connection
-  void ClientEvent(wxSocketEvent& event);          // client event: maxima input/output
+  void SanitizeSocketBuffer(char *buffer, int length);  //< fix early nulls
+  void ServerEvent(wxSocketEvent& event);          //< server event: maxima connection
+  void ClientEvent(wxSocketEvent& event);          //< client event: maxima input/output
 
-  void ConsoleAppend(wxString s, int type);        // append maxima output to console
+  void ConsoleAppend(wxString s, int type);        //< append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
                        bool newLine = true, bool bigSkip = true);
   void DoRawConsoleAppend(wxString s, int type);   //
@@ -152,25 +152,25 @@ protected:
 
   wxString ExtractFirstExpression(wxString entry);
   wxString GetDefaultEntry();
-  bool StartServer();                              // starts the server
-  bool StartMaxima();                              // starts maxima (uses getCommand)
-  void CleanUp();                                  // shuts down server and client on exit
-  void OnClose(wxCloseEvent& event);               // close wxMaxima window
-  wxString GetCommand(bool params = true);         // returns the command to start maxima
+  bool StartServer();                              //< starts the server
+  bool StartMaxima();                              //< starts maxima (uses getCommand)
+  void CleanUp();                                  //< shuts down server and client on exit
+  void OnClose(wxCloseEvent& event);               //< close wxMaxima window
+  wxString GetCommand(bool params = true);         //< returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
-  void ReadFirstPrompt();            // reads everything before first prompt
+  void ReadFirstPrompt();            //< reads everything before first prompt
   // setsup m_pid
-  void ReadPrompt();                 // reads prompts
-  void ReadMath();                   // reads output other than prompts
-  void ReadLispError();              // lisp errors (no prompt prefix/suffix)
-  void ReadLoadSymbols();            // functions after load command
+  void ReadPrompt();                 //< reads prompts
+  void ReadMath();                   //< reads output other than prompts
+  void ReadLispError();              //< lisp errors (no prompt prefix/suffix)
+  void ReadLoadSymbols();            //< functions after load command
 #ifndef __WXMSW__
-  void ReadProcessOutput();          // reads output of maxima command
+  void ReadProcessOutput();          //< reads output of maxima command
 #endif
 
-  void SetupVariables();             // sets some maxima variables
-  void KillMaxima();                 // kills the maxima process
+  void SetupVariables();             //< sets some maxima variables
+  void KillMaxima();                 //< kills the maxima process
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
 
@@ -197,8 +197,8 @@ protected:
   wxString m_promptPrefix;
   wxString m_firstPrompt;
   bool m_readingPrompt;
-  bool m_dispReadOut;               // what is displayed in statusbar
-  bool m_inLispMode;                // don't add ; in lisp mode
+  bool m_dispReadOut;               //< what is displayed in statusbar
+  bool m_inLispMode;                //< don't add ; in lisp mode
   wxString m_lastPrompt;
   wxString m_lastPath;
   MathParser m_MParser;

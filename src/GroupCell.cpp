@@ -113,8 +113,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     ImgCell *ic = new ImgCell(initString, false);
     AppendOutput(ic);
   }
-
-  SetParent(this, false);
+  
+  SetParent(this);
 }
 
 GroupCell::~GroupCell()
@@ -126,14 +126,19 @@ GroupCell::~GroupCell()
     delete m_hiddenTree;
 }
 
-void GroupCell::SetParent(MathCell *parent, bool all)
+/*! Set the parent of this group cell
+
+ \todo: Is the while loop a simple m_output->SetParentList(parent)?
+*/
+void GroupCell::SetParent(MathCell *parent)
 {
+  //m_group = parent;
   if (m_input != NULL)
-    m_input->SetParent(parent, true);
+    m_input->SetParentList(parent);
 
   MathCell *tmp = m_output;
   while (tmp != NULL) {
-    tmp->SetParent(parent, false);
+    tmp->SetParent(parent);
     tmp = tmp->m_next;
   }
 }

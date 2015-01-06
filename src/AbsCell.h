@@ -41,7 +41,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();
   void Unbreak(bool all);
-  void SetParent(MathCell *parent, bool all);
+  void SetParent(MathCell *parent);
 protected:
   MathCell *m_innerCell;
   MathCell *m_open, *m_close, *m_last;
