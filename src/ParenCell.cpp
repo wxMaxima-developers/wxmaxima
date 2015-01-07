@@ -116,7 +116,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
   if (parser.CheckTeXFonts())
   {
     wxDC& dc = parser.GetDC();
-    m_innerCell->RecalculateSize(parser, fontsize, true);
+    m_innerCell->RecalculateSizeList(parser, fontsize);
     int size = m_innerCell->GetMaxHeight();
 
     int fontsize1 = (int) ((fontsize * scale + 0.5));
@@ -198,10 +198,10 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateSize(parser, fontsize, true);
+  m_innerCell->RecalculateSizeList(parser, fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
@@ -217,9 +217,8 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   }
 #endif
 
-  m_open->RecalculateSize(parser, fontsize, false);
-  m_close->RecalculateSize(parser, fontsize, false);
-  MathCell::RecalculateSize(parser, fontsize, all);
+  m_open->RecalculateSizeList(parser, fontsize);
+  m_close->RecalculateSizeList(parser, fontsize);
 }
 
 void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

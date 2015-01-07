@@ -94,15 +94,14 @@ void AtCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void AtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void AtCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_baseCell->RecalculateSizeList(parser, fontsize);
+  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX(7, scale);
   m_center = m_baseCell->GetCenter();
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

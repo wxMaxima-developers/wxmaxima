@@ -294,7 +294,7 @@ void GroupCell::Recalculate(CellParser& parser, int d_fontsize, int m_fontsize)
   m_mathFontSize = m_fontsize;
 
   RecalculateWidths(parser, d_fontsize);
-  RecalculateSize(parser, d_fontsize, false);
+  RecalculateSize(parser, d_fontsize);
 }
 
 void GroupCell::RecalculateWidths(CellParser& parser, int fontsize)
@@ -339,7 +339,7 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
   {
@@ -354,7 +354,7 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     }
 
     double scale = parser.GetScale();
-    m_input->RecalculateSize(parser, fontsize, true);
+    m_input->RecalculateSizeList(parser, fontsize);
     m_center = m_input->GetMaxCenter();
     m_height = m_input->GetMaxHeight();
     m_indent = parser.GetIndent();
@@ -362,7 +362,7 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
+        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
 
@@ -387,8 +387,6 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
       }
     }
   }
-
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 // We assume that appended cells will be in a new line!
@@ -414,7 +412,7 @@ void GroupCell::RecalculateAppended(CellParser& parser)
   // Recalculate size of cells
   tmp = m_appendedCells;
   while (tmp != NULL) {
-    tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
+    tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
     tmp = tmp->m_next;
   }
 
@@ -441,7 +439,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
   if (m_width == -1 || m_height == -1) {
     RecalculateWidths(parser, fontsize);
-    RecalculateSize(parser, fontsize, false);
+    RecalculateSize(parser, fontsize);
   }
   if (DrawThisCell(parser, point))
   {
@@ -1063,7 +1061,7 @@ void GroupCell::BreakUpCells(MathCell *cell, CellParser parser, int fontsize, in
     if (tmp->GetWidth() > clientWidth) {
       if (tmp->BreakUp()) {
         tmp->RecalculateWidths(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize, false);
+        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
       }
     }
     tmp = tmp->m_nextToDraw;

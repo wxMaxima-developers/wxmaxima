@@ -252,16 +252,15 @@ void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   }
 }
 
-/***
- * Calculate the size of cell, only needed once. Each derived class must call
- * MathCell::RecalculateSize(...).
- *
- * Should set: m_height, m_center.
- */
-void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
 {
-  if (m_next != NULL && all)
-    m_next->RecalculateSize(parser, fontsize, all);
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->RecalculateSize(parser, fontsize);
+      tmp=tmp->m_next;
+    }  
 }
 
 /*! Recalculate widths of cells. 

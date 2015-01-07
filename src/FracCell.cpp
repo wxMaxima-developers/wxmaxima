@@ -149,18 +149,18 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void FracCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   if (m_isBroken || m_exponent)
   {
-    m_num->RecalculateSize(parser, fontsize, true);
-    m_denom->RecalculateSize(parser, fontsize, true);
+    m_num->RecalculateSizeList(parser, fontsize);
+    m_denom->RecalculateSizeList(parser, fontsize);
   }
   else
   {
-    m_num->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
-    m_denom->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC), true);
+    m_num->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_denom->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
   if (!m_exponent)
   {
@@ -174,12 +174,12 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_center = m_height / 2;
   }
 
-  m_open1->RecalculateSize(parser, fontsize, false);
-  m_close1->RecalculateSize(parser, fontsize, false);
-  m_open2->RecalculateSize(parser, fontsize, false);
-  m_close2->RecalculateSize(parser, fontsize, false);
-  m_divide->RecalculateSize(parser, fontsize, false);
-  MathCell::RecalculateSize(parser, fontsize, all);
+  m_open1->RecalculateSize(parser, fontsize);
+  m_close1->RecalculateSize(parser, fontsize);
+  m_open2->RecalculateSize(parser, fontsize);
+  m_close2->RecalculateSize(parser, fontsize);
+  m_divide->RecalculateSize(parser, fontsize);
+  MathCell::RecalculateSize(parser, fontsize);
 }
 
 void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

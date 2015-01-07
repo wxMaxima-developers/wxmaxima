@@ -102,13 +102,13 @@ void MatrCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void MatrCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
-    m_cells[i]->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
+    m_cells[i]->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 2));
   }
   m_centers.clear();
   m_drops.clear();
@@ -130,7 +130,6 @@ void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   if (m_height == 0)
     m_height = fontsize + SCALE_PX(10, scale);
   m_center = m_height / 2;
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

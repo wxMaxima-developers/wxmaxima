@@ -188,11 +188,6 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void EditorCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
-{
-  MathCell::RecalculateSize(parser, fontsize, all);
-}
-
 ///////////////////////////
 // EditorCell::Draw
 // Draws the editor cell in the following order:

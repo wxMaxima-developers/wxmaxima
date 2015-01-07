@@ -93,13 +93,12 @@ void FunCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void FunCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void FunCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  m_nameCell->RecalculateSize(parser, fontsize, true);
-  m_argCell->RecalculateSize(parser, fontsize, true);
+  m_nameCell->RecalculateSizeList(parser, fontsize);
+  m_argCell->RecalculateSizeList(parser, fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

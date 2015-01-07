@@ -193,14 +193,14 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void IntCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
-  m_under->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
-  m_over->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
-  m_base->RecalculateSize(parser, fontsize, true);
-  m_var->RecalculateSize(parser, fontsize, true);
+  m_under->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 5));
+  m_base->RecalculateSizeList(parser, fontsize);
+  m_var->RecalculateSizeList(parser, fontsize);
 
   if (m_intStyle == INT_DEF)
   {
@@ -227,8 +227,6 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
     m_height = m_center +
       MAX(m_signSize / 2, m_base->GetMaxDrop());
   }
-
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

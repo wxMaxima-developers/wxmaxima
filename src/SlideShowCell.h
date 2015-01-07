@@ -53,7 +53,7 @@ protected:
   int m_displayed;
   wxFileSystem *m_fileSystem;
   vector<wxBitmap*> m_bitmaps;
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString();

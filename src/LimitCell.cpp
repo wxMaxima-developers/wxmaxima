@@ -117,17 +117,15 @@ void LimitCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void LimitCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void LimitCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  m_under->RecalculateSize(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE), true);
-  m_name->RecalculateSize(parser, fontsize, true);
-  m_base->RecalculateSize(parser, fontsize, true);
+  m_under->RecalculateSizeList(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+  m_name->RecalculateSizeList(parser, fontsize);
+  m_base->RecalculateSizeList(parser, fontsize);
 
   m_center = MAX(m_base->GetMaxCenter(), m_name->GetMaxCenter());
   m_height = m_center + MAX(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
                             m_base->GetMaxDrop());
-
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

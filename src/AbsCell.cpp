@@ -90,15 +90,14 @@ void AbsCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void AbsCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void AbsCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateSize(parser, fontsize, true);
+  m_innerCell->RecalculateSizeList(parser, fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
-  m_open->RecalculateSize(parser, fontsize, true);
-  m_close->RecalculateSize(parser, fontsize, true);
-  MathCell::RecalculateSize(parser, fontsize, all);
+  m_open->RecalculateSizeList(parser, fontsize);
+  m_close->RecalculateSizeList(parser, fontsize);
 }
 
 void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

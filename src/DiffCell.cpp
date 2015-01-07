@@ -92,13 +92,12 @@ void DiffCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void DiffCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void DiffCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_diffCell->RecalculateSize(parser, fontsize, true);
+  m_baseCell->RecalculateSizeList(parser, fontsize);
+  m_diffCell->RecalculateSizeList(parser, fontsize);
   m_center = MAX(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
   m_height = m_center + MAX(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

@@ -1479,7 +1479,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
     m_activeCell->ResetData();
     m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE));
-    m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE));
 
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=

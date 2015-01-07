@@ -144,11 +144,6 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void TextCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
-{
-  MathCell::RecalculateSize(parser, fontsize, all);
-}
-
 void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 {
   double scale = parser.GetScale();

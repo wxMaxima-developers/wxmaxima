@@ -144,21 +144,19 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void SumCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void SumCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
-  m_under->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
-  m_over->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
-  m_base->RecalculateSize(parser, fontsize, true);
+  m_under->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_base->RecalculateSizeList(parser, fontsize);
 
   m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
                  m_base->GetMaxCenter());
   m_height = m_center +
              MAX(m_under->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
                  m_base->GetMaxDrop());
-
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void SumCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)

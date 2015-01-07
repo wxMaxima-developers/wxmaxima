@@ -203,12 +203,17 @@ public:
    */
   virtual wxRect GetRect(bool all = false);
   virtual wxString GetDiffPart();
-  //! Recalculate the height of the cell and the difference between top and center
-  virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
+  /*! Recalculate the height of the cell and the difference between top and center
+
+    Should set: m_height, m_center.
+  */
+  virtual void RecalculateSize(CellParser& parser, int fontsize) { };
+  //! Recalculate the height of this list of cells 
+  void RecalculateSizeList(CellParser& parser, int fontsize);
   //! Marks all widths of this cell as to be recalculated on query.
   virtual void RecalculateWidths(CellParser& parser, int fontsize);
   //! Marks all widths of this list as to be recalculated on query.
-  virtual void RecalculateWidthsList(CellParser& parser, int fontsize);
+  void RecalculateWidthsList(CellParser& parser, int fontsize);
 
   void ResetData();
   void ResetSize() { m_width = m_height = -1; }

@@ -96,7 +96,7 @@ public:
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   //
   wxRect GetOutputRect() { return m_outputRect; }
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Recalculate(CellParser& parser, int d_fontsize, int m_fontsize);
   void BreakUpCells(CellParser parser, int fontsize, int clientWidth);

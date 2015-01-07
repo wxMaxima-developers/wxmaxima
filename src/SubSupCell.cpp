@@ -114,13 +114,13 @@ void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void SubSupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void SubSupCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
-  m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
-  m_exptCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
+  m_baseCell->RecalculateSizeList(parser, fontsize);
+  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_exptCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
@@ -128,8 +128,6 @@ void SubSupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
 void SubSupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
