@@ -173,9 +173,9 @@ bool AbsCell::BreakUp()
   return false;
 }
 
-void AbsCell::Unbreak(bool all)
+void AbsCell::Unbreak()
 {
   if (m_isBroken)
-    m_innerCell->Unbreak(true);
-  MathCell::Unbreak(all);
+    m_innerCell->UnbreakList();
+  MathCell::Unbreak();
 }

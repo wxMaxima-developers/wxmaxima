@@ -507,18 +507,23 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-/*!
- * Unbreaks broken cells
- */
-void MathCell::Unbreak(bool all)
+void MathCell::Unbreak()
 {
   ResetData();
   m_isBroken = false;
   m_nextToDraw = m_next;
   if (m_nextToDraw != NULL)
     m_nextToDraw->m_previousToDraw = this;
-  if (all && m_next != NULL)
-    m_next->Unbreak(all);
+}
+
+void MathCell::UnbreakList()
+{
+  MathCell *tmp=this;
+  while(tmp != NULL)
+  {
+    tmp->Unbreak();
+    tmp=tmp->m_next;
+  }
 }
 
 /***

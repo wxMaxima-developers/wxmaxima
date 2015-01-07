@@ -396,12 +396,12 @@ bool FracCell::BreakUp()
   return false;
 }
 
-void FracCell::Unbreak(bool all)
+void FracCell::Unbreak()
 {
   if (m_isBroken)
   {
-    m_num->Unbreak(true);
-    m_denom->Unbreak(true);
+    m_num->UnbreakList();
+    m_denom->UnbreakList();
   }
-  MathCell::Unbreak(all);
+  MathCell::Unbreak();
 }

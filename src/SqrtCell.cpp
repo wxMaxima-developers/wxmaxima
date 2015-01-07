@@ -290,9 +290,9 @@ bool SqrtCell::BreakUp()
   return false;
 }
 
-void SqrtCell::Unbreak(bool all)
+void SqrtCell::Unbreak()
 {
   if (m_isBroken)
-    m_innerCell->Unbreak(true);
-  MathCell::Unbreak(all);
+    m_innerCell->UnbreakList();
+  MathCell::Unbreak();
 }

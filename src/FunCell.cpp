@@ -175,12 +175,12 @@ bool FunCell::BreakUp()
   return false;
 }
 
-void FunCell::Unbreak(bool all)
+void FunCell::Unbreak()
 {
   if (m_isBroken)
   {
-    m_nameCell->Unbreak(true);
-    m_argCell->Unbreak(true);
+    m_nameCell->UnbreakList();
+    m_argCell->UnbreakList();
   }
-  MathCell::Unbreak(all);
+  MathCell::Unbreak();
 }

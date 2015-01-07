@@ -60,7 +60,7 @@ public:
   void SetExponentFlag();
   bool BreakUp();
   void SetupBreakUps();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   //! The nummerator

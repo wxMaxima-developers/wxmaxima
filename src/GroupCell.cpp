@@ -1073,7 +1073,7 @@ void GroupCell::UnBreakUpCells()
   MathCell *tmp = m_output;
   while (tmp != NULL) {
     if (tmp->m_isBroken) {
-      tmp->Unbreak(false);
+      tmp->Unbreak();
     }
     tmp = tmp->m_next;
   }

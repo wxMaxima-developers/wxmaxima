@@ -40,7 +40,7 @@ public:
   MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_innerCell;

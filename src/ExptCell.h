@@ -46,7 +46,7 @@ public:
     m_isMatrix = isMatrix;
   }
   bool BreakUp();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_baseCell, *m_powCell;

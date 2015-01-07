@@ -40,7 +40,7 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   bool BreakUp();
-  void Unbreak(bool all);
+  void Unbreak();
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();

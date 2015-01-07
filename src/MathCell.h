@@ -269,7 +269,22 @@ public:
   //! The height of this cell
 
   void UnsetPen(CellParser& parser);
-  virtual void Unbreak(bool all);
+  /*! Unbreak this cell
+
+    Some cells have different representations when they contain a line break.
+    Examples for this are fractions or a set of parenthesis.
+
+    This function tries to return a cell to the single-line form.
+   */
+  virtual void Unbreak();
+  /*! Unbreak this line
+
+    Some cells have different representations when they contain a line break.
+    Examples for this are fractions or a set of parenthesis.
+
+    This function tries to return a list of cells to the single-line form.
+  */
+  virtual void UnbreakList();
 
   /*! The next cell in the list of cells
 

@@ -244,12 +244,12 @@ bool ExptCell::BreakUp()
   return false;
 }
 
-void ExptCell::Unbreak(bool all)
+void ExptCell::Unbreak()
 {
   if (m_isBroken)
   {
-    m_baseCell->Unbreak(true);
-    m_powCell->Unbreak(true);
+    m_baseCell->UnbreakList();
+    m_powCell->UnbreakList();
   }
-  MathCell::Unbreak(all);
+  MathCell::Unbreak();
 }

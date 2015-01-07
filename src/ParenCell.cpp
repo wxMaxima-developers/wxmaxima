@@ -449,9 +449,9 @@ bool ParenCell::BreakUp()
   return false;
 }
 
-void ParenCell::Unbreak(bool all)
+void ParenCell::Unbreak()
 {
   if (m_isBroken)
-    m_innerCell->Unbreak(true);
-  MathCell::Unbreak(all);
+    m_innerCell->UnbreakList();
+  MathCell::Unbreak();
 }
