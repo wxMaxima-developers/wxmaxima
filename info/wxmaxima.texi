@@ -433,8 +433,14 @@ programs that communicate by the means of a local network connection
 the most probably case is that this connection is somehow not
 working. For example a firewall could be set up in a way that it
 doesn't only prevent against unauthorized connections from the
-internet and to the internet but also inter-process-communication
-inside the same computer. On Un*x computers another possible reason
+internet (and perhaps to intercept some connections to the internet,
+too) but also to block inter-process-communication inside the same
+computer. Note that since maxima is being run by a lisp processor
+the process communication is blocked from does not necessarily
+have to be named ``maxima''. Common names of the program that opens
+the network connection would be sbcl, gcl, ccl or similar instead.
+
+On Un*x computers another possible reason
 would be that the loopback network that provides network connections
 between two programs in the same computer isn't properly configured.
 @section How to save data from a broken .wxmx file
