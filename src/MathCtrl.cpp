@@ -1908,19 +1908,7 @@ MathCell* MathCtrl::CopyTree() {
   if (m_tree == NULL)
     return (MathCell*)NULL;
 
-  MathCell* tmp1 = m_tree;
-  MathCell* tmp;
-  MathCell* copy;
-  tmp = tmp1->Copy();
-  copy = tmp;
-
-  tmp1 = tmp1->m_next;
-  while (tmp1 != NULL) {
-    tmp->AppendCell(tmp1->Copy());
-    tmp = tmp->m_next;
-    tmp1 = tmp1->m_next;
-  }
-  return copy;
+  return m_tree->CopyList();
 }
 
 /***
