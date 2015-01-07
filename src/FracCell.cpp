@@ -249,7 +249,7 @@ wxString FracCell::ToString()
     else if (m_fracStyle == FC_CHOOSE)
     {
       s = wxT("binomial(") + m_num->ListToString() + wxT(",") +
-          m_denom->ListToString() + wxT(")");
+        m_denom->ListToString() + wxT(")");
     }
     else
     {
@@ -270,7 +270,6 @@ wxString FracCell::ToString()
       }
     }
   }
-  if (m_fracStyle == FC_NORMAL)
   return s;
 }
 
@@ -290,7 +289,6 @@ wxString FracCell::ToTeX()
           m_denom->ListToTeX() + wxT("}");
     }
   }
-  if (m_fracStyle == FC_NORMAL)
   return s;
 }
 

@@ -91,15 +91,18 @@ void MathCell::SetType(int type)
 
 MathCell *MathCell::CopyList()
 {
-  MathCell *dest=Copy();
-  MathCell *src= this->m_next;
+  MathCell *dest = Copy();
+  MathCell *src = this->m_next;
+  MathCell *ret = dest;
   
   while(src != NULL)
   {
-    dest->AppendCell(src->m_next->Copy());
-    src =src ->m_next;
-    dest=dest->m_next;
+    dest->AppendCell(src->Copy());
+    src = src->m_next;
+    dest = dest->m_next;
   }
+
+  return ret;
 }
 
 
