@@ -1719,14 +1719,15 @@ void wxMaxima::MenuCommand(wxString cmd)
 void wxMaxima::DumpProcessOutput()
 {
   wxString o;
+  o = "Output from Maxima to stdout (there should be none):\n";
   while (m_process->IsInputAvailable())
   {
     o += m_input->GetC();
   }
 
   wxMessageBox(o, wxT("Process output (stdout)"));
-
-  o = wxEmptyString;
+  
+  o = "Output from Maxima to stderr (there should be none):\n";
   wxInputStream *error = m_process->GetErrorStream();
   while (m_process->IsErrorAvailable())
   {
