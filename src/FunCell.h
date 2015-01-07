@@ -32,7 +32,7 @@ public:
   void SetName(MathCell *base);
   void SetArg(MathCell *index);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   wxString ToString();
   wxString ToTeX();

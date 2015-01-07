@@ -271,11 +271,20 @@ void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   
   Should set: set m_width.
 */
-void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void MathCell::RecalculateWidthsList(CellParser& parser, int fontsize)
+{
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->RecalculateWidths(parser, fontsize);
+      tmp=tmp->m_next;
+    }
+}
+
+void MathCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   ResetData();
-  if (m_next != NULL && all)
-    m_next->RecalculateWidths(parser, fontsize, all);
 }
 
 /*! Is this cell currently visible in the window?.

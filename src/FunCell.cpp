@@ -83,14 +83,14 @@ void FunCell::SetArg(MathCell *arg)
   m_argCell = arg;
 }
 
-void FunCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void FunCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_argCell->RecalculateWidths(parser, fontsize, true);
-  m_nameCell->RecalculateWidths(parser, fontsize, true);
+  m_argCell->RecalculateWidthsList(parser, fontsize);
+  m_nameCell->RecalculateWidthsList(parser, fontsize);
   m_width = m_nameCell->GetFullWidth(scale) + m_argCell->GetFullWidth(scale) -
             SCALE_PX(1, scale);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void FunCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

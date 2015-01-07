@@ -81,10 +81,10 @@ void SqrtCell::SetInner(MathCell *inner)
     m_last = m_last->m_next;
 }
 
-void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateWidths(parser, fontsize, true);
+  m_innerCell->RecalculateWidthsList(parser, fontsize);
   if (parser.CheckTeXFonts())
   {
     wxDC& dc = parser.GetDC();
@@ -131,9 +131,9 @@ void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   else
     m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(10, scale) +
               3 * SCALE_PX(1, scale) + 1;
-  m_open->RecalculateWidths(parser, fontsize, all);
-  m_close->RecalculateWidths(parser, fontsize, all);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
 void SqrtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

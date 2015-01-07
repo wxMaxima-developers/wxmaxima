@@ -1478,7 +1478,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     int fontsize = parser.GetDefaultFontSize();
 
     m_activeCell->ResetData();
-    m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
+    m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE));
     m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
 
     if (height != m_activeCell->GetHeight() ||

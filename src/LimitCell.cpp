@@ -104,18 +104,17 @@ void LimitCell::SetUnder(MathCell *under)
   m_under = under;
 }
 
-void LimitCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void LimitCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
-  m_base->RecalculateWidths(parser, fontsize, true);
-  m_under->RecalculateWidths(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE), true);
-  m_name->RecalculateWidths(parser, fontsize, true);
+  m_base->RecalculateWidthsList(parser, fontsize);
+  m_under->RecalculateWidthsList(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+  m_name->RecalculateWidthsList(parser, fontsize);
 
   m_width = MAX(m_name->GetFullWidth(scale), m_under->GetFullWidth(scale))
             + m_base->GetFullWidth(scale);
-
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void LimitCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

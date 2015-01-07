@@ -105,13 +105,13 @@ void ParenCell::SetInner(MathCell *inner, int type)
   m_last1 = inner;
 }
 
-void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
 
-  m_innerCell->RecalculateWidths(parser, fontsize, true);
+  m_innerCell->RecalculateWidthsList(parser, fontsize);
 
   if (parser.CheckTeXFonts())
   {
@@ -193,10 +193,9 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
 #endif
   }
-
-  m_open->RecalculateWidths(parser, fontsize, false);
-  m_close->RecalculateWidths(parser, fontsize, false);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
 void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

@@ -83,13 +83,13 @@ void DiffCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void DiffCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void DiffCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_diffCell->RecalculateWidths(parser, fontsize, true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
+  m_diffCell->RecalculateWidthsList(parser, fontsize);
   m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + 2*MC_CELL_SKIP;
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void DiffCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

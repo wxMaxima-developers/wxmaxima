@@ -76,12 +76,12 @@ void MatrCell::Destroy()
   m_next = NULL;
 }
 
-void MatrCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void MatrCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
-    m_cells[i]->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 2), true);
+    m_cells[i]->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - 2));
   }
   m_widths.clear();
   for (int i = 0; i < m_matWidth; i++)
@@ -99,7 +99,7 @@ void MatrCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   }
   if (m_width < SCALE_PX(14, scale))
     m_width = SCALE_PX(14, scale);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void MatrCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

@@ -161,7 +161,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
 {
   if (m_bitmaps[m_displayed] != NULL)
     m_width = m_bitmaps[m_displayed]->GetWidth() + 2;
@@ -172,7 +172,7 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)

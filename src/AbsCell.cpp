@@ -80,14 +80,14 @@ void AbsCell::SetInner(MathCell *inner)
     m_last = m_last->m_next;
 }
 
-void AbsCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void AbsCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateWidths(parser, fontsize, true);
+  m_innerCell->RecalculateWidthsList(parser, fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
-  m_open->RecalculateWidths(parser, fontsize, true);
-  m_close->RecalculateWidths(parser, fontsize, true);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
 void AbsCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

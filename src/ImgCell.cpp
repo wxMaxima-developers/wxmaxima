@@ -145,7 +145,7 @@ void ImgCell::Destroy()
   m_next = NULL;
 }
 
-void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   if (m_bitmap != NULL)
     m_width = m_bitmap->GetWidth() + 2;
@@ -156,7 +156,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

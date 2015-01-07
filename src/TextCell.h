@@ -32,7 +32,7 @@ public:
   void Destroy();
   void SetValue(wxString text);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   void SetFont(CellParser& parser, int fontsize);
   wxString ToString();

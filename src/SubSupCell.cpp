@@ -102,16 +102,16 @@ void SubSupCell::SetExponent(MathCell *exp)
   m_exptCell = exp;
 }
 
-void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
-  m_exptCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC), true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
+  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_exptCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
             SCALE_PX(2, parser.GetScale());
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void SubSupCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

@@ -111,20 +111,20 @@ void ExptCell::SetBase(MathCell *base)
     m_last1 = m_last1->m_next;
 }
 
-void ExptCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void ExptCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
   if (m_isBroken)
-    m_powCell->RecalculateWidths(parser, fontsize, true);
+    m_powCell->RecalculateWidthsList(parser, fontsize);
   else
-    m_powCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC), true);
+    m_powCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_width = m_baseCell->GetFullWidth(scale) + m_powCell->GetFullWidth(scale) -
             SCALE_PX(MC_TEXT_PADDING, scale);
-  m_exp->RecalculateWidths(parser, fontsize, true);
-  m_open->RecalculateWidths(parser, fontsize, true);
-  m_close->RecalculateWidths(parser, fontsize, true);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_exp->RecalculateWidthsList(parser, fontsize);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
 void ExptCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

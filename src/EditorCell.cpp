@@ -135,7 +135,7 @@ wxString EditorCell::ToXML()
   return head + xmlstring + wxT("</editor>\n");
 }
 
-void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   m_isDirty = false;
   if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
@@ -185,7 +185,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     m_center = m_charHeight / 2 + SCALE_PX(2, scale);
   }
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void EditorCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
@@ -208,7 +208,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
   wxPoint point(point1);
 
   if (m_width == -1 || m_height == -1)
-    RecalculateWidths(parser, fontsize, false);
+    RecalculateWidths(parser, fontsize);
 
   if (DrawThisCell(parser, point) && !m_isHidden)
   {

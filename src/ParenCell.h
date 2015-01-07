@@ -37,7 +37,7 @@ public:
   }
   void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
   void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
   bool BreakUp();
   void Unbreak(bool all);

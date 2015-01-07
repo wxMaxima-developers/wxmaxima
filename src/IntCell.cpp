@@ -131,21 +131,21 @@ void IntCell::SetVar(MathCell *var)
   m_var = var;
 }
 
-void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void IntCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
   m_signSize = SCALE_PX(50, scale);
   m_signWidth = SCALE_PX(18, scale);
 
-  m_base->RecalculateWidths(parser, fontsize, true);
-  m_var->RecalculateWidths(parser, fontsize, true);
+  m_base->RecalculateWidthsList(parser, fontsize);
+  m_var->RecalculateWidthsList(parser, fontsize);
   if (m_under == NULL)
     m_under = new TextCell;
-  m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_under->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - 5));
   if (m_over == NULL)
     m_over = new TextCell;
-  m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 5), true);
+  m_over->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - 5));
 
   if (parser.CheckTeXFonts()) {
     wxDC& dc = parser.GetDC();
@@ -190,9 +190,7 @@ void IntCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
               SCALE_PX(4, scale);
 #endif
   }
-
-
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void IntCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

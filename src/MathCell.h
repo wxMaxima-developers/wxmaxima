@@ -205,8 +205,11 @@ public:
   virtual wxString GetDiffPart();
   //! Recalculate the height of the cell and the difference between top and center
   virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  //! Marks all widths as to be recalculated on query.
-  virtual void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  //! Marks all widths of this cell as to be recalculated on query.
+  virtual void RecalculateWidths(CellParser& parser, int fontsize);
+  //! Marks all widths of this list as to be recalculated on query.
+  virtual void RecalculateWidthsList(CellParser& parser, int fontsize);
+
   void ResetData();
   void ResetSize() { m_width = m_height = -1; }
 

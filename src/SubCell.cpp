@@ -85,14 +85,14 @@ void SubCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SubCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
+  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) -
             SCALE_PX(2, parser.GetScale());
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void SubCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

@@ -111,7 +111,7 @@ void SumCell::SetUnder(MathCell *under)
   m_under = under;
 }
 
-void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SumCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
 
@@ -119,11 +119,11 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_signWidth = SCALE_PX(30, scale);
   m_signWCenter = SCALE_PX(15, scale);
 
-  m_base->RecalculateWidths(parser, fontsize, true);
-  m_under->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
+  m_base->RecalculateWidthsList(parser, fontsize);
+  m_under->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
     m_over = new TextCell;
-  m_over->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC), true);
+  m_over->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (parser.CheckTeXFonts())
   {
@@ -141,7 +141,7 @@ void SumCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth(scale) / 2);
   m_width = 2 * m_signWCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
 
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void SumCell::RecalculateSize(CellParser& parser, int fontsize, bool all)

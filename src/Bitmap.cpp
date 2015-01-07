@@ -116,7 +116,7 @@ void Bitmap::RecalculateWidths()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(parser,  tmp->IsMath() ? mfontsize : fontsize, false);
+    tmp->RecalculateWidths(parser,  tmp->IsMath() ? mfontsize : fontsize);
     tmp = tmp->m_next;
   }
 }
@@ -300,7 +300,7 @@ void Bitmap::BreakUpCells()
     {
       if (tmp->BreakUp())
       {
-        tmp->RecalculateWidths(parser, tmp->IsMath() ? mfontsize : fontsize, false);
+        tmp->RecalculateWidths(parser, tmp->IsMath() ? mfontsize : fontsize);
         tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize, false);
       }
     }

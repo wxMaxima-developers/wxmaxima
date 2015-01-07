@@ -69,7 +69,7 @@ void TextCell::Destroy()
   m_next = NULL;
 }
 
-void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   SetAltText(parser);
 
@@ -141,7 +141,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     m_realCenter = m_center = m_height / 2;
   }
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
 void TextCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
@@ -155,7 +155,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
   wxDC& dc = parser.GetDC();
 
   if (m_width == -1 || m_height == -1)
-    RecalculateWidths(parser, fontsize, false);
+    RecalculateWidths(parser, fontsize);
 
   if (DrawThisCell(parser, point) && !m_isHidden)
   {
