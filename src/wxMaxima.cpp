@@ -1749,7 +1749,9 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   case tb_print:
 #endif
     {
-      wxPrintDialogData printDialogData(*m_printData);
+      wxPrintDialogData printDialogData;
+      if (m_printData)
+	printDialogData.SetPrintData(*m_printData);
       wxPrinter printer(&printDialogData);
       wxString title(_("wxMaxima document")), suffix;
 
