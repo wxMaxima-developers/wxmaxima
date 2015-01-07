@@ -1149,7 +1149,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
              file +
              wxT("\")"));
   SetCWD(file);
-  
+
+  m_console->EnableEdit(true);
   wxEndBusyCursor();
   return true;
 }
