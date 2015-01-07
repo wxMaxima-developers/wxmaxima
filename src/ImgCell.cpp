@@ -145,7 +145,7 @@ void ImgCell::Destroy()
   m_next = NULL;
 }
 
-void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   if (m_bitmap != NULL)
     m_width = m_bitmap->GetWidth() + 2;
@@ -156,10 +156,10 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   if (m_bitmap != NULL)
     m_height = m_bitmap->GetHeight() + 2;
@@ -172,10 +172,9 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height= (int) (scale * m_height);
 
   m_center = m_height / 2;
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
-void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   wxDC& dc = parser.GetDC();
 
@@ -203,7 +202,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ImgCell::ToString()

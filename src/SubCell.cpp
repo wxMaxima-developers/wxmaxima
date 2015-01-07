@@ -85,27 +85,26 @@ void SubCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void SubCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SubCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
+  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) -
             SCALE_PX(2, parser.GetScale());
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void SubCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void SubCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
+  m_baseCell->RecalculateSizeList(parser, fontsize);
+  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser.GetScale());
   m_center = m_baseCell->GetCenter();
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
-void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -114,16 +113,16 @@ void SubCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->Draw(parser, bs, fontsize, true);
+    m_baseCell->DrawList(parser, bs, fontsize);
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - SUB_DEC), true);
+    m_indexCell->DrawList(parser, in, MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString SubCell::ToString()

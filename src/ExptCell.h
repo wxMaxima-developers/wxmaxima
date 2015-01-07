@@ -33,9 +33,9 @@ public:
   void SetBase(MathCell *base);
   //! Set the exponent
   void SetPower(MathCell *power);
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
+  void RecalculateWidths(CellParser& parser, int fontsize);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
@@ -46,7 +46,7 @@ public:
     m_isMatrix = isMatrix;
   }
   bool BreakUp();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_baseCell, *m_powCell;

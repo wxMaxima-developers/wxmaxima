@@ -144,7 +144,7 @@ public:
   }
   void CopyData(MathCell *s, MathCell *t);
 
-  /*! Draw this cells (and optionally the following cells)
+  /*! Draw this cell
 
     \param point The x and y position this cell is drawn at
     \param fontsize The font size that is to be used
@@ -152,7 +152,17 @@ public:
      - true: the whole list of cells has to be drawn starting with this one
      - false: only this cell has to be drawn
    */
-  virtual void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  virtual void Draw(CellParser& parser, wxPoint point, int fontsize);
+  /*! Draw this list of cells
+
+    \param point The x and y position this cell is drawn at
+    \param fontsize The font size that is to be used
+    \param all
+     - true: the whole list of cells has to be drawn starting with this one
+     - false: only this cell has to be drawn
+   */
+  void DrawList(CellParser& parser, wxPoint point, int fontsize);
+
   void DrawBoundingBox(wxDC& dc, bool all = false, int border = 0);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 
@@ -203,10 +213,18 @@ public:
    */
   virtual wxRect GetRect(bool all = false);
   virtual wxString GetDiffPart();
-  //! Recalculate the height of the cell and the difference between top and center
-  virtual void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  //! Marks all widths as to be recalculated on query.
-  virtual void RecalculateWidths(CellParser& parser, int fontsize, bool all);
+  /*! Recalculate the height of the cell and the difference between top and center
+
+    Should set: m_height, m_center.
+  */
+  virtual void RecalculateSize(CellParser& parser, int fontsize) { };
+  //! Recalculate the height of this list of cells 
+  void RecalculateSizeList(CellParser& parser, int fontsize);
+  //! Marks all widths of this cell as to be recalculated on query.
+  virtual void RecalculateWidths(CellParser& parser, int fontsize);
+  //! Marks all widths of this list as to be recalculated on query.
+  void RecalculateWidthsList(CellParser& parser, int fontsize);
+
   void ResetData();
   void ResetSize() { m_width = m_height = -1; }
 
@@ -251,7 +269,22 @@ public:
   //! The height of this cell
 
   void UnsetPen(CellParser& parser);
-  virtual void Unbreak(bool all);
+  /*! Unbreak this cell
+
+    Some cells have different representations when they contain a line break.
+    Examples for this are fractions or a set of parenthesis.
+
+    This function tries to return a cell to the single-line form.
+   */
+  virtual void Unbreak();
+  /*! Unbreak this line
+
+    Some cells have different representations when they contain a line break.
+    Examples for this are fractions or a set of parenthesis.
+
+    This function tries to return a list of cells to the single-line form.
+  */
+  virtual void UnbreakList();
 
   /*! The next cell in the list of cells
 

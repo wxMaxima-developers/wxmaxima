@@ -83,39 +83,38 @@ void FunCell::SetArg(MathCell *arg)
   m_argCell = arg;
 }
 
-void FunCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void FunCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_argCell->RecalculateWidths(parser, fontsize, true);
-  m_nameCell->RecalculateWidths(parser, fontsize, true);
+  m_argCell->RecalculateWidthsList(parser, fontsize);
+  m_nameCell->RecalculateWidthsList(parser, fontsize);
   m_width = m_nameCell->GetFullWidth(scale) + m_argCell->GetFullWidth(scale) -
             SCALE_PX(1, scale);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void FunCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void FunCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  m_nameCell->RecalculateSize(parser, fontsize, true);
-  m_argCell->RecalculateSize(parser, fontsize, true);
+  m_nameCell->RecalculateSizeList(parser, fontsize);
+  m_argCell->RecalculateSizeList(parser, fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
-void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
     double scale = parser.GetScale();
 
     wxPoint name(point), arg(point);
-    m_nameCell->Draw(parser, name, fontsize, true);
+    m_nameCell->DrawList(parser, name, fontsize);
 
     arg.x += m_nameCell->GetFullWidth(scale) - SCALE_PX(1, scale);
-    m_argCell->Draw(parser, arg, fontsize, true);
+    m_argCell->DrawList(parser, arg, fontsize);
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString FunCell::ToString()
@@ -176,12 +175,12 @@ bool FunCell::BreakUp()
   return false;
 }
 
-void FunCell::Unbreak(bool all)
+void FunCell::Unbreak()
 {
   if (m_isBroken)
   {
-    m_nameCell->Unbreak(true);
-    m_argCell->Unbreak(true);
+    m_nameCell->UnbreakList();
+    m_argCell->UnbreakList();
   }
-  MathCell::Unbreak(all);
+  MathCell::Unbreak();
 }

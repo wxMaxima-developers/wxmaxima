@@ -37,9 +37,9 @@ public:
 
   MathCell* Copy();
   void Destroy();
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
+  void RecalculateWidths(CellParser& parser, int fontsize);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   void SetFracStyle(int style)
   {
     m_fracStyle = style;
@@ -60,7 +60,7 @@ public:
   void SetExponentFlag();
   bool BreakUp();
   void SetupBreakUps();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   //! The nummerator

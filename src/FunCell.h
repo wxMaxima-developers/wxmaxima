@@ -31,15 +31,15 @@ public:
   void Destroy();
   void SetName(MathCell *base);
   void SetArg(MathCell *index);
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
+  void RecalculateWidths(CellParser& parser, int fontsize);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();
-  void Unbreak(bool all);
+  void Unbreak();
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_nameCell;

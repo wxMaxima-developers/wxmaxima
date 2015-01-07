@@ -84,28 +84,27 @@ void AtCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void AtCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void AtCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateWidths(parser, fontsize, true);
-  m_indexCell->RecalculateWidths(parser, MAX(MC_MIN_SIZE, fontsize - 4), true);
+  m_baseCell->RecalculateWidthsList(parser, fontsize);
+  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - 4));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
             SCALE_PX(4, scale);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void AtCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void AtCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_baseCell->RecalculateSize(parser, fontsize, true);
-  m_indexCell->RecalculateSize(parser, MAX(MC_MIN_SIZE, fontsize - 3), true);
+  m_baseCell->RecalculateSizeList(parser, fontsize);
+  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX(7, scale);
   m_center = m_baseCell->GetCenter();
-  MathCell::RecalculateSize(parser, fontsize, all);
 }
 
-void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -115,12 +114,12 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->Draw(parser, bs, fontsize, true);
+    m_baseCell->DrawList(parser, bs, fontsize);
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            + m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
-    m_indexCell->Draw(parser, in, MAX(MC_MIN_SIZE, fontsize - 3), true);
+    m_indexCell->DrawList(parser, in, MAX(MC_MIN_SIZE, fontsize - 3));
     SetPen(parser);
     dc.DrawLine(in.x - SCALE_PX(2, scale),
                 bs.y - m_baseCell->GetMaxCenter(),
@@ -128,7 +127,7 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 in.y);
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString AtCell::ToString()

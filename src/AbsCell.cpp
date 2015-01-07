@@ -80,28 +80,27 @@ void AbsCell::SetInner(MathCell *inner)
     m_last = m_last->m_next;
 }
 
-void AbsCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void AbsCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateWidths(parser, fontsize, true);
+  m_innerCell->RecalculateWidthsList(parser, fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
-  m_open->RecalculateWidths(parser, fontsize, true);
-  m_close->RecalculateWidths(parser, fontsize, true);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
-void AbsCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void AbsCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateSize(parser, fontsize, true);
+  m_innerCell->RecalculateSizeList(parser, fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
-  m_open->RecalculateSize(parser, fontsize, true);
-  m_close->RecalculateSize(parser, fontsize, true);
-  MathCell::RecalculateSize(parser, fontsize, all);
+  m_open->RecalculateSizeList(parser, fontsize);
+  m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -111,7 +110,7 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxPoint in;
     in.x = point.x + SCALE_PX(4, scale);
     in.y = point.y;
-    m_innerCell->Draw(parser, in, fontsize, true);
+    m_innerCell->DrawList(parser, in, fontsize);
 
     dc.DrawLine(point.x + SCALE_PX(2, scale),
                 point.y - m_center + SCALE_PX(2, scale),
@@ -123,7 +122,7 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString AbsCell::ToString()
@@ -174,9 +173,9 @@ bool AbsCell::BreakUp()
   return false;
 }
 
-void AbsCell::Unbreak(bool all)
+void AbsCell::Unbreak()
 {
   if (m_isBroken)
-    m_innerCell->Unbreak(true);
-  MathCell::Unbreak(all);
+    m_innerCell->UnbreakList();
+  MathCell::Unbreak();
 }

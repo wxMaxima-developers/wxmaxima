@@ -105,18 +105,18 @@ void ParenCell::SetInner(MathCell *inner, int type)
   m_last1 = inner;
 }
 
-void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
 
-  m_innerCell->RecalculateWidths(parser, fontsize, true);
+  m_innerCell->RecalculateWidthsList(parser, fontsize);
 
   if (parser.CheckTeXFonts())
   {
     wxDC& dc = parser.GetDC();
-    m_innerCell->RecalculateSize(parser, fontsize, true);
+    m_innerCell->RecalculateSizeList(parser, fontsize);
     int size = m_innerCell->GetMaxHeight();
 
     int fontsize1 = (int) ((fontsize * scale + 0.5));
@@ -193,16 +193,15 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
     m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
 #endif
   }
-
-  m_open->RecalculateWidths(parser, fontsize, false);
-  m_close->RecalculateWidths(parser, fontsize, false);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  m_open->RecalculateWidthsList(parser, fontsize);
+  m_close->RecalculateWidthsList(parser, fontsize);
+  ResetData();
 }
 
-void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
-  m_innerCell->RecalculateSize(parser, fontsize, true);
+  m_innerCell->RecalculateSizeList(parser, fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
@@ -218,12 +217,11 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   }
 #endif
 
-  m_open->RecalculateSize(parser, fontsize, false);
-  m_close->RecalculateSize(parser, fontsize, false);
-  MathCell::RecalculateSize(parser, fontsize, all);
+  m_open->RecalculateSizeList(parser, fontsize);
+  m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -379,9 +377,9 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       UnsetPen(parser);
 #endif
     }
-    m_innerCell->Draw(parser, in, fontsize, true);
+    m_innerCell->DrawList(parser, in, fontsize);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ParenCell::ToString()
@@ -451,9 +449,9 @@ bool ParenCell::BreakUp()
   return false;
 }
 
-void ParenCell::Unbreak(bool all)
+void ParenCell::Unbreak()
 {
   if (m_isBroken)
-    m_innerCell->Unbreak(true);
-  MathCell::Unbreak(all);
+    m_innerCell->UnbreakList();
+  MathCell::Unbreak();
 }

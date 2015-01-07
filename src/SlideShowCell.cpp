@@ -161,7 +161,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
 {
   if (m_bitmaps[m_displayed] != NULL)
     m_width = m_bitmaps[m_displayed]->GetWidth() + 2;
@@ -172,10 +172,10 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize, bool all)
   scale = MAX(scale, 1.0);
 
   m_width = (int) (scale * m_width);
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 {
   if (m_bitmaps[m_displayed] != NULL)
     m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
@@ -188,10 +188,10 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize, bool all)
   m_height= (int) (scale * m_height);
 
   m_center = m_height / 2;
-  MathCell::RecalculateSize(parser, fontsize, all);
+  MathCell::RecalculateSizeList(parser, fontsize);
 }
 
-void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point) && m_bitmaps[m_displayed] != NULL)
   {
@@ -215,7 +215,7 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString SlideShow::ToString()

@@ -52,9 +52,9 @@ public:
 protected:
   wxBitmap *m_bitmap;
   wxFileSystem *m_fileSystem;
-  void RecalculateSize(CellParser& parser, int fontsize, bool all);
-  void RecalculateWidths(CellParser& parser, int fontsize, bool all);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void RecalculateSize(CellParser& parser, int fontsize);
+  void RecalculateWidths(CellParser& parser, int fontsize);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();

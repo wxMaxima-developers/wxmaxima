@@ -243,28 +243,33 @@ int MathCell::GetLineWidth(double scale)
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   m_currentPoint.x = point.x;
   m_currentPoint.y = point.y;
-  if (m_nextToDraw != NULL && all)
-  {
-    double scale = parser.GetScale();
-    point.x += m_width + SCALE_PX(MC_CELL_SKIP, scale);
-    m_nextToDraw->Draw(parser, point, fontsize, true);
-  }
 }
 
-/***
- * Calculate the size of cell, only needed once. Each derived class must call
- * MathCell::RecalculateSize(...).
- *
- * Should set: m_height, m_center.
- */
-void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
+void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (m_next != NULL && all)
-    m_next->RecalculateSize(parser, fontsize, all);
+  MathCell *tmp=this;
+  while(tmp!=NULL)
+    {
+      tmp->Draw(parser,point,fontsize);
+      double scale = parser.GetScale();
+      point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
+      tmp=tmp->m_nextToDraw;
+    }
+}
+
+void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
+{
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->RecalculateSize(parser, fontsize);
+      tmp=tmp->m_next;
+    }  
 }
 
 /*! Recalculate widths of cells. 
@@ -274,11 +279,20 @@ void MathCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
   
   Should set: set m_width.
 */
-void MathCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void MathCell::RecalculateWidthsList(CellParser& parser, int fontsize)
+{
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->RecalculateWidths(parser, fontsize);
+      tmp=tmp->m_next;
+    }
+}
+
+void MathCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   ResetData();
-  if (m_next != NULL && all)
-    m_next->RecalculateWidths(parser, fontsize, all);
 }
 
 /*! Is this cell currently visible in the window?.
@@ -496,18 +510,23 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-/*!
- * Unbreaks broken cells
- */
-void MathCell::Unbreak(bool all)
+void MathCell::Unbreak()
 {
   ResetData();
   m_isBroken = false;
   m_nextToDraw = m_next;
   if (m_nextToDraw != NULL)
     m_nextToDraw->m_previousToDraw = this;
-  if (all && m_next != NULL)
-    m_next->Unbreak(all);
+}
+
+void MathCell::UnbreakList()
+{
+  MathCell *tmp=this;
+  while(tmp != NULL)
+  {
+    tmp->Unbreak();
+    tmp=tmp->m_next;
+  }
 }
 
 /***

@@ -95,7 +95,7 @@ void Bitmap::RecalculateSize()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize, false);
+    tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize);
     tmp = tmp->m_next;
   }
 }
@@ -116,7 +116,7 @@ void Bitmap::RecalculateWidths()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(parser,  tmp->IsMath() ? mfontsize : fontsize, false);
+    tmp->RecalculateWidths(parser,  tmp->IsMath() ? mfontsize : fontsize);
     tmp = tmp->m_next;
   }
 }
@@ -210,7 +210,7 @@ void Bitmap::Draw()
     {
       if (!tmp->m_isBroken)
       {
-        tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize, false);
+        tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize);
         if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = 0;
@@ -300,8 +300,8 @@ void Bitmap::BreakUpCells()
     {
       if (tmp->BreakUp())
       {
-        tmp->RecalculateWidths(parser, tmp->IsMath() ? mfontsize : fontsize, false);
-        tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize, false);
+        tmp->RecalculateWidths(parser, tmp->IsMath() ? mfontsize : fontsize);
+        tmp->RecalculateSize(parser, tmp->IsMath() ? mfontsize : fontsize);
       }
     }
     tmp = tmp->m_nextToDraw;

@@ -69,7 +69,7 @@ void TextCell::Destroy()
   m_next = NULL;
 }
 
-void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
+void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   SetAltText(parser);
 
@@ -141,21 +141,16 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize, bool all)
 
     m_realCenter = m_center = m_height / 2;
   }
-  MathCell::RecalculateWidths(parser, fontsize, all);
+  ResetData();
 }
 
-void TextCell::RecalculateSize(CellParser& parser, int fontsize, bool all)
-{
-  MathCell::RecalculateSize(parser, fontsize, all);
-}
-
-void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
 
   if (m_width == -1 || m_height == -1)
-    RecalculateWidths(parser, fontsize, false);
+    RecalculateWidths(parser, fontsize);
 
   if (DrawThisCell(parser, point) && !m_isHidden)
   {
@@ -195,7 +190,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 void TextCell::SetFont(CellParser& parser, int fontsize)
