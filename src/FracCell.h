@@ -39,7 +39,7 @@ public:
   void Destroy();
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   void SetFracStyle(int style)
   {
     m_fracStyle = style;

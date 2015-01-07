@@ -196,7 +196,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
 // 3. draw text (wxCOPY)
 // 4. draw caret (wxCOPY), TS_CURSOR color
 ////////////////////////////
-void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all)
+void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -372,7 +372,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize, bool all
     UnsetPen(parser);
 
   } // if (DrawThisCell(parser, point) && !m_isHidden)
-  MathCell::Draw(parser, point1, fontsize, all);
+  MathCell::Draw(parser, point1, fontsize);
 }
 
 void EditorCell::SetFont(CellParser& parser, int fontsize)

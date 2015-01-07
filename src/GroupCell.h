@@ -122,7 +122,7 @@ public:
   bool IsMainInput(MathCell *active);
   void Number(int &section, int &subsection, int &image);
   void RecalculateAppended(CellParser& parser);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold

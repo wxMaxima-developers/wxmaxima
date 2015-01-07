@@ -210,7 +210,7 @@ void Bitmap::Draw()
     {
       if (!tmp->m_isBroken)
       {
-        tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize, false);
+        tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize);
         if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
         {
           point.x = 0;

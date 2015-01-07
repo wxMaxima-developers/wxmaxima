@@ -100,7 +100,7 @@ void AbsCell::RecalculateSize(CellParser& parser, int fontsize)
   m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -110,7 +110,7 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxPoint in;
     in.x = point.x + SCALE_PX(4, scale);
     in.y = point.y;
-    m_innerCell->Draw(parser, in, fontsize, true);
+    m_innerCell->DrawList(parser, in, fontsize);
 
     dc.DrawLine(point.x + SCALE_PX(2, scale),
                 point.y - m_center + SCALE_PX(2, scale),
@@ -122,7 +122,7 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                 point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString AbsCell::ToString()

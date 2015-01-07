@@ -221,7 +221,7 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
   m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -377,9 +377,9 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       UnsetPen(parser);
 #endif
     }
-    m_innerCell->Draw(parser, in, fontsize, true);
+    m_innerCell->DrawList(parser, in, fontsize);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ParenCell::ToString()

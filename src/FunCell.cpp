@@ -101,20 +101,20 @@ void FunCell::RecalculateSize(CellParser& parser, int fontsize)
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
 }
 
-void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
     double scale = parser.GetScale();
 
     wxPoint name(point), arg(point);
-    m_nameCell->Draw(parser, name, fontsize, true);
+    m_nameCell->DrawList(parser, name, fontsize);
 
     arg.x += m_nameCell->GetFullWidth(scale) - SCALE_PX(1, scale);
-    m_argCell->Draw(parser, arg, fontsize, true);
+    m_argCell->DrawList(parser, arg, fontsize);
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString FunCell::ToString()

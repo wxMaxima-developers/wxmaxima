@@ -174,7 +174,7 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   m_center = m_height / 2;
 }
 
-void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   wxDC& dc = parser.GetDC();
 
@@ -202,7 +202,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ImgCell::ToString()

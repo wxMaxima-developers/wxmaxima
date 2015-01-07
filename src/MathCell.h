@@ -144,7 +144,7 @@ public:
   }
   void CopyData(MathCell *s, MathCell *t);
 
-  /*! Draw this cells (and optionally the following cells)
+  /*! Draw this cell
 
     \param point The x and y position this cell is drawn at
     \param fontsize The font size that is to be used
@@ -152,7 +152,17 @@ public:
      - true: the whole list of cells has to be drawn starting with this one
      - false: only this cell has to be drawn
    */
-  virtual void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  virtual void Draw(CellParser& parser, wxPoint point, int fontsize);
+  /*! Draw this list of cells
+
+    \param point The x and y position this cell is drawn at
+    \param fontsize The font size that is to be used
+    \param all
+     - true: the whole list of cells has to be drawn starting with this one
+     - false: only this cell has to be drawn
+   */
+  void DrawList(CellParser& parser, wxPoint point, int fontsize);
+
   void DrawBoundingBox(wxDC& dc, bool all = false, int border = 0);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 

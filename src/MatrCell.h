@@ -35,7 +35,7 @@ public:
   MathCell* Copy();
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   void AddNewCell(MathCell* cell)
   {
     m_cells.push_back(cell);

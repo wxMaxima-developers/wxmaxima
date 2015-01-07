@@ -132,7 +132,7 @@ void MatrCell::RecalculateSize(CellParser& parser, int fontsize)
   m_center = m_height / 2;
 }
 
-void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -149,7 +149,7 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
         mp.y += m_centers[j];
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth(scale)) / 2;
-        m_cells[j*m_matWidth + i]->Draw(parser, mp1, MAX(MC_MIN_SIZE, fontsize - 2), true);
+        m_cells[j*m_matWidth + i]->DrawList(parser, mp1, MAX(MC_MIN_SIZE, fontsize - 2));
         mp.y += (m_drops[j] + SCALE_PX(10, scale));
       }
       mp.x += (m_widths[i] + SCALE_PX(10, scale));
@@ -206,7 +206,7 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     }
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString MatrCell::ToString()

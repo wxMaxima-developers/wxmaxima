@@ -229,7 +229,7 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize)
   }
 }
 
-void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -326,7 +326,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       under.x += m_signWidth;
       under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + SCALE_PX(2, scale) -
                 m_signSize / 3;
-      m_under->Draw(parser, under, MAX(MC_MIN_SIZE, fontsize - 5), true);
+      m_under->DrawList(parser, under, MAX(MC_MIN_SIZE, fontsize - 5));
 
       if (parser.CheckTeXFonts())
         over.x += 2*m_signWidth;
@@ -335,7 +335,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
       over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale) +
                m_signSize / 3;
-      m_over->Draw(parser, over, MAX(MC_MIN_SIZE, fontsize - 5), true);
+      m_over->DrawList(parser, over, MAX(MC_MIN_SIZE, fontsize - 5));
 
       if (parser.CheckTeXFonts())
       {
@@ -352,13 +352,13 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     else
       base.x += m_signWidth;
 
-    m_base->Draw(parser, base, fontsize, true);
+    m_base->Draw(parser, base, fontsize);
 
     var.x = base.x + m_base->GetFullWidth(scale);
-    m_var->Draw(parser, var, fontsize, true);
+    m_var->DrawList(parser, var, fontsize);
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString IntCell::ToString()

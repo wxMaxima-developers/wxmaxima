@@ -95,7 +95,7 @@ bool MathPrintout::OnPrintPage(int num)
 
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
-      tmp->Draw(parser, point, fontsize, false);
+      tmp->Draw(parser, point, fontsize);
       if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();

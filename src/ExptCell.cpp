@@ -144,7 +144,7 @@ void ExptCell::RecalculateSize(CellParser& parser, int fontsize)
   m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -152,16 +152,16 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->Draw(parser, bs, fontsize, true);
+    m_baseCell->DrawList(parser, bs, fontsize);
 
     pw.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(MC_TEXT_PADDING, scale);
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
            + m_powCell->GetMaxCenter() +
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_powCell->Draw(parser, pw, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC), true);
+    m_powCell->DrawList(parser, pw, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   }
 
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ExptCell::ToString()

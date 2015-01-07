@@ -33,7 +33,7 @@ public:
   void SetDiff(MathCell *diff);
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString();
   wxString ToTeX();

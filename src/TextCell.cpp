@@ -144,7 +144,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -190,7 +190,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 void TextCell::SetFont(CellParser& parser, int fontsize)

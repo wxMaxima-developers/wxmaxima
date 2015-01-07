@@ -54,7 +54,7 @@ protected:
   wxFileSystem *m_fileSystem;
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize, bool all);
+  void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();

@@ -146,7 +146,7 @@ void SqrtCell::RecalculateSize(CellParser& parser, int fontsize)
   m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (DrawThisCell(parser, point))
   {
@@ -231,9 +231,9 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       UnsetPen(parser);
     }
 
-    m_innerCell->Draw(parser, in, fontsize, true);
+    m_innerCell->DrawList(parser, in, fontsize);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString SqrtCell::ToString()

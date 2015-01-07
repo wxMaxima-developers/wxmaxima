@@ -433,7 +433,7 @@ void GroupCell::RecalculateAppended(CellParser& parser)
   m_appendedCells = NULL;
 }
 
-void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -451,7 +451,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
       wxPen pen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);
       dc.DrawLine(0, y , 10000, y);
-      MathCell::Draw(parser, point, fontsize, all);
+      MathCell::Draw(parser, point, fontsize);
       return;
     }
 
@@ -476,7 +476,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
     SetPen(parser);
     wxPoint in(point);
     parser.Outdated(false);
-    m_input->Draw(parser, in, fontsize, true);
+    m_input->DrawList(parser, in, fontsize);
     if (m_groupType == GC_TYPE_CODE && m_input->m_next)
       parser.Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
@@ -493,7 +493,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
           tmp->m_currentPoint.x = in.x;
           tmp->m_currentPoint.y = in.y;
           if (tmp->DrawThisCell(parser, in))
-            tmp->Draw(parser, in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE), false);
+            tmp->Draw(parser, in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
           if (tmp->m_nextToDraw != NULL) {
             if (tmp->m_nextToDraw->BreakLineHere()) {
               in.x = m_indent;
@@ -575,7 +575,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
 
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize, all);
+  MathCell::Draw(parser, point, fontsize);
 }
 
 wxRect GroupCell::HideRect()

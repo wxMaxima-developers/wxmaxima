@@ -240,16 +240,22 @@ int MathCell::GetLineWidth(double scale)
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize, bool all)
+void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   m_currentPoint.x = point.x;
   m_currentPoint.y = point.y;
-  if (m_nextToDraw != NULL && all)
-  {
-    double scale = parser.GetScale();
-    point.x += m_width + SCALE_PX(MC_CELL_SKIP, scale);
-    m_nextToDraw->Draw(parser, point, fontsize, true);
-  }
+}
+
+void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)
+{
+  MathCell *tmp=this;
+  while(tmp!=NULL)
+    {
+      tmp->Draw(parser,point,fontsize);
+      double scale = parser.GetScale();
+      point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
+      tmp=tmp->m_nextToDraw;
+    }
 }
 
 void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
