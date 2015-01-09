@@ -254,6 +254,10 @@ bool TextCell::IsOperator()
 {
   if (wxString(wxT("+*/-")).Find(m_text) >= 0)
     return true;
+#if wxUSE_UNICODE
+  if (m_text == wxT("\x2212"))
+    return true;
+#endif
   return false;
 }
 
