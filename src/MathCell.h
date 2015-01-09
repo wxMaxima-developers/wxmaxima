@@ -162,7 +162,14 @@ public:
      - false: only this cell has to be drawn
    */
   void DrawList(CellParser& parser, wxPoint point, int fontsize);
+  /*! Draw the bounding box of this cell or this list of cells
 
+    \param all
+     - true:  Draw the bounding box around this list of cells
+     - false: Draw the bounding box around this cell only
+     \param border The width of the border in pixels
+     \param dc Where to draw the box.
+  */
   void DrawBoundingBox(wxDC& dc, bool all = false, int border = 0);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 
@@ -196,10 +203,32 @@ public:
     Returns the type of this cell.
    */
   int GetType() { return m_type; }
+  /*! Returns the maximum distance between center and bottom of this line
+
+    Note that the center doesn't need to be exactly in the middle of an object.
+    For a fraction for example the center is exactly at the middle of the 
+    horizontal line.
+   */
   int GetMaxDrop();
+  /*! Returns the maximum distance between top and center of this line
+
+    Note that the center doesn't need to be exactly in the middle of an object.
+    For a fraction for example the center is exactly at the middle of the 
+    horizontal line.
+  */
   int GetMaxCenter();
+  /*! Returns the total height of this line
+
+    Returns GetMaxCenter()+GetMaxDrop()
+   */
   int GetMaxHeight();
+  //! How many pixels would this list of cells be wide if we didn't introduce line breaks?
   int GetFullWidth(double scale);
+  /*! How many pixels is this list of cells wide?
+
+    This command returns the real line width when all line breaks are really performed. 
+    See GetFullWidth().
+   */
   int GetLineWidth(double scale);
   //! Get the x position of the top left of this cell
   int GetCurrentX() { return m_currentPoint.x; }
@@ -224,11 +253,13 @@ public:
   virtual void RecalculateWidths(CellParser& parser, int fontsize);
   //! Marks all widths of this list as to be recalculated on query.
   void RecalculateWidthsList(CellParser& parser, int fontsize);
-
+  //! Mark all cached size information as "to be calculated".
   void ResetData();
+  //! Mark the cached height informations as "to be calculated".
   void ResetSize() { m_width = m_height = -1; }
 
   void SetSkip(bool skip) { m_bigSkip = skip; }
+  //! Sets the text style according to the type
   void SetType(int type);
   int GetStyle(){ return m_textStyle; }	//l'ho aggiunto io
 
