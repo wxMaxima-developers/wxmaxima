@@ -23,7 +23,7 @@ all-local: wxmaxima.info $(WXMAXIMA_CHM)
 wxmaxima.info : wxmaxima.texi
 	makeinfo --split-size=1000000 $<
 
-wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS)
+wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS) manual.css texi2html.init
 	sh extract_categories.sh wxmaxima
 
 wxmaxima_1.html: wxmaxima.html
