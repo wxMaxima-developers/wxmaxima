@@ -22,9 +22,6 @@
 @c @synindex cp fn
 
 @c %**end of header
-
-@include category-macros.texi
-
 @ifinfo
 This is a Texinfo wxMaxima manual based on the maxima
 manual which is Copyright 1994,2001 William F. Schelter
@@ -41,6 +38,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
+@iftex
 @titlepage
 @sp 10
 @comment The title is printed in a large font.
@@ -55,20 +53,30 @@ wxMaxima is a graphical user interface that allows to use all of
 maxima's functions providing convenient wizards for accessing the most
 commonly used of them.
 @end titlepage
+@end iftex
 
-@summarycontents
-@contents
+@ifnottex
 @node top
-@chapter Introduction to wxMaxima
-@ifnotinfo
-@image{wxMaximaLogo,4cm}
-
-@end ifnotinfo
+@top The wxMaxima user's manual
 wxMaxima is a graphical user interface that allows to use all of
 maxima's functions providing convenient wizards for accessing the most
 commonly used of them. This manual attempts to describe the unique
 features that make this program one of the most popular GUIs for
 maxima.
+@end ifnottex
+@ifnotinfo
+@image{wxMaximaLogo,4cm}
+@end ifnotinfo
+@ifnottex
+@menu
+* Introduction::    wxMaxima basics
+* Extensions::      The commands wxMaxima adds to maxima
+* Troubleshooting:: What to do if wxMaxima doesn't work as expected
+* CommandLine::     The command-line arguments wxMaxima supports
+@end menu
+@end ifnottex
+@node Introduction
+@chapter Introduction to wxMaxima
 @section Maxima and wxMaxima
 In the open-source domain big systems are normally split into smaller
 projects that are easier to handle for small groups of developers.
@@ -281,6 +289,7 @@ Since most version control systems compress the data they store on the
 server the server space occupied by the initial version of both
 @file{.wxmx} flavors should be nearly identical in size.
 @end itemize
+@node Extensions
 @chapter Extensions to maxima
 wxMaxima aims to be but a graphical user interface for maxima. In some
 cases it adds functionality to Maxima, though. These cases are
@@ -425,6 +434,7 @@ running version of wxMaxima
       connection (as it should be) the dialog is filled with this
       information instead.
 @end itemize
+@node Troubleshooting
 @chapter Troubleshooting
 @section Cannot connect to Maxima
 Since maxima (the program that does the actual mathematics) and
@@ -516,6 +526,7 @@ On possible reason is that maxima cannot be found in the location that is
 set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working maxima binary should
 fix this problem.
+@node CommandLine
 @chapter Command-line arguments
 Most operating systems provide less complicated ways of
 starting programs than the command line so this possibility
