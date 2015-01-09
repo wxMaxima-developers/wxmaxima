@@ -2795,9 +2795,6 @@ bool MathCtrl::ExportToWXMX(wxString file)
   ImgCell::WXMXResetCounter();
   
   output << ConvertToUnicode(m_tree->ListToXML());
-  std::cerr << "Debug start\n";
-  std::cerr << ConvertToUnicode(m_tree->ListToXML());
-  std::cerr << "Debug end\n";
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
