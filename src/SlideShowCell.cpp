@@ -55,7 +55,7 @@ void SlideShow::LoadImages(wxArrayString images)
       if (fsfile) { // open successful
 
         wxInputStream *istream = fsfile->GetStream();
-        wxImage pngImage(*istream);
+        wxImage pngImage(*istream, wxBITMAP_TYPE_PNG);
         if (pngImage.Ok())
         {
           loadedImage = true;
