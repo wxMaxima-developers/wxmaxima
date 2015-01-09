@@ -188,7 +188,8 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
   m_height= (int) (scale * m_height);
 
   m_center = m_height / 2;
-  MathCell::RecalculateSizeList(parser, fontsize);
+  
+  MathCell::RecalculateSize(parser, fontsize);
 }
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
