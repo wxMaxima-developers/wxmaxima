@@ -905,10 +905,17 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::AddRecentDocument(wxString file)
 {
-  if (m_recentDocuments.Index(file) != wxNOT_FOUND)
-    m_recentDocuments.Remove(file);
-  m_recentDocuments.Insert(file, 0);
+  wxFileName FileName=file;
+  FileName.MakeAbsolute();
+  wxString CanonicalFilename=FileName.GetFullPath();
+  
+  if (m_recentDocuments.Index(CanonicalFilename) != wxNOT_FOUND)
+    m_recentDocuments.Remove(CanonicalFilename);
+  m_recentDocuments.Insert(CanonicalFilename, 0);
 
+  std::cerr<< "Canonical File name: ";
+  std::cerr<< CanonicalFilename;  
+  std::cerr<< "\n";
   UpdateRecentDocuments();
 }
 
