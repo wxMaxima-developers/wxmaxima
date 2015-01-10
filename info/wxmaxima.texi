@@ -210,29 +210,36 @@ program expects. To activate this feature press
 Computers traditionally store characters in 8-bit values: This allows
 for a maximum of 256 different characters and all letters, numbers,
 and control symbols (end of transmission, end of string, lines and
-edges for drawing rectangles for menus etc.) fit there.
+edges for drawing rectangles for menus etc.) of nearly any given
+language fit there.
 
 For most countries the codepage of 256 characters that has been chosen
-unfortunately doesn't include greek letters. To overcome this unicode
-has been invented: A method of including different characters in a
-text that otherwise looks like plain 8-bit ASCII.
+doesn't include greek letters, though. To overcome this limitation
+unicode has been invented: A method of including characters that
+aren't normally used in the english language in a text that
+(as long as only the basic form of latin characters is used)
+looks like plain 8-bit ASCII.
 
-Maxima allows for unicode characters if it runs on a lisp  that
+Maxima allows for unicode characters if it runs on a lisp that
 supports them and if the wxWidgets library wxMaxima is built on
 supports unicode characters, too, wxMaxima can be built with unicode
-support, too. In this case it provides a method of entering greek
+support. In this case it provides a method of entering greek
 characters:
 @itemize @bullet
 @item An alpha is entered by pressing the <ESC> key and then typing in
       the character a.
+@item A beta is entered by pressing the <ESC> key and then typing in
+      the character b.
+@item A gamma is entered by pressing the <ESC> key and then typing in
+      the character c.
 @item ...and so on.
 @end itemize 
-If the system does not provide unicode support wxMaxima still provides
-a method of showing greek characters: Variable names like ``alpha''
-are displayed as the corresponding greek symbols.
+If the system does not provide unicode support wxMaxima will still
+provide a method of showing greek characters: Variable names like
+``alpha'' are always displayed as the corresponding greek symbols.
 
 It is to note that a maxima running on a lisp without unicode support
-won't be able to open files containing special unicode characters.
+won't be able to deal with files that contain special unicode characters.
 @subsection Side Panes
 @ifnotinfo
 @image{SidePanes,12cm}
@@ -428,11 +435,13 @@ information about the current system:
 running version of wxMaxima
 @item @code{wxbug_report()} tells how and where to file bugs
 @item In special cases additional debugging information might be
-      obtimed by issuing the command @code{wxmaxima_debug_dump_output}:
-      Normally this command produces an empty dialog. If there is output
+      obtained by issuing the command @code{wxmaxima_debug_dump_output}:
+      Normally this command produces an dialog containing only the
+      information what would be displayed here if there was something
+      to display. If there is output
       from maxima that isn't passed to wxMaxima through the network
       connection (as it should be) the dialog is filled with this
-      information instead.
+      output instead.
 @end itemize
 @node Troubleshooting
 @chapter Troubleshooting
@@ -522,10 +531,12 @@ If nothing else helps maxima contains a replay feature:
 %i1 playback();
 @end example
 @section wxMaxima starts up with the message ``Maxima process Terminated.''
-On possible reason is that maxima cannot be found in the location that is
+One possible reason is that maxima cannot be found in the location that is
 set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working maxima binary should
-fix this problem.
+fix this problem. If it doesn't the command @code{wxmaxima_debug_dump_output}
+(that does still work if maxima isn't connected) might give some hints to the
+problem.
 @node CommandLine
 @chapter Command-line arguments
 Most operating systems provide less complicated ways of
