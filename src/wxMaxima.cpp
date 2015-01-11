@@ -669,7 +669,7 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
-#ifndef __WXMAC__
+#ifndef __WXMSW__
   addr.LocalHost();
 #else
   addr.AnyAddress();

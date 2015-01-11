@@ -28,13 +28,14 @@
 
 (defvar $wxfilename "")
 
-(defun wx-cd (dir)
-  (let ((dir (cond ((pathnamep dir) dir)
-		   ((stringp dir)
-		    (make-pathname :directory (pathname-directory dir)
-				   :device (pathname-device dir)))
-		   (t (error "cd(dir): dir must be a string or pathname.")))))
-    (and (xchdir dir) (setf *default-pathname-defaults* dir) (namestring dir))))
+;(defun wx-cd (dir)
+;  (let ((dir (cond ((pathnamep dir) dir)
+;		   ((stringp dir)
+;		    (make-pathname :directory (pathname-directory dir)
+;				   :device (pathname-device dir)))
+;		   (t (error "cd(dir): dir must be a string or pathname.")))))
+					;    (and (xchdir dir) (setf *default-pathname-defaults* dir) (namestring dir))))
+(defun wx-cd (dir) dir)
 
 #+ccl (setf *print-circle* nil)
 
