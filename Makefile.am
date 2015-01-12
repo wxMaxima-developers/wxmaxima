@@ -81,3 +81,8 @@ endif
 		cp locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	cp src/wxmaxima.exe wxMaxima/
+
+allmo:
+	    cd locales&&make allmo
+
+.PHONY:	allmo
