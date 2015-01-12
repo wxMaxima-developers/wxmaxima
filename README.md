@@ -85,14 +85,16 @@ To build an application bundle of wxMaxima on Mac OS X
 
 On Windows execute instead:
 
-    ./configure --with-wx-config=<path to wx-config> --enable-chm
+    ./configure --with-wx-config=<path to wx-config> --with-hhc=<path to hhc.exe> --enable-chm
     make
     make allmo
     make wxMaxima.win
 
 which builds the directory structure necessary for running wxMaxima.
 
-The --enable-chm is necessary to make the builder convert the wxMaxima
-offline manual to a format the built-in help browser of windows
-understands. For this conversion the Microsoft HTML Help workshop
-is necessary that is distributed separately.
+The --enable-chm and the --with-hhc are necessary to make the
+builder convert the wxMaxima offline manual to a format the
+built-in help browser of windows understands. For this conversion
+the Microsoft HTML Help workshop is necessary. This program that
+is distributed separately. If they aren't added to the configure
+command line a cached version of the manual is used.

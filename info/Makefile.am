@@ -12,7 +12,7 @@ pdffigures=NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf wxMaximaLogo.pdf
 pdffigures+=wxMaximaWindow.pdf SidePanes.pdf
 
 if CHM
-WXMAXIMA_CHM = wxmaxima.chm
+WXMAXIMA_CHM = wxMaxima.chm
 INSTALL_CHM = install-chm
 UNINSTALL_CHM = uninstall-chm
 CLEAN_CHM = clean-chm
@@ -47,7 +47,7 @@ contents.hhc index.hhk: wxmaxima.html
 	perl ./create_index
 
 # Squash error on exit from hhc
-wxmaxima.chm: wxmaxima.hhp contents.hhc index.hhk
+wxMaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
 html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html
@@ -76,18 +76,17 @@ clean-html:
 	rm -f wxmaxima*.html
 	rm -f contents.hhc
 	rm -f index.hhk
-	rm -f wxmaxima.chm
 
 if CHM
-install-chm: wxmaxima.chm
+install-chm: wxMaxima.chm
 	test -z "$(DESTDIR)$(docchmdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)"
-	$(INSTALL_DATA) wxmaxima.chm "$(DESTDIR)$(docchmdir)/wxmaxima.chm"
+	$(INSTALL_DATA) wxMaxima.chm "$(DESTDIR)$(docchmdir)/wxMaxima.chm"
 
 uninstall-chm:
 	rm -f "$(DESTDIR)$(docchmdir)"
 
 clean-chm:
-	rm -f wxmaxima.chm
+	rm -f wxMaxima.chm
 	rm -rf chm
 endif
 
@@ -96,7 +95,7 @@ EXTRA_DIST = texi2html manual.css texi2html.init $(html_DATA)\
     $(genericdirDATA) $(pdffigures) \
     check_tab fix_tab build_index.pl \
     extract_categories1.awk  extract_categories1.sed  extract_categories.sh\
-    wxmaxima.info
+    wxmaxima.info wxmaxima.hhc wxMaxima.chm
 
 check_texinfo:
 	pattern=`printf "\t"` ; \

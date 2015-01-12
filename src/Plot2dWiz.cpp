@@ -290,7 +290,7 @@ void Plot2DWiz::Parse(wxString s)
         text_ctrl_7->SetValue(curr);
         i++;
       }
-      else if (curr == wxT("gnuplot_preamble"))
+      else if (curr == wxT("gnuplot_postamble"))
       {
         while (i < s.Length() && s.GetChar(i) != '"')
           i++;
@@ -386,9 +386,9 @@ wxString Plot2DWiz::GetValue()
     s += wxT(",\n [plot_format, ") + f + wxT("]");
 
 
-  // gnuplot_preamble
+  // gnuplot_postamble
   if (p.Length() > 0)
-    s += wxT(",\n [gnuplot_preamble, \"") + p + wxT("\"]");
+    s += wxT(",\n [gnuplot_postamble, \"") + p + wxT("\"]");
   if (t != 10)
   {
     s += wxT(",\n [nticks,");
