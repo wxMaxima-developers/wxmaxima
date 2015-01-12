@@ -73,9 +73,7 @@ To build wxMaxima on Linux execute
 
     ./configure
     make
-    cd locales
     make allmo
-    cd ..
     sudo make install
 
 To build wxMaxima on Mac OS X and Windows first execute
