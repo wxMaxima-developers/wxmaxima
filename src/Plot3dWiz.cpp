@@ -307,7 +307,7 @@ void Plot3DWiz::Parse(wxString s)
       }
       curr.Trim();
       curr.Trim(false);
-      if (curr == wxT("gnuplot_preamble"))
+      if (curr == wxT("gnuplot_postamble"))
       {
         while (i < s.Length() && s.GetChar(i) != '"')
           i++;
@@ -393,7 +393,7 @@ wxString Plot3DWiz::GetValue()
 #endif
 
   if (p.Length() > 0)
-    s += wxT(",\n [gnuplot_preamble, \"") + p + wxT("\"]");
+    s += wxT(",\n [gnuplot_postamble, \"") + p + wxT("\"]");
   if (file.Length())
   {
     s += wxT(",\n [gnuplot_term, ps]");
