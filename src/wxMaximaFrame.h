@@ -314,11 +314,26 @@ public:
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
   ~wxMaximaFrame();
-  //! Update the recent documents list
+  /*! Update the recent documents list
+
+    Copies the string array containing the list of recent documents to the
+    recent documents menu.
+   */
   void UpdateRecentDocuments();
+  //! Add an entry to the "Recent Documents" list.
   void AddRecentDocument(wxString file);
+  /*! Remove a file from the "Recent Documents" list.
+
+    Removing and re-adding a file will move it to the top of the list.
+   */
   void RemoveRecentDocument(wxString file);
+  //! Read the nth entry in the list of recent documents.
   wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
+  /*! true, if a Pane is currently enabled
+
+    \param id The event that toggles the visibility of the pane that is
+    to be queried
+   */
   bool IsPaneDisplayed(Event id);
   /*! Show or hide a sidebar
     
@@ -328,7 +343,14 @@ public:
      - false: hide it
    */
   void ShowPane(Event id, bool hide);
+  //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
+  /*! Show or hide the toolbar
+
+    \param show
+     - true:  Thow the toolbar
+     - false: hide the toolbar
+   */
   void ShowToolBar(bool show);
 private:
   //! The menu bar

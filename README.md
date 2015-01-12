@@ -76,20 +76,23 @@ To build wxMaxima on Linux execute
     make allmo
     sudo make install
 
-To build wxMaxima on Mac OS X and Windows first execute
+To build an application bundle of wxMaxima on Mac OS X
 
     ./configure --with-wx-config=<path to wx-config>
     make
-    cd locales
     make allmo
-    cd ..
-
-On Mac OS X you should build an application bundle:
-
     make wxMaxima.app
 
-On Windows execute
+On Windows execute instead:
 
+    ./configure --with-wx-config=<path to wx-config> --enable-chm
+    make
+    make allmo
     make wxMaxima.win
 
 which builds the directory structure necessary for running wxMaxima.
+
+The --enable-chm is necessary to make the builder convert the wxMaxima
+offline manual to a format the built-in help browser of windows
+understands. For this conversion the Microsoft HTML Help workshop
+is necessary that is distributed separately.

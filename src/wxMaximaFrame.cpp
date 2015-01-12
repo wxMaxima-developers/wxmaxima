@@ -881,6 +881,7 @@ void wxMaximaFrame::SaveRecentDocuments()
 
 void wxMaximaFrame::UpdateRecentDocuments()
 {
+  // Iterate through all the entries to the recent documents menu.
   for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
   {
     if (m_recentDocumentsMenu->FindItem(i) != NULL)
@@ -908,7 +909,9 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
   wxFileName FileName=file;
   FileName.MakeAbsolute();
   wxString CanonicalFilename=FileName.GetFullPath();
-  
+
+  // Append the current document to the list of recent documents
+  // or move it to the top, if it is already there.
   if (m_recentDocuments.Index(CanonicalFilename) != wxNOT_FOUND)
     m_recentDocuments.Remove(CanonicalFilename);
   m_recentDocuments.Insert(CanonicalFilename, 0);
