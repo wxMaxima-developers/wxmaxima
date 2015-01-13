@@ -28,13 +28,19 @@
 
 (defvar $wxfilename "")
 
+#+(or windows win32)
+(defvar $wxchangedir nil)
+#-(or windows win32)
+(defvar $wxchangedir t)
+
 (defun wx-cd (dir)
-  (let ((dir (cond ((pathnamep dir) dir)
-		   ((stringp dir)
-		    (make-pathname :directory (pathname-directory dir)
-				   :device (pathname-device dir)))
-		   (t (error "cd(dir): dir must be a string or pathname.")))))
-    (and (xchdir dir) (setf *default-pathname-defaults* dir) (namestring dir))))
+  (when $wxchangedir
+    (let ((dir (cond ((pathnamep dir) dir)
+                     ((stringp dir)
+                      (make-pathname :directory (pathname-directory dir)
+                                     :device (pathname-device dir)))
+                     (t (error "cd(dir): dir must be a string or pathname.")))))
+      (and (xchdir dir) (setf *default-pathname-defaults* dir) (namestring dir)))))
 
 #+ccl (setf *print-circle* nil)
 
@@ -63,6 +69,7 @@
     (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
             year month day hour minute seconds)
     (format t "Host type: ~a~%" *autoconf-host*)
+    (format t "System type: ~a ~a ~a~%" (software-type) (software-version) (machine-type))
     (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
     (format t "Lisp implementation version: ~a~%" (lisp-implementation-version)))
   "")
