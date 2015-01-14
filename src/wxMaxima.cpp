@@ -541,7 +541,9 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       m_currentOutput += wxString(buffer, *wxConvCurrent);
 #endif
 
-      if (!m_dispReadOut && (m_currentOutput != wxT("\n")) && (m_currentOutput.Length()>1)) {
+      if (!m_dispReadOut &&
+	  (m_currentOutput != wxT("\n")) &&
+	  (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>"))) {
         SetStatusText(_("Reading Maxima output"), 1);
         m_dispReadOut = true;
       }
