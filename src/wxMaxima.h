@@ -89,7 +89,10 @@ public:
                 wxString command = wxEmptyString); //< Open a file
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
-protected:
+ private:
+    //! Can we display the "ready" prompt right now?
+  bool m_ready;
+ protected:
   void ShowHelp(wxString helpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
@@ -132,7 +135,13 @@ protected:
 
   void SanitizeSocketBuffer(char *buffer, int length);  //< fix early nulls
   void ServerEvent(wxSocketEvent& event);          //< server event: maxima connection
-  void ClientEvent(wxSocketEvent& event);          //< client event: maxima input/output
+  /*! Is triggered on Input or disconnect from maxima
+
+    \todo An :lisp-quiet command causes the status line to be changed to "reading maxima
+    output". But since there will be no prompt afterwards the status line won't change 
+    back. This is for example triggered by opening a file. Is there a way to fix this?
+   */
+  void ClientEvent(wxSocketEvent& event);
 
   void ConsoleAppend(wxString s, int type);        //< append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
@@ -174,8 +183,9 @@ protected:
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
 
-  // loading functions
+  // Opens a wxm file
   bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  //! Opens a wxmx file
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
   GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);

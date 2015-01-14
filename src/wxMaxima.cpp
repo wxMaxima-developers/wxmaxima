@@ -78,6 +78,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 {
   m_port = 4010;
   m_pid = -1;
+  m_ready = false;
   m_readingPrompt=false;
   m_inLispMode = false;
   m_first = true;
@@ -518,8 +519,6 @@ void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
   }
 }
 
-/*! Client event is triggered when there is something we can read from the socket.
- */
 void wxMaxima::ClientEvent(wxSocketEvent& event)
 {
   char buffer[SOCKET_SIZE + 1];
@@ -542,7 +541,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       m_currentOutput += wxString(buffer, *wxConvCurrent);
 #endif
 
-      if (!m_dispReadOut && m_currentOutput != wxT("\n")) {
+      if (!m_dispReadOut && (m_currentOutput != wxT("\n")) && (m_currentOutput.Length()>1)) {
         SetStatusText(_("Reading Maxima output"), 1);
         m_dispReadOut = true;
       }
@@ -895,7 +894,7 @@ void wxMaxima::ReadLoadSymbols()
  */
 void wxMaxima::ReadPrompt()
 {
-  bool ready = true;
+  m_ready=true;
   int end = m_currentOutput.Find(m_promptSuffix);
   if (end > -1)
   {
@@ -917,9 +916,9 @@ void wxMaxima::ReadPrompt()
           m_console->Refresh();
         }
         else { // we don't have an empty queue
+          m_ready = false;
           m_console->Refresh();
           m_console->EnableEdit();
-          ready = false;
           TryEvaluateNextInQueue();
         }
 
@@ -948,7 +947,7 @@ void wxMaxima::ReadPrompt()
         m_inLispMode = false;
     }
 
-    if (ready)
+    if (m_ready)
       SetStatusText(_("Ready for user input"), 1);
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                       m_currentOutput.Length());
@@ -969,6 +968,8 @@ void wxMaxima::SetCWD(wxString file)
 #endif
   
   SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
+    if (m_ready)
+      SetStatusText(_("Ready for user input"), 1);
 }
 
 // OpenWXM(X)File
