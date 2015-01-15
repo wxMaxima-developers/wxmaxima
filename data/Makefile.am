@@ -5,3 +5,6 @@ EXTRA_DIST = tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgI
 
 appdatadir = $(datarootdir)/appdata
 dist_appdata_DATA = wxmaxima.appdata.xml
+
+mimedatadir = $(datarootdir)/mime/application
+dist_appdata_DATA = wxmathml.xml wxmbatch.xml

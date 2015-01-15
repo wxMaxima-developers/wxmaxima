@@ -2758,7 +2758,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Make sure that the mime type is stored as plain text.
   zip.SetLevel(0);
   zip.PutNextEntry(wxT("mimetype"));
-  output << wxT("text/x-wxmaxima-batch");
+  output << wxT("text/x-wxmathml");
 
   /* We might want to compress the rest of this file, though, if the user doesn't 
      use a version control system like git or svn:

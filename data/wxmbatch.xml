@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-wxmaxima-batch">
+    <comment>wxMaxima document</comment>
+    <comment xml:lang="de">wxMaxima Dokument</comment>
+    <glob pattern="*.wxm"/>
+    <magic>
+      <match type="string" offset="0" value="/* [wxMaxima batch file"/>
+    </magic>
+  </mime-type>
+</mime-info>
