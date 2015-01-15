@@ -11,3 +11,6 @@ dist_appicon_DATA = wxmaxima.svg wxmaxima.png
 
 mimedatadir = $(datarootdir)/mime/packages
 dist_mimedata_DATA = x-wxmathml.xml x-wxmaxima-batch.xml
+
+gnomefileicondir = $(datarootdir)/icons/gnome/scalable/mimetypes
+dist_gnomefileicon_DATA = text-x-wxmaxima-batch.svg text-x-wxmathml.svg  
