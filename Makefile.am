@@ -1,4 +1,4 @@
-desktopdir = $(datarootdir)/app-install/desktop
+desktopdir = $(datarootdir)/applications
 dist_desktop_DATA = wxmaxima.desktop
 
 SUBDIRS = src locales data info
