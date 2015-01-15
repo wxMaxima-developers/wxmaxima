@@ -30,6 +30,7 @@
 
 #include "wxMaxima.h"
 #include "Setup.h"
+#include "Dirstructure.h"
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of wxMaxima.
@@ -98,9 +99,9 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
     wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
-  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
+  m_locale.AddCatalogLookupPathPrefix(Dirstructure::LocaleDir());
 #elif defined (__WXMAC__)
-  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
+  m_locale.AddCatalogLookupPathPrefix(Dirstructure::LocaleDir());
 #endif
 
   m_locale.AddCatalog(wxT("wxMaxima"));

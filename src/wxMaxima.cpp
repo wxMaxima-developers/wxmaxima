@@ -41,6 +41,7 @@
 #include "EditorCell.h"
 #include "SlideShowCell.h"
 #include "PlotFormatWiz.h"
+#include "Dirstructure.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -63,10 +64,6 @@
 
 #include <wx/url.h>
 #include <wx/sstream.h>
-
-#if defined __WXMAC__
-#define MACPREFIX "wxMaxima.app/Contents/Resources/"
-#endif
 
 enum {
   maxima_process_id
@@ -235,7 +232,7 @@ void wxMaxima::FirstOutput(wxString s)
 
   m_lastPrompt = wxT("(%i1) ");
 
-  /// READ FUNCTIONS FOR AUTOCOMPLETION
+  // The help file
 #if defined __WXMSW__
   // On windows and mac computers wxMaxima the data is always to be found relative to the CWD
   wxString index = wxGetCwd();
@@ -245,15 +242,8 @@ void wxMaxima::FirstOutput(wxString s)
   index.Replace(wxT("header.hhp"), wxT("index.hhk"));
 #endif
 
-#if defined __WXMAC__
-  // On windows and mac computers the cwd of wxMaxima is the installation directory.
-  m_console->LoadSymbols(wxGetCwd() + wxT("/") + wxT(MACPREFIX) + wxT("/autocomplete.txt"));
-#elif defined __WXMSW__
-  m_console->LoadSymbols(wxGetCwd() + wxT("\\data\\autocomplete.txt"));
-#else
-  wxString prefix(wxT(PREFIX));
-  m_console->LoadSymbols(prefix + wxT("/share/wxMaxima/autocomplete.txt"));
-#endif
+  /// READ FUNCTIONS FOR AUTOCOMPLETION
+  m_console->LoadSymbols(Dirstructure::AutocompleteFile());
   m_console->SetFocus();
 }
 
@@ -1412,22 +1402,12 @@ void wxMaxima::SetupVariables()
              wxT("\")"));
   SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)"));
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)"));
-#if defined (__WXMSW__)
-  wxString cwd = wxGetCwd();
-  cwd.Replace(wxT("\\"), wxT("/"));
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"));
-#elif defined (__WXMAC__)
-  wxString cwd = wxGetCwd();
-  cwd = cwd + wxT("/") + wxT(MACPREFIX);
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"));
+  SendMaxima(wxT(":lisp-quiet ($load \"") + Dirstructure::DataDir() + wxT("/wxmathml\")"));
+#if defined (__WXMAC__)
   // check for Gnuplot.app - use it if it exists
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
     SendMaxima(wxT(":lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")"));
-#else
-  wxString prefix = wxT(PREFIX);
-  SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
-             wxT("/share/wxMaxima/wxmathml\")"));
 #endif
 
   if (m_currentFile != wxEmptyString)
@@ -1523,15 +1503,7 @@ void wxMaxima::ShowTip(bool force)
   if (!ShowTips && !force)
     return ;
   wxString tips = wxT("tips.txt");
-#if defined (__WXMSW__)
-  wxString prefix = wxGetCwd() + wxT("\\data\\");
-#elif defined (__WXMAC__)
-  wxString prefix = wxT(MACPREFIX);
-  prefix += wxT("/");
-#else
-  wxString prefix = wxT(PREFIX);
-  prefix += wxT("/share/wxMaxima/");
-#endif
+  wxString prefix = Dirstructure::DataDir();
 
   tips = prefix + tips;
   if (wxFileExists(tips))
@@ -1648,13 +1620,11 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
+  wxString htmldir = Dirstructure::HelpDir();
 #if defined __WXMAC__
-  // We are on a mac => the help folder will be in a subfolder of our cwd.
-  wxString htmldir = wxString(MACPREFIX) + wxT("/help/");
+  // We are on a mac
   wxString helpfile = htmldir + wxT("wxmaxima.hhp");
 #elif defined __WXMSW__
-  // We are on a windows computer => the help folder will be in a subfolder of our cwd.
-  wxString htmldir = wxGetCwd() + wxT("\\help\\");
 #if WXM_CHM
   wxString helpfile = htmldir + wxT("wxmaxima.chm");
 #else
@@ -1672,8 +1642,7 @@ void wxMaxima::ShowWxMaximaHelp()
      Adding the strings to the variable one-by-one is ugly *and* wastes 
      ressources.
   */
-  wxString htmldir = wxT(PREFIX "/share/doc/wxmaxima");
-  wxString helpfile = htmldir + wxT("/wxmaxima.html");
+  wxString helpfile = htmldir + wxT("wxmaxima.html");
 #endif
   ShowHelp(helpfile, wxT("%"));
 }
@@ -3386,13 +3355,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
   wxHtmlWindow* html_bottom = new wxHtmlWindow(this, -1, wxDefaultPosition, wxSize(380, 280));
   html_bottom->SetBorders(5);
 
-  wxString cwd = wxGetCwd();
-#if defined __WXMAC__
-  cwd = cwd + wxT("/") + wxT(MACPREFIX);
-#else
-  cwd.Replace(wxT("\\"), wxT("/"));
-  cwd = cwd + wxT("/data/");
-#endif
+  wxString cwd = Dirstructure::DataDir();
 
   wxString page_top = wxString::Format(
 wxT("<html>"
