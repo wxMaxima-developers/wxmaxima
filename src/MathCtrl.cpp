@@ -2708,8 +2708,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
   // Try to save the file.
   bool done=backupfile.Write(wxTextFileType_None);
-  // Even if that failed we should issue a Close() in order to store as much as possible
-  // on the disk.
+  // Even if that failed we should perhaps still issue a Close() .
   if(!backupfile.Close()) return false;
   if(!done)return false;
 
