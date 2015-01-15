@@ -1624,13 +1624,14 @@ void wxMaxima::ShowWxMaximaHelp()
 #if defined __WXMAC__
   // We are on a mac
   wxString helpfile = htmldir + wxT("wxmaxima.hhp");
+  ShowHelp(helpfile, wxT("%"));
 #elif defined __WXMSW__
 #if WXM_CHM
   wxString helpfile = htmldir + wxT("wxmaxima.chm");
+  ShowHelp(helpfile, wxT("%"));
 #else
-  // TODO: this will not work - the help viewer on
-  //       windows expects a chm file.
   wxString helpfile = htmldir + wxT("wxmaxima.html");
+  wxLaunchDefaultBrowser(helpfile);
 #endif
 #else // __WXMSW__
   /* This must be Linux. On linux HTMLDIR tells us where the help files are.
@@ -1643,8 +1644,8 @@ void wxMaxima::ShowWxMaximaHelp()
      ressources.
   */
   wxString helpfile = htmldir + wxT("wxmaxima.html");
-#endif
   ShowHelp(helpfile, wxT("%"));
+#endif
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
