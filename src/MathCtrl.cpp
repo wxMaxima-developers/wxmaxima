@@ -2667,24 +2667,28 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
-  bool wxm = false;
+  bool wxm;
+  
   if (file.Right(4) == wxT(".wxm"))
     wxm = true;
+  else
+    wxm = false;
 
-  wxTextFile output(file);
-  if (output.Exists())
+  
+  wxTextFile backupfile(file+wxT("~"));
+  if (backupfile.Exists())
   {
-    if (!output.Open(file))
+    if (!backupfile.Open())
       return false;
-    output.Clear();
+    backupfile.Clear();
   }
-  else if (!output.Create(file))
+  else if (!backupfile.Create())
     return false;
 
   if (wxm) {
-    AddLineToFile(output, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
+    AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
     wxString version(wxT(VERSION));
-    AddLineToFile(output, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
+    AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
   bool fixReorderedIndices;
@@ -2694,20 +2698,26 @@ bool MathCtrl::ExportToMAC(wxString file)
     int cellIndex = 1;
     CalculateReorderedCellIndices(m_tree, cellIndex,  cellMap);
   }
-  ExportToMAC(output, m_tree, wxm, cellMap, fixReorderedIndices);
+  ExportToMAC(backupfile, m_tree, wxm, cellMap, fixReorderedIndices);
 
-  AddLineToFile(output, wxEmptyString, false);
+  AddLineToFile(backupfile, wxEmptyString, false);
   if (wxm) {
-    AddLineToFile(output, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
-    AddLineToFile(output, wxT("\"Created with wxMaxima\"$"), false);
+    AddLineToFile(backupfile, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
+    AddLineToFile(backupfile, wxT("\"Created with wxMaxima\"$"), false);
   }
 
-  bool done = output.Write(wxTextFileType_None);
-  if(!output.Close())done=false;
+  // Try to save the file.
+  bool done=backupfile.Write(wxTextFileType_None);
+  // Even if that failed we should issue a Close() in order to store as much as possible
+  // on the disk.
+  if(!backupfile.Close()) return false;
+  if(!done)return false;
 
-  if(done)m_saved = true;
+  // If we succeeded in saving the backup file we now can overwrite the Real Thing.
+  if(!wxRenameFile(file+wxT("~"),file,true)) return false;
 
-  return done;
+  m_saved = true;
+  return true;
 }
 
 wxString ConvertToUnicode(wxString str)

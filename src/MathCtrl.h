@@ -105,7 +105,11 @@ public:
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
-  void ClearDocument(); // used when opening new file in wxMaxima.cpp
+  /*! Empties the current document
+
+    Used before opening a new file or when the "new" button is pressed.
+  */
+  void ClearDocument(); 
   void ResetInputPrompts();
   bool CanCopy(bool fromActive = false) {
     return m_selectionStart != NULL ||
