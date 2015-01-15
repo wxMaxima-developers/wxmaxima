@@ -367,7 +367,7 @@ wxString MathCell::ToString()
 
 wxString MathCell::ListToString()
 {
-  wxString retval="";
+  wxString retval;
   MathCell *tmp=this;
   
   while(tmp!=NULL)
@@ -386,7 +386,7 @@ wxString MathCell::ToTeX()
 
 wxString MathCell::ListToTeX()
 {
-  wxString retval="";
+  wxString retval;
   MathCell *tmp=this;
   
   while(tmp!=NULL)
@@ -405,9 +405,9 @@ wxString MathCell::ToXML()
 
 wxString MathCell::ListToXML()
 {
-  wxString retval="";
+  wxString retval;
   MathCell *tmp=this;
-  
+
   while(tmp!=NULL)
     {
       retval+=tmp->ToXML();

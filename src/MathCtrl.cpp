@@ -77,7 +77,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   m_animate = false;
   m_workingGroup = NULL;
-  m_saved = true;
+  m_saved = false;
   m_zoomFactor = 1.0; // set zoom to 100%
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
@@ -457,7 +457,7 @@ void MathCtrl::ClearDocument() {
   EnableEdit(true);
   m_switchDisplayCaret = true;
   m_animate = false;
-  m_saved = true;
+  m_saved = false;
 
   Recalculate();
   Scroll(0, 0);
@@ -2793,8 +2793,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   // Reset image counter
   ImgCell::WXMXResetCounter();
-  
-  output << ConvertToUnicode(m_tree->ListToXML());
+
+  if(m_tree!=NULL)output << ConvertToUnicode(m_tree->ListToXML());
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
