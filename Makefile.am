@@ -86,6 +86,10 @@ endif
 	cp src/wxmaxima.exe wxMaxima/
 
 allmo:
-	    cd locales&&make allmo
+	    cd locales&&$(MAKE) allmo
 
-.PHONY:	allmo
+Doxygen: FORCE
+	    cd Doxygen&&$(MAKE)
+
+.PHONY:	allmo FORCE
+FORCE:
