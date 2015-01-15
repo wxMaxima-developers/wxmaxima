@@ -1,3 +1,6 @@
+desktopdir = $(datarootdir)/app-install/desktop
+dist_desktopdir_DATA = wxmaxima.desktop
+
 SUBDIRS = src locales data info
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
