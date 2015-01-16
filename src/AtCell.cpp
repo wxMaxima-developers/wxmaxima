@@ -149,8 +149,7 @@ wxString AtCell::ToTeX()
 wxString AtCell::ToXML()
 {
   return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
-    m_indexCell->ListToXML() + wxT("</r></at>") +
-    MathCell::ListToXML();
+    m_indexCell->ListToXML() + wxT("</r></at>");
 }
 
 void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
