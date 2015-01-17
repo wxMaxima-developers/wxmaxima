@@ -1986,10 +1986,6 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
   return tmp1;
 }
 
-/***
- * Export content to a HTML file.
- */
-
 void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
@@ -2125,6 +2121,9 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
   }
 }
 
+/***
+ * Export content to a HTML file.
+ */
 bool MathCtrl::ExportToHTML(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
