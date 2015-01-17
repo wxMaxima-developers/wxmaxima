@@ -161,6 +161,8 @@ protected:
   wxCheckBox* m_saveSize;
   wxCheckBox* m_savePanes;
   wxCheckBox* m_UncompressedWXMX;
+  //! A checkbox that allows to select if the LaTeX file should contain animations.
+  wxCheckBox* m_AnimateLaTeX;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_enterEvaluates;

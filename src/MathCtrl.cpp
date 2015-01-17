@@ -2466,7 +2466,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           AddLineToFile(output, wxT("<BR>"));
 	  if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
 	    {
-	      CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count), out, NULL, true);
+	      ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
 	      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
 			    filename +
 			    wxString::Format(wxT("_%d.gif\">"), count));
@@ -2519,7 +2519,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   wxString imgDir;
   wxString path, filename, ext;
   GroupCell *tmp = m_tree;
-
+  
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
   int imgCounter = 0;
@@ -2542,6 +2542,14 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\usepackage{graphicx}"));
   AddLineToFile(output, wxT("\\usepackage{color}"));
   AddLineToFile(output, wxT("\\usepackage{amsmath}"));
+
+  bool AnimateLaTeX=true;
+  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+  if(AnimateLaTeX)
+    {
+      AddLineToFile(output, wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option"));
+      AddLineToFile(output, wxT("                      % \"Export animations to TeX\" was enabled when this file was generated."));
+    }
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("\\definecolor{labelcolor}{RGB}{100,0,0}"));
   AddLineToFile(output, wxEmptyString);
