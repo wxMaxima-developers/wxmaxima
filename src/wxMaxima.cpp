@@ -164,7 +164,7 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
           files[0].Right(5) == wxT(".jpeg") ||
           files[0].Right(4) == wxT(".jpg"))
         m_wxmax->LoadImage(files[0]);
-      else if (!m_wxmax->DocumentSaved() &&
+      else if (!m_wxmax->DocumentSaved() && (m_wxmax->m_console->GetTree() != NULL) &&
           (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
       {
         int close = m_wxmax->SaveDocumentP();
@@ -1990,7 +1990,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_open_id:
     {
-      if (!m_fileSaved) {
+      if ((!m_fileSaved)&&(m_console->GetTree()!=NULL)) {
         int close = SaveDocumentP();
 
         if (close == wxID_CANCEL)
@@ -3888,7 +3888,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
-  if (!m_fileSaved && event.CanVeto()) {
+  if (!m_fileSaved && event.CanVeto() && (m_console->GetTree()!=NULL)) {
     int close = SaveDocumentP();
 
     if (close == wxID_CANCEL) {
@@ -4123,7 +4123,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
-  if (!m_fileSaved) {
+  if (!m_fileSaved && (m_console->GetTree()!=NULL)) {
     int close = SaveDocumentP();
 
     if (close == wxID_CANCEL)
