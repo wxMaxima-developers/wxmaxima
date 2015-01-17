@@ -132,6 +132,7 @@ void Config::SetProperties()
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_UncompressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
+  m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
@@ -149,7 +150,7 @@ void Config::SetProperties()
   // configuration data for this item.
   bool match = true, showLongExpr = false, savePanes = false,UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
-  bool enterEvaluates = false, saveUntitled = true, openHCaret = false;
+  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true;
   bool insertAns = true;
   bool fixReorderedIndices = false;
   
@@ -161,6 +162,7 @@ void Config::SetProperties()
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
+  config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
@@ -220,6 +222,7 @@ void Config::SetProperties()
     m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
   m_UncompressedWXMX->SetValue(UncompressedWXMX);
+  m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_changeAsterisk->SetValue(changeAsterisk);
@@ -249,7 +252,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(14,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(15,1,5,5);
 
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
@@ -286,6 +289,7 @@ wxPanel* Config::CreateOptionsPanel()
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   m_UncompressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
+  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
@@ -309,6 +313,7 @@ wxPanel* Config::CreateOptionsPanel()
   vsizer->Add(m_saveSize, 0, wxALL, 5);
   vsizer->Add(m_savePanes, 0, wxALL, 5);
   vsizer->Add(m_UncompressedWXMX, 0, wxALL, 5);
+  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
   vsizer->Add(m_matchParens, 0, wxALL, 5);
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
   vsizer->Add(m_showLong, 0, wxALL, 5);
@@ -482,6 +487,7 @@ void Config::WriteSettings()
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("OptimizeForVersionControl"), m_UncompressedWXMX->GetValue());
+  config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   if (m_saveSize->GetValue())

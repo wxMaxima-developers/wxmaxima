@@ -23,6 +23,7 @@
 #include <wx/clipbrd.h>
 
 #include "GroupCell.h"
+#include "SlideShowCell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
 #include "ImgCell.h"
@@ -646,8 +647,8 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   else if (m_groupType == GC_TYPE_IMAGE && imgDir != wxEmptyString) {
     MathCell *copy = m_output->Copy();
     (*imgCounter)++;
-    wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
-    wxString file = imgDir + wxT("/") + image;
+    wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
+    wxString file = imgDir + wxT("/") + image + wxT(".png");
 
     Bitmap bmp;
     bmp.SetData(copy);
@@ -709,31 +710,47 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           {
             MathCell *copy = tmp->Copy();
             (*imgCounter)++;
-            wxString image = filename + wxString::Format(wxT("_%d.png"), *imgCounter);
-            wxString file = imgDir + wxT("/") + image;
-
-            Bitmap bmp;
-            bmp.SetData(copy);
-
+            wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
+	    
             if (!wxDirExists(imgDir))
               if (!wxMkdir(imgDir))
                 continue;
-
-            if (bmp.ToFile(file))
-              str += wxT("\\includegraphics[width=9cm]{") +
-                  filename + wxT("_img/") + image + wxT("}");
-          }
-          else
-            str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-        }
-
+	    
+	    // Do we want to output LaTeX animations?
+	    bool AnimateLaTeX=true;
+	    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+	    if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
+	      {
+		wxString file = imgDir + wxT("/") + image + wxT(".gif");
+		if(((SlideShow *)tmp)->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), *imgCounter)))
+		  {
+		    str += wxT("\\resizebox{9cm}{!}{\\animategraphics{") +
+		      filename + wxT("_img/") + image + wxT("}}");
+		  }
+		else
+		  str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+	      }
+	    else
+	      {
+		wxString file = imgDir + wxT("/") + image + wxT(".png");
+		
+		Bitmap bmp;
+		bmp.SetData(copy);
+		if (bmp.ToFile(file))
+		  str += wxT("\\includegraphics[width=9cm]{") +
+		    filename + wxT("_img/") + image + wxT("}");
+		else
+		  str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+	      }
+	  }
+	}
         else if (tmp->GetStyle() == TS_LABEL)
-        {
-          if (str.Right(13) != wxT("displaystyle\n"))
-            str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
-          str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX() + wxT("}\n");
-        }
-
+	  {
+	    if (str.Right(13) != wxT("displaystyle\n"))
+	      str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
+	    str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX() + wxT("}\n");
+	  }
+	
         else
           str += tmp->ToTeX();
 
