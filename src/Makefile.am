@@ -9,7 +9,6 @@ bin_PROGRAMS = wxmaxima
 wxmaxima_SOURCES = \
 	wx_inc.h                            \
 	Config.cpp         Config.h         \
-	Dirstructure.cpp   Dirstructure.h   \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \
