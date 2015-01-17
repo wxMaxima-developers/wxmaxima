@@ -92,9 +92,10 @@ On Windows execute instead:
 
 which builds the directory structure necessary for running wxMaxima.
 
-The --enable-chm and the --with-hhc are necessary to make the
-builder convert the wxMaxima offline manual to a format the
+The --enable-chm and the --with-hhc are only necessary to allow the
+builder to convert the wxMaxima offline manual to a format the
 built-in help browser of windows understands. For this conversion
-the Microsoft HTML Help workshop is necessary. This program that
+the Microsoft HTML Help workshop is necessary which 
 is distributed separately. If they aren't added to the configure
-command line a cached version of the manual is used.
+command line wxMaxima is shipped with a html version of the manual
+that can be viewed using the internet browser instead.
