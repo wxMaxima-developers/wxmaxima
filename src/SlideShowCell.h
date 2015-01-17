@@ -45,7 +45,9 @@ public:
   int GetDisplayedIndex() { return m_displayed; }
   void SetDisplayedIndex(int ind);
   int Length() { return m_size; }
+  //! Exports the image the slideshow currently displays
   bool ToImageFile(wxString filename);
+  //! Exports the whole animation as animated gif
   bool ToGif(wxString filename);
   bool CopyToClipboard();
 protected:
