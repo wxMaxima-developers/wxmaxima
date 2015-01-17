@@ -18,7 +18,6 @@
 //
 
 #include "Autocomplete.h"
-#include "Dirstructure.h"
 
 #include <wx/textfile.h>
 
@@ -86,7 +85,11 @@ bool AutoComplete::LoadSymbols(wxString file)
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
-  privateList = Dirstructure::UserAutocompleteFile();
+#if defined __WXMSW__
+  privateList = wxGetHomeDir() + wxT("\\wxmax.ac");
+#else
+  privateList = wxGetHomeDir() + wxT("/.wxmaxima.ac");
+#endif
 
   if (wxFileExists(privateList))
   {

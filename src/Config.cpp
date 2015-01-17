@@ -26,7 +26,6 @@ The C code for the preferences dialog.
 
 #include "Config.h"
 #include "MathCell.h"
-#include "Dirstructure.h"
 
 #include <wx/config.h>
 #include <wx/fileconf.h>
@@ -82,7 +81,14 @@ Config::Config(wxWindow* parent)
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
-  #define IMAGE(img) wxImage(Dirstructure::ConfigArtDir()+wxT(img))
+#if defined __WXMAC__
+  #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
+#elif defined __WXMSW__
+  #define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
+#else
+  wxString prefix = wxT(PREFIX);
+  #define IMAGE(img) wxImage(prefix + wxT("/share/wxMaxima/") + wxT(img))
+#endif
 
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);
@@ -179,10 +185,12 @@ void Config::SetProperties()
   else
     m_language->SetSelection(0);
 
-  wxString maximapath = Dirstructure::MaximaDefaultLocation();
-  if (wxFileExists(maximapath))
+#if defined __WXMSW__
+  wxString cwd = wxGetCwd();
+  cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
+  if (wxFileExists(cwd))
   {
-    m_maximaProgram->SetValue(maximapath);
+    m_maximaProgram->SetValue(cwd);
     m_maximaProgram->Enable(false);
     m_mpBrowse->Enable(false);
   }
@@ -191,8 +199,20 @@ void Config::SetProperties()
     if (mp.Length())
       m_maximaProgram->SetValue(mp);
     else
-      m_maximaProgram->SetValue(Dirstructure::MaximaDefaultName());
+      m_maximaProgram->SetValue(wxT("maxima.bat"));
   }
+#elif defined __WXMAC__
+  if (mp.Length())
+    m_maximaProgram->SetValue(mp);
+  else
+    // this is where the mac installer installs maxima
+    m_maximaProgram->SetValue(wxT("/Applications/Maxima.app"));
+#else
+  if (mp.Length())
+    m_maximaProgram->SetValue(mp);
+  else
+    m_maximaProgram->SetValue(wxT("maxima"));
+#endif
   m_additionalParameters->SetValue(mc);
   if (rs == 1)
     m_saveSize->SetValue(true);

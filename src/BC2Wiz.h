@@ -39,7 +39,6 @@ public:
   }
   wxString GetValue();
 private:
-  //! Sets the button to "active" the user expects to be active.
   void set_properties();
   void do_layout();
   wxStaticText* label_2;
