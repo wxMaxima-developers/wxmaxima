@@ -27,6 +27,7 @@
  (*expr wxxml-lbp wxxml-rbp))
 
 (defvar $wxfilename "")
+(defvar $wxdirname "")
 
 #+(or windows win32)
 (defvar $wxchangedir nil)

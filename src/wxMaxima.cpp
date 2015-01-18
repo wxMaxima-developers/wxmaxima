@@ -968,10 +968,17 @@ void wxMaxima::SetCWD(wxString file)
 #if defined __WXMSW__
   filenamestring.Replace(wxT("\\"),wxT("/"));
 #endif
-  
+
+  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+             filenamestring +
+             wxT("\")"));
+  SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
+             filename.GetPath() +
+             wxT("\")"));
+
   SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
-    if (m_ready)
-      SetStatusText(_("Ready for user input"), 1);
+  if (m_ready)
+    SetStatusText(_("Ready for user input"), 1);
 }
 
 // OpenWXM(X)File
@@ -1045,9 +1052,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
 #endif
-  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-             file +
-             wxT("\")"));
   SetCWD(file);
 
   wxEndBusyCursor();
@@ -1148,11 +1152,9 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
 #endif
-  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-             file +
-             wxT("\")"));
-  SetCWD(file);
 
+  SetCWD(file);
+  
   m_console->EnableEdit(true);
   wxEndBusyCursor();
   return true;
@@ -1436,9 +1438,7 @@ void wxMaxima::SetupVariables()
 #if defined __WXMSW__
     filename.Replace(wxT("\\"), wxT("/"));
 #endif
-    SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-               filename +
-               wxT("\")"));
+    
     SetCWD(filename);
   }
 }

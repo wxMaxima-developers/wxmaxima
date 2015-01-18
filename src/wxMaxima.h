@@ -89,10 +89,10 @@ public:
                 wxString command = wxEmptyString); //< Open a file
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
- private:
+private:
     //! Can we display the "ready" prompt right now?
   bool m_ready;
- protected:
+protected:
   void ShowHelp(wxString helpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
