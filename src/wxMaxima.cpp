@@ -492,13 +492,16 @@ void wxMaxima::SendMaxima(wxString s, bool history)
     }
   }
 
-  m_console->EnableEdit(false);
+  if(m_console) m_console->EnableEdit(false);
 
-#if wxUSE_UNICODE
-  m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
-#else
-  m_client->Write(s.c_str(), s.Length());
-#endif
+  if(m_client)
+    {
+      #if wxUSE_UNICODE
+      m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
+      #else
+      m_client->Write(s.c_str(), s.Length());
+      #endif
+    }
 }
 
 ///--------------------------------------------------------------------------------

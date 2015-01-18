@@ -90,6 +90,7 @@ public:
   void SetInput(MathCell *input);
   void SetOutput(MathCell *output);
   void AppendInput(MathCell *cell);
+  wxString TexEscapeOutputCell(wxString Input);
   MathCell* GetPrompt() { return m_input; }
   MathCell* GetInput() { return m_input->m_next; }
   MathCell* GetLabel() { return m_output; }

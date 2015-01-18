@@ -43,6 +43,7 @@ public:
     *first = *last = this;
   }
   int GetDisplayedIndex() { return m_displayed; }
+  wxImage GetBitmap(int n) { return m_bitmaps[n]->ConvertToImage(); }
   void SetDisplayedIndex(int ind);
   int Length() { return m_size; }
   //! Exports the image the slideshow currently displays
