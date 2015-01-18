@@ -1931,7 +1931,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 bool wxMaxima::SaveFile(bool forceSave)
 {
   wxString file = m_currentFile;
-  wxString fileExt;
+  wxString fileExt=wxT("wxmx");
   int ext = -1;
 
   if (file.Length() == 0 || forceSave)
@@ -1946,8 +1946,8 @@ bool wxMaxima::SaveFile(bool forceSave)
     wxFileDialog fileDialog(this,
         _("Save As"), m_lastPath,
         file,
-        _("wxMaxima document (*.wxm)|*.wxm|"
-            "wxMaxima xml document (*.wxmx)|*.wxmx|"
+        _("wxMaxima document (*.wxm)|*.wxm"
+            "wxMaxima xml document (*.wxmx)|*.wxmx"
             "Maxima batch file (*.mac)|*.mac"),
             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
@@ -2063,8 +2063,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
       file = wxFileSelector(_("Export"), m_lastPath,
                             file + wxT(".html"), wxT("html"),
-                            _("HTML file (*.html)|*.html|"
-                              "pdfLaTeX file (*.tex)|*.tex|"
+                            _("HTML file (*.html)|*.html"
+                              "pdfLaTeX file (*.tex)|*.tex"
                               "All|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
