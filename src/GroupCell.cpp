@@ -197,6 +197,13 @@ void GroupCell::Destroy()
   m_next = NULL;
 }
 
+wxString GroupCell::TexEscapeOutputCell(wxString Input)
+{
+  wxString retval(Input);
+  Input.Replace(wxT("#"),wxT("\\#"));
+  return(Input);
+}
+
 void GroupCell::SetInput(MathCell *input)
 {
   if (input == NULL)
@@ -721,14 +728,19 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
 	    if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
 	      {
-		wxString file = imgDir + wxT("/") + image + wxT(".gif");
-		if(((SlideShow *)tmp)->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), *imgCounter)))
+		str << wxT("\\begin{animateinline}{10}\n");
+		SlideShow* src=(SlideShow *)tmp;
+		for(int i=0;i<src->Length();i++)
 		  {
-		    str += wxT("\\resizebox{9cm}{!}{\\animategraphics{") +
-		      filename + wxT("_img/") + image + wxT("}}");
+		    wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i.png"), i);
+		    if(src->GetBitmap(i).SaveFile(Frame)+wxT(".png"))
+		      str << wxT("\\includegraphics[width=9cm]{")+Frame+wxT("}\n");
+		    else
+		      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+		    if(i<src->Length()-1)
+		    str << wxT("\\newframe");
 		  }
-		else
-		  str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+		str << wxT("\\end{animateinline}");
 	      }
 	    else
 	      {
@@ -752,10 +764,12 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	  }
 	
         else
-          str += tmp->ToTeX();
-
+          str += TexEscapeOutputCell(tmp->ToTeX());
         tmp = tmp->m_nextToDraw;
       }
+      // Some invisible dummy content that keeps TeX happy if there really is
+      // no output to display.
+      str += wxT("\\mbox{}");
       str += wxT("\n\\end{math}\n%%%%%%%%%%%%%%%\n");
     }
   }
