@@ -23,17 +23,29 @@
 
 #include "Dirstructure.h"
 
-Dirstructure::Dirstructure()
+//Dirstructure::Dirstructure
+//{
+//}
+
+wxString Dirstructure::RessourcesDir()
 {
-  Prefix=wxT(PREFIX);
-  UserConfDir=wxGetHomeDir()+wxT("/");
   #if defined __WXMSW__
-  RessourcesDir=wxStandardPaths::GetExecutablePath()+wxT("/");
+  return wxStandardPaths::GetExecutablePath()+wxT("/");
   #elif defined __WXMAC__
-  RessourcesDir=wxStandardPaths::GetExecutablePath()+wxT("/wxMaxima.app/Contents/Resources/");
+  return wxStandardPaths::GetExecutablePath()+wxT("/wxMaxima.app/Contents/Resources/");
   #else
-  RessourcesDir=Prefix+wxT("/share/wxMaxima/");
-  #endif  
+  return Prefix()+wxT("/share/wxMaxima/");
+  #endif
+}
+
+wxString Dirstructure::Prefix()
+{
+  return wxT(PREFIX);
+}
+
+wxString Dirstructure::UserConfDir()
+{
+  return wxGetHomeDir()+wxT("/");
 }
 
 wxString Dirstructure::MaximaDefaultLocation()
@@ -48,9 +60,3 @@ wxString Dirstructure::MaximaDefaultLocation()
 
   
 }
-
-//! If we don't instantiate a Dirstructure the static variables won't exist.
-wxString Dirstructure::RessourcesDir;
-wxString Dirstructure::Prefix;
-wxString Dirstructure::UserConfDir;
-Dirstructure dirstruct;

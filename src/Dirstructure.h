@@ -37,27 +37,27 @@ class Dirstructure
 {
   private:
   //! The directory all data is stored relative to.
-  static wxString RessourcesDir;
+  static wxString RessourcesDir();
   //! The directory the user stores its data in.
-  static wxString UserConfDir;
+  static wxString UserConfDir();
 
  public:
-  Dirstructure();
+  //  Dirstructure();
 
   //! The directory general data is stored in
   #if defined __WXMSW__
-  static wxString DataDir() {return Ressourcesdir+wxT("data/");}
+  static wxString DataDir() {return Ressourcesdir()+wxT("data/");}
   #else
-  static wxString DataDir() {return RessourcesDir;}
+  static wxString DataDir() {return RessourcesDir();}
   #endif
 
   //! The directory the help file is stored in
   #if defined __WXMAC__
-  static wxString HelpDir() {return Ressourcesdir+wxT("help/");}
+  static wxString HelpDir() {return Ressourcesdir()+wxT("help/");}
   #elif defined __WXMSW__
-  static wxString HelpDir() {return Ressourcesdir+wxT("help/");}
+  static wxString HelpDir() {return Ressourcesdir()+wxT("help/");}
   #else
-  static wxString HelpDir() {return Prefix+wxT("/share/doc/wxmaxima/");}
+  static wxString HelpDir() {return Prefix()+wxT("/share/doc/wxmaxima/");}
   #endif
 
   /*! The file private accellerator key information is stored in
@@ -65,9 +65,9 @@ class Dirstructure
     \todo Document this file in the texinfo manual
    */
   #if defined __WXMSW__
-  static wxString UserAutocompleteFile() {return UserConfDir+wxT("wxmax.ac");}
+  static wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
   #else
-  static wxString UserAutocompleteFile() {return UserConfDir+wxT(".wxmaxima.ac");}
+  static wxString UserAutocompleteFile() {return UserConfDir()+wxT(".wxmaxima.ac");}
   #endif
 
   //! The path to wxMaxima's own AutoComplete file
@@ -75,28 +75,28 @@ class Dirstructure
   
   //! The directory art is stored relative to
   #if defined __WXMAC__
-  static wxString ArtDir() {return RessourcesDir;}
+  static wxString ArtDir() {return RessourcesDir();}
   #elif defined __WXMSW__
-  static wxString ArtDir() {return RessourcesDir+wxT("art/");}
+  static wxString ArtDir() {return RessourcesDir()+wxT("art/");}
   #else
-  static wxString ArtDir() {return RessourcesDir;}
+  static wxString ArtDir() {return RessourcesDir();}
   #endif
 
 
   //! The directory config art is stored relative to
   #if defined __WXMAC__
-  static wxString ConfigArtDir() {return ArtDir+wxT("config/");}
+  static wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
   #elif defined __WXMSW__
-  static wxString ConfigArtDir() {return ArtDir+wxT("config/");}
+  static wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
   #else
-  static wxString ConfigArtDir() {return RessourcesDir;}
+  static wxString ConfigArtDir() {return RessourcesDir();}
   #endif
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
-  static wxString LocaleDir() {return RessourcesDir+wxT("/locale");}
+  static wxString LocaleDir() {return RessourcesDir()+wxT("/locale");}
 
   //! The path maxima is found at by default.
   #if defined __WXMAC__
@@ -115,7 +115,7 @@ class Dirstructure
     wxWidgets 3.0.2 refuses to directly concatenate two wxT-generated strings.
     To avoid triggering this bug we store the prefix here.
   */
-  static wxString Prefix;
+  static wxString Prefix();
 };
 
 #endif // DIRSTRUCTURE_H
