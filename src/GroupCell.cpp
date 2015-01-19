@@ -733,7 +733,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 		for(int i=0;i<src->Length();i++)
 		  {
 		    wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i.png"), i);
-		    if(src->GetBitmap(i).SaveFile(Frame)+wxT(".png"))
+		    if((src->GetBitmap(i)).SaveFile(Frame+wxT(".png")))
 		      str << wxT("\\includegraphics[width=9cm]{")+Frame+wxT("}\n");
 		    else
 		      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
