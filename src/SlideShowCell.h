@@ -33,7 +33,13 @@ using namespace std;
 class SlideShow : public MathCell
 {
 public:
-  SlideShow(wxFileSystem *filesystem = NULL);
+  /*! The constructor
+
+    \param framerate The individual frame rate that has to be set for this cell only. 
+    If the default frame rate from the config is to be used instead this parameter 
+    has to be set to -1.
+   */
+  SlideShow(wxFileSystem *filesystem = NULL,int framerate = -1);
   ~SlideShow();
   void Destroy();
   void LoadImages(wxArrayString images);
@@ -51,7 +57,24 @@ public:
   //! Exports the whole animation as animated gif
   bool ToGif(wxString filename);
   bool CopyToClipboard();
+  /*! Get the frame rate of this SlideShow [in Hz].
+
+    Returns either the frame rate set for this slide show cell individually or 
+    the default frame rate chosen in the config.
+   */
+  int GetFrameRate();
+  /*! Set the frame rate of this SlideShow [in Hz].
+    
+    \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
+    \return The frame rate that was actually set.
+   */
+  int SetFrameRate(int Freq);
 protected:
+  /*! The framerate of this cell.
+
+    Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
+  */
+  int m_framerate;
   int m_size;
   int m_displayed;
   wxFileSystem *m_fileSystem;

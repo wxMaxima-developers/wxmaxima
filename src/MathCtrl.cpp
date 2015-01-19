@@ -1857,7 +1857,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
       
-      m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT);
+      m_animationTimer.Start(1000/tmp->GetFrameRate());
     }
     else
       m_animate = false;
@@ -3438,7 +3438,7 @@ void MathCtrl::Animate(bool run) {
       Refresh();
 
       m_animate = true;
-      m_animationTimer.Start(ANIMATION_TIMER_TIMEOUT, true);
+      m_animationTimer.Start(1000/tmp->GetFrameRate(), true);
     }
     else
       m_animate = false;

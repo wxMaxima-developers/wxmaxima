@@ -131,7 +131,8 @@ void Config::SetProperties()
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
-  m_UncompressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
+  m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
+  m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -153,6 +154,7 @@ void Config::SetProperties()
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true;
   bool insertAns = true;
   bool fixReorderedIndices = false;
+  int defaultFramerate=2;
   
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -161,6 +163,7 @@ void Config::SetProperties()
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("AUI/savePanes"), &savePanes);
+  config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("pos-restore"), &rs);
@@ -221,7 +224,7 @@ void Config::SetProperties()
   else
     m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
-  m_UncompressedWXMX->SetValue(UncompressedWXMX);
+  m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
@@ -254,9 +257,6 @@ wxPanel* Config::CreateOptionsPanel()
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(15,1,5,5);
 
-  int defaultPort = 4010;
-  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
-
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   const wxString m_language_choices[] =
     {
@@ -283,12 +283,14 @@ wxPanel* Config::CreateOptionsPanel()
       _("Ukrainian")
     };
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
-  wxStaticText* dp = new wxStaticText(panel, -1, _("Default port:"));
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
-  m_defaultPort->SetValue(defaultPort);
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
-  m_UncompressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
+
+  int defaultFramerate;
+  wxConfig::Get()->Read(wxT("DefaultFramerate"), &defaultFramerate);
+
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200, defaultFramerate);
+  m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
@@ -307,12 +309,13 @@ wxPanel* Config::CreateOptionsPanel()
   // wxMaxima options box
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxStaticText* df = new wxStaticText(panel, -1, _("The default frame rate used for animations."));
+  grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
   vsizer->Add(m_saveSize, 0, wxALL, 5);
   vsizer->Add(m_savePanes, 0, wxALL, 5);
-  vsizer->Add(m_UncompressedWXMX, 0, wxALL, 5);
+  vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
   vsizer->Add(m_matchParens, 0, wxALL, 5);
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
@@ -336,13 +339,18 @@ wxPanel* Config::CreateMaximaPanel()
 {
   wxPanel* panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* sizer = new wxFlexGridSizer(5, 2, 0, 0);
+  wxFlexGridSizer* sizer = new wxFlexGridSizer(7, 2, 0, 0);
+
+  int defaultPort = 4010;
+  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
 
   wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
   wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters:"));
   m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
+  m_defaultPort->SetValue(defaultPort);
 
   sizer->Add(mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
@@ -353,6 +361,12 @@ wxPanel* Config::CreateMaximaPanel()
   sizer->Add(ap, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
   sizer->Add(m_additionalParameters, 0, wxALL, 5);
+  wxStaticText* dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
+  sizer->Add(10, 10);
+  sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(10, 10);
+  sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(10, 10);
 
   panel->SetSizer(sizer);
   sizer->Fit(panel);
@@ -486,7 +500,8 @@ void Config::WriteSettings()
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
-  config->Write(wxT("OptimizeForVersionControl"), m_UncompressedWXMX->GetValue());
+  config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
+  config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());

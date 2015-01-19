@@ -728,8 +728,8 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
 	    if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
 	      {
-		str << wxT("\\begin{animateinline}{10}\n");
 		SlideShow* src=(SlideShow *)tmp;
+		str << wxT("\\begin{animateinline}{")+wxString::Format(wxT("%i"), src->GetFrameRate())+wxT("}\n");
 		for(int i=0;i<src->Length();i++)
 		  {
 		    wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i.png"), i);

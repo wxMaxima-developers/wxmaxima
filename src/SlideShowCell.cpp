@@ -26,12 +26,15 @@
 #include <wx/fs_mem.h>
 #include <wx/utils.h>
 #include <wx/clipbrd.h>
+#include <wx/config.h>
+#include "Config.h"
 
-SlideShow::SlideShow(wxFileSystem *filesystem) : MathCell()
+SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
 {
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
+  m_framerate = framerate;
 }
 
 SlideShow::~SlideShow()
@@ -40,6 +43,39 @@ SlideShow::~SlideShow()
     delete m_bitmaps[i];
   if (m_next != NULL)
     delete m_next;
+}
+
+
+int SlideShow::GetFrameRate()
+{
+  int framerate=2;
+
+  if(m_framerate>-1)
+    framerate=m_framerate;
+  else
+    {
+      wxConfigBase *config = wxConfig::Get();
+      
+      config->Read(wxT("DefaultFramerate"),&framerate);
+    }
+  return(framerate);
+}
+
+int SlideShow::SetFrameRate(int Freq)
+{
+
+  m_framerate=Freq;
+  
+  if(Freq<0)
+     m_framerate=-1;
+  else{
+    if(Freq<1)
+      m_framerate=1;
+    if(Freq>200)
+      m_framerate=200;
+    }
+
+  return m_framerate;
 }
 
 void SlideShow::LoadImages(wxArrayString images)
@@ -258,7 +294,7 @@ bool SlideShow::ToGif(wxString file)
   wxArrayString which;
   bool retval = true;
 
-  wxString convert(wxT("convert -delay 40 "));
+  wxString convert(wxT("convert -delay "+wxString::Format(wxT("%i"),1000/GetFrameRate())));
   wxString convertArgs;
 
   wxString tmpdir = wxFileName::GetTempDir();
