@@ -1277,6 +1277,14 @@
     (setq lo 1))
   (cons '(mlist simp) (loop :for i :from lo :to hi :by st :collect i)))
 
+(defvar *default-framerate* 2)
+(defvar $wxanimate_framerate *default-framerate*)
+(defun slide-tag (images)
+  (if (eql *default-framerate* $wxanimate_framerate)
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"
+                    (format nil "fr=\"~a\"" $wxanimate_framerate)))))
+
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
 	 (a (car scene))
@@ -1305,7 +1313,7 @@
                             ((mlist simp) $gnuplot_out_file ,filename)))
 	(setq images (cons filename images))))
     (when images
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))))
+      (slide-tag images)))
   "")
 
 (defmspec $with_slider (scene)
@@ -1377,7 +1385,7 @@
                          (get-pic-size-opt)
                          (list args)))))
             (when images
-              ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide")))))
+              (slide-tag images))))
       "")))
 
 (defmspec $wxanimate_draw (scene)

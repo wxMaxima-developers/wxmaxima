@@ -838,7 +838,14 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         SlideShow *tmp = new SlideShow(m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
+        wxString framerate;
         wxStringTokenizer tokens(str, wxT(";"));
+        if (node->GetAttribute(wxT("fr"), &framerate))
+        {
+          long fr;
+          if (framerate.ToLong(&fr))
+            tmp->SetFrameRate(fr);
+        }
         while (tokens.HasMoreTokens()) {
           wxString token = tokens.GetNextToken();
           if (token.Length())

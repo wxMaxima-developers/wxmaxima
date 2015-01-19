@@ -2409,21 +2409,21 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, wxEmptyString);
       }
       else {
-	  if(tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
-	    {
-	      ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-	      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-			    filename +
-			    wxString::Format(wxT("_%d.gif\">"), count));
-	    }
-	  else
-	    {
-	      CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-	      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-			    filename +
-			    wxString::Format(wxT("_%d.png\">"), count));
-	    }
-	  count++;
+        if(tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
+        {
+          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
+          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+                        filename +
+                        wxString::Format(wxT("_%d.gif\">"), count));
+        }
+        else
+        {
+          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
+          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+                        filename +
+                        wxString::Format(wxT("_%d.png\">"), count));
+        }
+        count++;
       }
     }
 
