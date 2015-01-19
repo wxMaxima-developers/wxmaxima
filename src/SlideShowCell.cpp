@@ -279,7 +279,10 @@ wxString SlideShow::ToXML()
     images += basename + wxT(";");
   }
 
-  return wxT("\n<slide>") + images + wxT("</slide>");
+  if(m_framerate<0)
+    return wxT("\n<slide>") + images + wxT("</slide>");
+  else
+    return wxT("\n<slide fr=\"")+ wxString::Format(wxT("%i\">"),GetFrameRate()) + images + wxT("</slide>");
 }
 
 bool SlideShow::ToImageFile(wxString file)
