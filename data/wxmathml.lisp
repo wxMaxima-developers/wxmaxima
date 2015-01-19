@@ -27,6 +27,7 @@
  (*expr wxxml-lbp wxxml-rbp))
 
 (defvar $wxfilename "")
+(defvar $wxdirname "")
 
 #+(or windows win32)
 (defvar $wxchangedir nil)
@@ -1660,7 +1661,8 @@
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
-	(load-and-tell searched-for))
+        (no-warning
+         (load-and-tell searched-for)))
        (t
 	(merror "Maxima bug: Unknown file type ~M" type)))
      searched-for)))
