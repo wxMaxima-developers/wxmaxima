@@ -366,6 +366,15 @@ wxanimate_draw(
     explicit(sin(a*x), x, -4, 4),
     title=printf(false, "a=~a", a));
 @end example
+
+Normally the animations are played back or exported with the frame
+rate chosen in the configuration of wxMaxima. To set the speed an
+individual animation is played back the variable @var{wxanimate_framerate}
+can be used:
+@example
+wxanimate(a, 10,
+    sin(a*x), [x,-5,5]), wxanimate_framerate=6$
+@end example
 @subsection Opening multiple plot windows contemporarily
 While not being a provided by wxmaxima this feature of maxima (on
 setups that support it) sometimes comes in handily. The following
@@ -428,6 +437,9 @@ graphics quality.
       of from the drive maxima has been installed to. Setting
       @var{wxchangedir} to @code{true} tells wxMmaxima that it has to
       risk that and to set maxima's working directory.
+@item @var{wxanimate_framerate} The number of frames per second the
+      following animations have to be played back with. -1 tells
+      wxMaxima to use the default frame rate from the config dialog.
 @end itemize
 @section Pretty-printing 2D output
 The function @code{(table_form)} displays a 2D list in a form that is
