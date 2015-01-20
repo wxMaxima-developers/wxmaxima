@@ -732,7 +732,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
               str << wxT("\\begin{animateinline}{")+wxString::Format(wxT("%i"), src->GetFrameRate())+wxT("}\n");
               for(int i=0;i<src->Length();i++)
               {
-                wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i.png"), i);
+                wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i"), i);
                 if((src->GetBitmap(i)).SaveFile(Frame+wxT(".png")))
                   str << wxT("\\includegraphics[width=9cm]{")+Frame+wxT("}\n");
                 else
