@@ -1059,12 +1059,14 @@ bool MathCtrl::Copy(bool astext) {
   /// If the selection is IMAGE or SLIDESHOW, copy it to clipboard
   /// as image.
   else if (m_selectionStart == m_selectionEnd &&
-      m_selectionStart->GetType() == MC_TYPE_IMAGE) {
+      m_selectionStart->GetType() == MC_TYPE_IMAGE)
+  {
     ((ImgCell *)m_selectionStart)->CopyToClipboard();
 	return true;
   }
   else if (m_selectionStart == m_selectionEnd &&
-        m_selectionStart->GetType() == MC_TYPE_SLIDE) {
+        m_selectionStart->GetType() == MC_TYPE_SLIDE)
+  {
     ((SlideShow *)m_selectionStart)->CopyToClipboard();
 	return true;
   }
@@ -1619,6 +1621,14 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     return;
   }
 
+  if (m_selectionStart != NULL &&
+      m_selectionStart->GetType() == MC_TYPE_SLIDE &&
+      ccode == WXK_SPACE)
+  {
+    Animate(!m_animate);
+    return;
+  }
+    
   // Remove selection with shift+WXK_UP/WXK_DOWN
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   
@@ -2465,19 +2475,21 @@ bool MathCtrl::ExportToHTML(wxString file) {
                                             tmp->GetEditable()->ToString()));
           AddLineToFile(output, wxT("<BR>"));
 	  if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
-	    {
-	      ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-	      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-			    filename +
-			    wxString::Format(wxT("_%d.gif\">"), count));
-	    }
+          {
+            ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
+                                                   wxString::Format(wxT("_%d.gif"), count));
+            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+                          filename +
+                          wxString::Format(wxT("_%d.gif\">"), count));
+          }
 	  else
-	    {
-	      CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-	      AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
-			    filename +
-			    wxString::Format(wxT("_%d.png\">"), count));
-	    }
+          {
+            CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+                       out, NULL, true);
+            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+                          filename +
+                          wxString::Format(wxT("_%d.png\">"), count));
+          }
 	  count++;
         }
         break;
