@@ -154,7 +154,7 @@ void Config::SetProperties()
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true;
   bool insertAns = true;
   bool fixReorderedIndices = false;
-  int defaultFramerate=2;
+  int defaultFramerate = 2;
   
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -237,6 +237,7 @@ void Config::SetProperties()
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
+  m_defaultFramerate->SetValue(defaultFramerate);
 
   m_getStyleFont->Enable(false);
 
@@ -285,11 +286,8 @@ wxPanel* Config::CreateOptionsPanel()
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
-
-  int defaultFramerate;
-  wxConfig::Get()->Read(wxT("DefaultFramerate"), &defaultFramerate);
-
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200, defaultFramerate);
+  wxStaticText* df = new wxStaticText(panel, -1, _("Default framerate:"));
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200);
   m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
@@ -309,7 +307,6 @@ wxPanel* Config::CreateOptionsPanel()
   // wxMaxima options box
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText* df = new wxStaticText(panel, -1, _("The default frame rate used for animations."));
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
