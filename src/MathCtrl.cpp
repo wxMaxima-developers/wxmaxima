@@ -2021,6 +2021,12 @@ void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
 wxString PrependNBSP(wxString input)
 {
   wxString line = wxEmptyString;
+
+    // Escape html chars
+  input.Replace(wxT("&"), wxT("&amp;"));  
+  input.Replace(wxT("<"), wxT("&lt;"));
+  input.Replace(wxT(">"), wxT("&gt;"));
+
   for (unsigned int i = 0; i < input.Length(); i++) {
     while (input.GetChar(i) == '\n') {
       line += wxT("<BR>\n");
@@ -2032,6 +2038,7 @@ wxString PrependNBSP(wxString input)
     }
     line += input.GetChar(i);
   }
+  
   return line;
 }
 
