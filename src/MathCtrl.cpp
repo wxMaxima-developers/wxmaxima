@@ -2558,10 +2558,17 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\setlength{\\parskip}{\\medskipamount}"));
   AddLineToFile(output, wxT("\\setlength{\\parindent}{0pt}"));
   AddLineToFile(output, wxT("\\usepackage[utf8]{inputenc}"));
+  // Tell LaTeX how to handle a few special characters.
+  AddLineToFile(output, wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}"));
+  // The following line loads all code needed in order to include graphics.
   AddLineToFile(output, wxT("\\usepackage{graphicx}"));
+  // We want to color the labels and text cells. The following line adds the necessary
+  // logic for this to TeX.
   AddLineToFile(output, wxT("\\usepackage{color}"));
   AddLineToFile(output, wxT("\\usepackage{amsmath}"));
 
+  // The animate package is only needed if we actually want to output animations
+  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
   bool AnimateLaTeX=true;
   wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   if(AnimateLaTeX)
