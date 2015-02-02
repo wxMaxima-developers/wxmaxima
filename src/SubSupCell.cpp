@@ -18,6 +18,8 @@
 //
 
 #include "SubSupCell.h"
+#include <wx/config.h>
+#include "Config.h"
 
 #define SUBSUP_DEC 3
 
@@ -174,9 +176,23 @@ wxString SubSupCell::ToString()
 
 wxString SubSupCell::ToTeX()
 {
-  wxString s = wxT("{") + m_baseCell->ListToTeX() + wxT("}_{") +
-               m_indexCell->ListToTeX() + wxT("}^{") +
-               m_exptCell->ListToTeX() + wxT("}");
+  wxConfigBase *config = wxConfig::Get();
+
+  bool TeXExponentsAfterSubscript=false;
+  
+  config->Read(wxT("TeXExponentsAfterSubscript"),&TeXExponentsAfterSubscript);
+
+  wxString s;
+
+  if(TeXExponentsAfterSubscript)
+    s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
+      m_indexCell->ListToTeX() + wxT("}}^{") +
+      m_exptCell->ListToTeX() + wxT("}");
+  else
+    s = wxT("{") + m_baseCell->ListToTeX() + wxT("}_{") +
+      m_indexCell->ListToTeX() + wxT("}^{") +
+      m_exptCell->ListToTeX() + wxT("}");
+  
   return s;
 }
 

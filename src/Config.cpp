@@ -134,6 +134,7 @@ void Config::SetProperties()
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
+  m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
@@ -151,7 +152,7 @@ void Config::SetProperties()
   // configuration data for this item.
   bool match = true, showLongExpr = false, savePanes = false,UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
-  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true;
+  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false;
   bool insertAns = true;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
@@ -166,6 +167,7 @@ void Config::SetProperties()
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+  config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
@@ -226,6 +228,7 @@ void Config::SetProperties()
   m_savePanes->SetValue(savePanes);
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
+  m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_changeAsterisk->SetValue(changeAsterisk);
@@ -256,7 +259,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(15,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   const wxString m_language_choices[] =
@@ -290,6 +293,7 @@ wxPanel* Config::CreateOptionsPanel()
   m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200);
   m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
+  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
   m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
@@ -314,6 +318,7 @@ wxPanel* Config::CreateOptionsPanel()
   vsizer->Add(m_savePanes, 0, wxALL, 5);
   vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
+  vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
   vsizer->Add(m_matchParens, 0, wxALL, 5);
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
   vsizer->Add(m_showLong, 0, wxALL, 5);
@@ -500,6 +505,7 @@ void Config::WriteSettings()
   config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
+  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   if (m_saveSize->GetValue())
