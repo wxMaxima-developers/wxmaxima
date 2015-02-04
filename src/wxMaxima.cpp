@@ -1643,7 +1643,10 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
     m_helpCtrl.Initialize(helpfile);
   }
   
-  if (keyword == wxT("%"))
+  if (
+      (keyword == wxT("%"))||
+      (keyword == wxT(" << Graphics >> "))
+      )
     m_helpCtrl.DisplayContents();
   else
     m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
