@@ -92,9 +92,10 @@ Config::Config(wxWindow* parent)
 
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);
-  m_imageList->Add(IMAGE("options.png"));
+  m_imageList->Add(IMAGE("editing.png"));
   m_imageList->Add(IMAGE("maxima.png"));
   m_imageList->Add(IMAGE("styles.png"));
+  m_imageList->Add(IMAGE("options.png"));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
       wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
@@ -103,9 +104,10 @@ Config::Config(wxWindow* parent)
 
   m_notebook->SetImageList(m_imageList);
 
-  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), true, 0);
+  m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
+  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), true, 3);
 
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
@@ -254,6 +256,50 @@ void Config::SetProperties()
   ReadStyles();
 }
 
+wxPanel* Config::CreateWorksheetPanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
+  
+  wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200);
+  grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
+  vsizer->Add(m_matchParens, 0, wxALL, 5);
+
+  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
+  vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
+
+  m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
+  vsizer->Add(m_showLong, 0, wxALL, 5);
+
+  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
+  vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
+
+  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
+  vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
+
+  m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
+  vsizer->Add(m_enterEvaluates, 0, wxALL, 5);
+
+  m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
+  vsizer->Add(m_openHCaret, 0, wxALL, 5);
+
+  m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
+  vsizer->Add(m_insertAns, 0, wxALL, 5);
+
+  vsizer->AddGrowableRow(10);
+  panel->SetSizer(vsizer);
+  vsizer->Fit(panel);
+
+  return panel;
+}
+  
 wxPanel* Config::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
@@ -287,47 +333,29 @@ wxPanel* Config::CreateOptionsPanel()
       _("Ukrainian")
     };
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
-  m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
-  m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
-  wxStaticText* df = new wxStaticText(panel, -1, _("Default framerate:"));
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200);
-  m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
-  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
-  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
-  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
-  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
-  m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
-  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
-  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
-  m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
-  m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
-  m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
-  m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
-  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
-
-  // TAB 1
-  // Maxima options box
-
-  // wxMaxima options box
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   vsizer->Add(m_saveSize, 0, wxALL, 5);
+
+  m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
+
+  m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
+
+  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
+
+  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
-  vsizer->Add(m_matchParens, 0, wxALL, 5);
-  vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
-  vsizer->Add(m_showLong, 0, wxALL, 5);
-  vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
-  vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
-  vsizer->Add(m_enterEvaluates, 0, wxALL, 5);
+
+  m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
-  vsizer->Add(m_openHCaret, 0, wxALL, 5);
-  vsizer->Add(m_insertAns, 0, wxALL, 5);
+
+  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
   vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);

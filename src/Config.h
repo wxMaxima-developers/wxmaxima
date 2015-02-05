@@ -145,6 +145,8 @@ private:
     This method sets the window title, the tool tips etc.
    */
   void SetProperties();
+  //! The panel that allows to set the editing options
+  wxPanel* CreateWorksheetPanel();
   //! The panel that allows to set checkbox-style options
   wxPanel* CreateOptionsPanel();
   //! The panel that allows to change styles
