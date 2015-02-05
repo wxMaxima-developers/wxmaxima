@@ -107,7 +107,7 @@ Config::Config(wxWindow* parent)
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
-  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), true, 3);
+  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 3);
 
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
