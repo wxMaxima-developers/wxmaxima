@@ -21,7 +21,6 @@
 //
 
 #include "wxMaxima.h"
-#include "Config.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
 #include "LimitWiz.h"
@@ -29,6 +28,7 @@
 #include "SeriesWiz.h"
 #include "SumWiz.h"
 #include "Plot3dWiz.h"
+#include "Config.h"
 #include "Gen1Wiz.h"
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
@@ -1403,10 +1403,6 @@ void wxMaxima::ReadProcessOutput()
 }
 #endif
 
-/***
- * This method is called once when maxima starts. It loads wxmathml.lisp
- * and sets some option variables.
- */
 void wxMaxima::SetupVariables()
 {
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
@@ -1417,6 +1413,19 @@ void wxMaxima::SetupVariables()
              wxT("\")"));
   SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)"));
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)"));
+
+  wxConfigBase *config = wxConfig::Get();
+  #if defined (__WXMAC__)
+  bool usepngCairo=true;
+  #else
+  bool usepngCairo=false;
+  #endif
+  config->Read(wxT("usepngCairo"),&usepngCairo);
+  if(usepngCairo)
+    SendMaxima(wxT(":lisp-quiet (defmvar $wxplot_pngcairo t)"));
+  else
+    SendMaxima(wxT(":lisp-quiet (defmvar $wxplot_pngcairo nil)"));
+
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
@@ -1447,7 +1456,7 @@ void wxMaxima::SetupVariables()
 }
 
 ///--------------------------------------------------------------------------------
-///  Getting confuguration
+///  Getting configuration
 ///--------------------------------------------------------------------------------
 
 wxString wxMaxima::GetCommand(bool params)
@@ -2158,6 +2167,18 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         m_console->Refresh();
       }
       configW->Destroy();
+
+      wxConfigBase *config = wxConfig::Get();
+      #if defined (__WXMAC__)
+      bool usepngCairo=true;
+      #else
+      bool usepngCairo=false;
+      #endif
+      config->Read(wxT("usepngCairo"),&usepngCairo);
+      if(usepngCairo)
+	SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)"));
+      else
+	SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
     }
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

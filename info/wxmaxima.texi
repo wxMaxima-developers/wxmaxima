@@ -331,8 +331,10 @@ The plotting routines of wxMaxima respect the variable
 @subsection Better quality plots
 Gnuplot doesn't seem to provide a portable way of determining is it
 supports the high-quality bitmap output the cairo library provides.
-On systems where it supports these the option @var{wxplot_pngcairo}
-enables support for antialiasing an additional line styles.
+On systems where gnuplot is compiled to use this library the
+pngcairo option from the configuration menu (that can be overridden
+by the variable @var{wxplot_pngcairo}) enables support for
+antialiasing and additional line styles.
 @subsection Embedding animations into the spreadsheet
 The @code{with_slider_draw} command is a version of @code{wxdraw2d}
 that does prepare multiple plots and allows to switch between them
@@ -422,7 +424,8 @@ startup file can be placed in.
 %currently opened in wxMaxima.
 @item @var{wxplot_pngcairo} tells if wxMaxima tries to use gnuplot's
 pngcairo terminal that provides more line styles and a better overall
-graphics quality.
+graphics quality. This variable can be used for reading or overriding
+the respective setting in the configuration dialog.
 @item @var{wxplot_size} defines the size of embedded plots.
 @item @var{wxchangedir} On most operating systems wxmaxima
       automatically sets maxima's working directory to the directory
@@ -542,6 +545,11 @@ Possible reasons that might cause this are:
       @var{maxima_userdir} points to contains the instructions from
       maxima to gnuplot. Most of the time this file's contents therefore is
       helpful when debugging the problem.
+@item Gnuplot was instructed to use the pngcairo library that provides
+      antialiassing and additional line styles. But it wasn't compiled to
+      support this possibility. Solution: Uncheck the "Use the cairo
+      terminal for plot" checkbox in the configuration dialog and
+      don't set @var{wxplot_pngcairo} to true from maxima.
 @item Gnuplot didn't output a valid @file{.png} file.
 @end itemize
 @section I lost a cell contents and undo doesn't remember

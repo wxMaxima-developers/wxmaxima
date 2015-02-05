@@ -1247,7 +1247,6 @@
 
 (defmvar $wxplot_size '((mlist simp) 500 300))
 (defmvar $wxplot_old_gnuplot nil)
-(defmvar $wxplot_pngcairo nil)
 
 (defvar *image-counter* 0)
 

@@ -138,6 +138,7 @@ void Config::SetProperties()
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
+  m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
@@ -152,12 +153,19 @@ void Config::SetProperties()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool match = true, showLongExpr = false, savePanes = false,UncompressedWXMX=true;
+  bool match = true, showLongExpr = false, savePanes = false, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false;
   bool insertAns = true;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
+
+  #if defined (__WXMAC__)
+  bool usepngCairo=true;
+  #else
+  bool usepngCairo=false;
+  #endif
+
   
   int rs = 0;
   int lang = wxLANGUAGE_UNKNOWN;
@@ -166,6 +174,7 @@ void Config::SetProperties()
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("AUI/savePanes"), &savePanes);
+  config->Read(wxT("usepngCairo"), &usepngCairo);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
@@ -228,6 +237,8 @@ void Config::SetProperties()
   else
     m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
+  m_usepngCairo->SetValue(usepngCairo);
+
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
@@ -342,6 +353,9 @@ wxPanel* Config::CreateOptionsPanel()
 
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
+
+  m_usepngCairo = new wxCheckBox(panel, -1, _("Use cairo to improve plot quality."));
+  vsizer->Add(m_usepngCairo, 0, wxALL, 5);
 
   m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
@@ -530,6 +544,7 @@ void Config::WriteSettings()
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
+  config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());

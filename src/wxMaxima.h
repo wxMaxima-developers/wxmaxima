@@ -178,7 +178,14 @@ protected:
   void ReadProcessOutput();          //< reads output of maxima command
 #endif
 
-  void SetupVariables();             //< sets some maxima variables
+  /*!
+    This method is called once when maxima starts. It loads wxmathml.lisp
+    and sets some option variables.
+
+    \todo Set pngcairo to be the default terminal as soon as the mac platform 
+    supports it.
+ */
+  void SetupVariables();
   void KillMaxima();                 //< kills the maxima process
   void ResetTitle(bool saved);
   void FirstOutput(wxString s);
