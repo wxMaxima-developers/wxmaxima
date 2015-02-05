@@ -279,7 +279,6 @@ wxString TextCell::ToString()
 
 wxString TextCell::ToTeX()
 {
-  wxString text;
 
   // m_IsHidden is set only for multiplication signs
   if (m_isHidden)
@@ -296,15 +295,17 @@ wxString TextCell::ToTeX()
       if(m_previous)
 	{
 	  if(m_previous->ToTeX()==wxT("d"))
-	    text = wxT("\\,");
+	    return wxT("\\,");
 	  else
-	    text = wxT("\\cdot ");
+	    return wxT("\\cdot ");
 	}
       else
-	text = wxT("\\cdot ");
+	return wxT("\\cdot ");
     }
-  else if (m_textStyle == TS_GREEK_CONSTANT)
+
+  if (m_textStyle == TS_GREEK_CONSTANT)
   {
+    wxString text;
     if (m_text[0] != '%')
       text = wxT("%") + m_text;
     else
@@ -338,39 +339,50 @@ wxString TextCell::ToTeX()
       text = wxT("X");
     else
       text = wxT("\\") + text.Mid(1);
+
+    return text;
   }
-  else if (m_textStyle == TS_SPECIAL_CONSTANT)
+  
+  if (m_textStyle == TS_SPECIAL_CONSTANT)
   {
     if (m_text == wxT("inf"))
-      text = wxT("\\infty ");
+      return wxT("\\infty ");
     else if (m_text == wxT("%e"))
-      text = wxT("e");
+      return wxT("e");
     else if (m_text == wxT("%i"))
-      text = wxT("i");
+      return wxT("i");
     else if (m_text == wxT("%pi"))
-      text = wxT("\\pi ");
+      return wxT("\\pi ");
     else
-      text = m_text;
-  }
-  else if (m_type == MC_TYPE_LABEL)
-  {
-    text = wxT("\\leqno{\\tt ") + m_text + wxT("}");
-    text.Replace(wxT("%"), wxT("\\%"));
-  }
-  else
-  {
-    if (m_textStyle == TS_FUNCTION)
-      text = wxT("\\mathrm{") + m_text + wxT("}");
-    else
-      text = m_text;
-    text.Replace(wxT("^"), wxT("\\^"));
-    text.Replace(wxT("_"), wxT("\\_"));
-    text.Replace(wxT("%"), wxT("\\%"));
-#if wxUSE_UNICODE
-    text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-#endif
+      return m_text;
   }
 
+  if (m_type == MC_TYPE_LABEL)
+  {
+    wxString text;
+    
+    text = wxT("\\leqno{\\tt ") + m_text + wxT("}");
+    text.Replace(wxT("%"), wxT("\\%"));
+
+    return text;
+  }
+
+  if (m_textStyle == TS_FUNCTION)
+    return wxT("\\mathrm{") + m_text + wxT("}");
+
+
+  wxString text = m_text;
+  if (
+      (m_textStyle != TS_FUNCTION) &&
+      (m_textStyle != TS_OUTDATED)
+      )
+    text.Replace(wxT("^"), wxT("\\^"));
+  text.Replace(wxT("_"), wxT("\\_"));
+  text.Replace(wxT("%"), wxT("\\%"));
+#if wxUSE_UNICODE
+  text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+#endif
+  
   return text;
 }
 
