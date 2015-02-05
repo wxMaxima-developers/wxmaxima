@@ -281,29 +281,30 @@ wxString TextCell::ToTeX()
 {
   // m_IsHidden is set only for multiplication signs
   if (m_isHidden)
+  {
+    /*
+      Normally we want to draw a centered dot in this case. But if we
+      are in the denominator of a d/dt or are drawing the "dx" or
+      similar of an integral a centered dot looks stupid and will be
+      replaced by a short space ("\,") instead. Likewise we don't want
+      to begin a parenthesis with a centered dot even if this
+      parenthesis does contain a product.
+    */
+    
+    if (m_SuppressMultiplicationDot) return wxEmptyString;
+    
+    // If we want to know if the last element was a "d" we first have to
+    // look if there actually is a last element.
+    if(m_previous)
     {
-      /*
-	Normally we want to draw a centered dot in this case. But if we are
-	in the denominator of a d/dt or are drawing the "dx" or similar of an
-	integral a centered dot looks stupid and will be replaced by a short
-	space ("\,") instead. Likewise we don't want to begin a parenthesis
-	with a centered dot even if this parenthesis does contain a product.
-      */
-
-      if (m_SuppressMultiplicationDot) return wxEmptyString;
-      
-      // If we want to know if the last element was a "d" we first have to
-      // look if there actually is a last element.
-      if(m_previous)
-	{	  
-	  if (m_previous->ToTeX()==wxT("d"))
-	    return wxT("\\,");
-	  else
-	    return wxT("\\cdot ");
-	}
+      if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX()==wxT("d"))
+        return wxT("\\,");
       else
-	return wxT("\\cdot ");
+        return wxT("\\cdot ");
     }
+    else
+      return wxT("\\cdot ");
+  }
 
   if (m_textStyle == TS_GREEK_CONSTANT)
   {
