@@ -362,7 +362,7 @@ public:
   bool m_bigSkip;
   //! true means: Add a linebreak to the end of this cell.
   bool m_isBroken;
-  /*! True means: This cell isn't drawn.
+  /*! True means: This cell is a multiplication sign that isn't drawn.
 
     Currently only the centered dots for multiplications fall in this category.
    */

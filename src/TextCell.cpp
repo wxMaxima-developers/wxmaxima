@@ -280,8 +280,29 @@ wxString TextCell::ToString()
 wxString TextCell::ToTeX()
 {
   wxString text;
+
+  // m_IsHidden is set only for multiplication signs
   if (m_isHidden)
-    text = wxT("\\cdot ");
+    {
+      /*
+	Normally we want to draw a centered dot in this case. But if we are
+	in the denominator of a d/dt or are drawing the "dx" or similar of an
+	integral a centered dot looks stupid and will be replaced by a short
+	space ("\,") instead.
+      */
+      
+      // If we want to know if the last element was a "d" we first have to
+      // look if there actually is a last element.
+      if(m_previous)
+	{
+	  if(m_previous->ToTeX()==wxT("d"))
+	    text = wxT("\\,");
+	  else
+	    text = wxT("\\cdot ");
+	}
+      else
+	text = wxT("\\cdot ");
+    }
   else if (m_textStyle == TS_GREEK_CONSTANT)
   {
     if (m_text[0] != '%')
