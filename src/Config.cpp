@@ -194,7 +194,7 @@ void Config::SetProperties()
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
 
-  int i = 0;
+  unsigned int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
       break;
