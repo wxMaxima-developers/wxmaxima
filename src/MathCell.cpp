@@ -42,6 +42,7 @@ MathCell::MathCell()
   m_highlight = false;
   m_type = MC_TYPE_DEFAULT;
   m_textStyle = TS_VARIABLE;
+  m_SuppressMultiplicationDot = false;
 }
 
 /***

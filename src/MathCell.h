@@ -425,6 +425,15 @@ public:
     from.
   */
   virtual MathCell* Copy() = 0;
+  /*! Do we want to begin this cell with a center dot if it is part of a product?
+
+    Maxima will represent a product like (a*b*c) by a list like the following:
+    [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
+    code: \left(\cdot a \cdot b \cdot c\right) which obviously is one \cdot too
+    many => we need parenthesis cells to set this flag for the first cell in 
+    their "inner cell" list.
+   */
+  bool m_SuppressMultiplicationDot;
 protected:
   int m_height;
   //! The width of this cell
@@ -446,6 +455,7 @@ protected:
   int m_maxDrop;
   int m_type;
   int m_textStyle;
+
   //! Does this cell begin with a forced page break?
   bool m_breakPage;
   //! Are we allowed to add a linee break before this cell?

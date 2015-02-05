@@ -72,6 +72,8 @@ void DiffCell::SetDiff(MathCell *diff)
   if (m_diffCell != NULL)
     delete m_diffCell;
   m_diffCell = diff;
+
+  m_diffCell->m_SuppressMultiplicationDot=true;
 }
 
 void DiffCell::SetBase(MathCell *base)

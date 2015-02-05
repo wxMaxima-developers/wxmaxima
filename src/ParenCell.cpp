@@ -100,6 +100,10 @@ void ParenCell::SetInner(MathCell *inner, int type)
   m_innerCell = inner;
   m_type = type;
 
+  // Tell the first of our inter cell not to begin with a multiplication dot.
+  m_innerCell->m_SuppressMultiplicationDot=true;
+
+  // Search for the last of the inner cells
   while (inner->m_next != NULL)
     inner = inner->m_next;
   m_last1 = inner;

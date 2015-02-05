@@ -279,7 +279,6 @@ wxString TextCell::ToString()
 
 wxString TextCell::ToTeX()
 {
-
   // m_IsHidden is set only for multiplication signs
   if (m_isHidden)
     {
@@ -291,14 +290,12 @@ wxString TextCell::ToTeX()
 	with a centered dot even if this parenthesis does contain a product.
       */
 
+      if (m_SuppressMultiplicationDot) return wxEmptyString;
       
       // If we want to know if the last element was a "d" we first have to
       // look if there actually is a last element.
       if(m_previous)
-	{
-
-	  if (m_previous==m_group) return wxEmptyString;
-	  
+	{	  
 	  if (m_previous->ToTeX()==wxT("d"))
 	    return wxT("\\,");
 	  else
@@ -310,42 +307,39 @@ wxString TextCell::ToTeX()
 
   if (m_textStyle == TS_GREEK_CONSTANT)
   {
-    wxString text;
     if (m_text[0] != '%')
-      text = wxT("%") + m_text;
+      return wxT("%") + m_text;
     else
-      text = m_text;
+      return m_text;
 
-    if (text == wxT("%Alpha"))
-      text = wxT("A");
-    else if (text == wxT("%Beta"))
-      text = wxT("B");
-    else if (text == wxT("%Epsilon"))
-      text = wxT("E");
-    else if (text == wxT("%Zeta"))
-      text = wxT("Z");
-    else if (text == wxT("%Eta"))
-      text = wxT("H");
-    else if (text == wxT("%Iota"))
-      text = wxT("I");
-    else if (text == wxT("%Kappa"))
-      text = wxT("K");
-    else if (text == wxT("%Mu"))
-      text = wxT("M");
-    else if (text == wxT("%Nu"))
-      text = wxT("N");
-    else if (text == wxT("%Omicron"))
-      text = wxT("O");
-    else if (text == wxT("%Rho"))
-      text = wxT("P");
-    else if (text == wxT("%Tau"))
-      text = wxT("T");
-    else if (text == wxT("%Chi"))
-      text = wxT("X");
+    if (m_text == wxT("%Alpha"))
+      return wxT("A");
+    else if (m_text == wxT("%Beta"))
+      return wxT("B");
+    else if (m_text == wxT("%Epsilon"))
+      return wxT("E");
+    else if (m_text == wxT("%Zeta"))
+      return wxT("Z");
+    else if (m_text == wxT("%Eta"))
+      return wxT("H");
+    else if (m_text == wxT("%Iota"))
+      return wxT("I");
+    else if (m_text == wxT("%Kappa"))
+      return wxT("K");
+    else if (m_text == wxT("%Mu"))
+      return wxT("M");
+    else if (m_text == wxT("%Nu"))
+      return wxT("N");
+    else if (m_text == wxT("%Omicron"))
+      return wxT("O");
+    else if (m_text == wxT("%Rho"))
+      return wxT("P");
+    else if (m_text == wxT("%Tau"))
+      return wxT("T");
+    else if (m_text == wxT("%Chi"))
+      return wxT("X");
     else
-      text = wxT("\\") + text.Mid(1);
-
-    return text;
+      return wxT("\\") + m_text.Mid(1);
   }
   
   if (m_textStyle == TS_SPECIAL_CONSTANT)
@@ -362,21 +356,22 @@ wxString TextCell::ToTeX()
       return m_text;
   }
 
+  
+  wxString text = m_text;
+  
   if (m_type == MC_TYPE_LABEL)
   {
-    wxString text;
     
     text = wxT("\\leqno{\\tt ") + m_text + wxT("}");
     text.Replace(wxT("%"), wxT("\\%"));
-
-    return text;
   }
+  else
+    {
+      if (m_textStyle == TS_FUNCTION)
+	text = wxT("\\mathrm{") + m_text + wxT("}");
+      
+    }
 
-  if (m_textStyle == TS_FUNCTION)
-    return wxT("\\mathrm{") + m_text + wxT("}");
-
-
-  wxString text = m_text;
   if (
       (m_textStyle != TS_FUNCTION) &&
       (m_textStyle != TS_OUTDATED) &&
