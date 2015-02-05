@@ -287,14 +287,19 @@ wxString TextCell::ToTeX()
 	Normally we want to draw a centered dot in this case. But if we are
 	in the denominator of a d/dt or are drawing the "dx" or similar of an
 	integral a centered dot looks stupid and will be replaced by a short
-	space ("\,") instead.
+	space ("\,") instead. Likewise we don't want to begin a parenthesis
+	with a centered dot even if this parenthesis does contain a product.
       */
+
       
       // If we want to know if the last element was a "d" we first have to
       // look if there actually is a last element.
       if(m_previous)
 	{
-	  if(m_previous->ToTeX()==wxT("d"))
+
+	  if (m_previous==m_group) return wxEmptyString;
+	  
+	  if (m_previous->ToTeX()==wxT("d"))
 	    return wxT("\\,");
 	  else
 	    return wxT("\\cdot ");
@@ -374,7 +379,11 @@ wxString TextCell::ToTeX()
   wxString text = m_text;
   if (
       (m_textStyle != TS_FUNCTION) &&
-      (m_textStyle != TS_OUTDATED)
+      (m_textStyle != TS_OUTDATED) &&
+      (m_textStyle != TS_VARIABLE) &&
+      (m_textStyle != TS_NUMBER)   &&
+      (m_textStyle != TS_GREEK_CONSTANT)   &&
+      (m_textStyle != TS_SPECIAL_CONSTANT)
       )
     text.Replace(wxT("^"), wxT("\\^"));
   text.Replace(wxT("_"), wxT("\\_"));
