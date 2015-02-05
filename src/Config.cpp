@@ -69,7 +69,7 @@ const int langs[] =
     wxLANGUAGE_UKRAINIAN
   };
 
-#define LANGUAGE_NUMBER sizeof(langs)/sizeof(langs[1])
+#define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
 
 Config::Config(wxWindow* parent)
 {

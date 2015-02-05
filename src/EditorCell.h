@@ -113,7 +113,7 @@ public:
   //! Move the cursor to the start of this cell
   void CaretToStart();
   //! Is the cursor at the end of this cell?
-  bool CaretAtEnd() { return m_positionOfCaret == (signed)m_text.Length(); }
+  bool CaretAtEnd() { return m_positionOfCaret == m_text.Length(); }
   //! Move the cursor to the end of this cell
   void CaretToEnd();
   //! Move the cursor to a certain position in the cell

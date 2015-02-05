@@ -2045,7 +2045,7 @@ wxString PrependNBSP(wxString input)
 //Simple iterator over a Maxima input string, skipping comments and strings
 struct SimpleMathParserIterator{
   const wxString &input; //reference to input string (must be a reference, so it can be modified)
-  int pos;
+  unsigned int pos;
 
   SimpleMathParserIterator(const wxString& ainput): input(ainput), pos(0){
     if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 && input[1] == '*') )) {
@@ -2058,7 +2058,7 @@ struct SimpleMathParserIterator{
     return pos < input.length();
   }
   void operator++(){
-    int oldpos = pos;
+    unsigned int oldpos = pos;
     pos++;
     while (pos < input.length() && oldpos != pos) {
       oldpos = pos;
@@ -2110,22 +2110,22 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
           case ';': outputExpressions++;
           }
 
-        int promptIndex = getMathCellIndex(prompt);
-        int outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
-        int index = promptIndex;
+        unsigned int promptIndex = getMathCellIndex(prompt);
+        unsigned int outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        unsigned int index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
-        else if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
-          //input index, but no output index means the expression was evaluated, but produced no result
-          // => it is invalid and should be ignored
-          index = -1;
-          outputExpressions = 0;
-        }
-
-        if (index > 0) {
-          if (index + outputExpressions > cellMap.size()) cellMap.resize(index+outputExpressions);
-          for (int i=0; i < outputExpressions; i++)
-            cellMap[index + i] = cellIndex + i;
-        }
+        else
+	  {
+	    if (outputIndex < 0 && initialHiddenExpressions < outputExpressions) {
+	      //input index, but no output index means the expression was evaluated, but produced no result
+	      // => it is invalid and should be ignored
+	      outputExpressions = 0;
+	    }
+	    else
+	      if (index + outputExpressions > cellMap.size()) cellMap.resize(index+outputExpressions);
+	    for (int i=0; i < outputExpressions; i++)
+	      cellMap[index + i] = cellIndex + i;
+	  }
 
         cellIndex += outputExpressions; //new cell index
       }
@@ -2628,8 +2628,8 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
           for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
             if (*it == '%' && (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') && (it.pos == 0 || input[it.pos-1] != '%')){
               it.pos += 2;
-              int startPos = it.pos;
-              int temp = 0;
+              unsigned int startPos = it.pos;
+              unsigned int temp = 0;
               for (; it.pos < input.Length() && (*it >= '0' && *it <= '9'); ++it.pos)
                 temp = temp * 10 + (*it - '0');
               if (temp >= cellMap.size() || cellMap[temp] < 1) continue;
@@ -3841,7 +3841,7 @@ bool MathCtrl::Autocomplete(bool templates)
 
     wxMenu *popup = new wxMenu();
 
-    for (int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
+    for (unsigned int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
       popup->Append(popid_complete_00 + i, m_completions[i]);
 
     // Find the position for the popup menu

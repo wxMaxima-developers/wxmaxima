@@ -132,7 +132,6 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
   else
   {
     wxString text = GetValue();
-    size_t insp = GetInsertionPoint();
 
     wxString newtext = 
       (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
