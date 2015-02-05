@@ -1249,6 +1249,16 @@
 (defmvar $wxplot_old_gnuplot nil)
 (defmvar $wxplot_pngcairo nil)
 
+(catch
+   (setq $wxplot_pngcairo nil)
+  (cond
+   ((like (simplify
+	   (mfunction-call $system
+			   '"(gnuplot -e 'set term pngcairo dashed')"))
+	  0.)
+    (setq $wxplot_pngcairo t)))
+  )
+
 (defvar *image-counter* 0)
 
 (defun wxplot-filename (&optional (suff t))
