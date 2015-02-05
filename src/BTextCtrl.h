@@ -44,6 +44,10 @@ private:
   bool m_matchParens;
   bool m_skipTab;
   bool MatchParenthesis(int code);
+  /*
+
+    \todo The variable "insp" isn't used. Can the line containing it be removed?
+   */
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);
   void OnChar(wxKeyEvent& event);
   DECLARE_EVENT_TABLE()
