@@ -1529,7 +1529,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
  * We have a wxKeyEvent with no active editor, shift is down and
  * keycode (ccode) is WXK_UP/WXK_DOWN
  */
-void MathCtrl::SelectWithChar(wxChar ccode) {
+void MathCtrl::SelectWithChar(int ccode) {
   // start making a selection
   // m_hCaretPositionStart is the first group selected
   // m_hCaretPositionEnd is tle last group selected
@@ -1539,10 +1539,10 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
       m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
     else
       m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
-
+    
     if (m_hCaretPositionStart == NULL)
       return;
-
+    
     if (ccode == WXK_DOWN && m_hCaretPosition != NULL && m_hCaretPositionStart->m_next != NULL)
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
@@ -1550,7 +1550,7 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
   else if (ccode == WXK_UP) {
     if (m_hCaretPositionEnd->m_previous != NULL) {
       if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
-          m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
+        m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
       m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
     }
     if (m_hCaretPositionEnd != NULL)
@@ -1566,7 +1566,7 @@ void MathCtrl::SelectWithChar(wxChar ccode) {
     if (m_hCaretPositionEnd != NULL)
       ScrollToCell(m_hCaretPositionEnd);
   }
-
+  
   // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
   if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
     m_selectionStart = m_hCaretPositionStart;
@@ -1612,7 +1612,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
 }
 
 void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
-  wxChar ccode = event.GetKeyCode();
+  int ccode = event.GetKeyCode();
   wxString txt; // Usually we open an Editor Cell with initial content txt
 
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
