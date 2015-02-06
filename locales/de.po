@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-14 11:15+0100\n"
-"PO-Revision-Date: 2007-07-23 12:53+0200\n"
+"PO-Revision-Date: 2015-02-06 19:21+0100\n"
 "Last-Translator: Dieter Kaiser <drdieterkaiser@web.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -530,7 +530,6 @@ msgid "Calculate modulus:"
 msgstr "Rechne modulo:"
 
 #: ../src/wxMaximaFrame.cpp:650
-#, fuzzy
 msgid "Calculate numeric value of the last result"
 msgstr "Letztes Ergebnis als Gleitkommazahl"
 
@@ -615,11 +614,11 @@ msgstr ""
 
 #: ../src/Config.cpp:249
 msgid "Chinese Simplified"
-msgstr ""
+msgstr "Chinesisch (vereinfacht)"
 
 #: ../src/Config.cpp:250
 msgid "Chinese traditional"
-msgstr "Chinesisch traditionell"
+msgstr "Chinesisch (traditionell)"
 
 #: ../src/Config.cpp:358 ../src/Config.cpp:360 ../src/Config.cpp:389
 msgid "Choose font"
@@ -803,9 +802,8 @@ msgid "Copy Previous Input\tCtrl-I"
 msgstr "Kopiere letzte Eingabe\tCtrl-I"
 
 #: ../src/wxMaximaFrame.cpp:302
-#, fuzzy
 msgid "Copy Previous Output\tCtrl-U"
-msgstr "Kopiere letzte Eingabe\tCtrl-I"
+msgstr "Kopiere letzte Ausgabe\tCtrl-U"
 
 #: ../src/wxMaximaFrame.cpp:243
 msgid "Copy as Image"
@@ -841,9 +839,8 @@ msgid "Create a new cell with previous input"
 msgstr "Neue Zelle mit letzter Eingabe erzeugen."
 
 #: ../src/wxMaximaFrame.cpp:303
-#, fuzzy
 msgid "Create a new cell with previous output"
-msgstr "Neue Zelle mit letzter Eingabe erzeugen."
+msgstr "Neue Zelle mit letzter Ausgabe erzeugen."
 
 #: ../src/Config.cpp:384
 msgid "Cursor"
@@ -1138,12 +1135,10 @@ msgid "Evaluate &Noun Forms"
 msgstr "&Noun-Formen auswerten"
 
 #: ../src/wxMaximaFrame.cpp:295
-#, fuzzy
 msgid "Evaluate All Cells\tCtrl-Shift-R"
-msgstr "Alle Zellen neu auswerten\tCtrl-R"
+msgstr "Alle Zellen neu auswerten\tCtrl-Shift-R"
 
 #: ../src/wxMaximaFrame.cpp:293
-#, fuzzy
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl-R"
 
@@ -1164,7 +1159,6 @@ msgid "Evaluate all noun forms in expression"
 msgstr "Alle Noun-Formen im Ausdruck auswerten"
 
 #: ../src/wxMaximaFrame.cpp:294
-#, fuzzy
 msgid "Evaluate all visible cells in the document"
 msgstr "Alle sichtbaren Zellen im Dokument auswerten"
 
@@ -1363,20 +1357,19 @@ msgstr "Suchen ..."
 #: ../src/Config.cpp:282
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
-msgstr ""
+msgstr "Neunummerierung der Ein- und Ausgabemarken beim Speichern"
 
 #: ../src/Config.cpp:274
 msgid "Fixed font in text controls"
 msgstr "Schriftart mit fester Breite in Texteingabefeldern"
 
 #: ../src/wxMaximaFrame.cpp:324
-#, fuzzy
 msgid "Fold All\tCtrl-Alt-["
-msgstr "Alles auswählen\tCtrl-A"
+msgstr "Alles zuklappen\tCtrl-A"
 
 #: ../src/wxMaximaFrame.cpp:325
 msgid "Fold all sections"
-msgstr ""
+msgstr "Alle Sektionen zuklappen"
 
 #: ../src/Config.cpp:133
 msgid "Font used for display in document."
@@ -1448,7 +1441,7 @@ msgstr "GIF Bild (*.gif)|*.gif"
 
 #: ../src/Config.cpp:255
 msgid "Galician"
-msgstr ""
+msgstr "Galicisch"
 
 #: ../src/wxMaximaFrame.cpp:134
 msgid "General Math"
@@ -1593,6 +1586,10 @@ msgid ""
 "cell, % will be automatically inserted before the operator, as on a graphing "
 "calculator. You can disable this feature from the 'Edit->Configure' dialog."
 msgstr ""
+"Bei Eingabe eines Operators (+, *, /, ^ oder =) als erstes Symbol einer Zelle\n"
+"wird automatisch ein % eingeführt, so dass sich das Programm wie ein\n"
+"graphischer Taschenrechner verhält. Diese Funktion kann über die Konfiguration\n"
+"(erreichbar über 'Bearbeiten->Einstellungen' abgeschaltet werden."
 
 #: ../data/tips.txt:17
 msgid ""
@@ -1931,7 +1928,6 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../src/wxMaximaFrame.cpp:660
-#, fuzzy
 msgid "Maxima &Help\tCTRL+?"
 msgstr "Maxima &Hilfe\tF1"
 
@@ -2368,14 +2364,12 @@ msgid "Rectform"
 msgstr "Rectform"
 
 #: ../src/wxMaximaFrame.cpp:227
-#, fuzzy
 msgid "Redo\tCtrl-Shift-Z"
-msgstr "&Rückgängig\tCtrl-Z"
+msgstr "&Erneut\tCtrl-Shift-Z"
 
 #: ../src/wxMaximaFrame.cpp:228
-#, fuzzy
 msgid "Redo last change"
-msgstr "Letzte Änderung rückgängig machen"
+msgstr "Letzte Änderung erneut durchführen"
 
 #: ../src/wxMaximaFrame.cpp:992
 msgid "Reduce (tr)"
@@ -2972,7 +2966,6 @@ msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "Port für die Kommunikation zwischen Maxima und wxMaxima."
 
 #: ../data/tips.txt:10
-#, fuzzy
 msgid ""
 "There are many resources about Maxima and wxMaxima on the internet. Visit "
 "http://andrejv.github.com/wxmaxima/help.html for more information and to "
@@ -2980,7 +2973,7 @@ msgid ""
 msgstr ""
 "Im Internet gibt es viele Quellen zu Maxima und wxMaxima. Besuchen Sie die "
 "Webseite https://andrejv.github.io/wxmaxima/help.html, um weitere "
-"Informationen zu erhalten."
+"Informationen und Selbstlernkurse zu erhalten."
 
 #: ../src/SlideShowCell.cpp:289
 msgid ""
@@ -3028,11 +3021,11 @@ msgid ""
 "fold or unfold, click in the square next to the cell. If you shift-click, "
 "all sublevels of that cell will also fold/unfold."
 msgstr ""
-"Titel-, Kapitel- and Unterkapitelzellen können ausgeblendet werden, um den "
+"Titel-, Kapitel- and Unterkapitelzellen können zugeklappt werden, um den "
 "Inhalt zu verbergen. Mit einen Klick in das linke obere Quadrat der Zelle "
-"wird die Zelle ein- oder ausgeblendet. Wird beim Klicken die Umschalt-Taste "
-"gehalten, werden alle Ebenen unterhalb der Zelle ebenfalls ein- oder "
-"ausgeblendet."
+"wird die Zelle auf- oder zugeklappt. Wird beim Klicken die Umschalt-Taste "
+"gehalten, werden alle Ebenen unterhalb der Zelle ebenfalls auf- oder "
+"zugeklappt."
 
 #: ../src/wxMaximaFrame.cpp:646
 msgid "To &Bigfloat"
@@ -3048,7 +3041,7 @@ msgstr "Letztes Ergebnis als Gleitkommazahl"
 
 #: ../src/wxMaximaFrame.cpp:649
 msgid "To Numeri&c\tCTRL+SHIFT+N"
-msgstr ""
+msgstr "Als &Zahl\\tCTRL+SHIFT+N"
 
 #: ../data/tips.txt:18
 msgid ""
@@ -3163,13 +3156,12 @@ msgid "Undo last change"
 msgstr "Letzte Änderung rückgängig machen"
 
 #: ../src/wxMaximaFrame.cpp:326
-#, fuzzy
 msgid "Unfold All\tCtrl-Alt-]"
-msgstr "Alles auswählen\tCtrl-A"
+msgstr "Alles aufklappen\tCtrl-Alt-A"
 
 #: ../src/wxMaximaFrame.cpp:327
 msgid "Unfold all folded sections"
-msgstr ""
+msgstr "Alle zugeklappten Sektionen aufklappen"
 
 #: ../src/wxMaxima.cpp:3488
 msgid "Unicode Support"
