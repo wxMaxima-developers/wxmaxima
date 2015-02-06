@@ -370,7 +370,7 @@ wxPanel* Config::CreateOptionsPanel()
   m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
 
-  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images will move if the PDF viewer supports this)"));
+  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
 
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
