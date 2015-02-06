@@ -354,7 +354,7 @@ wxPanel* Config::CreateOptionsPanel()
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
   wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE);
+  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE | wxHSCROLL);
   grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
 
