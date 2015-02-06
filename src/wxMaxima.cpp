@@ -3462,6 +3462,7 @@ wxT("<html>"
 "Andrej Vodopivec<br>"
 "Ziga Lenarcic<br>"
 "Doug Ilijev<br>"
+"Gunter Königsmann<br>"
 "</p>"
 "<h4>Patches</h4>"
 "Sandro Montanar (SF-patch 2537150)"
@@ -3609,6 +3610,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
     info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
     info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
+    info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
 
     info.AddTranslator(wxT("Innocent de Marchi (ca)"));
     info.AddTranslator(wxT("Josef Barak (cs)"));
