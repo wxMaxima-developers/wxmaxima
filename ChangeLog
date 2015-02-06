@@ -2,7 +2,6 @@ Current:
 	- wxWidgets 3.0 is now a mandatory requirement
 	- Various bugfixes
 	- Loads of stability and performance fixes
-	- Export of animations to pdf (via a pdfTeX file run) and html
 	- Adjustable framerate for animations
 	- A version-control friendly flavour of the wxmx format
 	- A mimetype marker at the beginning of wxmx files
@@ -15,3 +14,5 @@ Current:
 	- LaTeX: Use centered dots for multiplications
 	- LaTeX: Added an option to select if superscripts should be
 	  placed above or after subscripts
+	- LaTeX: Allow the user to add additional commands to the preamble.x
+	- Export of animations to pdf (via a pdfTeX file run) and html

@@ -2579,6 +2579,16 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("\\definecolor{labelcolor}{RGB}{100,0,0}"));
   AddLineToFile(output, wxEmptyString);
+
+  // Add an eventual preamble requested by the user.
+  wxString texPreamble;
+  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
+  if(texPreamble!=wxEmptyString)
+    {
+      AddLineToFile(output, texPreamble);
+      AddLineToFile(output, wxEmptyString);
+    }
+
   AddLineToFile(output, wxT("\\begin{document}"));
 
   //

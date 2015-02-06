@@ -133,6 +133,7 @@ void Config::SetProperties()
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
+  m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
@@ -159,7 +160,8 @@ void Config::SetProperties()
   bool insertAns = true;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
-
+  wxString texPreamble=wxEmptyString;
+  
   #if defined (__WXMAC__)
   bool usepngCairo=true;
   #else
@@ -183,6 +185,7 @@ void Config::SetProperties()
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
+  config->Read(wxT("texPreamble"), &texPreamble);  
   config->Read(wxT("changeAsterisk"), &changeAsterisk);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
@@ -203,6 +206,8 @@ void Config::SetProperties()
   else
     m_language->SetSelection(0);
 
+  m_texPreamble->SetValue(texPreamble);
+  
 #if defined __WXMSW__
   wxString cwd = wxGetCwd();
   cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
@@ -347,6 +352,11 @@ wxPanel* Config::CreateOptionsPanel()
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
+  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE);
+  grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
 
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   vsizer->Add(m_saveSize, 0, wxALL, 5);
@@ -551,6 +561,8 @@ void Config::WriteSettings()
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
+  config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
+  
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
