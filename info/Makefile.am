@@ -34,14 +34,6 @@ wxmaxima_4.html: wxmaxima.html
 
 wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
-	-rm wxmaxima.tp
-	-rm wxmaxima.pg
-	-rm wxmaxima.ky
-	-rm wxmaxima.cp
-	-rm wxmaxima.toc
-	-rm wxmaxima.fn
-	-rm wxmaxima.aux
-	-rm wxmaxima.log
 
 contents.hhc index.hhk: wxmaxima.html
 	perl ./create_index
