@@ -2,6 +2,7 @@
 //  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -746,6 +747,9 @@ void wxMaximaFrame::SetupToolBar()
   frame_1_toolbar->AddTool(tb_paste, _("Paste"),
                            IMAGE("paste.png"),
                            _("Paste from clipboard"));
+  frame_1_toolbar->AddTool(tb_select_all, _("Select all"),
+                           IMAGE("edit-select-all.png"),
+                           _("Select all"));
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_find, _("Find"),
                              IMAGE("find.png"),
@@ -815,6 +819,11 @@ void wxMaximaFrame::SetupToolBar()
                            wxArtProvider::GetBitmap(wxT("gtk-paste"),
                                                     wxART_TOOLBAR),
                            _("Paste from clipboard"));
+  frame_1_toolbar->AddTool(tb_select_all, _("Paste"),
+                           wxArtProvider::GetBitmap(wxT("gtk-select-all"),
+                                                    wxART_TOOLBAR),
+                           _("Select all"));
+  
   frame_1_toolbar->AddSeparator();
   frame_1_toolbar->AddTool(tb_find, _("Find..."),
                            wxArtProvider::GetBitmap(wxT("gtk-find"),

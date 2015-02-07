@@ -11,6 +11,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/toolbar/help.png art/toolbar/open.png       \
              art/toolbar/save.png art/toolbar/text.png       \
              art/toolbar/playback-start.png                  \
+	     art/toolbar/edit-select-all.png		     \
              art/toolbar/playback-stop.png                   \
 	     art/toolbar/paste.png                           \
 	     art/toolbar/find.png                            \

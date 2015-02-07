@@ -1,6 +1,7 @@
 //
 //  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -234,6 +235,7 @@ public:
     tb_copy,
     tb_paste,
     tb_cut,
+    tb_select_all,
     tb_print,
     tb_pref,
     tb_interrupt,

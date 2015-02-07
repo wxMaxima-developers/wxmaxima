@@ -2201,6 +2201,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->CutToClipboard();
     break;
   case menu_select_all:
+  case tb_select_all:
     m_console->SelectAll();
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -4812,6 +4813,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_TOOL(tb_save, wxMaxima::FileMenu)
   EVT_TOOL(tb_copy, wxMaxima::EditMenu)
   EVT_TOOL(tb_paste, wxMaxima::EditMenu)
+  EVT_TOOL(tb_select_all, wxMaxima::EditMenu)
   EVT_TOOL(tb_cut, wxMaxima::EditMenu)
   EVT_TOOL(tb_pref, wxMaxima::EditMenu)
   EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
