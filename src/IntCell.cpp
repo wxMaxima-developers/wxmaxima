@@ -353,7 +353,7 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     else
       base.x += m_signWidth;
 
-    m_base->Draw(parser, base, fontsize);
+    m_base->DrawList(parser, base, fontsize);
 
     var.x = base.x + m_base->GetFullWidth(scale);
     m_var->DrawList(parser, var, fontsize);

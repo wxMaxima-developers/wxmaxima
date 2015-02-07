@@ -186,13 +186,13 @@ wxString SubSupCell::ToTeX()
   wxString s;
 
   if(TeXExponentsAfterSubscript)
-    s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
+    s = wxT("{{{") + m_baseCell->ListToTeX() + wxT("}_{") +
       m_indexCell->ListToTeX() + wxT("}}^{") +
-      m_exptCell->ListToTeX() + wxT("}");
+      m_exptCell->ListToTeX() + wxT("}}");
   else
-    s = wxT("{") + m_baseCell->ListToTeX() + wxT("}_{") +
+    s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
       m_indexCell->ListToTeX() + wxT("}^{") +
-      m_exptCell->ListToTeX() + wxT("}");
+      m_exptCell->ListToTeX() + wxT("}}");
   
   return s;
 }
