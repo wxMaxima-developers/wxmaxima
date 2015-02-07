@@ -352,6 +352,9 @@
 (defprop mabs wxxml-matchfix wxxml)
 (defprop mabs (("<a>")"</a>") wxxmlsym)
 
+(defprop $conjugate wxxml-matchfix wxxml)
+(defprop $conjugate (("<cj>")"</cj>") wxxmlsym)
+
 (defprop mbox wxxml-mbox wxxml)
 (defprop mlabox wxxml-mbox wxxml)
 

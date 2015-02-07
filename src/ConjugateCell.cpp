@@ -1,6 +1,5 @@
 //
-//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,17 +17,17 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#include "AbsCell.h"
+#include "ConjugateCell.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell() : MathCell()
+ConjugateCell::ConjugateCell() : MathCell()
 {
   m_innerCell = NULL;
-  m_open = new TextCell(wxT("abs("));
+  m_open = new TextCell(wxT("conjugate("));
   m_close = new TextCell(wxT(")"));
 }
 
-AbsCell::~AbsCell()
+ConjugateCell::~ConjugateCell()
 {
   if (m_innerCell != NULL)
     delete m_innerCell;
@@ -38,7 +37,7 @@ AbsCell::~AbsCell()
   delete m_close;
 }
 
-void AbsCell::SetParent(MathCell *parent)
+void ConjugateCell::SetParent(MathCell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -49,16 +48,16 @@ void AbsCell::SetParent(MathCell *parent)
     m_close->SetParentList(parent);
 }
 
-MathCell* AbsCell::Copy()
+MathCell* ConjugateCell::Copy()
 {
-  AbsCell* tmp = new AbsCell;
+  ConjugateCell* tmp = new ConjugateCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
 
   return tmp;
 }
 
-void AbsCell::Destroy()
+void ConjugateCell::Destroy()
 {
   if (m_innerCell != NULL)
     delete m_innerCell;
@@ -66,7 +65,7 @@ void AbsCell::Destroy()
   m_next = NULL;
 }
 
-void AbsCell::SetInner(MathCell *inner)
+void ConjugateCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
     return ;
@@ -79,7 +78,7 @@ void AbsCell::SetInner(MathCell *inner)
     m_last = m_last->m_next;
 }
 
-void AbsCell::RecalculateWidths(CellParser& parser, int fontsize)
+void ConjugateCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   m_innerCell->RecalculateWidthsList(parser, fontsize);
@@ -89,7 +88,7 @@ void AbsCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void AbsCell::RecalculateSize(CellParser& parser, int fontsize)
+void ConjugateCell::RecalculateSize(CellParser& parser, int fontsize)
 {
   double scale = parser.GetScale();
   m_innerCell->RecalculateSizeList(parser, fontsize);
@@ -99,7 +98,7 @@ void AbsCell::RecalculateSize(CellParser& parser, int fontsize)
   m_close->RecalculateSizeList(parser, fontsize);
 }
 
-void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -113,33 +112,31 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     dc.DrawLine(point.x + SCALE_PX(2, scale),
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + SCALE_PX(2, scale),
-                point.y - m_center + m_height - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y - m_center + SCALE_PX(2, scale),
                 point.x + m_width - SCALE_PX(2, scale) - 1,
-                point.y - m_center + m_height - SCALE_PX(2, scale));
+                point.y - m_center + SCALE_PX(2, scale)
+		);
+		//                point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen(parser);
   }
   MathCell::Draw(parser, point, fontsize);
 }
 
-wxString AbsCell::ToString()
+wxString ConjugateCell::ToString()
 {
-  return wxT("abs(") + m_innerCell->ListToString() + wxT(")");
+  return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString AbsCell::ToTeX()
+wxString ConjugateCell::ToTeX()
 {
-  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
+  return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString AbsCell::ToXML()
+wxString ConjugateCell::ToXML()
 {
-  return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");
+  return wxT("<cj>") + m_innerCell->ListToXML() + wxT("</cj>");
 }
 
-void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void ConjugateCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -154,7 +151,7 @@ void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
   }
 }
 
-bool AbsCell::BreakUp()
+bool ConjugateCell::BreakUp()
 {
   if (!m_isBroken)
   {
@@ -172,7 +169,7 @@ bool AbsCell::BreakUp()
   return false;
 }
 
-void AbsCell::Unbreak()
+void ConjugateCell::Unbreak()
 {
   if (m_isBroken)
     m_innerCell->UnbreakList();

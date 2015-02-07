@@ -33,6 +33,7 @@
 #include "MatrCell.h"
 #include "ParenCell.h"
 #include "AbsCell.h"
+#include "ConjugateCell.h"
 #include "AtCell.h"
 #include "DiffCell.h"
 #include "SumCell.h"
@@ -433,6 +434,17 @@ MathCell* MathParser::ParseAbsTag(wxXmlNode* node)
   return cell;
 }
 
+MathCell* MathParser::ParseConjugateTag(wxXmlNode* node)
+{
+  wxXmlNode* child = node->GetChildren();
+  ConjugateCell* cell = new ConjugateCell;
+  cell->SetInner(ParseTag(child, true));
+  cell->SetType(m_ParserStyle);
+  cell->SetStyle(TS_VARIABLE);
+  cell->SetHighlight(m_highlight);
+  return cell;
+}
+
 MathCell* MathParser::ParseParenTag(wxXmlNode* node)
 {
   wxXmlNode* child = node->GetChildren();
@@ -739,6 +751,13 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
           cell = ParseAbsTag(node);
         else
           cell->AppendCell(ParseAbsTag(node));
+      }
+      else if (tagName == wxT("cj"))
+      {
+        if (cell == NULL)
+          cell = ParseConjugateTag(node);
+        else
+          cell->AppendCell(ParseConjugateTag(node));
       }
       else if (tagName == wxT("ie"))
       {

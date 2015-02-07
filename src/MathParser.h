@@ -54,6 +54,7 @@ private:
   MathCell* ParseSupTag(wxXmlNode* node);
   MathCell* ParseSubTag(wxXmlNode* node);
   MathCell* ParseAbsTag(wxXmlNode* node);
+  MathCell* ParseConjugateTag(wxXmlNode* node);
   MathCell* ParseUnderTag(wxXmlNode* node);
   MathCell* ParseTableTag(wxXmlNode* node);
   MathCell* ParseAtTag(wxXmlNode* node);

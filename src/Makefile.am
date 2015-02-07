@@ -39,6 +39,7 @@ wxmaxima_SOURCES = \
 	ParenCell.cpp      ParenCell.h      \
 	SumCell.cpp        SumCell.h        \
 	AbsCell.cpp        AbsCell.h        \
+	ConjugateCell.cpp  ConjugateCell.h  \
 	AtCell.cpp         AtCell.h         \
 	DiffCell.cpp       DiffCell.h       \
 	FunCell.cpp        FunCell.h        \
