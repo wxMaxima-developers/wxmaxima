@@ -16,3 +16,7 @@ Current:
 	  placed above or after subscripts
 	- LaTeX: Allow the user to add additional commands to the preamble.x
 	- Export of animations to pdf (via a pdfTeX file run) and html
+	- Now complex conjugates are drawn as overstrike text.
+	- bumped the minor version number of .wxmx: overstrike text is
+	  a new feature and therefore a file containing it cannot be read by
+	  old wxMaxima versions.
