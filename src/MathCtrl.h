@@ -1,8 +1,7 @@
-// \file
-// This file defines the class MathCtl
 //
-// \copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -218,15 +217,25 @@ public:
   void RemoveAllOutput();
   void RemoveAllOutput(GroupCell* cell);
   // methods related to evaluation queue
+
   void AddDocumentToEvaluationQueue();
+  
+  //! Schedule all cells in the document for evaluation
   void AddEntireDocumentToEvaluationQueue();
+  //! Schedule all cells stopping with the one the caret is in for evaluation
+  void AddDocumentTillHereToEvaluationQueue();
+  //! Schedule all selected cells to be evaluated
   void AddSelectionToEvaluationQueue();
+  //! Schedule this cell for evaluation
   void AddCellToEvaluationQueue(GroupCell* gc);
+  //! Unschedule all cells marked as to be evaluated
   void ClearEvaluationQueue();
+  //! The list of cells that have to be evaluated
   EvaluationQueue* m_evaluationQueue;
   // methods for folding
   GroupCell *UpdateMLast();
   void FoldOccurred();
+  //! Fold or unfold a cell
   GroupCell *ToggleFold(GroupCell *which);
   GroupCell *ToggleFoldAll(GroupCell *which);
   void FoldAll();

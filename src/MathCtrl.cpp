@@ -2,6 +2,7 @@
 //  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -3062,6 +3063,31 @@ void MathCtrl::AddSelectionToEvaluationQueue()
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   SetHCaret(m_selectionEnd);
+}
+
+void MathCtrl::AddDocumentTillHereToEvaluationQueue()
+{
+  GroupCell *stop;
+  if(m_hCaretActive)
+    stop=m_hCaretPosition;
+  else
+    {
+      stop=dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
+      if(stop->m_previous!=NULL)
+      stop=dynamic_cast<GroupCell*>(stop->m_previous);
+    }
+    
+  if(stop!=NULL)
+    {
+      GroupCell* tmp = m_tree;
+      while (tmp != NULL) {
+	std::cerr<<"Debug3\n";
+	m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+	if (tmp == stop)
+	  break;
+	tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+      } 
+    }
 }
 
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)

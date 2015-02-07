@@ -200,6 +200,7 @@ public:
     menu_add_path,
     menu_evaluate_all_visible,
     menu_evaluate_all,
+    menu_evaluate_till_here,
     menu_show_tip,
     menu_copy_from_console,
     menu_copy_tex_from_console,

@@ -1823,7 +1823,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
   menubar->Enable(menu_interrupt_id, m_pid>0);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
-  menubar->Enable(menu_evaluate_all, m_console->GetTree() != NULL);
+  menubar->Enable(menu_evaluate_till_here, (m_console->GetTree() != NULL)
+		  &&	  (m_console->CanPaste()) );  
   menubar->Enable(menu_save_id, !m_fileSaved);
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
@@ -2450,6 +2451,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_evaluate_all:
     m_console->AddEntireDocumentToEvaluationQueue();
+    TryEvaluateNextInQueue();
+    break;
+  case menu_evaluate_till_here:
+    m_console->AddDocumentTillHereToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
   case menu_clear_var:
@@ -4836,6 +4841,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_evaluate, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_evaluate_till_here, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_hideall, wxMaxima::UpdateMenus)
@@ -4887,6 +4893,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
   EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
   EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
+  EVT_MENU(menu_evaluate_till_here, wxMaxima::MaximaMenu)
   EVT_IDLE(wxMaxima::OnIdle)
   EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
   EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
