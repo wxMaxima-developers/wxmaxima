@@ -1,7 +1,7 @@
 desktopdir = $(datarootdir)/applications
 dist_desktop_DATA = wxmaxima.desktop
 
-SUBDIRS = src locales data info
+SUBDIRS = src locales data info test
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/readme.txt art/license.txt                  \

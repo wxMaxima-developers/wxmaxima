@@ -215,6 +215,7 @@ AC_CONFIG_FILES([
         locales/Makefile
         data/Makefile
         info/Makefile
+        test/Makefile
         wxmaxima.spec
         data/Info.plist
 	data/wxMaxima.desktop
