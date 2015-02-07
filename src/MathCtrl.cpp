@@ -2568,6 +2568,10 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\usepackage{color}"));
   AddLineToFile(output, wxT("\\usepackage{amsmath}"));
 
+  // Define an "abs" operator for abs commands that are long enough to be broken into
+  // lines.
+  AddLineToFile(output, wxT("\\DeclareMathOperator{\\abs}{abs}"));
+  
   // The animate package is only needed if we actually want to output animations
   // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
   bool AnimateLaTeX=true;

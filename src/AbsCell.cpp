@@ -131,7 +131,10 @@ wxString AbsCell::ToString()
 
 wxString AbsCell::ToTeX()
 {
-  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
+  if (!m_isBroken)
+    return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
+  else
+    return wxT("\\abs( ") + m_innerCell->ListToTeX();
 }
 
 wxString AbsCell::ToXML()
