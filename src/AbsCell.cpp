@@ -47,8 +47,6 @@ void AbsCell::SetParent(MathCell *parent)
     m_open->SetParentList(parent);
   if (m_close != NULL)
     m_close->SetParentList(parent);
-
-  MathCell::SetParentList(parent);
 }
 
 MathCell* AbsCell::Copy()
