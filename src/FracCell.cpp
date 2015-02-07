@@ -29,7 +29,7 @@ FracCell::FracCell() : MathCell()
   m_denom = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
-
+  
   m_open1 = NULL;
   m_close1 = NULL;
   m_open2 = NULL;
@@ -130,6 +130,7 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize)
   if (m_exponent && !m_isBroken)
   {
     wxDC& dc = parser.GetDC();
+
     int height;
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
@@ -140,7 +141,15 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize)
   }
   else
   {
-    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale));
+    wxDC& dc = parser.GetDC();
+
+    // We want half a space's widh of blank space to separate us from the
+    // next minus.
+    int dummy,horizontalgap;
+    dc.GetTextExtent(wxT(" "), &horizontalgap, &dummy);
+    horizontalgap/=2;
+
+    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) + 2 * horizontalgap;
   }
   m_open1->RecalculateWidths(parser, fontsize);
   m_close1->RecalculateWidths(parser, fontsize);
@@ -185,6 +194,7 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+
   if (DrawThisCell(parser, point))
   {
     wxDC& dc = parser.GetDC();
@@ -194,7 +204,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     if (m_exponent && !m_isBroken)
     {
       double scale = parser.GetScale();
-
+      
       num.x = point.x;
       num.y = point.y;
       denom.x = point.x + m_num->GetFullWidth(scale) + m_expDivideWidth;
@@ -213,6 +223,12 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     }
     else
     {
+      // We want half a space's widh of space separating a fraction from any
+      // minus that is drawn before or after it.
+      int dummy,horizontalgap;
+      dc.GetTextExtent(wxT(" "), &horizontalgap, &dummy);
+      horizontalgap/=2;
+      
       num.x = point.x + (m_width - m_num->GetFullWidth(scale)) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               SCALE_PX(2, scale);
@@ -223,7 +239,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       m_denom->DrawList(parser, denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen(parser);
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x, point.y, point.x + m_width, point.y);
+        dc.DrawLine(point.x + horizontalgap, point.y, point.x + m_width - horizontalgap, point.y);
       UnsetPen(parser);
     }
   }
