@@ -1969,8 +1969,10 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
              newStr +
              m_text.SubString(m_selectionEnd, m_text.Length());
     m_containsChanges = -1;
-    m_positionOfCaret = m_selectionEnd = m_selectionStart + newStr.Length();
-
+    m_positionOfCaret = m_selectionStart + newStr.Length();
+    m_selectionStart = -1;
+    m_selectionEnd = -1;
+    
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();
 
