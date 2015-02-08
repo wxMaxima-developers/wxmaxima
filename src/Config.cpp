@@ -136,6 +136,8 @@ void Config::SetProperties()
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
+  m_defaultPlotWidth->SetToolTip(_("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
+  m_defaultPlotHeight->SetToolTip(_("The default height for embedded plots. Can be read out or overridden by the maxima variable wxplot_size."));
   m_displayedDigits->SetToolTip(_("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
@@ -180,6 +182,10 @@ void Config::SetProperties()
   config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("usepngCairo"), &usepngCairo);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
+  int defaultPlotWidth = 800;
+  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
+  int defaultPlotHeight = 600;
+  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   config->Read(wxT("displayedDigits"), &displayedDigits);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
@@ -262,6 +268,8 @@ void Config::SetProperties()
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_defaultFramerate->SetValue(defaultFramerate);
+  m_defaultPlotWidth->SetValue(defaultPlotWidth);
+  m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(displayedDigits);
 
   m_getStyleFont->Enable(false);
@@ -280,7 +288,7 @@ wxPanel* Config::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(3, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
@@ -288,6 +296,18 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size"));
+  wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
+  m_defaultPlotWidth=new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 100, 16384);
+  PlotWidthHbox->Add(m_defaultPlotWidth,0,wxEXPAND, 0);
+  wxStaticText* xx = new wxStaticText(panel, -1, _("x"));
+  PlotWidthHbox->Add(xx,0,wxALIGN_CENTER_VERTICAL, 0);
+  m_defaultPlotHeight=new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 100, 16384);
+  PlotWidthHbox->Add(m_defaultPlotHeight,0,wxEXPAND, 0);
+  //  plotWidth->SetSizerAndFit(PlotWidthHbox);
+  grid_sizer->Add(pw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(PlotWidthHbox,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   wxStaticText* dd = new wxStaticText(panel, -1, _("Maximum displayed number of digits:"));
   m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 20, INT_MAX);
@@ -566,6 +586,8 @@ void Config::WriteSettings()
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
+  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
+  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
   config->Write(wxT("displayedDigits"), m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());

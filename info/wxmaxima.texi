@@ -319,8 +319,11 @@ prepended by a ``wx''. For example  @command{wxplot} corresponds to
 @command{plot}, @command{wxdraw} corresponds to @command{draw} and
 @command{wxhistogram} corresponds to @command{histogram}.
 @subsection Making embedded plots bigger or smaller
-The plotting routines of wxMaxima respect the variable
-@var{wxplot_size} that specifies the size of a plot in pixels.
+The configure dialog provides a way to change the default size plots
+are created with which sets the starting value of @var{wxplot_size}.
+The plotting routines of wxMaxima respect this variable that specifies
+the size of a plot in pixels. It can always be queried or used to set
+the size of the following plots:
 @example
 %i1 wxplot_size:[1200,800];
 %o1 [1200,800];
@@ -330,8 +333,22 @@ The plotting routines of wxMaxima respect the variable
             sin(x),
             x,1,10
         )
-    );
+    )$
 @end example
+If the size of only one plot is to be changed maxima provides a
+canonical way to change an attribute only for the current cell.
+@example
+%i1 wxplot_size:[1200,800];
+%o1 [1200,800];
+
+%i1 wxdraw2d(
+        explicit(
+            sin(x),
+            x,1,10
+        )
+    ),wxplot_size=[1600,800]$
+@end example
+
 @subsection Better quality plots
 Gnuplot doesn't seem to provide a portable way of determining is it
 supports the high-quality bitmap output the cairo library provides.

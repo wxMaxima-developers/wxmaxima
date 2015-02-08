@@ -166,6 +166,8 @@ protected:
   wxCheckBox* m_usepngCairo;
   wxCheckBox* m_uncomressedWXMX;
   wxSpinCtrl* m_defaultFramerate;
+  wxSpinCtrl* m_defaultPlotWidth;
+  wxSpinCtrl* m_defaultPlotHeight;
   wxSpinCtrl* m_displayedDigits;
   //! A checkbox that allows to select if the LaTeX file should contain animations.
   wxCheckBox* m_AnimateLaTeX;

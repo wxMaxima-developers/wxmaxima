@@ -149,7 +149,11 @@ protected:
                        bool newLine = true, bool bigSkip = true);
   void DoRawConsoleAppend(wxString s, int type);   //
 
-  void EditInputMenu(wxCommandEvent& event);       //
+  /*! Spawn the "configure" menu.
+
+    \todo Inform maxima about the new default plot window size.
+  */
+  void EditInputMenu(wxCommandEvent& event);
   void EvaluateEvent(wxCommandEvent& event);       //
   void InsertMenu(wxCommandEvent& event);          //
   void PrintMenu(wxCommandEvent& event);
