@@ -174,13 +174,12 @@ wxString LimitCell::ToString()
 
 wxString LimitCell::ToTeX()
 {
-  wxString s = wxT("\\lim");
   wxString under = m_under->ListToTeX();
-  wxString base = m_base->ListToTeX();
+  wxString base  = m_base ->ListToTeX();
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
-  s += wxT("_{") + var + wxT("\\to ") + to + wxT("}") + base;
+  wxString s = wxT("\\lim_{")+var+wxT("\\to ")+to+wxT("}{")+base+wxT("}");
   return s;
 }
 

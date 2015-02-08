@@ -143,13 +143,21 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("o"), &file))
     {
-      NewWindow(wxString(file));
+      wxFileName FileName=file;
+      FileName.MakeAbsolute();
+      wxString CanonicalFilename=FileName.GetFullPath();
+      NewWindow(wxString(CanonicalFilename));
       return true;
     }
   else
     {
       if (cmdLineParser.GetParamCount()>0)
-	NewWindow(cmdLineParser.GetParam());
+	{
+	  wxFileName FileName=cmdLineParser.GetParam();
+	  FileName.MakeAbsolute();
+	  wxString CanonicalFilename=FileName.GetFullPath();
+	  NewWindow(CanonicalFilename);
+	}
       else
 	NewWindow();
     }
