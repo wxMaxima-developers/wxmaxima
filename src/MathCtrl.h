@@ -101,6 +101,8 @@ public:
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
   GroupCell *InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
+
+  //! Add a new line to working group or m_last
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool force = false);
   void RecalculateForce();

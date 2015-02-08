@@ -337,9 +337,6 @@ GroupCell *MathCtrl::UpdateMLast()
   return m_last;
 }
 
-/***
- * Add a new line to working group or m_last
- */
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
   SetActiveCell(NULL, false);
@@ -348,9 +345,14 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   GroupCell *tmp = m_workingGroup;
 
+  // If there is no working group we take the last cell
   if (tmp == NULL)
     tmp = m_last;
 
+  // If there is no last cell either the new one is used as the last cell.
+  if (tmp == NULL)
+    return;
+    
   newCell->ForceBreakLine(forceNewLine);
 
   tmp->AppendOutput(newCell);
