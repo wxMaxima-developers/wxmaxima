@@ -183,8 +183,8 @@ wxString ExptCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = wxT("{") + m_baseCell->ListToTeX() + wxT("}^{") +
-               m_powCell->ListToTeX() + wxT("}");
+  wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
+               m_powCell->ListToTeX() + wxT("}}");
   return s;
 }
 
