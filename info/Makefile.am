@@ -43,7 +43,7 @@ wxMaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
 html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html
-html_DATA+= wxmaxima_1.html wxmaxima_2.html wxmaxima_3.html wxmaxima_4.html
+html_DATA+= wxmaxima_1.html wxmaxima_2.html wxmaxima_3.html wxmaxima_4.html wxmaxima_5.html
 html_DATA+= wxmaxima_abt.html wxmaxima_ovr.html wxmaxima_toc.html
 #dist_html_data=$(html_DATA)
 

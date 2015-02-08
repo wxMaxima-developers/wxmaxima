@@ -590,6 +590,13 @@ on a different drive than the one maxima is installed on maxima
 therefore might fail to load the additional packages it was bundled
 with.
 @node CommandLine
+@chapter FAQ
+@section Is there a way to make more text fit on a pdfLaTeX page?
+There is: Just add the following lines to the LaTeX preamble (for
+example by using the respective field in the config dialog):
+@example
+\usepackage[a4paper,landscape,left=1cm,right=1cm,top=1cm,bottom=1cm]@{geometry@}
+@end example
 @chapter Command-line arguments
 Most operating systems provide less complicated ways of
 starting programs than the command line so this possibility
