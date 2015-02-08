@@ -21,6 +21,7 @@
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
 #include <wx/regex.h>
+#include <wx/intl.h>
 
 #include "MathParser.h"
 
@@ -94,8 +95,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
         group->AppendOutput(ParseTag(children->GetChildren()));
       children = children->GetNext();
     }
-  }
-  else if (type == wxT("image")) {
+  }  else if (type == wxT("image")) {
     group = new GroupCell(GC_TYPE_IMAGE);
     wxXmlNode *children = node->GetChildren();
     while (children) {
@@ -380,8 +380,19 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 #endif
     if (style == TS_NUMBER)
     {
-      if (str.Length() > 100) // This could be made configurable.
-        str = str.Left(30) + wxString::Format(wxT("[%d digits]"), str.Length() - 60) + str.Right(30);
+      m_displayedDigits=100;
+      wxConfigBase *config = wxConfig::Get();      
+      config->Read(wxT("displayedDigits"),&m_displayedDigits);
+
+      if (m_displayedDigits<10)m_displayedDigits=10;
+      if (str.Length() > m_displayedDigits)
+	{
+	  int left= m_displayedDigits/3;
+	  if (left>30) left=30;
+	  
+	  str = str.Left(left) + wxString::Format(_(wxT("[%i digits]")), (int) str.Length() - 2 * left) + str.Right(left);
+	  //	  str = str.Left(left)+wxT("...");
+	}
     }
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);

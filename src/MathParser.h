@@ -68,6 +68,8 @@ private:
   MathCell* ParseSubSupTag(wxXmlNode* node);
   int m_ParserStyle;
   int m_FracStyle;
+  //! The maximum number of digits of a number that is to be displayed
+  int m_displayedDigits;
   bool m_highlight;
   wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>
 };

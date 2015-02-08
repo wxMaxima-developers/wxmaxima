@@ -136,6 +136,7 @@ void Config::SetProperties()
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
+  m_displayedDigits->SetToolTip(_("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the putput, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
@@ -160,6 +161,7 @@ void Config::SetProperties()
   bool insertAns = true;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
+  int displayedDigits = 100;
   wxString texPreamble=wxEmptyString;
   
   #if defined (__WXMAC__)
@@ -178,6 +180,7 @@ void Config::SetProperties()
   config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("usepngCairo"), &usepngCairo);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
+  config->Read(wxT("displayedDigits"), &displayedDigits);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
@@ -259,6 +262,7 @@ void Config::SetProperties()
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_defaultFramerate->SetValue(defaultFramerate);
+  m_displayedDigits->SetValue(displayedDigits);
 
   m_getStyleFont->Enable(false);
 
@@ -284,6 +288,11 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText* dd = new wxStaticText(panel, -1, _("Maximum displayed number of digits:"));
+  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 20, 200000000);
+  grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_displayedDigits,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
@@ -557,6 +566,7 @@ void Config::WriteSettings()
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
+  config->Write(wxT("displayedDigits"), m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());

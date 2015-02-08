@@ -2160,6 +2160,8 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case tb_pref:
 #endif
     {
+      wxConfigBase *config = wxConfig::Get();      
+
       Config *configW = new Config(this);
       configW->Centre(wxBOTH);
       if (configW->ShowModal() == wxID_OK)
@@ -2168,9 +2170,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         m_console->RecalculateForce();
         m_console->Refresh();
       }
-      configW->Destroy();
 
-      wxConfigBase *config = wxConfig::Get();
+      configW->Destroy();
+      
       #if defined (__WXMAC__)
       bool usepngCairo=true;
       #else
