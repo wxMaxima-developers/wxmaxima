@@ -407,13 +407,32 @@ wxString MathCell::ToXML()
 
 wxString MathCell::ListToXML()
 {
+  bool highlight=false;
+  
   wxString retval;
   MathCell *tmp=this;
 
   while(tmp!=NULL)
     {
+      if((tmp->GetHighlight())&&(!highlight))
+	{
+	  retval+=wxT("<hl>\n");
+	  highlight=true;
+	}
+
+      if((!tmp->GetHighlight())&&(highlight))
+	{
+	  retval+=wxT("</hl>\n");
+	  highlight=false;
+	}
+      
       retval+=tmp->ToXML();
       tmp=tmp->m_next;
+    }
+
+  if(highlight)
+    {
+      retval+=wxT("</hl>\n");
     }
   
   return retval;
