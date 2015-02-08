@@ -47,6 +47,14 @@ public:
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
 private:
+  /*! Convert XML to a group tree
+
+    This function is responsible for creating
+    a tree of groupcells when loading XML document.
+    \attention Any changes in GroupCell structure or methods
+    has to be reflected here in order to ensure proper
+    loading of WXMX files.
+  */
   MathCell* ParseCellTag(wxXmlNode* node);
   MathCell* ParseEditorTag(wxXmlNode* node);
   MathCell* ParseFracTag(wxXmlNode* node);

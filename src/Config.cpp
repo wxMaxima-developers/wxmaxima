@@ -290,7 +290,7 @@ wxPanel* Config::CreateWorksheetPanel()
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
   wxStaticText* dd = new wxStaticText(panel, -1, _("Maximum displayed number of digits:"));
-  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 20, 200000000);
+  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 20, INT_MAX);
   grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_displayedDigits,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
