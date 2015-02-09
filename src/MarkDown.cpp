@@ -21,15 +21,26 @@
 wxString MarkDownParser::MarkDown(wxString str)
 {
   wxString result=wxEmptyString;
-  
-  wxStringTokenizer stringLines(str,"\n");
-
   std::list <int> indentationLevels;
-   
-  while(stringLines.HasMoreTokens())
-    {
-      wxString line=stringLines.GetNextToken();
+  bool addNewline = false;
+  wxString line;
 
+  while(str != wxEmptyString)
+    {
+
+      // Extract a line from the string.
+      int newLinePos = str.find(NewLine());
+      if(newLinePos == wxNOT_FOUND)
+	{
+	  line = str;
+	  str  = wxEmptyString;
+	}
+      else
+	{
+	  line = str.Left(newLinePos);
+	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
+	}
+      
       int index=0;
       while((index<line.Length()) && (line[index] == wxT(' ')))
 	index++;
@@ -77,6 +88,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 	      // and add a new item if we still are inside a list.
 	      if(indentationLevels.back() > index)
 		{
+		  //		  addNewline = false;
 		  result += itemizeEndItem();
 		  while((!indentationLevels.empty())&&
 			(indentationLevels.back()>index))
@@ -88,13 +100,18 @@ wxString MarkDownParser::MarkDown(wxString str)
 		}
 
 	      // Add the text to the output.
+	      if(addNewline) result += NewLine();
 	      result += line;
+	      
+	      addNewline = true;
 	    }
 	}
       else
 	{
+	  if(addNewline) result += NewLine();
 	  result += line;
 	}
+      addNewline = true;
     }
 
   // Close all item lists

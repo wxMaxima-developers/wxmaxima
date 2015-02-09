@@ -30,6 +30,7 @@
 #include "GroupCell.h"
 #include "SlideShowCell.h"
 #include "ImgCell.h"
+#include "MarkDown.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -2021,28 +2022,37 @@ void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   }
 }
 
-wxString PrependNBSP(wxString input)
+wxString MathCtrl::EscapeHTMLChars(wxString input)
 {
-  wxString line = wxEmptyString;
-
-    // Escape html chars
   input.Replace(wxT("&"), wxT("&amp;"));  
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
+  input.Replace(wxT("\n"), wxT("<BR>"));
 
-  for (unsigned int i = 0; i < input.Length(); i++) {
-    while (input.GetChar(i) == '\n') {
-      line += wxT("<BR>\n");
-      i++;
-      while (i < input.Length() && input.GetChar(i) == ' ') {
-        line += wxT("&nbsp;");
-        i++;
-      }
-    }
-    line += input.GetChar(i);
-  }
+  return input;
+}
+
+wxString MathCtrl::PrependNBSP(wxString input)
+{
+  wxStringTokenizer stringLines(input,"\n");
+  wxString line;
+  wxString output=wxEmptyString;
   
-  return line;
+  while(stringLines.HasMoreTokens())
+    {
+      wxString line=stringLines.GetNextToken();
+      
+      for (unsigned int i = 0; i < input.Length(); i++) {
+	
+	while (i < input.Length() && input.GetChar(i) == ' ') {
+	  output += wxT("&nbsp;");
+	  i++;
+	}
+	output += input.GetChar(i);
+      }
+      if(stringLines.HasMoreTokens())output += wxT("\n");
+    }
+  return output;
 }
 
 //Simple iterator over a Maxima input string, skipping comments and strings
@@ -2418,7 +2428,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
       MathCell *input = tmp->GetInput();
       if (input != NULL) {
         AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
-        AddLineToFile(output, PrependNBSP(input->ToString()));
+        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(input->ToString())));
         AddLineToFile(output, wxT("  </SPAN></TD>"));
       }
       AddLineToFile(output, wxT("</TR></TABLE>"));
@@ -2449,26 +2459,28 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
     else
     {
+      MarkDownHTML MarkDown;
+      
       switch(tmp->GetGroupType()) {
         case GC_TYPE_TEXT:
           AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString()));
+          AddLineToFile(output, PrependNBSP(MarkDown.MarkDown(EscapeHTMLChars(tmp->GetEditable()->ToString()))));
           break;
         case GC_TYPE_SECTION:
           AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()));
+          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
           break;
         case GC_TYPE_SUBSECTION:
           AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()));
+          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
           break;
         case GC_TYPE_TITLE:
           AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
           AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetEditable()->ToString()));
+          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetEditable()->ToString())));
           break;
         case GC_TYPE_PAGEBREAK:
           AddLineToFile(output, wxT("\n\n<!-- Page break cell -->\n\n"));
@@ -2480,9 +2492,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
           AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
           MathCell *out = tmp->GetLabel();
           AddLineToFile(output, wxT("<P CLASS=\"image\">"));
-          AddLineToFile(output, PrependNBSP(tmp->GetPrompt()->ToString() +
+          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                             wxT(" ") +
-                                            tmp->GetEditable()->ToString()));
+							    tmp->GetEditable()->ToString())));
           AddLineToFile(output, wxT("<BR>"));
 	  if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
           {
@@ -3653,7 +3665,7 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
     if (sub != NULL)
       RemoveAllOutput(sub);
     tree = dynamic_cast<GroupCell*>(tree->m_next);
-  }  
+  }
 }
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)

@@ -274,7 +274,13 @@ public:
   GroupCell *GetWorkingGroup() { return m_workingGroup; }
   void OpenNextOrCreateCell();
  private:
+  /*! Escape all chars that aren't allowed in html.
 
+    Also converts \n to <BR>
+   */
+  wxString EscapeHTMLChars(wxString input);
+  //! Allow indentation by spaces for html by replacing them by non-breakable spaces
+  wxString PrependNBSP(wxString input);
   //! An enum for all classes of items one can click on
   enum ClickType { 
     CLICK_TYPE_NONE,

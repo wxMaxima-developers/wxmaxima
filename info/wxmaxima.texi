@@ -253,6 +253,19 @@ won't be able to deal with files that contain special unicode characters.
 Shortcuts to the most important maxima commands and a history of the last
 issued commands can be accessed using the side panes. They can be enabled
 using the ``Panes'' entry in the ``Maxima'' menu.
+@subsection Markdown support
+Markdown in many cases collides with the notations that are frequently used
+for mathematics. wxMaxima will recognize bullet lists, though, for the HTML
+and TeX export when the items are marked with stars.
+@example
+Ordinary text
+ * One item, indentation level 1
+ * Another item at indentation level 1
+   * An item at a second indentation level
+   * A second item at the second indentation level
+ * A third item at the first indentation level
+Ordinary text
+@end example
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
