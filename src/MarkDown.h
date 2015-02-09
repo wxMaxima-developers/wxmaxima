@@ -40,6 +40,7 @@ public:
   virtual wxString itemizeEnd()=0;    //!< The marker for the end of an item list
   virtual wxString itemizeItem()=0;   //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;//!< The marker for the end of an item
+  virtual wxString NewLine()=0;       //!< The marker for the beginning of a new line
 };
 
 //! A markdown parser for TeX
@@ -51,6 +52,7 @@ public:
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
   virtual wxString itemizeItem(){return wxT("\\item");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
+  virtual wxString NewLine(){return wxT("\n");}
 };
 
 //! A markdown parser for HTML
@@ -62,6 +64,7 @@ public:
   virtual wxString itemizeEnd(){return wxT("</UL>");}
   virtual wxString itemizeItem(){return wxT("<LI>");}
   virtual wxString itemizeEndItem(){return wxT("</LI>");}
+  virtual wxString NewLine(){return wxT("<BR>");}
 };
 
 #endif // MARKDOWN_H
