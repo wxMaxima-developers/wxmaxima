@@ -55,6 +55,7 @@ wxmaxima_SOURCES = \
 	SlideShowCell.cpp  SlideShowCell.h  \
 	GroupCell.cpp      GroupCell.h      \
 	EvaluationQueue.cpp EvaluationQueue.h \
+	MarkDown.cpp       MarkDown.h       \
 	History.cpp        History.h        \
 	Autocomplete.cpp   Autocomplete.h   \
 	PlotFormatWiz.cpp  PlotFormatWiz.h  \

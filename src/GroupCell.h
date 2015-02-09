@@ -81,8 +81,10 @@ public:
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
   wxString ToTeX();
   wxString PrepareForTeX(wxString text);
+  //! Add Markdown to the TeX representation of input cells.
+  wxString TeXMarkdown(wxString str);
   wxString ToXML();
-  // hide status
+  //! Return the hide status
   bool IsHidden() { return m_hide; }
   void Hide(bool hide);
   void SwitchHide();

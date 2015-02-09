@@ -22,13 +22,16 @@
 
 #include <wx/config.h>
 #include <wx/clipbrd.h>
+#include <wx/tokenzr.h>
 
+#include "MarkDown.h"
 #include "GroupCell.h"
 #include "SlideShowCell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
 #include "ImgCell.h"
 #include "Bitmap.h"
+#include "list"
 
 GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
@@ -795,6 +798,10 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           str = str.Mid(5, str.Length());
         else {
           str = PrepareForTeX(str);
+
+	  // Now we might want to introduce some markdown:
+	  MarkDownTeX MarkDownParser;
+	  str = MarkDownParser.MarkDown(str);
         }
         break;
     }
