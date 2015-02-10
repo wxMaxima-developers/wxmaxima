@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on February 10, 2015 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>wxMaxima Manual: 3. Troubleshooting</title>
+
+<meta name="description" content="wxMaxima Manual: 3. Troubleshooting">
+<meta name="keywords" content="wxMaxima Manual: 3. Troubleshooting">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+body {color: black; background: #dbe3eb;  margin-left: 8%; margin-right: 13%;
+      font-family: "FreeSans", sans-serif}
+hr {
+  border: 0;
+  width: 80%;
+  color: #fff;
+  background-color: #fa1;
+}
+h1 {font-size: 150%; font-family: "FreeSans", sans-serif}
+h2 {font-size: 125%; font-family: "FreeSans", sans-serif}
+h3 {font-size: 100%; font-family: "FreeSans", sans-serif}
+a[href] {color: rgb(0,0,255); text-decoration: none;}
+a[href]:hover {background: rgb(220,220,220);}
+div.textbox {border: solid; border-width: thin; padding-top: 1em;
+    padding-bottom: 1em; padding-left: 2em; padding-right: 2em}
+div.titlebox {border: none; padding-top: 1em; padding-bottom: 1em;
+    padding-left: 2em; padding-right: 2em; background: rgb(200,255,255);
+    font-family: sans-serif}
+div.synopsisbox {
+    border: none; padding-top: 1em; padding-bottom: 1em; padding-left: 2em;
+    padding-right: 2em; background: rgb(255,220,255);}
+pre.example {border: 1px solid rgb(180,180,180); padding-top: 1em;
+    padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
+    background-color: rgb(238,238,255)}
+div.spacerbox {border: none; padding-top: 2em; padding-bottom: 2em}
+div.image {margin: 0; padding: 1em; text-align: center}
+div.categorybox {border: 1px solid gray; padding-top: 0px; padding-bottom: 0px;
+    padding-left: 1em; padding-right: 1em; background: rgb(247,242,220)}
+
+-->
+</style>
+
+<link rel="icon" href="wxmaximaicon.ico"/>
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Troubleshooting"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="wxmaxima_2.html#Bug-reporting" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Cannot-connect-to-Maxima" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima_2.html#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Troubleshooting-1"></a>
+<h1 class="chapter">3. Troubleshooting</h1>
+<hr size="6">
+<a name="Cannot-connect-to-Maxima"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Troubleshooting" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#How-to-save-data-from-a-broken-_002ewxmx-file" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.1 Cannot connect to Maxima</h2>
+<p>Since maxima (the program that does the actual mathematics) and
+wxMaxima (providing the easy-to-use user interface) are separate
+programs that communicate by the means of a local network connection
+the most probably case is that this connection is somehow not
+working. For example a firewall could be set up in a way that it
+doesn&rsquo;t only prevent against unauthorized connections from the
+internet (and perhaps to intercept some connections to the internet,
+too) but also to block inter-process-communication inside the same
+computer. Note that since maxima is being run by a lisp processor
+the process communication is blocked from does not necessarily
+have to be named &ldquo;maxima&rdquo;. Common names of the program that opens
+the network connection would be sbcl, gcl, ccl or similar instead.
+</p>
+<p>On Un*x computers another possible reason
+would be that the loopback network that provides network connections
+between two programs in the same computer isn&rsquo;t properly configured.
+</p><hr size="6">
+<a name="How-to-save-data-from-a-broken-_002ewxmx-file"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Cannot-connect-to-Maxima" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#wxMaxima-waits-forever-for-data-from-maxima" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.2 How to save data from a broken .wxmx file</h2>
+<p>Internally most modern xml-based formats are ordinary zip-files with
+one speciality: the first file in the archive is stored uncompressed
+and provides information about what type of program can open this
+file.
+</p>
+<p>If the zip signature at the end of the file is still intact
+after renaming a broken &lsquo;<tt>.wxmx</tt>&rsquo; file to &lsquo;<tt>.zip</tt>&rsquo; most operating
+systems will provide a way to extract any portion of information that
+is stored inside it. The can be done when there is the need of
+recovering the original image files from a text processor document.
+If the zip signature isn&rsquo;t intact that does not need to be the end
+of the world: If wxMaxima during saving detected that something went
+wrong there will be a &lsquo;<tt>wxmx~</tt>&rsquo; file whose contents might help and
+even if there isn&rsquo;t such a file: If the configuration option is set
+that &lsquo;<tt>.wxmx</tt>&rsquo; files have to be optimized for version control
+it is possible to rename the &lsquo;<tt>.wxmx</tt>&rsquo; file to a &lsquo;<tt>.txt</tt>&rsquo; file
+and to use a text editor to recover the file&rsquo;s contents.
+</p><hr size="6">
+<a name="wxMaxima-waits-forever-for-data-from-maxima"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#How-to-save-data-from-a-broken-_002ewxmx-file" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Outputting-animations-doesn_0027t-work" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.3 wxMaxima waits forever for data from maxima</h2>
+<p>This might be caused by the fact that a closing brace, bracket,
+parenthesis or hyphenation mark is missing: In this case maxima waits
+until it gets the rest of its input. If that isn&rsquo;t the case the
+operating system normally provides a way to see if maxima is actually
+really working forever trying to solve the current problem.
+</p><hr size="6">
+<a name="Outputting-animations-doesn_0027t-work"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#wxMaxima-waits-forever-for-data-from-maxima" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.4 Outputting animations doesn&rsquo;t work</h2>
+<p>wxMaxima relies on a third-party tool
+(<a href="http://www.imagemagick.org/">ImageMagick</a>) to convert
+animations to the animated gif format. This will obviously only work
+if this package is installed and known to the system (on windows the path
+to ImageMagick&rsquo;s &lsquo;<tt>convert.exe</tt>&rsquo; has to be part of the <var>PATH</var> system
+variable to make the system find it).
+</p>
+<p>Another possible reason of not getting an animated gif is that this
+image would exceed the format&rsquo;s (or ImageMagick&rsquo;s) capabilities:
+</p><ul>
+<li> &lsquo;<tt>.gif</tt>&rsquo; files only allow for a maximum of 256 frames
+</li><li> &lsquo;<tt>.gif</tt>&rsquo; files can not exceed 65535x65535 pixels
+</li><li> ImageMagick has to have access to enough memory to hold all frames in
+      their uncompressed form.
+</li></ul>
+<hr size="6">
+<a name="Plotting-only-shows-an-closed-empty-envelope-with-an-error-message"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Outputting-animations-doesn_0027t-work" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.5 Plotting only shows an closed empty envelope with an error message</h2>
+<p>This means that wxMaxima was unable to read the file maxima was supposed
+to instruct gnuplot to create.
+</p>
+<p>Possible reasons that might cause this are:
+</p><ul>
+<li> The plotting command is part of a third-party package like
+      <code>implicit_plot</code> but this package wasn&rsquo;t loaded by maxima&rsquo;s
+      <code>load()</code> command before trying to plot.
+</li><li> maxima tried to do something the currently installed version of
+      gnuplot isn&rsquo;t able to understand. In this case the file
+      &lsquo;<tt>maxout.gnuplot</tt>&rsquo; in the directory maxima&rsquo;s variable
+      <var>maxima_userdir</var> points to contains the instructions from
+      maxima to gnuplot. Most of the time this file&rsquo;s contents therefore is
+      helpful when debugging the problem.
+</li><li> Gnuplot was instructed to use the pngcairo library that provides
+      antialiassing and additional line styles. But it wasn&rsquo;t compiled to
+      support this possibility. Solution: Uncheck the &quot;Use the cairo
+      terminal for plot&quot; checkbox in the configuration dialog and
+      don&rsquo;t set <var>wxplot_pngcairo</var> to true from maxima.
+</li><li> Gnuplot didn&rsquo;t output a valid &lsquo;<tt>.png</tt>&rsquo; file.
+</li></ul>
+<hr size="6">
+<a name="I-lost-a-cell-contents-and-undo-doesn_0027t-remember"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#wxMaxima-starts-up-with-the-message-_0060_0060Maxima-process-Terminated_002e_0027_0027" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.6 I lost a cell contents and undo doesn&rsquo;t remember</h2>
+<p>If you still have a way to find out what label maxima has assigned
+to the cell just type in the cell&rsquo;s label and it&rsquo;s contents will
+reappear. If you don&rsquo;t: Don&rsquo;t panic. In the &ldquo;maxima&rdquo; menu there
+is a way to show a history pane that shows all maxima commands that
+have been issued recently.
+</p>
+<p>If nothing else helps maxima contains a replay feature:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">%i1 playback();
+</pre></td></tr></table>
+<hr size="6">
+<a name="wxMaxima-starts-up-with-the-message-_0060_0060Maxima-process-Terminated_002e_0027_0027"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#File-I_002fO-from-maxima-doesn_0027t-work-on-Windows" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.7 wxMaxima starts up with the message &ldquo;Maxima process Terminated.&rdquo;</h2>
+<p>One possible reason is that maxima cannot be found in the location that is
+set in the &ldquo;maxima&rdquo; tab of wxMaxima&rsquo;s configuration dialog and therefore
+won&rsquo;t run at all. Setting the path to a working maxima binary should
+fix this problem. If it doesn&rsquo;t the command <code>wxmaxima_debug_dump_output</code>
+(that does still work if maxima isn&rsquo;t connected) might give some hints to the
+problem.
+</p><hr size="6">
+<a name="File-I_002fO-from-maxima-doesn_0027t-work-on-Windows"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#wxMaxima-starts-up-with-the-message-_0060_0060Maxima-process-Terminated_002e_0027_0027" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.8 File I/O from maxima doesn&rsquo;t work on Windows</h2>
+<p>On windows File I/O isn&rsquo;t relative to the directory of the current
+file by default. If you store the maxima file on the drive wxMaxima is
+installed to setting <var>wxchangedir</var> to <code>true</code> will fix
+that for <code>load</code>, <code>read_list</code>, <code>batch</code>,
+<code>read_matrix</code>, <code>save</code> and all similar commands.
+</p>
+<p>Setting this variable to <code>true</code> might have a drawback, though:
+Maxima knows which directory it is installed in and will search for
+any additional package that is requested by a <code>load</code> command in
+this directory, too. But it might not know which drive it is installed
+on. If <var>wxchangedir</var> is <code>true</code> and the current file is saved
+on a different drive than the one maxima is installed on maxima
+therefore might fail to load the additional packages it was bundled
+with.
+</p><hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Gunter Königsmann</em> on <em>February 10, 2015</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

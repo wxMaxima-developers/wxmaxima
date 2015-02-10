@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on February 10, 2015 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>wxMaxima Manual: 2. Extensions to maxima</title>
+
+<meta name="description" content="wxMaxima Manual: 2. Extensions to maxima">
+<meta name="keywords" content="wxMaxima Manual: 2. Extensions to maxima">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+body {color: black; background: #dbe3eb;  margin-left: 8%; margin-right: 13%;
+      font-family: "FreeSans", sans-serif}
+hr {
+  border: 0;
+  width: 80%;
+  color: #fff;
+  background-color: #fa1;
+}
+h1 {font-size: 150%; font-family: "FreeSans", sans-serif}
+h2 {font-size: 125%; font-family: "FreeSans", sans-serif}
+h3 {font-size: 100%; font-family: "FreeSans", sans-serif}
+a[href] {color: rgb(0,0,255); text-decoration: none;}
+a[href]:hover {background: rgb(220,220,220);}
+div.textbox {border: solid; border-width: thin; padding-top: 1em;
+    padding-bottom: 1em; padding-left: 2em; padding-right: 2em}
+div.titlebox {border: none; padding-top: 1em; padding-bottom: 1em;
+    padding-left: 2em; padding-right: 2em; background: rgb(200,255,255);
+    font-family: sans-serif}
+div.synopsisbox {
+    border: none; padding-top: 1em; padding-bottom: 1em; padding-left: 2em;
+    padding-right: 2em; background: rgb(255,220,255);}
+pre.example {border: 1px solid rgb(180,180,180); padding-top: 1em;
+    padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
+    background-color: rgb(238,238,255)}
+div.spacerbox {border: none; padding-top: 2em; padding-bottom: 2em}
+div.image {margin: 0; padding: 1em; text-align: center}
+div.categorybox {border: 1px solid gray; padding-top: 0px; padding-bottom: 0px;
+    padding-left: 1em; padding-right: 1em; background: rgb(247,242,220)}
+
+-->
+</style>
+
+<link rel="icon" href="wxmaximaicon.ico"/>
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Extensions"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="wxmaxima_1.html#g_t_002ewxmx" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima_1.html#Introduction" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Extensions-to-maxima"></a>
+<h1 class="chapter">2. Extensions to maxima</h1>
+<p>wxMaxima aims to be but a graphical user interface for maxima. In some
+cases it adds functionality to Maxima, though. These cases are
+described here.
+</p><hr size="6">
+<a name="Plotting"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Extensions" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Embedding-a-plot-into-the-work-sheet" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.1 Plotting</h2>
+<p>Plotting (having fundamentally to do with graphics) is a place where a
+graphical user interface will have to provide some extensions to the
+original program.
+</p><hr size="6">
+<a name="Embedding-a-plot-into-the-work-sheet"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Plotting" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Making-embedded-plots-bigger-or-smaller" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection">2.1.1 Embedding a plot into the work sheet</h3>
+<p>Maxima normally instructs the external program gnuplot to open a
+separate window for every diagram it creates. Since many times it is
+convenient to embed graphs into the work sheet instead wxMaxima
+provides its own set of plot functions that don&rsquo;t differ from the
+corresponding maxima functions save in their name: They are all
+prepended by a &ldquo;wx&rdquo;. For example  <code>wxplot</code> corresponds to
+<code>plot</code>, <code>wxdraw</code> corresponds to <code>draw</code> and
+<code>wxhistogram</code> corresponds to <code>histogram</code>.
+</p><hr size="6">
+<a name="Making-embedded-plots-bigger-or-smaller"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Embedding-a-plot-into-the-work-sheet" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Better-quality-plots" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection">2.1.2 Making embedded plots bigger or smaller</h3>
+<p>The configure dialog provides a way to change the default size plots
+are created with which sets the starting value of <var>wxplot_size</var>.
+The plotting routines of wxMaxima respect this variable that specifies
+the size of a plot in pixels. It can always be queried or used to set
+the size of the following plots:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">%i1 wxplot_size:[1200,800];
+%o1 [1200,800];
+
+%i2 wxdraw2d(
+        explicit(
+            sin(x),
+            x,1,10
+        )
+    )$
+</pre></td></tr></table>
+<p>If the size of only one plot is to be changed maxima provides a
+canonical way to change an attribute only for the current cell.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">%i1 wxplot_size:[1200,800];
+%o1 [1200,800];
+
+%i1 wxdraw2d(
+        explicit(
+            sin(x),
+            x,1,10
+        )
+    ),wxplot_size=[1600,800]$
+</pre></td></tr></table>
+
+<hr size="6">
+<a name="Better-quality-plots"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Making-embedded-plots-bigger-or-smaller" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Embedding-animations-into-the-spreadsheet" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection">2.1.3 Better quality plots</h3>
+<p>Gnuplot doesn&rsquo;t seem to provide a portable way of determining is it
+supports the high-quality bitmap output the cairo library provides.
+On systems where gnuplot is compiled to use this library the
+pngcairo option from the configuration menu (that can be overridden
+by the variable <var>wxplot_pngcairo</var>) enables support for
+antialiasing and additional line styles.
+</p><hr size="6">
+<a name="Embedding-animations-into-the-spreadsheet"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Better-quality-plots" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Opening-multiple-plot-windows-contemporarily" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection">2.1.4 Embedding animations into the spreadsheet</h3>
+<p>The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code>
+that does prepare multiple plots and allows to switch between them
+by moving the slider on top of the screen. If ImageMagick is installed
+wxMaxima even allows to export this animation as an animated gif.
+</p>
+<p>The first two arguments for <code>with_slider_draw</code> are the name of
+the variable that is stepped between the plots and a list of the
+values of these variable. The arguments that follow are the ordinary
+arguments for <code>wxdraw2d</code>:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">with_slider_draw(
+    f,[1,2,3,4,5,6,7,10],
+    title=concat(&quot;f=&quot;,f,&quot;Hz&quot;),
+    explicit(
+        sin(2*%pi*f*x),
+        x,0,1
+    ),grid=true
+);
+</pre></td></tr></table>
+<p>The same functionality for 3d plots is accessible as <code>with_slider_draw3d</code>.
+</p>
+<p>There is a second set of functions making use of the slider
+</p><ul>
+<li> <code>wxanimate_draw</code> and
+</li><li> <code>wxanimate_draw3d</code>:
+</li></ul>
+<table><tr><td>&nbsp;</td><td><pre class="example">wxanimate_draw(
+    a, 3,
+    explicit(sin(a*x), x, -4, 4),
+    title=printf(false, &quot;a=~a&quot;, a));
+</pre></td></tr></table>
+
+<p>Normally the animations are played back or exported with the frame
+rate chosen in the configuration of wxMaxima. To set the speed an
+individual animation is played back the variable <var>wxanimate_framerate</var>
+can be used:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">wxanimate(a, 10,
+    sin(a*x), [x,-5,5]), wxanimate_framerate=6$
+</pre></td></tr></table>
+<hr size="6">
+<a name="Opening-multiple-plot-windows-contemporarily"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Embedding-animations-into-the-spreadsheet" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Embedding-graphics" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection">2.1.5 Opening multiple plot windows contemporarily</h3>
+<p>While not being a provided by wxmaxima this feature of maxima (on
+setups that support it) sometimes comes in handily. The following
+example comes from a post from Mario Rodriguez to the maxima mailing
+list: 
+</p><table><tr><td>&nbsp;</td><td><pre class="example">load(draw);
+
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+
+/* Paraboloid in window #3 */
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+</pre></td></tr></table>
+<hr size="6">
+<a name="Embedding-graphics"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Opening-multiple-plot-windows-contemporarily" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#wxmaximarc" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.2 Embedding graphics</h2>
+<p>if the &lsquo;<tt>.wxmx</tt>&rsquo; file format is being used embedding files in a
+wxMaxima project can be done as easily as per drag-and-drop. But
+sometimes (for example if an image&rsquo;s contents might change lateron)
+it is better to tell the file to load the image on evaluation:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">show_image(&quot;Mann.png&quot;);
+</pre></td></tr></table>
+<hr size="6">
+<a name="wxmaximarc"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Embedding-graphics" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Special-variables" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.3 wxmaximarc</h2>
+<a name="index-Startup-File"></a>
+<p>If the maxima user directory there is a text file named &lsquo;<tt>wxmaxima-init.mac</tt>&rsquo;
+the contents of the file is passed to maxima automatically every time
+a new worksheet has been started.
+</p>
+<p>To find out which directory maxima uses as the user directory just
+type in the following line:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">maxima_userdir;
+</pre></td></tr></table>
+<p>The answer from Maxima will specify the name of the directory that the
+startup file can be placed in. 
+</p><table><tr><td>&nbsp;</td><td><pre class="example">%o1 /home/username/.maxima
+</pre></td></tr></table>
+<hr size="6">
+<a name="Special-variables"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#wxmaximarc" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Pretty_002dprinting-2D-output" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.4 Special variables</h2>
+<ul>
+<li> <var>wxfilename</var> This variable contains the name of the file
+%currently opened in wxMaxima.
+</li><li> <var>wxplot_pngcairo</var> tells if wxMaxima tries to use gnuplot&rsquo;s
+pngcairo terminal that provides more line styles and a better overall
+graphics quality. This variable can be used for reading or overriding
+the respective setting in the configuration dialog.
+</li><li> <var>wxplot_size</var> defines the size of embedded plots.
+</li><li> <var>wxchangedir</var> On most operating systems wxmaxima
+      automatically sets maxima&rsquo;s working directory to the directory
+      of the current file. This will allow file I/O (e.G. by
+      <code>read_matrix</code>) to work without specifying the whole path to the 
+      file that has to be read or written. On windows this is
+      deactivated, though: The Lisp Standard doesn&rsquo;t contain a concept of
+      the current working directory. Therefore there is no standard
+      way of setting it and changing to a directory that isn&rsquo;t on
+      the drive maxima has been installed to might cause maxima to
+      try to read is own package files from this drive, too, instead
+      of from the drive maxima has been installed to. Setting
+      <var>wxchangedir</var> to <code>true</code> tells wxMmaxima that it has to
+      risk that and to set maxima&rsquo;s working directory.
+</li><li> <var>wxanimate_framerate</var> The number of frames per second the
+      following animations have to be played back with. -1 tells
+      wxMaxima to use the default frame rate from the config dialog.
+</li></ul>
+<hr size="6">
+<a name="Pretty_002dprinting-2D-output"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Special-variables" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Bug-reporting" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.5 Pretty-printing 2D output</h2>
+<p>The function <code>(table_form)</code> displays a 2D list in a form that is
+more readable than the output maxima&rsquo;s default output routine.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">table_form(
+    [
+        [1,2],
+        [3,4]
+    ]
+)$
+</pre></td></tr></table>
+<hr size="6">
+<a name="Bug-reporting"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Pretty_002dprinting-2D-output" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Extensions" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">2.6 Bug reporting</h2>
+<p>wxMaxima provides a few functions that gather bug reporting
+information about the current system:
+</p><ul>
+<li> <code>wxbuild_info()</code> gathers information about the currently
+running version of wxMaxima
+</li><li> <code>wxbug_report()</code> tells how and where to file bugs
+</li><li> In special cases additional debugging information might be
+      obtained by issuing the command <code>wxmaxima_debug_dump_output</code>:
+      Normally this command produces an dialog containing only the
+      information what would be displayed here if there was something
+      to display. If there is output
+      from maxima that isn&rsquo;t passed to wxMaxima through the network
+      connection (as it should be) the dialog is filled with this
+      output instead.
+</li></ul>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Extensions" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_3.html#Troubleshooting" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Gunter Königsmann</em> on <em>February 10, 2015</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

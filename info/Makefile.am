@@ -31,6 +31,7 @@ wxmaxima_1.html: wxmaxima.html
 wxmaxima_2.html: wxmaxima.html
 wxmaxima_3.html: wxmaxima.html
 wxmaxima_4.html: wxmaxima.html
+wxmaxima_5.html: wxmaxima.html
 
 wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
@@ -42,7 +43,7 @@ contents.hhc index.hhk: wxmaxima.html
 wxMaxima.chm: wxmaxima.hhp contents.hhc index.hhk
 	-"$(HHC)" wxmaxima.hhp
 
-html_DATA = $(figurefiles) contents.hhc index.hhk wxmaxima.hhp wxmaxima.html
+html_DATA = $(figurefiles) $(wildcard contents.hhc) index.hhk wxmaxima.hhp wxmaxima.html
 html_DATA+= wxmaxima_1.html wxmaxima_2.html wxmaxima_3.html wxmaxima_4.html wxmaxima_5.html
 html_DATA+= wxmaxima_abt.html wxmaxima_ovr.html wxmaxima_toc.html
 #dist_html_data=$(html_DATA)
@@ -81,8 +82,9 @@ clean-chm:
 endif
 
 
-EXTRA_DIST = texi2html manual.css texi2html.init $(html_DATA)\
+EXTRA_DIST = manual.css texi2html.init $(html_DATA)\
     $(genericdirDATA) $(pdffigures) \
     wxmaximaicon.ico \
-    wxmaxima.info wxmaxima.hhc wxMaxima.chm
+    wxmaxima.info $(wildcard wxmaxima.hhc) wxMaxima.chm \
+    $(html_DATA)
 
