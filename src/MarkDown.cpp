@@ -18,6 +18,13 @@
 //
 
 #include "MarkDown.h"
+
+MarkDownParser :: MarkDownParser()
+{
+  m_flowedTextRequested = true;
+  wxConfig::Get()->Read(wxT("flowedTextRequested"), &m_flowedTextRequested);
+}
+  
 wxString MarkDownParser::MarkDown(wxString str)
 {
   wxString result=wxEmptyString;
@@ -88,7 +95,8 @@ wxString MarkDownParser::MarkDown(wxString str)
 	      // and add a new item if we still are inside a list.
 	      if(indentationLevels.back() > index)
 		{
-		  //		  addNewline = false;
+		  if(NewLineBreaksLine() && !m_flowedTextRequested)
+		    addNewline = false;
 		  result += itemizeEndItem();
 		  while((!indentationLevels.empty())&&
 			(indentationLevels.back()>index))

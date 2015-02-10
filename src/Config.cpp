@@ -141,6 +141,7 @@ void Config::SetProperties()
   m_displayedDigits->SetToolTip(_("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
+  m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -159,7 +160,7 @@ void Config::SetProperties()
   // configuration data for this item.
   bool match = true, showLongExpr = false, savePanes = false, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
-  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false;
+  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true;
   bool insertAns = true;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
@@ -190,6 +191,7 @@ void Config::SetProperties()
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
+  config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
@@ -256,6 +258,7 @@ void Config::SetProperties()
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
+  m_flowedTextRequested->SetValue(flowedTextRequested);
   m_matchParens->SetValue(match);
   m_showLong->SetValue(showLongExpr);
   m_changeAsterisk->SetValue(changeAsterisk);
@@ -405,6 +408,10 @@ wxPanel* Config::CreateOptionsPanel()
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
 
+    m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
+  vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
+
+  
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
 
@@ -591,6 +598,7 @@ void Config::WriteSettings()
   config->Write(wxT("displayedDigits"), m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
+  config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());

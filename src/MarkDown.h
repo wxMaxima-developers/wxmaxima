@@ -33,26 +33,30 @@
 class MarkDownParser
 {
 public:
-  MarkDownParser(){}
+  MarkDownParser();
   wxString MarkDown(wxString str);
-
-  virtual wxString itemizeBegin()=0;  //!< The marker for the begin of an item list
-  virtual wxString itemizeEnd()=0;    //!< The marker for the end of an item list
-  virtual wxString itemizeItem()=0;   //!< The marker for the begin of an item
-  virtual wxString itemizeEndItem()=0;//!< The marker for the end of an item
-  virtual wxString NewLine()=0;       //!< The marker for the beginning of a new line
+ private:
+  bool m_flowedTextRequested;             //!< For HTML: Do we want to pass all newlines to the output?
+  virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
+  virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
+  virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
+  virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
+  virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
+  virtual bool     NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
 };
 
 //! A markdown parser for TeX
 class MarkDownTeX: public MarkDownParser
 {
 public:
-  MarkDownTeX() : MarkDownParser() {}
+ MarkDownTeX() : MarkDownParser() {}
+ private:
   virtual wxString itemizeBegin(){return wxT("\\begin{itemize}\n");}
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
   virtual wxString itemizeItem(){return wxT("\\item");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
   virtual wxString NewLine(){return wxT("\n");}
+  virtual bool     NewLineBreaksLine(){return false;}
 };
 
 //! A markdown parser for HTML
@@ -60,11 +64,13 @@ class MarkDownHTML: public MarkDownParser
 {
 public:
   MarkDownHTML() : MarkDownParser() {}
+ private:
   virtual wxString itemizeBegin(){return wxT("<UL>");}
   virtual wxString itemizeEnd(){return wxT("</UL>");}
   virtual wxString itemizeItem(){return wxT("<LI>");}
   virtual wxString itemizeEndItem(){return wxT("</LI>");}
   virtual wxString NewLine(){return wxT("<BR>");}
+  virtual bool     NewLineBreaksLine(){return true;}
 };
 
 #endif // MARKDOWN_H

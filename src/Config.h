@@ -173,6 +173,8 @@ protected:
   wxCheckBox* m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox* m_TeXExponentsAfterSubscript;
+  //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
+  wxCheckBox* m_flowedTextRequested;
   wxCheckBox* m_matchParens;
   wxCheckBox* m_showLong;
   wxCheckBox* m_enterEvaluates;
