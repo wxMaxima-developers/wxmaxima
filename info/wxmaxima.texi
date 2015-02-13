@@ -620,6 +620,9 @@ on. If @var{wxchangedir} is @code{true} and the current file is saved
 on a different drive than the one maxima is installed on maxima
 therefore might fail to load the additional packages it was bundled
 with.
+@section Input sometimes is sluggish/ignoring keys on Ubuntu
+Installing the package @code{ibus-gtk} should resolve this issue. See
+(@uref{https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558}) for details.
 @node FAQ
 @chapter FAQ
 @section Is there a way to make more text fit on a pdfLaTeX page?
