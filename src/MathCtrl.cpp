@@ -2117,15 +2117,16 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
       if (prompt && cell && input.Len() > 0) {
         int outputExpressions = 0;
         int initialHiddenExpressions = 0;
-        for (SimpleMathParserIterator it = input; it.isValid(); ++it)
+        for (SimpleMathParserIterator it = input; it.isValid(); ++it) {
           switch (*it) {
           case '$': if (initialHiddenExpressions == outputExpressions) initialHiddenExpressions++; //fallthrough
           case ';': outputExpressions++;
           }
+        }
 
-        unsigned int promptIndex = getMathCellIndex(prompt);
-        unsigned int outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
-        unsigned int index = promptIndex;
+        int promptIndex = getMathCellIndex(prompt);
+        int outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        int index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
         else
 	  {
