@@ -1952,67 +1952,82 @@ bool wxMaxima::SaveFile(bool forceSave)
 {
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
-  int ext = -1;
-
+  int ext;
+  
   if (file.Length() == 0 || forceSave)
-  {
-    if (file.Length() == 0) {
-      file = _("untitled");
-      wxConfig::Get()->Read(wxT("defaultExt"), &fileExt);
-    }
-    else
-      wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
-
-    wxFileDialog fileDialog(this,
-        _("Save As"), m_lastPath,
-        file,
-        _("wxMaxima document (*.wxm)|*.wxm|"
-            "wxMaxima xml document (*.wxmx)|*.wxmx|"
-            "Maxima batch file (*.mac)|*.mac"),
-            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-    if (fileExt == wxT("wxm"))
-      fileDialog.SetFilterIndex(0);
-    else if (fileExt == wxT("wxmx"))
-      fileDialog.SetFilterIndex(1);
-    else if (fileExt == wxT("mac"))
-      fileDialog.SetFilterIndex(2);
-
-    if (fileDialog.ShowModal() == wxID_OK)
     {
-      file = fileDialog.GetPath();
-      ext = fileDialog.GetFilterIndex();
+      if (file.Length() == 0) {
+	wxConfig::Get()->Read(wxT("defaultExt"), &fileExt);
+	file = _("untitled") + wxT(".") + fileExt;
+      }
+      else
+      wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
+      
+      wxFileDialog fileDialog(this,
+			      _("Save As"), m_lastPath,
+			      file,
+			      _(  "wxMaxima xml document (*.wxmx)|*.wxmx|"
+				  "wxMaxima document (*.wxm)|*.wxm|"
+				  "Maxima batch file (*.mac)|*.mac"),
+			      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+      
+      if (fileExt == wxT("wxm"))
+	fileDialog.SetFilterIndex(1);
+      else if (fileExt == wxT("wxmx"))
+	fileDialog.SetFilterIndex(0);
+      else if (fileExt == wxT("mac"))
+	fileDialog.SetFilterIndex(2);
+      
+      if (fileDialog.ShowModal() == wxID_OK)
+	{
+	  file = fileDialog.GetPath();
+	  ext = fileDialog.GetFilterIndex();
+	}
+      else
+	return false;
     }
-    else
-      return false;
-  }
 
   if (file.Length())
-  {
-    if (ext == 0 && file.Right(4) != wxT(".wxm"))
-      file += wxT(".wxm");
-    else if (ext == 1 && file.Right(5) != wxT(".wxmx"))
-      file += wxT(".wxmx");
-    else if (ext == 2 && file.Right(4) != wxT(".mac"))
-      file += wxT(".mac");
-
-    m_currentFile = file;
-    m_lastPath = wxPathOnly(file);
-    if (file.Right(5) == wxT(".wxmx")) {
-      if (!m_console->ExportToWXMX(file))
-        return false;
-      wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
-    }
-    else {
-      if (!m_console->ExportToMAC(file))
-        return false;
-      wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
-    }
-    AddRecentDocument(file);
-    SetCWD(file);
+    {
+      if((file.Right(4) != wxT(".wxm"))&&
+	 (file.Right(5) != wxT(".wxmx"))&&
+	 (file.Right(4) != wxT(".mac"))
+	 )
+	{
+	  switch(ext)
+	    {
+	    case 1:
+	      file += wxT(".wxm");
+	      break;
+	    case 0:
+	      file += wxT(".wxmx");
+	      break;
+	    case 2:
+	      file += wxT(".mac");
+	      break;
+	    }
+	}
     
-    return true;
-  }
+      m_currentFile = file;
+      m_lastPath = wxPathOnly(file);
+      if (file.Right(5) == wxT(".wxmx")) {
+	if (!m_console->ExportToWXMX(file))
+	  return false;
+	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
+      }
+      else {
+	if (!m_console->ExportToMAC(file))
+	  return false;
+	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
+      }
+      AddRecentDocument(file);
+      SetCWD(file);
+
+      wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
+      wxConfig::Get()->Write(wxT("defaultExt"), fileExt);
+
+      return true;
+    }
 
   return false;
 }
@@ -2078,35 +2093,72 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case menu_export_html:
     {
-      wxString file(_("untitled"));
-      if (m_currentFile.Length() >0)
-        wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, NULL);
-      file = wxFileSelector(_("Export"), m_lastPath,
-                            file + wxT(".html"), wxT("html"),
-                            _("HTML file (*.html)|*.html|"
-                              "pdfLaTeX file (*.tex)|*.tex|"
-                              "Automatic by extension|*"),
-                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (file.Length())
-      {
-        m_lastPath = wxPathOnly(file);
-        if (file.Right(5) != wxT(".html") && file.Right(4) != wxT(".tex"))
-          file = file + wxT(".html");
+      // Determine a sane default file name;
+      wxString file = m_currentFile;
 
-        if (file.Right(4) == wxT(".tex")) {
-          if (!m_console->ExportToTeX(file))
-            wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
-                         wxOK);
-        }
-        else {
-          if (!m_console->ExportToHTML(file))
-            wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
-                         wxOK);
-        }
-      }
+      if (file.Length() == 0)
+	file = _("untitled");
+      else
+	wxFileName::SplitPath(file, NULL, NULL, &file, NULL);
+    
+      wxString fileExt="html";
+      wxConfig::Get()->Read(wxT("defaultExportExt"), &fileExt);
+
+      int ext;    
+      wxFileDialog fileDialog(this,
+			      _("Export"), m_lastPath,
+			      file + wxT(".") + fileExt,
+			      _("HTML file (*.html)|*.html|"
+				"pdfLaTeX file (*.tex)|*.tex"),
+			      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    
+      if (fileExt == wxT("html"))
+	fileDialog.SetFilterIndex(0);
+      else fileDialog.SetFilterIndex(1);
+    
+      if (fileDialog.ShowModal() == wxID_OK)
+	{
+	  file = fileDialog.GetPath();
+	  ext = fileDialog.GetFilterIndex();
+	  if (file.Length())
+	    {
+	      int ext = fileDialog.GetFilterIndex();
+	      if((file.Right(5) != wxT(".html"))&&
+		 (file.Right(4) != wxT(".tex"))
+		 )
+		{
+		  switch(ext)
+		    {
+		    case 0:
+		      file += wxT(".html");
+		      break;
+		    case 1:
+		      file += wxT(".tex");
+		      break;
+		    default: 
+		      file += wxT(".html");
+		    }
+		}
+	    
+	      if (file.Right(4) == wxT(".tex")) {
+		if (!m_console->ExportToTeX(file))
+		  wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
+			       wxOK);
+	      }
+	      else {
+		if (!m_console->ExportToHTML(file))
+		  wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
+			       wxOK);
+	      }
+
+	      wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
+	      wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
+	      
+	    }
+	}
     }
     break;
-
+    
   case menu_load_id:
     {
       wxString file = wxFileSelector(_("Load Package"), m_lastPath,
