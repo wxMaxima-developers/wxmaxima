@@ -3100,7 +3100,6 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
     {
       GroupCell* tmp = m_tree;
       while (tmp != NULL) {
-	std::cerr<<"Debug3\n";
 	m_evaluationQueue->AddToQueue((GroupCell*) tmp);
 	if (tmp == stop)
 	  break;
