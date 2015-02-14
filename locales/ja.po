@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+#
 # matcha-zaq <Matcha_zaq@excite.co.jp>, 2014, 2015.
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-08 08:36+0100\n"
-"PO-Revision-Date: 2015-01-01 10:47+0900\n"
+"PO-Revision-Date: 2015-02-11 15:52+0900\n"
 "Last-Translator: matcha-zaq <Matcha_zaq@excite.co.jp>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
 "Language: ja\n"
@@ -245,9 +245,8 @@ msgid "&Maxima"
 msgstr "&Maxima"
 
 #: ../src/wxMaximaFrame.cpp:670
-#, fuzzy
 msgid "&Maxima help"
-msgstr "ヘルプ"
+msgstr "Maximaのヘルプ(&M)"
 
 #: ../src/wxMaximaFrame.cpp:629
 msgid "&Modulus Computation..."
@@ -428,11 +427,11 @@ msgstr "検索するディレクトリを追加(&P)"
 #: ../src/Config.cpp:136
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
-msgstr ""
+msgstr "pdftexに対してのLaTeX出力のプリアンブルに追加される追加コマンド"
 
 #: ../src/Config.cpp:365
 msgid "Additional lines for the TeX preamble:"
-msgstr ""
+msgstr "TeXのプリアンブルに追加する行"
 
 #: ../src/Config.cpp:133
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
@@ -468,7 +467,7 @@ msgstr "文字："
 
 #: ../src/wxMaxima.cpp:3536
 msgid "Artwork by"
-msgstr "Artwork by"
+msgstr "アートワーク担当"
 
 #: ../src/Config.cpp:388
 msgid "Ask to save untitled documents"
@@ -691,8 +690,7 @@ msgstr "単語補完"
 
 #: ../src/wxMaximaFrame.cpp:535
 msgid "Compute continued fraction of a value"
-msgstr ""
-"連分数を求める（連分数の段数はコマンド \"cflength:＜段数＞\"で変更可能）"
+msgstr "連分数を求める（連分数の段数はコマンド \"cflength:＜段数＞\"で変更可能）"
 
 #: ../src/wxMaximaFrame.cpp:473
 msgid "Compute the adjoint matrix"
@@ -770,8 +768,7 @@ msgstr "引数が複素数の指数関数を三角関数に変換"
 
 #: ../src/wxMaximaFrame.cpp:554
 msgid "Convert logarithm of product to sum of logarithms"
-msgstr ""
-"対数の展開（自動的に展開したい場合はコマンド\"logexpand:super\"を入力）"
+msgstr "対数の展開（自動的に展開したい場合はコマンド\"logexpand:super\"を入力）"
 
 #: ../src/wxMaximaFrame.cpp:557
 msgid "Convert sum of logarithms to logarithm of product"
@@ -913,22 +910,21 @@ msgstr "特別な文字列"
 
 #: ../src/Config.cpp:286
 msgid "Default animation framerate:"
-msgstr ""
+msgstr "既定のアニメーションフレームレート:"
 
 #: ../src/Config.cpp:456
 msgid "Default font:"
 msgstr "入力用フォント："
 
 #: ../src/Config.cpp:427
-#, fuzzy
 msgid "Default port for communication with wxMaxima:"
-msgstr "MaximaとwxMaximaの通信に使用される既定のポート"
+msgstr "wxMaximaとの通信に使用される既定のポート"
 
 #: ../src/Config.cpp:138
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
-msgstr ""
+msgstr "アニメーションを再生する際のデフォルトのスピード（一秒あたりのフレーム数）を定義。"
 
 #: ../src/wxMaxima.cpp:2463 ../src/wxMaxima.cpp:2472
 msgid "Delete"
@@ -1056,6 +1052,8 @@ msgid ""
 "enables version control systems like git and svn to effectively spot the "
 "differences."
 msgstr ""
+"Maximaの入力テキストを圧縮せず、画像を個別に圧縮します。 "
+"これはgitやsvnのようなバージョン管理システムが効率的に差異を見つけ出すことを可能にします。"
 
 #: ../src/wxMaxima.cpp:4625
 msgid "Don't save"
@@ -1243,7 +1241,7 @@ msgstr "エクスポート"
 #: ../src/Config.cpp:382
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
-msgstr ""
+msgstr "TeXにアニメーションを出力(ただしPDF閲覧ソフトがこの機能をサポートしている場合のみ画像が動きます)"
 
 #: ../src/wxMaximaFrame.cpp:214
 msgid "Export document to a HTML or pdfLaTeX file"
@@ -1533,8 +1531,7 @@ msgstr "実部を取り出す(&A)"
 
 #: ../src/wxMaximaFrame.cpp:519
 msgid "Get inverse Laplace transformation of an expression"
-msgstr ""
-"ラプラス逆変換を求めます（分母の多項式は各次数が定まっている必要があります）"
+msgstr "ラプラス逆変換を求めます（分母の多項式は各次数が定まっている必要があります）"
 
 #: ../src/wxMaximaFrame.cpp:506
 msgid "Get the Taylor or power series of expression"
@@ -1561,13 +1558,12 @@ msgid "Grid:"
 msgstr "グラフの滑らかさ（y）："
 
 #: ../src/wxMaxima.cpp:2080
-#, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|Automatic by extension|"
 "*"
 msgstr ""
-"HTML ドキュメント (*.html)|*.html|TeX ファイル (*.tex)|*.tex|すべてのファイ"
-"ル (*.*)|*"
+"HTML ドキュメント (*.html)|*.html|pdfLaTeX ファイル (*.tex)|*.tex|拡張子で自動判別|"
+"*"
 
 #: ../src/wxMaxima.cpp:2824 ../src/wxMaxima.cpp:2843
 msgid "Height:"
@@ -1633,6 +1629,8 @@ msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
 msgstr ""
+"もし数値がこの桁数より長ければ、 "
+"数値は省略記号によって省略表示されます。"
 
 #: ../data/tips.txt:5
 msgid ""
@@ -1665,6 +1663,8 @@ msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
 msgstr ""
+"LaTeXへの出力において、指数を最後の下付き文字の上部ではなく、後方に配置。 "
+"いくつかのフォントや短い下付き文字の読みやすさを向上させる可能性があります。"
 
 #: ../src/wxMaxima.cpp:3930
 msgid "Include columns:"
@@ -1859,7 +1859,7 @@ msgstr "最小公倍数"
 
 #: ../src/Config.cpp:385
 msgid "LaTeX: Place exponents after, instead above subscripts"
-msgstr ""
+msgstr "LaTeX: 下付き文字の上部ではなく、後方に指数を置く"
 
 #: ../src/Config.cpp:146
 msgid "Language used for wxMaxima GUI."
@@ -2021,7 +2021,7 @@ msgstr "条件不足時のMaximaの質問"
 
 #: ../src/wxMaxima.cpp:733
 msgid "Maxima started. Waiting for connection..."
-msgstr "maximaと接続しています"
+msgstr "Maximaと接続しています"
 
 #: ../data/tips.txt:3
 msgid ""
@@ -2041,7 +2041,7 @@ msgstr "Maxima version: "
 
 #: ../src/Config.cpp:292
 msgid "Maximum displayed number of digits:"
-msgstr ""
+msgstr "表示する最大の桁数:"
 
 #: ../src/wxMaximaFrame.cpp:1059
 msgid "Mean Difference Test..."
@@ -2113,7 +2113,7 @@ msgstr "正規性の検定"
 
 #: ../src/Config.cpp:352
 msgid "Norwegian"
-msgstr ""
+msgstr "ノルウェー語"
 
 #: ../src/wxMaxima.cpp:2788
 msgid "Not a valid matrix dimension!"
@@ -2121,7 +2121,7 @@ msgstr "有効な行列の次元ではありません！"
 
 #: ../src/wxMaxima.cpp:2653 ../src/wxMaxima.cpp:2677
 msgid "Not a valid number of equations!"
-msgstr "有効な方程式の数ではありません"
+msgstr "有効な方程式の数ではありません!"
 
 #: ../src/wxMaxima.cpp:3672
 msgid "Not connected."
@@ -2206,7 +2206,7 @@ msgstr "ファイルを開く"
 
 #: ../src/Config.cpp:379
 msgid "Optimize wxmx files for version control"
-msgstr ""
+msgstr "バージョン管理のためにwxmxファイルを最適化する"
 
 #: ../src/wxMaximaFrame.cpp:740 ../src/wxMaximaFrame.cpp:808
 #: ../src/Config.cpp:110
@@ -2223,11 +2223,11 @@ msgstr "再入力する前の出力"
 
 #: ../src/wxMaxima.cpp:1750
 msgid "Output from Maxima to stderr (there should be none):\n"
-msgstr ""
+msgstr "Maximaからstderr（標準エラー出力）への出力（出力先は空であることが望ましい）:\n"
 
 #: ../src/wxMaxima.cpp:1742
 msgid "Output from Maxima to stdout (there should be none):\n"
-msgstr ""
+msgstr "Maximaからstdout（標準出力）への出力（出力先は空であることが望ましい）:\n"
 
 #: ../src/Config.cpp:473
 msgid "Output labels"
@@ -2397,9 +2397,8 @@ msgid "Precision"
 msgstr "表示桁数"
 
 #: ../src/wxMaximaFrame.cpp:282
-#, fuzzy
 msgid "Preferences...\tCtrl+,"
-msgstr "設定\tCTRL+,"
+msgstr "設定\tCtrl+,"
 
 #: ../src/wxMaximaFrame.cpp:333
 msgid "Previous Command\tAlt-Up"
@@ -2419,14 +2418,12 @@ msgid "Product"
 msgstr "総乗"
 
 #: ../src/wxMaximaFrame.cpp:298
-#, fuzzy
 msgid "Re-evaluate All until here\tCtrl-Shift-H"
-msgstr "全てのセルを評価\tCtrl-Shift-R"
+msgstr "ここまでの全てのセルを再評価\tCtrl-Shift-H"
 
 #: ../src/wxMaximaFrame.cpp:299
-#, fuzzy
 msgid "Re-evaluate all cells above the one the cursor is in"
-msgstr "全てのセルを評価"
+msgstr "カーソルがあるセルより上にある全てのセルを再評価"
 
 #: ../src/wxMaximaFrame.cpp:1074
 msgid "Read Matrix..."
@@ -2794,9 +2791,8 @@ msgid "Show the definition of function:"
 msgstr "表示する関数名の入力"
 
 #: ../src/wxMaximaFrame.cpp:665 ../src/wxMaximaFrame.cpp:668
-#, fuzzy
 msgid "Show wxMaxima help"
-msgstr "ヘルプ"
+msgstr "wxMaximaのヘルプを表示"
 
 #: ../src/wxMaximaFrame.cpp:1007
 msgid "Simplify"
@@ -2939,6 +2935,8 @@ msgid ""
 "output them. If this option is selected additional LaTeX packages might be "
 "needed in order to compile the putput, though."
 msgstr ""
+"いくつかのPDF閲覧ソフトは動画を表示できますそしてwxMaximaは動画を出力できます。 "
+"ただしこのオプションが有効化された場合、追加のLaTeXパッケージが出力を生成するために必要となる可能性があります。"
 
 #: ../src/Config.cpp:356
 msgid "Spanish"
@@ -3062,7 +3060,7 @@ msgstr "MaximaとwxMaximaの通信に使用される既定のポート"
 
 #: ../src/wxMaximaFrame.cpp:671
 msgid "The offline manual of maxima"
-msgstr ""
+msgstr "Maximaのオフラインマニュアルを開く"
 
 #: ../src/Config.cpp:143
 msgid ""
@@ -3070,6 +3068,8 @@ msgid ""
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it."
 msgstr ""
+"pngCairoターミナルはより高品質なグラフィック（アンチエイリアスや追加のラインスタイル）を提供します。 "
+"ただし、お使いのシステムにインストールされているgnuplotがこの機能を実際にサポートしている場合のみプロットが出力されます。"
 
 #: ../data/tips.txt:10
 msgid ""
@@ -3146,9 +3146,8 @@ msgid "To Float"
 msgstr "小数点で出力"
 
 #: ../src/wxMaximaFrame.cpp:653
-#, fuzzy
 msgid "To Numeri&c\tCtrl+Shift+N"
-msgstr "数値で出力(&C)\tCTRL+SHIFT+N"
+msgstr "数値で出力(&C)\tCtrl+Shift+N"
 
 #: ../data/tips.txt:18
 msgid ""
@@ -3207,8 +3206,7 @@ msgstr "計算に要した時間を表示(&T)"
 
 #: ../src/wxMaximaFrame.cpp:625
 msgid "Toggle algebraic flag"
-msgstr ""
-"式中の平方根や虚数といった代数的整数の整理を有効にします（デフォルトは無効）"
+msgstr "式中の平方根や虚数といった代数的整数の整理を有効にします（デフォルトは無効）"
 
 #: ../src/wxMaximaFrame.cpp:278
 msgid "Toggle full screen editing"
@@ -3228,7 +3226,7 @@ msgstr "ツールバーのアイコン"
 
 #: ../src/wxMaxima.cpp:3539
 msgid "Translated by"
-msgstr "Translated by"
+msgstr "翻訳担当"
 
 #: ../src/wxMaximaFrame.cpp:475
 msgid "Transpose a matrix"
@@ -3236,7 +3234,7 @@ msgstr "転置行列を求める"
 
 #: ../src/Config.cpp:357
 msgid "Turkish"
-msgstr ""
+msgstr "トルコ語"
 
 #: ../src/wxMaximaFrame.cpp:682
 msgid "Tutorials"
@@ -3292,7 +3290,7 @@ msgstr "Gosperアルゴリズムを使用"
 
 #: ../src/Config.cpp:376
 msgid "Use cairo to improve plot quality."
-msgstr ""
+msgstr "より高品質なプロットのためにcairoを使用"
 
 #: ../src/Config.cpp:150 ../src/Config.cpp:306
 msgid "Use centered dot character for multiplication"
@@ -3359,7 +3357,7 @@ msgstr "行数："
 
 #: ../src/Config.cpp:107
 msgid "Worksheet"
-msgstr ""
+msgstr "ワークシート"
 
 #: ../src/Config.cpp:144
 msgid "Write matching parenthesis in text controls."
@@ -3367,7 +3365,7 @@ msgstr "テキスト入力ボックスでの括弧の自動補完"
 
 #: ../src/wxMaxima.cpp:3535
 msgid "Written by"
-msgstr "Written by"
+msgstr "開発担当"
 
 #: ../data/tips.txt:4
 msgid ""
@@ -3557,14 +3555,12 @@ msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
 #: ../src/wxMaximaFrame.cpp:664
-#, fuzzy
 msgid "wxMaxima &Help\tCtrl+?"
-msgstr "Maximaのヘルプ(&H)\tCTRL+?"
+msgstr "wxMaximaのヘルプ(&H)\tCtrl+?"
 
 #: ../src/wxMaximaFrame.cpp:667
-#, fuzzy
 msgid "wxMaxima &Help\tF1"
-msgstr "ヘルプ(&H)\tF1"
+msgstr "wxMaximaのヘルプ(&H)\tF1"
 
 #: ../src/Config.cpp:100 ../src/Config.cpp:130
 msgid "wxMaxima configuration"
