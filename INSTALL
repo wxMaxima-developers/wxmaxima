@@ -227,3 +227,15 @@ operates.
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
 
+
+Testing the program
+===================
+
+A minimal test if compilation has worked would be
+ - opening test/testbench_simple.wxmx with wxMaxima
+ - Select the "Cell/Evaluate all Cells" menu item
+ - Saving the file with a .wxmx extension
+ - and opening it again.
+
+If this worked and all the plots work this normally means
+compilation and the system setup seem to work basically.
