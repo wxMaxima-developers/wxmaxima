@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on February 13, 2015 by texi2html 1.82
+<!-- Created on February 15, 2015 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -222,7 +222,7 @@ image would exceed the format&rsquo;s (or ImageMagick&rsquo;s) capabilities:
 <a name="Plotting-only-shows-an-closed-empty-envelope-with-an-error-message"></a>
 <table cellpadding="1" cellspacing="1" border="0">
 <tr><td valign="middle" align="left">[<a href="#Outputting-animations-doesn_0027t-work" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Plotting-an-animation-results-in-_0060_0060error_003a-undefined-variable_0027_0027" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
@@ -259,9 +259,31 @@ to instruct gnuplot to create.
 </li><li> Gnuplot didn&rsquo;t output a valid &lsquo;<tt>.png</tt>&rsquo; file.
 </li></ul>
 <hr size="6">
-<a name="I-lost-a-cell-contents-and-undo-doesn_0027t-remember"></a>
+<a name="Plotting-an-animation-results-in-_0060_0060error_003a-undefined-variable_0027_0027"></a>
 <table cellpadding="1" cellspacing="1" border="0">
 <tr><td valign="middle" align="left">[<a href="#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Troubleshooting" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_4.html#FAQ" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="wxmaxima.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section">3.6 Plotting an animation results in &ldquo;error: undefined variable&rdquo;</h2>
+<p>The value of the slider variable by default is only substituted into the
+expression that is to be plotted if it is visible there. Putting an
+<code>ev()</code> around this expression should resolve this problem.
+</p><hr size="6">
+<a name="I-lost-a-cell-contents-and-undo-doesn_0027t-remember"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Plotting-an-animation-results-in-_0060_0060error_003a-undefined-variable_0027_0027" title="Previous section in reading order"> &lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#wxMaxima-starts-up-with-the-message-_0060_0060Maxima-process-Terminated_002e_0027_0027" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#Troubleshooting" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
@@ -276,7 +298,7 @@ to instruct gnuplot to create.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section">3.6 I lost a cell contents and undo doesn&rsquo;t remember</h2>
+<h2 class="section">3.7 I lost a cell contents and undo doesn&rsquo;t remember</h2>
 <p>If you still have a way to find out what label maxima has assigned
 to the cell just type in the cell&rsquo;s label and it&rsquo;s contents will
 reappear. If you don&rsquo;t: Don&rsquo;t panic. In the &ldquo;maxima&rdquo; menu there
@@ -304,7 +326,7 @@ have been issued recently.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section">3.7 wxMaxima starts up with the message &ldquo;Maxima process Terminated.&rdquo;</h2>
+<h2 class="section">3.8 wxMaxima starts up with the message &ldquo;Maxima process Terminated.&rdquo;</h2>
 <p>One possible reason is that maxima cannot be found in the location that is
 set in the &ldquo;maxima&rdquo; tab of wxMaxima&rsquo;s configuration dialog and therefore
 won&rsquo;t run at all. Setting the path to a working maxima binary should
@@ -329,7 +351,7 @@ problem.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section">3.8 File I/O from maxima doesn&rsquo;t work on Windows</h2>
+<h2 class="section">3.9 File I/O from maxima doesn&rsquo;t work on Windows</h2>
 <p>On windows File I/O isn&rsquo;t relative to the directory of the current
 file by default. If you store the maxima file on the drive wxMaxima is
 installed to setting <var>wxchangedir</var> to <code>true</code> will fix
@@ -362,7 +384,7 @@ with.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="wxmaxima_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section">3.9 Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
+<h2 class="section">3.10 Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See
 (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.
 </p><hr size="6">
@@ -381,7 +403,7 @@ with.
 </tr></table>
 <p>
  <font size="-1">
-  This document was generated by <em>Gunter Königsmann</em> on <em>February 13, 2015</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Gunter Königsmann</em> on <em>February 15, 2015</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 

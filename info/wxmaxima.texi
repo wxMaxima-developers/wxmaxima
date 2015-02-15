@@ -412,6 +412,33 @@ can be used:
 wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$
 @end example
+
+The animation functions have a pitfall that one has to be aware of when
+using them: The slider variable's value are substituted into the
+expression that is to be plotted - which will fail, if the variable
+isn't directly visible in the expression. Therefore the following
+example will fail:
+@example
+f:sin(a*x);
+with_slider_draw(
+    a,makelist(i/2,i,1,10),
+    title=concat("a=",float(a)),
+    grid=true,
+    explicit(f,x,0,10)
+)$
+@end example
+If maxima is forced to first evaluate the expression and then asked
+to substitute the slider's value plotting works fine instead:
+@example
+f:sin(a*x);
+with_slider_draw(
+    a,makelist(i/2,i,1,10),
+    title=concat("a=",float(a)),
+    grid=true,
+    explicit(''f,x,0,10)
+)$
+@end example
+
 @subsection Opening multiple plot windows contemporarily
 While not being a provided by wxmaxima this feature of maxima (on
 setups that support it) sometimes comes in handily. The following
@@ -587,6 +614,10 @@ Possible reasons that might cause this are:
       don't set @var{wxplot_pngcairo} to true from maxima.
 @item Gnuplot didn't output a valid @file{.png} file.
 @end itemize
+@section Plotting an animation results in ``error: undefined variable''
+The value of the slider variable by default is only substituted into the
+expression that is to be plotted if it is visible there. Putting an
+@code{ev()} around this expression should resolve this problem.
 @section I lost a cell contents and undo doesn't remember
 If you still have a way to find out what label maxima has assigned
 to the cell just type in the cell's label and it's contents will
