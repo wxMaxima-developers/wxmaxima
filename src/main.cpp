@@ -26,6 +26,7 @@
 
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
+#include "Dirstructure.h"
 #include <iostream>
 
 #include "wxMaxima.h"
@@ -94,15 +95,17 @@ bool MyApp::OnInit()
     m_locale.Init(lang);
   }
 
+  Dirstructure dirstructure;
+
+  
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
     wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
-  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/locale"));
-#elif defined (__WXMAC__)
-  m_locale.AddCatalogLookupPathPrefix(wxGetCwd() + wxT("/wxMaxima.app/Contents/Resources/locale"));
 #endif
-
+  
+  m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
+  
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 

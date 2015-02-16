@@ -42,8 +42,6 @@ private:
   static wxString UserConfDir();
 
 public:
-  //  Dirstructure();
-
   //! The directory general data is stored in
 #if defined __WXMSW__
   static wxString DataDir() {return ResourcesDir()+wxT("data/");}
@@ -92,17 +90,26 @@ public:
   static wxString ConfigArtDir() {return ResourcesDir();}
 #endif
 
+  //! The directory config art is stored relative to
+#if defined __WXMAC__
+  static wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
+#elif defined __WXMSW__
+  static wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
+#else
+  static wxString ConfigToolbarDir() {return ResourcesDir();}
+#endif
+
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
   static wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
-
+  
   //! The path maxima is found at by default.
 #if defined __WXMAC__
-  static wxString MaximaDefaultName() {return wxT("Maxima.app");}
+  static wxString MaximaDefaultName() {return wxT("/Applications/Maxima.app");}
 #elif defined __WXMSW__
-  static wxString MaximaDefaultName() {return wxT("maxima.bat");}
+  static wxString MaximaDefaultName() {return cwd.Replace(ResourcesDir()+wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));}
 #else
   static wxString MaximaDefaultName() {return wxT("maxima");}
 #endif

@@ -21,6 +21,7 @@
 //
 
 #include "wxMaximaFrame.h"
+#include "Dirstructure.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -710,16 +711,13 @@ void wxMaximaFrame::SetupMenu()
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
 
-#if defined (__WXMSW__)
-#define IMAGE(img) wxImage(wxT("art/toolbar/") wxT(img))
-#else
-#define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/toolbar/") wxT(img))
-#endif
+#define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img))
 
 void wxMaximaFrame::SetupToolBar()
 {
   wxToolBar* frame_1_toolbar = CreateToolBar();
-
+  Dirstructure dirstructure;
+  
   frame_1_toolbar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__

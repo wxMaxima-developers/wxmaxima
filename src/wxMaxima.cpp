@@ -42,6 +42,7 @@
 #include "EditorCell.h"
 #include "SlideShowCell.h"
 #include "PlotFormatWiz.h"
+#include "Dirstructure.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -226,6 +227,8 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
+  Dirstructure dirstructure;
+  
   int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
   int startHTTP = s.find(wxT("http"), startMaxima);
   m_maximaVersion = s.SubString(startMaxima+7, startHTTP - 1);
@@ -235,26 +238,10 @@ void wxMaxima::FirstOutput(wxString s)
     m_lispVersion = lisp.GetMatch(s, 1);
 
   m_lastPrompt = wxT("(%i1) ");
-
+  
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-#if defined __WXMSW__
-  // On windows and mac computers wxMaxima the data is always to be found relative to the CWD
-  wxString index = wxGetCwd();
-  index += wxT("\\data\\index.hhk");
-#else
-  wxString index = GetHelpFile();
-  index.Replace(wxT("header.hhp"), wxT("index.hhk"));
-#endif
+  m_console->LoadSymbols(dirstructure.AutocompleteFile());
 
-#if defined __WXMAC__
-  // On windows and mac computers the cwd of wxMaxima is the installation directory.
-  m_console->LoadSymbols(wxGetCwd() + wxT("/") + wxT(MACPREFIX) + wxT("/autocomplete.txt"));
-#elif defined __WXMSW__
-  m_console->LoadSymbols(wxGetCwd() + wxT("\\data\\autocomplete.txt"));
-#else
-  wxString prefix(wxT(PREFIX));
-  m_console->LoadSymbols(prefix + wxT("/share/wxMaxima/autocomplete.txt"));
-#endif
   m_console->SetFocus();
 }
 

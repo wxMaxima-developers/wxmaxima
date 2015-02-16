@@ -35,6 +35,7 @@ The C code for the preferences dialog.
 #include <wx/sstream.h>
 #include <wx/colordlg.h>
 #include <wx/settings.h>
+#include "Dirstructure.h"
 
 #define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
@@ -81,14 +82,9 @@ Config::Config(wxWindow* parent)
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
-#if defined __WXMAC__
-  #define IMAGE(img) wxImage(wxT("wxMaxima.app/Contents/Resources/config/") wxT(img))
-#elif defined __WXMSW__
-  #define IMAGE(img) wxImage(wxT("art/config/") wxT(img))
-#else
-  wxString prefix = wxT(PREFIX);
-  #define IMAGE(img) wxImage(prefix + wxT("/share/wxMaxima/") + wxT(img))
-#endif
+  Dirstructure dirstruct;
+    
+#define IMAGE(img) wxImage(dirstruct.ConfigArtDir() + wxT(img))
 
   wxSize imageSize(32, 32);
   m_imageList = new wxImageList(32, 32);
@@ -218,35 +214,23 @@ void Config::SetProperties()
     m_language->SetSelection(0);
 
   m_texPreamble->SetValue(texPreamble);
-  
-#if defined __WXMSW__
-  wxString cwd = wxGetCwd();
-  cwd.Replace(wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));
-  if (wxFileExists(cwd))
+
+  Dirstructure dirstruct;
+
+  if (wxFileExists(dirstruct.MaximaDefaultName()))
   {
-    m_maximaProgram->SetValue(cwd);
+    m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
     m_maximaProgram->Enable(false);
     m_mpBrowse->Enable(false);
   }
   else
-  {
-    if (mp.Length())
-      m_maximaProgram->SetValue(mp);
-    else
-      m_maximaProgram->SetValue(wxT("maxima.bat"));
-  }
-#elif defined __WXMAC__
-  if (mp.Length())
-    m_maximaProgram->SetValue(mp);
-  else
-    // this is where the mac installer installs maxima
-    m_maximaProgram->SetValue(wxT("/Applications/Maxima.app"));
-#else
-  if (mp.Length())
-    m_maximaProgram->SetValue(mp);
-  else
-    m_maximaProgram->SetValue(wxT("maxima"));
-#endif
+    {
+      if (mp.Length())
+	m_maximaProgram->SetValue(mp);
+      else
+	m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
+    }
+  
   m_additionalParameters->SetValue(mc);
   if (rs == 1)
     m_saveSize->SetValue(true);

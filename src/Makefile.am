@@ -18,6 +18,7 @@ wxmaxima_SOURCES = \
 	SeriesWiz.cpp      SeriesWiz.h      \
 	SumWiz.cpp         SumWiz.h         \
 	Plot3dWiz.cpp      Plot3dWiz.h      \
+	Dirstructure.cpp   Dirstructure.h   \
 	Gen1Wiz.cpp        Gen1Wiz.h        \
 	Gen2Wiz.cpp        Gen2Wiz.h        \
 	Gen3Wiz.cpp        Gen3Wiz.h        \
