@@ -2037,15 +2037,24 @@ wxString MathCtrl::PrependNBSP(wxString input)
   wxStringTokenizer stringLines(input,"\n");
   wxString line;
   wxString output=wxEmptyString;
+  bool     multipleSpace;
   
   while(stringLines.HasMoreTokens())
     {
       wxString line=stringLines.GetNextToken();
       
       for (unsigned int i = 0; i < input.Length(); i++) {
-	
+
+	multipleSpace = false;
+
 	while (i < input.Length() && input.GetChar(i) == ' ') {
-	  output += wxT("&nbsp;");
+	  if(multipleSpace)
+	    output += wxT("&nbsp;");
+	  else
+	    {
+	      multipleSpace = true;
+	      output += wxT(" ");
+	    }
 	  i++;
 	}
 	output += input.GetChar(i);
@@ -2162,7 +2171,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   GroupCell *tmp = m_tree;
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir = path + wxT("/") + filename + wxT("_img");
+  imgDir = path + wxT("/") + filename + wxT("_htmlimg");
 
   if (!wxDirExists(imgDir))
     if (!wxMkdir(imgDir))
@@ -2274,6 +2283,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   }
   AddLineToFile(output, wxT("}"));
 
+  
   // INPUT STYLE
   AddLineToFile(output, wxT(".input {"));
   if (colorInput.Length()) {
@@ -2443,14 +2453,14 @@ bool MathCtrl::ExportToHTML(wxString file) {
         if(tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(wxT("_%d.gif\">"), count));
         }
         else
         {
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(wxT("_%d.png\">"), count));
         }
@@ -2501,7 +2511,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           {
             ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                    wxString::Format(wxT("_%d.gif"), count));
-            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
                           filename +
                           wxString::Format(wxT("_%d.gif\">"), count));
           }
@@ -2509,7 +2519,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           {
             CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                        out, NULL, true);
-            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_img/") +
+            AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
                           filename +
                           wxString::Format(wxT("_%d.png\">"), count));
           }
