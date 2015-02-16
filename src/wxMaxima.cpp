@@ -1656,7 +1656,7 @@ void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
 {
   if (m_helpFile != helpfile)
   {
-    m_helpCtrl.Initialize(helpfile);
+    m_helpCtrl.AddBook(helpfile);
   }
   
   if (
