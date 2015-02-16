@@ -298,7 +298,7 @@ bool SlideShow::ToGif(wxString file)
   wxArrayString which;
   bool retval = true;
 
-  wxString convert(wxT("convert -delay "+wxString::Format(wxT("%i"),1000/GetFrameRate())));
+  wxString convert(wxT("convert -delay "+wxString::Format(wxT("%i"),100/GetFrameRate())));
   wxString convertArgs;
 
   wxString tmpdir = wxFileName::GetTempDir();
