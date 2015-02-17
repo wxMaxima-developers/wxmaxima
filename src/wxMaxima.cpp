@@ -2019,9 +2019,6 @@ bool wxMaxima::SaveFile(bool forceSave)
 
 void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 {
-  std::cerr << "Timer ";
-  std::cerr << event.GetId();
-  std::cerr << "\n";
   switch (event.GetId()) {
   case KEYBOARD_INACTIVITY_TIMER_ID:
     m_console->m_keyboardInactive = true;
@@ -2029,7 +2026,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       {
 	SaveFile(false);
       }
-    std::cerr << "Keyboard timeout\n";
     break;
   case AUTO_SAVE_TIMER_ID:
     if((m_console->m_keyboardInactive) && (m_currentFile.Length() > 0))
@@ -2039,7 +2035,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 	if(m_autoSaveInterval > 10000)
 	  m_autoSaveTimer.StartOnce(m_autoSaveInterval);
       }
-    std::cerr << "Save timeout\n";
     break;
   }
 }
@@ -2258,13 +2253,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
       m_autoSaveInterval *= 60000;
 
-      std::cerr << "Save \n";
-
       if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0 ))
-	{
 	  m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-	  std::cerr << "startded \n";
-	}
+      else
+	  m_autoSaveTimer.Stop();
       
       int defaultPlotWidth = 800;
       config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
