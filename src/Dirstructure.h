@@ -37,25 +37,25 @@ class Dirstructure
 {
 private:
   //! The directory all data is stored relative to.
-  static wxString ResourcesDir();
+  wxString ResourcesDir();
   //! The directory the user stores its data in.
-  static wxString UserConfDir();
+  wxString UserConfDir();
 
 public:
   //! The directory general data is stored in
 #if defined __WXMSW__
-  static wxString DataDir() {return ResourcesDir()+wxT("data/");}
+  wxString DataDir() {return ResourcesDir()+wxT("data/");}
 #else
-  static wxString DataDir() {return ResourcesDir();}
+  wxString DataDir() {return ResourcesDir();}
 #endif
 
   //! The directory the help file is stored in
 #if defined __WXMAC__
-  static wxString HelpDir() {return ResourcesDir()+wxT("help/");}
+  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
 #elif defined __WXMSW__
-  static wxString HelpDir() {return ResourcesDir()+wxT("help/");}
+  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
 #else
-  static wxString HelpDir() {return Prefix()+wxT("/share/doc/wxmaxima/");}
+  wxString HelpDir() {return Prefix()+wxT("/share/doc/wxmaxima/");}
 #endif
 
   /*! The file private accellerator key information is stored in
@@ -63,66 +63,66 @@ public:
     \todo Document this file in the texinfo manual
    */
 #if defined __WXMSW__
-  static wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
+  wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
 #else
-  static wxString UserAutocompleteFile() {return UserConfDir()+wxT(".wxmaxima.ac");}
+  wxString UserAutocompleteFile() {return UserConfDir()+wxT(".wxmaxima.ac");}
 #endif
 
   //! The path to wxMaxima's own AutoComplete file
-  static wxString AutocompleteFile() {return DataDir() + wxT("autocomplete.txt");}
+  wxString AutocompleteFile() {return DataDir() + wxT("autocomplete.txt");}
   
   //! The directory art is stored relative to
 #if defined __WXMAC__
-  static wxString ArtDir() {return ResourcesDir();}
+  wxString ArtDir() {return ResourcesDir();}
 #elif defined __WXMSW__
-  static wxString ArtDir() {return ResourcesDir()+wxT("art/");}
+  wxString ArtDir() {return ResourcesDir()+wxT("art/");}
 #else
-  static wxString ArtDir() {return ResourcesDir();}
+  wxString ArtDir() {return ResourcesDir();}
 #endif
 
 
   //! The directory config art is stored relative to
 #if defined __WXMAC__
-  static wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
+  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
 #elif defined __WXMSW__
-  static wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
+  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
 #else
-  static wxString ConfigArtDir() {return ResourcesDir();}
+  wxString ConfigArtDir() {return ResourcesDir();}
 #endif
 
   //! The directory config art is stored relative to
 #if defined __WXMAC__
-  static wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
+  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
 #elif defined __WXMSW__
-  static wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
+  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
 #else
-  static wxString ConfigToolbarDir() {return ResourcesDir();}
+  wxString ConfigToolbarDir() {return ResourcesDir();}
 #endif
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
-  static wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
+  wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
   
   //! The path maxima is found at by default.
 #if defined __WXMAC__
-  static wxString MaximaDefaultName() {return wxT("/Applications/Maxima.app");}
+  wxString MaximaDefaultName() {return wxT("/Applications/Maxima.app");}
 #elif defined __WXMSW__
-  static wxString MaximaDefaultName() {return cwd.Replace(ResourcesDir()+wxT("wxMaxima"), wxT("\\bin\\maxima.bat"));}
+  wxString MaximaDefaultName() {return ResourcesDir().Replace( wxT("Resources/"), wxT("/bin/maxima.bat"));}
 #else
-  static wxString MaximaDefaultName() {return wxT("maxima");}
+  wxString MaximaDefaultName() {return wxT("maxima");}
 #endif
 
   //! The path we pass to the operating system if we want it to locate maxima instead
-  static wxString MaximaDefaultLocation();
+  wxString MaximaDefaultLocation();
 
   /*! The contents of the PREFIX macro as a wxString
 
     wxWidgets 3.0.2 refuses to directly concatenate two wxT-generated strings.
     To avoid triggering this bug we store the prefix here.
   */
-  static wxString Prefix();
+  wxString Prefix();
 };
 
 #endif // DIRSTRUCTURE_H
