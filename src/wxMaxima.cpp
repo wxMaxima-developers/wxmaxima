@@ -181,19 +181,20 @@ bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files)
         m_wxmax->LoadImage(files[0]);
       else if (!m_wxmax->DocumentSaved() && (m_wxmax->m_console->GetTree() != NULL) &&
           (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
-      {
-        int close = m_wxmax->SaveDocumentP();
-
-        if (close == wxID_CANCEL)
-          return false;
-
-        if (close == wxID_YES) {
-          if (!m_wxmax->SaveFile())
-            return false;
-        }
-
-        m_wxmax->OpenFile(files[0]);
-      }
+	{
+	   	  
+	  int close = m_wxmax->SaveDocumentP();
+	  
+	  if (close == wxID_CANCEL)
+	    return false;
+	  
+	  if (close == wxID_YES) {
+	    if (!m_wxmax->SaveFile())
+	      return false;
+	  }
+	  
+	  m_wxmax->OpenFile(files[0]);
+	}
       else
         m_wxmax->OpenFile(files[0]);
 
@@ -1424,9 +1425,9 @@ void wxMaxima::SetupVariables()
   else
     SendMaxima(wxT(":lisp-quiet (defmvar $wxplot_pngcairo nil)"));
   
-  int defaultPlotWidth = 800;
+  int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 600;
+  int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   SendMaxima(wxString::Format(wxT(":lisp-quiet (defmvar $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));
   
@@ -4691,6 +4692,9 @@ int wxMaxima::SaveDocumentP()
 #endif
   }
   else {
+    if(m_autoSaveInterval > 10000)
+      if(SaveFile()) return wxID_YES;
+
     wxString ext;
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
     file += wxT(".") + ext;

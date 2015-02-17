@@ -181,9 +181,9 @@ void Config::SetProperties()
   config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("usepngCairo"), &usepngCairo);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
-  int defaultPlotWidth = 800;
+  int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 600;
+  int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   config->Read(wxT("displayedDigits"), &displayedDigits);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
@@ -288,7 +288,7 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-  wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size"));
+  wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
   m_defaultPlotWidth=new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 100, 16384);
   PlotWidthHbox->Add(m_defaultPlotWidth,0,wxEXPAND, 0);

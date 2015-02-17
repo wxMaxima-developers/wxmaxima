@@ -69,6 +69,9 @@ public:
 };
 #endif
 
+/* The top-level window and the main application logic
+
+ */
 class wxMaxima : public wxMaximaFrame
 {
 public:
