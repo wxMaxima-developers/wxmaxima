@@ -130,7 +130,7 @@ void Config::SetProperties()
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
-  m_autoSaveInterval->SetToolTip(_("If this number of seconds has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
+  m_autoSaveInterval->SetToolTip(_("If this number of minutes has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(_("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
