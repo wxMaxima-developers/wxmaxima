@@ -78,6 +78,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
     wxMaximaFrame(parent, id, title, pos, size)
 {
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  
+  m_autoSaveInterval = 0;
+  config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
+  m_autoSaveInterval *= 60000;
+  
   m_port = 4010;
   m_pid = -1;
   m_ready = false;
@@ -94,7 +100,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_client = NULL;
   m_server = NULL;
 
-  wxConfig::Get()->Read(wxT("lastPath"), &m_lastPath);
+  config->Read(wxT("lastPath"), &m_lastPath);
   m_lastPrompt = wxEmptyString;
 
   m_closing = false;
@@ -119,7 +125,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_findData.SetFlags(wxFR_DOWN);
 
   m_console->SetFocus();
+  m_console->m_keyboardInactiveTimer.SetOwner(this,KEYBOARD_INACTIVITY_TIMER_ID);
 
+  m_autoSaveIntervalExpired = false;
+  m_autoSaveTimer.SetOwner(this,AUTO_SAVE_TIMER_ID);
+  
 #if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
@@ -1933,6 +1943,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
   }
+  
+  if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0))
+    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
@@ -2000,6 +2013,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (file.Right(5) == wxT(".wxmx")) {
 	if (!m_console->ExportToWXMX(file))
 	  return false;
+	
 	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
       }
       else {
@@ -2010,6 +2024,9 @@ bool wxMaxima::SaveFile(bool forceSave)
       AddRecentDocument(file);
       SetCWD(file);
 
+      if(m_autoSaveInterval > 10000)
+	m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+
       wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
       wxConfig::Get()->Write(wxT("defaultExt"), fileExt);
 
@@ -2017,6 +2034,33 @@ bool wxMaxima::SaveFile(bool forceSave)
     }
 
   return false;
+}
+
+void wxMaxima::OnTimerEvent(wxTimerEvent& event)
+{
+  std::cerr << "Timer ";
+  std::cerr << event.GetId();
+  std::cerr << "\n";
+  switch (event.GetId()) {
+  case KEYBOARD_INACTIVITY_TIMER_ID:
+    m_console->m_keyboardInactive = true;
+    if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0))
+      {
+	SaveFile(false);
+      }
+    std::cerr << "Keyboard timeout\n";
+    break;
+  case AUTO_SAVE_TIMER_ID:
+    if((m_console->m_keyboardInactive) && (m_currentFile.Length() > 0))
+      {
+	SaveFile(false);
+	
+	if(m_autoSaveInterval > 10000)
+	  m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+      }
+    std::cerr << "Save timeout\n";
+    break;
+  }
 }
 
 void wxMaxima::FileMenu(wxCommandEvent& event)
@@ -2229,6 +2273,18 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       else
 	SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
 
+      m_autoSaveInterval = 0;
+      config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
+      m_autoSaveInterval *= 60000;
+
+      std::cerr << "Save \n";
+
+      if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0 ))
+	{
+	  m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+	  std::cerr << "startded \n";
+	}
+      
       int defaultPlotWidth = 800;
       config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
       int defaultPlotHeight = 600;
@@ -4683,6 +4739,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(mac_closeId, wxMaxima::FileMenu)
 #endif
   EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
+  EVT_TIMER(KEYBOARD_INACTIVITY_TIMER_ID, wxMaxima::OnTimerEvent)
+  EVT_TIMER(wxID_ANY, wxMaxima::OnTimerEvent)
   EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
@@ -4983,4 +5041,5 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_FIND_REPLACE(wxID_ANY, wxMaxima::OnReplace)
   EVT_FIND_REPLACE_ALL(wxID_ANY, wxMaxima::OnReplaceAll)
   EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
+
 END_EVENT_TABLE()

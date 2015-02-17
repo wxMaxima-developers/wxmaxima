@@ -158,6 +158,7 @@ protected:
   // begin wxGlade: Config::attributes
   wxTextCtrl* m_maximaProgram;
   wxTextCtrl* m_texPreamble;
+  wxSpinCtrl* m_autoSaveInterval;
   wxButton* m_mpBrowse;
   wxTextCtrl* m_additionalParameters;
   wxComboBox* m_language;

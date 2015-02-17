@@ -72,6 +72,36 @@ public:
 class wxMaxima : public wxMaximaFrame
 {
 public:
+  
+  //! An enum of individual IDs for all timers this class handles
+  enum TimerIDs
+  {
+    KEYBOARD_INACTIVITY_TIMER_ID,
+    AUTO_SAVE_TIMER_ID
+  };
+
+  /*! A timer that determines when to do the next autosave;
+
+    The actual autosave is triggered if both this timer is expired and the keyboard
+    has been inactive for >10s so the autosave won't cause the application to shortly
+    stop responding due to saving the file while the user is typing a word.
+
+    This timer is used in one-shot mode so in the unikely case that saving needs more
+    time than this timer to expire the user still got a chance to do something against
+    it between two expirys. 
+   */
+  wxTimer m_autoSaveTimer;
+  //! Has m_autoSaveTimer expired since the last save?
+  bool m_autoSaveIntervalExpired;
+  //! Is triggered when a timer this class is responsible for requires
+  void OnTimerEvent(wxTimerEvent& event);
+
+  /*! The interval between auto-saves (in milliseconds). 
+
+    Values <10000 mean: Auto-save is off.
+  */
+  long int m_autoSaveInterval;
+  
   wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
@@ -133,7 +163,7 @@ protected:
   void OnReplace(wxFindDialogEvent& event);
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent& event);
-
+  
   void SanitizeSocketBuffer(char *buffer, int length);  //< fix early nulls
   void ServerEvent(wxSocketEvent& event);          //< server event: maxima connection
   /*! Is triggered on Input or disconnect from maxima

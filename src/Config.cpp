@@ -130,6 +130,7 @@ void Config::SetProperties()
                                        " (e.g. -l clisp)."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
+  m_autoSaveInterval->SetToolTip(_("If this number of seconds has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
   m_uncomressedWXMX->SetToolTip(_("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(_("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
@@ -162,6 +163,7 @@ void Config::SetProperties()
   int defaultFramerate = 2;
   int displayedDigits = 100;
   wxString texPreamble=wxEmptyString;
+  int autoSaveInterval = 0;
   
   #if defined (__WXMAC__)
   bool usepngCairo=true;
@@ -192,7 +194,8 @@ void Config::SetProperties()
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLong"), &showLongExpr);
   config->Read(wxT("language"), &lang);
-  config->Read(wxT("texPreamble"), &texPreamble);  
+  config->Read(wxT("texPreamble"), &texPreamble);
+  config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
   config->Read(wxT("changeAsterisk"), &changeAsterisk);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
@@ -214,6 +217,7 @@ void Config::SetProperties()
     m_language->SetSelection(0);
 
   m_texPreamble->SetValue(texPreamble);
+  m_autoSaveInterval->SetValue(autoSaveInterval);
 
   Dirstructure dirstruct;
 
@@ -336,7 +340,7 @@ wxPanel* Config::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(3, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
@@ -374,6 +378,11 @@ wxPanel* Config::CreateOptionsPanel()
   grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
 
+  wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off)"));
+  m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0, 30);
+  grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_autoSaveInterval, 0, wxALL, 5);
+      
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   vsizer->Add(m_saveSize, 0, wxALL, 5);
 
@@ -586,7 +595,7 @@ void Config::WriteSettings()
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
-  
+  config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

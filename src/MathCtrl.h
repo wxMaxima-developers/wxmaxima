@@ -97,6 +97,10 @@ public:
   MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
   //! The destructor
   ~MathCtrl();
+  wxTimer m_keyboardInactiveTimer;
+  //! Reads true if the keyboard was inactive for > 10 seconds
+  bool m_keyboardInactive;
+
   void DestroyTree();
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
@@ -289,7 +293,7 @@ public:
     CLICK_TYPE_OUTPUT_SELECTION
   };
 
-  //! An enum of individual IDs for all timers we declare in this class
+  //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {
     TIMER_ID,
@@ -303,6 +307,7 @@ public:
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   void GetMaxPoint(int* width, int* height);
   void OnTimer(wxTimerEvent& event);
+  bool m_autoSaveIntervalExpired;
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
   void OnPaint(wxPaintEvent& event);

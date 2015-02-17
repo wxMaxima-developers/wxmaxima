@@ -58,6 +58,7 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 #endif
   )
 {
+  m_keyboardInactive = true;
   m_tree = NULL;
   m_memory = NULL;
   m_selectionStart = NULL;
@@ -1353,6 +1354,13 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
  * Support for copying and deleting with keyboard
  */
 void MathCtrl::OnKeyDown(wxKeyEvent& event) {
+
+  // Track the activity of the keyboard. Setting the keyboard
+  // to inactive again is done in wxMaxima.cpp
+  m_keyboardInactiveTimer.StartOnce(10000);
+  m_keyboardInactive = false;
+
+  // Handling of the keys this class has to handle
   switch (event.GetKeyCode()) {
 
     case WXK_DELETE:
@@ -1891,7 +1899,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
     }
   }
-  break;
+  break;      
   }
 }
 
