@@ -2014,25 +2014,20 @@ bool wxMaxima::SaveFile(bool forceSave)
       
       StatusSaveStart();
 
-      std::cerr<<"Test1\n";
-
       m_currentFile = file;
       m_lastPath = wxPathOnly(file);
       if (file.Right(5) == wxT(".wxmx")) {
 	if (!m_console->ExportToWXMX(file))
 	  {
 	    StatusSaveFailed();
-	    std::cerr<<"Test2\n";
 	    return false;
 	  }
 	
 	config->Write(wxT("defaultExt"), wxT("wxmx"));
       }
       else {
-	std::cerr<<"Test3\n";
 	if (!m_console->ExportToMAC(file))
 	  {
-	    std::cerr<<"Test4\n";
 	    if (file.Right(4) == wxT(".mac"))
 	      config->Write(wxT("defaultExt"), wxT("wxm"));
 	    else
@@ -2042,7 +2037,6 @@ bool wxMaxima::SaveFile(bool forceSave)
 	    return false;
 	  }
       }
-      std::cerr<<"Test5\n";
 
       AddRecentDocument(file);
       SetCWD(file);
