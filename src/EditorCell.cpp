@@ -924,6 +924,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                  m_text.SubString(end, m_text.Length());
         m_positionOfCaret = start;  insertLetter = false;
         break;
+      case '\"':
+        m_text = m_text.SubString(0, start - 1) +   wxT("\"") +
+                 m_text.SubString(start, end - 1) + wxT("\"") +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;  insertLetter = false;
+        break;
       case '{':
         m_text = m_text.SubString(0, start - 1) +   wxT("{") +
                  m_text.SubString(start, end - 1) + wxT("}") +
