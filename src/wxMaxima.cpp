@@ -3577,6 +3577,7 @@ wxT("<html>"
 "Jens Thostrup (da)<br>"
 "Harald Geyer (de)<br>"
 "Dieter Kaiser (de)<br>"
+"Gunter Königsmann (de)<br>"
 "Alkis Akritas (el)<br>"
 "Evgenia Kelepesi-Akritas (el)<br>"
 "Kostantinos Derekas (el)<br>"
@@ -3715,6 +3716,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("Jens Thostrup (da)"));
     info.AddTranslator(wxT("Harald Geyer (de)"));
     info.AddTranslator(wxT("Dieter Kaiser (de)"));
+    info.AddTranslator(wxT("Gunter Königsmann (de)"));
     info.AddTranslator(wxT("Alkis Akritas (el)"));
     info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (el)"));
     info.AddTranslator(wxT("Kostantinos Derekas (el)"));
@@ -3747,6 +3749,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
 
     info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
+    info.AddArtist(wxT("Toolbar and config icons: The TANGO Project"));
     info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
 
     wxAboutBox(info);
