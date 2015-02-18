@@ -1934,7 +1934,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 {
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
-  int ext;
+  int ext=wxT("wxmx");
   
   if (file.Length() == 0 || forceSave)
     {
@@ -1960,7 +1960,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       else if (fileExt == wxT("mac"))
 	fileDialog.SetFilterIndex(2);
       
-      if (fileDialog.ShowModal() == wxID_OK)
+      if (fileDialog.ShowModal() != wxID_OK)
 	{
 	  file = fileDialog.GetPath();
 	  ext = fileDialog.GetFilterIndex();
@@ -2226,8 +2226,15 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case tb_pref:
 #endif
     {
-      wxConfigBase *config = wxConfig::Get();      
-
+      wxConfigBase *config = wxConfig::Get();
+      
+      #if defined (__WXMAC__)
+      bool pngcairo_old=true;
+      #else
+      bool pngcairo_old=false;
+      #endif
+      config->Read(wxT("usepngCairo"),&pngcairo_old);
+      
       Config *configW = new Config(this);
       configW->Centre(wxBOTH);
       if (configW->ShowModal() == wxID_OK)
@@ -2245,11 +2252,14 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       bool usepngCairo=false;
       #endif
       config->Read(wxT("usepngCairo"),&usepngCairo);
-      if(usepngCairo)
-	SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)"));
-      else
-	SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
-
+      if(usepngCairo != pngcairo_old)
+	{
+	  if(usepngCairo)
+	    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)"));
+	  else
+	    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
+	}
+      
       m_autoSaveInterval = 0;
       config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
       m_autoSaveInterval *= 60000;
