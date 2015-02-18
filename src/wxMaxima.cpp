@@ -1934,7 +1934,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 {
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
-  int ext=wxT("wxmx");
+  int ext=0;
   
   if (file.Length() == 0 || forceSave)
     {
@@ -2112,7 +2112,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       wxString fileExt="html";
       wxConfig::Get()->Read(wxT("defaultExportExt"), &fileExt);
 
-      int ext;    
       wxFileDialog fileDialog(this,
 			      _("Export"), m_lastPath,
 			      file + wxT(".") + fileExt,
@@ -2127,7 +2126,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (fileDialog.ShowModal() == wxID_OK)
 	{
 	  file = fileDialog.GetPath();
-	  ext = fileDialog.GetFilterIndex();
 	  if (file.Length())
 	    {
 	      int ext = fileDialog.GetFilterIndex();
