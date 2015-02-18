@@ -1777,7 +1777,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   }
 #endif
 
-  if (event.CmdDown() && !event.AltDown()) {
+  if (event.CmdDown() && !event.AltDown() && !(event.GetKeyCode() == WXK_LEFT) && !(event.GetKeyCode() == WXK_RIGHT) ) {
     event.Skip();
     return;
   }
