@@ -3709,6 +3709,13 @@ void MathCtrl::CommentSelection()
   }
 }
 
+void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
+{
+  m_keyboardInactiveTimer.StartOnce(10000);
+  m_keyboardInactive = false;
+  ev.Skip();
+}
+
 void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
 {
   m_keyboardInactiveTimer.StartOnce(10000);
@@ -4042,4 +4049,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
   EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
   EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
+  EVT_SCROLL_CHANGED(MathCtrl::OnScrollChanged)
 END_EVENT_TABLE()
