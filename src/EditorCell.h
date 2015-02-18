@@ -30,9 +30,11 @@
   This file contains the definition of the class EditorCell
  */
 
-/*! This class provides an interface for editing cells
+/*! This class defines what the user sees as input cell
 
-  One of the examples what this class does is to provide an undo buffer.
+  This class handles input cells including:
+   - The per-cell undo buffer
+   - The handling of key presses when this cell is active
  */
 class EditorCell : public MathCell
 {
