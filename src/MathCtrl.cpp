@@ -3711,6 +3711,9 @@ void MathCtrl::CommentSelection()
 
 void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
 {
+  m_keyboardInactiveTimer.StartOnce(10000);
+  m_keyboardInactive = false;
+
   if (m_selectionStart == NULL || m_selectionStart != m_selectionEnd ||
       m_selectionStart->GetType() != MC_TYPE_SLIDE || m_animate)
     ev.Skip();
