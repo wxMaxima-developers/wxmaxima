@@ -51,7 +51,7 @@ public:
      - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
        that toggles them which makes the handling of these IDs easier.
    */
-  enum Event{
+  enum Event {
 
     /*! Hide all panes
       
@@ -346,6 +346,10 @@ public:
      - false: hide it
    */
   void ShowPane(Event id, bool hide);
+
+  //! The main toolbar
+  wxToolBar* m_mainToolbar;
+
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
   /*! Show or hide the toolbar
@@ -355,6 +359,30 @@ public:
      - false: hide the toolbar
    */
   void ShowToolBar(bool show);
+
+    enum ToolbarStatus {
+      waiting,
+      calculating,
+      parsing,
+      transferring
+    };
+  /*! Set the status according to if maxima is calculating 
+
+    \param status
+      - true:  Maxima is calculating
+      - false: Maxima is waiting for input
+   */
+  void StatusMaximaBusy(ToolbarStatus status);
+  //! True=Maxima is currently busy.
+  ToolbarStatus m_StatusMaximaBusy;
+  //! Set the status to "Maxima is saving"
+  void StatusSaveStart();
+  //! True=We are currently saving.
+  bool m_StatusSaving;
+  //! Set the status to "Maxima has finished saving"
+  void StatusSaveFinished();
+  //! Set the status to "Saving has failed"
+  void StatusSaveFailed();
 private:
   //! The menu bar
   wxMenuBar *m_MenuBar;

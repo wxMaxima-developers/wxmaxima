@@ -277,7 +277,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     return ;
 
   if (type != MC_TYPE_ERROR)
-    SetStatusText(_("Parsing output"), 1);
+    StatusMaximaBusy(parsing);
 
   if (type == MC_TYPE_DEFAULT)
   {
@@ -321,7 +321,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   }
 
   else if (type == MC_TYPE_PROMPT) {
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     m_lastPrompt = s;
 
     if (s.StartsWith(wxT("MAXIMA> "))) {
@@ -444,7 +444,7 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   s.Replace(wxT("\x2212"), wxT("-"));
 #endif
 
-  SetStatusText(_("Maxima is calculating"), 1);
+  StatusMaximaBusy(calculating);
   m_dispReadOut = false;
 
   /// Add this command to history
@@ -546,7 +546,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       if (!m_dispReadOut &&
 	  (m_currentOutput != wxT("\n")) &&
 	  (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>"))) {
-        SetStatusText(_("Reading Maxima output"), 1);
+	StatusMaximaBusy(transferring);
         m_dispReadOut = true;
       }
 
@@ -819,7 +819,7 @@ void wxMaxima::ReadFirstPrompt()
 
   m_first = false;
   m_inLispMode = false;
-  SetStatusText(_("Ready for user input"), 1);
+  StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
   m_currentOutput = wxEmptyString;
   m_console->EnableEdit(true);
@@ -952,7 +952,7 @@ void wxMaxima::ReadPrompt()
     }
 
     if (m_ready)
-      SetStatusText(_("Ready for user input"), 1);
+      StatusMaximaBusy(waiting);
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                       m_currentOutput.Length());
   }
@@ -980,7 +980,7 @@ void wxMaxima::SetCWD(wxString file)
 
   SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
   if (m_ready)
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
 }
 
 // OpenWXM(X)File
@@ -999,7 +999,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1010,7 +1010,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1049,7 +1049,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
-  SetStatusText(_("Ready for user input"), 1);
+  StatusMaximaBusy(waiting);
 
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
@@ -1078,7 +1078,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
         wxOK | wxICON_EXCLAMATION);
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1090,7 +1090,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
         wxOK | wxICON_EXCLAMATION);
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1107,7 +1107,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       wxMessageBox(_("Document ") + file +
           _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
           _("Error"), wxOK | wxICON_EXCLAMATION);
-      SetStatusText(_("Ready for user input"), 1);
+      StatusMaximaBusy(waiting);
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR) {
@@ -1149,7 +1149,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
-  SetStatusText(_("Ready for user input"), 1);
+  StatusMaximaBusy(waiting);
 
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
@@ -1377,7 +1377,7 @@ void wxMaxima::ReadLispError()
     wxString o = m_currentOutput.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
     ConsoleAppend(lispError, MC_TYPE_PROMPT);
-    SetStatusText(_("Ready for user input"), 1);
+    StatusMaximaBusy(waiting);
     m_currentOutput = wxEmptyString;
   }
 }
@@ -1398,7 +1398,7 @@ void wxMaxima::ReadProcessOutput()
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               o.SubString(st, o.Length() - 1));
 
-  SetStatusText(_("Ready for user input"), 1);
+  StatusMaximaBusy(waiting);
 }
 #endif
 
@@ -1848,9 +1848,9 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   toolbar->EnableTool(tb_cut, m_console->CanCut());
   toolbar->EnableTool(tb_save, !m_fileSaved);
   if (m_pid > 0)
-    toolbar->EnableTool(tb_interrupt, true);
+    toolbar->EnableTool(tb_pref, true);
   else
-    toolbar->EnableTool(tb_interrupt, false);
+    toolbar->EnableTool(tb_pref, false);
   if (m_console->GetTree() != NULL)
     toolbar->EnableTool(tb_print, true);
   else
@@ -1990,17 +1990,25 @@ bool wxMaxima::SaveFile(bool forceSave)
 	    }
 	}
     
+      StatusSaveStart();
+      
       m_currentFile = file;
       m_lastPath = wxPathOnly(file);
       if (file.Right(5) == wxT(".wxmx")) {
 	if (!m_console->ExportToWXMX(file))
-	  return false;
+	  {
+	    StatusSaveFailed();
+	    return false;
+	  }
 	
 	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
       }
       else {
 	if (!m_console->ExportToMAC(file))
-	  return false;
+	  {
+	    StatusSaveFailed();
+	    return false;
+	  }
 	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
       }
       AddRecentDocument(file);
@@ -2012,6 +2020,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
       wxConfig::Get()->Write(wxT("defaultExt"), fileExt);
 
+      StatusSaveFinished();
       return true;
     }
 

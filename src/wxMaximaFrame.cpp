@@ -49,6 +49,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetupToolBar();
 #endif
 
+  m_StatusMaximaBusy = waiting;
+  m_StatusSaving =     false;
 
   CreateStatusBar(2);
   int widths[] =
@@ -68,6 +70,52 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   do_layout();
 
   m_console->SetFocus();
+}
+
+void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
+{
+  wxToolBar * toolbar = GetToolBar();
+  
+  switch(m_StatusMaximaBusy = status)
+    {
+    case waiting:
+      toolbar->EnableTool(tb_interrupt, false);
+      SetStatusText(_("Ready for user input"), 1);
+      break;
+    case calculating:
+      toolbar->EnableTool(tb_interrupt, true);
+      SetStatusText(_("Maxima is calculating"), 1);
+      break;
+    case transferring:
+      toolbar->EnableTool(tb_interrupt, false);
+      SetStatusText(_("Reading Maxima output"), 1);
+      break;	
+    case parsing:
+      toolbar->EnableTool(tb_interrupt, false);
+      SetStatusText(_("Parsing output"), 1);
+      break;
+    }
+}
+
+void wxMaximaFrame::StatusSaveStart()
+{
+  m_StatusSaving = true;
+  SetStatusText(_("Saving..."), 1);
+}
+
+void wxMaximaFrame::StatusSaveFinished()
+{
+  m_StatusSaving = false;
+  if(m_StatusMaximaBusy != waiting)
+    StatusMaximaBusy(m_StatusMaximaBusy);
+  else
+    SetStatusText(_("Saving successful."), 1);
+}
+
+void wxMaximaFrame::StatusSaveFailed()
+{
+  m_StatusSaving = false;
+  SetStatusText(_("Saving failed."), 1);
 }
 
 wxMaximaFrame::~wxMaximaFrame()
@@ -715,145 +763,146 @@ void wxMaximaFrame::SetupMenu()
 
 void wxMaximaFrame::SetupToolBar()
 {
-  wxToolBar* frame_1_toolbar = CreateToolBar();
+  wxToolBar* m_mainToolbar = CreateToolBar();
   Dirstructure dirstructure;
   
-  frame_1_toolbar->SetToolBitmapSize(wxSize(24, 24));
+  m_mainToolbar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
-  frame_1_toolbar->AddTool(tb_new, _("New"),
+  m_mainToolbar->AddTool(tb_new, _("New"),
                            IMAGE("new.png"),
                            _("New document"));
 #endif
-  frame_1_toolbar->AddTool(tb_open, _("Open"),
+  m_mainToolbar->AddTool(tb_open, _("Open"),
                            IMAGE("open.png"),
                            _("Open document"));
-  frame_1_toolbar->AddTool(tb_save, _("Save"),
+  m_mainToolbar->AddTool(tb_save, _("Save"),
                            IMAGE("save.png"),
                            _("Save document"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_print, _("Print"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_print, _("Print"),
                            IMAGE("print.png"),
                            _("Print document"));
-  frame_1_toolbar->AddTool(tb_pref, _("Options"),
+  m_mainToolbar->AddTool(tb_pref, _("Options"),
                            IMAGE("configure.png"),
                            _("Configure wxMaxima"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_cut, _("Cut"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_cut, _("Cut"),
                            IMAGE("cut.png"),
                            _("Cut selection"));
-  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+  m_mainToolbar->AddTool(tb_copy, _("Copy"),
                            IMAGE("copy.png"),
                            _("Copy selection"));
-  frame_1_toolbar->AddTool(tb_paste, _("Paste"),
+  m_mainToolbar->AddTool(tb_paste, _("Paste"),
                            IMAGE("paste.png"),
                            _("Paste from clipboard"));
-  frame_1_toolbar->AddTool(tb_select_all, _("Select all"),
+  m_mainToolbar->AddTool(tb_select_all, _("Select all"),
                            IMAGE("edit-select-all.png"),
                            _("Select all"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_find, _("Find"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_find, _("Find"),
                              IMAGE("find.png"),
                              _("Find and replace"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_interrupt, _("Interrupt"),
                            IMAGE("stop.png"),
                            _("Interrupt current computation"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_animation_start, _("Start animation"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_animation_start, _("Start animation"),
                            IMAGE("playback-start.png"),
                            _("Start animation"));
-  frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
+  m_mainToolbar->AddTool(tb_animation_stop, _("Stop animation"),
 			   IMAGE("playback-stop.png"),
 			   _("Stop animation"));
-  m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
+  m_plotSlider = new wxSlider(m_mainToolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  frame_1_toolbar->AddControl(m_plotSlider);
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_help, _("Help"),
+  m_mainToolbar->AddControl(m_plotSlider);
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_help, _("Help"),
                            IMAGE("help.png"),
                            _("Show Maxima help"));
-  frame_1_toolbar->Realize();
+  m_mainToolbar->Realize();
 
-  SetToolBar(frame_1_toolbar);
+  SetToolBar(m_mainToolbar);
 }
 
 #elif defined (__WXGTK20__)
 
 void wxMaximaFrame::SetupToolBar()
 {
-  wxToolBar* frame_1_toolbar = CreateToolBar();
+  m_mainToolbar = CreateToolBar();
 
-  frame_1_toolbar->AddTool(tb_new, _("New"),
+  m_mainToolbar->AddTool(tb_new, _("New"),
                            wxArtProvider::GetBitmap(wxT("gtk-new"),
                                                     wxART_TOOLBAR),
                            _("New document"));
 
-  frame_1_toolbar->AddTool(tb_open, _("Open"),
+  m_mainToolbar->AddTool(tb_open, _("Open"),
                            wxArtProvider::GetBitmap(wxT("gtk-open"),
                                                     wxART_TOOLBAR),
                            _("Open document"));
-  frame_1_toolbar->AddTool(tb_save, _("Save"),
+  m_mainToolbar->AddTool(tb_save, _("Save"),
                            wxArtProvider::GetBitmap(wxT("gtk-save"),
                                                     wxART_TOOLBAR),
                            _("Save document"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_print, _("Print"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_print, _("Print"),
                            wxArtProvider::GetBitmap(wxT("gtk-print"),
                                                     wxART_TOOLBAR),
                            _("Print document"));
-  frame_1_toolbar->AddTool(tb_pref, _("Options"),
+  m_mainToolbar->AddTool(tb_pref, _("Options"),
                            wxArtProvider::GetBitmap(wxT("gtk-preferences"),
                                                     wxART_TOOLBAR),
                            _("Configure wxMaxima"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_cut, _("Cut"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_cut, _("Cut"),
                            wxArtProvider::GetBitmap(wxT("gtk-cut"),
                                                     wxART_TOOLBAR),
                            _("Cut selection"));
-  frame_1_toolbar->AddTool(tb_copy, _("Copy"),
+  m_mainToolbar->AddTool(tb_copy, _("Copy"),
                            wxArtProvider::GetBitmap(wxT("gtk-copy"),
                                                     wxART_TOOLBAR),
                            _("Copy selection"));
-  frame_1_toolbar->AddTool(tb_paste, _("Paste"),
+  m_mainToolbar->AddTool(tb_paste, _("Paste"),
                            wxArtProvider::GetBitmap(wxT("gtk-paste"),
                                                     wxART_TOOLBAR),
                            _("Paste from clipboard"));
-  frame_1_toolbar->AddTool(tb_select_all, _("Paste"),
+  m_mainToolbar->AddTool(tb_select_all, _("Paste"),
                            wxArtProvider::GetBitmap(wxT("gtk-select-all"),
                                                     wxART_TOOLBAR),
                            _("Select all"));
   
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_find, _("Find..."),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_find, _("Find..."),
                            wxArtProvider::GetBitmap(wxT("gtk-find"),
                                                     wxART_TOOLBAR),
                            _("Find and replace"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_interrupt, _("Interrupt"),
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_interrupt, _("Interrupt"),
                            wxArtProvider::GetBitmap(wxT("gtk-stop"),
                                                     wxART_TOOLBAR),
                            _("Interrupt current computation"));
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_animation_start, _("Animation"),
+  m_mainToolbar->EnableTool(tb_interrupt,false);
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_animation_start, _("Animation"),
 			   wxArtProvider::GetBitmap(wxT("media-playback-start"),
 						    wxART_TOOLBAR));
-  frame_1_toolbar->AddTool(tb_animation_stop, _("Stop animation"),
+  m_mainToolbar->AddTool(tb_animation_stop, _("Stop animation"),
 			   wxArtProvider::GetBitmap(wxT("media-playback-stop"),
 						    wxART_TOOLBAR));
-  m_plotSlider = new wxSlider(frame_1_toolbar, plot_slider_id, 0, 0, 10,
+  m_plotSlider = new wxSlider(m_mainToolbar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  frame_1_toolbar->AddControl(m_plotSlider);
-  frame_1_toolbar->AddSeparator();
-  frame_1_toolbar->AddTool(tb_help, _("Help"),
+  m_mainToolbar->AddControl(m_plotSlider);
+  m_mainToolbar->AddSeparator();
+  m_mainToolbar->AddTool(tb_help, _("Help"),
                            wxArtProvider::GetBitmap(wxT("gtk-help"),
                                                     wxART_TOOLBAR),
                            _("Show Maxima help"));
-  frame_1_toolbar->Realize();
+  m_mainToolbar->Realize();
 
-  SetToolBar(frame_1_toolbar);
+  SetToolBar(m_mainToolbar);
 }
 
 #endif
