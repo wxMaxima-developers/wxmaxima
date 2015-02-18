@@ -127,7 +127,8 @@ private:
     //! Can we display the "ready" prompt right now?
   bool m_ready;
 protected:
-  void ShowHelp(wxString helpfile,wxString keyword);
+  void ShowCHMHelp(wxString helpfile,wxString keyword);
+  void ShowHTMLHelp(wxString helpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
   void OnIdle(wxIdleEvent& event);
@@ -263,14 +264,14 @@ protected:
   wxString m_currentFile;
   bool m_fileSaved;
   bool m_variablesOK;
-  wxString m_helpFile;
+  wxString m_chmhelpFile;
+  wxString m_htmlhelpFile;
   wxString m_maximaVersion;
   wxString m_lispVersion;
 #if defined (__WXMSW__)
-  wxCHMHelpController m_helpCtrl;
-#else
-  wxHtmlHelpController m_helpCtrl;
+  wxCHMHelpController m_chmhelpCtrl;
 #endif
+  wxHtmlHelpController m_htmlhelpCtrl;
   wxFindReplaceDialog *m_findDialog;
   wxFindReplaceData m_findData;
   wxRegEx m_funRegEx;

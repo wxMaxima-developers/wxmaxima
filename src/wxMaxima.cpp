@@ -111,7 +111,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_variablesOK = false;
 
-  m_helpFile = wxEmptyString;
+  m_htmlhelpFile = wxEmptyString;
+  m_chmhelpFile = wxEmptyString;
 
   m_isConnected = false;
   m_isRunning = false;
@@ -1649,19 +1650,35 @@ wxString wxMaxima::GetHelpFile()
 #endif
 }
 
-void wxMaxima::ShowHelp(wxString helpfile,wxString keyword)
+void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString keyword)
 {
-  if (m_helpFile != helpfile)
-    m_helpCtrl.AddBook(helpfile);
+  if (m_htmlhelpFile != helpfile)
+    m_htmlhelpCtrl.AddBook(helpfile);
   
   if (
       (keyword == wxT("%"))||
       (keyword == wxT(" << Graphics >> "))
       )
-    m_helpCtrl.DisplayContents();
+    m_htmlhelpCtrl.DisplayContents();
   else
-    m_helpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+    m_htmlhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
 }
+
+#if defined (__WXMSW__)
+void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
+{
+  if (m_chmhelpFile != helpfile)
+    m_chmhelpCtrl.AddBook(helpfile);
+  
+  if (
+      (keyword == wxT("%"))||
+      (keyword == wxT(" << Graphics >> "))
+      )
+    m_chmhelpCtrl.DisplayContents();
+  else
+    m_chmhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
+}
+#endif
 
 void wxMaxima::ShowWxMaximaHelp()
 {
@@ -1669,15 +1686,14 @@ void wxMaxima::ShowWxMaximaHelp()
 
   wxString htmldir = dirstructure.HelpDir();
 
-  wxString helpfile = htmldir + wxT("wxmaxima.html");
+  wxString helpfile = htmldir + wxT("wxmaxima.hhp");
 
-#if defined __WXMSW__
-#if WXM_CHM
+#if defined CHM
   helpfile = htmldir + wxT("wxmaxima.chm");
+  ShowCHMHelp(helpfile, wxT("%"));
+#else
+  ShowHTMLHelp(helpfile, wxT("%"));  
 #endif
-#endif
-
-  ShowHelp(helpfile, wxT("%"));
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
@@ -1691,7 +1707,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                  _("Error"), wxICON_ERROR | wxOK);
     return ;
   }
-  ShowHelp(MaximaHelpFile,keyword);
+  #if defined (__WXMSW__)
+  ShowCHMHelp(MaximaHelpFile,keyword);
+  #else
+  ShowHTMLHelp(MaximaHelpFile,keyword);
+  #endif
 }
 
 ///--------------------------------------------------------------------------------
