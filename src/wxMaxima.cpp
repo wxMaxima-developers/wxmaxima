@@ -1935,11 +1935,13 @@ bool wxMaxima::SaveFile(bool forceSave)
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
   int ext=0;
+
+  wxConfig *config = (wxConfig *)wxConfig::Get();
   
   if (file.Length() == 0 || forceSave)
     {
       if (file.Length() == 0) {
-	wxConfig::Get()->Read(wxT("defaultExt"), &fileExt);
+	config->Read(wxT("defaultExt"), &fileExt);
 	file = _("untitled") + wxT(".") + fileExt;
       }
       else
@@ -1960,7 +1962,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       else if (fileExt == wxT("mac"))
 	fileDialog.SetFilterIndex(2);
       
-      if (fileDialog.ShowModal() != wxID_OK)
+      if (fileDialog.ShowModal() == wxID_OK)
 	{
 	  file = fileDialog.GetPath();
 	  ext = fileDialog.GetFilterIndex();
@@ -1989,28 +1991,39 @@ bool wxMaxima::SaveFile(bool forceSave)
 	      break;
 	    }
 	}
-    
-      StatusSaveStart();
       
+      StatusSaveStart();
+
+      std::cerr<<"Test1\n";
+
       m_currentFile = file;
       m_lastPath = wxPathOnly(file);
       if (file.Right(5) == wxT(".wxmx")) {
 	if (!m_console->ExportToWXMX(file))
 	  {
 	    StatusSaveFailed();
+	    std::cerr<<"Test2\n";
 	    return false;
 	  }
 	
-	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxmx"));
+	config->Write(wxT("defaultExt"), wxT("wxmx"));
       }
       else {
+	std::cerr<<"Test3\n";
 	if (!m_console->ExportToMAC(file))
 	  {
+	    std::cerr<<"Test4\n";
+	    if (file.Right(4) == wxT(".mac"))
+	      config->Write(wxT("defaultExt"), wxT("wxm"));
+	    else
+	      config->Write(wxT("defaultExt"), wxT("mac"));
+	    
 	    StatusSaveFailed();
 	    return false;
 	  }
-	wxConfig::Get()->Write(wxT("defaultExt"), wxT("wxm"));
       }
+      std::cerr<<"Test5\n";
+
       AddRecentDocument(file);
       SetCWD(file);
 
@@ -2018,7 +2031,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 	m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 
       wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
-      wxConfig::Get()->Write(wxT("defaultExt"), fileExt);
+      config->Write(wxT("defaultExt"), fileExt);
 
       StatusSaveFinished();
       return true;
@@ -4713,7 +4726,8 @@ int wxMaxima::SaveDocumentP()
   }
   else {
     if(m_autoSaveInterval > 10000)
-      if(SaveFile()) return wxID_YES;
+      if(SaveFile())
+	return wxID_YES;
 
     wxString ext;
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
