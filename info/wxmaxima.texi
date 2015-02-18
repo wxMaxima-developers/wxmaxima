@@ -314,6 +314,34 @@ Since most version control systems compress the data they store on the
 server the server space occupied by the initial version of both
 @file{.wxmx} flavors should be nearly identical in size.
 @end itemize
+@section Configuration options
+@subsection Default animation framerate
+The animation framerate that is used for new animations if
+the value of @var{wxanimate_framerate} isn't changed from the maxima
+side.
+@subsection Default plot size for new maxima sessions
+After the next start plots embedded into the worksheet will be created
+with this size if the value of  @var{wxplot_size} isn't changed by
+maxima. 
+@subsection Match parenthesis in text controls
+This option enables two things:
+@itemize @bullet
+@item If an opening parenthesis, bracket or double quote is entered
+wxMaxima will insert a closing one after it.
+@item If text is selected if any of these keys is pressed the selected
+text will be put between the matched signs.
+@end itemize
+@subsection Autosave interval
+If this value is set to a value bigger than zero maxima will work in a
+more mobile-device-like fashion: 
+@itemize @bullet
+@item Files are saved automatically on exit
+@item And the file will automatically be saved every n minutes.
+@end itemize
+For the automatic saving functionality to work wxMaxima needs to know
+a name to save the file with, though. This means this feature will
+only work if the file has already been saved to or opened from the
+disk.
 @node Extensions
 @chapter Extensions to maxima
 wxMaxima aims to be but a graphical user interface for maxima. In some
