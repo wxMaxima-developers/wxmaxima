@@ -61,8 +61,8 @@ Now build wxWidgets with
 You do not need to install the library with `make install`. You will
 need to specify a path to wx-config when configuring wxMaxima. There
 are two files in `build/lib/wx/config`. The correct file to use is
-`inplace-msw-ansi-release-static-2.8` on Windows and
-`implace-mac-unicode-release-static-2.8` on Mac OS X. You will also
+`inplace-msw-ansi-release-static-3.0` on Windows and
+`implace-mac-unicode-release-static-3.0` on Mac OS X. You will also
 need to copy the file `wxwin.m4` to `acinclude.m4` in the wxMaxima
 source directory.
 
