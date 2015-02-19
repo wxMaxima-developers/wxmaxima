@@ -1457,6 +1457,10 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   if (event.GetKeyCode() == WXK_UP &&
       m_activeCell->CaretAtStart() &&
       !event.ShiftDown()) {
+    // Re-calculate the table of contents as we possibly leave a cell that is
+    // to be found here.
+    m_structure->Update(m_tree);
+    
     SetHCaret((m_activeCell->GetParent())->m_previous);
     return;
   }
@@ -1464,6 +1468,10 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   if (event.GetKeyCode() == WXK_DOWN &&
       m_activeCell->CaretAtEnd() &&
       !event.ShiftDown()) {
+    // Re-calculate the table of contents as we possibly leave a cell that is
+    // to be found here.
+    m_structure->Update(m_tree);
+
     SetHCaret(m_activeCell->GetParent());
     return;
   }
@@ -1713,15 +1721,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       else
         event.Skip();
     }
-    else if (m_selectionStart != NULL) {
+    else if (m_selectionStart != NULL) 
       SetHCaret(m_selectionStart->GetParent()->m_previous);
-      // Re-calculate the table of contents
-      m_structure->Update(m_tree);
-    }
     else if (!ActivatePrevInput())
       event.Skip();
     else
-      Refresh();
+	Refresh();
     break;
 
   case WXK_DOWN:
@@ -1734,17 +1739,14 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       }
       else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
         SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable(), true);
-	// Re-calculate the table of contents
-	m_structure->Update(m_tree);
       }
     }
-    else if (m_selectionEnd != NULL) {
+    else if (m_selectionEnd != NULL)
       SetHCaret(m_selectionEnd->GetParent());
-    }
     else if (!ActivateNextInput())
       event.Skip();
     else
-      Refresh();
+	Refresh();
     break;
     
   case WXK_RETURN:

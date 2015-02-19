@@ -49,7 +49,13 @@ public:
   void AddToStructure(wxString cmd);
   //! What happens if someone changes the search box contents
   void OnRegExEvent(wxCommandEvent &ev);
-  //! Update the structure information from the tree 
+  /*! Update the structure information from the tree 
+
+    Since this function traverses the tree and we don't want it 
+    to impact the performance too much
+      - we call it only on creation of a cell and on leaving it again
+      - and we only traverse the tree if the pane is actually shown.
+   */
   void Update(MathCell* tree);
   //! Get the nth Cell in the table of contents.
   MathCell *GetCell(int index){return m_structure[index];}

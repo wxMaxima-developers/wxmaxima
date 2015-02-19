@@ -85,13 +85,29 @@ void Structure::UpdateDisplay()
 
   for (unsigned int i=0; i<m_structure.size(); i++)
   {
-    wxString curr = m_structure[i]->ToString();
-
+    // Indentation further reduces the screen real-estate. So it is to be used
+    // sparingly. But we should perhaps add at least a little bit of it to make
+    // the list more readable.
+    wxString curr;
+    switch(dynamic_cast<GroupCell*>(m_structure[i])->GetGroupType())
+      {
+      case GC_TYPE_TITLE:
+	curr = m_structure[i]->ToString();
+	break;
+      case GC_TYPE_SECTION:
+	curr = wxT("  ") + m_structure[i]->ToString();
+	break;
+      case GC_TYPE_SUBSECTION:
+	curr = wxT("    ") + m_structure[i]->ToString();
+	m_structure[i]->ToString();
+	break;
+      }
+    
     if (regex.Length()>0 && matcher.IsValid())
-    {
-      if (matcher.Matches(curr))
-        display.Add(curr);
-    }
+      {
+	if (matcher.Matches(curr))
+	  display.Add(curr);
+      }
     else
       display.Add(curr);
   }
