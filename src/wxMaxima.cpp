@@ -1668,7 +1668,7 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString keyword)
 void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 {
   if (m_chmhelpFile != helpfile)
-    m_chmhelpCtrl.AddBook(helpfile);
+    m_chmhelpCtrl.LoadFile(helpfile);
   
   if (
       (keyword == wxT("%"))||

@@ -34,9 +34,9 @@
 
 #if defined (__WXMSW__)
  #include <wx/msw/helpchm.h>
-#else
- #include <wx/html/helpctrl.h>
 #endif
+
+#include <wx/html/helpctrl.h>
 
 #define SOCKET_SIZE 1024
 #define DOCUMENT_VERSION_MAJOR 1

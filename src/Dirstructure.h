@@ -109,7 +109,7 @@ public:
 #if defined __WXMAC__
   wxString MaximaDefaultName() {return wxT("/Applications/Maxima.app");}
 #elif defined __WXMSW__
-  wxString MaximaDefaultName() {return ResourcesDir().Replace( wxT("Resources/"), wxT("/bin/maxima.bat"));}
+  wxString MaximaDefaultName() {return wxStandardPaths::Get().GetExecutablePath()+wxT("/bin/maxima.bat");}
 #else
   wxString MaximaDefaultName() {return wxT("maxima");}
 #endif
