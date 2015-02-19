@@ -1652,6 +1652,20 @@ wxString wxMaxima::GetHelpFile()
 
 void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString keyword)
 {
+  #if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(helpfile.Length()>1)
+    {
+      if(helpfile[1]==wxT('/'))
+	{
+	  helpfile[1]=helpfile[2];
+	  helpfile[2]=wxT(':')
+	}
+    }
+  #endif
+  
   if (m_htmlhelpFile != helpfile)
     m_htmlhelpCtrl.AddBook(helpfile);
   
