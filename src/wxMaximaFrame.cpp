@@ -42,6 +42,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // history
   m_history = new History(this, -1);
 
+  // The table of contents
+  m_console->m_structure = new Structure(this, -1);
+
   m_plotSlider = NULL;
 
   SetupMenu();
@@ -131,6 +134,7 @@ wxMaximaFrame::~wxMaximaFrame()
 
   m_manager.UnInit();
   delete m_history;
+  //  delete m_console->m_structure;
   delete m_console;
 }
 
@@ -167,8 +171,17 @@ void wxMaximaFrame::do_layout()
       wxAuiPaneInfo().Name(wxT("history")).
                       Caption(_("History")).
                       Show(false).
-                      TopDockable(false).
-                      BottomDockable(false).
+                      TopDockable(true).
+                      BottomDockable(true).
+                      PaneBorder(true).
+                      Right());
+
+  m_manager.AddPane(m_console->m_structure,
+      wxAuiPaneInfo().Name(wxT("structure")).
+                      Caption(_("Table of Contents")).
+                      Show(false).
+                      TopDockable(true).
+                      BottomDockable(true).
                       PaneBorder(true).
                       Right());
 
@@ -176,8 +189,8 @@ void wxMaximaFrame::do_layout()
       wxAuiPaneInfo().Name(wxT("stats")).
                       Caption(_("Statistics")).
                       Show(false).
-                      TopDockable(false).
-                      BottomDockable(false).
+                      TopDockable(true).
+                      BottomDockable(true).
                       PaneBorder(true).
                       Fixed().
                       Left());
@@ -186,8 +199,8 @@ void wxMaximaFrame::do_layout()
       wxAuiPaneInfo().Name(wxT("math")).
                       Caption(_("General Math")).
                       Show(false).
-                      TopDockable(false).
-                      BottomDockable(false).
+                      TopDockable(true).
+                      BottomDockable(true).
                       PaneBorder(true).
                       Fixed().
                       Left());
@@ -196,8 +209,8 @@ void wxMaximaFrame::do_layout()
       wxAuiPaneInfo().Name(wxT("format")).
                       Caption(_("Insert")).
                       Show(false).
-                      TopDockable(false).
-                      BottomDockable(false).
+                      TopDockable(true).
+                      BottomDockable(true).
                       PaneBorder(true).
                       Fixed().
                       Left());
@@ -396,6 +409,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-H"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Structure\tAlt-Shift-T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
@@ -996,6 +1010,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_history:
       displayed = m_manager.GetPane(wxT("history")).IsShown();
       break;
+    case menu_pane_structure:
+      displayed = m_manager.GetPane(wxT("structure")).IsShown();
+      break;
     case menu_pane_stats:
       displayed = m_manager.GetPane(wxT("stats")).IsShown();
       break;
@@ -1019,6 +1036,10 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_history:
       m_manager.GetPane(wxT("history")).Show(show);
       break;
+    case menu_pane_structure:
+      m_manager.GetPane(wxT("structure")).Show(show);
+      m_console->m_structure->Update(m_console->GetTree());
+      break;
     case menu_pane_stats:
       m_manager.GetPane(wxT("stats")).Show(show);
       break;
@@ -1028,6 +1049,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_hideall:
       m_manager.GetPane(wxT("math")).Show(false);
       m_manager.GetPane(wxT("history")).Show(false);
+      m_manager.GetPane(wxT("structure")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
       break;

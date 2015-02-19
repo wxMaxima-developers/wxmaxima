@@ -30,6 +30,7 @@
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
+#include "Structure.h"
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
@@ -279,6 +280,8 @@ public:
   bool InsertText(wxString text);
   GroupCell *GetWorkingGroup() { return m_workingGroup; }
   void OpenNextOrCreateCell();
+  //! The table of contents pane
+  Structure*    m_structure;
  private:
   /*! Escape all chars that aren't allowed in html.
 
@@ -366,6 +369,7 @@ public:
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
+
  protected:
   DECLARE_EVENT_TABLE()
 };

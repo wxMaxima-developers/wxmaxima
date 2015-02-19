@@ -261,9 +261,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom() + 1;
       dcm.DrawLine( 0, caretY, 3000,  caretY);
     }
-
+    
   }
-
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
@@ -317,6 +316,7 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell* tree, GroupCell* where)
     NumberSections();
   Recalculate();
   m_saved = false; // document has been modified
+
   return last;
 }
 
@@ -415,8 +415,12 @@ void MathCtrl::Recalculate(bool force)
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
     point.y += MC_GROUP_SKIP;
   }
-
+  
   AdjustSize();
+  
+  // Re-calculate the table of contents
+  m_structure->Update(m_tree);
+
 }
 
 /***
@@ -903,6 +907,8 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
   }
   Refresh();
+  // Re-calculate the table of contents
+  m_structure->Update(m_tree);
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
@@ -1709,6 +1715,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     }
     else if (m_selectionStart != NULL) {
       SetHCaret(m_selectionStart->GetParent()->m_previous);
+      // Re-calculate the table of contents
+      m_structure->Update(m_tree);
     }
     else if (!ActivatePrevInput())
       event.Skip();
@@ -1726,6 +1734,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       }
       else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
         SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable(), true);
+	// Re-calculate the table of contents
+	m_structure->Update(m_tree);
       }
     }
     else if (m_selectionEnd != NULL) {
@@ -2976,6 +2986,8 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
     parent->SelectOutput(&m_selectionStart, &m_selectionEnd);
     Refresh();
   }
+  // Re-calculate the table of contents
+  m_structure->Update(m_tree);
 }
 
 bool MathCtrl::ActivatePrevInput() {

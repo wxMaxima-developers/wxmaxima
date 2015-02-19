@@ -57,6 +57,7 @@ wxmaxima_SOURCES = \
 	EvaluationQueue.cpp EvaluationQueue.h \
 	MarkDown.cpp       MarkDown.h       \
 	History.cpp        History.h        \
+	Structure.cpp      Structure.h      \
 	Autocomplete.cpp   Autocomplete.h   \
 	PlotFormatWiz.cpp  PlotFormatWiz.h  \
 	TextStyle.h

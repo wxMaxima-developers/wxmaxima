@@ -66,6 +66,7 @@ public:
      */
     menu_pane_math,
     menu_pane_history,		//!< Both the "toggle the history pane" command and the history pane
+    menu_pane_structure,       	//!< Both the "toggle the structure pane" command and the structure pane
     menu_pane_format,		//!< Both the "toggle the format pane" command and the format pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
@@ -316,6 +317,12 @@ public:
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
+
+ /*! The destructor
+
+   \ţodo Do we really need to delete m_history? I assume wxWidgets will do this for us
+   and we want to avoid a double free.
+  */
   ~wxMaximaFrame();
   /*! Update the recent documents list
 
@@ -433,11 +440,13 @@ protected:
   void SaveRecentDocuments();
   wxAuiManager m_manager;
 
-  MathCtrl* m_console;
-  History * m_history;
-  wxSlider* m_plotSlider;
+  //! The worksheet itself
+  MathCtrl*     m_console;
+  //! The history pane
+  History*      m_history;
+  wxSlider*     m_plotSlider;
   wxArrayString m_recentDocuments;
-  wxMenu* m_recentDocumentsMenu;
+  wxMenu*       m_recentDocumentsMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

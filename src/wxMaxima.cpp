@@ -418,7 +418,7 @@ void wxMaxima::StripComments(wxString& s)
   m_blankStatementRegEx.Replace(&s, wxT(";"));
 }
 
-void wxMaxima::SendMaxima(wxString s, bool history)
+void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
   if (!m_variablesOK) {
     m_variablesOK = true;
@@ -448,8 +448,8 @@ void wxMaxima::SendMaxima(wxString s, bool history)
   StatusMaximaBusy(calculating);
   m_dispReadOut = false;
 
-  /// Add this command to history
-  if (history)
+  /// Add this command to History
+  if (addToHistory)
     AddToHistory(s);
 
   s.Replace(wxT("\n"), wxT(" "));
@@ -4644,6 +4644,12 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
   m_console->SetFocus();
 }
 
+void wxMaxima::StructureDClick(wxCommandEvent& ev)
+{
+  m_console->ScrollToCell(((GroupCell *)m_console->m_structure->GetCell(ev.GetSelection())->GetParent()));
+}
+
+
 long *VersionToInt(wxString version)
 {
   long *intV = new long[3];
@@ -4984,6 +4990,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_pane_math, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_stats, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
+  EVT_UPDATE_UI(menu_pane_structure, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_remove_output, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
@@ -5037,6 +5044,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
   EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
   EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
+  EVT_LISTBOX_DCLICK(structure_ctrl_id, wxMaxima::StructureDClick)
   EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
   EVT_BUTTON(menu_stats_scatterplot, wxMaxima::StatsMenu)

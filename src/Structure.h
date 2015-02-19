@@ -20,42 +20,48 @@
 
 /*! \file
 
-  This file contains the definition of the class History that handles the recently 
-  issued commands for the history pane.
+  This file contains the definition of the class Structure that handles the 
+  table of contents pane.
  */
 #include <wx/wx.h>
+#include <vector>
+#include "GroupCell.h"
 
-#ifndef HISTORY_H
-#define HISTORY_H
+#ifndef STRUCTURE_H
+#define STRUCTURE_H
 
 enum {
-  history_ctrl_id = 1,
-  history_regex_id
+  structure_ctrl_id = 4,
+  structure_regex_id
 };
 
-/*! This class generates a pane containing the last commands that were issued.
+/*! This class generates a pane containing the table of contents.
 
  */
-class History : public wxPanel
+class Structure : public wxPanel
 {
 public:
-  History(wxWindow* parent, int id);
+  Structure(wxWindow* parent, int id);
   /* The destructor
-
-     \todo Save the history on exit and reload it on loading a file?
    */
-  ~History();
+  ~Structure();
   //! Add a file to the recently opened files list.
-  void AddToHistory(wxString cmd);
+  void AddToStructure(wxString cmd);
+  //! What happens if someone changes the search box contents
   void OnRegExEvent(wxCommandEvent &ev);
-  void UpdateDisplay();
-  wxString GetCommand(bool next);
+  //! Update the structure information from the tree 
+  void Update(MathCell* tree);
+  //! Get the nth Cell in the table of contents.
+  MathCell *GetCell(int index){return m_structure[index];}
 private:
-  wxListBox *m_history;
+  //! Update the displayed contents.
+  void UpdateDisplay();
+  wxListBox *m_displayedItems;
   wxTextCtrl *m_regex;
-  wxArrayString commands;
+  
+  std::vector <MathCell *> m_structure;
   int m_current;
   DECLARE_EVENT_TABLE()
 };
 
-#endif // HISTORY_H
+#endif // STRUCTURE_H
