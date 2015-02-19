@@ -79,25 +79,26 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 {
   wxToolBar * toolbar = GetToolBar();
   
-  switch(m_StatusMaximaBusy = status)
-    {
-    case waiting:
-      toolbar->EnableTool(tb_interrupt, false);
-      SetStatusText(_("Ready for user input"), 1);
-      break;
-    case calculating:
-      toolbar->EnableTool(tb_interrupt, true);
-      SetStatusText(_("Maxima is calculating"), 1);
-      break;
-    case transferring:
-      toolbar->EnableTool(tb_interrupt, false);
-      SetStatusText(_("Reading Maxima output"), 1);
-      break;	
-    case parsing:
-      toolbar->EnableTool(tb_interrupt, false);
-      SetStatusText(_("Parsing output"), 1);
-      break;
-    }
+  if(!m_StatusSaving)
+    switch(m_StatusMaximaBusy = status)
+      {
+      case waiting:
+	toolbar->EnableTool(tb_interrupt, false);
+	SetStatusText(_("Ready for user input"), 1);
+	break;
+      case calculating:
+	toolbar->EnableTool(tb_interrupt, true);
+	SetStatusText(_("Maxima is calculating"), 1);
+	break;
+      case transferring:
+	toolbar->EnableTool(tb_interrupt, false);
+	SetStatusText(_("Reading Maxima output"), 1);
+	break;	
+      case parsing:
+	toolbar->EnableTool(tb_interrupt, false);
+	SetStatusText(_("Parsing output"), 1);
+	break;
+      }
 }
 
 void wxMaximaFrame::StatusSaveStart()
