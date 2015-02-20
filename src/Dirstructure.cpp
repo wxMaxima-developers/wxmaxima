@@ -49,7 +49,7 @@ wxString Dirstructure::UserConfDir()
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
-  return wxStandardPaths::GetExecutablePath()+wxT("../bin/maxima.bat");
+  return wxStandardPaths::Get().GetExecutablePath()+wxT("../bin/maxima.bat");
 #elif defined __WXMAC__
   return wxT("/Applications/Maxima.app");
 #else
