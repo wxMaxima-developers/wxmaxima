@@ -33,6 +33,7 @@
 #include "MathCtrl.h"
 #include "Setup.h"
 #include "History.h"
+#include "ToolBar.h"
 
 
 /*! The frame containing the menu and the sidebars
@@ -41,16 +42,23 @@ class wxMaximaFrame: public wxFrame
 {
 public:
 
+  /*! Shows or hides the toolbar
+    \param show
+    - true:  Show the toolbar
+    - false: Hide the toolbar
+   */
+  void ShowToolBar(bool show);
+
   /*! A list of all events the maxima frame can receive
 
     This list serves several purposes:
-     - wxwidgets uses this list to tell us what kind of events it has to inform us about.
-     - we use these events for inter process communication.\n
-       For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter,
-       depending on what option is set in the configuration).
-     - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
-       that toggles them which makes the handling of these IDs easier.
-   */
+    - wxwidgets uses this list to tell us what kind of events it has to inform us about.
+    - we use these events for inter process communication.\n
+    For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter,
+    depending on what option is set in the configuration).
+    - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
+    that toggles them which makes the handling of these IDs easier.
+  */
   enum Event {
 
     /*! Hide all panes
@@ -63,7 +71,7 @@ public:
 
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the first pane in this enum.
-     */
+    */
     menu_pane_math,
     menu_pane_history,		//!< Both the "toggle the history pane" command and the history pane
     menu_pane_structure,       	//!< Both the "toggle the structure pane" command and the structure pane
@@ -72,12 +80,11 @@ public:
 
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the last pane in this enum.
-     */
+    */
     menu_pane_stats,
 
     socket_client_id,
     socket_server_id,
-    plot_slider_id,
     input_line_id,
     menu_new_id,
     menu_open_id,
@@ -228,24 +235,6 @@ public:
     menu_export_html,
     menu_change_var,
     menu_nouns,
-#if defined (__WXMSW__) || defined (__WXGTK20__) 
-    tb_new,
-#endif
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-    tb_open,
-    tb_save,
-    tb_copy,
-    tb_paste,
-    tb_cut,
-    tb_select_all,
-    tb_print,
-    tb_pref,
-    tb_interrupt,
-    tb_help,
-    tb_animation_start,
-    tb_animation_stop,
-    tb_find,
-#endif
     menu_evaluate,
     menu_add_comment,
     menu_add_subsection,
@@ -354,25 +343,15 @@ public:
    */
   void ShowPane(Event id, bool hide);
 
-  //! The main toolbar
-  wxToolBar* m_mainToolbar;
-
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
-  /*! Show or hide the toolbar
-
-    \param show
-     - true:  Thow the toolbar
-     - false: hide the toolbar
-   */
-  void ShowToolBar(bool show);
-
-    enum ToolbarStatus {
-      waiting,
-      calculating,
-      parsing,
-      transferring
-    };
+  
+  enum ToolbarStatus {
+    waiting,
+    calculating,
+    parsing,
+    transferring
+  };
   /*! Set the status according to if maxima is calculating 
 
     \param status
@@ -444,7 +423,6 @@ protected:
   MathCtrl*     m_console;
   //! The history pane
   History*      m_history;
-  wxSlider*     m_plotSlider;
   wxArrayString m_recentDocuments;
   wxMenu*       m_recentDocumentsMenu;
 };

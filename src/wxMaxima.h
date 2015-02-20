@@ -127,6 +127,8 @@ private:
     //! Can we display the "ready" prompt right now?
   bool m_ready;
 protected:
+  //! Called when the "Scroll to currently evaluated" button is pressed.
+  void OnFollow(wxCommandEvent& event);
   void ShowCHMHelp(wxString helpfile,wxString keyword);
   void ShowHTMLHelp(wxString helpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);

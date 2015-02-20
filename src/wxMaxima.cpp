@@ -1787,7 +1787,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
   {
   case wxID_PRINT:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_print:
+  case ToolBar::tb_print:
 #endif
     {
       wxPrintDialogData printDialogData;
@@ -1847,7 +1847,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_save_id, !m_fileSaved);
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
-    menubar->Check(id, IsPaneDisplayed(static_cast<wxMaximaFrame::Event>(id)));
+    menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
 #if defined __WXMAC__
   menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
 #else
@@ -1878,25 +1878,25 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   wxToolBar * toolbar = GetToolBar();
-  toolbar->EnableTool(tb_copy,  m_console->CanCopy(true));
-  toolbar->EnableTool(tb_cut, m_console->CanCut());
-  toolbar->EnableTool(tb_save, !m_fileSaved);
+  toolbar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
+  toolbar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
+  toolbar->EnableTool(ToolBar::tb_save, !m_fileSaved);
   if (m_pid > 0)
-    toolbar->EnableTool(tb_pref, true);
+    toolbar->EnableTool(ToolBar::tb_pref, true);
   else
-    toolbar->EnableTool(tb_pref, false);
+    toolbar->EnableTool(ToolBar::tb_pref, false);
   if (m_console->GetTree() != NULL)
-    toolbar->EnableTool(tb_print, true);
+    toolbar->EnableTool(ToolBar::tb_print, true);
   else
-    toolbar->EnableTool(tb_print, false);
+    toolbar->EnableTool(ToolBar::tb_print, false);
   if (m_console->CanAnimate() && !m_console->AnimationRunning())
-    toolbar->EnableTool(tb_animation_start, true);
+    toolbar->EnableTool(ToolBar::tb_animation_start, true);
   else
-    toolbar->EnableTool(tb_animation_start, false);
+    toolbar->EnableTool(ToolBar::tb_animation_start, false);
   if (m_console->CanAnimate() && m_console->AnimationRunning())
-    toolbar->EnableTool(tb_animation_stop, true);
+    toolbar->EnableTool(ToolBar::tb_animation_stop, true);
   else
-    toolbar->EnableTool(tb_animation_stop, false);
+    toolbar->EnableTool(ToolBar::tb_animation_stop, false);
 }
 
 #endif
@@ -2112,12 +2112,12 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
 #elif defined __WXMSW__ || defined __WXGTK20__
   case menu_new_id:
-  case tb_new:
+  case ToolBar::tb_new:
     wxExecute(wxTheApp->argv[0]);
     break;
 #endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_open:
+  case ToolBar::tb_open:
 #endif
   case menu_open_id:
     {
@@ -2147,7 +2147,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     m_fileSaved = false;
 
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_save:
+  case ToolBar::tb_save:
 #endif
   case menu_save_id:
     SaveFile(forceSave);
@@ -2246,14 +2246,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case MathCtrl::popid_animation_start:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_animation_start:
+  case ToolBar::tb_animation_start:
 #endif
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
     break;
 
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_animation_stop:
+  case ToolBar::tb_animation_stop:
     if (m_console->CanAnimate() && m_console->AnimationRunning())
       m_console->Animate(false);
     break;
@@ -2275,7 +2275,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   {
   case wxID_PREFERENCES:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_pref:
+  case ToolBar::tb_pref:
 #endif
     {
       wxConfigBase *config = wxConfig::Get();
@@ -2329,7 +2329,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_copy:
+  case ToolBar::tb_copy:
 #endif
   case menu_copy_from_console:
     if (m_console->CanCopy(true))
@@ -2340,18 +2340,18 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->Copy(true);
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_cut:
+  case ToolBar::tb_cut:
 #endif
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
     break;
   case menu_select_all:
-  case tb_select_all:
+  case ToolBar::tb_select_all:
     m_console->SelectAll();
     break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_paste:
+  case ToolBar::tb_paste:
 #endif
   case menu_paste:
     if (m_console->CanPaste())
@@ -2439,15 +2439,15 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->RemoveAllOutput();
     break;
   case menu_show_toolbar:
-#if defined __WXMAC__
     ShowToolBar(!(GetToolBar()->IsShown()));
+#if defined __WXMAC__
 #else
-    ShowToolBar(!(GetToolBar() != NULL));
+    /*    ShowToolBar(!(GetToolBar() != NULL));*/
 #endif
     break;
   case menu_edit_find:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_find:
+  case ToolBar::tb_find:
 #endif
     if ( m_findDialog != NULL )
     {
@@ -3829,7 +3829,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
   case wxID_HELP:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case tb_help:
+  case ToolBar::tb_help:
 #endif
     if(helpSearchString==wxT("%"))
       ShowWxMaximaHelp();
@@ -4385,6 +4385,8 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
+  m_console->FollowEvaluation(true);
+
   MathCell* tmp = m_console->GetActiveCell();
   if (tmp != NULL) // we have an active cell
   {
@@ -4429,33 +4431,37 @@ void wxMaxima::TryEvaluateNextInQueue()
     return ;
   }
 
-  GroupCell * group = m_console->m_evaluationQueue->GetFirst();
-  if (group == NULL)
+  m_console->m_currentlyEvaluated = m_console->m_evaluationQueue->GetFirst();
+  if (m_console->m_currentlyEvaluated == NULL)
   {
     m_console->SetWorkingGroup(NULL);
     return; //empty queue
   }
 
-  if (group->GetEditable()->GetValue() != wxEmptyString)
+  if (m_console->m_currentlyEvaluated->GetEditable()->GetValue() != wxEmptyString)
   {
-    group->GetEditable()->AddEnding();
-    group->GetEditable()->ContainsChanges(false);
-    wxString text = group->GetEditable()->ToString();
-
+    m_console->m_currentlyEvaluated->GetEditable()->AddEnding();
+    m_console->m_currentlyEvaluated->GetEditable()->ContainsChanges(false);
+    wxString text = m_console->m_currentlyEvaluated->GetEditable()->ToString();
+    
     // override evaluation when input equals wxmaxima_debug_dump_output
     if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
       m_console->m_evaluationQueue->RemoveFirst();
       DumpProcessOutput();
       return;
     }
+    
+    m_console->m_currentlyEvaluated->RemoveOutput();
+    
+    if(m_console->FollowEvaluation())
+      m_console->SetWorkingGroup(m_console->m_currentlyEvaluated);
 
-    group->RemoveOutput();
-
-    m_console->SetWorkingGroup(group);
-    group->GetPrompt()->SetValue(m_lastPrompt);
+    m_console->m_currentlyEvaluated->GetPrompt()->SetValue(m_lastPrompt);
     m_console->Recalculate();
-    m_console->ScrollToCell(group);
 
+    if(m_console->FollowEvaluation())
+      m_console->ScrollToCell(m_console->m_currentlyEvaluated);
+    
     SendMaxima(text, true);
   }
   else
@@ -4619,7 +4625,7 @@ void wxMaxima::ResetTitle(bool saved)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-  if (m_plotSlider == NULL)
+  if (m_console->m_mainToolBar->m_plotSlider == NULL)
     return;
   if (m_console->IsSelected(MC_TYPE_SLIDE))
   {
@@ -4627,19 +4633,20 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
     {
       SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
 
-      m_plotSlider->SetRange(0, cell->Length() - 1);
-      m_plotSlider->SetValue(cell->GetDisplayedIndex());
-      m_plotSlider->Enable(true);
+      m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
+      m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
+      m_console->m_mainToolBar->m_plotSlider->Enable(true);
     }
     else
-      m_plotSlider->Enable(false);
+      m_console->m_mainToolBar->m_plotSlider->Enable(false);
   }
   else
-    m_plotSlider->Enable(false);
+    m_console->m_mainToolBar->m_plotSlider->Enable(false);
 }
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
+  m_console->ScrolledAwayFromEvaluation(true);
   SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
   if (cell != NULL)
   {
@@ -4652,8 +4659,8 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
 {
   int id = ev.GetId();
 
-  wxMaximaFrame::ShowPane(static_cast<wxMaximaFrame::Event>(id),
-			  !IsPaneDisplayed(static_cast<wxMaximaFrame::Event>(id)));
+  wxMaximaFrame::ShowPane(static_cast<Event>(id),
+			  !IsPaneDisplayed(static_cast<Event>(id)));
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
@@ -4665,6 +4672,12 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 void wxMaxima::StructureDClick(wxCommandEvent& ev)
 {
   m_console->ScrollToCell(((GroupCell *)m_console->m_structure->GetCell(ev.GetSelection())->GetParent()));
+}
+
+//! Called when the "Scroll to currently evaluated" button is pressed.
+void wxMaxima::OnFollow(wxCommandEvent& event)
+{
+  m_console->OnFollow();
 }
 
 
@@ -4790,7 +4803,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
   EVT_TIMER(KEYBOARD_INACTIVITY_TIMER_ID, wxMaxima::OnTimerEvent)
   EVT_TIMER(wxID_ANY, wxMaxima::OnTimerEvent)
-  EVT_COMMAND_SCROLL(plot_slider_id, wxMaxima::SliderEvent)
+  EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
   EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
   EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
   EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
@@ -4955,7 +4968,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
   EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
 #if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
-  EVT_TOOL(tb_print, wxMaxima::PrintMenu)
+  EVT_TOOL(ToolBar::tb_print, wxMaxima::PrintMenu)
 #endif
   EVT_MENU(menu_zoom_in,  wxMaxima::EditMenu)
   EVT_MENU(menu_zoom_out, wxMaxima::EditMenu)
@@ -4971,26 +4984,27 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_MENU(menu_select_all, wxMaxima::EditMenu)
   EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
 #if defined (__WXMSW__) || defined (__WXGTK20__)
-  EVT_TOOL(tb_new, wxMaxima::FileMenu)
+  EVT_TOOL(ToolBar::tb_new, wxMaxima::FileMenu)
 #endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  EVT_TOOL(tb_open, wxMaxima::FileMenu)
-  EVT_TOOL(tb_save, wxMaxima::FileMenu)
-  EVT_TOOL(tb_copy, wxMaxima::EditMenu)
-  EVT_TOOL(tb_paste, wxMaxima::EditMenu)
-  EVT_TOOL(tb_select_all, wxMaxima::EditMenu)
-  EVT_TOOL(tb_cut, wxMaxima::EditMenu)
-  EVT_TOOL(tb_pref, wxMaxima::EditMenu)
-  EVT_TOOL(tb_interrupt, wxMaxima::Interrupt)
-  EVT_TOOL(tb_help, wxMaxima::HelpMenu)
-  EVT_TOOL(tb_animation_start, wxMaxima::FileMenu)
-  EVT_TOOL(tb_animation_stop, wxMaxima::FileMenu)
-  EVT_TOOL(tb_find, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_open, wxMaxima::FileMenu)
+  EVT_TOOL(ToolBar::tb_save, wxMaxima::FileMenu)
+  EVT_TOOL(ToolBar::tb_copy, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_paste, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_select_all, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_cut, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_pref, wxMaxima::EditMenu)
+  EVT_TOOL(ToolBar::tb_interrupt, wxMaxima::Interrupt)
+  EVT_TOOL(ToolBar::tb_help, wxMaxima::HelpMenu)
+  EVT_TOOL(ToolBar::tb_animation_start, wxMaxima::FileMenu)
+  EVT_TOOL(ToolBar::tb_animation_stop, wxMaxima::FileMenu)
+  EVT_TOOL(ToolBar::tb_find, wxMaxima::EditMenu)
 #endif
+  EVT_TOOL(ToolBar::tb_follow,wxMaxima::OnFollow)
   EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
   EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
   EVT_UPDATE_UI(menu_interrupt_id, wxMaxima::UpdateMenus)
-  EVT_UPDATE_UI(plot_slider_id, wxMaxima::UpdateSlider)
+  EVT_UPDATE_UI(ToolBar::plot_slider_id, wxMaxima::UpdateSlider)
   EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_text_from_console, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
@@ -5012,13 +5026,14 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_remove_output, wxMaxima::UpdateMenus)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  EVT_UPDATE_UI(tb_print, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_copy, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_cut, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_interrupt, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_save, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_animation_start, wxMaxima::UpdateToolBar)
-  EVT_UPDATE_UI(tb_animation_stop, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_print, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_follow, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_copy, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_cut, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_interrupt, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_save, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_animation_start, wxMaxima::UpdateToolBar)
+  EVT_UPDATE_UI(ToolBar::tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
   EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
   EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)

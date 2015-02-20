@@ -28,7 +28,6 @@
 #include <wx/image.h>
 #include <wx/filename.h>
 
-
 wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
                              long style):
@@ -45,11 +44,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // The table of contents
   m_console->m_structure = new Structure(this, -1);
 
-  m_plotSlider = NULL;
-
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  SetupToolBar();
+  m_console->m_mainToolBar=new ToolBar(this,id);
+  SetToolBar(m_console->m_mainToolBar);
 #endif
 
   m_StatusMaximaBusy = waiting;
@@ -76,26 +74,36 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 }
 
 void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
-{
-  wxToolBar * toolbar = GetToolBar();
-  
+{  
   if(!m_StatusSaving)
     switch(m_StatusMaximaBusy = status)
       {
       case waiting:
-	toolbar->EnableTool(tb_interrupt, false);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);
+	// We don't evaluate any cell right now.
+	m_console->m_currentlyEvaluated = NULL;
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
 	break;
       case calculating:
-	toolbar->EnableTool(tb_interrupt, true);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+					     m_console->ScrolledAwayFromEvaluation()
+					     );
 	SetStatusText(_("Maxima is calculating"), 1);
 	break;
       case transferring:
-	toolbar->EnableTool(tb_interrupt, false);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+					     m_console->ScrolledAwayFromEvaluation()
+					     );
 	SetStatusText(_("Reading Maxima output"), 1);
 	break;	
       case parsing:
-	toolbar->EnableTool(tb_interrupt, false);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+					     m_console->ScrolledAwayFromEvaluation()
+					     );
 	SetStatusText(_("Parsing output"), 1);
 	break;
       }
@@ -127,12 +135,13 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
-#if defined __WXMAC__
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar()->IsShown()));
+#if defined __WXMAC__
 #else
-  wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar() != NULL));
 #endif
-
+  /*
+  wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar() != NULL));
+   */
   m_manager.UnInit();
   delete m_history;
   //  delete m_console->m_structure;
@@ -772,156 +781,6 @@ void wxMaximaFrame::SetupMenu()
 
 }
 
-#if defined (__WXMSW__) || defined (__WXMAC__)
-
-#define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img))
-
-void wxMaximaFrame::SetupToolBar()
-{
-  wxToolBar* m_mainToolbar = CreateToolBar();
-  Dirstructure dirstructure;
-  
-  m_mainToolbar->SetToolBitmapSize(wxSize(24, 24));
-
-#if defined __WXMSW__
-  m_mainToolbar->AddTool(tb_new, _("New"),
-                           IMAGE("new.png"),
-                           _("New document"));
-#endif
-  m_mainToolbar->AddTool(tb_open, _("Open"),
-                           IMAGE("open.png"),
-                           _("Open document"));
-  m_mainToolbar->AddTool(tb_save, _("Save"),
-                           IMAGE("save.png"),
-                           _("Save document"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_print, _("Print"),
-                           IMAGE("print.png"),
-                           _("Print document"));
-  m_mainToolbar->AddTool(tb_pref, _("Options"),
-                           IMAGE("configure.png"),
-                           _("Configure wxMaxima"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_cut, _("Cut"),
-                           IMAGE("cut.png"),
-                           _("Cut selection"));
-  m_mainToolbar->AddTool(tb_copy, _("Copy"),
-                           IMAGE("copy.png"),
-                           _("Copy selection"));
-  m_mainToolbar->AddTool(tb_paste, _("Paste"),
-                           IMAGE("paste.png"),
-                           _("Paste from clipboard"));
-  m_mainToolbar->AddTool(tb_select_all, _("Select all"),
-                           IMAGE("edit-select-all.png"),
-                           _("Select all"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_find, _("Find"),
-                             IMAGE("find.png"),
-                             _("Find and replace"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_interrupt, _("Interrupt"),
-                           IMAGE("stop.png"),
-                           _("Interrupt current computation"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_animation_start, _("Start animation"),
-                           IMAGE("playback-start.png"),
-                           _("Start animation"));
-  m_mainToolbar->AddTool(tb_animation_stop, _("Stop animation"),
-			   IMAGE("playback-stop.png"),
-			   _("Stop animation"));
-  m_plotSlider = new wxSlider(m_mainToolbar, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxDefaultSize,
-			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  m_mainToolbar->AddControl(m_plotSlider);
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_help, _("Help"),
-                           IMAGE("help.png"),
-                           _("Show Maxima help"));
-  m_mainToolbar->Realize();
-
-  SetToolBar(m_mainToolbar);
-}
-
-#elif defined (__WXGTK20__)
-
-void wxMaximaFrame::SetupToolBar()
-{
-  m_mainToolbar = CreateToolBar();
-
-  m_mainToolbar->AddTool(tb_new, _("New"),
-                           wxArtProvider::GetBitmap(wxT("gtk-new"),
-                                                    wxART_TOOLBAR),
-                           _("New document"));
-
-  m_mainToolbar->AddTool(tb_open, _("Open"),
-                           wxArtProvider::GetBitmap(wxT("gtk-open"),
-                                                    wxART_TOOLBAR),
-                           _("Open document"));
-  m_mainToolbar->AddTool(tb_save, _("Save"),
-                           wxArtProvider::GetBitmap(wxT("gtk-save"),
-                                                    wxART_TOOLBAR),
-                           _("Save document"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_print, _("Print"),
-                           wxArtProvider::GetBitmap(wxT("gtk-print"),
-                                                    wxART_TOOLBAR),
-                           _("Print document"));
-  m_mainToolbar->AddTool(tb_pref, _("Options"),
-                           wxArtProvider::GetBitmap(wxT("gtk-preferences"),
-                                                    wxART_TOOLBAR),
-                           _("Configure wxMaxima"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_cut, _("Cut"),
-                           wxArtProvider::GetBitmap(wxT("gtk-cut"),
-                                                    wxART_TOOLBAR),
-                           _("Cut selection"));
-  m_mainToolbar->AddTool(tb_copy, _("Copy"),
-                           wxArtProvider::GetBitmap(wxT("gtk-copy"),
-                                                    wxART_TOOLBAR),
-                           _("Copy selection"));
-  m_mainToolbar->AddTool(tb_paste, _("Paste"),
-                           wxArtProvider::GetBitmap(wxT("gtk-paste"),
-                                                    wxART_TOOLBAR),
-                           _("Paste from clipboard"));
-  m_mainToolbar->AddTool(tb_select_all, _("Paste"),
-                           wxArtProvider::GetBitmap(wxT("gtk-select-all"),
-                                                    wxART_TOOLBAR),
-                           _("Select all"));
-  
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_find, _("Find..."),
-                           wxArtProvider::GetBitmap(wxT("gtk-find"),
-                                                    wxART_TOOLBAR),
-                           _("Find and replace"));
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_interrupt, _("Interrupt"),
-                           wxArtProvider::GetBitmap(wxT("gtk-stop"),
-                                                    wxART_TOOLBAR),
-                           _("Interrupt current computation"));
-  m_mainToolbar->EnableTool(tb_interrupt,false);
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_animation_start, _("Animation"),
-			   wxArtProvider::GetBitmap(wxT("media-playback-start"),
-						    wxART_TOOLBAR));
-  m_mainToolbar->AddTool(tb_animation_stop, _("Stop animation"),
-			   wxArtProvider::GetBitmap(wxT("media-playback-stop"),
-						    wxART_TOOLBAR));
-  m_plotSlider = new wxSlider(m_mainToolbar, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxSize(200, -1),
-			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  m_mainToolbar->AddControl(m_plotSlider);
-  m_mainToolbar->AddSeparator();
-  m_mainToolbar->AddTool(tb_help, _("Help"),
-                           wxArtProvider::GetBitmap(wxT("gtk-help"),
-                                                    wxART_TOOLBAR),
-                           _("Show Maxima help"));
-  m_mainToolbar->Realize();
-
-  SetToolBar(m_mainToolbar);
-}
-
-#endif
-
 void wxMaximaFrame::LoadRecentDocuments()
 {
   wxConfigBase *config = wxConfig::Get();
@@ -1185,22 +1044,21 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
-#if defined __WXMAC__
   wxToolBar *tbar = GetToolBar();
   tbar->Show(show);
+#if defined __WXMAC__
 #else
+  /*
   if (show) {
-    if (GetToolBar() == NULL)
-      SetupToolBar();
-  }
-  else {
-    wxToolBar *tbar = GetToolBar();
-    if (tbar != NULL) {
-      delete tbar;
-      m_plotSlider = NULL;
-      SetToolBar(NULL);
+    if (m_console->m_mainToolBar == NULL)
+      m_console->m_mainToolBar=new ToolBar(this,-1);
+    SetToolBar(m_console->m_mainToolBar);
     }
-  }
+  else
+    {
+      m_console->m_mainToolBar->Destroy();
+      m_console->m_mainToolBar==NULL;
+      }*/
 #endif
 }
 

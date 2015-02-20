@@ -23,6 +23,7 @@
 #define MATHCTRL_H
 
 #include <wx/wx.h>
+#include <wx/aui/aui.h>
 #include <wx/textfile.h>
 
 #include "MathCell.h"
@@ -31,6 +32,7 @@
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
 #include "Structure.h"
+#include "ToolBar.h"
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
@@ -181,6 +183,7 @@ public:
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
+  //! Scrolls to a given cell
   void ScrollToCell(MathCell *cell);
   EditorCell* GetActiveCell() { return m_activeCell; }
   void ShowPoint(wxPoint point);
@@ -218,6 +221,34 @@ public:
     This command is ignored if no cell is selected.
   */
   void Redo();
+
+  /*! The cell that is being evaluated right now
+
+    - NULL means: No such cell
+   */
+  GroupCell *m_currentlyEvaluated;
+  /*! Do we want to follow the evaluation process?
+
+    Maxima can automagically scroll to the cell that is currently evaluated.
+    If it does do so can be queried by FollowEvaluation(). Changing the 
+    behavior (for example because the user has scrolled away from the
+    cell being evaluated and now clearly wants the cursor to stay where
+    it is) can be archieved by FollowEvaluation(true) or 
+    FollowEvaluation(false).
+   */
+  void FollowEvaluation(bool FollowEvaluation);
+  //! Query if we want to automatically scroll to the cell that is currently evaluated
+  bool FollowEvaluation() {return m_followEvaluation;}
+
+  /*! Set or get the "Scrolled away from evaluation" status
+
+    Sets FollowEvaluation() to false and enables the toolbar button to follow the
+    evaluation process again.
+   */
+  bool ScrolledAwayFromEvaluation(bool ScrolledAway);
+  bool ScrolledAwayFromEvaluation()
+  { return m_scrolledAwayFromEvaluation;}
+
   void SaveValue();
   bool IsSaved() { return m_saved; }
   void SetSaved(bool saved) { m_saved = saved; }
@@ -282,7 +313,12 @@ public:
   void OpenNextOrCreateCell();
   //! The table of contents pane
   Structure*    m_structure;
+  //! Called when the "Scroll to currently evaluated" button is pressed.
+  void OnFollow();
+  //! The toolbar of the main window: We need to access it and therefore have it defined here.
+  ToolBar *m_mainToolBar;
  private:
+  bool m_scrolledAwayFromEvaluation;
   /*! Escape all chars that aren't allowed in html.
 
     Also converts \n to <BR>
@@ -310,6 +346,7 @@ public:
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
+
   void GetMaxPoint(int* width, int* height);
   void OnTimer(wxTimerEvent& event);
   bool m_autoSaveIntervalExpired;
@@ -343,6 +380,8 @@ public:
   GroupCell *m_hCaretPosition; // group above hcaret, NULL for the top
   GroupCell *m_hCaretPositionStart, *m_hCaretPositionEnd; // selection with caret
   bool m_leftDown;
+  //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
+  bool m_followEvaluation;
   bool m_mouseDrag;
   bool m_mouseOutside;
   GroupCell *m_tree;

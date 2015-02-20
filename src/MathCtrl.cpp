@@ -58,6 +58,8 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 #endif
   )
 {
+  m_scrolledAwayFromEvaluation = false;
+  m_currentlyEvaluated = NULL;
   m_keyboardInactive = true;
   m_tree = NULL;
   m_memory = NULL;
@@ -361,7 +363,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if (newCell->GetType() == MC_TYPE_PROMPT)
   {
     m_workingGroup = tmp;
-    ScrollToCell(tmp->GetParent());
+
+    // These two line obviously don't make a change => Commented them out.
+    //    if(FollowEvaluation())
+    //  ScrollToCell(tmp->GetParent());
     OpenHCaret();
   }
 
@@ -378,7 +383,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   tmp->RecalculateAppended(parser);
   Recalculate();
 
-  ScrollToCell(tmp); // also refreshes
+  if(FollowEvaluation())
+    ScrollToCell(tmp); // also refreshes
+  else
+    Refresh();
 }
 
 /***
@@ -909,6 +917,10 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   Refresh();
   // Re-calculate the table of contents
   m_structure->Update(m_tree);
+
+  // The click will have changed the cell so we the user works there and doesn't want the
+  // evaluation mechanism to automatically follow the evaluation any more.
+  ScrolledAwayFromEvaluation(true);
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
@@ -1070,7 +1082,7 @@ bool MathCtrl::Copy(bool astext) {
   /// If the selection is IMAGE or SLIDESHOW, copy it to clipboard
   /// as image.
   else if (m_selectionStart == m_selectionEnd &&
-      m_selectionStart->GetType() == MC_TYPE_IMAGE)
+	   m_selectionStart->GetType() == MC_TYPE_IMAGE)
   {
     ((ImgCell *)m_selectionStart)->CopyToClipboard();
 	return true;
@@ -1460,7 +1472,11 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
     m_structure->Update(m_tree);
-    
+
+    // If we scrolled away from the cell that is currently being evaluated
+    // we need to enable the button that brings us back
+    ScrolledAwayFromEvaluation();
+
     SetHCaret((m_activeCell->GetParent())->m_previous);
     return;
   }
@@ -1471,6 +1487,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
     m_structure->Update(m_tree);
+    ScrolledAwayFromEvaluation();
 
     SetHCaret(m_activeCell->GetParent());
     return;
@@ -3078,6 +3095,7 @@ bool MathCtrl::ActivateNextInput(bool input) {
 //
 void MathCtrl::AddDocumentToEvaluationQueue()
 {
+  FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
       m_evaluationQueue->AddToQueue((GroupCell*) tmp);
@@ -3091,6 +3109,7 @@ void MathCtrl::AddDocumentToEvaluationQueue()
  */
 void MathCtrl::AddEntireDocumentToEvaluationQueue()
 {
+  FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
     m_evaluationQueue->AddToQueue((GroupCell*) tmp);
@@ -3102,6 +3121,7 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
 
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
+  FollowEvaluation(true);
   if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
     return;
   if (m_selectionStart->GetType() != MC_TYPE_GROUP)
@@ -3118,6 +3138,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
 
 void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 {
+  FollowEvaluation(true);
   GroupCell *stop;
   if(m_hCaretActive)
     stop=m_hCaretPosition;
@@ -3151,6 +3172,33 @@ void MathCtrl::ClearEvaluationQueue()
     m_evaluationQueue->RemoveFirst();
 }
 //////// end of EvaluationQueue related stuff ////////////////
+bool MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
+{
+  std::cerr << "Scrolled away:";
+  std::cerr << ScrolledAway;
+  std::cerr << "\n";
+  if(ScrolledAway!=m_scrolledAwayFromEvaluation)
+    {
+      m_scrolledAwayFromEvaluation = ScrolledAway;
+      if(FollowEvaluation()&&(ScrolledAway))
+	{
+	  FollowEvaluation(false);
+	  m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
+	}
+      else
+	m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+    }
+}
+
+
+void MathCtrl::FollowEvaluation(bool FollowEvaluation)
+{
+  std::cerr << "Follow Evaluation:";
+  std::cerr << FollowEvaluation;
+  std::cerr << "\n";
+  m_followEvaluation = FollowEvaluation;
+  if(FollowEvaluation)ScrolledAwayFromEvaluation(false);
+}
 
 void MathCtrl::ScrollToCell(MathCell *cell)
 {
@@ -3725,6 +3773,13 @@ void MathCtrl::CommentSelection()
 
 void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
 {
+  // Did we scroll away from the cell that is being currently evaluated?
+  // If yes we want to no more follow the evaluation with the scroll and
+  // want to enable the button that brings us back.
+  ScrolledAwayFromEvaluation();
+
+  // We don't want to start the autosave while the user is scrolling through
+  // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
   ev.Skip();
@@ -3732,6 +3787,8 @@ void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
 
 void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
 {
+  ScrolledAwayFromEvaluation(true);
+  
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
 
@@ -4040,6 +4097,13 @@ void MathCtrl::OpenNextOrCreateCell()
   }
   else
     OpenHCaret();
+}
+
+
+void MathCtrl::OnFollow()
+{
+  ScrollToCell(m_currentlyEvaluated);
+  FollowEvaluation(true);
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
