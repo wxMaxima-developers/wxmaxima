@@ -1661,7 +1661,7 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString keyword)
       if(helpfile[1]==wxT('/'))
 	{
 	  helpfile[1]=helpfile[2];
-	  helpfile[2]=wxT(':')
+	  helpfile[2]=wxT(':');
 	}
     }
   #endif
