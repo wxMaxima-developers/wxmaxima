@@ -3174,9 +3174,6 @@ void MathCtrl::ClearEvaluationQueue()
 //////// end of EvaluationQueue related stuff ////////////////
 bool MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
 {
-  std::cerr << "Scrolled away:";
-  std::cerr << ScrolledAway;
-  std::cerr << "\n";
   if(ScrolledAway!=m_scrolledAwayFromEvaluation)
     {
       m_scrolledAwayFromEvaluation = ScrolledAway;
@@ -3193,9 +3190,6 @@ bool MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
 
 void MathCtrl::FollowEvaluation(bool FollowEvaluation)
 {
-  std::cerr << "Follow Evaluation:";
-  std::cerr << FollowEvaluation;
-  std::cerr << "\n";
   m_followEvaluation = FollowEvaluation;
   if(FollowEvaluation)ScrolledAwayFromEvaluation(false);
 }
