@@ -2630,6 +2630,32 @@ bool MathCtrl::ExportToTeX(wxString file) {
   AddLineToFile(output, wxT("\\usepackage{color}"));
   AddLineToFile(output, wxT("\\usepackage{amsmath}"));
 
+  // We want to shrink pictures the user has included if they are
+  // higher or wider than the page.
+  AddLineToFile(output, wxT("\\usepackage{ifthen}"));
+  AddLineToFile(output, wxT("\\newsavebox{\\picturebox}"));
+  AddLineToFile(output, wxT("\\newlength{\\pictureboxwidth}"));
+  AddLineToFile(output, wxT("\\newlength{\\pictureboxheight}"));
+  AddLineToFile(output, wxT("\\newcommand{\\includeimage}[1]{"));
+  AddLineToFile(output, wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}"));
+  AddLineToFile(output, wxT("    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}"));
+  AddLineToFile(output, wxT("    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}"));
+  AddLineToFile(output, wxT("    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}"));
+  AddLineToFile(output, wxT("    {"));
+  AddLineToFile(output, wxT("        \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}"));
+  AddLineToFile(output, wxT("    }"));
+  AddLineToFile(output, wxT("    {"));
+  AddLineToFile(output, wxT("        \\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}"));
+  AddLineToFile(output, wxT("        {"));
+  AddLineToFile(output, wxT("            \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}"));
+  AddLineToFile(output, wxT("            "));
+  AddLineToFile(output, wxT("        }"));
+  AddLineToFile(output, wxT("        {"));
+  AddLineToFile(output, wxT("            \\includegraphics{#1}"));
+  AddLineToFile(output, wxT("        }"));
+  AddLineToFile(output, wxT("    }"));
+  AddLineToFile(output, wxT("}"));
+
   // Define an "abs" operator for abs commands that are long enough to be broken into
   // lines.
   AddLineToFile(output, wxT("\\DeclareMathOperator{\\abs}{abs}"));

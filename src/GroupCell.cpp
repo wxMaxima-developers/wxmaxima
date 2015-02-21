@@ -681,7 +681,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     {
       str << wxT("\\begin{figure}[htb]\n")
           << wxT("  \\begin{center}\n")
-          << wxT("    \\includegraphics{")
+          << wxT("    \\includeimage{")
           << filename << wxT("_img/") << image << wxT("}\n")
           << wxT("  \\caption{") << PrepareForTeX(m_input->m_next->GetValue()) << wxT("}\n")
           << wxT("  \\end{center}\n")
@@ -748,7 +748,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
               {
                 wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i"), i);
                 if((src->GetBitmap(i)).SaveFile(Frame+wxT(".png")))
-                  str << wxT("\\includegraphics[width=.95\\linewidth]{")+Frame+wxT("}\n");
+                  str << wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{")+Frame+wxT("}\n");
                 else
                   str << wxT("\n\\verb|<<GRAPHICS>>|\n");
                 if(i<src->Length()-1)
@@ -763,7 +763,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
               Bitmap bmp;
               bmp.SetData(copy);
               if (bmp.ToFile(file))
-                str += wxT("\\includegraphics[width=.95\\linewidth]{") +
+                str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                   filename + wxT("_img/") + image + wxT("}");
               else
                 str << wxT("\n\\verb|<<GRAPHICS>>|\n");
