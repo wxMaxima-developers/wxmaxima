@@ -78,10 +78,15 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
   if(!m_StatusSaving)
     switch(m_StatusMaximaBusy = status)
       {
+      case userinput:
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
+	SetStatusText(_("Maxima got a question"), 1);
+	break;
       case waiting:
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);
-	// We don't evaluate any cell right now.
+	// We don't evaluate any cell right now. But we might be waiting for a user prompt.
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
 	break;
       case calculating:

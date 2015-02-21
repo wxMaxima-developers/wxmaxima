@@ -899,6 +899,7 @@ void wxMaxima::ReadLoadSymbols()
  */
 void wxMaxima::ReadPrompt()
 {
+  bool question = false;
   m_ready=true;
   int end = m_currentOutput.Find(m_promptSuffix);
   if (end > -1)
@@ -940,10 +941,13 @@ void wxMaxima::ReadPrompt()
 
       // We have a question
       else {
+	question = true;
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
         else
           DoRawConsoleAppend(o, MC_TYPE_PROMPT);
+	if(m_console->ScrolledAwayFromEvaluation())
+	    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
       }
 
       if (o.StartsWith(wxT("\nMAXIMA>")))
@@ -953,7 +957,13 @@ void wxMaxima::ReadPrompt()
     }
 
     if (m_ready)
-      StatusMaximaBusy(waiting);
+      {
+	if(question)
+	  StatusMaximaBusy(userinput);
+	else
+	  StatusMaximaBusy(waiting);
+      }
+    
     m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
                       m_currentOutput.Length());
   }
@@ -4454,8 +4464,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     
     m_console->m_currentlyEvaluated->RemoveOutput();
     
-    if(m_console->FollowEvaluation())
-      m_console->SetWorkingGroup(m_console->m_currentlyEvaluated);
+    m_console->SetWorkingGroup(m_console->m_currentlyEvaluated);
 
     m_console->m_currentlyEvaluated->GetPrompt()->SetValue(m_lastPrompt);
     m_console->Recalculate();

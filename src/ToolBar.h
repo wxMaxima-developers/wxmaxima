@@ -33,7 +33,7 @@ class ToolBar: public wxToolBar
   /*! A list of all events the Toolbar can receive
    */
   enum Event {
-    plot_slider_id = 5000,
+    plot_slider_id = 5500,
     tb_new,
     tb_open,
     tb_save,
