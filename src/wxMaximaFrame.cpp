@@ -79,17 +79,21 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
     switch(m_StatusMaximaBusy = status)
       {
       case userinput:
+	
+	m_console->m_mainToolBar->ShowUserInputBitmap();
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
 	SetStatusText(_("Maxima got a question"), 1);
 	break;
       case waiting:
+	m_console->m_mainToolBar->ShowFollowBitmap();
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);
 	// We don't evaluate any cell right now.
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
 	break;
       case calculating:
+	m_console->m_mainToolBar->ShowFollowBitmap();
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
 					     m_console->ScrolledAwayFromEvaluation()

@@ -78,8 +78,9 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
   AddTool(tb_interrupt, _("Interrupt"),
 	  IMAGE("stop.png"),
 	  _("Interrupt current computation"));
-  AddTool(tb_follow, _("Follow"),
-	  IMAGE("ShowCurrentCell.png"),
+  m_followIcon=IMAGE("stock_weather-sunny");
+  m_needsInformationIcon=IMAGE("dialog-information");
+  AddTool(tb_follow, _("Follow"),m_followIcon,
 	  _("Return to the cell that is currently being evaluated"));
   AddSeparator();
   AddTool(tb_animation_start, _("Start animation"),
@@ -155,10 +156,11 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 	  wxArtProvider::GetBitmap(wxT("gtk-stop"),
 				   wxART_TOOLBAR),
 	  _("Interrupt current computation"));
-  AddTool(tb_follow, _("Follow"),
-	  wxArtProvider::GetBitmap(wxT("stock_weather-sunny"),
-				   wxART_TOOLBAR),
-	  _("Return to the cell that is currently being evaluated"));
+
+  m_followIcon=wxArtProvider::GetBitmap(wxT("stock_weather-sunny"),wxART_TOOLBAR);
+  m_needsInformationIcon=wxArtProvider::GetBitmap(wxT("dialog-information"),wxART_TOOLBAR);
+  AddTool(tb_follow, _("Follow"),m_followIcon,
+  _("Return to the cell that is currently being evaluated"));
   EnableTool(tb_interrupt,false);
   AddSeparator();
   AddTool(tb_animation_start, _("Animation"),
