@@ -2133,7 +2133,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_open_id:
     {
-      if (!SaveNecessary()) {
+      if (SaveNecessary()) {
         int close = SaveDocumentP();
 	
         if (close == wxID_CANCEL)
@@ -4121,7 +4121,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
-  if (!SaveNecessary())
+  if (SaveNecessary())
     {
     int close = SaveDocumentP();
 
@@ -4357,7 +4357,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
-  if (!SaveNecessary())
+  if (SaveNecessary())
     {
     int close = SaveDocumentP();
 
