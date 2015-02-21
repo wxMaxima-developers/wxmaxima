@@ -2133,7 +2133,12 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_open_id:
     {
-      if ((!m_fileSaved)&&(m_console->GetTree()!=NULL)) {
+      if ((!m_fileSaved)&&(m_console->GetTree()!=NULL)&&
+	  // No data in the document
+	  (m_console->GetTree()!=NULL) &&
+	  // Only one math cell that consists only of a prompt
+	  !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
+	  ) {
         int close = SaveDocumentP();
 
         if (close == wxID_CANCEL)
@@ -4121,7 +4126,14 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
-  if (!m_fileSaved && event.CanVeto() && (m_console->GetTree()!=NULL)) {
+  if (
+      !m_fileSaved && event.CanVeto() &&
+      // No data in the document
+      (m_console->GetTree()!=NULL) &&
+      // Only one math cell that consists only of a prompt
+      !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
+      )
+    {
     int close = SaveDocumentP();
 
     if (close == wxID_CANCEL) {
@@ -4356,7 +4368,17 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
-  if (!m_fileSaved && (m_console->GetTree()!=NULL)) {
+  std::cerr<<"Debug";
+  std::cerr<<(m_console->GetTree()->m_next==NULL);
+  std::cerr<<(m_console->GetTree()->ToString().Length()<7);
+  std::cerr<<"\n";
+  if (!m_fileSaved && (m_console->GetTree()!=NULL) &&
+      // No data in the document
+      (m_console->GetTree()!=NULL) &&
+      // Only one math cell that consists only of a prompt
+      !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
+      )
+    {
     int close = SaveDocumentP();
 
     if (close == wxID_CANCEL)
