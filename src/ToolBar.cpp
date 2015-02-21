@@ -79,7 +79,7 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 	  IMAGE("stop.png"),
 	  _("Interrupt current computation"));
   m_followIcon=IMAGE("stock_weather-sunny");
-  m_needsInformationIcon=IMAGE("dialog-information");
+  m_needsInformationIcon=IMAGE("software-update-urgent");
   AddTool(tb_follow, _("Follow"),m_followIcon,
 	  _("Return to the cell that is currently being evaluated"));
   AddSeparator();
@@ -158,7 +158,7 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 	  _("Interrupt current computation"));
 
   m_followIcon=wxArtProvider::GetBitmap(wxT("stock_weather-sunny"),wxART_TOOLBAR);
-  m_needsInformationIcon=wxArtProvider::GetBitmap(wxT("dialog-information"),wxART_TOOLBAR);
+  m_needsInformationIcon=wxArtProvider::GetBitmap(wxT("software-update-urgent"),wxART_TOOLBAR);
   AddTool(tb_follow, _("Follow"),m_followIcon,
   _("Return to the cell that is currently being evaluated"));
   EnableTool(tb_interrupt,false);
