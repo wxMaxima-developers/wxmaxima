@@ -20,5 +20,9 @@ Current:
 	- bumped the minor version number of .wxmx: overstrike text is
 	  a new feature and therefore a file containing it cannot be read by
 	  old wxMaxima versions.
-	- An autosave functionality
+	- An autosave functionality that makes maxima work more like a mobile
+	  app whose documents are always saved.
 	- A table-of-contents pane for faster navigation
+	- It is now possible to scroll away from a running evaluation for
+	  arbitrary lengths of time and to choose to follow the evaluation
+	  process again.
