@@ -4431,12 +4431,13 @@ void wxMaxima::TryEvaluateNextInQueue()
     return ;
   }
 
-  m_console->m_currentlyEvaluated = m_console->m_evaluationQueue->GetFirst();
-  if (m_console->m_currentlyEvaluated == NULL)
+  GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
+  if (tmp == NULL)
   {
     m_console->SetWorkingGroup(NULL);
     return; //empty queue
   }
+  if(tmp)m_console->m_currentlyEvaluated = tmp;
 
   if (m_console->m_currentlyEvaluated->GetEditable()->GetValue() != wxEmptyString)
   {

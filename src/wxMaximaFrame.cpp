@@ -82,7 +82,6 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);
 	// We don't evaluate any cell right now.
-	m_console->m_currentlyEvaluated = NULL;
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
 	break;
       case calculating:
