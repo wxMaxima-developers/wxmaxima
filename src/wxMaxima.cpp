@@ -2087,6 +2087,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0))
       {
 	SaveFile(false);
+	m_autoSaveIntervalExpired = false;
 	if(m_autoSaveInterval > 10000)
 	  m_autoSaveTimer.StartOnce(m_autoSaveInterval);
       }
