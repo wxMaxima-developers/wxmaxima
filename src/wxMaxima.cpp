@@ -920,6 +920,7 @@ void wxMaxima::ReadPrompt()
           m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
+	  m_console->FollowEvaluation(false);
         }
         else { // we don't have an empty queue
           m_ready = false;
