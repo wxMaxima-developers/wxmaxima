@@ -2133,17 +2133,12 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_open_id:
     {
-      if ((!m_fileSaved)&&(m_console->GetTree()!=NULL)&&
-	  // No data in the document
-	  (m_console->GetTree()!=NULL) &&
-	  // Only one math cell that consists only of a prompt
-	  !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
-	  ) {
+      if (!SaveNecessary()) {
         int close = SaveDocumentP();
-
+	
         if (close == wxID_CANCEL)
           return;
-
+	
         if (close == wxID_YES) {
           if (!SaveFile())
             return;
@@ -4126,13 +4121,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 
 void wxMaxima::OnClose(wxCloseEvent& event)
 {
-  if (
-      !m_fileSaved && event.CanVeto() &&
-      // No data in the document
-      (m_console->GetTree()!=NULL) &&
-      // Only one math cell that consists only of a prompt
-      !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
-      )
+  if (!SaveNecessary())
     {
     int close = SaveDocumentP();
 
@@ -4368,16 +4357,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
-  std::cerr<<"Debug";
-  std::cerr<<(m_console->GetTree()->m_next==NULL);
-  std::cerr<<(m_console->GetTree()->ToString().Length()<7);
-  std::cerr<<"\n";
-  if (!m_fileSaved && (m_console->GetTree()!=NULL) &&
-      // No data in the document
-      (m_console->GetTree()!=NULL) &&
-      // Only one math cell that consists only of a prompt
-      !((m_console->GetTree()->m_next==NULL)&&(m_console->GetTree()->ToString().Length()<6))
-      )
+  if (!SaveNecessary())
     {
     int close = SaveDocumentP();
 
@@ -4397,6 +4377,15 @@ void wxMaxima::OnRecentDocument(wxCommandEvent& event)
     wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
     RemoveRecentDocument(file);
   }
+}
+
+bool wxMaxima::SaveNecessary()
+{
+  return !m_fileSaved && (m_console->GetTree()!=NULL) &&
+    // No data in the document
+    (m_console->GetTree()!=NULL) &&
+    // Only one math cell that consists only of a prompt
+    !(dynamic_cast<GroupCell*>(m_console->GetTree())->Empty());
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent& event)

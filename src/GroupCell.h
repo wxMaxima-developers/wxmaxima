@@ -127,6 +127,8 @@ public:
   void Number(int &section, int &subsection, int &image);
   void RecalculateAppended(CellParser& parser);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
+  //! Is this list of cells empty?
+  bool Empty();
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold

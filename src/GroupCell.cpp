@@ -148,6 +148,16 @@ void GroupCell::SetParent(MathCell *parent)
   }
 }
 
+bool GroupCell::Empty()
+{
+  return (
+	  // No next cell
+	  (m_next==NULL)&&
+	  // This cell at maximum contains a prompt.
+	  (ToString().Length()<6)
+	  );
+}
+
 void GroupCell::DestroyOutput()
 {
   MathCell *tmp = m_output, *tmp1;
