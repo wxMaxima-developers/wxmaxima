@@ -65,7 +65,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   }
 
   bool match = true;
-  bool insertAns = true;
+  bool insertAns = false;
   wxConfig::Get()->Read(wxT("matchParens"), &match);
   wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
   EditorCell *editor = new EditorCell();
