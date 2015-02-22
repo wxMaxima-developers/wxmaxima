@@ -3198,7 +3198,7 @@ void MathCtrl::ClearEvaluationQueue()
     m_evaluationQueue->RemoveFirst();
 }
 //////// end of EvaluationQueue related stuff ////////////////
-bool MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
+void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
 {
   if(ScrolledAway!=m_scrolledAwayFromEvaluation)
     {

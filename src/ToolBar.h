@@ -30,6 +30,7 @@ class ToolBar: public wxToolBar
 {
  public:
   ToolBar(wxWindow* parent, int id);
+  virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap(){SetToolNormalBitmap(tb_follow,m_needsInformationIcon);}
   //! Stop showing that user input is needed for maxima to continue

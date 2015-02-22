@@ -25,9 +25,10 @@
 #include <wx/artprov.h>
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
-
 #define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img))
-
+#else
+#define IMAGE(img) wxArtProvider::GetBitmap(wxT("gtk-new"),wxART_TOOLBAR)
+#endif
 
 ToolBar::~ToolBar()
 {
@@ -36,7 +37,9 @@ ToolBar::~ToolBar()
 
 ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 {
+  #if defined (__WXMSW__) || defined (__WXMAC__)
   Dirstructure dirstructure;
+  #endif
   
   SetToolBitmapSize(wxSize(24, 24));
 
@@ -90,7 +93,7 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
   AddTool(tb_animation_stop, _("Stop animation"),
 	  IMAGE("playback-stop.png"),
 	  _("Stop animation"));
-  m_plotSlider = new wxSlider(m_console->m_mainToolbar, plot_slider_id, 0, 0, 10,
+  m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxDefaultSize,
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   AddControl(m_plotSlider);
@@ -99,87 +102,4 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 	  IMAGE("help.png"),
 	  _("Show Maxima help"));
   Realize();
-
-  SetToolBar(m_console->m_mainToolbar);
 }
-
-#elif defined (__WXGTK20__)
-
-ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
-{
-  AddTool(tb_new, _("New"),
-	  wxArtProvider::GetBitmap(wxT("gtk-new"),
-				   wxART_TOOLBAR),
-	  _("New document"));
-
-  AddTool(tb_open, _("Open"),
-	  wxArtProvider::GetBitmap(wxT("gtk-open"),
-				   wxART_TOOLBAR),
-	  _("Open document"));
-  AddTool(tb_save, _("Save"),
-	  wxArtProvider::GetBitmap(wxT("gtk-save"),
-				   wxART_TOOLBAR),
-	  _("Save document"));
-  AddSeparator();
-  AddTool(tb_print, _("Print"),
-	  wxArtProvider::GetBitmap(wxT("gtk-print"),
-				   wxART_TOOLBAR),
-	  _("Print document"));
-  AddTool(tb_pref, _("Options"),
-	  wxArtProvider::GetBitmap(wxT("gtk-preferences"),
-				   wxART_TOOLBAR),
-	  _("Configure wxMaxima"));
-  AddSeparator();
-  AddTool(tb_cut, _("Cut"),
-	  wxArtProvider::GetBitmap(wxT("gtk-cut"),
-				   wxART_TOOLBAR),
-	  _("Cut selection"));
-  AddTool(tb_copy, _("Copy"),
-	  wxArtProvider::GetBitmap(wxT("gtk-copy"),
-				   wxART_TOOLBAR),
-	  _("Copy selection"));
-  AddTool(tb_paste, _("Paste"),
-	  wxArtProvider::GetBitmap(wxT("gtk-paste"),
-				   wxART_TOOLBAR),
-	  _("Paste from clipboard"));
-  AddTool(tb_select_all, _("Paste"),
-	  wxArtProvider::GetBitmap(wxT("gtk-select-all"),
-				   wxART_TOOLBAR),
-	  _("Select all"));
-  
-  AddSeparator();
-  AddTool(tb_find, _("Find..."),
-	  wxArtProvider::GetBitmap(wxT("gtk-find"),
-				   wxART_TOOLBAR),
-	  _("Find and replace"));
-  AddSeparator();
-  AddTool(tb_interrupt, _("Interrupt"),
-	  wxArtProvider::GetBitmap(wxT("gtk-stop"),
-				   wxART_TOOLBAR),
-	  _("Interrupt current computation"));
-
-  m_followIcon=wxArtProvider::GetBitmap(wxT("stock_weather-sunny"),wxART_TOOLBAR);
-  m_needsInformationIcon=wxArtProvider::GetBitmap(wxT("software-update-urgent"),wxART_TOOLBAR);
-  AddTool(tb_follow, _("Follow"),m_followIcon,
-  _("Return to the cell that is currently being evaluated"));
-  EnableTool(tb_interrupt,false);
-  AddSeparator();
-  AddTool(tb_animation_start, _("Animation"),
-	  wxArtProvider::GetBitmap(wxT("media-playback-start"),
-				   wxART_TOOLBAR));
-  AddTool(tb_animation_stop, _("Stop animation"),
-	  wxArtProvider::GetBitmap(wxT("media-playback-stop"),
-				   wxART_TOOLBAR));
-  m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxSize(200, -1),
-			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  AddControl(m_plotSlider);
-  AddSeparator();
-  AddTool(tb_help, _("Help"),
-	  wxArtProvider::GetBitmap(wxT("gtk-help"),
-				   wxART_TOOLBAR),
-	  _("Show Maxima help"));
-  Realize();
-}
-
-#endif

@@ -245,7 +245,7 @@ public:
     Sets FollowEvaluation() to false and enables the toolbar button to follow the
     evaluation process again.
    */
-  bool ScrolledAwayFromEvaluation(bool ScrolledAway);
+  void ScrolledAwayFromEvaluation(bool ScrolledAway);
   bool ScrolledAwayFromEvaluation()
   { return m_scrolledAwayFromEvaluation;}
 
