@@ -5,18 +5,18 @@ SUBDIRS = src locales data info test
 
 EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
              art/readme.txt art/license.txt                  \
-             art/toolbar/configure.png art/toolbar/cut.png   \
-             art/toolbar/input.png art/toolbar/print.png     \
-             art/toolbar/stop.png art/toolbar/copy.png       \
-             art/toolbar/help.png art/toolbar/open.png       \
-             art/toolbar/save.png art/toolbar/text.png       \
-             art/toolbar/playback-start.png                  \
-	     art/toolbar/edit-select-all.png		     \
-             art/toolbar/playback-stop.png                   \
-	     art/toolbar/paste.png                           \
-	     art/toolbar/find.png                            \
-	     art/toolbar/new.png                             \
-	     art/toolbar/ShowCurrentCell.png                 \
+             art/toolbar/gtk-preferences.png art/toolbar/gtk-cut.png   \
+             art/toolbar/input.png art/toolbar/gtk-print.png     \
+             art/toolbar/gtk-stop.png art/toolbar/gtk-copy.png       \
+             art/toolbar/gtk-help.png art/toolbar/gtk-open.png   \
+             art/toolbar/gtk-save.png art/toolbar/text.png       \
+             art/toolbar/media-playback-start.png            \
+	     art/toolbar/gtk-select-all.png		     \
+             art/toolbar/media-playback-stop.png             \
+	     art/toolbar/gtk-paste.png                       \
+	     art/toolbar/gtk-find.png                        \
+	     art/toolbar/gtk-new.png                         \
+	     art/toolbar/weather-clear.png                   \
 	     art/toolbar/software-update-urgent.png          \
 	     art/config/options.png                          \
 	     art/config/maxima.png                           \

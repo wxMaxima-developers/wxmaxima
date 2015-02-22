@@ -25,9 +25,9 @@
 #include <wx/artprov.h>
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
-#define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img))
+#define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img)+wxT(".png"))
 #else
-#define IMAGE(img) wxArtProvider::GetBitmap(wxT("gtk-new"),wxART_TOOLBAR)
+#define IMAGE(img) wxArtProvider::GetBitmap(wxT(img),wxART_TOOLBAR)
 #endif
 
 ToolBar::~ToolBar()
@@ -45,61 +45,61 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 
 #if defined __WXMSW__
   AddTool(tb_new, _("New"),
-	  IMAGE("new.png"),
+	  IMAGE("gtk-new"),
 	  _("New document"));
 #endif
   AddTool(tb_open, _("Open"),
-	  IMAGE("open.png"),
+	  IMAGE("gtk-open"),
 	  _("Open document"));
   AddTool(tb_save, _("Save"),
-	  IMAGE("save.png"),
+	  IMAGE("gtk-save"),
 	  _("Save document"));
   AddSeparator();
   AddTool(tb_print, _("Print"),
-	  IMAGE("print.png"),
+	  IMAGE("gtk-print"),
 	  _("Print document"));
   AddTool(tb_pref, _("Options"),
-	  IMAGE("configure.png"),
+	  IMAGE("gtk-preferences"),
 	  _("Configure wxMaxima"));
   AddSeparator();
   AddTool(tb_cut, _("Cut"),
-	  IMAGE("cut.png"),
+	  IMAGE("gtk-cut"),
 	  _("Cut selection"));
   AddTool(tb_copy, _("Copy"),
-	  IMAGE("copy.png"),
+	  IMAGE("gtk-copy"),
 	  _("Copy selection"));
   AddTool(tb_paste, _("Paste"),
-	  IMAGE("paste.png"),
+	  IMAGE("gtk-paste"),
 	  _("Paste from clipboard"));
   AddTool(tb_select_all, _("Select all"),
-	  IMAGE("edit-select-all.png"),
+	  IMAGE("gtk-select-all"),
 	  _("Select all"));
   AddSeparator();
   AddTool(tb_find, _("Find"),
-	  IMAGE("find.png"),
+	  IMAGE("gtk-find"),
 	  _("Find and replace"));
   AddSeparator();
   AddTool(tb_interrupt, _("Interrupt"),
-	  IMAGE("stop.png"),
+	  IMAGE("gtk-stop"),
 	  _("Interrupt current computation"));
-  m_followIcon=IMAGE("stock_weather-sunny");
+  m_followIcon=IMAGE("weather-clear");
   m_needsInformationIcon=IMAGE("software-update-urgent");
   AddTool(tb_follow, _("Follow"),m_followIcon,
 	  _("Return to the cell that is currently being evaluated"));
   AddSeparator();
   AddTool(tb_animation_start, _("Start animation"),
-	  IMAGE("playback-start.png"),
+	  IMAGE("media-playback-start"),
 	  _("Start animation"));
   AddTool(tb_animation_stop, _("Stop animation"),
-	  IMAGE("playback-stop.png"),
+	  IMAGE("media-playback-stop"),
 	  _("Stop animation"));
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxDefaultSize,
+			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   AddControl(m_plotSlider);
   AddSeparator();
   AddTool(tb_help, _("Help"),
-	  IMAGE("help.png"),
+	  IMAGE("gtk-help"),
 	  _("Show Maxima help"));
   Realize();
 }

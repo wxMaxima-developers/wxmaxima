@@ -4,6 +4,9 @@ config/ subdirectory) are from the Tango project
 the Creative Commons Attribution Share-Alike license
 (http://creativecommons.org/licenses/by-sa/2.5/) but since then have
 been released to the public domain.
+They were renamed to match the names of the gtk system icons they
+replace.
+
 
 wxMaxima icons (wxmac.icns, maximaicon.ico, wxmaxima.png) were created
 by Sven Hodapp (http://4pple.de) and are under GPL.
