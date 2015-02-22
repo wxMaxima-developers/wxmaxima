@@ -29,11 +29,11 @@
 class ToolBar: public wxToolBar
 {
  public:
+  ToolBar(wxWindow* parent, int id);
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap(){SetToolNormalBitmap(tb_follow,m_needsInformationIcon);}
   //! Stop showing that user input is needed for maxima to continue
   void ShowFollowBitmap(){SetToolNormalBitmap(tb_follow,m_followIcon);}
-  ToolBar(wxWindow* parent, int id);
   /*! A list of all events the Toolbar can receive
    */
   enum Event {
@@ -56,9 +56,9 @@ class ToolBar: public wxToolBar
   };
 
   //! The slider for animations
-  wxSlider*     m_plotSlider;
-  wxBitmap m_followIcon;
-  wxBitmap m_needsInformationIcon;
+  wxSlider* m_plotSlider;
+  wxBitmap  m_followIcon;
+  wxBitmap  m_needsInformationIcon;
 };
 
 #endif

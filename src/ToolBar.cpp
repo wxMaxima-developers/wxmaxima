@@ -21,6 +21,7 @@
 //
 
 #include "ToolBar.h"
+#include "Dirstructure.h"
 #include <wx/artprov.h>
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
