@@ -94,7 +94,6 @@ public:
     menu_load_id,
     menu_sconsole_id,
     menu_interrupt_id,
-    menu_restart_id,
     menu_solve,
     menu_solve_to_poly,
     menu_solve_num,

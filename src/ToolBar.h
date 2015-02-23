@@ -54,7 +54,8 @@ class ToolBar: public wxToolBar
     tb_help,
     tb_animation_start,
     tb_animation_stop,
-    tb_find
+    tb_find,
+    menu_restart_id
   };
 
   //! The slider for animations

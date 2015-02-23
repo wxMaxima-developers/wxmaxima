@@ -82,6 +82,9 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 	  GetImage(wxT("gtk-find")),
 	  _("Find and replace"));
   AddSeparator();
+  AddTool(menu_restart_id, _("Restart maxima"),
+	  GetImage(wxT("view-refresh")),
+	  _("Kill maxima if it is running, and restart it, when necessary."));
   AddTool(tb_interrupt, _("Interrupt"),
 	  GetImage(wxT("gtk-stop")),
 	  _("Interrupt current computation"));
