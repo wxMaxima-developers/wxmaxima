@@ -1465,7 +1465,8 @@ wxString wxMaxima::GetCommand(bool params)
     {
       wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
                      "Please configure wxMaxima with 'Edit->Configure'.\n"
-                     "Then start Maxima with 'Maxima->Restart Maxima'."), _("Warning"),
+                     "Then start Maxima with 'Maxima->Restart Maxima'."),
+		   _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
       return wxEmptyString;
@@ -1858,9 +1859,9 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   toolbar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
   toolbar->EnableTool(ToolBar::tb_save, !m_fileSaved);
   if (m_pid > 0)
-    toolbar->EnableTool(ToolBar::tb_pref, true);
+    toolbar->EnableTool(ToolBar::tb_interrupt, true);
   else
-    toolbar->EnableTool(ToolBar::tb_pref, false);
+    toolbar->EnableTool(ToolBar::tb_interrupt, false);
   if (m_console->GetTree() != NULL)
     toolbar->EnableTool(ToolBar::tb_print, true);
   else
