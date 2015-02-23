@@ -1,5 +1,5 @@
 //
-//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -3595,7 +3595,7 @@ wxT("<html>"
 "<img src=\"%s/wxmaxima.png\">"
 "</p>"
 "<h1>wxMaxima %s</h1>"
-"<p><small>(C) 2004 - 2014 Andrej Vodopivec</small><br></p>"
+"<p><small>(C) 2004 - 2015 Andrej Vodopivec</small><br></p>"
 "</center>"
 "</body>"
 "</html>"),
@@ -3767,7 +3767,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(VERSION));
-    info.SetCopyright(wxT("(C) 2004-2014 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2015 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
