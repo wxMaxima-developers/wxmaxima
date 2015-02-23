@@ -675,42 +675,12 @@ bool wxMaxima::StartMaxima()
   if (command.Length() > 0)
   {
 #if defined(__WXMSW__)
-    if (wxGetOsVersion() == wxOS_WINDOWS_9X)
-    {
-      wxString maximaPrefix = command.SubString(1, command.Length() - 3);
-      wxString sysPath;
-
-      wxGetEnv(wxT("path"), &sysPath);
-      maximaPrefix.Replace(wxT("\\bin\\maxima.bat"), wxEmptyString);
-
-      wxSetEnv(wxT("maxima_prefix"), maximaPrefix);
-      wxSetEnv(wxT("path"), maximaPrefix + wxT("\\bin;") + sysPath);
-
-      command = maximaPrefix + wxT("\\lib\\maxima");
-      if (!wxDirExists(command))
-        return false;
-
-      wxArrayString files;
-      wxDir::GetAllFiles(command, &files, wxT("maxima.exe"));
-      if (files.Count() == 0)
-        return false;
-      else
-      {
-        command = files[0];
-        command.Append(wxString::Format(
-                         wxT(" -eval \"(maxima::start-client %d)\" -eval \"(run)\" -f"),
-                         m_port
-                       ));
-      }
-    }
-    else {
-      wxString clisp = command.SubString(1, command.Length() - 3);
-      clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
-      if (wxFindFirstFile(clisp, wxDIR).empty())
-	command.Append(wxString::Format(wxT(" -s %d"), m_port));
-      else
-	command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
-    }
+    wxString clisp = command.SubString(1, command.Length() - 3);
+    clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
+    if (wxFindFirstFile(clisp, wxDIR).empty())
+      command.Append(wxString::Format(wxT(" -s %d"), m_port));
+    else
+      command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
     wxSetEnv(wxT("home"), wxGetHomeDir());
     wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
 #else
@@ -1676,7 +1646,6 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
   
   if (m_htmlhelpFile != helpfile)
     m_htmlhelpCtrl.AddBook(helpfile);
-  wxMessageBox(helpfile);
   
   if ((keyword == wxT("%")) ||
       (keyword == wxT(" << Graphics >> ")))
@@ -1691,10 +1660,8 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
   if (m_chmhelpFile != helpfile)
     m_chmhelpCtrl.LoadFile(helpfile);
   
-  if (
-      (keyword == wxT("%"))||
-      (keyword == wxT(" << Graphics >> "))
-      )
+  if ((keyword == wxT("%"))||
+      (keyword == wxT(" << Graphics >> ")))
     m_chmhelpCtrl.DisplayContents();
   else
     m_chmhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
@@ -1707,12 +1674,11 @@ void wxMaxima::ShowWxMaximaHelp()
 
   wxString htmldir = dirstructure.HelpDir();
 
-  wxString helpfile = htmldir + wxT("wxmaxima.hhp");
-
 #if defined CHM
-  helpfile = htmldir + wxT("wxmaxima.chm");
+  wxString helpfile = htmldir + wxT("wxmaxima.chm");
   ShowCHMHelp(helpfile, wxT("%"));
 #else
+  wxString helpfile = htmldir + wxT("wxmaxima.hhp");
   ShowHTMLHelp(helpfile, wxT("%"));  
 #endif
 }
