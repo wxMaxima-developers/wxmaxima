@@ -26,7 +26,7 @@
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
-class ToolBar: public wxToolBar
+class ToolBar
 {
  public:
 #if defined __WXGTK__
@@ -34,15 +34,21 @@ class ToolBar: public wxToolBar
 #else
   wxImage GetImage(wxString img);
 #endif
-  ToolBar(wxWindow* parent, int id);
+  ToolBar(wxToolBar *toolbar);
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
-  void ShowUserInputBitmap(){
-    SetToolNormalBitmap(tb_follow,m_needsInformationIcon);
+  void ShowUserInputBitmap() {
+    m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
   }
   //! Stop showing that user input is needed for maxima to continue
-  void ShowFollowBitmap(){
-    SetToolNormalBitmap(tb_follow,m_followIcon);
+  void ShowFollowBitmap() {
+    m_toolBar->SetToolNormalBitmap(tb_follow,m_followIcon);
+  }
+  void EnableTool(int id, bool enable) {
+    m_toolBar->EnableTool(id, enable);
+  }
+  wxToolBar *GetToolBar() {
+    return m_toolBar;
   }
   /*! A list of all events the Toolbar can receive
    */
@@ -69,6 +75,9 @@ class ToolBar: public wxToolBar
   wxSlider* m_plotSlider;
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
+
+private:
+  wxToolBar *m_toolBar;
 };
 
 #endif

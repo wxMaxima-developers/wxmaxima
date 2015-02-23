@@ -46,15 +46,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  m_console->m_mainToolBar=new ToolBar(this,id);
-  SetToolBar(m_console->m_mainToolBar);
+  m_console->m_mainToolBar = new ToolBar(CreateToolBar());
+  SetToolBar(m_console->m_mainToolBar->GetToolBar());
 #endif
 
   CreateStatusBar(2);
-  int widths[] =
-    {
-      -1, 300
-    };
+  int widths[] = { -1, 300 };
   SetStatusWidths(2, widths);
 
   StatusMaximaBusy(waiting);
