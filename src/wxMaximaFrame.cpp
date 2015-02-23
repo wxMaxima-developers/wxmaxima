@@ -449,7 +449,7 @@ void wxMaximaFrame::SetupMenu()
                    _("&Interrupt\tCtrl-G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
 #endif
-  APPEND_MENU_ITEM(m_MaximaMenu, menu_restart_id,
+  APPEND_MENU_ITEM(m_MaximaMenu, ToolBar::menu_restart_id,
                    _("&Restart Maxima"), _("Restart Maxima"), wxT("gtk-refresh"));
   m_MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
                              _("Delete all values from memory"), wxITEM_NORMAL);

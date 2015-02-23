@@ -2498,7 +2498,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   wxString f = wxT("/");
   switch (event.GetId())
   {
-  case menu_restart_id:
+  case ToolBar::menu_restart_id:
     m_closing = true;
     m_console->ClearEvaluationQueue();
     m_console->ResetInputPrompts();
@@ -4836,7 +4836,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
   EVT_BUTTON(button_rectform, wxMaxima::SimplifyMenu)
   EVT_BUTTON(button_trigrat, wxMaxima::SimplifyMenu)
   EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
-  EVT_MENU(menu_restart_id, wxMaxima::MaximaMenu)
+  EVT_MENU(ToolBar::menu_restart_id, wxMaxima::MaximaMenu)
 #ifndef __WXMAC__
   EVT_MENU(wxID_EXIT, wxMaxima::FileMenu)
 #endif

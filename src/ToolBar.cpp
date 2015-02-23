@@ -33,7 +33,11 @@ wxImage ToolBar::GetImage(wxString img)
 #else
 wxBitmap ToolBar::GetImage(wxString img)
 {
+  #if defined (__WXMSW__) || defined (__WXMAC__)
+  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
+  #else
   return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
+  #endif
 }
 #endif
 
