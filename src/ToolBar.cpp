@@ -1,5 +1,5 @@
 //
-//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -24,6 +24,13 @@
 #include "Dirstructure.h"
 #include <wx/artprov.h>
 
+#if defined (__WXMSW__) || defined (__WXMAC__)
+wxImage ToolBar::GetImage(wxString img)
+{
+  Dirstructure dirstructure;
+  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
+}
+#else
 wxBitmap ToolBar::GetImage(wxString img)
 {
   #if defined (__WXMSW__) || defined (__WXMAC__)
@@ -32,80 +39,76 @@ wxBitmap ToolBar::GetImage(wxString img)
   return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
   #endif
 }
+#endif
 
 ToolBar::~ToolBar()
 {
   m_plotSlider = NULL;
 }
 
-ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
+ToolBar::ToolBar(wxToolBar* toolbar)
 {
-  #if defined (__WXMSW__) || defined (__WXMAC__)
-  Dirstructure dirstructure;
-  #endif
+  m_toolBar = toolbar;
   
-  SetToolBitmapSize(wxSize(24, 24));
+  toolbar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
-  AddTool(tb_new, _("New"),
-	  GetImage(wxT("gtk-new")),
-	  _("New document"));
+  m_toolBar->AddTool(tb_new, _("New"),
+                     GetImage(wxT("gtk-new")),
+                     _("New document"));
 #endif
-  AddTool(tb_open, _("Open"),
-	  GetImage(wxT("gtk-open")),
-	  _("Open document"));
-  AddTool(tb_save, _("Save"),
-	  GetImage(wxT("gtk-save")),
-	  _("Save document"));
-  AddSeparator();
-  AddTool(tb_print, _("Print"),
-	  GetImage(wxT("gtk-print")),
-	  _("Print document"));
-  AddTool(tb_pref, _("Options"),
-	  GetImage(wxT("gtk-preferences")),
-	  _("Configure wxMaxima"));
-  AddSeparator();
-  AddTool(tb_cut, _("Cut"),
-	  GetImage(wxT("gtk-cut")),
-	  _("Cut selection"));
-  AddTool(tb_copy, _("Copy"),
-	  GetImage(wxT("gtk-copy")),
-	  _("Copy selection"));
-  AddTool(tb_paste, _("Paste"),
-	  GetImage(wxT("gtk-paste")),
-	  _("Paste from clipboard"));
-  AddTool(tb_select_all, _("Select all"),
-	  GetImage(wxT("gtk-select-all")),
-	  _("Select all"));
-  AddSeparator();
-  AddTool(tb_find, _("Find"),
-	  GetImage(wxT("gtk-find")),
-	  _("Find and replace"));
-  AddSeparator();
-  AddTool(menu_restart_id, _("Restart maxima"),
-	  GetImage(wxT("view-refresh")),
-	  _("Kill maxima if it is running, and restart it, when necessary."));
-  AddTool(tb_interrupt, _("Interrupt"),
-	  GetImage(wxT("gtk-stop")),
-	  _("Interrupt current computation"));
-  m_followIcon=GetImage(wxT("weather-clear"));
-  m_needsInformationIcon=GetImage(wxT("software-update-urgent"));
-  AddTool(tb_follow, _("Follow"),m_followIcon,
-	  _("Return to the cell that is currently being evaluated"));
-  AddSeparator();
-  AddTool(tb_animation_start, _("Start animation"),
-	  GetImage(wxT("media-playback-start")),
-	  _("Start animation"));
-  AddTool(tb_animation_stop, _("Stop animation"),
-	  GetImage(wxT("media-playback-stop")),
-	  _("Stop animation"));
-  m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
+  m_toolBar->AddTool(tb_open, _("Open"),
+                     GetImage(wxT("gtk-open")),
+                     _("Open document"));
+  m_toolBar->AddTool(tb_save, _("Save"),
+                     GetImage(wxT("gtk-save")),
+                     _("Save document"));
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_print, _("Print"),
+                     GetImage(wxT("gtk-print")),
+                     _("Print document"));
+  m_toolBar->AddTool(tb_pref, _("Options"),
+                     GetImage(wxT("gtk-preferences")),
+                     _("Configure wxMaxima"));
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_cut, _("Cut"),
+                     GetImage(wxT("gtk-cut")),
+                     _("Cut selection"));
+  m_toolBar->AddTool(tb_copy, _("Copy"),
+                     GetImage(wxT("gtk-copy")),
+                     _("Copy selection"));
+  m_toolBar->AddTool(tb_paste, _("Paste"),
+                     GetImage(wxT("gtk-paste")),
+                     _("Paste from clipboard"));
+  m_toolBar->AddTool(tb_select_all, _("Select all"),
+                     GetImage(wxT("gtk-select-all")),
+                     _("Select all"));
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_find, _("Find"),
+                     GetImage(wxT("gtk-find")),
+                     _("Find and replace"));
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_interrupt, _("Interrupt"),
+                     GetImage(wxT("gtk-stop")),
+                     _("Interrupt current computation"));
+  m_followIcon = GetImage(wxT("weather-clear"));
+  m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
+  m_toolBar->AddTool(tb_follow, _("Follow"),m_followIcon,
+                     _("Return to the cell that is currently being evaluated"));
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_animation_start, _("Start animation"),
+                     GetImage(wxT("media-playback-start")),
+                     _("Start animation"));
+  m_toolBar->AddTool(tb_animation_stop, _("Stop animation"),
+                     GetImage(wxT("media-playback-stop")),
+                     _("Stop animation"));
+  m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  AddControl(m_plotSlider);
-  AddSeparator();
-  AddTool(tb_help, _("Help"),
-	  GetImage(wxT("gtk-help")),
-	  _("Show Maxima help"));
-  Realize();
+  m_toolBar->AddControl(m_plotSlider);
+  m_toolBar->AddSeparator();
+  m_toolBar->AddTool(tb_help, _("Help"),
+                     GetImage(wxT("gtk-help")),
+                     _("Show Maxima help"));
+  m_toolBar->Realize();
 }

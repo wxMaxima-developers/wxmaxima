@@ -1,5 +1,5 @@
 //
-//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -26,16 +26,30 @@
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
-class ToolBar: public wxToolBar
+class ToolBar
 {
  public:
+#if defined __WXGTK__
   wxBitmap GetImage(wxString img);
-  ToolBar(wxWindow* parent, int id);
+#else
+  wxImage GetImage(wxString img);
+#endif
+  ToolBar(wxToolBar *toolbar);
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
-  void ShowUserInputBitmap(){SetToolNormalBitmap(tb_follow,m_needsInformationIcon);}
+  void ShowUserInputBitmap() {
+    m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
+  }
   //! Stop showing that user input is needed for maxima to continue
-  void ShowFollowBitmap(){SetToolNormalBitmap(tb_follow,m_followIcon);}
+  void ShowFollowBitmap() {
+    m_toolBar->SetToolNormalBitmap(tb_follow,m_followIcon);
+  }
+  void EnableTool(int id, bool enable) {
+    m_toolBar->EnableTool(id, enable);
+  }
+  wxToolBar *GetToolBar() {
+    return m_toolBar;
+  }
   /*! A list of all events the Toolbar can receive
    */
   enum Event {
@@ -62,6 +76,9 @@ class ToolBar: public wxToolBar
   wxSlider* m_plotSlider;
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
+
+private:
+  wxToolBar *m_toolBar;
 };
 
 #endif

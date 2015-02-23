@@ -1,5 +1,5 @@
 //
-//  Copyright (C) 2008-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2008-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>

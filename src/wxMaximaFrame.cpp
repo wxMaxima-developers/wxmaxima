@@ -1,5 +1,5 @@
 //
-//  Copyright (C) 2004-2014 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2011-2011 cw.ahbong <cwahbong@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -46,20 +46,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   SetupMenu();
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  m_console->m_mainToolBar=new ToolBar(this,id);
-  SetToolBar(m_console->m_mainToolBar);
+  m_console->m_mainToolBar = new ToolBar(CreateToolBar());
+  SetToolBar(m_console->m_mainToolBar->GetToolBar());
 #endif
 
-  StatusMaximaBusy(waiting);
-  m_StatusSaving =false;
-
   CreateStatusBar(2);
-  int widths[] =
-    {
-      -1, 300
-    };
+  int widths[] = { -1, 300 };
   SetStatusWidths(2, widths);
 
+  StatusMaximaBusy(waiting);
+  m_StatusSaving = false;
+  
 #if defined __WXMSW__
   wxAcceleratorEntry entries[1];
   entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
@@ -76,8 +73,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 {  
   if(!m_StatusSaving)
+  {
     switch(m_StatusMaximaBusy = status)
-      {
+    {
       case userinput:	
 	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->ShowUserInputBitmap();
@@ -119,7 +117,8 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 					     );
 	SetStatusText(_("Parsing output"), 1);
 	break;
-      }
+    }
+  }
 }
 
 void wxMaximaFrame::StatusSaveStart()
