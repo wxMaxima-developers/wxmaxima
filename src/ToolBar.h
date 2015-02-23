@@ -73,8 +73,14 @@ class ToolBar
 
   //! The slider for animations
   wxSlider* m_plotSlider;
+#if defined __WXGTK__
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
+#else
+  wxImage m_followIcon;
+  wxImage  m_needsInformationIcon;
+#endif
+  
 
 private:
   wxToolBar *m_toolBar;
