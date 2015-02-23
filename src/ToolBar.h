@@ -23,8 +23,8 @@
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 
-#ifndef _TOOLBAR_H
-#define _TOOLBAR_H
+#ifndef _WXMAXIMA_TOOLBAR_H
+#define _WXMAXIMA_TOOLBAR_H
 
 class ToolBar: public wxToolBar
 {
