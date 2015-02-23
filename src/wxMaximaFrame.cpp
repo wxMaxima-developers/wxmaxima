@@ -50,8 +50,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetToolBar(m_console->m_mainToolBar);
 #endif
 
-  m_StatusMaximaBusy = waiting;
-  m_StatusSaving =     false;
+  StatusMaximaBusy(waiting);
+  m_StatusSaving =false;
 
   CreateStatusBar(2);
   int widths[] =
@@ -78,14 +78,16 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
   if(!m_StatusSaving)
     switch(m_StatusMaximaBusy = status)
       {
-      case userinput:
-	
+      case userinput:	
+	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->ShowUserInputBitmap();
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
 	SetStatusText(_("Maxima got a question"), 1);
 	break;
       case waiting:
+	m_console->SetWorkingGroup(NULL);
+	m_MenuBar->Enable(menu_remove_output,true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);
 	// We don't evaluate any cell right now.
@@ -93,6 +95,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 	m_console->m_mainToolBar->ShowFollowBitmap();
 	break;
       case calculating:
+	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->ShowFollowBitmap();
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
@@ -101,6 +104,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 	SetStatusText(_("Maxima is calculating"), 1);
 	break;
       case transferring:
+	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
 					     m_console->ScrolledAwayFromEvaluation()
@@ -108,6 +112,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 	SetStatusText(_("Reading Maxima output"), 1);
 	break;	
       case parsing:
+	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
 					     m_console->ScrolledAwayFromEvaluation()

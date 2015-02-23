@@ -1850,7 +1850,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
-  menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
+  // Now should be done in StatusMaximaBusy.
+  //  menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
   menubar->Enable(menu_interrupt_id, m_pid>0);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(menu_evaluate_till_here, (m_console->GetTree() != NULL)
@@ -1859,13 +1860,15 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
-#if defined __WXMAC__
   menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
+#if defined __WXMAC__
 #else
+  /*
   if (GetToolBar() != NULL)
     menubar->Check(menu_show_toolbar, true);
   else
     menubar->Check(menu_show_toolbar, false);
+  */
 #endif
 
   if (m_console->GetTree() != NULL)
