@@ -29,6 +29,7 @@
 class ToolBar: public wxToolBar
 {
  public:
+  wxBitmap GetImage(wxString img);
   ToolBar(wxWindow* parent, int id);
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue

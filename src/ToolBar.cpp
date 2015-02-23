@@ -24,11 +24,14 @@
 #include "Dirstructure.h"
 #include <wx/artprov.h>
 
-#if defined (__WXMSW__) || defined (__WXMAC__)
-#define IMAGE(img) wxImage(dirstructure.ConfigToolbarDir()+ wxT(img)+wxT(".png"))
-#else
-#define IMAGE(img) wxArtProvider::GetBitmap(wxT(img),wxART_TOOLBAR)
-#endif
+wxBitmap ToolBar::GetImage(wxString img)
+{
+  #if defined (__WXMSW__) || defined (__WXMAC__)
+  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
+  #else
+  return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
+  #endif
+}
 
 ToolBar::~ToolBar()
 {
@@ -45,53 +48,53 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 
 #if defined __WXMSW__
   AddTool(tb_new, _("New"),
-	  IMAGE("gtk-new"),
+	  GetImage(wxT("gtk-new")),
 	  _("New document"));
 #endif
   AddTool(tb_open, _("Open"),
-	  IMAGE("gtk-open"),
+	  GetImage(wxT("gtk-open")),
 	  _("Open document"));
   AddTool(tb_save, _("Save"),
-	  IMAGE("gtk-save"),
+	  GetImage(wxT("gtk-save")),
 	  _("Save document"));
   AddSeparator();
   AddTool(tb_print, _("Print"),
-	  IMAGE("gtk-print"),
+	  GetImage(wxT("gtk-print")),
 	  _("Print document"));
   AddTool(tb_pref, _("Options"),
-	  IMAGE("gtk-preferences"),
+	  GetImage(wxT("gtk-preferences")),
 	  _("Configure wxMaxima"));
   AddSeparator();
   AddTool(tb_cut, _("Cut"),
-	  IMAGE("gtk-cut"),
+	  GetImage(wxT("gtk-cut")),
 	  _("Cut selection"));
   AddTool(tb_copy, _("Copy"),
-	  IMAGE("gtk-copy"),
+	  GetImage(wxT("gtk-copy")),
 	  _("Copy selection"));
   AddTool(tb_paste, _("Paste"),
-	  IMAGE("gtk-paste"),
+	  GetImage(wxT("gtk-paste")),
 	  _("Paste from clipboard"));
   AddTool(tb_select_all, _("Select all"),
-	  IMAGE("gtk-select-all"),
+	  GetImage(wxT("gtk-select-all")),
 	  _("Select all"));
   AddSeparator();
   AddTool(tb_find, _("Find"),
-	  IMAGE("gtk-find"),
+	  GetImage(wxT("gtk-find")),
 	  _("Find and replace"));
   AddSeparator();
   AddTool(tb_interrupt, _("Interrupt"),
-	  IMAGE("gtk-stop"),
+	  GetImage(wxT("gtk-stop")),
 	  _("Interrupt current computation"));
-  m_followIcon=IMAGE("weather-clear");
-  m_needsInformationIcon=IMAGE("software-update-urgent");
+  m_followIcon=GetImage(wxT("weather-clear"));
+  m_needsInformationIcon=GetImage(wxT("software-update-urgent"));
   AddTool(tb_follow, _("Follow"),m_followIcon,
 	  _("Return to the cell that is currently being evaluated"));
   AddSeparator();
   AddTool(tb_animation_start, _("Start animation"),
-	  IMAGE("media-playback-start"),
+	  GetImage(wxT("media-playback-start")),
 	  _("Start animation"));
   AddTool(tb_animation_stop, _("Stop animation"),
-	  IMAGE("media-playback-stop"),
+	  GetImage(wxT("media-playback-stop")),
 	  _("Stop animation"));
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
@@ -99,7 +102,7 @@ ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
   AddControl(m_plotSlider);
   AddSeparator();
   AddTool(tb_help, _("Help"),
-	  IMAGE("gtk-help"),
+	  GetImage(wxT("gtk-help")),
 	  _("Show Maxima help"));
   Realize();
 }
