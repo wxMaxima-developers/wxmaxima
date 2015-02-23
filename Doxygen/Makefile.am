@@ -1,7 +1,7 @@
 html: html_local
 html_local: html/index.html
 
-html/index.html: FORCE index.html
+html/index.html latex/index.tex: FORCE index.html
 	doxygen Doxyfile
 
 index.html:
@@ -10,6 +10,11 @@ index.html:
 	echo "</head>">>index.html
 
 
-all-am: html
+EXTRA_DIST =
+
+pdf-am:
+	cd latex&&pdflatex refman.tex
+	cd latex&&pdflatex refman.tex
+	cd latex&&pdflatex refman.tex
 
 FORCE:
