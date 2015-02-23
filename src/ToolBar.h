@@ -29,13 +29,21 @@
 class ToolBar: public wxToolBar
 {
  public:
+#if defined __WXGTK__
   wxBitmap GetImage(wxString img);
+#else
+  wxImage GetImage(wxString img);
+#endif
   ToolBar(wxWindow* parent, int id);
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
-  void ShowUserInputBitmap(){SetToolNormalBitmap(tb_follow,m_needsInformationIcon);}
+  void ShowUserInputBitmap(){
+    SetToolNormalBitmap(tb_follow,m_needsInformationIcon);
+  }
   //! Stop showing that user input is needed for maxima to continue
-  void ShowFollowBitmap(){SetToolNormalBitmap(tb_follow,m_followIcon);}
+  void ShowFollowBitmap(){
+    SetToolNormalBitmap(tb_follow,m_followIcon);
+  }
   /*! A list of all events the Toolbar can receive
    */
   enum Event {

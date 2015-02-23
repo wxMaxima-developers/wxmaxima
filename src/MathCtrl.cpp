@@ -2729,7 +2729,9 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
         if (fixReorderedIndices)
           for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
-            if (*it == '%' && (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') && (it.pos == 0 || input[it.pos-1] != '%')){
+            if (*it == '%' &&
+                (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') &&
+                (it.pos == 0 || input[it.pos-1] != '%')){
               it.pos += 2;
               unsigned int startPos = it.pos;
               unsigned int temp = 0;
@@ -3201,23 +3203,24 @@ void MathCtrl::ClearEvaluationQueue()
 void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
 {
   if(ScrolledAway!=m_scrolledAwayFromEvaluation)
+  {
+    m_scrolledAwayFromEvaluation = ScrolledAway;
+    if(FollowEvaluation()&&(ScrolledAway))
     {
-      m_scrolledAwayFromEvaluation = ScrolledAway;
-      if(FollowEvaluation()&&(ScrolledAway))
-	{
-	  FollowEvaluation(false);
-	  m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
-	}
-      else
-	m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+      FollowEvaluation(false);
+      m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
     }
+    else
+      m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+  }
 }
 
 
 void MathCtrl::FollowEvaluation(bool FollowEvaluation)
 {
   m_followEvaluation = FollowEvaluation;
-  if(FollowEvaluation)ScrolledAwayFromEvaluation(false);
+  if(FollowEvaluation)
+    ScrolledAwayFromEvaluation(false);
 }
 
 void MathCtrl::ScrollToCell(MathCell *cell)
@@ -3319,7 +3322,8 @@ void MathCtrl::ShowPoint(wxPoint point) {
     Scroll(scrollToX / SCROLL_UNIT, scrollToY / SCROLL_UNIT);
 }
 
-bool MathCtrl::CutToClipboard() {
+bool MathCtrl::CutToClipboard()
+{
   if (m_activeCell != NULL)
   {
     m_activeCell->CutToClipboard();
@@ -3343,8 +3347,8 @@ bool MathCtrl::CutToClipboard() {
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void MathCtrl::PasteFromClipboard(bool primary) {
-
+void MathCtrl::PasteFromClipboard(bool primary)
+{
   bool cells = false;
 
   if (primary)

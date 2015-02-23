@@ -20,6 +20,7 @@
 #ifndef DIRSTRUCTURE_H
 #define DIRSTRUCTURE_H
 
+#include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/stdpaths.h>
 #include <wx/utils.h>

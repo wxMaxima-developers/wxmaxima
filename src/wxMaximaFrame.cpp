@@ -50,9 +50,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetToolBar(m_console->m_mainToolBar);
 #endif
 
-  StatusMaximaBusy(waiting);
-  m_StatusSaving =false;
-
   CreateStatusBar(2);
   int widths[] =
     {
@@ -60,6 +57,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
     };
   SetStatusWidths(2, widths);
 
+  StatusMaximaBusy(waiting);
+  m_StatusSaving = false;
+  
 #if defined __WXMSW__
   wxAcceleratorEntry entries[1];
   entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
@@ -76,8 +76,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 {  
   if(!m_StatusSaving)
+  {
     switch(m_StatusMaximaBusy = status)
-      {
+    {
       case userinput:	
 	m_MenuBar->Enable(menu_remove_output,false);
 	m_console->m_mainToolBar->ShowUserInputBitmap();
@@ -119,7 +120,8 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 					     );
 	SetStatusText(_("Parsing output"), 1);
 	break;
-      }
+    }
+  }
 }
 
 void wxMaximaFrame::StatusSaveStart()

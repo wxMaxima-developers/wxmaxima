@@ -1661,29 +1661,25 @@ wxString wxMaxima::GetHelpFile()
 #endif
 }
 
-void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString keyword)
+void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 {
-  #if defined (__WXMSW__)
+#if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
-  if(helpfile.Length()>1)
-    {
-      if(helpfile[1]==wxT('/'))
-	{
-	  helpfile[1]=helpfile[2];
-	  helpfile[2]=wxT(':');
-	}
-    }
-  #endif
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/'))
+  {
+      helpfile[1]=helpfile[2];
+      helpfile[2]=wxT(':');
+  }
+#endif
   
   if (m_htmlhelpFile != helpfile)
     m_htmlhelpCtrl.AddBook(helpfile);
+  wxMessageBox(helpfile);
   
-  if (
-      (keyword == wxT("%"))||
-      (keyword == wxT(" << Graphics >> "))
-      )
+  if ((keyword == wxT("%")) ||
+      (keyword == wxT(" << Graphics >> ")))
     m_htmlhelpCtrl.DisplayContents();
   else
     m_htmlhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
@@ -1724,7 +1720,7 @@ void wxMaxima::ShowWxMaximaHelp()
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
   wxLogNull disableWarnings;
-  wxString MaximaHelpFile=GetHelpFile();
+  wxString MaximaHelpFile = GetHelpFile();
   if (MaximaHelpFile.Length() == 0)
   {
     wxMessageBox(_("wxMaxima could not find help files."
@@ -1732,11 +1728,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                  _("Error"), wxICON_ERROR | wxOK);
     return ;
   }
-  #if defined (__WXMSW__)
+#if defined (__WXMSW__)
   ShowCHMHelp(MaximaHelpFile,keyword);
-  #else
+#else
   ShowHTMLHelp(MaximaHelpFile,keyword);
-  #endif
+#endif
 }
 
 ///--------------------------------------------------------------------------------

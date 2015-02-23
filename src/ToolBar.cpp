@@ -24,14 +24,18 @@
 #include "Dirstructure.h"
 #include <wx/artprov.h>
 
+#if defined (__WXMSW__) || defined (__WXMAC__)
+wxImage ToolBar::GetImage(wxString img)
+{
+  Dirstructure dirstructure;
+  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
+}
+#else
 wxBitmap ToolBar::GetImage(wxString img)
 {
-  #if defined (__WXMSW__) || defined (__WXMAC__)
-  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
-  #else
   return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
-  #endif
 }
+#endif
 
 ToolBar::~ToolBar()
 {
@@ -40,10 +44,10 @@ ToolBar::~ToolBar()
 
 ToolBar::ToolBar(wxWindow* parent, int id):wxToolBar(parent,id)
 {
-  #if defined (__WXMSW__) || defined (__WXMAC__)
+#if defined (__WXMSW__) || defined (__WXMAC__)
   Dirstructure dirstructure;
-  #endif
-  
+#endif
+
   SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
