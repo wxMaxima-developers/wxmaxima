@@ -26,7 +26,9 @@
 wxString Dirstructure::ResourcesDir()
 {
 #if defined __WXMSW__
-  return wxStandardPaths::Get().GetExecutablePath()+wxT("/");
+  wxString exe = wxStandardPaths::Get().GetExecutablePath();
+  exe.Replace(wxT("wxmaxima.exe"), wxEmptyString);
+  return exe;
 #elif defined __WXMAC__
   wxString exe = wxStandardPaths::Get().GetExecutablePath();
   exe.Replace(wxT("MacOS/wxmaxima"), wxT("Resources/"));
@@ -49,7 +51,9 @@ wxString Dirstructure::UserConfDir()
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
-  return wxStandardPaths::Get().GetExecutablePath()+wxT("../bin/maxima.bat");
+  wxString exe = wxStandardPaths::Get().GetExecutablePath();
+  exe.Replace(wxT("wxMaxima/wxmaxima.exe"), wxT("bin/maxima.bat"));
+  return exe;
 #elif defined __WXMAC__
   return wxT("/Applications/Maxima.app");
 #else
