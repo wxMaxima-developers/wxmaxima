@@ -1136,22 +1136,13 @@ void GroupCell::Hide(bool hide) {
 
   if (m_hide == hide)
     return;
-  else
-  {
-    if (m_hide == false) {
-      if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-        GetEditable()->SetFirstLineOnly(true);
-      m_hide = true;
-    }
-    else {
-      if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-        GetEditable()->SetFirstLineOnly(false);
-      m_hide = false;
-    }
 
-    ResetSize();
-    GetEditable()->ResetSize();
-  }
+  m_hide = hide;
+  if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
+    GetEditable()->SetFirstLineOnly(m_hide);
+
+  ResetSize();
+  GetEditable()->ResetSize();
 }
 
 void GroupCell::SwitchHide() {
