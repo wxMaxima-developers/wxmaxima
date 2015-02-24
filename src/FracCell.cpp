@@ -29,6 +29,7 @@ FracCell::FracCell() : MathCell()
   m_denom = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
+  m_horizontalGap = 0;
   
   m_open1 = NULL;
   m_close1 = NULL;
@@ -145,11 +146,15 @@ void FracCell::RecalculateWidths(CellParser& parser, int fontsize)
 
     // We want half a space's widh of blank space to separate us from the
     // next minus.
-    int dummy,horizontalgap;
-    dc.GetTextExtent(wxT(" "), &horizontalgap, &dummy);
-    horizontalgap/=2;
+    int dummy = 0;
+    int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
+    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                      parser.GetFontName(TS_VARIABLE)));
+    dc.GetTextExtent(wxT("X"), &m_horizontalGap, &dummy);
+    m_horizontalGap /= 2;
 
-    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) + 2 * horizontalgap;
+    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) + 2 * m_horizontalGap;
   }
   m_open1->RecalculateWidths(parser, fontsize);
   m_close1->RecalculateWidths(parser, fontsize);
@@ -222,13 +227,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                   point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));
     }
     else
-    {
-      // We want half a space's widh of space separating a fraction from any
-      // minus that is drawn before or after it.
-      int dummy,horizontalgap;
-      dc.GetTextExtent(wxT(" "), &horizontalgap, &dummy);
-      horizontalgap/=2;
-      
+    {      
       num.x = point.x + (m_width - m_num->GetFullWidth(scale)) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               SCALE_PX(2, scale);
@@ -239,7 +238,7 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       m_denom->DrawList(parser, denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen(parser);
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x + horizontalgap, point.y, point.x + m_width - horizontalgap, point.y);
+        dc.DrawLine(point.x + m_horizontalGap, point.y, point.x + m_width - m_horizontalGap, point.y);
       UnsetPen(parser);
     }
   }

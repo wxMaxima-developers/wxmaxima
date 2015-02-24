@@ -73,6 +73,7 @@ protected:
   bool m_exponent;
   int m_fracStyle;
   int m_expDivideWidth;
+  int m_horizontalGap;
 };
 
 #endif // FRACCELL_H
