@@ -63,14 +63,18 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   m_toolBar->AddTool(tb_save, _("Save"),
                      GetImage(wxT("gtk-save")),
                      _("Save document"));
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_print, _("Print"),
                      GetImage(wxT("gtk-print")),
                      _("Print document"));
   m_toolBar->AddTool(tb_pref, _("Options"),
                      GetImage(wxT("gtk-preferences")),
                      _("Configure wxMaxima"));
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_cut, _("Cut"),
                      GetImage(wxT("gtk-cut")),
                      _("Cut selection"));
@@ -83,11 +87,15 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   m_toolBar->AddTool(tb_select_all, _("Select all"),
                      GetImage(wxT("gtk-select-all")),
                      _("Select all"));
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_find, _("Find"),
                      GetImage(wxT("gtk-find")),
                      _("Find and replace"));
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_interrupt, _("Interrupt"),
                      GetImage(wxT("gtk-stop")),
                      _("Interrupt current computation"));
@@ -95,7 +103,9 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
   m_toolBar->AddTool(tb_follow, _("Follow"),m_followIcon,
                      _("Return to the cell that is currently being evaluated"));
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_animation_start, _("Start animation"),
                      GetImage(wxT("media-playback-start")),
                      _("Start animation"));
@@ -106,7 +116,9 @@ ToolBar::ToolBar(wxToolBar* toolbar)
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   m_toolBar->AddControl(m_plotSlider);
+#ifndef __WXMAC__
   m_toolBar->AddSeparator();
+#endif
   m_toolBar->AddTool(tb_help, _("Help"),
                      GetImage(wxT("gtk-help")),
                      _("Show Maxima help"));
