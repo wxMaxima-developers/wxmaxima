@@ -107,7 +107,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_openFile = wxEmptyString;
   m_currentFile = wxEmptyString;
   m_fileSaved = true;
-  m_printData=NULL;
+  m_printData = NULL;
 
   m_variablesOK = false;
 
@@ -1780,19 +1780,11 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
       MathPrintout printout(title);
       MathCell* copy = m_console->CopyTree();
       printout.SetData(copy);
-      /*
-            if (!printer.Print(this, &printout, true)) {
-              if (wxPrinter::GetLastError() == wxPRINTER_ERROR)
-                wxMessageBox(_("There was a problem printing.\n"
-                               "Perhaps your current printer is not set correctly?"),
-                             _("Printing"), wxOK);
-            }
-            else {
-              (*m_printData) = printer.GetPrintDialogData().GetPrintData();
-            }
-      */
-      if (printer.Print(this, &printout, true))
-        (*m_printData) = printer.GetPrintDialogData().GetPrintData();
+      if (printer.Print(this, &printout, true)) {
+        if (m_printData != NULL)
+          delete m_printData;
+        m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
+      }
       break;
     }
   }
