@@ -1527,6 +1527,10 @@
 ;;
 
 (defun $wxxmlput (e s &optional tx lbp rbp)
+
+  (when (stringp e)
+    (setf e (define-symbol e)))
+  
   (cond (($listp s)
 	 (setq s (margs s)))
         ((stringp s)
