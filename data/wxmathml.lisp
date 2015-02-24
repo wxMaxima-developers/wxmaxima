@@ -115,6 +115,8 @@
          (wxxml-matchfix-dim x l r))
 	((equal (wxxml-get (caar x) 'dimension) 'dimension-nary)
 	 (wxxml-nary x l r))
+        ((equal (wxxml-get (caar x) 'dimension) 'dimension-postfix)
+         (wxxml-postfix x l r))
         ((wxxml-get (caar x) 'defstruct-template)
          (wxxml-defstruct x l r))
         (t (wxxml-function x l r))))
