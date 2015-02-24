@@ -74,6 +74,7 @@
     </p>
     
     <h2>Nightly Builds</h2>
+    <h3>Nightly Builds of wxMaxima </h3>
     
     <p>
       The result of the latest nightly build attempt on windows can be queried at
@@ -87,8 +88,84 @@
       current nightly build.
     </p>
     
-  </div>
+    <h3>Updating maxima to the last version, as well</h3>
+    <p>
+      David Scherfgen
+      <a href="https://sourceforge.net/p/maxima/mailman/message/33481264/">
+	posted</a> the following procedure to update the current maxima
+      installation to the git head on windows:
+      <ol>
+	<li>
+	  Install the latest &quot;stable&quot; Maxima build for
+	  Windows from
+	  <a href="https://sourceforge.net/projects/maxima/files/Maxima-Windows/">
+	    sourceforge.net</a>. We will use the wxMaxima version that
+	  comes with this build and just replace Maxima itself.
+	</li>
+	<li>
+	  If you don't have one, install a Git client for Windows
+	  from <a href="http://git-scm.com/download/win">http://git-scm.com</a>. 
+ 	</li>
+	<li>
+	  If you don't have it already, install Steel Bank Common Lisp
+	  (SBCL) for Windows
+	  from <a href="http://www.sbcl.org/platform-table.html">http://www.sbcl.org</a>. Since
+	  I'm on a 64-bit Windows, I chose the 64-bit version, and it
+	  worked fine. 
+	</li>
+	<li>
+	  Now we will build Maxima using SBCL only. For that,
+	  precisely follow the instructions found in the INSTALL.lisp
+	  file in C:\Maxima-Git: 
+	</li>
+	<ol>
+	  <li>
+	    Open a command prompt and CD to C:\Maxima-Git.
+	  </li>
+	  <li>
+	    Start SBCL by entering: sbcl
+	  </li>
+	  <li>
+	    Now we configure Maxima by entering (load
+	    &quot;configure.lisp&quot;), then (configure), and finally
+	    (quit) 
+	  </li>
+	  <li>
+	    Navigate to the C:\Maxima-Git\src directory: CD src
+	  </li>
+	  <li>
+	    Start SBCL again: sbcl
+	  </li>
+	  <li>
+	    Now we compile Maxima by entering (load
+	    &quot;maxima-build.lisp&quot;), then (maxima-compile), and finally
+	    (quit) 
+	  </li>
+	  <li>
+	    Start SBCL again: sbcl
+	  </li>
+	  <li>
+	    Now we load the compiled Maxima program by entering (load
+	    &quot;maxima-build.lisp&quot;) again, then (maxima-load)
+	  </li>
+	  <li>
+	    Finally, we dump an image by entering (maxima-dump)
+	  </li>
+	</ol>
+	<li>
+	  After these steps, you should have a compiled version of the
+	  latest Maxima. Verify that everything worked by running the
+	  maxima.bat file that you should find in
+	  C:\Maxima-Git\src. The Maxima command prompt should show
+	  up.
+	</li>
+	<li>
+	  Now we will make wxMaxima use our self-compiled Maxima
+	  version:
+	</li>
 
+      </ol>
+  </div>
  </div>
 <!-- Start of StatCounter Code -->
 <script type="text/javascript">
