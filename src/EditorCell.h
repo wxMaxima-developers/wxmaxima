@@ -185,7 +185,7 @@ private:
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
   ptrdiff_t m_historyPosition;
-//  int m_oldPosition;
+  //! Where inside this cell is the cursor?
   int m_positionOfCaret;
   int m_caretColumn;
   long m_selectionStart;

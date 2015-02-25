@@ -1568,10 +1568,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   ShowPoint(point);
 }
 
-/****
- * We have a wxKeyEvent with no active editor, shift is down and
- * keycode (ccode) is WXK_UP/WXK_DOWN
- */
 void MathCtrl::SelectWithChar(int ccode) {
   // start making a selection
   // m_hCaretPositionStart is the first group selected
@@ -1622,10 +1618,6 @@ void MathCtrl::SelectWithChar(int ccode) {
   Refresh();
 }
 
-/****
- * SelectEditable is called when a hCursor is active and
- * we have a WXK_UP/WXK_DOWN event
- */
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
   if(editor != NULL && m_workingGroup == NULL)
   {

@@ -185,6 +185,7 @@ public:
   bool ActivateNextInput(bool input = false);
   //! Scrolls to a given cell
   void ScrollToCell(MathCell *cell);
+  //! Returns the cell the cursor that is drawn as a vertical line is in.
   EditorCell* GetActiveCell() { return m_activeCell; }
   void ShowPoint(wxPoint point);
   void OnSetFocus(wxFocusEvent& event);
@@ -363,7 +364,16 @@ public:
   void OnCharInActive(wxKeyEvent& event);
   void OnCharNoActive(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
+
+  //! Is called when a hCursor is active and we have a WXK_UP/WXK_DOWN event
   void SelectEditable(EditorCell *editor, bool up);
+
+  /*! Handle selecting text using the keyboard
+ Is called when the all of the following is true:
+  - We have a wxKeyEvent with no active editor, 
+  - shift is down and
+  - keycode (ccode) is WXK_UP/WXK_DOWN
+ */
   void SelectWithChar(int ccode);
   void ClickNDrag(wxPoint down, wxPoint up);
   void AdjustSize();
@@ -376,21 +386,45 @@ public:
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
-  bool m_hCaretActive; // horizontal caret
-  GroupCell *m_hCaretPosition; // group above hcaret, NULL for the top
-  GroupCell *m_hCaretPositionStart, *m_hCaretPositionEnd; // selection with caret
+  /*! Is the active cursor the one represented by a horizontal line? 
+
+    See m_hCaretPosition and m_activeCell for the position of the two
+    types of cursors. 
+   */
+  bool m_hCaretActive;
+  /*! The group above the hcaret, NULL for the top of the document
+    See m_activeCell for the position if the cursor that is drawn as a
+    vertical line.
+   */
+  GroupCell *m_hCaretPosition;
+  //! The start for the selection when selecting group with the horizontally drawn cursor
+  GroupCell *m_hCaretPositionStart;
+  //! The start for the selection when selecting group with the horizontally drawn cursor
+  GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation;
   bool m_mouseDrag;
   bool m_mouseOutside;
+  //! The list of tree that contains the document itself
   GroupCell *m_tree;
   GroupCell *m_last;
+  /*! The group cell maxima is currently working on.
+
+    NULL means that maxima isn't currently evaluating a cell.
+   */
   GroupCell *m_workingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
+  /*! The cell the cursor that is drawn as a vertical line is in. 
+    The position of the cursor inside that cell is defined by
+    EditorCell::m_positionOfCaret.
+
+    See also m_hCaretActive and m_hCaretPosition that handle the
+    cursor that is drawn as a horizontal line. 
+   */
   EditorCell *m_activeCell;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
