@@ -102,6 +102,9 @@ void Structure::UpdateDisplay()
 	m_structure[i]->ToString();
 	break;
       }
+
+    // Respecting linebreaks doesn't make much sense here.
+    curr.Replace(wxT("\n"),wxT(" "));
     
     if (regex.Length()>0 && matcher.IsValid())
       {
