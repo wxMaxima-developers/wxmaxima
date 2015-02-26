@@ -96,9 +96,12 @@ ToolBar::ToolBar(wxToolBar* toolbar)
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
+  m_toolBar->AddTool(menu_restart_id, _("Restart maxima"),
+                     GetImage(wxT("view-refresh")),
+                     _("Completely stop maxima and restart it"));
   m_toolBar->AddTool(tb_interrupt, _("Interrupt"),
                      GetImage(wxT("gtk-stop")),
-                     _("Interrupt current computation"));
+                     _("Interrupt current computation. To completely restart maxima press the button left to this one."));
   m_followIcon = GetImage(wxT("weather-clear"));
   m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
   m_toolBar->AddTool(tb_follow, _("Follow"),m_followIcon,
