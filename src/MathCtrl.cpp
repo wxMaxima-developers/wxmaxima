@@ -4118,7 +4118,13 @@ void MathCtrl::OpenNextOrCreateCell()
 
 void MathCtrl::OnFollow()
 {
-  ScrollToCell(m_currentlyEvaluated);
+  m_hCaretPosition = GetWorkingGroup();
+  m_hCaretActive = true;
+  if (m_workingGroup->RevealHidden()) {
+    FoldOccurred();
+    Recalculate(true);
+  }
+  ScrollToCell(GetWorkingGroup());
   FollowEvaluation(true);
 }
 
