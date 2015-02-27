@@ -840,10 +840,19 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     SetHCaret(tmp->m_previous, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
+    // The click will has changed the position that is in focus so we assume
+    // the user wants to work herr and doesn't want the evaluation mechanism
+    // to automatically follow the evaluation any more.
+  ScrolledAwayFromEvaluation(true);
+
   } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
 
   else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
 
+    // The click has changed the cell which means the user works here and
+    // doesn't want the evaluation mechanism to automatically follow the
+    // evaluation any more.
+    ScrolledAwayFromEvaluation(true);
 
     if (m_down.x <= MC_GROUP_LEFT_INDENT) { // we clicked in left bracket area
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
@@ -934,10 +943,6 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   Refresh();
   // Re-calculate the table of contents
   m_structure->Update(m_tree);
-
-  // The click will have changed the cell so we the user works there and doesn't want the
-  // evaluation mechanism to automatically follow the evaluation any more.
-  ScrolledAwayFromEvaluation(true);
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
@@ -1798,6 +1803,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
 
   case WXK_UP:
+    ScrolledAwayFromEvaluation(true);
     if (m_hCaretActive) {
       if (m_selectionStart != NULL) {
         SetHCaret(m_selectionStart->GetParent()->m_previous);
@@ -1817,6 +1823,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
 
   case WXK_DOWN:
+    ScrolledAwayFromEvaluation(true);
     if (m_hCaretActive) {
       if (m_selectionEnd != NULL) {
         SetHCaret(m_selectionEnd->GetParent());
