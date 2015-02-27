@@ -85,6 +85,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 	break;
       case waiting:
 	m_console->SetWorkingGroup(NULL);
+	m_console->QuestionAnswered();
 	m_MenuBar->Enable(menu_remove_output,true);
 	m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 	SetStatusText(_("Ready for user input"), 1);

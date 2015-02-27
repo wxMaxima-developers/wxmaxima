@@ -223,11 +223,6 @@ public:
   */
   void Redo();
 
-  /*! The cell that is being evaluated right now
-
-    - NULL means: No such cell
-   */
-  GroupCell *m_currentlyEvaluated;
   /*! Do we want to follow the evaluation process?
 
     Maxima can automagically scroll to the cell that is currently evaluated.
@@ -318,8 +313,27 @@ public:
   void OnFollow();
   //! The toolbar of the main window: We need to access it and therefore have it defined here.
   ToolBar *m_mainToolBar;
+  //! Set this cell as the currently selected one
+  void SelectGroupCell(GroupCell *cell);
+  //! Mark the current question from maxima as "answered"..
+  void QuestionAnswered(){m_answerCell = NULL;m_questionPrompt = false;}
+  //! true = the last reply from maxima was a question
+  bool m_questionPrompt;
+  //! Does the GroupCell cell points to contain the question currently asked by maxima?  
+  bool GCContainsCurrentQuestion(GroupCell *cell){
+    if(m_workingGroup)
+      return ((cell == m_workingGroup) && m_questionPrompt);
+    else
+      return false;}
+  /*! Move the cursor to the end of the question and if needed add a cell for user input
+   */
+  void OpenQuestionCaret(wxString txt=wxT(""));
+
  private:
   bool m_scrolledAwayFromEvaluation;
+
+  //! The cell the current question from maxima is being kept in.
+  EditorCell *m_answerCell;
   /*! Escape all chars that aren't allowed in html.
 
     Also converts \n to <BR>

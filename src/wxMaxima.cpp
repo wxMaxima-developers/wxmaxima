@@ -869,7 +869,7 @@ void wxMaxima::ReadLoadSymbols()
  */
 void wxMaxima::ReadPrompt()
 {
-  bool question = false;
+  m_console->m_questionPrompt = false;
   m_ready=true;
   int end = m_currentOutput.Find(m_promptSuffix);
   if (end > -1)
@@ -910,9 +910,9 @@ void wxMaxima::ReadPrompt()
         }
       }
 
-      // We have a question
+      // We have a m_question
       else {
-	question = true;
+	m_console->m_questionPrompt = true;
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
         else
@@ -929,7 +929,7 @@ void wxMaxima::ReadPrompt()
 
     if (m_ready)
       {
-	if(question)
+	if(m_console->m_questionPrompt)
 	  StatusMaximaBusy(userinput);
 	else
 	  StatusMaximaBusy(waiting);
@@ -1805,8 +1805,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
-  // Now should be done in StatusMaximaBusy.
-  //  menubar->Enable(menu_remove_output, m_console->GetWorkingGroup() == NULL);
   menubar->Enable(menu_interrupt_id, m_pid>0);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(menu_evaluate_till_here, (m_console->GetTree() != NULL)
@@ -4377,6 +4375,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     // case - answering a question. Manually send answer to Maxima.
     if (tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
       SendMaxima(tmp->ToString(), true);
+      m_console->QuestionAnswered();
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));
@@ -4418,38 +4417,41 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_console->SetWorkingGroup(NULL);
     return; //empty queue
   }
-  if(tmp)m_console->m_currentlyEvaluated = tmp;
-
-  if (m_console->m_currentlyEvaluated->GetEditable()->GetValue() != wxEmptyString)
-  {
-    m_console->m_currentlyEvaluated->GetEditable()->AddEnding();
-    m_console->m_currentlyEvaluated->GetEditable()->ContainsChanges(false);
-    wxString text = m_console->m_currentlyEvaluated->GetEditable()->ToString();
-    
-    // override evaluation when input equals wxmaxima_debug_dump_output
-    if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-      m_console->m_evaluationQueue->RemoveFirst();
-      DumpProcessOutput();
-      return;
-    }
-    
-    m_console->m_currentlyEvaluated->RemoveOutput();
-    
-    m_console->SetWorkingGroup(m_console->m_currentlyEvaluated);
-
-    m_console->m_currentlyEvaluated->GetPrompt()->SetValue(m_lastPrompt);
-    m_console->Recalculate();
-
-    if(m_console->FollowEvaluation())
-      m_console->ScrollToCell(m_console->m_currentlyEvaluated);
-    
-    SendMaxima(text, true);
-  }
   else
-  {
-    m_console->m_evaluationQueue->RemoveFirst();
-    TryEvaluateNextInQueue();
-  }
+    {
+      m_console->SetWorkingGroup(tmp);
+      if (tmp->GetEditable()->GetValue() != wxEmptyString)
+	{
+	  tmp->GetEditable()->AddEnding();
+	  tmp->GetEditable()->ContainsChanges(false);
+	  wxString text = tmp->GetEditable()->ToString();
+	  
+	  // override evaluation when input equals wxmaxima_debug_dump_output
+	  if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
+	    m_console->m_evaluationQueue->RemoveFirst();
+	    DumpProcessOutput();
+	    return;
+	  }
+	  
+	  tmp->RemoveOutput();	  
+	  tmp->GetPrompt()->SetValue(m_lastPrompt);
+	  
+	  if(m_console->FollowEvaluation())
+	    {
+	      m_console->ScrollToCell(tmp);
+	      m_console->SetSelection(tmp);
+  	    }
+	  else
+	    m_console->Recalculate();
+	  
+	  SendMaxima(text, true);
+	}
+      else
+	{
+	  m_console->m_evaluationQueue->RemoveFirst();
+	  TryEvaluateNextInQueue();
+	}
+    }
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)

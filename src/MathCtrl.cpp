@@ -58,8 +58,9 @@ MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 #endif
   )
 {
+  m_questionPrompt = false;
+  m_answerCell = NULL;
   m_scrolledAwayFromEvaluation = false;
-  m_currentlyEvaluated = NULL;
   m_keyboardInactive = true;
   m_tree = NULL;
   m_memory = NULL;
@@ -363,10 +364,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if (newCell->GetType() == MC_TYPE_PROMPT)
   {
     m_workingGroup = tmp;
-
-    // These two line obviously don't make a change => Commented them out.
-    //    if(FollowEvaluation())
-    //  ScrollToCell(tmp->GetParent());
     OpenHCaret();
   }
 
@@ -384,7 +381,12 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   Recalculate();
 
   if(FollowEvaluation())
-    ScrollToCell(tmp); // also refreshes
+    {
+      if(GCContainsCurrentQuestion(tmp))
+	OpenQuestionCaret();
+      
+      ScrollToCell(tmp); // also refreshes
+    }
   else
     Refresh();
 }
@@ -837,9 +839,11 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
     SetHCaret(tmp->m_previous, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
+
   } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
 
   else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
+
 
     if (m_down.x <= MC_GROUP_LEFT_INDENT) { // we clicked in left bracket area
       if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
@@ -865,20 +869,32 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     } // end we clicked in left bracket area
 
     else { // we didn't click in left bracket space
-      EditorCell * editor = clickedInGC->GetEditable();
-      if (editor != NULL) {
-        rect = editor->GetRect();
-        if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
-          SetActiveCell(editor, false); // do not refresh
-          wxClientDC dc(this);
-          m_activeCell->SelectPointText(dc, m_down);
-          m_switchDisplayCaret = false;
-          m_clickType = CLICK_TYPE_INPUT_SELECTION;
-          if (editor->GetWidth() == -1)
-            Recalculate();
-          Refresh();
-          return;
-        }
+
+      
+      if(GCContainsCurrentQuestion(clickedInGC))
+	{
+	  // The user clicked at the cell maxima has asked a question in.
+	  OpenQuestionCaret();
+	  return;
+	}
+      else
+	{
+	  // The user clicked at a ordinary cell
+	  EditorCell * editor = clickedInGC->GetEditable();
+	  if (editor != NULL) {
+	    rect = editor->GetRect();
+	    if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
+	      SetActiveCell(editor, false); // do not refresh
+	      wxClientDC dc(this);
+	      m_activeCell->SelectPointText(dc, m_down);
+	      m_switchDisplayCaret = false;
+	      m_clickType = CLICK_TYPE_INPUT_SELECTION;
+	      if (editor->GetWidth() == -1)
+		Recalculate();
+	      Refresh();
+	      return;
+	    }
+	  }
       }
       // what if we tried to select something in output, select it (or if editor, activate it)
       if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
@@ -888,13 +904,14 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
                                         &m_selectionStart, &m_selectionEnd);
         if (m_selectionStart != NULL) {
           if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
-               && (clickedInGC == m_workingGroup)) // if we clicked an editor in output - activate it if working!
+	      && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
           {
             SetActiveCell(dynamic_cast<EditorCell*>(m_selectionStart), false);
             wxClientDC dc(this);
             m_activeCell->SelectPointText(dc, m_down);
             m_switchDisplayCaret = false;
             m_clickType = CLICK_TYPE_INPUT_SELECTION;
+	    OpenQuestionCaret();
             Refresh();
             return;
           }
@@ -1198,13 +1215,35 @@ bool MathCtrl::CopyCells()
 
 /***
  * CanDeleteSelection
- * Returns true if we have a selection of groupcells and we have no working group!
+ * Returns true if we have a selection of groupcells and maxima isn't currently evaluating
  */
 bool MathCtrl::CanDeleteSelection() {
-  if (m_selectionStart == NULL || m_selectionEnd == NULL ||
-      m_workingGroup != NULL)
+  if (m_selectionStart == NULL || m_selectionEnd == NULL)
     return false;
 
+  
+  GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
+  GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
+
+  if (tmp == NULL || end == NULL) return false;
+
+  // We refuse deletion of a cell maxima is currently evaluating
+  if(tmp == m_workingGroup)
+    return false;
+
+  // We refuse deletion of a cell we are planning to evaluate
+  while (tmp != NULL)
+    {
+      if(m_evaluationQueue->IsInQueue(tmp))
+	return false;
+
+      if (tmp == m_selectionEnd)
+        break;
+
+      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+    }
+  
+  tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
   if ((m_selectionStart->GetType() != MC_TYPE_GROUP) || (m_selectionEnd->GetType() != MC_TYPE_GROUP))
     return false;
   else { // a fine selection of groupcells
@@ -1227,17 +1266,16 @@ bool MathCtrl::CanDeleteSelection() {
  * Delete the selection
  */
 void MathCtrl::DeleteSelection() {
-  if (m_selectionStart == NULL || m_selectionEnd == NULL ||
-      m_workingGroup != NULL)
+
+  // Abort deletion if there is no valid selection or if we cannot
+  // delete it.
+  if(!CanDeleteSelection())
     return;
-
-  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
+  
   GroupCell *start = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
   GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
 
-  if (start == NULL || end == NULL)
-    return;
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
 
   m_saved = false;
 
@@ -1303,38 +1341,62 @@ void MathCtrl::DeleteSelection() {
   Refresh();
 }
 
+void MathCtrl::OpenQuestionCaret(wxString txt)
+{
+  
+  if (m_workingGroup->RevealHidden())
+    FoldOccurred();
+ 
+  if(m_answerCell == NULL)
+    {      
+      m_answerCell = new EditorCell;
+      m_answerCell->SetType(MC_TYPE_INPUT);
+      m_answerCell->SetValue(txt);
+      m_answerCell->CaretToEnd();
+      
+      m_workingGroup->AppendOutput(m_answerCell);
+      m_answerCell->SetParent(m_workingGroup);
+    }
+  
+  m_hCaretPosition == NULL;
+  m_hCaretActive == false;
+  m_switchDisplayCaret = false;
+  
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  parser.SetZoomFactor(m_zoomFactor);
+  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+  m_workingGroup->RecalculateAppended(parser);
+
+  SetActiveCell(m_answerCell, false);
+
+  Refresh();
+}
+
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
-  // if we have a working group, bypass normal behaviour
-  // and insert an EditorCell into the output
-  // of the working group.
-  if (m_workingGroup != NULL) {
-    if (m_workingGroup->RevealHidden()) {
-      FoldOccurred();
-      Recalculate(true);
+  // if we are inside cell maxima is currently evaluating
+  // bypass normal behaviour and insert an EditorCell into
+  // the output of the working group.
+  if(m_workingGroup)
+    {
+      if(m_activeCell!=NULL)
+	{
+	  if((m_activeCell->GetParent() == m_workingGroup)&&(m_questionPrompt))
+	    {
+	      OpenQuestionCaret(txt);
+	      return;
+	    }
+	}
+      if(m_hCaretPosition!=NULL)
+	{	  
+	  if((m_hCaretPosition == m_workingGroup->m_next)&&(m_questionPrompt))
+	    {
+	      OpenQuestionCaret(txt);
+	      return;
+	    }
+	}
     }
-
-    EditorCell *newInput = new EditorCell;
-    newInput->SetType(MC_TYPE_INPUT);
-    newInput->SetValue(txt);
-    newInput->CaretToEnd();
-
-    m_workingGroup->AppendOutput(newInput);
-    newInput->SetParent(m_workingGroup);
-    SetActiveCell(newInput, false);
-
-    wxClientDC dc(this);
-    CellParser parser(dc);
-    parser.SetZoomFactor(m_zoomFactor);
-    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-    m_workingGroup->RecalculateAppended(parser);
-
-    Recalculate();
-    Refresh();
-
-    return;
-  }
-
   // set m_hCaretPosition to a sensible value
   if (m_activeCell != NULL)
     SetHCaret(m_activeCell->GetParent(), false);
@@ -1477,7 +1539,15 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // we need to enable the button that brings us back
     ScrolledAwayFromEvaluation();
 
-    SetHCaret((m_activeCell->GetParent())->m_previous);
+    GroupCell *previous=dynamic_cast<GroupCell*>((m_activeCell->GetParent())->m_previous);
+    if (GCContainsCurrentQuestion(previous))
+      {
+	// The user moved into the cell maxima has asked a question in.
+	OpenQuestionCaret();
+	return;
+      }
+    else
+      SetHCaret(previous);
     return;
   }
 
@@ -1489,7 +1559,15 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     m_structure->Update(m_tree);
     ScrolledAwayFromEvaluation();
 
-    SetHCaret(m_activeCell->GetParent());
+    GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    if (GCContainsCurrentQuestion(next))
+      {
+	// The user moved into the cell maxima has asked a question in.
+	OpenQuestionCaret();
+	return;
+      }
+    else
+      SetHCaret(next);
     return;
   }
 
@@ -1619,7 +1697,7 @@ void MathCtrl::SelectWithChar(int ccode) {
 }
 
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
-  if(editor != NULL && m_workingGroup == NULL)
+  if(editor != NULL)
   {
     wxClientDC dc(this);
     CellParser parser(dc);
@@ -2999,7 +3077,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
  */
 bool MathCtrl::CanEdit() {
   if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart
-      || m_workingGroup != NULL || m_editingEnabled == false)
+      || m_editingEnabled == false)
     return false;
 
   if (!m_selectionStart->IsEditable())
@@ -3683,9 +3761,7 @@ void MathCtrl::ShowHCaret()
 {
   if (m_hCaretPosition == NULL)
   {
-    if (m_workingGroup != NULL)
-      m_hCaretPosition = m_workingGroup;
-    else if (m_last != NULL)
+    if (m_last != NULL)
       m_hCaretPosition = m_last;
     else m_hCaretPosition = NULL;
   }
@@ -3736,6 +3812,7 @@ void MathCtrl::SaveValue()
 
 void MathCtrl::RemoveAllOutput()
 {
+  // We don't want to remove all output if maxima is currently evaluating.
   if (m_workingGroup != NULL)
     return;
 
@@ -4086,16 +4163,20 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
-  if (m_workingGroup != NULL)
-    return false;
-
-  if (m_activeCell == NULL)
-    OpenHCaret(text);
-  else {
-    m_activeCell->InsertText(text);
-    Refresh();
+  
+  if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent())))
+  {  
+      OpenQuestionCaret(text);
   }
-
+  else
+    {
+      if (m_activeCell == NULL)
+	OpenHCaret(text);
+      else {
+	m_activeCell->InsertText(text);
+	Refresh();
+      }
+    }
   return true;
 }
 
@@ -4115,16 +4196,26 @@ void MathCtrl::OpenNextOrCreateCell()
     OpenHCaret();
 }
 
+void MathCtrl::SelectGroupCell(GroupCell *cell)
+{
+  m_selectionStart = m_selectionEnd = cell;
+  m_hCaretActive = false;
+  m_activeCell = NULL;
+  if(GCContainsCurrentQuestion(cell))
+    OpenQuestionCaret();
+}
 
 void MathCtrl::OnFollow()
 {
-  m_hCaretPosition = GetWorkingGroup();
   m_hCaretActive = true;
   if (m_workingGroup->RevealHidden()) {
     FoldOccurred();
     Recalculate(true);
   }
+  SetSelection(GetWorkingGroup());
   ScrollToCell(GetWorkingGroup());
+  if(GCContainsCurrentQuestion(GetWorkingGroup()))
+    OpenQuestionCaret();
   FollowEvaluation(true);
 }
 
