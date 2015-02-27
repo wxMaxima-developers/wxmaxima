@@ -344,7 +344,7 @@ GroupCell *MathCtrl::UpdateMLast()
 
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
-  SetActiveCell(NULL, false);
+  //  SetActiveCell(NULL, false);
 
   m_saved = false;
 
@@ -1362,18 +1362,15 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
       m_workingGroup->AppendOutput(m_answerCell);
       m_answerCell->SetParent(m_workingGroup);
     }
-  
-  m_hCaretPosition == NULL;
-  m_hCaretActive == false;
-  m_switchDisplayCaret = false;
-  
+    
   wxClientDC dc(this);
   CellParser parser(dc);
   parser.SetZoomFactor(m_zoomFactor);
   parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
   m_workingGroup->RecalculateAppended(parser);
 
-  SetActiveCell(m_answerCell, false);
+  if(FollowEvaluation())
+    SetActiveCell(m_answerCell, false);
 
   Refresh();
 }
