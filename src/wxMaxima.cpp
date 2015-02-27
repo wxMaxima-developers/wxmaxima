@@ -910,7 +910,7 @@ void wxMaxima::ReadPrompt()
         }
       }
 
-      // We have a m_question
+      // We have a question
       else {
 	m_console->m_questionPrompt = true;
         if (o.Find(wxT("<mth>")) > -1)
@@ -1848,10 +1848,17 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   toolbar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
   toolbar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
   toolbar->EnableTool(ToolBar::tb_save, !m_fileSaved);
-  if (m_pid > 0)
-    toolbar->EnableTool(ToolBar::tb_interrupt, true);
-  else
-    toolbar->EnableTool(ToolBar::tb_interrupt, false);
+  /*
+    The interrupt button is now automatically enabled when maxima
+    is actually working and disabled when it isn't.
+    The code that does this can be found in StatusMaximaBusy().
+    The old code was:
+
+    if (m_pid > 0)
+      toolbar->EnableTool(ToolBar::tb_interrupt, true);
+    else
+      toolbar->EnableTool(ToolBar::tb_interrupt, false);
+  */
   if (m_console->GetTree() != NULL)
     toolbar->EnableTool(ToolBar::tb_print, true);
   else
