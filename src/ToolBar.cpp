@@ -106,6 +106,8 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
   m_toolBar->AddTool(tb_follow, _("Follow"),m_followIcon,
                      _("Return to the cell that is currently being evaluated"));
+  m_toolBar->EnableTool(tb_follow,false);
+
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif

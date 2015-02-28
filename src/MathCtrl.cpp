@@ -4211,16 +4211,19 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
 
 void MathCtrl::OnFollow()
 {
-  m_hCaretActive = true;
-  if (m_workingGroup->RevealHidden()) {
-    FoldOccurred();
-    Recalculate(true);
-  }
-  SetSelection(GetWorkingGroup());
-  ScrollToCell(GetWorkingGroup());
-  if(GCContainsCurrentQuestion(GetWorkingGroup()))
-    OpenQuestionCaret();
-  FollowEvaluation(true);
+  if(m_workingGroup)
+    {
+      m_hCaretActive = true;
+      if (m_workingGroup->RevealHidden()) {
+	FoldOccurred();
+	Recalculate(true);
+      }
+      SetSelection(GetWorkingGroup());
+      ScrollToCell(GetWorkingGroup());
+      if(GCContainsCurrentQuestion(GetWorkingGroup()))
+	OpenQuestionCaret();
+      FollowEvaluation(true);
+    }
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
