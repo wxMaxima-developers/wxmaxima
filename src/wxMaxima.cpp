@@ -1437,7 +1437,11 @@ void wxMaxima::SetupVariables()
   // Otherwise two wxMaxima processes running at the same time might
   // end up with images stolen from each other.
   srand(time(NULL));
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf *unique-id* %i)"),rand()));
+
+  unsigned int id=rand();
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf *unique-id* %u)"),id));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf $data_file_name \"maxout_%u.dat\")"),id));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf $gnuplot_file_name \"maxout_%u.gnuplot\")"),id));
   
   if (m_currentFile != wxEmptyString)
   {

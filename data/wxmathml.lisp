@@ -1254,6 +1254,8 @@
 
 (defvar *image-counter* 0)
 (defvar *unique-id* 0)
+(defvar $gnuplot_file_name)
+(defvar $data_file_name)
 
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
