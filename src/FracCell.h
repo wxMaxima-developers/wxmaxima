@@ -73,6 +73,11 @@ protected:
   bool m_exponent;
   int m_fracStyle;
   int m_expDivideWidth;
+  /*! The horizontal gap btween this frac and any minus before or after it
+  
+    This gap hinders avoids the horizontal rule of a fraction from building a straight 
+    nearly-uninterrupted horizontal line together with a minus.
+  */
   int m_horizontalGap;
 };
 

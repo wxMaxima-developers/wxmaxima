@@ -1253,12 +1253,13 @@
 (defmvar $wxplot_old_gnuplot nil)
 
 (defvar *image-counter* 0)
+(defvar *unique-id* 0)
 
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
   (plot-temp-file (if suff
-		      (format nil "maxout_~d.png" *image-counter*)
-		      (format nil "maxout_~d" *image-counter*))))
+		      (format nil "maxout2_~d_~d.png" *unique-id* *image-counter*)
+		      (format nil "maxout2_~d_~d" *unique-id* *image-counter*))))
 
 (defun $wxplot_preamble ()
   (let ((frmt 
