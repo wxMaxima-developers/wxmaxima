@@ -306,7 +306,7 @@ wxString TextCell::ToTeX()
     else
       return wxT("\\cdot ");
   }
-
+  
   if (m_textStyle == TS_GREEK_CONSTANT)
   {
     if (m_text[0] != '%')
@@ -370,8 +370,8 @@ wxString TextCell::ToTeX()
   else
     {
       if (m_textStyle == TS_FUNCTION)
-	text = wxT("\\mathrm{") + m_text + wxT("}");
-      
+	if(m_text!=wxEmptyString)
+	  text = wxT("\\mathrm{") + m_text + wxT("}");
     }
 
   if (
@@ -382,13 +382,20 @@ wxString TextCell::ToTeX()
       (m_textStyle != TS_GREEK_CONSTANT)   &&
       (m_textStyle != TS_SPECIAL_CONSTANT)
       )
-    text.Replace(wxT("^"), wxT("\\^"));
+    text.Replace(wxT("^"), wxT("\\textasciicircum"));
+
+  if(m_textStyle == TS_DEFAULT)
+    {
+      if(m_text.Length()>1)
+	text=wxT("\\mbox{\\textit{")+text+wxT("}}\\linebreak[3]");
+    }
+
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("%"), wxT("\\%"));
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
-  
+    
   return text;
 }
 
