@@ -44,8 +44,6 @@
 #include "PlotFormatWiz.h"
 #include "Dirstructure.h"
 
-#include <stdlib.h>
-#include <time.h>
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
 #include <wx/utils.h>
@@ -1433,16 +1431,6 @@ void wxMaxima::SetupVariables()
              wxT("/share/wxMaxima/wxmathml\")"));
 #endif
 
-  // Assign an unique name to the files that are created in this session.
-  // Otherwise two wxMaxima processes running at the same time might
-  // end up with images stolen from each other.
-  srand(time(NULL));
-
-  unsigned int id=rand();
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf *unique-id* %u)"),id));
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf $data_file_name \"maxout_%u.dat\")"),id));
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setf $gnuplot_file_name \"maxout_%u.gnuplot\")"),id));
-  
   if (m_currentFile != wxEmptyString)
   {
     wxString filename(m_currentFile);
