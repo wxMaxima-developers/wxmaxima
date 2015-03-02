@@ -384,10 +384,13 @@ wxString TextCell::ToTeX()
       )
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
 
-  if(m_textStyle == TS_DEFAULT)
+  if((m_textStyle == TS_DEFAULT)||(m_textStyle == TS_STRING))
     {
       if(m_text.Length()>1)
-	text=wxT("\\mbox{\\textit{")+text+wxT("}}\\linebreak[3]");
+	{
+	  text=wxT("\\mbox{\\textit{")+text+wxT("}}");
+	  if((m_forceBreakLine)||(m_breakLine)) text=wxT("\\\\")+text;
+	}
     }
 
   text.Replace(wxT("_"), wxT("\\_"));
@@ -395,7 +398,6 @@ wxString TextCell::ToTeX()
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
-    
   return text;
 }
 
