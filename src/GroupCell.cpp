@@ -658,10 +658,12 @@ wxString GroupCell::ToTeX()
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
+  bool SuppressLeadingNewlines = true;
 
   // pagebreak
   if (m_groupType == GC_TYPE_PAGEBREAK) {
     str = wxT("\\pagebreak\n");
+    SuppressLeadingNewlines = true;
   }
 
   // IMAGE CELLS
@@ -720,8 +722,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
       // Need to define labelcolor if this is Copy as LaTeX!
       if (imgCounter == NULL)
         str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
-      str += wxT("\\begin{math}\\displaystyle\n");
       MathCell *tmp = m_output;
+
+      bool mathMode = false;
 
       while (tmp != NULL)
       {
@@ -772,19 +775,48 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	}
         else if (tmp->GetStyle() == TS_LABEL)
         {
-          if (str.Right(13) != wxT("displaystyle\n"))
-            str += wxT("\n\\end{math}\n\n\\begin{math}\\displaystyle\n");
+	  if(mathMode)
+	    str += wxT("\\end{math}\n\n\\begin{math}\\displaystyle\n");
+	  else
+	    {
+	      str += wxT("\n\n\\begin{math}\\displaystyle\n");
+	      mathMode=true;
+	    }
           str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX() + wxT("}\n");
         }
 	
         else
-          str += TexEscapeOutputCell(tmp->ToTeX());
+	  {
+	    if((tmp->GetStyle() == TS_DEFAULT)||(tmp->GetStyle() == TS_STRING))
+	      {
+		// We either got a bracket or a parenthesis or regular Text
+		// that shouldn't be displayed as math.
+		if((mathMode)&&(tmp->ToString().Length()>2))
+		  {
+		    str += wxT("\\mbox{}");
+		    str += wxT("\n\\end{math}\n");
+		    mathMode = false;
+		  }
+	      }
+	    else
+	      {
+		if(!mathMode)
+		  {
+		    str += wxT("\n\n\\begin{math}\\displaystyle\n");
+		    mathMode = true;
+		  }
+	      }		
+	    str += TexEscapeOutputCell(tmp->ToTeX());
+	  }
         tmp = tmp->m_nextToDraw;
       }
-      // Some invisible dummy content that keeps TeX happy if there really is
-      // no output to display.
-      str += wxT("\\mbox{}");
-      str += wxT("\n\\end{math}\n%%%%%%%%%%%%%%%\n");
+      if(mathMode)
+	{
+	  // Some invisible dummy content that keeps TeX happy if there really is
+	  // no output to display.
+	  str += wxT("\\mbox{}");
+	  str += wxT("\n\\end{math}\n%%%%%%%%%%%%%%%\n");
+	}
     }
   }
 

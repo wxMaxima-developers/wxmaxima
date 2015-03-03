@@ -388,11 +388,10 @@ wxString TextCell::ToTeX()
     {
       if(m_text.Length()>1)
 	{
-	  text=wxT("\\mbox{\\textit{")+text+wxT("}}");
-	  if((m_forceBreakLine)||(m_breakLine)) text=wxT("\\\\")+text;
+	  if(((m_forceBreakLine)||(m_breakLine)))
+	    text=wxT("\\ifhmode\\\\\\fi\n")+text;
 	}
     }
-
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("%"), wxT("\\%"));
 #if wxUSE_UNICODE
