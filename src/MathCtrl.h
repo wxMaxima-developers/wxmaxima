@@ -177,7 +177,17 @@ public:
    */
   wxString GetString(bool lb = false);
   MathCell* GetTree() { return m_tree; }
+  /*! Return the first of the currently selected cells.
+
+    NULL means: No cell is selected.
+  */
   MathCell* GetSelectionStart() { return m_selectionStart; }
+  /*! Return the last of the currently selected cells.
+
+    NULL means: No cell is selected.
+  */
+  MathCell* GetSelectionEnd() { return m_selectionEnd; }
+  //! Select the cell sel
   void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
   bool CanEdit();
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }

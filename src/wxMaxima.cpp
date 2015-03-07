@@ -135,8 +135,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
 
-  GetMenuBar()->Enable(menu_interrupt_id, false);
-
+  StatusMaximaBusy(waiting);
+  
   /// RegEx for function definitions
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
   // RegEx for variable definitions
@@ -1825,9 +1825,17 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 #endif
 
   if (m_console->GetTree() != NULL)
-    menubar->Enable(wxID_PRINT, true);
+    {
+      menubar->Enable(MathCtrl::popid_divide_cell, m_console->GetActiveCell() != NULL);
+      menubar->Enable(MathCtrl::popid_merge_cells, m_console->GetSelectionStart() != m_console->GetSelectionEnd());
+      menubar->Enable(wxID_PRINT, true);
+    }
   else
-    menubar->Enable(wxID_PRINT, false);
+    {
+      menubar->Enable(MathCtrl::popid_divide_cell, false);
+      menubar->Enable(MathCtrl::popid_merge_cells, false);
+      menubar->Enable(wxID_PRINT, false);
+    }
   double zf = m_console->GetZoomFactor();
   if (zf < 3.0)
     menubar->Enable(menu_zoom_in, true);
