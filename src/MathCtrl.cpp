@@ -1367,7 +1367,9 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   CellParser parser(dc);
   parser.SetZoomFactor(m_zoomFactor);
   parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-  m_workingGroup->RecalculateAppended(parser);
+  int fontsize = parser.GetDefaultFontSize();
+  m_workingGroup->RecalculateWidths(parser, fontsize);
+  m_workingGroup->RecalculateSize(parser, fontsize);
 
   if(FollowEvaluation())
     SetActiveCell(m_answerCell, false);
