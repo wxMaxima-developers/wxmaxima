@@ -1362,7 +1362,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
     m_workingGroup->AppendOutput(m_answerCell);
     m_answerCell->SetParent(m_workingGroup);
   }
-    
+
   wxClientDC dc(this);
   CellParser parser(dc);
   parser.SetZoomFactor(m_zoomFactor);
@@ -1522,6 +1522,13 @@ bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
     return ((cell == m_workingGroup) && m_questionPrompt);
   else
     return false;
+}
+
+void MathCtrl::QuestionAnswered()
+{
+  m_answerCell = NULL;
+  m_questionPrompt = false;
+  SetActiveCell(NULL);
 }
 
 /****
