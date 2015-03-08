@@ -409,6 +409,8 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
       }
     }
   }
+
+  m_appendedCells = NULL;
 }
 
 // We assume that appended cells will be in a new line!
