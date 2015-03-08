@@ -21,7 +21,7 @@
 
 /*\file
 
-The C code for the preferences dialog.
+  The C code for the preferences dialog.
 */
 
 #include "Config.h"
@@ -42,33 +42,33 @@ The C code for the preferences dialog.
 
 /*! The enum that chooses the language in the language drop-down menu. 
 
- \attention
+  \attention
   - Should match whatever is put in the m_language.
 */
 const int langs[] =
-  {
-    wxLANGUAGE_DEFAULT,
-    wxLANGUAGE_CATALAN,
-    wxLANGUAGE_CHINESE_SIMPLIFIED,
-    wxLANGUAGE_CHINESE_TRADITIONAL,
-    wxLANGUAGE_CZECH,
-    wxLANGUAGE_DANISH,
-    wxLANGUAGE_ENGLISH,
-    wxLANGUAGE_FRENCH,
-    wxLANGUAGE_GALICIAN,
-    wxLANGUAGE_GERMAN,
-    wxLANGUAGE_GREEK,
-    wxLANGUAGE_HUNGARIAN,
-    wxLANGUAGE_ITALIAN,
-    wxLANGUAGE_JAPANESE,
-    wxLANGUAGE_NORWEGIAN_BOKMAL,
-    wxLANGUAGE_POLISH,
-    wxLANGUAGE_PORTUGUESE_BRAZILIAN,
-    wxLANGUAGE_RUSSIAN,
-    wxLANGUAGE_SPANISH,
-    wxLANGUAGE_TURKISH,
-    wxLANGUAGE_UKRAINIAN
-  };
+{
+  wxLANGUAGE_DEFAULT,
+  wxLANGUAGE_CATALAN,
+  wxLANGUAGE_CHINESE_SIMPLIFIED,
+  wxLANGUAGE_CHINESE_TRADITIONAL,
+  wxLANGUAGE_CZECH,
+  wxLANGUAGE_DANISH,
+  wxLANGUAGE_ENGLISH,
+  wxLANGUAGE_FRENCH,
+  wxLANGUAGE_GALICIAN,
+  wxLANGUAGE_GERMAN,
+  wxLANGUAGE_GREEK,
+  wxLANGUAGE_HUNGARIAN,
+  wxLANGUAGE_ITALIAN,
+  wxLANGUAGE_JAPANESE,
+  wxLANGUAGE_NORWEGIAN_BOKMAL,
+  wxLANGUAGE_POLISH,
+  wxLANGUAGE_PORTUGUESE_BRAZILIAN,
+  wxLANGUAGE_RUSSIAN,
+  wxLANGUAGE_SPANISH,
+  wxLANGUAGE_TURKISH,
+  wxLANGUAGE_UKRAINIAN
+};
 
 #define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
 
@@ -94,7 +94,7 @@ Config::Config(wxWindow* parent)
   m_imageList->Add(IMAGE("options.png"));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
-      wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+         wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
 
   m_notebook = GetBookCtrl();
 
@@ -165,11 +165,11 @@ void Config::SetProperties()
   wxString texPreamble=wxEmptyString;
   int autoSaveInterval = 0;
   
-  #if defined (__WXMAC__)
+#if defined (__WXMAC__)
   bool usepngCairo=true;
-  #else
+#else
   bool usepngCairo=false;
-  #endif
+#endif
 
   
   int rs = 0;
@@ -228,12 +228,12 @@ void Config::SetProperties()
     m_mpBrowse->Enable(false);
   }
   else
-    {
-      if (mp.Length())
-	m_maximaProgram->SetValue(mp);
-      else
-	m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
-    }
+  {
+    if (mp.Length())
+      m_maximaProgram->SetValue(mp);
+    else
+      m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
+  }
   
   m_additionalParameters->SetValue(mc);
   if (rs == 1)
@@ -401,7 +401,7 @@ wxPanel* Config::CreateOptionsPanel()
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
 
-    m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
+  m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
   vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
 
   
@@ -766,13 +766,13 @@ void Config::ReadStyles(wxString file)
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp)) m_styleSelection.color.Set(tmp);
 
-#define READ_STYLE(style, where)        \
-  if (config->Read(wxT(where "color"), &tmp)) style.color.Set(tmp); \
-  config->Read(wxT(where "bold"),       \
-               &style.bold);            \
-  config->Read(wxT(where "italic"),     \
-               &style.italic);          \
-  config->Read(wxT(where "underlined"), \
+#define READ_STYLE(style, where)                                        \
+  if (config->Read(wxT(where "color"), &tmp)) style.color.Set(tmp);     \
+  config->Read(wxT(where "bold"),                                       \
+               &style.bold);                                            \
+  config->Read(wxT(where "italic"),                                     \
+               &style.italic);                                          \
+  config->Read(wxT(where "underlined"),                                 \
                &style.underlined);
 
   // Text in math output
@@ -837,7 +837,7 @@ void Config::ReadStyles(wxString file)
   m_styleGreek.italic = false;
   m_styleGreek.underlined = false;
   READ_STYLE(m_styleGreek, "Style/Greek/")
-
+    
   // Variable
   m_styleVariable.color = m_styleDefault.color;
   m_styleVariable.bold = false;
@@ -860,7 +860,7 @@ void Config::ReadStyles(wxString file)
   m_styleText.font = m_styleDefault.font;
   m_styleText.fontSize = m_fontSize;
   config->Read(wxT("Style/Text/fontsize"),
-                 &m_styleText.fontSize);
+               &m_styleText.fontSize);
   config->Read(wxT("Style/Text/fontname"),
                &m_styleText.font);
   READ_STYLE(m_styleText, "Style/Text/")
@@ -873,11 +873,10 @@ void Config::ReadStyles(wxString file)
   m_styleSubsection.font = m_styleDefault.font;
   m_styleSubsection.fontSize = 16;
   config->Read(wxT("Style/Subsection/fontsize"),
-                 &m_styleSubsection.fontSize);
+               &m_styleSubsection.fontSize);
   config->Read(wxT("Style/Subsection/fontname"),
                &m_styleSubsection.font);
   READ_STYLE(m_styleSubsection, "Style/Subsection/")
-
 
   // Section
   m_styleSection.color = wxT("black");
@@ -887,7 +886,7 @@ void Config::ReadStyles(wxString file)
   m_styleSection.font = m_styleDefault.font;
   m_styleSection.fontSize = 18;
   config->Read(wxT("Style/Section/fontsize"),
-                 &m_styleSection.fontSize);
+               &m_styleSection.fontSize);
   config->Read(wxT("Style/Section/fontname"),
                &m_styleSection.font);
   READ_STYLE(m_styleSection, "Style/Section/")
@@ -900,7 +899,7 @@ void Config::ReadStyles(wxString file)
   m_styleTitle.font = m_styleDefault.font;
   m_styleTitle.fontSize = 24;
   config->Read(wxT("Style/Title/fontsize"),
-                 &m_styleTitle.fontSize);
+               &m_styleTitle.fontSize);
   config->Read(wxT("Style/Title/fontname"),
                &m_styleTitle.font);
   READ_STYLE(m_styleTitle, "Style/Title/")
@@ -950,10 +949,10 @@ void Config::WriteStyles(wxString file)
 
   config->Write(wxT("Style/Math/fontname"), m_mathFontName);
 
-#define WRITE_STYLE(style, where)                   \
-  config->Write(wxT(where "color"), style.color.GetAsString(wxC2S_CSS_SYNTAX));   \
-  config->Write(wxT(where "bold"), style.bold);     \
-  config->Write(wxT(where "italic"), style.italic); \
+#define WRITE_STYLE(style, where)                                       \
+  config->Write(wxT(where "color"), style.color.GetAsString(wxC2S_CSS_SYNTAX)); \
+  config->Write(wxT(where "bold"), style.bold);                         \
+  config->Write(wxT(where "italic"), style.italic);                     \
   config->Write(wxT(where "underlined"), style.underlined);
 
   // Normal text
@@ -1164,7 +1163,7 @@ void Config::UpdateExample()
   wxString font(m_styleDefault.font);
 
   if (tmp == &m_styleBackground)
-      color = m_styleInput.color;
+    color = m_styleInput.color;
 
   int fontsize = m_fontSize;
   if (tmp == &m_styleText || tmp == &m_styleSubsection || tmp == &m_styleSection || tmp == &m_styleTitle)
@@ -1175,7 +1174,7 @@ void Config::UpdateExample()
       fontsize = m_fontSize;
   }
   else if (tmp == &m_styleVariable || tmp == &m_styleNumber || tmp == &m_styleFunction ||
-      tmp == &m_styleSpecial)
+           tmp == &m_styleSpecial)
   {
     fontsize = m_mathFontSize;
     font = m_mathFontName;
@@ -1204,17 +1203,17 @@ void Config::LoadSave(wxCommandEvent& event)
   if (event.GetId() == save_id)
   {
     wxString file = wxFileSelector(_("Save style to file"),
-        wxEmptyString, wxT("style.ini"), wxT("ini"),
-        _("Config file (*.ini)|*.ini"),
-        wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+                                   wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                   _("Config file (*.ini)|*.ini"),
+                                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file != wxEmptyString)
       WriteStyles(file);
   }
   else {
     wxString file = wxFileSelector(_("Load style from file"),
-        wxEmptyString, wxT("style.ini"), wxT("ini"),
-        _("Config file (*.ini)|*.ini"),
-        wxFD_OPEN);
+                                   wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                   _("Config file (*.ini)|*.ini"),
+                                   wxFD_OPEN);
     if (file != wxEmptyString)
     {
       ReadStyles(file);
@@ -1231,24 +1230,24 @@ void Config::OnColorButton(wxCommandEvent &event)
 #endif
 
 BEGIN_EVENT_TABLE(Config, wxPropertySheetDialog)
-  EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
-  EVT_BUTTON(button_mathFont, Config::OnMathBrowse)
-  EVT_BUTTON(font_family, Config::OnChangeFontFamily)
+EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
+EVT_BUTTON(button_mathFont, Config::OnMathBrowse)
+EVT_BUTTON(font_family, Config::OnChangeFontFamily)
 #if defined __WXMSW__
-  EVT_BUTTON(color_id, Config::OnColorButton)
+EVT_BUTTON(color_id, Config::OnColorButton)
 #endif
-  EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
-  EVT_COMBOBOX(language_id, Config::OnChangeWarning)
-  EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
-  EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
-  EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
-  EVT_BUTTON(save_id, Config::LoadSave)
-  EVT_BUTTON(load_id, Config::LoadSave)
-  EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
-  EVT_CLOSE(Config::OnClose)
+EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
+EVT_COMBOBOX(language_id, Config::OnChangeWarning)
+EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
+EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
+EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
+EVT_BUTTON(save_id, Config::LoadSave)
+EVT_BUTTON(load_id, Config::LoadSave)
+EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
+EVT_CLOSE(Config::OnClose)
 END_EVENT_TABLE()
 
-void ExamplePanel::OnPaint(wxPaintEvent& event)
+  void ExamplePanel::OnPaint(wxPaintEvent& event)
 {
   wxString example(_("Example text"));
   wxPaintDC dc(this);
@@ -1276,11 +1275,11 @@ void ExamplePanel::OnPaint(wxPaintEvent& event)
 }
 
 BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
-  EVT_PAINT(ExamplePanel::OnPaint)
+EVT_PAINT(ExamplePanel::OnPaint)
 END_EVENT_TABLE()
 
 #ifndef __WXMSW__
 BEGIN_EVENT_TABLE(ColorPanel, wxPanel)
-  EVT_LEFT_UP(ColorPanel::OnClick)
+EVT_LEFT_UP(ColorPanel::OnClick)
 END_EVENT_TABLE()
 #endif
