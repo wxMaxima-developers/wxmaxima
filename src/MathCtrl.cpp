@@ -382,7 +382,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if(FollowEvaluation()) {
     if(GCContainsCurrentQuestion(tmp))
       OpenQuestionCaret();
-    
     ScrollToCell(tmp); // also refreshes
   }
   else
@@ -668,7 +667,6 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
           break;
         tmp = tmp->m_nextToDraw;
       }
-
     }
   }
   // SELECTION IN EDITORCELL
@@ -787,6 +785,102 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
   delete popupMenu;
 }
 
+
+/***
+ * We have a mouse click to the left of a GroupCel.
+ */
+void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC)
+{
+  if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
+  {
+    if (clickedInGC->IsFoldable()) {
+      if (event.ShiftDown())
+        ToggleFoldAll(clickedInGC);
+      else
+        ToggleFold(clickedInGC);
+      Recalculate(true);
+    }
+    else {
+      clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
+      clickedInGC->ResetSize();
+      Recalculate();
+      m_clickType = CLICK_TYPE_NONE; // ignore drag-select
+    }
+  }
+  else {
+    m_clickType = CLICK_TYPE_GROUP_SELECTION;
+    m_selectionStart = m_selectionEnd = clickedInGC;
+  }
+}
+
+/***
+ * We have a mouse click in the GroupCell.
+ */
+void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
+{
+  if(GCContainsCurrentQuestion(clickedInGC)) {
+    // The user clicked at the cell maxima has asked a question in.
+    OpenQuestionCaret();
+    return;
+  }
+  else {
+    // The user clicked at a ordinary cell
+    EditorCell * editor = clickedInGC->GetEditable();
+    if (editor != NULL) {
+      wxRect rect = editor->GetRect();
+      if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
+        SetActiveCell(editor, false); // do not refresh
+        wxClientDC dc(this);
+        m_activeCell->SelectPointText(dc, m_down);
+        m_switchDisplayCaret = false;
+        m_clickType = CLICK_TYPE_INPUT_SELECTION;
+        if (editor->GetWidth() == -1)
+          Recalculate();
+        Refresh();
+        return;
+      }
+    }
+  }
+  // what if we tried to select something in output, select it (or if editor, activate it)
+  if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
+    wxRect rect2(m_down.x, m_down.y, 1,1);
+    wxPoint mmm(m_down.x + 1, m_down.y +1);
+    clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
+                                    &m_selectionStart, &m_selectionEnd);
+    if (m_selectionStart != NULL) {
+      if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
+          && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
+      {
+        SetActiveCell(dynamic_cast<EditorCell*>(m_selectionStart), false);
+        wxClientDC dc(this);
+        m_activeCell->SelectPointText(dc, m_down);
+        m_switchDisplayCaret = false;
+        m_clickType = CLICK_TYPE_INPUT_SELECTION;
+        OpenQuestionCaret();
+        Refresh();
+        return;
+      }
+      else {
+        m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
+        m_clickInGC = clickedInGC;
+      }
+    }
+  }
+}
+
+void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
+{
+  // The click has changed the cell which means the user works here and
+  // doesn't want the evaluation mechanism to automatically follow the
+  // evaluation any more.
+  ScrolledAwayFromEvaluation(true);
+
+  if (m_down.x <= MC_GROUP_LEFT_INDENT)
+    OnMouseLeftInGcLeft(event, clickedInGc);
+  else
+    OnMouseLeftInGcCell(event, clickedInGc);
+}
+
 /***
  * Left mouse button down - selection handling
  *
@@ -842,99 +936,18 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     // the user wants to work herr and doesn't want the evaluation mechanism
     // to automatically follow the evaluation any more.
     ScrolledAwayFromEvaluation(true);
+  }
 
-  } // end if (clickedBeforeGC != NULL) // we clicked between groupcells, set hCaret
-
-  else if (clickedInGC != NULL) { // we clicked in a groupcell, find out where
-
-    // The click has changed the cell which means the user works here and
-    // doesn't want the evaluation mechanism to automatically follow the
-    // evaluation any more.
-    ScrolledAwayFromEvaluation(true);
-
-    if (m_down.x <= MC_GROUP_LEFT_INDENT) { // we clicked in left bracket area
-      if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
-      {
-        if (clickedInGC->IsFoldable()) {
-          if (event.ShiftDown())
-            ToggleFoldAll(clickedInGC);
-          else
-            ToggleFold(clickedInGC);
-          Recalculate(true);
-        }
-        else {
-          clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
-          clickedInGC->ResetSize();
-          Recalculate();
-          m_clickType = CLICK_TYPE_NONE; // ignore drag-select
-        }
-      }
-      else {
-        m_clickType = CLICK_TYPE_GROUP_SELECTION;
-        m_selectionStart = m_selectionEnd = clickedInGC;
-      }
-    } // end we clicked in left bracket area
-
-    else { // we didn't click in left bracket space
-
-      
-      if(GCContainsCurrentQuestion(clickedInGC)) {
-	// The user clicked at the cell maxima has asked a question in.
-	OpenQuestionCaret();
-	return;
-      }
-      else {
-	// The user clicked at a ordinary cell
-	EditorCell * editor = clickedInGC->GetEditable();
-	if (editor != NULL) {
-	  rect = editor->GetRect();
-	  if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
-	    SetActiveCell(editor, false); // do not refresh
-	    wxClientDC dc(this);
-	    m_activeCell->SelectPointText(dc, m_down);
-	    m_switchDisplayCaret = false;
-	    m_clickType = CLICK_TYPE_INPUT_SELECTION;
-	    if (editor->GetWidth() == -1)
-	      Recalculate();
-	    Refresh();
-	    return;
-	  }
-	}
-      }
-      // what if we tried to select something in output, select it (or if editor, activate it)
-      if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
-        wxRect rect2(m_down.x, m_down.y, 1,1);
-        wxPoint mmm(m_down.x + 1, m_down.y +1);
-        clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
-                                        &m_selectionStart, &m_selectionEnd);
-        if (m_selectionStart != NULL) {
-          if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
-	      && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
-          {
-            SetActiveCell(dynamic_cast<EditorCell*>(m_selectionStart), false);
-            wxClientDC dc(this);
-            m_activeCell->SelectPointText(dc, m_down);
-            m_switchDisplayCaret = false;
-            m_clickType = CLICK_TYPE_INPUT_SELECTION;
-	    OpenQuestionCaret();
-            Refresh();
-            return;
-          }
-          else {
-            m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
-            m_clickInGC = clickedInGC;
-          }
-        }
-      }
-    } // end we didn't click in left bracket space
-
-  } // end if (clickedInGC != NULL) // we clicked in a groupcell, find out where
+  else if (clickedInGC != NULL) {
+    OnMouseLeftInGc(event, clickedInGC);
+  }
 
   else { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
     SetHCaret(m_last, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
   }
+
   Refresh();
   // Re-calculate the table of contents
   m_structure->Update(m_tree);

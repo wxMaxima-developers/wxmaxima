@@ -382,6 +382,9 @@ public:
   void OnMouseRightDown(wxMouseEvent& event);
   void OnMouseLeftUp(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
+  void OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC);
+  void OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC);
+  void OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGC);
   void OnMouseMotion(wxMouseEvent& event);
   void OnDoubleClick(wxMouseEvent& event);
   void OnKeyDown(wxKeyEvent& event);
