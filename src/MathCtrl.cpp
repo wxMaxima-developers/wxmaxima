@@ -4171,17 +4171,14 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
-  
   if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent()))) {  
     OpenQuestionCaret(text);
   }
+  else if (m_activeCell == NULL)
+    OpenHCaret(text);
   else {
-    if (m_activeCell == NULL)
-      OpenHCaret(text);
-    else {
-      m_activeCell->InsertText(text);
-      Refresh();
-    }
+    m_activeCell->InsertText(text);
+    Refresh();
   }
   return true;
 }
