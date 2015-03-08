@@ -326,15 +326,16 @@ public:
   //! Set this cell as the currently selected one
   void SelectGroupCell(GroupCell *cell);
   //! Mark the current question from maxima as "answered"..
-  void QuestionAnswered(){m_answerCell = NULL;m_questionPrompt = false;}
+  void QuestionAnswered() { m_answerCell = NULL;m_questionPrompt = false; }
   //! true = the last reply from maxima was a question
   bool m_questionPrompt;
   //! Does the GroupCell cell points to contain the question currently asked by maxima?  
-  bool GCContainsCurrentQuestion(GroupCell *cell){
+  bool GCContainsCurrentQuestion(GroupCell *cell) {
     if(m_workingGroup)
       return ((cell == m_workingGroup) && m_questionPrompt);
     else
-      return false;}
+      return false;
+  }
   /*! Move the cursor to the end of the question and if needed add a cell for user input
    */
   void OpenQuestionCaret(wxString txt=wxT(""));

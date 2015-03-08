@@ -343,8 +343,6 @@ GroupCell *MathCtrl::UpdateMLast()
 
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
-  //  SetActiveCell(NULL, false);
-
   m_saved = false;
 
   GroupCell *tmp = m_workingGroup;
@@ -356,15 +354,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   // If there is no last cell either the new one is used as the last cell.
   if (tmp == NULL)
     return;
-    
+
   newCell->ForceBreakLine(forceNewLine);
 
   tmp->AppendOutput(newCell);
-  if (newCell->GetType() == MC_TYPE_PROMPT)
-  {
-    m_workingGroup = tmp;
-    OpenHCaret();
-  }
 
   newCell->SetParentList(tmp);
 
@@ -1356,7 +1349,6 @@ void MathCtrl::DeleteSelection() {
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
-  
   if (m_workingGroup->RevealHidden())
     FoldOccurred();
  
@@ -1520,6 +1512,14 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   default:
     event.Skip();
   }
+}
+
+bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
+{
+  if (m_workingGroup)
+    return ((cell == m_workingGroup) && m_questionPrompt);
+  else
+    return false;
 }
 
 /****
