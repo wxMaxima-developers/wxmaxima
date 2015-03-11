@@ -1,3 +1,4 @@
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //

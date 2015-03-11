@@ -1,3 +1,4 @@
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -5108,3 +5109,10 @@ EVT_FIND_REPLACE_ALL(wxID_ANY, wxMaxima::OnReplaceAll)
 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
 
 END_EVENT_TABLE()
+
+/* 
+Local Variables:      
+/* mode: text             */
+/* c-file-style:  "linux" */
+/* c-basic-offset: 2      */
+/* indent-tabs-mode: nil  */
