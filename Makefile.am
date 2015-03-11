@@ -77,10 +77,10 @@ wxMaxima.win: all
 if CHM
 	cp info/*.chm  wxMaxima/help
 else
-	cp info/*.html wxMaxima/help
-	cp info/index.hhk wxMaxima/help
-	cp info/contents.hhc wxMaxima/help
-	cp info/wxmaxima.hhp wxMaxima/help
+	-cp info/*.html wxMaxima/help
+	-cp info/index.hhk wxMaxima/help
+	-cp info/contents.hhc wxMaxima/help
+	-cp info/wxmaxima.hhp wxMaxima/help
 endif
 	mkdir -p wxMaxima/art/toolbar
 	cp art/toolbar/*.png wxMaxima/art/toolbar
