@@ -813,6 +813,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
 {
   if(GCContainsCurrentQuestion(clickedInGC)) {
     // The user clicked at the cell maxima has asked a question in.
+    FollowEvaluation(true);
     OpenQuestionCaret();
     return;
   }
@@ -849,6 +850,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_activeCell->SelectPointText(dc, m_down);
         m_switchDisplayCaret = false;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
+        FollowEvaluation(true);    
         OpenQuestionCaret();
         Refresh();
         return;
@@ -1556,6 +1558,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     GroupCell *previous=dynamic_cast<GroupCell*>((m_activeCell->GetParent())->m_previous);
     if (GCContainsCurrentQuestion(previous)) {
       // The user moved into the cell maxima has asked a question in.
+      FollowEvaluation(true);
       OpenQuestionCaret();
       return;
     }
@@ -1575,6 +1578,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     if (GCContainsCurrentQuestion(next)) {
       // The user moved into the cell maxima has asked a question in.
+      FollowEvaluation(true);
       OpenQuestionCaret();
       return;
     }
@@ -4180,7 +4184,8 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
-  if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent()))) {  
+  if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent()))) {
+    m_followEvaluation = true;
     OpenQuestionCaret(text);
   }
   else if (m_activeCell == NULL)
@@ -4208,7 +4213,10 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
   m_hCaretActive = false;
   m_activeCell = NULL;
   if(GCContainsCurrentQuestion(cell))
+  {
+    FollowEvaluation(true);
     OpenQuestionCaret();
+  }
 }
 
 void MathCtrl::OnFollow()
@@ -4222,9 +4230,9 @@ void MathCtrl::OnFollow()
     }
     SetSelection(GetWorkingGroup());
     ScrollToCell(GetWorkingGroup());
+    FollowEvaluation(true);
     if(GCContainsCurrentQuestion(GetWorkingGroup()))
       OpenQuestionCaret();
-    FollowEvaluation(true);
   }
 }
 
