@@ -479,38 +479,17 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
 
     if (event.ControlDown()) {
-      if (m_positionOfCaret > 1 &&
-          (chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
-              chars.Find(m_text[m_positionOfCaret-2]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
-	      delim.Find(m_text[m_positionOfCaret-2]) == wxNOT_FOUND)) {
-        while (m_positionOfCaret > 0 &&
-              chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND)
-          m_positionOfCaret--;
-      }
-      else {
-        while (m_positionOfCaret > 0 &&
-            chars.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND &&
-            delim.Find(m_text[m_positionOfCaret-1]) == wxNOT_FOUND)
-          m_positionOfCaret--;
-        if (chars.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND) {
-          while (m_positionOfCaret > 0 && chars.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND)
-            m_positionOfCaret--;
-        }
-        else if (delim.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND) {
-          while (m_positionOfCaret > 0 && delim.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND)
-            m_positionOfCaret--;
-        }
-        else {
-          while (m_positionOfCaret > 0 &&
-              chars.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret-1]) != wxNOT_FOUND)
-            m_positionOfCaret--;
-        }
-      }
-    }
+      int lastpos = m_positionOfCaret;
 
+      while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        m_positionOfCaret--;
+
+      while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        m_positionOfCaret--;
+      
+      if((lastpos == m_positionOfCaret)&&(m_positionOfCaret > 0))
+        m_positionOfCaret--;
+    }
     else if (event.AltDown())
     {
       int count=0;
@@ -524,15 +503,14 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           count++;
       }
     }
-
     else if (m_positionOfCaret > 0)
       m_positionOfCaret--;
-
+    
     if (event.ShiftDown())
       m_selectionEnd = m_positionOfCaret;
-
+    
     break;
-
+    
   case WXK_RIGHT:
     SaveValue();
     if (event.ShiftDown())
@@ -542,45 +520,19 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
     else
       m_selectionEnd = m_selectionStart = -1;
+    
+    if (event.ControlDown()) {
+      int lastpos = m_positionOfCaret;
 
-    if (event.ControlDown() && m_positionOfCaret < (signed)m_text.Length()-1) {
-      if (m_positionOfCaret < (signed)m_text.Length()-1 &&
-          (chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
-              chars.Find(m_text[m_positionOfCaret+1]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
-	      delim.Find(m_text[m_positionOfCaret+1]) == wxNOT_FOUND)) {
-        while (m_positionOfCaret < (signed)m_text.Length() &&
-              chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
+      while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret<m_text.Length()))
           m_positionOfCaret++;
-      }
-      else {
-        while (m_positionOfCaret < (signed)m_text.Length() &&
-            chars.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND &&
-            delim.Find(m_text[m_positionOfCaret]) == wxNOT_FOUND)
-          m_positionOfCaret++;
-        if (chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-        {
-          while (m_positionOfCaret < (signed)m_text.Length() &&
-              chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-            m_positionOfCaret++;
-        }
-        else if (delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-        {
-          while (m_positionOfCaret < (signed)m_text.Length() &&
-              delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-            m_positionOfCaret++;
-        }
-        else
-        {
-          while (m_positionOfCaret < (signed)m_text.Length() &&
-              chars.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND &&
-              delim.Find(m_text[m_positionOfCaret]) != wxNOT_FOUND)
-            m_positionOfCaret++;
-        }
-      }
+
+      while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret<m_text.Length()))
+        m_positionOfCaret++;
+      
+      if((lastpos == m_positionOfCaret)&&(m_positionOfCaret<m_text.Length()))
+        m_positionOfCaret++;
     }
-
     else if (event.AltDown())
     {
       int count=0;
@@ -809,7 +761,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         m_isDirty = true;
         
         
-        int right = m_positionOfCaret;
+        int lastpos = m_positionOfCaret;
         // Delete characters until the end of the current word or number 
         while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
         {
@@ -824,7 +776,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         }
         
         // If we didn't delete anything till now delete one single character.
-        if(right == m_positionOfCaret)
+        if(lastpos == m_positionOfCaret)
         {
           m_positionOfCaret--;
           m_text = m_text.SubString(0, m_positionOfCaret - 1);
