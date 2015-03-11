@@ -775,22 +775,61 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_selectionEnd = m_selectionStart = -1;
       break;
     }
-    else if (m_positionOfCaret > 0)
+    else
     {
-      m_containsChanges = true;
-      m_isDirty = true;
 
-      /// If deleting ( in () then delete both.
-      int right = m_positionOfCaret;
-      if (m_positionOfCaret < m_text.Length() &&
-          ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
-              (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
-              (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
-              (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
-        right++;
-      m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-               m_text.SubString(right, m_text.Length());
-      m_positionOfCaret--;
+      if(!event.CmdDown())
+      {
+        // Backspace without Ctrl => Delete one character if there are characters to delete.
+        if(m_positionOfCaret > 0)
+        {
+          m_containsChanges = true;
+          m_isDirty = true;
+          
+          
+          /// If deleting ( in () then delete both.
+          int right = m_positionOfCaret;
+          if (m_positionOfCaret < m_text.Length() &&
+              ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
+               (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
+               (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
+               (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
+            right++;
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+            m_text.SubString(right, m_text.Length());
+          m_positionOfCaret--;
+        }
+        
+      }
+      else
+      {
+        // Ctrl+Backspace is pressed.
+
+        m_containsChanges = true;
+        m_isDirty = true;
+        
+        
+        int right = m_positionOfCaret;
+        // Delete characters until the end of the current word or number 
+        while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+        }            
+        // Delete Spaces, Tabs and Newlines until the next printable character
+        while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+        }
+        
+        // If we didn't delete anything till now delete one single character.
+        if(right == m_positionOfCaret)
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+        }
+      }
     }
     break;
 

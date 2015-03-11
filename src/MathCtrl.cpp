@@ -1895,9 +1895,19 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   }
 #endif
 
-  if (event.CmdDown() && !event.AltDown() && !(event.GetKeyCode() == WXK_LEFT) && !(event.GetKeyCode() == WXK_RIGHT) ) {
-    event.Skip();
-    return;
+  // Skip all events that look like they might be hotkey invocations so they
+  // are processed by the other receipients
+  if (event.CmdDown() && !event.AltDown())
+  {
+    if (
+      !(event.GetKeyCode() == WXK_LEFT) &&
+      !(event.GetKeyCode() == WXK_RIGHT) &&
+      !(event.GetKeyCode() == WXK_BACK)
+      )
+    {
+      event.Skip();
+      return;
+    }
   }
 
   if (m_activeCell != NULL)
