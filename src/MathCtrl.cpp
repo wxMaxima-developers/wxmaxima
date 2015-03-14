@@ -1818,10 +1818,45 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     ScrolledAwayFromEvaluation(true);
     if (m_hCaretActive) {
       if (m_selectionStart != NULL) {
-        SetHCaret(m_selectionStart->GetParent()->m_previous);
+        if(event.CmdDown())
+        {
+          MathCell *tmp = m_selectionStart;
+          if(tmp->m_previous)
+          {
+            do tmp = tmp->m_previous; while(
+              (tmp->m_previous)&&(
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                )
+              );
+            SetHCaret(tmp);
+          } else
+            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+        }
+        else
+          SetHCaret(m_selectionStart->GetParent()->m_previous);
       }
       else if (m_hCaretPosition != NULL) {
-        SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable(), false);
+        if(event.CmdDown())
+        {
+          MathCell *tmp = m_hCaretPosition;
+          if(tmp->m_previous)
+          {
+            do tmp = tmp->m_previous; while(
+              (tmp->m_previous)&&(
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                )
+              ); 
+            SetHCaret(tmp);
+          }
+          else
+            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+        }
+        else
+          SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable(), false);
       }
       else
         event.Skip();
@@ -1838,14 +1873,50 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     ScrolledAwayFromEvaluation(true);
     if (m_hCaretActive) {
       if (m_selectionEnd != NULL) {
-        SetHCaret(m_selectionEnd->GetParent());
+        if(event.CmdDown())
+        {
+          MathCell *tmp = m_selectionEnd;
+          if(tmp->m_next)
+          {
+            do tmp = tmp->m_next; while(
+              (tmp->m_next)&&(
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                )
+              );
+            SetHCaret(tmp);
+          } else
+            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+        }
+        else
+          SetHCaret(m_selectionEnd->GetParent());
+        
+      }
+      else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
+        if(event.CmdDown())
+        {
+          MathCell *tmp = m_hCaretPosition;
+          if(tmp->m_next)
+          {
+            do tmp = tmp->m_next; while(
+              (tmp->m_next)&&(
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                )
+              );
+            SetHCaret(tmp);
+          } else
+            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+        }
+        else
+          SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable(), true);
       }
       else if (m_tree != NULL && m_hCaretPosition == NULL) {
         SelectEditable(dynamic_cast<GroupCell*>(m_tree)->GetEditable(), true);
       }
-      else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
-        SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next)->GetEditable(), true);
-      }
+
     }
     else if (m_selectionEnd != NULL)
       SetHCaret(m_selectionEnd->GetParent());
@@ -1900,8 +1971,10 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
   if (event.CmdDown() && !event.AltDown())
   {
     if (
-      !(event.GetKeyCode() == WXK_LEFT) &&
+      !(event.GetKeyCode() == WXK_LEFT)  &&
       !(event.GetKeyCode() == WXK_RIGHT) &&
+      !(event.GetKeyCode() == WXK_UP)    &&
+      !(event.GetKeyCode() == WXK_DOWN)  &&
       !(event.GetKeyCode() == WXK_BACK)
       )
     {
