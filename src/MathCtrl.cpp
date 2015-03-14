@@ -2079,7 +2079,8 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       wxRect rect = m_selectionStart->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
-      
+      m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+
       m_animationTimer.Start(1000/tmp->GetFrameRate());
     }
     else
