@@ -4627,17 +4627,12 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
   if (m_console->m_mainToolBar->m_plotSlider == NULL)
     return;
   if (m_console->IsSelected(MC_TYPE_SLIDE))
-  {
-    if (!m_console->AnimationRunning())
-    {
-      SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
-
-      m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
-      m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
-      m_console->m_mainToolBar->m_plotSlider->Enable(true);
-    }
-    else
-      m_console->m_mainToolBar->m_plotSlider->Enable(false);
+  {    
+    SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+    
+    m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
+    m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
+    m_console->m_mainToolBar->m_plotSlider->Enable(true);
   }
   else
     m_console->m_mainToolBar->m_plotSlider->Enable(false);
@@ -4646,6 +4641,9 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
   m_console->ScrolledAwayFromEvaluation(true);
+  if (m_console->AnimationRunning())
+    m_console->Animate(false);
+
   SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
   if (cell != NULL)
   {
