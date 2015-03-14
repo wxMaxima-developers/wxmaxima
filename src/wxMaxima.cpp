@@ -4640,7 +4640,6 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
-  m_console->ScrolledAwayFromEvaluation(true);
   if (m_console->AnimationRunning())
     m_console->Animate(false);
 
