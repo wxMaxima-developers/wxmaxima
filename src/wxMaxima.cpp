@@ -4410,41 +4410,41 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   int len=text.Length();
   int index=0;
 
-  std::list<char> delimiters;
+  std::list<wxChar> delimiters;
   
   while(index<len)
   {
-    char c=char(text.GetChar(index));
+    wxChar c=text[index];
     
     switch(c)
     {
-    case '(':
-      delimiters.push_back(')');
+    case wxT('('):
+      delimiters.push_back(wxT(')'));
       break;
-    case '[':
-      delimiters.push_back(']');
+    case wxT('['):
+      delimiters.push_back(wxT(']'));
       break;
-    case '{':
-      delimiters.push_back('}');
+    case wxT('{'):
+      delimiters.push_back(wxT('}'));
       break;
 
-    case ')':
-    case ']':
-    case '}':
+    case wxT(')'):
+    case wxT(']'):
+    case wxT('}'):
       if(c!=delimiters.back()) return(_("Mismatched parenthesis"));
       delimiters.pop_back();
       break;
 
-    case '\\':
+    case wxT('\\'):
       index++;
       break;
 
-    case '"':
+    case wxT('"'):
       //
       index++;
-      while((index<len)&&(c=char(text.GetChar(index)))!='"')
+      while((index<len)&&(c=text[index])!=wxT('"'))
       {
-        if(c=='\\')
+        if(c==wxT('\\'))
           index++;
         index++;
       }
@@ -4454,7 +4454,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     case '/':
       if(index<len-1)
       {
-        if(text.GetChar(index + 1)=='*')
+        if(text[index + 1]==wxT('*'))
         {
           index=text.find(wxT("*/"),index);
           if(index==wxNOT_FOUND)
