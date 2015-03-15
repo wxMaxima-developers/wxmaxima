@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-15 12:48+0100\n"
-"PO-Revision-Date: 2015-03-11 08:13+0100\n"
+"POT-Creation-Date: 2015-03-15 16:17+0100\n"
+"PO-Revision-Date: 2015-03-15 16:18+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -380,7 +380,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "Rand&bedingung setzen ..."
 
-#: ../src/wxMaxima.cpp:3807 ../src/wxMaximaFrame.cpp:790
+#: ../src/wxMaximaFrame.cpp:790 ../src/wxMaxima.cpp:3807
 msgid "About"
 msgstr "Info"
 
@@ -2133,6 +2133,11 @@ msgstr "Verbinde die markierten Eingabezellen zu einer"
 msgid "Method:"
 msgstr "Methode:"
 
+#: ../src/wxMaxima.cpp:4434
+#, fuzzy
+msgid "Mismatched parenthesis"
+msgstr "Nicht-zusammengehörige Klammern"
+
 #: ../src/wxMaxima.cpp:3160
 msgid "Modulus"
 msgstr "Modulo"
@@ -2234,7 +2239,7 @@ msgid "Online tutorials"
 msgstr "Online Tutorials"
 
 #: ../src/main.cpp:243 ../src/Config.cpp:433 ../src/ToolBar.cpp:61
-#: ../src/wxMaxima.cpp:2121 ../src/MenuBar.cpp:55
+#: ../src/MenuBar.cpp:55 ../src/wxMaxima.cpp:2121
 msgid "Open"
 msgstr "Öffnen"
 
@@ -2579,8 +2584,8 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/Config.cpp:520 ../src/ToolBar.cpp:64 ../src/wxMaxima.cpp:4875
-#: ../src/MenuBar.cpp:58
+#: ../src/Config.cpp:520 ../src/ToolBar.cpp:64 ../src/MenuBar.cpp:58
+#: ../src/wxMaxima.cpp:4875
 msgid "Save"
 msgstr "Speichern"
 
@@ -3351,6 +3356,10 @@ msgstr "Gestalt:"
 msgid "Ukrainian"
 msgstr "Ukrainisch"
 
+#: ../src/wxMaxima.cpp:4470
+msgid "Un-closed parenthesis"
+msgstr "Nicht geschlossene Klammer"
+
 #: ../src/Config.cpp:517
 msgid "Underlined"
 msgstr "Unterstrichen"
@@ -3374,6 +3383,14 @@ msgstr "Alle zugeklappten Sektionen aufklappen"
 #: ../src/wxMaxima.cpp:3657
 msgid "Unicode Support"
 msgstr "Unicode Unterstützung"
+
+#: ../src/wxMaxima.cpp:4461
+msgid "Unterminated comment."
+msgstr "Fehlende Kommentarendemarkierung"
+
+#: ../src/wxMaxima.cpp:4451
+msgid "Unterminated string."
+msgstr "Fehlendes schließendes Anführungszeichen"
 
 #: ../src/wxMaxima.cpp:4818 ../src/wxMaxima.cpp:4825
 msgid "Upgrade"
@@ -3586,7 +3603,7 @@ msgstr "Zoom in Schritten von 10 %"
 msgid "Zoom set to "
 msgstr "Vergrößerung gesetzt auf "
 
-#: ../src/wxMaxima.cpp:4667 ../src/wxMaximaFrame.cpp:175
+#: ../src/wxMaximaFrame.cpp:175 ../src/wxMaxima.cpp:4667
 msgid "[ unsaved ]"
 msgstr "[ nicht gespeichert ]"
 
@@ -3653,8 +3670,8 @@ msgstr "symmetrisch"
 msgid "unsaved"
 msgstr "nicht gespeichert"
 
-#: ../src/wxMaxima.cpp:1963 ../src/wxMaxima.cpp:2147
-#: ../src/wxMaximaFrame.cpp:177
+#: ../src/wxMaximaFrame.cpp:177 ../src/wxMaxima.cpp:1963
+#: ../src/wxMaxima.cpp:2147
 msgid "untitled"
 msgstr "unbenannt"
 
@@ -3667,8 +3684,8 @@ msgstr "unbenannt %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:4667 ../src/wxMaxima.cpp:4669 ../src/wxMaxima.cpp:4678
-#: ../src/wxMaxima.cpp:4681 ../src/wxMaximaFrame.cpp:175
+#: ../src/wxMaximaFrame.cpp:175 ../src/wxMaxima.cpp:4667
+#: ../src/wxMaxima.cpp:4669 ../src/wxMaxima.cpp:4678 ../src/wxMaxima.cpp:4681
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

@@ -4431,7 +4431,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     case ')':
     case ']':
     case '}':
-      if(c!=delimiters.back()) return(_(wxT("Mismatched parenthesis")));
+      if(c!=delimiters.back()) return(_("Mismatched parenthesis"));
       delimiters.pop_back();
       break;
 
@@ -4448,7 +4448,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
           index++;
         index++;
       }
-      if(c!='"') return(_(wxT("Unterminated string.")));
+      if(c!='"') return(_("Unterminated string."));
       break;
     
     case '/':
@@ -4458,7 +4458,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
         {
           index=text.find(wxT("*/"),index);
           if(index==wxNOT_FOUND)
-            return(_(wxT("Unterminated comment.")));
+            return(_("Unterminated comment."));
         }
       }
     }
@@ -4467,7 +4467,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   }
   if(!delimiters.empty())
   {
-    return _(wxT("Un-closed parenthesis"));
+    return _("Un-closed parenthesis");
   }
   return wxEmptyString;
 }
