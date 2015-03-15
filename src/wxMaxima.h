@@ -125,8 +125,13 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
-    //! Can we display the "ready" prompt right now?
+  //! Can we display the "ready" prompt right now?
   bool m_ready;
+  /*! A human-readable presentation of eventual unmatched-parenthesis type errors
+
+    If text doesn't contain any error this function returns wxEmptyString
+   */
+  wxString GetUnmatchedParenthesisState(wxString text);
 protected:
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent& event);

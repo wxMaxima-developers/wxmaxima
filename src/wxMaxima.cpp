@@ -66,6 +66,7 @@
 
 #include <wx/url.h>
 #include <wx/sstream.h>
+#include <list>
 
 #if defined __WXMAC__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
@@ -4404,11 +4405,79 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
   }
 }
 
+wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
+{
+  int len=text.Length();
+  int index=0;
+
+  std::list<char> delimiters;
+  
+  while(index<len)
+  {
+    char c=char(text.GetChar(index));
+    
+    switch(c)
+    {
+    case '(':
+      delimiters.push_back(')');
+      break;
+    case '[':
+      delimiters.push_back(']');
+      break;
+    case '{':
+      delimiters.push_back('}');
+      break;
+
+    case ')':
+    case ']':
+    case '}':
+      if(c!=delimiters.back()) return(_(wxT("Mismatched parenthesis")));
+      delimiters.pop_back();
+      break;
+
+    case '\\':
+      index++;
+      break;
+
+    case '"':
+      //
+      index++;
+      while((index<len)&&(c=char(text.GetChar(index)))!='"')
+      {
+        if(c=='\\')
+          index++;
+        index++;
+      }
+      if(c!='"') return(_(wxT("Unterminated string.")));
+      break;
+    
+    case '/':
+      if(index<len-1)
+      {
+        if(text.GetChar(index + 1)=='*')
+        {
+          index=text.find(wxT("*/"),index);
+          if(index==wxNOT_FOUND)
+            return(_(wxT("Unterminated comment.")));
+        }
+      }
+    }
+
+    index++;
+  }
+  if(!delimiters.empty())
+  {
+    return _(wxT("Un-closed parenthesis"));
+  }
+  return wxEmptyString;
+}
+
 //! Tries to evaluate next group cell in queue
 //
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {
+
   if (!m_isConnected) {
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
@@ -4435,7 +4504,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
   else
   {
-    m_console->SetWorkingGroup(tmp);
     if (tmp->GetEditable()->GetValue() != wxEmptyString)
     {
       tmp->GetEditable()->AddEnding();
@@ -4449,18 +4517,35 @@ void wxMaxima::TryEvaluateNextInQueue()
         return;
       }
 	  
-      tmp->RemoveOutput();	  
-      tmp->GetPrompt()->SetValue(m_lastPrompt);
-	  
-      if(m_console->FollowEvaluation())
+      tmp->RemoveOutput();
+      wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
+      if(parenthesisError==wxEmptyString)
       {
-        m_console->ScrollToCell(tmp);
-        m_console->SetSelection(tmp);
+        m_console->SetWorkingGroup(tmp);
+        tmp->GetPrompt()->SetValue(m_lastPrompt);
+        
+        if(m_console->FollowEvaluation())
+        {
+          m_console->ScrollToCell(tmp);
+          m_console->SetSelection(tmp);
+        }
+        else
+          m_console->Recalculate();
+        SendMaxima(text, true);
       }
       else
-        m_console->Recalculate();
-	  
-      SendMaxima(text, true);
+      {
+        TextCell* cell = new TextCell(_(wxT("Refusing to send cell to maxima: ")) +
+                                      parenthesisError + wxT("\n"));
+        cell->SetType(MC_TYPE_ERROR);
+        cell->SetParent(tmp);
+        tmp->SetOutput(cell);
+        if(m_console->FollowEvaluation())
+          m_console->SetSelection(NULL);
+
+        m_console->SetWorkingGroup(NULL);
+        m_console->m_evaluationQueue->RemoveFirst();
+      }
     }
     else
     {
