@@ -4544,7 +4544,11 @@ void wxMaxima::TryEvaluateNextInQueue()
           m_console->SetSelection(NULL);
 
         m_console->SetWorkingGroup(NULL);
+        m_console->Recalculate();
+        m_console->Refresh();
         m_console->m_evaluationQueue->RemoveFirst();
+        StatusMaximaBusy(waiting);
+        TryEvaluateNextInQueue();
       }
     }
     else
