@@ -44,9 +44,9 @@ enum
   GC_TYPE_PAGEBREAK
 };
 
-/*! A cell grouping a foldable item
+/*! A cell grouping input (and, if there is one, also the output) cell to a foldable item
 
-Foldable items include
+Items where a list of groupcells can be folded include
  - sections
  - chapters
  - The prompt (if maxima outputs one) with the input cell, the output label maxima might 
@@ -54,7 +54,8 @@ Foldable items include
  - A combination of image and title
  - A combination of image and input cell
 
- This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree.
+ This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree 
+ has the parent m_hiddenTreeParent.
  */
 class GroupCell: public MathCell
 {
@@ -110,22 +111,68 @@ public:
   void BreakLines(int fullWidth);
   void BreakLines(MathCell *cell, int fullWidth);
   void ResetInputLabel(bool all = false); // if !all only this GC is reset
-  // folding and unfolding
+  //! @{ folding and unfolding
+
+  //! Is this cell foldable?
   bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
                               (m_groupType == GC_TYPE_TITLE) ||
                               (m_groupType == GC_TYPE_SUBSECTION)); }
+  //! Get the tree of cells that got hidden by folding this cell
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
+  /*! Fold the current cell
+
+    \return
+    - false, if the cell already was folded when this function was called
+    - true, if the cell was folded by this function call.
+  */
   bool HideTree(GroupCell *tree);
+  //! Unfold the current cell
   GroupCell *UnhideTree();
+  /*! Unfold all that is needed to make the current cell seen
+
+    \return
+    - false, if the cell already was visible on calling this function
+    - true, if cells were unfolded by this function call
+   */
   bool RevealHidden();
+  //! Set the parent cell of hidden cells
   void SetHiddenTreeParent(GroupCell* parent);
+  /*! Fold this cell
+
+    \return the cell's address if folding was successful, else NULL
+  */
   GroupCell *Fold(); // returns pointer to this or NULL if not successful
-  GroupCell *Unfold(); // return pointer to last cell that unfolded
+  /*! Unfold this cell
+
+    \return the last cell that was unfolded.
+  */  GroupCell *Unfold();
+  /*! Fold all cells
+
+    \return the cell's address if folding was successful, else NULL
+    \todo This function is still recursive and therefore can provoke stack overflows
+    -> Convert to a while loop.
+  */
   GroupCell *FoldAll(bool all = false);
+  /*! Unfold all cells
+
+    \return the last unfolded cell's address if unfolding was successful, else NULL
+    \todo This function is still recursive and therefore can provoke stack overflows
+    -> Convert to a while loop.
+  */
   GroupCell *UnfoldAll(bool all = false);
+  /*! Document structure: Can this cell type be part of the contents of comparedTo?
+
+    For example ordinary text cells can be part of a chapter and sections can be
+    part of a chapter, too.
+   */
   bool IsLesserGCType(int comparedTo);
+  //! @}
   bool IsMainInput(MathCell *active);
   void Number(int &section, int &subsection, int &image);
+  /*! Recalculate the cell dimensions after appending new lines.
+
+    Won't work if text has been added to the end of the line instead.
+   */
   void RecalculateAppended(CellParser& parser);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   //! Is this list of cells empty?
