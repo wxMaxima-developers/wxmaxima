@@ -25,7 +25,7 @@
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
-#define BM_FULL_WIDTH 800
+#define BM_FULL_WIDTH 1000
 
 Bitmap::Bitmap()
 {
@@ -293,6 +293,7 @@ void Bitmap::BreakUpCells()
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
   wxMemoryDC dc;
+  dc.SelectObject(m_bmp);
   CellParser parser(dc);
 
   while (tmp != NULL)
@@ -307,4 +308,5 @@ void Bitmap::BreakUpCells()
     }
     tmp = tmp->m_nextToDraw;
   }
+  dc.SelectObject(wxNullBitmap);
 }

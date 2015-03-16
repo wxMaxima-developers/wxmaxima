@@ -2383,9 +2383,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_htmlimg");
 
-  if (!wxDirExists(imgDir))
+  if (!wxDirExists(imgDir)) {
     if (!wxMkdir(imgDir))
       return false;
+  }
 
   wxTextFile output(file);
   if (output.Exists()) {
@@ -2660,7 +2661,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, wxEmptyString);
       }
       else {
-        if(tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
+        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
           AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
