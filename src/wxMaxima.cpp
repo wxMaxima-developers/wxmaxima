@@ -1854,10 +1854,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
-  wxToolBar * toolbar = GetToolBar();
-  toolbar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
-  toolbar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
-  toolbar->EnableTool(ToolBar::tb_save, !m_fileSaved);
+  m_console->m_mainToolBar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
+  m_console->m_mainToolBar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
+  m_console->m_mainToolBar->EnableTool(ToolBar::tb_save, !m_fileSaved);
   /*
     The interrupt button is now automatically enabled when maxima
     is actually working and disabled when it isn't.
@@ -1865,22 +1864,24 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     The old code was:
 
     if (m_pid > 0)
-    toolbar->EnableTool(ToolBar::tb_interrupt, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
     else
-    toolbar->EnableTool(ToolBar::tb_interrupt, false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
   */
   if (m_console->GetTree() != NULL)
-    toolbar->EnableTool(ToolBar::tb_print, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, true);
   else
-    toolbar->EnableTool(ToolBar::tb_print, false);
-  if (m_console->CanAnimate() && !m_console->AnimationRunning())
-    toolbar->EnableTool(ToolBar::tb_animation_start, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
+
+  if (m_console->CanAnimate())
+  {
+    if(m_console->AnimationRunning())
+      m_console->m_mainToolBar->AnimationButtonState(ToolBar::Running);
+    else
+      m_console->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
+  }
   else
-    toolbar->EnableTool(ToolBar::tb_animation_start, false);
-  if (m_console->CanAnimate() && m_console->AnimationRunning())
-    toolbar->EnableTool(ToolBar::tb_animation_stop, true);
-  else
-    toolbar->EnableTool(ToolBar::tb_animation_stop, false);
+      m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
 }
 
 #endif
@@ -2231,19 +2232,17 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case MathCtrl::popid_animation_start:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case ToolBar::tb_animation_start:
+  case ToolBar::tb_animation_startStop:
 #endif
-    if (m_console->CanAnimate() && !m_console->AnimationRunning())
-      m_console->Animate(true);
+    if (m_console->CanAnimate())
+    {
+      if(m_console->AnimationRunning())
+        m_console->Animate(false);
+      else
+        m_console->Animate(true);      
+    }
     break;
-
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  case ToolBar::tb_animation_stop:
-    if (m_console->CanAnimate() && m_console->AnimationRunning())
-      m_console->Animate(false);
-    break;
-#endif
-
+    
   default:
     break;
   }
@@ -4721,10 +4720,9 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
     
     m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
     m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
-    m_console->m_mainToolBar->m_plotSlider->Enable(true);
   }
   else
-    m_console->m_mainToolBar->m_plotSlider->Enable(false);
+    m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
 }
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
@@ -5082,8 +5080,7 @@ EVT_TOOL(ToolBar::tb_cut, wxMaxima::EditMenu)
 EVT_TOOL(ToolBar::tb_pref, wxMaxima::EditMenu)
 EVT_TOOL(ToolBar::tb_interrupt, wxMaxima::Interrupt)
 EVT_TOOL(ToolBar::tb_help, wxMaxima::HelpMenu)
-EVT_TOOL(ToolBar::tb_animation_start, wxMaxima::FileMenu)
-EVT_TOOL(ToolBar::tb_animation_stop, wxMaxima::FileMenu)
+EVT_TOOL(ToolBar::tb_animation_startStop, wxMaxima::FileMenu)
 EVT_TOOL(ToolBar::tb_find, wxMaxima::EditMenu)
 #endif
 EVT_TOOL(ToolBar::tb_follow,wxMaxima::OnFollow)
@@ -5118,8 +5115,7 @@ EVT_UPDATE_UI(ToolBar::tb_copy, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_cut, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_interrupt, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_save, wxMaxima::UpdateToolBar)
-EVT_UPDATE_UI(ToolBar::tb_animation_start, wxMaxima::UpdateToolBar)
-EVT_UPDATE_UI(ToolBar::tb_animation_stop, wxMaxima::UpdateToolBar)
+EVT_UPDATE_UI(ToolBar::tb_animation_startStop, wxMaxima::UpdateToolBar)
 #endif
 EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)

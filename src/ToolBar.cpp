@@ -50,6 +50,7 @@ ToolBar::~ToolBar()
 ToolBar::ToolBar(wxToolBar* toolbar)
 {
   m_toolBar = toolbar;
+  m_AnimationStartStopState=Inactive;
   
   toolbar->SetToolBitmapSize(wxSize(24, 24));
 
@@ -112,12 +113,15 @@ ToolBar::ToolBar(wxToolBar* toolbar)
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
-  m_toolBar->AddTool(tb_animation_start, _("Start animation"),
-                     GetImage(wxT("media-playback-start")),
-                     _("Start animation"));
-  m_toolBar->AddTool(tb_animation_stop, _("Stop animation"),
-                     GetImage(wxT("media-playback-stop")),
-                     _("Stop animation"));
+  m_PlayButton = GetImage(wxT("media-playback-start"));
+  m_StopButton = GetImage(wxT("media-playback-stop"));
+
+  m_toolBar->AddTool(tb_animation_startStop, _("Start or Stop animation"),
+                     m_PlayButton,
+                     _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
+  m_toolBar->EnableTool(tb_animation_startStop,false);
+
+    
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
@@ -129,4 +133,30 @@ ToolBar::ToolBar(wxToolBar* toolbar)
                      GetImage(wxT("gtk-help")),
                      _("Show Maxima help"));
   m_toolBar->Realize();
+}
+
+void ToolBar::AnimationButtonState(AnimationStartStopState state)
+{
+  switch(state)
+  {
+  case Running:
+    m_toolBar->EnableTool(tb_animation_startStop,true);
+    m_plotSlider->Enable(true);
+    if(m_AnimationStartStopState!=Running)
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
+    break;
+  case Stopped:
+    m_toolBar->EnableTool(tb_animation_startStop,true);
+    m_plotSlider->Enable(true);
+    if(m_AnimationStartStopState==Running)
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+    break;
+  case Inactive:
+    m_toolBar->EnableTool(tb_animation_startStop,false);
+    m_plotSlider->Enable(false);
+    if(m_AnimationStartStopState==Running)
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+    break;
+  }
+  m_AnimationStartStopState = state;
 }

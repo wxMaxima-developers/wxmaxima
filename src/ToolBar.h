@@ -30,6 +30,14 @@
 class ToolBar
 {
  public:
+  /*! All states the "start/stop animation" toolbar button can be in
+   */
+  enum AnimationStartStopState {
+    Running, //!< The animation is running
+    Stopped, //!< The animation is stopped
+    Inactive //!< No animation is currently running
+  };
+
 #if defined __WXGTK__
   wxBitmap GetImage(wxString img);
 #else
@@ -51,6 +59,9 @@ class ToolBar
   wxToolBar *GetToolBar() {
     return m_toolBar;
   }
+
+  void AnimationButtonState(AnimationStartStopState state);
+      
   /*! A list of all events the Toolbar can receive
    */
   enum Event {
@@ -67,25 +78,30 @@ class ToolBar
     tb_interrupt,
     tb_follow,
     tb_help,
-    tb_animation_start,
-    tb_animation_stop,
+    tb_animation_startStop,
     tb_find,
     menu_restart_id
   };
 
   //! The slider for animations
   wxSlider* m_plotSlider;
+
 #if defined __WXGTK__
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
+  wxBitmap  m_PlayButton;
+  wxBitmap  m_StopButton;
 #else
   wxImage m_followIcon;
   wxImage  m_needsInformationIcon;
+  wxImage  m_PlayButton;
+  wxImage  m_StopButton;
 #endif
   
 
 private:
   wxToolBar *m_toolBar;
+  AnimationStartStopState m_AnimationStartStopState;
 };
 
 #endif
