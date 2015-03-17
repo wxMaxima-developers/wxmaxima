@@ -31,6 +31,7 @@
 
 EditorCell::EditorCell() : MathCell()
 {
+  m_displayCaret = false;
   m_text = wxEmptyString;
   m_fontSize = -1;
   m_positionOfCaret = 0;
