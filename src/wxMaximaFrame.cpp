@@ -55,8 +55,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   int widths[] = { -1, 300 };
   SetStatusWidths(2, widths);
 
-  StatusMaximaBusy(waiting);
   m_StatusSaving = false;
+  StatusMaximaBusy(waiting);
   
 #if defined __WXMSW__
   wxAcceleratorEntry entries[1];
