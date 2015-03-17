@@ -525,13 +525,13 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     if (event.ControlDown()) {
       int lastpos = m_positionOfCaret;
 
-      while((wxIsalnum(m_text[m_positionOfCaret]))&&(m_positionOfCaret<m_text.Length()-1))
+      while((wxIsalnum(m_text[m_positionOfCaret]))&&(m_positionOfCaret<m_text.Length()))
           m_positionOfCaret++;
 
-      while((wxIsspace(m_text[m_positionOfCaret]))&&(m_positionOfCaret<m_text.Length()-1))
+      while((wxIsspace(m_text[m_positionOfCaret]))&&(m_positionOfCaret<m_text.Length()))
         m_positionOfCaret++;
       
-      if((lastpos == m_positionOfCaret)&&(m_positionOfCaret<m_text.Length()-1))
+      if((lastpos == m_positionOfCaret)&&(m_positionOfCaret<m_text.Length()))
         m_positionOfCaret++;
     }
     else if (event.AltDown())
