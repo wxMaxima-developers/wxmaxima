@@ -767,20 +767,23 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
         {
           m_positionOfCaret--;
-          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+            m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }            
         // Delete Spaces, Tabs and Newlines until the next printable character
         while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
         {
           m_positionOfCaret--;
-          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+            m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
         
         // If we didn't delete anything till now delete one single character.
         if(lastpos == m_positionOfCaret)
         {
           m_positionOfCaret--;
-          m_text = m_text.SubString(0, m_positionOfCaret - 1);
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+            m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
       }
     }
