@@ -29,11 +29,6 @@
 (defvar $wxfilename "")
 (defvar $wxdirname "")
 
-#+(or windows win32)
-(defvar $wxchangedir nil)
-#-(or windows win32)
-(defvar $wxchangedir t)
-
 (defun wx-cd (dir)
   (when $wxchangedir
     (let ((dir (cond ((pathnamep dir) dir)

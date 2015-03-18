@@ -944,6 +944,11 @@ void wxMaxima::ReadPrompt()
 
 void wxMaxima::SetCWD(wxString file)
 {
+  
+#if defined __WXMSW__
+  file.Replace(wxT("\\"), wxT("/"));
+#endif
+  
   wxFileName filename(file);
 
   if (filename.GetPath() == wxEmptyString)
@@ -1035,9 +1040,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   m_console->SetFocus();
   StatusMaximaBusy(waiting);
 
-#if defined __WXMSW__
-  file.Replace(wxT("\\"), wxT("/"));
-#endif
   SetCWD(file);
 
   wxEndBusyCursor();
@@ -1134,10 +1136,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
   StatusMaximaBusy(waiting);
-
-#if defined __WXMSW__
-  file.Replace(wxT("\\"), wxT("/"));
-#endif
 
   SetCWD(file);
   
@@ -1396,8 +1394,27 @@ void wxMaxima::SetupVariables()
              wxT("\")"));
   SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)"));
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)"));
-
+  
   wxConfigBase *config = wxConfig::Get();
+  
+  bool wxcd;
+
+  #if defined (__WXMSW__)
+  wxcd = false;
+  config->Read(wxT("wxcd"),&wxcd);
+  #else
+  wxcd = true;
+  #endif
+  
+  if(wxcd)
+  {
+    SendMaxima(wxT(":lisp-quiet (defmvar $wxchangedir t)"));
+  }
+  else
+  {
+    SendMaxima(wxT(":lisp-quiet (defmvar $wxchangedir nil)"));
+  }
+
 #if defined (__WXMAC__)
   bool usepngCairo=true;
 #else
@@ -1436,9 +1453,6 @@ void wxMaxima::SetupVariables()
   if (m_currentFile != wxEmptyString)
   {
     wxString filename(m_currentFile);
-#if defined __WXMSW__
-    filename.Replace(wxT("\\"), wxT("/"));
-#endif
     
     SetCWD(filename);
   }
@@ -2263,7 +2277,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #endif
   {
     wxConfigBase *config = wxConfig::Get();
-      
+    
 #if defined (__WXMAC__)
     bool pngcairo_old=true;
 #else
@@ -2281,7 +2295,26 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
 
     configW->Destroy();
-      
+
+#if defined (__WXMSW__)
+    bool wxcd = false;
+    config->Read(wxT("wxcd"),&wxcd);
+    if(wxcd)
+    {
+      SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
+      if (m_currentFile != wxEmptyString)
+      {
+        wxString filename(m_currentFile);
+        SetCWD(filename);
+      }
+    }
+    else
+    {
+      SetCWD(wxStandardPaths::Get().GetExecutablePath());
+      SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)"));
+    }
+#endif
+    
 #if defined (__WXMAC__)
     bool usepngCairo=true;
 #else

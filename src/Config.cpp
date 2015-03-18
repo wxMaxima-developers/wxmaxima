@@ -151,6 +151,12 @@ void Config::SetProperties()
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
 
+  #ifdef __WXMSW__
+  m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in:"
+                       "This is necessary if the document uses File I/O relative to the current directory"
+                       "but will make maxima 5.35 fail to find its own installation path when the current"
+                       "document resides on a different drive than the maxima installation."));
+  #endif
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString mp, mc, ib, mf;
 
@@ -423,28 +429,28 @@ wxPanel* Config::CreateMaximaPanel()
 {
   wxPanel* panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* sizer = new wxFlexGridSizer(7, 2, 0, 0);
-
-  int defaultPort = 4010;
-  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
+  wxFlexGridSizer* sizer = new wxFlexGridSizer(8, 2, 0, 0);  
 
   wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
-  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters:"));
-  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
-  m_defaultPort->SetValue(defaultPort);
-
   sizer->Add(mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
   sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters:"));
+  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   sizer->Add(10, 10);
   sizer->Add(10, 10);
   sizer->Add(ap, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
   sizer->Add(m_additionalParameters, 0, wxALL, 5);
+
+  int defaultPort = 4010;
+  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
+  m_defaultPort->SetValue(defaultPort);
   wxStaticText* dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(10, 10);
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -452,6 +458,15 @@ wxPanel* Config::CreateMaximaPanel()
   sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
 
+  #ifdef __WXMSW__
+  bool wxcd = false;  
+  wxConfig::Get()->Read(wxT("wxcd"), &wxcd);
+  m_wxcd = new wxCheckBox(panel, -1, _("maxima's pwd is path to document"));
+  m_wxcd-> SetValue(wxcd);
+  sizer->Add(m_wxcd, 0, wxALL, 5);
+  sizer->Add(10, 10);
+  #endif
+  
   panel->SetSizer(sizer);
   sizer->Fit(panel);
 
@@ -583,6 +598,9 @@ void Config::WriteSettings()
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
+  #ifdef __WXMSW__
+  config->Write(wxT("wxcd"), m_wxcd->GetValue());
+  #endif
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
