@@ -3055,18 +3055,6 @@ wxString ConvertToUnicode(wxString str)
 #ifndef wxUSE_UNICODE
   str=str.wc_str(*wxConvCurrent), wxConvUTF8;
 #endif
-
-  return str;
-
-  // Delete all but one control character from the string: there should be
-  // no way for them to enter this string, anyway. But sometimes they still
-  // do...
-  for(unsigned int c=0;c<=0x1F;c++)
-    str.Replace(wxChar((char) c),"|");
-
-  // The Backspace character is the only control character not to be found
-  // in the above range.
-  str.Replace(wxChar((char) 0x7f),"|");
   return str;
 }
 
@@ -3144,7 +3132,28 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Reset image counter
   ImgCell::WXMXResetCounter();
 
-  if(m_tree!=NULL)output << ConvertToUnicode(m_tree->ListToXML());
+  wxString xmlText = ConvertToUnicode(m_tree->ListToXML());
+  size_t xmlLen = xmlText.Length();
+  bool illegalCharFound=false;
+  
+  // Delete all but one control character from the string: there should be
+  // no way for them to enter this string, anyway. But sometimes they still
+  // do...
+  for(size_t index=0;index<xmlLen;index++)
+  {
+    wxChar c=xmlText[index];
+
+    if(( c <  wxT('\t')) ||
+       ((c >  wxT('\n'))&&(c < wxT(' '))) ||
+       ( c == wxChar((char)0x7F))
+      )
+    {
+      xmlText[index]==wxT('|'); 
+      illegalCharFound=true;
+    }   
+  }
+  
+  if(m_tree!=NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
@@ -3182,6 +3191,11 @@ bool MathCtrl::ExportToWXMX(wxString file)
   if(!wxRenameFile(backupfile,file,true))
     return false;
 
+  if(illegalCharFound)
+    wxMessageBox(_("File saved. But had to replace illegal characters in the file by | chars."),
+                 _("Warning"),
+                 wxOK | wxICON_WARNING);
+  
   m_saved = true;
   return true;
 }
