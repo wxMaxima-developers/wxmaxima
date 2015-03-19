@@ -209,7 +209,9 @@ public:
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetDefaultHCaret();
   void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
+  //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();
   /*! Is it possible to issue an undo in the currently selected cell? 
@@ -384,9 +386,20 @@ public:
   void OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGC);
   void OnMouseMotion(wxMouseEvent& event);
   void OnDoubleClick(wxMouseEvent& event);
+  /*! A special key has been pressed 
+
+    Printable characters are handled by OnChar instead.
+   */
   void OnKeyDown(wxKeyEvent& event);
+  //! Key pressed inside a cell
   void OnCharInActive(wxKeyEvent& event);
+  //! Key pressed and no cell was active
   void OnCharNoActive(wxKeyEvent& event);
+  /*! Key for a printable character pressed.
+
+    Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for 
+    non-printable characters like "up" or "right".
+   */
   void OnChar(wxKeyEvent& event);
 
   //! Is called when a hCursor is active and we have a WXK_UP/WXK_DOWN event

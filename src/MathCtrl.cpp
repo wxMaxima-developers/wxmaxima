@@ -3052,12 +3052,20 @@ bool MathCtrl::ExportToMAC(wxString file)
 
 wxString ConvertToUnicode(wxString str)
 {
-#if wxUSE_UNICODE
-  return str;
-#else
-  wxString str1(str.wc_str(*wxConvCurrent), wxConvUTF8);
-  return str1;
+#ifndef wxUSE_UNICODE
+  str=str.wc_str(*wxConvCurrent), wxConvUTF8;
 #endif
+
+  // Delete all but one control character from the string: there should be
+  // no way for them to enter this string, anyway. But sometimes they still
+  // do...
+  for(unsigned int c=0;c<=0x1F;c++)
+    str.Replace(wxChar((char) c),"|");
+
+  // The Backspace character is the only control character not to be found
+  // in the above range.
+  str.Replace(wxChar((char) 0x7f),"|");
+  return str;
 }
 
 /*
