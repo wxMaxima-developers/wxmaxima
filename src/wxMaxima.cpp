@@ -1406,13 +1406,11 @@ void wxMaxima::SetupVariables()
   wxcd = true;
   #endif
   
-  if(wxcd)
-  {
-    SendMaxima(wxT(":lisp-quiet (defmvar $wxchangedir t)"));
+  if(wxcd) {
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir t)"));
   }
-  else
-  {
-    SendMaxima(wxT(":lisp-quiet (defmvar $wxchangedir nil)"));
+  else {
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)"));
   }
 
 #if defined (__WXMAC__)
@@ -1422,15 +1420,15 @@ void wxMaxima::SetupVariables()
 #endif
   config->Read(wxT("usepngCairo"),&usepngCairo);
   if(usepngCairo)
-    SendMaxima(wxT(":lisp-quiet (defmvar $wxplot_pngcairo t)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)"));
   else
-    SendMaxima(wxT(":lisp-quiet (defmvar $wxplot_pngcairo nil)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)"));
   
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (defmvar $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (defparameter $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));
   
 #if defined (__WXMSW__)
   wxString cwd = wxGetCwd();
