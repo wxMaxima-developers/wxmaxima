@@ -3056,6 +3056,8 @@ wxString ConvertToUnicode(wxString str)
   str=str.wc_str(*wxConvCurrent), wxConvUTF8;
 #endif
 
+  return str;
+
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
   // do...
