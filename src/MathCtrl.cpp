@@ -2070,18 +2070,23 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   break;
   case ANIMATION_TIMER_ID:
   {
-    if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-        m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
-      
+    if (
+      (m_selectionStart != NULL) &&
+      (m_selectionStart == m_selectionEnd) &&
+      (m_selectionStart->GetType() == MC_TYPE_SLIDE) &&
+      m_animate
+      )
+    {  
       SlideShow *tmp = (SlideShow *)m_selectionStart;
       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
       
       wxRect rect = m_selectionStart->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
+      
       m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
-
-      m_animationTimer.Start(1000/tmp->GetFrameRate());
+            
+      m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
     }
     else
       m_animate = false;
@@ -3822,11 +3827,13 @@ void MathCtrl::Animate(bool run)
       Refresh();
 
       m_animate = true;
-      m_animationTimer.Start(1000/tmp->GetFrameRate(), true);
+      m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
     }
     else
       m_animate = false;
   }
+  else
+    m_animate = false;    
 }
 
 void MathCtrl::SetWorkingGroup(GroupCell *group)

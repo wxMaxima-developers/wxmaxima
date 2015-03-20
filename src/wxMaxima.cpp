@@ -4745,17 +4745,19 @@ void wxMaxima::ResetTitle(bool saved)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-  if (m_console->m_mainToolBar->m_plotSlider == NULL)
-    return;
-  if (m_console->IsSelected(MC_TYPE_SLIDE))
-  {    
-    SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
-    
-    m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
-    m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
+  if(m_console->m_mainToolBar)
+  {
+    if (m_console->m_mainToolBar->m_plotSlider)
+    {
+      if (m_console->IsSelected(MC_TYPE_SLIDE))
+      {    
+        SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+        
+        m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
+        m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
+      }
+    }
   }
-  else
-    m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
 }
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
@@ -4767,7 +4769,10 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   if (cell != NULL)
   {
     cell->SetDisplayedIndex(ev.GetPosition());
-    m_console->Refresh();
+
+    wxRect rect = cell->GetRect();
+    m_console->CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+    m_console->RefreshRect(rect);
   }
 }
 
