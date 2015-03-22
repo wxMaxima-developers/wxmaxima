@@ -2070,18 +2070,23 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   break;
   case ANIMATION_TIMER_ID:
   {
-    if (m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-        m_selectionStart->GetType() == MC_TYPE_SLIDE && m_animate) {
-      
+    if (
+      (m_selectionStart != NULL) &&
+      (m_selectionStart == m_selectionEnd) &&
+      (m_selectionStart->GetType() == MC_TYPE_SLIDE) &&
+      m_animate
+      )
+    {  
       SlideShow *tmp = (SlideShow *)m_selectionStart;
       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
       
       wxRect rect = m_selectionStart->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
+      
       m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
-
-      m_animationTimer.Start(1000/tmp->GetFrameRate());
+            
+      m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
     }
     else
       m_animate = false;
@@ -3052,12 +3057,10 @@ bool MathCtrl::ExportToMAC(wxString file)
 
 wxString ConvertToUnicode(wxString str)
 {
-#if wxUSE_UNICODE
-  return str;
-#else
-  wxString str1(str.wc_str(*wxConvCurrent), wxConvUTF8);
-  return str1;
+#ifndef wxUSE_UNICODE
+  str=str.wc_str(*wxConvCurrent), wxConvUTF8;
 #endif
+  return str;
 }
 
 /*
@@ -3134,7 +3137,28 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Reset image counter
   ImgCell::WXMXResetCounter();
 
-  if(m_tree!=NULL)output << ConvertToUnicode(m_tree->ListToXML());
+  wxString xmlText = ConvertToUnicode(m_tree->ListToXML());
+  size_t xmlLen = xmlText.Length();
+  bool illegalCharFound=false;
+  
+  // Delete all but one control character from the string: there should be
+  // no way for them to enter this string, anyway. But sometimes they still
+  // do...
+  for(size_t index=0;index<xmlLen;index++)
+  {
+    wxChar c=xmlText[index];
+
+    if(( c <  wxT('\t')) ||
+       ((c >  wxT('\n'))&&(c < wxT(' '))) ||
+       ( c == wxChar((char)0x7F))
+      )
+    {
+      xmlText[index]==wxT('|'); 
+      illegalCharFound=true;
+    }   
+  }
+  
+  if(m_tree!=NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
 
   // save images from memory to zip file
@@ -3172,6 +3196,11 @@ bool MathCtrl::ExportToWXMX(wxString file)
   if(!wxRenameFile(backupfile,file,true))
     return false;
 
+  if(illegalCharFound)
+    wxMessageBox(_("File saved. But had to replace illegal characters in the file by | chars."),
+                 _("Warning"),
+                 wxOK | wxICON_WARNING);
+  
   m_saved = true;
   return true;
 }
@@ -3798,11 +3827,13 @@ void MathCtrl::Animate(bool run)
       Refresh();
 
       m_animate = true;
-      m_animationTimer.Start(1000/tmp->GetFrameRate(), true);
+      m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
     }
     else
       m_animate = false;
   }
+  else
+    m_animate = false;    
 }
 
 void MathCtrl::SetWorkingGroup(GroupCell *group)
