@@ -3824,7 +3824,10 @@ void MathCtrl::Animate(bool run)
     if (run) {
       SlideShow *tmp = (SlideShow *)m_selectionStart;
       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-      Refresh();
+
+      wxRect rect = m_selectionStart->GetRect();
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RefreshRect(rect);
 
       m_animate = true;
       m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
