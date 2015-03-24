@@ -4754,7 +4754,6 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
         SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
         
         m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
-        m_console->m_mainToolBar->m_plotSlider->SetTickFreq(cell->Length()/10);
         m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
       }
     }
