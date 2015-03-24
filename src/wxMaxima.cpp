@@ -4762,6 +4762,7 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
+  std::cerr<<"SliderEvent!\n";
   if (m_console->AnimationRunning())
     m_console->Animate(false);
 

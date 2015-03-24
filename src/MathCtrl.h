@@ -202,7 +202,17 @@ public:
   void OnSetFocus(wxFocusEvent& event);
   void OnKillFocus(wxFocusEvent& event);
   bool IsSelected(int type);
+  /*! Set the slide of the currently selected slideshow or advance it by one step
+
+    \param pos
+      - >=0: The slide the animation has to be set to
+      - <0:  Advance the animation by one step.
+   */
+  void StepAnimation(int pos = -1);
+  //! Query if an animation is currently running
   bool AnimationRunning() { return m_animate; }
+  //! Tell if an animation should run running
+  void AnimationRunning(bool state) { m_animate = state; }
   bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
   void SetWorkingGroup(GroupCell *group);
   bool IsSelectionInWorking();
@@ -471,6 +481,7 @@ public:
    */
   bool m_editingEnabled;
   wxTimer m_timer, m_caretTimer, m_animationTimer;
+  //! True only when an animation is running
   bool m_animate;
   wxBitmap *m_memory;
   //! True if no changes have to be saved.

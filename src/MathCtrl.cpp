@@ -82,7 +82,7 @@ wxScrolledCanvas(
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
-  m_animate = false;
+  AnimationRunning(false);
   m_workingGroup = NULL;
   m_saved = false;
   m_zoomFactor = 1.0; // set zoom to 100%
@@ -466,7 +466,7 @@ void MathCtrl::ClearDocument() {
 
   EnableEdit(true);
   m_switchDisplayCaret = true;
-  m_animate = false;
+  AnimationRunning(false);
   m_saved = false;
 
   Recalculate();
@@ -890,7 +890,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
  * - if it falls within a groupcell investigate where did it fall (input or output)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
-  m_animate = false;
+  AnimationRunning(false);
   m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
@@ -950,7 +950,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
-  m_animate = false;
+  AnimationRunning(false);
   m_leftDown = false;
   m_mouseDrag = false;
   m_clickInGC = NULL; // pointer to NULL to prevent crashes if the cell is deleted
@@ -1755,7 +1755,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
   {
-    Animate(!m_animate);
+    Animate(!AnimationRunning());
     return;
   }
     
@@ -2043,6 +2043,28 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
   m_mouseOutside = false;
 }
 
+void MathCtrl::StepAnimation(int pos)
+{
+  SlideShow *tmp = (SlideShow *)m_selectionStart;
+
+  // Change the bitmap
+  if(pos<0)pos = tmp->GetDisplayedIndex() + 1;
+  if(pos>=tmp->Length())pos = 0;
+  tmp->SetDisplayedIndex(pos);
+
+  // Refresh the displayed bitmap
+  wxRect rect = m_selectionStart->GetRect();
+  CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+  RefreshRect(rect);
+
+  // Set the slider to its new value
+  m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+
+  // Rearm the animation timer if necessary.
+  if(AnimationRunning())
+    m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
+}
+
 void MathCtrl::OnTimer(wxTimerEvent& event) {
   switch (event.GetId()) {
   case TIMER_ID:
@@ -2070,26 +2092,12 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   break;
   case ANIMATION_TIMER_ID:
   {
-    if (
-      (m_selectionStart != NULL) &&
-      (m_selectionStart == m_selectionEnd) &&
-      (m_selectionStart->GetType() == MC_TYPE_SLIDE) &&
-      m_animate
-      )
-    {  
-      SlideShow *tmp = (SlideShow *)m_selectionStart;
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-      
-      wxRect rect = m_selectionStart->GetRect();
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RefreshRect(rect);
-      
-      m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
-            
-      m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
+    if (CanAnimate())
+    {
+      StepAnimation();            
     }
     else
-      m_animate = false;
+      AnimationRunning(false);
   }
   break;
   case CARET_TIMER_ID:
@@ -3823,20 +3831,24 @@ void MathCtrl::Animate(bool run)
   if (CanAnimate()) {
     if (run) {
       SlideShow *tmp = (SlideShow *)m_selectionStart;
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-
-      wxRect rect = m_selectionStart->GetRect();
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RefreshRect(rect);
-
-      m_animate = true;
+      AnimationRunning(true);
       m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
+      StepAnimation();
+      std::cerr<<"Animate1\n";
     }
     else
-      m_animate = false;
+    {
+      AnimationRunning(false);
+      m_animationTimer.Stop();
+      std::cerr<<"Animate2\n";
+    }
   }
   else
-    m_animate = false;    
+  {
+    AnimationRunning(false);
+    m_animationTimer.Stop();
+    std::cerr<<"Animate3\n";
+  }
 }
 
 void MathCtrl::SetWorkingGroup(GroupCell *group)
@@ -4026,23 +4038,13 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
 
-  if (m_selectionStart == NULL || m_selectionStart != m_selectionEnd ||
-      m_selectionStart->GetType() != MC_TYPE_SLIDE || m_animate)
+  if ((!CanAnimate()) || AnimationRunning())
     ev.Skip();
   else
   {
-    int rot = ev.GetWheelRotation();
-
+    int rot = ev.GetWheelRotation();  
     SlideShow *tmp = (SlideShow *)m_selectionStart;
-
-    if (rot > 0)
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-    else
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
-
-    wxRect rect = m_selectionStart->GetRect();
-    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-    RefreshRect(rect);
+    StepAnimation(tmp->GetDisplayedIndex() + 1);
   }
 }
 
