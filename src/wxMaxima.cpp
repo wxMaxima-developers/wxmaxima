@@ -4762,9 +4762,17 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
+  // I suspect that on WXMSW changing the slider using the animation
+  // generates a "slider changed" event. This event shouldn't stop
+  // the animation.
+  //
+  // On other systems a manual movement of the slider indicates a
+  // user wants to change the animation state, though.
+  #ifndef __WXMSW__
   std::cerr<<"SliderEvent!\n";
   if (m_console->AnimationRunning())
     m_console->Animate(false);
+  #endif
 
   SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
   if (cell != NULL)
