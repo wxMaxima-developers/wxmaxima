@@ -1887,6 +1887,19 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
 
+  // On MSW it seems cannot change an icon without side-effects that somehow
+  // stop the animation => on this OS we have separate icons for the
+  // animation start and stop.
+  #ifdef __WXMSW__
+if (m_console->CanAnimate() && !m_console->AnimationRunning())
+    toolbar->EnableTool(ToolBar::tb_animation_start, true);
+  else
+    toolbar->EnableTool(ToolBar::tb_animation_start, false);
+  if (m_console->CanAnimate() && m_console->AnimationRunning())
+    toolbar->EnableTool(ToolBar::tb_animation_stop, true);
+  else
+    toolbar->EnableTool(ToolBar::tb_animation_stop, false);
+   #else
   if (m_console->CanAnimate())
   {
     if(m_console->AnimationRunning())
@@ -1896,6 +1909,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   }
   else
       m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
+  #endif
 }
 
 #endif
@@ -2244,7 +2258,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     Close();
     break;
 
-  case MathCtrl::popid_animation_start:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_animation_startStop:
 #endif
@@ -2256,7 +2269,14 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_console->Animate(true);      
     }
     break;
-    
+  case MathCtrl::popid_animation_start:
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case ToolBar::tb_animation_start:
+#endif
+    if (m_console->CanAnimate() && !m_console->AnimationRunning())
+      m_console->Animate(true);
+    break;
+
   default:
     break;
   }
@@ -5128,6 +5148,8 @@ EVT_TOOL(ToolBar::tb_pref, wxMaxima::EditMenu)
 EVT_TOOL(ToolBar::tb_interrupt, wxMaxima::Interrupt)
 EVT_TOOL(ToolBar::tb_help, wxMaxima::HelpMenu)
 EVT_TOOL(ToolBar::tb_animation_startStop, wxMaxima::FileMenu)
+EVT_TOOL(ToolBar::tb_animation_start, wxMaxima::FileMenu)
+EVT_TOOL(ToolBar::tb_animation_stop, wxMaxima::FileMenu)
 EVT_TOOL(ToolBar::tb_find, wxMaxima::EditMenu)
 #endif
 EVT_TOOL(ToolBar::tb_follow,wxMaxima::OnFollow)
@@ -5163,6 +5185,8 @@ EVT_UPDATE_UI(ToolBar::tb_cut, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_interrupt, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_save, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_animation_startStop, wxMaxima::UpdateToolBar)
+EVT_UPDATE_UI(ToolBar::tb_animation_start, wxMaxima::UpdateToolBar)
+EVT_UPDATE_UI(ToolBar::tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
 EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)

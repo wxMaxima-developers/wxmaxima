@@ -79,6 +79,8 @@ class ToolBar
     tb_follow,
     tb_help,
     tb_animation_startStop,
+    tb_animation_start,
+    tb_animation_stop,
     tb_find,
     menu_restart_id
   };

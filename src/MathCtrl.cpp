@@ -3834,7 +3834,6 @@ void MathCtrl::Animate(bool run)
       AnimationRunning(true);
       m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
       StepAnimation();
-      std::cerr<<"Animate1\n";
  
       // I suspect that on WXMSW changing the slider from the program's side
       // generates a "slider changed" event - which is nearlly indistinguishable
@@ -3848,7 +3847,6 @@ void MathCtrl::Animate(bool run)
     {
       AnimationRunning(false);
       m_animationTimer.Stop();
-      std::cerr<<"Animate2\n";
       #ifdef __WXMSW__
       m_mainToolBar->m_plotSlider->Enable(true);
       #endif
@@ -3858,7 +3856,6 @@ void MathCtrl::Animate(bool run)
   {
     AnimationRunning(false);
     m_animationTimer.Stop();
-    std::cerr<<"Animate3\n";
      #ifdef __WXMSW__
      m_mainToolBar->m_plotSlider->Enable(true);
      #endif
