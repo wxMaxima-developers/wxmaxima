@@ -1887,9 +1887,10 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
 
-  // On MSW it seems cannot change an icon without side-effects that somehow
+  // On MSW it seems we cannot change an icon without side-effects that somehow
   // stop the animation => on this OS we have separate icons for the
-  // animation start and stop.
+  // animation start and stop. On the rest of the OSes we use one combined
+  // start/stop button instead.
   #ifdef __WXMSW__
 if (m_console->CanAnimate() && !m_console->AnimationRunning())
     toolbar->EnableTool(ToolBar::tb_animation_start, true);
