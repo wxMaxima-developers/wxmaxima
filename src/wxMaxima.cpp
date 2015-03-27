@@ -1893,13 +1893,13 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   // start/stop button instead.
   #ifdef __WXMSW__
 if (m_console->CanAnimate() && !m_console->AnimationRunning())
-    toolbar->EnableTool(ToolBar::tb_animation_start, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, true);
   else
-    toolbar->EnableTool(ToolBar::tb_animation_start, false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, false);
   if (m_console->CanAnimate() && m_console->AnimationRunning())
-    toolbar->EnableTool(ToolBar::tb_animation_stop, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, true);
   else
-    toolbar->EnableTool(ToolBar::tb_animation_stop, false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, false);
    #else
   if (m_console->CanAnimate())
   {
