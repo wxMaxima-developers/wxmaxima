@@ -34,11 +34,11 @@ wxImage ToolBar::GetImage(wxString img)
 #else
 wxBitmap ToolBar::GetImage(wxString img)
 {
-  #if defined (__WXMSW__) || defined (__WXMAC__)
+#if defined (__WXMSW__) || defined (__WXMAC__)
   return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
-  #else
+#else
   return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
-  #endif
+#endif
 }
 #endif
 
@@ -119,20 +119,19 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   // It felt like a good idea to combine the play and the stop button.
   // On windows changing a button seems to somehow stop the animation, though, so
   // this OS requires the buttons to be separate.
-  #ifndef __WXMSW__
+#ifndef __WXMSW__
   m_toolBar->AddTool(tb_animation_startStop, _("Start or Stop animation"),
                      m_PlayButton,
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   m_toolBar->EnableTool(tb_animation_startStop,false);
-  #else
+#else
   m_toolBar->AddTool(tb_animation_start, _("Start animation"),
                      m_PlayButton,
                      _("Start animation"));
   m_toolBar->AddTool(tb_animation_stop, _("Stop animation"),
                      m_StopButton,
                      _("Stop animation")); 
-  #endif
-    
+#endif  
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);

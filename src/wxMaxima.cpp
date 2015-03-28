@@ -1891,8 +1891,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   // stop the animation => on this OS we have separate icons for the
   // animation start and stop. On the rest of the OSes we use one combined
   // start/stop button instead.
-  #ifdef __WXMSW__
-if (m_console->CanAnimate() && !m_console->AnimationRunning())
+#ifdef __WXMSW__
+  if (m_console->CanAnimate() && !m_console->AnimationRunning())
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, true);
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, false);
@@ -1900,7 +1900,7 @@ if (m_console->CanAnimate() && !m_console->AnimationRunning())
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, true);
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, false);
-   #else
+#else
   if (m_console->CanAnimate())
   {
     if(m_console->AnimationRunning())
@@ -1909,8 +1909,8 @@ if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
   }
   else
-      m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
-  #endif
+    m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
+#endif
 }
 
 #endif
@@ -2259,9 +2259,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     Close();
     break;
 
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+#if defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_animation_startStop:
-#endif
     if (m_console->CanAnimate())
     {
       if(m_console->AnimationRunning())
@@ -2270,14 +2269,23 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         m_console->Animate(true);      
     }
     break;
+#endif
+    
   case MathCtrl::popid_animation_start:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+#if defined (__WXMSW__)
   case ToolBar::tb_animation_start:
 #endif
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
     break;
 
+#if defined __WXMSW__
+  case ToolBar::tb_animation_stop:
+    if (m_console->CanAnimate() && m_console->AnimationRunning())
+      m_console->Animate(false);
+    break;
+#endif
+    
   default:
     break;
   }
