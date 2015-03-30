@@ -3152,17 +3152,17 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
   // do...
-  for(size_t index=0;index<xmlLen;index++)
+  for(size_t index = 0;index<xmlLen;index++)
   {
     wxChar c=xmlText[index];
 
     if(( c <  wxT('\t')) ||
-       ((c >  wxT('\n'))&&(c < wxT(' '))) ||
+       ((c >  wxT('\n')) &&(c < wxT(' '))) ||
        ( c == wxChar((char)0x7F))
       )
     {
-      xmlText[index]==wxT('|'); 
-      illegalCharFound=true;
+      xmlText[index] = wxT('|'); 
+      illegalCharFound = true;
     }   
   }
   
@@ -3174,7 +3174,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
 
-  for (int i=1; i<=ImgCell::WXMXImageCount(); i++)
+  for (int i = 1; i<=ImgCell::WXMXImageCount(); i++)
   {
     wxString name = wxT("image");
     name << i << wxT(".png");
