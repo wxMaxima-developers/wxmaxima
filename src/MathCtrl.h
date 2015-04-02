@@ -26,6 +26,7 @@
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
+#include <list>
 
 #include "MathCell.h"
 #include "EditorCell.h"
@@ -41,314 +42,174 @@ This canvas contains all the math, title, image etc.- cells of the current sessi
  */
 class MathCtrl: public wxScrolledCanvas
 {
-public:
+   private:
 
-  /*! The ids for all popup menu items.
+  /*! \defgroup UndoBufferFill
 
-    \attention popid_complete_00 has to stay the last event in this enum
-    Since we want to be able to dynamically add events to popups
-    (for example for autocompletion) we need to make sure we know what 
-    the item with the lowest ID is we can assign dynamically.
-  */
-  enum PopIds{
-    /*! The "copy" popup menu item was clicked
+    These methods and classes contain the undo functionality for tree changes:
+     - Cells aren't deleted. They are moved into an undo buffer instead.
+     - The undo buffer is also notified when Cells that are added
+     - If the cursor enters a cell the contents of this cell is saved
+     - And if the cell is left and the contents has changed this information
+       is kept in the undo buffer, as well.
+     
+    The add and delete actions offer to choose which undo buffer to use since
+    there are two of them:
+     - The normal undo buffer and
+     - The buffer that is used instead if a cell change has been issued by the
+       undo command so the undo action can be reverted.\n
+       This approach allows the undo functionality to use the regular add and
+       delete operations keeping the codebase small.
+    @{ 
+  */ 
 
-      This item is the first of the enum and is assigned a high enough number
-      that it won't collide with the numbers to be found in wxFrame::Event
-     */
-    popid_copy = wxID_HIGHEST + 500,
-    popid_cut,
-    popid_paste,
-    popid_select_all,
-    popid_comment_selection,
-    popid_divide_cell,
-    popid_copy_image,
-    popid_delete,
-    popid_simplify,
-    popid_expand,
-    popid_factor,
-    popid_solve,
-    popid_solve_num,
-    popid_integrate,
-    popid_diff,
-    popid_subst,
-    popid_plot2d,
-    popid_plot3d,
-    popid_float,
-    popid_edit,
-    popid_add_comment,
-    popid_insert_input,
-    popid_copy_tex,
-    popid_image,
-    popid_animation_save,
-    popid_animation_start,
-    popid_evaluate,
-    popid_merge_cells,
-    popid_insert_text,
-    popid_insert_title,
-    popid_insert_section,
-    popid_insert_subsection,
-    /*! The first number that is open for dynamic ID assignment
+  //! The description of one action for the undo (or redo) command
+  class TreeUndoAction
+    {
+    public:
+      void Clear()
+        {
+          m_start=NULL;
+          m_oldText=wxEmptyString;
+          m_newCellsEnd=NULL;
+          m_oldCells=NULL;
+        }
+      
+      TreeUndoAction(){ Clear(); }
+      
 
-      If we want to add additional elements to a pop-up this is the 
-      lowest ID that is guaranteed to be free for this purpose.
-      \attention popid_must be the last id in this list
-     */
-    popid_complete_00
-  };
+      /*! The position this action started at.
+        
+        NULL = At the begin of the document.
+      */
+      GroupCell *m_start;
+      
+      /*! The old contents of the cell start
+        
+        if this field != wxEmptyString this field contains the old contents of the text 
+        cell pointed to by the field start.
+      */
+      wxString  m_oldText;
+      
+      /*! This action inserted all cells from start to newCellsEnd. 
+        
+        To undo it these cells have to be deleted again.
+
+        If this field's value is NULL no cells have to be deleted to undo this action.
+      */
+      GroupCell *m_newCellsEnd;
+      
+      /*! Cells that were deleted in this action.
+        
+        This field will have to contain the cells themself, not a copy of them because 
+        the latter might break consecutive undos.
+        
+        If this field's value is NULL no cells have to be added to undo this action.
+      */
+      GroupCell *m_oldCells;
+    };
+
+  //! The list of tree actions that can be undone
+  std::list <TreeUndoAction *> treeUndoActions;
   
-  //! The constructor
-  MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
-  //! The destructor
-  ~MathCtrl();
-  wxTimer m_keyboardInactiveTimer;
-  //! Reads true if the keyboard was inactive for > 10 seconds
-  bool m_keyboardInactive;
+  //! The list of tree actions that can be redone
+  std::list <TreeUndoAction *> treeRedoActions;
 
-  void DestroyTree();
-  void DestroyTree(MathCell* tree);
-  MathCell* CopyTree();
-  GroupCell *InsertGroupCells(GroupCell* tree, GroupCell* where = NULL);
+  //! The current undo action.
+  TreeUndoAction m_currentUndoAction;
+  
+  void TreeUndo_ClearRedoActionList();
 
-  //! Add a new line to working group or m_last
-  void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  void Recalculate(bool force = false);
-  void RecalculateForce();
-  /*! Empties the current document
+  //! Remove one action ftom the action list
+  void TreeUndo_DiscardAction(std::list <TreeUndoAction *> *actionList);
 
-    Used before opening a new file or when the "new" button is pressed.
+  /*! The last cell we have entered. 
+
+    This pointer is needed for keeping track of cell contents changes.
+   */
+  GroupCell *TreeUndo_ActiveCell;
+
+  /*! Undo an item from a list of undo actions.
+
+    \param actionlist The list to take the undo information from
+    \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
-  void ClearDocument(); 
-  void ResetInputPrompts();
-  bool CanCopy(bool fromActive = false) {
-    return m_selectionStart != NULL ||
-           (fromActive && m_activeCell != NULL && m_activeCell->CanCopy());
-  }
-  bool CanPaste() { return (m_activeCell != NULL) || (m_hCaretActive);
-  }
-  bool CanCut() {
-    return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
-           (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
-  }
-  void SelectAll();
-  //! Is it possible to delete the currently selected cells?
-  bool CanDeleteSelection();
-  bool CanAnimate() {
-    return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-      m_selectionStart->GetType() == MC_TYPE_SLIDE;
-  }
-  void Animate(bool run);
-  //! Delete the currently selected cells
-  void DeleteSelection();
-  void DivideCell();
-  void MergeCells();
-  bool CutToClipboard();
-  void PasteFromClipboard(bool primary = false);
-  /*! Copy the current selection to the clipboard
+  bool TreeUndo(std::list <TreeUndoAction *> *actionlist,std::list <TreeUndoAction *> *undoForThisOperation);
 
-    \param astext
-     - true:  Copy the current selection as text
-     - false: Copy the current selection as they would appear in a .wxm file
-   */
-  bool Copy(bool astext = false);
-  //! Copy the selection to the clipboard as it would appear in a .wxm file
-  bool CopyCells();
-  //! Copy the TeX representation of the current selection to the clipboard
-  bool CopyTeX();
-  //! Copy a bitmap of the the current selection to the clipboard
-  bool CopyBitmap();
-  bool CopyToFile(wxString file);
-  bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
-  void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int>& cellMap);
-  //! Export the file to an html document
-  bool ExportToHTML(wxString file);
-  //! Export a region of the file to a .wxm or .mac file maxima's load command can read
-  void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
-  //! Export the file to a text file maxima's load command can read
-  bool ExportToMAC(wxString file);
-  //! export to xml compatible file
-  bool ExportToWXMX(wxString file);	
-  //! export to a LaTeX file
-  bool ExportToTeX(wxString file);
-  /*! Convert the current selection to a string
+  //! Undo a tree operation.
+  bool TreeUndo(){return TreeUndo(&treeUndoActions,&treeRedoActions);}
 
-    \param lb
-     - true:  Include linebreaks
-     - false: Remove linebreaks from the converted string
-   */
-  wxString GetString(bool lb = false);
-  MathCell* GetTree() { return m_tree; }
-  /*! Return the first of the currently selected cells.
+  //! Redo an undone tree operation.
+  bool TreeRedo(){return TreeUndo(&treeRedoActions,&treeUndoActions);}
+  
+  //! Can we undo a tree operation?
+  bool CanTreeUndo();
 
-    NULL means: No cell is selected.
+  //! Can we redo a tree operation?
+  bool CanTreeRedo();
+
+  /*! The cursor has entered one cell => save the value to see if it has changed.
   */
-  MathCell* GetSelectionStart() { return m_selectionStart; }
-  /*! Return the last of the currently selected cells.
+  void TreeUndo_CellEntered();
+  
+  /*! The cursor is about to leave the current cell => Store the change if the value has changed.
+   */
+  void TreeUndo_CellLeft();
 
-    NULL means: No cell is selected.
+  /*! Clear the undo and the redo buffer
+
+   */
+  void TreeUndo_ClearBuffers();
+  
+  /*! Remember that these cells were just added so this addition can be undone.
+
+    \param start      The first cell that has been added
+    \param end        The last cell that has been added
+    \param undoBuffer Where to store the undo information. This normally is
+      - treeUedoActions for the normal undo buffer or
+      - treeRedoActions for the buffer that allows reverting undos
   */
-  MathCell* GetSelectionEnd() { return m_selectionEnd; }
-  //! Select the cell sel
-  void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
-  bool CanEdit();
-  void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
-  bool ActivatePrevInput();
-  bool ActivateNextInput(bool input = false);
-  //! Scrolls to a given cell
-  void ScrollToCell(MathCell *cell);
-  //! Returns the cell the cursor that is drawn as a vertical line is in.
-  EditorCell* GetActiveCell() { return m_activeCell; }
-  void ShowPoint(wxPoint point);
-  void OnSetFocus(wxFocusEvent& event);
-  void OnKillFocus(wxFocusEvent& event);
-  bool IsSelected(int type);
-  /*! Set the slide of the currently selected slideshow or advance it by one step
+  void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::list <TreeUndoAction *> *undoBuffer);
 
-    \param pos
-      - >=0: The slide the animation has to be set to
-      - <0:  Advance the animation by one step.
-   */
-  void StepAnimation(int pos = -1);
-  //! Query if an animation is currently running
-  bool AnimationRunning() { return m_animate; }
-  //! Tell if an animation should run running
-  void AnimationRunning(bool state) { m_animate = state; }
-  bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
-  void SetWorkingGroup(GroupCell *group);
-  bool IsSelectionInWorking();
-  void SetActiveCell(EditorCell *cell, bool callRefresh = true);
-  void SetDefaultHCaret();
-  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
-  //! The cell the horizontal cursor is above. NULL means at the start of the document.
-  GroupCell *GetHCaret();
-  //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
-  void ShowHCaret();
-  /*! Is it possible to issue an undo in the currently selected cell? 
+  
+  /*! Remember that these cells were just added so this addition can be undone.
 
-    \return false if no cell is selected or there is no further undo information
-   */
-  bool CanUndo();
-  /*! Is it possible to issue an undo in the currently selected cell?
+    \param start      The first cell that has been added
+    \param end        The last cell that has been added
+  */
+  void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
 
-    \return false if no cell is selected or no redo can be executed.
-   */
-  bool CanRedo();
-  /*! Issue an undo in the currently selected cell
+  /*! True collectes requests until the end of a whole cell paste action
 
-    \todo Currently the deletion of cells cannot be undone: If no cell is selected 
-          there is no undo.
-   */
-  void Undo();
-  /*! Issue a redo in the currently selected cell
+    A replace or action can consist of a cell delete and many consecutive adds of
+    individual cells that at the end form a region.
+
+    As long as mergeRequest is true these actions are merged to a long undo action.
     
-    This command is ignored if no cell is selected.
+    \parameter mergeRequest 
+     - true=Start collecting data for one big undo action
+     - false=Stop collecting data and write the undo action to the undo buffer.
+   \parameter undoList This normally is
+      - treeUedoActions for the normal undo buffer or
+      - treeRedoActions for the buffer that allows reverting undos
+   */
+  bool TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList);
+  /*! True collectes requests until the end of a whole cell paste action
+
+    A replace or action can consist of a cell delete and many consecutive adds of
+    individual cells that at the end form a region.
+
+    As long as mergeRequest is true these actions are merged to a long undo action.
+    
+    \parameter mergeRequest 
+     - true=Start collecting data for one big undo action
+     - false=Stop collecting data and write the undo action to the undo buffer.
   */
-  void Redo();
+  bool TreeUndo_MergeSubsequentEdits(bool mergeRequest);
+  bool m_TreeUndoMergeSubsequentEdits;
+  //!@}
 
-  /*! Do we want to follow the evaluation process?
-
-    Maxima can automagically scroll to the cell that is currently evaluated.
-    If it does do so can be queried by FollowEvaluation(). Changing the 
-    behavior (for example because the user has scrolled away from the
-    cell being evaluated and now clearly wants the cursor to stay where
-    it is) can be archieved by FollowEvaluation(true) or 
-    FollowEvaluation(false).
-   */
-  void FollowEvaluation(bool FollowEvaluation);
-  //! Query if we want to automatically scroll to the cell that is currently evaluated
-  bool FollowEvaluation() {return m_followEvaluation;}
-
-  /*! Set or get the "Scrolled away from evaluation" status
-
-    Sets FollowEvaluation() to false and enables the toolbar button to follow the
-    evaluation process again.
-   */
-  void ScrolledAwayFromEvaluation(bool ScrolledAway);
-  bool ScrolledAwayFromEvaluation()
-  { return m_scrolledAwayFromEvaluation;}
-
-  void SaveValue();
-  bool IsSaved() { return m_saved; }
-  void SetSaved(bool saved) { m_saved = saved; }
-  void RemoveAllOutput();
-  void RemoveAllOutput(GroupCell* cell);
-  // methods related to evaluation queue
-
-  void AddDocumentToEvaluationQueue();
   
-  //! Schedule all cells in the document for evaluation
-  void AddEntireDocumentToEvaluationQueue();
-  //! Schedule all cells stopping with the one the caret is in for evaluation
-  void AddDocumentTillHereToEvaluationQueue();
-  //! Schedule all selected cells to be evaluated
-  void AddSelectionToEvaluationQueue();
-  //! Schedule this cell for evaluation
-  void AddCellToEvaluationQueue(GroupCell* gc);
-  //! Unschedule all cells marked as to be evaluated
-  void ClearEvaluationQueue();
-  //! The list of cells that have to be evaluated
-  EvaluationQueue* m_evaluationQueue;
-  // methods for folding
-  GroupCell *UpdateMLast();
-  void FoldOccurred();
-  //! Fold or unfold a cell
-  GroupCell *ToggleFold(GroupCell *which);
-  GroupCell *ToggleFoldAll(GroupCell *which);
-  void FoldAll();
-  void UnfoldAll();
-  GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
-  // methods for zooming the document in and out
-  double GetZoomFactor() { return m_zoomFactor; }
-  void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
-    if (recalc) {RecalculateForce(); Refresh();} }
-  void CommentSelection();
-  void OnMouseWheel(wxMouseEvent &ev);
-  //! Called if the user is scrolling through the document.
-  void OnScrollChanged(wxScrollEvent &ev);
-  /*! Find the next ocourrence of a string
-
-    Used by the find dialog.
-   */
-  bool FindNext(wxString str, bool down, bool ignoreCase);
-  /*! Replace the current ocourrence of a string
-
-    Used by the find dialog.
-   */
-  void Replace(wxString oldString, wxString newString);
-  /*! Replace all ocourrences of a string
-
-    Used by the find dialog.
-   */
-  int ReplaceAll(wxString oldString, wxString newString);
-  wxString GetInputAboveCaret();
-  wxString GetOutputAboveCaret();
-  bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }
-  bool Autocomplete(bool templates = false);
-  void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
-  void SetActiveCellText(wxString text);
-  bool InsertText(wxString text);
-  GroupCell *GetWorkingGroup() { return m_workingGroup; }
-  void OpenNextOrCreateCell();
-  //! The table of contents pane
-  Structure*    m_structure;
-  //! Called when the "Scroll to currently evaluated" button is pressed.
-  void OnFollow();
-  //! The toolbar of the main window: We need to access it and therefore have it defined here.
-  ToolBar *m_mainToolBar;
-  //! Set this cell as the currently selected one
-  void SelectGroupCell(GroupCell *cell);
-  //! Mark the current question from maxima as "answered"..
-  void QuestionAnswered();
-  //! true = the last reply from maxima was a question
-  bool m_questionPrompt;
-  //! Does the GroupCell cell points to contain the question currently asked by maxima?  
-  bool GCContainsCurrentQuestion(GroupCell *cell);
-  /*! Move the cursor to the end of the question and if needed add a cell for user input
-   */
-  void OpenQuestionCaret(wxString txt=wxT(""));
-
- private:
   bool m_scrolledAwayFromEvaluation;
 
   //! The cell the current question from maxima is being kept in.
@@ -490,6 +351,358 @@ public:
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
+
+
+public:
+
+  bool CanUndo(){return CanTreeUndo()||CanUndoInsideCell();}
+  bool CanRedo(){return CanTreeRedo()||CanRedoInsideCell();}
+  void Undo();
+  void Redo();
+
+  /*! The ids for all popup menu items.
+
+    \attention popid_complete_00 has to stay the last event in this enum
+    Since we want to be able to dynamically add events to popups
+    (for example for autocompletion) we need to make sure we know what 
+    the item with the lowest ID is we can assign dynamically.
+  */
+  enum PopIds{
+    /*! The "copy" popup menu item was clicked
+
+      This item is the first of the enum and is assigned a high enough number
+      that it won't collide with the numbers to be found in wxFrame::Event
+     */
+    popid_copy = wxID_HIGHEST + 500,
+    popid_cut,
+    popid_paste,
+    popid_select_all,
+    popid_comment_selection,
+    popid_divide_cell,
+    popid_copy_image,
+    popid_delete,
+    popid_simplify,
+    popid_expand,
+    popid_factor,
+    popid_solve,
+    popid_solve_num,
+    popid_integrate,
+    popid_diff,
+    popid_subst,
+    popid_plot2d,
+    popid_plot3d,
+    popid_float,
+    popid_edit,
+    popid_add_comment,
+    popid_insert_input,
+    popid_copy_tex,
+    popid_image,
+    popid_animation_save,
+    popid_animation_start,
+    popid_evaluate,
+    popid_merge_cells,
+    popid_insert_text,
+    popid_insert_title,
+    popid_insert_section,
+    popid_insert_subsection,
+    /*! The first number that is open for dynamic ID assignment
+
+      If we want to add additional elements to a pop-up this is the 
+      lowest ID that is guaranteed to be free for this purpose.
+      \attention popid_must be the last id in this list
+     */
+    popid_complete_00
+  };
+  
+  //! The constructor
+  MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
+  //! The destructor
+  ~MathCtrl();
+  wxTimer m_keyboardInactiveTimer;
+  //! Reads true if the keyboard was inactive for > 10 seconds
+  bool m_keyboardInactive;
+
+  //! Clear the whole worksheet
+  void DestroyTree();
+  //! Delete a  part of the worksheet that previously has been unlinked.
+  void DestroyTree(MathCell* tree);
+  MathCell* CopyTree();
+  GroupCell *InsertGroupCells(GroupCell* cells,
+                              GroupCell* where,
+                              std::list <TreeUndoAction *> *undoBuffer
+    );
+  
+  GroupCell *InsertGroupCells(GroupCell* cells, GroupCell* where = NULL);
+
+  //! Add a new line to working group or m_last
+  void InsertLine(MathCell *newLine, bool forceNewLine = false);
+  void Recalculate(bool force = false);
+  void RecalculateForce();
+  /*! Empties the current document
+
+    Used before opening a new file or when the "new" button is pressed.
+  */
+  void ClearDocument(); 
+  void ResetInputPrompts();
+  bool CanCopy(bool fromActive = false) {
+    return m_selectionStart != NULL ||
+           (fromActive && m_activeCell != NULL && m_activeCell->CanCopy());
+  }
+  bool CanPaste() { return (m_activeCell != NULL) || (m_hCaretActive);
+  }
+  bool CanCut() {
+    return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
+           (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
+  }
+  void SelectAll();
+  /*! Delete a range of cells
+  
+    \param start The first cell to delete
+    \param end The last cell to delete
+    \param undoBuffer The buffer the undo information has to be kept in. Might be
+      - treeUndoActions for normal deletes,
+      - treeRedoActions for deletions while executing an undo or
+      - NULL for: Don't keep any copy of the cells.
+    \addtogroup UndoBufferFill
+  */
+  void DeleteRegion(
+    GroupCell *start,
+    GroupCell *end,
+    std::list <TreeUndoAction *> *undoBuffer
+    );
+
+  /*! Move a range of cells from the document to the undo buffer
+  
+    \param start The first cell to delete
+    \param end The last cell to delete
+    \addtogroup UndoBufferFill
+  */
+  void DeleteRegion(
+    GroupCell *start,
+    GroupCell *end
+    );
+
+  /*! Delete the currently selected cells
+    
+    Actually moves them to the undo buffer so this action can be undone.
+    \addtogroup UndoBufferFill
+  */
+  void DeleteSelection();
+
+  //! Is it possible to delete the cells between start and end?
+  bool CanDeleteRegion(GroupCell *start, GroupCell *end);
+
+  //! Is it possible to delete the currently selected cells?
+  bool CanDeleteSelection();
+
+  //! Does it make sense to enable the "Play" button and the slider now? 
+  bool CanAnimate() {
+    return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
+      m_selectionStart->GetType() == MC_TYPE_SLIDE;
+  }
+  void Animate(bool run);
+  void DivideCell();
+  void MergeCells();
+  //! Add the currently selected cells to the clipboard and delete them.
+  bool CutToClipboard();
+  void PasteFromClipboard(bool primary = false);
+  /*! Copy the current selection to the clipboard
+
+    \param astext
+     - true:  Copy the current selection as text
+     - false: Copy the current selection as they would appear in a .wxm file
+   */
+  bool Copy(bool astext = false);
+  //! Copy the selection to the clipboard as it would appear in a .wxm file
+  bool CopyCells();
+  //! Copy the TeX representation of the current selection to the clipboard
+  bool CopyTeX();
+  //! Copy a bitmap of the the current selection to the clipboard
+  bool CopyBitmap();
+  bool CopyToFile(wxString file);
+  bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
+  void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int>& cellMap);
+  //! Export the file to an html document
+  bool ExportToHTML(wxString file);
+  //! Export a region of the file to a .wxm or .mac file maxima's load command can read
+  void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
+  //! Export the file to a text file maxima's load command can read
+  bool ExportToMAC(wxString file);
+  //! export to xml compatible file
+  bool ExportToWXMX(wxString file);	
+  //! export to a LaTeX file
+  bool ExportToTeX(wxString file);
+  /*! Convert the current selection to a string
+
+    \param lb
+     - true:  Include linebreaks
+     - false: Remove linebreaks from the converted string
+   */
+  wxString GetString(bool lb = false);
+  MathCell* GetTree() { return m_tree; }
+  /*! Return the first of the currently selected cells.
+
+    NULL means: No cell is selected.
+  */
+  MathCell* GetSelectionStart() { return m_selectionStart; }
+  /*! Return the last of the currently selected cells.
+
+    NULL means: No cell is selected.
+  */
+  MathCell* GetSelectionEnd() { return m_selectionEnd; }
+  //! Select the cell sel
+  void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
+  bool CanEdit();
+  void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
+  bool ActivatePrevInput();
+  bool ActivateNextInput(bool input = false);
+  //! Scrolls to a given cell
+  void ScrollToCell(MathCell *cell);
+  //! Returns the cell the cursor that is drawn as a vertical line is in.
+  EditorCell* GetActiveCell() { return m_activeCell; }
+  void ShowPoint(wxPoint point);
+  void OnSetFocus(wxFocusEvent& event);
+  void OnKillFocus(wxFocusEvent& event);
+  bool IsSelected(int type);
+  /*! Set the slide of the currently selected slideshow or advance it by one step
+
+    \param pos
+      - >=0: The slide the animation has to be set to
+      - <0:  Advance the animation by one step.
+   */
+  void StepAnimation(int pos = -1);
+  //! Query if an animation is currently running
+  bool AnimationRunning() { return m_animate; }
+  //! Tell if an animation should run running
+  void AnimationRunning(bool state) { m_animate = state; }
+  bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
+  void SetWorkingGroup(GroupCell *group);
+  bool IsSelectionInWorking();
+  void SetActiveCell(EditorCell *cell, bool callRefresh = true);
+  void SetDefaultHCaret();
+  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  //! The cell the horizontal cursor is above. NULL means at the start of the document.
+  GroupCell *GetHCaret();
+  //! Place the cursor into a new cell where the horizontal cursor is
+  void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
+  void ShowHCaret();
+  /*! Is it possible to issue an undo in the currently selected cell? 
+
+    \return false if no cell is selected or there is no further undo information
+   */
+  bool CanUndoInsideCell();
+
+  void UndoInsideCell();
+
+  /*! Is it possible to issue an undo in the currently selected cell?
+
+    \return false if no cell is selected or no redo can be executed.
+   */
+  bool CanRedoInsideCell();
+
+  void RedoInsideCell();
+
+  /*! Do we want to follow the evaluation process?
+
+    Maxima can automagically scroll to the cell that is currently evaluated.
+    If it does do so can be queried by FollowEvaluation(). Changing the 
+    behavior (for example because the user has scrolled away from the
+    cell being evaluated and now clearly wants the cursor to stay where
+    it is) can be archieved by FollowEvaluation(true) or 
+    FollowEvaluation(false).
+   */
+  void FollowEvaluation(bool FollowEvaluation);
+  //! Query if we want to automatically scroll to the cell that is currently evaluated
+  bool FollowEvaluation() {return m_followEvaluation;}
+
+  /*! Set or get the "Scrolled away from evaluation" status
+
+    Sets FollowEvaluation() to false and enables the toolbar button to follow the
+    evaluation process again.
+   */
+  void ScrolledAwayFromEvaluation(bool ScrolledAway);
+  bool ScrolledAwayFromEvaluation()
+  { return m_scrolledAwayFromEvaluation;}
+
+  void SaveValue();
+  bool IsSaved() { return m_saved; }
+  void SetSaved(bool saved) { m_saved = saved; }
+  void RemoveAllOutput();
+  void RemoveAllOutput(GroupCell* cell);
+  // methods related to evaluation queue
+
+  void AddDocumentToEvaluationQueue();
+  
+  //! Schedule all cells in the document for evaluation
+  void AddEntireDocumentToEvaluationQueue();
+  //! Schedule all cells stopping with the one the caret is in for evaluation
+  void AddDocumentTillHereToEvaluationQueue();
+  //! Schedule all selected cells to be evaluated
+  void AddSelectionToEvaluationQueue();
+  //! Schedule this cell for evaluation
+  void AddCellToEvaluationQueue(GroupCell* gc);
+  //! Unschedule all cells marked as to be evaluated
+  void ClearEvaluationQueue();
+  //! The list of cells that have to be evaluated
+  EvaluationQueue* m_evaluationQueue;
+  // methods for folding
+  GroupCell *UpdateMLast();
+  void FoldOccurred();
+  //! Fold or unfold a cell
+  GroupCell *ToggleFold(GroupCell *which);
+  GroupCell *ToggleFoldAll(GroupCell *which);
+  void FoldAll();
+  void UnfoldAll();
+  GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
+  // methods for zooming the document in and out
+  double GetZoomFactor() { return m_zoomFactor; }
+  void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
+    if (recalc) {RecalculateForce(); Refresh();} }
+  void CommentSelection();
+  void OnMouseWheel(wxMouseEvent &ev);
+  //! Called if the user is scrolling through the document.
+  void OnScrollChanged(wxScrollEvent &ev);
+  /*! Find the next ocourrence of a string
+
+    Used by the find dialog.
+   */
+  bool FindNext(wxString str, bool down, bool ignoreCase);
+  /*! Replace the current ocourrence of a string
+
+    Used by the find dialog.
+   */
+  void Replace(wxString oldString, wxString newString);
+  /*! Replace all ocourrences of a string
+
+    Used by the find dialog.
+   */
+  int ReplaceAll(wxString oldString, wxString newString);
+  wxString GetInputAboveCaret();
+  wxString GetOutputAboveCaret();
+  bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }
+  bool Autocomplete(bool templates = false);
+  void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
+  void SetActiveCellText(wxString text);
+  bool InsertText(wxString text);
+  GroupCell *GetWorkingGroup() { return m_workingGroup; }
+  void OpenNextOrCreateCell();
+  //! The table of contents pane
+  Structure*    m_structure;
+  //! Called when the "Scroll to currently evaluated" button is pressed.
+  void OnFollow();
+  //! The toolbar of the main window: We need to access it and therefore have it defined here.
+  ToolBar *m_mainToolBar;
+  //! Set this cell as the currently selected one
+  void SelectGroupCell(GroupCell *cell);
+  //! Mark the current question from maxima as "answered"..
+  void QuestionAnswered();
+  //! true = the last reply from maxima was a question
+  bool m_questionPrompt;
+  //! Does the GroupCell cell points to contain the question currently asked by maxima?  
+  bool GCContainsCurrentQuestion(GroupCell *cell);
+  /*! Move the cursor to the end of the question and if needed add a cell for user input
+   */
+  void OpenQuestionCaret(wxString txt=wxT(""));
 
  protected:
   DECLARE_EVENT_TABLE()

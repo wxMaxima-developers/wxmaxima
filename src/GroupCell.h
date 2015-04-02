@@ -177,6 +177,8 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   //! Is this list of cells empty?
   bool Empty();
+  wxString ToString();
+
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
@@ -191,7 +193,6 @@ protected:
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
   wxRect m_outputRect;
-  wxString ToString();
 };
 
 #endif /* GROUPCELL_H */
