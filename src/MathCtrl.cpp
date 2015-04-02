@@ -3147,7 +3147,6 @@ bool MathCtrl::ExportToWXMX(wxString file)
 
   wxString xmlText = ConvertToUnicode(m_tree->ListToXML());
   size_t xmlLen = xmlText.Length();
-  bool illegalCharFound=false;
   
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
@@ -3161,8 +3160,7 @@ bool MathCtrl::ExportToWXMX(wxString file)
        ( c == wxChar((char)0x7F))
       )
     {
-      xmlText[index] = wxT('|'); 
-      illegalCharFound = true;
+      xmlText[index] = wxT(' '); 
     }   
   }
   
@@ -3203,11 +3201,6 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Now that all data is save we can overwrite the actual save file.
   if(!wxRenameFile(backupfile,file,true))
     return false;
-
-  if(illegalCharFound)
-    wxMessageBox(_("File saved. But had to replace illegal characters in the file by | chars."),
-                 _("Warning"),
-                 wxOK | wxICON_WARNING);
   
   m_saved = true;
   return true;
