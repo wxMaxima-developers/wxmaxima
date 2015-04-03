@@ -940,7 +940,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   }
 
   if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
-    SetHCaret(tmp->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(tmp->m_previous), false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
     // The click will has changed the position that is in focus so we assume
@@ -1053,7 +1053,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
     if (tmp == NULL)
       m_selectionEnd = m_last;
     if (m_selectionEnd == (m_selectionStart->m_previous)) {
-      SetHCaret(m_selectionEnd, false); // will refresh at the end of function
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false); // will refresh at the end of function
     }
     else {
       m_hCaretActive = false;
@@ -1562,7 +1562,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
   m_selectionStart = m_selectionEnd = NULL;
   if (newSelection != NULL)
-    SetHCaret(newSelection->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(newSelection->m_previous), false);
   else
     SetHCaret(m_last, false);
 
@@ -1636,7 +1636,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     SetHCaret(dynamic_cast<GroupCell*>(m_activeCell->GetParent()), false);
   }
   else if (m_selectionStart != NULL)
-    SetHCaret(m_selectionStart, false);
+    SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart), false);
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
@@ -2059,17 +2059,17 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if (m_selectionStart != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_selectionStart;
+          GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart);
           if(tmp->m_previous)
           {
             do tmp = dynamic_cast<GroupCell*>(tmp->m_previous); while(
               (tmp->m_previous)&&(
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                (tmp->GetGroupType()!=GC_TYPE_TITLE) &&
+                (tmp->GetGroupType()!=GC_TYPE_SECTION) &&
+                (tmp->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
-            SetHCaret(tmp);
+            SetHCaret(dynamic_cast<GroupCell*>(tmp));
           } else
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
@@ -2124,12 +2124,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
-            SetHCaret(tmp);
+            SetHCaret(dynamic_cast<GroupCell*>(tmp));
           } else
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
-          SetHCaret(m_selectionEnd);
+          SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
         
       }
       else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
@@ -2158,7 +2158,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 
     }
     else if (m_selectionEnd != NULL)
-      SetHCaret(m_selectionEnd);
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
     else if (!ActivateNextInput())
       event.Skip();
     else
@@ -3606,7 +3606,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-  SetHCaret(m_selectionEnd);
+  SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
 }
 
 void MathCtrl::AddDocumentTillHereToEvaluationQueue()
@@ -4390,16 +4390,16 @@ void MathCtrl::SetDefaultHCaret()
  * @param where   The cell to place the cursor before.
  * @param callRefresh   Call with false when manually refreshing.
  */
-void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
+void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
-  if((where)&&(m_tree)&&(!m_tree->Contains(dynamic_cast<GroupCell*>(where))))
-    wxASSERT_MSG(m_tree->Contains(dynamic_cast<GroupCell*>(where)),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
+  if((where)&&(m_tree)&&(!m_tree->Contains(where)))
+    wxASSERT_MSG(m_tree->Contains(where),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
   else
   {
     m_selectionStart = m_selectionEnd = NULL;
     m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
     SetActiveCell(NULL, false);
-    m_hCaretPosition = dynamic_cast<GroupCell*>(where);
+    m_hCaretPosition = where;
     m_hCaretActive = true;
     
     if (callRefresh) // = true default

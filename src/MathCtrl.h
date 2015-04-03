@@ -611,7 +611,7 @@ public:
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetDefaultHCaret();
-  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  void SetHCaret(GroupCell *where, bool callRefresh = true); // call with false, when manually refreshing
   //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
   //! Place the cursor into a new cell where the horizontal cursor is
