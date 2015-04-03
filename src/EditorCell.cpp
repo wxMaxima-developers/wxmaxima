@@ -454,6 +454,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   static const wxString delim(wxT("()[]{},.;?/*:=&$"));
 
   if ((event.GetKeyCode() != WXK_DOWN) &&
+      (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
       #ifdef WXK_PRIOR
       (event.GetKeyCode() != WXK_PRIOR) &&
@@ -468,7 +469,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   
   switch (event.GetKeyCode())
   {
-
   case WXK_LEFT:
     SaveValue();
     if (event.ShiftDown())

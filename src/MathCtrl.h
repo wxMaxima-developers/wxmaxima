@@ -322,8 +322,8 @@ class MathCtrl: public wxScrolledCanvas
     NULL means that maxima isn't currently evaluating a cell.
    */
   GroupCell *m_workingGroup;
-  GroupCell *m_selectionStart;
-  GroupCell *m_selectionEnd;
+  MathCell *m_selectionStart;
+  MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
   /*! The cell the cursor that is drawn as a vertical line is in. 
@@ -582,7 +582,7 @@ public:
   */
   MathCell* GetSelectionEnd() { return m_selectionEnd; }
   //! Select the cell sel
-  void SetSelection(GroupCell* sel) { m_selectionStart = m_selectionEnd = sel; }
+  void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
   bool CanEdit();
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();
@@ -611,7 +611,7 @@ public:
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetDefaultHCaret();
-  void SetHCaret(GroupCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
   //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
   //! Place the cursor into a new cell where the horizontal cursor is
