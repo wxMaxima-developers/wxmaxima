@@ -183,6 +183,7 @@ protected:
   wxCheckBox* m_saveUntitled;
   wxCheckBox* m_openHCaret;
   wxCheckBox* m_insertAns;
+  wxSpinCtrl* m_undoLimit;
   wxCheckBox* m_fixReorderedIndices;
   wxButton* m_getFont;
   wxButton* m_getStyleFont;

@@ -1316,6 +1316,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
     undoAction->m_start = start;
     undoAction->m_newCellsEnd = end;
     undoBuffer->push_front(undoAction);
+    TreeUndo_LimitUndoBuffer();
     TreeUndo_ClearRedoActionList();
   }
 }
@@ -1377,6 +1378,7 @@ void MathCtrl::TreeUndo_CellLeft()
     undoAction->m_start = activeCell;
     wxASSERT_MSG(undoAction->m_start != NULL,_("Bug: Trying to record a cell contents change without a cell."));    
     treeUndoActions.push_front(undoAction);
+    TreeUndo_LimitUndoBuffer();
     m_currentUndoAction.Clear();
     TreeUndo_ClearRedoActionList();
   }
@@ -1502,6 +1504,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
         undoAction->m_oldCells = start;
         
         undoBuffer->push_front(undoAction);
+        TreeUndo_LimitUndoBuffer();
       }
       else
       {
@@ -1544,6 +1547,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
         undoAction->m_start = dynamic_cast<GroupCell*>(start->m_previous);
         undoAction->m_oldCells = start;
         undoBuffer->push_front(undoAction);
+        TreeUndo_LimitUndoBuffer();
       }
       else
       {
@@ -3711,6 +3715,19 @@ void MathCtrl::Undo()
     if(CanTreeUndo())
       TreeUndo();
   }
+}
+
+void MathCtrl::TreeUndo_LimitUndoBuffer()
+{
+  
+  wxConfigBase *config = wxConfig::Get();
+  int undoLimit;
+  config->Read(wxT("undoLimit"),&undoLimit);
+
+  if(undoLimit == 0)
+    return;
+  while(treeUndoActions.size() > undoLimit)
+    TreeUndo_DiscardAction(&treeUndoActions);
 }
 
 bool MathCtrl::CanTreeUndo(){

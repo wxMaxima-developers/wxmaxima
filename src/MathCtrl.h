@@ -126,8 +126,11 @@ class MathCtrl: public wxScrolledCanvas
   /*! The last cell we have entered. 
 
     This pointer is needed for keeping track of cell contents changes.
-   */
+   */  
   GroupCell *TreeUndo_ActiveCell;
+
+  //! Drop actions from the back of the undo list until itis within the undo limit.
+  void TreeUndo_LimitUndoBuffer();
 
   /*! Undo an item from a list of undo actions.
 

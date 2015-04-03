@@ -150,6 +150,7 @@ void Config::SetProperties()
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
+  m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -166,6 +167,7 @@ void Config::SetProperties()
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true;
   bool insertAns = true;
+  int  undoLimit = 0;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
   int displayedDigits = 100;
@@ -210,6 +212,7 @@ void Config::SetProperties()
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
+  config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
@@ -261,6 +264,7 @@ void Config::SetProperties()
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
+  m_undoLimit->SetValue(undoLimit);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
@@ -286,11 +290,11 @@ wxPanel* Config::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(3, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 1, 200);
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 200);
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
@@ -308,9 +312,14 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(PlotWidthHbox,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   wxStaticText* dd = new wxStaticText(panel, -1, _("Maximum displayed number of digits:"));
-  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 20, INT_MAX);
+  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 20, INT_MAX);
   grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_displayedDigits,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+  wxStaticText* ul = new wxStaticText(panel, -1, _("Undo limit (0 for none)"));
+  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
+  grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
 
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
@@ -596,6 +605,7 @@ void Config::WriteSettings()
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
+  config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   #ifdef __WXMSW__
