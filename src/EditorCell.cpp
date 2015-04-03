@@ -455,7 +455,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
+      (event.GetKeyCode() != WXK_NEXT) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
+      (event.GetKeyCode() != WXK_PRIOR) &&
       (event.GetKeyCode() != WXK_UP))
       m_caretColumn = -1; // make caretColumn invalid
 
@@ -550,6 +552,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEDOWN:
+  case WXK_NEXT:
   case WXK_DOWN:
     SaveValue();
     {
@@ -581,6 +584,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEUP:
+  case WXK_PRIOR:
   case WXK_UP:
     SaveValue();
     {

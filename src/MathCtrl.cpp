@@ -1993,7 +1993,9 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   switch (ccode) {
     // These are ingored
   case WXK_PAGEUP:
+  case WXK_PRIOR
   case WXK_PAGEDOWN:
+  case WXK_NEXT:
   case WXK_LEFT:
   case WXK_RIGHT:
   case WXK_WINDOWS_LEFT:
