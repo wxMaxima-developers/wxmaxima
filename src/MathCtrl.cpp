@@ -1301,6 +1301,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
     if(m_currentUndoAction.m_newCellsEnd)
       wxASSERT_MSG(end->m_previous == m_currentUndoAction.m_newCellsEnd,
                    _("Bug: Trying to merge individual cell adds to a region in the undo buffer but there are other cells between them."));
+
     m_currentUndoAction.m_newCellsEnd = end;
   }
   else
@@ -1402,7 +1403,7 @@ bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUn
   // create an item for the undo buffer.
   if(mergeRequest)
   {
-    m_currentUndoAction.m_start = NULL;
+    m_currentUndoAction.Clear();
     m_TreeUndoMergeStartIsSet = false;
   }
   else
@@ -1413,7 +1414,9 @@ bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUn
       undoList->push_front(undoAction);
       m_currentUndoAction.Clear();
       TreeUndo_ActiveCell = NULL;
-   }
+      m_TreeUndoMergeStartIsSet = false;
+    }
+    else
   }
 
   // Remember if we are currently merging undo info.
@@ -1543,7 +1546,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
         if(!m_TreeUndoMergeStartIsSet)
         {
           m_currentUndoAction.m_start = dynamic_cast<GroupCell*>(start->m_previous);
-          m_TreeUndoMergeStartIsSet = false;
+          m_TreeUndoMergeStartIsSet = true;
         }
         m_currentUndoAction.m_oldCells = start;
       }
@@ -3845,20 +3848,22 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
       if(!m_tree->Contains(action->m_start))
       {
         wxASSERT_MSG(m_tree->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
-        return false;
+        TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
       }
-
-      // If we delete the start cell of this undo action we need to set a pointer
-      // that tells where to add cells later if this request  is part of the 
-      // current undo action, too.
-      parentOfInsert=dynamic_cast<GroupCell*>(action->m_start->GetParent());
-      
-      // We make the cell we want to end the deletion with visible.
-      if(action->m_newCellsEnd->RevealHidden())
-        FoldOccurred();
-
-      wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
-      DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+      else
+      {
+        // If we delete the start cell of this undo action we need to set a pointer
+        // that tells where to add cells later if this request  is part of the 
+        // current undo action, too.
+        parentOfInsert=dynamic_cast<GroupCell*>(action->m_start->GetParent());
+        
+        // We make the cell we want to end the deletion with visible.
+        if(action->m_newCellsEnd->RevealHidden())
+          FoldOccurred();
+        
+        wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
+        DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+      }
     }
   }
   
@@ -3869,6 +3874,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
       if(!parentOfInsert->Contains(action->m_start))
       {
         wxASSERT_MSG(parentOfInsert->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+        TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
         return false;
       }
  
