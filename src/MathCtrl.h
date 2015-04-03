@@ -207,6 +207,8 @@ class MathCtrl: public wxScrolledCanvas
   */
   bool TreeUndo_MergeSubsequentEdits(bool mergeRequest);
   bool m_TreeUndoMergeSubsequentEdits;
+  //! true if m_start of m_currentUndoAction already marks the beginning of the action.
+  bool m_TreeUndoMergeStartIsSet;
   //!@}
 
   
@@ -427,14 +429,34 @@ public:
   //! Delete a  part of the worksheet that previously has been unlinked.
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
+  /*! Insert group cells into the worksheet
+
+    \param cells The list of cells that has to be inserted
+    \param where The cell the cells have to be inserted after. NULL means: 
+           Insert the cells at the beginning of the worksheet.
+    \param undoBuffer The buffer the undo information for this action has 
+           to be kept in. Might be
+            - treeUndoActions for normal deletes,
+            - treeRedoActions for deletions while executing an undo or
+            - NULL for: Don't keep any copy of the cells.
+   */
   GroupCell *InsertGroupCells(GroupCell* cells,
                               GroupCell* where,
                               std::list <TreeUndoAction *> *undoBuffer
     );
   
+  /*! Insert group cells into the worksheet
+
+    \param cells The list of cells that has to be inserted
+    \param where The cell the cells have to be inserted after
+  */
   GroupCell *InsertGroupCells(GroupCell* cells, GroupCell* where = NULL);
 
-  //! Add a new line to working group or m_last
+  /*! Add a new line to the output cell of the working group.
+
+    If maxima isn't currently evaluating and therefore there is no working group
+    the line is appended to m_last, instead.
+  */
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool force = false);
   void RecalculateForce();

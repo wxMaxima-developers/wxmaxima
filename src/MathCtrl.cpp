@@ -1291,7 +1291,11 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
 {
   if(m_TreeUndoMergeSubsequentEdits)
   {
-    if(!m_currentUndoAction.m_start) m_currentUndoAction.m_start = start;
+    if(!m_TreeUndoMergeStartIsSet)
+    {
+      m_currentUndoAction.m_start = start;
+      m_TreeUndoMergeStartIsSet = true;
+    }
     
     if(m_currentUndoAction.m_newCellsEnd)
       wxASSERT_MSG(end->m_previous == m_currentUndoAction.m_newCellsEnd,
@@ -1392,16 +1396,17 @@ bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest)
 bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList)
 {
   wxASSERT_MSG(mergeRequest != m_TreeUndoMergeSubsequentEdits,_("Bug: Start or end of merging of subsequent editing actions was requested two times in a row."));
-
-  // If we start merging undos we still have no "start of operation" marker.
-  if(mergeRequest && (!m_TreeUndoMergeSubsequentEdits))
-    m_currentUndoAction.m_start = NULL;
   
   // If we have just finished collecting data for a undo action it is time to
   // create an item for the undo buffer.
-  if(!mergeRequest)
+  if(mergeRequest)
   {
-    if(m_currentUndoAction.m_start!=NULL)
+    m_currentUndoAction.m_start = NULL;
+    m_TreeUndoMergeStartIsSet = false;
+  }
+  else
+  {
+    if(m_TreeUndoMergeStartIsSet)
     {
       TreeUndoAction *undoAction=new TreeUndoAction(m_currentUndoAction);
       undoList->push_front(undoAction);
@@ -1483,15 +1488,19 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       if(!m_TreeUndoMergeSubsequentEdits)
       {
         TreeUndoAction *undoAction = new TreeUndoAction;
-        undoAction->m_start = m_tree;
+        m_TreeUndoMergeStartIsSet = true;
+        undoAction->m_start = NULL;
         undoAction->m_oldCells = start;
         
         undoBuffer->push_front(undoAction);
       }
       else
       {
-        if(!m_currentUndoAction.m_start)
-          m_currentUndoAction.m_start = m_tree;
+        if(!m_TreeUndoMergeStartIsSet)
+        {
+          m_currentUndoAction.m_start = NULL;
+          m_TreeUndoMergeStartIsSet = true;
+        }
         m_currentUndoAction.m_oldCells = start;
       }
     }
@@ -1530,8 +1539,11 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       else
       {
         // Add the cells that are to be deleted to the undo action.
-        if(!m_currentUndoAction.m_start)
+        if(!m_TreeUndoMergeStartIsSet)
+        {
           m_currentUndoAction.m_start = dynamic_cast<GroupCell*>(start->m_previous);
+          m_TreeUndoMergeStartIsSet = false;
+        }
         m_currentUndoAction.m_oldCells = start;
       }
 
@@ -3741,35 +3753,42 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   // Do we have to undo a cell contents change?
   if(action->m_oldText != wxEmptyString)
   {
-    // If this action actually does do nothing - we have not done anything
-    // and want to make another attempt on undoing things.
-    if(
-      (action->m_oldText == action->m_start->GetEditable()->GetValue())||
-      (action->m_oldText + wxT(";") == action->m_start->GetEditable()->GetValue())
-      )
+    wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to change the contents of the cell above the beginning of the worksheet."));
+
+    if(action->m_start)
     {
+      // If this action actually does do nothing - we have not done anything
+      // and want to make another attempt on undoing things.
+      if(
+        (action->m_oldText == action->m_start->GetEditable()->GetValue())||
+        (action->m_oldText + wxT(";") == action->m_start->GetEditable()->GetValue())
+        )
+      {
+        sourcelist->pop_front();
+        return TreeUndo(sourcelist,undoForThisOperation);
+      }
+
+      // Document the old state of this cell so the next action can be undone.
+      TreeUndoAction *undoAction = new TreeUndoAction;
+      undoAction->m_start = action->m_start;
+      undoAction->m_oldText = action->m_start->GetEditable()->GetValue();
+      undoForThisOperation->push_front(undoAction);
+      
+      // Revert the old cell state
+      action->m_start->GetEditable()->SetValue(action->m_oldText);
+      
+      // Make sure that the cell we have to work on is in the visible part of the tree.
+      if (action->m_start->RevealHidden())
+        FoldOccurred();
+      
+      ScrollToCell(action->m_start);
+
       sourcelist->pop_front();
-      return TreeUndo(sourcelist,undoForThisOperation);
+
+      wxASSERT_MSG(action->m_newCellsEnd==NULL,_("Bug: Got a request to first change the contents of a cell and to then undelete it."));
+      wxASSERT_MSG(action->m_oldCells==NULL,_("Bug: Undo action with both cell contents change and cell addition."));
+      return true;
     }
-
-    // Document the old state of this cell so the next action can be undone.
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    undoAction->m_start = action->m_start;
-    undoAction->m_oldText = action->m_start->GetEditable()->GetValue();
-    undoForThisOperation->push_front(undoAction);
-
-    // Revert the old cell state
-    action->m_start->GetEditable()->SetValue(action->m_oldText);
-
-    // Make sure that the cell we have to work on is in the visible part of the tree.
-    if (action->m_start->RevealHidden())
-      FoldOccurred();
-   
-    ScrollToCell(action->m_start);
-
-    sourcelist->pop_front();
-    
-    return true;
   }
 
   // We have to change the structure of the tree.
@@ -3792,38 +3811,39 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   // a single undo action.
   TreeUndo_MergeSubsequentEdits(true,undoForThisOperation);
 
+    
+    GroupCell *parentOfInsert=action->m_start;
   // un-add new cells
-  GroupCell *parentOfInsert=action->m_start;
   if(action->m_newCellsEnd)
   {
-    // If we delete the cell this action start we need to set a pointer where
-    // to add cells later if this is part of the same action.
+    wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to delete the cell above the beginning of the worksheet."));
     if(action->m_start)
+    {
+      // If we delete the start cell of this undo action we need to set a pointer
+      // that tells where to add cells later if this request  is part of the 
+      // current undo action, too.
       parentOfInsert=dynamic_cast<GroupCell*>(action->m_start->GetParent());
+      
+      // We make the cell we want to end the deletion with visible.
+      if(action->m_newCellsEnd->RevealHidden())
+        FoldOccurred();
 
-    // We make the cell we want to end the deletion with visible.
-    if(action->m_newCellsEnd->RevealHidden())
-      FoldOccurred();
-
-    wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
-    DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+      wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
+      DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+    }
   }
-  // Add cells we want to undo the delete for.
+  
+  // Add cells we want to undo a delete for.
   if(action->m_oldCells)
   {
     InsertGroupCells(action->m_oldCells,parentOfInsert,undoForThisOperation);
   }
   TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
-//  if(parentOfInsert)
     
   sourcelist->pop_front();
 
   Recalculate(true);
   Refresh();
-
-      
-    
-  //ScrollToCell(action->m_start);
 
   return true;
 }
