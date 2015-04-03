@@ -2001,8 +2001,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   case WXK_PAGEUP:
   #ifdef WXK_PRIOR
   case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
-  case WXK_NEXT:  
   #endif 
+  #ifdef WXK_NEXT
+  case WXK_NEXT:
+  #endif
   case WXK_PAGEDOWN:
   case WXK_LEFT:
   case WXK_RIGHT:

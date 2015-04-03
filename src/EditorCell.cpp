@@ -464,8 +464,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       (event.GetKeyCode() != WXK_UP) &&
       (event.GetKeyCode() != WXK_PAGEDOWN)
     )
-      m_caretColumn = -1; // make caretColumn invalid
-
+    m_caretColumn = -1; // make caretColumn invalid
+  
   switch (event.GetKeyCode())
   {
 
