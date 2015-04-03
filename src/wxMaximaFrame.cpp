@@ -311,7 +311,7 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_undo, _("Undo\tCtrl-Z"),
                      _("Undo last change"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(menu_redo, _("Redo\tCtrl-Shift-Z"),
+  m_EditMenu->Append(menu_redo, _("Redo\tCtrl-Y"),
                      _("Redo last change"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
