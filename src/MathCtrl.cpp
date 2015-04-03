@@ -725,7 +725,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
 
-        if (m_selectionStart != m_selectionEnd)
+        if (CanMergeSelection())
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
       }
 
@@ -3737,6 +3737,20 @@ void MathCtrl::Redo()
     if(CanTreeRedo())
       TreeRedo();
   }
+}
+
+bool MathCtrl::CanMergeSelection()
+{
+  // We cannot merge cells if not at least two cells are selected
+  if(GetSelectionStart() == GetSelectionEnd())
+    return false;
+
+  // We cannot merge cells if we cannot delete the cells that are
+  // removed during the merge.
+  if(!CanDeleteSelection())
+    return false;
+  
+  return true;
 }
 
 bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <TreeUndoAction *> *undoForThisOperation)

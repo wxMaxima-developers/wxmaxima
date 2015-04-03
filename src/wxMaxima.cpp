@@ -1843,7 +1843,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   if (m_console->GetTree() != NULL)
   {
     menubar->Enable(MathCtrl::popid_divide_cell, m_console->GetActiveCell() != NULL);
-    menubar->Enable(MathCtrl::popid_merge_cells, m_console->GetSelectionStart() != m_console->GetSelectionEnd());
+    menubar->Enable(MathCtrl::popid_merge_cells, m_console->CanMergeSelection());
     menubar->Enable(wxID_PRINT, true);
   }
   else

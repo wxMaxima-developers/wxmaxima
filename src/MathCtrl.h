@@ -356,6 +356,12 @@ class MathCtrl: public wxScrolledCanvas
 
 
 public:
+  /*! Can we merge the selected cells into one?
+    
+    \todo Does it make sense to make to allow the text of sections and image cells 
+    with math cells?
+   */
+  bool CanMergeSelection();
 
   bool CanUndo(){return CanTreeUndo()||CanUndoInsideCell();}
   bool CanRedo(){return CanTreeRedo()||CanRedoInsideCell();}
