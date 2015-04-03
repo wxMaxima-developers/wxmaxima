@@ -177,9 +177,11 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   //! Is this list of cells empty?
   bool Empty();
-  wxString ToString();
+  //! Does this tree contain the cell "cell"?
+  bool Contains(GroupCell *cell);
 
 protected:
+  wxString ToString();
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;

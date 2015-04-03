@@ -243,7 +243,7 @@ class MathCtrl: public wxScrolledCanvas
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
-
+  
   void GetMaxPoint(int* width, int* height);
   void OnTimer(wxTimerEvent& event);
   bool m_autoSaveIntervalExpired;

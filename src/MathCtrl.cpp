@@ -569,6 +569,7 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   return result;
 }
 
+
 /**
  * Toggles the status of the fold for the given GroupCell and its children.
  * If the cell is folded, it will be recursively unfolded;
@@ -3755,6 +3756,13 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   {
     wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to change the contents of the cell above the beginning of the worksheet."));
 
+
+    if(!m_tree->Contains(action->m_start))
+    {
+      wxASSERT_MSG(m_tree->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+      return false;
+    }
+    
     if(action->m_start)
     {
       // If this action actually does do nothing - we have not done anything
@@ -3819,6 +3827,12 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
     wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to delete the cell above the beginning of the worksheet."));
     if(action->m_start)
     {
+      if(!m_tree->Contains(action->m_start))
+      {
+        wxASSERT_MSG(m_tree->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+        return false;
+      }
+
       // If we delete the start cell of this undo action we need to set a pointer
       // that tells where to add cells later if this request  is part of the 
       // current undo action, too.
@@ -3836,6 +3850,13 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   // Add cells we want to undo a delete for.
   if(action->m_oldCells)
   {
+    if(parentOfInsert)
+      if(!parentOfInsert->Contains(action->m_start))
+      {
+        wxASSERT_MSG(parentOfInsert->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+        return false;
+      }
+ 
     InsertGroupCells(action->m_oldCells,parentOfInsert,undoForThisOperation);
   }
   TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
