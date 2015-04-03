@@ -155,11 +155,6 @@ class MathCtrl: public wxScrolledCanvas
   /*! The cursor is about to leave the current cell => Store the change if the value has changed.
    */
   void TreeUndo_CellLeft();
-
-  /*! Clear the undo and the redo buffer
-
-   */
-  void TreeUndo_ClearBuffers();
   
   /*! Remember that these cells were just added so this addition can be undone.
 
@@ -367,6 +362,11 @@ public:
   bool CanRedo(){return CanTreeRedo()||CanRedoInsideCell();}
   void Undo();
   void Redo();
+  /*! Clear the undo and the redo buffer
+
+    \addtogroup UndoBufferFill
+   */
+  void TreeUndo_ClearBuffers();
 
   /*! The ids for all popup menu items.
 

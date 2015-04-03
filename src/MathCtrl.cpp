@@ -1569,6 +1569,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
+
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
     

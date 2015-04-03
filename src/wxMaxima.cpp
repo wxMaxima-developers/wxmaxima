@@ -1976,6 +1976,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   
   if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0))
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+
+  if(m_console)m_console->TreeUndo_ClearBuffers();
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
