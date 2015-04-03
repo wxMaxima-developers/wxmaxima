@@ -1416,7 +1416,6 @@ bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUn
       TreeUndo_ActiveCell = NULL;
       m_TreeUndoMergeStartIsSet = false;
     }
-    else
   }
 
   // Remember if we are currently merging undo info.
@@ -3808,6 +3807,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
         FoldOccurred();
       
       ScrollToCell(action->m_start);
+      SetHCaret(action->m_start);
 
       sourcelist->pop_front();
 
@@ -3862,6 +3862,14 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
           FoldOccurred();
         
         wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
+
+        // Set the cursor to a sane position.
+        if(action->m_newCellsEnd->m_next)
+          SetHCaret(action->m_newCellsEnd->m_next);
+        else
+          SetHCaret(action->m_start->m_previous);
+
+        // Actually delete the cells we want to remove.
         DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
       }
     }
@@ -3878,7 +3886,13 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
         return false;
       }
  
+    GroupCell *lastofTheNewCells = action->m_oldCells;
+    while(lastofTheNewCells->m_next)
+      lastofTheNewCells=dynamic_cast<GroupCell*>(lastofTheNewCells->m_next);
+    
     InsertGroupCells(action->m_oldCells,parentOfInsert,undoForThisOperation);
+
+    SetHCaret(lastofTheNewCells);
   }
   TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
     
@@ -4344,14 +4358,19 @@ void MathCtrl::SetDefaultHCaret()
  */
 void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
 {
-  m_selectionStart = m_selectionEnd = NULL;
-  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  SetActiveCell(NULL, false);
-  m_hCaretPosition = dynamic_cast<GroupCell*>(where);
-  m_hCaretActive = true;
-
-  if (callRefresh) // = true default
-    Refresh();
+  if((where)&&(m_tree)&&(!m_tree->Contains(dynamic_cast<GroupCell*>(where))))
+    wxASSERT_MSG(m_tree->Contains(dynamic_cast<GroupCell*>(where)),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
+  else
+  {
+    m_selectionStart = m_selectionEnd = NULL;
+    m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+    SetActiveCell(NULL, false);
+    m_hCaretPosition = dynamic_cast<GroupCell*>(where);
+    m_hCaretActive = true;
+    
+    if (callRefresh) // = true default
+      Refresh();
+  }
 }
 
 void MathCtrl::ShowHCaret()
