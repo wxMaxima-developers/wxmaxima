@@ -152,9 +152,9 @@ void Config::SetProperties()
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
 
   #ifdef __WXMSW__
-  m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in:"
-                       "This is necessary if the document uses File I/O relative to the current directory"
-                       "but will make maxima 5.35 fail to find its own installation path when the current"
+  m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
+                       "This is necessary if the document uses File I/O relative to the current directory "
+                       "but will make maxima 5.35 fail to find its own installation path when the current "
                        "document resides on a different drive than the maxima installation."));
   #endif
   wxConfig *config = (wxConfig *)wxConfig::Get();

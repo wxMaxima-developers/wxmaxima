@@ -1300,7 +1300,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
     
     if(m_currentUndoAction.m_newCellsEnd)
       wxASSERT_MSG(end->m_previous == m_currentUndoAction.m_newCellsEnd,
-                   _("Bug: Trying to merge individual cells adds to a region in the undo buffer but there are other cells between them."));
+                   _("Bug: Trying to merge individual cell adds to a region in the undo buffer but there are other cells between them."));
     m_currentUndoAction.m_newCellsEnd = end;
   }
   else
@@ -3749,7 +3749,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   m_saved = false;
   
   TreeUndoAction *action=sourcelist->front();
-  wxASSERT_MSG(action!=NULL,_("Trying to undo a action without starting cell."));
+  wxASSERT_MSG(action!=NULL,_("Trying to undo an action without starting cell."));
 
   // Do we have to undo a cell contents change?
   if(action->m_oldText != wxEmptyString)
