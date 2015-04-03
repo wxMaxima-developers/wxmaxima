@@ -3791,6 +3791,14 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   
   m_saved = false;
   
+  // Seems like saving the current value of the currently active cell
+  // in the tree undo buffer makes the behavior of TreeUndo feel
+  // more predictable to the user.
+  if(GetActiveCell())
+  {
+    TreeUndo_CellLeft();
+  }
+  
   TreeUndoAction *action=sourcelist->front();
   wxASSERT_MSG(action!=NULL,_("Trying to undo an action without starting cell."));
 
