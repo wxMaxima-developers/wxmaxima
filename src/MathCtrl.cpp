@@ -855,8 +855,10 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
   if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
     wxRect rect2(m_down.x, m_down.y, 1,1);
     wxPoint mmm(m_down.x + 1, m_down.y +1);
+    MathCell *selectionStart = m_selectionStart;
+    MathCell *selectionEnd   = m_selectionEnd;
     clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
-                                    &m_selectionStart, &m_selectionEnd);
+                                    &selectionStart, &selectionEnd);
     if (m_selectionStart != NULL) {
       if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
           && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
@@ -940,7 +942,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   }
 
   if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
-    SetHCaret(tmp->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(tmp->m_previous), false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
     // The click will has changed the position that is in focus so we assume
@@ -1045,7 +1047,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
     while (tmp != NULL) {
       rect = tmp->GetRect();
       if (ybottom < rect.GetTop()) {
-        m_selectionEnd = tmp->m_previous;
+        m_selectionEnd = dynamic_cast<GroupCell*>(tmp->m_previous);
         break;
       }
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
@@ -1070,7 +1072,11 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
     rect.height = MAX(ABS(down.y - up.y), 1);
 
     if (m_clickInGC != NULL)
-      m_clickInGC->SelectRectInOutput(rect, down, up, &m_selectionStart, &m_selectionEnd);
+    {
+      MathCell *selectionStart = m_selectionStart;
+      MathCell *selectionEnd   = m_selectionEnd;
+      m_clickInGC->SelectRectInOutput(rect, down, up, &selectionStart, &selectionEnd);
+    }
     break;
 
   default:
@@ -1558,7 +1564,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
   m_selectionStart = m_selectionEnd = NULL;
   if (newSelection != NULL)
-    SetHCaret(newSelection->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(newSelection->m_previous), false);
   else
     SetHCaret(m_last, false);
 
@@ -1629,10 +1635,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // set m_hCaretPosition to a sensible value
   if (m_activeCell != NULL)
   {
-    SetHCaret(m_activeCell->GetParent(), false);
+    SetHCaret(dynamic_cast<GroupCell*>(m_activeCell->GetParent()), false);
   }
   else if (m_selectionStart != NULL)
-    SetHCaret(m_selectionStart->GetParent(), false);
+    SetHCaret(m_selectionStart, false);
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
@@ -1819,7 +1825,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
       m_activeCell->GetValue() == wxEmptyString) {
-    m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
+    m_selectionStart = m_selectionEnd = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     DeleteSelection();
     return;
   }
@@ -1993,9 +1999,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   switch (ccode) {
     // These are ingored
   case WXK_PAGEUP:
-  case WXK_PRIOR
+  #ifdef WXK_PRIOR
+  case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
+  case WXK_NEXT:  
+  #endif 
   case WXK_PAGEDOWN:
-  case WXK_NEXT:
   case WXK_LEFT:
   case WXK_RIGHT:
   case WXK_WINDOWS_LEFT:
@@ -2037,7 +2045,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       }
     }
     else if (m_hCaretPosition->m_next != NULL) {
-      SetSelection(m_hCaretPosition->m_next);
+      SetSelection(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next));
       m_hCaretActive = false;
       Refresh();
       return;
@@ -2050,10 +2058,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if (m_selectionStart != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_selectionStart;
+          GroupCell *tmp = m_selectionStart;
           if(tmp->m_previous)
           {
-            do tmp = tmp->m_previous; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_previous); while(
               (tmp->m_previous)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
@@ -2065,15 +2073,15 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
-          SetHCaret(m_selectionStart->GetParent()->m_previous);
+          SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
       }
       else if (m_hCaretPosition != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_hCaretPosition;
+          GroupCell *tmp = m_hCaretPosition;
           if(tmp->m_previous)
           {
-            do tmp = tmp->m_previous; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_previous); while(
               (tmp->m_previous)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
@@ -2092,7 +2100,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         event.Skip();
     }
     else if (m_selectionStart != NULL) 
-      SetHCaret(m_selectionStart->GetParent()->m_previous);
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
     else if (!ActivatePrevInput())
       event.Skip();
     else
@@ -2105,31 +2113,31 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if (m_selectionEnd != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_selectionEnd;
+          GroupCell *tmp = m_selectionEnd;
           if(tmp->m_next)
           {
-            do tmp = tmp->m_next; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_next); while(
               (tmp->m_next)&&(
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                (tmp->GetGroupType()!=GC_TYPE_TITLE) &&
+                (tmp->GetGroupType()!=GC_TYPE_SECTION) &&
+                (tmp->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
             SetHCaret(tmp);
           } else
-            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+            SelectEditable(tmp->GetEditable(), false);
         }
         else
-          SetHCaret(m_selectionEnd->GetParent());
+          SetHCaret(m_selectionEnd);
         
       }
       else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_hCaretPosition;
+          GroupCell *tmp = m_hCaretPosition;
           if(tmp->m_next)
           {
-            do tmp = tmp->m_next; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_next); while(
               (tmp->m_next)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
@@ -2149,7 +2157,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 
     }
     else if (m_selectionEnd != NULL)
-      SetHCaret(m_selectionEnd->GetParent());
+      SetHCaret(m_selectionEnd);
     else if (!ActivateNextInput())
       event.Skip();
     else
@@ -3464,7 +3472,9 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   }
   else if (m_selectionStart != NULL) {
     GroupCell *parent = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
-    parent->SelectOutput(&m_selectionStart, &m_selectionEnd);
+    MathCell *selectionStart = m_selectionStart;
+    MathCell *selectionEnd   = m_selectionEnd;
+    parent->SelectOutput(&selectionStart, &selectionEnd);
     Refresh();
   }
   // Re-calculate the table of contents
@@ -3626,7 +3636,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
-  SetHCaret((MathCell *) gc);
+  SetHCaret(gc);
 }
 void MathCtrl::ClearEvaluationQueue()
 {
@@ -3867,9 +3877,9 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
 
         // Set the cursor to a sane position.
         if(action->m_newCellsEnd->m_next)
-          SetHCaret(action->m_newCellsEnd->m_next);
+          SetHCaret(dynamic_cast<GroupCell*>(action->m_newCellsEnd->m_next));
         else
-          SetHCaret(action->m_start->m_previous);
+          SetHCaret(dynamic_cast<GroupCell*>(action->m_start->m_previous));
 
         // Actually delete the cells we want to remove.
         DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
@@ -4221,7 +4231,7 @@ void MathCtrl::MergeCells()
   EditorCell *editor = dynamic_cast<GroupCell*>(m_selectionStart)->GetEditable();
   editor->SetValue(newcell);
 
-  m_selectionStart = m_selectionStart->m_next;
+  m_selectionStart = dynamic_cast<GroupCell*>(m_selectionStart->m_next);
   DeleteSelection();
   editor->GetParent()->ResetSize();
   dynamic_cast<GroupCell*>(editor->GetParent())->ResetInputLabel();
@@ -4358,7 +4368,7 @@ void MathCtrl::SetDefaultHCaret()
  * @param where   The cell to place the cursor before.
  * @param callRefresh   Call with false when manually refreshing.
  */
-void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
+void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
   if((where)&&(m_tree)&&(!m_tree->Contains(dynamic_cast<GroupCell*>(where))))
     wxASSERT_MSG(m_tree->Contains(dynamic_cast<GroupCell*>(where)),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
@@ -4529,7 +4539,9 @@ wxString MathCtrl::GetOutputAboveCaret()
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
 
-  m_hCaretPosition->SelectOutput(&m_selectionStart, &m_selectionEnd);
+  MathCell *selectionStart = m_selectionStart;
+  MathCell *selectionEnd   = m_selectionEnd;
+  m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();
 

@@ -454,11 +454,16 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   static const wxString delim(wxT("()[]{},.;?/*:=&$"));
 
   if ((event.GetKeyCode() != WXK_DOWN) &&
-      (event.GetKeyCode() != WXK_PAGEDOWN) &&
-      (event.GetKeyCode() != WXK_NEXT) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
+      #ifdef WXK_PRIOR
       (event.GetKeyCode() != WXK_PRIOR) &&
-      (event.GetKeyCode() != WXK_UP))
+      #endif
+      #ifdef WXK_NEXT
+      (event.GetKeyCode() != WXK_NEXT) &&
+      #endif
+      (event.GetKeyCode() != WXK_UP) &&
+      (event.GetKeyCode() != WXK_PAGEDOWN)
+    )
       m_caretColumn = -1; // make caretColumn invalid
 
   switch (event.GetKeyCode())
@@ -552,7 +557,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEDOWN:
+  #ifdef WXK_NEXT
   case WXK_NEXT:
+  #endif
   case WXK_DOWN:
     SaveValue();
     {
@@ -584,7 +591,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEUP:
+  #ifdef WXK_PRIOR
   case WXK_PRIOR:
+  #endif
   case WXK_UP:
     SaveValue();
     {
