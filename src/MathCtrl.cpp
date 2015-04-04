@@ -1349,13 +1349,13 @@ void MathCtrl::TreeUndo_CellLeft()
 {
   if(m_TreeUndoMergeSubsequentEdits) return;
 
-  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
-
   // If no cell is active we didn't leave a cell and return from this function.
-  if(activeCell==NULL)
+  if(GetActiveCell()==NULL)
   {
     return;
   }
+
+  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
   
   if(TreeUndo_ActiveCell)
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell,_("Bug: Cell left but not entered."));
