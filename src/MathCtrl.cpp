@@ -59,6 +59,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_lastWorkingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
   m_questionPrompt = false;
@@ -362,38 +363,50 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   GroupCell *tmp = m_workingGroup;
 
-  // If there is no working group we take the last cell
+  // If there is no working group we take the last cell maxima evaluated
+  if (tmp == NULL)
+    tmp = m_lastWorkingGroup;
+
+  // If there is no such cell, neither, we append the line to the end of the
+  // worksheet.
   if (tmp == NULL)
     tmp = m_last;
 
-  // If there is no last cell either the new one is used as the last cell.
+  // If we still don't have a place to put the line we give up.
   if (tmp == NULL)
     return;
 
-  newCell->ForceBreakLine(forceNewLine);
+  if(m_tree->Contains(tmp))
+  {     
+    newCell->ForceBreakLine(forceNewLine);
+    
+    tmp->AppendOutput(newCell);
 
-  tmp->AppendOutput(newCell);
+    newCell->SetParentList(tmp);
+    
+    m_selectionStart = NULL;
+    m_selectionEnd = NULL;
 
-  newCell->SetParentList(tmp);
+    wxClientDC dc(this);
+    CellParser parser(dc);
+    parser.SetZoomFactor(m_zoomFactor);
+    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
+    tmp->RecalculateAppended(parser);
+    Recalculate();
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetZoomFactor(m_zoomFactor);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-
-  tmp->RecalculateAppended(parser);
-  Recalculate();
-
-  if(FollowEvaluation()) {
-    if(GCContainsCurrentQuestion(tmp))
-      OpenQuestionCaret();
-    ScrollToCell(tmp); // also refreshes
+    if(FollowEvaluation()) {
+      if(GCContainsCurrentQuestion(tmp))
+        OpenQuestionCaret();
+      ScrollToCell(tmp); // also refreshes
+    }
+    else
+      Refresh();
   }
   else
-    Refresh();
+  {
+    wxASSERT_MSG(m_tree->Contains(tmp),_("Bug: Trying to append maxima's output to a cell outside the worksheet."));
+  }
 }
 
 /***
@@ -1449,9 +1462,13 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   m_hCaretPosition = NULL;
 
   // check if chapters or sections need to be renumbered
+  // and unset m_lastWorkingGroup if it points to a cell that isn't valid any more.
   bool renumber = false;
   GroupCell *tmp = start;
   while (tmp) {
+    if(tmp==m_lastWorkingGroup)
+      m_lastWorkingGroup = NULL;
+    
     if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE)) {
       renumber = true;
       break;
@@ -2365,6 +2382,7 @@ void MathCtrl::DestroyTree() {
   m_hCaretPosition = NULL;
   DestroyTree(m_tree);
   m_tree = m_last = NULL;
+  m_lastWorkingGroup = NULL;
 }
 
 void MathCtrl::DestroyTree(MathCell* tmp) {
@@ -4346,7 +4364,10 @@ void MathCtrl::Animate(bool run)
 void MathCtrl::SetWorkingGroup(GroupCell *group)
  {
   if (m_workingGroup != NULL)
+  {
     m_workingGroup->SetWorking(false);
+    m_lastWorkingGroup = group;
+  }
   m_workingGroup = group;
   if (m_workingGroup != NULL)
     m_workingGroup->SetWorking(group);

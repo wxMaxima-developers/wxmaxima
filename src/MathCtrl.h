@@ -322,6 +322,8 @@ class MathCtrl: public wxScrolledCanvas
     NULL means that maxima isn't currently evaluating a cell.
    */
   GroupCell *m_workingGroup;
+  //! The last group cell maxima was working on.
+  GroupCell *m_lastWorkingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
   int m_clickType;
