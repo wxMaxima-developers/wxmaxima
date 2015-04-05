@@ -4709,6 +4709,54 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 
   editor->SelectWordUnderCaret(false, false);
 
+  if(type==AutoComplete::command)
+  {
+    // Let's look if we want to complete a unit instead of a command.
+    bool inEzUnit = true;
+    wxString frontOfSelection = editor->TextInFrontOfSelection();
+    int positionOfEzunitStart = frontOfSelection.rfind(wxT('`'));
+    
+    if(positionOfEzunitStart!=wxNOT_FOUND)
+    {
+      frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart+1);
+      std::cerr<<"UnitString: ";
+      std::cerr<<frontOfSelection;
+      std::cerr<<"\n";
+      int numberOfParenthesis=0;
+
+      for(size_t i=0;i<frontOfSelection.Length()-1;i++)
+      {
+        wxChar ch=frontOfSelection[i];
+        if(
+          (!wxIsalnum(ch))&&
+          (ch!=wxT('('))&&
+          (ch!=wxT(')'))&&
+          (ch!=wxT('*'))&&
+          (ch!=wxT('/'))
+          )
+          inEzUnit = false;
+
+        if(ch==wxT('('))
+          numberOfParenthesis++;
+        if(ch==wxT(')'))
+        {
+          numberOfParenthesis++;
+          if(numberOfParenthesis<0)
+          inEzUnit = false;            
+        }
+      }
+      
+    }
+    else
+      inEzUnit = false;
+
+    if(inEzUnit)
+    {
+      type=AutoComplete::unit;
+      std::cerr<<"Unit!\n";
+    }
+  }
+  
   wxString partial = editor->GetSelectionString();
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);

@@ -176,6 +176,10 @@ public:
   int GetCaretPosition() { return m_positionOfCaret; }
   bool FindNextTemplate(bool left = false);
   void InsertText(wxString text);
+  wxString TextInFrontOfSelection()
+    {
+      return GetValue().Mid(1,m_selectionStart);
+    }
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);
