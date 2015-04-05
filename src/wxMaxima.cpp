@@ -490,7 +490,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         }
       }
       funName << wxT(")");
-      m_console->AddSymbol(funName, true);
+      m_console->AddSymbol(funName, AutoComplete::tmplte);
     }
   }
 
@@ -4640,7 +4640,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     return ;
     break;
   case menu_autocomplete_templates:
-    m_console->Autocomplete(true);
+    m_console->Autocomplete(AutoComplete::tmplte);
     return ;
     break;
   case menu_add_comment:

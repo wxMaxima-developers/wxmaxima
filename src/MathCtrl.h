@@ -713,8 +713,8 @@ public:
   wxString GetInputAboveCaret();
   wxString GetOutputAboveCaret();
   bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }
-  bool Autocomplete(bool templates = false);
-  void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
+  bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
+  void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command) { m_autocomplete.AddSymbol(fun, type); }
   void SetActiveCellText(wxString text);
   bool InsertText(wxString text);
   GroupCell *GetWorkingGroup() { return m_workingGroup; }

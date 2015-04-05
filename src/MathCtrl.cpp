@@ -4700,12 +4700,10 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-bool MathCtrl::Autocomplete(bool templates)
+bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 {
   if (m_activeCell == NULL)
     return false;
-
-  m_autocompleteTemplates = templates;
 
   EditorCell *editor = (EditorCell *)m_activeCell;
 
@@ -4713,7 +4711,7 @@ bool MathCtrl::Autocomplete(bool templates)
 
   wxString partial = editor->GetSelectionString();
 
-  m_completions = m_autocomplete.CompleteSymbol(partial, templates);
+  m_completions = m_autocomplete.CompleteSymbol(partial, type);
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)
@@ -4732,7 +4730,7 @@ bool MathCtrl::Autocomplete(bool templates)
     editor->ClearSelection();
     editor->CaretToPosition(start);
 
-    if (!templates || !editor->FindNextTemplate())
+    if ((type != AutoComplete::tmplte) || !editor->FindNextTemplate())
       editor->CaretToPosition(start + m_completions[0].Length());
 
     editor->ResetSize();
