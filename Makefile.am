@@ -60,6 +60,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources/help
 	cp info/*.html wxMaxima.app/Contents/Resources/help
 	cp info/*.jpg  wxMaxima.app/Contents/Resources/help
+	cp info/*.png  wxMaxima.app/Contents/Resources/help
 	cp info/index.hhk wxMaxima.app/Contents/Resources/help
 	cp info/contents.hhc wxMaxima.app/Contents/Resources/help
 	cp info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
@@ -74,6 +75,7 @@ wxMaxima.win: all
 	cp data/tips*.txt wxMaxima/data
 	mkdir -p wxMaxima/help
 	cp info/*.jpg  wxMaxima/help
+	cp info/*.png  wxMaxima/help
 if CHM
 	cp info/*.chm  wxMaxima/help
 else
