@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 19:02+0200\n"
-"PO-Revision-Date: 2015-04-03 19:06+0200\n"
+"POT-Creation-Date: 2015-04-07 12:38+0200\n"
+"PO-Revision-Date: 2015-04-07 12:40+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -513,30 +513,34 @@ msgstr "Kursdiagramm"
 msgid "Browse"
 msgstr "Ordner Anzeigen"
 
-#: ../src/MathCtrl.cpp:1361
+#: ../src/Autocomplete.cpp:129
+msgid "Bug: Autocompletion requested for unknown type of item."
+msgstr "Fehler: Textvervollständigung für eine unbekannte Kathegorie aufgerufen."
+
+#: ../src/MathCtrl.cpp:1374
 msgid "Bug: Cell left but not entered."
 msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
-#: ../src/MathCtrl.cpp:3808
+#: ../src/MathCtrl.cpp:3826
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3897
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:3848
+#: ../src/MathCtrl.cpp:3866
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 
-#: ../src/MathCtrl.cpp:1402
+#: ../src/MathCtrl.cpp:1415
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -544,13 +548,19 @@ msgstr ""
 "Interner Fehler: Soll gleichzeitig zweimal mit dem Sammeln neuer Zellen "
 "beginnen oder aufhören."
 
-#: ../src/MathCtrl.cpp:1371
+#: ../src/MathCtrl.cpp:1384
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
 "Zelle."
 
-#: ../src/MathCtrl.cpp:1303
+#: ../src/MathCtrl.cpp:408
+msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
+msgstr ""
+"Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
+"Arbeitsblattes an."
+
+#: ../src/MathCtrl.cpp:1316
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -558,19 +568,19 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:1373
+#: ../src/MathCtrl.cpp:1386
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Interner Fehler: Versuche, die Änderung des Inhalts einer Zelle zu "
 "dokumentieren, ohne die Zelle zu kennen."
 
-#: ../src/MathCtrl.cpp:3849
+#: ../src/MathCtrl.cpp:3867
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:3813 ../src/MathCtrl.cpp:3884 ../src/MathCtrl.cpp:3918
+#: ../src/MathCtrl.cpp:3831 ../src/MathCtrl.cpp:3902 ../src/MathCtrl.cpp:3936
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -751,7 +761,7 @@ msgstr "x-Koordinaten durch Kommata getrennt"
 msgid "Comma separated y coordinates"
 msgstr "y-Koordinaten durch Kommata getrennt"
 
-#: ../src/MathCtrl.cpp:783
+#: ../src/MathCtrl.cpp:796
 msgid "Comment Selection"
 msgstr "Auswahl auskommentieren"
 
@@ -878,16 +888,16 @@ msgstr "Wandle trigonometrischen Ausdruck in eine kanonische Form"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Ersetze Winkelfunktionen durch Exponentialfunktionen"
 
-#: ../src/MenuBar.cpp:72 ../src/ToolBar.cpp:83 ../src/MathCtrl.cpp:705
-#: ../src/MathCtrl.cpp:718 ../src/MathCtrl.cpp:734 ../src/MathCtrl.cpp:777
+#: ../src/MenuBar.cpp:72 ../src/ToolBar.cpp:83 ../src/MathCtrl.cpp:718
+#: ../src/MathCtrl.cpp:731 ../src/MathCtrl.cpp:747 ../src/MathCtrl.cpp:790
 msgid "Copy"
 msgstr "Kopieren"
 
-#: ../src/MathCtrl.cpp:720 ../src/MathCtrl.cpp:736
+#: ../src/MathCtrl.cpp:733 ../src/MathCtrl.cpp:749
 msgid "Copy As Image"
 msgstr "Als Bild kopieren"
 
-#: ../src/MathCtrl.cpp:719 ../src/MathCtrl.cpp:735
+#: ../src/MathCtrl.cpp:732 ../src/MathCtrl.cpp:748
 msgid "Copy LaTeX"
 msgstr "LaTeX kopieren"
 
@@ -939,7 +949,7 @@ msgstr "Neue Zelle mit letzter Ausgabe erzeugen."
 msgid "Cursor"
 msgstr "Cursor"
 
-#: ../src/MenuBar.cpp:69 ../src/ToolBar.cpp:80 ../src/MathCtrl.cpp:776
+#: ../src/MenuBar.cpp:69 ../src/ToolBar.cpp:80 ../src/MathCtrl.cpp:789
 msgid "Cut"
 msgstr "Ausschneiden"
 
@@ -1014,7 +1024,7 @@ msgstr "Löschen"
 msgid "Delete F&unction..."
 msgstr "F&unktion löschen ..."
 
-#: ../src/MathCtrl.cpp:723 ../src/MathCtrl.cpp:739
+#: ../src/MathCtrl.cpp:736 ../src/MathCtrl.cpp:752
 msgid "Delete Selection"
 msgstr "Auswahl löschen"
 
@@ -1074,7 +1084,7 @@ msgstr "Differenzieren"
 msgid "Differentiate expression"
 msgstr "Ausdruck differenzieren"
 
-#: ../src/MathCtrl.cpp:755
+#: ../src/MathCtrl.cpp:768
 msgid "Differentiate..."
 msgstr "Differenzieren ..."
 
@@ -1106,7 +1116,7 @@ msgstr "Zeige Zeit für die Auswertung an"
 msgid "Divide"
 msgstr "Dividiere"
 
-#: ../src/wxMaximaFrame.cpp:426 ../src/MathCtrl.cpp:785
+#: ../src/wxMaximaFrame.cpp:426 ../src/MathCtrl.cpp:798
 msgid "Divide Cell"
 msgstr "Zelle teilen"
 
@@ -1233,11 +1243,11 @@ msgstr "Gleichung:"
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/ImgCell.cpp:103 ../src/wxMaxima.cpp:358 ../src/wxMaxima.cpp:990
-#: ../src/wxMaxima.cpp:1001 ../src/wxMaxima.cpp:1065 ../src/wxMaxima.cpp:1077
-#: ../src/wxMaxima.cpp:1095 ../src/wxMaxima.cpp:1567 ../src/wxMaxima.cpp:1711
-#: ../src/wxMaxima.cpp:4545 ../src/wxMaxima.cpp:4869 ../src/wxMaxima.cpp:4914
-#: ../src/Config.cpp:662
+#: ../src/ImgCell.cpp:103 ../src/Config.cpp:662 ../src/wxMaxima.cpp:358
+#: ../src/wxMaxima.cpp:990 ../src/wxMaxima.cpp:1001 ../src/wxMaxima.cpp:1065
+#: ../src/wxMaxima.cpp:1077 ../src/wxMaxima.cpp:1095 ../src/wxMaxima.cpp:1567
+#: ../src/wxMaxima.cpp:1711 ../src/wxMaxima.cpp:4545 ../src/wxMaxima.cpp:4869
+#: ../src/wxMaxima.cpp:4914
 msgid "Error"
 msgstr "Fehler"
 
@@ -1263,7 +1273,7 @@ msgstr "Alle Zellen neu auswerten\tCtrl-Shift-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:378 ../src/MathCtrl.cpp:726
+#: ../src/wxMaximaFrame.cpp:378 ../src/MathCtrl.cpp:739
 msgid "Evaluate Cell(s)"
 msgstr "Zelle(n) auswerten"
 
@@ -1307,7 +1317,7 @@ msgstr "Expandieren"
 msgid "Expand (tr)"
 msgstr "Trigexpand"
 
-#: ../src/MathCtrl.cpp:751
+#: ../src/MathCtrl.cpp:764
 msgid "Expand Expression"
 msgstr "Ausdruck expandieren"
 
@@ -1370,7 +1380,7 @@ msgstr "Faktorisieren"
 msgid "Factor Complex"
 msgstr "Audruck faktorisieren (Komplex)"
 
-#: ../src/MathCtrl.cpp:750
+#: ../src/MathCtrl.cpp:763
 msgid "Factor Expression"
 msgstr "Ausdruck faktorisieren"
 
@@ -1427,7 +1437,7 @@ msgstr "Grenz&wert suchen ..."
 msgid "Find Minimum..."
 msgstr "Minimum suchen ..."
 
-#: ../src/MathCtrl.cpp:747
+#: ../src/MathCtrl.cpp:760
 msgid "Find Root..."
 msgstr "Nullstelle suchen ..."
 
@@ -1632,7 +1642,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:3898
+#: ../src/MathCtrl.cpp:3916
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1691,10 +1701,6 @@ msgstr "Histogramm ..."
 #: ../src/wxMaximaFrame.cpp:196
 msgid "History"
 msgstr "Historie der letzten Eingaben"
-
-#: ../src/wxMaximaFrame.cpp:440
-msgid "History\tAlt-Shift-H"
-msgstr "Historie\tAlt-Shift-H"
 
 #: ../data/tips.txt:14
 msgid ""
@@ -1850,11 +1856,11 @@ msgstr "Seitenumbruch einfügen"
 msgid "Insert S&ubsection Cell\tCtrl-4"
 msgstr "Neue &Unterkapitelzelle\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:769
+#: ../src/MathCtrl.cpp:782
 msgid "Insert Section Cell"
 msgstr "Neue &Kapitelzelle"
 
-#: ../src/MathCtrl.cpp:770
+#: ../src/MathCtrl.cpp:783
 msgid "Insert Subsection Cell"
 msgstr "Neue &Unterkapitelzelle"
 
@@ -1862,11 +1868,11 @@ msgstr "Neue &Unterkapitelzelle"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "Neue T&itelzelle\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:767
+#: ../src/MathCtrl.cpp:780
 msgid "Insert Text Cell"
 msgstr "Neue &Textzelle"
 
-#: ../src/MathCtrl.cpp:768
+#: ../src/MathCtrl.cpp:781
 msgid "Insert Title Cell"
 msgstr "Neue T&itelzelle"
 
@@ -1919,7 +1925,7 @@ msgstr "Ausdruck integrieren"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Ausdruck mit Risch-Algorithmus integrieren"
 
-#: ../src/wxMaximaFrame.cpp:968 ../src/MathCtrl.cpp:754
+#: ../src/wxMaximaFrame.cpp:968 ../src/MathCtrl.cpp:767
 msgid "Integrate..."
 msgstr "Integrieren ..."
 
@@ -2206,7 +2212,7 @@ msgstr "Mittelwert:"
 msgid "Median..."
 msgstr "Median"
 
-#: ../src/wxMaximaFrame.cpp:424 ../src/MathCtrl.cpp:729
+#: ../src/wxMaximaFrame.cpp:424 ../src/MathCtrl.cpp:742
 msgid "Merge Cells"
 msgstr "Zellen verbinden"
 
@@ -2323,7 +2329,7 @@ msgid "Online tutorials"
 msgstr "Online Tutorials"
 
 #: ../src/main.cpp:243 ../src/MenuBar.cpp:55 ../src/ToolBar.cpp:62
-#: ../src/wxMaxima.cpp:2153 ../src/Config.cpp:445
+#: ../src/Config.cpp:445 ../src/wxMaxima.cpp:2153
 msgid "Open"
 msgstr "Öffnen"
 
@@ -2431,8 +2437,8 @@ msgstr "Partialbruchzerlegung"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Teile des Dokuments werden nicht korrekt geladen!"
 
-#: ../src/MenuBar.cpp:75 ../src/ToolBar.cpp:86 ../src/MathCtrl.cpp:764
-#: ../src/MathCtrl.cpp:778
+#: ../src/MenuBar.cpp:75 ../src/ToolBar.cpp:86 ../src/MathCtrl.cpp:777
+#: ../src/MathCtrl.cpp:791
 msgid "Paste"
 msgstr "Einfügen"
 
@@ -2481,7 +2487,7 @@ msgstr "2D Plotten"
 msgid "Plot 2D..."
 msgstr "2D Plotten ..."
 
-#: ../src/MathCtrl.cpp:757
+#: ../src/MathCtrl.cpp:770
 msgid "Plot 2d..."
 msgstr "2D Plotten ..."
 
@@ -2493,7 +2499,7 @@ msgstr "3D Plotten"
 msgid "Plot 3D..."
 msgstr "3D Plotten ..."
 
-#: ../src/MathCtrl.cpp:758
+#: ../src/MathCtrl.cpp:771
 msgid "Plot 3d..."
 msgstr "3D Plotten ..."
 
@@ -2668,12 +2674,12 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/MenuBar.cpp:58 ../src/ToolBar.cpp:65 ../src/wxMaxima.cpp:4955
-#: ../src/Config.cpp:544
+#: ../src/MenuBar.cpp:58 ../src/ToolBar.cpp:65 ../src/Config.cpp:544
+#: ../src/wxMaxima.cpp:4955
 msgid "Save"
 msgstr "Speichern"
 
-#: ../src/MathCtrl.cpp:708
+#: ../src/MathCtrl.cpp:721
 msgid "Save Animation..."
 msgstr "Speichere Animation ..."
 
@@ -2685,7 +2691,7 @@ msgstr "Speichern als"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Speichern als ...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:706
+#: ../src/MathCtrl.cpp:719
 msgid "Save Image..."
 msgstr "Bild speichern ..."
 
@@ -2713,7 +2719,9 @@ msgstr "Dokument speichern als"
 msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
-msgstr "Die Anzahl von Aktionen, die für die Rückgängig-Funktion zu speichern sind. 0 heißt: Keine Begrenzung der Anzahl rückgängig machbaren Aktionen."
+msgstr ""
+"Die Anzahl von Aktionen, die für die Rückgängig-Funktion zu speichern sind. "
+"0 heißt: Keine Begrenzung der Anzahl rückgängig machbaren Aktionen."
 
 #: ../src/Config.cpp:405
 msgid "Save panes layout"
@@ -2775,7 +2783,7 @@ msgstr "Kapitel"
 msgid "Section cell"
 msgstr "Kapitelzelle"
 
-#: ../src/MathCtrl.cpp:765 ../src/MathCtrl.cpp:780
+#: ../src/MathCtrl.cpp:778 ../src/MathCtrl.cpp:793
 msgid "Select All"
 msgstr "Alles auswählen"
 
@@ -2974,7 +2982,7 @@ msgstr "Wurzelvereinf."
 msgid "Simplify (tr)"
 msgstr "Trigsimp"
 
-#: ../src/MathCtrl.cpp:749
+#: ../src/MathCtrl.cpp:762
 msgid "Simplify Expression"
 msgstr "Ausdruck vereinfachen"
 
@@ -3090,7 +3098,7 @@ msgstr "Eine gewöhnliche DGL von höchstens zweitem Grad lösen"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Gewöhnliche DGL mit Laplacetransformation lösen"
 
-#: ../src/wxMaximaFrame.cpp:965 ../src/MathCtrl.cpp:746
+#: ../src/wxMaximaFrame.cpp:965 ../src/MathCtrl.cpp:759
 msgid "Solve..."
 msgstr "Gleichung lösen ..."
 
@@ -3118,7 +3126,7 @@ msgstr "Besondere Werte"
 msgid "Special constants"
 msgstr "Besondere Konstanten"
 
-#: ../src/MathCtrl.cpp:709
+#: ../src/MathCtrl.cpp:722
 msgid "Start Animation"
 msgstr "Starte Animation"
 
@@ -3206,7 +3214,7 @@ msgstr "Substituieren ..."
 msgid "Substitute"
 msgstr "Substituieren"
 
-#: ../src/wxMaximaFrame.cpp:710 ../src/MathCtrl.cpp:752
+#: ../src/wxMaximaFrame.cpp:710 ../src/MathCtrl.cpp:765
 msgid "Substitute..."
 msgstr "Substituieren ..."
 
@@ -3221,6 +3229,11 @@ msgstr "System Information"
 #: ../src/wxMaximaFrame.cpp:205
 msgid "Table of Contents"
 msgstr "Inhaltsverzeichnis"
+
+#~ #: ../src/wxMaximaFrame.cpp:440
+#~ #, fuzzy
+#~ msgid "Table of contents\tAlt-Shift-I"
+#~ msgstr "Inhaltsverzeichnis\\tAlt-Shift-I"
 
 #: ../src/wxMaxima.cpp:3261
 msgid "Taylor series:"
@@ -3347,7 +3360,7 @@ msgstr "Als &lange Gleitkommazahl"
 msgid "To &Float"
 msgstr "Letztes Ergebnis als Gleitkommazahl"
 
-#: ../src/MathCtrl.cpp:744
+#: ../src/MathCtrl.cpp:757
 msgid "To Float"
 msgstr "Letztes Ergebnis als Gleitkommazahl"
 
@@ -3438,17 +3451,19 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:4396
+#: ../src/MathCtrl.cpp:4417
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-msgstr "Versuche, die Markierung in eine Zelle außerhalb des Arbeitsblatts zu verschieben."
+msgstr ""
+"Versuche, die Markierung in eine Zelle außerhalb des Arbeitsblatts zu "
+"verschieben."
 
-#: ../src/MathCtrl.cpp:3803
+#: ../src/MathCtrl.cpp:3821
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:3867
+#: ../src/MathCtrl.cpp:3885
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängigmachen, aber die Spezifikation dafür ist leer."
 
@@ -3928,6 +3943,9 @@ msgstr "x"
 #: ../src/wxMaxima.cpp:3789
 msgid "yes"
 msgstr "ja"
+
+#~ msgid "History\tAlt-Shift-H"
+#~ msgstr "Historie\tAlt-Shift-H"
 
 #~ msgid "Redo\tCtrl-Shift-Z"
 #~ msgstr "&Erneut\tCtrl-Shift-Z"

@@ -164,7 +164,8 @@ Besides the input cells wxMaxima allows for text cells for
 documentation, image cells, title cells, chapter
 cells and section cells; Every cell has it's own undo buffer so debugging
 by changing the values of several cells and then gradually reverting the
-unneeded changes is rather easy.
+unneeded changes is rather easy. Besides this the worksheet itself has a
+global undo buffer that can undo cell edits, adds and deletes.
 
 @ifnotinfo
 @image{NoiseFilter,12cm}
@@ -205,12 +206,21 @@ ther scope to the current cell.
 @subsection Command autocompletion
 wxMaxima contains an autocompletion feature that is triggered via the menu
 (Cell/Complete Word) or alternatively by pressing the key combination
-@key{Ctrl}+@key{k}. Besides completing the current command's name the
-autocompletion feature is able to show a template for most of the
+@key{Ctrl}+@key{k}. The autocompletion is context-sensitive and if activated
+within an unit specification for ezUnits it will offer a list of applicable
+units.
+
+@ifnotinfo
+@image{ezUnits,12cm}
+@end ifnotinfo
+
+Besides completing the current command's or variable's name the
+autocompletion is able to show a template for most of the
 commands indicating the type (and meaning) of the parameters this
 program expects. To activate this feature press
 @key{Shift}+@key{Ctrl}+@key{k} or select the respective menu item
 (Cell/Show Template).
+
 @subsection Greek characters
 Computers traditionally store characters in 8-bit values: This allows
 for a maximum of 256 different characters and all letters, numbers,
@@ -232,11 +242,11 @@ support. In this case it provides a method of entering greek
 characters:
 @itemize @bullet
 @item An alpha is entered by pressing the <ESC> key and then typing in
-      the character a.
+      the character a followed by a press on the <ESC> key.
 @item A beta is entered by pressing the <ESC> key and then typing in
-      the character b.
+      the character b followed by a press on the <ESC> key.
 @item A gamma is entered by pressing the <ESC> key and then typing in
-      the character c.
+      the character c followed by a press on the <ESC> key.
 @item ...and so on.
 @end itemize 
 If the system does not provide unicode support wxMaxima will still
@@ -244,7 +254,8 @@ provide a method of showing greek characters: Variable names like
 ``alpha'' are always displayed as the corresponding greek symbols.
 
 It is to note that a maxima running on a lisp without unicode support
-won't be able to deal with files that contain special unicode characters.
+might not be able to deal with files that contain special unicode
+characters.
 @subsection Side Panes
 @ifnotinfo
 @image{SidePanes,12cm}
