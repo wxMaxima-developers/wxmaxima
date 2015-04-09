@@ -5274,8 +5274,7 @@ EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
 
 END_EVENT_TABLE()
 
-/* 
-Local Variables:      
+/* Local Variables:       */
 /* mode: text             */
 /* c-file-style:  "linux" */
 /* c-basic-offset: 2      */
