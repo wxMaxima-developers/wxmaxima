@@ -73,8 +73,8 @@
     </p>
     
     <h2>Nightly Builds</h2>
-    <h3>Install a Nightly WiBuilds of wxMaxima </h3>
-    
+    <h3>Install a Nightly Build of wxMaxima </h3>
+    <h4>Windows</h4>
     <p>
       The result of the latest nightly build attempt on windows can be queried at
       <a href="http://cdash.dautermann.at/index.php?project=wxMaxima">Wolfgang Dautermann's
@@ -86,14 +86,24 @@
       this installation are compatible with the one used in the
       current nightly build.
     </p>
-    
+    <h4>Linux</h4>
+    A nightly build of wxMaxima can be downloaded from
+    <a href="https://code.launchpad.net/~peterpall/+archive/ubuntu/wxmaxima-nightlies">
+      Launchpad</a>.
+    This page also contains information on how to make debian-based
+    system automatically keep updating to the latest build. For a
+    one-time install downloading the .deb file and double-clicking on
+    it should suffice on most systems. Alternatively the file can be
+    installed from the console, on debian-based systems by
+    typing <span class=code>sudo dpkg -i filename.deb</span>.
     <h3>Updating maxima to the last version, as well</h3>
     <p>
       On Linux updating maxima to the current git head should be
       straightforward. David Scherfgen  
       <a href="https://sourceforge.net/p/maxima/mailman/message/33481264/">
 	posted</a> the following procedure that allows to update the
-      current maxima installation to the git head on windows, too:
+      current maxima installation to the git head on windows, too, without
+      having to install any traditional build tools.
       <ol>
 	<li>
 	  Install the latest &quot;stable&quot; Maxima build for
