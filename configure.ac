@@ -193,6 +193,7 @@ AC_SUBST(WX_LIBS)
 AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 AC_SUBST(HHC)
+AC_SUBST(prefix)
 
 dnl Doxygen creates html code documentation from the comments in the code
 AC_CHECK_PROG(HAVE_DOXYGEN,doxygen,yes,no)
@@ -219,6 +220,7 @@ AC_CONFIG_FILES([
         wxmaxima.spec
         data/Info.plist
 	data/wxMaxima.desktop
+	data/wxmaxima.menu
 ])
 
 AC_OUTPUT

@@ -7,7 +7,12 @@ appdatadir = $(datarootdir)/appdata
 dist_appdata_DATA = wxmaxima.appdata.xml
 
 appicondir = $(datarootdir)/pixmaps
-dist_appicon_DATA = wxmaxima.svg wxmaxima.png text-x-wxmaxima-batch.svg text-x-wxmathml.svg
+dist_appicon_DATA = wxmaxima.svg wxmaxima.png text-x-wxmaxima-batch.svg text-x-wxmathml.svg wxmaxima-16.xpm wxmaxima-32.xpm
+
+menudir = $(datarootdir)/menu
+dist_menu_DATA = wxmaxima.menu
+
+
 
 mandatadir = $(datadir)/man/man1
 dist_mandata_DATA = wxmaxima.1
