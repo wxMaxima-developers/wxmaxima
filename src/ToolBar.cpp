@@ -34,11 +34,7 @@ wxImage ToolBar::GetImage(wxString img)
 #else
 wxBitmap ToolBar::GetImage(wxString img)
 {
-#if defined (__WXMSW__) || defined (__WXMAC__)
-  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
-#else
   return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
-#endif
 }
 #endif
 
@@ -147,7 +143,7 @@ ToolBar::ToolBar(wxToolBar* toolbar)
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
-  #ifndef __WXMSW__
+#ifndef __WXMSW__
   switch(state)
   {
   case Running:
@@ -169,6 +165,6 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
     break;
   }
-  #endif
+#endif
   m_AnimationStartStopState = state;
 }

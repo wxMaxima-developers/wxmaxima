@@ -4711,9 +4711,6 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     if(positionOfEzunitStart!=wxNOT_FOUND)
     {
       frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart+1);
-      std::cerr<<"UnitString: ";
-      std::cerr<<frontOfSelection;
-      std::cerr<<"\n";
       int numberOfParenthesis=0;
 
       for(size_t i=0;i<frontOfSelection.Length()-1;i++)
@@ -4745,7 +4742,6 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     if(inEzUnit)
     {
       type=AutoComplete::unit;
-      std::cerr<<"Unit!\n";
     }
   }
   
@@ -4820,7 +4816,6 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 
   int sel_start, sel_end;
   editor->GetSelection(&sel_start, &sel_end);
-
   editor->ClearSelection();
 
   if (m_autocompleteTemplates)

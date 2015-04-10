@@ -4797,11 +4797,10 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   //
   // On other systems a manual movement of the slider indicates a
   // user wants to change the animation state, though.
-  #ifndef __WXMSW__
-  std::cerr<<"SliderEvent!\n";
+#ifndef __WXMSW__
   if (m_console->AnimationRunning())
     m_console->Animate(false);
-  #endif
+#endif
 
   SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
   if (cell != NULL)
