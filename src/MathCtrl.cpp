@@ -4863,16 +4863,20 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
-  if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent()))) {
-    m_followEvaluation = true;
-    OpenQuestionCaret(text);
+  if(m_activeCell)
+  {
+    if (GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(m_activeCell->GetParent())))
+    {
+      m_followEvaluation = true;
+      OpenQuestionCaret(text);
+    }
+    else {
+      m_activeCell->InsertText(text);
+      Refresh();
+    }
   }
-  else if (m_activeCell == NULL)
+  else
     OpenHCaret(text);
-  else {
-    m_activeCell->InsertText(text);
-    Refresh();
-  }
   return true;
 }
 
@@ -4891,16 +4895,19 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
   m_selectionStart = m_selectionEnd = cell;
   m_hCaretActive = false;
   m_activeCell = NULL;
-  if(GCContainsCurrentQuestion(cell))
+  if(cell)
   {
-    FollowEvaluation(true);
-    OpenQuestionCaret();
+    if(GCContainsCurrentQuestion(cell))
+    {
+      FollowEvaluation(true);
+      OpenQuestionCaret();
+    }
   }
 }
 
 void MathCtrl::OnFollow()
 {
-  if(m_workingGroup)
+  if(GetWorkingGroup())
   {
     m_hCaretActive = true;
     if (m_workingGroup->RevealHidden()) {
