@@ -1,9 +1,6 @@
-desktopdir = $(datarootdir)/applications
-dist_desktop_DATA = wxmaxima.desktop
-
 SUBDIRS = src locales data info test Doxygen
 
-EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
+EXTRA_DIST = bootstrap wxmaxima.spec.in     \
              art/readme.txt art/license.txt                  \
              art/toolbar/gtk-preferences.png art/toolbar/gtk-cut.png   \
              art/toolbar/input.png art/toolbar/gtk-print.png     \
