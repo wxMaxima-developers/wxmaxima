@@ -2035,11 +2035,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     if ((!CanAnimate()) || AnimationRunning())
       event.Skip();
     else
-    {
-      int rot = ccode == WXK_LEFT ? -1 : 1;
-      SlideShow *tmp = (SlideShow *)m_selectionStart;
-      StepAnimation(tmp->GetDisplayedIndex() + rot);
-    }
+      StepAnimation(ccode == WXK_LEFT ? -1 : 1);
     break;
     
   case WXK_HOME: // TODO: if shift down, select.
@@ -2309,13 +2305,16 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
   m_mouseOutside = false;
 }
 
-void MathCtrl::StepAnimation(int pos)
+void MathCtrl::StepAnimation(int change)
 {
   SlideShow *tmp = (SlideShow *)m_selectionStart;
 
+  int pos = tmp->GetDisplayedIndex() + change;
   // Change the bitmap
-  if(pos<0)pos = tmp->GetDisplayedIndex() + 1;
-  if(pos>=tmp->Length())pos = 0;
+  if(pos<0)
+    pos = tmp->Length()-1;
+  if(pos >= tmp->Length())
+    pos = 0;
   tmp->SetDisplayedIndex(pos);
 
   // Refresh the displayed bitmap

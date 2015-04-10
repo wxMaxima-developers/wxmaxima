@@ -603,7 +603,7 @@ public:
       - >=0: The slide the animation has to be set to
       - <0:  Advance the animation by one step.
    */
-  void StepAnimation(int pos = -1);
+  void StepAnimation(int change = 1);
   //! Query if an animation is currently running
   bool AnimationRunning() { return m_animate; }
   //! Tell if an animation should run running
