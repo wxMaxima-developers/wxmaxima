@@ -692,7 +692,6 @@ public:
   void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
     if (recalc) {RecalculateForce(); Refresh();} }
   void CommentSelection();
-  void OnMouseWheel(wxMouseEvent &ev);
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);
   /*! Find the next ocourrence of a string

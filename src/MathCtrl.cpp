@@ -2014,16 +2014,14 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   switch (ccode) {
     // These are ingored
   case WXK_PAGEUP:
-  #ifdef WXK_PRIOR
+#ifdef WXK_PRIOR
   case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
   case WXK_NEXT:  
   #endif 
-  #ifdef WXK_NEXT
+#ifdef WXK_NEXT
   case WXK_NEXT:
-  #endif
+#endif
   case WXK_PAGEDOWN:
-  case WXK_LEFT:
-  case WXK_RIGHT:
   case WXK_WINDOWS_LEFT:
   case WXK_WINDOWS_RIGHT:
   case WXK_WINDOWS_MENU:
@@ -2032,6 +2030,18 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     event.Skip();
     break;
 
+  case WXK_LEFT:
+  case WXK_RIGHT:
+    if ((!CanAnimate()) || AnimationRunning())
+      event.Skip();
+    else
+    {
+      int rot = ccode == WXK_LEFT ? -1 : 1;
+      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      StepAnimation(tmp->GetDisplayedIndex() + rot);
+    }
+    break;
+    
   case WXK_HOME: // TODO: if shift down, select.
     SetHCaret(NULL);
     if (m_tree != NULL)
@@ -4338,26 +4348,26 @@ void MathCtrl::Animate(bool run)
       // generates a "slider changed" event - which is nearlly indistinguishable
       // from a manual slider change that is supposed to stop the animation =>
       // disallow manual slider changes and the problem disappears.
-      #ifdef __WXMSW__
+#ifdef __WXMSW__
       m_mainToolBar->m_plotSlider->Enable(false);
-      #endif
+#endif
     }
     else
     {
       AnimationRunning(false);
       m_animationTimer.Stop();
-      #ifdef __WXMSW__
+#ifdef __WXMSW__
       m_mainToolBar->m_plotSlider->Enable(true);
-      #endif
+#endif
     }
   }
   else
   {
     AnimationRunning(false);
     m_animationTimer.Stop();
-     #ifdef __WXMSW__
+#ifdef __WXMSW__
      m_mainToolBar->m_plotSlider->Enable(true);
-     #endif
+#endif
   }
 }
 
@@ -4546,23 +4556,6 @@ void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
   ev.Skip();
-}
-
-void MathCtrl::OnMouseWheel(wxMouseEvent &ev)
-{
-  ScrolledAwayFromEvaluation(true);
-  
-  m_keyboardInactiveTimer.StartOnce(10000);
-  m_keyboardInactive = false;
-
-  if ((!CanAnimate()) || AnimationRunning())
-    ev.Skip();
-  else
-  {
-    int rot = ev.GetWheelRotation();  
-    SlideShow *tmp = (SlideShow *)m_selectionStart;
-    StepAnimation(tmp->GetDisplayedIndex() + 1);
-  }
 }
 
 wxString MathCtrl::GetInputAboveCaret()
@@ -4943,6 +4936,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
   EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
-  EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
   EVT_SCROLL_CHANGED(MathCtrl::OnScrollChanged)
 END_EVENT_TABLE()
