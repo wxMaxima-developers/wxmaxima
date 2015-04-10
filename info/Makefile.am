@@ -25,7 +25,7 @@ wxmaxima.info : wxmaxima.texi
 
 wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS) manual.css
 	texi2any --no-split --output=wxmaxima.html --html \
-          --css-include="manual.css" --init-file "texi2html.init" wxmaxima.texi
+          --css-include="manual.css" wxmaxima.texi
 
 wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
 	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
@@ -64,7 +64,7 @@ clean-chm:
 endif
 
 
-EXTRA_DIST = manual.css texi2html.init $(html_DATA)\
+EXTRA_DIST = manual.css $(html_DATA)\
     $(genericdirDATA) $(pdffigures) \
     wxmaximaicon.ico \
     wxmaxima.info \
