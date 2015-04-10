@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-08 08:36+0100\n"
-"PO-Revision-Date: 2014-12-24 08:14+0100\n"
+"PO-Revision-Date: 2015-04-10 17:44+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -420,11 +420,11 @@ msgstr "Aggiungi al &percorso..."
 #: ../src/Config.cpp:136
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
-msgstr ""
+msgstr "Comandi aggiuntivi da aggiungere al preambolo dell'uscita LaTeX per pdftex."
 
 #: ../src/Config.cpp:365
 msgid "Additional lines for the TeX preamble:"
-msgstr ""
+msgstr "Righe aggiuntive per il preambolo TeX:"
 
 #: ../src/Config.cpp:133
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
@@ -906,22 +906,21 @@ msgstr "Predefinito"
 
 #: ../src/Config.cpp:286
 msgid "Default animation framerate:"
-msgstr ""
+msgstr "Framerate predefinito per le animazioni:"
 
 #: ../src/Config.cpp:456
 msgid "Default font:"
 msgstr "Carattere predefinito:"
 
 #: ../src/Config.cpp:427
-#, fuzzy
 msgid "Default port for communication with wxMaxima:"
-msgstr "La porta predefinita usata per la comunicazione tra Maxima e wxMaxima."
+msgstr "La porta predefinita per la comunicazione con wxMaxima:"
 
 #: ../src/Config.cpp:138
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
-msgstr ""
+msgstr "Definisce la velocità predefinita (in quadri al secondo) alla quale sono eseguite le animazioni."
 
 #: ../src/wxMaxima.cpp:2463 ../src/wxMaxima.cpp:2472
 msgid "Delete"
@@ -1239,7 +1238,7 @@ msgstr "Esporta"
 #: ../src/Config.cpp:382
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
-msgstr ""
+msgstr "Esporta le animazioni in TeX (le immagini si muoveranno solo se il visualizzatore PDF lo supporterà)"
 
 #: ../src/wxMaximaFrame.cpp:214
 msgid "Export document to a HTML or pdfLaTeX file"
@@ -1553,11 +1552,10 @@ msgid "Grid:"
 msgstr "Griglia:"
 
 #: ../src/wxMaxima.cpp:2080
-#, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|Automatic by extension|"
 "*"
-msgstr "File HTML (*.html)|*.html|File PDFLaTeX (*.tex)|*.tex|Tutti|*"
+msgstr "File HTML (*.html)|*.html|File pdfLaTeX (*.tex)|*.tex|Per estensione automatica|"
 
 #: ../src/wxMaxima.cpp:2824 ../src/wxMaxima.cpp:2843
 msgid "Height:"
@@ -1623,7 +1621,7 @@ msgstr "IC2"
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
-msgstr ""
+msgstr "Se i numeri verranno più lunghi di questo numero di cifre verranno mostrati abbreviati con dei puntini di sospensione."
 
 #: ../data/tips.txt:5
 msgid ""
@@ -1656,7 +1654,7 @@ msgstr "File immagine (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
-msgstr ""
+msgstr "Nel risultato LaTeX: metti gli esponenti dopo un eventuale pedice invece di metterli sopra di esso. Può migliorare la leggibilità con alcuni font e con alcuni pedici corti."
 
 #: ../src/wxMaxima.cpp:3930
 msgid "Include columns:"
@@ -1852,11 +1850,11 @@ msgstr "mcm"
 
 #: ../src/Config.cpp:385
 msgid "LaTeX: Place exponents after, instead above subscripts"
-msgstr ""
+msgstr "LaTeX: metti gli esponenti dopo, invece che sopra i pedici"
 
 #: ../src/Config.cpp:146
 msgid "Language used for wxMaxima GUI."
-msgstr "Lingua usata per l'interfaccia grafica di wxMaxima."
+msgstr "Lingua usata per wxMaxima."
 
 #: ../src/Config.cpp:335
 msgid "Language:"
@@ -2028,7 +2026,7 @@ msgstr "Versione di Maxima: "
 
 #: ../src/Config.cpp:292
 msgid "Maximum displayed number of digits:"
-msgstr ""
+msgstr "Numero massimo di cifre mostrate:"
 
 #: ../src/wxMaximaFrame.cpp:1059
 msgid "Mean Difference Test..."
@@ -2210,11 +2208,11 @@ msgstr "Celle non aggiornate"
 
 #: ../src/wxMaxima.cpp:1750
 msgid "Output from Maxima to stderr (there should be none):\n"
-msgstr ""
+msgstr "Risultati di Maxima su stderr (non dovrebbero essercene):\n"
 
 #: ../src/wxMaxima.cpp:1742
 msgid "Output from Maxima to stdout (there should be none):\n"
-msgstr ""
+msgstr "Risultato di Maxima su stdout (non dovrebbero essercene):\n"
 
 #: ../src/Config.cpp:473
 msgid "Output labels"
@@ -2403,14 +2401,12 @@ msgid "Product"
 msgstr "Prodotto"
 
 #: ../src/wxMaximaFrame.cpp:298
-#, fuzzy
 msgid "Re-evaluate All until here\tCtrl-Shift-H"
-msgstr "Elabora tutte le celle\tCtrl-Maiusc-R"
+msgstr "Ri-elabora tutto fino a qui\tCtrl-Maiusc-H"
 
 #: ../src/wxMaximaFrame.cpp:299
-#, fuzzy
 msgid "Re-evaluate all cells above the one the cursor is in"
-msgstr "Elabora tutte le celle nel documento"
+msgstr "Ri-elabora tutte le celle sopra quella dove si trova il cursore"
 
 #: ../src/wxMaximaFrame.cpp:1074
 msgid "Read Matrix..."
@@ -2925,7 +2921,7 @@ msgid ""
 "Some PDF viewers are able to display moving images and wxMaxima is able to "
 "output them. If this option is selected additional LaTeX packages might be "
 "needed in order to compile the putput, though."
-msgstr ""
+msgstr "Alcuni visualizzatori PDF sono in grado di visualizzare immagini in movimento che wxMaxima è in grado generare. Se questa opzione è selezionata potrebbero però essere necessari ulteriori pacchetti LaTeX per poter compilare i risultati."
 
 #: ../src/Config.cpp:356
 msgid "Spanish"
@@ -3056,7 +3052,7 @@ msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it."
-msgstr ""
+msgstr "Il terminale pngCairo offre qualità grafica molto migliore (antialias e stili di linee aggiuntivi). Esso produrrà grafici però solamente se la versione correntemente installata nel sistema di gnuplot lo supporta."
 
 #: ../data/tips.txt:10
 msgid ""
@@ -3274,7 +3270,7 @@ msgstr "Usa l'algoritmo di Gosper"
 
 #: ../src/Config.cpp:376
 msgid "Use cairo to improve plot quality."
-msgstr ""
+msgstr "Usa cairo per migliorare la qualità dei grafici."
 
 #: ../src/Config.cpp:150 ../src/Config.cpp:306
 msgid "Use centered dot character for multiplication"
@@ -3341,7 +3337,7 @@ msgstr "Ampiezza:"
 
 #: ../src/Config.cpp:107
 msgid "Worksheet"
-msgstr ""
+msgstr "Foglio di lavoro"
 
 #: ../src/Config.cpp:144
 msgid "Write matching parenthesis in text controls."
@@ -3651,12 +3647,3 @@ msgstr ""
 #: ../src/wxMaxima.cpp:3597
 msgid "yes"
 msgstr "sì"
-
-#~ msgid "Default port:"
-#~ msgstr "Porta predefinita:"
-
-#~ msgid "Save changes before closing?"
-#~ msgstr "Salvare i cambiamenti prima di chiudere?"
-
-#~ msgid "Save changes?"
-#~ msgstr "Salvare i cambiamenti?"
