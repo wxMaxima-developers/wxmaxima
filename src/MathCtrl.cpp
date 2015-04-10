@@ -91,6 +91,7 @@ wxScrolledCanvas(
   m_zoomFactor = 1.0; // set zoom to 100%
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
+  m_autocompleteTemplates = false;
 
   DisableKeyboardScrolling();
 
@@ -4752,6 +4753,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   wxString partial = editor->GetSelectionString();
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
+  m_autocompleteTemplates = type == AutoComplete::tmplte;
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)
@@ -4818,13 +4820,12 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   editor->ReplaceSelection(editor->GetSelectionString(),
                            m_completions[event.GetId() - popid_complete_00]);
 
-  int sel_start, sel_end;
-  editor->GetSelection(&sel_start, &sel_end);
-
-  editor->ClearSelection();
-
   if (m_autocompleteTemplates)
   {
+    int sel_start, sel_end;
+    editor->GetSelection(&sel_start, &sel_end);
+    editor->ClearSelection();
+
     editor->CaretToPosition(caret);
     if (!editor->FindNextTemplate())
       editor->CaretToPosition(sel_start + m_completions[event.GetId() - popid_complete_00].Length());
