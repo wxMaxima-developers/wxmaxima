@@ -113,9 +113,10 @@ rearranging formulas and finding a formula solving the problem as
 opposed to just outputting the numeric value of the result.  
 
 @ifnotinfo
-@image{maxima_screenshot,6cm}
-@end ifnotinfo
 
+@image{maxima_screenshot,6cm}
+
+@end ifnotinfo
 There is extensive documentation for maxima available in the internet
 part of which can be found in wxMaxima's help menu. To make access to
 the documentation easier if the @key{Help} key is pressed (on most systems
@@ -131,9 +132,10 @@ if that is needed, any part of a formula, as well) as text, as LaTeX
 or as MathML specification at a simple right-click.
 
 @ifnotinfo
-@image{wxMaximaWindow,12cm}
-@end ifnotinfo
 
+@image{wxMaximaWindow,12cm}
+
+@end ifnotinfo
 The calculations itself are done by the maxima command-line
 tool in the background.
 @section  Worksheet basics
@@ -153,7 +155,9 @@ The cells wxMaxima automatically creates on typing some text are maxima
 input cells that will eventually be sent to maxima.
 
 @ifnotinfo
+
 @image{InputCell,12cm}
+
 @end ifnotinfo
 
 On evaluation of an input cell's contents the input cell maxima
@@ -170,7 +174,9 @@ unneeded changes is rather easy. Besides this the worksheet itself has a
 global undo buffer that can undo cell edits, adds and deletes.
 
 @ifnotinfo
+
 @image{NoiseFilter,12cm}
+
 @end ifnotinfo
 @subsection Cells
 The worksheet is organized in cells that work like very much like the
@@ -213,9 +219,10 @@ within an unit specification for ezUnits it will offer a list of applicable
 units.
 
 @ifnotinfo
-@image{ezUnits,12cm}
-@end ifnotinfo
 
+@image{ezUnits,12cm}
+
+@end ifnotinfo
 Besides completing the current command's or variable's name the
 autocompletion is able to show a template for most of the
 commands indicating the type (and meaning) of the parameters this
@@ -259,10 +266,12 @@ It is to note that a maxima running on a lisp without unicode support
 might not be able to deal with files that contain special unicode
 characters.
 @subsection Side Panes
-@ifnotinfo
-@image{SidePanes,12cm}
-@end ifnotinfo
 
+@ifnotinfo
+
+@image{SidePanes,12cm}
+
+@end ifnotinfo
 Shortcuts to the most important maxima commands and a history of the last
 issued commands can be accessed using the side panes. They can be enabled
 using the ``Panes'' entry in the ``Maxima'' menu.
