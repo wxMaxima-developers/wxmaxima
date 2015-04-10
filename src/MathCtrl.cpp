@@ -277,7 +277,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
 GroupCell *MathCtrl::InsertGroupCells(GroupCell* cells,GroupCell* where)
 {
-  InsertGroupCells(cells,where,&treeUndoActions);
+  return InsertGroupCells(cells,where,&treeUndoActions);
 }
   
 // InsertGroupCells
@@ -1405,12 +1405,12 @@ void MathCtrl::TreeUndo_CellEntered()
   }
 }
 
-bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest)
+void MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest)
 {
   TreeUndo_MergeSubsequentEdits(mergeRequest,&treeUndoActions);
 }
 
-bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList)
+void MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList)
 {
   wxASSERT_MSG(mergeRequest != m_TreeUndoMergeSubsequentEdits,_("Bug: Start or end of merging of subsequent editing actions was requested two times in a row."));
   

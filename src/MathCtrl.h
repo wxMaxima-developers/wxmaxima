@@ -191,7 +191,7 @@ class MathCtrl: public wxScrolledCanvas
       - treeUedoActions for the normal undo buffer or
       - treeRedoActions for the buffer that allows reverting undos
    */
-  bool TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList);
+  void TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList);
   /*! True collectes requests until the end of a whole cell paste action
 
     A replace or action can consist of a cell delete and many consecutive adds of
@@ -203,7 +203,7 @@ class MathCtrl: public wxScrolledCanvas
      - true=Start collecting data for one big undo action
      - false=Stop collecting data and write the undo action to the undo buffer.
   */
-  bool TreeUndo_MergeSubsequentEdits(bool mergeRequest);
+  void TreeUndo_MergeSubsequentEdits(bool mergeRequest);
   bool m_TreeUndoMergeSubsequentEdits;
   //! true if m_start of m_currentUndoAction already marks the beginning of the action.
   bool m_TreeUndoMergeStartIsSet;
