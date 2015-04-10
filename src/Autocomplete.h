@@ -1,6 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2015 Gunter Königsmann     <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,14 +29,21 @@
 class AutoComplete
 {
 public:
+  //! All types of things we can autocomplete
+  enum autoCompletionType
+  {
+    command, //! Command names. \attention Must be the first entry in this enum
+    tmplte,  //! Function templates
+    unit     //! Unit names. \attention Must be the last entry in this enum 
+  };
+    
   AutoComplete();
   bool LoadSymbols(wxString file);
-  void AddSymbol(wxString fun, bool templ = false);
-  wxArrayString CompleteSymbol(wxString partial, bool templates = false);
+  void AddSymbol(wxString fun, autoCompletionType type=command);
+  wxArrayString CompleteSymbol(wxString partial, autoCompletionType type=command);
   wxString FixTemplate(wxString templ);
 private:
-  wxArrayString m_symbolList;
-  wxArrayString m_templateList;
+  wxArrayString m_wordList[3];
   wxRegEx m_args;
 };
 

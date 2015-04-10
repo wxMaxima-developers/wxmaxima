@@ -1,6 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2015 Gunter Königsmann     <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,11 +34,12 @@ bool AutoComplete::LoadSymbols(wxString file)
   if (!wxFileExists(file))
     return false;
 
-  if (m_symbolList.GetCount() > 0)
-    m_symbolList.Empty();
-  if (m_templateList.GetCount() > 0)
-    m_templateList.Empty();
-
+  for(int i=command;i<=unit;i++)
+  {
+    if (m_wordList[i].GetCount()!=0)
+      m_wordList[i].Clear();
+  }
+ 
   wxString line;
   wxString rest, function;
   wxTextFile index(file);
@@ -48,42 +50,45 @@ bool AutoComplete::LoadSymbols(wxString file)
   {
     if (line.StartsWith(wxT("FUNCTION: ")) ||
         line.StartsWith(wxT("OPTION  : ")))
-      m_symbolList.Add(line.Mid(10));
+      m_wordList[command].Add(line.Mid(10));
     else if (line.StartsWith(wxT("TEMPLATE: ")))
-      m_templateList.Add(FixTemplate(line.Mid(10)));
+      m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
+      else if
+        (line.StartsWith(wxT("UNIT: ")))
+        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
   }
 
   index.Close();
 
   /// Add wxMaxima functions
-  m_symbolList.Add(wxT("set_display"));
-  m_symbolList.Add(wxT("wxplot2d"));
-  m_templateList.Add(wxT("wxplot2d(<expr>,<x_range>)"));
-  m_symbolList.Add(wxT("wxplot3d"));
-  m_templateList.Add(wxT("wxplot3d(<expr>,<x_range>,<y_range>)"));
-  m_symbolList.Add(wxT("wximplicit_plot"));
-  m_symbolList.Add(wxT("wxcontour_plot"));
-  m_symbolList.Add(wxT("wxanimate"));
-  m_symbolList.Add(wxT("wxanimate_draw"));
-  m_symbolList.Add(wxT("wxanimate_draw3d"));
-  m_symbolList.Add(wxT("with_slider"));
-  m_templateList.Add(wxT("with_slider(<a_var>,<a_list>,<expr>,<x_range>)"));
-  m_symbolList.Add(wxT("with_slider_draw"));
-  m_symbolList.Add(wxT("with_slider_draw3d"));
-  m_symbolList.Add(wxT("wxdraw"));
-  m_symbolList.Add(wxT("wxdraw2d"));
-  m_symbolList.Add(wxT("wxdraw3d"));
-  m_symbolList.Add(wxT("wxhistogram"));
-  m_symbolList.Add(wxT("wxscatterplot"));
-  m_symbolList.Add(wxT("wxbarsplot"));
-  m_symbolList.Add(wxT("wxpiechart"));
-  m_symbolList.Add(wxT("wxboxplot"));
-  m_symbolList.Add(wxT("wxplot_size"));
-  m_symbolList.Add(wxT("wxdraw_list"));
-  m_symbolList.Add(wxT("table_form"));
-  m_symbolList.Add(wxT("wxbuild_info"));
-  m_templateList.Add(wxT("table_form(<data>)"));
-  m_templateList.Add(wxT("table_form(<data>,<[options]>)"));
+  m_wordList[command].Add(wxT("set_display"));
+  m_wordList[command].Add(wxT("wxplot2d"));
+  m_wordList[tmplte].Add(wxT("wxplot2d(<expr>,<x_range>)"));
+  m_wordList[command].Add(wxT("wxplot3d"));
+  m_wordList[tmplte].Add(wxT("wxplot3d(<expr>,<x_range>,<y_range>)"));
+  m_wordList[command].Add(wxT("wximplicit_plot"));
+  m_wordList[command].Add(wxT("wxcontour_plot"));
+  m_wordList[command].Add(wxT("wxanimate"));
+  m_wordList[command].Add(wxT("wxanimate_draw"));
+  m_wordList[command].Add(wxT("wxanimate_draw3d"));
+  m_wordList[command].Add(wxT("with_slider"));
+  m_wordList[tmplte].Add(wxT("with_slider(<a_var>,<a_list>,<expr>,<x_range>)"));
+  m_wordList[command].Add(wxT("with_slider_draw"));
+  m_wordList[command].Add(wxT("with_slider_draw3d"));
+  m_wordList[command].Add(wxT("wxdraw"));
+  m_wordList[command].Add(wxT("wxdraw2d"));
+  m_wordList[command].Add(wxT("wxdraw3d"));
+  m_wordList[command].Add(wxT("wxhistogram"));
+  m_wordList[command].Add(wxT("wxscatterplot"));
+  m_wordList[command].Add(wxT("wxbarsplot"));
+  m_wordList[command].Add(wxT("wxpiechart"));
+  m_wordList[command].Add(wxT("wxboxplot"));
+  m_wordList[command].Add(wxT("wxplot_size"));
+  m_wordList[command].Add(wxT("wxdraw_list"));
+  m_wordList[command].Add(wxT("table_form"));
+  m_wordList[command].Add(wxT("wxbuild_info"));
+  m_wordList[tmplte].Add(wxT("table_form(<data>)"));
+  m_wordList[tmplte].Add(wxT("table_form(<data>,<[options]>)"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
@@ -101,40 +106,42 @@ bool AutoComplete::LoadSymbols(wxString file)
     {
       if (line.StartsWith(wxT("FUNCTION: ")) ||
           line.StartsWith(wxT("OPTION  : ")))
-        m_symbolList.Add(line.Mid(10));
+        m_wordList[command].Add(line.Mid(10));
       else if (line.StartsWith(wxT("TEMPLATE: ")))
-        m_templateList.Add(FixTemplate(line.Mid(10)));
-      else
-        m_symbolList.Add(line);
+        m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
+      else if (line.StartsWith(wxT("UNIT: ")))
+        m_wordList[unit].Add(FixTemplate(line.Mid(6)));      
     }
 
     priv.Close();
   }
 
-  m_symbolList.Sort();
+  m_wordList[command].Sort();
 
   return false;
 }
 
 /// Returns a string array with functions which start with partial.
-wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
+wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType type)
 {
   wxArrayString completions;
   wxArrayString perfectCompletions;
 
-  if (!templates) {
-    for (int i=0; i<m_symbolList.GetCount(); i++)
+  wxASSERT_MSG((type>=command)&&(type<=unit),_("Bug: Autocompletion requested for unknown type of item."));
+  
+  if (type != tmplte) {
+    for (int i=0; i<m_wordList[type].GetCount(); i++)
     {
-      if (m_symbolList[i].StartsWith(partial) &&
-          completions.Index(m_symbolList[i]) == wxNOT_FOUND)
-        completions.Add(m_symbolList[i]);
+      if (m_wordList[type][i].StartsWith(partial) &&
+          completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
+        completions.Add(m_wordList[type][i]);
     }
   }
 
   else {
-    for (int i=0; i<m_templateList.GetCount(); i++)
+    for (int i=0; i<m_wordList[type].GetCount(); i++)
     {
-      wxString templ = m_templateList[i];
+      wxString templ = m_wordList[type][i];
       if (templ.StartsWith(partial))
       {
         if (completions.Index(templ) == wxNOT_FOUND)
@@ -151,39 +158,43 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, bool templates)
   return completions;
 }
 
-void AutoComplete::AddSymbol(wxString fun, bool templ)
+void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
 {
   /// Check for function of template
   if (fun.StartsWith(wxT("FUNCTION: ")))
   {
     fun = fun.Mid(10);
-    templ = false;
+    type = command;
   }
   else if (fun.StartsWith(wxT("TEMPLATE: ")))
   {
     fun = fun.Mid(10);
-    templ = true;
+    type = tmplte;
+  } else if (fun.StartsWith(wxT("UNIT: ")))
+  {
+    fun = fun.Mid(6);
+    type = unit;
   }
 
   /// Add symbols
-  if (!templ && m_symbolList.Index(fun, true, true) == wxNOT_FOUND)
-    m_symbolList.Add(fun);
+  if ((type != tmplte) && m_wordList[type].Index(fun, true, true) == wxNOT_FOUND)
+    m_wordList[type].Add(fun);
 
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
-  if (templ)
+  if (type == tmplte)
   {
     fun = FixTemplate(fun);
     wxString funName = fun.SubString(0, fun.Find(wxT("(")));
     int count = fun.Freq('<'), i=0;
-    for (i=0; i<m_templateList.GetCount(); i++)
+    for (i=0; i<m_wordList[type].GetCount(); i++)
     {
-      wxString t = m_templateList[i];
+      wxString t = m_wordList[type][i];
       if (t.StartsWith(funName) && t.Freq('<') == count)
         break;
     }
-    if (i == m_templateList.GetCount())
-      m_templateList.Add(fun);
+    if (i == m_wordList[type].GetCount())
+      m_wordList[type].Add(fun);
   }
 }
 

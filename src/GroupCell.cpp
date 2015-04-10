@@ -1397,3 +1397,28 @@ bool GroupCell::IsMainInput(MathCell *active)
 
   return (active == m_input->m_next);
 }
+
+bool GroupCell::Contains(GroupCell *cell)
+{
+  GroupCell *tmp = this;
+
+  // Iterate through all cells
+  while(tmp)
+  {
+    // If this is the cell we search for we can end the search.
+    if(tmp == cell)
+      return true;
+
+    // If this cell contains a hidden tree we have to search that at well.
+    if (this->IsFoldable())
+      if(this->GetHiddenTree())
+        if (this->GetHiddenTree()->Contains(cell))
+          return true;
+
+    // Step to the next cell.
+    tmp= dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  
+  return false;
+}
+

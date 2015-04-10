@@ -59,6 +59,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_lastWorkingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
   m_questionPrompt = false;
@@ -362,38 +363,50 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   GroupCell *tmp = m_workingGroup;
 
-  // If there is no working group we take the last cell
+  // If there is no working group we take the last cell maxima evaluated
+  if (tmp == NULL)
+    tmp = m_lastWorkingGroup;
+
+  // If there is no such cell, neither, we append the line to the end of the
+  // worksheet.
   if (tmp == NULL)
     tmp = m_last;
 
-  // If there is no last cell either the new one is used as the last cell.
+  // If we still don't have a place to put the line we give up.
   if (tmp == NULL)
     return;
 
-  newCell->ForceBreakLine(forceNewLine);
+  if(m_tree->Contains(tmp))
+  {     
+    newCell->ForceBreakLine(forceNewLine);
+    
+    tmp->AppendOutput(newCell);
 
-  tmp->AppendOutput(newCell);
+    newCell->SetParentList(tmp);
+    
+    m_selectionStart = NULL;
+    m_selectionEnd = NULL;
 
-  newCell->SetParentList(tmp);
+    wxClientDC dc(this);
+    CellParser parser(dc);
+    parser.SetZoomFactor(m_zoomFactor);
+    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
+    tmp->RecalculateAppended(parser);
+    Recalculate();
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetZoomFactor(m_zoomFactor);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-
-  tmp->RecalculateAppended(parser);
-  Recalculate();
-
-  if(FollowEvaluation()) {
-    if(GCContainsCurrentQuestion(tmp))
-      OpenQuestionCaret();
-    ScrollToCell(tmp); // also refreshes
+    if(FollowEvaluation()) {
+      if(GCContainsCurrentQuestion(tmp))
+        OpenQuestionCaret();
+      ScrollToCell(tmp); // also refreshes
+    }
+    else
+      Refresh();
   }
   else
-    Refresh();
+  {
+    wxASSERT_MSG(m_tree->Contains(tmp),_("Bug: Trying to append maxima's output to a cell outside the worksheet."));
+  }
 }
 
 /***
@@ -569,6 +582,7 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which) {
   return result;
 }
 
+
 /**
  * Toggles the status of the fold for the given GroupCell and its children.
  * If the cell is folded, it will be recursively unfolded;
@@ -724,7 +738,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
 
-        if (m_selectionStart != m_selectionEnd)
+        if (CanMergeSelection())
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
       }
 
@@ -939,7 +953,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   }
 
   if (clickedBeforeGC != NULL) { // we clicked between groupcells, set hCaret
-    SetHCaret(tmp->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(tmp->m_previous), false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
     // The click will has changed the position that is in focus so we assume
@@ -1052,7 +1066,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
     if (tmp == NULL)
       m_selectionEnd = m_last;
     if (m_selectionEnd == (m_selectionStart->m_previous)) {
-      SetHCaret(m_selectionEnd, false); // will refresh at the end of function
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false); // will refresh at the end of function
     }
     else {
       m_hCaretActive = false;
@@ -1291,11 +1305,16 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
 {
   if(m_TreeUndoMergeSubsequentEdits)
   {
-    if(!m_currentUndoAction.m_start) m_currentUndoAction.m_start = start;
+    if(!m_TreeUndoMergeStartIsSet)
+    {
+      m_currentUndoAction.m_start = start;
+      m_TreeUndoMergeStartIsSet = true;
+    }
     
     if(m_currentUndoAction.m_newCellsEnd)
       wxASSERT_MSG(end->m_previous == m_currentUndoAction.m_newCellsEnd,
-                   _("Bug: Trying to merge individual cells adds to a region in the undo buffer but there are other cells between them."));
+                   _("Bug: Trying to merge individual cell adds to a region in the undo buffer but there are other cells between them."));
+
     m_currentUndoAction.m_newCellsEnd = end;
   }
   else
@@ -1304,6 +1323,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
     undoAction->m_start = start;
     undoAction->m_newCellsEnd = end;
     undoBuffer->push_front(undoAction);
+    TreeUndo_LimitUndoBuffer();
     TreeUndo_ClearRedoActionList();
   }
 }
@@ -1342,13 +1362,13 @@ void MathCtrl::TreeUndo_CellLeft()
 {
   if(m_TreeUndoMergeSubsequentEdits) return;
 
-  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
-
   // If no cell is active we didn't leave a cell and return from this function.
-  if(activeCell==NULL)
+  if(GetActiveCell()==NULL)
   {
     return;
   }
+
+  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
   
   if(TreeUndo_ActiveCell)
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell,_("Bug: Cell left but not entered."));
@@ -1365,6 +1385,7 @@ void MathCtrl::TreeUndo_CellLeft()
     undoAction->m_start = activeCell;
     wxASSERT_MSG(undoAction->m_start != NULL,_("Bug: Trying to record a cell contents change without a cell."));    
     treeUndoActions.push_front(undoAction);
+    TreeUndo_LimitUndoBuffer();
     m_currentUndoAction.Clear();
     TreeUndo_ClearRedoActionList();
   }
@@ -1392,22 +1413,24 @@ bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest)
 bool MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest,std::list <TreeUndoAction *> *undoList)
 {
   wxASSERT_MSG(mergeRequest != m_TreeUndoMergeSubsequentEdits,_("Bug: Start or end of merging of subsequent editing actions was requested two times in a row."));
-
-  // If we start merging undos we still have no "start of operation" marker.
-  if(mergeRequest && (!m_TreeUndoMergeSubsequentEdits))
-    m_currentUndoAction.m_start = NULL;
   
   // If we have just finished collecting data for a undo action it is time to
   // create an item for the undo buffer.
-  if(!mergeRequest)
+  if(mergeRequest)
   {
-    if(m_currentUndoAction.m_start!=NULL)
+    m_currentUndoAction.Clear();
+    m_TreeUndoMergeStartIsSet = false;
+  }
+  else
+  {
+    if(m_TreeUndoMergeStartIsSet)
     {
       TreeUndoAction *undoAction=new TreeUndoAction(m_currentUndoAction);
       undoList->push_front(undoAction);
       m_currentUndoAction.Clear();
       TreeUndo_ActiveCell = NULL;
-   }
+      m_TreeUndoMergeStartIsSet = false;
+    }
   }
 
   // Remember if we are currently merging undo info.
@@ -1439,9 +1462,13 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   m_hCaretPosition = NULL;
 
   // check if chapters or sections need to be renumbered
+  // and unset m_lastWorkingGroup if it points to a cell that isn't valid any more.
   bool renumber = false;
   GroupCell *tmp = start;
   while (tmp) {
+    if(tmp==m_lastWorkingGroup)
+      m_lastWorkingGroup = NULL;
+    
     if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE)) {
       renumber = true;
       break;
@@ -1483,15 +1510,20 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       if(!m_TreeUndoMergeSubsequentEdits)
       {
         TreeUndoAction *undoAction = new TreeUndoAction;
-        undoAction->m_start = m_tree;
+        m_TreeUndoMergeStartIsSet = true;
+        undoAction->m_start = NULL;
         undoAction->m_oldCells = start;
         
         undoBuffer->push_front(undoAction);
+        TreeUndo_LimitUndoBuffer();
       }
       else
       {
-        if(!m_currentUndoAction.m_start)
-          m_currentUndoAction.m_start = m_tree;
+        if(!m_TreeUndoMergeStartIsSet)
+        {
+          m_currentUndoAction.m_start = NULL;
+          m_TreeUndoMergeStartIsSet = true;
+        }
         m_currentUndoAction.m_oldCells = start;
       }
     }
@@ -1526,12 +1558,16 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
         undoAction->m_start = dynamic_cast<GroupCell*>(start->m_previous);
         undoAction->m_oldCells = start;
         undoBuffer->push_front(undoAction);
+        TreeUndo_LimitUndoBuffer();
       }
       else
       {
         // Add the cells that are to be deleted to the undo action.
-        if(!m_currentUndoAction.m_start)
+        if(!m_TreeUndoMergeStartIsSet)
+        {
           m_currentUndoAction.m_start = dynamic_cast<GroupCell*>(start->m_previous);
+          m_TreeUndoMergeStartIsSet = true;
+        }
         m_currentUndoAction.m_oldCells = start;
       }
 
@@ -1543,7 +1579,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
   m_selectionStart = m_selectionEnd = NULL;
   if (newSelection != NULL)
-    SetHCaret(newSelection->m_previous, false);
+    SetHCaret(dynamic_cast<GroupCell*>(newSelection->m_previous), false);
   else
     SetHCaret(m_last, false);
 
@@ -1556,6 +1592,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
+
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
     
@@ -1613,10 +1650,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // set m_hCaretPosition to a sensible value
   if (m_activeCell != NULL)
   {
-    SetHCaret(m_activeCell->GetParent(), false);
+    SetHCaret(dynamic_cast<GroupCell*>(m_activeCell->GetParent()), false);
   }
   else if (m_selectionStart != NULL)
-    SetHCaret(m_selectionStart->GetParent(), false);
+    SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart), false);
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
@@ -1803,7 +1840,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
       m_activeCell->GetValue() == wxEmptyString) {
-    m_selectionStart = m_selectionEnd = m_activeCell->GetParent();
+    m_selectionStart = m_selectionEnd = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     DeleteSelection();
     return;
   }
@@ -1977,6 +2014,13 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   switch (ccode) {
     // These are ingored
   case WXK_PAGEUP:
+  #ifdef WXK_PRIOR
+  case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
+  case WXK_NEXT:  
+  #endif 
+  #ifdef WXK_NEXT
+  case WXK_NEXT:
+  #endif
   case WXK_PAGEDOWN:
   case WXK_LEFT:
   case WXK_RIGHT:
@@ -2019,7 +2063,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       }
     }
     else if (m_hCaretPosition->m_next != NULL) {
-      SetSelection(m_hCaretPosition->m_next);
+      SetSelection(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next));
       m_hCaretActive = false;
       Refresh();
       return;
@@ -2032,30 +2076,30 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if (m_selectionStart != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_selectionStart;
+          GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart);
           if(tmp->m_previous)
           {
-            do tmp = tmp->m_previous; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_previous); while(
               (tmp->m_previous)&&(
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                (tmp->GetGroupType()!=GC_TYPE_TITLE) &&
+                (tmp->GetGroupType()!=GC_TYPE_SECTION) &&
+                (tmp->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
-            SetHCaret(tmp);
+            SetHCaret(dynamic_cast<GroupCell*>(tmp));
           } else
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
-          SetHCaret(m_selectionStart->GetParent()->m_previous);
+          SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
       }
       else if (m_hCaretPosition != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_hCaretPosition;
+          GroupCell *tmp = m_hCaretPosition;
           if(tmp->m_previous)
           {
-            do tmp = tmp->m_previous; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_previous); while(
               (tmp->m_previous)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
@@ -2074,7 +2118,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         event.Skip();
     }
     else if (m_selectionStart != NULL) 
-      SetHCaret(m_selectionStart->GetParent()->m_previous);
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
     else if (!ActivatePrevInput())
       event.Skip();
     else
@@ -2090,28 +2134,28 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
           MathCell *tmp = m_selectionEnd;
           if(tmp->m_next)
           {
-            do tmp = tmp->m_next; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_next); while(
               (tmp->m_next)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
-            SetHCaret(tmp);
+            SetHCaret(dynamic_cast<GroupCell*>(tmp));
           } else
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
-          SetHCaret(m_selectionEnd->GetParent());
+          SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
         
       }
       else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL) {
         if(event.CmdDown())
         {
-          MathCell *tmp = m_hCaretPosition;
+          GroupCell *tmp = m_hCaretPosition;
           if(tmp->m_next)
           {
-            do tmp = tmp->m_next; while(
+            do tmp = dynamic_cast<GroupCell*>(tmp->m_next); while(
               (tmp->m_next)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
@@ -2131,7 +2175,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 
     }
     else if (m_selectionEnd != NULL)
-      SetHCaret(m_selectionEnd->GetParent());
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
     else if (!ActivateNextInput())
       event.Skip();
     else
@@ -2338,6 +2382,7 @@ void MathCtrl::DestroyTree() {
   m_hCaretPosition = NULL;
   DestroyTree(m_tree);
   m_tree = m_last = NULL;
+  m_lastWorkingGroup = NULL;
 }
 
 void MathCtrl::DestroyTree(MathCell* tmp) {
@@ -3446,7 +3491,9 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   }
   else if (m_selectionStart != NULL) {
     GroupCell *parent = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
-    parent->SelectOutput(&m_selectionStart, &m_selectionEnd);
+    MathCell *selectionStart = m_selectionStart;
+    MathCell *selectionEnd   = m_selectionEnd;
+    parent->SelectOutput(&selectionStart, &selectionEnd);
     Refresh();
   }
   // Re-calculate the table of contents
@@ -3577,7 +3624,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-  SetHCaret(m_selectionEnd);
+  SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
 }
 
 void MathCtrl::AddDocumentTillHereToEvaluationQueue()
@@ -3608,7 +3655,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
-  SetHCaret((MathCell *) gc);
+  SetHCaret(gc);
 }
 void MathCtrl::ClearEvaluationQueue()
 {
@@ -3683,6 +3730,19 @@ void MathCtrl::Undo()
   }
 }
 
+void MathCtrl::TreeUndo_LimitUndoBuffer()
+{
+  
+  wxConfigBase *config = wxConfig::Get();
+  int undoLimit;
+  config->Read(wxT("undoLimit"),&undoLimit);
+
+  if(undoLimit == 0)
+    return;
+  while(treeUndoActions.size() > undoLimit)
+    TreeUndo_DiscardAction(&treeUndoActions);
+}
+
 bool MathCtrl::CanTreeUndo(){
   if(treeUndoActions.empty())
     return false;
@@ -3726,6 +3786,20 @@ void MathCtrl::Redo()
   }
 }
 
+bool MathCtrl::CanMergeSelection()
+{
+  // We cannot merge cells if not at least two cells are selected
+  if(GetSelectionStart() == GetSelectionEnd())
+    return false;
+
+  // We cannot merge cells if we cannot delete the cells that are
+  // removed during the merge.
+  if(!CanDeleteSelection())
+    return false;
+  
+  return true;
+}
+
 bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <TreeUndoAction *> *undoForThisOperation)
 {
   if(sourcelist->empty())
@@ -3735,41 +3809,64 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   
   m_saved = false;
   
+  // Seems like saving the current value of the currently active cell
+  // in the tree undo buffer makes the behavior of TreeUndo feel
+  // more predictable to the user.
+  if(GetActiveCell())
+  {
+    TreeUndo_CellLeft();
+  }
+  
   TreeUndoAction *action=sourcelist->front();
-  wxASSERT_MSG(action!=NULL,_("Trying to undo a action without starting cell."));
+  wxASSERT_MSG(action!=NULL,_("Trying to undo an action without starting cell."));
 
   // Do we have to undo a cell contents change?
   if(action->m_oldText != wxEmptyString)
   {
-    // If this action actually does do nothing - we have not done anything
-    // and want to make another attempt on undoing things.
-    if(
-      (action->m_oldText == action->m_start->GetEditable()->GetValue())||
-      (action->m_oldText + wxT(";") == action->m_start->GetEditable()->GetValue())
-      )
+    wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to change the contents of the cell above the beginning of the worksheet."));
+
+
+    if(!m_tree->Contains(action->m_start))
     {
-      sourcelist->pop_front();
-      return TreeUndo(sourcelist,undoForThisOperation);
+      wxASSERT_MSG(m_tree->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+      return false;
     }
-
-    // Document the old state of this cell so the next action can be undone.
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    undoAction->m_start = action->m_start;
-    undoAction->m_oldText = action->m_start->GetEditable()->GetValue();
-    undoForThisOperation->push_front(undoAction);
-
-    // Revert the old cell state
-    action->m_start->GetEditable()->SetValue(action->m_oldText);
-
-    // Make sure that the cell we have to work on is in the visible part of the tree.
-    if (action->m_start->RevealHidden())
-      FoldOccurred();
-   
-    ScrollToCell(action->m_start);
-
-    sourcelist->pop_front();
     
-    return true;
+    if(action->m_start)
+    {
+      // If this action actually does do nothing - we have not done anything
+      // and want to make another attempt on undoing things.
+      if(
+        (action->m_oldText == action->m_start->GetEditable()->GetValue())||
+        (action->m_oldText + wxT(";") == action->m_start->GetEditable()->GetValue())
+        )
+      {
+        sourcelist->pop_front();
+        return TreeUndo(sourcelist,undoForThisOperation);
+      }
+
+      // Document the old state of this cell so the next action can be undone.
+      TreeUndoAction *undoAction = new TreeUndoAction;
+      undoAction->m_start = action->m_start;
+      undoAction->m_oldText = action->m_start->GetEditable()->GetValue();
+      undoForThisOperation->push_front(undoAction);
+      
+      // Revert the old cell state
+      action->m_start->GetEditable()->SetValue(action->m_oldText);
+      
+      // Make sure that the cell we have to work on is in the visible part of the tree.
+      if (action->m_start->RevealHidden())
+        FoldOccurred();
+      
+      ScrollToCell(action->m_start);
+      SetHCaret(action->m_start);
+
+      sourcelist->pop_front();
+
+      wxASSERT_MSG(action->m_newCellsEnd==NULL,_("Bug: Got a request to first change the contents of a cell and to then undelete it."));
+      wxASSERT_MSG(action->m_oldCells==NULL,_("Bug: Undo action with both cell contents change and cell addition."));
+      return true;
+    }
   }
 
   // We have to change the structure of the tree.
@@ -3792,38 +3889,69 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   // a single undo action.
   TreeUndo_MergeSubsequentEdits(true,undoForThisOperation);
 
+    
+    GroupCell *parentOfInsert=action->m_start;
   // un-add new cells
-  GroupCell *parentOfInsert=action->m_start;
   if(action->m_newCellsEnd)
   {
-    // If we delete the cell this action start we need to set a pointer where
-    // to add cells later if this is part of the same action.
+    wxASSERT_MSG(action->m_start!=NULL,_("Bug: Got a request to delete the cell above the beginning of the worksheet."));
     if(action->m_start)
-      parentOfInsert=dynamic_cast<GroupCell*>(action->m_start->GetParent());
+    {
+      if(!m_tree->Contains(action->m_start))
+      {
+        wxASSERT_MSG(m_tree->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+        TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
+      }
+      else
+      {
+        // If we delete the start cell of this undo action we need to set a pointer
+        // that tells where to add cells later if this request  is part of the 
+        // current undo action, too.
+        parentOfInsert=dynamic_cast<GroupCell*>(action->m_start->GetParent());
+        
+        // We make the cell we want to end the deletion with visible.
+        if(action->m_newCellsEnd->RevealHidden())
+          FoldOccurred();
+        
+        wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
 
-    // We make the cell we want to end the deletion with visible.
-    if(action->m_newCellsEnd->RevealHidden())
-      FoldOccurred();
+        // Set the cursor to a sane position.
+        if(action->m_newCellsEnd->m_next)
+          SetHCaret(dynamic_cast<GroupCell*>(action->m_newCellsEnd->m_next));
+        else
+          SetHCaret(dynamic_cast<GroupCell*>(action->m_start->m_previous));
 
-    wxASSERT_MSG(CanDeleteRegion(action->m_start,action->m_newCellsEnd),_("Got a request to undo an action that involves an delete which isn't possible at this moment."));
-    DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+        // Actually delete the cells we want to remove.
+        DeleteRegion(action->m_start,action->m_newCellsEnd,undoForThisOperation);
+      }
+    }
   }
-  // Add cells we want to undo the delete for.
+  
+  // Add cells we want to undo a delete for.
   if(action->m_oldCells)
   {
+    if(parentOfInsert)
+      if(!parentOfInsert->Contains(action->m_start))
+      {
+        wxASSERT_MSG(parentOfInsert->Contains(action->m_start),_("Bug: Undo request for cell outside worksheet."));
+        TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
+        return false;
+      }
+ 
+    GroupCell *lastofTheNewCells = action->m_oldCells;
+    while(lastofTheNewCells->m_next)
+      lastofTheNewCells=dynamic_cast<GroupCell*>(lastofTheNewCells->m_next);
+    
     InsertGroupCells(action->m_oldCells,parentOfInsert,undoForThisOperation);
+
+    SetHCaret(lastofTheNewCells);
   }
   TreeUndo_MergeSubsequentEdits(false,undoForThisOperation);
-//  if(parentOfInsert)
     
   sourcelist->pop_front();
 
   Recalculate(true);
   Refresh();
-
-      
-    
-  //ScrollToCell(action->m_start);
 
   return true;
 }
@@ -4143,7 +4271,7 @@ void MathCtrl::MergeCells()
   EditorCell *editor = dynamic_cast<GroupCell*>(m_selectionStart)->GetEditable();
   editor->SetValue(newcell);
 
-  m_selectionStart = m_selectionStart->m_next;
+  m_selectionStart = dynamic_cast<GroupCell*>(m_selectionStart->m_next);
   DeleteSelection();
   editor->GetParent()->ResetSize();
   dynamic_cast<GroupCell*>(editor->GetParent())->ResetInputLabel();
@@ -4236,7 +4364,10 @@ void MathCtrl::Animate(bool run)
 void MathCtrl::SetWorkingGroup(GroupCell *group)
  {
   if (m_workingGroup != NULL)
+  {
     m_workingGroup->SetWorking(false);
+    m_lastWorkingGroup = group;
+  }
   m_workingGroup = group;
   if (m_workingGroup != NULL)
     m_workingGroup->SetWorking(group);
@@ -4280,16 +4411,21 @@ void MathCtrl::SetDefaultHCaret()
  * @param where   The cell to place the cursor before.
  * @param callRefresh   Call with false when manually refreshing.
  */
-void MathCtrl::SetHCaret(MathCell *where, bool callRefresh)
+void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
-  m_selectionStart = m_selectionEnd = NULL;
-  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  SetActiveCell(NULL, false);
-  m_hCaretPosition = dynamic_cast<GroupCell*>(where);
-  m_hCaretActive = true;
-
-  if (callRefresh) // = true default
-    Refresh();
+  if((where)&&(m_tree)&&(!m_tree->Contains(where)))
+    wxASSERT_MSG(m_tree->Contains(where),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
+  else
+  {
+    m_selectionStart = m_selectionEnd = NULL;
+    m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+    SetActiveCell(NULL, false);
+    m_hCaretPosition = where;
+    m_hCaretActive = true;
+    
+    if (callRefresh) // = true default
+      Refresh();
+  }
 }
 
 void MathCtrl::ShowHCaret()
@@ -4446,7 +4582,9 @@ wxString MathCtrl::GetOutputAboveCaret()
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
 
-  m_hCaretPosition->SelectOutput(&m_selectionStart, &m_selectionEnd);
+  MathCell *selectionStart = m_selectionStart;
+  MathCell *selectionEnd   = m_selectionEnd;
+  m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();
 
@@ -4562,20 +4700,66 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
   return count;
 }
 
-bool MathCtrl::Autocomplete(bool templates)
+bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 {
   if (m_activeCell == NULL)
     return false;
-
-  m_autocompleteTemplates = templates;
 
   EditorCell *editor = (EditorCell *)m_activeCell;
 
   editor->SelectWordUnderCaret(false, false);
 
+  if(type==AutoComplete::command)
+  {
+    // Let's look if we want to complete a unit instead of a command.
+    bool inEzUnit = true;
+    wxString frontOfSelection = editor->TextInFrontOfSelection();
+    int positionOfEzunitStart = frontOfSelection.rfind(wxT('`'));
+    
+    if(positionOfEzunitStart!=wxNOT_FOUND)
+    {
+      frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart+1);
+      std::cerr<<"UnitString: ";
+      std::cerr<<frontOfSelection;
+      std::cerr<<"\n";
+      int numberOfParenthesis=0;
+
+      for(size_t i=0;i<frontOfSelection.Length()-1;i++)
+      {
+        wxChar ch=frontOfSelection[i];
+        if(
+          (!wxIsalnum(ch))&&
+          (ch!=wxT('('))&&
+          (ch!=wxT(')'))&&
+          (ch!=wxT('*'))&&
+          (ch!=wxT('/'))
+          )
+          inEzUnit = false;
+
+        if(ch==wxT('('))
+          numberOfParenthesis++;
+        if(ch==wxT(')'))
+        {
+          numberOfParenthesis++;
+          if(numberOfParenthesis<0)
+          inEzUnit = false;            
+        }
+      }
+      
+    }
+    else
+      inEzUnit = false;
+
+    if(inEzUnit)
+    {
+      type=AutoComplete::unit;
+      std::cerr<<"Unit!\n";
+    }
+  }
+  
   wxString partial = editor->GetSelectionString();
 
-  m_completions = m_autocomplete.CompleteSymbol(partial, templates);
+  m_completions = m_autocomplete.CompleteSymbol(partial, type);
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)
@@ -4594,7 +4778,7 @@ bool MathCtrl::Autocomplete(bool templates)
     editor->ClearSelection();
     editor->CaretToPosition(start);
 
-    if (!templates || !editor->FindNextTemplate())
+    if ((type != AutoComplete::tmplte) || !editor->FindNextTemplate())
       editor->CaretToPosition(start + m_completions[0].Length());
 
     editor->ResetSize();

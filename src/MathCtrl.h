@@ -126,8 +126,11 @@ class MathCtrl: public wxScrolledCanvas
   /*! The last cell we have entered. 
 
     This pointer is needed for keeping track of cell contents changes.
-   */
+   */  
   GroupCell *TreeUndo_ActiveCell;
+
+  //! Drop actions from the back of the undo list until itis within the undo limit.
+  void TreeUndo_LimitUndoBuffer();
 
   /*! Undo an item from a list of undo actions.
 
@@ -155,11 +158,6 @@ class MathCtrl: public wxScrolledCanvas
   /*! The cursor is about to leave the current cell => Store the change if the value has changed.
    */
   void TreeUndo_CellLeft();
-
-  /*! Clear the undo and the redo buffer
-
-   */
-  void TreeUndo_ClearBuffers();
   
   /*! Remember that these cells were just added so this addition can be undone.
 
@@ -207,6 +205,8 @@ class MathCtrl: public wxScrolledCanvas
   */
   bool TreeUndo_MergeSubsequentEdits(bool mergeRequest);
   bool m_TreeUndoMergeSubsequentEdits;
+  //! true if m_start of m_currentUndoAction already marks the beginning of the action.
+  bool m_TreeUndoMergeStartIsSet;
   //!@}
 
   
@@ -241,7 +241,7 @@ class MathCtrl: public wxScrolledCanvas
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
   MathCell* CopySelection();
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
-
+  
   void GetMaxPoint(int* width, int* height);
   void OnTimer(wxTimerEvent& event);
   bool m_autoSaveIntervalExpired;
@@ -322,6 +322,8 @@ class MathCtrl: public wxScrolledCanvas
     NULL means that maxima isn't currently evaluating a cell.
    */
   GroupCell *m_workingGroup;
+  //! The last group cell maxima was working on.
+  GroupCell *m_lastWorkingGroup;
   MathCell *m_selectionStart;
   MathCell *m_selectionEnd;
   int m_clickType;
@@ -354,11 +356,22 @@ class MathCtrl: public wxScrolledCanvas
 
 
 public:
+  /*! Can we merge the selected cells into one?
+    
+    \todo Does it make sense to make to allow the text of sections and image cells 
+    with math cells?
+   */
+  bool CanMergeSelection();
 
   bool CanUndo(){return CanTreeUndo()||CanUndoInsideCell();}
   bool CanRedo(){return CanTreeRedo()||CanRedoInsideCell();}
   void Undo();
   void Redo();
+  /*! Clear the undo and the redo buffer
+
+    \addtogroup UndoBufferFill
+   */
+  void TreeUndo_ClearBuffers();
 
   /*! The ids for all popup menu items.
 
@@ -427,14 +440,34 @@ public:
   //! Delete a  part of the worksheet that previously has been unlinked.
   void DestroyTree(MathCell* tree);
   MathCell* CopyTree();
+  /*! Insert group cells into the worksheet
+
+    \param cells The list of cells that has to be inserted
+    \param where The cell the cells have to be inserted after. NULL means: 
+           Insert the cells at the beginning of the worksheet.
+    \param undoBuffer The buffer the undo information for this action has 
+           to be kept in. Might be
+            - treeUndoActions for normal deletes,
+            - treeRedoActions for deletions while executing an undo or
+            - NULL for: Don't keep any copy of the cells.
+   */
   GroupCell *InsertGroupCells(GroupCell* cells,
                               GroupCell* where,
                               std::list <TreeUndoAction *> *undoBuffer
     );
   
+  /*! Insert group cells into the worksheet
+
+    \param cells The list of cells that has to be inserted
+    \param where The cell the cells have to be inserted after
+  */
   GroupCell *InsertGroupCells(GroupCell* cells, GroupCell* where = NULL);
 
-  //! Add a new line to working group or m_last
+  /*! Add a new line to the output cell of the working group.
+
+    If maxima isn't currently evaluating and therefore there is no working group
+    the line is appended to m_last, instead.
+  */
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
   void Recalculate(bool force = false);
   void RecalculateForce();
@@ -580,7 +613,7 @@ public:
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetDefaultHCaret();
-  void SetHCaret(MathCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  void SetHCaret(GroupCell *where, bool callRefresh = true); // call with false, when manually refreshing
   //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
   //! Place the cursor into a new cell where the horizontal cursor is
@@ -680,8 +713,8 @@ public:
   wxString GetInputAboveCaret();
   wxString GetOutputAboveCaret();
   bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }
-  bool Autocomplete(bool templates = false);
-  void AddSymbol(wxString fun, bool templ = false) { m_autocomplete.AddSymbol(fun, templ); }
+  bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
+  void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command) { m_autocomplete.AddSymbol(fun, type); }
   void SetActiveCellText(wxString text);
   bool InsertText(wxString text);
   GroupCell *GetWorkingGroup() { return m_workingGroup; }

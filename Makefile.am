@@ -1,9 +1,6 @@
-desktopdir = $(datarootdir)/applications
-dist_desktop_DATA = wxmaxima.desktop
-
 SUBDIRS = src locales data info test Doxygen
 
-EXTRA_DIST = bootstrap wxmaxima.spec.in wxmaxima.desktop     \
+EXTRA_DIST = bootstrap wxmaxima.spec.in     \
              art/readme.txt art/license.txt                  \
              art/toolbar/gtk-preferences.png art/toolbar/gtk-cut.png   \
              art/toolbar/input.png art/toolbar/gtk-print.png     \
@@ -60,6 +57,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/Resources/help
 	cp info/*.html wxMaxima.app/Contents/Resources/help
 	cp info/*.jpg  wxMaxima.app/Contents/Resources/help
+	cp info/*.png  wxMaxima.app/Contents/Resources/help
 	cp info/index.hhk wxMaxima.app/Contents/Resources/help
 	cp info/contents.hhc wxMaxima.app/Contents/Resources/help
 	cp info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
@@ -74,6 +72,7 @@ wxMaxima.win: all
 	cp data/tips*.txt wxMaxima/data
 	mkdir -p wxMaxima/help
 	cp info/*.jpg  wxMaxima/help
+	cp info/*.png  wxMaxima/help
 if CHM
 	cp info/*.chm  wxMaxima/help
 else

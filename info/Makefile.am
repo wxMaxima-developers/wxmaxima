@@ -4,12 +4,12 @@ info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
 figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
-figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg
+figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg ezUnits.png
 
 # install-data-local:install-html
 
 pdffigures=NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf wxMaximaLogo.pdf
-pdffigures+=wxMaximaWindow.pdf SidePanes.pdf
+pdffigures+=wxMaximaWindow.pdf SidePanes.pdf ezUnits.pdf
 
 if CHM
 WXMAXIMA_CHM = wxMaxima.chm
@@ -85,6 +85,5 @@ endif
 EXTRA_DIST = manual.css texi2html.init $(html_DATA)\
     $(genericdirDATA) $(pdffigures) \
     wxmaximaicon.ico \
-    wxmaxima.info contents.hhc wxMaxima.chm \
+    wxmaxima.info contents.hhc \
     $(html_DATA)
-

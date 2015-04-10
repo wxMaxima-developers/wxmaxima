@@ -11,3 +11,6 @@ dist_appicon_DATA = wxmaxima.svg wxmaxima.png text-x-wxmaxima-batch.svg text-x-w
 
 mimedatadir = $(datarootdir)/mime/packages
 dist_mimedata_DATA = x-wxmathml.xml x-wxmaxima-batch.xml
+
+desktopdir = $(datarootdir)/applications
+dist_desktop_DATA = wxMaxima.desktop

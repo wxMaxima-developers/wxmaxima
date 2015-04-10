@@ -490,7 +490,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         }
       }
       funName << wxT(")");
-      m_console->AddSymbol(funName, true);
+      m_console->AddSymbol(funName, AutoComplete::tmplte);
     }
   }
 
@@ -1841,7 +1841,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   if (m_console->GetTree() != NULL)
   {
     menubar->Enable(MathCtrl::popid_divide_cell, m_console->GetActiveCell() != NULL);
-    menubar->Enable(MathCtrl::popid_merge_cells, m_console->GetSelectionStart() != m_console->GetSelectionEnd());
+    menubar->Enable(MathCtrl::popid_merge_cells, m_console->CanMergeSelection());
     menubar->Enable(wxID_PRINT, true);
   }
   else
@@ -1974,6 +1974,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   
   if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0))
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+
+  if(m_console)m_console->TreeUndo_ClearBuffers();
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
@@ -4636,7 +4638,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     return ;
     break;
   case menu_autocomplete_templates:
-    m_console->Autocomplete(true);
+    m_console->Autocomplete(AutoComplete::tmplte);
     return ;
     break;
   case menu_add_comment:
@@ -5270,8 +5272,7 @@ EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
 
 END_EVENT_TABLE()
 
-/* 
-Local Variables:      
+/* Local Variables:       */
 /* mode: text             */
 /* c-file-style:  "linux" */
 /* c-basic-offset: 2      */
