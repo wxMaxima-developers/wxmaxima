@@ -9,6 +9,9 @@ dist_appdata_DATA = wxmaxima.appdata.xml
 appicondir = $(datarootdir)/pixmaps
 dist_appicon_DATA = wxmaxima.svg wxmaxima.png text-x-wxmaxima-batch.svg text-x-wxmathml.svg
 
+mandatadir = $(datadir)/man/man1
+dist_mandata_DATA = wxmaxima.1
+
 mimedatadir = $(datarootdir)/mime/packages
 dist_mimedata_DATA = x-wxmathml.xml x-wxmaxima-batch.xml
 
