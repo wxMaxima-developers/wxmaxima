@@ -272,6 +272,7 @@ void GroupCell::RemoveOutput()
 {
   DestroyOutput();
   ResetSize();
+  m_height = GetEditable()->GetHeight();
   m_output = NULL;
   m_lastInOutput = NULL;
   m_appendedCells = NULL;
@@ -290,7 +291,6 @@ void GroupCell::AppendOutput(MathCell *cell)
 
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
-
   }
 
   else {
