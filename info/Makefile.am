@@ -85,6 +85,5 @@ endif
 EXTRA_DIST = manual.css texi2html.init $(html_DATA)\
     $(genericdirDATA) $(pdffigures) \
     wxmaximaicon.ico \
-    wxmaxima.info contents.hhc wxMaxima.chm \
+    wxmaxima.info contents.hhc \
     $(html_DATA)
-
