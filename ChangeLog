@@ -1,33 +1,33 @@
 Current:
 
-15.04:
-	- wxWidgets 3.0 is now a mandatory requirement
-	- Various bugfixes
-	- Loads of stability and performance fixes
-	- Adjustable framerate for animations
-	- A version-control friendly flavour of the wxmx format
-	- A mimetype marker at the beginning of wxmx files
-	- Better desktop integration
-	- An offline manual
-	- Autodetection of maxima's working directory on Mac and Windows
-	- Use gnuplot_postamble instead of gnuplot_preamble
-	- Dropped the hard dependency of TeXinfo
-	- Translation updates
-	- LaTeX: Use centered dots for multiplications
-	- LaTeX: Added an option to select if superscripts should be
-	  placed above or after subscripts
-	- LaTeX: Allow the user to add additional commands to the preamble.
-	- Export of animations to pdf (via a pdfTeX file run) and html
-	- Now complex conjugates are drawn as overstrike text.
-	- bumped the minor version number of .wxmx: overstrike text is
-	  a new feature and therefore a file containing it cannot be read by
-	  old wxMaxima versions.
-	- An autosave functionality that makes maxima work more like a mobile
-	  app whose documents are always saved.
-	- A table-of-contents pane for faster navigation
-	- It is now possible to scroll away from a running evaluation for
-	  arbitrary lengths of time and to choose to follow the evaluation
-	  process again.
-	- Now TeX scales down images that are obviously too big for the page.
-	- An undo for cell deletes and for adding cells.
-	- Autocompletion for units from ezUnits
+15.04.0:
+  * wxWidgets 3.0 is now a mandatory requirement
+  * Various bugfixes
+  * Loads of stability and performance fixes
+  * Adjustable framerate for animations
+  * A version-control friendly flavour of the wxmx format
+  * A mimetype marker at the beginning of wxmx files
+  * Better desktop integration
+  * An offline manual
+  * Autodetection of maxima's working directory on Mac and Windows
+  * Use gnuplot_postamble instead of gnuplot_preamble
+  * Dropped the hard dependency of TeXinfo
+  * Translation updates
+  * LaTeX: Use centered dots for multiplications
+  * LaTeX: Added an option to select if superscripts should be
+    placed above or after subscripts
+  * LaTeX: Allow the user to add additional commands to the preamble.
+  * Export of animations to pdf (via a pdfTeX file run) and html
+  * Now complex conjugates are drawn as overstrike text.
+  * bumped the minor version number of .wxmx: overstrike text is
+    a new feature and therefore a file containing it cannot be read by
+    old wxMaxima versions.
+  * An autosave functionality that makes maxima work more like a mobile
+    app whose documents are always saved.
+  * A table-of-contents pane for faster navigation
+  * It is now possible to scroll away from a running evaluation for
+    arbitrary lengths of time and to choose to follow the evaluation
+    process again.
+  * Now TeX scales down images that are obviously too big for the page.
+  * An undo for cell deletes and for adding cells.
+  * Autocompletion for units from ezUnits
