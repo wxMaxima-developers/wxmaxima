@@ -3412,7 +3412,9 @@ bool MathCtrl::ExportToWXMX(wxString file)
   // Reset image counter
   ImgCell::WXMXResetCounter();
 
-  wxString xmlText = ConvertToUnicode(m_tree->ListToXML());
+  wxString xmlText;
+  if(m_tree)
+    xmlText = ConvertToUnicode(m_tree->ListToXML());
   size_t xmlLen = xmlText.Length();
   
   // Delete all but one control character from the string: there should be
