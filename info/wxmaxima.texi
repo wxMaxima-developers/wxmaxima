@@ -288,6 +288,11 @@ Ordinary text
  * A third item at the first indentation level
 Ordinary text
 @end example
+
+wxMaxima will also recognize @code{=>} and replace it by a 
+@example
+cogito => sum.
+@end example
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using

@@ -25,6 +25,7 @@
 #include <wx/string.h>
 #include <wx/config.h>
 #include <wx/tokenzr.h>
+#include <wx/regex.h>
 #include <list>
 
 /*! A generic markdown Parser.
@@ -43,6 +44,8 @@ public:
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
   virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
+  virtual wxString longRightArrow()=0;    //!< The marker for f$\LongRightArrow$f
+  virtual wxString longRightArrowSrc()=0;    //!< The marker for f$\LongRightArrow$f
   virtual bool     NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
 };
 
@@ -57,6 +60,8 @@ public:
   virtual wxString itemizeItem(){return wxT("\\item");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
   virtual wxString NewLine(){return wxT("\n");}
+  virtual wxString longRightArrow(){return wxT("\\\\LongRightArrow");}
+  virtual wxString longRightArrowSrc(){return wxT("=\\\\verb\\|>\\|");}
   virtual bool     NewLineBreaksLine(){return false;}
 };
 
@@ -71,6 +76,8 @@ public:
   virtual wxString itemizeItem(){return wxT("<LI>");}
   virtual wxString itemizeEndItem(){return wxT("</LI>");}
   virtual wxString NewLine(){return wxT("<BR>");}
+  virtual wxString longRightArrow(){return wxT("\\&rArr;");}
+  virtual wxString longRightArrowSrc(){return wxT("=\\&gt;");}
   virtual bool     NewLineBreaksLine(){return true;}
 };
 

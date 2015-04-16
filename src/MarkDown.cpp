@@ -48,7 +48,11 @@ wxString MarkDownParser::MarkDown(wxString str)
 	  line = str.Left(newLinePos);
 	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
 	}
-      
+
+      wxRegEx regEx(longRightArrowSrc());
+      wxString replacement = longRightArrow(); 
+      regEx.Replace(&line,replacement);
+  
       int index=0;
       while((index<line.Length()) && (line[index] == wxT(' ')))
 	index++;
