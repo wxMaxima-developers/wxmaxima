@@ -34,18 +34,39 @@
 
 class MarkDownParser
 {
+protected:
+  //! A pair of a regExp and a string that has to replace the matches.
+  class RegexReplacer:public wxRegEx
+  {
+  public:
+    RegexReplacer(wxString From,wxString To):wxRegEx(From)
+      {
+      replaceBy=To;
+      }
+    
+    void DoReplace(wxString *line)
+      {
+        Replace(line,replaceBy);
+      }
+  private:
+    wxString replaceBy; //!< The thing we replace it with
+  };
+
+  typedef std::list<RegexReplacer *> replaceList;
+  replaceList regexReplaceList;
 public:
   MarkDownParser();
   wxString MarkDown(wxString str);
- private:
+
+  //! A list of things we want to replace.
+  std::list<RegexReplacer *> RegexReplaceList(){return regexReplaceList;}
+ private:    
   bool m_flowedTextRequested;             //!< For HTML: Do we want to pass all newlines to the output?
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
   virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
   virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
-  virtual wxString longRightArrow()=0;    //!< The marker for f$\LongRightArrow$f
-  virtual wxString longRightArrowSrc()=0;    //!< The marker for f$\LongRightArrow$f
   virtual bool     NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
 };
 
@@ -53,15 +74,13 @@ public:
 class MarkDownTeX: public MarkDownParser
 {
 public:
- MarkDownTeX() : MarkDownParser() {}
+  MarkDownTeX();
  private:
   virtual wxString itemizeBegin(){return wxT("\\begin{itemize}\n");}
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
   virtual wxString itemizeItem(){return wxT("\\item");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
   virtual wxString NewLine(){return wxT("\n");}
-  virtual wxString longRightArrow(){return wxT("\\\\LongRightArrow");}
-  virtual wxString longRightArrowSrc(){return wxT("=\\\\verb\\|>\\|");}
   virtual bool     NewLineBreaksLine(){return false;}
 };
 
@@ -69,15 +88,13 @@ public:
 class MarkDownHTML: public MarkDownParser
 {
 public:
-  MarkDownHTML() : MarkDownParser() {}
+  MarkDownHTML();
  private:
   virtual wxString itemizeBegin(){return wxT("<UL>");}
   virtual wxString itemizeEnd(){return wxT("</UL>");}
   virtual wxString itemizeItem(){return wxT("<LI>");}
   virtual wxString itemizeEndItem(){return wxT("</LI>");}
   virtual wxString NewLine(){return wxT("<BR>");}
-  virtual wxString longRightArrow(){return wxT("\\&rArr;");}
-  virtual wxString longRightArrowSrc(){return wxT("=\\&gt;");}
   virtual bool     NewLineBreaksLine(){return true;}
 };
 

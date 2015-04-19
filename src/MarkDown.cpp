@@ -48,10 +48,18 @@ wxString MarkDownParser::MarkDown(wxString str)
 	  line = str.Left(newLinePos);
 	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
 	}
+      std::cerr<<RegexReplaceList().size();
+      
+      std::cerr<<"Test3\n";
 
-      wxRegEx regEx(longRightArrowSrc());
-      wxString replacement = longRightArrow(); 
-      regEx.Replace(&line,replacement);
+      for(replaceList::iterator it=regexReplaceList.begin();
+          it!=regexReplaceList.end();
+          ++it)
+      {
+        std::cerr<<"Test1\n";
+        (*it)->DoReplace(&line);
+        std::cerr<<"Test2\n";
+      }
   
       int index=0;
       while((index<line.Length()) && (line[index] == wxT(' ')))
@@ -135,4 +143,28 @@ wxString MarkDownParser::MarkDown(wxString str)
     }
   
   return result;
+}
+  
+MarkDownTeX::MarkDownTeX() : MarkDownParser()
+{
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),wxT("\\ensuremath{\\\\Longleftrightarrow}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("=\\\\verb\\|>\\|"),wxT("\\ensuremath{\\\\LongrightArrow}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|<\\|="),wxT("\\ensuremath{\\\\leq}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\ensuremath{\\\\geq}")));
+}
+
+MarkDownHTML::MarkDownHTML() : MarkDownParser()
+{
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\&lt;=\\&gt;"),wxT("\\&hArr;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("=\\&gt;"),wxT("\\&rArr;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\&lt;="),wxT("\\&le;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\&gt;="),wxT("\\&ge;")));;
 }
