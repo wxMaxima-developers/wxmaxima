@@ -157,13 +157,13 @@ wxString MarkDownParser::MarkDown(wxString str)
 MarkDownTeX::MarkDownTeX() : MarkDownParser()
 {
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),wxT("\\ensuremath{\\\\Longleftrightarrow}")));
+    new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\Longleftrightarrow}")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("=\\\\verb\\|>\\|"),wxT("\\ensuremath{\\\\LongrightArrow}")));
+    new RegexReplacer(wxT("=\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\Longrightarrow}")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\\\\verb\\|<\\|="),wxT("\\ensuremath{\\\\leq}")));
+    new RegexReplacer(wxT("\\\\verb\\|<\\|="),wxT("\\\\ensuremath{\\\\leq}")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\ensuremath{\\\\geq}")));
+    new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
 }
 
 MarkDownHTML::MarkDownHTML() : MarkDownParser()
