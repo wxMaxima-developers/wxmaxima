@@ -20,6 +20,15 @@
 
 #include "MarkDown.h"
 
+MarkDownParser::~MarkDownParser()
+{
+  while(!regexReplaceList.empty())
+  {
+    delete regexReplaceList.front();
+    regexReplaceList.pop_front();
+  }
+}
+
 MarkDownParser :: MarkDownParser()
 {
   m_flowedTextRequested = true;

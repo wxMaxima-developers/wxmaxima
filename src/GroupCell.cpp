@@ -662,6 +662,8 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
   bool SuppressLeadingNewlines = true;
+  // Now we might want to introduce some markdown:
+  MarkDownTeX MarkDownParser;
 
   // pagebreak
   if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -843,9 +845,6 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           str = str.Mid(5, str.Length());
         else {
           str = PrepareForTeX(str);
-
-	  // Now we might want to introduce some markdown:
-	  MarkDownTeX MarkDownParser;
 	  str = MarkDownParser.MarkDown(str);
         }
         break;

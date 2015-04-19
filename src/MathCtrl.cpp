@@ -2659,6 +2659,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString path, filename, ext;
   int count = 0;
   GroupCell *tmp = m_tree;
+  MarkDownHTML MarkDown;    
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_htmlimg");
@@ -2961,8 +2962,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
     else
     {
-      MarkDownHTML MarkDown;
-      
       switch(tmp->GetGroupType()) {
       case GC_TYPE_TEXT:
         AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));

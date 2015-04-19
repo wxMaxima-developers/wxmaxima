@@ -56,6 +56,7 @@ protected:
   replaceList regexReplaceList;
 public:
   MarkDownParser();
+  virtual ~MarkDownParser();
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
