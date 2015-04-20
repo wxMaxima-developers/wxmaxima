@@ -57,18 +57,11 @@ wxString MarkDownParser::MarkDown(wxString str)
 	  line = str.Left(newLinePos);
 	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
 	}
-      std::cerr<<RegexReplaceList().size();
-      
-      std::cerr<<"Test3\n";
 
       for(replaceList::iterator it=regexReplaceList.begin();
           it!=regexReplaceList.end();
           ++it)
-      {
-        std::cerr<<"Test1\n";
         (*it)->DoReplace(&line);
-        std::cerr<<"Test2\n";
-      }
   
       int index=0;
       while((index<line.Length()) && (line[index] == wxT(' ')))
