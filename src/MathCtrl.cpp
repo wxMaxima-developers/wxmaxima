@@ -2918,26 +2918,34 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Write contents
 //////////////////////////////////////////////
 
+  bool exportInput = true;
+  wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
+      
   while (tmp != NULL) {
     if (tmp->GetGroupType() == GC_TYPE_CODE)
     {
-      AddLineToFile(output, wxT("\n\n<!-- Code cell -->\n\n"));
-      MathCell *prompt = tmp->GetPrompt();
-      AddLineToFile(output, wxT("<P><TABLE><TR><TD>"));
-      AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-      AddLineToFile(output, prompt->ToString());
-      AddLineToFile(output, wxT("  </SPAN></TD>"));
-
-      MathCell *input = tmp->GetInput();
-      if (input != NULL) {
-        AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(input->ToString())));
-        AddLineToFile(output, wxT("  </SPAN></TD>"));
-      }
-      AddLineToFile(output, wxT("</TR></TABLE>"));
-
       MathCell *out = tmp->GetLabel();
 
+      if(out||exportInput)
+        AddLineToFile(output, wxT("\n\n<!-- Code cell -->\n\n"));
+
+      if(exportInput)
+      {
+        MathCell *prompt = tmp->GetPrompt();
+        AddLineToFile(output, wxT("<P><TABLE><TR><TD>"));
+        AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
+        AddLineToFile(output, prompt->ToString());
+        AddLineToFile(output, wxT("  </SPAN></TD>"));
+        
+        MathCell *input = tmp->GetInput();
+        if (input != NULL) {
+          AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
+          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(input->ToString())));
+          AddLineToFile(output, wxT("  </SPAN></TD>"));
+        }
+        AddLineToFile(output, wxT("</TR></TABLE>"));
+      }
+      
       if (out == NULL) {
         AddLineToFile(output, wxEmptyString);
       }

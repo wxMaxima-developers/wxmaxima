@@ -665,6 +665,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   // Now we might want to introduce some markdown:
   MarkDownTeX MarkDownParser;
 
+  bool exportInput = true;
+  wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
+
   // pagebreak
   if (m_groupType == GC_TYPE_PAGEBREAK) {
     str = wxT("\\pagebreak\n");
@@ -701,26 +704,30 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
     // Input cells
-    str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
-          wxT("%%% INPUT:\n")
-          wxT("\\begin{minipage}[t]{8ex}{\\color{red}\\bf\n")
-          wxT("\\begin{verbatim}\n") +
-          m_input->ToString() +
-          wxT("\n\\end{verbatim}}\n\\end{minipage}");
-
-    if (m_input->m_next!=NULL)
+    if(exportInput)
     {
-
-      wxString input = m_input->m_next->ToString();
+      str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
+        wxT("%%% INPUT:\n")
+        wxT("\\begin{minipage}[t]{8ex}{\\color{red}\\bf\n")
+        wxT("\\begin{verbatim}\n") +
+        m_input->ToString() +
+        wxT("\n\\end{verbatim}}\n\\end{minipage}");
+      
+      if (m_input->m_next!=NULL)
+      {
+        
+        wxString input = m_input->m_next->ToString();
 #if wxUSE_UNICODE
-      input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+        input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
-      str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}\n") +
-             input +
+        str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}\n") +
+          input +
              wxT("\n\\end{verbatim}}\n\\end{minipage}");
+      }
+      
+      str += wxT("\n");
     }
-
-    str += wxT("\n");
+    else str = wxEmptyString;
 
     if (m_output != NULL) {
       str += wxT("%%% OUTPUT:\n");
