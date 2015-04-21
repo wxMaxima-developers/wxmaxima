@@ -2182,7 +2182,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 
     }
     else if (m_selectionEnd != NULL)
-      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
+      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd->GetParent()));
     else if (!ActivateNextInput())
       event.Skip();
     else
