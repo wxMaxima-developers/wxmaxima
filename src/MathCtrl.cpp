@@ -4439,6 +4439,11 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
     m_selectionStart = m_selectionEnd = NULL;
     m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
     SetActiveCell(NULL, false);
+    if(where)
+      wxASSERT_MSG(
+        where->GetType()==MC_TYPE_GROUP,
+        _(wxT("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell.")));
+    
     m_hCaretPosition = where;
     m_hCaretActive = true;
     
