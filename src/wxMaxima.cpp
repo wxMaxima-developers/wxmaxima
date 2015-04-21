@@ -2637,14 +2637,20 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   }
   break;
   case menu_evaluate_all_visible:
+    if(!m_isConnected)
+      StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
   case menu_evaluate_all:
+    if(!m_isConnected)
+      StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
   case menu_evaluate_till_here:
+    if(!m_isConnected)
+      StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
