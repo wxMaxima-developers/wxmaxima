@@ -483,7 +483,7 @@ void MathCtrl::ClearDocument() {
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_hCaretActive = false;
-  m_hCaretPosition = NULL; // horizontal caret at the top of document
+  SetHCaret(NULL); // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_activeCell = NULL;
   m_workingGroup = NULL;
@@ -2389,7 +2389,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
  */
 void MathCtrl::DestroyTree() {
   m_hCaretActive = false;
-  m_hCaretPosition = NULL;
+  SetHCaret(NULL);
   DestroyTree(m_tree);
   m_tree = m_last = NULL;
   m_lastWorkingGroup = NULL;
@@ -4443,12 +4443,12 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
       wxASSERT_MSG(
         where->GetType()==MC_TYPE_GROUP,
         _(wxT("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell.")));
-    
     m_hCaretPosition = where;
     m_hCaretActive = true;
     
     if (callRefresh) // = true default
       Refresh();
+    ScrollToCell(where);
   }
 }
 
@@ -4457,8 +4457,9 @@ void MathCtrl::ShowHCaret()
   if (m_hCaretPosition == NULL)
   {
     if (m_last != NULL)
-      m_hCaretPosition = m_last;
-    else m_hCaretPosition = NULL;
+      SetHCaret(m_last);
+    else
+      SetHCaret(NULL);
   }
 
   m_hCaretActive = true;
