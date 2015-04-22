@@ -55,13 +55,12 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   
   toolbar->SetToolBitmapSize(wxSize(24, 24));
 
-onfigToolbarDir());
 #if defined __WXMSW__
-
+o
   // If there are packaging issues we want to have a detailed error message.
   Dirstructure dirstructure;
   wxFileName test(dirstructure.ConfigToolbarDir() + wxT("gtk-new.png"));  
-  wxASSERT_MSG(test.IsFileReadable(),_(wxT("Expected the icon files to be found at"))+dirstructure.C
+  wxASSERT_MSG(test.IsFileReadable(),_(wxT("Expected the icon files to be found at"))+dirstructure.ConfigToolbarDir());
                
   m_toolBar->AddTool(tb_new, _("New"),
                      GetImage(wxT("gtk-new")),
