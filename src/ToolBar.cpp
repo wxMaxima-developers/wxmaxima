@@ -56,7 +56,6 @@ ToolBar::ToolBar(wxToolBar* toolbar)
   toolbar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
-o
   // If there are packaging issues we want to have a detailed error message.
   Dirstructure dirstructure;
   wxFileName test(dirstructure.ConfigToolbarDir() + wxT("gtk-new.png"));  
