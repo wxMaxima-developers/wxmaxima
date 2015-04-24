@@ -81,6 +81,10 @@ public:
     m_selectionStart = 0;
     m_selectionEnd = m_positionOfCaret = m_text.Length();
   }
+  void SelectNone()
+  {
+    m_selectionStart = m_selectionEnd = 0;
+  }
   bool CanCopy()
   {
     return m_selectionStart != -1;

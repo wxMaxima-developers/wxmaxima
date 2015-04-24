@@ -532,6 +532,25 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
+
+MathCell *MathCell::first()
+{
+  MathCell *tmp=this;
+  while(tmp->m_previous)
+    tmp = tmp->m_previous;
+
+  return tmp;
+}
+
+MathCell *MathCell::last()
+{
+  MathCell *tmp=this;
+  while(tmp->m_next)
+    tmp = tmp->m_next;
+
+  return tmp;
+}
+
 void MathCell::Unbreak()
 {
   ResetData();

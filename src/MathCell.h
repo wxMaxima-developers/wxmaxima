@@ -274,6 +274,11 @@ public:
   virtual void SetValue(wxString text) { }
   virtual wxString GetValue() { return wxEmptyString; }
 
+  //! Get the first cell in this list of cells
+  MathCell *first();
+  //! Get the last cell in this list of cells
+  MathCell *last();
+  
   void SelectRect(wxRect& rect, MathCell** first, MathCell** last);
   void SelectFirst(wxRect& rect, MathCell** first);
   void SelectLast(wxRect& rect, MathCell** last);

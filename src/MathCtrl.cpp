@@ -853,6 +853,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
     if (editor != NULL) {
       wxRect rect = editor->GetRect();
       if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
+        m_cellSelectionStartedIn=editor;
         SetActiveCell(editor, false); // do not refresh
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
@@ -875,7 +876,8 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
           && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
       {
-        SetActiveCell(dynamic_cast<EditorCell*>(m_selectionStart), false);
+        m_cellSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
+        SetActiveCell(m_cellSelectionStartedIn, false);
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
         m_switchDisplayCaret = false;
@@ -1000,24 +1002,64 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
   ClickNDrag(m_down, m_up);
 }
 
-/***
- * Select the rectangle surrounded by down and up. Called from OnMouseMotion.
- *
- * The method decides what to do, based on the value of m_clickType which
- * was set previously in OnMouseLeftDown. This enables different selection behaviours
- * depending on where we first clicked. If m_clickType equals
- * CLICK_TYPE_NONE - click-dragging does not result in a selection (we clicked in hideRect for instance)
- * CLICK_TYPE_GROUP_SELECTION - we are selecting full groupcells only. Only y-coordinate matters.
- * CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and draging
- *   results in selecting text in EditorCell
- * CLICK_TYPE_OUTPUT_SELECTION - we clicked in an output, we want selection to be confined to that
- *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method
- *   into m_clickInGC pointer.
- */
-void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
 
-  MathCell *st = m_selectionStart, *en = m_selectionEnd;
+void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
+{
+  // Calculate the rectangle that has been selected
+  int ytop    = MIN( down.y, up.y );
+  int ybottom = MAX( down.y, up.y );
+  m_selectionStart = m_selectionEnd = NULL;
+  
   wxRect rect;
+  
+  // find out the group cell the selection begins in
+  GroupCell *tmp = m_tree;
+  while (tmp != NULL) {
+    rect = tmp->GetRect();
+    if (ytop <= rect.GetBottom()) {
+      m_selectionStart = tmp;
+      break;
+    }
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+
+  // find out the group cell the selection ends in
+  tmp = m_tree;
+  while (tmp != NULL) {
+    rect = tmp->GetRect();
+    if (ybottom < rect.GetTop()) {
+      m_selectionEnd = tmp->m_previous;
+      break;
+    }
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  if (tmp == NULL)
+    m_selectionEnd = m_last;
+
+  if(m_selectionStart)
+  {
+      if (m_selectionEnd == (m_selectionStart->m_previous)) {
+        SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false); // will refresh at the end of function
+      }
+      else {
+        m_hCaretActive = false;
+        m_hCaretPosition = NULL;
+      }
+  }
+  else
+  {
+        m_hCaretActive = true;
+        m_hCaretPosition = NULL;
+  }
+}
+
+void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
+{
+  MathCell *selectionStartOld = m_selectionStart, *selectionEndOld = m_selectionEnd;
+  wxRect rect;
+
+  int ytop    = MIN( down.y, up.y );
+  int ybottom = MAX( down.y, up.y );
 
   switch (m_clickType)
   {
@@ -1025,56 +1067,44 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
     return;
 
   case CLICK_TYPE_INPUT_SELECTION:
-    if (m_activeCell != NULL) {
-      wxClientDC dc(this);
-      m_activeCell->SelectRectText(dc, down, up);
-      m_switchDisplayCaret = false;
-      wxRect rect = m_activeCell->GetRect();
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RefreshRect(rect);
-      return;
+    wxASSERT_MSG(m_cellSelectionStartedIn != NULL,_(wxT("Bug: Trying to select inside a cell without having a current cell")));
+    if (m_cellSelectionStartedIn != NULL) {
+      rect = m_cellSelectionStartedIn->GetRect();
+
+      // Let's see if we are still inside the cell we started selecting in.
+      if((ytop<rect.GetTop()) || (ybottom>rect.GetBottom()))
+      {
+        // We have left the cell we started to select in =>
+        // select all group cells between start and end of the selection.
+        SelectGroupCells(up,down);
+
+        // If we have just started selecting GroupCells we have to unselect
+        // the already-selected text in the cell we have started selecting in.
+        if(m_activeCell)
+        {
+          m_activeCell -> SelectNone();
+          m_activeCell = NULL;
+        }
+      }
+      else
+      {
+        // Clean up in case that we have re-entered the cell we started
+        // selecting in.
+        m_selectionStart = m_selectionEnd = NULL;
+        m_activeCell = m_cellSelectionStartedIn;
+        // We are still inside the cell => select inside the current cell.
+        wxClientDC dc(this);
+        m_activeCell->SelectRectText(dc, down, up);
+        m_switchDisplayCaret = false;
+        wxRect rect = m_activeCell->GetRect();
+        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+        RefreshRect(rect);
+      }
+      break;
     }
   case CLICK_TYPE_GROUP_SELECTION:
-  {
-    m_selectionStart = m_selectionEnd = NULL;
-    int ytop    = MIN( down.y, up.y );
-    int ybottom = MAX( down.y, up.y );
-    // find out group cells between ytop and ybottom (including these two points)
-    GroupCell * tmp = m_tree;
-    while (tmp != NULL) {
-      rect = tmp->GetRect();
-      if (ytop <= rect.GetBottom()) {
-        m_selectionStart = tmp;
-        break;
-      }
-      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-    }
-
-    if (tmp == NULL) { // below last cell, handle with care
-      SetHCaret(m_last); // also refreshes
-      return;
-    }
-
-    tmp = m_tree;
-    while (tmp != NULL) {
-      rect = tmp->GetRect();
-      if (ybottom < rect.GetTop()) {
-        m_selectionEnd = tmp->m_previous;
-        break;
-      }
-      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-    }
-    if (tmp == NULL)
-      m_selectionEnd = m_last;
-    if (m_selectionEnd == (m_selectionStart->m_previous)) {
-      SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false); // will refresh at the end of function
-    }
-    else {
-      m_hCaretActive = false;
-      m_hCaretPosition = NULL;
-    }
+    SelectGroupCells(up,down);
     break;
-  }
 
   case CLICK_TYPE_OUTPUT_SELECTION:
     m_selectionStart = m_selectionEnd = NULL;
@@ -1092,8 +1122,9 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up) {
   } // end switch
 
   // Refresh only if the selection has changed
-  if (st != m_selectionStart || en != m_selectionEnd)
+  if ((selectionStartOld != m_selectionStart) || (selectionEndOld != m_selectionEnd))
     Refresh();
+    std::cerr <<"Selected: "<<m_selectionStart<<"-"<<m_selectionEnd<<"\n";
 }
 
 /***

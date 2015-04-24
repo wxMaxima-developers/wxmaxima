@@ -283,7 +283,23 @@ class MathCtrl: public wxScrolledCanvas
   - keycode (ccode) is WXK_UP/WXK_DOWN
  */
   void SelectWithChar(int ccode);
+  /*!
+   * Select the rectangle surrounded by down and up. Called from OnMouseMotion.
+   *
+   * The method decides what to do, based on the value of m_clickType which
+   * was set previously in OnMouseLeftDown. This enables different selection behaviours
+   * depending on where we first clicked. If m_clickType equals
+   * CLICK_TYPE_NONE - click-dragging does not result in a selection (we clicked in hideRect for instance)
+   * CLICK_TYPE_GROUP_SELECTION - we are selecting full groupcells only. Only y-coordinate matters.
+   * CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and draging
+   *   results in selecting text in EditorCell
+   * CLICK_TYPE_OUTPUT_SELECTION - we clicked in an output, we want selection to be confined to that
+   *   GroupCell's output. GC we first clicked in was stored in OnMouseMotion method
+   *   into m_clickInGC pointer.
+   */
   void ClickNDrag(wxPoint down, wxPoint up);
+  // Select all group cells inside the given rectangle;
+  void SelectGroupCells(wxPoint down, wxPoint up);
   void AdjustSize();
   void OnEraseBackground(wxEraseEvent& event) { }
   void CheckUnixCopy();
@@ -336,6 +352,7 @@ class MathCtrl: public wxScrolledCanvas
     cursor that is drawn as a horizontal line. 
    */
   EditorCell *m_activeCell;
+  EditorCell *m_cellSelectionStartedIn;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
   /*! Is editing enabled?
