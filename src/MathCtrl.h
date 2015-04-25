@@ -321,9 +321,17 @@ class MathCtrl: public wxScrolledCanvas
     vertical line.
    */
   GroupCell *m_hCaretPosition;
-  //! The start for the selection when selecting group with the horizontally drawn cursor
+  /*! The start for the selection when selecting group with the horizontally drawn cursor
+
+    This cell does actually define weree the selection was started and therefore does not need 
+    to be above m_hCaretPositionEnd in the worksheet.
+   */
   GroupCell *m_hCaretPositionStart;
-  //! The start for the selection when selecting group with the horizontally drawn cursor
+  /*! The end of the selection when selecting group with the horizontally drawn cursor
+
+    This cell does actually define weree the selection was ended and therefore does not need 
+    to be below m_hCaretPositionEnd in the worksheet.
+   */
   GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
@@ -352,7 +360,8 @@ class MathCtrl: public wxScrolledCanvas
     cursor that is drawn as a horizontal line. 
    */
   EditorCell *m_activeCell;
-  EditorCell *m_cellSelectionStartedIn;
+  EditorCell *m_cellMouseSelectionStartedIn;
+  EditorCell *m_cellKeyboardSelectionStartedIn;
   CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
   /*! Is editing enabled?
@@ -602,6 +611,8 @@ public:
   MathCell* GetSelectionEnd() { return m_selectionEnd; }
   //! Select the cell sel
   void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
+  //! Select the cell range start-end
+  void SetSelection(MathCell* start,MathCell* end) { m_selectionStart = start;m_selectionEnd = end; }
   bool CanEdit();
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();

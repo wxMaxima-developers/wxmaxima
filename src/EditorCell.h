@@ -184,6 +184,16 @@ public:
     {
       return GetValue().Mid(1,m_selectionStart);
     }
+  //! Return to the selection after the cell has been left upwards
+  void ReturnToSelectionFromTop()
+    {
+      SetSelection(0,m_lastSelectionStart);
+    }
+  //! Return to the selection after the cell has been left downwards
+  void ReturnToSelectionFromBot()
+    {
+      SetSelection(m_lastSelectionStart,m_text.Length());
+    }
 private:
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);
@@ -197,6 +207,7 @@ private:
   //! Where inside this cell is the cursor?
   int m_positionOfCaret;
   int m_caretColumn;
+  long m_lastSelectionStart;
   long m_selectionStart;
   long m_selectionEnd;
 //  long m_oldStart, m_oldEnd;

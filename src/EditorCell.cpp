@@ -31,6 +31,7 @@
 
 EditorCell::EditorCell() : MathCell()
 {
+  m_lastSelectionStart = -1;
   m_displayCaret = false;
   m_text = wxEmptyString;
   m_fontSize = -1;
@@ -566,7 +567,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       if (event.ShiftDown())
       {
         if (m_selectionStart == -1)
+        {
           m_selectionEnd = m_selectionStart = m_positionOfCaret;
+          m_lastSelectionStart = m_positionOfCaret;
+        }
       }
       else
         m_selectionEnd = m_selectionStart = -1;
@@ -600,7 +604,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       if (event.ShiftDown())
       {
         if (m_selectionStart == -1)
+        {
+          m_lastSelectionStart = m_positionOfCaret;
           m_selectionEnd = m_selectionStart = m_positionOfCaret;
+        }
       }
       else
         m_selectionEnd = m_selectionStart = -1;

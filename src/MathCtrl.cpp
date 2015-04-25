@@ -62,6 +62,8 @@ wxScrolledCanvas(
   m_lastWorkingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
+  m_cellMouseSelectionStartedIn = NULL;
+  m_cellKeyboardSelectionStartedIn = NULL;
   m_questionPrompt = false;
   m_answerCell = NULL;
   m_scrolledAwayFromEvaluation = false;
@@ -853,7 +855,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
     if (editor != NULL) {
       wxRect rect = editor->GetRect();
       if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
-        m_cellSelectionStartedIn=editor;
+        m_cellMouseSelectionStartedIn=editor;
         SetActiveCell(editor, false); // do not refresh
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
@@ -876,8 +878,8 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
           && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
       {
-        m_cellSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
-        SetActiveCell(m_cellSelectionStartedIn, false);
+        m_cellMouseSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
+        SetActiveCell(m_cellMouseSelectionStartedIn, false);
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
         m_switchDisplayCaret = false;
@@ -988,6 +990,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
   m_clickType = CLICK_TYPE_NONE;
   CheckUnixCopy();
   SetFocus();
+  m_cellMouseSelectionStartedIn = NULL;
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
@@ -1067,9 +1070,9 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
     return;
 
   case CLICK_TYPE_INPUT_SELECTION:
-    wxASSERT_MSG(m_cellSelectionStartedIn != NULL,_(wxT("Bug: Trying to select inside a cell without having a current cell")));
-    if (m_cellSelectionStartedIn != NULL) {
-      rect = m_cellSelectionStartedIn->GetRect();
+    wxASSERT_MSG(m_cellMouseSelectionStartedIn != NULL,_(wxT("Bug: Trying to select inside a cell without having a current cell")));
+    if (m_cellMouseSelectionStartedIn != NULL) {
+      rect = m_cellMouseSelectionStartedIn->GetRect();
 
       // Let's see if we are still inside the cell we started selecting in.
       if((ytop<rect.GetTop()) || (ybottom>rect.GetBottom()))
@@ -1091,7 +1094,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         // Clean up in case that we have re-entered the cell we started
         // selecting in.
         m_selectionStart = m_selectionEnd = NULL;
-        m_activeCell = m_cellSelectionStartedIn;
+        m_activeCell = m_cellMouseSelectionStartedIn;
         // We are still inside the cell => select inside the current cell.
         wxClientDC dc(this);
         m_activeCell->SelectRectText(dc, down, up);
@@ -1124,7 +1127,6 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
   // Refresh only if the selection has changed
   if ((selectionStartOld != m_selectionStart) || (selectionEndOld != m_selectionEnd))
     Refresh();
-    std::cerr <<"Selected: "<<m_selectionStart<<"-"<<m_selectionEnd<<"\n";
 }
 
 /***
@@ -1825,10 +1827,35 @@ void MathCtrl::QuestionAnswered()
 void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   bool needRecalculate = false;
 
-  // don't exit the cell if we are making a selection
   if (event.GetKeyCode() == WXK_UP &&
-      m_activeCell->CaretAtStart() &&
-      !event.ShiftDown()) {
+      m_activeCell->CaretAtStart()
+    )
+  {
+    GroupCell *previous=dynamic_cast<GroupCell*>((m_activeCell->GetParent())->m_previous);
+    if(event.ShiftDown()) {
+      SetSelection(previous,dynamic_cast<GroupCell*>((m_activeCell->GetParent())));
+      m_hCaretPosition = dynamic_cast<GroupCell*>(m_selectionStart);
+      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_selectionStart);
+      m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionEnd);
+
+      m_cellKeyboardSelectionStartedIn = m_activeCell;
+      m_activeCell -> SelectNone();
+      GroupCell *next;
+      SetActiveCell(NULL);
+      Refresh();
+    }
+    else
+    {
+      if (GCContainsCurrentQuestion(previous)) {
+        // The user moved into the cell maxima has asked a question in.
+        FollowEvaluation(true);
+        OpenQuestionCaret();
+        return;
+      }
+      else
+        SetHCaret(previous);
+    }
+    
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
     m_structure->Update(m_tree);
@@ -1837,37 +1864,46 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // we need to enable the button that brings us back
     ScrolledAwayFromEvaluation();
 
-    GroupCell *previous=dynamic_cast<GroupCell*>((m_activeCell->GetParent())->m_previous);
-    if (GCContainsCurrentQuestion(previous)) {
-      // The user moved into the cell maxima has asked a question in.
-      FollowEvaluation(true);
-      OpenQuestionCaret();
-      return;
-    }
-    else
-      SetHCaret(previous);
+
     return;
   }
 
   if (event.GetKeyCode() == WXK_DOWN &&
-      m_activeCell->CaretAtEnd() &&
-      !event.ShiftDown()) {
+      m_activeCell->CaretAtEnd())
+  {
+    GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    if(event.ShiftDown()) {
+      SetSelection(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),dynamic_cast<GroupCell*>(m_activeCell->GetParent()->m_next));
+      m_hCaretPosition = dynamic_cast<GroupCell*>(m_selectionStart);
+      m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionStart);
+      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_selectionEnd);
+
+      m_cellKeyboardSelectionStartedIn = m_activeCell;
+      m_activeCell -> SelectNone();
+      GroupCell *previous;
+      SetActiveCell(NULL);
+      Refresh();
+    }
+    else
+    {
+      if (GCContainsCurrentQuestion(next)) {
+        // The user moved into the cell maxima has asked a question in.
+        FollowEvaluation(true);
+        OpenQuestionCaret();
+        return;
+      }
+      else
+        SetHCaret(next);
+    }
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
     m_structure->Update(m_tree);
     ScrolledAwayFromEvaluation();
-
-    GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-    if (GCContainsCurrentQuestion(next)) {
-      // The user moved into the cell maxima has asked a question in.
-      FollowEvaluation(true);
-      OpenQuestionCaret();
-      return;
-    }
-    else
-      SetHCaret(next);
+    
     return;
   }
+
+  m_cellKeyboardSelectionStartedIn = NULL;
 
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
@@ -1961,25 +1997,53 @@ void MathCtrl::SelectWithChar(int ccode) {
     if (ccode == WXK_DOWN && m_hCaretPosition != NULL && m_hCaretPositionStart->m_next != NULL)
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
-  // extend/shorten selection up
   else if (ccode == WXK_UP) {
-    if (m_hCaretPositionEnd->m_previous != NULL) {
-      if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
-        m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
-      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
+    if(m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next))
+    {
+      // We are in the cell the selection started in
+      SetActiveCell(m_cellKeyboardSelectionStartedIn);
+      SetSelection(NULL);
+      m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromBot();
+      m_hCaretPositionStart = m_tree;
+      m_hCaretPositionEnd = m_tree;
+      Refresh();
     }
-    if (m_hCaretPositionEnd != NULL)
-      ScrollToCell(m_hCaretPositionEnd); 
+    else
+    {
+      // extend/shorten up selection
+      if (m_hCaretPositionEnd->m_previous != NULL) {
+        if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
+          m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
+           m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
+         }
+         if (m_hCaretPositionEnd != NULL)
+           ScrollToCell(m_hCaretPositionEnd); 
+       }
   }
-  // extend/shorten selection down
-  else {
-    if (m_hCaretPositionEnd->m_next != NULL) {
-      if (m_hCaretPosition == m_hCaretPositionEnd)
-        m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
-      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
+  else
+  {
+    // We arrive here if the down key was pressed.
+    if(m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_previous))
+    {
+      // We are in the cell the selection started in
+      SetActiveCell(m_cellKeyboardSelectionStartedIn);
+      SetSelection(NULL);
+      m_hCaretPositionStart = m_tree;
+      m_hCaretPositionEnd = m_tree;
+      m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromTop();
+      Refresh();
     }
-    if (m_hCaretPositionEnd != NULL)
-      ScrollToCell(m_hCaretPositionEnd);
+    else
+    {
+      // extend/shorten selection down
+      if (m_hCaretPositionEnd->m_next != NULL) {
+        if (m_hCaretPosition == m_hCaretPositionEnd)
+          m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
+        m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
+      }
+      if (m_hCaretPositionEnd != NULL)
+        ScrollToCell(m_hCaretPositionEnd);
+    }
   }
   
   // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
@@ -2032,6 +2096,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     return;
   }
 
+  m_cellKeyboardSelectionStartedIn = NULL;
+  
   if (m_selectionStart != NULL &&
       m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
