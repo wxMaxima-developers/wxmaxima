@@ -187,7 +187,7 @@ public:
   //! Return to the selection after the cell has been left upwards
   void ReturnToSelectionFromTop()
     {
-      SetSelection(0,m_lastSelectionStart);
+      SetSelection(m_lastSelectionStart,0);
     }
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()

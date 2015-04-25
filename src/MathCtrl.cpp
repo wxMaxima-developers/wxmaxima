@@ -2004,8 +2004,7 @@ void MathCtrl::SelectWithChar(int ccode) {
       SetActiveCell(m_cellKeyboardSelectionStartedIn);
       SetSelection(NULL);
       m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromBot();
-      m_hCaretPositionStart = m_tree;
-      m_hCaretPositionEnd = m_tree;
+      m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
       Refresh();
     }
     else
@@ -2028,8 +2027,7 @@ void MathCtrl::SelectWithChar(int ccode) {
       // We are in the cell the selection started in
       SetActiveCell(m_cellKeyboardSelectionStartedIn);
       SetSelection(NULL);
-      m_hCaretPositionStart = m_tree;
-      m_hCaretPositionEnd = m_tree;
+      m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
       m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromTop();
       Refresh();
     }
@@ -2045,17 +2043,20 @@ void MathCtrl::SelectWithChar(int ccode) {
         ScrollToCell(m_hCaretPositionEnd);
     }
   }
-  
-  // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
-  if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
-    m_selectionStart = m_hCaretPositionStart;
-    m_selectionEnd = m_hCaretPositionEnd;
+
+  if ((m_hCaretPositionStart) && (m_hCaretPositionEnd))
+  {
+    // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
+    if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
+      m_selectionStart = m_hCaretPositionStart;
+      m_selectionEnd = m_hCaretPositionEnd;
+    }
+    else {
+      m_selectionStart = m_hCaretPositionEnd;
+      m_selectionEnd = m_hCaretPositionStart;
+    }
+    Refresh();
   }
-  else {
-    m_selectionStart = m_hCaretPositionEnd;
-    m_selectionEnd = m_hCaretPositionStart;
-  }
-  Refresh();
 }
 
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
