@@ -217,11 +217,19 @@ wxString ImgCell::ToTeX()
   return wxT(" << Graphics >> ");
 }
 
-bool ImgCell::ToImageFile(wxString file)
+wxSize ImgCell::ToImageFile(wxString file)
 {
   wxImage image = m_bitmap->ConvertToImage();
 
-  return image.SaveFile(file, wxBITMAP_TYPE_PNG);
+  SizeInMillimeters retval;
+  if(image.SaveFile(file, wxBITMAP_TYPE_PNG))
+    return image.GetSize();
+  else
+  {
+    wxSize retval;
+    retval.x = retval.y = -1;
+    return retval;
+  }
 }
 
 wxString ImgCell::ToXML()

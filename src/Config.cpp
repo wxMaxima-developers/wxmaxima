@@ -140,7 +140,8 @@ void Config::SetProperties()
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
-  m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
+    m_bitmapScale->SetToolTip(_("Normally html and bitmap export use a graphics resolution that is fit for an average screen. If this resolution isn't enough this factor can be set to a value > 1 to scale the exported images."));
+m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -169,6 +170,7 @@ void Config::SetProperties()
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true;
   bool insertAns = true;
   int  undoLimit = 0;
+  int  bitmapScale = 1;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
   int displayedDigits = 100;
@@ -215,6 +217,7 @@ void Config::SetProperties()
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
   config->Read(wxT("undoLimit"), &undoLimit);
+  config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
@@ -268,6 +271,7 @@ void Config::SetProperties()
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
   m_undoLimit->SetValue(undoLimit);
+  m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
@@ -293,7 +297,7 @@ wxPanel* Config::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
@@ -323,6 +327,11 @@ wxPanel* Config::CreateWorksheetPanel()
   m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
+
+  wxStaticText* bs = new wxStaticText(panel, -1, _("Bitmap scale for export"));
+  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
+  grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
@@ -611,6 +620,7 @@ void Config::WriteSettings()
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
+  config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   #ifdef __WXMSW__

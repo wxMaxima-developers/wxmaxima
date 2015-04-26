@@ -687,7 +687,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     if (!wxDirExists(imgDir))
       wxMkdir(imgDir);
 
-    if (bmp.ToFile(file))
+    if (bmp.ToFile(file).x>=0)
     {
       str << wxT("\\begin{figure}[htb]\n")
           << wxT("  \\begin{center}\n")
@@ -777,7 +777,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
               
               Bitmap bmp;
               bmp.SetData(copy);
-              if (bmp.ToFile(file))
+              if (bmp.ToFile(file).x>=0)
                 str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                   filename + wxT("_img/") + image + wxT("}");
               else

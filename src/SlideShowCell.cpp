@@ -287,17 +287,24 @@ wxString SlideShow::ToXML()
     return wxT("\n<slide fr=\"")+ wxString::Format(wxT("%i\">"),GetFrameRate()) + images + wxT("</slide>");
 }
 
-bool SlideShow::ToImageFile(wxString file)
+wxSize SlideShow::ToImageFile(wxString file)
 {
   wxImage image = m_bitmaps[m_displayed]->ConvertToImage();
 
-  return image.SaveFile(file, wxBITMAP_TYPE_PNG);
+  if(image.SaveFile(file, wxBITMAP_TYPE_PNG))
+    return image.GetSize();
+  else
+  {
+    wxSize retval;
+    retval.x = retval.y = -1;
+    return retval;
+  }
 }
 
-bool SlideShow::ToGif(wxString file)
+wxSize SlideShow::ToGif(wxString file)
 {
   wxArrayString which;
-  bool retval = true;
+  bool success = true;
 
   wxString convert(wxT("convert -delay "+wxString::Format(wxT("%i"),100/GetFrameRate())));
   wxString convertArgs;
@@ -322,7 +329,7 @@ bool SlideShow::ToGif(wxString file)
   if (wxExecute(convert, wxEXEC_SYNC) != 0)
 #endif
   {
-    retval = false;
+    success = false;
     wxMessageBox(_("There was an error during GIF export!\n\nMake sure ImageMagick is installed and wxMaxima can find the convert program."),
         wxT("Error"), wxICON_ERROR);
   }
@@ -333,7 +340,23 @@ bool SlideShow::ToGif(wxString file)
     wxRemoveFile(imgname.GetFullPath());
   }
 
-  return retval;
+  if(success)
+  {
+    if(m_size>0)
+      return m_bitmaps[1]->GetSize();
+    else
+    {
+      wxSize retval;
+      retval.x=retval.y=0;
+      return retval;
+    }
+  }
+  else
+  {
+    wxSize retval;
+    retval.x=retval.y=-1;
+    return retval;
+  }
 }
 
 bool SlideShow::CopyToClipboard()

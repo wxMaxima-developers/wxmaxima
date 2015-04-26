@@ -578,8 +578,8 @@ public:
   bool CopyTeX();
   //! Copy a bitmap of the the current selection to the clipboard
   bool CopyBitmap();
-  bool CopyToFile(wxString file);
-  bool CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false);
+  wxSize CopyToFile(wxString file);
+  wxSize CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false,int scale=1);
   void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int>& cellMap);
   //! Export the file to an html document
   bool ExportToHTML(wxString file);

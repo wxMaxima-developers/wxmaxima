@@ -295,6 +295,13 @@ public:
 
   MathCell* GetParent();
 
+  //! For the bitmap export we sometimes want to know how big the result will be...
+  struct SizeInMillimeters
+  {
+  public:
+    double x,y;
+  };
+
     //! Returns the list's representation as a string.
   virtual wxString ListToString();
   //! Convert this list to its LaTeX representation
@@ -444,6 +451,7 @@ public:
     their "inner cell" list.
    */
   bool m_SuppressMultiplicationDot;
+
 protected:
   int m_height;
   //! The width of this cell

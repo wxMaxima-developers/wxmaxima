@@ -42,7 +42,7 @@ public:
     *first = *last = this;
   }
   friend class SlideShow;
-  bool ToImageFile(wxString filename);
+  wxSize ToImageFile(wxString filename);
   void SetBitmap(wxBitmap bitmap);
   bool CopyToClipboard();
   // These methods should only be used for saving wxmx files

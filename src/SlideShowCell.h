@@ -55,9 +55,9 @@ public:
   void SetDisplayedIndex(int ind);
   int Length() { return m_size; }
   //! Exports the image the slideshow currently displays
-  bool ToImageFile(wxString filename);
+  wxSize ToImageFile(wxString filename);
   //! Exports the whole animation as animated gif
-  bool ToGif(wxString filename);
+  wxSize ToGif(wxString filename);
   bool CopyToClipboard();
   /*! Get the frame rate of this SlideShow [in Hz].
 

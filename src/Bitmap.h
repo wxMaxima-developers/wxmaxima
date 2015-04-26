@@ -1,6 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,10 +27,14 @@
 class Bitmap
 {
 public:
-  Bitmap();
+  Bitmap(int scale=1);
   ~Bitmap();
   void SetData(MathCell* tree);
-  bool ToFile(wxString file);
+  /*! Exports this bitmap to a file
+
+    \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
+   */
+  wxSize ToFile(wxString file);
   bool ToClipboard();
 protected:
   void DestroyTree();
@@ -41,7 +46,20 @@ protected:
   void Layout();
   void Draw();
   MathCell *m_tree;
+  double GetRealHeight();
+  double GetRealWidth();
+
+private:
+  //! How many times the natural resolution do we want this bitmap to be?
+  int m_scale;
   wxBitmap m_bmp;
+  //! The width of the current bitmap;
+  long m_width;
+  //! The height of the current bitmap;
+  long m_height;
+  //! The resolution of the bitmap.
+  wxSize m_ppi;
+  
 };
 
 #endif // BITMAP_H

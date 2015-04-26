@@ -2525,8 +2525,10 @@ bool MathCtrl::CopyBitmap() {
   return bmp.ToClipboard();
 }
 
-bool MathCtrl::CopyToFile(wxString file) {
+wxSize MathCtrl::CopyToFile(wxString file) {
 
+  bool success;
+  
   if (m_selectionStart != NULL &&
       m_selectionStart == m_selectionEnd &&
       (m_selectionStart->GetType() == MC_TYPE_IMAGE ||
@@ -2548,11 +2550,12 @@ bool MathCtrl::CopyToFile(wxString file) {
   }
 }
 
-bool MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
-                          bool asData) {
+wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
+                                                 bool asData,int scale) {
+  // TODO: Set scale to 1 if we only copy a slideshow or image cell.
   MathCell* tmp = CopySelection(start, end, asData);
 
-  Bitmap bmp;
+  Bitmap bmp(scale);
   bmp.SetData(tmp);
 
   return bmp.ToFile(file);
@@ -3051,16 +3054,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
         if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
+          AddLineToFile(output,_(wxT("  <IMG ALT=\"Animated Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(wxT("_%d.gif\">"), count));
         }
         else
         {
-          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true);
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
+          int scale = 1;
+
+          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, wxConfig::Get()->Read(wxT("bitmapScale"), &scale));
+          AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.png\">"), count));
+                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\">")), count, size.x, size.y));
         }
         count++;
       }
@@ -3107,15 +3112,15 @@ bool MathCtrl::ExportToHTML(wxString file) {
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                  wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
+          AddLineToFile(output, _(wxT("  <IMG ALT=\"Animated Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(wxT("_%d.gif\">"), count));
         }
         else
         {
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                     out, NULL, true);
-          AddLineToFile(output, wxT("  <IMG ALT=\"Result\" SRC=\"") + filename + wxT("_htmlimg/") +
+                                                      out, NULL, true);
+          AddLineToFile(output, _(wxT("  <IMG ALT=\"Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(wxT("_%d.png\">"), count));
         }

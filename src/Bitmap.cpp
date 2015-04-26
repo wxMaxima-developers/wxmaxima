@@ -1,6 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,9 +28,10 @@
 
 #define BM_FULL_WIDTH 1000
 
-Bitmap::Bitmap()
+Bitmap::Bitmap(int scale)
 {
   m_tree = NULL;
+  m_scale=scale;
   m_bmp.Create(10,10);
 }
 
@@ -65,6 +67,7 @@ void Bitmap::Layout()
 
     wxMemoryDC dc;
     dc.SelectObject(m_bmp);
+    dc.SetUserScale(m_scale,m_scale);
     CellParser parser(dc);
     parser.SetClientWidth(BM_FULL_WIDTH);
 
@@ -77,9 +80,18 @@ void Bitmap::Layout()
 
   int width, height;
   GetMaxPoint(&width, &height);
-  m_bmp.Create(width, height);
-
+  m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale);
   Draw();
+}
+
+double Bitmap::GetRealWidth()
+{
+  return m_width/m_scale;
+}
+
+double Bitmap::GetRealHeight()
+{
+  return m_height/m_scale;
 }
 
 void Bitmap::RecalculateSize()
@@ -92,6 +104,7 @@ void Bitmap::RecalculateSize()
 
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
+  dc.SetUserScale(m_scale,m_scale);
   CellParser parser(dc);
 
   while (tmp != NULL)
@@ -112,6 +125,7 @@ void Bitmap::RecalculateWidths()
 
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
+  dc.SetUserScale(m_scale,m_scale);
   CellParser parser(dc);
   parser.SetClientWidth(BM_FULL_WIDTH);
 
@@ -187,6 +201,7 @@ void Bitmap::Draw()
   MathCell* tmp = m_tree;
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
+  dc.SetUserScale(m_scale,m_scale);
 
   wxString bgColStr = wxT("white");
   wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
@@ -238,24 +253,41 @@ void Bitmap::Draw()
     }
   }
   dc.SelectObject(wxNullBitmap);
+  // Update the bitmap's size information.
+  m_ppi = dc.GetPPI();
+  m_ppi.x *= m_scale;
+  m_ppi.y *= m_scale;
 }
 
-bool Bitmap::ToFile(wxString file)
+wxSize Bitmap::ToFile(wxString file)
 {
-  bool res = false;
+  bool success = false;
   if (file.Right(4) == wxT(".bmp"))
-    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_BMP);
+    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_BMP);
   else if (file.Right(4) == wxT(".xpm"))
-    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_XPM);
+    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_XPM);
   else if (file.Right(4) == wxT(".jpg"))
-    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_JPEG);
+    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_JPEG);
   else
   {
     if (file.Right(4) != wxT(".png"))
       file = file + wxT(".png");
-    res = m_bmp.SaveFile(file, wxBITMAP_TYPE_PNG);
+    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_PNG);
   }
-  return res;
+
+  wxSize retval;
+  if( success )
+  {
+    retval.x=GetRealWidth();
+    retval.y=GetRealHeight();
+    return retval;
+  }
+  else
+  {
+    retval.x=-1;
+    retval.y=-1;
+    return retval;
+  };
 }
 
 bool Bitmap::ToClipboard()
@@ -294,6 +326,7 @@ void Bitmap::BreakUpCells()
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
+  dc.SetUserScale(m_scale,m_scale);
   CellParser parser(dc);
 
   while (tmp != NULL)
