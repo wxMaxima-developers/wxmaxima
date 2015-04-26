@@ -2552,7 +2552,6 @@ wxSize MathCtrl::CopyToFile(wxString file) {
 
 wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
                                                  bool asData,int scale) {
-  // TODO: Set scale to 1 if we only copy a slideshow or image cell.
   MathCell* tmp = CopySelection(start, end, asData);
 
   Bitmap bmp(scale);
@@ -3060,9 +3059,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
         }
         else
         {
-          int scale = 1;
-
-          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, wxConfig::Get()->Read(wxT("bitmapScale"), &scale));
+          int bitmapScale = 3;
+          wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
           AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
                         wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\">")), count, size.x, size.y));
