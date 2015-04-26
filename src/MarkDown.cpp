@@ -123,7 +123,11 @@ wxString MarkDownParser::MarkDown(wxString str)
 		}
 
 	      // Add the text to the output.
-	      if(addNewline) result += NewLine();
+	      if (addNewline)
+                result += NewLine()
+                else
+                  result += " ";
+              
 	      result += line;
 	      
 	      addNewline = true;
