@@ -24,14 +24,14 @@ wxmaxima.info : wxmaxima.texi
 	makeinfo --split-size=1000000 $<
 
 wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS) manual.css
-	texi2any --no-split --output=wxmaxima.html --html \
-          --css-include="manual.css" wxmaxima.texi
+	texi2any --no-split --output=$@ --html \
+          --css-include=manual.css $<
 
 wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
-	$(TEXI2PDF) $(AM_V_texinfo) -o wxmaxima.pdf wxmaxima.texi
+	$(TEXI2PDF) $(AM_V_texinfo) -o $@ $<
 
 wxMaxima.chm: wxmaxima.hhp
-	-"$(HHC)" wxmaxima.hhp
+	-"$(HHC)" $<
 
 html_DATA = $(figurefiles) wxmaxima.hhp wxmaxima.html
 #dist_html_data=$(html_DATA)
@@ -53,7 +53,7 @@ clean-html:
 if CHM
 install-chm: wxMaxima.chm
 	test -z "$(DESTDIR)$(docchmdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)"
-	$(INSTALL_DATA) wxMaxima.chm "$(DESTDIR)$(docchmdir)/wxMaxima.chm"
+	$(INSTALL_DATA) $< "$(DESTDIR)$(docchmdir)/wxMaxima.chm"
 
 uninstall-chm:
 	rm -f "$(DESTDIR)$(docchmdir)"
