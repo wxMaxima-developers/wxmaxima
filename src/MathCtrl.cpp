@@ -3053,9 +3053,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
         if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output,_(wxT("  <IMG ALT=\"Animated Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
+          AddLineToFile(output,_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\">"), count));
+                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
         }
         else
         {
@@ -3064,7 +3064,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
           AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\">")), count, size.x, size.y));
+                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\" style=\"max-width:90\%;max-height:\90%;\" >")), count, size.x, size.y));
         }
         count++;
       }
@@ -3111,17 +3111,17 @@ bool MathCtrl::ExportToHTML(wxString file) {
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                  wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output, _(wxT("  <IMG ALT=\"Animated Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
+          AddLineToFile(output, _(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\">"), count));
+                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
         }
         else
         {
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                                       out, NULL, true);
-          AddLineToFile(output, _(wxT("  <IMG ALT=\"Diagram\" SRC=\"")) + filename + wxT("_htmlimg/") +
+          AddLineToFile(output, _(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.png\">"), count));
+                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
         }
         count++;
       }
