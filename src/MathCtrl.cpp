@@ -332,6 +332,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
   
+  m_tree->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate();
@@ -423,6 +424,9 @@ void MathCtrl::Recalculate(bool force)
 {
   GroupCell *tmp = m_tree;
 
+  if(m_tree)
+    m_tree->SetCanvasSize(GetClientSize());
+
   wxClientDC dc(this);
   CellParser parser(dc);
   parser.SetZoomFactor(m_zoomFactor);
@@ -448,7 +452,6 @@ void MathCtrl::Recalculate(bool force)
   }
   
   AdjustSize();
-  
   // Re-calculate the table of contents
   m_structure->Update(m_tree);
 
@@ -3055,7 +3058,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
           AddLineToFile(output,_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
+                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:90\%;\" >"), count));
         }
         else
         {
@@ -3064,7 +3067,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
           AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\" style=\"max-width:90\%;max-height:\90%;\" >")), count, size.x, size.y));
+                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" height=\"%i\" style=\"max-width:90\%;max-height:90\%;\" >")), count, size.x, size.y));
         }
         count++;
       }
@@ -3113,7 +3116,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
                                                  wxString::Format(wxT("_%d.gif"), count));
           AddLineToFile(output, _(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
+                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90\%;max-height:90\%;\" >"), count));
         }
         else
         {
@@ -3121,7 +3124,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
                                                       out, NULL, true);
           AddLineToFile(output, _(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90\%;max-height:\90%;\" >"), count));
+                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90\%;max-height:90\%;\" >"), count));
         }
         count++;
       }

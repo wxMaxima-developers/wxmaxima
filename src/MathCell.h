@@ -452,7 +452,13 @@ public:
    */
   bool m_SuppressMultiplicationDot;
 
+  /*! Set the size of the canvas our cells have to be drawn on
+
+   */
+  void SetCanvasSize(wxSize size) { m_canvasSize = size; }
 protected:
+  //! The size of the canvas our cells have to be drawn on
+  static wxSize m_canvasSize;
   int m_height;
   //! The width of this cell
   int m_width;

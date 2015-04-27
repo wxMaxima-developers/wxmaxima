@@ -650,3 +650,5 @@ bool MathCell::IsMath()
            m_textStyle == TS_LABEL ||
            m_textStyle == TS_INPUT);
 }
+
+wxSize MathCell::m_canvasSize;
