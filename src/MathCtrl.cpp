@@ -464,13 +464,9 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   wxDELETE(m_memory);
 
   // Determine if we have a sane thing we can scroll to.
-  GroupCell *CellToScrollTo = m_hCaretPosition;
-  if(!CellToScrollTo)
-  {
-    if(m_activeCell)
-      CellToScrollTo=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-  }
-  if(!CellToScrollTo) m_workingGroup;
+  MathCell *CellToScrollTo = m_hCaretPosition;
+  if(!CellToScrollTo) CellToScrollTo = m_activeCell;
+  if(!CellToScrollTo) CellToScrollTo = m_workingGroup;
     
   if (m_tree != NULL) {
     m_selectionStart = NULL;
