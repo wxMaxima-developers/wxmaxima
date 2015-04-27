@@ -463,6 +463,15 @@ void MathCtrl::Recalculate(bool force)
 void MathCtrl::OnSize(wxSizeEvent& event) {
   wxDELETE(m_memory);
 
+  // Determine if we have a sane thing we can scroll to.
+  GroupCell *CellToScrollTo = m_hCaretPosition;
+  if(!CellToScrollTo)
+  {
+    if(m_activeCell)
+      CellToScrollTo=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+  }
+  if(!CellToScrollTo) m_workingGroup;
+    
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
@@ -472,6 +481,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
     AdjustSize();
 
   Refresh();
+  if(CellToScrollTo)ScrollToCell(CellToScrollTo);
   //wxScrolledCanvas::OnSize(event);
 }
 
