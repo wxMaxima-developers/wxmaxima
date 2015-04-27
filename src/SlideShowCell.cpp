@@ -201,13 +201,26 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
 {
+  int height;
   if (m_bitmaps[m_displayed] != NULL)
-    m_width = m_bitmaps[m_displayed]->GetWidth() + 2;
+  {
+    height = m_bitmaps[m_displayed]->GetHeight() + 2;
+    m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+  }
   else
-    m_width = 0;
+  {
+    height = 0;
+    m_width  = 0;
+  }
 
   double scale = parser.GetScale();
   scale = MAX(scale, 1.0);
+
+  // Shrink to .9* the canvas size
+  if(scale * m_width > .9 * m_canvasSize.x)
+    scale = .9 * m_canvasSize.x / m_width;
+  if(scale * height > .9 * m_canvasSize.y)
+    scale = .9 * m_canvasSize.y / height;
 
   m_width = (int) (scale * m_width);
   ResetData();
@@ -215,13 +228,26 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
 
 void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 {
+  int width;
   if (m_bitmaps[m_displayed] != NULL)
+  {
     m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
+    width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+  }
   else
+  {
     m_height = 0;
-
+    width  = 0;
+  }
+    
   double scale = parser.GetScale();
   scale = MAX(scale, 1.0);
+
+  // Shrink to .9* the canvas size
+  if(scale * width > .9 * m_canvasSize.x)
+    scale = .9 * m_canvasSize.x / width;
+  if(scale * m_height > .9 * m_canvasSize.y)
+    scale = .9 * m_canvasSize.y / m_height;
 
   m_height= (int) (scale * m_height);
 
@@ -232,6 +258,17 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  if (m_bitmaps[m_displayed] != NULL)
+  {
+    m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
+    m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+  }
+  else
+  {
+    m_height = 0;
+    m_width  = 0;
+  }
+  
   if (DrawThisCell(parser, point) && m_bitmaps[m_displayed] != NULL)
   {
     wxDC& dc = parser.GetDC();
@@ -239,12 +276,29 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     double scale = parser.GetScale();
     scale = MAX(scale, 1.0);
 
-    dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    // Shrink to .9* the canvas size
+    if(scale * m_width > .9 * m_canvasSize.x)
+      scale = .9 * m_canvasSize.x / m_width;
+    if(scale * m_height > .9 * m_canvasSize.y)
+      scale = .9 * m_canvasSize.y / m_height;
 
+    if (m_bitmaps[m_displayed] != NULL)
+    {
+      m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
+      m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+    }
+    else
+    {
+      m_height = 0;
+      m_width  = 0;
+    }
+    
+    dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width * scale + 2, m_height * scale + 2));
+    
     if (scale != 1.0)
     {
       wxImage img = m_bitmaps[m_displayed]->ConvertToImage();
-      img.Rescale(m_width, m_height);
+      img.Rescale(m_width * scale, m_height * scale,wxIMAGE_QUALITY_BICUBIC);
 
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
