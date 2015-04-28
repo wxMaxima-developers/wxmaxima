@@ -2007,7 +2007,7 @@ void MathCtrl::SelectWithChar(int ccode) {
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
   else if (ccode == WXK_UP) {
-    if(m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next))
+    if(m_cellKeyboardSelectionStartedIn && (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next)))
     {
       // We are in the cell the selection started in
       SetActiveCell(m_cellKeyboardSelectionStartedIn);
@@ -2031,7 +2031,7 @@ void MathCtrl::SelectWithChar(int ccode) {
   else
   {
     // We arrive here if the down key was pressed.
-    if(m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_previous))
+    if(m_cellKeyboardSelectionStartedIn && (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_previous)))
     {
       // We are in the cell the selection started in
       SetActiveCell(m_cellKeyboardSelectionStartedIn);
