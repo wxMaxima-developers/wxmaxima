@@ -152,8 +152,8 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
   int height;
   if (m_bitmap != NULL)
   {
-    height = m_bitmap->GetHeight() + 2;
-    m_width  = m_bitmap->GetWidth()  + 2;
+    height = m_bitmap->GetHeight();
+    m_width  = m_bitmap->GetWidth();
   }
   else
   {
@@ -170,7 +170,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
   if(scale * height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / height;
 
-  m_width = (int) (scale * m_width);
+  m_width = (int) (scale * m_width) + 2;
   ResetData();
 }
 
@@ -179,8 +179,8 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   int width;
   if (m_bitmap != NULL)
   {
-    m_height = m_bitmap->GetHeight() + 2;
-    width  = m_bitmap->GetWidth()  + 2;
+    m_height = m_bitmap->GetHeight();
+    width  = m_bitmap->GetWidth();
   }
   else
   {
@@ -197,7 +197,7 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   if(scale * m_height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / m_height;
 
-  m_height= (int) (scale * m_height);
+  m_height= (int) (scale * m_height) + 2;
 
   m_center = m_height / 2;
 }
@@ -214,8 +214,8 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     if (m_bitmap != NULL)
     {
-      m_height = m_bitmap->GetHeight() + 2;
-      m_width  = m_bitmap->GetWidth()  + 2;
+      m_height = m_bitmap->GetHeight();
+      m_width  = m_bitmap->GetWidth();
     }
     else
     {

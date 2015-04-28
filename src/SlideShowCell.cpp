@@ -222,7 +222,7 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
   if(scale * height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / height;
 
-  m_width = (int) (scale * m_width);
+  m_width = (int) (scale * m_width) + 2;
   ResetData();
 }
 
@@ -249,7 +249,7 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
   if(scale * m_height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / m_height;
 
-  m_height= (int) (scale * m_height);
+  m_height= (int) (scale * m_height) + 2;
 
   m_center = m_height / 2;
   
@@ -260,8 +260,8 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   if (m_bitmaps[m_displayed] != NULL)
   {
-    m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
-    m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+    m_height = m_bitmaps[m_displayed]->GetHeight();
+    m_width  = m_bitmaps[m_displayed]->GetWidth();
   }
   else
   {
@@ -282,17 +282,6 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     if(scale * m_height > .9 * m_canvasSize.y)
       scale = .9 * m_canvasSize.y / m_height;
 
-    if (m_bitmaps[m_displayed] != NULL)
-    {
-      m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
-      m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
-    }
-    else
-    {
-      m_height = 0;
-      m_width  = 0;
-    }
-    
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width * scale + 2, m_height * scale + 2));
     
     if (scale != 1.0)
