@@ -138,10 +138,31 @@ void wxMaximaFrame::StatusSaveFinished()
     SetStatusText(_("Saving successful."), 1);
 }
 
+void wxMaximaFrame::StatusExportStart()
+{
+  m_StatusSaving = true;
+  SetStatusText(_("Exporting..."), 1);
+}
+
+void wxMaximaFrame::StatusExportFinished()
+{
+  m_StatusSaving = false;
+  if(m_StatusMaximaBusy != waiting)
+    StatusMaximaBusy(m_StatusMaximaBusy);
+  else
+    SetStatusText(_("Sav successful."), 1);
+}
+
 void wxMaximaFrame::StatusSaveFailed()
 {
   m_StatusSaving = false;
   SetStatusText(_("Saving failed."), 1);
+}
+
+void wxMaximaFrame::StatusExportFailed()
+{
+  m_StatusSaving = false;
+  SetStatusText(_("Export failed."), 1);
 }
 
 wxMaximaFrame::~wxMaximaFrame()

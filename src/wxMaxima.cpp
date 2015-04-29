@@ -2216,14 +2216,27 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         }
 	    
         if (file.Right(4) == wxT(".tex")) {
+          StatusExportStart();
+
           if (!m_console->ExportToTeX(file))
+          {
             wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
                          wxOK);
+            StatusExportFailed();
+          }
+          else
+            StatusExportFinished();
         }
         else {
+          StatusExportStart();
           if (!m_console->ExportToHTML(file))
+          {
             wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
                          wxOK);
+            StatusExportFailed();
+          }
+          else
+            StatusExportFinished();
         }
 
         wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
@@ -4607,6 +4620,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         cell->SetType(MC_TYPE_ERROR);
         cell->SetParent(tmp);
         tmp->SetOutput(cell);
+        tmp->ResetData();
         if(m_console->FollowEvaluation())
           m_console->SetSelection(NULL);
 

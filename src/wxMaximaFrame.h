@@ -368,6 +368,12 @@ public:
   void StatusSaveFinished();
   //! Set the status to "Saving has failed"
   void StatusSaveFailed();
+  //! Set the status to "Maxima is exporting"
+  void StatusExportStart();
+  //! Set the status to "Maxima has finished exporting"
+  void StatusExportFinished();
+  //! Set the status to "Exporting has failed"
+  void StatusExportFailed();
 private:
   //! True=We are currently saving.
   bool m_StatusSaving;
