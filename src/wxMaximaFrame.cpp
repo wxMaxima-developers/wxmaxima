@@ -150,7 +150,7 @@ void wxMaximaFrame::StatusExportFinished()
   if(m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    SetStatusText(_("Sav successful."), 1);
+    SetStatusText(_("Export successful."), 1);
 }
 
 void wxMaximaFrame::StatusSaveFailed()
