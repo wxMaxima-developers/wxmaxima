@@ -158,6 +158,12 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(wxT("=\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\Longrightarrow}")));
   regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\longleftrightarrow}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("-\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\longrightarrow}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|<\\|-"),wxT("\\\\ensuremath{\\\\longleftarrow}")));
+  regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|<\\|="),wxT("\\\\ensuremath{\\\\leq}")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
@@ -169,6 +175,12 @@ MarkDownHTML::MarkDownHTML() : MarkDownParser()
     new RegexReplacer(wxT("\\&lt;=\\&gt;"),wxT("\\&hArr;")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("=\\&gt;"),wxT("\\&rArr;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("&lt;-\\&gt;"),wxT("\\&harr;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("-\\&gt;"),wxT("\\&rarr;")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\&lt;-"),wxT("\\&larr;")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\&lt;="),wxT("\\&le;")));
   regexReplaceList.push_back(
