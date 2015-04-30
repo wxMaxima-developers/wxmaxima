@@ -167,6 +167,8 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
     new RegexReplacer(wxT("\\\\verb\\|<\\|="),wxT("\\\\ensuremath{\\\\leq}")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("+/-"),wxT("\\\\ensuremath{\\\\pm}")));
 }
 
 MarkDownHTML::MarkDownHTML() : MarkDownParser()
@@ -185,4 +187,6 @@ MarkDownHTML::MarkDownHTML() : MarkDownParser()
     new RegexReplacer(wxT("\\&lt;="),wxT("\\&le;")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\&gt;="),wxT("\\&ge;")));;
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("+/-"),wxT("\\&plusmn;")));;
 }

@@ -3791,6 +3791,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
+  FollowEvaluation(true);
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
   SetHCaret(gc);
 }

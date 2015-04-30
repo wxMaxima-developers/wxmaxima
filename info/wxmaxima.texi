@@ -294,7 +294,9 @@ wxMaxima will also recognize @code{=>} and replace it by a
 cogito => sum.
 @end example
 Other symbols the markdown parser will recognize are @code{<=} and
-@code{>=} for comparisons and a double-pointed double arrow (@code{<=>}).
+@code{>=} for comparisons, a double-pointed double arrow (@code{<=>}),
+single- headed arrows (@code{<->}, @code{->} and @code{<-}) and
+@code{+/-} as the respective sign.
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
