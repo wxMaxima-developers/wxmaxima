@@ -4939,8 +4939,11 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   EditorCell *editor = (EditorCell *)m_activeCell;
   int caret = editor->GetCaretPosition();
 
-  editor->ReplaceSelection(editor->GetSelectionString(),
-                           m_completions[event.GetId() - popid_complete_00]);
+  if (editor->GetSelectionString() != wxEmptyString)
+    editor->ReplaceSelection(editor->GetSelectionString(),
+                             m_completions[event.GetId() - popid_complete_00]);
+  else
+    editor->InsertText(m_completions[event.GetId() - popid_complete_00]);
 
   if (m_autocompleteTemplates)
   {
