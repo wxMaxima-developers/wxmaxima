@@ -86,6 +86,11 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
       break;
     case waiting:
       m_console->SetWorkingGroup(NULL);
+      // If we evaluated a cell that produces no output we still want the
+      // cell to be unselected after evaluating it.
+      if(m_console->FollowEvaluation())
+        m_console->SetSelection(NULL);
+
       m_console->QuestionAnswered();
       m_MenuBar->Enable(menu_remove_output,true);
       m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);

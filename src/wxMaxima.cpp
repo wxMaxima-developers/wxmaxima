@@ -283,7 +283,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     StatusMaximaBusy(parsing);
 
   if (type == MC_TYPE_DEFAULT)
-  {
+  {    
     while (s.Length() > 0)
     {
       int start = s.Find(wxT("<mth"));
