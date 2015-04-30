@@ -906,6 +906,22 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_saveValue = false;
     }
 
+    
+      wxChar keyCode;
+#if wxUSE_UNICODE
+      keyCode=event.GetUnicodeKey();
+#else
+      keyCode=event.GetKeyCode();
+#endif
+
+      // If we got passed a non-printable character we have to send it back to the
+      // hotkey management.
+      if(!wxIsprint(keyCode))
+      {
+        event.Skip();
+        break;
+      }
+
     if (m_historyPosition != -1) {
       int len = m_textHistory.GetCount() - m_historyPosition;
       m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
@@ -921,11 +937,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       SaveValue();
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
-#if wxUSE_UNICODE
-      switch (event.GetUnicodeKey())
-#else
-      switch (event.GetKeyCode())
-#endif
+      
+      switch (keyCode)
       {
       case '(':
         m_text = m_text.SubString(0, start - 1) +   wxT("(") +
@@ -989,14 +1002,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                m_text.SubString(m_positionOfCaret, m_text.Length());
 
       m_positionOfCaret++;
-
+      
       if (m_matchParens)
       {
-#if wxUSE_UNICODE
-        switch (event.GetUnicodeKey())
-#else
-        switch (event.GetKeyCode())
-#endif
+        switch (keyCode)
         {
         case '(':
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
