@@ -1921,7 +1921,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     DeleteSelection();
     return;
   }
-
+  
   ///
   /// send event to active cell
   ///
@@ -2315,11 +2315,18 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     // keycodes which open hCaret with initial content
   default:
 #if wxUSE_UNICODE
-    wxString txt(event.GetUnicodeKey());
+    wxChar txt(event.GetUnicodeKey());
 #else
-    wxString txt = wxString::Format(wxT("%c"), event.GetKeyCode());
+    wxChar txt = wxString::Format(wxT("%c"), event.GetKeyCode());
 #endif
-    OpenHCaret(txt);
+    if(!wxIsprint(txt))
+      {
+        std::cerr<<"Non-Printable!\n";
+        event.Skip();
+        return;
+      }
+    else
+      OpenHCaret(txt);
   }
 
   Refresh();
