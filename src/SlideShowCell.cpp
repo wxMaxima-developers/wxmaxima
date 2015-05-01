@@ -114,7 +114,6 @@ void SlideShow::LoadImages(wxArrayString images)
 
         int width = 0, height = 0;
         dc.GetTextExtent(error, &width, &height);
-
         dc.DrawRectangle(0, 0, 400, 250);
         dc.DrawLine(0, 0,   400, 250);
         dc.DrawLine(0, 250, 400, 0);
@@ -157,7 +156,7 @@ void SlideShow::LoadImages(wxArrayString images)
 
         int width = 0, height = 0;
         dc.GetTextExtent(error, &width, &height);
-
+        
         dc.DrawRectangle(0, 0, 400, 250);
         dc.DrawLine(0, 0,   400, 250);
         dc.DrawLine(0, 250, 400, 0);
@@ -281,6 +280,8 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
       scale = .9 * m_canvasSize.x / m_width;
     if(scale * m_height > .9 * m_canvasSize.y)
       scale = .9 * m_canvasSize.y / m_height;
+
+    dc.SetPen(*wxRED_PEN);
 
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width * scale + 2, m_height * scale + 2));
     

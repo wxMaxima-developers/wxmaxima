@@ -69,7 +69,9 @@ source directory.
 
 ### Compiling with autotools
 
-If you are building from git, execute `./bootstrap` first.
+If you are not building an official tarball but using the git version it
+is necessary to execute `./bootstrap` first in order to get the file
+./configure
 
 To build wxMaxima on Linux execute
 
