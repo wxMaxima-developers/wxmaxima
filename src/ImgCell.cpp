@@ -210,34 +210,20 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
-    scale = MAX(scale, 1.0);
-
-    if (m_bitmap != NULL)
-    {
-      m_height = m_bitmap->GetHeight();
-      m_width  = m_bitmap->GetWidth();
-    }
-    else
-    {
-      m_height = 0;
-      m_width  = 0;
-    }
-    
-    // Shrink to .9* the canvas size
-    if(scale * m_width > .9 * m_canvasSize.x)
-      scale = .9 * m_canvasSize.x / m_width;
-    if(scale * m_height > .9 * m_canvasSize.y)
-      scale = .9 * m_canvasSize.y / m_height;
 
     SetPen(parser);
     if (m_drawRectangle)
       
-      dc.DrawRectangle(wxRect(point.x, point.y - m_center, scale * m_width + 2, scale *m_height + 2));  
+      dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));  
 
-    if (scale != 1.0)
+    bool rescale=false;
+    if(m_bitmap->GetHeight() + 2 != m_height)
+      rescale=true;
+    
+    if (rescale)
     {
       wxImage img = m_bitmap->ConvertToImage();
-      img.Rescale(m_width * scale, m_height * scale,wxIMAGE_QUALITY_BICUBIC);
+      img.Rescale(m_width - 2, m_height - 2,wxIMAGE_QUALITY_BICUBIC);
 
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
@@ -247,7 +233,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       bitmapDC.SelectObject(*m_bitmap);
     }
 
-    dc.Blit(point.x + 1, point.y - m_center + 1, m_width, m_height, &bitmapDC, 0, 0);
+    dc.Blit(point.x + 1, point.y - m_center + 1, m_width - 2, m_height - 2, &bitmapDC, 0, 0);
   }
 
   MathCell::Draw(parser, point, fontsize);
