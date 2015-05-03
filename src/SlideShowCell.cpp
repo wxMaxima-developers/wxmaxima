@@ -203,8 +203,8 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
   int height;
   if (m_bitmaps[m_displayed] != NULL)
   {
-    height = m_bitmaps[m_displayed]->GetHeight() + 2;
-    m_width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+    height = m_bitmaps[m_displayed]->GetHeight();
+    m_width  = m_bitmaps[m_displayed]->GetWidth();
   }
   else
   {
@@ -230,8 +230,8 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
   int width;
   if (m_bitmaps[m_displayed] != NULL)
   {
-    m_height = m_bitmaps[m_displayed]->GetHeight() + 2;
-    width  = m_bitmaps[m_displayed]->GetWidth() + 2;
+    m_height = m_bitmaps[m_displayed]->GetHeight();
+    width  = m_bitmaps[m_displayed]->GetWidth();
   }
   else
   {
@@ -270,7 +270,7 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     if (m_bitmaps[m_displayed] != NULL)
     {
       if(m_bitmaps[m_displayed]->GetHeight() + 2 != m_height)
-        rescale=true;
+        rescale=true;;
     }               
     
     if (rescale)
