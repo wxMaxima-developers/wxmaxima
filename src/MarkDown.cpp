@@ -67,8 +67,11 @@ wxString MarkDownParser::MarkDown(wxString str)
       while((index<line.Length()) && (line[index] == wxT(' ')))
 	index++;
 
+      // Does the line contain anything other than spaces?
       if(index<line.Length())
 	{
+          // The line contains anything other than spaces.
+          
 	  // If the line begins with a star followed by a space it is part
 	  // of a bullet list
 	  if(line[index] == wxT('*') && (line[index + 1] == wxT(' ')) )
@@ -78,7 +81,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 	      if(indentationLevels.empty())
 		{
 		  result += itemizeBegin()+itemizeItem();
-		  indentationLevels.push_back(index);
+		  indentationLevels.push_back(index );
 		}
 	      else
 		{
@@ -101,6 +104,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 		  result += itemizeEndItem() + itemizeItem();
 		}
 	      result += line.Right(line.Length() - index - 1);
+              addNewline = false;
 	    }
 	  else
 	    {
@@ -108,20 +112,24 @@ wxString MarkDownParser::MarkDown(wxString str)
 	      //
 	      // If we are at a old indentation level we need to end some lists
 	      // and add a new item if we still are inside a list.
-	      if(indentationLevels.back() > index)
+              if(!indentationLevels.empty())
+              {
+                if(indentationLevels.back() > index)
 		{
 		  if(NewLineBreaksLine() && !m_flowedTextRequested)
 		    addNewline = false;
 		  result += itemizeEndItem();
 		  while((!indentationLevels.empty())&&
 			(indentationLevels.back()>index))
-		    {
-		      result += itemizeEnd();
-		      indentationLevels.pop_back();
-		    }
+                  {
+                    result += itemizeEnd();
+                    indentationLevels.pop_back();
+                  }
 		  if(!indentationLevels.empty()) result += itemizeItem();
 		}
-
+                line = line.Right(line.Length() - index);
+              }
+              
 	      // Add the text to the output.
 	      if (addNewline)
                 result += NewLine();
@@ -129,16 +137,14 @@ wxString MarkDownParser::MarkDown(wxString str)
                 result += " ";
               
 	      result += line;
-	      
-	      addNewline = true;
-	    }
+            }
 	}
       else
 	{
 	  if(addNewline) result += NewLine();
 	  result += line;
+          addNewline = true;
 	}
-      addNewline = true;
     }
 
   // Close all item lists
@@ -168,7 +174,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("+/-"),wxT("\\\\ensuremath{\\\\pm}")));
+    new RegexReplacer(wxT("\\+/-"),wxT("\\\\ensuremath{\\\\pm}")));
 }
 
 MarkDownHTML::MarkDownHTML() : MarkDownParser()
@@ -188,5 +194,5 @@ MarkDownHTML::MarkDownHTML() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\&gt;="),wxT("\\&ge;")));;
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("+/-"),wxT("\\&plusmn;")));;
+    new RegexReplacer(wxT("\\+/-"),wxT("\\&plusmn;")));;
 }
