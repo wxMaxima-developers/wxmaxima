@@ -3077,10 +3077,14 @@ bool MathCtrl::ExportToHTML(wxString file) {
         {
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
+          bitmapScale=1;
           wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
+          int borderwidth = 0;
+          if(tmp->GetOutput()) borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" style=\"max-width:90\%;\" >")), count, size.x));
+                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" style=\"max-width:90\%;\" >")), count, size.x - 2 * borderwidth));
         }
         count++;
       }

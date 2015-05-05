@@ -33,6 +33,7 @@ ImgCell::ImgCell() : MathCell()
   m_type = MC_TYPE_IMAGE;
   m_fileSystem = NULL;
   m_drawRectangle = true;
+  m_imageBorderWidth = 1;
 }
 
 int ImgCell::s_counter = 0;
@@ -170,7 +171,7 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
   if(scale * height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / height;
 
-  m_width = (int) (scale * m_width) + 2;
+  m_width = (int) (scale * m_width) + 2 * m_imageBorderWidth;
   ResetData();
 }
 
@@ -197,7 +198,7 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   if(scale * m_height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / m_height;
 
-  m_height= (int) (scale * m_height) + 2;
+  m_height= (int) (scale * m_height) + 2 * m_imageBorderWidth;
 
   m_center = m_height / 2;
 }
@@ -217,13 +218,13 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));  
 
     bool rescale=false;
-    if(m_bitmap->GetHeight() + 2 != m_height)
+    if(m_bitmap->GetHeight() + 2 * m_imageBorderWidth != m_height)
       rescale=true;
     
     if (rescale)
     {
       wxImage img = m_bitmap->ConvertToImage();
-      img.Rescale(m_width - 2, m_height - 2,wxIMAGE_QUALITY_BICUBIC);
+      img.Rescale(m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth,wxIMAGE_QUALITY_BICUBIC);
 
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
@@ -233,7 +234,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       bitmapDC.SelectObject(*m_bitmap);
     }
 
-    dc.Blit(point.x + 1, point.y - m_center + 1, m_width - 2, m_height - 2, &bitmapDC, 0, 0);
+    dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
   }
 
   MathCell::Draw(parser, point, fontsize);

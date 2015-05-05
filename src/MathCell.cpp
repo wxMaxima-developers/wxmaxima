@@ -45,6 +45,7 @@ MathCell::MathCell()
   m_type = MC_TYPE_DEFAULT;
   m_textStyle = TS_VARIABLE;
   m_SuppressMultiplicationDot = false;
+  m_imageBorderWidth = 0;
 }
 
 /***

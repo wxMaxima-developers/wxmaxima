@@ -117,6 +117,8 @@ public:
    */
   void AppendCell(MathCell *p_next);
 
+  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
+  int m_imageBorderWidth;
   //! Do we want this cell to start with a linebreak?
   void BreakLine(bool breakLine) { m_breakLine = breakLine; }
   //! Do we want this cell to start with a pagebreak?

@@ -37,6 +37,7 @@ SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
   m_framerate = framerate;
+  m_imageBorderWidth = 1;
 }
 
 SlideShow::~SlideShow()
@@ -221,7 +222,7 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
   if(scale * height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / height;
 
-  m_width = (int) (scale * m_width) + 2;
+  m_width = (int) (scale * m_width) + 2 * m_imageBorderWidth;
   ResetData();
 }
 
@@ -248,7 +249,7 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
   if(scale * m_height > .9 * m_canvasSize.y)
     scale = .9 * m_canvasSize.y / m_height;
 
-  m_height= (int) (scale * m_height) + 2;
+  m_height= (int) (scale * m_height) + 2 * m_imageBorderWidth;
 
   m_center = m_height / 2;
   
@@ -269,14 +270,14 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     bool rescale=false;
     if (m_bitmaps[m_displayed] != NULL)
     {
-      if(m_bitmaps[m_displayed]->GetHeight() + 2 != m_height)
+      if(m_bitmaps[m_displayed]->GetHeight() + 2 * m_imageBorderWidth != m_height)
         rescale=true;;
     }               
     
     if (rescale)
     {
       wxImage img = m_bitmaps[m_displayed]->ConvertToImage();
-      img.Rescale(m_width - 2,m_height - 2,wxIMAGE_QUALITY_BICUBIC);
+      img.Rescale(m_width - 2 * m_imageBorderWidth,m_height - 2 * m_imageBorderWidth,wxIMAGE_QUALITY_BICUBIC);
       
       wxBitmap bmp = img;
       bitmapDC.SelectObject(bmp);
@@ -284,7 +285,7 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     else
       bitmapDC.SelectObject(*m_bitmaps[m_displayed]);
 
-    dc.Blit(point.x + 1, point.y - m_center + 1,m_width - 2,m_height - 2, &bitmapDC, 0, 0);
+    dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth,m_width - 2 * m_imageBorderWidth,m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
   }
   MathCell::Draw(parser, point, fontsize);
 }
