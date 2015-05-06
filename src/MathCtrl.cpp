@@ -2926,6 +2926,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
 
+  // SMOOTHER IMAGE SCALING FOR THE IE
+  AddLineToFile(output, wxT("img {"));
+  AddLineToFile(output, wxT("  -ms-interpolation-mode: bicubic;"));
+  AddLineToFile(output, wxT("}"));
+  
   // IMAGE STYLE
   AddLineToFile(output, wxT(".image {"));
   if (fontText.Length()) {
