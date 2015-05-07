@@ -1461,8 +1461,9 @@
 	 res)
     (setq res ($apply '$draw
                       (append
-                       `((mlist simp)
-			 ((mequal simp) $gnuplot_file_name ,$gnuplot_file_name)
+                       '((mlist simp))
+                       args
+                       `(((mequal simp) $gnuplot_file_name ,$gnuplot_file_name)
 			 ((mequal simp) $data_file_name ,$data_file_name)
                          ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
                          ((mequal simp) $file_name ,filename))
@@ -1471,8 +1472,7 @@
                           `(((mequal simp) $pic_width ,($first $wxplot_size))
                             ((mequal simp) $pic_height ,($second $wxplot_size))))
                          (t
-                          `(((mequal simp) $dimensions ,$wxplot_size))))
-                       args)))
+                          `(((mequal simp) $dimensions ,$wxplot_size)))))))
     (if $display_graphics
 	(progn
           ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
