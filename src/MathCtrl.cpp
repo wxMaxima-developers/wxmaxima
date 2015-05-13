@@ -1061,7 +1061,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
   else
   {
         m_hCaretActive = true;
-        m_hCaretPosition = NULL;
+        m_hCaretPosition = m_last;
   }
 }
 
@@ -2321,7 +2321,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 #endif
     if(!wxIsprint(txt))
       {
-        std::cerr<<"Non-Printable!\n";
         event.Skip();
         return;
       }

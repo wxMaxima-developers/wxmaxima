@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-04 12:28+0200\n"
+"POT-Creation-Date: 2015-05-13 21:22+0200\n"
 "PO-Revision-Date: 2015-04-20 12:19+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -522,30 +522,30 @@ msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Fehler: Textvervollständigung für eine unbekannte Kathegorie aufgerufen."
 
-#: ../src/MathCtrl.cpp:1417
+#: ../src/MathCtrl.cpp:1420
 msgid "Bug: Cell left but not entered."
 msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
-#: ../src/MathCtrl.cpp:3964
+#: ../src/MathCtrl.cpp:3976
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:4035
+#: ../src/MathCtrl.cpp:4047
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:4004
+#: ../src/MathCtrl.cpp:4016
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 
-#: ../src/MathCtrl.cpp:1458
+#: ../src/MathCtrl.cpp:1461
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -553,7 +553,7 @@ msgstr ""
 "Interner Fehler: Soll gleichzeitig zweimal mit dem Sammeln neuer Zellen "
 "beginnen oder aufhören."
 
-#: ../src/MathCtrl.cpp:1427
+#: ../src/MathCtrl.cpp:1430
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
@@ -565,7 +565,7 @@ msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
 "Arbeitsblattes an."
 
-#: ../src/MathCtrl.cpp:1359
+#: ../src/MathCtrl.cpp:1362
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -573,19 +573,19 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:1429
+#: ../src/MathCtrl.cpp:1432
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Interner Fehler: Versuche, die Änderung des Inhalts einer Zelle zu "
 "dokumentieren, ohne die Zelle zu kennen."
 
-#: ../src/MathCtrl.cpp:4005
+#: ../src/MathCtrl.cpp:4017
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:3969 ../src/MathCtrl.cpp:4040 ../src/MathCtrl.cpp:4074
+#: ../src/MathCtrl.cpp:3981 ../src/MathCtrl.cpp:4052 ../src/MathCtrl.cpp:4086
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -1248,7 +1248,7 @@ msgstr "Gleichung:"
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/Config.cpp:678 ../src/ImgCell.cpp:103 ../src/wxMaxima.cpp:358
+#: ../src/Config.cpp:678 ../src/ImgCell.cpp:104 ../src/wxMaxima.cpp:358
 #: ../src/wxMaxima.cpp:990 ../src/wxMaxima.cpp:1001 ../src/wxMaxima.cpp:1065
 #: ../src/wxMaxima.cpp:1077 ../src/wxMaxima.cpp:1095 ../src/wxMaxima.cpp:1565
 #: ../src/wxMaxima.cpp:1709 ../src/wxMaxima.cpp:4562 ../src/wxMaxima.cpp:4886
@@ -1256,7 +1256,7 @@ msgstr "Gleichungen:"
 msgid "Error"
 msgstr "Fehler"
 
-#: ../src/SlideShowCell.cpp:110 ../src/SlideShowCell.cpp:152
+#: ../src/SlideShowCell.cpp:111 ../src/SlideShowCell.cpp:153
 #, c-format
 msgid "Error %d"
 msgstr "Fehler %d"
@@ -1662,7 +1662,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:4054
+#: ../src/MathCtrl.cpp:4066
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2369,7 +2369,7 @@ msgstr "Einstichproben t-Test"
 msgid "Online tutorials"
 msgstr "Online Tutorials"
 
-#: ../src/Config.cpp:459 ../src/main.cpp:243 ../src/ToolBar.cpp:68
+#: ../src/Config.cpp:459 ../src/ToolBar.cpp:68 ../src/main.cpp:243
 #: ../src/wxMaxima.cpp:2151
 msgid "Open"
 msgstr "Öffnen"
@@ -3335,7 +3335,7 @@ msgstr ""
 "Webseite https://andrejv.github.io/wxmaxima/help.html, um weitere "
 "Informationen und Selbstlernkurse zu erhalten."
 
-#: ../src/SlideShowCell.cpp:365
+#: ../src/SlideShowCell.cpp:366
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -3486,19 +3486,19 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:4555
+#: ../src/MathCtrl.cpp:4567
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 "Versuche, die Markierung in eine Zelle außerhalb des Arbeitsblatts zu "
 "verschieben."
 
-#: ../src/MathCtrl.cpp:3959
+#: ../src/MathCtrl.cpp:3971
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:4023
+#: ../src/MathCtrl.cpp:4035
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängigmachen, aber die Spezifikation dafür ist leer."
 
