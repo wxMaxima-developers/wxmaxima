@@ -1668,8 +1668,11 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   m_workingGroup->RecalculateSize(parser, fontsize);
 
   if(FollowEvaluation())
+  {
     SetActiveCell(m_answerCell, false);
-
+    ScrollToCaret();
+  }
+  
   Refresh();
 }
 
@@ -1986,9 +1989,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
     RefreshRect(rect);
   }
-  
-  wxPoint point = m_activeCell->PositionToPoint(parser);
-  ShowPoint(point);
+
+  ScrollToCaret();
 }
 
 void MathCtrl::SelectWithChar(int ccode) {
@@ -2084,7 +2086,8 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
     else
       m_activeCell->CaretToEnd();
 
-    ShowPoint(m_activeCell->PositionToPoint(parser));
+    ScrollToCaret();
+
     if (editor->GetWidth() == -1)
       Recalculate();
     Refresh();
@@ -4771,12 +4774,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         editor->GetSelection(&start, &end);
         SetActiveCell(editor);
         editor->SetSelection(start, end);
-        // Scroll to the position of the search result
-        wxClientDC dc(this);
-        CellParser parser(dc);
-        wxPoint point = m_activeCell->PositionToPoint(parser);
-        ShowPoint(m_activeCell->PositionToPoint(parser));
-
+        ScrollToCaret();
         Refresh();
         return true;
       }
@@ -4789,6 +4787,24 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
   }
 
   return false;
+}
+
+void MathCtrl::ScrollToCaret()
+{
+  if(m_hCaretPosition)
+  {
+    ScrollToCell(m_hCaretPosition);
+  }
+  else
+  {
+    if(m_activeCell)
+    {
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      wxPoint point = m_activeCell->PositionToPoint(parser);
+      ShowPoint(m_activeCell->PositionToPoint(parser));
+    }
+  }
 }
 
 void MathCtrl::Replace(wxString oldString, wxString newString)

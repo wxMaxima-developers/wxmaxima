@@ -617,6 +617,8 @@ public:
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
+  //! Scrolls to the cursor
+  void ScrollToCaret();
   //! Scrolls to a given cell
   void ScrollToCell(MathCell *cell);
   //! Returns the cell the cursor that is drawn as a vertical line is in.
