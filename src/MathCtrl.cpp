@@ -4767,11 +4767,16 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
 
       if (found)
       {
-        ScrollToCell(editor);
         int start, end;
         editor->GetSelection(&start, &end);
         SetActiveCell(editor);
         editor->SetSelection(start, end);
+        // Scroll to the position of the search result
+        wxClientDC dc(this);
+        CellParser parser(dc);
+        wxPoint point = m_activeCell->PositionToPoint(parser);
+        ShowPoint(m_activeCell->PositionToPoint(parser));
+
         Refresh();
         return true;
       }
