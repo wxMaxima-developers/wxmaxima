@@ -1095,15 +1095,17 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         if(m_activeCell)
         {
           m_activeCell -> SelectNone();
-          m_activeCell = NULL;
+          m_hCaretActive = true;
+          SetActiveCell(NULL);
         }
       }
       else
       {
         // Clean up in case that we have re-entered the cell we started
         // selecting in.
+        m_hCaretActive = false;
         m_selectionStart = m_selectionEnd = NULL;
-        m_activeCell = m_cellMouseSelectionStartedIn;
+        SetActiveCell(m_cellMouseSelectionStartedIn);
         // We are still inside the cell => select inside the current cell.
         wxClientDC dc(this);
         m_activeCell->SelectRectText(dc, down, up);
