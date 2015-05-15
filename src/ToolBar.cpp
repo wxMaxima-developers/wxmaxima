@@ -48,12 +48,12 @@ ToolBar::~ToolBar()
   m_plotSlider = NULL;
 }
 
-ToolBar::ToolBar(wxToolBar* toolbar)
+ToolBar::ToolBar(wxWindow* parent, int id)
 {
-  m_toolBar = toolbar;
+  m_toolBar = new wxToolBar;
   m_AnimationStartStopState=Inactive;
   
-  toolbar->SetToolBitmapSize(wxSize(24, 24));
+  m_toolBar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
   // If there are packaging issues we want to have a detailed error message.

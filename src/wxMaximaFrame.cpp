@@ -46,10 +46,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console->m_structure = new Structure(this, -1);
 
   SetupMenu();
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-  m_console->m_mainToolBar = new ToolBar(CreateToolBar());
-  SetToolBar(m_console->m_mainToolBar->GetToolBar());
-#endif
 
   CreateStatusBar(2);
   int widths[] = { -1, 300 };
@@ -79,9 +75,12 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
     {
     case userinput:	
       m_MenuBar->Enable(menu_remove_output,false);
-      m_console->m_mainToolBar->ShowUserInputBitmap();
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
+      if(m_console->m_mainToolBar)
+      {
+        m_console->m_mainToolBar->ShowUserInputBitmap();
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
+      }
       SetStatusText(_("Maxima got a question"), 1);
       break;
     case waiting:
@@ -93,35 +92,47 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 
       m_console->QuestionAnswered();
       m_MenuBar->Enable(menu_remove_output,true);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+      if (m_console->m_mainToolBar)
+      {
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+        m_console->m_mainToolBar->ShowFollowBitmap();
+      }
       SetStatusText(_("Ready for user input"), 1);
       // We don't evaluate any cell right now.
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
-      m_console->m_mainToolBar->ShowFollowBitmap();
       break;
     case calculating:
       m_MenuBar->Enable(menu_remove_output,false);
-      m_console->m_mainToolBar->ShowFollowBitmap();
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                           m_console->ScrolledAwayFromEvaluation()
+      if (m_console->m_mainToolBar)
+      {
+        m_console->m_mainToolBar->ShowFollowBitmap();
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                             m_console->ScrolledAwayFromEvaluation()
         );
+      }
       SetStatusText(_("Maxima is calculating"), 1);
       break;
     case transferring:
       m_MenuBar->Enable(menu_remove_output,false);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                           m_console->ScrolledAwayFromEvaluation()
-        );
+      if (m_console->m_mainToolBar)
+      {
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                             m_console->ScrolledAwayFromEvaluation()
+          );
+      }
       SetStatusText(_("Reading Maxima output"), 1);
       break;	
     case parsing:
       m_MenuBar->Enable(menu_remove_output,false);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                           m_console->ScrolledAwayFromEvaluation()
-        );
+      if (m_console->m_mainToolBar)
+      {
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                             m_console->ScrolledAwayFromEvaluation()
+          );
+      }
       SetStatusText(_("Parsing output"), 1);
       break;
     }
@@ -1089,21 +1100,15 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
-  wxToolBar *tbar = GetToolBar();
-  tbar->Show(show);
-#if defined __WXMAC__
-#else
-  /*
-    if (show) {
+  if (show) {
     if (m_console->m_mainToolBar == NULL)
-    m_console->m_mainToolBar=new ToolBar(this,-1);
-    SetToolBar(m_console->m_mainToolBar);
-    }
-    else
-    {
-    m_console->m_mainToolBar->Destroy();
-    m_console->m_mainToolBar==NULL;
-    }*/
-#endif
+      m_console->m_mainToolBar=new ToolBar(this,-1);
+    SetToolBar(m_console->m_mainToolBar->GetToolBar());
+  }
+  else
+  {
+    m_console->m_mainToolBar->GetToolBar()->Destroy();
+    m_console->m_mainToolBar=NULL;
+  }
 }
 

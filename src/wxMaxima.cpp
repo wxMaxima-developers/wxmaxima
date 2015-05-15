@@ -920,7 +920,10 @@ void wxMaxima::ReadPrompt()
         else
           DoRawConsoleAppend(o, MC_TYPE_PROMPT);
 	if(m_console->ScrolledAwayFromEvaluation())
-          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
+        {
+          if(m_console->m_mainToolBar)
+            m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
+        }
       }
 
       if (o.StartsWith(wxT("\nMAXIMA>")))
@@ -1827,16 +1830,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
-  menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
-#if defined __WXMAC__
-#else
-  /*
-    if (GetToolBar() != NULL)
+  if (GetToolBar() != NULL)
     menubar->Check(menu_show_toolbar, true);
-    else
+  else
     menubar->Check(menu_show_toolbar, false);
-  */
-#endif
 
   if (m_console->GetTree() != NULL)
   {
@@ -1866,6 +1863,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
+  if(!m_console->m_mainToolBar)
+    return;
+  
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_save, !m_fileSaved);
@@ -2498,11 +2498,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->RemoveAllOutput();
     break;
   case menu_show_toolbar:
-    ShowToolBar(!(GetToolBar()->IsShown()));
-#if defined __WXMAC__
-#else
-    /*    ShowToolBar(!(GetToolBar() != NULL));*/
-#endif
+    ShowToolBar(!(GetToolBar() != NULL));
     break;
   case menu_edit_find:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

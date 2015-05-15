@@ -43,7 +43,7 @@ class ToolBar
 #else
   wxImage GetImage(wxString img);
 #endif
-  ToolBar(wxToolBar *toolbar);
+  ToolBar(wxWindow* parent, int id);
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap() {
