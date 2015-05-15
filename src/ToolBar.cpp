@@ -50,7 +50,7 @@ ToolBar::~ToolBar()
 
 ToolBar::ToolBar(wxWindow* parent, int id)
 {
-  m_toolBar = new wxToolBar;
+  m_toolBar = new wxToolBar(parent,id);
   m_AnimationStartStopState=Inactive;
   
   m_toolBar->SetToolBitmapSize(wxSize(24, 24));
@@ -137,7 +137,7 @@ ToolBar::ToolBar(wxWindow* parent, int id)
   m_toolBar->AddTool(tb_animation_stop, _("Stop animation"),
                      m_StopButton,
                      _("Stop animation")); 
-#endif  
+#endif
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);

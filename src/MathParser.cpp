@@ -48,8 +48,6 @@
 #include "SlideShowCell.h"
 #include "GroupCell.h"
 
-#define MAXLENGTH 50000
-
 MathParser::MathParser(wxString zipfile)
 {
   m_ParserStyle = MC_TYPE_DEFAULT;
@@ -972,9 +970,24 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   MathCell* cell = NULL;
 
   wxConfigBase* config = wxConfig::Get();
-  bool showLong = false;
-  config->Read(wxT("showLong"), &showLong);
+  int showLength = 0;
+  config->Read(wxT("showLength"), &showLength);
 
+  switch(showLength)
+  {
+  case 0:
+    showLength = 50000;
+    break;
+  case 1:
+    showLength = 500000;
+    break;
+  case 2:
+    showLength = 5000000;
+    break;
+  case 3:
+    showLength = 0;
+    break;
+  }
   wxRegEx graph(wxT("[[:cntrl:]]"));
 
 #if wxUSE_UNICODE
@@ -983,7 +996,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   graph.Replace(&s, wxT("?"));
 #endif
 
-  if (s.Length() < MAXLENGTH || showLong)
+  if ((s.Length() < showLength) || (showLength=0))
   {
 
     wxXmlDocument xml;

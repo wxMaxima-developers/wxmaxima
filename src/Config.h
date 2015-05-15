@@ -180,7 +180,8 @@ protected:
   //! A checkbox that asks if we want to export the input for maxima, as well.
   wxCheckBox* m_exportInput;
   wxCheckBox* m_matchParens;
-  wxCheckBox* m_showLong;
+
+  wxChoice* m_showLength;
   wxCheckBox* m_enterEvaluates;
   wxCheckBox* m_saveUntitled;
   wxCheckBox* m_openHCaret;

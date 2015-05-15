@@ -69,6 +69,7 @@ wxScrolledCanvas(
   m_scrolledAwayFromEvaluation = false;
   m_keyboardInactive = true;
   m_tree = NULL;
+  m_mainToolBar = NULL;
   m_memory = NULL;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;

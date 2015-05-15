@@ -140,12 +140,12 @@ void Config::SetProperties()
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
-    m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-ress but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
+    m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
 m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
-  m_showLong->SetToolTip(_("Show long expressions in wxMaxima document."));
+  m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
@@ -165,11 +165,12 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool match = true, showLongExpr = false, savePanes = false, UncompressedWXMX=true;
+  bool match = true, savePanes = false, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true;
   bool insertAns = true;
   int  undoLimit = 0;
+  int showLength = 0;
   int  bitmapScale = 3;
   bool fixReorderedIndices = false;
   int defaultFramerate = 2;
@@ -205,7 +206,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
-  config->Read(wxT("showLong"), &showLongExpr);
+  config->Read(wxT("showLength"), &showLength);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
@@ -264,7 +265,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
   m_matchParens->SetValue(match);
-  m_showLong->SetValue(showLongExpr);
+  m_showLength->SetSelection(showLength);
   m_changeAsterisk->SetValue(changeAsterisk);
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
@@ -297,7 +298,9 @@ wxPanel* Config::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
+  wxArrayString showLengths;
+
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
@@ -333,14 +336,20 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
+  wxStaticText* sl = new wxStaticText(panel, -1, _("Show long expressions"));
+  grid_sizer->Add(sl, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  showLengths.Add(_(wxT("No")));
+  showLengths.Add(_(wxT("If not very long")));
+  showLengths.Add(_(wxT("If not extremely long")));
+  showLengths.Add(_(wxT("Yes")));
+  m_showLength = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,showLengths);
+  grid_sizer->Add(m_showLength, 0, wxALL, 5);
+
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
 
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
-
-  m_showLong = new wxCheckBox(panel, -1, _("Show long expressions"));
-  vsizer->Add(m_showLong, 0, wxALL, 5);
 
   m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
   vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
@@ -612,7 +621,7 @@ void Config::WriteSettings()
   config->Write(wxT("fontSize"), m_fontSize);
   config->Write(wxT("mathFontsize"), m_mathFontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
-  config->Write(wxT("showLong"), m_showLong->GetValue());
+  config->Write(wxT("showLength"), m_showLength->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
