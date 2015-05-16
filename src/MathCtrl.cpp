@@ -2443,7 +2443,8 @@ void MathCtrl::StepAnimation(int change)
   RefreshRect(rect);
 
   // Set the slider to its new value
-  m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+  if(m_mainToolBar)
+    m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
 
   // Rearm the animation timer if necessary.
   if(AnimationRunning())
@@ -3823,10 +3824,14 @@ void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
     if(FollowEvaluation()&&(ScrolledAway))
     {
       FollowEvaluation(false);
-      m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
+      if(m_mainToolBar)
+        m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
     }
     else
-      m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+    {
+      if(m_mainToolBar)
+        m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+    }
   }
 }
 
@@ -4491,7 +4496,8 @@ void MathCtrl::Animate(bool run)
       // from a manual slider change that is supposed to stop the animation =>
       // disallow manual slider changes and the problem disappears.
 #ifdef __WXMSW__
-      m_mainToolBar->m_plotSlider->Enable(false);
+      if(m_mainToolBar)
+        m_mainToolBar->m_plotSlider->Enable(false);
 #endif
     }
     else
@@ -4499,7 +4505,8 @@ void MathCtrl::Animate(bool run)
       AnimationRunning(false);
       m_animationTimer.Stop();
 #ifdef __WXMSW__
-      m_mainToolBar->m_plotSlider->Enable(true);
+      if(m_mainToolBar)
+        m_mainToolBar->m_plotSlider->Enable(true);
 #endif
     }
   }
@@ -4508,7 +4515,8 @@ void MathCtrl::Animate(bool run)
     AnimationRunning(false);
     m_animationTimer.Stop();
 #ifdef __WXMSW__
-     m_mainToolBar->m_plotSlider->Enable(true);
+    if(m_mainToolBar)
+      m_mainToolBar->m_plotSlider->Enable(true);
 #endif
   }
 }
