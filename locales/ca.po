@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-05-04 12:28+0200\n"
-"PO-Revision-Date: 2015-05-16 19:20+0100\n"
+"PO-Revision-Date: 2015-05-17 19:23+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language: ca_ES\n"
@@ -52,7 +52,7 @@ msgid ""
 "Not connected to Maxima!\n"
 msgstr ""
 "\n"
-"No conectat a Maxima!\n"
+"No connectat a Maxima!\n"
 
 #: ../src/wxMaxima.cpp:3814
 msgid ""
@@ -60,7 +60,7 @@ msgid ""
 "Not connected."
 msgstr ""
 "\n"
-"No conectat."
+"No connectat."
 
 #: ../src/MathParser.cpp:1007
 msgid " << Expression too long to display! >>"
@@ -215,7 +215,7 @@ msgstr "&Integrar"
 
 #: ../src/wxMaximaFrame.cpp:478
 msgid "&Interrupt\tCtrl-."
-msgstr "&﻿Interrupció\tCtrl-G"
+msgstr "&﻿Interrupció\tCtrl-."
 
 #: ../src/wxMaximaFrame.cpp:482
 msgid "&Interrupt\tCtrl-G"
@@ -243,7 +243,7 @@ msgstr "Ajuda de &Maxima"
 
 #: ../src/wxMaximaFrame.cpp:747
 msgid "&Modulus Computation..."
-msgstr "Càlcul del &mòdulo"
+msgstr "Càlcul del &mòdul"
 
 #: ../src/main.cpp:124
 msgid "&New\tCtrl-N"
@@ -349,7 +349,7 @@ msgstr "(Fer servir l'idioma predeterminat)"
 #: ../src/IntegrateWiz.cpp:230 ../src/IntegrateWiz.cpp:241
 #: ../src/LimitWiz.cpp:134 ../src/LimitWiz.cpp:145
 msgid "- Infinity"
-msgstr "- Infiinit"
+msgstr "- Infinit"
 
 #: ../src/wxMaxima.cpp:3885
 msgid "<br>Lisp: "
@@ -374,7 +374,7 @@ msgid ""
 msgstr ""
 "S'ha introduït en wxMaxima 0.8.2 un nou format de document que permet desar "
 "les instruccions i comentaris de l'usuari i també els resultats. En desar el "
-"document, seleccioneu 'Document xml wxMaxima' "
+"document, seleccioneu el format «Document xml wxMaxima» "
 
 #: ../src/wxMaximaFrame.cpp:561
 msgid "A&t Value..."
@@ -406,7 +406,7 @@ msgstr "Afegir un directori a la ruta de recerca"
 
 #: ../src/wxMaxima.cpp:2639
 msgid "Add dir to path:"
-msgstr "Afegir dir. a la ruta:"
+msgstr "Afegir directori a la ruta:"
 
 #: ../src/wxMaximaFrame.cpp:745
 msgid "Add equality to the rational simplifier"
@@ -523,21 +523,21 @@ msgstr "Error: es requereix l'auto completat per un tipus d'ítem desconegut."
 
 #: ../src/MathCtrl.cpp:1417
 msgid "Bug: Cell left but not entered."
-msgstr "Error: Cel·la esquerra sense entrada."
+msgstr "Error: cel·la esquerra sense entrada."
 
 #: ../src/MathCtrl.cpp:3964
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
-"Error: Hi ha una petició de canviar el contingut d'una cel·la situada abans "
+"Error: hi ha una petició de canviar el contingut d'una cel·la situada abans "
 "de l'inici del full de càlcul."
 
 #: ../src/MathCtrl.cpp:4035
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
-"Error: Hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
+"Error: hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
 "full de càlcul."
 
 #: ../src/MathCtrl.cpp:4004
@@ -545,7 +545,7 @@ msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr ""
-"Error: Hi ha una petició de canviar el contingut d'una cel·la per a desprès "
+"Error: hi ha una petició de canviar el contingut d'una cel·la per a desprès "
 "recuperar-ho."
 
 #: ../src/MathCtrl.cpp:1458
@@ -553,17 +553,17 @@ msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
-"Error: S'ha sol·licitat la fusió de l'inici o final d'accions d'edició "
+"Error: s'ha sol·licitat la fusió de l'inici o final d'accions d'edició "
 "encadenades dues vegades en una fila."
 
 #: ../src/MathCtrl.cpp:1427
 msgid "Bug: Text changed, but no active cell."
-msgstr "Error: Ha canviat el text però no hi ha cap cel·la activa."
+msgstr "Error: ha canviat el text però no hi ha cap cel·la activa."
 
 #: ../src/MathCtrl.cpp:412
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
-"Error: S'està intentant afegir la sortida de Maxima a una cel·la situada "
+"Error: s'està intentant afegir la sortida de Maxima a una cel·la situada "
 "fora del full de càlcul."
 
 #: ../src/MathCtrl.cpp:1359
@@ -571,25 +571,25 @@ msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
-"Error: S'està intentant combinar addicions de cel·les individuals a una "
+"Error: s'està intentant combinar addicions de cel·les individuals a una "
 "regió a la coa de desfer accions però hi ha altres cel·les entre elles."
 
 #: ../src/MathCtrl.cpp:1429
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
-"Error: S'està intentant registrar els canvis de contingut de la cel·la que "
+"Error: s'està intentant registrar els canvis de contingut de la cel·la que "
 "no existeix."
 
 #: ../src/MathCtrl.cpp:4005
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
-"Error: Desfer acció amb canvi del contingut de la cel·la i addició de la "
+"Error: desfer acció amb canvi del contingut de la cel·la i addició de la "
 "cel·la."
 
 #: ../src/MathCtrl.cpp:3969 ../src/MathCtrl.cpp:4040 ../src/MathCtrl.cpp:4074
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
-"Error: S'està intentant desfer una acció a una cel·la situada fora del full "
+"Error: s'està intentant desfer una acció a una cel·la situada fora del full "
 "de càlcul."
 
 #: ../src/wxMaximaFrame.cpp:803
@@ -605,7 +605,7 @@ msgid ""
 msgstr ""
 "Per defecte, Shift-Enter es fa servir per avaluar instruccions, i Retorn per "
 "introduir línies múltiples. És possible canviar aquest comportament en "
-"'Editar->Preferències' seleccionant 'Tecla retorn avalúa cel·les', "
+"«Editar->Preferències» seleccionant «Tecla retorn avalua cel·les», "
 "intercanviant la funcionalitat de les tecles."
 
 #: ../src/wxMaximaFrame.cpp:612
@@ -780,7 +780,7 @@ msgstr "Autocompletar"
 
 #: ../src/ToolBar.cpp:109
 msgid "Completely stop maxima and restart it"
-msgstr "Aturar completament Maxima i tornar a enllegar-ho"
+msgstr "Aturar completament Maxima i reiniciar"
 
 #: ../src/wxMaximaFrame.cpp:653
 msgid "Compute continued fraction of a value"
@@ -809,7 +809,7 @@ msgstr "Calcular la inversa d'una matriu"
 #: ../src/wxMaximaFrame.cpp:643
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr ""
-"Calcular el mínim comú múltiple (executar load(functs) abans de fer servir)"
+"Calcular el mínim comú múltiple (executar «load(functs)» abans de fer servir)"
 
 #: ../src/wxMaxima.cpp:4140
 msgid "Condition:"
@@ -914,7 +914,7 @@ msgstr "Copiar resultat anterior\tCtrl-U"
 
 #: ../src/wxMaximaFrame.cpp:356
 msgid "Copy as Image"
-msgstr "Copiar com imatge"
+msgstr "Copiar com a imatge"
 
 #: ../src/wxMaximaFrame.cpp:352
 msgid "Copy as LaTeX"
@@ -922,7 +922,7 @@ msgstr "Copiar com a &LaTeX"
 
 #: ../src/wxMaximaFrame.cpp:349
 msgid "Copy as Text\tCtrl-Shift-C"
-msgstr "Copiar coma  &text\tCtrl-Shift-C"
+msgstr "Copiar com a &text\tCtrl-Shift-C"
 
 #: ../src/ToolBar.cpp:91 ../src/wxMaximaFrame.cpp:348
 msgid "Copy selection"
@@ -989,7 +989,7 @@ msgstr "Dades:"
 
 #: ../src/wxMaximaFrame.cpp:650
 msgid "Decompose rational function to partial fractions"
-msgstr "Descomposa funció racional en fraccions simples"
+msgstr "Descompondre funció racional en fraccions simples"
 
 #: ../src/Config.cpp:522
 msgid "Default"
@@ -1059,11 +1059,11 @@ msgstr "Suprimeix variable(s):"
 
 #: ../src/wxMaxima.cpp:3279
 msgid "Denom. deg:"
-msgstr "denom deg:"
+msgstr "Denom. deg:"
 
 #: ../src/SeriesWiz.cpp:43
 msgid "Depth:"
-msgstr "fondària:"
+msgstr "Fondària:"
 
 #: ../src/wxMaxima.cpp:2809
 msgid "Derivative:"
@@ -1083,11 +1083,11 @@ msgstr "Derivar"
 
 #: ../src/wxMaxima.cpp:3422 ../src/wxMaxima.cpp:4308
 msgid "Differentiate"
-msgstr "Derivar"
+msgstr "Diferenciar"
 
 #: ../src/wxMaximaFrame.cpp:616
 msgid "Differentiate expression"
-msgstr "Derivar expressió"
+msgstr "Diferenciar expressió"
 
 #: ../src/MathCtrl.cpp:780
 msgid "Differentiate..."
@@ -1476,7 +1476,7 @@ msgstr "Calcular totes les arrels d'un polinomi"
 
 #: ../src/wxMaximaFrame.cpp:528
 msgid "Find all roots of a polynomial (bfloat)"
-msgstr "Calcula totes les arrels reals d'un polinomi"
+msgstr "Calcular totes les arrels reals d'un polinomi"
 
 #: ../src/wxMaxima.cpp:2521
 msgid "Find and Replace"
@@ -1488,23 +1488,23 @@ msgstr "Cercar i substituir"
 
 #: ../src/wxMaximaFrame.cpp:586
 msgid "Find eigenvalues of a matrix"
-msgstr "Calcula els valors propis d'una matriu"
+msgstr "Calcular els valors propis d'una matriu"
 
 #: ../src/wxMaximaFrame.cpp:588
 msgid "Find eigenvectors of a matrix"
-msgstr "Calcula els vectors propis d'una matriu"
+msgstr "Calcular els vectors propis d'una matriu"
 
 #: ../src/wxMaxima.cpp:3478
 msgid "Find minimum"
-msgstr "Calcula mínim"
+msgstr "Calcular mínim"
 
 #: ../src/wxMaximaFrame.cpp:531
 msgid "Find real roots of a polynomial"
-msgstr "Calcula les arrels reals d'un polinomi"
+msgstr "Calcular les arrels reals d'un polinomi"
 
 #: ../src/wxMaxima.cpp:2761 ../src/wxMaxima.cpp:4278
 msgid "Find root"
-msgstr "Calcula arrel"
+msgstr "Calcular arrel"
 
 #: ../src/Config.cpp:441
 #, c-format
@@ -1665,6 +1665,8 @@ msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
+"Hi ha una petició de desfer una acció que implica una eliminació que no és "
+"possible realitzar en aquest moment."
 
 #: ../src/Config.cpp:387
 msgid "Greek"
@@ -1684,7 +1686,7 @@ msgstr "Arxiu HTML (*.html)|*.html|Arxiu pdfLaTeX (*.tex)|*.tex"
 
 #: ../src/Config.cpp:432
 msgid "HTML/Text Cells: Export all linebreaks"
-msgstr ""
+msgstr "HTML/Text de les cel·les: exportar els retorns de línia"
 
 #: ../src/wxMaxima.cpp:3032 ../src/wxMaxima.cpp:3051
 msgid "Height:"
@@ -1747,6 +1749,8 @@ msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
 msgstr ""
+"Si els nombres superen aquest nombre de dígits es mostraran abreviats amb "
+"una el·lipse."
 
 #: ../src/Config.cpp:134
 msgid ""
@@ -1755,6 +1759,10 @@ msgid ""
 "been inactive for > 10 seconds the file is saved. If this number is zero the "
 "file isn't saved automatically at all."
 msgstr ""
+"Si aquest nombre de minuts es superat després de la darrera operació de "
+"desar el fitxer, s'ha assignat un nom al fitxer (obrint-lo o desant-lo) i el "
+"teclat roman inactiu més de 10 segons, es desarà el fitxer. Si el nombre és "
+"zero no es desarà automàticament el fitxer en cap cas."
 
 #: ../data/tips.txt:6
 msgid ""
@@ -1788,6 +1796,9 @@ msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
 msgstr ""
+"A la sortida LaTeX: posar els exponents després de un subíndex enlloc de per "
+"sobre d'ell. Això poc millorar la llegibilitat d'algunes fonts o subíndex "
+"curts."
 
 #: ../src/wxMaxima.cpp:4141
 msgid "Include columns:"
@@ -1795,7 +1806,7 @@ msgstr "Incloure columnes:"
 
 #: ../src/Config.cpp:435
 msgid "Include input cells in the export of a worksheet"
-msgstr ""
+msgstr "Incloure les cel·les d'entrada en l'exportació del full de càlcul"
 
 #: ../src/IntegrateWiz.cpp:210 ../src/IntegrateWiz.cpp:220
 #: ../src/IntegrateWiz.cpp:229 ../src/IntegrateWiz.cpp:239
@@ -1949,6 +1960,8 @@ msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
+"Interrompre el càlcul actual. Per reiniciar Maxima completament, premi el "
+"botó situat a l'esquerra d'aquest."
 
 #: ../src/Config.cpp:677
 msgid ""
@@ -1991,7 +2004,7 @@ msgstr "MCM"
 
 #: ../src/Config.cpp:429
 msgid "LaTeX: Place exponents after, instead above subscripts"
-msgstr ""
+msgstr "LaTeX: situar els exponents després enlloc de dalt dels subíndexs"
 
 #: ../src/Config.cpp:149
 msgid "Language used for wxMaxima GUI."
@@ -2169,6 +2182,13 @@ msgid ""
 "3602879701896397/36028797018963968 for 0.1 introducing a (though very small) "
 "error."
 msgstr ""
+"Maxima gestiona tres tipus de nombres: fraccions exactes (per exemple les "
+"generades escrivint 1/10), nombres de coma flotant IEEE (0.2) i nombres "
+"decimals de precisió arbitrària (1b-1). Atès que es manegen en forma "
+"binaria, no com a nombres decimals, no hi ha manera de generar un nombre de "
+"coma flotant IEEE que sigui exactament 0,1.. Si es fan servir nombres de "
+"coma flotant enlloc de fraccions, de vegades Maxima produirà petits errors "
+"com fer servir 3602879701896397/36028797018963968 per a 0,1."
 
 #: ../data/tips.txt:3
 msgid ""
@@ -2213,6 +2233,7 @@ msgstr "Unir cel·les"
 #: ../src/wxMaximaFrame.cpp:451
 msgid "Merge the text from two input cells into one"
 msgstr ""
+"Combinar el text a partir de l'entrada de dues cel·les per produir una cadena"
 
 #: ../src/IntegrateWiz.cpp:46
 msgid "Method:"
@@ -2269,6 +2290,11 @@ msgid ""
 "this setting was introduces that selects the factor by which the HTML export "
 "increases the resolution in respect to the default value."
 msgstr ""
+"Normalment, html espera que les imatges tenguin una resolució baixa per "
+"estalviar espai. És freqüent que aquestes imatges es vegin borroses en les "
+"pantalles modernes. Per això, s'ha introduït aquesta opció de configuració "
+"per permetre seleccionar el factor d'augment (respecte al valor "
+"predeterminat) de la resolució en fer l'exportació a HTML."
 
 #: ../src/Config.cpp:144
 msgid ""
@@ -2276,6 +2302,9 @@ msgid ""
 "maxima input does scare the user. This option turns off exporting of "
 "maxima's input."
 msgstr ""
+"Normalment s'exporta tot el full de càlcul a TeX o HTML. Però sovint "
+"l'entrada de Màxima fa espantar a l'usuari. Aquesta opció desactiva "
+"l'exportació de l'entrada de Maxima."
 
 #: ../src/Config.cpp:391
 msgid "Norwegian"
@@ -2372,7 +2401,7 @@ msgstr "Obrint arxiu"
 
 #: ../src/Config.cpp:423
 msgid "Optimize wxmx files for version control"
-msgstr ""
+msgstr "Optimitzar els fitxer wxmx per al control de versions"
 
 #: ../src/Config.cpp:107 ../src/ToolBar.cpp:80
 msgid "Options"
@@ -2389,10 +2418,13 @@ msgstr "Cel·les obsoletes"
 #: ../src/wxMaxima.cpp:1757
 msgid "Output from Maxima to stderr (there should be none):\n"
 msgstr ""
+"Sortida de Maxima per la sortida d'errors predeterminada (no hi ha d'haver-"
+"ni cap):\n"
 
 #: ../src/wxMaxima.cpp:1749
 msgid "Output from Maxima to stdout (there should be none):\n"
 msgstr ""
+"Sortida de Maxima per la sortida predeterminada (no hi ha d'haver-ni cap):\n"
 
 #: ../src/Config.cpp:532
 msgid "Output labels"
@@ -2648,7 +2680,7 @@ msgstr "Reinicia Maxima"
 
 #: ../src/ToolBar.cpp:116
 msgid "Return to the cell that is currently being evaluated"
-msgstr ""
+msgstr "Retorna a la cel·la que s'està avaluant actualment."
 
 #: ../src/wxMaximaFrame.cpp:609
 msgid "Risch Integration..."
@@ -2727,6 +2759,8 @@ msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
 msgstr ""
+"Desar només aquest nombre d'accions en la memòria intermèdia de desfer "
+"accions. 0 significa: desar un nombre infinit d'accions."
 
 #: ../src/Config.cpp:417
 msgid "Save panes layout"
@@ -3114,6 +3148,9 @@ msgid ""
 "output them. If this option is selected additional LaTeX packages might be "
 "needed in order to compile the output, though."
 msgstr ""
+"Alguns visors de PDF poden mostrar imatges animades i wxMaxima és capaç de "
+"generar-les. Si se selecciona aquesta opció, podrien esser necessaris "
+"paquets addicionals de LaTeX per compilar la sortida."
 
 #: ../src/Config.cpp:395
 msgid "Spanish"
@@ -3145,6 +3182,8 @@ msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
 msgstr ""
+"Iniciar o aturar l'animació seleccionada generada per una ordre de la classe "
+"«with_slider»"
 
 #: ../src/wxMaxima.cpp:239
 msgid "Starting Maxima process failed"
@@ -3257,6 +3296,8 @@ msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
 msgstr ""
+"L'alçada predeterminada dels gràfics incrustats. Es pot llegir o modificar "
+"amb la variable «wxplot_size» de Maxima."
 
 #: ../src/Config.cpp:154
 msgid "The default port used for communication between Maxima and wxMaxima."
@@ -3267,10 +3308,12 @@ msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
 msgstr ""
+"L'amplada predeterminada dels gràfics incrustats. Es pot llegir o modificar "
+"amb la variable «wxplot_size» de Maxima."
 
 #: ../src/wxMaximaFrame.cpp:789
 msgid "The offline manual of maxima"
-msgstr ""
+msgstr "El manual oficial de Maxima"
 
 #: ../src/Config.cpp:146
 msgid ""
@@ -3278,6 +3321,9 @@ msgid ""
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it."
 msgstr ""
+"El terminal pngCairo proporciona gràfics de major qualitat (amb prevenció de "
+"distorsions i estils de línia addicionals). Però només produirà gràfics si "
+"el «gnuplot» instal·lat actualment en el sistema pot gestionar-ho."
 
 #: ../data/tips.txt:11
 msgid ""
@@ -3441,14 +3487,15 @@ msgstr "Matriu transposta"
 #: ../src/MathCtrl.cpp:4555
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
+"Intentant situar el cursor en una cel·la que no pertany al full de càlcul"
 
 #: ../src/MathCtrl.cpp:3959
 msgid "Trying to undo an action without starting cell."
-msgstr ""
+msgstr "Intentant desfer una acció sense cel·la inicial."
 
 #: ../src/MathCtrl.cpp:4023
 msgid "Trying to undo something but the undo action is empty."
-msgstr ""
+msgstr "Intentant desfer alguna acció sense que hi hagi accions per desfer."
 
 #: ../src/Config.cpp:396
 msgid "Turkish"
@@ -3524,7 +3571,7 @@ msgstr "Usar algoritme Gosper"
 
 #: ../src/Config.cpp:420
 msgid "Use cairo to improve plot quality."
-msgstr ""
+msgstr "Fer servir «Cairo» per millora la qualitat dels gràfics."
 
 #: ../src/Config.cpp:153 ../src/Config.cpp:345
 msgid "Use centered dot character for multiplication"
@@ -3593,6 +3640,11 @@ msgid ""
 "If this option isn't set manual linebreaks can still be introduced by "
 "introducing an empty line."
 msgstr ""
+"Mentre que el text en LaTeX de les cel·les és dividit en línies per TeX, el "
+"text que es mostra a la pantalla es divideix en línies manualment. Aquesta "
+"opció, si està seleccionada, determina que les línies en la sortida HTML es "
+"dividiran si estan dividides en el full de càlcul. Si l'opció no està "
+"seleccionada, es podran introduir salts de línia afegint una línia buida."
 
 #: ../src/wxMaxima.cpp:3032 ../src/wxMaxima.cpp:3051
 msgid "Width:"
@@ -3765,7 +3817,7 @@ msgstr "matriu[i,j]:"
 
 #: ../src/Config.cpp:487
 msgid "maxima's pwd is path to document"
-msgstr ""
+msgstr "El «pwd» de Maxima és la ruta al document"
 
 #: ../src/wxMaxima.cpp:3808
 msgid "no"
