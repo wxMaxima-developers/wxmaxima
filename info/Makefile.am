@@ -20,17 +20,17 @@ endif
 
 all-local: wxmaxima.info $(WXMAXIMA_CHM)
 
-wxmaxima.info : wxmaxima.texi
+.info:.texi
 	makeinfo --split-size=1000000 $<
 
-wxmaxima.html: wxmaxima.texi $(wxmaxima_TEXINFOS) manual.css
+.html:.texi $(wxmaxima_TEXINFOS) manual.css
 	texi2any --no-split --output=$@ --html \
           --css-include=manual.css $<
 
-wxmaxima.pdf: wxmaxima.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
+.pdf:.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
 	$(TEXI2PDF) $(AM_V_texinfo) -o $@ $<
 
-wxMaxima.chm: wxmaxima.hhp
+.chm:.hhp
 	-"$(HHC)" $<
 
 html_DATA = $(figurefiles) wxmaxima.hhp wxmaxima.html
