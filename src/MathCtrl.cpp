@@ -3806,6 +3806,15 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
+    
+  if(GetActiveCell())
+  {
+    std::cerr << "Test\n";
+    GetActiveCell() -> SelectNone();
+  }
+    std::cerr << "Tes2t\n";
+
+    m_selectionStart = m_selectionEnd = NULL;
   FollowEvaluation(true);
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
   SetHCaret(gc);

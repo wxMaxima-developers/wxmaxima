@@ -12,7 +12,7 @@ index.html:
 
 EXTRA_DIST =
 
-pdf-am:
+pdf-am: html/index.html
 	cd latex&&pdflatex refman.tex
 	cd latex&&pdflatex refman.tex
 	cd latex&&pdflatex refman.tex

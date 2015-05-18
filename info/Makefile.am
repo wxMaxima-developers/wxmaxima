@@ -20,21 +20,10 @@ endif
 
 all-local: wxmaxima.info $(WXMAXIMA_CHM)
 
-.info:.texi
-	makeinfo --split-size=1000000 $<
-
-.html:.texi $(wxmaxima_TEXINFOS) manual.css
-	texi2any --no-split --output=$@ --html \
-          --css-include=manual.css $<
-
-.pdf:.texi $(wxmaxima_TEXINFOS) $(pdffigures) $(figurefiles)
-	$(TEXI2PDF) $(AM_V_texinfo) -o $@ $<
-
-.chm:.hhp
-	-"$(HHC)" $<
+MAKEINFOHTML = texi2any
+AM_MAKEINFOFLAGS = --no-split --html -include=manual.css
 
 html_DATA = $(figurefiles) wxmaxima.hhp wxmaxima.html
-#dist_html_data=$(html_DATA)
 
 dist-hook: html
 
@@ -69,3 +58,6 @@ EXTRA_DIST = manual.css $(html_DATA)\
     wxmaximaicon.ico \
     wxmaxima.info \
     $(html_DATA)
+
+%.chm:%.hhp
+	-"$(HHC)" $<
