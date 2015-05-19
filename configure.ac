@@ -194,7 +194,8 @@ AC_SUBST(WX_RC_PATH)
 AC_SUBST(RC_OBJ)
 AC_SUBST(HHC)
 AC_SUBST(prefix)
-
+AC_SUBST(top_builddir)
+AC_SUBST(srcdir)
 dnl Doxygen creates html code documentation from the comments in the code
 AC_CHECK_PROG(HAVE_DOXYGEN,doxygen,yes,no)
 AC_SUBST(HAVE_DOXYGEN)
