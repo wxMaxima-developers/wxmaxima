@@ -7,6 +7,8 @@ Current:
   * Allow Extending selection from part of a single cell to multiple cells.
   * An option to use High-resolution bitmaps for the HTML export.
   * Images that are too big for the window now are displayed in a scaled-down version.
+  * Fixed the support for out-of-tree-bulds that was broken in 15.04
+  * Fixed a race condition that could cause text from maxima to be appended to the wrong cell.
 
 15.04.0:
   * wxWidgets 3.0 is now a mandatory requirement
