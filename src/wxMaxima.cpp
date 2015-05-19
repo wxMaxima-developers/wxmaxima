@@ -892,6 +892,15 @@ void wxMaxima::ReadPrompt()
           m_console->ShowHCaret();
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
+
+          // If we have selected a cell in order to show we are evaluating it
+          // we should now remove this marker.
+          if(m_console->FollowEvaluation())
+          {
+            if(m_console->GetActiveCell())
+              m_console->GetActiveCell() -> SelectNone();            
+            m_console->SetSelection(NULL,NULL); 
+          }
 	  m_console->FollowEvaluation(false);
         }
         else { // we don't have an empty queue

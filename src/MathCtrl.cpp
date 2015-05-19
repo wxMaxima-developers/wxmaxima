@@ -3806,15 +3806,6 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
-    
-  if(GetActiveCell())
-  {
-    std::cerr << "Test\n";
-    GetActiveCell() -> SelectNone();
-  }
-    std::cerr << "Tes2t\n";
-
-    m_selectionStart = m_selectionEnd = NULL;
   FollowEvaluation(true);
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
   SetHCaret(gc);
@@ -4533,13 +4524,15 @@ void MathCtrl::Animate(bool run)
 void MathCtrl::SetWorkingGroup(GroupCell *group)
  {
   if (m_workingGroup != NULL)
-  {
     m_workingGroup->SetWorking(false);
+  
+  m_workingGroup = group;
+
+  if (m_workingGroup != NULL)
+  {
+    m_workingGroup->SetWorking(group);
     m_lastWorkingGroup = group;
   }
-  m_workingGroup = group;
-  if (m_workingGroup != NULL)
-    m_workingGroup->SetWorking(group);
 }
 
 bool MathCtrl::IsSelectionInWorking() {
