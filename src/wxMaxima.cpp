@@ -444,7 +444,9 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   s.Replace(wxT("\x21D2"), wxT(" implies "));
   s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
-  s.Replace(wxT("\x2212"), wxT("-"));
+  s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
+  s.Replace(wxT("\xDCB6"), wxT(" ")); // Some weird unicode space character
+
 #endif
 
   StatusMaximaBusy(calculating);
