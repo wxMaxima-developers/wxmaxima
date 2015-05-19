@@ -33,6 +33,7 @@ LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
 	mkdir -p wxMaxima.app/Contents/Resources
+	cp testbench_simple.wxmx wxMaxima.app/Contents/Resources
 	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp data/wxmaxima.png wxMaxima.app/Contents/Resources
 	cp data/wxmaxima.svg wxMaxima.app/Contents/Resources
@@ -65,6 +66,8 @@ wxMaxima.app: all
 wxMaxima.win: all
 	mkdir -p wxMaxima/art
 	mkdir -p wxMaxima/data
+	cp data/wxmathml.lisp wxMaxima/data
+	cp testbench_simple.wxmx wxMaxima/data
 	cp data/wxmathml.lisp wxMaxima/data
 	cp data/wxmaxima.png wxMaxima/data
 	cp data/wxmaxima.svg wxMaxima/data

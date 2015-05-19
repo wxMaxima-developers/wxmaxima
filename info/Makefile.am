@@ -20,8 +20,7 @@ endif
 
 all-local: wxmaxima.info $(WXMAXIMA_CHM)
 
-MAKEINFOHTML = texi2any
-AM_MAKEINFOFLAGS = --no-split --html --css-include=manual.css
+AM_MAKEINFOFLAGS = --no-split --css-include=manual.css
 
 html_DATA = $(figurefiles) wxmaxima.hhp wxmaxima.html
 
