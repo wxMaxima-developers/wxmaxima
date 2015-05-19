@@ -372,6 +372,18 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if (tmp == NULL)
     tmp = m_lastWorkingGroup;
 
+  // This is weird. Let's try the cell below the horizontally drawn cursor:
+  // The cursor should most of the times be near to the cell we are evaluating.
+  if (tmp == NULL)
+    tmp = m_hCaretPosition;
+
+  // No such cursor? Perhaps there is a vertically drawn one.
+  if (tmp == NULL)
+  {
+    if(GetActiveCell())
+      tmp = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+  }
+  
   // If there is no such cell, neither, we append the line to the end of the
   // worksheet.
   if (tmp == NULL)
