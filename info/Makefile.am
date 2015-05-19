@@ -58,5 +58,5 @@ EXTRA_DIST = manual.css $(html_DATA)\
     wxmaxima.info \
     $(html_DATA)
 
-%.chm:%.hhp
+.chm:.hhp
 	-"$(HHC)" $<
