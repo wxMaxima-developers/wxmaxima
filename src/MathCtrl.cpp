@@ -3109,8 +3109,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
           int borderwidth = 0;
           wxString alttext = _(wxT("Result"));
           if(tmp->GetOutput())
-            alttext = PrependNBSP(EscapeHTMLChars(tmp->GetOutput()->ToString()));
-          if(tmp->GetOutput()) borderwidth = tmp->GetOutput()->m_imageBorderWidth;
+          {
+            std::cerr<<EscapeHTMLChars(tmp->GetOutput()->ToString())+wxT("Test")<<"\n";
+            alttext = EscapeHTMLChars(tmp->GetOutput()->ToString());
+            borderwidth = tmp->GetOutput()->m_imageBorderWidth;
+          }
           wxString line = wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
             wxString::Format(_(wxT("_%d.png\" alt=\"")),count);
