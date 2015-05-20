@@ -71,7 +71,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 {  
   if(!m_StatusSaving)
   {
-    switch(m_StatusMaximaBusy = status)
+    switch(status)
     {
     case userinput:	
       m_MenuBar->Enable(menu_remove_output,false);
@@ -91,12 +91,10 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
       if(m_console->FollowEvaluation())
         m_console->SetSelection(NULL);
 
-      m_console->QuestionAnswered();
       m_MenuBar->Enable(menu_remove_output,true);
       if (m_console->m_mainToolBar)
       {
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
         m_console->m_mainToolBar->ShowFollowBitmap();
       }
@@ -108,7 +106,6 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
       if (m_console->m_mainToolBar)
       {
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
-        m_console->m_mainToolBar->ShowFollowBitmap();
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
                                              m_console->ScrolledAwayFromEvaluation()
@@ -139,7 +136,8 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
       SetStatusText(_("Parsing output"), 1);
       break;
     }
-  }
+    }
+    m_StatusMaximaBusy = status;
 }
 
 void wxMaximaFrame::StatusSaveStart()

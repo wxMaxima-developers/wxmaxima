@@ -47,11 +47,19 @@ class ToolBar
   virtual ~ToolBar();
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap() {
-    m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
+    if(!m_needsInformation)
+    {
+      m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
+      m_needsInformation = true;
+    }
   }
   //! Stop showing that user input is needed for maxima to continue
   void ShowFollowBitmap() {
-    m_toolBar->SetToolNormalBitmap(tb_follow,m_followIcon);
+    if(m_needsInformation)
+    {
+      m_toolBar->SetToolNormalBitmap(tb_follow,m_followIcon);
+      m_needsInformation = false;
+    }
   }
   void EnableTool(int id, bool enable) {
     m_toolBar->EnableTool(id, enable);
@@ -104,6 +112,9 @@ class ToolBar
 private:
   wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
+    //! True if we we show the "needs information" button.
+  bool     m_needsInformation;
+
 };
 
 #endif

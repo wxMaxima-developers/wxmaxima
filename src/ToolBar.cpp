@@ -51,6 +51,7 @@ ToolBar::~ToolBar()
 ToolBar::ToolBar(wxWindow* parent, int id)
 {
   m_toolBar = new wxToolBar(parent,id);
+  m_needsInformation = false;
   m_AnimationStartStopState=Inactive;
   
   m_toolBar->SetToolBitmapSize(wxSize(24, 24));

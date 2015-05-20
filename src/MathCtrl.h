@@ -760,6 +760,11 @@ public:
   void QuestionAnswered();
   //! true = the last reply from maxima was a question
   bool m_questionPrompt;
+  /*! Does maxima wait for the answer of a question?
+
+    \retval true = maxima waits for the answer of a question.
+  */
+  bool QuestionPending(){return m_questionPrompt;}
   //! Does the GroupCell cell points to contain the question currently asked by maxima?  
   bool GCContainsCurrentQuestion(GroupCell *cell);
   /*! Move the cursor to the end of the question and if needed add a cell for user input
