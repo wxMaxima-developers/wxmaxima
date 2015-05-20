@@ -9,6 +9,9 @@ Current:
   * Images that are too big for the window now are displayed in a scaled-down version.
   * Fixed the support for out-of-tree-bulds that was broken in 15.04
   * Fixed a race condition that could cause text from maxima to be appended to the wrong cell.
+  * Meaningful ALT texts for the HTML export to provide accessibility
+  * A few performance fixes
+  * Unification of some platform-specific code
 
 15.04.0:
   * wxWidgets 3.0 is now a mandatory requirement

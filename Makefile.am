@@ -94,6 +94,9 @@ endif
 allmo:
 	    cd locales&&$(MAKE) allmo
 
+allpo:
+	    cd locales&&$(MAKE) allpo
+
 Doxygen: FORCE
 	    cd Doxygen&&$(MAKE)
 
