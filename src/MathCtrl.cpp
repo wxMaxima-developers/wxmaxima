@@ -396,14 +396,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   if(m_tree->Contains(tmp))
   {     
     newCell->ForceBreakLine(forceNewLine);
-    
-    tmp->AppendOutput(newCell);
-
     newCell->SetParentList(tmp);
     
-    m_selectionStart = NULL;
-    m_selectionEnd = NULL;
-
+    tmp->AppendOutput(newCell);
+    
     wxClientDC dc(this);
     CellParser parser(dc);
     parser.SetZoomFactor(m_zoomFactor);
@@ -413,9 +409,15 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     Recalculate();
 
     if(FollowEvaluation()) {
+      m_selectionStart = NULL;
+      m_selectionEnd = NULL;
       if(GCContainsCurrentQuestion(tmp))
         OpenQuestionCaret();
-      ScrollToCell(tmp); // also refreshes
+      else
+      {
+        SetHCaret(tmp);
+        ScrollToCaret();
+      }
     }
     else
       Refresh();

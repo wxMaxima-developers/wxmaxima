@@ -4613,8 +4613,9 @@ void wxMaxima::TryEvaluateNextInQueue()
         
         if(m_console->FollowEvaluation())
         {
-          m_console->ScrollToCell(tmp);
           m_console->SetSelection(tmp);
+          m_console->SetHCaret(tmp);
+          m_console->ScrollToCaret();
         }
         else
           m_console->Recalculate();
@@ -4627,10 +4628,11 @@ void wxMaxima::TryEvaluateNextInQueue()
         cell->SetType(MC_TYPE_ERROR);
         cell->SetParent(tmp);
         tmp->SetOutput(cell);
-        tmp->ResetData();
+        m_console->RecalculateForce();
+
         if(m_console->FollowEvaluation())
           m_console->SetSelection(NULL);
-
+        
         m_console->SetWorkingGroup(NULL);
         m_console->Recalculate();
         m_console->Refresh();
