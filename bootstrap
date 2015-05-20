@@ -2,5 +2,5 @@
 
 aclocal \
 && autoheader \
-&& automake --gnu --add-missing 2>&1 | sed -e "s/configure.ac:[0-9]*: installing/configure.ac installs/g"\
+&& automake --gnu --add-missing 2>&1 | sed -e "s/:[0-9]*: installing/ installs/g"\
 && autoconf

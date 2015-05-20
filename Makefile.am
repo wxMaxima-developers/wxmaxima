@@ -65,7 +65,7 @@ wxMaxima.win: all
 	mkdir -p wxMaxima/art
 	mkdir -p wxMaxima/data
 	cp data/wxmathml.lisp wxMaxima/data
-	cp testbench_simple.wxmx wxMaxima/data
+	cp test/testbench_simple.wxmx wxMaxima/data
 	cp data/wxmathml.lisp wxMaxima/data
 	cp data/wxmaxima.png wxMaxima/data
 	cp data/wxmaxima.svg wxMaxima/data
@@ -78,8 +78,6 @@ if CHM
 	cp info/*.chm  wxMaxima/help
 else
 	-cp info/*.html wxMaxima/help
-	-cp info/index.hhk wxMaxima/help
-	-cp info/contents.hhc wxMaxima/help
 	-cp info/wxmaxima.hhp wxMaxima/help
 endif
 	mkdir -p wxMaxima/art/toolbar
