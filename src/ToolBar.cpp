@@ -125,19 +125,10 @@ ToolBar::ToolBar(wxWindow* parent, int id)
   // It felt like a good idea to combine the play and the stop button.
   // On windows changing a button seems to somehow stop the animation, though, so
   // this OS requires the buttons to be separate.
-#ifndef __WXMSW__
   m_toolBar->AddTool(tb_animation_startStop, _("Start or Stop animation"),
                      m_PlayButton,
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   m_toolBar->EnableTool(tb_animation_startStop,false);
-#else
-  m_toolBar->AddTool(tb_animation_start, _("Start animation"),
-                     m_PlayButton,
-                     _("Start animation"));
-  m_toolBar->AddTool(tb_animation_stop, _("Stop animation"),
-                     m_StopButton,
-                     _("Stop animation")); 
-#endif
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
@@ -153,20 +144,30 @@ ToolBar::ToolBar(wxWindow* parent, int id)
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
-  #ifndef __WXMSW__
   switch(state)
   {
   case Running:
-    m_toolBar->EnableTool(tb_animation_startStop,true);
     m_plotSlider->Enable(true);
     if(m_AnimationStartStopState!=Running)
+    {
+      // On windows changing the bitmap displayed on a enabled button
+      // seems to have side-effects.
+      m_toolBar->EnableTool(tb_animation_startStop,false);
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
+    }
     break;
-  case Stopped:
     m_toolBar->EnableTool(tb_animation_startStop,true);
     m_plotSlider->Enable(true);
+  case Stopped:
     if(m_AnimationStartStopState==Running)
+    {
+      // On windows changing the bitmap displayed on a enabled button
+      // seems to have side-effects.
+      m_toolBar->EnableTool(tb_animation_startStop,false);
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+    }
+    m_toolBar->EnableTool(tb_animation_startStop,true);
+    m_plotSlider->Enable(true);
     break;
   case Inactive:
     m_toolBar->EnableTool(tb_animation_startStop,false);
@@ -175,6 +176,5 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
     break;
   }
-  #endif
   m_AnimationStartStopState = state;
 }
