@@ -242,12 +242,12 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
 wxString ImgCell::ToString()
 {
-  return wxT(" << Graphics >> ");
+  return _(wxT(" (Graphics) "));
 }
 
 wxString ImgCell::ToTeX()
 {
-  return wxT(" << Graphics >> ");
+  return _(wxT(" (Graphics) "));
 }
 
 wxSize ImgCell::ToImageFile(wxString file)

@@ -2651,6 +2651,7 @@ void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
 wxString MathCtrl::EscapeHTMLChars(wxString input)
 {
   input.Replace(wxT("&"), wxT("&amp;"));  
+  input.Replace(wxT("\""), wxT("&quot;"));  
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
   input.Replace(wxT("\n"), wxT("<BR>"));
@@ -3106,10 +3107,16 @@ bool MathCtrl::ExportToHTML(wxString file) {
           bitmapScale=1;
           wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
           int borderwidth = 0;
+          wxString alttext = _(wxT("Result"));
+          if(tmp->GetOutput())
+            alttext = PrependNBSP(EscapeHTMLChars(tmp->GetOutput()->ToString()));
           if(tmp->GetOutput()) borderwidth = tmp->GetOutput()->m_imageBorderWidth;
-          AddLineToFile(output,wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
+          wxString line = wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(_(wxT("_%d.png\" alt=\"Result\"  width=\"%i\" style=\"max-width:90\%;\" >")), count, size.x - 2 * borderwidth));
+            wxString::Format(_(wxT("_%d.png\" alt=\"")),count);
+          line+=alttext;
+          line+= wxString::Format(_("\"  width=\"%i\" style=\"max-width:90\%;\" >"),size.x - 2 * borderwidth);
+          AddLineToFile(output, line);
         }
         count++;
       }
