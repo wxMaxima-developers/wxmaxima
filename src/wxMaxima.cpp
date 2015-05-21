@@ -1900,16 +1900,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   // stop the animation => on this OS we have separate icons for the
   // animation start and stop. On the rest of the OSes we use one combined
   // start/stop button instead.
-#ifdef __WXMSW__
-  if (m_console->CanAnimate() && !m_console->AnimationRunning())
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, true);
-  else
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_start, false);
-  if (m_console->CanAnimate() && m_console->AnimationRunning())
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, true);
-  else
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_animation_stop, false);
-#else
   if (m_console->CanAnimate())
   {
     if(m_console->AnimationRunning())
@@ -1919,7 +1909,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   }
   else
     m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
-#endif
 }
 
 #endif
@@ -4820,16 +4809,8 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
-  // I suspect that on WXMSW changing the slider using the animation
-  // generates a "slider changed" event. This event shouldn't stop
-  // the animation.
-  //
-  // On other systems a manual movement of the slider indicates a
-  // user wants to change the animation state, though.
-  #ifndef __WXMSW__
   if (m_console->AnimationRunning())
     m_console->Animate(false);
-  #endif
 
   SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
   if (cell != NULL)
