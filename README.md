@@ -95,6 +95,12 @@ On Windows execute instead:
     make wxMaxima.win
 
 which builds the directory structure necessary for running wxMaxima.
+Alternatively
+
+    make wxMaxima.win.zip
+
+will build the whole application as a zip archive whose contents is a self-contained wxMaxima
+installation that can be placed in the folder maxima was installed in.
 
 The `--enable-chm` and the `--with-hhc` are only necessary to allow the
 builder to convert the wxMaxima offline manual to a format the
