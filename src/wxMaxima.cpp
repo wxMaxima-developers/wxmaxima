@@ -673,8 +673,8 @@ bool wxMaxima::StartMaxima()
     m_isConnected = false;
   }
 
+  m_console->QuestionAnswered();
   m_console->SetWorkingGroup(NULL);
-  m_console->SetLastWorkingGroup(NULL);
 
   m_variablesOK = false;
   wxString command = GetCommand();;

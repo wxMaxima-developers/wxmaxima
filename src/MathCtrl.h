@@ -382,10 +382,6 @@ class MathCtrl: public wxScrolledCanvas
 
 
 public:
-  void SetLastWorkingGroup(GroupCell *group)
-    {
-      m_lastWorkingGroup = group;
-    }
   bool HCaretActive(){return m_hCaretActive;}
   /*! Can we merge the selected cells into one?
     
