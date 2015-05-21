@@ -60,6 +60,7 @@ wxScrolledCanvas(
   )
 {
   m_lastWorkingGroup = NULL;
+  m_workingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
   m_cellMouseSelectionStartedIn = NULL;
@@ -89,7 +90,6 @@ wxScrolledCanvas(
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   AnimationRunning(false);
-  m_workingGroup = NULL;
   m_saved = false;
   m_zoomFactor = 1.0; // set zoom to 100%
   m_evaluationQueue = new EvaluationQueue();
@@ -1460,6 +1460,8 @@ void MathCtrl::TreeUndo_CellEntered()
   if(m_TreeUndoMergeSubsequentEdits) return;
   if(GetActiveCell())
   {
+    if(GetActiveCell()->m_group==NULL)
+      return;
     TreeUndo_ActiveCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
     m_currentUndoAction.m_oldText = TreeUndo_ActiveCell->GetEditable()->GetValue();
   }
@@ -1666,12 +1668,12 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   if(m_answerCell == NULL)
   {      
     m_answerCell = new EditorCell;
+    m_answerCell->SetParent(m_workingGroup);
     m_answerCell->SetType(MC_TYPE_INPUT);
     m_answerCell->SetValue(txt);
     m_answerCell->CaretToEnd();
       
     m_workingGroup->AppendOutput(m_answerCell);
-    m_answerCell->SetParent(m_workingGroup);
   }
 
   wxClientDC dc(this);
@@ -1686,8 +1688,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   {
     SetActiveCell(m_answerCell, false);
     ScrollToCaret();
-  }
-  
+  }  
   Refresh();
 }
 
@@ -4167,8 +4168,11 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   }
 
   if (cell != NULL)
+  {
     m_hCaretActive = false; // we have activated a cell .. disable caret
-
+    m_hCaretPosition = NULL;
+  }
+  
   if (callRefresh) // = true default
     Refresh();
 }
@@ -4826,7 +4830,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
 
 void MathCtrl::ScrollToCaret()
 {
-  if(m_hCaretPosition)
+  if(m_hCaretActive)
   {
     ScrollToCell(m_hCaretPosition);
   }

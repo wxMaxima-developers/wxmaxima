@@ -382,6 +382,11 @@ class MathCtrl: public wxScrolledCanvas
 
 
 public:
+  void SetLastWorkingGroup(GroupCell *group)
+    {
+      m_lastWorkingGroup = group;
+    }
+  bool HCaretActive(){return m_hCaretActive;}
   /*! Can we merge the selected cells into one?
     
     \todo Does it make sense to make to allow the text of sections and image cells 

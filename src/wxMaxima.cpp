@@ -673,6 +673,9 @@ bool wxMaxima::StartMaxima()
     m_isConnected = false;
   }
 
+  m_console->SetWorkingGroup(NULL);
+  m_console->SetLastWorkingGroup(NULL);
+
   m_variablesOK = false;
   wxString command = GetCommand();;
 
@@ -1821,6 +1824,9 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 {
   wxMenuBar* menubar = GetMenuBar();
+
+  if(m_console)
+    wxASSERT_MSG((!m_console->HCaretActive())||(m_console->GetActiveCell()==NULL),_(wxT("Both horizontal and vertical cursor active at the same time")));
 
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
