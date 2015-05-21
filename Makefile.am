@@ -92,7 +92,7 @@ endif
 	cp src/wxmaxima.exe wxMaxima/
 
 wxMaxima.win.zip: wxMaxima.win
-	zip wxMaxima.win.zip wxMaxima
+	zip -r wxMaxima.win.zip wxMaxima
 
 allmo:
 	    cd locales&&$(MAKE) allmo
