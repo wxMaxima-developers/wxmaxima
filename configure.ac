@@ -123,11 +123,23 @@ AC_TRY_LINK([#include <wx/wx.h>],
              AC_MSG_ERROR([Failed to compile a test program])])
 
 
-dnl we have to setup rc compiling under Windows
+dnl we have to setup rc compiling under 32-bit Windows
 if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
+   LDFLAGS="$LDFLAGS -static -static-libgcc -static-libstdc++"
+else
+   RC_OBJ=""
+   WX_RC_PATH=""
+fi
+
+dnl we have to setup rc compiling under 64-bit Windows, too
+if test x"${win64}" = x"true" ; then
+   RC_OBJ="Resources.o"
+   wx_prefix=`$WX_CONFIG_NAME --prefix`
+   WX_RC_PATH="${wx_prefix}/include"
+   LDFLAGS="$LDFLAGS -static -static-libgcc -static-libstdc++"
 else
    RC_OBJ=""
    WX_RC_PATH=""
