@@ -1658,13 +1658,17 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
     
-  // We don't need an undo action for this cell.
+  // We don't need an undo action for the thing we will do now.
   TreeUndo_ActiveCell = NULL;
 
   // Make sure that the cell containing the question is visible
   if (m_workingGroup->RevealHidden())
+  {
     FoldOccurred();
- 
+    Recalculate(true);
+  }
+
+  // If we still haven't a cell to put the answer in we now create one.
   if(m_answerCell == NULL)
   {      
     m_answerCell = new EditorCell;
@@ -1674,20 +1678,15 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
     m_answerCell->CaretToEnd();
       
     m_workingGroup->AppendOutput(m_answerCell);
+    RecalculateForce();
   }
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetZoomFactor(m_zoomFactor);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-  int fontsize = parser.GetDefaultFontSize();
-  m_workingGroup->RecalculateWidths(parser, fontsize);
-  m_workingGroup->RecalculateSize(parser, fontsize);
-
+  // If the user wants to be automatically scrolled to the cell evaluation takes place
+  // we scroll to this cell.
   if(FollowEvaluation())
   {
     SetActiveCell(m_answerCell, false);
-    ScrollToCaret();
+    ScrollToCell(m_workingGroup);
   }  
   Refresh();
 }
@@ -2747,9 +2746,6 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
       MathCell *prompt = tmp->GetPrompt();
       MathCell *cell = tmp->GetEditable();
 
-      //fprintf(stderr, ">%ls< >%ls<\n", prompt?prompt->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0", cell?cell->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0" );
-      //fprintf(stderr, ">%ls< >%ls<\n", tmp->GetLabel()?tmp->GetLabel()->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0", tmp->GetOutput()?tmp->GetOutput()->ToString(false).wc_str():(wchar_t*)"n\0i\0l\0\0" );
-
       wxString input = cell->ToString();
       if (prompt && cell && input.Len() > 0) {
         int outputExpressions = 0;
@@ -3111,7 +3107,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
           wxString alttext = _(wxT("Result"));
           if(tmp->GetOutput())
           {
-            std::cerr<<EscapeHTMLChars(tmp->GetOutput()->ToString())+wxT("Test")<<"\n";
             alttext = EscapeHTMLChars(tmp->GetOutput()->ToString());
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
@@ -5113,16 +5108,20 @@ void MathCtrl::OnFollow()
 {
   if(GetWorkingGroup())
   {
-    m_hCaretActive = true;
-    if (m_workingGroup->RevealHidden()) {
-      FoldOccurred();
-      Recalculate(true);
-    }
-    SetSelection(GetWorkingGroup());
-    ScrollToCell(GetWorkingGroup());
     FollowEvaluation(true);
+
     if(GCContainsCurrentQuestion(GetWorkingGroup()))
       OpenQuestionCaret();
+    else
+    {
+      if (GetWorkingGroup()->RevealHidden()) {
+        FoldOccurred();
+        Recalculate(true);
+      }
+      SetSelection(GetWorkingGroup());
+      SetHCaret(GetWorkingGroup());
+      ScrollToCell(GetWorkingGroup());
+    }
   }
 }
 

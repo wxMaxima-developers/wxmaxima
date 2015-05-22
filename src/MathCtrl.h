@@ -117,7 +117,8 @@ class MathCtrl: public wxScrolledCanvas
 
   //! The current undo action.
   TreeUndoAction m_currentUndoAction;
-  
+
+  //! Clear the list of actions for which an undo can be undone
   void TreeUndo_ClearRedoActionList();
 
   //! Remove one action ftom the action list
@@ -208,7 +209,6 @@ class MathCtrl: public wxScrolledCanvas
   //! true if m_start of m_currentUndoAction already marks the beginning of the action.
   bool m_TreeUndoMergeStartIsSet;
   //!@}
-
   
   bool m_scrolledAwayFromEvaluation;
 
@@ -239,11 +239,27 @@ class MathCtrl: public wxScrolledCanvas
 
   //! Add a line to a file.
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
+  //! Copy the currently selected cells
   MathCell* CopySelection();
+  /*! Copy the currently given list of cells
+
+    \param start The cell to start copying at
+    \param end   The cell the copy has to end with
+    \param asdata 
+      - true:  The cells are copied in the order they are stored
+      - false: The cells are copied in the order they are displayed: Sometimes (for 
+               example with fractions that can be displayed in 2d or flat) these
+               two orders differ.
+   */
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
   
   void GetMaxPoint(int* width, int* height);
+  //! Is executed if a timer associated with MathCtrl has expired.
   void OnTimer(wxTimerEvent& event);
+  /*! Has the autosave interval expired?
+  
+    True means: A save will be issued after the user stops typing.
+   */
   bool m_autoSaveIntervalExpired;
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
@@ -768,7 +784,9 @@ public:
   bool QuestionPending(){return m_questionPrompt;}
   //! Does the GroupCell cell points to contain the question currently asked by maxima?  
   bool GCContainsCurrentQuestion(GroupCell *cell);
-  /*! Move the cursor to the end of the question and if needed add a cell for user input
+  /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
+
+    \todo Currently scrolls to the GroupCell the question is in, not to the actual question.
    */
   void OpenQuestionCaret(wxString txt=wxT(""));
 
