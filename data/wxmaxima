@@ -1,0 +1,24 @@
+# wxmaxima(1) completion                                     -*- shell-script -*-
+
+_wxmaxima()
+{
+    local cur prev words cword split
+    _init_completion -s || return
+
+    case $prev in
+        --help|-h|--version|-v)
+            return
+            ;;
+        --open|-o)
+            _filedir
+            return
+            ;;
+    esac
+
+    $split && return 0
+
+    _filedir '@(|mac|wxm|wxmx)'
+} &&
+complete -F _wxmaxima wxmaxima
+
+# ex: ts=4 sw=4 et filetype=sh

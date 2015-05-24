@@ -1,6 +1,9 @@
 wxmaximadatadir = ${datadir}/wxMaxima
 wxmaximadata_DATA = tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg autocomplete.txt
 
+bashcompletiondir = ${datarootdir}/bash-completion/completions
+bashcompletion_DATA = wxmaxima
+
 EXTRA_DIST = tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt
 
 appdatadir = $(datarootdir)/appdata
