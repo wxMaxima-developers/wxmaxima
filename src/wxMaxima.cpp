@@ -2278,32 +2278,27 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     Close();
     break;
 
-#if defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_animation_startStop:
-    if (m_console->CanAnimate())
+    if(m_console->m_mainToolBar->m_ignoreStartStopButton)
     {
-      if(m_console->AnimationRunning())
-        m_console->Animate(false);
-      else
-        m_console->Animate(true);      
+      m_console->m_mainToolBar->m_ignoreStartStopButton = false;
+    }
+    else
+    {
+      if (m_console->CanAnimate())
+      {
+        if(m_console->AnimationRunning())
+          m_console->Animate(false);
+        else
+          m_console->Animate(true);      
+      }
     }
     break;
-#endif
     
   case MathCtrl::popid_animation_start:
-#if defined (__WXMSW__)
-  case ToolBar::tb_animation_start:
-#endif
     if (m_console->CanAnimate() && !m_console->AnimationRunning())
       m_console->Animate(true);
     break;
-
-#if defined __WXMSW__
-  case ToolBar::tb_animation_stop:
-    if (m_console->CanAnimate() && m_console->AnimationRunning())
-      m_console->Animate(false);
-    break;
-#endif
     
   default:
     break;

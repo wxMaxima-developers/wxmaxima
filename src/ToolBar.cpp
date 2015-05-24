@@ -52,6 +52,7 @@ ToolBar::ToolBar(wxWindow* parent, int id)
 {
   m_toolBar = new wxToolBar(parent,id);
   m_needsInformation = false;
+  m_ignoreStartStopButton = false;
   m_AnimationStartStopState=Inactive;
   
   m_toolBar->SetToolBitmapSize(wxSize(24, 24));
@@ -151,10 +152,10 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_plotSlider->Enable(true);
     if(m_AnimationStartStopState!=Running)
     {
-      // On windows changing the bitmap displayed on a enabled button
-      // seems to have side-effects.
-      m_toolBar->EnableTool(tb_animation_startStop,false);
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
+      #ifdef __WXMSW__
+      m_ignoreStartStopButton = true;
+      #endif
     }
     break;
     m_toolBar->EnableTool(tb_animation_startStop,true);
@@ -162,10 +163,10 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
   case Stopped:
     if(m_AnimationStartStopState==Running)
     {
-      // On windows changing the bitmap displayed on a enabled button
-      // seems to have side-effects.
-      m_toolBar->EnableTool(tb_animation_startStop,false);
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+      #ifdef __WXMSW__
+      m_ignoreStartStopButton = true;
+      #endif
     }
     m_toolBar->EnableTool(tb_animation_startStop,true);
     m_plotSlider->Enable(true);
@@ -174,7 +175,12 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_toolBar->EnableTool(tb_animation_startStop,false);
     m_plotSlider->Enable(false);
     if(m_AnimationStartStopState==Running)
+    {
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+      #ifdef __WXMSW__
+      m_ignoreStartStopButton = true;
+      #endif
+    }
     break;
   }
   m_AnimationStartStopState = state;
