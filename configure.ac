@@ -122,13 +122,27 @@ AC_TRY_LINK([#include <wx/wx.h>],
              echo ""
              AC_MSG_ERROR([Failed to compile a test program])])
 
+_save_ldflags="$LDFLAGS"
+LDFLAGS="$_save_ldflags -static -static-libgcc -static-libstdc++"
+AC_MSG_CHECKING([if we can compile a wxWidgets program in a way that it runs without needing dynamic libraries.])
+AC_TRY_LINK([#include <wx/wx.h>],
+            [wxString test=wxT("")],
+            [LIKFLAGS_COMPLETELYSTATIC="--static --static-libgcc --static-libstdc++"],
+            [LIKFLAGS_COMPLETELYSTATIC=""])
+
+if test x"${LIKFLAGS_COMPLETELYSTATIC}" = x ; then
+   AC_MSG_RESULT([no])
+else
+   AC_MSG_RESULT([yes])
+fi
+LDFLAGS="$_save_ldflags"
 
 dnl we have to setup rc compiling under 32-bit Windows
 if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
-   LDFLAGS="$LDFLAGS -static -static-libgcc -static-libstdc++"
+   LDFLAGS="$LDFLAGS $LIKFLAGS_COMPLETELYSTATIC"
 else
    RC_OBJ=""
    WX_RC_PATH=""
@@ -139,7 +153,7 @@ if test x"${win64}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
-   LDFLAGS="$LDFLAGS -static -static-libgcc -static-libstdc++"
+   LDFLAGS="$LDFLAGS $LIKFLAGS_COMPLETELYSTATIC"
 else
    RC_OBJ=""
    WX_RC_PATH=""
