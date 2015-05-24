@@ -3107,16 +3107,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
           wxString alttext = _(wxT("Result"));
           if(tmp->GetOutput())
           {
-            alttext = tmp->GetOutput()->ToString();
-            alttext.Replace(wxT("\n"),wxT(" "));
+            alttext = tmp->GetOutput()->ListToString();
+//            alttext.Replace(wxT("\n"),wxT(" "));
             alttext = EscapeHTMLChars(alttext);
+            std::cerr<<"New:"<<alttext<<"\n";
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
-          wxString line = wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
-                        filename +
-            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90\%;\" alt=\"")),count,size.x - 2 * borderwidth);
-          line+=alttext;
-          line+= wxT("\"   >");
+          wxString line = wxT("  <img src=\"") +
+            filename + wxT("_htmlimg/") + filename +
+            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90\%;\" alt=\"")),
+                             count,size.x - 2 * borderwidth) +
+            alttext +
+            wxT("\" >");
           AddLineToFile(output, line);
         }
         count++;

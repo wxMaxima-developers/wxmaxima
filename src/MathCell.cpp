@@ -372,11 +372,16 @@ wxString MathCell::ToString()
 wxString MathCell::ListToString()
 {
   wxString retval;
-  MathCell *tmp=this;
+  MathCell *tmp = this;
+  bool firstline = true;
   
   while(tmp!=NULL)
     {
       retval+=tmp->ToString();
+      if((!firstline)&&(tmp->m_forceBreakLine))
+        retval+=wxT("\n");
+
+      firstline = false;
       tmp=tmp->m_next;
     }
   
