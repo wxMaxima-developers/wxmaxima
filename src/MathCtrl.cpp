@@ -3071,7 +3071,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
       if(exportInput)
       {
         MathCell *prompt = tmp->GetPrompt();
-        AddLineToFile(output, wxT("<P><TABLE><TR><TD>"));
+        AddLineToFile(output, wxT("<TABLE><TR><TD>"));
         AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
         AddLineToFile(output, prompt->ToString());
         AddLineToFile(output, wxT("  </SPAN></TD>"));
@@ -3107,14 +3107,16 @@ bool MathCtrl::ExportToHTML(wxString file) {
           wxString alttext = _(wxT("Result"));
           if(tmp->GetOutput())
           {
-            alttext = EscapeHTMLChars(tmp->GetOutput()->ToString());
+            alttext = tmp->GetOutput()->ToString();
+            alttext.Replace(wxT("\n"),wxT(" "));
+            alttext = EscapeHTMLChars(alttext);
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
           wxString line = wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
                         filename +
-            wxString::Format(_(wxT("_%d.png\" alt=\"")),count);
+            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90\%;\" alt=\"")),count,size.x - 2 * borderwidth);
           line+=alttext;
-          line+= wxString::Format(_("\"  width=\"%i\" style=\"max-width:90\%;\" >"),size.x - 2 * borderwidth);
+          line+= wxT("\"   >");
           AddLineToFile(output, line);
         }
         count++;
@@ -3128,26 +3130,31 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
         AddLineToFile(output, PrependNBSP(MarkDown.MarkDown(EscapeHTMLChars(tmp->GetEditable()->ToString()))));
+        AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_SECTION:
         AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"section\">"));
         AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_SUBSECTION:
         AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
         AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_TITLE:
         AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"title\">"));
         AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetEditable()->ToString())));
+        AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_PAGEBREAK:
         AddLineToFile(output, wxT("\n\n<!-- Page break cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
         AddLineToFile(output, wxT("<hr/>"));
+        AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_IMAGE:
       {
@@ -3179,8 +3186,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
       break;
       }
     }
-
-    AddLineToFile(output, wxT("</P>"));
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
