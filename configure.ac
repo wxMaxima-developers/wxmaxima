@@ -127,7 +127,7 @@ LDFLAGS="$_save_ldflags -static -static-libgcc -static-libstdc++"
 AC_MSG_CHECKING([if we can compile a wxWidgets program in a way that it runs without needing dynamic libraries.])
 AC_TRY_LINK([#include <wx/wx.h>],
             [wxString test=wxT("")],
-            [LIKFLAGS_COMPLETELYSTATIC="--static --static-libgcc --static-libstdc++"],
+            [LIKFLAGS_COMPLETELYSTATIC="-static -static-libgcc -static-libstdc++"],
             [LIKFLAGS_COMPLETELYSTATIC=""])
 
 if test x"${LIKFLAGS_COMPLETELYSTATIC}" = x ; then
