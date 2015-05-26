@@ -615,7 +615,7 @@ public:
      - false: Remove linebreaks from the converted string
    */
   wxString GetString(bool lb = false);
-  MathCell* GetTree() { return m_tree; }
+  GroupCell* GetTree() { return m_tree; }
   /*! Return the first of the currently selected cells.
 
     NULL means: No cell is selected.

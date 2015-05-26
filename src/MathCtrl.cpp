@@ -3574,7 +3574,52 @@ bool MathCtrl::ExportToWXMX(wxString file)
   output << wxT("\n<wxMaximaDocument version=\"");
   output << DOCUMENT_VERSION_MAJOR << wxT(".");
   output << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
-  output << int(100.0 * m_zoomFactor) << wxT("\">\n");
+  output << int(100.0 * m_zoomFactor) << wxT("\"");
+
+  // **************************************************************************
+  // Find out the number of the cell the cursor is at and save this information
+  // if we find it
+
+  // Determine which cell the cursor is at.
+  long ActiveCellNumber = 1;
+  GroupCell *cursorCell;
+  if(m_hCaretActive)
+  {
+    cursorCell = GetHCaret();
+
+    // If the cursor is before the 1st cell in the worksheet the cell number
+    // is 0.
+    if(!cursorCell)
+      ActiveCellNumber = 0;
+  }
+  else
+  {
+    if(GetActiveCell())
+      cursorCell = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
+  }
+
+  // We want to save the information that the cursor is in the nth cell.
+  // Count the cells until then.
+  GroupCell *tmp = GetTree();
+  if(tmp == 0)
+    ActiveCellNumber = -1;
+  if(ActiveCellNumber > 0)
+  {
+    while((tmp)&&(tmp != cursorCell))
+    {
+      tmp=dynamic_cast<GroupCell*>(tmp->m_next);
+      ActiveCellNumber++;
+    }
+  }
+  // Paranoia: What happens if we didn't find the cursor?
+  if(tmp == NULL) ActiveCellNumber = -1;
+
+  // If we know where the cursor was we save this piece of information.
+  // If not we omit it.
+  if(ActiveCellNumber >= 0)
+    output << wxString::Format(wxT(" activecell=\"%li\""),ActiveCellNumber);
+
+  output << ">\n";
 
   // Reset image counter
   ImgCell::WXMXResetCounter();

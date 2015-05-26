@@ -1099,6 +1099,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   // read document version and complain
   wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
+  wxString ActiveCellNumber_String = xmldoc.GetRoot()->GetAttribute(wxT("activecell"), wxT("-1"));
+  long ActiveCellNumber;
+  if(!ActiveCellNumber_String.ToLong(&ActiveCellNumber))
+    ActiveCellNumber = -1;
+  
   double version = 1.0;
   if (docversion.ToDouble(&version)) {
     int version_major = int(version);
@@ -1158,6 +1163,26 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   
   m_console->EnableEdit(true);
   wxEndBusyCursor();
+
+  // We can set the cursor to the last known position.
+  if(ActiveCellNumber == 0)
+      m_console->SetHCaret(NULL);
+  std::cerr<<ActiveCellNumber<<"\n";
+  if(ActiveCellNumber > 0)
+  {
+    GroupCell *pos = m_console->GetTree();
+    std::cerr<pos;
+
+    for(long i=1;i<ActiveCellNumber;i++)
+      if(pos)
+      {
+        std::cerr<"Debug\n";
+        pos=dynamic_cast<GroupCell*>(pos->m_next);
+      }
+
+    if(pos)
+      m_console->SetHCaret(pos);
+  }
   return true;
 }
 
