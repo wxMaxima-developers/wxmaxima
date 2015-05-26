@@ -3094,7 +3094,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
           AddLineToFile(output,_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90\%;\" >"), count));
+                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count));
         }
         else
         {
@@ -3110,12 +3110,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
             alttext = tmp->GetOutput()->ListToString();
 //            alttext.Replace(wxT("\n"),wxT(" "));
             alttext = EscapeHTMLChars(alttext);
-            std::cerr<<"New:"<<alttext<<"\n";
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
           wxString line = wxT("  <img src=\"") +
             filename + wxT("_htmlimg/") + filename +
-            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90\%;\" alt=\"")),
+            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
                              count,size.x - 2 * borderwidth) +
             alttext +
             wxT("\" >");
@@ -3173,7 +3172,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
                                                  wxString::Format(wxT("_%d.gif"), count));
           AddLineToFile(output, _(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90\%;\" >"), count));
+                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count));
         }
         else
         {
@@ -3181,7 +3180,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
                                                       out, NULL, true);
           AddLineToFile(output, _(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
                         filename +
-                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90\%;\" >"), count));
+                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count));
         }
         count++;
       }

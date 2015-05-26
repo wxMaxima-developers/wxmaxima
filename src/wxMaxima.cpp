@@ -1167,18 +1167,13 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // We can set the cursor to the last known position.
   if(ActiveCellNumber == 0)
       m_console->SetHCaret(NULL);
-  std::cerr<<ActiveCellNumber<<"\n";
   if(ActiveCellNumber > 0)
   {
     GroupCell *pos = m_console->GetTree();
-    std::cerr<pos;
 
     for(long i=1;i<ActiveCellNumber;i++)
       if(pos)
-      {
-        std::cerr<"Debug\n";
         pos=dynamic_cast<GroupCell*>(pos->m_next);
-      }
 
     if(pos)
       m_console->SetHCaret(pos);
