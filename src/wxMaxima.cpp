@@ -113,7 +113,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_variablesOK = false;
 
-  m_htmlhelpFile = wxEmptyString;
+  m_htmlHelpInitialized = false;
   m_chmhelpFile = wxEmptyString;
 
   m_isConnected = false;
@@ -1683,7 +1683,7 @@ wxString wxMaxima::GetHelpFile()
 #endif
 }
 
-void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
+void wxMaxima::ShowHTMLHelp(wxString helpfile,wxString otherhelpfile,wxString keyword)
 {
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
@@ -1695,9 +1695,15 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
     helpfile[2]=wxT(':');
   }
 #endif
-  
-  if (m_htmlhelpFile != helpfile)
+
+  if(!m_htmlHelpInitialized)
+  {
+    wxFileName otherhelpfilenname(otherhelpfile);
+    if(otherhelpfilenname.FileExists())
+      m_htmlhelpCtrl.AddBook(otherhelpfile);
     m_htmlhelpCtrl.AddBook(helpfile);
+    m_htmlHelpInitialized = true;
+  }
   
   if ((keyword == wxT("%")) ||
       (keyword == wxT(" << Graphics >> ")))
@@ -1728,10 +1734,10 @@ void wxMaxima::ShowWxMaximaHelp()
 
 #if defined CHM
   wxString helpfile = htmldir + wxT("wxmaxima.chm");
-  ShowCHMHelp(helpfile, wxT("%"));
+  ShowCHMHelp(helpfile,wxT("%"));
 #else
   wxString helpfile = htmldir + wxT("wxmaxima.hhp");
-  ShowHTMLHelp(helpfile, wxT("%"));  
+  ShowHTMLHelp(helpfile,GetHelpFile(),wxT("%"));  
 #endif
 }
 
@@ -1749,7 +1755,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 #if defined (__WXMSW__)
   ShowCHMHelp(MaximaHelpFile,keyword);
 #else
-  ShowHTMLHelp(MaximaHelpFile,keyword);
+  Dirstructure dirstructure;
+  wxString htmldir = dirstructure.HelpDir();
+  wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
+
+  ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
 #endif
 }
 

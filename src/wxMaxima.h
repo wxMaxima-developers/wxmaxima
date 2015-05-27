@@ -136,7 +136,15 @@ protected:
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent& event);
   void ShowCHMHelp(wxString helpfile,wxString keyword);
-  void ShowHTMLHelp(wxString helpfile,wxString keyword);
+  /*! Launches the HTML help browser
+
+    \param helpfile The name of the file the help browser has to be launched with
+    \param otherhelpfile We offer help for maxima and wxMaxima in separate manuals.
+                         This parameter contains the filename of the manual we aren't
+                         using currently so the help browser can open a tab containing
+                         this file.
+  */
+  void ShowHTMLHelp(wxString helpfile,wxString otherhelpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
   void OnIdle(wxIdleEvent& event);
@@ -277,7 +285,7 @@ protected:
   bool m_fileSaved;
   bool m_variablesOK;
   wxString m_chmhelpFile;
-  wxString m_htmlhelpFile;
+  bool m_htmlHelpInitialized;
   wxString m_maximaVersion;
   wxString m_lispVersion;
 #if defined (__WXMSW__)
