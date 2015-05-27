@@ -2046,7 +2046,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     else if (fileExt == wxT("mac"))
       fileDialog.SetFilterIndex(2);
     else
-      fileDialog.SetFilterIndex(0)
+      fileDialog.SetFilterIndex(0);
         
     if (fileDialog.ShowModal() == wxID_OK)
     {
