@@ -2045,7 +2045,9 @@ bool wxMaxima::SaveFile(bool forceSave)
       fileDialog.SetFilterIndex(0);
     else if (fileExt == wxT("mac"))
       fileDialog.SetFilterIndex(2);
-      
+    else
+      fileDialog.SetFilterIndex(0)
+        
     if (fileDialog.ShowModal() == wxID_OK)
     {
       file = fileDialog.GetPath();
@@ -2093,9 +2095,9 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_console->ExportToMAC(file))
       {
         if (file.Right(4) == wxT(".mac"))
-          config->Write(wxT("defaultExt"), wxT("wxm"));
-        else
           config->Write(wxT("defaultExt"), wxT("mac"));
+        else
+          config->Write(wxT("defaultExt"), wxT("wxm"));
 	    
         StatusSaveFailed();
         return false;
@@ -2107,9 +2109,6 @@ bool wxMaxima::SaveFile(bool forceSave)
 
     if(m_autoSaveInterval > 10000)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-
-    wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
-    config->Write(wxT("defaultExt"), fileExt);
 
     StatusSaveFinished();
     return true;
