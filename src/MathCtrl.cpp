@@ -3234,7 +3234,12 @@ bool MathCtrl::ExportToTeX(wxString file) {
   } else if (!output.Create(file))
     return false;
 
-  AddLineToFile(output, wxT("\\documentclass{article}"));
+  wxString documentclass = wxT("article");
+  wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
+  
+  AddLineToFile(output, wxT("\\documentclass{") +
+                documentclass +
+                wxT("}"));
   AddLineToFile(output, wxEmptyString);
   AddLineToFile(output, wxT("%% Created with wxMaxima " VERSION ));
   AddLineToFile(output, wxEmptyString);

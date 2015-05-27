@@ -147,6 +147,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
+  m_documentclass->SetToolTip(_("The document class LaTeX is instructed to use for our documents."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
@@ -176,6 +177,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   int defaultFramerate = 2;
   int displayedDigits = 100;
   wxString texPreamble=wxEmptyString;
+  wxString documentclass=wxT("article");
   int autoSaveInterval = 0;
   
 #if defined (__WXMAC__)
@@ -208,6 +210,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLength"), &showLength);
   config->Read(wxT("language"), &lang);
+  config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
   config->Read(wxT("changeAsterisk"), &changeAsterisk);
@@ -232,6 +235,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   else
     m_language->SetSelection(0);
 
+  m_documentclass->SetValue(documentclass);
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(autoSaveInterval);
 
@@ -377,7 +381,7 @@ wxPanel* Config::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(3, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
@@ -409,6 +413,11 @@ wxPanel* Config::CreateOptionsPanel()
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
+  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
+  grid_sizer->Add(dc, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_documentclass, 0, wxALL, 5);
 
   wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
   m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE | wxHSCROLL);
@@ -650,6 +659,7 @@ void Config::WriteSettings()
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
+  config->Write(wxT("documentclass"), m_documentclass->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
