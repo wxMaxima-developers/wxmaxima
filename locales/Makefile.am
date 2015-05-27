@@ -41,11 +41,11 @@ XARGS=xargs
 XGETTEXT_ARGS=-C -k_ -s -j
 
 # implicit rules
-.po.mo: .po
+%.po.mo:.po
 	$(MSGFMT) -o $@ $<
 
 # a PO file must be updated to include new translations
-.po: $(srcdir)/wxMaxima.pot
+%.po:$(srcdir)/wxMaxima.pot
 	touch $@
 	$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;
 
@@ -142,3 +142,4 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              wxMaxima.pot ChangeLog
 
 .PHONY: allpo allmo force-update stats FORCE
+SUFFIXES+=.po .po.mo
