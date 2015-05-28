@@ -1741,6 +1741,9 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   SetActiveCell(group->GetEditable(), false);
   m_activeCell->ClearUndo();
   ScrollToCell(group);
+  // If we just have started typing inside a new cell we don't want the screen
+  // to scroll away.
+  ScrolledAwayFromEvaluation();
   Refresh();
 }
 
