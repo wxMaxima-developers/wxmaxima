@@ -1,5 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/ico" href="favicon.ico">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>wxMaxima - download</title>
  <HEAD>
   <TITLE>Example</TITLE>
   <META NAME="generator" CONTENT="wxMaxima">
@@ -55,12 +67,41 @@ td {
 }
   </STYLE>
  </HEAD>
- <BODY>
+</head>
 
-<!---------------------------------------------------------->
-<!--          Created with wxMaxima version 15.04.0         -->
-<!---------------------------------------------------------->
+<body>
 
+  <div class="container">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="index.html">
+          wxMaxima
+        </a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="help.html">Documentation</a></li>
+          <li><a href="develop.html">Develop</a></li>
+          <li  class="active"><a href="Example.html">Example</a></li>
+        </ul>
+      </div>
+    </nav>
+    
 
 <!-- Title cell -->
 
@@ -118,7 +159,7 @@ solve(%,y);
 
 
 <P CLASS="comment">
- Most of the times a formula can speak for itself. It can for example describe &nbsp;the mechanism that causes a phenomenon or it can tell in which way a problem &nbsp;can be optimized.<BR>But it can obviously be used to generate numbers instead. Maxima might be better <BR>suited for doing this than many programs that claim to have been written for <BR>numerical work:<UL><LI> It supports simple floating-point numbers like 1.25e-7 or 0.3.</LI><LI> But if they aren't precise enough it offers bigfloats (example: 1.25b-7) &nbsp;with a user-selectable number of digits.</LI><LI> If a numbers is specified as a fraction of integers it will be treated as an exact integer and will only be rounded on explicit request.</LI><LI> And if converting from float to exact fractions involves a rounding error maxima will warn the user:</UL>
+ Most of the times a formula can speak for itself. It can for example describe &nbsp;the mechanism that causes a phenomenon or it can tell in which way a problem &nbsp;can be optimized.<BR> But it can obviously be used to generate numbers instead. Maxima might be better &nbsp;suited for doing this than many programs that claim to have been written for &nbsp;numerical work:<UL><LI> It supports simple floating-point numbers like 1.25e-7 or 0.3.</LI><LI> But if they aren't precise enough it offers bigfloats (example: 1.25b-7) &nbsp;with a user-selectable number of digits.</LI><LI> If a numbers is specified as a fraction of integers it will be treated as an exact integer and will only be rounded on explicit request.</LI><LI> And if converting from float to exact fractions involves a rounding error maxima will warn the user:</UL>
 </P>
 
 
@@ -238,7 +279,7 @@ Figure 1: The schematic of the circuit
 g1:U_R(t)=-R*I_C(t);<BR>g2:U_L(t)=-L*diff(I_C(t),t);<BR>g3:I_C(t)=C*diff(U_C(t),t);<BR>g4:U_L(t)+U_R(t)=U_C(t);
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_7.png" width="270" style="max-width:90%;" alt="U_R(t)=-I_C(t)*R(%o24) <BR>U_L(t)=-('diff(d/(d*t)*))*L(%o25) <BR>I_C(t)=('diff(d/(d*t)*))*C(%o26) <BR>U_R(t)+U_L(t)=U_C(t)" >
+  <img src="Example_htmlimg/Example_7.png" width="270" style="max-width:90%;" alt="U_R(t)=-I_C(t)*R(%o24) <BR>U_L(t)=-('diff(*I_C(t)))*L(%o25) <BR>I_C(t)=('diff(*U_C(t)))*C(%o26) <BR>U_R(t)+U_L(t)=U_C(t)" >
 
 
 <!-- Text cell -->
@@ -267,7 +308,7 @@ g1:U_R(t)=-R*I_C(t);<BR>g2:U_L(t)=-L*diff(I_C(t),t);<BR>g3:I_C(t)=C*diff(U_C(t),
 
 
 <P CLASS="comment">
- It even introduces additional variables like %r1 to show there is more than one solution.<BR>But it can of course shorten equation systems by introducing one equation into<BR>another like we will do with the equations we have previously named g4 and g1:
+ It even introduces additional variables like %r1 to show there is more than one solution.<BR> But it can of course shorten equation systems by introducing one equation into another like we will do with the equations we have previously named g4 and g1:
 </P>
 
 
@@ -304,7 +345,7 @@ g4;<BR>solve(g4,U_R(t));<BR>g5:ev(g1,%);
 solve(g5,U_L(t));<BR>g6:ev(g2,%);<BR>g7:ev(g3,%);
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_10.png" width="352" style="max-width:90%;" alt="[U_L(t)=I_C(t)*R+U_C(t)](%o33) <BR>I_C(t)*R+U_C(t)=-('diff(d/(d*t)*))*L(%o34) <BR>I_C(t)=('diff(d/(d*t)*))*C" >
+  <img src="Example_htmlimg/Example_10.png" width="352" style="max-width:90%;" alt="[U_L(t)=I_C(t)*R+U_C(t)](%o33) <BR>I_C(t)*R+U_C(t)=-('diff(*I_C(t)))*L(%o34) <BR>I_C(t)=('diff(*U_C(t)))*C" >
 
 
 <!-- Text cell -->
@@ -326,7 +367,7 @@ solve(g5,U_L(t));<BR>g6:ev(g2,%);<BR>g7:ev(g3,%);
 dgl:ev(g6,g7);
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_11.png" width="492" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+U_C(t)=-('diff(d/(d*t)*))*L" >
+  <img src="Example_htmlimg/Example_11.png" width="492" style="max-width:90%;" alt="('diff(*U_C(t)))*C*R+U_C(t)=-('diff(*(('diff(*U_C(t)))*C)))*L" >
 
 
 <!-- Text cell -->
@@ -348,7 +389,7 @@ dgl:ev(g6,g7);
 lhs(dgl)-rhs(dgl)=0;
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_12.png" width="504" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+('diff(d/(d*t)*))*L+U_C(t)=0" >
+  <img src="Example_htmlimg/Example_12.png" width="504" style="max-width:90%;" alt="('diff(*U_C(t)))*C*R+('diff(*(('diff(*U_C(t)))*C)))*L+U_C(t)=0" >
 
 
 <!-- Section cell -->
@@ -371,7 +412,7 @@ lhs(dgl)-rhs(dgl)=0;
 
 
 <P CLASS="comment">
- Maxima will try to find a formula that solves differential equations if they are &nbsp;in the &quot;one time-dependent variable per equation&quot; form - which the differential equation is in by now.<BR>Since a differential equation describes all potential shapes a curve can assume<BR>but doesn't describe the actual height nor which of these possibilities are actually<BR>used in reality the result looks quite monstrous in this case:
+ Maxima will try to find a formula that solves differential equations if they are &nbsp;in the &quot;one time-dependent variable per equation&quot; form - which the differential equation is in by now.<BR> Since a differential equation describes all potential shapes a curve can assume but doesn't describe the actual height nor which of these possibilities are actually used in reality the result looks quite monstrous in this case:
 </P>
 
 
@@ -386,7 +427,7 @@ lhs(dgl)-rhs(dgl)=0;
 solution1:desolve(dgl,U_C(t));
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_13.png" width="874" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;p;(%o37) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+  <img src="Example_htmlimg/Example_13.png" width="874" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;p;(%o37) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(*U_C(t)),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
 
 
 <!-- Text cell -->
@@ -408,7 +449,7 @@ solution1:desolve(dgl,U_C(t));
 solution2:desolve(dgl,U_C(t));
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_14.png" width="876" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;n;(%o38) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sin((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L)))/sqrt(-C*(C*R^2-4*L))+U_C(0)*C*L*cos((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+  <img src="Example_htmlimg/Example_14.png" width="876" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;n;(%o38) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(*U_C(t)),t=0))*C*L)-U_C(0)*C^2*L*R)*sin((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L)))/sqrt(-C*(C*R^2-4*L))+U_C(0)*C*L*cos((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
 
 
 <!-- Code cell -->
@@ -422,7 +463,7 @@ solution2:desolve(dgl,U_C(t));
 scanmap('trigexpand,solution1);
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_15.png" width="874" style="max-width:90%;" alt="U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+  <img src="Example_htmlimg/Example_15.png" width="874" style="max-width:90%;" alt="U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(*U_C(t)),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
 
 
 <!-- Text cell -->
@@ -482,7 +523,7 @@ atvalue(U_C(t),t=0,U_0)$
 (2*C*L*(U_C(0)*C*R+(at('diff(U_C(t),t,1),t=0))*C*L)-U_C(0)*C^2*L*R)=0;<BR>InitialCondition1:solve(%,'diff(U_C(t),t));
   </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="2*C*L*(C*R*U_0+(at('diff(d/(d*t)*),t=0))*C*L)-C^2*L*R*U_0=0(%o42) <BR>['diff(d/(d*t)*)=-(R*U_0)/(2*L)]" >
+  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="2*C*L*(C*R*U_0+(at('diff(*U_C(t)),t=0))*C*L)-C^2*L*R*U_0=0(%o42) <BR>['diff(*U_C(t))=-(R*U_0)/(2*L)]" >
 
 
 <!-- Text cell -->
@@ -757,7 +798,7 @@ wxplot_size:[1024,768]$<BR>wxanimate_framerate:2$<BR>with_slider_draw(<BR> &nbsp
 -->  
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-wxdraw3d(<BR> &nbsp;&nbsp;&nbsp;grid=true,enhanced3d=true,<BR> &nbsp;&nbsp;&nbsp;wired_surface=true,<BR> &nbsp;&nbsp;&nbsp;nticks=200,contour=both,<BR> &nbsp;&nbsp;&nbsp;explicit(<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ev(Voltage(R,t)),<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t,0,10,<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R,0,1<BR> &nbsp;&nbsp;&nbsp;),colorbox=&quot;Magnitude&quot;<BR>);
+wxdraw3d(<BR> &nbsp;&nbsp;&nbsp;grid=true,enhanced3d=true,<BR> &nbsp;wired_surface=true,<BR> &nbsp;&nbsp;&nbsp;nticks=200,contour=both,<BR> &nbsp;&nbsp;&nbsp;explicit(<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ev(Voltage(R,t)),<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t,0,10,<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R,0,1<BR> &nbsp;&nbsp;&nbsp;),colorbox=&quot;Magnitude&quot;<BR>);
   </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_28.png" width="1026" style="max-width:90%;" alt=" (Graphics) (%o81) <BR>" >
@@ -773,5 +814,29 @@ wxdraw3d(<BR> &nbsp;&nbsp;&nbsp;grid=true,enhanced3d=true,<BR> &nbsp;&nbsp;&nbsp
  <HR>
  <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
 
- </BODY>
-</HTML>
+ <!-- Start of StatCounter Code -->
+<script type="text/javascript">
+sc_project=318894; 
+sc_invisible=1; 
+sc_partition=1; 
+sc_security=""; 
+</script>
+
+<script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script><noscript><div class="statcounter"><a title="web counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank"><img class="statcounter" src="http://c2.statcounter.com/318894/0//1/" alt="web counter" style="border:0"></a></div></noscript>
+<!-- End of StatCounter Code -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57021248-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End of Google Analytics -->
+
+
+</body>
