@@ -155,6 +155,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
       #ifdef __WXMSW__
       m_ignoreStartStopButton = true;
+      #else
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
       #endif
     }
     break;
@@ -163,9 +165,10 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
   case Stopped:
     if(m_AnimationStartStopState==Running)
     {
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
       #ifdef __WXMSW__
       m_ignoreStartStopButton = true;
+      #else
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);      
       #endif
     }
     m_toolBar->EnableTool(tb_animation_startStop,true);
@@ -176,9 +179,10 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_plotSlider->Enable(false);
     if(m_AnimationStartStopState==Running)
     {
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
       #ifdef __WXMSW__
       m_ignoreStartStopButton = true;
+      #else
+      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
       #endif
     }
     break;
