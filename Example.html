@@ -1,0 +1,777 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+ <HEAD>
+  <TITLE>Example</TITLE>
+  <META NAME="generator" CONTENT="wxMaxima">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+  <STYLE TYPE="text/css">
+body {
+  background-color: rgb(255,255,255);
+}
+.input {
+  color: rgb(83,83,83);
+}
+.comment {
+  color: rgb(0,0,0);
+  background-color: rgb(255,255,255);
+  padding: 2mm;
+}
+img {
+  -ms-interpolation-mode: bicubic;
+}
+.image {
+  color: rgb(0,0,0);
+  padding: 2mm;
+}
+.section {
+  color: rgb(0,0,0);
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5em;
+  padding: 2mm;
+}
+.subsect {
+  color: rgb(0,0,0);
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 2mm;
+}
+.title {
+  color: rgb(0,0,0);
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 2em;
+  padding: 2mm;
+}
+.prompt {
+  color: rgb(255,0,0);
+}
+table {
+  border: 0px;
+}
+td {
+  vertical-align: top;
+  padding: 1mm;
+}
+  </STYLE>
+ </HEAD>
+ <BODY>
+
+<!---------------------------------------------------------->
+<!--          Created with wxMaxima version 15.04.0         -->
+<!---------------------------------------------------------->
+
+
+<!-- Title cell -->
+
+
+<P CLASS="title">
+Does damping change the frequency of an oscillator?
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 1 Preface
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Most computers programs try to find numbers or curves that solve problems. &nbsp;A Computer Algebra System like Maxima is specialised in finding the formula &nbsp;that provides the solution instead:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+x=1/10*y+5*y^2-3;
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_0.png" width="198" style="max-width:90%;" alt="x=5*y^2+y/10-3" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solve(%,y);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_1.png" width="460" style="max-width:90%;" alt="[y=-(sqrt(2000*x+6001)+1)/100,y=(sqrt(2000*x+6001)-1)/100]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Most of the times a formula can speak for itself. It can for example describe &nbsp;the mechanism that causes a phenomenon or it can tell in which way a problem &nbsp;can be optimized.<BR>But it can obviously be used to generate numbers instead. Maxima might be better <BR>suited for doing this than many programs that claim to have been written for <BR>numerical work:<UL><LI> It supports simple floating-point numbers like 1.25e-7 or 0.3.</LI><LI> But if they aren't precise enough it offers bigfloats (example: 1.25b-7) &nbsp;with a user-selectable number of digits.</LI><LI> If a numbers is specified as a fraction of integers it will be treated as an exact integer and will only be rounded on explicit request.</LI><LI> And if converting from float to exact fractions involves a rounding error maxima will warn the user:</UL>
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+x=.1*y;
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_2.png" width="143" style="max-width:90%;" alt="x=0.1*y" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solve(%,y);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_3.png" width="342" style="max-width:90%;" alt="(%o20) [y=10*x]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Note that computers use binary numbers and therefore cannot express an exact 0.1 &nbsp;as a floating-point number. The error the computer will introduce to approximate 1/10 as floating number is extremely small:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+rationalize(.1);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_4.png" width="237" style="max-width:90%;" alt="3602879701896397/36028797018963968" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ But sometimes simple tasks like finding the root of a polygon are extremely &nbsp;suspectible to small errors. Other times one step in solving an equation incorporates something like:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+(Something[Big]+Something[Very_small])/Something[Big]-1;
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_5.png" width="374" style="max-width:90%;" alt="(Something[Very_small]+Something[Big])/Something[Big]-1" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Never trust a program that automatically decides that &nbsp;(Something[Big]+Something[Very_small]) is Something[Big]+ a rounding error that can be discarded.
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 2 Description of a complicated circuit
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ There are many good tutorials on Maxima. This document was just created instead to show it in action. We therefore grab a ridiculously complicated &nbsp;problem and see what the program can do:
+</P>
+
+
+<!-- Image cell -->
+
+
+<P CLASS="image">
+Figure 1: The schematic of the circuit
+<BR>
+  <IMG src="Example_htmlimg/Example_6.png" alt="Diagram" style="max-width:90%;" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+g1:U_R(t)=-R*I_C(t);<BR>g2:U_L(t)=-L*diff(I_C(t),t);<BR>g3:I_C(t)=C*diff(U_C(t),t);<BR>g4:U_L(t)+U_R(t)=U_C(t);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_7.png" width="270" style="max-width:90%;" alt="U_R(t)=-I_C(t)*R(%o24) <BR>U_L(t)=-('diff(d/(d*t)*))*L(%o25) <BR>I_C(t)=('diff(d/(d*t)*))*C(%o26) <BR>U_R(t)+U_L(t)=U_C(t)" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Maxima can solve equation systems automatically:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+[<BR> &nbsp;&nbsp;&nbsp;x+y=5,<BR> &nbsp;&nbsp;&nbsp;y+z=3<BR>];<BR>solve(%,[x,y,z]);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_8.png" width="360" style="max-width:90%;" alt="[y+x=5,z+y=3](%o28) <BR>[[x=%r2+2,y=3-%r2,z=%r2]]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ It even introduces additional variables like %r1 to show there is more than one solution.<BR>But it can of course shorten equation systems by introducing one equation into<BR>another like we will do with the equations we have previously named g4 and g1:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+g4;<BR>solve(g4,U_R(t));<BR>g5:ev(g1,%);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_9.png" width="288" style="max-width:90%;" alt="U_R(t)+U_L(t)=U_C(t)(%o30) <BR>[U_R(t)=U_C(t)-U_L(t)](%o31) <BR>U_C(t)-U_L(t)=-I_C(t)*R" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ One could do this on step on paper, too. But when doing a long list of &nbsp;calculations the paper-approach is too prone to errors for this to be practical. So let us evaluate g2 and g3 with the knowledge we have from &nbsp;the last step:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solve(g5,U_L(t));<BR>g6:ev(g2,%);<BR>g7:ev(g3,%);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_10.png" width="352" style="max-width:90%;" alt="[U_L(t)=I_C(t)*R+U_C(t)](%o33) <BR>I_C(t)*R+U_C(t)=-('diff(d/(d*t)*))*L(%o34) <BR>I_C(t)=('diff(d/(d*t)*))*C" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Combining the last two results we get a one-line description of the problem:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+dgl:ev(g6,g7);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_11.png" width="492" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+U_C(t)=-('diff(d/(d*t)*))*L" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Perhaps things look nicer if we combine the right- and the left hand side of this equation:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+lhs(dgl)-rhs(dgl)=0;
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_12.png" width="504" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+('diff(d/(d*t)*))*L+U_C(t)=0" >
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 3 Solving the differential equation
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+ &nbsp;3.1 The naïve approach
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Maxima will try to find a formula that solves differential equations if they are &nbsp;in the &quot;one time-dependent variable per equation&quot; form - which the differential equation is in by now.<BR>Since a differential equation describes all potential shapes a curve can assume<BR>but doesn't describe the actual height nor which of these possibilities are actually<BR>used in reality the result looks quite monstrous in this case:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solution1:desolve(dgl,U_C(t));
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_13.png" width="874" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;p;(%o37) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ If we answer the question differently the form the answer is presented in does change:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solution2:desolve(dgl,U_C(t));
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_14.png" width="876" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;n;(%o38) <BR>U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sin((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L)))/sqrt(-C*(C*R^2-4*L))+U_C(0)*C*L*cos((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+scanmap('trigexpand,solution1);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_15.png" width="874" style="max-width:90%;" alt="U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ This time the question maxima has asked doesn't actually change the shape of the curve that solves the differential equation, though. It just determines if the program combines the exp() functions that solve the problem to sinusses.
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+ &nbsp;3.2 A starting value
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Maxima maintains a database of known facts. We can use this database to tell the program &nbsp;about the starting values of the curve it is about to generate. The first of these values &nbsp;is easy to acquire: We want to start with a discharged capacitor:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+atvalue(U_C(t),t=0,U_0)$
+  </SPAN></TD>
+</TR></TABLE>
+
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ The second condition could be calculated using our initial equation system and knowledge about the current through the inductor. Or we can tell maxim we want to know a condition &nbsp;that makes the sinus go away:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+(2*C*L*(U_C(0)*C*R+(at('diff(U_C(t),t,1),t=0))*C*L)-U_C(0)*C^2*L*R)=0;<BR>InitialCondition1:solve(%,'diff(U_C(t),t));
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="2*C*L*(C*R*U_0+(at('diff(d/(d*t)*),t=0))*C*L)-C^2*L*R*U_0=0(%o42) <BR>['diff(d/(d*t)*)=-(R*U_0)/(2*L)]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Let's assign 'diff(U_C(t),t) the right-hand-side of the first element in this equation list for &nbsp;the case that t=0.
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+atvalue('diff(U_C(t),t),t=0,rhs(InitialCondition1[1]))$
+  </SPAN></TD>
+</TR></TABLE>
+
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ We also can inform maxima about enough facts about the problem it does need to ask the same &nbsp;question again:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+assume(C&gt;0,R&gt;0,L&gt;0,C*R^2&lt;4*L);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_17.png" width="315" style="max-width:90%;" alt="[C&gt;0,R&gt;0,L&gt;0,4*L&gt;C*R^2]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Now that the solution does no more need to be this general it does look much cleaner:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+solution2:desolve(dgl,U_C(t));
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_18.png" width="373" style="max-width:90%;" alt="U_C(t)=%e^(-(t*R)/(2*L))*cos((t*sqrt(4*L-C*R^2))/(2*sqrt(C)*L))*U_0" >
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+ &nbsp;3.3 The actual result
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ From the last equation one can easily see that the resonance frequency is in fact dependant on the damping:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+Frequency:f=(sqrt(4*L-C*R^2))/(2*sqrt(C)*L)/(2*%pi);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_19.png" width="187" style="max-width:90%;" alt="f=sqrt(4*L-C*R^2)/(4*%pi*sqrt(C)*L)" >
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 4 Visualization of the result
+</P>
+
+
+<!-- Subsection cell -->
+
+
+<P CLASS="subsect">
+ &nbsp;4.1 Real circuit element values
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ We wnt to variate R, but the actual values of L and C don't really matter so we can set &nbsp;them for example to 1:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+ElementValues:<BR>[<BR> &nbsp;&nbsp;&nbsp;L=1,<BR> &nbsp;&nbsp;&nbsp;C=1,<BR> &nbsp;&nbsp;&nbsp;U_0=1<BR>];
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_20.png" width="248" style="max-width:90%;" alt="[L=1,C=1,U_0=1]" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ It is always good to keep real numbers separate from the actual formula so one can switch &nbsp;between displaying tha formula and the result:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+Frequency;
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_21.png" width="187" style="max-width:90%;" alt="f=sqrt(4*L-C*R^2)/(4*%pi*sqrt(C)*L)" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+at(Frequency,ElementValues);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_22.png" width="161" style="max-width:90%;" alt="f=sqrt(4-R^2)/(4*%pi)" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ To make the command for plotting shorter we should assign the right-hand-value of the &nbsp;solution of the differential equation with the applied element values in a macro, though:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+Voltage(R,t):=ev(rhs(solution2),ElementValues);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_23.png" width="525" style="max-width:90%;" alt="Voltage(R,t):=ev(rhs(solution2),ElementValues)" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Maxima will keep all variables it doesn't currently know the value of as symbols. &nbsp;So looking if defining the functions work is easy:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+Voltage(R,t);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_24.png" width="245" style="max-width:90%;" alt="%e^(-(t*R)/2)*cos((t*sqrt(4-R^2))/2)" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+Resistors:makelist(i/20,i,0,20);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_25.png" width="867" style="max-width:90%;" alt="[0,1/20,1/10,3/20,1/5,1/4,3/10,7/20,2/5,9/20,1/2,11/20,3/5,13/20,7/10,3/4,4/5,17/20,9/10,19/20,1]" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+float(Resistors);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_26.png" width="998" style="max-width:90%;" alt="[0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0]" >
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+wxplot_size:[1024,768]$<BR>wxanimate_framerate:2$<BR>with_slider_draw(<BR> &nbsp;&nbsp;&nbsp;/* The parameter we want to assign to the slider and all values it can assume */<BR> &nbsp;&nbsp;&nbsp;R,Resistors,<BR><BR> &nbsp;&nbsp;&nbsp;/* The thing we actually want to draw */<BR> &nbsp;&nbsp;&nbsp;key=concat(&quot;R=&quot;,float(R),&quot; Ohm&quot;),<BR> &nbsp;&nbsp;&nbsp;explicit(<BR> &nbsp;&nbsp;&nbsp;&nbsp;ev(Voltage(R,t)),<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t,0,20<BR> &nbsp;&nbsp;&nbsp;),line_type=dots,color=black,<BR> &nbsp;&nbsp;&nbsp;key=concat(&quot;R=0.0 Ohm&quot;),<BR> &nbsp;&nbsp;&nbsp;explicit(<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ev(Voltage(0,t)),<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t,0,20<BR> &nbsp;&nbsp;&nbsp;),<BR> &nbsp;yrange=[-1,1],<BR> &nbsp;&nbsp;&nbsp;grid=true<BR>);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_27.gif"  alt="Animated Diagram" style="max-width:90%;" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ Normally animated 2D plots are easier to read than 3D ones. But we can of course draw such a thing, too:
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+wxdraw3d(<BR> &nbsp;&nbsp;&nbsp;grid=true,enhanced3d=true,<BR> &nbsp;&nbsp;&nbsp;wired_surface=true,<BR> &nbsp;&nbsp;&nbsp;nticks=200,contour=both,<BR> &nbsp;&nbsp;&nbsp;explicit(<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ev(Voltage(R,t)),<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t,0,10,<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R,0,1<BR> &nbsp;&nbsp;&nbsp;),colorbox=&quot;Magnitude&quot;<BR>);
+  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example_htmlimg/Example_28.png" width="1026" style="max-width:90%;" alt=" (Graphics) (%o81) <BR>" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+ This example has been created by the HTML export-feature of a post-15.04 wxMaxima.
+</P>
+
+ <HR>
+ <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
+
+ </BODY>
+</HTML>
