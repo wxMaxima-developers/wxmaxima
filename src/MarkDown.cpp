@@ -42,6 +42,7 @@ wxString MarkDownParser::MarkDown(wxString str)
   bool addNewline = false;
   wxString line;
 
+  // We will process the string line-per line until no more chars are left.
   while(str != wxEmptyString)
     {
 
@@ -58,11 +59,13 @@ wxString MarkDownParser::MarkDown(wxString str)
 	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
 	}
 
+      // Replace all arrows and so on by the according symbols
       for(replaceList::iterator it=regexReplaceList.begin();
           it!=regexReplaceList.end();
           ++it)
         (*it)->DoReplace(&line);
-  
+
+      // Find the first non-whitespace character of the current line.
       int index=0;
       while((index<line.Length()) && (line[index] == wxT(' ')))
 	index++;
@@ -141,9 +144,8 @@ wxString MarkDownParser::MarkDown(wxString str)
 	}
       else
 	{
-	  if(addNewline) result += NewLine();
-	  result += line;
-          addNewline = true;
+	  if(str != wxEmptyString) result += NewLine();
+          addNewline = false;
 	}
     }
 
