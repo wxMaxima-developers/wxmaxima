@@ -143,17 +143,16 @@ Most of wxMaxima should be self-explaining. Therefore this manual will
 concentrate on describing facts that won't need more time to read about
 than to be actually explored.
 @subsection The worksheet approach
-One of the very few things that aren's standard ist that wxMaxima
+One of the very few things that aren't standar ist that wxMaxima
 organizes the data for maxima in cells that are only evaluated (which
-means: sent to maxima) when the user request this. This approach might
+means: sent to maxima) when the user requests this. This approach might
 feel unfamiliar at the first sight. But it drastically eases work with
-big documents (where the user won't want every small change at the
-beginning automatically to trigger a full re-evaluation of the whole
+big documents (where the user certainly doesn't want every small change
+to automatically to trigger a full re-evaluation of the whole
 document) and is very handy for debugging. 
 
 The cells wxMaxima automatically creates on typing some text are maxima
 input cells that will eventually be sent to maxima.
-
 @ifnotinfo
 
 @image{InputCell,12cm}

@@ -188,12 +188,6 @@ wxMaximaFrame::~wxMaximaFrame()
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
-#if defined __WXMAC__
-#else
-#endif
-  /*
-    wxConfig::Get()->Write(wxT("AUI/toolbar"), (GetToolBar() != NULL));
-  */
   m_manager.UnInit();
   delete m_history;
   //  delete m_console->m_structure;
