@@ -634,6 +634,11 @@ parenthesis or hyphenation mark is missing: In this case maxima waits
 until it gets the rest of its input. If that isn't the case the
 operating system normally provides a way to see if maxima is actually
 really working forever trying to solve the current problem.
+@section wxMaxima on Windows crashes on displaying seemingly simple equations
+The jsMath fonts allow for excellent 2D-display of equations. But there
+are of broken versions of this package that crash wxMaxima. If this is
+the caise the use of jsMath can be deactivated in the Styles tab of the
+configuration dialogue.
 @section Outputting animations doesn't work
 wxMaxima relies on a third-party tool
 (@uref{http://www.imagemagick.org/, ImageMagick}) to convert
