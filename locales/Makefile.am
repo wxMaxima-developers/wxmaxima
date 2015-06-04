@@ -42,18 +42,18 @@ XGETTEXT_ARGS=-C -k_ -s -j
 .po.mo:
 	$(MSGFMT) -o $@ $<
 
-# a PO file must be updated to include new translations
-%.po:$(srcdir)/wxMaxima.pot
-	touch $@
-	$(MSGMERGE) $@ $(srcdir)/wxMaxima.pot > $@.new && mv $@.new $@;
-
 $(srcdir)/wxMaxima.pot:
 	touch $@
 	(cd $(srcdir) ; find ../src -name "*.cpp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
 	$(XGETTEXT) $(XGETTEXT_ARGS) ../data/tips.txt -o wxMaxima.pot
 
+# The PO file must be updated by to include new translations by running this make target
+# every time a new string is introduced.
 allpo: force-update wxMaxima.pot
-	@-for t in $(WXMAXIMA_LINGUAS); do $(MAKE) $(srcdir)/$$t.po; done
+	@-for t in $(WXMAXIMA_LINGUAS); do \
+		echo Creating $$t.po; \
+		$(MSGMERGE) $$t.po $(srcdir)/wxMaxima.pot > $$t.new && mv $$t.new $$t.po;\
+		done
 
 allmo:
 	@for t in $(WXMAXIMA_LINGUAS); do $(MAKE) $(srcdir)/$$t.mo; done
