@@ -2310,19 +2310,12 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
 
   case ToolBar::tb_animation_startStop:
-    if(m_console->m_mainToolBar->m_ignoreStartStopButton)
+    if (m_console->CanAnimate())
     {
-      m_console->m_mainToolBar->m_ignoreStartStopButton = false;
-    }
-    else
-    {
-      if (m_console->CanAnimate())
-      {
-        if(m_console->AnimationRunning())
-          m_console->Animate(false);
-        else
-          m_console->Animate(true);      
-      }
+      if(m_console->AnimationRunning())
+        m_console->Animate(false);
+      else
+        m_console->Animate(true);      
     }
     break;
     

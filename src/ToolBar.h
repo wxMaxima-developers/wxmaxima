@@ -37,15 +37,6 @@ class ToolBar
     Stopped, //!< The animation is stopped
     Inactive //!< No animation is currently running
   };
-
-  /*! Ignore the next press on the start/stop button
-
-    On MSW changing the icon on the start/stop button seems to activate a click
-    event on this button that in turn causes the button icon to be changed...
-
-    Setting this variable to true breaks this loop.
-   */
-  bool m_ignoreStartStopButton;
   
 #if defined __WXGTK__
   wxBitmap GetImage(wxString img);

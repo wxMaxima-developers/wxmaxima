@@ -52,7 +52,6 @@ ToolBar::ToolBar(wxWindow* parent, int id)
 {
   m_toolBar = new wxToolBar(parent,id);
   m_needsInformation = false;
-  m_ignoreStartStopButton = false;
   m_AnimationStartStopState=Inactive;
   
   m_toolBar->SetToolBitmapSize(wxSize(24, 24));
@@ -121,7 +120,14 @@ ToolBar::ToolBar(wxWindow* parent, int id)
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
+
+  // Seems like on MSW changing the image of this button has strange side-effects
+  // so we combine both images into one for this OS.
+  #if defined __WXMSW__
+  m_PlayButton = GetImage(wxT("media-playback-startstop"));
+  #else
   m_PlayButton = GetImage(wxT("media-playback-start"));
+  #endif
   m_StopButton = GetImage(wxT("media-playback-stop"));
 
   // It felt like a good idea to combine the play and the stop button.
@@ -152,10 +158,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_plotSlider->Enable(true);
     if(m_AnimationStartStopState!=Running)
     {
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
-      #ifdef __WXMSW__
-      m_ignoreStartStopButton = true;
-      #else
+      #ifndef __WXMSW__
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
       #endif
     }
@@ -165,9 +168,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
   case Stopped:
     if(m_AnimationStartStopState==Running)
     {
-      #ifdef __WXMSW__
-      m_ignoreStartStopButton = true;
-      #else
+      #ifndef __WXMSW__
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);      
       #endif
     }
@@ -179,9 +180,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_plotSlider->Enable(false);
     if(m_AnimationStartStopState==Running)
     {
-      #ifdef __WXMSW__
-      m_ignoreStartStopButton = true;
-      #else
+      #ifndef __WXMSW__
       m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
       #endif
     }
