@@ -3642,7 +3642,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
     MenuCommand(cmd);
     break;
   case menu_set_precision:
-    cmd = GetTextFromUser(_("Enter new precision:"), _("Precision"),
+    cmd = GetTextFromUser(_("Enter new precision for bigfloats:"), _("Precision"),
                           wxT("16"), this);
     if (cmd.Length())
     {
