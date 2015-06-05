@@ -59,6 +59,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_followEvaluation = true;
   m_lastWorkingGroup = NULL;
   m_workingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
