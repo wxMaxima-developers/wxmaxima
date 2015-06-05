@@ -53,11 +53,20 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   m_StatusSaving = false;
   StatusMaximaBusy(waiting);
-  
+
+  // Add some shortcuts that aren't automatically set by menu entries.
 #if defined __WXMSW__
-  wxAcceleratorEntry entries[1];
-  entries[0].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
-  wxAcceleratorTable accel(1, entries);
+  wxAcceleratorEntry entries[3];
+  entries[0].Set(wxACCEL_CTRL,  WXK_TAB, menu_autocomplete);
+  entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
+  entries[2].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
+  wxAcceleratorTable accel(3, entries);
+  SetAcceleratorTable(accel);
+#else
+  wxAcceleratorEntry entries[2];
+  entries[0].Set(wxACCEL_CTRL,  WXK_TAB, menu_autocomplete);
+  entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
+  wxAcceleratorTable accel(2, entries);
   SetAcceleratorTable(accel);
 #endif
 
