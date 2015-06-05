@@ -571,6 +571,12 @@ public:
   //! Is it possible to delete the currently selected cells?
   bool CanDeleteSelection();
 
+  /*! Delete the currently active cell - or the cell above this one.
+
+    Used for the "delete current cell" shortcut.
+   */
+  void DeleteCurrentCell();
+
   //! Does it make sense to enable the "Play" button and the slider now? 
   bool CanAnimate() {
     return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&

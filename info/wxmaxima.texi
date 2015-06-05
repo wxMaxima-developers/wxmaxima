@@ -296,6 +296,14 @@ Other symbols the markdown parser will recognize are @code{<=} and
 @code{>=} for comparisons, a double-pointed double arrow (@code{<=>}),
 single- headed arrows (@code{<->}, @code{->} and @code{<-}) and
 @code{+/-} as the respective sign.
+@subsection Hotkeys
+Most hotkeys can be found in the text of the respective menus. There are a few
+hotkeys or hotkey aliases, though, that aren't documented there. They are:
+@itemize @bullet
+@item @code{Ctrl+Shift+Delete} deletes a complete cell. 
+@item @code{Ctrl+Tab} or @code{Ctrl+Shift} triggers the auto-completion mechanism.
+@end itemize
+
 @section  File Formats
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using

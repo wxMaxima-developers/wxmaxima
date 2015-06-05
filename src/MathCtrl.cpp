@@ -1331,6 +1331,18 @@ void MathCtrl::DeleteSelection()
   TreeUndo_ClearRedoActionList();
 }
 
+void MathCtrl::DeleteCurrentCell()
+{
+  GroupCell *cellToDelete = NULL;
+  if(m_hCaretActive)
+    cellToDelete = m_hCaretPosition;
+  else
+    cellToDelete = dynamic_cast<GroupCell*>(GetActiveCell() -> m_group);
+
+  if(cellToDelete)
+    DeleteRegion(cellToDelete,cellToDelete);
+}
+
 bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
 {
   if ((start == NULL)||(end == NULL))
@@ -1758,10 +1770,13 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
 
+
+        
   // Handling of the keys this class has to handle
   switch (event.GetKeyCode()) {
 
   case WXK_DELETE:
+    std::cerr<<"Delete!\n";
     if (event.ShiftDown()) {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
       GetParent()->ProcessWindowEvent(ev);
@@ -1784,12 +1799,17 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     break;
 
   case WXK_BACK:
-    if (CanDeleteSelection()) {
-      wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
-      GetParent()->ProcessWindowEvent(ev);
-    }
+    if((event.ControlDown()) && (event.ShiftDown()))
+      DeleteCurrentCell();
     else
-      event.Skip();
+    {
+      if (CanDeleteSelection()) {
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_delete);
+        GetParent()->ProcessWindowEvent(ev);
+      }
+      else
+        event.Skip();
+    }
     break;
 
   case WXK_NUMPAD_ENTER:
