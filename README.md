@@ -8,9 +8,10 @@ natively on Windows, X11 and Mac OS X.  wxMaxima provides menus and
 dialogs for many common maxima commands, autocompletion, inline plots
 and simple animations. wxMaxima is distributed under the GPL license.
 
-wxMaxima is included with the Windows installer for Maxima. Packages
-are available for many Linux distributions. If you wish to compile
-wxMaxima from source, read the instructions below.
+wxMaxima is included with the Windows and the macintosh installer for
+Maxima. Packages are also available for many Linux distributions. Screenshots
+and documentation can be found at http://andrejv.github.io/wxmaxima/;
+If you wish to compile wxMaxima from source, please read the instructions below.
 
 
 Building wxMaxima from source
