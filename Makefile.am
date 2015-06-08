@@ -34,63 +34,63 @@ LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
 	mkdir -p wxMaxima.app/Contents/Resources
-	cp testbench_simple.wxmx wxMaxima.app/Contents/Resources
-	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
-	cp data/wxmaxima.png wxMaxima.app/Contents/Resources
-	cp data/wxmaxima.svg wxMaxima.app/Contents/Resources
-	cp data/autocomplete.txt wxMaxima.app/Contents/Resources
-	cp data/tips*.txt wxMaxima.app/Contents/Resources
-	cp art/wxmac.icns wxMaxima.app/Contents/Resources
-	cp art/wxmac-doc.icns wxMaxima.app/Contents/Resources
-	cp art/wxmac-doc-wxm.icns wxMaxima.app/Contents/Resources
-	cp art/wxmac-doc-wxmx.icns wxMaxima.app/Contents/Resources
-	cp data/Info.plist wxMaxima.app/Contents
-	cp data/PkgInfo wxMaxima.app/Contents
-	cp src/wxmaxima wxMaxima.app/Contents/MacOS
+	cp $(srcdir)/testbench_simple.wxmx wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/wxmathml.lisp wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/wxmaxima.png wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/wxmaxima.svg wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/autocomplete.txt wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/tips*.txt wxMaxima.app/Contents/Resources
+	cp $(srcdir)/art/wxmac.icns wxMaxima.app/Contents/Resources
+	cp $(srcdir)/art/wxmac-doc.icns wxMaxima.app/Contents/Resources
+	cp $(srcdir)/art/wxmac-doc-wxm.icns wxMaxima.app/Contents/Resources
+	cp $(srcdir)/art/wxmac-doc-wxmx.icns wxMaxima.app/Contents/Resources
+	cp $(srcdir)/data/Info.plist wxMaxima.app/Contents
+	cp $(srcdir)/data/PkgInfo wxMaxima.app/Contents
+	cp $(srcdir)/src/wxmaxima wxMaxima.app/Contents/MacOS
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES ; \
-		cp locales/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
-		cp locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+		cp $(srcdir)/locales/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
 	mkdir -p wxMaxima.app/Contents/Resources/config
-	cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
-	cp art/config/*.png wxMaxima.app/Contents/Resources/config
+	cp $(srcdir)/art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
+	cp $(srcdir)/art/config/*.png wxMaxima.app/Contents/Resources/config
 	mkdir -p wxMaxima.app/Contents/Resources/help
-	cp info/*.html wxMaxima.app/Contents/Resources/help
-	cp info/*.jpg  wxMaxima.app/Contents/Resources/help
-	cp info/*.png  wxMaxima.app/Contents/Resources/help
-	cp info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
+	cp $(srcdir)/info/*.html wxMaxima.app/Contents/Resources/help
+	cp $(srcdir)/info/*.jpg  wxMaxima.app/Contents/Resources/help
+	cp $(srcdir)/info/*.png  wxMaxima.app/Contents/Resources/help
+	cp $(srcdir)/info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
 
 wxMaxima.win: all
 	mkdir -p wxMaxima/art
 	mkdir -p wxMaxima/data
-	cp data/wxmathml.lisp wxMaxima/data
-	cp test/testbench_simple.wxmx wxMaxima/data
-	cp data/wxmathml.lisp wxMaxima/data
-	cp data/wxmaxima.png wxMaxima/data
-	cp data/wxmaxima.svg wxMaxima/data
-	cp data/autocomplete.txt wxMaxima/data
-	cp data/tips*.txt wxMaxima/data
+	cp $(srcdir)/data/wxmathml.lisp wxMaxima/data
+	cp $(srcdir)/test/testbench_simple.wxmx wxMaxima/data
+	cp $(srcdir)/data/wxmathml.lisp wxMaxima/data
+	cp $(srcdir)/data/wxmaxima.png wxMaxima/data
+	cp $(srcdir)/data/wxmaxima.svg wxMaxima/data
+	cp $(srcdir)/data/autocomplete.txt wxMaxima/data
+	cp $(srcdir)/data/tips*.txt wxMaxima/data
 	mkdir -p wxMaxima/help
-	cp info/*.jpg  wxMaxima/help
-	cp info/*.png  wxMaxima/help
+	cp $(srcdir)/info/*.jpg  wxMaxima/help
+	cp $(srcdir)/info/*.png  wxMaxima/help
 if CHM
-	cp info/*.chm  wxMaxima/help
+	cp $(srcdir)/info/*.chm  wxMaxima/help
 else
-	-cp info/*.html wxMaxima/help
-	-cp info/wxmaxima.hhp wxMaxima/help
+	-cp $(srcdir)/info/*.html wxMaxima/help
+	-cp $(srcdir)/info/wxmaxima.hhp wxMaxima/help
 endif
 	mkdir -p wxMaxima/art/toolbar
-	cp art/toolbar/*.png wxMaxima/art/toolbar
+	cp $(srcdir)/art/toolbar/*.png wxMaxima/art/toolbar
 	mkdir -p wxMaxima/art/config
-	cp art/config/*.png wxMaxima/art/config
+	cp $(srcdir)/art/config/*.png wxMaxima/art/config
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
-		cp locales/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
-		cp locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+		cp $(srcdir)/locales/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
-	cp src/wxmaxima.exe wxMaxima/
+	cp $(srcdir)/src/wxmaxima.exe wxMaxima/
 
 wxMaxima.win.zip: wxMaxima.win
 	zip -r wxMaxima.win.zip wxMaxima
