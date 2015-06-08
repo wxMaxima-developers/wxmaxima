@@ -1771,6 +1771,18 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   m_keyboardInactive = false;
 
 
+  if(event.ControlDown()&&event.AltDown())
+  {
+    if(
+      (event.GetUnicodeKey()==wxT('{')) ||
+      (event.GetUnicodeKey()==wxT('}'))
+      )
+    {
+      event.Skip();
+      return;
+    }
+  }
+    
         
   // Handling of the keys this class has to handle
   switch (event.GetKeyCode()) {
