@@ -261,6 +261,63 @@ If the system does not provide unicode support wxMaxima will still
 provide a method of showing greek characters: Variable names like
 ``alpha'' are always displayed as the corresponding greek symbols.
 
+The lowercase greek letters actually can be entered both by enter
+a lating letter or the whole latin name of the greek letter
+followed and preceded by a press of the escape key:
+@example
+a alpha    i iota      r rho
+b beta     k kappa     s sigma
+g gamma    l lambda    t tau
+d delta    m mu        u upsilon
+e epsilon  n nu        f phi
+z zeta     x xi        c chi
+h eta      om omicron  y psi
+q theta    p pi        o omega
+@end example
+
+The same is tue for the uppercase greek letters:
+@example
+A Alpha    I Iota      R Rho
+B Beta     K Kappa     S Sigma
+G Gamma    L Lambda    T Tau
+D Delta    M Mu        U Upsilon
+E Epsilon  N Nu        P Phi
+Z Zeta     X Xi        C Chi
+H Eta      Om Omicron  Y Psi
+T Theta    P Pi        O Omega
+@end example
+
+This mechanism also allows to enter some miscellaneous mathematical
+symbols:
+@example
+2             squared
+3             to the power of three
+/2            1/2
+sq            root
+ii            imaginary
+ee            element
+hb            h barred
+in            in
+impl,implies  implies
+inf           infinity
+empty         empty
+TB            Big triangle right
+tb            small triangle right
+and           and
+or            or
+xor           xor
+nand          nand
+nor           nor
+equiv         equivalent
+not           not
+union         union
+inter         intersection
+subseteq      subset or equal
+subset        subset
+notsubseteq   not subset or equal
+notsubset     not subset
+@end example
+
 It is to note that a maxima running on a lisp without unicode support
 might not be able to deal with files that contain special unicode
 characters.
