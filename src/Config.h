@@ -231,6 +231,7 @@ protected:
         m_styleLabel,
         m_styleHighlight,
         m_styleText,
+        m_styleSubsubsection,
         m_styleSubsection,
         m_styleSection,
         m_styleTitle,

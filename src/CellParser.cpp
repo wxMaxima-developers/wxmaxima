@@ -85,7 +85,7 @@ CellParser::~CellParser()
 
 wxString CellParser::GetFontName(int type)
 {
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SECTION || type == TS_TEXT)
+  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
     return m_styles[type].font;
   else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
       type == TS_SPECIAL_CONSTANT || type == TS_STRING)
@@ -142,6 +142,18 @@ void CellParser::ReadStyle()
   config->Read(wxT("Style/Text/fontname"),
                &m_styles[TS_TEXT].font);
   READ_STYLES(TS_TEXT, "Style/Text/")
+
+  // Subsubsection
+  m_styles[TS_SUBSUBSECTION].color = wxT("black");
+  m_styles[TS_SUBSUBSECTION].bold = true;
+  m_styles[TS_SUBSUBSECTION].italic = false;
+  m_styles[TS_SUBSUBSECTION].underlined = false;
+  m_styles[TS_SUBSUBSECTION].fontSize = 14;
+  config->Read(wxT("Style/Subsubsection/fontsize"),
+               &m_styles[TS_SUBSUBSECTION].fontSize);
+  config->Read(wxT("Style/Subsubsection/fontname"),
+               &m_styles[TS_SUBSUBSECTION].font);
+  READ_STYLES(TS_SUBSUBSECTION, "Style/Subsubsection/")
 
   // Subsection
   m_styles[TS_SUBSECTION].color = wxT("black");
@@ -266,7 +278,7 @@ void CellParser::ReadStyle()
 
   m_styles[TS_ACTIVE_CELL_BRACKET].color = wxT("rgb(255,0,0)");
   if (config->Read(wxT("Style/ActiveCellBracket/color"),
-                   &tmp)) m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
+                  &tmp)) m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
 
   // Cursor (hcaret in MathCtrl and caret in EditorCell)
   m_styles[TS_CURSOR].color = wxT("rgb(0,0,0)");

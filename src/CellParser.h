@@ -85,7 +85,7 @@ public:
   int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
   int GetFontSize(int st)
   {
-    if (st == TS_TEXT || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
+    if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return int(m_zoomFactor * double(m_styles[st].fontSize));
     return 0;
   }

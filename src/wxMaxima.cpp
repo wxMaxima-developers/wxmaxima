@@ -989,7 +989,7 @@ void wxMaxima::SetCWD(wxString file)
     StatusMaximaBusy(waiting);
 }
 
-// OpenWXM(X)File
+// OpenWXMFile
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
@@ -1272,7 +1272,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       }
     }
 
-    // Print section
+    // Print subsection
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsect start ]"))
     {
       wxmLines->RemoveAt(0);
@@ -1289,6 +1289,29 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       }
 
       cell = new GroupCell(GC_TYPE_SUBSECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+    
+    // print subsubsection
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while (wxmLines->Item(0) != wxT("   [wxMaxima: subsubsect end   ] */"))
+      {
+        if (line.Length() == 0)
+          line = wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_SUBSUBSECTION, line);
       if (hide) {
         cell->Hide(true);
         hide = false;
@@ -4731,6 +4754,11 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case MathCtrl::popid_insert_subsection:
     type = GC_TYPE_SUBSECTION;
     break;
+  case menu_add_subsubsection:
+  case menu_format_subsubsection:
+  case MathCtrl::popid_insert_subsubsection:
+    type = GC_TYPE_SUBSUBSECTION;
+    break;
   case menu_add_pagebreak:
   case menu_format_pagebreak:
     m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
@@ -5030,6 +5058,7 @@ EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
 EVT_MENU(MathCtrl::popid_insert_title, wxMaxima::InsertMenu)
 EVT_MENU(MathCtrl::popid_insert_section, wxMaxima::InsertMenu)
 EVT_MENU(MathCtrl::popid_insert_subsection, wxMaxima::InsertMenu)
+EVT_MENU(MathCtrl::popid_insert_subsubsection, wxMaxima::InsertMenu)
 EVT_MENU(MathCtrl::popid_delete, wxMaxima::EditMenu)
 EVT_MENU(MathCtrl::popid_simplify, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_factor, wxMaxima::PopupMenu)
@@ -5266,6 +5295,7 @@ EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
 EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
 EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
 EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)
+EVT_MENU(menu_add_subsubsection, wxMaxima::InsertMenu)
 EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
 EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
 EVT_MENU(menu_fold_all_cells, wxMaxima::InsertMenu)
@@ -5319,6 +5349,7 @@ EVT_BUTTON(menu_stats_enterm, wxMaxima::AlgebraMenu)
 EVT_BUTTON(menu_stats_subsample, wxMaxima::StatsMenu)
 EVT_BUTTON(menu_format_title, wxMaxima::InsertMenu)
 EVT_BUTTON(menu_format_text, wxMaxima::InsertMenu)
+EVT_BUTTON(menu_format_subsubsection, wxMaxima::InsertMenu)
 EVT_BUTTON(menu_format_subsection, wxMaxima::InsertMenu)
 EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)
 EVT_BUTTON(menu_format_pagebreak, wxMaxima::InsertMenu)

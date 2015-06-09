@@ -447,6 +447,8 @@ void wxMaximaFrame::SetupMenu()
                      _("Insert a new section cell"));
   m_CellMenu->Append(menu_add_subsection, _("Insert S&ubsection Cell\tCtrl-4"),
                      _("Insert a new subsection cell"));
+  m_CellMenu->Append(menu_add_subsubsection, _("Insert S&ubsubsection Cell\tCtrl-5"),
+                     _("Insert a new subsubsection cell"));
   m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
@@ -1091,6 +1093,7 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
   grid->Add(new wxButton(panel, menu_format_text, _("Text")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_title, _("Title")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsection, _("Subsection")), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_subsubsection, _("Subsubsection")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_section, _("Section")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_image, _("Image")), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_pagebreak, _("Pagebreak")), 0, style, border);

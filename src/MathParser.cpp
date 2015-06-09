@@ -81,6 +81,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
   bool hide = (node->GetAttribute(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
   // read (group)cell type
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
+  wxString sectioning_level = node->GetAttribute(wxT("sectioning_level"), wxT("0"));
 
   if (type == wxT("code")) {
     group = new GroupCell(GC_TYPE_CODE);
@@ -125,7 +126,21 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     else if (type == wxT("section"))
       group = new GroupCell(GC_TYPE_SECTION);
     else if (type == wxT("subsection"))
-      group = new GroupCell(GC_TYPE_SUBSECTION);
+    {
+      // We save subsubsections as subsections with a higher sectioning level:
+      // This makes them backwards-compatible in the way that they are displayed
+      // as subsections on old wxMaxima installations.
+      // A sectioning level of the value 0 means that the file is too old to
+      // provide a sectioning level.
+      if(sectioning_level != wxT("4"))
+        group = new GroupCell(GC_TYPE_SUBSECTION);
+      else
+        group = new GroupCell(GC_TYPE_SUBSUBSECTION);
+    }
+    else if (type == wxT("subsubsection"))
+    {
+      group = new GroupCell(GC_TYPE_SUBSUBSECTION);
+    }
     else
       return NULL;
 
@@ -178,6 +193,8 @@ MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
     editor->SetType(MC_TYPE_SECTION);
   else if (type == wxT("subsection"))
     editor->SetType(MC_TYPE_SUBSECTION);
+  else if (type == wxT("subsubsection"))
+    editor->SetType(MC_TYPE_SUBSUBSECTION);
 
   wxString text = wxEmptyString;
   wxXmlNode *line = node->GetChildren();

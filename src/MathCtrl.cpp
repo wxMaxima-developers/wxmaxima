@@ -541,10 +541,10 @@ void MathCtrl::ResetInputPrompts() {
 // support for numbered sections with hiding
 //
 void MathCtrl::NumberSections() {
-  int s, sub, i;
-  s = sub = i = 0;
+  int s, sub, subsub, i;
+  s = sub = subsub = i = 0;
   if (m_tree)
-    m_tree->Number(s, sub, i);
+    m_tree->Number(s, sub, subsub, i);
 }
 
 bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
@@ -553,7 +553,13 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo) {
   case GC_TYPE_TEXT:
   case GC_TYPE_IMAGE:
     if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-        (comparedTo == GC_TYPE_SUBSECTION))
+        (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION))
+      return true;
+    else
+      return false;
+  case GC_TYPE_SUBSUBSECTION:
+    if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
+      (comparedTo == GC_TYPE_SUBSECTION))
       return true;
     else
       return false;
@@ -809,6 +815,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
       popupMenu->Append(popid_insert_title, _("Insert Title Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_section, _("Insert Section Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_subsubsection, _("Insert Subsubsection Cell"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 
@@ -1289,6 +1296,11 @@ bool MathCtrl::CopyCells()
       s += wxT("/* [wxMaxima: subsect start ]\n");
       s += tmp->GetEditable()->ToString() + wxT("\n");
       s += wxT("   [wxMaxima: subsect end   ] */\n");
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      s += wxT("/* [wxMaxima: subsubsect start ]\n");
+      s += tmp->GetEditable()->ToString() + wxT("\n");
+      s += wxT("   [wxMaxima: subsubsect end   ] */\n");
       break;
     case GC_TYPE_TITLE:
       s += wxT("/* [wxMaxima: title   start ]\n");
@@ -2329,7 +2341,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
               (tmp->m_next)&&(
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_TITLE) &&
                 (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SECTION) &&
-                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION)
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSECTION) &&
+                (dynamic_cast<GroupCell*>(tmp)->GetGroupType()!=GC_TYPE_SUBSUBSECTION)
                 )
               );
             SetHCaret(tmp);
@@ -2862,11 +2875,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Write styles
 //////////////////////////////////////////////
 
-  wxString font, fontTitle, fontSection, fontSubsection, fontText;
+  wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection, fontText;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
   wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
-    colorSubSec(wxT("black"));
+    colorSubSec(wxT("black")),colorSubsubSec(wxT("black"));
   wxString colorTextBg(wxT("white"));
   wxString colorBg(wxT("white"));
 
@@ -2885,8 +2898,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
   bool italicSection = false;
   bool  underSection = false;
   bool   boldSubsection = false;
+  bool   boldSubsubsection = false;
   bool italicSubsection = false;
+  bool italicSubsubsection = false;
   bool  underSubsection = false;
+  bool  underSubsubsection = false;
 
   int fontSize = 12;
   wxConfigBase* config= wxConfig::Get();
@@ -2898,6 +2914,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Title/fontname"), &fontTitle);
   config->Read(wxT("Style/Section/fontname"), &fontSection);
   config->Read(wxT("Style/Subsection/fontname"), &fontSubsection);
+  config->Read(wxT("Style/Subsubsection/fontname"), &fontSubsubsection);
   config->Read(wxT("Style/Text/fontname"), &fontText);
 
   // read colors
@@ -2906,6 +2923,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Text/color"), &colorText);
   config->Read(wxT("Style/Section/color"), &colorSection);
   config->Read(wxT("Style/Subsection/color"), &colorSubSec);
+  config->Read(wxT("Style/Subsubsection/color"), &colorSubsubSec);
   config->Read(wxT("Style/Title/color"), &colorTitle);
   config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
   config->Read(wxT("Style/Background/color"), &colorBg);
@@ -2927,6 +2945,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Subsection/bold"),     &boldSubsection);
   config->Read(wxT("Style/Subsection/italic"), &italicSubsection);
   config->Read(wxT("Style/Subsection/underlined"), &underSubsection);
+  config->Read(wxT("Style/Subsubsection/bold"),     &boldSubsubsection);
+  config->Read(wxT("Style/Subsubsection/italic"), &italicSubsubsection);
+  config->Read(wxT("Style/Subsubsection/underlined"), &underSubsubsection);
 
   AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
 
@@ -3035,6 +3056,25 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if   (boldSubsection) AddLineToFile(output, wxT("  font-weight: bold;"));
   if  (underSubsection) AddLineToFile(output, wxT("  text-decoration: underline;"));
   if (italicSubsection) AddLineToFile(output, wxT("  font-style: italic;"));
+  AddLineToFile(output, wxT("  font-size: 1.2em;"));
+  AddLineToFile(output, wxT("  padding: 2mm;"));
+  AddLineToFile(output, wxT("}"));
+
+  // SUBSECTION STYLE
+  AddLineToFile(output, wxT(".subsubsect {"));
+  if (fontSubsubsection.Length()) {
+    AddLineToFile(output, wxT("  font-family: ") +
+                  fontSubsubsection + wxT(";"));
+  }
+  if (colorSubsubSec.Length()) {
+    wxColour color(colorSubsubSec);
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";"));
+  }
+  if   (boldSubsubsection) AddLineToFile(output, wxT("  font-weight: bold;"));
+  if  (underSubsubsection) AddLineToFile(output, wxT("  text-decoration: underline;"));
+  if (italicSubsubsection) AddLineToFile(output, wxT("  font-style: italic;"));
   AddLineToFile(output, wxT("  font-size: 1.2em;"));
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
@@ -3178,6 +3218,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
       case GC_TYPE_SUBSECTION:
         AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
+        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, wxT("</P>"));
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        AddLineToFile(output, wxT("\n\n<!-- Subsubsection cell -->\n\n"));
+        AddLineToFile(output, wxT("<P CLASS=\"subsubsect\">"));
         AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("</P>"));
         break;
@@ -3434,6 +3480,9 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
         case MC_TYPE_SUBSECTION:
           AddLineToFile(output, wxT("/* [wxMaxima: subsect start ]"), false);
           break;
+        case MC_TYPE_SUBSUBSECTION:
+          AddLineToFile(output, wxT("/* [wxMaxima: subsubsect start ]"), false);
+          break;
         case MC_TYPE_TITLE:
           AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
           break;
@@ -3457,6 +3506,9 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
           break;
         case MC_TYPE_SUBSECTION:
           AddLineToFile(output, wxT("   [wxMaxima: subsect end   ] */"), false);
+          break;
+        case MC_TYPE_SUBSUBSECTION:
+          AddLineToFile(output, wxT("   [wxMaxima: subsubsect end   ] */"), false);
           break;
         case MC_TYPE_TITLE:
           AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
@@ -3599,9 +3651,6 @@ bool MathCtrl::ExportToWXMX(wxString file)
      compression.
   */
   bool VcFriendlyWXMX=true;
-  wxConfig::Get()->Read(wxT("OptimizeForVersionControl"), &VcFriendlyWXMX);
-  if(!VcFriendlyWXMX)
-    zip.SetLevel(9);
 
   // next zip entry is "content.xml", xml of m_tree
 
@@ -3688,6 +3737,10 @@ bool MathCtrl::ExportToWXMX(wxString file)
   if(m_tree!=NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
 
+  wxConfig::Get()->Read(wxT("OptimizeForVersionControl"), &VcFriendlyWXMX);
+  if(!VcFriendlyWXMX)
+    zip.SetLevel(9);
+  
   // save images from memory to zip file
   wxFileSystem *fsystem = new wxFileSystem();
   fsystem->AddHandler(new wxMemoryFSHandler);
@@ -4362,6 +4415,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
                    line != wxT("/* [wxMaxima: comment start ]") &&
                    line != wxT("/* [wxMaxima: section start ]") &&
                    line != wxT("/* [wxMaxima: subsect start ]") &&
+                   line != wxT("/* [wxMaxima: subsubsect start ]") &&
                    line != wxT("/* [wxMaxima: title   start ]"));
 
           // Read the cell content
@@ -4391,6 +4445,12 @@ void MathCtrl::PasteFromClipboard(bool primary)
               inp.Add(input);
               input = wxEmptyString;
             }
+            else if (line == wxT("   [wxMaxima: subsubsect end   ] */"))
+            {
+              inp.Add(wxT("subsubsection"));
+              inp.Add(input);
+              input = wxEmptyString;
+            }
             else if (line == wxT("   [wxMaxima: title   end   ] */"))
             {
               inp.Add(wxT("title"));
@@ -4409,6 +4469,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
                    line != wxT("   [wxMaxima: comment end   ] */") &&
                    line != wxT("   [wxMaxima: section end   ] */") &&
                    line != wxT("   [wxMaxima: subsect end   ] */") &&
+                   line != wxT("   [wxMaxima: subsubsect end   ] */") &&
                    line != wxT("   [wxMaxima: title   end   ] */"));
         }
 
@@ -4424,6 +4485,8 @@ void MathCtrl::PasteFromClipboard(bool primary)
             OpenHCaret(inp[i+1], GC_TYPE_SECTION);
           else if (inp[i] == wxT("subsection"))
             OpenHCaret(inp[i+1], GC_TYPE_SUBSECTION);
+          else if (inp[i] == wxT("subsubsection"))
+            OpenHCaret(inp[i+1], GC_TYPE_SUBSUBSECTION);
           else if (inp[i] == wxT("title"))
             OpenHCaret(inp[i+1], GC_TYPE_TITLE);
         }

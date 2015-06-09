@@ -41,7 +41,15 @@
 
 #define SOCKET_SIZE 1024
 #define DOCUMENT_VERSION_MAJOR 1
-#define DOCUMENT_VERSION_MINOR 2
+/*! The part of the .wxmx format version number that appears after the dot.
+  
+  - Updated to version 1.1 after user selectable animation-speeds were introduced:
+    Old wxMaxima versions play them back in the default speed instead but still
+    open the file.
+  - Bumped to version 1.2 after sub-subsections were introduced:
+    Old wxMaxima versions interpret them as subsections but still open the file.
+ */
+#define DOCUMENT_VERSION_MINOR 3
 
 class MyApp : public wxApp
 {

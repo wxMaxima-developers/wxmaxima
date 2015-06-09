@@ -78,6 +78,9 @@ void MathCell::SetType(int type)
   case MC_TYPE_TEXT:
     m_textStyle = TS_TEXT;
     break;
+  case MC_TYPE_SUBSUBSECTION:
+    m_textStyle = TS_SUBSUBSECTION;
+    break;
   case MC_TYPE_SUBSECTION:
     m_textStyle = TS_SUBSECTION;
     break;

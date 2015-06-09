@@ -65,6 +65,7 @@ enum {
   MC_TYPE_ERROR,       //!< An error output by maxima
   MC_TYPE_TEXT,        //!< Text that isn't passed to maxima
   MC_TYPE_SUBSECTION,  //!< A subsection name
+  MC_TYPE_SUBSUBSECTION,  //!< A subsubsection name
   MC_TYPE_SECTION,     //!< A section name
   MC_TYPE_TITLE,       //!< The title of the document
   MC_TYPE_IMAGE,       //!< An image
@@ -388,12 +389,13 @@ public:
   bool m_isHidden;
   /*! Determine if this cell contains text that won't be passed to maxima
 
-    \return true, if this is a text cell, a title cell, a section or a subsection cell.
+    \return true, if this is a text cell, a title cell, a section, a subsection or a subsubsection cell.
    */
   bool IsComment()
   {
     return m_type == MC_TYPE_TEXT || m_type == MC_TYPE_SECTION ||
-           m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_TITLE;
+           m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_SUBSUBSECTION ||
+           m_type == MC_TYPE_TITLE;
   }
   bool IsEditable(bool input = false)
   {

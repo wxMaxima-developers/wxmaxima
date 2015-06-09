@@ -39,6 +39,7 @@ enum
   GC_TYPE_TITLE,
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
+  GC_TYPE_SUBSUBSECTION,
   GC_TYPE_TEXT,
   GC_TYPE_IMAGE,
   GC_TYPE_PAGEBREAK
@@ -116,7 +117,9 @@ public:
   //! Is this cell foldable?
   bool IsFoldable() { return ((m_groupType == GC_TYPE_SECTION) ||
                               (m_groupType == GC_TYPE_TITLE) ||
-                              (m_groupType == GC_TYPE_SUBSECTION)); }
+                              (m_groupType == GC_TYPE_SUBSECTION) ||
+                              (m_groupType == GC_TYPE_SUBSUBSECTION)
+      ); }
   //! Get the tree of cells that got hidden by folding this cell
   GroupCell *GetHiddenTree() { return m_hiddenTree; }
   /*! Fold the current cell
@@ -168,7 +171,11 @@ public:
   bool IsLesserGCType(int comparedTo);
   //! @}
   bool IsMainInput(MathCell *active);
-  void Number(int &section, int &subsection, int &image);
+  /*!  Return this cell's section- or image number.
+
+    \todo This code is still using recursive function calls.
+   */
+  void Number(int &section, int &subsection, int &subsubsection, int &image);
   /*! Recalculate the cell dimensions after appending new lines.
 
     Won't work if text has been added to the end of the line instead.

@@ -550,6 +550,7 @@ wxPanel* Config::CreateStylePanel()
       _("Output labels"),
       _("Highlight (dpart)"),
       _("Text cell"),
+      _("Subsubsection cell"),
       _("Subsection cell"),
       _("Section cell"),
       _("Title cell"),
@@ -724,7 +725,7 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
   style *tmp = GetStylePointer();
   wxString fontName;
 
-  if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsection || tmp == &m_styleSection)
+  if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection || tmp == &m_styleSection)
   {
     if (tmp->fontSize != 0)
       fontsize = tmp->fontSize;
@@ -929,6 +930,18 @@ void Config::ReadStyles(wxString file)
                &m_styleText.font);
   READ_STYLE(m_styleText, "Style/Text/")
 
+  // Subsubsection
+  m_styleSubsubsection.color = wxT("black");
+  m_styleSubsubsection.bold = true;
+  m_styleSubsubsection.italic = false;
+  m_styleSubsubsection.underlined = false;
+  m_styleSubsubsection.font = m_styleDefault.font;
+  m_styleSubsubsection.fontSize = 16;
+  config->Read(wxT("Style/Subsubsection/fontsize"),
+               &m_styleSubsubsection.fontSize);
+  config->Read(wxT("Style/Subsubsection/fontname"),
+               &m_styleSubsubsection.font);
+  READ_STYLE(m_styleSubsubsection, "Style/Subsubsection/")
   // Subsection
   m_styleSubsection.color = wxT("black");
   m_styleSubsection.bold = true;
@@ -1054,7 +1067,12 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
   WRITE_STYLE(m_styleText, "Style/Text/")
 
-  // Section
+  // Subsubsection
+  config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
+  config->Write(wxT("Style/Subsubsection/fontsize"), m_styleSubsubsection.fontSize);
+  WRITE_STYLE(m_styleSubsubsection, "Style/Subsubsection/")
+
+  // Subsection
   config->Write(wxT("Style/Subsection/fontname"), m_styleSubsection.font);
   config->Write(wxT("Style/Subsection/fontsize"), m_styleSubsection.fontSize);
   WRITE_STYLE(m_styleSubsection, "Style/Subsection/")
@@ -1186,33 +1204,36 @@ style* Config::GetStylePointer()
     tmp = &m_styleText;
     break;
   case 13:
-    tmp = &m_styleSubsection;
+    tmp = &m_styleSubsubsection;
     break;
   case 14:
-    tmp = &m_styleSection;
+    tmp = &m_styleSubsection;
     break;
   case 15:
-    tmp = &m_styleTitle;
+    tmp = &m_styleSection;
     break;
   case 16:
-    tmp = &m_styleTextBackground;
+    tmp = &m_styleTitle;
     break;
   case 17:
-    tmp = &m_styleBackground;
+    tmp = &m_styleTextBackground;
     break;
   case 18:
-    tmp = &m_styleCellBracket;
+    tmp = &m_styleBackground;
     break;
   case 19:
-    tmp = &m_styleActiveCellBracket;
+    tmp = &m_styleCellBracket;
     break;
   case 20:
-    tmp = &m_styleCursor;
+    tmp = &m_styleActiveCellBracket;
     break;
   case 21:
-    tmp = &m_styleSelection;
+    tmp = &m_styleCursor;
     break;
   case 22:
+    tmp = &m_styleSelection;
+    break;
+  case 23:
     tmp = &m_styleOutdated;
     break;
   }
@@ -1230,7 +1251,7 @@ void Config::UpdateExample()
     color = m_styleInput.color;
 
   int fontsize = m_fontSize;
-  if (tmp == &m_styleText || tmp == &m_styleSubsection || tmp == &m_styleSection || tmp == &m_styleTitle)
+  if (tmp == &m_styleText || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection || tmp == &m_styleSection || tmp == &m_styleTitle)
   {
     fontsize = tmp->fontSize;
     font = tmp->font;

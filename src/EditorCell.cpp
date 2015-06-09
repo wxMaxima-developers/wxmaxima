@@ -114,15 +114,21 @@ wxString EditorCell::ToXML()
       head += wxT(" type=\"text\"");
       break;
     case MC_TYPE_TITLE:
-      head += wxT(" type=\"title\"");
+      head += wxT(" type=\"title\" sectioning_level=\"1\"");
       break;
     case MC_TYPE_SECTION:
-      head += wxT(" type=\"section\"");
+      head += wxT(" type=\"section\" sectioning_level=\"2\"");
       break;
     case MC_TYPE_SUBSECTION:
-      head += wxT(" type=\"subsection\"");
+      head += wxT(" type=\"subsection\" sectioning_level=\"3\"");
       break;
-    case MC_TYPE_INPUT:
+    case MC_TYPE_SUBSUBSECTION:
+      // We save subsubsections as subsections with a higher sectioning level:
+      // This makes them backwards-compatible in the way that they are displayed
+      // as subsections on old wxMaxima installations.
+      head += wxT(" type=\"subsection\" sectioning_level=\"4\"");
+      break;
+  case MC_TYPE_INPUT:
     default:
       head += wxT(" type=\"input\"");
       break;

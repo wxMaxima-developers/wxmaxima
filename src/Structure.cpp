@@ -62,7 +62,8 @@ void Structure::Update(MathCell* tree)
 	  if(
 	     (groupType == GC_TYPE_TITLE) ||
 	     (groupType == GC_TYPE_SECTION) ||
-	     (groupType == GC_TYPE_SUBSECTION)
+	     (groupType == GC_TYPE_SUBSECTION) ||
+	     (groupType == GC_TYPE_SUBSUBSECTION)
 	     )
 	    m_structure.push_back((MathCell *)cell);
 	  
@@ -100,6 +101,10 @@ void Structure::UpdateDisplay()
 	break;
       case GC_TYPE_SUBSECTION:
 	curr = wxT("    ") + m_structure[i]->ToString();
+	m_structure[i]->ToString();
+	break;
+      case GC_TYPE_SUBSUBSECTION:
+	curr = wxT("      ") + m_structure[i]->ToString();
 	m_structure[i]->ToString();
 	break;
       }

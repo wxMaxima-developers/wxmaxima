@@ -461,6 +461,7 @@ public:
     popid_insert_title,
     popid_insert_section,
     popid_insert_subsection,
+    popid_insert_subsubsection,
     /*! The first number that is open for dynamic ID assignment
 
       If we want to add additional elements to a pop-up this is the 
