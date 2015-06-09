@@ -878,13 +878,13 @@ wxString GroupCell::ToXML()
       str += wxT(" type=\"text\"");
       break;
     case GC_TYPE_TITLE:
-      str += wxT(" type=\"title\"");
+      str += wxT(" type=\"title\" sectioning_level=\"1\"");
       break;
     case GC_TYPE_SECTION:
-      str += wxT(" type=\"section\"");
+      str += wxT(" type=\"section\" sectioning_level=\"2\"");
       break;
     case GC_TYPE_SUBSECTION:
-      str += wxT(" type=\"subsection\"");
+      str += wxT(" type=\"subsection\" sectioning_level=\"3\"");
       break;
     case GC_TYPE_PAGEBREAK:
       {
