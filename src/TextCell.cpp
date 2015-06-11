@@ -188,9 +188,27 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     /// This is the default.
     else
-      dc.DrawText(m_text,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+    {
+      switch(GetType())
+      {
+      case MC_TYPE_TEXT:
+        // TODO: Add markdown formatting for bold, italic and underlined here.
+        dc.DrawText(m_text,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        break;
+      case MC_TYPE_INPUT:
+        // TODO: Add syntax highlighting here.
+        dc.DrawText(m_text,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        break;
+      default:
+        dc.DrawText(m_text,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+      }
+    }
   }
   MathCell::Draw(parser, point, fontsize);
 }
