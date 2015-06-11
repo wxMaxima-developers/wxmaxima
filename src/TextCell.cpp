@@ -198,10 +198,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
         break;
       case MC_TYPE_INPUT:
-        // TODO: Add syntax highlighting here.
-        dc.DrawText(m_text,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        // This cell has already been drawn as an EditorCell => we don't repeat this action here.
         break;
       default:
         dc.DrawText(m_text,

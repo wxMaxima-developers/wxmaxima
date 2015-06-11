@@ -191,14 +191,16 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-///////////////////////////
-// EditorCell::Draw
-// Draws the editor cell in the following order:
-// 1. draw selection (wxCOPY), TS_SELECTION color
-// 2. mark matching parenthesis (wxCOPY), TS_SELECTION color
-// 3. draw text (wxCOPY)
-// 4. draw caret (wxCOPY), TS_CURSOR color
-////////////////////////////
+/* Draws the editor cell including selection and cursor
+
+The order this cell is drawn is:
+ 1. draw selection (wxCOPY), TS_SELECTION color
+ 2. mark matching parenthesis (wxCOPY), TS_SELECTION color
+ 3. draw all text (wxCOPY)
+ 4. draw the caret (wxCOPY), TS_CURSOR color
+
+\todo Add syntax highlighting?
+*/
 void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 {
   double scale = parser.GetScale();
