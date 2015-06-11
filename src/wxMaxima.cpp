@@ -160,50 +160,46 @@ wxMaxima::~wxMaxima()
 #if wxUSE_DRAG_AND_DROP
 
 bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& files) {
+
   if (files.GetCount() != 1)
     return true;
-  else {
-    if (wxGetKeyState(WXK_SHIFT)) {
-      m_wxmax->m_console->InsertText(files[0]);
-      return true;
-    }
-    else if (files[0].Right(4) != wxT(".png") &&
-             files[0].Right(5) != wxT(".jpeg") &&
-             files[0].Right(4) != wxT(".jpg") &&
-             files[0].Right(4) != wxT(".wxm") &&
-             files[0].Right(5) != wxT(".wxmx") &&
-             files[0].Right(4) != wxT(".mac"))
-    {
-      m_wxmax->m_console->InsertText(files[0]);
-      return true;
-    }
-    else {
-      if (files[0].Right(4) == wxT(".png")  ||
-          files[0].Right(5) == wxT(".jpeg") ||
-          files[0].Right(4) == wxT(".jpg"))
-        m_wxmax->LoadImage(files[0]);
-      else if (!m_wxmax->DocumentSaved() && (m_wxmax->m_console->GetTree() != NULL) &&
-               (files[0].Right(4) == wxT(".wxm") || files[0].Right(5) == wxT(".wxmx")))
-      {
-	   	  
-        int close = m_wxmax->SaveDocumentP();
-	  
-        if (close == wxID_CANCEL)
-          return false;
-	  
-        if (close == wxID_YES) {
-          if (!m_wxmax->SaveFile())
-            return false;
-        }
-	  
-        m_wxmax->OpenFile(files[0]);
-      }
-      else
-        m_wxmax->OpenFile(files[0]);
 
-      return true;
-    }
+  if (wxGetKeyState(WXK_SHIFT)) {
+    m_wxmax->m_console->InsertText(files[0]);
+    return true;
   }
+
+  if (files[0].Right(4) == wxT(".wxm") ||
+      files[0].Right(5) == wxT(".wxmx"))
+  {
+    if (m_wxmax->m_console->GetTree() != NULL &&
+        !m_wxmax->DocumentSaved())
+    {
+      int close = m_wxmax->SaveDocumentP();
+      
+      if (close == wxID_CANCEL)
+        return false;
+      
+      if (close == wxID_YES) {
+        if (!m_wxmax->SaveFile())
+          return false;
+      }
+    }
+
+    m_wxmax->OpenFile(files[0]);
+    return true;
+  }
+
+  if (files[0].Right(4) == wxT(".png")  ||
+      files[0].Right(5) == wxT(".jpeg") ||
+      files[0].Right(4) == wxT(".jpg"))
+  {
+    m_wxmax->LoadImage(files[0]);
+    return true;
+  }
+
+  m_wxmax->m_console->InsertText(files[0]);
+  return true;
 }
 
 #endif
