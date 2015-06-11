@@ -633,9 +633,9 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
   GroupCell *result = NULL;
   if (which->IsFoldable())
     if (which->GetHiddenTree())
-      result = which->UnfoldAll(false);
+      result = which->UnfoldAll();
     else
-      result = which->FoldAll(false);
+      result = which->FoldAll();
   else
     return NULL;
 
@@ -650,7 +650,7 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
  */
 void MathCtrl::FoldAll() {
   if (m_tree) {
-    m_tree->FoldAll(true);
+    m_tree->FoldAll();
     FoldOccurred();
   }
 }
@@ -660,7 +660,7 @@ void MathCtrl::FoldAll() {
  */
 void MathCtrl::UnfoldAll() {
   if (m_tree) {
-    m_tree->UnfoldAll(true);
+    m_tree->UnfoldAll();
     FoldOccurred();
   }
 }

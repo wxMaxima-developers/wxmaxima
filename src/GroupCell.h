@@ -155,14 +155,14 @@ public:
     \todo This function is still recursive and therefore can provoke stack overflows
     -> Convert to a while loop.
   */
-  GroupCell *FoldAll(bool all = false);
+  GroupCell *FoldAll();
   /*! Unfold all cells
 
     \return the last unfolded cell's address if unfolding was successful, else NULL
     \todo This function is still recursive and therefore can provoke stack overflows
     -> Convert to a while loop.
   */
-  GroupCell *UnfoldAll(bool all = false);
+  GroupCell *UnfoldAll();
   /*! Document structure: Can this cell type be part of the contents of comparedTo?
 
     For example ordinary text cells can be part of a chapter and sections can be

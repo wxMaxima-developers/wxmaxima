@@ -1315,34 +1315,44 @@ GroupCell *GroupCell::Unfold() {
   return dynamic_cast<GroupCell*>(tmp);
 }
 
-GroupCell *GroupCell::FoldAll(bool all) {
-  GroupCell *result = this;
-  if (IsFoldable() && !m_hiddenTree) {
-    Fold();
-    if (m_hiddenTree)
-      m_hiddenTree->FoldAll(true);
-  }
-  else
-    result = NULL;
+GroupCell *GroupCell::FoldAll() {
+  GroupCell *result = NULL;
 
-  if (all && m_next)
-    return dynamic_cast<GroupCell*>(m_next)->FoldAll(true);
-  else
-    return result;
+  GroupCell *tmp = this;
+
+  while (tmp != NULL)
+  {
+    if (tmp->IsFoldable() && !tmp->m_hiddenTree)
+    {
+      tmp->Fold();
+      result = tmp;
+    }
+    if (tmp-> m_hiddenTree)
+      m_hiddenTree->FoldAll();
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  return result;
 }
 
 // unfolds recursivly its contents
 // if (all) then also calls it on it's m_next
-GroupCell *GroupCell::UnfoldAll(bool all) {
-  if (all && m_next)
-    dynamic_cast<GroupCell*>(m_next)->UnfoldAll(true);
+GroupCell *GroupCell::UnfoldAll() {
+  GroupCell *result = NULL;
 
-  if (!IsFoldable() || !m_hiddenTree)
-    return NULL;
+  GroupCell *tmp = this;
 
-  m_hiddenTree->UnfoldAll(true);
-
-  return Unfold();
+  while (tmp != NULL)
+  {
+    if (tmp->IsFoldable() && tmp->m_hiddenTree)
+    {
+      tmp->Unfold();
+      result = tmp;
+    }
+    if (tmp-> m_hiddenTree)
+      m_hiddenTree->UnfoldAll();
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  return result;
 }
 
 bool GroupCell::IsLesserGCType(int comparedTo) {
