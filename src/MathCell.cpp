@@ -164,6 +164,8 @@ MathCell* MathCell::GetParent()
 
 /***
  * Get the maximum drop of the center.
+
+\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetMaxCenter()
 {
@@ -186,6 +188,8 @@ int MathCell::GetMaxCenter()
 
 /***
  * Get the maximum drop of cell.
+
+\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetMaxDrop()
 {
@@ -217,18 +221,27 @@ int MathCell::GetMaxHeight()
  */
 int MathCell::GetFullWidth(double scale)
 {
-  if (m_fullWidth == -1)
+  // Recalculate the with of this list of cells only if this has been marked as necessary.
+  if (m_fullWidth < 0)
   {
-    if (m_next == NULL)
-      m_fullWidth = m_width;
-    else
-      m_fullWidth = m_width + m_next->GetFullWidth(scale) +
-                    SCALE_PX(MC_CELL_SKIP, scale);
-  }
+    MathCell *tmp = this;
+
+    // We begin this calculation with a negative offset since the full width of only a single
+    // cell doesn't contain the space that separates two cells - that is automatically added
+    // to every cell in the next step.
+    m_fullWidth = -SCALE_PX(MC_CELL_SKIP, scale);
+    while(tmp != NULL)
+    {
+      m_fullWidth += tmp->m_width;
+      tmp = tmp->m_next + SCALE_PX(MC_CELL_SKIP, scale);
+    }
   return m_fullWidth;
+  }
 }
 
 /*! Get the width of this line.
+
+\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetLineWidth(double scale)
 {
