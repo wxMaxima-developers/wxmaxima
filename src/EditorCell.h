@@ -26,6 +26,7 @@
 #include "MathCell.h"
 
 #include <vector>
+#include <list>
 /*! \file
 
   This file contains the definition of the class EditorCell
@@ -46,6 +47,11 @@ public:
   ~EditorCell();
   void Destroy();
   MathCell* Copy();
+  /*! Recalculate the widths of the current cell.
+
+      \todo If we use a centered dot instead of a * and we don't use a fixed-
+      size fonts we miscalculate the widths here.
+   */
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   //! Convert the current cell to a string
@@ -56,11 +62,21 @@ public:
   wxString ToXML();
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
+
+  /*! Sets the text that is to be displayed.
+    
+    Automatically calls StyleText().
+   */
   void SetValue(wxString text);
   wxString GetValue()
   {
     return m_text;
   }
+  /*! Converts m_text to a list of styled text snippets that will later be used by draw().
+
+    \todo Actually set the needed text styles.
+   */
+  void StyleText();
   void Reset();
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
@@ -93,7 +109,7 @@ public:
   {
     m_matchParens = match;
   }
-  void SetInsertAns(bool insertAns)
+    void SetInsertAns(bool insertAns)
   {
     m_insertAns = insertAns;
   }
@@ -114,7 +130,10 @@ public:
     m_hasFocus = focus;
   }
   void SetFirstLineOnly(bool show = true) {
-    if (m_firstLineOnly != show) { m_width = m_height = -1; m_firstLineOnly = show; }}
+    if (m_firstLineOnly != show) { m_width = m_height = -1; m_firstLineOnly = show; }
+    // Style the text anew.
+    StyleText();
+  }
   bool IsActive() { return m_isActive; }
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() { return m_positionOfCaret == 0; }
@@ -195,6 +214,52 @@ public:
       SetSelection(m_lastSelectionStart,m_text.Length());
     }
 private:
+
+  /*! A piece of styled text for syntax highlighting
+
+   */
+  class StyledText
+  {
+  private:
+    //! The color of this text portion
+    wxColor  m_color;
+    //! The text of this text portion
+    wxString m_text;
+    //! Do we really want to style this text portion different than the default?
+    bool m_styleThisText;
+  public:
+    //! Defines a piece of styled text
+    StyledText(wxColor color,wxString text)
+      {
+        m_text = text;
+        m_color = color;
+        m_styleThisText = true;
+      }
+
+    //! Defines a piece of text with the default style
+    StyledText(wxString text)
+      {
+        m_text = text;
+        m_styleThisText = false;
+      }
+    //! Returns the piece of text
+    wxString GetText()
+      {
+        return m_text;
+      }
+    //! If StyleSet() is true this function returns the color of this text portion
+    wxColour GetColor()
+      {
+        return m_color;
+      }
+    // Has a individual text style been set for this text portion?
+    bool StyleSet()
+      {
+        return m_styleThisText;
+      }
+  };
+  
+  std::list<StyledText> m_styledText;
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);
 #endif
