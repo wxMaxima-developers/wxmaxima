@@ -1889,14 +1889,42 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
   while(pos<size)
   {
-        // Find a number that starts at the current position
-    if(wxIsdigit(string.GetChar(pos)))
+    // Find a number that starts at the current position
+    if(wxIsalpha(string.GetChar(pos)))
     {
-      retval.Add(token);
+      retval.Add(token + wxT("d"));
       token=wxEmptyString;
+
       while(pos<size)
       {
-        std::cerr << "Digit\n";
+        if(wxIsalnum(string.GetChar(pos)) ||
+          string.GetChar(pos) == wxT('d') ||
+          string.GetChar(pos) == wxT('D') ||
+          string.GetChar(pos) == wxT('c') ||
+          string.GetChar(pos) == wxT('C') ||
+          string.GetChar(pos) == wxT('e') ||
+          string.GetChar(pos) == wxT('E')
+          )
+        {
+          token += string.GetChar(pos);
+          pos++;
+        }
+        else
+        {
+          break;
+        }
+      }
+      retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+    }
+    else
+    if(wxIsdigit(string.GetChar(pos)))
+    {
+      retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+
+      while(pos<size)
+      {
         if(wxIsdigit(string.GetChar(pos)) ||
           string.GetChar(pos) == wxT('d') ||
           string.GetChar(pos) == wxT('D') ||
@@ -1908,64 +1936,58 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         {
           token += string.GetChar(pos);
           pos++;
-          std::cerr << pos << "\n";
         }
         else
         {
           break;
         }
       }
-      retval.Add(token);
-      std::cerr<<token<<"\n";
+      retval.Add(token + wxT("d"));
       token=wxEmptyString;
-      continue;
     }
-
-    // Find a string that starts at the current position.
-    if(string.GetChar(pos)==wxT('"'))
-    {
-      retval.Add(token);
-      
-      // Extract the string constant from our input
-      token=string.Right(string.Length()-pos-1);
-      size_t stringEnd;
-      if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
+    else
+      // Find a string that starts at the current position.
+      if(string.GetChar(pos)==wxT('"'))
       {
-        token = token.Left(stringEnd + 1);
-        pos += stringEnd + 2;
-      }
-      else
-        pos = size + 1;
-      retval.Add(wxT("\"")+token);
-      token = wxEmptyString;
-      continue;
-    }
-
-    // Find a comment that starts at the current position
-    if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
-    {
-      retval.Add(token);
+        retval.Add(token + wxT("d"));
         
-      // Extract the comment from our input
-      token=string.Right(string.Length()-pos-2);
-      size_t commentEnd;
-      if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
-      {
-        token = token.Left(commentEnd + 2);
-        pos += commentEnd + 4;
+        // Extract the string constant from our input
+        token=string.Right(string.Length()-pos-1);
+        size_t stringEnd;
+        if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
+        {
+          token = token.Left(stringEnd + 1);
+          pos += stringEnd + 2;
+        }
+        else
+          pos = size + 1;
+        retval.Add(wxT("\"")+token + wxT("d"));
+        token = wxEmptyString;
       }
       else
-        pos = size + 1;
-      retval.Add(wxT("/*") + token);
-      token = wxEmptyString;
-      continue;
-    }
-    
-    token = token + string.GetChar(pos);
-    pos++;
+        // Find a comment that starts at the current position
+        if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
+        {
+          retval.Add(token + wxT("d"));
+          
+          // Extract the comment from our input
+          token=string.Right(string.Length()-pos-2);
+          size_t commentEnd;
+          if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
+          {
+            token = token.Left(commentEnd + 2);
+            pos += commentEnd + 4;
+          }
+          else
+            pos = size + 1;
+          retval.Add(wxT("/*") + token + wxT("d"));
+          token = wxEmptyString;
+        }
+        else
+          token = token + string.GetChar(pos++);
   }
   // Add the last token we detected to the token list
-  retval.Add(token);
+  retval.Add(token + wxT("d"));
   
   return retval;
 }
@@ -1993,36 +2015,37 @@ void EditorCell::StyleText()
     std::cerr << "\n\nTokens:\n";
     for(size_t i=0;i<tokens.GetCount();i++)
     {
-      std::cerr << "\""<<tokens[i]<<"\"";
-
-      if(tokens[i][0]==wxT('\"'))
+      wxString token = tokens[i];
+      token = token.Left(token.Length()-1);
+      
+      if(token[0]==wxT('\"'))
       {
-        m_styledText.push_back(StyledText(TS_CODE_STRING,tokens[i]));
+        m_styledText.push_back(StyledText(TS_CODE_STRING,token));
         continue;
       }
-      if((tokens[i][0]==wxT('/')&&(tokens[i][0]==wxT('*'))))
+      if((token[0]==wxT('/')&&(token[0]==wxT('*'))))
       {
-        m_styledText.push_back(StyledText(TS_CODE_COMMENT,tokens[i]));
+        m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
         continue;
       }
-      if(isdigit(tokens[i][0]))
+      if(isdigit(token[0]))
       {
-        m_styledText.push_back(StyledText(TS_CODE_NUMBER,tokens[i]));
+        m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if((isalpha(tokens[i][0])) || (tokens[i][0]==wxT('\\')))
+      if((wxIsalpha(token[0])) || (token[0]==wxT('\\')))
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume we will not always make the right decision here.
         //
         // TODO: Refine the decision between variable and functions.
         if(((tokens.GetCount()>i+1)&&(tokens[i+1].Trim()[0])==wxT('(')))
-          m_styledText.push_back(StyledText(TS_CODE_FUNCTION,tokens[i]));
+          m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
         else
-          m_styledText.push_back(StyledText(TS_CODE_VARIABLE,tokens[i]));
+          m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
         continue;
       }
-      m_styledText.push_back(StyledText(tokens[i]));
+      m_styledText.push_back(StyledText(token));
     }
     
   }
