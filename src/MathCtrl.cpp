@@ -1800,7 +1800,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   switch (event.GetKeyCode()) {
 
   case WXK_DELETE:
-    std::cerr<<"Delete!\n";
     if (event.ShiftDown()) {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
       GetParent()->ProcessWindowEvent(ev);
