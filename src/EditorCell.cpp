@@ -1887,15 +1887,44 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxArrayString retval;
   wxString token;
 
-  while(pos<=size)
+  while(pos<size)
   {
+        // Find a number that starts at the current position
+    if(wxIsdigit(string.GetChar(pos)))
+    {
+      retval.Add(token);
+      token=wxEmptyString;
+      while(pos<size)
+      {
+        std::cerr << "Digit\n";
+        if(wxIsdigit(string.GetChar(pos)) ||
+          string.GetChar(pos) == wxT('d') ||
+          string.GetChar(pos) == wxT('D') ||
+          string.GetChar(pos) == wxT('c') ||
+          string.GetChar(pos) == wxT('C') ||
+          string.GetChar(pos) == wxT('e') ||
+          string.GetChar(pos) == wxT('E')
+          )
+        {
+          token += string.GetChar(pos);
+          pos++;
+          std::cerr << pos << "\n";
+        }
+        else
+        {
+          break;
+        }
+      }
+      retval.Add(token);
+      std::cerr<<token<<"\n";
+      token=wxEmptyString;
+      continue;
+    }
 
     // Find a string that starts at the current position.
-    if(string[pos]==wxT('"'))
+    if(string.GetChar(pos)==wxT('"'))
     {
-      // Add the last token we detected to the token list
-      if(token!=wxEmptyString)
-        retval.Add(token);
+      retval.Add(token);
       
       // Extract the string constant from our input
       token=string.Right(string.Length()-pos-1);
@@ -1913,11 +1942,9 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
 
     // Find a comment that starts at the current position
-    if((pos<size) && (string[pos]==wxT('/')) && (string[pos+1]==wxT('*')))
+    if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
     {
-      // Add the last token we detected to the token list
-      if(token!=wxEmptyString)
-        retval.Add(token);
+      retval.Add(token);
         
       // Extract the comment from our input
       token=string.Right(string.Length()-pos-2);
@@ -1933,101 +1960,12 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
       continue;
     }
-   
-    // Find a number that starts at the current position
-    if(isdigit(string[pos]))
-    {
-      // Add the last token we detected to the token list
-      if(token!=wxEmptyString)
-        retval.Add(token);
-      
-      // Extract the number from our input
-      token=string.Right(string.Length()-pos);
-      size_t numberEnd = 0;
-      while(
-        (numberEnd<token.Length()) &&
-        (
-          (isdigit(token[numberEnd]) ||
-           (token[numberEnd]==wxT('e')) ||
-           (token[numberEnd]==wxT('E')) ||
-           (token[numberEnd]==wxT('d')) ||
-           (token[numberEnd]==wxT('D')) ||
-           (token[numberEnd]==wxT('b')) ||
-           (token[numberEnd]==wxT('B'))
-            )
-          )
-        )
-      {
-        numberEnd++;
-        pos++;
-      }
-      while(
-        (numberEnd<token.Length()) &&
-        (
-          (token[numberEnd]==wxT(' ')) || 
-          (token[numberEnd]==wxT('\n'))
-          )
-        )
-      {
-          numberEnd++;
-          pos++;
-        }
-      token = token.Left(numberEnd);
-      retval.Add(token);
-      token = wxEmptyString;
-
-      continue;
-    }
-
     
-    // Find a keyword that starts at the current position
-    if(isalpha(string[pos]))
-    {
-      // Add the last token we detected to the token list
-      retval.Add(token);
-      
-      // Extract the keyword from our input
-      token=string.Right(string.Length()-pos);
-      size_t keywordEnd = 0;
-      while(
-        (keywordEnd<token.Length()) &&
-        (
-          (isalnum(token[keywordEnd])) ||
-          (token[keywordEnd]==wxT('\\'))
-          )
-        )
-      {
-        if(token[keywordEnd]==wxT('\\'))
-        {
-          keywordEnd++;
-          pos++;
-        }
-        keywordEnd++;
-        pos++;
-      }
-      while(
-        (keywordEnd<token.Length()) &&
-        (
-          (token[keywordEnd]==wxT(' ')) || 
-          (token[keywordEnd]==wxT('\n'))
-          )
-        )
-        {
-          keywordEnd++;
-          pos++;
-        }
-
-      token = token.Left(keywordEnd);
-      retval.Add(token);
-      token = wxEmptyString;
-
-      continue;
-    }
-    token += string[pos++];
+    token = token + string.GetChar(pos);
+    pos++;
   }
   // Add the last token we detected to the token list
-  if(token!=wxEmptyString)
-    retval.Add(token);
+  retval.Add(token);
   
   return retval;
 }
@@ -2052,8 +1990,11 @@ void EditorCell::StyleText()
 
     wxArrayString tokens = StringToTokens(textToStyle);
 
+    std::cerr << "\n\nTokens:\n";
     for(size_t i=0;i<tokens.GetCount();i++)
     {
+      std::cerr << "\""<<tokens[i]<<"\"";
+
       if(tokens[i][0]==wxT('\"'))
       {
         m_styledText.push_back(StyledText(TS_CODE_STRING,tokens[i]));
