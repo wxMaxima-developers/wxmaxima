@@ -560,9 +560,15 @@ wxPanel* Config::CreateStylePanel()
       _("Active cell bracket"),
       _("Cursor"),
       _("Selection"),
-      _("Outdated cells")
+      _("Outdated cells"),
+      _("Code highlighting: Variables"),
+      _("Code highlighting: Functions"),
+      _("Code highlighting: Comments"),
+      _("Code highlighting: Numbers"),
+      _("Code highlighting: Strings")
     };
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(200, -1), 23, m_styleFor_choices, wxLB_SINGLE);
+
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 29, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
 #ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
@@ -793,7 +799,7 @@ void Config::ReadStyles(wxString file)
                    &tmp)) m_styleBackground.color.Set(tmp);
 
   // Text background
-  m_styleTextBackground.color = wxT("light blue");
+  m_styleTextBackground.color = wxT("rgb(0,0,0)");
   if (config->Read(wxT("Style/TextBackground/color"),
                    &tmp)) m_styleTextBackground.color.Set(tmp);
 
@@ -919,7 +925,7 @@ void Config::ReadStyles(wxString file)
 
   // Text
   m_styleText.color = wxT("black");
-  m_styleText.bold = false;
+  m_styleText.bold = true;
   m_styleText.italic = false;
   m_styleText.underlined = false;
   m_styleText.font = m_styleDefault.font;
@@ -929,6 +935,41 @@ void Config::ReadStyles(wxString file)
   config->Read(wxT("Style/Text/fontname"),
                &m_styleText.font);
   READ_STYLE(m_styleText, "Style/Text/")
+
+  // Variables in highlighted code
+  m_styleCodeHighlightingVariable.color = wxT("rgb(0,128,0)");
+  m_styleCodeHighlightingVariable.bold = false;
+  m_styleCodeHighlightingVariable.italic = true;
+  m_styleCodeHighlightingVariable.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingVariable, "Style/CodeHighlighting/Variable/")
+
+  // Functions in highlighted code
+  m_styleCodeHighlightingFunction.color = wxT("rgb(128,0,0)");
+  m_styleCodeHighlightingFunction.bold = false;
+  m_styleCodeHighlightingFunction.italic = true;
+  m_styleCodeHighlightingFunction.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingFunction, "Style/CodeHighlighting/Function/")
+
+  // Comments in highlighted code
+  m_styleCodeHighlightingComment.color = wxT("rgb(64,64,64)");
+  m_styleCodeHighlightingComment.bold = false;
+  m_styleCodeHighlightingComment.italic = true;
+  m_styleCodeHighlightingComment.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingComment, "Style/CodeHighlighting/Comment/")
+
+  // Numbers in highlighted code
+  m_styleCodeHighlightingNumber.color = wxT("rgb(128,64,0)");
+  m_styleCodeHighlightingNumber.bold = false;
+  m_styleCodeHighlightingNumber.italic = true;
+  m_styleCodeHighlightingNumber.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/Number/")
+
+  // Strings in highlighted code
+  m_styleCodeHighlightingString.color = wxT("rgb(0,0,128)");
+  m_styleCodeHighlightingString.bold = false;
+  m_styleCodeHighlightingString.italic = true;
+  m_styleCodeHighlightingString.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingString, "Style/CodeHighlighting/String/")
 
   // Subsubsection
   m_styleSubsubsection.color = wxT("black");
@@ -1067,6 +1108,13 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
   WRITE_STYLE(m_styleText, "Style/Text/")
 
+    // Syntax highlighting
+  WRITE_STYLE(m_styleCodeHighlightingVariable, "Style/CodeHighlighting/Variable/")
+  WRITE_STYLE(m_styleCodeHighlightingFunction, "Style/CodeHighlighting/Function/")
+  WRITE_STYLE(m_styleCodeHighlightingComment, "Style/CodeHighlighting/Comment/")
+  WRITE_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/Number/")
+  WRITE_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/String/")
+
   // Subsubsection
   config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
   config->Write(wxT("Style/Subsubsection/fontsize"), m_styleSubsubsection.fontSize);
@@ -1134,12 +1182,20 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   }
   else
   {
-    m_boldCB->Enable(true);
-    m_italicCB->Enable(true);
-    m_underlinedCB->Enable(true);
-    m_boldCB->SetValue(tmp->bold);
-    m_italicCB->SetValue(tmp->italic);
-    m_underlinedCB->SetValue(tmp->underlined);
+    if(st>23)
+    {
+      m_boldCB->Enable(false);
+      m_italicCB->Enable(false);
+      m_underlinedCB->Enable(false);
+    } else
+    {
+      m_boldCB->Enable(true);
+      m_italicCB->Enable(true);
+      m_underlinedCB->Enable(true);
+      m_boldCB->SetValue(tmp->bold);
+      m_italicCB->SetValue(tmp->italic);
+      m_underlinedCB->SetValue(tmp->underlined);
+    }
   }
   UpdateExample();
 }
@@ -1235,6 +1291,21 @@ style* Config::GetStylePointer()
     break;
   case 23:
     tmp = &m_styleOutdated;
+    break;
+  case 24:
+    tmp = &m_styleCodeHighlightingVariable;
+    break;
+  case 25:
+    tmp = &m_styleCodeHighlightingFunction;
+    break;
+  case 26:
+    tmp = &m_styleCodeHighlightingComment;
+    break;
+  case 27:
+    tmp = &m_styleCodeHighlightingNumber;
+    break;
+  case 28:
+    tmp = &m_styleCodeHighlightingString;
     break;
   }
   return tmp;

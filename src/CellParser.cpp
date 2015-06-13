@@ -143,6 +143,42 @@ void CellParser::ReadStyle()
                &m_styles[TS_TEXT].font);
   READ_STYLES(TS_TEXT, "Style/Text/")
 
+  // Variables in highlighted code
+  m_styles[TS_CODE_VARIABLE].color = wxT("rgb(0,128,0)");
+  m_styles[TS_CODE_VARIABLE].bold = false;
+  m_styles[TS_CODE_VARIABLE].italic = true;
+  m_styles[TS_CODE_VARIABLE].underlined = false;
+  READ_STYLES(TS_CODE_VARIABLE, "Style/CodeHighlighting/Variable/")
+
+  // Keywords in highlighted code
+  m_styles[TS_CODE_FUNCTION].color = wxT("rgb(128,0,0)");
+  m_styles[TS_CODE_FUNCTION].bold = false;
+  m_styles[TS_CODE_FUNCTION].italic = true;
+  m_styles[TS_CODE_FUNCTION].underlined = false;
+  READ_STYLES(TS_CODE_FUNCTION, "Style/CodeHighlighting/Function/")
+
+  // Comments in highlighted code
+  m_styles[TS_CODE_COMMENT].color = wxT("rgb(64,64,64)");
+  m_styles[TS_CODE_COMMENT].bold = false;
+  m_styles[TS_CODE_COMMENT].italic = true;
+  m_styles[TS_CODE_COMMENT].underlined = false;
+  READ_STYLES(TS_CODE_COMMENT, "Style/CodeHighlighting/Comment/")
+
+  // Numbers in highlighted code
+  m_styles[TS_CODE_NUMBER].color = wxT("rgb(128,64,0)");
+  m_styles[TS_CODE_NUMBER].bold = false;
+  m_styles[TS_CODE_NUMBER].italic = true;
+  m_styles[TS_CODE_NUMBER].underlined = false;
+  READ_STYLES(TS_CODE_NUMBER, "Style/CodeHighlighting/Number/")
+
+  // Strings in highlighted code
+  m_styles[TS_CODE_STRING].color = wxT("rgb(0,0,128)");
+  m_styles[TS_CODE_STRING].bold = false;
+  m_styles[TS_CODE_STRING].italic = true;
+  m_styles[TS_CODE_STRING].underlined = false;
+  READ_STYLES(TS_CODE_STRING, "Style/CodeHighlighting/String/")
+
+    
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
   m_styles[TS_SUBSUBSECTION].bold = true;

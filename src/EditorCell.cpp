@@ -310,7 +310,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       if(TextSnippet.StyleSet())
       {
           wxDC& dc = parser.GetDC();
-          dc.SetTextForeground(TextSnippet.GetColor());
+          dc.SetTextForeground(parser.GetColor(TextSnippet.GetStyle()));
       }
       else
       {
@@ -2020,7 +2020,36 @@ void EditorCell::StyleText()
     wxArrayString tokens = StringToTokens(textToStyle);
 
     for(size_t i=0;i<tokens.GetCount();i++)
-      m_styledText.push_back(StyledText(tokens[i]));
+    {
+      if(tokens[i][0]==wxT('\"'))
+        {
+          m_styledText.push_back(StyledText(TS_CODE_STRING,tokens[i]));
+          continue;
+        }
+        if((tokens[i][0]==wxT('/')&&(tokens[i][0]==wxT('*'))))
+        {
+          m_styledText.push_back(StyledText(TS_CODE_COMMENT,tokens[i]));
+          continue;
+        }
+        if(isdigit(tokens[i][0]))
+        {
+          m_styledText.push_back(StyledText(TS_CODE_NUMBER,tokens[i]));
+          continue;
+        }
+        if(isalpha(tokens[i][0]))
+        {
+          // Sometimes we can differ between variables and functions by the context.
+          // But I assume we will not always make the right decision here.
+          //
+          // TODO: Refine the decision between variable and functions.
+          if(((tokens.GetCount()<i+1)&&(tokens[i+1].Trim()[0])==wxT('(')))
+            m_styledText.push_back(StyledText(TS_CODE_FUNCTION,tokens[i]));
+          else
+            m_styledText.push_back(StyledText(TS_CODE_VARIABLE,tokens[i]));
+          continue;
+        }
+        m_styledText.push_back(StyledText(tokens[i]));
+    }
 
   }
   else

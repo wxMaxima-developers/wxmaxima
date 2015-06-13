@@ -227,17 +227,17 @@ private:
   {
   private:
     //! The color of this text portion
-    wxColor  m_color;
+    TextStyle  m_style;
     //! The text of this text portion
     wxString m_text;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText;
   public:
     //! Defines a piece of styled text
-    StyledText(wxColor color,wxString text)
+    StyledText(TextStyle style,wxString text)
       {
         m_text = text;
-        m_color = color;
+        m_style = style;
         m_styleThisText = true;
       }
 
@@ -253,9 +253,9 @@ private:
         return m_text;
       }
     //! If StyleSet() is true this function returns the color of this text portion
-    wxColour GetColor()
+    TextStyle GetStyle()
       {
-        return m_color;
+        return m_style;
       }
     // Has a individual text style been set for this text portion?
     bool StyleSet()

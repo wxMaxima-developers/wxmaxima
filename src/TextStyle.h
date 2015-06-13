@@ -35,7 +35,7 @@ struct style
 };
 
 //! All text styles known to wxMaxima
-enum
+enum TextStyle
 {
   TS_DEFAULT = 0,
   TS_VARIABLE,
@@ -60,9 +60,14 @@ enum
   TS_ACTIVE_CELL_BRACKET,
   TS_CURSOR,
   TS_SELECTION,
-  TS_OUTDATED
+  TS_OUTDATED,
+  TS_CODE_COMMENT,
+  TS_CODE_VARIABLE,
+  TS_CODE_FUNCTION,
+  TS_CODE_NUMBER,
+  TS_CODE_STRING
 };
 
-#define STYLE_NUM 24
+#define STYLE_NUM 29
 
 #endif // TEXTSTYLE_H
