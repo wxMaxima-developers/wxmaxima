@@ -214,6 +214,11 @@ public:
       SetSelection(m_lastSelectionStart,m_text.Length());
     }
 private:
+  /*! Divide a string into tokens
+
+    Used when styling text.
+   */
+  wxArrayString StringToTokens(wxString string);
 
   /*! A piece of styled text for syntax highlighting
 
