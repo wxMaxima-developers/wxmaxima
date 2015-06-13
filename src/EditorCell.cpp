@@ -1932,8 +1932,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
       continue;
     }
-
-    
+   
     // Find a number that starts at the current position
     if(isdigit(string[pos]))
     {
@@ -1967,6 +1966,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
       continue;
     }
+    token += string[pos++];
   }
   // Add the last token we detected to the token list
   if(token!=wxEmptyString)
