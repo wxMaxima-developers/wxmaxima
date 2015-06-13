@@ -1961,6 +1961,17 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         numberEnd++;
         pos++;
       }
+      while(
+        (numberEnd<token.Length()) &&
+        (
+          (token[numberEnd]==wxT(' ')) || 
+          (token[numberEnd]==wxT('\n'))
+          )
+        )
+      {
+          numberEnd++;
+          pos++;
+        }
       token = token.Left(numberEnd);
       retval.Add(token);
       token = wxEmptyString;
@@ -1996,7 +2007,10 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       }
       while(
         (keywordEnd<token.Length()) &&
-        (token[keywordEnd]==wxT(' '))
+        (
+          (token[keywordEnd]==wxT(' ')) || 
+          (token[keywordEnd]==wxT('\n'))
+          )
         )
         {
           keywordEnd++;
