@@ -2048,10 +2048,7 @@ void EditorCell::StyleText()
         if(((tokens.GetCount()>i+1)&&(tokens[i+1].Trim()[0])==wxT('(')))
           m_styledText.push_back(StyledText(TS_CODE_FUNCTION,tokens[i]));
         else
-        {
-          std::cerr << "Debug:"<<wxString((tokens[i+1].Trim()[0]))<<"\n";
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,tokens[i]));
-        }
         continue;
       }
       m_styledText.push_back(StyledText(tokens[i]));
