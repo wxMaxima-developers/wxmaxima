@@ -2033,7 +2033,7 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if((wxIsalpha(token[0])) || (token[0]==wxT('\\')))
+      if((wxIsalpha(token[0])) || (token[0]==wxT('\\')) || (token[0]==wxT('_')))
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume we will not always make the right decision here.
