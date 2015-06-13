@@ -744,8 +744,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_isDirty = true;
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
-      SetValue(m_text.SubString(0, start - 1) +
-               m_text.SubString(end, m_text.Length()));
+      m_text = m_text.SubString(0, start - 1) +
+               m_text.SubString(end, m_text.Length());
+      StyleText();
       m_positionOfCaret = start;
       m_selectionEnd = m_selectionStart = -1;
       break;
@@ -770,8 +771,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
                (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
             right++;
-          SetValue(m_text.SubString(0, m_positionOfCaret - 2) +
-                   m_text.SubString(right, m_text.Length()));
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+                   m_text.SubString(right, m_text.Length());
+          StyleText();
           m_positionOfCaret--;
         }
         
