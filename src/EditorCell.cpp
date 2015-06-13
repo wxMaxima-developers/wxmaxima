@@ -1889,6 +1889,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
   while(pos<=size)
   {
+
     // Find a string that starts at the current position.
     if(string[pos]==wxT('"'))
     {
@@ -1961,6 +1962,48 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         pos++;
       }
       token = token.Left(numberEnd);
+      retval.Add(token);
+      token = wxEmptyString;
+
+      continue;
+    }
+
+    
+    // Find a keyword that starts at the current position
+    if(isalpha(string[pos]))
+    {
+      // Add the last token we detected to the token list
+      retval.Add(token);
+      
+      // Extract the keyword from our input
+      token=string.Right(string.Length()-pos);
+      size_t keywordEnd = 0;
+      while(
+        (keywordEnd<token.Length()) &&
+        (
+          (isalnum(token[keywordEnd])) ||
+          (token[keywordEnd]==wxT('\\'))
+          )
+        )
+      {
+        if(token[keywordEnd]==wxT('\\'))
+        {
+          keywordEnd++;
+          pos++;
+        }
+        keywordEnd++;
+        pos++;
+      }
+      while(
+        (keywordEnd<token.Length()) &&
+        (token[keywordEnd]==wxT(' '))
+        )
+        {
+          keywordEnd++;
+          pos++;
+        }
+
+      token = token.Left(keywordEnd);
       retval.Add(token);
       token = wxEmptyString;
 
