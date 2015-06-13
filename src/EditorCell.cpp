@@ -1890,7 +1890,11 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   while(pos<size)
   {
     // Find a number that starts at the current position
-    if(wxIsalpha(string.GetChar(pos)))
+    if(
+      (wxIsalpha(string.GetChar(pos))) ||
+      (string.GetChar(pos) == wxT('\\')) ||
+      (string.GetChar(pos) == wxT('_'))
+      )
     {
       retval.Add(token + wxT("d"));
       token=wxEmptyString;
@@ -1898,12 +1902,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       while(pos<size)
       {
         if(wxIsalnum(string.GetChar(pos)) ||
-          string.GetChar(pos) == wxT('d') ||
-          string.GetChar(pos) == wxT('D') ||
-          string.GetChar(pos) == wxT('c') ||
-          string.GetChar(pos) == wxT('C') ||
-          string.GetChar(pos) == wxT('e') ||
-          string.GetChar(pos) == wxT('E')
+           (string.GetChar(pos) == wxT('\\')) ||
+           (string.GetChar(pos) == wxT('_'))
           )
         {
           token += string.GetChar(pos);
@@ -1926,12 +1926,12 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       while(pos<size)
       {
         if(wxIsdigit(string.GetChar(pos)) ||
-          string.GetChar(pos) == wxT('d') ||
-          string.GetChar(pos) == wxT('D') ||
-          string.GetChar(pos) == wxT('c') ||
-          string.GetChar(pos) == wxT('C') ||
-          string.GetChar(pos) == wxT('e') ||
-          string.GetChar(pos) == wxT('E')
+           (string.GetChar(pos) == wxT('d')) ||
+           (string.GetChar(pos) == wxT('D')) ||
+           (string.GetChar(pos) == wxT('c')) ||
+           (string.GetChar(pos) == wxT('C')) ||
+           (string.GetChar(pos) == wxT('e')) ||
+           (string.GetChar(pos) == wxT('E'))
           )
         {
           token += string.GetChar(pos);
