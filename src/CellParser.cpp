@@ -126,7 +126,7 @@ void CellParser::ReadStyle()
 
   // Normal text
   m_styles[TS_DEFAULT].color = wxT("black");
-  m_styles[TS_DEFAULT].bold = false;
+  m_styles[TS_DEFAULT].bold = true;
   m_styles[TS_DEFAULT].italic = true;
   m_styles[TS_DEFAULT].underlined = false;
   READ_STYLES(TS_DEFAULT, "Style/NormalText/")
@@ -267,7 +267,7 @@ void CellParser::ReadStyle()
                    &tmp)) m_styles[TS_HIGHLIGHT].color.Set(tmp);
 
   // Text background
-  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("light blue"));
+  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("rgb(0,0,0)"));
   if (config->Read(wxT("Style/TextBackground/color"),
                    &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
 
