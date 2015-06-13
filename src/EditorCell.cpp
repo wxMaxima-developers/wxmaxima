@@ -339,7 +339,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         // Let's check if there is a newline at the end of this line of the token.
         if(lines.HasMoreTokens())
         {
-          
           // Set the point to the beginning of the next line.
           TextCurrentPoint.x = TextStartingpoint.x;
           TextCurrentPoint.y += m_charHeight;
@@ -823,10 +822,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           SaveValue();
           long start = MIN(m_selectionEnd, m_selectionStart);
           long end = MAX(m_selectionEnd, m_selectionStart);
-          SetValue(m_text.SubString(0, start - 1) +
-                   m_text.SubString(end, m_text.Length()));
+          m_text = m_text.SubString(0, start - 1) +
+                   m_text.SubString(end, m_text.Length());
           m_positionOfCaret = start;
           m_selectionEnd = m_selectionStart = -1;
+          StyleText();
           break;
         }
 
@@ -838,10 +838,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           ins += wxT(" ");
         } while (col%4 != 0);
 
-        SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
                  ins +
-                 m_text.SubString(m_positionOfCaret, m_text.Length()));
+                 m_text.SubString(m_positionOfCaret, m_text.Length());
         m_positionOfCaret += ins.Length();
+        StyleText();
       }
     }
     break;
@@ -1932,6 +1933,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       continue;
     }
 
+    
     // Find a number that starts at the current position
     if(isdigit(string[pos]))
     {
@@ -1965,34 +1967,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
       continue;
     }
-    
-    // Find a keyword that starts at the current position
-    if((isalpha(string[pos]))||(string[pos]==wxT('\\')))
-    {
-      // Add the last token we detected to the token list
-      if(token!=wxEmptyString)
-        retval.Add(token);
-      
-      // Extract the keyword from our input
-      token=string.Right(string.Length()-pos);
-      size_t keywordEnd = 0;
-      while(
-        (keywordEnd<token.Length()) &&
-        (
-          (isalnum(token[keywordEnd]) ||
-           (token[keywordEnd]==wxT('\\'))
-            )
-          )
-        )
-      {
-        keywordEnd++;
-        pos++;
-      }
-      token = token.Left(keywordEnd);
-      retval.Add(token);
-      token = wxEmptyString;
-    }
-    token += string[pos++];
   }
   // Add the last token we detected to the token list
   if(token!=wxEmptyString)
@@ -2023,7 +1997,6 @@ void EditorCell::StyleText()
 
     for(size_t i=0;i<tokens.GetCount();i++)
     {
-      wxASSERT_MSG(tokens[i].Length()>0,wxT("Bug: Styled text element of zero size."));
       if(tokens[i][0]==wxT('\"'))
       {
         m_styledText.push_back(StyledText(TS_CODE_STRING,tokens[i]));
