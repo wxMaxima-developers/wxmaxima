@@ -70,7 +70,7 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   input.Replace(wxT("\""), wxT("&quot;"));  
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
-  input.Replace(wxT("\n"), wxT("<BR>"));
+  input.Replace(wxT("\n"), wxT("<BR>\n"));
   std::cerr << input;
   return input;
 }
