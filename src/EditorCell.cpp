@@ -64,6 +64,44 @@ EditorCell::~EditorCell()
     delete m_next;
 }
 
+wxString EditorCell::EscapeHTMLChars(wxString input)
+{
+  input.Replace(wxT("&"), wxT("&amp;"));  
+  input.Replace(wxT("\""), wxT("&quot;"));  
+  input.Replace(wxT("<"), wxT("&lt;"));
+  input.Replace(wxT(">"), wxT("&gt;"));
+  input.Replace(wxT("\n"), wxT("<BR>"));
+  std::cerr << input;
+  return input;
+}
+
+wxString EditorCell::PrependNBSP(wxString input)
+{
+  bool     firstSpace = true;;
+  wxString retval;
+  
+  for(size_t i=0;i<input.Length();i++)
+  {
+    wxChar ch = input.GetChar(i);
+    if(ch == wxT('\n'))
+      firstSpace = true;
+
+    if(ch == wxT(' '))
+    {
+      if(firstSpace)
+      {
+        firstSpace = false;
+        retval += ch;
+      }
+      else
+        retval += wxT("&nbsp;");
+    }
+    else 
+      retval += ch;
+  }
+  return retval;
+}
+
 MathCell *EditorCell::Copy()
 {
   EditorCell *tmp = new EditorCell();
@@ -193,6 +231,56 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     m_center = m_charHeight / 2 + SCALE_PX(2, scale);
   }
   ResetData();
+}
+
+wxString EditorCell::ToHTML()
+{
+  EditorCell *tmp = this;
+  wxString retval;
+
+  while(tmp != NULL)
+  {
+    std::list<StyledText> styledText = tmp->m_styledText;
+    while(!styledText.empty())
+    {
+      // Grab a portion of text from the list.
+      StyledText TextSnippet=styledText.front();
+      styledText.pop_front();
+
+      wxString text =  PrependNBSP(EscapeHTMLChars(TextSnippet.GetText()));
+/*      wxString tmp = EscapeHTMLChars(TextSnippet.GetText());
+        wxString text = tmp);*/
+      
+      if(TextSnippet.StyleSet())
+      {
+        switch(TextSnippet.GetStyle())
+        {
+        case TS_CODE_COMMENT:
+          retval+=wxT("<span class=\"code_comment\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_VARIABLE:
+          retval+=wxT("<span class=\"code_variable\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_FUNCTION:
+          retval+=wxT("<span class=\"code_function\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_NUMBER:
+          retval+=wxT("<span class=\"code_number\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_STRING:
+          retval+=wxT("<span class=\"code_string\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_OPERATOR:
+        default:
+          retval+=wxT("<span class=\"code_operator\">")+text+wxT("</span>");
+          break;
+        }
+      } else
+        retval+=text;
+    }
+    tmp = dynamic_cast<EditorCell*>(tmp->m_next);
+  }
+  return retval; 
 }
 
 /* Draws the editor cell including selection and cursor

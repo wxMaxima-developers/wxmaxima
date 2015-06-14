@@ -2696,49 +2696,6 @@ void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
   }
 }
 
-wxString MathCtrl::EscapeHTMLChars(wxString input)
-{
-  input.Replace(wxT("&"), wxT("&amp;"));  
-  input.Replace(wxT("\""), wxT("&quot;"));  
-  input.Replace(wxT("<"), wxT("&lt;"));
-  input.Replace(wxT(">"), wxT("&gt;"));
-  input.Replace(wxT("\n"), wxT("<BR>"));
-
-  return input;
-}
-
-wxString MathCtrl::PrependNBSP(wxString input)
-{
-  wxStringTokenizer stringLines(input,"\n");
-  wxString line;
-  wxString output=wxEmptyString;
-  bool     multipleSpace;
-  
-  while(stringLines.HasMoreTokens())
-  {
-    wxString line=stringLines.GetNextToken();
-      
-    for (unsigned int i = 0; i < input.Length(); i++) {
-
-      multipleSpace = false;
-
-      while (i < input.Length() && input.GetChar(i) == ' ') {
-        if(multipleSpace)
-          output += wxT("&nbsp;");
-        else
-        {
-          multipleSpace = true;
-          output += wxT(" ");
-        }
-        i++;
-      }
-      output += input.GetChar(i);
-    }
-    if(stringLines.HasMoreTokens())output += wxT("\n");
-  }
-  return output;
-}
-
 //Simple iterator over a Maxima input string, skipping comments and strings
 struct SimpleMathParserIterator{
   const wxString &input; //reference to input string (must be a reference, so it can be modified)
@@ -2879,6 +2836,14 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString colorPrompt(wxT("red"));
   wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
     colorSubSec(wxT("black")),colorSubsubSec(wxT("black"));
+  wxString colorCodeVariable = wxT("rgb(0,128,0)");
+  wxString colorCodeFunction = wxT("rgb(128,0,0)");
+  wxString colorCodeComment  = wxT("rgb(64,64,64)");
+  wxString colorCodeNumber   = wxT("rgb(128,64,0)");
+  wxString colorCodeString   = wxT("rgb(0,0,128)");
+  wxString colorCodeOperator = wxT("rgb(0,0,128)");
+
+    
   wxString colorTextBg(wxT("white"));
   wxString colorBg(wxT("white"));
 
@@ -2926,6 +2891,13 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Title/color"), &colorTitle);
   config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
   config->Read(wxT("Style/Background/color"), &colorBg);
+
+  config->Read(wxT("Style/CodeHighlighting/Variable/color"),&colorCodeVariable);
+  config->Read(wxT("Style/CodeHighlighting/Function/color"),&colorCodeFunction);
+  config->Read(wxT("Style/CodeHighlighting/Comment/color"),&colorCodeComment );
+  config->Read(wxT("Style/CodeHighlighting/Number/color"),&colorCodeNumber  );
+  config->Read(wxT("Style/CodeHighlighting/String/color"),&colorCodeString  );
+  config->Read(wxT("Style/CodeHighlighting/Operator/color"),&colorCodeOperator);
 
   // read bold and italic
   config->Read(wxT("Style/Input/bold"), &boldInput);
@@ -2985,6 +2957,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
                   fontText +
                   wxT(";"));
   }
+
   if (colorText.Length()) {
     wxColour color(colorText);
     AddLineToFile(output, wxT("  color: ") +
@@ -3000,6 +2973,85 @@ bool MathCtrl::ExportToHTML(wxString file) {
   AddLineToFile(output, wxT("  padding: 2mm;"));
   AddLineToFile(output, wxT("}"));
 
+  // Colors for code highlighting
+    if(colorCodeVariable.Length())
+  {
+    wxColour color(colorCodeVariable);
+    AddLineToFile(output, wxT(".code_variable {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+
+  if(colorCodeFunction.Length())
+  {
+    wxColour color(colorCodeFunction);
+    AddLineToFile(output, wxT(".code_function {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+  
+  if(colorCodeComment.Length())
+  {
+    wxColour color(colorCodeComment);
+    AddLineToFile(output, wxT(".code_comment {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+
+  if(colorCodeNumber.Length())
+  {
+    wxColour color(colorCodeNumber);
+    AddLineToFile(output, wxT(".code_number {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+
+  if(colorCodeString.Length())
+  {
+    wxColour color(colorCodeString);
+    AddLineToFile(output, wxT(".code_string {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+
+  if(colorCodeOperator.Length())
+  {
+    wxColour color(colorCodeOperator);
+    AddLineToFile(output, wxT(".code_string {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+  
   // SMOOTHER IMAGE SCALING FOR THE IE
   AddLineToFile(output, wxT("img {"));
   AddLineToFile(output, wxT("  -ms-interpolation-mode: bicubic;"));
@@ -3151,10 +3203,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, prompt->ToString());
         AddLineToFile(output, wxT("  </SPAN></TD>"));
         
-        MathCell *input = tmp->GetInput();
+        EditorCell *input = tmp->GetInput();
         if (input != NULL) {
           AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
-          AddLineToFile(output, PrependNBSP(EscapeHTMLChars(input->ToString())));
+          AddLineToFile(output, input->ToHTML());
           AddLineToFile(output, wxT("  </SPAN></TD>"));
         }
         AddLineToFile(output, wxT("</TR></TABLE>"));
@@ -3184,7 +3236,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           {
             alttext = tmp->GetOutput()->ListToString();
 //            alttext.Replace(wxT("\n"),wxT(" "));
-            alttext = EscapeHTMLChars(alttext);
+            alttext = EditorCell::EscapeHTMLChars(alttext);
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
           wxString line = wxT("  <img src=\"") +
@@ -3205,31 +3257,31 @@ bool MathCtrl::ExportToHTML(wxString file) {
       case GC_TYPE_TEXT:
         AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-        AddLineToFile(output, PrependNBSP(MarkDown.MarkDown(EscapeHTMLChars(tmp->GetEditable()->ToString()))));
+        AddLineToFile(output, EditorCell::PrependNBSP(MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))));
         AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_SECTION:
         AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_SUBSECTION:
         AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_SUBSUBSECTION:
         AddLineToFile(output, wxT("\n\n<!-- Subsubsection cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"subsubsect\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
+        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_TITLE:
         AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
         AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetEditable()->ToString())));
+        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("</P>"));
         break;
       case GC_TYPE_PAGEBREAK:
@@ -3243,7 +3295,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
         MathCell *out = tmp->GetLabel();
         AddLineToFile(output, wxT("<P CLASS=\"image\">"));
-        AddLineToFile(output, PrependNBSP(EscapeHTMLChars(tmp->GetPrompt()->ToString() +
+        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                                           wxT(" ") +
                                                           tmp->GetEditable()->ToString())));
         AddLineToFile(output, wxT("<BR>"));
@@ -3606,7 +3658,6 @@ wxString ConvertToUnicode(wxString str)
 */
 bool MathCtrl::ExportToWXMX(wxString file)
 {
-  std::cerr << "Export";
   // delete temp file if it already exists
   wxString backupfile=file+wxT("~");
   if(wxFileExists(backupfile))

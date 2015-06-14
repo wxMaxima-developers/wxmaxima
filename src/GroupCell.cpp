@@ -23,8 +23,6 @@
 
 #include <wx/config.h>
 #include <wx/clipbrd.h>
-#include <wx/tokenzr.h>
-
 #include "MarkDown.h"
 #include "GroupCell.h"
 #include "SlideShowCell.h"

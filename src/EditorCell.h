@@ -27,6 +27,8 @@
 
 #include <vector>
 #include <list>
+#include <wx/tokenzr.h>
+
 /*! \file
 
   This file contains the definition of the class EditorCell
@@ -45,6 +47,12 @@ public:
   EditorCell(wxString text = wxEmptyString);
   //! The destructor
   ~EditorCell();
+
+  //! Escape all chars that cannot be used in HTML otherwise
+  static wxString EscapeHTMLChars(wxString input);
+  //! Convert all but the first of a row of multiple spaces to non-breakable
+  static wxString PrependNBSP(wxString input);
+
   void Destroy();
   MathCell* Copy();
   /*! Recalculate the widths of the current cell.
@@ -60,6 +68,8 @@ public:
   wxString ToTeX();
   //! Convert the current cell to XML code for inclusion in a .wxmx file.
   wxString ToXML();
+  //! Convert the current cell to HTML code.
+  wxString ToHTML();
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
 
