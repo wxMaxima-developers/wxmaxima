@@ -565,7 +565,8 @@ wxPanel* Config::CreateStylePanel()
       _("Code highlighting: Functions"),
       _("Code highlighting: Comments"),
       _("Code highlighting: Numbers"),
-      _("Code highlighting: Strings")
+      _("Code highlighting: Strings"),
+      _("Code highlighting: Operators")
     };
 
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 29, m_styleFor_choices, wxLB_SINGLE);
@@ -902,6 +903,13 @@ void Config::ReadStyles(wxString file)
   m_styleString.underlined = false;
   READ_STYLE(m_styleString, "Style/String/")
 
+  // Operator
+  m_styleString.color = m_styleDefault.color;
+  m_styleString.bold = false;
+  m_styleString.italic = true;
+  m_styleString.underlined = false;
+  READ_STYLE(m_styleString, "Style/String/Operator")
+
   // Greek
   m_styleGreek.color = m_styleDefault.color;
   m_styleGreek.bold = false;
@@ -970,6 +978,13 @@ void Config::ReadStyles(wxString file)
   m_styleCodeHighlightingString.italic = true;
   m_styleCodeHighlightingString.underlined = false;
   READ_STYLE(m_styleCodeHighlightingString, "Style/CodeHighlighting/String/")
+
+  // Operators in highlighted code
+  m_styleCodeHighlightingOperator.color = wxT("rgb(0,0,128)");
+  m_styleCodeHighlightingOperator.bold = false;
+  m_styleCodeHighlightingOperator.italic = true;
+  m_styleCodeHighlightingOperator.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
 
   // Subsubsection
   m_styleSubsubsection.color = wxT("black");
@@ -1108,12 +1123,13 @@ void Config::WriteStyles(wxString file)
   config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
   WRITE_STYLE(m_styleText, "Style/Text/")
 
-    // Syntax highlighting
+  // Syntax highlighting
   WRITE_STYLE(m_styleCodeHighlightingVariable, "Style/CodeHighlighting/Variable/")
   WRITE_STYLE(m_styleCodeHighlightingFunction, "Style/CodeHighlighting/Function/")
-  WRITE_STYLE(m_styleCodeHighlightingComment, "Style/CodeHighlighting/Comment/")
-  WRITE_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/Number/")
-  WRITE_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/String/")
+  WRITE_STYLE(m_styleCodeHighlightingComment,  "Style/CodeHighlighting/Comment/")
+  WRITE_STYLE(m_styleCodeHighlightingNumber,   "Style/CodeHighlighting/Number/")
+  WRITE_STYLE(m_styleCodeHighlightingString,   "Style/CodeHighlighting/String/")
+  WRITE_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
 
   // Subsubsection
   config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
@@ -1220,7 +1236,7 @@ void Config::OnChangeWarning(wxCommandEvent &event)
 
 style* Config::GetStylePointer()
 {
-  style* tmp = &m_styleDefault;
+  style* tmp;
   switch (m_styleFor->GetSelection())
   {
   case 1:
@@ -1306,7 +1322,11 @@ style* Config::GetStylePointer()
     break;
   case 28:
     tmp = &m_styleCodeHighlightingString;
+  case 29:
+    tmp = &m_styleCodeHighlightingOperator;
     break;
+  default:
+    tmp = &m_styleDefault;
   }
   return tmp;
 }

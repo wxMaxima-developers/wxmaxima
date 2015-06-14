@@ -178,6 +178,12 @@ void CellParser::ReadStyle()
   m_styles[TS_CODE_STRING].underlined = false;
   READ_STYLES(TS_CODE_STRING, "Style/CodeHighlighting/String/")
 
+  // Operators in highlighted code
+  m_styles[TS_CODE_STRING].color = wxT("rgb(0,0,0)");
+  m_styles[TS_CODE_STRING].bold = false;
+  m_styles[TS_CODE_STRING].italic = true;
+  m_styles[TS_CODE_STRING].underlined = false;
+  READ_STYLES(TS_CODE_STRING, "Style/CodeHighlighting/Operator/")
     
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
