@@ -2378,6 +2378,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     if (configW->ShowModal() == wxID_OK)
     {
       configW->WriteSettings();
+      // Write the changes in the configuration to the disk.
+      config->Flush();
+      // Refresh the display as the settings that affect it might have changed.
       m_console->RecalculateForce();
       m_console->Refresh();
     }
