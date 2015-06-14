@@ -1739,8 +1739,9 @@ void EditorCell::InsertText(wxString text)
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd);
     m_positionOfCaret = start;
-    SetValue(m_text.SubString(0, start - 1) +
-             m_text.SubString(end, m_text.Length()));
+    m_text = m_text.SubString(0, start - 1) +
+             m_text.SubString(end, m_text.Length());
+    StyleText();
   }
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
