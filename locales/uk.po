@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-13 11:18+0200\n"
+"POT-Creation-Date: 2015-06-14 08:46+0200\n"
 "PO-Revision-Date: 2015-04-07 18:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -442,7 +442,7 @@ msgstr "Додаткові параметри команди Maxima (напри�
 msgid "Additional parameters:"
 msgstr "Додаткові параметри:"
 
-#: ../src/Config.cpp:695
+#: ../src/Config.cpp:696
 msgid "All|*"
 msgstr "Всі|*"
 
@@ -500,7 +500,7 @@ msgstr "BC2"
 msgid "Barsplot..."
 msgstr "Стовпчикова діаграма…"
 
-#: ../src/Config.cpp:690
+#: ../src/Config.cpp:691
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Пакетні файли (*.bat)|*.bat|Всі|*"
 
@@ -512,7 +512,7 @@ msgstr "Пакетний файл"
 msgid "Bitmap scale for export"
 msgstr ""
 
-#: ../src/Config.cpp:578
+#: ../src/Config.cpp:579
 msgid "Bold"
 msgstr "Жирний"
 
@@ -532,20 +532,20 @@ msgstr "Вада: надіслано запит щодо автодоповне�
 msgid "Bug: Cell left but not entered."
 msgstr "Вада: полишено комірку без введення даних."
 
-#: ../src/MathCtrl.cpp:4148
+#: ../src/MathCtrl.cpp:4147
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:4219
+#: ../src/MathCtrl.cpp:4218
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:4188
+#: ../src/MathCtrl.cpp:4187
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -583,13 +583,13 @@ msgstr ""
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Вада: спроба запису зміни вмісту комірки без визначення комірки."
 
-#: ../src/MathCtrl.cpp:4189
+#: ../src/MathCtrl.cpp:4188
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: ../src/MathCtrl.cpp:4153 ../src/MathCtrl.cpp:4224 ../src/MathCtrl.cpp:4258
+#: ../src/MathCtrl.cpp:4152 ../src/MathCtrl.cpp:4223 ../src/MathCtrl.cpp:4257
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
@@ -729,7 +729,7 @@ msgstr "китайська (спрощена)"
 msgid "Chinese traditional"
 msgstr "китайська (традиційний запис)"
 
-#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:572
+#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:573
 msgid "Choose font"
 msgstr "Вибрати шрифт"
 
@@ -759,6 +759,10 @@ msgstr ""
 
 #: ../src/Config.cpp:567
 msgid "Code highlighting: Numbers"
+msgstr ""
+
+#: ../src/Config.cpp:569
+msgid "Code highlighting: Operators"
 msgstr ""
 
 #: ../src/Config.cpp:568
@@ -839,11 +843,11 @@ msgstr ""
 msgid "Condition:"
 msgstr "Умова:"
 
-#: ../src/Config.cpp:1363 ../src/Config.cpp:1371
+#: ../src/Config.cpp:1383 ../src/Config.cpp:1391
 msgid "Config file (*.ini)|*.ini"
 msgstr "Файл налаштувань (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1217
+#: ../src/Config.cpp:1233
 msgid "Configuration warning"
 msgstr "Попередження щодо налаштувань"
 
@@ -1276,7 +1280,7 @@ msgstr "Рівняння:"
 msgid "Equations:"
 msgstr "Рівняння:"
 
-#: ../src/ImgCell.cpp:104 ../src/Config.cpp:704 ../src/wxMaxima.cpp:354
+#: ../src/ImgCell.cpp:104 ../src/Config.cpp:705 ../src/wxMaxima.cpp:354
 #: ../src/wxMaxima.cpp:1003 ../src/wxMaxima.cpp:1014 ../src/wxMaxima.cpp:1078
 #: ../src/wxMaxima.cpp:1090 ../src/wxMaxima.cpp:1113 ../src/wxMaxima.cpp:1621
 #: ../src/wxMaxima.cpp:1771 ../src/wxMaxima.cpp:4626 ../src/wxMaxima.cpp:4951
@@ -1334,7 +1338,7 @@ msgstr "Виконати обчислення у всіх видимих ком�
 msgid "Example"
 msgstr "Приклад"
 
-#: ../src/Config.cpp:1317 ../src/Config.cpp:1408
+#: ../src/Config.cpp:1337 ../src/Config.cpp:1428
 msgid "Example text"
 msgstr "Текст прикладу"
 
@@ -1689,7 +1693,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: ../src/MathCtrl.cpp:4238
+#: ../src/MathCtrl.cpp:4237
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2010,7 +2014,7 @@ msgstr ""
 "Перервати поточні обчислення. Щоб повністю перезапустити maxima, натисніть "
 "кнопку, розташовану ліворуч від цієї."
 
-#: ../src/Config.cpp:703
+#: ../src/Config.cpp:704
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2032,7 +2036,7 @@ msgstr "Обернене п&еретворення Лапласа…"
 msgid "Italian"
 msgstr "італійська"
 
-#: ../src/Config.cpp:579
+#: ../src/Config.cpp:580
 msgid "Italic"
 msgstr "Курсив"
 
@@ -2097,7 +2101,7 @@ msgstr "Лінійна регресія…"
 msgid "List:"
 msgstr "Список:"
 
-#: ../src/Config.cpp:582
+#: ../src/Config.cpp:583
 msgid "Load"
 msgstr "Завантажити"
 
@@ -2113,7 +2117,7 @@ msgstr "Завантажити файл програми Maxima за допом�
 msgid "Load a Maxima package file"
 msgstr "Завантажити файл пакунка Maxima"
 
-#: ../src/Config.cpp:1369
+#: ../src/Config.cpp:1389
 msgid "Load style from file"
 msgstr "Завантажити стиль з файла"
 
@@ -2538,7 +2542,7 @@ msgstr "Кругова діаграма…"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Налаштуйте wxMaxima за допомогою пункту меню «Зміни → Налаштувати»."
 
-#: ../src/Config.cpp:1216
+#: ../src/Config.cpp:1232
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Для набуття змінами чинності wxMaxima слід перезавантажити!"
 
@@ -2750,7 +2754,7 @@ msgstr "Вибірка 2:"
 msgid "Sample:"
 msgstr "Вибірка:"
 
-#: ../src/ToolBar.cpp:72 ../src/Config.cpp:583 ../src/wxMaxima.cpp:5037
+#: ../src/ToolBar.cpp:72 ../src/Config.cpp:584 ../src/wxMaxima.cpp:5037
 msgid "Save"
 msgstr "Зберегти"
 
@@ -2818,7 +2822,7 @@ msgstr "Зберегти позначене у документі до файл�
 msgid "Save selection to file"
 msgstr "Зберегти позначене до файла"
 
-#: ../src/Config.cpp:1361
+#: ../src/Config.cpp:1381
 msgid "Save style to file"
 msgstr "Зберегти стиль до файла"
 
@@ -2866,7 +2870,7 @@ msgstr "Позначити все"
 msgid "Select All\tCtrl-A"
 msgstr "Позначити все\tCtrl-A"
 
-#: ../src/Config.cpp:688 ../src/Config.cpp:693
+#: ../src/Config.cpp:689 ../src/Config.cpp:694
 msgid "Select Maxima program"
 msgstr "Виберіть адресу програми Maxima"
 
@@ -3533,16 +3537,16 @@ msgstr "Переклад"
 msgid "Transpose a matrix"
 msgstr "Транспонувати матрицю"
 
-#: ../src/MathCtrl.cpp:4757
+#: ../src/MathCtrl.cpp:4756
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 "Спроба встановлення курсора у комірку, яка не є частиною робочого аркуша"
 
-#: ../src/MathCtrl.cpp:4143
+#: ../src/MathCtrl.cpp:4142
 msgid "Trying to undo an action without starting cell."
 msgstr "Спроба скасування дії без визначення початкової комірки."
 
-#: ../src/MathCtrl.cpp:4207
+#: ../src/MathCtrl.cpp:4206
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Намагаємося скасувати дію, але дія зі скасування є порожньою."
 
@@ -3570,7 +3574,7 @@ msgstr "українська"
 msgid "Un-closed parenthesis"
 msgstr "Незакрита дужка"
 
-#: ../src/Config.cpp:580
+#: ../src/Config.cpp:581
 msgid "Underlined"
 msgstr "Підкреслення"
 

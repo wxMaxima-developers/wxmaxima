@@ -2175,25 +2175,19 @@ void EditorCell::StyleText()
           if((nextToken[0])==wxT('('))
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
           else
-          {
-            std::cerr <<nextToken.Left(2) << "\n";
-            if((nextToken.Left(2))==wxT(":="))
-              m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
-            else
-              m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
-          }
+            m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
+          continue;
         }
         else
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
-        continue;
       }
       m_styledText.push_back(StyledText(token));
-    }
-    
+    }   
   }
   else
     m_styledText.push_back(StyledText(m_text));
 }
+
 
 void EditorCell::SetValue(wxString text)
 {

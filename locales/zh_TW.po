@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-13 11:18+0200\n"
+"POT-Creation-Date: 2015-06-14 08:46+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -434,7 +434,7 @@ msgstr "Maxima 的附加參數 (例： -l clisp)"
 msgid "Additional parameters:"
 msgstr "附加參數："
 
-#: ../src/Config.cpp:695
+#: ../src/Config.cpp:696
 msgid "All|*"
 msgstr "所有類型|*"
 
@@ -487,7 +487,7 @@ msgstr "邊界條件(二階)"
 msgid "Barsplot..."
 msgstr "長條圖..."
 
-#: ../src/Config.cpp:690
+#: ../src/Config.cpp:691
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
 
@@ -499,7 +499,7 @@ msgstr "以批次檔載入"
 msgid "Bitmap scale for export"
 msgstr ""
 
-#: ../src/Config.cpp:578
+#: ../src/Config.cpp:579
 msgid "Bold"
 msgstr "粗體"
 
@@ -519,18 +519,18 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4148
+#: ../src/MathCtrl.cpp:4147
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4219
+#: ../src/MathCtrl.cpp:4218
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4188
+#: ../src/MathCtrl.cpp:4187
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -560,11 +560,11 @@ msgstr ""
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4189
+#: ../src/MathCtrl.cpp:4188
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4153 ../src/MathCtrl.cpp:4224 ../src/MathCtrl.cpp:4258
+#: ../src/MathCtrl.cpp:4152 ../src/MathCtrl.cpp:4223 ../src/MathCtrl.cpp:4257
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -700,7 +700,7 @@ msgstr ""
 msgid "Chinese traditional"
 msgstr "正體中文"
 
-#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:572
+#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:573
 msgid "Choose font"
 msgstr "選擇字型"
 
@@ -730,6 +730,10 @@ msgstr ""
 
 #: ../src/Config.cpp:567
 msgid "Code highlighting: Numbers"
+msgstr ""
+
+#: ../src/Config.cpp:569
+msgid "Code highlighting: Operators"
 msgstr ""
 
 #: ../src/Config.cpp:568
@@ -808,11 +812,11 @@ msgstr "計算最小公倍式 (在使用前會先執行 load(functs) )"
 msgid "Condition:"
 msgstr "條件："
 
-#: ../src/Config.cpp:1363 ../src/Config.cpp:1371
+#: ../src/Config.cpp:1383 ../src/Config.cpp:1391
 msgid "Config file (*.ini)|*.ini"
 msgstr "設定檔 (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1217
+#: ../src/Config.cpp:1233
 msgid "Configuration warning"
 msgstr "設定值警告"
 
@@ -1241,7 +1245,7 @@ msgstr "方程式："
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/ImgCell.cpp:104 ../src/Config.cpp:704 ../src/wxMaxima.cpp:354
+#: ../src/ImgCell.cpp:104 ../src/Config.cpp:705 ../src/wxMaxima.cpp:354
 #: ../src/wxMaxima.cpp:1003 ../src/wxMaxima.cpp:1014 ../src/wxMaxima.cpp:1078
 #: ../src/wxMaxima.cpp:1090 ../src/wxMaxima.cpp:1113 ../src/wxMaxima.cpp:1621
 #: ../src/wxMaxima.cpp:1771 ../src/wxMaxima.cpp:4626 ../src/wxMaxima.cpp:4951
@@ -1303,7 +1307,7 @@ msgstr "評算這份文件中的所有單元"
 msgid "Example"
 msgstr "範例"
 
-#: ../src/Config.cpp:1317 ../src/Config.cpp:1408
+#: ../src/Config.cpp:1337 ../src/Config.cpp:1428
 msgid "Example text"
 msgstr "Example text 範例文字"
 
@@ -1656,7 +1660,7 @@ msgstr "取得複數數式的虛部"
 msgid "Get the real part of complex expression"
 msgstr "取得複數數式的實部"
 
-#: ../src/MathCtrl.cpp:4238
+#: ../src/MathCtrl.cpp:4237
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1957,7 +1961,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/Config.cpp:703
+#: ../src/Config.cpp:704
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -1979,7 +1983,7 @@ msgstr "反 Laplace 變換(&R)..."
 msgid "Italian"
 msgstr "Italian"
 
-#: ../src/Config.cpp:579
+#: ../src/Config.cpp:580
 msgid "Italic"
 msgstr "斜體"
 
@@ -2044,7 +2048,7 @@ msgstr "線性迴歸..."
 msgid "List:"
 msgstr "串列："
 
-#: ../src/Config.cpp:582
+#: ../src/Config.cpp:583
 msgid "Load"
 msgstr "載入"
 
@@ -2060,7 +2064,7 @@ msgstr "以批次命令的方式載入 Maxima 檔"
 msgid "Load a Maxima package file"
 msgstr "讀取 Maxima package 檔"
 
-#: ../src/Config.cpp:1369
+#: ../src/Config.cpp:1389
 msgid "Load style from file"
 msgstr "自檔案載入樣式"
 
@@ -2479,7 +2483,7 @@ msgstr "圓餅圖..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "請從「編輯(E)」->「設定(O)」設定 wxMaxima"
 
-#: ../src/Config.cpp:1216
+#: ../src/Config.cpp:1232
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "請重新啟動 wxMaxima 使變更生效！"
 
@@ -2695,7 +2699,7 @@ msgstr "樣本 2："
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/ToolBar.cpp:72 ../src/Config.cpp:583 ../src/wxMaxima.cpp:5037
+#: ../src/ToolBar.cpp:72 ../src/Config.cpp:584 ../src/wxMaxima.cpp:5037
 msgid "Save"
 msgstr "儲存"
 
@@ -2761,7 +2765,7 @@ msgstr "儲存所選區域為圖片檔"
 msgid "Save selection to file"
 msgstr "儲存選取區域至檔案"
 
-#: ../src/Config.cpp:1361
+#: ../src/Config.cpp:1381
 msgid "Save style to file"
 msgstr "將樣式儲存至檔案"
 
@@ -2810,7 +2814,7 @@ msgstr "全部選取"
 msgid "Select All\tCtrl-A"
 msgstr "全部選取\tCtrl-A"
 
-#: ../src/Config.cpp:688 ../src/Config.cpp:693
+#: ../src/Config.cpp:689 ../src/Config.cpp:694
 msgid "Select Maxima program"
 msgstr "選擇 Maxima 程式"
 
@@ -3455,15 +3459,15 @@ msgstr "翻譯者"
 msgid "Transpose a matrix"
 msgstr "計算轉置矩陣"
 
-#: ../src/MathCtrl.cpp:4757
+#: ../src/MathCtrl.cpp:4756
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4143
+#: ../src/MathCtrl.cpp:4142
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4207
+#: ../src/MathCtrl.cpp:4206
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -3491,7 +3495,7 @@ msgstr "Ukrainian"
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../src/Config.cpp:580
+#: ../src/Config.cpp:581
 msgid "Underlined"
 msgstr "底線"
 

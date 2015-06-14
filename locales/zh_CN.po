@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-13 11:18+0200\n"
+"POT-Creation-Date: 2015-06-14 08:46+0200\n"
 "PO-Revision-Date: 2013-01-04 00:31+0800\n"
 "Last-Translator: crickzhang1 <crickzhang1@gmail.com>\n"
 "Language-Team: amateur\n"
@@ -431,7 +431,7 @@ msgstr "Maxima 的附加参数(例如： -l clisp)。"
 msgid "Additional parameters:"
 msgstr "附加参数："
 
-#: ../src/Config.cpp:695
+#: ../src/Config.cpp:696
 msgid "All|*"
 msgstr "所有类型|*"
 
@@ -484,7 +484,7 @@ msgstr "边界条件(二阶)"
 msgid "Barsplot..."
 msgstr "直方图..."
 
-#: ../src/Config.cpp:690
+#: ../src/Config.cpp:691
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批处理文件 (*.bat)|*.bat|所有类型|*"
 
@@ -496,7 +496,7 @@ msgstr "载入批处理文件"
 msgid "Bitmap scale for export"
 msgstr ""
 
-#: ../src/Config.cpp:578
+#: ../src/Config.cpp:579
 msgid "Bold"
 msgstr "黑体"
 
@@ -516,18 +516,18 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4148
+#: ../src/MathCtrl.cpp:4147
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4219
+#: ../src/MathCtrl.cpp:4218
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4188
+#: ../src/MathCtrl.cpp:4187
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -557,11 +557,11 @@ msgstr ""
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4189
+#: ../src/MathCtrl.cpp:4188
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4153 ../src/MathCtrl.cpp:4224 ../src/MathCtrl.cpp:4258
+#: ../src/MathCtrl.cpp:4152 ../src/MathCtrl.cpp:4223 ../src/MathCtrl.cpp:4257
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -696,7 +696,7 @@ msgstr ""
 msgid "Chinese traditional"
 msgstr "繁体中文"
 
-#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:572
+#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:573
 msgid "Choose font"
 msgstr "选择字体"
 
@@ -726,6 +726,10 @@ msgstr ""
 
 #: ../src/Config.cpp:567
 msgid "Code highlighting: Numbers"
+msgstr ""
+
+#: ../src/Config.cpp:569
+msgid "Code highlighting: Operators"
 msgstr ""
 
 #: ../src/Config.cpp:568
@@ -804,11 +808,11 @@ msgstr "计算最小公倍式（在使用前先执行 load(functs)）"
 msgid "Condition:"
 msgstr "条件："
 
-#: ../src/Config.cpp:1363 ../src/Config.cpp:1371
+#: ../src/Config.cpp:1383 ../src/Config.cpp:1391
 msgid "Config file (*.ini)|*.ini"
 msgstr "配置文件 (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1217
+#: ../src/Config.cpp:1233
 msgid "Configuration warning"
 msgstr "配置警告"
 
@@ -1235,7 +1239,7 @@ msgstr "方程："
 msgid "Equations:"
 msgstr "方程"
 
-#: ../src/ImgCell.cpp:104 ../src/Config.cpp:704 ../src/wxMaxima.cpp:354
+#: ../src/ImgCell.cpp:104 ../src/Config.cpp:705 ../src/wxMaxima.cpp:354
 #: ../src/wxMaxima.cpp:1003 ../src/wxMaxima.cpp:1014 ../src/wxMaxima.cpp:1078
 #: ../src/wxMaxima.cpp:1090 ../src/wxMaxima.cpp:1113 ../src/wxMaxima.cpp:1621
 #: ../src/wxMaxima.cpp:1771 ../src/wxMaxima.cpp:4626 ../src/wxMaxima.cpp:4951
@@ -1294,7 +1298,7 @@ msgstr "对文档中所有可见单元求值"
 msgid "Example"
 msgstr "示例"
 
-#: ../src/Config.cpp:1317 ../src/Config.cpp:1408
+#: ../src/Config.cpp:1337 ../src/Config.cpp:1428
 msgid "Example text"
 msgstr "示例文本"
 
@@ -1646,7 +1650,7 @@ msgstr "取复数表达式的虚部"
 msgid "Get the real part of complex expression"
 msgstr "取复数表达式的实部"
 
-#: ../src/MathCtrl.cpp:4238
+#: ../src/MathCtrl.cpp:4237
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1946,7 +1950,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/Config.cpp:703
+#: ../src/Config.cpp:704
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -1968,7 +1972,7 @@ msgstr "Laplace 逆变换(&R)..."
 msgid "Italian"
 msgstr "意大利语"
 
-#: ../src/Config.cpp:579
+#: ../src/Config.cpp:580
 msgid "Italic"
 msgstr "斜体"
 
@@ -2033,7 +2037,7 @@ msgstr "线性回归..."
 msgid "List:"
 msgstr "列表："
 
-#: ../src/Config.cpp:582
+#: ../src/Config.cpp:583
 msgid "Load"
 msgstr "载入"
 
@@ -2049,7 +2053,7 @@ msgstr "使用批处理命令载入 Maxima 文件"
 msgid "Load a Maxima package file"
 msgstr "载入 Maxima 包文件"
 
-#: ../src/Config.cpp:1369
+#: ../src/Config.cpp:1389
 msgid "Load style from file"
 msgstr "从文件载入样式"
 
@@ -2467,7 +2471,7 @@ msgstr "饼图..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "请用 “编辑->配置” 配置 wxMaxima。"
 
-#: ../src/Config.cpp:1216
+#: ../src/Config.cpp:1232
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "请重启 wxMaxima 以使变更生效。"
 
@@ -2683,7 +2687,7 @@ msgstr "样本2："
 msgid "Sample:"
 msgstr "样本："
 
-#: ../src/ToolBar.cpp:72 ../src/Config.cpp:583 ../src/wxMaxima.cpp:5037
+#: ../src/ToolBar.cpp:72 ../src/Config.cpp:584 ../src/wxMaxima.cpp:5037
 msgid "Save"
 msgstr "保存"
 
@@ -2749,7 +2753,7 @@ msgstr "保存文档中所选区域到图片文件"
 msgid "Save selection to file"
 msgstr "保存所选区域到文件"
 
-#: ../src/Config.cpp:1361
+#: ../src/Config.cpp:1381
 msgid "Save style to file"
 msgstr "保存样式到文件"
 
@@ -2798,7 +2802,7 @@ msgstr "选择全部"
 msgid "Select All\tCtrl-A"
 msgstr "选择全部\tCtrl-A"
 
-#: ../src/Config.cpp:688 ../src/Config.cpp:693
+#: ../src/Config.cpp:689 ../src/Config.cpp:694
 msgid "Select Maxima program"
 msgstr "选择 Maxima 程序"
 
@@ -3441,15 +3445,15 @@ msgstr "翻译人员："
 msgid "Transpose a matrix"
 msgstr "转置矩阵"
 
-#: ../src/MathCtrl.cpp:4757
+#: ../src/MathCtrl.cpp:4756
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4143
+#: ../src/MathCtrl.cpp:4142
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4207
+#: ../src/MathCtrl.cpp:4206
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -3477,7 +3481,7 @@ msgstr "乌克兰语"
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../src/Config.cpp:580
+#: ../src/Config.cpp:581
 msgid "Underlined"
 msgstr "下划线"
 

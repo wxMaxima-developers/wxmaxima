@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-13 11:18+0200\n"
+"POT-Creation-Date: 2015-06-14 08:46+0200\n"
 "PO-Revision-Date: 2015-06-04 17:01+0200\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -439,7 +439,7 @@ msgstr "Paràmetres addicionals per a Maxima (p. ex. -l clisp)"
 msgid "Additional parameters:"
 msgstr "Paràmetres addicionals:"
 
-#: ../src/Config.cpp:695
+#: ../src/Config.cpp:696
 msgid "All|*"
 msgstr "Tots|*"
 
@@ -497,7 +497,7 @@ msgstr "BC2"
 msgid "Barsplot..."
 msgstr "Diagrama de barres..."
 
-#: ../src/Config.cpp:690
+#: ../src/Config.cpp:691
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Arxius bat (*.bat)|*.bat|Tots|*"
 
@@ -509,7 +509,7 @@ msgstr "Arxiu per lots"
 msgid "Bitmap scale for export"
 msgstr "Escala del mapa de bits per a l'exportació"
 
-#: ../src/Config.cpp:578
+#: ../src/Config.cpp:579
 msgid "Bold"
 msgstr "Negreta"
 
@@ -529,7 +529,7 @@ msgstr "Error: es requereix l'auto completat per un tipus d'ítem desconegut."
 msgid "Bug: Cell left but not entered."
 msgstr "Error: cel·la esquerra sense entrada."
 
-#: ../src/MathCtrl.cpp:4148
+#: ../src/MathCtrl.cpp:4147
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -537,14 +537,14 @@ msgstr ""
 "Error: hi ha una petició de canviar el contingut d'una cel·la situada abans "
 "de l'inici del full de càlcul."
 
-#: ../src/MathCtrl.cpp:4219
+#: ../src/MathCtrl.cpp:4218
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Error: hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
 "full de càlcul."
 
-#: ../src/MathCtrl.cpp:4188
+#: ../src/MathCtrl.cpp:4187
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -584,13 +584,13 @@ msgstr ""
 "Error: s'està intentant registrar els canvis de contingut de la cel·la que "
 "no existeix."
 
-#: ../src/MathCtrl.cpp:4189
+#: ../src/MathCtrl.cpp:4188
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Error: desfer acció amb canvi del contingut de la cel·la i addició de la "
 "cel·la."
 
-#: ../src/MathCtrl.cpp:4153 ../src/MathCtrl.cpp:4224 ../src/MathCtrl.cpp:4258
+#: ../src/MathCtrl.cpp:4152 ../src/MathCtrl.cpp:4223 ../src/MathCtrl.cpp:4257
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Error: s'està intentant desfer una acció a una cel·la situada fora del full "
@@ -730,7 +730,7 @@ msgstr "Xinès simplificat"
 msgid "Chinese traditional"
 msgstr "Xinés tradicional"
 
-#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:572
+#: ../src/Config.cpp:534 ../src/Config.cpp:536 ../src/Config.cpp:573
 msgid "Choose font"
 msgstr "Seleccionar font"
 
@@ -760,6 +760,10 @@ msgstr ""
 
 #: ../src/Config.cpp:567
 msgid "Code highlighting: Numbers"
+msgstr ""
+
+#: ../src/Config.cpp:569
+msgid "Code highlighting: Operators"
 msgstr ""
 
 #: ../src/Config.cpp:568
@@ -839,11 +843,11 @@ msgstr ""
 msgid "Condition:"
 msgstr "Condició"
 
-#: ../src/Config.cpp:1363 ../src/Config.cpp:1371
+#: ../src/Config.cpp:1383 ../src/Config.cpp:1391
 msgid "Config file (*.ini)|*.ini"
 msgstr "Arxius de configuració (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1217
+#: ../src/Config.cpp:1233
 msgid "Configuration warning"
 msgstr "Advertència sobre configuració"
 
@@ -1277,7 +1281,7 @@ msgstr "Equació:"
 msgid "Equations:"
 msgstr "Equacions:"
 
-#: ../src/ImgCell.cpp:104 ../src/Config.cpp:704 ../src/wxMaxima.cpp:354
+#: ../src/ImgCell.cpp:104 ../src/Config.cpp:705 ../src/wxMaxima.cpp:354
 #: ../src/wxMaxima.cpp:1003 ../src/wxMaxima.cpp:1014 ../src/wxMaxima.cpp:1078
 #: ../src/wxMaxima.cpp:1090 ../src/wxMaxima.cpp:1113 ../src/wxMaxima.cpp:1621
 #: ../src/wxMaxima.cpp:1771 ../src/wxMaxima.cpp:4626 ../src/wxMaxima.cpp:4951
@@ -1335,7 +1339,7 @@ msgstr "Avaluar totes les cel·les visibles en el document"
 msgid "Example"
 msgstr "Exemple"
 
-#: ../src/Config.cpp:1317 ../src/Config.cpp:1408
+#: ../src/Config.cpp:1337 ../src/Config.cpp:1428
 msgid "Example text"
 msgstr "Text d'exemple"
 
@@ -1689,7 +1693,7 @@ msgstr "Calcula la part imaginària d'una expressió complexa"
 msgid "Get the real part of complex expression"
 msgstr "Calcula la part real d'una expressió complexa"
 
-#: ../src/MathCtrl.cpp:4238
+#: ../src/MathCtrl.cpp:4237
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2007,7 +2011,7 @@ msgstr ""
 "Interrompre el càlcul actual. Per reiniciar Maxima completament, premi el "
 "botó situat a l'esquerra d'aquest."
 
-#: ../src/Config.cpp:703
+#: ../src/Config.cpp:704
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2029,7 +2033,7 @@ msgstr "Trans&formada inversa de Laplace"
 msgid "Italian"
 msgstr "Italià"
 
-#: ../src/Config.cpp:579
+#: ../src/Config.cpp:580
 msgid "Italic"
 msgstr "Itàlica"
 
@@ -2094,7 +2098,7 @@ msgstr "Regressió lineal..."
 msgid "List:"
 msgstr "Llista:"
 
-#: ../src/Config.cpp:582
+#: ../src/Config.cpp:583
 msgid "Load"
 msgstr "Carrega"
 
@@ -2110,7 +2114,7 @@ msgstr "Carrega un arxiu Maxima fent servir l'ordre batch"
 msgid "Load a Maxima package file"
 msgstr "Carrega un paquet Maxima"
 
-#: ../src/Config.cpp:1369
+#: ../src/Config.cpp:1389
 msgid "Load style from file"
 msgstr "Llegir estil des d'un arxiu"
 
@@ -2546,7 +2550,7 @@ msgstr "Diagrama de sectors..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Configuri wxMaxima amb 'Edita->Configura'."
 
-#: ../src/Config.cpp:1216
+#: ../src/Config.cpp:1232
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Reiniciau wxMaxima per aplicar els canvis"
 
@@ -2758,7 +2762,7 @@ msgstr "Exemple 2:"
 msgid "Sample:"
 msgstr "Mostra:"
 
-#: ../src/ToolBar.cpp:72 ../src/Config.cpp:583 ../src/wxMaxima.cpp:5037
+#: ../src/ToolBar.cpp:72 ../src/Config.cpp:584 ../src/wxMaxima.cpp:5037
 msgid "Save"
 msgstr "Desa"
 
@@ -2826,7 +2830,7 @@ msgstr "Copia la selecció del document a una imatge"
 msgid "Save selection to file"
 msgstr "Desa la selecció en un arxiu"
 
-#: ../src/Config.cpp:1361
+#: ../src/Config.cpp:1381
 msgid "Save style to file"
 msgstr "Desa estil en un arxiu"
 
@@ -2874,7 +2878,7 @@ msgstr "Selecciona tot"
 msgid "Select All\tCtrl-A"
 msgstr "&Selecciona tot\tCtrl-A"
 
-#: ../src/Config.cpp:688 ../src/Config.cpp:693
+#: ../src/Config.cpp:689 ../src/Config.cpp:694
 msgid "Select Maxima program"
 msgstr "Selecciona el programa Maxima"
 
@@ -3537,16 +3541,16 @@ msgstr "Traduït per"
 msgid "Transpose a matrix"
 msgstr "Matriu transposta"
 
-#: ../src/MathCtrl.cpp:4757
+#: ../src/MathCtrl.cpp:4756
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 "Intentant situar el cursor en una cel·la que no pertany al full de càlcul"
 
-#: ../src/MathCtrl.cpp:4143
+#: ../src/MathCtrl.cpp:4142
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentant desfer una acció sense cel·la inicial."
 
-#: ../src/MathCtrl.cpp:4207
+#: ../src/MathCtrl.cpp:4206
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentant desfer alguna acció sense que hi hagi accions per desfer."
 
@@ -3574,7 +3578,7 @@ msgstr "Ucraïnés"
 msgid "Un-closed parenthesis"
 msgstr "Parèntesi sense tancar"
 
-#: ../src/Config.cpp:580
+#: ../src/Config.cpp:581
 msgid "Underlined"
 msgstr "Subrallat"
 
