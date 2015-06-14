@@ -390,6 +390,12 @@ wxSize SlideShow::ToGif(wxString file)
     retval.x=retval.y=-1;
     return retval;
   }
+  // Saving an animation might need loads of time. Since we use this time
+  // in the foreground and many operation systems assume that an application
+  // that is busy with other things and therefore isn't reacting is stuck
+  // and therefore offer to kill the application we should now listen to
+  // requests from the OS before continuing the save.
+  wxYield();
 }
 
 bool SlideShow::CopyToClipboard()
