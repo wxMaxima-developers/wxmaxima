@@ -3606,6 +3606,7 @@ wxString ConvertToUnicode(wxString str)
 */
 bool MathCtrl::ExportToWXMX(wxString file)
 {
+  std::cerr << "Export";
   // delete temp file if it already exists
   wxString backupfile=file+wxT("~");
   if(wxFileExists(backupfile))
