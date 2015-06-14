@@ -1902,7 +1902,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   {
     if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
     {
-      retval.Add(token + wxT("d"));
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
       token = string.Right(size-pos);
       retval.Add(token.Left(operatorLength) + wxT("d"));
       token =wxEmptyString;
@@ -1916,7 +1917,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         (string.GetChar(pos) == wxT('_'))
         )
       {
-        retval.Add(token + wxT("d"));
+        if(token != wxEmptyString)
+          retval.Add(token + wxT("d"));
         token=wxEmptyString;
 
         while(pos<size)
@@ -1941,7 +1943,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         // Find a number that starts at the current position
         if(wxIsdigit(string.GetChar(pos)))
         {
-          retval.Add(token + wxT("d"));
+          if(token != wxEmptyString)
+            retval.Add(token + wxT("d"));
           token=wxEmptyString;
 
           while(pos<size)
@@ -1970,7 +1973,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
           // Find a string that starts at the current position.
           if(string.GetChar(pos)==wxT('"'))
           {
-            retval.Add(token + wxT("d"));
+            if(token != wxEmptyString)
+              retval.Add(token + wxT("d"));
         
             // Extract the string constant from our input
             token=string.Right(string.Length()-pos-1);
@@ -1989,7 +1993,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
             // Find a comment that starts at the current position
             if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
             {
-              retval.Add(token + wxT("d"));
+              if(token != wxEmptyString)
+                retval.Add(token + wxT("d"));
           
               // Extract the comment from our input
               token=string.Right(string.Length()-pos-2);
@@ -2155,12 +2160,29 @@ void EditorCell::StyleText()
       if((wxIsalpha(token[0])) || (token[0]==wxT('\\')) || (token[0]==wxT('_')))
       {
         // Sometimes we can differ between variables and functions by the context.
-        // But I assume we will not always make the right decision here.
-        //
+        // But I assume we will not be able to find an algorithm that always makes
+        // the right decision here:
+        //  - Function names can be used without the parenthesis that make out
+        //    functions.
+        //  - The same name can stand for a function and an array
+        //  - There are indexed functions
+        //  - And using lambda a user can store a function in a variable
         // TODO: Refine the decision between variable and functions.
         wxString nextToken = tokens[i+1];
-        if(((tokens.GetCount()>i+1)&&(nextToken.Trim(false)[0])==wxT('(')))
-          m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+        nextToken=nextToken.Trim(false);
+        if((tokens.GetCount()>i+1))
+        {
+          if((nextToken[0])==wxT('('))
+            m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+          else
+          {
+            std::cerr <<nextToken.Left(2) << "\n";
+            if((nextToken.Left(2))==wxT(":="))
+              m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+            else
+              m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
+          }
+        }
         else
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
         continue;
