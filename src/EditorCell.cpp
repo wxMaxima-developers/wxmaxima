@@ -66,7 +66,9 @@ EditorCell::~EditorCell()
 MathCell *EditorCell::Copy()
 {
   EditorCell *tmp = new EditorCell();
-  tmp->SetValue(m_text);
+  // We cannot use SetValue() here, since SetValue() sometimes has the task to change
+  //  the cell's contents
+  tmp->m_text = m_text;
   tmp->m_containsChanges = m_containsChanges;
   CopyData(this, tmp);
 
@@ -646,14 +648,14 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       SaveValue();
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
-      SetValue(m_text.SubString(0, start - 1) +
-               m_text.SubString(end, m_text.Length()));
+      m_text = m_text.SubString(0, start - 1) +
+               m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       m_selectionEnd = m_selectionStart = -1;
     }
-    SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
+    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              wxT("\n") +
-             m_text.SubString(m_positionOfCaret, m_text.Length()));
+             m_text.SubString(m_positionOfCaret, m_text.Length());
     m_positionOfCaret++;
     m_isDirty = true;
     m_containsChanges = true;
@@ -715,8 +717,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       {
         m_isDirty = true;
         m_containsChanges = true;
-        SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
-                 m_text.SubString(m_positionOfCaret + 1, m_text.Length()));
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                 m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       }
     }
     else
@@ -727,8 +729,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_saveValue = true;
       long start = MIN(m_selectionEnd, m_selectionStart);
       long end = MAX(m_selectionEnd, m_selectionStart);
-      SetValue(m_text.SubString(0, start - 1) +
-               m_text.SubString(end, m_text.Length()));
+      m_text = m_text.SubString(0, start - 1) +
+               m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       m_selectionEnd = m_selectionStart = -1;
     }
@@ -745,7 +747,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       long end = MAX(m_selectionEnd, m_selectionStart);
       m_text = m_text.SubString(0, start - 1) +
                m_text.SubString(end, m_text.Length());
-      StyleText();
       m_positionOfCaret = start;
       m_selectionEnd = m_selectionStart = -1;
       break;
@@ -772,7 +773,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
             right++;
           m_text = m_text.SubString(0, m_positionOfCaret - 2) +
                    m_text.SubString(right, m_text.Length());
-          StyleText();
           m_positionOfCaret--;
         }
         
@@ -790,23 +790,23 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
         {
           m_positionOfCaret--;
-          SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
-                   m_text.SubString(m_positionOfCaret + 1, m_text.Length()));
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }            
         // Delete Spaces, Tabs and Newlines until the next printable character
         while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
         {
           m_positionOfCaret--;
-          SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
-                   m_text.SubString(m_positionOfCaret + 1, m_text.Length()));
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
         
         // If we didn't delete anything till now delete one single character.
         if(lastpos == m_positionOfCaret)
         {
           m_positionOfCaret--;
-          SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
-                   m_text.SubString(m_positionOfCaret + 1, m_text.Length()));
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
       }
     }
@@ -826,7 +826,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                    m_text.SubString(end, m_text.Length());
           m_positionOfCaret = start;
           m_selectionEnd = m_selectionStart = -1;
-          StyleText();
           break;
         }
 
@@ -842,18 +841,17 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
                  ins +
                  m_text.SubString(m_positionOfCaret, m_text.Length());
         m_positionOfCaret += ins.Length();
-        StyleText();
       }
     }
     break;
 /*
   case WXK_SPACE:
     if (event.ShiftDown())
-      SetValue(m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\x00B7")
-               m_text.SubString(m_positionOfCaret, m_text.Length()));
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\x00B7")
+               m_text.SubString(m_positionOfCaret, m_text.Length());
     else
-      SetValue(m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
-               m_text.SubString(m_positionOfCaret, m_text.Length()));
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
+               m_text.SubString(m_positionOfCaret, m_text.Length());
     m_isDirty = true;
     m_containsChanges = true;
     m_positionOfCaret++;
@@ -874,8 +872,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       if (esccharpos > -1) { // we have a match, check for insertion
         wxString greek = InterpretEscapeString(m_text.SubString(esccharpos + 1, m_positionOfCaret - 1));
         if (greek.Length() > 0 ) {
-          SetValue(m_text.SubString(0, esccharpos - 1) + greek +
-                   m_text.SubString(m_positionOfCaret, m_text.Length()));
+          m_text = m_text.SubString(0, esccharpos - 1) + greek +
+                   m_text.SubString(m_positionOfCaret, m_text.Length());
           m_positionOfCaret = esccharpos + greek.Length();
           m_isDirty = true;
           m_containsChanges = true;
@@ -887,8 +885,8 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         insertescchar = true;
 
       if (insertescchar) {
-        SetValue(m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
-                 m_text.SubString(m_positionOfCaret, m_text.Length()));
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
+                 m_text.SubString(m_positionOfCaret, m_text.Length());
         m_isDirty = true;
         m_containsChanges = true;
         m_positionOfCaret++;
@@ -1717,9 +1715,12 @@ bool EditorCell::CutToClipboard()
   long start = MIN(m_selectionStart, m_selectionEnd);
   long end = MAX(m_selectionStart, m_selectionEnd);
   m_positionOfCaret = start;
-  SetValue(m_text.SubString(0, start - 1) +
-           m_text.SubString(end, m_text.Length()));
 
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  m_text = m_text.SubString(0, start - 1) +
+           m_text.SubString(end, m_text.Length());
+  StyleText();
+  
   m_selectionEnd = m_selectionStart = -1;
   m_paren1 = m_paren2 = -1;
   m_width = m_height = m_maxDrop = m_center = -1;
@@ -1741,9 +1742,12 @@ void EditorCell::InsertText(wxString text)
     SetValue(m_text.SubString(0, start - 1) +
              m_text.SubString(end, m_text.Length()));
   }
-  SetValue(m_text.SubString(0, m_positionOfCaret - 1) +
+
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  m_text = m_text.SubString(0, m_positionOfCaret - 1) +
            text +
-           m_text.SubString(m_positionOfCaret, m_text.Length()));
+           m_text.SubString(m_positionOfCaret, m_text.Length());
+  StyleText();
   m_positionOfCaret += text.Length();
 
   if (GetType() == MC_TYPE_INPUT)
@@ -1810,7 +1814,10 @@ void EditorCell::Undo()
   if (m_historyPosition == -1)
     return ;
 
-  SetValue(m_textHistory.Item(m_historyPosition));
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  m_text = m_textHistory.Item(m_historyPosition);
+  StyleText();
+  
   m_positionOfCaret = m_positionHistory[m_historyPosition];
   m_selectionStart = m_startHistory[m_historyPosition];
   m_selectionEnd = m_endHistory[m_historyPosition];
@@ -1838,7 +1845,10 @@ void EditorCell::Redo()
   if (m_historyPosition >= m_textHistory.GetCount())
     return ;
 
-  SetValue(m_textHistory.Item(m_historyPosition));
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  m_text = m_textHistory.Item(m_historyPosition);
+  StyleText();
+  
   m_positionOfCaret = m_positionHistory[m_historyPosition];
   m_selectionStart = m_startHistory[m_historyPosition];
   m_selectionEnd = m_endHistory[m_historyPosition];
@@ -2178,9 +2188,12 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
   if (m_selectionStart > -1 &&
       m_text.SubString(m_selectionStart, m_selectionEnd - 1) == oldStr)
   {
-    SetValue(m_text.SubString(0, m_selectionStart - 1) +
+    // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+    m_text = m_text.SubString(0, m_selectionStart - 1) +
              newStr +
-             m_text.SubString(m_selectionEnd, m_text.Length()));
+             m_text.SubString(m_selectionEnd, m_text.Length());
+    StyleText();
+    
     m_containsChanges = -1;
     m_positionOfCaret = m_selectionStart + newStr.Length();
     m_selectionStart = -1;
