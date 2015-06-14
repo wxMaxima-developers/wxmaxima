@@ -30,7 +30,7 @@
 
 #define ESC_CHAR wxT('\xA6')
 
-EditorCell::EditorCell() : MathCell()
+EditorCell::EditorCell(wxString text) : MathCell()
 {
   m_lastSelectionStart = -1;
   m_displayCaret = false;
@@ -55,6 +55,7 @@ EditorCell::EditorCell() : MathCell()
   m_containsChangesCheck = false;
   m_firstLineOnly = false;
   m_historyPosition = -1;
+  m_text = text;
 }
 
 EditorCell::~EditorCell()

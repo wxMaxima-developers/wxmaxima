@@ -42,7 +42,7 @@ class EditorCell : public MathCell
 {
 public:
   //! The constructor
-  EditorCell();
+  EditorCell(wxString text = wxEmptyString);
   //! The destructor
   ~EditorCell();
   void Destroy();
