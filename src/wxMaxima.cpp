@@ -1803,7 +1803,7 @@ void wxMaxima::MenuCommand(wxString cmd)
 {
   m_console->SetFocus();
   m_console->SetSelection(NULL);
-  m_console->SetActiveCell(NULL);
+//  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
   TryEvaluateNextInQueue();

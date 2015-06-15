@@ -71,7 +71,6 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
   input.Replace(wxT("\n"), wxT("<BR>\n"));
-  std::cerr << input;
   return input;
 }
 
@@ -1517,6 +1516,7 @@ bool EditorCell::AddEnding()
   if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
     m_text += wxT(";");
     m_paren1 = m_paren2 = m_width = -1;
+    StyleText();
     return true;
   }
   return false;
@@ -1989,7 +1989,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxArrayString retval;
   wxString token;
   size_t operatorLength;
-  
+
   while(pos<size)
   {
     if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
@@ -2221,7 +2221,6 @@ void EditorCell::StyleText()
           wxString::Format(wxT(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
       }
     }
-
     wxArrayString tokens = StringToTokens(textToStyle);
 
     for(size_t i=0;i<tokens.GetCount();i++)
