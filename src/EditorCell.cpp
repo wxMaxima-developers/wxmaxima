@@ -397,12 +397,13 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       StyledText TextSnippet=styledText.front();
       styledText.pop_front();
       wxString TextToDraw = TextSnippet.GetText();
+      int width, height;
       
       // Grab a pen of the right color.
       if(TextSnippet.StyleSet())
       {
-          wxDC& dc = parser.GetDC();
-          dc.SetTextForeground(parser.GetColor(TextSnippet.GetStyle()));
+        wxDC& dc = parser.GetDC();
+        dc.SetTextForeground(parser.GetColor(TextSnippet.GetStyle()));
       }
       else
       {
@@ -426,7 +427,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
                     TextCurrentPoint.y - m_center + SCALE_PX(2, scale)
           );
         
-        TextCurrentPoint.x += m_charWidth * line.Length();
+        dc.GetTextExtent(line, &width, &height);
+        TextCurrentPoint.x += width;
         
         // Let's check if there is a newline at the end of this line of the token.
         if(lines.HasMoreTokens())
