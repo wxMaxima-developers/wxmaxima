@@ -235,8 +235,8 @@ int MathCell::GetFullWidth(double scale)
       m_fullWidth += tmp->m_width;
       tmp = tmp->m_next + SCALE_PX(MC_CELL_SKIP, scale);
     }
-  return m_fullWidth;
   }
+  return m_fullWidth;
 }
 
 /*! Get the width of this line.
@@ -273,12 +273,12 @@ void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)
 {
   MathCell *tmp=this;
   while(tmp!=NULL)
-    {
-      tmp->Draw(parser,point,fontsize);
-      double scale = parser.GetScale();
-      point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
-      tmp=tmp->m_nextToDraw;
-    }
+  {
+    tmp->Draw(parser,point,fontsize);
+    double scale = parser.GetScale();
+    point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
+    tmp=tmp->m_nextToDraw;
+  }
 }
 
 void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)

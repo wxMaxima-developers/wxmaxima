@@ -415,17 +415,17 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       {
         wxString line = lines.GetNextToken();
 
-        #if defined __WXMSW__ || wxUSE_UNICODE
+#if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot if requested
         if (parser.GetChangeAsterisk())  
           line.Replace(wxT("*"), wxT("\xB7"));
-        #endif
+#endif
 
         dc.DrawText(line,
                     TextCurrentPoint.x + SCALE_PX(2, scale),
                     TextCurrentPoint.y - m_center + SCALE_PX(2, scale)
           );
-
+        
         TextCurrentPoint.x += m_charWidth * line.Length();
         
         // Let's check if there is a newline at the end of this line of the token.
@@ -557,12 +557,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
-      #ifdef WXK_PRIOR
+#ifdef WXK_PRIOR
       (event.GetKeyCode() != WXK_PRIOR) &&
-      #endif
-      #ifdef WXK_NEXT
+#endif
+#ifdef WXK_NEXT
       (event.GetKeyCode() != WXK_NEXT) &&
-      #endif
+#endif
       (event.GetKeyCode() != WXK_UP) &&
       (event.GetKeyCode() != WXK_PAGEDOWN)
     )
@@ -658,9 +658,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEDOWN:
-  #ifdef WXK_NEXT
+#ifdef WXK_NEXT
   case WXK_NEXT:
-  #endif
+#endif
   case WXK_DOWN:
     SaveValue();
     {
@@ -695,9 +695,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   case WXK_PAGEUP:
-  #ifdef WXK_PRIOR
+#ifdef WXK_PRIOR
   case WXK_PRIOR:
-  #endif
+#endif
   case WXK_UP:
     SaveValue();
     {
@@ -2116,32 +2116,36 @@ size_t EditorCell::OperatorLength(wxString text)
      return 1;
   if(text[0] == wxT('-'))
      return 1;
-  if(text[0] == wxT('*'))
+  if(text[0] == wxT('*')) {
     if((text.Length()>1)&&(text[1] == wxT('*')))
       return 2;
     else
       return 1;
+  }
   if(text[0] == wxT('/'))
     return 1;
-  if(text[0] == wxT('^'))
+  if(text[0] == wxT('^')) {
     if((text.Length()>1)&&(text[1] == wxT('^')))
       return 2;
     else
       return 1;
+  }
   if(text[0] == wxT('.'))
     return 1;
   
-  if(text[0] == wxT('<'))
+  if(text[0] == wxT('<')) {
      if((text.Length()>1)&&(text[1] == wxT('=')))
        return 2;
      else
        return 1;
+  }
      
-  if(text[0] == wxT('>'))
+  if(text[0] == wxT('>')) {
     if((text.Length()>1)&&(text[1] == wxT('=')))
       return 2;
     else
       return 1;
+  }
 
   if(
     (text.Left(3) == wxT("not")) &&
