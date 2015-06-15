@@ -1741,7 +1741,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     SetHCaret(dynamic_cast<GroupCell*>(m_activeCell->GetParent()), false);
   }
   else if (m_selectionStart != NULL)
-    SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart), false);
+    SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()), false);
 
   if (!m_hCaretActive) {
     if (m_last == NULL)
@@ -1794,8 +1794,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
       return;
     }
   }
-    
-        
+
   // Handling of the keys this class has to handle
   switch (event.GetKeyCode()) {
 
@@ -2073,7 +2072,8 @@ void MathCtrl::SelectWithChar(int ccode) {
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
   else if (ccode == WXK_UP) {
-    if(m_cellKeyboardSelectionStartedIn && (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next)))
+    if(m_cellKeyboardSelectionStartedIn &&
+       (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next)))
     {
       // We are in the cell the selection started in
       SetActiveCell(m_cellKeyboardSelectionStartedIn);
