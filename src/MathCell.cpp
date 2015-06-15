@@ -165,22 +165,20 @@ MathCell* MathCell::GetParent()
 /***
  * Get the maximum drop of the center.
 
-\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetMaxCenter()
 {
-  if (m_maxCenter == -1)
+  if (m_maxCenter < 0)
   {
-    int center = m_isBroken ? 0 : m_center;
-    if (m_nextToDraw == NULL)
-      m_maxCenter = center;
-    else
+    MathCell *tmp = this;
+    while(tmp != NULL)
     {
-      // If the next cell is on a new line, maxCenter is m_center
-      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
-        m_maxCenter = center;
-      else
-        m_maxCenter = MAX(center, m_nextToDraw->GetMaxCenter());
+      m_maxCenter = MAX(m_maxCenter, tmp->m_center);
+      if(tmp->m_nextToDraw == NULL)
+        break;
+      if(tmp->m_nextToDraw->m_breakLine)
+        break;
+      tmp = tmp-> m_nextToDraw;
     }
   }
   return m_maxCenter;
@@ -193,17 +191,18 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
-  if (m_maxDrop == -1)
+
+  if (m_maxDrop < 0)
   {
-    int drop = m_isBroken ? 0 : (m_height - m_center);
-    if (m_nextToDraw == NULL)
-      m_maxDrop = drop;
-    else
+    MathCell *tmp = this;
+    while(tmp != NULL)
     {
-      if (m_nextToDraw->m_breakLine && !m_nextToDraw->m_isBroken)
-        m_maxDrop = drop;
-      else
-        m_maxDrop = MAX(drop, m_nextToDraw->GetMaxDrop());
+      m_maxDrop = MAX(m_maxDrop, tmp->m_isBroken ? 0 : (tmp->m_height - tmp->m_center));
+      if(tmp->m_nextToDraw == NULL)
+        break;
+      if(tmp->m_nextToDraw->m_breakLine && !tmp->m_nextToDraw->m_isBroken)
+        break;
+      tmp = tmp-> m_nextToDraw;
     }
   }
   return m_maxDrop;
