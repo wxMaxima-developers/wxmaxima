@@ -1993,131 +1993,126 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   while(pos<size)
   {
     if(string.GetChar(pos)==wxT('\n'))
-      {
+    {
       if(token != wxEmptyString)
         retval.Add(token + wxT("d"));
-        retval.Add(wxT("\nd"));
-        token = wxEmptyString;
-        pos++;
-      }
-      else
-        if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
+      retval.Add(wxT("\nd"));
+      token = wxEmptyString;
+      pos++;
+    }
+    else if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
+    {
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
+      token = string.Right(size-pos);
+      retval.Add(token.Left(operatorLength) + wxT("d"));
+      token =wxEmptyString;
+      pos += operatorLength;
+    }
+    // Find a keyword that starts at the current position
+    else if(
+      (wxIsalpha(string.GetChar(pos))) ||
+      (string.GetChar(pos) == wxT('\\')) ||
+      (string.GetChar(pos) == wxT('_'))
+      )
+    {
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+      
+      while(pos<size)
+      {
+        if(wxIsalnum(string.GetChar(pos)) ||
+           (string.GetChar(pos) == wxT('\\')) ||
+           (string.GetChar(pos) == wxT('_'))
+          )
         {
-          if(token != wxEmptyString)
-            retval.Add(token + wxT("d"));
-          token = string.Right(size-pos);
-          retval.Add(token.Left(operatorLength) + wxT("d"));
-          token =wxEmptyString;
-          pos += operatorLength;
+          token += string.GetChar(pos);
+          pos++;
         }
         else
-          // Find a keyword that starts at the current position
-          if(
-            (wxIsalpha(string.GetChar(pos))) ||
-            (string.GetChar(pos) == wxT('\\')) ||
-            (string.GetChar(pos) == wxT('_'))
-            )
-          {
-            if(token != wxEmptyString)
-              retval.Add(token + wxT("d"));
-            token=wxEmptyString;
-
-            while(pos<size)
-            {
-              if(wxIsalnum(string.GetChar(pos)) ||
-                 (string.GetChar(pos) == wxT('\\')) ||
-                 (string.GetChar(pos) == wxT('_'))
-                )
-              {
-                token += string.GetChar(pos);
-                pos++;
-              }
-              else
-              {
-                break;
-              }
-            }
-            retval.Add(token + wxT("d"));
-            token=wxEmptyString;
-          }
-          else
-            // Find a number that starts at the current position
-            if(wxIsdigit(string.GetChar(pos)))
-            {
-              if(token != wxEmptyString)
-                retval.Add(token + wxT("d"));
-              token=wxEmptyString;
-
-              while(pos<size)
-              {
-                if(wxIsdigit(string.GetChar(pos)) ||
-                   (string.GetChar(pos) == wxT('d')) ||
-                   (string.GetChar(pos) == wxT('D')) ||
-                   (string.GetChar(pos) == wxT('c')) ||
-                   (string.GetChar(pos) == wxT('C')) ||
-                   (string.GetChar(pos) == wxT('e')) ||
-                   (string.GetChar(pos) == wxT('E'))
-                  )
-                {
-                  token += string.GetChar(pos);
-                  pos++;
-                }
-                else
-                {
-                  break;
-                }
-              }
-              retval.Add(token + wxT("d"));
-              token=wxEmptyString;
-            }
-            else
-              // Find a string that starts at the current position.
-              if(string.GetChar(pos)==wxT('"'))
-              {
-                if(token != wxEmptyString)
-                  retval.Add(token + wxT("d"));
-        
-                // Extract the string constant from our input
-                token=string.Right(string.Length()-pos-1);
-                size_t stringEnd;
-                if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
-                {
-                  token = token.Left(stringEnd + 1);
-                  pos += stringEnd + 2;
-                }
-                else
-                  pos = size + 1;
-                retval.Add(wxT("\"")+token + wxT("d"));
-                token = wxEmptyString;
-              }
-              else
-                // Find a comment that starts at the current position
-                if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
-                {
-                  if(token != wxEmptyString)
-                    retval.Add(token + wxT("d"));
-          
-                  // Extract the comment from our input
-                  token=string.Right(string.Length()-pos-2);
-                  size_t commentEnd;
-                  if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
-                  {
-                    token = token.Left(commentEnd + 2);
-                    pos += commentEnd + 4;
-                  }
-                  else
-                    pos = size + 1;
-                  retval.Add(wxT("/*") + token + wxT("d"));
-                  token = wxEmptyString;
-                }
-                else
-                  token = token + string.GetChar(pos++);
+        {
+          break;
+        }
       }
-    // Add the last token we detected to the token list
-    retval.Add(token + wxT("d"));
-  
-    return retval;
+      retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+    }
+    // Find a number that starts at the current positions
+    else if(wxIsdigit(string.GetChar(pos)))
+    {
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+            
+      while(pos<size)
+      {
+        if(wxIsdigit(string.GetChar(pos)) ||
+           (string.GetChar(pos) == wxT('d')) ||
+           (string.GetChar(pos) == wxT('D')) ||
+           (string.GetChar(pos) == wxT('c')) ||
+           (string.GetChar(pos) == wxT('C')) ||
+           (string.GetChar(pos) == wxT('e')) ||
+           (string.GetChar(pos) == wxT('E'))
+          )
+        {
+          token += string.GetChar(pos);
+          pos++;
+        }
+        else
+        {
+          break;
+        }
+      }
+      retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+    }
+    // Find a string that starts at the current position.
+    else if(string.GetChar(pos)==wxT('"'))
+    {
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
+      
+      // Extract the string constant from our input
+      token=string.Right(string.Length()-pos-1);
+      size_t stringEnd;
+      if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
+      {
+        token = token.Left(stringEnd + 1);
+        pos += stringEnd + 2;
+      }
+      else
+        pos = size + 1;
+      retval.Add(wxT("\"")+token + wxT("d"));
+      token = wxEmptyString;
+    }
+    // Find a comment that starts at the current position
+    else if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
+    {
+      if(token != wxEmptyString)
+        retval.Add(token + wxT("d"));
+      
+      // Extract the comment from our input
+      token=string.Right(string.Length()-pos-2);
+      size_t commentEnd;
+      if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
+      {
+        token = token.Left(commentEnd + 2);
+        pos += commentEnd + 4;
+      }
+      else
+        pos = size + 1;
+      retval.Add(wxT("/*") + token + wxT("d"));
+      token = wxEmptyString;
+    }
+    else
+      token = token + string.GetChar(pos++);
   }
+  // Add the last token we detected to the token list
+  retval.Add(token + wxT("d"));
+  
+  return retval;
+}
 
 size_t EditorCell::OperatorLength(wxString text)
 {
@@ -2286,7 +2281,7 @@ void EditorCell::StyleText()
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
       }
       m_styledText.push_back(StyledText(token));
-    }   
+    }
   }
   else
     m_styledText.push_back(StyledText(m_text));
