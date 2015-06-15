@@ -56,9 +56,9 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
-      m_input = new EditorCell(EMPTY_INPUT_LABEL);
+      m_input = new TextCell(EMPTY_INPUT_LABEL);
     else
-      m_input = new EditorCell(wxT(" "));
+      m_input = new TextCell(wxT(" "));
 
     m_input->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -197,7 +197,7 @@ MathCell* GroupCell::Copy()
   tmp->Hide(m_hide);
   CopyData(this, tmp);
   if (m_input)
-    tmp->SetInput(dynamic_cast<EditorCell*>(m_input->CopyList()));
+    tmp->SetInput(m_input->CopyList());
   if (m_output != NULL)
     tmp->SetOutput(m_output->CopyList());
 
@@ -222,7 +222,7 @@ wxString GroupCell::TexEscapeOutputCell(wxString Input)
   return(Input);
 }
 
-void GroupCell::SetInput(EditorCell *input)
+void GroupCell::SetInput(MathCell *input)
 {
   if (input == NULL)
     return ;
@@ -232,7 +232,7 @@ void GroupCell::SetInput(EditorCell *input)
   m_input->m_group = this;
 }
 
-void GroupCell::AppendInput(EditorCell *cell)
+void GroupCell::AppendInput(MathCell *cell)
 {
   if (m_input == NULL) {
     m_input = cell;

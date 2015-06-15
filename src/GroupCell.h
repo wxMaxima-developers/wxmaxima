@@ -93,9 +93,9 @@ public:
   void SwitchHide();
   wxRect HideRect();
   // raw manipulation of GC (should be protected)
-  void SetInput(EditorCell *input);
+  void SetInput(MathCell *input);
   void SetOutput(MathCell *output);
-  void AppendInput(EditorCell *cell);
+  void AppendInput(MathCell *cell);
   wxString TexEscapeOutputCell(wxString Input);
   MathCell* GetPrompt() { return m_input; }
   EditorCell* GetInput() { return dynamic_cast<EditorCell*>(m_input->m_next); }
@@ -193,7 +193,7 @@ protected:
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
   void DestroyOutput();
-  EditorCell *m_input;
+  MathCell *m_input;
   MathCell *m_output;
   bool m_hide;
   bool m_working;
