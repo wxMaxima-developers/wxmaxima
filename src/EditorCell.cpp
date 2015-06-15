@@ -2264,14 +2264,15 @@ void EditorCell::StyleText()
       if((wxIsalpha(token[0])) || (token[0]==wxT('\\')) || (token[0]==wxT('_')))
       {
         // Sometimes we can differ between variables and functions by the context.
-        // But I assume we will not be able to find an algorithm that always makes
+        // But I assume there cannot be an algorithm that always makes
         // the right decision here:
         //  - Function names can be used without the parenthesis that make out
         //    functions.
-        //  - The same name can stand for a function and an array
+        //  - The same name can stand for a function and a variable
         //  - There are indexed functions
-        //  - And using lambda a user can store a function in a variable
-        // TODO: Refine the decision between variable and functions.
+        //  - using lambda a user can store a function in a variable
+        //  - and is U_C1(t) really meant as a function or does it represent a variable
+        //    named U_C1 that depends on t?
         wxString nextToken = tokens[i+1];
         nextToken=nextToken.Trim(false);
         if((tokens.GetCount()>i+1))
