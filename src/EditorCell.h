@@ -125,7 +125,7 @@ public:
   }
   bool FindMatchingQuotes();
   void FindMatchingParens();
-  wxString GetLineString(int line, int start = 0, int end = -1);
+  int GetLineWidth(wxDC& dc, int line, int end);
   //! true, if this cell's width has to be recalculated.
   bool IsDirty()
   {

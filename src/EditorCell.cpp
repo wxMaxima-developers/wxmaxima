@@ -447,9 +447,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 
       PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
 
-      wxString line = GetLineString(caretInLine, 0, caretInColumn);
-      int lineWidth, lineHeight;
-      dc.GetTextExtent(line, &lineWidth, &lineHeight);
+      int lineWidth = GetLineWidth(dc, caretInLine, caretInColumn);
 
       dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); //TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
@@ -1587,11 +1585,9 @@ wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
     return wxPoint(-1, -1);
 
   PositionToXY(pos, &cX, &cY);
-  if (cX > 0)
-    line = GetLineString(cY, 0, cX);
 
-  dc.GetTextExtent(line, &width, &height);
-
+  width = GetLineWidth(dc, cY, cX);
+  
   x += width;
   y += m_charHeight * cY;
 
@@ -1866,23 +1862,46 @@ void EditorCell::PasteFromClipboard(bool primary)
     wxTheClipboard->UsePrimarySelection(false);
 }
 
-wxString EditorCell::GetLineString(int line, int start, int end)
+int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
 {
-  if (start >= end)
-    return wxEmptyString;
-
-  int posStart = 0, posEnd = 0;
-
-  posStart = XYToPosition(start, line);
-  if (end == -1)
+  int i = 0;
+  
+  std::list<StyledText> styledText = m_styledText;
+  
+  while(!styledText.empty() && i<line)
   {
-    posEnd = XYToPosition(0, line+1);
-    posEnd--;
+    // Grab a portion of text from the list.
+    StyledText textSnippet = styledText.front();
+    styledText.pop_front();
+    wxString text = textSnippet.GetText();
+    if (text.Right(1) == '\n')
+      i++;
   }
-  else
-    posEnd = XYToPosition(end, line);
 
-  return m_text.SubString(posStart, posEnd - 1);
+  if (i<line)
+    return 0;
+
+  int width = 0;
+  wxString text;
+  int textWidth, textHeight;
+  pos--;
+  while (!styledText.empty() && pos>=0)
+  {
+    StyledText textSnippet = styledText.front();
+    styledText.pop_front();
+    text = textSnippet.GetText();
+    dc.GetTextExtent(text, &textWidth, &textHeight);
+    width += textWidth;
+    pos -= text.Length();
+  }
+
+  if (pos<0) {
+    width -= textWidth;
+    dc.GetTextExtent(text.SubString(0, text.Length() + pos), &textWidth, &textHeight);
+    width += textWidth;
+  }
+
+  return width;
 }
 
 
