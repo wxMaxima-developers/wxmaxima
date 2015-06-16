@@ -2211,8 +2211,18 @@ void EditorCell::StyleText()
       m_styledText.push_back(StyledText(token));
     }
   }
-  else
-    m_styledText.push_back(StyledText(m_text));
+  else {
+    wxString token;
+    for (size_t i = 0; i<m_text.Length(); i++) {
+      token += m_text.GetChar(i);
+      if (m_text.GetChar(i) == '\n') {
+        m_styledText.push_back(StyledText(token));
+        m_styledText.push_back(StyledText(wxT("\n")));
+        token = wxEmptyString;
+      }
+    }
+    m_styledText.push_back(StyledText(token));
+  }
 }
 
 
