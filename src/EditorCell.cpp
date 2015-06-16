@@ -2121,44 +2121,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       retval.Add(token + wxT("d"));
       token=wxEmptyString;
     }
-    // Find a string that starts at the current position.
-    else if(Ch==wxT('"'))
-    {
-      if(token != wxEmptyString)
-        retval.Add(token + wxT("d"));
-      
-      // Extract the string constant from our input
-      token=string.Right(string.Length()-pos-1);
-      size_t stringEnd;
-      if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
-      {
-        token = token.Left(stringEnd + 1);
-        pos += stringEnd + 2;
-      }
-      else
-        pos = size + 1;
-      retval.Add(wxT("\"")+token + wxT("d"));
-      token = wxEmptyString;
-    }
-    // Find a comment that starts at the current position
-    else if((pos<size-1) && (Ch==wxT('/')) && (string[pos+1]==wxT('*')))
-    {
-      if(token != wxEmptyString)
-        retval.Add(token + wxT("d"));
-      
-      // Extract the comment from our input
-      token=string.Right(string.Length()-pos-2);
-      size_t commentEnd;
-      if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
-      {
-        token = token.Left(commentEnd + 2);
-        pos += commentEnd + 4;
-      }
-      else
-        pos = size + 1;
-      retval.Add(wxT("/*") + token + wxT("d"));
-      token = wxEmptyString;
-    }
     else
       token = token + string.GetChar(pos++);
   }
