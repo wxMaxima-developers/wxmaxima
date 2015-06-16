@@ -185,6 +185,13 @@ void CellParser::ReadStyle()
   m_styles[TS_CODE_OPERATOR].underlined = false;
   READ_STYLES(TS_CODE_OPERATOR, "Style/CodeHighlighting/Operator/")
     
+  // Line endings in highlighted code
+  m_styles[TS_CODE_ENDOFLINE].color = wxT("rgb(64,64,64)");
+  m_styles[TS_CODE_ENDOFLINE].bold = false;
+  m_styles[TS_CODE_ENDOFLINE].italic = true;
+  m_styles[TS_CODE_ENDOFLINE].underlined = false;
+  READ_STYLES(TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/")
+    
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
   m_styles[TS_SUBSUBSECTION].bold = true;

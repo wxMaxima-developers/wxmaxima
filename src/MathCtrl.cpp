@@ -2842,6 +2842,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString colorCodeNumber   = wxT("rgb(128,64,0)");
   wxString colorCodeString   = wxT("rgb(0,0,128)");
   wxString colorCodeOperator = wxT("rgb(0,0,128)");
+  wxString colorCodeEndOfLine = wxT("rgb(64,64,64)");
 
     
   wxString colorTextBg(wxT("white"));
@@ -2898,6 +2899,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/CodeHighlighting/Number/color"),&colorCodeNumber  );
   config->Read(wxT("Style/CodeHighlighting/String/color"),&colorCodeString  );
   config->Read(wxT("Style/CodeHighlighting/Operator/color"),&colorCodeOperator);
+  config->Read(wxT("Style/CodeHighlighting/EndOfLine/color"),&colorCodeEndOfLine);
 
   // read bold and italic
   config->Read(wxT("Style/Input/bold"), &boldInput);
@@ -3042,7 +3044,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if(colorCodeOperator.Length())
   {
     wxColour color(colorCodeOperator);
-    AddLineToFile(output, wxT(".code_string {"));
+    AddLineToFile(output, wxT(".code_operator {"));
     AddLineToFile(output, wxT("  color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"),
                                    color.Red(),
@@ -3051,7 +3053,20 @@ bool MathCtrl::ExportToHTML(wxString file) {
                   wxT(";"));
     AddLineToFile(output, wxT("}"));
   }
-  
+
+  if(colorCodeEndOfLine.Length())
+  {
+    wxColour color(colorCodeEndOfLine);
+    AddLineToFile(output, wxT(".code_endofline {"));
+    AddLineToFile(output, wxT("  color: ") +
+                  wxString::Format(wxT("rgb(%d,%d,%d)"),
+                                   color.Red(),
+                                   color.Green(),
+                                   color.Blue()) +
+                  wxT(";"));
+    AddLineToFile(output, wxT("}"));
+  }
+
   // SMOOTHER IMAGE SCALING FOR THE IE
   AddLineToFile(output, wxT("img {"));
   AddLineToFile(output, wxT("  -ms-interpolation-mode: bicubic;"));

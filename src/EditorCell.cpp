@@ -273,8 +273,11 @@ wxString EditorCell::ToHTML()
           retval+=wxT("<span class=\"code_string\">")+text+wxT("</span>");
           break;
         case TS_CODE_OPERATOR:
-        default:
           retval+=wxT("<span class=\"code_operator\">")+text+wxT("</span>");
+          break;
+        case TS_CODE_ENDOFLINE:
+        default:
+          retval+=wxT("<span class=\"code_endofline\">")+text+wxT("</span>");
           break;
         }
       } else
@@ -2280,7 +2283,10 @@ void EditorCell::StyleText()
       
       if(operators.Find(token) != wxNOT_FOUND)
       {
-        m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
+        if((token==wxT('$'))||(token==wxT(';')))
+          m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE,token));
+        else
+          m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
       if(isdigit(token[0]))

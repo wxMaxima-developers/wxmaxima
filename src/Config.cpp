@@ -566,10 +566,11 @@ wxPanel* Config::CreateStylePanel()
       _("Code highlighting: Comments"),
       _("Code highlighting: Numbers"),
       _("Code highlighting: Strings"),
-      _("Code highlighting: Operators")
+      _("Code highlighting: Operators"),
+      _("Code highlighting: End of line")
     };
 
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 30, m_styleFor_choices, wxLB_SINGLE);
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 31, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
 #ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
@@ -985,6 +986,12 @@ void Config::ReadStyles(wxString file)
   m_styleCodeHighlightingOperator.italic = true;
   m_styleCodeHighlightingOperator.underlined = false;
   READ_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
+  // Line endings in highlighted code
+  m_styleCodeHighlightingEndOfLine.color = wxT("rgb(64,64,64)");
+  m_styleCodeHighlightingEndOfLine.bold = false;
+  m_styleCodeHighlightingEndOfLine.italic = true;
+  m_styleCodeHighlightingEndOfLine.underlined = false;
+  READ_STYLE(m_styleCodeHighlightingEndOfLine, "Style/CodeHighlighting/EndOfLine/")
 
   // Subsubsection
   m_styleSubsubsection.color = wxT("black");
@@ -1130,6 +1137,7 @@ void Config::WriteStyles(wxString file)
   WRITE_STYLE(m_styleCodeHighlightingNumber,   "Style/CodeHighlighting/Number/")
   WRITE_STYLE(m_styleCodeHighlightingString,   "Style/CodeHighlighting/String/")
   WRITE_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
+  WRITE_STYLE(m_styleCodeHighlightingEndOfLine,"Style/CodeHighlighting/EndOfLine/")
 
   // Subsubsection
   config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
@@ -1322,8 +1330,12 @@ style* Config::GetStylePointer()
     break;
   case 28:
     tmp = &m_styleCodeHighlightingString;
+    break;
   case 29:
     tmp = &m_styleCodeHighlightingOperator;
+    break;
+  case 30:
+    tmp = &m_styleCodeHighlightingEndOfLine;
     break;
   default:
     tmp = &m_styleDefault;

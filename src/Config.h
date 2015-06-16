@@ -247,7 +247,8 @@ protected:
     m_styleCodeHighlightingComment,
     m_styleCodeHighlightingNumber,
     m_styleCodeHighlightingString,
-    m_styleCodeHighlightingOperator;
+    m_styleCodeHighlightingOperator,
+    m_styleCodeHighlightingEndOfLine;
 
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent& event);
