@@ -2235,7 +2235,7 @@ void EditorCell::StyleText()
         continue;
       }
 
-if((Ch==wxT('+')) ||
+      if((Ch==wxT('+')) ||
          (Ch==wxT('-'))||
          (Ch==wxT('\x2212'))
         )
@@ -2247,7 +2247,7 @@ if((Ch==wxT('+')) ||
         {
           // Our sign precedes a number.
           if(
-            (wxIsalpha(lastChar)) ||
+            (wxIsalnum(lastChar)) ||
             (lastChar==wxT('%'))  ||
             (lastChar==wxT(')'))  ||
             (lastChar==wxT('}'))  ||
