@@ -30,6 +30,9 @@
 
 #define ESC_CHAR wxT('\xA6')
 
+wxString operators = wxT("+-*/^:=#'!\";");
+wxString alphas = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY\\_%");
+
 EditorCell::EditorCell(wxString text) : MathCell()
 {
   m_lastSelectionStart = -1;
@@ -243,7 +246,7 @@ wxString EditorCell::ToHTML()
     while(!styledText.empty())
     {
       // Grab a portion of text from the list.
-      StyledText TextSnippet=styledText.front();
+      StyledText TextSnippet = styledText.front();
       styledText.pop_front();
 
       wxString text =  PrependNBSP(EscapeHTMLChars(TextSnippet.GetText()));
@@ -391,11 +394,11 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     TextStartingpoint.x += SCALE_PX(MC_TEXT_PADDING, scale);
     wxPoint TextCurrentPoint = TextStartingpoint;
     std::list<StyledText> styledText = m_styledText;
-    int lastStyle=-1;
+    int lastStyle = -1;
     while(!styledText.empty())
     {
       // Grab a portion of text from the list.
-      StyledText TextSnippet=styledText.front();
+      StyledText TextSnippet = styledText.front();
       styledText.pop_front();
       wxString TextToDraw = TextSnippet.GetText();
       int width, height;
@@ -416,7 +419,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         if(TextSnippet.StyleSet())
         {
           wxDC& dc = parser.GetDC();
-          if(lastStyle!=TextSnippet.GetStyle())
+          if(lastStyle != TextSnippet.GetStyle())
           {
             dc.SetTextForeground(parser.GetColor(TextSnippet.GetStyle()));
             lastStyle = TextSnippet.GetStyle();
@@ -435,9 +438,13 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #endif
         
         dc.DrawText(TextToDraw,
+                    TextCurrentPoint.x,
+                    TextCurrentPoint.y - m_center);
+        /*
+        dc.DrawLine(TextCurrentPoint.x + SCALE_PX(2, scale),
+                    TextCurrentPoint.y - m_center,
                     TextCurrentPoint.x + SCALE_PX(2, scale),
-                    TextCurrentPoint.y - m_center + SCALE_PX(2, scale)
-          );
+                    TextCurrentPoint.y); */
         
         dc.GetTextExtent(TextToDraw, &width, &height);
         TextCurrentPoint.x += width;
@@ -2015,18 +2022,24 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxString token;
   size_t operatorLength;
 
+  static wxString nums = wxT("1234567890");
+  static wxString numSeps = wxT("dDcCeE");
+
   while(pos<size)
   {
     wxChar Ch = string.GetChar(pos);
-    if(Ch==wxT('\n'))
+
+    // Check for new line
+    if(string.GetChar(pos)==wxT('\n'))
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
+        token = wxEmptyString;
+      }
       retval.Add(wxT("\nd"));
-      token = wxEmptyString;
       pos++;
     }
-    // A minus and a plus are special tokens as they can be both
+ // A minus and a plus are special tokens as they can be both
     // operators or part of a number.
     else if (
       (Ch==wxT('+')) ||
@@ -2041,87 +2054,70 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       pos++;
       token = wxEmptyString;
     }
-    // Find a number that starts at the current positions
-    else if(
-      (
-        (Ch>=wxT('0')) &&
-        (Ch<=wxT('9'))
-        ) 
-      )
+    // Check for comment
+    if ((string.Length() > pos+1) &&
+        ((string.GetChar(pos) == '/' && string.GetChar(pos+1) == '*') ||
+         (string.GetChar(pos) == '*' && string.GetChar(pos+1) == '/')))
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token=wxEmptyString;
-      
-      while(pos<size)
-      {
-        if(
-          (string.GetChar(pos) == wxT('d')) ||
-          (string.GetChar(pos) == wxT('D')) ||
-          (string.GetChar(pos) == wxT('c')) ||
-          (string.GetChar(pos) == wxT('C')) ||
-          (string.GetChar(pos) == wxT('e')) ||
-          (string.GetChar(pos) == wxT('E'))
-          )
-        {
-          token += string.GetChar(pos++);
-        }
-        else
-        {
-          if(
-            !(
-              (string.GetChar(pos)>=wxT('0')) &&
-              (string.GetChar(pos)<=wxT('9'))
-              )
-            )
-            break;
-
-        }
-        token += string.GetChar(pos++);
+        token = wxEmptyString;
       }
-      retval.Add(token + wxT("d"));
-      token=wxEmptyString;
+      retval.Add(string.SubString(pos, pos+1) + wxT("d"));
+      pos = pos+2;
     }
-    else if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
+    
+    // Find operators that starts at the current position
+    else if (operators.Find(string.GetChar(pos)) != wxNOT_FOUND)
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token = string.Right(size-pos);
-      retval.Add(token.Left(operatorLength) + wxT("d"));
-      token =wxEmptyString;
-      pos += operatorLength;
+        token = wxEmptyString;
+      }
+      retval.Add(wxString(string.GetChar(pos++)) + wxT("d"));
     }
+    
     // Find a keyword that starts at the current position
-    else if(
-      (wxIsalpha(string.GetChar(pos))) ||
-      (string.GetChar(pos) == wxT('\\')) ||
-      (string.GetChar(pos) == wxT('_'))
-      )
+    else if (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND)
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token=wxEmptyString;
-      
-      while(pos<size)
-      {
-        if(wxIsalnum(string.GetChar(pos)) ||
-           (string.GetChar(pos) == wxT('\\')) ||
-           (string.GetChar(pos) == wxT('_'))
-          )
-        {
-          token += string.GetChar(pos);
-          pos++;
-        }
-        else
-        {
-          break;
-        }
+        token=wxEmptyString;
       }
+      
+      while((pos<size) &&
+            (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND ||
+             nums.Find(string.GetChar(pos)) != wxNOT_FOUND))
+      {
+        token += string.GetChar(pos);
+        pos++;
+      }
+      
+      retval.Add(token + wxT("d"));
+      token = wxEmptyString;
+    }
+    
+    // Find a number that starts at the current positions
+    else if (nums.Find(string.GetChar(pos)) != wxNOT_FOUND)
+    {
+      if(token != wxEmptyString) {
+        retval.Add(token + wxT("d"));
+        token=wxEmptyString;
+      }
+            
+      while((pos<size) &
+            (nums.Find(string.GetChar(pos)) != wxNOT_FOUND ||
+             numSeps.Find(string.GetChar(pos)) != wxNOT_FOUND))
+      {
+        token += string.GetChar(pos);
+        pos++;
+      }
+      
       retval.Add(token + wxT("d"));
       token=wxEmptyString;
     }
     // Find a string that starts at the current position.
-    else if(Ch==wxT('"'))
+    else if(string.GetChar(pos)==wxT('"'))
     {
       if(token != wxEmptyString)
         retval.Add(token + wxT("d"));
@@ -2140,7 +2136,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
     }
     // Find a comment that starts at the current position
-    else if((pos<size-1) && (Ch==wxT('/')) && (string[pos+1]==wxT('*')))
+    else if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
     {
       if(token != wxEmptyString)
         retval.Add(token + wxT("d"));
@@ -2161,6 +2157,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     else
       token = token + string.GetChar(pos++);
   }
+  
   // Add the last token we detected to the token list
   retval.Add(token + wxT("d"));
   
@@ -2173,8 +2170,6 @@ size_t EditorCell::OperatorLength(wxString text)
      return 1;
   if(text[0] == wxT('-'))
      return 1;
-  if(text[0] == wxT('\x2212')) // Unicode minus sign
-     return 1;    
   if(text[0] == wxT('*')) {
     if((text.Length()>1)&&(text[1] == wxT('*')))
       return 2;
@@ -2284,6 +2279,7 @@ void EditorCell::StyleText()
           wxString::Format(wxT(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
       }
     }
+    
     wxArrayString tokens = StringToTokens(textToStyle);
 
     wxString lastTokenWithText;
@@ -2319,7 +2315,26 @@ void EditorCell::StyleText()
         o++;
       }
 
-      if((Ch==wxT('+')) ||
+      // Handle comments
+      if(token == wxT("\""))
+      {
+        m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+        if (i+1<tokens.GetCount()) {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length()-1);
+          m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+          while ((i+1 < tokens.GetCount()) && token != wxT("\"")) {
+            i++;
+            token = tokens[i];
+            token = token.Left(token.Length()-1);
+            m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+          }
+        }
+        continue;
+      }
+
+if((Ch==wxT('+')) ||
          (Ch==wxT('-'))||
          (Ch==wxT('\x2212'))
         )
@@ -2349,20 +2364,22 @@ void EditorCell::StyleText()
             m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
-      
-      if(OperatorLength(token) > 0)
-      {
-        m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
-        continue;
-      }
-      if(token[0]==wxT('\"'))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_STRING,token));
-        continue;
-      }
-      if((token[0]==wxT('/')&&(token[0]==wxT('*'))))
+
+      if(token == wxT("/*"))
       {
         m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        while ((i+1 < tokens.GetCount()) && (token != wxT("*/"))) {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length()-1);
+          m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        }
+        continue;
+      }
+      
+      if(operators.Find(token) != wxNOT_FOUND)
+      {
+        m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
       if(isdigit(token[0]))
@@ -2370,7 +2387,7 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if((wxIsalpha(token[0])) || (token[0]==wxT('\\')) || (token[0]==wxT('_')))
+      if(alphas.Find(token[0]) != wxNOT_FOUND)
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume there cannot be an algorithm that always makes
@@ -2382,17 +2399,48 @@ void EditorCell::StyleText()
         //  - using lambda a user can store a function in a variable
         //  - and is U_C1(t) really meant as a function or does it represent a variable
         //    named U_C1 that depends on t?
-        if(nextChar==wxT('('))
-          m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+        if((tokens.GetCount()>i+1))
+        {
+          wxString nextToken = tokens[i+1];
+          nextToken=nextToken.Trim(false);
+
+          if (token == wxT("for")    ||
+              token == wxT("in")     ||
+              token == wxT("while")  ||
+              token == wxT("do")     ||
+              token == wxT("thru")   ||
+              token == wxT("next")   ||
+              token == wxT("step")   ||
+              token == wxT("unless") ||
+              token == wxT("from")   ||
+              token == wxT("if")     ||
+              token == wxT("else")   ||
+              token == wxT("elif"))
+            m_styledText.push_back(token);
+          else if((nextToken[0])==wxT('('))
+            m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+          else
+            m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
+          continue;
+        }
         else
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
-        continue;
       }
       m_styledText.push_back(StyledText(token));
     }
   }
-  else
-    m_styledText.push_back(StyledText(m_text));
+  else {
+    wxString token;
+    for (size_t i = 0; i<m_text.Length(); i++) {
+      token += m_text.GetChar(i);
+      if (m_text.GetChar(i) == '\n') {
+        m_styledText.push_back(StyledText(token));
+        m_styledText.push_back(StyledText(wxT("\n")));
+        token = wxEmptyString;
+      }
+    }
+    m_styledText.push_back(StyledText(token));
+  }
 }
 
 
