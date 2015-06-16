@@ -2057,7 +2057,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
     }
     // Check for comment
-    if ((string.Length() > pos+1) &&
+    else if ((string.Length() > pos+1) &&
         ((Ch == '/' && string.GetChar(pos+1) == '*') ||
          (Ch == '*' && string.GetChar(pos+1) == '/')))
     {
