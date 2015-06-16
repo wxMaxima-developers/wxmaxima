@@ -1880,6 +1880,9 @@ void EditorCell::PasteFromClipboard(bool primary)
 
 int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
 {
+  if (pos == 0)
+    return 0;
+
   int i = 0;
   
   std::list<StyledText> styledText = m_styledText;
