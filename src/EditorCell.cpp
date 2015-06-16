@@ -31,6 +31,7 @@
 #define ESC_CHAR wxT('\xA6')
 
 wxString operators = wxT("+-*/^:=#'!\";");
+wxString alphas = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY\\_%");
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
@@ -2015,7 +2016,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxString token;
   size_t operatorLength;
 
-  static wxString alphas = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY\\_%");
   static wxString nums = wxT("1234567890");
   static wxString numSeps = wxT("dDcCeE");
 
@@ -2169,7 +2169,7 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if((wxIsalpha(token[0])) || (token[0]==wxT('\\')) || (token[0]==wxT('_')))
+      if(alphas.Find(token[0]) != wxNOT_FOUND)
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume there cannot be an algorithm that always makes
@@ -2185,8 +2185,21 @@ void EditorCell::StyleText()
         {
           wxString nextToken = tokens[i+1];
           nextToken=nextToken.Trim(false);
-          
-          if((nextToken[0])==wxT('('))
+
+          if (token == wxT("for")    ||
+              token == wxT("in")     ||
+              token == wxT("while")  ||
+              token == wxT("do")     ||
+              token == wxT("thru")   ||
+              token == wxT("next")   ||
+              token == wxT("step")   ||
+              token == wxT("unless") ||
+              token == wxT("from")   ||
+              token == wxT("if")     ||
+              token == wxT("else")   ||
+              token == wxT("elif"))
+            m_styledText.push_back(token);
+          else if((nextToken[0])==wxT('('))
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
           else
             m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
