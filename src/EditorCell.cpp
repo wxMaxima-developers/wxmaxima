@@ -30,6 +30,8 @@
 
 #define ESC_CHAR wxT('\xA6')
 
+wxString operators = wxT("+-*/^:=#'!\";");
+
 EditorCell::EditorCell(wxString text) : MathCell()
 {
   m_lastSelectionStart = -1;
@@ -243,7 +245,7 @@ wxString EditorCell::ToHTML()
     while(!styledText.empty())
     {
       // Grab a portion of text from the list.
-      StyledText TextSnippet=styledText.front();
+      StyledText TextSnippet = styledText.front();
       styledText.pop_front();
 
       wxString text =  PrependNBSP(EscapeHTMLChars(TextSnippet.GetText()));
@@ -394,7 +396,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     while(!styledText.empty())
     {
       // Grab a portion of text from the list.
-      StyledText TextSnippet=styledText.front();
+      StyledText TextSnippet = styledText.front();
       styledText.pop_front();
       wxString TextToDraw = TextSnippet.GetText();
       int width, height;
@@ -429,9 +431,13 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #endif
         
         dc.DrawText(TextToDraw,
+                    TextCurrentPoint.x,
+                    TextCurrentPoint.y - m_center);
+        /*
+        dc.DrawLine(TextCurrentPoint.x + SCALE_PX(2, scale),
+                    TextCurrentPoint.y - m_center,
                     TextCurrentPoint.x + SCALE_PX(2, scale),
-                    TextCurrentPoint.y - m_center + SCALE_PX(2, scale)
-          );
+                    TextCurrentPoint.y); */
         
         dc.GetTextExtent(TextToDraw, &width, &height);
         TextCurrentPoint.x += width;
@@ -2009,226 +2015,93 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxString token;
   size_t operatorLength;
 
+  static wxString alphas = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY\\_%");
+  static wxString nums = wxT("1234567890");
+  static wxString numSeps = wxT("dDcCeE");
+
   while(pos<size)
   {
+    // Check for new line
     if(string.GetChar(pos)==wxT('\n'))
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
+        token = wxEmptyString;
+      }
       retval.Add(wxT("\nd"));
-      token = wxEmptyString;
       pos++;
     }
-    else if((operatorLength=OperatorLength(string.Right(size-pos)))>0)
+
+    // Check for comment
+    if ((string.Length() > pos+1) &&
+        ((string.GetChar(pos) == '/' && string.GetChar(pos+1) == '*') ||
+         (string.GetChar(pos) == '*' && string.GetChar(pos+1) == '/')))
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token = string.Right(size-pos);
-      retval.Add(token.Left(operatorLength) + wxT("d"));
-      token =wxEmptyString;
-      pos += operatorLength;
+        token = wxEmptyString;
+      }
+      retval.Add(string.SubString(pos, pos+1) + wxT("d"));
+      pos = pos+2;
     }
+    
+    // Find operators that starts at the current position
+    else if (operators.Find(string.GetChar(pos)) != wxNOT_FOUND)
+    {
+      if(token != wxEmptyString) {
+        retval.Add(token + wxT("d"));
+        token = wxEmptyString;
+      }
+      retval.Add(wxString(string.GetChar(pos++)) + wxT("d"));
+    }
+    
     // Find a keyword that starts at the current position
-    else if(
-      (wxIsalpha(string.GetChar(pos))) ||
-      (string.GetChar(pos) == wxT('\\')) ||
-      (string.GetChar(pos) == wxT('_'))
-      )
+    else if (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND)
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token=wxEmptyString;
-      
-      while(pos<size)
-      {
-        if(wxIsalnum(string.GetChar(pos)) ||
-           (string.GetChar(pos) == wxT('\\')) ||
-           (string.GetChar(pos) == wxT('_'))
-          )
-        {
-          token += string.GetChar(pos);
-          pos++;
-        }
-        else
-        {
-          break;
-        }
+        token=wxEmptyString;
       }
+      
+      while((pos<size) &&
+            (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND ||
+             nums.Find(string.GetChar(pos)) != wxNOT_FOUND))
+      {
+        token += string.GetChar(pos);
+        pos++;
+      }
+      
       retval.Add(token + wxT("d"));
-      token=wxEmptyString;
+      token = wxEmptyString;
     }
+    
     // Find a number that starts at the current positions
-    else if(wxIsdigit(string.GetChar(pos)))
+    else if (nums.Find(string.GetChar(pos)) != wxNOT_FOUND)
     {
-      if(token != wxEmptyString)
+      if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
-      token=wxEmptyString;
-            
-      while(pos<size)
-      {
-        if(wxIsdigit(string.GetChar(pos)) ||
-           (string.GetChar(pos) == wxT('d')) ||
-           (string.GetChar(pos) == wxT('D')) ||
-           (string.GetChar(pos) == wxT('c')) ||
-           (string.GetChar(pos) == wxT('C')) ||
-           (string.GetChar(pos) == wxT('e')) ||
-           (string.GetChar(pos) == wxT('E'))
-          )
-        {
-          token += string.GetChar(pos);
-          pos++;
-        }
-        else
-        {
-          break;
-        }
+        token=wxEmptyString;
       }
+            
+      while((pos<size) &
+            (nums.Find(string.GetChar(pos)) != wxNOT_FOUND ||
+             numSeps.Find(string.GetChar(pos)) != wxNOT_FOUND))
+      {
+        token += string.GetChar(pos);
+        pos++;
+      }
+      
       retval.Add(token + wxT("d"));
       token=wxEmptyString;
-    }
-    // Find a string that starts at the current position.
-    else if(string.GetChar(pos)==wxT('"'))
-    {
-      if(token != wxEmptyString)
-        retval.Add(token + wxT("d"));
-      
-      // Extract the string constant from our input
-      token=string.Right(string.Length()-pos-1);
-      size_t stringEnd;
-      if((stringEnd = token.Find(wxT("\"")))!=wxNOT_FOUND)
-      {
-        token = token.Left(stringEnd + 1);
-        pos += stringEnd + 2;
-      }
-      else
-        pos = size + 1;
-      retval.Add(wxT("\"")+token + wxT("d"));
-      token = wxEmptyString;
-    }
-    // Find a comment that starts at the current position
-    else if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
-    {
-      if(token != wxEmptyString)
-        retval.Add(token + wxT("d"));
-      
-      // Extract the comment from our input
-      token=string.Right(string.Length()-pos-2);
-      size_t commentEnd;
-      if((commentEnd = token.Find(wxT("*/")))!=wxNOT_FOUND)
-      {
-        token = token.Left(commentEnd + 2);
-        pos += commentEnd + 4;
-      }
-      else
-        pos = size + 1;
-      retval.Add(wxT("/*") + token + wxT("d"));
-      token = wxEmptyString;
     }
     else
       token = token + string.GetChar(pos++);
   }
+  
   // Add the last token we detected to the token list
   retval.Add(token + wxT("d"));
   
   return retval;
-}
-
-size_t EditorCell::OperatorLength(wxString text)
-{
-  if(text[0] == wxT('+'))
-     return 1;
-  if(text[0] == wxT('-'))
-     return 1;
-  if(text[0] == wxT('*')) {
-    if((text.Length()>1)&&(text[1] == wxT('*')))
-      return 2;
-    else
-      return 1;
-  }
-  if(text[0] == wxT('/'))
-    return 1;
-  if(text[0] == wxT('^')) {
-    if((text.Length()>1)&&(text[1] == wxT('^')))
-      return 2;
-    else
-      return 1;
-  }
-  if(text[0] == wxT('.'))
-    return 1;
-  
-  if(text[0] == wxT('<')) {
-     if((text.Length()>1)&&(text[1] == wxT('=')))
-       return 2;
-     else
-       return 1;
-  }
-     
-  if(text[0] == wxT('>')) {
-    if((text.Length()>1)&&(text[1] == wxT('=')))
-      return 2;
-    else
-      return 1;
-  }
-
-  if(
-    (text.Left(3) == wxT("not")) &&
-    (
-      (text.Length()<4) ||
-      ((text.Length()>4) && !wxIsalnum(text[4]))
-      )
-    )
-    return 3;
-  
-  if(
-    (text.Left(3) == wxT("and")) &&
-    (
-      (text.Length()<4) ||
-      ((text.Length()>4) && !wxIsalnum(text[4]))
-      )
-    )
-    return 3;
-  
-  if(
-    (text.Left(2) == wxT("or")) &&
-    (
-      (text.Length()<3) ||
-      ((text.Length()>3) && !wxIsalnum(text[3]))
-      )
-    )
-    return 2;
-  
-  if(text[0] == wxT('='))
-  {
-    if((text.Length()>1)&&(text[1] == wxT('=')))
-      return 2;
-    else
-      return 1;
-  }
-  
-  if(text[0] == wxT('#'))
-    return 1;
-
-  if(text[0] == wxT('='))
-    return 1;
-
-  if(text[0] == wxT(':'))
-  {
-    if(text.Length()>1)
-    {
-      if(text[1] == wxT('='))
-        return 2;
-      
-      if(text[1] == wxT(':'))
-      {
-        if((text.Length()>2) && (text[2]==wxT('=')))
-          return 3;
-        else
-          return 2;
-      } 
-    }
-    else return 1;
-  }
-  return 0;
 }
 
 void EditorCell::StyleText()
@@ -2248,26 +2121,47 @@ void EditorCell::StyleText()
           wxString::Format(wxT(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
       }
     }
+    
     wxArrayString tokens = StringToTokens(textToStyle);
 
     for(size_t i=0;i<tokens.GetCount();i++)
     {
       wxString token = tokens[i];
       token = token.Left(token.Length()-1);
-      
-      if(OperatorLength(token) > 0)
-      {
-        m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
-        continue;
-      }
-      if(token[0]==wxT('\"'))
+
+      if(token == wxT("\""))
       {
         m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+        if (i+1<tokens.GetCount()) {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length()-1);
+          m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+          while ((i+1 < tokens.GetCount()) && token != wxT("\"")) {
+            i++;
+            token = tokens[i];
+            token = token.Left(token.Length()-1);
+            m_styledText.push_back(StyledText(TS_CODE_STRING,token));
+          }
+        }
         continue;
       }
-      if((token[0]==wxT('/')&&(token[0]==wxT('*'))))
+
+      if(token == wxT("/*"))
       {
         m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        while ((i+1 < tokens.GetCount()) && (token != wxT("*/"))) {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length()-1);
+          m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        }
+        continue;
+      }
+      
+      if(operators.Find(token) != wxNOT_FOUND)
+      {
+        m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
       if(isdigit(token[0]))
@@ -2287,10 +2181,11 @@ void EditorCell::StyleText()
         //  - using lambda a user can store a function in a variable
         //  - and is U_C1(t) really meant as a function or does it represent a variable
         //    named U_C1 that depends on t?
-        wxString nextToken = tokens[i+1];
-        nextToken=nextToken.Trim(false);
         if((tokens.GetCount()>i+1))
         {
+          wxString nextToken = tokens[i+1];
+          nextToken=nextToken.Trim(false);
+          
           if((nextToken[0])==wxT('('))
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
           else
