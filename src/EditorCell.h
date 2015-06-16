@@ -275,11 +275,6 @@ private:
   };
   
   std::list<StyledText> m_styledText;
-  /*! Returns the length of an eventual infix operator the wxString text begins with.
-
-    If an operator isn't detected automatically for syntax highlighting it has to be added here.
-   */
-  size_t OperatorLength(wxString text);
 
 #if wxUSE_UNICODE
   wxString InterpretEscapeString(wxString txt);

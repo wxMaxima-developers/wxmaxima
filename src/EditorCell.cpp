@@ -2020,7 +2020,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   size_t pos=0;
   wxArrayString retval;
   wxString token;
-  size_t operatorLength;
 
   static wxString nums = wxT("1234567890");
   static wxString numSeps = wxT("dDcCeE");
@@ -2030,7 +2029,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     wxChar Ch = string.GetChar(pos);
 
     // Check for new line
-    if(string.GetChar(pos)==wxT('\n'))
+    if(Ch==wxT('\n'))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2039,7 +2038,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       retval.Add(wxT("\nd"));
       pos++;
     }
- // A minus and a plus are special tokens as they can be both
+    // A minus and a plus are special tokens as they can be both
     // operators or part of a number.
     else if (
       (Ch==wxT('+')) ||
@@ -2056,8 +2055,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     // Check for comment
     if ((string.Length() > pos+1) &&
-        ((string.GetChar(pos) == '/' && string.GetChar(pos+1) == '*') ||
-         (string.GetChar(pos) == '*' && string.GetChar(pos+1) == '/')))
+        ((Ch == '/' && string.GetChar(pos+1) == '*') ||
+         (Ch == '*' && string.GetChar(pos+1) == '/')))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2068,7 +2067,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find operators that starts at the current position
-    else if (operators.Find(string.GetChar(pos)) != wxNOT_FOUND)
+    else if (operators.Find(Ch) != wxNOT_FOUND)
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2078,7 +2077,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find a keyword that starts at the current position
-    else if (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND)
+    else if (alphas.Find(Ch) != wxNOT_FOUND)
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2098,7 +2097,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find a number that starts at the current positions
-    else if (nums.Find(string.GetChar(pos)) != wxNOT_FOUND)
+    else if (nums.Find(Ch) != wxNOT_FOUND)
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2117,7 +2116,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token=wxEmptyString;
     }
     // Find a string that starts at the current position.
-    else if(string.GetChar(pos)==wxT('"'))
+    else if(Ch==wxT('"'))
     {
       if(token != wxEmptyString)
         retval.Add(token + wxT("d"));
@@ -2136,7 +2135,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
     }
     // Find a comment that starts at the current position
-    else if((pos<size-1) && (string.GetChar(pos)==wxT('/')) && (string[pos+1]==wxT('*')))
+    else if((pos<size-1) && (Ch==wxT('/')) && (string[pos+1]==wxT('*')))
     {
       if(token != wxEmptyString)
         retval.Add(token + wxT("d"));
@@ -2162,104 +2161,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   retval.Add(token + wxT("d"));
   
   return retval;
-}
-
-size_t EditorCell::OperatorLength(wxString text)
-{
-  if(text[0] == wxT('+'))
-     return 1;
-  if(text[0] == wxT('-'))
-     return 1;
-  if(text[0] == wxT('*')) {
-    if((text.Length()>1)&&(text[1] == wxT('*')))
-      return 2;
-    else
-      return 1;
-  }
-  if(text[0] == wxT('/'))
-    return 1;
-  if(text[0] == wxT('^')) {
-    if((text.Length()>1)&&(text[1] == wxT('^')))
-      return 2;
-    else
-      return 1;
-  }
-  if(text[0] == wxT('.'))
-    return 1;
-  
-  if(text[0] == wxT('<')) {
-     if((text.Length()>1)&&(text[1] == wxT('=')))
-       return 2;
-     else
-       return 1;
-  }
-     
-  if(text[0] == wxT('>')) {
-    if((text.Length()>1)&&(text[1] == wxT('=')))
-      return 2;
-    else
-      return 1;
-  }
-
-  if(
-    (text.Left(3) == wxT("not")) &&
-    (
-      (text.Length()<4) ||
-      ((text.Length()>4) && !wxIsalnum(text[4]))
-      )
-    )
-    return 3;
-  
-  if(
-    (text.Left(3) == wxT("and")) &&
-    (
-      (text.Length()<4) ||
-      ((text.Length()>4) && !wxIsalnum(text[4]))
-      )
-    )
-    return 3;
-  
-  if(
-    (text.Left(2) == wxT("or")) &&
-    (
-      (text.Length()<3) ||
-      ((text.Length()>3) && !wxIsalnum(text[3]))
-      )
-    )
-    return 2;
-  
-  if(text[0] == wxT('='))
-  {
-    if((text.Length()>1)&&(text[1] == wxT('=')))
-      return 2;
-    else
-      return 1;
-  }
-  
-  if(text[0] == wxT('#'))
-    return 1;
-
-  if(text[0] == wxT('='))
-    return 1;
-
-  if(text[0] == wxT(':'))
-  {
-    if(text.Length()>1)
-    {
-      if(text[1] == wxT('='))
-        return 2;
-      
-      if(text[1] == wxT(':'))
-      {
-        if((text.Length()>2) && (text[2]==wxT('=')))
-          return 3;
-        else
-          return 2;
-      } 
-    }
-    else return 1;
-  }
-  return 0;
 }
 
 void EditorCell::StyleText()
@@ -2417,7 +2318,7 @@ if((Ch==wxT('+')) ||
               token == wxT("else")   ||
               token == wxT("elif"))
             m_styledText.push_back(token);
-          else if((nextToken[0])==wxT('('))
+          else if(nextChar==wxT('('))
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
           else
             m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
