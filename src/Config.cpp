@@ -987,7 +987,7 @@ void Config::ReadStyles(wxString file)
   m_styleCodeHighlightingOperator.underlined = false;
   READ_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
   // Line endings in highlighted code
-  m_styleCodeHighlightingEndOfLine.color = wxT("rgb(64,64,64)");
+  m_styleCodeHighlightingEndOfLine.color = wxT("rgb(192,192,192)");
   m_styleCodeHighlightingEndOfLine.bold = false;
   m_styleCodeHighlightingEndOfLine.italic = true;
   m_styleCodeHighlightingEndOfLine.underlined = false;

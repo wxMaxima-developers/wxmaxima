@@ -186,7 +186,7 @@ void CellParser::ReadStyle()
   READ_STYLES(TS_CODE_OPERATOR, "Style/CodeHighlighting/Operator/")
     
   // Line endings in highlighted code
-  m_styles[TS_CODE_ENDOFLINE].color = wxT("rgb(64,64,64)");
+  m_styles[TS_CODE_ENDOFLINE].color = wxT("rgb(192,192,192)");
   m_styles[TS_CODE_ENDOFLINE].bold = false;
   m_styles[TS_CODE_ENDOFLINE].italic = true;
   m_styles[TS_CODE_ENDOFLINE].underlined = false;

@@ -2842,7 +2842,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString colorCodeNumber   = wxT("rgb(128,64,0)");
   wxString colorCodeString   = wxT("rgb(0,0,128)");
   wxString colorCodeOperator = wxT("rgb(0,0,128)");
-  wxString colorCodeEndOfLine = wxT("rgb(64,64,64)");
+  wxString colorCodeEndOfLine = wxT("rgb(192,192,192)");
 
     
   wxString colorTextBg(wxT("white"));
