@@ -230,6 +230,10 @@ private:
    */
   wxArrayString StringToTokens(wxString string);
 
+  bool IsAlpha(wxChar c);
+  bool IsNum(wxChar c);
+  bool IsAlphaNum(wxChar c);
+  
   /*! A piece of styled text for syntax highlighting
 
    */

@@ -30,8 +30,7 @@
 
 #define ESC_CHAR wxT('\xA6')
 
-wxString operators = wxT("+-*/^:=#'!\";");
-wxString alphas = wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY\\_%");
+const wxString operators = wxT("+-*/^:=#'!\";");
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
@@ -565,9 +564,6 @@ int ChangeNumpadToChar(int c)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-  static const wxString chars(wxT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNOPQRSTUVWXYZ01234567890_%"));
-  static const wxString delim(wxT("()[]{},.;?/*:=&$"));
-
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
@@ -1758,12 +1754,11 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
     m_positionOfCaret = m_selectionEnd;
     return wxT("%");
   }
-  wxString wordChars = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_%");
 
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
   {
-    if (wordChars.Find(m_text.GetChar(left-1)) == -1)
+    if (!IsAlphaNum(m_text.GetChar(left-1)))
       break;
     left--;
   }
@@ -1772,7 +1767,7 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   {
     while (right < (signed)m_text.length() )
     {
-      if(wordChars.Find(m_text.GetChar(right)) == -1)
+      if(!IsAlphaNum(m_text.GetChar(right)))
         break;
       right++;
     }
@@ -2020,6 +2015,35 @@ void EditorCell::ClearUndo()
   m_historyPosition = -1;
 }
 
+bool EditorCell::IsAlpha(wxChar ch)
+{
+  static const wxString alphas = wxT("\\_%");
+
+  if (wxIsalpha(ch))
+    return true;
+
+  if (alphas.Find(ch) != wxNOT_FOUND)
+    return true;
+
+  return false;
+}
+
+bool EditorCell::IsNum(wxChar ch)
+{
+  if (ch >= '0' && ch <= '9')
+    return true;
+
+  return false;
+}
+
+bool EditorCell::IsAlphaNum(wxChar ch)
+{
+  if (IsAlpha(ch) || IsNum(ch))
+    return true;
+
+  return false;
+}
+
 wxArrayString EditorCell::StringToTokens(wxString string)
 {
   size_t size=string.Length();
@@ -2027,8 +2051,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxArrayString retval;
   wxString token;
 
-  static wxString nums = wxT("1234567890");
-  static wxString numSeps = wxT("dDcCeE");
+  static wxString numSeps = wxT("bBdDeEfF");
 
   while(pos<size)
   {
@@ -2083,16 +2106,14 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find a keyword that starts at the current position
-    else if (alphas.Find(Ch) != wxNOT_FOUND)
+    else if (IsAlpha(Ch))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
         token=wxEmptyString;
       }
       
-      while((pos<size) &&
-            (alphas.Find(string.GetChar(pos)) != wxNOT_FOUND ||
-             nums.Find(string.GetChar(pos)) != wxNOT_FOUND))
+      while((pos<size) && IsAlphaNum(string.GetChar(pos)))
       {
         token += string.GetChar(pos);
         pos++;
@@ -2103,15 +2124,15 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find a number that starts at the current positions
-    else if (nums.Find(Ch) != wxNOT_FOUND)
+    else if (IsNum(Ch))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
         token=wxEmptyString;
       }
             
-      while((pos<size) &
-            (nums.Find(string.GetChar(pos)) != wxNOT_FOUND ||
+      while((pos<size) &&
+            (IsNum(string.GetChar(pos)) ||
              numSeps.Find(string.GetChar(pos)) != wxNOT_FOUND))
       {
         token += string.GetChar(pos);
@@ -2259,7 +2280,7 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if(alphas.Find(token[0]) != wxNOT_FOUND)
+      if(IsAlpha(token[0]))
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume there cannot be an algorithm that always makes
@@ -2287,7 +2308,12 @@ void EditorCell::StyleText()
               token == wxT("from")   ||
               token == wxT("if")     ||
               token == wxT("else")   ||
-              token == wxT("elif"))
+              token == wxT("elif")   ||
+              token == wxT("and")    ||
+              token == wxT("or")     ||
+              token == wxT("not")    ||
+              token == wxT("true")   ||
+              token == wxT("false"))
             m_styledText.push_back(token);
           else if(nextChar==wxT('('))
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
