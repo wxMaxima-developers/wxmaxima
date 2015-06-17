@@ -2810,7 +2810,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
-      return false;
+    return false;
 
   wxTextOutputStream output(outfile);
 
@@ -2927,7 +2927,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (colorBg.Length()) {
     wxColour color(colorBg);
     output<< wxT("  background-color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
   output<<wxT("}\n");
@@ -2939,7 +2939,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxColour color(colorInput);
     output<<wxT("  color: \n") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";\n");
+      wxT(";\n");
   }
   if   (boldInput) output<<wxT("  font-weight: bold;\n");
   if (italicInput) output<<wxT("  font-style: italic;\n");
@@ -2957,7 +2957,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxColour color(colorText);
     output<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";\n");
+      wxT(";\n");
   }
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
@@ -3039,11 +3039,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxColour color(colorCodeOperator);
     output << wxT(".code_operator {\n");
     output << wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";\\");
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\\");
     output << wxT("}\n");
   }
 
@@ -3052,11 +3052,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
     wxColour color(colorCodeEndOfLine);
     output<<wxT(".code_endofline {\n");
     output<<wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";");
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";");
     output<<wxT("}\n");
   }
  
@@ -3221,115 +3221,115 @@ bool MathCtrl::ExportToHTML(wxString file) {
       
       if (out == NULL) {
         output<<wxT("\n");
+      }
+      else {
+        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
+        {
+          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
+          output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+            filename +
+            wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
+        }
+        else
+        {
+          int bitmapScale = 3;
+          wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+          if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
+            bitmapScale=1;
+          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
+          int borderwidth = 0;
+          wxString alttext = _(wxT("Result"));
+          if(tmp->GetOutput())
+          {
+            alttext = tmp->GetOutput()->ListToString();
+//            alttext.Replace(wxT("\n"),wxT(" "));
+            alttext = EditorCell::EscapeHTMLChars(alttext);
+            borderwidth = tmp->GetOutput()->m_imageBorderWidth;
+          }
+          wxString line = wxT("  <img src=\"") +
+            filename + wxT("_htmlimg/") + filename +
+            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
+                             count,size.x - 2 * borderwidth) +
+            alttext +
+            wxT("\" >");
+          output<<line<<wxT("\n");
+        }
+        count++;
+      }
     }
-    else {
-      if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
-      {
-        ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-        output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
-          filename +
-          wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
-    }
+
     else
     {
-      int bitmapScale = 3;
-      wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-      if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
-        bitmapScale=1;
-      wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
-      int borderwidth = 0;
-      wxString alttext = _(wxT("Result"));
-                           if(tmp->GetOutput())
-                           {
-                             alttext = tmp->GetOutput()->ListToString();
-//            alttext.Replace(wxT("\n"),wxT(" "));
-                             alttext = EditorCell::EscapeHTMLChars(alttext);
-                             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
-                           }
-                             wxString line = wxT("  <img src=\"") +
-                             filename + wxT("_htmlimg/") + filename +
-                             wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
-                                              count,size.x - 2 * borderwidth) +
-                             alttext +
-                             wxT("\" >");
-                             output<<line<<wxT("\n");
-      }
-      count++;
-    }
-  }
-
-  else
-  {
-    switch(tmp->GetGroupType()) {
-    case GC_TYPE_TEXT:
-      output<<wxT("\n\n<!-- Text cell -->\n\n\n");
-      output<<wxT("<P CLASS=\"comment\">\n");
-      output<<EditorCell::PrependNBSP(MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())))<<wxT("\n");
-      output<<wxT("</P>\n");
-      break;
-    case GC_TYPE_SECTION:
-                    output<<wxT("\n\n<!-- Section cell -->\n\n\n");
-                    output<<wxT("<P CLASS=\"section\">\n");
-                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
-                    output<<wxT("</P>\n");
-                    break;
+      switch(tmp->GetGroupType()) {
+      case GC_TYPE_TEXT:
+        output<<wxT("\n\n<!-- Text cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"comment\">\n");
+        output<<EditorCell::PrependNBSP(MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())))<<wxT("\n");
+        output<<wxT("</P>\n");
+        break;
+      case GC_TYPE_SECTION:
+        output<<wxT("\n\n<!-- Section cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"section\">\n");
+        output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+        output<<wxT("</P>\n");
+        break;
       case GC_TYPE_SUBSECTION:
-                    output<<wxT("\n\n<!-- Subsection cell -->\n\n\n");
-                    output<<wxT("<P CLASS=\"subsect\">\n");
-                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
-                    output<<wxT("</P>\n");
-                    break;
+        output<<wxT("\n\n<!-- Subsection cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"subsect\">\n");
+        output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+        output<<wxT("</P>\n");
+        break;
       case GC_TYPE_SUBSUBSECTION:
-                    output<<wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
-                    output<<wxT("<P CLASS=\"subsubsect\">\n");
-                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
-                    output<<wxT("</P>\n");
-                    break;
+        output<<wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"subsubsect\">\n");
+        output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+        output<<wxT("</P>\n");
+        break;
       case GC_TYPE_TITLE:
-                    output<<wxT("\n\n<!-- Title cell -->\n\n\n");
-                    output<<wxT("<P CLASS=\"title\">\n");
-                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))<<wxT("\n");
-                    output<<wxT("</P>\n");
-                    break;
+        output<<wxT("\n\n<!-- Title cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"title\">\n");
+        output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))<<wxT("\n");
+        output<<wxT("</P>\n");
+        break;
       case GC_TYPE_PAGEBREAK:
-                    output<<wxT("\n\n<!-- Page break cell -->\n\n\n");
-                    output<<wxT("<P CLASS=\"comment\">\n");
-                    output<<wxT("<hr/>\n");
-                    output<<wxT("</P>\n");
-                    break;
+        output<<wxT("\n\n<!-- Page break cell -->\n\n\n");
+        output<<wxT("<P CLASS=\"comment\">\n");
+        output<<wxT("<hr/>\n");
+        output<<wxT("</P>\n");
+        break;
       case GC_TYPE_IMAGE:
-                    {
-                      output<<wxT("\n\n<!-- Image cell -->\n\n\n");
-                      MathCell *out = tmp->GetLabel();
-                      output<<wxT("<P CLASS=\"image\">\n");
-                      output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
-                                                                                  wxT(" ") +
-                                                                                  tmp->GetEditable()->ToString()))<<wxT("\n");
-                      output<<wxT("<BR>\n");
-                      if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
-                                  {
-                                    ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
-                                                                           wxString::Format(wxT("_%d.gif"), count));
-                                                  output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
-                                                    filename +
-                                                    wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)<<wxT("\n");
-                                                }
-                                  else
-                                  {
-                                    CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                                               out, NULL, true);
-                                    output<<_(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
-                                                  filename +
-                                                  wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count);
-                                  }
-                                  count++;
-                                  }
-                      break;
-                  }
-                }
+      {
+        output<<wxT("\n\n<!-- Image cell -->\n\n\n");
+        MathCell *out = tmp->GetLabel();
+        output<<wxT("<P CLASS=\"image\">\n");
+        output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
+                                                                    wxT(" ") +
+                                                                    tmp->GetEditable()->ToString()))<<wxT("\n");
+        output<<wxT("<BR>\n");
+        if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
+        {
+          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
+                                                 wxString::Format(wxT("_%d.gif"), count));
+          output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+            filename +
+            wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)<<wxT("\n");
+        }
+        else
+        {
+          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+                     out, NULL, true);
+          output<<_(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
+            filename +
+            wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count);
+        }
+        count++;
+      }
+      break;
+      }
+    }
 
-                tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-                }
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
 
 //////////////////////////////////////////////
 // Footer
@@ -3357,97 +3357,97 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
 /*! Export the file as TeX code
  */
-    bool MathCtrl::ExportToTeX(wxString file) {
-    wxString imgDir;
-    wxString path, filename, ext;
-    GroupCell *tmp = m_tree;
+bool MathCtrl::ExportToTeX(wxString file) {
+  wxString imgDir;
+  wxString path, filename, ext;
+  GroupCell *tmp = m_tree;
   
-    wxFileName::SplitPath(file, &path, &filename, &ext);
-    imgDir = path + wxT("/") + filename + wxT("_img");
-    int imgCounter = 0;
+  wxFileName::SplitPath(file, &path, &filename, &ext);
+  imgDir = path + wxT("/") + filename + wxT("_img");
+  int imgCounter = 0;
     
-    wxFileOutputStream outfile(file);
-    if (!outfile.IsOk())
-      return false;
+  wxFileOutputStream outfile(file);
+  if (!outfile.IsOk())
+    return false;
     
-    wxTextOutputStream output(outfile);
+  wxTextOutputStream output(outfile);
 
-    wxString documentclass = wxT("article");
-    wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
+  wxString documentclass = wxT("article");
+  wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
   
-    output<<wxT("\\documentclass{") +
-      documentclass +
-      wxT("}\n\n");
-    output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
-    output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
-    output<<wxT("\\setlength{\\parindent}{0pt}\n");
-    output<<wxT("\\usepackage[utf8]{inputenc}\n");
-    // Tell LaTeX how to handle a few special characters.
-    output<<wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
-    // The following line loads all code needed in order to include graphics.
-    output<<wxT("\\usepackage{graphicx}\n");
-    // We want to color the labels and text cells. The following line adds the necessary
-    // logic for this to TeX.
-    output<<wxT("\\usepackage{color}\n");
-    output<<wxT("\\usepackage{amsmath}\n");
+  output<<wxT("\\documentclass{") +
+    documentclass +
+    wxT("}\n\n");
+  output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
+  output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
+  output<<wxT("\\setlength{\\parindent}{0pt}\n");
+  output<<wxT("\\usepackage[utf8]{inputenc}\n");
+  // Tell LaTeX how to handle a few special characters.
+  output<<wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
+  // The following line loads all code needed in order to include graphics.
+  output<<wxT("\\usepackage{graphicx}\n");
+  // We want to color the labels and text cells. The following line adds the necessary
+  // logic for this to TeX.
+  output<<wxT("\\usepackage{color}\n");
+  output<<wxT("\\usepackage{amsmath}\n");
     
-    // We want to shrink pictures the user has included if they are
-    // higher or wider than the page.
-    output<<wxT("\\usepackage{ifthen}\n");
-    output<<wxT("\\newsavebox{\\picturebox}\n");
-    output<<wxT("\\newlength{\\pictureboxwidth}\n");
-    output<<wxT("\\newlength{\\pictureboxheight}\n");
-    output<<wxT("\\newcommand{\\includeimage}[1]{\n");
-    output<<wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}\n");
-    output<<wxT("    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
-    output<<wxT("    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
-    output<<wxT("    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
-    output<<wxT("    {\n");
-    output<<wxT("        \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
-    output<<wxT("    }\n");
-    output<<wxT("    {\n");
-    output<<wxT("        \\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
-    output<<wxT("        {\n");
-    output<<wxT("            \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
-    output<<wxT("            \n");
-    output<<wxT("        }\n");
-    output<<wxT("        {\n");
-    output<<wxT("            \\includegraphics{#1}\n");
-    output<<wxT("        }\n");
-    output<<wxT("    }\n");
-    output<<wxT("}\n");
+  // We want to shrink pictures the user has included if they are
+  // higher or wider than the page.
+  output<<wxT("\\usepackage{ifthen}\n");
+  output<<wxT("\\newsavebox{\\picturebox}\n");
+  output<<wxT("\\newlength{\\pictureboxwidth}\n");
+  output<<wxT("\\newlength{\\pictureboxheight}\n");
+  output<<wxT("\\newcommand{\\includeimage}[1]{\n");
+  output<<wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}\n");
+  output<<wxT("    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
+  output<<wxT("    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
+  output<<wxT("    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
+  output<<wxT("    {\n");
+  output<<wxT("        \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
+  output<<wxT("    }\n");
+  output<<wxT("    {\n");
+  output<<wxT("        \\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
+  output<<wxT("        {\n");
+  output<<wxT("            \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
+  output<<wxT("            \n");
+  output<<wxT("        }\n");
+  output<<wxT("        {\n");
+  output<<wxT("            \\includegraphics{#1}\n");
+  output<<wxT("        }\n");
+  output<<wxT("    }\n");
+  output<<wxT("}\n");
 
-    // Define an "abs" operator for abs commands that are long enough to be broken into
-    // lines.
-    output<<wxT("\\DeclareMathOperator{\\abs}{abs}\n");
+  // Define an "abs" operator for abs commands that are long enough to be broken into
+  // lines.
+  output<<wxT("\\DeclareMathOperator{\\abs}{abs}\n");
   
-    // The animate package is only needed if we actually want to output animations
-    // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
-    bool AnimateLaTeX=true;
-    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-    if(AnimateLaTeX)
-    {
-      output<<wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
-      output<<wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
-    }
-    output<<wxT("\n");
-    output<<wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
-    output<<wxT("\n");
+  // The animate package is only needed if we actually want to output animations
+  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
+  bool AnimateLaTeX=true;
+  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+  if(AnimateLaTeX)
+  {
+    output<<wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
+    output<<wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
+  }
+  output<<wxT("\n");
+  output<<wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
+  output<<wxT("\n");
                 
-    // Add an eventual preamble requested by the user.
-    wxString texPreamble;
-    wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
-    if(texPreamble!=wxEmptyString)
-      output << texPreamble<<wxT("\n\n");
+  // Add an eventual preamble requested by the user.
+  wxString texPreamble;
+  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
+  if(texPreamble!=wxEmptyString)
+    output << texPreamble<<wxT("\n\n");
 
-    output<<wxT("\\begin{document}\n");
+  output<<wxT("\\begin{document}\n");
     
-    //
-    // Write contents
-    //
-    while (tmp != NULL) {
-      wxString s = tmp->ToTeX(imgDir, filename, &imgCounter);
-      output<<s<<wxT("\n");
+  //
+  // Write contents
+  //
+  while (tmp != NULL) {
+    wxString s = tmp->ToTeX(imgDir, filename, &imgCounter);
+    output<<s<<wxT("\n");
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   
