@@ -3807,13 +3807,17 @@ bool MathCtrl::ExportToWXMX(wxString file)
     if (fsfile) {
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
-
+      
       while (!(imagefile->Eof()))
         imagefile->Read(zip);
 
       delete imagefile;
       wxMemoryFSHandler::RemoveFile(name);
     }
+    // Saving an image needs loads of time and we don't want the gui to
+    // offer to help the user by killing the currently running process
+    // => give wx the possibility to tell the OS that we are still running.
+    wxYield();
   }
 
   delete fsystem;
