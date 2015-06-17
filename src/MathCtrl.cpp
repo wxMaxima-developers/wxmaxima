@@ -2808,24 +2808,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
       return false;
   }
 
-  wxTextFile output(file);
-  if (output.Exists()) {
-    if (!output.Open(file))
+  wxFileOutputStream outfile(file);
+  if (!outfile.IsOk())
       return false;
-    output.Clear();
-  } else if (!output.Create(file))
-    return false;
 
-  AddLineToFile(
-    output,
-    wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"));
-  AddLineToFile(output, wxT("<HTML>"));
-  AddLineToFile(output, wxT(" <HEAD>"));
-  AddLineToFile(output, wxT("  <TITLE>") + filename + wxT("</TITLE>"));
-  AddLineToFile(output, wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">"));
-  AddLineToFile(
-    output,
-    wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">"));
+  wxTextOutputStream output(outfile);
+
+  output<< wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+  output<<wxT("<HTML>");
+  output<<wxT(" <HEAD>");
+  output<<wxT("  <TITLE>") + filename + wxT("</TITLE>");
+  output<<wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">");
+  output<<wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">");
 
 //////////////////////////////////////////////
 // Write styles
@@ -2899,7 +2893,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/CodeHighlighting/Number/color"),&colorCodeNumber  );
   config->Read(wxT("Style/CodeHighlighting/String/color"),&colorCodeString  );
   config->Read(wxT("Style/CodeHighlighting/Operator/color"),&colorCodeOperator);
-  config->Read(wxT("Style/CodeHighlighting/EndOfLine/color"),&colorCodeEndOfLine);
 
   // read bold and italic
   config->Read(wxT("Style/Input/bold"), &boldInput);
@@ -2922,565 +2915,558 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Subsubsection/italic"), &italicSubsubsection);
   config->Read(wxT("Style/Subsubsection/underlined"), &underSubsubsection);
 
-  AddLineToFile(output, wxT("  <STYLE TYPE=\"text/css\">"));
+  output<<wxT("  <STYLE TYPE=\"text/css\">\n");
 
   // BODY STYLE
-  AddLineToFile(output, wxT("body {"));
+  output<<wxT("body {\n");
   if (font.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  font +
-                  wxT(";"));
+    output<<wxT("  font-family: ") +
+      font +
+      wxT(";\n");
   }
   if (colorBg.Length()) {
     wxColour color(colorBg);
-    AddLineToFile(output, wxT("  background-color: ") +
+    output<< wxT("  background-color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+      wxT(";\n");
   }
-  AddLineToFile(output, wxT("}"));
-
+  output<<wxT("}\n");
+  
   
   // INPUT STYLE
-  AddLineToFile(output, wxT(".input {"));
+  output<<wxT(".input {\n");
   if (colorInput.Length()) {
     wxColour color(colorInput);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: \n") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";\n");
   }
-  if   (boldInput) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicInput) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("}"));
-
+  if   (boldInput) output<<wxT("  font-weight: bold;\n");
+  if (italicInput) output<<wxT("  font-style: italic;\n");
+  output<<wxT("}\n");
+  
   // COMMENT STYLE
-  AddLineToFile(output, wxT(".comment {"));
+  output<<wxT(".comment {\n");
   if (fontText.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontText +
-                  wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontText +
+      wxT(";\n");
   }
 
   if (colorText.Length()) {
     wxColour color(colorText);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+                  wxT(";\n");
   }
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
-    AddLineToFile(output, wxT("  background-color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  background-color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
-
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
+  
   // Colors for code highlighting
-    if(colorCodeVariable.Length())
+  if(colorCodeVariable.Length())
   {
     wxColour color(colorCodeVariable);
-    AddLineToFile(output, wxT(".code_variable {"));
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+    output<<wxT(".code_variable {\n");
+    output<<wxT("  color: \n") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\n");
+    output<<wxT("}\n");
   }
-
+  
   if(colorCodeFunction.Length())
   {
     wxColour color(colorCodeFunction);
-    AddLineToFile(output, wxT(".code_function {"));
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+    output<<wxT(".code_function {\n\n");
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\n");
+    output<<wxT("}\n");
   }
   
   if(colorCodeComment.Length())
   {
     wxColour color(colorCodeComment);
-    AddLineToFile(output, wxT(".code_comment {"));
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+    output<<wxT(".code_comment {\n");
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\n");
+    output<<wxT("}\n");
   }
-
+  
   if(colorCodeNumber.Length())
   {
     wxColour color(colorCodeNumber);
-    AddLineToFile(output, wxT(".code_number {"));
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+    output<<wxT(".code_number {\n");
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\n");
+    output<<wxT("}\n");
   }
-
+  
   if(colorCodeString.Length())
   {
     wxColour color(colorCodeString);
-    AddLineToFile(output, wxT(".code_string {"));
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"),
-                                   color.Red(),
-                                   color.Green(),
-                                   color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+    output<<wxT(".code_string {\n");
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"),
+                       color.Red(),
+                       color.Green(),
+                       color.Blue()) +
+      wxT(";\n");
+    output<<wxT("}\n");
   }
-
+  
   if(colorCodeOperator.Length())
   {
     wxColour color(colorCodeOperator);
-    AddLineToFile(output, wxT(".code_operator {"));
-    AddLineToFile(output, wxT("  color: ") +
+    output << wxT(".code_operator {\n");
+    output << wxT("  color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"),
                                    color.Red(),
                                    color.Green(),
                                    color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+                  wxT(";\\");
+    output << wxT("}\n");
   }
 
   if(colorCodeEndOfLine.Length())
   {
     wxColour color(colorCodeEndOfLine);
-    AddLineToFile(output, wxT(".code_endofline {"));
-    AddLineToFile(output, wxT("  color: ") +
+    output<<wxT(".code_endofline {\n");
+    output<<wxT("  color: ") +
                   wxString::Format(wxT("rgb(%d,%d,%d)"),
                                    color.Red(),
                                    color.Green(),
                                    color.Blue()) +
-                  wxT(";"));
-    AddLineToFile(output, wxT("}"));
+                  wxT(";");
+    output<<wxT("}\n");
   }
-
+ 
   // SMOOTHER IMAGE SCALING FOR THE IE
-  AddLineToFile(output, wxT("img {"));
-  AddLineToFile(output, wxT("  -ms-interpolation-mode: bicubic;"));
-  AddLineToFile(output, wxT("}"));
+  output<<"img {\n";
+  output<<wxT("  -ms-interpolation-mode: bicubic;\n");
+  output<<wxT("}\n");
   
   // IMAGE STYLE
-  AddLineToFile(output, wxT(".image {"));
+  output<<wxT(".image {\n");
   if (fontText.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontText + wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontText + wxT(";\n");
   }
   if (colorText.Length()) {
     wxColour color(colorText);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
-
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
+  
   // SECTION STYLE
-  AddLineToFile(output, wxT(".section {"));
+  output<<wxT(".section {\n");
   if (fontSection.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontSection + wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontSection + wxT(";\\");
   }
   if (colorSection.Length()) {
     wxColour color(colorSection);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  if   (boldSection) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if  (underSection) AddLineToFile(output, wxT("  text-decoration: underline;"));
-  if (italicSection) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("  font-size: 1.5em;"));
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
+  if   (boldSection) output<<wxT("  font-weight: bold;\n");
+  if  (underSection) output<<wxT("  text-decoration: underline;\n");
+  if (italicSection) output<<wxT("  font-style: italic;\n");
+  output<<wxT("  font-size: 1.5em;\n");
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
 
 
   // SUBSECTION STYLE
-  AddLineToFile(output, wxT(".subsect {"));
+  output<<wxT(".subsect {\n");
   if (fontSubsection.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontSubsection + wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontSubsection + wxT(";\n");
   }
   if (colorSubSec.Length()) {
     wxColour color(colorSubSec);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  if   (boldSubsection) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if  (underSubsection) AddLineToFile(output, wxT("  text-decoration: underline;"));
-  if (italicSubsection) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("  font-size: 1.2em;"));
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
+  if   (boldSubsection) output<<wxT("  font-weight: bold;\n");
+  if  (underSubsection) output<<wxT("  text-decoration: underline;\n");
+  if (italicSubsection) output<<wxT("  font-style: italic;\n");
+  output<<wxT("  font-size: 1.2em;\n");
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
 
   // SUBSECTION STYLE
-  AddLineToFile(output, wxT(".subsubsect {"));
+  output<<wxT(".subsubsect {\n");
   if (fontSubsubsection.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontSubsubsection + wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontSubsubsection + wxT(";\n");
   }
   if (colorSubsubSec.Length()) {
     wxColour color(colorSubsubSec);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  if   (boldSubsubsection) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if  (underSubsubsection) AddLineToFile(output, wxT("  text-decoration: underline;"));
-  if (italicSubsubsection) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("  font-size: 1.2em;"));
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
+  if   (boldSubsubsection) output<<wxT("  font-weight: bold;\n");
+  if  (underSubsubsection) output<<wxT("  text-decoration: underline;\n");
+  if (italicSubsubsection) output<<wxT("  font-style: italic;\n");
+  output<<wxT("  font-size: 1.2em;\n");
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
 
   // TITLE STYLE
-  AddLineToFile(output, wxT(".title {"));
+  output<<wxT(".title {\n");
   if (fontTitle.Length()) {
-    AddLineToFile(output, wxT("  font-family: ") +
-                  fontTitle + wxT(";"));
+    output<<wxT("  font-family: ") +
+      fontTitle + wxT(";\n");
   }
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  if   (boldTitle) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if  (underTitle) AddLineToFile(output, wxT("  text-decoration: underline;"));
-  if (italicTitle) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("  font-size: 2em;"));
-  AddLineToFile(output, wxT("  padding: 2mm;"));
-  AddLineToFile(output, wxT("}"));
+  if   (boldTitle) output<<wxT("  font-weight: bold;\n");
+  if  (underTitle) output<<wxT("  text-decoration: underline;\n");
+  if (italicTitle) output<<wxT("  font-style: italic;\n");
+  output<<wxT("  font-size: 2em;\n");
+  output<<wxT("  padding: 2mm;\n");
+  output<<wxT("}\n");
 
   // PROMPT STYLE
-  AddLineToFile(output, wxT(".prompt {"));
+  output<<wxT(".prompt {\n");
   if (colorPrompt.Length()) {
     wxColour color(colorPrompt);
-    AddLineToFile(output, wxT("  color: ") +
-                  wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-                  wxT(";"));
+    output<<wxT("  color: ") +
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
-  if   (boldPrompt) AddLineToFile(output, wxT("  font-weight: bold;"));
-  if (italicPrompt) AddLineToFile(output, wxT("  font-style: italic;"));
-  AddLineToFile(output, wxT("}"));
+  if (boldPrompt) output<<wxT("  font-weight: bold;\n");
+  if (italicPrompt) output<<wxT("  font-style: italic;\n");
+  output<<wxT("}\n");
 
   // TABLES
-  AddLineToFile(output, wxT("table {"));
-  AddLineToFile(output, wxT("  border: 0px;"));
-  AddLineToFile(output, wxT("}"));
-  AddLineToFile(output, wxT("td {"));
-  AddLineToFile(output, wxT("  vertical-align: top;"));
-  AddLineToFile(output, wxT("  padding: 1mm;"));
-  AddLineToFile(output, wxT("}"));
+  output<<wxT("table {\n");
+  output<<wxT("  border: 0px;\n");
+  output<<wxT("}\n");
+  output<<wxT("td {\n");
+  output<<wxT("  vertical-align: top;\n");
+  output<<wxT("  padding: 1mm;\n");
+  output<<wxT("}\n");
 
-  AddLineToFile(output, wxT("  </STYLE>"));
-  AddLineToFile(output, wxT(" </HEAD>"));
-  AddLineToFile(output, wxT(" <BODY>"));
+  output<<wxT("  </STYLE>\n");
+  output<<wxT(" </HEAD>\n");
+  output<<wxT(" <BODY>\n");
 
   wxString version(wxT(VERSION));
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
-  AddLineToFile(output, wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->"));
-  AddLineToFile(output, wxT("<!---------------------------------------------------------->"));
-
-//////////////////////////////////////////////
-// Write contents
-//////////////////////////////////////////////
-
+  output<<wxT("\n");
+  output<<wxT("<!---------------------------------------------------------->\n");
+  output<<wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
+  output<<wxT("<!---------------------------------------------------------->\n");
+  
+  //////////////////////////////////////////////
+  // Write contents
+  //////////////////////////////////////////////
+  
   bool exportInput = true;
   wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
-      
+  
   while (tmp != NULL) {
     if (tmp->GetGroupType() == GC_TYPE_CODE)
     {
       MathCell *out = tmp->GetLabel();
-
+      
       if(out||exportInput)
-        AddLineToFile(output, wxT("\n\n<!-- Code cell -->\n\n"));
+        output<<wxT("\n\n<!-- Code cell -->\n\n\n");
 
       if(exportInput)
       {
         MathCell *prompt = tmp->GetPrompt();
-        AddLineToFile(output, wxT("<TABLE><TR><TD>"));
-        AddLineToFile(output, wxT("  <SPAN CLASS=\"prompt\">"));
-        AddLineToFile(output, prompt->ToString());
-        AddLineToFile(output, wxT("  </SPAN></TD>"));
+        output<<wxT("<TABLE><TR><TD>\n");
+        output<<wxT("  <SPAN CLASS=\"prompt\">\n");
+        output<<wxT("\n  </SPAN></TD>\n");
         
         EditorCell *input = tmp->GetInput();
         if (input != NULL) {
-          AddLineToFile(output, wxT("  <TD><SPAN CLASS=\"input\">"));
-          AddLineToFile(output, input->ToHTML());
-          AddLineToFile(output, wxT("  </SPAN></TD>"));
+          output<<wxT("  <TD><SPAN CLASS=\"input\">\n");
+          output<<input->ToHTML();
+          output, wxT("  </SPAN></TD>\n");
         }
-        AddLineToFile(output, wxT("</TR></TABLE>"));
+        output<<wxT("</TR></TABLE>\n");
       }
       
       if (out == NULL) {
-        AddLineToFile(output, wxEmptyString);
-      }
-      else {
-        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
-        {
-          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output,_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
-                        filename +
-                        wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count));
-        }
-        else
-        {
-          int bitmapScale = 3;
-          wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
-          bitmapScale=1;
-          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
-          int borderwidth = 0;
-          wxString alttext = _(wxT("Result"));
-          if(tmp->GetOutput())
-          {
-            alttext = tmp->GetOutput()->ListToString();
-//            alttext.Replace(wxT("\n"),wxT(" "));
-            alttext = EditorCell::EscapeHTMLChars(alttext);
-            borderwidth = tmp->GetOutput()->m_imageBorderWidth;
-          }
-          wxString line = wxT("  <img src=\"") +
-            filename + wxT("_htmlimg/") + filename +
-            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
-                             count,size.x - 2 * borderwidth) +
-            alttext +
-            wxT("\" >");
-          AddLineToFile(output, line);
-        }
-        count++;
-      }
+        output<<wxT("\n");
     }
-
+    else {
+      if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
+      {
+        ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
+        output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+          filename +
+          wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
+    }
     else
     {
-      switch(tmp->GetGroupType()) {
-      case GC_TYPE_TEXT:
-        AddLineToFile(output, wxT("\n\n<!-- Text cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_SECTION:
-        AddLineToFile(output, wxT("\n\n<!-- Section cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"section\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_SUBSECTION:
-        AddLineToFile(output, wxT("\n\n<!-- Subsection cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"subsect\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_SUBSUBSECTION:
-        AddLineToFile(output, wxT("\n\n<!-- Subsubsection cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"subsubsect\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString())));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_TITLE:
-        AddLineToFile(output, wxT("\n\n<!-- Title cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"title\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_PAGEBREAK:
-        AddLineToFile(output, wxT("\n\n<!-- Page break cell -->\n\n"));
-        AddLineToFile(output, wxT("<P CLASS=\"comment\">"));
-        AddLineToFile(output, wxT("<hr/>"));
-        AddLineToFile(output, wxT("</P>"));
-        break;
-      case GC_TYPE_IMAGE:
-      {
-        AddLineToFile(output, wxT("\n\n<!-- Image cell -->\n\n"));
-        MathCell *out = tmp->GetLabel();
-        AddLineToFile(output, wxT("<P CLASS=\"image\">"));
-        AddLineToFile(output, EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
-                                                          wxT(" ") +
-                                                          tmp->GetEditable()->ToString())));
-        AddLineToFile(output, wxT("<BR>"));
-        if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
-        {
-          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
-                                                 wxString::Format(wxT("_%d.gif"), count));
-          AddLineToFile(output, _(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
-                        filename +
-                        wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count));
-        }
-        else
-        {
-          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                                                      out, NULL, true);
-          AddLineToFile(output, _(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
-                        filename +
-                        wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count));
-        }
-        count++;
+      int bitmapScale = 3;
+      wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+      if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
+        bitmapScale=1;
+      wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
+      int borderwidth = 0;
+      wxString alttext = _(wxT("Result"));
+                           if(tmp->GetOutput())
+                           {
+                             alttext = tmp->GetOutput()->ListToString();
+//            alttext.Replace(wxT("\n"),wxT(" "));
+                             alttext = EditorCell::EscapeHTMLChars(alttext);
+                             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
+                           }
+                             wxString line = wxT("  <img src=\"") +
+                             filename + wxT("_htmlimg/") + filename +
+                             wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
+                                              count,size.x - 2 * borderwidth) +
+                             alttext +
+                             wxT("\" >");
+                             output<<line<<wxT("\n");
       }
-      break;
-      }
+      count++;
     }
-
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
+
+  else
+  {
+    switch(tmp->GetGroupType()) {
+    case GC_TYPE_TEXT:
+      output<<wxT("\n\n<!-- Text cell -->\n\n\n");
+      output<<wxT("<P CLASS=\"comment\">\n");
+      output<<EditorCell::PrependNBSP(MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())))<<wxT("\n");
+      output<<wxT("</P>\n");
+      break;
+    case GC_TYPE_SECTION:
+                    output<<wxT("\n\n<!-- Section cell -->\n\n\n");
+                    output<<wxT("<P CLASS=\"section\">\n");
+                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+                    output<<wxT("</P>\n");
+                    break;
+      case GC_TYPE_SUBSECTION:
+                    output<<wxT("\n\n<!-- Subsection cell -->\n\n\n");
+                    output<<wxT("<P CLASS=\"subsect\">\n");
+                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+                    output<<wxT("</P>\n");
+                    break;
+      case GC_TYPE_SUBSUBSECTION:
+                    output<<wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
+                    output<<wxT("<P CLASS=\"subsubsect\">\n");
+                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))<<wxT("\n");
+                    output<<wxT("</P>\n");
+                    break;
+      case GC_TYPE_TITLE:
+                    output<<wxT("\n\n<!-- Title cell -->\n\n\n");
+                    output<<wxT("<P CLASS=\"title\">\n");
+                    output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))<<wxT("\n");
+                    output<<wxT("</P>\n");
+                    break;
+      case GC_TYPE_PAGEBREAK:
+                    output<<wxT("\n\n<!-- Page break cell -->\n\n\n");
+                    output<<wxT("<P CLASS=\"comment\">\n");
+                    output<<wxT("<hr/>\n");
+                    output<<wxT("</P>\n");
+                    break;
+      case GC_TYPE_IMAGE:
+                    {
+                      output<<wxT("\n\n<!-- Image cell -->\n\n\n");
+                      MathCell *out = tmp->GetLabel();
+                      output<<wxT("<P CLASS=\"image\">\n");
+                      output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
+                                                                                  wxT(" ") +
+                                                                                  tmp->GetEditable()->ToString()))<<wxT("\n");
+                      output<<wxT("<BR>\n");
+                      if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
+                                  {
+                                    ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
+                                                                           wxString::Format(wxT("_%d.gif"), count));
+                                                  output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+                                                    filename +
+                                                    wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)<<wxT("\n");
+                                                }
+                                  else
+                                  {
+                                    CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+                                               out, NULL, true);
+                                    output<<_(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
+                                                  filename +
+                                                  wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count);
+                                  }
+                                  count++;
+                                  }
+                      break;
+                  }
+                }
+
+                tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+                }
 
 //////////////////////////////////////////////
 // Footer
 //////////////////////////////////////////////
 
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT(" <HR>"));
-  AddLineToFile(output, wxT(" <SMALL> Created with")
-                wxT(" <A HREF=\"http://wxmaxima.sourceforge.net/\">")
-                wxT("wxMaxima</A>")
-                wxT(".</SMALL>"));
-  AddLineToFile(output, wxEmptyString);
-
+  output<<wxT("\n");
+  output<<wxT(" <HR>\n");
+  output<<wxT(" <SMALL> Created with"
+              "<A HREF=\"http://wxmaxima.sourceforge.net/\">"
+              "wxMaxima</A>"
+              ".</SMALL>\n");
+  output<<wxEmptyString;
+  
   //
   // Close document
   //
-  AddLineToFile(output, wxT(" </BODY>"));
-  AddLineToFile(output, wxT("</HTML>"));
-
-  bool done = output.Write(wxTextFileType_None);
-  output.Close();
-
+  output<<wxT(" </BODY>\n");
+  output<<wxT("</HTML>\n");
+  
+  bool done = !outfile.GetFile()->Error();
+  outfile.Close();
+  
   return done;
 }
 
 /*! Export the file as TeX code
  */
-bool MathCtrl::ExportToTeX(wxString file) {
-  wxString imgDir;
-  wxString path, filename, ext;
-  GroupCell *tmp = m_tree;
+    bool MathCtrl::ExportToTeX(wxString file) {
+    wxString imgDir;
+    wxString path, filename, ext;
+    GroupCell *tmp = m_tree;
   
-  wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir = path + wxT("/") + filename + wxT("_img");
-  int imgCounter = 0;
-
-  wxTextFile output(file);
-  if (output.Exists()) {
-    if (!output.Open(file))
+    wxFileName::SplitPath(file, &path, &filename, &ext);
+    imgDir = path + wxT("/") + filename + wxT("_img");
+    int imgCounter = 0;
+    
+    wxFileOutputStream outfile(file);
+    if (!outfile.IsOk())
       return false;
-    output.Clear();
-  } else if (!output.Create(file))
-    return false;
+    
+    wxTextOutputStream output(outfile);
 
-  wxString documentclass = wxT("article");
-  wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
+    wxString documentclass = wxT("article");
+    wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
   
-  AddLineToFile(output, wxT("\\documentclass{") +
-                documentclass +
-                wxT("}"));
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("%% Created with wxMaxima " VERSION ));
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("\\setlength{\\parskip}{\\medskipamount}"));
-  AddLineToFile(output, wxT("\\setlength{\\parindent}{0pt}"));
-  AddLineToFile(output, wxT("\\usepackage[utf8]{inputenc}"));
-  // Tell LaTeX how to handle a few special characters.
-  AddLineToFile(output, wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}"));
-  // The following line loads all code needed in order to include graphics.
-  AddLineToFile(output, wxT("\\usepackage{graphicx}"));
-  // We want to color the labels and text cells. The following line adds the necessary
-  // logic for this to TeX.
-  AddLineToFile(output, wxT("\\usepackage{color}"));
-  AddLineToFile(output, wxT("\\usepackage{amsmath}"));
+    output<<wxT("\\documentclass{") +
+      documentclass +
+      wxT("}\n\n");
+    output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
+    output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
+    output<<wxT("\\setlength{\\parindent}{0pt}\n");
+    output<<wxT("\\usepackage[utf8]{inputenc}\n");
+    // Tell LaTeX how to handle a few special characters.
+    output<<wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
+    // The following line loads all code needed in order to include graphics.
+    output<<wxT("\\usepackage{graphicx}\n");
+    // We want to color the labels and text cells. The following line adds the necessary
+    // logic for this to TeX.
+    output<<wxT("\\usepackage{color}\n");
+    output<<wxT("\\usepackage{amsmath}\n");
+    
+    // We want to shrink pictures the user has included if they are
+    // higher or wider than the page.
+    output<<wxT("\\usepackage{ifthen}\n");
+    output<<wxT("\\newsavebox{\\picturebox}\n");
+    output<<wxT("\\newlength{\\pictureboxwidth}\n");
+    output<<wxT("\\newlength{\\pictureboxheight}\n");
+    output<<wxT("\\newcommand{\\includeimage}[1]{\n");
+    output<<wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}\n");
+    output<<wxT("    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
+    output<<wxT("    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
+    output<<wxT("    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
+    output<<wxT("    {\n");
+    output<<wxT("        \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
+    output<<wxT("    }\n");
+    output<<wxT("    {\n");
+    output<<wxT("        \\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
+    output<<wxT("        {\n");
+    output<<wxT("            \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}\n");
+    output<<wxT("            \n");
+    output<<wxT("        }\n");
+    output<<wxT("        {\n");
+    output<<wxT("            \\includegraphics{#1}\n");
+    output<<wxT("        }\n");
+    output<<wxT("    }\n");
+    output<<wxT("}\n");
 
-  // We want to shrink pictures the user has included if they are
-  // higher or wider than the page.
-  AddLineToFile(output, wxT("\\usepackage{ifthen}"));
-  AddLineToFile(output, wxT("\\newsavebox{\\picturebox}"));
-  AddLineToFile(output, wxT("\\newlength{\\pictureboxwidth}"));
-  AddLineToFile(output, wxT("\\newlength{\\pictureboxheight}"));
-  AddLineToFile(output, wxT("\\newcommand{\\includeimage}[1]{"));
-  AddLineToFile(output, wxT("    \\savebox{\\picturebox}{\\includegraphics{#1}}"));
-  AddLineToFile(output, wxT("    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}"));
-  AddLineToFile(output, wxT("    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}"));
-  AddLineToFile(output, wxT("    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}"));
-  AddLineToFile(output, wxT("    {"));
-  AddLineToFile(output, wxT("        \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}"));
-  AddLineToFile(output, wxT("    }"));
-  AddLineToFile(output, wxT("    {"));
-  AddLineToFile(output, wxT("        \\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}"));
-  AddLineToFile(output, wxT("        {"));
-  AddLineToFile(output, wxT("            \\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{#1}"));
-  AddLineToFile(output, wxT("            "));
-  AddLineToFile(output, wxT("        }"));
-  AddLineToFile(output, wxT("        {"));
-  AddLineToFile(output, wxT("            \\includegraphics{#1}"));
-  AddLineToFile(output, wxT("        }"));
-  AddLineToFile(output, wxT("    }"));
-  AddLineToFile(output, wxT("}"));
-
-  // Define an "abs" operator for abs commands that are long enough to be broken into
-  // lines.
-  AddLineToFile(output, wxT("\\DeclareMathOperator{\\abs}{abs}"));
+    // Define an "abs" operator for abs commands that are long enough to be broken into
+    // lines.
+    output<<wxT("\\DeclareMathOperator{\\abs}{abs}\n");
   
-  // The animate package is only needed if we actually want to output animations
-  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
-  bool AnimateLaTeX=true;
-  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-  if(AnimateLaTeX)
-  {
-    AddLineToFile(output, wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option"));
-    AddLineToFile(output, wxT("                      % \"Export animations to TeX\" was enabled when this file was generated."));
-  }
-  AddLineToFile(output, wxEmptyString);
-  AddLineToFile(output, wxT("\\definecolor{labelcolor}{RGB}{100,0,0}"));
-  AddLineToFile(output, wxEmptyString);
+    // The animate package is only needed if we actually want to output animations
+    // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
+    bool AnimateLaTeX=true;
+    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+    if(AnimateLaTeX)
+    {
+      output<<wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
+      output<<wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
+    }
+    output<<wxT("\n");
+    output<<wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
+    output<<wxT("\n");
+                
+    // Add an eventual preamble requested by the user.
+    wxString texPreamble;
+    wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
+    if(texPreamble!=wxEmptyString)
+      output << texPreamble<<wxT("\n\n");
 
-  // Add an eventual preamble requested by the user.
-  wxString texPreamble;
-  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
-  if(texPreamble!=wxEmptyString)
-  {
-    AddLineToFile(output, texPreamble);
-    AddLineToFile(output, wxEmptyString);
-  }
-
-  AddLineToFile(output, wxT("\\begin{document}"));
-
-  //
-  // Write contents
-  //
-  while (tmp != NULL) {
-    wxString s = tmp->ToTeX(imgDir, filename, &imgCounter);
-    AddLineToFile(output, s);
+    output<<wxT("\\begin{document}\n");
+    
+    //
+    // Write contents
+    //
+    while (tmp != NULL) {
+      wxString s = tmp->ToTeX(imgDir, filename, &imgCounter);
+      output<<s<<wxT("\n");
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-
+  
   //
   // Close document
   //
-  AddLineToFile(output, wxT("\\end{document}"));
+  output<<wxT("\\end{document}\n");
+  
 
-  bool done = output.Write(wxTextFileType_None);
-  output.Close();
-
+  bool done = !outfile.GetFile()->Error();
+  outfile.Close();
+  
   return done;
 }
 
 void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
 {
   GroupCell* tmp = dynamic_cast<GroupCell*>(tree);
-
+  
   //
   // Write contents
   //
@@ -3526,7 +3512,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
         }
       }
     }
-
+    
     else if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK) {
       AddLineToFile(output, wxT("/* [wxMaxima: page break    ] */"), false);
     }
@@ -3598,7 +3584,6 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-
 }
 
 bool MathCtrl::ExportToMAC(wxString file)
