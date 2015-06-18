@@ -3214,7 +3214,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         if (input != NULL) {
           output<<wxT("  <TD><SPAN CLASS=\"input\">\n");
           output<<input->ToHTML();
-          output, wxT("  </SPAN></TD>\n");
+          output<<wxT("  </SPAN></TD>\n");
         }
         output<<wxT("</TR></TABLE>\n");
       }
