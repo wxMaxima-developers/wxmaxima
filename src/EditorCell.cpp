@@ -30,7 +30,7 @@
 
 #define ESC_CHAR wxT('\xA6')
 
-const wxString operators = wxT("+-*/^:=#'!\";");
+const wxString operators = wxT("+-*/^:=#'!\";$");
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
