@@ -3996,8 +3996,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-  if(tmp)
-    SetHCaret(dynamic_cast<GroupCell*>(tmp));
+  SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
 }
 
 void MathCtrl::AddDocumentTillHereToEvaluationQueue()
