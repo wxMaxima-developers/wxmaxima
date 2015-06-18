@@ -562,6 +562,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       ReadLispError();
     }
+
     break;
 
   case wxSOCKET_LOST:
@@ -4635,6 +4636,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         DumpProcessOutput();
     }
 
+    // Clear the evaluation queue.
     while (!m_console->m_evaluationQueue->Empty())
       m_console->m_evaluationQueue->RemoveFirst();
 
@@ -4643,69 +4645,74 @@ void wxMaxima::TryEvaluateNextInQueue()
     return ;
   }
 
+  // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
   if (tmp == NULL)
   {
     m_console->SetWorkingGroup(NULL);
     return; //empty queue
   }
-  else
+
+  // Maxima is connected and the queue contains an item.
+  if (tmp->GetEditable()->GetValue() != wxEmptyString)
   {
-    if (tmp->GetEditable()->GetValue() != wxEmptyString)
-    {
-      tmp->GetEditable()->AddEnding();
-      tmp->GetEditable()->ContainsChanges(false);
-      wxString text = tmp->GetEditable()->ToString();
-	  
-      // override evaluation when input equals wxmaxima_debug_dump_output
-      if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-        m_console->m_evaluationQueue->RemoveFirst();
-        DumpProcessOutput();
-        return;
-      }
-	  
-      tmp->RemoveOutput();
-      wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
-      if(parenthesisError==wxEmptyString)
-      {
-        m_console->SetWorkingGroup(tmp);
-        tmp->GetPrompt()->SetValue(m_lastPrompt);
+    tmp->GetEditable()->AddEnding();
+    tmp->GetEditable()->ContainsChanges(false);
+    wxString text = tmp->GetEditable()->ToString();
+      
+    // override evaluation when input equals wxmaxima_debug_dump_output
+    if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
+      m_console->m_evaluationQueue->RemoveFirst();
+      DumpProcessOutput();
+      return;
+    }
         
-        if(m_console->FollowEvaluation())
+    tmp->RemoveOutput();
+    wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
+    if(parenthesisError==wxEmptyString)
+    {          
+      if(m_console->FollowEvaluation())
+      {
+        m_console->SetSelection(tmp);
+        if(!m_console->GetWorkingGroup())
         {
-          m_console->SetSelection(tmp);
           m_console->SetHCaret(tmp);
           m_console->ScrollToCaret();
         }
-        else
-          m_console->Recalculate();
-        SendMaxima(text, true);
       }
       else
-      {
-        TextCell* cell = new TextCell(_(wxT("Refusing to send cell to maxima: ")) +
-                                      parenthesisError + wxT("\n"));
-        cell->SetType(MC_TYPE_ERROR);
-        cell->SetParent(tmp);
-        tmp->SetOutput(cell);
-        m_console->RecalculateForce();
-
-        if(m_console->FollowEvaluation())
-          m_console->SetSelection(NULL);
-        
-        m_console->SetWorkingGroup(NULL);
         m_console->Recalculate();
-        m_console->Refresh();
-        m_console->m_evaluationQueue->RemoveFirst();
-        StatusMaximaBusy(waiting);
-        TryEvaluateNextInQueue();
-      }
+
+      
+      m_console->SetWorkingGroup(tmp);
+      tmp->GetPrompt()->SetValue(m_lastPrompt);
+      
+      SendMaxima(text, true);
     }
     else
     {
+      TextCell* cell = new TextCell(_(wxT("Refusing to send cell to maxima: ")) +
+                                    parenthesisError + wxT("\n"));
+      cell->SetType(MC_TYPE_ERROR);
+      cell->SetParent(tmp);
+      tmp->SetOutput(cell);
+      m_console->RecalculateForce();
+
+      if(m_console->FollowEvaluation())
+        m_console->SetSelection(NULL);
+        
+      m_console->SetWorkingGroup(NULL);
+      m_console->Recalculate();
+      m_console->Refresh();
       m_console->m_evaluationQueue->RemoveFirst();
+      StatusMaximaBusy(waiting);
       TryEvaluateNextInQueue();
     }
+  }
+  else
+  {
+    m_console->m_evaluationQueue->RemoveFirst();
+    TryEvaluateNextInQueue();
   }
 }
 

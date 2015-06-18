@@ -1832,14 +1832,14 @@ void EditorCell::InsertText(wxString text)
   m_saveValue = true;
   m_containsChanges = true;
 
-  if (m_selectionStart > -1)
+  if (m_selectionStart >= 0)
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd);
     m_positionOfCaret = start;
     m_text = m_text.SubString(0, start - 1) +
              m_text.SubString(end, m_text.Length());
-    StyleText();
+    m_selectionEnd = m_positionOfCaret + text.Length();
   }
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
@@ -1848,11 +1848,12 @@ void EditorCell::InsertText(wxString text)
            m_text.SubString(m_positionOfCaret, m_text.Length());
   StyleText();
   m_positionOfCaret += text.Length();
-
+    
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 
   m_width = m_height = m_maxDrop = m_center = -1;
+
 }
 
 void EditorCell::PasteFromClipboard(bool primary)
