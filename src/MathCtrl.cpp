@@ -2794,14 +2794,20 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
  * Export content to a HTML file.
  */
 bool MathCtrl::ExportToHTML(wxString file) {
+  // The path to the image directory as seen from the html directory
+  wxString imgDir_rel;
+  // The absolute path to the image directory
   wxString imgDir;
+  // What happens if we split the filename into several parts.
   wxString path, filename, ext;
+  
   int count = 0;
   GroupCell *tmp = m_tree;
   MarkDownHTML MarkDown;    
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir = path + wxT("/") + filename + wxT("_htmlimg");
+  imgDir_rel = filename + wxT("_htmlimg");
+  imgDir     = path + wxT("/") + imgDir_rel;
 
   if (!wxDirExists(imgDir)) {
     if (!wxMkdir(imgDir))
@@ -2814,12 +2820,20 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   wxTextOutputStream output(outfile);
 
-  output<< wxT("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
-  output<<wxT("<HTML>");
-  output<<wxT(" <HEAD>");
-  output<<wxT("  <TITLE>") + filename + wxT("</TITLE>");
-  output<<wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">");
-  output<<wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">");
+  wxString cssfileName_rel = imgDir_rel + wxT("/") + filename+wxT(".css");
+  wxString cssfileName = path + wxT("/") + cssfileName_rel;
+  wxFileOutputStream cssfile(cssfileName);
+  if (!cssfile.IsOk())
+    return false;
+
+  wxTextOutputStream css(cssfile);
+
+  output<< wxT("<!DOCTYPE HTML\">\n");
+  output<<wxT("<HTML>\n");
+  output<<wxT(" <HEAD>\n");
+  output<<wxT("  <TITLE>") + filename + wxT("</TITLE>\n");
+  output<<wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">\n");
+  output<<wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">\n");
 
 //////////////////////////////////////////////
 // Write styles
@@ -2915,278 +2929,282 @@ bool MathCtrl::ExportToHTML(wxString file) {
   config->Read(wxT("Style/Subsubsection/italic"), &italicSubsubsection);
   config->Read(wxT("Style/Subsubsection/underlined"), &underSubsubsection);
 
-  output<<wxT("  <STYLE TYPE=\"text/css\">\n");
+  output<<wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"")+cssfileName_rel+wxT("\"/>\n");
+
+  wxString version(wxT(VERSION));
+  css<<wxT("\n");
+  css<<wxT("/*--------------------------------------------------------\n");
+  css<<wxT("  --          Created with wxMaxima version ") + version;
+  css<<wxT("  -------------------------------------------------------- */\n\n");
 
   // BODY STYLE
-  output<<wxT("body {\n");
+  css<<wxT("body {\n");
   if (font.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       font +
       wxT(";\n");
   }
   if (colorBg.Length()) {
     wxColour color(colorBg);
-    output<< wxT("  background-color: ") +
+    css<< wxT("  background-color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  output<<wxT("}\n");
+  css<<wxT("}\n");
   
   
   // INPUT STYLE
-  output<<wxT(".input {\n");
+  css<<wxT(".input {\n");
   if (colorInput.Length()) {
     wxColour color(colorInput);
-    output<<wxT("  color: \n") +
+    css<<wxT("  color: \n") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if   (boldInput) output<<wxT("  font-weight: bold;\n");
-  if (italicInput) output<<wxT("  font-style: italic;\n");
-  output<<wxT("}\n");
+  if   (boldInput) css<<wxT("  font-weight: bold;\n");
+  if (italicInput) css<<wxT("  font-style: italic;\n");
+  css<<wxT("}\n");
   
   // COMMENT STYLE
-  output<<wxT(".comment {\n");
+  css<<wxT(".comment {\n");
   if (fontText.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontText +
       wxT(";\n");
   }
 
   if (colorText.Length()) {
     wxColour color(colorText);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
-    output<<wxT("  background-color: ") +
+    css<<wxT("  background-color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
   
   // Colors for code highlighting
   if(colorCodeVariable.Length())
   {
     wxColour color(colorCodeVariable);
-    output<<wxT(".code_variable {\n");
-    output<<wxT("  color: \n") +
+    css<<wxT(".code_variable {\n");
+    css<<wxT("  color: \n") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";\n");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
   
   if(colorCodeFunction.Length())
   {
     wxColour color(colorCodeFunction);
-    output<<wxT(".code_function {\n\n");
-    output<<wxT("  color: ") +
+    css<<wxT(".code_function {\n\n");
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";\n");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
   
   if(colorCodeComment.Length())
   {
     wxColour color(colorCodeComment);
-    output<<wxT(".code_comment {\n");
-    output<<wxT("  color: ") +
+    css<<wxT(".code_comment {\n");
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";\n");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
   
   if(colorCodeNumber.Length())
   {
     wxColour color(colorCodeNumber);
-    output<<wxT(".code_number {\n");
-    output<<wxT("  color: ") +
+    css<<wxT(".code_number {\n");
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";\n");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
   
   if(colorCodeString.Length())
   {
     wxColour color(colorCodeString);
-    output<<wxT(".code_string {\n");
-    output<<wxT("  color: ") +
+    css<<wxT(".code_string {\n");
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";\n");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
   
   if(colorCodeOperator.Length())
   {
     wxColour color(colorCodeOperator);
-    output << wxT(".code_operator {\n");
-    output << wxT("  color: ") +
+    css << wxT(".code_operator {\n");
+    css << wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
-      wxT(";\\");
-    output << wxT("}\n");
+      wxT(";\n");
+    css << wxT("}\n");
   }
 
   if(colorCodeEndOfLine.Length())
   {
     wxColour color(colorCodeEndOfLine);
-    output<<wxT(".code_endofline {\n");
-    output<<wxT("  color: ") +
+    css<<wxT(".code_endofline {\n");
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"),
                        color.Red(),
                        color.Green(),
                        color.Blue()) +
       wxT(";");
-    output<<wxT("}\n");
+    css<<wxT("}\n");
   }
  
   // SMOOTHER IMAGE SCALING FOR THE IE
-  output<<"img {\n";
-  output<<wxT("  -ms-interpolation-mode: bicubic;\n");
-  output<<wxT("}\n");
+  css<<"img {\n";
+  css<<wxT("  -ms-interpolation-mode: bicubic;\n");
+  css<<wxT("}\n");
   
   // IMAGE STYLE
-  output<<wxT(".image {\n");
+  css<<wxT(".image {\n");
   if (fontText.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontText + wxT(";\n");
   }
   if (colorText.Length()) {
     wxColour color(colorText);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
   
   // SECTION STYLE
-  output<<wxT(".section {\n");
+  css<<wxT(".section {\n");
   if (fontSection.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontSection + wxT(";\\");
   }
   if (colorSection.Length()) {
     wxColour color(colorSection);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if   (boldSection) output<<wxT("  font-weight: bold;\n");
-  if  (underSection) output<<wxT("  text-decoration: underline;\n");
-  if (italicSection) output<<wxT("  font-style: italic;\n");
-  output<<wxT("  font-size: 1.5em;\n");
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  if   (boldSection) css<<wxT("  font-weight: bold;\n");
+  if  (underSection) css<<wxT("  text-decoration: underline;\n");
+  if (italicSection) css<<wxT("  font-style: italic;\n");
+  css<<wxT("  font-size: 1.5em;\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
 
 
   // SUBSECTION STYLE
-  output<<wxT(".subsect {\n");
+  css<<wxT(".subsect {\n");
   if (fontSubsection.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontSubsection + wxT(";\n");
   }
   if (colorSubSec.Length()) {
     wxColour color(colorSubSec);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if   (boldSubsection) output<<wxT("  font-weight: bold;\n");
-  if  (underSubsection) output<<wxT("  text-decoration: underline;\n");
-  if (italicSubsection) output<<wxT("  font-style: italic;\n");
-  output<<wxT("  font-size: 1.2em;\n");
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  if   (boldSubsection) css<<wxT("  font-weight: bold;\n");
+  if  (underSubsection) css<<wxT("  text-decoration: underline;\n");
+  if (italicSubsection) css<<wxT("  font-style: italic;\n");
+  css<<wxT("  font-size: 1.2em;\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
 
   // SUBSECTION STYLE
-  output<<wxT(".subsubsect {\n");
+  css<<wxT(".subsubsect {\n");
   if (fontSubsubsection.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontSubsubsection + wxT(";\n");
   }
   if (colorSubsubSec.Length()) {
     wxColour color(colorSubsubSec);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if   (boldSubsubsection) output<<wxT("  font-weight: bold;\n");
-  if  (underSubsubsection) output<<wxT("  text-decoration: underline;\n");
-  if (italicSubsubsection) output<<wxT("  font-style: italic;\n");
-  output<<wxT("  font-size: 1.2em;\n");
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  if   (boldSubsubsection) css<<wxT("  font-weight: bold;\n");
+  if  (underSubsubsection) css<<wxT("  text-decoration: underline;\n");
+  if (italicSubsubsection) css<<wxT("  font-style: italic;\n");
+  css<<wxT("  font-size: 1.2em;\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
 
   // TITLE STYLE
-  output<<wxT(".title {\n");
+  css<<wxT(".title {\n");
   if (fontTitle.Length()) {
-    output<<wxT("  font-family: ") +
+    css<<wxT("  font-family: ") +
       fontTitle + wxT(";\n");
   }
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if   (boldTitle) output<<wxT("  font-weight: bold;\n");
-  if  (underTitle) output<<wxT("  text-decoration: underline;\n");
-  if (italicTitle) output<<wxT("  font-style: italic;\n");
-  output<<wxT("  font-size: 2em;\n");
-  output<<wxT("  padding: 2mm;\n");
-  output<<wxT("}\n");
+  if   (boldTitle) css<<wxT("  font-weight: bold;\n");
+  if  (underTitle) css<<wxT("  text-decoration: underline;\n");
+  if (italicTitle) css<<wxT("  font-style: italic;\n");
+  css<<wxT("  font-size: 2em;\n");
+  css<<wxT("  padding: 2mm;\n");
+  css<<wxT("}\n");
 
   // PROMPT STYLE
-  output<<wxT(".prompt {\n");
+  css<<wxT(".prompt {\n");
   if (colorPrompt.Length()) {
     wxColour color(colorPrompt);
-    output<<wxT("  color: ") +
+    css<<wxT("  color: ") +
       wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
       wxT(";\n");
   }
-  if (boldPrompt) output<<wxT("  font-weight: bold;\n");
-  if (italicPrompt) output<<wxT("  font-style: italic;\n");
-  output<<wxT("}\n");
+  if (boldPrompt) css<<wxT("  font-weight: bold;\n");
+  if (italicPrompt) css<<wxT("  font-style: italic;\n");
+  css<<wxT("}\n");
 
   // TABLES
-  output<<wxT("table {\n");
-  output<<wxT("  border: 0px;\n");
-  output<<wxT("}\n");
-  output<<wxT("td {\n");
-  output<<wxT("  vertical-align: top;\n");
-  output<<wxT("  padding: 1mm;\n");
-  output<<wxT("}\n");
+  css<<wxT("table {\n");
+  css<<wxT("  border: 0px;\n");
+  css<<wxT("}\n");
+  css<<wxT("td {\n");
+  css<<wxT("  vertical-align: top;\n");
+  css<<wxT("  padding: 1mm;\n");
+  css<<wxT("}\n");
 
-  output<<wxT("  </STYLE>\n");
   output<<wxT(" </HEAD>\n");
   output<<wxT(" <BODY>\n");
 
-  wxString version(wxT(VERSION));
   output<<wxT("\n");
-  output<<wxT("<!---------------------------------------------------------->\n");
+  output<<wxT("<!-- ***************************************************** -->\n");
   output<<wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
-  output<<wxT("<!---------------------------------------------------------->\n");
+  output<<wxT("<!-- ***************************************************** -->\n");
   
   //////////////////////////////////////////////
   // Write contents
@@ -3349,10 +3367,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
   output<<wxT(" </BODY>\n");
   output<<wxT("</HTML>\n");
   
-  bool done = !outfile.GetFile()->Error();
+  bool outfileOK = !outfile.GetFile()->Error();
+  bool cssOK =     !cssfile.GetFile()->Error();
   outfile.Close();
+  cssfile.Close();
   
-  return done;
+  return outfileOK && cssOK;
 }
 
 /*! Export the file as TeX code
