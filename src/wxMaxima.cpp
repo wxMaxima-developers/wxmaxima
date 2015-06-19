@@ -269,11 +269,19 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
 
+  // If the string we have to append is empty we return immediately.
   wxString t(s);
   t.Trim();
   t.Trim(false);
   if (!t.Length())
+  {
+    // The thing we get a emptry string back by default is that wxMaxima has changed
+    // some of maxima's configuration values in the background.
+    // In this case we no longer wait for a reply from maxima and therefore set the
+    // status to "waiting".
+    StatusMaximaBusy(waiting);
     return ;
+  }
 
   if (type != MC_TYPE_ERROR)
     StatusMaximaBusy(parsing);
@@ -284,7 +292,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     {
       int start = s.Find(wxT("<mth"));
 
-      if (start == -1) {
+      if (start == wxNOT_FOUND) {
         t = s;
         t.Trim();
         t.Trim(false);
@@ -292,33 +300,33 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
           DoRawConsoleAppend(s, MC_TYPE_DEFAULT);
         s = wxEmptyString;
       }
-
       else {
+
+        // If the string doesn't begin with a <mth> we add the
+        // part of the string that precedes the <mth> to the console
+        // first.
         wxString pre = s.SubString(0, start - 1);
         wxString pre1(pre);
         pre1.Trim();
         pre1.Trim(false);
+        if (pre1.Length())
+          DoRawConsoleAppend(pre, MC_TYPE_DEFAULT);
+
+        // If the math tag ends inside this string we add the whole tag.
         int end = s.Find(wxT("</mth>"));
-        if (end == -1)
+        if (end == wxNOT_FOUND)
           end = s.Length();
         else
           end += 5;
         wxString rest = s.SubString(start, end);
 
-        if (pre1.Length()) {
-          DoRawConsoleAppend(pre, MC_TYPE_DEFAULT);
-          DoConsoleAppend(wxT("<span>") + rest +
-                          wxT("</span>"), type, false);
-        }
-        else {
-          DoConsoleAppend(wxT("<span>") + rest +
-                          wxT("</span>"), type, false);
-        }
+        DoConsoleAppend(wxT("<span>") + rest +
+                        wxT("</span>"), type, false);
         s = s.SubString(end + 1, s.Length());
       }
     }
   }
-
+  
   else if (type == MC_TYPE_PROMPT) {
     StatusMaximaBusy(waiting);
     m_lastPrompt = s;
