@@ -787,6 +787,20 @@ with.
 @section Input sometimes is sluggish/ignoring keys on Ubuntu
 Installing the package @code{ibus-gtk} should resolve this issue. See
 (@uref{https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558}) for details.
+@section wxMaxima halts when maxima processes greek characters or Umlaute
+If your maxima is based on sbcl the following lines have to be added to your
+@file{.sblrc}:
+@example
+(setf sb-impl::default-external-format :utf-8)
+@endexample
+The location this file has to be put in order to be found by sbcl is system-
+and installation-specific. But any sbcl-based maxima that already has evaluated
+a cell in the current session will happily tell where it can be found after
+getting the following command:
+@example
+:lisp (sb-impl::userinit-pathname)
+@example
+
 @node FAQ
 @chapter FAQ
 @section Is there a way to make more text fit on a pdfLaTeX page?
