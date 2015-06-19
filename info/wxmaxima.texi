@@ -792,7 +792,7 @@ If your maxima is based on sbcl the following lines have to be added to your
 @file{.sblrc}:
 @example
 (setf sb-impl::default-external-format :utf-8)
-@endexample
+@end example
 The location this file has to be put in order to be found by sbcl is system-
 and installation-specific. But any sbcl-based maxima that already has evaluated
 a cell in the current session will happily tell where it can be found after
