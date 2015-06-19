@@ -81,7 +81,7 @@ public:
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
   virtual wxString itemizeItem(){return wxT("\\item");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
-  virtual wxString NewLine(){return wxT("\n");}
+  virtual wxString NewLine(){return wxT("");}
   virtual bool     NewLineBreaksLine(){return false;}
 };
 
@@ -91,10 +91,10 @@ class MarkDownHTML: public MarkDownParser
 public:
   MarkDownHTML();
  private:
-  virtual wxString itemizeBegin(){return wxT("<UL>");}
-  virtual wxString itemizeEnd(){return wxT("</UL>");}
+  virtual wxString itemizeBegin(){return wxT("<UL>\n");}
+  virtual wxString itemizeEnd(){return wxT("</UL>\n");}
   virtual wxString itemizeItem(){return wxT("<LI>");}
-  virtual wxString itemizeEndItem(){return wxT("</LI>");}
+  virtual wxString itemizeEndItem(){return wxT("</LI>\n");}
   virtual wxString NewLine(){return wxT("<BR>");}
   virtual bool     NewLineBreaksLine(){return true;}
 };

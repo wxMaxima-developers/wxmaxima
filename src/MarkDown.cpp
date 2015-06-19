@@ -37,125 +37,137 @@ MarkDownParser :: MarkDownParser()
   
 wxString MarkDownParser::MarkDown(wxString str)
 {
+  // Replace all arrows and so on by the according symbols
+  for(replaceList::iterator it=regexReplaceList.begin();
+      it!=regexReplaceList.end();
+      ++it)
+    (*it)->DoReplace(&str);
+  
+  // The result of this action
   wxString result=wxEmptyString;
+
+  // The list of indentation levels for bullet lists we found
+  // so far
   std::list <int> indentationLevels;
+
+  // Do we need to add a newline character?
   bool addNewline = false;
-  wxString line;
 
-  // We will process the string line-per line until no more chars are left.
-  while(str != wxEmptyString)
+  // Now process the input string line-by-line.
+  wxStringTokenizer lines(str,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
+  while(lines.HasMoreTokens())
+  {
+    // Determine the amount of indentation and the contents of the rest
+    // of the line.
+    wxString line = lines.GetNextToken();
+
+    // We will add our own newline characters when needed.
+    line.Replace(NewLine(),wxT(""));
+
+    // Trailing whitespace doesn't help much.
+    line=line.Trim();
+
+    wxString str = line;
+    str = str.Trim(false);
+    size_t index = line.Length()-str.Length();
+
+    // Does the line contain anything other than spaces?
+    if(str != wxEmptyString)
     {
+      // The line contains actual text..
+      
+      // If the line begins with a star followed by a space it is part
+      // of a bullet list
+      if(str.Left(2) == wxT("* "))
+      {
+        // We are part of a bullet list.
 
-      // Extract a line from the string.
-      int newLinePos = str.find(NewLine());
-      if(newLinePos == wxNOT_FOUND)
-	{
-	  line = str;
-	  str  = wxEmptyString;
-	}
-      else
-	{
-	  line = str.Left(newLinePos);
-	  str  = str.Right(str.Length() - newLinePos - NewLine().Length());
-	}
+        // Remove the bullet list start marker from our string.
+        str = str.Right(str.Length()-2);
+        str = str.Trim(false);
+        
+        // Let's see if this is the first item in the list
+        if(indentationLevels.empty())
+        {
+          // This is the first item => Start the itemization.
+          result += itemizeBegin()+itemizeItem();
+          indentationLevels.push_back(index );
+        }
+        else
+        {
+          // We are inside a bullet list.
 
-      // Replace all arrows and so on by the according symbols
-      for(replaceList::iterator it=regexReplaceList.begin();
-          it!=regexReplaceList.end();
-          ++it)
-        (*it)->DoReplace(&line);
-
-      // Find the first non-whitespace character of the current line.
-      int index=0;
-      while((index<line.Length()) && (line[index] == wxT(' ')))
-	index++;
-
-      // Does the line contain anything other than spaces?
-      if(index<line.Length())
-	{
-          // The line contains anything other than spaces.
+          // Are we on a new indentation level?
+          if(indentationLevels.back()<index)
+          {
+            // A new identation level => add the itemization-start-command.
+            result += itemizeEndItem() + itemizeBegin();
+            indentationLevels.push_back(index);
+          }
           
-	  // If the line begins with a star followed by a space it is part
-	  // of a bullet list
-	  if(line[index] == wxT('*') && (line[index + 1] == wxT(' ')) )
-	    {
-	      // We are part of a bullet list. Let's see if this is the first
-	      // item and we need to start a new list.
-	      if(indentationLevels.empty())
-		{
-		  result += itemizeBegin()+itemizeItem();
-		  indentationLevels.push_back(index );
-		}
-	      else
-		{
-		  // We are inside a bullet list. Are we at a new indentation
-		  // level?
-		  if(indentationLevels.back()<index)
-		    {
-		      result += itemizeEndItem() + itemizeBegin();
-		      indentationLevels.push_back(index);
-		    }
-
-		  // End lists if we are at a old indentation level.
-		  while(indentationLevels.back() > index)
-		    {
-		      result += itemizeEnd();
-		      indentationLevels.pop_back();
-		    }
-
-		  // Add a new item.
-		  result += itemizeEndItem() + itemizeItem();
-		}
-	      result += line.Right(line.Length() - index - 1);
-              addNewline = false;
-	    }
-	  else
-	    {
-	      // Ordinary text.
-	      //
-	      // If we are at a old indentation level we need to end some lists
-	      // and add a new item if we still are inside a list.
-              if(!indentationLevels.empty())
-              {
-                if(indentationLevels.back() > index)
-		{
-		  if(NewLineBreaksLine() && !m_flowedTextRequested)
-		    addNewline = false;
-		  result += itemizeEndItem();
-		  while((!indentationLevels.empty())&&
-			(indentationLevels.back()>index))
-                  {
-                    result += itemizeEnd();
-                    indentationLevels.pop_back();
-                  }
-		  if(!indentationLevels.empty()) result += itemizeItem();
-		}
-                line = line.Right(line.Length() - index);
-              }
-              
-	      // Add the text to the output.
-	      if (addNewline)
-                result += NewLine();
-              else
-                result += " ";
-              
-	      result += line;
-            }
-	}
+          // End lists if we are at a old indentation level.
+          while(indentationLevels.back() > index)
+          {
+            result += itemizeEnd();
+            indentationLevels.pop_back();
+          }
+          
+          // Add a new item marker.
+          result += itemizeEndItem() + itemizeItem();
+        }
+        result += str;
+        addNewline = false;
+      }
       else
-	{
-	  if(str != wxEmptyString) result += NewLine();
+      {
+        // Ordinary text.
+        //
+        // If we are at a old indentation level we need to end some lists
+        // and add a new item if we still are inside a list.
+        if(!indentationLevels.empty())
+        {
+          if(indentationLevels.back() > index)
+          {
+            if(NewLineBreaksLine() && !m_flowedTextRequested)
+              addNewline = false;
+
+            result += itemizeEndItem();
+            while((!indentationLevels.empty())&&
+                  (indentationLevels.back()>index))
+            {
+              result += itemizeEnd();
+              indentationLevels.pop_back();
+            }
+            if(!indentationLevels.empty()) result += itemizeItem();
+          }
+          line = line.Right(line.Length() - index);
+        }
+        
+        // Add the text to the output.
+        if (addNewline)
+        {
+          result += NewLine() + wxT("\n");
           addNewline = false;
-	}
+        }
+        else
+          result += "\n";
+        
+        result += line;
+      }
     }
+    else
+    {
+      if(str != wxEmptyString) result += NewLine();
+      addNewline = false;
+    }
+  }
 
   // Close all item lists
   while(!indentationLevels.empty())
-    {
-      result += itemizeEnd();
-      indentationLevels.pop_back();
-    }
-  
+  {
+    result += itemizeEnd();
+    indentationLevels.pop_back();
+  }
   return result;
 }
   
