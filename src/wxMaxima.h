@@ -196,9 +196,8 @@ protected:
   void ServerEvent(wxSocketEvent& event);          //!< server event: maxima connection
   /*! Is triggered on Input or disconnect from maxima
 
-    \todo An :lisp-quiet command causes the status line to be changed to "reading maxima
-    output". But since there will be no prompt afterwards the status line won't change 
-    back. This is for example triggered by opening a file. Is there a way to fix this?
+    The data we get from maxima is split into small packets we append to m_currentOutput 
+    until we got a full line we can display.
    */
   void ClientEvent(wxSocketEvent& event);
 
@@ -234,16 +233,34 @@ protected:
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
-  void ReadFirstPrompt(wxString &data);            //!< reads everything before first prompt
-  // setsup m_pid
-  void ReadPrompt(wxString &data);                 //!< reads prompts
-  void ReadMath(wxString &data);                   //!< reads output other than prompts
-  void ReadLispError(wxString &data);              //!< lisp errors (no prompt prefix/suffix)
-  void ReadLoadSymbols(wxString &data);            //!< functions after load command
+  /*! Determines the process id of maxima from its initial output
+
+    This function does several things:
+     - it sets m_pid to the process id of maxima
+     - it discards all data until this point
+     - and it prepares the worksheet for editing.
+
+     \param data The string ReadFirstPrompt() does read its data from. 
+                  After leaving this function data is empty again.
+   */
+  void ReadFirstPrompt(wxString &data);
+  /* Reads the input and the output prompt from Maxima.
+   */
+  void ReadPrompt(wxString &data);
+  /* Reads the math cell's contents from Maxima.
+     
+     Math cells are enclosed between the tags \<mth\> and \</mth\>. If we 
+   */
+  void ReadMath(wxString &data);                   //!< reads the math that is contained in data
+  void ReadLispError(wxString &data);              //!< read lisp errors (no prompt prefix/suffix)
+  //! Reads autocompletion templates we get on load of a package
+  void ReadLoadSymbols(wxString &data);
 #ifndef __WXMSW__
-  void ReadProcessOutput();                        //!< reads output of maxima command
+  //!< reads the output the maxima command sends to stdout
+  void ReadProcessOutput();                        
 #endif
-  bool SaveNecessary();                            //!< Does this file contain anything worth saving?
+  //!< Does this file contain anything worth saving?
+  bool SaveNecessary();
 
   /*!
     This method is called once when maxima starts. It loads wxmathml.lisp
@@ -272,6 +289,7 @@ protected:
   bool m_isConnected;
   bool m_isRunning;
   bool m_first;
+  //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   wxProcess *m_process;
   wxInputStream *m_input;

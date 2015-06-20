@@ -783,17 +783,20 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 {
 #if defined(__WXMSW__)
   int start = data.Find(wxT("Maxima"));
-  if (start == -1)
+  if (start == wxNOT_FOUND)
     start = 0;
+  
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               data.SubString(start, data.Length() - 1));
 #endif // __WXMSW__
 
+  // Wait for a line maxima informs us about it's process id in.
   int s = data.Find(wxT("pid=")) + 4;
   int t = s + data.SubString(s, data.Length()).Find(wxT("\n")) - 1;
 
+  // Read this pid
   if (s < t)
     data.SubString(s, t).ToLong(&m_pid);
 
@@ -826,21 +829,23 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  int end = data.Find(m_promptPrefix);
 
-  while (end != wxNOT_FOUND)
+  // Skip all data before the last prompt in the data string.
+  int end;
+  while ((end = data.Find(m_promptPrefix)) != wxNOT_FOUND)
   {
     m_readingPrompt = true;
     wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
     data = data.SubString(end + m_promptPrefix.Length(),
                                                 data.Length());
-    end = data.Find(m_promptPrefix);
   }
-
+  
+  // If we did find a prompt in the last step we leave this function again.
   if (m_readingPrompt)
     return ;
 
+  // Append everything untill the "end of math" marker to the console.
   wxString mth = wxT("</mth>");
   end = data.Find(mth);
   while (end > -1)
@@ -848,31 +853,33 @@ void wxMaxima::ReadMath(wxString &data)
     wxString o = data.Left(end);
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
     data = data.SubString(end + mth.Length(),
-                                                data.Length());
+                          data.Length());
     end = data.Find(mth);
   }
 }
 
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
-  int start = data.Find(wxT("<wxxml-symbols>"));
-  while (start > -1)
+  int start;
+  while ((start = data.Find(wxT("<wxxml-symbols>"))) != wxNOT_FOUND)
   {
     int end = data.Find(wxT("</wxxml-symbols>"));
-    if (end > -1)
+    if (end != wxNOT_FOUND)
     {
+      // Put the symbols into a separate string
       wxString symbols = data.SubString(start + 15, end - 1);
+
+      // Remove the symbols from the data string
       data = data.SubString(0, start-1) +
         data.SubString(end + 16, data.Length());
 
+      // Send each symbol to the console
       wxStringTokenizer templates(symbols, wxT("$"));
       while (templates.HasMoreTokens())
         m_console->AddSymbol(templates.GetNextToken());
-
-      start = data.Find(wxT("<wxxml-symbols>"));
     }
     else
-      start = -1;
+      break;
   }
 }
 
