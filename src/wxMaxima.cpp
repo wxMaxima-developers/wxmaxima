@@ -1962,7 +1962,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, true);
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
-
+  
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_evaltillhere,
                                        (m_console->GetTree() != NULL) &&
                                        (m_console->CanPaste()) &&
