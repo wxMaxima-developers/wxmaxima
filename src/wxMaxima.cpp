@@ -275,11 +275,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   t.Trim(false);
   if (!t.Length())
   {
-    // The thing we get a emptry string back by default is that wxMaxima has changed
-    // some of maxima's configuration values in the background.
-    // In this case we no longer wait for a reply from maxima and therefore set the
-    // status to "waiting".
-    StatusMaximaBusy(waiting);
     return ;
   }
 
@@ -4676,7 +4671,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
   if (tmp == NULL)
   {
-    m_console->SetWorkingGroup(NULL);
+    StatusMaximaBusy(waiting);
     return; //empty queue
   }
 
