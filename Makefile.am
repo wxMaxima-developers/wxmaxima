@@ -9,6 +9,7 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in     \
              art/toolbar/gtk-save.png art/toolbar/text.png   \
              art/toolbar/media-playback-start.png            \
              art/toolbar/media-playback-startstop.png        \
+	     art/toolbar/go-bottom.png			     \
 	     art/toolbar/gtk-select-all.png		     \
 	     art/toolbar/view-refresh.png		     \
              art/toolbar/media-playback-stop.png             \

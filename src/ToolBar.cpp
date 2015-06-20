@@ -117,6 +117,10 @@ ToolBar::ToolBar(wxWindow* parent, int id)
                      _("Return to the cell that is currently being evaluated"));
   m_toolBar->EnableTool(tb_follow,false);
 
+  m_toolBar->AddTool(menu_restart_id, _("Evaluate to point"),
+                     GetImage(wxT("go-bottom")),
+                     _("Evaluate the file from its beginning to the cell above the cursor"));
+
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif

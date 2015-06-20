@@ -422,7 +422,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_evaluate_till_here, _("Evaluate Cells above this point\tCtrl-Shift-P"),
+  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells above this point\tCtrl-Shift-P"),
                      _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
 
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),

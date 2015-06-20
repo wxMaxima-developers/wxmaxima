@@ -828,7 +828,7 @@ void wxMaxima::ReadMath()
 {
   int end = m_currentOutput.Find(m_promptPrefix);
 
-  while (end > -1)
+  while (end != wxNOT_FOUND)
   {
     m_readingPrompt = true;
     wxString o = m_currentOutput.Left(end);
@@ -1899,8 +1899,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid>0);
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
-  menubar->Enable(menu_evaluate_till_here, (m_console->GetTree() != NULL)
-		  &&	  (m_console->CanPaste()) );  
+  menubar->Enable(ToolBar::tb_evaltillhere,
+                  (m_console->GetTree() != NULL) &&
+                  (m_console->CanPaste()) &&
+                  (m_console->GetHCaret() != NULL)
+    );  
   menubar->Enable(menu_save_id, !m_fileSaved);
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
@@ -1959,6 +1962,12 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, true);
   else
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
+
+  m_console->m_mainToolBar->EnableTool(ToolBar::tb_evaltillhere,
+                                       (m_console->GetTree() != NULL) &&
+                                       (m_console->CanPaste()) &&
+                                       (m_console->GetHCaret() != NULL)
+    );
 
   // On MSW it seems we cannot change an icon without side-effects that somehow
   // stop the animation => on this OS we have separate icons for the
@@ -2717,7 +2726,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->AddEntireDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
     break;
-  case menu_evaluate_till_here:
+  case ToolBar::tb_evaltillhere:
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
@@ -5279,7 +5288,7 @@ EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_evaluate, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)
-EVT_UPDATE_UI(menu_evaluate_till_here, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(ToolBar::tb_evaltillhere, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_select_all, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_undo, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_pane_hideall, wxMaxima::UpdateMenus)
@@ -5335,7 +5344,7 @@ EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
-EVT_MENU(menu_evaluate_till_here, wxMaxima::MaximaMenu)
+EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)
 EVT_IDLE(wxMaxima::OnIdle)
 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)

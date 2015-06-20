@@ -85,6 +85,7 @@ class ToolBar
     tb_pref,
     tb_interrupt,
     tb_follow,
+    tb_evaltillhere,
     tb_help,
     tb_animation_startStop,
     tb_animation_start,
