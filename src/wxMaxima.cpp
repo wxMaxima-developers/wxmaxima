@@ -4491,7 +4491,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case MathCtrl::popid_evaluate:
   {
     bool evaluating = !m_console->m_evaluationQueue->Empty();
-    
+    m_console->AddSelectionToEvaluationQueue();
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
