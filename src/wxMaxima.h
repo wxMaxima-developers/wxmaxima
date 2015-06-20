@@ -234,16 +234,16 @@ protected:
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
-  void ReadFirstPrompt();            //!< reads everything before first prompt
+  void ReadFirstPrompt(wxString &data);            //!< reads everything before first prompt
   // setsup m_pid
-  void ReadPrompt();                 //!< reads prompts
-  void ReadMath();                   //!< reads output other than prompts
-  void ReadLispError();              //!< lisp errors (no prompt prefix/suffix)
-  void ReadLoadSymbols();            //!< functions after load command
+  void ReadPrompt(wxString &data);                 //!< reads prompts
+  void ReadMath(wxString &data);                   //!< reads output other than prompts
+  void ReadLispError(wxString &data);              //!< lisp errors (no prompt prefix/suffix)
+  void ReadLoadSymbols(wxString &data);            //!< functions after load command
 #ifndef __WXMSW__
-  void ReadProcessOutput();          //!< reads output of maxima command
+  void ReadProcessOutput();                        //!< reads output of maxima command
 #endif
-  bool SaveNecessary();              //!< Does this file contain anything worth saving?
+  bool SaveNecessary();                            //!< Does this file contain anything worth saving?
 
   /*!
     This method is called once when maxima starts. It loads wxmathml.lisp

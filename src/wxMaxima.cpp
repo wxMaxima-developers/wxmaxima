@@ -560,15 +560,15 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       }
 
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
-        ReadFirstPrompt();
+        ReadFirstPrompt(m_currentOutput);
 
-      ReadLoadSymbols();
+      ReadLoadSymbols(m_currentOutput);
 
-      ReadMath();
+      ReadMath(m_currentOutput);
 
-      ReadPrompt();
+      ReadPrompt(m_currentOutput);
 
-      ReadLispError();
+      ReadLispError(m_currentOutput);
     }
 
     break;
@@ -779,23 +779,23 @@ void wxMaxima::CleanUp()
 ///  Dealing with stuff read from the socket
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::ReadFirstPrompt()
+void wxMaxima::ReadFirstPrompt(wxString &data)
 {
 #if defined(__WXMSW__)
-  int start = m_currentOutput.Find(wxT("Maxima"));
+  int start = data.Find(wxT("Maxima"));
   if (start == -1)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
-              m_currentOutput.SubString(start, m_currentOutput.Length() - 1));
+              data.SubString(start, data.Length() - 1));
 #endif // __WXMSW__
 
-  int s = m_currentOutput.Find(wxT("pid=")) + 4;
-  int t = s + m_currentOutput.SubString(s, m_currentOutput.Length()).Find(wxT("\n")) - 1;
+  int s = data.Find(wxT("pid=")) + 4;
+  int t = s + data.SubString(s, data.Length()).Find(wxT("\n")) - 1;
 
   if (s < t)
-    m_currentOutput.SubString(s, t).ToLong(&m_pid);
+    data.SubString(s, t).ToLong(&m_pid);
 
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
@@ -804,7 +804,7 @@ void wxMaxima::ReadFirstPrompt()
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
-  m_currentOutput = wxEmptyString;
+  data = wxEmptyString;
   m_console->EnableEdit(true);
 
   if (m_openFile.Length())
@@ -824,52 +824,52 @@ void wxMaxima::ReadFirstPrompt()
 /***
  * Checks if maxima displayed a new chunk of math
  */
-void wxMaxima::ReadMath()
+void wxMaxima::ReadMath(wxString &data)
 {
-  int end = m_currentOutput.Find(m_promptPrefix);
+  int end = data.Find(m_promptPrefix);
 
   while (end != wxNOT_FOUND)
   {
     m_readingPrompt = true;
-    wxString o = m_currentOutput.Left(end);
+    wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
-    m_currentOutput = m_currentOutput.SubString(end + m_promptPrefix.Length(),
-                                                m_currentOutput.Length());
-    end = m_currentOutput.Find(m_promptPrefix);
+    data = data.SubString(end + m_promptPrefix.Length(),
+                                                data.Length());
+    end = data.Find(m_promptPrefix);
   }
 
   if (m_readingPrompt)
     return ;
 
   wxString mth = wxT("</mth>");
-  end = m_currentOutput.Find(mth);
+  end = data.Find(mth);
   while (end > -1)
   {
-    wxString o = m_currentOutput.Left(end);
+    wxString o = data.Left(end);
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
-    m_currentOutput = m_currentOutput.SubString(end + mth.Length(),
-                                                m_currentOutput.Length());
-    end = m_currentOutput.Find(mth);
+    data = data.SubString(end + mth.Length(),
+                                                data.Length());
+    end = data.Find(mth);
   }
 }
 
-void wxMaxima::ReadLoadSymbols()
+void wxMaxima::ReadLoadSymbols(wxString &data)
 {
-  int start = m_currentOutput.Find(wxT("<wxxml-symbols>"));
+  int start = data.Find(wxT("<wxxml-symbols>"));
   while (start > -1)
   {
-    int end = m_currentOutput.Find(wxT("</wxxml-symbols>"));
+    int end = data.Find(wxT("</wxxml-symbols>"));
     if (end > -1)
     {
-      wxString symbols = m_currentOutput.SubString(start + 15, end - 1);
-      m_currentOutput = m_currentOutput.SubString(0, start-1) +
-        m_currentOutput.SubString(end + 16, m_currentOutput.Length());
+      wxString symbols = data.SubString(start + 15, end - 1);
+      data = data.SubString(0, start-1) +
+        data.SubString(end + 16, data.Length());
 
       wxStringTokenizer templates(symbols, wxT("$"));
       while (templates.HasMoreTokens())
         m_console->AddSymbol(templates.GetNextToken());
 
-      start = m_currentOutput.Find(wxT("<wxxml-symbols>"));
+      start = data.Find(wxT("<wxxml-symbols>"));
     }
     else
       start = -1;
@@ -879,15 +879,15 @@ void wxMaxima::ReadLoadSymbols()
 /***
  * Checks if maxima displayed a new prompt.
  */
-void wxMaxima::ReadPrompt()
+void wxMaxima::ReadPrompt(wxString &data)
 {
   m_console->m_questionPrompt = false;
   m_ready=true;
-  int end = m_currentOutput.Find(m_promptSuffix);
+  int end = data.Find(m_promptSuffix);
   if (end > -1)
   {
     m_readingPrompt = false;
-    wxString o = m_currentOutput.Left(end);
+    wxString o = data.Left(end);
     if (o != wxT("\n") && o.Length())
     {
       // Maxima displayed a new main prompt
@@ -959,8 +959,8 @@ void wxMaxima::ReadPrompt()
         StatusMaximaBusy(waiting);
     }
     
-    m_currentOutput = m_currentOutput.SubString(end + m_promptSuffix.Length(),
-                                                m_currentOutput.Length());
+    data = data.SubString(end + m_promptSuffix.Length(),
+                                                data.Length());
   }
 }
 
@@ -1413,19 +1413,19 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
 /***
  * This works only for gcl by default - other lisps have different prompts.
  */
-void wxMaxima::ReadLispError()
+void wxMaxima::ReadLispError(wxString &data)
 {
   static const wxString lispError = wxT("dbl:MAXIMA>>"); // gcl
-  int end = m_currentOutput.Find(lispError);
+  int end = data.Find(lispError);
   if (end > -1)
   {
     m_readingPrompt = false;
     m_inLispMode = true;
-    wxString o = m_currentOutput.Left(end);
+    wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
     ConsoleAppend(lispError, MC_TYPE_PROMPT);
     StatusMaximaBusy(waiting);
-    m_currentOutput = wxEmptyString;
+    data = wxEmptyString;
   }
 }
 
