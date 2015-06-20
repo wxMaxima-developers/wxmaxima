@@ -2055,10 +2055,13 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
 bool wxMaxima::SaveFile(bool forceSave)
 {
+  // We don't want an autosave to be triggered during save.
+  m_autoSaveTimer.Stop();
+  
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
   int ext=0;
-
+  
   wxConfig *config = (wxConfig *)wxConfig::Get();
   
   if (file.Length() == 0 || forceSave)
@@ -2093,7 +2096,10 @@ bool wxMaxima::SaveFile(bool forceSave)
       ext = fileDialog.GetFilterIndex();
     }
     else
+    {
+      m_autoSaveTimer.StartOnce(m_autoSaveInterval);
       return false;
+    }
   }
 
   if (file.Length())
@@ -2125,6 +2131,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_console->ExportToWXMX(file))
       {
         StatusSaveFailed();
+        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
         return false;
       }
 	
@@ -2139,6 +2146,7 @@ bool wxMaxima::SaveFile(bool forceSave)
           config->Write(wxT("defaultExt"), wxT("wxm"));
 	    
         StatusSaveFailed();
+        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
         return false;
       }
     }
@@ -2150,6 +2158,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 
     StatusSaveFinished();
+    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     return true;
   }
 
@@ -2246,6 +2255,11 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case menu_export_html:
   {
+
+    // Saving calls wxYield(), exporting does do so, too => we need to
+    // avoid triggering an autosave during export.
+    m_autoSaveTimer.Stop();
+    
     // Determine a sane default file name;
     wxString file = m_currentFile;
 
@@ -2314,6 +2328,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           else
             StatusExportFinished();
         }
+        m_autoSaveTimer.StartOnce(m_autoSaveInterval);   
 
         wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
         wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
