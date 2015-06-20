@@ -2717,23 +2717,35 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   }
   break;
   case menu_evaluate_all_visible:
+  {
+    bool evaluating = !m_console->m_evaluationQueue->Empty();
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
-    break;
+    if(!evaluating) TryEvaluateNextInQueue();
+  }
+  break;
   case menu_evaluate_all:
+  {
+    bool evaluating = !m_console->m_evaluationQueue->Empty();
     if(!m_isConnected)
       StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
     TryEvaluateNextInQueue();
-    break;
+    if(!evaluating) TryEvaluateNextInQueue();
+  }
+  break;
   case ToolBar::tb_evaltillhere:
+  {
+    bool evaluating = !m_console->m_evaluationQueue->Empty();
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     TryEvaluateNextInQueue();
-    break;
+    if(!evaluating) TryEvaluateNextInQueue();
+  }
+  break;
   case menu_clear_var:
     cmd = GetTextFromUser(_("Delete variable(s):"), _("Delete"),
                           wxT("all"), this);
