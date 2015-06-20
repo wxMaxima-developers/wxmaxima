@@ -323,7 +323,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   }
   
   else if (type == MC_TYPE_PROMPT) {
-    StatusMaximaBusy(waiting);
     m_lastPrompt = s;
 
     if (s.StartsWith(wxT("MAXIMA> "))) {
@@ -958,7 +957,10 @@ void wxMaxima::ReadPrompt(wxString &data)
       if(m_console->m_questionPrompt)
         StatusMaximaBusy(userinput);
       else
-        StatusMaximaBusy(waiting);
+      {
+        if(m_console->m_evaluationQueue->Empty())
+          StatusMaximaBusy(waiting);
+      }
     }
     
     data = data.SubString(end + m_promptSuffix.Length(),
@@ -993,7 +995,10 @@ void wxMaxima::SetCWD(wxString file)
 
   SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
   if (m_ready)
-    StatusMaximaBusy(waiting);
+  {
+    if(m_console->m_evaluationQueue->Empty())
+      StatusMaximaBusy(waiting);
+  }
 }
 
 // OpenWXMFile
@@ -1012,7 +1017,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1023,7 +1027,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1062,7 +1065,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
-  StatusMaximaBusy(waiting);
 
   SetCWD(file);
 
@@ -1088,7 +1090,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1100,7 +1101,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
     return false;
   }
 
@@ -1122,7 +1122,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       wxMessageBox(_("Document ") + file +
                    _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
                    _("Error"), wxOK | wxICON_EXCLAMATION);
-      StatusMaximaBusy(waiting);
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR) {
@@ -1164,7 +1163,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
-  StatusMaximaBusy(waiting);
 
   SetCWD(file);
   
@@ -1426,7 +1424,6 @@ void wxMaxima::ReadLispError(wxString &data)
     wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
     ConsoleAppend(lispError, MC_TYPE_PROMPT);
-    StatusMaximaBusy(waiting);
     data = wxEmptyString;
   }
 }
@@ -1446,8 +1443,6 @@ void wxMaxima::ReadProcessOutput()
               wxT(VERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               o.SubString(st, o.Length() - 1));
-
-  StatusMaximaBusy(waiting);
 }
 #endif
 
@@ -4698,7 +4693,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
   if (tmp == NULL)
   {
-    StatusMaximaBusy(waiting);
+      StatusMaximaBusy(waiting);
     return; //empty queue
   }
 
@@ -4754,7 +4749,6 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->Recalculate();
       m_console->Refresh();
       m_console->m_evaluationQueue->RemoveFirst();
-      StatusMaximaBusy(waiting);
       TryEvaluateNextInQueue();
     }
   }

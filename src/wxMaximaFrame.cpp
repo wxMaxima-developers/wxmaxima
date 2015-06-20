@@ -35,6 +35,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 
 {
+  m_forceStatusbarUpdate = false;
   m_manager.SetManagedWindow(this);
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
@@ -77,86 +78,92 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 }
 
 void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
-{  
-  if(!m_StatusSaving)
+{
+  if((m_StatusMaximaBusy != status) || (m_forceStatusbarUpdate))
   {
-    switch(status)
+    if(!m_StatusSaving)
     {
-    case userinput:	
-      m_MenuBar->Enable(menu_remove_output,false);
-      if(m_console->m_mainToolBar)
+      switch(status)
       {
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
-        m_console->m_mainToolBar->ShowUserInputBitmap();
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
-      }
-      SetStatusText(_("Maxima got a question"), 1);
-      break;
-    case waiting:
-      m_console->SetWorkingGroup(NULL);
-      // If we evaluated a cell that produces no output we still want the
-      // cell to be unselected after evaluating it.
-      if(m_console->FollowEvaluation())
-        m_console->SetSelection(NULL);
+      case userinput:	
+        m_MenuBar->Enable(menu_remove_output,false);
+        if(m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+          m_console->m_mainToolBar->ShowUserInputBitmap();
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
+        }
+        SetStatusText(_("Maxima got a question"), 1);
+        break;
+      case waiting:
+        m_console->SetWorkingGroup(NULL);
+        // If we evaluated a cell that produces no output we still want the
+        // cell to be unselected after evaluating it.
+        if(m_console->FollowEvaluation())
+          m_console->SetSelection(NULL);
 
-      m_MenuBar->Enable(menu_remove_output,true);
-      if (m_console->m_mainToolBar)
-      {
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
-        m_console->m_mainToolBar->ShowFollowBitmap();
+        m_MenuBar->Enable(menu_remove_output,true);
+        if (m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+          m_console->m_mainToolBar->ShowFollowBitmap();
+        }
+        SetStatusText(_("Ready for user input"), 1);
+        // We don't evaluate any cell right now.
+        break;
+      case calculating:
+        m_MenuBar->Enable(menu_remove_output,false);
+        if (m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                               m_console->ScrolledAwayFromEvaluation()
+            );
+        }
+        SetStatusText(_("Maxima is calculating"), 1);
+        break;
+      case transferring:
+        m_MenuBar->Enable(menu_remove_output,false);
+        if (m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                               m_console->ScrolledAwayFromEvaluation()
+            );
+        }
+        SetStatusText(_("Reading Maxima output"), 1);
+        break;	
+      case parsing:
+        m_MenuBar->Enable(menu_remove_output,false);
+        if (m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                               m_console->ScrolledAwayFromEvaluation()
+            );
+        }
+        SetStatusText(_("Parsing output"), 1);
+        break;
       }
-      SetStatusText(_("Ready for user input"), 1);
-      // We don't evaluate any cell right now.
-      break;
-    case calculating:
-      m_MenuBar->Enable(menu_remove_output,false);
-      if (m_console->m_mainToolBar)
-      {
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                             m_console->ScrolledAwayFromEvaluation()
-        );
-      }
-      SetStatusText(_("Maxima is calculating"), 1);
-      break;
-    case transferring:
-      m_MenuBar->Enable(menu_remove_output,false);
-      if (m_console->m_mainToolBar)
-      {
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                             m_console->ScrolledAwayFromEvaluation()
-          );
-      }
-      SetStatusText(_("Reading Maxima output"), 1);
-      break;	
-    case parsing:
-      m_MenuBar->Enable(menu_remove_output,false);
-      if (m_console->m_mainToolBar)
-      {
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                             m_console->ScrolledAwayFromEvaluation()
-          );
-      }
-      SetStatusText(_("Parsing output"), 1);
-      break;
     }
-    }
-    m_StatusMaximaBusy = status;
+  }
+  m_StatusMaximaBusy = status;
+  m_forceStatusbarUpdate = false;
 }
 
 void wxMaximaFrame::StatusSaveStart()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
   SetStatusText(_("Saving..."), 1);
 }
 
 void wxMaximaFrame::StatusSaveFinished()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
   if(m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
@@ -166,12 +173,14 @@ void wxMaximaFrame::StatusSaveFinished()
 
 void wxMaximaFrame::StatusExportStart()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
   SetStatusText(_("Exporting..."), 1);
 }
 
 void wxMaximaFrame::StatusExportFinished()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
   if(m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
@@ -181,12 +190,14 @@ void wxMaximaFrame::StatusExportFinished()
 
 void wxMaximaFrame::StatusSaveFailed()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
   SetStatusText(_("Saving failed."), 1);
 }
 
 void wxMaximaFrame::StatusExportFailed()
 {
+  m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
   SetStatusText(_("Export failed."), 1);
 }

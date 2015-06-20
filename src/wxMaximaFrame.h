@@ -427,6 +427,8 @@ protected:
   void SaveRecentDocuments();
   wxAuiManager m_manager;
 
+  //! true=force an update of the status bar at the next call of StatusMaximaBusy()
+  bool m_forceStatusbarUpdate;
   //! The worksheet itself
   MathCtrl*     m_console;
   //! The history pane
