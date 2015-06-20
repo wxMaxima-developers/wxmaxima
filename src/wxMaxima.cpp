@@ -4489,9 +4489,12 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   }
   break;
   case MathCtrl::popid_evaluate:
-    m_console->AddSelectionToEvaluationQueue();
-    //  TryEvaluateNextInQueue();
-    break;
+  {
+    bool evaluating = !m_console->m_evaluationQueue->Empty();
+    
+    if(!evaluating) TryEvaluateNextInQueue();
+  }
+  break;
   case MathCtrl::popid_merge_cells:
     m_console->MergeCells();
     break;
