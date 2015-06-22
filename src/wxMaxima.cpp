@@ -533,6 +533,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
   case wxSOCKET_INPUT:
     m_client->Read(buffer, SOCKET_SIZE);
+
     if (!m_client->Error())
     {
       read = m_client->LastCount();
@@ -920,6 +921,8 @@ void wxMaxima::ReadPrompt(wxString &data)
           m_console->EnableEdit();
           if(!m_console->QuestionPending())
             TryEvaluateNextInQueue();
+          else
+            m_console->QuestionAnswered();
         }
 
         m_console->EnableEdit();
@@ -935,7 +938,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 
       // We have a question
       else {
-	m_console->m_questionPrompt = true;
+        m_console->QuestionPending(true);
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
         else
@@ -1808,12 +1811,14 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 
 void wxMaxima::MenuCommand(wxString cmd)
 {
+  bool evaluating = !m_console->m_evaluationQueue->Empty();
+
   m_console->SetFocus();
 //  m_console->SetSelection(NULL);
 //  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
-  TryEvaluateNextInQueue();
+    if(!evaluating) TryEvaluateNextInQueue();
 }
 
 void wxMaxima::DumpProcessOutput()
@@ -2735,7 +2740,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
-    TryEvaluateNextInQueue();
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -2745,7 +2749,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
-    TryEvaluateNextInQueue();
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -2755,7 +2758,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
-    TryEvaluateNextInQueue();
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -4577,7 +4579,8 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
   m_console->FollowEvaluation(true);
-
+  bool evaluating = !m_console->m_evaluationQueue->Empty();
+  if(m_console->QuestionPending())evaluating=false;
   MathCell* tmp = m_console->GetActiveCell();
   if (tmp != NULL) // we have an active cell
   {
@@ -4585,19 +4588,17 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering a question. Manually send answer to Maxima.
-    if (tmp->GetParent() == m_console->m_evaluationQueue->GetFirst()) {
+    if (m_console->GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(tmp->GetParent()))) {
       SendMaxima(tmp->ToString(), true);
-      m_console->QuestionAnswered();
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));
-      TryEvaluateNextInQueue();
     }
   }
   else { // no evaluate has been called on no active cell?
     m_console->AddSelectionToEvaluationQueue();
-    TryEvaluateNextInQueue();
   }
+  if(!evaluating) TryEvaluateNextInQueue();;
 }
 
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
@@ -4667,6 +4668,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   return wxEmptyString;
 }
 
+void wxMaxima::TriggerEvaluation()
+{
+  if(m_console->m_evaluationQueue->Empty())
+    TryEvaluateNextInQueue();
+}
+
 //! Tries to evaluate next group cell in queue
 //
 // Calling this function should not do anything dangerous
@@ -4692,6 +4699,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     return ;
   }
 
+  
   // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
   if (tmp == NULL)
@@ -4700,16 +4708,20 @@ void wxMaxima::TryEvaluateNextInQueue()
     return; //empty queue
   }
 
+  // We don't want to evaluate a new cell if the user still has to answer
+  // a question.
+  if(m_console->QuestionPending())
+    return;
+
   // Maxima is connected and the queue contains an item.
   if (tmp->GetEditable()->GetValue() != wxEmptyString)
   {
     tmp->GetEditable()->AddEnding();
     tmp->GetEditable()->ContainsChanges(false);
     wxString text = tmp->GetEditable()->ToString();
-      
+
     // override evaluation when input equals wxmaxima_debug_dump_output
     if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-      m_console->m_evaluationQueue->RemoveFirst();
       DumpProcessOutput();
       return;
     }
@@ -4733,7 +4745,6 @@ void wxMaxima::TryEvaluateNextInQueue()
       
       m_console->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
-      
       SendMaxima(text, true);
     }
     else
@@ -4751,13 +4762,11 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->SetWorkingGroup(NULL);
       m_console->Recalculate();
       m_console->Refresh();
-      m_console->m_evaluationQueue->RemoveFirst();
       TryEvaluateNextInQueue();
     }
   }
   else
   {
-    m_console->m_evaluationQueue->RemoveFirst();
     TryEvaluateNextInQueue();
   }
 }

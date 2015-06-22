@@ -221,7 +221,11 @@ protected:
   void StructureDClick(wxCommandEvent& event);
   void OnInspectorEvent(wxCommandEvent& ev);
   void DumpProcessOutput();
+
+  //! Try to evaluate the next command for maxima that is in the evaluation queue
   void TryEvaluateNextInQueue();
+  //! Trigger execution of the evaluation queue
+  void TriggerEvaluation();
   void TryUpdateInspector();
 
   wxString ExtractFirstExpression(wxString entry);

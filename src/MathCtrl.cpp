@@ -3981,7 +3981,7 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    m_evaluationQueue->AddToQueue(tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   SetHCaret(m_last);
@@ -3995,8 +3995,8 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue((GroupCell*) tmp);
-    m_evaluationQueue->AddHiddenTreeToQueue((GroupCell*) tmp);
+    m_evaluationQueue->AddToQueue(tmp);
+    m_evaluationQueue->AddHiddenTreeToQueue(tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   SetHCaret(m_last);
@@ -4011,7 +4011,7 @@ void MathCtrl::AddSelectionToEvaluationQueue()
     return;
   GroupCell* tmp = dynamic_cast<GroupCell*>(m_selectionStart);
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+    m_evaluationQueue->AddToQueue(tmp);
     if (tmp == m_selectionEnd)
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
@@ -4036,7 +4036,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
   {
     GroupCell* tmp = m_tree;
     while (tmp != NULL) {
-      m_evaluationQueue->AddToQueue((GroupCell*) tmp);
+      m_evaluationQueue->AddToQueue(tmp);
       if (tmp == stop)
         break;
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
