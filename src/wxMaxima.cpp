@@ -1761,7 +1761,7 @@ void wxMaxima::ShowWxMaximaHelp()
 
   wxString htmldir = dirstructure.HelpDir();
 
-#if defined CHM
+#if CHM==true
   wxString helpfile = htmldir + wxT("wxmaxima.chm");
   ShowCHMHelp(helpfile,wxT("%"));
 #else
