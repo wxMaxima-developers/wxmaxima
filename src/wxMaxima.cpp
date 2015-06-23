@@ -897,6 +897,8 @@ void wxMaxima::ReadPrompt(wxString &data)
       // Maxima displayed a new main prompt
       if (o.StartsWith(wxT("(%i")))
       {
+        m_console->QuestionAnswered();
+        std::cerr<<"Debug\n";
         //m_lastPrompt = o.Mid(1,o.Length()-1);
         //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
         m_lastPrompt = o;

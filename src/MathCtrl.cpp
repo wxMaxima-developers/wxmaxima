@@ -1679,10 +1679,12 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
+  wxASSERT_MSG(m_workingGroup!=NULL,_(wxT("Bug: Got a question but no cell to answer it in")));
 
+  std::cerr<<"QuestionCaret\n";
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
-    
+  
   // We don't need an undo action for the thing we will do now.
   TreeUndo_ActiveCell = NULL;
 
@@ -1695,7 +1697,8 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
 
   // If we still haven't a cell to put the answer in we now create one.
   if(m_answerCell == NULL)
-  {      
+  {
+    std::cerr<<"NewAnswer\n";
     m_answerCell = new EditorCell;
     m_answerCell->SetParent(m_workingGroup);
     m_answerCell->SetType(MC_TYPE_INPUT);
@@ -1705,6 +1708,8 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
     m_workingGroup->AppendOutput(m_answerCell);
     RecalculateForce();
   }
+  else
+    std::cerr<<"NoNewAnswer\n";
 
   // If the user wants to be automatically scrolled to the cell evaluation takes place
   // we scroll to this cell.
@@ -1889,7 +1894,7 @@ void MathCtrl::QuestionAnswered()
 {
   m_answerCell = NULL;
   m_questionPrompt = false;
-  SetActiveCell(NULL);
+  std::cerr<<"Answered\n";
 }
 
 /****
