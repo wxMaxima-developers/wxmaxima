@@ -81,11 +81,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   wxMaximaFrame(parent, id, title, pos, size)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  
+
+  m_saving = false;
   m_autoSaveInterval = 0;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
-  
+
+  m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
   m_ready = false;
@@ -974,7 +976,6 @@ void wxMaxima::ReadPrompt(wxString &data)
 
 void wxMaxima::SetCWD(wxString file)
 {
-  
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
 #endif
@@ -990,18 +991,24 @@ void wxMaxima::SetCWD(wxString file)
   filenamestring.Replace(wxT("\\"),wxT("/"));
 #endif
 
-  SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-             filenamestring +
-             wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
-             filename.GetPath() +
-             wxT("\")"));
+  wxString workingDirectory = filename.GetPath();
 
-  SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
-  if (m_ready)
+  if(workingDirectory != GetCWD())
   {
-    if(m_console->m_evaluationQueue->Empty())
-      StatusMaximaBusy(waiting);
+    SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+               filenamestring +
+               wxT("\")"));
+    SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
+               filename.GetPath() +
+               wxT("\")"));
+    
+    SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
+    if (m_ready)
+    {
+      if(m_console->m_evaluationQueue->Empty())
+        StatusMaximaBusy(waiting);
+    }
+    m_CWD = workingDirectory;
   }
 }
 
@@ -1907,7 +1914,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
                   (m_console->CanPaste()) &&
                   (m_console->GetHCaret() != NULL)
     );  
-  menubar->Enable(menu_save_id, !m_fileSaved);
+  menubar->Enable(menu_save_id, (!m_fileSaved)&&(!m_saving));
+  menubar->Enable(menu_export_html, !m_saving);
 
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
@@ -1949,7 +1957,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
-  m_console->m_mainToolBar->EnableTool(ToolBar::tb_save, !m_fileSaved);
+  m_console->m_mainToolBar->EnableTool(ToolBar::tb_save, (!m_fileSaved)&&(!m_saving));
   /*
     The interrupt button is now automatically enabled when maxima
     is actually working and disabled when it isn't.
@@ -2055,10 +2063,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
-{
-  // We don't want an autosave to be triggered during save.
-  m_autoSaveTimer.Stop();
-  
+{  
   wxString file = m_currentFile;
   wxString fileExt=wxT("wxmx");
   int ext=0;
@@ -2099,6 +2104,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     else
     {
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+      m_saving = false;
       return false;
     }
   }
@@ -2134,6 +2140,7 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if(m_autoSaveInterval > 10000)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+        m_saving = false;
         return false;
       }
 	
@@ -2150,6 +2157,7 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if(m_autoSaveInterval > 10000)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+        m_saving = false;
         return false;
       }
     }
@@ -2159,11 +2167,15 @@ bool wxMaxima::SaveFile(bool forceSave)
 
     if(m_autoSaveInterval > 10000)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-
     StatusSaveFinished();
+    m_saving = false;
     return true;
   }
 
+  if(m_autoSaveInterval > 10000)
+    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+  m_saving = false;
+  
   return false;
 }
 
@@ -2174,7 +2186,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     m_console->m_keyboardInactive = true;
     if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0) && SaveNecessary())
     {
-      SaveFile(false);
+      if(!m_saving)SaveFile(false);
       m_autoSaveIntervalExpired = false;
       if(m_autoSaveInterval > 10000)
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -2184,7 +2196,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     m_autoSaveIntervalExpired = true;
     if((m_console->m_keyboardInactive) && (m_currentFile.Length() > 0) && SaveNecessary())
     {
-      SaveFile(false);
+      if(!m_saving)SaveFile(false);
 	
       if(m_autoSaveInterval > 10000)
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -2257,7 +2269,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
   case menu_export_html:
   {
-
+    m_saving = true;
     // Saving calls wxYield(), exporting does do so, too => we need to
     // avoid triggering an autosave during export.
     m_autoSaveTimer.Stop();
@@ -2339,6 +2351,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
   }
+  m_saving = false;
   break;
     
   case menu_load_id:

@@ -133,6 +133,9 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! The current working directory maxima's file I/O is relative to.
+  wxString m_CWD;
+
   //! Can we display the "ready" prompt right now?
   bool m_ready;
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
@@ -286,8 +289,13 @@ protected:
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
   bool SaveFile(bool forceSave = false);
   int SaveDocumentP();
+  //! Set the current working directory file I/O from maxima is relative to.
   void SetCWD(wxString file);
-
+  //! Get the current working directory file I/O from maxima is relative to.
+  wxString GetCWD()
+    {
+      return m_CWD;
+    }
   wxSocketBase *m_client;
   wxSocketServer *m_server;
   bool m_isConnected;
@@ -298,6 +306,8 @@ protected:
   wxProcess *m_process;
   wxInputStream *m_input;
   int m_port;
+  //! Are we currently saving the file?
+  bool m_saving;
   wxString m_currentOutput;
   wxString m_promptSuffix;
   wxString m_promptPrefix;
