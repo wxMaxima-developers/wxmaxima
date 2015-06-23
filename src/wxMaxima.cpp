@@ -898,7 +898,6 @@ void wxMaxima::ReadPrompt(wxString &data)
       if (o.StartsWith(wxT("(%i")))
       {
         m_console->QuestionAnswered();
-        std::cerr<<"Debug\n";
         //m_lastPrompt = o.Mid(1,o.Length()-1);
         //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
         m_lastPrompt = o;
@@ -942,6 +941,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 
       // We have a question
       else {
+        m_console->QuestionAnswered();
         m_console->QuestionPending(true);
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);

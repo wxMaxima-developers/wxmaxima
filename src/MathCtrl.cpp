@@ -1681,7 +1681,6 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
 {
   wxASSERT_MSG(m_workingGroup!=NULL,_(wxT("Bug: Got a question but no cell to answer it in")));
 
-  std::cerr<<"QuestionCaret\n";
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
   
@@ -1698,7 +1697,6 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   // If we still haven't a cell to put the answer in we now create one.
   if(m_answerCell == NULL)
   {
-    std::cerr<<"NewAnswer\n";
     m_answerCell = new EditorCell;
     m_answerCell->SetParent(m_workingGroup);
     m_answerCell->SetType(MC_TYPE_INPUT);
@@ -1709,15 +1707,15 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
     RecalculateForce();
   }
   else
-    std::cerr<<"NoNewAnswer\n";
-
-  // If the user wants to be automatically scrolled to the cell evaluation takes place
-  // we scroll to this cell.
-  if(FollowEvaluation())
   {
-    SetActiveCell(m_answerCell, false);
-    ScrollToCell(m_workingGroup);
-  }  
+    // If the user wants to be automatically scrolled to the cell evaluation takes place
+    // we scroll to this cell.
+    if(FollowEvaluation())
+    {
+      SetActiveCell(m_answerCell, false);
+      ScrollToCell(m_workingGroup);
+    }
+  }
   Refresh();
 }
 
@@ -1894,7 +1892,6 @@ void MathCtrl::QuestionAnswered()
 {
   m_answerCell = NULL;
   m_questionPrompt = false;
-  std::cerr<<"Answered\n";
 }
 
 /****
