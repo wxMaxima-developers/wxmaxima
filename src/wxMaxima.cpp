@@ -4775,7 +4775,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->SetWorkingGroup(NULL);
       m_console->Recalculate();
       m_console->Refresh();
-      TryEvaluateNextInQueue();
+//      TryEvaluateNextInQueue();
     }
   }
   else
