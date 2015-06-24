@@ -413,7 +413,9 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
       m_selectionStart = NULL;
       m_selectionEnd = NULL;
       if(GCContainsCurrentQuestion(tmp))
+      {
         OpenQuestionCaret();
+      }
       else
       {
         SetHCaret(tmp);
@@ -1706,15 +1708,12 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
     m_workingGroup->AppendOutput(m_answerCell);
     RecalculateForce();
   }
-  else
+  // If the user wants to be automatically scrolled to the cell evaluation takes place
+  // we scroll to this cell.
+  if(FollowEvaluation())
   {
-    // If the user wants to be automatically scrolled to the cell evaluation takes place
-    // we scroll to this cell.
-    if(FollowEvaluation())
-    {
-      SetActiveCell(m_answerCell, false);
-      ScrollToCell(m_workingGroup);
-    }
+    SetActiveCell(m_answerCell, false);
+    ScrollToCell(m_workingGroup);
   }
   Refresh();
 }
