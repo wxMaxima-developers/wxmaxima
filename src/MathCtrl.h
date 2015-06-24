@@ -792,9 +792,8 @@ public:
 
     /*! Does maxima wait for the answer of a question?
 
-    \retval true = maxima waits for the answer of a question.
   */
-  bool QuestionPending(bool pending){m_questionPrompt = pending;}
+  void QuestionPending(bool pending){m_questionPrompt = pending;}
 //! Does the GroupCell cell points to contain the question currently asked by maxima?  
   bool GCContainsCurrentQuestion(GroupCell *cell);
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
