@@ -668,6 +668,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima()
 {
+  m_CWD = wxEmptyString;
   if (m_isConnected)
   {
     KillMaxima();
