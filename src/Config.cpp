@@ -168,7 +168,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool match = true, savePanes = false, UncompressedWXMX=true;
-  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = false;
+  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true;
   bool insertAns = true;
   int  undoLimit = 0;
@@ -809,7 +809,7 @@ void Config::ReadStyles(wxString file)
                    &tmp)) m_styleBackground.color.Set(tmp);
 
   // Text background
-  m_styleTextBackground.color = wxT("rgb(0,0,0)");
+  m_styleTextBackground.color = wxT("white");
   if (config->Read(wxT("Style/TextBackground/color"),
                    &tmp)) m_styleTextBackground.color.Set(tmp);
 

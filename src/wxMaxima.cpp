@@ -879,7 +879,7 @@ void wxMaxima::ReadMath(wxString &data)
         ConsoleAppend(normalOutput,MC_TYPE_DEFAULT);
         ConsoleAppend(line, MC_TYPE_ERROR);
         normalOutput = wxEmptyString;
-        bool abortOnError = false;
+        bool abortOnError = true;
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
         if(abortOnError)
           while(!m_console->m_evaluationQueue->Empty())
@@ -890,7 +890,7 @@ void wxMaxima::ReadMath(wxString &data)
     }
     
     if(normalOutput!=wxEmptyString)
-      ConsoleAppend(o, MC_TYPE_DEFAULT);
+      ConsoleAppend(normalOutput, MC_TYPE_DEFAULT);
 
     data = data.SubString(end + m_promptPrefix.Length(),
                                                 data.Length());

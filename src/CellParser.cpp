@@ -316,7 +316,7 @@ void CellParser::ReadStyle()
                    &tmp)) m_styles[TS_HIGHLIGHT].color.Set(tmp);
 
   // Text background
-  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("rgb(0,0,0)"));
+  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("white"));
   if (config->Read(wxT("Style/TextBackground/color"),
                    &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
 
