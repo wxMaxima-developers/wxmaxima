@@ -866,7 +866,20 @@ void wxMaxima::ReadMath(wxString &data)
   {
     m_readingPrompt = true;
     wxString o = data.Left(end);
-    ConsoleAppend(o, MC_TYPE_DEFAULT);
+    wxString tmp=o;
+    tmp.Trim(false);
+    if(tmp.Left(12)==wxT("-- an error."))
+    {
+      ConsoleAppend(o, MC_TYPE_ERROR);
+      bool abortOnError = false;
+      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+      if(abortOnError)
+        while(!m_console->m_evaluationQueue->Empty())
+          m_console->m_evaluationQueue->RemoveFirst();
+    }
+    else
+      ConsoleAppend(o, MC_TYPE_DEFAULT);
+
     data = data.SubString(end + m_promptPrefix.Length(),
                                                 data.Length());
   }
@@ -1471,8 +1484,15 @@ void wxMaxima::ReadLispError(wxString &data)
     m_inLispMode = true;
     wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
-    ConsoleAppend(lispError, MC_TYPE_PROMPT);
+    ConsoleAppend(lispError, MC_TYPE_ERROR);
     data = wxEmptyString;
+
+    bool abortOnError = false;
+    wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+    if(abortOnError)
+      while(!m_console->m_evaluationQueue->Empty())
+        m_console->m_evaluationQueue->RemoveFirst();
+    
   }
 }
 
@@ -4812,7 +4832,11 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->SetWorkingGroup(NULL);
       m_console->Recalculate();
       m_console->Refresh();
-//      TryEvaluateNextInQueue();
+            bool abortOnError = false;
+      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+      if(abortOnError)
+        while(!m_console->m_evaluationQueue->Empty())
+          m_console->m_evaluationQueue->RemoveFirst();
     }
   }
   else

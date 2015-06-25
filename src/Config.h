@@ -165,6 +165,7 @@ protected:
   wxTextCtrl* m_additionalParameters;
   wxComboBox* m_language;
   wxCheckBox* m_saveSize;
+  wxCheckBox* m_abortOnError;
   wxCheckBox* m_savePanes;
   wxCheckBox* m_usepngCairo;
   wxCheckBox* m_uncomressedWXMX;

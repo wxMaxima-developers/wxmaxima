@@ -126,6 +126,7 @@ void Config::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
+  m_abortOnError->SetToolTip(_("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
@@ -167,7 +168,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool match = true, savePanes = false, UncompressedWXMX=true;
-  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true;
+  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = false;
   bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true;
   bool insertAns = true;
   int  undoLimit = 0;
@@ -225,7 +226,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
-
+  config->Read(wxT("abortOnError"), &abortOnError);
   unsigned int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
@@ -281,6 +282,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
+  m_abortOnError->SetValue(abortOnError);
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
@@ -472,6 +474,10 @@ wxPanel* Config::CreateMaximaPanel()
 
   wxFlexGridSizer* sizer = new wxFlexGridSizer(8, 2, 0, 0);  
 
+  m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
+  sizer->Add(m_abortOnError,0,wxALL);
+  sizer->Add(10,10);
+  
   wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
@@ -632,8 +638,10 @@ void Config::WriteSettings()
   int i = 0;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
+  bool abortOnError = m_abortOnError->GetValue();
   wxString maxima = m_maximaProgram->GetValue();
   wxConfig *config = (wxConfig *)wxConfig::Get();
+  config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
   config->Write(wxT("maxima"), m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize);
