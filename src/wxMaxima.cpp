@@ -866,18 +866,30 @@ void wxMaxima::ReadMath(wxString &data)
   {
     m_readingPrompt = true;
     wxString o = data.Left(end);
-    wxString tmp=o;
-    tmp.Trim(false);
-    if(tmp.Left(12)==wxT("-- an error."))
+
+    wxString normalOutput = wxEmptyString;
+    wxStringTokenizer lines(o,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
+    while(lines.HasMoreTokens())
     {
-      ConsoleAppend(o, MC_TYPE_ERROR);
-      bool abortOnError = false;
-      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      if(abortOnError)
-        while(!m_console->m_evaluationQueue->Empty())
-          m_console->m_evaluationQueue->RemoveFirst();
+      wxString line = lines.GetNextToken();
+      wxString trimmedLine = line;
+      trimmedLine.Trim(false);
+      if(trimmedLine.Left(12)==wxT("-- an error."))
+      {
+        ConsoleAppend(normalOutput,MC_TYPE_DEFAULT);
+        ConsoleAppend(line, MC_TYPE_ERROR);
+        normalOutput = wxEmptyString;
+        bool abortOnError = false;
+        wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+        if(abortOnError)
+          while(!m_console->m_evaluationQueue->Empty())
+            m_console->m_evaluationQueue->RemoveFirst();
+      }
+      else
+        normalOutput+=line+=wxT("\n");
     }
-    else
+    
+    if(normalOutput!=wxEmptyString)
       ConsoleAppend(o, MC_TYPE_DEFAULT);
 
     data = data.SubString(end + m_promptPrefix.Length(),
