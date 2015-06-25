@@ -306,7 +306,10 @@ protected:
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   wxProcess *m_process;
+  // The stdout of the maxima process
   wxInputStream *m_input;
+  // The stderr of the maxima process
+  wxInputStream *m_error;
   int m_port;
   //! Are we currently saving the file?
   bool m_saving;

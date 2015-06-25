@@ -741,6 +741,8 @@ bool wxMaxima::StartMaxima()
     SetStatusText(_("Starting Maxima..."), 1);
     wxExecute(command, wxEXEC_ASYNC, m_process);
     m_input = m_process->GetInputStream();
+    m_error = m_process->GetErrorStream();
+
     SetStatusText(_("Maxima started. Waiting for connection..."), 1);
   }
   else
@@ -1909,10 +1911,9 @@ void wxMaxima::DumpProcessOutput()
   wxMessageBox(o, wxT("Process output (stdout)"));
   
   o = _("Output from Maxima to stderr (there should be none):\n");
-  wxInputStream *error = m_process->GetErrorStream();
   while (m_process->IsErrorAvailable())
   {
-    o += error->GetC();
+    o += m_error->GetC();
   }
 
   wxMessageBox(o, wxT("Process output (stderr)"));
@@ -4849,6 +4850,11 @@ void wxMaxima::TryEvaluateNextInQueue()
       if(abortOnError)
         while(!m_console->m_evaluationQueue->Empty())
           m_console->m_evaluationQueue->RemoveFirst();
+      else
+      {
+        m_console->m_evaluationQueue->RemoveFirst();
+        TryEvaluateNextInQueue();
+      }
     }
   }
   else
