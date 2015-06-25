@@ -133,6 +133,8 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! The number of consecutive unsucessfull attempts to connect to the maxima server
+  int m_unsuccessfullConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
 

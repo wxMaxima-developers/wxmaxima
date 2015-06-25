@@ -82,6 +82,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
 
+  m_unsuccessfullConnectionAttempts = 0;
   m_saving = false;
   m_autoSaveInterval = 0;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
@@ -449,7 +450,14 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 
 #endif
 
-  StatusMaximaBusy(calculating);
+  // If there is no working group and we still are trying to send something
+  // we are trying to change maxima's settings from the background and might never
+  // get an answer that changes the status again.
+  if(m_console->GetWorkingGroup())
+    StatusMaximaBusy(calculating);
+  else
+    StatusMaximaBusy(waiting);
+  
   m_dispReadOut = false;
 
   /// Add this command to History
@@ -571,10 +579,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
-    if (!m_closing)
-      ConsoleAppend(wxT("\nCLIENT: Lost socket connection ...\n"
-                        "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                    MC_TYPE_ERROR);
+    while(!m_console->m_evaluationQueue->Empty())
+      m_console->m_evaluationQueue->RemoveFirst();
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
@@ -582,6 +588,19 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_client->Destroy();
     m_client = NULL;
     m_isConnected = false;
+    if (!m_closing)
+      if(m_unsuccessfullConnectionAttempts > 0)
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                      MC_TYPE_ERROR);
+      else
+      {
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Trying to restart Maxima.\n"),
+                      MC_TYPE_ERROR);
+        m_unsuccessfullConnectionAttempts ++;
+        StartMaxima();
+      }
     break;
 
   default:
@@ -616,12 +635,25 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   break;
 
   case wxSOCKET_LOST:
-    if (!m_closing)
-      ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                        "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                    MC_TYPE_ERROR);
+    while(!m_console->m_evaluationQueue->Empty())
+      m_console->m_evaluationQueue->RemoveFirst();
     m_pid = -1;
     m_isConnected = false;
+    if (!m_closing)
+    {
+      if(m_unsuccessfullConnectionAttempts > 0)
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                      MC_TYPE_ERROR);
+      else
+      {
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Trying to restart Maxima.\n"),
+                      MC_TYPE_ERROR);
+        m_unsuccessfullConnectionAttempts ++;
+        StartMaxima();
+      }
+    }
 
   default:
     break;
@@ -886,6 +918,8 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
  */
 void wxMaxima::ReadPrompt(wxString &data)
 {
+  // If we got a prompt our connection to maxima was successful. 
+  m_unsuccessfullConnectionAttempts = 0;
   m_console->m_questionPrompt = false;
   m_ready=true;
   int end = data.Find(m_promptSuffix);
