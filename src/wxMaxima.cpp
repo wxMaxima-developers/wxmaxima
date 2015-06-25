@@ -91,6 +91,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
+  m_input = NULL;
+  m_error = NULL;  
   m_ready = false;
   m_readingPrompt=false;
   m_inLispMode = false;
@@ -132,6 +134,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_console->SetFocus();
   m_console->m_keyboardInactiveTimer.SetOwner(this,KEYBOARD_INACTIVITY_TIMER_ID);
+  m_maximaStdoutPollTimer.SetOwner(this,MAXIMA_STDOUT_POLL_ID);
 
   m_autoSaveIntervalExpired = false;
   m_autoSaveTimer.SetOwner(this,AUTO_SAVE_TIMER_ID);
@@ -700,6 +703,8 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima()
 {
+  // We start checking for maximas output again as soon as we send some data to the program.
+  m_maximaStdoutPollTimer.Stop();
   m_CWD = wxEmptyString;
   if (m_isConnected)
   {
@@ -1029,7 +1034,10 @@ void wxMaxima::ReadPrompt(wxString &data)
       else
       {
         if(m_console->m_evaluationQueue->Empty())
+        {
           StatusMaximaBusy(waiting);
+          m_maximaStdoutPollTimer.Stop();
+        }
       }
     }
     
@@ -1899,27 +1907,6 @@ void wxMaxima::MenuCommand(wxString cmd)
     if(!evaluating) TryEvaluateNextInQueue();
 }
 
-void wxMaxima::DumpProcessOutput()
-{
-  wxString o;
-  o = _("Output from Maxima to stdout (there should be none):\n");
-  while (m_process->IsInputAvailable())
-  {
-    o += m_input->GetC();
-  }
-
-  wxMessageBox(o, wxT("Process output (stdout)"));
-  
-  o = _("Output from Maxima to stderr (there should be none):\n");
-  while (m_process->IsErrorAvailable())
-  {
-    o += m_error->GetC();
-  }
-
-  wxMessageBox(o, wxT("Process output (stderr)"));
-
-}
-
 ///--------------------------------------------------------------------------------
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
@@ -2252,6 +2239,60 @@ bool wxMaxima::SaveFile(bool forceSave)
 void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 {
   switch (event.GetId()) {
+  case MAXIMA_STDOUT_POLL_ID:
+  {
+    // Maxima will never send us any data via stdout or stderr after it has finished
+    // starting up: It rather sends us the data over the network.
+    //
+    // If something is severely  broken this might not be true, though, and we want
+    // to inform the user about it.
+
+    if(!m_process) break;
+
+    wxASSERT_MSG(m_process!=NULL,
+                 wxT("Bug: Trying to read from maxima but there isn't a maxima process"));
+    if(m_process->IsInputAvailable())
+    {
+      wxASSERT_MSG(m_input!=NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
+      wxString o = wxT("Message from maxima's stdout stream: ");
+      while (m_process->IsInputAvailable())
+      {
+        o += m_input->GetC();
+      }
+      DoRawConsoleAppend(o, MC_TYPE_ERROR);
+      // If maxima did output something it defintively has stopped.
+      // The question is now if we want to try to send it something new to evaluate.
+      bool abortOnError = false;
+      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+      if(abortOnError)
+        while(!m_console->m_evaluationQueue->Empty())
+          m_console->m_evaluationQueue->RemoveFirst();
+      else
+        TryEvaluateNextInQueue();
+    }
+
+    if(m_process->IsErrorAvailable())
+    {
+      wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
+      wxString o = wxT("Message from maxima's stderr stream: ");
+      while (m_process->IsErrorAvailable())
+      {
+        o += m_error->GetC();
+      }
+      DoRawConsoleAppend(o, MC_TYPE_ERROR);
+
+      // If maxima did output something it defintively has stopped.
+      // The question is now if we want to try to send it something new to evaluate.
+      bool abortOnError = false;
+      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+      if(abortOnError)
+        while(!m_console->m_evaluationQueue->Empty())
+          m_console->m_evaluationQueue->RemoveFirst();
+      else
+        TryEvaluateNextInQueue();
+    }
+  }  
+  break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
     m_console->m_keyboardInactive = true;
     if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0) && SaveNecessary())
@@ -4766,13 +4807,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (!m_isConnected) {
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
-    if (!m_console->m_evaluationQueue->Empty())
-    {
-      if (m_console->m_evaluationQueue->GetFirst()->GetInput()->ToString() ==
-          wxT("wxmaxima_debug_dump_output;"))
-        DumpProcessOutput();
-    }
-
     // Clear the evaluation queue.
     while (!m_console->m_evaluationQueue->Empty())
       m_console->m_evaluationQueue->RemoveFirst();
@@ -4787,7 +4821,8 @@ void wxMaxima::TryEvaluateNextInQueue()
   GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
   if (tmp == NULL)
   {
-      StatusMaximaBusy(waiting);
+    StatusMaximaBusy(waiting);
+    m_maximaStdoutPollTimer.Stop();
     return; //empty queue
   }
 
@@ -4797,18 +4832,18 @@ void wxMaxima::TryEvaluateNextInQueue()
     return;
 
   // Maxima is connected and the queue contains an item.
+
+  // From now on we look every second if we got some output from a crashing
+  // maxima: Is maxima is working correctly the stdout and stderr descriptors we
+  // poll don't offer any data.
+  m_maximaStdoutPollTimer.Start(1000);
+
   if (tmp->GetEditable()->GetValue() != wxEmptyString)
   {
     tmp->GetEditable()->AddEnding();
     tmp->GetEditable()->ContainsChanges(false);
     wxString text = tmp->GetEditable()->ToString();
 
-    // override evaluation when input equals wxmaxima_debug_dump_output
-    if (text.IsSameAs(wxT("wxmaxima_debug_dump_output;"))) {
-      DumpProcessOutput();
-      return;
-    }
-        
     tmp->RemoveOutput();
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
     if(parenthesisError==wxEmptyString)
@@ -5203,6 +5238,7 @@ EVT_MENU(mac_closeId, wxMaxima::FileMenu)
 #endif
 EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
 EVT_TIMER(KEYBOARD_INACTIVITY_TIMER_ID, wxMaxima::OnTimerEvent)
+EVT_TIMER(MAXIMA_STDOUT_POLL_ID, wxMaxima::OnTimerEvent)
 EVT_TIMER(wxID_ANY, wxMaxima::OnTimerEvent)
 EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
 EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)

@@ -88,8 +88,12 @@ public:
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {
-    KEYBOARD_INACTIVITY_TIMER_ID,
-    AUTO_SAVE_TIMER_ID
+    //! The keyboard was inactive long enough that we can attempt an auto-save.
+    KEYBOARD_INACTIVITY_TIMER_ID, 
+    //! The time between two auto-saves has elapsed.
+    AUTO_SAVE_TIMER_ID,
+    //! We look if we got new data from maxima's stdout.
+    MAXIMA_STDOUT_POLL_ID
   };
 
   /*! A timer that determines when to do the next autosave;
@@ -107,6 +111,8 @@ public:
   bool m_autoSaveIntervalExpired;
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent& event);
+  //! A timer that polls for output from the maxima process.
+  wxTimer m_maximaStdoutPollTimer;
 
   /*! The interval between auto-saves (in milliseconds). 
 
