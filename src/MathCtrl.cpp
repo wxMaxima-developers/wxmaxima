@@ -1713,7 +1713,10 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   if(FollowEvaluation())
   {
     SetActiveCell(m_answerCell, false);
-    ScrollToCell(m_workingGroup);
+    GroupCell *tmp = m_workingGroup;
+    if (tmp->m_next)
+      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+    ScrollToCell(tmp);
   }
   Refresh();
 }

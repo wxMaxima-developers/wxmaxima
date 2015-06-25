@@ -647,14 +647,6 @@ information about the current system:
 @item @code{wxbuild_info()} gathers information about the currently
 running version of wxMaxima
 @item @code{wxbug_report()} tells how and where to file bugs
-@item In special cases additional debugging information might be
-      obtained by issuing the command @code{wxmaxima_debug_dump_output}:
-      Normally this command produces an dialog containing only the
-      information what would be displayed here if there was something
-      to display. If there is output
-      from maxima that isn't passed to wxMaxima through the network
-      connection (as it should be) the dialog is filled with this
-      output instead.
 @end itemize
 @node Troubleshooting
 @chapter Troubleshooting
@@ -766,9 +758,7 @@ have been issued recently.
 One possible reason is that maxima cannot be found in the location that is
 set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working maxima binary should
-fix this problem. If it doesn't the command @code{wxmaxima_debug_dump_output}
-(that does still work if maxima isn't connected) might give some hints to the
-problem.
+fix this problem.
 @section File I/O from maxima doesn't work on Windows
 On windows File I/O isn't relative to the directory of the current
 file by default. If you store the maxima file on the drive wxMaxima is
