@@ -53,6 +53,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetStatusWidths(2, widths);
 
   m_StatusSaving = false;
+  m_StatusMaximaBusy = calculating;
   StatusMaximaBusy(waiting);
 
   // Add some shortcuts that aren't automatically set by menu entries.
