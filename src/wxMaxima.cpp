@@ -1878,7 +1878,7 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = htmldir + wxT("wxmaxima.chm");
   ShowCHMHelp(helpfile,wxT("%"));
 #else
-  wxString helpfile = htmldir + wxT("wxmaxima.hhp");
+  wxString helpfile = htmldir + wxT("wxmaxima.html");
   ShowHTMLHelp(helpfile,GetHelpFile(),wxT("%"));  
 #endif
 }
@@ -1895,6 +1895,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     return ;
   }
 #if defined (__WXMSW__)
+// ttttttttttttttttttttttttt
   ShowCHMHelp(MaximaHelpFile,keyword);
 #else
   Dirstructure dirstructure;
