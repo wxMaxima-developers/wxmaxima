@@ -566,23 +566,28 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 	StatusMaximaBusy(transferring);
         m_dispReadOut = true;
       }
-
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
+      {
         ReadFirstPrompt(m_currentOutput);
-
+        if(m_batchmode)
+          m_console->AddDocumentToEvaluationQueue();
+        TryEvaluateNextInQueue();
+      }
+      
       ReadLoadSymbols(m_currentOutput);
 
       ReadMath(m_currentOutput);
 
       ReadPrompt(m_currentOutput);
-
+      
       ReadLispError(m_currentOutput);
+      
     }
-
     break;
 
   case wxSOCKET_LOST:
     m_console->m_evaluationQueue->Clear();
+    SetBatchMode(false);
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
@@ -638,6 +643,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
 
   case wxSOCKET_LOST:
     m_console->m_evaluationQueue->Clear();
+    SetBatchMode(false);
     m_pid = -1;
     m_isConnected = false;
     if (!m_closing)
@@ -879,15 +885,21 @@ void wxMaxima::ReadMath(wxString &data)
       wxString line = lines.GetNextToken();
       wxString trimmedLine = line;
       trimmedLine.Trim(false);
-      if(trimmedLine.Left(12)==wxT("-- an error."))
+      
+      if(
+        (trimmedLine.Left(12)==wxT("-- an error."))||
+        (trimmedLine.Left(17)==wxT("incorrect syntax:"))
+        )
       {
         ConsoleAppend(normalOutput,MC_TYPE_DEFAULT);
         ConsoleAppend(line, MC_TYPE_ERROR);
         normalOutput = wxEmptyString;
         bool abortOnError = true;
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-        if(abortOnError)
+        if(abortOnError || m_batchmode)
           m_console->m_evaluationQueue->Clear();
+
+        SetBatchMode(false);
       }
       else
         normalOutput+=line+=wxT("\n");
@@ -981,6 +993,12 @@ void wxMaxima::ReadPrompt(wxString &data)
             m_console->SetSelection(NULL,NULL); 
           }
 	  m_console->FollowEvaluation(false);
+          if(m_batchmode)
+          {
+            SaveFile(false);
+            wxCloseEvent dummy;
+            OnClose(dummy);
+          }
         }
         else { // we don't have an empty queue
           m_ready = false;
@@ -1097,6 +1115,8 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
     return false;
   }
 
@@ -1149,6 +1169,9 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   SetCWD(file);
 
   wxEndBusyCursor();
+  StatusMaximaBusy(waiting);
+  SetStatusText(_("File opened"), 1);
+  
   return true;
 }
 
@@ -1170,6 +1193,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
     return false;
   }
 
@@ -1181,6 +1206,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
     return false;
   }
 
@@ -1202,6 +1229,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       wxMessageBox(_("Document ") + file +
                    _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
                    _("Error"), wxOK | wxICON_EXCLAMATION);
+      StatusMaximaBusy(waiting);
+      SetStatusText(_("File could not be opened"), 1);
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR) {
@@ -1263,6 +1292,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     if(pos)
       m_console->SetHCaret(pos);
   }
+  StatusMaximaBusy(waiting);
+  SetStatusText(_("File opened"), 1);
   return true;
 }
 
@@ -1508,8 +1539,9 @@ void wxMaxima::ReadLispError(wxString &data)
 
     bool abortOnError = false;
     wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-    if(abortOnError)
-      m_console->m_evaluationQueue->Clear();    
+    if(abortOnError || m_batchmode)
+      m_console->m_evaluationQueue->Clear();
+    SetBatchMode(false);
   }
 }
 
@@ -2266,7 +2298,9 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
         // The question is now if we want to try to send it something new to evaluate.
         bool abortOnError = false;
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-        if(abortOnError)
+        SetBatchMode(false);
+
+        if(abortOnError || m_batchmode)
           m_console->m_evaluationQueue->Clear();
         else
           TryEvaluateNextInQueue();
@@ -2287,7 +2321,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       // The question is now if we want to try to send it something new to evaluate.
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      if(abortOnError)
+      SetBatchMode(false);
+      if(abortOnError || m_batchmode)
         m_console->m_evaluationQueue->Clear();
       else
         TryEvaluateNextInQueue();
@@ -4881,9 +4916,10 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->SetWorkingGroup(NULL);
       m_console->Recalculate();
       m_console->Refresh();
-            bool abortOnError = false;
+      bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      if(abortOnError)
+      SetBatchMode(false);
+      if(abortOnError || m_batchmode)
         m_console->m_evaluationQueue->Clear();
       else
       {

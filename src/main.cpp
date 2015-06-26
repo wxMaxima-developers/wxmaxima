@@ -49,6 +49,7 @@ IMPLEMENT_APP(MyApp)
 bool MyApp::OnInit()
 {
   int lang = wxLANGUAGE_UNKNOWN;
+  bool batchmode = false;
 
   wxCmdLineParser cmdLineParser(argc, argv);
 
@@ -60,7 +61,7 @@ bool MyApp::OnInit()
        * line option, he expects probably a answer just on the command line... */
       { wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE},
       { wxCMD_LINE_OPTION, "o", "open", "open a file" },
-//      { wxCMD_LINE_OPTION, "b", "batch","run the file and exit afterwards. Halts on questions and errors." },
+      { wxCMD_LINE_SWITCH, "b", "batch","run the file and exit afterwards. Halts on questions and stops on errors." },
 #if defined __WXMSW__
       { wxCMD_LINE_OPTION, "f", "ini", "open an input file" },
 #endif
@@ -146,12 +147,17 @@ bool MyApp::OnInit()
       wxExit();
     }
 
+  if (cmdLineParser.Found(wxT("b")))
+  {
+    batchmode = true;
+  }
+
   if (cmdLineParser.Found(wxT("o"), &file))
     {
       wxFileName FileName=file;
       FileName.MakeAbsolute();
       wxString CanonicalFilename=FileName.GetFullPath();
-      NewWindow(wxString(CanonicalFilename));
+      NewWindow(wxString(CanonicalFilename),batchmode);
       return true;
     }
   else
@@ -161,7 +167,7 @@ bool MyApp::OnInit()
 	  wxFileName FileName=cmdLineParser.GetParam();
 	  FileName.MakeAbsolute();
 	  wxString CanonicalFilename=FileName.GetFullPath();
-	  NewWindow(CanonicalFilename);
+	  NewWindow(CanonicalFilename,batchmode);
 	}
       else
 	NewWindow();
@@ -173,7 +179,7 @@ bool MyApp::OnInit()
 int window_counter = 0;
 #endif
 
-void MyApp::NewWindow(wxString file)
+void MyApp::NewWindow(wxString file,bool batchmode)
 {
   int x = 40, y = 40, h = 650, w = 950, m = 0;
   int rs = 0;
@@ -218,6 +224,7 @@ void MyApp::NewWindow(wxString file)
     frame->SetOpenFile(file);
   }
 
+  frame->SetBatchMode(batchmode);
 #if defined __WXMAC__
   topLevelWindows.Append(frame);
   if (topLevelWindows.GetCount()>1)

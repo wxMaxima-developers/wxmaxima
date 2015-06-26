@@ -56,7 +56,12 @@ class MyApp : public wxApp
 public:
   virtual bool OnInit();
   wxLocale m_locale;
-  void NewWindow(wxString file = wxEmptyString);
+  /*! Create a new window
+
+    \param file The file name
+    \param batchmode Do we want to execute the file and save it, but halt on error?
+   */
+  void NewWindow(wxString file = wxEmptyString,bool batchmode=false);
 #if defined (__WXMAC__)
   wxWindowList topLevelWindows;
   void OnFileMenu(wxCommandEvent &ev);
@@ -132,6 +137,10 @@ public:
   {
     m_openFile = file;
   }
+  void SetBatchMode(bool batch = false)
+  {
+    m_batchmode = batch;
+  }
   void StripComments(wxString& s);
   void SendMaxima(wxString s, bool history = false);
   void OpenFile(wxString file,
@@ -143,7 +152,8 @@ private:
   int m_unsuccessfullConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
-
+  //! Are we in batch mode?
+  bool m_batchmode;
   //! Can we display the "ready" prompt right now?
   bool m_ready;
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
@@ -295,6 +305,10 @@ protected:
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
   GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
   GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
+  /*! Saves the current file
+
+    \param forceSave true means: Always ask for a file name before saving.
+   */
   bool SaveFile(bool forceSave = false);
   int SaveDocumentP();
   //! Set the current working directory file I/O from maxima is relative to.
