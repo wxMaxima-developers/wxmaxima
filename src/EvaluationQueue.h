@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,20 +38,21 @@ class EvaluationQueueElement {
 // A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
-  public:
-    EvaluationQueue();
-    ~EvaluationQueue() {};
-
-    bool IsInQueue(GroupCell* gr);
-
-    void AddToQueue(GroupCell* gr);
-    void AddHiddenTreeToQueue(GroupCell* gr);
-    void RemoveFirst();
-    GroupCell* GetFirst();
-    bool Empty() { return m_queue == NULL; }
-  private:
-    EvaluationQueueElement* m_queue;
-    EvaluationQueueElement* m_last;
+public:
+  EvaluationQueue();
+  ~EvaluationQueue() {};
+  
+  bool IsInQueue(GroupCell* gr);
+  
+  void AddToQueue(GroupCell* gr);
+  void AddHiddenTreeToQueue(GroupCell* gr);
+  void RemoveFirst();
+  GroupCell* GetFirst();
+  bool Empty() { return m_queue == NULL; }
+  void Clear();
+private:
+  EvaluationQueueElement* m_queue;
+  EvaluationQueueElement* m_last;
 };
 
 

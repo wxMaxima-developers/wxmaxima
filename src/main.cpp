@@ -60,6 +60,7 @@ bool MyApp::OnInit()
        * line option, he expects probably a answer just on the command line... */
       { wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE},
       { wxCMD_LINE_OPTION, "o", "open", "open a file" },
+//      { wxCMD_LINE_OPTION, "b", "batch","run the file and exit afterwards. Halts on questions and errors." },
 #if defined __WXMSW__
       { wxCMD_LINE_OPTION, "f", "ini", "open an input file" },
 #endif

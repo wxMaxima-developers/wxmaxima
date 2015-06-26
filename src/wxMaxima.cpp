@@ -582,8 +582,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
-    while(!m_console->m_evaluationQueue->Empty())
-      m_console->m_evaluationQueue->RemoveFirst();
+    m_console->m_evaluationQueue->Clear();
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
@@ -638,8 +637,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   break;
 
   case wxSOCKET_LOST:
-    while(!m_console->m_evaluationQueue->Empty())
-      m_console->m_evaluationQueue->RemoveFirst();
+    m_console->m_evaluationQueue->Clear();
     m_pid = -1;
     m_isConnected = false;
     if (!m_closing)
@@ -889,8 +887,7 @@ void wxMaxima::ReadMath(wxString &data)
         bool abortOnError = true;
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
         if(abortOnError)
-          while(!m_console->m_evaluationQueue->Empty())
-            m_console->m_evaluationQueue->RemoveFirst();
+          m_console->m_evaluationQueue->Clear();
       }
       else
         normalOutput+=line+=wxT("\n");
@@ -1512,9 +1509,7 @@ void wxMaxima::ReadLispError(wxString &data)
     bool abortOnError = false;
     wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
     if(abortOnError)
-      while(!m_console->m_evaluationQueue->Empty())
-        m_console->m_evaluationQueue->RemoveFirst();
-    
+      m_console->m_evaluationQueue->Clear();    
   }
 }
 
@@ -2272,8 +2267,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
         bool abortOnError = false;
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
         if(abortOnError)
-          while(!m_console->m_evaluationQueue->Empty())
-            m_console->m_evaluationQueue->RemoveFirst();
+          m_console->m_evaluationQueue->Clear();
         else
           TryEvaluateNextInQueue();
       }
@@ -2294,8 +2288,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       if(abortOnError)
-        while(!m_console->m_evaluationQueue->Empty())
-          m_console->m_evaluationQueue->RemoveFirst();
+        m_console->m_evaluationQueue->Clear();
       else
         TryEvaluateNextInQueue();
     }
@@ -4891,8 +4884,7 @@ void wxMaxima::TryEvaluateNextInQueue()
             bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       if(abortOnError)
-        while(!m_console->m_evaluationQueue->Empty())
-          m_console->m_evaluationQueue->RemoveFirst();
+        m_console->m_evaluationQueue->Clear();
       else
       {
         m_console->m_evaluationQueue->RemoveFirst();

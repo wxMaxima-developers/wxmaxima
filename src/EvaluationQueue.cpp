@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +32,12 @@ EvaluationQueue::EvaluationQueue()
 {
   m_queue = NULL;
   m_last = NULL;
+}
+
+void EvaluationQueue::Clear()
+{
+  while(!Empty())
+    RemoveFirst();
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell* gr)
