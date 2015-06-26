@@ -2259,16 +2259,24 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       {
         o += m_input->GetC();
       }
-      DoRawConsoleAppend(o, MC_TYPE_ERROR);
-      // If maxima did output something it defintively has stopped.
-      // The question is now if we want to try to send it something new to evaluate.
-      bool abortOnError = false;
-      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      if(abortOnError)
-        while(!m_console->m_evaluationQueue->Empty())
-          m_console->m_evaluationQueue->RemoveFirst();
-      else
-        TryEvaluateNextInQueue();
+
+      // Maxima might inform us which port it is connected to.
+      // This message might be localized so we might not recognize it from the
+      // words of the message. But since the message does contain the port number
+      // we can filter it out.
+      if(o.find(wxString::Format("%i",m_port))!=wxNOT_FOUND)
+      {
+        DoRawConsoleAppend(o, MC_TYPE_ERROR);
+        // If maxima did output something strange it defintively has stopped.
+        // The question is now if we want to try to send it something new to evaluate.
+        bool abortOnError = false;
+        wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+        if(abortOnError)
+          while(!m_console->m_evaluationQueue->Empty())
+            m_console->m_evaluationQueue->RemoveFirst();
+        else
+          TryEvaluateNextInQueue();
+      }
     }
 
     if(m_process->IsErrorAvailable())
