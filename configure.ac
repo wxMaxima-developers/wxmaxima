@@ -142,7 +142,6 @@ if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
-   LDFLAGS="$LDFLAGS $LIKFLAGS_COMPLETELYSTATIC"
 else
    RC_OBJ=""
    WX_RC_PATH=""
@@ -153,7 +152,6 @@ if test x"${win64}" = x"true" ; then
    RC_OBJ="Resources.o"
    wx_prefix=`$WX_CONFIG_NAME --prefix`
    WX_RC_PATH="${wx_prefix}/include"
-   LDFLAGS="$LDFLAGS $LIKFLAGS_COMPLETELYSTATIC"
 else
    RC_OBJ=""
    WX_RC_PATH=""
@@ -165,6 +163,21 @@ CATALOGS_TO_INSTALL="install-wxmaxima-catalogs"
 if test x"${static_wx}" = x"true" ; then
     CATALOGS_TO_INSTALL="$CATALOGS_TO_INSTALL install-wxstd-catalogs"
 fi
+
+dnl Attempt a fully static build?
+AC_ARG_ENABLE(fullystatic,
+  [  --enable-fullystatic         Try to statically link all needed libraries into the application],
+  [case "${enableval}" in
+       		yes) fullystatic=true ;;
+       		no)  fullystatic=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-fullystatic) ;;
+   esac],
+   [chm=fullystatic])
+
+if test x"${fullystatic}" = x"true" ; then
+   LDFLAGS="$LDFLAGS $LIKFLAGS_COMPLETELYSTATIC"
+fi
+
 
 dnl Optionally build the windows CHM help files
 dnl default to false as requires win32 and Microsoft HTML Help Workshop
