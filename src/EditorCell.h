@@ -197,10 +197,15 @@ public:
   }
   /*! Replace the current selection with a string
 
-    \todo This function sets the bool m_containsChanges to -1. I assume this should 
-    read false instead.
+    \param oldStr The old string in the selection. If this string doesn't match
+                  the selection this function doesn't replace it.
+    \param newString The new string oldStr has to be replaced by
+    \param keepSelected 
+      - true = we want the new string to be selected afterwards
+      - false = the selection is cleared after replacing the string
+        and moving the cursor to its end.
    */
-  bool ReplaceSelection(wxString oldStr, wxString newString);
+  bool ReplaceSelection(wxString oldStr, wxString newString,bool keepSelected = false);
   //! Convert the current selection to a string
   wxString GetSelectionString();
   //! Unselect everything

@@ -41,8 +41,14 @@ class AutocompletePopup : public wxMenu
 private:
   wxArrayString m_completions;
   AutoComplete *m_autocomplete;
+  size_t m_length;
+  EditorCell *m_editor;
+  AutoComplete::autoCompletionType m_type;
 public:
   AutocompletePopup(EditorCell* editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type);
+  void UpdateResults();
+protected:
+  void ProcessEvent(wxKeyEvent& event);
 };
 
 #endif // AUTOCOMPLETEPOPUP_H

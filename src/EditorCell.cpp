@@ -2464,7 +2464,7 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   return false;
 }
 
-bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
+bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected)
 {
   if (m_selectionStart > -1 &&
       m_text.SubString(m_selectionStart, m_selectionEnd - 1) == oldStr)
@@ -2475,10 +2475,18 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr)
              m_text.SubString(m_selectionEnd, m_text.Length());
     StyleText();
     
-    m_containsChanges = -1;
+    m_containsChanges = true;
     m_positionOfCaret = m_selectionStart + newStr.Length();
-    m_selectionStart = -1;
-    m_selectionEnd = -1;
+
+    if(keepSelected)
+    {
+      m_selectionEnd = m_positionOfCaret;
+    }
+    else
+    {
+      m_selectionStart = -1;
+      m_selectionEnd = -1;
+    }
     
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();

@@ -24,6 +24,29 @@
 
 #include <wx/textfile.h>
 
+void AutocompletePopup::UpdateResults()
+{
+  wxString partial = m_editor->GetSelectionString();
+  
+  m_completions = m_autocomplete->CompleteSymbol(partial, m_type);
+  m_completions.Sort();
+
+  for (unsigned int i=0; i<m_length; i++)
+    Destroy(popid_complete_00 + i);
+  
+  m_length = m_completions.GetCount();
+  if(m_length>AC_MENU_LENGTH) m_length = AC_MENU_LENGTH;
+  
+  for (unsigned int i=0; i<m_length; i++)
+    Append(popid_complete_00 + i, m_completions[i]);
+}
+
+void AutocompletePopup::ProcessEvent(wxKeyEvent& event)
+{
+  std::cerr<<"Key\n";
+  event.Skip();
+}
+
 AutocompletePopup::AutocompletePopup(
   EditorCell* editor,
   AutoComplete * autocomplete,
@@ -31,13 +54,13 @@ AutocompletePopup::AutocompletePopup(
   ) : wxMenu()
 {
   m_autocomplete = autocomplete;
-  wxString partial = editor->GetSelectionString();
-  
-  m_completions = m_autocomplete->CompleteSymbol(partial, type);
-  type == AutoComplete::tmplte;
-  
-  m_completions.Sort();
-
-  for (unsigned int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
-    Append(popid_complete_00 + i, m_completions[i]);
+  m_editor       = editor;
+  m_type         = type;
+  m_length       = 0;
+  UpdateResults();
 }
+
+//BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
+//EVT_KEY_DOWN(AutocompletePopup::ProcessEvent)
+//END_EVENT_TABLE()
+
