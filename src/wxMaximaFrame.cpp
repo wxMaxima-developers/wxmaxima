@@ -53,6 +53,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   SetStatusWidths(2, widths);
 
   m_StatusSaving = false;
+  // If we need to set the status manually for the first time using StatusMaximaBusy
+  // we first have to manually set the last state to something else.
   m_StatusMaximaBusy = calculating;
   StatusMaximaBusy(waiting);
 
