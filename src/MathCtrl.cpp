@@ -48,7 +48,6 @@
 #define SCROLL_UNIT 10
 #define CARET_TIMER_TIMEOUT 500
 #define ANIMATION_TIMER_TIMEOUT 300
-#define AC_MENU_LENGTH 25
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 wxScrolledCanvas(
@@ -5213,24 +5212,20 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   /// If there are more than one completions, popup a menu
   else {
 
-    m_completions.Sort();
-
-    wxMenu *popup = new wxMenu();
-
-    for (unsigned int i=0; i<m_completions.GetCount() && i<AC_MENU_LENGTH; i++)
-      popup->Append(popid_complete_00 + i, m_completions[i]);
-
+    // Create a popup menu
+    wxMenu *popup = new AutocompletePopup(editor,&m_autocomplete,type);
+    
     // Find the position for the popup menu
     wxClientDC dc(this);
     CellParser parser(dc);
-
+    
     wxPoint pos = editor->PositionToPoint(parser, -1);
-
+    
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
-
+    
     // Show popup menu
     PopupMenu(popup, pos.x, pos.y);
-
+    
     delete popup;
   }
 

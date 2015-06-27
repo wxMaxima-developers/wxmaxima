@@ -54,7 +54,8 @@ wxmaxima_SOURCES = \
 	SubSupCell.cpp     SubSupCell.h     \
 	SlideShowCell.cpp  SlideShowCell.h  \
 	GroupCell.cpp      GroupCell.h      \
-	EvaluationQueue.cpp EvaluationQueue.h \
+	EvaluationQueue.cpp   EvaluationQueue.h   \
+	AutocompletePopup.cpp AutocompletePopup.h \
 	MarkDown.cpp       MarkDown.h       \
 	ToolBar.cpp        ToolBar.h        \
 	History.cpp        History.h        \

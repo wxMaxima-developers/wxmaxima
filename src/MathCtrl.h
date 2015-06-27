@@ -33,6 +33,7 @@
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
 #include "Autocomplete.h"
+#include "AutocompletePopup.h"
 #include "Structure.h"
 #include "ToolBar.h"
 
@@ -417,11 +418,6 @@ public:
   void TreeUndo_ClearBuffers();
 
   /*! The ids for all popup menu items.
-
-    \attention popid_complete_00 has to stay the last event in this enum
-    Since we want to be able to dynamically add events to popups
-    (for example for autocompletion) we need to make sure we know what 
-    the item with the lowest ID is we can assign dynamically.
   */
   enum PopIds{
     /*! The "copy" popup menu item was clicked
@@ -462,13 +458,6 @@ public:
     popid_insert_section,
     popid_insert_subsection,
     popid_insert_subsubsection,
-    /*! The first number that is open for dynamic ID assignment
-
-      If we want to add additional elements to a pop-up this is the 
-      lowest ID that is guaranteed to be free for this purpose.
-      \attention popid_must be the last id in this list
-     */
-    popid_complete_00
   };
   
   //! The constructor
