@@ -49,6 +49,7 @@ public:
   void UpdateResults();
 protected:
   void ProcessEvent(wxKeyEvent& event);
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // AUTOCOMPLETEPOPUP_H

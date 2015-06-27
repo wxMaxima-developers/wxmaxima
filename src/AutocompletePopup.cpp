@@ -60,7 +60,8 @@ AutocompletePopup::AutocompletePopup(
   UpdateResults();
 }
 
-//BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
+BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
 //EVT_KEY_DOWN(AutocompletePopup::ProcessEvent)
-//END_EVENT_TABLE()
+EVT_CHAR(AutocompletePopup::ProcessEvent)
+END_EVENT_TABLE()
 
