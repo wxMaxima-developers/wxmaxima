@@ -2413,7 +2413,7 @@ bool EditorCell::CheckChanges()
   return false;
 }
 
-int EditorCell::ReplaceAll(wxString oldString, wxString newString)
+int EditorCell::ReplaceAll(wxString oldString, wxString newString,bool IgnoreCase)
 {
   SaveValue();
   int count = m_text.Replace(oldString, newString);
@@ -2464,10 +2464,22 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   return false;
 }
 
-bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected)
+bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase)
 {
-  if (m_selectionStart > -1 &&
-      m_text.SubString(m_selectionStart, m_selectionEnd - 1) == oldStr)
+  if (m_selectionStart <0) return false;
+  if(IgnoreCase)
+    {
+      if ( m_text.SubString(m_selectionStart, m_selectionEnd - 1).Upper() !=
+           wxString(oldStr).Upper()
+        )
+        return false;
+    }
+    else
+    {
+      if ( m_text.SubString(m_selectionStart, m_selectionEnd - 1) != oldStr)
+        return false;
+    }
+ 
   {
     // We cannot use SetValue() here, since SetValue() tends to move the cursor.
     m_text = m_text.SubString(0, m_selectionStart - 1) +

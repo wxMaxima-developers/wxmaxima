@@ -746,12 +746,12 @@ public:
 
     Used by the find dialog.
    */
-  void Replace(wxString oldString, wxString newString);
+  void Replace(wxString oldString, wxString newString, bool ignoreCase);
   /*! Replace all ocourrences of a string
 
     Used by the find dialog.
    */
-  int ReplaceAll(wxString oldString, wxString newString);
+  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
   wxString GetInputAboveCaret();
   wxString GetOutputAboveCaret();
   bool LoadSymbols(wxString file) { return m_autocomplete.LoadSymbols(file); }

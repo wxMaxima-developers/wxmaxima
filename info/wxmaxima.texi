@@ -743,6 +743,10 @@ There are separate undo functions for cell operations and for changes
 inside of cells so chances are low that this ever happens. If it does
 there are several methods to recover data:
 @itemize @bullet
+@item wxMaxima actually has two undo features: The global undo buffer
+that is active if no cell is selected and a per-cell undo buffer that is
+active if the cursor is inside a cell. It is worth trying to use both undo
+options in order to see if an old value can still be accessed.
 @item If you still have a way to find out what label maxima has assigned
 to the cell just type in the cell's label and it's contents will
 reappear.

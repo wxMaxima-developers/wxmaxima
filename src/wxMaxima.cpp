@@ -2801,17 +2801,26 @@ void wxMaxima::OnFindClose(wxFindDialogEvent& event)
 
 void wxMaxima::OnReplace(wxFindDialogEvent& event)
 {
-  m_console->Replace(event.GetFindString(), event.GetReplaceString());
+  m_console->Replace(event.GetFindString(),
+                     event.GetReplaceString(),
+                     !(event.GetFlags() & wxFR_MATCHCASE)
+    );
 
   if (!m_console->FindNext(event.GetFindString(),
                            event.GetFlags() & wxFR_DOWN,
-                           !(event.GetFlags() & wxFR_MATCHCASE)))
+                           !(event.GetFlags() & wxFR_MATCHCASE)
+                           )
+    )
     wxMessageBox(_("No matches found!"));
 }
 
 void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
 {
-  int count = m_console->ReplaceAll(event.GetFindString(), event.GetReplaceString());
+  int count = m_console->ReplaceAll(
+    event.GetFindString(),
+    event.GetReplaceString(),
+    !(event.GetFlags() & wxFR_MATCHCASE)
+    );
 
   wxMessageBox(wxString::Format(_("Replaced %d occurrences."), count));
 }

@@ -173,8 +173,11 @@ public:
   //! Set the information if this cell needs to be re-evaluated by maxima
   void ContainsChanges(bool changes) { m_containsChanges = m_containsChangesCheck = changes; }
   bool CheckChanges();
-  //! Replaces all occurrences of a given string
-  int ReplaceAll(wxString oldString, wxString newString);
+  /*! Replaces all occurrences of a given string
+
+    TODO: Implement the IgnoreCase case.
+   */
+  int ReplaceAll(wxString oldString, wxString newString,bool IgnoreCase);
   /*! Finds the next occurrences of a string
 
     \param str The string to search for
@@ -204,8 +207,9 @@ public:
       - true = we want the new string to be selected afterwards
       - false = the selection is cleared after replacing the string
         and moving the cursor to its end.
+    \param ignoreCase
    */
-  bool ReplaceSelection(wxString oldStr, wxString newString,bool keepSelected = false);
+  bool ReplaceSelection(wxString oldStr, wxString newString,bool keepSelected = false,bool ignoreCase = false);
   //! Convert the current selection to a string
   wxString GetSelectionString();
   //! Unselect everything

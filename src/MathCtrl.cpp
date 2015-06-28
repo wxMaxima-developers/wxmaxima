@@ -5006,34 +5006,36 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
   if (m_tree == NULL)
     return false;
 
-  GroupCell *tmp = m_tree;
+  GroupCell *start = m_tree;
   if (!down)
-    tmp = m_last;
+    start = m_last;
 
   if (m_activeCell != NULL)
-    tmp = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    start = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
 
   else if (m_hCaretActive)
   {
     if (down)
     {
       if (m_hCaretPosition != NULL)
-        tmp = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+        start = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
     }
     else
     {
-      tmp = m_hCaretPosition;
+      start = m_hCaretPosition;
     }
   }
-
-  while (tmp != NULL)
+  if(start == NULL)
+    start = m_tree;
+  
+  while (start != NULL)
   {
-    EditorCell *editor = (EditorCell *)(tmp->GetEditable());
-
+    EditorCell *editor = (EditorCell *)(start->GetEditable());
+    
     if (editor != NULL)
     {
       bool found = editor->FindNext(str, down, ignoreCase);
-
+      
       if (found)
       {
         int start, end;
@@ -5045,13 +5047,12 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         return true;
       }
     }
-
+    
     if (down)
-      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+      start = dynamic_cast<GroupCell*>(start->m_next);
     else
-      tmp = dynamic_cast<GroupCell*>(tmp->m_previous);
+      start = dynamic_cast<GroupCell*>(start->m_previous);
   }
-
   return false;
 }
 
@@ -5073,7 +5074,7 @@ void MathCtrl::ScrollToCaret()
   }
 }
 
-void MathCtrl::Replace(wxString oldString, wxString newString)
+void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
 {
   if (m_activeCell != NULL)
   {
@@ -5087,7 +5088,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString)
   }
 }
 
-int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
+int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
 {
   if (m_tree == NULL)
     return 0;
@@ -5102,13 +5103,13 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString)
 
     if (editor != NULL)
     {
-      int replaced = editor->ReplaceAll(oldString, newString);
+      int replaced = editor->ReplaceAll(oldString, newString, ignoreCase);
       if (replaced > 0)
       {
         count += replaced;
         tmp->ResetInputLabel();
       }
-      count += editor->ReplaceAll(oldString, newString);
+      count += editor->ReplaceAll(oldString, newString, ignoreCase);
     }
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
