@@ -29,17 +29,25 @@ void AutocompletePopup::UpdateResults()
 {
   wxString partial = m_editor->GetSelectionString();
 
+  
   m_completions = m_autocomplete->CompleteSymbol(partial, m_type);
   m_completions.Sort();
-  if(m_completions.GetCount()==1)
+
+  switch(m_completions.GetCount())
   {
+  case 1:
     m_editor->ReplaceSelection(
       m_editor->GetSelectionString(),
       m_completions[0]
       );
+  case 0:
+    m_editor->ClearSelection();
     Dismiss();
+    break;
+  default:
+    m_autocompletions->Set(m_completions);
+    m_autocompletions->SetSelection(0);    
   }
-  m_autocompletions->Set(m_completions);
 }
 
 void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
@@ -87,11 +95,12 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
     int selection = m_autocompletions->GetSelection();
     if(selection<0)
       selection = 0;
-    
-    m_editor->ReplaceSelection(
-      m_editor->GetSelectionString(),
-      m_completions[selection]
-      );
+
+    if(m_completions.GetCount()>0)
+      m_editor->ReplaceSelection(
+        m_editor->GetSelectionString(),
+        m_completions[selection]
+        );
     Dismiss();
   }
   break;
@@ -161,6 +170,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
         m_completions[selection]+key
         );
       Dismiss();
+      
     } else
       event.Skip();
   }
@@ -170,14 +180,17 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
 
 void AutocompletePopup::OnClick(wxCommandEvent& event)
 {
-  int selection = event.GetSelection();
-  if(selection > 0)
+  if(m_completions.GetCount()>0)
   {
-    m_editor->ReplaceSelection(
-      m_editor->GetSelectionString(),
-      m_completions[selection]
-      );
-    this->GetParent()->GetParent()->Refresh();
+    int selection = event.GetSelection();
+    if(selection > 0)
+    {
+      m_editor->ReplaceSelection(
+        m_editor->GetSelectionString(),
+        m_completions[selection]
+        );
+      this->GetParent()->GetParent()->Refresh();
+    }
     Dismiss();
   }
 }

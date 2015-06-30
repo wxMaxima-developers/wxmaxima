@@ -5218,12 +5218,11 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     CellParser parser(dc);
     wxPoint pos = editor->PositionToPoint(parser, -1);
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
-    pos.x -= 400;
-    
+    ClientToScreen(&pos.x, &pos.y);
     // Create the popup menu
     m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type);
-    m_autocompletePopup -> Position(ClientToScreen(pos),wxSize(400,800));
     m_autocompletePopup -> Popup();
+    m_autocompletePopup -> Position(pos, wxDefaultSize);
   }
 
   return true;
