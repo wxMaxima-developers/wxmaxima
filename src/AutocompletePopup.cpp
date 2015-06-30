@@ -140,7 +140,17 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
   }
   default:
   {
-    if((key==wxT(' '))||(key==wxT('(')))
+    if((wxIsalpha(key))||(key==wxT('_')))
+    {
+      wxString oldString=m_editor->GetSelectionString();
+      m_editor->ReplaceSelection(
+        oldString,
+        oldString+wxString(key),
+        true
+        );
+      UpdateResults();
+    }
+    else if(wxIsprint(key))
     {
       int selection = m_autocompletions->GetSelection();
       if(selection<0)
@@ -151,18 +161,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
         m_completions[selection]+key
         );
       Dismiss();
-    }
-    else if((wxIsalpha(key))||(key==wxT('_')))
-    {
-      wxString oldString=m_editor->GetSelectionString();
-      m_editor->ReplaceSelection(
-        oldString,
-        oldString+wxString(key),
-        true
-        );
-      UpdateResults();
-    }
-    else
+    } else
       event.Skip();
   }
   }
