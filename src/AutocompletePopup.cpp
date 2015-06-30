@@ -47,6 +47,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
   switch (event.GetKeyCode()) {
   case WXK_RETURN:
   case WXK_TAB:
+  case WXK_RIGHT:
   case WXK_NUMPAD_ENTER:
   {
     int selection = m_autocompletions->GetSelection();
@@ -60,6 +61,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
     Dismiss();
   }
   break;
+  case WXK_LEFT:
   case WXK_ESCAPE:
     Dismiss();
     break;
@@ -100,7 +102,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
 #else
     wxChar key = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
 #endif
-    if(key==wxT(' '))
+    if((key==wxT(' '))||(key==wxT('(')))
     {
       int selection = m_autocompletions->GetSelection();
       if(selection<0)
@@ -108,7 +110,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
       
       m_editor->ReplaceSelection(
         m_editor->GetSelectionString(),
-        m_completions[selection]
+        m_completions[selection]+key
         );
       Dismiss();
     }
