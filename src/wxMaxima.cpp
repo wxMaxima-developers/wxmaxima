@@ -2835,6 +2835,9 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   wxString f = wxT("/");
   switch (event.GetId())
   {
+  case menu_triggerEvaluation:
+    TryEvaluateNextInQueue();
+    break;
   case ToolBar::menu_restart_id:
     m_closing = true;
     m_console->ClearEvaluationQueue();

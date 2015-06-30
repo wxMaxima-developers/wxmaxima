@@ -763,6 +763,11 @@ One possible reason is that maxima cannot be found in the location that is
 set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working maxima binary should
 fix this problem.
+@section Maxima is forever calculating and not responding to input
+It is theoretically possible that wxMaxima doesn't realize that maxima has
+finished calculating and therefore never gets informed it can send new data
+to maxima. If this is the case ``Trigger evaluation'' might resynchronize
+the two programs.
 @section File I/O from maxima doesn't work on Windows
 On windows File I/O isn't relative to the directory of the current
 file by default. If you store the maxima file on the drive wxMaxima is

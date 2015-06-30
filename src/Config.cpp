@@ -472,7 +472,7 @@ wxPanel* Config::CreateMaximaPanel()
 {
   wxPanel* panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* sizer = new wxFlexGridSizer(8, 2, 0, 0);  
+  wxFlexGridSizer* sizer = new wxFlexGridSizer(9, 2, 0, 0);  
 
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   sizer->Add(m_abortOnError,0,wxALL);

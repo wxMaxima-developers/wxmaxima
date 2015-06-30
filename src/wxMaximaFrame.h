@@ -176,6 +176,7 @@ public:
     menu_realpart,
     menu_imagpart,
     menu_subst,
+    menu_triggerEvaluation,
     button_factor_id,
     button_solve,
     button_solve_ode,
