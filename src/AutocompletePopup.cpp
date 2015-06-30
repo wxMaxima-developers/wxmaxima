@@ -51,8 +51,36 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
 #endif
   
   switch (event.GetKeyCode()) {
-  case WXK_RETURN:
   case WXK_TAB:
+    if(m_completions.GetCount()>0)
+    {
+      wxChar ch;
+      bool addChar = true;
+      wxString word=m_editor->GetSelectionString();
+      int index=word.Length();
+      do
+      {
+        if(m_completions[0].Length()<=index)
+          addChar = false;
+        else
+        {
+          ch = m_completions[0][index];
+          for(size_t i=0;i<m_completions.GetCount();i++)
+            if((m_completions[i].Length()<index + 1)||(m_completions[i][index]!=ch))
+              addChar = false;
+        }
+        
+        if(addChar)
+        {
+          index++;
+          word += ch;
+        }
+      }
+      while(addChar);
+      m_editor->ReplaceSelection(m_editor->GetSelectionString(),word,true);
+    }
+    break;
+  case WXK_RETURN:
   case WXK_RIGHT:
   case WXK_NUMPAD_ENTER:
   {
