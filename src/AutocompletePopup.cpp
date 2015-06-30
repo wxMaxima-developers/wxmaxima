@@ -44,6 +44,12 @@ void AutocompletePopup::UpdateResults()
 
 void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
 {
+#if wxUSE_UNICODE
+  wxChar key = event.GetUnicodeKey();
+#else
+  wxChar key = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
+#endif
+  
   switch (event.GetKeyCode()) {
   case WXK_RETURN:
   case WXK_TAB:
@@ -97,11 +103,6 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
   }
   default:
   {
-#if wxUSE_UNICODE
-    wxChar key = event.GetUnicodeKey();
-#else
-    wxChar key = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
-#endif
     if((key==wxT(' '))||(key==wxT('(')))
     {
       int selection = m_autocompletions->GetSelection();
@@ -114,7 +115,7 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
         );
       Dismiss();
     }
-    else if(wxIsalpha(key))
+    else if((wxIsalpha(key))||(key==wxT('_')))
     {
       wxString oldString=m_editor->GetSelectionString();
       m_editor->ReplaceSelection(
