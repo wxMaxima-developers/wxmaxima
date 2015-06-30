@@ -21,47 +21,151 @@
 
 #include "AutocompletePopup.h"
 #include "Dirstructure.h"
+#include "wxMaximaFrame.h"
 
 #include <wx/textfile.h>
 
 void AutocompletePopup::UpdateResults()
 {
   wxString partial = m_editor->GetSelectionString();
-  
+
   m_completions = m_autocomplete->CompleteSymbol(partial, m_type);
   m_completions.Sort();
-
-  for (unsigned int i=0; i<m_length; i++)
-    Destroy(popid_complete_00 + i);
-  
-  m_length = m_completions.GetCount();
-  if(m_length>AC_MENU_LENGTH) m_length = AC_MENU_LENGTH;
-  
-  for (unsigned int i=0; i<m_length; i++)
-    Append(popid_complete_00 + i, m_completions[i]);
+  if(m_completions.GetCount()==1)
+  {
+    m_editor->ReplaceSelection(
+      m_editor->GetSelectionString(),
+      m_completions[0]
+      );
+    Dismiss();
+  }
+  m_autocompletions->Set(m_completions);
 }
 
-void AutocompletePopup::ProcessEvent(wxKeyEvent& event)
+void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
 {
-  std::cerr<<"Key\n";
-  event.Skip();
+  switch (event.GetKeyCode()) {
+  case WXK_RETURN:
+  case WXK_TAB:
+  case WXK_NUMPAD_ENTER:
+  {
+    int selection = m_autocompletions->GetSelection();
+    if(selection<0)
+      selection = 0;
+    
+    m_editor->ReplaceSelection(
+      m_editor->GetSelectionString(),
+      m_completions[selection]
+      );
+    Dismiss();
+  }
+  break;
+  case WXK_ESCAPE:
+    Dismiss();
+    break;
+  case WXK_UP:
+  {
+    int selection = m_autocompletions->GetSelection();
+    if(selection > 0)
+      m_autocompletions->SetSelection(selection-1);
+    break;
+  }
+  case WXK_DOWN:
+  {
+    int selection = m_autocompletions->GetSelection();
+    if(selection < m_completions.GetCount() - 1)
+      m_autocompletions->SetSelection(selection+1);
+    break;
+  }
+  case WXK_BACK:
+  {
+    wxString oldString=m_editor->GetSelectionString();
+    if(oldString!=wxEmptyString)
+    {
+      m_editor->ReplaceSelection(
+        oldString,
+        oldString.Left(oldString.Length()-1),
+        true
+        );
+      UpdateResults();
+    }
+    else
+      Dismiss();
+    break;
+  }
+  default:
+  {
+#if wxUSE_UNICODE
+    wxChar key = event.GetUnicodeKey();
+#else
+    wxChar key = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
+#endif
+    if(key==wxT(' '))
+    {
+      int selection = m_autocompletions->GetSelection();
+      if(selection<0)
+        selection = 0;
+      
+      m_editor->ReplaceSelection(
+        m_editor->GetSelectionString(),
+        m_completions[selection]
+        );
+      Dismiss();
+    }
+    else if(wxIsalpha(key))
+    {
+      wxString oldString=m_editor->GetSelectionString();
+      m_editor->ReplaceSelection(
+        oldString,
+        oldString+wxString(key),
+        true
+        );
+      UpdateResults();
+    }
+    else
+      event.Skip();
+  }
+  }
+  this->GetParent()->GetParent()->Refresh();
+}
+
+void AutocompletePopup::OnClick(wxCommandEvent& event)
+{
+  int selection = event.GetSelection();
+  if(selection > 0)
+  {
+    m_editor->ReplaceSelection(
+      m_editor->GetSelectionString(),
+      m_completions[selection]
+      );
+    this->GetParent()->GetParent()->Refresh();
+    Dismiss();
+  }
 }
 
 AutocompletePopup::AutocompletePopup(
+  wxWindow *parent,
   EditorCell* editor,
   AutoComplete * autocomplete,
   AutoComplete::autoCompletionType type
-  ) : wxMenu()
+  ) : wxPopupTransientWindow(parent,-1)
 {
   m_autocomplete = autocomplete;
   m_editor       = editor;
   m_type         = type;
   m_length       = 0;
+  m_autocompletions = new wxListBox(this, -1);
+  
+  m_autocompletions->Connect(wxEVT_LISTBOX,
+                             wxCommandEventHandler(AutocompletePopup::OnClick),
+                             NULL, this);
+  m_autocompletions->Connect(wxEVT_CHAR,
+                             wxKeyEventHandler(AutocompletePopup::OnKeyPress),
+                             NULL, this);
+wxFlexGridSizer *box = new wxFlexGridSizer(1);
   UpdateResults();
+  box->AddGrowableCol(0);
+  box->AddGrowableRow(0);
+  box->Add(m_autocompletions, 0, wxEXPAND | wxALL, 0);
+  SetSizerAndFit(box);
 }
-
-BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
-//EVT_KEY_DOWN(AutocompletePopup::ProcessEvent)
-EVT_CHAR(AutocompletePopup::ProcessEvent)
-END_EVENT_TABLE()
-

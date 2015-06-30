@@ -2466,7 +2466,14 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
 
 bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase)
 {
-  if (m_selectionStart <0) return false;
+  if (m_selectionStart <0)
+  {
+    if(oldStr == wxEmptyString)
+      m_selectionStart = m_selectionEnd = m_positionOfCaret;
+    else
+      return false;
+  }
+    
   if(IgnoreCase)
     {
       if ( m_text.SubString(m_selectionStart, m_selectionEnd - 1).Upper() !=
@@ -2503,6 +2510,7 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();
 
+    StyleText();
     return true;
   }
   return false;

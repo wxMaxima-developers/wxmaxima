@@ -5213,56 +5213,20 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   /// If there are more than one completions, popup a menu
   else {
 
-    // Create a popup menu
-    wxMenu *popup = new AutocompletePopup(editor,&m_autocomplete,type);
-    
     // Find the position for the popup menu
     wxClientDC dc(this);
     CellParser parser(dc);
-    
     wxPoint pos = editor->PositionToPoint(parser, -1);
-    
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
+    pos.x -= 400;
     
-    // Show popup menu
-    PopupMenu(popup, pos.x, pos.y);
-    
-    delete popup;
+    // Create the popup menu
+    m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type);
+    m_autocompletePopup -> Position(ClientToScreen(pos),wxSize(400,800));
+    m_autocompletePopup -> Popup();
   }
 
   return true;
-}
-
-void MathCtrl::OnComplete(wxCommandEvent &event)
-{
-  if (m_activeCell == NULL)
-    return;
-
-  EditorCell *editor = (EditorCell *)m_activeCell;
-  int caret = editor->GetCaretPosition();
-
-  if (editor->GetSelectionString() != wxEmptyString)
-    editor->ReplaceSelection(editor->GetSelectionString(),
-                             m_completions[event.GetId() - popid_complete_00]);
-  else
-    editor->InsertText(m_completions[event.GetId() - popid_complete_00]);
-
-  if (m_autocompleteTemplates)
-  {
-    int sel_start, sel_end;
-    editor->GetSelection(&sel_start, &sel_end);
-    editor->ClearSelection();
-
-    editor->CaretToPosition(caret);
-    if (!editor->FindNextTemplate())
-      editor->CaretToPosition(sel_start + m_completions[event.GetId() - popid_complete_00].Length());
-  }
-
-  editor->ResetSize();
-  editor->GetParent()->ResetSize();
-  Recalculate();
-
-  Refresh();
 }
 
 void MathCtrl::SetActiveCellText(wxString text)
@@ -5355,7 +5319,6 @@ void MathCtrl::OnFollow()
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
-  EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)

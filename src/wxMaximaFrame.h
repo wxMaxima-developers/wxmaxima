@@ -87,6 +87,7 @@ public:
     socket_client_id,
     socket_server_id,
     input_line_id,
+    refresh_id,
     menu_new_id,
     menu_open_id,
     menu_batch_id,

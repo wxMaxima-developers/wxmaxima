@@ -4068,7 +4068,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
   switch (event.GetId())
   {
-
   case wxID_ABOUT:
 #if defined __WXGTK__
   {
@@ -5446,7 +5445,7 @@ EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_text_from_console, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
 EVT_MENU(menu_undo, wxMaxima::EditMenu)
-EVT_MENU(menu_redo, wxMaxima::EditMenu)
+EVT_MENU(menu_redo, wxMaxima::MaximaMenu)
 EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
 EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
 EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
