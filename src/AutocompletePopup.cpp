@@ -76,13 +76,22 @@ void AutocompletePopup::OnKeyPress(wxKeyEvent& event)
     int selection = m_autocompletions->GetSelection();
     if(selection > 0)
       m_autocompletions->SetSelection(selection-1);
+    else
+    {
+      if(m_completions.GetCount()>0)
+        m_autocompletions->SetSelection(0);
+    }
     break;
   }
   case WXK_DOWN:
   {
     int selection = m_autocompletions->GetSelection();
-    if(selection < m_completions.GetCount() - 1)
-      m_autocompletions->SetSelection(selection+1);
+    if(selection<0) selection = 0;
+    selection++;
+    if(selection >= m_completions.GetCount())
+      selection--;
+    if(m_completions.GetCount()>0)
+      m_autocompletions->SetSelection(selection);
     break;
   }
   case WXK_BACK:
