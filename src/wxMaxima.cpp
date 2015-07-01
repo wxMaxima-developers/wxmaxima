@@ -4858,8 +4858,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
     // Clear the evaluation queue.
-    while (!m_console->m_evaluationQueue->Empty())
-      m_console->m_evaluationQueue->RemoveFirst();
+    m_console->m_evaluationQueue->Clear();
 
     m_console->Refresh();
 

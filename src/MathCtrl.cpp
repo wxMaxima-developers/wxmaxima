@@ -32,6 +32,7 @@
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
+#include "ContentAssistantPopup.h"
 
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -5223,8 +5224,8 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     // On wxGtk a popup window gets informed on keypresses and if somebody
     // clicks a control that is inside it => we can create a content assistant.
     ClientToScreen(&pos.x, &pos.y);
-    AutocompletePopup *autocompletePopup;
-    autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type);
+    ContentAssistantPopup *autocompletePopup;
+    autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type);
     autocompletePopup -> Popup();
     autocompletePopup -> Position(pos, wxDefaultSize);
     #else
