@@ -323,6 +323,8 @@ class MathCtrl: public wxScrolledCanvas
   void OnMouseMiddleUp(wxMouseEvent& event);
   void NumberSections();
   bool IsLesserGCType(int type, int comparedTo);
+  //! Is called if a action from the autocomplete menu is selected
+  void OnComplete(wxCommandEvent &event);
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
@@ -790,7 +792,6 @@ public:
    */
   void OpenQuestionCaret(wxString txt=wxT(""));
 
-  AutocompletePopup *m_autocompletePopup;
  protected:
   DECLARE_EVENT_TABLE()
 };

@@ -5218,15 +5218,61 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     CellParser parser(dc);
     wxPoint pos = editor->PositionToPoint(parser, -1);
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
+
+    #ifdef __WXGTK__
+    // On wxGtk a popup window gets informed on keypresses and if somebody
+    // clicks a control that is inside it => we can create a content assistant.
     ClientToScreen(&pos.x, &pos.y);
-    // Create the popup menu
-    m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type);
-    m_autocompletePopup -> Popup();
-    m_autocompletePopup -> Position(pos, wxDefaultSize);
+    AutocompletePopup *autocompletePopup;
+    autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type);
+    autocompletePopup -> Popup();
+    autocompletePopup -> Position(pos, wxDefaultSize);
+    #else
+    // On Win and Mac a popup window doesn't accept clicks and keypresses.
+    // a popup menu at least accepts clicks => we stick to the traditional
+    // autocomplete function.
+    wxMenu *popup = new AutocompletePopup(editor,&m_autocomplete,type);
+    // Show the popup menu
+    PopupMenu(popup, pos.x, pos.y);
+    delete popup;
+    #endif
   }
 
   return true;
 }
+
+void MathCtrl::OnComplete(wxCommandEvent &event)
+{
+  if (m_activeCell == NULL)
+    return;
+
+  EditorCell *editor = (EditorCell *)m_activeCell;
+  int caret = editor->GetCaretPosition();
+
+  if (editor->GetSelectionString() != wxEmptyString)
+    editor->ReplaceSelection(editor->GetSelectionString(),
+                             m_completions[event.GetId() - popid_complete_00]);
+  else
+    editor->InsertText(m_completions[event.GetId() - popid_complete_00]);
+
+  if (m_autocompleteTemplates)
+  {
+    int sel_start, sel_end;
+    editor->GetSelection(&sel_start, &sel_end);
+    editor->ClearSelection();
+
+    editor->CaretToPosition(caret);
+    if (!editor->FindNextTemplate())
+      editor->CaretToPosition(sel_start + m_completions[event.GetId() - popid_complete_00].Length());
+  }
+
+  editor->ResetSize();
+  editor->GetParent()->ResetSize();
+  Recalculate();
+
+  Refresh();
+}
+
 
 void MathCtrl::SetActiveCellText(wxString text)
 {
@@ -5318,6 +5364,7 @@ void MathCtrl::OnFollow()
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
+  EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)

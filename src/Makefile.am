@@ -56,6 +56,7 @@ wxmaxima_SOURCES = \
 	GroupCell.cpp      GroupCell.h      \
 	EvaluationQueue.cpp   EvaluationQueue.h   \
 	AutocompletePopup.cpp AutocompletePopup.h \
+	ContentAssistantPopup.cpp ContentAssistantPopup.h \
 	MarkDown.cpp       MarkDown.h       \
 	ToolBar.cpp        ToolBar.h        \
 	History.cpp        History.h        \

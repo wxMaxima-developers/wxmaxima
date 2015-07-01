@@ -2,7 +2,7 @@ Current:
   * Fixed a few instances of cursors jumping out of the screen
   * Fixed a few instances of cursors jumping to the beginning of the worksheet
   * Better detection which cell maxima is processing and if it still is doing so
-  * Regression: Hiding the toolbar didn't work
+  * Regression: Hiding the toolbar didn't work on some systems
   * Markdown support for <=, >=, <=>, <-, ->, <->, => and +/- symbols.
   * An option to not export maxima's input as well as the output.
   * Allow Extending selection from part of a single cell to multiple cells.
@@ -15,10 +15,16 @@ Current:
   * Unification of some platform-specific code
   * bash autocompletion
   * A fourth sectioning level
-  * Entering uppercase greek letters is now easier.
-  * Syntax highlighting in code cells.
-  * A "halt on error" feature.
+  * Made entering uppercase greek letters easier
+  * Syntax highlighting in code cell
+  * A "halt on error" feature
   * A batch mode that pauses evaluation if maxima asks a question.
+  * Now evaluation is only triggered if evaluation of the last command has finished.
+  * If ever a end-of-evaluation marker gets lost there is a new "trigger evaluation"
+	menu entry in the maxima menu.
+  * Ctrl+Tab now launches the autocompletion (or content assistant, if available)
+  * on wxGtk we now have a content assistant that is based on the surprisingly powerful
+	autocompletion feature.
 
 15.04.0:
   * wxWidgets 3.0 is now a mandatory requirement

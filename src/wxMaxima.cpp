@@ -887,8 +887,10 @@ void wxMaxima::ReadMath(wxString &data)
       trimmedLine.Trim(false);
       
       if(
-        (trimmedLine.Left(12)==wxT("-- an error."))||
-        (trimmedLine.Left(17)==wxT("incorrect syntax:"))
+        (trimmedLine.Left(12)==wxT("-- an error.")) ||
+        (trimmedLine.Left(17)==wxT("incorrect syntax:")) ||
+        (trimmedLine.Left(32)==wxT("Maxima encountered a Lisp error:")) ||
+        (trimmedLine.Left(28)==wxT("killcontext: no such context"))
         )
       {
         ConsoleAppend(normalOutput,MC_TYPE_DEFAULT);
