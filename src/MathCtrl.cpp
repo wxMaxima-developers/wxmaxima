@@ -5182,6 +5182,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   wxString partial = editor->GetSelectionString();
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
+  m_completions.Sort();
   m_autocompleteTemplates = type == AutoComplete::tmplte;
 
   /// No completions - clear the selection and return false

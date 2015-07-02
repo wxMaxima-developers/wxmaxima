@@ -2271,8 +2271,9 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
   switch (event.GetId()) {
   case MAXIMA_STDOUT_POLL_ID:
   {
-    // Maxima will never send us any data via stdout or stderr after it has finished
-    // starting up: It rather sends us the data over the network.
+    // Maxima will never send us any data via stderr after it has finished
+    // starting up and will send data via stdout only in rare cases:
+    // It rather sends us the data over the network.
     //
     // If something is severely  broken this might not be true, though, and we want
     // to inform the user about it.
@@ -2291,23 +2292,11 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       }
 
       // Maxima might inform us which port it is connected to.
-      // This message might be localized so we might not recognize it from the
-      // words of the message. But since the message does contain the port number
-      // we can filter it out.
-      if(o.find(wxString::Format("%i",m_port))!=wxNOT_FOUND)
-      {
-        DoRawConsoleAppend(o, MC_TYPE_ERROR);
-        // If maxima did output something strange it defintively has stopped.
-        // The question is now if we want to try to send it something new to evaluate.
-        bool abortOnError = false;
-        wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-        SetBatchMode(false);
-
-        if(abortOnError || m_batchmode)
-          m_console->m_evaluationQueue->Clear();
-        else
-          TryEvaluateNextInQueue();
-      }
+      // If it does rell us something else this is strange - but we don't abort
+      // evaluation assuming this to be an error since it seems that error messages
+      // always arrive at stderr instead.
+      if(o.Left(35) != wxT("Connecting Maxima to server on port")
+         DoRawConsoleAppend(wxT("Message from the stdout of Maxima: ")+o, MC_TYPE_DEFAULT);
     }
 
     if(m_process->IsErrorAvailable())

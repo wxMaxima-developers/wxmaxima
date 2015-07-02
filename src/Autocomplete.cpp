@@ -117,6 +117,8 @@ bool AutoComplete::LoadSymbols(wxString file)
   }
 
   m_wordList[command].Sort();
+  m_wordList[tmplte].Sort();
+  m_wordList[unit].Sort();
 
   return false;
 }
