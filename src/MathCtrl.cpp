@@ -388,8 +388,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   // If there is no such cell, neither, we append the line to the end of the
   // worksheet.
   if (tmp == NULL)
+  {
     tmp = m_last;
-
+  }
+      
   // If we still don't have a place to put the line we give up.
   if (tmp == NULL)
     return;
@@ -4856,7 +4858,9 @@ void MathCtrl::ShowHCaret()
   if (m_hCaretPosition == NULL)
   {
     if (m_last != NULL)
+    {
       SetHCaret(m_last);
+    }
     else
       SetHCaret(NULL);
   }

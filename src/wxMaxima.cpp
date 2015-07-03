@@ -982,7 +982,12 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->Empty()) { // queue empty?
-          m_console->ShowHCaret();
+          if(m_console->FollowEvaluation())
+          {
+            if(m_console->GetWorkingGroup())
+              m_console->SetHCaret(m_console->GetWorkingGroup());
+            m_console->ShowHCaret();
+          }
           m_console->SetWorkingGroup(NULL);
           m_console->Refresh();
 
@@ -2295,7 +2300,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
       // If it does rell us something else this is strange - but we don't abort
       // evaluation assuming this to be an error since it seems that error messages
       // always arrive at stderr instead.
-      if(o.Left(35) != wxT("Connecting Maxima to server on port")
+      if(o.Left(35) != wxT("Connecting Maxima to server on port"))
          DoRawConsoleAppend(wxT("Message from the stdout of Maxima: ")+o, MC_TYPE_DEFAULT);
     }
 
@@ -4751,8 +4756,10 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering a question. Manually send answer to Maxima.
-    if (m_console->GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(tmp->GetParent()))) {
+    if (m_console->GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(tmp->GetParent())))
+    {
       SendMaxima(tmp->ToString(), true);
+      StatusMaximaBusy(calculating);
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));
