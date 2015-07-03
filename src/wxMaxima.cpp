@@ -2174,20 +2174,19 @@ bool wxMaxima::SaveFile(bool forceSave)
     wxFileDialog fileDialog(this,
                             _("Save As"), m_lastPath,
                             file,
-                            _(  "wxMaxima xml document (*.wxmx)|*.wxmx|"
-                                "wxMaxima document (*.wxm)|*.wxm|"
-                                "Maxima batch file (*.mac)|*.mac"),
+                            _(  "Whole document (*.wxmx)|*.wxmx|"
+                                "The input without images (*.wxm)|*.wxm"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       
-    if (fileExt == wxT("wxm"))
+    if (fileExt == wxT("wxmx"))
+      fileDialog.SetFilterIndex(0);
+    else if (fileExt == wxT("wxm"))
       fileDialog.SetFilterIndex(1);
-    else if (fileExt == wxT("wxmx"))
-      fileDialog.SetFilterIndex(0);
-    else if (fileExt == wxT("mac"))
-      fileDialog.SetFilterIndex(2);
     else
+    {
       fileDialog.SetFilterIndex(0);
-        
+      fileExt = wxT("wxmx");
+    }   
     if (fileDialog.ShowModal() == wxID_OK)
     {
       file = fileDialog.GetPath();
@@ -2204,25 +2203,24 @@ bool wxMaxima::SaveFile(bool forceSave)
   if (file.Length())
   {
     if((file.Right(4) != wxT(".wxm"))&&
-       (file.Right(5) != wxT(".wxmx"))&&
-       (file.Right(4) != wxT(".mac"))
+       (file.Right(5) != wxT(".wxmx"))
       )
     {
       switch(ext)
       {
-      case 1:
-        file += wxT(".wxm");
-        break;
       case 0:
         file += wxT(".wxmx");
         break;
-      case 2:
-        file += wxT(".mac");
+      case 1:
+        file += wxT(".wxm");
         break;
+      default:
+        file += wxT(".wxmx");
       }
     }
       
     StatusSaveStart();
+    config->Write(wxT("defaultExt"), wxT("wxmx"));
 
     m_currentFile = file;
     m_lastPath = wxPathOnly(file);
@@ -2235,17 +2233,13 @@ bool wxMaxima::SaveFile(bool forceSave)
         m_saving = false;
         return false;
       }
-	
-      config->Write(wxT("defaultExt"), wxT("wxmx"));
+      
     }
     else {
       if (!m_console->ExportToMAC(file))
       {
-        if (file.Right(4) == wxT(".mac"))
-          config->Write(wxT("defaultExt"), wxT("mac"));
-        else
-          config->Write(wxT("defaultExt"), wxT("wxm"));
-	    
+        config->Write(wxT("defaultExt"), wxT("wxm"));
+	
         StatusSaveFailed();
         if(m_autoSaveInterval > 10000)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -2253,7 +2247,7 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
     }
-
+    
     AddRecentDocument(file);
     SetCWD(file);
 
@@ -2433,12 +2427,17 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
                             _("Export"), m_lastPath,
                             file + wxT(".") + fileExt,
                             _("HTML file (*.html)|*.html|"
-                              "pdfLaTeX file (*.tex)|*.tex"),
+                              "maxima batch file (*.mac)|*.mac|"
+                              "pdfLaTeX file (*.tex)|*.tex"
+                              ),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     
     if (fileExt == wxT("html"))
       fileDialog.SetFilterIndex(0);
-    else fileDialog.SetFilterIndex(1);
+    else if (fileExt == wxT("mac"))
+      fileDialog.SetFilterIndex(1);
+      else
+        fileDialog.SetFilterIndex(2);
     
     if (fileDialog.ShowModal() == wxID_OK)
     {
@@ -2446,7 +2445,8 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       if (file.Length())
       {
         int ext = fileDialog.GetFilterIndex();
-        if((file.Right(5) != wxT(".html"))&&
+        if((file.Right(5) != wxT(".html")) &&
+           (file.Right(4) != wxT(".mac")) &&
            (file.Right(4) != wxT(".tex"))
           )
         {
@@ -2456,6 +2456,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
             file += wxT(".html");
             break;
           case 1:
+            file += wxT(".mac");
+            break;
+          case 2:
             file += wxT(".tex");
             break;
           default: 
@@ -2466,6 +2469,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
         if (file.Right(4) == wxT(".tex")) {
           StatusExportStart();
 
+          fileExt = wxT("tex");
           if (!m_console->ExportToTeX(file))
           {
             wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
@@ -2475,8 +2479,24 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           else
             StatusExportFinished();
         }
+        else if (file.Right(4) == wxT(".mac"))
+        {
+          StatusExportStart();
+
+          fileExt = wxT("mac");
+          if (!m_console->ExportToMAC(file))
+          {
+            wxMessageBox(_("Exporting to maxima batch file failed!"), _("Error!"),
+                         wxOK);
+            StatusExportFailed();
+          }
+          else
+            StatusExportFinished();
+        }
         else {
           StatusExportStart();
+
+          fileExt = wxT("html");
           if (!m_console->ExportToHTML(file))
           {
             wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
