@@ -393,7 +393,9 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 
     wxPoint TextStartingpoint = point;
     int labelwidth, labelheight;
-    TextStartingpoint.x += SCALE_PX(MC_TEXT_PADDING, scale);
+    // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
+    TextStartingpoint.x += SCALE_PX(2, scale);
+    TextStartingpoint.y += SCALE_PX(2, scale);
     wxPoint TextCurrentPoint = TextStartingpoint;
     std::list<StyledText> styledText = m_styledText;
     int lastStyle = -1;
