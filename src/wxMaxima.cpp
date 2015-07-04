@@ -2005,7 +2005,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
                   (m_console->GetTree() != NULL) &&
                   (m_console->CanPaste()) &&
                   (m_console->GetHCaret() != NULL)
-    );  
+    );
+
+  menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue->Empty());
   menubar->Enable(menu_save_id, (!m_fileSaved)&&(!m_saving));
   menubar->Enable(menu_export_html, !m_saving);
 
