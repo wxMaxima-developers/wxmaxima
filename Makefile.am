@@ -102,6 +102,10 @@ allmo:
 allpo:
 	    cd locales&&$(MAKE) allpo
 
+all: locales/en.mo
+
+locales/en.mo: allmo
+
 Doxygen: FORCE
 	    cd Doxygen&&$(MAKE)
 
