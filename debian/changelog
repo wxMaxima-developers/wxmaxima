@@ -1,0 +1,259 @@
+wxmaxima (15.04.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Updated the dependencies
+  * If nobody else wants to do this I will try to maintain the debian
+    package now.
+
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  sat, 25 Apr 2015 21:55:36 +0100
+
+wxmaxima (13.04.2-3) unstable; urgency=medium
+
+  * Orphan package.
+  * Revert the update to wxWidgets 3.0. (closes: #742988)
+  * Remove myself from Uploaders and set the QA Group as Maintainer.
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 27 Apr 2014 09:41:59 +0200
+
+wxmaxima (13.04.2-2) unstable; urgency=low
+
+  * Use dh-autoreconf to support arm64. (closes: #728003)
+  * Bumped Standards-Version from 3.9.4 to 3.9.5, no changes required.
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 16 Mar 2014 10:05:36 +0100
+
+wxmaxima (13.04.2-1.1) unstable; urgency=low
+
+  * Non-maintainer upload at maintainer's request.
+  * Update to use wxWidgets 3.0.  (closes: #741569)
+
+ -- Olly Betts <olly@survex.com>  Sat, 15 Mar 2014 10:59:46 +1300
+
+wxmaxima (13.04.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Upload to unstable. (closes: #711965)
+  * Updated debian/copyright for the new release.
+  * Bumped Standards-Version from 3.9.3 to 3.9.4, no changes required.
+
+ -- Frank S. Thomas <fst@debian.org>  Wed, 19 Jun 2013 18:16:46 +0200
+
+wxmaxima (12.04.0-1) unstable; urgency=low
+
+  * New upstream release.
+    - Shows the output of build_info(). (closes: #670088)
+  * Bumped Standards-Version from 3.9.2 to 3.9.3, no changes required.
+  * Use debhelper >= 9 and dpkg-buildflags.
+  * Added independent license paragraphs to debian/copyright.
+
+ -- Frank S. Thomas <fst@debian.org>  Tue, 01 May 2012 18:04:55 +0200
+
+wxmaxima (12.01.0-1) unstable; urgency=low
+
+  * New upstream release.
+    - Registers text/x-wxmaxima-batch as MimeType for wxMaxima documents.
+      (closes: #626525)
+    - Indicates in the desktop file that a filename can be passed as command
+      line argument to wxMaxima. (LP: #887806)
+  * Updated debian/copyright according to the latest DEP5 specification.
+
+ -- Frank S. Thomas <fst@debian.org>  Tue, 17 Jan 2012 21:27:27 +0100
+
+wxmaxima (11.08.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bumped Standards-Version from 3.9.1 to 3.9.2, no changes required.
+  * Updated debian/copyright for the new release.
+
+ -- Frank S. Thomas <fst@debian.org>  Mon, 15 Aug 2011 08:11:02 +0200
+
+wxmaxima (11.04.0-1) unstable; urgency=low
+
+  * New upstream release.
+    - Adds support for CUA editing keys. (closes: #610559)
+  * debian/rules: Added a get-orig-source target that calls uscan to document
+    explicitly how upstream tarballs are obtained.
+
+ -- Frank S. Thomas <fst@debian.org>  Sat, 23 Apr 2011 00:37:15 +0200
+
+wxmaxima (0.8.7-2) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 06 Feb 2011 10:29:26 +0100
+
+wxmaxima (0.8.7-1) experimental; urgency=low
+
+  * New upstream release.
+
+ -- Frank S. Thomas <fst@debian.org>  Thu, 27 Jan 2011 08:32:01 +0100
+
+wxmaxima (0.8.6-1) experimental; urgency=low
+
+  * New upstream release.
+  * Bumped Standards-Version from 3.8.4 to 3.9.1, no changes required.
+  * Updated debian/copyright for the new release.
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 14 Nov 2010 09:20:29 +0100
+
+wxmaxima (0.8.5-2) unstable; urgency=low
+
+  * debian/control: Recommend libgnomeprintui2.2-0 which is required to
+    print properly. Thanks to Andres Cimmarusti for hunting down this
+    issue. (closes: #575297)
+
+ -- Frank S. Thomas <fst@debian.org>  Sat, 12 Jun 2010 01:58:34 +0200
+
+wxmaxima (0.8.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bumped Standards-Version from 3.8.3 to 3.8.4, no changes required.
+  * Updated debian/copyright for the new release.
+
+ -- Frank S. Thomas <fst@debian.org>  Tue, 04 May 2010 22:33:55 +0200
+
+wxmaxima (0.8.4-1) unstable; urgency=low
+
+  * New upstream release.
+    - wxMaxima shows now appropriate error messages when plotting undefined
+      functions. (closes: #545105)
+  * Switched to source format "3.0 (quilt)".
+  * Removed debian/patches/001_renamed_client_to_server.patch which was
+    required for Maxima (<< 5.18). Now that a newer Maxima version is in
+    unstable, this patch has been dropped and the Maxima dependency has
+    been bumped to (>= 5.18). (closes: #561326)
+  * Updated debian/copyright for the new release.
+
+ -- Frank S. Thomas <fst@debian.org>  Wed, 16 Dec 2009 12:34:45 +0100
+
+wxmaxima (0.8.3a-2) unstable; urgency=low
+
+  * debian/watch: Changed regexp to match versions with lower case characters.
+  * debian/control: Recommend ttf-jsmath which is required for displaying
+    mathematical symbols and greek letters. Thanks to Brendon Higgins!
+    (closes: #550022)
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 18 Oct 2009 17:05:03 +0200
+
+wxmaxima (0.8.3a-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: Bumped Standards-Version from 3.8.2 to 3.8.3, no changes
+    required.
+  * debian/patches/: wxmaxima.desktop was updated upstream according to the
+    latest freedesktop.org specs so reduced 201_fix_desktop_file.patch to the
+    Debian specific bits and renamed it to 002_adapt_desktop_file.patch.
+  * debian/rules: Do not configure with "--enable-unicode-glyphs" because this
+    option has been removed in this release.
+  * Updated debian/copyright for the new release.
+
+ -- Frank S. Thomas <fst@debian.org>  Sat, 29 Aug 2009 11:09:53 +0200
+
+wxmaxima (0.8.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/rules: Set configure's --build and --host options properly
+    according to the autotools-dev documentation.
+  * debian/patches/: Added 001_renamed_client_to_server.patch so that wxMaxima
+    works with Maxima (<< 5.18).
+  * debian/control: This version requires wxWidgets (>= 2.8.4), bumped
+    build-dependency accordingly.
+  * Update config.{guess,sub} at build time and therefore added autotools-dev
+    to Build-Depends.
+
+ -- Frank S. Thomas <fst@debian.org>  Sun, 28 Jun 2009 13:58:42 +0200
+
+wxmaxima (0.8.1-1) unstable; urgency=low
+
+  * New upstream release. (closes: #484281, #508181)
+    - Does not fail to build from source. (closes: #527708)
+    - Warns on quit if modified files are not saved. (closes: #457599)
+    - Does not display an error pupup on program startup. (closes: #368630)
+    - Does not exhibit "strange" Lisp errors with recent maxima.
+      (closes: #493882, #487391)
+  * debian/control:
+    - Took over package from Rafa Rodríguez Galván with his permission. Thanks
+      Rafa and Marco for all your work! Set Debian Science Maintainers as
+      Maintainer and myself as Uploader.
+    - Added Vcs-{Git,Browser} and Homepage fields.
+    - wxWidgets >= 2.8.0 is required now; updated build-dependency accordingly.
+    - Bumped Standards-Version to 3.8.2.
+    - libxml2-dev is not required anymore; removed it from Build-Depends.
+    - Edited Description with the help of the debian-l10n-english folks.
+  * Updated debian/copyright and adapted it to DEP5. (closes: #439964)
+  * Added debian/watch file.
+  * debian/wxmaxima.menu:
+    - Changed section "Apps/Math" to "Applications/Science/Mathematics".
+    - Use 16x16 and 32x32 wxMaxima icons. (closes: #428820)
+  * Use dh and quilt's new debhelper addon instead of CDBS to minimize
+    debian/rules. This required to build-depend on debhelper (>= 7.0.50) and
+    quilt (>= 0.46-7).
+  * debian/patches/:
+    - Added 201_fix_desktop_file.patch that changes wxmaxima.desktop so that it
+      is valid according to the latest freedesktop.org specs. (closes: #466997)
+    - Removed config.patch; applied upstream.
+
+ -- Frank S. Thomas <fst@debian.org>  Sat, 27 Jun 2009 15:18:46 +0200
+
+wxmaxima (0.7.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Added a patch to replace automatically the parameter 'maxima' in 
+    users ~/.wxMaxima if set to a wrong value (it happens on upgrades from
+    wxmaxima_0.7.0a-1). (Closes: #391535)
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Mon, 26 Feb 2007 12:32:24 +0000
+
+wxmaxima (0.7.0a-1) unstable; urgency=low
+
+  * New upstream release.
+  * Updated depends on maxima (>= 5.10.0). Closes: #387782
+  * Added depends on maxima-doc
+  * Bumped standard versions tp 3.7.2
+  * Added a patch to locate documentation
+  * Disabled support for drag and drop (knonw bug in upstream sources)
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Wed, 27 Sep 2006 11:39:41 +0200
+
+wxmaxima (0.6.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Upstream changes fix documentation browsing. Closes: #340152
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Mon, 21 Nov 2005 15:57:51 -0500
+
+wxmaxima (0.6.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * wxmaxima now depends on maxima>=5.9.2 due to case-sensitive 
+    commands introduction in maxima 5.9.2
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Thu, 17 Nov 2005 22:12:36 -0500
+
+wxmaxima (0.6.2-4) unstable; urgency=low
+
+  * Added wxmaxima.desktop
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Tue, 25 Oct 2005 14:52:44 -0400
+
+wxmaxima (0.6.2-3) unstable; urgency=low
+
+  [ Rafa Rodriguez Galvan ]
+  * Provided wxmaxima.menu entry. Closes: #335645.
+  
+  [ Marco Presi ]
+  * Added maxima icon.
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Tue, 25 Oct 2005 12:17:05 -0400
+
+wxmaxima (0.6.2-2) unstable; urgency=low
+
+  * Modified erroneous entry in Maintainer: field.
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Sun, 23 Oct 2005 13:27:55 -0400
+
+wxmaxima (0.6.2-1) unstable; urgency=low
+
+  * Initial release Closes: #290922
+
+ -- Marco Presi (Zufus) <zufus@debian.org>  Wed,  5 Oct 2005 00:38:43 -0400

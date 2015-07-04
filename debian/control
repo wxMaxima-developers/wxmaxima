@@ -1,0 +1,26 @@
+Source: wxmaxima
+Section: math
+Priority: optional
+Maintainer: Gunter Königsmann <wxmaxima@physikbuch.de>
+Build-Depends: debhelper (>= 9), dh-autoreconf, libwxgtk3.0-dev, perl, texinfo, gettext
+Standards-Version: 3.9.6
+Vcs-Git: git://git@github.com:andrejv/wxmaxima.git
+Homepage: http://andrejv.github.com/wxmaxima/
+
+Package: wxmaxima
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, maxima (>= 5.18), ibus-gtk3,
+ maxima-doc (>= 5.10.0), imagemagick
+Recommends: ttf-jsmath, texlive-latex-extra
+Description: GUI for the computer algebra system Maxima
+ wxMaxima is a graphical user interface for the computer algebra system
+ Maxima. It eases the use of Maxima by making most of its commands available
+ through a menu system and by providing input dialogs for commands that
+ require more than one argument. It also implements its own display engine
+ that outputs mathematical symbols directly instead of depicting them with
+ ASCII characters.
+ .
+ wxMaxima also features 2D and 3D inline plots, simple animations, mixing of
+ text and mathematical calculations to create documents, exporting of input
+ and output to TeX, and a browser for Maxima's manual including command index
+ and full text searching.

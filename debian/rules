@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+
+export DEB_CXXFLAGS_MAINT_APPEND = -Wall -DNDEBUG
+export DEB_LDFLAGS_MAINT_APPEND  = -Wl,--as-needed
+
+%:
+	dh $@ --with autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- --enable-printing
+
+override_dh_auto_build:
+	make
+	make allmo
+
+override_dh_auto_install:
+	dh_auto_install
+	rm debian/wxmaxima/usr/share/wxMaxima/COPYING
+
+get-orig-source:
+	uscan --force-download --repack --rename --destdir .
+
+.PHONY: get-orig-source
