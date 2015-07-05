@@ -347,7 +347,7 @@ class MathCtrl: public wxScrolledCanvas
   GroupCell *m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
-    This cell does actually define weree the selection was ended and therefore does not need 
+    This cell does actually define where the selection was ended and therefore does not need 
     to be below m_hCaretPositionEnd in the worksheet.
    */
   GroupCell *m_hCaretPositionEnd;
@@ -521,7 +521,13 @@ public:
     return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
            (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
+  //! Select the whole document
   void SelectAll();
+  //! Is at least one entire cell selected?
+  bool CellsSelected()
+    {
+      return((m_selectionStart != NULL) && (m_selectionEnd != NULL));
+    }
   /*! Delete a range of cells
   
     \param start The first cell to delete
@@ -605,8 +611,7 @@ public:
   bool ExportToWXMX(wxString file);	
   //! export to a LaTeX file
   bool ExportToTeX(wxString file);
-  /*! Convert the current selection to a string
-
+  /*! Convert the current selection to a string 
     \param lb
      - true:  Include linebreaks
      - false: Remove linebreaks from the converted string

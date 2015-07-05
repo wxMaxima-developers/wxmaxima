@@ -2000,6 +2000,12 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid>0);
+  menubar->Enable(menu_evaluate, (
+                    (m_console->GetActiveCell() != NULL)||
+                    (m_console->CellsSelected())
+                    )
+    );
+  
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(ToolBar::tb_evaltillhere,
                   (m_console->GetTree() != NULL) &&
