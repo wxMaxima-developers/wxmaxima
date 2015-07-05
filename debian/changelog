@@ -1,10 +1,32 @@
 wxmaxima (15.04.0-1) unstable; urgency=medium
 
   * New upstream release with many new features (closes: bug#752528, #617355)
+    The list of the most important user-visible changes can be viewed at
+    https://github.com/andrejv/wxmaxima/blob/68ded943ecf12ac11d9753fb0025257067ff8d9b/ChangeLog
   * New maintainer (closes: bug#744706)
-  * Updated the dependencies
-
+  * Added ibus-gtk2 to the dependencies (needed for hotkey processing in some setups)
+  * Added imagemagick to the dependencies (else export of animations breaks silently)
+  * Changed recommended font from ttf-jsmath (virtual package) to the real package
+    fonts-jsmath
+  * wxMaxima now includes a manual that adds perl, texinfo and gettext to the
+    build-dependencies  * debian/copyright: The tango icons have been released to the public domain
+  * debian/compat: Updated the standards version to 9.
+  * The patch that adds the desktop file now is included in upstream
+  * The patch that improves key modifier handling now is included in upstream
+  * Desktop integration (.desktop file, desktop icon, registered mimetypes, appdata.xml) is
+    now included in upstream.
+  * debian/copyright: The tango icons have been released to the public domain
+  * debian/copyright: Corrected the filename of data/wxmathml.lisp
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  sat, 04 Jul 2015 10:16:36 +0100
+
+wxmaxima (13.04.2-4) unstable; urgency=medium
+
+  * QA upload.
+  * New patch 100_improve_key_modifiers_handling.patch cherry-picked from
+    upstream git which fixes #742988 under wxWidgets 3.0.
+  * Update to use wxWidgets 3.0 again.  (closes: #741569)
+
+ -- Olly Betts <olly@survex.com>  Tue, 29 Apr 2014 09:47:11 +1200
 
 wxmaxima (13.04.2-3) unstable; urgency=medium
 
