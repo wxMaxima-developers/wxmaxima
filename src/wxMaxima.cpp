@@ -4975,6 +4975,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
   else
   {
+    m_console->m_evaluationQueue->RemoveFirst();
     TryEvaluateNextInQueue();
   }
 }
