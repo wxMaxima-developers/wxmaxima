@@ -3906,6 +3906,11 @@ GroupCell *MathCtrl::GetCursorPosition()
   {
     pos = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
   }
+  if(pos == NULL)
+  {
+    if(m_selectionEnd != NULL)
+      pos = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
+  }
   return pos;
 }
 
