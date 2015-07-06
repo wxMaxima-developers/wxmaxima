@@ -47,8 +47,9 @@ Structure::~Structure()
   delete m_displayedItems;
 }
 
-void Structure::Update(MathCell* tree)
+void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
 {
+  int selection = -1;
   if(IsShown())
     {
       GroupCell* cell=  dynamic_cast<GroupCell*>(tree);
@@ -64,13 +65,21 @@ void Structure::Update(MathCell* tree)
 	     (groupType == GC_TYPE_SECTION) ||
 	     (groupType == GC_TYPE_SUBSECTION) ||
 	     (groupType == GC_TYPE_SUBSUBSECTION)
-	     )
+            )
 	    m_structure.push_back((MathCell *)cell);
-	  
+          
+          if(cell == cursorPosition)
+          {
+            if(!m_structure.empty())
+              selection = m_structure.size()-1;
+          }
+
 	  cell = dynamic_cast<GroupCell*>(cell->m_next);
 	}
       
       UpdateDisplay();
+      if(selection >= 0)
+        m_displayedItems->SetSelection(selection);
     }
 }
 

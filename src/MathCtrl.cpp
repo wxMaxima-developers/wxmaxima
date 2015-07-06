@@ -473,8 +473,7 @@ void MathCtrl::Recalculate(bool force)
   
   AdjustSize();
   // Re-calculate the table of contents
-  m_structure->Update(m_tree);
-
+  m_structure->Update(m_tree,GetCursorPosition());
 }
 
 /***
@@ -1015,7 +1014,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   Refresh();
   // Re-calculate the table of contents
-  m_structure->Update(m_tree);
+  m_structure->Update(m_tree,GetCursorPosition());
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
@@ -1939,7 +1938,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
-    m_structure->Update(m_tree);
+    m_structure->Update(m_tree,GetCursorPosition());
 
     // If we scrolled away from the cell that is currently being evaluated
     // we need to enable the button that brings us back
@@ -1978,7 +1977,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     }
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
-    m_structure->Update(m_tree);
+    m_structure->Update(m_tree,GetCursorPosition());
+    
     ScrolledAwayFromEvaluation();
     
     return;
@@ -3894,8 +3894,19 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
     parent->SelectOutput(&selectionStart, &selectionEnd);
     Refresh();
   }
-  // Re-calculate the table of contents
-  m_structure->Update(m_tree);
+  // Re-calculate the table of contents  
+  m_structure->Update(m_tree,GetCursorPosition());
+}
+
+GroupCell *MathCtrl::GetCursorPosition()
+{
+  GroupCell *pos;
+  pos = GetHCaret();
+  if(GetActiveCell())
+  {
+    pos = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
+  }
+  return pos;
 }
 
 bool MathCtrl::ActivatePrevInput() {

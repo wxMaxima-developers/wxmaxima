@@ -665,6 +665,8 @@ public:
   void SetHCaret(GroupCell *where, bool callRefresh = true); // call with false, when manually refreshing
   //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
+  //! The cell the cursor (horizontal or vertical) is above.
+  GroupCell *GetCursorPosition();
   //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
   void ShowHCaret();

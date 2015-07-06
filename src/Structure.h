@@ -57,7 +57,7 @@ public:
       - we call it only on creation of a cell and on leaving it again
       - and we only traverse the tree if the pane is actually shown.
    */
-  void Update(MathCell* tree);
+  void Update(MathCell* tree,GroupCell *pos);
   //! Get the nth Cell in the table of contents.
   MathCell *GetCell(int index){return m_structure[index];}
 private:
