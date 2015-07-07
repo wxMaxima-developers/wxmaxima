@@ -2292,23 +2292,22 @@ void wxMaxima::ReadStdErr()
   // to inform the user about it.
 
   if(!m_process) return;
+
   if(m_process->IsInputAvailable())
   {
     wxASSERT_MSG(m_input!=NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
-    wxString o = wxT("Message from maxima's stdout stream: ");
+    wxString o;
     while (m_process->IsInputAvailable())
     {
       o += m_input->GetC();
     }
-    
-    // Maxima might inform us which port it is connected to.
-    // If it does tell us something else on stdout this is strange - but we don't abort
-    // evaluation assuming this to be an error since it seems that error messages
-    // always arrive at stderr instead.
-    if(o.Left(35) != wxT("Connecting Maxima to server on port"))
-      DoRawConsoleAppend(wxT("Message from the stdout of Maxima: ") + o, MC_TYPE_DEFAULT);
+    bool pollStdOut = false; 
+    wxConfig *config = (wxConfig *)wxConfig::Get();
+    config->Read(wxT("pollStdOut"), &pollStdOut);
+     
+    if(pollStdOut)
+      DoRawConsoleAppend(_(wxT("Message from the stdout of Maxima: ")) + o, MC_TYPE_DEFAULT);
   }
-  
   if(m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
@@ -4918,6 +4917,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   // From now on we look every second if we got some output from a crashing
   // maxima: Is maxima is working correctly the stdout and stderr descriptors we
   // poll don't offer any data.
+  ReadStdErr();
   m_maximaStdoutPollTimer.Start(1000);
 
   if (tmp->GetEditable()->GetValue() != wxEmptyString)

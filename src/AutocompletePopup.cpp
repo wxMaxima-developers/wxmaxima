@@ -43,7 +43,6 @@ void AutocompletePopup::UpdateResults()
 
 void AutocompletePopup::ProcessEvent(wxKeyEvent& event)
 {
-  std::cerr<<"Key\n";
   event.Skip();
 }
 
