@@ -2435,6 +2435,7 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString,bool IgnoreCas
     m_containsChanges = true;
     m_selectionStart = m_selectionEnd = -1;
   }
+  StyleText();
   return count;
 }
 
