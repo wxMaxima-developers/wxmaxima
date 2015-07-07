@@ -545,6 +545,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   {
 
   case wxSOCKET_INPUT:
+    ReadStdErr();
     m_client->Read(buffer, SOCKET_SIZE);
 
     if (!m_client->Error())
@@ -2281,60 +2282,60 @@ bool wxMaxima::SaveFile(bool forceSave)
   return false;
 }
 
+void wxMaxima::ReadStdErr()
+{
+  // Maxima will never send us any data via stderr after it has finished
+  // starting up and will send data via stdout only in rare cases:
+  // It rather sends us the data over the network.
+  //
+  // If something is severely  broken this might not be true, though, and we want
+  // to inform the user about it.
+
+  if(!m_process) return;
+  if(m_process->IsInputAvailable())
+  {
+    wxASSERT_MSG(m_input!=NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
+    wxString o = wxT("Message from maxima's stdout stream: ");
+    while (m_process->IsInputAvailable())
+    {
+      o += m_input->GetC();
+    }
+    
+    // Maxima might inform us which port it is connected to.
+    // If it does rell us something else this is strange - but we don't abort
+    // evaluation assuming this to be an error since it seems that error messages
+    // always arrive at stderr instead.
+    if(o.Left(35) != wxT("Connecting Maxima to server on port"))
+      DoRawConsoleAppend(wxT("Message from the stdout of Maxima: ")+o, MC_TYPE_DEFAULT);
+  }
+  
+  if(m_process->IsErrorAvailable())
+  {
+    wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
+    wxString o = wxT("Message from maxima's stderr stream: ");
+    while (m_process->IsErrorAvailable())
+    {
+      o += m_error->GetC();
+    }
+    DoRawConsoleAppend(o, MC_TYPE_ERROR);
+    
+    // If maxima did output something it defintively has stopped.
+    // The question is now if we want to try to send it something new to evaluate.
+    bool abortOnError = false;
+    wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+    SetBatchMode(false);
+    if(abortOnError || m_batchmode)
+      m_console->m_evaluationQueue->Clear();
+    else
+      TryEvaluateNextInQueue();
+  }
+}
+
 void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 {
   switch (event.GetId()) {
   case MAXIMA_STDOUT_POLL_ID:
-  {
-    // Maxima will never send us any data via stderr after it has finished
-    // starting up and will send data via stdout only in rare cases:
-    // It rather sends us the data over the network.
-    //
-    // If something is severely  broken this might not be true, though, and we want
-    // to inform the user about it.
-
-    if(!m_process) break;
-
-    wxASSERT_MSG(m_process!=NULL,
-                 wxT("Bug: Trying to read from maxima but there isn't a maxima process"));
-    if(m_process->IsInputAvailable())
-    {
-      wxASSERT_MSG(m_input!=NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
-      wxString o = wxT("Message from maxima's stdout stream: ");
-      while (m_process->IsInputAvailable())
-      {
-        o += m_input->GetC();
-      }
-
-      // Maxima might inform us which port it is connected to.
-      // If it does rell us something else this is strange - but we don't abort
-      // evaluation assuming this to be an error since it seems that error messages
-      // always arrive at stderr instead.
-      if(o.Left(35) != wxT("Connecting Maxima to server on port"))
-         DoRawConsoleAppend(wxT("Message from the stdout of Maxima: ")+o, MC_TYPE_DEFAULT);
-    }
-
-    if(m_process->IsErrorAvailable())
-    {
-      wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
-      wxString o = wxT("Message from maxima's stderr stream: ");
-      while (m_process->IsErrorAvailable())
-      {
-        o += m_error->GetC();
-      }
-      DoRawConsoleAppend(o, MC_TYPE_ERROR);
-
-      // If maxima did output something it defintively has stopped.
-      // The question is now if we want to try to send it something new to evaluate.
-      bool abortOnError = false;
-      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      SetBatchMode(false);
-      if(abortOnError || m_batchmode)
-        m_console->m_evaluationQueue->Clear();
-      else
-        TryEvaluateNextInQueue();
-    }
-  }  
+    ReadStdErr();
   break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
     m_console->m_keyboardInactive = true;

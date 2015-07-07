@@ -258,6 +258,8 @@ protected:
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
                                                    //    (uses guessConfiguration)
 
+  //! Polls the stderr and stdout of maxima for input.
+  void ReadStdErr();
   /*! Determines the process id of maxima from its initial output
 
     This function does several things:
