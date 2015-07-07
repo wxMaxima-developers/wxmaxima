@@ -131,6 +131,8 @@ public:
   {
     return m_isDirty;
   }
+
+  //! Toggles the visibility of the cursor which is used to make it blink.
   void SwitchCaretDisplay()
   {
     m_displayCaret = !m_displayCaret;

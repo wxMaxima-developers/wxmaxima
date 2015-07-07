@@ -41,6 +41,9 @@ void ContentAssistantPopup::UpdateResults()
       );
   case 0:
     m_editor->ClearSelection();
+    this->GetParent()->GetParent()->Refresh();
+    if(!m_editor->IsActive())
+      m_editor->ActivateCell();
     Dismiss();
     break;
   default:
@@ -100,11 +103,17 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         m_editor->GetSelectionString(),
         m_completions[selection]
         );
+    this->GetParent()->GetParent()->Refresh();
+    if(!m_editor->IsActive())
+      m_editor->ActivateCell();
     Dismiss();
   }
   break;
   case WXK_LEFT:
   case WXK_ESCAPE:
+    this->GetParent()->GetParent()->Refresh();
+    if(!m_editor->IsActive())
+      m_editor->ActivateCell();
     Dismiss();
     break;
   case WXK_UP:
@@ -143,7 +152,11 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
       UpdateResults();
     }
     else
-      Dismiss();
+      this->GetParent()->GetParent()->Refresh();
+    if(!m_editor->IsActive())
+      m_editor->ActivateCell();
+    
+    Dismiss();
     break;
   }
   default:
@@ -168,6 +181,9 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         m_editor->GetSelectionString(),
         m_completions[selection]+key
         );
+      this->GetParent()->GetParent()->Refresh();
+      if(!m_editor->IsActive())
+        m_editor->ActivateCell();
       Dismiss();
       
     } else
@@ -190,6 +206,9 @@ void ContentAssistantPopup::OnClick(wxCommandEvent& event)
         );
       this->GetParent()->GetParent()->Refresh();
     }
+    this->GetParent()->GetParent()->Refresh();
+    if(!m_editor->IsActive())
+      m_editor->ActivateCell();
     Dismiss();
   }
 }

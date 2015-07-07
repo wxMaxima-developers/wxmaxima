@@ -2565,7 +2565,6 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         RefreshRect(rect);
       }
       m_switchDisplayCaret = true;
-      m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
     }
   }
   break;      
@@ -4367,7 +4366,10 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     TreeUndo_CellLeft();
     m_activeCell->ActivateCell();
   }
-  
+
+  if (cell == NULL)
+    m_caretTimer.Stop();
+
   m_activeCell = cell;
   TreeUndo_CellEntered();
 
@@ -4384,7 +4386,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_activeCell->SetMatchParens(match);
     m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = false;
-    m_caretTimer.Start(CARET_TIMER_TIMEOUT, true);
+    m_caretTimer.Start(CARET_TIMER_TIMEOUT);
   }
 
   if (cell != NULL)

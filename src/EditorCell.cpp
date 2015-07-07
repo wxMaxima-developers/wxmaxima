@@ -457,6 +457,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     //
     // Draw the caret
     //
+
     if (m_displayCaret && m_hasFocus && m_isActive)
     {
       int caretInLine = 0;
