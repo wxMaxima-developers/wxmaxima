@@ -1,19 +1,23 @@
 wxmaxima (15.04.0-1) unstable; urgency=medium
 
   * New upstream release with many new features (closes: bug#752528, #617355)
-    The list of the most important user-visible changes can be viewed at
-    https://github.com/andrejv/wxmaxima/blob/68ded943ecf12ac11d9753fb0025257067ff8d9b/ChangeLog
+    The list of the most important user-visible changes can be viewed in
+    the file ChangeLog in the original tarball.
   * New maintainer (closes: bug#744706)
-  * Added ibus-gtk2 to the dependencies (needed for hotkey processing in some setups)
-  * Added imagemagick to the dependencies (else export of animations breaks silently)
-  * Changed recommended font from ttf-jsmath (virtual package) to the real package
-    fonts-jsmath
+  * Added ibus-gtk2 to the dependencies (needed for hotkey processing in some
+    setups)
+  * Added imagemagick to the dependencies (else export of animations breaks
+    silently)
+  * Changed recommended font from ttf-jsmath (virtual package) to the real
+    package fonts-jsmath
   * wxMaxima now includes a manual that adds perl, texinfo and gettext to the
-    build-dependencies  * debian/copyright: The tango icons have been released to the public domain
+    build-dependencies  * debian/copyright: The tango icons have been released
+    to the public domain
   * debian/compat: Updated the standards version to 9.
   * The patch that adds the desktop file now is included in upstream
   * The patch that improves key modifier handling now is included in upstream
-  * Desktop integration (.desktop file, desktop icon, registered mimetypes, appdata.xml) is
+  * Desktop integration (.desktop file, desktop icon, registered mimetypes,
+    appdata.xml) is
     now included in upstream.
   * debian/copyright: The tango icons have been released to the public domain
   * debian/copyright: Corrected the filename of data/wxmathml.lisp
