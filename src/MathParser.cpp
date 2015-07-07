@@ -93,7 +93,11 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
         delete editor;
       }
       if (children->GetName() == wxT("output"))
-        group->AppendOutput(ParseTag(children->GetChildren()));
+      {
+        MathCell *tag = ParseTag(children->GetChildren());
+        if(tag != NULL)
+          group->AppendOutput(tag);
+      }
       children = children->GetNext();
     }
   }  else if (type == wxT("image")) {
