@@ -473,7 +473,7 @@ void MathCtrl::Recalculate(bool force)
   
   AdjustSize();
   // Re-calculate the table of contents
-  m_structure->Update(m_tree,GetCursorPosition());
+  m_structure->Update(m_tree,GetHCaret());
 }
 
 /***
@@ -1014,7 +1014,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   Refresh();
   // Re-calculate the table of contents
-  m_structure->Update(m_tree,GetCursorPosition());
+  m_structure->Update(m_tree,GetHCaret());
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
@@ -1938,7 +1938,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
-    m_structure->Update(m_tree,GetCursorPosition());
+    m_structure->Update(m_tree,GetHCaret());
 
     // If we scrolled away from the cell that is currently being evaluated
     // we need to enable the button that brings us back
@@ -1977,7 +1977,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     }
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
-    m_structure->Update(m_tree,GetCursorPosition());
+    m_structure->Update(m_tree,GetHCaret());
     
     ScrolledAwayFromEvaluation();
     
@@ -3895,23 +3895,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
     Refresh();
   }
   // Re-calculate the table of contents  
-  m_structure->Update(m_tree,GetCursorPosition());
-}
-
-GroupCell *MathCtrl::GetCursorPosition()
-{
-  GroupCell *pos;
-  pos = GetHCaret();
-  if(GetActiveCell())
-  {
-    pos = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
-  }
-  if(pos == NULL)
-  {
-    if(m_selectionEnd != NULL)
-      pos = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
-  }
-  return pos;
+  m_structure->Update(m_tree,GetHCaret());
 }
 
 bool MathCtrl::ActivatePrevInput() {
@@ -4830,6 +4814,13 @@ GroupCell *MathCtrl::GetHCaret()
   if (m_activeCell)
     return dynamic_cast<GroupCell*>(m_activeCell->GetParent());
 
+  if (m_selectionStart)
+    return dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
+
+  if (m_cellMouseSelectionStartedIn)
+    return dynamic_cast<GroupCell*>(m_cellMouseSelectionStartedIn->GetParent());
+
+  // A fallback value that is returned if nothing else seems to work
   return m_last;
 }
 

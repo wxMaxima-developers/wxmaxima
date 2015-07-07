@@ -978,7 +978,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
   case menu_pane_structure:
   {
     m_manager.GetPane(wxT("structure")).Show(show);
-    m_console->m_structure->Update(m_console->GetTree(),m_console->GetCursorPosition());
+    m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
   }
   break;
   case menu_pane_stats:
