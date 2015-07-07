@@ -4927,6 +4927,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     wxString text = tmp->GetEditable()->ToString();
 
     tmp->RemoveOutput();
+    m_console->Recalculate();
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
     if(parenthesisError==wxEmptyString)
     {          
