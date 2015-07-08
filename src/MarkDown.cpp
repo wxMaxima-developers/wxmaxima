@@ -37,7 +37,8 @@ MarkDownParser :: MarkDownParser()
   
 wxString MarkDownParser::MarkDown(wxString str)
 {
-  // Replace all arrows and so on by the according symbols
+  // Replace all markdown equivalents of arrows and similar symbols by the
+  // according symbols
   for(replaceList::iterator it=regexReplaceList.begin();
       it!=regexReplaceList.end();
       ++it)
@@ -157,7 +158,7 @@ wxString MarkDownParser::MarkDown(wxString str)
     }
     else
     {
-      if(str != wxEmptyString) result += NewLine();
+      if(lines.HasMoreTokens()) result += NewLine();
       addNewline = false;
     }
   }
