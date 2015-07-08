@@ -4860,8 +4860,16 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       }
       if(c!='"') return(_("Unterminated string."));
       break;
-    
-    case '/':
+
+    case wxT(';'):
+    case wxT('$'):
+      if(!delimiters.empty())
+      {
+        return _("Un-closed parenthesis on encountering ; or $");
+      }
+      break;      
+      
+    case wxT('/'):
       if(index<len-1)
       {
         if(text[index + 1]==wxT('*'))
