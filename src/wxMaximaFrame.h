@@ -356,6 +356,12 @@ public:
     transferring,
     userinput
   };
+
+  /*! Inform the user about the length of the evaluation queue.
+
+   */
+  void NumEvaluationQueue(int length);
+
   /*! Set the status according to if maxima is calculating 
 
     \param status

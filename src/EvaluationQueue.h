@@ -38,6 +38,10 @@ class EvaluationQueueElement {
 // A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
+private:
+  int m_size;
+  EvaluationQueueElement* m_queue;
+  EvaluationQueueElement* m_last;
 public:
   EvaluationQueue();
   ~EvaluationQueue() {};
@@ -50,9 +54,11 @@ public:
   GroupCell* GetFirst();
   bool Empty() { return m_queue == NULL; }
   void Clear();
-private:
-  EvaluationQueueElement* m_queue;
-  EvaluationQueueElement* m_last;
+  //! Get the size of the queue
+  int Size()
+    {
+      return m_size;
+    }
 };
 
 

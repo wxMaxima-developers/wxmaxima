@@ -80,6 +80,20 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console->SetFocus();
 }
 
+void wxMaximaFrame::NumEvaluationQueue(int length)
+{
+  if(length>0)
+  {
+    SetStatusText(wxString::Format(_(wxT("%i cells in evaluation queue")),length),0);
+
+  }
+  else
+  {
+    SetStatusText(_(wxT("Welcome to wxMaxima")),0);
+  }
+}
+
+
 void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
 {
   if((m_StatusMaximaBusy != status) || (m_forceStatusbarUpdate))

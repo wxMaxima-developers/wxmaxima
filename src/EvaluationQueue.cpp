@@ -30,6 +30,7 @@ EvaluationQueueElement::EvaluationQueueElement(GroupCell* gr)
 
 EvaluationQueue::EvaluationQueue()
 {
+  m_size = 0;
   m_queue = NULL;
   m_last = NULL;
 }
@@ -38,6 +39,7 @@ void EvaluationQueue::Clear()
 {
   while(!Empty())
     RemoveFirst();
+  m_size = 0;
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell* gr)
@@ -63,6 +65,7 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
     m_last->next = newelement;
     m_last = newelement;
   }
+  m_size++;
 }
 
 /**
@@ -94,6 +97,7 @@ void EvaluationQueue::RemoveFirst()
     m_queue = m_queue->next;
 
   delete tmp;
+  m_size--;
 }
 
 GroupCell* EvaluationQueue::GetFirst()

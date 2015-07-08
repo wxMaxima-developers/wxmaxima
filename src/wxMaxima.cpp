@@ -588,6 +588,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
   case wxSOCKET_LOST:
     m_console->m_evaluationQueue->Clear();
+    NumEvaluationQueue(0);
     SetBatchMode(false);
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
@@ -644,6 +645,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
 
   case wxSOCKET_LOST:
     m_console->m_evaluationQueue->Clear();
+    NumEvaluationQueue(0);
     SetBatchMode(false);
     m_pid = -1;
     m_isConnected = false;
@@ -859,6 +861,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   }
   else if (m_console->m_evaluationQueue->Empty())
   {
+    NumEvaluationQueue(0);
     bool open = false;
     wxConfig::Get()->Read(wxT("openHCaret"), &open);
     if (open)
@@ -901,8 +904,8 @@ void wxMaxima::ReadMath(wxString &data)
         wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
         if(abortOnError || m_batchmode)
           m_console->m_evaluationQueue->Clear();
-
         SetBatchMode(false);
+        NumEvaluationQueue(0);
       }
       else
         normalOutput+=line+=wxT("\n");
@@ -1007,6 +1010,7 @@ void wxMaxima::ReadPrompt(wxString &data)
             wxCloseEvent dummy;
             OnClose(dummy);
           }
+          NumEvaluationQueue(0);
         }
         else { // we don't have an empty queue
           m_ready = false;
@@ -1550,6 +1554,7 @@ void wxMaxima::ReadLispError(wxString &data)
     if(abortOnError || m_batchmode)
       m_console->m_evaluationQueue->Clear();
     SetBatchMode(false);
+    NumEvaluationQueue(0);
   }
 }
 
@@ -2324,7 +2329,10 @@ void wxMaxima::ReadStdErr()
     wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
     SetBatchMode(false);
     if(abortOnError || m_batchmode)
+    {
       m_console->m_evaluationQueue->Clear();
+      NumEvaluationQueue(0);
+    }
     else
       TryEvaluateNextInQueue();
   }
@@ -4891,9 +4899,8 @@ void wxMaxima::TryEvaluateNextInQueue()
 
     // Clear the evaluation queue.
     m_console->m_evaluationQueue->Clear();
-
     m_console->Refresh();
-
+    NumEvaluationQueue(0);
     return ;
   }
 
@@ -4904,8 +4911,11 @@ void wxMaxima::TryEvaluateNextInQueue()
   {
     StatusMaximaBusy(waiting);
     m_maximaStdoutPollTimer.Stop();
+    NumEvaluationQueue(0);
     return; //empty queue
   }
+
+  NumEvaluationQueue(m_console->m_evaluationQueue->Size());
 
   // We don't want to evaluate a new cell if the user still has to answer
   // a question.
@@ -4966,6 +4976,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       SetBatchMode(false);
+      NumEvaluationQueue(0);
       if(abortOnError || m_batchmode)
         m_console->m_evaluationQueue->Clear();
       else
