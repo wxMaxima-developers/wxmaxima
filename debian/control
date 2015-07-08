@@ -12,7 +12,7 @@ Package: wxmaxima
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, maxima (>= 5.18), ibus-gtk3,
  maxima-doc (>= 5.10.0), imagemagick
-Recommends: ttf-jsmath, texlive-latex-extra
+Recommends: fonts-jsmath, texlive-latex-extra
 Description: GUI for the computer algebra system Maxima
  wxMaxima is a graphical user interface for the computer algebra system
  Maxima. It eases the use of Maxima by making most of its commands available
