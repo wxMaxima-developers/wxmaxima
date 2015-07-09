@@ -514,11 +514,11 @@ wxPanel* Config::CreateMaximaPanel()
   #endif
 
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
-  sizer->Add(m_abortOnError,0,wxALL);
+  sizer->Add(m_abortOnError,0,wxALL, 5);
   sizer->Add(10,10);
   
   m_pollStdOut = new wxCheckBox(panel, -1, _("Debug: Watch maxima's stdout stream"));
-  sizer->Add(m_pollStdOut,0,wxALL);
+  sizer->Add(m_pollStdOut,0,wxALL, 5);
   sizer->Add(10,10);
   
   panel->SetSizer(sizer);
