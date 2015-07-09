@@ -243,6 +243,7 @@ protected:
     m_styleActiveCellBracket,
     m_styleCursor,
     m_styleSelection,
+    m_styleEqualsSelection,
     m_styleOutdated,
     m_styleCodeHighlightingVariable,
     m_styleCodeHighlightingFunction,

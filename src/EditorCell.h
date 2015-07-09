@@ -42,6 +42,27 @@
  */
 class EditorCell : public MathCell
 {
+private:
+  //! Draw a box that marks the current selection
+  void MarkSelection(size_t start, size_t end,CellParser& parser,double scale, wxDC& dc, TextStyle style);
+  /*! The start of the current selection.
+
+     - >0: the position of the cursors in characters from start
+     - -1: Currently no selection is active
+   */
+  long m_selectionStart;
+  /*! The end of the current selection.
+
+     - >0: the position of the cursors in characters from start
+     - -1: Currently no selection is active
+   */
+  long m_selectionEnd;
+  /*! The currently selected string. 
+
+    Since this string is defined statically it is available in every editor cell
+    for highlighting selected strings.
+  */
+  static wxString m_selectionString;
 public:
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
@@ -191,11 +212,7 @@ public:
      - false: Case-sensitive search
    */
   bool FindNext(wxString str, bool down, bool ignoreCase);
-  void SetSelection(int start, int end)
-  {
-    m_selectionStart = start;
-    m_positionOfCaret = m_selectionEnd = end;
-  }
+  void SetSelection(int start, int end);
   void GetSelection(int *start, int *end)
   {
     *start = m_selectionStart; *end = m_selectionEnd;
@@ -304,8 +321,6 @@ private:
   int m_positionOfCaret;
   int m_caretColumn;
   long m_lastSelectionStart;
-  long m_selectionStart;
-  long m_selectionEnd;
 //  long m_oldStart, m_oldEnd;
   int m_numberOfLines;
   bool m_isActive;

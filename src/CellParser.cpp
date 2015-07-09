@@ -342,6 +342,9 @@ void CellParser::ReadStyle()
 #endif
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp)) m_styles[TS_SELECTION].color.Set(tmp);
+  m_styles[TS_EQUALSSELECTION].color = wxT("rgb(192,192,192)");
+  if (config->Read(wxT("Style/EqualsSelection/color"),
+                   &tmp)) m_styles[TS_EQUALSSELECTION].color.Set(tmp);
 
   // Outdated cells
   m_styles[TS_OUTDATED].color = wxT("rgb(153,153,153)");

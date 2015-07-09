@@ -573,6 +573,7 @@ wxPanel* Config::CreateStylePanel()
       _("Active cell bracket"),
       _("Cursor"),
       _("Selection"),
+      _("Text equal to selection"),
       _("Outdated cells"),
       _("Code highlighting: Variables"),
       _("Code highlighting: Functions"),
@@ -856,6 +857,11 @@ void Config::ReadStyles(wxString file)
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp)) m_styleSelection.color.Set(tmp);
 
+  // Text equal to the current selection
+  m_styleEqualsSelection.color = wxT("rgb(192,192,192)");
+  if (config->Read(wxT("Style/EqualsSelection/color"),
+                   &tmp)) m_styleEqualsSelection.color.Set(tmp);
+
 #define READ_STYLE(style, where)                                        \
   if (config->Read(wxT(where "color"), &tmp)) style.color.Set(tmp);     \
   config->Read(wxT(where "bold"),                                       \
@@ -1098,6 +1104,8 @@ void Config::WriteStyles(wxString file)
                 m_styleCursor.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Selection/color"),
                 m_styleSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
+  config->Write(wxT("Style/EqualsSelection/color"),
+                m_styleEqualsSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
   config->Write(wxT("Style/Outdated/color"),
                 m_styleOutdated.color.GetAsString(wxC2S_CSS_SYNTAX));
 
@@ -1209,13 +1217,13 @@ void Config::OnChangeStyle(wxCommandEvent& event)
 
   m_styleColor->SetBackgroundColour(tmp->color);
 
-  if (st >= 12 && st <= 15)
+  if (st >= TS_TEXT_BACKGROUND && st <= TS_SUBSUBSECTION)
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
 
   // Background color only
-  if (st >= 16)
+  if (st >= TS_SECTION)
   {
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
@@ -1223,7 +1231,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   }
   else
   {
-    if(st>23)
+    if(st>TS_OUTDATED)
     {
       m_boldCB->Enable(false);
       m_italicCB->Enable(false);
@@ -1331,27 +1339,30 @@ style* Config::GetStylePointer()
     tmp = &m_styleSelection;
     break;
   case 23:
-    tmp = &m_styleOutdated;
+    tmp = &m_styleEqualsSelection;
     break;
   case 24:
-    tmp = &m_styleCodeHighlightingVariable;
+    tmp = &m_styleOutdated;
     break;
   case 25:
-    tmp = &m_styleCodeHighlightingFunction;
+    tmp = &m_styleCodeHighlightingVariable;
     break;
   case 26:
-    tmp = &m_styleCodeHighlightingComment;
+    tmp = &m_styleCodeHighlightingFunction;
     break;
   case 27:
-    tmp = &m_styleCodeHighlightingNumber;
+    tmp = &m_styleCodeHighlightingComment;
     break;
   case 28:
-    tmp = &m_styleCodeHighlightingString;
+    tmp = &m_styleCodeHighlightingNumber;
     break;
   case 29:
-    tmp = &m_styleCodeHighlightingOperator;
+    tmp = &m_styleCodeHighlightingString;
     break;
   case 30:
+    tmp = &m_styleCodeHighlightingOperator;
+    break;
+  case 31:
     tmp = &m_styleCodeHighlightingEndOfLine;
     break;
   default:
