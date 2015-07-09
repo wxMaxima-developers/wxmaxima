@@ -35,6 +35,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 
 {
+  m_EvaluationQueueLength = 0;
   m_forceStatusbarUpdate = false;
   m_manager.SetManagedWindow(this);
   // console
@@ -80,12 +81,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console->SetFocus();
 }
 
-void wxMaximaFrame::NumEvaluationQueue(int length)
+void wxMaximaFrame::EvaluationQueueLength(int length)
 {
-  if(length>0)
-    SetStatusText(wxString::Format(_(wxT("%i cells in evaluation queue")),length),0);
-  else
-    SetStatusText(_(wxT("Welcome to wxMaxima")),0);
+  if(length != m_EvaluationQueueLength)
+  {
+    m_EvaluationQueueLength = length;
+    if(length>0)
+      SetStatusText(wxString::Format(_(wxT("%i cells in evaluation queue")),length),0);
+    else
+      SetStatusText(_(wxT("Welcome to wxMaxima")),0);
+  }
 }
 
 

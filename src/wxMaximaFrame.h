@@ -360,7 +360,7 @@ public:
   /*! Inform the user about the length of the evaluation queue.
 
    */
-  void NumEvaluationQueue(int length);
+  void EvaluationQueueLength(int length);
 
   /*! Set the status according to if maxima is calculating 
 
@@ -384,6 +384,8 @@ public:
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
 private:
+  //! The current length of the evaluation queue of commands we still need to send to maxima
+  int m_EvaluationQueueLength;
   //! True=We are currently saving.
   bool m_StatusSaving;
   //! The menu bar
