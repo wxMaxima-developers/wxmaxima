@@ -3360,7 +3360,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   output<<wxT("\n");
   output<<wxT(" <HR>\n");
-  output<<wxT(" <SMALL> Created with"
+  output<<wxT(" <SMALL> Created with "
               "<A HREF=\"http://wxmaxima.sourceforge.net/\">"
               "wxMaxima</A>"
               ".</SMALL>\n");
