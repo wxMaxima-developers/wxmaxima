@@ -87,9 +87,9 @@ void wxMaximaFrame::EvaluationQueueLength(int length)
   {
     m_EvaluationQueueLength = length;
     if(length>0)
-      SetStatusText(wxString::Format(_(wxT("%i cells in evaluation queue")),length),0);
+      SetStatusText(wxString::Format(_("%i cells in evaluation queue"),length),0);
     else
-      SetStatusText(_(wxT("Welcome to wxMaxima")),0);
+      SetStatusText(_("Welcome to wxMaxima"),0);
   }
 }
 
