@@ -1,89 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML">
 <HTML>
  <HEAD>
-  <TITLE>Example</TITLE>
-  <META NAME="generator" CONTENT="wxMaxima">
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-  <STYLE TYPE="text/css">
-body {
-  background-color: rgb(255,255,255);
-}
-.input {
-  color: rgb(83,83,83);
-}
-.comment {
-  color: rgb(0,0,0);
-  background-color: rgb(255,255,255);
-  padding: 2mm;
-}
-.code_variable {
-  color: rgb(0,76,0);
-}
-.code_function {
-  color: rgb(128,0,0);
-}
-.code_comment {
-  color: rgb(64,64,64);
-}
-.code_number {
-  color: rgb(128,64,0);
-}
-.code_string {
-  color: rgb(128,64,0);
-}
-.code_string {
-  color: rgb(0,0,128);
-}
-img {
-  -ms-interpolation-mode: bicubic;
-}
-.image {
-  color: rgb(0,0,0);
-  padding: 2mm;
-}
-.section {
-  color: rgb(0,0,0);
-  font-weight: bold;
-  font-style: italic;
-  font-size: 1.5em;
-  padding: 2mm;
-}
-.subsect {
-  color: rgb(0,0,0);
-  font-weight: bold;
-  font-size: 1.2em;
-  padding: 2mm;
-}
-.subsubsect {
-  color: rgb(0,0,0);
-  font-weight: bold;
-  font-size: 1.2em;
-  padding: 2mm;
-}
-.title {
-  color: rgb(0,0,0);
-  font-weight: bold;
-  text-decoration: underline;
-  font-size: 2em;
-  padding: 2mm;
-}
-.prompt {
-  color: rgb(255,0,0);
-}
-table {
-  border: 0px;
-}
-td {
-  vertical-align: top;
-  padding: 1mm;
-}
-  </STYLE>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/ico" href="favicon.ico">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>wxMaxima</title>
+  <link rel="stylesheet" type="text/css" href="Example_htmlimg/Example.css"/>
  </HEAD>
  <BODY>
+  <div class="container">
 
-<!---------------------------------------------------------->
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="index.html">wxMaxima</a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="help.html">Documentation</a></li>
+          <li><a href="develop.html">Develop</a></li>
+          <li><a href="Example.html">Example</a></li>
+        </ul>
+      </div>
+    </nav>
+
+<!-- ***************************************************** -->
 <!--          Created with wxMaxima version 15.06.0         -->
-<!---------------------------------------------------------->
+<!-- ***************************************************** -->
 
 
 <!-- Title cell -->
@@ -106,8 +69,9 @@ Does damping&nbsp;change&nbsp;the&nbsp;frequency&nbsp;of&nbsp;an&nbsp;oscillator
 
 
 <P CLASS="comment">
- Most&nbsp;computers&nbsp;programs&nbsp;try&nbsp;to&nbsp;find&nbsp;numbers&nbsp;or&nbsp;curves&nbsp;that&nbsp;solve&nbsp;problems.&nbsp;&nbsp;
-A Computer&nbsp;Algebra&nbsp;System&nbsp;like&nbsp;Maxima&nbsp;is&nbsp;specialised&nbsp;in&nbsp;finding&nbsp;the&nbsp;formula&nbsp;
+
+Most computers&nbsp;programs&nbsp;try&nbsp;to&nbsp;find&nbsp;numbers&nbsp;or&nbsp;curves&nbsp;that&nbsp;solve&nbsp;problems.
+A Computer&nbsp;Algebra&nbsp;System&nbsp;like&nbsp;Maxima&nbsp;is&nbsp;specialised&nbsp;in&nbsp;finding&nbsp;the&nbsp;formula
 that provides&nbsp;the&nbsp;solution&nbsp;instead:
 </P>
 
@@ -117,11 +81,10 @@ that provides&nbsp;the&nbsp;solution&nbsp;instead:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i1) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">x</span><span class="code_operator">=</span><span class="code_number">1</span><span class="code_operator">/</span><span class="code_number">10</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">+</span><span class="code_number">5</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">-</span><span class="code_number">3</span>;
-  </SPAN></TD>
+<span class="code_variable">x</span><span class="code_operator">=</span><span class="code_number">1</span><span class="code_operator">/</span><span class="code_number">10</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">+</span><span class="code_number">5</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">-</span><span class="code_number">3</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_0.png" width="198" style="max-width:90%;" alt="x=5*y^2+y/10-3" >
 
@@ -131,11 +94,10 @@ that provides&nbsp;the&nbsp;solution&nbsp;instead:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i2) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">solve</span>(%,<span class="code_variable">y</span>);
-  </SPAN></TD>
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">y</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_1.png" width="460" style="max-width:90%;" alt="[y=-(sqrt(2000*x+6001)+1)/100,y=(sqrt(2000*x+6001)-1)/100]" >
 
@@ -144,20 +106,21 @@ that provides&nbsp;the&nbsp;solution&nbsp;instead:
 
 
 <P CLASS="comment">
- Most&nbsp;of&nbsp;the&nbsp;times&nbsp;a&nbsp;formula&nbsp;can&nbsp;speak&nbsp;for&nbsp;itself.&nbsp;It&nbsp;can&nbsp;for&nbsp;example&nbsp;describe&nbsp;&nbsp;
-the mechanism&nbsp;that&nbsp;causes&nbsp;a&nbsp;phenomenon&nbsp;or&nbsp;it&nbsp;can&nbsp;tell&nbsp;in&nbsp;which&nbsp;way&nbsp;a&nbsp;problem&nbsp;&nbsp;
-can be&nbsp;optimized.&nbsp;
- 
-But it&nbsp;can&nbsp;obviously&nbsp;be&nbsp;used&nbsp;to&nbsp;generate&nbsp;numbers&nbsp;instead.&nbsp;Maxima&nbsp;might&nbsp;be&nbsp;better&nbsp;
-suited for&nbsp;doing&nbsp;this&nbsp;than&nbsp;many&nbsp;programs&nbsp;that&nbsp;claim&nbsp;to&nbsp;have&nbsp;been&nbsp;written&nbsp;for&nbsp;
-numerical work:&nbsp;
- *&nbsp;It&nbsp;supports&nbsp;simple&nbsp;floating-point&nbsp;numbers&nbsp;like&nbsp;1.25e-7&nbsp;or&nbsp;0.3.&nbsp;
- *&nbsp;But&nbsp;if&nbsp;they&nbsp;aren't&nbsp;precise&nbsp;enough&nbsp;it&nbsp;offers&nbsp;bigfloats&nbsp;(example:&nbsp;1.25b-7)&nbsp;
- &nbsp;&nbsp;with&nbsp;a&nbsp;user-selectable&nbsp;number&nbsp;of&nbsp;digits.&nbsp;
- *&nbsp;If&nbsp;a&nbsp;numbers&nbsp;is&nbsp;specified&nbsp;as&nbsp;a&nbsp;fraction&nbsp;of&nbsp;integers&nbsp;it&nbsp;will&nbsp;be&nbsp;treated&nbsp;as&nbsp;
- &nbsp;&nbsp;an&nbsp;exact&nbsp;integer&nbsp;and&nbsp;will&nbsp;only&nbsp;be&nbsp;rounded&nbsp;on&nbsp;explicit&nbsp;request.&nbsp;
- *&nbsp;And&nbsp;if&nbsp;converting&nbsp;from&nbsp;float&nbsp;to&nbsp;exact&nbsp;fractions&nbsp;involves&nbsp;a&nbsp;rounding&nbsp;error&nbsp;
- &nbsp;&nbsp;maxima&nbsp;will&nbsp;warn&nbsp;the&nbsp;user:
+
+Most of&nbsp;the&nbsp;times&nbsp;a&nbsp;formula&nbsp;can&nbsp;speak&nbsp;for&nbsp;itself.&nbsp;It&nbsp;can&nbsp;for&nbsp;example&nbsp;describe
+the mechanism&nbsp;that&nbsp;causes&nbsp;a&nbsp;phenomenon&nbsp;or&nbsp;it&nbsp;can&nbsp;tell&nbsp;in&nbsp;which&nbsp;way&nbsp;a&nbsp;problem
+can be&nbsp;optimized.<BR>
+But it&nbsp;can&nbsp;obviously&nbsp;be&nbsp;used&nbsp;to&nbsp;generate&nbsp;numbers&nbsp;instead.&nbsp;Maxima&nbsp;might&nbsp;be&nbsp;better
+suited for&nbsp;doing&nbsp;this&nbsp;than&nbsp;many&nbsp;programs&nbsp;that&nbsp;claim&nbsp;to&nbsp;have&nbsp;been&nbsp;written&nbsp;for
+numerical work:<UL>
+<LI>It supports&nbsp;simple&nbsp;floating-point&nbsp;numbers&nbsp;like&nbsp;1.25e-7&nbsp;or&nbsp;0.3.</LI>
+<LI>But if&nbsp;they&nbsp;aren't&nbsp;precise&nbsp;enough&nbsp;it&nbsp;offers&nbsp;bigfloats&nbsp;(example:&nbsp;1.25b-7)
+with a&nbsp;user-selectable&nbsp;number&nbsp;of&nbsp;digits.</LI>
+<LI>If a&nbsp;numbers&nbsp;is&nbsp;specified&nbsp;as&nbsp;a&nbsp;fraction&nbsp;of&nbsp;integers&nbsp;it&nbsp;will&nbsp;be&nbsp;treated&nbsp;as
+an exact&nbsp;integer&nbsp;and&nbsp;will&nbsp;only&nbsp;be&nbsp;rounded&nbsp;on&nbsp;explicit&nbsp;request.</LI>
+<LI>And if&nbsp;converting&nbsp;from&nbsp;float&nbsp;to&nbsp;exact&nbsp;fractions&nbsp;involves&nbsp;a&nbsp;rounding&nbsp;error
+maxima will&nbsp;warn&nbsp;the&nbsp;user:</UL>
+
 </P>
 
 
@@ -166,11 +129,10 @@ numerical work:&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i3) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">x</span><span class="code_operator">=</span><span class="code_operator">.</span><span class="code_number">1</span><span class="code_operator">*</span><span class="code_variable">y</span>;
-  </SPAN></TD>
+<span class="code_variable">x</span><span class="code_operator">=</span>.<span class="code_number">1</span><span class="code_operator">*</span><span class="code_variable">y</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_2.png" width="143" style="max-width:90%;" alt="x=0.1*y" >
 
@@ -180,11 +142,10 @@ numerical work:&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i4) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">solve</span>(%,<span class="code_variable">y</span>);
-  </SPAN></TD>
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">y</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_3.png" width="342" style="max-width:90%;" alt="(%o4) [y=10*x]" >
 
@@ -193,8 +154,9 @@ numerical work:&nbsp;
 
 
 <P CLASS="comment">
- Note&nbsp;that&nbsp;computers&nbsp;use&nbsp;binary&nbsp;numbers&nbsp;and&nbsp;therefore&nbsp;cannot&nbsp;express&nbsp;an&nbsp;exact&nbsp;0.1&nbsp;
-as a&nbsp;floating-point&nbsp;number.&nbsp;The&nbsp;error&nbsp;the&nbsp;computer&nbsp;will&nbsp;introduce&nbsp;to&nbsp;approximate&nbsp;
+
+Note that&nbsp;computers&nbsp;use&nbsp;binary&nbsp;numbers&nbsp;and&nbsp;therefore&nbsp;cannot&nbsp;express&nbsp;an&nbsp;exact&nbsp;0.1
+as a&nbsp;floating-point&nbsp;number.&nbsp;The&nbsp;error&nbsp;the&nbsp;computer&nbsp;will&nbsp;introduce&nbsp;to&nbsp;approximate
 1/10 as&nbsp;floating&nbsp;number&nbsp;is&nbsp;extremely&nbsp;small:
 </P>
 
@@ -204,11 +166,10 @@ as a&nbsp;floating-point&nbsp;number.&nbsp;The&nbsp;error&nbsp;the&nbsp;computer
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i5) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">rationalize</span>(<span class="code_operator">.</span><span class="code_number">1</span>);
-  </SPAN></TD>
+<span class="code_function">rationalize</span>(.<span class="code_number">1</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_4.png" width="237" style="max-width:90%;" alt="3602879701896397/36028797018963968" >
 
@@ -217,8 +178,9 @@ as a&nbsp;floating-point&nbsp;number.&nbsp;The&nbsp;error&nbsp;the&nbsp;computer
 
 
 <P CLASS="comment">
- But&nbsp;sometimes&nbsp;simple&nbsp;tasks&nbsp;like&nbsp;finding&nbsp;the&nbsp;root&nbsp;of&nbsp;a&nbsp;polygon&nbsp;are&nbsp;extremely&nbsp;
-suspectible to&nbsp;small&nbsp;errors.&nbsp;Other&nbsp;times&nbsp;one&nbsp;step&nbsp;in&nbsp;solving&nbsp;an&nbsp;equation&nbsp;
+
+But sometimes&nbsp;simple&nbsp;tasks&nbsp;like&nbsp;finding&nbsp;the&nbsp;root&nbsp;of&nbsp;a&nbsp;polygon&nbsp;are&nbsp;extremely
+suspectible to&nbsp;small&nbsp;errors.&nbsp;Other&nbsp;times&nbsp;one&nbsp;step&nbsp;in&nbsp;solving&nbsp;an&nbsp;equation
 incorporates something&nbsp;like:
 </P>
 
@@ -228,11 +190,10 @@ incorporates something&nbsp;like:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i6) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span>;
-  </SPAN></TD>
+(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_5.png" width="374" style="max-width:90%;" alt="(Something[Very_small]+Something[Big])/Something[Big]-1" >
 
@@ -241,7 +202,8 @@ incorporates something&nbsp;like:
 
 
 <P CLASS="comment">
- Never&nbsp;trust&nbsp;a&nbsp;program&nbsp;that&nbsp;automatically&nbsp;decides&nbsp;the&nbsp;following:
+
+Never trust&nbsp;a&nbsp;program&nbsp;that&nbsp;automatically&nbsp;decides&nbsp;the&nbsp;following:
 </P>
 
 
@@ -250,11 +212,10 @@ incorporates something&nbsp;like:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i7) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span><span class="code_operator">=</span><span class="code_number">0</span>;
-  </SPAN></TD>
+(<span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">+</span><span class="code_variable">Something</span>[<span class="code_variable">Very_small</span>])<span class="code_operator">/</span><span class="code_variable">Something</span>[<span class="code_variable">Big</span>]<span class="code_operator">-</span><span class="code_number">1</span><span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_6.png" width="398" style="max-width:90%;" alt="(Something[Very_small]+Something[Big])/Something[Big]-1=0" >
 
@@ -263,7 +224,8 @@ incorporates something&nbsp;like:
 
 
 <P CLASS="comment">
- There&nbsp;are&nbsp;many&nbsp;such&nbsp;programs&nbsp;around.
+
+There are&nbsp;many&nbsp;such&nbsp;programs&nbsp;around.
 </P>
 
 
@@ -279,8 +241,9 @@ incorporates something&nbsp;like:
 
 
 <P CLASS="comment">
- There&nbsp;are&nbsp;many&nbsp;good&nbsp;tutorials&nbsp;on&nbsp;Maxima.&nbsp;This&nbsp;document&nbsp;was&nbsp;just&nbsp;created&nbsp;
-instead to&nbsp;show&nbsp;it&nbsp;in&nbsp;action.&nbsp;We&nbsp;therefore&nbsp;grab&nbsp;a&nbsp;ridiculously&nbsp;complicated&nbsp;
+
+There are&nbsp;many&nbsp;good&nbsp;tutorials&nbsp;on&nbsp;Maxima.&nbsp;This&nbsp;document&nbsp;was&nbsp;just&nbsp;created
+instead to&nbsp;show&nbsp;it&nbsp;in&nbsp;action.&nbsp;We&nbsp;therefore&nbsp;grab&nbsp;a&nbsp;ridiculously&nbsp;complicated
 problem and&nbsp;see&nbsp;what&nbsp;the&nbsp;program&nbsp;can&nbsp;do:
 </P>
 
@@ -293,24 +256,22 @@ Figure 1:&nbsp;The&nbsp;schematic&nbsp;of&nbsp;the&nbsp;circuit
 <BR>
   <IMG src="Example_htmlimg/Example_7.png" alt="Diagram" style="max-width:90%;" >
 
-
 <!-- Code cell -->
 
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i8) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">g1</span><span class="code_operator">:</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">R</span><span class="code_operator">*</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>);<BR>
-<span class="code_variable">g2</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">I_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>);<BR>
-<span class="code_variable">g3</span><span class="code_operator">:</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>);<BR>
-<span class="code_variable">g4</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">+</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_function">U_C</span>(<span class="code_variable">t</span>);
-  </SPAN></TD>
+<span class="code_variable">g1</span><span class="code_operator">:</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">R</span><span class="code_operator">*</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g2</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_operator">-</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">I_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g3</span><span class="code_operator">:</span><span class="code_function">I_C</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g4</span><span class="code_operator">:</span><span class="code_function">U_L</span>(<span class="code_variable">t</span>)<span class="code_operator">+</span><span class="code_function">U_R</span>(<span class="code_variable">t</span>)<span class="code_operator">=</span><span class="code_function">U_C</span>(<span class="code_variable">t</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_8.png" width="270" style="max-width:90%;" alt="U_R(t)=-I_C(t)*R(%o9) <BR>
-U_L(t)=-('diff(I_C(t),t,1))*L(%o10) <BR>
-I_C(t)=('diff(U_C(t),t,1))*C(%o11) <BR>
+U_L(t)=-('diff(d/(d*t)*))*L(%o10) <BR>
+I_C(t)=('diff(d/(d*t)*))*C(%o11) <BR>
 U_R(t)+U_L(t)=U_C(t)" >
 
 
@@ -318,7 +279,8 @@ U_R(t)+U_L(t)=U_C(t)" >
 
 
 <P CLASS="comment">
- Maxima&nbsp;can&nbsp;solve&nbsp;equation&nbsp;systems&nbsp;automatically:
+
+Maxima can&nbsp;solve&nbsp;equation&nbsp;systems&nbsp;automatically:
 </P>
 
 
@@ -327,15 +289,14 @@ U_R(t)+U_L(t)=U_C(t)" >
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i12) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 [<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">x</span><span class="code_operator">+</span><span class="code_variable">y</span><span class="code_operator">=</span><span class="code_number">5</span>,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">y</span><span class="code_operator">+</span><span class="code_variable">z</span><span class="code_operator">=</span><span class="code_number">3</span><BR>
-];<BR>
-<span class="code_function">solve</span>(%,[<span class="code_variable">x</span>,<span class="code_variable">y</span>,<span class="code_variable">z</span>]);
-  </SPAN></TD>
+]<span class="code_endofline">;</span><BR>
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,[<span class="code_variable">x</span>,<span class="code_variable">y</span>,<span class="code_variable">z</span>])<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_9.png" width="360" style="max-width:90%;" alt="[y+x=5,z+y=3](%o13) <BR>
 [[x=%r1+2,y=3-%r1,z=%r1]]" >
@@ -345,10 +306,10 @@ U_R(t)+U_L(t)=U_C(t)" >
 
 
 <P CLASS="comment">
- It&nbsp;even&nbsp;introduces&nbsp;additional&nbsp;variables&nbsp;like&nbsp;%r1&nbsp;to&nbsp;show&nbsp;there&nbsp;is&nbsp;more&nbsp;than&nbsp;
-one solution.&nbsp;
- 
-But it&nbsp;can&nbsp;of&nbsp;course&nbsp;shorten&nbsp;equation&nbsp;systems&nbsp;by&nbsp;introducing&nbsp;one&nbsp;equation&nbsp;into&nbsp;
+
+It even&nbsp;introduces&nbsp;additional&nbsp;variables&nbsp;like&nbsp;%r1&nbsp;to&nbsp;show&nbsp;there&nbsp;is&nbsp;more&nbsp;than
+one solution.<BR>
+But it&nbsp;can&nbsp;of&nbsp;course&nbsp;shorten&nbsp;equation&nbsp;systems&nbsp;by&nbsp;introducing&nbsp;one&nbsp;equation&nbsp;into
 another like&nbsp;we&nbsp;will&nbsp;do&nbsp;with&nbsp;the&nbsp;equations&nbsp;we&nbsp;have&nbsp;previously&nbsp;named&nbsp;g4&nbsp;and&nbsp;g1:
 </P>
 
@@ -358,13 +319,12 @@ another like&nbsp;we&nbsp;will&nbsp;do&nbsp;with&nbsp;the&nbsp;equations&nbsp;we
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i14) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">g4</span>;<BR>
-<span class="code_function">solve</span>(<span class="code_variable">g4</span>,<span class="code_function">U_R</span>(<span class="code_variable">t</span>));<BR>
-<span class="code_variable">g5</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g1</span>,%);
-  </SPAN></TD>
+<span class="code_variable">g4</span><span class="code_endofline">;</span><BR>
+<span class="code_function">solve</span>(<span class="code_variable">g4</span>,<span class="code_function">U_R</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">g5</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g1</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_10.png" width="288" style="max-width:90%;" alt="U_R(t)+U_L(t)=U_C(t)(%o15) <BR>
 [U_R(t)=U_C(t)-U_L(t)](%o16) <BR>
@@ -375,9 +335,10 @@ U_C(t)-U_L(t)=-I_C(t)*R" >
 
 
 <P CLASS="comment">
- One&nbsp;could&nbsp;do&nbsp;this&nbsp;on&nbsp;step&nbsp;on&nbsp;paper,&nbsp;too.&nbsp;But&nbsp;when&nbsp;doing&nbsp;a&nbsp;long&nbsp;list&nbsp;of&nbsp;
-calculations the&nbsp;paper-approach&nbsp;is&nbsp;too&nbsp;prone&nbsp;to&nbsp;errors&nbsp;for&nbsp;this&nbsp;to&nbsp;be&nbsp;
-practical. So&nbsp;let&nbsp;us&nbsp;evaluate&nbsp;g2&nbsp;and&nbsp;g3&nbsp;with&nbsp;the&nbsp;knowledge&nbsp;we&nbsp;have&nbsp;from&nbsp;
+
+One could&nbsp;do&nbsp;this&nbsp;on&nbsp;step&nbsp;on&nbsp;paper,&nbsp;too.&nbsp;But&nbsp;when&nbsp;doing&nbsp;a&nbsp;long&nbsp;list&nbsp;of
+calculations the&nbsp;paper-approach&nbsp;is&nbsp;too&nbsp;prone&nbsp;to&nbsp;errors&nbsp;for&nbsp;this&nbsp;to&nbsp;be
+practical. So&nbsp;let&nbsp;us&nbsp;evaluate&nbsp;g2&nbsp;and&nbsp;g3&nbsp;with&nbsp;the&nbsp;knowledge&nbsp;we&nbsp;have&nbsp;from
 the last&nbsp;step:
 </P>
 
@@ -387,24 +348,24 @@ the last&nbsp;step:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i17) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">solve</span>(<span class="code_variable">g5</span>,<span class="code_function">U_L</span>(<span class="code_variable">t</span>));<BR>
-<span class="code_variable">g6</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g2</span>,%);<BR>
-<span class="code_variable">g7</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g3</span>,%);
-  </SPAN></TD>
+<span class="code_function">solve</span>(<span class="code_variable">g5</span>,<span class="code_function">U_L</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">g6</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g2</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">g7</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g3</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_11.png" width="352" style="max-width:90%;" alt="[U_L(t)=I_C(t)*R+U_C(t)](%o18) <BR>
-I_C(t)*R+U_C(t)=-('diff(I_C(t),t,1))*L(%o19) <BR>
-I_C(t)=('diff(U_C(t),t,1))*C" >
+I_C(t)*R+U_C(t)=-('diff(d/(d*t)*))*L(%o19) <BR>
+I_C(t)=('diff(d/(d*t)*))*C" >
 
 
 <!-- Text cell -->
 
 
 <P CLASS="comment">
- Combining&nbsp;the&nbsp;last&nbsp;two&nbsp;results&nbsp;we&nbsp;get&nbsp;a&nbsp;one-line&nbsp;description&nbsp;of&nbsp;the&nbsp;problem:
+
+Combining the&nbsp;last&nbsp;two&nbsp;results&nbsp;we&nbsp;get&nbsp;a&nbsp;one-line&nbsp;description&nbsp;of&nbsp;the&nbsp;problem:
 </P>
 
 
@@ -413,20 +374,20 @@ I_C(t)=('diff(U_C(t),t,1))*C" >
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i20) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">dgl</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g6</span>,<span class="code_variable">g7</span>);
-  </SPAN></TD>
+<span class="code_variable">dgl</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">g6</span>,<span class="code_variable">g7</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_12.png" width="492" style="max-width:90%;" alt="('diff(U_C(t),t,1))*C*R+U_C(t)=-('diff((('diff(U_C(t),t,1))*C),t,1))*L" >
+  <img src="Example_htmlimg/Example_12.png" width="492" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+U_C(t)=-('diff(d/(d*t)*))*L" >
 
 
 <!-- Text cell -->
 
 
 <P CLASS="comment">
- Perhaps&nbsp;things&nbsp;look&nbsp;nicer&nbsp;if&nbsp;we&nbsp;combine&nbsp;the&nbsp;right-&nbsp;and&nbsp;the&nbsp;left&nbsp;hand&nbsp;side&nbsp;of&nbsp;this&nbsp;
+
+Perhaps things&nbsp;look&nbsp;nicer&nbsp;if&nbsp;we&nbsp;combine&nbsp;the&nbsp;right-&nbsp;and&nbsp;the&nbsp;left&nbsp;hand&nbsp;side&nbsp;of&nbsp;this
 equation:
 </P>
 
@@ -436,13 +397,12 @@ equation:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i21) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">lhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">-</span><span class="code_function">rhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">=</span><span class="code_number">0</span>;
-  </SPAN></TD>
+<span class="code_function">lhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">-</span><span class="code_function">rhs</span>(<span class="code_variable">dgl</span>)<span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_13.png" width="504" style="max-width:90%;" alt="('diff(U_C(t),t,1))*C*R+('diff((('diff(U_C(t),t,1))*C),t,1))*L+U_C(t)=0" >
+  <img src="Example_htmlimg/Example_13.png" width="504" style="max-width:90%;" alt="('diff(d/(d*t)*))*C*R+('diff(d/(d*t)*))*L+U_C(t)=0" >
 
 
 <!-- Section cell -->
@@ -465,12 +425,12 @@ equation:
 
 
 <P CLASS="comment">
- Maxima&nbsp;will&nbsp;try&nbsp;to&nbsp;find&nbsp;a&nbsp;formula&nbsp;that&nbsp;solves&nbsp;differential&nbsp;equations&nbsp;if&nbsp;they&nbsp;are&nbsp;
-in the&nbsp;&quot;one&nbsp;time-dependent&nbsp;variable&nbsp;per&nbsp;equation&quot;&nbsp;form&nbsp;-&nbsp;which&nbsp;the&nbsp;
-differential equation&nbsp;is&nbsp;in&nbsp;by&nbsp;now.&nbsp;
- 
-Since a&nbsp;differential&nbsp;equation&nbsp;describes&nbsp;all&nbsp;potential&nbsp;shapes&nbsp;a&nbsp;curve&nbsp;can&nbsp;assume&nbsp;
-but doesn't&nbsp;describe&nbsp;the&nbsp;actual&nbsp;height&nbsp;nor&nbsp;which&nbsp;of&nbsp;these&nbsp;possibilities&nbsp;are&nbsp;actually&nbsp;
+
+Maxima will&nbsp;try&nbsp;to&nbsp;find&nbsp;a&nbsp;formula&nbsp;that&nbsp;solves&nbsp;differential&nbsp;equations&nbsp;if&nbsp;they&nbsp;are
+in the&nbsp;&quot;one&nbsp;time-dependent&nbsp;variable&nbsp;per&nbsp;equation&quot;&nbsp;form&nbsp;-&nbsp;which&nbsp;the
+differential equation&nbsp;is&nbsp;in&nbsp;by&nbsp;now.<BR>
+Since a&nbsp;differential&nbsp;equation&nbsp;describes&nbsp;all&nbsp;potential&nbsp;shapes&nbsp;a&nbsp;curve&nbsp;can&nbsp;assume
+but doesn't&nbsp;describe&nbsp;the&nbsp;actual&nbsp;height&nbsp;nor&nbsp;which&nbsp;of&nbsp;these&nbsp;possibilities&nbsp;are&nbsp;actually
 used in&nbsp;reality&nbsp;the&nbsp;result&nbsp;looks&nbsp;quite&nbsp;monstrous&nbsp;in&nbsp;this&nbsp;case:
 </P>
 
@@ -480,21 +440,21 @@ used in&nbsp;reality&nbsp;the&nbsp;result&nbsp;looks&nbsp;quite&nbsp;monstrous&n
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i22) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">solution1</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>));
-  </SPAN></TD>
+<span class="code_variable">solution1</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_14.png" width="874" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;p;(%o22) <BR>
-U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(U_C(t),t,1),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sinh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L)))/sqrt(C*(C*R^2-4*L))+U_C(0)*C*L*cosh((t*sqrt(C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
 
 
 <!-- Text cell -->
 
 
 <P CLASS="comment">
- If&nbsp;we&nbsp;answer&nbsp;the&nbsp;question&nbsp;differently&nbsp;the&nbsp;form&nbsp;the&nbsp;answer&nbsp;is&nbsp;presented&nbsp;in&nbsp;does&nbsp;change:
+
+If we&nbsp;answer&nbsp;the&nbsp;question&nbsp;differently&nbsp;the&nbsp;form&nbsp;the&nbsp;answer&nbsp;is&nbsp;presented&nbsp;in&nbsp;does&nbsp;change:
 </P>
 
 
@@ -503,22 +463,22 @@ U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(U_C(t),t,1),t=0))*C*L)-
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i23) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>));
-  </SPAN></TD>
+<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_15.png" width="876" style="max-width:90%;" alt="C*(C*R^2-4*L)&quot; positive, negative or zero?&quot;n;(%o23) <BR>
-U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(U_C(t),t,1),t=0))*C*L)-U_C(0)*C^2*L*R)*sin((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L)))/sqrt(-C*(C*R^2-4*L))+U_C(0)*C*L*cos((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
+U_C(t)=(%e^(-(t*R)/(2*L))*(((2*C*L*(U_C(0)*C*R+(at('diff(d/(d*t)*),t=0))*C*L)-U_C(0)*C^2*L*R)*sin((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L)))/sqrt(-C*(C*R^2-4*L))+U_C(0)*C*L*cos((t*sqrt(-C*(C*R^2-4*L)))/(2*C*L))))/(C*L)" >
 
 
 <!-- Text cell -->
 
 
 <P CLASS="comment">
- This&nbsp;time&nbsp;the&nbsp;question&nbsp;maxima&nbsp;has&nbsp;asked&nbsp;doesn't&nbsp;actually&nbsp;change&nbsp;the&nbsp;shape&nbsp;of&nbsp;the&nbsp;curve&nbsp;
-that solves&nbsp;the&nbsp;differential&nbsp;equation,&nbsp;though.&nbsp;It&nbsp;just&nbsp;determines&nbsp;if&nbsp;the&nbsp;program&nbsp;combines&nbsp;
+
+This time&nbsp;the&nbsp;question&nbsp;maxima&nbsp;has&nbsp;asked&nbsp;doesn't&nbsp;actually&nbsp;change&nbsp;the&nbsp;shape&nbsp;of&nbsp;the&nbsp;curve
+that solves&nbsp;the&nbsp;differential&nbsp;equation,&nbsp;though.&nbsp;It&nbsp;just&nbsp;determines&nbsp;if&nbsp;the&nbsp;program&nbsp;combines
 the exp()&nbsp;functions&nbsp;that&nbsp;solve&nbsp;the&nbsp;problem&nbsp;to&nbsp;sinusses.
 </P>
 
@@ -535,8 +495,9 @@ the exp()&nbsp;functions&nbsp;that&nbsp;solve&nbsp;the&nbsp;problem&nbsp;to&nbsp
 
 
 <P CLASS="comment">
- Maxima&nbsp;maintains&nbsp;a&nbsp;database&nbsp;of&nbsp;known&nbsp;facts.&nbsp;We&nbsp;can&nbsp;use&nbsp;this&nbsp;database&nbsp;to&nbsp;tell&nbsp;the&nbsp;program&nbsp;
-about the&nbsp;starting&nbsp;values&nbsp;of&nbsp;the&nbsp;curve&nbsp;it&nbsp;is&nbsp;about&nbsp;to&nbsp;generate.&nbsp;The&nbsp;first&nbsp;of&nbsp;these&nbsp;values&nbsp;
+
+Maxima maintains&nbsp;a&nbsp;database&nbsp;of&nbsp;known&nbsp;facts.&nbsp;We&nbsp;can&nbsp;use&nbsp;this&nbsp;database&nbsp;to&nbsp;tell&nbsp;the&nbsp;program
+about the&nbsp;starting&nbsp;values&nbsp;of&nbsp;the&nbsp;curve&nbsp;it&nbsp;is&nbsp;about&nbsp;to&nbsp;generate.&nbsp;The&nbsp;first&nbsp;of&nbsp;these&nbsp;values
 is easy&nbsp;to&nbsp;acquire:&nbsp;We&nbsp;want&nbsp;to&nbsp;start&nbsp;with&nbsp;a&nbsp;discharged&nbsp;capacitor:
 </P>
 
@@ -546,11 +507,10 @@ is easy&nbsp;to&nbsp;acquire:&nbsp;We&nbsp;want&nbsp;to&nbsp;start&nbsp;with&nbs
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i24) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">atvalue</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_variable">U_0</span>)$
-  </SPAN></TD>
+<span class="code_function">atvalue</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_variable">U_0</span>)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
 
 
@@ -559,8 +519,9 @@ is easy&nbsp;to&nbsp;acquire:&nbsp;We&nbsp;want&nbsp;to&nbsp;start&nbsp;with&nbs
 
 
 <P CLASS="comment">
- The&nbsp;second&nbsp;condition&nbsp;could&nbsp;be&nbsp;calculated&nbsp;using&nbsp;our&nbsp;initial&nbsp;equation&nbsp;system&nbsp;and&nbsp;knowledge&nbsp;
-about the&nbsp;current&nbsp;through&nbsp;the&nbsp;inductor.&nbsp;Or&nbsp;we&nbsp;can&nbsp;tell&nbsp;maxim&nbsp;we&nbsp;want&nbsp;to&nbsp;know&nbsp;a&nbsp;condition&nbsp;
+
+The second&nbsp;condition&nbsp;could&nbsp;be&nbsp;calculated&nbsp;using&nbsp;our&nbsp;initial&nbsp;equation&nbsp;system&nbsp;and&nbsp;knowledge
+about the&nbsp;current&nbsp;through&nbsp;the&nbsp;inductor.&nbsp;Or&nbsp;we&nbsp;can&nbsp;tell&nbsp;maxim&nbsp;we&nbsp;want&nbsp;to&nbsp;know&nbsp;a&nbsp;condition
 that makes&nbsp;the&nbsp;sinus&nbsp;go&nbsp;away:
 </P>
 
@@ -570,22 +531,22 @@ that makes&nbsp;the&nbsp;sinus&nbsp;go&nbsp;away:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i25) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span>(<span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">+</span>(<span class="code_function">at</span>('<span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>,<span class="code_number">1</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>))<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">-</span><span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_variable">R</span>)<span class="code_operator">=</span><span class="code_number">0</span>;<BR>
-<span class="code_variable">InitialCondition1</span><span class="code_operator">:</span><span class="code_function">solve</span>(%,'<span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>));
-  </SPAN></TD>
+(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span>(<span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">+</span>(<span class="code_function">at</span>(<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>,<span class="code_number">1</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>))<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">-</span><span class="code_function">U_C</span>(<span class="code_number">0</span>)<span class="code_operator">*</span><span class="code_variable">C</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">*</span><span class="code_variable">R</span>)<span class="code_operator">=</span><span class="code_number">0</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">InitialCondition1</span><span class="code_operator">:</span><span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="2*C*L*(C*R*U_0+(at('diff(U_C(t),t,1),t=0))*C*L)-C^2*L*R*U_0=0(%o26) <BR>
-['diff(U_C(t),t,1)=-(R*U_0)/(2*L)]" >
+  <img src="Example_htmlimg/Example_16.png" width="487" style="max-width:90%;" alt="2*C*L*(C*R*U_0+(at('diff(d/(d*t)*),t=0))*C*L)-C^2*L*R*U_0=0(%o26) <BR>
+['diff(d/(d*t)*)=-(R*U_0)/(2*L)]" >
 
 
 <!-- Text cell -->
 
 
 <P CLASS="comment">
- Let's&nbsp;assign&nbsp;'diff(U_C(t),t)&nbsp;the&nbsp;right-hand-side&nbsp;of&nbsp;the&nbsp;first&nbsp;element&nbsp;in&nbsp;this&nbsp;equation&nbsp;list&nbsp;for&nbsp;
+
+Let's assign&nbsp;'diff(U_C(t),t)&nbsp;the&nbsp;right-hand-side&nbsp;of&nbsp;the&nbsp;first&nbsp;element&nbsp;in&nbsp;this&nbsp;equation&nbsp;list&nbsp;for
 the case&nbsp;that&nbsp;t=0.
 </P>
 
@@ -595,11 +556,10 @@ the case&nbsp;that&nbsp;t=0.
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i27) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">atvalue</span>('<span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_function">rhs</span>(<span class="code_variable">InitialCondition1</span>[<span class="code_number">1</span>]))$
-  </SPAN></TD>
+<span class="code_function">atvalue</span>(<span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_function">U_C</span>(<span class="code_variable">t</span>),<span class="code_variable">t</span>),<span class="code_variable">t</span><span class="code_operator">=</span><span class="code_number">0</span>,<span class="code_function">rhs</span>(<span class="code_variable">InitialCondition1</span>[<span class="code_number">1</span>]))<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
 
 
@@ -608,7 +568,8 @@ the case&nbsp;that&nbsp;t=0.
 
 
 <P CLASS="comment">
- We&nbsp;also&nbsp;can&nbsp;inform&nbsp;maxima&nbsp;about&nbsp;enough&nbsp;facts&nbsp;about&nbsp;the&nbsp;problem&nbsp;it&nbsp;does&nbsp;need&nbsp;to&nbsp;ask&nbsp;the&nbsp;same&nbsp;
+
+We also&nbsp;can&nbsp;inform&nbsp;maxima&nbsp;about&nbsp;enough&nbsp;facts&nbsp;about&nbsp;the&nbsp;problem&nbsp;it&nbsp;does&nbsp;need&nbsp;to&nbsp;ask&nbsp;the&nbsp;same
 question again:
 </P>
 
@@ -618,11 +579,10 @@ question again:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i28) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">assume</span>(<span class="code_variable">C</span><span class="code_operator">&gt;</span><span class="code_number">0</span>,<span class="code_variable">R</span><span class="code_operator">&gt;</span><span class="code_number">0</span>,<span class="code_variable">L</span><span class="code_operator">&gt;</span><span class="code_number">0</span>,<span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span><span class="code_operator">&lt;</span><span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span>);
-  </SPAN></TD>
+<span class="code_function">assume</span>(<span class="code_variable">C</span>&gt;<span class="code_number">0</span>,<span class="code_variable">R</span>&gt;<span class="code_number">0</span>,<span class="code_variable">L</span>&gt;<span class="code_number">0</span>,<span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span>&lt;<span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_17.png" width="315" style="max-width:90%;" alt="[C&gt;0,R&gt;0,L&gt;0,4*L&gt;C*R^2]" >
 
@@ -631,7 +591,8 @@ question again:
 
 
 <P CLASS="comment">
- Now&nbsp;that&nbsp;the&nbsp;solution&nbsp;does&nbsp;no&nbsp;more&nbsp;need&nbsp;to&nbsp;be&nbsp;this&nbsp;general&nbsp;it&nbsp;does&nbsp;look&nbsp;much&nbsp;cleaner:
+
+Now that&nbsp;the&nbsp;solution&nbsp;does&nbsp;no&nbsp;more&nbsp;need&nbsp;to&nbsp;be&nbsp;this&nbsp;general&nbsp;it&nbsp;does&nbsp;look&nbsp;much&nbsp;cleaner:
 </P>
 
 
@@ -640,11 +601,10 @@ question again:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i29) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>));
-  </SPAN></TD>
+<span class="code_variable">solution2</span><span class="code_operator">:</span><span class="code_function">desolve</span>(<span class="code_variable">dgl</span>,<span class="code_function">U_C</span>(<span class="code_variable">t</span>))<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_18.png" width="373" style="max-width:90%;" alt="U_C(t)=%e^(-(t*R)/(2*L))*cos((t*sqrt(4*L-C*R^2))/(2*sqrt(C)*L))*U_0" >
 
@@ -661,7 +621,8 @@ question again:
 
 
 <P CLASS="comment">
- From&nbsp;the&nbsp;last&nbsp;equation&nbsp;one&nbsp;can&nbsp;easily&nbsp;see&nbsp;that&nbsp;the&nbsp;resonance&nbsp;frequency&nbsp;is&nbsp;in&nbsp;fact&nbsp;dependant&nbsp;
+
+From the&nbsp;last&nbsp;equation&nbsp;one&nbsp;can&nbsp;easily&nbsp;see&nbsp;that&nbsp;the&nbsp;resonance&nbsp;frequency&nbsp;is&nbsp;in&nbsp;fact&nbsp;dependant
 on the&nbsp;damping:
 </P>
 
@@ -671,11 +632,10 @@ on the&nbsp;damping:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i30) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">Frequency</span><span class="code_operator">:</span><span class="code_variable">f</span><span class="code_operator">=</span>(<span class="code_function">sqrt</span>(<span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">-</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span>))<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_function">sqrt</span>(<span class="code_variable">C</span>)<span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span>%<span class="code_variable">pi</span>);
-  </SPAN></TD>
+<span class="code_variable">Frequency</span><span class="code_operator">:</span><span class="code_variable">f</span><span class="code_operator">=</span>(<span class="code_function">sqrt</span>(<span class="code_number">4</span><span class="code_operator">*</span><span class="code_variable">L</span><span class="code_operator">-</span><span class="code_variable">C</span><span class="code_operator">*</span><span class="code_variable">R</span><span class="code_operator">^</span><span class="code_number">2</span>))<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_function">sqrt</span>(<span class="code_variable">C</span>)<span class="code_operator">*</span><span class="code_variable">L</span>)<span class="code_operator">/</span>(<span class="code_number">2</span><span class="code_operator">*</span><span class="code_variable">%pi</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_19.png" width="187" style="max-width:90%;" alt="f=sqrt(4*L-C*R^2)/(4*%pi*sqrt(C)*L)" >
 
@@ -700,7 +660,8 @@ on the&nbsp;damping:
 
 
 <P CLASS="comment">
- We&nbsp;wnt&nbsp;to&nbsp;variate&nbsp;R,&nbsp;but&nbsp;the&nbsp;actual&nbsp;values&nbsp;of&nbsp;L&nbsp;and&nbsp;C&nbsp;don't&nbsp;really&nbsp;matter&nbsp;so&nbsp;we&nbsp;can&nbsp;set&nbsp;
+
+We wnt&nbsp;to&nbsp;variate&nbsp;R,&nbsp;but&nbsp;the&nbsp;actual&nbsp;values&nbsp;of&nbsp;L&nbsp;and&nbsp;C&nbsp;don't&nbsp;really&nbsp;matter&nbsp;so&nbsp;we&nbsp;can&nbsp;set
 them for&nbsp;example&nbsp;to&nbsp;1:
 </P>
 
@@ -710,16 +671,15 @@ them for&nbsp;example&nbsp;to&nbsp;1:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i31) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">ElementValues</span>:<BR>
+<span class="code_variable">ElementValues</span><span class="code_operator">:</span><BR>
 [<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">L</span><span class="code_operator">=</span><span class="code_number">1</span>,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">C</span><span class="code_operator">=</span><span class="code_number">1</span>,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">U_0</span><span class="code_operator">=</span><span class="code_number">1</span><BR>
-];
-  </SPAN></TD>
+]<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_20.png" width="248" style="max-width:90%;" alt="[L=1,C=1,U_0=1]" >
 
@@ -728,7 +688,8 @@ them for&nbsp;example&nbsp;to&nbsp;1:
 
 
 <P CLASS="comment">
- It&nbsp;is&nbsp;always&nbsp;good&nbsp;to&nbsp;keep&nbsp;real&nbsp;numbers&nbsp;separate&nbsp;from&nbsp;the&nbsp;actual&nbsp;formula&nbsp;so&nbsp;one&nbsp;can&nbsp;switch&nbsp;
+
+It is&nbsp;always&nbsp;good&nbsp;to&nbsp;keep&nbsp;real&nbsp;numbers&nbsp;separate&nbsp;from&nbsp;the&nbsp;actual&nbsp;formula&nbsp;so&nbsp;one&nbsp;can&nbsp;switch
 between displaying&nbsp;tha&nbsp;formula&nbsp;and&nbsp;the&nbsp;result:
 </P>
 
@@ -738,11 +699,10 @@ between displaying&nbsp;tha&nbsp;formula&nbsp;and&nbsp;the&nbsp;result:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i32) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">Frequency</span>;
-  </SPAN></TD>
+<span class="code_variable">Frequency</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_21.png" width="187" style="max-width:90%;" alt="f=sqrt(4*L-C*R^2)/(4*%pi*sqrt(C)*L)" >
 
@@ -752,11 +712,10 @@ between displaying&nbsp;tha&nbsp;formula&nbsp;and&nbsp;the&nbsp;result:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i33) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">at</span>(<span class="code_variable">Frequency</span>,<span class="code_variable">ElementValues</span>);
-  </SPAN></TD>
+<span class="code_function">at</span>(<span class="code_variable">Frequency</span>,<span class="code_variable">ElementValues</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_22.png" width="161" style="max-width:90%;" alt="f=sqrt(4-R^2)/(4*%pi)" >
 
@@ -765,7 +724,8 @@ between displaying&nbsp;tha&nbsp;formula&nbsp;and&nbsp;the&nbsp;result:
 
 
 <P CLASS="comment">
- To&nbsp;make&nbsp;the&nbsp;command&nbsp;for&nbsp;plotting&nbsp;shorter&nbsp;we&nbsp;should&nbsp;assign&nbsp;the&nbsp;right-hand-value&nbsp;of&nbsp;the&nbsp;
+
+To make&nbsp;the&nbsp;command&nbsp;for&nbsp;plotting&nbsp;shorter&nbsp;we&nbsp;should&nbsp;assign&nbsp;the&nbsp;right-hand-value&nbsp;of&nbsp;the
 solution of&nbsp;the&nbsp;differential&nbsp;equation&nbsp;with&nbsp;the&nbsp;applied&nbsp;element&nbsp;values&nbsp;in&nbsp;a&nbsp;macro,&nbsp;though:
 </P>
 
@@ -775,11 +735,10 @@ solution of&nbsp;the&nbsp;differential&nbsp;equation&nbsp;with&nbsp;the&nbsp;app
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i34) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)<span class="code_operator">:=</span><span class="code_function">ev</span>(<span class="code_function">rhs</span>(<span class="code_variable">solution2</span>),<span class="code_variable">ElementValues</span>);
-  </SPAN></TD>
+<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)<span class="code_operator">:</span><span class="code_operator">=</span><span class="code_function">ev</span>(<span class="code_function">rhs</span>(<span class="code_variable">solution2</span>),<span class="code_variable">ElementValues</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_23.png" width="525" style="max-width:90%;" alt="Voltage(R,t):=ev(rhs(solution2),ElementValues)" >
 
@@ -788,7 +747,8 @@ solution of&nbsp;the&nbsp;differential&nbsp;equation&nbsp;with&nbsp;the&nbsp;app
 
 
 <P CLASS="comment">
- Maxima&nbsp;will&nbsp;keep&nbsp;all&nbsp;variables&nbsp;it&nbsp;doesn't&nbsp;currently&nbsp;know&nbsp;the&nbsp;value&nbsp;of&nbsp;as&nbsp;symbols.&nbsp;
+
+Maxima will&nbsp;keep&nbsp;all&nbsp;variables&nbsp;it&nbsp;doesn't&nbsp;currently&nbsp;know&nbsp;the&nbsp;value&nbsp;of&nbsp;as&nbsp;symbols.
 So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;easy:
 </P>
 
@@ -798,11 +758,10 @@ So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i35) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>);
-  </SPAN></TD>
+<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_24.png" width="245" style="max-width:90%;" alt="%e^(-(t*R)/2)*cos((t*sqrt(4-R^2))/2)" >
 
@@ -812,11 +771,10 @@ So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i36) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">Resistors</span><span class="code_operator">:</span><span class="code_function">makelist</span>(<span class="code_variable">i</span><span class="code_operator">/</span><span class="code_number">20</span>,<span class="code_variable">i</span>,<span class="code_number">0</span>,<span class="code_number">20</span>);
-  </SPAN></TD>
+<span class="code_variable">Resistors</span><span class="code_operator">:</span><span class="code_function">makelist</span>(<span class="code_variable">i</span><span class="code_operator">/</span><span class="code_number">20</span>,<span class="code_variable">i</span>,<span class="code_number">0</span>,<span class="code_number">20</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_25.png" width="867" style="max-width:90%;" alt="[0,1/20,1/10,3/20,1/5,1/4,3/10,7/20,2/5,9/20,1/2,11/20,3/5,13/20,7/10,3/4,4/5,17/20,9/10,19/20,1]" >
 
@@ -826,11 +784,10 @@ So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i37) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_function">float</span>(<span class="code_variable">Resistors</span>);
-  </SPAN></TD>
+<span class="code_function">float</span>(<span class="code_variable">Resistors</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_26.png" width="998" style="max-width:90%;" alt="[0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0]" >
 
@@ -840,34 +797,31 @@ So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i38) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
-<span class="code_variable">wxplot_size</span>:[<span class="code_number">1024</span>,<span class="code_number">768</span>]$<BR>
-<span class="code_variable">wxanimate_framerate</span><span class="code_operator">:</span><span class="code_number">2</span>$<BR>
+<span class="code_variable">wxplot_size</span><span class="code_operator">:</span>[<span class="code_number">1024</span>,<span class="code_number">768</span>]<span class="code_endofline">$</span><BR>
+<span class="code_variable">wxanimate_framerate</span><span class="code_operator">:</span><span class="code_number">2</span><span class="code_endofline">$</span><BR>
 <span class="code_function">with_slider_draw</span>(<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_operator">/</span><span class="code_operator">*</span> <span class="code_variable">The</span> <span class="code_variable">parameter</span> <span class="code_variable">we</span> <span class="code_variable">want</span> <span class="code_variable">to</span> <span class="code_variable">assign</span> <span class="code_variable">to</span> <span class="code_variable">the</span> <span class="code_variable">slider</span> <span class="code_operator">and</span> <span class="code_variable">all</span> <span class="code_variable">values</span> <span class="code_variable">it</span> <span class="code_variable">can</span> <span class="code_variable">assume</span> <span class="code_operator">*</span><span class="code_operator">/</span><BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">The</span><span class="code_comment"> </span><span class="code_comment">parameter</span><span class="code_comment"> </span><span class="code_comment">we</span><span class="code_comment"> </span><span class="code_comment">want</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">assign</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">the</span><span class="code_comment"> </span><span class="code_comment">slider</span><span class="code_comment"> </span><span class="code_comment">and</span><span class="code_comment"> </span><span class="code_comment">all</span><span class="code_comment"> </span><span class="code_comment">values</span><span class="code_comment"> </span><span class="code_comment">it</span><span class="code_comment"> </span><span class="code_comment">can</span><span class="code_comment"> </span><span class="code_comment">assume</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">R</span>,<span class="code_variable">Resistors</span>,<BR>
 <BR>
- &nbsp;&nbsp;&nbsp;<span class="code_operator">/</span><span class="code_operator">*</span> <span class="code_variable">The</span> <span class="code_variable">thing</span> <span class="code_variable">we</span> <span class="code_variable">actually</span> <span class="code_variable">want</span> <span class="code_variable">to</span> <span class="code_variable">draw</span> <span class="code_operator">*</span><span class="code_operator">/</span><BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;R=&quot;</span>,<span class="code_function">float</span>(<span class="code_variable">R</span>),<span class="code_string">&quot; Ohm&quot;</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">The</span><span class="code_comment"> </span><span class="code_comment">thing</span><span class="code_comment"> </span><span class="code_comment">we</span><span class="code_comment"> </span><span class="code_comment">actually</span><span class="code_comment"> </span><span class="code_comment">want</span><span class="code_comment"> </span><span class="code_comment">to</span><span class="code_comment"> </span><span class="code_comment">draw</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">R</span><span class="code_string">=</span><span class="code_string">&quot;</span>,<span class="code_function">float</span>(<span class="code_variable">R</span>),<span class="code_string">&quot;</span><span class="code_string"> </span><span class="code_string">Ohm</span><span class="code_string">&quot;</span>),<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)),<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">20</span><BR>
  &nbsp;&nbsp;&nbsp;),<span class="code_variable">line_type</span><span class="code_operator">=</span><span class="code_variable">dots</span>,<span class="code_variable">color</span><span class="code_operator">=</span><span class="code_variable">black</span>,<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;R=0.0 Ohm&quot;</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">key</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">R</span><span class="code_string">=</span><span class="code_string">0</span><span class="code_string">.</span><span class="code_string">0</span><span class="code_string"> </span><span class="code_string">Ohm</span><span class="code_string">&quot;</span>),<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_number">0</span>,<span class="code_variable">t</span>)),<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">20</span><BR>
  &nbsp;&nbsp;&nbsp;),<BR>
- &nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_operator">-</span><span class="code_number">1</span>,<span class="code_number">1</span>],<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span><span class="code_variable">true</span><BR>
-);
-  </SPAN></TD>
+ &nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">-</span><span class="code_number">1</span>,<span class="code_number">1</span>],<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true<BR>
+)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-  <img src="Example_htmlimg/Example_27.png" width="1222" style="max-width:90%;" alt=";; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/gnuplot.fasl&quot;;; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/vtk.fasl&quot;<BR>
-;; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/picture.fasl&quot;<BR>
-(%t40) <BR>
+  <img src="Example_htmlimg/Example_27.png" width="1222" style="max-width:90%;" alt=";; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/gnuplot.fasl&quot;;; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/vtk.fasl&quot;;; loading #P&quot;/home/gunter/.maxima/binary/branch_5_36_base_111_gb952323_dirty/sbcl/1_2_11_debian/share/draw/picture.fasl&quot;(%t40) <BR>
  &lt;&lt; Graphics &gt;&gt; (%o40) <BR>
 " >
 
@@ -876,7 +830,8 @@ So looking&nbsp;if&nbsp;defining&nbsp;the&nbsp;functions&nbsp;work&nbsp;is&nbsp;
 
 
 <P CLASS="comment">
- Normally&nbsp;animated&nbsp;2D&nbsp;plots&nbsp;are&nbsp;easier&nbsp;to&nbsp;read&nbsp;than&nbsp;3D&nbsp;ones.&nbsp;But&nbsp;just&nbsp;to&nbsp;show&nbsp;that&nbsp;
+
+Normally animated&nbsp;2D&nbsp;plots&nbsp;are&nbsp;easier&nbsp;to&nbsp;read&nbsp;than&nbsp;3D&nbsp;ones.&nbsp;But&nbsp;just&nbsp;to&nbsp;show&nbsp;that
 we can&nbsp;produce&nbsp;an&nbsp;expecially&nbsp;shiny&nbsp;one,&nbsp;too:
 </P>
 
@@ -886,20 +841,19 @@ we can&nbsp;produce&nbsp;an&nbsp;expecially&nbsp;shiny&nbsp;one,&nbsp;too:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i41) 
+
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_function">wxdraw3d</span>(<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span><span class="code_variable">true</span>,<span class="code_variable">enhanced3d</span><span class="code_operator">=</span><span class="code_variable">true</span>,<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">wired_surface</span><span class="code_operator">=</span><span class="code_variable">true</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<span class="code_variable">enhanced3d</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">wired_surface</span><span class="code_operator">=</span>true,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">nticks</span><span class="code_operator">=</span><span class="code_number">200</span>,<span class="code_variable">contour</span><span class="code_operator">=</span><span class="code_variable">base</span>,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">ev</span>(<span class="code_function">Voltage</span>(<span class="code_variable">R</span>,<span class="code_variable">t</span>)),<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">t</span>,<span class="code_number">0</span>,<span class="code_number">10</span>,<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">R</span>,<span class="code_number">0</span>,<span class="code_number">1</span><BR>
- &nbsp;&nbsp;&nbsp;),<span class="code_variable">colorbox</span><span class="code_operator">=</span><span class="code_string">&quot;Magnitude&quot;</span><BR>
-);
-  </SPAN></TD>
+ &nbsp;&nbsp;&nbsp;),<span class="code_variable">colorbox</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Magnitude</span><span class="code_string">&quot;</span><BR>
+)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
   <img src="Example_htmlimg/Example_28.png" width="1026" style="max-width:90%;" alt=" (Graphics) (%o41) <BR>
 " >
@@ -909,11 +863,37 @@ we can&nbsp;produce&nbsp;an&nbsp;expecially&nbsp;shiny&nbsp;one,&nbsp;too:
 
 
 <P CLASS="comment">
- This&nbsp;example&nbsp;has&nbsp;been&nbsp;created&nbsp;by&nbsp;the&nbsp;HTML&nbsp;export-feature&nbsp;of&nbsp;a&nbsp;post-15.04&nbsp;wxMaxima.
+
+This example&nbsp;has&nbsp;been&nbsp;created&nbsp;by&nbsp;the&nbsp;HTML&nbsp;export-feature&nbsp;of&nbsp;a&nbsp;post-15.04&nbsp;wxMaxima.
 </P>
 
  <HR>
  <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
 
- </BODY>
-</HTML>
+ </div>
+
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+sc_project=318894; 
+sc_invisible=1; 
+sc_partition=1; 
+sc_security=""; 
+</script>
+
+<script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script><noscript><div class="statcounter"><a title="web counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank"><img class="statcounter" src="http://c2.statcounter.com/318894/0//1/" alt="web counter" style="border:0"></a></div></noscript>
+<!-- End of StatCounter Code -->
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57021248-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End of Google Analytics -->
+
+</body>
