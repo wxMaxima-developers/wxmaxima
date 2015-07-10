@@ -375,7 +375,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       //
       // Mark selection
       //
-      if (m_selectionStart > -1)
+      if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
                       parser,scale,dc,TS_SELECTION);
@@ -1759,11 +1759,14 @@ wxString EditorCell::DivideAtCaret()
 
 void EditorCell::SetSelection(int start, int end)
 {
-  if((m_selectionStart != m_oldSelectionStart)||(m_selectionEnd != m_oldSelectionEnd))
+  std::cerr<<"Sel:"<<start<<"-"<<end<<"\n";
+  if((start != m_oldSelectionStart)||(end != m_oldSelectionEnd))
   {
-    m_selectionChanged = true;
-    m_selectionStart = start;
-    m_positionOfCaret = m_selectionEnd = end;
+    m_oldSelectionStart = start;
+    m_oldSelectionEnd   = end;
+    m_selectionChanged  = true;
+    m_selectionStart    = start;
+    m_positionOfCaret   = m_selectionEnd = end;
     if (m_selectionStart == -1 || m_selectionEnd == -1)
       m_selectionString = wxEmptyString;
     else
@@ -1771,6 +1774,8 @@ void EditorCell::SetSelection(int start, int end)
         MIN(m_selectionStart, m_selectionEnd),
         MAX(m_selectionStart, m_selectionEnd) - 1
         );
+    std::cerr<<"string:"<<m_selectionString<<"\n";
+    std::cerr<<"text:"<<m_text<<"\n";
   }  
 }
 
@@ -2579,7 +2584,7 @@ void EditorCell::ClearSelection()
   {
     m_selectionChanged = true;
     m_selectionString = wxEmptyString;
-    m_selectionStart = m_selectionEnd = -1;
+    m_oldSelectionStart = m_oldSelectionEnd = m_selectionStart = m_selectionEnd = -1;
   }
 }
 
