@@ -1759,7 +1759,6 @@ wxString EditorCell::DivideAtCaret()
 
 void EditorCell::SetSelection(int start, int end)
 {
-  std::cerr<<"Sel:"<<start<<"-"<<end<<"\n";
   if((start != m_oldSelectionStart)||(end != m_oldSelectionEnd))
   {
     m_oldSelectionStart = start;
@@ -1774,8 +1773,6 @@ void EditorCell::SetSelection(int start, int end)
         MIN(m_selectionStart, m_selectionEnd),
         MAX(m_selectionStart, m_selectionEnd) - 1
         );
-    std::cerr<<"string:"<<m_selectionString<<"\n";
-    std::cerr<<"text:"<<m_text<<"\n";
   }  
 }
 
