@@ -67,6 +67,8 @@ private:
   long m_oldSelectionEnd;
 
 public:
+  //! Has the selection changed since the last draw event?
+  bool m_selectionChanged;
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
   //! The destructor

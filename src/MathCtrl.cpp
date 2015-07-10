@@ -1944,7 +1944,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // we need to enable the button that brings us back
     ScrolledAwayFromEvaluation();
 
-
     return;
   }
 
@@ -2037,26 +2036,31 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     Recalculate();
     Refresh();
   }
-
-  /// Otherwise refresh only the active cell
-  else {
-    wxRect rect;
-    if (m_activeCell->CheckChanges()) {
-      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-      if ((group->GetGroupType() == GC_TYPE_CODE) &&
-          (m_activeCell == group->GetEditable()))
-        group->ResetInputLabel();
-      rect = group->GetRect();
-      rect.width = GetVirtualSize().x;
+  else
+  {
+    if(m_activeCell->m_selectionChanged)
+    {
+      Refresh();
     }
+    /// Otherwise refresh only the active cell
     else {
-      rect = m_activeCell->GetRect();
-      rect.width = GetVirtualSize().x;
+      wxRect rect;
+      if (m_activeCell->CheckChanges()) {
+        GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+        if ((group->GetGroupType() == GC_TYPE_CODE) &&
+            (m_activeCell == group->GetEditable()))
+          group->ResetInputLabel();
+        rect = group->GetRect();
+        rect.width = GetVirtualSize().x;
+      }
+      else {
+        rect = m_activeCell->GetRect();
+        rect.width = GetVirtualSize().x;
+      }
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RefreshRect(rect);
     }
-    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-    RefreshRect(rect);
   }
-
   ScrollToCaret();
 }
 
@@ -2138,6 +2142,7 @@ void MathCtrl::SelectWithChar(int ccode) {
     }
     Refresh();
   }
+  Refresh();
 }
 
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {

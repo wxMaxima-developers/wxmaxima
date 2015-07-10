@@ -858,7 +858,7 @@ void Config::ReadStyles(wxString file)
                    &tmp)) m_styleSelection.color.Set(tmp);
 
   // Text equal to the current selection
-  m_styleEqualsSelection.color = wxT("rgb(192,192,192)");
+  m_styleEqualsSelection.color = wxT("rgb(192,192,255)");
   if (config->Read(wxT("Style/EqualsSelection/color"),
                    &tmp)) m_styleEqualsSelection.color.Set(tmp);
 

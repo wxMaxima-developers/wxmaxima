@@ -36,6 +36,7 @@ wxString EditorCell::m_selectionString;
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
+  m_selectionChanged = false;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
   m_text = wxEmptyString;
@@ -339,6 +340,7 @@ The order this cell is drawn is:
 */
 void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 {
+  m_selectionChanged = false;
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
   wxPoint point(point1);
@@ -354,23 +356,22 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     m_currentPoint.x = point.x;
     m_currentPoint.y = point.y;
 
+    //
+    // Mark text that coincides with the selection
+    //
+    if (m_selectionString != wxEmptyString)
+    {
+      size_t start = 0;
+      while((start = m_text.find(m_selectionString,start)) != wxNOT_FOUND)
+      {
+        size_t end = start + m_selectionString.Length();
+        MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION);
+        start = end;
+      }
+    }
+    
     if (m_isActive) // draw selection or matching parens
     {
-      //
-      // Mark text that coincides with the selection
-      //
-      if (m_selectionString != wxEmptyString)
-      {
-        size_t start = 0;
-        std::cerr<<"Debug1\n";
-
-        while((start = m_text.find(m_selectionString,start)) != wxNOT_FOUND)
-        {
-          size_t end = start + m_selectionString.Length();
-          MarkSelection(start,end - 1,parser,scale,dc,TS_EQUALSSELECTION);
-          start = end;
-        }
-      }
       //
       // Mark selection
       //
@@ -1760,6 +1761,7 @@ void EditorCell::SetSelection(int start, int end)
 {
   if((m_selectionStart != m_oldSelectionStart)||(m_selectionEnd != m_oldSelectionEnd))
   {
+    m_selectionChanged = true;
     m_selectionStart = start;
     m_positionOfCaret = m_selectionEnd = end;
     if (m_selectionStart == -1 || m_selectionEnd == -1)
@@ -1767,12 +1769,9 @@ void EditorCell::SetSelection(int start, int end)
     else
       m_selectionString = m_text.SubString(
         MIN(m_selectionStart, m_selectionEnd),
-        MAX(m_selectionStart, m_selectionEnd)
+        MAX(m_selectionStart, m_selectionEnd) - 1
         );
-    MathCell *first = GetParent();
-    while(first->m_previous != NULL)
-      first = first->m_previous;
-    first->DrawList();
+//    first->DrawList();
   }
 
 }
@@ -2582,6 +2581,7 @@ void EditorCell::ClearSelection()
 {
   if((m_selectionStart != -1)||(m_selectionEnd != -1))
   {
+    m_selectionChanged = true;
     m_selectionString = wxEmptyString;
     m_selectionStart = -1;
     m_selectionEnd = -1;
