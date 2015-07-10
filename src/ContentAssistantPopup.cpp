@@ -28,7 +28,6 @@
 void ContentAssistantPopup::UpdateResults()
 {
   wxString partial = m_editor->GetSelectionString();
-
   m_completions = m_autocomplete->CompleteSymbol(partial, m_type);
   m_completions.Sort();
 

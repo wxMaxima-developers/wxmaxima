@@ -137,6 +137,11 @@ public:
   {
     m_selectionStart = m_selectionEnd = 0;
   }
+  bool SelectionActive()
+  {
+    return (m_selectionStart != -1)&&(m_selectionEnd != -1);
+  }
+
   bool CanCopy()
   {
     return m_selectionStart != -1;

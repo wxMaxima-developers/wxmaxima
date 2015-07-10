@@ -127,7 +127,7 @@ wxString EditorCell::ToString()
 {
   wxString text = m_text;
 
-  if (m_selectionStart > -1)
+  if (SelectionActive())
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd) - 1;
@@ -1771,9 +1771,7 @@ void EditorCell::SetSelection(int start, int end)
         MIN(m_selectionStart, m_selectionEnd),
         MAX(m_selectionStart, m_selectionEnd) - 1
         );
-//    first->DrawList();
-  }
-
+  }  
 }
 
 void EditorCell::CommentSelection()
@@ -1824,14 +1822,12 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
     }
   }
 
+  SetSelection(left,right);
+  m_positionOfCaret = m_selectionEnd;
   if (left != right)
-  {
-    SetSelection(left,right);
-    m_positionOfCaret = m_selectionEnd;
-    return m_text.SubString(m_selectionStart, m_selectionEnd - 1);
-  }
-
-  return wxString(wxT("%"));
+    return m_selectionString;
+  else
+    return wxString(wxT("%"));
 }
 
 bool EditorCell::CopyToClipboard()
@@ -2571,7 +2567,7 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
 
 wxString EditorCell::GetSelectionString()
 {
-  if(m_selectionStart>0)
+  if(m_selectionStart>=0)
     return m_selectionString;
   else
     return wxEmptyString;
@@ -2579,12 +2575,11 @@ wxString EditorCell::GetSelectionString()
 
 void EditorCell::ClearSelection()
 {
-  if((m_selectionStart != -1)||(m_selectionEnd != -1))
+  if(SelectionActive())
   {
     m_selectionChanged = true;
     m_selectionString = wxEmptyString;
-    m_selectionStart = -1;
-    m_selectionEnd = -1;
+    m_selectionStart = m_selectionEnd = -1;
   }
 }
 
