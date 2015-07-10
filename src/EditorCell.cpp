@@ -362,14 +362,12 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       if (m_selectionString != wxEmptyString)
       {
         size_t start = 0;
-
         std::cerr<<"Debug1\n";
+
         while((start = m_text.find(m_selectionString,start)) != wxNOT_FOUND)
         {
           size_t end = start + m_selectionString.Length();
-          
-          std::cerr<<"Debug2\n";
-          MarkSelection(start,end,parser,scale,dc,TS_SELECTION);
+          MarkSelection(start,end - 1,parser,scale,dc,TS_EQUALSSELECTION);
           start = end;
         }
       }
@@ -1760,12 +1758,23 @@ wxString EditorCell::DivideAtCaret()
 
 void EditorCell::SetSelection(int start, int end)
 {
-  m_selectionStart = start;
-  m_positionOfCaret = m_selectionEnd = end;
-  if (m_selectionStart == -1 || m_selectionEnd == -1)
-    m_selectionString = wxEmptyString;
-  else
-    m_selectionString = m_text.SubString(m_selectionStart, m_selectionEnd-1);
+  if((m_selectionStart != m_oldSelectionStart)||(m_selectionEnd != m_oldSelectionEnd))
+  {
+    m_selectionStart = start;
+    m_positionOfCaret = m_selectionEnd = end;
+    if (m_selectionStart == -1 || m_selectionEnd == -1)
+      m_selectionString = wxEmptyString;
+    else
+      m_selectionString = m_text.SubString(
+        MIN(m_selectionStart, m_selectionEnd),
+        MAX(m_selectionStart, m_selectionEnd)
+        );
+    MathCell *first = GetParent();
+    while(first->m_previous != NULL)
+      first = first->m_previous;
+    first->DrawList();
+  }
+
 }
 
 void EditorCell::CommentSelection()
@@ -2571,12 +2580,12 @@ wxString EditorCell::GetSelectionString()
 
 void EditorCell::ClearSelection()
 {
-  m_selectionString = wxEmptyString;
-  if (m_selectionStart == -1 || m_selectionEnd == -1)
-    return;
-
-  m_positionOfCaret = m_selectionEnd;
-  ClearSelection();
+  if((m_selectionStart != -1)||(m_selectionEnd != -1))
+  {
+    m_selectionString = wxEmptyString;
+    m_selectionStart = -1;
+    m_selectionEnd = -1;
+  }
 }
 
 /***

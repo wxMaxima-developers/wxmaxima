@@ -63,6 +63,9 @@ private:
     for highlighting selected strings.
   */
   static wxString m_selectionString;
+  long m_oldSelectionStart;
+  long m_oldSelectionEnd;
+
 public:
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
