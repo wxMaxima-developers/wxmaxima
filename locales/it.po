@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-09 08:19+0200\n"
+"POT-Creation-Date: 2015-07-12 22:12+0200\n"
 "PO-Revision-Date: 2015-04-10 17:44+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -448,7 +448,7 @@ msgstr "Parametri aggiuntivi per maxima (per es. -l clisp)."
 msgid "Additional parameters:"
 msgstr "Parametri aggiuntivi:"
 
-#: ../src/Config.cpp:714
+#: ../src/Config.cpp:715
 msgid "All|*"
 msgstr "Tutti|*"
 
@@ -501,7 +501,7 @@ msgstr "BC2"
 msgid "Barsplot..."
 msgstr "Grafico a barre..."
 
-#: ../src/Config.cpp:709
+#: ../src/Config.cpp:710
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "File bat (*.bat)|*.bat|Tutti|*"
 
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Bitmap scale for export"
 msgstr ""
 
-#: ../src/Config.cpp:593
+#: ../src/Config.cpp:594
 msgid "Bold"
 msgstr "Grassetto"
 
@@ -542,18 +542,18 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4227
+#: ../src/MathCtrl.cpp:4232
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4298
+#: ../src/MathCtrl.cpp:4303
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4267
+#: ../src/MathCtrl.cpp:4272
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -583,11 +583,11 @@ msgstr ""
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4268
+#: ../src/MathCtrl.cpp:4273
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4232 ../src/MathCtrl.cpp:4303 ../src/MathCtrl.cpp:4337
+#: ../src/MathCtrl.cpp:4237 ../src/MathCtrl.cpp:4308 ../src/MathCtrl.cpp:4342
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -726,7 +726,7 @@ msgstr "Cinese semplificato"
 msgid "Chinese traditional"
 msgstr "Cinese tradizionale"
 
-#: ../src/Config.cpp:547 ../src/Config.cpp:549 ../src/Config.cpp:587
+#: ../src/Config.cpp:547 ../src/Config.cpp:549 ../src/Config.cpp:588
 msgid "Choose font"
 msgstr "Scegli font"
 
@@ -746,31 +746,31 @@ msgstr "Chiudi\tCtrl-W"
 msgid "Close window"
 msgstr "Chiudi la finestra"
 
-#: ../src/Config.cpp:579
+#: ../src/Config.cpp:580
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: ../src/Config.cpp:583
+#: ../src/Config.cpp:584
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: ../src/Config.cpp:578
+#: ../src/Config.cpp:579
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: ../src/Config.cpp:580
+#: ../src/Config.cpp:581
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: ../src/Config.cpp:582
+#: ../src/Config.cpp:583
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: ../src/Config.cpp:581
+#: ../src/Config.cpp:582
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: ../src/Config.cpp:577
+#: ../src/Config.cpp:578
 msgid "Code highlighting: Variables"
 msgstr ""
 
@@ -843,11 +843,11 @@ msgstr ""
 msgid "Condition:"
 msgstr "Condizione:"
 
-#: ../src/Config.cpp:1412 ../src/Config.cpp:1420
+#: ../src/Config.cpp:1423 ../src/Config.cpp:1431
 msgid "Config file (*.ini)|*.ini"
 msgstr "File di configurazione (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1258
+#: ../src/Config.cpp:1266
 msgid "Configuration warning"
 msgstr "Avvertenze di configurazione"
 
@@ -921,8 +921,8 @@ msgstr ""
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Converti le funzioni trigonometriche nella forma esponenziale"
 
-#: ../src/MathCtrl.cpp:755 ../src/MathCtrl.cpp:768 ../src/MathCtrl.cpp:784
-#: ../src/MathCtrl.cpp:828 ../src/ToolBar.cpp:90
+#: ../src/ToolBar.cpp:90 ../src/MathCtrl.cpp:755 ../src/MathCtrl.cpp:768
+#: ../src/MathCtrl.cpp:784 ../src/MathCtrl.cpp:828
 msgid "Copy"
 msgstr "Copia"
 
@@ -982,7 +982,7 @@ msgstr "Crea una nuova cella con il risultato precedente"
 msgid "Cursor"
 msgstr "Cursore"
 
-#: ../src/MathCtrl.cpp:827 ../src/ToolBar.cpp:87
+#: ../src/ToolBar.cpp:87 ../src/MathCtrl.cpp:827
 msgid "Cut"
 msgstr "Taglia"
 
@@ -1153,7 +1153,7 @@ msgstr "Mostra il tempo impiegato per l'esecuzione"
 msgid "Divide"
 msgstr "Dividi"
 
-#: ../src/MathCtrl.cpp:836 ../src/wxMaximaFrame.cpp:497
+#: ../src/wxMaximaFrame.cpp:497 ../src/MathCtrl.cpp:836
 msgid "Divide Cell"
 msgstr "Dividi cella"
 
@@ -1285,11 +1285,11 @@ msgstr "Equazione:"
 msgid "Equations:"
 msgstr "Equazioni:"
 
-#: ../src/Config.cpp:723 ../src/ImgCell.cpp:104 ../src/wxMaxima.cpp:362
-#: ../src/wxMaxima.cpp:1129 ../src/wxMaxima.cpp:1141 ../src/wxMaxima.cpp:1206
-#: ../src/wxMaxima.cpp:1219 ../src/wxMaxima.cpp:1243 ../src/wxMaxima.cpp:1757
-#: ../src/wxMaxima.cpp:1917 ../src/wxMaxima.cpp:4906 ../src/wxMaxima.cpp:5246
-#: ../src/wxMaxima.cpp:5291
+#: ../src/ImgCell.cpp:104 ../src/wxMaxima.cpp:362 ../src/wxMaxima.cpp:1129
+#: ../src/wxMaxima.cpp:1141 ../src/wxMaxima.cpp:1206 ../src/wxMaxima.cpp:1219
+#: ../src/wxMaxima.cpp:1243 ../src/wxMaxima.cpp:1757 ../src/wxMaxima.cpp:1917
+#: ../src/wxMaxima.cpp:4906 ../src/wxMaxima.cpp:5246 ../src/wxMaxima.cpp:5291
+#: ../src/Config.cpp:724
 msgid "Error"
 msgstr "Errore"
 
@@ -1315,7 +1315,7 @@ msgstr "Elabora tutte le celle\tCtrl-Maiusc-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Elabora tutte le celle visibili\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:776 ../src/wxMaximaFrame.cpp:447
+#: ../src/wxMaximaFrame.cpp:447 ../src/MathCtrl.cpp:776
 msgid "Evaluate Cell(s)"
 msgstr "Elabora le celle"
 
@@ -1353,7 +1353,7 @@ msgstr "Elabora le forme &nominali"
 msgid "Example"
 msgstr "Esempio"
 
-#: ../src/Config.cpp:1366 ../src/Config.cpp:1457
+#: ../src/Config.cpp:1377 ../src/Config.cpp:1468
 msgid "Example text"
 msgstr "Esempio di testo"
 
@@ -1724,7 +1724,7 @@ msgstr "Ricava la parte immaginaria da un'espressione complessa"
 msgid "Get the real part of complex expression"
 msgstr "Ricava la parte reale da un'espressione complessa"
 
-#: ../src/MathCtrl.cpp:4317
+#: ../src/MathCtrl.cpp:4322
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2033,7 +2033,7 @@ msgstr "Integra l'espressione"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integra l'espressione con l'algoritmo di Risch"
 
-#: ../src/MathCtrl.cpp:804 ../src/wxMaximaFrame.cpp:1044
+#: ../src/wxMaximaFrame.cpp:1044 ../src/MathCtrl.cpp:804
 msgid "Integrate..."
 msgstr "Integra..."
 
@@ -2051,7 +2051,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/Config.cpp:722
+#: ../src/Config.cpp:723
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2080,7 +2080,7 @@ msgstr ""
 msgid "Italian"
 msgstr "Italiano"
 
-#: ../src/Config.cpp:594
+#: ../src/Config.cpp:595
 msgid "Italic"
 msgstr "Corsivo"
 
@@ -2153,7 +2153,7 @@ msgstr "Regressione lineare..."
 msgid "List:"
 msgstr "Lista:"
 
-#: ../src/Config.cpp:597
+#: ../src/Config.cpp:598
 msgid "Load"
 msgstr "Carica"
 
@@ -2169,7 +2169,7 @@ msgstr "Carica un file Maxima usando un comando batch"
 msgid "Load a Maxima package file"
 msgstr "Carica un file pacchetto Maxima"
 
-#: ../src/Config.cpp:1418
+#: ../src/Config.cpp:1429
 msgid "Load style from file"
 msgstr "Carica lo stile da file"
 
@@ -2328,7 +2328,7 @@ msgstr "Media:"
 msgid "Median..."
 msgstr "Mediana..."
 
-#: ../src/MathCtrl.cpp:779 ../src/wxMaximaFrame.cpp:495
+#: ../src/wxMaximaFrame.cpp:495 ../src/MathCtrl.cpp:779
 msgid "Merge Cells"
 msgstr "Fondi celle"
 
@@ -2470,8 +2470,8 @@ msgstr "Test t a un campione"
 msgid "Online tutorials"
 msgstr "Guide online"
 
-#: ../src/Config.cpp:482 ../src/ToolBar.cpp:69 ../src/main.cpp:251
-#: ../src/wxMaxima.cpp:2412
+#: ../src/ToolBar.cpp:69 ../src/main.cpp:251 ../src/wxMaxima.cpp:2412
+#: ../src/Config.cpp:482
 msgid "Open"
 msgstr "Apri"
 
@@ -2507,7 +2507,7 @@ msgstr "Durante l'apertura del file"
 msgid "Optimize wxmx files for version control"
 msgstr "Ottimizza i file wxmx per i controlli di versione"
 
-#: ../src/Config.cpp:107 ../src/ToolBar.cpp:81
+#: ../src/ToolBar.cpp:81 ../src/Config.cpp:107
 msgid "Options"
 msgstr "Opzioni"
 
@@ -2515,7 +2515,7 @@ msgstr "Opzioni"
 msgid "Options:"
 msgstr "Opzioni:"
 
-#: ../src/Config.cpp:576
+#: ../src/Config.cpp:577
 msgid "Outdated cells"
 msgstr "Celle non aggiornate"
 
@@ -2571,7 +2571,7 @@ msgstr "Frazioni parziali"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Parti del documento non saranno caricate correttamente!"
 
-#: ../src/MathCtrl.cpp:814 ../src/MathCtrl.cpp:829 ../src/ToolBar.cpp:93
+#: ../src/ToolBar.cpp:93 ../src/MathCtrl.cpp:814 ../src/MathCtrl.cpp:829
 msgid "Paste"
 msgstr "Incolla"
 
@@ -2595,7 +2595,7 @@ msgstr "Diagramma a torta..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Configurare wxMaxima con \"Modifica->Configura\"."
 
-#: ../src/Config.cpp:1257
+#: ../src/Config.cpp:1265
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Riavviare wxMaxima perché i cambiamenti abbiano effetto!"
 
@@ -2817,7 +2817,7 @@ msgstr "Esempio 2:"
 msgid "Sample:"
 msgstr "Esempio:"
 
-#: ../src/Config.cpp:598 ../src/ToolBar.cpp:72 ../src/wxMaxima.cpp:5332
+#: ../src/ToolBar.cpp:72 ../src/wxMaxima.cpp:5332 ../src/Config.cpp:599
 msgid "Save"
 msgstr "Salva"
 
@@ -2883,7 +2883,7 @@ msgstr "Salva la selezione del documento su di un file immagine"
 msgid "Save selection to file"
 msgstr "Salva la selezione su file"
 
-#: ../src/Config.cpp:1410
+#: ../src/Config.cpp:1421
 msgid "Save style to file"
 msgstr "Salva lo stile su file"
 
@@ -2932,7 +2932,7 @@ msgstr "Seleziona tutto"
 msgid "Select All\tCtrl-A"
 msgstr "Seleziona tutto\tCtrl-A"
 
-#: ../src/Config.cpp:707 ../src/Config.cpp:712
+#: ../src/Config.cpp:708 ../src/Config.cpp:713
 msgid "Select Maxima program"
 msgstr "Seleziona il programma maxima"
 
@@ -3243,7 +3243,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Risolvi l'equazione differenziale ordinaria con la trasformata di Laplace"
 
-#: ../src/MathCtrl.cpp:796 ../src/wxMaximaFrame.cpp:1041
+#: ../src/wxMaximaFrame.cpp:1041 ../src/MathCtrl.cpp:796
 msgid "Solve..."
 msgstr "Risolvi..."
 
@@ -3350,7 +3350,7 @@ msgstr "Sostit..."
 msgid "Substitute"
 msgstr "Sostituisci"
 
-#: ../src/MathCtrl.cpp:802 ../src/wxMaximaFrame.cpp:784
+#: ../src/wxMaximaFrame.cpp:784 ../src/MathCtrl.cpp:802
 msgid "Substitute..."
 msgstr "Sostituisci..."
 
@@ -3399,6 +3399,11 @@ msgstr "Cella di testo"
 #: ../src/Config.cpp:570
 msgid "Text cell background"
 msgstr "Sfondo della cella di testo"
+
+#: ../src/Config.cpp:576
+#, fuzzy
+msgid "Text equal to selection"
+msgstr "Taglia la selezione"
 
 #: ../src/Config.cpp:140
 msgid ""
@@ -3592,15 +3597,15 @@ msgstr "Tradotto da"
 msgid "Transpose a matrix"
 msgstr "Trasponi una matrice"
 
-#: ../src/MathCtrl.cpp:4846
+#: ../src/MathCtrl.cpp:4851
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4222
+#: ../src/MathCtrl.cpp:4227
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4286
+#: ../src/MathCtrl.cpp:4291
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -3632,7 +3637,7 @@ msgstr ""
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/Config.cpp:595
+#: ../src/Config.cpp:596
 msgid "Underlined"
 msgstr "Sottolineato"
 

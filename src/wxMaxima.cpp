@@ -2300,7 +2300,7 @@ void wxMaxima::ReadStdErr()
 
   if(m_process->IsInputAvailable())
   {
-    wxASSERT_MSG(m_input!=NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
+    wxASSERT_MSG(m_input != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
     wxString o;
     while (m_process->IsInputAvailable())
     {
