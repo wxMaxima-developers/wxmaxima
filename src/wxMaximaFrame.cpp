@@ -413,7 +413,10 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_copy_to_file, _("Save Selection to Image..."),
                      _("Save selection from document to an image file"),
                      wxITEM_NORMAL);
-
+  m_EditMenu->AppendSeparator();
+  m_EditMenu->Append(MathCtrl::popid_comment_selection, _("Comment selection\tCtrl-/"),
+                     _("Comment out the currently selected text"),
+                     wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_EditMenu, menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));

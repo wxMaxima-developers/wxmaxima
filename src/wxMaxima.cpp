@@ -2014,6 +2014,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid>0);
+  menubar->Enable(MathCtrl::popid_comment_selection,(m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
   menubar->Enable(menu_evaluate, (
                     (m_console->GetActiveCell() != NULL)||
                     (m_console->CellsSelected())
