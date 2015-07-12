@@ -1,6 +1,6 @@
 Toolbar icons (in toolbar/ subdirectory) and the config icons (in
 config/ subdirectory) are from the Tango project
-(http://tango.freedesktop.org). They origninally were released under
+(http://tango.freedesktop.org). They originally were released under
 the Creative Commons Attribution Share-Alike license
 (http://creativecommons.org/licenses/by-sa/2.5/) but since then have
 been released to the public domain.
