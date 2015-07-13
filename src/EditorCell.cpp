@@ -974,8 +974,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           size_t start = MIN(m_selectionStart,m_selectionEnd);
           size_t end   = MAX(m_selectionStart,m_selectionEnd);
           size_t newLineIndex = m_text.find(wxT('\n'),start);
-          
-          if((newLineIndex != wxNOT_FOUND) && (newLineIndex < end))
+
+          if(((newLineIndex != wxNOT_FOUND) && (newLineIndex < end)) ||
+             (m_text.SubString(newLineIndex,start).Trim() == wxEmptyString)
+            )
           {
             start = BeginningOfLine(start);
             size_t pos = start;
