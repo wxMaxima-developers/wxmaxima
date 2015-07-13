@@ -872,7 +872,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
   case WXK_BACK:
     SaveValue();
-    if (m_selectionStart > -1) {
+    if (SelectionActive()) {
       SaveValue();
       m_saveValue = true;
       m_containsChanges = true;
@@ -882,12 +882,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_text = m_text.SubString(0, start - 1) +
                m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
-      SetSelection(m_positionOfCaret,m_positionOfCaret);
+      ClearSelection();
       break;
     }
     else
     {
-
       if(!event.CmdDown())
       {
         // Backspace without Ctrl => Delete one character if there are characters to delete.
