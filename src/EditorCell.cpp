@@ -803,12 +803,28 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       m_positionOfCaret = start;
       ClearSelection();
     }
-    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-             wxT("\n") +
-             m_text.SubString(m_positionOfCaret, m_text.Length());
-    m_positionOfCaret++;
-    m_isDirty = true;
-    m_containsChanges = true;
+
+    {
+      // Determine how far we need to indent the new line.
+      wxString indentString;
+      size_t indentChars = 0;
+      size_t pos = BeginningOfLine(m_positionOfCaret);
+      while((pos < m_text.Length())&&(m_text[pos]==wxT(' ')))
+      {
+        pos++;
+        indentString += wxT(" ");
+        indentChars++;
+      }
+      
+      
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+        wxT("\n") + indentString +
+        m_text.SubString(m_positionOfCaret, m_text.Length());
+      m_positionOfCaret++;
+      m_positionOfCaret+= indentChars;
+      m_isDirty = true;
+      m_containsChanges = true;
+    }
     break;
 
   case WXK_END:
