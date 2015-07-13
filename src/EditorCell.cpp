@@ -988,12 +988,26 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
             
             while(pos < end)
             {
-              m_text =
-                m_text.SubString(0, pos - 1) +
-                wxT("    ") +
-                m_text.SubString(pos, m_text.Length());
-              end += 4;
-              pos += 4;
+              if(event.ShiftDown())
+              {
+                for(size_t i=0;i<4;i++)
+                  if(m_text[pos]==wxT(' '))
+                  {
+                    m_text =
+                      m_text.SubString(0, pos - 1) +
+                      m_text.SubString(pos + 1, m_text.Length());
+                    end--;
+                  }
+              }
+              else
+              {
+                m_text =
+                  m_text.SubString(0, pos - 1) +
+                  wxT("    ") +
+                  m_text.SubString(pos, m_text.Length());
+                end += 4;
+                pos += 4;
+              }
               while((pos < end) && (m_text[pos] != wxT('\n')))
                 pos ++;
                 if(m_text[pos] == wxT('\n'))
