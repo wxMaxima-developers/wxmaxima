@@ -587,6 +587,22 @@ int ChangeNumpadToChar(int c)
 
 #endif
 
+size_t EditorCell::BeginningOfLine(size_t pos)
+{
+  if(pos>0)
+    pos--;
+  
+  while(pos > 0)
+  {
+    if(m_text[pos]==wxT('\n'))
+      break;
+    pos--;
+  }
+  if(m_text[pos]==wxT('\n'))
+    pos++;
+  return pos;
+}
+
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   if ((event.GetKeyCode() != WXK_DOWN) &&
@@ -951,17 +967,49 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     {
       m_containsChanges = true;
       {
-        if (m_selectionStart > -1) {
+        if (SelectionActive())
+        {
           SaveValue();
-          long start = MIN(m_selectionEnd, m_selectionStart);
-          long end = MAX(m_selectionEnd, m_selectionStart);
-          m_text = m_text.SubString(0, start - 1) +
-                   m_text.SubString(end, m_text.Length());
+
+          size_t start = MIN(m_selectionStart,m_selectionEnd);
+          size_t end   = MAX(m_selectionStart,m_selectionEnd);
+          size_t newLineIndex = m_text.find(wxT('\n'),start);
+          
+          if((newLineIndex != wxNOT_FOUND) && (newLineIndex < end))
+          {
+            start = BeginningOfLine(start);
+            size_t pos = start;
+            
+            if(m_text[end-1]==wxT('\n'))
+              end++;
+
+            if(end > m_text.Length())
+              end = m_text.Length();
+            
+            while(pos < end)
+            {
+              m_text =
+                m_text.SubString(0, pos - 1) +
+                wxT("    ") +
+                m_text.SubString(pos, m_text.Length());
+              end += 4;
+              pos += 4;
+              while((pos < end) && (m_text[pos] != wxT('\n')))
+                pos ++;
+                if(m_text[pos] == wxT('\n'))
+              pos ++;
+            }
+            SetSelection(start,end);
+          }
+          else
+          {
+            m_text = m_text.SubString(0, start - 1) +
+              m_text.SubString(end, m_text.Length());
+            ClearSelection();
+          }
           m_positionOfCaret = start;
-          ClearSelection();
           break;
         }
-
         int col, line;
         PositionToXY(m_positionOfCaret, &col, &line);
         wxString ins;
