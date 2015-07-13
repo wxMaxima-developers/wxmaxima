@@ -1880,23 +1880,14 @@ void EditorCell::InsertText(wxString text)
   m_saveValue = true;
   m_containsChanges = true;
 
-  if (m_selectionStart >= 0)
-  {
-    long start = MIN(m_selectionStart, m_selectionEnd);
-    long end = MAX(m_selectionStart, m_selectionEnd);
-    m_positionOfCaret = start;
-    m_text = m_text.SubString(0, start - 1) +
-             m_text.SubString(end, m_text.Length());
-    SetSelection(m_selectionStart,m_positionOfCaret + text.Length());
-  }
+  if (!SelectionActive())
+    SetSelection(m_positionOfCaret,m_positionOfCaret);
+  
+  ReplaceSelection(
+    GetSelectionString(),
+    text
+    );
 
-  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-           text +
-           m_text.SubString(m_positionOfCaret, m_text.Length());
-  StyleText();
-  m_positionOfCaret += text.Length();
-    
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 
@@ -2560,7 +2551,6 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();
 
-    m_selectionString = newStr;
     StyleText();
     return true;
   }
