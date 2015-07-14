@@ -74,6 +74,13 @@ public:
   //! The destructor
   ~EditorCell();
 
+  /*! Expand all tabulators.
+
+    \param input The string the tabulators should be expanded in
+    \param posInLine The number of characters that come before the input in the same line
+    \todo Implement the actual TAB expansion
+  */
+  wxString TabExpand(wxString input, size_t posInLine);
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
   //! Convert all but the first of a row of multiple spaces to non-breakable

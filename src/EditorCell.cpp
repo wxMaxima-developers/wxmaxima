@@ -60,7 +60,7 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_containsChangesCheck = false;
   m_firstLineOnly = false;
   m_historyPosition = -1;
-  m_text = text;
+  m_text = TabExpand(text,0);
 }
 
 EditorCell::~EditorCell()
@@ -586,6 +586,16 @@ int ChangeNumpadToChar(int c)
 }
 
 #endif
+
+wxString EditorCell::TabExpand(wxString input, size_t posInLine)
+{
+  // Convert the text to our line endings.
+  input.Replace(wxT("\r\n"),wxT("\n"));
+  input.Replace(wxT("\r"),wxT("\n"));
+
+  // TODO: Implement the actual TAB expansion
+  return input;
+}
 
 size_t EditorCell::BeginningOfLine(size_t pos)
 {
@@ -1969,7 +1979,9 @@ void EditorCell::InsertText(wxString text)
 
   if (!SelectionActive())
     SetSelection(m_positionOfCaret,m_positionOfCaret);
-  
+
+  text = TabExpand(text,m_positionOfCaret - BeginningOfLine(m_positionOfCaret));
+
   ReplaceSelection(
     GetSelectionString(),
     text
