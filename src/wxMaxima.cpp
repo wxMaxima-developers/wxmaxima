@@ -2877,6 +2877,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   switch (event.GetId())
   {
   case menu_triggerEvaluation:
+    m_console->QuestionAnswered();
     TryEvaluateNextInQueue();
     break;
   case ToolBar::menu_restart_id:
