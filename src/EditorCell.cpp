@@ -851,23 +851,82 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     }
 
     {
-      // Determine how far we need to indent the new line.
       wxString indentString;
-      size_t indentChars = 0;
+      int indentChars = 0;
+
+      /*
+      // Determine how far the last line was indented.
       size_t pos = BeginningOfLine(m_positionOfCaret);
       while((pos < m_text.Length())&&(m_text[pos]==wxT(' ')))
       {
         pos++;
-        indentString += wxT(" ");
         indentChars++;
       }
-      
+      */
+
+      // Determine how many parenthesis this cell opens or closes before the point
+      size_t pos = 0;
+      while((pos < m_text.Length())&&(pos < m_positionOfCaret))
+      {
+        wxChar ch = m_text[pos];
+        if(ch == wxT('\\'))
+        {
+          pos++;
+          continue;
+        }
+        
+        if(ch == wxT('\"'))
+        {
+          pos++;
+          while(
+            (pos < m_text.Length()) &&
+            (pos < m_positionOfCaret) &&
+            (m_text[pos] != wxT('\"'))
+            )
+            pos++;
+        }
+        
+        if(
+          (ch == wxT('(')) ||
+          (ch == wxT('[')) ||
+          (ch == wxT('{'))
+          )
+        {
+          indentChars += 4;
+        }
+        
+        if(
+          (ch == wxT(')')) ||
+          (ch == wxT(']')) ||
+          (ch == wxT('}'))
+          )  
+        {
+          indentChars -= 4;
+        }
+                  pos++;
+      }
+
+      if(m_text.Length() > m_positionOfCaret)
+      {
+        if(
+          (m_text[m_positionOfCaret] == wxT(')')) ||
+          (m_text[m_positionOfCaret] == wxT(']')) ||
+          (m_text[m_positionOfCaret] == wxT('}'))
+          )
+          indentChars -= 4;
+      }
+
+      // The string we indent with.
+      if(indentChars > 0)
+        for(int i=0;i<indentChars;i++)
+          indentString += wxT(" ");
       
       m_text = m_text.SubString(0, m_positionOfCaret - 1) +
         wxT("\n") + indentString +
         m_text.SubString(m_positionOfCaret, m_text.Length());
       m_positionOfCaret++;
-      m_positionOfCaret+= indentChars;
+      if(indentChars > 0)
+        m_positionOfCaret += indentChars;
       m_isDirty = true;
       m_containsChanges = true;
     }
