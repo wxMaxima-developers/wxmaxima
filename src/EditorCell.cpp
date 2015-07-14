@@ -927,18 +927,26 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
           m_containsChanges = true;
           m_isDirty = true;
           
-          
-          /// If deleting ( in () then delete both.
-          int right = m_positionOfCaret;
-          if (m_positionOfCaret < m_text.Length() &&
-              ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
-               (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
-               (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
-               (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
-            right++;
-          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-                   m_text.SubString(right, m_text.Length());
-          m_positionOfCaret--;
+          if(m_text.SubString(0, m_positionOfCaret - 1).Right(4) == wxT("    ")) 
+          {
+            m_text = m_text.SubString(0, m_positionOfCaret - 5) +
+              m_text.SubString(m_positionOfCaret, m_text.Length());
+            m_positionOfCaret -= 4;
+          }
+          else
+          { 
+            /// If deleting ( in () then delete both.
+            int right = m_positionOfCaret;
+            if (m_positionOfCaret < m_text.Length() &&
+                ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
+                 (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
+                 (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
+                 (m_text.GetChar(m_positionOfCaret-1) == '"' && m_text.GetChar(m_positionOfCaret) == '"')))
+              right++;
+            m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+              m_text.SubString(right, m_text.Length());
+            m_positionOfCaret--;
+          }
         }
         
       }
