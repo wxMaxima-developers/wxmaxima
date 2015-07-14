@@ -589,12 +589,48 @@ int ChangeNumpadToChar(int c)
 
 wxString EditorCell::TabExpand(wxString input, size_t posInLine)
 {
+  wxString retval;
   // Convert the text to our line endings.
   input.Replace(wxT("\r\n"),wxT("\n"));
   input.Replace(wxT("\r"),wxT("\n"));
 
+  size_t index = 0;
+  while(index < input.Length())
+  {
+    wxChar ch = input[index++];
+
+    if(ch == wxT('\n'))
+    {
+      posInLine = 0;
+      retval += ch;
+      continue;
+    }
+
+    if(ch == wxT('\t'))
+    {
+      switch(posInLine - (posInLine / 4) * 4)
+      {
+      case 0:
+        retval += wxT("    ");
+        break;
+      case 1:
+        retval += wxT("   ");
+        break;
+      case 2:
+        retval += wxT("  ");
+        break;
+      case 3:
+        retval += wxT(" ");
+        break;
+      }
+      posInLine = 0;
+      continue;
+    }
+    retval += ch;
+    posInLine ++;
+  }
   // TODO: Implement the actual TAB expansion
-  return input;
+  return retval;
 }
 
 size_t EditorCell::BeginningOfLine(size_t pos)
