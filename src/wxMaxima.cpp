@@ -4793,7 +4793,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
   m_console->FollowEvaluation(true);
   bool evaluating = !m_console->m_evaluationQueue->Empty();
-  if(m_console->QuestionPending())evaluating=false;
+  if(m_console->QuestionPending())evaluating=true;
   MathCell* tmp = m_console->GetActiveCell();
   if (tmp != NULL) // we have an active cell
   {
@@ -4805,6 +4805,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     {
       SendMaxima(tmp->ToString(), true);
       StatusMaximaBusy(calculating);
+      m_console->QuestionAnswered();
     }
     else { // normally just add to queue
       m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(tmp->GetParent()));

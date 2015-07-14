@@ -473,7 +473,8 @@ void MathCtrl::Recalculate(bool force)
   
   AdjustSize();
   // Re-calculate the table of contents
-  m_structure->Update(m_tree,GetHCaret());
+  if(m_structure)
+    m_structure->Update(m_tree,GetHCaret());
 }
 
 /***
