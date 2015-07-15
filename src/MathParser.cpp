@@ -415,7 +415,10 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 	  //	  str = str.Left(left)+wxT("...");
 	}
     }
-    cell->SetType(m_ParserStyle);
+    if(style != TS_ERROR)
+      cell->SetType(m_ParserStyle);
+    else
+      cell->SetType(MC_TYPE_ERROR);
     cell->SetStyle(style);
     cell->SetHighlight(m_highlight);
     cell->SetValue(str);
@@ -655,10 +658,16 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
       else if (tagName == wxT("t"))
       {          // Other text
+        TextStyle style = TS_DEFAULT;
+        if(node->GetAttribute(wxT("type")) == wxT("error"))
+        {
+          std::cerr << "ErrorFlag\n";
+          style = TS_ERROR;
+        }
         if (cell == NULL)
-          cell = ParseText(node->GetChildren(), TS_DEFAULT);
+          cell = ParseText(node->GetChildren(), style);
         else
-          cell->AppendCell(ParseText(node->GetChildren(), TS_DEFAULT));
+          cell->AppendCell(ParseText(node->GetChildren(), style));
       }
       else if (tagName == wxT("n"))
       {          // Numbers

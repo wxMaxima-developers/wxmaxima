@@ -424,6 +424,7 @@ wxString TextCell::ToTeX()
 wxString TextCell::ToXML()
 {
   wxString tag;
+  wxString flags;
   if(m_isHidden)tag=_T("h");
     else
       switch(m_textStyle)
@@ -437,7 +438,10 @@ wxString TextCell::ToXML()
 	case TS_LABEL: tag=_T("lbl");break;
 	default: tag=_T("t");
 	}
-  
+
+  if(m_textStyle == TS_ERROR)
+    flags += wxT(" type=\"error\"");
+    
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
   xmlstring.Replace(wxT("&"),  wxT("&amp;"));
@@ -446,7 +450,7 @@ wxString TextCell::ToXML()
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
 
-  return _T("<") + tag + _T(">") + xmlstring + _T("</") + tag + _T(">");
+  return _T("<") + tag + flags +_T(">") + xmlstring + _T("</") + tag + _T(">");
 }
 
 wxString TextCell::GetDiffPart()
