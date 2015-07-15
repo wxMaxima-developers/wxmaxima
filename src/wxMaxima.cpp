@@ -976,16 +976,18 @@ void wxMaxima::ReadPrompt(wxString &data)
     wxString o = data.Left(end);
     if (o != wxT("\n") && o.Length())
     {
-      // Maxima displayed a new main prompt
+      // Maxima displayed a new main prompt => We don't have a question
       if (o.StartsWith(wxT("(%i")))
       {
         m_console->QuestionAnswered();
+
         //m_lastPrompt = o.Mid(1,o.Length()-1);
         //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
         m_lastPrompt = o;
         m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
 
         if (m_console->m_evaluationQueue->Empty()) { // queue empty?
+          StatusMaximaBusy(waiting);
           if(m_console->FollowEvaluation())
           {
             if(m_console->GetWorkingGroup())
@@ -1016,10 +1018,8 @@ void wxMaxima::ReadPrompt(wxString &data)
           m_ready = false;
           m_console->Refresh();
           m_console->EnableEdit();
-          if(!m_console->QuestionPending())
-            TryEvaluateNextInQueue();
-          else
-            m_console->QuestionAnswered();
+          StatusMaximaBusy(calculating);
+          TryEvaluateNextInQueue();
         }
 
         m_console->EnableEdit();
@@ -1046,6 +1046,7 @@ void wxMaxima::ReadPrompt(wxString &data)
           if(m_console->m_mainToolBar)
             m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
         }
+        StatusMaximaBusy(userinput);
       }
 
       if (o.StartsWith(wxT("\nMAXIMA>")))
@@ -1056,20 +1057,15 @@ void wxMaxima::ReadPrompt(wxString &data)
 
     if (m_ready)
     {
-      if(m_console->m_questionPrompt)
-        StatusMaximaBusy(userinput);
-      else
+      if(!m_console->QuestionPending())
       {
         if(m_console->m_evaluationQueue->Empty())
-        {
-          StatusMaximaBusy(waiting);
           m_maximaStdoutPollTimer.Stop();
-        }
       }
     }
     
     data = data.SubString(end + m_promptSuffix.Length(),
-                                                data.Length());
+                          data.Length());
   }
 }
 
@@ -4792,10 +4788,12 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
-  m_console->FollowEvaluation(true);
   bool evaluating = !m_console->m_evaluationQueue->Empty();
-  if(m_console->QuestionPending())evaluating=true;
+  m_console->FollowEvaluation(true);
   MathCell* tmp = m_console->GetActiveCell();
+  if(m_console->QuestionPending())
+    evaluating = false;
+
   if (tmp != NULL) // we have an active cell
   {
     if (tmp->GetType() == MC_TYPE_INPUT && !m_inLispMode)

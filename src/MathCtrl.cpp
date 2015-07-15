@@ -1457,7 +1457,7 @@ void MathCtrl::TreeUndo_CellLeft()
     return;
   }
 
-  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
+  GroupCell *activeCell = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
   
   if(TreeUndo_ActiveCell)
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell,_("Bug: Cell left but not entered."));
@@ -1896,6 +1896,7 @@ void MathCtrl::QuestionAnswered()
 {
   m_answerCell = NULL;
   m_questionPrompt = false;
+  SetActiveCell(NULL);
 }
 
 /****
@@ -5352,7 +5353,7 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
 {
   m_selectionStart = m_selectionEnd = cell;
   m_hCaretActive = false;
-  m_activeCell = NULL;
+  SetActiveCell(NULL);
   if(cell)
   {
     if(GCContainsCurrentQuestion(cell))
