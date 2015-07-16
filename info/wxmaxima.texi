@@ -354,11 +354,15 @@ Other symbols the markdown parser will recognize are @code{<=} and
 single- headed arrows (@code{<->}, @code{->} and @code{<-}) and
 @code{+/-} as the respective sign.
 @subsection Hotkeys
-Most hotkeys can be found in the text of the respective menus. There are a few
-hotkeys or hotkey aliases, though, that aren't documented there. They are:
+Most hotkeys can be found in the text of the respective menus.
+Since they are actually taken from the menu text and thus can be customized
+by the translations of wxMaxima to match the needs of users of the local
+keyboard there is no usee of documenting them here.
+There are a few hotkeys or hotkey aliases, though, that aren't documented there:
 @itemize @bullet
 @item @code{Ctrl+Shift+Delete} deletes a complete cell. 
 @item @code{Ctrl+Tab} or @code{Ctrl+Shift} triggers the auto-completion mechanism.
+@item @code{Ctrl++} or @code{Ctrl+-} Zoom in or out.
 @end itemize
 
 @section  File Formats
