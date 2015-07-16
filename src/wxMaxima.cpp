@@ -984,7 +984,8 @@ void wxMaxima::ReadPrompt(wxString &data)
         //m_lastPrompt = o.Mid(1,o.Length()-1);
         //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
         m_lastPrompt = o;
-        m_console->m_evaluationQueue->RemoveFirst(); // remove it from queue
+        // remove the event maxima has just processed from the evaluation queue
+        m_console->m_evaluationQueue->RemoveFirst();
 
         if (m_console->m_evaluationQueue->Empty()) { // queue empty?
           StatusMaximaBusy(waiting);
@@ -4792,7 +4793,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
   m_console->FollowEvaluation(true);
   MathCell* tmp = m_console->GetActiveCell();
   if(m_console->QuestionPending())
-    evaluating = false;
+    evaluating = true;
 
   if (tmp != NULL) // we have an active cell
   {
@@ -4822,6 +4823,9 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   int index=0;
 
   std::list<wxChar> delimiters;
+
+  if(text.Right(1) == wxT("\\"))
+    return(_("Cell ends in a backslash"));
   
   while(index<len)
   {
@@ -4939,13 +4943,11 @@ void wxMaxima::TryEvaluateNextInQueue()
   ReadStdErr();
   m_maximaStdoutPollTimer.Start(1000);
 
-  if (tmp->GetEditable()->GetValue() != wxEmptyString)
+  wxString text = m_console->m_evaluationQueue->GetString();
+  if(text != wxEmptyString)
   {
-    tmp->GetEditable()->AddEnding();
-    tmp->GetEditable()->ContainsChanges(false);
-    wxString text = tmp->GetEditable()->ToString();
-
-    tmp->RemoveOutput();
+    if(m_console->m_evaluationQueue->m_workingGroupChanged)
+      tmp->RemoveOutput();
     m_console->Recalculate();
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
     if(parenthesisError==wxEmptyString)

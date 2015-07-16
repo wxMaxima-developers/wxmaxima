@@ -25,6 +25,7 @@
 #define EVALUATIONQUEUE_H
 
 #include "GroupCell.h"
+#include "wx/arrstr.h"
 
 class EvaluationQueueElement {
   public:
@@ -39,21 +40,31 @@ class EvaluationQueueElement {
 class EvaluationQueue
 {
 private:
+  wxArrayString m_tokens;
   int m_size;
   EvaluationQueueElement* m_queue;
   EvaluationQueueElement* m_last;
 public:
+  bool m_workingGroupChanged;
   EvaluationQueue();
   ~EvaluationQueue() {};
   
   bool IsInQueue(GroupCell* gr);
   
   void AddToQueue(GroupCell* gr);
+  //! Adds all commands in commandString as separate tokens to the queue.
+  void AddTokens(wxString commandString);
   void AddHiddenTreeToQueue(GroupCell* gr);
+  //! Removes the first cell in the queue
   void RemoveFirst();
+  //! Gets the first cell in the queue
   GroupCell* GetFirst();
-  bool Empty() { return m_queue == NULL; }
+  bool Empty();
+  //! Clear the queue
   void Clear();
+  //! Return the next string that needs to be evaluated.
+  wxString GetString();
+  
   //! Get the size of the queue
   int Size()
     {

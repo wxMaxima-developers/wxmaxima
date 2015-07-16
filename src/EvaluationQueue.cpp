@@ -28,11 +28,17 @@ EvaluationQueueElement::EvaluationQueueElement(GroupCell* gr)
   next = NULL;
 }
 
+bool EvaluationQueue::Empty()
+{
+  return (m_queue == NULL) && (m_tokens.IsEmpty());
+}
+
 EvaluationQueue::EvaluationQueue()
 {
   m_size = 0;
   m_queue = NULL;
   m_last = NULL;
+  m_workingGroupChanged = false;
 }
 
 void EvaluationQueue::Clear()
@@ -40,6 +46,7 @@ void EvaluationQueue::Clear()
   while(!Empty())
     RemoveFirst();
   m_size = 0;
+  m_workingGroupChanged = false;
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell* gr)
@@ -55,6 +62,7 @@ bool EvaluationQueue::IsInQueue(GroupCell* gr)
 
 void EvaluationQueue::AddToQueue(GroupCell* gr)
 {
+  bool emptyWas = Empty();
   if (gr->GetGroupType() != GC_TYPE_CODE
       || gr->GetEditable() == NULL) // dont add cells which can't be evaluated
     return;
@@ -66,6 +74,11 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
     m_last = newelement;
   }
   m_size++;
+  if(emptyWas)
+  {
+    AddTokens(gr->GetEditable()->GetValue());
+    m_workingGroupChanged = true;
+  }
 }
 
 /**
@@ -87,23 +100,133 @@ void EvaluationQueue::AddHiddenTreeToQueue(GroupCell* gr)
 
 void EvaluationQueue::RemoveFirst()
 {
-  if (m_queue == NULL)
-    return; // shouldn't happen
-  EvaluationQueueElement* tmp = m_queue;
-  if (m_queue == m_last) {
-    m_queue = m_last = NULL;
+  if(!m_tokens.IsEmpty())
+  {
+    m_workingGroupChanged = false;
+    m_tokens.RemoveAt(0);
   }
   else
-    m_queue = m_queue->next;
+  {
+    if (m_queue == NULL)
+      return; // shouldn't happen
+    EvaluationQueueElement* tmp = m_queue;
+    if (m_queue == m_last) {
+      m_queue = m_last = NULL;
+    }
+    else
+      m_queue = m_queue->next;
+    
+    delete tmp;
+    m_size--;
+    if(!Empty())
+    {
+      AddTokens(GetFirst()->GetEditable()->GetValue());
+      m_workingGroupChanged = true;
+    }
+  }
 
-  delete tmp;
-  m_size--;
+}
+
+void EvaluationQueue::AddTokens(wxString commandString)
+{
+  size_t index = 0;
+
+  wxString token;
+
+  while(index < commandString.Length())
+  {
+    wxChar ch = commandString[index];
+
+    // Process strings
+    if(ch == wxT('\"'))
+    {
+      token += ch;
+      index++;
+      while((index < commandString.Length()) && (commandString[index] != wxT('\"')))
+      {
+        token += commandString[index];
+        index++;
+      }
+    }
+
+    // :lisp -commands should be added as a whole
+    if(ch == wxT(':'))
+    {
+      if(commandString.find(wxT("lisp"),ch + 1) == ch + 1)
+      {
+        token += commandString.Right(
+          commandString.Length()-index
+          );
+        break;
+      }
+    }
+
+    // Handle escaped chars
+    if(ch == wxT('\\'))
+    {
+      token += ch;
+      index++;
+      ch = commandString[index];
+    }
+      
+    // Remove comments
+    if((ch == wxT('/'))&&
+       (index < commandString.Length() - 1)&&
+       (commandString[index + 1]==wxT('*'))
+      )
+    {
+      while((index < commandString.Length()) &&
+            !(
+              (commandString[index] == wxT('*')) &&
+              (commandString[index + 1] == wxT('/'))
+              )
+        )
+        index++;
+      index += 2;
+    }
+    else
+    {
+      // Add the current char to the current token
+      token += ch;
+      index++;
+    }
+      
+    // If we ended a command we now have to add a new token to the list.
+    if(
+      (ch == wxT(';')) || 
+      (ch == wxT('$'))
+      )
+    {
+      token.Trim(true).Trim(false);
+      m_tokens.Add(token);
+      token = wxEmptyString;
+    }
+  }
 }
 
 GroupCell* EvaluationQueue::GetFirst()
 {
-  if (m_queue != NULL)
+  if(!m_tokens.IsEmpty())
+  {
     return m_queue->group;
+  }
   else
-    return NULL; // queu is empty
+  {
+    if (m_queue != NULL)
+    {
+      m_queue->group->GetEditable()->AddEnding();
+      m_queue->group->GetEditable()->ContainsChanges(false);
+      return m_queue->group;
+    }
+    else
+      return NULL; // queue is empty
+  }
+}
+
+wxString EvaluationQueue::GetString()
+{
+  wxString retval;
+  if(!m_tokens.IsEmpty())
+    retval = m_tokens[0];
+  return retval;
 }

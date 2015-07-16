@@ -660,10 +660,8 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       {          // Other text
         TextStyle style = TS_DEFAULT;
         if(node->GetAttribute(wxT("type")) == wxT("error"))
-        {
-          std::cerr << "ErrorFlag\n";
           style = TS_ERROR;
-        }
+
         if (cell == NULL)
           cell = ParseText(node->GetChildren(), style);
         else
