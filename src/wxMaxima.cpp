@@ -4944,7 +4944,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   m_maximaStdoutPollTimer.Start(1000);
 
   wxString text = m_console->m_evaluationQueue->GetString();
-  if(text != wxEmptyString)
+  if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     if(m_console->m_evaluationQueue->m_workingGroupChanged)
       tmp->RemoveOutput();
