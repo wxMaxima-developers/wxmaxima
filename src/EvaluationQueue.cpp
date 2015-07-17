@@ -202,6 +202,8 @@ void EvaluationQueue::AddTokens(wxString commandString)
       token = wxEmptyString;
     }
   }
+  if(token != wxEmptyString)
+    m_tokens.Add(token);
 }
 
 GroupCell* EvaluationQueue::GetFirst()

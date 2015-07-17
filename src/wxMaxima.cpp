@@ -4854,16 +4854,16 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       index++;
       break;
 
-    case wxT('"'):
-      //
+    case wxT('\"'):
       index++;
-      while((index<len)&&(c=text[index])!=wxT('"'))
+      while((index<len)&&(c=text[index])!=wxT('\"'))
       {
         if(c==wxT('\\'))
           index++;
         index++;
       }
-      if(c!='"') return(_("Unterminated string."));
+      std::cerr<<wxString(c)<<" "<<c<<"\n";
+      if(text[index]!=wxT('\"')) return(_("Unterminated string."));
       break;
 
     case wxT(';'):
@@ -4944,6 +4944,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   m_maximaStdoutPollTimer.Start(1000);
 
   wxString text = m_console->m_evaluationQueue->GetString();
+  std::cerr<<"Text:"<<text<<"\n";
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     if(m_console->m_evaluationQueue->m_workingGroupChanged)
