@@ -3667,8 +3667,6 @@ bool MathCtrl::ExportToMAC(wxString file)
 
   // If we succeeded in saving the backup file we now can overwrite the Real Thing.
   if(!wxRenameFile(file+wxT("~"),file,true)) return false;
-
-  m_saved = true;
   return true;
 }
 
