@@ -723,8 +723,6 @@ public:
   void AddSelectionToEvaluationQueue();
   //! Schedule this cell for evaluation
   void AddCellToEvaluationQueue(GroupCell* gc);
-  //! Unschedule all cells marked as to be evaluated
-  void ClearEvaluationQueue();
   //! The list of cells that have to be evaluated
   EvaluationQueue* m_evaluationQueue;
   // methods for folding

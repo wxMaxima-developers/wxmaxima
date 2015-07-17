@@ -203,13 +203,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     //
     // Mark groupcells currently in queue. TODO better in gc::draw?
     //
-    if (m_evaluationQueue->GetFirst() != NULL) {
+    if (m_evaluationQueue->GetCell() != NULL) {
       MathCell* tmp = m_tree;
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
         if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
-          if (m_evaluationQueue->GetFirst() == tmp)
+          if (m_evaluationQueue->GetCell() == tmp)
           {
             wxRect rect = tmp->GetRect();
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
@@ -519,7 +519,7 @@ void MathCtrl::ClearDocument() {
   m_activeCell = NULL;
   m_workingGroup = NULL;
 
-  ClearEvaluationQueue();
+  m_evaluationQueue->Clear();
   TreeUndo_ClearBuffers();
   DestroyTree();
 
@@ -4055,16 +4055,10 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
     } 
   }
 }
-
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
   m_evaluationQueue->AddToQueue((GroupCell*) gc);
   SetHCaret(gc);
-}
-void MathCtrl::ClearEvaluationQueue()
-{
-  while (m_evaluationQueue->GetFirst() != NULL)
-    m_evaluationQueue->RemoveFirst();
 }
 //////// end of EvaluationQueue related stuff ////////////////
 void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)

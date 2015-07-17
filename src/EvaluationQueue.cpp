@@ -120,7 +120,7 @@ void EvaluationQueue::RemoveFirst()
     m_size--;
     if(!Empty())
     {
-      AddTokens(GetFirst()->GetEditable()->GetValue());
+      AddTokens(GetCell()->GetEditable()->GetValue());
       m_workingGroupChanged = true;
     }
   }
@@ -206,7 +206,7 @@ void EvaluationQueue::AddTokens(wxString commandString)
     m_tokens.Add(token);
 }
 
-GroupCell* EvaluationQueue::GetFirst()
+GroupCell* EvaluationQueue::GetCell()
 {
   if(!m_tokens.IsEmpty())
   {
@@ -225,7 +225,7 @@ GroupCell* EvaluationQueue::GetFirst()
   }
 }
 
-wxString EvaluationQueue::GetString()
+wxString EvaluationQueue::GetCommand()
 {
   wxString retval;
   if(!m_tokens.IsEmpty())

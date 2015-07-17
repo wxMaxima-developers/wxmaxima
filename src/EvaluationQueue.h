@@ -58,12 +58,12 @@ public:
   //! Removes the first cell in the queue
   void RemoveFirst();
   //! Gets the first cell in the queue
-  GroupCell* GetFirst();
+  GroupCell* GetCell();
   bool Empty();
   //! Clear the queue
   void Clear();
   //! Return the next string that needs to be evaluated.
-  wxString GetString();
+  wxString GetCommand();
   
   //! Get the size of the queue
   int Size()

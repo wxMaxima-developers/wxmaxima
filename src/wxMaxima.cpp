@@ -2879,7 +2879,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case ToolBar::menu_restart_id:
     m_closing = true;
-    m_console->ClearEvaluationQueue();
+    m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     StartMaxima();
     break;
@@ -4919,7 +4919,7 @@ void wxMaxima::TryEvaluateNextInQueue()
 
   
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = m_console->m_evaluationQueue->GetFirst();
+  GroupCell *tmp = m_console->m_evaluationQueue->GetCell();
   if (tmp == NULL)
   {
     StatusMaximaBusy(waiting);
@@ -4943,7 +4943,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   ReadStdErr();
   m_maximaStdoutPollTimer.Start(1000);
 
-  wxString text = m_console->m_evaluationQueue->GetString();
+  wxString text = m_console->m_evaluationQueue->GetCommand();
   std::cerr<<"Text:"<<text<<"\n";
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
