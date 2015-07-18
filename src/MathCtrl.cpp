@@ -5056,6 +5056,9 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         SetActiveCell(editor);
         editor->SetSelection(start, end);
         ScrollToCaret();
+        if(m_structure)
+          m_structure->Update(m_tree,GetHCaret());
+
         Refresh();
         return true;
       }
