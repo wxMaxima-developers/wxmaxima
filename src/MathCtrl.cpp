@@ -1029,6 +1029,27 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
   m_cellMouseSelectionStartedIn = NULL;
 }
 
+void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
+  if(event.GetModifiers() & wxMOD_CONTROL)
+  {
+    std::cerr<<"Scroll!\n";
+    wxCommandEvent *zoomEvent = new wxCommandEvent;
+    zoomEvent->SetEventType(wxEVT_MENU);
+    if(event.GetWheelRotation()>0)
+    {
+      zoomEvent->SetId(menu_zoom_in);
+      GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
+    }
+    else
+    {
+      zoomEvent->SetId(menu_zoom_out);
+      GetParent()->GetEventHandler()->QueueEvent(zoomEvent); 
+    }
+  }
+  else
+    event.Skip();
+}
+
 void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
   if (m_tree == NULL || !m_leftDown)
     return;
@@ -5401,4 +5422,5 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_SET_FOCUS(MathCtrl::OnSetFocus)
   EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
   EVT_SCROLL_CHANGED(MathCtrl::OnScrollChanged)
+  EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
 END_EVENT_TABLE()

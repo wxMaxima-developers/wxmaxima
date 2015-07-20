@@ -73,8 +73,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxAcceleratorEntry entries[4];
   entries[0].Set(wxACCEL_CTRL,  WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
-  entries[2].Set(wxACCEL_CTRL,  wxT('+'), menu_zoom_in);
-  entries[3].Set(wxACCEL_CTRL,  wxT('-'), menu_zoom_out);
+  entries[2].Set(wxACCEL_CTRL,  wxT('+'), MathCtrl::menu_zoom_in);
+  entries[3].Set(wxACCEL_CTRL,  wxT('-'), MathCtrl::menu_zoom_out);
   wxAcceleratorTable accel(4, entries);
   SetAcceleratorTable(accel);
 #endif
@@ -422,9 +422,9 @@ void wxMaximaFrame::SetupMenu()
                      _("Comment out the currently selected text"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_EditMenu, menu_zoom_in, _("Zoom &In\tAlt-I"),
+  APPEND_MENU_ITEM(m_EditMenu, MathCtrl::menu_zoom_in, _("Zoom &In\tAlt-I"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_EditMenu, menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
+  APPEND_MENU_ITEM(m_EditMenu, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;

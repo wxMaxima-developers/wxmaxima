@@ -223,8 +223,6 @@ public:
     menu_to_gamma,
     menu_texform,
     button_enter,
-    menu_zoom_in,
-    menu_zoom_out,
     menu_zoom_80,
     menu_zoom_100,
     menu_zoom_120,

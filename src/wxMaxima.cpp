@@ -2050,13 +2050,13 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   }
   double zf = m_console->GetZoomFactor();
   if (zf < 3.0)
-    menubar->Enable(menu_zoom_in, true);
+    menubar->Enable(MathCtrl::menu_zoom_in, true);
   else
-    menubar->Enable(menu_zoom_in, false);
+    menubar->Enable(MathCtrl::menu_zoom_in, false);
   if (zf > 0.8)
-    menubar->Enable(menu_zoom_out, true);
+    menubar->Enable(MathCtrl::menu_zoom_out, true);
   else
-    menubar->Enable(menu_zoom_out, false);
+    menubar->Enable(MathCtrl::menu_zoom_out, false);
 
 }
 
@@ -2594,6 +2594,8 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
   }
 
+  std::cerr<<"Evt!\n";
+
   switch (event.GetId())
   {
   case wxID_PREFERENCES:
@@ -2743,7 +2745,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       return;
     }
     break;
-  case menu_zoom_in:
+  case MathCtrl::menu_zoom_in:
     if (m_console->GetZoomFactor() < 3.0) {
       m_console->SetZoomFactor(m_console->GetZoomFactor() + 0.1);
       wxString message = _("Zoom set to ");
@@ -2751,7 +2753,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       SetStatusText(message, 1);
     }
     break;
-  case menu_zoom_out:
+  case MathCtrl::menu_zoom_out:
     if (m_console->GetZoomFactor() > 0.8) {
       m_console->SetZoomFactor(m_console->GetZoomFactor() - 0.1);
       wxString message = _("Zoom set to ");
@@ -5515,8 +5517,8 @@ EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
 #if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
 EVT_TOOL(ToolBar::tb_print, wxMaxima::PrintMenu)
 #endif
-EVT_MENU(menu_zoom_in,  wxMaxima::EditMenu)
-EVT_MENU(menu_zoom_out, wxMaxima::EditMenu)
+EVT_MENU(MathCtrl::menu_zoom_in,  wxMaxima::EditMenu)
+EVT_MENU(MathCtrl::menu_zoom_out, wxMaxima::EditMenu)
 EVT_MENU(menu_zoom_80,  wxMaxima::EditMenu)
 EVT_MENU(menu_zoom_100, wxMaxima::EditMenu)
 EVT_MENU(menu_zoom_120, wxMaxima::EditMenu)
@@ -5554,8 +5556,8 @@ EVT_UPDATE_UI(ToolBar::plot_slider_id, wxMaxima::UpdateSlider)
 EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_text_from_console, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
-EVT_UPDATE_UI(menu_zoom_in, wxMaxima::UpdateMenus)
-EVT_UPDATE_UI(menu_zoom_out, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(MathCtrl::menu_zoom_in, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(MathCtrl::menu_zoom_out, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)

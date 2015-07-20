@@ -273,6 +273,7 @@ class MathCtrl: public wxScrolledCanvas
   void OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC);
   void OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGC);
   void OnMouseMotion(wxMouseEvent& event);
+  void OnMouseWheel(wxMouseEvent& event);
   void OnDoubleClick(wxMouseEvent& event);
   /*! A special key has been pressed 
 
@@ -459,6 +460,8 @@ public:
     popid_insert_section,
     popid_insert_subsection,
     popid_insert_subsubsection,
+    menu_zoom_in,
+    menu_zoom_out
   };
   
   //! The constructor
