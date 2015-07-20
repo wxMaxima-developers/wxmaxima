@@ -1930,8 +1930,15 @@ void MathCtrl::QuestionAnswered()
 void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   bool needRecalculate = false;
 
-  if (event.GetKeyCode() == WXK_UP &&
-      m_activeCell->CaretAtStart()
+  if (
+    (
+      (event.GetKeyCode() == WXK_UP) ||
+      (event.GetKeyCode() == WXK_PAGEUP)
+#ifdef WXK_PRIOR
+      || (event.GetKeyCode() != WXK_PRIOR)
+#endif
+      )&&
+    m_activeCell->CaretAtStart()
     )
   {
     GroupCell *previous=dynamic_cast<GroupCell*>((m_activeCell->GetParent())->m_previous);
@@ -1965,13 +1972,21 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
     // If we scrolled away from the cell that is currently being evaluated
     // we need to enable the button that brings us back
-    ScrolledAwayFromEvaluation();
+     ScrolledAwayFromEvaluation();
 
     return;
   }
-
-  if (event.GetKeyCode() == WXK_DOWN &&
-      m_activeCell->CaretAtEnd())
+  
+  if (
+    (
+      (event.GetKeyCode() == WXK_DOWN) ||
+      (event.GetKeyCode() == WXK_PAGEDOWN)
+#ifdef WXK_PRIOR
+      || (event.GetKeyCode() != WXK_NEXT)
+#endif
+      )&&
+      m_activeCell->CaretAtEnd()
+      )
   {
     GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     if(event.ShiftDown()) {
