@@ -739,8 +739,7 @@ public:
   GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
   // methods for zooming the document in and out
   double GetZoomFactor() { return m_zoomFactor; }
-  void SetZoomFactor(double newzoom, bool recalc = true) { m_zoomFactor = newzoom;
-    if (recalc) {RecalculateForce(); Refresh();} }
+  void SetZoomFactor(double newzoom, bool recalc = true);
   void CommentSelection();
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);

@@ -440,6 +440,36 @@ void MathCtrl::RecalculateForce() {
   Recalculate(true);
 }
 
+void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
+{
+  // Determine if we have a sane thing we can scroll to.
+  MathCell *CellToScrollTo = GetHCaret();
+  if(!CellToScrollTo) CellToScrollTo = GetActiveCell();
+  if(!CellToScrollTo) CellToScrollTo = GetWorkingGroup();
+  if(!CellToScrollTo)
+  {
+    wxPoint topleft;
+    CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
+    CellToScrollTo = GetTree();
+    while (CellToScrollTo != NULL)
+    {
+      wxRect rect = CellToScrollTo->GetRect();
+      if(rect.GetBottom() > topleft.y)
+        break;
+      CellToScrollTo = CellToScrollTo -> m_next;
+    }
+  }
+  m_zoomFactor = newzoom;
+  if (recalc)
+  {
+    RecalculateForce();
+    Refresh();
+  }
+  
+  if(CellToScrollTo)
+    ScrollToCell(CellToScrollTo);
+}
+
 void MathCtrl::Recalculate(bool force)
 {
   GroupCell *tmp = m_tree;
@@ -487,7 +517,21 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   MathCell *CellToScrollTo = m_hCaretPosition;
   if(!CellToScrollTo) CellToScrollTo = m_activeCell;
   if(!CellToScrollTo) CellToScrollTo = m_workingGroup;
-    
+
+  if(!CellToScrollTo)
+  {
+    wxPoint topleft;
+    CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
+    CellToScrollTo = m_tree;
+    while (CellToScrollTo != NULL)
+    {
+      wxRect rect = CellToScrollTo->GetRect();
+      if(rect.GetBottom() > topleft.y)
+        break;
+      CellToScrollTo = CellToScrollTo -> m_next;
+    }
+  }
+
   if (m_tree != NULL) {
     m_selectionStart = NULL;
     m_selectionEnd = NULL;
@@ -1032,7 +1076,6 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
 void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
   if(event.GetModifiers() & wxMOD_CONTROL)
   {
-    std::cerr<<"Scroll!\n";
     wxCommandEvent *zoomEvent = new wxCommandEvent;
     zoomEvent->SetEventType(wxEVT_MENU);
     if(event.GetWheelRotation()>0)

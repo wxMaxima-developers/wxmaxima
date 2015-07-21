@@ -2594,7 +2594,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     return;
   }
 
-  std::cerr<<"Evt!\n";
 
   switch (event.GetId())
   {
@@ -2746,19 +2745,14 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
   case MathCtrl::menu_zoom_in:
+    
     if (m_console->GetZoomFactor() < 3.0) {
       m_console->SetZoomFactor(m_console->GetZoomFactor() + 0.1);
-      wxString message = _("Zoom set to ");
-      message << int(100.0 * m_console->GetZoomFactor()) << wxT("%");
-      SetStatusText(message, 1);
     }
     break;
   case MathCtrl::menu_zoom_out:
     if (m_console->GetZoomFactor() > 0.8) {
       m_console->SetZoomFactor(m_console->GetZoomFactor() - 0.1);
-      wxString message = _("Zoom set to ");
-      message << int(100.0 * m_console->GetZoomFactor()) << wxT("%");
-      SetStatusText(message, 1);
     }
     break;
   case menu_zoom_80:
@@ -4864,7 +4858,6 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
           index++;
         index++;
       }
-      std::cerr<<wxString(c)<<" "<<c<<"\n";
       if(text[index]!=wxT('\"')) return(_("Unterminated string."));
       break;
 
@@ -4946,7 +4939,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   m_maximaStdoutPollTimer.Start(1000);
 
   wxString text = m_console->m_evaluationQueue->GetCommand();
-  std::cerr<<"Text:"<<text<<"\n";
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     if(m_console->m_evaluationQueue->m_workingGroupChanged)
