@@ -62,10 +62,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // Add some shortcuts that aren't automatically set by menu entries.
 #if defined __WXMSW__
   wxAcceleratorEntry entries[5];
-  entries[0].Set(wxACCEL_CTRL,  WXK_TAB, menu_autocomplete);
-  entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
-  entries[2].Set(wxACCEL_CTRL,  wxT('+'), menu_zoom_in);
-  entries[3].Set(wxACCEL_CTRL,  wxT('-'), menu_zoom_out);
+  entries[0].Set(wxACCEL_CTRL,  WXK_TAB,    menu_autocomplete);
+  entries[1].Set(wxACCEL_CTRL,  WXK_SPACE,  menu_autocomplete);
+  entries[2].Set(wxACCEL_CTRL,  wxT('+'),   MathCtrl::menu_zoom_in);
+  entries[3].Set(wxACCEL_CTRL,  wxT('-'),   MathCtrl::menu_zoom_out);
   entries[4].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
   wxAcceleratorTable accel(5, entries);
   SetAcceleratorTable(accel);
