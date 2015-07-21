@@ -101,7 +101,10 @@ wxString EditorCell::PrependNBSP(wxString input)
         retval += wxT("&nbsp;");
     }
     else 
+    {
       retval += ch;
+      firstSpace = true;
+    }
   }
   return retval;
 }

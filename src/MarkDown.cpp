@@ -51,9 +51,6 @@ wxString MarkDownParser::MarkDown(wxString str)
   // so far
   std::list <int> indentationLevels;
 
-  // Do we need to add a newline character?
-  bool addNewline = false;
-
   // Now process the input string line-by-line.
   wxStringTokenizer lines(str,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
   while(lines.HasMoreTokens())
@@ -117,7 +114,6 @@ wxString MarkDownParser::MarkDown(wxString str)
           result += itemizeEndItem() + itemizeItem();
         }
         result += str;
-        addNewline = false;
       }
       else
       {
@@ -130,7 +126,6 @@ wxString MarkDownParser::MarkDown(wxString str)
           if(indentationLevels.back() > index)
           {
             if(NewLineBreaksLine() && !m_flowedTextRequested)
-              addNewline = false;
 
             result += itemizeEndItem();
             while((!indentationLevels.empty())&&
@@ -144,22 +139,14 @@ wxString MarkDownParser::MarkDown(wxString str)
           line = line.Right(line.Length() - index);
         }
         
-        // Add the text to the output.
-        if (addNewline)
-        {
-          result += NewLine() + wxT("\n");
-          addNewline = false;
-        }
-        else
-          result += "\n";
-        
-        result += line;
+        // Add the text to the output.        
+        result += line + "\n";
       }
     }
     else
     {
+      std::cerr<<"EmptyString\n";
       if(lines.HasMoreTokens()) result += NewLine();
-      addNewline = false;
     }
   }
 
