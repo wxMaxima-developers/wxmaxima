@@ -1,34 +1,39 @@
 Current:
-  * The table-of-contents-sidebar no shows the current cursor position
+  * The table-of-contents-sidebar now shows the current cursor position
   * Fixed a few instances of cursors jumping out of the screen
-  * Fixed a few instances of cursors jumping to the beginning of the worksheet
+  * Fixed a few instances of cursors jumping to the beginning or end of the worksheet
   * Better detection which cell maxima is processing and if it still is doing so
   * Regression: Hiding the toolbar didn't work on some systems
   * Markdown support for <=, >=, <=>, <-, ->, <->, => and +/- symbols.
   * An option to not export maxima's input as well as the output.
-  * Allow Extending selection from part of a single cell to multiple cells.
   * An option to use High-resolution bitmaps for the HTML export.
   * Images that are too big for the window now are displayed in a scaled-down version.
   * Fixed the support for out-of-tree-bulds that was broken in 15.04
-  * Fixed a race condition that could cause text from maxima to be appended to the wrong cell.
   * Meaningful ALT texts for the HTML export to provide accessibility
-  * Performance fixes that are espectionally effective on MSW
+  * Performance fixes that are espectionally effective for MSW
   * Unification of some platform-specific code
   * bash autocompletion
   * A fourth sectioning level
-  * Made entering uppercase greek letters easier
-  * Syntax highlighting in code cell
-  * A "halt on error" feature
-  * Improved handling for multiple commands per cell
+  * Made entering uppercase greek letters easier and documented how to input special
+	unicode symbols
+  * Syntax highlighting in code cells
+  * Automatic highlighting of text equal to the currrently selected one.
   * A batch mode that pauses evaluation if maxima asks a question.
-  * Now evaluation is only triggered if evaluation of the last command has finished.
+  * A "halt on error" feature
+  * Now evaluation of a new command is only triggered if evaluation of the last
+	command has finished. This means that output from maxima is always appended
+	to the right cell.
+  * Un-broke error and question handling for multiple commands per cell. Sincewe now send
+	maxima's input command-per-command this means a cell with multiple commands is no
+	more evaluated faster than multiple cells with single commands each.
   * If ever a end-of-evaluation marker gets lost there is a new "trigger evaluation"
 	menu entry in the maxima menu.
+  * On wxGtk autocompletion was replaced by a content assistant that is based on the
+	surprisingly powerful autocompletion feature.
   * Ctrl+Tab now launches the autocompletion (or content assistant, if available)
-  * on wxGtk we now have a content assistant that is based on the surprisingly powerful
-	autocompletion feature.
-  * Text equal to the text currently selected text now is highlighted in the editor.
   * Tab and Shift+Tab now indent and unindent regions.
+  * Ctrl+Mouse wheel and Ctrl++/- now zoom in and out of the worksheet.
+  * Allow Extending selection from part of a single cell to multiple cells.
   * A Autoindent functionality.
 
 15.04.0:
