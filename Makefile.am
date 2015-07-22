@@ -22,13 +22,14 @@ EXTRA_DIST = bootstrap wxmaxima.spec.in     \
 	     art/config/maxima.png                           \
 	     art/config/styles.png                           \
 	     art/config/editing.png                          \
+	     art/config/Document-export.png		     \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
              art/wxmac-doc.ico art/maximaicon.ico
 
 docdir = ${datadir}/wxMaxima
 doc_DATA = README README.md COPYING art/config/options.png art/config/maxima.png \
-	art/config/styles.png art/config/editing.png
+	art/config/styles.png art/config/editing.png art/config/Document-export.png
 
 LANGS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
 

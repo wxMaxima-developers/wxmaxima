@@ -148,8 +148,10 @@ private:
   void SetProperties();
   //! The panel that allows to set the editing options
   wxPanel* CreateWorksheetPanel();
-  //! The panel that allows to set checkbox-style options
+  //! A panel that allows to set general options
   wxPanel* CreateOptionsPanel();
+  //! The panel that allows to set options affecting the export functionality
+  wxPanel* CreateExportPanel();
   //! The panel that allows to change styles
   wxPanel* CreateStylePanel();
   //! The panel that allows to change maxima-specific configurations.

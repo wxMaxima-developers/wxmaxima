@@ -92,6 +92,7 @@ Config::Config(wxWindow* parent)
   m_imageList->Add(IMAGE("editing.png"));
   m_imageList->Add(IMAGE("maxima.png"));
   m_imageList->Add(IMAGE("styles.png"));
+  m_imageList->Add(IMAGE("Document-export.png"));
   m_imageList->Add(IMAGE("options.png"));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
@@ -104,7 +105,8 @@ Config::Config(wxWindow* parent)
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
-  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 3);
+  m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
+  m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
 
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
@@ -382,6 +384,44 @@ wxPanel* Config::CreateWorksheetPanel()
   return panel;
 }
   
+wxPanel* Config::CreateExportPanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
+
+  wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
+  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
+  grid_sizer->Add(dc, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_documentclass, 0, wxALL, 5);
+
+  wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
+  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE | wxHSCROLL);
+  grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
+
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
+  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
+
+  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
+  vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
+
+  m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
+  vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
+
+  m_exportInput = new wxCheckBox(panel, -1, _("Include input cells in the export of a worksheet"));
+  vsizer->Add(m_exportInput, 0, wxALL, 5);
+
+  vsizer->AddGrowableRow(10);
+  panel->SetSizer(vsizer);
+  vsizer->Fit(panel);
+
+  return panel;
+}
+
 wxPanel* Config::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
@@ -419,16 +459,6 @@ wxPanel* Config::CreateOptionsPanel()
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-  wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
-  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
-  grid_sizer->Add(dc, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_documentclass, 0, wxALL, 5);
-
-  wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE | wxHSCROLL);
-  grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
-
   wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off)"));
   m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0, 30);
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -445,18 +475,6 @@ wxPanel* Config::CreateOptionsPanel()
 
   m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
   vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
-
-  m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
-  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
-
-  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
-  vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
-
-  m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
-  vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
-
-  m_exportInput = new wxCheckBox(panel, -1, _("Include input cells in the export of a worksheet"));
-  vsizer->Add(m_exportInput, 0, wxALL, 5);
 
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
