@@ -1090,9 +1090,6 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
     }
   }
   else
-    // TODO: Remove this if again after testing if scrolling can be intercepted
-    // on win if the ALT key is pressed.
-    if(!(event.GetModifiers() & wxMOD_ALT))
     event.Skip();
 }
 
