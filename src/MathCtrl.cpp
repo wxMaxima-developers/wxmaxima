@@ -2511,7 +2511,8 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       !(event.GetKeyCode() == WXK_RIGHT) &&
       !(event.GetKeyCode() == WXK_UP)    &&
       !(event.GetKeyCode() == WXK_DOWN)  &&
-      !(event.GetKeyCode() == WXK_BACK)
+      !(event.GetKeyCode() == WXK_BACK)  &&
+      !(event.GetKeyCode() == WXK_DELETE)
       )
     {
       event.Skip();
