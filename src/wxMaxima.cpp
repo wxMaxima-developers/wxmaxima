@@ -598,6 +598,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_client = NULL;
     m_isConnected = false;
     if (!m_closing)
+    {
       if(m_unsuccessfullConnectionAttempts > 0)
         ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                           "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
@@ -610,6 +611,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         m_unsuccessfullConnectionAttempts ++;
         StartMaxima();
       }
+    }
     break;
 
   default:
