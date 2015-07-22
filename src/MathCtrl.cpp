@@ -3452,6 +3452,20 @@ bool MathCtrl::ExportToHTML(wxString file) {
               "wxMaxima</A>"
               ".</SMALL>\n");
   output<<wxEmptyString;
+
+  bool exportContainsWXMX = false;
+  wxConfig::Get()->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
+
+  if(exportContainsWXMX)
+  {
+    wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename+wxT(".wxmx");
+    wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
+    ExportToWXMX(wxmxfileName,false);
+    output<<wxT(" <SMALL> The source of this maxima session can be downloaded "
+                "<A HREF=\"") + wxmxfileName_rel + wxT("\">"
+                "here</A>"
+                ".</SMALL>\n");
+  }
   
   //
   // Close document
@@ -3766,7 +3780,7 @@ wxString ConvertToUnicode(wxString str)
   since the last save. Then the original .wxmx file is replaced in a 
   (hopefully) atomic operation.
 */
-bool MathCtrl::ExportToWXMX(wxString file)
+bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
 {
   // delete temp file if it already exists
   wxString backupfile=file+wxT("~");
@@ -3941,7 +3955,8 @@ bool MathCtrl::ExportToWXMX(wxString file)
   if(!wxRenameFile(backupfile,file,true))
     return false;
   
-  m_saved = true;
+  if(markAsSaved)
+    m_saved = true;
   return true;
 }
 

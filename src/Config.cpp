@@ -144,8 +144,9 @@ void Config::SetProperties()
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
-    m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
-m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
+  m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
+  m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
+  m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -172,7 +173,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   // configuration data for this item.
   bool match = true, savePanes = false, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
-  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true;
+  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true, exportContainsWXMX = false;
   bool insertAns = true;
   int  undoLimit = 0;
   int showLength = 0;
@@ -210,6 +211,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportInput"), &exportInput);
+  config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLength"), &showLength);
@@ -273,6 +275,7 @@ m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HT
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
+  m_exportContainsWXMX->SetValue(exportContainsWXMX);
   m_matchParens->SetValue(match);
   m_showLength->SetSelection(showLength);
   m_changeAsterisk->SetValue(changeAsterisk);
@@ -415,6 +418,9 @@ wxPanel* Config::CreateExportPanel()
   m_exportInput = new wxCheckBox(panel, -1, _("Include input cells in the export of a worksheet"));
   vsizer->Add(m_exportInput, 0, wxALL, 5);
 
+  m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
+  vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
+  
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
@@ -700,6 +706,7 @@ void Config::WriteSettings()
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportInput"), m_exportInput->GetValue());
+  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());

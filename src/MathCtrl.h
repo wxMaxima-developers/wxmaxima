@@ -610,8 +610,12 @@ public:
   void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
   //! Export the file to a text file maxima's load command can read
   bool ExportToMAC(wxString file);
-  //! export to xml compatible file
-  bool ExportToWXMX(wxString file);	
+  /*! export to xml compatible file
+    \param file The file name
+    \param markAsSaved false means that this action doesn't clear the 
+                             worksheet's "modified" status.
+  */
+  bool ExportToWXMX(wxString file, bool markAsSaved = true);	
   //! export to a LaTeX file
   bool ExportToTeX(wxString file);
   /*! Convert the current selection to a string 
