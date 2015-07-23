@@ -1170,7 +1170,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
     return;
 
   case CLICK_TYPE_INPUT_SELECTION:
-    wxASSERT_MSG(m_cellMouseSelectionStartedIn != NULL,_(wxT("Bug: Trying to select inside a cell without having a current cell")));
+    wxASSERT_MSG(m_cellMouseSelectionStartedIn != NULL,_("Bug: Trying to select inside a cell without having a current cell"));
     if (m_cellMouseSelectionStartedIn != NULL) {
       rect = m_cellMouseSelectionStartedIn->GetRect();
 
@@ -1747,7 +1747,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
-  wxASSERT_MSG(m_workingGroup!=NULL,_(wxT("Bug: Got a question but no cell to answer it in")));
+  wxASSERT_MSG(m_workingGroup!=NULL,_("Bug: Got a question but no cell to answer it in"));
 
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
@@ -3336,9 +3336,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
         if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+          output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
             filename +
-            wxString::Format(wxT("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
+            wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
         }
         else
         {
@@ -3348,7 +3348,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
             bitmapScale=1;
           wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
           int borderwidth = 0;
-          wxString alttext = _(wxT("Result"));
+          wxString alttext = _("Result");
           if(tmp->GetOutput())
           {
             alttext = tmp->GetOutput()->ListToString();
@@ -3358,7 +3358,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           }
           wxString line = wxT("  <img src=\"") +
             filename + wxT("_htmlimg/") + filename +
-            wxString::Format(_(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\"")),
+            wxString::Format(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                              count,size.x - 2 * borderwidth) +
             alttext +
             wxT("\" >");
@@ -3420,15 +3420,15 @@ bool MathCtrl::ExportToHTML(wxString file) {
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                  wxString::Format(wxT("_%d.gif"), count));
-          output<<_(wxT("  <img src=\"")) + filename + wxT("_htmlimg/") +
+          output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
             filename +
-            wxString::Format(wxT("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)<<wxT("\n");
+            wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)<<wxT("\n");
         }
         else
         {
           CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                      out, NULL, true);
-          output<<_(wxT("  <IMG src=\"")) + filename + wxT("_htmlimg/") +
+          output<<wxT("  <IMG src=\"") + filename + wxT("_htmlimg/") +
             filename +
             wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count);
         }
@@ -4946,7 +4946,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
     if(where)
       wxASSERT_MSG(
         where->GetType()==MC_TYPE_GROUP,
-        _(wxT("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell.")));
+        _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
     m_hCaretPosition = where;
     m_hCaretActive = true;
     
@@ -5293,7 +5293,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
   m_completions.Sort();
-  m_autocompleteTemplates = type == AutoComplete::tmplte;
+  m_autocompleteTemplates = (type == AutoComplete::tmplte);
 
   /// No completions - clear the selection and return false
   if (m_completions.GetCount() == 0)

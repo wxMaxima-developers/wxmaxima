@@ -60,7 +60,7 @@ ToolBar::ToolBar(wxWindow* parent, int id)
   // If there are packaging issues we want to have a detailed error message.
   Dirstructure dirstructure;
   wxFileName test(dirstructure.ConfigToolbarDir() + wxT("gtk-new.png"));  
-  wxASSERT_MSG(test.IsFileReadable(),_(wxT("Expected the icon files to be found at"))+dirstructure.ConfigToolbarDir());
+  wxASSERT_MSG(test.IsFileReadable(),_("Expected the icon files to be found at")+dirstructure.ConfigToolbarDir());
                
   m_toolBar->AddTool(tb_new, _("New"),
                      GetImage(wxT("gtk-new")),

@@ -352,10 +352,10 @@ wxPanel* Config::CreateWorksheetPanel()
 
   wxStaticText* sl = new wxStaticText(panel, -1, _("Show long expressions"));
   grid_sizer->Add(sl, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  showLengths.Add(_(wxT("No")));
-  showLengths.Add(_(wxT("If not very long")));
-  showLengths.Add(_(wxT("If not extremely long")));
-  showLengths.Add(_(wxT("Yes")));
+  showLengths.Add(_("No"));
+  showLengths.Add(_("If not very long"));
+  showLengths.Add(_("If not extremely long"));
+  showLengths.Add(_("Yes"));
   m_showLength = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,showLengths);
   grid_sizer->Add(m_showLength, 0, wxALL, 5);
 

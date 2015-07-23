@@ -4191,8 +4191,6 @@ FUNCTION: simp_inequality
 TEMPLATE: simp_inequality(<e>)
 FUNCTION: standardize_inverse_trig
 TEMPLATE: standardize_inverse_trig(<e>)
-FUNCTION: subst_parallel
-TEMPLATE: subst_parallel(<l>, <e>)
 FUNCTION: to_poly
 TEMPLATE: to_poly(<e>, <l>)
 FUNCTION: to_poly_solve
@@ -4457,3 +4455,8 @@ UNIT: weber
 UNIT: week
 UNIT: yard
 UNIT: year
+FUNCTION: defstruct
+TEMPLATE: defstruct(<struct(fields)>)
+OPTION  : structures
+FUNCTION: new
+TEMPLATE: new(<struct(fields)>)

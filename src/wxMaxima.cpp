@@ -1999,7 +1999,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   wxMenuBar* menubar = GetMenuBar();
 
   if(m_console)
-    wxASSERT_MSG((!m_console->HCaretActive())||(m_console->GetActiveCell()==NULL),_(wxT("Both horizontal and vertical cursor active at the same time")));
+    wxASSERT_MSG((!m_console->HCaretActive())||(m_console->GetActiveCell()==NULL),_("Both horizontal and vertical cursor active at the same time"));
 
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
@@ -2311,7 +2311,7 @@ void wxMaxima::ReadStdErr()
     config->Read(wxT("pollStdOut"), &pollStdOut);
      
     if(pollStdOut)
-      DoRawConsoleAppend(_(wxT("Message from the stdout of Maxima: ")) + o, MC_TYPE_DEFAULT);
+      DoRawConsoleAppend(_("Message from the stdout of Maxima: ") + o, MC_TYPE_DEFAULT);
   }
   if(m_process->IsErrorAvailable())
   {
@@ -4968,7 +4968,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     }
     else
     {
-      TextCell* cell = new TextCell(_(wxT("Refusing to send cell to maxima: ")) +
+      TextCell* cell = new TextCell(_("Refusing to send cell to maxima: " ) +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
       cell->SetParent(tmp);

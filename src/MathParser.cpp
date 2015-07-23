@@ -411,7 +411,7 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 	  int left= m_displayedDigits/3;
 	  if (left>30) left=30;
 	  
-	  str = str.Left(left) + wxString::Format(_(wxT("[%i digits]")), (int) str.Length() - 2 * left) + str.Right(left);
+	  str = str.Left(left) + wxString::Format(_("[%i digits]"), (int) str.Length() - 2 * left) + str.Right(left);
 	  //	  str = str.Left(left)+wxT("...");
 	}
     }
