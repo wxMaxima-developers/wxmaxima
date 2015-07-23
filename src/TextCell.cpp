@@ -294,8 +294,21 @@ wxString TextCell::ToString()
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif
   }
-  if (m_textStyle == TS_STRING)
+  switch(m_textStyle)
+  {
+  case TS_VARIABLE:
+  case TS_FUNCTION:
+    // The only way for variable or function names to contain quotes is
+    // that they contain a quote quoted by a backslash: They cannot
+    // be quoted by quotation marks since maxima would'nt accept that.
+    text.Replace(wxT("'"), wxT("\\'"));
+    text.Replace(wxT("\""), wxT("\\\""));
+    break;
+  case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
+    break;
+  }
+
   return text;
 }
 
