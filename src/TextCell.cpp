@@ -298,11 +298,15 @@ wxString TextCell::ToString()
   {
   case TS_VARIABLE:
   case TS_FUNCTION:
-    // The only way for variable or function names to contain quotes is
-    // that they contain a quote quoted by a backslash: They cannot
-    // be quoted by quotation marks since maxima would'nt accept that.
-    text.Replace(wxT("'"), wxT("\\'"));
-    text.Replace(wxT("\""), wxT("\\\""));
+    // The only way for variable or function names to contain quotes and
+    // characters that clearly represent operators is that these chars
+    // are quoted by a backslash: They cannot be quoted by quotation
+    // marks since maxima would'nt allow strings here.
+  {
+    wxString charsNeedingQuotes("'\"()[]{}^+-*/&§?:;=#<>$");
+    for(int i=0;i++;i<charsNeedingQuotes.Length())
+      text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+  }
     break;
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
