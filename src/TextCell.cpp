@@ -304,7 +304,7 @@ wxString TextCell::ToString()
     // marks since maxima would'nt allow strings here.
   {
     wxString charsNeedingQuotes("'\"()[]{}^+-*/&§?:;=#<>$");
-    for(int i=0;i++;i<charsNeedingQuotes.Length())
+    for(int i=0;i<charsNeedingQuotes.Length();i++)
       text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
   }
     break;
