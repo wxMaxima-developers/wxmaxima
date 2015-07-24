@@ -304,8 +304,19 @@ wxString TextCell::ToString()
     // marks since maxima would'nt allow strings here.
   {
     wxString charsNeedingQuotes("'\"()[]{}^+-*/&§?:;=#<>$");
-    for(int i=0;i<charsNeedingQuotes.Length();i++)
-      text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+    bool isOperator = true;
+    for(int i=0;i<m_text.Length();i++)
+    {
+      if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.find(m_text[i])==wxNOT_FOUND))
+      {
+        isOperator = false;
+        break;
+      }
+    }
+
+    if(!isOperator)
+      for(int i=0;i<charsNeedingQuotes.Length();i++)
+        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
   }
     break;
   case TS_STRING:
