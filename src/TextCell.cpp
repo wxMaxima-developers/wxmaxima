@@ -303,7 +303,7 @@ wxString TextCell::ToString()
     // are quoted by a backslash: They cannot be quoted by quotation
     // marks since maxima would'nt allow strings here.
   {
-    wxString charsNeedingQuotes("'\"()[]{}^+-*/&§?:;=#<>$");
+    wxString charsNeedingQuotes("'\"()[]{}^+-*/&§?:;=#<>$\\");
     bool isOperator = true;
     for(int i=0;i<m_text.Length();i++)
     {
