@@ -2341,7 +2341,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     
     // Find a keyword that starts at the current position
-    else if (IsAlpha(Ch))
+    else if ((IsAlpha(Ch)) || (Ch == wxT('\\')))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2350,6 +2350,11 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       
       while((pos<size) && IsAlphaNum(string.GetChar(pos)))
       {
+        if(string.GetChar(pos) == wxT('\\'))
+        {
+          token += string.GetChar(pos);
+          pos++;
+        }
         token += string.GetChar(pos);
         pos++;
       }
@@ -2515,7 +2520,7 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
       }
-      if(IsAlpha(token[0]))
+      if((IsAlpha(token[0])) || (token[0] == wxT('\\')))
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume there cannot be an algorithm that always makes
