@@ -1477,7 +1477,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,std::l
     undoAction->m_newCellsEnd = end;
     undoBuffer->push_front(undoAction);
     TreeUndo_LimitUndoBuffer();
-    TreeUndo_ClearRedoActionList();
+//    TreeUndo_ClearRedoActionList();
   }
 }
 
@@ -4256,10 +4256,12 @@ bool MathCtrl::CanTreeUndo(){
 
 bool MathCtrl::CanTreeRedo(){
   if(treeRedoActions.empty())
+  {
     return false;
+  }
   else
   {
-    // If the next redo action will delete cells we have to look if we are allowed
+   // If the next redo action will delete cells we have to look if we are allowed
     // to do this.
     if(treeRedoActions.front()->m_newCellsEnd)
       return CanDeleteRegion(
@@ -4273,11 +4275,15 @@ bool MathCtrl::CanTreeRedo(){
 void MathCtrl::Redo()
 {
   if(CanRedoInsideCell())
+  {
     RedoInsideCell();
+  }
   else
   {
     if(CanTreeRedo())
+    {
       TreeRedo();
+    }
   }
 }
 
