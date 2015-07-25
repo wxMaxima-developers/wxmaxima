@@ -145,7 +145,6 @@ wxString MarkDownParser::MarkDown(wxString str)
     }
     else
     {
-      std::cerr<<"EmptyString\n";
       if(lines.HasMoreTokens()) result += NewLine();
     }
   }

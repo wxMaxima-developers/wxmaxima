@@ -5201,7 +5201,6 @@ void MathCtrl::ScrollToCaret()
 {
   if(m_hCaretActive)
   {
-    std::cerr<<"Test1\n";
     ScrollToCell(m_hCaretPosition);
   }
   else
@@ -5216,7 +5215,6 @@ void MathCtrl::ScrollToCaret()
         RecalculateForce();
         point = GetActiveCell()->PositionToPoint(parser, -1);
       }
-      std::cerr<<"Point:"<<point.x<<":"<<point.y<<"\n";
       ShowPoint(point);
     }   
   }
