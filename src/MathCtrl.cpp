@@ -5120,31 +5120,41 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
   if (m_tree == NULL)
     return false;
 
-  GroupCell *start = m_tree;
+  // Determine where to begin the search
+  GroupCell *pos = m_tree;
   if (!down)
-    start = m_last;
+    pos = m_last;
 
   if (m_activeCell != NULL)
-    start = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-
+    pos = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
   else if (m_hCaretActive)
   {
     if (down)
     {
       if (m_hCaretPosition != NULL)
-        start = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+        pos = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
     }
     else
     {
-      start = m_hCaretPosition;
+      pos = m_hCaretPosition;
     }
   }
-  if(start == NULL)
-    start = m_tree;
+  if(pos == NULL)
+    pos = m_tree;
+
+  // If we still don't have a place to pos searching there we tried to
+  // search in a empty worksheet and know we won't get any result.
+  if(pos == NULL)
+    return false;
   
-  while (start != NULL)
+  // Remember where to go if we need to wrapp the search.
+  GroupCell *start = pos;
+
+  bool wrappedSearch = false;
+  
+  while ((pos != start) || (!wrappedSearch))
   {
-    EditorCell *editor = (EditorCell *)(start->GetEditable());
+    EditorCell *editor = (EditorCell *)(pos->GetEditable());
     
     if (editor != NULL)
     {
@@ -5166,9 +5176,23 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
     }
     
     if (down)
-      start = dynamic_cast<GroupCell*>(start->m_next);
+    {
+      pos = dynamic_cast<GroupCell*>(pos->m_next);
+      if (pos == NULL)
+      {
+        wrappedSearch = true;
+        pos = m_tree;
+      }
+    }
     else
-      start = dynamic_cast<GroupCell*>(start->m_previous);
+    {
+      pos = dynamic_cast<GroupCell*>(pos->m_previous);
+      if (pos == NULL)
+      {
+        wrappedSearch = true;
+        pos = m_last;
+      }
+    }
   }
   return false;
 }
