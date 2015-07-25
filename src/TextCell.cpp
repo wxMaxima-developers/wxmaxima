@@ -283,7 +283,7 @@ bool TextCell::IsOperator()
   return false;
 }
 
-wxString TextCell::ToString()
+wxString TextCell::ToString(bool escapeForDragnDrop)
 {
   wxString text;
   if (m_altCopyText != wxEmptyString)
@@ -302,29 +302,32 @@ wxString TextCell::ToString()
     // characters that clearly represent operators is that these chars
     // are quoted by a backslash: They cannot be quoted by quotation
     // marks since maxima would'nt allow strings here.
-  {
     // TODO: We could escape the - char. But we get false positives, then.
-    wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
-    bool isOperator = true;
-    for(int i=0;i<m_text.Length();i++)
+    //       Is there any way around this?
+    
+    if(escapeForDragnDrop)
     {
-      if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.find(m_text[i])==wxNOT_FOUND))
+      wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+      bool isOperator = true;
+      for(int i=0;i<m_text.Length();i++)
       {
-        isOperator = false;
-        break;
+        if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.find(m_text[i])==wxNOT_FOUND))
+        {
+          isOperator = false;
+          break;
+        }
       }
+      
+      if(!isOperator)
+        for(int i=0;i<charsNeedingQuotes.Length();i++)
+          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      break;
     }
-
-    if(!isOperator)
-      for(int i=0;i<charsNeedingQuotes.Length();i++)
-        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-  }
-    break;
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
     break;
   }
-
+  
   return text;
 }
 
