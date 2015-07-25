@@ -120,6 +120,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
   wxMemoryDC dcm;
 
+  std::cerr<<"Paint\n";
   // Get the font size
   wxConfig *config = (wxConfig *)wxConfig::Get();
 

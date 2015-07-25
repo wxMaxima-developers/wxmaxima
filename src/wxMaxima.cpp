@@ -998,7 +998,6 @@ void wxMaxima::ReadPrompt(wxString &data)
             m_console->ShowHCaret();
           }
           m_console->SetWorkingGroup(NULL);
-          m_console->Refresh();
 
           // If we have selected a cell in order to show we are evaluating it
           // we should now remove this marker.
@@ -1007,15 +1006,19 @@ void wxMaxima::ReadPrompt(wxString &data)
             if(m_console->GetActiveCell())
               m_console->GetActiveCell() -> SelectNone();            
             m_console->SetSelection(NULL,NULL); 
+            m_console->SetActiveCell(NULL);
           }
 	  m_console->FollowEvaluation(false);
           if(m_batchmode)
           {
             SaveFile(false);
-            wxCloseEvent dummy;
-            OnClose(dummy);
+            wxCloseEvent *closeEvent;
+            closeEvent = new wxCloseEvent();
+            GetEventHandler()->QueueEvent(closeEvent);
           }
+          std::cerr<<"Empty\n";
           EvaluationQueueLength(0);
+          m_console->Refresh();
         }
         else { // we don't have an empty queue
           m_ready = false;
@@ -4919,9 +4922,16 @@ void wxMaxima::TryEvaluateNextInQueue()
   GroupCell *tmp = m_console->m_evaluationQueue->GetCell();
   if (tmp == NULL)
   {
+    // Maxima is no more busy.
     StatusMaximaBusy(waiting);
+    // If maxima isn't doing anything there is no need to poll for input from
+    // maxima's stdout.
     m_maximaStdoutPollTimer.Stop();
+    // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
+    // The cell from the last evaluation might still be shown in it's "evaluating" state
+    // so let's refresh the console to update the display of this.
+    m_console->Refresh();
     return; //empty queue
   }
 
