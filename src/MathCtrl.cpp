@@ -5201,6 +5201,7 @@ void MathCtrl::ScrollToCaret()
 {
   if(m_hCaretActive)
   {
+    std::cerr<<"Test1\n";
     ScrollToCell(m_hCaretPosition);
   }
   else
@@ -5209,9 +5210,15 @@ void MathCtrl::ScrollToCaret()
     {
       wxClientDC dc(this);
       CellParser parser(dc);
-      wxPoint point = m_activeCell->PositionToPoint(parser);
-      ShowPoint(m_activeCell->PositionToPoint(parser));
-    }
+      wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
+      if(point.y<1)
+      {
+        RecalculateForce();
+        point = GetActiveCell()->PositionToPoint(parser, -1);
+      }
+      std::cerr<<"Point:"<<point.x<<":"<<point.y<<"\n";
+      ShowPoint(point);
+    }   
   }
 }
 
@@ -5271,7 +5278,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   if (m_activeCell == NULL)
     return false;
 
-  EditorCell *editor = (EditorCell *)m_activeCell;
+  EditorCell *editor = GetActiveCell();
 
   editor->SelectWordUnderCaret(false, false);
 
