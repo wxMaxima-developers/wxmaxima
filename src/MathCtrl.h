@@ -264,6 +264,11 @@ class MathCtrl: public wxScrolledCanvas
   bool m_autoSaveIntervalExpired;
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
+  /*! Is called by wxWidgets when it wants to redraw the console.
+
+    The canonical way to trigger this function is calling the Refresh() function
+    of this class.
+   */
   void OnPaint(wxPaintEvent& event);
   void OnSize(wxSizeEvent& event);
   void OnMouseRightDown(wxMouseEvent& event);

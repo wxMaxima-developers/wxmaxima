@@ -1016,7 +1016,6 @@ void wxMaxima::ReadPrompt(wxString &data)
             closeEvent = new wxCloseEvent();
             GetEventHandler()->QueueEvent(closeEvent);
           }
-          std::cerr<<"Empty\n";
           EvaluationQueueLength(0);
           m_console->Refresh();
         }
