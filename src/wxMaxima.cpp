@@ -4996,7 +4996,10 @@ void wxMaxima::TryEvaluateNextInQueue()
       SetBatchMode(false);
       EvaluationQueueLength(0);
       if(abortOnError || m_batchmode)
+      {
         m_console->m_evaluationQueue->Clear();
+        StatusMaximaBusy(waiting);
+      }
       else
       {
         m_console->m_evaluationQueue->RemoveFirst();
