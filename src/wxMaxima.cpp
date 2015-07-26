@@ -76,18 +76,43 @@ enum {
   maxima_process_id
 };
 
+void wxMaxima::ConfigChanged()
+{
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  int showLength = 0;
+  
+  config->Read(wxT("showLength"), &showLength);
+  
+  switch(showLength)
+  {
+  case 0:
+    m_maxOutputCellsPerCommand = 50;
+    break;
+  case 1:
+    m_maxOutputCellsPerCommand = 100;
+    break;
+  case 2:
+    m_maxOutputCellsPerCommand = 200;
+    break;
+  case 3:
+    m_maxOutputCellsPerCommand = -1;
+    break;
+  }
+  config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
+}
+
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
 
+  ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
   m_saving = false;
   m_autoSaveInterval = 0;
-  config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
-
+  m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
@@ -279,11 +304,24 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   wxString t(s);
   t.Trim();
   t.Trim(false);
-  if (!t.Length())
+  if (t.Length() == 0)
   {
     return ;
   }
 
+  // If we already have output more lines than we are allowed to we a inform the user
+  // about this and return.
+  if(m_outputCellsFromCurrentCommand++ == m_maxOutputCellsPerCommand)
+  {
+    DoRawConsoleAppend(_("... [suppressed additional lines since the output is longer than allowed in the configuration] "), MC_TYPE_ERROR);
+    return; 
+  };
+
+  // If we already have output more lines than we are allowed to and we already
+  // have informed the user about this we return immediately
+  if(m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
+    return;
+  
   if (type != MC_TYPE_ERROR)
     StatusMaximaBusy(parsing);
 
@@ -988,7 +1026,9 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_lastPrompt = o;
         // remove the event maxima has just processed from the evaluation queue
         m_console->m_evaluationQueue->RemoveFirst();
-
+        // if we remove a command from the evaluation queue the next output line will be the
+        // first from the next command.
+        m_outputCellsFromCurrentCommand = 0;
         if (m_console->m_evaluationQueue->Empty()) { // queue empty?
           StatusMaximaBusy(waiting);
           if(m_console->FollowEvaluation())
@@ -2626,6 +2666,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       // Refresh the display as the settings that affect it might have changed.
       m_console->RecalculateForce();
       m_console->Refresh();
+      ConfigChanged();
     }
 
     configW->Destroy();
@@ -5003,6 +5044,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       else
       {
         m_console->m_evaluationQueue->RemoveFirst();
+        m_outputCellsFromCurrentCommand = 0;
         TryEvaluateNextInQueue();
       }
     }
@@ -5010,6 +5052,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   else
   {
     m_console->m_evaluationQueue->RemoveFirst();
+    m_outputCellsFromCurrentCommand = 0;
     TryEvaluateNextInQueue();
   }
 }

@@ -148,6 +148,10 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! The number of output cells the current command has produced so far.
+  int m_outputCellsFromCurrentCommand;
+  //! The maximum number of lines per command we will display 
+  int m_maxOutputCellsPerCommand;
   //! The number of consecutive unsucessfull attempts to connect to the maxima server
   int m_unsuccessfullConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
@@ -162,6 +166,8 @@ private:
    */
   wxString GetUnmatchedParenthesisState(wxString text);
 protected:
+  //! Is called on start and whenever the configuration changes
+  void ConfigChanged();
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent& event);
   void ShowCHMHelp(wxString helpfile,wxString keyword);
