@@ -4707,16 +4707,19 @@ void MathCtrl::PasteFromClipboard(bool primary)
       Recalculate();
       Refresh();
     }
-    else if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
-      if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
-        wxTextDataObject obj;
-        wxTheClipboard->GetData(obj);
-        wxString txt = obj.GetText();
-
-        OpenHCaret(txt);
-        Refresh();
-      }
+    else
+    {
+      if ((m_hCaretActive == true) && (wxTheClipboard->Open())) {
+        if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+          wxTextDataObject obj;
+          wxTheClipboard->GetData(obj);
+          wxString txt = obj.GetText();
+          
+          OpenHCaret(txt);
+          Refresh();
+        }
       wxTheClipboard->Close();
+      }
     }
   }
   if (primary)

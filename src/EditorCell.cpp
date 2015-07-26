@@ -2710,6 +2710,8 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
 
 bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase)
 {
+  long start = MIN(m_selectionStart, m_selectionEnd);
+  long end = MAX(m_selectionStart, m_selectionEnd);
   if (m_selectionStart <0)
   {
     if(oldStr == wxEmptyString)
@@ -2720,30 +2722,30 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     
   if(IgnoreCase)
     {
-      if ( m_text.SubString(m_selectionStart, m_selectionEnd - 1).Upper() !=
+      if ( m_text.SubString(start,end - 1).Upper() !=
            wxString(oldStr).Upper()
         )
         return false;
     }
     else
     {
-      if ( m_text.SubString(m_selectionStart, m_selectionEnd - 1) != oldStr)
+      if ( m_text.SubString(start,end - 1) != oldStr)
         return false;
     }
   
   {
     // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-    m_text = m_text.SubString(0, m_selectionStart - 1) +
+    m_text = m_text.SubString(0, start - 1) +
              newStr +
-             m_text.SubString(m_selectionEnd, m_text.Length());
+             m_text.SubString(end, m_text.Length());
     StyleText();
     
     m_containsChanges = true;
-    m_positionOfCaret = m_selectionStart + newStr.Length();
+    m_positionOfCaret = start + newStr.Length();
 
     if(keepSelected)
     {
-      SetSelection(m_selectionStart, m_positionOfCaret);
+      SetSelection(start, m_positionOfCaret);
     }
     else
     {
