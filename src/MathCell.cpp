@@ -159,6 +159,7 @@ void MathCell::AppendCell(MathCell *p_next)
 
 MathCell* MathCell::GetParent()
 {
+  wxASSERT_MSG(m_group != NULL,_("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return m_group;
 }
 

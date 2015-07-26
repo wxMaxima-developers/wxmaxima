@@ -1417,7 +1417,7 @@ void MathCtrl::DeleteCurrentCell()
   if(m_hCaretActive)
     cellToDelete = m_hCaretPosition;
   else
-    cellToDelete = dynamic_cast<GroupCell*>(GetActiveCell() -> m_group);
+    cellToDelete = dynamic_cast<GroupCell*>(GetActiveCell() -> GetParent());
 
   if(cellToDelete)
     DeleteRegion(cellToDelete,cellToDelete);
@@ -1553,9 +1553,9 @@ void MathCtrl::TreeUndo_CellEntered()
   if(m_TreeUndoMergeSubsequentEdits) return;
   if(GetActiveCell())
   {
-    if(GetActiveCell()->m_group==NULL)
+    if(GetActiveCell()->GetParent()==NULL)
       return;
-    TreeUndo_ActiveCell = dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
+    TreeUndo_ActiveCell = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
     m_currentUndoAction.m_oldText = TreeUndo_ActiveCell->GetEditable()->GetValue();
   }
 }
@@ -4132,7 +4132,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
     stop=m_hCaretPosition;
   else
   {
-    stop=dynamic_cast<GroupCell*>(GetActiveCell()->m_group);
+    stop=dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
     if(stop->m_previous!=NULL)
       stop=dynamic_cast<GroupCell*>(stop->m_previous);
   }

@@ -347,11 +347,6 @@ public:
     Reads NULL, if this is the first cell of the list.    
    */
   MathCell *m_previous;
-  /*! The GroupCell this list of cells belongs to.
-    
-    Reads NULL, if no parent cell has been set.    
-   */
-  MathCell *m_group;
   /*! The next cell to draw
     
     Normally things are drawn in the order in which they appear in this list.
@@ -422,7 +417,9 @@ public:
   virtual bool IsActive() { return false; }
   /*! Define which GroupCell is the parent of this cell.
     
-    If a derived class defines a cell type that does include sub-cells
+    By definition every math cell is part of a group cell.
+    So this function has to be called on every math cell. Also if a
+    derived class defines a cell type that does include sub-cells 
     (One example would be the argument of a sqrt() cell) the derived
     class has to take care that the subCell's SetParent is called when
     the cell's SetParent is called.
@@ -461,6 +458,12 @@ public:
    */
   void SetCanvasSize(wxSize size) { m_canvasSize = size; }
 protected:
+  /*! The GroupCell this list of cells belongs to.
+    
+    Reads NULL, if no parent cell has been set - which is treated as an Error by GetParent():
+    every math cell has a GroupCell it belongs to.
+  */
+  MathCell *m_group;
   //! The size of the canvas our cells have to be drawn on
   static wxSize m_canvasSize;
   int m_height;

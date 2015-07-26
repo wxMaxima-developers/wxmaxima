@@ -229,7 +229,7 @@ void GroupCell::SetInput(MathCell *input)
   if (m_input != NULL)
     delete m_input;
   m_input = input;
-  m_input->m_group = this;
+  m_input->SetParent(this);
 }
 
 void GroupCell::AppendInput(MathCell *cell)
@@ -261,7 +261,7 @@ void GroupCell::SetOutput(MathCell *output)
     DestroyOutput();
 
   m_output = output;
-  m_output->m_group = this;
+  m_output->SetParent(this);
 
   m_lastInOutput = m_output;
 
