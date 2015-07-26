@@ -36,7 +36,7 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   void SetFont(CellParser& parser, int fontsize);
-  wxString ToString(bool escapeForDragnDrop=true);
+  wxString ToString();
   wxString ToTeX();
   wxString ToXML();
   wxString GetDiffPart();
