@@ -98,7 +98,9 @@ void wxMaxima::ConfigChanged()
     m_maxOutputCellsPerCommand = -1;
     break;
   }
+  m_autoSaveInterval = 0;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
+  m_autoSaveInterval *= 60000;
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
@@ -110,8 +112,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
   m_saving = false;
-  m_autoSaveInterval = 0;
-  m_autoSaveInterval *= 60000;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_port = 4010;
@@ -2474,9 +2474,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_export_html:
   {
     m_saving = true;
-    // Saving calls wxYield(), exporting does do so, too => we need to
-    // avoid triggering an autosave during export.
-    m_autoSaveTimer.Stop();
     
     // Determine a sane default file name;
     wxString file = m_currentFile;
@@ -2510,6 +2507,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       file = fileDialog.GetPath();
       if (file.Length())
       {
+        // Saving calls wxYield(), exporting does do so, too => we need to
+        // avoid triggering an autosave during export.
+        m_autoSaveTimer.Stop();
+        
         int ext = fileDialog.GetFilterIndex();
         if((file.Right(5) != wxT(".html")) &&
            (file.Right(4) != wxT(".mac")) &&
@@ -2576,8 +2577,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);   
 
         wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
-        wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
-	      
+        wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);     
       }
     }
   }
@@ -4553,6 +4553,8 @@ void wxMaxima::OnClose(wxCloseEvent& event)
       }
     }
   }
+  // We have saved the file now => No need to have the timer around any longer.
+  m_autoSaveTimer.Stop();
 
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxSize size = GetSize();
@@ -5372,7 +5374,7 @@ int wxMaxima::SaveDocumentP()
   else {
     if(m_autoSaveInterval > 10000)
       if(SaveFile())
-	return wxID_YES;
+	return wxID_NO;
 
     wxString ext;
     wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
@@ -5398,6 +5400,7 @@ EVT_MENU(mac_closeId, wxMaxima::FileMenu)
 EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
 EVT_TIMER(KEYBOARD_INACTIVITY_TIMER_ID, wxMaxima::OnTimerEvent)
 EVT_TIMER(MAXIMA_STDOUT_POLL_ID, wxMaxima::OnTimerEvent)
+EVT_TIMER(AUTO_SAVE_TIMER_ID, wxMaxima::OnTimerEvent)
 EVT_TIMER(wxID_ANY, wxMaxima::OnTimerEvent)
 EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
 EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
