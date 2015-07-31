@@ -186,9 +186,9 @@ void Config::SetProperties()
   int autoSaveInterval = 0;
   
 #if defined (__WXMAC__)
-  bool usepngCairo=true;
-#else
   bool usepngCairo=false;
+#else
+  bool usepngCairo=true;
 #endif
 
   

@@ -1647,9 +1647,9 @@ void wxMaxima::SetupVariables()
   }
 
 #if defined (__WXMAC__)
-  bool usepngCairo=true;
-#else
   bool usepngCairo=false;
+#else
+  bool usepngCairo=true;
 #endif
   config->Read(wxT("usepngCairo"),&usepngCairo);
   if(usepngCairo)
@@ -2650,9 +2650,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     wxConfigBase *config = wxConfig::Get();
     
 #if defined (__WXMAC__)
-    bool pngcairo_old=true;
-#else
     bool pngcairo_old=false;
+#else
+    bool pngcairo_old=true;
 #endif
     config->Read(wxT("usepngCairo"),&pngcairo_old);
       
@@ -2691,9 +2691,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #endif
     
 #if defined (__WXMAC__)
-    bool usepngCairo=true;
-#else
     bool usepngCairo=false;
+#else
+    bool usepngCairo=true;
 #endif
     config->Read(wxT("usepngCairo"),&usepngCairo);
     if(usepngCairo != pngcairo_old)
