@@ -352,7 +352,8 @@ public:
     calculating,
     parsing,
     transferring,
-    userinput
+    userinput,
+    disconnected
   };
 
   /*! Inform the user about the length of the evaluation queue.

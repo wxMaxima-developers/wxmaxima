@@ -168,7 +168,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
 
-  StatusMaximaBusy(waiting);
+  StatusMaximaBusy(disconnected);
   
   /// RegEx for function definitions
   m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
@@ -684,6 +684,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   break;
 
   case wxSOCKET_LOST:
+    StatusMaximaBusy(disconnected);
     m_console->m_evaluationQueue->Clear();
     EvaluationQueueLength(0);
     SetBatchMode(false);
@@ -1978,6 +1979,16 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 void wxMaxima::OnIdle(wxIdleEvent& event)
 {
   ResetTitle(m_console->IsSaved());
+  // On my linux box the menus need only rarely to be updated
+  // and the idle loop is called at least twice a key press
+  //
+  // => TODO: Should we invest time in optimizing this any further?
+  wxUpdateUIEvent dummy;
+  UpdateMenus(dummy);
+  UpdateToolBar(dummy);
+  UpdateSlider(dummy);
+  
+  // Tell wxMaxima it can process its own idle commands, as well.
   event.Skip();
 }
 
@@ -2133,7 +2144,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   m_console->m_mainToolBar->EnableTool(ToolBar::tb_evaltillhere,
                                        (m_console->GetTree() != NULL) &&
                                        (m_console->CanPaste()) &&
-                                       (m_console->GetHCaret() != NULL)
+                                       (m_console->GetHCaret() != NULL) &&
+                                       (m_client != NULL)
     );
 
   // On MSW it seems we cannot change an icon without side-effects that somehow
@@ -5604,6 +5616,11 @@ EVT_TOOL(ToolBar::tb_find, wxMaxima::EditMenu)
 EVT_TOOL(ToolBar::tb_follow,wxMaxima::OnFollow)
 EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
 EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)
+/* These commands somehow caused the menu to be updated six times on every
+   keypress and the tool bar to be updated six times on every menu update
+
+   => Moved the update events to the idle loop.
+
 EVT_UPDATE_UI(menu_interrupt_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(ToolBar::plot_slider_id, wxMaxima::UpdateSlider)
 EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
@@ -5639,6 +5656,7 @@ EVT_UPDATE_UI(ToolBar::tb_animation_stop, wxMaxima::UpdateToolBar)
 #endif
 EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
+*/
 EVT_CLOSE(wxMaxima::OnClose)
 EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
 EVT_MENU(MathCtrl::popid_edit, wxMaxima::EditInputMenu)

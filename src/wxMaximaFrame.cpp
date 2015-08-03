@@ -170,6 +170,15 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
         }
         SetStatusText(_("Parsing output"), 1);
         break;
+      case disconnected:
+        m_MenuBar->Enable(menu_remove_output,false);
+        if (m_console->m_mainToolBar)
+        {
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+        }
+        SetStatusText(_("Not connected to maxima"), 1);
+        break;
       }
     }
   }

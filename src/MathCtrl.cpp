@@ -117,7 +117,6 @@ MathCtrl::~MathCtrl() {
  */
 void MathCtrl::OnPaint(wxPaintEvent& event) {
   wxPaintDC dc(this);
-
   wxMemoryDC dcm;
 
   // Get the font size
@@ -2599,7 +2598,8 @@ void MathCtrl::StepAnimation(int change)
 
   // Set the slider to its new value
   if(m_mainToolBar)
-    m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+    if(m_mainToolBar->m_plotSlider)
+      m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
 
   // Rearm the animation timer if necessary.
   if(AnimationRunning())
@@ -4835,11 +4835,12 @@ bool MathCtrl::IsSelected(int type)
   else if (type == MC_TYPE_IMAGE || type == MC_TYPE_SLIDE) {
     if (m_selectionStart != m_selectionEnd || m_selectionStart->GetType() != type)
       return false;
-    return true;
+    else
+      return true;
   }
-
-  else if (m_selectionStart->GetType() != type)
-    return false;
+  else
+    if (m_selectionStart->GetType() != type)
+      return false;
 
   return true;
 }
@@ -4860,7 +4861,8 @@ void MathCtrl::Animate(bool run)
       // disallow manual slider changes and the problem disappears.
 #ifdef __WXMSW__
       if(m_mainToolBar)
-        m_mainToolBar->m_plotSlider->Enable(false);
+        if(m_mainToolBar->m_plotSlider)
+          m_mainToolBar->m_plotSlider->Enable(false);
 #endif
     }
     else
@@ -4869,7 +4871,8 @@ void MathCtrl::Animate(bool run)
       m_animationTimer.Stop();
 #ifdef __WXMSW__
       if(m_mainToolBar)
-        m_mainToolBar->m_plotSlider->Enable(true);
+        if(m_mainToolBar->m_plotSlider)
+          m_mainToolBar->m_plotSlider->Enable(true);
 #endif
     }
   }
@@ -4879,7 +4882,8 @@ void MathCtrl::Animate(bool run)
     m_animationTimer.Stop();
 #ifdef __WXMSW__
     if(m_mainToolBar)
-      m_mainToolBar->m_plotSlider->Enable(true);
+      if(m_mainToolBar->m_plotSlider)
+        m_mainToolBar->m_plotSlider->Enable(true);
 #endif
   }
 }
