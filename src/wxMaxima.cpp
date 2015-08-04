@@ -108,7 +108,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   wxMaximaFrame(parent, id, title, pos, size)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
-
   ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
   m_saving = false;
@@ -1980,7 +1979,10 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 {
   ResetTitle(m_console->IsSaved());
   // On my linux box the menus need only rarely to be updated
-  // and the idle loop is called at least twice a key press
+  // and the idle loop is called
+  //  - on every mouse movement
+  //  - at each key press
+  //  - and at each key release
   //
   // => TODO: Should we invest time in optimizing this any further?
   wxUpdateUIEvent dummy;
@@ -1988,7 +1990,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
   UpdateToolBar(dummy);
   UpdateSlider(dummy);
   
-  // Tell wxMaxima it can process its own idle commands, as well.
+  // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
 
@@ -2121,31 +2123,16 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 {
   if(!m_console->m_mainToolBar)
     return;
-  
-  m_console->m_mainToolBar->EnableTool(ToolBar::tb_copy,  m_console->CanCopy(true));
-  m_console->m_mainToolBar->EnableTool(ToolBar::tb_cut, m_console->CanCut());
-  m_console->m_mainToolBar->EnableTool(ToolBar::tb_save, (!m_fileSaved)&&(!m_saving));
-  /*
-    The interrupt button is now automatically enabled when maxima
-    is actually working and disabled when it isn't.
-    The code that does this can be found in StatusMaximaBusy().
-    The old code was:
 
-    if (m_pid > 0)
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    else
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-  */
-  if (m_console->GetTree() != NULL)
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, true);
-  else
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_print, false);
-  
-  m_console->m_mainToolBar->EnableTool(ToolBar::tb_evaltillhere,
-                                       (m_console->GetTree() != NULL) &&
-                                       (m_console->CanPaste()) &&
-                                       (m_console->GetHCaret() != NULL) &&
-                                       (m_client != NULL)
+  m_console->m_mainToolBar->CanCopy(m_console->CanCopy(true));
+  m_console->m_mainToolBar->CanCut (m_console->CanCut());
+  m_console->m_mainToolBar->CanSave((!m_fileSaved)&&(!m_saving));
+  m_console->m_mainToolBar->CanPrint(m_console->GetTree() != NULL);
+  m_console->m_mainToolBar->CanEvalTillHere(
+    (m_console->GetTree() != NULL) &&
+    (m_console->CanPaste()) &&
+    (m_console->GetHCaret() != NULL) &&
+    (m_client != NULL)
     );
 
   // On MSW it seems we cannot change an icon without side-effects that somehow

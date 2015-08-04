@@ -108,9 +108,58 @@ class ToolBar
   wxImage  m_PlayButton;
   wxImage  m_StopButton;
 #endif
-  
 
+  void CanCopy(bool value)
+    {
+      if (value!=m_canCopy_old)
+      {
+        EnableTool(tb_copy,value);
+        m_canCopy_old = value;
+      }
+    }
+  
+  void CanCut(bool value)
+    {
+      if (value!=m_canCut_old)
+      {
+        EnableTool(tb_cut,value);
+        m_canCut_old = value;
+      }
+    }
+
+  void CanSave(bool value)
+    {
+      if (value!=m_canSave_old)
+      {
+        EnableTool(tb_save,value);
+        m_canSave_old = value;
+      }
+    }
+  
+  void CanPrint(bool value)
+    {
+      if (value!=m_canPrint_old)
+      {
+        EnableTool(tb_print,value);
+        m_canPrint_old = value;
+      }
+    }
+  
+  void CanEvalTillHere(bool value)
+    {
+      if (value!=m_canEvalTillHere_old)
+      {
+        EnableTool(tb_evaltillhere,value);
+        m_canEvalTillHere_old = value;
+      }
+    }
+  
 private:
+  bool m_canCopy_old;
+  bool m_canCut_old;
+  bool m_canSave_old;
+  bool m_canPrint_old;
+  bool m_canEvalTillHere_old;
   wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
     //! True if we we show the "needs information" button.

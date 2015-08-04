@@ -50,6 +50,12 @@ ToolBar::~ToolBar()
 
 ToolBar::ToolBar(wxWindow* parent, int id)
 {
+  m_canCopy_old = true;
+  m_canCut_old = true;
+  m_canSave_old = true;
+  m_canPrint_old = true;
+  m_canEvalTillHere_old = true;
+
   m_toolBar = new wxToolBar(parent,id);
   m_needsInformation = false;
   m_AnimationStartStopState=Inactive;
@@ -156,39 +162,42 @@ ToolBar::ToolBar(wxWindow* parent, int id)
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
-  switch(state)
+  if(m_AnimationStartStopState != state)
   {
-  case Running:
-    m_plotSlider->Enable(true);
-    if(m_AnimationStartStopState!=Running)
+    switch(state)
     {
-      #ifndef __WXMSW__
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
-      #endif
+    case Running:
+      m_plotSlider->Enable(true);
+      if(m_AnimationStartStopState!=Running)
+      {
+#ifndef __WXMSW__
+        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
+#endif
+      }
+      break;
+      m_toolBar->EnableTool(tb_animation_startStop,true);
+      m_plotSlider->Enable(true);
+    case Stopped:
+      if(m_AnimationStartStopState==Running)
+      {
+#ifndef __WXMSW__
+        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);      
+#endif
+      }
+      m_toolBar->EnableTool(tb_animation_startStop,true);
+      m_plotSlider->Enable(true);
+      break;
+    case Inactive:
+      m_toolBar->EnableTool(tb_animation_startStop,false);
+      m_plotSlider->Enable(false);
+      if(m_AnimationStartStopState==Running)
+      {
+#ifndef __WXMSW__
+        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+#endif
+      }
+      break;
     }
-    break;
-    m_toolBar->EnableTool(tb_animation_startStop,true);
-    m_plotSlider->Enable(true);
-  case Stopped:
-    if(m_AnimationStartStopState==Running)
-    {
-      #ifndef __WXMSW__
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);      
-      #endif
-    }
-    m_toolBar->EnableTool(tb_animation_startStop,true);
-    m_plotSlider->Enable(true);
-    break;
-  case Inactive:
-    m_toolBar->EnableTool(tb_animation_startStop,false);
-    m_plotSlider->Enable(false);
-    if(m_AnimationStartStopState==Running)
-    {
-      #ifndef __WXMSW__
-      m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
-      #endif
-    }
-    break;
+    m_AnimationStartStopState = state;
   }
-  m_AnimationStartStopState = state;
 }
