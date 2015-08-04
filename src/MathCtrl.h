@@ -511,8 +511,10 @@ public:
     the line is appended to m_last, instead.
   */
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  void Recalculate(bool force = false);
-  void RecalculateForce();
+  void Recalculate(bool force = false);  
+  void RecalculateForce() {
+    Recalculate(true);
+  }
   /*! Empties the current document
 
     Used before opening a new file or when the "new" button is pressed.

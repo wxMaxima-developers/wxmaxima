@@ -432,13 +432,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   }
 }
 
-/***
- * Recalculate dimensions of cells
- */
-void MathCtrl::RecalculateForce() {
-  Recalculate(true);
-}
-
 void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
   // Determine if we have a sane thing we can scroll to.
@@ -2141,7 +2134,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
       RefreshRect(rect);
     }
   }
-  ScrollToCaret();
 }
 
 void MathCtrl::SelectWithChar(int ccode) {
