@@ -1989,10 +1989,16 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
   UpdateMenus(dummy);
   UpdateToolBar(dummy);
   UpdateSlider(dummy);
+
+  // If we have set the flag that tells us we should update the table of
+  // contents sooner or later we should do so now that wxMaxima is idle.
   if(m_console->m_scheduleUpdateToc)
   {
     if(m_console->m_structure)
+    {
+      m_console->m_scheduleUpdateToc = false;
       m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+    }
   }
      
   // Tell wxWidgets it can process its own idle commands, as well.

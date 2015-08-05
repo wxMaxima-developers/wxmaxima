@@ -220,6 +220,11 @@ class MathCtrl: public wxScrolledCanvas
    */
   wxString EscapeHTMLChars(wxString input);
 
+  /*! Update the table of contents
+
+    This function actually only schedules the update of the table-of-contents-tab.
+    The actual update is done when wxMaxima is idle.
+   */
   void UpdateTableOfContents()
     {
       m_scheduleUpdateToc = true;
