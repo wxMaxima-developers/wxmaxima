@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -1847,6 +1847,11 @@ msgstr "Histogram..."
 msgid "History"
 msgstr "History"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "History\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3430,11 +3435,6 @@ msgstr "Statistika\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Řetězce"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "Statistika\tAlt-Shift-S"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Styl"
@@ -3491,9 +3491,10 @@ msgstr ""
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "Panel nástrojů\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -4211,6 +4212,10 @@ msgstr ""
 msgid "yes"
 msgstr "ano"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Statistika\tAlt-Shift-S"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Zvětšení nastaveno na"
 
@@ -4239,9 +4244,6 @@ msgstr "ano"
 
 #~ msgid "Find..."
 #~ msgstr "Najít ..."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "History\tAlt-Shift-H"
 
 #, fuzzy
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"

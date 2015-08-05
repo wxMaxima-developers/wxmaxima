@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
-"PO-Revision-Date: 2015-08-05 19:48+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
+"PO-Revision-Date: 2015-08-05 21:26+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1864,6 +1864,10 @@ msgstr "Histogramm ..."
 msgid "History"
 msgstr "Historie der letzten Eingaben"
 
+#: ../src/wxMaximaFrame.cpp:529
+msgid "History\tAlt-Shift-I"
+msgstr "Historie\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3470,10 +3474,6 @@ msgstr "Statistik\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Zeichenfolgen"
 
-#: ../src/wxMaximaFrame.cpp:530
-msgid "Structure\tAlt-Shift-T"
-msgstr "Dokumentstruktur\tAlt-Shift-T"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Stil"
@@ -3527,9 +3527,9 @@ msgstr "System Information"
 msgid "Table of Contents"
 msgstr "Inhaltsverzeichnis"
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr "Inhaltsverzeichnis\tAlt-Shift-I"
+#: ../src/wxMaximaFrame.cpp:530
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "Inhaltsverzeichnis\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -3803,7 +3803,9 @@ msgstr "; oder $, bei dem nicht alle Klammern geschlossen waren"
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
-msgstr "Schaffe es nicht, die folgende Versionsinfo von http://andrejv.github.io/wxmaxima/version.txt zu interpretieren:"
+msgstr ""
+"Schaffe es nicht, die folgende Versionsinfo von http://andrejv.github.io/"
+"wxmaxima/version.txt zu interpretieren:"
 
 #: ../src/Config.cpp:620
 msgid "Underlined"
@@ -4277,6 +4279,9 @@ msgstr "x"
 msgid "yes"
 msgstr "ja"
 
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Dokumentstruktur\tAlt-Shift-T"
+
 #~ msgid "_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""
 #~ msgstr "_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""
 
@@ -4301,9 +4306,6 @@ msgstr "ja"
 
 #~ msgid "Stop animation"
 #~ msgstr "Stoppe Animation"
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "Historie\tAlt-Shift-H"
 
 #~ msgid "Redo\tCtrl-Shift-Z"
 #~ msgstr "&Erneut\tCtrl-Shift-Z"

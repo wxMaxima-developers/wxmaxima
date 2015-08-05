@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2015-06-04 17:11+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -1825,6 +1825,11 @@ msgstr "Histogram..."
 msgid "History"
 msgstr "Geçmiş"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "Geçmiş\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3382,11 +3387,6 @@ msgstr "İstatistik\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Karakter Dizinleri"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "Denetleyeci\tAlt-Shift-I"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Stil"
@@ -3442,9 +3442,9 @@ msgstr "Sistem Bilgisi"
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
+#: ../src/wxMaximaFrame.cpp:530
 #, fuzzy
-msgid "Table of contents\tAlt-Shift-I"
+msgid "Table of contents\tAlt-Shift-T"
 msgstr "Denetleyeci\tAlt-Shift-I"
 
 #: ../src/wxMaxima.cpp:3646
@@ -4168,6 +4168,10 @@ msgstr ""
 msgid "yes"
 msgstr "evet"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Denetleyeci\tAlt-Shift-I"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Yakınlaştırmayı ayarla "
 
@@ -4199,9 +4203,6 @@ msgstr "evet"
 
 #~ msgid "Find..."
 #~ msgstr "Bul.."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "Geçmiş\tAlt-Shift-H"
 
 #~ msgid "Diagram of sector..."
 #~ msgstr "Bölüm Diyagramı..."

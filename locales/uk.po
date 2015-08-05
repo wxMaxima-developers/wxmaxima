@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2015-04-07 18:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -1857,6 +1857,11 @@ msgstr "Гістограма…"
 msgid "History"
 msgstr "Журнал"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "Журнал\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3437,10 +3442,6 @@ msgstr "Статистика\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Рядки"
 
-#: ../src/wxMaximaFrame.cpp:530
-msgid "Structure\tAlt-Shift-T"
-msgstr "Структура\tAlt-Shift-T"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Стиль"
@@ -3496,9 +3497,9 @@ msgstr "Відомості щодо системи"
 msgid "Table of Contents"
 msgstr "Зміст"
 
-#: ../src/wxMaximaFrame.cpp:529
+#: ../src/wxMaximaFrame.cpp:530
 #, fuzzy
-msgid "Table of contents\tAlt-Shift-I"
+msgid "Table of contents\tAlt-Shift-T"
 msgstr "Зміст"
 
 #: ../src/wxMaxima.cpp:3646
@@ -4242,6 +4243,9 @@ msgstr "x"
 msgid "yes"
 msgstr "так"
 
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Структура\tAlt-Shift-T"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Встановлено масштаб у "
 
@@ -4269,9 +4273,6 @@ msgstr "так"
 
 #~ msgid "Stop animation"
 #~ msgstr "Припинити анімацію"
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "Журнал\tAlt-Shift-H"
 
 #~ msgid "Animation"
 #~ msgstr "Анімація"

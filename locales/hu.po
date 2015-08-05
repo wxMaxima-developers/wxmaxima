@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2015-06-04 17:02+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -1848,6 +1848,11 @@ msgstr "Hisztogram..."
 msgid "History"
 msgstr "Előzmények"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "Előzmények\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3433,10 +3438,6 @@ msgstr "Statisztika\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Karakterláncok"
 
-#: ../src/wxMaximaFrame.cpp:530
-msgid "Structure\tAlt-Shift-T"
-msgstr "Struktúra\tAlt-Shift-T"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Stílus"
@@ -3492,8 +3493,9 @@ msgstr "Rendszerinformáció"
 msgid "Table of Contents"
 msgstr "Tartalomjegyzék"
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
 msgstr "Tartalomjegyzék\tAlt-Shift-I"
 
 #: ../src/wxMaxima.cpp:3646
@@ -4234,6 +4236,9 @@ msgstr "x"
 msgid "yes"
 msgstr "igen"
 
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Struktúra\tAlt-Shift-T"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Nagyítás beállítása "
 
@@ -4267,9 +4272,6 @@ msgstr "igen"
 
 #~ msgid "Find..."
 #~ msgstr "Keresés..."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "Előzmények\tAlt-Shift-H"
 
 #, fuzzy
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"

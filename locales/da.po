@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -1870,6 +1870,11 @@ msgstr ""
 msgid "History"
 msgstr ""
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "Indsæt celle(r)\tCtrl-Shift-V"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3480,11 +3485,6 @@ msgstr ""
 msgid "Strings"
 msgstr "Tekststrenge"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "Indsæt celle(r)\tCtrl-Shift-V"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Typografi"
@@ -3543,9 +3543,10 @@ msgstr ""
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "Indsæt celle(r)\tCtrl-Shift-V"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"

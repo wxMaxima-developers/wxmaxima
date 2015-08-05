@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2013-01-04 00:31+0800\n"
 "Last-Translator: crickzhang1 <crickzhang1@gmail.com>\n"
 "Language-Team: amateur\n"
@@ -1811,6 +1811,11 @@ msgstr "柱状图..."
 msgid "History"
 msgstr "历史"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "历史\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3357,11 +3362,6 @@ msgstr "统计\tAlt-Shift-S"
 msgid "Strings"
 msgstr "字符串"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "统计\tAlt-Shift-S"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "样式"
@@ -3417,9 +3417,10 @@ msgstr "系统信息"
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "工具栏\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -4121,6 +4122,10 @@ msgstr ""
 msgid "yes"
 msgstr "是"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "统计\tAlt-Shift-S"
+
 #~ msgid "Zoom set to "
 #~ msgstr "显示比例设值为"
 
@@ -4149,9 +4154,6 @@ msgstr "是"
 
 #~ msgid "Find..."
 #~ msgstr "查找..."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "历史\tAlt-Shift-H"
 
 #, fuzzy
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"

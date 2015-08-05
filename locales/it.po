@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2015-04-10 17:44+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1836,6 +1836,11 @@ msgstr "Istogramma..."
 msgid "History"
 msgstr "Cronologia"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "Cronologia\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3402,11 +3407,6 @@ msgstr "Statistiche\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Stringhe"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "Statistiche\tAlt-Shift-S"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Stile"
@@ -3462,9 +3462,10 @@ msgstr "Informazioni sul sistema"
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "Barra strumenti\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -4189,6 +4190,10 @@ msgstr ""
 msgid "yes"
 msgstr "sì"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Statistiche\tAlt-Shift-S"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Zoom impostato a "
 
@@ -4223,9 +4228,6 @@ msgstr "sì"
 
 #~ msgid "Find..."
 #~ msgstr "Trova..."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "Cronologia\tAlt-Shift-H"
 
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"
 #~ msgstr "Ri-elabora tutto fino a qui\tCtrl-Maiusc-H"

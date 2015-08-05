@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2013-03-13 11:01+0300\n"
 "Last-Translator: Max Musatov <m1kc@yandex.ru>\n"
 "Language-Team: \n"
@@ -1879,6 +1879,11 @@ msgstr "Гистограмма..."
 msgid "History"
 msgstr "История"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "История\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3472,11 +3477,6 @@ msgstr "Статистика\tAlt-Shift-S"
 msgid "Strings"
 msgstr "Строки"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "Статистика\tAlt-Shift-S"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "Стиль"
@@ -3533,9 +3533,10 @@ msgstr "Информация о системе"
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "Панель инструментов\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -4230,6 +4231,10 @@ msgstr ""
 msgid "yes"
 msgstr "да"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "Статистика\tAlt-Shift-S"
+
 #~ msgid "Zoom set to "
 #~ msgstr "Задать увеличение"
 
@@ -4258,9 +4263,6 @@ msgstr "да"
 
 #~ msgid "Find..."
 #~ msgstr "Найти..."
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "История\tAlt-Shift-H"
 
 #, fuzzy
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"

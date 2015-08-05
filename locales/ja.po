@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:47+0200\n"
+"POT-Creation-Date: 2015-08-05 21:26+0200\n"
 "PO-Revision-Date: 2015-02-11 15:52+0900\n"
 "Last-Translator: matcha-zaq <Matcha_zaq@excite.co.jp>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -1844,6 +1844,11 @@ msgstr "ヒストグラム"
 msgid "History"
 msgstr "入力履歴"
 
+#: ../src/wxMaximaFrame.cpp:529
+#, fuzzy
+msgid "History\tAlt-Shift-I"
+msgstr "入力履歴\tAlt-Shift-H"
+
 #: ../data/tips.txt:14
 msgid ""
 "Horizontal cursor works like a normal cursor, but it operates on cells: "
@@ -3408,11 +3413,6 @@ msgstr "統計処理\tAlt-Shift-S"
 msgid "Strings"
 msgstr "出力文字列"
 
-#: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
-msgid "Structure\tAlt-Shift-T"
-msgstr "統計処理\tAlt-Shift-S"
-
 #: ../src/Config.cpp:107
 msgid "Style"
 msgstr "スタイル"
@@ -3468,9 +3468,10 @@ msgstr "System info"
 msgid "Table of Contents"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
-msgid "Table of contents\tAlt-Shift-I"
-msgstr ""
+#: ../src/wxMaximaFrame.cpp:530
+#, fuzzy
+msgid "Table of contents\tAlt-Shift-T"
+msgstr "ツールバー\tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3646
 msgid "Taylor series:"
@@ -4195,6 +4196,10 @@ msgstr ""
 msgid "yes"
 msgstr "yes"
 
+#, fuzzy
+#~ msgid "Structure\tAlt-Shift-T"
+#~ msgstr "統計処理\tAlt-Shift-S"
+
 #~ msgid "Zoom set to "
 #~ msgstr "拡大率 "
 
@@ -4232,9 +4237,6 @@ msgstr "yes"
 
 #~ msgid "Find..."
 #~ msgstr "解を1つ探す"
-
-#~ msgid "History\tAlt-Shift-H"
-#~ msgstr "入力履歴\tAlt-Shift-H"
 
 #~ msgid "Re-evaluate All until here\tCtrl-Shift-H"
 #~ msgstr "ここまでの全てのセルを再評価\tCtrl-Shift-H"
