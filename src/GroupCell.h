@@ -111,7 +111,13 @@ public:
   void UnBreakUpCells();
   void BreakLines(int fullWidth);
   void BreakLines(MathCell *cell, int fullWidth);
-  void ResetInputLabel(bool all = false); // if !all only this GC is reset
+  /*! Reset the input label of the current cell.
+
+    Won't do nothing if the cell isn't a code cell and therefore isn't equipped
+    with an input label.
+   */
+  void ResetInputLabel();
+  void ResetInputLabelList();
   //! @{ folding and unfolding
 
   //! Is this cell foldable?

@@ -573,7 +573,7 @@ void MathCtrl::ClearDocument() {
  */
 void MathCtrl::ResetInputPrompts() {
   if (m_tree)
-    m_tree->ResetInputLabel(true); // recursivly reset prompts
+    m_tree->ResetInputLabelList(); // recursivly reset prompts
 }
 
 //

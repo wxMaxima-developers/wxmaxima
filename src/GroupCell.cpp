@@ -174,21 +174,27 @@ void GroupCell::DestroyOutput()
   m_output = NULL;
 }
 
-// when all=false (default) only reset input label of the current (code) cell
-// if all = true, then also reset next cells and folded cells
-void GroupCell::ResetInputLabel(bool all)
+void GroupCell::ResetInputLabel()
 {
   if (m_groupType == GC_TYPE_CODE) {
     if (m_input)
       m_input->SetValue(EMPTY_INPUT_LABEL);
   }
-  // if all, also reset input labels in the folded cells
-  else if (all && IsFoldable() && m_hiddenTree)
-    m_hiddenTree->ResetInputLabel(true);
+}
 
-  // reset the next cell
-  if (all && m_next)
-    dynamic_cast<GroupCell*>(m_next)->ResetInputLabel(true);
+void GroupCell::ResetInputLabelList()
+{
+  GroupCell *tmp=this;
+  while(tmp)
+  {
+    tmp->ResetInputLabel();
+      // also reset input labels in the folded cells
+    if (tmp->IsFoldable() && (tmp->m_hiddenTree))
+      tmp->m_hiddenTree->ResetInputLabelList();
+
+    tmp=dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+
 }
 
 MathCell* GroupCell::Copy()
