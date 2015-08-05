@@ -38,7 +38,6 @@ Structure::Structure(wxWindow* parent, int id) : wxPanel(parent, id)
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
-  m_current = 0;
 }
 
 Structure::~Structure()
@@ -78,7 +77,7 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
 	}
       
       UpdateDisplay();
-      if(selection >= 0)
+      if((selection >= 0)&&(m_displayedItems->GetSelection()!=selection))
         m_displayedItems->SetSelection(selection);
     }
 }
@@ -88,7 +87,7 @@ void Structure::UpdateDisplay()
   wxLogNull disableWarnings;
 
   wxString regex = m_regex->GetValue();
-  wxArrayString display;
+  wxArrayString items;
   wxRegEx matcher;
 
   if (regex != wxEmptyString)
@@ -124,13 +123,14 @@ void Structure::UpdateDisplay()
     if (regex.Length()>0 && matcher.IsValid())
       {
 	if (matcher.Matches(curr))
-	  display.Add(curr);
+	  items.Add(curr);
       }
     else
-      display.Add(curr);
+      items.Add(curr);
   }
 
-  m_displayedItems->Set(display);
+  if(items!=m_items_old)
+    m_displayedItems->Set(items);
 }
 
 void Structure::OnRegExEvent(wxCommandEvent &ev)

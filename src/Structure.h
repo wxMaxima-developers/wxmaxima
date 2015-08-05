@@ -65,9 +65,10 @@ private:
   void UpdateDisplay();
   wxListBox *m_displayedItems;
   wxTextCtrl *m_regex;
+  //! The items we displayed the last time update() was called
+  wxArrayString m_items_old;
   
   std::vector <MathCell *> m_structure;
-  int m_current;
   DECLARE_EVENT_TABLE()
 };
 
