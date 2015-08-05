@@ -48,6 +48,7 @@ IMPLEMENT_APP(MyApp)
 
 void MyApp::Cleanup_Static()
 {
+  std::cout <<"Cleanup\n";
   if(m_frame)
     m_frame->CleanUp();
 }
@@ -55,7 +56,7 @@ void MyApp::Cleanup_Static()
 bool MyApp::OnInit()
 {
   m_frame = NULL;
-  atexit(Cleanup_Static);
+//  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
   bool batchmode = false;
 
