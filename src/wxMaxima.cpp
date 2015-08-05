@@ -103,6 +103,8 @@ void wxMaxima::ConfigChanged()
   m_autoSaveInterval *= 60000;
 }
 
+wxMaxima *MyApp::m_frame;
+
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size)

@@ -51,26 +51,6 @@
  */
 #define DOCUMENT_VERSION_MINOR 3
 
-class MyApp : public wxApp
-{
-public:
-  virtual bool OnInit();
-  wxLocale m_locale;
-  /*! Create a new window
-
-    \param file The file name
-    \param batchmode Do we want to execute the file and save it, but halt on error?
-   */
-  void NewWindow(wxString file = wxEmptyString,bool batchmode=false);
-#if defined (__WXMAC__)
-  wxWindowList topLevelWindows;
-  void OnFileMenu(wxCommandEvent &ev);
-  virtual void MacNewFile();
-  virtual void MacOpenFile(const wxString& file);
-#endif
-};
-
-DECLARE_APP(MyApp)
 
 #ifndef __WXGTK__
 class MyAboutDialog : public wxDialog
@@ -89,7 +69,7 @@ public:
 class wxMaxima : public wxMaximaFrame
 {
 public:
-  
+  void CleanUp();                                  //!< shuts down server and client on exit
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {
@@ -259,7 +239,6 @@ protected:
   wxString GetDefaultEntry();
   bool StartServer();                              //!< starts the server
   bool StartMaxima();                              //!< starts maxima (uses getCommand)
-  void CleanUp();                                  //!< shuts down server and client on exit
   void OnClose(wxCloseEvent& event);               //!< close wxMaxima window
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
                                                    //    (uses guessConfiguration)
@@ -388,5 +367,31 @@ private:
 };
 
 #endif
+
+class MyApp : public wxApp
+{
+public:
+  virtual bool OnInit();
+  wxLocale m_locale;
+  /*! Create a new window
+
+    \param file The file name
+    \param batchmode Do we want to execute the file and save it, but halt on error?
+   */
+  void NewWindow(wxString file = wxEmptyString,bool batchmode=false);
+  //! Is called by atExit and tries to close down the maxima process if wxMaxima has crashed.
+  static void Cleanup_Static();
+  //! A pointer to the currently running wxMaxima instance
+  static wxMaxima *m_frame;
+#if defined (__WXMAC__)
+  wxWindowList topLevelWindows;
+  void OnFileMenu(wxCommandEvent &ev);
+  virtual void MacNewFile();
+  virtual void MacOpenFile(const wxString& file);
+  
+#endif
+};
+
+DECLARE_APP(MyApp)
 
 #endif // WXMAXIMA_H

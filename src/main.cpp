@@ -46,8 +46,16 @@
 
 IMPLEMENT_APP(MyApp)
 
+void MyApp::Cleanup_Static()
+{
+  if(m_frame)
+    m_frame->CleanUp();
+}
+
 bool MyApp::OnInit()
 {
+  m_frame = NULL;
+  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
   bool batchmode = false;
 
@@ -212,29 +220,29 @@ void MyApp::NewWindow(wxString file,bool batchmode)
   y += topLevelWindows.GetCount()*20;
 #endif
 
-  wxMaxima *frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
+  m_frame = new wxMaxima((wxFrame *)NULL, -1, _("wxMaxima"),
                                  wxPoint(x, y), wxSize(w, h));
 
-  frame->Move(wxPoint(x, y));
-  frame->SetSize(wxSize(w, h));
+  m_frame->Move(wxPoint(x, y));
+  m_frame->SetSize(wxSize(w, h));
   if (m == 1)
-    frame->Maximize(true);
+    m_frame->Maximize(true);
 
   if (file.Length() > 0 && wxFileExists(file)) {
-    frame->SetOpenFile(file);
+    m_frame->SetOpenFile(file);
   }
 
-  frame->SetBatchMode(batchmode);
+  m_frame->SetBatchMode(batchmode);
 #if defined __WXMAC__
-  topLevelWindows.Append(frame);
+  topLevelWindows.Append(m_frame);
   if (topLevelWindows.GetCount()>1)
-    frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
+    m_frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
 #endif
 
-  SetTopWindow(frame);
-  frame->Show(true);
-  frame->InitSession();
-  frame->ShowTip(false);
+  SetTopWindow(m_frame);
+  m_frame->Show(true);
+  m_frame->InitSession();
+  m_frame->ShowTip(false);
 }
 
 #if defined (__WXMAC__)
