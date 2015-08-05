@@ -1414,10 +1414,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     FindMatchingParens();
 
   if (m_isDirty)
+  {
     m_width = m_maxDrop = -1;
-
+    StyleText();
+  }
   m_displayCaret = true;
-  StyleText();
 }
 
 /**
@@ -2394,6 +2395,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
 void EditorCell::StyleText()
 {
+  std::cerr<<"Style!\n";
   m_styledText.clear();
 
   if(m_type == MC_TYPE_INPUT)
