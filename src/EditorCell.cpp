@@ -2395,7 +2395,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
 void EditorCell::StyleText()
 {
-  std::cerr<<"Style!\n";
   m_styledText.clear();
 
   if(m_type == MC_TYPE_INPUT)
