@@ -2134,7 +2134,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   }
   if(GetActiveCell())
   {
-    if(IsLesserGCType(GC_TYPE_SUBSUBSECTION,dynamic_cast<GroupCell*>(GetActiveCell()->GetParent())->GetGroupType()))
+    if(IsLesserGCType(GC_TYPE_TEXT,dynamic_cast<GroupCell*>(GetActiveCell()->GetParent())->GetGroupType()))
       UpdateTableOfContents();
   }
 }
