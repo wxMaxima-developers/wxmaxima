@@ -5346,7 +5346,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
                                   wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)
-          wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima/"));
+          wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima"));
       }
       else if (reportUpToDate)
         wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
@@ -5354,6 +5354,12 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
       delete [] myVersion;
       delete [] currVersion;
+    }
+    else
+    {
+      wxMessageBox(_("Unable to interpret the version info I got from http://andrejv.github.io//wxmaxima/version.txt: ")+version, _("Upgrade"),
+                   wxOK | wxICON_INFORMATION);
+
     }
   }
   else
