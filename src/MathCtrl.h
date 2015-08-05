@@ -43,8 +43,7 @@ This canvas contains all the math, title, image etc.- cells of the current sessi
  */
 class MathCtrl: public wxScrolledCanvas
 {
-   private:
-
+   private:  
   /*! \defgroup UndoBufferFill
 
     These methods and classes contain the undo functionality for tree changes:
@@ -156,7 +155,7 @@ class MathCtrl: public wxScrolledCanvas
   /*! The cursor has entered one cell => save the value to see if it has changed.
   */
   void TreeUndo_CellEntered();
-  
+
   /*! The cursor is about to leave the current cell => Store the change if the value has changed.
    */
   void TreeUndo_CellLeft();
@@ -220,6 +219,13 @@ class MathCtrl: public wxScrolledCanvas
     Also converts \n to <BR>
    */
   wxString EscapeHTMLChars(wxString input);
+
+  void UpdateTableOfContents()
+    {
+      m_scheduleUpdateToc = true;
+    }
+  
+  
   //! Allow indentation by spaces for html by replacing them by non-breakable spaces
   wxString PrependNBSP(wxString input);
   //! An enum for all classes of items one can click on
@@ -406,6 +412,12 @@ class MathCtrl: public wxScrolledCanvas
 
 
 public:
+  /*! True = schedule an update of the table of contents
+    
+    used by UpdateTableOfContents() and the idle task.
+  */
+  bool m_scheduleUpdateToc;
+  
   bool HCaretActive(){return m_hCaretActive;}
   /*! Can we merge the selected cells into one?
     

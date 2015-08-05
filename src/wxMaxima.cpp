@@ -1989,7 +1989,12 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
   UpdateMenus(dummy);
   UpdateToolBar(dummy);
   UpdateSlider(dummy);
-  
+  if(m_console->m_scheduleUpdateToc)
+  {
+    if(m_console->m_structure)
+      m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+  }
+     
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
