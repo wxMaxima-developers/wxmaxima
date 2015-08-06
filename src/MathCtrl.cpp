@@ -2722,7 +2722,8 @@ wxSize MathCtrl::CopyToFile(wxString file) {
 }
 
 wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
-                                                 bool asData,int scale) {
+                            bool asData,int scale)
+{
   MathCell* tmp = CopySelection(start, end, asData);
 
   Bitmap bmp(scale);
@@ -2887,6 +2888,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString imgDir;
   // What happens if we split the filename into several parts.
   wxString path, filename, ext;
+  wxConfigBase* config= wxConfig::Get();
+
+  bool mathjax = true;
+  config->Read(wxT("exportWithMathJAX"), &mathjax);
   
   int count = 0;
   GroupCell *tmp = m_tree;
@@ -2926,6 +2931,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Write styles
 //////////////////////////////////////////////
 
+  if (mathjax)
+  {
+    output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
+    output << wxT("  MathJax.Hub.Config({") << endl;
+    output << wxT("    displayAlign: \"left\"") << endl;
+    output << wxT("  })") << endl;
+    output << wxT("</script>") << endl;
+    output << wxT("<script type=\"text/javascript\"") << endl;
+    output << wxT("  src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\">") << endl;
+    output << wxT("</script>") << endl;
+  }
+  
   wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection, fontText;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
@@ -2965,7 +2982,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
   bool  underSubsubsection = false;
 
   int fontSize = 12;
-  wxConfigBase* config= wxConfig::Get();
   // main fontsize
   config->Read(wxT("fontSize"), &fontSize);
 
@@ -3313,6 +3329,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         MathCell *prompt = tmp->GetPrompt();
         output<<wxT("<TABLE><TR><TD>\n");
         output<<wxT("  <SPAN CLASS=\"prompt\">\n");
+        output<<prompt->ToString();
         output<<wxT("\n  </SPAN></TD>\n");
         
         EditorCell *input = tmp->GetInput();
@@ -3335,13 +3352,20 @@ bool MathCtrl::ExportToHTML(wxString file) {
             filename +
             wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
         }
+        else if (mathjax &&
+                 (tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() != MC_TYPE_IMAGE)) {
+          wxString line = out->ListToTeX();          
+          output<<wxT("\\[")<<line<<wxT("\\]\n");
+        }
         else
         {
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
           if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
             bitmapScale=1;
-          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count), out, NULL, true, bitmapScale);
+          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+                                   out,
+                                   NULL, true, bitmapScale);
           int borderwidth = 0;
           wxString alttext = _("Result");
           if(tmp->GetOutput())
@@ -3351,13 +3375,15 @@ bool MathCtrl::ExportToHTML(wxString file) {
             alttext = EditorCell::EscapeHTMLChars(alttext);
             borderwidth = tmp->GetOutput()->m_imageBorderWidth;
           }
+          
           wxString line = wxT("  <img src=\"") +
             filename + wxT("_htmlimg/") + filename +
             wxString::Format(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                              count,size.x - 2 * borderwidth) +
             alttext +
             wxT("\" >");
-          output<<line<<wxT("\n");
+
+          output<<line<<endl;
         }
         count++;
       }

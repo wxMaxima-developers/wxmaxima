@@ -147,6 +147,7 @@ void Config::SetProperties()
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
+  m_exportWithMathJAX->SetToolTip(_("Use MathJAX instead of images in HTML exports to display maxima output."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -173,7 +174,10 @@ void Config::SetProperties()
   // configuration data for this item.
   bool match = true, savePanes = false, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
-  bool enterEvaluates = false, saveUntitled = true, openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false, flowedTextRequested = true, exportInput = true, exportContainsWXMX = false;
+  bool enterEvaluates = false, saveUntitled = true,
+    openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
+    flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
+    exportWithMathJAX = true;
   bool insertAns = true;
   int  undoLimit = 0;
   int showLength = 0;
@@ -212,6 +216,7 @@ void Config::SetProperties()
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
+  config->Read(wxT("exportWithMathJAX"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLength"), &showLength);
@@ -276,6 +281,7 @@ void Config::SetProperties()
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
+  m_exportWithMathJAX->SetValue(exportWithMathJAX);
   m_matchParens->SetValue(match);
   m_showLength->SetSelection(showLength);
   m_changeAsterisk->SetValue(changeAsterisk);
@@ -392,7 +398,7 @@ wxPanel* Config::CreateExportPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
   m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
@@ -420,6 +426,9 @@ wxPanel* Config::CreateExportPanel()
 
   m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
   vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
+
+  m_exportWithMathJAX = new wxCheckBox(panel, -1, _("Use MathJAX in HTML export"));
+  vsizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
   
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -707,6 +716,7 @@ void Config::WriteSettings()
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportInput"), m_exportInput->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
+  config->Write(wxT("exportWithMathJAX"), m_exportWithMathJAX->GetValue());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
