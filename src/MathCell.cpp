@@ -416,8 +416,11 @@ wxString MathCell::ListToTeX()
   
   while(tmp!=NULL)
   {
-    retval+=tmp->ToTeX();
-    tmp=tmp->m_next;
+    if ((tmp->m_textStyle == TS_LABEL && retval != wxEmptyString) ||
+        (tmp->m_breakLine && retval != wxEmptyString))
+      retval += wxT("\\]\\[");
+    retval += tmp->ToTeX();
+    tmp = tmp->m_next;
   }
   
   return retval;

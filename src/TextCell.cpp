@@ -412,7 +412,7 @@ wxString TextCell::ToTeX()
   
   if (m_textStyle == TS_LABEL)
   {    
-    text = wxT("\\mathrm{\\tt ") + m_text + wxT("}\\quad");
+    text = wxT("\\mathrm{\\tt ") + m_text + wxT("}\\quad ");
   }
   else
   {
@@ -436,11 +436,14 @@ wxString TextCell::ToTeX()
     if(m_text.Length()>1)
     {
       if(((m_forceBreakLine)||(m_breakLine)))
-        text=wxT("\\ifhmode\\\\\\fi\n")+text;
+        //text=wxT("\\ifhmode\\\\\\fi\n")+text;
+        text = wxT("\\]\\[")+text;
     }
+    text.Replace(wxT(" "), wxT("\\,"));
   }
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("%"), wxT("\\%"));
+  text.Replace(wxT("#"), wxT("\\#"));
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif

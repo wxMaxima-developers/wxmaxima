@@ -3354,7 +3354,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
         }
         else if (mathjax &&
                  (tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() != MC_TYPE_IMAGE)) {
-          wxString line = out->ListToTeX();          
+          wxString line = out->ListToTeX();
+
+          line.Replace(wxT("<"), wxT("&lt;"));
+          line.Replace(wxT(">"), wxT("&gt;"));
+          
           output<<wxT("\\[")<<line<<wxT("\\]\n");
         }
         else
