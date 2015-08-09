@@ -409,6 +409,8 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
+  bool scrollToCaret = (!m_console->FollowEvaluation()&&m_console->CaretVisibleIs());
+
   if (type == MC_TYPE_MAIN_PROMPT)
   {
     TextCell* cell = new TextCell(s);
@@ -442,6 +444,8 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
     }
     m_console->InsertLine(tmp, true);
   }
+
+  if(scrollToCaret) m_console -> ScrollToCaret();
 }
 
 /*! Remove empty statements

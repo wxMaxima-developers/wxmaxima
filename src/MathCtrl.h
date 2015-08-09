@@ -673,6 +673,12 @@ public:
   void ScrollToCell(MathCell *cell);
   //! Returns the cell the cursor that is drawn as a vertical line is in.
   EditorCell* GetActiveCell() { return m_activeCell; }
+  //! Is the point currently visible on the worksheet?
+  bool PointVisibleIs(wxPoint point);
+  //! Is the caret (hcaret or vcaret) currently visible on the worksheet?
+  bool CaretVisibleIs();
+
+  //! Scrolls to a point on the worksheet
   void ShowPoint(wxPoint point);
   void OnSetFocus(wxFocusEvent& event);
   void OnKillFocus(wxFocusEvent& event);

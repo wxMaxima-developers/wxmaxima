@@ -435,8 +435,12 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
   // Determine if we have a sane thing we can scroll to.
-  MathCell *CellToScrollTo = GetHCaret();
-  if(!CellToScrollTo) CellToScrollTo = GetActiveCell();
+  MathCell *CellToScrollTo = NULL;
+  if(CaretVisibleIs())
+  {
+    MathCell *CellToScrollTo = GetHCaret();
+    if(!CellToScrollTo) CellToScrollTo = GetActiveCell();
+  }
   if(!CellToScrollTo) CellToScrollTo = GetWorkingGroup();
   if(!CellToScrollTo)
   {
@@ -505,10 +509,14 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   wxDELETE(m_memory);
 
   // Determine if we have a sane thing we can scroll to.
-  MathCell *CellToScrollTo = m_hCaretPosition;
-  if(!CellToScrollTo) CellToScrollTo = m_activeCell;
+  MathCell *CellToScrollTo = NULL;
+  if(CaretVisibleIs())
+  {
+   CellToScrollTo = m_hCaretPosition;
+   if(!CellToScrollTo) CellToScrollTo = m_activeCell;
+  }
   if(!CellToScrollTo) CellToScrollTo = m_workingGroup;
-
+  
   if(!CellToScrollTo)
   {
     wxPoint topleft;
@@ -2936,11 +2944,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
   {
     output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
     output << wxT("  MathJax.Hub.Config({") << endl;
-    output << wxT("    displayAlign: \"left\"") << endl;
+    output << wxT("    displayAlign: \"left\",") << endl;
+    output << wxT("    context: \"MathJax\"") << endl;
     output << wxT("  })") << endl;
     output << wxT("</script>") << endl;
     output << wxT("<script type=\"text/javascript\"") << endl;
-    output << wxT("  src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\">") << endl;
+    output << wxT("  src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML\">") << endl;
     output << wxT("</script>") << endl;
   }
   
@@ -4526,6 +4535,28 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     Refresh();
 }
 
+bool MathCtrl::PointVisibleIs(wxPoint point)
+{
+  int view_x, view_y;
+  int height, width;
+
+  GetViewStart(&view_x, &view_y);
+  GetSize(&width, &height);  
+
+  view_x *= SCROLL_UNIT;
+  view_y *= SCROLL_UNIT;
+
+  if ((point.y < view_y) || (point.y > view_y + height
+                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
+    return false;
+
+  if ((point.x < view_x) || (point.x > view_x + width
+                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
+    return false;
+
+  return true;
+}
+
 void MathCtrl::ShowPoint(wxPoint point) {
   if (point.x == -1 || point.y == -1)
     return;
@@ -5229,6 +5260,45 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
     }
   }
   return false;
+}
+
+bool MathCtrl::CaretVisibleIs()
+{
+  if(m_hCaretActive)
+  {
+    int y;
+    if(m_hCaretPosition)
+      y=m_hCaretPosition->GetCurrentY();
+
+    int view_x, view_y;
+    int height, width;
+    
+    GetViewStart(&view_x, &view_y);
+    GetSize(&width, &height);  
+    
+    view_x *= SCROLL_UNIT;
+    view_y *= SCROLL_UNIT;
+
+    return ((y >= view_y) && (y <= view_y + height));
+  }
+  else
+  {
+    if(m_activeCell)
+    {
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
+      if(point.y<1)
+      {
+        RecalculateForce();
+        point = GetActiveCell()->PositionToPoint(parser, -1);
+      }
+      return PointVisibleIs(point);
+    }
+    else
+      return false;
+  }
+  
 }
 
 void MathCtrl::ScrollToCaret()
