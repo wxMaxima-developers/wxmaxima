@@ -2072,7 +2072,9 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   /// send event to active cell
   ///
   m_activeCell->ProcessEvent(event);
-
+  // The keypress might have moved the cursor off-screen.
+  ScrollToCaret();
+  
   m_switchDisplayCaret = false;
 
   wxClientDC dc(this);
@@ -5213,6 +5215,7 @@ void MathCtrl::ScrollToCaret()
       if(point.y<1)
       {
         RecalculateForce();
+        std::cerr<<"Recalculate!\n";
         point = GetActiveCell()->PositionToPoint(parser, -1);
       }
       ShowPoint(point);

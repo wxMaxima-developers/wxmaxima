@@ -627,6 +627,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
   case wxSOCKET_LOST:
     m_console->m_evaluationQueue->Clear();
+    // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     SetBatchMode(false);
     m_console->SetWorkingGroup(NULL);
@@ -687,6 +688,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   case wxSOCKET_LOST:
     StatusMaximaBusy(disconnected);
     m_console->m_evaluationQueue->Clear();
+    // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     SetBatchMode(false);
     m_pid = -1;
@@ -903,6 +905,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   }
   else if (m_console->m_evaluationQueue->Empty())
   {
+    // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     bool open = false;
     wxConfig::Get()->Read(wxT("openHCaret"), &open);
@@ -947,6 +950,7 @@ void wxMaxima::ReadMath(wxString &data)
         if(abortOnError || m_batchmode)
           m_console->m_evaluationQueue->Clear();
         SetBatchMode(false);
+        // Inform the user that the evaluation queue is empty.
         EvaluationQueueLength(0);
       }
       else
@@ -1058,6 +1062,7 @@ void wxMaxima::ReadPrompt(wxString &data)
             closeEvent = new wxCloseEvent();
             GetEventHandler()->QueueEvent(closeEvent);
           }
+          // Inform the user that the evaluation queue is empty.
           EvaluationQueueLength(0);
           m_console->Refresh();
         }
@@ -1597,6 +1602,7 @@ void wxMaxima::ReadLispError(wxString &data)
     if(abortOnError || m_batchmode)
       m_console->m_evaluationQueue->Clear();
     SetBatchMode(false);
+    // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
   }
 }
@@ -2385,6 +2391,7 @@ void wxMaxima::ReadStdErr()
     if(abortOnError || m_batchmode)
     {
       m_console->m_evaluationQueue->Clear();
+      // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
     }
     else
@@ -3006,6 +3013,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
+  // Inform the user about the length of the evaluation queue.
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -3015,6 +3024,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
+  // Inform the user about the length of the evaluation queue.
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -3024,6 +3035,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     if(!m_isConnected)
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
+  // Inform the user about the length of the evaluation queue.
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
     if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
@@ -4870,6 +4883,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
   else { // no evaluate has been called on no active cell?
     m_console->AddSelectionToEvaluationQueue();
   }
+  // Inform the user about the length of the evaluation queue.
+  EvaluationQueueLength(m_console->m_evaluationQueue->Size());
   if(!evaluating) TryEvaluateNextInQueue();;
 }
 
@@ -4990,6 +5005,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     return; //empty queue
   }
 
+  // Display the evaluation queue's status.
   EvaluationQueueLength(m_console->m_evaluationQueue->Size());
 
   // We don't want to evaluate a new cell if the user still has to answer
@@ -5049,6 +5065,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       SetBatchMode(false);
+      // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       if(abortOnError || m_batchmode)
       {

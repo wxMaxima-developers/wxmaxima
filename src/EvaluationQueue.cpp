@@ -197,11 +197,17 @@ void EvaluationQueue::AddTokens(wxString commandString)
       (ch == wxT('$'))
       )
     {
+      // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
+      // to detect if the token is empty.      
       token.Trim(true).Trim(false);
       m_tokens.Add(token);
       token = wxEmptyString;
     }
   }
+  // There might be a last token in the string we still haven't added.
+  // Let's trim() it first: This way MathCtrl::TryEvaluateNextInQueue()
+  // will detect if the token is empty.
+  token.Trim(true).Trim(false);
   if(token != wxEmptyString)
     m_tokens.Add(token);
 }
