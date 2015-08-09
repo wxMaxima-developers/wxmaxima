@@ -408,42 +408,42 @@ wxString TextCell::ToTeX()
       return m_text;
   }
 
-  
   wxString text = m_text;
   
-  if (m_type == MC_TYPE_LABEL)
-  {
-    
-    text = wxT("\\leqno{\\tt ") + m_text + wxT("}");
-    text.Replace(wxT("%"), wxT("\\%"));
+  if (m_textStyle == TS_LABEL)
+  {    
+    text = wxT("\\mathrm{\\tt ") + m_text + wxT("}\\quad ");
   }
   else
-    {
-      if (m_textStyle == TS_FUNCTION)
-	if(m_text!=wxEmptyString)
-	  text = wxT("\\mathrm{") + m_text + wxT("}");
-    }
-
+  {
+    if (m_textStyle == TS_FUNCTION)
+      if(m_text!=wxEmptyString)
+        text = wxT("\\mathrm{") + m_text + wxT("}");
+  }
+  
   if (
-      (m_textStyle != TS_FUNCTION) &&
-      (m_textStyle != TS_OUTDATED) &&
-      (m_textStyle != TS_VARIABLE) &&
-      (m_textStyle != TS_NUMBER)   &&
-      (m_textStyle != TS_GREEK_CONSTANT)   &&
-      (m_textStyle != TS_SPECIAL_CONSTANT)
-      )
+    (m_textStyle != TS_FUNCTION) &&
+    (m_textStyle != TS_OUTDATED) &&
+    (m_textStyle != TS_VARIABLE) &&
+    (m_textStyle != TS_NUMBER)   &&
+    (m_textStyle != TS_GREEK_CONSTANT)   &&
+    (m_textStyle != TS_SPECIAL_CONSTANT)
+    )
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
-
+  
   if((m_textStyle == TS_DEFAULT)||(m_textStyle == TS_STRING))
+  {
+    if(m_text.Length()>1)
     {
-      if(m_text.Length()>1)
-	{
-	  if(((m_forceBreakLine)||(m_breakLine)))
-	    text=wxT("\\ifhmode\\\\\\fi\n")+text;
-	}
+      if(((m_forceBreakLine)||(m_breakLine)))
+        //text=wxT("\\ifhmode\\\\\\fi\n")+text;
+        text = wxT("\\]\\[")+text;
     }
+    text.Replace(wxT(" "), wxT("\\,"));
+  }
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("%"), wxT("\\%"));
+  text.Replace(wxT("#"), wxT("\\#"));
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
 #endif

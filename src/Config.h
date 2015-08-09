@@ -185,6 +185,7 @@ protected:
   //! A checkbox that asks if we want to export the input for maxima, as well.
   wxCheckBox* m_exportInput;
   wxCheckBox* m_exportContainsWXMX;
+  wxCheckBox* m_exportWithMathJAX;
   wxCheckBox* m_matchParens;
 
   wxChoice* m_showLength;
