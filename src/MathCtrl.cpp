@@ -2623,7 +2623,6 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       dy = -10;
     else if (m_mousePoint.y >= size.GetHeight())
       dy = 10;
-    
     Scroll((currX + dx) / 10, (currY + dy) / 10);
     m_timer.Start(50, true);
   }
@@ -4206,8 +4205,9 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   if (cellY + cellDrop + SCROLL_UNIT > view_y + height - height / 10)
     Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/SCROLL_UNIT + 4, 0));
   else if (cellY - cellCenter - SCROLL_UNIT < view_y && cellDrop + cellCenter < height)
+  {
     Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
-
+  }
   Refresh();
 }
 
@@ -4512,14 +4512,14 @@ void MathCtrl::ShowPoint(wxPoint point) {
   view_x *= SCROLL_UNIT;
   view_y *= SCROLL_UNIT;
 
-  if ((point.y < view_y) || (point.y > view_y + height
+  if ((point.y - 2 < view_y) || (point.y + 2 > view_y + height
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
     sc = true;
     scrollToY = point.y - height / 2;
   } else
     scrollToY = view_y;
 
-  if ((point.x < view_x) || (point.x > view_x + width
+  if ((point.x - 2 < view_x) || (point.x + 2 > view_x + width
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
     sc = true;
     scrollToX = point.x - width / 2;
@@ -4527,7 +4527,9 @@ void MathCtrl::ShowPoint(wxPoint point) {
     scrollToX = view_x;
 
   if (sc)
+  {
     Scroll(scrollToX / SCROLL_UNIT, scrollToY / SCROLL_UNIT);
+  }
 }
 
 bool MathCtrl::CutToClipboard()
@@ -5215,7 +5217,6 @@ void MathCtrl::ScrollToCaret()
       if(point.y<1)
       {
         RecalculateForce();
-        std::cerr<<"Recalculate!\n";
         point = GetActiveCell()->PositionToPoint(parser, -1);
       }
       ShowPoint(point);
