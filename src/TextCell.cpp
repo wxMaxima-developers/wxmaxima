@@ -417,11 +417,28 @@ wxString TextCell::ToTeX()
   else
   {
     if (m_textStyle == TS_FUNCTION)
+    {
       if(m_text!=wxEmptyString)
         text = wxT("\\mathrm{") + m_text + wxT("}");
-    if (m_textStyle == TS_VARIABLE)
+    }
+    else if (m_textStyle == TS_VARIABLE)
+    {
       if(m_text.Length() > 1)
         text = wxT("\\mathit{") + m_text + wxT("}");
+    }
+    else if (m_textStyle == TS_ERROR)
+    {
+      if(m_text.Length() > 1)
+        text = wxT("\\mbox{") + m_text + wxT("}");
+    }
+    else if (m_textStyle == TS_DEFAULT)
+    {
+      if(m_text.Length() > 2)
+      {
+        text = wxT("\\mbox{") + m_text + wxT("}");
+        text.Replace(wxT("\\,"),wxT(" "));
+      }
+    }
   }
   
   if (
