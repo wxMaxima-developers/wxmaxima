@@ -419,6 +419,9 @@ wxString TextCell::ToTeX()
     if (m_textStyle == TS_FUNCTION)
       if(m_text!=wxEmptyString)
         text = wxT("\\mathrm{") + m_text + wxT("}");
+    if (m_textStyle == TS_VARIABLE)
+      if(m_text.Length() > 1)
+        text = wxT("\\mathit{") + m_text + wxT("}");
   }
   
   if (

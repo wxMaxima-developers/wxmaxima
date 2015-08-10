@@ -3318,9 +3318,19 @@ bool MathCtrl::ExportToHTML(wxString file) {
   output<<wxT("<!-- ***************************************************** -->\n");
   output<<wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
   output<<wxT("<!-- ***************************************************** -->\n");
-  
+
+  if (mathjax)
+  {
+    // Tell users that have disabled JavaScript why they don't get 2d maths.
+    output << wxT("<noscript>");
+    output << wxT("<div class=\"error message\">");
+    output << wxT("    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.");
+    output << wxT("</div>");
+    output << wxT("</noscript>");
+  }
+
   //////////////////////////////////////////////
-  // Write contents
+  // Write the actual contents
   //////////////////////////////////////////////
   
   bool exportInput = true;
