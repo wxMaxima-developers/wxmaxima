@@ -3327,6 +3327,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
     output << wxT("    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.");
     output << wxT("</div>");
     output << wxT("</noscript>");
+
+    // Tell mathJax about the \abs{} operator we define for LaTeX.
+    output<<wxT("\\(");
+    output<<wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
+    output<<wxT("\\)");
+
   }
 
   //////////////////////////////////////////////
