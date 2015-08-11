@@ -1,0 +1,441 @@
+<!DOCTYPE HTML">
+<HTML>
+ <HEAD>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/ico" href="favicon.ico">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <TITLE>Example2</TITLE>
+  <META NAME="generator" CONTENT="wxMaxima">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    displayAlign: "left",
+    context: "MathJax"
+  })
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+</script>
+  <link rel="stylesheet" type="text/css" href="Example2_htmlimg/Example2.css"/>
+ </HEAD>
+ <BODY>
+
+  <div class="container">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="index.html">wxMaxima</a>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="screenshots.html">Screenshots</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="help.html">Documentation</a></li>
+          <li><a href="develop.html">Develop</a></li>
+          <li><a href="Example.html">Example</a></li>
+          <li class="active"><a href="Example2.html">Example 2</a></li>
+        </ul>
+      </div>
+    </nav>
+
+<!-- ***************************************************** -->
+<!--          Created with wxMaxima version 15.06.0         -->
+<!-- ***************************************************** -->
+<noscript><div class="error message">    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</div></noscript>\(      \DeclareMathOperator{\abs}{abs}
+\)
+
+<!-- Title cell -->
+
+
+<P CLASS="title">
+Not getting wet when it rains
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 1 Mathematical description of the problem
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Sometimes one wonders if when in a thunderstorm the rain
+comes from behind there is an optimum walking speed that
+allows to get less wet than normally.:
+<BR>In order to determine if this is true it is helful to build
+a small model of yourself that is easily handled with
+mathematical means
+
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+If you happened to be exacly rectangular in shape the top
+of your head would obviously be hit by an amount of water
+that depends on the following factors:
+<UL>
+<LI>The speed v[Rain\,y] of the raindrops</LI>
+<LI>The amount p of water air that consists of rain</LI>
+<LI>And the area A[Top] that is hit by the rain:</UL>
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i96) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">V_Top</span><span class="code_operator">:</span><span class="code_variable">V</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span><span class="code_variable">p</span><span class="code_operator">*</span><span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">*</span><span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o96) }\quad {{V}_{\mathit{Top}}}=p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The amount of rain that will hit your front and your back
+will be zero if you are moving forwards as fast as the rain
+does and will be higher the more the two speeds deviate from
+another:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i97) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">V_Sides</span><span class="code_operator">:</span><span class="code_variable">V</span>[<span class="code_variable">Sides</span>]<span class="code_operator">=</span><span class="code_variable">p</span><span class="code_operator">*</span><span class="code_function">abs</span>(<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">-</span><span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>])<span class="code_operator">*</span><span class="code_variable">A</span>[<span class="code_variable">Sides</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o97) }\quad {{V}_{\mathit{Sides}}}=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \]
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The last calculations can be added up to a total amount of
+rain per second:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i99) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">V</span><span class="code_operator">=</span><span class="code_variable">V</span>[<span class="code_variable">Top</span>]<span class="code_operator">+</span><span class="code_variable">V</span>[<span class="code_variable">Sides</span>]<span class="code_endofline">;</span><BR>
+<span class="code_variable">V_total</span><span class="code_operator">:</span><span class="code_function">at</span>(<span class="code_variable">%</span>,[<span class="code_variable">V_Top</span>,<span class="code_variable">V_Sides</span>])<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o98) }\quad V={{V}_{\mathit{Top}}}+{{V}_{\mathit{Sides}}}\]\[\mathrm{\tt (\%o99) }\quad V=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 2 One solution
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+If the main goal is to get less wet in a fixed amount of time
+there clearly is a solution: Walk exactly as fast as the wind
+makes the rain move horizontally:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i102) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">Q</span><span class="code_operator">=</span><span class="code_variable">V</span><span class="code_operator">/</span><span class="code_variable">t</span><span class="code_endofline">;</span><BR>
+<span class="code_function">at</span>(<span class="code_variable">%</span>,<span class="code_variable">V_total</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">Q_total</span><span class="code_operator">:</span><span class="code_function">ratsimp</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o100) }\quad Q=\frac{V}{t}\]\[\mathrm{\tt (\%o101) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}}{t}\]\[\mathrm{\tt (\%o102) }\quad Q=p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\]
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The constants that were picked in order to be able to display
+the following animation were a little bit random, to be honest.
+But they are good enough to show the fundamental shape of the
+curves.
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i103) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">with_slider_draw</span>(<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">vr</span>,<span class="code_function">makelist</span>(<span class="code_variable">i</span>,<span class="code_variable">i</span>,<span class="code_number">-</span><span class="code_number">10</span>,<span class="code_number">10</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">title</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">Rain</span><span class="code_string"> </span><span class="code_string">velocity</span><span class="code_string"> </span><span class="code_string">in</span><span class="code_string"> </span><span class="code_string">x</span><span class="code_string">-</span><span class="code_string">direction</span><span class="code_string">:</span><span class="code_string">&quot;</span>,<span class="code_variable">vr</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">at</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">rhs</span>(<span class="code_variable">Q_total</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">p</span><span class="code_operator">=</span>.<span class="code_number">01</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">=</span><span class="code_number">20</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">=</span><span class="code_variable">vr</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span>.<span class="code_number">1</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Sides</span>]<span class="code_operator">=</span>.<span class="code_number">6</span><BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>],<span class="code_number">-</span><span class="code_number">10</span>,<span class="code_number">10</span><BR>
+ &nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">0</span>,.<span class="code_number">14</span>],<BR>
+<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">ylabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Amount</span><span class="code_string"> </span><span class="code_string">of</span><span class="code_string"> </span><span class="code_string">water</span><span class="code_string"> </span><span class="code_string">per</span><span class="code_string"> </span><span class="code_string">second</span><span class="code_string">&quot;</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">xlabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Walking</span><span class="code_string"> </span><span class="code_string">speed</span><span class="code_string">&quot;</span><BR>
+)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example2_htmlimg/Example2_4.gif"  alt="Animated Diagram" style="max-width:90%;" >
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 3 A second solution
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+If your aim is to arrive at home at least half-way dry it is the
+amount of water per meter that counts, not the amount of water per time
+
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The total amount of water after having walked for the distance x is easy
+to calculate:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i106) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">x</span><span class="code_operator">=</span><span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><BR>
+<span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">s1</span><span class="code_operator">:</span><span class="code_function">at</span>(<span class="code_variable">V_total</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o104) }\quad x=t\cdot {{v}_{\mathit{Walk,x}}}\]\[\mathrm{\tt (\%o105) }\quad [t=\frac{x}{{{v}_{\mathit{Walk,x}}}}]\]\[\mathrm{\tt (\%o106) }\quad V=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \cdot x}{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\cdot x}{{{v}_{\mathit{Walk,x}}}}\]
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The amount of water per distance will be calculated by maxima instead:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i108) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">Q</span><span class="code_operator">=</span><span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_variable">V</span>,<span class="code_variable">x</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">Q_perMeter</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">%</span>,<span class="code_variable">s1</span>,<span class="code_variable">diff</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o107) }\quad Q=\frac{d}{d\,x}\cdot V\]\[\mathrm{\tt (\%o108) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| }{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}}{{{v}_{\mathit{Walk,x}}}}\]
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+This time the meaning of the equation is more difficult to make out:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i109) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">with_slider_draw</span>(<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">vr</span>,<span class="code_function">makelist</span>(<span class="code_variable">i</span>,<span class="code_variable">i</span>,<span class="code_number">-</span><span class="code_number">10</span>,<span class="code_number">10</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">title</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">Rain</span><span class="code_string"> </span><span class="code_string">velocity</span><span class="code_string"> </span><span class="code_string">in</span><span class="code_string"> </span><span class="code_string">x</span><span class="code_string">-</span><span class="code_string">direction</span><span class="code_string">:</span><span class="code_string">&quot;</span>,<span class="code_variable">vr</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">at</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">rhs</span>(<span class="code_variable">Q_perMeter</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">p</span><span class="code_operator">=</span>.<span class="code_number">01</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">=</span><span class="code_number">20</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">=</span><span class="code_variable">vr</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span>.<span class="code_number">1</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Sides</span>]<span class="code_operator">=</span>.<span class="code_number">6</span><BR>
+<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>],<span class="code_number">0</span>,<span class="code_number">10</span><BR>
+ &nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">0</span>,<span class="code_number">2</span>],<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">ylabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Amount</span><span class="code_string"> </span><span class="code_string">of</span><span class="code_string"> </span><span class="code_string">water</span><span class="code_string"> </span><span class="code_string">per</span><span class="code_string"> </span><span class="code_string">second</span><span class="code_string">&quot;</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">xlabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Walking</span><span class="code_string"> </span><span class="code_string">speed</span><span class="code_string">&quot;</span><BR>
+)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example2_htmlimg/Example2_7.gif"  alt="Animated Diagram" style="max-width:90%;" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+The overall shape of the curve shows that if you move too slow you will stay
+in the rain for too long a time. But wait until we zoom into it:
+
+</P>
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i110) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">with_slider_draw</span>(<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">vr</span>,<span class="code_function">makelist</span>(<span class="code_variable">i</span>,<span class="code_variable">i</span>,<span class="code_number">-</span><span class="code_number">10</span>,<span class="code_number">10</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">title</span><span class="code_operator">=</span><span class="code_function">concat</span>(<span class="code_string">&quot;</span><span class="code_string">Rain</span><span class="code_string"> </span><span class="code_string">velocity</span><span class="code_string"> </span><span class="code_string">in</span><span class="code_string"> </span><span class="code_string">x</span><span class="code_string">-</span><span class="code_string">direction</span><span class="code_string">:</span><span class="code_string">&quot;</span>,<span class="code_variable">vr</span>),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_function">explicit</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">at</span>(<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">rhs</span>(<span class="code_variable">Q_perMeter</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">p</span><span class="code_operator">=</span>.<span class="code_number">01</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">=</span><span class="code_number">20</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">=</span><span class="code_variable">vr</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span>.<span class="code_number">1</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Sides</span>]<span class="code_operator">=</span>.<span class="code_number">6</span><BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>],<span class="code_number">0</span>,<span class="code_number">60</span><BR>
+ &nbsp;&nbsp;&nbsp;),<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">0</span>,.<span class="code_number">04</span>],<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">ylabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Amount</span><span class="code_string"> </span><span class="code_string">of</span><span class="code_string"> </span><span class="code_string">water</span><span class="code_string"> </span><span class="code_string">per</span><span class="code_string"> </span><span class="code_string">second</span><span class="code_string">&quot;</span>,<BR>
+ &nbsp;&nbsp;&nbsp;<span class="code_variable">xlabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Walking</span><span class="code_string"> </span><span class="code_string">speed</span><span class="code_string">&quot;</span><BR>
+)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+  <img src="Example2_htmlimg/Example2_8.gif"  alt="Animated Diagram" style="max-width:90%;" >
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+It seems that this time there is a optimum speed, too - if the rain is falling horizontally
+enough.
+
+</P>
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 4 Credits
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+Special Thanks to Robin Lehmann and Marco Juresic that have asked this question!
+
+</P>
+
+<P CLASS="comment">
+This example has been created by the HTML export-feature of a post-15.04 wxMaxima with 
+enabled MathJAX.
+</P>
+
+ <HR>
+ <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
+ <SMALL> The source of this maxima session can be downloaded <A HREF="Example2_htmlimg/Example2.wxmx">here</A>.</SMALL>
+</container>
+ </BODY>
+</HTML>
