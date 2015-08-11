@@ -363,35 +363,6 @@ wxString TextCell::ToTeX()
       return wxT("\\") + m_text;
     else
       return m_text;
-
-    if (m_text == wxT("%Alpha"))
-      return wxT("A");
-    else if (m_text == wxT("%Beta"))
-      return wxT("B");
-    else if (m_text == wxT("%Epsilon"))
-      return wxT("E");
-    else if (m_text == wxT("%Zeta"))
-      return wxT("Z");
-    else if (m_text == wxT("%Eta"))
-      return wxT("H");
-    else if (m_text == wxT("%Iota"))
-      return wxT("I");
-    else if (m_text == wxT("%Kappa"))
-      return wxT("K");
-    else if (m_text == wxT("%Mu"))
-      return wxT("M");
-    else if (m_text == wxT("%Nu"))
-      return wxT("N");
-    else if (m_text == wxT("%Omicron"))
-      return wxT("O");
-    else if (m_text == wxT("%Rho"))
-      return wxT("P");
-    else if (m_text == wxT("%Tau"))
-      return wxT("T");
-    else if (m_text == wxT("%Chi"))
-      return wxT("X");
-    else
-      return wxT("\\") + m_text.Mid(1);
   }
   
   if (m_textStyle == TS_SPECIAL_CONSTANT)
