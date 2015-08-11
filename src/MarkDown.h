@@ -79,7 +79,7 @@ public:
  private:
   virtual wxString itemizeBegin(){return wxT("\\begin{itemize}\n");}
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
-  virtual wxString itemizeItem(){return wxT("\\item");}
+  virtual wxString itemizeItem(){return wxT("\\item ");}
   virtual wxString itemizeEndItem(){return wxEmptyString;}
   virtual wxString NewLine(){return wxT("");}
   virtual bool     NewLineBreaksLine(){return false;}
