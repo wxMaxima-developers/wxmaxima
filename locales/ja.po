@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 08:58+0200\n"
+"POT-Creation-Date: 2015-08-11 17:25+0200\n"
 "PO-Revision-Date: 2015-02-11 15:52+0900\n"
 "Last-Translator: matcha-zaq <Matcha_zaq@excite.co.jp>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -1524,7 +1524,7 @@ msgstr "階乗とガンマ関数(&G)"
 msgid "Fatal error"
 msgstr "致命的なエラー"
 
-#: ../src/GroupCell.cpp:1430
+#: ../src/GroupCell.cpp:1452
 #, c-format
 msgid "Figure %d:"
 msgstr "図 %d:"
@@ -3793,7 +3793,13 @@ msgid "Use MathJAX in HTML export"
 msgstr ""
 
 #: ../src/Config.cpp:150
-msgid "Use MathJAX instead of images in HTML exports to display maxima output."
+msgid ""
+"Use MathJAX instead of images in HTML exports to display maxima output. The "
+"advantage of MathJAX is that it allows to copy the displayed equations as if "
+"they were text, to choose if they should be copied as TeX or MathML instead "
+"and displays them in a scaleable format that is really nice to look at. The "
+"disadvantage of MathJAX is that it will need JavaScript and a little bit of "
+"time in order to typeset an equation."
 msgstr ""
 
 #: ../src/Config.cpp:488

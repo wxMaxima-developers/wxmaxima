@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 08:58+0200\n"
+"POT-Creation-Date: 2015-08-11 17:25+0200\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -1547,7 +1547,7 @@ msgstr "Fakultet og &Gamma-funktion"
 msgid "Fatal error"
 msgstr "Alvorlig fejl"
 
-#: ../src/GroupCell.cpp:1430
+#: ../src/GroupCell.cpp:1452
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "&Indstillinger..."
@@ -3861,7 +3861,13 @@ msgid "Use MathJAX in HTML export"
 msgstr ""
 
 #: ../src/Config.cpp:150
-msgid "Use MathJAX instead of images in HTML exports to display maxima output."
+msgid ""
+"Use MathJAX instead of images in HTML exports to display maxima output. The "
+"advantage of MathJAX is that it allows to copy the displayed equations as if "
+"they were text, to choose if they should be copied as TeX or MathML instead "
+"and displays them in a scaleable format that is really nice to look at. The "
+"disadvantage of MathJAX is that it will need JavaScript and a little bit of "
+"time in order to typeset an equation."
 msgstr ""
 
 #: ../src/Config.cpp:488

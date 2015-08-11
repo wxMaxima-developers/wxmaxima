@@ -147,7 +147,7 @@ void Config::SetProperties()
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
-  m_exportWithMathJAX->SetToolTip(_("Use MathJAX instead of images in HTML exports to display maxima output."));
+  m_exportWithMathJAX->SetToolTip(_("Use MathJAX instead of images in HTML exports to display maxima output. The advantage of MathJAX is that it allows to copy the displayed equations as if they were text, to choose if they should be copied as TeX or MathML instead and displays them in a scaleable format that is really nice to look at. The disadvantage of MathJAX is that it will need JavaScript and a little bit of time in order to typeset an equation."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));

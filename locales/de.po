@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 08:58+0200\n"
-"PO-Revision-Date: 2015-08-05 21:26+0200\n"
+"POT-Creation-Date: 2015-08-11 17:25+0200\n"
+"PO-Revision-Date: 2015-08-11 17:25+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1549,7 +1549,7 @@ msgstr "Fakultät und &Gamma"
 msgid "Fatal error"
 msgstr "Fataler Fehler"
 
-#: ../src/GroupCell.cpp:1430
+#: ../src/GroupCell.cpp:1452
 #, c-format
 msgid "Figure %d:"
 msgstr "Figure %d:"
@@ -3857,11 +3857,22 @@ msgstr "Verwende Gosper-Algorithmus"
 
 #: ../src/Config.cpp:430
 msgid "Use MathJAX in HTML export"
-msgstr ""
+msgstr "Verwende MathJAX für den HTML-Export"
 
 #: ../src/Config.cpp:150
-msgid "Use MathJAX instead of images in HTML exports to display maxima output."
+msgid ""
+"Use MathJAX instead of images in HTML exports to display maxima output. The "
+"advantage of MathJAX is that it allows to copy the displayed equations as if "
+"they were text, to choose if they should be copied as TeX or MathML instead "
+"and displays them in a scaleable format that is really nice to look at. The "
+"disadvantage of MathJAX is that it will need JavaScript and a little bit of "
+"time in order to typeset an equation."
 msgstr ""
+"Verwende MathJax, um Formeln darzustellen, keine Bilder. Der Vorteil hiervon "
+"ist, dass MathJAX es erlaubt, Formeln als Text, als LaTeX oder als MathML zu "
+"kopieren und sie in einem skalierbaren Format darstellt, das eine sehr hohe "
+"optische Qualität zulässt. Der Nachteil von MathJAX ist, dass es hierfür "
+"JavaScript und etwas Zeit benötigt."
 
 #: ../src/Config.cpp:488
 msgid "Use cairo to improve plot quality."

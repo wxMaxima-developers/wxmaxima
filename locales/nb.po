@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 08:58+0200\n"
+"POT-Creation-Date: 2015-08-11 17:25+0200\n"
 "PO-Revision-Date: 2015-01-11 07:47+0100\n"
 "Last-Translator: Asbjørn Apeland <asap openmailbox org>\n"
 "Language-Team: norwegian\n"
@@ -1519,7 +1519,7 @@ msgstr "Fakultet og &Gamma"
 msgid "Fatal error"
 msgstr "Fatal feil"
 
-#: ../src/GroupCell.cpp:1430
+#: ../src/GroupCell.cpp:1452
 #, c-format
 msgid "Figure %d:"
 msgstr "Figur %d:"
@@ -3775,7 +3775,13 @@ msgid "Use MathJAX in HTML export"
 msgstr ""
 
 #: ../src/Config.cpp:150
-msgid "Use MathJAX instead of images in HTML exports to display maxima output."
+msgid ""
+"Use MathJAX instead of images in HTML exports to display maxima output. The "
+"advantage of MathJAX is that it allows to copy the displayed equations as if "
+"they were text, to choose if they should be copied as TeX or MathML instead "
+"and displays them in a scaleable format that is really nice to look at. The "
+"disadvantage of MathJAX is that it will need JavaScript and a little bit of "
+"time in order to typeset an equation."
 msgstr ""
 
 #: ../src/Config.cpp:488
