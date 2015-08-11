@@ -739,10 +739,10 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     {
       str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
         wxT("%%% INPUT:\n")
-        wxT("\\begin{minipage}[t]{8ex}{\\color{red}\\bf\n")
+        wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n")
         wxT("\\begin{verbatim}\n") +
         m_input->ToString() +
-        wxT("\n\\end{verbatim}}\n\\end{minipage}");
+        wxT("\n\\end{verbatim}\n\\end{minipage}");
       
       if (m_input->m_next!=NULL)
       {
@@ -752,9 +752,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
         input.Replace(wxT("\xDCB6"), wxT(" ")); // Some weird unicode space character
 #endif
-        str += wxT("\n\\begin{minipage}[t]{\\textwidth}{\\color{blue}\n\\begin{verbatim}\n") +
+        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}\n") +
           input +
-             wxT("\n\\end{verbatim}}\n\\end{minipage}");
+             wxT("\n\\end{verbatim}\n\\end{minipage}");
       }
       
       str += wxT("\n");
@@ -820,13 +820,13 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         else if (tmp->GetStyle() == TS_LABEL)
         {
 	  if(mathMode)
-	    str += wxT("\\end{math}\n\n\\begin{math}\\displaystyle\n");
+	    str += wxT("\\]\n\\[\\displaystyle\n");
 	  else
 	    {
-	      str += wxT("\n\n\\begin{math}\\displaystyle\n");
+	      str += wxT("\n\\[\\displaystyle\n");
 	      mathMode=true;
 	    }
-          str += wxT("\\parbox{8ex}{$\\color{labelcolor}") + tmp->ToTeX() + wxT("$}\n");
+          str += wxT("\\parbox{10ex}{$\\color{labelcolor}") + tmp->ToTeX() + wxT("$}\n");
         }
 	
         else
@@ -838,7 +838,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 		if((mathMode)&&(tmp->ToString().Length()>2))
 		  {
 		    str += wxT("\\mbox{}");
-		    str += wxT("\n\\end{math}\n");
+		    str += wxT("\n\\]\n");
 		    mathMode = false;
 		  }
 	      }
@@ -846,7 +846,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	      {
 		if(!mathMode)
 		  {
-		    str += wxT("\n\n\\begin{math}\\displaystyle\n");
+		    str += wxT("\n\n\\[\\displaystyle\n");
 		    mathMode = true;
 		  }
 	      }		
@@ -859,7 +859,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	  // Some invisible dummy content that keeps TeX happy if there really is
 	  // no output to display.
 	  str += wxT("\\mbox{}");
-	  str += wxT("\n\\end{math}\n%%%%%%%%%%%%%%%\n");
+	  str += wxT("\n\\]\n%%%%%%%%%%%%%%%\n");
 	}
     }
   }

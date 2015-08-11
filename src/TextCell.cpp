@@ -425,12 +425,13 @@ wxString TextCell::ToTeX()
     {
       if(((m_forceBreakLine)||(m_breakLine)))
         //text=wxT("\\ifhmode\\\\\\fi\n")+text;
-        text = wxT("\\]\\[")+text;
+        text = wxT("\\mbox{}\\\\")+text;
       if(m_textStyle != TS_DEFAULT)
         text.Replace(wxT(" "), wxT("\\,"));
     }
   }
   text.Replace(wxT("_"), wxT("\\_"));
+  text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
   text.Replace(wxT("#"), wxT("\\#"));
 #if wxUSE_UNICODE

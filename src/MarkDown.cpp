@@ -60,7 +60,7 @@ wxString MarkDownParser::MarkDown(wxString str)
     wxString line = lines.GetNextToken();
 
     // We will add our own newline characters when needed.
-    line.Replace(NewLine(),wxT(""));
+    line.Replace(NewLine(),wxT(" "));
 
     // Trailing whitespace doesn't help much.
     line=line.Trim();
