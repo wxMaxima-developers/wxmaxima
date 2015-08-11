@@ -104,11 +104,11 @@ wxString MarkDownParser::MarkDown(wxString str)
           }
           
           // End lists if we are at a old indentation level.
-          while(indentationLevels.back() > index)
-          {
-            result += itemizeEnd();
-            indentationLevels.pop_back();
-          }
+          while(!indentationLevels.empty() && (indentationLevels.back() > index))
+            {
+              result += itemizeEnd();
+              indentationLevels.pop_back();
+            }
           
           // Add a new item marker.
           result += itemizeEndItem() + itemizeItem();
