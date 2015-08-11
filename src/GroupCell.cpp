@@ -826,7 +826,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	      str += wxT("\n\n\\begin{math}\\displaystyle\n");
 	      mathMode=true;
 	    }
-          str += wxT("\\parbox{8ex}{\\color{labelcolor}") + tmp->ToTeX() + wxT("}\n");
+          str += wxT("\\parbox{8ex}{$\\color{labelcolor}") + tmp->ToTeX() + wxT("$}\n");
         }
 	
         else

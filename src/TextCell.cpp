@@ -360,7 +360,7 @@ wxString TextCell::ToTeX()
   if (m_textStyle == TS_GREEK_CONSTANT)
   {
     if (m_text[0] != '%')
-      return wxT("%") + m_text;
+      return wxT("\\") + m_text;
     else
       return m_text;
 
