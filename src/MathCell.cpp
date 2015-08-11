@@ -595,6 +595,17 @@ void MathCell::UnbreakList()
   }
 }
 
+void MathCell::DestroyList()
+{
+  MathCell *tmp, *next;
+  tmp = this;
+  while(tmp != NULL)
+  {
+    next = tmp->m_next;
+    tmp->Destroy();
+    tmp = next;
+  }
+}
 /***
  * Set the pen in device context accordint to the style of the cell.
  */

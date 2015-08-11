@@ -79,6 +79,12 @@ public:
   bool SetEditableContent(wxString text);
   EditorCell* GetEditable(); // returns pointer to editor (if there is one)
   void AppendOutput(MathCell *cell);
+  /*! Remove all output cells attached to this one
+
+    If called on an image cell it will not remove the image attached to it (even if the image
+    technically is the first output cell attached to an image cell)
+    but it will remove eventual error messages attached to the image.
+  */
   void RemoveOutput();
   // exporting
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
@@ -198,7 +204,18 @@ protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
-  void DestroyOutput();
+  /*! Unallocate all output cells
+
+    Use RemoveOutput() instead as RemoveOutput() also triggers a recalculation
+    of the cell's size.
+
+    \param destroyFirst
+     - false: Leave the first output cell intact. Useful for image cells that have an
+     output cell containing the image but that we want to strip from all warnings we
+     might have appended to it.
+     - true:  Destroy all output cells.
+  */
+  void DestroyOutput(bool destroyFirst = true);
   MathCell *m_input;
   MathCell *m_output;
   bool m_hide;

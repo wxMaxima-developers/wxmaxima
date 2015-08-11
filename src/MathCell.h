@@ -112,6 +112,9 @@ public:
    */
   virtual void Destroy() = 0;
 
+  //! Delete this cell and all cells that follow it in the list.
+  void DestroyList();
+  
   /*! Add a cell to the end of the list this cell is part of
     
     \param p_next The cell that will be appended to the list.

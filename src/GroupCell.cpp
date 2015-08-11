@@ -162,16 +162,36 @@ bool GroupCell::Empty()
 	  );
 }
 
-void GroupCell::DestroyOutput()
+void GroupCell::DestroyOutput(bool destroyFirst)
 {
   MathCell *tmp = m_output, *tmp1;
+
+  // If there isn't anything to do we can already return.
+  if(tmp == NULL)
+    return;
+
+  // If we are dealing with an image cell we don't delete the actual image.
+  if(!destroyFirst)
+  {
+    tmp1 = tmp;
+    tmp = tmp -> m_next;
+    tmp1->m_next = NULL;
+    tmp1->m_nextToDraw = NULL;
+  }
+
+  // Delete what is left of the output.
   while (tmp != NULL) {
     tmp1 = tmp;
     tmp = tmp->m_next;
     tmp1->Destroy();
     delete tmp1;
   }
-  m_output = NULL;
+  if(destroyFirst)
+  {
+    m_output = NULL;
+    m_lastInOutput = NULL;
+    m_appendedCells = NULL;
+  }
 }
 
 void GroupCell::ResetInputLabel()
@@ -279,12 +299,14 @@ void GroupCell::SetOutput(MathCell *output)
 
 void GroupCell::RemoveOutput()
 {
-  DestroyOutput();
+  // If there is nothing to do we can skip the rest of this action.
+  if(m_output == NULL)
+    return;
+  
+  DestroyOutput(!(GetGroupType() == GC_TYPE_IMAGE));
   ResetSize();
-  m_height = GetEditable()->GetHeight();
-  m_output = NULL;
-  m_lastInOutput = NULL;
-  m_appendedCells = NULL;
+  if(GetGroupType() != GC_TYPE_IMAGE)
+    m_height = GetEditable()->GetHeight();
   m_hide = false;
 }
 

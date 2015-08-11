@@ -5025,11 +5025,11 @@ void wxMaxima::TryEvaluateNextInQueue()
   ReadStdErr();
   m_maximaStdoutPollTimer.Start(1000);
 
+  if(m_console->m_evaluationQueue->m_workingGroupChanged)
+    tmp->RemoveOutput();
   wxString text = m_console->m_evaluationQueue->GetCommand();
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
-    if(m_console->m_evaluationQueue->m_workingGroupChanged)
-      tmp->RemoveOutput();
     m_console->Recalculate();
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
     if(parenthesisError==wxEmptyString)

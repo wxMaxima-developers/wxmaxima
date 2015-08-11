@@ -5122,8 +5122,8 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
 
   while (tree != NULL)
   {
-    if (tree->GetGroupType() == GC_TYPE_CODE)
-      tree->RemoveOutput();
+    tree->RemoveOutput();
+    
     GroupCell *sub = tree->GetHiddenTree();
     if (sub != NULL)
       RemoveAllOutput(sub);
