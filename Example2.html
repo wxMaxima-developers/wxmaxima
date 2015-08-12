@@ -113,12 +113,12 @@ that depends on the following factors:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i96) 
+(%i3) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">V_Top</span><span class="code_operator">:</span><span class="code_variable">V</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span><span class="code_variable">p</span><span class="code_operator">*</span><span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">*</span><span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o96) }\quad {{V}_{\mathit{Top}}}=p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
+\[\mathrm{\tt (\%o3) }\quad {{V}_{\mathit{Top}}}=p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
 
 
 <!-- Text cell -->
@@ -138,12 +138,12 @@ another:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i97) 
+(%i4) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">V_Sides</span><span class="code_operator">:</span><span class="code_variable">V</span>[<span class="code_variable">Sides</span>]<span class="code_operator">=</span><span class="code_variable">p</span><span class="code_operator">*</span><span class="code_function">abs</span>(<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">-</span><span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>])<span class="code_operator">*</span><span class="code_variable">A</span>[<span class="code_variable">Sides</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o97) }\quad {{V}_{\mathit{Sides}}}=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \]
+\[\mathrm{\tt (\%o4) }\quad {{V}_{\mathit{Sides}}}=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \]
 
 
 <!-- Text cell -->
@@ -161,13 +161,13 @@ rain per second:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i99) 
+(%i6) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">V</span><span class="code_operator">=</span><span class="code_variable">V</span>[<span class="code_variable">Top</span>]<span class="code_operator">+</span><span class="code_variable">V</span>[<span class="code_variable">Sides</span>]<span class="code_endofline">;</span><BR>
 <span class="code_variable">V_total</span><span class="code_operator">:</span><span class="code_function">at</span>(<span class="code_variable">%</span>,[<span class="code_variable">V_Top</span>,<span class="code_variable">V_Sides</span>])<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o98) }\quad V={{V}_{\mathit{Top}}}+{{V}_{\mathit{Sides}}}\]\[\mathrm{\tt (\%o99) }\quad V=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
+\[\mathrm{\tt (\%o5) }\quad V={{V}_{\mathit{Top}}}+{{V}_{\mathit{Sides}}}\]\[\mathrm{\tt (\%o6) }\quad V=p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}\]
 
 
 <!-- Section cell -->
@@ -194,14 +194,14 @@ makes the rain move horizontally:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i102) 
+(%i9) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">Q</span><span class="code_operator">=</span><span class="code_variable">V</span><span class="code_operator">/</span><span class="code_variable">t</span><span class="code_endofline">;</span><BR>
 <span class="code_function">at</span>(<span class="code_variable">%</span>,<span class="code_variable">V_total</span>)<span class="code_endofline">;</span><BR>
 <span class="code_variable">Q_total</span><span class="code_operator">:</span><span class="code_function">ratsimp</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o100) }\quad Q=\frac{V}{t}\]\[\mathrm{\tt (\%o101) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}}{t}\]\[\mathrm{\tt (\%o102) }\quad Q=p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\]
+\[\mathrm{\tt (\%o7) }\quad Q=\frac{V}{t}\]\[\mathrm{\tt (\%o8) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot t\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot t\cdot {{A}_{\mathit{Top}}}}{t}\]\[\mathrm{\tt (\%o9) }\quad Q=p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| +p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\]
 
 
 <!-- Text cell -->
@@ -221,7 +221,7 @@ curves.
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i103) 
+(%i10) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_function">with_slider_draw</span>(<BR>
@@ -247,7 +247,7 @@ curves.
  &nbsp;&nbsp;&nbsp;<span class="code_variable">xlabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Walking</span><span class="code_string"> </span><span class="code_string">speed</span><span class="code_string">&quot;</span><BR>
 )<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-  <img src="Example2_htmlimg/Example2_4.gif"  alt="Animated Diagram" style="max-width:90%;" >
+\[\mbox{}\\\mbox{;; loading \#P"/home/gunter/.maxima/binary/branch\_5\_36\_base\_188\_g2908479/sbcl/1\_2\_14\_debian/share/draw/grcommon.fasl"}\]\[\mbox{}\\\mbox{;; loading \#P"/home/gunter/.maxima/binary/branch\_5\_36\_base\_188\_g2908479/sbcl/1\_2\_14\_debian/share/draw/gnuplot.fasl"}\]\[\mbox{}\\\mbox{;; loading \#P"/home/gunter/.maxima/binary/branch\_5\_36\_base\_188\_g2908479/sbcl/1\_2\_14\_debian/share/draw/vtk.fasl"}\]\[\mbox{}\\\mbox{;; loading \#P"/home/gunter/.maxima/binary/branch\_5\_36\_base\_188\_g2908479/sbcl/1\_2\_14\_debian/share/draw/picture.fasl"}\]\[\mathrm{\tt (\%t10) }\quad  &lt;&lt; Graphics &gt;&gt; \]
 
 
 <!-- Section cell -->
@@ -283,14 +283,14 @@ to calculate:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i106) 
+(%i13) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">x</span><span class="code_operator">=</span><span class="code_variable">v</span>[<span class="code_variable">Walk\,x</span>]<span class="code_operator">*</span><span class="code_variable">t</span><span class="code_endofline">;</span><BR>
 <span class="code_function">solve</span>(<span class="code_variable">%</span>,<span class="code_variable">t</span>)<span class="code_endofline">;</span><BR>
 <span class="code_variable">s1</span><span class="code_operator">:</span><span class="code_function">at</span>(<span class="code_variable">V_total</span>,<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o104) }\quad x=t\cdot {{v}_{\mathit{Walk,x}}}\]\[\mathrm{\tt (\%o105) }\quad [t=\frac{x}{{{v}_{\mathit{Walk,x}}}}]\]\[\mathrm{\tt (\%o106) }\quad V=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \cdot x}{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\cdot x}{{{v}_{\mathit{Walk,x}}}}\]
+\[\mathrm{\tt (\%o11) }\quad x=t\cdot {{v}_{\mathit{Walk,x}}}\]\[\mathrm{\tt (\%o12) }\quad [t=\frac{x}{{{v}_{\mathit{Walk,x}}}}]\]\[\mathrm{\tt (\%o13) }\quad V=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| \cdot x}{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}\cdot x}{{{v}_{\mathit{Walk,x}}}}\]
 
 
 <!-- Text cell -->
@@ -307,13 +307,13 @@ The amount of water per distance will be calculated by maxima instead:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i108) 
+(%i15) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_variable">Q</span><span class="code_operator">=</span><span class="code_operator">'</span><span class="code_function">diff</span>(<span class="code_variable">V</span>,<span class="code_variable">x</span>)<span class="code_endofline">;</span><BR>
 <span class="code_variable">Q_perMeter</span><span class="code_operator">:</span><span class="code_function">ev</span>(<span class="code_variable">%</span>,<span class="code_variable">s1</span>,<span class="code_variable">diff</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
-\[\mathrm{\tt (\%o107) }\quad Q=\frac{d}{d\,x}\cdot V\]\[\mathrm{\tt (\%o108) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| }{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}}{{{v}_{\mathit{Walk,x}}}}\]
+\[\mathrm{\tt (\%o14) }\quad Q=\frac{d}{d\,x}\cdot V\]\[\mathrm{\tt (\%o15) }\quad Q=\frac{p\cdot {{A}_{\mathit{Sides}}}\cdot \left| {{v}_{\mathit{Walk,x}}}-{{v}_{\mathit{Rain,x}}}\right| }{{{v}_{\mathit{Walk,x}}}}+\frac{p\cdot {{v}_{\mathit{Rain,y}}}\cdot {{A}_{\mathit{Top}}}}{{{v}_{\mathit{Walk,x}}}}\]
 
 
 <!-- Text cell -->
@@ -330,7 +330,7 @@ This time the meaning of the equation is more difficult to make out:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i109) 
+(%i16) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_function">with_slider_draw</span>(<BR>
@@ -352,7 +352,7 @@ This time the meaning of the equation is more difficult to make out:
  &nbsp;&nbsp;&nbsp;),<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">grid</span><span class="code_operator">=</span>true,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">yrange</span><span class="code_operator">=</span>[<span class="code_number">0</span>,<span class="code_number">2</span>],<BR>
- &nbsp;&nbsp;&nbsp;<span class="code_variable">ylabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Amount</span><span class="code_string"> </span><span class="code_string">of</span><span class="code_string"> </span><span class="code_string">water</span><span class="code_string"> </span><span class="code_string">per</span><span class="code_string"> </span><span class="code_string">second</span><span class="code_string">&quot;</span>,<BR>
+ &nbsp;<span class="code_variable">ylabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Amount</span><span class="code_string"> </span><span class="code_string">of</span><span class="code_string"> </span><span class="code_string">water</span><span class="code_string"> </span><span class="code_string">per</span><span class="code_string"> </span><span class="code_string">second</span><span class="code_string">&quot;</span>,<BR>
  &nbsp;&nbsp;&nbsp;<span class="code_variable">xlabel</span><span class="code_operator">=</span><span class="code_string">&quot;</span><span class="code_string">Walking</span><span class="code_string"> </span><span class="code_string">speed</span><span class="code_string">&quot;</span><BR>
 )<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
 </TR></TABLE>
@@ -374,7 +374,7 @@ in the rain for too long a time. But wait until we zoom into it:
 
 <TABLE><TR><TD>
   <SPAN CLASS="prompt">
-(%i110) 
+(%i17) 
   </SPAN></TD>
   <TD><SPAN CLASS="input">
 <span class="code_function">with_slider_draw</span>(<BR>
@@ -384,7 +384,7 @@ in the rain for too long a time. But wait until we zoom into it:
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">at</span>(<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">rhs</span>(<span class="code_variable">Q_perMeter</span>),<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<BR>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">p</span><span class="code_operator">=</span>.<span class="code_number">01</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">p</span><span class="code_operator">=</span>.<span class="code_number">01</span>,<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,y</span>]<span class="code_operator">=</span><span class="code_number">20</span>,<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">v</span>[<span class="code_variable">Rain\,x</span>]<span class="code_operator">=</span><span class="code_variable">vr</span>,<BR>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">A</span>[<span class="code_variable">Top</span>]<span class="code_operator">=</span>.<span class="code_number">1</span>,<BR>
@@ -416,7 +416,7 @@ enough.
 
 
 <P CLASS="section">
- 4 Credits
+ 4 The total amount of water in a given distance
 </P>
 
 
@@ -424,13 +424,47 @@ enough.
 
 
 <P CLASS="comment">
-Special Thanks to Robin Lehmann and Marco Juresic that have asked this question!
+Just to make this document contain a nice integral sign:
 
 </P>
 
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+(%i27) 
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">V</span>[<span class="code_variable">Water</span>]<span class="code_operator">=</span><span class="code_function">integrate</span>(<span class="code_variable">Q</span>[<span class="code_variable">Rain</span>](<span class="code_variable">x</span>),<span class="code_variable">x</span>,<span class="code_number">0</span>,<span class="code_variable">Distance</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o27) }\quad {{V}_{\mathit{Water}}}=\int_{0}^{\mathit{Distance}}{{Q}_{\mathit{Rain}}}\left( x\right) dx\]
+
+
+<!-- Section cell -->
+
+
+<P CLASS="section">
+ 5 Credits
+</P>
+
+
+<!-- Text cell -->
+
+
 <P CLASS="comment">
-This example has been created by the HTML export-feature of a post-15.04 wxMaxima with 
-enabled MathJAX.
+Special Thanks to Robin Lehmann and Marco Juresic for asking this question in 1996!
+
+</P>
+
+
+<!-- Text cell -->
+
+
+<P CLASS="comment">
+This file was generated by the HTML export of a post-15.04 wxMaxima with MathJAX enabled.
+
 </P>
 
  <HR>
