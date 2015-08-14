@@ -2112,7 +2112,13 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   for (int id = menu_pane_math; id<=menu_pane_format; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
   if (GetToolBar() != NULL)
+  {
+#if defined __WXMAC__
+    menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
+#else
     menubar->Check(menu_show_toolbar, true);
+#endif
+  }
   else
     menubar->Check(menu_show_toolbar, false);
 

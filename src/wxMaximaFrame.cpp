@@ -239,7 +239,11 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
+#if defined __WXMAC__
+  wxConfig::Get()->Write(wxT("AUI/toolbar"), GetToolBar()->IsShown());
+#else
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
+#endif
   m_manager.UnInit();
   delete m_history;
   //  delete m_console->m_structure;
@@ -530,7 +534,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-T"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
   m_MaximaMenu->Append(wxNewId(), _("Panes"), m_Maxima_Panes_Sub);
 
   m_MaximaMenu->AppendSeparator();
@@ -1158,6 +1162,15 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
+#if defined __WXMAC__
+  wxToolBar *tbar = GetToolBar();
+  if (tbar == NULL) {
+    tbar = CreateToolBar();
+    m_console->m_mainToolBar = new ToolBar(tbar);
+    SetToolBar(m_console->m_mainToolBar->GetToolBar());
+  }
+  tbar->Show(show);
+#else
   if (show) {
     if (m_console->m_mainToolBar == NULL) {
       wxToolBar *tbar = CreateToolBar();
@@ -1175,5 +1188,6 @@ void wxMaximaFrame::ShowToolBar(bool show)
       m_console->m_mainToolBar=NULL;
     }
   }
+#endif
 }
 
