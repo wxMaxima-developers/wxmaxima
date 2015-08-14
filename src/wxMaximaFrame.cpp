@@ -1159,8 +1159,10 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 void wxMaximaFrame::ShowToolBar(bool show)
 {
   if (show) {
-    if (m_console->m_mainToolBar == NULL)
-      m_console->m_mainToolBar=new ToolBar(this,-1);
+    if (m_console->m_mainToolBar == NULL) {
+      wxToolBar *tbar = CreateToolBar();
+      m_console->m_mainToolBar=new ToolBar(tbar);
+    }
     SetToolBar(m_console->m_mainToolBar->GetToolBar());
   }
   else

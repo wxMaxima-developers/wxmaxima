@@ -2849,7 +2849,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->RemoveAllOutput();
     break;
   case menu_show_toolbar:
+#if defined __WXMAC__
+    ShowToolBar((GetToolBar() == NULL) || !(GetToolBar()->IsShown()));
+#else
     ShowToolBar(!(GetToolBar() != NULL));
+#endif
     break;
   case menu_edit_find:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)

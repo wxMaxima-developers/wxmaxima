@@ -48,7 +48,7 @@ ToolBar::~ToolBar()
   m_plotSlider = NULL;
 }
 
-ToolBar::ToolBar(wxWindow* parent, int id)
+ToolBar::ToolBar(wxToolBar *tbar)
 {
   m_canCopy_old = true;
   m_canCut_old = true;
@@ -56,7 +56,7 @@ ToolBar::ToolBar(wxWindow* parent, int id)
   m_canPrint_old = true;
   m_canEvalTillHere_old = true;
 
-  m_toolBar = new wxToolBar(parent,id);
+  m_toolBar = tbar;
   m_needsInformation = false;
   m_AnimationStartStopState=Inactive;
   
