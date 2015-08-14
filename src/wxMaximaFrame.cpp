@@ -239,8 +239,9 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
-#if defined __WXMAC__
-  wxConfig::Get()->Write(wxT("AUI/toolbar"), GetToolBar()->IsShown());
+#if defined __WXMAC__ || defined __WXMSW__
+  wxConfig::Get()->Write(wxT("AUI/toolbar"),
+                         GetToolBar() != NULL && GetToolBar()->IsShown());
 #else
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
 #endif
@@ -1162,7 +1163,7 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
-#if defined __WXMAC__
+#if defined __WXMAC__ || defined __WXMSW__
   wxToolBar *tbar = GetToolBar();
   if (tbar == NULL) {
     tbar = CreateToolBar();
@@ -1170,6 +1171,9 @@ void wxMaximaFrame::ShowToolBar(bool show)
     SetToolBar(m_console->m_mainToolBar->GetToolBar());
   }
   tbar->Show(show);
+#if defined __WXMSW__
+  PostSizeEvent();
+#endif
 #else
   if (show) {
     if (m_console->m_mainToolBar == NULL) {
@@ -1183,9 +1187,10 @@ void wxMaximaFrame::ShowToolBar(bool show)
     if(m_console->m_mainToolBar)
     {
       if(m_console->m_mainToolBar->GetToolBar())
-        m_console->m_mainToolBar->GetToolBar()->Destroy();
+        delete m_console->m_mainToolBar->GetToolBar();
       delete m_console->m_mainToolBar;
       m_console->m_mainToolBar=NULL;
+      SetToolBar(NULL);
     }
   }
 #endif

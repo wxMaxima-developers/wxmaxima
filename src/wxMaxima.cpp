@@ -2113,7 +2113,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
   if (GetToolBar() != NULL)
   {
-#if defined __WXMAC__
+#if defined __WXMAC__ || defined __WXMSW__
     menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
 #else
     menubar->Check(menu_show_toolbar, true);
@@ -2855,7 +2855,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     m_console->RemoveAllOutput();
     break;
   case menu_show_toolbar:
-#if defined __WXMAC__
+#if defined __WXMAC__ || defined __WXMSW__
     ShowToolBar((GetToolBar() == NULL) || !(GetToolBar()->IsShown()));
 #else
     ShowToolBar(!(GetToolBar() != NULL));
