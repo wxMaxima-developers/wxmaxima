@@ -2016,6 +2016,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     // we need to enable the button that brings us back
      ScrolledAwayFromEvaluation();
 
+     // We might have moved the cursor off-screen and therefore might need to scroll.
+     ScrollToCell(GetHCaret());
     return;
   }
   
@@ -2059,6 +2061,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     UpdateTableOfContents();
     ScrolledAwayFromEvaluation();
     
+     // We might have moved the cursor off-screen and therefore might need to scroll.
+    ScrollToCell(GetHCaret());
     return;
   }
 
