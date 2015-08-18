@@ -61,23 +61,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   // Add some shortcuts that aren't automatically set by menu entries.
 #if defined __WXMSW__
-  wxAcceleratorEntry entries[5];
+  wxAcceleratorEntry entries[7];
   entries[0].Set(wxACCEL_CTRL,  WXK_TAB,    menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE,  menu_autocomplete);
-  entries[0].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
-  entries[1].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
-  entries[2].Set(wxACCEL_CTRL,  wxT('+'),   MathCtrl::menu_zoom_in);
-  entries[3].Set(wxACCEL_CTRL,  wxT('-'),   MathCtrl::menu_zoom_out);
-  entries[4].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
-  wxAcceleratorTable accel(5, entries);
+  entries[2].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
+  entries[3].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
+  entries[4].Set(wxACCEL_CTRL,  wxT('+'),   MathCtrl::menu_zoom_in);
+  entries[5].Set(wxACCEL_CTRL,  wxT('-'),   MathCtrl::menu_zoom_out);
+  entries[6].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
+  wxAcceleratorTable accel(7, entries);
   SetAcceleratorTable(accel);
 #else
-  wxAcceleratorEntry entries[4];
+  wxAcceleratorEntry entries[6];
   entries[0].Set(wxACCEL_CTRL,  WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
-  entries[2].Set(wxACCEL_CTRL,  wxT('+'), MathCtrl::menu_zoom_in);
-  entries[3].Set(wxACCEL_CTRL,  wxT('-'), MathCtrl::menu_zoom_out);
-  wxAcceleratorTable accel(4, entries);
+  entries[2].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
+  entries[3].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
+  entries[4].Set(wxACCEL_CTRL,  wxT('+'), MathCtrl::menu_zoom_in);
+  entries[5].Set(wxACCEL_CTRL,  wxT('-'), MathCtrl::menu_zoom_out);
+  wxAcceleratorTable accel(6, entries);
   SetAcceleratorTable(accel);
 #endif
 
