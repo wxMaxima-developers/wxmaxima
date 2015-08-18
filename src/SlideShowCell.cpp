@@ -172,10 +172,16 @@ void SlideShow::LoadImages(wxArrayString images)
 
 MathCell* SlideShow::Copy()
 {
-  ImgCell* tmp = new ImgCell;
+  SlideShow* tmp = new SlideShow;
   CopyData(this, tmp);
 
-  tmp->m_bitmap = new wxBitmap(*m_bitmaps[m_displayed]);
+  for(int i=0;i<m_bitmaps.size();i++)
+  {
+    wxBitmap *image = new wxBitmap(*m_bitmaps[i]);
+    tmp->m_bitmaps.push_back(image);
+  }
+
+  tmp->m_size = m_size;
   
   return tmp;
 }

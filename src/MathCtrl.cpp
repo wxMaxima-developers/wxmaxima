@@ -2752,16 +2752,16 @@ MathCell* MathCtrl::CopySelection() {
 }
 
 MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
-  MathCell *tmp, *tmp1= NULL, *tmp2= NULL;
+  MathCell *tmp, *out= NULL, *outEnd= NULL;
   tmp = start;
 
   while (tmp != NULL) {
-    if (tmp1 == NULL) {
-      tmp1 = tmp->Copy();
-      tmp2 = tmp1;
+    if (out == NULL) {
+      out = tmp->Copy();
+      outEnd = out;
     } else {
-      tmp2->AppendCell(tmp->Copy());
-      tmp2 = tmp2->m_next;
+      outEnd->AppendCell(tmp->Copy());
+      outEnd = outEnd->m_next;
     }
     if (tmp == end)
       break;
@@ -2771,7 +2771,7 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
       tmp = tmp->m_nextToDraw;
   }
 
-  return tmp1;
+  return out;
 }
 
 void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
@@ -3346,13 +3346,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
   
   while (tmp != NULL) {
+
+    // Handle a code cell
     if (tmp->GetGroupType() == GC_TYPE_CODE)
     {
+
+      // Handle the label
       MathCell *out = tmp->GetLabel();
       
-      if(out||exportInput)
+      if(out || exportInput)
         output<<wxT("\n\n<!-- Code cell -->\n\n\n");
 
+      // Handle the input
       if(exportInput)
       {
         MathCell *prompt = tmp->GetPrompt();
@@ -3369,60 +3374,102 @@ bool MathCtrl::ExportToHTML(wxString file) {
         }
         output<<wxT("</TR></TABLE>\n");
       }
-      
+
+      // Handle the output - if output exists.
       if (out == NULL) {
+        // No output to export.x
         output<<wxT("\n");
       }
       else {
-        if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_SLIDE)
-        {
-          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-          output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
-            filename +
-            wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
-        }
-        else if (mathjax &&
-                 (tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() != MC_TYPE_IMAGE)) {
-          wxString line = out->ListToTeX();
 
-          line.Replace(wxT("<"), wxT("&lt;"));
-          line.Replace(wxT(">"), wxT("&gt;"));
-          
-          output<<wxT("\\[")<<line<<wxT("\\]\n");
-        }
-        else
+        // We got output.
+        // Output is a list that can consist of equations, images and slideshows.
+        // We need to handle each of these item types separately => break down the list
+        // into chunks of one type.
+        MathCell *chunkStart = tmp->GetLabel();
+        while(chunkStart != NULL)
         {
-          int bitmapScale = 3;
-          wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-          if(tmp->GetOutput() != NULL && tmp->GetOutput()->GetType() == MC_TYPE_IMAGE)
-            bitmapScale=1;
-          wxSize size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                                   out,
-                                   NULL, true, bitmapScale);
-          int borderwidth = 0;
-          wxString alttext = _("Result");
-          if(tmp->GetOutput())
+          MathCell *chunkEnd = chunkStart;
+          
+          if(
+            (chunkEnd->GetType() != MC_TYPE_SLIDE) &&
+            (chunkEnd->GetType() != MC_TYPE_IMAGE)
+            )
+            while(chunkEnd->m_next != NULL)
+            {
+              if(
+                (chunkEnd->m_next->GetType() == MC_TYPE_SLIDE) ||
+                (chunkEnd->m_next->GetType() == MC_TYPE_IMAGE)
+                )
+                break;
+              chunkEnd = chunkEnd->m_next;
+            }
+          
+          // Create a list containing only our chunk.
+          MathCell *chunk = CopySelection(chunkStart,chunkEnd,true);
+
+          // Export the chunk.
+          if(chunk->GetType() == MC_TYPE_SLIDE)
           {
-            alttext = tmp->GetOutput()->ListToString();
+            ((SlideShow *)chunk)->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
+            output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
+              filename +
+              wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
+          }
+          else if (mathjax &&
+                   (chunk->GetType() != MC_TYPE_IMAGE)) {
+            wxString line = chunk->ListToTeX();
+            
+            line.Replace(wxT("<"), wxT("&lt;"));
+            line.Replace(wxT(">"), wxT("&gt;"));
+            
+            output<<wxT("\\[")<<line<<wxT("\\]\n");
+          }
+          else
+          {
+            wxSize size;
+            // Something we want to export as an image.
+            if(chunk->GetType() == MC_TYPE_IMAGE)
+            {
+              size = ((ImgCell *)chunk)->ToImageFile(
+                imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count)
+                );
+            }
+            else
+            {
+              int bitmapScale = 3;
+              wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+              std::cerr<<"Image\n";
+              size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+                                chunk,
+                                NULL, true, bitmapScale);
+            }
+            
+            int borderwidth = 0;
+            wxString alttext = _("Result");
+            alttext = chunk->ListToString();
 //            alttext.Replace(wxT("\n"),wxT(" "));
             alttext = EditorCell::EscapeHTMLChars(alttext);
-            borderwidth = tmp->GetOutput()->m_imageBorderWidth;
+            borderwidth = chunk->m_imageBorderWidth;
+            
+            wxString line = wxT("  <img src=\"") +
+              filename + wxT("_htmlimg/") + filename +
+              wxString::Format(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                               count,size.x - 2 * borderwidth) +
+              alttext +
+              wxT("\" >");
+            
+            output<<line<<endl;
           }
-          
-          wxString line = wxT("  <img src=\"") +
-            filename + wxT("_htmlimg/") + filename +
-            wxString::Format(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
-                             count,size.x - 2 * borderwidth) +
-            alttext +
-            wxT("\" >");
+          count++;
 
-          output<<line<<endl;
+          // Prepare for fetching the next chunk.
+          chunk->DestroyList();
+          chunkStart = chunkEnd->m_next;
         }
-        count++;
       }
     }
-
-    else
+    else // No code cell
     {
       switch(tmp->GetGroupType()) {
       case GC_TYPE_TEXT:
