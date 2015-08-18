@@ -1044,7 +1044,9 @@ void wxMaxima::ReadPrompt(wxString &data)
           if(m_console->FollowEvaluation())
           {
             if(m_console->GetWorkingGroup())
+            {
               m_console->SetHCaret(m_console->GetWorkingGroup());
+            }
             m_console->ShowHCaret();
           }
           m_console->SetWorkingGroup(NULL);

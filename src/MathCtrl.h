@@ -660,7 +660,7 @@ public:
   */
   MathCell* GetSelectionEnd() { return m_selectionEnd; }
   //! Select the cell sel
-  void SetSelection(MathCell* sel) { m_selectionStart = m_selectionEnd = sel; }
+  void SetSelection(MathCell* sel) { SetSelection(sel,sel); }
   //! Select the cell range start-end
   void SetSelection(MathCell* start,MathCell* end) { m_selectionStart = start;m_selectionEnd = end; }
   bool CanEdit();

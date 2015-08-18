@@ -411,8 +411,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     Recalculate();
 
     if(FollowEvaluation()) {
-      m_selectionStart = NULL;
-      m_selectionEnd = NULL;
+      SetSelection(NULL);
       if(GCContainsCurrentQuestion(tmp))
       {
         OpenQuestionCaret();
@@ -532,8 +531,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   }
 
   if (m_tree != NULL) {
-    m_selectionStart = NULL;
-    m_selectionEnd = NULL;
+    SetSelection(NULL);
     RecalculateForce();
   }
   else
@@ -552,8 +550,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
  */
 void MathCtrl::ClearDocument() {
 
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
+  SetSelection(NULL);
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_hCaretActive = false;
@@ -913,7 +910,7 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC)
   }
   else {
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
-    m_selectionStart = m_selectionEnd = clickedInGC;
+    SetSelection(clickedInGC);
   }
 }
 
@@ -1011,7 +1008,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
 
   // default when clicking
   m_clickType = CLICK_TYPE_NONE;
-  m_selectionStart = m_selectionEnd = NULL;
+  SetSelection(NULL);
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   m_hCaretPosition = NULL;
   m_hCaretActive = false;
@@ -1110,7 +1107,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
   // Calculate the rectangle that has been selected
   int ytop    = MIN( down.y, up.y );
   int ybottom = MAX( down.y, up.y );
-  m_selectionStart = m_selectionEnd = NULL;
+  SetSelection(NULL);
   
   wxRect rect;
   
@@ -1194,7 +1191,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         // Clean up in case that we have re-entered the cell we started
         // selecting in.
         m_hCaretActive = false;
-        m_selectionStart = m_selectionEnd = NULL;
+        SetSelection(NULL);
         SetActiveCell(m_cellMouseSelectionStartedIn);
         // We are still inside the cell => select inside the current cell.
         wxClientDC dc(this);
@@ -1211,7 +1208,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
     break;
 
   case CLICK_TYPE_OUTPUT_SELECTION:
-    m_selectionStart = m_selectionEnd = NULL;
+    SetSelection(NULL);
     rect.x = MIN(down.x, up.x);
     rect.y = MIN(down.y, up.y);
     rect.width = MAX(ABS(down.x - up.x), 1);
@@ -1731,7 +1728,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       DestroyTree(start);
   }
 
-  m_selectionStart = m_selectionEnd = NULL;
+  SetSelection(NULL);
   if (newSelection != NULL)
     SetHCaret(dynamic_cast<GroupCell*>(newSelection->m_previous), false);
   else
@@ -1957,9 +1954,10 @@ bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
 
 void MathCtrl::QuestionAnswered()
 {
+  if(m_questionPrompt)
+    SetActiveCell(NULL);
   m_answerCell = NULL;
   m_questionPrompt = false;
-  SetActiveCell(NULL);
 }
 
 /****
@@ -2034,7 +2032,10 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   {
     GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     if(event.ShiftDown()) {
-      SetSelection(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),dynamic_cast<GroupCell*>(m_activeCell->GetParent()->m_next));
+      SetSelection(
+        dynamic_cast<GroupCell*>(m_activeCell->GetParent()),
+        dynamic_cast<GroupCell*>(m_activeCell->GetParent()->m_next)
+        );
       m_hCaretPosition = dynamic_cast<GroupCell*>(m_selectionStart);
       m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionStart);
       m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_selectionEnd);
@@ -2071,7 +2072,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
       m_activeCell->GetValue() == wxEmptyString) {
-    m_selectionStart = m_selectionEnd = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    SetSelection(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
     DeleteSelection();
     return;
   }
@@ -2222,12 +2223,10 @@ void MathCtrl::SelectWithChar(int ccode) {
   {
     // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
     if (m_hCaretPositionStart->GetCurrentY() < m_hCaretPositionEnd->GetCurrentY()) {
-      m_selectionStart = m_hCaretPositionStart;
-      m_selectionEnd = m_hCaretPositionEnd;
+      SetSelection(m_hCaretPositionStart,m_hCaretPositionEnd);
     }
     else {
-      m_selectionStart = m_hCaretPositionEnd;
-      m_selectionEnd = m_hCaretPositionStart;
+      SetSelection(m_hCaretPositionEnd,m_hCaretPositionStart);
     }
     Refresh();
   }
@@ -4813,8 +4812,7 @@ void MathCtrl::SelectAll()
 {
   if (m_activeCell == NULL && m_tree != NULL)
   {
-    m_selectionStart = m_tree;
-    m_selectionEnd = m_last;
+    SetSelection(m_tree,m_last);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     m_hCaretActive = false;
   }
@@ -5033,7 +5031,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
     wxASSERT_MSG(m_tree->Contains(where),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
   else
   {
-    m_selectionStart = m_selectionEnd = NULL;
+    SetSelection(NULL);
     m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
     SetActiveCell(NULL, false);
     if(where)
@@ -5195,7 +5193,7 @@ wxString MathCtrl::GetOutputAboveCaret()
 
   wxString output = GetString();
 
-  m_selectionStart = m_selectionEnd = NULL;
+  SetSelection(NULL);
 
   Refresh();
 
@@ -5591,7 +5589,7 @@ bool MathCtrl::InsertText(wxString text)
 void MathCtrl::OpenNextOrCreateCell()
 {
   if (m_hCaretPosition && m_hCaretPosition->m_next) {
-    m_selectionStart = m_selectionEnd = m_hCaretPosition;
+    SetSelection(m_hCaretPosition);
     ActivateNextInput();
   }
   else
@@ -5600,7 +5598,7 @@ void MathCtrl::OpenNextOrCreateCell()
 
 void MathCtrl::SelectGroupCell(GroupCell *cell)
 {
-  m_selectionStart = m_selectionEnd = cell;
+  SetSelection(cell);
   m_hCaretActive = false;
   SetActiveCell(NULL);
   if(cell)
