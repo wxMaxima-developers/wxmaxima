@@ -698,8 +698,9 @@ really working forever trying to solve the current problem.
 @section wxMaxima on Windows crashes on displaying seemingly simple equations
 The jsMath fonts allow for excellent 2D-display of equations. But there
 are of broken versions of this package that crash wxMaxima.
-A working version can be downloaded from @uref{http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html math.union.edu}. If this doesn't help jsMath can be deactivated
-in the Styles tab of wxMaxima's configuration dialogue.
+A working version can be downloaded from @uref{http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html math.union.edu}. To make wxMaxima actually use these fonts
+the according checkbox has to be enabled in the Styles tab of wxMaxima's
+configuration dialogue afterwards.
 @section Outputting animations doesn't work
 wxMaxima relies on a third-party tool
 (@uref{http://www.imagemagick.org/, ImageMagick}) to convert
