@@ -1146,23 +1146,33 @@ void wxMaxima::SetCWD(wxString file)
 
   wxString workingDirectory = filename.GetPath();
 
-  if(workingDirectory != GetCWD())
-  {
-    SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-               filenamestring +
-               wxT("\")"));
-    SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
-               filename.GetPath() +
-               wxT("\")"));
+  bool wxcd;
     
-    SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
-    if (m_ready)
+    #if defined (__WXMSW__)
+    wxcd = false;
+    config->Read(wxT("wxcd"),&wxcd);
+    #else
+    wxcd = true;
+    #endif
+
+    if(wxcd && (workingDirectory != GetCWD()))
     {
-      if(m_console->m_evaluationQueue->Empty())
-        StatusMaximaBusy(waiting);
+      
+      SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
+                 filenamestring +
+                 wxT("\")"));
+      SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
+                 filename.GetPath() +
+                 wxT("\")"));
+      
+      SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
+      if (m_ready)
+      {
+        if(m_console->m_evaluationQueue->Empty())
+          StatusMaximaBusy(waiting);
+      }
+      m_CWD = workingDirectory;
     }
-    m_CWD = workingDirectory;
-  }
 }
 
 // OpenWXMFile
