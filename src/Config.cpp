@@ -107,7 +107,6 @@ Config::Config(wxWindow* parent)
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
   m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
-
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
 #endif
@@ -641,13 +640,13 @@ wxPanel* Config::CreateStylePanel()
   sb_sizer_1->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 0);
   vsizer->Add(sb_sizer_1, 1, wxALL | wxEXPAND, 3);
 
-  vbox_sizer->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  vbox_sizer->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vbox_sizer->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER, 5);
+  vbox_sizer->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER, 5);
   hbox_sizer_1->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   hbox_sizer_1->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   hbox_sizer_1->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vbox_sizer->Add(hbox_sizer_1, 1, wxALL | wxEXPAND, 0);
-  vbox_sizer->Add(m_examplePanel, 0, wxALL | wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 5);
+  vbox_sizer->Add(m_examplePanel, 0, wxALL | wxEXPAND, 5);
   hbox_sizer_2->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   hbox_sizer_2->Add(vbox_sizer, 1, wxALL | wxEXPAND, 0);
   sb_sizer_2->Add(hbox_sizer_2, 0, wxALL | wxEXPAND, 0);
