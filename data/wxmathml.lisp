@@ -271,7 +271,7 @@
 
 (defun wxxml-nary (x l r)
   (let* ((op (caar x))
-	 (sym (cond ((eq op 'mtimes)
+	 (sym (cond ((member op '(mtimes wxtimes) :test #'eq)
 		     (if $stardisp
 			 "<t>*</t>"
 			 "<h>*</h>"))
@@ -606,6 +606,12 @@
 (defprop mtimes 120. wxxml-lbp)
 (defprop mtimes 120. wxxml-rbp)
 
+(defprop wxtimes wxxml-nary wxxml)
+(defprop wxtimes "<h>*</h>" wxxmlsym)
+(defprop wxtimes "<t>*</t>" wxxmlword)
+(defprop wxtimes 120. wxxml-lbp)
+(defprop wxtimes 120. wxxml-rbp)
+
 (defprop %sqrt wxxml-sqrt wxxml)
 
 (defun wxxml-sqrt (x l r)
@@ -937,7 +943,7 @@
                     (mapcan #'(lambda(b e)
                                 `(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
                             vars ords))))
-    `((mtimes)
+    `((wxtimes)
       ((mquotient) ,(simplifya numer nil) ,denom)
       ,arg)))
 
