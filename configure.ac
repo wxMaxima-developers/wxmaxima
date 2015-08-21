@@ -147,16 +147,6 @@ else
    WX_RC_PATH=""
 fi
 
-dnl we have to setup rc compiling under 64-bit Windows, too
-if test x"${win64}" = x"true" ; then
-   RC_OBJ="Resources.o"
-   wx_prefix=`$WX_CONFIG_NAME --prefix`
-   WX_RC_PATH="${wx_prefix}/include"
-else
-   RC_OBJ=""
-   WX_RC_PATH=""
-fi
-
 dnl translations
 CATALOGS_TO_INSTALL="install-wxmaxima-catalogs"
 
