@@ -9,6 +9,9 @@ _wxmaxima()
         --help|-h|--version|-v)
             return
             ;;
+        --batch|-b)
+            return
+            ;;
         --open|-o)
             _filedir
             return
