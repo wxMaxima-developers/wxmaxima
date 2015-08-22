@@ -51,7 +51,7 @@ msgid ""
 "Not connected to Maxima!\n"
 msgstr ""
 "\n"
-"Maxima'ya bağlanamdı \n"
+"Maxima'ya bağlanamadı \n"
 
 #: ../src/wxMaxima.cpp:4204
 msgid ""
@@ -59,7 +59,7 @@ msgid ""
 "Not connected."
 msgstr ""
 "\n"
-"Bağlantı yok."
+"Bağlanamdı."
 
 #: ../src/ImgCell.cpp:245 ../src/ImgCell.cpp:250
 msgid " (Graphics) "
@@ -87,7 +87,7 @@ msgstr ""
 #: ../src/wxMaximaFrame.cpp:96
 #, c-format
 msgid "%i cells in evaluation queue"
-msgstr ""
+msgstr "%i hücreleri değerlendirme sırasında (bekliyor)"
 
 #: ../src/wxMaximaFrame.cpp:669
 msgid "&Algebra"
@@ -512,7 +512,7 @@ msgstr "Sütun Diyagramı"
 
 #: ../src/Config.cpp:745
 msgid "Bat files (*.bat)|*.bat|All|*"
-msgstr "bat Dosyaları (*.bat)|*.bat|tümü|*"
+msgstr "Bat Dosyaları (*.bat)|*.bat|tümü|*"
 
 #: ../src/wxMaxima.cpp:2623
 msgid "Batch File"
@@ -525,11 +525,14 @@ msgid ""
 "cursor is inside a cell. Pressing Ctrl+Z inside a cell can therefore been "
 "used for a fine-pitch undo that doesn't affect latter changes made in other "
 "cells."
-msgstr ""
+msgstr "İmleç hücreler arasında olduğunda geri alma işlemi yapılabildiği gibi,"
+"İmlecin bir hücrenin içinde aktif olduğu durumlarda da wxMaxima, hücre hücre" 
+"geri alma işlemi yapabilir.Bir hücre içinde Ctrl+Z basarak diğer hücrelerdeki"
+"değişiklikleri etkilemeyen ince ayar bir geri alma işlemi yapabilir."
 
 #: ../src/Config.cpp:354
 msgid "Bitmap scale for export"
-msgstr ""
+msgstr "Çıkarım için Bitmap ölçüsü"
 
 #: ../src/Config.cpp:627
 msgid "Bold"
@@ -537,7 +540,7 @@ msgstr "Koyu"
 
 #: ../src/wxMaxima.cpp:2080
 msgid "Both horizontal and vertical cursor active at the same time"
-msgstr ""
+msgstr "Yatay ve dikey imleçlerin her ikisi de aynı anda aktif"
 
 #: ../src/wxMaximaFrame.cpp:1112
 msgid "Boxplot..."
@@ -549,15 +552,15 @@ msgstr "Göz at"
 
 #: ../src/Autocomplete.cpp:134
 msgid "Bug: Autocompletion requested for unknown type of item."
-msgstr ""
+msgstr "Hata: Bilinmeyen bir öge için otomatik tamamlama isteği."
 
 #: ../src/MathCtrl.cpp:1526
 msgid "Bug: Cell left but not entered."
-msgstr ""
+msgstr "Hata: Hücre geride bırakıldı ancak (değerlendirmeye) girmedi."
 
 #: ../src/MathCtrl.cpp:1749
 msgid "Bug: Got a question but no cell to answer it in"
-msgstr ""
+msgstr "Hata: Bir soru alındı ama yanıtı içeren bir hücre yok"
 
 #: ../src/MathCtrl.cpp:4379
 msgid ""
