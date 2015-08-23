@@ -604,6 +604,10 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 #else
       newChars = wxString(buffer, *wxConvCurrent);
 #endif
+      if(IsPaneDisplayed(menu_pane_wireshark))
+      {
+        m_wireshark->Add(newChars+wxT("\n"));
+      }
 
       m_currentOutput +=newChars;
 
@@ -962,11 +966,6 @@ void wxMaxima::ReadMath(wxString &data)
       }
       else
         normalOutput+=line+=wxT("\n");
-
-      if(IsPaneDisplayed(menu_pane_wireshark))
-      {
-        m_wireshark->Add(line+wxT("\n"));
-      }
     }
     
     if(normalOutput!=wxEmptyString)
