@@ -965,8 +965,6 @@ void wxMaxima::ReadMath(wxString &data)
 
       if(IsPaneDisplayed(menu_pane_wireshark))
       {
-        line.Replace(wxT("\r"),wxT("\n"));
-        line.Replace(wxT(">"),wxT(">\n"));
         m_wireshark->Add(line+wxT("\n"));
       }
     }
