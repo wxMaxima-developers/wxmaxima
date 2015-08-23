@@ -598,11 +598,14 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       SanitizeSocketBuffer(buffer, read);
 
+      wxString newChars;
 #if wxUSE_UNICODE
-      m_currentOutput += wxString(buffer, wxConvUTF8);
+      newChars = wxString(buffer, wxConvUTF8);
 #else
-      m_currentOutput += wxString(buffer, *wxConvCurrent);
+      newChars = wxString(buffer, *wxConvCurrent);
 #endif
+
+      m_currentOutput +=newChars;
 
       if (!m_dispReadOut &&
 	  (m_currentOutput != wxT("\n")) &&
@@ -959,6 +962,13 @@ void wxMaxima::ReadMath(wxString &data)
       }
       else
         normalOutput+=line+=wxT("\n");
+
+      if(IsPaneDisplayed(menu_pane_wireshark))
+      {
+        line.Replace(wxT("\r"),wxT("\n"));
+        line.Replace(wxT(">"),wxT(">\n"));
+        m_wireshark->Add(line+wxT("\n"));
+      }
     }
     
     if(normalOutput!=wxEmptyString)
@@ -5048,7 +5058,9 @@ void wxMaxima::TryEvaluateNextInQueue()
   m_maximaStdoutPollTimer.Start(1000);
 
   if(m_console->m_evaluationQueue->m_workingGroupChanged)
+  {
     tmp->RemoveOutput();
+  }
   wxString text = m_console->m_evaluationQueue->GetCommand();
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
@@ -5071,6 +5083,11 @@ void wxMaxima::TryEvaluateNextInQueue()
       
       m_console->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
+      // Clear the monitor that shows the xml representation of the output of the
+      // current maxima command.
+      if(m_wireshark)
+        m_wireshark->Clear();
+      
       SendMaxima(text, true);
     }
     else

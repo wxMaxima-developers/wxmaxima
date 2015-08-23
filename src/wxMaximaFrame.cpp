@@ -47,6 +47,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   // The table of contents
   m_console->m_structure = new Structure(this, -1);
 
+  m_wireshark = new Wireshark(this, -1);
   SetupMenu();
 
   CreateStatusBar(2);
@@ -300,6 +301,15 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     Right());
 
+  m_manager.AddPane(m_wireshark,
+                    wxAuiPaneInfo().Name(wxT("wireshark")).
+                    Caption(_("Raw XML monitor")).
+                    Show(false).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    PaneBorder(true).
+                    Right());
+
   m_manager.AddPane(CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
                     Caption(_("Statistics")).
@@ -535,6 +545,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_wireshark,  _("Debug: Raw XML answer from maxima"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
@@ -991,6 +1002,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
   case menu_pane_structure:
     displayed = m_manager.GetPane(wxT("structure")).IsShown();
     break;
+  case menu_pane_wireshark:
+    displayed = m_manager.GetPane(wxT("wireshark")).IsShown();
+    break;
   case menu_pane_stats:
     displayed = m_manager.GetPane(wxT("stats")).IsShown();
     break;
@@ -1018,8 +1032,13 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
   {
     m_manager.GetPane(wxT("structure")).Show(show);
     m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+    break;
   }
-  break;
+  case menu_pane_wireshark:
+  {
+    m_manager.GetPane(wxT("wireshark")).Show(show);
+    break;
+  }
   case menu_pane_stats:
     m_manager.GetPane(wxT("stats")).Show(show);
     break;
@@ -1030,6 +1049,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     m_manager.GetPane(wxT("math")).Show(false);
     m_manager.GetPane(wxT("history")).Show(false);
     m_manager.GetPane(wxT("structure")).Show(false);
+    m_manager.GetPane(wxT("wireshark")).Show(false);
     m_manager.GetPane(wxT("stats")).Show(false);
     m_manager.GetPane(wxT("format")).Show(false);
     break;

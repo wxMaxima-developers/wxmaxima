@@ -61,6 +61,7 @@ wxmaxima_SOURCES = \
 	ToolBar.cpp        ToolBar.h        \
 	History.cpp        History.h        \
 	Structure.cpp      Structure.h      \
+	Wireshark.cpp      Wireshark.h      \
 	Autocomplete.cpp   Autocomplete.h   \
 	PlotFormatWiz.cpp  PlotFormatWiz.h  \
 	TextStyle.h
