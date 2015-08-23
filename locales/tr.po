@@ -3488,12 +3488,12 @@ msgstr "Sistem Bilgisi"
 
 #: ../src/wxMaximaFrame.cpp:289
 msgid "Table of Contents"
-msgstr ""
+msgstr "İçerik Tablosu"
 
 #: ../src/wxMaximaFrame.cpp:530
-#, fuzzy
+
 msgid "Table of contents\tAlt-Shift-T"
-msgstr "Denetleyeci\tAlt-Shift-I"
+msgstr "İçerik Tablosu \tAlt-Shift-T"
 
 #: ../src/wxMaxima.cpp:3663
 msgid "Taylor series:"
@@ -3516,15 +3516,16 @@ msgid "Text cell background"
 msgstr "Metin Hücresi Arka Planı"
 
 #: ../src/Config.cpp:609
-#, fuzzy
+
 msgid "Text equal to selection"
-msgstr "Seçimi kes"
+msgstr "Metin seçime eşit"
 
 #: ../src/Config.cpp:142
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
-msgstr ""
+msgstr "Çalışma yaprağına gömülü çizimlerde varsayılan yükseklik."
+"wxplot_size komutu ile geçersiz kılınabilir."
 
 #: ../src/Config.cpp:161
 msgid "The default port used for communication between Maxima and wxMaxima."
@@ -3534,22 +3535,25 @@ msgstr "Maxima ile wxMaxima'nın iletişiminde kullanılan bağlantı noktası"
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
-msgstr ""
+msgstr "Çalışma yaprağına gömülü çizimlerde varsayılan genişlik."
+"wxplot_size komutu ile geçersiz kılınabilir."
 
 #: ../src/Config.cpp:156
 msgid "The document class LaTeX is instructed to use for our documents."
-msgstr ""
+msgstr "LaTeX belge sınıfı bizim belgelerimizi kullanmak için yönlendirilir."
 
 #: ../src/wxMaximaFrame.cpp:855
 msgid "The offline manual of maxima"
-msgstr ""
+msgstr "Çevirim dışı maxima kılavuzu"
 
 #: ../src/Config.cpp:152
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it."
-msgstr ""
+msgstr "\"pngCairo\" terminali yüksek grafik kalitesi sağlar"
+"(örtüşme-önler ve ek çizgi stilleri). Ancak gnuplot u destekleyen bir"
+"sistemde çizim üretebilir."
 
 #: ../data/tips.txt:11
 msgid ""
@@ -3637,7 +3641,7 @@ msgid ""
 msgstr ""
 "Kutupsal Koordinatlarda 2B grafik çizimi için 2B Grafik kutusunda,"
 "Seçeneklerde'set polar'='kutupsala ayarla' yı seçiniz.Aynı şekilde 3B Grafik "
-"çizimlerini silindirik ve küreselkoordinatlarda da yapabilirsiniz"
+"çizimlerini silindirik ve küresel koordinatlarda da yapabilirsiniz"
 
 #: ../data/tips.txt:21
 msgid ""
@@ -3661,7 +3665,7 @@ msgid ""
 "should appear. Then press Shift-Enter to evaluate your command."
 msgstr ""
 "wxMaxima'yı, Girdilerinizi yazarak hemen kullanmaya başlayabilirsiniz  Bir "
-"Girdi hücresi oluşur ve  işleminiz bitinceShift+Enter a basarak Maxima'nın "
+"Girdi hücresi oluşur ve  işleminiz bitince Shift+Enter a basarak Maxima'nın "
 "Girdinizi değerlendirmesini sağlayabilirsiniz "
 
 #: ../src/IntegrateWiz.cpp:41 ../src/Plot2dWiz.cpp:40 ../src/Plot2dWiz.cpp:50
@@ -3712,19 +3716,19 @@ msgstr "Transpoze Matris"
 
 #: ../src/MathCtrl.cpp:5029
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-msgstr ""
+msgstr "Çalşma yaprağının bir parçası olmayan bir hücreye imleci yerleştirmeye çalışıyor."
 
 #: ../src/MathCtrl.cpp:4374
 msgid "Trying to undo an action without starting cell."
-msgstr ""
+msgstr "Hücre (değerlendirlmesi) başlatılmadan bir eylemi geri almaya çalışıyor."
 
 #: ../src/MathCtrl.cpp:4438
 msgid "Trying to undo something but the undo action is empty."
-msgstr ""
+msgstr "Birşeyi geri almaya çalışıyor ancak geri alacak bir şey yok."
 
 #: ../src/Config.cpp:469
 msgid "Turkish"
-msgstr ""
+msgstr "Türkçe"
 
 #: ../src/wxMaximaFrame.cpp:866
 msgid "Tutorials"
@@ -3744,17 +3748,18 @@ msgstr "Ukraynaca"
 
 #: ../src/wxMaxima.cpp:4967
 msgid "Un-closed parenthesis"
-msgstr ""
+msgstr "Kapanmamış parantezler"
 
 #: ../src/wxMaxima.cpp:4947
 msgid "Un-closed parenthesis on encountering ; or $"
-msgstr ""
+msgstr "Kapatılmamış parantez ; yada $"
 
 #: ../src/wxMaxima.cpp:5381
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
-msgstr ""
+msgstr "\"http://andrejv.github.io//wxmaxima/version.txt\" den edindiğim"
+"sürüm bilgisini yorumlayamıyor:"
 
 #: ../src/Config.cpp:629
 msgid "Underlined"
@@ -3770,7 +3775,7 @@ msgstr "Son Değişikliği Geri Al"
 
 #: ../src/Config.cpp:349
 msgid "Undo limit (0 for none)"
-msgstr ""
+msgstr "Geri alma limiti (0, geri alma işlemi yapma! demektir)"
 
 #: ../src/wxMaximaFrame.cpp:505
 msgid "Unfold All\tCtrl-Alt-]"
@@ -3785,13 +3790,13 @@ msgid "Unicode Support"
 msgstr "Unicode Desteği"
 
 #: ../src/wxMaxima.cpp:4958
-#, fuzzy
+
 msgid "Unterminated comment."
-msgstr "Yorumlamamış"
+msgstr "Sonlandırılmamış yorum"
 
 #: ../src/wxMaxima.cpp:4940
 msgid "Unterminated string."
-msgstr ""
+msgstr "Sonlandırılmamış dizin"
 
 #: ../src/wxMaxima.cpp:5366 ../src/wxMaxima.cpp:5373 ../src/wxMaxima.cpp:5381
 msgid "Upgrade"
@@ -3807,7 +3812,7 @@ msgstr "Gosper Algoritmasını Kullan"
 
 #: ../src/Config.cpp:430
 msgid "Use MathJAX in HTML export"
-msgstr ""
+msgstr "HTML çıkarımlarında MathJAX kullan"
 
 #: ../src/Config.cpp:150
 msgid ""
@@ -3817,11 +3822,15 @@ msgid ""
 "and displays them in a scaleable format that is really nice to look at. The "
 "disadvantage of MathJAX is that it will need JavaScript and a little bit of "
 "time in order to typeset an equation."
-msgstr ""
+msgstr "Maxima çıktılarının gösteriminde HTML deki \"resim\" gösterimi yerine"
+"MathJAX ı kullan. MathJAX ın avantajlı yanı, gösterilen matematiksel ifadeleri"
+"metin gibi kopyalar, TeX ya da MathML olarak kopyalama seçeneği sunar ve güzel"
+"bir görünüm kazandırmasıdır. Avantajlı olmayan yanı ise JavaScript gerektirmesi"
+"ve matematiksel ifadeyi yazma işleminin uzun olasıdır."
 
 #: ../src/Config.cpp:488
 msgid "Use cairo to improve plot quality."
-msgstr ""
+msgstr "Çizim kalitesini arttırmak için cairo kullan."
 
 #: ../src/Config.cpp:160 ../src/Config.cpp:374
 msgid "Use centered dot character for multiplication"
@@ -3891,11 +3900,14 @@ msgid ""
 "lines in HTML output will be broken where they are broken in the worksheet. "
 "If this option isn't set manual linebreaks can still be introduced by "
 "introducing an empty line."
-msgstr ""
+msgstr "LaTeX'teki metin hücreleri TeX tarafından satırlara ayrılırken,"
+"ekranda görüntülenen metin el ile satırlara ayrılır. Bu seçenek seçildiğinde,"
+"çalışma yaprağında olan satır kesmelerini  HTML çıkarımında  yapacaktır."
+"Bu seçenek seçilmediğinde satır kesmeleri boş bir satırla gösterilecektir. "
 
 #: ../src/wxMaxima.cpp:2263
 msgid "Whole document (*.wxmx)|*.wxmx|The input without images (*.wxm)|*.wxm"
-msgstr ""
+msgstr "Bütün belge (*.wxmx)|*.wxmx|Resimsiz girdi (*.wxm)|*.wxm"
 
 #: ../src/wxMaxima.cpp:3413 ../src/wxMaxima.cpp:3432
 msgid "Width:"
@@ -3903,7 +3915,7 @@ msgstr "Genişlik:"
 
 #: ../src/Config.cpp:105
 msgid "Worksheet"
-msgstr ""
+msgstr "Çalışma yaprağı"
 
 #: ../src/Config.cpp:153
 msgid "Write matching parenthesis in text controls."
@@ -3914,9 +3926,9 @@ msgid "Written by"
 msgstr "Yazan:"
 
 #: ../src/Config.cpp:364
-#, fuzzy
+
 msgid "Yes"
-msgstr "evet"
+msgstr "Evet"
 
 #: ../data/tips.txt:4
 msgid ""
@@ -3924,9 +3936,9 @@ msgid ""
 "output of previous commands using variables '%on' where n is the number of "
 "output."
 msgstr ""
-"Son ÇIKTI'ya '%' ı kullanarak ulaşabilirsiniz.Herhangibir ÇIKTI satırındaki "
-"bir ÇIKTI'ya '%on'formülüyle ulaşabilirsiniz'%on' ifadesinde 'o' "
-"output=ÇİKTI 'n' de ÇIKTI satırı numarasıdır ÖRN: %o6 =Altıncı ÇIKTI satırı."
+"Son Çıktı'ya '%' ı kullanarak ulaşabilirsiniz.Herhangi bir Çıktı satırındaki "
+"bir Çıktı'ya '%on'formülüyle ulaşabilirsiniz'%on' ifadesinde 'o' "
+"output=Çıktı 'n' de Çıktı satırı numarasıdır ÖRN: %o6 =Altıncı Çıktı satırı."
 
 #: ../data/tips.txt:17
 msgid ""
@@ -3935,7 +3947,7 @@ msgid ""
 "the order they appear in the document."
 msgstr ""
 "Belgenizdeki tüm komutları 'Hücre->Bütün Hücreleri Değerlendir' i tıklayarak "
-"yada kısayolu kullanarak değerlendirme şlemini yapabilirsiniz.Belgeenizdeki "
+"yada kısayolu kullanarak değerlendirme işlemini yapabilirsiniz.Belgenizdeki "
 "tüm -metin yada komut -hücreleri yazıldıkları sırayla değerlendirilir. "
 
 #: ../data/tips.txt:12
@@ -3944,7 +3956,7 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"Bir Maxima fonksiyonunu fare ile  yada üstüne çift tıklayarak seçipF1'e "
+"Bir Maxima fonksiyonunu fare ile  yada üstüne çift tıklayarak seçip F1'e "
 "bastığınızda wxMaxima, o komutla  ilgili yardım dosyasındaki  yere götürür."
 
 #: ../data/tips.txt:10
@@ -3952,7 +3964,7 @@ msgid ""
 "You can hide output part of cells by clicking in the triangle on the left "
 "side of cells. This works on text cells also."
 msgstr ""
-"Solundaki üçgeni tıklayarak hücrelerin ÇIKTI kısımlarını gizleyebilirsiniz "
+"Solundaki üçgeni tıklayarak hücrelerin Çıktı kısımlarını gizleyebilirsiniz "
 "Bu durum metin hücreleri için de geçerlidir."
 
 #: ../data/tips.txt:7
@@ -3996,7 +4008,7 @@ msgstr "Kaydetmezseniz yaptığınız değişiklikler kaybolabilir."
 
 #: ../src/wxMaxima.cpp:5373
 msgid "Your version of wxMaxima is up to date."
-msgstr "Kullandığınız wxMaxima güncellenebilir."
+msgstr "Kullandığınız wxMaxima güncel."
 
 #: ../src/wxMaximaFrame.cpp:436
 msgid "Zoom &In\tAlt-I"
@@ -4025,17 +4037,17 @@ msgstr "[Kaydedilmemiş*]"
 #: ../src/MathParser.cpp:414
 #, c-format
 msgid "[%i digits]"
-msgstr ""
+msgstr "[%i basamaklar]"
 
 #: ../src/MathCtrl.cpp:3379
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
-msgstr ""
+msgstr "_%d.gif\"  alt=\"Animasyon Diagram\" stil=\"maks-genişlik:90%%;\" >\n"
 
 #: ../src/MathCtrl.cpp:3476
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
-msgstr ""
+msgstr "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 
 #: ../src/MatWiz.cpp:177
 msgid "antisymmetric"
@@ -4078,7 +4090,7 @@ msgstr "matris[i,j]:"
 
 #: ../src/Config.cpp:543
 msgid "maxima's pwd is path to document"
-msgstr ""
+msgstr "Maxima'nın pwd si belgeye yönlendirilmiştir."
 
 #: ../src/wxMaxima.cpp:4198
 msgid "no"
@@ -4117,21 +4129,24 @@ msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
 #: ../src/wxMaximaFrame.cpp:848
-#, fuzzy
+
 msgid "wxMaxima &Help\tCtrl+?"
-msgstr "Maxima &Yardım\tCTRL+?"
+msgstr "wxMaxima &Yardım\tCTRL+?"
 
 #: ../src/wxMaximaFrame.cpp:851
-#, fuzzy
+
 msgid "wxMaxima &Help\tF1"
-msgstr "Maxima Yardım\tF1"
+msgstr "wxMaxima Yardım\tF1"
 
 #: ../data/tips.txt:29
 msgid ""
 "wxMaxima can be made to execute commands at every start-up by placing them "
 "in a a text file with the name wxmaxima.rc in the user directory. This "
 "directory can be found by typing maxima_userdir"
-msgstr ""
+msgstr "Kullanıcı her zaman kullanmak durmunda olduğu komutları wxmaxima.rc"
+"isimli bir metin dosyasına yazarak gerekli dizine  kaydederse bunları"
+"herzaman yazmak durumunda kalmaz. Bu directory dosyası (nın nerede)"
+"wxMaxima sayfasına \"maxima_userdir ;\" yazarak bulunabilir."
 
 #: ../src/Config.cpp:98 ../src/Config.cpp:129
 msgid "wxMaxima configuration"
@@ -4224,7 +4239,7 @@ msgstr ""
 
 #: ../src/Config.cpp:336
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../src/wxMaxima.cpp:4196
 msgid "yes"
@@ -4232,7 +4247,7 @@ msgstr "evet"
 
 #, fuzzy
 #~ msgid "Structure\tAlt-Shift-T"
-#~ msgstr "Denetleyeci\tAlt-Shift-I"
+#~ msgstr "Yapı\tAlt-Shift-T"
 
 #~ msgid "Zoom set to "
 #~ msgstr "Yakınlaştırmayı ayarla "
@@ -4242,7 +4257,7 @@ msgstr "evet"
 #~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
 #~ "Maxima batch file (*.mac)|*.mac"
 #~ msgstr ""
-#~ "wxMaxima Belgesi (*.wxm)|*.wxm|xml wxMaxima Belgesi,(*.wxmx)|*.wxmx| "
+#~ "wxMaxima xml Belgesi (*.wxmx)|*.wxmx| wxMaxima Belgesi (*.wxm)|*.wxm| "
 #~ "Maxima Kütüğü (*.mac)|*.mac"
 
 #~ msgid "lines hidden"
@@ -4273,13 +4288,13 @@ msgstr "evet"
 #~ msgstr "Yinele\tCtrl-Shift-Z"
 
 #~ msgid "Save changes before closing?"
-#~ msgstr "Belgeyi Kapatmadan Önce Kaydet"
+#~ msgstr "Belgeyi Kapatmadan Önce Kaydet?"
 
 #~ msgid "Save changes?"
 #~ msgstr "Değişiklikler Kaydedilsin mi?"
 
 #~ msgid "&Cell"
-#~ msgstr "Hücre"
+#~ msgstr "&Hücre"
 
 #~ msgid "&New Window\tCtrl-N"
 #~ msgstr "&Yeni Pencere\tCtrl-N"
@@ -4346,7 +4361,7 @@ msgstr "evet"
 #~ msgstr "Seçerken panoya kopyala"
 
 #~ msgid "Input"
-#~ msgstr "GİRDİ"
+#~ msgstr "Girdi"
 
 #~ msgid "Save document as ..."
 #~ msgstr "Belgeyi Farklı Kaydet"
@@ -4370,7 +4385,7 @@ msgstr "evet"
 #~ msgstr "Buton paneli:"
 
 #~ msgid "Copy selected cell(s)"
-#~ msgstr " Seçilen Hücre(leri) Kopyala "
+#~ msgstr "Seçilen Hücre(leri) Kopyala "
 
 #~ msgid "Cut Cell(s)\tCtrl-Shift-X"
 #~ msgstr "Hücre(leri) Kes\tCtrl-Shift-X"
@@ -4379,7 +4394,7 @@ msgstr "evet"
 #~ msgstr "Belgede yazı tipi boyutunu küçült"
 
 #~ msgid "Delete selected cell(s)"
-#~ msgstr " Seçilen Hücre(leri) Sil"
+#~ msgstr "Seçilen Hücre(leri) Sil"
 
 #~ msgid "Delete selection"
 #~ msgstr "Seçileni Sİl "
@@ -4416,7 +4431,7 @@ msgstr "evet"
 #~ msgstr "Çarpım"
 
 #~ msgid "Select file to open"
-#~ msgstr "Seç açılacak dosyayı"
+#~ msgstr "Açılacak dosyayı seç"
 
 #~ msgid "Sum..."
 #~ msgstr "Toplam.."
@@ -4638,7 +4653,7 @@ msgstr "evet"
 #~ msgstr "Belgeden seçileni Kes  "
 
 #~ msgid "Evaluate cell\tShift-Enter"
-#~ msgstr "Değerlendir hücreyi\tShift-Enter"
+#~ msgstr "Hücreyi Değerlendir\tShift-Enter"
 
 #~ msgid "Export to HTML file"
 #~ msgstr "HTML dosyasına Çıkart "
@@ -4656,7 +4671,7 @@ msgstr "evet"
 #~ msgstr "Bir dosyadan oturum Aç   "
 
 #~ msgid "Other prompts"
-#~ msgstr "Diğer bilgi istemleri"
+#~ msgstr "Diğer komutlar"
 
 #~ msgid "Save session"
 #~ msgstr "Oturumu Kaydet "
@@ -4692,7 +4707,7 @@ msgstr "evet"
 #~ msgstr "&Dosyayı İzle"
 
 #~ msgid "&Re-evaluate input\tCtrl-R"
-#~ msgstr "&Tekrar değerlendir-GİRDİyi\tCtrl-R"
+#~ msgstr "&Girdiyi tekrar Değerlendir\tCtrl-R"
 
 #~ msgid "&Read file"
 #~ msgstr "&Dosyayı Oku"
@@ -4714,7 +4729,7 @@ msgstr "evet"
 #~ msgstr "&Ekranı temizle"
 
 #~ msgid "Copy input"
-#~ msgstr "GİRDİyi KOPYALA- "
+#~ msgstr "Girdiyi kopyala- "
 
 #~ msgid "Copy input from console"
 #~ msgstr "Konsoldan GİRDİYİ Kopyala"
@@ -4726,7 +4741,7 @@ msgstr "evet"
 #~ msgstr "Kopyala- GİRDİ satırına "
 
 #~ msgid "Delete selected input/output group"
-#~ msgstr "Sil-GİRDİ\\ÇIKTI dan Seçim Grubunu "
+#~ msgstr "Seçilen girdi/çıktı grubunu sil "
 
 #~ msgid "Delete the contents of console."
 #~ msgstr "Konsol içeriğini sil."
@@ -4735,10 +4750,10 @@ msgstr "evet"
 #~ msgstr "Tanımla"
 
 #~ msgid "Edit input"
-#~ msgstr "GİRDİyi Düzenle- "
+#~ msgstr "Girdiyi Düzenle- "
 
 #~ msgid "Edit selected input"
-#~ msgstr "Seçilen GİRDİyi Düzenle"
+#~ msgstr "Seçilen Girdiyi Düzenle"
 
 #~ msgid "Edit text"
 #~ msgstr "Metin Düzenle-"
@@ -4747,13 +4762,13 @@ msgstr "evet"
 #~ msgstr "Komut gir"
 
 #~ msgid "Go to input\tCtrl-Shift-D"
-#~ msgstr "GİRDİye GİT\tCtrl-Shift-D"
+#~ msgstr "Girdiye Git\tCtrl-Shift-D"
 
 #~ msgid "Go to input\tF4"
-#~ msgstr "GİRDİye GİT-\tF4"
+#~ msgstr "Girdiye GİT-\tF4"
 
 #~ msgid "Go to output window\tF3"
-#~ msgstr "ÇIKTI penceresine GİT \tF3"
+#~ msgstr "Çıktı penceresine Git \tF3"
 
 #~ msgid "I&nsert"
 #~ msgstr "&Yerleştir"
@@ -4765,7 +4780,7 @@ msgstr "evet"
 #~ "If you want to input more than one line at a time, use the 'Multiline "
 #~ "input' button at the right of the input line."
 #~ msgstr ""
-#~ "Bir defada birden fazla GİRDİ satırı ekleyeceksenizGİRDİ satırının "
+#~ "Bir defada birden fazla GİRDİ satırı ekleyecekseniz GİRDİ satırının "
 #~ "sağındaki 'Çok Satırlı GİRDİ' butonunu kullanınız."
 
 #~ msgid "Insert new input before selected input"
@@ -4803,10 +4818,10 @@ msgstr "evet"
 #~ msgstr "Tekrar Değerlendir- Tümünü \tCtrl-Shift-R"
 
 #~ msgid "Re-evaluate all input"
-#~ msgstr "Tekrar Değerlendir-Tüm GİRDİleri "
+#~ msgstr "Tüm girdileri tekrar değerlendir"
 
 #~ msgid "Re-evaluate input"
-#~ msgstr "Tekrar Değerlendir-GİRDİyi "
+#~ msgstr "Girdiyi tekrar Değerlendir"
 
 #~ msgid "Read file from command line"
 #~ msgstr "Komut satırından dosya oku"
@@ -4821,28 +4836,28 @@ msgstr "evet"
 #~ msgstr "Bir dosya Seç (dosya adını GİRDİ satırına kopyala) "
 
 #~ msgid "Select last input\tCtrl-D"
-#~ msgstr "Son GİRDİyi seç\tCtrl-D"
+#~ msgstr "Son Girdiyi seç\tCtrl-D"
 
 #~ msgid "Select last input\tF2"
-#~ msgstr "Son ÇIKTIyı seç\tF2"
+#~ msgstr "Son Çıktıyı seç\tF2"
 
 #~ msgid "Select last input in the colsole!"
-#~ msgstr "Konsoldaki Son GİRDİyi Seç! "
+#~ msgstr "Konsoldaki Son Girdiyi Seç! "
 
 #~ msgid "Select last input in the console!"
 #~ msgstr "Konsoldaki Son GİRDİyi Seç! "
 
 #~ msgid "Selection to input\tCtrl-Shift-E"
-#~ msgstr "GİRDİ için Seçim\tCtrl-Shift-E"
+#~ msgstr "Girdi için Seçim\tCtrl-Shift-E"
 
 #~ msgid "Selection to input\tF5"
-#~ msgstr "GİRDİ için Seçim\tF5"
+#~ msgstr "Girdi için Seçim\tF5"
 
 #~ msgid "Set focus to the input line"
-#~ msgstr "GİRDİ satırına odaklan"
+#~ msgstr "Girdi satırına odaklan"
 
 #~ msgid "Set focus to the output window"
-#~ msgstr "ÇIKTI penceresine odaklan"
+#~ msgstr "Çıktı penceresine odaklan"
 
 #~ msgid "Show the description of a command"
 #~ msgstr "Bir Komutun tanımını göster"
@@ -4854,7 +4869,7 @@ msgstr "evet"
 #~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
 #~ "matrix' from menus."
 #~ msgstr ""
-#~ "A matrisini girmek için, GİRDİ satırına 'A:' yaz vemenüden 'Cebir-> "
+#~ "A matrisini girmek için, Girdi satırına 'A:' yaz vemenüden 'Cebir-> "
 #~ "Matris Gir' i seç."
 
 #~ msgid ""
@@ -4862,14 +4877,14 @@ msgstr "evet"
 #~ "input line, select the expression with mouse and then type '('."
 #~ msgstr ""
 #~ "Komut satırına önceden yazdığınız bir ifadeyi parantez içine almak "
-#~ "içinifadenizi fare ile seçip '(' yazınız."
+#~ "için ifadenizi fare ile seçip '(' yazınız."
 
 #~ msgid ""
 #~ "To repeat a long command you previously entered in the input line, type "
 #~ "in the first few letters to the input line and then pres tab key."
 #~ msgstr ""
 #~ "Komut satırına yazdığınız uzun bir komutunun başındaki bir kaç harfi  "
-#~ "GİRDİ satırna yazıp 'tab' tuşuna basınız."
+#~ "Girdi satırna yazıp 'tab' tuşuna basınız."
 
 #~ msgid ""
 #~ "You can delete output/input group if you select the input label and "
@@ -4997,7 +5012,7 @@ msgstr "evet"
 #~ msgstr ".. nın Toplamı:"
 
 #~ msgid "Unfold"
-#~ msgstr "dosyadan çıkart"
+#~ msgstr "Dosyadan çıkart"
 
 #~ msgid "Use &Taylor series"
 #~ msgstr "&Taylor Serisi kullan"
