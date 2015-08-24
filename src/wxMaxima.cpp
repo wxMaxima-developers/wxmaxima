@@ -604,9 +604,9 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 #else
       newChars = wxString(buffer, *wxConvCurrent);
 #endif
-      if(IsPaneDisplayed(menu_pane_wireshark))
+      if(IsPaneDisplayed(menu_pane_xmlInspector))
       {
-        m_wireshark->Add(newChars+wxT("\n"));
+        m_xmlInspector->Add(newChars+wxT("\n"));
       }
 
       m_currentOutput +=newChars;
@@ -5089,8 +5089,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
-      if(m_wireshark)
-        m_wireshark->Clear();
+      if(m_xmlInspector)
+        m_xmlInspector->Clear();
       
       SendMaxima(text, true);
     }

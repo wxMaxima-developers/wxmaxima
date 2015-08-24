@@ -18,21 +18,36 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#include "Wireshark.h"
+/*! \file
 
-#include <wx/sizer.h>
-#include <wx/regex.h>
+  This file contains the definition of the class XmlInspector that handles the 
+  table of contents pane.
+ */
+#include <wx/wx.h>
+#include <vector>
+#include "GroupCell.h"
 
-Wireshark::Wireshark(wxWindow* parent, int id) : wxTextCtrl(parent,id,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE)
+#ifndef XMLINSPECTOR_H
+#define XMLINSPECTOR_H
+
+enum {
+  XmlInspector_ctrl_id = 4,
+  XmlInspector_regex_id
+};
+
+/*! This class generates a pane containing the table of contents.
+
+ */
+class XmlInspector : public wxTextCtrl
 {
-}
+public:
+  XmlInspector(wxWindow* parent, int id);
+  /* The destructor
+   */
+  ~XmlInspector();
+  //! Add some text.
+  void Add(wxString text);
+private:
+};
 
-Wireshark::~Wireshark()
-{
-}
-
-void Wireshark::Add(wxString text)
-{
-  text.Replace(wxT(">"),wxT(">\n"));
-  AppendText(text);
-}
+#endif // XMLINSPECTOR_H
