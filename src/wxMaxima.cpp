@@ -1648,6 +1648,7 @@ void wxMaxima::SetupVariables()
 
   #if defined (__WXMSW__)
   wxcd = false;
+  wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Read(wxT("wxcd"),&wxcd);
   #else
   wxcd = true;
