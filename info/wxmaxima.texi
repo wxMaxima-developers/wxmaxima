@@ -690,11 +690,24 @@ that @file{.wxmx} files have to be optimized for version control
 it is possible to rename the @file{.wxmx} file to a @file{.txt} file
 and to use a text editor to recover the file's contents.
 @section wxMaxima waits forever for data from maxima
-This might be caused by the fact that a closing brace, bracket,
-parenthesis or hyphenation mark is missing: In this case maxima waits
-until it gets the rest of its input. If that isn't the case the
-operating system normally provides a way to see if maxima is actually
-really working forever trying to solve the current problem.
+In old versions of maxima this might be caused by the fact that a closing
+brace, bracket, parenthesis or hyphenation mark is missing: In this case
+maxima waits until it gets the rest of its input. The current version
+of wxMaxima should filter out the offending output before it is sent
+to Maxima, though.
+@section I want some debug info to be displayed on the screen before my command has finished
+Normally wxMaxima waits for the whole 2D formula to be transferred before
+it begins to typeset. This saves time for making many attempts to typeset a
+only partially completed equation. There is a @code{disp} command, though, that
+will provide debug output immediately and without waiting for the current
+maxima command to finish, though:
+@example
+for i:1 thru 10 do (
+   disp(i),
+   t:makelist(i,i,1000000),
+   length(t)
+)$
+@end example
 @section wxMaxima on Windows crashes on displaying seemingly simple equations
 The jsMath fonts allow for excellent 2D-display of equations. But there
 are of broken versions of this package that crash wxMaxima.
