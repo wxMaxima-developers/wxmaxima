@@ -4930,7 +4930,9 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
   if(text.Right(1) == wxT("\\"))
     return(_("Cell ends in a backslash"));
-  
+
+  bool lisp = false;
+
   while(index<len)
   {
     wxChar c=text[index];
@@ -4969,9 +4971,14 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       if(text[index]!=wxT('\"')) return(_("Unterminated string."));
       break;
 
+    case wxT(':'):
+      if(text.find(wxT("lisp"),index + 1) == index + 1)
+        lisp = true;
+      break;
+      
     case wxT(';'):
     case wxT('$'):
-      if(!delimiters.empty())
+      if((!lisp) && (!delimiters.empty()))
       {
         return _("Un-closed parenthesis on encountering ; or $");
       }
