@@ -3439,7 +3439,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
             {
               int bitmapScale = 3;
               wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-              std::cerr<<"Image\n";
               size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                 chunk,
                                 NULL, true, bitmapScale);
