@@ -152,7 +152,7 @@ void EvaluationQueue::AddTokens(wxString commandString)
     // :lisp -commands should be added as a whole
     if(ch == wxT(':'))
     {
-      if(commandString.find(wxT("lisp"),ch + 1) == ch + 1)
+      if(commandString.find(wxT("lisp"),index + 1) == index + 1)
       {
         token += commandString.Right(
           commandString.Length()-index
