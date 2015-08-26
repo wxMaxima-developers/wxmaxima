@@ -32,6 +32,7 @@ doc_DATA = README README.md COPYING art/config/options.png art/config/maxima.png
 	art/config/styles.png art/config/editing.png art/config/Document-export.png
 
 LANGS = en fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
+wxLANGS =  fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
@@ -52,6 +53,9 @@ wxMaxima.app: all
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES ; \
 		cp $(srcdir)/locales/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+	done
+	for i in $(wxLANGS) ; do \
+		mkdir -p wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES ; \
 		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
@@ -90,6 +94,9 @@ endif
 	for i in $(LANGS) ; do \
 		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
 		cp $(srcdir)/locales/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima.mo ; \
+	done
+	for i in $(wxLANGS) ; do \
+		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
 		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	cp $(srcdir)/src/wxmaxima.exe wxMaxima/
