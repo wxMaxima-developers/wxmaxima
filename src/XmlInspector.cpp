@@ -33,6 +33,6 @@ XmlInspector::~XmlInspector()
 
 void XmlInspector::Add(wxString text)
 {
-  text.Replace(wxT(">"),wxT(">\n"));
+  text.Replace(wxT("><"),wxT(">\n"));
   AppendText(text);
 }

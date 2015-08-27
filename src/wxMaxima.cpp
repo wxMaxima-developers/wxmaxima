@@ -1851,12 +1851,23 @@ wxString wxMaxima::GetHelpFile()
   chm = chm + wxT("\\doc\\chm\\");
 
   wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
+  
+  wxString tmp = chm + locale + wxT("\\maxima.chm");
+  if (wxFileExists(tmp))
+    return tmp;
+  
+  tmp = chm + wxT("maxima.chm");
+  if (wxFileExists(tmp))
+    return tmp;
 
-  if (wxFileExists(chm + locale + wxT("\\maxima.chm")))
-    return chm + locale + wxT("\\maxima.chm");
+  tmp = chm + locale + wxT("\\maxima.html");
+  if (wxFileExists(tmp))
+    return tmp;
+  
+  tmp = chm + wxT("maxima.html");
+  if (wxFileExists(tmp))
+    return tmp;
 
-  if (wxFileExists(chm + wxT("maxima.chm")))
-    return chm + wxT("maxima.chm");
 
   return wxEmptyString;
 #else
@@ -1990,7 +2001,10 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     return ;
   }
 #if defined (__WXMSW__)
-  ShowCHMHelp(MaximaHelpFile,keyword);
+  if(wxFileName(MaximaHelpFile).Last(4)==wxT(".chm"))
+    ShowCHMHelp(MaximaHelpFile,keyword);
+  else
+    wxLaunchDefaultBrowser(MaximaHelpFile+wxT("#")+keyword);
 #else
   Dirstructure dirstructure;
   wxString htmldir = dirstructure.HelpDir();
