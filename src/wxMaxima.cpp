@@ -2012,7 +2012,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else
-    wxLaunchDefaultBrowser(wxT("file://")+MaximaHelpFile+wxT("#")+keyword);
+    wxLaunchDefaultBrowser(wxT("file:///")+MaximaHelpFile+wxT("#")+keyword);
 #else
   Dirstructure dirstructure;
   wxString htmldir = dirstructure.HelpDir();
