@@ -1860,6 +1860,14 @@ wxString wxMaxima::GetHelpFile()
   if (wxFileExists(tmp))
     return tmp;
 
+  tmp = chm + locale + wxT("\\maxima_singlepage.html");
+  if (wxFileExists(tmp))
+    return tmp;
+  
+  tmp = chm + wxT("maxima_singlepage.html");
+  if (wxFileExists(tmp))
+    return tmp;
+
   tmp = chm + locale + wxT("\\maxima.html");
   if (wxFileExists(tmp))
     return tmp;
