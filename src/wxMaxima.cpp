@@ -2009,10 +2009,10 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     return ;
   }
 #if defined (__WXMSW__)
-  if(wxFileName(MaximaHelpFile).Last(4)==wxT(".chm"))
+  if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else
-    wxLaunchDefaultBrowser(MaximaHelpFile+wxT("#")+keyword);
+    wxLaunchDefaultBrowser(wxT("file://")+MaximaHelpFile+wxT("#")+keyword);
 #else
   Dirstructure dirstructure;
   wxString htmldir = dirstructure.HelpDir();
