@@ -42,12 +42,15 @@ class XmlInspector : public wxTextCtrl
 {
 public:
   XmlInspector(wxWindow* parent, int id);
-  /* The destructor
+  /*! The destructor
    */
-  ~XmlInspector();
+    ~XmlInspector();
+  //! Remove all text from the editor.
+  virtual void Clear();
   //! Add some text.
   void Add(wxString text);
 private:
+  bool m_closedTag;
 };
 
 #endif // XMLINSPECTOR_H

@@ -25,14 +25,25 @@
 
 XmlInspector::XmlInspector(wxWindow* parent, int id) : wxTextCtrl(parent,id,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE)
 {
+  m_closedTag = false;
 }
 
 XmlInspector::~XmlInspector()
 {
 }
 
+void XmlInspector::Clear()
+{
+  wxTextCtrl::Clear();
+}
+
 void XmlInspector::Add(wxString text)
 {
-  text.Replace(wxT("><"),wxT(">\n"));
+  text.Replace(wxT("><"),wxT(">\n<"));
+  text.Replace(wxT("$FUNCTION:"),wxT("\n$FUNCTION:"));
+  if(m_closedTag &&(text[0] == wxT('<')))
+    text = "\n" + text;
   AppendText(text);
+  if(text.Last()==wxT('>'))
+    m_closedTag = true; 
 }

@@ -606,7 +606,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 #endif
       if(IsPaneDisplayed(menu_pane_xmlInspector))
       {
-        m_xmlInspector->Add(newChars+wxT("\n"));
+        m_xmlInspector->Add(newChars);
       }
 
       m_currentOutput +=newChars;
