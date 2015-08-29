@@ -50,7 +50,9 @@ public:
   //! Add some text.
   void Add(wxString text);
 private:
-  bool m_closedTag;
+  wxChar m_lastChar;
+  int m_indentLevel;
+  wxString IndentString(int level);
 };
 
 #endif // XMLINSPECTOR_H

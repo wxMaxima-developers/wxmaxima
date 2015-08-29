@@ -25,7 +25,7 @@
 
 XmlInspector::XmlInspector(wxWindow* parent, int id) : wxTextCtrl(parent,id,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE)
 {
-  m_closedTag = false;
+  Clear();
 }
 
 XmlInspector::~XmlInspector()
@@ -35,15 +35,46 @@ XmlInspector::~XmlInspector()
 void XmlInspector::Clear()
 {
   wxTextCtrl::Clear();
+  m_lastChar = wxChar(0);
+  m_indentLevel = 0;
+}
+
+wxString XmlInspector::IndentString(int level)
+{
+  wxString result;
+  for (int i=0;i<=level;i++)
+    result += wxT(" ");
+  return result;
 }
 
 void XmlInspector::Add(wxString text)
 {
-  text.Replace(wxT("><"),wxT(">\n<"));
-  text.Replace(wxT("$FUNCTION:"),wxT("\n$FUNCTION:"));
-  if(m_closedTag &&(text[0] == wxT('<')))
-    text = "\n" + text;
+  int index=0;
+  text.Replace(wxT("$FUNCTION:"),wxT("\n$FUNCTION:"));      
+  while(index < text.Length())
+  {
+    wxChar ch = text[index];
+
+    if(m_lastChar == wxT('<'))
+    {
+      if (ch == wxT('/'))
+      {
+        std::cerr<<"-\n";
+        m_indentLevel -= 2;
+      }
+      else
+        m_indentLevel ++;
+      std::cerr<<m_indentLevel<<"\n";
+    }
+
+    if((m_lastChar == wxT('>')) && (ch == wxT('<')))
+    {
+      text = text.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + text.Right(text.Length()-index);
+      index += 1 + m_indentLevel; 
+    }
+      
+    index++;
+    m_lastChar = ch;
+  }
   AppendText(text);
-  if(text.Last()==wxT('>'))
-    m_closedTag = true; 
 }

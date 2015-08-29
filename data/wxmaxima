@@ -10,6 +10,7 @@ _wxmaxima()
             return
             ;;
         --batch|-b)
+            _filedir
             return
             ;;
         --open|-o)
