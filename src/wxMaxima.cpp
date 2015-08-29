@@ -1985,6 +1985,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     return ;
   }
 
+#if defined (__WXMSW__)
   if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else {
@@ -1993,6 +1994,12 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
     ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
   }
+#else
+  Dirstructure dirstructure;
+  wxString htmldir = dirstructure.HelpDir();
+  wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
+  ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);  
+#endif
 }
 
 ///--------------------------------------------------------------------------------
