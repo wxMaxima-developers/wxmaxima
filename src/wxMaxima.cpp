@@ -1835,6 +1835,7 @@ wxString wxMaxima::GetHelpFile()
 #if defined __WXMSW__
   wxString command;
   wxString chm;
+  wxString html;
 
   command = GetCommand(false);
 
@@ -1848,6 +1849,7 @@ wxString wxMaxima::GetHelpFile()
   if (chm.empty())
     return wxEmptyString;
 
+  html = chm + wxT("\\doc\\html\\");
   chm = chm + wxT("\\doc\\chm\\");
 
   wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
@@ -1860,22 +1862,13 @@ wxString wxMaxima::GetHelpFile()
   if (wxFileExists(tmp))
     return tmp;
 
-  tmp = chm + locale + wxT("\\maxima_singlepage.html");
+  tmp = html + locale + wxT("\\header.hhp");
   if (wxFileExists(tmp))
     return tmp;
   
-  tmp = chm + wxT("maxima_singlepage.html");
+  tmp = html + wxT("header.hhp");
   if (wxFileExists(tmp))
     return tmp;
-
-  tmp = chm + locale + wxT("\\maxima.html");
-  if (wxFileExists(tmp))
-    return tmp;
-  
-  tmp = chm + wxT("maxima.html");
-  if (wxFileExists(tmp))
-    return tmp;
-
 
   return wxEmptyString;
 #else
@@ -2008,17 +2001,23 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                  _("Error"), wxICON_ERROR | wxOK);
     return ;
   }
+  
 #if defined (__WXMSW__)
   if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
-  else
-    wxLaunchDefaultBrowser(wxT("file:///")+MaximaHelpFile+wxT("#")+keyword);
+  else {
+    Dirstructure dirstructure;
+    wxString htmldir = dirstructure.HelpDir();
+    wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
+    ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
+  }
 #else
   Dirstructure dirstructure;
   wxString htmldir = dirstructure.HelpDir();
   wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
-  ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
+  ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);  
 #endif
+
 }
 
 ///--------------------------------------------------------------------------------
