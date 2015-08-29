@@ -59,12 +59,10 @@ void XmlInspector::Add(wxString text)
     {
       if (ch == wxT('/'))
       {
-        std::cerr<<"-\n";
         m_indentLevel -= 2;
       }
       else
         m_indentLevel ++;
-      std::cerr<<m_indentLevel<<"\n";
     }
 
     if((m_lastChar == wxT('>')) && (ch == wxT('<')))
