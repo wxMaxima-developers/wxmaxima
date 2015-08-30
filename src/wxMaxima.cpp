@@ -381,7 +381,6 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
 
   else if (type == MC_TYPE_ERROR)
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
-
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
 }
@@ -627,12 +626,14 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       
       ReadLoadSymbols(m_currentOutput);
 
+      ReadMiscText(m_currentOutput);
+
       ReadMath(m_currentOutput);
 
       ReadPrompt(m_currentOutput);
-      
+
       ReadLispError(m_currentOutput);
-      
+
     }
     break;
 
@@ -925,66 +926,79 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   }
 }
 
+void wxMaxima::ReadMiscText(wxString &data)
+{
+  if(data.IsEmpty())
+    return;
+
+  int newLinePos;
+  while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
+    {
+     int tagPos=data.Find("<");
+
+     // if the text begins with a tag marker we don't have any text to output.
+     if(tagPos == 0)
+     {
+       return;
+     }
+     
+     wxString textline;
+
+     if(newLinePos == 0)
+     {
+       textline = wxT("\n");
+       data = data.Right(data.Length() - 1);
+     }
+     else
+     {
+       // If the line we got ends in a tag, not in a newline we hande this here:
+       if((tagPos!=wxNOT_FOUND)&&(tagPos<newLinePos))
+       {
+         textline = data.Left(tagPos);
+         data = data.Right(data.Length() - tagPos);
+         std::cerr<<"Data1:"<<data<<"\n";
+       }
+       else
+       {
+         textline = data.Left(newLinePos - 1);
+         data = data.Right(data.Length() - newLinePos - 1);
+       }
+     }
+     wxString trimmedLine = textline;
+
+     trimmedLine.Trim(true);
+     trimmedLine.Trim(false);
+     
+     if((trimmedLine.Left(12)==wxT("-- an error.")) ||
+       (trimmedLine.Left(17)==wxT("incorrect syntax:")) ||
+       (trimmedLine.Left(32)==wxT("Maxima encountered a Lisp error:")) ||
+       (trimmedLine.Left(28)==wxT("killcontext: no such context"))
+       )
+       ConsoleAppend(textline,MC_TYPE_DEFAULT);
+     else
+       ConsoleAppend(textline,MC_TYPE_ERROR);
+    }   
+}
+
+
 /***
  * Checks if maxima displayed a new chunk of math
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-
-  // Skip all data before the last prompt in the data string.
-  int end;
-  while ((end = data.Find(m_promptPrefix)) != wxNOT_FOUND)
-  {
-    m_readingPrompt = true;
-    wxString o = data.Left(end);
-
-    wxString normalOutput = wxEmptyString;
-    wxStringTokenizer lines(o,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
-    while(lines.HasMoreTokens())
-    {
-      wxString line = lines.GetNextToken();
-      wxString trimmedLine = line;
-      trimmedLine.Trim(false);
-      
-      if(
-        (trimmedLine.Left(12)==wxT("-- an error.")) ||
-        (trimmedLine.Left(17)==wxT("incorrect syntax:")) ||
-        (trimmedLine.Left(32)==wxT("Maxima encountered a Lisp error:")) ||
-        (trimmedLine.Left(28)==wxT("killcontext: no such context"))
-        )
-      {
-        ConsoleAppend(normalOutput,MC_TYPE_DEFAULT);
-        ConsoleAppend(line, MC_TYPE_ERROR);
-        normalOutput = wxEmptyString;
-        bool abortOnError = true;
-        wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-        if(abortOnError || m_batchmode)
-          m_console->m_evaluationQueue->Clear();
-        SetBatchMode(false);
-        // Inform the user that the evaluation queue is empty.
-        EvaluationQueueLength(0);
-      }
-      else
-        normalOutput+=line+=wxT("\n");
-    }
-    
-    if(normalOutput!=wxEmptyString)
-      ConsoleAppend(normalOutput, MC_TYPE_DEFAULT);
-
-    data = data.SubString(end + m_promptPrefix.Length(),
-                                                data.Length());
-  }
-  
   // If we did find a prompt in the last step we leave this function again.
   if (m_readingPrompt)
     return ;
 
-  // Append everything untill the "end of math" marker to the console.
+  // Append everything until the "end of math" marker to the console.
   wxString mth = wxT("</mth>");
-  end = data.Find(mth);
+  int end = data.Find(mth);
   while (end > -1)
   {
     wxString o = data.Left(end);
+    int start = data.Find("<mth>");
+    if(start != wxNOT_FOUND)
+      o = o.SubString(start,o.Length());
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
     data = data.SubString(end + mth.Length(),
                           data.Length());
@@ -1024,14 +1038,24 @@ void wxMaxima::ReadPrompt(wxString &data)
 {
   // If we got a prompt our connection to maxima was successful. 
   m_unsuccessfullConnectionAttempts = 0;
+
+  // Assume we don't have a question prompt
   m_console->m_questionPrompt = false;
   m_ready=true;
   int end = data.Find(m_promptSuffix);
-  if (end > -1)
+  int begin=data.Find(m_promptPrefix);
+  if(begin == wxNOT_FOUND)
+    begin = 0;
+  // Did we find a prompt suffix?
+  if (end != wxNOT_FOUND)
   {
     m_readingPrompt = false;
-    wxString o = data.Left(end);
-    if (o != wxT("\n") && o.Length())
+    wxString o;
+    o=data.SubString(begin + m_promptPrefix.Length() - 1,end - 1);
+    if(begin!=wxNOT_FOUND)
+      o=o.Right(o.Length()-begin);
+        
+    if ((o != wxT("\n")) && !(o.IsEmpty()))
     {
       // Maxima displayed a new main prompt => We don't have a question
       if (o.StartsWith(wxT("(%i")))
@@ -1618,6 +1642,7 @@ void wxMaxima::ReadLispError(wxString &data)
     wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);
     ConsoleAppend(lispError, MC_TYPE_ERROR);
+
     data = wxEmptyString;
 
     bool abortOnError = false;
@@ -2431,6 +2456,7 @@ void wxMaxima::ReadStdErr()
     {
       o += m_error->GetC();
     }
+
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
     
     // If maxima did output something it defintively has stopped.

@@ -256,6 +256,10 @@ protected:
                   After leaving this function data is empty again.
    */
   void ReadFirstPrompt(wxString &data);
+  /* Reads strings that aren't enclosed in xml tags
+   */
+  void ReadMiscText(wxString &data);
+
   /* Reads the input and the output prompt from Maxima.
    */
   void ReadPrompt(wxString &data);
