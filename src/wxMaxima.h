@@ -256,6 +256,12 @@ protected:
                   After leaving this function data is empty again.
    */
   void ReadFirstPrompt(wxString &data);
+  /* Reads text that isn't enclosed between xml tags.
+
+     Some commands provide status messages before the math output or the command has finished.
+     This function makes wxMaxima output them directly as they arrive.
+   */
+  void ReadMiscText(wxString &data);
   /* Reads the input and the output prompt from Maxima.
    */
   void ReadPrompt(wxString &data);
