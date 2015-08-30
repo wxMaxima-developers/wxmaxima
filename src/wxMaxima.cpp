@@ -956,7 +956,6 @@ void wxMaxima::ReadMiscText(wxString &data)
        {
          textline = data.Left(tagPos);
          data = data.Right(data.Length() - tagPos);
-         std::cerr<<"Data1:"<<data<<"\n";
        }
        else
        {
@@ -1058,110 +1057,107 @@ void wxMaxima::ReadPrompt(wxString &data)
     else
       o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
         
-    if ((o != wxT("\n")) && !(o.IsEmpty()))
+    if (o.StartsWith(wxT("(%i")))
     {
-      int test;
-      test = o.Find(wxT("(%i"));
-      
-      if (o.StartsWith(wxT("(%i")))
-      {
-        // Maxima displayed a new main prompt => We don't have a question
-        m_console->QuestionAnswered();
+      // Maxima displayed a new main prompt => We don't have a question
+      m_console->QuestionAnswered();
 
-        //m_lastPrompt = o.Mid(1,o.Length()-1);
-        //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
-        m_lastPrompt = o;
-        // remove the event maxima has just processed from the evaluation queue
-        m_console->m_evaluationQueue->RemoveFirst();
-        // if we remove a command from the evaluation queue the next output line will be the
-        // first from the next command.
-        m_outputCellsFromCurrentCommand = 0;
-        if (m_console->m_evaluationQueue->Empty()) { // queue empty?
-          StatusMaximaBusy(waiting);
-          if(m_console->FollowEvaluation())
-          {
-            if(m_console->GetWorkingGroup())
-            {
-              m_console->SetHCaret(m_console->GetWorkingGroup());
-            }
-            m_console->ShowHCaret();
-          }
-          m_console->SetWorkingGroup(NULL);
-
-          // If we have selected a cell in order to show we are evaluating it
-          // we should now remove this marker.
-          if(m_console->FollowEvaluation())
-          {
-            if(m_console->GetActiveCell())
-              m_console->GetActiveCell() -> SelectNone();            
-            m_console->SetSelection(NULL,NULL); 
-            m_console->SetActiveCell(NULL);
-          }
-	  m_console->FollowEvaluation(false);
-          if(m_batchmode)
-          {
-            SaveFile(false);
-            wxCloseEvent *closeEvent;
-            closeEvent = new wxCloseEvent();
-            GetEventHandler()->QueueEvent(closeEvent);
-          }
-          // Inform the user that the evaluation queue is empty.
-          EvaluationQueueLength(0);
-          m_console->Refresh();
-        }
-        else { // we don't have an empty queue
-          m_ready = false;
-          m_console->Refresh();
-          m_console->EnableEdit();
-          StatusMaximaBusy(calculating);
-          TryEvaluateNextInQueue();
-        }
-
-        m_console->EnableEdit();
-
-        if (m_console->m_evaluationQueue->Empty())
+      //m_lastPrompt = o.Mid(1,o.Length()-1);
+      //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
+      m_lastPrompt = o;
+      // remove the event maxima has just processed from the evaluation queue
+      m_console->m_evaluationQueue->RemoveFirst();
+      // if we remove a command from the evaluation queue the next output line will be the
+      // first from the next command.
+      m_outputCellsFromCurrentCommand = 0;
+      if (m_console->m_evaluationQueue->Empty()) { // queue empty?
+        StatusMaximaBusy(waiting);
+        if(m_console->FollowEvaluation())
         {
-          bool open = false;
-          wxConfig::Get()->Read(wxT("openHCaret"), &open);
-          if (open)
-            m_console->OpenNextOrCreateCell();
+          if(m_console->GetWorkingGroup())
+          {
+            m_console->SetHCaret(m_console->GetWorkingGroup());
+          }
+          m_console->ShowHCaret();
         }
+        m_console->SetWorkingGroup(NULL);
+
+        // If we have selected a cell in order to show we are evaluating it
+        // we should now remove this marker.
+        if(m_console->FollowEvaluation())
+        {
+          if(m_console->GetActiveCell())
+            m_console->GetActiveCell() -> SelectNone();            
+          m_console->SetSelection(NULL,NULL); 
+          m_console->SetActiveCell(NULL);
+        }
+        m_console->FollowEvaluation(false);
+        if(m_batchmode)
+        {
+          SaveFile(false);
+          wxCloseEvent *closeEvent;
+          closeEvent = new wxCloseEvent();
+          GetEventHandler()->QueueEvent(closeEvent);
+        }
+        // Inform the user that the evaluation queue is empty.
+        EvaluationQueueLength(0);
+        m_console->Refresh();
+      }
+      else { // we don't have an empty queue
+        m_ready = false;
+        m_console->Refresh();
+        m_console->EnableEdit();
+        StatusMaximaBusy(calculating);
+        TryEvaluateNextInQueue();
       }
 
-      // We have a question
-      else {
-        m_console->QuestionAnswered();
-        m_console->QuestionPending(true);
+      m_console->EnableEdit();
+
+      if (m_console->m_evaluationQueue->Empty())
+      {
+        bool open = false;
+        wxConfig::Get()->Read(wxT("openHCaret"), &open);
+        if (open)
+          m_console->OpenNextOrCreateCell();
+      }
+    }
+
+    // We have a question
+    else {
+      m_console->QuestionAnswered();
+      m_console->QuestionPending(true);
+      if(!o.IsEmpty())
+      {
         if (o.Find(wxT("<mth>")) > -1)
           DoConsoleAppend(o, MC_TYPE_PROMPT);
         else
           DoRawConsoleAppend(o, MC_TYPE_PROMPT);
-	if(m_console->ScrolledAwayFromEvaluation())
-        {
-          if(m_console->m_mainToolBar)
-            m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
-        }
-        StatusMaximaBusy(userinput);
       }
-
-      if (o.StartsWith(wxT("\nMAXIMA>")))
-        m_inLispMode = true;
-      else
-        m_inLispMode = false;
-    }
-
-    if (m_ready)
-    {
-      if(!m_console->QuestionPending())
+      if(m_console->ScrolledAwayFromEvaluation())
       {
-        if(m_console->m_evaluationQueue->Empty())
-          m_maximaStdoutPollTimer.Stop();
+        if(m_console->m_mainToolBar)
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
       }
+      StatusMaximaBusy(userinput);
     }
-    
-    data = data.SubString(end + m_promptSuffix.Length(),
-                          data.Length());
+
+    if (o.StartsWith(wxT("\nMAXIMA>")))
+      m_inLispMode = true;
+    else
+      m_inLispMode = false;
   }
+
+  if (m_ready)
+  {
+    if(!m_console->QuestionPending())
+    {
+      if(m_console->m_evaluationQueue->Empty())
+        m_maximaStdoutPollTimer.Stop();
+    }
+  }
+    
+  data = data.SubString(end + m_promptSuffix.Length(),
+                        data.Length());
 }
 
 void wxMaxima::SetCWD(wxString file)
