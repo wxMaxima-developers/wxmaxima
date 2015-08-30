@@ -623,16 +623,22 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
           m_console->AddDocumentToEvaluationQueue();
         TryEvaluateNextInQueue();
       }
-      
+
+      std::cerr<<"1: "<<m_currentOutput<<"\n";
       ReadLoadSymbols(m_currentOutput);
 
+      std::cerr<<"2: "<<m_currentOutput<<"\n";
       ReadMiscText(m_currentOutput);
 
+      std::cerr<<"3: "<<m_currentOutput<<"\n";
       ReadMath(m_currentOutput);
 
+      std::cerr<<"4: "<<m_currentOutput<<"\n";
       ReadPrompt(m_currentOutput);
 
+      std::cerr<<"5: "<<m_currentOutput<<"\n";
       ReadLispError(m_currentOutput);
+      std::cerr<<"6: "<<m_currentOutput<<"\n";
 
     }
     break;
@@ -999,8 +1005,11 @@ void wxMaxima::ReadMath(wxString &data)
     int start = data.Find("<mth>");
     if(start != wxNOT_FOUND)
       o = o.SubString(start,o.Length());
+    else
+      start = 0;
+    
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
-    data = data.SubString(end + mth.Length(),
+    data = data.Left(start) + data.SubString(end + mth.Length(),
                           data.Length());
     end = data.Find(mth);
   }
@@ -1044,22 +1053,28 @@ void wxMaxima::ReadPrompt(wxString &data)
   m_ready=true;
   int end = data.Find(m_promptSuffix);
   int begin=data.Find(m_promptPrefix);
-  if(begin == wxNOT_FOUND)
-    begin = 0;
+  std::cerr<<"Begin="<<begin<<"\n";
   // Did we find a prompt suffix?
   if (end != wxNOT_FOUND)
   {
     m_readingPrompt = false;
     wxString o;
-    o=data.SubString(begin + m_promptPrefix.Length() - 1,end - 1);
-    if(begin!=wxNOT_FOUND)
-      o=o.Right(o.Length()-begin);
+
+    if(begin == wxNOT_FOUND)
+      o=data.SubString(0, end - 1);
+    else
+      o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
         
     if ((o != wxT("\n")) && !(o.IsEmpty()))
     {
-      // Maxima displayed a new main prompt => We don't have a question
+      std::cerr << "o=" <<o<<"\n";
+      int test;
+      test = o.Find(wxT("(%i"));
+      std::cerr << "test=" <<test<<"\n";
+      
       if (o.StartsWith(wxT("(%i")))
       {
+        // Maxima displayed a new main prompt => We don't have a question
         m_console->QuestionAnswered();
 
         //m_lastPrompt = o.Mid(1,o.Length()-1);
