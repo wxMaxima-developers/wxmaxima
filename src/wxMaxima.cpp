@@ -1021,15 +1021,14 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
 
     // If we found an end marker we data contains a whole symbols part we can extract.
 
-    wxASSERT_MSG(end != wxNOT_FOUND,_("Bug: Found the end of autocompletion symbols but no beginning"));
+    wxASSERT_MSG(start != wxNOT_FOUND,_("Bug: Found the end of autocompletion symbols but no beginning"));
     if (end != wxNOT_FOUND)
     {
       // Put the symbols into a separate string
       wxString symbols = data.SubString(start + 15, end - 1);
 
       // Remove the symbols from the data string
-      data = data.SubString(0, start-1) +
-        data.SubString(end + 16, data.Length());
+      data = data.Left(start) + data.SubString(end + 16, data.Length());
 
       // Send each symbol to the console
       wxStringTokenizer templates(symbols, wxT("$"));
@@ -1063,7 +1062,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   wxString o;
 
   if(begin == wxNOT_FOUND)
-    o=data.SubString(0, end - 1);
+    o=data.Left(end);
   else
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
         
