@@ -633,6 +633,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       ReadMath(m_currentOutput);
 
+      ReadMiscText(m_currentOutput);
+
       ReadPrompt(m_currentOutput);
 
       ReadLispError(m_currentOutput);
@@ -934,18 +936,19 @@ void wxMaxima::ReadMiscText(wxString &data)
   if(data.IsEmpty())
     return;
 
-  // Add all text lines to the console until we reach an XML tag.
-  // Since "<" gets converted to &lt; by maxima we can be sure
-  // that an "<" is the first char of a tag marker.
+  // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
   while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
     {
-     int tagPos=data.Find("<");
-
-     // if the text begins with a tag marker we don't have any text to output.
-     if(tagPos == 0)
+     if(data.StartsWith(wxT("<mth")))
        return;
 
+     if(data.StartsWith(m_promptPrefix))
+       return;
+
+     if(data.StartsWith(wxT("<wxxml-symbols")))
+       return;
+     
      // extract a string from the Data lines
      wxString textline;
      if(newLinePos == 0)
@@ -955,17 +958,8 @@ void wxMaxima::ReadMiscText(wxString &data)
      }
      else
      {
-       // If the line we got ends in a tag, not in a newline we hande this here:
-       if((tagPos!=wxNOT_FOUND)&&(tagPos<newLinePos))
-       {
-         textline = data.Left(tagPos);
-         data = data.Right(data.Length() - tagPos);
-       }
-       else
-       {
-         textline = data.Left(newLinePos);
-         data = data.Right(data.Length() - newLinePos - 1);
-       }
+       textline = data.Left(newLinePos);
+       data = data.Right(data.Length() - newLinePos - 1);
      }
      wxString trimmedLine = textline;
 
