@@ -120,7 +120,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_input = NULL;
   m_error = NULL;  
   m_ready = false;
-  m_readingPrompt=false;
   m_inLispMode = false;
   m_first = true;
   m_isRunning = false;
@@ -623,7 +622,11 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
           m_console->AddDocumentToEvaluationQueue();
         TryEvaluateNextInQueue();
       }
-      
+
+
+      // The next function calls each extract and remove one type of information from
+      // the data string we got - but only do so after the piece of information it
+      // is able to detect has been transferred as a whole.
       ReadLoadSymbols(m_currentOutput);
 
       ReadMiscText(m_currentOutput);
@@ -931,6 +934,9 @@ void wxMaxima::ReadMiscText(wxString &data)
   if(data.IsEmpty())
     return;
 
+  // Add all text lines to the console until we reach an XML tag.
+  // Since "<" gets converted to &lt; by maxima we can be sure
+  // that an "<" is the first char of a tag marker.
   int newLinePos;
   while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
     {
@@ -938,12 +944,10 @@ void wxMaxima::ReadMiscText(wxString &data)
 
      // if the text begins with a tag marker we don't have any text to output.
      if(tagPos == 0)
-     {
        return;
-     }
-     
-     wxString textline;
 
+     // extract a string from the Data lines
+     wxString textline;
      if(newLinePos == 0)
      {
        textline = wxT("\n");
@@ -959,7 +963,7 @@ void wxMaxima::ReadMiscText(wxString &data)
        }
        else
        {
-         textline = data.Left(newLinePos - 1);
+         textline = data.Left(newLinePos);
          data = data.Right(data.Length() - newLinePos - 1);
        }
      }
@@ -967,11 +971,12 @@ void wxMaxima::ReadMiscText(wxString &data)
 
      trimmedLine.Trim(true);
      trimmedLine.Trim(false);
-     
-     if((trimmedLine.Left(12)==wxT("-- an error.")) ||
-       (trimmedLine.Left(17)==wxT("incorrect syntax:")) ||
-       (trimmedLine.Left(32)==wxT("Maxima encountered a Lisp error:")) ||
-       (trimmedLine.Left(28)==wxT("killcontext: no such context"))
+
+     if(
+       (trimmedLine.StartsWith(wxT("-- an error."))) ||
+       (trimmedLine.StartsWith(wxT("incorrect syntax"))) ||
+       (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
+       (trimmedLine.StartsWith(wxT("killcontext: no such context")))
        )
        ConsoleAppend(textline,MC_TYPE_ERROR);
      else
@@ -985,17 +990,16 @@ void wxMaxima::ReadMiscText(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  // If we did find a prompt in the last step we leave this function again.
-  if (m_readingPrompt)
-    return ;
-
-  // Append everything until the "end of math" marker to the console.
+  // Append everything from the "beginning of math" to the "end of math" marker
+  // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
   int end = data.Find(mth);
   while (end > -1)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
+
+    wxASSERT_MSG(start != wxNOT_FOUND, _("Bug: Found a math end marker without any start marker."));
     if(start != wxNOT_FOUND)
       o = o.SubString(start,o.Length());
     else
@@ -1014,6 +1018,10 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   while ((start = data.Find(wxT("<wxxml-symbols>"))) != wxNOT_FOUND)
   {
     int end = data.Find(wxT("</wxxml-symbols>"));
+
+    // If we found an end marker we data contains a whole symbols part we can extract.
+
+    wxASSERT_MSG(end != wxNOT_FOUND,_("Bug: Found the end of autocompletion symbols but no beginning"));
     if (end != wxNOT_FOUND)
     {
       // Put the symbols into a separate string
@@ -1046,107 +1054,113 @@ void wxMaxima::ReadPrompt(wxString &data)
   m_ready=true;
   int end = data.Find(m_promptSuffix);
   int begin=data.Find(m_promptPrefix);
-  // Did we find a prompt suffix?
-  if (end != wxNOT_FOUND)
-  {
-    m_readingPrompt = false;
-    wxString o;
+  // Did we find a prompt?
+  if (end == wxNOT_FOUND)
+    return;
 
-    if(begin == wxNOT_FOUND)
-      o=data.SubString(0, end - 1);
-    else
-      o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
+  wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
+
+  wxString o;
+
+  if(begin == wxNOT_FOUND)
+    o=data.SubString(0, end - 1);
+  else
+    o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
         
-    if (o.StartsWith(wxT("(%i")))
-    {
-      // Maxima displayed a new main prompt => We don't have a question
-      m_console->QuestionAnswered();
+  if (o.StartsWith(wxT("(%i")))
+  {
+    // Maxima displayed a new main prompt => We don't have a question
+    m_console->QuestionAnswered();
 
-      //m_lastPrompt = o.Mid(1,o.Length()-1);
-      //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
-      m_lastPrompt = o;
-      // remove the event maxima has just processed from the evaluation queue
-      m_console->m_evaluationQueue->RemoveFirst();
-      // if we remove a command from the evaluation queue the next output line will be the
-      // first from the next command.
-      m_outputCellsFromCurrentCommand = 0;
-      if (m_console->m_evaluationQueue->Empty()) { // queue empty?
-        StatusMaximaBusy(waiting);
-        if(m_console->FollowEvaluation())
+    //m_lastPrompt = o.Mid(1,o.Length()-1);
+    //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
+    m_lastPrompt = o;
+    // remove the event maxima has just processed from the evaluation queue
+    m_console->m_evaluationQueue->RemoveFirst();
+    // if we remove a command from the evaluation queue the next output line will be the
+    // first from the next command.
+    m_outputCellsFromCurrentCommand = 0;
+    if (m_console->m_evaluationQueue->Empty()) { // queue empty?
+      StatusMaximaBusy(waiting);
+      if(m_console->FollowEvaluation())
+      {
+        if(m_console->GetWorkingGroup())
         {
-          if(m_console->GetWorkingGroup())
-          {
-            m_console->SetHCaret(m_console->GetWorkingGroup());
-          }
-          m_console->ShowHCaret();
+          m_console->SetHCaret(m_console->GetWorkingGroup());
         }
-        m_console->SetWorkingGroup(NULL);
-
-        // If we have selected a cell in order to show we are evaluating it
-        // we should now remove this marker.
-        if(m_console->FollowEvaluation())
-        {
-          if(m_console->GetActiveCell())
-            m_console->GetActiveCell() -> SelectNone();            
-          m_console->SetSelection(NULL,NULL); 
-          m_console->SetActiveCell(NULL);
-        }
-        m_console->FollowEvaluation(false);
-        if(m_batchmode)
-        {
-          SaveFile(false);
-          wxCloseEvent *closeEvent;
-          closeEvent = new wxCloseEvent();
-          GetEventHandler()->QueueEvent(closeEvent);
-        }
-        // Inform the user that the evaluation queue is empty.
-        EvaluationQueueLength(0);
-        m_console->Refresh();
+        m_console->ShowHCaret();
       }
-      else { // we don't have an empty queue
-        m_ready = false;
-        m_console->Refresh();
-        m_console->EnableEdit();
-        StatusMaximaBusy(calculating);
-        TryEvaluateNextInQueue();
-      }
+      m_console->SetWorkingGroup(NULL);
 
+      // If we have selected a cell in order to show we are evaluating it
+      // we should now remove this marker.
+      if(m_console->FollowEvaluation())
+      {
+        if(m_console->GetActiveCell())
+          m_console->GetActiveCell() -> SelectNone();            
+        m_console->SetSelection(NULL,NULL); 
+        m_console->SetActiveCell(NULL);
+      }
+      m_console->FollowEvaluation(false);
+      if(m_batchmode)
+      {
+        SaveFile(false);
+        wxCloseEvent *closeEvent;
+        closeEvent = new wxCloseEvent();
+        GetEventHandler()->QueueEvent(closeEvent);
+      }
+      // Inform the user that the evaluation queue is empty.
+      EvaluationQueueLength(0);
+      m_console->Refresh();
+    }
+    else { // we don't have an empty queue
+      m_ready = false;
+      m_console->Refresh();
       m_console->EnableEdit();
-
-      if (m_console->m_evaluationQueue->Empty())
-      {
-        bool open = false;
-        wxConfig::Get()->Read(wxT("openHCaret"), &open);
-        if (open)
-          m_console->OpenNextOrCreateCell();
-      }
+      StatusMaximaBusy(calculating);
+      TryEvaluateNextInQueue();
     }
 
-    // We have a question
-    else {
-      m_console->QuestionAnswered();
-      m_console->QuestionPending(true);
-      if(!o.IsEmpty())
-      {
-        if (o.Find(wxT("<mth>")) > -1)
-          DoConsoleAppend(o, MC_TYPE_PROMPT);
-        else
-          DoRawConsoleAppend(o, MC_TYPE_PROMPT);
-      }
-      if(m_console->ScrolledAwayFromEvaluation())
-      {
-        if(m_console->m_mainToolBar)
-          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
-      }
-      StatusMaximaBusy(userinput);
-    }
+    m_console->EnableEdit();
 
-    if (o.StartsWith(wxT("\nMAXIMA>")))
-      m_inLispMode = true;
-    else
-      m_inLispMode = false;
+    if (m_console->m_evaluationQueue->Empty())
+    {
+      bool open = false;
+      wxConfig::Get()->Read(wxT("openHCaret"), &open);
+      if (open)
+        m_console->OpenNextOrCreateCell();
+    }
   }
 
+  // We have a question
+  else {
+    m_console->QuestionAnswered();
+    m_console->QuestionPending(true);
+    if(!o.IsEmpty())
+    {
+      if (o.Find(wxT("<mth>")) > -1)
+        DoConsoleAppend(o, MC_TYPE_PROMPT);
+      else
+        DoRawConsoleAppend(o, MC_TYPE_PROMPT);
+    }
+    if(m_console->ScrolledAwayFromEvaluation())
+    {
+      if(m_console->m_mainToolBar)
+        m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
+    }
+    else
+      m_console->OpenQuestionCaret();
+    StatusMaximaBusy(userinput);
+  }
+
+  if (o.StartsWith(wxT("\nMAXIMA>")))
+    m_inLispMode = true;
+  else
+    m_inLispMode = false;
+  
+
+  // If maxima isn't running we stopp polling its stderr for messages.
+  // Always reduce the number of CPU wakeups if you can.
   if (m_ready)
   {
     if(!m_console->QuestionPending())
@@ -1155,9 +1169,10 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_maximaStdoutPollTimer.Stop();
     }
   }
-    
-  data = data.SubString(end + m_promptSuffix.Length(),
-                        data.Length());
+
+  // Remove the prompt we have processed from the string.
+  data = data.Left(begin) +
+    data.SubString(end + m_promptSuffix.Length(),data.Length());
 }
 
 void wxMaxima::SetCWD(wxString file)
@@ -1639,7 +1654,6 @@ void wxMaxima::ReadLispError(wxString &data)
   int end = data.Find(lispError);
   if (end > -1)
   {
-    m_readingPrompt = false;
     m_inLispMode = true;
     wxString o = data.Left(end);
     ConsoleAppend(o, MC_TYPE_DEFAULT);

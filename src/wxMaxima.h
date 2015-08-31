@@ -260,18 +260,35 @@ protected:
 
      Some commands provide status messages before the math output or the command has finished.
      This function makes wxMaxima output them directly as they arrive.
+
+     After processing the lines not enclosed in xml tags they are removed from data.
    */
   void ReadMiscText(wxString &data);
-  /* Reads the input and the output prompt from Maxima.
+  /* Reads the input prompt from Maxima.
+
+     After processing the input prompt it is removed from data.
    */
   void ReadPrompt(wxString &data);
   /* Reads the math cell's contents from Maxima.
      
-     Math cells are enclosed between the tags \<mth\> and \</mth\>. If we 
+     Math cells are enclosed between the tags \<mth\> and \</mth\>. 
+     This function removes the from data after appending them
+     to the console.
    */
-  void ReadMath(wxString &data);                   //!< reads the math that is contained in data
-  void ReadLispError(wxString &data);              //!< read lisp errors (no prompt prefix/suffix)
-  //! Reads autocompletion templates we get on load of a package
+  void ReadMath(wxString &data);
+  /*! read lisp errors
+
+    Lisp errors typically don't provide a prompt prefix/suffix.
+
+    After processing the error it is removed from data.
+
+    \todo Add detection for lisp error prefixes for more lisps.
+   */
+  void ReadLispError(wxString &data);
+  /*! Reads autocompletion templates we get on definition of a function or variable
+
+    After processing the templates they are removed from data.
+   */
   void ReadLoadSymbols(wxString &data);
 #ifndef __WXMSW__
   //!< reads the output the maxima command sends to stdout
@@ -330,7 +347,6 @@ protected:
   wxString m_promptSuffix;
   wxString m_promptPrefix;
   wxString m_firstPrompt;
-  bool m_readingPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   bool m_inLispMode;                //!< don't add ; in lisp mode
   wxString m_lastPrompt;
