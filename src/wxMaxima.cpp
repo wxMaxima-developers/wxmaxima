@@ -636,12 +636,11 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       ReadMath(m_currentOutput);
 
+      ReadLispError(m_currentOutput);
+
       ReadMiscText(m_currentOutput);
 
       ReadPrompt(m_currentOutput);
-
-      ReadLispError(m_currentOutput);
-
     }
     break;
 
