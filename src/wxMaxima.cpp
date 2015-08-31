@@ -124,8 +124,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_first = true;
   m_isRunning = false;
   m_dispReadOut = false;
-  m_promptSuffix = "<PROMPT-S/>";
-  m_promptPrefix = "<PROMPT-P/>";
+  m_promptPrefix = wxT("<PROMPT-P/>");
+  m_promptSuffix = wxT("<PROMPT-S/>");
+                       
+  m_symbolsPrefix = wxT("<wxxml-symbols>");
+  m_symbolsSuffix = wxT("</wxxml-symbols>");
   m_findDialog = NULL;
   m_firstPrompt = wxT("(%i1) ");
 
@@ -946,7 +949,7 @@ void wxMaxima::ReadMiscText(wxString &data)
      if(data.StartsWith(m_promptPrefix))
        return;
 
-     if(data.StartsWith(wxT("<wxxml-symbols")))
+     if(data.StartsWith(m_symbolsPrefix))
        return;
      
      // extract a string from the Data lines
@@ -987,8 +990,8 @@ void wxMaxima::ReadMath(wxString &data)
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
-  int end = data.Find(mth);
-  while (end > -1)
+  int end;
+  while ((end = data.Find(mth)) > -1)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
@@ -1000,29 +1003,27 @@ void wxMaxima::ReadMath(wxString &data)
       start = 0;
     
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
-    data = data.Left(start) + data.SubString(end + mth.Length(),
-                          data.Length());
-    end = data.Find(mth);
+    data = data.Left(start) +
+      data.SubString(end + mth.Length(), data.Length());
   }
 }
 
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
   int start;
-  while ((start = data.Find(wxT("<wxxml-symbols>"))) != wxNOT_FOUND)
+  while ((start = data.Find(m_symbolsPrefix)) != wxNOT_FOUND)
   {
-    int end = data.Find(wxT("</wxxml-symbols>"));
+    int end = data.Find(m_symbolsSuffix);
 
     // If we found an end marker we data contains a whole symbols part we can extract.
-
     wxASSERT_MSG(start != wxNOT_FOUND,_("Bug: Found the end of autocompletion symbols but no beginning"));
     if (end != wxNOT_FOUND)
     {
       // Put the symbols into a separate string
-      wxString symbols = data.SubString(start + 15, end - 1);
+      wxString symbols = data.SubString(start + m_symbolsPrefix.Length(), end - 1);
 
       // Remove the symbols from the data string
-      data = data.Left(start) + data.SubString(end + 16, data.Length());
+      data = data.Left(start) + data.SubString(end + m_symbolsSuffix.Length(), data.Length());
 
       // Send each symbol to the console
       wxStringTokenizer templates(symbols, wxT("$"));
