@@ -86,13 +86,13 @@ void wxMaxima::ConfigChanged()
   switch(showLength)
   {
   case 0:
-    m_maxOutputCellsPerCommand = 50;
+    m_maxOutputCellsPerCommand = 300;
     break;
   case 1:
-    m_maxOutputCellsPerCommand = 100;
+    m_maxOutputCellsPerCommand = 600;
     break;
   case 2:
-    m_maxOutputCellsPerCommand = 200;
+    m_maxOutputCellsPerCommand = 1200;
     break;
   case 3:
     m_maxOutputCellsPerCommand = -1;
