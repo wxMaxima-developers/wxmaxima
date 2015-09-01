@@ -392,7 +392,10 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 {
   MathCell* cell;
 
-  s.Replace(wxT("\n"), wxT(""), true);
+  if(s.IsEmpty())
+    return;
+
+  s.Replace(wxT("\n"), wxT(" "), true);
 
   cell = m_MParser.ParseLine(s, type);
 
@@ -410,6 +413,9 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
+  if(s.IsEmpty())
+    return;
+
   bool scrollToCaret = (!m_console->FollowEvaluation()&&m_console->CaretVisibleIs());
 
   if (type == MC_TYPE_MAIN_PROMPT)
@@ -888,6 +894,9 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
 #if defined(__WXMSW__)
   int start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
@@ -960,7 +969,7 @@ void wxMaxima::ReadMiscText(wxString &data)
      }
      else
      {
-       textline = data.Left(newLinePos);
+       textline = data.Left(newLinePos + 1);
        data = data.Right(data.Length() - newLinePos - 1);
      }
      wxString trimmedLine = textline;
@@ -986,6 +995,9 @@ void wxMaxima::ReadMiscText(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+  
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
@@ -1004,11 +1016,17 @@ void wxMaxima::ReadMath(wxString &data)
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
     data = data.Left(start) +
       data.SubString(end + mth.Length(), data.Length());
+
+    if(data.IsEmpty())
+      return;
   }
 }
 
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
   int start;
   while ((start = data.Find(m_symbolsPrefix)) != wxNOT_FOUND)
   {
@@ -1039,6 +1057,9 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
  */
 void wxMaxima::ReadPrompt(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+  
   // If we got a prompt our connection to maxima was successful. 
   m_unsuccessfullConnectionAttempts = 0;
 
@@ -1059,7 +1080,8 @@ void wxMaxima::ReadPrompt(wxString &data)
     o=data.Left(end);
   else
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
-        
+
+  // Input prompts begin with (%i. Question prompts don't.
   if (o.StartsWith(wxT("(%i")))
   {
     // Maxima displayed a new main prompt => We don't have a question
@@ -1152,7 +1174,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_inLispMode = false;
   
 
-  // If maxima isn't running we stopp polling its stderr for messages.
+  // If maxima isn't running we stop polling its stderr for messages.
   // Always reduce the number of CPU wakeups if you can.
   if (m_ready)
   {
@@ -1643,6 +1665,9 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
  */
 void wxMaxima::ReadLispError(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
   static const wxString lispError = wxT("dbl:MAXIMA>>"); // gcl
   int end = data.Find(lispError);
   if (end > -1)
