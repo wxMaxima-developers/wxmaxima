@@ -16,6 +16,7 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh_auto_install
 	rm debian/wxmaxima/usr/share/wxMaxima/COPYING
+	dh_installmenu
 
 get-orig-source:
 	uscan --force-download --repack --rename --destdir .
