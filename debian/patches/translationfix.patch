@@ -1,6 +1,8 @@
-The tarball was missing the translation file that was added in order to be able
-to do spellfixes without invalidating the affected string in all translations of
-wxMaxima.
+From: Gunter Königsmann <wxmaxima@physikbuch.de>
+Description: Added a file that is necessary in order to build.
+Author: Gunter Königsmann <wxmaxima@physikbuch.de>
+Forwarded: Yes
+
 --- a/locales/Makefile.am
 +++ b/locales/Makefile.am
 @@ -120,6 +120,7 @@
