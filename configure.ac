@@ -250,7 +250,6 @@ AC_CONFIG_FILES([
         wxmaxima.spec
         data/Info.plist
 	data/wxMaxima.desktop
-	data/wxmaxima.menu
 ])
 
 AC_OUTPUT
