@@ -50,7 +50,7 @@
   #+clisp `(let ((custom:*suppress-check-redefinition* t)) ,form)
   #-(or sbcl clisp) `(progn ,form))
 
-($put '$wxmaxima `((mlist simp) 15 8 1) '$version)
+($put '$wxmaxima `((mlist simp) 15 8 2) '$version)
 
 (defun $wxbuild_info ()
   (let ((wxmaxima-version (cdr ($get '$wxmaxima '$version)))
