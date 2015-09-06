@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([wxMaxima], [16.08.0-git])
+AC_INIT([wxMaxima], [15.08.1+git])
 AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
 
@@ -250,7 +250,6 @@ AC_CONFIG_FILES([
         wxmaxima.spec
         data/Info.plist
 	data/wxMaxima.desktop
-	data/wxmaxima.menu
 ])
 
 AC_OUTPUT

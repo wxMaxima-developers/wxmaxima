@@ -344,8 +344,14 @@ protected:
   //! Are we currently saving the file?
   bool m_saving;
   wxString m_currentOutput;
-  wxString m_promptSuffix;
+  //! The marker for the start of a input prompt
   wxString m_promptPrefix;
+  //! The marker for the end of a input prompt
+  wxString m_promptSuffix;
+  //! The marker for the start of a list of autocompletion templates
+  wxString m_symbolsPrefix;
+  //! The marker for the end of a list of autocompletion templates
+  wxString m_symbolsSuffix;
   wxString m_firstPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   bool m_inLispMode;                //!< don't add ; in lisp mode

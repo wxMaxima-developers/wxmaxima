@@ -86,13 +86,13 @@ void wxMaxima::ConfigChanged()
   switch(showLength)
   {
   case 0:
-    m_maxOutputCellsPerCommand = 50;
+    m_maxOutputCellsPerCommand = 300;
     break;
   case 1:
-    m_maxOutputCellsPerCommand = 100;
+    m_maxOutputCellsPerCommand = 600;
     break;
   case 2:
-    m_maxOutputCellsPerCommand = 200;
+    m_maxOutputCellsPerCommand = 1200;
     break;
   case 3:
     m_maxOutputCellsPerCommand = -1;
@@ -124,8 +124,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_first = true;
   m_isRunning = false;
   m_dispReadOut = false;
-  m_promptSuffix = "<PROMPT-S/>";
-  m_promptPrefix = "<PROMPT-P/>";
+  m_promptPrefix = wxT("<PROMPT-P/>");
+  m_promptSuffix = wxT("<PROMPT-S/>");
+                       
+  m_symbolsPrefix = wxT("<wxxml-symbols>");
+  m_symbolsSuffix = wxT("</wxxml-symbols>");
   m_findDialog = NULL;
   m_firstPrompt = wxT("(%i1) ");
 
@@ -389,7 +392,10 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 {
   MathCell* cell;
 
-  s.Replace(wxT("\n"), wxT(""), true);
+  if(s.IsEmpty())
+    return;
+
+  s.Replace(wxT("\n"), wxT(" "), true);
 
   cell = m_MParser.ParseLine(s, type);
 
@@ -407,6 +413,9 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
+  if(s.IsEmpty())
+    return;
+
   bool scrollToCaret = (!m_console->FollowEvaluation()&&m_console->CaretVisibleIs());
 
   if (type == MC_TYPE_MAIN_PROMPT)
@@ -633,10 +642,11 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       ReadMath(m_currentOutput);
 
-      ReadPrompt(m_currentOutput);
-
       ReadLispError(m_currentOutput);
 
+      ReadMiscText(m_currentOutput);
+
+      ReadPrompt(m_currentOutput);
     }
     break;
 
@@ -884,6 +894,9 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
 #if defined(__WXMSW__)
   int start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
@@ -934,18 +947,19 @@ void wxMaxima::ReadMiscText(wxString &data)
   if(data.IsEmpty())
     return;
 
-  // Add all text lines to the console until we reach an XML tag.
-  // Since "<" gets converted to &lt; by maxima we can be sure
-  // that an "<" is the first char of a tag marker.
+  // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
   while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
     {
-     int tagPos=data.Find("<");
-
-     // if the text begins with a tag marker we don't have any text to output.
-     if(tagPos == 0)
+     if(data.StartsWith(wxT("<mth")))
        return;
 
+     if(data.StartsWith(m_promptPrefix))
+       return;
+
+     if(data.StartsWith(m_symbolsPrefix))
+       return;
+     
      // extract a string from the Data lines
      wxString textline;
      if(newLinePos == 0)
@@ -955,17 +969,8 @@ void wxMaxima::ReadMiscText(wxString &data)
      }
      else
      {
-       // If the line we got ends in a tag, not in a newline we hande this here:
-       if((tagPos!=wxNOT_FOUND)&&(tagPos<newLinePos))
-       {
-         textline = data.Left(tagPos);
-         data = data.Right(data.Length() - tagPos);
-       }
-       else
-       {
-         textline = data.Left(newLinePos);
-         data = data.Right(data.Length() - newLinePos - 1);
-       }
+       textline = data.Left(newLinePos + 1);
+       data = data.Right(data.Length() - newLinePos - 1);
      }
      wxString trimmedLine = textline;
 
@@ -990,11 +995,14 @@ void wxMaxima::ReadMiscText(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+  
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
-  int end = data.Find(mth);
-  while (end > -1)
+  int end;
+  while ((end = data.Find(mth)) > -1)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
@@ -1006,29 +1014,33 @@ void wxMaxima::ReadMath(wxString &data)
       start = 0;
     
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
-    data = data.Left(start) + data.SubString(end + mth.Length(),
-                          data.Length());
-    end = data.Find(mth);
+    data = data.Left(start) +
+      data.SubString(end + mth.Length(), data.Length());
+
+    if(data.IsEmpty())
+      return;
   }
 }
 
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
   int start;
-  while ((start = data.Find(wxT("<wxxml-symbols>"))) != wxNOT_FOUND)
+  while ((start = data.Find(m_symbolsPrefix)) != wxNOT_FOUND)
   {
-    int end = data.Find(wxT("</wxxml-symbols>"));
+    int end = data.Find(m_symbolsSuffix);
 
     // If we found an end marker we data contains a whole symbols part we can extract.
-
     wxASSERT_MSG(start != wxNOT_FOUND,_("Bug: Found the end of autocompletion symbols but no beginning"));
     if (end != wxNOT_FOUND)
     {
       // Put the symbols into a separate string
-      wxString symbols = data.SubString(start + 15, end - 1);
+      wxString symbols = data.SubString(start + m_symbolsPrefix.Length(), end - 1);
 
       // Remove the symbols from the data string
-      data = data.Left(start) + data.SubString(end + 16, data.Length());
+      data = data.Left(start) + data.SubString(end + m_symbolsSuffix.Length(), data.Length());
 
       // Send each symbol to the console
       wxStringTokenizer templates(symbols, wxT("$"));
@@ -1045,6 +1057,9 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
  */
 void wxMaxima::ReadPrompt(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+  
   // If we got a prompt our connection to maxima was successful. 
   m_unsuccessfullConnectionAttempts = 0;
 
@@ -1065,7 +1080,8 @@ void wxMaxima::ReadPrompt(wxString &data)
     o=data.Left(end);
   else
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
-        
+
+  // Input prompts begin with (%i. Question prompts don't.
   if (o.StartsWith(wxT("(%i")))
   {
     // Maxima displayed a new main prompt => We don't have a question
@@ -1158,7 +1174,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_inLispMode = false;
   
 
-  // If maxima isn't running we stopp polling its stderr for messages.
+  // If maxima isn't running we stop polling its stderr for messages.
   // Always reduce the number of CPU wakeups if you can.
   if (m_ready)
   {
@@ -1649,6 +1665,9 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
  */
 void wxMaxima::ReadLispError(wxString &data)
 {
+  if(data.IsEmpty())
+    return;
+
   static const wxString lispError = wxT("dbl:MAXIMA>>"); // gcl
   int end = data.Find(lispError);
   if (end > -1)
