@@ -2522,8 +2522,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 
 void wxMaxima::FileMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   bool forceSave = false;
@@ -2741,10 +2739,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
-
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
-
   if (m_findDialog != NULL) {
     event.Skip();
     return;
@@ -3021,8 +3015,6 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString b = wxT("\\");
@@ -3174,8 +3166,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
 
 void wxMaxima::EquationsMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3405,8 +3395,6 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
 
 void wxMaxima::AlgebraMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3593,8 +3581,6 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
 
 void wxMaxima::SimplifyMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3725,8 +3711,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
 
 void wxMaxima::CalculusMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4003,8 +3987,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
 
 void wxMaxima::PlotMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4062,8 +4044,6 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
 
 void wxMaxima::NumericalMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4257,8 +4237,6 @@ END_EVENT_TABLE()
 
 void wxMaxima::HelpMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString helpSearchString = wxT("%");
@@ -4440,8 +4418,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
 void wxMaxima::StatsMenu(wxCommandEvent &ev)
 {
-  if(ev.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
 
   switch (ev.GetId())
@@ -4701,8 +4677,6 @@ void wxMaxima::OnClose(wxCloseEvent& event)
 
 void wxMaxima::PopupMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
@@ -4933,8 +4907,6 @@ bool wxMaxima::SaveNecessary()
 
 void wxMaxima::EditInputMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   if (!m_console->CanEdit())
     return ;
 
@@ -5199,8 +5171,6 @@ void wxMaxima::TryEvaluateNextInQueue()
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   int type = 0;
   bool output = false;
   switch (event.GetId())
