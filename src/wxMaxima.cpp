@@ -510,7 +510,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   if (addToHistory)
     AddToHistory(s);
 
-  s.Replace(wxT("\n"), wxT(" "));
+  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
+    s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
   StripComments(s);
 
