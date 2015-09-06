@@ -2190,7 +2190,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid>0);
-  menubar->Enable(MathCtrl::popid_comment_selection,(m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
+  menubar->Enable(MathCtrl::popid_comment_selection,
+                  (m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
   menubar->Enable(menu_evaluate, (
                     (m_console->GetActiveCell() != NULL)||
                     (m_console->CellsSelected())
@@ -2208,7 +2209,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_save_id, (!m_fileSaved)&&(!m_saving));
   menubar->Enable(menu_export_html, !m_saving);
 
-  for (int id = menu_pane_math; id<=menu_pane_format; id++)
+  for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
   if (GetToolBar() != NULL)
   {
