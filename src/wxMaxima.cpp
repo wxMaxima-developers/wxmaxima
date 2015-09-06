@@ -517,7 +517,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   if (addToHistory)
     AddToHistory(s);
 
-  s.Replace(wxT("\n"), wxT(" "));
+  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
+    s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
   StripComments(s);
 
@@ -5070,7 +5071,6 @@ void wxMaxima::TriggerEvaluation()
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {
-
   if (!m_isConnected) {
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
@@ -5144,7 +5144,12 @@ void wxMaxima::TryEvaluateNextInQueue()
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
       if(m_xmlInspector)
+      {
         m_xmlInspector->Clear();
+        m_xmlInspector->Add(wxT("SENT TO MAXIMA:\n\n"));
+        m_xmlInspector->Add(text);
+        m_xmlInspector->Add(wxT("\n\n\nMAXIMA RESPONSE:\n\n"));
+      }
       
       SendMaxima(text, true);
     }
