@@ -120,7 +120,7 @@ transcoded:
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              es.po es.mo wxwin/es.mo  \
-             en.po es.mo  \
+             en.po \
              it.po it.mo wxwin/it.mo  \
              de.po de.mo wxwin/de.mo  \
 	     pt_BR.po pt_BR.mo wxwin/pt_BR.mo \

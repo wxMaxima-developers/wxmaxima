@@ -517,7 +517,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   if (addToHistory)
     AddToHistory(s);
 
-  s.Replace(wxT("\n"), wxT(" "));
+  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
+    s.Replace(wxT("\n"), wxT(" "));
   s.Append(wxT("\n"));
   StripComments(s);
 
@@ -2190,7 +2191,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid>0);
-  menubar->Enable(MathCtrl::popid_comment_selection,(m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
+  menubar->Enable(MathCtrl::popid_comment_selection,
+                  (m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
   menubar->Enable(menu_evaluate, (
                     (m_console->GetActiveCell() != NULL)||
                     (m_console->CellsSelected())
@@ -2208,7 +2210,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_save_id, (!m_fileSaved)&&(!m_saving));
   menubar->Enable(menu_export_html, !m_saving);
 
-  for (int id = menu_pane_math; id<=menu_pane_format; id++)
+  for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
   if (GetToolBar() != NULL)
   {
@@ -2541,8 +2543,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
 
 void wxMaxima::FileMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   bool forceSave = false;
@@ -2760,10 +2760,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
-
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
-
   if (m_findDialog != NULL) {
     event.Skip();
     return;
@@ -3040,8 +3036,6 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString b = wxT("\\");
@@ -3193,8 +3187,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
 
 void wxMaxima::EquationsMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3424,8 +3416,6 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
 
 void wxMaxima::AlgebraMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3612,8 +3602,6 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
 
 void wxMaxima::SimplifyMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -3744,8 +3732,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
 
 void wxMaxima::CalculusMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4022,8 +4008,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
 
 void wxMaxima::PlotMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4081,8 +4065,6 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
 
 void wxMaxima::NumericalMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4276,8 +4258,6 @@ END_EVENT_TABLE()
 
 void wxMaxima::HelpMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString helpSearchString = wxT("%");
@@ -4459,8 +4439,6 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
 
 void wxMaxima::StatsMenu(wxCommandEvent &ev)
 {
-  if(ev.GetEventType() != (wxEVT_MENU))
-    return;
   wxString expr = GetDefaultEntry();
 
   switch (ev.GetId())
@@ -4720,8 +4698,6 @@ void wxMaxima::OnClose(wxCloseEvent& event)
 
 void wxMaxima::PopupMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
@@ -4952,8 +4928,6 @@ bool wxMaxima::SaveNecessary()
 
 void wxMaxima::EditInputMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   if (!m_console->CanEdit())
     return ;
 
@@ -5097,7 +5071,6 @@ void wxMaxima::TriggerEvaluation()
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {
-
   if (!m_isConnected) {
     wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
 
@@ -5171,7 +5144,12 @@ void wxMaxima::TryEvaluateNextInQueue()
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
       if(m_xmlInspector)
+      {
         m_xmlInspector->Clear();
+        m_xmlInspector->Add(wxT("SENT TO MAXIMA:\n\n"));
+        m_xmlInspector->Add(text);
+        m_xmlInspector->Add(wxT("\n\n\nMAXIMA RESPONSE:\n\n"));
+      }
       
       SendMaxima(text, true);
     }
@@ -5218,8 +5196,6 @@ void wxMaxima::TryEvaluateNextInQueue()
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
 {
-  if(event.GetEventType() != (wxEVT_MENU))
-    return;
   int type = 0;
   bool output = false;
   switch (event.GetId())
