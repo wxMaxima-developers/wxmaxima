@@ -1,8 +1,16 @@
+wxmaxima (15.08.1-3) unstable; urgency=medium
+
+  * Removed the broken and duplicate menu file
+  * Unbroke the remaining menu file (closes: bug#798156)
+  * Added a keywords entry to the desktop file
+  * Now we register our docs with doc-base
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 06 Sep 2015 17:37:36 +0100
+
 wxmaxima (15.08.1-2) unstable; urgency=medium
 
   * Added a patch that adds the missing en.po to the tarball.
   * Added a patch that corrects the desktop file.
-  * Cheaned up debian/rules
+  * Cleaned up debian/rules
   * Added the .menu file to the debian directory
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Thu, 03 Sep 2015 07:37:36 +0100
 
@@ -281,7 +289,7 @@ wxmaxima (0.6.2-3) unstable; urgency=low
 
   [ Rafa Rodriguez Galvan ]
   * Provided wxmaxima.menu entry. Closes: #335645.
-  
+
   [ Marco Presi ]
   * Added maxima icon.
 
