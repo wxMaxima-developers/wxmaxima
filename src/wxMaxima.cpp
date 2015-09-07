@@ -621,10 +621,12 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
       if (!m_dispReadOut &&
 	  (m_currentOutput != wxT("\n")) &&
-	  (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>"))) {
+	  (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+      {
 	StatusMaximaBusy(transferring);
         m_dispReadOut = true;
       }
+      
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
       {
         ReadFirstPrompt(m_currentOutput);
@@ -639,13 +641,16 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       // is able to detect has been transferred as a whole.
       ReadLoadSymbols(m_currentOutput);
 
-      ReadMiscText(m_currentOutput);
+      if(!m_first)
+        ReadMiscText(m_currentOutput);
 
       ReadMath(m_currentOutput);
 
-      ReadLispError(m_currentOutput);
-
-      ReadMiscText(m_currentOutput);
+      if (!m_first)
+      {
+        ReadLispError(m_currentOutput);
+        ReadMiscText(m_currentOutput);
+      }
 
       ReadPrompt(m_currentOutput);
     }
@@ -895,9 +900,6 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
-  if(data.IsEmpty())
-    return;
-
 #if defined(__WXMSW__)
   int start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
