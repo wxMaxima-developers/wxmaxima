@@ -24,6 +24,7 @@
 
 #include "MathCell.h"
 #include <wx/image.h>
+#include <Image.h>
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
@@ -51,9 +52,10 @@ public:
   static wxString WXMXGetNewFileName();
   static int WXMXImageCount() { return s_counter; }
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
+  //! Returns the file name extension that matches the image type
+  wxString GetExtension(){if(m_image)return m_image->GetExtension(); else return wxEmptyString;}
 protected:
-  wxBitmap *m_bitmap;
-  wxFileSystem *m_fileSystem;
+  Image *m_image;
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);

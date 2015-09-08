@@ -51,6 +51,7 @@ wxmaxima_SOURCES = \
 	MyTipProvider.cpp  MyTipProvider.h  \
 	EditorCell.cpp     EditorCell.h     \
 	ImgCell.cpp        ImgCell.h        \
+	Image.cpp          Image.h          \
 	SubSupCell.cpp     SubSupCell.h     \
 	SlideShowCell.cpp  SlideShowCell.h  \
 	GroupCell.cpp      GroupCell.h      \

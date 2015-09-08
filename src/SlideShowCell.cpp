@@ -134,7 +134,7 @@ void SlideShow::LoadImages(wxArrayString images)
       if (wxFileExists(images[i]))
       {
         wxBitmap *bitmap = new wxBitmap;
-        if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_PNG))
+        if (bitmap->LoadFile(images[i], wxBITMAP_TYPE_ANY))
         {
           loadedImage = true;
           m_bitmaps.push_back(bitmap);

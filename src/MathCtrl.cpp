@@ -3431,15 +3431,16 @@ bool MathCtrl::ExportToHTML(wxString file) {
             // Something we want to export as an image.
             if(chunk->GetType() == MC_TYPE_IMAGE)
             {
-              size = ((ImgCell *)chunk)->ToImageFile(
-                imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count)
-                );
+              size = dynamic_cast<ImgCell*>(chunk)->ToImageFile(
+                imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
+                dynamic_cast<ImgCell*>(chunk) -> GetExtension());
             }
             else
             {
               int bitmapScale = 3;
               wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-              size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
+              size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
+                                dynamic_cast<ImgCell*>(chunk) -> GetExtension(),
                                 chunk,
                                 NULL, true, bitmapScale);
             }
@@ -3526,11 +3527,14 @@ bool MathCtrl::ExportToHTML(wxString file) {
         }
         else
         {
-          CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                     out, NULL, true);
+          ImgCell *imgCell = dynamic_cast<ImgCell*>(out);
+          imgCell->ToImageFile(
+            imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
+            imgCell -> GetExtension());
           output<<wxT("  <IMG src=\"") + filename + wxT("_htmlimg/") +
             filename +
-            wxString::Format(wxT("_%d.png\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count);
+            wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count,
+                             imgCell -> GetExtension());
         }
         count++;
       }
@@ -4024,10 +4028,12 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
   for (int i = 1; i<=ImgCell::WXMXImageCount(); i++)
   {
     wxString name = wxT("image");
-    name << i << wxT(".png");
-
+    name << i << wxT(".*");
+    name = fsystem->FindFirst(name);
+    
     wxFSFile *fsfile = fsystem->OpenFile(name);
 
+    name = name.Right(name.Length() - 7);
     if (fsfile) {
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
@@ -4038,10 +4044,6 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
       delete imagefile;
       wxMemoryFSHandler::RemoveFile(name);
     }
-    // Saving an image needs loads of time and we don't want the gui to
-    // offer to help the user by killing the currently running process
-    // => give wx the possibility to tell the OS that we are still running.
-    wxYield();
   }
 
   delete fsystem;

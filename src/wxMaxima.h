@@ -46,10 +46,13 @@
   - Updated to version 1.1 after user selectable animation-speeds were introduced:
     Old wxMaxima versions play them back in the default speed instead but still
     open the file.
-  - Bumped to version 1.2 after sub-subsections were introduced:
+  - Bumped to version 1.3 after sub-subsections were introduced:
     Old wxMaxima versions interpret them as subsections but still open the file.
+  - Bumped to version 1.4 when we started allowing to embed .jpg images in a .wxmx
+    file. wxMaxima versions between 13.04 and 15.08 replace these images by a 
+    "image cannot be loaded" marker but will correctly display the rest of the file.
  */
-#define DOCUMENT_VERSION_MINOR 3
+#define DOCUMENT_VERSION_MINOR 4
 
 
 #ifndef __WXGTK__

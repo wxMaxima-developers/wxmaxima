@@ -710,15 +710,12 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     MathCell *copy = m_output->Copy();
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
-    wxString file = imgDir + wxT("/") + image + wxT(".png");
-
-    Bitmap bmp;
-    bmp.SetData(copy);
+    wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
 
     if (!wxDirExists(imgDir))
       wxMkdir(imgDir);
 
-    if (bmp.ToFile(file).x>=0)
+    if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
     {
       str << wxT("\\begin{figure}[htb]\n")
           << wxT("  \\begin{center}\n")
@@ -805,11 +802,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
             }
 	    else
             {
-              wxString file = imgDir + wxT("/") + image + wxT(".png");
-              
-              Bitmap bmp;
-              bmp.SetData(copy);
-              if (bmp.ToFile(file).x>=0)
+              wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
+              std::cerr<<"tttttttttt\n";
+              if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
                 str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                   filename + wxT("_img/") + image + wxT("}");
               else
