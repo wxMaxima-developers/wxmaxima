@@ -1,10 +1,13 @@
-wxmaxima (15.08.1-3) unstable; urgency=medium
+wxmaxima (15.08.2-1) unstable; urgency=medium
 
+  * New upstream release. Fixes sidebar buttons and toolbar enable.
   * Removed the broken and duplicate menu file
   * Unbroke the remaining menu file (closes: bug#798156)
   * Added a keywords entry to the desktop file
+  * Dropped the patch that adds a missing .po file since it was added upstream
+  * Dropped the parch that adds a mimetype to the .desktop file (is upstream)
   * Now we register our docs with doc-base
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 06 Sep 2015 17:37:36 +0100
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 09 Sep 2015 03:39:36 +0100
 
 wxmaxima (15.08.1-2) unstable; urgency=medium
 
