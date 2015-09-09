@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 08:22+0200\n"
+"POT-Creation-Date: 2015-09-09 18:58+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "\n"
 "Maxima 版本："
 
-#: ../src/wxMaxima.cpp:5084
+#: ../src/wxMaxima.cpp:5077
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -63,7 +63,7 @@ msgstr ""
 "\n"
 "未連線"
 
-#: ../src/ImgCell.cpp:245 ../src/ImgCell.cpp:250
+#: ../src/ImgCell.cpp:146 ../src/ImgCell.cpp:151
 msgid " (Graphics) "
 msgstr ""
 
@@ -71,14 +71,14 @@ msgstr ""
 msgid " << Expression too long to display! >>"
 msgstr " << 數式過長不易顯示 >>"
 
-#: ../src/wxMaxima.cpp:1363
+#: ../src/wxMaxima.cpp:1381
 msgid ""
 " was saved using a newer version of wxMaxima so it may not load correctly. "
 "Please update your wxMaxima."
 msgstr ""
 " 是以新版的 wxMaxima 儲存，所以可能無法正確的讀取。請更新您的 wxMaxima。"
 
-#: ../src/wxMaxima.cpp:1354
+#: ../src/wxMaxima.cpp:1372
 msgid ""
 " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr " 是以新版的 wxMaxima 儲存，請更新您的 wxMaxima 。"
@@ -359,7 +359,7 @@ msgstr "( 使用預設語言 )"
 msgid "- Infinity"
 msgstr "負無限大"
 
-#: ../src/wxMaxima.cpp:316
+#: ../src/wxMaxima.cpp:319
 msgid ""
 "... [suppressed additional lines since the output is longer than allowed in "
 "the configuration] "
@@ -396,7 +396,7 @@ msgstr "定點設值(T)..."
 msgid "Abort evaluation on error"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:900 ../src/wxMaxima.cpp:4369
+#: ../src/wxMaxima.cpp:4369 ../src/wxMaximaFrame.cpp:900
 msgid "About"
 msgstr "關於"
 
@@ -420,7 +420,7 @@ msgstr "新增代數"
 msgid "Add a directory to search path"
 msgstr "將目錄加入搜尋路徑"
 
-#: ../src/wxMaxima.cpp:3093
+#: ../src/wxMaxima.cpp:3107
 msgid "Add dir to path:"
 msgstr "將目錄加入搜尋路徑："
 
@@ -457,7 +457,7 @@ msgstr "附加參數："
 msgid "All|*"
 msgstr "所有類型|*"
 
-#: ../src/wxMaxima.cpp:3579
+#: ../src/wxMaxima.cpp:3589
 msgid "Apply"
 msgstr "套用"
 
@@ -469,11 +469,11 @@ msgstr "套用函數至串列"
 msgid "Apropos"
 msgstr "Apropos 指令"
 
-#: ../src/wxMaxima.cpp:3505
+#: ../src/wxMaxima.cpp:3515
 msgid "Array:"
 msgstr "陣列："
 
-#: ../src/wxMaxima.cpp:4226
+#: ../src/wxMaxima.cpp:4228
 msgid "Artwork by"
 msgstr "美工"
 
@@ -481,7 +481,7 @@ msgstr "美工"
 msgid "Ask to save untitled documents"
 msgstr "詢問是否儲存未命名文件"
 
-#: ../src/wxMaxima.cpp:3389
+#: ../src/wxMaxima.cpp:3401
 msgid "At value"
 msgstr "定點設值"
 
@@ -498,7 +498,7 @@ msgstr ""
 msgid "Autosave interval (minutes, 0 means: off)"
 msgstr ""
 
-#: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3296
+#: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3308
 msgid "BC2"
 msgstr "邊界條件(二階)"
 
@@ -510,7 +510,7 @@ msgstr "長條圖..."
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
 
-#: ../src/wxMaxima.cpp:2711
+#: ../src/wxMaxima.cpp:2731
 msgid "Batch File"
 msgstr "以批次檔載入"
 
@@ -531,7 +531,7 @@ msgstr ""
 msgid "Bold"
 msgstr "粗體"
 
-#: ../src/wxMaxima.cpp:2161
+#: ../src/wxMaxima.cpp:2182
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
@@ -547,82 +547,82 @@ msgstr "瀏覽"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1523
+#: ../src/MathCtrl.cpp:1546
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1002
+#: ../src/wxMaxima.cpp:1013
 msgid "Bug: Found a math end marker without any start marker."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1024
+#: ../src/wxMaxima.cpp:1039
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1746
+#: ../src/MathCtrl.cpp:1773
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4428
+#: ../src/MathCtrl.cpp:4457
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4499
+#: ../src/MathCtrl.cpp:4528
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4468
+#: ../src/MathCtrl.cpp:4497
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr ""
 
-#: ../src/MathCell.cpp:162
+#: ../src/MathCell.cpp:172
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1566
+#: ../src/MathCtrl.cpp:1589
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1533
+#: ../src/MathCtrl.cpp:1556
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:430
+#: ../src/MathCtrl.cpp:453
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1465
+#: ../src/MathCtrl.cpp:1488
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5086
+#: ../src/MathCtrl.cpp:5115
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1535
+#: ../src/MathCtrl.cpp:1558
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1169
+#: ../src/MathCtrl.cpp:1192
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4469
+#: ../src/MathCtrl.cpp:4498
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4433 ../src/MathCtrl.cpp:4504 ../src/MathCtrl.cpp:4538
+#: ../src/MathCtrl.cpp:4462 ../src/MathCtrl.cpp:4533 ../src/MathCtrl.cpp:4567
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -665,7 +665,7 @@ msgstr "將最後的計算結果以長浮點數 (bigfloat) 表示"
 msgid "Calculate float value of the last result"
 msgstr "將最後的計算結果以浮點數 (float) 表示"
 
-#: ../src/wxMaxima.cpp:3714
+#: ../src/wxMaxima.cpp:3722
 msgid "Calculate modulus:"
 msgstr "模運算："
 
@@ -682,11 +682,11 @@ msgstr "計算乘積"
 msgid "Calculate sums"
 msgstr "計算加總"
 
-#: ../src/wxMaxima.cpp:5443
+#: ../src/wxMaxima.cpp:5439
 msgid "Can not connect to the web server."
 msgstr "無法連線至網路伺服器。"
 
-#: ../src/wxMaxima.cpp:5494
+#: ../src/wxMaxima.cpp:5490
 msgid "Can not download version info."
 msgstr "無法下載版本資訊。"
 
@@ -702,7 +702,7 @@ msgstr "無法下載版本資訊。"
 #: ../src/PlotFormatWiz.cpp:44 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43
 #: ../src/SumWiz.cpp:44 ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38
-#: ../src/SystemWiz.cpp:40 ../src/wxMaxima.cpp:5535
+#: ../src/SystemWiz.cpp:40 ../src/wxMaxima.cpp:5531
 msgid "Cancel"
 msgstr "取消"
 
@@ -722,7 +722,7 @@ msgstr "單元(&L)"
 msgid "Cell bracket"
 msgstr "單元框"
 
-#: ../src/wxMaxima.cpp:4995
+#: ../src/wxMaxima.cpp:4989
 msgid "Cell ends in a backslash"
 msgstr ""
 
@@ -734,7 +734,7 @@ msgstr "變更顯示方式(&2)"
 msgid "Change the 2d display algorithm used to display math output"
 msgstr "變更顯示數學輸出的演算法"
 
-#: ../src/wxMaxima.cpp:3740
+#: ../src/wxMaxima.cpp:3746
 msgid "Change variable"
 msgstr "變數變換"
 
@@ -742,7 +742,7 @@ msgstr "變數變換"
 msgid "Change variable in integral or sum"
 msgstr "對積分數式或加總數式作變數變換"
 
-#: ../src/wxMaxima.cpp:3492
+#: ../src/wxMaxima.cpp:3502
 msgid "Char poly"
 msgstr "特徵多項式"
 
@@ -770,7 +770,7 @@ msgstr "選擇字型"
 msgid "Choose new plot format:"
 msgstr "選擇新的繪圖格式："
 
-#: ../src/wxMaxima.cpp:4452 ../src/wxMaxima.cpp:4466
+#: ../src/wxMaxima.cpp:4450 ../src/wxMaxima.cpp:4464
 msgid "Classes:"
 msgstr "種類數："
 
@@ -810,7 +810,7 @@ msgstr ""
 msgid "Code highlighting: Variables"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4574
+#: ../src/wxMaxima.cpp:4572
 msgid "Col. names:"
 msgstr "欄位名："
 
@@ -830,7 +830,7 @@ msgstr "x 座標，以逗號分隔"
 msgid "Comma separated y coordinates"
 msgstr "y 座標，以逗號分隔"
 
-#: ../src/MathCtrl.cpp:875
+#: ../src/MathCtrl.cpp:898
 msgid "Comment Selection"
 msgstr "將所選區域變成註解"
 
@@ -883,7 +883,7 @@ msgstr "計算矩陣的反矩陣"
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "計算最小公倍式 (在使用前會先執行 load(functs) )"
 
-#: ../src/wxMaxima.cpp:4624
+#: ../src/wxMaxima.cpp:4622
 msgid "Condition:"
 msgstr "條件："
 
@@ -962,16 +962,16 @@ msgstr "轉換三角函數數式為標準準線性形式"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "轉換三角函數數式為指數形式"
 
-#: ../src/ToolBar.cpp:96 ../src/MathCtrl.cpp:796 ../src/MathCtrl.cpp:809
-#: ../src/MathCtrl.cpp:825 ../src/MathCtrl.cpp:869
+#: ../src/MathCtrl.cpp:819 ../src/MathCtrl.cpp:832 ../src/MathCtrl.cpp:848
+#: ../src/MathCtrl.cpp:892 ../src/ToolBar.cpp:96
 msgid "Copy"
 msgstr "複製"
 
-#: ../src/MathCtrl.cpp:811 ../src/MathCtrl.cpp:827
+#: ../src/MathCtrl.cpp:834 ../src/MathCtrl.cpp:850
 msgid "Copy As Image"
 msgstr "複製為圖片"
 
-#: ../src/MathCtrl.cpp:810 ../src/MathCtrl.cpp:826
+#: ../src/MathCtrl.cpp:833 ../src/MathCtrl.cpp:849
 msgid "Copy LaTeX"
 msgstr "複製為 LaTeX 格式"
 
@@ -1025,7 +1025,7 @@ msgstr "以上一個輸入建立一個新的單元"
 msgid "Cursor"
 msgstr "游標"
 
-#: ../src/ToolBar.cpp:93 ../src/MathCtrl.cpp:868
+#: ../src/MathCtrl.cpp:891 ../src/ToolBar.cpp:93
 msgid "Cut"
 msgstr "剪下"
 
@@ -1045,18 +1045,18 @@ msgstr "Czech"
 msgid "Danish"
 msgstr "Danish"
 
-#: ../src/wxMaxima.cpp:4567 ../src/wxMaxima.cpp:4574 ../src/wxMaxima.cpp:4624
+#: ../src/wxMaxima.cpp:4565 ../src/wxMaxima.cpp:4572 ../src/wxMaxima.cpp:4622
 msgid "Data Matrix:"
 msgstr "資料矩陣："
 
-#: ../src/wxMaxima.cpp:4594
+#: ../src/wxMaxima.cpp:4592
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "資料檔 (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
-#: ../src/wxMaxima.cpp:4452 ../src/wxMaxima.cpp:4466 ../src/wxMaxima.cpp:4480
-#: ../src/wxMaxima.cpp:4487 ../src/wxMaxima.cpp:4494 ../src/wxMaxima.cpp:4502
-#: ../src/wxMaxima.cpp:4509 ../src/wxMaxima.cpp:4516 ../src/wxMaxima.cpp:4523
-#: ../src/wxMaxima.cpp:4559
+#: ../src/wxMaxima.cpp:4450 ../src/wxMaxima.cpp:4464 ../src/wxMaxima.cpp:4478
+#: ../src/wxMaxima.cpp:4485 ../src/wxMaxima.cpp:4492 ../src/wxMaxima.cpp:4500
+#: ../src/wxMaxima.cpp:4507 ../src/wxMaxima.cpp:4514 ../src/wxMaxima.cpp:4521
+#: ../src/wxMaxima.cpp:4557
 msgid "Data:"
 msgstr "資料："
 
@@ -1099,7 +1099,7 @@ msgid ""
 "with."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3140 ../src/wxMaxima.cpp:3149
+#: ../src/wxMaxima.cpp:3154 ../src/wxMaxima.cpp:3163
 msgid "Delete"
 msgstr "刪除"
 
@@ -1107,7 +1107,7 @@ msgstr "刪除"
 msgid "Delete F&unction..."
 msgstr "刪除函數(&U)..."
 
-#: ../src/MathCtrl.cpp:814 ../src/MathCtrl.cpp:830
+#: ../src/MathCtrl.cpp:837 ../src/MathCtrl.cpp:853
 msgid "Delete Selection"
 msgstr "刪除所選區域"
 
@@ -1127,15 +1127,15 @@ msgstr "刪除變數"
 msgid "Delete all values from memory"
 msgstr "刪除記憶體中全部的值"
 
-#: ../src/wxMaxima.cpp:3149
+#: ../src/wxMaxima.cpp:3163
 msgid "Delete function(s):"
 msgstr "刪除該函數："
 
-#: ../src/wxMaxima.cpp:3140
+#: ../src/wxMaxima.cpp:3154
 msgid "Delete variable(s):"
 msgstr "刪除該變數："
 
-#: ../src/wxMaxima.cpp:3756
+#: ../src/wxMaxima.cpp:3762
 msgid "Denom. deg:"
 msgstr "分母 degree："
 
@@ -1143,7 +1143,7 @@ msgstr "分母 degree："
 msgid "Depth:"
 msgstr "深度："
 
-#: ../src/wxMaxima.cpp:3280
+#: ../src/wxMaxima.cpp:3292
 msgid "Derivative:"
 msgstr "導函數："
 
@@ -1159,7 +1159,7 @@ msgstr "多項式相除(&V)..."
 msgid "Diff..."
 msgstr "微分..."
 
-#: ../src/wxMaxima.cpp:3899 ../src/wxMaxima.cpp:4796
+#: ../src/wxMaxima.cpp:3905 ../src/wxMaxima.cpp:4792
 msgid "Differentiate"
 msgstr "微分"
 
@@ -1167,7 +1167,7 @@ msgstr "微分"
 msgid "Differentiate expression"
 msgstr "對數式微分"
 
-#: ../src/MathCtrl.cpp:846
+#: ../src/MathCtrl.cpp:869
 msgid "Differentiate..."
 msgstr "微分..."
 
@@ -1183,7 +1183,7 @@ msgstr "離散繪圖"
 msgid "Display Te&X Form"
 msgstr "以 TeX 格式顯示(&X)"
 
-#: ../src/wxMaxima.cpp:3060
+#: ../src/wxMaxima.cpp:3074
 msgid "Display algorithm"
 msgstr "用於顯示的演算法"
 
@@ -1195,11 +1195,11 @@ msgstr "將最後的結果以 TeX 格式顯示"
 msgid "Display time used for evaluation"
 msgstr "顯示評算所花費的時間"
 
-#: ../src/wxMaxima.cpp:3806
+#: ../src/wxMaxima.cpp:3812
 msgid "Divide"
 msgstr "數字／多項式相除"
 
-#: ../src/MathCtrl.cpp:877 ../src/wxMaximaFrame.cpp:532
+#: ../src/MathCtrl.cpp:900 ../src/wxMaximaFrame.cpp:532
 msgid "Divide Cell"
 msgstr "分割單元"
 
@@ -1211,11 +1211,11 @@ msgstr "將數字或多項式相除"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5530
+#: ../src/wxMaxima.cpp:5526
 msgid "Do you want to save the changes you made in the document \""
 msgstr "您是否想儲存於此文件中的變更： \""
 
-#: ../src/wxMaxima.cpp:1353 ../src/wxMaxima.cpp:1362
+#: ../src/wxMaxima.cpp:1371 ../src/wxMaxima.cpp:1380
 msgid "Document "
 msgstr "文件"
 
@@ -1234,7 +1234,7 @@ msgid ""
 "differences."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5535
+#: ../src/wxMaxima.cpp:5531
 msgid "Don't save"
 msgstr "不要儲存"
 
@@ -1254,7 +1254,7 @@ msgstr "特徵向量(&N)"
 msgid "Eigen&values"
 msgstr "特徵值(&V)"
 
-#: ../src/wxMaxima.cpp:3311
+#: ../src/wxMaxima.cpp:3323
 msgid "Eliminate"
 msgstr "消去"
 
@@ -1266,9 +1266,9 @@ msgstr "自方程組中消去變數"
 msgid "English"
 msgstr "English"
 
-#: ../src/wxMaxima.cpp:4480 ../src/wxMaxima.cpp:4487 ../src/wxMaxima.cpp:4494
-#: ../src/wxMaxima.cpp:4502 ../src/wxMaxima.cpp:4509 ../src/wxMaxima.cpp:4516
-#: ../src/wxMaxima.cpp:4523 ../src/wxMaxima.cpp:4559 ../src/wxMaxima.cpp:4567
+#: ../src/wxMaxima.cpp:4478 ../src/wxMaxima.cpp:4485 ../src/wxMaxima.cpp:4492
+#: ../src/wxMaxima.cpp:4500 ../src/wxMaxima.cpp:4507 ../src/wxMaxima.cpp:4514
+#: ../src/wxMaxima.cpp:4521 ../src/wxMaxima.cpp:4557 ../src/wxMaxima.cpp:4565
 msgid "Enter Data"
 msgstr "輸入資料"
 
@@ -1280,7 +1280,7 @@ msgstr "輸入矩陣..."
 msgid "Enter a matrix"
 msgstr "輸入一個矩陣"
 
-#: ../src/wxMaxima.cpp:3705
+#: ../src/wxMaxima.cpp:3713
 msgid "Enter an equation for rational simplification:"
 msgstr "輸入供化簡有理數式的方程式："
 
@@ -1292,11 +1292,11 @@ msgstr "輸入以逗號分隔的所有變數"
 msgid "Enter evaluates cells"
 msgstr "按 Enter 評算單元"
 
-#: ../src/wxMaxima.cpp:3475
+#: ../src/wxMaxima.cpp:3485
 msgid "Enter matrix"
 msgstr "輸入矩陣"
 
-#: ../src/wxMaxima.cpp:4089
+#: ../src/wxMaxima.cpp:4091
 #, fuzzy
 msgid "Enter new precision for bigfloats:"
 msgstr "輸入新的精確度："
@@ -1305,7 +1305,7 @@ msgstr "輸入新的精確度："
 msgid "Enter the path to the Maxima executable."
 msgstr "輸入可執行 Maxima 的路徑"
 
-#: ../src/wxMaxima.cpp:3953
+#: ../src/wxMaxima.cpp:3959
 msgid "Epsilon:"
 msgstr "Epsilon:"
 
@@ -1314,35 +1314,30 @@ msgstr "Epsilon:"
 msgid "Equation %d:"
 msgstr "方程式 %d："
 
-#: ../src/wxMaxima.cpp:3199 ../src/wxMaxima.cpp:3213 ../src/wxMaxima.cpp:3372
-#: ../src/wxMaxima.cpp:4749
+#: ../src/wxMaxima.cpp:3211 ../src/wxMaxima.cpp:3225 ../src/wxMaxima.cpp:3384
+#: ../src/wxMaxima.cpp:4745
 msgid "Equation(s):"
 msgstr "方程式："
 
-#: ../src/wxMaxima.cpp:3229 ../src/wxMaxima.cpp:3248 ../src/wxMaxima.cpp:3738
-#: ../src/wxMaxima.cpp:4575 ../src/wxMaxima.cpp:4763
+#: ../src/wxMaxima.cpp:3241 ../src/wxMaxima.cpp:3260 ../src/wxMaxima.cpp:3744
+#: ../src/wxMaxima.cpp:4573 ../src/wxMaxima.cpp:4759
 msgid "Equation:"
 msgstr "方程式："
 
-#: ../src/wxMaxima.cpp:3309
+#: ../src/wxMaxima.cpp:3321
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/ImgCell.cpp:104 ../src/Config.cpp:758 ../src/wxMaxima.cpp:399
-#: ../src/wxMaxima.cpp:1241 ../src/wxMaxima.cpp:1253 ../src/wxMaxima.cpp:1318
-#: ../src/wxMaxima.cpp:1331 ../src/wxMaxima.cpp:1355 ../src/wxMaxima.cpp:1870
-#: ../src/wxMaxima.cpp:2042 ../src/wxMaxima.cpp:5084 ../src/wxMaxima.cpp:5443
-#: ../src/wxMaxima.cpp:5494
+#: ../src/Config.cpp:758 ../src/Image.cpp:93 ../src/wxMaxima.cpp:405
+#: ../src/wxMaxima.cpp:1259 ../src/wxMaxima.cpp:1271 ../src/wxMaxima.cpp:1336
+#: ../src/wxMaxima.cpp:1349 ../src/wxMaxima.cpp:1373 ../src/wxMaxima.cpp:1891
+#: ../src/wxMaxima.cpp:2063 ../src/wxMaxima.cpp:5077 ../src/wxMaxima.cpp:5439
+#: ../src/wxMaxima.cpp:5490
 msgid "Error"
 msgstr "錯誤"
 
-#: ../src/SlideShowCell.cpp:111 ../src/SlideShowCell.cpp:153
-#, c-format
-msgid "Error %d"
-msgstr "錯誤 %d"
-
-#: ../src/wxMaxima.cpp:2653 ../src/wxMaxima.cpp:2667 ../src/wxMaxima.cpp:2680
-#: ../src/wxMaxima.cpp:3332 ../src/wxMaxima.cpp:3356 ../src/wxMaxima.cpp:3469
+#: ../src/wxMaxima.cpp:2673 ../src/wxMaxima.cpp:2687 ../src/wxMaxima.cpp:2700
+#: ../src/wxMaxima.cpp:3344 ../src/wxMaxima.cpp:3368 ../src/wxMaxima.cpp:3479
 msgid "Error!"
 msgstr "錯誤！"
 
@@ -1360,7 +1355,7 @@ msgstr "評算所有單元\tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "評算所有單元\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:817 ../src/wxMaximaFrame.cpp:482
+#: ../src/MathCtrl.cpp:840 ../src/wxMaximaFrame.cpp:482
 msgid "Evaluate Cell(s)"
 msgstr "評算單元"
 
@@ -1415,7 +1410,7 @@ msgstr "展開"
 msgid "Expand (tr)"
 msgstr "展開 (三角)"
 
-#: ../src/MathCtrl.cpp:842
+#: ../src/MathCtrl.cpp:865
 msgid "Expand Expression"
 msgstr "展開數式"
 
@@ -1435,7 +1430,7 @@ msgstr "展開三角函數數式"
 msgid "Expected the icon files to be found at"
 msgstr ""
 
-#: ../src/Config.cpp:108 ../src/wxMaxima.cpp:2601
+#: ../src/Config.cpp:108 ../src/wxMaxima.cpp:2621
 msgid "Export"
 msgstr "匯出"
 
@@ -1457,15 +1452,15 @@ msgstr "匯出為 TeX 失敗！"
 msgid "Export successful."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2680
+#: ../src/wxMaxima.cpp:2700
 msgid "Exporting to HTML failed!"
 msgstr "匯出為 HTML 失敗！"
 
-#: ../src/wxMaxima.cpp:2653
+#: ../src/wxMaxima.cpp:2673
 msgid "Exporting to TeX failed!"
 msgstr "匯出為 TeX 失敗！"
 
-#: ../src/wxMaxima.cpp:2667
+#: ../src/wxMaxima.cpp:2687
 #, fuzzy
 msgid "Exporting to maxima batch file failed!"
 msgstr "匯出為 TeX 失敗！"
@@ -1484,10 +1479,10 @@ msgid "Expression(s):"
 msgstr "數式："
 
 #: ../src/IntegrateWiz.cpp:30 ../src/LimitWiz.cpp:27 ../src/SeriesWiz.cpp:33
-#: ../src/SubstituteWiz.cpp:28 ../src/SumWiz.cpp:27 ../src/wxMaxima.cpp:3387
-#: ../src/wxMaxima.cpp:3559 ../src/wxMaxima.cpp:3819 ../src/wxMaxima.cpp:3834
-#: ../src/wxMaxima.cpp:3863 ../src/wxMaxima.cpp:3880 ../src/wxMaxima.cpp:3897
-#: ../src/wxMaxima.cpp:3950 ../src/wxMaxima.cpp:3985 ../src/wxMaxima.cpp:4794
+#: ../src/SubstituteWiz.cpp:28 ../src/SumWiz.cpp:27 ../src/wxMaxima.cpp:3399
+#: ../src/wxMaxima.cpp:3569 ../src/wxMaxima.cpp:3825 ../src/wxMaxima.cpp:3840
+#: ../src/wxMaxima.cpp:3869 ../src/wxMaxima.cpp:3886 ../src/wxMaxima.cpp:3903
+#: ../src/wxMaxima.cpp:3956 ../src/wxMaxima.cpp:3991 ../src/wxMaxima.cpp:4790
 msgid "Expression:"
 msgstr "數式："
 
@@ -1499,7 +1494,7 @@ msgstr "因式分解"
 msgid "Factor Complex"
 msgstr "複數因式分解"
 
-#: ../src/MathCtrl.cpp:841
+#: ../src/MathCtrl.cpp:864
 msgid "Factor Expression"
 msgstr "因式分解數式"
 
@@ -1515,11 +1510,11 @@ msgstr "因式分解含 Gaussian 數的數式"
 msgid "Factorials and &Gamma"
 msgstr "階乘與 Gamma 函數(&G)"
 
-#: ../src/wxMaxima.cpp:257
+#: ../src/wxMaxima.cpp:260
 msgid "Fatal error"
 msgstr "嚴重錯誤"
 
-#: ../src/GroupCell.cpp:1452
+#: ../src/GroupCell.cpp:1462
 #, c-format
 msgid "Figure %d:"
 msgstr "圖 %d:"
@@ -1528,22 +1523,22 @@ msgstr "圖 %d:"
 msgid "File"
 msgstr "檔案"
 
-#: ../src/wxMaxima.cpp:1243 ../src/wxMaxima.cpp:1321 ../src/wxMaxima.cpp:1334
-#: ../src/wxMaxima.cpp:1357
+#: ../src/wxMaxima.cpp:1261 ../src/wxMaxima.cpp:1339 ../src/wxMaxima.cpp:1352
+#: ../src/wxMaxima.cpp:1375
 #, fuzzy
 msgid "File could not be opened"
 msgstr "找不到檔案"
 
-#: ../src/wxMaxima.cpp:4921
+#: ../src/wxMaxima.cpp:4917
 msgid "File not found"
 msgstr "找不到檔案"
 
-#: ../src/wxMaxima.cpp:1297 ../src/wxMaxima.cpp:1420
+#: ../src/wxMaxima.cpp:1315 ../src/wxMaxima.cpp:1438
 #, fuzzy
 msgid "File opened"
 msgstr "找不到檔案"
 
-#: ../src/wxMaxima.cpp:4921
+#: ../src/wxMaxima.cpp:4917
 msgid "File you tried to open does not exist."
 msgstr "找不到您想開啟的檔案。"
 
@@ -1567,7 +1562,7 @@ msgstr "求極限(&L)..."
 msgid "Find Minimum..."
 msgstr "求極小值..."
 
-#: ../src/MathCtrl.cpp:838
+#: ../src/MathCtrl.cpp:861
 msgid "Find Root..."
 msgstr "找根..."
 
@@ -1591,7 +1586,7 @@ msgstr "找多項式所有的根"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "找多項式所有的根(以長浮點數表示)"
 
-#: ../src/wxMaxima.cpp:2960
+#: ../src/wxMaxima.cpp:2976
 msgid "Find and Replace"
 msgstr "尋找及取代"
 
@@ -1607,7 +1602,7 @@ msgstr "尋找矩陣的特徵值"
 msgid "Find eigenvectors of a matrix"
 msgstr "尋找矩陣的特徵向量"
 
-#: ../src/wxMaxima.cpp:3955
+#: ../src/wxMaxima.cpp:3961
 msgid "Find minimum"
 msgstr "求極小值"
 
@@ -1615,7 +1610,7 @@ msgstr "求極小值"
 msgid "Find real roots of a polynomial"
 msgstr "找多項式所有的實根"
 
-#: ../src/wxMaxima.cpp:3232 ../src/wxMaxima.cpp:4766
+#: ../src/wxMaxima.cpp:3244 ../src/wxMaxima.cpp:4762
 msgid "Find root"
 msgstr "找根"
 
@@ -1663,7 +1658,7 @@ msgstr "French"
 
 #: ../src/IntegrateWiz.cpp:37 ../src/Plot2dWiz.cpp:37 ../src/Plot2dWiz.cpp:47
 #: ../src/Plot2dWiz.cpp:536 ../src/Plot3dWiz.cpp:36 ../src/Plot3dWiz.cpp:45
-#: ../src/SumWiz.cpp:33 ../src/wxMaxima.cpp:3560 ../src/wxMaxima.cpp:3985
+#: ../src/SumWiz.cpp:33 ../src/wxMaxima.cpp:3570 ../src/wxMaxima.cpp:3991
 msgid "From:"
 msgstr "從："
 
@@ -1671,7 +1666,7 @@ msgstr "從："
 msgid "Full Screen\tAlt-Enter"
 msgstr "全螢幕\tAlt-Enter"
 
-#: ../src/wxMaxima.cpp:3082
+#: ../src/wxMaxima.cpp:3096
 msgid "Function"
 msgstr "函數"
 
@@ -1679,12 +1674,12 @@ msgstr "函數"
 msgid "Function names"
 msgstr "函數名"
 
-#: ../src/wxMaxima.cpp:3372
+#: ../src/wxMaxima.cpp:3384
 msgid "Function(s):"
 msgstr "函數："
 
-#: ../src/wxMaxima.cpp:3248 ../src/wxMaxima.cpp:3441 ../src/wxMaxima.cpp:3544
-#: ../src/wxMaxima.cpp:3577
+#: ../src/wxMaxima.cpp:3260 ../src/wxMaxima.cpp:3451 ../src/wxMaxima.cpp:3554
+#: ../src/wxMaxima.cpp:3587
 msgid "Function:"
 msgstr "函數："
 
@@ -1700,11 +1695,11 @@ msgstr "用以化簡階乘及 gamma 函數的函數"
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "用以化簡三角函數數式的函數"
 
-#: ../src/wxMaxima.cpp:3791
+#: ../src/wxMaxima.cpp:3797
 msgid "GCD"
 msgstr "最大公因式"
 
-#: ../src/wxMaxima.cpp:4879
+#: ../src/wxMaxima.cpp:4875
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF (*.gif)|*.gif"
 
@@ -1720,7 +1715,7 @@ msgstr "常用數學"
 msgid "General Math\tAlt-Shift-M"
 msgstr "常用數學\tAlt-Shift-M"
 
-#: ../src/wxMaxima.cpp:3507 ../src/wxMaxima.cpp:3526
+#: ../src/wxMaxima.cpp:3517 ../src/wxMaxima.cpp:3536
 msgid "Generate Matrix"
 msgstr "產生矩陣"
 
@@ -1772,7 +1767,7 @@ msgstr "取得複數數式的虛部"
 msgid "Get the real part of complex expression"
 msgstr "取得複數數式的實部"
 
-#: ../src/MathCtrl.cpp:4518
+#: ../src/MathCtrl.cpp:4547
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1790,7 +1785,7 @@ msgstr "希臘字母"
 msgid "Grid:"
 msgstr "格線："
 
-#: ../src/wxMaxima.cpp:2603
+#: ../src/wxMaxima.cpp:2623
 #, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|pdfLaTeX file (*."
@@ -1801,7 +1796,7 @@ msgstr "HTML 檔案 (*.html)|*.html|pdfLaTeX 檔案 (*.tex)|*.tex|所有類型|*
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3505 ../src/wxMaxima.cpp:3524
+#: ../src/wxMaxima.cpp:3515 ../src/wxMaxima.cpp:3534
 msgid "Height:"
 msgstr "高："
 
@@ -1821,7 +1816,7 @@ msgstr "隱藏所有窗格"
 msgid "Highlight (dpart)"
 msgstr "高亮度標記(於dpart函數中)"
 
-#: ../src/wxMaxima.cpp:4453
+#: ../src/wxMaxima.cpp:4451
 msgid "Histogram"
 msgstr "直方圖"
 
@@ -1853,11 +1848,11 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Hungarian"
 
-#: ../src/wxMaxima.cpp:3266
+#: ../src/wxMaxima.cpp:3278
 msgid "IC1"
 msgstr "初始條件(一階)"
 
-#: ../src/wxMaxima.cpp:3282
+#: ../src/wxMaxima.cpp:3294
 msgid "IC2"
 msgstr "初始條件(二階)"
 
@@ -1920,7 +1915,7 @@ msgstr ""
 msgid "Image"
 msgstr "圖片"
 
-#: ../src/wxMaxima.cpp:5263
+#: ../src/wxMaxima.cpp:5259
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "圖片檔 (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -1930,7 +1925,7 @@ msgid ""
 "above it. Might increase readability for some fonts and short subscripts."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4625
+#: ../src/wxMaxima.cpp:4623
 msgid "Include columns:"
 msgstr "包含欄位："
 
@@ -1948,7 +1943,7 @@ msgstr "無限大"
 msgid "Info about Maxima build"
 msgstr "關於 Maxima 建置的資訊"
 
-#: ../src/wxMaxima.cpp:3952
+#: ../src/wxMaxima.cpp:3958
 msgid "Initial Estimates:"
 msgstr "起始預估："
 
@@ -1984,7 +1979,7 @@ msgstr "插入文字單元(&T)\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "插入(單元)\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5261
+#: ../src/wxMaxima.cpp:5257
 msgid "Insert Image"
 msgstr "插入圖片"
 
@@ -2009,15 +2004,15 @@ msgstr "插入子章節單元(&U)\tCtrl-4"
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "插入子章節單元(&U)\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:860
+#: ../src/MathCtrl.cpp:883
 msgid "Insert Section Cell"
 msgstr "插入章節單元"
 
-#: ../src/MathCtrl.cpp:861
+#: ../src/MathCtrl.cpp:884
 msgid "Insert Subsection Cell"
 msgstr "插入子章節單元"
 
-#: ../src/MathCtrl.cpp:862
+#: ../src/MathCtrl.cpp:885
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "插入子章節單元"
@@ -2026,11 +2021,11 @@ msgstr "插入子章節單元"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "插入標題單元(&I)\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:858
+#: ../src/MathCtrl.cpp:881
 msgid "Insert Text Cell"
 msgstr "插入文字單元"
 
-#: ../src/MathCtrl.cpp:859
+#: ../src/MathCtrl.cpp:882
 msgid "Insert Title Cell"
 msgstr "插入標題單元"
 
@@ -2067,16 +2062,16 @@ msgstr "插入一個換頁符號"
 msgid "Insert image"
 msgstr "插入圖片"
 
-#: ../src/wxMaxima.cpp:3737
+#: ../src/wxMaxima.cpp:3743
 msgid "Integral/Sum:"
 msgstr "積分／加總："
 
-#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:3850
-#: ../src/wxMaxima.cpp:4781
+#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:3856
+#: ../src/wxMaxima.cpp:4777
 msgid "Integrate"
 msgstr "積分"
 
-#: ../src/wxMaxima.cpp:3836
+#: ../src/wxMaxima.cpp:3842
 msgid "Integrate (risch)"
 msgstr "Risch 積分"
 
@@ -2088,7 +2083,7 @@ msgstr "對數式積分"
 msgid "Integrate expression with Risch algorithm"
 msgstr "使用 Risch 演算法積分數式"
 
-#: ../src/MathCtrl.cpp:845 ../src/wxMaximaFrame.cpp:1089
+#: ../src/MathCtrl.cpp:868 ../src/wxMaximaFrame.cpp:1089
 msgid "Integrate..."
 msgstr "積分..."
 
@@ -2116,7 +2111,7 @@ msgstr ""
 "\n"
 "請再次輸入 Maxima 程式的所在路徑。"
 
-#: ../src/wxMaxima.cpp:3882
+#: ../src/wxMaxima.cpp:3888
 msgid "Inverse Laplace"
 msgstr "Laplace 逆變換"
 
@@ -2148,7 +2143,7 @@ msgstr "Japanese"
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
 
-#: ../src/wxMaxima.cpp:3776
+#: ../src/wxMaxima.cpp:3782
 msgid "LCM"
 msgstr "最小公倍式"
 
@@ -2164,7 +2159,7 @@ msgstr "wxMaxima 圖形介面的語言"
 msgid "Language:"
 msgstr "語言："
 
-#: ../src/wxMaxima.cpp:3865
+#: ../src/wxMaxima.cpp:3871
 msgid "Laplace"
 msgstr "Laplace 變換"
 
@@ -2176,7 +2171,7 @@ msgstr "Laplace 變換(&T)..."
 msgid "Least Common Multiple..."
 msgstr "最小公倍式..."
 
-#: ../src/wxMaxima.cpp:4577
+#: ../src/wxMaxima.cpp:4575
 msgid "Least Squares Fit"
 msgstr "最小平方法"
 
@@ -2191,7 +2186,7 @@ msgid ""
 "can be found by typing maxima_userdir"
 msgstr ""
 
-#: ../src/LimitWiz.cpp:67 ../src/wxMaxima.cpp:3937
+#: ../src/LimitWiz.cpp:67 ../src/wxMaxima.cpp:3943
 msgid "Limit"
 msgstr "極限"
 
@@ -2203,7 +2198,7 @@ msgstr "極限..."
 msgid "Linear Regression..."
 msgstr "線性迴歸..."
 
-#: ../src/wxMaxima.cpp:3544 ../src/wxMaxima.cpp:3577
+#: ../src/wxMaxima.cpp:3554 ../src/wxMaxima.cpp:3587
 msgid "List:"
 msgstr "串列："
 
@@ -2211,7 +2206,7 @@ msgstr "串列："
 msgid "Load"
 msgstr "載入"
 
-#: ../src/wxMaxima.cpp:2700
+#: ../src/wxMaxima.cpp:2720
 msgid "Load Package"
 msgstr "載入 Package"
 
@@ -2227,7 +2222,7 @@ msgstr "讀取 Maxima package 檔"
 msgid "Load style from file"
 msgstr "自檔案載入樣式"
 
-#: ../src/wxMaxima.cpp:3230 ../src/wxMaxima.cpp:4764
+#: ../src/wxMaxima.cpp:3242 ../src/wxMaxima.cpp:4760
 msgid "Lower bound:"
 msgstr "下界："
 
@@ -2239,7 +2234,7 @@ msgstr "映射至整個矩陣(&P)..."
 msgid "Make &List..."
 msgstr "產生串列(&L)..."
 
-#: ../src/wxMaxima.cpp:3562
+#: ../src/wxMaxima.cpp:3572
 msgid "Make list"
 msgstr "產生串列"
 
@@ -2256,7 +2251,7 @@ msgstr "在數式中作代換"
 msgid "Manually trigger evaluation"
 msgstr "顯示評算所花費的時間"
 
-#: ../src/wxMaxima.cpp:3546
+#: ../src/wxMaxima.cpp:3556
 msgid "Map"
 msgstr "映射"
 
@@ -2276,19 +2271,19 @@ msgstr "在文字控制項中輸入時匹配括弧"
 msgid "Math font:"
 msgstr "數學字型："
 
-#: ../src/wxMaxima.cpp:3457
+#: ../src/wxMaxima.cpp:3467
 msgid "Matrix"
 msgstr "矩陣"
 
-#: ../src/wxMaxima.cpp:3443
+#: ../src/wxMaxima.cpp:3453
 msgid "Matrix map"
 msgstr "矩陣映射"
 
-#: ../src/wxMaxima.cpp:4625
+#: ../src/wxMaxima.cpp:4623
 msgid "Matrix name:"
 msgstr "矩陣名："
 
-#: ../src/wxMaxima.cpp:3441 ../src/wxMaxima.cpp:3490
+#: ../src/wxMaxima.cpp:3451 ../src/wxMaxima.cpp:3500
 msgid "Matrix:"
 msgstr "矩陣："
 
@@ -2309,15 +2304,15 @@ msgstr "Maxima 輸入"
 msgid "Maxima is calculating"
 msgstr "Maxima 計算中"
 
-#: ../src/wxMaxima.cpp:2713
+#: ../src/wxMaxima.cpp:2733
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Maxima package (*.mac)|*.mac"
 
-#: ../src/wxMaxima.cpp:2702
+#: ../src/wxMaxima.cpp:2722
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|所有類型|*"
 
-#: ../src/wxMaxima.cpp:862
+#: ../src/wxMaxima.cpp:878
 msgid "Maxima process terminated."
 msgstr "Maxima 程序已結束"
 
@@ -2329,7 +2324,7 @@ msgstr "Maxima 程式："
 msgid "Maxima questions"
 msgstr "Maxima 詢問"
 
-#: ../src/wxMaxima.cpp:817
+#: ../src/wxMaxima.cpp:833
 msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima 已啟動，等待連線中..."
 
@@ -2374,7 +2369,7 @@ msgstr "平均值檢驗..."
 msgid "Mean..."
 msgstr "平均..."
 
-#: ../src/wxMaxima.cpp:4530
+#: ../src/wxMaxima.cpp:4528
 msgid "Mean:"
 msgstr "平均值："
 
@@ -2382,7 +2377,7 @@ msgstr "平均值："
 msgid "Median..."
 msgstr "中位數..."
 
-#: ../src/MathCtrl.cpp:820 ../src/wxMaximaFrame.cpp:530
+#: ../src/MathCtrl.cpp:843 ../src/wxMaximaFrame.cpp:530
 msgid "Merge Cells"
 msgstr "合併單元"
 
@@ -2390,7 +2385,7 @@ msgstr "合併單元"
 msgid "Merge the text from two input cells into one"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2465
+#: ../src/wxMaxima.cpp:2487
 msgid "Message from the stdout of Maxima: "
 msgstr ""
 
@@ -2398,16 +2393,16 @@ msgstr ""
 msgid "Method:"
 msgstr "方法："
 
-#: ../src/wxMaxima.cpp:5018
+#: ../src/wxMaxima.cpp:5012
 #, fuzzy
 msgid "Mismatched parenthesis"
 msgstr "在文字控制項中輸入時匹配括弧"
 
-#: ../src/wxMaxima.cpp:3715
+#: ../src/wxMaxima.cpp:3723
 msgid "Modulus"
 msgstr "模運算"
 
-#: ../src/MatWiz.cpp:183 ../src/wxMaxima.cpp:3505 ../src/wxMaxima.cpp:3524
+#: ../src/MatWiz.cpp:183 ../src/wxMaxima.cpp:3515 ../src/wxMaxima.cpp:3534
 msgid "Name:"
 msgstr "命名："
 
@@ -2427,7 +2422,7 @@ msgstr "新增文件"
 msgid "New value:"
 msgstr "新值："
 
-#: ../src/wxMaxima.cpp:3738 ../src/wxMaxima.cpp:3864 ../src/wxMaxima.cpp:3881
+#: ../src/wxMaxima.cpp:3744 ../src/wxMaxima.cpp:3870 ../src/wxMaxima.cpp:3887
 msgid "New variable:"
 msgstr "新變數："
 
@@ -2439,7 +2434,7 @@ msgstr "下一個命令\tAlt-Down"
 msgid "No"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2988 ../src/wxMaxima.cpp:3009
+#: ../src/wxMaxima.cpp:3004 ../src/wxMaxima.cpp:3025
 msgid "No matches found!"
 msgstr "找不到匹配的項目！"
 
@@ -2466,11 +2461,11 @@ msgstr ""
 msgid "Norwegian"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3469
+#: ../src/wxMaxima.cpp:3479
 msgid "Not a valid matrix dimension!"
 msgstr "這不是有效的矩陣大小！"
 
-#: ../src/wxMaxima.cpp:3332 ../src/wxMaxima.cpp:3356
+#: ../src/wxMaxima.cpp:3344 ../src/wxMaxima.cpp:3368
 msgid "Not a valid number of equations!"
 msgstr "這不是有效的數字或方程式！"
 
@@ -2485,11 +2480,11 @@ msgstr ""
 msgid "Not connected."
 msgstr "未連線"
 
-#: ../src/wxMaxima.cpp:3755
+#: ../src/wxMaxima.cpp:3761
 msgid "Num. deg:"
 msgstr "分子 degree："
 
-#: ../src/wxMaxima.cpp:3324 ../src/wxMaxima.cpp:3348
+#: ../src/wxMaxima.cpp:3336 ../src/wxMaxima.cpp:3360
 msgid "Number of equations:"
 msgstr "方程式數量："
 
@@ -2517,7 +2512,7 @@ msgstr "確認"
 msgid "Old value:"
 msgstr "舊值："
 
-#: ../src/wxMaxima.cpp:3737 ../src/wxMaxima.cpp:3863 ../src/wxMaxima.cpp:3880
+#: ../src/wxMaxima.cpp:3743 ../src/wxMaxima.cpp:3869 ../src/wxMaxima.cpp:3886
 msgid "Old variable:"
 msgstr "舊變數："
 
@@ -2531,7 +2526,7 @@ msgid ""
 "stream for messages."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4531
+#: ../src/wxMaxima.cpp:4529
 msgid "One sample t-test"
 msgstr "單樣本 t-檢驗"
 
@@ -2539,8 +2534,8 @@ msgstr "單樣本 t-檢驗"
 msgid "Online tutorials"
 msgstr "線上教材"
 
-#: ../src/ToolBar.cpp:75 ../src/main.cpp:260 ../src/Config.cpp:514
-#: ../src/wxMaxima.cpp:2565
+#: ../src/Config.cpp:514 ../src/ToolBar.cpp:75 ../src/main.cpp:260
+#: ../src/wxMaxima.cpp:2585
 msgid "Open"
 msgstr "開啟"
 
@@ -2564,11 +2559,11 @@ msgstr "開新視窗"
 msgid "Open document"
 msgstr "開啟文件"
 
-#: ../src/wxMaxima.cpp:4592
+#: ../src/wxMaxima.cpp:4590
 msgid "Open matrix"
 msgstr "開啟矩陣"
 
-#: ../src/wxMaxima.cpp:1230 ../src/wxMaxima.cpp:1304
+#: ../src/wxMaxima.cpp:1248 ../src/wxMaxima.cpp:1322
 msgid "Opening file"
 msgstr "正在開啟檔案"
 
@@ -2576,7 +2571,7 @@ msgstr "正在開啟檔案"
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ToolBar.cpp:87 ../src/Config.cpp:109
+#: ../src/Config.cpp:109 ../src/ToolBar.cpp:87
 msgid "Options"
 msgstr "選項"
 
@@ -2596,7 +2591,7 @@ msgstr "輸出標籤"
 msgid "P&ade Approximation..."
 msgstr "Pade 近似(&A)..."
 
-#: ../src/wxMaxima.cpp:2883 ../src/wxMaxima.cpp:4863
+#: ../src/wxMaxima.cpp:2899 ../src/wxMaxima.cpp:4859
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|X pixmap (*.xpm)|*.xpm"
@@ -2604,7 +2599,7 @@ msgstr ""
 "PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|Windows 點陣圖 (*.bmp)|*.bmp|X pixmap "
 "(*.xpm)|*.xpm"
 
-#: ../src/wxMaxima.cpp:3757
+#: ../src/wxMaxima.cpp:3763
 msgid "Pade approximation"
 msgstr "Pade 近似"
 
@@ -2632,15 +2627,15 @@ msgstr "解析輸出中"
 msgid "Partial &Fractions..."
 msgstr "部分分式(&F)..."
 
-#: ../src/wxMaxima.cpp:3821
+#: ../src/wxMaxima.cpp:3827
 msgid "Partial fractions"
 msgstr "部分分式"
 
-#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1447
+#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1465
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: ../src/ToolBar.cpp:99 ../src/MathCtrl.cpp:855 ../src/MathCtrl.cpp:870
+#: ../src/MathCtrl.cpp:878 ../src/MathCtrl.cpp:893 ../src/ToolBar.cpp:99
 msgid "Paste"
 msgstr "貼上"
 
@@ -2660,7 +2655,7 @@ msgstr "從剪貼簿貼上文字"
 msgid "Piechart..."
 msgstr "圓餅圖..."
 
-#: ../src/wxMaxima.cpp:1790
+#: ../src/wxMaxima.cpp:1811
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "請從「編輯(E)」->「設定(O)」設定 wxMaxima"
 
@@ -2681,7 +2676,7 @@ msgid "Plot &Format..."
 msgstr "繪圖格式(&F)..."
 
 #: ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:450 ../src/Plot2dWiz.cpp:464
-#: ../src/wxMaxima.cpp:4030 ../src/wxMaxima.cpp:4832
+#: ../src/wxMaxima.cpp:4034 ../src/wxMaxima.cpp:4828
 msgid "Plot 2D"
 msgstr "二維繪圖"
 
@@ -2689,11 +2684,11 @@ msgstr "二維繪圖"
 msgid "Plot 2D..."
 msgstr "二維繪圖..."
 
-#: ../src/MathCtrl.cpp:848
+#: ../src/MathCtrl.cpp:871
 msgid "Plot 2d..."
 msgstr "二維繪圖..."
 
-#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4016 ../src/wxMaxima.cpp:4845
+#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4020 ../src/wxMaxima.cpp:4841
 msgid "Plot 3D"
 msgstr "三維繪圖"
 
@@ -2701,11 +2696,11 @@ msgstr "三維繪圖"
 msgid "Plot 3D..."
 msgstr "三維繪圖..."
 
-#: ../src/MathCtrl.cpp:849
+#: ../src/MathCtrl.cpp:872
 msgid "Plot 3d..."
 msgstr "三維繪圖..."
 
-#: ../src/wxMaxima.cpp:4043
+#: ../src/wxMaxima.cpp:4047
 msgid "Plot format"
 msgstr "繪圖格式"
 
@@ -2722,8 +2717,8 @@ msgid "Plot to file:"
 msgstr "繪圖存檔："
 
 #: ../src/BC2Wiz.cpp:30 ../src/BC2Wiz.cpp:36 ../src/LimitWiz.cpp:33
-#: ../src/SeriesWiz.cpp:39 ../src/wxMaxima.cpp:3264 ../src/wxMaxima.cpp:3279
-#: ../src/wxMaxima.cpp:3387
+#: ../src/SeriesWiz.cpp:39 ../src/wxMaxima.cpp:3276 ../src/wxMaxima.cpp:3291
+#: ../src/wxMaxima.cpp:3399
 msgid "Point:"
 msgstr "點："
 
@@ -2731,11 +2726,11 @@ msgstr "點："
 msgid "Polish"
 msgstr "Polish"
 
-#: ../src/wxMaxima.cpp:3774 ../src/wxMaxima.cpp:3789 ../src/wxMaxima.cpp:3804
+#: ../src/wxMaxima.cpp:3780 ../src/wxMaxima.cpp:3795 ../src/wxMaxima.cpp:3810
 msgid "Polynomial 1:"
 msgstr "多項式 1："
 
-#: ../src/wxMaxima.cpp:3774 ../src/wxMaxima.cpp:3789 ../src/wxMaxima.cpp:3804
+#: ../src/wxMaxima.cpp:3780 ../src/wxMaxima.cpp:3795 ../src/wxMaxima.cpp:3810
 msgid "Polynomial 2:"
 msgstr "多項式 2："
 
@@ -2747,7 +2742,7 @@ msgstr "Portuguese (Brazilian)"
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript 檔 (*.eps)|*.eps|所有類型|*"
 
-#: ../src/wxMaxima.cpp:4089
+#: ../src/wxMaxima.cpp:4091
 msgid "Precision"
 msgstr "精確度"
 
@@ -2776,7 +2771,7 @@ msgstr "列印"
 msgid "Print document"
 msgstr "列印文件"
 
-#: ../src/wxMaxima.cpp:3987
+#: ../src/wxMaxima.cpp:3993
 msgid "Product"
 msgstr "乘積"
 
@@ -2830,7 +2825,7 @@ msgstr "縮併 (三角)"
 msgid "Reduce trigonometric expression"
 msgstr "縮併三角函數數式"
 
-#: ../src/wxMaxima.cpp:5162
+#: ../src/wxMaxima.cpp:5160
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -2842,7 +2837,7 @@ msgstr "移除所有輸出"
 msgid "Remove output from input cells"
 msgstr "移除所有輸入單元的輸出"
 
-#: ../src/wxMaxima.cpp:3020
+#: ../src/wxMaxima.cpp:3036
 #, c-format
 msgid "Replaced %d occurrences."
 msgstr "找到 %d 個並取代。"
@@ -2860,7 +2855,7 @@ msgstr "重新啟動 Maxima"
 msgid "Restart maxima"
 msgstr "重新啟動 Maxima"
 
-#: ../src/MathCtrl.cpp:3448
+#: ../src/MathCtrl.cpp:3476
 msgid "Result"
 msgstr ""
 
@@ -2888,27 +2883,27 @@ msgstr "列："
 msgid "Russian"
 msgstr "Russian"
 
-#: ../src/wxMaxima.cpp:4544
+#: ../src/wxMaxima.cpp:4542
 msgid "Sample 1:"
 msgstr "樣本 1："
 
-#: ../src/wxMaxima.cpp:4544
+#: ../src/wxMaxima.cpp:4542
 msgid "Sample 2:"
 msgstr "樣本 2："
 
-#: ../src/wxMaxima.cpp:4530
+#: ../src/wxMaxima.cpp:4528
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/ToolBar.cpp:78 ../src/Config.cpp:631 ../src/wxMaxima.cpp:5535
+#: ../src/Config.cpp:631 ../src/ToolBar.cpp:78 ../src/wxMaxima.cpp:5531
 msgid "Save"
 msgstr "儲存"
 
-#: ../src/MathCtrl.cpp:799
+#: ../src/MathCtrl.cpp:822
 msgid "Save Animation..."
 msgstr "儲存動畫..."
 
-#: ../src/wxMaxima.cpp:2348
+#: ../src/wxMaxima.cpp:2370
 msgid "Save As"
 msgstr "另存新檔"
 
@@ -2916,11 +2911,11 @@ msgstr "另存新檔"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "另存新檔...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:797
+#: ../src/MathCtrl.cpp:820
 msgid "Save Image..."
 msgstr "儲存圖片..."
 
-#: ../src/wxMaxima.cpp:2881
+#: ../src/wxMaxima.cpp:2897
 msgid "Save Selection to Image"
 msgstr "儲存所選區域為圖片"
 
@@ -2928,7 +2923,7 @@ msgstr "儲存所選區域為圖片"
 msgid "Save Selection to Image..."
 msgstr "儲存為圖片..."
 
-#: ../src/wxMaxima.cpp:4877
+#: ../src/wxMaxima.cpp:4873
 msgid "Save animation to file"
 msgstr "儲存動畫至檔案"
 
@@ -2962,7 +2957,7 @@ msgstr "儲存繪圖至檔案"
 msgid "Save selection from document to an image file"
 msgstr "儲存所選區域為圖片檔"
 
-#: ../src/wxMaxima.cpp:4861
+#: ../src/wxMaxima.cpp:4857
 msgid "Save selection to file"
 msgstr "儲存選取區域至檔案"
 
@@ -2991,7 +2986,7 @@ msgstr ""
 msgid "Saving..."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4467
+#: ../src/wxMaxima.cpp:4465
 msgid "Scatterplot"
 msgstr "散布圖"
 
@@ -3007,7 +3002,7 @@ msgstr "章節"
 msgid "Section cell"
 msgstr "章節單元"
 
-#: ../src/MathCtrl.cpp:856 ../src/MathCtrl.cpp:872
+#: ../src/MathCtrl.cpp:879 ../src/MathCtrl.cpp:895
 msgid "Select All"
 msgstr "全部選取"
 
@@ -3019,7 +3014,7 @@ msgstr "全部選取\tCtrl-A"
 msgid "Select Maxima program"
 msgstr "選擇 Maxima 程式"
 
-#: ../src/wxMaxima.cpp:4628
+#: ../src/wxMaxima.cpp:4626
 msgid "Select Subsample"
 msgstr "選取子樣本"
 
@@ -3032,7 +3027,7 @@ msgstr "選擇常數"
 msgid "Select all"
 msgstr "全部選取"
 
-#: ../src/wxMaxima.cpp:3059
+#: ../src/wxMaxima.cpp:3073
 msgid "Select math display algorithm"
 msgstr "選擇用於顯示數學的演算法"
 
@@ -3047,7 +3042,7 @@ msgstr ""
 msgid "Selection"
 msgstr "所選區域"
 
-#: ../src/SeriesWiz.cpp:62 ../src/wxMaxima.cpp:3923
+#: ../src/SeriesWiz.cpp:62 ../src/wxMaxima.cpp:3929
 msgid "Series"
 msgstr "級數"
 
@@ -3055,7 +3050,7 @@ msgstr "級數"
 msgid "Series..."
 msgstr "級數..."
 
-#: ../src/wxMaxima.cpp:756
+#: ../src/wxMaxima.cpp:772
 msgid "Server started"
 msgstr "伺服器已啟動"
 
@@ -3182,7 +3177,7 @@ msgstr "顯示長的數式"
 msgid "Show long expressions in wxMaxima document."
 msgstr "在 wxMaxima 文件中顯示長的數式"
 
-#: ../src/wxMaxima.cpp:3081
+#: ../src/wxMaxima.cpp:3095
 msgid "Show the definition of function:"
 msgstr "顯示該函數的定義："
 
@@ -3207,7 +3202,7 @@ msgstr "化簡根式"
 msgid "Simplify (tr)"
 msgstr "化簡 (三角)"
 
-#: ../src/MathCtrl.cpp:840
+#: ../src/MathCtrl.cpp:863
 msgid "Simplify Expression"
 msgstr "化簡數式"
 
@@ -3242,11 +3237,11 @@ msgstr ""
 "插入圖片。請注意：若您希望將圖片與文件一起儲存，您必須將您的文件儲存為 "
 "「wxMaxima XML 文件」。"
 
-#: ../src/BC2Wiz.cpp:27 ../src/wxMaxima.cpp:3264 ../src/wxMaxima.cpp:3279
+#: ../src/BC2Wiz.cpp:27 ../src/wxMaxima.cpp:3276 ../src/wxMaxima.cpp:3291
 msgid "Solution:"
 msgstr "一般解："
 
-#: ../src/wxMaxima.cpp:3200 ../src/wxMaxima.cpp:3214 ../src/wxMaxima.cpp:4750
+#: ../src/wxMaxima.cpp:3212 ../src/wxMaxima.cpp:3226 ../src/wxMaxima.cpp:4746
 msgid "Solve"
 msgstr "求解"
 
@@ -3266,7 +3261,7 @@ msgstr "解常微分方程(&O)..."
 msgid "Solve (to_poly)..."
 msgstr "求解 (to_poly)..."
 
-#: ../src/wxMaxima.cpp:3250 ../src/wxMaxima.cpp:3374
+#: ../src/wxMaxima.cpp:3262 ../src/wxMaxima.cpp:3386
 msgid "Solve ODE"
 msgstr "解常微分方程"
 
@@ -3278,7 +3273,7 @@ msgstr "以 Laplace 變換解常微分方程(&C)..."
 msgid "Solve ODE..."
 msgstr "解常微分方程..."
 
-#: ../src/wxMaxima.cpp:3325 ../src/wxMaxima.cpp:3336
+#: ../src/wxMaxima.cpp:3337 ../src/wxMaxima.cpp:3348
 msgid "Solve algebraic system"
 msgstr "解代數系統"
 
@@ -3306,7 +3301,7 @@ msgstr "解 1 階常微分方程的初始值問題"
 msgid "Solve initial value problem for second degree ODE"
 msgstr "解 2 階常微分方程的初始值問題"
 
-#: ../src/wxMaxima.cpp:3349 ../src/wxMaxima.cpp:3360
+#: ../src/wxMaxima.cpp:3361 ../src/wxMaxima.cpp:3372
 msgid "Solve linear system"
 msgstr "解線性系統"
 
@@ -3322,7 +3317,7 @@ msgstr "解常微分方程式 (最大 2 階)"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "以 Laplace 變換解常微分方程式"
 
-#: ../src/MathCtrl.cpp:837 ../src/wxMaximaFrame.cpp:1086
+#: ../src/MathCtrl.cpp:860 ../src/wxMaximaFrame.cpp:1086
 msgid "Solve..."
 msgstr "求解..."
 
@@ -3346,7 +3341,7 @@ msgstr "特殊"
 msgid "Special constants"
 msgstr "特殊常數"
 
-#: ../src/MathCtrl.cpp:800
+#: ../src/MathCtrl.cpp:823
 msgid "Start Animation"
 msgstr "開始動畫"
 
@@ -3361,19 +3356,19 @@ msgid ""
 "the with_slider class of commands"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:266
+#: ../src/wxMaxima.cpp:269
 msgid "Starting Maxima process failed"
 msgstr "Maxima 程序啟動失敗"
 
-#: ../src/wxMaxima.cpp:812
+#: ../src/wxMaxima.cpp:828
 msgid "Starting Maxima..."
 msgstr "Maxima 啟動中..."
 
-#: ../src/wxMaxima.cpp:264 ../src/wxMaxima.cpp:753
+#: ../src/wxMaxima.cpp:267 ../src/wxMaxima.cpp:769
 msgid "Starting server failed"
 msgstr "伺服器啟動失敗"
 
-#: ../src/wxMaxima.cpp:734
+#: ../src/wxMaxima.cpp:750
 #, c-format
 msgid "Starting server on port %d"
 msgstr "於 %d埠啟動伺服器"
@@ -3414,12 +3409,12 @@ msgstr "子章節單元"
 msgid "Subst..."
 msgstr "代換"
 
-#: ../src/SubstituteWiz.cpp:54 ../src/wxMaxima.cpp:3160
-#: ../src/wxMaxima.cpp:4819
+#: ../src/SubstituteWiz.cpp:54 ../src/wxMaxima.cpp:3174
+#: ../src/wxMaxima.cpp:4815
 msgid "Substitute"
 msgstr "代換"
 
-#: ../src/MathCtrl.cpp:843 ../src/wxMaximaFrame.cpp:820
+#: ../src/MathCtrl.cpp:866 ../src/wxMaximaFrame.cpp:820
 msgid "Substitute..."
 msgstr "代換..."
 
@@ -3433,11 +3428,11 @@ msgstr "子章節"
 msgid "Subsubsection cell"
 msgstr "子章節單元"
 
-#: ../src/SumWiz.cpp:58 ../src/wxMaxima.cpp:3971
+#: ../src/SumWiz.cpp:58 ../src/wxMaxima.cpp:3977
 msgid "Sum"
 msgstr "加總"
 
-#: ../src/wxMaxima.cpp:4216
+#: ../src/wxMaxima.cpp:4218
 msgid "System info"
 msgstr "系統資訊"
 
@@ -3450,11 +3445,11 @@ msgstr ""
 msgid "Table of contents\tAlt-Shift-T"
 msgstr "工具列\tAlt-Shift-T"
 
-#: ../src/wxMaxima.cpp:3755
+#: ../src/wxMaxima.cpp:3761
 msgid "Taylor series:"
 msgstr "Taylor 級數："
 
-#: ../src/wxMaxima.cpp:3706
+#: ../src/wxMaxima.cpp:3714
 msgid "Tellrat"
 msgstr "Tellrat 函數"
 
@@ -3517,7 +3512,7 @@ msgstr ""
 "sourceforge.net/wiki/index.php/Tutorials 以獲得更多 wxMaxima 與 Maxima 的相關"
 "資訊。"
 
-#: ../src/SlideShowCell.cpp:379
+#: ../src/SlideShowCell.cpp:257
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -3527,7 +3522,7 @@ msgstr ""
 "\n"
 "請確認您已安裝 ImageMagick 且 wxMaxima 可找到該程式。"
 
-#: ../src/wxMaxima.cpp:398
+#: ../src/wxMaxima.cpp:404
 msgid ""
 "There was an error in generated XML!\n"
 "\n"
@@ -3541,7 +3536,7 @@ msgstr ""
 msgid "Ticks:"
 msgstr "描繪密度："
 
-#: ../src/wxMaxima.cpp:3898 ../src/wxMaxima.cpp:4795
+#: ../src/wxMaxima.cpp:3904 ../src/wxMaxima.cpp:4791
 msgid "Times:"
 msgstr "次數："
 
@@ -3575,7 +3570,7 @@ msgstr "計算長浮點數(&B)"
 msgid "To &Float"
 msgstr "計算浮點數(&F)"
 
-#: ../src/MathCtrl.cpp:835
+#: ../src/MathCtrl.cpp:858
 msgid "To Float"
 msgstr "計算浮點數"
 
@@ -3617,7 +3612,7 @@ msgstr ""
 
 #: ../src/IntegrateWiz.cpp:41 ../src/Plot2dWiz.cpp:40 ../src/Plot2dWiz.cpp:50
 #: ../src/Plot2dWiz.cpp:539 ../src/Plot3dWiz.cpp:39 ../src/Plot3dWiz.cpp:48
-#: ../src/SumWiz.cpp:36 ../src/wxMaxima.cpp:3560 ../src/wxMaxima.cpp:3986
+#: ../src/SumWiz.cpp:36 ../src/wxMaxima.cpp:3570 ../src/wxMaxima.cpp:3992
 msgid "To:"
 msgstr "到："
 
@@ -3650,11 +3645,11 @@ msgstr "切換數值輸出／數式輸出"
 msgid "Toolbar\tAlt-Shift-B"
 msgstr "工具列\tAlt-Shift-T"
 
-#: ../src/wxMaxima.cpp:4228
+#: ../src/wxMaxima.cpp:4230
 msgid "Toolbar icons"
 msgstr "工具列圖示"
 
-#: ../src/wxMaxima.cpp:4229
+#: ../src/wxMaxima.cpp:4231
 msgid "Translated by"
 msgstr "翻譯者"
 
@@ -3662,15 +3657,15 @@ msgstr "翻譯者"
 msgid "Transpose a matrix"
 msgstr "計算轉置矩陣"
 
-#: ../src/MathCtrl.cpp:5077
+#: ../src/MathCtrl.cpp:5106
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4423
+#: ../src/MathCtrl.cpp:4452
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4487
+#: ../src/MathCtrl.cpp:4516
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -3682,7 +3677,7 @@ msgstr ""
 msgid "Tutorials"
 msgstr "教材"
 
-#: ../src/wxMaxima.cpp:4546
+#: ../src/wxMaxima.cpp:4544
 msgid "Two sample t-test"
 msgstr "雙樣本 t-檢驗"
 
@@ -3694,15 +3689,15 @@ msgstr "類型："
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
-#: ../src/wxMaxima.cpp:5066
+#: ../src/wxMaxima.cpp:5060
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5046
+#: ../src/wxMaxima.cpp:5040
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5487
+#: ../src/wxMaxima.cpp:5483
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -3733,23 +3728,23 @@ msgstr "全部選取\tCtrl-A"
 msgid "Unfold all folded sections"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4218
+#: ../src/wxMaxima.cpp:4220
 msgid "Unicode Support"
 msgstr "支援 Unicode"
 
-#: ../src/wxMaxima.cpp:5057
+#: ../src/wxMaxima.cpp:5051
 msgid "Unterminated comment."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5034
+#: ../src/wxMaxima.cpp:5028
 msgid "Unterminated string."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5472 ../src/wxMaxima.cpp:5479 ../src/wxMaxima.cpp:5487
+#: ../src/wxMaxima.cpp:5468 ../src/wxMaxima.cpp:5475 ../src/wxMaxima.cpp:5483
 msgid "Upgrade"
 msgstr "升級"
 
-#: ../src/wxMaxima.cpp:3230 ../src/wxMaxima.cpp:4764
+#: ../src/wxMaxima.cpp:3242 ../src/wxMaxima.cpp:4760
 msgid "Upper bound:"
 msgstr "上界："
 
@@ -3764,11 +3759,11 @@ msgstr ""
 #: ../src/Config.cpp:149
 msgid ""
 "Use MathJAX instead of images in HTML exports to display maxima output. The "
-"advantage of MathJAX is that it allows to copy the displayed equations as if "
-"they were text, to choose if they should be copied as TeX or MathML instead "
-"and displays them in a scaleable format that is really nice to look at. The "
-"disadvantage of MathJAX is that it will need JavaScript and a little bit of "
-"time in order to typeset an equation."
+"advantage of MathJAX is that it allows one to copy the displayed equations "
+"as if they were text, to choose if they should be copied as TeX or MathML "
+"instead and displays them in a scaleable format that is really nice to look "
+"at. The disadvantage of MathJAX is that it will need JavaScript and a little "
+"bit of time in order to typeset an equation."
 msgstr ""
 
 #: ../src/Config.cpp:487
@@ -3783,22 +3778,22 @@ msgstr "用圓點符號表示乘法"
 msgid "Use jsMath fonts"
 msgstr "使用 jsMath 字型"
 
-#: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:3264
-#: ../src/wxMaxima.cpp:3280 ../src/wxMaxima.cpp:3388
+#: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:3276
+#: ../src/wxMaxima.cpp:3292 ../src/wxMaxima.cpp:3400
 msgid "Value:"
 msgstr "值："
 
-#: ../src/wxMaxima.cpp:3199 ../src/wxMaxima.cpp:3213 ../src/wxMaxima.cpp:3897
-#: ../src/wxMaxima.cpp:4749 ../src/wxMaxima.cpp:4794
+#: ../src/wxMaxima.cpp:3211 ../src/wxMaxima.cpp:3225 ../src/wxMaxima.cpp:3903
+#: ../src/wxMaxima.cpp:4745 ../src/wxMaxima.cpp:4790
 msgid "Variable(s):"
 msgstr "變數："
 
 #: ../src/IntegrateWiz.cpp:33 ../src/LimitWiz.cpp:30 ../src/Plot2dWiz.cpp:34
 #: ../src/Plot2dWiz.cpp:44 ../src/Plot2dWiz.cpp:533 ../src/Plot3dWiz.cpp:33
 #: ../src/Plot3dWiz.cpp:42 ../src/SeriesWiz.cpp:36 ../src/SumWiz.cpp:30
-#: ../src/wxMaxima.cpp:3229 ../src/wxMaxima.cpp:3248 ../src/wxMaxima.cpp:3490
-#: ../src/wxMaxima.cpp:3559 ../src/wxMaxima.cpp:3819 ../src/wxMaxima.cpp:3834
-#: ../src/wxMaxima.cpp:3985 ../src/wxMaxima.cpp:4763
+#: ../src/wxMaxima.cpp:3241 ../src/wxMaxima.cpp:3260 ../src/wxMaxima.cpp:3500
+#: ../src/wxMaxima.cpp:3569 ../src/wxMaxima.cpp:3825 ../src/wxMaxima.cpp:3840
+#: ../src/wxMaxima.cpp:3991 ../src/wxMaxima.cpp:4759
 msgid "Variable:"
 msgstr "變數："
 
@@ -3806,8 +3801,8 @@ msgstr "變數："
 msgid "Variables"
 msgstr "變數"
 
-#: ../src/SystemWiz.cpp:73 ../src/wxMaxima.cpp:3310 ../src/wxMaxima.cpp:3951
-#: ../src/wxMaxima.cpp:4575
+#: ../src/SystemWiz.cpp:73 ../src/wxMaxima.cpp:3322 ../src/wxMaxima.cpp:3957
+#: ../src/wxMaxima.cpp:4573
 msgid "Variables:"
 msgstr "變數："
 
@@ -3815,8 +3810,8 @@ msgstr "變數："
 msgid "Variance..."
 msgstr "變異數..."
 
-#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1364 ../src/wxMaxima.cpp:1447
-#: ../src/wxMaxima.cpp:1788
+#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1382 ../src/wxMaxima.cpp:1465
+#: ../src/wxMaxima.cpp:1809
 msgid "Warning"
 msgstr "警告"
 
@@ -3842,11 +3837,11 @@ msgid ""
 "introducing an empty line."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2350
+#: ../src/wxMaxima.cpp:2372
 msgid "Whole document (*.wxmx)|*.wxmx|The input without images (*.wxm)|*.wxm"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3505 ../src/wxMaxima.cpp:3524
+#: ../src/wxMaxima.cpp:3515 ../src/wxMaxima.cpp:3534
 msgid "Width:"
 msgstr "寬："
 
@@ -3858,7 +3853,7 @@ msgstr ""
 msgid "Write matching parenthesis in text controls."
 msgstr "在文字控制項輸入時插入匹配的括弧"
 
-#: ../src/wxMaxima.cpp:4225
+#: ../src/wxMaxima.cpp:4227
 msgid "Written by"
 msgstr "作者"
 
@@ -3923,7 +3918,7 @@ msgstr ""
 "您可以透過滑鼠(在單元之間或左側的單元框拖曳)或鍵盤(在移動水平游標時按住Shift"
 "鍵)選取多個單元，然後對所選區域操作。這在您想要刪除或評算多個單元時很有用。"
 
-#: ../src/wxMaxima.cpp:5469
+#: ../src/wxMaxima.cpp:5465
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -3934,11 +3929,11 @@ msgstr ""
 "\n"
 "按「確認」至 wxMaxima 首頁。"
 
-#: ../src/wxMaxima.cpp:5534
+#: ../src/wxMaxima.cpp:5530
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果您未儲存，您所做的所有修改將遺失。"
 
-#: ../src/wxMaxima.cpp:5479
+#: ../src/wxMaxima.cpp:5475
 msgid "Your version of wxMaxima is up to date."
 msgstr "您的 wxMaxima 是最新版本"
 
@@ -3958,11 +3953,11 @@ msgstr "將顯示比例放大 10%"
 msgid "Zoom out 10%"
 msgstr "將顯示比例縮小 10%"
 
-#: ../src/wxMaximaFrame.cpp:267 ../src/wxMaxima.cpp:5317
+#: ../src/wxMaxima.cpp:5313 ../src/wxMaximaFrame.cpp:267
 msgid "[ unsaved ]"
 msgstr "[ 未儲存 ]"
 
-#: ../src/wxMaxima.cpp:5319
+#: ../src/wxMaxima.cpp:5315
 msgid "[ unsaved* ]"
 msgstr "[ 未儲存* ]"
 
@@ -3971,12 +3966,12 @@ msgstr "[ 未儲存* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3417
+#: ../src/MathCtrl.cpp:3444
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3525
+#: ../src/MathCtrl.cpp:3553
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -3989,7 +3984,7 @@ msgstr "反對稱"
 msgid "both sides"
 msgstr "雙邊"
 
-#: ../src/wxMaxima.cpp:1061
+#: ../src/wxMaxima.cpp:1078
 msgid "bug: Input prompt end detected but didn't detect an input prompt begin!"
 msgstr ""
 
@@ -4020,7 +4015,7 @@ msgstr "左"
 msgid "logscale"
 msgstr "對數尺度"
 
-#: ../src/wxMaxima.cpp:3524
+#: ../src/wxMaxima.cpp:3534
 msgid "matrix[i,j]:"
 msgstr "矩陣[i,j]："
 
@@ -4040,12 +4035,12 @@ msgstr "右"
 msgid "symmetric"
 msgstr "對稱"
 
-#: ../src/wxMaxima.cpp:5516
+#: ../src/wxMaxima.cpp:5512
 msgid "unsaved"
 msgstr "未儲存"
 
-#: ../src/wxMaximaFrame.cpp:269 ../src/wxMaxima.cpp:2342
-#: ../src/wxMaxima.cpp:2593
+#: ../src/wxMaxima.cpp:2364 ../src/wxMaxima.cpp:2613
+#: ../src/wxMaximaFrame.cpp:269
 msgid "untitled"
 msgstr "未命名"
 
@@ -4058,8 +4053,8 @@ msgstr "未命名 %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:267 ../src/wxMaxima.cpp:5317
-#: ../src/wxMaxima.cpp:5319 ../src/wxMaxima.cpp:5328 ../src/wxMaxima.cpp:5331
+#: ../src/wxMaxima.cpp:5313 ../src/wxMaxima.cpp:5315 ../src/wxMaxima.cpp:5324
+#: ../src/wxMaxima.cpp:5327 ../src/wxMaximaFrame.cpp:267
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
@@ -4085,7 +4080,7 @@ msgstr ""
 msgid "wxMaxima configuration"
 msgstr "wxMaxima 設定"
 
-#: ../src/wxMaxima.cpp:1785
+#: ../src/wxMaxima.cpp:1806
 msgid ""
 "wxMaxima could not find Maxima!\n"
 "\n"
@@ -4097,7 +4092,7 @@ msgstr ""
 "請從「編輯(E)」->「設定(O)」設定 wxMaxima\n"
 "然後從「Maxima(M)」->「重新啟動 Maxima(R)」啟動 Maxima"
 
-#: ../src/wxMaxima.cpp:2040
+#: ../src/wxMaxima.cpp:2061
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
@@ -4107,7 +4102,7 @@ msgstr ""
 "\n"
 "請檢查您的安裝"
 
-#: ../src/wxMaxima.cpp:1868
+#: ../src/wxMaxima.cpp:1889
 msgid ""
 "wxMaxima could not find tip files.\n"
 "\n"
@@ -4117,7 +4112,7 @@ msgstr ""
 "\n"
 "請檢查您的安裝"
 
-#: ../src/wxMaxima.cpp:254
+#: ../src/wxMaxima.cpp:257
 msgid ""
 "wxMaxima could not start the server.\n"
 "\n"
@@ -4138,24 +4133,24 @@ msgstr ""
 "wxMaxima 對話框會設定輸入內容為預設值，其中一種是 \"%\"。如果您已經在您的文件"
 "中作選取，則這個選取內容將會取代 \"%\"。"
 
-#: ../src/wxMaxima.cpp:2134
+#: ../src/wxMaxima.cpp:2155
 msgid "wxMaxima document"
 msgstr "wxMaxima 文件"
 
-#: ../src/main.cpp:262 ../src/wxMaxima.cpp:2567
+#: ../src/main.cpp:262 ../src/wxMaxima.cpp:2587
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima 文件 (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
-#: ../src/wxMaxima.cpp:1241 ../src/wxMaxima.cpp:1253 ../src/wxMaxima.cpp:1318
-#: ../src/wxMaxima.cpp:1331
+#: ../src/wxMaxima.cpp:1259 ../src/wxMaxima.cpp:1271 ../src/wxMaxima.cpp:1336
+#: ../src/wxMaxima.cpp:1349
 msgid "wxMaxima encountered an error loading "
 msgstr "wxMaxima 發生讀取錯誤"
 
-#: ../src/wxMaxima.cpp:4227
+#: ../src/wxMaxima.cpp:4229
 msgid "wxMaxima icon"
 msgstr "wxMaxima 圖示"
 
-#: ../src/wxMaxima.cpp:4215
+#: ../src/wxMaxima.cpp:4217
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "MAXIMA based on wxWidgets."
@@ -4174,6 +4169,9 @@ msgstr ""
 #: ../src/wxMaxima.cpp:4288
 msgid "yes"
 msgstr "是"
+
+#~ msgid "Error %d"
+#~ msgstr "錯誤 %d"
 
 #, fuzzy
 #~ msgid "Structure\tAlt-Shift-T"
