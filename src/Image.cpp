@@ -111,8 +111,11 @@ wxBitmap Image::GetBitmap()
   // Make sure we stay within sane defaults
   if(m_width<1)m_width = 1;
   if(m_height<1)m_height = 1;
-  
-  m_scaledBitmap = m_scaledBitmap.ConvertToImage().Rescale(m_width, m_height,wxIMAGE_QUALITY_BICUBIC);
+
+  // Create a scaled bitmap and return it.
+  wxImage img=m_scaledBitmap.ConvertToImage();
+  img.Rescale(m_width, m_height,wxIMAGE_QUALITY_BICUBIC);
+  m_scaledBitmap = wxBitmap(img,24);
   return m_scaledBitmap;
 }
 
@@ -135,9 +138,10 @@ void Image::LoadImage(wxString image, bool remove)
 {
   m_compressedImage.Clear();
   m_scaledBitmap.Create (0,0);
-  
+
   if (m_fileSystem) {
     wxFSFile *fsfile = m_fileSystem->OpenFile(image);
+    std::cerr<<image<<" from filesystem\n";
     if (fsfile) { // open successful
 
       wxInputStream *istream = fsfile->GetStream();
@@ -147,6 +151,7 @@ void Image::LoadImage(wxString image, bool remove)
     m_fileSystem = NULL;
   }
   else {
+    std::cerr<<image<<" from disk\n";
     wxFile file(image);
     wxFileInputStream strm(file);
     m_compressedImage = ReadCompressedImage(&strm);

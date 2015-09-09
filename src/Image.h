@@ -98,6 +98,9 @@ public:
   size_t m_height;
   //! Returns the original image in its compressed form
   wxMemoryBuffer GetCompressedImage(){return m_compressedImage;}
+  size_t GetOriginalWidth(){return m_originalWidth;}
+  size_t GetOriginalHeight(){return m_originalHeight;}
+
 protected:
   //! The width of the unscaled image
   size_t m_originalWidth;
