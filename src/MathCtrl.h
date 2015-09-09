@@ -43,7 +43,12 @@ This canvas contains all the math, title, image etc.- cells of the current sessi
  */
 class MathCtrl: public wxScrolledCanvas
 {
-   private:  
+private:
+  //! The last beginning for the area being drawn
+  size_t m_lastTop;
+  //! The last ending for the area being drawn
+  size_t m_lastBottom;
+
   /*! \defgroup UndoBufferFill
 
     These methods and classes contain the undo functionality for tree changes:

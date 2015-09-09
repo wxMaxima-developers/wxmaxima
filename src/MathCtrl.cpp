@@ -59,6 +59,8 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_lastTop    = 0;
+  m_lastBottom = 0;
   m_followEvaluation = true;
   m_lastWorkingGroup = NULL;
   m_workingGroup = NULL;
@@ -218,7 +220,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
             // Clear the image cache of all cells above or below the viewport.
             if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
-              tmp->GetOutput()->ClearCache();
+            {
+              // Only actually clear the image cache if we did display the
+              // image in the last step: Else it most probably isn't actually cached.
+              if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
+                tmp->GetOutput()->ClearCache();
+            }
           }
           else
           {
@@ -227,12 +234,19 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
             // Clear the image cache of all cells above or below the viewport.
             if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
-              tmp->GetOutput()->ClearCache();
+            {
+              // Only actually clear the image cache if we did display the
+              // image in the last step: Else it most probably isn't actually cached.
+              if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
+                tmp->GetOutput()->ClearCache();
+            }
           }
         }
         tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       }
     }
+    m_lastTop = top;
+    m_lastBottom = bottom;
     //
     // Draw content over
     //
