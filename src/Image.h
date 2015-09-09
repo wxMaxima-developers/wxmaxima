@@ -75,7 +75,7 @@ public:
 
     Will recreate the scaled image as soon as needed.
    */
-  void ClearCache() {m_scaledBitmap.Create (0,0);}
+  void ClearCache() {if(m_scaledBitmap.GetWidth()>0)m_scaledBitmap.Create(0,0);}
   //! Reads the compressed image into a memory buffer
   wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   //! Returns the file name extension of the current image

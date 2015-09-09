@@ -130,7 +130,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   CalcUnscrolledPosition(0, rect.GetTop(), &tmp, &top);
   CalcUnscrolledPosition(0, rect.GetBottom(), &tmp, &bottom);
 
-  // Thest if m_memory is NULL (resize event)
+  // Test if m_memory is NULL (resize event)
   if (m_memory == NULL) {
     m_memory = new wxBitmap();
     m_memory->CreateScaled (sz.x, sz.y, -1, dc.GetContentScaleFactor ());
@@ -171,7 +171,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 #endif
       dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION)))); //highlight c.
 
-      if (m_selectionStart->GetType() == MC_TYPE_GROUP) // selection of groups
+      // Draw the marker that tells us which groups are selected -
+      // if groups are selected, that is.
+      if (m_selectionStart->GetType() == MC_TYPE_GROUP) 
       {
         while (tmp != NULL)
         {
@@ -203,7 +205,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     // Mark groupcells currently in queue. TODO better in gc::draw?
     //
     if (m_evaluationQueue->GetCell() != NULL) {
-      MathCell* tmp = m_tree;
+      GroupCell* tmp = m_tree;
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
@@ -213,15 +215,22 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             wxRect rect = tmp->GetRect();
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+
+            // Clear the image cache of all cells above or below the viewport.
+            if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
+              tmp->GetOutput()->ClearCache();
           }
           else
           {
             wxRect rect = tmp->GetRect();
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+            // Clear the image cache of all cells above or below the viewport.
+            if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
+              tmp->GetOutput()->ClearCache();
           }
         }
-        tmp = tmp->m_next;
+        tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       }
     }
     //
@@ -1624,6 +1633,10 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       renumber = true;
       break;
     }
+
+    // Don't keep cached versions of scaled images around in the undo buffer.
+    tmp->GetOutput()->ClearCacheList();
+    
     if (tmp == end)
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);

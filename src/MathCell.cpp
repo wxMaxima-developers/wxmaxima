@@ -112,6 +112,16 @@ MathCell *MathCell::CopyList()
   return ret;
 }
 
+void MathCell::ClearCacheList()
+{
+  MathCell *tmp = this;
+  
+  while(tmp != NULL)
+  {
+    tmp->ClearCache();
+    tmp = tmp->m_next;
+  }
+}
 
 void MathCell::SetParentList(MathCell *parent)
 {

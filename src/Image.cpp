@@ -208,4 +208,9 @@ void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight,double scale
   // Set the width of the scaled image
   m_height = (int) (scale * height);
   m_width  = (int) (scale * width);
+
+  // Clear this cell's image cache if it doesn't contain an image of the size
+  // we need right now.
+  if(m_scaledBitmap.GetWidth() != m_width)
+    ClearCache();
 }

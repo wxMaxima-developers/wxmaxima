@@ -43,8 +43,24 @@ public:
     *first = *last = this;
   }
   friend class SlideShow;
+  /*! Writes the image to a file
+
+    The image file that is written is either a bit-per-bit copy of the original
+    file loaded into the ImgCell - or in the case that there is no original file
+    a losslessly compressed png version of the bitmap.
+
+    See also GetExtension().
+   */
   wxSize ToImageFile(wxString filename);
+  /*! Removes the cached scaled image from memory
+
+    The scaled version of the image will be recreated automatically once it is 
+    needed.
+   */
+  virtual void ClearCache(){if(m_image)m_image->ClearCache();}
+  //! Sets the bitmap that is shown
   void SetBitmap(wxBitmap bitmap);
+  //! Copies the cell to the system's clipboard
   bool CopyToClipboard();
   // These methods should only be used for saving wxmx files
   // and are shared with SlideShowCell.

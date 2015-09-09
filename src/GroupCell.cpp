@@ -1220,6 +1220,9 @@ void GroupCell::Hide(bool hide) {
   if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
     GetEditable()->SetFirstLineOnly(m_hide);
 
+  // Don't keep cached versions of scaled images around if they aren't visible at all.
+  GetLabel()->ClearCacheList();
+
   ResetSize();
   GetEditable()->ResetSize();
 }
@@ -1233,10 +1236,20 @@ void GroupCell::SwitchHide() {
 //
 bool GroupCell::HideTree(GroupCell *tree)
 {
+  std::cerr<<"HideTree!\n";
   if (m_hiddenTree)
     return false;
   m_hiddenTree = tree;
   m_hiddenTree->SetHiddenTreeParent(this);
+
+  // Clear cached images from cells that are hidden
+  GroupCell *tmp = m_hiddenTree;
+  while(tmp)
+  {
+    tmp->GetLabel()->ClearCacheList();
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+  }
+  
   return true;
 }
 
@@ -1289,6 +1302,8 @@ GroupCell *GroupCell::Fold() {
   GroupCell *start = end; // first to fold
 
   while (end) {
+    end->GetLabel()->ClearCacheList();
+ 
     GroupCell *tmp = dynamic_cast<GroupCell*>(end->m_next);
     if (tmp == NULL)
       break;

@@ -134,6 +134,9 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       
     dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
   }
+  else
+    // The cell isn't drawn => No need to keep it's image cache for now.
+    ClearCache();
 
   MathCell::Draw(parser, point, fontsize);
 }

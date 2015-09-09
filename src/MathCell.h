@@ -152,6 +152,19 @@ public:
   }
   void CopyData(MathCell *s, MathCell *t);
 
+  /*! Clears memory from cached items automatically regenerated when the cell is drawn
+    
+    The scaled version of the image will be recreated automatically once it is 
+    needed.
+   */
+  virtual void ClearCache(){}
+
+  /*! Clears the cache of the whole list of cells starting with this one.
+
+    For details see ClearCache().
+   */
+  void ClearCacheList();
+
   /*! Draw this cell
 
     \param point The x and y position this cell is drawn at
