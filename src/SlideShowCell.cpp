@@ -43,9 +43,8 @@ SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
 SlideShow::~SlideShow()
 {
   for (int i=0; i<m_size; i++)
-    delete m_images[i];
-  if (m_next != NULL)
-    delete m_next;
+    wxDELETE(m_images[i]);
+  wxDELETE(m_next);
 }
 
 
@@ -124,7 +123,7 @@ void SlideShow::Destroy()
   for (int i=0; i<m_size; i++)
     if (m_images[i] != NULL)
     {
-      delete m_images[i];
+      wxDELETE(m_images[i]);
       m_images[i] = NULL;
     }
   m_next = NULL;

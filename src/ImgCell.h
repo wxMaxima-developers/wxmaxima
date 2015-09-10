@@ -59,7 +59,7 @@ public:
    */
   virtual void ClearCache(){if(m_image)m_image->ClearCache();}
   //! Sets the bitmap that is shown
-  void SetBitmap(wxBitmap bitmap);
+  void SetBitmap(const wxBitmap &bitmap);
   //! Copies the cell to the system's clipboard
   bool CopyToClipboard();
   // These methods should only be used for saving wxmx files

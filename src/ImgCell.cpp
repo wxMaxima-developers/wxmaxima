@@ -47,24 +47,19 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
 
 ImgCell::~ImgCell()
 {
-  if (m_image != NULL)
-    delete m_image;
-  if (m_next != NULL)
-    delete m_next;
+  wxDELETE(m_image);
+  wxDELETE(m_next);
 }
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
-  if (m_image != NULL)
-    delete m_image;
-
+  wxDELETE(m_image);
   m_image = new Image(image, remove);
 }
 
-void ImgCell::SetBitmap(wxBitmap bitmap)
+void ImgCell::SetBitmap(const wxBitmap &bitmap)
 {
-  if (m_image != NULL)
-    delete m_image;
+  wxDELETE(m_image);
 
   m_width = m_height = -1;
   m_image = new Image(bitmap);
@@ -85,8 +80,7 @@ MathCell* ImgCell::Copy()
 
 void ImgCell::Destroy()
 {
-  if (m_image != NULL)
-    delete m_image;
+  wxDELETE(m_image);
   m_image = NULL;
   m_next = NULL;
 }
