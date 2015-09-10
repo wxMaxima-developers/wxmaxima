@@ -37,7 +37,7 @@ Image::Image()
   m_scaledBitmap.Create (0,0);
 }
 
-Image::Image(wxBitmap bitmap)
+Image::Image(const wxBitmap &bitmap)
 {
   m_viewportWidth  = 640;
   m_viewportHeight = 480;
@@ -119,7 +119,7 @@ wxBitmap Image::GetBitmap()
   return m_scaledBitmap;
 }
 
-void Image::LoadImage(wxBitmap bitmap)
+void Image::LoadImage(const wxBitmap &bitmap)
 {
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();

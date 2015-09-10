@@ -61,7 +61,7 @@ public:
     This constructor actually has to do some compression since we got
     the bitmap in an uncompressed form.
    */
-  Image(wxBitmap bitmap);
+  Image(const wxBitmap &bitmap);
   /*! A constructor that loads an image
 
     \param image The name of the file
@@ -83,7 +83,7 @@ public:
   //! Loads an image from a file
   void LoadImage(wxString image, bool remove = true);
   //! "Loads" an image from a bitmap
-  void LoadImage(wxBitmap bitmap);
+  void LoadImage(const wxBitmap &bitmap);
   //! Saves the image in its original form, or as .png if it originates in a bitmap
   wxSize ToImageFile(wxString filename);
   //! Returns the bitmap being displayed
