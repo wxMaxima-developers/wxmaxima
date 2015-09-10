@@ -803,7 +803,6 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	    else
             {
               wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
-              std::cerr<<"tttttttttt\n";
               if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
                 str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                   filename + wxT("_img/") + image + wxT("}");
@@ -1236,7 +1235,6 @@ void GroupCell::SwitchHide() {
 //
 bool GroupCell::HideTree(GroupCell *tree)
 {
-  std::cerr<<"HideTree!\n";
   if (m_hiddenTree)
     return false;
   m_hiddenTree = tree;

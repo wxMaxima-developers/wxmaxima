@@ -1,7 +1,15 @@
 Current:
   * Debug: A monitor for the xml communication between maxima and wxMaxima
-  * Efficient handling of big and of jpeg-encoded images.
-  * More efficient handling of animations
+  * jpeg-encoded images are now no more converted to much larger png files
+    on saving .wxmx files and on exporting.
+  * Bumped the minor version of the .wxmx format: Some old versions of
+    wxmaxima will replace .jpg files embedded in .wxmx files by a
+    placeholder on load
+  * All Images that aren't currently displayed are now ony stored in their
+    original compressed form.
+  * Avoid as many image rescaling actions as possible.
+  * Having the already-compressed images in memory means a massive speedup for
+    saving files with many images.
 
 15.08:
   * Compatibility with maxima 5.37.0

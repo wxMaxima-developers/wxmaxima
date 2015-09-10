@@ -46,6 +46,8 @@
   - Updated to version 1.1 after user selectable animation-speeds were introduced:
     Old wxMaxima versions play them back in the default speed instead but still
     open the file.
+  - Bumped to version 1.2 after saving highlighting was introduced: Older versions
+    of wxMaxima will ignore the highlighting on opening .wxmx files.
   - Bumped to version 1.3 after sub-subsections were introduced:
     Old wxMaxima versions interpret them as subsections but still open the file.
   - Bumped to version 1.4 when we started allowing to embed .jpg images in a .wxmx

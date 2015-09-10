@@ -141,7 +141,6 @@ void Image::LoadImage(wxString image, bool remove)
 
   if (m_fileSystem) {
     wxFSFile *fsfile = m_fileSystem->OpenFile(image);
-    std::cerr<<image<<" from filesystem\n";
     if (fsfile) { // open successful
 
       wxInputStream *istream = fsfile->GetStream();
@@ -151,7 +150,6 @@ void Image::LoadImage(wxString image, bool remove)
     m_fileSystem = NULL;
   }
   else {
-    std::cerr<<image<<" from disk\n";
     wxFile file(image);
     wxFileInputStream strm(file);
     m_compressedImage = ReadCompressedImage(&strm);
