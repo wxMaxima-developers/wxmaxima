@@ -224,7 +224,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
               // Only actually clear the image cache if we did display the
               // image in the last step: Else it most probably isn't actually cached.
               if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
-                tmp->GetOutput()->ClearCache();
+                if(tmp->GetOutput())
+                  tmp->GetOutput()->ClearCache();
             }
           }
           else
@@ -238,7 +239,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
               // Only actually clear the image cache if we did display the
               // image in the last step: Else it most probably isn't actually cached.
               if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
-                tmp->GetOutput()->ClearCache();
+              {
+                if(tmp->GetOutput())
+                  tmp->GetOutput()->ClearCache();
+              }
             }
           }
         }
@@ -1649,7 +1653,8 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
     }
 
     // Don't keep cached versions of scaled images around in the undo buffer.
-    tmp->GetOutput()->ClearCacheList();
+    if(tmp->GetOutput())
+      tmp->GetOutput()->ClearCacheList();
     
     if (tmp == end)
       break;

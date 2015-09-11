@@ -146,7 +146,7 @@ public:
 
     \param point The point to test for collision with this cell
    */
-  bool ContainsPoint(wxPoint& point)
+  bool ContainsPoint(const wxPoint& point)
   {
     return GetRect().Contains(point);
   }
