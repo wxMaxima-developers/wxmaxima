@@ -34,6 +34,7 @@ class ImgCell : public MathCell
 public:
   ImgCell();
   ImgCell(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  ImgCell(const wxBitmap &bitmap);
   ~ImgCell();
   void Destroy();
   void LoadImage(wxString image, bool remove = true);

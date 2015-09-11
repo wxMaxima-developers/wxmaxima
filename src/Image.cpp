@@ -48,12 +48,11 @@ Image::Image(const wxBitmap &bitmap)
 // constructor which loads an image
 Image::Image(wxString image,bool remove, wxFileSystem *filesystem)
 {
-  m_fileSystem = filesystem; // != NULL when loading from wxmx
   m_viewportWidth  = 640;
   m_viewportHeight = 480;
   m_scale          = 1;
   m_scaledBitmap.Create (0,0);
-  LoadImage(image, remove);
+  LoadImage(image,remove,filesystem);
 }
 
 wxSize Image::ToImageFile(wxString filename)
@@ -133,22 +132,22 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_extension = wxT("png");
   m_originalWidth  = image.GetWidth();
   m_originalHeight = image.GetHeight();
+  m_scaledBitmap.Create (0,0);
 }
 
-void Image::LoadImage(wxString image, bool remove)
+void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
 {
   m_compressedImage.Clear();
   m_scaledBitmap.Create (0,0);
 
-  if (m_fileSystem) {
-    wxFSFile *fsfile = m_fileSystem->OpenFile(image);
+  if (filesystem) {
+    wxFSFile *fsfile = filesystem->OpenFile(image);
     if (fsfile) { // open successful
 
       wxInputStream *istream = fsfile->GetStream();
 
       m_compressedImage = ReadCompressedImage(istream);
     }
-    m_fileSystem = NULL;
   }
   else {
     wxFile file(image);

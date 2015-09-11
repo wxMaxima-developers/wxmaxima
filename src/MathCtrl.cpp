@@ -4837,10 +4837,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
       {
         wxBitmapDataObject bitmap;
         wxTheClipboard->GetData(bitmap);
-        ImgCell *ic = new ImgCell(wxEmptyString, false);
-        ic->DrawRectangle(false);
-        ic->SetBitmap(bitmap.GetBitmap());
-
+        ImgCell *ic = new ImgCell(bitmap.GetBitmap());
         group->AppendOutput(ic);
       }
     }

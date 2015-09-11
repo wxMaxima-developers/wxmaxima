@@ -81,7 +81,7 @@ public:
   //! Returns the file name extension of the current image
   wxString GetExtension() {return m_extension;};
   //! Loads an image from a file
-  void LoadImage(wxString image, bool remove = true);
+  void LoadImage(wxString image,bool remove = true, wxFileSystem *filesystem = NULL);
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
   //! Saves the image in its original form, or as .png if it originates in a bitmap
@@ -116,8 +116,6 @@ protected:
   wxMemoryBuffer m_compressedImage;
   //! The bitmap, scaled down to the screen size
   wxBitmap m_scaledBitmap;
-  //! The filesystem the image was taken from
-  wxFileSystem *m_fileSystem;
   //! The file extension for the current image type
   wxString m_extension;
 };

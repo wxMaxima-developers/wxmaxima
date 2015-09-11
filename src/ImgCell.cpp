@@ -35,6 +35,14 @@ ImgCell::ImgCell() : MathCell()
   m_imageBorderWidth = 1;
 }
 
+ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
+{
+  m_image = new Image(bitmap);
+  m_type = MC_TYPE_IMAGE;
+  m_drawRectangle = true;
+  m_imageBorderWidth = 1;
+}
+
 int ImgCell::s_counter = 0;
 
 // constructor which load image
@@ -42,7 +50,10 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
-  m_image = new Image(image,remove,filesystem);
+  if(image != wxEmptyString)
+    m_image = new Image(image,remove,filesystem);
+  else
+    m_image = new Image();
 }
 
 ImgCell::~ImgCell()
