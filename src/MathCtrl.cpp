@@ -211,39 +211,18 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
+        wxRect rect = tmp->GetRect();        
         if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
           if (m_evaluationQueue->GetCell() == tmp)
           {
-            wxRect rect = tmp->GetRect();
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
 
-            // Clear the image cache of all cells above or below the viewport.
-            if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
-            {
-              // Only actually clear the image cache if we did display the
-              // image in the last step: Else it most probably isn't actually cached.
-              if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
-                if(tmp->GetOutput())
-                  tmp->GetOutput()->ClearCache();
-            }
           }
           else
           {
-            wxRect rect = tmp->GetRect();
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
             dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
-            // Clear the image cache of all cells above or below the viewport.
-            if((rect.GetTop() > bottom) || (rect.GetBottom() < top))
-            {
-              // Only actually clear the image cache if we did display the
-              // image in the last step: Else it most probably isn't actually cached.
-              if((rect.GetBottom()>=m_lastTop)&&(rect.GetTop()<=m_lastBottom))
-              {
-                if(tmp->GetOutput())
-                  tmp->GetOutput()->ClearCache();
-              }
-            }
           }
         }
         tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -258,7 +237,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     point.x = MC_GROUP_LEFT_INDENT;
     point.y = MC_BASE_INDENT + m_tree->GetMaxCenter();
     // Draw tree
-    MathCell* tmp = m_tree;
+    GroupCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
 
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
@@ -270,6 +249,19 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
     while (tmp != NULL)
     {
+      wxRect rect = tmp->GetRect();        
+      // Clear the image cache of all cells above or below the viewport.
+      if((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
+      {
+        // Only actually clear the image cache if we did display the
+        // image in the last step: Else it most probably isn't actually cached.
+        if((rect.GetBottom()<=m_lastBottom)||(rect.GetTop()>=m_lastTop))
+        {
+          if(tmp->GetOutput())
+            tmp->GetOutput()->ClearCacheList();
+        }
+      }
+
       tmp->m_currentPoint.x = point.x;
       tmp->m_currentPoint.y = point.y;
       if (tmp->DrawThisCell(parser, point))
@@ -280,7 +272,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         point.y += MC_GROUP_SKIP;
         drop = tmp->m_next->GetMaxDrop();
       }
-      tmp = tmp->m_next;
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
 
   }
