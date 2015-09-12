@@ -341,7 +341,7 @@ void wxMaximaFrame::do_layout()
                     Left());
 
   wxConfigBase *config = wxConfig::Get();
-  bool loadPanes = false;
+  bool loadPanes = true;
   config->Read(wxT("AUI/savePanes"), &loadPanes);
 
   if (loadPanes) {

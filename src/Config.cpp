@@ -171,7 +171,7 @@ void Config::SetProperties()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool match = true, savePanes = false, UncompressedWXMX=true;
+  bool match = true, savePanes = true, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
