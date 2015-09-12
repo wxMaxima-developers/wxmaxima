@@ -427,7 +427,7 @@ public:
     used by UpdateTableOfContents() and the idle task.
   */
   bool m_scheduleUpdateToc;
-  
+  //! Is the vertically-drawn cursor active?
   bool HCaretActive(){return m_hCaretActive;}
   /*! Can we merge the selected cells into one?
     

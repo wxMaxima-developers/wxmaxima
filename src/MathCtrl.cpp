@@ -94,7 +94,9 @@ wxScrolledCanvas(
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   AnimationRunning(false);
   m_saved = false;
-  m_zoomFactor = 1.0; // set zoom to 100%
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  m_zoomFactor = 1.0; // Let the zoom factor default to 100%
+  config->Read(wxT("ZoomFactor"),&m_zoomFactor);
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
@@ -112,6 +114,8 @@ MathCtrl::~MathCtrl() {
     delete m_memory;
 
   delete m_evaluationQueue;
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  config->Write(wxT("ZoomFactor"),m_zoomFactor);
 }
 
 /***
@@ -505,8 +509,6 @@ void MathCtrl::Recalculate(bool force)
 
   while (tmp != NULL) {
     tmp->Recalculate(parser, d_fontsize, m_fontsize);
-//    tmp->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE), false);
-//    tmp->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE), false);
     point.y += tmp->GetMaxCenter();
     tmp->m_currentPoint.x = point.x;
     tmp->m_currentPoint.y = point.y;
