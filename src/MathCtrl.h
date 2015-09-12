@@ -402,7 +402,6 @@ private:
   EditorCell *m_activeCell;
   EditorCell *m_cellMouseSelectionStartedIn;
   EditorCell *m_cellKeyboardSelectionStartedIn;
-  CellParser *m_selectionParser;
   bool m_switchDisplayCaret;
   /*! Is editing enabled?
 

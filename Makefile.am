@@ -1,5 +1,6 @@
 SUBDIRS = src locales data info test Doxygen
 
+DISTCLEAN_FILES = $(distdir).tar.gz.asc
 EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
              art/readme.txt art/license.txt                  \
              art/toolbar/gtk-preferences.png art/toolbar/gtk-cut.png   \
@@ -106,6 +107,11 @@ wxMaxima.win.zip: wxMaxima.win
 
 allmo:
 	    cd locales&&$(MAKE) allmo
+
+signeddist: dist-gzip
+	gpg --armor --detach-sign $(distdir).tar.gz
+
+
 
 allpo:
 	    cd locales&&$(MAKE) allpo

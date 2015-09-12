@@ -189,6 +189,8 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
+  int charWidth;
+
   m_isDirty = false;
   if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
   {
@@ -197,7 +199,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    dc.GetTextExtent(wxT("X"), &m_charWidth, &m_charHeight);
+    dc.GetTextExtent(wxT("X"), &charWidth, &m_charHeight);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0;
     int width = 0, width1, height1;
@@ -230,7 +232,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
       m_numberOfLines = 1;
 
     if (m_text == wxEmptyString)
-      width = m_charWidth;
+      width = charWidth;
 
     m_width = width + 2 * SCALE_PX(2, scale);
     m_height = m_numberOfLines * m_charHeight + 2 * SCALE_PX(2, scale);

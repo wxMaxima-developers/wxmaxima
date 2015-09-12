@@ -344,7 +344,6 @@ private:
   int m_numberOfLines;
   bool m_isActive;
   int m_fontSize;
-  int m_charWidth;
   int m_charHeight;
   bool m_matchParens;
   int m_paren1, m_paren2;
