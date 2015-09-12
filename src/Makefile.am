@@ -67,7 +67,6 @@ wxmaxima_SOURCES = \
 	PlotFormatWiz.cpp  PlotFormatWiz.h  \
 	TextStyle.h
 
-wxmaxima_LDFLAGS =
 wxmaxima_LDADD = $(RC_OBJ) $(WX_LIBS)
 
 wxmaxima_DEPENDENCIES = $(RC_OBJ)
