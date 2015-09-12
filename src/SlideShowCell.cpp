@@ -263,13 +263,6 @@ wxSize SlideShow::ToGif(wxString file)
     wxRemoveFile(imgname.GetFullPath());
   }
 
-  // Converting images to an animation might need loads of time. Since we do this
-  // in the foreground and many operation systems assume that an application
-  // that is busy with other things and therefore isn't reacting is stuck
-  // and therefore offer to kill the application we should now listen to
-  // requests from the OS before continuing the save.
-  wxYield();
-
   if(success)
   {
     if(m_size>0)
