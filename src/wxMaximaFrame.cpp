@@ -539,7 +539,7 @@ void wxMaximaFrame::SetupMenu()
 
   // panes
   m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
+  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All toolbars\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
@@ -549,10 +549,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
-  m_MaximaMenu->Append(wxNewId(), _("Panes"), m_Maxima_Panes_Sub);
-
-  m_MaximaMenu->AppendSeparator();
-
+  m_MenuBar->Append(m_Maxima_Panes_Sub,_("View"));
 
 #if defined (__WXMAC__)
   APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
