@@ -1716,6 +1716,10 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x2288";
   else if (txt == wxT("notsubset"))
     return L"\x2284";
+  else if (txt == wxT("hbar"))
+    return L"\x0127";
+  else if (txt == wxT("Hbar"))
+    return L"\x0126";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))
