@@ -477,6 +477,21 @@ void wxMaximaFrame::SetupMenu()
 #endif
   m_MenuBar->Append(m_EditMenu, _("&Edit"));
 
+  // panes
+  m_Maxima_Panes_Sub = new wxMenu;
+  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector,  _("XML Inspector"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
+  m_MenuBar->Append(m_Maxima_Panes_Sub,_("View"));
+
+  
   // Cell menu
   m_CellMenu = new wxMenu;
   m_CellMenu->Append(menu_evaluate, _("Evaluate Cell(s)"),
@@ -536,20 +551,6 @@ void wxMaximaFrame::SetupMenu()
 
   // Maxima menu
   m_MaximaMenu = new wxMenu;
-
-  // panes
-  m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All toolbars\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector,  _("Debug: Raw XML answer from maxima"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
-  m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
-  m_MenuBar->Append(m_Maxima_Panes_Sub,_("View"));
 
 #if defined (__WXMAC__)
   APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
