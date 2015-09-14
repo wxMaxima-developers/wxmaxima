@@ -67,8 +67,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE,  menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_CTRL,  wxT('+'),   MathCtrl::menu_zoom_in);
-  entries[5].Set(wxACCEL_CTRL,  wxT('-'),   MathCtrl::menu_zoom_out);
+  entries[4].Set(wxACCEL_ALT,  wxT('I'),   MathCtrl::menu_zoom_in);
+  entries[5].Set(wxACCEL_ALT,  wxT('O'),   MathCtrl::menu_zoom_out);
   entries[6].Set(wxACCEL_CTRL,  WXK_RETURN, menu_evaluate);
   wxAcceleratorTable accel(7, entries);
   SetAcceleratorTable(accel);
@@ -78,8 +78,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_CTRL,  wxT('+'), MathCtrl::menu_zoom_in);
-  entries[5].Set(wxACCEL_CTRL,  wxT('-'), MathCtrl::menu_zoom_out);
+  entries[4].Set(wxACCEL_ALT,  wxT('I'), MathCtrl::menu_zoom_in);
+  entries[5].Set(wxACCEL_ALT,  wxT('O'), MathCtrl::menu_zoom_out);
   wxAcceleratorTable accel(6, entries);
   SetAcceleratorTable(accel);
 #endif
@@ -450,24 +450,6 @@ void wxMaximaFrame::SetupMenu()
                      _("Comment out the currently selected text"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_EditMenu, MathCtrl::menu_zoom_in, _("Zoom &In\tAlt-I"),
-                   _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_EditMenu, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tAlt-O"),
-                   _("Zoom out 10%"), wxT("gtk-zoom-out"));
-  // zoom submenu
-  m_Edit_Zoom_Sub = new wxMenu;
-  m_Edit_Zoom_Sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
-
-  m_EditMenu->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
-  m_EditMenu->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
-                     _("Toggle full screen editing"),
-                     wxITEM_NORMAL);
-  m_EditMenu->AppendSeparator();
 #if defined __WXMAC__
   APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
@@ -489,6 +471,25 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Toolbar\tAlt-Shift-B"));
+  m_Maxima_Panes_Sub->AppendSeparator();
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl-+"),
+                   _("Zoom in 10%"), wxT("gtk-zoom-in"));
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tCtrl--"),
+                   _("Zoom out 10%"), wxT("gtk-zoom-out"));
+  // zoom submenu
+  m_Edit_Zoom_Sub = new wxMenu;
+  m_Edit_Zoom_Sub->Append(menu_zoom_80,  wxT("80%"),  _("Set zoom to 80%"),  wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
+
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
+  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+                     _("Toggle full screen editing"),
+                     wxITEM_NORMAL);
+
   m_MenuBar->Append(m_Maxima_Panes_Sub,_("View"));
 
   
