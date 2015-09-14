@@ -127,7 +127,7 @@ void Config::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
-  m_showUserDefinedLabels->SetToolTip(_("If a command begins with a label followed by a : wxMaxima will show this label instead of the %o style label maxima automatically assigns to the output"));
+  m_showUserDefinedLabels->SetToolTip(_("If a command begins with a label followed by a : wxMaxima will show this label instead of the \%o style label maxima has automatically assigned to the same output cell."));
   m_abortOnError->SetToolTip(_("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_pollStdOut->SetToolTip(_("Once the local network link between maxima and wxMaxima has been established maxima has no reason to send any messages using the system's stdout stream so all this stream transport should be a greeting message; The lisp running maxima will send eventual error messages using the system's stderr stream instead. If this box is checked we will nonetheless watch maxima's stdout stream for messages."));
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
@@ -377,7 +377,7 @@ wxPanel* Config::CreateWorksheetPanel()
   m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
   vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
 
-  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
+  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: \%e, \%i, etc."));
   vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
 
   m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
@@ -386,7 +386,7 @@ wxPanel* Config::CreateWorksheetPanel()
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
   vsizer->Add(m_openHCaret, 0, wxALL, 5);
 
-  m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
+  m_insertAns = new wxCheckBox(panel, -1, _("Insert \% before an operator at the beginning of a cell"));
   vsizer->Add(m_insertAns, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
