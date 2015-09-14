@@ -265,6 +265,5 @@ wxString EvaluationQueue::GetCommand()
       } 
     };
   }
-  std::cerr<<"userLabel="<<m_userLabel<<"\n";
   return retval;
 }
