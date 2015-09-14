@@ -234,7 +234,37 @@ GroupCell* EvaluationQueue::GetCell()
 wxString EvaluationQueue::GetCommand()
 {
   wxString retval;
+  m_userLabel = wxEmptyString;
   if(!m_tokens.IsEmpty())
+  {
     retval = m_tokens[0];
+
+    wxString userLabel;
+    int colonPos;
+    if((colonPos = retval.find(wxT(":")))!=wxNOT_FOUND)
+    {
+      userLabel = retval.Left(colonPos);
+      userLabel.Trim(true);
+      userLabel.Trim(false);
+      if((wxIsalpha(userLabel[0]))||(userLabel[0]==wxT('\\')))
+      {
+        for(size_t i=0;i<userLabel.Length();i++)
+        {
+          if(userLabel[i]==wxT('\\'))
+            i++;
+          else
+          {
+            if(!wxIsalnum(userLabel[i]))
+            {
+              userLabel = wxEmptyString;
+              break;
+            }
+          }
+        }
+        m_userLabel = userLabel;
+      } 
+    };
+  }
+  std::cerr<<"userLabel="<<m_userLabel<<"\n";
   return retval;
 }

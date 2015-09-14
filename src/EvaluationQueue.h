@@ -50,11 +50,20 @@ class EvaluationQueue
 private:
   wxArrayString m_tokens;
   int m_size;
+  //! The label the user has assigned to the current command.
+  wxString m_userLabel;
   EvaluationQueueElement* m_queue;
   EvaluationQueueElement* m_last;
   //! Adds all commands in commandString as separate tokens to the queue.
   void AddTokens(wxString commandString);
 public:
+  /*! Query for the label the user has assigned to the current command.  
+
+    If there is no such label or the label as hidden deep down inside the command
+    (in which case we assume the user wanted to hide it and for example didn't use
+    it as a label at all) we return wxEmptyString.
+  */
+  wxString GetUserLabel(){return m_userLabel;}
   bool m_workingGroupChanged;
   EvaluationQueue();
   ~EvaluationQueue() {};

@@ -127,6 +127,7 @@ void Config::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
+  m_showUserDefinedLabels->SetToolTip(_("If a command begins with a label followed by a : wxMaxima will show this label instead of the %o style label maxima automatically assigns to the output"));
   m_abortOnError->SetToolTip(_("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_pollStdOut->SetToolTip(_("Once the local network link between maxima and wxMaxima has been established maxima has no reason to send any messages using the system's stdout stream so all this stream transport should be a greeting message; The lisp running maxima will send eventual error messages using the system's stderr stream instead. If this box is checked we will nonetheless watch maxima's stdout stream for messages."));
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
@@ -182,6 +183,7 @@ void Config::SetProperties()
   int showLength = 0;
   int  bitmapScale = 3;
   bool fixReorderedIndices = false;
+  bool showUserDefinedLabels = true;
   int defaultFramerate = 2;
   int displayedDigits = 100;
   wxString texPreamble=wxEmptyString;
@@ -233,6 +235,7 @@ void Config::SetProperties()
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
+  config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
   config->Read(wxT("abortOnError"), &abortOnError);
@@ -291,6 +294,7 @@ void Config::SetProperties()
   m_undoLimit->SetValue(undoLimit);
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
+  m_showUserDefinedLabels->SetValue(showUserDefinedLabels);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
@@ -441,7 +445,7 @@ wxPanel* Config::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   const wxString m_language_choices[] =
@@ -495,6 +499,8 @@ wxPanel* Config::CreateOptionsPanel()
 
   m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
   vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
+  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (%oxx)"));
+  vsizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -699,6 +705,7 @@ void Config::WriteSettings()
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
+  config->Write(wxT("showUserDefinedLabels"), m_showUserDefinedLabels->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   #ifdef __WXMSW__
   config->Write(wxT("wxcd"), m_wxcd->GetValue());

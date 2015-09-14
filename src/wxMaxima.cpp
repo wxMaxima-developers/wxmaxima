@@ -109,6 +109,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size)
 {
+  m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
   wxConfig *config = (wxConfig *)wxConfig::Get();
   ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
@@ -1015,6 +1016,24 @@ void wxMaxima::ReadMath(wxString &data)
       o = o.SubString(start,o.Length());
     else
       start = 0;
+
+    bool showUserDefinedLabels = true;
+
+    wxConfigBase *config = wxConfig::Get();
+    config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
+
+    // Replace the name of the automatic label maxima has assigned to the output
+    // by the one the user has used - if the configuration option to do so is set.
+    if(showUserDefinedLabels)
+    {
+      if(m_console->m_evaluationQueue->GetUserLabel() != wxEmptyString)
+      {
+        wxString label = m_console->m_evaluationQueue->GetUserLabel();
+        if(label.Length()<3)
+          label=wxString(label+wxT("   ")).Left(3);
+        m_outputPromptRegEx.Replace(&o,wxT("<lbl>(")+label+wxT(")</lbl>"),1);
+      }
+    }
     
     ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
     data = data.Left(start) +

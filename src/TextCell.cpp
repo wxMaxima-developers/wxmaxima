@@ -164,7 +164,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     {
       SetFont(parser, m_fontSizeLabel);
       dc.DrawText(m_text,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale) + (m_width - m_labelWidth),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + (m_height - m_labelHeight)/2);
     }
 

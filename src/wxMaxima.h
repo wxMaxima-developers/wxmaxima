@@ -133,6 +133,8 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! Searches for maxima's output prompts
+  wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
