@@ -312,6 +312,9 @@ void GroupCell::RemoveOutput()
 
 void GroupCell::AppendOutput(MathCell *cell)
 {
+  wxASSERT_MSG(cell != NULL,_("Bug: Trying to append NULL to a group cell."));
+  if(cell == NULL) return;
+  cell->SetParent(this);
   if (m_output == NULL) {
     m_output = cell;
 
