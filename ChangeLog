@@ -11,6 +11,8 @@ Current:
   * Having the already-compressed images in memory means a massive speedup for
     saving files with many images.
   * Save the zoom factor at exit and reload it on opening a new file
+  * An option that makes wxMaxima use user-defined labels instead of %o where an
+    user-defined label exists.
 
 15.08:
   * Compatibility with maxima 5.37.0

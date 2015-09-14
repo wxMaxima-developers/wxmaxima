@@ -497,9 +497,9 @@ wxPanel* Config::CreateOptionsPanel()
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
 
-  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
+  m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of \%i, \%o) before saving"));
   vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
-  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (%oxx)"));
+  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (\%oxx)"));
   vsizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
