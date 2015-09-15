@@ -1032,7 +1032,6 @@ void wxMaxima::ReadMath(wxString &data)
         if(label.Length()<3)
           label=wxString(label+wxT("   ")).Left(3);
         m_outputPromptRegEx.Replace(&o,wxT("<lbl userdefined=\"yes\">(")+label+wxT(")</lbl>"),1);
-        std::cerr<<"debug1:"<<o<<"\n";
       }
     }
     

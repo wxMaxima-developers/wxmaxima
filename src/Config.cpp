@@ -933,7 +933,7 @@ void Config::ReadStyles(wxString file)
   READ_STYLE(m_styleDefault, "Style/NormalText/")
 
   // Main prompt
-  m_styleMainPrompt.color = wxT("red");
+  m_styleMainPrompt.color = wxT("rgb(128,255,255)");
   m_styleMainPrompt.bold = false;
   m_styleMainPrompt.italic = false;
   m_styleMainPrompt.underlined = false;
@@ -953,8 +953,8 @@ void Config::ReadStyles(wxString file)
   m_styleLabel.underlined = false;
   READ_STYLE(m_styleLabel, "Style/Label/")
 
-  // Labels
-  m_styleUserDefinedLabel.color = wxT("rgb(128,192,255)");
+  // User-defined Labels
+  m_styleUserDefinedLabel.color = wxT("rgb(0,64,255)");
   m_styleUserDefinedLabel.bold = false;
   m_styleUserDefinedLabel.italic = false;
   m_styleUserDefinedLabel.underlined = false;

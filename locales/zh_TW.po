@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 17:59+0200\n"
+"POT-Creation-Date: 2015-09-15 13:30+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1048
+#: ../src/MathParser.cpp:1052
 msgid " << Expression too long to display! >>"
 msgstr " << 數式過長不易顯示 >>"
 
@@ -349,7 +349,7 @@ msgstr "三角化簡(&T)"
 msgid "&pm3d"
 msgstr "pm3d(&P)"
 
-#: ../src/Config.cpp:453
+#: ../src/Config.cpp:455
 msgid "(Use default language)"
 msgstr "( 使用預設語言 )"
 
@@ -392,7 +392,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "定點設值(T)..."
 
-#: ../src/Config.cpp:554
+#: ../src/Config.cpp:565
 msgid "Abort evaluation on error"
 msgstr ""
 
@@ -404,7 +404,7 @@ msgstr "關於"
 msgid "About wxMaxima"
 msgstr "關於 wxMaxima"
 
-#: ../src/Config.cpp:611
+#: ../src/Config.cpp:623
 msgid "Active cell bracket"
 msgstr "作用中的單元框"
 
@@ -428,7 +428,7 @@ msgstr "將目錄加入搜尋路徑："
 msgid "Add equality to the rational simplifier"
 msgstr "新增有理數式化簡所使用的等式"
 
-#: ../src/Config.cpp:430
+#: ../src/Config.cpp:432
 msgid "Add the .wxmx file to the HTML export"
 msgstr ""
 
@@ -441,7 +441,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 
-#: ../src/Config.cpp:411
+#: ../src/Config.cpp:409
 msgid "Additional lines for the TeX preamble:"
 msgstr ""
 
@@ -449,11 +449,11 @@ msgstr ""
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Maxima 的附加參數 (例： -l clisp)"
 
-#: ../src/Config.cpp:526
+#: ../src/Config.cpp:537
 msgid "Additional parameters:"
 msgstr "附加參數："
 
-#: ../src/Config.cpp:756
+#: ../src/Config.cpp:769
 msgid "All|*"
 msgstr "所有類型|*"
 
@@ -477,7 +477,7 @@ msgstr "陣列："
 msgid "Artwork by"
 msgstr "美工"
 
-#: ../src/Config.cpp:497
+#: ../src/Config.cpp:510
 msgid "Ask to save untitled documents"
 msgstr "詢問是否儲存未命名文件"
 
@@ -494,7 +494,7 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: ../src/Config.cpp:480
+#: ../src/Config.cpp:481
 msgid "Autosave interval (minutes, 0 means: off)"
 msgstr ""
 
@@ -506,7 +506,7 @@ msgstr "邊界條件(二階)"
 msgid "Barsplot..."
 msgstr "長條圖..."
 
-#: ../src/Config.cpp:751
+#: ../src/Config.cpp:764
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
 
@@ -523,11 +523,11 @@ msgid ""
 "cells."
 msgstr ""
 
-#: ../src/Config.cpp:357
+#: ../src/Config.cpp:415
 msgid "Bitmap scale for export"
 msgstr ""
 
-#: ../src/Config.cpp:632
+#: ../src/Config.cpp:644
 msgid "Bold"
 msgstr "粗體"
 
@@ -714,7 +714,7 @@ msgstr "取消"
 msgid "Canonical (tr)"
 msgstr "標準型式 (三角)"
 
-#: ../src/Config.cpp:454
+#: ../src/Config.cpp:456
 msgid "Catalan"
 msgstr "Catalan"
 
@@ -722,7 +722,7 @@ msgstr "Catalan"
 msgid "Ce&ll"
 msgstr "單元(&L)"
 
-#: ../src/Config.cpp:610
+#: ../src/Config.cpp:622
 msgid "Cell bracket"
 msgstr "單元框"
 
@@ -758,15 +758,15 @@ msgstr "檢查更新"
 msgid "Check if a newer version of wxMaxima/Maxima exist."
 msgstr "檢查是否存在新版的 wxMaxima 或 Maxima"
 
-#: ../src/Config.cpp:455
+#: ../src/Config.cpp:457
 msgid "Chinese Simplified"
 msgstr ""
 
-#: ../src/Config.cpp:456
+#: ../src/Config.cpp:458
 msgid "Chinese traditional"
 msgstr "正體中文"
 
-#: ../src/Config.cpp:585 ../src/Config.cpp:587 ../src/Config.cpp:626
+#: ../src/Config.cpp:596 ../src/Config.cpp:598 ../src/Config.cpp:638
 msgid "Choose font"
 msgstr "選擇字型"
 
@@ -786,31 +786,31 @@ msgstr "關閉\tCtrl-W"
 msgid "Close window"
 msgstr "關閉視窗"
 
-#: ../src/Config.cpp:618
+#: ../src/Config.cpp:630
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: ../src/Config.cpp:622
+#: ../src/Config.cpp:634
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: ../src/Config.cpp:617
+#: ../src/Config.cpp:629
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: ../src/Config.cpp:619
+#: ../src/Config.cpp:631
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: ../src/Config.cpp:621
+#: ../src/Config.cpp:633
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: ../src/Config.cpp:620
+#: ../src/Config.cpp:632
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: ../src/Config.cpp:616
+#: ../src/Config.cpp:628
 msgid "Code highlighting: Variables"
 msgstr ""
 
@@ -891,11 +891,11 @@ msgstr "計算最小公倍式 (在使用前會先執行 load(functs) )"
 msgid "Condition:"
 msgstr "條件："
 
-#: ../src/Config.cpp:1464 ../src/Config.cpp:1472
+#: ../src/Config.cpp:1490 ../src/Config.cpp:1498
 msgid "Config file (*.ini)|*.ini"
 msgstr "設定檔 (*.ini)|*.ini"
 
-#: ../src/Config.cpp:1307
+#: ../src/Config.cpp:1330
 msgid "Configuration warning"
 msgstr "設定值警告"
 
@@ -1025,7 +1025,7 @@ msgstr "以上一個輸入建立一個新的單元"
 msgid "Create a new cell with previous output"
 msgstr "以上一個輸入建立一個新的單元"
 
-#: ../src/Config.cpp:612
+#: ../src/Config.cpp:624
 msgid "Cursor"
 msgstr "游標"
 
@@ -1041,11 +1041,11 @@ msgstr "剪下\tCtrl-X"
 msgid "Cut selection"
 msgstr "剪下所選區域"
 
-#: ../src/Config.cpp:457
+#: ../src/Config.cpp:459
 msgid "Czech"
 msgstr "Czech"
 
-#: ../src/Config.cpp:458
+#: ../src/Config.cpp:460
 msgid "Danish"
 msgstr "Danish"
 
@@ -1064,7 +1064,7 @@ msgstr "資料檔 (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "資料："
 
-#: ../src/Config.cpp:558
+#: ../src/Config.cpp:569
 msgid "Debug: Watch maxima's stdout stream"
 msgstr ""
 
@@ -1072,23 +1072,23 @@ msgstr ""
 msgid "Decompose rational function to partial fractions"
 msgstr "將有理函數分解為部分分式"
 
-#: ../src/Config.cpp:591
+#: ../src/Config.cpp:602
 msgid "Default"
 msgstr "預設"
 
-#: ../src/Config.cpp:329
+#: ../src/Config.cpp:491
 msgid "Default animation framerate:"
 msgstr ""
 
-#: ../src/Config.cpp:584
+#: ../src/Config.cpp:595
 msgid "Default font:"
 msgstr "預設字型："
 
-#: ../src/Config.cpp:335
+#: ../src/Config.cpp:332
 msgid "Default plot size for new maxima sessions"
 msgstr ""
 
-#: ../src/Config.cpp:538
+#: ../src/Config.cpp:549
 #, fuzzy
 msgid "Default port for communication with wxMaxima:"
 msgstr "供 Maxima 與 wxMaxima 溝通的預設埠"
@@ -1219,11 +1219,11 @@ msgstr "您是否想儲存於此文件中的變更： \""
 msgid "Document "
 msgstr "文件"
 
-#: ../src/Config.cpp:609
+#: ../src/Config.cpp:621
 msgid "Document background"
 msgstr "文件背景"
 
-#: ../src/Config.cpp:406
+#: ../src/Config.cpp:404
 msgid "Documentclass for TeX export:"
 msgstr ""
 
@@ -1262,7 +1262,7 @@ msgstr "消去"
 msgid "Eliminate a variable from a system of equations"
 msgstr "自方程組中消去變數"
 
-#: ../src/Config.cpp:459
+#: ../src/Config.cpp:461
 msgid "English"
 msgstr "English"
 
@@ -1288,7 +1288,7 @@ msgstr "輸入供化簡有理數式的方程式："
 msgid "Enter comma separated list of variables."
 msgstr "輸入以逗號分隔的所有變數"
 
-#: ../src/Config.cpp:383
+#: ../src/Config.cpp:381
 msgid "Enter evaluates cells"
 msgstr "按 Enter 評算單元"
 
@@ -1328,7 +1328,7 @@ msgstr "方程式："
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/Config.cpp:765 ../src/Image.cpp:93 ../src/wxMaxima.cpp:406
+#: ../src/Config.cpp:778 ../src/Image.cpp:93 ../src/wxMaxima.cpp:406
 #: ../src/wxMaxima.cpp:1278 ../src/wxMaxima.cpp:1290 ../src/wxMaxima.cpp:1355
 #: ../src/wxMaxima.cpp:1368 ../src/wxMaxima.cpp:1392 ../src/wxMaxima.cpp:1910
 #: ../src/wxMaxima.cpp:2082 ../src/wxMaxima.cpp:5096 ../src/wxMaxima.cpp:5458
@@ -1394,7 +1394,7 @@ msgstr "評算名詞形式(&N)"
 msgid "Example"
 msgstr "範例"
 
-#: ../src/Config.cpp:1418 ../src/Config.cpp:1509
+#: ../src/Config.cpp:1444 ../src/Config.cpp:1535
 msgid "Example text"
 msgstr "Example text 範例文字"
 
@@ -1434,7 +1434,7 @@ msgstr ""
 msgid "Export"
 msgstr "匯出"
 
-#: ../src/Config.cpp:418
+#: ../src/Config.cpp:420
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1614,12 +1614,12 @@ msgstr "找多項式所有的實根"
 msgid "Find root"
 msgstr "找根"
 
-#: ../src/Config.cpp:500
+#: ../src/Config.cpp:513
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: ../src/Config.cpp:374
+#: ../src/Config.cpp:372
 msgid "Fixed font in text controls"
 msgstr "文字控制項使用等寬字型"
 
@@ -1644,7 +1644,7 @@ msgstr "文件中用以顯示一般文字的字型"
 msgid "Font used for displaying math characters in document."
 msgstr "文件中用以顯示數學文字的字型"
 
-#: ../src/Config.cpp:572
+#: ../src/Config.cpp:583
 msgid "Fonts"
 msgstr "字型"
 
@@ -1652,7 +1652,7 @@ msgstr "字型"
 msgid "Format:"
 msgstr "格式："
 
-#: ../src/Config.cpp:460
+#: ../src/Config.cpp:462
 msgid "French"
 msgstr "French"
 
@@ -1670,7 +1670,7 @@ msgstr "全螢幕\tAlt-Enter"
 msgid "Function"
 msgstr "函數"
 
-#: ../src/Config.cpp:594
+#: ../src/Config.cpp:605
 msgid "Function names"
 msgstr "函數名"
 
@@ -1703,7 +1703,7 @@ msgstr "最大公因式"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF (*.gif)|*.gif"
 
-#: ../src/Config.cpp:461
+#: ../src/Config.cpp:463
 msgid "Galician"
 msgstr ""
 
@@ -1731,7 +1731,7 @@ msgstr "以二維陣列產生一個矩陣"
 msgid "Generate a matrix from a lambda expression"
 msgstr "以 lambda 數式產生矩陣"
 
-#: ../src/Config.cpp:462
+#: ../src/Config.cpp:464
 msgid "German"
 msgstr "German"
 
@@ -1773,11 +1773,11 @@ msgid ""
 "at this moment."
 msgstr ""
 
-#: ../src/Config.cpp:463
+#: ../src/Config.cpp:465
 msgid "Greek"
 msgstr "Greek"
 
-#: ../src/Config.cpp:596
+#: ../src/Config.cpp:607
 msgid "Greek constants"
 msgstr "希臘字母"
 
@@ -1792,7 +1792,7 @@ msgid ""
 "tex)|*.tex"
 msgstr "HTML 檔案 (*.html)|*.html|pdfLaTeX 檔案 (*.tex)|*.tex|所有類型|*"
 
-#: ../src/Config.cpp:424
+#: ../src/Config.cpp:426
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
@@ -1813,7 +1813,7 @@ msgstr "全部隱藏\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "隱藏所有窗格"
 
-#: ../src/Config.cpp:602
+#: ../src/Config.cpp:614
 msgid "Highlight (dpart)"
 msgstr "高亮度標記(於dpart函數中)"
 
@@ -1845,7 +1845,7 @@ msgstr ""
 "動時按住 Shift 鍵將會選擇單元，按 backspace 或 delete 鍵兩次會刪除相鄰的單"
 "元。"
 
-#: ../src/Config.cpp:464
+#: ../src/Config.cpp:466
 msgid "Hungarian"
 msgstr "Hungarian"
 
@@ -1877,11 +1877,11 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: ../src/Config.cpp:366
+#: ../src/Config.cpp:353
 msgid "If not extremely long"
 msgstr ""
 
-#: ../src/Config.cpp:365
+#: ../src/Config.cpp:352
 msgid "If not very long"
 msgstr ""
 
@@ -1938,7 +1938,7 @@ msgstr ""
 msgid "Include columns:"
 msgstr "包含欄位："
 
-#: ../src/Config.cpp:427
+#: ../src/Config.cpp:429
 msgid "Include input cells in the export of a worksheet"
 msgstr ""
 
@@ -1964,7 +1964,7 @@ msgstr "一階常微方初始值問題(&1)..."
 msgid "Initial Value Problem (&2)..."
 msgstr "二階常微方初始值問題(&2)..."
 
-#: ../src/Config.cpp:599
+#: ../src/Config.cpp:610
 msgid "Input labels"
 msgstr "輸入標籤"
 
@@ -1972,7 +1972,7 @@ msgstr "輸入標籤"
 msgid "Insert"
 msgstr "插入"
 
-#: ../src/Config.cpp:389
+#: ../src/Config.cpp:387
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
@@ -2110,7 +2110,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/Config.cpp:764
+#: ../src/Config.cpp:777
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2135,19 +2135,19 @@ msgid ""
 "do that is to export a file in the .mac format."
 msgstr ""
 
-#: ../src/Config.cpp:465
+#: ../src/Config.cpp:467
 msgid "Italian"
 msgstr "Italian"
 
-#: ../src/Config.cpp:633
+#: ../src/Config.cpp:645
 msgid "Italic"
 msgstr "斜體"
 
-#: ../src/Config.cpp:466
+#: ../src/Config.cpp:468
 msgid "Japanese"
 msgstr "Japanese"
 
-#: ../src/Config.cpp:380
+#: ../src/Config.cpp:378
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
@@ -2156,15 +2156,19 @@ msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
 msgid "LCM"
 msgstr "最小公倍式"
 
-#: ../src/Config.cpp:421
+#: ../src/Config.cpp:423
 msgid "LaTeX: Place exponents after, instead above subscripts"
+msgstr ""
+
+#: ../src/Config.cpp:358
+msgid "Label width"
 msgstr ""
 
 #: ../src/Config.cpp:155
 msgid "Language used for wxMaxima GUI."
 msgstr "wxMaxima 圖形介面的語言"
 
-#: ../src/Config.cpp:450
+#: ../src/Config.cpp:452
 msgid "Language:"
 msgstr "語言："
 
@@ -2211,7 +2215,7 @@ msgstr "線性迴歸..."
 msgid "List:"
 msgstr "串列："
 
-#: ../src/Config.cpp:636
+#: ../src/Config.cpp:648
 msgid "Load"
 msgstr "載入"
 
@@ -2227,7 +2231,7 @@ msgstr "以批次命令的方式載入 Maxima 檔"
 msgid "Load a Maxima package file"
 msgstr "讀取 Maxima package 檔"
 
-#: ../src/Config.cpp:1470
+#: ../src/Config.cpp:1496
 msgid "Load style from file"
 msgstr "自檔案載入樣式"
 
@@ -2272,11 +2276,11 @@ msgstr "映射函數至串列"
 msgid "Map function to a matrix"
 msgstr "映射函數至矩陣"
 
-#: ../src/Config.cpp:371
+#: ../src/Config.cpp:369
 msgid "Match parenthesis in text controls"
 msgstr "在文字控制項中輸入時匹配括弧"
 
-#: ../src/Config.cpp:586
+#: ../src/Config.cpp:597
 msgid "Math font:"
 msgstr "數學字型："
 
@@ -2305,7 +2309,7 @@ msgstr "Maxima"
 msgid "Maxima got a question"
 msgstr "Maxima 詢問"
 
-#: ../src/Config.cpp:598
+#: ../src/Config.cpp:609
 msgid "Maxima input"
 msgstr "Maxima 輸入"
 
@@ -2325,11 +2329,11 @@ msgstr "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|所有類型|*
 msgid "Maxima process terminated."
 msgstr "Maxima 程序已結束"
 
-#: ../src/Config.cpp:518
+#: ../src/Config.cpp:529
 msgid "Maxima program:"
 msgstr "Maxima 程式："
 
-#: ../src/Config.cpp:600
+#: ../src/Config.cpp:611
 msgid "Maxima questions"
 msgstr "Maxima 詢問"
 
@@ -2362,7 +2366,7 @@ msgstr ""
 msgid "Maxima version: "
 msgstr "Maxima 版本："
 
-#: ../src/Config.cpp:347
+#: ../src/Config.cpp:344
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
@@ -2439,7 +2443,7 @@ msgstr "新變數："
 msgid "Next Command\tAlt-Down"
 msgstr "下一個命令\tAlt-Down"
 
-#: ../src/Config.cpp:364
+#: ../src/Config.cpp:351
 msgid "No"
 msgstr ""
 
@@ -2466,7 +2470,7 @@ msgid ""
 "maxima's input."
 msgstr ""
 
-#: ../src/Config.cpp:467
+#: ../src/Config.cpp:469
 msgid "Norwegian"
 msgstr ""
 
@@ -2497,7 +2501,7 @@ msgstr "分子 degree："
 msgid "Number of equations:"
 msgstr "方程式數量："
 
-#: ../src/Config.cpp:593
+#: ../src/Config.cpp:604
 msgid "Numbers"
 msgstr "數字"
 
@@ -2543,7 +2547,7 @@ msgstr "單樣本 t-檢驗"
 msgid "Online tutorials"
 msgstr "線上教材"
 
-#: ../src/Config.cpp:520 ../src/ToolBar.cpp:75 ../src/main.cpp:260
+#: ../src/Config.cpp:531 ../src/ToolBar.cpp:75 ../src/main.cpp:260
 #: ../src/wxMaxima.cpp:2604
 msgid "Open"
 msgstr "開啟"
@@ -2552,7 +2556,7 @@ msgstr "開啟"
 msgid "Open Recent"
 msgstr "最近開啟的文件"
 
-#: ../src/Config.cpp:386
+#: ../src/Config.cpp:384
 msgid "Open a cell when Maxima expects input"
 msgstr "當 Maxima 期望輸入時新增單元"
 
@@ -2576,7 +2580,7 @@ msgstr "開啟矩陣"
 msgid "Opening file"
 msgstr "正在開啟檔案"
 
-#: ../src/Config.cpp:494
+#: ../src/Config.cpp:507
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
@@ -2588,11 +2592,11 @@ msgstr "選項"
 msgid "Options:"
 msgstr "選項："
 
-#: ../src/Config.cpp:615
+#: ../src/Config.cpp:627
 msgid "Outdated cells"
 msgstr "過時的單元"
 
-#: ../src/Config.cpp:601
+#: ../src/Config.cpp:612
 msgid "Output labels"
 msgstr "輸出標籤"
 
@@ -2636,7 +2640,7 @@ msgstr "部分分式(&F)..."
 msgid "Partial fractions"
 msgstr "部分分式"
 
-#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1484
+#: ../src/MathParser.cpp:977 ../src/wxMaxima.cpp:1484
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "文件的某部分將無法被正確的讀取！"
 
@@ -2664,7 +2668,7 @@ msgstr "圓餅圖..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "請從「編輯(E)」->「設定(O)」設定 wxMaxima"
 
-#: ../src/Config.cpp:1306
+#: ../src/Config.cpp:1329
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "請重新啟動 wxMaxima 使變更生效！"
 
@@ -2727,7 +2731,7 @@ msgstr "繪圖存檔："
 msgid "Point:"
 msgstr "點："
 
-#: ../src/Config.cpp:468
+#: ../src/Config.cpp:470
 msgid "Polish"
 msgstr "Polish"
 
@@ -2739,7 +2743,7 @@ msgstr "多項式 1："
 msgid "Polynomial 2:"
 msgstr "多項式 2："
 
-#: ../src/Config.cpp:469
+#: ../src/Config.cpp:471
 msgid "Portuguese (Brazilian)"
 msgstr "Portuguese (Brazilian)"
 
@@ -2884,7 +2888,7 @@ msgstr "找多項式所有的根(長浮點數)"
 msgid "Rows:"
 msgstr "列："
 
-#: ../src/Config.cpp:470
+#: ../src/Config.cpp:472
 msgid "Russian"
 msgstr "Russian"
 
@@ -2900,7 +2904,7 @@ msgstr "樣本 2："
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/Config.cpp:637 ../src/ToolBar.cpp:78 ../src/wxMaxima.cpp:5550
+#: ../src/Config.cpp:649 ../src/ToolBar.cpp:78 ../src/wxMaxima.cpp:5550
 msgid "Save"
 msgstr "儲存"
 
@@ -2946,7 +2950,7 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: ../src/Config.cpp:488
+#: ../src/Config.cpp:501
 msgid "Save panes layout"
 msgstr "儲存窗格配置"
 
@@ -2966,11 +2970,11 @@ msgstr "儲存所選區域為圖片檔"
 msgid "Save selection to file"
 msgstr "儲存選取區域至檔案"
 
-#: ../src/Config.cpp:1462
+#: ../src/Config.cpp:1488
 msgid "Save style to file"
 msgstr "將樣式儲存至檔案"
 
-#: ../src/Config.cpp:485
+#: ../src/Config.cpp:498
 msgid "Save wxMaxima window size/position"
 msgstr "儲存 wxMaxima 視窗的大小及位置"
 
@@ -3003,7 +3007,7 @@ msgstr "散布圖..."
 msgid "Section"
 msgstr "章節"
 
-#: ../src/Config.cpp:606
+#: ../src/Config.cpp:618
 msgid "Section cell"
 msgstr "章節單元"
 
@@ -3015,7 +3019,7 @@ msgstr "全部選取"
 msgid "Select All\tCtrl-A"
 msgstr "全部選取\tCtrl-A"
 
-#: ../src/Config.cpp:749 ../src/Config.cpp:754
+#: ../src/Config.cpp:762 ../src/Config.cpp:767
 msgid "Select Maxima program"
 msgstr "選擇 Maxima 程式"
 
@@ -3043,7 +3047,7 @@ msgid ""
 msgstr ""
 "選取輸出並點擊右鍵會顯示功能表，其中含有一些供您方便操作所選區域的函數。"
 
-#: ../src/Config.cpp:613
+#: ../src/Config.cpp:625
 msgid "Selection"
 msgstr "所選區域"
 
@@ -3174,7 +3178,7 @@ msgstr "顯示函數的定義"
 msgid "Show function template"
 msgstr "顯示函數範本"
 
-#: ../src/Config.cpp:362
+#: ../src/Config.cpp:349
 msgid "Show long expressions"
 msgstr "顯示長的數式"
 
@@ -3186,7 +3190,7 @@ msgstr "在 wxMaxima 文件中顯示長的數式"
 msgid "Show the definition of function:"
 msgstr "顯示該函數的定義："
 
-#: ../src/Config.cpp:502
+#: ../src/Config.cpp:366
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
@@ -3338,7 +3342,7 @@ msgid ""
 "needed in order to compile the output, though."
 msgstr ""
 
-#: ../src/Config.cpp:471
+#: ../src/Config.cpp:473
 msgid "Spanish"
 msgstr "Spanish"
 
@@ -3347,7 +3351,7 @@ msgstr "Spanish"
 msgid "Special"
 msgstr "特殊"
 
-#: ../src/Config.cpp:595
+#: ../src/Config.cpp:606
 msgid "Special constants"
 msgstr "特殊常數"
 
@@ -3391,7 +3395,7 @@ msgstr "統計"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "統計\tAlt-Shift-S"
 
-#: ../src/Config.cpp:597
+#: ../src/Config.cpp:608
 msgid "Strings"
 msgstr "字串"
 
@@ -3399,7 +3403,7 @@ msgstr "字串"
 msgid "Style"
 msgstr "樣式"
 
-#: ../src/Config.cpp:573
+#: ../src/Config.cpp:584
 msgid "Styles"
 msgstr "樣式"
 
@@ -3411,7 +3415,7 @@ msgstr "子樣本..."
 msgid "Subsection"
 msgstr "子章節"
 
-#: ../src/Config.cpp:605
+#: ../src/Config.cpp:617
 msgid "Subsection cell"
 msgstr "子章節單元"
 
@@ -3433,7 +3437,7 @@ msgstr "代換..."
 msgid "Subsubsection"
 msgstr "子章節"
 
-#: ../src/Config.cpp:604
+#: ../src/Config.cpp:616
 #, fuzzy
 msgid "Subsubsection cell"
 msgstr "子章節單元"
@@ -3467,15 +3471,15 @@ msgstr "Tellrat 函數"
 msgid "Text"
 msgstr "文字"
 
-#: ../src/Config.cpp:603
+#: ../src/Config.cpp:615
 msgid "Text cell"
 msgstr "文字單元"
 
-#: ../src/Config.cpp:608
+#: ../src/Config.cpp:620
 msgid "Text cell background"
 msgstr "文字單元背景"
 
-#: ../src/Config.cpp:614
+#: ../src/Config.cpp:626
 #, fuzzy
 msgid "Text equal to selection"
 msgstr "剪下所選區域"
@@ -3558,7 +3562,7 @@ msgstr "抱歉，小秘訣無法顯示！"
 msgid "Title"
 msgstr "標題"
 
-#: ../src/Config.cpp:607
+#: ../src/Config.cpp:619
 msgid "Title cell"
 msgstr "標題單元"
 
@@ -3679,7 +3683,7 @@ msgstr ""
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: ../src/Config.cpp:472
+#: ../src/Config.cpp:474
 msgid "Turkish"
 msgstr ""
 
@@ -3695,7 +3699,7 @@ msgstr "雙樣本 t-檢驗"
 msgid "Type:"
 msgstr "類型："
 
-#: ../src/Config.cpp:473
+#: ../src/Config.cpp:475
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
@@ -3713,7 +3717,7 @@ msgid ""
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: ../src/Config.cpp:634
+#: ../src/Config.cpp:646
 msgid "Underlined"
 msgstr "底線"
 
@@ -3725,7 +3729,7 @@ msgstr "復原\tCtrl-Z"
 msgid "Undo last change"
 msgstr "復原上次的變更"
 
-#: ../src/Config.cpp:352
+#: ../src/Config.cpp:486
 msgid "Undo limit (0 for none)"
 msgstr ""
 
@@ -3762,7 +3766,7 @@ msgstr "上界："
 msgid "Use Gosper algorithm"
 msgstr "使用 Gosper 演算法"
 
-#: ../src/Config.cpp:433
+#: ../src/Config.cpp:435
 msgid "Use MathJAX in HTML export"
 msgstr ""
 
@@ -3776,17 +3780,21 @@ msgid ""
 "bit of time in order to typeset an equation."
 msgstr ""
 
-#: ../src/Config.cpp:491
+#: ../src/Config.cpp:504
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
-#: ../src/Config.cpp:160 ../src/Config.cpp:377
+#: ../src/Config.cpp:160 ../src/Config.cpp:375
 msgid "Use centered dot character for multiplication"
 msgstr "用圓點符號表示乘法"
 
-#: ../src/Config.cpp:588
+#: ../src/Config.cpp:599
 msgid "Use jsMath fonts"
 msgstr "使用 jsMath 字型"
+
+#: ../src/Config.cpp:613
+msgid "User-defined labels"
+msgstr ""
 
 #: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:3295
 #: ../src/wxMaxima.cpp:3311 ../src/wxMaxima.cpp:3419
@@ -3807,7 +3815,7 @@ msgstr "變數："
 msgid "Variable:"
 msgstr "變數："
 
-#: ../src/Config.cpp:592
+#: ../src/Config.cpp:603
 msgid "Variables"
 msgstr "變數"
 
@@ -3824,7 +3832,7 @@ msgstr "變異數..."
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:973 ../src/wxMaxima.cpp:1401 ../src/wxMaxima.cpp:1484
+#: ../src/MathParser.cpp:977 ../src/wxMaxima.cpp:1401 ../src/wxMaxima.cpp:1484
 #: ../src/wxMaxima.cpp:1828
 msgid "Warning"
 msgstr "警告"
@@ -3875,7 +3883,7 @@ msgstr "作者"
 msgid "XML Inspector"
 msgstr ""
 
-#: ../src/Config.cpp:367
+#: ../src/Config.cpp:354
 #, fuzzy
 msgid "Yes"
 msgstr "是"
@@ -4039,7 +4047,7 @@ msgstr "對數尺度"
 msgid "matrix[i,j]:"
 msgstr "矩陣[i,j]："
 
-#: ../src/Config.cpp:548
+#: ../src/Config.cpp:559
 msgid "maxima's pwd is path to document"
 msgstr ""
 
@@ -4182,7 +4190,7 @@ msgid ""
 "Maxima based on wxWidgets."
 msgstr "wxMaxima 是基於 wxWidgets ，為電腦代數系統 Maxima 的圖形使用界面。"
 
-#: ../src/Config.cpp:339
+#: ../src/Config.cpp:336
 msgid "x"
 msgstr ""
 
