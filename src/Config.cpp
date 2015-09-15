@@ -179,6 +179,7 @@ void Config::SetProperties()
     flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
     exportWithMathJAX = true;
   bool insertAns = true;
+  int labelWidth = 4;
   int  undoLimit = 0;
   int showLength = 0;
   int  bitmapScale = 3;
@@ -232,6 +233,7 @@ void Config::SetProperties()
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
+  config->Read(wxT("labelWidth"), &labelWidth);
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
@@ -291,6 +293,7 @@ void Config::SetProperties()
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
+  m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
@@ -326,12 +329,6 @@ wxPanel* Config::CreateWorksheetPanel()
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
-  wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 200);
-  grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
-
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
   m_defaultPlotWidth=new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 100, 16384);
@@ -349,16 +346,6 @@ wxPanel* Config::CreateWorksheetPanel()
   grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_displayedDigits,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* ul = new wxStaticText(panel, -1, _("Undo limit (0 for none)"));
-  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
-  grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
-
-  wxStaticText* bs = new wxStaticText(panel, -1, _("Bitmap scale for export"));
-  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
-  grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
-
   wxStaticText* sl = new wxStaticText(panel, -1, _("Show long expressions"));
   grid_sizer->Add(sl, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   showLengths.Add(_("No"));
@@ -367,6 +354,17 @@ wxPanel* Config::CreateWorksheetPanel()
   showLengths.Add(_("Yes"));
   m_showLength = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,showLengths);
   grid_sizer->Add(m_showLength, 0, wxALL, 5);
+
+  wxStaticText* lw = new wxStaticText(panel, -1, _("Label width"));
+  grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 10);
+  grid_sizer->Add(m_labelWidth, 0, wxALL, 5);
+
+
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (\%oxx)"));
+  vsizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
@@ -412,8 +410,12 @@ wxPanel* Config::CreateExportPanel()
   m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100), wxTE_MULTILINE | wxHSCROLL);
   grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
-
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText* bs = new wxStaticText(panel, -1, _("Bitmap scale for export"));
+  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
+  grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);  
 
   m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
@@ -475,13 +477,24 @@ wxPanel* Config::CreateOptionsPanel()
   m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
-
+  
   wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off)"));
   m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0, 30);
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_autoSaveInterval, 0, wxALL, 5);
-      
+
+  wxStaticText* ul = new wxStaticText(panel, -1, _("Undo limit (0 for none)"));
+  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
+  grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
+
+  wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 200);
+  grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_defaultFramerate,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+
   m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
   vsizer->Add(m_saveSize, 0, wxALL, 5);
 
@@ -499,8 +512,6 @@ wxPanel* Config::CreateOptionsPanel()
 
   m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of \%i, \%o) before saving"));
   vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
-  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (\%oxx)"));
-  vsizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -702,6 +713,7 @@ void Config::WriteSettings()
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
+  config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());

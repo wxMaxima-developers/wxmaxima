@@ -21,6 +21,7 @@
 
 #include "TextCell.h"
 #include "Setup.h"
+#include "wx/config.h"
 
 TextCell::TextCell() : MathCell()
 {
@@ -71,6 +72,20 @@ void TextCell::Destroy()
   m_next = NULL;
 }
 
+wxString TextCell::LabelWidthText()
+{
+  wxString result;
+
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  int labelWidth = 4;
+  config->Read(wxT("labelWidth"), &labelWidth);
+
+  for(int i=0;i<labelWidth;i++)
+    result += wxT("X");
+
+  return result;
+}
+
 void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   SetAltText(parser);
@@ -88,9 +103,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
 	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
-        dc.GetTextExtent(wxT("(\%oXXX)"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
       else
-        dc.GetTextExtent(wxT("(\%oXXX)/R/"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       while (m_labelWidth >= m_width) {

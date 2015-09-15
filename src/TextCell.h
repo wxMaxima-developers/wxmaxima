@@ -63,6 +63,10 @@ protected:
   int m_fontSizeTeX;
   int m_fontSizeLabel;
   int m_labelWidth, m_labelHeight;
+private:
+  //! Produces a text sample that determines the label width
+  wxString LabelWidthText();
+
 };
 
 #endif // TEXTCELL_H

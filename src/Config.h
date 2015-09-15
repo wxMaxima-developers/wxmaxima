@@ -193,6 +193,7 @@ protected:
   wxCheckBox* m_saveUntitled;
   wxCheckBox* m_openHCaret;
   wxCheckBox* m_insertAns;
+  wxSpinCtrl* m_labelWidth;
   wxSpinCtrl* m_undoLimit;
   wxSpinCtrl* m_bitmapScale;
   wxCheckBox* m_fixReorderedIndices;
