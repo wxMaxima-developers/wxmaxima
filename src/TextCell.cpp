@@ -100,7 +100,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
 	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
         dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
@@ -175,7 +175,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     SetForeground(parser);
 
     /// Labels and prompts have special fontsize
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
     {
       SetFont(parser, m_fontSizeLabel);
       dc.DrawText(m_text,
@@ -396,7 +396,7 @@ wxString TextCell::ToTeX()
 
   wxString text = m_text;
   
-  if (m_textStyle == TS_LABEL)
+  if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
   {    
     text = wxT("\\mathrm{\\tt ") + m_text + wxT("}\\quad ");
   }
@@ -470,6 +470,9 @@ wxString TextCell::ToXML()
 	case TS_NUMBER: tag=_T("n");break;
 	case TS_STRING: tag=_T("st");break;
 	case TS_LABEL: tag=_T("lbl");break;
+	case TS_USERLABEL: tag=_T("lbl");
+          flags += wxT(" userdefined=\"yes\"");
+          break;
 	default: tag=_T("t");
 	}
 

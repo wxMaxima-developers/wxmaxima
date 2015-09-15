@@ -47,6 +47,7 @@ enum TextStyle
   TS_MAIN_PROMPT,
   TS_OTHER_PROMPT,
   TS_LABEL,
+  TS_USERLABEL,
   TS_INPUT,
   TS_HIGHLIGHT,
   TS_TEXT_BACKGROUND,
@@ -71,6 +72,6 @@ enum TextStyle
   TS_CODE_ENDOFLINE
 };
 
-#define STYLE_NUM 32
+#define STYLE_NUM 33
 
 #endif // TEXTSTYLE_H

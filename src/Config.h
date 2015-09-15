@@ -237,6 +237,7 @@ protected:
     m_styleMainPrompt,
     m_styleOtherPrompt,
     m_styleLabel,
+    m_styleUserDefinedLabel,
     m_styleHighlight,
     m_styleText,
     m_styleSubsubsection,

@@ -814,7 +814,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
             }
 	  }
 	}
-        else if (tmp->GetStyle() == TS_LABEL)
+        else if ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL))
         {
 	  if(mathMode)
 	    str += wxT("\\]\n\\[\\displaystyle\n");

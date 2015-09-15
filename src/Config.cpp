@@ -610,6 +610,7 @@ wxPanel* Config::CreateStylePanel()
       _("Input labels"),
       _("Maxima questions"),
       _("Output labels"),
+      _("User-defined labels"),
       _("Highlight (dpart)"),
       _("Text cell"),
       _("Subsubsection cell"),
@@ -633,7 +634,7 @@ wxPanel* Config::CreateStylePanel()
       _("Code highlighting: End of line")
     };
 
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 31, m_styleFor_choices, wxLB_SINGLE);
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 33, m_styleFor_choices, wxLB_SINGLE);
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
 #ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30), wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
@@ -946,11 +947,18 @@ void Config::ReadStyles(wxString file)
   READ_STYLE(m_styleOtherPrompt, "Style/OtherPrompt/")
 
   // Labels
-  m_styleLabel.color = wxT("brown");
+  m_styleLabel.color = wxT("rgb(128,192,255)");
   m_styleLabel.bold = false;
   m_styleLabel.italic = false;
   m_styleLabel.underlined = false;
   READ_STYLE(m_styleLabel, "Style/Label/")
+
+  // Labels
+  m_styleUserDefinedLabel.color = wxT("rgb(128,192,255)");
+  m_styleUserDefinedLabel.bold = false;
+  m_styleUserDefinedLabel.italic = false;
+  m_styleUserDefinedLabel.underlined = false;
+  READ_STYLE(m_styleUserDefinedLabel, "Style/UserDefinedLabel/")
 
   // Special
   m_styleSpecial.color = m_styleDefault.color;
@@ -1185,6 +1193,9 @@ void Config::WriteStyles(wxString file)
   // Label
   WRITE_STYLE(m_styleLabel, "Style/Label/")
 
+  // Label
+  WRITE_STYLE(m_styleUserDefinedLabel, "Style/UserDefinedLabel/")
+
   // Special
   WRITE_STYLE(m_styleSpecial, "Style/Special/")
 
@@ -1356,66 +1367,69 @@ style* Config::GetStylePointer()
     tmp = &m_styleLabel;
     break;
   case 11:
-    tmp = &m_styleHighlight;
+    tmp = &m_styleUserDefinedLabel;
     break;
   case 12:
-    tmp = &m_styleText;
+    tmp = &m_styleHighlight;
     break;
   case 13:
-    tmp = &m_styleSubsubsection;
+    tmp = &m_styleText;
     break;
   case 14:
-    tmp = &m_styleSubsection;
+    tmp = &m_styleSubsubsection;
     break;
   case 15:
-    tmp = &m_styleSection;
+    tmp = &m_styleSubsection;
     break;
   case 16:
-    tmp = &m_styleTitle;
+    tmp = &m_styleSection;
     break;
   case 17:
-    tmp = &m_styleTextBackground;
+    tmp = &m_styleTitle;
     break;
   case 18:
-    tmp = &m_styleBackground;
+    tmp = &m_styleTextBackground;
     break;
   case 19:
-    tmp = &m_styleCellBracket;
+    tmp = &m_styleBackground;
     break;
   case 20:
-    tmp = &m_styleActiveCellBracket;
+    tmp = &m_styleCellBracket;
     break;
   case 21:
-    tmp = &m_styleCursor;
+    tmp = &m_styleActiveCellBracket;
     break;
   case 22:
-    tmp = &m_styleSelection;
+    tmp = &m_styleCursor;
     break;
   case 23:
-    tmp = &m_styleEqualsSelection;
+    tmp = &m_styleSelection;
     break;
   case 24:
-    tmp = &m_styleOutdated;
+    tmp = &m_styleEqualsSelection;
     break;
   case 25:
-    tmp = &m_styleCodeHighlightingVariable;
+    tmp = &m_styleOutdated;
     break;
   case 26:
-    tmp = &m_styleCodeHighlightingFunction;
+    tmp = &m_styleCodeHighlightingVariable;
     break;
   case 27:
-    tmp = &m_styleCodeHighlightingComment;
+    tmp = &m_styleCodeHighlightingFunction;
     break;
   case 28:
-    tmp = &m_styleCodeHighlightingNumber;
+    tmp = &m_styleCodeHighlightingComment;
     break;
   case 29:
-    tmp = &m_styleCodeHighlightingString;
+    tmp = &m_styleCodeHighlightingNumber;
     break;
   case 30:
-    tmp = &m_styleCodeHighlightingOperator;
+    tmp = &m_styleCodeHighlightingString;
     break;
   case 31:
+    tmp = &m_styleCodeHighlightingOperator;
+    break;
+  case 32:
     tmp = &m_styleCodeHighlightingEndOfLine;
     break;
   default:
