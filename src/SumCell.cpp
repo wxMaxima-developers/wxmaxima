@@ -280,7 +280,7 @@ wxString SumCell::ToString()
   s += m_base->ListToString();
 
   MathCell* tmp = m_under;
-  wxString var = tmp->ListToString();
+  wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->m_next;
   if (tmp != NULL)
@@ -288,6 +288,7 @@ wxString SumCell::ToString()
     tmp = tmp->m_next;
     if (tmp != NULL)
       from = tmp->ListToString();
+    std::cerr<<"from="<<from<<"\n";
   }
   wxString to = m_over->ListToString();
   s += wxT(",") + var + wxT(",") + from;
