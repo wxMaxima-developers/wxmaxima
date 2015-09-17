@@ -562,8 +562,6 @@ void MathCell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop = -1;
-//  m_currentPoint.x = -1;
-//  m_currentPoint.y = -1;
   m_breakLine = m_forceBreakLine;
 }
 

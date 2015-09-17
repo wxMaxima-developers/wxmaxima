@@ -400,8 +400,10 @@ wxString IntCell::ToTeX()
   else
     s += wxT(" ");
 
+  s += wxT("{\\left. ");
   s += m_base->ListToTeX();
   s += m_var->ListToTeX();
+  s += wxT("\\right.}");
 
   return s;
 }

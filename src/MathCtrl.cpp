@@ -3676,7 +3676,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   output<<wxT("\\newcommand{\\printlabel}[1]\n");
   output<<wxT("{\n");
   output<<wxT("    \\settowidth{\\thislabelwidth}{\\ensuremath{#1}}\n");
-  output<<wxT("    \\ifdim \\thislabelwidth>10ex \\color{labelcolor}\\ensuremath{#1}\\else\\makebox[10ex]{\\color{labelcolor}\\ensuremath{#1}}\\fi\n");
+  output<<wxT("    \\ifdim \\thislabelwidth>10ex \\color{labelcolor}\\ensuremath{#1}\\else\\makebox[10ex]{\\color{labelcolor}\\ensuremath{#1}}\\fi\\color{black}\n");
   output<<wxT("}\n");
 
   // Define an "abs" operator for abs commands that are long enough to be broken into
@@ -4343,9 +4343,22 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 
   int cellY = tmp->GetCurrentY();
 
-  if (cellY == -1)
-    return;
+  if (cellY < 1)
+  {
+    RecalculateForce();
+    cellY = tmp->GetCurrentY();
 
+    if(cellY < 1)
+    {
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      
+      cellY = tmp->GetParent()->PositionToPoint(parser, -1).y;
+    }
+  }
+
+  wxASSERT_MSG(cellY > 0,wxT("Bug: Cell with negative y position!"));
+  
   int cellDrop = tmp->GetDrop();
   int cellCenter = tmp->GetCenter();
 
@@ -5429,7 +5442,10 @@ void MathCtrl::ScrollToCaret()
       if(point.y<1)
       {
         RecalculateForce();
+        ScrollToCell(GetActiveCell()->GetParent());
         point = GetActiveCell()->PositionToPoint(parser, -1);
+        if(point.y<1)
+          point = GetActiveCell()->GetParent()->PositionToPoint(parser, -1);
       }
       ShowPoint(point);
     }   

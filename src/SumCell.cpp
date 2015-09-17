@@ -312,7 +312,11 @@ wxString SumCell::ToTeX()
   wxString to = m_over->ListToTeX();
   if (to.Length())
     s += wxT("^{") + to + wxT("}");
+
+
+  s += wxT("{\\left. ");
   s += m_base->ListToTeX();
+  s += wxT("\\right.}");
   return s;
 }
 
