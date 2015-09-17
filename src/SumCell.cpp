@@ -288,7 +288,6 @@ wxString SumCell::ToString()
     tmp = tmp->m_next;
     if (tmp != NULL)
       from = tmp->ListToString();
-    std::cerr<<"from="<<from<<"\n";
   }
   wxString to = m_over->ListToString();
   s += wxT(",") + var + wxT(",") + from;

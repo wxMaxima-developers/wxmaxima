@@ -283,9 +283,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   // Draw horizontal caret
   //
-  if (m_hCaretActive && m_hCaretPositionStart == NULL)
+  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible))
   {
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); // TODO is there more efficient way to do this?
+    // TODO is there more efficient way to do this?
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine( 0, 5, 3000, 5);
@@ -956,7 +957,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         SetActiveCell(editor, false); // do not refresh
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
-        m_switchDisplayCaret = false;
+        m_switchDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
           Recalculate();
@@ -979,7 +980,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         SetActiveCell(m_cellMouseSelectionStartedIn, false);
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
-        m_switchDisplayCaret = false;
+        m_switchDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         FollowEvaluation(true);    
         OpenQuestionCaret();
@@ -1217,7 +1218,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         // We are still inside the cell => select inside the current cell.
         wxClientDC dc(this);
         m_activeCell->SelectRectText(dc, down, up);
-        m_switchDisplayCaret = false;
+        m_switchDisplayCaret = true;
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
         RefreshRect(rect);
@@ -2114,7 +2115,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   // The keypress might have moved the cursor off-screen.
   ScrollToCaret();
   
-  m_switchDisplayCaret = false;
+  m_switchDisplayCaret = true;
 
   wxClientDC dc(this);
   CellParser parser(dc);
@@ -2676,15 +2677,34 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   break;
   case CARET_TIMER_ID:
   {
-    if (m_activeCell != NULL) {
-      if (m_switchDisplayCaret) {
+    if (m_switchDisplayCaret) {
+      wxRect rect;
+
+      if (m_activeCell != NULL) {
+        rect = m_activeCell->GetRect();
         m_activeCell->SwitchCaretDisplay();
-        
-        wxRect rect = m_activeCell->GetRect();
-        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-        RefreshRect(rect);
       }
-      m_switchDisplayCaret = true;
+      else
+      {
+        m_hCaretBlinkVisible = ! m_hCaretBlinkVisible;        
+        if (m_hCaretPosition == NULL)
+        {
+          rect.SetTop(4);
+          rect.SetBottom(6);
+        }
+        else
+        {
+          rect = m_hCaretPosition->GetRect();
+          int caretY = ((int) MC_GROUP_SKIP) / 2 + rect.GetBottom() + 1;
+          rect.SetTop(caretY - 1);
+          rect.SetBottom(caretY + 1);
+        }
+        rect.SetLeft(0);
+        rect.SetRight(5000);
+
+      }
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RefreshRect(rect);
     }
   }
   break;      
@@ -4650,7 +4670,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_activeCell->ActivateCell();
     m_activeCell->SetMatchParens(match);
     m_activeCell->SetInsertAns(insertAns);
-    m_switchDisplayCaret = false;
+    m_switchDisplayCaret = true;
     m_caretTimer.Start(CARET_TIMER_TIMEOUT);
   }
 
@@ -5152,6 +5172,11 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
       Refresh();
     ScrollToCell(where);
   }
+  
+  // Tell the cursor to blink, but to be visible right now.
+  m_switchDisplayCaret = true;
+  m_hCaretBlinkVisible = true;
+  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
 }
 
 void MathCtrl::ShowHCaret()

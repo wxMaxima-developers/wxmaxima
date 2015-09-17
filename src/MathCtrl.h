@@ -402,7 +402,10 @@ private:
   EditorCell *m_activeCell;
   EditorCell *m_cellMouseSelectionStartedIn;
   EditorCell *m_cellKeyboardSelectionStartedIn;
+  //! true = blink the cursor
   bool m_switchDisplayCaret;
+  //! Is the blinking vertically-drawn cursor currently visible?
+  bool m_hCaretBlinkVisible;
   /*! Is editing enabled?
 
     Editing is disabled while we are waiting for maxima.
