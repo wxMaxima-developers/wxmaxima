@@ -2976,6 +2976,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (!cssfile.IsOk())
     return false;
 
+
+  // Show a busy cursor as long as we export.
+  wxBusyCursor crs;
+  
   wxTextOutputStream css(cssfile);
 
   output<< wxT("<!DOCTYPE HTML\">\n");
@@ -3648,6 +3652,9 @@ bool MathCtrl::ExportToTeX(wxString file) {
     
   wxTextOutputStream output(outfile);
 
+  // Show a busy cursor as long as we export.
+  wxBusyCursor crs;
+
   wxString documentclass = wxT("article");
   wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
   
@@ -3888,6 +3895,9 @@ bool MathCtrl::ExportToMAC(wxString file)
   else if (!backupfile.Create())
     return false;
 
+  // Show a busy cursor as long as we export or save.
+  wxBusyCursor crs;
+
   if (wxm) {
     AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
     wxString version(wxT(VERSION));
@@ -3960,6 +3970,9 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
     return false;
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
+
+  // Show a busy cursor as long as we save.
+  wxBusyCursor crs;
 
   /* The first zip entry is a file named "mimetype": This makes sure that the mimetype 
      is always stored at the same position in the file. This is common practice. One 

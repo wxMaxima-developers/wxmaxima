@@ -1265,7 +1265,6 @@ void wxMaxima::SetCWD(wxString file)
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   SetStatusText(_("Opening file"), 1);
-  wxBeginBusyCursor();
   document->Freeze();
 
   // open wxm file
@@ -1273,7 +1272,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   wxArrayString *wxmLines = NULL;
 
   if (!inputFile.Open()) {
-    wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
@@ -1281,11 +1279,13 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     return false;
   }
 
+  // Show a busy cursor as long as we open a file.
+  wxBusyCursor crs;
+
   if (inputFile.GetFirstLine() !=
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
   {
     inputFile.Close();
-    wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
@@ -1329,7 +1329,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   SetCWD(file);
 
-  wxEndBusyCursor();
   StatusMaximaBusy(waiting);
   SetStatusText(_("File opened"), 1);
   
@@ -1339,7 +1338,9 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   SetStatusText(_("Opening file"), 1);
-  wxBeginBusyCursor();
+
+  // Show a busy cursor as long as we open a file.
+  wxBusyCursor crs;
   document->Freeze();
 
   // open wxmx file
@@ -1349,7 +1350,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxFSFile *fsfile = fs.OpenFile(wxT("file:") + file + wxT("#zip:content.xml"));
 
   if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
-    wxEndBusyCursor();
     document->Thaw();
     delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
@@ -1363,7 +1363,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
-    wxEndBusyCursor();
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
@@ -1385,7 +1384,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     int version_minor = int(10* (version - double(version_major)));
 
     if (version_major > DOCUMENT_VERSION_MAJOR) {
-      wxEndBusyCursor();
       document->Thaw();
       wxMessageBox(_("Document ") + file +
                    _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
@@ -1395,11 +1393,9 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR) {
-      wxEndBusyCursor();
       wxMessageBox(_("Document ") + file +
                    _(" was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
                    _("Warning"), wxOK | wxICON_EXCLAMATION);
-      wxBeginBusyCursor();
     }
   }
 
@@ -1437,7 +1433,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   SetCWD(file);
   
   m_console->EnableEdit(true);
-  wxEndBusyCursor();
 
   // We can set the cursor to the last known position.
   if(ActiveCellNumber == 0)
