@@ -59,6 +59,8 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_hCaretBlinkVisible = true;
+  m_hasFocus = true;
   m_lastTop    = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
@@ -100,6 +102,8 @@ wxScrolledCanvas(
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
+
+  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
 
   DisableKeyboardScrolling();
 
@@ -283,7 +287,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   // Draw horizontal caret
   //
-  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible))
+  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus))
   {
     // TODO is there more efficient way to do this?
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
@@ -5019,12 +5023,14 @@ void MathCtrl::MergeCells()
 
 void MathCtrl::OnSetFocus(wxFocusEvent& event)
 {
+  m_hasFocus = true;
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(true);
 }
 
 void MathCtrl::OnKillFocus(wxFocusEvent& event)
 {
+  m_hasFocus = false;
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(false);
 }
