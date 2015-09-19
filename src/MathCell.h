@@ -38,7 +38,11 @@
 #define MC_TEXT_PADDING 1
 
 #define MC_GROUP_SKIP 20
+//! The horizontal amount the worksheet is indented by  
 #define MC_GROUP_LEFT_INDENT 15
+
+//! The width of the horizontally-drawn cursor
+#define MC_HCARET_WIDTH 25
 
 #if defined __WXMAC__
  #define MC_EXP_INDENT 2

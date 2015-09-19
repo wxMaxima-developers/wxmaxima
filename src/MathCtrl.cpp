@@ -132,9 +132,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   wxRect rect = GetUpdateRegion().GetBox();
   // printf("Updating rect [%d, %d] -> [%d, %d]\n", rect.x, rect.y, rect.width, rect.height);
   wxSize sz = GetSize();
-  int tmp, top, bottom, drop;
-  CalcUnscrolledPosition(0, rect.GetTop(), &tmp, &top);
-  CalcUnscrolledPosition(0, rect.GetBottom(), &tmp, &bottom);
+  int xstart, top, bottom, drop;
+  CalcUnscrolledPosition(0, rect.GetTop(), &xstart, &top);
+  CalcUnscrolledPosition(0, rect.GetBottom(), &xstart, &bottom);
 
   // Test if m_memory is NULL (resize event)
   if (m_memory == NULL) {
@@ -289,11 +289,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
 
     if (m_hCaretPosition == NULL)
-      dcm.DrawLine( 0, 5, 3000, 5);
+      dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, 5,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT, 5);
     else {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
       int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom() + 1;
-      dcm.DrawLine( 0, caretY, 3000,  caretY);
+      dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, caretY,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT,  caretY);
     }
     
   }
@@ -3904,8 +3904,7 @@ bool MathCtrl::ExportToMAC(wxString file)
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
-  bool fixReorderedIndices;
-  wxConfig::Get()->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
+  bool fixReorderedIndices;  wxConfig::Get()->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   std::vector<int> cellMap;
   if (fixReorderedIndices) {
     int cellIndex = 1;
