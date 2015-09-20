@@ -21,7 +21,7 @@
 
 #include "SubSupCell.h"
 #include <wx/config.h>
-#include "Config.h"
+#include "wx/config.h"
 
 #define SUBSUP_DEC 3
 

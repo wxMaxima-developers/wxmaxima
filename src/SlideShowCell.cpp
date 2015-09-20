@@ -29,7 +29,7 @@
 #include <wx/utils.h>
 #include <wx/clipbrd.h>
 #include <wx/config.h>
-#include "Config.h"
+#include "wx/config.h"
 
 SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
 {

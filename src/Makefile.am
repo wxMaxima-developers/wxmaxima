@@ -7,7 +7,7 @@ endif
 bin_PROGRAMS = wxmaxima
 
 wxmaxima_SOURCES = \
-	Config.cpp         Config.h         \
+	ConfigDialogue.cpp         ConfigDialogue.h         \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \

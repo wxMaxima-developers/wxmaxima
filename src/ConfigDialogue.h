@@ -39,8 +39,8 @@ be read directly using <code> config->Read </code>, instead, where needed.
 #include <wx/bookctrl.h>
 #include <wx/artprov.h>
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIGDIALOGUE_H
+#define CONFIGDIALOGUE_H
 
 #include "TextStyle.h"
 #include "Setup.h"
@@ -94,7 +94,7 @@ public:
 private:
   /*! Actually updates the formatting example
 
-    This function is called after Config::UpdateExample() changes the example's style.
+    This function is called after ConfigDialogue::UpdateExample() changes the example's style.
  */
   void OnPaint(wxPaintEvent& event);
 
@@ -121,13 +121,13 @@ This class draws and handles the configuration dialog.
 Code that needs to know the value of the preferences that are set here reads 
 them directly using <code> config->Read </code>, instead.
  */
-class Config: public wxPropertySheetDialog
+class ConfigDialogue: public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  Config(wxWindow* parent);
+  ConfigDialogue(wxWindow* parent);
   //! The destructor
-  ~Config();
+  ~ConfigDialogue();
 
   /*! Called if the color of an item has been changed 
 
@@ -141,7 +141,7 @@ public:
   */
   void WriteSettings();
 private:
-  /*! begin wxGlade: Config::methods
+  /*! begin wxGlade: ConfigDialogue::methods
 
     This method sets the window title, the tool tips etc.
    */
@@ -158,7 +158,7 @@ private:
   wxPanel* CreateMaximaPanel();
   // end wxGlade
 protected:
-  // begin wxGlade: Config::attributes
+  // begin wxGlade: ConfigDialogue::attributes
   wxTextCtrl* m_maximaProgram;
   wxTextCtrl* m_documentclass;
   wxTextCtrl* m_texPreamble;
@@ -304,16 +304,16 @@ protected:
 class ColorPanel : public wxPanel
 {
 public:
-  ColorPanel(Config * conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id, pos, size, style)
+  ColorPanel(ConfigDialogue * conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id, pos, size, style)
   {
-     config = conf;
+     m_configDialogue = conf;
      SetBackgroundColour(wxColour(0,0,0));
   };
   void OnClick(wxMouseEvent &event) {
-      config->OnChangeColor();
+      m_configDialogue->OnChangeColor();
   }
 private:
-  Config * config;
+  ConfigDialogue * m_configDialogue;
   DECLARE_EVENT_TABLE()
 };
 #endif // __WXMSW__

@@ -30,7 +30,7 @@
 #include "SeriesWiz.h"
 #include "SumWiz.h"
 #include "Plot3dWiz.h"
-#include "Config.h"
+#include "ConfigDialogue.h"
 #include "Gen1Wiz.h"
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
@@ -633,7 +633,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         ReadFirstPrompt(m_currentOutput);
         if(m_batchmode)
           m_console->AddDocumentToEvaluationQueue();
-        TryEvaluateNextInQueue();
       }
 
 
@@ -658,7 +657,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
-    m_console->m_evaluationQueue->Clear();
+    if (!m_closing)
+      m_console->m_evaluationQueue->Clear();
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     SetBatchMode(false);
@@ -683,6 +683,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         m_unsuccessfullConnectionAttempts ++;
         StartMaxima();
       }
+      m_console->m_evaluationQueue->Clear();
     }
     break;
 
@@ -835,6 +836,12 @@ bool wxMaxima::StartMaxima()
   }
   else
     return false;
+
+  if (m_openFile.Length())
+  {
+    OpenFile(m_openFile);
+    m_openFile = wxEmptyString;
+  }
   return true;
 }
 
@@ -905,7 +912,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   int start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
     start = 0;
-  
   FirstOutput(wxT("wxMaxima ")
               wxT(VERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
@@ -930,12 +936,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   data = wxEmptyString;
   m_console->EnableEdit(true);
 
-  if (m_openFile.Length())
-  {
-    OpenFile(m_openFile);
-    m_openFile = wxEmptyString;
-  }
-  else if (m_console->m_evaluationQueue->Empty())
+  if (m_console->m_evaluationQueue->Empty())
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
@@ -943,6 +944,10 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     wxConfig::Get()->Read(wxT("openHCaret"), &open);
     if (open)
       m_console->OpenNextOrCreateCell();
+  }
+  else
+  {
+    TryEvaluateNextInQueue();
   }
 }
 
@@ -2797,7 +2802,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #endif
     config->Read(wxT("usepngCairo"),&pngcairo_old);
       
-    Config *configW = new Config(this);
+    ConfigDialogue *configW = new ConfigDialogue(this);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
     {
@@ -3133,35 +3138,38 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   break;
   case menu_evaluate_all_visible:
   {
-    bool evaluating = !m_console->m_evaluationQueue->Empty();
-    if(!m_isConnected)
-      StartMaxima();
+    m_closing = true;
+    m_console->m_evaluationQueue->Clear();
+    m_console->ResetInputPrompts();
+    EvaluationQueueLength(0);
+    StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
-  // Inform the user about the length of the evaluation queue.
+    // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
-    if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
   case menu_evaluate_all:
   {
-    bool evaluating = !m_console->m_evaluationQueue->Empty();
-    if(!m_isConnected)
-      StartMaxima();
+    m_closing = true;
+    m_console->m_evaluationQueue->Clear();
+    m_console->ResetInputPrompts();
+    EvaluationQueueLength(0);
+    StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
-    if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
   case ToolBar::tb_evaltillhere:
   {
-    bool evaluating = !m_console->m_evaluationQueue->Empty();
-    if(!m_isConnected)
-      StartMaxima();
+    m_closing = true;
+    m_console->m_evaluationQueue->Clear();
+    m_console->ResetInputPrompts();
+    EvaluationQueueLength(0);
+    StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
-  // Inform the user about the length of the evaluation queue.
+    // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
-    if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
   case menu_clear_var:
@@ -5088,12 +5096,15 @@ void wxMaxima::TriggerEvaluation()
 void wxMaxima::TryEvaluateNextInQueue()
 {
   if (!m_isConnected) {
-    wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
-
-    // Clear the evaluation queue.
-    m_console->m_evaluationQueue->Clear();
-    m_console->Refresh();
-    EvaluationQueueLength(0);
+    if(!StartMaxima())
+    {
+      wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
+      
+      // Clear the evaluation queue.
+      m_console->m_evaluationQueue->Clear();
+      m_console->Refresh();
+      EvaluationQueueLength(0);
+    }
     return ;
   }
 

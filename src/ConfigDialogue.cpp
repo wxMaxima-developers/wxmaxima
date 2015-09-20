@@ -25,7 +25,7 @@
   The C code for the preferences dialog.
 */
 
-#include "Config.h"
+#include "ConfigDialogue.h"
 #include "MathCell.h"
 
 #include <wx/config.h>
@@ -73,7 +73,7 @@ const int langs[] =
 
 #define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
 
-Config::Config(wxWindow* parent)
+ConfigDialogue::ConfigDialogue(wxWindow* parent)
 {
 #if defined __WXMAC__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
@@ -117,13 +117,13 @@ Config::Config(wxWindow* parent)
   UpdateExample();
 }
 
-Config::~Config()
+ConfigDialogue::~ConfigDialogue()
 {
   if (m_imageList != NULL)
     delete m_imageList;
 }
 
-void Config::SetProperties()
+void ConfigDialogue::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
@@ -320,7 +320,7 @@ void Config::SetProperties()
   ReadStyles();
 }
 
-wxPanel* Config::CreateWorksheetPanel()
+wxPanel* ConfigDialogue::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
@@ -394,7 +394,7 @@ wxPanel* Config::CreateWorksheetPanel()
   return panel;
 }
   
-wxPanel* Config::CreateExportPanel()
+wxPanel* ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
@@ -442,7 +442,7 @@ wxPanel* Config::CreateExportPanel()
   return panel;
 }
 
-wxPanel* Config::CreateOptionsPanel()
+wxPanel* ConfigDialogue::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
@@ -520,7 +520,7 @@ wxPanel* Config::CreateOptionsPanel()
   return panel;
 }
 
-wxPanel* Config::CreateMaximaPanel()
+wxPanel* ConfigDialogue::CreateMaximaPanel()
 {
   wxPanel* panel = new wxPanel(m_notebook, -1);
 
@@ -576,7 +576,7 @@ wxPanel* Config::CreateMaximaPanel()
   return panel;
 }
 
-wxPanel* Config::CreateStylePanel()
+wxPanel* ConfigDialogue::CreateStylePanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
@@ -682,7 +682,7 @@ wxPanel* Config::CreateStylePanel()
   return panel;
 }
 
-void Config::OnClose(wxCloseEvent& event)
+void ConfigDialogue::OnClose(wxCloseEvent& event)
 {
 #if defined __WXMAC__
   EndModal(wxID_OK);
@@ -691,7 +691,7 @@ void Config::OnClose(wxCloseEvent& event)
 #endif
 }
 
-void Config::WriteSettings()
+void ConfigDialogue::WriteSettings()
 {
   int i = 0;
   wxString search = wxT("maxima-htmldir");
@@ -753,7 +753,7 @@ void Config::WriteSettings()
   config->Flush();
 }
 
-void Config::OnMpBrowse(wxCommandEvent& event)
+void ConfigDialogue::OnMpBrowse(wxCommandEvent& event)
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString dd;
@@ -782,7 +782,7 @@ void Config::OnMpBrowse(wxCommandEvent& event)
   }
 }
 
-void Config::OnMathBrowse(wxCommandEvent& event)
+void ConfigDialogue::OnMathBrowse(wxCommandEvent& event)
 {
   wxFont math;
   math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
@@ -798,7 +798,7 @@ void Config::OnMathBrowse(wxCommandEvent& event)
   }
 }
 
-void Config::OnChangeFontFamily(wxCommandEvent& event)
+void ConfigDialogue::OnChangeFontFamily(wxCommandEvent& event)
 {
   wxFont font;
   int fontsize = m_fontSize;
@@ -840,7 +840,7 @@ void Config::OnChangeFontFamily(wxCommandEvent& event)
   }
 }
 
-void Config::ReadStyles(wxString file)
+void ConfigDialogue::ReadStyles(wxString file)
 {
   wxConfigBase* config;
   if (file == wxEmptyString)
@@ -1141,7 +1141,7 @@ void Config::ReadStyles(wxString file)
     delete config;
 }
 
-void Config::WriteStyles(wxString file)
+void ConfigDialogue::WriteStyles(wxString file)
 {
   wxConfigBase* config;
   if (file == wxEmptyString)
@@ -1262,7 +1262,7 @@ void Config::WriteStyles(wxString file)
   }
 }
 
-void Config::OnChangeColor()
+void ConfigDialogue::OnChangeColor()
 {
   style* tmp = GetStylePointer();
   wxColour col = wxGetColourFromUser(this, tmp->color);
@@ -1274,7 +1274,7 @@ void Config::OnChangeColor()
   }
 }
 
-void Config::OnChangeStyle(wxCommandEvent& event)
+void ConfigDialogue::OnChangeStyle(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
@@ -1313,7 +1313,7 @@ void Config::OnChangeStyle(wxCommandEvent& event)
   UpdateExample();
 }
 
-void Config::OnCheckbox(wxCommandEvent& event)
+void ConfigDialogue::OnCheckbox(wxCommandEvent& event)
 {
   style* tmp = GetStylePointer();
 
@@ -1324,14 +1324,14 @@ void Config::OnCheckbox(wxCommandEvent& event)
   UpdateExample();
 }
 
-void Config::OnChangeWarning(wxCommandEvent &event)
+void ConfigDialogue::OnChangeWarning(wxCommandEvent &event)
 {
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
                wxOK|wxICON_WARNING);
 }
 
-style* Config::GetStylePointer()
+style* ConfigDialogue::GetStylePointer()
 {
   style* tmp;
   switch (m_styleFor->GetSelection())
@@ -1438,7 +1438,7 @@ style* Config::GetStylePointer()
   return tmp;
 }
 
-void Config::UpdateExample()
+void ConfigDialogue::UpdateExample()
 {
   style *tmp = GetStylePointer();
   wxString example = _("Example text");
@@ -1481,7 +1481,7 @@ void Config::UpdateExample()
   m_examplePanel->Refresh();
 }
 
-void Config::LoadSave(wxCommandEvent& event)
+void ConfigDialogue::LoadSave(wxCommandEvent& event)
 {
   if (event.GetId() == save_id)
   {
@@ -1506,28 +1506,28 @@ void Config::LoadSave(wxCommandEvent& event)
 }
 
 #if defined __WXMSW__
-void Config::OnColorButton(wxCommandEvent &event)
+void ConfigDialogue::OnColorButton(wxCommandEvent &event)
 {
   OnChangeColor();
 }
 #endif
 
-BEGIN_EVENT_TABLE(Config, wxPropertySheetDialog)
-EVT_BUTTON(wxID_OPEN, Config::OnMpBrowse)
-EVT_BUTTON(button_mathFont, Config::OnMathBrowse)
-EVT_BUTTON(font_family, Config::OnChangeFontFamily)
+BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
+EVT_BUTTON(wxID_OPEN, ConfigDialogue::OnMpBrowse)
+EVT_BUTTON(button_mathFont, ConfigDialogue::OnMathBrowse)
+EVT_BUTTON(font_family, ConfigDialogue::OnChangeFontFamily)
 #if defined __WXMSW__
-EVT_BUTTON(color_id, Config::OnColorButton)
+EVT_BUTTON(color_id, ConfigDialogue::OnColorButton)
 #endif
-EVT_LISTBOX(listbox_styleFor, Config::OnChangeStyle)
-EVT_COMBOBOX(language_id, Config::OnChangeWarning)
-EVT_CHECKBOX(checkbox_bold, Config::OnCheckbox)
-EVT_CHECKBOX(checkbox_italic, Config::OnCheckbox)
-EVT_CHECKBOX(checkbox_underlined, Config::OnCheckbox)
-EVT_BUTTON(save_id, Config::LoadSave)
-EVT_BUTTON(load_id, Config::LoadSave)
-EVT_BUTTON(style_font_family, Config::OnChangeFontFamily)
-EVT_CLOSE(Config::OnClose)
+EVT_LISTBOX(listbox_styleFor, ConfigDialogue::OnChangeStyle)
+EVT_COMBOBOX(language_id, ConfigDialogue::OnChangeWarning)
+EVT_CHECKBOX(checkbox_bold, ConfigDialogue::OnCheckbox)
+EVT_CHECKBOX(checkbox_italic, ConfigDialogue::OnCheckbox)
+EVT_CHECKBOX(checkbox_underlined, ConfigDialogue::OnCheckbox)
+EVT_BUTTON(save_id, ConfigDialogue::LoadSave)
+EVT_BUTTON(load_id, ConfigDialogue::LoadSave)
+EVT_BUTTON(style_font_family, ConfigDialogue::OnChangeFontFamily)
+EVT_CLOSE(ConfigDialogue::OnClose)
 END_EVENT_TABLE()
 
   void ExamplePanel::OnPaint(wxPaintEvent& event)
