@@ -474,7 +474,7 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
       _("Turkish"),
       _("Ukrainian")
     };
-  m_language = new wxComboBox(panel, language_id, wxEmptyString, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER, m_language_choices);
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   

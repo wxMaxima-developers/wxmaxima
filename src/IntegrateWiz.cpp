@@ -45,8 +45,8 @@ IntegrateWiz::IntegrateWiz(wxWindow* parent, int id,
   checkbox_2 = new wxCheckBox(this, numeric_id, _("&Numerical integration"));
   label_6 = new wxStaticText(this, -1, _("Method:"));
   wxString numeric_methods[] = { wxT("quadpack"), wxT("romberg") };
-  combobox_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                              2, numeric_methods, wxCB_DROPDOWN | wxCB_READONLY);
+  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                          2, numeric_methods);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -75,11 +75,11 @@ void IntegrateWiz::set_properties()
   text_ctrl_4->Enable(false);
   button_4->Enable(false);
   checkbox_2->Enable(false);
-  combobox_1->Enable(false);
+  choice_1->Enable(false);
 
   int num_sel = 0;
   wxConfig::Get()->Read(wxT("Wiz/Int/numericSelection"), &num_sel);
-  combobox_1->SetSelection(num_sel);
+  choice_1->SetSelection(num_sel);
 
   text_ctrl_1->SetFocus();
 }
@@ -111,7 +111,7 @@ void IntegrateWiz::do_layout()
   grid_sizer_4->Add(20, 20, 0, 0);
   grid_sizer_4->Add(checkbox_2, 0, wxALL, 5);
   grid_sizer_4->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-  grid_sizer_4->Add(combobox_1, 0, wxALL, 5);
+  grid_sizer_4->Add(choice_1, 0, wxALL, 5);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
   grid_sizer_3->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   sizer_3->Add(button_1, 0, wxALL, 5);
@@ -129,7 +129,7 @@ wxString IntegrateWiz::GetValue()
   wxString s;
   if (checkbox_2->GetValue())
   {
-    if (combobox_1->GetValue() == wxT("romberg"))
+    if (choice_1->GetSelection() == 1)
     {
       wxConfig::Get()->Write(wxT("Wiz/Int/numericSelection"), 1);
       s = wxT("romberg(") +
@@ -198,7 +198,7 @@ void IntegrateWiz::OnCheckbox(wxCommandEvent& event)
   checkbox_2->Enable(enable);
 
   enable = enable && checkbox_2->GetValue();
-  combobox_1->Enable(enable);
+  choice_1->Enable(enable);
 }
 
 void IntegrateWiz::OnButton(wxCommandEvent& event)

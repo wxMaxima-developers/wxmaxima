@@ -35,15 +35,14 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
                               wxSize(110, -1));
   button_1 = new wxButton(this, special, _("Special"));
   label_5 = new wxStaticText(this, -1, _("Direction:"));
-  const wxString combo_box_1_choices[] =
+  const wxString choice_1_choices[] =
     {
       _("both sides"),
       _("left"),
       _("right")
     };
-  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(130, -1), 3,
-                               combo_box_1_choices, wxCB_DROPDOWN | wxCB_READONLY);
+  choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(130, -1),
+                          3, choice_1_choices);
   checkbox_1 = new wxCheckBox(this, -1, _("&Taylor series"));
   static_line_1 = new wxStaticLine(this, -1);
 
@@ -65,7 +64,7 @@ LimitWiz::LimitWiz(wxWindow* parent, int id, const wxString& title,
 void LimitWiz::set_properties()
 {
   SetTitle(_("Limit"));
-  combo_box_1->SetSelection(0);
+  choice_1->SetSelection(0);
 #if defined __WXMSW__
   button_2->SetDefault();
 #else
@@ -91,7 +90,7 @@ void LimitWiz::do_layout()
   sizer_1->Add(button_1, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_1, 1, 0, 0);
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-  grid_sizer_2->Add(combo_box_1, 0, wxALL, 5);
+  grid_sizer_2->Add(choice_1, 0, wxALL, 5);
   grid_sizer_2->Add(20, 20, 0, wxALL, 5);
   grid_sizer_2->Add(checkbox_1, 9, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
@@ -118,11 +117,14 @@ wxString LimitWiz::GetValue()
   s += text_ctrl_2->GetValue();
   s += wxT(", ");
   s += text_ctrl_3->GetValue();
-  wxString f = combo_box_1->GetValue();
-  if (f == _("left"))
-    s += wxT(", minus");
-  else if (f == _("right"))
-    s += wxT(", plus");
+  if (choice_1->IsEnabled())
+  {
+    int f = choice_1->GetSelection();
+    if (f == 1)
+      s += wxT(", minus");
+    else if (f == 2)
+      s += wxT(", plus");
+  }
   s += wxT(");");
 
   return s;
@@ -154,14 +156,11 @@ void LimitWiz::OnIdle(wxIdleEvent& ev)
   if (point == wxT("inf") || point == wxT("-inf") || point == wxT("+inf") ||
       point == wxT("minf") || point == wxT("-minf") || point == wxT("+minf"))
   {
-    combo_box_1->SetValue(wxEmptyString);
-    combo_box_1->Enable(false);
+    choice_1->Enable(false);
   }
-  else if (combo_box_1->IsEnabled() == false)
+  else if (choice_1->IsEnabled() == false)
   {
-    combo_box_1->Enable(true);
-    if (combo_box_1->GetValue() == wxEmptyString)
-      combo_box_1->SetValue(_("both sides"));
+    choice_1->Enable(true);
   }
 }
 

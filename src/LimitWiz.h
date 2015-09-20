@@ -58,7 +58,7 @@ protected:
   BTextCtrl* text_ctrl_3;
   wxButton* button_1;
   wxStaticText* label_5;
-  wxComboBox* combo_box_1;
+  wxChoice* choice_1;
   wxCheckBox* checkbox_1;
   wxStaticLine* static_line_1;
   wxButton* button_2;
