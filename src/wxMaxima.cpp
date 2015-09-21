@@ -2232,7 +2232,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
 
   menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue->Empty());
   menubar->Enable(menu_save_id, (!m_fileSaved));
-//  menubar->Enable(menu_export_html, !m_saving);
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
@@ -2617,6 +2616,9 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #endif
   case menu_save_id:
     SaveFile(forceSave);
+    // Seems like resetting the title on "file/save as" is a little bit
+    // sluggish, otherwise.
+    ResetTitle(m_console->IsSaved());
     break;
 
   case menu_export_html:
