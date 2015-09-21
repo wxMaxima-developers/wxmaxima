@@ -131,24 +131,31 @@ void EvaluationQueue::AddTokens(wxString commandString)
 {
   size_t index = 0;
 
+
   wxString token;
 
   while(index < commandString.Length())
   {
     wxChar ch = commandString[index];
 
-    // Process strings
+    // Add strings as a whole
     if(ch == wxT('\"'))
     {
       token += ch;
       index++;
       while((index < commandString.Length()) && (commandString[index] != wxT('\"')))
       {
+        if(commandString[index]==wxT('\\'))
+        {
+          token += commandString[index];
+          index++;
+        }
         token += commandString[index];
         index++;
       }
+      continue;
     }
-
+    
     // :lisp -commands should be added as a whole
     if(ch == wxT(':'))
     {
@@ -166,7 +173,10 @@ void EvaluationQueue::AddTokens(wxString commandString)
     {
       token += ch;
       index++;
-      ch = commandString[index];
+      if(index < commandString.Length())
+        ch = commandString[index];
+      else
+        continue;
     }
       
     // Remove comments
@@ -209,7 +219,9 @@ void EvaluationQueue::AddTokens(wxString commandString)
   // will detect if the token is empty.
   token.Trim(true).Trim(false);
   if(token != wxEmptyString)
+  {
     m_tokens.Add(token);
+  }
 }
 
 GroupCell* EvaluationQueue::GetCell()
