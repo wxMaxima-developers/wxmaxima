@@ -348,8 +348,6 @@ protected:
   // The stderr of the maxima process
   wxInputStream *m_error;
   int m_port;
-  //! Are we currently saving the file?
-  bool m_saving;
   wxString m_currentOutput;
   //! The marker for the start of a input prompt
   wxString m_promptPrefix;

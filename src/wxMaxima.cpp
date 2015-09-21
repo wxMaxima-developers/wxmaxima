@@ -113,7 +113,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   wxConfig *config = (wxConfig *)wxConfig::Get();
   ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
-  m_saving = false;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_port = 4010;
@@ -2232,8 +2231,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     );
 
   menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue->Empty());
-  menubar->Enable(menu_save_id, (!m_fileSaved)&&(!m_saving));
-  menubar->Enable(menu_export_html, !m_saving);
+  menubar->Enable(menu_save_id, (!m_fileSaved));
+//  menubar->Enable(menu_export_html, !m_saving);
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
@@ -2281,7 +2280,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
 
   m_console->m_mainToolBar->CanCopy(m_console->CanCopy(true));
   m_console->m_mainToolBar->CanCut (m_console->CanCut());
-  m_console->m_mainToolBar->CanSave((!m_fileSaved)&&(!m_saving));
+  m_console->m_mainToolBar->CanSave((!m_fileSaved));
   m_console->m_mainToolBar->CanPrint(m_console->GetTree() != NULL);
   m_console->m_mainToolBar->CanEvalTillHere(
     (m_console->GetTree() != NULL) &&
@@ -2413,7 +2412,6 @@ bool wxMaxima::SaveFile(bool forceSave)
     else
     {
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-      m_saving = false;
       return false;
     }
   }
@@ -2448,7 +2446,6 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if(m_autoSaveInterval > 10000)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-        m_saving = false;
         return false;
       }
       
@@ -2461,7 +2458,6 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if(m_autoSaveInterval > 10000)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-        m_saving = false;
         return false;
       }
     }
@@ -2472,13 +2468,11 @@ bool wxMaxima::SaveFile(bool forceSave)
     if(m_autoSaveInterval > 10000)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     StatusSaveFinished();
-    m_saving = false;
     return true;
   }
 
   if(m_autoSaveInterval > 10000)
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-  m_saving = false;
   
   return false;
 }
@@ -2546,7 +2540,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     m_console->m_keyboardInactive = true;
     if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0) && SaveNecessary())
     {
-      if(!m_saving)SaveFile(false);
+      SaveFile(false);
       m_autoSaveIntervalExpired = false;
       if(m_autoSaveInterval > 10000)
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -2556,7 +2550,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     m_autoSaveIntervalExpired = true;
     if((m_console->m_keyboardInactive) && (m_currentFile.Length() > 0) && SaveNecessary())
     {
-      if(!m_saving)SaveFile(false);
+      SaveFile(false);
 	
       if(m_autoSaveInterval > 10000)
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -2626,9 +2620,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     break;
 
   case menu_export_html:
-  {
-    m_saving = true;
-    
+  {    
     // Determine a sane default file name;
     wxString file = m_currentFile;
 
@@ -2735,7 +2727,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       }
     }
   }
-  m_saving = false;
   break;
     
   case menu_load_id:
