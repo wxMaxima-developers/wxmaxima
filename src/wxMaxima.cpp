@@ -313,18 +313,22 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     return ;
   }
 
-  // If we already have output more lines than we are allowed to we a inform the user
-  // about this and return.
-  if(m_outputCellsFromCurrentCommand++ == m_maxOutputCellsPerCommand)
+  if(m_maxOutputCellsPerCommand > 0)
   {
-    DoRawConsoleAppend(_("... [suppressed additional lines since the output is longer than allowed in the configuration] "), MC_TYPE_ERROR);
-    return; 
-  };
-
-  // If we already have output more lines than we are allowed to and we already
-  // have informed the user about this we return immediately
-  if(m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
-    return;
+    // If we already have output more lines than we are allowed to we a inform the user
+    // about this and return.
+    if(m_outputCellsFromCurrentCommand++ == m_maxOutputCellsPerCommand)
+    {
+      DoRawConsoleAppend(_("... [suppressed additional lines since the output is longer than allowed in the configuration] "), MC_TYPE_ERROR);
+      return; 
+    };
+    
+    
+    // If we already have output more lines than we are allowed to and we already
+    // have informed the user about this we return immediately
+    if(m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
+      return;
+  }
   
   if (type != MC_TYPE_ERROR)
     StatusMaximaBusy(parsing);
