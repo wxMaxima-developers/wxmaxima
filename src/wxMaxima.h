@@ -313,7 +313,14 @@ protected:
  */
   void SetupVariables();
   void KillMaxima();                 //!< kills the maxima process
-  void ResetTitle(bool saved);
+  /*! Update the title
+
+    Updates the "saved" status, as well, but does only do anything if saved has
+    changed or force is true.
+    \param saved The new "saved" status
+    \param force Force update if the "saved" status hasn't changed.
+   */
+  void ResetTitle(bool saved,bool force = false);
   void FirstOutput(wxString s);
 
   // Opens a wxm file

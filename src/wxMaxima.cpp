@@ -1322,8 +1322,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   if (clearDocument) {
     m_currentFile = file;
-    m_fileSaved = false; // to force reset title to update
-    ResetTitle(true);
+    ResetTitle(true,true);
     document->SetSaved(true);
   }
   else
@@ -1425,8 +1424,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   if (clearDocument) {
     m_currentFile = file;
-    m_fileSaved = false; // to force reset title to update
-    ResetTitle(true);
+    ResetTitle(true,true);
     document->SetSaved(true);
   }
   else
@@ -2618,7 +2616,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
     SaveFile(forceSave);
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
-    ResetTitle(m_console->IsSaved());
+    ResetTitle(m_console->IsSaved(),true);
     break;
 
   case menu_export_html:
@@ -5324,9 +5322,9 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     m_console->OpenHCaret(wxEmptyString, type);
 }
 
-void wxMaxima::ResetTitle(bool saved)
+void wxMaxima::ResetTitle(bool saved,bool force)
 {
-  if (saved != m_fileSaved)
+  if ((saved != m_fileSaved)||(force))
   {
     m_fileSaved = saved;
     if (m_currentFile.Length() == 0) {
