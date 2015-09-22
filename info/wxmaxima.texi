@@ -616,7 +616,8 @@ startup file can be placed in.
 @section Special variables
 @itemize @bullet
 @item @var{wxfilename} This variable contains the name of the file
-%currently opened in wxMaxima.
+currently opened in wxMaxima. On windows this piece of information
+is only available if in the configuration dialogue the checkbox @code{Maxima/maxima's pwd is path to document} is checked.
 @item @var{wxplot_pngcairo} tells if wxMaxima tries to use gnuplot's
 pngcairo terminal that provides more line styles and a better overall
 graphics quality. This variable can be used for reading or overriding
