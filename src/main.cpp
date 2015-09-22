@@ -58,6 +58,18 @@ bool MyApp::OnInit()
   m_frame = NULL;
 //  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
+  wxConfigBase *config = wxConfig::Get();
+  config->Read(wxT("language"), &lang);
+  if (lang == wxLANGUAGE_UNKNOWN)
+    lang = wxLocale::GetSystemLanguage();
+
+  {
+    wxLogNull disableErrors;
+    m_locale.Init(lang);
+  }
+
+
+  
   bool batchmode = false;
 
   wxCmdLineParser cmdLineParser(argc, argv);
@@ -90,22 +102,11 @@ bool MyApp::OnInit()
   wxConfig::Set(new wxConfig(wxT("wxMaxima")));
 #endif
 
-  wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("language"), &lang);
-
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
-
-  if (lang == wxLANGUAGE_UNKNOWN)
-    lang = wxLocale::GetSystemLanguage();
-
-  {
-    wxLogNull disableErrors;
-    m_locale.Init(lang);
-  }
 
   Dirstructure dirstructure;
 

@@ -2,8 +2,8 @@
 # This file is based on the corresponding file for the poedit program
 #
 
-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb en
-WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN tr nb
+WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb en
+WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el    ja ca gl zh_CN tr nb
 
 localedir = $(datadir)/locale
 
@@ -106,6 +106,8 @@ transcoded:
 	$(MSGFMT) transcoded/cs.po -o transcoded/cs.mo
 	cp el.po transcoded
 	$(MSGFMT) transcoded/el.po -o transcoded/el.mo
+	cp fi.po transcoded
+	$(MSGFMT) transcoded/fi.po -o transcoded/fi.mo
 	cp ja.po transcoded
 	$(MSGFMT) transcoded/ja.po -o transcoded/ja.mo
 	cp ca.po transcoded
@@ -132,6 +134,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     da.po da.mo wxwin/da.mo \
 	     cs.po cs.mo wxwin/cs.mo \
 	     el.po el.mo wxwin/el.mo \
+	     fi.po el.mo wxwin/fi.mo \
 	     ja.po ja.mo wxwin/ja.mo \
 	     ca.po ca.mo wxwin/ca.mo \
 	     gl.po gl.mo wxwin/gl.mo \

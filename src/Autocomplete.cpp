@@ -80,6 +80,7 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxdraw"));
   m_wordList[command].Add(wxT("wxdraw2d"));
   m_wordList[command].Add(wxT("wxdraw3d"));
+  m_wordList[command].Add(wxT("wxfilename"));
   m_wordList[command].Add(wxT("wxhistogram"));
   m_wordList[command].Add(wxT("wxscatterplot"));
   m_wordList[command].Add(wxT("wxbarsplot"));
