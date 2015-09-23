@@ -1510,7 +1510,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("   [wxMaxima: title   end   ] */"))
+      while ((wxmLines->GetCount()>0) && (wxmLines->Item(0) != wxT("   [wxMaxima: title   end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1533,7 +1533,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("   [wxMaxima: section end   ] */"))
+      while ((wxmLines->GetCount()>0) && (wxmLines->Item(0) != wxT("   [wxMaxima: section end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1556,7 +1556,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("   [wxMaxima: subsect end   ] */"))
+      while ((wxmLines->GetCount()>0) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsect end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1579,7 +1579,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("   [wxMaxima: subsubsect end   ] */"))
+      while ((wxmLines->GetCount()>0) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsubsect end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1602,7 +1602,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("   [wxMaxima: comment end   ] */"))
+      while ((wxmLines->GetCount()>0) && (wxmLines->Item(0) != wxT("   [wxMaxima: comment end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1625,7 +1625,7 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
-      while (wxmLines->Item(0) != wxT("/* [wxMaxima: input   end   ] */"))
+      while ((wxmLines->GetCount()>0) &&(wxmLines->Item(0) != wxT("/* [wxMaxima: input   end   ] */")))
       {
         if (line.Length() == 0)
           line = wxmLines->Item(0);
@@ -1677,9 +1677,10 @@ GroupCell* wxMaxima::CreateTreeFromWXMCode(wxArrayString* wxmLines)
       cell = NULL;
     }
 
-    wxmLines->RemoveAt(0);
+    if (wxmLines->GetCount()>0)
+      wxmLines->RemoveAt(0);
   }
-
+  
   return tree;
 }
 
