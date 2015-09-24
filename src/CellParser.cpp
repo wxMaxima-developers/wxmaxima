@@ -241,7 +241,7 @@ void CellParser::ReadStyle()
   READ_STYLES(TS_TITLE, "Style/Title/")
 
   // Main prompt
-  m_styles[TS_MAIN_PROMPT].color = wxT("rgb(128,255,255)");
+  m_styles[TS_MAIN_PROMPT].color = wxT("rgb(255,128,128)");
   m_styles[TS_MAIN_PROMPT].bold = false;
   m_styles[TS_MAIN_PROMPT].italic = false;
   m_styles[TS_MAIN_PROMPT].underlined = false;
@@ -255,14 +255,14 @@ void CellParser::ReadStyle()
   READ_STYLES(TS_OTHER_PROMPT, "Style/OtherPrompt/");
 
   // Labels
-  m_styles[TS_LABEL].color = wxT("rgb(128,192,255)");
+  m_styles[TS_LABEL].color = wxT("rgb(255,192,128)");
   m_styles[TS_LABEL].bold = false;
   m_styles[TS_LABEL].italic = false;
   m_styles[TS_LABEL].underlined = false;
   READ_STYLES(TS_LABEL, "Style/Label/")
 
   // User-defined Labels
-  m_styles[TS_USERLABEL].color = wxT("rgb(0,64,255)");
+  m_styles[TS_USERLABEL].color = wxT("rgb(255,64,0)");
   m_styles[TS_USERLABEL].bold = false;
   m_styles[TS_USERLABEL].italic = false;
   m_styles[TS_USERLABEL].underlined = false;
