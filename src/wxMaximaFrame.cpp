@@ -348,7 +348,10 @@ void wxMaximaFrame::do_layout()
     wxString perspective;
     bool toolbar = true;
     if (config->Read(wxT("AUI/perspective"), &perspective))
-      m_manager.LoadPerspective(perspective);
+    {
+      if(!perspective.IsEmpty())
+        m_manager.LoadPerspective(perspective);
+    }
     config->Read(wxT("AUI/toolbar"), &toolbar);
     ShowToolBar(toolbar);
   }
