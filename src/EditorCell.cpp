@@ -117,6 +117,7 @@ MathCell *EditorCell::Copy()
   tmp->m_text = m_text;
   tmp->m_containsChanges = m_containsChanges;
   CopyData(this, tmp);
+  tmp->m_styledText = m_styledText;
 
   return tmp;
 }
