@@ -293,7 +293,7 @@ private:
     wxString m_text;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText;
-  public:
+  public:    
     //! Defines a piece of styled text
     StyledText(TextStyle style,wxString text)
       {
