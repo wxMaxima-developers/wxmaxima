@@ -327,8 +327,8 @@ protected:
   bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
   //! Opens a wxmx file
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  //! Loads a wxmx description
   GroupCell* CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
-  GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
   /*! Saves the current file
 
     \param forceSave true means: Always ask for a file name before saving.

@@ -778,8 +778,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           {
             MathCell *copy = tmp->Copy();
             (*imgCounter)++;
-            wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
-	    
+            wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);	    
             if (!wxDirExists(imgDir))
               if (!wxMkdir(imgDir))
                 continue;
@@ -1161,7 +1160,7 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end)
 
   *start = m_output;
 
-  while (*start != NULL && (*start)->GetStyle() != TS_LABEL)
+  while (*start != NULL && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
     *start = (*start)->m_nextToDraw;
 
 

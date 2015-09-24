@@ -3453,7 +3453,9 @@ bool MathCtrl::ExportToHTML(wxString file) {
             {
               if(
                 (chunkEnd->m_next->GetType() == MC_TYPE_SLIDE) ||
-                (chunkEnd->m_next->GetType() == MC_TYPE_IMAGE)
+                (chunkEnd->m_next->GetType() == MC_TYPE_IMAGE) ||
+                (chunkEnd->m_next->GetStyle() == TS_LABEL) ||
+                (chunkEnd->m_next->GetStyle() == TS_USERLABEL)
                 )
                 break;
               chunkEnd = chunkEnd->m_next;
@@ -3637,6 +3639,198 @@ bool MathCtrl::ExportToHTML(wxString file) {
   cssfile.Close();
   
   return outfileOK && cssOK;
+}
+
+GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
+{
+  bool hide = false;
+  GroupCell* tree = NULL;
+  GroupCell* last = NULL;
+  GroupCell* cell = NULL;
+
+  while (!wxmLines->IsEmpty())
+  {
+    if (wxmLines->Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
+      hide = true;
+
+    // Print title
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: title   start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: title   end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_TITLE, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print section
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: section start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: section end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_SECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print subsection
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsect start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsect end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_SUBSECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+    
+    // print subsubsection
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsubsect end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_SUBSUBSECTION, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print comment
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: comment start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: comment end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_TEXT, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // Print input
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: input   start ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) &&(wxmLines->Item(0) != wxT("/* [wxMaxima: input   end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_CODE, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: page break    ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      cell = new GroupCell(GC_TYPE_PAGEBREAK);
+    }
+
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      last->HideTree(CreateTreeFromWXMCode(wxmLines));
+    }
+
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    end   ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      break;
+    }
+
+    if (cell) { // if we have created a cell in this pass
+      if (!tree)
+        tree = last = cell;
+      else {
+
+        last->m_next = last->m_nextToDraw = ((MathCell *)cell);
+        last->m_next->m_previous = last->m_next->m_previousToDraw = ((MathCell *)last);
+
+        last = (GroupCell *)last->m_next;
+
+      }
+      cell = NULL;
+    }
+
+    if (!wxmLines->IsEmpty())
+      wxmLines->RemoveAt(0);
+  }
+  
+  return tree;
 }
 
 /*! Export the file as TeX code
@@ -4805,102 +4999,89 @@ void MathCtrl::PasteFromClipboard(bool primary)
 
       if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
       {
-        cells = true;
 
+        // Convert the text from the clipboard into an array of lines
         wxStringTokenizer lines(inputs, wxT("\n"));
-        wxString input, line;
-        wxArrayString inp;
+        wxArrayString lines_array;
+        while(lines.HasMoreTokens())
+          lines_array.Add(lines.GetNextToken());
 
-        // Read the content from clipboard
-        while (lines.HasMoreTokens())
+        // Load the array like we would do with a .wxm file
+        GroupCell *contents = CreateTreeFromWXMCode(&lines_array);
+        
+        // Add the result of the last operation to the worksheet.
+        if(contents)
         {
-          // Go to the beginning of the cell
-          do {
-            line = lines.GetNextToken();
-          } while (lines.HasMoreTokens() &&
-                   line != wxT("/* [wxMaxima: input   start ] */") &&
-                   line != wxT("/* [wxMaxima: comment start ]") &&
-                   line != wxT("/* [wxMaxima: section start ]") &&
-                   line != wxT("/* [wxMaxima: subsect start ]") &&
-                   line != wxT("/* [wxMaxima: subsubsect start ]") &&
-                   line != wxT("/* [wxMaxima: title   start ]"));
+          // ! Tell the rest of this function that we have found cells
+          cells = true;
 
-          // Read the cell content
-          do {
-            line = lines.GetNextToken();
-            if (line == wxT("/* [wxMaxima: input   end   ] */"))
+          // Search for the last cell we want to paste
+          GroupCell *end = contents;
+          while(end->m_next != NULL)
+            end = dynamic_cast<GroupCell*>(end->m_next);
+
+          // Now paste the cells
+          if(m_tree == NULL)
+          {
+            // Empty work sheet => We paste cells as the new cells
+            m_tree = contents;
+            m_last = end;
+          }
+          else
+          {
+            if(m_hCaretActive)
             {
-              inp.Add(wxT("input"));
-              inp.Add(input);
-              input = wxEmptyString;
-            }
-            else if (line == wxT("   [wxMaxima: comment end   ] */"))
-            {
-              inp.Add(wxT("comment"));
-              inp.Add(input);
-              input = wxEmptyString;
-            }
-            else if (line == wxT("   [wxMaxima: section end   ] */"))
-            {
-              inp.Add(wxT("section"));
-              inp.Add(input);
-              input = wxEmptyString;
-            }
-            else if (line == wxT("   [wxMaxima: subsect end   ] */"))
-            {
-              inp.Add(wxT("subsection"));
-              inp.Add(input);
-              input = wxEmptyString;
-            }
-            else if (line == wxT("   [wxMaxima: subsubsect end   ] */"))
-            {
-              inp.Add(wxT("subsubsection"));
-              inp.Add(input);
-              input = wxEmptyString;
-            }
-            else if (line == wxT("   [wxMaxima: title   end   ] */"))
-            {
-              inp.Add(wxT("title"));
-              inp.Add(input);
-              input = wxEmptyString;
+              if(m_hCaretPosition == NULL)
+              {                
+                end->m_next = m_tree;
+                end->m_nextToDraw = m_tree;
+                m_tree -> m_previous = end;
+                m_tree -> m_previousToDraw = end;
+                m_tree = contents;
+              }
+              else
+              {
+                MathCell *next = m_hCaretPosition->m_next;
+                if(m_hCaretPosition->m_next)
+                  m_hCaretPosition->m_next->m_previous = end;
+                if(m_hCaretPosition->m_nextToDraw)
+                  m_hCaretPosition->m_next->m_previousToDraw = end;
+                    
+                m_hCaretPosition->m_next = contents;
+                m_hCaretPosition->m_nextToDraw = contents;
+                contents->m_previous=m_hCaretPosition;
+                contents->m_previousToDraw=m_hCaretPosition;
+                end->m_next = next;
+                end->m_nextToDraw = next;
+              }
             }
             else
             {
-              if (input.Length()>0)
-                input = input + wxT("\n") + line;
+              if (m_activeCell != NULL)
+              {
+                MathCell *next = m_activeCell->GetParent()->m_next;
+                if(m_activeCell->GetParent()->m_next)
+                  m_activeCell->GetParent()->m_next->m_previous = end;
+                if(m_activeCell->GetParent()->m_nextToDraw)
+                  m_activeCell->GetParent()->m_next->m_previousToDraw = end;
+                    
+                m_activeCell->GetParent()->m_next = contents;
+                m_activeCell->GetParent()->m_nextToDraw = contents;
+                contents->m_previous=m_activeCell->GetParent();
+                contents->m_previousToDraw=m_activeCell->GetParent();
+                end->m_next = next;
+                end->m_nextToDraw = next;
+              }
               else
-                input = line;
+                m_last->AppendCell(contents);
             }
-          } while (lines.HasMoreTokens() &&
-                   line != wxT("/* [wxMaxima: input   end   ] */") &&
-                   line != wxT("   [wxMaxima: comment end   ] */") &&
-                   line != wxT("   [wxMaxima: section end   ] */") &&
-                   line != wxT("   [wxMaxima: subsect end   ] */") &&
-                   line != wxT("   [wxMaxima: subsubsect end   ] */") &&
-                   line != wxT("   [wxMaxima: title   end   ] */"));
+          }
+          RecalculateForce();
+          Refresh();
+          SetHCaret(end);
         }
-
-        // Paste the content into the document.
-        Freeze();
-        for (unsigned int i=0; i<inp.Count(); i = i+2)
-        {
-          if (inp[i] == wxT("input"))
-            OpenHCaret(inp[i+1]);
-          else if (inp[i] == wxT("comment"))
-            OpenHCaret(inp[i+1], GC_TYPE_TEXT);
-          else if (inp[i] == wxT("section"))
-            OpenHCaret(inp[i+1], GC_TYPE_SECTION);
-          else if (inp[i] == wxT("subsection"))
-            OpenHCaret(inp[i+1], GC_TYPE_SUBSECTION);
-          else if (inp[i] == wxT("subsubsection"))
-            OpenHCaret(inp[i+1], GC_TYPE_SUBSUBSECTION);
-          else if (inp[i] == wxT("title"))
-            OpenHCaret(inp[i+1], GC_TYPE_TITLE);
-        }
-        Thaw();
       }
     }
-
     // Check if the clipboard contains an image.
     else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
     {

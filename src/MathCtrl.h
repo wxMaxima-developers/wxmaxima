@@ -827,6 +827,8 @@ public:
     \retval true = maxima waits for the answer of a question.
   */
   bool QuestionPending(){return m_questionPrompt;}
+  //! Converts a wxm description into individual cells
+  GroupCell* CreateTreeFromWXMCode(wxArrayString *wxmLines);
 
     /*! Does maxima wait for the answer of a question?
 

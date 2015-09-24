@@ -445,6 +445,10 @@ wxString TextCell::ToTeX()
         text.Replace(wxT(" "), wxT("\\,"));
     }
   }
+
+  if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
+    text = text + wxT(" ");
+
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
