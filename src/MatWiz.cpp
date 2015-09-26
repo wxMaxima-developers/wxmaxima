@@ -169,17 +169,15 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
   text_ctrl_2 = new BTextCtrl(this, -1, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_4 = new wxStaticText(this, -1, _("Type:"));
-  const wxString combo_box_1_choices[] =
+  const wxString choice_1_choices[] =
     {
       _("general"),
       _("diagonal"),
       _("symmetric"),
       _("antisymmetric")
     };
-  combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(150, -1), 4,
-                               combo_box_1_choices,
-                               wxCB_DROPDOWN | wxCB_READONLY);
+  choice_1 = new wxChoice(this, -1, wxDefaultPosition,
+                          wxSize(150, -1), 4, choice_1_choices);
   label_0 = new wxStaticText(this, -1, _("Name:"));
   text_ctrl_0 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
@@ -205,7 +203,7 @@ void MatDim::set_properties()
   button_2->SetDefault();
 #endif
 
-  combo_box_1->SetSelection(0);
+  choice_1->SetSelection(0);
   text_ctrl_1->SetFocus();
   text_ctrl_1->SetSelection(-1, -1);
 }
@@ -221,7 +219,7 @@ void MatDim::do_layout()
   grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
   grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer_2->Add(combo_box_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(choice_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(label_0, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_0, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
@@ -238,7 +236,7 @@ void MatDim::do_layout()
 
 int MatDim::GetMatrixType()
 {
-  int type = combo_box_1->GetSelection();
+  int type = choice_1->GetSelection();
   if (type == 0)
     return MatWiz::MATRIX_GENERAL;
   if (type == 1)

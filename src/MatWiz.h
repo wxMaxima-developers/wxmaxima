@@ -86,7 +86,7 @@ protected:
   wxStaticText* label_3;
   BTextCtrl* text_ctrl_2;
   wxStaticText* label_4;
-  wxComboBox* combo_box_1;
+  wxChoice* choice_1;
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;

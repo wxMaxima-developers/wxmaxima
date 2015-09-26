@@ -165,7 +165,7 @@ protected:
   wxSpinCtrl* m_autoSaveInterval;
   wxButton* m_mpBrowse;
   wxTextCtrl* m_additionalParameters;
-  wxComboBox* m_language;
+  wxChoice* m_language;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_abortOnError;
   wxCheckBox* m_pollStdOut;
