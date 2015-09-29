@@ -30,9 +30,9 @@ wxString Dirstructure::ResourcesDir()
   int lastSlash = exe.rfind(wxT('/'));
   int lastBackslash = exe.rfind(wxT('\\'));
   if (lastSlash < lastBackslash)
-    exe = exe.Left(lastBackslash);
+    exe = exe.Left(lastBackslash + 1);
   else
-    exe = exe.Left(lastSlash);
+    exe = exe.Left(lastSlash + 1);
   return exe;
 #elif defined __WXMAC__
   wxString exe = wxStandardPaths::Get().GetExecutablePath();

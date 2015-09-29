@@ -108,7 +108,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
         dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
-      while (m_labelWidth >= m_width) {
+      while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
               parser.IsItalic(m_textStyle),
