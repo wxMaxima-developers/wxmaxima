@@ -12,8 +12,13 @@ Current:
     saving files with many images.
   * Save the zoom factor at exit and reload it on opening a new file
   * An option that makes wxMaxima use user-defined labels instead of %o where an
-    user-defined label exists.
+    user-defined label exists. Works well together with unchecking the
+    "export code cells" config item.
   * A separate text style for user-defined labels.
+  * The "evaluate all cells" and "evaluate till here" now start with a fresh
+    instance of maxima
+  * A few bug and performance fixes
+  * Most importantly: If it is a cursor it blinks now.
 
 15.08:
   * Compatibility with maxima 5.37.0

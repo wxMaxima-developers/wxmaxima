@@ -2710,6 +2710,11 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RefreshRect(rect);
     }
+
+    // We only blink the cursor if we have the focus => If we loose the focus
+    // we can save batteries by not waking up the CPU unnecessarily.
+    if(!m_hasFocus)
+      m_caretTimer.Stop();
   }
   break;      
   }
@@ -5205,8 +5210,16 @@ void MathCtrl::MergeCells()
 void MathCtrl::OnSetFocus(wxFocusEvent& event)
 {
   m_hasFocus = true;
+  // We want the cursor to blink in this case
+  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(true);
+
+  // And we want the cursor start in its visible phase.
+
+  wxTimerEvent dummy;
+  dummy.SetId(CARET_TIMER_ID);
+  OnTimer(dummy);
 }
 
 void MathCtrl::OnKillFocus(wxFocusEvent& event)
