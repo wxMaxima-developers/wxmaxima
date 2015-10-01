@@ -2794,6 +2794,12 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     else
     {
+      if(m_console->GetActiveCell()!=NULL)
+      {
+        wxString selected = m_console->GetActiveCell()->GetSelectionString();
+        if(selected.Length()>0)
+          m_findData.SetFindString(selected);
+      }
       m_findDialog = new wxFindReplaceDialog(
         this,
         &m_findData,
