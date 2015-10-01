@@ -718,6 +718,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
 #ifndef __WXMSW__
     ReadProcessOutput();
 #endif
+    SetupVariables();
   }
   break;
 
