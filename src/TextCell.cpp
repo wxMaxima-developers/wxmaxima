@@ -108,6 +108,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
         dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
+      wxASSERT_MSG((m_labelWidth>0)||(m_text==wxEmptyString),_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
