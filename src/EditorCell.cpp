@@ -1721,6 +1721,10 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x0127";
   else if (txt == wxT("Hbar"))
     return L"\x0126";
+  else if (txt == wxT("partial"))
+    return L"\x2202";
+  else if (txt == wxT("integral"))
+    return L"\x222b";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

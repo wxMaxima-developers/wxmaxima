@@ -176,6 +176,12 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
     new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\+/-"),wxT("\\\\ensuremath{\\\\pm}")));
+  #if wxUSE_UNICODE
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2202",wxT("\\\\ensuremath{\\\\partial}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x222b",wxT("\\\\ensuremath{\\\\int}")));
+  #endif
 }
 
 MarkDownHTML::MarkDownHTML() : MarkDownParser()
