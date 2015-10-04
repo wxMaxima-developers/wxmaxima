@@ -323,6 +323,9 @@ subset        subset
 notsubseteq   not subset or equal
 notsubset     not subset
 @end example
+If a character isn't in the list it is possible to input arbitrary unicode
+characters by pressing @code{<ESC>number of the character<ESC>}.
+@code{<ESC>61<ESC>} therefore results in an @code{a}.
 
 It is to note that a maxima running on a lisp without unicode support
 might not be able to deal with files that contain special unicode

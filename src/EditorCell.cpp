@@ -1724,7 +1724,13 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))
-    return wxString::Format(wxT("%c"), unicodeval);
+  {
+    if(unicodeval>=32)
+      return wxString(wxChar(unicodeval));
+    else
+      return wxT(" ");
+        
+  }
 
   /////////////////////////
   else
