@@ -153,6 +153,10 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
       ///  there is something wrong with what dc.GetTextExtent returns,
       ///  make sure there is no infinite loop!
       int i=0;
+      
+      // Avoid a possible infinite loop.
+      if(size < 2) size = 2;
+      
       while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
       {
         int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
@@ -165,6 +169,8 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
                          m_bigParenType == 1 ? wxT(PAREN_OPEN) :
 			 wxT(PAREN_OPEN_TOP),
                          &m_signWidth, &m_signSize);
+        // Avoid an infinite loop.
+        if(m_signSize < 2) m_signSize = 2;
         i++;
       }
     }
@@ -194,6 +200,8 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
                       parser.IsUnderlined(TS_DEFAULT),
                       parser.GetSymbolFontName()));
     dc.GetTextExtent(PAREN_LEFT_TOP, &m_charWidth, &m_charHeight);
+    if(m_charHeight < 2)
+      m_charHeight = 2;
     m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;
 #else
     m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
@@ -220,6 +228,8 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
                       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                       parser.GetFontName()));
     dc.GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
+    if(m_charHeight1 < 2)
+      m_charHeight1 = 2;
   }
 #endif
 
