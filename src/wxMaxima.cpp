@@ -1103,7 +1103,10 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (end == wxNOT_FOUND)
     return;
 
-  wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
+  // This assert was automatically triggered after a to_lisp() so I commented
+  // it out.
+  //
+  //wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
 
   wxString o;
 
@@ -4823,6 +4826,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
   bool lisp = false;
 
+  wxChar lastC=wxT(';');
   while(index<len)
   {
     wxChar c=text[index];
@@ -4831,12 +4835,15 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     {
     case wxT('('):
       delimiters.push_back(wxT(')'));
+      lastC=c;
       break;
     case wxT('['):
       delimiters.push_back(wxT(']'));
+      lastC=c;
       break;
     case wxT('{'):
       delimiters.push_back(wxT('}'));
+      lastC=c;
       break;
 
     case wxT(')'):
@@ -4844,10 +4851,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     case wxT('}'):
       if(c!=delimiters.back()) return(_("Mismatched parenthesis"));
       delimiters.pop_back();
+      lastC=c;
       break;
 
     case wxT('\\'):
       index++;
+      lastC=c;
       break;
 
     case wxT('\"'):
@@ -4859,11 +4868,13 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
         index++;
       }
       if(text[index]!=wxT('\"')) return(_("Unterminated string."));
+      lastC=c;
       break;
 
     case wxT(':'):
       if(text.find(wxT("lisp"),index + 1) == index + 1)
         lisp = true;
+      lastC=c;
       break;
       
     case wxT(';'):
@@ -4872,6 +4883,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       {
         return _("Un-closed parenthesis on encountering ; or $");
       }
+      lastC=c;
       break;      
       
     case wxT('/'):
@@ -4883,7 +4895,11 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
           if(index==wxNOT_FOUND)
             return(_("Unterminated comment."));
         }
+        else lastC=c;
       }
+    default:
+      if((c!=wxT('\n')) && (c!=wxT(' '))&& (c!=wxT('\t')))
+        lastC=c;
     }
 
     index++;
@@ -4891,6 +4907,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   if(!delimiters.empty())
   {
     return _("Un-closed parenthesis");
+  }
+
+  if((!lisp))
+  {
+    if((lastC!=wxT(';'))&&(lastC!=wxT('$')))
+      return _("No dollar ($) or semicolon (;) at the end of command");      
   }
   return wxEmptyString;
 }
