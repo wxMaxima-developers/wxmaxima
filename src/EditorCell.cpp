@@ -1725,6 +1725,18 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x2202";
   else if (txt == wxT("integral"))
     return L"\x222b";
+  else if (txt == wxT("approx"))
+    return L"\x2245";
+  else if (txt == wxT("prop"))
+    return L"\x221d";
+  else if (txt == wxT("propto"))
+    return L"\x221d";
+  else if (txt == wxT("neq"))
+    return L"\x2260";
+  else if (txt == wxT("qed"))
+    return L"\x220E";
+  else if (txt == wxT("equiv"))
+    return L"\2263";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

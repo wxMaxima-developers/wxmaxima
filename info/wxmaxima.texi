@@ -364,7 +364,8 @@ cogito => sum.
 Other symbols the markdown parser will recognize are @code{<=} and
 @code{>=} for comparisons, a double-pointed double arrow (@code{<=>}),
 single- headed arrows (@code{<->}, @code{->} and @code{<-}) and
-@code{+/-} as the respective sign.
+@code{+/-} as the respective sign. For TeX output also @code{<<} and
+@code{>>} are recognized.
 @subsection Hotkeys
 Most hotkeys can be found in the text of the respective menus.
 Since they are actually taken from the menu text and thus can be customized

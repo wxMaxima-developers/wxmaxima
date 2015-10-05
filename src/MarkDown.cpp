@@ -37,6 +37,7 @@ MarkDownParser :: MarkDownParser()
   
 wxString MarkDownParser::MarkDown(wxString str)
 {
+  std::cerr<<str<<"\n";
   // Replace all markdown equivalents of arrows and similar symbols by the
   // according symbols
   for(replaceList::iterator it=regexReplaceList.begin();
@@ -176,8 +177,109 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
     new RegexReplacer(wxT("\\\\verb\\|>\\|="),wxT("\\\\ensuremath{\\\\geq}")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\+/-"),wxT("\\\\ensuremath{\\\\pm}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\gg}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"),wxT("\\\\ensuremath{\\\\ll}")));
   #if wxUSE_UNICODE
   regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B1",wxT("\\\\ensuremath{\\\\alpha}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B2",wxT("\\\\ensuremath{\\\\beta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B3",wxT("\\\\ensuremath{\\\\gamma}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B4",wxT("\\\\ensuremath{\\\\delta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B5",wxT("\\\\ensuremath{\\\\epsilon}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B6",wxT("\\\\ensuremath{\\\\zeta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B7",wxT("\\\\ensuremath{\\\\eta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B8",wxT("\\\\ensuremath{\\\\theta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03B9",wxT("\\\\ensuremath{\\\\iota}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BA",wxT("\\\\ensuremath{\\\\kappa}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BB",wxT("\\\\ensuremath{\\\\lambda}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BC",wxT("\\\\ensuremath{\\\\mu}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BD",wxT("\\\\ensuremath{\\\\nu}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BE",wxT("\\\\ensuremath{\\\\xi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03BF",wxT("\\\\ensuremath{\\\\omnicron}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C0",wxT("\\\\ensuremath{\\\\pi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C1",wxT("\\\\ensuremath{\\\\rho}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C3",wxT("\\\\ensuremath{\\\\sigma}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C4",wxT("\\\\ensuremath{\\\\tau}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C5",wxT("\\\\ensuremath{\\\\upsilon}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C6",wxT("\\\\ensuremath{\\\\phi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C7",wxT("\\\\ensuremath{\\\\chi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C8",wxT("\\\\ensuremath{\\\\psi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03C9",wxT("\\\\ensuremath{\\\\omega}")));
+
+    regexReplaceList.push_back(
+    new RegexReplacer(L"\x0391",wxT("\\\\ensuremath{\\\\Alpha}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0392",wxT("\\\\ensuremath{\\\\Beta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0393",wxT("\\\\ensuremath{\\\\Gamma}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0394",wxT("\\\\ensuremath{\\\\Delta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0395",wxT("\\\\ensuremath{\\\\Epsilon}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0396",wxT("\\\\ensuremath{\\\\Zeta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0397",wxT("\\\\ensuremath{\\\\Eta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0398",wxT("\\\\ensuremath{\\\\Theta}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0399",wxT("\\\\ensuremath{\\\\Iota}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039A",wxT("\\\\ensuremath{\\\\Kappa}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039B",wxT("\\\\ensuremath{\\\\Lambda}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039C",wxT("\\\\ensuremath{\\\\Mu}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039D",wxT("\\\\ensuremath{\\\\Nu}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039E",wxT("\\\\ensuremath{\\\\Xi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x039F",wxT("\\\\ensuremath{\\\\Omnicron}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A0",wxT("\\\\ensuremath{\\\\Pi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A1",wxT("\\\\ensuremath{\\\\Rho}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A3",wxT("\\\\ensuremath{\\\\Sigma}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A4",wxT("\\\\ensuremath{\\\\Tau}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A5",wxT("\\\\ensuremath{\\\\Upsilon}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A6",wxT("\\\\ensuremath{\\\\Phi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A7",wxT("\\\\ensuremath{\\\\Chi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A8",wxT("\\\\ensuremath{\\\\Psi}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x03A9",wxT("\\\\ensuremath{\\\\Omega}")));
+regexReplaceList.push_back(
     new RegexReplacer(L"\x2202",wxT("\\\\ensuremath{\\\\partial}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x222b",wxT("\\\\ensuremath{\\\\int}")));
