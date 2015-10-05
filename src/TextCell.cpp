@@ -286,6 +286,8 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.IsUnderlined(m_textStyle),
                       parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
+
+  wxASSERT_MSG(dc.GetFont().IsOk(),_("Did try to select a font that wasn't installed."));
 }
 
 bool TextCell::IsOperator()
