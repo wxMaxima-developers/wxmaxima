@@ -287,7 +287,9 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
                       parser.GetFontName(m_textStyle),
                       parser.GetFontEncoding()));
 
-  wxASSERT_MSG(dc.GetFont().IsOk(),_("Did try to select a font that wasn't installed."));
+  // A fallback if the font we selected is no more installed or isn't working at all.
+  if(!dc.GetFont().IsOk())
+    dc.SetFont(wxFontInfo(10));
 }
 
 bool TextCell::IsOperator()
