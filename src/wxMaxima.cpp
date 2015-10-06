@@ -4808,7 +4808,29 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     }
   }
   else { // no evaluate has been called on no active cell?
-    m_console->AddSelectionToEvaluationQueue();
+    if(m_console->GetSelectionStart() != NULL)
+      // If we have selected something we want to send this to the evaluation queue:
+      m_console->AddSelectionToEvaluationQueue();
+    else
+    {
+      std::cerr<<"1\n";
+      // We tried to evaluate something, but aren't inside a cell and haven't selected
+      // anything. Perhaps we can jump to the next cell so the next evaluate command
+      // might actually do something:
+      if(m_console->HCaretActive())
+      {
+        if(m_console->GetHCaret() == NULL)
+        {
+          if(m_console->GetTree()!=NULL)
+            m_console->SetActiveCell(dynamic_cast<GroupCell*>(m_console->GetTree())->GetEditable());
+        }
+        else
+          if(m_console->GetHCaret()->m_next != NULL)
+          {
+            m_console->SetActiveCell(dynamic_cast<GroupCell*>(m_console->GetHCaret()->m_next)->GetEditable());
+          }
+      }
+    }
   }
   // Inform the user about the length of the evaluation queue.
   EvaluationQueueLength(m_console->m_evaluationQueue->Size());
