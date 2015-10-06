@@ -202,6 +202,12 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                   point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
+#if wxUSE_UNICODE
+    else if (m_text == wxT("#"))
+      dc.DrawText(wxT("\x2260"),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#endif
     /// This is the default.
     else
     {

@@ -162,6 +162,8 @@ wxString MarkDownParser::MarkDown(wxString str)
 MarkDownTeX::MarkDownTeX() : MarkDownParser()
 {
   regexReplaceList.push_back(
+    new RegexReplacer(wxT("#"),wxT("\\\\#")));
+  regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\Longleftrightarrow}")));
   regexReplaceList.push_back(
     new RegexReplacer(wxT("=\\\\verb\\|>\\|"),wxT("\\\\ensuremath{\\\\Longrightarrow}")));
@@ -184,6 +186,55 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   #if wxUSE_UNICODE
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03B1",wxT("\\\\ensuremath{\\\\alpha}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x00B2",wxT("\\\\ensuremath{^2}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x00B3",wxT("\\\\ensuremath{^3}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x221A",wxT("\\\\ensuremath{\\\\sqrt{}}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2148",wxT("\\\\ensuremath{\\\\mathbbm{i}}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2147",wxT("\\\\ensuremath{\\\\mathbbm{e}}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x210f",wxT("\\\\ensuremath{\\\\hbar}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2208",wxT("\\\\ensuremath{\\\\in}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x21D2",wxT("\\\\ensuremath{\\\\Longrightarrow}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x221e",wxT("\\\\ensuremath{\\\\infty}")));
+  // TODO: Are there LaTeX symbols for <ESC>TB<ESC> and <ESC>tb<ESC>?
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22C0",wxT("\\\\ensuremath{\\\\wedge}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22C1",wxT("\\\\ensuremath{\\\\vee}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22bb",wxT("\\\\ensuremath{\\\\oplus}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22BC",wxT("\\\\ensuremath{\\\\overline{\\\\wedge}}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22BB",wxT("\\\\ensuremath{\\\\overline{\\\\vee}}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x00AC",wxT("\\\\ensuremath{\\\\setminus}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22C3",wxT("\\\\ensuremath{\\\\cup}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x22C2",wxT("\\\\ensuremath{\\\\cap}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2286",wxT("\\\\ensuremath{\\\\subseteq}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2282",wxT("\\\\ensuremath{\\\\subset}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2288",wxT("\\\\ensuremath{\\\\not\\\\subseteq}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0127",wxT("\\\\ensuremath{\\\\hbar}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x0126",wxT("\\\\ensuremath{\\\\Hbar}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2205",wxT("\\\\ensuremath{\\\\emptyset}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x00BD",wxT("\\\\ensuremath{\\\\frac{1}{2}}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03B2",wxT("\\\\ensuremath{\\\\beta}")));
   regexReplaceList.push_back(
@@ -279,10 +330,24 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
     new RegexReplacer(L"\x03A8",wxT("\\\\ensuremath{\\\\Psi}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03A9",wxT("\\\\ensuremath{\\\\Omega}")));
-regexReplaceList.push_back(
+  regexReplaceList.push_back(
     new RegexReplacer(L"\x2202",wxT("\\\\ensuremath{\\\\partial}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x222b",wxT("\\\\ensuremath{\\\\int}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2245",wxT("\\\\ensuremath{\\\\approx}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x221d",wxT("\\\\ensuremath{\\\\propto}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2260",wxT("\\\\ensuremath{\\\\neq}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x220e",wxT("\\\\ensuremath{\\\\blacksquare}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\x2263",wxT("\\\\ensuremath{\\\\equiv}")));
+  regexReplaceList.push_back(
+    new RegexReplacer(wxT("~"),wxT("\\\\ensuremath{\\\\sim }")));
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\xDCB6",wxT("~")));
   #endif
 }
 
@@ -304,4 +369,6 @@ MarkDownHTML::MarkDownHTML() : MarkDownParser()
     new RegexReplacer(wxT("\\&gt;="),wxT("\\&ge;")));;
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\+/-"),wxT("\\&plusmn;")));;
+  regexReplaceList.push_back(
+    new RegexReplacer(L"\xDCB6",wxT("&nbsp;")));
 }
