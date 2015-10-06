@@ -17,7 +17,12 @@ Current:
   * A separate text style for user-defined labels.
   * The "evaluate all cells" and "evaluate till here" now start with a fresh
     instance of maxima
-  * A few bug and performance fixes
+  * TeX export now should work with most unicode chars we have ESC sequences
+    for.
+  * A few new ESC sequences and markdown commands.
+  * "#" now is shown as a "not equal" sign and a "not equal" sign is interpreted
+    as "#".
+  * Many bug, usability and performance fixes
   * Most importantly: If it is a cursor it blinks now.
 
 15.08:
