@@ -37,7 +37,6 @@ MarkDownParser :: MarkDownParser()
   
 wxString MarkDownParser::MarkDown(wxString str)
 {
-  std::cerr<<str<<"\n";
   // Replace all markdown equivalents of arrows and similar symbols by the
   // according symbols
   for(replaceList::iterator it=regexReplaceList.begin();

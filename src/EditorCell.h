@@ -331,7 +331,7 @@ private:
   /*! Handle ESC shortcuts for special characters
 
     These characters can be tought to LaTeX and the html browser if neccessary in
-    MarkDownTeX::MarkDownTeX and MarkDownHTML::MarkDownHTML. They can also be
+    TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
   wxString InterpretEscapeString(wxString txt);

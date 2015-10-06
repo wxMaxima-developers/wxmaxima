@@ -668,12 +668,12 @@ wxString GroupCell::PrepareForTeX(wxString str)
   wxString str1(str);
 #endif
 
-  str1.Replace(wxT("\\"), wxT("\\verb|\\|"));
+//  str1.Replace(wxT("\\"), wxT("\\verb|\\|"));
   str1.Replace(wxT("_"), wxT("\\_"));
   str1.Replace(wxT("%"), wxT("\\%"));
   str1.Replace(wxT("$"), wxT("\\$"));
-  str1.Replace(wxT("{"), wxT("\\{"));
-  str1.Replace(wxT("}"), wxT("\\}"));
+//  str1.Replace(wxT("{"), wxT("\\{"));
+//  str1.Replace(wxT("}"), wxT("\\}"));
   str1.Replace(wxT("^"), wxT("\\verb|^|"));
   str1.Replace(wxT(">"), wxT("\\verb|>|"));
   str1.Replace(wxT("<"), wxT("\\verb|<|"));
@@ -739,22 +739,17 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     {
       str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
         wxT("%%% INPUT:\n")
-        wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n")
-        wxT("\\begin{verbatim}\n") +
-        m_input->ToString() +
-        wxT("\n\\end{verbatim}\n\\end{minipage}");
+        wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
+        m_input->ToTeX() +
+        wxT("\n\n\\end{minipage}");
       
       if (m_input->m_next!=NULL)
       {
         
-        wxString input = m_input->m_next->ToString();
-#if wxUSE_UNICODE
-        input.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-        input.Replace(wxT("\xDCB6"), wxT(" ")); // Some weird unicode space character
-#endif
-        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}\n") +
+        wxString input = m_input->m_next->ToTeX();
+        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
           input +
-             wxT("\n\\end{verbatim}\n\\end{minipage}");
+             wxT("\n\n\\end{minipage}");
       }
       
       str += wxT("\n");
