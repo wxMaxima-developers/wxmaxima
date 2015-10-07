@@ -1942,50 +1942,21 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     break;
 
   case WXK_RETURN:
-    if ((m_activeCell != NULL))
-    {
-      if((m_activeCell->GetType() != MC_TYPE_INPUT))
-      {
-        // The user tried to evaluate a chapter, section, comment or similar.
-        // Let's port him to the next cell so we will eventually end up at a place
-        // that needs evaluating.
-        if(m_activeCell->GetParent()->m_next!=NULL)
-          SetActiveCell(dynamic_cast<GroupCell*>(m_activeCell->GetParent()->m_next)->GetEditable());
-      }
-      else
-      {
-        bool enterEvaluates = false;
-        bool controlOrShift = event.ControlDown() || event.ShiftDown();
-        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates &&  controlOrShift) ||
-            ( enterEvaluates && !controlOrShift) )
-        { // shift-enter pressed === menu_evaluate event
-          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
-        } else
-          event.Skip();
-      }
-      
+    if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
+      event.Skip(); // if enter pressed in text, title, section cell, pass the event
+    else {
+      bool enterEvaluates = false;
+      bool controlOrShift = event.ControlDown() || event.ShiftDown();
+      wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+      if ((!enterEvaluates &&  controlOrShift) ||
+          ( enterEvaluates && !controlOrShift) )
+      { // shift-enter pressed === menu_evaluate event
+        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+      } else
+        event.Skip();
     }
-    else
-    {
-      // No active cell => We obviously cannot evaluate a cell but we at least
-      // can try to jump to the next one.
-      if(HCaretActive())
-      {
-        if(GetHCaret() == NULL)
-        {
-          if(GetTree()!=NULL)
-            SetActiveCell(dynamic_cast<GroupCell*>(GetTree())->GetEditable());
-        }
-        else
-          if(GetHCaret()->m_next != NULL)
-          {
-            SetActiveCell(dynamic_cast<GroupCell*>(GetHCaret()->m_next)->GetEditable());
-          }
-      }
-    }
-  break;
-    
+    break;
+
   case WXK_ESCAPE:
 #ifndef wxUSE_UNICODE
     if (m_activeCell == NULL) {
