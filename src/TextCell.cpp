@@ -446,6 +446,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
+  text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
 
 #endif
   // m_IsHidden is set only for multiplication signs
