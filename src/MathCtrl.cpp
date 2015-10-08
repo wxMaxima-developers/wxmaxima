@@ -1942,18 +1942,81 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     break;
 
   case WXK_RETURN:
-    if ((m_activeCell != NULL) && (m_activeCell->GetType() != MC_TYPE_INPUT))
-      event.Skip(); // if enter pressed in text, title, section cell, pass the event
-    else {
-      bool enterEvaluates = false;
-      bool controlOrShift = event.ControlDown() || event.ShiftDown();
-      wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-      if ((!enterEvaluates &&  controlOrShift) ||
-          ( enterEvaluates && !controlOrShift) )
-      { // shift-enter pressed === menu_evaluate event
-        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
-      } else
-        event.Skip();
+    if(m_activeCell == NULL)
+    {
+      // We are instructed to evaluate something - but we aren't inside a cell.
+      // Let's see if there are selected cells we can evaluate.
+      if(CellsSelected())
+      {
+        bool enterEvaluates = false;
+        bool controlOrShift = event.ControlDown() || event.ShiftDown();
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if ((!enterEvaluates &&  controlOrShift) ||
+            ( enterEvaluates && !controlOrShift) )
+        { // shift-enter pressed === menu_evaluate event
+          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+        } else
+          event.Skip();
+        
+      }
+      else
+      {
+        // We are instructed to evaluate something - but we aren't inside a cell
+        // and we haven't selected one. Let's see if we are in front of a cell
+        // we can jump into.
+        if(m_hCaretActive)
+        {
+          if(GetHCaret())
+          {
+            if(GetHCaret()->m_next)
+              SetActiveCell(dynamic_cast<GroupCell*>(GetHCaret()->m_next)->GetEditable());
+          }
+          else
+          {
+            if(m_tree)
+              SetActiveCell(m_tree->GetEditable());
+          }
+        }
+        else
+          event.Skip();
+      }
+    }
+    else
+    {      
+      if (m_activeCell->GetType() != MC_TYPE_INPUT)
+      {
+        bool enterEvaluates = false;
+        bool controlOrShift = event.ControlDown() || event.ShiftDown();
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if ((!enterEvaluates &&  controlOrShift) ||
+            ( enterEvaluates && !controlOrShift) )
+        { // shift-enter pressed === menu_evaluate event          
+          // In this cell there isn't anything to evaluate. But we can jump to the next
+          // cell. Perhaps there is something there...
+          if(GetActiveCell()->GetParent()->m_next)
+            // Jump to the next cell.
+            SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
+          else
+            // No next cell -> Jump to the end of the document.
+            SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
+        }
+        else
+          event.Skip(); // pass the event
+          
+      }
+      else {
+        bool enterEvaluates = false;
+        bool controlOrShift = event.ControlDown() || event.ShiftDown();
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if ((!enterEvaluates &&  controlOrShift) ||
+            ( enterEvaluates && !controlOrShift) )
+        { // shift-enter pressed === menu_evaluate event          
+          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+        } else
+        {
+          event.Skip();
+        }
+      }
     }
     break;
 
