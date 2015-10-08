@@ -902,6 +902,20 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     if (!clickInSelection)
       popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
 
+    if(GetActiveCell()!=NULL)
+    {
+      wxASSERT_MSG(m_activeCell->GetParent() != NULL,_("Bug: Math Cell that claims to have no group Cell it belongs toBug: Math Cell that claims to have no group Cell it belongs to"));
+      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+      if(group->GetGroupType() == GC_TYPE_TITLE)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Part"), wxEmptyString, wxITEM_NORMAL);
+      if(group->GetGroupType() == GC_TYPE_SECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Section"), wxEmptyString, wxITEM_NORMAL);
+      if(group->GetGroupType() == GC_TYPE_SUBSECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection"), wxEmptyString, wxITEM_NORMAL);
+      if(group->GetGroupType() == GC_TYPE_SUBSUBSECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection"), wxEmptyString, wxITEM_NORMAL);
+    }
+    
     popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
     popupMenu->Enable(popid_cut, m_activeCell->CanCopy());
   }
@@ -4556,21 +4570,41 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
+void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
+{
+  GroupCell *end = start;
+  while(end->m_next != NULL)
+  {
+    if(dynamic_cast<GroupCell*>(end->m_next)->IsLesserGCType(start->GetGroupType()))
+    {
+      end = dynamic_cast<GroupCell*>(end->m_next);
+    }
+    else
+      break;
+  }
+  AddSelectionToEvaluationQueue(start,end);
+}
+
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
+  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell*>(m_selectionStart),dynamic_cast<GroupCell*>(m_selectionEnd));
+}
+
+void MathCtrl::AddSelectionToEvaluationQueue(GroupCell *start,GroupCell *end)
+{
   FollowEvaluation(true);
-  if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
+  if ((start == NULL) || (end == NULL))
     return;
-  if (m_selectionStart->GetType() != MC_TYPE_GROUP)
+  if (start->GetType() != MC_TYPE_GROUP)
     return;
-  GroupCell* tmp = dynamic_cast<GroupCell*>(m_selectionStart);
+  GroupCell* tmp = dynamic_cast<GroupCell*>(start);
   while (tmp != NULL) {
     m_evaluationQueue->AddToQueue(tmp);
-    if (tmp == m_selectionEnd)
+    if (tmp == end)
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-  SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
+  SetHCaret(dynamic_cast<GroupCell*>(end));
 }
 
 void MathCtrl::AddDocumentTillHereToEvaluationQueue()

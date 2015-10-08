@@ -4540,6 +4540,13 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
+  case MathCtrl::popid_evaluate_section:
+  {
+    bool evaluating = !m_console->m_evaluationQueue->Empty();
+    m_console->AddSectionToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
+    if(!evaluating) TryEvaluateNextInQueue();
+  }
+  break;
   case MathCtrl::popid_copy:
     if (m_console->CanCopy(true))
       m_console->Copy();
@@ -4717,13 +4724,6 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       if (selection != NULL && selection->GetType() == MC_TYPE_SLIDE)
         ((SlideShow *)(selection))->ToGif(file);
     }
-  }
-  break;
-  case MathCtrl::popid_evaluate:
-  {
-    bool evaluating = !m_console->m_evaluationQueue->Empty();
-    m_console->AddSelectionToEvaluationQueue();
-    if(!evaluating) TryEvaluateNextInQueue();
   }
   break;
   case MathCtrl::popid_merge_cells:
@@ -5675,6 +5675,7 @@ EVT_MENU(MathCtrl::popid_select_all, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_comment_selection, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_divide_cell, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
+EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
