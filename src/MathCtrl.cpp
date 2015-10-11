@@ -5236,6 +5236,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
                 m_last->AppendCell(contents);
             }
           }
+          NumberSections();
           RecalculateForce();
           Refresh();
           SetHCaret(end);
