@@ -906,14 +906,14 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     {
       wxASSERT_MSG(m_activeCell->GetParent() != NULL,_("Bug: Math Cell that claims to have no group Cell it belongs toBug: Math Cell that claims to have no group Cell it belongs to"));
       GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-      if(group->GetGroupType() == GC_TYPE_TITLE)
-        popupMenu->Append(popid_evaluate_section, _("Evaluate Part"), wxEmptyString, wxITEM_NORMAL);
-      if(group->GetGroupType() == GC_TYPE_SECTION)
-        popupMenu->Append(popid_evaluate_section, _("Evaluate Section"), wxEmptyString, wxITEM_NORMAL);
-      if(group->GetGroupType() == GC_TYPE_SUBSECTION)
-        popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection"), wxEmptyString, wxITEM_NORMAL);
-      if(group->GetGroupType() == GC_TYPE_SUBSUBSECTION)
-        popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection"), wxEmptyString, wxITEM_NORMAL);
+      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Section\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSUBSECTION)
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
     }
     
     popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
@@ -1947,88 +1947,110 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
     break;
 
   case WXK_NUMPAD_ENTER:
-    if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
-      dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
-    else if (m_hCaretActive)
-      OpenHCaret(wxT("%"));
+    if(event.ControlDown()&&event.ShiftDown())
+    {
+      // Queue an evaluate event for the window containing this worksheet.
+      wxCommandEvent *evaluateEvent = new wxCommandEvent;
+      evaluateEvent->SetEventType(wxEVT_MENU);
+      evaluateEvent->SetId(popid_evaluate_section);
+      GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
+    }
     else
-      event.Skip();
+    {
+      if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
+        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+      else if (m_hCaretActive)
+        OpenHCaret(wxT("%"));
+      else
+        event.Skip();
+    }
     break;
 
   case WXK_RETURN:
-    if(m_activeCell == NULL)
+    if(event.ControlDown()&&event.ShiftDown())
     {
-      // We are instructed to evaluate something - but we aren't inside a cell.
-      // Let's see if there are selected cells we can evaluate.
-      if(CellsSelected())
-      {
-        bool enterEvaluates = false;
-        bool controlOrShift = event.ControlDown() || event.ShiftDown();
-        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates &&  controlOrShift) ||
-            ( enterEvaluates && !controlOrShift) )
-        { // shift-enter pressed === menu_evaluate event
-          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
-        } else
-          event.Skip();
-        
-      }
-      else
-      {
-        // We are instructed to evaluate something - but we aren't inside a cell
-        // and we haven't selected one. Let's see if we are in front of a cell
-        // we can jump into.
-        if(m_hCaretActive)
-        {
-          if(GetHCaret())
-          {
-            if(GetHCaret()->m_next)
-              SetActiveCell(dynamic_cast<GroupCell*>(GetHCaret()->m_next)->GetEditable());
-          }
-          else
-          {
-            if(m_tree)
-              SetActiveCell(m_tree->GetEditable());
-          }
-        }
-        else
-          event.Skip();
-      }
+      // Queue an evaluate event for the window containing this worksheet.
+      wxCommandEvent *evaluateEvent = new wxCommandEvent;
+      evaluateEvent->SetEventType(wxEVT_MENU);
+      evaluateEvent->SetId(popid_evaluate_section);
+      GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
     }
     else
-    {      
-      if (m_activeCell->GetType() != MC_TYPE_INPUT)
+    {
+      if(m_activeCell == NULL)
       {
-        bool enterEvaluates = false;
-        bool controlOrShift = event.ControlDown() || event.ShiftDown();
-        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates &&  controlOrShift) ||
-            ( enterEvaluates && !controlOrShift) )
-        { // shift-enter pressed === menu_evaluate event          
-          // In this cell there isn't anything to evaluate. But we can jump to the next
-          // cell. Perhaps there is something there...
-          if(GetActiveCell()->GetParent()->m_next)
-            // Jump to the next cell.
-            SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
-          else
-            // No next cell -> Jump to the end of the document.
-            SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
+        // We are instructed to evaluate something - but we aren't inside a cell.
+        // Let's see if there are selected cells we can evaluate.
+        if(CellsSelected())
+        {
+          bool enterEvaluates = false;
+          bool controlOrShift = event.ControlDown() || event.ShiftDown();
+          wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+          if ((!enterEvaluates &&  controlOrShift) ||
+              ( enterEvaluates && !controlOrShift) )
+          { // shift-enter pressed === menu_evaluate event
+            dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+          } else
+            event.Skip();
+        
         }
         else
-          event.Skip(); // pass the event
-          
-      }
-      else {
-        bool enterEvaluates = false;
-        bool controlOrShift = event.ControlDown() || event.ShiftDown();
-        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates &&  controlOrShift) ||
-            ( enterEvaluates && !controlOrShift) )
-        { // shift-enter pressed === menu_evaluate event          
-          dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
-        } else
         {
-          event.Skip();
+          // We are instructed to evaluate something - but we aren't inside a cell
+          // and we haven't selected one. Let's see if we are in front of a cell
+          // we can jump into.
+          if(m_hCaretActive)
+          {
+            if(GetHCaret())
+            {
+              if(GetHCaret()->m_next)
+                SetActiveCell(dynamic_cast<GroupCell*>(GetHCaret()->m_next)->GetEditable());
+            }
+            else
+            {
+              if(m_tree)
+                SetActiveCell(m_tree->GetEditable());
+            }
+          }
+          else
+            event.Skip();
+        }
+      }
+      else
+      {      
+        if (m_activeCell->GetType() != MC_TYPE_INPUT)
+        {
+          bool enterEvaluates = false;
+          bool controlOrShift = event.ControlDown() || event.ShiftDown();
+          wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+          if ((!enterEvaluates &&  controlOrShift) ||
+              ( enterEvaluates && !controlOrShift) )
+          { // shift-enter pressed === menu_evaluate event          
+            // In this cell there isn't anything to evaluate. But we can jump to the next
+            // cell. Perhaps there is something there...
+            if(GetActiveCell()->GetParent()->m_next)
+              // Jump to the next cell.
+              SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
+            else
+              // No next cell -> Jump to the end of the document.
+              SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
+          }
+          else
+            event.Skip(); // pass the event
+          
+        }
+        else {
+          bool enterEvaluates = false;
+          bool controlOrShift = event.ControlDown() || event.ShiftDown();
+          wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+          if ((!enterEvaluates &&  controlOrShift) ||
+              ( enterEvaluates && !controlOrShift) )
+          { // shift-enter pressed === menu_evaluate event          
+            dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+          } else
+          {
+            event.Skip();
+          }
         }
       }
     }
@@ -2066,6 +2088,47 @@ void MathCtrl::QuestionAnswered()
     SetActiveCell(NULL);
   m_answerCell = NULL;
   m_questionPrompt = false;
+}
+
+GroupCell *MathCtrl::StartOfSectioningUnit(GroupCell *start)
+{
+  wxASSERT(start != NULL);
+  // If the current cell is a sectioning cell we return this cell
+  if(IsLesserGCType(GC_TYPE_TEXT,start->GetGroupType()))
+    return start;
+
+  GroupCell *end = start;
+  while((end != NULL)&&(!IsLesserGCType(GC_TYPE_TEXT,end->GetGroupType())))
+  {
+    end = dynamic_cast<GroupCell*>(end->m_previous);
+  }
+
+  // Return the sectioning cell we found - or the current cell which is the
+  // next equivalent to a sectioning cell.
+  if(end != NULL)
+    return end;
+  else
+    return start;
+}
+
+GroupCell *MathCtrl::EndOfSectioningUnit(GroupCell *start)
+{
+  wxASSERT(start != NULL);
+  GroupCell *sectionbegin = StartOfSectioningUnit(start);
+  int endgrouptype = sectionbegin->GetGroupType();
+
+  // Begin with the cell after the start cell - that might contain a section
+  // start of any sorts.
+  GroupCell *end = dynamic_cast<GroupCell*>(start->m_next);
+  if(end == NULL)
+    return start;
+
+  // Find the end of the chapter/section/...
+  while((end -> m_next != NULL)&&(IsLesserGCType(end->GetGroupType(),endgrouptype)))
+  {
+    end = dynamic_cast<GroupCell*>(end->m_next);
+  }
+  return end;
 }
 
 /****
@@ -4572,16 +4635,11 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
 
 void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
 {
-  GroupCell *end = start;
-  while(end->m_next != NULL)
-  {
-    if(dynamic_cast<GroupCell*>(end->m_next)->IsLesserGCType(start->GetGroupType()))
-    {
-      end = dynamic_cast<GroupCell*>(end->m_next);
-    }
-    else
-      break;
-  }
+  // Find the begin of the current section
+  start = StartOfSectioningUnit(start);
+
+  // Find the end of the current section
+  GroupCell *end = EndOfSectioningUnit(start);
   AddSelectionToEvaluationQueue(start,end);
 }
 

@@ -347,6 +347,10 @@ private:
   void OnMouseMiddleUp(wxMouseEvent& event);
   void NumberSections();
   bool IsLesserGCType(int type, int comparedTo);
+  //! Finds the start of the current chapter/section/...
+  GroupCell *StartOfSectioningUnit(GroupCell *start);
+  //! Finds the end of the current chapter/section/...
+  GroupCell *EndOfSectioningUnit(GroupCell *start);
   //! Is called if a action from the autocomplete menu is selected
   void OnComplete(wxCommandEvent &event);
   wxPoint m_down;
