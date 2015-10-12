@@ -4543,8 +4543,29 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case MathCtrl::popid_evaluate_section:
   {
     bool evaluating = !m_console->m_evaluationQueue->Empty();
-    m_console->AddSectionToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
-    if(!evaluating) TryEvaluateNextInQueue();
+    GroupCell *group = NULL;
+    if(m_console->GetActiveCell())
+    {
+      // This "if" is pure paranoia. But - since the costs of an "if" are low...
+      if(m_console->GetActiveCell()->GetParent())
+        group = dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent());
+    }
+    else if(m_console->HCaretActive())
+    {
+      if(m_console->GetHCaret())
+      {
+        group = m_console->GetHCaret();
+/*        if(group->m_next)
+          group = dynamic_cast<GroupCell*>(group->m_next);*/
+      }
+      else
+        group = m_console->GetTree();
+    }
+    if(group)
+    {
+      m_console->AddSectionToEvaluationQueue(group);
+      if(!evaluating) TryEvaluateNextInQueue();
+    }
   }
   break;
   case MathCtrl::popid_copy:
