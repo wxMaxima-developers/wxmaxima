@@ -830,7 +830,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     else if (m_selectionStart != NULL)
     {
       if (m_selectionStart->GetType() == MC_TYPE_GROUP) {
-
+    
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
@@ -844,6 +844,33 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
 
         if (CanMergeSelection())
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
+
+        // Add a "evaluate this <sectioning unit>" context menu entry.
+        GroupCell *group;
+        if(m_selectionEnd != NULL)
+          group = dynamic_cast<GroupCell *>(m_selectionEnd);
+        else
+          group = dynamic_cast<GroupCell *>(m_selectionStart);
+        if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        }
+        if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SECTION)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Section\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        }
+        if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSECTION)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        }
+        if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSUBSECTION)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        }
       }
 
       else {
@@ -902,10 +929,23 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     if (!clickInSelection)
       popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
 
+    GroupCell *group = NULL;
     if(GetActiveCell()!=NULL)
     {
-      wxASSERT_MSG(m_activeCell->GetParent() != NULL,_("Bug: Math Cell that claims to have no group Cell it belongs toBug: Math Cell that claims to have no group Cell it belongs to"));
-      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+      wxASSERT(GetActiveCell()->GetParent() != NULL);
+      group = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
+    }
+    if(m_selectionStart!= NULL)
+    {
+      std::cerr<<"SelectionStt\n";
+      if(m_selectionStart->GetType() == MC_TYPE_GROUP)
+      {      std::cerr<<"Selection\n";
+        group = dynamic_cast<GroupCell *>(m_selectionStart);
+      }
+    }
+    if(group)
+    {
+      popupMenu->AppendSeparator();
       if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
         popupMenu->Append(popid_evaluate_section, _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
       if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SECTION)
