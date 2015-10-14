@@ -40,6 +40,11 @@
 
 #+ccl (setf *print-circle* nil)
 
+
+;;; Without this command encountering unicode characters might cause
+;;; maxima to stop responding on windows.
+#+ccl (setf (stream-external-format *socket-connection*) charset:utf-8)
+
 ;;; Muffle compiler-notes globally
 #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
 (defmacro no-warning (form)
