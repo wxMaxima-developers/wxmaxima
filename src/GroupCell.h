@@ -89,7 +89,6 @@ public:
   // exporting
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
   wxString ToTeX();
-  wxString PrepareForTeX(wxString text,bool replace_underscore=true);
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
   wxString ToXML();

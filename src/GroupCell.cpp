@@ -660,32 +660,6 @@ wxString GroupCell::ToString()
   return str;
 }
 
-wxString GroupCell::PrepareForTeX(wxString str,bool replace_underscore)
-{
-#if !wxUSE_UNICODE
-  wxString str1(str.wc_str(wxConvLocal), wxConvUTF8);
-#else
-  wxString str1(str);
-#endif
-
-//  str1.Replace(wxT("\\"), wxT("\\verb|\\|"));
-//  str1.Replace(wxT("_"), wxT("\\_"));
-  str1.Replace(wxT("%"), wxT("\\%"));
-//  str1.Replace(wxT("{"), wxT("\\{"));
-//  str1.Replace(wxT("}"), wxT("\\}"));
-  str1.Replace(wxT("^"), wxT("\\verb|^|"));
-  str1.Replace(wxT(">"), wxT("\\verb|>|"));
-  str1.Replace(wxT("<"), wxT("\\verb|<|"));
-
-#if !wxUSE_UNICODE
-  wxString str2(str1.wc_str(wxConvUTF8), wxConvLocal);
-#else
-  wxString str2(str1);
-#endif
-
-  return str2;
-}
-
 wxString GroupCell::ToTeX()
 {
   return ToTeX(wxEmptyString, wxEmptyString, NULL);
