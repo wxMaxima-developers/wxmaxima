@@ -660,7 +660,7 @@ wxString GroupCell::ToString()
   return str;
 }
 
-wxString GroupCell::PrepareForTeX(wxString str)
+wxString GroupCell::PrepareForTeX(wxString str,bool replace_underscore)
 {
 #if !wxUSE_UNICODE
   wxString str1(str.wc_str(wxConvLocal), wxConvUTF8);
@@ -669,9 +669,8 @@ wxString GroupCell::PrepareForTeX(wxString str)
 #endif
 
 //  str1.Replace(wxT("\\"), wxT("\\verb|\\|"));
-  str1.Replace(wxT("_"), wxT("\\_"));
+//  str1.Replace(wxT("_"), wxT("\\_"));
   str1.Replace(wxT("%"), wxT("\\%"));
-  str1.Replace(wxT("$"), wxT("\\$"));
 //  str1.Replace(wxT("{"), wxT("\\{"));
 //  str1.Replace(wxT("}"), wxT("\\}"));
   str1.Replace(wxT("^"), wxT("\\verb|^|"));
@@ -724,9 +723,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           << wxT("  \\begin{center}\n")
           << wxT("    \\includeimage{")
           << filename << wxT("_img/") << image << wxT("}\n")
-          << wxT("  \\caption{") << PrepareForTeX(m_input->m_next->GetValue()) << wxT("}\n")
+          << wxT("  \\caption{") << m_input->m_next->ToTeX() << wxT("}\n")
           << wxT("  \\end{center}\n")
-          << wxT("\\end{figure}");
+          << wxT("\\end{figure}\n");
     }
   }
   else if (m_groupType == GC_TYPE_IMAGE)
@@ -737,11 +736,11 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     // Input cells
     if(exportInput)
     {
-      str = wxT("\n\\noindent\n%%%%%%%%%%%%%%%\n")
+      str = wxT("\\noindent\n%%%%%%%%%%%%%%%\n")
         wxT("%%% INPUT:\n")
         wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
         m_input->ToTeX() +
-        wxT("\n\n\\end{minipage}");
+        wxT("\n\\end{minipage}");
       
       if (m_input->m_next!=NULL)
       {
@@ -749,10 +748,8 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         wxString input = m_input->m_next->ToTeX();
         str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
           input +
-             wxT("\n\n\\end{minipage}");
-      }
-      
-      str += wxT("\n");
+             wxT("\n\\end{minipage}");
+      }      
     }
     else str = wxEmptyString;
 
@@ -814,7 +811,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	    str += wxT("\\]\n\\[\\displaystyle\n");
 	  else
 	    {
-	      str += wxT("\n\\[\\displaystyle\n");
+	      str += wxT("\\[\\displaystyle\n");
 	      mathMode=true;
 	    }
           str += wxT("\\printlabel{") + tmp->ToTeX() + wxT("}\n");
@@ -837,7 +834,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	      {
 		if(!mathMode)
 		  {
-		    str += wxT("\n\n\\[\\displaystyle\n");
+		    str += wxT("\\[\\displaystyle\n");
 		    mathMode = true;
 		  }
 	      }		
@@ -850,7 +847,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	  // Some invisible dummy content that keeps TeX happy if there really is
 	  // no output to display.
 	  str += wxT("\\mbox{}");
-	  str += wxT("\n\\]\n%%%%%%%%%%%%%%%\n");
+	  str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
 	}
     }
   }
@@ -860,24 +857,24 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     str = GetEditable()->ListToTeX();
     switch (GetEditable()->GetStyle()) {
       case TS_TITLE:
-        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + PrepareForTeX(str) + wxT("}}\n");
+        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
         str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
-        str += wxT("\\setcounter{figure}{0}\n\n");
+        str += wxT("\\setcounter{figure}{0}\n");
         break;
       case TS_SECTION:
-        str = wxT("\n\\section{") + PrepareForTeX(str) + wxT("}\n\n");
+        str = wxT("\n\\section{") + str + wxT("}\n");
         break;
       case TS_SUBSECTION:
-        str = wxT("\n\\subsection{") + PrepareForTeX(str) + wxT("}\n\n");
+        str = wxT("\n\\subsection{") + str + wxT("}\n");
         break;
       case TS_SUBSUBSECTION:
-        str = wxT("\n\\subsubsection{") + PrepareForTeX(str) + wxT("}\n\n");
+        str = wxT("\n\\subsubsection{") + str + wxT("}\n");
         break;
       default:
         if (str.StartsWith(wxT("TeX:")))
           str = str.Mid(5, str.Length());
         else {
-          str = PrepareForTeX(str);
+          str = str;
 	  str = MarkDownParser.MarkDown(str);
         }
         break;
