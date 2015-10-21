@@ -764,6 +764,9 @@ public:
   void RemoveAllOutput(GroupCell* cell);
   // methods related to evaluation queue
 
+  //! Adds a group cell to the evaluation queue marking its contents as "outdated".
+  void AddToEvaluationQueue(GroupCell *cell);
+
   void AddDocumentToEvaluationQueue();
   
   //! Schedule all cells in the document for evaluation

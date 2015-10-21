@@ -857,11 +857,71 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
     break;
 
+      case WXK_END:
+    std::cerr<<"WXK_END\n";
+    SaveValue();
+    if (event.ShiftDown())
+    {
+      std::cerr<<"NewStart="<<m_positionOfCaret<<"\n";
+      if (m_selectionStart == -1)
+      {
+        std::cerr<<"NewStart2\n";
+        SetSelection(m_positionOfCaret,m_positionOfCaret);
+      }
+    }
+    else
+      ClearSelection();
+    
+    if (event.ControlDown())
+      m_positionOfCaret = (signed)m_text.Length();
+    else
+    {
+      while (m_positionOfCaret < (signed)m_text.Length() &&
+             m_text.GetChar(m_positionOfCaret) != '\n')
+        m_positionOfCaret++;
+      std::cerr<<"NewStart3="<<m_positionOfCaret<<"\n";
+    }
+
+    if (event.ShiftDown())
+    {
+      SetSelection(m_selectionStart,m_positionOfCaret);
+      std::cerr<<"NewStart4\n";
+    }
+    break;
+
+  case WXK_HOME:
+    SaveValue();
+    {
+      if (event.ShiftDown())
+      {
+        if (m_selectionStart == -1)
+          SetSelection(m_positionOfCaret,m_positionOfCaret);
+      }
+      else
+        ClearSelection();
+      
+      if (event.ControlDown())
+        m_positionOfCaret = 0;
+      else
+      {
+        int col, lin;
+        PositionToXY(m_positionOfCaret, &col, &lin);
+        m_positionOfCaret = XYToPosition(0, lin);
+      }
+
+      if (event.ShiftDown())
+        SetSelection(m_selectionStart,m_positionOfCaret);
+    }
+    break;
+    
   case WXK_PAGEDOWN:
+    std::cerr<<"PageDown!";
 #ifdef WXK_NEXT
   case WXK_NEXT:
+    std::cerr<<"Next!";
 #endif
   case WXK_DOWN:
+    std::cerr<<"Down!";
     SaveValue();
     {
       if (event.ShiftDown())
@@ -1022,54 +1082,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
         m_positionOfCaret += indentChars;
       m_isDirty = true;
       m_containsChanges = true;
-    }
-    break;
-
-  case WXK_END:
-    SaveValue();
-    if (event.ShiftDown())
-    {
-      if (m_selectionStart == -1)
-        SetSelection(m_positionOfCaret,m_positionOfCaret);
-    }
-    else
-      ClearSelection();
-    
-    if (event.ControlDown())
-      m_positionOfCaret = (signed)m_text.Length();
-    else
-    {
-      while (m_positionOfCaret < (signed)m_text.Length() &&
-             m_text.GetChar(m_positionOfCaret) != '\n')
-        m_positionOfCaret++;
-    }
-
-    if (event.ShiftDown())
-      SetSelection(m_selectionStart,m_positionOfCaret);
-    break;
-
-  case WXK_HOME:
-    SaveValue();
-    {
-      if (event.ShiftDown())
-      {
-        if (m_selectionStart == -1)
-          SetSelection(m_positionOfCaret,m_positionOfCaret);
-      }
-      else
-        ClearSelection();
-      
-      if (event.ControlDown())
-        m_positionOfCaret = 0;
-      else
-      {
-        int col, lin;
-        PositionToXY(m_positionOfCaret, &col, &lin);
-        m_positionOfCaret = XYToPosition(0, lin);
-      }
-
-      if (event.ShiftDown())
-        SetSelection(m_selectionStart,m_positionOfCaret);
     }
     break;
 

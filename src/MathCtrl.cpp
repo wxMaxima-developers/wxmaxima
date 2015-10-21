@@ -2530,6 +2530,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
     
   case WXK_END:
+    std::cerr<<"End2\n";
     SetHCaret(m_last);
     if (m_last != NULL)
       ScrollToCell(m_last);
@@ -4652,10 +4653,21 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue(tmp);
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+    {
+      AddToEvaluationQueue(tmp);
+      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+    }
   }
   SetHCaret(m_last);
+}
+
+void MathCtrl::AddToEvaluationQueue(GroupCell *cell)
+{
+  // Gray out the output of the cell in order to mark it as "not current".
+  if(cell->GetInput())
+    cell->GetInput()->ContainsChanges(true);
+  // ...and add it to the evaluation queue
+  m_evaluationQueue->AddToQueue(cell);
 }
 
 /**
@@ -4666,7 +4678,7 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue(tmp);
+    AddToEvaluationQueue(tmp);
     m_evaluationQueue->AddHiddenTreeToQueue(tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
@@ -4697,7 +4709,7 @@ void MathCtrl::AddSelectionToEvaluationQueue(GroupCell *start,GroupCell *end)
     return;
   GroupCell* tmp = dynamic_cast<GroupCell*>(start);
   while (tmp != NULL) {
-    m_evaluationQueue->AddToQueue(tmp);
+    AddToEvaluationQueue(tmp);
     if (tmp == end)
       break;
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
@@ -4722,7 +4734,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
   {
     GroupCell* tmp = m_tree;
     while (tmp != NULL) {
-      m_evaluationQueue->AddToQueue(tmp);
+      AddToEvaluationQueue(tmp);
       if (tmp == stop)
         break;
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
@@ -4731,7 +4743,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 }
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
-  m_evaluationQueue->AddToQueue((GroupCell*) gc);
+  AddToEvaluationQueue((GroupCell*) gc);
   SetHCaret(gc);
 }
 //////// end of EvaluationQueue related stuff ////////////////
