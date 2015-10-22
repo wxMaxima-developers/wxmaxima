@@ -430,6 +430,13 @@ private:
 
 
 public:
+    /*! Key for a printable character pressed.
+
+    Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for 
+    non-printable characters like "up" or "right".
+   */
+  void OnChar(wxKeyEvent& event);
+
   /*! True = schedule an update of the table of contents
     
     used by UpdateTableOfContents() and the idle task.

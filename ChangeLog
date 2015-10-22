@@ -20,8 +20,11 @@ Current:
   * TeX export now should work with most unicode chars we have ESC sequences
     for.
   * A few new ESC sequences and markdown commands.
-  * "#" now is shown as a "not equal" sign and a "not equal" sign is interpreted
-    as "#".
+  * "#" now is shown as a "not equal" sign as a "not equal" sign already would
+    be interpreted as "#".
+  * Teach SBCL and CCL on Windows how to deal with unicode variable names like
+    ü and α.
+  * Sidebars for symbols
   * Many bug, usability and performance fixes
   * Most importantly: If it is a cursor it blinks now.
 

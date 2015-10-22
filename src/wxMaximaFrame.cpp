@@ -282,7 +282,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(m_console->m_structure,
                     wxAuiPaneInfo().Name(wxT("structure")).
                     Caption(_("Table of Contents")).
-                    Show(false).
+                    Show(true).
                     TopDockable(true).
                     BottomDockable(true).
                     PaneBorder(true).
@@ -307,6 +307,27 @@ void wxMaximaFrame::do_layout()
                     Fixed().
                     Left());
 
+#ifdef wxUSE_UNICODE
+  m_manager.AddPane(CreateGreekPane(),
+                    wxAuiPaneInfo().Name(wxT("greek")).
+                    Caption(_("Greek letters")).
+                    Show(false).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    PaneBorder(true).
+                    Fixed().
+                    Left());
+  m_manager.AddPane(CreateSymbolsPane(),
+                    wxAuiPaneInfo().Name(wxT("symbols")).
+                    Caption(_("Mathematical Symbols")).
+                    Show(false).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    PaneBorder(true).
+                    Fixed().
+                    Left());
+#endif
+  
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
                     Caption(_("General Math")).
@@ -455,6 +476,10 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+#ifdef wxUSE_UNICODE
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek\tAlt-Shift-G"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt-Shift-Y"));
+#endif
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector,  _("XML Inspector"));
@@ -997,6 +1022,14 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
   case menu_pane_stats:
     displayed = m_manager.GetPane(wxT("stats")).IsShown();
     break;
+#ifdef wxUSE_UNICODE
+  case menu_pane_greek:
+    displayed = m_manager.GetPane(wxT("greek")).IsShown();
+    break;
+  case menu_pane_symbols:
+    displayed = m_manager.GetPane(wxT("symbols")).IsShown();
+    break;
+#endif
   case menu_pane_format:
     displayed = m_manager.GetPane(wxT("format")).IsShown();
     break;
@@ -1031,6 +1064,14 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
   case menu_pane_stats:
     m_manager.GetPane(wxT("stats")).Show(show);
     break;
+#ifdef wxUSE_UNICODE
+  case menu_pane_greek:
+    m_manager.GetPane(wxT("greek")).Show(show);
+    break;
+  case menu_pane_symbols:
+    m_manager.GetPane(wxT("symbols")).Show(show);
+    break;
+#endif
   case menu_pane_format:
     m_manager.GetPane(wxT("format")).Show(show);
     break;
@@ -1040,6 +1081,10 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     m_manager.GetPane(wxT("structure")).Show(false);
     m_manager.GetPane(wxT("XmlInspector")).Show(false);
     m_manager.GetPane(wxT("stats")).Show(false);
+#ifdef wxUSE_UNICODE
+    m_manager.GetPane(wxT("greek")).Show(false);
+    m_manager.GetPane(wxT("symbols")).Show(false);
+#endif
     m_manager.GetPane(wxT("format")).Show(false);
     break;
   default:
@@ -1144,6 +1189,162 @@ wxPanel* wxMaximaFrame::CreateStatPane()
 
   return panel;
 }
+
+void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
+{
+  std::cerr<<"Char button!\n";
+  wxChar ch = event.GetId();
+  wxString ch_string(ch);
+  std::cerr<<ch_string<<"\n";
+  m_console->InsertText(ch_string);
+}
+
+wxStaticText *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description)
+{
+  wxStaticText *text = new wxStaticText(parent,ch,wxString(ch));
+  if(description.Length()>0)
+    text->SetToolTip(description);
+  text->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
+  return text;
+}
+
+#ifdef wxUSE_UNICODE
+wxPanel* wxMaximaFrame::CreateGreekPane()
+{
+  wxPanel *panel = new wxPanel(this, -1);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
+  int border = 1;
+#else
+  int border = 0;
+#endif
+
+  wxPanel *lowercasePanel = new wxPanel(panel, -1);
+  wxGridSizer *lowercase = new wxGridSizer(8);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B1')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B2')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B3')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B4')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B5')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B6')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B7')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B8')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B9')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BA')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BB')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BC')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BD')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BE')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03BF')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C0')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C1')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C3')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C4')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C5')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C6')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C7')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C8')));
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x03C9')));
+  lowercasePanel->SetSizer(lowercase);
+  vbox->Add(lowercasePanel,0,style,border);
+
+  wxPanel *uppercasePanel = new wxPanel(panel, -1);
+  wxGridSizer *uppercase = new wxGridSizer(8);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0391')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0392')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0393')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0394')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0395')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0396')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0397')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0398')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x0399')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039A')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039B')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039C')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039D')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039E')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x039F')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A0')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A1')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A3')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A4')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A5')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A6')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A7')),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A8')));
+  uppercase->Add(CharButton(uppercasePanel,  wxT('\x03A9')));
+  uppercasePanel->SetSizer(uppercase);
+  vbox->Add(uppercasePanel,0,style,border);
+
+
+  panel->SetSizer(vbox);
+  vbox->Fit(panel);
+  vbox->SetSizeHints(panel);
+
+  return panel;
+}
+
+wxPanel* wxMaximaFrame::CreateSymbolsPane()
+{
+  wxPanel *panel = new wxPanel(this, -1);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
+  int border = 1;
+#else
+  int border = 0;
+#endif
+
+  wxPanel *lowercasePanel = new wxPanel(panel, -1);
+  wxGridSizer *lowercase = new wxGridSizer(8);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00BD')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221A')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2148')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2147')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x210F')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2208')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D2')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221E')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2205')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x25b6')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x25b8')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C0')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C1')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BB')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BC')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BD')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D2')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D4')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00AC')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C3')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C2')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2286')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2282')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2288')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2284')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x0127')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x0126')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2202')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x222b')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221d')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263')),0,wxALL | wxEXPAND,2);
+  lowercasePanel->SetSizer(lowercase);
+  vbox->Add(lowercasePanel,0,style,border);
+
+  panel->SetSizer(vbox);
+  vbox->Fit(panel);
+  vbox->SetSizeHints(panel);
+
+  return panel;
+}
+#endif
 
 wxPanel *wxMaximaFrame::CreateFormatPane()
 {
