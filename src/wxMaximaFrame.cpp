@@ -477,7 +477,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
 #ifdef wxUSE_UNICODE
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek\tAlt-Shift-G"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek letters\tAlt-Shift-G"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt-Shift-Y"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
@@ -1328,13 +1328,13 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2284'),_("not subset")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x0127')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x0126')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2202')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x222b')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2202'),_("partial sign")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x222b'),_("Integral sign")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221d')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221d'),_("proportional to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260'),_("not bytewise identical")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
   lowercasePanel->SetSizer(lowercase);
   vbox->Add(lowercasePanel,0,style,border);
 
