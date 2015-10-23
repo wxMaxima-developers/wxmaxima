@@ -5056,6 +5056,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
     
   sourcelist->pop_front();
 
+  UpdateMLast();
   Recalculate(true);
   Refresh();
 
@@ -5341,6 +5342,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
 
   // Tell the undo functionality that the current paste action has finished now.
   TreeUndo_MergeSubsequentEdits(false);
+  UpdateMLast();
 }
 
 void MathCtrl::SelectAll()
