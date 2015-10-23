@@ -937,9 +937,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
     }
     if(m_selectionStart!= NULL)
     {
-      std::cerr<<"SelectionStt\n";
       if(m_selectionStart->GetType() == MC_TYPE_GROUP)
-      {      std::cerr<<"Selection\n";
+      {
         group = dynamic_cast<GroupCell *>(m_selectionStart);
       }
     }
@@ -2530,7 +2529,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
     
   case WXK_END:
-    std::cerr<<"End2\n";
     SetHCaret(m_last);
     if (m_last != NULL)
       ScrollToCell(m_last);

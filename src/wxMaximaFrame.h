@@ -437,7 +437,7 @@ private:
   wxPanel *CreateFormatPane();
 
   //! A button for the greek pane
-  wxStaticText *CharButton(wxPanel *parent,wxChar ch,wxString description=wxEmptyString);
+  wxPanel *CharButton(wxPanel *parent,wxChar ch,wxString description=wxEmptyString);
 #ifdef wxUSE_UNICODE
   wxPanel *CreateGreekPane();
   wxPanel *CreateSymbolsPane();

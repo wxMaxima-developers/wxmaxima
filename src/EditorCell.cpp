@@ -857,15 +857,12 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
     break;
 
-      case WXK_END:
-    std::cerr<<"WXK_END\n";
+  case WXK_END:
     SaveValue();
     if (event.ShiftDown())
     {
-      std::cerr<<"NewStart="<<m_positionOfCaret<<"\n";
       if (m_selectionStart == -1)
       {
-        std::cerr<<"NewStart2\n";
         SetSelection(m_positionOfCaret,m_positionOfCaret);
       }
     }
@@ -879,13 +876,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
       while (m_positionOfCaret < (signed)m_text.Length() &&
              m_text.GetChar(m_positionOfCaret) != '\n')
         m_positionOfCaret++;
-      std::cerr<<"NewStart3="<<m_positionOfCaret<<"\n";
     }
 
     if (event.ShiftDown())
     {
       SetSelection(m_selectionStart,m_positionOfCaret);
-      std::cerr<<"NewStart4\n";
     }
     break;
 
@@ -915,13 +910,10 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
     
   case WXK_PAGEDOWN:
-    std::cerr<<"PageDown!";
 #ifdef WXK_NEXT
   case WXK_NEXT:
-    std::cerr<<"Next!";
 #endif
   case WXK_DOWN:
-    std::cerr<<"Down!";
     SaveValue();
     {
       if (event.ShiftDown())

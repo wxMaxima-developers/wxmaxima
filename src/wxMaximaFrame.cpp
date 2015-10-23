@@ -1192,20 +1192,24 @@ wxPanel* wxMaximaFrame::CreateStatPane()
 
 void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
 {
-  std::cerr<<"Char button!\n";
   wxChar ch = event.GetId();
   wxString ch_string(ch);
-  std::cerr<<ch_string<<"\n";
   m_console->InsertText(ch_string);
 }
 
-wxStaticText *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description)
+wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description)
 {
-  wxStaticText *text = new wxStaticText(parent,ch,wxString(ch));
+  wxPanel *panel = new wxPanel(parent,-1);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxStaticText *text = new wxStaticText(panel,ch,wxString(ch));
+  vbox->Add(text,1,wxALL | wxEXPAND,1);
+  
   if(description.Length()>0)
     text->SetToolTip(description);
   text->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
-  return text;
+  panel->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
+  panel->SetSizerAndFit(vbox);
+  return panel;
 }
 
 #ifdef wxUSE_UNICODE
