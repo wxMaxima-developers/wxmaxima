@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 20:19+0200\n"
+"POT-Creation-Date: 2015-10-24 20:51+0200\n"
 "PO-Revision-Date: 2015-01-11 07:47+0100\n"
 "Last-Translator: Asbjørn Apeland <asap openmailbox org>\n"
 "Language-Team: norwegian\n"
@@ -2006,7 +2006,7 @@ msgstr ""
 "Om kalkulasjonen din tar for lang tid å utføre, kan du prøve 'Maxima-"
 ">Avbryt' eller 'Maxima->Restart Maxima' fra menyen."
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "Image"
 msgstr "Bilde"
 
@@ -2756,9 +2756,13 @@ msgstr "Padétilnærming"
 msgid "Pade approximation of a Taylor series"
 msgstr "Padétilnærming av en taylorrekke"
 
-#: ../src/wxMaximaFrame.cpp:1376
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "Pagebreak"
 msgstr "Sideskift"
+
+#: ../src/wxMaximaFrame.cpp:1347
+msgid "Parallel to"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2796,6 +2800,10 @@ msgstr "Lim inn fra utklippstavle"
 #: ../src/wxMaximaFrame.cpp:447
 msgid "Paste text from clipboard"
 msgstr "Lim inn tekst fra utklippstavle"
+
+#: ../src/wxMaximaFrame.cpp:1348
+msgid "Perpendicular to"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
@@ -3161,7 +3169,7 @@ msgstr "Spredningsplott"
 msgid "Scatterplot..."
 msgstr "Spredningsplott..."
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "Section"
 msgstr "Seksjon"
 
@@ -3584,7 +3592,7 @@ msgstr "Stiler"
 msgid "Subsample..."
 msgstr "Undermåling..."
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Subsection"
 msgstr "Underseksjon"
 
@@ -3605,7 +3613,7 @@ msgstr "Erstatt"
 msgid "Substitute..."
 msgstr "&Erstatt..."
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1375
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Underseksjon"
@@ -3653,7 +3661,7 @@ msgstr "Taylorrekke:"
 msgid "Tellrat"
 msgstr "tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "Text"
 msgstr "Tekst"
 
@@ -3751,7 +3759,7 @@ msgstr "Antall:"
 msgid "Tips not available, sorry!"
 msgstr "Tips ikke tilgjengelig, beklager!"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "Title"
 msgstr "Tittel"
 

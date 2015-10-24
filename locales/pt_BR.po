@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 20:19+0200\n"
+"POT-Creation-Date: 2015-10-24 20:51+0200\n"
 "PO-Revision-Date: 2012-11-15 15:29-0200\n"
 "Last-Translator: Eduardo M Kalinowski <eduardo@kalinowski.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1996,7 +1996,7 @@ msgstr ""
 "Se seu cálculo está demorando de mais para executar, você pode tentar os "
 "menus 'Maxima->Interromper' ou 'Maxima->Reiniciar o Maxima'."
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "Image"
 msgstr "Imagem"
 
@@ -2743,9 +2743,13 @@ msgstr "Aproximação de Padé"
 msgid "Pade approximation of a Taylor series"
 msgstr "Aproximação de Padé de uma série de Taylor"
 
-#: ../src/wxMaximaFrame.cpp:1376
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "Pagebreak"
 msgstr "Quebra de página"
+
+#: ../src/wxMaximaFrame.cpp:1347
+msgid "Parallel to"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2782,6 +2786,10 @@ msgstr "Colar da área de transferência"
 #: ../src/wxMaximaFrame.cpp:447
 msgid "Paste text from clipboard"
 msgstr "Colar texto da área de transferência"
+
+#: ../src/wxMaximaFrame.cpp:1348
+msgid "Perpendicular to"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
@@ -3148,7 +3156,7 @@ msgstr "Gráfico de dispersão"
 msgid "Scatterplot..."
 msgstr "Gráfico de dispersão..."
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "Section"
 msgstr "Seção"
 
@@ -3570,7 +3578,7 @@ msgstr "Estilos"
 msgid "Subsample..."
 msgstr "Subamostra..."
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Subsection"
 msgstr "Subseção"
 
@@ -3591,7 +3599,7 @@ msgstr "Substituir"
 msgid "Substitute..."
 msgstr "Substituir..."
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1375
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Subseção"
@@ -3639,7 +3647,7 @@ msgstr "Série de Taylor:"
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "Text"
 msgstr "Texto"
 
@@ -3735,7 +3743,7 @@ msgstr "Vezes:"
 msgid "Tips not available, sorry!"
 msgstr "Dicas não disponíveis, desculpe!"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "Title"
 msgstr "Título"
 

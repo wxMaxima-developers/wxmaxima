@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 20:19+0200\n"
+"POT-Creation-Date: 2015-10-24 20:51+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ihor Rokach <rokach@tu.kielce.pl>\n"
 "Language-Team: \n"
@@ -1998,7 +1998,7 @@ msgstr ""
 "Jeśli obliczenia trwają zbyt długo, możesz je przerwać wybierając 'Maxima-"
 ">Przerwij' albo 'Maxima->Uruchom ponownie'"
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "Image"
 msgstr "Obrazek"
 
@@ -2746,9 +2746,13 @@ msgstr "Przybliżenie Pade"
 msgid "Pade approximation of a Taylor series"
 msgstr "Przybliżenie Pade szeregu Taylora"
 
-#: ../src/wxMaximaFrame.cpp:1376
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "Pagebreak"
 msgstr "Podział strony"
+
+#: ../src/wxMaximaFrame.cpp:1347
+msgid "Parallel to"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2785,6 +2789,10 @@ msgstr "Wklej ze schowka"
 #: ../src/wxMaximaFrame.cpp:447
 msgid "Paste text from clipboard"
 msgstr "Wklej tekst ze schowka"
+
+#: ../src/wxMaximaFrame.cpp:1348
+msgid "Perpendicular to"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
@@ -3151,7 +3159,7 @@ msgstr "Wykres punktowy"
 msgid "Scatterplot..."
 msgstr "Wykres punktowy...."
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "Section"
 msgstr "Rozdział"
 
@@ -3574,7 +3582,7 @@ msgstr "Style"
 msgid "Subsample..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Subsection"
 msgstr "Podrozdział"
 
@@ -3595,7 +3603,7 @@ msgstr "Podstaw"
 msgid "Substitute..."
 msgstr "Podstaw..."
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1375
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Podrozdział"
@@ -3643,7 +3651,7 @@ msgstr "Szereg Taylora:"
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "Text"
 msgstr "Tekst"
 
@@ -3739,7 +3747,7 @@ msgstr "Stopień:"
 msgid "Tips not available, sorry!"
 msgstr "Wskazówki niedostępne!"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "Title"
 msgstr "Tytuł"
 

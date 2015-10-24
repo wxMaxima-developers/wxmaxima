@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 20:19+0200\n"
+"POT-Creation-Date: 2015-10-24 20:51+0200\n"
 "PO-Revision-Date: 2013-03-13 11:01+0300\n"
 "Last-Translator: Max Musatov <m1kc@yandex.ru>\n"
 "Language-Team: \n"
@@ -2046,7 +2046,7 @@ msgid ""
 ">Interrupt' or 'Maxima->Restart Maxima' menu commands."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "Image"
 msgstr "Изображение"
 
@@ -2816,9 +2816,13 @@ msgstr "Аппроксимация Паде"
 msgid "Pade approximation of a Taylor series"
 msgstr "Паде-аппроксимация ряда Тейлора"
 
-#: ../src/wxMaximaFrame.cpp:1376
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "Pagebreak"
 msgstr "Разрыв страницы"
+
+#: ../src/wxMaximaFrame.cpp:1347
+msgid "Parallel to"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2857,6 +2861,10 @@ msgstr "Вставить текст из буфера обмена"
 #: ../src/wxMaximaFrame.cpp:447
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
+
+#: ../src/wxMaximaFrame.cpp:1348
+msgid "Perpendicular to"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
@@ -3235,7 +3243,7 @@ msgstr "График рассеяния"
 msgid "Scatterplot..."
 msgstr "График рассеяния..."
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "Section"
 msgstr "Раздел"
 
@@ -3668,7 +3676,7 @@ msgstr "Стили"
 msgid "Subsample..."
 msgstr "Пример"
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Subsection"
 msgstr "Подраздел"
 
@@ -3689,7 +3697,7 @@ msgstr "Подставить"
 msgid "Substitute..."
 msgstr "Подставить..."
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1375
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Подраздел"
@@ -3737,7 +3745,7 @@ msgstr "Ряд Тейлора:"
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "Text"
 msgstr "Текст"
 
@@ -3825,7 +3833,7 @@ msgstr "Порядок производной:"
 msgid "Tips not available, sorry!"
 msgstr "Подсказки недоступны, извините!"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "Title"
 msgstr "Заголовок"
 

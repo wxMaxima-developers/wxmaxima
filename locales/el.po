@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 20:19+0200\n"
+"POT-Creation-Date: 2015-10-24 20:51+0200\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -2017,7 +2017,7 @@ msgstr ""
 "Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
 "μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "Image"
 msgstr "Εικόνα"
 
@@ -2782,9 +2782,13 @@ msgstr "Προσέγγιση Pade..."
 msgid "Pade approximation of a Taylor series"
 msgstr "Προσέγγιση Pade σειράς Taylor"
 
-#: ../src/wxMaximaFrame.cpp:1376
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "Pagebreak"
 msgstr "Αλλαγή σελίδας"
+
+#: ../src/wxMaximaFrame.cpp:1347
+msgid "Parallel to"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2821,6 +2825,10 @@ msgstr "Επικόλληση κειμένου από το πρόχειρο"
 #: ../src/wxMaximaFrame.cpp:447
 msgid "Paste text from clipboard"
 msgstr "Επικόλληση κειμένου από το πρόχειρο"
+
+#: ../src/wxMaximaFrame.cpp:1348
+msgid "Perpendicular to"
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
@@ -3191,7 +3199,7 @@ msgstr "Διάγραμμα διασποράς"
 msgid "Scatterplot..."
 msgstr "Διάγραμμα διασποράς..."
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "Section"
 msgstr "Ενότητα"
 
@@ -3616,7 +3624,7 @@ msgstr "Στυλ"
 msgid "Subsample..."
 msgstr "Υποδείγμα..."
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Subsection"
 msgstr "Υποενότητα"
 
@@ -3637,7 +3645,7 @@ msgstr "Αντικατάσταση"
 msgid "Substitute..."
 msgstr "Αντικατάσταση..."
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1375
 #, fuzzy
 msgid "Subsubsection"
 msgstr "Υποενότητα"
@@ -3685,7 +3693,7 @@ msgstr "Σειρές Taylor:"
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "Text"
 msgstr "Κείμενο"
 
@@ -3782,7 +3790,7 @@ msgstr "Φορές:"
 msgid "Tips not available, sorry!"
 msgstr "Οι συμβουλές δεν ειναι διαθέσιμες, συγνώμη!"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "Title"
 msgstr "Τίτλος"
 
