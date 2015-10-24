@@ -153,6 +153,8 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x2148",wxT("\\ensuremath{\\mathbbm{i}}"));
   text.Replace(L"\x2147",wxT("\\ensuremath{\\mathbbm{e}}"));
   text.Replace(L"\x210f",wxT("\\ensuremath{\\hbar}"));
+  text.Replace(L"\x2203",wxT("\\ensuremath{\\exists}"));
+  text.Replace(L"\x2204",wxT("\\ensuremath{\\nexists}"));
   text.Replace(L"\x2208",wxT("\\ensuremath{\\in}"));
   text.Replace(L"\x21D2",wxT("\\ensuremath{\\Longrightarrow}"));
   text.Replace(L"\x221e",wxT("\\ensuremath{\\infty}"));
@@ -225,6 +227,8 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x2260",wxT("\\ensuremath{\\neq}"));
   text.Replace(L"\x220e",wxT("\\ensuremath{\\blacksquare}"));
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
+  text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));
+  text.Replace(L"\x220F",wxT("\\ensuremath{\\prod}"));
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
@@ -1828,6 +1832,16 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x220E";
   else if (txt == wxT("equiv"))
     return L"\2263";
+  else if (txt == wxT("sum"))
+    return L"\2211";
+  else if (txt == wxT("prod"))
+    return L"\220F";
+  else if (txt == wxT("product"))
+    return L"\220F";
+  else if (txt == wxT("exists"))
+    return L"\2203";
+  else if (txt == wxT("nexists"))
+    return L"\2204";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

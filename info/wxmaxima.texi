@@ -330,7 +330,10 @@ propto        proportional to
 neq           not equal to
 equiv         equivalent to
 qed           end of proof
-
+sum           sum sign
+prod          product sign
+exists        "there exists" sign
+nexists       "there is no" sign
 @end example
 If a character isn't in the list it is possible to input arbitrary unicode
 characters by pressing @code{<ESC>number of the character<ESC>}.
