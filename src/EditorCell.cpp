@@ -229,6 +229,8 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
   text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));
   text.Replace(L"\x220F",wxT("\\ensuremath{\\prod}"));
+  text.Replace(L"\x2225",wxT("\\ensuremath{\\parallel}"));
+  text.Replace(L"\x27C2",wxT("\\ensuremath{\\bot}"));
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
@@ -1842,6 +1844,14 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\2203";
   else if (txt == wxT("nexists"))
     return L"\2204";
+  else if (txt == wxT("parallel"))
+    return L"\2225";
+  else if (txt == wxT("perp"))
+    return L"\27C2";
+  else if (txt == wxT("perpendicular"))
+    return L"\27C2";
+  else if (txt == wxT("bot"))
+    return L"\27C2";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

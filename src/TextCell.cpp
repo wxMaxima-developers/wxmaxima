@@ -445,7 +445,10 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
   text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));
   text.Replace(L"\x220F",wxT("\\ensuremath{\\prod}"));
+  text.Replace(L"\x2225",wxT("\\ensuremath{\\parallel}"));
+  text.Replace(L"\x27C2",wxT("\\ensuremath{\\bot}"));
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
+
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));

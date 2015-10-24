@@ -1344,6 +1344,8 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2211'),_("Sum sign")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x220F'),_("Product sign")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2225'),_("Parallel to")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
   lowercasePanel->SetSizer(lowercase);
   vbox->Add(lowercasePanel,0,style,border);
 
