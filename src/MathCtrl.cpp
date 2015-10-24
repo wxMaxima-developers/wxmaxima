@@ -5056,7 +5056,6 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
     
   sourcelist->pop_front();
 
-  UpdateMLast();
   Recalculate(true);
   Refresh();
 
