@@ -337,13 +337,15 @@ nexists       "there is no" sign
 parallel      a "parallel" sign
 perp          a "perpendicular" sign
 @end example
-If a character isn't in the list it is possible to input arbitrary unicode
-characters by pressing @code{<ESC>number of the character<ESC>}.
+If a special symbol isn't in the list it is possible to input arbitrary
+unicode characters by pressing @code{<ESC>number of the character<ESC>}.
 @code{<ESC>61<ESC>} therefore results in an @code{a}.
 
-It is to note that a maxima running on a lisp without unicode support
-might not be able to deal with files that contain special unicode
-characters.
+Please note that most of these symbols (notable exceptions are the
+logic symbols) don't have a special meaning in maxima and therefore
+will be interpreted as ordinary characters - or might provoke
+unexpected results in case that the maxima is being run
+by a lisp that doesn't support dealing with special unicode characters.
 @subsection Side Panes
 
 @ifnotinfo
@@ -353,7 +355,7 @@ characters.
 @end ifnotinfo
 Shortcuts to the most important maxima commands and a history of the last
 issued commands can be accessed using the side panes. They can be enabled
-using the ``Panes'' entry in the ``Maxima'' menu.
+using the ``View'' menu.
 @subsection Markdown support
 Markdown in many cases collides with the notations that are frequently used
 for mathematics. wxMaxima will recognize bullet lists, though, for the HTML
