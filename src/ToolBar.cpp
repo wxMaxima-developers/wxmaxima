@@ -150,6 +150,8 @@ ToolBar::ToolBar(wxToolBar *tbar)
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
 			      wxDefaultPosition, wxSize(200, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+  m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+  m_plotSlider->Enable(false);
   m_toolBar->AddControl(m_plotSlider);
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
@@ -190,6 +192,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     case Inactive:
       m_toolBar->EnableTool(tb_animation_startStop,false);
       m_plotSlider->Enable(false);
+      m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
       if(m_AnimationStartStopState==Running)
       {
 #ifndef __WXMSW__

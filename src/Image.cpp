@@ -59,7 +59,7 @@ wxSize Image::ToImageFile(wxString filename)
 {
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
-  if(filename.Lower().EndsWith(GetExtension()))
+  if(filename.Lower().EndsWith(GetExtension().Lower()))
     {
       wxFile file(filename,wxFile::write);
       if(!file.IsOpened())

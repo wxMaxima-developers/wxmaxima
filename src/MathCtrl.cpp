@@ -2954,7 +2954,7 @@ wxSize MathCtrl::CopyToFile(wxString file) {
     if (m_selectionStart->GetType() == MC_TYPE_IMAGE)
       return ((ImgCell *)m_selectionStart)->ToImageFile(file);
     else
-      return ((SlideShow *)m_selectionStart)->ToGif(file);
+      return ((SlideShow *)m_selectionStart)->ToImageFile(file);
   }
   else
   {
@@ -5478,37 +5478,17 @@ void MathCtrl::Animate(bool run)
       AnimationRunning(true);
       m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
       StepAnimation();
- 
-      // I suspect that on WXMSW changing the slider from the program's side
-      // generates a "slider changed" event - which is nearlly indistinguishable
-      // from a manual slider change that is supposed to stop the animation =>
-      // disallow manual slider changes and the problem disappears.
-#ifdef __WXMSW__
-      if(m_mainToolBar)
-        if(m_mainToolBar->m_plotSlider)
-          m_mainToolBar->m_plotSlider->Enable(false);
-#endif
     }
     else
     {
       AnimationRunning(false);
       m_animationTimer.Stop();
-#ifdef __WXMSW__
-      if(m_mainToolBar)
-        if(m_mainToolBar->m_plotSlider)
-          m_mainToolBar->m_plotSlider->Enable(true);
-#endif
     }
   }
   else
   {
     AnimationRunning(false);
     m_animationTimer.Stop();
-#ifdef __WXMSW__
-    if(m_mainToolBar)
-      if(m_mainToolBar->m_plotSlider)
-        m_mainToolBar->m_plotSlider->Enable(true);
-#endif
   }
 }
 

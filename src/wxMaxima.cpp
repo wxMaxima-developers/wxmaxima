@@ -2728,7 +2728,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
                                    _("PNG image (*.png)|*.png|"
                                      "JPEG image (*.jpg)|*.jpg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
-                                     "X pixmap (*.xpm)|*.xpm"),
+                                     "Portable animap (*.pnm)|*.pnm|"
+                                     "Tagged image file format (*.tif)|*.tif|"
+                                     "X pixmap (*.xpm)|*.xpm"
+                                     ),
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file.Length())
     {
@@ -4725,7 +4728,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
                                    _("PNG image (*.png)|*.png|"
                                      "JPEG image (*.jpg)|*.jpg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
-                                     "X pixmap (*.xpm)|*.xpm"),
+                                     "Portable animap (*.pnm)|*.pnm|"
+                                     "Tagged image file format (*.tif)|*.tif|"
+                                     "X pixmap (*.xpm)|*.xpm"
+                                     ),
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file.Length())
     {
@@ -5246,6 +5252,7 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
         
         m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
         m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
+        m_console->m_mainToolBar->m_plotSlider->SetToolTip(wxString::Format(_("Frame %i of %i"),cell->GetDisplayedIndex() + 1,cell->Length()));
       }
     }
   }

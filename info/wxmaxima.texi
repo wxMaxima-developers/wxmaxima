@@ -846,6 +846,39 @@ getting the following command:
 @end example
 
 @node FAQ
+@chapter Plotting
+@section Can I make wxMaxima output both image files and embedded plots at once?
+It is possible to write a command that does do so
+@example
+     mydraw(name,[contents]):=
+     (
+         wxdraw(contents),
+         draw
+         (
+             append(    
+                 [
+                     terminal=pngcairo,
+                     file_name=name
+                 ],
+                 contents
+             )
+         )
+     );
+@end example
+Using this command a file can be plotted in both ways by issuing the
+following command:
+@example
+     mydraw("filename",explicit(sin(x),x,1,10)$
+@end example
+
+@section Can I set the aspect ratio of a plot?
+Not directly using maxima. But there are gnuplot commands for it:
+@example
+     wxdraw2d(
+         user_preamble="set size ratio 1;set tmargin 3;set bmargin 3;set lmargin 3;set rmargin 3",
+         explicit(sin(x),x,1,10)
+     ),wxplot_size=[1000,1000];
+@end example
 @chapter FAQ
 @section Is there a way to make more text fit on a pdfLaTeX page?
 There is: Just add the following lines to the LaTeX preamble (for
