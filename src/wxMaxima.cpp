@@ -998,7 +998,19 @@ void wxMaxima::ReadMiscText(wxString &data)
        (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
        (trimmedLine.StartsWith(wxT("killcontext: no such context")))
        )
+     {
        ConsoleAppend(textline,MC_TYPE_ERROR);
+
+       bool abortOnError = false;
+       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+       if(abortOnError || m_batchmode)
+         m_console->m_evaluationQueue->Clear();
+       {
+         SetBatchMode(false);
+         // Inform the user that the evaluation queue is empty.
+         EvaluationQueueLength(0);
+       }
+     }
      else
        ConsoleAppend(textline,MC_TYPE_DEFAULT);
     }   
@@ -1521,9 +1533,11 @@ void wxMaxima::ReadLispError(wxString &data)
     wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
     if(abortOnError || m_batchmode)
       m_console->m_evaluationQueue->Clear();
-    SetBatchMode(false);
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
+    {
+      SetBatchMode(false);
+      // Inform the user that the evaluation queue is empty.
+      EvaluationQueueLength(0);
+    }
   }
 }
 
