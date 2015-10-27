@@ -1202,7 +1202,7 @@ wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString descriptio
   wxPanel *panel = new wxPanel(parent,ch);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxStaticText *text = new wxStaticText(panel,ch,wxString(ch));
-  vbox->Add(text,1,wxALL | wxEXPAND,1);
+  vbox->Add(text,wxSizerFlags().Expand().Center().Border(wxALL, 0));
   
   if(description.Length()>0)
     text->SetToolTip(description);
