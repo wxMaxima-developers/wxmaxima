@@ -1199,7 +1199,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
 
 wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description)
 {
-  wxPanel *panel = new wxPanel(parent,-1);
+  wxPanel *panel = new wxPanel(parent,ch);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxStaticText *text = new wxStaticText(panel,ch,wxString(ch));
   vbox->Add(text,1,wxALL | wxEXPAND,1);

@@ -1165,7 +1165,42 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
     }
   }
   else
+  {
+  if(CanAnimate() && (m_mainToolBar != NULL) && (m_mainToolBar -> m_plotSlider != NULL))
+  {
+
+    //! Step the slide show.
+    int rot = event.GetWheelRotation();
+    
+    SlideShow *tmp = (SlideShow *)m_selectionStart;
+    
+    if (rot > 0)
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+    else
+      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
+    
+    wxRect rect = m_selectionStart->GetRect();
+    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+    RefreshRect(rect);
+
+    #ifdef __WXMSW__
+    // On windows: Set the focus to the slider so it handles further wheel events
+    m_mainToolBar -> m_plotSlider -> SetFocus();
+
+    // On windows the first scroll event scrolls the canvas. Let's scroll it back
+    // again.
+    int view_x,view_y;
+    GetViewStart(&view_x, &view_y);
+    if(rot>0)
+      view_y ++;
+    else 
+      view_y --;
+      Scroll(view_x, view_y);
+    #endif
+  }
+  else
     event.Skip();
+  }
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
@@ -5698,7 +5733,7 @@ void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
   // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
-  ev.Skip();
+
 }
 
 wxString MathCtrl::GetInputAboveCaret()
