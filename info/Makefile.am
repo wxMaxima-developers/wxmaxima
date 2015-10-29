@@ -4,12 +4,23 @@ info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
 figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
-figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg ezUnits.png
+figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg ezUnits.jpg
+figurefiles += BatchImage.jpg wxMaxima_configuration_001.jpg wxMaxima_configuration_002.jpg
 
 # install-data-local:install-html
 
-pdffigures=NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf wxMaximaLogo.pdf
-pdffigures+=wxMaximaWindow.pdf SidePanes.pdf ezUnits.pdf
+pdffigures =  NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf
+pdffigures += wxMaximaWindow.pdf wxMaximaLogo.pdf SidePanes.pdf ezUnits.pdf
+pdffigures += BatchImage.pdf wxMaxima_configuration_001.pdf wxMaxima_configuration_002.pdf
+
+# %.jpg: %.png
+# 	pngtopnm $<|cjpeg > $@
+
+# %.eps: %.png
+# 	cat $<|pngtopnm  -background white -mix|ppmtopgm|pnmtops -scale .125 -noturn -rle> $@
+
+# %.pdf:	%.eps
+# 	gs -dNOPAUSE -dNOCACHE -dBATCH -sDEVICE=eps2write -sPAPERSIZE=a0 -sOutputFile=$<.eps $< -c q
 
 if CHM
 WXMAXIMA_CHM = wxMaxima.chm
