@@ -276,12 +276,12 @@ Computers traditionally store characters in 8-bit values. This allows
 for a maximum of 256 different characters. All letters, numbers,
 and control symbols (end of transmission, end of string, lines and
 edges for drawing rectangles for menus etc.) of nearly any given
-language can fit within that limot.
+language can fit within that limit.
 
 For most countries the codepage of 256 characters that has been chosen
 does not include Greek letters, though. To overcome this limitation
 unicode has been invented: This is a method of including characters
-that aren't normally used in the english language in a text that
+that are not normally used in the English language in a text that
 (as long as only the basic form of Latin characters is used)
 looks like plain 8-bit ASCII.
 
@@ -506,18 +506,52 @@ server the server space occupied by the initial version of both
 @file{.wxmx} flavors should be nearly identical in size.
 @end itemize
 @section Configuration options
-wxMaxima offers two ways to configure a session. The configuration
-dialog box below lets you change the default values for the current
-and subsequent sessions. Also, default values can be set for the
-current session, as shown below, but not saved for later sessions. 
+For some common configuration variables wxMaxima offers two ways of
+configuring:
+@itemize @bullet
+@item The configuration dialog box below lets you change their
+      default values for the current and subsequent sessions. 
+@item Also, the values for most configuration variables can be changed
+      for the current session only by overwiting their values from
+      the worksheet, as shown below.
+@end itemize
+@ifnotinfo
+
+@image{wxMaxima_configuration_001,12cm}
+
+@end ifnotinfo
+
 @subsection Default animation framerate
-The animation framerate that is used for new animations if
-the value of @var{wxanimate_framerate} isn't changed from the maxima
-side.
+The animation framerate that is used for new animations is kept in
+the variable @var{wxanimate_framerate}. The initial value this
+variable will contain in a new worksheet can be changed using the
+configuration dialogue.
 @subsection Default plot size for new maxima sessions
 After the next start plots embedded into the worksheet will be created
 with this size if the value of  @var{wxplot_size} isn't changed by
-maxima. 
+maxima.
+
+In order to set the plot size of a single graph only use the following
+notation can be used that sets a variable's value for one command only:
+@example
+wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$.
+@end example
+
+@subsection Use jsMath fonts
+The style menu allows customization that pertains to the appearance of
+your notebook as you work.
+@ifnotinfo
+
+@image{wxMaxima_configuration_002,12cm}
+
+@end ifnotinfo
+It also contains the option to use jsMath fonts. It is a good idea to
+install these fonts since they were especially designed for maths and
+tend to resolve issues that can be caused by broken fonts. If they are 
+not installed on your computer, the option to activate them will not
+be highlighted. The jsMath fonts can be found on
+@uref{https://www.mpim-bonn.mpg.de/node/258, this site}.
+
 @subsection Match parenthesis in text controls
 This option enables two things:
 @itemize @bullet
@@ -539,8 +573,11 @@ only work if the file has already been saved to or opened from the
 disk.
 @node Extensions
 @chapter Extensions to maxima
-wxMaxima aims to be but a graphical user interface for maxima. In some
-cases it adds functionality to Maxima, though. These cases are
+wxMaxima is predominantly a graphical user interface for Maxima. That is, it primarily 
+passes along commands to Maxima and reports the results of executing those commands. In some
+cases, however, it adds functionality to Maxima. wxMaxima's ability to generate reports by
+exporting a workbook's contents to HTML and LaTeX files has been mentioned. This section
+considers some ways that wxMaxima enhances the inclusion of graphics into a session.
 described here.
 @section Plotting
 Plotting (having fundamentally to do with graphics) is a place where a
@@ -552,11 +589,11 @@ separate window for every diagram it creates. Since many times it is
 convenient to embed graphs into the work sheet instead wxMaxima
 provides its own set of plot functions that don't differ from the
 corresponding maxima functions save in their name: They are all
-prepended by a ``wx''. For example  @command{wxplot} corresponds to
+prefixed by a ``wx''. For example  @command{wxplot} corresponds to
 @command{plot}, @command{wxdraw} corresponds to @command{draw} and
 @command{wxhistogram} corresponds to @command{histogram}.
 @subsection Making embedded plots bigger or smaller
-The configure dialog provides a way to change the default size plots
+As noted above, the configure dialog provides a way to change the default size plots
 are created with which sets the starting value of @var{wxplot_size}.
 The plotting routines of wxMaxima respect this variable that specifies
 the size of a plot in pixels. It can always be queried or used to set
@@ -575,8 +612,15 @@ the size of the following plots:
 If the size of only one plot is to be changed maxima provides a
 canonical way to change an attribute only for the current cell.
 @example
-%i1 wxplot_size:[1200,800];
-%o1 [1200,800];
+     %i1 wxplot_size:[1200,800];
+     %o1 [1200,800];
+     
+     %i1 wxdraw2d(
+             explicit(
+                 sin(x),
+                 x,1,10
+             )
+         ),wxplot_size=[1600,800]$
 
 %i1 wxdraw2d(
         explicit(
@@ -587,8 +631,8 @@ canonical way to change an attribute only for the current cell.
 @end example
 
 @subsection Better quality plots
-Gnuplot doesn't seem to provide a portable way of determining is it
-supports the high-quality bitmap output the cairo library provides.
+Gnuplot doesn't seem to provide a portable way of determining whether it
+supports the high-quality bitmap output the @code{cairo} library provides.
 On systems where gnuplot is compiled to use this library the
 pngcairo option from the configuration menu (that can be overridden
 by the variable @var{wxplot_pngcairo}) enables support for
@@ -650,7 +694,7 @@ with_slider_draw(
     explicit(f,x,0,10)
 )$
 @end example
-If maxima is forced to first evaluate the expression and then asked
+If Maxima is forced to first evaluate the expression and then asked
 to substitute the slider's value plotting works fine instead:
 @example
 f:sin(a*x);
@@ -662,10 +706,10 @@ with_slider_draw(
 )$
 @end example
 
-@subsection Opening multiple plot windows contemporarily
-While not being a provided by wxmaxima this feature of maxima (on
+@subsection Opening multiple plots in contemporaneous windows
+While not being a provided by wxMaxima this feature of Maxima (on
 setups that support it) sometimes comes in handily. The following
-example comes from a post from Mario Rodriguez to the maxima mailing
+example comes from a post from Mario Rodriguez to the Maxima mailing
 list: 
 @example
 load(draw);
@@ -682,18 +726,19 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 @section Embedding graphics
 if the @file{.wxmx} file format is being used embedding files in a
 wxMaxima project can be done as easily as per drag-and-drop. But
-sometimes (for example if an image's contents might change lateron)
+sometimes (for example if an image's contents might change later on in
+a session)
 it is better to tell the file to load the image on evaluation:
 @example
 show_image("Mann.png");
 @end example
 @section wxmaximarc
 @cindex Startup File
-If the maxima user directory there is a text file named @file{wxmaxima-init.mac}
-the contents of the file is passed to maxima automatically every time
+If the Maxima user directory there is a text file named @file{wxmaxima-init.mac}
+the contents of the file is passed to Maxima automatically every time
 a new worksheet has been started.
 
-To find out which directory maxima uses as the user directory just
+To find out which directory Maxima uses as the user directory just
 type in the following line:
 @example
 maxima_userdir;
@@ -713,26 +758,26 @@ pngcairo terminal that provides more line styles and a better overall
 graphics quality. This variable can be used for reading or overriding
 the respective setting in the configuration dialog.
 @item @var{wxplot_size} defines the size of embedded plots.
-@item @var{wxchangedir} On most operating systems wxmaxima
-      automatically sets maxima's working directory to the directory
-      of the current file. This will allow file I/O (e.G. by
+@item @var{wxchangedir} On most operating systems wxMaxima
+      automatically sets Maxima's working directory to the directory
+      of the current file. This will allow file I/O (e.g. by
       @code{read_matrix}) to work without specifying the whole path to the 
-      file that has to be read or written. On windows this is
+      file that has to be read or written. On Windows this is
       deactivated, though: The Lisp Standard doesn't contain a concept of
       the current working directory. Therefore there is no standard
       way of setting it and changing to a directory that isn't on
-      the drive maxima has been installed to might cause maxima to
+      the drive Maxima has been installed to might cause Maxima to
       try to read is own package files from this drive, too, instead
-      of from the drive maxima has been installed to. Setting
+      of from the drive Maxima has been installed to. Setting
       @var{wxchangedir} to @code{true} tells wxMmaxima that it has to
-      risk that and to set maxima's working directory.
+      risk that and to set Maxima's working directory.
 @item @var{wxanimate_framerate} The number of frames per second the
       following animations have to be played back with. -1 tells
       wxMaxima to use the default frame rate from the config dialog.
 @end itemize
 @section Pretty-printing 2D output
 The function @code{(table_form)} displays a 2D list in a form that is
-more readable than the output maxima's default output routine.
+more readable than the output Maxima's default output routine.
 @example
 table_form(
     [
@@ -752,25 +797,25 @@ running version of wxMaxima
 @node Troubleshooting
 @chapter Troubleshooting
 @section Cannot connect to Maxima
-Since maxima (the program that does the actual mathematics) and
+Since Maxima (the program that does the actual mathematics) and
 wxMaxima (providing the easy-to-use user interface) are separate
-programs that communicate by the means of a local network connection
-the most probably case is that this connection is somehow not
+programs that communicate by the means of a local network connection.
+Therefore the most probable cause is that this connection is somehow not
 working. For example a firewall could be set up in a way that it
-doesn't only prevent against unauthorized connections from the
+doesn't just prevent against unauthorized connections from the
 internet (and perhaps to intercept some connections to the internet,
-too) but also to block inter-process-communication inside the same
-computer. Note that since maxima is being run by a lisp processor
-the process communication is blocked from does not necessarily
-have to be named ``maxima''. Common names of the program that opens
-the network connection would be sbcl, gcl, ccl or similar instead.
+too), but it also to blocks inter-process-communication inside the same
+computer. Note that since Maxima is being run by a lisp processor
+the process communication that is blocked from does not necessarily
+have to be named "maxima". Common names of the program that opens
+the network connection would be @file{sbcl}, @file{gcl}, @file{ccl}, @file{lisp.exe} or similar names.
 
 On Un*x computers another possible reason
 would be that the loopback network that provides network connections
 between two programs in the same computer isn't properly configured.
 @section How to save data from a broken .wxmx file
 Internally most modern xml-based formats are ordinary zip-files with
-one speciality: the first file in the archive is stored uncompressed
+one special characteristic: the first file in the archive is stored uncompressed
 and provides information about what type of program can open this
 file.
 
@@ -786,18 +831,21 @@ even if there isn't such a file: If the configuration option is set
 that @file{.wxmx} files have to be optimized for version control
 it is possible to rename the @file{.wxmx} file to a @file{.txt} file
 and to use a text editor to recover the file's contents.
-@section wxMaxima waits forever for data from maxima
-In old versions of maxima this might be caused by the fact that a closing
+@section wxMaxima waits forever for data from Maxima
+In old versions of Maxima this might be caused by the fact that a closing
 brace, bracket, parenthesis or hyphenation mark is missing: In this case
-maxima waits until it gets the rest of its input. The current version
-of wxMaxima should filter out the offending output before it is sent
-to Maxima, though.
+Maxima waits until it gets the rest of its input (which it never
+does).
+
+In order to find out if this is the issue the operating system
+normally provides a way to determine if Maxima is actually 
+really working forever trying to solve the current problem.
 @section I want some debug info to be displayed on the screen before my command has finished
 Normally wxMaxima waits for the whole 2D formula to be transferred before
 it begins to typeset. This saves time for making many attempts to typeset a
 only partially completed equation. There is a @code{disp} command, though, that
 will provide debug output immediately and without waiting for the current
-maxima command to finish, though:
+Maxima command to finish, though:
 @example
 for i:1 thru 10 do (
    disp(i),
@@ -810,7 +858,7 @@ The jsMath fonts allow for excellent 2D-display of equations. But there
 are of broken versions of this package that crash wxMaxima.
 A working version can be downloaded from @uref{http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html math.union.edu}. To make wxMaxima actually use these fonts
 the according checkbox has to be enabled in the Styles tab of wxMaxima's
-configuration dialogue afterwards.
+configuration dialogue.
 @section Outputting animations doesn't work
 wxMaxima relies on a third-party tool
 (@uref{http://www.imagemagick.org/, ImageMagick}) to convert
@@ -828,25 +876,25 @@ image would exceed the format's (or ImageMagick's) capabilities:
       their uncompressed form.
 @end itemize
 @section Plotting only shows an closed empty envelope with an error message
-This means that wxMaxima was unable to read the file maxima was supposed
+This means that wxMaxima was unable to read the file Maxima was supposed
 to instruct gnuplot to create.
 
 Possible reasons that might cause this are:
 @itemize @bullet
 @item The plotting command is part of a third-party package like
-      @code{implicit_plot} but this package wasn't loaded by maxima's
+      @code{implicit_plot} but this package wasn't loaded by Maxima's
       @code{load()} command before trying to plot.
-@item maxima tried to do something the currently installed version of
+@item Maxima tried to do something the currently installed version of
       gnuplot isn't able to understand. In this case the file
-      @file{maxout.gnuplot} in the directory maxima's variable
+      @file{maxout.gnuplot} in the directory Maxima's variable
       @var{maxima_userdir} points to contains the instructions from
-      maxima to gnuplot. Most of the time this file's contents therefore is
+      Maxima to gnuplot. Most of the time this file's contents therefore is
       helpful when debugging the problem.
 @item Gnuplot was instructed to use the pngcairo library that provides
-      antialiassing and additional line styles. But it wasn't compiled to
+      antialiassing and additional line styles, but it wasn't compiled to
       support this possibility. Solution: Uncheck the "Use the cairo
       terminal for plot" checkbox in the configuration dialog and
-      don't set @var{wxplot_pngcairo} to true from maxima.
+      don't set @var{wxplot_pngcairo} to true from Maxima.
 @item Gnuplot didn't output a valid @file{.png} file.
 @end itemize
 @section Plotting an animation results in ``error: undefined variable''
@@ -862,30 +910,30 @@ there are several methods to recover data:
 that is active if no cell is selected and a per-cell undo buffer that is
 active if the cursor is inside a cell. It is worth trying to use both undo
 options in order to see if an old value can still be accessed.
-@item If you still have a way to find out what label maxima has assigned
+@item If you still have a way to find out what label Maxima has assigned
 to the cell just type in the cell's label and it's contents will
 reappear.
-@item If you don't: Don't panic. In the ``maxima'' menu there
-is a way to show a history pane that shows all maxima commands that
+@item If you don't: Don't panic. In the ``Maxima'' menu there
+is a way to show a history pane that shows all Maxima commands that
 have been issued recently.
-@item If nothing else helps maxima contains a replay feature:
+@item If nothing else helps Maxima contains a replay feature:
 @example
 %i1 playback();
 @end example
 @end itemize
 @section wxMaxima starts up with the message ``Maxima process Terminated.''
-One possible reason is that maxima cannot be found in the location that is
-set in the ``maxima'' tab of wxMaxima's configuration dialog and therefore
-won't run at all. Setting the path to a working maxima binary should
+One possible reason is that Maxima cannot be found in the location that is
+set in the ``Maxima'' tab of wxMaxima's configuration dialog and therefore
+won't run at all. Setting the path to a working Maxima binary should
 fix this problem.
 @section Maxima is forever calculating and not responding to input
-It is theoretically possible that wxMaxima doesn't realize that maxima has
+It is theoretically possible that wxMaxima doesn't realize that Maxima has
 finished calculating and therefore never gets informed it can send new data
-to maxima. If this is the case ``Trigger evaluation'' might resynchronize
+to Maxima. If this is the case ``Trigger evaluation'' might resynchronize
 the two programs.
-@section File I/O from maxima doesn't work on Windows
+@section File I/O from Maxima doesn't work on Windows
 On windows File I/O isn't relative to the directory of the current
-file by default. If you store the maxima file on the drive wxMaxima is
+file by default. If you store the Maxima file on the drive wxMaxima is
 installed to setting @var{wxchangedir} to @code{true} will fix
 that for @code{load}, @code{read_list}, @code{batch},
 @code{read_matrix}, @code{save} and all similar commands.
@@ -895,20 +943,20 @@ Maxima knows which directory it is installed in and will search for
 any additional package that is requested by a @code{load} command in
 this directory, too. But it might not know which drive it is installed
 on. If @var{wxchangedir} is @code{true} and the current file is saved
-on a different drive than the one maxima is installed on maxima
+on a different drive than the one Maxima is installed on Maxima
 therefore might fail to load the additional packages it was bundled
 with.
 @section Input sometimes is sluggish/ignoring keys on Ubuntu
 Installing the package @code{ibus-gtk} should resolve this issue. See
 (@uref{https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558}) for details.
-@section wxMaxima halts when maxima processes greek characters or Umlaute
-If your maxima is based on sbcl the following lines have to be added to your
+@section wxMaxima halts when Maxima processes Greek characters or Umlauts
+If your Maxima is based on sbcl the following lines have to be added to your
 @file{.sblrc}:
 @example
 (setf sb-impl::default-external-format :utf-8)
 @end example
-The location this file has to be put in order to be found by sbcl is system-
-and installation-specific. But any sbcl-based maxima that already has evaluated
+The folder this file has to be placed in is system- and installation-specific.
+But any sbcl-based Maxima that already has evaluated
 a cell in the current session will happily tell where it can be found after
 getting the following command:
 @example
@@ -942,7 +990,7 @@ following command:
 @end example
 
 @section Can I set the aspect ratio of a plot?
-Not directly using maxima. But there are gnuplot commands for it:
+Not directly using Maxima. But there are gnuplot commands for it:
 @example
      wxdraw2d(
          user_preamble="set size ratio 1;set tmargin 3;set bmargin 3;set lmargin 3;set rmargin 3",
@@ -963,18 +1011,18 @@ starting programs than the command line so this possibility
 is only rarely used. wxMaxima still provides some
 command line switches, though.
 @itemize @bullet
-@item -v or --version: Output the version information
-@item -h or --help: Output a short help text
-@item -o or --open: Open the filename given as argument to this
+@item @code{-v} or @code{--version}: Output the version information
+@item @code{-h} or @code{--help}: Output a short help text
+@item @code{-o} or @code{--open}: Open the filename given as argument to this
       command-line switch
-@item -b or --batch: If the command-line opens a file all cells in this file are
+@item @code{-b} or @code{--batch}: If the command-line opens a file all cells in this file are
       evaluated and the file is saved afterwards. This is for example useful if
-      the sesson described in the file makes maxima generate output files.
-      Batch-processing will be stopped if wxMaxima detects that maxima has output
-      an error and will pause if maxima has a question: Mathematics is somewhat
+      the sesson described in the file makes Maxima generate output files.
+      Batch-processing will be stopped if wxMaxima detects that Maxima has output
+      an error and will pause if Maxima has a question: Mathematics is somewhat
       interactive by nature so a completely interaction-free batch processing
       cannot always be guaranteed.
-@item (Only on windows): -f or --ini: Use the init file that was
+@item (Only on windows): @code{-f} or @code{--ini}: Use the init file that was
       given as argument to this command-line switch
 @end itemize
 Instead of a minus some operating systems might use a dash in
