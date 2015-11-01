@@ -403,11 +403,10 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
   cell = m_MParser.ParseLine(s, type);
 
+  wxASSERT_MSG(cell != NULL,_("There was an error in generated XML!\n\n"
+                              "Please report this as a bug."));
   if (cell == NULL)
   {
-    wxMessageBox(_("There was an error in generated XML!\n\n"
-                   "Please report this as a bug."), _("Error"),
-                 wxOK | wxICON_EXCLAMATION);
     return ;
   }
 
@@ -1029,7 +1028,7 @@ void wxMaxima::ReadMath(wxString &data)
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
   int end;
-  while ((end = data.Find(mth)) > -1)
+  while ((end = data.Find(mth)) != wxNOT_FOUND)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
@@ -1052,18 +1051,18 @@ void wxMaxima::ReadMath(wxString &data)
       if(m_console->m_evaluationQueue->GetUserLabel() != wxEmptyString)
       {
         wxString label = m_console->m_evaluationQueue->GetUserLabel();
-        if(label.Length()<3)
-          label=wxString(label+wxT("   ")).Left(3);
         m_outputPromptRegEx.Replace(&o,wxT("<lbl userdefined=\"yes\">(")+label+wxT(")</lbl>"),1);
       }
     }
+
+    o.Trim(true);
+    o.Trim(false);
     
-    ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+    if(o.Length()>0)
+      ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+
     data = data.Left(start) +
       data.SubString(end + mth.Length(), data.Length());
-
-    if(data.IsEmpty())
-      return;
   }
 }
 
@@ -1868,8 +1867,10 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
   if (m_chmhelpFile != helpfile)
     m_chmhelpCtrl.LoadFile(helpfile);
   
-  if ((keyword == wxT("%"))||
-      (keyword == wxT(" << Graphics >> ")))
+  if ((keyword == wxT("%")) ||
+      (keyword == wxT(" << Graphics >> ")) ||
+      (keyword.IsEmpty())
+    )
     m_chmhelpCtrl.DisplayContents();
   else
     m_chmhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);

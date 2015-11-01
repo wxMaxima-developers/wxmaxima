@@ -1046,6 +1046,10 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
     if (doc != NULL)
       cell = ParseTag(doc->GetChildren());
+    else
+    {
+      std::cerr<<"xml="<<s<<"\n";
+    }
   }
   else
   {

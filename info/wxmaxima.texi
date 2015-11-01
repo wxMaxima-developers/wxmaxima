@@ -946,6 +946,25 @@ on. If @var{wxchangedir} is @code{true} and the current file is saved
 on a different drive than the one Maxima is installed on Maxima
 therefore might fail to load the additional packages it was bundled
 with.
+@section My sbcl-based maxima runs out of memory
+SBCL by default comes with a memory limit that allows it to run even on
+low-end computers. When compiling a big software package like lapack
+or dealing with extremely big lists or equations this limit might be
+too low. In order to extend the limits sbcl can be provided with the
+command line parameter
+@code{--dynamic-space-size} that tells sbcl how many megabytes it
+should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes,
+1800. A 64-bit sbcl version running on windows can be instructed to use
+more than the about 1280 Megabytes compiling lapack needs.
+
+One way to provide maxima (and thus sbcl) with command line parameters is
+the @code{additional parameters} field of wxMaxima's configuration
+dialogue.
+@ifnotinfo
+
+@image{sbclMemory,12cm}
+
+@end ifnotinfo
 @section Input sometimes is sluggish/ignoring keys on Ubuntu
 Installing the package @code{ibus-gtk} should resolve this issue. See
 (@uref{https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558}) for details.
