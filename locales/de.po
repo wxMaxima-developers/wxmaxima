@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-03 06:46+0100\n"
-"PO-Revision-Date: 2015-10-22 20:26+0200\n"
+"PO-Revision-Date: 2015-11-03 06:55+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -468,7 +468,7 @@ msgstr "Zusätzliche Parameter:"
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
-msgstr ""
+msgstr "Wenn Animationen (diese können beispielsweise mit with_slider_draw() erstellt werden) angeklickt sind, erlaubt dieser Schieberegler es, das aktuell angezeigte Bild zu wählen."
 
 #: ../src/ConfigDialogue.cpp:769
 msgid "All|*"
@@ -476,7 +476,7 @@ msgstr "Alle|*"
 
 #: ../src/wxMaximaFrame.cpp:1259
 msgid "Alpha"
-msgstr ""
+msgstr "Alpha"
 
 #: ../src/wxMaxima.cpp:3447
 msgid "Apply"
@@ -558,7 +558,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1260
 msgid "Beta"
-msgstr ""
+msgstr "Beta"
 
 #: ../src/ConfigDialogue.cpp:415
 msgid "Bitmap scale for export"
@@ -827,7 +827,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1280
 msgid "Chi"
-msgstr ""
+msgstr "Chi"
 
 #: ../src/ConfigDialogue.cpp:457
 msgid "Chinese Simplified"
@@ -1211,7 +1211,7 @@ msgstr "Lösche die Variable(n):"
 
 #: ../src/wxMaximaFrame.cpp:1262
 msgid "Delta"
-msgstr ""
+msgstr "Delta"
 
 #: ../src/wxMaxima.cpp:3620
 msgid "Denom. deg:"
@@ -1390,9 +1390,8 @@ msgid "Enter the path to the Maxima executable."
 msgstr "Geben Sie den Pfad zum Maxima Programm an."
 
 #: ../src/wxMaximaFrame.cpp:1263
-#, fuzzy
 msgid "Epsilon"
-msgstr "Epsilon:"
+msgstr "Epsilon"
 
 #: ../src/wxMaxima.cpp:3817
 msgid "Epsilon:"
@@ -1431,7 +1430,7 @@ msgstr "Fehler!"
 
 #: ../src/wxMaximaFrame.cpp:1265
 msgid "Eta"
-msgstr ""
+msgstr "Eta"
 
 #: ../src/wxMaximaFrame.cpp:837
 msgid "Evaluate &Noun Forms"
@@ -1756,7 +1755,7 @@ msgstr "Format:"
 #: ../src/ToolBar.cpp:64
 #, c-format
 msgid "Frame %i of %i"
-msgstr ""
+msgstr "Bild %i von %i"
 
 #: ../src/ConfigDialogue.cpp:462
 msgid "French"
@@ -1815,7 +1814,7 @@ msgstr "Galicisch"
 
 #: ../src/wxMaximaFrame.cpp:1261
 msgid "Gamma"
-msgstr ""
+msgstr "Gamma"
 
 #: ../src/wxMaximaFrame.cpp:333
 msgid "General Math"
@@ -2285,7 +2284,7 @@ msgstr "Inverse Laplacet&ransformation ..."
 
 #: ../src/wxMaximaFrame.cpp:1267
 msgid "Iota"
-msgstr ""
+msgstr "Iota"
 
 #: ../data/tips.txt:28
 msgid ""
@@ -2312,7 +2311,7 @@ msgstr "Japanisch"
 
 #: ../src/wxMaximaFrame.cpp:1268
 msgid "Kappa"
-msgstr ""
+msgstr "Kappa"
 
 #: ../src/ConfigDialogue.cpp:378
 #, c-format
@@ -2333,7 +2332,7 @@ msgstr "Breite der Ein- und Ausgabemarken"
 
 #: ../src/wxMaximaFrame.cpp:1269
 msgid "Lambda"
-msgstr ""
+msgstr "Lambda"
 
 #: ../src/ConfigDialogue.cpp:155
 msgid "Language used for wxMaxima GUI."
@@ -2606,7 +2605,7 @@ msgstr "Modulo"
 
 #: ../src/wxMaximaFrame.cpp:1270
 msgid "My"
-msgstr ""
+msgstr "My"
 
 #: ../src/MatWiz.cpp:181 ../src/wxMaxima.cpp:3373 ../src/wxMaxima.cpp:3392
 msgid "Name:"
@@ -2708,7 +2707,7 @@ msgstr "Zahlen"
 
 #: ../src/wxMaximaFrame.cpp:1271
 msgid "Ny"
-msgstr ""
+msgstr "Ny"
 
 #: ../src/BC2Wiz.cpp:44 ../src/BC2Wiz.cpp:48 ../src/Gen1Wiz.cpp:34
 #: ../src/Gen1Wiz.cpp:38 ../src/Gen2Wiz.cpp:42 ../src/Gen2Wiz.cpp:46
@@ -2736,11 +2735,11 @@ msgstr "Variable:"
 
 #: ../src/wxMaximaFrame.cpp:1282
 msgid "Omega"
-msgstr ""
+msgstr "Omega"
 
 #: ../src/wxMaximaFrame.cpp:1273
 msgid "Omnikron"
-msgstr ""
+msgstr "Omnikron"
 
 #: ../src/ConfigDialogue.cpp:132
 msgid ""
@@ -2824,14 +2823,11 @@ msgid "P&ade Approximation..."
 msgstr "P&ade-Approximation ..."
 
 #: ../src/wxMaxima.cpp:2745 ../src/wxMaxima.cpp:4745
-#, fuzzy
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
-msgstr ""
-"PNG Bild (*.png)|*.png|JPEG Bild (*.jpg)|*.jpg|Windows Bitmap (*.bmp)|*.bmp|"
-"X Pixmap (*.xpm)|*.xpm"
+msgstr "PNG-Bild (*.png)|*.png|JPEG-Bild (*.jpg)|*.jpg|Windows-Bitmap (*.bmp)|*.bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X-Bixmap (*.xpm)|*.xpm"
 
 #: ../src/wxMaxima.cpp:3621
 msgid "Pade approximation"
@@ -2847,7 +2843,7 @@ msgstr "Seitenumbruch"
 
 #: ../src/wxMaximaFrame.cpp:1347
 msgid "Parallel to"
-msgstr ""
+msgstr "Parallel"
 
 #: ../src/Plot2dWiz.cpp:435 ../src/Plot2dWiz.cpp:561
 msgid "Parametric plot"
@@ -2887,15 +2883,15 @@ msgstr "Aus Zwischenablage einfügen"
 
 #: ../src/wxMaximaFrame.cpp:1348
 msgid "Perpendicular to"
-msgstr ""
+msgstr "Senkrecht"
 
 #: ../src/wxMaximaFrame.cpp:1279
 msgid "Phi"
-msgstr ""
+msgstr "Phi"
 
 #: ../src/wxMaximaFrame.cpp:1274
 msgid "Pi"
-msgstr ""
+msgstr "Pi"
 
 #: ../src/wxMaximaFrame.cpp:1172
 msgid "Piechart..."
@@ -3025,13 +3021,12 @@ msgid "Product"
 msgstr "Produkt"
 
 #: ../src/wxMaximaFrame.cpp:1346
-#, fuzzy
 msgid "Product sign"
-msgstr "Produkt"
+msgstr "Produktzeichen"
 
 #: ../src/wxMaximaFrame.cpp:1281
 msgid "Psi"
-msgstr ""
+msgstr "Psi"
 
 #: ../src/wxMaximaFrame.cpp:293
 msgid "Raw XML monitor"
@@ -3120,7 +3115,7 @@ msgstr "Zurückscrollen zu der Zelle, die derzeit evaluiert wird"
 
 #: ../src/wxMaximaFrame.cpp:1275
 msgid "Rho"
-msgstr ""
+msgstr "Rho"
 
 #: ../src/wxMaximaFrame.cpp:707
 msgid "Risch Integration..."
@@ -3468,7 +3463,7 @@ msgstr "Zeige die Hilfe von wxMaxima an"
 
 #: ../src/wxMaximaFrame.cpp:1276
 msgid "Sigma"
-msgstr ""
+msgstr "Sigma"
 
 #: ../src/wxMaximaFrame.cpp:1110
 msgid "Simplify"
@@ -3722,7 +3717,7 @@ msgstr "Summieren"
 
 #: ../src/wxMaximaFrame.cpp:1345
 msgid "Sum sign"
-msgstr ""
+msgstr "Summenzeichen"
 
 #: ../src/wxMaximaFrame.cpp:481
 msgid "Symbols\tAlt-Shift-Y"
@@ -3742,7 +3737,7 @@ msgstr "Inhaltsverzeichnis\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:1277
 msgid "Tau"
-msgstr ""
+msgstr "Tau"
 
 #: ../src/wxMaxima.cpp:3619
 msgid "Taylor series:"
@@ -3839,7 +3834,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1266
 msgid "Theta"
-msgstr ""
+msgstr "Theta"
 
 #: ../src/Plot2dWiz.cpp:54 ../src/Plot2dWiz.cpp:542
 msgid "Ticks:"
@@ -4201,7 +4196,7 @@ msgstr "XML-Inspektor"
 
 #: ../src/wxMaximaFrame.cpp:1272
 msgid "Xi"
-msgstr ""
+msgstr "Xi"
 
 #: ../src/ConfigDialogue.cpp:354
 msgid "Yes"
@@ -4292,13 +4287,12 @@ msgid "Your version of wxMaxima is up to date."
 msgstr "Ihre wxMaxima Version ist aktuell."
 
 #: ../src/wxMaximaFrame.cpp:1278
-#, fuzzy
 msgid "Ypsilon"
-msgstr "Epsilon:"
+msgstr "Ypsilon"
 
 #: ../src/wxMaximaFrame.cpp:1264
 msgid "Zeta"
-msgstr ""
+msgstr "Zeta"
 
 #: ../src/wxMaximaFrame.cpp:490
 msgid "Zoom &In\tCtrl-+"
@@ -4341,7 +4335,7 @@ msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"
 
 #: ../src/wxMaximaFrame.cpp:1230
 msgid "alpha"
-msgstr ""
+msgstr "alpha"
 
 #: ../src/wxMaximaFrame.cpp:1322
 msgid "and"
@@ -4353,7 +4347,7 @@ msgstr "schiefsymmetrisch"
 
 #: ../src/wxMaximaFrame.cpp:1231
 msgid "beta"
-msgstr ""
+msgstr "beta"
 
 #: ../src/LimitWiz.cpp:40
 msgid "both sides"
@@ -4361,7 +4355,7 @@ msgstr "beide Seiten"
 
 #: ../src/wxMaximaFrame.cpp:1251
 msgid "chi"
-msgstr ""
+msgstr "chi"
 
 #: ../src/Plot2dWiz.cpp:61 ../src/Plot2dWiz.cpp:386 ../src/Plot3dWiz.cpp:62
 #: ../src/Plot3dWiz.cpp:378
@@ -4370,7 +4364,7 @@ msgstr "Standard"
 
 #: ../src/wxMaximaFrame.cpp:1233
 msgid "delta"
-msgstr ""
+msgstr "delta"
 
 #: ../src/MatWiz.cpp:175
 msgid "diagonal"
@@ -4381,9 +4375,8 @@ msgid "empty"
 msgstr "Leere Menge"
 
 #: ../src/wxMaximaFrame.cpp:1234
-#, fuzzy
 msgid "epsilon"
-msgstr "Epsilon:"
+msgstr "epsilon"
 
 #: ../src/wxMaximaFrame.cpp:1328
 msgid "equivalent"
@@ -4391,15 +4384,15 @@ msgstr "Äquivalent"
 
 #: ../src/wxMaximaFrame.cpp:1236
 msgid "eta"
-msgstr ""
+msgstr "eta"
 
 #: ../src/wxMaximaFrame.cpp:1315
 msgid "exists"
-msgstr ""
+msgstr "Existiert"
 
 #: ../src/wxMaximaFrame.cpp:1232
 msgid "gamma"
-msgstr ""
+msgstr "gamma"
 
 #: ../src/MatWiz.cpp:174
 msgid "general"
@@ -4425,15 +4418,15 @@ msgstr "Schnittmenge"
 
 #: ../src/wxMaximaFrame.cpp:1238
 msgid "iota"
-msgstr ""
+msgstr "iota"
 
 #: ../src/wxMaximaFrame.cpp:1239
 msgid "kappa"
-msgstr ""
+msgstr "kappa"
 
 #: ../src/wxMaximaFrame.cpp:1240
 msgid "lambda"
-msgstr ""
+msgstr "lambda"
 
 #: ../src/LimitWiz.cpp:41
 msgid "left"
@@ -4453,7 +4446,7 @@ msgstr "Maxima im Verzeichnis des Dokuments starten"
 
 #: ../src/wxMaximaFrame.cpp:1241
 msgid "my"
-msgstr ""
+msgstr "my"
 
 #: ../src/wxMaximaFrame.cpp:1325
 msgid "nand"
@@ -4485,15 +4478,15 @@ msgstr "Nicht Untermenge von oder gleich zu"
 
 #: ../src/wxMaximaFrame.cpp:1242
 msgid "ny"
-msgstr ""
+msgstr "ny"
 
 #: ../src/wxMaximaFrame.cpp:1253
 msgid "omega"
-msgstr ""
+msgstr "omega"
 
 #: ../src/wxMaximaFrame.cpp:1244
 msgid "omnikron"
-msgstr ""
+msgstr "omnikron"
 
 #: ../src/wxMaximaFrame.cpp:1323
 msgid "or"
@@ -4505,11 +4498,11 @@ msgstr "Symbol für partielle Ableitung"
 
 #: ../src/wxMaximaFrame.cpp:1250
 msgid "phi"
-msgstr ""
+msgstr "phi"
 
 #: ../src/wxMaximaFrame.cpp:1245
 msgid "pi"
-msgstr ""
+msgstr "pi"
 
 #: ../src/wxMaximaFrame.cpp:1341
 msgid "proportional to"
@@ -4517,11 +4510,11 @@ msgstr "Proportional zu"
 
 #: ../src/wxMaximaFrame.cpp:1252
 msgid "psi"
-msgstr ""
+msgstr "psi"
 
 #: ../src/wxMaximaFrame.cpp:1246
 msgid "rho"
-msgstr ""
+msgstr "rho"
 
 #: ../src/LimitWiz.cpp:42
 msgid "right"
@@ -4529,7 +4522,7 @@ msgstr "rechts"
 
 #: ../src/wxMaximaFrame.cpp:1247
 msgid "sigma"
-msgstr ""
+msgstr "sigma"
 
 #: ../src/wxMaximaFrame.cpp:1333
 msgid "subset"
@@ -4545,15 +4538,15 @@ msgstr "symmetrisch"
 
 #: ../src/wxMaximaFrame.cpp:1248
 msgid "tau"
-msgstr ""
+msgstr "tau"
 
 #: ../src/wxMaximaFrame.cpp:1316
 msgid "there is no"
-msgstr ""
+msgstr "Es existiert kein"
 
 #: ../src/wxMaximaFrame.cpp:1237
 msgid "theta"
-msgstr ""
+msgstr "theta"
 
 #: ../src/wxMaximaFrame.cpp:1330
 msgid "union"
@@ -4698,9 +4691,8 @@ msgid "x"
 msgstr "x"
 
 #: ../src/wxMaximaFrame.cpp:1243
-#, fuzzy
 msgid "xi"
-msgstr "x"
+msgstr "xi"
 
 #: ../src/wxMaximaFrame.cpp:1324
 msgid "xor"
@@ -4711,18 +4703,16 @@ msgid "yes"
 msgstr "ja"
 
 #: ../src/wxMaximaFrame.cpp:1249
-#, fuzzy
 msgid "ypsilon"
-msgstr "Epsilon:"
+msgstr "ypsilon"
 
 #: ../src/wxMaximaFrame.cpp:1235
 msgid "zeta"
-msgstr ""
+msgstr "zeta"
 
 #~ msgid ""
 #~ "bug: Input prompt end detected but didn't detect an input prompt begin!"
-#~ msgstr ""
-#~ "Interner Fehler: Eingabemarke endet, finde aber keine Beginnmarkierung."
+#~ msgstr "Interner Fehler: Habe das Ende einer Eingabemarke gefunden, aber keinen passenden Beginn!!"
 
 #~ msgid "Debug: Raw XML answer from maxima"
 #~ msgstr "Debug: Der XML-Datenstrom von Maxima"
