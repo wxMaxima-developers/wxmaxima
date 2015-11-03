@@ -23,6 +23,7 @@
 
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
+#include "SlideShowCell.h"
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
@@ -153,8 +154,15 @@ class ToolBar
         m_canEvalTillHere_old = value;
       }
     }
+
+  //! Updates the slider to match the Slide Show cell.
+  void UpdateSlider(SlideShow *cell);
   
 private:
+  //! The position in the current slideshow at the last call of UpdateSlider()
+  int m_slideShowDisplayedIndex;
+  //! The length of the current slideshow at the last call of UpdateSlider()
+  int m_slideShowMaxIndex;
   bool m_canCopy_old;
   bool m_canCut_old;
   bool m_canSave_old;

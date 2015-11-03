@@ -48,6 +48,24 @@ ToolBar::~ToolBar()
   m_plotSlider = NULL;
 }
 
+void ToolBar::UpdateSlider(SlideShow *cell)
+{
+  int slideShowDisplayedIndex = cell->GetDisplayedIndex();
+  int slideShowMaxIndex = cell->Length();
+
+  if((m_slideShowDisplayedIndex != slideShowDisplayedIndex) || (m_slideShowMaxIndex != slideShowMaxIndex))
+  {
+    m_slideShowMaxIndex = slideShowMaxIndex;
+    m_slideShowDisplayedIndex = slideShowDisplayedIndex;
+    if(m_plotSlider != NULL)
+    {
+      m_plotSlider->SetRange(0, cell->Length() - 1);
+      m_plotSlider->SetValue(cell->GetDisplayedIndex());
+      m_plotSlider->SetToolTip(wxString::Format(_("Frame %i of %i"),cell->GetDisplayedIndex() + 1,cell->Length()));
+    }
+  }
+}
+
 ToolBar::ToolBar(wxToolBar *tbar)
 {
   m_canCopy_old = true;
@@ -152,6 +170,8 @@ ToolBar::ToolBar(wxToolBar *tbar)
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
+  m_slideShowMaxIndex = -1;
+  m_slideShowDisplayedIndex = -1;
   m_toolBar->AddControl(m_plotSlider);
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
@@ -193,6 +213,9 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
       m_toolBar->EnableTool(tb_animation_startStop,false);
       m_plotSlider->Enable(false);
       m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+      m_slideShowMaxIndex = -1;
+      m_slideShowDisplayedIndex = -1;
+
       if(m_AnimationStartStopState==Running)
       {
 #ifndef __WXMSW__

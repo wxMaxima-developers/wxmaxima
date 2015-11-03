@@ -1833,25 +1833,25 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
   else if (txt == wxT("qed"))
     return L"\x220E";
   else if (txt == wxT("equiv"))
-    return L"\2263";
+    return L"\x2263";
   else if (txt == wxT("sum"))
-    return L"\2211";
+    return L"\x2211";
   else if (txt == wxT("prod"))
-    return L"\220F";
+    return L"\x220F";
   else if (txt == wxT("product"))
-    return L"\220F";
+    return L"\x220F";
   else if (txt == wxT("exists"))
-    return L"\2203";
+    return L"\x2203";
   else if (txt == wxT("nexists"))
-    return L"\2204";
+    return L"\x2204";
   else if (txt == wxT("parallel"))
     return L"\2225";
   else if (txt == wxT("perp"))
-    return L"\27C2";
+    return L"\x27C2";
   else if (txt == wxT("perpendicular"))
-    return L"\27C2";
+    return L"\x27C2";
   else if (txt == wxT("bot"))
-    return L"\27C2";
+    return L"\x27C2";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

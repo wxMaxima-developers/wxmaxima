@@ -1678,6 +1678,8 @@ wxString wxMaxima::GetCommand(bool params)
       command = wxT("/Applications/Maxima.app");
     else if (wxFileExists("/usr/local/bin/maxima"))
       command = wxT("/usr/local/bin/maxima");
+    else if (wxFileExists("/usr/bin/maxima"))
+      command = wxT("/usr/bin/maxima");
     else
       command = wxT("maxima");
 #else
@@ -5257,6 +5259,12 @@ void wxMaxima::ResetTitle(bool saved,bool force)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
+  int displayedIndex;
+  int lastIndex;
+    int m_slideShowDisplayedIndex;
+  //! The length of the current slideshow at the last call of UpdateSlider()
+  int m_slideShowMaxIndex;
+
   if(m_console->m_mainToolBar)
   {
     if (m_console->m_mainToolBar->m_plotSlider)
@@ -5265,9 +5273,7 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
       {    
         SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
         
-        m_console->m_mainToolBar->m_plotSlider->SetRange(0, cell->Length() - 1);
-        m_console->m_mainToolBar->m_plotSlider->SetValue(cell->GetDisplayedIndex());
-        m_console->m_mainToolBar->m_plotSlider->SetToolTip(wxString::Format(_("Frame %i of %i"),cell->GetDisplayedIndex() + 1,cell->Length()));
+        m_console->m_mainToolBar->UpdateSlider(cell);
       }
     }
   }
