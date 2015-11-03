@@ -25,7 +25,7 @@ wxWidgets library installed.
 
 On Mac OS X you should install XCode. To build wxMaxima open the
 Terminal application and follow the instructions for building with GNU
-autotools.  It is recommended that you compile you own version of
+autotools.  It is recommended that you compile your own version of
 wxMac. See the section about compiling wxWidgets.
 
 
