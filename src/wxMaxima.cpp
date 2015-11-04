@@ -1373,10 +1373,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxFileSystem fs;
   wxString filename = wxT("file:") + file + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
-  if (fsfile == NULL)
-    fsfile = fs.OpenFile(wxString(filename.To8BitData(), wxConvUTF8));
-  if (fsfile == NULL)
-    fsfile = fs.OpenFile(filename.mb_str());
   if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
     document->Thaw();
     delete fsfile;
