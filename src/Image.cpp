@@ -180,6 +180,11 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
 
       m_compressedImage = ReadCompressedImage(istream);
     }
+
+    // Deleting fsfile is important: If this line is missing opening .wxmx
+    // files containing hundreds of images might lead to a "too many open
+    // files" error.
+    delete fsfile;
   }
   else {
     wxFile file(image);
