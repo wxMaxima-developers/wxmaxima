@@ -55,7 +55,7 @@ MathParser::MathParser(wxString zipfile)
   m_highlight = false;
   if (zipfile.Length() > 0) {
     m_fileSystem = new wxFileSystem();
-    m_fileSystem->ChangePathTo(wxT("file:") + zipfile + wxT("#zip:/"), true);
+    m_fileSystem->ChangePathTo(zipfile + wxT("#zip:/"), true);
   }
   else
     m_fileSystem = NULL;

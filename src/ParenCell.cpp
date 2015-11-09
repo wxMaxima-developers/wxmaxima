@@ -284,6 +284,11 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     bottom);
         top = top + m_signSize / 2;
+
+        wxASSERT_MSG(m_signSize>=10,_("Font issue: The Parenthesis sign is too small!"));
+        if(m_signSize <= 10)
+          m_signSize = 10;
+
         if (top <= bottom)
         {
           while (top < bottom)
@@ -341,6 +346,11 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
         int top, bottom;
         top = point.y - m_center + m_charHeight/2;
         bottom = point.y + m_height - m_center - (4*m_charHeight)/3;
+
+        wxASSERT_MSG(m_charHeight>=2,_("Font issue: The char height is too small! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
+        if(m_charHeight <= 2)
+          m_charHeight = 2;
+
         if (top <= bottom)
         {
           while (top < bottom)

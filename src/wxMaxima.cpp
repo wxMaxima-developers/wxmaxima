@@ -48,6 +48,7 @@
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
 #include <wx/utils.h>
+#include <wx/uri.h>
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 #include <wx/tokenzr.h>
@@ -1371,7 +1372,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxXmlDocument xmldoc;
 
   wxFileSystem fs;
-  wxString filename = wxT("file:") + file + wxT("#zip:content.xml");
+  wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
+  wxString filename = wxmxURI + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
   if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
     document->Thaw();
@@ -1426,7 +1428,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // read zoom factor
   wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"),wxT("100"));
   wxXmlNode *xmlcells = xmldoc.GetRoot()->GetChildren();
-  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
+  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument) {

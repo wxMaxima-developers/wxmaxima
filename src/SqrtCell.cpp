@@ -180,6 +180,9 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
         int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2*m_signTop;
         int yTop = point.y - m_innerCell->GetMaxCenter() - m_signTop;
         int dy = m_signSize / 10;
+        wxASSERT_MSG(dy>0,_("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
+        if(dy <= 0)
+          dy = 1;
         dc.DrawText(wxT("t"),
             point.x,
             yBottom);
