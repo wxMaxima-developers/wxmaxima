@@ -1257,13 +1257,10 @@ void wxMaxima::SetCWD(wxString file)
   
   wxString workingDirectory = filename.GetPath();
   
-  bool wxcd;
+  bool wxcd = true;
   
 #if defined (__WXMSW__)
-  wxcd = false;
   wxConfig::Get()->Read(wxT("wxcd"),&wxcd);
-#else
-  wxcd = true;
 #endif
   
   if(wxcd && (workingDirectory != GetCWD()))
@@ -1573,13 +1570,10 @@ void wxMaxima::SetupVariables()
   
   wxConfigBase *config = wxConfig::Get();
   
-  bool wxcd;
+  bool wxcd = true;
 
   #if defined (__WXMSW__)
-  wxcd = false;
   config->Read(wxT("wxcd"),&wxcd);
-  #else
-  wxcd = true;
   #endif
   
   if(wxcd) {
@@ -2647,7 +2641,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     configW->Destroy();
 
 #if defined (__WXMSW__)
-    bool wxcd = false;
+    bool wxcd = true;
     config->Read(wxT("wxcd"),&wxcd);
     if(wxcd)
     {

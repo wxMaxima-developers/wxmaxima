@@ -554,7 +554,7 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer->Add(10, 10);
 
   #ifdef __WXMSW__
-  bool wxcd = false;  
+  bool wxcd = true;  
   wxConfig::Get()->Read(wxT("wxcd"), &wxcd);
   m_wxcd = new wxCheckBox(panel, -1, _("maxima's pwd is path to document"));
   m_wxcd-> SetValue(wxcd);
