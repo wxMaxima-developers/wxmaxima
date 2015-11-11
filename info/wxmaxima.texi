@@ -972,7 +972,7 @@ Installing the package @code{ibus-gtk} should resolve this issue. See
 If your Maxima is based on sbcl the following lines have to be added to your
 @file{.sblrc}:
 @example
-(setf sb-impl::default-external-format :utf-8)
+(setf sb-impl::*default-external-format* :utf-8)
 @end example
 The folder this file has to be placed in is system- and installation-specific.
 But any sbcl-based Maxima that already has evaluated
