@@ -357,10 +357,10 @@ wxString TextCell::ToString()
 wxString TextCell::ToTeX()
 {
   wxString text = m_text;
-#if wxUSE_UNICODE
-  text.Replace(wxT("\\"), wxT("\\verb|\\|"));
+  text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
+#if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
   text.Replace(L"\x03B1",wxT("\\ensuremath{\\alpha}"));
   text.Replace(L"\x00B2",wxT("\\ensuremath{^2}"));

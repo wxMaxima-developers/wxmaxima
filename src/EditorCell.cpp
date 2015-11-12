@@ -144,8 +144,8 @@ wxString EditorCell::ToString()
 wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
+  text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-  text.Replace(wxT("\\"), wxT("\\verb|\\|"));
   text.Replace(L"\x03B1",wxT("\\ensuremath{\\alpha}"));
   text.Replace(L"\x00B2",wxT("\\ensuremath{^2}"));
   text.Replace(L"\x00B3",wxT("\\ensuremath{^3}"));
