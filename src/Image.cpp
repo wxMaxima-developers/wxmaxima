@@ -191,6 +191,7 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
     wxFileInputStream strm(file);
     m_compressedImage = ReadCompressedImage(&strm);
 
+    file.Close();
     if(remove)
       wxRemoveFile (image);
   }
