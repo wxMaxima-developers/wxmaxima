@@ -23,11 +23,13 @@ Current:
   * A few new ESC sequences and markdown commands.
   * "#" now is shown as a "not equal" sign as a "not equal" sign already would
     be interpreted as "#".
-  * Teach SBCL and CCL on Windows how to deal with unicode variable names like
-    ü and α.
+  * Teach CCL on Windows how to deal with unicode variable names like
+    ü and α. For SBCL the necessary change has been done on the maxima side.
   * Sidebars for symbols
+  * Printing text cells now works again
+  * The <ESC> key now works as a shortcut that closes the search dialogue.
   * Many bug, usability and performance fixes
-  * Most importantly: If it is a cursor it blinks now.
+  * Most importantly: If it is a cursor it now blinks.
 
 15.08:
   * Compatibility with maxima 5.37.0

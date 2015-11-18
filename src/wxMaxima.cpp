@@ -130,7 +130,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                        
   m_symbolsPrefix = wxT("<wxxml-symbols>");
   m_symbolsSuffix = wxT("</wxxml-symbols>");
-  m_findDialog = NULL;
   m_firstPrompt = wxT("(%i1) ");
 
   m_client = NULL;
@@ -158,7 +157,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   LoadRecentDocuments();
   UpdateRecentDocuments();
 
-  m_findDialog = NULL;
+  m_console->m_findDialog = NULL;
   m_findData.SetFlags(wxFR_DOWN);
 
   m_console->SetFocus();
@@ -2604,7 +2603,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
-  if (m_findDialog != NULL) {
+  if (m_console->m_findDialog != NULL) {
     event.Skip();
     return;
   }
@@ -2808,10 +2807,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_find:
 #endif
-    if ( m_findDialog != NULL )
+    if ( m_console->m_findDialog != NULL )
     {
-      delete m_findDialog;
-      m_findDialog = NULL;
+      m_console->m_findDialog->Destroy();
+      m_console->m_findDialog = NULL;
     }
     else
     {
@@ -2821,13 +2820,13 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         if(selected.Length()>0)
           m_findData.SetFindString(selected);
       }
-      m_findDialog = new wxFindReplaceDialog(
+      m_console->m_findDialog = new wxFindReplaceDialog(
         this,
         &m_findData,
         _("Find and Replace"),
         wxFR_REPLACEDIALOG |
         wxFR_NOWHOLEWORD);
-      m_findDialog->Show(true);
+      m_console->m_findDialog->Show(true);
     }
     break;
   case menu_history_next:
@@ -2857,8 +2856,8 @@ void wxMaxima::OnFind(wxFindDialogEvent& event)
 
 void wxMaxima::OnFindClose(wxFindDialogEvent& event)
 {
-  m_findDialog->Destroy();
-  m_findDialog = NULL;
+  m_console->m_findDialog->Destroy();
+  m_console->m_findDialog = NULL;
 }
 
 void wxMaxima::OnReplace(wxFindDialogEvent& event)

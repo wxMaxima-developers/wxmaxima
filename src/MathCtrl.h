@@ -26,6 +26,7 @@
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
+#include <wx/fdrepdlg.h>
 #include <list>
 
 #include "MathCell.h"
@@ -430,6 +431,9 @@ private:
 
 
 public:
+  //! The find-and-replace-dialog
+  wxFindReplaceDialog *m_findDialog;
+  
   /*! True = schedule an update of the table of contents
     
     used by UpdateTableOfContents() and the idle task.

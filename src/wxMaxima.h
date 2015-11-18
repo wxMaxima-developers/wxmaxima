@@ -28,7 +28,6 @@
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
-#include <wx/fdrepdlg.h>
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
@@ -384,7 +383,6 @@ protected:
   wxCHMHelpController m_chmhelpCtrl;
 #endif
   wxHtmlHelpController m_htmlhelpCtrl;
-  wxFindReplaceDialog *m_findDialog;
   wxFindReplaceData m_findData;
   wxRegEx m_funRegEx;
   wxRegEx m_varRegEx;
