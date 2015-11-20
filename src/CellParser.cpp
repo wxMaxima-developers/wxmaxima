@@ -42,7 +42,6 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
       wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
   {
-    m_TeXFonts = true;
     wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
