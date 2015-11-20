@@ -156,23 +156,25 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
       
       // Avoid a possible infinite loop.
       if(size < 2) size = 2;
-      
-      while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
-      {
-        int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
-        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                          wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                          m_bigParenType == 0 ?
-			  parser.GetTeXCMRI() :
-			  parser.GetTeXCMEX()));
-        dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
-                         m_bigParenType == 1 ? wxT(PAREN_OPEN) :
-			 wxT(PAREN_OPEN_TOP),
-                         &m_signWidth, &m_signSize);
-        // Avoid an infinite loop.
-        if(m_signSize < 2) m_signSize = 2;
-        i++;
-      }
+
+      wxASSERT_MSG(m_signSize > 0,_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      if(m_signSize > 0)
+        while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
+        {
+          int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
+          dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                            m_bigParenType == 0 ?
+                            parser.GetTeXCMRI() :
+                            parser.GetTeXCMEX()));
+          dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
+                           m_bigParenType == 1 ? wxT(PAREN_OPEN) :
+                           wxT(PAREN_OPEN_TOP),
+                           &m_signWidth, &m_signSize);
+          // Avoid an infinite loop.
+          if(m_signSize < 2) m_signSize = 2;
+          i++;
+        }
     }
     else
     {
