@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-21 20:03+0100\n"
-"PO-Revision-Date: 2015-11-03 06:55+0100\n"
+"PO-Revision-Date: 2015-11-21 20:09+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1741,35 +1741,25 @@ msgstr "Folge"
 
 #: ../src/ParenCell.cpp:290
 msgid "Font issue: The Parenthesis sign is too small!"
-msgstr ""
+msgstr "Zeichensatzproblem: Das Klammer-Symbol ist zu klein!"
 
 #: ../src/IntCell.cpp:277 ../src/ParenCell.cpp:352
-#, fuzzy
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
-msgstr ""
-"Irgend etwas stimmt mit dem für Mathematik ausgewählten Zeichensatz nicht. "
-"Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-"
-"fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" "
-"in der Konfiguration sollte das Problem beheben."
+msgstr "Zeichensatzproblem: Die Zeichengröße ist zu klein. Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der Konfiguration sollte das Problem beheben."
 
 #: ../src/SqrtCell.cpp:184
-#, fuzzy
 msgid ""
 "Font issue: The sqrt() sign has the size 0! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
-msgstr ""
-"Irgend etwas stimmt mit dem für Mathematik ausgewählten Zeichensatz nicht. "
-"Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-"
-"fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" "
-"in der Konfiguration sollte das Problem beheben."
+msgstr "Zeichensatzproblem: Das Wurzelsymbol hat die Größe 0. Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der Konfiguration sollte das Problem beheben."
 
 #: ../src/SqrtCell.cpp:183
 msgid "Font issue? The contents of a sqrt() has the size 0."
-msgstr ""
+msgstr "Zeichensatzproblem? Das Wurzelzeichen hat die Größe 0."
 
 #: ../src/ConfigDialogue.cpp:158
 msgid "Font used for display in document."
@@ -2556,7 +2546,6 @@ msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima gestartet. Warte auf Verbindung ..."
 
 #: ../data/tips.txt:5
-#, fuzzy
 msgid ""
 "Maxima supports three types of numbers: exact fractions (they can be "
 "generated for example by typing 1/10), IEEE floating-point numbers (0.2) and "
@@ -3299,16 +3288,11 @@ msgstr "Kapitelzelle"
 
 #: ../src/BTextCtrl.cpp:48 ../src/TextCell.cpp:264 ../src/TextCell.cpp:278
 #: ../src/TextCell.cpp:294 ../src/TextCell.cpp:306
-#, fuzzy
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
-msgstr ""
-"Irgend etwas stimmt mit dem für Mathematik ausgewählten Zeichensatz nicht. "
-"Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-"
-"fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" "
-"in der Konfiguration sollte das Problem beheben."
+msgstr "Irgend etwas stimmt mit einem Zeichensatz nicht. Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der Konfiguration sollte das Problem beheben."
 
 #: ../src/ParenCell.cpp:160 ../src/TextCell.cpp:113
 msgid ""
@@ -3840,16 +3824,11 @@ msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Die Dokumentklasse für den Export von LaTeX-Dokumenten "
 
 #: ../src/TextCell.cpp:110
-#, fuzzy
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
 "the configuration dialogue should fix it."
-msgstr ""
-"Irgend etwas stimmt mit dem für Mathematik ausgewählten Zeichensatz nicht. "
-"Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-"
-"fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" "
-"in der Konfiguration sollte das Problem beheben."
+msgstr "Der Buchstabe \"X\" hat die Breite 0. Ein Installieren von http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der Konfiguration sollte das Problem beheben."
 
 #: ../src/wxMaximaFrame.cpp:887
 msgid "The offline manual of maxima"
@@ -4463,9 +4442,8 @@ msgid "general"
 msgstr "allgemein"
 
 #: ../src/wxMaximaFrame.cpp:1343
-#, fuzzy
 msgid "greater than or equal"
-msgstr "Untermenge oder gleich"
+msgstr "Größer oder gleich"
 
 #: ../src/wxMaximaFrame.cpp:1314
 msgid "in"
@@ -4498,9 +4476,8 @@ msgid "left"
 msgstr "links"
 
 #: ../src/wxMaximaFrame.cpp:1342
-#, fuzzy
 msgid "less or equal"
-msgstr "Untermenge oder gleich"
+msgstr "Kleiner oder gleich"
 
 #: ../src/Plot2dWiz.cpp:43 ../src/Plot2dWiz.cpp:53
 msgid "logscale"
