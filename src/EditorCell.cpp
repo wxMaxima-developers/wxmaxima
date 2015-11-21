@@ -225,6 +225,8 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x2245",wxT("\\ensuremath{\\approx}"));
   text.Replace(L"\x221d",wxT("\\ensuremath{\\propto}"));
   text.Replace(L"\x2260",wxT("\\ensuremath{\\neq}"));
+  text.Replace(L"\x2264",wxT("\\ensuremath{\\leq}"));
+  text.Replace(L"\x2265",wxT("\\ensuremath{\\geq}"));
   text.Replace(L"\x220e",wxT("\\ensuremath{\\blacksquare}"));
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
   text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));
@@ -1830,6 +1832,20 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x221d";
   else if (txt == wxT("neq"))
     return L"\x2260";
+  else if (txt == wxT("!="))
+    return L"\x2260";
+  else if (txt == wxT("/="))
+    return L"\x2260";
+  else if (txt == wxT("#"))
+    return L"\x2260";
+  else if (txt == wxT("<="))
+    return L"\x2264";
+  else if (txt == wxT("leq"))
+    return L"\x2264";
+  else if (txt == wxT(">="))
+    return L"\x2265";
+  else if (txt == wxT("geq"))
+    return L"\x2265";
   else if (txt == wxT("qed"))
     return L"\x220E";
   else if (txt == wxT("equiv"))

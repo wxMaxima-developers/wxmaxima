@@ -1324,7 +1324,6 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BB'),_("xor")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BC'),_("nand")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BD'),_("nor")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D2'),_("implies")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D4'),_("equivalent")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x00AC'),_("not")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C3'),_("union")),0,wxALL | wxEXPAND,2);
@@ -1340,6 +1339,8 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x221d'),_("proportional to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260'),_("not bytewise identical")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2264'),_("less or equal")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2265'),_("greater than or equal")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2211'),_("Sum sign")),0,wxALL | wxEXPAND,2);

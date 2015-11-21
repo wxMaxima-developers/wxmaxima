@@ -502,6 +502,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   s.Replace(wxT("\x21D4"), wxT(" equiv "));
   s.Replace(wxT("\x00AC"), wxT(" not "));
   s.Replace(wxT("\x2260"), wxT(" # "));
+  s.Replace(wxT("\x2264"), wxT(" <= "));
+  s.Replace(wxT("\x2265"), wxT(" >= "));
   s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
   s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
 
