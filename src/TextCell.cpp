@@ -256,48 +256,62 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   // Use jsMath
   if (m_altJs && parser.CheckTeXFonts())
   {
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
                       parser.IsBold(m_textStyle),
                       parser.IsUnderlined(m_textStyle),
-                      m_texFontname));
+                         m_texFontname);
+    wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+    dc.SetFont(font);
   }
 
   // We have an alternative symbol
   else if (m_alt)
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+  {
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
                       parser.IsBold(m_textStyle),
                       false,
                       m_fontname != wxEmptyString ?
                           m_fontname : parser.GetFontName(m_textStyle),
-                      parser.GetFontEncoding()));
-
+                  parser.GetFontEncoding());
+    wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+    dc.SetFont(font);
+  }
   // Titles, sections, subsections... - don't underline
   else if ((m_textStyle == TS_TITLE) ||
            (m_textStyle == TS_SECTION) ||
            (m_textStyle == TS_SUBSECTION) ||
            (m_textStyle == TS_SUBSUBSECTION)
     )
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      parser.IsItalic(m_textStyle),
-                      parser.IsBold(m_textStyle),
-                      false,
-                      parser.GetFontName(m_textStyle),
-                      parser.GetFontEncoding()));
-
+  {
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+                parser.IsItalic(m_textStyle),
+                parser.IsBold(m_textStyle),
+                false,
+                parser.GetFontName(m_textStyle),
+                parser.GetFontEncoding());
+    wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+    dc.SetFont(font);
+  }
   // Default
   else
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      parser.IsItalic(m_textStyle),
-                      parser.IsBold(m_textStyle),
-                      parser.IsUnderlined(m_textStyle),
-                      parser.GetFontName(m_textStyle),
-                      parser.GetFontEncoding()));
-
+  {
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+                parser.IsItalic(m_textStyle),
+                parser.IsBold(m_textStyle),
+                parser.IsUnderlined(m_textStyle),
+                parser.GetFontName(m_textStyle),
+                parser.GetFontEncoding());
+    wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+    dc.SetFont(font);
+  }
+  
   // A fallback if the font we selected is no more installed or isn't working at all.
   if(!dc.GetFont().IsOk())
+  {
     dc.SetFont(wxFontInfo(10));
+  }
 }
 
 bool TextCell::IsOperator()

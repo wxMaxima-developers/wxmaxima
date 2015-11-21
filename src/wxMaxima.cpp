@@ -1364,6 +1364,28 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxBusyCursor crs;
   document->Freeze();
 
+  // If the file is empty we don't want to generate an error, but just
+  // open an empty file.
+  //
+  // This makes the following thing work on windows without the need of an
+  // empty template file:
+  //
+  // - Create a registry key named HKEY_LOKAL_MACHINE\SOFTWARE\CLASSES\.wxmx\ShellNew
+  // - Create a string named "NullFile" within this key
+  //
+  // => After the next reboot the right-click context menu's "new" submenu contains
+  //    an entry that creates valid empty .wxmx files.
+  if(wxFile(file,wxFile::read).Eof())
+  {
+    document->ClearDocument();
+
+    m_currentFile = file;
+    ResetTitle(true,true);
+    document->SetSaved(true);
+    document->Thaw();
+    return true;
+  }
+
   // open wxmx file
   wxXmlDocument xmldoc;
 
@@ -1371,6 +1393,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
   wxString filename = wxmxURI + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
+  
   if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
     document->Thaw();
     delete fsfile;
@@ -1380,7 +1403,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     SetStatusText(_("File could not be opened"), 1);
     return false;
   }
-
   delete fsfile;
 
   // start processing the XML file
