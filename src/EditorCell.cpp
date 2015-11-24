@@ -227,6 +227,8 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x2260",wxT("\\ensuremath{\\neq}"));
   text.Replace(L"\x2264",wxT("\\ensuremath{\\leq}"));
   text.Replace(L"\x2265",wxT("\\ensuremath{\\geq}"));
+  text.Replace(L"\x226A",wxT("\\ensuremath{\\ll}"));
+  text.Replace(L"\x226B",wxT("\\ensuremath{\\gg}"));
   text.Replace(L"\x220e",wxT("\\ensuremath{\\blacksquare}"));
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
   text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));
@@ -239,7 +241,9 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT("%"), wxT("\\%"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
-  return text;
+  text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
+  text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
+   return text;
 }
 
 wxString EditorCell::ToXML()
@@ -1846,6 +1850,14 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x2265";
   else if (txt == wxT("geq"))
     return L"\x2265";
+  else if (txt == wxT("ll"))
+    return L"\x226A";
+  else if (txt == wxT("<<"))
+    return L"\x226A";
+  else if (txt == wxT("gg"))
+    return L"\x226B";
+  else if (txt == wxT(">>"))
+    return L"\x226B";
   else if (txt == wxT("qed"))
     return L"\x220E";
   else if (txt == wxT("equiv"))

@@ -1341,12 +1341,14 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260'),_("not bytewise identical")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2264'),_("less or equal")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2265'),_("greater than or equal")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x226A'),_("much less than")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x226B'),_("much greater than")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2211'),_("Sum sign")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x220F'),_("Product sign")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2225'),_("Parallel to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
   lowercasePanel->SetSizer(lowercase);
   vbox->Add(lowercasePanel,0,style,border);
 

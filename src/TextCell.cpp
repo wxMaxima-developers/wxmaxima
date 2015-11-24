@@ -459,6 +459,8 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x2260",wxT("\\ensuremath{\\neq}"));
   text.Replace(L"\x2264",wxT("\\ensuremath{\\leq}"));
   text.Replace(L"\x2265",wxT("\\ensuremath{\\geq}"));
+  text.Replace(L"\x226A",wxT("\\ensuremath{\\ll}"));
+  text.Replace(L"\x226B",wxT("\\ensuremath{\\gg}"));
   text.Replace(L"\x220e",wxT("\\ensuremath{\\blacksquare}"));
   text.Replace(L"\x2263",wxT("\\ensuremath{\\equiv}"));
   text.Replace(L"\x2211",wxT("\\ensuremath{\\sum}"));

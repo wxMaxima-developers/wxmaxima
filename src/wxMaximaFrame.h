@@ -26,6 +26,7 @@
 #include <wx/wx.h>
 
 #include <wx/dirctrl.h>
+#include <wx/filehistory.h>
 #include <wx/listbox.h>
 #include <wx/bmpbuttn.h>
 #include <wx/arrstr.h>

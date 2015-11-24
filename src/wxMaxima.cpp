@@ -1396,7 +1396,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxString filename = wxmxURI + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
   
-  if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream())))) {
+  if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream()))))
+  {
     document->Thaw();
     delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
