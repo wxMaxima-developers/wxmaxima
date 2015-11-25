@@ -3712,20 +3712,22 @@ bool MathCtrl::ExportToHTML(wxString file) {
           }
           else
           {
+            wxString ext;
             wxSize size;
             // Something we want to export as an image.
             if(chunk->GetType() == MC_TYPE_IMAGE)
             {
+              ext=wxString::Format(wxT("_%d."), count);
               size = dynamic_cast<ImgCell*>(chunk)->ToImageFile(
-                imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
+                imgDir + wxT("/") + filename + ext +
                 dynamic_cast<ImgCell*>(chunk) -> GetExtension());
             }
             else
             {
               int bitmapScale = 3;
+              ext=wxT(".png");
               wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-              size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
-                                dynamic_cast<ImgCell*>(chunk) -> GetExtension(),
+              size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                 chunk,
                                 NULL, true, bitmapScale);
             }
@@ -3739,8 +3741,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
             
             wxString line = wxT("  <img src=\"") +
               filename + wxT("_htmlimg/") + filename +
-              wxString::Format(wxT("_%d.png\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
-                               count,size.x - 2 * borderwidth) +
+              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                               count,ext,size.x - 2 * borderwidth) +
               alttext +
               wxT("\" >");
             
