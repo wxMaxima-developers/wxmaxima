@@ -180,6 +180,8 @@ protected:
   wxCheckBox* m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox* m_TeXExponentsAfterSubscript;
+  //! A checkbox that asks if TeX should use the \partial symbol for representing diff()
+  wxCheckBox* m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
   wxCheckBox* m_flowedTextRequested;
   //! A checkbox that asks if we want to export the input for maxima, as well.

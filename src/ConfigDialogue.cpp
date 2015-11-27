@@ -143,6 +143,7 @@ void ConfigDialogue::SetProperties()
   m_displayedDigits->SetToolTip(_("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
+  m_usePartialForDiff->SetToolTip(_("Use the \"partial derivative\" symbol to represent the fraction that represents a diff() when exporting LaTeX"));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
@@ -176,6 +177,7 @@ void ConfigDialogue::SetProperties()
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
+    usePartialForDiff = false,
     flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
     exportWithMathJAX = true;
   bool insertAns = true;
@@ -215,6 +217,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
+  config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
@@ -282,6 +285,7 @@ void ConfigDialogue::SetProperties()
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
+  m_usePartialForDiff->SetValue(usePartialForDiff);
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
@@ -422,6 +426,9 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
+
+    m_usePartialForDiff = new wxCheckBox(panel, -1, _("LaTeX: Use the \"partial derivative\" symbol to represent diff()"));
+  vsizer->Add(m_usePartialForDiff, 0, wxALL, 5);
 
   m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
   vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
@@ -732,6 +739,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("displayedDigits"), m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
+  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportInput"), m_exportInput->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());

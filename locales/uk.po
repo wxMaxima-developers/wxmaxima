@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-23 16:39+0100\n"
+"POT-Creation-Date: 2015-11-27 12:36+0100\n"
 "PO-Revision-Date: 2015-08-18 10:34+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -357,7 +357,7 @@ msgstr "&Тригонометричне спрощення"
 msgid "&pm3d"
 msgstr "&pm3d"
 
-#: ../src/ConfigDialogue.cpp:455
+#: ../src/ConfigDialogue.cpp:462
 msgid "(Use default language)"
 msgstr "(Використовувати типову мову)"
 
@@ -406,7 +406,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "Значення &у точці…"
 
-#: ../src/ConfigDialogue.cpp:565
+#: ../src/ConfigDialogue.cpp:572
 msgid "Abort evaluation on error"
 msgstr "Перервати обчислення, якщо трапиться помилка"
 
@@ -418,7 +418,7 @@ msgstr "Про програму"
 msgid "About wxMaxima"
 msgstr "Про wxMaxima"
 
-#: ../src/ConfigDialogue.cpp:623
+#: ../src/ConfigDialogue.cpp:630
 msgid "Active cell bracket"
 msgstr "Дужка активної комірки"
 
@@ -442,7 +442,7 @@ msgstr "Додати каталог до шляху:"
 msgid "Add equality to the rational simplifier"
 msgstr "Додати рівність до спрощувача раціональних виразів"
 
-#: ../src/ConfigDialogue.cpp:432
+#: ../src/ConfigDialogue.cpp:439
 msgid "Add the .wxmx file to the HTML export"
 msgstr "Додати файл .wxmx до експортованого HTML"
 
@@ -455,7 +455,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr "Додаткові команди, які слід додати до преамбули коду LaTeX для pdftex."
 
-#: ../src/ConfigDialogue.cpp:409
+#: ../src/ConfigDialogue.cpp:413
 msgid "Additional lines for the TeX preamble:"
 msgstr "Додаткові рядки до преамбули TeX:"
 
@@ -463,7 +463,7 @@ msgstr "Додаткові рядки до преамбули TeX:"
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Додаткові параметри команди Maxima (наприклад -l clisp)."
 
-#: ../src/ConfigDialogue.cpp:537
+#: ../src/ConfigDialogue.cpp:544
 msgid "Additional parameters:"
 msgstr "Додаткові параметри:"
 
@@ -473,7 +473,7 @@ msgid ""
 "slider allows to change the current frame."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:769
+#: ../src/ConfigDialogue.cpp:777
 msgid "All|*"
 msgstr "Всі|*"
 
@@ -501,7 +501,7 @@ msgstr "Масив:"
 msgid "Artwork by"
 msgstr "Графіка"
 
-#: ../src/ConfigDialogue.cpp:510
+#: ../src/ConfigDialogue.cpp:517
 msgid "Ask to save untitled documents"
 msgstr "Запитувати щодо збереження документів без назв"
 
@@ -509,7 +509,7 @@ msgstr "Запитувати щодо збереження документів 
 msgid "At value"
 msgstr "Значення у точці"
 
-#: ../src/ConfigDialogue.cpp:165
+#: ../src/ConfigDialogue.cpp:166
 msgid ""
 "Automatically change maxima's working directory to the one the current "
 "document is in: This is necessary if the document uses File I/O relative to "
@@ -523,7 +523,7 @@ msgstr ""
 "знайти власний шлях до встановлення maxima 5.35, якщо документ зберігається "
 "на диску, відмінному від того, куди встановлено maxima."
 
-#: ../src/ConfigDialogue.cpp:481
+#: ../src/ConfigDialogue.cpp:488
 msgid "Autosave interval (minutes, 0 means: off)"
 msgstr "Інтервал автозбереження (у хвилинах, 0 — вимкнути)"
 
@@ -535,7 +535,7 @@ msgstr "BC2"
 msgid "Barsplot..."
 msgstr "Стовпчикова діаграма…"
 
-#: ../src/ConfigDialogue.cpp:764
+#: ../src/ConfigDialogue.cpp:772
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Пакетні файли (*.bat)|*.bat|Всі|*"
 
@@ -561,11 +561,11 @@ msgstr ""
 msgid "Beta"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:415
+#: ../src/ConfigDialogue.cpp:419
 msgid "Bitmap scale for export"
 msgstr "Масштаб растра для експортування"
 
-#: ../src/ConfigDialogue.cpp:644
+#: ../src/ConfigDialogue.cpp:651
 msgid "Bold"
 msgstr "Жирний"
 
@@ -601,20 +601,20 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Вада: маємо питання, але не маємо комірки для відповіді на нього"
 
-#: ../src/MathCtrl.cpp:4977
+#: ../src/MathCtrl.cpp:4979
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5048
+#: ../src/MathCtrl.cpp:5050
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5017
+#: ../src/MathCtrl.cpp:5019
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -659,7 +659,7 @@ msgstr ""
 "Вада: спроба об’єднати окремі комірки додає область у буфері скасування, але "
 "між цими комірками є інші комірки."
 
-#: ../src/MathCtrl.cpp:5611
+#: ../src/MathCtrl.cpp:5613
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -674,13 +674,13 @@ msgstr "Вада: спроба запису зміни вмісту комірк
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Вада: спроба позначити щось у комірці без визначення поточної комірки"
 
-#: ../src/MathCtrl.cpp:5018
+#: ../src/MathCtrl.cpp:5020
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: ../src/MathCtrl.cpp:4982 ../src/MathCtrl.cpp:5053 ../src/MathCtrl.cpp:5087
+#: ../src/MathCtrl.cpp:4984 ../src/MathCtrl.cpp:5055 ../src/MathCtrl.cpp:5089
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
@@ -770,7 +770,7 @@ msgstr "Скасувати"
 msgid "Canonical (tr)"
 msgstr "Канонічна форма (триг)"
 
-#: ../src/ConfigDialogue.cpp:456
+#: ../src/ConfigDialogue.cpp:463
 msgid "Catalan"
 msgstr "каталонська"
 
@@ -778,7 +778,7 @@ msgstr "каталонська"
 msgid "Ce&ll"
 msgstr "&Комірка"
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:629
 msgid "Cell bracket"
 msgstr "Дужка комірки"
 
@@ -820,16 +820,16 @@ msgstr "Перевірити, чи не випущено новішу версі
 msgid "Chi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:457
+#: ../src/ConfigDialogue.cpp:464
 msgid "Chinese Simplified"
 msgstr "китайська (спрощена)"
 
-#: ../src/ConfigDialogue.cpp:458
+#: ../src/ConfigDialogue.cpp:465
 msgid "Chinese traditional"
 msgstr "китайська (традиційний запис)"
 
-#: ../src/ConfigDialogue.cpp:596 ../src/ConfigDialogue.cpp:598
-#: ../src/ConfigDialogue.cpp:638
+#: ../src/ConfigDialogue.cpp:603 ../src/ConfigDialogue.cpp:605
+#: ../src/ConfigDialogue.cpp:645
 msgid "Choose font"
 msgstr "Вибрати шрифт"
 
@@ -849,31 +849,31 @@ msgstr "Закрити\tCtrl-W"
 msgid "Close window"
 msgstr "Закрити вікно"
 
-#: ../src/ConfigDialogue.cpp:630
+#: ../src/ConfigDialogue.cpp:637
 msgid "Code highlighting: Comments"
 msgstr "Підсвічування коду: коментарі"
 
-#: ../src/ConfigDialogue.cpp:634
+#: ../src/ConfigDialogue.cpp:641
 msgid "Code highlighting: End of line"
 msgstr "Підсвічування коду: кінець рядка"
 
-#: ../src/ConfigDialogue.cpp:629
+#: ../src/ConfigDialogue.cpp:636
 msgid "Code highlighting: Functions"
 msgstr "Підсвічування коду: функції"
 
-#: ../src/ConfigDialogue.cpp:631
+#: ../src/ConfigDialogue.cpp:638
 msgid "Code highlighting: Numbers"
 msgstr "Підсвічування коду: числа"
 
-#: ../src/ConfigDialogue.cpp:633
+#: ../src/ConfigDialogue.cpp:640
 msgid "Code highlighting: Operators"
 msgstr "Підсвічування коду: оператори"
 
-#: ../src/ConfigDialogue.cpp:632
+#: ../src/ConfigDialogue.cpp:639
 msgid "Code highlighting: Strings"
 msgstr "Підсвічування коду: рядки"
 
-#: ../src/ConfigDialogue.cpp:628
+#: ../src/ConfigDialogue.cpp:635
 msgid "Code highlighting: Variables"
 msgstr "Підсвічування коду: змінні"
 
@@ -955,11 +955,11 @@ msgstr ""
 msgid "Condition:"
 msgstr "Умова:"
 
-#: ../src/ConfigDialogue.cpp:1490 ../src/ConfigDialogue.cpp:1498
+#: ../src/ConfigDialogue.cpp:1498 ../src/ConfigDialogue.cpp:1506
 msgid "Config file (*.ini)|*.ini"
 msgstr "Файл налаштувань (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1330
+#: ../src/ConfigDialogue.cpp:1338
 msgid "Configuration warning"
 msgstr "Попередження щодо налаштувань"
 
@@ -1090,7 +1090,7 @@ msgstr "Створити нову комірку з попередньою вв�
 msgid "Create a new cell with previous output"
 msgstr "Створити нову комірку з попереднім результатом обчислень"
 
-#: ../src/ConfigDialogue.cpp:624
+#: ../src/ConfigDialogue.cpp:631
 msgid "Cursor"
 msgstr "Курсор"
 
@@ -1106,11 +1106,11 @@ msgstr "Вирізати\tCtrl+X"
 msgid "Cut selection"
 msgstr "Вирізати позначене"
 
-#: ../src/ConfigDialogue.cpp:459
+#: ../src/ConfigDialogue.cpp:466
 msgid "Czech"
 msgstr "чеська"
 
-#: ../src/ConfigDialogue.cpp:460
+#: ../src/ConfigDialogue.cpp:467
 msgid "Danish"
 msgstr "данська"
 
@@ -1129,7 +1129,7 @@ msgstr "Файл даних (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Дані:"
 
-#: ../src/ConfigDialogue.cpp:569
+#: ../src/ConfigDialogue.cpp:576
 msgid "Debug: Watch maxima's stdout stream"
 msgstr "Діагностика: спостерігати за потоком stdout maxima"
 
@@ -1137,23 +1137,23 @@ msgstr "Діагностика: спостерігати за потоком std
 msgid "Decompose rational function to partial fractions"
 msgstr "Розкласти раціональну функцію на прості дроби"
 
-#: ../src/ConfigDialogue.cpp:602
+#: ../src/ConfigDialogue.cpp:609
 msgid "Default"
 msgstr "Типовий"
 
-#: ../src/ConfigDialogue.cpp:491
+#: ../src/ConfigDialogue.cpp:498
 msgid "Default animation framerate:"
 msgstr "Типова частота кадрів анімації:"
 
-#: ../src/ConfigDialogue.cpp:595
+#: ../src/ConfigDialogue.cpp:602
 msgid "Default font:"
 msgstr "Типовий шрифт:"
 
-#: ../src/ConfigDialogue.cpp:332
+#: ../src/ConfigDialogue.cpp:336
 msgid "Default plot size for new maxima sessions"
 msgstr "Типовий розмір креслень для нових сеансів maxima"
 
-#: ../src/ConfigDialogue.cpp:549
+#: ../src/ConfigDialogue.cpp:556
 msgid "Default port for communication with wxMaxima:"
 msgstr "Типовий порт для обміну даними з wxMaxima:"
 
@@ -1288,11 +1288,11 @@ msgstr "Хочете зберегти зміни, які було внесено
 msgid "Document "
 msgstr "Документ "
 
-#: ../src/ConfigDialogue.cpp:621
+#: ../src/ConfigDialogue.cpp:628
 msgid "Document background"
 msgstr "Тло документа"
 
-#: ../src/ConfigDialogue.cpp:404
+#: ../src/ConfigDialogue.cpp:408
 msgid "Documentclass for TeX export:"
 msgstr "Клас документа для експортування до TeX:"
 
@@ -1338,7 +1338,7 @@ msgstr "Виключити змінну із системи рівнянь"
 msgid "End of proof"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:461
+#: ../src/ConfigDialogue.cpp:468
 msgid "English"
 msgstr "англійська"
 
@@ -1364,7 +1364,7 @@ msgstr "Введіть рівняння для раціонального спр
 msgid "Enter comma separated list of variables."
 msgstr "Введіть список змінних, відокремлених комами."
 
-#: ../src/ConfigDialogue.cpp:381
+#: ../src/ConfigDialogue.cpp:385
 msgid "Enter evaluates cells"
 msgstr "Enter для обчислення у комірках"
 
@@ -1408,7 +1408,7 @@ msgstr "Рівняння:"
 msgid "Equations:"
 msgstr "Рівняння:"
 
-#: ../src/ConfigDialogue.cpp:778 ../src/Image.cpp:125 ../src/wxMaxima.cpp:1300
+#: ../src/ConfigDialogue.cpp:786 ../src/Image.cpp:125 ../src/wxMaxima.cpp:1300
 #: ../src/wxMaxima.cpp:1314 ../src/wxMaxima.cpp:1403 ../src/wxMaxima.cpp:1414
 #: ../src/wxMaxima.cpp:1437 ../src/wxMaxima.cpp:1761 ../src/wxMaxima.cpp:1935
 #: ../src/wxMaxima.cpp:5000 ../src/wxMaxima.cpp:5368 ../src/wxMaxima.cpp:5419
@@ -1488,7 +1488,7 @@ msgstr "Обчислити до пункту"
 msgid "Example"
 msgstr "Приклад"
 
-#: ../src/ConfigDialogue.cpp:1444 ../src/ConfigDialogue.cpp:1535
+#: ../src/ConfigDialogue.cpp:1452 ../src/ConfigDialogue.cpp:1543
 msgid "Example text"
 msgstr "Текст прикладу"
 
@@ -1528,7 +1528,7 @@ msgstr "Очікувалося, що файли піктограм можна з
 msgid "Export"
 msgstr "Експортувати"
 
-#: ../src/ConfigDialogue.cpp:420
+#: ../src/ConfigDialogue.cpp:424
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1705,12 +1705,12 @@ msgstr "Знайти дійсні корені полінома"
 msgid "Find root"
 msgstr "Знайти корінь"
 
-#: ../src/ConfigDialogue.cpp:513
+#: ../src/ConfigDialogue.cpp:520
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr "Виправити перевпорядковані індекси посилань (%i, %o) до збереження"
 
-#: ../src/ConfigDialogue.cpp:372
+#: ../src/ConfigDialogue.cpp:376
 msgid "Fixed font in text controls"
 msgstr "Шрифт сталої ширини у текстових мітках"
 
@@ -1748,15 +1748,15 @@ msgstr ""
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:158
+#: ../src/ConfigDialogue.cpp:159
 msgid "Font used for display in document."
 msgstr "Шрифт, яким буде показано текст у документі."
 
-#: ../src/ConfigDialogue.cpp:159
+#: ../src/ConfigDialogue.cpp:160
 msgid "Font used for displaying math characters in document."
 msgstr "Шрифт, яким буде показано математичні символи у документі."
 
-#: ../src/ConfigDialogue.cpp:583
+#: ../src/ConfigDialogue.cpp:590
 msgid "Fonts"
 msgstr "Шрифти"
 
@@ -1769,7 +1769,7 @@ msgstr "Формат:"
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:462
+#: ../src/ConfigDialogue.cpp:469
 msgid "French"
 msgstr "французька"
 
@@ -1787,7 +1787,7 @@ msgstr "На весь екран\tAlt-Enter"
 msgid "Function"
 msgstr "Функція"
 
-#: ../src/ConfigDialogue.cpp:605
+#: ../src/ConfigDialogue.cpp:612
 msgid "Function names"
 msgstr "Назви функцій"
 
@@ -1820,7 +1820,7 @@ msgstr "НСД"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "зображення GIF (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:463
+#: ../src/ConfigDialogue.cpp:470
 msgid "Galician"
 msgstr "галісійська"
 
@@ -1852,7 +1852,7 @@ msgstr "Створити матрицю з двовимірного масиву
 msgid "Generate a matrix from a lambda expression"
 msgstr "Створити матрицю на основі лямбда-виразу"
 
-#: ../src/ConfigDialogue.cpp:464
+#: ../src/ConfigDialogue.cpp:471
 msgid "German"
 msgstr "німецька"
 
@@ -1888,7 +1888,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: ../src/MathCtrl.cpp:5067
+#: ../src/MathCtrl.cpp:5069
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1896,11 +1896,11 @@ msgstr ""
 "Отримано запит на скасування дії, до якої включено вилучення, яке зараз не "
 "можна виконати."
 
-#: ../src/ConfigDialogue.cpp:465
+#: ../src/ConfigDialogue.cpp:472
 msgid "Greek"
 msgstr "грецька"
 
-#: ../src/ConfigDialogue.cpp:607
+#: ../src/ConfigDialogue.cpp:614
 msgid "Greek constants"
 msgstr "Грецькі сталі"
 
@@ -1926,7 +1926,7 @@ msgstr ""
 "файл HTML (*.html)|*.html|пакетний файл maxima (*.mac)|*.mac|файл pdfLaTeX "
 "(*.tex)|*.tex"
 
-#: ../src/ConfigDialogue.cpp:426
+#: ../src/ConfigDialogue.cpp:433
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "Комірки HTML/тексту: Експортувати усі розриви рядків"
 
@@ -1947,7 +1947,7 @@ msgstr "Сховати все\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "Сховати усі панелі"
 
-#: ../src/ConfigDialogue.cpp:614
+#: ../src/ConfigDialogue.cpp:621
 msgid "Highlight (dpart)"
 msgstr "Позначити (dpart)"
 
@@ -1980,7 +1980,7 @@ msgstr ""
 "позначення комірок, натискання клавіші Backspace або подвійне натискання "
 "клавіші Delete призводить до вилучення вмісту комірки поряд з курсором."
 
-#: ../src/ConfigDialogue.cpp:466
+#: ../src/ConfigDialogue.cpp:473
 msgid "Hungarian"
 msgstr "угорська"
 
@@ -2022,11 +2022,11 @@ msgstr ""
 "обчислення, якщо wxMaxima буде виявлено, що обробка у maxima призвела до "
 "помилки."
 
-#: ../src/ConfigDialogue.cpp:353
+#: ../src/ConfigDialogue.cpp:357
 msgid "If not extremely long"
 msgstr "Якщо не надзвичайно довго"
 
-#: ../src/ConfigDialogue.cpp:352
+#: ../src/ConfigDialogue.cpp:356
 msgid "If not very long"
 msgstr "Якщо не дуже довго"
 
@@ -2051,7 +2051,7 @@ msgstr ""
 "Якщо вказано нульову кількість хвилин, програма не виконуватиме спроб "
 "зберегти файл у автоматичному режимі."
 
-#: ../src/ConfigDialogue.cpp:149
+#: ../src/ConfigDialogue.cpp:150
 msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
@@ -2100,7 +2100,7 @@ msgstr ""
 msgid "Include columns:"
 msgstr "Включити такі стовпці:"
 
-#: ../src/ConfigDialogue.cpp:429
+#: ../src/ConfigDialogue.cpp:436
 msgid "Include input cells in the export of a worksheet"
 msgstr "Включити комірки із введенням команд до експортованого робочого аркуша"
 
@@ -2127,7 +2127,7 @@ msgstr "Задача Коші (&1)…"
 msgid "Initial Value Problem (&2)..."
 msgstr "Задача Коші (&2)…"
 
-#: ../src/ConfigDialogue.cpp:610
+#: ../src/ConfigDialogue.cpp:617
 msgid "Input labels"
 msgstr "Мітки введення"
 
@@ -2135,7 +2135,7 @@ msgstr "Мітки введення"
 msgid "Insert"
 msgstr "Вставити"
 
-#: ../src/ConfigDialogue.cpp:387
+#: ../src/ConfigDialogue.cpp:391
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr "Додавати % перед оператором на початку комірки"
 
@@ -2277,7 +2277,7 @@ msgstr ""
 "Перервати поточні обчислення. Щоб повністю перезапустити maxima, натисніть "
 "кнопку, розташовану ліворуч від цієї."
 
-#: ../src/ConfigDialogue.cpp:777
+#: ../src/ConfigDialogue.cpp:785
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2309,15 +2309,15 @@ msgstr ""
 "функції load(). Для цього всього лише треба експортувати відповідні команди "
 "до файла у форматі .mac."
 
-#: ../src/ConfigDialogue.cpp:467
+#: ../src/ConfigDialogue.cpp:474
 msgid "Italian"
 msgstr "італійська"
 
-#: ../src/ConfigDialogue.cpp:645
+#: ../src/ConfigDialogue.cpp:652
 msgid "Italic"
 msgstr "Курсив"
 
-#: ../src/ConfigDialogue.cpp:468
+#: ../src/ConfigDialogue.cpp:475
 msgid "Japanese"
 msgstr "японська"
 
@@ -2325,7 +2325,7 @@ msgstr "японська"
 msgid "Kappa"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:378
+#: ../src/ConfigDialogue.cpp:382
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Додавати символ відсотків до спеціальних символів: %e, %i тощо"
@@ -2334,11 +2334,15 @@ msgstr "Додавати символ відсотків до спеціальн
 msgid "LCM"
 msgstr "НСК"
 
-#: ../src/ConfigDialogue.cpp:423
+#: ../src/ConfigDialogue.cpp:427
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr "LaTeX: розташовувати степені за нижніми індексами, а не над ними"
 
-#: ../src/ConfigDialogue.cpp:358
+#: ../src/ConfigDialogue.cpp:430
+msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:362
 msgid "Label width"
 msgstr ""
 
@@ -2346,11 +2350,11 @@ msgstr ""
 msgid "Lambda"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:155
+#: ../src/ConfigDialogue.cpp:156
 msgid "Language used for wxMaxima GUI."
 msgstr "Мова інтерфейсу wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:452
+#: ../src/ConfigDialogue.cpp:459
 msgid "Language:"
 msgstr "Мова:"
 
@@ -2401,7 +2405,7 @@ msgstr "Лінійна регресія…"
 msgid "List:"
 msgstr "Список:"
 
-#: ../src/ConfigDialogue.cpp:648
+#: ../src/ConfigDialogue.cpp:655
 msgid "Load"
 msgstr "Завантажити"
 
@@ -2417,7 +2421,7 @@ msgstr "Завантажити файл програми Maxima за допом�
 msgid "Load a Maxima package file"
 msgstr "Завантажити файл пакунка Maxima"
 
-#: ../src/ConfigDialogue.cpp:1496
+#: ../src/ConfigDialogue.cpp:1504
 msgid "Load style from file"
 msgstr "Завантажити стиль з файла"
 
@@ -2466,11 +2470,11 @@ msgstr "Відобразити функцію на список"
 msgid "Map function to a matrix"
 msgstr "Відобразити функцію на матрицю"
 
-#: ../src/ConfigDialogue.cpp:369
+#: ../src/ConfigDialogue.cpp:373
 msgid "Match parenthesis in text controls"
 msgstr "Перевіряти баланс дужок у тексті"
 
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:604
 msgid "Math font:"
 msgstr "Математичний шрифт:"
 
@@ -2502,7 +2506,7 @@ msgstr "Maxima"
 msgid "Maxima got a question"
 msgstr "У Maxima є питання"
 
-#: ../src/ConfigDialogue.cpp:609
+#: ../src/ConfigDialogue.cpp:616
 msgid "Maxima input"
 msgstr "Команда Maxima"
 
@@ -2522,11 +2526,11 @@ msgstr "пакунок Maxima (*.mac)|*.mac|пакунок Lisp (*.lisp)|*.lisp|
 msgid "Maxima process terminated."
 msgstr "Роботу процесу Maxima перервано."
 
-#: ../src/ConfigDialogue.cpp:529
+#: ../src/ConfigDialogue.cpp:536
 msgid "Maxima program:"
 msgstr "Програма Maxima:"
 
-#: ../src/ConfigDialogue.cpp:611
+#: ../src/ConfigDialogue.cpp:618
 msgid "Maxima questions"
 msgstr "Питання Maxima"
 
@@ -2568,7 +2572,7 @@ msgstr ""
 msgid "Maxima version: "
 msgstr "Версія Maxima: "
 
-#: ../src/ConfigDialogue.cpp:344
+#: ../src/ConfigDialogue.cpp:348
 msgid "Maximum displayed number of digits:"
 msgstr "Максимальна показана кількість цифр:"
 
@@ -2648,7 +2652,7 @@ msgstr "Нова змінна:"
 msgid "Next Command\tAlt-Down"
 msgstr "Наступна команда\tAlt-↓"
 
-#: ../src/ConfigDialogue.cpp:351
+#: ../src/ConfigDialogue.cpp:355
 msgid "No"
 msgstr "Ні"
 
@@ -2664,7 +2668,7 @@ msgstr "Не знайдено відповідників."
 msgid "Normality Test..."
 msgstr "Перевірка нормальності…"
 
-#: ../src/ConfigDialogue.cpp:147
+#: ../src/ConfigDialogue.cpp:148
 msgid ""
 "Normally html expects images to be rather low-res but space saving. These "
 "images tend to look rather blurry when viewed on modern screens. Therefore "
@@ -2677,7 +2681,7 @@ msgstr ""
 "цього параметра можна визначити коефіцієнт збільшення роздільної здатності "
 "під час експортування до HTML відносно типового значення."
 
-#: ../src/ConfigDialogue.cpp:148
+#: ../src/ConfigDialogue.cpp:149
 msgid ""
 "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
 "maxima input does scare the user. This option turns off exporting of "
@@ -2687,7 +2691,7 @@ msgstr ""
 "іноді, команди maxima є зайвими. За допомогою цього пункту ви можете "
 "вимкнути експортування команд maxima."
 
-#: ../src/ConfigDialogue.cpp:469
+#: ../src/ConfigDialogue.cpp:476
 msgid "Norwegian"
 msgstr "норвезька"
 
@@ -2715,7 +2719,7 @@ msgstr "Степінь чисельника:"
 msgid "Number of equations:"
 msgstr "Кількість рівнянь:"
 
-#: ../src/ConfigDialogue.cpp:604
+#: ../src/ConfigDialogue.cpp:611
 msgid "Numbers"
 msgstr "Числа"
 
@@ -2780,7 +2784,7 @@ msgstr "Одновибіркова t-перевірка"
 msgid "Online tutorials"
 msgstr "Навчальні матеріали у інтернеті"
 
-#: ../src/ConfigDialogue.cpp:531 ../src/ToolBar.cpp:93 ../src/main.cpp:261
+#: ../src/ConfigDialogue.cpp:538 ../src/ToolBar.cpp:93 ../src/main.cpp:261
 #: ../src/wxMaxima.cpp:2451
 msgid "Open"
 msgstr "Відкрити"
@@ -2789,7 +2793,7 @@ msgstr "Відкрити"
 msgid "Open Recent"
 msgstr "Відкрити недавні"
 
-#: ../src/ConfigDialogue.cpp:384
+#: ../src/ConfigDialogue.cpp:388
 msgid "Open a cell when Maxima expects input"
 msgstr "Відкрити комірку, якщо Maxima очікує на вхідні дані"
 
@@ -2813,7 +2817,7 @@ msgstr "Відкрити матрицю"
 msgid "Opening file"
 msgstr "Відкриваємо файл"
 
-#: ../src/ConfigDialogue.cpp:507
+#: ../src/ConfigDialogue.cpp:514
 msgid "Optimize wxmx files for version control"
 msgstr "Оптимізувати файли wxmx для системи керування версіями"
 
@@ -2825,11 +2829,11 @@ msgstr "Параметри"
 msgid "Options:"
 msgstr "Параметри:"
 
-#: ../src/ConfigDialogue.cpp:627
+#: ../src/ConfigDialogue.cpp:634
 msgid "Outdated cells"
 msgstr "Застарілі комірки"
 
-#: ../src/ConfigDialogue.cpp:612
+#: ../src/ConfigDialogue.cpp:619
 msgid "Output labels"
 msgstr "Мітки результатів"
 
@@ -2919,7 +2923,7 @@ msgstr "Кругова діаграма…"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Налаштуйте wxMaxima за допомогою пункту меню «Зміни → Налаштувати»."
 
-#: ../src/ConfigDialogue.cpp:1329
+#: ../src/ConfigDialogue.cpp:1337
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Для набуття змінами чинності wxMaxima слід перезавантажити!"
 
@@ -2982,7 +2986,7 @@ msgstr "Вивести графік до файла:"
 msgid "Point:"
 msgstr "Точка:"
 
-#: ../src/ConfigDialogue.cpp:470
+#: ../src/ConfigDialogue.cpp:477
 msgid "Polish"
 msgstr "польська"
 
@@ -2994,7 +2998,7 @@ msgstr "Поліном 1:"
 msgid "Polynomial 2:"
 msgstr "Поліном 2:"
 
-#: ../src/ConfigDialogue.cpp:471
+#: ../src/ConfigDialogue.cpp:478
 msgid "Portuguese (Brazilian)"
 msgstr "португальська (Бразилія)"
 
@@ -3125,7 +3129,7 @@ msgstr "Перезапустити Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
-#: ../src/MathCtrl.cpp:3734
+#: ../src/MathCtrl.cpp:3736
 msgid "Result"
 msgstr "Результат"
 
@@ -3153,7 +3157,7 @@ msgstr "Корені полінома (підв. точн.)"
 msgid "Rows:"
 msgstr "Рядків:"
 
-#: ../src/ConfigDialogue.cpp:472
+#: ../src/ConfigDialogue.cpp:479
 msgid "Russian"
 msgstr "російська"
 
@@ -3169,7 +3173,7 @@ msgstr "Вибірка 2:"
 msgid "Sample:"
 msgstr "Вибірка:"
 
-#: ../src/ConfigDialogue.cpp:649 ../src/ToolBar.cpp:96
+#: ../src/ConfigDialogue.cpp:656 ../src/ToolBar.cpp:96
 #: ../src/wxMaxima.cpp:5460
 msgid "Save"
 msgstr "Зберегти"
@@ -3210,7 +3214,7 @@ msgstr "Зберегти документ"
 msgid "Save document as"
 msgstr "Зберегти документ як"
 
-#: ../src/ConfigDialogue.cpp:162
+#: ../src/ConfigDialogue.cpp:163
 msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
@@ -3218,11 +3222,11 @@ msgstr ""
 "Зберігати у буфері скасовування лише вказану кількість записів дій. 0 "
 "означає «зберігати нескінченну кількість записів дій»."
 
-#: ../src/ConfigDialogue.cpp:501
+#: ../src/ConfigDialogue.cpp:508
 msgid "Save panes layout"
 msgstr "Зберігати компонування панелей"
 
-#: ../src/ConfigDialogue.cpp:151
+#: ../src/ConfigDialogue.cpp:152
 msgid "Save panes layout between sessions."
 msgstr "Запам’ятовувати розташування панелей."
 
@@ -3238,11 +3242,11 @@ msgstr "Зберегти позначене у документі до файл�
 msgid "Save selection to file"
 msgstr "Зберегти позначене до файла"
 
-#: ../src/ConfigDialogue.cpp:1488
+#: ../src/ConfigDialogue.cpp:1496
 msgid "Save style to file"
 msgstr "Зберегти стиль до файла"
 
-#: ../src/ConfigDialogue.cpp:498
+#: ../src/ConfigDialogue.cpp:505
 msgid "Save wxMaxima window size/position"
 msgstr "Зберігати розташування і розмір вікна wxMaxima"
 
@@ -3274,7 +3278,7 @@ msgstr "Точкова діаграма…"
 msgid "Section"
 msgstr "Розділ"
 
-#: ../src/ConfigDialogue.cpp:618
+#: ../src/ConfigDialogue.cpp:625
 msgid "Section cell"
 msgstr "Комірка розділу"
 
@@ -3301,7 +3305,7 @@ msgstr "Позначити все"
 msgid "Select All\tCtrl-A"
 msgstr "Позначити все\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:762 ../src/ConfigDialogue.cpp:767
+#: ../src/ConfigDialogue.cpp:770 ../src/ConfigDialogue.cpp:775
 msgid "Select Maxima program"
 msgstr "Виберіть адресу програми Maxima"
 
@@ -3331,7 +3335,7 @@ msgstr ""
 "миші, програма відкриє меню, за допомогою якого ви зможете отримати доступ "
 "до функцій з обробки позначеного фрагмента."
 
-#: ../src/ConfigDialogue.cpp:625
+#: ../src/ConfigDialogue.cpp:632
 msgid "Selection"
 msgstr "Позначення"
 
@@ -3355,7 +3359,7 @@ msgstr "Встановити масштаб"
 msgid "Set bigfloat &Precision..."
 msgstr "Встановити підвищену то&чність обчислень…"
 
-#: ../src/ConfigDialogue.cpp:157
+#: ../src/ConfigDialogue.cpp:158
 msgid "Set fixed font in text controls."
 msgstr "Встановити шрифт сталої ширини для текстових міток."
 
@@ -3464,11 +3468,11 @@ msgstr "Показати визначення функції"
 msgid "Show function template"
 msgstr "Показати шаблон функції"
 
-#: ../src/ConfigDialogue.cpp:349
+#: ../src/ConfigDialogue.cpp:353
 msgid "Show long expressions"
 msgstr "Показувати довгі вирази"
 
-#: ../src/ConfigDialogue.cpp:154
+#: ../src/ConfigDialogue.cpp:155
 msgid "Show long expressions in wxMaxima document."
 msgstr "Показувати довгі вирази у документі wxMaxima."
 
@@ -3476,7 +3480,7 @@ msgstr "Показувати довгі вирази у документі wxMax
 msgid "Show the definition of function:"
 msgstr "Показати визначення функції:"
 
-#: ../src/ConfigDialogue.cpp:366
+#: ../src/ConfigDialogue.cpp:370
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
@@ -3638,7 +3642,7 @@ msgstr ""
 "позначено цей пункт, для збирання відповідного файла можуть знадобитися "
 "додаткові пакунки LaTeX."
 
-#: ../src/ConfigDialogue.cpp:473
+#: ../src/ConfigDialogue.cpp:480
 msgid "Spanish"
 msgstr "іспанська"
 
@@ -3647,7 +3651,7 @@ msgstr "іспанська"
 msgid "Special"
 msgstr "Додатково"
 
-#: ../src/ConfigDialogue.cpp:606
+#: ../src/ConfigDialogue.cpp:613
 msgid "Special constants"
 msgstr "Додаткові сталі"
 
@@ -3692,7 +3696,7 @@ msgstr "Статистика"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "Статистика\tAlt-Shift-S"
 
-#: ../src/ConfigDialogue.cpp:608
+#: ../src/ConfigDialogue.cpp:615
 msgid "Strings"
 msgstr "Рядки"
 
@@ -3700,7 +3704,7 @@ msgstr "Рядки"
 msgid "Style"
 msgstr "Стиль"
 
-#: ../src/ConfigDialogue.cpp:584
+#: ../src/ConfigDialogue.cpp:591
 msgid "Styles"
 msgstr "Стилі"
 
@@ -3712,7 +3716,7 @@ msgstr "Підвибірка…"
 msgid "Subsection"
 msgstr "Підрозділ"
 
-#: ../src/ConfigDialogue.cpp:617
+#: ../src/ConfigDialogue.cpp:624
 msgid "Subsection cell"
 msgstr "Комірка підрозділу"
 
@@ -3733,7 +3737,7 @@ msgstr "Підставити…"
 msgid "Subsubsection"
 msgstr "Підпідрозділ"
 
-#: ../src/ConfigDialogue.cpp:616
+#: ../src/ConfigDialogue.cpp:623
 msgid "Subsubsection cell"
 msgstr "Комірка підпідрозділу"
 
@@ -3778,15 +3782,15 @@ msgstr "Tellrat"
 msgid "Text"
 msgstr "Текст"
 
-#: ../src/ConfigDialogue.cpp:615
+#: ../src/ConfigDialogue.cpp:622
 msgid "Text cell"
 msgstr "Текстова комірка"
 
-#: ../src/ConfigDialogue.cpp:620
+#: ../src/ConfigDialogue.cpp:627
 msgid "Text cell background"
 msgstr "Тло текстової комірки"
 
-#: ../src/ConfigDialogue.cpp:626
+#: ../src/ConfigDialogue.cpp:633
 msgid "Text equal to selection"
 msgstr "Текст, що збігається із позначеним"
 
@@ -3798,7 +3802,7 @@ msgstr ""
 "Типова висота вбудованих креслень. Їх можна прочитати або перевизначити за "
 "допомогою змінної maxima wxplot_size."
 
-#: ../src/ConfigDialogue.cpp:161
+#: ../src/ConfigDialogue.cpp:162
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "Типовий порт для обміну даними між Maxima та wxMaxima"
 
@@ -3810,7 +3814,7 @@ msgstr ""
 "Типова ширина вбудованих креслень. Їх можна прочитати або перевизначити за "
 "допомогою змінної maxima wxplot_size"
 
-#: ../src/ConfigDialogue.cpp:156
+#: ../src/ConfigDialogue.cpp:157
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Клас документів LaTeX, який слід використовувати для наших документів."
 
@@ -3825,7 +3829,7 @@ msgstr ""
 msgid "The offline manual of maxima"
 msgstr "Автономний підручник з maxima"
 
-#: ../src/ConfigDialogue.cpp:152
+#: ../src/ConfigDialogue.cpp:153
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
@@ -3886,7 +3890,7 @@ msgstr "Підказки недоступні, вибачте!"
 msgid "Title"
 msgstr "Заголовок"
 
-#: ../src/ConfigDialogue.cpp:619
+#: ../src/ConfigDialogue.cpp:626
 msgid "Title cell"
 msgstr "Комірка заголовка"
 
@@ -3995,20 +3999,20 @@ msgstr "Переклад"
 msgid "Transpose a matrix"
 msgstr "Транспонувати матрицю"
 
-#: ../src/MathCtrl.cpp:5602
+#: ../src/MathCtrl.cpp:5604
 msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
 msgstr ""
 "Спроба встановлення курсора у комірку, яка не є частиною робочого аркуша"
 
-#: ../src/MathCtrl.cpp:4972
+#: ../src/MathCtrl.cpp:4974
 msgid "Trying to undo an action without starting cell."
 msgstr "Спроба скасування дії без визначення початкової комірки."
 
-#: ../src/MathCtrl.cpp:5036
+#: ../src/MathCtrl.cpp:5038
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Намагаємося скасувати дію, але дія зі скасування є порожньою."
 
-#: ../src/ConfigDialogue.cpp:474
+#: ../src/ConfigDialogue.cpp:481
 msgid "Turkish"
 msgstr "турецька"
 
@@ -4024,7 +4028,7 @@ msgstr "Двовибіркова t-перевірка"
 msgid "Type:"
 msgstr "Тип:"
 
-#: ../src/ConfigDialogue.cpp:475
+#: ../src/ConfigDialogue.cpp:482
 msgid "Ukrainian"
 msgstr "українська"
 
@@ -4044,7 +4048,7 @@ msgstr ""
 "Не вдалося визначити дані щодо версій з http://andrejv.github.io//wxmaxima/"
 "version.txt: "
 
-#: ../src/ConfigDialogue.cpp:646
+#: ../src/ConfigDialogue.cpp:653
 msgid "Underlined"
 msgstr "Підкреслення"
 
@@ -4056,7 +4060,7 @@ msgstr "Вернути\tCtrl-Z"
 msgid "Undo last change"
 msgstr "Скасувати останню зміну"
 
-#: ../src/ConfigDialogue.cpp:486
+#: ../src/ConfigDialogue.cpp:493
 msgid "Undo limit (0 for none)"
 msgstr "Обмеження скасувань (0 — не обмежувати)"
 
@@ -4092,11 +4096,11 @@ msgstr "Верхня межа:"
 msgid "Use Gosper algorithm"
 msgstr "Використати алгоритм Госпера"
 
-#: ../src/ConfigDialogue.cpp:435
+#: ../src/ConfigDialogue.cpp:442
 msgid "Use MathJAX in HTML export"
 msgstr "Використовувати для експорту до HTML MathJAX"
 
-#: ../src/ConfigDialogue.cpp:150
+#: ../src/ConfigDialogue.cpp:151
 #, fuzzy
 msgid ""
 "Use MathJAX instead of images in HTML exports to display maxima output. The "
@@ -4113,19 +4117,25 @@ msgstr ""
 "потрібен JavaScript, і те, що відтворення формули є тривалішим, ніж показ "
 "готового зображення."
 
-#: ../src/ConfigDialogue.cpp:504
+#: ../src/ConfigDialogue.cpp:511
 msgid "Use cairo to improve plot quality."
 msgstr "Скористатися cairo, щоб покращити якість креслення."
 
-#: ../src/ConfigDialogue.cpp:160 ../src/ConfigDialogue.cpp:375
+#: ../src/ConfigDialogue.cpp:161 ../src/ConfigDialogue.cpp:379
 msgid "Use centered dot character for multiplication"
 msgstr "Використовувати крапку для позначення множення"
 
-#: ../src/ConfigDialogue.cpp:599
+#: ../src/ConfigDialogue.cpp:606
 msgid "Use jsMath fonts"
 msgstr "Використовувати шрифти jsMath"
 
-#: ../src/ConfigDialogue.cpp:613
+#: ../src/ConfigDialogue.cpp:146
+msgid ""
+"Use the \"partial derivative\" symbol to represent the fraction that "
+"represents a diff() when exporting LaTeX"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:620
 msgid "User-defined labels"
 msgstr ""
 
@@ -4148,7 +4158,7 @@ msgstr "Змінні:"
 msgid "Variable:"
 msgstr "Змінна:"
 
-#: ../src/ConfigDialogue.cpp:603
+#: ../src/ConfigDialogue.cpp:610
 msgid "Variables"
 msgstr "Змінні"
 
@@ -4184,7 +4194,7 @@ msgstr ""
 "вважається «%». Якщо слід застосувати функцію до іншого параметра, слід "
 "позначити його у документі до використання пункту меню."
 
-#: ../src/ConfigDialogue.cpp:146
+#: ../src/ConfigDialogue.cpp:147
 msgid ""
 "While text cells in LaTeX are broken into lines by TeX the text displayed on "
 "the screen is broken into lines manually. This option, if set tells that "
@@ -4211,7 +4221,7 @@ msgstr "Ширина:"
 msgid "Worksheet"
 msgstr "Робочий аркуш"
 
-#: ../src/ConfigDialogue.cpp:153
+#: ../src/ConfigDialogue.cpp:154
 msgid "Write matching parenthesis in text controls."
 msgstr "Писати відповідні дужки в текстових елементах керування."
 
@@ -4227,7 +4237,7 @@ msgstr ""
 msgid "Xi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:354
+#: ../src/ConfigDialogue.cpp:358
 msgid "Yes"
 msgstr "Так"
 
@@ -4363,7 +4373,7 @@ msgstr "[%i цифр]"
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3811
+#: ../src/MathCtrl.cpp:3813
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >"
@@ -4485,7 +4495,7 @@ msgstr "логарифмічна шкала"
 msgid "matrix[i,j]:"
 msgstr "матриця[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:559
+#: ../src/ConfigDialogue.cpp:566
 msgid "maxima's pwd is path to document"
 msgstr "pwd maxima є шляхом до документа"
 
@@ -4746,7 +4756,7 @@ msgstr ""
 "wxMaxima — графічний інтерфейс до системи комп’ютерної алгебри Maxima на "
 "основі wxWidgets."
 
-#: ../src/ConfigDialogue.cpp:336
+#: ../src/ConfigDialogue.cpp:340
 msgid "x"
 msgstr "x"
 

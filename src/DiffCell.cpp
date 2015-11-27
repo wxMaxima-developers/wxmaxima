@@ -20,6 +20,7 @@
 //
 
 #include "DiffCell.h"
+#include "wx/config.h"
 
 DiffCell::DiffCell() : MathCell()
 {
@@ -133,7 +134,15 @@ wxString DiffCell::ToString()
 
 wxString DiffCell::ToTeX()
 {
-  wxString s = m_diffCell->ListToTeX() + m_baseCell->ListToTeX();
+  wxString diff=m_diffCell->ListToTeX();
+  wxString function=m_baseCell->ListToTeX();
+
+  bool usePartialForDiff = false;
+  wxConfig::Get()->Read(wxT("usePartialForDiff"), &usePartialForDiff);
+  if(usePartialForDiff)
+    diff.Replace(wxT("\\frac{d}{d"),wxT("\\frac{\\partial}{\\partial"));
+
+  wxString s = diff + function;
   return s;
 }
 
