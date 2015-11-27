@@ -113,7 +113,7 @@ wxString MarkDownParser::MarkDown(wxString str)
           // Add a new item marker.
           result += itemizeEndItem() + itemizeItem();
         }
-        result += str;
+        result += str += wxT(" ");
       }
       else
       {
