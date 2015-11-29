@@ -76,10 +76,13 @@ const int langs[] =
 wxImage ConfigDialogue::GetImage(wxString name)
 {
   Dirstructure dirstruct;
+  std::cerr<<dirstruct.ConfigArtDir() + name<<"\n";
   wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
   double imgWidth = wxGetDisplayPPI().x*32/72;
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+
+  return img;
 }
 
 
