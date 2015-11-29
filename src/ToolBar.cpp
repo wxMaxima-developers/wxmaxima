@@ -27,19 +27,33 @@
 #include <wx/filename.h>
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
-wxImage ToolBar::GetImage(wxString img)
+wxImage ToolBar::GetImage(wxString name)
 {
   Dirstructure dirstructure;
-  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
+  wxImage img = wxImage(dirstructure.ConfigToolbarDir() + name + wxT(".png"));
+  double imgWidth = wxGetDisplayPPI().x*24/72;
+  int width,height;
+  wxDisplaySize(&width,&height);
+  if(width<800)
+    imgWidth = 24;
+  double scaleFactor = imgWidth / img.GetWidth();
+  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  return img;
 }
 #else
-wxBitmap ToolBar::GetImage(wxString img)
+wxBitmap ToolBar::GetImage(wxString name)
 {
-#if defined (__WXMSW__) || defined (__WXMAC__)
-  return wxImage(dirstructure.ConfigToolbarDir() + img + wxT(".png"));
-#else
-  return wxArtProvider::GetBitmap(img,wxART_TOOLBAR);
-#endif
+  wxImage img;
+  img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+/*
+  I think scaling is unnecessary in this case since wxArtProvider should consider
+  the display's dpi number automagically. => Commented out the following lines:
+
+  double imgWidth = wxGetDisplayPPI().x*24/72;
+  double scaleFactor = imgWidth / img.GetWidth();
+  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+*/
+  return img;
 }
 #endif
 
@@ -165,8 +179,13 @@ ToolBar::ToolBar(wxToolBar *tbar)
                      m_PlayButton,
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   m_toolBar->EnableTool(tb_animation_startStop,false);
+  int sliderWidth = wxGetDisplayPPI().x*200/72;
+  int width,height;
+  wxDisplaySize(&width,&height);
+  if(width<800)
+    sliderWidth = MIN(sliderWidth,100);
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxSize(200, -1),
+			      wxDefaultPosition, wxSize(sliderWidth, -1),
 			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);

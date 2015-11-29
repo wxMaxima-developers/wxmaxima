@@ -146,6 +146,10 @@ private:
     This method sets the window title, the tool tips etc.
    */
   void SetProperties();
+
+  //! Loads the image for a configuration tab
+  wxImage GetImage(wxString name);
+    
   //! The panel that allows to set the editing options
   wxPanel* CreateWorksheetPanel();
   //! A panel that allows to set general options

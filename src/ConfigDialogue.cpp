@@ -73,6 +73,16 @@ const int langs[] =
 
 #define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
 
+wxImage ConfigDialogue::GetImage(wxString name)
+{
+  Dirstructure dirstruct;
+  wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
+  double imgWidth = wxGetDisplayPPI().x*32/72;
+  double scaleFactor = imgWidth / img.GetWidth();
+  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+}
+
+
 ConfigDialogue::ConfigDialogue(wxWindow* parent)
 {
 #if defined __WXMAC__
@@ -83,17 +93,14 @@ ConfigDialogue::ConfigDialogue(wxWindow* parent)
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
-  Dirstructure dirstruct;
-    
-#define IMAGE(img) wxImage(dirstruct.ConfigArtDir() + wxT(img))
-
-  wxSize imageSize(32, 32);
-  m_imageList = new wxImageList(32, 32);
-  m_imageList->Add(IMAGE("editing.png"));
-  m_imageList->Add(IMAGE("maxima.png"));
-  m_imageList->Add(IMAGE("styles.png"));
-  m_imageList->Add(IMAGE("Document-export.png"));
-  m_imageList->Add(IMAGE("options.png"));
+  double imgWidth = wxGetDisplayPPI().x*32/72;
+  wxSize imageSize(imgWidth, imgWidth);
+  m_imageList = new wxImageList(imgWidth,imgWidth);
+  m_imageList->Add(GetImage(wxT("editing.png")));
+  m_imageList->Add(GetImage(wxT("maxima.png")));
+  m_imageList->Add(GetImage(wxT("styles.png")));
+  m_imageList->Add(GetImage(wxT("Document-export.png")));
+  m_imageList->Add(GetImage(wxT("options.png")));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
