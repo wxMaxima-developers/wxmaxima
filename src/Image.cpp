@@ -113,10 +113,16 @@ wxBitmap Image::GetBitmap()
   // Seems like we need to create a new scaled bitmap.
   if(m_scaledBitmap.GetWidth()!=m_width)
     {
-      wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
-      wxImage img(istream, wxBITMAP_TYPE_ANY);
+      wxImage img;
+      if(m_compressedImage.GetDataLen() > 0)
+	{
+	  wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
+	  
+	  img = wxImage(istream, wxBITMAP_TYPE_ANY);
+	}
+
       if(img.Ok())
-	  m_scaledBitmap = wxBitmap(img);
+	m_scaledBitmap = wxBitmap(img);
       else
 	{
 	  // Create a "image not loaded" bitmap.
@@ -188,12 +194,16 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
   }
   else {
     wxFile file(image);
-    wxFileInputStream strm(file);
-    m_compressedImage = ReadCompressedImage(&strm);
-
-    file.Close();
-    if(remove)
-      wxRemoveFile (image);
+    if(file.IsOpened())
+      {
+	wxFileInputStream strm(file);
+	if(strm.IsOk())
+	  m_compressedImage = ReadCompressedImage(&strm);
+	
+	file.Close();
+	if(remove)
+	  wxRemoveFile (image);
+      }
   }
 
   wxImage Image;
