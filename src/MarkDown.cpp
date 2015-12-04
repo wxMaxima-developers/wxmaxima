@@ -140,7 +140,11 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
         
         // Add the text to the output.        
-        result += line + "\n";
+        if(!m_flowedTextRequested)
+          result += line + "\n";
+        else
+          result += line + NewLine();
+          
       }
     }
     else
