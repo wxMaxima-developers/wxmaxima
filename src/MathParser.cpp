@@ -233,12 +233,15 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
     if (child)
     {
       frac->SetDenom(ParseTag(child, false));
-      if (node->GetAttributes() != NULL)
+      frac->SetStyle(TS_VARIABLE);
+
+      if(node->GetAttribute(wxT("line")) == wxT("no"))
       {
         frac->SetFracStyle(FracCell::FC_CHOOSE);
       }
+      if(node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
+        frac->SetFracStyle(FracCell::FC_DIFF);
       frac->SetType(m_ParserStyle);
-      frac->SetStyle(TS_VARIABLE);
       frac->SetupBreakUps();
       return frac;
     }
@@ -1046,10 +1049,6 @@ MathCell* MathParser::ParseLine(wxString s, int style)
 
     if (doc != NULL)
       cell = ParseTag(doc->GetChildren());
-    else
-    {
-      std::cerr<<"xml="<<s<<"\n";
-    }
   }
   else
   {

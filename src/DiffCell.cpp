@@ -148,8 +148,7 @@ wxString DiffCell::ToTeX()
 
 wxString DiffCell::ToXML()
 {
-  return _T("<d>") + m_baseCell->ListToXML() +
-    m_diffCell->ListToXML() + _T("</d>");
+  return _T("<d>") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
 }
 
 void DiffCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

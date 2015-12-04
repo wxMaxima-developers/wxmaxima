@@ -315,7 +315,10 @@ wxString FracCell::ToXML()
 //    return wxEmptyString;
   wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )?
     _T("f"): _T("f line = \"no\"");
-  return _T("<") + s + _T("><r>") +
+  wxString diffStyle;
+  if(m_fracStyle == FC_DIFF)
+    diffStyle=wxT(" diffstyle=\"yes\"");
+  return _T("<") + s + diffStyle + _T("><r>") +
     m_num->ListToXML() + _T("</r><r>") +
     m_denom->ListToXML() + _T("</r></f>");
 }
