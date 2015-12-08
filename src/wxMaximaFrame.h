@@ -80,8 +80,10 @@ public:
     menu_pane_structure,       	//!< Both the "toggle the structure pane" command and the structure
     menu_pane_xmlInspector,        //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,		//!< Both the "toggle the format pane" command and the format pane
+#ifdef wxUSE_UNICODE
     menu_pane_greek,            //!< Both the "toggle the format pane" command for the "greek" pane
     menu_pane_symbols,          //!< Both the "toggle the format pane" command for the "symbols" pane
+#endif
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
       Since this enum is also used for iterating over the panes it is vital 

@@ -1350,6 +1350,12 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
   lowercasePanel->SetSizer(lowercase);
+
+  wxString symbolPaneAdditionalChars=wxT("üØ");
+  wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"),symbolPaneAdditionalChars);
+  for (size_t i=0;i<symbolPaneAdditionalChars.Length();i++)
+  lowercase->Add(CharButton(lowercasePanel, symbolPaneAdditionalChars[i],_("A symbol from the configuraton dialogue")),0,wxALL | wxEXPAND,2);
+
   vbox->Add(lowercasePanel,0,style,border);
 
   panel->SetSizer(vbox);

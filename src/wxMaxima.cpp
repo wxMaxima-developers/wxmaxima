@@ -5320,7 +5320,7 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
   int id = ev.GetId();
 
   wxMaximaFrame::ShowPane(static_cast<Event>(id),
-			  !IsPaneDisplayed(static_cast<Event>(id)));
+                          !IsPaneDisplayed(static_cast<Event>(id)));
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
@@ -5754,7 +5754,7 @@ EVT_IDLE(wxMaxima::OnIdle)
 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
-EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
+EVT_MENU_RANGE(menu_pane_math, menu_pane_stats, wxMaxima::ShowPane)
 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
 EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
 EVT_LISTBOX_DCLICK(structure_ctrl_id, wxMaxima::StructureDClick)

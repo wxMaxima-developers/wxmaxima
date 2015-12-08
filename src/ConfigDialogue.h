@@ -170,6 +170,7 @@ protected:
   wxButton* m_mpBrowse;
   wxTextCtrl* m_additionalParameters;
   wxChoice* m_language;
+  wxTextCtrl* m_symbolPaneAdditionalChars;
   wxCheckBox* m_saveSize;
   wxCheckBox* m_abortOnError;
   wxCheckBox* m_pollStdOut;
