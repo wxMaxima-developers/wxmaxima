@@ -769,7 +769,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
   //
   bool clickInSelection = false;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &downx, &downy);
-  if ((m_selectionStart != NULL) && (m_selectionEnd != NULL)) {
+  if ((m_selectionStart != NULL)) {
     // SELECTION OF GROUPCELLS
     if (m_selectionStart->GetType() == MC_TYPE_GROUP) { //a selection of groups
       if ( downx <= MC_GROUP_LEFT_INDENT + 3) {

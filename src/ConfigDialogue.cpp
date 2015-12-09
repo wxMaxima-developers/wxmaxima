@@ -475,7 +475,7 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
