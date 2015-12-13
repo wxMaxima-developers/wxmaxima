@@ -396,15 +396,22 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   GroupCell *tmp = m_workingGroup;
 
+  wxASSERT_MSG((m_workingGroup == NULL) || (m_tree->Contains(m_workingGroup)),_("Bug: Working group outside the tree."));
   // If there is no working group we take the last cell maxima evaluated
   if (tmp == NULL)
-    tmp = m_lastWorkingGroup;
-
+  {
+    if(m_tree->Contains(m_lastWorkingGroup))
+       tmp = m_lastWorkingGroup;
+  }
+  
   // This is weird. Let's try the cell below the horizontally drawn cursor:
   // The cursor should most of the times be near to the cell we are evaluating.
   if (tmp == NULL)
-    tmp = m_hCaretPosition;
-
+  {
+    if(m_hCaretActive)
+      tmp = m_hCaretPosition;
+  }
+    
   // No such cursor? Perhaps there is a vertically drawn one.
   if (tmp == NULL)
   {
