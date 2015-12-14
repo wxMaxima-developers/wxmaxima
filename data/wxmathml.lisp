@@ -167,8 +167,8 @@
 (defun subscriptp (x)
   (let* ((name (subseq (maybe-invert-string-case (symbol-name x)) 1))
          (pos (search "_" name :from-end t))
-         (*readtable* (copy-readtable nil)))
-    (setf (readtable-case *readtable*) :invert)
+         #-gcl (*readtable* (copy-readtable nil)))
+    #-gcl (setf (readtable-case *readtable*) :invert)
     (when pos
       (let* ((sub (subseq name (+ pos 1)))
              (sub-var (subseq name 0 pos))
@@ -176,6 +176,7 @@
              (sub-symb (read-from-string (concatenate 'string "$" sub)))
              (sub-int (parse-integer sub :junk-allowed t)))
         (when (or sub-int
+                  (eq $wxsubscripts '$all)
                   (= (length sub) 1)
                   (= (length sub-var) 1)
                   ($get x '$wxxml_subscripted)
