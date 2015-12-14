@@ -399,6 +399,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   if(m_workingGroup != NULL)
   {
+    // TODO: In theory m_tree->Contains(m_workingGroup) should always be true.
+    // But sometimes it isn't. Why?
     if(m_tree->Contains(m_workingGroup))
       tmp = m_workingGroup;
   }
