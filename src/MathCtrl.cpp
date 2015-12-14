@@ -382,6 +382,7 @@ GroupCell *MathCtrl::UpdateMLast()
     m_last = NULL;
   else
   {
+    
     m_last = m_tree;
     while (m_last->m_next)
       m_last = dynamic_cast<GroupCell*>(m_last->m_next);
@@ -394,10 +395,14 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
   m_saved = false;
 
-  GroupCell *tmp = m_workingGroup;
+  GroupCell *tmp = NULL;
 
-  wxASSERT_MSG((m_workingGroup == NULL) || (m_tree->Contains(m_workingGroup)),_("Bug: Working group outside the tree."));
-  // If there is no working group we take the last cell maxima evaluated
+  if(m_workingGroup != NULL)
+  {
+    if(m_tree->Contains(m_workingGroup))
+      tmp = m_workingGroup;
+  }
+  
   if (tmp == NULL)
   {
     if(m_tree->Contains(m_lastWorkingGroup))
