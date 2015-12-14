@@ -147,6 +147,46 @@
 ;;; First we have the functions which are called directly by wxxml and its
 ;;; descendants
 
+(defvar $wxsubscripts nil
+  "Recognize TeX-style subscripts")
+
+(defun $wxdeclare_subscript (x &optional (opt t))
+  (unless (listp x)
+    (setq x (list '(mlist simp) x)))
+  (dolist (s (cdr x))
+    ($put s opt '$wxxml_subscript))
+  opt)
+
+(defun $wxdeclare_subscripted (x &optional (opt t))
+  (unless (listp x)
+    (setq x (list '(mlist simp) x)))
+  (dolist (s (cdr x))
+    ($put s opt '$wxxml_subscripted))
+  opt)
+
+(defun subscriptp (x)
+  (let* ((name (subseq (maybe-invert-string-case (symbol-name x)) 1))
+         (pos (search "_" name :from-end t))
+         (*readtable* (copy-readtable nil)))
+    (setf (readtable-case *readtable*) :invert)
+    (when pos
+      (let* ((sub (subseq name (+ pos 1)))
+             (sub-var (subseq name 0 pos))
+             (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
+             (sub-symb (read-from-string (concatenate 'string "$" sub)))
+             (sub-int (parse-integer sub :junk-allowed t)))
+        (when (or sub-int
+                  (= (length sub) 1)
+                  ($get x '$wxxml_subscripted)
+                  ($get sub-symb '$wxxml_subscript))
+          (format nil  "<i altCopy=\"~{~a~}\"><r>~a</r><r>~a</r></i>"
+                  (mstring x)
+                  (or (get sub-var-symb 'wxxmlword)
+                      (format nil "<v>~a</v>" sub-var))
+                  (if sub-int
+                      (format nil "<n>~a</n>" sub-int)
+                      (format nil "<v>~a</v>" sub))))))))
+
 (defun wxxml-atom (x l r &aux tmp-x)
   (append l
           (list (cond ((numberp x) (wxxmlnumformat x))
@@ -171,6 +211,7 @@
                          (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
                       ((hash-table-p x)
 		       (format nil "<v>HashTable</v>"))
+                      ((and $wxsubscripts (subscriptp x)))
                       (t (wxxml-stripdollar x))))
 	  r))
 
