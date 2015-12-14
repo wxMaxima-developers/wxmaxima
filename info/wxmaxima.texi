@@ -584,6 +584,19 @@ cases, however, it adds functionality to Maxima. wxMaxima's ability to generate 
 exporting a workbook's contents to HTML and LaTeX files has been mentioned. This section
 considers some ways that wxMaxima enhances the inclusion of graphics into a session.
 described here.
+@section Subscripted variables
+if @var{wxsubscripts} is set to true variable names of the format @code{x_y} are
+displayed using a subscript if
+@itemize @bullet
+@item @code{y} is a single letter
+@item @code{y} is an integer
+@end itemize
+
+If the variable name doesn't match these requirements it can still be declared as
+"to be subscripted" using the command
+@code{wxdeclare_subscript(variable_name);} or @code{wxdeclare_subscript([variable_name1,variable_name2,...]);} 
+Declaring a variable as subscripted can be reverted using the following command:
+@code{wxdeclare_subscript(variable_name,false);}
 @section Plotting
 Plotting (having fundamentally to do with graphics) is a place where a
 graphical user interface will have to provide some extensions to the
@@ -755,6 +768,10 @@ startup file can be placed in.
 @end example
 @section Special variables
 @itemize @bullet
+@item @var{wxsubscripts} tells maxima if it should convert variable
+      names that contain an underscore (@code{R_150}) or the like into
+      subscripted variables. See @code{wxdeclare_subscript} for details
+      which variable names are automatically converted.
 @item @var{wxfilename} This variable contains the name of the file
 currently opened in wxMaxima. On windows this piece of information
 is only available if in the configuration dialogue the checkbox @code{Maxima/maxima's pwd is path to document} is checked.

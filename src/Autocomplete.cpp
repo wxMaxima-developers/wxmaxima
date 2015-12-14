@@ -92,6 +92,9 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxbuild_info"));
   m_wordList[tmplte].Add(wxT("table_form(<data>)"));
   m_wordList[tmplte].Add(wxT("table_form(<data>,<[options]>)"));
+  m_wordList[command].Add(wxT("wxsubscripts"));
+  m_wordList[command].Add(wxT("wxdeclare_subscripted"));
+  m_wordList[tmplte].Add(wxT("wxdeclare_subscripted(<name>,<[false]>)"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;

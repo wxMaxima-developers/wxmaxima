@@ -99,6 +99,7 @@ void wxMaxima::ConfigChanged()
     m_maxOutputCellsPerCommand = -1;
     break;
   }
+
   m_autoSaveInterval = 0;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
@@ -1617,7 +1618,24 @@ void wxMaxima::SetupVariables()
     SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)"));
   else
     SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)"));
-  
+
+  int autosubscript = 0;
+  config->Read(wxT("autosubscript"), &autosubscript);
+  wxString subscriptval;
+  switch(autosubscript)
+  {
+  case 0:
+    subscriptval="nil";
+    break;
+  case 1:
+    subscriptval="t";
+    break;
+  case 2:
+    subscriptval="'all";
+    break;
+  }
+  SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")"));
+
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
@@ -2696,7 +2714,24 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       else
         SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
     }
-      
+    
+    int autosubscript = 0;
+    config->Read(wxT("autosubscript"), &autosubscript);
+    wxString subscriptval;
+    switch(autosubscript)
+    {
+    case 0:
+      subscriptval="nil";
+      break;
+    case 1:
+      subscriptval="t";
+      break;
+    case 2:
+      subscriptval="'all";
+      break;
+    }
+    SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") + subscriptval + wxT(")"));
+    
     m_autoSaveInterval = 0;
     config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
     m_autoSaveInterval *= 60000;

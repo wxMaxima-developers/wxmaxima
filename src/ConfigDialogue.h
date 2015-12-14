@@ -194,8 +194,8 @@ protected:
   wxCheckBox* m_exportContainsWXMX;
   wxCheckBox* m_exportWithMathJAX;
   wxCheckBox* m_matchParens;
-
   wxChoice* m_showLength;
+  wxChoice* m_autosubscript;
   wxCheckBox* m_enterEvaluates;
   wxCheckBox* m_saveUntitled;
   wxCheckBox* m_openHCaret;
