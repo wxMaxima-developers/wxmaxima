@@ -151,8 +151,13 @@ wxString SubCell::ToTeX()
 
 wxString SubCell::ToXML()
 {
-  return _T("<i><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-    m_indexCell->ListToXML() + _T("</r></i>");
+  if (m_altCopyText == wxEmptyString)
+  {
+    return _T("<i><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
+      m_indexCell->ListToXML() + _T("</r></i>");
+  }
+  return _T("<i altCopy=\"" + m_altCopyText + "\"><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
+      m_indexCell->ListToXML() + _T("</r></i>");
 }
 
 void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
