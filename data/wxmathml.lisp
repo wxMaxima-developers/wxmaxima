@@ -177,6 +177,7 @@
              (sub-int (parse-integer sub :junk-allowed t)))
         (when (or sub-int
                   (= (length sub) 1)
+                  (= (length sub-var) 1)
                   ($get x '$wxxml_subscripted)
                   ($get sub-symb '$wxxml_subscript))
           (format nil  "<i altCopy=\"~{~a~}\"><r>~a</r><r>~a</r></i>"
