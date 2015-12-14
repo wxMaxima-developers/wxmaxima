@@ -1619,7 +1619,7 @@ void wxMaxima::SetupVariables()
   else
     SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)"));
 
-  int autosubscript = 0;
+  int autosubscript = 1;
   config->Read(wxT("autosubscript"), &autosubscript);
   wxString subscriptval;
   switch(autosubscript)

@@ -76,7 +76,6 @@ const int langs[] =
 wxImage ConfigDialogue::GetImage(wxString name)
 {
   Dirstructure dirstruct;
-  std::cerr<<dirstruct.ConfigArtDir() + name<<"\n";
   wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
   double imgWidth = wxGetDisplayPPI().x*32/72;
   double scaleFactor = imgWidth / img.GetWidth();
@@ -163,6 +162,7 @@ void ConfigDialogue::SetProperties()
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
+  m_autosubscript->SetToolTip(_("false=Don't generate subscripts\ntrue=Automatically convert underscores to subscript markers if the would-be subscript is a number or a single letter\nall=_ marks subscripts."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
 #ifdef wxUSE_UNICODE
   m_symbolPaneAdditionalChars->SetToolTip("Symbols that are entered or copied here will appear in the symbols sidebar so they can be entered into the worksheet easily.");
@@ -197,6 +197,7 @@ void ConfigDialogue::SetProperties()
   int labelWidth = 4;
   int  undoLimit = 0;
   int showLength = 0;
+  int autosubscript = 1;
   int  bitmapScale = 3;
   bool fixReorderedIndices = false;
   bool showUserDefinedLabels = true;
@@ -241,6 +242,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLength"), &showLength);
+  config->Read(wxT("autosubscript"), &autosubscript);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
@@ -312,6 +314,7 @@ void ConfigDialogue::SetProperties()
   m_exportWithMathJAX->SetValue(exportWithMathJAX);
   m_matchParens->SetValue(match);
   m_showLength->SetSelection(showLength);
+  m_autosubscript->SetSelection(autosubscript);
   m_changeAsterisk->SetValue(changeAsterisk);
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
@@ -351,8 +354,8 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxArrayString showLengths;
-
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
+  wxArrayString autosubscripts;
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
@@ -380,6 +383,16 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   showLengths.Add(_("Yes"));
   m_showLength = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,showLengths);
   grid_sizer->Add(m_showLength, 0, wxALL, 5);
+
+  wxStaticText* as = new wxStaticText(panel, -1, _("Underscore converts to subscripts"));
+  grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  autosubscripts.Add(_("No"));
+  autosubscripts.Add(_("Integers and single letters"));
+  autosubscripts.Add(_("All variable names"));
+  m_autosubscript = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,autosubscripts);
+  grid_sizer->Add(m_autosubscript, 0, wxALL, 5);
+
+  
 
   wxStaticText* lw = new wxStaticText(panel, -1, _("Label width"));
   grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -744,6 +757,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("mathFontsize"), m_mathFontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   config->Write(wxT("showLength"), m_showLength->GetSelection());
+  config->Write(wxT("autosubscript"), m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
