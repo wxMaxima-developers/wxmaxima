@@ -977,8 +977,11 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     }
     else if (warning)
     {
-      wxMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
-        wxOK | wxICON_WARNING);
+      wxString name;
+      if(cell != NULL) name = cell->ToString();
+      if(name.Length()>0)
+        wxMessageBox(_("Parts of the document will not be loaded correctly!\nFound unknown XML Tag name "+ name), _("Warning"),
+                     wxOK | wxICON_WARNING);
       warning = false;
     }
 
