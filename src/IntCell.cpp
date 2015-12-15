@@ -422,11 +422,20 @@ wxString IntCell::ToXML()
   var += tmp->ListToXML();
   var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
 
+  wxString from;
   tmp = m_under;
-  wxString from = _T("<r>") + tmp->ListToXML() + _T("</r>");
+  if(tmp  != NULL)
+    from = _T("<r>") + tmp->ListToXML() + _T("</r>");
+  else
+    from = _T("<r></r>");
+    
 
+  wxString to;
   tmp = m_over;
-  wxString to = _T("<r>") + tmp->ListToXML() + _T("</r>");
+  if(tmp  != NULL)
+    from = _T("<r>") + tmp->ListToXML() + _T("</r>");
+  else
+    from = _T("<r></r>");
 
   if (m_intStyle == INT_DEF)
     return wxT("<in>") + from + to + base + var + wxT("</in>");

@@ -4858,7 +4858,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
     }
   }
 
-  wxASSERT_MSG(cellY > 0,wxT("Bug: Cell with negative y position!"));
+  wxASSERT_MSG(cellY >= -1,wxT("Bug: Cell with negative y position!"));
   
   int cellDrop = tmp->GetDrop();
   int cellCenter = tmp->GetCenter();
