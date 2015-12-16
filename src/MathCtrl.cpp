@@ -5620,24 +5620,20 @@ void MathCtrl::SetDefaultHCaret()
  */
 void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
-  if((where)&&(m_tree)&&(!m_tree->Contains(where)))
-    wxASSERT_MSG(m_tree->Contains(where),_("Trying to set the cursor to a cell that isn't part of the worksheet"));
-  else
-  {
-    SetSelection(NULL);
-    m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-    SetActiveCell(NULL, false);
-    if(where)
-      wxASSERT_MSG(
-        where->GetType()==MC_TYPE_GROUP,
-        _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
-    m_hCaretPosition = where;
-    m_hCaretActive = true;
-    
-    if (callRefresh) // = true default
-      Refresh();
-    ScrollToCell(where);
-  }
+
+  SetSelection(NULL);
+  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+  SetActiveCell(NULL, false);
+  if(where)
+    wxASSERT_MSG(
+      where->GetType()==MC_TYPE_GROUP,
+      _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
+  m_hCaretPosition = where;
+  m_hCaretActive = true;
+  
+  if (callRefresh) // = true default
+    Refresh();
+  ScrollToCell(where);
   
   // Tell the cursor to blink, but to be visible right now.
   m_switchDisplayCaret = true;
