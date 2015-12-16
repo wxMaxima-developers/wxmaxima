@@ -4375,7 +4375,11 @@ bool MathCtrl::ExportToMAC(wxString file)
     // it during this action => Wait for a second and retry.
     wxSleep(1);
     if(!wxRenameFile(file+wxT("~"),file,true))
-      return false;
+    {
+      wxSleep(1);
+      if(!wxRenameFile(file+wxT("~"),file,true))
+        return false;
+    }
   }
 
   return true;
@@ -4572,13 +4576,15 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
   // Now that all data is save we can overwrite the actual save file.
   if(!wxRenameFile(backupfile,file,true))
   {
-    
     // We might have failed to move the file because an over-eager virus scanner wants to
     // scan it and a design decision of a filesystem driver might hinder us from moving
     // it during this action => Wait for a second and retry.
+    wxSleep(1);
     if(!wxRenameFile(backupfile,file,true))
     {
-      return false;
+      wxSleep(1);
+      if(!wxRenameFile(backupfile,file,true))
+        return false;
     }
   }
   if(markAsSaved)

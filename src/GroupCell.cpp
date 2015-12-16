@@ -1460,10 +1460,9 @@ bool GroupCell::Contains(GroupCell *cell)
       return true;
 
     // If this cell contains a hidden tree we have to search that at well.
-    if (this->IsFoldable())
-      if(this->GetHiddenTree())
-        if (this->GetHiddenTree()->Contains(cell))
-          return true;
+    if ((tmp->IsFoldable()) && (tmp->GetHiddenTree()) )
+      if (this->GetHiddenTree()->Contains(cell))
+        return true;
 
     // Step to the next cell.
     tmp= dynamic_cast<GroupCell*>(tmp->m_next);
