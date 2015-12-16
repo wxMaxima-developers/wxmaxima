@@ -174,7 +174,8 @@
              (sub-var (subseq name 0 pos))
              (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
              (sub-symb (read-from-string (concatenate 'string "$" sub)))
-             (sub-int (parse-integer sub :junk-allowed t)))
+             (sub-int (ignore-errors
+                        (parse-integer sub))))
         (when (or sub-int
                   (eq $wxsubscripts '$all)
                   (= (length sub) 1)
