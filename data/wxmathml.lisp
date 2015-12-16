@@ -165,6 +165,8 @@
   opt)
 
 (defun subscriptp (x)
+  (unless (symbolp x)
+    (return-from subscriptp x))
   (let* ((name (subseq (maybe-invert-string-case (symbol-name x)) 1))
          (pos (search "_" name :from-end t))
          #-gcl (*readtable* (copy-readtable nil)))
