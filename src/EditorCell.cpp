@@ -754,8 +754,99 @@ size_t EditorCell::BeginningOfLine(size_t pos)
   return pos;
 }
 
+size_t EditorCell::EndOfLine(size_t pos)
+{
+  while (pos<m_text.length() && m_text[pos] != wxT('\n'))
+    pos++;
+
+  return pos;
+}
+
+bool EditorCell::HandleCtrlCommand(wxKeyEvent& ev)
+{
+  int code = ev.GetKeyCode();
+  bool done = true;
+
+  if (code>=32)
+    return false;
+  
+  code = code + 'A' - 1;
+  
+  switch (code)
+  {
+  case 'K':
+  {
+    ClearSelection();
+    SaveValue();
+    size_t end = EndOfLine(m_positionOfCaret);
+    m_text = m_text.SubString(0, m_positionOfCaret-1) + m_text.SubString(end, m_text.length());
+    m_isDirty = true;
+    break;
+  }
+
+  case 'E':
+  {
+    ClearSelection();
+    int end = EndOfLine(m_positionOfCaret);
+    if (ev.ShiftDown())
+    {
+      m_selectionStart = m_positionOfCaret;
+      m_selectionEnd = end;
+    }
+    m_positionOfCaret = end;
+    m_displayCaret = true;
+    break;
+  }
+  
+  case 'A':
+  {
+    ClearSelection();
+    int start = BeginningOfLine(m_positionOfCaret);
+    if (ev.ShiftDown())
+    {
+      m_selectionStart = start ;
+      m_selectionEnd = m_positionOfCaret;
+    }
+    m_positionOfCaret = start;
+    m_displayCaret = true;
+    break;
+  }
+  
+  default:
+    done = false;
+    break;
+  }
+
+  return done;
+}
+
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
+  bool done = false;
+
+  done = HandleCtrlCommand(event);
+
+  if (!done)
+    done = HandleSpecialKey(event);
+
+  if (!done)
+    HandleOrdinaryKey(event);
+
+  if (m_type == MC_TYPE_INPUT)
+    FindMatchingParens();
+
+  if (m_isDirty)
+  {
+    m_width = m_maxDrop = -1;
+    StyleText();
+  }
+  m_displayCaret = true;
+}
+
+bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
+{
+  bool done = true;
+  
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
@@ -1339,192 +1430,191 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     break;
 
   default:
-    if (event.ControlDown() && !event.AltDown())
-      break;
+    done = false;
+    break;
+  }
 
-    m_isDirty = true;
-    m_containsChanges = true;
-    bool insertLetter = true;
+  return done;
+}
 
-    if (m_saveValue) {
-      SaveValue();
-      m_saveValue = false;
-    }
+bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
+{
+  if (event.ControlDown() && !event.AltDown())
+    return false;
+
+  m_isDirty = true;
+  m_containsChanges = true;
+  bool insertLetter = true;
+
+  if (m_saveValue) {
+    SaveValue();
+    m_saveValue = false;
+  }
 
     
-      wxChar keyCode;
+  wxChar keyCode;
 #if wxUSE_UNICODE
-      keyCode=event.GetUnicodeKey();
+  keyCode=event.GetUnicodeKey();
 #else
-      keyCode=event.GetKeyCode();
+  keyCode=event.GetKeyCode();
 #endif
 
-      // If we got passed a non-printable character we have to send it back to the
-      // hotkey management.
-      if(!wxIsprint(keyCode))
-      {
-        event.Skip();
-        break;
-      }
+  // If we got passed a non-printable character we have to send it back to the
+  // hotkey management.
+  if(!wxIsprint(keyCode))
+  {
+    event.Skip();
+    return false;
+  }
 
-    if (m_historyPosition != -1) {
-      int len = m_textHistory.GetCount() - m_historyPosition;
-      m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
-      m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
-      m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
-      m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
-      m_historyPosition = -1;
+  if (m_historyPosition != -1) {
+    int len = m_textHistory.GetCount() - m_historyPosition;
+    m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
+    m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
+    m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
+    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
+    m_historyPosition = -1;
+  }
+
+  // if we have a selection either put parens around it (and don't write the letter afterwards)
+  // or delete selection and write letter (insertLetter = true).
+  if (m_selectionStart > -1) {
+    SaveValue();
+    long start = MIN(m_selectionEnd, m_selectionStart);
+    long end = MAX(m_selectionEnd, m_selectionStart);
+    
+    switch (keyCode)
+    {
+    case '(':
+      m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+        m_text.SubString(start, end - 1) + wxT(")") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '\"':
+      m_text = m_text.SubString(0, start - 1) +   wxT("\"") +
+        m_text.SubString(start, end - 1) + wxT("\"") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '{':
+      m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+        m_text.SubString(start, end - 1) + wxT("}") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '[':
+      m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+        m_text.SubString(start, end - 1) + wxT("]") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case ')':
+      m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+        m_text.SubString(start, end - 1) + wxT(")") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    case '}':
+      m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+        m_text.SubString(start, end - 1) + wxT("}") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    case ']':
+      m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+        m_text.SubString(start, end - 1) + wxT("]") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    default: // delete selection
+      m_text = m_text.SubString(0, start - 1) +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;
+      break;
     }
-
-    // if we have a selection either put parens around it (and don't write the letter afterwards)
-    // or delete selection and write letter (insertLetter = true).
-    if (m_selectionStart > -1) {
-      SaveValue();
-      long start = MIN(m_selectionEnd, m_selectionStart);
-      long end = MAX(m_selectionEnd, m_selectionStart);
+    ClearSelection();
+  } // end if (m_selectionStart > -1)
+  
+  // insert letter if we didn't insert brackets around selection
+  if (insertLetter) {
+    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+#if wxUSE_UNICODE
+      event.GetUnicodeKey() +
+#else
+      wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
+#endif
+      m_text.SubString(m_positionOfCaret, m_text.Length());
+    
+    m_positionOfCaret++;
       
+    if (m_matchParens)
+    {
       switch (keyCode)
       {
       case '(':
-        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
-                 m_text.SubString(start, end - 1) + wxT(")") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case '\"':
-        m_text = m_text.SubString(0, start - 1) +   wxT("\"") +
-                 m_text.SubString(start, end - 1) + wxT("\"") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case '{':
-        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
-                 m_text.SubString(start, end - 1) + wxT("}") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+          wxT(")") +
+          m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
       case '[':
-        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
-                 m_text.SubString(start, end - 1) + wxT("]") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+          wxT("]") +
+          m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
-      case ')':
-        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
-                 m_text.SubString(start, end - 1) + wxT(")") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
+      case '{':
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+          wxT("}") +
+          m_text.SubString(m_positionOfCaret, m_text.Length());
         break;
-      case '}':
-        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
-                 m_text.SubString(start, end - 1) + wxT("}") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
-        break;
-      case ']':
-        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
-                 m_text.SubString(start, end - 1) + wxT("]") +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
-        break;
-      default: // delete selection
-        m_text = m_text.SubString(0, start - 1) +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;
-        break;
-      }
-      ClearSelection();
-    } // end if (m_selectionStart > -1)
-
-// insert letter if we didn't insert brackets around selection
-  if (insertLetter) {
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-#if wxUSE_UNICODE
-               event.GetUnicodeKey() +
-#else
-               wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
-#endif
-               m_text.SubString(m_positionOfCaret, m_text.Length());
-
-      m_positionOfCaret++;
-      
-      if (m_matchParens)
-      {
-        switch (keyCode)
-        {
-        case '(':
+      case '"':
+        if (m_positionOfCaret < m_text.Length() &&
+            m_text.GetChar(m_positionOfCaret) == '"')
+          m_text = m_text.SubString(0, m_positionOfCaret - 2)+
+            m_text.SubString(m_positionOfCaret, m_text.Length());
+        else
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                   wxT(")") +
-                   m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case '[':
-          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                   wxT("]") +
-                   m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case '{':
-          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                   wxT("}") +
-                   m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case '"':
-          if (m_positionOfCaret < m_text.Length() &&
-              m_text.GetChar(m_positionOfCaret) == '"')
-            m_text = m_text.SubString(0, m_positionOfCaret - 2)+
-                      m_text.SubString(m_positionOfCaret, m_text.Length());
-          else
-            m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                       wxT("\"") + m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case ')': // jump over ')'
-          if (m_positionOfCaret < m_text.Length() &&
-              m_text.GetChar(m_positionOfCaret) == ')')
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-                       m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case ']': // jump over ']'
-          if (m_positionOfCaret < m_text.Length() &&
-              m_text.GetChar(m_positionOfCaret) == ']')
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-                       m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case '}': // jump over '}'
-          if (m_positionOfCaret < m_text.Length() &&
-              m_text.GetChar(m_positionOfCaret) == '}')
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) +
-                       m_text.SubString(m_positionOfCaret, m_text.Length());
-          break;
-        case '+':
+            wxT("\"") + m_text.SubString(m_positionOfCaret, m_text.Length());
+        break;
+      case ')': // jump over ')'
+        if (m_positionOfCaret < m_text.Length() &&
+            m_text.GetChar(m_positionOfCaret) == ')')
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+            m_text.SubString(m_positionOfCaret, m_text.Length());
+        break;
+      case ']': // jump over ']'
+        if (m_positionOfCaret < m_text.Length() &&
+            m_text.GetChar(m_positionOfCaret) == ']')
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+            m_text.SubString(m_positionOfCaret, m_text.Length());
+        break;
+      case '}': // jump over '}'
+        if (m_positionOfCaret < m_text.Length() &&
+            m_text.GetChar(m_positionOfCaret) == '}')
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) +
+            m_text.SubString(m_positionOfCaret, m_text.Length());
+        break;
+      case '+':
         // case '-': // this could mean negative.
-        case '*':
-        case '/':
-        case '^':
-        case '=':
-        case ',':
-          wxChar key = event.GetKeyCode();
-          size_t len = m_text.Length();
-          if (m_insertAns && len == 1 && m_positionOfCaret == 1)
-          {
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
-                     m_text.SubString(m_positionOfCaret - 1, m_text.Length());
-            m_positionOfCaret += 1;
-          }
-          break;
+      case '*':
+      case '/':
+      case '^':
+      case '=':
+      case ',':
+        wxChar key = event.GetKeyCode();
+        size_t len = m_text.Length();
+        if (m_insertAns && len == 1 && m_positionOfCaret == 1)
+        {
+          m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
+            m_text.SubString(m_positionOfCaret - 1, m_text.Length());
+          m_positionOfCaret += 1;
         }
+        break;
       }
-    } // end if (insertLetter)
-    break;
-  } // end switch (event.GetKeyCode())
+    }
+  } // end if (insertLetter)
 
-  if (m_type == MC_TYPE_INPUT)
-    FindMatchingParens();
-
-  if (m_isDirty)
-  {
-    m_width = m_maxDrop = -1;
-    StyleText();
-  }
-  m_displayCaret = true;
+  return true;
 }
 
 /**
@@ -2575,7 +2665,7 @@ void EditorCell::StyleText()
 
     if(m_firstLineOnly)
     {
-      size_t newlinepos = textToStyle.find(wxT("\n"));
+      size_t newlinepos = textToStyle.find(wxT("\nd"));
       if(newlinepos != wxNOT_FOUND)
       {
         textToStyle = textToStyle.Left(newlinepos) +

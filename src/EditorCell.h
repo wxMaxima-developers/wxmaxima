@@ -126,6 +126,7 @@ public:
   bool ActivateCell();
   //! Return the index of the 1st char of the line containing the letter #pos.
   size_t BeginningOfLine(size_t pos);
+  size_t EndOfLine(size_t pos);
   bool AddEnding();
   void PositionToXY(int pos, int* line, int* col);
   int XYToPosition(int x, int y);
@@ -277,6 +278,10 @@ private:
    */
   wxArrayString StringToTokens(wxString string);
 
+  bool HandleCtrlCommand(wxKeyEvent& ev);
+  bool HandleSpecialKey(wxKeyEvent& ev);
+  bool HandleOrdinaryKey(wxKeyEvent& ev);
+  
   bool IsAlpha(wxChar c);
   bool IsNum(wxChar c);
   bool IsAlphaNum(wxChar c);
