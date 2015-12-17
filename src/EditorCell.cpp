@@ -762,6 +762,7 @@ size_t EditorCell::EndOfLine(size_t pos)
   return pos;
 }
 
+#if defined __WXMAC__
 bool EditorCell::HandleCtrlCommand(wxKeyEvent& ev)
 {
   int code = ev.GetKeyCode();
@@ -820,11 +821,15 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent& ev)
   return done;
 }
 
+#endif // __WXMAC__
+
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   bool done = false;
 
+#if defined __WXMAC__
   done = HandleCtrlCommand(event);
+#endif
 
   if (!done)
     done = HandleSpecialKey(event);

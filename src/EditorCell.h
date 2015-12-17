@@ -278,7 +278,9 @@ private:
    */
   wxArrayString StringToTokens(wxString string);
 
+#if defined __WXMAC__
   bool HandleCtrlCommand(wxKeyEvent& ev);
+#endif
   bool HandleSpecialKey(wxKeyEvent& ev);
   bool HandleOrdinaryKey(wxKeyEvent& ev);
   
