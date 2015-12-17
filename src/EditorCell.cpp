@@ -780,6 +780,8 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent& ev)
     ClearSelection();
     SaveValue();
     size_t end = EndOfLine(m_positionOfCaret);
+    if (end == m_positionOfCaret)
+      end++;
     m_text = m_text.SubString(0, m_positionOfCaret-1) + m_text.SubString(end, m_text.length());
     m_isDirty = true;
     break;
