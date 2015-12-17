@@ -391,12 +391,25 @@ GroupCell *MathCtrl::UpdateMLast()
   return m_last;
 }
 
-void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
+void MathCtrl::ScrollToError()
 {
-  m_saved = false;
+  GroupCell *ErrorCell=GetLastWorkingGroup();
+  if(ErrorCell != NULL)
+  {
+    if (ErrorCell->RevealHidden())
+    {
+      FoldOccurred();
+      Recalculate(true);
+      if(FollowEvaluation())
+        SetHCaret(ErrorCell);
+    }
+  }
+}
 
+GroupCell *MathCtrl::GetLastWorkingGroup()
+{
   GroupCell *tmp = NULL;
-
+  
   if(m_workingGroup != NULL)
   {
     // TODO: In theory m_tree->Contains(m_workingGroup) should always be true.
@@ -432,7 +445,15 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   {
     tmp = m_last;
   }
-      
+  return tmp;
+}
+
+void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
+{
+  m_saved = false;
+
+  GroupCell *tmp=GetLastWorkingGroup();
+  
   // If we still don't have a place to put the line we give up.
   if (tmp == NULL)
     return;

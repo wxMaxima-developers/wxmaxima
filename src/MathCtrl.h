@@ -431,6 +431,10 @@ private:
 
 
 public:
+  //! Unfold the cell that produced the error, if necessary and, if requested, scroll to it
+  void ScrollToError();
+  //! Get the last known GroupCell maxima was working on
+  GroupCell *GetLastWorkingGroup();
   //! The find-and-replace-dialog
   wxFindReplaceDialog *m_findDialog;
   

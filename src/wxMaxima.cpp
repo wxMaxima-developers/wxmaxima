@@ -1011,6 +1011,7 @@ void wxMaxima::ReadMiscText(wxString &data)
          SetBatchMode(false);
          // Inform the user that the evaluation queue is empty.
          EvaluationQueueLength(0);
+         m_console->ScrollToError();
        }
      }
      else
@@ -1560,6 +1561,7 @@ void wxMaxima::ReadLispError(wxString &data)
       SetBatchMode(false);
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
+      m_console->ScrollToError();
     }
   }
 }
@@ -2391,6 +2393,7 @@ void wxMaxima::ReadStdErr()
       m_console->m_evaluationQueue->Clear();
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
+      m_console->ScrollToError();
     }
     else
       TryEvaluateNextInQueue();
@@ -5138,6 +5141,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       {
         m_console->m_evaluationQueue->Clear();
         StatusMaximaBusy(waiting);
+        m_console->ScrollToError();
       }
       else
       {
