@@ -845,8 +845,10 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         str = wxT("\n\\subsubsection{") + str + wxT("}\n");
         break;
       default:
-        if (str.StartsWith(wxT("TeX:")))
+        if (str.StartsWith(wxT("TeX:"))) {
+          str = GetEditable()->ToString();
           str = str.Mid(5, str.Length());
+          }
         else {
           str = str;
 	  str = MarkDownParser.MarkDown(str);
