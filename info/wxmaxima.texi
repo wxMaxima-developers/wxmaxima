@@ -445,7 +445,9 @@ A few hotkeys or hotkey aliases, though, are not documented in the menus:
 @item @code{Ctrl+Tab} or @code{Ctrl+Shift} triggers the auto-completion mechanism.
 @item @code{Ctrl+I} or @code{Ctrl+O} Zoom in or out.
 @end itemize
-
+@subsection Raw TeX in the TeX export
+If a text cell begins with @code{TeX:} the TeX export contains the literal text
+that follows the @cpde{TeX:} marker.
 @section  File Formats
 The material that is developed in a wxMaxima session can be stored for
 later use in any of three ways:
