@@ -404,6 +404,9 @@
 (defprop $conjugate wxxml-matchfix wxxml)
 (defprop $conjugate (("<cj>")"</cj>") wxxmlsym)
 
+(defprop %conjugate wxxml-matchfix wxxml)
+(defprop %conjugate (("<cj>")"</cj>") wxxmlsym)
+
 (defprop mbox wxxml-mbox wxxml)
 (defprop mlabox wxxml-mbox wxxml)
 
