@@ -1051,16 +1051,12 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     m_manager.GetPane(wxT("history")).Show(show);
     break;
   case menu_pane_structure:
-  {
     m_manager.GetPane(wxT("structure")).Show(show);
     m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
     break;
-  }
   case menu_pane_xmlInspector:
-  {
     m_manager.GetPane(wxT("XmlInspector")).Show(show);
     break;
-  }
   case menu_pane_stats:
     m_manager.GetPane(wxT("stats")).Show(show);
     break;
@@ -1086,6 +1082,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     m_manager.GetPane(wxT("symbols")).Show(false);
 #endif
     m_manager.GetPane(wxT("format")).Show(false);
+    ShowToolBar(false);
     break;
   default:
     wxASSERT(false);
