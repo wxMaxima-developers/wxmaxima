@@ -4337,6 +4337,8 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
+
+  m_saved = true;
 }
 
 bool MathCtrl::ExportToMAC(wxString file)
