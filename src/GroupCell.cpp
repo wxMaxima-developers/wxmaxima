@@ -703,7 +703,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
     }
   }
   else if (m_groupType == GC_TYPE_IMAGE)
-    str << wxT("\n\\vert|<<GRAPHICS>>|\n");
+    str << wxT("\n\\verb|<<GRAPHICS>>|\n");
 
   // CODE CELLS
   else if (m_groupType == GC_TYPE_CODE) {
@@ -720,15 +720,15 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
       {
         
         wxString input = m_input->m_next->ToTeX();
-        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
+        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}") +
           input +
-             wxT("\n\\end{minipage}");
+          wxT("\n\\end{verbatim}\\end{minipage}");
       }      
     }
     else str = wxEmptyString;
 
     if (m_output != NULL) {
-      str += wxT("%%% OUTPUT:\n");
+      str += wxT("\n%%% OUTPUT:\n");
       // Need to define labelcolor if this is Copy as LaTeX!
       if (imgCounter == NULL)
         str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
@@ -738,8 +738,10 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 
       while (tmp != NULL)
       {
-        if (tmp->GetType() == MC_TYPE_IMAGE || tmp->GetType() == MC_TYPE_SLIDE)
+        switch (tmp->GetType())
         {
+        case MC_TYPE_IMAGE:
+        case MC_TYPE_SLIDE:
           if (imgDir != wxEmptyString)
           {
             MathCell *copy = tmp->Copy();
@@ -778,85 +780,83 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
                 str << wxT("\n\\verb|<<GRAPHICS>>|\n");
             }
 	  }
-	}
-        else if ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL))
-        {
+          break;
+
+        case TS_LABEL:
+        case TS_USERLABEL:
 	  if(mathMode)
 	    str += wxT("\\]\n\\[\\displaystyle\n");
 	  else
-	    {
-	      str += wxT("\\[\\displaystyle\n");
-	      mathMode=true;
-	    }
+          {
+            str += wxT("\\[\\displaystyle\n");
+            mathMode = true;
+          }
           str += wxT("\\printlabel{") + tmp->ToTeX() + wxT("}\n");
+          break;
+
+        case TS_STRING:
+          if (mathMode)
+          {
+            str += wxT("\n\\]");
+            mathMode = false;
+          }
+          str += TexEscapeOutputCell(tmp->ToTeX()) + wxT("\n");
+          break;
+          
+        default:
+          if(!mathMode)
+          {
+            str += wxT("\\[\\displaystyle\n");
+            mathMode = true;
+          }
+          str += tmp->ToTeX();
+          break;
         }
-	
-        else
-	  {
-	    if((tmp->GetStyle() == TS_DEFAULT)||(tmp->GetStyle() == TS_STRING))
-	      {
-		// We either got a bracket or a parenthesis or regular Text
-		// that shouldn't be displayed as math.
-		if((mathMode)&&(tmp->ToString().Length()>2))
-		  {
-		    str += wxT("\\mbox{}");
-		    str += wxT("\n\\]\n");
-		    mathMode = false;
-		  }
-	      }
-	    else
-	      {
-		if(!mathMode)
-		  {
-		    str += wxT("\\[\\displaystyle\n");
-		    mathMode = true;
-		  }
-	      }		
-	    str += TexEscapeOutputCell(tmp->ToTeX());
-	  }
+
         tmp = tmp->m_nextToDraw;
       }
+      
       if(mathMode)
-	{
-	  // Some invisible dummy content that keeps TeX happy if there really is
-	  // no output to display.
-	  str += wxT("\\mbox{}");
-	  str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
-	}
+      {
+        // Some invisible dummy content that keeps TeX happy if there really is
+        // no output to display.
+        str += wxT("\\mbox{}");
+        str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
+      }
     }
   }
-
+  
   // TITLES, SECTIONS, SUBSECTIONS, SUBSUBSECTIONS, TEXT
   else if (GetEditable() != NULL && !m_hide) {
     str = GetEditable()->ListToTeX();
     switch (GetEditable()->GetStyle()) {
-      case TS_TITLE:
-        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
-        str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
-        str += wxT("\\setcounter{figure}{0}\n");
-        break;
-      case TS_SECTION:
-        str = wxT("\n\\section{") + str + wxT("}\n");
-        break;
-      case TS_SUBSECTION:
-        str = wxT("\n\\subsection{") + str + wxT("}\n");
-        break;
-      case TS_SUBSUBSECTION:
-        str = wxT("\n\\subsubsection{") + str + wxT("}\n");
-        break;
-      default:
-        if (str.StartsWith(wxT("TeX:"))) {
-          str = GetEditable()->ToString();
-          str = str.Mid(5, str.Length());
-          }
-        else {
-          str = str;
-	  str = MarkDownParser.MarkDown(str);
-        }
-        break;
+    case TS_TITLE:
+      str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
+      str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
+      str += wxT("\\setcounter{figure}{0}\n");
+      break;
+    case TS_SECTION:
+      str = wxT("\n\\section{") + str + wxT("}\n");
+      break;
+    case TS_SUBSECTION:
+      str = wxT("\n\\subsection{") + str + wxT("}\n");
+      break;
+    case TS_SUBSUBSECTION:
+      str = wxT("\n\\subsubsection{") + str + wxT("}\n");
+      break;
+    default:
+      if (str.StartsWith(wxT("TeX:"))) {
+        str = GetEditable()->ToString();
+        str = str.Mid(5, str.Length());
+      }
+      else {
+        str = str;
+        str = MarkDownParser.MarkDown(str);
+      }
+      break;
     }
   }
-    
+  
   return str;
 }
 
