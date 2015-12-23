@@ -665,6 +665,7 @@ wxString GroupCell::ToTeX()
   return ToTeX(wxEmptyString, wxEmptyString, NULL);
 }
 
+
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
@@ -672,128 +673,136 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   // Now we might want to introduce some markdown:
   MarkDownTeX MarkDownParser;
 
+  switch (m_groupType)
+  {
+  case GC_TYPE_PAGEBREAK:
+    str = wxT("\\pagebreak\n");
+    SuppressLeadingNewlines = true;
+    break;
+
+  case GC_TYPE_IMAGE:
+    if (imgDir != wxEmptyString) {
+      MathCell *copy = m_output->Copy();
+      (*imgCounter)++;
+      wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
+      wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
+
+      if (!wxDirExists(imgDir))
+        wxMkdir(imgDir);
+
+      if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
+      {
+        str << wxT("\\begin{figure}[htb]\n")
+            << wxT("  \\begin{center}\n")
+            << wxT("    \\includeimage{")
+            << filename << wxT("_img/") << image << wxT("}\n")
+            << wxT("  \\caption{") << m_input->m_next->ToTeX() << wxT("}\n")
+            << wxT("  \\end{center}\n")
+            << wxT("\\end{figure}\n");
+      }
+    }
+    else
+      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+    break;
+
+  case GC_TYPE_CODE:
+    str = ToTeXCodeCell(imgDir, filename, imgCounter);
+    break;
+    
+  default:
+    if (GetEditable() != NULL && !m_hide) {
+      str = GetEditable()->ListToTeX();
+      switch (GetEditable()->GetStyle()) {
+      case TS_TITLE:
+        str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
+        str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
+        str += wxT("\\setcounter{figure}{0}\n");
+        break;
+      case TS_SECTION:
+        str = wxT("\n\\section{") + str + wxT("}\n");
+        break;
+      case TS_SUBSECTION:
+        str = wxT("\n\\subsection{") + str + wxT("}\n");
+        break;
+      case TS_SUBSUBSECTION:
+        str = wxT("\n\\subsubsection{") + str + wxT("}\n");
+        break;
+      default:
+        if (str.StartsWith(wxT("TeX:"))) {
+          str = GetEditable()->ToString();
+          str = str.Mid(5, str.Length());
+        }
+        else {
+          str = MarkDownParser.MarkDown(str);
+        }
+        break;
+      }
+    }
+    break;
+  }
+  
+  return str;
+}
+
+wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter)
+{
+  wxString str;
   bool exportInput = true;
   wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
 
-  // pagebreak
-  if (m_groupType == GC_TYPE_PAGEBREAK) {
-    str = wxT("\\pagebreak\n");
-    SuppressLeadingNewlines = true;
-  }
-
-  // IMAGE CELLS
-  else if (m_groupType == GC_TYPE_IMAGE && imgDir != wxEmptyString) {
-    MathCell *copy = m_output->Copy();
-    (*imgCounter)++;
-    wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
-    wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
-
-    if (!wxDirExists(imgDir))
-      wxMkdir(imgDir);
-
-    if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
+  // Input cells
+  if(exportInput)
+  {
+    str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
+      wxT("%%% INPUT:\n")
+      wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
+      m_input->ToTeX() +
+      wxT("\n\\end{minipage}");      
+    if (m_input->m_next!=NULL)
     {
-      str << wxT("\\begin{figure}[htb]\n")
-          << wxT("  \\begin{center}\n")
-          << wxT("    \\includeimage{")
-          << filename << wxT("_img/") << image << wxT("}\n")
-          << wxT("  \\caption{") << m_input->m_next->ToTeX() << wxT("}\n")
-          << wxT("  \\end{center}\n")
-          << wxT("\\end{figure}\n");
-    }
-  }
-  else if (m_groupType == GC_TYPE_IMAGE)
-    str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-
-  // CODE CELLS
-  else if (m_groupType == GC_TYPE_CODE) {
-    // Input cells
-    if(exportInput)
-    {
-      str = wxT("\\noindent\n%%%%%%%%%%%%%%%\n")
-        wxT("%%% INPUT:\n")
-        wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
-        m_input->ToTeX() +
-        wxT("\n\\end{minipage}");
       
-      if (m_input->m_next!=NULL)
+      wxString input = m_input->m_next->ToString();
+      str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}") +
+        input +
+        wxT("\n\\end{verbatim}\\end{minipage}");
+    }      
+  }
+
+  if (m_output != NULL) {
+    str += wxT("\n%%% OUTPUT:\n");
+    // Need to define labelcolor if this is Copy as LaTeX!
+    if (imgCounter == NULL)
+      str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
+    
+    MathCell *tmp = m_output;
+    
+    bool mathMode = false;
+    
+    while (tmp != NULL)
+    {
+
+      if (tmp->GetType() == MC_TYPE_IMAGE ||
+          tmp->GetType() == MC_TYPE_SLIDE)
       {
-        
-        wxString input = m_input->m_next->ToTeX();
-        str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}") +
-          input +
-          wxT("\n\\end{verbatim}\\end{minipage}");
-      }      
-    }
-    else str = wxEmptyString;
-
-    if (m_output != NULL) {
-      str += wxT("\n%%% OUTPUT:\n");
-      // Need to define labelcolor if this is Copy as LaTeX!
-      if (imgCounter == NULL)
-        str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
-      MathCell *tmp = m_output;
-
-      bool mathMode = false;
-
-      while (tmp != NULL)
+        str << ToTeXImage(tmp, imgDir, filename, imgCounter);
+      }
+      else
       {
-        switch (tmp->GetType())
+        switch (tmp->GetStyle())
         {
-        case MC_TYPE_IMAGE:
-        case MC_TYPE_SLIDE:
-          if (imgDir != wxEmptyString)
-          {
-            MathCell *copy = tmp->Copy();
-            (*imgCounter)++;
-            wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);	    
-            if (!wxDirExists(imgDir))
-              if (!wxMkdir(imgDir))
-                continue;
-	    
-	    // Do we want to output LaTeX animations?
-	    bool AnimateLaTeX=true;
-	    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-	    if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
-            {
-              SlideShow* src=(SlideShow *)tmp;
-              str << wxT("\\begin{animateinline}{")+wxString::Format(wxT("%i"), src->GetFrameRate())+wxT("}\n");
-              for(int i=0;i<src->Length();i++)
-              {
-                wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i"), i);
-                if((src->GetBitmap(i)).SaveFile(Frame+wxT(".png")))
-                  str << wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{")+Frame+wxT("}\n");
-                else
-                  str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-                if(i<src->Length()-1)
-                  str << wxT("\\newframe");
-              }
-              str << wxT("\\end{animateinline}");
-            }
-	    else
-            {
-              wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
-              if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
-                str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
-                  filename + wxT("_img/") + image + wxT("}");
-              else
-                str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-            }
-	  }
-          break;
-
+      
         case TS_LABEL:
         case TS_USERLABEL:
-	  if(mathMode)
-	    str += wxT("\\]\n\\[\\displaystyle\n");
-	  else
+          if(mathMode)
+          str += wxT("\\]\n\\[\\displaystyle\n");
+          else
           {
             str += wxT("\\[\\displaystyle\n");
             mathMode = true;
           }
           str += wxT("\\printlabel{") + tmp->ToTeX() + wxT("}\n");
           break;
-
+        
         case TS_STRING:
           if (mathMode)
           {
@@ -802,7 +811,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           }
           str += TexEscapeOutputCell(tmp->ToTeX()) + wxT("\n");
           break;
-          
+        
         default:
           if(!mathMode)
           {
@@ -812,51 +821,66 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           str += tmp->ToTeX();
           break;
         }
-
-        tmp = tmp->m_nextToDraw;
       }
       
-      if(mathMode)
+      tmp = tmp->m_nextToDraw;
+    }
+    
+    if(mathMode)
+    {
+      // Some invisible dummy content that keeps TeX happy if there really is
+      // no output to display.
+      str += wxT("\\mbox{}");
+      str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
+    }
+  }
+  
+  return str;
+}
+
+wxString GroupCell::ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename, int *imgCounter)
+{
+  wxString str;
+  
+  if (imgDir != wxEmptyString)
+  {
+    MathCell *copy = tmp->Copy();
+    (*imgCounter)++;
+    wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);	    
+    if (!wxDirExists(imgDir))
+      if (!wxMkdir(imgDir))
+        return wxEmptyString;
+    
+    // Do we want to output LaTeX animations?
+    bool AnimateLaTeX=true;
+    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
+    if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
+    {
+      SlideShow* src=(SlideShow *)tmp;
+      str << wxT("\\begin{animateinline}{")+wxString::Format(wxT("%i"), src->GetFrameRate())+wxT("}\n");
+      for(int i=0;i<src->Length();i++)
       {
-        // Some invisible dummy content that keeps TeX happy if there really is
-        // no output to display.
-        str += wxT("\\mbox{}");
-        str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
+        wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i"), i);
+        if((src->GetBitmap(i)).SaveFile(Frame+wxT(".png")))
+          str << wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{")+Frame+wxT("}\n");
+        else
+          str << wxT("\n\\verb|<<GRAPHICS>>|\n");
+        if(i<src->Length()-1)
+          str << wxT("\\newframe");
       }
+      str << wxT("\\end{animateinline}");
+    }
+    else
+    {
+      wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell*>(copy)->GetExtension();
+      if (dynamic_cast<ImgCell*>(copy)->ToImageFile(file).x>=0)
+        str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
+          filename + wxT("_img/") + image + wxT("}");
+      else
+        str << wxT("\n\\verb|<<GRAPHICS>>|\n");
     }
   }
-  
-  // TITLES, SECTIONS, SUBSECTIONS, SUBSUBSECTIONS, TEXT
-  else if (GetEditable() != NULL && !m_hide) {
-    str = GetEditable()->ListToTeX();
-    switch (GetEditable()->GetStyle()) {
-    case TS_TITLE:
-      str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
-      str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
-      str += wxT("\\setcounter{figure}{0}\n");
-      break;
-    case TS_SECTION:
-      str = wxT("\n\\section{") + str + wxT("}\n");
-      break;
-    case TS_SUBSECTION:
-      str = wxT("\n\\subsection{") + str + wxT("}\n");
-      break;
-    case TS_SUBSUBSECTION:
-      str = wxT("\n\\subsubsection{") + str + wxT("}\n");
-      break;
-    default:
-      if (str.StartsWith(wxT("TeX:"))) {
-        str = GetEditable()->ToString();
-        str = str.Mid(5, str.Length());
-      }
-      else {
-        str = str;
-        str = MarkDownParser.MarkDown(str);
-      }
-      break;
-    }
-  }
-  
+
   return str;
 }
 

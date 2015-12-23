@@ -88,6 +88,8 @@ public:
   void RemoveOutput();
   // exporting
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename, int *imgCounter);
   wxString ToTeX();
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
