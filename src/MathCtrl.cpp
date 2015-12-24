@@ -2270,7 +2270,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
-      GroupCell *next;
       SetActiveCell(NULL);
       Refresh();
     }
@@ -2322,7 +2321,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
-      GroupCell *previous;
       SetActiveCell(NULL);
       Refresh();
     }
@@ -3040,8 +3038,6 @@ bool MathCtrl::CopyBitmap() {
 
 wxSize MathCtrl::CopyToFile(wxString file) {
 
-  bool success;
-  
   if (m_selectionStart != NULL &&
       m_selectionStart == m_selectionEnd &&
       (m_selectionStart->GetType() == MC_TYPE_IMAGE ||
@@ -4509,7 +4505,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
 
   // Determine which cell the cursor is at.
   long ActiveCellNumber = 1;
-  GroupCell *cursorCell;
+  GroupCell *cursorCell = NULL;
   if(m_hCaretActive)
   {
     cursorCell = GetHCaret();
@@ -4525,10 +4521,12 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
       cursorCell = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
   }
 
+  if(cursorCell == NULL)
+    ActiveCellNumber = 0;
   // We want to save the information that the cursor is in the nth cell.
   // Count the cells until then.
   GroupCell *tmp = GetTree();
-  if(tmp == 0)
+  if(tmp == NULL)
     ActiveCellNumber = -1;
   if(ActiveCellNumber > 0)
   {
@@ -5917,7 +5915,7 @@ bool MathCtrl::CaretVisibleIs()
 {
   if(m_hCaretActive)
   {
-    int y;
+    int y=-1;
     if(m_hCaretPosition)
       y=m_hCaretPosition->GetCurrentY();
 

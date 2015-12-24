@@ -519,7 +519,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     SetFont(parser, fontsize);
 
     wxPoint TextStartingpoint = point;
-    int labelwidth, labelheight;
     // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
     TextStartingpoint.x += SCALE_PX(2, scale);
     TextStartingpoint.y += SCALE_PX(2, scale);
@@ -2085,7 +2084,7 @@ wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
   SetFont(parser, m_fontSize);
 
   int x = m_currentPoint.x, y = m_currentPoint.y;
-  int height, width;
+  int width;
   int cX, cY;
   wxString line = wxEmptyString;
 

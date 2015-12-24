@@ -5372,9 +5372,7 @@ void wxMaxima::ResetTitle(bool saved,bool force)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-  int displayedIndex;
-  int lastIndex;
-    int m_slideShowDisplayedIndex;
+  int m_slideShowDisplayedIndex;
   //! The length of the current slideshow at the last call of UpdateSlider()
   int m_slideShowMaxIndex;
 
