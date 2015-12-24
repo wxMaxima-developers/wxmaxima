@@ -134,7 +134,7 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     da.po da.mo wxwin/da.mo \
 	     cs.po cs.mo wxwin/cs.mo \
 	     el.po el.mo wxwin/el.mo \
-	     fi.po el.mo wxwin/fi.mo \
+	     fi.po el.mo \
 	     ja.po ja.mo wxwin/ja.mo \
 	     ca.po ca.mo wxwin/ca.mo \
 	     gl.po gl.mo wxwin/gl.mo \

@@ -206,7 +206,7 @@ void ConfigDialogue::SetProperties()
   wxString texPreamble=wxEmptyString;
   wxString documentclass=wxT("article");
 #ifdef wxUSE_UNICODE
-  wxString symbolPaneAdditionalChars=wxT("Øü");
+  wxString symbolPaneAdditionalChars=wxT("üØ");
 #endif
   int autoSaveInterval = 0;
   

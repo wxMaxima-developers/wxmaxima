@@ -5180,26 +5180,80 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     m_console->Autocomplete(AutoComplete::tmplte);
     return ;
     break;
+  case menu_convert_to_code:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToCode\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_CODE);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
+    break;
+  case menu_convert_to_comment:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToComment\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TEXT);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
+    break;
   case menu_add_comment:
   case MathCtrl::popid_add_comment:
   case menu_format_text:
   case MathCtrl::popid_insert_text:
     type = GC_TYPE_TEXT;
     break;
+  case menu_convert_to_title:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToTitle\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TITLE);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
+    break;
   case menu_add_title:
   case menu_format_title:
   case MathCtrl::popid_insert_title:
     type = GC_TYPE_TITLE;
+    break;
+  case menu_convert_to_section:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToComment\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SECTION);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
     break;
   case menu_add_section:
   case menu_format_section:
   case MathCtrl::popid_insert_section:
     type = GC_TYPE_SECTION;
     break;
+  case menu_convert_to_subsection:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToComment\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSECTION);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
+    break;
   case menu_add_subsection:
   case menu_format_subsection:
   case MathCtrl::popid_insert_subsection:
     type = GC_TYPE_SUBSECTION;
+    break;
+  case menu_convert_to_subsubsection:
+    if(m_console->GetActiveCell())
+    {
+      std::cerr<<"ConvertToComment\n";
+      m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSUBSECTION);
+      m_console->Recalculate(true);
+      m_console->Refresh();
+    }
     break;
   case menu_add_subsubsection:
   case menu_format_subsubsection:

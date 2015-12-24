@@ -2807,6 +2807,22 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
   }
 
+  if (event.CmdDown() && event.AltDown())
+  {
+    if(
+      (event.GetKeyCode() == WXK_ESCAPE) ||
+      (event.GetKeyCode() == wxT('1')) ||
+      (event.GetKeyCode() == wxT('2')) ||
+      (event.GetKeyCode() == wxT('3')) ||
+      (event.GetKeyCode() == wxT('4')) ||
+      (event.GetKeyCode() == wxT('5'))
+      )
+    {
+      event.Skip();
+      return;
+    }
+  }
+
   // If the find dialogue is open we use the ESC key as a hotkey that closes
   // the dialogue. If it isn't it is used as part of the shortcuts for
   // entering unicode characters instead.

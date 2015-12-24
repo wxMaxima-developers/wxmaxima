@@ -61,14 +61,20 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   StatusMaximaBusy(waiting);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[6];
+  wxAcceleratorEntry entries[11];
   entries[0].Set(wxACCEL_CTRL,  WXK_TAB,    menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL,  WXK_SPACE,  menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_TAB,    menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL|wxACCEL_SHIFT,  WXK_SPACE,  menu_autocomplete_templates);
   entries[4].Set(wxACCEL_ALT,  wxT('I'),   MathCtrl::menu_zoom_in);
   entries[5].Set(wxACCEL_ALT,  wxT('O'),   MathCtrl::menu_zoom_out);
-  wxAcceleratorTable accel(6, entries);
+  entries[6].Set(wxACCEL_CTRL|wxACCEL_SHIFT, WXK_ESCAPE,  menu_convert_to_code);
+  entries[6].Set(wxACCEL_CTRL|wxACCEL_SHIFT, wxT('1'),  menu_convert_to_comment);
+  entries[7].Set(wxACCEL_CTRL|wxACCEL_SHIFT, wxT('2'),  menu_convert_to_title);
+  entries[8].Set(wxACCEL_CTRL|wxACCEL_SHIFT, wxT('3'),  menu_convert_to_section);
+  entries[9].Set(wxACCEL_CTRL|wxACCEL_SHIFT, wxT('4'),  menu_convert_to_subsection);
+  entries[10].Set(wxACCEL_CTRL|wxACCEL_SHIFT, wxT('5'),  menu_convert_to_subsubsection);
+  wxAcceleratorTable accel(11, entries);
   SetAcceleratorTable(accel);
 
   set_properties();
