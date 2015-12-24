@@ -745,8 +745,6 @@ void ConfigDialogue::WriteSettings()
   int i = 0;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
-  bool abortOnError = m_abortOnError->GetValue();
-  bool pollStdOut   = m_pollStdOut->GetValue();
   wxString maxima = m_maximaProgram->GetValue();
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
