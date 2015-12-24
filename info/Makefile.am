@@ -4,14 +4,17 @@ info_TEXINFOS = wxmaxima.texi
 wxmaxima_TEXINFOS = wxmaxima.texi
 
 figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
-figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg SidePanes.jpg ezUnits.jpg
+figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg wxMaximaLogo.png SidePanes.jpg ezUnits.jpg
 figurefiles += BatchImage.jpg wxMaxima_configuration_001.jpg wxMaxima_configuration_002.jpg
+figurefiles += wxMaxima_configuration_001.png wxMaxima_configuration_002.png sbclMemory.png
+figurefiles += sbclMemory.jpg ezUnits.png BatchImage.png Autocomplete1.jpg Autocomplete2.jpg
 
 # install-data-local:install-html
 
 pdffigures =  NoiseFilter.pdf maxima_screenshot.pdf InputCell.pdf
 pdffigures += wxMaximaWindow.pdf wxMaximaLogo.pdf SidePanes.pdf ezUnits.pdf
 pdffigures += BatchImage.pdf wxMaxima_configuration_001.pdf wxMaxima_configuration_002.pdf
+pdffigures += sbclMemory.pdf Autocomplete1.pdf Autocomplete2.pdf 
 
 # %.jpg: %.png
 # 	pngtopnm $<|cjpeg > $@
@@ -64,10 +67,10 @@ endif
 
 
 EXTRA_DIST = manual.css $(html_DATA)\
-    $(genericdirDATA) $(pdffigures) \
+    $(genericdirDATA) $(figurefiles) $(pdffigures) \
     wxmaximaicon.ico \
     wxmaxima.info \
-    $(html_DATA)
+    $(html_DATA) wxMaximaWindow.wxmx texinfo.tex
 
 .chm:.hhp
 	-"$(HHC)" $<

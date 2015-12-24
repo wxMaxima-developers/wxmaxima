@@ -10,7 +10,7 @@ index.html:
 	echo "</head>">>index.html
 
 
-EXTRA_DIST =
+EXTRA_DIST = wxmaxima.png
 
 pdf-am: html/index.html
 	cd latex&&pdflatex refman.tex
