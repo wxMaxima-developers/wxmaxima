@@ -485,31 +485,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     SetupVariables();
   }
 
-#if wxUSE_UNICODE
-  s.Replace(wxT("\x00B2"), wxT("^2"));
-  s.Replace(wxT("\x00B3"), wxT("^3"));
-  s.Replace(wxT("\x00BD"), wxT("(1/2)"));
-  s.Replace(wxT("\x221A"), wxT("sqrt"));
-  s.Replace(wxT("\x03C0"), wxT("%pi"));
-  s.Replace(wxT("\x2148"), wxT("%i"));
-  s.Replace(wxT("\x2147"), wxT("%e"));
-  s.Replace(wxT("\x221E"), wxT("inf"));
-  s.Replace(wxT("\x22C0"), wxT(" and "));
-  s.Replace(wxT("\x22C1"), wxT(" or "));
-  s.Replace(wxT("\x22BB"), wxT(" xor "));
-  s.Replace(wxT("\x22BC"), wxT(" nand "));
-  s.Replace(wxT("\x22BD"), wxT(" nor "));
-  s.Replace(wxT("\x21D2"), wxT(" implies "));
-  s.Replace(wxT("\x21D4"), wxT(" equiv "));
-  s.Replace(wxT("\x00AC"), wxT(" not "));
-  s.Replace(wxT("\x2260"), wxT(" # "));
-  s.Replace(wxT("\x2264"), wxT(" <= "));
-  s.Replace(wxT("\x2265"), wxT(" >= "));
-  s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
-  s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
-
-#endif
-
+  s = m_console->UnicodeToMaxima(s);
+  
   // If there is no working group and we still are trying to send something
   // we are trying to change maxima's settings from the background and might never
   // get an answer that changes the status again.

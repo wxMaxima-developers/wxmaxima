@@ -51,7 +51,6 @@ private:
   size_t m_lastTop;
   //! The last ending for the area being drawn
   size_t m_lastBottom;
-
   /*! \defgroup UndoBufferFill
 
     These methods and classes contain the undo functionality for tree changes:
@@ -431,6 +430,13 @@ private:
 
 
 public:
+  /*! Make a few unicode characters interpretable by maxima.
+    
+    Does convert the not equal sign to a '#' and similar.
+
+    \todo We perhaps could think of only doing this outside of strings.
+   */
+  wxString UnicodeToMaxima(wxString s);
   //! Unfold the cell that produced the error, if necessary and, if requested, scroll to it
   void ScrollToError();
   //! Get the last known GroupCell maxima was working on

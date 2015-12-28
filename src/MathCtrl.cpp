@@ -4228,6 +4228,34 @@ bool MathCtrl::ExportToTeX(wxString file) {
   return done;
 }
 
+wxString MathCtrl::UnicodeToMaxima(wxString s)
+{
+#if wxUSE_UNICODE
+  s.Replace(wxT("\x00B2"), wxT("^2"));
+  s.Replace(wxT("\x00B3"), wxT("^3"));
+  s.Replace(wxT("\x00BD"), wxT("(1/2)"));
+  s.Replace(wxT("\x221A"), wxT("sqrt"));
+  s.Replace(wxT("\x03C0"), wxT("%pi"));
+  s.Replace(wxT("\x2148"), wxT("%i"));
+  s.Replace(wxT("\x2147"), wxT("%e"));
+  s.Replace(wxT("\x221E"), wxT("inf"));
+  s.Replace(wxT("\x22C0"), wxT(" and "));
+  s.Replace(wxT("\x22C1"), wxT(" or "));
+  s.Replace(wxT("\x22BB"), wxT(" xor "));
+  s.Replace(wxT("\x22BC"), wxT(" nand "));
+  s.Replace(wxT("\x22BD"), wxT(" nor "));
+  s.Replace(wxT("\x21D2"), wxT(" implies "));
+  s.Replace(wxT("\x21D4"), wxT(" equiv "));
+  s.Replace(wxT("\x00AC"), wxT(" not "));
+  s.Replace(wxT("\x2260"), wxT(" # "));
+  s.Replace(wxT("\x2264"), wxT(" <= "));
+  s.Replace(wxT("\x2265"), wxT(" >= "));
+  s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
+  s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
+#endif
+  return s;
+}
+
 void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
 {
   GroupCell* tmp = dynamic_cast<GroupCell*>(tree);
@@ -4271,6 +4299,12 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
         if (input.Length()>0) {
           if (wxm)
             AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
+
+          // Convert all unicode characters that have a direct representation in
+          // maxima to maxima's code.
+          if (!wxm)
+            input = UnicodeToMaxima(input);
+          
           AddLineToFile(output, input, false);
           if (wxm)
             AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
