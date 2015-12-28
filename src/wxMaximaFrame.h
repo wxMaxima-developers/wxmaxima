@@ -445,8 +445,17 @@ private:
   wxPanel *CreateMathPane();
   wxPanel *CreateFormatPane();
 
-  //! A button for the greek pane
-  wxPanel *CharButton(wxPanel *parent,wxChar ch,wxString description=wxEmptyString);
+  /*! A button for the greek pane
+    
+    \param parent The parent panel/window
+    \param ch The unicode symbol
+    \param description The help text for the symbol
+    \param matchesMaximaCommand true means that this symbol is automatically
+                                translated into a maxima command/operator
+
+   */
+  wxPanel *CharButton(wxPanel *parent,wxChar ch,wxString description=wxEmptyString,
+                      bool matchesMaximaCommand = false);
 #ifdef wxUSE_UNICODE
   wxPanel *CreateGreekPane();
   wxPanel *CreateSymbolsPane();

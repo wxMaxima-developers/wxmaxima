@@ -1200,7 +1200,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
   m_console->InsertText(ch_string);
 }
 
-wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description)
+wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description,bool matchesMaximaCommand)
 {
   wxPanel *panel = new wxPanel(parent,ch);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -1211,6 +1211,56 @@ wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString descriptio
     text->SetToolTip(description);
   text->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
   panel->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
+
+  if(matchesMaximaCommand)
+  {
+    wxColour backgroundcolor = panel->GetBackgroundColour();
+
+    if(backgroundcolor.Alpha()<255)
+    {
+          panel->SetBackgroundColour(
+            wxColor(
+              backgroundcolor.Red(),
+              backgroundcolor.Green(),
+              backgroundcolor.Blue(),
+              1-(1-backgroundcolor.Alpha())*.9
+              )
+            );
+    }
+    else
+    {
+      if(backgroundcolor.Red()>=128)
+      {
+        if(backgroundcolor.Red()<255)
+        {
+          panel->SetBackgroundColour(wxColor(255,255,255));
+        }
+        else
+        {
+          panel->SetBackgroundColour(
+            wxColor(
+              255-.9*(255-backgroundcolor.Red()),
+              255-.9*(255-backgroundcolor.Green()),
+              255-.9*(255-backgroundcolor.Blue())
+              )
+            );
+        }
+      }
+      else
+      {
+        if(backgroundcolor.Red()>0)
+          panel->SetBackgroundColour(wxColor(0,0,0));
+        else
+          panel->SetBackgroundColour(
+            wxColor(
+              10,
+              10,
+              10
+              )
+            );
+      }
+    }
+  }
   panel->SetSizerAndFit(vbox);
   return panel;
 }
@@ -1309,26 +1359,28 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
 
   wxPanel *lowercasePanel = new wxPanel(panel, -1);
   wxGridSizer *lowercase = new wxGridSizer(8);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00BD')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221A')),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00BD'),_("1/2"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00B2'),_("to the power of 2"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00B3'),_("to the power of 3"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221A'),_("sqrt (needs parenthesis for its argument to work as a maxima command)"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2148')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2147')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x210F')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2208'),_("in")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2203'),_("exists")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2204'),_("there is no")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D2'),_("\"implies\" symbol")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221E'),_("Infinity")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D2'),_("\"implies\" symbol"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x221E'),_("Infinity"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2205'),_("empty")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x25b6')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x25b8')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C0'),_("and")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C1'),_("or")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BB'),_("xor")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BC'),_("nand")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BD'),_("nor")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D4'),_("equivalent")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00AC'),_("not")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C0'),_("and"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C1'),_("or"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BB'),_("xor"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BC'),_("nand"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BD'),_("nor"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D4'),_("equivalent"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00AC'),_("not"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C3'),_("union")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C2'),_("intersection")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2286'),_("subset or equal")),0,wxALL | wxEXPAND,2);
@@ -1341,9 +1393,9 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x222b'),_("Integral sign")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x221d'),_("proportional to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260'),_("not bytewise identical")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2264'),_("less or equal")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2265'),_("greater than or equal")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2260'),_("not bytewise identical"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2264'),_("less or equal"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x2265'),_("greater than or equal"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x226A'),_("much less than")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x226B'),_("much greater than")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);

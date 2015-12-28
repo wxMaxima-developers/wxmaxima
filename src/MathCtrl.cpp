@@ -4236,8 +4236,8 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\x00BD"), wxT("(1/2)"));
   s.Replace(wxT("\x221A"), wxT("sqrt"));
   s.Replace(wxT("\x03C0"), wxT("%pi"));
-  s.Replace(wxT("\x2148"), wxT("%i"));
-  s.Replace(wxT("\x2147"), wxT("%e"));
+//  s.Replace(wxT("\x2148"), wxT("%i"));
+//  s.Replace(wxT("\x2147"), wxT("%e"));
   s.Replace(wxT("\x221E"), wxT("inf"));
   s.Replace(wxT("\x22C0"), wxT(" and "));
   s.Replace(wxT("\x22C1"), wxT(" or "));

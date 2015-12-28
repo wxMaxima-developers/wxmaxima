@@ -5022,6 +5022,11 @@ void wxMaxima::TryEvaluateNextInQueue()
     return ;
   }
 
+  // Initialize maxima if necessary.
+  if (!m_variablesOK) {
+    m_variablesOK = true;
+    SetupVariables();
+  }
   
   // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *tmp = m_console->m_evaluationQueue->GetCell();
