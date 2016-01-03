@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 15:33+0100\n"
+"POT-Creation-Date: 2016-01-03 22:42+0100\n"
 "PO-Revision-Date: 2015-02-11 15:52+0900\n"
 "Last-Translator: matcha-zaq <Matcha_zaq@excite.co.jp>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -70,7 +70,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1138
+#: ../src/MathParser.cpp:1123
 msgid " << Expression too long to display! >>"
 msgstr ""
 " <<出力結果が長過ぎて表示できません！>> （もし表示したい場合は、メニューバー"
@@ -601,7 +601,7 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathParser.cpp:64 ../src/MathParser.cpp:1040
+#: ../src/MathParser.cpp:64
 #, c-format
 msgid "Bug: Found unexpected text between XML nodes: %s"
 msgstr ""
@@ -2860,7 +2860,7 @@ msgstr "部分分数分解"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "ドキュメントの一部は正確に読み込まれないでしょう！"
 
-#: ../src/MathParser.cpp:1062
+#: ../src/MathParser.cpp:1047
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
@@ -4138,8 +4138,8 @@ msgstr "標本分散"
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1062 ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519
-#: ../src/wxMaxima.cpp:1689
+#: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
+#: ../src/MathParser.cpp:1047
 msgid "Warning"
 msgstr "Warning"
 

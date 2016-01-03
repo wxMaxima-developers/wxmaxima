@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 15:33+0100\n"
+"POT-Creation-Date: 2016-01-03 22:42+0100\n"
 "PO-Revision-Date: 2015-04-10 17:44+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1138
+#: ../src/MathParser.cpp:1123
 msgid " << Expression too long to display! >>"
 msgstr "<< Espressione troppo lunga da visualizzare! >>"
 
@@ -595,7 +595,7 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathParser.cpp:64 ../src/MathParser.cpp:1040
+#: ../src/MathParser.cpp:64
 #, c-format
 msgid "Bug: Found unexpected text between XML nodes: %s"
 msgstr ""
@@ -2851,7 +2851,7 @@ msgstr "Frazioni parziali"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Parti del documento non saranno caricate correttamente!"
 
-#: ../src/MathParser.cpp:1062
+#: ../src/MathParser.cpp:1047
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
@@ -4128,8 +4128,8 @@ msgstr "Varianza..."
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1062 ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519
-#: ../src/wxMaxima.cpp:1689
+#: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
+#: ../src/MathParser.cpp:1047
 msgid "Warning"
 msgstr "Attenzione"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 15:33+0100\n"
+"POT-Creation-Date: 2016-01-03 22:42+0100\n"
 "PO-Revision-Date: 2015-01-11 07:47+0100\n"
 "Last-Translator: Asbjørn Apeland <asap openmailbox org>\n"
 "Language-Team: norwegian\n"
@@ -69,7 +69,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1138
+#: ../src/MathParser.cpp:1123
 msgid " << Expression too long to display! >>"
 msgstr " << Uttrykk for langt til å vises! >>"
 
@@ -596,7 +596,7 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathParser.cpp:64 ../src/MathParser.cpp:1040
+#: ../src/MathParser.cpp:64
 #, c-format
 msgid "Bug: Found unexpected text between XML nodes: %s"
 msgstr ""
@@ -2846,7 +2846,7 @@ msgstr "Delbrøker"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Deler av dokumentet vil ikke bli lastet riktig!"
 
-#: ../src/MathParser.cpp:1062
+#: ../src/MathParser.cpp:1047
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
@@ -4119,8 +4119,8 @@ msgstr "Varians..."
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1062 ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519
-#: ../src/wxMaxima.cpp:1689
+#: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
+#: ../src/MathParser.cpp:1047
 msgid "Warning"
 msgstr "Advarsel"
 

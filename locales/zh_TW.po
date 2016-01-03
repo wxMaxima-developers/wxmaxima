@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 15:33+0100\n"
+"POT-Creation-Date: 2016-01-03 22:42+0100\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1138
+#: ../src/MathParser.cpp:1123
 msgid " << Expression too long to display! >>"
 msgstr " << 數式過長不易顯示 >>"
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathParser.cpp:64 ../src/MathParser.cpp:1040
+#: ../src/MathParser.cpp:64
 #, c-format
 msgid "Bug: Found unexpected text between XML nodes: %s"
 msgstr ""
@@ -2825,7 +2825,7 @@ msgstr "部分分式"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: ../src/MathParser.cpp:1062
+#: ../src/MathParser.cpp:1047
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
@@ -4090,8 +4090,8 @@ msgstr "變異數..."
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1062 ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519
-#: ../src/wxMaxima.cpp:1689
+#: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
+#: ../src/MathParser.cpp:1047
 msgid "Warning"
 msgstr "警告"
 

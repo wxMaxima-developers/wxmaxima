@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 15:33+0100\n"
+"POT-Creation-Date: 2016-01-03 22:42+0100\n"
 "PO-Revision-Date: 2016-01-03 15:34+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: ../src/MathParser.cpp:1138
+#: ../src/MathParser.cpp:1123
 msgid " << Expression too long to display! >>"
 msgstr " << Ausdruck zu lang, um angezeigt zu werden! >>"
 
@@ -616,7 +616,7 @@ msgstr ""
 "Interner Fehler: Habe das Ende von Symbolen für das automatische "
 "Vervollständigen bekommen, aber keinen Beginn von ihnen."
 
-#: ../src/MathParser.cpp:64 ../src/MathParser.cpp:1040
+#: ../src/MathParser.cpp:64
 #, c-format
 msgid "Bug: Found unexpected text between XML nodes: %s"
 msgstr "Interner Fehler: Text zwischen XML-Knoten: %s"
@@ -2929,7 +2929,7 @@ msgstr "Partialbruchzerlegung"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Teile des Dokuments werden nicht korrekt geladen!"
 
-#: ../src/MathParser.cpp:1062
+#: ../src/MathParser.cpp:1047
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
@@ -4235,8 +4235,8 @@ msgstr "Varianz"
 msgid "View"
 msgstr "Anzeige"
 
-#: ../src/MathParser.cpp:1062 ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519
-#: ../src/wxMaxima.cpp:1689
+#: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
+#: ../src/MathParser.cpp:1047
 msgid "Warning"
 msgstr "Warnung"
 
@@ -4652,7 +4652,9 @@ msgstr "sigma"
 
 #: ../src/wxMaximaFrame.cpp:1365
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
-msgstr "sqrt (benötigt Klammern um sein Argument, um als Maxima-Kommando zu funktionieren)"
+msgstr ""
+"sqrt (benötigt Klammern um sein Argument, um als Maxima-Kommando zu "
+"funktionieren)"
 
 #: ../src/wxMaximaFrame.cpp:1387
 msgid "subset"
