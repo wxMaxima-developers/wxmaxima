@@ -1,5 +1,7 @@
 Current:
   * Debug: A monitor for the xml communication between maxima and wxMaxima
+  * Leading White-space in front of a character that has to be escaped in
+    XML is no more ignored.
   * jpeg-encoded images are now no more converted to much larger png files
     on saving .wxmx files and on exporting.
   * Images will now actually be converted to the target format.

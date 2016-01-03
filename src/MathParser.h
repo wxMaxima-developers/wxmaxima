@@ -48,6 +48,27 @@ public:
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
 private:
+  /*! Get the next xml tag
+
+    wxXmlNode can operate in two modes:
+     - One mode skips all whitespace between the beginning of the line and the first
+       character if that character was escaped by a & for including it into the XML
+       stream. This obviously is a bad idea in our case.
+     - And the other mode inserts bogus whitespace text nodes if there is whitespace 
+       between XML tags. This one is more helpful - but only if we provide a function
+       that skips these whitespace text nodes.
+    If we encounter a non-whitespace text node where we shouldn't we raise an 
+    assertation that informs the user that we might want a bug report about this.
+   */
+  wxXmlNode* GetNextTag(wxXmlNode* node);
+
+  /*! Returns node - or (if node is a whitespace-only text node) the next one.
+
+    If we encounter a non-whitespace text node where we shouldn't we raise an 
+    assertation that informs the user that we might want a bug report about this.
+   */
+  wxXmlNode* SkipWhitespaceNode(wxXmlNode* node);
+
   /*! Convert XML to a group tree
 
     This function is responsible for creating
