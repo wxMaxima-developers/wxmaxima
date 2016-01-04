@@ -573,7 +573,9 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
 {
   wxPanel* panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* sizer = new wxFlexGridSizer(10, 2, 0, 0);  
+  wxFlexGridSizer* sizer  = new wxFlexGridSizer(4, 2, 0, 0);  
+  wxFlexGridSizer* sizer2 = new wxFlexGridSizer(6, 2, 0, 0);  
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(7,1,0,0);
 
   wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
@@ -583,44 +585,51 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters:"));
-  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
-  sizer->Add(10, 10);
-  sizer->Add(10, 10);
-  sizer->Add(ap, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer->Add(10, 10);
-  sizer->Add(m_additionalParameters, 0, wxALL, 5);
-
-  int defaultPort = 4010;
+    int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
   m_defaultPort->SetValue(defaultPort);
   wxStaticText* dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
-  sizer->Add(10, 10);
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer->Add(10, 10);
   sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer->Add(10, 10);
 
+  sizer->Add(10, 10);
+  sizer->Add(10, 10);
+  vsizer->Add(sizer);
+  wxStaticText *ap = new wxStaticText(panel, -1, _("Additional parameters for maxima"));
+  sizer2->Add(ap, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(10, 10);
+  wxStaticText *ap1 = new wxStaticText(panel, -1, _("Examples:"));
+  sizer2->Add(ap1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(10, 10);
+  wxStaticText *ap2 = new wxStaticText(panel, -1, _("      -l <name>"));
+  sizer2->Add(ap2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxStaticText *ap3 = new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with"));
+  sizer2->Add(ap3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxStaticText *ap4 = new wxStaticText(panel, -1, _("      --dynamic-space-size <int>"));
+  sizer2->Add(ap4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxStaticText *ap5 = new wxStaticText(panel, -1, _("Tell sbcl to use <int>Mb as heap"));
+  sizer2->Add(ap5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  vsizer->Add(sizer2);
+  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(700, -1), wxTE_RICH);
+  vsizer->Add(m_additionalParameters, 0, wxALL, 0);
+
+  vsizer->Add(10, 10);
   #ifdef __WXMSW__
   bool wxcd = true;  
   wxConfig::Get()->Read(wxT("wxcd"), &wxcd);
   m_wxcd = new wxCheckBox(panel, -1, _("maxima's pwd is path to document"));
   m_wxcd-> SetValue(wxcd);
-  sizer->Add(m_wxcd, 0, wxALL, 5);
-  sizer->Add(10, 10);
+  vsizer->Add(m_wxcd, 0, wxALL, 5);
+  vsizer->Add(10, 10);
   #endif
 
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
-  sizer->Add(m_abortOnError,0,wxALL, 5);
-  sizer->Add(10,10);
-  
+  vsizer->Add(m_abortOnError,0,wxALL, 5);
+
   m_pollStdOut = new wxCheckBox(panel, -1, _("Debug: Watch maxima's stdout stream"));
-  sizer->Add(m_pollStdOut,0,wxALL, 5);
-  sizer->Add(10,10);
-  
-  panel->SetSizer(sizer);
-  sizer->Fit(panel);
+  vsizer->Add(m_pollStdOut,0,wxALL, 5);
+  panel->SetSizerAndFit(vsizer);
 
   return panel;
 }
