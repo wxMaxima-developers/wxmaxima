@@ -1211,7 +1211,7 @@ wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString descriptio
     text->SetToolTip(description);
   text->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
   panel->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
-
+/*
   if(matchesMaximaCommand)
   {
     wxColour backgroundcolor = panel->GetBackgroundColour();
@@ -1261,6 +1261,7 @@ wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString descriptio
       }
     }
   }
+*/
   panel->SetSizerAndFit(vbox);
   return panel;
 }
