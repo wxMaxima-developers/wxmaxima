@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-03 22:42+0100\n"
+"POT-Creation-Date: 2016-01-04 22:24+0100\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -61,11 +61,19 @@ msgstr ""
 "\n"
 "Bağlantı yok."
 
+#: ../src/ConfigDialogue.cpp:609
+msgid "      --dynamic-space-size <int>"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:605
+msgid "      -l <name>"
+msgstr ""
+
 #: ../src/ImgCell.cpp:151 ../src/ImgCell.cpp:156
 msgid " (Graphics) "
 msgstr "(Grafikler)"
 
-#: ../src/MathParser.cpp:1123
+#: ../src/MathParser.cpp:1129
 msgid " << Expression too long to display! >>"
 msgstr " << İfade, görüntülemek için çok uzun!' >>"
 
@@ -84,7 +92,7 @@ msgstr ""
 " wxMaxima'nın daha yeni bir sürümü ile kaydedildi;Lütfen wxMaxima'yı "
 "güncelleyin Lütfen wxMaxima'yı güncelleyin."
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "\"implies\" symbol"
 msgstr "\"uygular\" işareti"
 
@@ -371,7 +379,7 @@ msgstr ""
 "....[Yapılandırmada izin verilenden daha uzun bir çıktı olduğundan "
 "çıkarılmış ek satırlar]"
 
-#: ../src/wxMaximaFrame.cpp:1362
+#: ../src/wxMaximaFrame.cpp:1363
 msgid "1/2"
 msgstr ""
 
@@ -401,7 +409,7 @@ msgstr ""
 "değil aynı zamanda hesaplamalarınızın sonuçlarını da saklar.Belgenizi "
 "kaydederken 'wxMaxima XML document format' ı 'seçin "
 
-#: ../src/wxMaximaFrame.cpp:1412
+#: ../src/wxMaximaFrame.cpp:1413
 msgid "A symbol from the configuraton dialogue"
 msgstr ""
 
@@ -409,7 +417,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "&Başlangıç Şartı"
 
-#: ../src/ConfigDialogue.cpp:614
+#: ../src/ConfigDialogue.cpp:627
 msgid "Abort evaluation on error"
 msgstr "Hata oluştuğunda değerlendirmeyi durdur"
 
@@ -421,7 +429,7 @@ msgstr "Hakkında"
 msgid "About wxMaxima"
 msgstr "wxMaxima hakkında"
 
-#: ../src/ConfigDialogue.cpp:672
+#: ../src/ConfigDialogue.cpp:681
 msgid "Active cell bracket"
 msgstr "Aktif hücre ayıracı"
 
@@ -466,8 +474,9 @@ msgstr "TeX önsözü için ek satırlar:"
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Maxima için ek parametreler (p. ex. -l clisp)"
 
-#: ../src/ConfigDialogue.cpp:586
-msgid "Additional parameters:"
+#: ../src/ConfigDialogue.cpp:599
+#, fuzzy
+msgid "Additional parameters for maxima"
 msgstr "Ek parametreler:"
 
 #: ../src/ToolBar.cpp:190 ../src/ToolBar.cpp:234
@@ -483,11 +492,11 @@ msgstr ""
 msgid "All variable names"
 msgstr "Eski Değişken:"
 
-#: ../src/ConfigDialogue.cpp:820
+#: ../src/ConfigDialogue.cpp:829
 msgid "All|*"
 msgstr "Hepsi|*"
 
-#: ../src/wxMaximaFrame.cpp:1312
+#: ../src/wxMaximaFrame.cpp:1313
 msgid "Alpha"
 msgstr "Alpha"
 
@@ -545,7 +554,7 @@ msgstr "SŞ2"
 msgid "Barsplot..."
 msgstr "Sütun Diyagramı"
 
-#: ../src/ConfigDialogue.cpp:815
+#: ../src/ConfigDialogue.cpp:824
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "bat Dosyaları (*.bat)|*.bat|tümü|*"
 
@@ -567,7 +576,7 @@ msgstr ""
 "hücrelerdeki değişiklikleri etkilemeyen ince ayar bir geri alma işlemi "
 "yapabilir."
 
-#: ../src/wxMaximaFrame.cpp:1313
+#: ../src/wxMaximaFrame.cpp:1314
 msgid "Beta"
 msgstr "Beta"
 
@@ -575,7 +584,7 @@ msgstr "Beta"
 msgid "Bitmap scale for export"
 msgstr "Çıkarım için Bitmap ölçüsü"
 
-#: ../src/ConfigDialogue.cpp:693
+#: ../src/ConfigDialogue.cpp:702
 msgid "Bold"
 msgstr "Koyu"
 
@@ -606,11 +615,6 @@ msgstr "Hata: Başlangıç işaretçisi olmadan bir matematik sonlandrıcı işa
 #: ../src/wxMaxima.cpp:1061
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr "Hata: Başlamamış otomatik tamamlama sonlandırması bulundu"
-
-#: ../src/MathParser.cpp:64
-#, c-format
-msgid "Bug: Found unexpected text between XML nodes: %s"
-msgstr ""
 
 #: ../src/MathCtrl.cpp:1900
 msgid "Bug: Got a question but no cell to answer it in"
@@ -791,7 +795,7 @@ msgstr "Katalanca"
 msgid "Ce&ll"
 msgstr "&Hücre"
 
-#: ../src/ConfigDialogue.cpp:671
+#: ../src/ConfigDialogue.cpp:680
 msgid "Cell bracket"
 msgstr "Hücre parantezi"
 
@@ -829,7 +833,7 @@ msgstr "Güncellemeleri denetle"
 msgid "Check if a newer version of wxMaxima/Maxima exist."
 msgstr "wxMaxima/Maxima'nın daha yeni bir sürümü olup olmadığına bak."
 
-#: ../src/wxMaximaFrame.cpp:1333
+#: ../src/wxMaximaFrame.cpp:1334
 msgid "Chi"
 msgstr "Chi"
 
@@ -841,8 +845,8 @@ msgstr "Basit Çince"
 msgid "Chinese traditional"
 msgstr "Geleneksel çince"
 
-#: ../src/ConfigDialogue.cpp:645 ../src/ConfigDialogue.cpp:647
-#: ../src/ConfigDialogue.cpp:687
+#: ../src/ConfigDialogue.cpp:654 ../src/ConfigDialogue.cpp:656
+#: ../src/ConfigDialogue.cpp:696
 msgid "Choose font"
 msgstr "Yazı tipini değiştir"
 
@@ -862,31 +866,31 @@ msgstr "Kapat\tCtrl-W"
 msgid "Close window"
 msgstr "Pencereyi kapat"
 
-#: ../src/ConfigDialogue.cpp:679
+#: ../src/ConfigDialogue.cpp:688
 msgid "Code highlighting: Comments"
 msgstr "Kod vurgulama: Açıklamalar"
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:692
 msgid "Code highlighting: End of line"
 msgstr "Kod vurgulama: Satır sonu"
 
-#: ../src/ConfigDialogue.cpp:678
+#: ../src/ConfigDialogue.cpp:687
 msgid "Code highlighting: Functions"
 msgstr "Kod vurgulama: Fonksiyonlar"
 
-#: ../src/ConfigDialogue.cpp:680
+#: ../src/ConfigDialogue.cpp:689
 msgid "Code highlighting: Numbers"
 msgstr "Kod vurgulama: Sayılar"
 
-#: ../src/ConfigDialogue.cpp:682
+#: ../src/ConfigDialogue.cpp:691
 msgid "Code highlighting: Operators"
 msgstr "Kod vurgulama: İşlemciler"
 
-#: ../src/ConfigDialogue.cpp:681
+#: ../src/ConfigDialogue.cpp:690
 msgid "Code highlighting: Strings"
 msgstr "Kod vurgulama: Dizinler"
 
-#: ../src/ConfigDialogue.cpp:677
+#: ../src/ConfigDialogue.cpp:686
 msgid "Code highlighting: Variables"
 msgstr "Kod vurgulama: Değişkenler"
 
@@ -968,11 +972,11 @@ msgstr "OKEK hesapla (önce load(functs) paketini yükle)"
 msgid "Condition:"
 msgstr "Şart:"
 
-#: ../src/ConfigDialogue.cpp:1541 ../src/ConfigDialogue.cpp:1549
+#: ../src/ConfigDialogue.cpp:1550 ../src/ConfigDialogue.cpp:1558
 msgid "Config file (*.ini)|*.ini"
 msgstr "Config dosyası (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1381
+#: ../src/ConfigDialogue.cpp:1390
 msgid "Configuration warning"
 msgstr "Yapılandırma uyarısı"
 
@@ -1100,7 +1104,7 @@ msgstr "Bir önceki girdi ile yeni bir hücre oluştur"
 msgid "Create a new cell with previous output"
 msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 
-#: ../src/ConfigDialogue.cpp:673
+#: ../src/ConfigDialogue.cpp:682
 msgid "Cursor"
 msgstr "İmleç"
 
@@ -1143,7 +1147,7 @@ msgstr "Veri dosyası (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Veri:"
 
-#: ../src/ConfigDialogue.cpp:618
+#: ../src/ConfigDialogue.cpp:630
 msgid "Debug: Watch maxima's stdout stream"
 msgstr "Onar: Maxima'nın stdout (standart çıktı) akışını izle"
 
@@ -1151,7 +1155,7 @@ msgstr "Onar: Maxima'nın stdout (standart çıktı) akışını izle"
 msgid "Decompose rational function to partial fractions"
 msgstr "Rasyonel fonksiyonu parçalı fonksiyonlara ayır"
 
-#: ../src/ConfigDialogue.cpp:651
+#: ../src/ConfigDialogue.cpp:660
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -1159,7 +1163,7 @@ msgstr "Varsayılan"
 msgid "Default animation framerate:"
 msgstr "Varsayılan animasyon resim oranı"
 
-#: ../src/ConfigDialogue.cpp:644
+#: ../src/ConfigDialogue.cpp:653
 msgid "Default font:"
 msgstr "Varsayılan Yazı Tipi:"
 
@@ -1167,7 +1171,7 @@ msgstr "Varsayılan Yazı Tipi:"
 msgid "Default plot size for new maxima sessions"
 msgstr "Yeni maxima oturumları için varsayılan çizim (çerçeve) ölçüsü"
 
-#: ../src/ConfigDialogue.cpp:598
+#: ../src/ConfigDialogue.cpp:592
 msgid "Default port for communication with wxMaxima:"
 msgstr "wxMaxima'nın iletişiminde kullanılan bağlantı noktası"
 
@@ -1215,7 +1219,7 @@ msgstr "Fonksiyon(ları) Sil:"
 msgid "Delete variable(s):"
 msgstr "Değiken(leri) sil:"
 
-#: ../src/wxMaximaFrame.cpp:1315
+#: ../src/wxMaximaFrame.cpp:1316
 msgid "Delta"
 msgstr "Delta"
 
@@ -1303,7 +1307,7 @@ msgstr "Belgede yaptığınız değişiklikleri kaydetmek isityormusunuz? \""
 msgid "Document "
 msgstr "Belge"
 
-#: ../src/ConfigDialogue.cpp:670
+#: ../src/ConfigDialogue.cpp:679
 msgid "Document background"
 msgstr "Belge arkaplanı"
 
@@ -1348,7 +1352,7 @@ msgstr "Ortadan kaldır"
 msgid "Eliminate a variable from a system of equations"
 msgstr "Bir denklem sisteminde bir değişkeni sadeleştirerek ortadan kaldır"
 
-#: ../src/wxMaximaFrame.cpp:1406
+#: ../src/wxMaximaFrame.cpp:1407
 msgid "End of proof"
 msgstr "İspat ın sonu"
 
@@ -1394,7 +1398,7 @@ msgstr "Yeni ondalık-hassasiyeti belirleyin:"
 msgid "Enter the path to the Maxima executable."
 msgstr "Maxima'nın uygulayabileceği şekilde girin"
 
-#: ../src/wxMaximaFrame.cpp:1316
+#: ../src/wxMaximaFrame.cpp:1317
 msgid "Epsilon"
 msgstr "Epsilon"
 
@@ -1421,7 +1425,7 @@ msgstr "Denklem:"
 msgid "Equations:"
 msgstr "Denklemler:"
 
-#: ../src/ConfigDialogue.cpp:829 ../src/Image.cpp:131 ../src/wxMaxima.cpp:1279
+#: ../src/ConfigDialogue.cpp:838 ../src/Image.cpp:131 ../src/wxMaxima.cpp:1279
 #: ../src/wxMaxima.cpp:1293 ../src/wxMaxima.cpp:1382 ../src/wxMaxima.cpp:1393
 #: ../src/wxMaxima.cpp:1416 ../src/wxMaxima.cpp:1773 ../src/wxMaxima.cpp:1947
 #: ../src/wxMaxima.cpp:5030 ../src/wxMaxima.cpp:5452 ../src/wxMaxima.cpp:5503
@@ -1433,7 +1437,7 @@ msgstr "HATA"
 msgid "Error!"
 msgstr "HATA!"
 
-#: ../src/wxMaximaFrame.cpp:1318
+#: ../src/wxMaximaFrame.cpp:1319
 msgid "Eta"
 msgstr "Eta"
 
@@ -1501,9 +1505,14 @@ msgstr "Noktaya Değerlendir "
 msgid "Example"
 msgstr "Örnek"
 
-#: ../src/ConfigDialogue.cpp:1495 ../src/ConfigDialogue.cpp:1586
+#: ../src/ConfigDialogue.cpp:1504 ../src/ConfigDialogue.cpp:1595
 msgid "Example text"
 msgstr "Örnek Metin"
+
+#: ../src/ConfigDialogue.cpp:602
+#, fuzzy
+msgid "Examples:"
+msgstr "Örnek"
 
 #: ../src/wxMaximaFrame.cpp:425
 msgid "Exit wxMaxima"
@@ -1777,7 +1786,7 @@ msgstr "Belgede gösterilecek yazı tipi"
 msgid "Font used for displaying math characters in document."
 msgstr "Belgede matematik karakterlerini gösterimde kullanılan yazı tipi"
 
-#: ../src/ConfigDialogue.cpp:632
+#: ../src/ConfigDialogue.cpp:641
 msgid "Fonts"
 msgstr "Yazı Tipleri"
 
@@ -1808,7 +1817,7 @@ msgstr "Tüm Ekran\tAlt-Return"
 msgid "Function"
 msgstr "Fonksiyon"
 
-#: ../src/ConfigDialogue.cpp:654
+#: ../src/ConfigDialogue.cpp:663
 msgid "Function names"
 msgstr "Fonksiyon isimleri"
 
@@ -1845,7 +1854,7 @@ msgstr "GIF resmi (*.gif)|*.gif"
 msgid "Galician"
 msgstr "Galiçyaca"
 
-#: ../src/wxMaximaFrame.cpp:1314
+#: ../src/wxMaximaFrame.cpp:1315
 msgid "Gamma"
 msgstr "Gamma"
 
@@ -1921,7 +1930,7 @@ msgstr ""
 msgid "Greek"
 msgstr "Yunanca"
 
-#: ../src/ConfigDialogue.cpp:656
+#: ../src/ConfigDialogue.cpp:665
 msgid "Greek constants"
 msgstr "Yunanca Sabitler"
 
@@ -1965,7 +1974,7 @@ msgstr "Araç çubuklarının hepsini gizle\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "Bütün panoları gizle"
 
-#: ../src/ConfigDialogue.cpp:663
+#: ../src/ConfigDialogue.cpp:672
 msgid "Highlight (dpart)"
 msgstr "Belirginleştir"
 
@@ -2009,7 +2018,7 @@ msgstr "BŞ1"
 msgid "IC2"
 msgstr "BŞ2"
 
-#: ../src/wxMaximaFrame.cpp:1401
+#: ../src/wxMaximaFrame.cpp:1402
 msgid "Identical to"
 msgstr "'e ye benzer"
 
@@ -2095,7 +2104,7 @@ msgstr ""
 "Mkomut menüsünden Maxima-> Interrupt (Yarıda Kes) yada Maxima-> Restart "
 "Maxima (Maximayı Yeninden Başlat) yapın"
 
-#: ../src/wxMaximaFrame.cpp:1441
+#: ../src/wxMaximaFrame.cpp:1442
 msgid "Image"
 msgstr "Resim"
 
@@ -2122,7 +2131,7 @@ msgstr "Bir çalışma yaprağı çıkarımında girdi hücrelerini içerir"
 #: ../src/IntegrateWiz.cpp:210 ../src/IntegrateWiz.cpp:220
 #: ../src/IntegrateWiz.cpp:229 ../src/IntegrateWiz.cpp:239
 #: ../src/LimitWiz.cpp:135 ../src/LimitWiz.cpp:145
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "Infinity"
 msgstr "Sonsuz"
 
@@ -2142,7 +2151,7 @@ msgstr "Başlangıç Değer Problemi (&1)"
 msgid "Initial Value Problem (&2)..."
 msgstr "Başlangıç Değer Problemi (&2)"
 
-#: ../src/ConfigDialogue.cpp:659
+#: ../src/ConfigDialogue.cpp:668
 msgid "Input labels"
 msgstr "GİRDİ Etiketleri"
 
@@ -2250,7 +2259,7 @@ msgstr "Resim Yerleştir"
 msgid "Integers and single letters"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1393
+#: ../src/wxMaximaFrame.cpp:1394
 msgid "Integral sign"
 msgstr "İntegral işareti"
 
@@ -2294,7 +2303,7 @@ msgstr ""
 "Bu hesaplamayı durdur. Maxima'yı yeniden başlatmak için bunu solundaki "
 "butona bas."
 
-#: ../src/ConfigDialogue.cpp:828
+#: ../src/ConfigDialogue.cpp:837
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2312,7 +2321,7 @@ msgstr "Ters Laplace "
 msgid "Inverse Laplace T&ransform..."
 msgstr "Ters Laplace Dönüşümü"
 
-#: ../src/wxMaximaFrame.cpp:1320
+#: ../src/wxMaximaFrame.cpp:1321
 msgid "Iota"
 msgstr "Iota"
 
@@ -2332,7 +2341,7 @@ msgstr ""
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: ../src/ConfigDialogue.cpp:694
+#: ../src/ConfigDialogue.cpp:703
 msgid "Italic"
 msgstr "İtalik"
 
@@ -2340,7 +2349,7 @@ msgstr "İtalik"
 msgid "Japanese"
 msgstr "Japonca"
 
-#: ../src/wxMaximaFrame.cpp:1321
+#: ../src/wxMaximaFrame.cpp:1322
 msgid "Kappa"
 msgstr "Kappa"
 
@@ -2365,7 +2374,7 @@ msgstr ""
 msgid "Label width"
 msgstr "ile etiketle"
 
-#: ../src/wxMaximaFrame.cpp:1322
+#: ../src/wxMaximaFrame.cpp:1323
 msgid "Lambda"
 msgstr "Lambda"
 
@@ -2423,7 +2432,7 @@ msgstr "Doğrusal Regresyon..."
 msgid "List:"
 msgstr "Liste:"
 
-#: ../src/ConfigDialogue.cpp:697
+#: ../src/ConfigDialogue.cpp:706
 msgid "Load"
 msgstr "Yükle"
 
@@ -2439,7 +2448,7 @@ msgstr "Bir Maxima dosyasını kütük komutu ile yükle"
 msgid "Load a Maxima package file"
 msgstr "Bir Maxima dosyasını yükle"
 
-#: ../src/ConfigDialogue.cpp:1547
+#: ../src/ConfigDialogue.cpp:1556
 msgid "Load style from file"
 msgstr "Sitili dosyadan yükle"
 
@@ -2491,7 +2500,7 @@ msgstr "Fonksiyonu matrise Eşle"
 msgid "Match parenthesis in text controls"
 msgstr "Metin kontrolünde parantezi eşleştir"
 
-#: ../src/ConfigDialogue.cpp:646
+#: ../src/ConfigDialogue.cpp:655
 msgid "Math font:"
 msgstr "Mat. yazı tipi:"
 
@@ -2523,7 +2532,7 @@ msgstr "Maxima"
 msgid "Maxima got a question"
 msgstr "Maxima'nın bir sorusu var"
 
-#: ../src/ConfigDialogue.cpp:658
+#: ../src/ConfigDialogue.cpp:667
 msgid "Maxima input"
 msgstr "Maxima GİRDİsi"
 
@@ -2543,11 +2552,11 @@ msgstr "Maxima Paketi (*.mac)|*.mac|Lisp Paketi (*.lisp)|*.lisp|Tümü|*"
 msgid "Maxima process terminated."
 msgstr "Maxima'nın çalışması sonlandı."
 
-#: ../src/ConfigDialogue.cpp:578
+#: ../src/ConfigDialogue.cpp:580
 msgid "Maxima program:"
 msgstr "Maxima programı:"
 
-#: ../src/ConfigDialogue.cpp:660
+#: ../src/ConfigDialogue.cpp:669
 msgid "Maxima questions"
 msgstr "Maxima sorular"
 
@@ -2636,7 +2645,7 @@ msgstr "Eşleşmeyen parantezler"
 msgid "Modulus"
 msgstr "Modül"
 
-#: ../src/wxMaximaFrame.cpp:1323
+#: ../src/wxMaximaFrame.cpp:1324
 msgid "My"
 msgstr "Benim"
 
@@ -2733,11 +2742,11 @@ msgstr "Say.derecesi:"
 msgid "Number of equations:"
 msgstr "Denklemlerin sayısı:"
 
-#: ../src/ConfigDialogue.cpp:653
+#: ../src/ConfigDialogue.cpp:662
 msgid "Numbers"
 msgstr "Sayılar"
 
-#: ../src/wxMaximaFrame.cpp:1324
+#: ../src/wxMaximaFrame.cpp:1325
 msgid "Ny"
 msgstr "Ny"
 
@@ -2764,11 +2773,11 @@ msgstr "Eski değer:"
 msgid "Old variable:"
 msgstr "Eski Değişken:"
 
-#: ../src/wxMaximaFrame.cpp:1335
+#: ../src/wxMaximaFrame.cpp:1336
 msgid "Omega"
 msgstr "Omega"
 
-#: ../src/wxMaximaFrame.cpp:1326
+#: ../src/wxMaximaFrame.cpp:1327
 msgid "Omnikron"
 msgstr "Omnikron"
 
@@ -2795,7 +2804,7 @@ msgstr "Bir örnek t-testi"
 msgid "Online tutorials"
 msgstr "Çevirimiçi Çalışma Notları"
 
-#: ../src/ConfigDialogue.cpp:580 ../src/ToolBar.cpp:107 ../src/main.cpp:261
+#: ../src/ConfigDialogue.cpp:582 ../src/ToolBar.cpp:107 ../src/main.cpp:261
 #: ../src/wxMaxima.cpp:2464
 msgid "Open"
 msgstr "Aç"
@@ -2840,11 +2849,11 @@ msgstr "Seçenekler"
 msgid "Options:"
 msgstr "Seçenekler:"
 
-#: ../src/ConfigDialogue.cpp:676
+#: ../src/ConfigDialogue.cpp:685
 msgid "Outdated cells"
 msgstr "Kullanılmayan Hücreler"
 
-#: ../src/ConfigDialogue.cpp:661
+#: ../src/ConfigDialogue.cpp:670
 msgid "Output labels"
 msgstr "Çıktı Etiketleri"
 
@@ -2870,11 +2879,11 @@ msgstr "Padé Yaklaşımı"
 msgid "Pade approximation of a Taylor series"
 msgstr "Bir Taylor Serisinin Padé Yaklaşımı"
 
-#: ../src/wxMaximaFrame.cpp:1442
+#: ../src/wxMaximaFrame.cpp:1443
 msgid "Pagebreak"
 msgstr "Sayfa sonu"
 
-#: ../src/wxMaximaFrame.cpp:1404
+#: ../src/wxMaximaFrame.cpp:1405
 msgid "Parallel to"
 msgstr "'e paralel"
 
@@ -2898,7 +2907,7 @@ msgstr "Parçalı Kesirler"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Belgenin parçaları düzgün olarak yüklenemedi!"
 
-#: ../src/MathParser.cpp:1047
+#: ../src/MathParser.cpp:1053
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
@@ -2921,15 +2930,15 @@ msgstr "Panodan Yapıştır"
 msgid "Paste text from clipboard"
 msgstr "Metni Panodan Yapıştır"
 
-#: ../src/wxMaximaFrame.cpp:1405
+#: ../src/wxMaximaFrame.cpp:1406
 msgid "Perpendicular to"
 msgstr "'e dik"
 
-#: ../src/wxMaximaFrame.cpp:1332
+#: ../src/wxMaximaFrame.cpp:1333
 msgid "Phi"
 msgstr "Phi"
 
-#: ../src/wxMaximaFrame.cpp:1327
+#: ../src/wxMaximaFrame.cpp:1328
 msgid "Pi"
 msgstr "Pi"
 
@@ -2941,7 +2950,7 @@ msgstr "Pasta dilimi"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Lütfen wxMaxima'yı 'Düzenle-> Yapılandır' ile yapılandırınız."
 
-#: ../src/ConfigDialogue.cpp:1380
+#: ../src/ConfigDialogue.cpp:1389
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Değişikliklerin aktif olabilmesi içi wxMaxima'yı yeniden başlat"
 
@@ -3060,11 +3069,11 @@ msgstr "Belgeyi Yazdır"
 msgid "Product"
 msgstr "Çarpım"
 
-#: ../src/wxMaximaFrame.cpp:1403
+#: ../src/wxMaximaFrame.cpp:1404
 msgid "Product sign"
 msgstr "Çarpım işareti"
 
-#: ../src/wxMaximaFrame.cpp:1334
+#: ../src/wxMaximaFrame.cpp:1335
 msgid "Psi"
 msgstr "Psi"
 
@@ -3154,7 +3163,7 @@ msgstr "Sonuç"
 msgid "Return to the cell that is currently being evaluated"
 msgstr "Değerlendirilmekte olan hücreye dön"
 
-#: ../src/wxMaximaFrame.cpp:1328
+#: ../src/wxMaximaFrame.cpp:1329
 msgid "Rho"
 msgstr "Rho"
 
@@ -3190,7 +3199,7 @@ msgstr "Örnek 2:"
 msgid "Sample:"
 msgstr "Örnek:"
 
-#: ../src/ConfigDialogue.cpp:698 ../src/ToolBar.cpp:110
+#: ../src/ConfigDialogue.cpp:707 ../src/ToolBar.cpp:110
 #: ../src/wxMaxima.cpp:5544
 msgid "Save"
 msgstr "Kaydet"
@@ -3259,7 +3268,7 @@ msgstr "Seçileni Bir Resim Dosyası Olarak Kaydet"
 msgid "Save selection to file"
 msgstr "Seçileni Dosyaya Kaydet"
 
-#: ../src/ConfigDialogue.cpp:1539
+#: ../src/ConfigDialogue.cpp:1548
 msgid "Save style to file"
 msgstr "Stili dosyaya Kaydet"
 
@@ -3291,11 +3300,11 @@ msgstr "Dağılım Grafiği"
 msgid "Scatterplot..."
 msgstr "Dağılım Grafiği..."
 
-#: ../src/wxMaximaFrame.cpp:1440
+#: ../src/wxMaximaFrame.cpp:1441
 msgid "Section"
 msgstr "Kısım"
 
-#: ../src/ConfigDialogue.cpp:667
+#: ../src/ConfigDialogue.cpp:676
 msgid "Section cell"
 msgstr "Kısım Hücresi"
 
@@ -3330,7 +3339,7 @@ msgstr "Tümünü Seç"
 msgid "Select All\tCtrl-A"
 msgstr "Tümünü Seç\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:813 ../src/ConfigDialogue.cpp:818
+#: ../src/ConfigDialogue.cpp:822 ../src/ConfigDialogue.cpp:827
 msgid "Select Maxima program"
 msgstr "Maxima Programını Seç"
 
@@ -3359,7 +3368,7 @@ msgstr ""
 "Çıktının bir bölümünü seçip fareyi sağ tıkladığınızdaseçilen bölüm ile "
 "yapılabilecekler menüsü gelir"
 
-#: ../src/ConfigDialogue.cpp:674
+#: ../src/ConfigDialogue.cpp:683
 msgid "Selection"
 msgstr "Seçim"
 
@@ -3513,7 +3522,7 @@ msgstr "(%oxx) yerine kullanıcı tanımlı etiketleri göster"
 msgid "Show wxMaxima help"
 msgstr "wxMaxima Yardımını Göster"
 
-#: ../src/wxMaximaFrame.cpp:1329
+#: ../src/wxMaximaFrame.cpp:1330
 msgid "Sigma"
 msgstr "Sigma"
 
@@ -3672,7 +3681,7 @@ msgstr "İspanyolca"
 msgid "Special"
 msgstr "Özel"
 
-#: ../src/ConfigDialogue.cpp:655
+#: ../src/ConfigDialogue.cpp:664
 msgid "Special constants"
 msgstr "Özel Sabitler"
 
@@ -3717,7 +3726,7 @@ msgstr "İstatistik"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "İstatistik\tAlt-Shift-S"
 
-#: ../src/ConfigDialogue.cpp:657
+#: ../src/ConfigDialogue.cpp:666
 msgid "Strings"
 msgstr "Dizinler"
 
@@ -3725,7 +3734,7 @@ msgstr "Dizinler"
 msgid "Style"
 msgstr "Stil"
 
-#: ../src/ConfigDialogue.cpp:633
+#: ../src/ConfigDialogue.cpp:642
 msgid "Styles"
 msgstr "Stiller"
 
@@ -3733,11 +3742,11 @@ msgstr "Stiller"
 msgid "Subsample..."
 msgstr "Alt Örnek"
 
-#: ../src/wxMaximaFrame.cpp:1438
+#: ../src/wxMaximaFrame.cpp:1439
 msgid "Subsection"
 msgstr "Alt Kısım"
 
-#: ../src/ConfigDialogue.cpp:666
+#: ../src/ConfigDialogue.cpp:675
 msgid "Subsection cell"
 msgstr "Alt Kısım Hücresi"
 
@@ -3754,11 +3763,11 @@ msgstr "Yerine koy"
 msgid "Substitute..."
 msgstr "Yerine koy..."
 
-#: ../src/wxMaximaFrame.cpp:1439
+#: ../src/wxMaximaFrame.cpp:1440
 msgid "Subsubsection"
 msgstr "Alt-alt Kısım"
 
-#: ../src/ConfigDialogue.cpp:665
+#: ../src/ConfigDialogue.cpp:674
 msgid "Subsubsection cell"
 msgstr "Alt-alt Kısım Hücresi"
 
@@ -3766,7 +3775,7 @@ msgstr "Alt-alt Kısım Hücresi"
 msgid "Sum"
 msgstr "Toplam"
 
-#: ../src/wxMaximaFrame.cpp:1402
+#: ../src/wxMaximaFrame.cpp:1403
 msgid "Sum sign"
 msgstr "Toplam işareti"
 
@@ -3786,7 +3795,7 @@ msgstr "İçerik Tablosu"
 msgid "Table of contents\tAlt-Shift-T"
 msgstr "İçerik Tablosu \tAlt-Shift-T"
 
-#: ../src/wxMaximaFrame.cpp:1330
+#: ../src/wxMaximaFrame.cpp:1331
 msgid "Tau"
 msgstr "Tau"
 
@@ -3794,23 +3803,27 @@ msgstr "Tau"
 msgid "Taylor series:"
 msgstr "Taylor Serileri:"
 
+#: ../src/ConfigDialogue.cpp:611
+msgid "Tell sbcl to use <int>Mbytes of heap"
+msgstr ""
+
 #: ../src/wxMaxima.cpp:3622
 msgid "Tellrat"
 msgstr "Tellrat"
 
-#: ../src/wxMaximaFrame.cpp:1436
+#: ../src/wxMaximaFrame.cpp:1437
 msgid "Text"
 msgstr "Metin"
 
-#: ../src/ConfigDialogue.cpp:664
+#: ../src/ConfigDialogue.cpp:673
 msgid "Text cell"
 msgstr "Metin Hücresi"
 
-#: ../src/ConfigDialogue.cpp:669
+#: ../src/ConfigDialogue.cpp:678
 msgid "Text cell background"
 msgstr "Metin Hücresi Arka Planı"
 
-#: ../src/ConfigDialogue.cpp:675
+#: ../src/ConfigDialogue.cpp:684
 msgid "Text equal to selection"
 msgstr "Metin seçime eşit"
 
@@ -3892,7 +3905,7 @@ msgstr ""
 "\n"
 "Lütfen bunu hata olarak bildirin"
 
-#: ../src/wxMaximaFrame.cpp:1319
+#: ../src/wxMaximaFrame.cpp:1320
 msgid "Theta"
 msgstr "Theta"
 
@@ -3908,11 +3921,11 @@ msgstr "Tekrarlar:"
 msgid "Tips not available, sorry!"
 msgstr "Yararlı Bilgi Bulunamadı Üzgünüz, "
 
-#: ../src/wxMaximaFrame.cpp:1437
+#: ../src/wxMaximaFrame.cpp:1438
 msgid "Title"
 msgstr "Başlık"
 
-#: ../src/ConfigDialogue.cpp:668
+#: ../src/ConfigDialogue.cpp:677
 msgid "Title cell"
 msgstr "Başlık Hücresi"
 
@@ -4064,7 +4077,7 @@ msgstr ""
 "\"http://andrejv.github.io//wxmaxima/version.txt\" den edindiğim sürüm "
 "bilgisini yorumlayamıyor:"
 
-#: ../src/ConfigDialogue.cpp:695
+#: ../src/ConfigDialogue.cpp:704
 msgid "Underlined"
 msgstr "Altı Çizili"
 
@@ -4144,7 +4157,7 @@ msgstr "Çizim kalitesini arttırmak için cairo kullan."
 msgid "Use centered dot character for multiplication"
 msgstr "Çarpma işareti gösterimi için 'ortada nokta'yı kullan '.' "
 
-#: ../src/ConfigDialogue.cpp:648
+#: ../src/ConfigDialogue.cpp:657
 msgid "Use jsMath fonts"
 msgstr "jsMath Yazı tipini kullan"
 
@@ -4154,7 +4167,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:662
+#: ../src/ConfigDialogue.cpp:671
 msgid "User-defined labels"
 msgstr "Kullanıcı tanımlı etiketler"
 
@@ -4177,7 +4190,7 @@ msgstr "Değişken(ler):"
 msgid "Variable:"
 msgstr "Değişken:"
 
-#: ../src/ConfigDialogue.cpp:652
+#: ../src/ConfigDialogue.cpp:661
 msgid "Variables"
 msgstr "Değişken(ler)"
 
@@ -4195,7 +4208,7 @@ msgid "View"
 msgstr "Görünüm"
 
 #: ../src/wxMaxima.cpp:1424 ../src/wxMaxima.cpp:1519 ../src/wxMaxima.cpp:1689
-#: ../src/MathParser.cpp:1047
+#: ../src/MathParser.cpp:1053
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -4252,7 +4265,7 @@ msgstr "Yazan:"
 msgid "XML Inspector"
 msgstr "XML Denetleyecisi"
 
-#: ../src/wxMaximaFrame.cpp:1325
+#: ../src/wxMaximaFrame.cpp:1326
 msgid "Xi"
 msgstr "Xi"
 
@@ -4340,11 +4353,11 @@ msgstr "Kaydetmezseniz yaptığınız değişiklikler kaybolabilir."
 msgid "Your version of wxMaxima is up to date."
 msgstr "Kullandığınız wxMaxima güncellenebilir."
 
-#: ../src/wxMaximaFrame.cpp:1331
+#: ../src/wxMaximaFrame.cpp:1332
 msgid "Ypsilon"
 msgstr "Epsilon"
 
-#: ../src/wxMaximaFrame.cpp:1317
+#: ../src/wxMaximaFrame.cpp:1318
 msgid "Zeta"
 msgstr "Zeta"
 
@@ -4372,7 +4385,7 @@ msgstr "[Kaydedilmemiş]"
 msgid "[ unsaved* ]"
 msgstr "[Kaydedilmemiş*]"
 
-#: ../src/MathParser.cpp:473
+#: ../src/MathParser.cpp:468
 #, c-format
 msgid "[%i digits]"
 msgstr "[%i basamaklar]"
@@ -4391,11 +4404,11 @@ msgstr ""
 "_%d.gif\"  alt=\"Hareketli çizim (Animasyon)\" style=\"maks-genişlik:90%%;\" "
 ">"
 
-#: ../src/wxMaximaFrame.cpp:1283
+#: ../src/wxMaximaFrame.cpp:1284
 msgid "alpha"
 msgstr "Alfa"
 
-#: ../src/wxMaximaFrame.cpp:1377
+#: ../src/wxMaximaFrame.cpp:1378
 msgid "and"
 msgstr "ve"
 
@@ -4403,7 +4416,7 @@ msgstr "ve"
 msgid "antisymmetric"
 msgstr "antisimetrik"
 
-#: ../src/wxMaximaFrame.cpp:1284
+#: ../src/wxMaximaFrame.cpp:1285
 msgid "beta"
 msgstr "beta"
 
@@ -4411,16 +4424,20 @@ msgstr "beta"
 msgid "both sides"
 msgstr "iki taraf"
 
-#: ../src/wxMaximaFrame.cpp:1304
+#: ../src/wxMaximaFrame.cpp:1305
 msgid "chi"
 msgstr "orkide"
+
+#: ../src/ConfigDialogue.cpp:607
+msgid "choose a lisp maxima was compiled with"
+msgstr ""
 
 #: ../src/Plot2dWiz.cpp:61 ../src/Plot2dWiz.cpp:386 ../src/Plot3dWiz.cpp:62
 #: ../src/Plot3dWiz.cpp:378
 msgid "default"
 msgstr "varsayılan"
 
-#: ../src/wxMaximaFrame.cpp:1286
+#: ../src/wxMaximaFrame.cpp:1287
 msgid "delta"
 msgstr "delta"
 
@@ -4428,23 +4445,23 @@ msgstr "delta"
 msgid "diagonal"
 msgstr "çarpraz"
 
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1375
 msgid "empty"
 msgstr "boş"
 
-#: ../src/wxMaximaFrame.cpp:1287
+#: ../src/wxMaximaFrame.cpp:1288
 msgid "epsilon"
 msgstr "epsilon"
 
-#: ../src/wxMaximaFrame.cpp:1382
+#: ../src/wxMaximaFrame.cpp:1383
 msgid "equivalent"
 msgstr "denk"
 
-#: ../src/wxMaximaFrame.cpp:1289
+#: ../src/wxMaximaFrame.cpp:1290
 msgid "eta"
 msgstr "eta"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1371
 msgid "exists"
 msgstr "var"
 
@@ -4456,7 +4473,7 @@ msgid ""
 "all=_ marks subscripts."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1285
+#: ../src/wxMaximaFrame.cpp:1286
 msgid "gamma"
 msgstr "gamma"
 
@@ -4464,11 +4481,11 @@ msgstr "gamma"
 msgid "general"
 msgstr "genel"
 
-#: ../src/wxMaximaFrame.cpp:1398
+#: ../src/wxMaximaFrame.cpp:1399
 msgid "greater than or equal"
 msgstr "büyük ya da eşit"
 
-#: ../src/wxMaximaFrame.cpp:1369
+#: ../src/wxMaximaFrame.cpp:1370
 msgid "in"
 msgstr "içinde"
 
@@ -4478,19 +4495,19 @@ msgstr "içinde"
 msgid "inline"
 msgstr "satır içi"
 
-#: ../src/wxMaximaFrame.cpp:1385
+#: ../src/wxMaximaFrame.cpp:1386
 msgid "intersection"
 msgstr "kesişim"
 
-#: ../src/wxMaximaFrame.cpp:1291
+#: ../src/wxMaximaFrame.cpp:1292
 msgid "iota"
 msgstr "ioata"
 
-#: ../src/wxMaximaFrame.cpp:1292
+#: ../src/wxMaximaFrame.cpp:1293
 msgid "kappa"
 msgstr "kappa"
 
-#: ../src/wxMaximaFrame.cpp:1293
+#: ../src/wxMaximaFrame.cpp:1294
 msgid "lambda"
 msgstr "lambda"
 
@@ -4498,7 +4515,7 @@ msgstr "lambda"
 msgid "left"
 msgstr "sol"
 
-#: ../src/wxMaximaFrame.cpp:1397
+#: ../src/wxMaximaFrame.cpp:1398
 msgid "less or equal"
 msgstr "az ya da eşit"
 
@@ -4510,24 +4527,24 @@ msgstr "log ölçek"
 msgid "matrix[i,j]:"
 msgstr "matris[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:608
+#: ../src/ConfigDialogue.cpp:621
 msgid "maxima's pwd is path to document"
 msgstr "Maxima'nın pwd si (print working directory) belgeye yönlendirilmiştir."
 
-#: ../src/wxMaximaFrame.cpp:1400
+#: ../src/wxMaximaFrame.cpp:1401
 #, fuzzy
 msgid "much greater than"
 msgstr "büyük ya da eşit"
 
-#: ../src/wxMaximaFrame.cpp:1399
+#: ../src/wxMaximaFrame.cpp:1400
 msgid "much less than"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1294
+#: ../src/wxMaximaFrame.cpp:1295
 msgid "my"
 msgstr "benim"
 
-#: ../src/wxMaximaFrame.cpp:1380
+#: ../src/wxMaximaFrame.cpp:1381
 msgid "nand"
 msgstr "nand"
 
@@ -4535,63 +4552,63 @@ msgstr "nand"
 msgid "no"
 msgstr "hayır"
 
-#: ../src/wxMaximaFrame.cpp:1381
+#: ../src/wxMaximaFrame.cpp:1382
 msgid "nor"
 msgstr "ya da"
 
-#: ../src/wxMaximaFrame.cpp:1383
+#: ../src/wxMaximaFrame.cpp:1384
 msgid "not"
 msgstr "değil"
 
-#: ../src/wxMaximaFrame.cpp:1396
+#: ../src/wxMaximaFrame.cpp:1397
 msgid "not bytewise identical"
 msgstr "bayt olarak aynısı değil"
 
-#: ../src/wxMaximaFrame.cpp:1389
+#: ../src/wxMaximaFrame.cpp:1390
 msgid "not subset"
 msgstr "alt küme değil"
 
-#: ../src/wxMaximaFrame.cpp:1388
+#: ../src/wxMaximaFrame.cpp:1389
 msgid "not subset or equal"
 msgstr "alt küme değil ya da eşit"
 
-#: ../src/wxMaximaFrame.cpp:1295
+#: ../src/wxMaximaFrame.cpp:1296
 msgid "ny"
 msgstr "lacivert"
 
-#: ../src/wxMaximaFrame.cpp:1306
+#: ../src/wxMaximaFrame.cpp:1307
 msgid "omega"
 msgstr "omega"
 
-#: ../src/wxMaximaFrame.cpp:1297
+#: ../src/wxMaximaFrame.cpp:1298
 msgid "omnikron"
 msgstr "omnikron"
 
-#: ../src/wxMaximaFrame.cpp:1378
+#: ../src/wxMaximaFrame.cpp:1379
 msgid "or"
 msgstr "ya da"
 
-#: ../src/wxMaximaFrame.cpp:1392
+#: ../src/wxMaximaFrame.cpp:1393
 msgid "partial sign"
 msgstr "Kısmi işareti"
 
-#: ../src/wxMaximaFrame.cpp:1303
+#: ../src/wxMaximaFrame.cpp:1304
 msgid "phi"
 msgstr "phi"
 
-#: ../src/wxMaximaFrame.cpp:1298
+#: ../src/wxMaximaFrame.cpp:1299
 msgid "pi"
 msgstr "pi"
 
-#: ../src/wxMaximaFrame.cpp:1395
+#: ../src/wxMaximaFrame.cpp:1396
 msgid "proportional to"
 msgstr "'e ile doğru orantılı"
 
-#: ../src/wxMaximaFrame.cpp:1305
+#: ../src/wxMaximaFrame.cpp:1306
 msgid "psi"
 msgstr "psi"
 
-#: ../src/wxMaximaFrame.cpp:1299
+#: ../src/wxMaximaFrame.cpp:1300
 msgid "rho"
 msgstr "ro"
 
@@ -4599,19 +4616,19 @@ msgstr "ro"
 msgid "right"
 msgstr "sağ"
 
-#: ../src/wxMaximaFrame.cpp:1300
+#: ../src/wxMaximaFrame.cpp:1301
 msgid "sigma"
 msgstr "sigma"
 
-#: ../src/wxMaximaFrame.cpp:1365
+#: ../src/wxMaximaFrame.cpp:1366
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1387
+#: ../src/wxMaximaFrame.cpp:1388
 msgid "subset"
 msgstr "alt küme"
 
-#: ../src/wxMaximaFrame.cpp:1386
+#: ../src/wxMaximaFrame.cpp:1387
 msgid "subset or equal"
 msgstr "alt küme ya da eşit"
 
@@ -4619,27 +4636,27 @@ msgstr "alt küme ya da eşit"
 msgid "symmetric"
 msgstr "simetrik"
 
-#: ../src/wxMaximaFrame.cpp:1301
+#: ../src/wxMaximaFrame.cpp:1302
 msgid "tau"
 msgstr "tau"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "there is no"
 msgstr "bulunmuyor"
 
-#: ../src/wxMaximaFrame.cpp:1290
+#: ../src/wxMaximaFrame.cpp:1291
 msgid "theta"
 msgstr "theta"
 
-#: ../src/wxMaximaFrame.cpp:1363
+#: ../src/wxMaximaFrame.cpp:1364
 msgid "to the power of 2"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1364
+#: ../src/wxMaximaFrame.cpp:1365
 msgid "to the power of 3"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1384
+#: ../src/wxMaximaFrame.cpp:1385
 msgid "union"
 msgstr "birleşim"
 
@@ -4779,11 +4796,11 @@ msgstr ""
 msgid "x"
 msgstr "x"
 
-#: ../src/wxMaximaFrame.cpp:1296
+#: ../src/wxMaximaFrame.cpp:1297
 msgid "xi"
 msgstr "xi"
 
-#: ../src/wxMaximaFrame.cpp:1379
+#: ../src/wxMaximaFrame.cpp:1380
 msgid "xor"
 msgstr "xor"
 
@@ -4791,11 +4808,11 @@ msgstr "xor"
 msgid "yes"
 msgstr "evet"
 
-#: ../src/wxMaximaFrame.cpp:1302
+#: ../src/wxMaximaFrame.cpp:1303
 msgid "ypsilon"
 msgstr "epsilon"
 
-#: ../src/wxMaximaFrame.cpp:1288
+#: ../src/wxMaximaFrame.cpp:1289
 msgid "zeta"
 msgstr "zeta"
 

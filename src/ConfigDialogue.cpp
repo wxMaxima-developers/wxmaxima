@@ -608,7 +608,7 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer2->Add(ap3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxStaticText *ap4 = new wxStaticText(panel, -1, _("      --dynamic-space-size <int>"));
   sizer2->Add(ap4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap5 = new wxStaticText(panel, -1, _("Tell sbcl to use <int>Mb as heap"));
+  wxStaticText *ap5 = new wxStaticText(panel, -1, _("Tell sbcl to use <int>Mbytes of heap"));
   sizer2->Add(ap5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600, -1), wxTE_RICH);
