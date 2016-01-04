@@ -941,6 +941,10 @@
 (defprop %derivative 120. wxxml-lbp)
 (defprop %derivative 119. wxxml-rbp)
 
+(defprop $diff wxxml-derivative wxxml)
+(defprop $diff 120. wxxml-lbp)
+(defprop $diff 119. wxxml-rbp)
+
 (defun wxxml-derivative (x l r)
   (if (and $derivabbrev
            (every #'integerp (odds (cddr x) 0))
