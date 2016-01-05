@@ -5041,6 +5041,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   if (!m_variablesOK) {
     m_variablesOK = true;
     SetupVariables();
+    return;
   }
   
   // Maxima is connected. Let's test if the evaluation queue is empty.
