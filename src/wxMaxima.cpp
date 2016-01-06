@@ -2010,7 +2010,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 
 void wxMaxima::MenuCommand(wxString cmd)
 {
-  bool evaluating = !m_console->m_evaluationQueue->Empty();
+  bool evaluating = (!m_console->m_evaluationQueue->Empty()) && (m_StatusMaximaBusy == waiting);
 
   m_console->SetFocus();
 //  m_console->SetSelection(NULL);
