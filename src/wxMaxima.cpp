@@ -119,6 +119,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
+  m_hasEvaluatedCells = false;
+  m_process = NULL;
   m_input = NULL;
   m_error = NULL;  
   m_ready = false;
@@ -769,64 +771,74 @@ bool wxMaxima::StartServer()
 ///  Maxima process stuff
 ///--------------------------------------------------------------------------------
 
-bool wxMaxima::StartMaxima()
+bool wxMaxima::StartMaxima(bool force)
 {
-  // We start checking for maximas output again as soon as we send some data to the program.
-  m_maximaStdoutPollTimer.Stop();
-  m_CWD = wxEmptyString;
-  if (m_isConnected)
+  // We only need to start or restart maxima if we aren't connected to a maxima
+  // that till now never has done anything and therefore is in perfect working
+  // order.
+  if(((m_process == NULL) || ((m_process != NULL) && (m_hasEvaluatedCells))) || force)
   {
-    KillMaxima();
-    //    m_client->Close();
-    m_isConnected = false;
-  }
+    std::cerr<<"ReStart!";
+    // The new maxima process will be in its initial condition => mark it as such.
+    m_hasEvaluatedCells = false;
 
-  m_console->QuestionAnswered();
-  m_console->SetWorkingGroup(NULL);
+    // We start checking for maximas output again as soon as we send some data to the program.
+    m_maximaStdoutPollTimer.Stop();
+    m_CWD = wxEmptyString;
+    if (m_isConnected)
+    {
+      KillMaxima();
+      //    m_client->Close();
+      m_isConnected = false;
+    }
 
-  m_variablesOK = false;
-  wxString command = GetCommand();;
+    m_console->QuestionAnswered();
+    m_console->SetWorkingGroup(NULL);
 
-  if (command.Length() > 0)
-  {
+    m_variablesOK = false;
+    wxString command = GetCommand();;
+
+    if (command.Length() > 0)
+    {
 
 #if defined(__WXMSW__)
-    wxString clisp = command.SubString(1, command.Length() - 3);
-    clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
-    if (wxFindFirstFile(clisp, wxDIR).empty())
-      command.Append(wxString::Format(wxT(" -s %d "), m_port));
-    else
-      command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
-    wxSetEnv(wxT("home"), wxGetHomeDir());
-    wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
+      wxString clisp = command.SubString(1, command.Length() - 3);
+      clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
+      if (wxFindFirstFile(clisp, wxDIR).empty())
+        command.Append(wxString::Format(wxT(" -s %d "), m_port));
+      else
+        command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
+      wxSetEnv(wxT("home"), wxGetHomeDir());
+      wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
 #else
-    command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
-                                    m_port));
+      command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
+                                      m_port));
 #endif
 
 #if defined __WXMAC__
-    wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
+      wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
 
-    m_process = new wxProcess(this, maxima_process_id);
-    m_process->Redirect();
-    m_first = true;
-    m_pid = -1;
-    SetStatusText(_("Starting Maxima..."), 1);
-    wxExecute(command, wxEXEC_ASYNC, m_process);
-    m_input = m_process->GetInputStream();
-    m_error = m_process->GetErrorStream();
+      m_process = new wxProcess(this, maxima_process_id);
+      m_process->Redirect();
+      m_first = true;
+      m_pid = -1;
+      SetStatusText(_("Starting Maxima..."), 1);
+      wxExecute(command, wxEXEC_ASYNC, m_process);
+      m_input = m_process->GetInputStream();
+      m_error = m_process->GetErrorStream();
 
-    SetStatusText(_("Maxima started. Waiting for connection..."), 1);
-  }
-  else
-    return false;
+      SetStatusText(_("Maxima started. Waiting for connection..."), 1);
+    }
+    else
+      return false;
 
-  if (m_openFile.Length())
-  {
-    wxString file = m_openFile;
-    m_openFile = wxEmptyString;
-    OpenFile(file);
+    if (m_openFile.Length())
+    {
+      wxString file = m_openFile;
+      m_openFile = wxEmptyString;
+      OpenFile(file);
+    }
   }
   return true;
 }
@@ -2958,7 +2970,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_closing = true;
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
-    StartMaxima();
+    StartMaxima(true);
     break;
   case menu_soft_restart:
     MenuCommand(wxT("kill(all);"));
@@ -5115,6 +5127,9 @@ void wxMaxima::TryEvaluateNextInQueue()
       }
       
       SendMaxima(text, true);
+
+      // Mark the current maxima process as "no more in its initial condition".
+      m_hasEvaluatedCells = true;
     }
     else
     {
