@@ -355,7 +355,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   wxArrayString showLengths;
   wxArrayString autosubscripts;
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
