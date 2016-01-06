@@ -824,8 +824,9 @@ bool wxMaxima::StartMaxima()
 
   if (m_openFile.Length())
   {
-    OpenFile(m_openFile);
+    wxString file = m_openFile;
     m_openFile = wxEmptyString;
+    OpenFile(file);
   }
   return true;
 }
