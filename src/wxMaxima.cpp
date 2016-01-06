@@ -614,11 +614,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       }
       
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
-      {
         ReadFirstPrompt(m_currentOutput);
-        if(m_batchmode)
-          m_console->AddDocumentToEvaluationQueue();
-      }
 
 
       // The next function calls each extract and remove one type of information from
@@ -1673,6 +1669,8 @@ void wxMaxima::SetupVariables()
     
     SetCWD(filename);
   }
+  if(m_batchmode)
+    m_console->AddDocumentToEvaluationQueue();
 }
 
 ///--------------------------------------------------------------------------------
