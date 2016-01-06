@@ -132,6 +132,8 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
+  bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts
   wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
@@ -244,7 +246,15 @@ protected:
   wxString ExtractFirstExpression(wxString entry);
   wxString GetDefaultEntry();
   bool StartServer();                              //!< starts the server
-  bool StartMaxima();                              //!< starts maxima (uses getCommand)
+  /*!< starts maxima (uses getCommand) or restarts it if needed
+
+    Normally a restart is only needed if
+      - maxima isn't currently in the process of starting up or
+      - maxima is runnning and has never evaluated any program 
+        so a restart won't change anything
+    \param force true means to restart maxima unconditionally.
+   */
+  bool StartMaxima(bool force = false);
   void OnClose(wxCloseEvent& event);               //!< close wxMaxima window
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
                                                    //    (uses guessConfiguration)
