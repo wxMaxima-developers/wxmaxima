@@ -601,6 +601,9 @@ wxString TextCell::ToXML()
 	default: tag=_T("t");
 	}
 
+  if(m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+    
   if(m_textStyle == TS_ERROR)
     flags += wxT(" type=\"error\"");
     

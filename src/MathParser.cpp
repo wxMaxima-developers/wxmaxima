@@ -923,6 +923,9 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else if (tagName == wxT("st"))
       {
         MathCell* tmp = ParseText(node->GetChildren(), TS_STRING);
+        if (node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
+          tmp->ForceBreakLine(true);
+        
         if (cell == NULL)
           cell = tmp;
         else
