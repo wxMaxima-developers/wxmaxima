@@ -785,6 +785,7 @@ bool wxMaxima::StartMaxima(bool force)
       KillMaxima();
       //    m_client->Close();
       m_isConnected = false;
+      m_closing = true;
     }
 
     m_console->QuestionAnswered();
@@ -3034,38 +3035,38 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   break;
   case menu_evaluate_all_visible:
   {
-    m_closing = true;
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    TryEvaluateNextInQueue();
   }
   break;
   case menu_evaluate_all:
   {
-    m_closing = true;
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    TryEvaluateNextInQueue();
   }
   break;
   case ToolBar::tb_evaltillhere:
   {
-    m_closing = true;
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    TryEvaluateNextInQueue();
   }
   break;
   case menu_clear_var:
