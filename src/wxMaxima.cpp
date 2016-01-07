@@ -882,8 +882,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
-//  delete m_process;
-//  m_process = NULL;
+  //  delete m_process;
+  m_process = NULL;
 }
 
 void wxMaxima::CleanUp()
