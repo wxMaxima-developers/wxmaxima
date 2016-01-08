@@ -102,6 +102,8 @@
   ;; be inserted
   (setq x (nformat x))
   (cond ((atom x) (wxxml-atom x l r))
+        ((not (listp (car x)))
+         (wxxml (cons '(mlist simp) x) l r lop rop))
         ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
              (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
          (wxxml-paren x l r))
