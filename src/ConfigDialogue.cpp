@@ -575,7 +575,7 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
 
   wxFlexGridSizer* sizer  = new wxFlexGridSizer(4, 2, 0, 0);  
   wxFlexGridSizer* sizer2 = new wxFlexGridSizer(6, 2, 0, 0);  
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(7,1,0,0);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(8,1,0,0);
 
   wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
