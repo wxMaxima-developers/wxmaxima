@@ -662,7 +662,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
                           "Trying to restart Maxima.\n"),
                       MC_TYPE_ERROR);
         m_unsuccessfullConnectionAttempts ++;
-        StartMaxima();
+        StartMaxima(true);
       }
       m_console->m_evaluationQueue->Clear();
     }
