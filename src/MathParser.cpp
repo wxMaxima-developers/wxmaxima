@@ -442,10 +442,11 @@ MathCell* MathParser::ParseFunTag(wxXmlNode* node)
 
 MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 {
-  TextCell* cell = new TextCell;
   wxString str;
+  TextCell *retval = NULL;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
+    std::cerr<<"String="<<str<<"\n";
 #if !wxUSE_UNICODE
     wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
     str = str1;
@@ -469,15 +470,29 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 	  //	  str = str.Left(left)+wxT("...");
 	}
     }
-    if(style != TS_ERROR)
-      cell->SetType(m_ParserStyle);
-    else
-      cell->SetType(MC_TYPE_ERROR);
-    cell->SetStyle(style);
-    cell->SetHighlight(m_highlight);
-    cell->SetValue(str);
+    
+    wxStringTokenizer lines(str, wxT('\n'));
+    while(lines.HasMoreTokens())
+    {
+      TextCell* cell = new TextCell;
+      if(style != TS_ERROR)
+        cell->SetType(m_ParserStyle);
+      else
+        cell->SetType(MC_TYPE_ERROR);
+      cell->SetStyle(style);
+      cell->SetHighlight(m_highlight);
+      cell->SetValue(lines.GetNextToken());
+        if(retval == NULL)
+        retval = cell;
+        else
+        {
+          cell->ForceBreakLine(true);
+          std::cerr<<"BreakLine\n";
+          retval->AppendCell(cell);
+        };
+    }
   }
-  return cell;
+  return retval;
 }
 
 MathCell* MathParser::ParseCharCode(wxXmlNode* node, int style)
