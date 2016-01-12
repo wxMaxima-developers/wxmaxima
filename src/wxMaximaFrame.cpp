@@ -356,16 +356,13 @@ void wxMaximaFrame::do_layout()
 
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = true;
+  wxString perspective;
   config->Read(wxT("AUI/savePanes"), &loadPanes);
+  config->Read(wxT("AUI/perspective"), &perspective);
 
-  if (loadPanes) {
-    wxString perspective;
+  if (loadPanes && !perspective.IsEmpty()) {
+    m_manager.LoadPerspective(perspective);
     bool toolbar = true;
-    if (config->Read(wxT("AUI/perspective"), &perspective))
-    {
-      if(!perspective.IsEmpty())
-        m_manager.LoadPerspective(perspective);
-    }
     config->Read(wxT("AUI/toolbar"), &toolbar);
     ShowToolBar(toolbar);
   }
