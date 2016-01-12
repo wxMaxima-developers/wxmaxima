@@ -142,7 +142,10 @@
   (if (stringp x)
       (let* ((tmp-x (string-substitute "&amp;" #\& x))
 	     (tmp-x (string-substitute "&lt;" #\< tmp-x))
-	     (tmp-x (string-substitute "&gt;" #\> tmp-x)))
+	     (tmp-x (string-substitute "&gt;" #\> tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Return tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Linefeed tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Newline tmp-x)))
 	tmp-x)
       x))
 

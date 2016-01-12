@@ -2241,6 +2241,19 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 
   if(m_console)m_console->TreeUndo_ClearBuffers();
+
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  bool wxcd = true;
+  config->Read(wxT("wxcd"),&wxcd);
+  if(wxcd)
+  {
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
+    if (m_currentFile != wxEmptyString)
+    {
+      wxString filename(m_currentFile);
+      SetCWD(filename);
+    }
+  }
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
