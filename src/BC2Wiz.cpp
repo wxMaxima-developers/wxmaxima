@@ -70,7 +70,7 @@ void BC2Wiz::do_layout()
 {
   wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 2, 0, 0);
+  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 0, 0);
   wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
