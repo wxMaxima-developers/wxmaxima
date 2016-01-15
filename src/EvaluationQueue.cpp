@@ -176,12 +176,8 @@ void EvaluationQueue::AddTokens(wxString commandString)
       if(index < commandString.Length())
       {
         ch = commandString[index];
-        std::cerr<<"Char=\""<<(char)ch<<"\"\n";
         if(ch == wxT('\n'))
-        {
-          std::cerr<<"Newline!\n";
           continue;
-        }
       }
       else
         continue;

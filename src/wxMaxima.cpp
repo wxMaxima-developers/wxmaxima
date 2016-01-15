@@ -503,10 +503,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   if (addToHistory)
     AddToHistory(s);
 
-  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
-    s.Replace(wxT("\n"), wxT(" "));
-  s.Append(wxT("\n"));
+/*  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
+    s.Replace(wxT("\n"), wxT(" "));*/
   StripComments(s);
+  s.Trim(true);
+  s.Append(wxT("\n"));
 
   /// Check for function/variable definitions
   wxStringTokenizer commands(s, wxT(";$"));
