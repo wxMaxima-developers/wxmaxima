@@ -2623,6 +2623,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         {
           token += string.GetChar(pos);
           pos++;
+          if((pos<size) && (string.GetChar(pos) == wxT('\n')))
+            continue;
         }
         token += string.GetChar(pos);
         pos++;

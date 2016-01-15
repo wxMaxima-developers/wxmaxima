@@ -446,7 +446,6 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
   TextCell *retval = NULL;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
-    std::cerr<<"String="<<str<<"\n";
 #if !wxUSE_UNICODE
     wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
     str = str1;
@@ -482,14 +481,23 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
       cell->SetStyle(style);
       cell->SetHighlight(m_highlight);
       cell->SetValue(lines.GetNextToken());
-        if(retval == NULL)
+      if(retval == NULL)
         retval = cell;
-        else
-        {
-          cell->ForceBreakLine(true);
-          std::cerr<<"BreakLine\n";
-          retval->AppendCell(cell);
-        };
+      else
+      {
+        cell->ForceBreakLine(true);
+        retval->AppendCell(cell);
+      };
+    }
+  }
+  wxString breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
+
+  if(breaklineattrib == wxT("true"))
+  {
+    
+    if(retval)
+    {
+      retval->ForceBreakLine(true);
     }
   }
   return retval;
@@ -753,10 +761,15 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
       else if (tagName == wxT("n"))
       {          // Numbers
+
+        MathCell* tmp = ParseText(node->GetChildren(), TS_NUMBER);
+        if (node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
+          tmp->ForceBreakLine(true);
+
         if (cell == NULL)
-          cell = ParseText(node->GetChildren(), TS_NUMBER);
+          cell = tmp;
         else
-          cell->AppendCell(ParseText(node->GetChildren(), TS_NUMBER));
+          cell->AppendCell(tmp);
       }
       else if (tagName == wxT("h"))
       {          // Hidden cells (*)
@@ -776,10 +789,14 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
       else if (tagName == wxT("f"))
       {               // Fractions
+        MathCell* tmp = ParseFracTag(node);
+        if (node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
+          tmp->ForceBreakLine(true);
+        
         if (cell == NULL)
-          cell = ParseFracTag(node);
+          cell = tmp;
         else
-          cell->AppendCell(ParseFracTag(node));
+          cell->AppendCell(tmp);
       }
       else if (tagName == wxT("e"))
       {          // Exponentials
