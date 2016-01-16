@@ -490,7 +490,10 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
       };
     }
   }
-  wxString breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
+
+  wxString breaklineattrib;
+  if(node != NULL)
+    breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
 
   if(breaklineattrib == wxT("true"))
   {
