@@ -741,7 +741,8 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
   {
     if (node->GetType() == wxXML_ELEMENT_NODE)
     {
-      // Parse XML tags
+      // Parse XML tags. The only other type of element we recognize are text
+      // nodes.
       wxString tagName(node->GetName());
 
       if (tagName == wxT("v"))
@@ -1063,7 +1064,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     }
     else
     {
-      // We got a text cell => Parse the text.
+      // We didn't get a tag but got na text cell => Parse the text.
       if (cell == NULL)
         cell = ParseText(node);
       else
@@ -1075,10 +1076,20 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     
     if (cell != NULL)
     {
+
+      // Let's see if we want to add a linebreak to the end of the new cell      
+      wxString breaklineattrib;
+      if(node != NULL)
+        breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
+      
+      if(breaklineattrib == wxT("true"))
+        cell->ForceBreakLine(true);
+
+      // Append the new cell to the return value
       if (retval == NULL)
         retval = cell;
-        else
-          cell = cell->m_next;
+      else
+        cell = cell->m_next;
     }
     else if (warning)
     {
