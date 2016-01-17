@@ -58,17 +58,6 @@ bool MyApp::OnInit()
   m_frame = NULL;
 //  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
-  wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("language"), &lang);
-  if (lang == wxLANGUAGE_UNKNOWN)
-    lang = wxLocale::GetSystemLanguage();
-
-  {
-    wxLogNull disableErrors;
-    m_locale.Init(lang);
-  }
-
-
   
   bool batchmode = false;
 
@@ -110,7 +99,17 @@ bool MyApp::OnInit()
 
   Dirstructure dirstructure;
 
+
+  wxConfigBase *config = wxConfig::Get();
+  config->Read(wxT("language"), &lang);
+  if (lang == wxLANGUAGE_UNKNOWN)
+    lang = wxLocale::GetSystemLanguage();
   
+  {
+    wxLogNull disableErrors;
+    m_locale.Init(lang);
+  }
+
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))

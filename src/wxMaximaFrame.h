@@ -320,11 +320,11 @@ public:
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
-
- /*! The destructor
-
-   \ţodo Do we really need to delete m_history? I assume wxWidgets will do this for us
-   and we want to avoid a double free.
+  
+  /*! The destructor
+    
+    \ţodo Do we really need to delete m_history? I assume wxWidgets will do this for us
+    and we want to avoid a double free.
   */
   ~wxMaximaFrame();
   /*! Update the recent documents list
