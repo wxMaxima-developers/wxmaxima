@@ -1453,9 +1453,16 @@ bool MathCtrl::CopyTeX() {
   bool inMath = false;
   wxString label;
 
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  bool wrapLatexMath = true;
+  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
+
+std::cerr<< 	wrapLatexMath<<"\n";
+
   if (tmp->GetType() != MC_TYPE_GROUP) {
     inMath = true;
-    s = wxT("\\[");
+    if(wrapLatexMath)
+      s = wxT("\\[");
   }
 
   while (tmp != NULL) {
@@ -1465,7 +1472,7 @@ bool MathCtrl::CopyTeX() {
     tmp = tmp->m_next;
   }
 
-  if (inMath == true)
+  if ((inMath == true) && (wrapLatexMath))
     s += wxT("\\]");
 
   if (wxTheClipboard->Open()) {

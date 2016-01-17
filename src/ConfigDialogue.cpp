@@ -153,6 +153,7 @@ void ConfigDialogue::SetProperties()
   m_AnimateLaTeX->SetToolTip(_("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_usePartialForDiff->SetToolTip(_("Use the \"partial derivative\" symbol to represent the fraction that represents a diff() when exporting LaTeX"));
+  m_wrapLatexMath->SetToolTip(_("Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
@@ -191,6 +192,7 @@ void ConfigDialogue::SetProperties()
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
+    wrapLatexMath = true,
     flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
     exportWithMathJAX = true;
   bool insertAns = true;
@@ -235,6 +237,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
+  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
@@ -308,6 +311,7 @@ void ConfigDialogue::SetProperties()
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_usePartialForDiff->SetValue(usePartialForDiff);
+  m_wrapLatexMath->SetValue(wrapLatexMath);
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
@@ -438,7 +442,7 @@ wxPanel* ConfigDialogue::CreateExportPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(18,1,5,5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
   m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
@@ -464,6 +468,9 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 
     m_usePartialForDiff = new wxCheckBox(panel, -1, _("LaTeX: Use the \"partial derivative\" symbol to represent diff()"));
   vsizer->Add(m_usePartialForDiff, 0, wxALL, 5);
+
+  m_wrapLatexMath = new wxCheckBox(panel, -1, _("\"Copy LaTeX\" adds equation markers"));
+  vsizer->Add(m_wrapLatexMath, 0, wxALL, 5);
 
   m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
   vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
@@ -790,6 +797,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
+  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportInput"), m_exportInput->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());

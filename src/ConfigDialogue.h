@@ -174,6 +174,7 @@ protected:
   wxCheckBox* m_saveSize;
   wxCheckBox* m_abortOnError;
   wxCheckBox* m_pollStdOut;
+  wxCheckBox* m_wrapLatexMath;
   wxCheckBox* m_savePanes;
   wxCheckBox* m_usepngCairo;
   wxCheckBox* m_uncomressedWXMX;
