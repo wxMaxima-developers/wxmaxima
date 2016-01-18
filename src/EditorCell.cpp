@@ -2274,7 +2274,12 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   while (left > 0)
   {
     if (!IsAlphaNum(m_text.GetChar(left-1)))
-      break;
+    {
+      if(left < 1)
+        break;
+      if(m_text.GetChar(left-2) != wxT('\\'))
+        break;
+    }
     left--;
   }
 
@@ -2282,6 +2287,15 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   {
     while (right < (signed)m_text.length() )
     {
+      if(m_text.GetChar(right) == wxT('\\'))
+        {
+         right +=2;
+         if(right >= (signed)m_text.length())
+         {
+           right = (signed)m_text.length() - 1;
+           break;
+         }
+        }
       if(!IsAlphaNum(m_text.GetChar(right)))
         break;
       right++;
