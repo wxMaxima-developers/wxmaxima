@@ -881,15 +881,21 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 
     if (event.ControlDown()) {
       int lastpos = m_positionOfCaret;
-
-      while((m_positionOfCaret>0)&&
-            (
-              wxIsalnum(m_text[m_positionOfCaret - 1]) ||
-              m_text[m_positionOfCaret - 1] == wxT('_')
+      
+      while(
+        (m_positionOfCaret>0)&&
+        (
+          wxIsalnum(m_text[m_positionOfCaret - 1]) ||
+          m_text[m_positionOfCaret - 1] == wxT('_') ||
+          ((m_positionOfCaret > 1) && (m_text[m_positionOfCaret - 2] == wxT('\\')))
               )
         )
-        m_positionOfCaret--;
-
+	{
+          if((m_positionOfCaret > 1) && (m_text[m_positionOfCaret - 2] == wxT('\\')))
+            m_positionOfCaret--;
+          m_positionOfCaret--;
+        }
+          
       while((m_positionOfCaret>0)&&(wxIsspace(m_text[m_positionOfCaret - 1])))
         m_positionOfCaret--;
       
@@ -933,11 +939,17 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       while((m_positionOfCaret<m_text.Length())&&
             (
               wxIsalnum(m_text[m_positionOfCaret]) ||
-              m_text[m_positionOfCaret] == wxT('_')
+              m_text[m_positionOfCaret] == wxT('_') ||
+              m_text[m_positionOfCaret] == wxT('\\')
               )
         )
-        m_positionOfCaret++;
-
+      {
+        if(m_text[m_positionOfCaret] == wxT('\\'))
+          m_positionOfCaret++;
+        if(m_positionOfCaret<m_text.Length())
+          m_positionOfCaret++;
+      }
+      
       while((m_positionOfCaret<m_text.Length())&&(wxIsspace(m_text[m_positionOfCaret])))
         m_positionOfCaret++;
       
