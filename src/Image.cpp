@@ -34,7 +34,7 @@ Image::Image()
   m_viewportWidth  = 640;
   m_viewportHeight = 480;
   m_scale          = 1;  
-  m_scaledBitmap.Create (0,0);
+  m_scaledBitmap.Create (1,1);
 }
 
 Image::Image(const wxBitmap &bitmap)
@@ -51,7 +51,7 @@ Image::Image(wxString image,bool remove, wxFileSystem *filesystem)
   m_viewportWidth  = 640;
   m_viewportHeight = 480;
   m_scale          = 1;
-  m_scaledBitmap.Create (0,0);
+  m_scaledBitmap.Create (1,1);
   LoadImage(image,remove,filesystem);
 }
 
@@ -170,13 +170,13 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_extension = wxT("png");
   m_originalWidth  = image.GetWidth();
   m_originalHeight = image.GetHeight();
-  m_scaledBitmap.Create (0,0);
+  m_scaledBitmap.Create (1,1);
 }
 
 void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
 {
   m_compressedImage.Clear();
-  m_scaledBitmap.Create (0,0);
+  m_scaledBitmap.Create (1,1);
 
   if (filesystem) {
     wxFSFile *fsfile = filesystem->OpenFile(image);
