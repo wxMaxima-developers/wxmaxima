@@ -46,6 +46,7 @@ void EvaluationQueue::Clear()
   while(!Empty())
     RemoveFirst();
   m_size = 0;
+  m_tokens.Clear();
   m_workingGroupChanged = false;
 }
 

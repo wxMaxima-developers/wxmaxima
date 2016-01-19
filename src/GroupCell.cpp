@@ -761,10 +761,10 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     if (m_input->m_next!=NULL)
     {
       
-      wxString input = m_input->m_next->ToString();
-      str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n\\begin{verbatim}") +
+      wxString input = m_input->m_next->ToTeX();
+      str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
         input +
-        wxT("\n\\end{verbatim}\\end{minipage}");
+        wxT("\n\\end{minipage}");
     }      
   }
 

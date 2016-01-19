@@ -145,6 +145,9 @@ wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
+  text.Replace(wxT("\n"), wxT("\\\\"));
+  text.Replace(wxT("^"), wxT("\\^"));
+  text.Replace("°",wxT("\\ensuremath{^\\circ}"));
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
   text.Replace(L"\x03B1",wxT("\\ensuremath{\\alpha}"));
   text.Replace(L"\x00B2",wxT("\\ensuremath{^2}"));
@@ -239,11 +242,14 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
+  text.Replace(wxT("&"), wxT("\\&"));
+  text.Replace(wxT("@"), wxT("\\verb+@+"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
-   return text;
+  text.Replace(wxT(" "), wxT("~"));
+  return text;
 }
 
 wxString EditorCell::ToXML()
