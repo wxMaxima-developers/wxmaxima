@@ -477,7 +477,21 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
  */
 void wxMaxima::StripComments(wxString& s)
 {
-  m_blankStatementRegEx.Replace(&s, wxT(";"));
+  if (s.StartsWith(wxT(":lisp\n")) || s.StartsWith(wxT(":lisp ")))
+  {
+    int start = 0;
+    int commentStart = 0;
+    int commentEnd = 0;
+    while ((commentStart = s.find(wxT(';'), start)) != wxNOT_FOUND)
+    {
+      commentEnd = s.find(wxT('\n'), commentStart);
+      if (commentEnd == wxNOT_FOUND)
+        commentEnd = s.length();
+      s = s.SubString(0, commentStart-1) + s.SubString(commentEnd, s.length());
+    }
+  }
+  else
+    m_blankStatementRegEx.Replace(&s, wxT(";"));
 }
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
@@ -503,9 +517,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   if (addToHistory)
     AddToHistory(s);
 
-/*  if (!(s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n"))))
-    s.Replace(wxT("\n"), wxT(" "));*/
   StripComments(s);
+
+  if (s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n")))
+    s.Replace(wxT("\n"), wxT(" "));
+  
   s.Trim(true);
   s.Append(wxT("\n"));
 
@@ -4660,7 +4676,8 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     if(group)
     {
       m_console->AddSectionToEvaluationQueue(group);
-      if(!evaluating) TryEvaluateNextInQueue();
+      if(!evaluating)
+        TryEvaluateNextInQueue();
     }
   }
   break;
@@ -4932,7 +4949,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
   }
   // Inform the user about the length of the evaluation queue.
   EvaluationQueueLength(m_console->m_evaluationQueue->Size());
-  if(!evaluating) TryEvaluateNextInQueue();;
+  if(!evaluating)
+    TryEvaluateNextInQueue();;
 }
 
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
