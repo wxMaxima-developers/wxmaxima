@@ -347,8 +347,8 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
     new RegexReplacer(L"\x220e",wxT("\\\\ensuremath{\\\\blacksquare}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x2263",wxT("\\\\ensuremath{\\\\equiv}")));
-  regexReplaceList.push_back(
-    new RegexReplacer(wxT("~"),wxT("\\\\ensuremath{\\\\sim }")));
+//  regexReplaceList.push_back(
+//    new RegexReplacer(wxT("~"),wxT("\\\\ensuremath{\\\\sim }")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\xDCB6",wxT("~")));
   #endif

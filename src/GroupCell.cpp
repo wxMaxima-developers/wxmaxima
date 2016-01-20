@@ -707,6 +707,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 
   case GC_TYPE_CODE:
     str = ToTeXCodeCell(imgDir, filename, imgCounter);
+    std::cerr<<"Code="<<str<<"\n";
     break;
     
   default:
@@ -734,6 +735,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         }
         else {
           str = MarkDownParser.MarkDown(str);
+          std::cerr<<"default="<<str<<"\n";
         }
         break;
       }

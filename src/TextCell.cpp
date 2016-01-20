@@ -468,12 +468,15 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x2225",wxT("\\ensuremath{\\parallel}"));
   text.Replace(L"\x27C2",wxT("\\ensuremath{\\bot}"));
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
-
   text.Replace(wxT("_"), wxT("\\_"));
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
+  text.Replace(wxT("&"), wxT("\\&"));
+  text.Replace(wxT("@"), wxT("\\verb+@+"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
+  text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
+  text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
 
 #endif
   // m_IsHidden is set only for multiplication signs
