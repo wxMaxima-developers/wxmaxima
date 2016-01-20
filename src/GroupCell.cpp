@@ -796,7 +796,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
         case TS_LABEL:
         case TS_USERLABEL:
           if(mathMode)
-          str += wxT("\\]\n\\[\\displaystyle\n");
+          str += wxT("\\mbox{}\\]\n\\[\\displaystyle\n");
           else
           {
             str += wxT("\\[\\displaystyle\n");
@@ -808,7 +808,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
         case TS_STRING:
           if (mathMode)
           {
-            str += wxT("\n\\]");
+            str += wxT("\\mbox{}\n\\]");
             mathMode = false;
           }
           str += TexEscapeOutputCell(tmp->ToTeX()) + wxT("\n");
@@ -832,8 +832,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     {
       // Some invisible dummy content that keeps TeX happy if there really is
       // no output to display.
-      str += wxT("\\mbox{}");
-      str += wxT("\n\\]\n%%%%%%%%%%%%%%%");
+      str += wxT("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%");
     }
   }
   
