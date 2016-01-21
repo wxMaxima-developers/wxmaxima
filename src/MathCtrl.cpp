@@ -1457,8 +1457,6 @@ bool MathCtrl::CopyTeX() {
   bool wrapLatexMath = true;
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
 
-std::cerr<< 	wrapLatexMath<<"\n";
-
   if (tmp->GetType() != MC_TYPE_GROUP) {
     inMath = true;
     if(wrapLatexMath)
