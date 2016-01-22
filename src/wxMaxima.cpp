@@ -496,80 +496,92 @@ void wxMaxima::StripComments(wxString& s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
-  if (!m_variablesOK) {
-    m_variablesOK = true;
-    SetupVariables();
-  }
+  // Normally we catch parenthesis errors before adding cells to the
+  // evaluation queue. But if the error is introduced only after the
+  // cell is placed in the evaluation queue we need to catch it here.
+  wxString parenthesisError=GetUnmatchedParenthesisState(s);
+  if(parenthesisError==wxEmptyString)
+  {          
 
-  s = m_console->UnicodeToMaxima(s);
-  
-  // If there is no working group and we still are trying to send something
-  // we are trying to change maxima's settings from the background and might never
-  // get an answer that changes the status again.
-  if(m_console->GetWorkingGroup())
-    StatusMaximaBusy(calculating);
-  else
-    StatusMaximaBusy(waiting);
-  
-  m_dispReadOut = false;
-
-  /// Add this command to History
-  if (addToHistory)
-    AddToHistory(s);
-
-  StripComments(s);
-
-  if (s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n")))
-    s.Replace(wxT("\n"), wxT(" "));
-  
-  s.Trim(true);
-  s.Append(wxT("\n"));
-
-  /// Check for function/variable definitions
-  wxStringTokenizer commands(s, wxT(";$"));
-  while (commands.HasMoreTokens())
-  {
-    wxString line = commands.GetNextToken();
-    if (m_varRegEx.Matches(line))
-      m_console->AddSymbol(m_varRegEx.GetMatch(line, 1));
-
-    if (m_funRegEx.Matches(line))
-    {
-      wxString funName = m_funRegEx.GetMatch(line, 1);
-      m_console->AddSymbol(funName);
-
-      /// Create a template from the input
-      wxString args = m_funRegEx.GetMatch(line, 2);
-      wxStringTokenizer argTokens(args, wxT(","));
-      funName << wxT("(");
-      int count = 0;
-      while (argTokens.HasMoreTokens()) {
-        if (count > 0)
-          funName << wxT(",");
-        wxString a = argTokens.GetNextToken().Trim().Trim(false);
-        if (a != wxEmptyString)
-        {
-          if (a[0]=='[')
-            funName << wxT("[<") << a.SubString(1, a.Length()-2) << wxT(">]");
-          else
-            funName << wxT("<") << a << wxT(">");
-          count++;
-        }
-      }
-      funName << wxT(")");
-      m_console->AddSymbol(funName, AutoComplete::tmplte);
+    if (!m_variablesOK) {
+      m_variablesOK = true;
+      SetupVariables();
     }
-  }
 
-  if(m_console) m_console->EnableEdit(false);
+    s = m_console->UnicodeToMaxima(s);
+  
+    // If there is no working group and we still are trying to send something
+    // we are trying to change maxima's settings from the background and might never
+    // get an answer that changes the status again.
+    if(m_console->GetWorkingGroup())
+      StatusMaximaBusy(calculating);
+    else
+      StatusMaximaBusy(waiting);
+  
+    m_dispReadOut = false;
 
-  if(m_client)
-  {
+    /// Add this command to History
+    if (addToHistory)
+      AddToHistory(s);
+
+    StripComments(s);
+
+    if (s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n")))
+      s.Replace(wxT("\n"), wxT(" "));
+  
+    s.Trim(true);
+    s.Append(wxT("\n"));
+
+    /// Check for function/variable definitions
+    wxStringTokenizer commands(s, wxT(";$"));
+    while (commands.HasMoreTokens())
+    {
+      wxString line = commands.GetNextToken();
+      if (m_varRegEx.Matches(line))
+        m_console->AddSymbol(m_varRegEx.GetMatch(line, 1));
+
+      if (m_funRegEx.Matches(line))
+      {
+        wxString funName = m_funRegEx.GetMatch(line, 1);
+        m_console->AddSymbol(funName);
+
+        /// Create a template from the input
+        wxString args = m_funRegEx.GetMatch(line, 2);
+        wxStringTokenizer argTokens(args, wxT(","));
+        funName << wxT("(");
+        int count = 0;
+        while (argTokens.HasMoreTokens()) {
+          if (count > 0)
+            funName << wxT(",");
+          wxString a = argTokens.GetNextToken().Trim().Trim(false);
+          if (a != wxEmptyString)
+          {
+            if (a[0]=='[')
+              funName << wxT("[<") << a.SubString(1, a.Length()-2) << wxT(">]");
+            else
+              funName << wxT("<") << a << wxT(">");
+            count++;
+          }
+        }
+        funName << wxT(")");
+        m_console->AddSymbol(funName, AutoComplete::tmplte);
+      }
+    }
+
+    if(m_console) m_console->EnableEdit(false);
+
+    if(m_client)
+    {
 #if wxUSE_UNICODE
-    m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
+      m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
 #else
-    m_client->Write(s.c_str(), s.Length());
+      m_client->Write(s.c_str(), s.Length());
 #endif
+    }
+    else
+      ConsoleAppend(_("Refusing to send cell to maxima: " ) +
+                    parenthesisError + wxT("\n"),
+                    MC_TYPE_ERROR);
   }
 }
 
