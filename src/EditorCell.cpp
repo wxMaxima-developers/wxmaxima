@@ -2587,8 +2587,6 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   wxArrayString retval;
   wxString token;
 
-  static wxString numSeps = wxT("bBdDeEfF");
-
   while(pos<size)
   {
     wxChar Ch = string.GetChar(pos);
@@ -2676,7 +2674,10 @@ wxArrayString EditorCell::StringToTokens(wxString string)
             
       while((pos<size) &&
             (IsNum(string.GetChar(pos)) ||
-             numSeps.Find(string.GetChar(pos)) != wxNOT_FOUND))
+             ((string.GetChar(pos)>= wxT('a')) && (string.GetChar(pos)<= wxT('z'))) ||
+             ((string.GetChar(pos)>= wxT('A')) && (string.GetChar(pos)<= wxT('Z')))
+               )
+        )
       {
         token += string.GetChar(pos);
         pos++;
