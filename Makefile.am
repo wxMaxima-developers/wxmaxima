@@ -67,7 +67,7 @@ wxMaxima.app: all
 	cp $(srcdir)/art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
 	cp $(srcdir)/art/config/*.png wxMaxima.app/Contents/Resources/config
 	mkdir -p wxMaxima.app/Contents/Resources/help
-	cp $(srcdir)/info/*.html wxMaxima.app/Contents/Resources/help
+	cp info/*.html wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/*.jpg  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/*.png  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
@@ -89,7 +89,7 @@ wxMaxima.win: all
 if CHM
 	cp $(srcdir)/info/*.chm  wxMaxima/help
 else
-	-cp $(srcdir)/info/*.html wxMaxima/help
+	-cp info/*.html wxMaxima/help
 	-cp $(srcdir)/info/wxmaxima.hhp wxMaxima/help
 endif
 	mkdir -p wxMaxima/art/toolbar
@@ -104,7 +104,7 @@ endif
 		mkdir -p wxMaxima/locale/$$i/LC_MESSAGES ; \
 		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
-	cp $(srcdir)/src/wxmaxima.exe wxMaxima/
+	cp src/wxmaxima.exe wxMaxima/
 
 wxMaxima.win.zip: wxMaxima.win
 	zip -r wxMaxima.win.zip wxMaxima

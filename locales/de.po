@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-17 19:26+0100\n"
-"PO-Revision-Date: 2016-01-17 19:29+0100\n"
+"PO-Revision-Date: 2016-01-24 09:29+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -118,7 +118,7 @@ msgstr "&Apropos ..."
 
 #: ../src/wxMaximaFrame.cpp:412
 msgid "&Batch File...\tCtrl-B"
-msgstr "&Batch-Datei laden ...\tCtrl-B"
+msgstr "&Batch-Datei laden ...\tStrg-B"
 
 #: ../src/wxMaximaFrame.cpp:655
 msgid "&Boundary Value Problem..."
@@ -158,7 +158,7 @@ msgstr "&Kettenbruch"
 
 #: ../src/wxMaximaFrame.cpp:436
 msgid "&Copy\tCtrl-C"
-msgstr "&Kopieren\tCtrl-C"
+msgstr "&Kopieren\tStrg-C"
 
 #: ../src/IntegrateWiz.cpp:36
 msgid "&Definite integration"
@@ -238,11 +238,11 @@ msgstr "&Integrieren ..."
 
 #: ../src/wxMaximaFrame.cpp:576
 msgid "&Interrupt\tCtrl-."
-msgstr "Unter&brechen\tCtrl-."
+msgstr "Unter&brechen\tStrg-."
 
 #: ../src/wxMaximaFrame.cpp:580
 msgid "&Interrupt\tCtrl-G"
-msgstr "Unter&brechen\tCtrl-G"
+msgstr "Unter&brechen\tStrg-G"
 
 #: ../src/wxMaximaFrame.cpp:677
 msgid "&Invert Matrix"
@@ -250,7 +250,7 @@ msgstr "Matrix &invertieren"
 
 #: ../src/wxMaximaFrame.cpp:410
 msgid "&Load Package...\tCtrl-L"
-msgstr "Paket &laden ...\tCtrl-L"
+msgstr "Paket &laden ...\tStrg-L"
 
 #: ../src/wxMaximaFrame.cpp:700
 msgid "&Map to List..."
@@ -270,7 +270,7 @@ msgstr "Setze &Modulo ..."
 
 #: ../src/main.cpp:135
 msgid "&New\tCtrl-N"
-msgstr "&Neu\tCtrl-N"
+msgstr "&Neu\tStrg-N"
 
 #: ../src/wxMaximaFrame.cpp:878
 msgid "&Numeric"
@@ -286,11 +286,11 @@ msgstr "&Gosper"
 
 #: ../src/main.cpp:136
 msgid "&Open\tCtrl-O"
-msgstr "&Öffnen\tCtrl-O"
+msgstr "&Öffnen\tStrg-O"
 
 #: ../src/wxMaximaFrame.cpp:397
 msgid "&Open...\tCtrl-O"
-msgstr "&Öffnen ...\tCtrl-O"
+msgstr "&Öffnen ...\tStrg-O"
 
 #: ../src/wxMaximaFrame.cpp:860
 msgid "&Plot"
@@ -302,7 +302,7 @@ msgstr "&Potenzreihe"
 
 #: ../src/wxMaximaFrame.cpp:417
 msgid "&Print...\tCtrl-P"
-msgstr "Drucken ...\tCtrl-P"
+msgstr "Drucken ...\tStrg-P"
 
 # frei
 #: ../src/SubstituteWiz.cpp:37
@@ -323,7 +323,7 @@ msgstr "reelle N&ullstellen eines Polynoms"
 
 #: ../src/wxMaximaFrame.cpp:406
 msgid "&Save\tCtrl-S"
-msgstr "Speichern\tCtrl-S"
+msgstr "Speichern\tStrg-S"
 
 #: ../src/SumWiz.cpp:39 ../src/wxMaximaFrame.cpp:850
 msgid "&Simplify"
@@ -610,7 +610,7 @@ msgstr "Ordner Anzeigen"
 #: ../src/Autocomplete.cpp:138
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
-"Fehler: Textvervollständigung für eine unbekannte Kathegorie aufgerufen."
+"Fehler: Textvervollständigung für eine unbekannte Kategorie aufgerufen."
 
 #: ../src/MathCtrl.cpp:1679
 msgid "Bug: Cell left but not entered."
@@ -630,7 +630,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:1907
 msgid "Bug: Got a question but no cell to answer it in"
-msgstr "Bug: Habe eine Frage, aber weiß nicht, in welcher Zelle"
+msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
 #: ../src/MathCtrl.cpp:5077
 msgid ""
@@ -879,7 +879,7 @@ msgstr "Klassen:"
 
 #: ../src/wxMaximaFrame.cpp:403
 msgid "Close\tCtrl-W"
-msgstr "Schließen\tCtrl-W"
+msgstr "Schließen\tStrg-W"
 
 #: ../src/wxMaximaFrame.cpp:404
 msgid "Close window"
@@ -943,11 +943,11 @@ msgstr "Kommentiert den aktuell ausgewählten Text aus."
 
 #: ../src/wxMaximaFrame.cpp:463
 msgid "Comment selection\tCtrl-/"
-msgstr "Auswahl auskommentieren\tCtrl-/"
+msgstr "Auswahl auskommentieren\tStrg-/"
 
 #: ../src/wxMaximaFrame.cpp:532
 msgid "Complete Word\tCtrl-K"
-msgstr "Vervollständige Befehl\tCtrl-K"
+msgstr "Vervollständige Befehl\tStrg-K"
 
 #: ../src/wxMaximaFrame.cpp:533
 msgid "Complete word"
@@ -1083,11 +1083,11 @@ msgstr "LaTeX kopieren"
 
 #: ../src/wxMaximaFrame.cpp:528
 msgid "Copy Previous Input\tCtrl-I"
-msgstr "Kopiere letzte Eingabe\tCtrl-I"
+msgstr "Kopiere letzte Eingabe\tStrg-I"
 
 #: ../src/wxMaximaFrame.cpp:530
 msgid "Copy Previous Output\tCtrl-U"
-msgstr "Kopiere letzte Ausgabe\tCtrl-U"
+msgstr "Kopiere letzte Ausgabe\tStrg-U"
 
 #: ../src/wxMaximaFrame.cpp:445
 msgid "Copy as Image"
@@ -1099,7 +1099,7 @@ msgstr "Als LaTeX kopieren"
 
 #: ../src/wxMaximaFrame.cpp:438
 msgid "Copy as Text\tCtrl-Shift-C"
-msgstr "Als Text kopieren\tCtrl-Shift-C"
+msgstr "Als Text kopieren\tStrg-Shift-C"
 
 #: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:437
 msgid "Copy selection"
@@ -1139,7 +1139,7 @@ msgstr "Ausschneiden"
 
 #: ../src/wxMaximaFrame.cpp:433
 msgid "Cut\tCtrl-X"
-msgstr "Ausschneiden\tCtrl-x"
+msgstr "Ausschneiden\tStrg-X"
 
 #: ../src/ToolBar.cpp:127 ../src/wxMaximaFrame.cpp:434
 msgid "Cut selection"
@@ -1356,7 +1356,7 @@ msgstr "&Gleichungen"
 
 #: ../src/wxMaximaFrame.cpp:421
 msgid "E&xit\tCtrl-Q"
-msgstr "B&eenden\tCtrl-Q"
+msgstr "B&eenden\tStrg-Q"
 
 #: ../src/wxMaximaFrame.cpp:688
 msgid "Eige&nvectors"
@@ -1372,7 +1372,7 @@ msgstr "Eliminieren"
 
 #: ../src/wxMaximaFrame.cpp:641
 msgid "Eliminate a variable from a system of equations"
-msgstr "Eleminiere eine Variable aus einem Gleichungssystem"
+msgstr "Eliminiere eine Variable aus einem Gleichungssystem"
 
 #: ../src/wxMaximaFrame.cpp:1404
 msgid "End of proof"
@@ -1470,11 +1470,11 @@ msgstr "&Noun-Formen auswerten"
 
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Evaluate All Cells\tCtrl-Shift-R"
-msgstr "Alle Zellen neu auswerten\tCtrl-Shift-R"
+msgstr "Alle Zellen neu auswerten\tStrg-Shift-R"
 
 #: ../src/wxMaximaFrame.cpp:518
 msgid "Evaluate All Visible Cells\tCtrl-R"
-msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl-R"
+msgstr "Alle sichtbaren Zellen neu auswerten\tStrg-R"
 
 #: ../src/MathCtrl.cpp:878 ../src/wxMaximaFrame.cpp:516
 msgid "Evaluate Cell(s)"
@@ -1482,23 +1482,23 @@ msgstr "Zelle(n) auswerten"
 
 #: ../src/wxMaximaFrame.cpp:522
 msgid "Evaluate Cells above this point\tCtrl-Shift-P"
-msgstr "Zellen über dem Cursor neu auswerten\tCtrl-Shift-P"
+msgstr "Zellen über dem Cursor neu auswerten\tStrg-Shift-P"
 
 #: ../src/MathCtrl.cpp:892 ../src/MathCtrl.cpp:984
 msgid "Evaluate Part\tShift+Ctrl+Enter"
-msgstr "Evaluiere diesen Teil des Dokuments\tShift+Ctrl+Return"
+msgstr "Evaluiere diesen Teil des Dokuments\tShift+Strg+Return"
 
 #: ../src/MathCtrl.cpp:897 ../src/MathCtrl.cpp:986
 msgid "Evaluate Section\tShift+Ctrl+Enter"
-msgstr "Evaluiere dieses Kapitel\tShift+Ctrl+Return"
+msgstr "Evaluiere dieses Kapitel\tShift+Strg+Return"
 
 #: ../src/MathCtrl.cpp:907 ../src/MathCtrl.cpp:990
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
-msgstr "Evaluiere dieses Unterkapitel\tShift+Ctrl+Return"
+msgstr "Evaluiere dieses Unterkapitel\tShift+Strg+Return"
 
 #: ../src/MathCtrl.cpp:902 ../src/MathCtrl.cpp:988
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
-msgstr "Evaluiere dieses Unter-Unterkapitel\tShift+Ctrl+Return"
+msgstr "Evaluiere dieses Unter-Unterkapitel\tShift+Strg+Return"
 
 #: ../src/wxMaximaFrame.cpp:517
 msgid "Evaluate active or selected cell(s)"
@@ -1688,7 +1688,7 @@ msgstr "Suchen"
 
 #: ../src/wxMaximaFrame.cpp:454
 msgid "Find\tCtrl-F"
-msgstr "Suchen und Ersetzen\tCtrl-F"
+msgstr "Suchen und Ersetzen\tStrg-F"
 
 #: ../src/wxMaximaFrame.cpp:718
 msgid "Find &Limit..."
@@ -1762,7 +1762,7 @@ msgstr "Schriftart mit fester Breite in Texteingabefeldern"
 
 #: ../src/wxMaximaFrame.cpp:554
 msgid "Fold All\tCtrl-Alt-["
-msgstr "Alles zuklappen\tCtrl-A"
+msgstr "Alles zuklappen\tStrg-A"
 
 #: ../src/wxMaximaFrame.cpp:555
 msgid "Fold all sections"
@@ -2195,11 +2195,11 @@ msgstr "Ein % Zeichen vor einem Operator am Anfang einer Zelle einfügen"
 
 #: ../src/wxMaximaFrame.cpp:543
 msgid "Insert &Section Cell\tCtrl-3"
-msgstr "Neue &Kapitelzelle\tCtrl-3"
+msgstr "Neue &Kapitelzelle\tStrg-3"
 
 #: ../src/wxMaximaFrame.cpp:539
 msgid "Insert &Text Cell\tCtrl-1"
-msgstr "Neue &Textzelle\tCtrl-1"
+msgstr "Neue &Textzelle\tStrg-1"
 
 #: ../src/wxMaximaFrame.cpp:489
 msgid "Insert Cell\tAlt-Shift-C"
@@ -2223,11 +2223,11 @@ msgstr "Seitenumbruch einfügen"
 
 #: ../src/wxMaximaFrame.cpp:545
 msgid "Insert S&ubsection Cell\tCtrl-4"
-msgstr "Neue &Unterkapitelzelle\tCtrl-4"
+msgstr "Neue &Unterkapitelzelle\tStrg-4"
 
 #: ../src/wxMaximaFrame.cpp:547
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
-msgstr "Neue &Unter-Unterkapitelzelle\tCtrl-5"
+msgstr "Neue &Unter-Unterkapitelzelle\tStrg-5"
 
 #: ../src/MathCtrl.cpp:948
 msgid "Insert Section Cell"
@@ -2243,7 +2243,7 @@ msgstr "Neue &Unter-Unterkapitelzelle"
 
 #: ../src/wxMaximaFrame.cpp:541
 msgid "Insert T&itle Cell\tCtrl-2"
-msgstr "Neue T&itelzelle\tCtrl-2"
+msgstr "Neue T&itelzelle\tStrg-2"
 
 #: ../src/MathCtrl.cpp:946
 msgid "Insert Text Cell"
@@ -2691,7 +2691,7 @@ msgstr "Neu"
 
 #: ../src/wxMaximaFrame.cpp:391 ../src/wxMaximaFrame.cpp:394
 msgid "New\tCtrl-N"
-msgstr "Neu\tCtrl-N"
+msgstr "Neu\tStrg-N"
 
 #: ../src/ToolBar.cpp:105
 msgid "New document"
@@ -2699,7 +2699,7 @@ msgstr "Neues Dokument"
 
 #: ../src/SubstituteWiz.cpp:34
 msgid "New value:"
-msgstr "neuer Wert:"
+msgstr "Neuer Wert:"
 
 #: ../src/wxMaxima.cpp:3677 ../src/wxMaxima.cpp:3803 ../src/wxMaxima.cpp:3820
 msgid "New variable:"
@@ -2707,7 +2707,7 @@ msgstr "Parameter:"
 
 #: ../src/wxMaximaFrame.cpp:561
 msgid "Next Command\tAlt-Down"
-msgstr "Nächster Befehl\tAlt-Runter"
+msgstr "Nächster Befehl\tAlt-Herunter"
 
 #: ../src/ConfigDialogue.cpp:384 ../src/ConfigDialogue.cpp:393
 msgid "No"
@@ -2715,7 +2715,7 @@ msgstr "Nein"
 
 #: ../src/wxMaxima.cpp:5036
 msgid "No dollar ($) or semicolon (;) at the end of command"
-msgstr "Kein Dollarzeichen ($) oder Semicolon (;) am Ende eines Befehls"
+msgstr "Kein Dollarzeichen ($) oder Semikolon (;) am Ende eines Befehls"
 
 #: ../src/wxMaxima.cpp:2934 ../src/wxMaxima.cpp:2955
 msgid "No matches found!"
@@ -2800,7 +2800,7 @@ msgstr "OK"
 
 #: ../src/SubstituteWiz.cpp:31
 msgid "Old value:"
-msgstr "alter Wert:"
+msgstr "Alter Wert:"
 
 #: ../src/wxMaxima.cpp:3676 ../src/wxMaxima.cpp:3802 ../src/wxMaxima.cpp:3819
 msgid "Old variable:"
@@ -2955,7 +2955,7 @@ msgstr "Einfügen"
 
 #: ../src/wxMaximaFrame.cpp:449
 msgid "Paste\tCtrl-V"
-msgstr "Einfügen\tCtrl-V"
+msgstr "Einfügen\tStrg-V"
 
 #: ../src/ToolBar.cpp:133
 msgid "Paste from clipboard"
@@ -2963,7 +2963,7 @@ msgstr "Aus Zwischenablage einfügen"
 
 #: ../src/wxMaximaFrame.cpp:450
 msgid "Paste text from clipboard"
-msgstr "Aus Zwischenablage einfügen"
+msgstr "Text aus Zwischenablage einfügen"
 
 #: ../src/wxMaximaFrame.cpp:1403
 msgid "Perpendicular to"
@@ -3074,7 +3074,7 @@ msgstr "Genauigkeit"
 
 #: ../src/wxMaximaFrame.cpp:468
 msgid "Preferences...\tCtrl+,"
-msgstr "Einstellungen...\tCTRL+,"
+msgstr "Einstellungen...\tStrg+,"
 
 #: ../data/tips.txt:27
 msgid ""
@@ -3083,7 +3083,7 @@ msgid ""
 "their parameters: It also knows about parameters from currently loaded "
 "packages and from functions that are defined in the current file."
 msgstr ""
-"Ctrl+Leertaste oder Ctrl+Tabulator startet eine Auto-Vervollständigungs-"
+"Strg+Leertaste oder Strg+Tabulator startet eine Auto-Vervollständigungs-"
 "Funktion, die nicht über in Maxima eingebaute Funktionen und Variablen "
 "informiert ist, sondern auch die von externen Paketen nachgeladenen Befehle "
 "in Erfahrung bringt sowie die im aktuellen Arbeitsblatt definierten."
@@ -3146,7 +3146,7 @@ msgstr "Rectform"
 
 #: ../src/wxMaximaFrame.cpp:429
 msgid "Redo\tCtrl-Y"
-msgstr "&Erneut\tCtrl-Y"
+msgstr "&Erneut\tStrg-Y"
 
 #: ../src/wxMaximaFrame.cpp:430
 msgid "Redo last change"
@@ -3248,7 +3248,7 @@ msgstr "Speichern als"
 
 #: ../src/wxMaximaFrame.cpp:408
 msgid "Save As...\tShift-Ctrl-S"
-msgstr "Speichern als ...\tShift-Ctrl-S"
+msgstr "Speichern als ...\tShift-Strg-S"
 
 #: ../src/MathCtrl.cpp:858
 msgid "Save Image..."
@@ -3371,7 +3371,7 @@ msgstr "Alles auswählen"
 
 #: ../src/wxMaximaFrame.cpp:456
 msgid "Select All\tCtrl-A"
-msgstr "Alles auswählen\tCtrl-A"
+msgstr "Alles auswählen\tStrg-A"
 
 #: ../src/ConfigDialogue.cpp:830 ../src/ConfigDialogue.cpp:835
 msgid "Select Maxima program"
@@ -3498,7 +3498,7 @@ msgstr "Zeige die Hilfe von Maxima"
 
 #: ../src/wxMaximaFrame.cpp:534
 msgid "Show Template\tCtrl-Shift-K"
-msgstr "Zeige Muster\tCtrl-Shift-K"
+msgstr "Zeige Muster\tStrg-Shift-K"
 
 #: ../src/wxMaximaFrame.cpp:899
 msgid "Show a tip"
@@ -3551,7 +3551,7 @@ msgstr "Zeige die Definition der Funktion:"
 #: ../src/ConfigDialogue.cpp:409
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
-msgstr "Zeige Benutzerdefinierte Ausgabemarken statt (\\%oxx)"
+msgstr "Zeige benutzerdefinierte Ausgabemarken statt (\\%oxx)"
 
 #: ../src/wxMaximaFrame.cpp:884 ../src/wxMaximaFrame.cpp:887
 msgid "Show wxMaxima help"
@@ -3631,7 +3631,7 @@ msgstr "Löse &lineares System ..."
 
 #: ../src/wxMaximaFrame.cpp:645
 msgid "Solve &ODE..."
-msgstr "Löse Differentialgleichung ..."
+msgstr "Löse gewöhnliche Differentialgleichung ..."
 
 #: ../src/wxMaximaFrame.cpp:621
 msgid "Solve (to_poly)..."
@@ -3639,7 +3639,7 @@ msgstr "Gleichung lösen (to_poly_solve) ..."
 
 #: ../src/wxMaxima.cpp:3195 ../src/wxMaxima.cpp:3319
 msgid "Solve ODE"
-msgstr "Löse Differentialgleichung"
+msgstr "Löse gewöhnliche Differentialgleichung"
 
 #: ../src/wxMaximaFrame.cpp:659
 msgid "Solve ODE with Lapla&ce..."
@@ -3993,7 +3993,7 @@ msgstr "Letztes Ergebnis als Gleitkommazahl"
 
 #: ../src/wxMaximaFrame.cpp:872
 msgid "To Numeri&c\tCtrl+Shift+N"
-msgstr "Als &Zahl\tCTRL+SHIFT+N"
+msgstr "Als &Zahl\tStrg+Shift+N"
 
 #: ../data/tips.txt:19
 msgid ""
@@ -4082,7 +4082,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:5136
 msgid "Trying to undo something but the undo action is empty."
-msgstr "Soll etwas rückgängigmachen, aber die Spezifikation dafür ist leer."
+msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
 #: ../src/ConfigDialogue.cpp:523
 msgid "Turkish"
@@ -4130,7 +4130,7 @@ msgstr "Unterstrich macht tiefgestellt"
 
 #: ../src/wxMaximaFrame.cpp:426
 msgid "Undo\tCtrl-Z"
-msgstr "&Rückgängig\tCtrl-Z"
+msgstr "&Rückgängig\tStrg-Z"
 
 #: ../src/wxMaximaFrame.cpp:427
 msgid "Undo last change"
@@ -4142,7 +4142,7 @@ msgstr "Rückgängigmachbare Aktionen (0=kein Limit)"
 
 #: ../src/wxMaximaFrame.cpp:556
 msgid "Unfold All\tCtrl-Alt-]"
-msgstr "Alles aufklappen\tCtrl-Alt-A"
+msgstr "Alles aufklappen\tStrg-Alt-A"
 
 #: ../src/wxMaximaFrame.cpp:557
 msgid "Unfold all folded sections"
@@ -4419,11 +4419,11 @@ msgstr "Zeta"
 
 #: ../src/wxMaximaFrame.cpp:493
 msgid "Zoom &In\tCtrl-+"
-msgstr "Ver&größern\tCtrl-+"
+msgstr "Ver&größern\tStrg-+"
 
 #: ../src/wxMaximaFrame.cpp:495
 msgid "Zoom Ou&t\tCtrl--"
-msgstr "Verk&leinern\tCtrl--"
+msgstr "Verk&leinern\tStrg--"
 
 #: ../src/wxMaximaFrame.cpp:494
 msgid "Zoom in 10%"
@@ -4618,7 +4618,7 @@ msgstr "nicht"
 
 #: ../src/wxMaximaFrame.cpp:1394
 msgid "not bytewise identical"
-msgstr "Nicht zeichen für zeichen identisch"
+msgstr "Nicht Zeichen für Zeichen identisch"
 
 #: ../src/wxMaximaFrame.cpp:1387
 msgid "not subset"
@@ -4744,7 +4744,7 @@ msgstr "wxMaxima %s "
 
 #: ../src/wxMaximaFrame.cpp:883
 msgid "wxMaxima &Help\tCtrl+?"
-msgstr "&Hilfe zu wxMaxima \tCtrl+?"
+msgstr "&Hilfe zu wxMaxima \tStrg+?"
 
 #: ../src/wxMaximaFrame.cpp:886
 msgid "wxMaxima &Help\tF1"
@@ -4757,9 +4757,9 @@ msgid ""
 "directory can be found by typing maxima_userdir"
 msgstr ""
 "Wenn im Benutzerverzeichnis eine Textdatei mit dem Namen wxmaxima.rc liegt, "
-"führt wxMaxma führt alle darin befindlichen Befelhe automatisch bei jedem "
-"Start aus. Wo das Benutzerverzeichnis liegt, wird angezeigt, wenn maxima den "
-"Befehl maxima_userdir; bekommt. "
+"führt wxMaxima alle darin befindlichen Befehle automatisch bei jedem "
+"Start aus. Wo das Benutzerverzeichnis liegt, wird mit dem Maxima-Befehl "
+"maxima_userdir; angezeigt. "
 
 #: ../src/ConfigDialogue.cpp:107 ../src/ConfigDialogue.cpp:137
 msgid "wxMaxima configuration"

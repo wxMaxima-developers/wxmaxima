@@ -73,4 +73,4 @@ wxmaxima_DEPENDENCIES = $(RC_OBJ)
 EXTRA_wxmaxima_SOURCES = Resources.rc
 
 Resources.o :
-	$(WINDRES) --include-dir $(WX_RC_PATH) --include-dir ../art Resources.rc -o Resources.o
+	$(WINDRES) --include-dir $(WX_RC_PATH) --include-dir $(srcdir)/../art $(srcdir)/Resources.rc -o Resources.o
