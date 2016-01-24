@@ -5794,6 +5794,10 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
 
   while (tree != NULL)
   {
+    // If this function actually does do something we
+    // should enable the "save" button.
+    m_saved = false;
+
     tree->RemoveOutput();
     
     GroupCell *sub = tree->GetHiddenTree();
