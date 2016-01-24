@@ -578,11 +578,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       m_client->Write(s.c_str(), s.Length());
 #endif
     }
-    else
-      ConsoleAppend(_("Refusing to send cell to maxima: " ) +
-                    parenthesisError + wxT("\n"),
-                    MC_TYPE_ERROR);
   }
+  else
+    ConsoleAppend(_("Refusing to send cell to maxima: " ) +
+                  parenthesisError + wxT("\n"),
+                  MC_TYPE_ERROR);
 }
 
 ///--------------------------------------------------------------------------------
