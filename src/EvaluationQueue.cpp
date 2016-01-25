@@ -144,7 +144,7 @@ void EvaluationQueue::AddTokens(wxString commandString)
     {
       token += ch;
       index++;
-      while((index < commandString.Length()) && (commandString[index] != wxT('\"')))
+      while((index < commandString.Length()) && ((ch = commandString[index]) != wxT('\"')))
       {
         if(commandString[index]==wxT('\\'))
         {
@@ -153,6 +153,11 @@ void EvaluationQueue::AddTokens(wxString commandString)
         }
         token += commandString[index];
         index++;
+      }
+      if (index < commandString.Length())
+      {
+        token += commandString[index];
+        index++;  
       }
       continue;
     }
@@ -214,17 +219,19 @@ void EvaluationQueue::AddTokens(wxString commandString)
     {
       // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
       // to detect if the token is empty.      
-      token.Trim(true).Trim(false);
+      token.Trim(true);
       m_tokens.Add(token);
+      std::cerr<<"Token1:"<<token<<"\n";
       token = wxEmptyString;
     }
   }
   // There might be a last token in the string we still haven't added.
   // Let's trim() it first: This way MathCtrl::TryEvaluateNextInQueue()
   // will detect if the token is empty.
-  token.Trim(true).Trim(false);
+  token.Trim(true);
   if(token != wxEmptyString)
   {
+    std::cerr<<"Token2:"<<token<<"\n";
     m_tokens.Add(token);
   }
 }
