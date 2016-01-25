@@ -1470,9 +1470,6 @@
 (defmspec $with_slider_draw (scene)
   (wxanimate-draw scene '($gr2d)))
 
-(defmspec $with_slider_draw2 (scene)
-  (wxanimate-draw scene))
-
 (defmspec $with_slider_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
 
