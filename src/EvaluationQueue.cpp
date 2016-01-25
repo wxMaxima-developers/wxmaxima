@@ -221,7 +221,6 @@ void EvaluationQueue::AddTokens(wxString commandString)
       // to detect if the token is empty.      
       token.Trim(true);
       m_tokens.Add(token);
-      std::cerr<<"Token1:"<<token<<"\n";
       token = wxEmptyString;
     }
   }
@@ -230,10 +229,7 @@ void EvaluationQueue::AddTokens(wxString commandString)
   // will detect if the token is empty.
   token.Trim(true);
   if(token != wxEmptyString)
-  {
-    std::cerr<<"Token2:"<<token<<"\n";
     m_tokens.Add(token);
-  }
 }
 
 GroupCell* EvaluationQueue::GetCell()
