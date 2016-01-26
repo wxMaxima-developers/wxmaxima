@@ -3287,7 +3287,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     output << wxT("  })") << endl;
     output << wxT("</script>") << endl;
     output << wxT("<script type=\"text/javascript\"") << endl;
-    output << wxT("  src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML\">") << endl;
+    output << wxT("  src=\"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML\">") << endl;
     output << wxT("</script>") << endl;
   }
   
