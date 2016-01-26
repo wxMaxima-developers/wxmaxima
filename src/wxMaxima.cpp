@@ -3473,7 +3473,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   break;
   case menu_gen_mat:
   {
-    Gen4Wiz *wiz = new Gen4Wiz(_("Array:"), _("Width:"), _("Height:"), _("Name:"),
+    Gen4Wiz *wiz = new Gen4Wiz(_("Array:"), _("Columns:"), _("Rows:"), _("Name:"),
                                expr, wxT("3"), wxT("3"), wxEmptyString,
                                this, -1, _("Generate Matrix"));
     wiz->SetValue(expr);
@@ -3492,7 +3492,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   break;
   case menu_gen_mat_lambda:
   {
-    Gen4Wiz *wiz = new Gen4Wiz(_("matrix[i,j]:"), _("Width:"), _("Height:"), _("Name:"),
+    Gen4Wiz *wiz = new Gen4Wiz(_("matrix[i,j]:"), _("Columns:"), _("Rows:"), _("Name:"),
                                expr, wxT("3"), wxT("3"), wxEmptyString,
                                this, -1, _("Generate Matrix"));
     wiz->SetValue(expr);
