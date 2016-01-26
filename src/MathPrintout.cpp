@@ -96,6 +96,10 @@ bool MathPrintout::OnPrintPage(int num)
 
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
+      // The following line seems to misteriously fix the "subsequent text
+      // cells aren't printed" problem on linux.
+      // No Idea why, though.
+      dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
       tmp->Draw(parser, point, fontsize);
       if (tmp->m_next != NULL) {
         point.x = marginX;
@@ -105,8 +109,6 @@ bool MathPrintout::OnPrintPage(int num)
       }
 
       tmp = (GroupCell *)tmp->m_next;
-      if (tmp == NULL || tmp->BreakPageHere())
-        break;
     }
     return true;
   }
