@@ -109,6 +109,8 @@ bool MathPrintout::OnPrintPage(int num)
       }
 
       tmp = (GroupCell *)tmp->m_next;
+      if (tmp == NULL || tmp->BreakPageHere())
+        break;
     }
     return true;
   }
