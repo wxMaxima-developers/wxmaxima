@@ -3512,7 +3512,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   case button_map:
   case menu_map:
   {
-    Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List:"),
+    Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List(s):"),
                                wxEmptyString, expr,
                                this, -1, _("Map"));
     wiz->Centre(wxBOTH);
