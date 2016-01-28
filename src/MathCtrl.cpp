@@ -3769,7 +3769,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
             // Something we want to export as an image.
             if(chunk->GetType() == MC_TYPE_IMAGE)
             {
-              ext=wxString::Format(wxT("_%d."), count);
+              ext = wxT(".")+dynamic_cast<ImgCell*>(chunk)->GetExtension();
               size = dynamic_cast<ImgCell*>(chunk)->ToImageFile(
                 imgDir + wxT("/") + filename + ext +
                 dynamic_cast<ImgCell*>(chunk) -> GetExtension());
