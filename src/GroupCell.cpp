@@ -800,7 +800,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
             str += wxT("\\[\\displaystyle\n");
             mathMode = true;
           }
-          str += wxT("\\printlabel{") + tmp->ToTeX() + wxT("}\n");
+          str += tmp->ToTeX() + wxT("\n");
           break;
         
         case TS_STRING:

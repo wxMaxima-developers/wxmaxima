@@ -472,7 +472,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
   text.Replace(wxT("&"), wxT("\\&"));
-  text.Replace(wxT("@"), wxT("\\mbox{\\verb+@+}"));
+  text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
@@ -529,8 +529,9 @@ wxString TextCell::ToTeX()
   }
   
   if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
-  {    
-    text = wxT("\\mathrm{\\tt ") + text + wxT("}\\quad ");
+  {
+    text.Trim(true);
+    text = wxT("\\tag{") + text.SubString(1,text.Length()-2) + wxT("}");
   }
   else
   {
