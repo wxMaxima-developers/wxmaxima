@@ -697,7 +697,7 @@ void wxMaximaFrame::SetupMenu()
                          _("Make list from expression"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
                          _("Apply function to a list"), wxITEM_NORMAL);
-  m_Algebra_Menu->Append(menu_map, _("&Map to List..."),
+  m_Algebra_Menu->Append(menu_map, _("&Map to List(s)..."),
                          _("Map function to a list"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_map_mat, _("Ma&p to Matrix..."),
                          _("Map function to a matrix"), wxITEM_NORMAL);
