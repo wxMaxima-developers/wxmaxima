@@ -187,6 +187,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"),wxT("\\\\ensuremath{\\\\ll}")));
   #if wxUSE_UNICODE
+  /*
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03B1",wxT("\\\\ensuremath{\\\\alpha}")));
   regexReplaceList.push_back(
@@ -346,7 +347,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(L"\x220e",wxT("\\\\ensuremath{\\\\blacksquare}")));
   regexReplaceList.push_back(
-    new RegexReplacer(L"\x2263",wxT("\\\\ensuremath{\\\\equiv}")));
+  new RegexReplacer(L"\x2263",wxT("\\\\ensuremath{\\\\equiv}")));*/
 //  regexReplaceList.push_back(
 //    new RegexReplacer(wxT("~"),wxT("\\\\ensuremath{\\\\sim }")));
   regexReplaceList.push_back(

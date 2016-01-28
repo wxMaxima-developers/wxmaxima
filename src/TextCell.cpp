@@ -472,7 +472,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("$"), wxT("\\$"));
   text.Replace(wxT("%"), wxT("\\%"));
   text.Replace(wxT("&"), wxT("\\&"));
-  text.Replace(wxT("@"), wxT("\\verb+@+"));
+  text.Replace(wxT("@"), wxT("\\mbox{\\verb+@+}"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
