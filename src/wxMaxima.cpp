@@ -663,6 +663,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       }
 
       ReadPrompt(m_currentOutput);
+      ReadMiscText(m_currentOutput);
     }
     break;
 
@@ -970,6 +971,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   }
   else
   {
+    // Needed in order to make batch mode start
     TryEvaluateNextInQueue();
   }
 }
@@ -5070,7 +5072,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
 void wxMaxima::TriggerEvaluation()
 {
-  if(m_console->m_evaluationQueue->Empty())
+  if(!m_console->m_evaluationQueue->Empty())
     TryEvaluateNextInQueue();
 }
 
