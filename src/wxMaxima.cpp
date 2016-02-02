@@ -641,7 +641,9 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 	StatusMaximaBusy(transferring);
         m_dispReadOut = true;
       }
-      
+
+      // This function determines the port maxima is running uü from  the text
+      // maxima outputs at startup and discards this piece of text afterwards.
       if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
         ReadFirstPrompt(m_currentOutput);
 
@@ -651,19 +653,26 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       // is able to detect has been transferred as a whole.
       ReadLoadSymbols(m_currentOutput);
 
+      // Handle text that isn't XML output: Mostly Error messages or warnings.
       if(!m_first)
         ReadMiscText(m_currentOutput);
 
+      // Handle XML text: All 1D and 2D maths for example.
       ReadMath(m_currentOutput);
 
+      // Handle eventual error messages
       if (!m_first)
       {
         ReadLispError(m_currentOutput);
         ReadMiscText(m_currentOutput);
       }
 
+      // The prompt that tells us that maxima awaits the next command
       ReadPrompt(m_currentOutput);
-      ReadMiscText(m_currentOutput);
+
+      // Seems like we need to scan for error messages again for some reason.
+      if (!m_first)
+        ReadMiscText(m_currentOutput);
     }
     break;
 
