@@ -4989,10 +4989,11 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   bool lisp = false;
 
   wxChar lastC=wxT(';');
+  wxChar lastnonWhitespace=wxT(',');
   while(index<len)
   {
     wxChar c=text[index];
-    
+
     switch(c)
     {
     case wxT('('):
@@ -5014,6 +5015,8 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       if(c!=delimiters.back()) return(_("Mismatched parenthesis"));
       delimiters.pop_back();
       lastC=c;
+      if(lastnonWhitespace==wxT(','))
+        return(_("Comma directly followed by a closing parenthesis"));
       break;
 
     case wxT('\\'):
@@ -5063,6 +5066,14 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       if((c!=wxT('\n')) && (c!=wxT(' '))&& (c!=wxT('\t')))
         lastC=c;
     }
+
+    if(
+      (c!=wxT(' ')) &&
+      (c!=wxT('\t')) &&
+      (c!=wxT('\n')) &&
+      (c!=wxT('\r'))
+      )
+      lastnonWhitespace = c;
 
     index++;
   }
