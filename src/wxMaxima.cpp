@@ -1611,7 +1611,12 @@ void wxMaxima::ReadLispError(wxString &data)
 #ifndef __WXMSW__
 void wxMaxima::ReadProcessOutput()
 {
+  // If there is no process we can already return from this function.
+  if(m_process == NULL)
+    return;
+
   wxString o;
+  
   while (m_process->IsInputAvailable())
     o += m_input->GetC();
 
