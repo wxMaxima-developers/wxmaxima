@@ -901,7 +901,8 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
 
 void wxMaxima::KillMaxima()
 {
-  m_process->Detach();
+  if(m_process)
+    m_process->Detach();
   if (m_pid < 0)
   {
     if (m_inLispMode)
