@@ -605,7 +605,7 @@ wxString TextCell::ToXML()
 	default: tag=_T("t");
 	}
 
-  if(m_forceBreakLine)
+  if((m_forceBreakLine)&&(m_textStyle!=TS_LABEL)&&(m_textStyle!=TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
     
   if(m_textStyle == TS_ERROR)
