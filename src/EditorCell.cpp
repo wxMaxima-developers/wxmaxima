@@ -2842,6 +2842,7 @@ void EditorCell::StyleText()
 
           if (token == wxT("for")    ||
               token == wxT("in")     ||
+              token == wxT("then")   ||
               token == wxT("while")  ||
               token == wxT("do")     ||
               token == wxT("thru")   ||
@@ -2854,6 +2855,7 @@ void EditorCell::StyleText()
               token == wxT("elif")   ||
               token == wxT("and")    ||
               token == wxT("or")     ||
+              token == wxT("not")    ||
               token == wxT("not")    ||
               token == wxT("true")   ||
               token == wxT("false"))
