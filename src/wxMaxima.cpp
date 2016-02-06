@@ -612,13 +612,19 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
 
   case wxSOCKET_INPUT:
     ReadStdErr();
-    m_client->Read(buffer, SOCKET_SIZE);
 
+    // It is theoretically possible that the client has exited after sending us
+    // data and before we had been able to process it.
+    if(m_client == NULL)
+      return;
+    
+    m_client->Read(buffer, SOCKET_SIZE);
+    
     if (!m_client->Error())
     {
       read = m_client->LastCount();
       buffer[read] = 0;
-
+      
       SanitizeSocketBuffer(buffer, read);
 
       wxString newChars;
