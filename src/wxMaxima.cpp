@@ -1276,6 +1276,10 @@ void wxMaxima::ReadPrompt(wxString &data)
 
 void wxMaxima::SetCWD(wxString file)
 {
+  // If maxima isn't connected we cannot do anything
+  if(!m_client)
+    return;
+  
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
 #endif
