@@ -38,6 +38,7 @@ public:
   void SetFont(CellParser& parser, int fontsize);
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
   wxString GetDiffPart();
   bool IsOperator();

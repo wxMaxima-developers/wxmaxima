@@ -584,6 +584,45 @@ wxString TextCell::ToTeX()
   return text;
 }
 
+wxString TextCell::ToMathML()
+{
+  wxString text=m_text;
+  text.Replace(wxT("&"),wxT("&amp;"));
+  text.Replace(wxT("<"),wxT("&lt;"));
+  text.Replace(wxT(">"),wxT("&gt;"));
+  text.Replace(wxT("'"),  wxT("&apos;"));
+  text.Replace(wxT("\""), wxT("&quot;"));
+
+  // If we didn't display a multiplication dot we want to do the same in MathML.
+  if(m_isHidden)
+  {
+    text.Replace(wxT("*"),     wxT("&InvisibleTimes;"));
+    text.Replace(wxT("\xB7"),  wxT("&InvisibleTimes;"));
+  }
+  
+  switch(m_textStyle)
+    {
+    case TS_GREEK_CONSTANT:
+    case TS_SPECIAL_CONSTANT:
+    case TS_VARIABLE:
+    case TS_FUNCTION:
+      return wxT("<mi>")+text+wxT("<mi>");
+      break;
+    case TS_NUMBER:
+      return wxT("<mn>")+text+wxT("<mn>");
+      break;
+
+    case TS_LABEL:
+    case TS_USERLABEL:
+      return wxT("<mtd><mtext>")+text+wxT("</mtext></mtd>");
+      break;
+
+    case TS_STRING:
+    default:
+      return wxT("<ms>")+text+wxT("<ms>");
+    }
+}
+
 wxString TextCell::ToXML()
 {
   wxString tag;

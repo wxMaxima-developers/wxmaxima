@@ -441,6 +441,26 @@ wxString MathCell::ToXML()
   return wxEmptyString;
 }
 
+wxString MathCell::ToMathML()
+{
+  return wxEmptyString;
+}
+
+wxString MathCell::ListToMathML()
+{
+  bool highlight=false;
+  
+  wxString retval;
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+  {
+    retval+=tmp->ToXML();
+    tmp=tmp->m_next;
+  }
+  return retval;
+}
+
 wxString MathCell::ListToXML()
 {
   bool highlight=false;
