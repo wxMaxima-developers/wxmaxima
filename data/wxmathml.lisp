@@ -44,6 +44,7 @@
 ;;; Without this command encountering unicode characters might cause
 ;;; maxima to stop responding on windows.
 #+(and clisp win32) (setf (stream-external-format *socket-connection*) charset:utf-8)
+#+(and clisp win32) (setf custom:*default-file-encoding* charset:utf-8)
 
 ;;; Muffle compiler-notes globally
 #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
