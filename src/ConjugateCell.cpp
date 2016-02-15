@@ -132,6 +132,11 @@ wxString ConjugateCell::ToTeX()
   return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
+wxString ConjugateCell::ToMathML()
+{
+  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+}
+
 wxString ConjugateCell::ToXML()
 {
   return wxT("<cj>") + m_innerCell->ListToXML() + wxT("</cj>");

@@ -52,6 +52,7 @@ protected:
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
 };
 

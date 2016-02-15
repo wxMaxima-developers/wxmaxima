@@ -138,6 +138,11 @@ wxString AbsCell::ToTeX()
     return wxT("\\abs( ") + m_innerCell->ListToTeX();
 }
 
+wxString AbsCell::ToMathML()
+{
+  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+}
+
 wxString AbsCell::ToXML()
 {
   return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");

@@ -148,6 +148,12 @@ wxString AtCell::ToTeX()
   return s;
 }
 
+wxString AtCell::ToMathML()
+{
+  return wxT("<msub>") + m_baseCell->ListToMathML() + 
+    m_indexCell->ListToMathML() + wxT("</msub>");
+}
+
 wxString AtCell::ToXML()
 {
   return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +

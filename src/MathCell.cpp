@@ -453,11 +453,18 @@ wxString MathCell::ListToMathML()
   wxString retval;
   MathCell *tmp=this;
 
+  // If the list contains multiple cells we wrap them in a <mrow>.
+  bool multiCell = (tmp->m_next != NULL);
+  
+
   while(tmp!=NULL)
   {
     retval+=tmp->ToXML();
     tmp=tmp->m_next;
   }
+  
+  if(multiCell)
+    retval = wxT("<mrow>")+retval+wxT("</mrow>");
   return retval;
 }
 
