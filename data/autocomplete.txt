@@ -2363,6 +2363,8 @@ TEMPLATE: mat_norm(<M>, frobenius)
 FUNCTION: matrixp
 TEMPLATE: matrixp(<e>, <p>)
 TEMPLATE: matrixp(<e>)
+FUNCTION: matrixexp
+TEMPLATE: matrixexp(<M>, <v>)
 FUNCTION: matrix_size
 TEMPLATE: matrix_size(<M>)
 FUNCTION: mat_fullunblocker
