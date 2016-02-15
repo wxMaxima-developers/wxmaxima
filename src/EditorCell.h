@@ -65,7 +65,12 @@ private:
   static wxString m_selectionString;
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
-
+  /*! Replace a "*" by a centered dot?
+    
+    Normally we ask the parser for this piece of information. But during recalculation
+    of widths while selecting text we don't know our parser.
+   */
+  bool m_changeAsterisk;
 public:
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged;

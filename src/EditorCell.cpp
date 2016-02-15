@@ -36,6 +36,7 @@ wxString EditorCell::m_selectionString;
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
+  m_changeAsterisk = false;
   m_selectionChanged = false;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
@@ -568,7 +569,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot if requested
-        if (parser.GetChangeAsterisk())  
+        if ((m_changeAsterisk = parser.GetChangeAsterisk())!=0)
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
 #endif
         
@@ -2418,7 +2419,7 @@ int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
   int i = 0;
   
   std::list<StyledText> styledText = m_styledText;
-  
+
   while(!styledText.empty() && i<line)
   {
     // Grab a portion of text from the list.
@@ -2702,7 +2703,9 @@ void EditorCell::StyleText()
   if(m_type == MC_TYPE_INPUT)
   {
     wxString textToStyle = m_text;
-
+    if (m_changeAsterisk)  
+      textToStyle.Replace(wxT("*"), wxT("\xB7"));
+    
     if(m_firstLineOnly)
     {
       size_t newlinepos = textToStyle.find(wxT("\nd"));
