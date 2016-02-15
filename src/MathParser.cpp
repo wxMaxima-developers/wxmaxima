@@ -379,8 +379,13 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
     if (child)
     {
       MathCell* index = ParseTag(child, false);
-      index->SetExponentFlag();
-      sub->SetIndex(index);
+      if(index != NULL)
+      {
+        sub->SetIndex(index);
+        index->SetExponentFlag();
+      }
+      else
+        return(NULL);
       sub->SetType(m_ParserStyle);
       sub->SetStyle(TS_VARIABLE);
       return sub;
@@ -1105,7 +1110,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
     }
     
-    if (node->GetAttribute(wxT("altCopy"), &altCopy))
+    if ((cell != NULL) &&(node->GetAttribute(wxT("altCopy"), &altCopy)))
       cell->SetAltCopyText(altCopy);
     
     node = GetNextTag(node);
