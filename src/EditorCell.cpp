@@ -37,6 +37,7 @@ wxString EditorCell::m_selectionString;
 EditorCell::EditorCell(wxString text) : MathCell()
 {
   m_changeAsterisk = false;
+  wxConfig::Get()->Read(wxT("changeAsterisk"), &m_changeAsterisk);
   m_selectionChanged = false;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
@@ -2145,10 +2146,14 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
 
-  while (m_positionOfCaret < (signed)m_text.Length() && m_text.GetChar(m_positionOfCaret) != '\n')
+  wxString text = m_text;
+  if (m_changeAsterisk)  
+    text.Replace(wxT("*"), wxT("\xB7"));
+
+  while (m_positionOfCaret < (signed)text.Length() && text.GetChar(m_positionOfCaret) != '\n')
   {
-    s = m_text.SubString(lineStart, m_positionOfCaret);
-    dc.GetTextExtent(m_text.SubString(lineStart, m_positionOfCaret),
+    s = text.SubString(lineStart, m_positionOfCaret);
+    dc.GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
                                       &width, &height);
     if (width > translate.x)
       break;
@@ -2156,7 +2161,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
     m_positionOfCaret++;
   }
 
-  m_positionOfCaret = MIN(m_positionOfCaret, (signed)m_text.Length());
+  m_positionOfCaret = MIN(m_positionOfCaret, (signed)text.Length());
 
   m_displayCaret = true;
   m_caretColumn = -1;
@@ -2193,6 +2198,10 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   wxString s;
   int fontsize1 = m_fontSize;
 
+  wxString text = m_text;
+  if (m_changeAsterisk)  
+    text.Replace(wxT("*"), wxT("\xB7"));
+
   dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
@@ -2206,16 +2215,16 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
-  while (m_text.GetChar(positionOfCaret) != '\n' && positionOfCaret < (signed)m_text.Length())
+  while (text.GetChar(positionOfCaret) != '\n' && positionOfCaret < (signed)text.Length())
   {
-    s = m_text.SubString(lineStart, positionOfCaret);
-    dc.GetTextExtent(m_text.SubString(lineStart, positionOfCaret),
+    s = text.SubString(lineStart, positionOfCaret);
+    dc.GetTextExtent(text.SubString(lineStart, positionOfCaret),
                                       &width, &height);
     if (width > translate.x)
       break;
     positionOfCaret++;
   }
-  positionOfCaret = MIN(positionOfCaret, (signed)m_text.Length());
+  positionOfCaret = MIN(positionOfCaret, (signed)text.Length());
 
   if ((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret))
     return false;
