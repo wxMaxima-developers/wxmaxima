@@ -63,11 +63,11 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:616
 msgid "      --dynamic-space-size <int>"
-msgstr ""
+msgstr "      --dynamic-space-size <int>"
 
 #: ../src/ConfigDialogue.cpp:612
 msgid "      -l <name>"
-msgstr ""
+msgstr "      -l <nome>"
 
 #: ../src/ImgCell.cpp:151 ../src/ImgCell.cpp:156
 msgid " (Graphics) "
@@ -94,7 +94,7 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:472
 msgid "\"Copy LaTeX\" adds equation markers"
-msgstr ""
+msgstr "\"Copy LaTeX\" engade marcadores de ecuacións"
 
 #: ../src/wxMaximaFrame.cpp:1370
 msgid "\"implies\" symbol"
@@ -254,9 +254,8 @@ msgid "&Load Package...\tCtrl-L"
 msgstr "Cargar &paquete\tCtrl-L"
 
 #: ../src/wxMaximaFrame.cpp:700
-#, fuzzy
 msgid "&Map to List(s)..."
-msgstr "Distribui&r sobre lista"
+msgstr "Distribui&r sobre lista..."
 
 #: ../src/wxMaximaFrame.cpp:615
 msgid "&Maxima"
@@ -386,7 +385,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1360
 msgid "1/2"
-msgstr ""
+msgstr "1/2"
 
 #: ../src/wxMaxima.cpp:4339
 msgid "<br>Lisp: "
@@ -479,9 +478,8 @@ msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Parámetros adicionais para Maxima (por exemplo, -l clisp)"
 
 #: ../src/ConfigDialogue.cpp:606
-#, fuzzy
 msgid "Additional parameters for maxima"
-msgstr "Parámetros adicionais:"
+msgstr "Parámetros adicionaispara maxima"
 
 #: ../src/ToolBar.cpp:190 ../src/ToolBar.cpp:234
 msgid ""
@@ -492,9 +490,8 @@ msgstr ""
 "semellante, este botón deslizante permite cambiar dunha imaxe a outra."
 
 #: ../src/ConfigDialogue.cpp:395
-#, fuzzy
 msgid "All variable names"
-msgstr "Variable antiga:"
+msgstr "Todos os nomes de variables"
 
 #: ../src/ConfigDialogue.cpp:837
 msgid "All|*"
@@ -907,7 +904,7 @@ msgstr "Combinar factoriais nunha expresión"
 
 #: ../src/wxMaxima.cpp:5019
 msgid "Comma directly followed by a closing parenthesis"
-msgstr ""
+msgstr "Coma seguida inmediatamente dun paréntese pechado"
 
 #: ../src/Plot2dWiz.cpp:663
 msgid "Comma separated x coordinates"
@@ -1512,9 +1509,8 @@ msgid "Example text"
 msgstr "Texto de exemplo"
 
 #: ../src/ConfigDialogue.cpp:609
-#, fuzzy
 msgid "Examples:"
-msgstr "Exemplo"
+msgstr "Exemplos:"
 
 #: ../src/wxMaximaFrame.cpp:422
 msgid "Exit wxMaxima"
@@ -1730,9 +1726,8 @@ msgid "Find root"
 msgstr "Calcula raíz"
 
 #: ../src/ConfigDialogue.cpp:569
-#, fuzzy, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
-msgstr "Axustar os índices de orde (\\%i e \\%o) antes de gardar"
+msgstr "Axustar os índices de orde (%i e %o) antes de gardar"
 
 #: ../src/ConfigDialogue.cpp:415
 msgid "Fixed font in text controls"
@@ -2020,14 +2015,13 @@ msgid "Identical to"
 msgstr "Idéntico a"
 
 #: ../src/ConfigDialogue.cpp:139
-#, fuzzy, c-format
 msgid ""
 "If a command begins with a label followed by a : wxMaxima will show this "
 "label instead of the %o style label maxima has automatically assigned to the "
 "same output cell."
 msgstr ""
 "Se unha instrucción comeza cunha etiqueta seguida de : wxMaxima amosará esta "
-"etiqueta en lugar da etiqueta \\%o por defecto de Maxima."
+"etiqueta en lugar da etiqueta %o por defecto de Maxima."
 
 #: ../src/wxMaximaFrame.cpp:614
 msgid ""
@@ -2156,9 +2150,8 @@ msgid "Insert"
 msgstr "Inserta"
 
 #: ../src/ConfigDialogue.cpp:430
-#, fuzzy
 msgid "Insert % before an operator at the beginning of a cell"
-msgstr "Inserir \\% antes dun operador ó comezo dunha cela"
+msgstr "Inserir % antes dun operador ó comezo dunha cela"
 
 #: ../src/wxMaximaFrame.cpp:543
 msgid "Insert &Section Cell\tCtrl-3"
@@ -2254,7 +2247,7 @@ msgstr "Inserta imaxe"
 
 #: ../src/ConfigDialogue.cpp:394
 msgid "Integers and single letters"
-msgstr ""
+msgstr "Enteiros e letras simples"
 
 #: ../src/wxMaximaFrame.cpp:1391
 msgid "Integral sign"
@@ -2323,7 +2316,6 @@ msgid "Iota"
 msgstr "Iota"
 
 #: ../data/tips.txt:28
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has be done in order to "
@@ -2350,9 +2342,8 @@ msgid "Kappa"
 msgstr "Kappa"
 
 #: ../src/ConfigDialogue.cpp:421
-#, fuzzy, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
-msgstr "Manter o símbolo porcentual en constantes especiais: \\%e, \\%i, etc."
+msgstr "Manter o símbolo porcentual en constantes especiais: %e, %i, etc."
 
 #: ../src/wxMaxima.cpp:3754
 msgid "LCM"
@@ -2426,9 +2417,8 @@ msgid "Linear Regression..."
 msgstr "Regresión linear"
 
 #: ../src/wxMaxima.cpp:3526
-#, fuzzy
 msgid "List(s):"
-msgstr "Lista:"
+msgstr "Lista(s):"
 
 #: ../src/wxMaxima.cpp:3559
 msgid "List:"
@@ -2909,11 +2899,11 @@ msgid "Parts of the document will not be loaded correctly!"
 msgstr "Lectura do documento parcialmente correcta!"
 
 #: ../src/MathParser.cpp:1102
-#, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
-msgstr "Lectura do documento parcialmente correcta!"
+msgstr "Partes do documento non se cargarán correctamente!\n"
+"Atopouse etiqueta XML descoñecida "
 
 #: ../src/MathCtrl.cpp:943 ../src/MathCtrl.cpp:958 ../src/ToolBar.cpp:131
 msgid "Paste"
@@ -3043,7 +3033,6 @@ msgid "Preferences...\tCtrl+,"
 msgstr "Preferencias...\tCtrl+,"
 
 #: ../data/tips.txt:27
-#, fuzzy
 msgid ""
 "Pressing Ctrl+Space or Ctrl+Tab starts an autocomplete function that can not "
 "only complete all functions that are integrated into the Maxima core and "
@@ -3510,9 +3499,8 @@ msgid "Show the definition of function:"
 msgstr "Amosa a definición da función:"
 
 #: ../src/ConfigDialogue.cpp:409
-#, fuzzy, c-format
 msgid "Show user-defined labels instead of (%oxx)"
-msgstr "Amosar etiquetas definidas polo usuario en lugar de (\\%oxx)"
+msgstr "Amosar etiquetas definidas polo usuario en lugar de (%oxx)"
 
 #: ../src/wxMaximaFrame.cpp:884 ../src/wxMaximaFrame.cpp:887
 msgid "Show wxMaxima help"
@@ -3801,7 +3789,7 @@ msgstr "Serie de Taylor:"
 
 #: ../src/ConfigDialogue.cpp:618
 msgid "Tell sbcl to use <int>Mbytes of heap"
-msgstr ""
+msgstr "Indicarlle a sbcl que utilice <int>Mbytes na pila de memoria"
 
 #: ../src/wxMaxima.cpp:3686
 msgid "Tellrat"
@@ -4079,7 +4067,7 @@ msgstr "Subraiado"
 
 #: ../src/ConfigDialogue.cpp:391
 msgid "Underscore converts to subscripts"
-msgstr ""
+msgstr "Guión baixo converte a subíndices"
 
 #: ../src/wxMaximaFrame.cpp:426
 msgid "Undo\tCtrl-Z"
@@ -4243,6 +4231,8 @@ msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
 msgstr ""
+"Envolver ecuacións exportadas coa opción \"copiar como LaTeX\" entre corchetes "
+"como marcadores de ecuacións"
 
 #: ../src/ConfigDialogue.cpp:164
 msgid "Write matching parenthesis in text controls."
@@ -4418,7 +4408,7 @@ msgstr "ji"
 
 #: ../src/ConfigDialogue.cpp:614
 msgid "choose a lisp maxima was compiled with"
-msgstr ""
+msgstr "escoller a contorna Lisp coa que se compilou Maxima"
 
 #: ../src/Plot2dWiz.cpp:61 ../src/Plot2dWiz.cpp:386 ../src/Plot3dWiz.cpp:62
 #: ../src/Plot3dWiz.cpp:378
@@ -4460,6 +4450,10 @@ msgid ""
 "subscript is a number or a single letter\n"
 "all=_ marks subscripts."
 msgstr ""
+"false=Non xerar subíndices\n"
+"true=Converter automáticamente guións baixos en marcadores de subíndices se "
+"se trata de números ou letras simples\n"
+"all=_ marcar subíndices."
 
 #: ../src/wxMaximaFrame.cpp:1283
 msgid "gamma"
@@ -4609,7 +4603,7 @@ msgstr "sigma"
 
 #: ../src/wxMaximaFrame.cpp:1363
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
-msgstr ""
+msgstr "sqrt (necesita pechar con parénteses o seu argumento)"
 
 #: ../src/wxMaximaFrame.cpp:1385
 msgid "subset"
@@ -4637,11 +4631,11 @@ msgstr "theta"
 
 #: ../src/wxMaximaFrame.cpp:1361
 msgid "to the power of 2"
-msgstr ""
+msgstr "á segunda potencia"
 
 #: ../src/wxMaximaFrame.cpp:1362
 msgid "to the power of 3"
-msgstr ""
+msgstr "á terceira potencia"
 
 #: ../src/wxMaximaFrame.cpp:1382
 msgid "union"
