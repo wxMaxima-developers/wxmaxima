@@ -218,17 +218,22 @@ void EvaluationQueue::AddTokens(wxString commandString)
       )
     {
       // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
-      // to detect if the token is empty.      
+      // to detect if the token is empty.
+      // The Trim(false) is needed in order to make a cell ending in a semicolon
+      // followed by a comment followed by a semicolon work.
+      token.Trim(false);
       token.Trim(true);
-      m_tokens.Add(token);
+      if(token.Length()>1)
+        m_tokens.Add(token);
       token = wxEmptyString;
     }
   }
   // There might be a last token in the string we still haven't added.
   // Let's trim() it first: This way MathCtrl::TryEvaluateNextInQueue()
   // will detect if the token is empty.
+  token.Trim(false);
   token.Trim(true);
-  if(token != wxEmptyString)
+  if(token.Length()>1)
     m_tokens.Add(token);
 }
 
