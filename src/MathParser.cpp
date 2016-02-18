@@ -191,10 +191,14 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
 
           if(tree == NULL) tree = cell;
 
-          last->m_next = last->m_nextToDraw = cell;
-          last->m_next->m_previous = last->m_next->m_previousToDraw = last;
-          
-          last = last->m_next;
+          if(last == NULL) last = cell;
+          else
+          {
+            last->m_next = last->m_nextToDraw = cell;
+            last->m_next->m_previous = last->m_next->m_previousToDraw = last;
+            
+            last = last->m_next;
+          }
           xmlcells = GetNextTag(xmlcells);
         }
         if (tree)
