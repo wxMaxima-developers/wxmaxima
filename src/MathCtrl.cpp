@@ -1590,8 +1590,11 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
     if(m_evaluationQueue->IsInQueue(tmp))
       return false;
 
-    if(tmp == m_cellMouseSelectionStartedIn->GetParent())
-      return false;
+    if(m_cellMouseSelectionStartedIn)
+    {
+      if(tmp == m_cellMouseSelectionStartedIn->GetParent())
+        return false;
+    }
     
     if (tmp == end)
       break;
