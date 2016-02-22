@@ -145,6 +145,14 @@ wxString FunCell::ToXML()
     m_argCell->ListToXML() + _T("</fn>");
 }
 
+wxString FunCell::ToMathML()
+{
+//  if (m_isBroken)
+//    return wxEmptyString;
+  return m_nameCell->ListToMathML() +
+    wxT("<mo>&af;</mo>");
+}
+
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

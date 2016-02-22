@@ -38,6 +38,7 @@ public:
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();

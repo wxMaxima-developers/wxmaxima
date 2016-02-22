@@ -146,6 +146,16 @@ wxString DiffCell::ToTeX()
   return s;
 }
 
+wxString DiffCell::ToMathML()
+{
+  wxString retval;
+  retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
+  if(m_baseCell)
+    retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
+  retval += wxT("</apply>");
+  return retval;
+}
+
 wxString DiffCell::ToXML()
 {
   return _T("<d>") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
