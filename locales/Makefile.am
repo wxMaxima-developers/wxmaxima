@@ -3,7 +3,7 @@
 #
 
 WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb en
-WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el    ja ca gl zh_CN tr nb
+WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb
 
 localedir = $(datadir)/locale
 
@@ -134,7 +134,8 @@ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
 	     da.po da.mo wxwin/da.mo \
 	     cs.po cs.mo wxwin/cs.mo \
 	     el.po el.mo wxwin/el.mo \
-	     fi.po fi.mo el.mo \
+	     fi.po fi.mo wxwin/fi.mo \
+	     el.mo \
 	     ja.po ja.mo wxwin/ja.mo \
 	     ca.po ca.mo wxwin/ca.mo \
 	     gl.po gl.mo wxwin/gl.mo \
