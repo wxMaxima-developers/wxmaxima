@@ -60,44 +60,45 @@ wxSize Image::ToImageFile(wxString filename)
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if(filename.Lower().EndsWith(GetExtension().Lower()))
-    {
-      wxFile file(filename,wxFile::write);
-      if(!file.IsOpened())
-	return wxSize(-1,-1);
-      
-      file.Write(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-      if(file.Close())
-	return wxSize(m_originalWidth,m_originalHeight);
-      else
-	return wxSize(-1,-1);
-    }
+  {
+    wxFile file(filename,wxFile::write);
+    if(!file.IsOpened())
+      return wxSize(-1,-1);
+    
+    file.Write(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    if(file.Close())
+      return wxSize(m_originalWidth,m_originalHeight);
+    else
+      return wxSize(-1,-1);
+  }
   else
-    {
-      wxBitmap bitmap = GetUnscaledBitmap();
-      wxImage image=bitmap.ConvertToImage();
-      wxBitmapType mimetype = wxBITMAP_TYPE_ANY;
-      if((ext.Lower() == wxT("jpg")) || (ext.Lower() == wxT("jpeg")))
-	mimetype = wxBITMAP_TYPE_JPEG;
-      else if(ext.Lower() == wxT("png"))
-	mimetype = wxBITMAP_TYPE_PNG;
-      else if(ext.Lower() == wxT("pcx"))
-	mimetype = wxBITMAP_TYPE_PCX;
-      else if(ext.Lower() == wxT("pnm"))
-	mimetype = wxBITMAP_TYPE_PNM;
-      else if((ext.Lower() == wxT("tif")) || (ext.Lower() == wxT("tiff")))
-	mimetype = wxBITMAP_TYPE_TIFF;
-      else if(ext.Lower() == wxT("xpm"))
-	mimetype = wxBITMAP_TYPE_XPM;
-      else if(ext.Lower() == wxT("ico"))
-	mimetype = wxBITMAP_TYPE_ICO;
-      else if(ext.Lower() == wxT("cur"))
-	mimetype = wxBITMAP_TYPE_CUR;
-      else
-	return(wxSize(-1,-1));
-
-      if(!image.SaveFile(filename,mimetype))
-	return wxSize(-1,-1);
-    }
+  {
+    wxBitmap bitmap = GetUnscaledBitmap();
+    wxImage image=bitmap.ConvertToImage();
+    wxBitmapType mimetype = wxBITMAP_TYPE_ANY;
+    if((ext.Lower() == wxT("jpg")) || (ext.Lower() == wxT("jpeg")))
+      mimetype = wxBITMAP_TYPE_JPEG;
+    else if(ext.Lower() == wxT("png"))
+      mimetype = wxBITMAP_TYPE_PNG;
+    else if(ext.Lower() == wxT("pcx"))
+      mimetype = wxBITMAP_TYPE_PCX;
+    else if(ext.Lower() == wxT("pnm"))
+      mimetype = wxBITMAP_TYPE_PNM;
+    else if((ext.Lower() == wxT("tif")) || (ext.Lower() == wxT("tiff")))
+      mimetype = wxBITMAP_TYPE_TIFF;
+    else if(ext.Lower() == wxT("xpm"))
+      mimetype = wxBITMAP_TYPE_XPM;
+    else if(ext.Lower() == wxT("ico"))
+      mimetype = wxBITMAP_TYPE_ICO;
+    else if(ext.Lower() == wxT("cur"))
+      mimetype = wxBITMAP_TYPE_CUR;
+    else
+      return(wxSize(-1,-1));
+    
+    if(!image.SaveFile(filename,mimetype))
+      return wxSize(-1,-1);
+    return image.GetSize();
+  }
 }
 
 wxBitmap Image::GetBitmap()
