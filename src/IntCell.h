@@ -57,6 +57,7 @@ public:
   }
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent);
