@@ -997,6 +997,11 @@ void wxMaxima::ReadMiscText(wxString &data)
   if(data.IsEmpty())
     return;
 
+  // An input prompt will be handled in another place. We therefore exit this
+  // function on encountering an input prompt.
+  if(data.StartsWith(wxT("(%i")))
+    return;
+    
   // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
   while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
