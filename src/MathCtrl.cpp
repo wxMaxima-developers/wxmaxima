@@ -4514,6 +4514,19 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
   zip.SetLevel(0);
   zip.PutNextEntry(wxT("mimetype"));
   output << wxT("text/x-wxmathml");
+  zip.PutNextEntry(wxT("format.txt"));
+  output << wxT(
+    "\nThis file contains a wxMaxima session.\n"
+    ".wxmx files are .xml-based files contained in a .zip container like .odt\n"
+    "or .docx files. After changing their name to end in .zip the .xml and\n"
+    "other files inside them can can be extracted using any .zip file viewer.\n"
+    "The reason why part of a .wxmx file still might seem to make sense in a\n"
+    "ordinary text viewer is that the text portion of .wxmx by default\n"
+    "isn't compressed: This way if only one line of the text changes this won't\n"
+    "(with a high probability) change the value of half of the bytes of the\n"
+    ".zip archive making the .wxmx file more version-control-friendly.\n"
+    "wxMaxima can be downloaded from https://github.com/andrejv/wxmaxima.\n"
+    );
 
   /* We might want to compress the rest of this file, though, if the user doesn't 
      use a version control system like git or svn:
