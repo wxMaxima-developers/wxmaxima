@@ -676,9 +676,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
       // The prompt that tells us that maxima awaits the next command
       ReadPrompt(m_currentOutput);
 
-      // Seems like we need to scan for error messages again for some reason.
-      if (!m_first)
-        ReadMiscText(m_currentOutput);
     }
     break;
 
@@ -995,11 +992,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 void wxMaxima::ReadMiscText(wxString &data)
 {
   if(data.IsEmpty())
-    return;
-
-  // An input prompt will be handled in another place. We therefore exit this
-  // function on encountering an input prompt.
-  if(data.StartsWith(wxT("(%i")))
     return;
     
   // Add all text lines to the console until we reach a known XML tag.
