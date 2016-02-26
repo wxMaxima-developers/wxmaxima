@@ -477,7 +477,8 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
-
+  text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
+  text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
 #endif
   // m_IsHidden is set only for multiplication signs
   if (m_isHidden)
@@ -1032,7 +1033,10 @@ wxString TextCell::GetSymbolSymbol(bool keepPercent)
     return "\xDB";
   else if (m_text == wxT(" xor "))
     return "\xC5";
+  else if (m_text == wxT("~>"))
+    return "\x219D";
 
+      
   if (!keepPercent) {
     if (m_text == wxT("%e"))
       return wxString(L"e");

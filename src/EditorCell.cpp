@@ -250,6 +250,8 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
+  text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
+  text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
   return text;
 }
 
@@ -1995,6 +1997,10 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x27C2";
   else if (txt == wxT("bot"))
     return L"\x27C2";
+  else if (txt == wxT("leadsto"))
+    return L"\x219D";
+  else if (txt == wxT("->"))
+    return L"\x2192";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))
