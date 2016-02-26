@@ -3675,6 +3675,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     // Tell mathJax about the \abs{} operator we define for LaTeX.
     output<<wxT("\\(");
     output<<wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
+    output<<wxT("      \\newcommand{\\ensuremath}[1]{\mbox{$#1$}}\n");
     output<<wxT("\\)");
 
   }
@@ -4186,11 +4187,6 @@ bool MathCtrl::ExportToTeX(wxString file) {
   output<<wxT("    }\n");
   output<<wxT("}\n");
   output<<wxT("\\newlength{\\thislabelwidth}\n");
-  output<<wxT("\\newcommand{\\printlabel}[1]\n");
-  output<<wxT("{\n");
-  output<<wxT("    \\settowidth{\\thislabelwidth}{\\ensuremath{#1}}\n");
-  output<<wxT("    \\ifdim \\thislabelwidth>10ex \\color{labelcolor}\\ensuremath{#1}\\else\\makebox[10ex]{\\color{labelcolor}\\ensuremath{#1}}\\fi\\color{black}\n");
-  output<<wxT("}\n");
 
   // Define an "abs" operator for abs commands that are long enough to be broken into
   // lines.
