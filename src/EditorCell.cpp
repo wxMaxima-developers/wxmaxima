@@ -1178,7 +1178,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         {
           indentChars -= 4;
         }
-                  pos++;
+        pos++;
       }
 
       if(m_text.Length() > m_positionOfCaret)
@@ -1191,8 +1191,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           indentChars -= 4;
       }
 
+      bool autoIndent;
+      wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
+
       // The string we indent with.
-      if(indentChars > 0)
+      if(autoIndent && (indentChars > 0))
         for(int i=0;i<indentChars;i++)
           indentString += wxT(" ");
       
@@ -2419,6 +2422,7 @@ void EditorCell::PasteFromClipboard(bool primary)
       wxTextDataObject obj;
       wxTheClipboard->GetData(obj);
       InsertText(obj.GetText());
+      m_containsChanges = true;
     }
     wxTheClipboard->Close();
   }

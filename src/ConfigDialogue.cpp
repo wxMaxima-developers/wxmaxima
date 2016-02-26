@@ -197,6 +197,8 @@ void ConfigDialogue::SetProperties()
     flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
     exportWithMathJAX = true;
   bool insertAns = true;
+  bool autoIndent = true;
+
   int labelWidth = 4;
   int  undoLimit = 0;
   int showLength = 0;
@@ -230,6 +232,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("usepngCairo"), &usepngCairo);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   int defaultPlotWidth = 600;
+  
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
@@ -258,6 +261,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
+  config->Read(wxT("autoIndent"), &autoIndent);
   config->Read(wxT("labelWidth"), &labelWidth);
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("bitmapScale"), &bitmapScale);
@@ -325,6 +329,7 @@ void ConfigDialogue::SetProperties()
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
+  m_autoIndent->SetValue(autoIndent);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
   m_bitmapScale->SetValue(bitmapScale);
@@ -361,7 +366,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   wxArrayString showLengths;
   wxArrayString autosubscripts;
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(16,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
@@ -430,6 +435,9 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   m_insertAns = new wxCheckBox(panel, -1, _("Insert \% before an operator at the beginning of a cell"));
   vsizer->Add(m_insertAns, 0, wxALL, 5);
+
+  m_autoIndent = new wxCheckBox(panel, -1, _("Auto-indent new lines"));
+  vsizer->Add(m_autoIndent, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -780,6 +788,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
+  config->Write(wxT("autoIndent"), m_autoIndent->GetValue());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
