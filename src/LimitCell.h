@@ -40,6 +40,7 @@ public:
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
+  wxString ToMathML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent);
 protected:

@@ -184,6 +184,21 @@ wxString LimitCell::ToTeX()
   return s;
 }
 
+wxString LimitCell::ToMathML()
+{
+  wxString base = m_base->ListToMathML();
+
+  wxString from;
+  if(m_under) from = m_under->ListToMathML();
+  
+  wxString retval;
+  if(from.IsEmpty())
+    retval = wxT("<mo>lim</mo>") + base;
+  else
+    retval = wxT("<munder><mo>lim</mo>") + from + wxT("</munder>");
+  return(retval);
+}
+
 wxString LimitCell::ToXML()
 {
   return _T("<lm><r>") + m_name->ListToXML() + _T("</r><r>") +
