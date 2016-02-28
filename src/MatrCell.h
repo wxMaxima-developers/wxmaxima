@@ -1,7 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
   void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }

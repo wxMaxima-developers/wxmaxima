@@ -1,7 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2007-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -196,6 +196,15 @@ wxString SubSupCell::ToTeX()
       m_exptCell->ListToTeX() + wxT("}}");
   
   return s;
+}
+
+wxString SubSupCell::ToMathML()
+{
+    return wxT("<msubsup>") +
+      m_baseCell -> ListToMathML() +
+      m_exptCell -> ListToMathML() +
+      m_indexCell -> ListToMathML() +
+    wxT("</msubsup>");
 }
 
 wxString SubSupCell::ToXML()

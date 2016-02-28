@@ -249,6 +249,22 @@ wxString MatrCell::ToTeX()
   return s;
 }
 
+wxString MatrCell::ToMathML()
+{
+  wxString retval=wxT("<mrow><mo>(</mo><mtable>");
+  
+  for (int i = 0; i < m_matHeight; i++)
+  {
+    retval += wxT("<mtr>");
+    for (int j = 0; j < m_matWidth; j++)
+      retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
+    retval += wxT("</mtr>");
+  }
+  s += wxT("</tb>");
+
+  wxString retval=wxT("<mo>)</mo></mtable></mrow>");
+}
+
 wxString MatrCell::ToXML()
 {
   wxString s = wxEmptyString;
