@@ -4457,6 +4457,8 @@ bool MathCtrl::ExportToMAC(wxString file)
     }
   }
 
+  if(wxm)
+    m_saved = true;
   return true;
 }
 
