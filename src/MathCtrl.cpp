@@ -1448,7 +1448,7 @@ bool MathCtrl::CopyMathML()
   if (m_activeCell != NULL)
     return false;
 
-  if (m_selectionStart == NULL)
+  if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
     return false;
 
   wxString s;

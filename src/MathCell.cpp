@@ -454,7 +454,7 @@ wxString MathCell::ListToMathML()
 
   bool needsTable=false;
   MathCell *temp=this;
-  while(this)
+  while(temp)
   {
     if(temp->ForceBreakLineHere())
       needsTable = true;
