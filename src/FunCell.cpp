@@ -149,8 +149,8 @@ wxString FunCell::ToMathML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return m_nameCell->ListToMathML() +
-    wxT("<mo>&af;</mo>");
+  return wxT("<mrow>")+m_nameCell->ListToMathML() +
+    wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML()+ wxT("</mrow>");
 }
 
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

@@ -597,20 +597,23 @@ wxString TextCell::ToMathML()
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if(m_isHidden)
   {
-    text.Replace(wxT("*"),     wxT("&InvisibleTimes;"));
-    text.Replace(wxT("\xB7"),  wxT("&InvisibleTimes;"));
+    text.Replace(wxT("*"),     wxT("&#8290;"));
+    text.Replace(wxT("\xB7"),  wxT("&#8290;"));
   }
-  
+  text.Replace(wxT("*"),  wxT("\xB7"));
+      
   switch(m_textStyle)
     {
     case TS_GREEK_CONSTANT:
     case TS_SPECIAL_CONSTANT:
     case TS_VARIABLE:
     case TS_FUNCTION:
-      return wxT("<mi>")+text+wxT("<mi>");
+      if(text == wxT("inf"))
+        text = wxT("\x221e");
+      return wxT("<mi>")+text+wxT("</mi>");
       break;
     case TS_NUMBER:
-      return wxT("<mn>")+text+wxT("<mn>");
+      return wxT("<mn>")+text+wxT("</mn>");
       break;
 
     case TS_LABEL:
@@ -620,7 +623,10 @@ wxString TextCell::ToMathML()
 
     case TS_STRING:
     default:
-      return wxT("<ms>")+text+wxT("<ms>");
+      if (text.StartsWith(wxT("\"")))
+        return wxT("<ms>")+text+wxT("</ms>");
+      else
+        return wxT("<mo>")+text+wxT("</mo>");
     }
 }
 

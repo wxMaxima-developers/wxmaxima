@@ -341,7 +341,7 @@ wxString SumCell::ToMathML()
   if(m_under) from = m_under->ListToMathML();
   
   wxString to;
-  if(m_over) to = m_under->ListToMathML();
+  if(m_over) to = m_over->ListToMathML();
 
   wxString retval;
 
@@ -349,22 +349,22 @@ wxString SumCell::ToMathML()
   {
     retval = wxT("<apply><sum/>");
     if(!from.IsEmpty())
-      retval += wxT("<lowlimit>") + m_under->ListToMathML() + wxT("<lowlimit>");
+      retval += wxT("<lowlimit>") + m_under->ListToMathML() + wxT("</lowlimit>");
     if(!to.IsEmpty())
-      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("<uplimit>");
-    retval += m_base->ListToMathML() + wxT("/apply>");
+      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("</uplimit>");
+    retval += m_base->ListToMathML() + wxT("</apply>");
   }
   else
   {
     // A product
       if(from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<mo>&prod;</mo>") + base;
+        retval = wxT("<mo>&#x220F;</mo>") + base;
       if(from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<mover><mo>&int;</mo>") + to + wxT("</mover>");
+        retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>");
       if(!from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<munder><mo>&int;</mo>") + from + wxT("</munder>");
+        retval = wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>");
       if(!from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<munderover><mo>&int;</mo>") + from + to + wxT("</munderover>");
+        retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>");
   }
   return(retval);
 }

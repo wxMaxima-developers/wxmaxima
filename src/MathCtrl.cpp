@@ -869,7 +869,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
-//          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -913,7 +913,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
-//          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
           
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
                             wxEmptyString, wxITEM_NORMAL);

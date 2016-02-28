@@ -427,17 +427,17 @@ wxString IntCell::ToMathML()
 
   wxString retval;
   if(from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<mo>&int;</mo>") + base;
+    retval = wxT("<mo>&#x222B;</mo>") + base;
   if(from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<mover><mo>&int;</mo>") + to + wxT("</mover>");
+    retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
   if(!from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<munder><mo>&int;</mo>") + from + wxT("</munder>");
+    retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
   if(!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&int;</mo>") + from + to + wxT("</munderover>");
+    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>")+ base;
   if(!var.IsEmpty())
-    retval = wxT("<row>") + retval + wxT("<mi>d</mi><mi>") + var + wxT("</mi></row>");
-  
-  return(retval);
+    retval = retval + wxT("<mi>") + var + wxT("</mi>");
+
+  return(wxT("<row>") + retval + wxT("</row>"));
 }
 
 wxString IntCell::ToXML()

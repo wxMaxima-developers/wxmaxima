@@ -251,7 +251,7 @@ wxString MatrCell::ToTeX()
 
 wxString MatrCell::ToMathML()
 {
-  wxString retval=wxT("<mrow><mo>(</mo><mtable>");
+  wxString retval=wxT("<mfenced open = \'(\' close = \'(\'><mtable>");
   
   for (int i = 0; i < m_matHeight; i++)
   {
@@ -261,7 +261,7 @@ wxString MatrCell::ToMathML()
     retval += wxT("</mtr>");
   }
 
-  retval+=wxT("<mo>)</mo></mtable></mrow>");
+  retval+=wxT("</mfenced></mtable>");
   return retval;
 }
 

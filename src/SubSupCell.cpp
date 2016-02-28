@@ -210,8 +210,8 @@ wxString SubSupCell::ToMathML()
 wxString SubSupCell::ToXML()
 {
   return _T("<ie><r>") + m_baseCell->ListToXML()
-    + _T("</r><r>") + m_indexCell->ListToXML()
     + _T("</r><r>") + m_exptCell->ListToXML()
+    + _T("</r><r>") + m_indexCell->ListToXML()
     + _T("</r></ie>");
 }
 

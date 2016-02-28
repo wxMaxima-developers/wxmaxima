@@ -441,9 +441,9 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);
-//  m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
-//                     _("Copy selection from document in MathML format"),
-//                     wxITEM_NORMAL);
+  m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
+                     _("Copy selection from document in MathML format"),
+                     wxITEM_NORMAL);
 #if defined __WXMSW__ || defined __WXMAC__
   m_EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
                      _("Copy selection from document as an image"),
