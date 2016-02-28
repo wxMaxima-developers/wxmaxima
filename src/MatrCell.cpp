@@ -260,9 +260,9 @@ wxString MatrCell::ToMathML()
       retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
     retval += wxT("</mtr>");
   }
-  s += wxT("</tb>");
 
-  wxString retval=wxT("<mo>)</mo></mtable></mrow>");
+  retval+=wxT("<mo>)</mo></mtable></mrow>");
+  return retval;
 }
 
 wxString MatrCell::ToXML()
