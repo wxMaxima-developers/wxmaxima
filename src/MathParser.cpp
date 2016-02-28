@@ -1163,7 +1163,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   graph.Replace(&s, wxT("?"));
 #endif
 
-  if ((s.Length() < showLength) || (showLength=0))
+  if ((s.Length() < showLength) || (showLength==0))
   {
 
     wxXmlDocument xml;
