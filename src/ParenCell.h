@@ -45,6 +45,7 @@ public:
   void Unbreak();
   wxString ToString();
   wxString ToTeX();
+  wxString ToMathML();
   wxString ToXML();
   void SetParent(MathCell *parent);
 protected:

@@ -436,6 +436,19 @@ wxString ParenCell::ToTeX()
   return s;
 }
 
+wxString ParenCell::ToMathML()
+{
+  if(!m_print) return m_innerCell->ListToMathML();
+
+  wxString open   = m_open->ToString();
+  wxString close  = m_close->ToString();
+  return(
+    wxT("<mfenced open = \'") + open + wxT("\' close = \'") + close + wxT("\'>") +
+    m_innerCell->ListToMathML() +
+    wxT("</mfenced>")
+    );
+}
+
 wxString ParenCell::ToXML()
 {
 //  if( m_isBroken )

@@ -451,20 +451,39 @@ wxString MathCell::ListToMathML()
   bool highlight=false;
   
   wxString retval;
-  MathCell *tmp=this;
 
-  // If the list contains multiple cells we wrap them in a <mrow>.
-  bool multiCell = (tmp->m_next != NULL);
-  
-
-  while(tmp!=NULL)
+  bool needsTable=false;
+  MathCell *temp=this;
+  while(this)
   {
-    retval+=tmp->ToXML();
-    tmp=tmp->m_next;
+    if(temp->ForceBreakLineHere())
+      needsTable = true;
+
+    if(temp->GetType() == MC_TYPE_LABEL)
+      needsTable = true;
+
+    temp = temp->m_next;
+  }
+
+  temp=this;
+  
+  // If the list contains multiple cells we wrap them in a <mrow>.
+  bool multiCell = (temp->m_next != NULL);
+  
+  temp=this;
+  while(temp!=NULL)
+  {
+    if((temp != this)&&(temp->ForceBreakLineHere()))
+      retval += wxT("</mtd></mrow><mrow><mtd>");
+    
+    retval+=temp->ToXML();
+    temp=temp->m_next;
   }
   
-  if(multiCell)
+  if((multiCell)&&(!needsTable))
     retval = wxT("<mrow>")+retval+wxT("</mrow>");
+  if(needsTable)
+    retval = wxT("<mlabledtr><mrow><mtd>") + retval + wxT("</mtd></mrow></mlabledtr>");
   return retval;
 }
 

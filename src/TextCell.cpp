@@ -615,7 +615,7 @@ wxString TextCell::ToMathML()
 
     case TS_LABEL:
     case TS_USERLABEL:
-      return wxT("<mtd><mtext>")+text+wxT("</mtext></mtd>");
+      return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>");
       break;
 
     case TS_STRING:
