@@ -869,6 +869,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
+//          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -912,6 +913,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy LaTeX"), wxEmptyString, wxITEM_NORMAL);
+//          popupMenu->Append(popid_copy_mathml, _("Copy MathML"), wxEmptyString, wxITEM_NORMAL);
+          
           popupMenu->Append(popid_copy_image, _("Copy As Image"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -1438,6 +1441,31 @@ bool MathCtrl::Copy(bool astext) {
     }
     return false;
   }
+}
+
+bool MathCtrl::CopyMathML()
+{
+  if (m_activeCell != NULL)
+    return false;
+
+  if (m_selectionStart == NULL)
+    return false;
+
+  wxString s;
+  MathCell* tmp = CopySelection(m_selectionStart, m_selectionEnd,true);
+
+  
+  s = wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")+
+    tmp->ListToMathML()+
+    wxT("</math>");
+  
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxTheClipboard->Close();
+    return true;
+  }
+  
+  return false;
 }
 
 bool MathCtrl::CopyTeX() {
@@ -3675,7 +3703,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
     // Tell mathJax about the \abs{} operator we define for LaTeX.
     output<<wxT("\\(");
     output<<wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
-    output<<wxT("      \\newcommand{\\ensuremath}[1]{\mbox{$#1$}}\n");
+    output<<wxT("      \\newcommand{\\ensuremath}[1]{\\mbox{$#1$}}\n");
     output<<wxT("\\)");
 
   }

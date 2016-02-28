@@ -2132,6 +2132,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
+//  menubar->Enable(MathCtrl::popid_copy_mathml, m_console->CanCopy());
 #if defined __WXMSW__ || defined __WXMAC__
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
 #endif
@@ -2860,6 +2861,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   case menu_copy_tex_from_console:
     if (m_console->CanCopy())
       m_console->CopyTeX();
+    break;
+  case MathCtrl::popid_copy_mathml:
+    if (m_console->CanCopy())
+      m_console->CopyMathML();
     break;
   case menu_copy_as_bitmap:
     if (m_console->CanCopy())
@@ -5809,6 +5814,7 @@ EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
 EVT_MENU(menu_copy_from_console, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_text_from_console, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_tex_from_console, wxMaxima::EditMenu)
+EVT_MENU(MathCtrl::popid_copy_mathml, wxMaxima::EditMenu)
 EVT_MENU(menu_undo, wxMaxima::EditMenu)
 EVT_MENU(menu_redo, wxMaxima::EditMenu)
 EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
@@ -5862,6 +5868,7 @@ EVT_UPDATE_UI(ToolBar::plot_slider_id, wxMaxima::UpdateSlider)
 EVT_UPDATE_UI(menu_copy_from_console, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_text_from_console, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_tex_from_console, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(menu_copy_mathml_from_console, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(MathCtrl::menu_zoom_in, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(MathCtrl::menu_zoom_out, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)

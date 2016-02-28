@@ -499,6 +499,7 @@ public:
     popid_add_comment,
     popid_insert_input,
     popid_copy_tex,
+    popid_copy_mathml,
     popid_image,
     popid_animation_save,
     popid_animation_start,
@@ -651,6 +652,8 @@ public:
   bool CopyCells();
   //! Copy the TeX representation of the current selection to the clipboard
   bool CopyTeX();
+  //! Copy the MathML representation of the current selection to the clipboard
+  bool CopyMathML();
   //! Copy a bitmap of the the current selection to the clipboard
   bool CopyBitmap();
   wxSize CopyToFile(wxString file);
