@@ -599,6 +599,8 @@ wxString TextCell::ToMathML()
   {
     text.Replace(wxT("*"),     wxT("&#8290;"));
     text.Replace(wxT("\xB7"),  wxT("&#8290;"));
+    if(text != wxT ("&#8290;"))
+      text = wxEmptyString;
   }
   text.Replace(wxT("*"),  wxT("\xB7"));
       
