@@ -2637,8 +2637,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     }
     // Check for comment
     else if ((string.Length() > pos+1) &&
-        ((Ch == '/' && string.GetChar(pos+1) == '*') ||
-         (Ch == '*' && string.GetChar(pos+1) == '/')))
+             ((Ch == '/' && ((string.GetChar(pos+1) == '*')||(string.GetChar(pos+1) == wxT('\xB7')))) ||
+              (((Ch == wxT('*'))||(Ch == wxT('\xB7'))) && ((string.GetChar(pos+1) == wxT('/'))))))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -2820,10 +2820,10 @@ void EditorCell::StyleText()
         continue;
       }
 
-      if(token == wxT("/*"))
+      if((token == wxT("/*"))||(token==wxT("/\xB7")))
       {
         m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
-        while ((i+1 < tokens.GetCount()) && (token != wxT("*/"))) {
+        while ((i+1 < tokens.GetCount()) && (token != wxT("*/"))&& (token != wxT("\xB7/"))) {
           i++;
           token = tokens[i];
           token = token.Left(token.Length()-1);
