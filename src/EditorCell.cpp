@@ -2,7 +2,7 @@
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 
 #define ESC_CHAR wxT('\xA6')
 
-const wxString operators = wxT("+-*/^:=#'!\";$\xB7");
+const wxString operators = wxT("+-*/^:=#'!\";$");
 
 wxString EditorCell::m_selectionString;
 
@@ -2636,26 +2636,16 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
     }
     // Check for comment
-    else if ((pos < string.Length() - 1) &&
-             (Ch == '/') &&
-             ((string.GetChar(pos + 1) == wxT('\xB7')) || (string.GetChar(pos + 1) == wxT('*')))
-      )
+    else if ((string.Length() > pos+1) &&
+        ((Ch == '/' && string.GetChar(pos+1) == '*') ||
+         (Ch == '*' && string.GetChar(pos+1) == '/')))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
+        token = wxEmptyString;
       }
-      token = Ch;
-      token += string.GetChar(pos + 1);
-      pos += 2;
-      while((pos < string.Length()) &&
-            !(
-              ((string.GetChar(pos - 2) == wxT('\xB7')) || (string.GetChar(pos - 2) == wxT('*')))
-              && (string.GetChar(pos - 1) == '/'))
-        )
-        token += string.GetChar(pos++);
-
-      retval.Add(token + wxT("d"));
-      token = wxEmptyString;
+      retval.Add(string.SubString(pos, pos+1) + wxT("d"));
+      pos = pos+2;
     }
     
     // Find operators that starts at the current position
@@ -2830,9 +2820,15 @@ void EditorCell::StyleText()
         continue;
       }
 
-      if(token.StartsWith(wxT("/*")) || token.StartsWith(wxT("/\xB7")))
+      if(token == wxT("/*"))
       {
         m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        while ((i+1 < tokens.GetCount()) && (token != wxT("*/"))) {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length()-1);
+          m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
+        }
         continue;
       }
       
