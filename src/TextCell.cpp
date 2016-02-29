@@ -607,7 +607,18 @@ wxString TextCell::ToMathML()
   switch(m_textStyle)
     {
     case TS_GREEK_CONSTANT:
+      text = GetGreekStringUnicode();
     case TS_SPECIAL_CONSTANT:
+    {
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      if (!keepPercent) {
+        if (text == wxT("%e"))
+          text = wxT("e");
+        else if (text == wxT("%i"))
+          text = wxT("i");
+      }
+    }
     case TS_VARIABLE:
     case TS_FUNCTION:
       if(text == wxT("inf"))
