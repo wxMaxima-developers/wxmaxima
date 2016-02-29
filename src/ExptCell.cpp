@@ -202,7 +202,11 @@ wxString ExptCell::GetDiffPart()
 
 wxString ExptCell::ToMathML()
 {
-  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
+  return wxT("<msup>") +
+    m_baseCell -> ListToMathML() +
+    m_powCell -> ListToMathML() +
+    wxT("</msup>");
+//  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
 }
 
 wxString ExptCell::ToXML()

@@ -347,12 +347,20 @@ wxString SumCell::ToMathML()
 
   if (m_sumStyle == SM_SUM)
   {
-    retval = wxT("<apply><sum/>");
-    if(!from.IsEmpty())
-      retval += wxT("<lowlimit>") + m_under->ListToMathML() + wxT("</lowlimit>");
-    if(!to.IsEmpty())
-      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("</uplimit>");
-    retval += m_base->ListToMathML() + wxT("</apply>");
+//    retval = wxT("<apply><sum/>");
+//    if(!from.IsEmpty())
+//      retval += wxT("<lowlimit>") + m_under->ListToMathML() + wxT("</lowlimit>");
+//    if(!to.IsEmpty())
+//      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("</uplimit>");
+//    retval += m_base->ListToMathML() + wxT("</apply>");
+      if(from.IsEmpty() && to.IsEmpty())
+        retval = wxT("<mo>&#x2211;</mo>") + base;
+      if(from.IsEmpty() && !to.IsEmpty())
+        retval = wxT("<mover><mo>&#x2211;</mo>") + to + wxT("</mover>") + base;
+      if(!from.IsEmpty() && to.IsEmpty())
+        retval = wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
+      if(!from.IsEmpty() && !to.IsEmpty())
+        retval = wxT("<munderover><mo>&#x2211;</mo>") + from + to + wxT("</munderover>") + base;
   }
   else
   {
@@ -360,11 +368,11 @@ wxString SumCell::ToMathML()
       if(from.IsEmpty() && to.IsEmpty())
         retval = wxT("<mo>&#x220F;</mo>") + base;
       if(from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>");
+        retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>") + base;
       if(!from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>");
+        retval = wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
       if(!from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>");
+        retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>") + base;
   }
   return(retval);
 }

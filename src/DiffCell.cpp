@@ -149,10 +149,15 @@ wxString DiffCell::ToTeX()
 wxString DiffCell::ToMathML()
 {
   wxString retval;
-  retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
-  if(m_baseCell)
-    retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
-  retval += wxT("</apply>");
+
+  retval = wxT("<mrow>")+m_diffCell->ListToMathML();
+  if(m_baseCell) 
+    retval += m_baseCell->ListToMathML();
+  retval += wxT("</mrow>");
+  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
+  // if(m_baseCell)
+  //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
+  // retval += wxT("</apply>");
   return retval;
 }
 

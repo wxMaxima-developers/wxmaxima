@@ -134,7 +134,9 @@ wxString ConjugateCell::ToTeX()
 
 wxString ConjugateCell::ToMathML()
 {
-  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+//  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+  return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
+    wxT("<mo>&#x0305;</mo></mover>");
 }
 
 wxString ConjugateCell::ToXML()
