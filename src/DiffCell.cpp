@@ -153,7 +153,7 @@ wxString DiffCell::ToMathML()
   retval = wxT("<mrow>")+m_diffCell->ListToMathML();
   if(m_baseCell) 
     retval += m_baseCell->ListToMathML();
-  retval += wxT("</mrow>");
+  retval += wxT("</mrow>\n");
   // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
   // if(m_baseCell)
   //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;

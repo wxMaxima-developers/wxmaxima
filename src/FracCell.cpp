@@ -313,7 +313,7 @@ wxString FracCell::ToMathML()
 {
   return wxT("<mfrac>") +
     m_num->ListToMathML() + 
-    m_denom->ListToMathML() + wxT("</mfrac>");
+    m_denom->ListToMathML() + wxT("</mfrac>\n");
 }
 
 wxString FracCell::ToXML()

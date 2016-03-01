@@ -443,9 +443,9 @@ wxString ParenCell::ToMathML()
   wxString open   = m_open->ToString();
   wxString close  = m_close->ToString();
   return(
-    wxT("<mfenced separators=\"\" open = \'") + open + wxT("\' close = \'") + close + wxT("\'>") +
+    wxT("<mfenced separators=\"\" open=\'") + open + wxT("\' close=\'") + close + wxT("\'>") +
     m_innerCell->ListToMathML() +
-    wxT("</mfenced>")
+    wxT("</mfenced>\n")
     );
 }
 

@@ -195,7 +195,7 @@ wxString LimitCell::ToMathML()
   if(from.IsEmpty())
     retval = wxT("<mo>lim</mo>") + base;
   else
-    retval = wxT("<munder><mo>lim</mo>") + from + wxT("</munder>");
+    retval = wxT("<munder><mo>lim</mo>") + from + wxT("</munder>\n");
   return(retval);
 }
 

@@ -205,7 +205,7 @@ wxString ExptCell::ToMathML()
   return wxT("<msup>") +
     m_baseCell -> ListToMathML() +
     m_powCell -> ListToMathML() +
-    wxT("</msup>");
+    wxT("</msup>\n");
 //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
 }
 

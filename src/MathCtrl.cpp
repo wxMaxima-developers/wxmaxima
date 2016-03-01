@@ -1458,7 +1458,7 @@ bool MathCtrl::CopyMathML()
   s = wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")+
     tmp->ListToMathML()+
     wxT("</math>");
-  
+
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();

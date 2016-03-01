@@ -258,7 +258,7 @@ wxString SqrtCell::ToTeX()
 
 wxString SqrtCell::ToMathML()
 {
-  return wxT("<msqrt>") + m_innerCell->ListToMathML() +wxT("</msqrt>");
+  return wxT("<msqrt>") + m_innerCell->ListToMathML() +wxT("</msqrt>\n");
 }
 
 wxString SqrtCell::ToXML()

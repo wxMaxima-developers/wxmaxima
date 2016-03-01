@@ -261,7 +261,7 @@ wxString MatrCell::ToMathML()
     retval += wxT("</mtr>");
   }
 
-  retval+=wxT("</mfenced></mtable>");
+  retval+=wxT("</mfenced></mtable>\n");
   return retval;
 }
 

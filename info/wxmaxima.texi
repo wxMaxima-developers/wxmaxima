@@ -411,6 +411,13 @@ The same commands can be accessed via the menus.
 @image{SidePanes,12cm}
 
 @end ifnotinfo
+@subsection MathML output
+It seems that several word processors and similar programs either recognize
+MathML input and automatically insert it as an editable 2D equation - or (like
+libreOffice 5.1) have an equation editor that offers an ``import MathML from
+clipboard'' feature. In order to address this wxMaxima offers a ``copy to word
+processor'' right-click menu entry that outputs the selected part of an
+equation in a format the external program (hopefully) understands.
 @subsection Markdown support
 A wxMaxima workbook can be exported as either an HTML file or a LaTeX file. The
 program uses a set of standard markdown conventions. Markdown in many

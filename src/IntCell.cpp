@@ -433,11 +433,11 @@ wxString IntCell::ToMathML()
   if(!from.IsEmpty() && to.IsEmpty())
     retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
   if(!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>")+ base;
+    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n")+ base;
   if(!var.IsEmpty())
-    retval = retval + wxT("<mi>") + var + wxT("</mi>");
+    retval = retval + var;
 
-  return(wxT("<row>") + retval + wxT("</row>"));
+  return(wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
 wxString IntCell::ToXML()

@@ -151,7 +151,7 @@ wxString AtCell::ToTeX()
 wxString AtCell::ToMathML()
 {
   return wxT("<msub>") + m_baseCell->ListToMathML() + 
-    m_indexCell->ListToMathML() + wxT("</msub>");
+    m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
 wxString AtCell::ToXML()

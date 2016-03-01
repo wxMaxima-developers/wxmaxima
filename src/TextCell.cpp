@@ -623,23 +623,23 @@ wxString TextCell::ToMathML()
     case TS_FUNCTION:
       if(text == wxT("inf"))
         text = wxT("\x221e");
-      return wxT("<mi>")+text+wxT("</mi>");
+      return wxT("<mi>")+text+wxT("</mi>\n");
       break;
     case TS_NUMBER:
-      return wxT("<mn>")+text+wxT("</mn>");
+      return wxT("<mn>")+text+wxT("</mn>\n");
       break;
 
     case TS_LABEL:
     case TS_USERLABEL:
-      return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>");
+      return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
       break;
 
     case TS_STRING:
     default:
       if (text.StartsWith(wxT("\"")))
-        return wxT("<ms>")+text+wxT("</ms>");
+        return wxT("<ms>")+text+wxT("</ms>\n");
       else
-        return wxT("<mo>")+text+wxT("</mo>");
+        return wxT("<mo>")+text+wxT("</mo>\n");
     }
 }
 

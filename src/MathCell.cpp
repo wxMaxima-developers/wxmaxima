@@ -481,7 +481,7 @@ wxString MathCell::ListToMathML()
   }
   
   if((multiCell)&&(!needsTable))
-    retval = wxT("<mrow>")+retval+wxT("</mrow>");
+    retval = wxT("<mrow>")+retval+wxT("</mrow>\n");
   if(needsTable)
     retval = wxT("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval + wxT("</mtd></mlabeledtr>\n</mtable>");
   return retval;

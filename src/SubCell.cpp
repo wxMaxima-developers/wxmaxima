@@ -154,7 +154,7 @@ wxString SubCell::ToMathML()
   return wxT("<msub>") +
     m_baseCell -> ListToMathML() +
     m_indexCell -> ListToMathML() +
-    wxT("</msub>");
+    wxT("</msub>\n");
 }
 
 wxString SubCell::ToXML()
