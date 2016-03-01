@@ -423,7 +423,7 @@ wxString IntCell::ToMathML()
   if(m_under) from = m_under->ListToMathML();
   
   wxString to;
-  if(m_over) to = m_under->ListToMathML();
+  if(m_over) to = m_over->ListToMathML();
 
   wxString retval;
   if(from.IsEmpty() && to.IsEmpty())

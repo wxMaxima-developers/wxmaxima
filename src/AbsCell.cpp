@@ -140,7 +140,7 @@ wxString AbsCell::ToTeX()
 
 wxString AbsCell::ToMathML()
 {
-  return wxT("<mfenced separators="" open = \'|\' close = \'|\'>") +
+  return wxT("<mfenced separators=\"\" open = \'|\' close = \'|\'>") +
     m_innerCell->ListToMathML() +
     wxT("</mfenced>");
 //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
