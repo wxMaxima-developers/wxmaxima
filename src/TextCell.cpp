@@ -610,6 +610,10 @@ wxString TextCell::ToMathML()
       text = GetGreekStringUnicode();
     case TS_SPECIAL_CONSTANT:
     {
+      // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
+      // support this currently => Commenting it out.
+      // if((m_textStyle == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+      //   text = wxT("&#2146;");
       bool keepPercent = true;
       wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
       if (!keepPercent) {
