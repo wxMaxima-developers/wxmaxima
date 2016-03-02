@@ -251,7 +251,10 @@ wxString MatrCell::ToTeX()
 
 wxString MatrCell::ToMathML()
 {
-  wxString retval=wxT("<mfenced open = \'(\' close = \')\'><mtable>");
+  wxString retval;
+  if(!m_specialMatrix)
+    retval = wxT("<mfenced open = \'(\' close = \')\'>");
+  retval +=  wxT("<mtable>");
   
   for (int i = 0; i < m_matHeight; i++)
   {
@@ -260,8 +263,9 @@ wxString MatrCell::ToMathML()
       retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
     retval += wxT("</mtr>");
   }
-
-  retval+=wxT("</mtable></mfenced>\n");
+  retval+=wxT("</mtable>\n");
+  if(!m_specialMatrix)
+    retval = wxT("</mfenced>\n");
   return retval;
 }
 
