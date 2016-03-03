@@ -1381,6 +1381,7 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BC'),_("nand"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22BD'),_("nor"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x21D4'),_("equivalent"),true),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(lowercasePanel,  wxT('\x00b1'),_("plus or minus")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x00AC'),_("not"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C3'),_("union")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x22C2'),_("intersection")),0,wxALL | wxEXPAND,2);

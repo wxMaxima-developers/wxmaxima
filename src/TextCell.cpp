@@ -378,6 +378,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+  text.Replace(L"\x00B1",wxT("\\ensuremath{\\pm}"));
   text.Replace(L"\x03B1",wxT("\\ensuremath{\\alpha}"));
   text.Replace(L"\x00B2",wxT("\\ensuremath{^2}"));
   text.Replace(L"\x00B3",wxT("\\ensuremath{^3}"));

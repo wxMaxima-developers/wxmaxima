@@ -152,6 +152,7 @@ wxString EditorCell::ToTeX()
   text.Replace("°",wxT("\\ensuremath{^\\circ}"));
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
   text.Replace(L"\x03B1",wxT("\\ensuremath{\\alpha}"));
+  text.Replace(L"\x00B1",wxT("\\ensuremath{\\pm}"));
   text.Replace(L"\x00B2",wxT("\\ensuremath{^2}"));
   text.Replace(L"\x00B3",wxT("\\ensuremath{^3}"));
   text.Replace(L"\x221A",wxT("\\ensuremath{\\sqrt{}}"));
@@ -1125,6 +1126,17 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       ClearSelection();
     }
 
+    // If the cursor is part of the whitespace at the beginning of the line
+    // we move it to its end.
+    {
+      int i=BeginningOfLine(m_positionOfCaret);
+      while((m_text[i]==wxT(' '))&&(i<m_positionOfCaret))
+        i++;
+      if(i==m_positionOfCaret)
+        while((m_text[m_positionOfCaret]==wxT(' '))&&(m_positionOfCaret<m_text.Length()-1))
+          m_positionOfCaret++;
+    }
+    
     {
       wxString indentString;
       int indentChars = 0;
@@ -1811,6 +1823,8 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
 {
   long int unicodeval = -1;
 
+  if ((txt == wxT("pm")) || (txt == wxT("+/-")))
+    return L"\x00B1";
   if ((txt == wxT("a")) || (txt == wxT("alpha")))
     return L"\x03B1";
   else if ((txt == wxT("b")) || (txt == wxT("beta")))
