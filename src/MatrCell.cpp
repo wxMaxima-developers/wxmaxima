@@ -263,7 +263,7 @@ wxString MatrCell::ToMathML()
       retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
     retval += wxT("</mtr>");
   }
-  retval+=wxT("</mtable>\n");
+  retval += wxT("</mtable>\n");
   if(!m_specialMatrix)
     retval = wxT("</mfenced>\n");
   return retval;

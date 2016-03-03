@@ -1203,7 +1203,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         wxT("\n") + indentString +
         m_text.SubString(m_positionOfCaret, m_text.Length());
       m_positionOfCaret++;
-      if(indentChars > 0)
+      if((indentChars > 0)&&(autoIndent))
         m_positionOfCaret += indentChars;
       m_isDirty = true;
       m_containsChanges = true;
