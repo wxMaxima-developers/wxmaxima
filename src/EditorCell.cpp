@@ -1410,7 +1410,12 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
               m_text =
                 m_text.SubString(0, start - 1) +
                 m_text.SubString(start + 4, m_text.Length());
-              if(m_positionOfCaret>start) m_positionOfCaret = start;
+              if(m_positionOfCaret>start)
+              {
+                m_positionOfCaret = start;
+                while((m_positionOfCaret < m_text.Length()) && (m_text[m_positionOfCaret] == wxT(' ')))
+                  m_positionOfCaret++;
+              }
             } 
           }
         }
