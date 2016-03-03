@@ -374,7 +374,7 @@ wxString SumCell::ToMathML()
       if(!from.IsEmpty() && !to.IsEmpty())
         retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>") + base;
   }
-  return(retval);
+  return(wxT("<mrow>")+retval+wxT("</mrow>"));
 }
 
 
