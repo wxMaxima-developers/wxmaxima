@@ -1385,18 +1385,35 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           m_positionOfCaret = start;
           break;
         }
-        int col, line;
-        PositionToXY(m_positionOfCaret, &col, &line);
-        wxString ins;
-        do {
-          col++;
-          ins += wxT(" ");
-        } while (col%4 != 0);
-
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 ins +
-                 m_text.SubString(m_positionOfCaret, m_text.Length());
-        m_positionOfCaret += ins.Length();
+        else
+        {
+          if(!event.ShiftDown())
+          {
+            int col, line;
+            PositionToXY(m_positionOfCaret, &col, &line);
+            wxString ins;
+            do {
+              col++;
+              ins += wxT(" ");
+            } while (col%4 != 0);
+            
+            m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+              ins +
+              m_text.SubString(m_positionOfCaret, m_text.Length());
+            m_positionOfCaret += ins.Length();
+          }
+          else
+          {
+            size_t start = BeginningOfLine(m_positionOfCaret - 1);
+            if(m_text.SubString(start,start + 3)==wxT("    "))
+            {
+              m_text =
+                m_text.SubString(0, start - 1) +
+                m_text.SubString(start + 4, m_text.Length());
+              if(m_positionOfCaret>start) m_positionOfCaret = start;
+            } 
+          }
+        }
       }
     }
     break;
