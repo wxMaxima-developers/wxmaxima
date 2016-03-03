@@ -483,7 +483,7 @@ wxString MathCell::ListToMathML(bool startofline)
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if((((temp->ForceBreakLineHere())||(startofline&&(this==temp)))&&(temp->GetStyle())!=TS_LABEL) && (needsTable))
+    if((((temp->ForceBreakLineHere())||(startofline&&(this==temp)))&&((temp->GetStyle()!=TS_LABEL)&&(temp->GetStyle()!=TS_USERLABEL))) && (needsTable))
       retval+=wxT("<mtext></mtext></mtd><mtd>");
 
     // Do we need to start a highlighting region?
