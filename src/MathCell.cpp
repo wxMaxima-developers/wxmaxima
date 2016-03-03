@@ -452,6 +452,7 @@ wxString MathCell::ListToMathML()
   
   wxString retval;
 
+  // If the region to export contains linebreaks or labels we put it into a table.
   bool needsTable=false;
   MathCell *temp=this;
   while(temp)
@@ -466,28 +467,43 @@ wxString MathCell::ListToMathML()
   }
 
   temp=this;
-  
-  // If the list contains multiple cells we wrap them in a <mrow>.
+  // If the list contains multiple cells we wrap them in a <mrow> in order to
+  // group them into a single object.
   bool multiCell = (temp->m_next != NULL);
-  
-  temp=this;
+
+  // Export all cells
   while(temp!=NULL)
   {
+    // Do we need to end a highlighting region?
     if((!temp->m_highlight)&&(highlight))
       retval += wxT("</mrow>");
+
+    // Handle linebreaks
     if((temp != this)&&(temp->ForceBreakLineHere()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
+
+    // Do we need to start a highlighting region?
     if((temp->m_highlight)&&(!highlight))
       retval += wxT("<mrow mathcolor=\"red\">");
     highlight = temp->m_highlight;
+
+    // If a linebreak isn't followed by a label we need to introduce an empty one.
+    if((temp->ForceBreakLineHere())&&(temp->GetStyle())!=TS_LABEL)
+      retval+=wxT("<mtext></mtext></mtd><mtd>");
     retval+=temp->ToMathML();
     temp=temp->m_next;
   }
+
+  // If the region we converted to MathML ended within a highlighted region
+  // we need to close this region now.
   if(highlight)
     retval += wxT("</mrow>");
-  
+
+  // If we grouped multiple cells as a single object we need to cose this group now
   if((multiCell)&&(!needsTable))
     retval = wxT("<mrow>")+retval+wxT("</mrow>\n");
+  
+  // If we put the region we exported into a table we need to end this table now
   if(needsTable)
     retval = wxT("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval + wxT("</mtd></mlabeledtr>\n</mtable>");
   return retval;
