@@ -188,9 +188,9 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
       m_compressedImage = ReadCompressedImage(istream);
     }
 
-    // Deleting fsfile is important: If this line is missing opening .wxmx
-    // files containing hundreds of images might lead to a "too many open
-    // files" error.
+    // Closing and deleting fsfile is important: If this line is missing
+    // opening .wxmx files containing hundreds of images might lead to a
+    // "too many open files" error.
     delete fsfile;
   }
   else {
@@ -198,11 +198,12 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
     if(file.IsOpened())
       {
 	wxFileInputStream strm(file);
-	if(strm.IsOk())
-	  m_compressedImage = ReadCompressedImage(&strm);
+	bool ok=strm.IsOk();
+	if(ok)
+	    m_compressedImage = ReadCompressedImage(&strm);
 	
 	file.Close();
-	if(remove)
+	if(ok && remove)
 	  wxRemoveFile (image);
       }
   }
