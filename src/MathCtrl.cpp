@@ -1460,6 +1460,26 @@ bool MathCtrl::CopyMathML()
     tmp->ListToMathML(true)+
     wxT("</math>");
 
+  // We might add indentation as additional eye candy to all but extremely long
+  // xml data chunks.
+  if(s.Length() < 1000000)
+  {
+    // Load the string into a wxXmlDocument that later can be output with
+    // sensible indentation.
+    wxXmlDocument doc;
+    {
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.Write(s);
+      wxMemoryInputStream istream(ostream);
+      doc.Load(istream);
+    }
+
+    wxMemoryOutputStream ostream;
+    doc.Save(ostream);
+    s = wxString::FromUTF8((char *)ostream.GetOutputStreamBuffer()->GetBufferStart(),ostream.GetOutputStreamBuffer()->GetBufferSize());
+  }
+  
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
