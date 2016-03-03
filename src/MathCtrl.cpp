@@ -1475,9 +1475,17 @@ bool MathCtrl::CopyMathML()
       doc.Load(istream);
     }
 
-    wxMemoryOutputStream ostream;
-    doc.Save(ostream);
-    s = wxString::FromUTF8((char *)ostream.GetOutputStreamBuffer()->GetBufferStart(),ostream.GetOutputStreamBuffer()->GetBufferSize());
+    // If we failed to load the document the word processor will most probably fail, too.
+    // But we can still put it into the clipboard for debugging purposes.
+    if(doc.IsOk())
+    {
+      wxMemoryOutputStream ostream;
+      doc.Save(ostream);
+      s = wxString::FromUTF8((char *)ostream.GetOutputStreamBuffer()->GetBufferStart(),ostream.GetOutputStreamBuffer()->GetBufferSize());
+      
+      // Now the string has a header we want to drop again.
+      s = s.SubString(s.Find("\n")+1,s.Length());
+    }
   }
   
   if (wxTheClipboard->Open()) {
