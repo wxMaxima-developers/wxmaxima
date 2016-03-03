@@ -39,6 +39,8 @@
 #include <wx/settings.h>
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
+#include <wx/xml/xml.h>
+#include <wx/mstream.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -1453,7 +1455,6 @@ bool MathCtrl::CopyMathML()
 
   wxString s;
   MathCell* tmp = CopySelection(m_selectionStart, m_selectionEnd,true);
-
   
   s = wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")+
     tmp->ListToMathML()+

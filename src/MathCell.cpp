@@ -473,12 +473,18 @@ wxString MathCell::ListToMathML()
   temp=this;
   while(temp!=NULL)
   {
+    if((!temp->m_highlight)&&(highlight))
+      retval += wxT("</mrow>");
     if((temp != this)&&(temp->ForceBreakLineHere()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
-    
+    if((temp->m_highlight)&&(!highlight))
+      retval += wxT("<mrow mathcolor=\"red\">");
+    highlight = temp->m_highlight;
     retval+=temp->ToMathML();
     temp=temp->m_next;
   }
+  if(highlight)
+    retval += wxT("</mrow>");
   
   if((multiCell)&&(!needsTable))
     retval = wxT("<mrow>")+retval+wxT("</mrow>\n");
