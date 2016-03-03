@@ -446,7 +446,7 @@ wxString MathCell::ToMathML()
   return wxEmptyString;
 }
 
-wxString MathCell::ListToMathML()
+wxString MathCell::ListToMathML(bool startofline)
 {
   bool highlight=false;
   
@@ -482,14 +482,16 @@ wxString MathCell::ListToMathML()
     if((temp != this)&&(temp->ForceBreakLineHere()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
+    // If a linebreak isn't followed by a label we need to introduce an empty one.
+    if(((temp->ForceBreakLineHere())||(startofline&&(this==temp)))&&(temp->GetStyle())!=TS_LABEL)
+      retval+=wxT("<mtext></mtext></mtd><mtd>");
+
     // Do we need to start a highlighting region?
     if((temp->m_highlight)&&(!highlight))
       retval += wxT("<mrow mathcolor=\"red\">");
     highlight = temp->m_highlight;
 
-    // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if((temp->ForceBreakLineHere())&&(temp->GetStyle())!=TS_LABEL)
-      retval+=wxT("<mtext></mtext></mtd><mtd>");
+
     retval+=temp->ToMathML();
     temp=temp->m_next;
   }

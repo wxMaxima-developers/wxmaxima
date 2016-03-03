@@ -332,7 +332,7 @@ public:
   //! Convert this list to an representation fit for saving in a .wxmx file
   virtual wxString ListToXML();
   //! Convert this list to an representation fit for saving in a .wxmx file
-  virtual wxString ListToMathML();
+  virtual wxString ListToMathML(bool startofline = false);
   //! Returns the cell's representation as a string.
   virtual wxString ToString();
   //! Convert this cell to its LaTeX representation
