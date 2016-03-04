@@ -314,7 +314,7 @@ void GroupCell::AppendOutput(MathCell *cell)
 {
   wxASSERT_MSG(cell != NULL,_("Bug: Trying to append NULL to a group cell."));
   if(cell == NULL) return;
-  cell->SetParent(this);
+  cell->SetParentList(this);
   if (m_output == NULL) {
     m_output = cell;
 
