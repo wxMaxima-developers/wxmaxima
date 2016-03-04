@@ -568,7 +568,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
     }
 
-    if(m_console) m_console->EnableEdit(false);
+    if((m_console != NULL)&&(addToHistory)) m_console->EnableEdit(false);
 
     if(m_client)
     {
