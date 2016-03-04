@@ -625,6 +625,15 @@ wxString TextCell::ToMathML()
       }
     }
     case TS_VARIABLE:
+    {
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      
+      if (!keepPercent) {
+        if (text == wxT("%pi"))
+          text = wxT("\x03C0");
+      }
+    }
     case TS_FUNCTION:
       if(text == wxT("inf"))
         text = wxT("\x221e");
@@ -909,6 +918,8 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
       return wxString(L"e");
     else if (m_text == wxT("%i"))
       return wxString(L"i");
+    else if (m_text == wxT("%pi"))
+      return wxString(wxT("\x03C0"));
   }
 
   return wxEmptyString;
