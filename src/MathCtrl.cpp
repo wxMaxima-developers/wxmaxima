@@ -1470,7 +1470,7 @@ bool MathCtrl::CopyMathML()
     {
       wxMemoryOutputStream ostream;
       wxTextOutputStream txtstrm(ostream);
-      txtstrm.Write(s);
+      txtstrm.WriteString(s);
       wxMemoryInputStream istream(ostream);
       doc.Load(istream);
     }
