@@ -59,6 +59,7 @@
 #include <wx/artprov.h>
 #include <wx/aboutdlg.h>
 #include <wx/utils.h>
+#include <wx/mstream.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -1431,8 +1432,40 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
   wxString filename = wxmxURI + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
-  
-  if ((fsfile == NULL) || (!xmldoc.Load(*(fsfile->GetStream()),wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES)))
+  if(fsfile)
+  {
+    // Let's see if we can open this file.
+    if(!xmldoc.Load(*(fsfile->GetStream()),wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES))
+    {
+      // If we cannot read the file a typical error in old wxMaxima versions was to include
+      // a letter of ascii code 27 in content.xml. Let's filter this char out.
+
+      // Re-open the file.
+      delete fsfile;
+      fsfile = fs.OpenFile(filename);
+      if(fsfile)
+      {
+        // Read the file into a string
+        wxString s;
+        wxTextInputStream istream1(*fsfile->GetStream());
+        while(!fsfile->GetStream()->Eof())
+          s += istream1.ReadLine()+wxT("\n");
+
+        // Remove the illegal character
+        s.Replace(wxT('\x1b'),wxT("|"));
+
+        // Write the string into a memory buffer
+        wxMemoryOutputStream ostream;
+        wxTextOutputStream txtstrm(ostream);
+        txtstrm.WriteString(s);
+        wxMemoryInputStream istream(ostream);
+
+        // Try to load the file from the memory buffer.
+        xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
+      }
+    }
+  }
+  if (!xmldoc.IsOk())
   {
     document->Thaw();
     delete fsfile;
