@@ -1203,7 +1203,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           indentChars -= 4;
       }
 
-      bool autoIndent;
+      bool autoIndent = true;
       wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
 
       // The string we indent with.
