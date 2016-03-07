@@ -184,12 +184,13 @@
              (sub-symb (read-from-string (concatenate 'string "$" sub)))
              (sub-int (ignore-errors
                         (parse-integer sub))))
-        (when (or sub-int
-                  (eq $wxsubscripts '$all)
-                  (= (length sub) 1)
-                  (= (length sub-var) 1)
-                  ($get x '$wxxml_subscripted)
-                  ($get sub-symb '$wxxml_subscript))
+        (when (and (> (length sub-var) 0)
+                   (or sub-int
+                       (eq $wxsubscripts '$all)
+                       (= (length sub) 1)
+                       (= (length sub-var) 1)
+                       ($get x '$wxxml_subscripted)
+                       ($get sub-symb '$wxxml_subscript)))
           (format nil  "<i altCopy=\"~{~a~}\"><r>~a</r><r>~a</r></i>"
                   (mstring x)
                   (or (get sub-var-symb 'wxxmlword)
