@@ -1141,16 +1141,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       wxString indentString;
       int indentChars = 0;
 
-      /*
-      // Determine how far the last line was indented.
-      size_t pos = BeginningOfLine(m_positionOfCaret);
-      while((pos < m_text.Length())&&(m_text[pos]==wxT(' ')))
-      {
-        pos++;
-        indentChars++;
-      }
-      */
-
       // Determine how many parenthesis this cell opens or closes before the point
       size_t pos = 0;
       while((pos < m_text.Length())&&(pos < m_positionOfCaret))
@@ -1213,10 +1203,13 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       
       m_text = m_text.SubString(0, m_positionOfCaret - 1) +
         wxT("\n") + indentString +
-        m_text.SubString(m_positionOfCaret, m_text.Length());
+        wxString(m_text.SubString(m_positionOfCaret, m_text.Length())).Trim();
       m_positionOfCaret++;
       if((indentChars > 0)&&(autoIndent))
+      {
+        m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
         m_positionOfCaret += indentChars;
+      }
       m_isDirty = true;
       m_containsChanges = true;
     }
