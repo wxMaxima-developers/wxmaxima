@@ -32,4 +32,4 @@ script: |
   ./configure &&
   make &&
   make dist &&
-  if [[ "$TRAVIS_OS_NAME" == "osx"]]; then make wxMaxima.app ; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi
