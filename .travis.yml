@@ -12,8 +12,9 @@ branches:
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0 texinfo gettext ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                            ; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install wxwidgets gettext texinfo ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                  ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo       ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin ; fi
 
 notification:
   email:
@@ -30,4 +31,5 @@ script: |
   ./bootstrap &&
   ./configure &&
   make &&
-  make dist
+  make dist &&
+  if [[ "$TRAVIS_OS_NAME" == "osx"]]; then make wxMaxima.app ; fi
