@@ -20,7 +20,7 @@ git:
   depth: 3
 
 script: |
-  curl https://raw.githubusercontent.com/wxWidgets/wxWidgets/master/wxwin.m4 -o aclocal.m4 &&
+  curl https://raw.githubusercontent.com/wxWidgets/wxWidgets/master/wxwin.m4 -o acinclude.m4 &&
   ./bootstrap &&
   ./configure &&
   make &&
