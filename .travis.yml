@@ -1,0 +1,16 @@
+language: cpp
+sudo: required
+
+branches:
+  only:
+    - master
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libwxgtk3.0
+
+script: |
+  ./bootstrap &&
+  ./configure &&
+  make &&
+  make dist
