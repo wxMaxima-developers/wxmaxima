@@ -51,7 +51,7 @@ execute
 
 On Mac OS X configure wxWidgets with
 
-    ../configure --disable-shared --enable-unicode --with-macosx-version-min=10.5
+    ../configure --disable-shared --enable-unicode
 
 and on Windows with
 
@@ -89,6 +89,9 @@ To build an application bundle of wxMaxima on Mac OS X
     make
     make allmo
     make wxMaxima.app
+
+Sometimes the configure step requires an extra
+`--with-macosx-version-min=10.5` argument.
 
 On Windows execute instead:
 
