@@ -368,7 +368,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
   
-  wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions"));
+  wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
   m_defaultPlotWidth=new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 100, 16384);
   PlotWidthHbox->Add(m_defaultPlotWidth,0,wxEXPAND, 0);
@@ -385,7 +385,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_displayedDigits,0,wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* sl = new wxStaticText(panel, -1, _("Show long expressions"));
+  wxStaticText* sl = new wxStaticText(panel, -1, _("Show long expressions:"));
   grid_sizer->Add(sl, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   showLengths.Add(_("No"));
   showLengths.Add(_("If not very long"));
@@ -394,7 +394,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   m_showLength = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,showLengths);
   grid_sizer->Add(m_showLength, 0, wxALL, 5);
 
-  wxStaticText* as = new wxStaticText(panel, -1, _("Underscore converts to subscripts"));
+  wxStaticText* as = new wxStaticText(panel, -1, _("Underscore converts to subscripts:"));
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   autosubscripts.Add(_("No"));
   autosubscripts.Add(_("Integers and single letters"));
@@ -404,7 +404,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   
 
-  wxStaticText* lw = new wxStaticText(panel, -1, _("Label width"));
+  wxStaticText* lw = new wxStaticText(panel, -1, _("Label width:"));
   grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 10);
   grid_sizer->Add(m_labelWidth, 0, wxALL, 5);
@@ -464,7 +464,7 @@ wxPanel* ConfigDialogue::CreateExportPanel()
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-  wxStaticText* bs = new wxStaticText(panel, -1, _("Bitmap scale for export"));
+  wxStaticText* bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
   m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);  
@@ -538,18 +538,18 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 #ifdef wxUSE_UNICODE
-  wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Custom symbols sidebar glyphs"));
+  wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Custom symbols sidebar glyphs:"));
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
   grid_sizer->Add(additionalSymbols, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 #endif
   
-  wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off)"));
+  wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off):"));
   m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0, 30);
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_autoSaveInterval, 0, wxALL, 5);
 
-  wxStaticText* ul = new wxStaticText(panel, -1, _("Undo limit (0 for none)"));
+  wxStaticText* ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
   m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
@@ -623,9 +623,9 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer2->Add(ap2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxStaticText *ap3 = new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with"));
   sizer2->Add(ap3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap4 = new wxStaticText(panel, -1, _("      --dynamic-space-size <int>"));
+  wxStaticText *ap4 = new wxStaticText(panel, -1, _("      -X '--dynamic-space-size <int>'"));
   sizer2->Add(ap4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap5 = new wxStaticText(panel, -1, _("Tell sbcl to use <int>Mbytes of heap"));
+  wxStaticText *ap5 = new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap"));
   sizer2->Add(ap5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600, -1), wxTE_RICH);
@@ -644,7 +644,7 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   vsizer->Add(m_abortOnError,0,wxALL, 5);
 
-  m_pollStdOut = new wxCheckBox(panel, -1, _("Debug: Watch maxima's stdout stream"));
+  m_pollStdOut = new wxCheckBox(panel, -1, _("Debug: watch maxima's stdout stream"));
   vsizer->Add(m_pollStdOut,0,wxALL, 5);
   panel->SetSizerAndFit(vsizer);
 
