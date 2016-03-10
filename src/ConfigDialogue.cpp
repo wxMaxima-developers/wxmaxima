@@ -1360,7 +1360,9 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent& event)
 
   m_styleColor->SetBackgroundColour(tmp->color);
 
-  if (st >= TS_TEXT_BACKGROUND && st <= TS_SUBSUBSECTION)
+  // MAGIC NUMBERS:
+  // the positions of TEXT and TITLE style in the list.
+  if (st >= 13 && st <= 17)
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
