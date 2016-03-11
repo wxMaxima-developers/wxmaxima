@@ -481,7 +481,8 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
   text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
 #endif
-  // m_IsHidden is set only for multiplication signs
+  // m_IsHidden is set for multiplication signs and parenthesis that
+  // don't need to be shown
   if (m_isHidden)
   {
     /*
@@ -493,19 +494,30 @@ wxString TextCell::ToTeX()
       parenthesis does contain a product.
     */
     
-    if (m_SuppressMultiplicationDot) return wxEmptyString;
-    
-    // If we want to know if the last element was a "d" we first have to
-    // look if there actually is a last element.
-    if(m_previous)
+    if (m_SuppressMultiplicationDot)
     {
-      if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX()==wxT("d"))
-        return wxT("\\,");
-      else
-        return wxT("\\cdot ");
+      text.Replace(wxT("*"),wxEmptyString);
+      text.Replace(wxT("\xB7"),wxEmptyString);
     }
     else
-      return wxT("\\cdot ");
+    {
+      // If we want to know if the last element was a "d" we first have to
+      // look if there actually is a last element.
+      if(m_previous)
+      {
+        if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX()==wxT("d"))
+        {
+          text.Replace(wxT("*"),wxT("\\,"));
+          text.Replace(wxT("\xB7"),wxT("\\,"));
+        }
+        else
+        {
+          text.Replace(wxT("*"),wxT("\\cdot"));
+       x   text.Replace(wxT("\xB7"),wxT("\\cdot"));
+        }
+      }
+      return text;
+    }
   }
   
   if (m_textStyle == TS_GREEK_CONSTANT)
