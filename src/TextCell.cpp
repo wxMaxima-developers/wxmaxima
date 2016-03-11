@@ -513,7 +513,7 @@ wxString TextCell::ToTeX()
         else
         {
           text.Replace(wxT("*"),wxT("\\cdot"));
-       x   text.Replace(wxT("\xB7"),wxT("\\cdot"));
+          text.Replace(wxT("\xB7"),wxT("\\cdot"));
         }
       }
       return text;
@@ -544,8 +544,10 @@ wxString TextCell::ToTeX()
   
   if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
   {
+    wxString conditionalLinebreak;
+    if(m_previous) conditionalLinebreak = wxT("\\]\n\\[");
     text.Trim(true);
-    text = wxT("\\tag{") + text.SubString(1,text.Length()-2) + wxT("}");
+    text = conditionalLinebreak + wxT("\\tag{") + text.SubString(1,text.Length()-2) + wxT("}");
   }
   else
   {
