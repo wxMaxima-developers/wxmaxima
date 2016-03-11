@@ -177,16 +177,17 @@ void EvaluationQueue::AddTokens(wxString commandString)
     // Handle escaped chars
     if(ch == wxT('\\'))
     {
+      if((index + 1 < commandString.Length())&&(commandString[index+1]==wxT('\n')))
+      {
+        index+=2;
+        continue;
+      }
+      
       token += ch;
       index++;
       if(index < commandString.Length())
-      {
-        ch = commandString[index];
-        if(ch == wxT('\n'))
-          continue;
-      }
-      else
-        continue;
+        token +=  commandString[index++];
+      continue;
     }
       
     // Remove comments

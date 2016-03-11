@@ -560,7 +560,7 @@ wxString TextCell::ToTeX()
     {
       if(text.Length() > 1)
         text = wxT("\\mathit{") + text + wxT("}");
-      text.replace(wxT("%pi"),wxT("\\ensuremath{\\pi}"));
+      text.Replace(wxT("%pi"),wxT("\\ensuremath{\\pi}"));
     }
     else if (m_textStyle == TS_ERROR)
     {
