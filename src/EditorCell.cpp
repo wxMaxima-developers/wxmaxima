@@ -1127,19 +1127,25 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
     }
     
     {
+      bool autoIndent = true;
+      wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
+
       // If the cursor is at the beginning of a line we will move it there again after
       // indenting.
       bool cursorAtStartOfLine = (m_positionOfCaret == BeginningOfLine(m_positionOfCaret));
 
       // If the cursor is part of the whitespace at the beginning of the line
-      // we move it to its end.
-      int i=BeginningOfLine(m_positionOfCaret);
-      while((m_text[i]==wxT(' '))&&(i<m_positionOfCaret))
-        i++;
-      if(i==m_positionOfCaret)
-        while((m_text[m_positionOfCaret]==wxT(' '))&&(m_positionOfCaret<m_text.Length()-1))
-          m_positionOfCaret++;
-
+      // we move it to its end if this makes sense.
+      if(autoIndent)
+      {
+        int i=BeginningOfLine(m_positionOfCaret);
+        while((m_text[i]==wxT(' '))&&(i<m_positionOfCaret))
+          i++;
+        if(i==m_positionOfCaret)
+          while((m_text[m_positionOfCaret]==wxT(' '))&&(m_positionOfCaret<m_text.Length()-1))
+            m_positionOfCaret++;
+      }
+      
       wxString indentString;
       int indentChars = 0;
 
@@ -1194,9 +1200,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           )
           indentChars -= 4;
       }
-
-      bool autoIndent = true;
-      wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
 
       // The string we indent with.
       if(autoIndent && (indentChars > 0))
