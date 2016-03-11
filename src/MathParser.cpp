@@ -963,7 +963,10 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         if (cell == NULL)
           cell = tmp;
         else
+        {
           cell->AppendCell(tmp);
+          tmp->ForceBreakLine(true);
+        }
       }
       else if (tagName == wxT("st"))
       {

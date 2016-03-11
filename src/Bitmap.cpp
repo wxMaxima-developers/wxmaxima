@@ -227,7 +227,7 @@ void Bitmap::Draw()
       if (!tmp->m_isBroken)
       {
         tmp->Draw(parser, point, tmp->IsMath() ? mfontsize : fontsize);
-        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
+        if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
           point.y += drop + tmp->m_next->GetMaxCenter();
@@ -240,7 +240,7 @@ void Bitmap::Draw()
       }
       else
       {
-        if (tmp->m_next != NULL && tmp->m_next->BreakLineHere())
+        if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
           point.y += drop + tmp->m_next->GetMaxCenter();

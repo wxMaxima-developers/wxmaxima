@@ -604,7 +604,7 @@ void MathCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 
 bool MathCell::BreakLineHere()
 {
-  return (!m_isBroken && (m_breakLine || m_forceBreakLine));
+  return (((!m_isBroken) && m_breakLine) || m_forceBreakLine);
 }
 
 bool MathCell::ContainsRect(wxRect& sm, bool all)
