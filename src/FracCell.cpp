@@ -297,7 +297,7 @@ wxString FracCell::ToTeX()
   {
     if (m_fracStyle == FC_CHOOSE)
     {
-      s = wxT("\\begin{pmatrix}") + m_num->ListToTeX() + wxT("\\cr ") +
+      s = wxT("\\begin{pmatrix}") + m_num->ListToTeX() + wxT("\\\\\n") +
           m_denom->ListToTeX() + wxT("\\end{pmatrix}");
     }
     else

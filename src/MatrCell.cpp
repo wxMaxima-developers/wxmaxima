@@ -243,7 +243,7 @@ wxString MatrCell::ToTeX()
         s += wxT(" & ");
     }
     if (i < m_matHeight - 1)
-      s += wxT("\\cr ");
+      s += wxT("\\\\\n");
   }
   s += wxT("\\end{pmatrix}");
   return s;
