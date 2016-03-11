@@ -3859,7 +3859,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
               wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                count,ext,size.x - 2 * borderwidth) +
               alttext +
-              wxT("\" >");
+              wxT("\" ><BR/>\n");
             
             output<<line<<endl;
           }
@@ -3918,7 +3918,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                                                     wxT(" ") +
                                                                     tmp->GetEditable()->ToString()))<<wxT("\n");
-        output<<wxT("<BR>\n");
+        output<<wxT("<BR/>\n");
         if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
         {
           ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
