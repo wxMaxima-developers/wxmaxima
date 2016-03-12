@@ -1223,15 +1223,52 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
     break;
 
   case WXK_DELETE:
-    SaveValue();
-    if (m_selectionStart == -1)
+    std::cerr<<"Test\n";
+    // On windows CMD+WXK_BACK is passed to us as CMD+WXK_DELETE.
+    if(!event.CmdDown())
     {
-      if (m_positionOfCaret < (signed)m_text.Length())
+      SaveValue();
+      if (m_selectionStart == -1)
       {
-        m_isDirty = true;
+        if (m_positionOfCaret < (signed)m_text.Length())
+        {
+          m_isDirty = true;
+          m_containsChanges = true;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+            m_text.SubString(m_positionOfCaret + 1, m_text.Length());
+        }
+      }
+      else
+      {
+        // Ctrl+Backspace is pressed.
+
         m_containsChanges = true;
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 m_text.SubString(m_positionOfCaret + 1, m_text.Length());
+        m_isDirty = true;
+        
+        
+        int lastpos = m_positionOfCaret;
+        // Delete characters until the end of the current word or number 
+        while((wxIsalnum(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
+        }            
+        // Delete Spaces, Tabs and Newlines until the next printable character
+        while((wxIsspace(m_text[m_positionOfCaret - 1]))&&(m_positionOfCaret>0))
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
+        }
+        
+        // If we didn't delete anything till now delete one single character.
+        if(lastpos == m_positionOfCaret)
+        {
+          m_positionOfCaret--;
+          m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                   m_text.SubString(m_positionOfCaret + 1, m_text.Length());
+        }
       }
     }
     else
