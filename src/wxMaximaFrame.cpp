@@ -1203,65 +1203,14 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
 wxPanel *wxMaximaFrame::CharButton(wxPanel *parent,wxChar ch,wxString description,bool matchesMaximaCommand)
 {
   wxPanel *panel = new wxPanel(parent,ch);
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *vbox = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText *text = new wxStaticText(panel,ch,wxString(ch));
-  vbox->Add(text,wxSizerFlags().Expand().Border(wxALL, 0));
+  vbox->Add(text,1,wxALL | wxEXPAND,0);
   
   if(description.Length()>0)
     text->SetToolTip(description);
   text->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
   panel->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed),NULL,this);
-/*
-  if(matchesMaximaCommand)
-  {
-    wxColour backgroundcolor = panel->GetBackgroundColour();
-
-    if(backgroundcolor.Alpha()<255)
-    {
-          panel->SetBackgroundColour(
-            wxColor(
-              backgroundcolor.Red(),
-              backgroundcolor.Green(),
-              backgroundcolor.Blue(),
-              1-(1-backgroundcolor.Alpha())*.9
-              )
-            );
-    }
-    else
-    {
-      if(backgroundcolor.Red()>=128)
-      {
-        if(backgroundcolor.Red()<255)
-        {
-          panel->SetBackgroundColour(wxColor(255,255,255));
-        }
-        else
-        {
-          panel->SetBackgroundColour(
-            wxColor(
-              255-.9*(255-backgroundcolor.Red()),
-              255-.9*(255-backgroundcolor.Green()),
-              255-.9*(255-backgroundcolor.Blue())
-              )
-            );
-        }
-      }
-      else
-      {
-        if(backgroundcolor.Red()>0)
-          panel->SetBackgroundColour(wxColor(0,0,0));
-        else
-          panel->SetBackgroundColour(
-            wxColor(
-              10,
-              10,
-              10
-              )
-            );
-      }
-    }
-  }
-*/
   panel->SetSizerAndFit(vbox);
   return panel;
 }
@@ -1280,7 +1229,10 @@ wxPanel* wxMaximaFrame::CreateGreekPane()
 #endif
 
   wxPanel *lowercasePanel = new wxPanel(panel, -1);
-  wxGridSizer *lowercase = new wxGridSizer(8);
+  wxFlexGridSizer *lowercase = new wxFlexGridSizer(8);
+  lowercase->SetFlexibleDirection(wxBOTH);
+  for (int i=0;i<8;i++)
+    lowercase->AddGrowableCol(i,1);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B1'),_("alpha")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B2'),_("beta")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x03B3'),_("gamma")),0,wxALL | wxEXPAND,2);
@@ -1309,7 +1261,11 @@ wxPanel* wxMaximaFrame::CreateGreekPane()
   vbox->Add(lowercasePanel,0,style,border);
 
   wxPanel *uppercasePanel = new wxPanel(panel, -1);
-  wxGridSizer *uppercase = new wxGridSizer(8);
+  wxFlexGridSizer *uppercase = new wxFlexGridSizer(8);
+  uppercase->SetFlexibleDirection(wxBOTH);
+  for (int i=0;i<8;i++)
+    uppercase->AddGrowableCol(i,1);
+
   uppercase->Add(CharButton(uppercasePanel,  wxT('\x0391'),_("Alpha")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(uppercasePanel,  wxT('\x0392'),_("Beta")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(uppercasePanel,  wxT('\x0393'),_("Gamma")),0,wxALL | wxEXPAND,2);
@@ -1339,9 +1295,8 @@ wxPanel* wxMaximaFrame::CreateGreekPane()
   vbox->Add(uppercasePanel,0,style,border);
 
 
-  panel->SetSizer(vbox);
-  vbox->Fit(panel);
-  vbox->SetSizeHints(panel);
+  panel->SetSizerAndFit(vbox);
+//  vbox->SetSizeHints(panel);
 
   return panel;
 }
@@ -1359,7 +1314,10 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
 #endif
 
   wxPanel *lowercasePanel = new wxPanel(panel, -1);
-  wxGridSizer *lowercase = new wxGridSizer(8);
+  wxFlexGridSizer *lowercase = new wxFlexGridSizer(8);
+  lowercase->SetFlexibleDirection(wxBOTH);
+  for (int i=0;i<8;i++)
+    lowercase->AddGrowableCol(i,1);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x00BD'),_("1/2"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x00B2'),_("to the power of 2"),true),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(lowercasePanel,  wxT('\x00B3'),_("to the power of 3"),true),0,wxALL | wxEXPAND,2);
@@ -1417,9 +1375,8 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
 
   vbox->Add(lowercasePanel,0,style,border);
 
-  panel->SetSizer(vbox);
-  vbox->Fit(panel);
-  vbox->SetSizeHints(panel);
+  panel->SetSizerAndFit(vbox);
+  // vbox->SetSizeHints(panel);
 
   return panel;
 }
