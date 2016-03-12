@@ -142,6 +142,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   CalcUnscrolledPosition(0, rect.GetTop(), &xstart, &top);
   CalcUnscrolledPosition(0, rect.GetBottom(), &xstart, &bottom);
 
+  if(sz.x == 0) sz.x=1;
+  if(sz.y == 0) sz.y=1;
+  
   // Test if m_memory is NULL (resize event)
   if (m_memory == NULL) {
     m_memory = new wxBitmap();
