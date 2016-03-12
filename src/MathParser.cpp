@@ -974,15 +974,6 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     
     if (cell != NULL)
     {
-
-      // Let's see if we want to add a linebreak to the end of the new cell      
-      wxString breaklineattrib;
-      if(node != NULL)
-        breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
-      
-      if(breaklineattrib == wxT("true"))
-        cell->ForceBreakLine(true);
-
       // Append the new cell to the return value
       if (retval == NULL)
         retval = cell;
