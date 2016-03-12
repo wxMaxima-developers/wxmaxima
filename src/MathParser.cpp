@@ -500,13 +500,15 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
     }
   }
 
+  if (retval == NULL)
+    retval = new TextCell;
+
   wxString breaklineattrib;
   if(node != NULL)
     breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
 
   if(breaklineattrib == wxT("true"))
   {
-    
     if(retval)
     {
       retval->ForceBreakLine(true);
