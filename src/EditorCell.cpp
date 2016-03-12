@@ -1416,7 +1416,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           }
           else
           {
-            size_t start = BeginningOfLine(m_positionOfCaret - 1);
+            size_t start = BeginningOfLine(m_positionOfCaret);
             if(m_text.SubString(start,start + 3)==wxT("    "))
             {
               m_text =
