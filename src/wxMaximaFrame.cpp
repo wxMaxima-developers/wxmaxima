@@ -282,6 +282,8 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Right());
 
@@ -291,6 +293,8 @@ void wxMaximaFrame::do_layout()
                     Show(true).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Right());
 
@@ -300,6 +304,8 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Right());
 
@@ -309,6 +315,8 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Fixed().
                     Left());
@@ -320,8 +328,9 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
-                    Fixed().
                     Left());
   m_manager.AddPane(CreateSymbolsPane(),
                     wxAuiPaneInfo().Name(wxT("symbols")).
@@ -329,8 +338,9 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
-                    Fixed().
                     Left());
 #endif
   
@@ -340,6 +350,8 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Fixed().
                     Left());
@@ -350,6 +362,8 @@ void wxMaximaFrame::do_layout()
                     Show(false).
                     TopDockable(true).
                     BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
                     PaneBorder(true).
                     Fixed().
                     Left());
