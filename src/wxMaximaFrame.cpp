@@ -321,8 +321,9 @@ void wxMaximaFrame::do_layout()
                     Fixed().
                     Left());
 
+  wxPanel *greekPane = CreateGreekPane();
 #ifdef wxUSE_UNICODE
-  m_manager.AddPane(CreateGreekPane(),
+  m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                     Caption(_("Greek letters")).
                     Show(false).
@@ -331,8 +332,11 @@ void wxMaximaFrame::do_layout()
                     LeftDockable(true).
                     RightDockable(true).
                     PaneBorder(true).
+                    MinSize(greekPane->GetEffectiveMinSize()).
                     Left());
-  m_manager.AddPane(CreateSymbolsPane(),
+
+  wxPanel *symbolsPane = CreateSymbolsPane();
+  m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                     Caption(_("Mathematical Symbols")).
                     Show(false).
@@ -341,6 +345,7 @@ void wxMaximaFrame::do_layout()
                     LeftDockable(true).
                     RightDockable(true).
                     PaneBorder(true).
+                    MinSize(symbolsPane->GetEffectiveMinSize()).
                     Left());
 #endif
   
