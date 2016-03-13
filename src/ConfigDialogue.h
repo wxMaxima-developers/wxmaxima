@@ -162,6 +162,7 @@ private:
   wxPanel* CreateMaximaPanel();
   // end wxGlade
 protected:
+  void OnTabChange(wxBookCtrlEvent& event);
   // begin wxGlade: ConfigDialogue::attributes
   wxTextCtrl* m_maximaProgram;
   wxTextCtrl* m_documentclass;

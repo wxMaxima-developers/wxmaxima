@@ -121,6 +121,10 @@ ConfigDialogue::ConfigDialogue(wxWindow* parent)
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
+  wxConfigBase* config = wxConfig::Get();
+  int notebookTab=0;
+  config->Read(wxT("ConfigDialogTab"),&notebookTab);
+  m_notebook->SetSelection(notebookTab);
   LayoutDialog();
 
   SetProperties();
@@ -765,6 +769,9 @@ void ConfigDialogue::OnClose(wxCloseEvent& event)
 #else
   EndModal(wxID_CANCEL);
 #endif
+  wxConfigBase* config = wxConfig::Get();
+  config->Write(wxT("ConfigDialogTab"),m_notebook->GetSelection());
+
 }
 
 void ConfigDialogue::WriteSettings()
@@ -1561,6 +1568,13 @@ void ConfigDialogue::UpdateExample()
     m_examplePanel->SetBackgroundColour(m_styleBackground.color);
 
   m_examplePanel->Refresh();
+}
+
+void ConfigDialogue::OnTabChange(wxBookCtrlEvent& event)
+{
+  std::cerr<<"Test\n";
+  wxConfigBase* config = wxConfig::Get();
+  config->Write(wxT("ConfigDialogTab"),event.GetSelection());
 }
 
 void ConfigDialogue::LoadSave(wxCommandEvent& event)
