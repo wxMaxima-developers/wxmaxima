@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 23:23+0100\n"
+"POT-Creation-Date: 2016-03-13 15:30+0100\n"
 "PO-Revision-Date: 2016-02-22 16:12-0500\n"
 "Last-Translator: kahkonen <mika.m.kahkonen@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -61,12 +61,12 @@ msgstr ""
 "\n"
 "Ei yhdistetty."
 
-#: ../src/ConfigDialogue.cpp:626
+#: ../src/ConfigDialogue.cpp:627
 #, fuzzy
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr "      --dynamic-space-size <int>"
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:623
 msgid "      -l <name>"
 msgstr "      -l <nimi>"
 
@@ -74,7 +74,7 @@ msgstr "      -l <nimi>"
 msgid " (Graphics) "
 msgstr " (Grafiikat) "
 
-#: ../src/MathParser.cpp:1187
+#: ../src/MathParser.cpp:1067
 msgid " << Expression too long to display! >>"
 msgstr " << Lauseke on liian pitkä näyttää! >>"
 
@@ -91,11 +91,11 @@ msgid ""
 " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr " tallennettiin uudemmalla wxMaximan versiolla. Päivitä wxMaximasi."
 
-#: ../src/ConfigDialogue.cpp:481
+#: ../src/ConfigDialogue.cpp:482
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "\"Kopioi LaTeX\" lisää kaavamerkinnät"
 
-#: ../src/wxMaximaFrame.cpp:1373
+#: ../src/wxMaximaFrame.cpp:1359
 msgid "\"implies\" symbol"
 msgstr ""
 
@@ -104,59 +104,59 @@ msgstr ""
 msgid "%i cells in evaluation queue"
 msgstr "%i solua arviointijonossa"
 
-#: ../src/wxMaximaFrame.cpp:707
+#: ../src/wxMaximaFrame.cpp:741
 msgid "&Algebra"
 msgstr "&Algebra "
 
-#: ../src/wxMaximaFrame.cpp:701
+#: ../src/wxMaximaFrame.cpp:735
 msgid "&Apply to List..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:898
+#: ../src/wxMaximaFrame.cpp:932
 msgid "&Apropos..."
 msgstr "&Etsi merkkijono..."
 
-#: ../src/wxMaximaFrame.cpp:412
+#: ../src/wxMaximaFrame.cpp:446
 msgid "&Batch File...\tCtrl-B"
 msgstr "&Komentojonotiedosto...\tCtrl-B"
 
-#: ../src/wxMaximaFrame.cpp:658
+#: ../src/wxMaximaFrame.cpp:692
 msgid "&Boundary Value Problem..."
 msgstr "&Raja-arvotehtävä"
 
-#: ../src/wxMaximaFrame.cpp:909
+#: ../src/wxMaximaFrame.cpp:943
 msgid "&Bug Report"
 msgstr "&Virheraportti"
 
-#: ../src/wxMaximaFrame.cpp:759
+#: ../src/wxMaximaFrame.cpp:793
 msgid "&Calculus"
 msgstr "&Analyysi"
 
-#: ../src/wxMaximaFrame.cpp:810
+#: ../src/wxMaximaFrame.cpp:844
 msgid "&Canonical Form"
 msgstr "&Kanoninen muoto"
 
-#: ../src/wxMaximaFrame.cpp:683
+#: ../src/wxMaximaFrame.cpp:717
 msgid "&Characteristic Polynomial..."
 msgstr "&Karakteristinen polynomi..."
 
-#: ../src/wxMaximaFrame.cpp:588
+#: ../src/wxMaximaFrame.cpp:622
 msgid "&Clear Memory"
 msgstr "&Tyhjennä muisti"
 
-#: ../src/wxMaximaFrame.cpp:793
+#: ../src/wxMaximaFrame.cpp:827
 msgid "&Combine Factorials"
 msgstr "&Yhdistä kertomat"
 
-#: ../src/wxMaximaFrame.cpp:836
+#: ../src/wxMaximaFrame.cpp:870
 msgid "&Complex Simplification"
 msgstr "&Kompleksi Sieventäminen"
 
-#: ../src/wxMaximaFrame.cpp:756
+#: ../src/wxMaximaFrame.cpp:790
 msgid "&Continued Fraction"
 msgstr "&Ketjumurtoluku"
 
-#: ../src/wxMaximaFrame.cpp:436
+#: ../src/wxMaximaFrame.cpp:470
 msgid "&Copy\tCtrl-C"
 msgstr "&Kopioi\tCtrl+C"
 
@@ -164,107 +164,107 @@ msgstr "&Kopioi\tCtrl+C"
 msgid "&Definite integration"
 msgstr "&Määrätty integraali"
 
-#: ../src/wxMaximaFrame.cpp:830
+#: ../src/wxMaximaFrame.cpp:864
 msgid "&Demoivre"
 msgstr "&Demoivre"
 
-#: ../src/wxMaximaFrame.cpp:686
+#: ../src/wxMaximaFrame.cpp:720
 msgid "&Determinant"
 msgstr "&Determinantti"
 
-#: ../src/wxMaximaFrame.cpp:719
+#: ../src/wxMaximaFrame.cpp:753
 msgid "&Differentiate..."
 msgstr "Derivoi..."
 
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:511
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: ../src/wxMaximaFrame.cpp:643
+#: ../src/wxMaximaFrame.cpp:677
 msgid "&Eliminate Variable..."
 msgstr "&Poista muuttuja..."
 
-#: ../src/wxMaximaFrame.cpp:678
+#: ../src/wxMaximaFrame.cpp:712
 msgid "&Enter Matrix..."
 msgstr "&Syötä Matriisi..."
 
-#: ../src/wxMaximaFrame.cpp:895
+#: ../src/wxMaximaFrame.cpp:929
 msgid "&Example..."
 msgstr "&Esimerkki..."
 
-#: ../src/wxMaximaFrame.cpp:773
+#: ../src/wxMaximaFrame.cpp:807
 msgid "&Expand Expression"
 msgstr "&Laajenna lauseke"
 
-#: ../src/wxMaximaFrame.cpp:807
+#: ../src/wxMaximaFrame.cpp:841
 msgid "&Expand Trigonometric"
 msgstr "&Laajenna trigonometrinen"
 
-#: ../src/wxMaximaFrame.cpp:833
+#: ../src/wxMaximaFrame.cpp:867
 msgid "&Exponentialize"
 msgstr "&Muunna eksponenttimuotoon"
 
-#: ../src/wxMaximaFrame.cpp:414
+#: ../src/wxMaximaFrame.cpp:448
 msgid "&Export..."
 msgstr "&Vie..."
 
-#: ../src/wxMaximaFrame.cpp:768
+#: ../src/wxMaximaFrame.cpp:802
 msgid "&Factor Expression"
 msgstr "&Jaa tekijöihin"
 
-#: ../src/wxMaximaFrame.cpp:423
+#: ../src/wxMaximaFrame.cpp:457
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: ../src/wxMaximaFrame.cpp:626
+#: ../src/wxMaximaFrame.cpp:660
 msgid "&Find Root..."
 msgstr "&Etsi juuri..."
 
-#: ../src/wxMaximaFrame.cpp:672
+#: ../src/wxMaximaFrame.cpp:706
 msgid "&Generate Matrix..."
 msgstr "&Luo matriisi..."
 
-#: ../src/wxMaximaFrame.cpp:743
+#: ../src/wxMaximaFrame.cpp:777
 msgid "&Greatest Common Divisor..."
 msgstr "&Suurin yhteinen tekijä"
 
-#: ../src/wxMaximaFrame.cpp:925
+#: ../src/wxMaximaFrame.cpp:959
 msgid "&Help"
 msgstr "O&hje"
 
-#: ../src/wxMaximaFrame.cpp:711
+#: ../src/wxMaximaFrame.cpp:745
 msgid "&Integrate..."
 msgstr "&Integroi..."
 
-#: ../src/wxMaximaFrame.cpp:579
+#: ../src/wxMaximaFrame.cpp:613
 msgid "&Interrupt\tCtrl-."
 msgstr "&Keskeytä\tCtrl-."
 
-#: ../src/wxMaximaFrame.cpp:583
+#: ../src/wxMaximaFrame.cpp:617
 msgid "&Interrupt\tCtrl-G"
 msgstr "&Keskeytä\tCtrl-G"
 
-#: ../src/wxMaximaFrame.cpp:680
+#: ../src/wxMaximaFrame.cpp:714
 msgid "&Invert Matrix"
 msgstr "&Käännä Matriisi"
 
-#: ../src/wxMaximaFrame.cpp:410
+#: ../src/wxMaximaFrame.cpp:444
 msgid "&Load Package...\tCtrl-L"
 msgstr "&Lataa Pakettu...\tCtrl-L"
 
-#: ../src/wxMaximaFrame.cpp:703
+#: ../src/wxMaximaFrame.cpp:737
 msgid "&Map to List(s)..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:618
+#: ../src/wxMaximaFrame.cpp:652
 msgid "&Maxima"
 msgstr "&Maxima"
 
-#: ../src/wxMaximaFrame.cpp:892
+#: ../src/wxMaximaFrame.cpp:926
 msgid "&Maxima help"
 msgstr "&Maximan ohje"
 
-#: ../src/wxMaximaFrame.cpp:851
+#: ../src/wxMaximaFrame.cpp:885
 msgid "&Modulus Computation..."
 msgstr "&Modulo-laskenta..."
 
@@ -272,7 +272,7 @@ msgstr "&Modulo-laskenta..."
 msgid "&New\tCtrl-N"
 msgstr "&Uusi\tCtrl+N"
 
-#: ../src/wxMaximaFrame.cpp:881
+#: ../src/wxMaximaFrame.cpp:915
 msgid "&Numeric"
 msgstr "&Numeerinen"
 
@@ -288,11 +288,11 @@ msgstr ""
 msgid "&Open\tCtrl-O"
 msgstr "&Avaa\tCtrl+O"
 
-#: ../src/wxMaximaFrame.cpp:397
+#: ../src/wxMaximaFrame.cpp:431
 msgid "&Open...\tCtrl-O"
 msgstr "&Avaa...\tCtrl+0"
 
-#: ../src/wxMaximaFrame.cpp:863
+#: ../src/wxMaximaFrame.cpp:897
 msgid "&Plot"
 msgstr "&Kuvaaja"
 
@@ -300,7 +300,7 @@ msgstr "&Kuvaaja"
 msgid "&Power series"
 msgstr "&Potenssisarja"
 
-#: ../src/wxMaximaFrame.cpp:417
+#: ../src/wxMaximaFrame.cpp:451
 msgid "&Print...\tCtrl-P"
 msgstr "&Tulosta...\tCtrl+P"
 
@@ -308,39 +308,39 @@ msgstr "&Tulosta...\tCtrl+P"
 msgid "&Rational"
 msgstr "&Rationaali"
 
-#: ../src/wxMaximaFrame.cpp:804
+#: ../src/wxMaximaFrame.cpp:838
 msgid "&Reduce Trigonometric"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:587
+#: ../src/wxMaximaFrame.cpp:621
 msgid "&Restart Maxima"
 msgstr "&Käynnistä Maxima uudelleen"
 
-#: ../src/wxMaximaFrame.cpp:634
+#: ../src/wxMaximaFrame.cpp:668
 msgid "&Roots of Polynomial (Real)"
 msgstr "&Polynomien juuret (Reaali)"
 
-#: ../src/wxMaximaFrame.cpp:406
+#: ../src/wxMaximaFrame.cpp:440
 msgid "&Save\tCtrl-S"
 msgstr "&Tallenna\tCtrl+S"
 
-#: ../src/SumWiz.cpp:39 ../src/wxMaximaFrame.cpp:853
+#: ../src/SumWiz.cpp:39 ../src/wxMaximaFrame.cpp:887
 msgid "&Simplify"
 msgstr "&Sievennä"
 
-#: ../src/wxMaximaFrame.cpp:763
+#: ../src/wxMaximaFrame.cpp:797
 msgid "&Simplify Expression"
 msgstr "&Sievennä lauseke"
 
-#: ../src/wxMaximaFrame.cpp:790
+#: ../src/wxMaximaFrame.cpp:824
 msgid "&Simplify Factorials"
 msgstr "&Sievennä kertomat"
 
-#: ../src/wxMaximaFrame.cpp:801
+#: ../src/wxMaximaFrame.cpp:835
 msgid "&Simplify Trigonometric"
 msgstr "&Sievennä trigonometriset"
 
-#: ../src/wxMaximaFrame.cpp:622
+#: ../src/wxMaximaFrame.cpp:656
 msgid "&Solve..."
 msgstr "&Ratkaise..."
 
@@ -352,11 +352,11 @@ msgstr ""
 msgid "&Taylor series"
 msgstr "&Taylorin sarja"
 
-#: ../src/wxMaximaFrame.cpp:696
+#: ../src/wxMaximaFrame.cpp:730
 msgid "&Transpose Matrix"
 msgstr "&Transponoi matriisi"
 
-#: ../src/wxMaximaFrame.cpp:813
+#: ../src/wxMaximaFrame.cpp:847
 msgid "&Trigonometric Simplification"
 msgstr "&Trigonometrinen sieventäminen"
 
@@ -364,7 +364,7 @@ msgstr "&Trigonometrinen sieventäminen"
 msgid "&pm3d"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:513
+#: ../src/ConfigDialogue.cpp:514
 msgid "(Use default language)"
 msgstr "(Käytä oletuskieltä)"
 
@@ -382,7 +382,7 @@ msgstr ""
 "...[piilotettu lisärivejä sillä tuloste on pidempi kuin asetuksissa "
 "sallitaan] "
 
-#: ../src/wxMaximaFrame.cpp:1363
+#: ../src/wxMaximaFrame.cpp:1349
 msgid "1/2"
 msgstr "1/2"
 
@@ -412,39 +412,39 @@ msgstr ""
 "ja kommenttien lisäksi laskutoimituksiesi tulokset. Kun tallennat "
 "asiakirjaasi, valitse muodoksi  'wxMaxima XML-asiakirja'. "
 
-#: ../src/wxMaximaFrame.cpp:1416
+#: ../src/wxMaximaFrame.cpp:1407
 msgid "A symbol from the configuraton dialogue"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:665
+#: ../src/wxMaximaFrame.cpp:699
 msgid "A&t Value..."
 msgstr "&Kohdassa..."
 
-#: ../src/ConfigDialogue.cpp:644
+#: ../src/ConfigDialogue.cpp:645
 msgid "Abort evaluation on error"
 msgstr "Virhe"
 
-#: ../src/wxMaximaFrame.cpp:920 ../src/wxMaxima.cpp:4392
+#: ../src/wxMaxima.cpp:4392 ../src/wxMaximaFrame.cpp:954
 msgid "About"
 msgstr "Tietoja"
 
-#: ../src/wxMaximaFrame.cpp:922 ../src/wxMaximaFrame.cpp:924
+#: ../src/wxMaximaFrame.cpp:956 ../src/wxMaximaFrame.cpp:958
 msgid "About wxMaxima"
 msgstr "Tietoja wxMaximasta"
 
-#: ../src/ConfigDialogue.cpp:698
+#: ../src/ConfigDialogue.cpp:699
 msgid "Active cell bracket"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:694
+#: ../src/wxMaximaFrame.cpp:728
 msgid "Ad&joint Matrix"
 msgstr "&Adjungoi matriisi"
 
-#: ../src/wxMaximaFrame.cpp:848
+#: ../src/wxMaximaFrame.cpp:882
 msgid "Add Algebraic E&quality..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:591
+#: ../src/wxMaximaFrame.cpp:625
 msgid "Add a directory to search path"
 msgstr "Lisää hakemisto hakupolkuun"
 
@@ -452,15 +452,15 @@ msgstr "Lisää hakemisto hakupolkuun"
 msgid "Add dir to path:"
 msgstr "Lisää hakemisto polkuu:"
 
-#: ../src/wxMaximaFrame.cpp:849
+#: ../src/wxMaximaFrame.cpp:883
 msgid "Add equality to the rational simplifier"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:490
+#: ../src/ConfigDialogue.cpp:491
 msgid "Add the .wxmx file to the HTML export"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:590
+#: ../src/wxMaximaFrame.cpp:624
 msgid "Add to &Path..."
 msgstr "Lisää &Polkuun..."
 
@@ -469,7 +469,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:461
+#: ../src/ConfigDialogue.cpp:462
 msgid "Additional lines for the TeX preamble:"
 msgstr ""
 
@@ -477,7 +477,7 @@ msgstr ""
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:616
+#: ../src/ConfigDialogue.cpp:617
 msgid "Additional parameters for maxima"
 msgstr "Lisäparametreja maximaan"
 
@@ -487,15 +487,15 @@ msgid ""
 "slider allows to change the current frame."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:401
+#: ../src/ConfigDialogue.cpp:402
 msgid "All variable names"
 msgstr "Kaikki muuttujanimet"
 
-#: ../src/ConfigDialogue.cpp:848
+#: ../src/ConfigDialogue.cpp:849
 msgid "All|*"
 msgstr "Kaikki | *"
 
-#: ../src/wxMaximaFrame.cpp:1313
+#: ../src/wxMaximaFrame.cpp:1300
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -503,7 +503,7 @@ msgstr "Alfa"
 msgid "Apply"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:702
+#: ../src/wxMaximaFrame.cpp:736
 msgid "Apply function to a list"
 msgstr "Sovella funktiota listaan"
 
@@ -519,7 +519,7 @@ msgstr "Taulukko:"
 msgid "Artwork by"
 msgstr "Kuvamateriaalin tehnyt"
 
-#: ../src/ConfigDialogue.cpp:576
+#: ../src/ConfigDialogue.cpp:577
 msgid "Ask to save untitled documents"
 msgstr "Ehdota nimettömien asiakirjojen tallentamista"
 
@@ -527,7 +527,7 @@ msgstr "Ehdota nimettömien asiakirjojen tallentamista"
 msgid "At value"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:439
+#: ../src/ConfigDialogue.cpp:440
 msgid "Auto-indent new lines"
 msgstr ""
 
@@ -540,7 +540,7 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:547
+#: ../src/ConfigDialogue.cpp:548
 #, fuzzy
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Automaattitallennuksen väli (minuutteina, 0 tarkoittaa: off)"
@@ -549,11 +549,11 @@ msgstr "Automaattitallennuksen väli (minuutteina, 0 tarkoittaa: off)"
 msgid "BC2"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1174
+#: ../src/wxMaximaFrame.cpp:1208
 msgid "Barsplot..."
 msgstr "Palkkikaavio..."
 
-#: ../src/ConfigDialogue.cpp:843
+#: ../src/ConfigDialogue.cpp:844
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Bat-tiedostot (*.bat) | *.bat | Kaikki | *"
 
@@ -570,15 +570,15 @@ msgid ""
 "cells."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1314
+#: ../src/wxMaximaFrame.cpp:1301
 msgid "Beta"
 msgstr "Beta"
 
-#: ../src/ConfigDialogue.cpp:467
+#: ../src/ConfigDialogue.cpp:468
 msgid "Bitmap scale for export:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:719
+#: ../src/ConfigDialogue.cpp:720
 msgid "Bold"
 msgstr "Lihavoi"
 
@@ -586,7 +586,7 @@ msgstr "Lihavoi"
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1176
+#: ../src/wxMaximaFrame.cpp:1210
 msgid "Boxplot..."
 msgstr "Laatikkokaavio..."
 
@@ -598,7 +598,7 @@ msgstr "Selaa"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1740
+#: ../src/MathCtrl.cpp:1749
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -610,22 +610,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1968
+#: ../src/MathCtrl.cpp:1977
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Virhe: Kysymykselle ei ole vastaussolua"
 
-#: ../src/MathCtrl.cpp:5148
+#: ../src/MathCtrl.cpp:5157
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5219
+#: ../src/MathCtrl.cpp:5228
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5188
+#: ../src/MathCtrl.cpp:5197
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -635,13 +635,13 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1783
+#: ../src/MathCtrl.cpp:1792
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1750
+#: ../src/MathCtrl.cpp:1759
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -649,41 +649,41 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:495
+#: ../src/MathCtrl.cpp:504
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Virhe: Yrittää lisätä maximan tulosteen työkirjan ulkopuolella olevaan "
 "soluun."
 
-#: ../src/MathCtrl.cpp:1682
+#: ../src/MathCtrl.cpp:1691
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5779
+#: ../src/MathCtrl.cpp:5788
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1752
+#: ../src/MathCtrl.cpp:1761
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Virhe: Yrittää tallentaa solun sisällön muutoksen ilman solua."
 
-#: ../src/MathCtrl.cpp:1323
+#: ../src/MathCtrl.cpp:1332
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5189
+#: ../src/MathCtrl.cpp:5198
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5153 ../src/MathCtrl.cpp:5224 ../src/MathCtrl.cpp:5258
+#: ../src/MathCtrl.cpp:5162 ../src/MathCtrl.cpp:5233 ../src/MathCtrl.cpp:5267
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:907
+#: ../src/wxMaximaFrame.cpp:941
 msgid "Build &Info"
 msgstr "Versio&tiedot"
 
@@ -699,27 +699,27 @@ msgstr ""
 "komennossa valitsemalla 'Enter laskee solut'. Valinta muuttaa näiden kahden "
 "keskeisen näppäinkomennon toiminnot ristiin. "
 
-#: ../src/wxMaximaFrame.cpp:716
+#: ../src/wxMaximaFrame.cpp:750
 msgid "C&hange Variable..."
 msgstr "&Vaihda muuttuja"
 
-#: ../src/wxMaximaFrame.cpp:474
+#: ../src/wxMaximaFrame.cpp:508
 msgid "C&onfigure"
 msgstr "&Määritä"
 
-#: ../src/wxMaximaFrame.cpp:735
+#: ../src/wxMaximaFrame.cpp:769
 msgid "Calculate &Product..."
 msgstr "Laske &tulo..."
 
-#: ../src/wxMaximaFrame.cpp:733
+#: ../src/wxMaximaFrame.cpp:767
 msgid "Calculate Su&m..."
 msgstr "Laske &summa..."
 
-#: ../src/wxMaximaFrame.cpp:873
+#: ../src/wxMaximaFrame.cpp:907
 msgid "Calculate bigfloat value of the last result"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:870
+#: ../src/wxMaximaFrame.cpp:904
 msgid "Calculate float value of the last result"
 msgstr ""
 
@@ -727,15 +727,15 @@ msgstr ""
 msgid "Calculate modulus:"
 msgstr "Laske modulus:"
 
-#: ../src/wxMaximaFrame.cpp:876
+#: ../src/wxMaximaFrame.cpp:910
 msgid "Calculate numeric value of the last result"
 msgstr "Laske likiarvo edelliselle tulokselle"
 
-#: ../src/wxMaximaFrame.cpp:736
+#: ../src/wxMaximaFrame.cpp:770
 msgid "Calculate products"
 msgstr "Laske tulot"
 
-#: ../src/wxMaximaFrame.cpp:734
+#: ../src/wxMaximaFrame.cpp:768
 msgid "Calculate sums"
 msgstr "Laske summat"
 
@@ -763,19 +763,19 @@ msgstr "Versiotiedon lataaminen ei onnistu"
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ../src/wxMaximaFrame.cpp:1119
+#: ../src/wxMaximaFrame.cpp:1153
 msgid "Canonical (tr)"
 msgstr "Kanoninen (tr)"
 
-#: ../src/ConfigDialogue.cpp:514
+#: ../src/ConfigDialogue.cpp:515
 msgid "Catalan"
 msgstr "Katalaani"
 
-#: ../src/wxMaximaFrame.cpp:572
+#: ../src/wxMaximaFrame.cpp:606
 msgid "Ce&ll"
 msgstr "Solu"
 
-#: ../src/ConfigDialogue.cpp:697
+#: ../src/ConfigDialogue.cpp:698
 msgid "Cell bracket"
 msgstr ""
 
@@ -783,11 +783,11 @@ msgstr ""
 msgid "Cell ends in a backslash"
 msgstr "Solu päättyy kenoviivaan"
 
-#: ../src/wxMaximaFrame.cpp:610
+#: ../src/wxMaximaFrame.cpp:644
 msgid "Change &2d Display"
 msgstr "Vaihda &2d Näyttö"
 
-#: ../src/wxMaximaFrame.cpp:611
+#: ../src/wxMaximaFrame.cpp:645
 msgid "Change the 2d display algorithm used to display math output"
 msgstr ""
 
@@ -795,7 +795,7 @@ msgstr ""
 msgid "Change variable"
 msgstr "Vaihda muuttuja"
 
-#: ../src/wxMaximaFrame.cpp:717
+#: ../src/wxMaximaFrame.cpp:751
 msgid "Change variable in integral or sum"
 msgstr "Vaihda muuttujaa integroinnissa tai summaamisessa"
 
@@ -803,28 +803,28 @@ msgstr "Vaihda muuttujaa integroinnissa tai summaamisessa"
 msgid "Char poly"
 msgstr "Karakteristinen polynomi:"
 
-#: ../src/wxMaximaFrame.cpp:912
+#: ../src/wxMaximaFrame.cpp:946
 msgid "Check for Updates"
 msgstr "Tarkista päivitykset"
 
-#: ../src/wxMaximaFrame.cpp:913
+#: ../src/wxMaximaFrame.cpp:947
 msgid "Check if a newer version of wxMaxima/Maxima exist."
 msgstr "Tarkista, onko wxMaximasta/Maximasta uudempaa versiota."
 
-#: ../src/wxMaximaFrame.cpp:1334
+#: ../src/wxMaximaFrame.cpp:1321
 msgid "Chi"
 msgstr "Khii"
 
-#: ../src/ConfigDialogue.cpp:515
+#: ../src/ConfigDialogue.cpp:516
 msgid "Chinese Simplified"
 msgstr "Yksinkertaistettu kiina"
 
-#: ../src/ConfigDialogue.cpp:516
+#: ../src/ConfigDialogue.cpp:517
 msgid "Chinese traditional"
 msgstr "Perinteinen kiina"
 
-#: ../src/ConfigDialogue.cpp:671 ../src/ConfigDialogue.cpp:673
-#: ../src/ConfigDialogue.cpp:713
+#: ../src/ConfigDialogue.cpp:672 ../src/ConfigDialogue.cpp:674
+#: ../src/ConfigDialogue.cpp:714
 msgid "Choose font"
 msgstr "Valitse fontti"
 
@@ -836,39 +836,39 @@ msgstr "Valitse uusi kuvaajalaji:"
 msgid "Classes:"
 msgstr "Luokat:"
 
-#: ../src/wxMaximaFrame.cpp:403
+#: ../src/wxMaximaFrame.cpp:437
 msgid "Close\tCtrl-W"
 msgstr "Sulje\tCtrl+W"
 
-#: ../src/wxMaximaFrame.cpp:404
+#: ../src/wxMaximaFrame.cpp:438
 msgid "Close window"
 msgstr "Sulkee ikkunan"
 
-#: ../src/ConfigDialogue.cpp:705
+#: ../src/ConfigDialogue.cpp:706
 msgid "Code highlighting: Comments"
 msgstr "Koodin korostus: Kommentit"
 
-#: ../src/ConfigDialogue.cpp:709
+#: ../src/ConfigDialogue.cpp:710
 msgid "Code highlighting: End of line"
 msgstr "Koodin korotus: Rivin loppu"
 
-#: ../src/ConfigDialogue.cpp:704
+#: ../src/ConfigDialogue.cpp:705
 msgid "Code highlighting: Functions"
 msgstr "Koodin korostus: Funktiot"
 
-#: ../src/ConfigDialogue.cpp:706
+#: ../src/ConfigDialogue.cpp:707
 msgid "Code highlighting: Numbers"
 msgstr "Koodin korostus: Numerot"
 
-#: ../src/ConfigDialogue.cpp:708
+#: ../src/ConfigDialogue.cpp:709
 msgid "Code highlighting: Operators"
 msgstr "Koodin korostus: Operaattorit"
 
-#: ../src/ConfigDialogue.cpp:707
+#: ../src/ConfigDialogue.cpp:708
 msgid "Code highlighting: Strings"
 msgstr "Koodin korostus: Merkkijonot"
 
-#: ../src/ConfigDialogue.cpp:703
+#: ../src/ConfigDialogue.cpp:704
 msgid "Code highlighting: Variables"
 msgstr "Koodin korotus: Muuttujat"
 
@@ -880,7 +880,7 @@ msgstr "Sarakkeiden nimet:"
 msgid "Columns:"
 msgstr "Sarakkeet:"
 
-#: ../src/wxMaximaFrame.cpp:794
+#: ../src/wxMaximaFrame.cpp:828
 msgid "Combine factorials in an expression"
 msgstr ""
 
@@ -896,23 +896,23 @@ msgstr "Pilkuilla erotetut x-koordinaatit"
 msgid "Comma separated y coordinates"
 msgstr "Pilkuilla erotetut y-koordinaatit"
 
-#: ../src/MathCtrl.cpp:968
+#: ../src/MathCtrl.cpp:977
 msgid "Comment Selection"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:467
+#: ../src/wxMaximaFrame.cpp:501
 msgid "Comment out the currently selected text"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:466
+#: ../src/wxMaximaFrame.cpp:500
 msgid "Comment selection\tCtrl-/"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:535
+#: ../src/wxMaximaFrame.cpp:569
 msgid "Complete Word\tCtrl-K"
 msgstr "Täydennä sana\tCtrl-K"
 
-#: ../src/wxMaximaFrame.cpp:536
+#: ../src/wxMaximaFrame.cpp:570
 msgid "Complete word"
 msgstr "Täydennä sana"
 
@@ -920,31 +920,31 @@ msgstr "Täydennä sana"
 msgid "Completely stop maxima and restart it"
 msgstr "Pysäytä maxima kokonaan ja käynnistä se uudelleen"
 
-#: ../src/wxMaximaFrame.cpp:757
+#: ../src/wxMaximaFrame.cpp:791
 msgid "Compute continued fraction of a value"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:695
+#: ../src/wxMaximaFrame.cpp:729
 msgid "Compute the adjoint matrix"
 msgstr "Laske adjungoitu matriisi"
 
-#: ../src/wxMaximaFrame.cpp:684
+#: ../src/wxMaximaFrame.cpp:718
 msgid "Compute the characteristic polynomial of a matrix"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:687
+#: ../src/wxMaximaFrame.cpp:721
 msgid "Compute the determinant of a matrix"
 msgstr "Laske matriisin determinantti"
 
-#: ../src/wxMaximaFrame.cpp:744
+#: ../src/wxMaximaFrame.cpp:778
 msgid "Compute the greatest common divisor"
 msgstr "Laske suurin yhteinen tekijä"
 
-#: ../src/wxMaximaFrame.cpp:681
+#: ../src/wxMaximaFrame.cpp:715
 msgid "Compute the inverse of a matrix"
 msgstr "Laske käänteismatriisi"
 
-#: ../src/wxMaximaFrame.cpp:747
+#: ../src/wxMaximaFrame.cpp:781
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "Laske pienin yhteinen jaettava (lataa (load) funktiot ennen käyttöä)"
 
@@ -952,16 +952,16 @@ msgstr "Laske pienin yhteinen jaettava (lataa (load) funktiot ennen käyttöä)"
 msgid "Condition:"
 msgstr "Ehto:"
 
-#: ../src/ConfigDialogue.cpp:1571 ../src/ConfigDialogue.cpp:1579
+#: ../src/ConfigDialogue.cpp:1572 ../src/ConfigDialogue.cpp:1580
 msgid "Config file (*.ini)|*.ini"
 msgstr "Asetustiedosto (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1411
+#: ../src/ConfigDialogue.cpp:1412
 msgid "Configuration warning"
 msgstr ""
 
-#: ../src/ToolBar.cpp:121 ../src/wxMaximaFrame.cpp:472
-#: ../src/wxMaximaFrame.cpp:475
+#: ../src/ToolBar.cpp:121 ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:509
 msgid "Configure wxMaxima"
 msgstr "Määrittele wxMaxima"
 
@@ -970,155 +970,152 @@ msgstr "Määrittele wxMaxima"
 msgid "Constant"
 msgstr "Vakio"
 
-#: ../src/wxMaximaFrame.cpp:778
+#: ../src/wxMaximaFrame.cpp:812
 msgid "Contract Logarithms"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:785
+#: ../src/wxMaximaFrame.cpp:819
 msgid "Convert binomials, beta and gamma function to factorials"
 msgstr "Muunna binomit, beta- ja gamma funktiot kertomiksi"
 
-#: ../src/wxMaximaFrame.cpp:788
+#: ../src/wxMaximaFrame.cpp:822
 msgid "Convert binomials, factorials and beta function to gamma function"
 msgstr "Muunna binomit, kertoimet ja betafunktiot gammafunktioksi"
 
-#: ../src/wxMaximaFrame.cpp:822
+#: ../src/wxMaximaFrame.cpp:856
 msgid "Convert complex expression to polar form"
 msgstr "Muunna kompleksilauseke polaarimuotoon"
 
-#: ../src/wxMaximaFrame.cpp:819
+#: ../src/wxMaximaFrame.cpp:853
 msgid "Convert complex expression to rect form"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:831
+#: ../src/wxMaximaFrame.cpp:865
 msgid ""
 "Convert exponential function of imaginary argument to trigonometric form"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:776
+#: ../src/wxMaximaFrame.cpp:810
 msgid "Convert logarithm of product to sum of logarithms"
 msgstr "Muunna logaritmin tulo logaritmien summaksi"
 
-#: ../src/wxMaximaFrame.cpp:779
+#: ../src/wxMaximaFrame.cpp:813
 msgid "Convert sum of logarithms to logarithm of product"
 msgstr "Muunna logaritmien summa tulon logaritmiksi"
 
-#: ../src/wxMaximaFrame.cpp:784
+#: ../src/wxMaximaFrame.cpp:818
 msgid "Convert to &Factorials"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:787
+#: ../src/wxMaximaFrame.cpp:821
 msgid "Convert to &Gamma"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:821
+#: ../src/wxMaximaFrame.cpp:855
 msgid "Convert to &Polarform"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:818
+#: ../src/wxMaximaFrame.cpp:852
 msgid "Convert to &Rectform"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:811
+#: ../src/wxMaximaFrame.cpp:845
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:834
+#: ../src/wxMaximaFrame.cpp:868
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Muunna trigonometrinen funktio eksponenttimuotoon"
 
-#: ../src/ToolBar.cpp:128 ../src/MathCtrl.cpp:859 ../src/MathCtrl.cpp:872
-#: ../src/MathCtrl.cpp:916 ../src/MathCtrl.cpp:962
+#: ../src/ToolBar.cpp:128 ../src/MathCtrl.cpp:868 ../src/MathCtrl.cpp:881
+#: ../src/MathCtrl.cpp:925 ../src/MathCtrl.cpp:971
 msgid "Copy"
 msgstr "Kopioi"
 
-#: ../src/MathCtrl.cpp:875 ../src/MathCtrl.cpp:920
-msgid "Copy As Image"
-msgstr "Kopioi kuvana"
-
-#: ../src/MathCtrl.cpp:873 ../src/MathCtrl.cpp:917
-msgid "Copy LaTeX"
-msgstr "Kopioi LaTeX"
-
-#: ../src/wxMaximaFrame.cpp:531
+#: ../src/wxMaximaFrame.cpp:565
 msgid "Copy Previous Input\tCtrl-I"
 msgstr "Kopioi aiempi syöte\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:533
+#: ../src/wxMaximaFrame.cpp:567
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "Kopioi aiempi tuloste\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:448
+#: ../src/wxMaximaFrame.cpp:482 ../src/MathCtrl.cpp:884 ../src/MathCtrl.cpp:929
 msgid "Copy as Image"
 msgstr "Kopioi kuvana"
 
-#: ../src/wxMaximaFrame.cpp:441
+#: ../src/wxMaximaFrame.cpp:475 ../src/MathCtrl.cpp:882 ../src/MathCtrl.cpp:926
 msgid "Copy as LaTeX"
 msgstr "Kopioi LaTeXina"
 
-#: ../src/wxMaximaFrame.cpp:438
+#: ../src/wxMaximaFrame.cpp:478
+#, fuzzy
+msgid "Copy as MathML"
+msgstr "Kopioi kuvana"
+
+#: ../src/MathCtrl.cpp:883 ../src/MathCtrl.cpp:927
+msgid "Copy as MathML (e.g. to word processor)"
+msgstr ""
+
+#: ../src/wxMaximaFrame.cpp:472
 msgid "Copy as Text\tCtrl-Shift-C"
 msgstr "Kopioi tekstinä"
 
-#: ../src/MathCtrl.cpp:874 ../src/MathCtrl.cpp:918 ../src/wxMaximaFrame.cpp:444
-msgid "Copy for word processor (as MathML)"
-msgstr ""
-
-#: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:437
+#: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:471
 msgid "Copy selection"
 msgstr "Kopioi valitun"
 
-#: ../src/wxMaximaFrame.cpp:449
+#: ../src/wxMaximaFrame.cpp:483
 msgid "Copy selection from document as an image"
 msgstr "Kopioi valitun osan dokumenttia kuvaksi"
 
-#: ../src/wxMaximaFrame.cpp:439
+#: ../src/wxMaximaFrame.cpp:473
 msgid "Copy selection from document as text"
 msgstr "Kopioi valitun osan dokumenttia tekstiksi"
 
-#: ../src/wxMaximaFrame.cpp:442
+#: ../src/wxMaximaFrame.cpp:476
 msgid "Copy selection from document in LaTeX format"
 msgstr "Tallenna valinta asiakirjasta LaTeX-muotoon"
 
-#: ../src/wxMaximaFrame.cpp:445
+#: ../src/wxMaximaFrame.cpp:479
 msgid ""
 "Copy selection from document in a MathML format many word processors can "
 "display as 2d equation"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:532
+#: ../src/wxMaximaFrame.cpp:566
 msgid "Create a new cell with previous input"
 msgstr "Luo uusi solu aiemmalla syötteellä"
 
-#: ../src/wxMaximaFrame.cpp:534
+#: ../src/wxMaximaFrame.cpp:568
 msgid "Create a new cell with previous output"
 msgstr "Luo uusi solu aiemmalla tulosteella"
 
-#: ../src/ConfigDialogue.cpp:699
+#: ../src/ConfigDialogue.cpp:700
 msgid "Cursor"
 msgstr "Kursori"
 
-#: ../src/ConfigDialogue.cpp:541
+#: ../src/ConfigDialogue.cpp:542
 msgid "Custom symbols sidebar glyphs:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:125 ../src/MathCtrl.cpp:961
+#: ../src/ToolBar.cpp:125 ../src/MathCtrl.cpp:970
 msgid "Cut"
 msgstr "Leikkaa"
 
-#: ../src/wxMaximaFrame.cpp:433
+#: ../src/wxMaximaFrame.cpp:467
 msgid "Cut\tCtrl-X"
 msgstr "Cut\tCtrl+X"
 
-#: ../src/ToolBar.cpp:127 ../src/wxMaximaFrame.cpp:434
+#: ../src/ToolBar.cpp:127 ../src/wxMaximaFrame.cpp:468
 msgid "Cut selection"
 msgstr "Leikkaa valitun"
 
-#: ../src/ConfigDialogue.cpp:517
+#: ../src/ConfigDialogue.cpp:518
 msgid "Czech"
 msgstr "Tsekki"
 
-#: ../src/ConfigDialogue.cpp:518
+#: ../src/ConfigDialogue.cpp:519
 msgid "Danish"
 msgstr "Tanska"
 
@@ -1137,31 +1134,31 @@ msgstr "Datatiedosto  (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Data:"
 
-#: ../src/ConfigDialogue.cpp:647
+#: ../src/ConfigDialogue.cpp:648
 msgid "Debug: watch maxima's stdout stream"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:754
+#: ../src/wxMaximaFrame.cpp:788
 msgid "Decompose rational function to partial fractions"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:677
+#: ../src/ConfigDialogue.cpp:678
 msgid "Default"
 msgstr "Oletus"
 
-#: ../src/ConfigDialogue.cpp:557
+#: ../src/ConfigDialogue.cpp:558
 msgid "Default animation framerate:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:670
+#: ../src/ConfigDialogue.cpp:671
 msgid "Default font:"
 msgstr "Oletus fontti"
 
-#: ../src/ConfigDialogue.cpp:371
+#: ../src/ConfigDialogue.cpp:372
 msgid "Default plot size for new maxima sessions:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:609
+#: ../src/ConfigDialogue.cpp:610
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
 
@@ -1175,27 +1172,27 @@ msgstr ""
 msgid "Delete"
 msgstr "Poista"
 
-#: ../src/wxMaximaFrame.cpp:601
+#: ../src/wxMaximaFrame.cpp:635
 msgid "Delete F&unction..."
 msgstr "Poista f&unktio..."
 
-#: ../src/MathCtrl.cpp:878 ../src/MathCtrl.cpp:923
+#: ../src/MathCtrl.cpp:887 ../src/MathCtrl.cpp:932
 msgid "Delete Selection"
 msgstr "Poista valittu"
 
-#: ../src/wxMaximaFrame.cpp:603
+#: ../src/wxMaximaFrame.cpp:637
 msgid "Delete V&ariable..."
 msgstr "Poista &muuttuja..."
 
-#: ../src/wxMaximaFrame.cpp:602
+#: ../src/wxMaximaFrame.cpp:636
 msgid "Delete a function"
 msgstr "Poistaa funktion"
 
-#: ../src/wxMaximaFrame.cpp:604
+#: ../src/wxMaximaFrame.cpp:638
 msgid "Delete a variable"
 msgstr "Poistaa muuttujan"
 
-#: ../src/wxMaximaFrame.cpp:589
+#: ../src/wxMaximaFrame.cpp:623
 msgid "Delete all values from memory"
 msgstr "Poista kaikki arvot muistista"
 
@@ -1207,7 +1204,7 @@ msgstr "Poista funktio(t):"
 msgid "Delete variable(s):"
 msgstr "Poista muuttuja(t):"
 
-#: ../src/wxMaximaFrame.cpp:1316
+#: ../src/wxMaximaFrame.cpp:1303
 msgid "Delta"
 msgstr "delta"
 
@@ -1223,15 +1220,15 @@ msgstr "Syvyys:"
 msgid "Derivative:"
 msgstr "Derivaatta:"
 
-#: ../src/wxMaximaFrame.cpp:1160
+#: ../src/wxMaximaFrame.cpp:1194
 msgid "Deviation..."
 msgstr "Derivointi..."
 
-#: ../src/wxMaximaFrame.cpp:750
+#: ../src/wxMaximaFrame.cpp:784
 msgid "Di&vide Polynomials..."
 msgstr "&Jaa polynomit..."
 
-#: ../src/wxMaximaFrame.cpp:1125
+#: ../src/wxMaximaFrame.cpp:1159
 msgid "Diff..."
 msgstr "Deri..."
 
@@ -1239,11 +1236,11 @@ msgstr "Deri..."
 msgid "Differentiate"
 msgstr "Derivoi"
 
-#: ../src/wxMaximaFrame.cpp:720
+#: ../src/wxMaximaFrame.cpp:754
 msgid "Differentiate expression"
 msgstr "Derivoi lauseke"
 
-#: ../src/MathCtrl.cpp:939
+#: ../src/MathCtrl.cpp:948
 msgid "Differentiate..."
 msgstr "Derivoi..."
 
@@ -1255,7 +1252,7 @@ msgstr "Suunta:"
 msgid "Discrete plot"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:613
+#: ../src/wxMaximaFrame.cpp:647
 msgid "Display Te&X Form"
 msgstr "Näytä Te&X muoto"
 
@@ -1263,11 +1260,11 @@ msgstr "Näytä Te&X muoto"
 msgid "Display algorithm"
 msgstr "Näytä algoritmi"
 
-#: ../src/wxMaximaFrame.cpp:614
+#: ../src/wxMaximaFrame.cpp:648
 msgid "Display last result in TeX form"
 msgstr "Näytä viimeisin tulos TeX-muodossa"
 
-#: ../src/wxMaximaFrame.cpp:608
+#: ../src/wxMaximaFrame.cpp:642
 msgid "Display time used for evaluation"
 msgstr "Näytä evaluointiin käytetty aika"
 
@@ -1275,15 +1272,15 @@ msgstr "Näytä evaluointiin käytetty aika"
 msgid "Divide"
 msgstr "Jaa"
 
-#: ../src/MathCtrl.cpp:970 ../src/wxMaximaFrame.cpp:569
+#: ../src/wxMaximaFrame.cpp:603 ../src/MathCtrl.cpp:979
 msgid "Divide Cell"
 msgstr "Jaa solu"
 
-#: ../src/wxMaximaFrame.cpp:751
+#: ../src/wxMaximaFrame.cpp:785
 msgid "Divide numbers or polynomials"
 msgstr "Jaa luvut tai polynomit"
 
-#: ../src/wxMaximaFrame.cpp:570
+#: ../src/wxMaximaFrame.cpp:604
 msgid "Divide this input cell into two cells"
 msgstr "Jaa tämä syötesolu kahdeksi soluksi"
 
@@ -1295,11 +1292,11 @@ msgstr "Haluatko tallentaa asiakirjaan tekemäsi muutokset? \""
 msgid "Document "
 msgstr "Asiakirja"
 
-#: ../src/ConfigDialogue.cpp:696
+#: ../src/ConfigDialogue.cpp:697
 msgid "Document background"
 msgstr "Asiakirjan tausta"
 
-#: ../src/ConfigDialogue.cpp:456
+#: ../src/ConfigDialogue.cpp:457
 msgid "Documentclass for TeX export:"
 msgstr ""
 
@@ -1314,19 +1311,19 @@ msgstr ""
 msgid "Don't save"
 msgstr "Älä tallenna"
 
-#: ../src/wxMaximaFrame.cpp:668
+#: ../src/wxMaximaFrame.cpp:702
 msgid "E&quations"
 msgstr "&Yhtälöt"
 
-#: ../src/wxMaximaFrame.cpp:421
+#: ../src/wxMaximaFrame.cpp:455
 msgid "E&xit\tCtrl-Q"
 msgstr "&Poistu\tCtrl-Q"
 
-#: ../src/wxMaximaFrame.cpp:691
+#: ../src/wxMaximaFrame.cpp:725
 msgid "Eige&nvectors"
 msgstr "Omi&naisvektrorit"
 
-#: ../src/wxMaximaFrame.cpp:689
+#: ../src/wxMaximaFrame.cpp:723
 msgid "Eigen&values"
 msgstr "Ominaisar&vot"
 
@@ -1334,15 +1331,15 @@ msgstr "Ominaisar&vot"
 msgid "Eliminate"
 msgstr "Eliminoi"
 
-#: ../src/wxMaximaFrame.cpp:644
+#: ../src/wxMaximaFrame.cpp:678
 msgid "Eliminate a variable from a system of equations"
 msgstr "Eliminoi muuttuja yhtälöryhmästä"
 
-#: ../src/wxMaximaFrame.cpp:1410
+#: ../src/wxMaximaFrame.cpp:1396
 msgid "End of proof"
 msgstr "Todistuksen loppu"
 
-#: ../src/ConfigDialogue.cpp:519
+#: ../src/ConfigDialogue.cpp:520
 msgid "English"
 msgstr "Englanti"
 
@@ -1352,11 +1349,11 @@ msgstr "Englanti"
 msgid "Enter Data"
 msgstr "Syötä data"
 
-#: ../src/wxMaximaFrame.cpp:1181
+#: ../src/wxMaximaFrame.cpp:1215
 msgid "Enter Matrix..."
 msgstr "Syötä matriisi..."
 
-#: ../src/wxMaximaFrame.cpp:679
+#: ../src/wxMaximaFrame.cpp:713
 msgid "Enter a matrix"
 msgstr "Syötä matriisi"
 
@@ -1368,7 +1365,7 @@ msgstr ""
 msgid "Enter comma separated list of variables."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:430
+#: ../src/ConfigDialogue.cpp:431
 msgid "Enter evaluates cells"
 msgstr ""
 
@@ -1384,7 +1381,7 @@ msgstr ""
 msgid "Enter the path to the Maxima executable."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1317
+#: ../src/wxMaximaFrame.cpp:1304
 msgid "Epsilon"
 msgstr "Epsilon:"
 
@@ -1411,11 +1408,10 @@ msgstr "Yhtälö:"
 msgid "Equations:"
 msgstr "Yhtälöt:"
 
-#: ../src/Image.cpp:132 ../src/wxMaxima.cpp:1337 ../src/wxMaxima.cpp:1351
-#: ../src/wxMaxima.cpp:1472 ../src/wxMaxima.cpp:1483 ../src/wxMaxima.cpp:1506
-#: ../src/wxMaxima.cpp:1870 ../src/wxMaxima.cpp:2044 ../src/wxMaxima.cpp:5158
-#: ../src/wxMaxima.cpp:5584 ../src/wxMaxima.cpp:5635
-#: ../src/ConfigDialogue.cpp:857
+#: ../src/ConfigDialogue.cpp:858 ../src/Image.cpp:132 ../src/wxMaxima.cpp:1337
+#: ../src/wxMaxima.cpp:1351 ../src/wxMaxima.cpp:1472 ../src/wxMaxima.cpp:1483
+#: ../src/wxMaxima.cpp:1506 ../src/wxMaxima.cpp:1870 ../src/wxMaxima.cpp:2044
+#: ../src/wxMaxima.cpp:5158 ../src/wxMaxima.cpp:5584 ../src/wxMaxima.cpp:5635
 msgid "Error"
 msgstr "Virhe"
 
@@ -1424,59 +1420,59 @@ msgstr "Virhe"
 msgid "Error!"
 msgstr "Virhe!"
 
-#: ../src/wxMaximaFrame.cpp:1319
+#: ../src/wxMaximaFrame.cpp:1306
 msgid "Eta"
 msgstr "Eeta"
 
-#: ../src/wxMaximaFrame.cpp:843
+#: ../src/wxMaximaFrame.cpp:877
 msgid "Evaluate &Noun Forms"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:523
+#: ../src/wxMaximaFrame.cpp:557
 msgid "Evaluate All Cells\tCtrl-Shift-R"
 msgstr "Evaluoi kaikki solut\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:521
+#: ../src/wxMaximaFrame.cpp:555
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Evaluoi kaikki näkyvät solut\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:881 ../src/wxMaximaFrame.cpp:519
+#: ../src/wxMaximaFrame.cpp:553 ../src/MathCtrl.cpp:890
 msgid "Evaluate Cell(s)"
 msgstr "Laske Solu(t)"
 
-#: ../src/wxMaximaFrame.cpp:525
+#: ../src/wxMaximaFrame.cpp:559
 msgid "Evaluate Cells above this point\tCtrl-Shift-P"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:895 ../src/MathCtrl.cpp:989
+#: ../src/MathCtrl.cpp:904 ../src/MathCtrl.cpp:998
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:900 ../src/MathCtrl.cpp:991
+#: ../src/MathCtrl.cpp:909 ../src/MathCtrl.cpp:1000
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:910 ../src/MathCtrl.cpp:995
+#: ../src/MathCtrl.cpp:919 ../src/MathCtrl.cpp:1004
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:905 ../src/MathCtrl.cpp:993
+#: ../src/MathCtrl.cpp:914 ../src/MathCtrl.cpp:1002
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:520
+#: ../src/wxMaximaFrame.cpp:554
 msgid "Evaluate active or selected cell(s)"
 msgstr "Laske aktiivinen tai valitut solu(t)"
 
-#: ../src/wxMaximaFrame.cpp:524
+#: ../src/wxMaximaFrame.cpp:558
 msgid "Evaluate all cells in the document"
 msgstr "Laske asiakirjan kaikki solut"
 
-#: ../src/wxMaximaFrame.cpp:844
+#: ../src/wxMaximaFrame.cpp:878
 msgid "Evaluate all noun forms in expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:522
+#: ../src/wxMaximaFrame.cpp:556
 msgid "Evaluate all visible cells in the document"
 msgstr "Laske kaikki näkyvät solut\tCtrl-R"
 
@@ -1492,39 +1488,39 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
-#: ../src/ConfigDialogue.cpp:1525 ../src/ConfigDialogue.cpp:1616
+#: ../src/ConfigDialogue.cpp:1526 ../src/ConfigDialogue.cpp:1617
 msgid "Example text"
 msgstr "Esimerkkiteksti"
 
-#: ../src/ConfigDialogue.cpp:619
+#: ../src/ConfigDialogue.cpp:620
 msgid "Examples:"
 msgstr "Esimerkit:"
 
-#: ../src/wxMaximaFrame.cpp:422
+#: ../src/wxMaximaFrame.cpp:456
 msgid "Exit wxMaxima"
 msgstr "Poistu wxMaximasta"
 
-#: ../src/wxMaximaFrame.cpp:1116
+#: ../src/wxMaximaFrame.cpp:1150
 msgid "Expand"
 msgstr "Laajenna"
 
-#: ../src/wxMaximaFrame.cpp:1121
+#: ../src/wxMaximaFrame.cpp:1155
 msgid "Expand (tr)"
 msgstr "Laajenna (tr)"
 
-#: ../src/MathCtrl.cpp:935
+#: ../src/MathCtrl.cpp:944
 msgid "Expand Expression"
 msgstr "Laajenna lauseke"
 
-#: ../src/wxMaximaFrame.cpp:775
+#: ../src/wxMaximaFrame.cpp:809
 msgid "Expand Logarithms"
 msgstr "Laajenna logaritmit"
 
-#: ../src/wxMaximaFrame.cpp:774
+#: ../src/wxMaximaFrame.cpp:808
 msgid "Expand an expression"
 msgstr "Laajenna lauseke"
 
-#: ../src/wxMaximaFrame.cpp:808
+#: ../src/wxMaximaFrame.cpp:842
 msgid "Expand trigonometric expression"
 msgstr "Laajenna trigonometrinen lauseke"
 
@@ -1532,16 +1528,16 @@ msgstr "Laajenna trigonometrinen lauseke"
 msgid "Expected the icon files to be found at"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2612 ../src/ConfigDialogue.cpp:118
+#: ../src/ConfigDialogue.cpp:118 ../src/wxMaxima.cpp:2612
 msgid "Export"
 msgstr "Vie"
 
-#: ../src/ConfigDialogue.cpp:472
+#: ../src/ConfigDialogue.cpp:473
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:415
+#: ../src/wxMaximaFrame.cpp:449
 msgid "Export document to a HTML or pdfLaTeX file"
 msgstr ""
 
@@ -1585,27 +1581,27 @@ msgstr "Lauseke/lausekkeet:"
 msgid "Expression:"
 msgstr "Lauseke:"
 
-#: ../src/wxMaximaFrame.cpp:1115
+#: ../src/wxMaximaFrame.cpp:1149
 msgid "Factor"
 msgstr "Tekijä"
 
-#: ../src/wxMaximaFrame.cpp:770
+#: ../src/wxMaximaFrame.cpp:804
 msgid "Factor Complex"
 msgstr "Kompleksitekijä"
 
-#: ../src/MathCtrl.cpp:934
+#: ../src/MathCtrl.cpp:943
 msgid "Factor Expression"
 msgstr "Lauseketekijä"
 
-#: ../src/wxMaximaFrame.cpp:769
+#: ../src/wxMaximaFrame.cpp:803
 msgid "Factor an expression"
 msgstr "Lausekkeen tekijä"
 
-#: ../src/wxMaximaFrame.cpp:771
+#: ../src/wxMaximaFrame.cpp:805
 msgid "Factor an expression in Gaussian numbers"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:796
+#: ../src/wxMaximaFrame.cpp:830
 msgid "Factorials and &Gamma"
 msgstr ""
 
@@ -1647,39 +1643,39 @@ msgstr "Tiedosto:"
 msgid "Find"
 msgstr "Etsi"
 
-#: ../src/wxMaximaFrame.cpp:457
+#: ../src/wxMaximaFrame.cpp:491
 msgid "Find\tCtrl-F"
 msgstr "Etsi\tCtrl+F"
 
-#: ../src/wxMaximaFrame.cpp:721
+#: ../src/wxMaximaFrame.cpp:755
 msgid "Find &Limit..."
 msgstr "&Etsi raja-arvo..."
 
-#: ../src/wxMaximaFrame.cpp:724
+#: ../src/wxMaximaFrame.cpp:758
 msgid "Find Minimum..."
 msgstr "Etsi minimi..."
 
-#: ../src/MathCtrl.cpp:931
+#: ../src/MathCtrl.cpp:940
 msgid "Find Root..."
 msgstr "Etsi juuri..."
 
-#: ../src/wxMaximaFrame.cpp:725
+#: ../src/wxMaximaFrame.cpp:759
 msgid "Find a (unconstrained) minimum of an expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:722
+#: ../src/wxMaximaFrame.cpp:756
 msgid "Find a limit of an expression"
 msgstr "Etsi lausekkeen raja-arvo"
 
-#: ../src/wxMaximaFrame.cpp:627
+#: ../src/wxMaximaFrame.cpp:661
 msgid "Find a root of an equation on an interval"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:629
+#: ../src/wxMaximaFrame.cpp:663
 msgid "Find all roots of a polynomial"
 msgstr "Etsi kaikki polynomin juuret"
 
-#: ../src/wxMaximaFrame.cpp:632
+#: ../src/wxMaximaFrame.cpp:666
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Etsi kaikki polynomin juuret (bfloat)"
 
@@ -1687,15 +1683,15 @@ msgstr "Etsi kaikki polynomin juuret (bfloat)"
 msgid "Find and Replace"
 msgstr "Etsi ja korvaa"
 
-#: ../src/ToolBar.cpp:142 ../src/wxMaximaFrame.cpp:457
+#: ../src/ToolBar.cpp:142 ../src/wxMaximaFrame.cpp:491
 msgid "Find and replace"
 msgstr "Etsi ja korvaa"
 
-#: ../src/wxMaximaFrame.cpp:690
+#: ../src/wxMaximaFrame.cpp:724
 msgid "Find eigenvalues of a matrix"
 msgstr "Etsi matriisin ominaisarvot"
 
-#: ../src/wxMaximaFrame.cpp:692
+#: ../src/wxMaximaFrame.cpp:726
 msgid "Find eigenvectors of a matrix"
 msgstr "Etsi matriisin ominaisvektorit"
 
@@ -1703,7 +1699,7 @@ msgstr "Etsi matriisin ominaisvektorit"
 msgid "Find minimum"
 msgstr "Etsi minimi"
 
-#: ../src/wxMaximaFrame.cpp:635
+#: ../src/wxMaximaFrame.cpp:669
 msgid "Find real roots of a polynomial"
 msgstr "Ratkaise polynomin reaalijuuret "
 
@@ -1711,25 +1707,25 @@ msgstr "Ratkaise polynomin reaalijuuret "
 msgid "Find root"
 msgstr "Etsi juuri"
 
-#: ../src/ConfigDialogue.cpp:520
+#: ../src/ConfigDialogue.cpp:521
 #, fuzzy
 msgid "Finnish"
 msgstr "Tanska"
 
-#: ../src/ConfigDialogue.cpp:579
+#: ../src/ConfigDialogue.cpp:580
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:421
+#: ../src/ConfigDialogue.cpp:422
 msgid "Fixed font in text controls"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:557
+#: ../src/wxMaximaFrame.cpp:591
 msgid "Fold All\tCtrl-Alt-["
 msgstr "Piilota kaikki\tCtrl-Alt-["
 
-#: ../src/wxMaximaFrame.cpp:558
+#: ../src/wxMaximaFrame.cpp:592
 msgid "Fold all sections"
 msgstr "Piilota kaikki kappaleet"
 
@@ -1741,7 +1737,7 @@ msgstr "Seuraa"
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr ""
 
-#: ../src/ParenCell.cpp:352 ../src/IntCell.cpp:277
+#: ../src/IntCell.cpp:277 ../src/ParenCell.cpp:352
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -1767,7 +1763,7 @@ msgstr "Asiakirjassa näytettävä fontti."
 msgid "Font used for displaying math characters in document."
 msgstr "Asiakirjassa matemaatisten merkkien näyttämiseen käytettävä fontti"
 
-#: ../src/ConfigDialogue.cpp:658
+#: ../src/ConfigDialogue.cpp:659
 msgid "Fonts"
 msgstr "Fontit"
 
@@ -1780,7 +1776,7 @@ msgstr "Muoto:"
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:521
+#: ../src/ConfigDialogue.cpp:522
 msgid "French"
 msgstr "Ranska"
 
@@ -1790,7 +1786,7 @@ msgstr "Ranska"
 msgid "From:"
 msgstr "Mistä:"
 
-#: ../src/wxMaximaFrame.cpp:510
+#: ../src/wxMaximaFrame.cpp:544
 msgid "Full Screen\tAlt-Enter"
 msgstr "Koko ruutu\tAlt-Enter"
 
@@ -1798,7 +1794,7 @@ msgstr "Koko ruutu\tAlt-Enter"
 msgid "Function"
 msgstr "Funktio"
 
-#: ../src/ConfigDialogue.cpp:680
+#: ../src/ConfigDialogue.cpp:681
 msgid "Function names"
 msgstr "Funktioiden nimet"
 
@@ -1811,15 +1807,15 @@ msgstr "Funktio(t):"
 msgid "Function:"
 msgstr "Funktio:"
 
-#: ../src/wxMaximaFrame.cpp:838
+#: ../src/wxMaximaFrame.cpp:872
 msgid "Functions for complex simplification"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:798
+#: ../src/wxMaximaFrame.cpp:832
 msgid "Functions for simplifying factorials and gamma function"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:815
+#: ../src/wxMaximaFrame.cpp:849
 msgid "Functions for simplifying trigonometric expressions"
 msgstr ""
 
@@ -1831,19 +1827,19 @@ msgstr "SYT"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF kuva (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:522
+#: ../src/ConfigDialogue.cpp:523
 msgid "Galician"
 msgstr "Galicia"
 
-#: ../src/wxMaximaFrame.cpp:1315
+#: ../src/wxMaximaFrame.cpp:1302
 msgid "Gamma"
 msgstr "gamma"
 
-#: ../src/wxMaximaFrame.cpp:339
+#: ../src/wxMaximaFrame.cpp:359
 msgid "General Math"
 msgstr "Yleinen Matematiikka"
 
-#: ../src/wxMaximaFrame.cpp:483
+#: ../src/wxMaximaFrame.cpp:517
 msgid "General Math\tAlt-Shift-M"
 msgstr "Yleinen Matematiikka\tAlt-Shift-M"
 
@@ -1851,73 +1847,73 @@ msgstr "Yleinen Matematiikka\tAlt-Shift-M"
 msgid "Generate Matrix"
 msgstr "Luo matriisi"
 
-#: ../src/wxMaximaFrame.cpp:675
+#: ../src/wxMaximaFrame.cpp:709
 msgid "Generate Matrix from Expression..."
 msgstr "Luo matriisi lausekkeesta..."
 
-#: ../src/wxMaximaFrame.cpp:673
+#: ../src/wxMaximaFrame.cpp:707
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Muodosta matriisi 2-ulotteisesta taulukosta"
 
-#: ../src/wxMaximaFrame.cpp:676
+#: ../src/wxMaximaFrame.cpp:710
 msgid "Generate a matrix from a lambda expression"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:523
+#: ../src/ConfigDialogue.cpp:524
 msgid "German"
 msgstr "Saksa"
 
-#: ../src/wxMaximaFrame.cpp:827
+#: ../src/wxMaximaFrame.cpp:861
 msgid "Get &Imaginary Part"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:727
+#: ../src/wxMaximaFrame.cpp:761
 msgid "Get &Series..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:738
+#: ../src/wxMaximaFrame.cpp:772
 msgid "Get Laplace transformation of an expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:824
+#: ../src/wxMaximaFrame.cpp:858
 msgid "Get Real P&art"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:741
+#: ../src/wxMaximaFrame.cpp:775
 msgid "Get inverse Laplace transformation of an expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:728
+#: ../src/wxMaximaFrame.cpp:762
 msgid "Get the Taylor or power series of expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:828
+#: ../src/wxMaximaFrame.cpp:862
 msgid "Get the imaginary part of complex expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:825
+#: ../src/wxMaximaFrame.cpp:859
 msgid "Get the real part of complex expression"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5238
+#: ../src/MathCtrl.cpp:5247
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:524
+#: ../src/ConfigDialogue.cpp:525
 msgid "Greek"
 msgstr "Kreikka"
 
-#: ../src/ConfigDialogue.cpp:682
+#: ../src/ConfigDialogue.cpp:683
 msgid "Greek constants"
 msgstr "Kreikkalaiset vakiot"
 
-#: ../src/wxMaximaFrame.cpp:319
+#: ../src/wxMaximaFrame.cpp:328
 msgid "Greek letters"
 msgstr "Kreikkalaiset kirjaimet"
 
-#: ../src/wxMaximaFrame.cpp:486
+#: ../src/wxMaximaFrame.cpp:520
 msgid "Greek letters\tAlt-Shift-G"
 msgstr "Kreikkalaiset kirjaimet\tAlt-Shift-G"
 
@@ -1931,7 +1927,7 @@ msgid ""
 "tex)|*.tex"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:484
+#: ../src/ConfigDialogue.cpp:485
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
@@ -1939,15 +1935,15 @@ msgstr ""
 msgid "Help"
 msgstr "Ohje"
 
-#: ../src/wxMaximaFrame.cpp:494
+#: ../src/wxMaximaFrame.cpp:528
 msgid "Hide All Toolbars\tAlt-Shift--"
 msgstr "Piilota kaikki työkalupalkit\tAlt-Shift--"
 
-#: ../src/wxMaximaFrame.cpp:494
+#: ../src/wxMaximaFrame.cpp:528
 msgid "Hide all panes"
 msgstr "Piilota kaikki paneelit"
 
-#: ../src/ConfigDialogue.cpp:689
+#: ../src/ConfigDialogue.cpp:690
 msgid "Highlight (dpart)"
 msgstr "Korosta (dpart)"
 
@@ -1955,7 +1951,7 @@ msgstr "Korosta (dpart)"
 msgid "Histogram"
 msgstr "Histogrammi"
 
-#: ../src/wxMaximaFrame.cpp:1172
+#: ../src/wxMaximaFrame.cpp:1206
 msgid "Histogram..."
 msgstr "Histogrammi..."
 
@@ -1963,7 +1959,7 @@ msgstr "Histogrammi..."
 msgid "History"
 msgstr "Historia"
 
-#: ../src/wxMaximaFrame.cpp:489
+#: ../src/wxMaximaFrame.cpp:523
 msgid "History\tAlt-Shift-I"
 msgstr "Historia\tAlt-Shift-H"
 
@@ -1980,7 +1976,7 @@ msgstr ""
 "valikoituvat, painaessasi askelpalautinta/backspacea tai deleteä kahdesti "
 "poistaa solun kursorin vierestä."
 
-#: ../src/ConfigDialogue.cpp:525
+#: ../src/ConfigDialogue.cpp:526
 msgid "Hungarian"
 msgstr "Unkari"
 
@@ -1992,7 +1988,7 @@ msgstr ""
 msgid "IC2"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1403
+#: ../src/wxMaximaFrame.cpp:1389
 msgid "Identical to"
 msgstr ""
 
@@ -2004,7 +2000,7 @@ msgid ""
 "same output cell."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:617
+#: ../src/wxMaximaFrame.cpp:651
 msgid ""
 "If maxima ever finishes evaluating without wxMaxima realizing this this menu "
 "item can force wxMaxima to try to send commands to maxima again."
@@ -2016,11 +2012,11 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:392
+#: ../src/ConfigDialogue.cpp:393
 msgid "If not extremely long"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:391
+#: ../src/ConfigDialogue.cpp:392
 msgid "If not very long"
 msgstr ""
 
@@ -2059,7 +2055,7 @@ msgstr ""
 "Jos laskutoimituksesi laskeminen kestää liian kauan, voit käyttää 'Maxima-"
 ">Keskeytä' tai 'Maxima->Uudelleenkäynnistä Maxima' valikkokomentoja."
 
-#: ../src/wxMaximaFrame.cpp:1445
+#: ../src/wxMaximaFrame.cpp:1434
 msgid "Image"
 msgstr "Kuva"
 
@@ -2077,18 +2073,18 @@ msgstr ""
 msgid "Include columns:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:487
+#: ../src/ConfigDialogue.cpp:488
 msgid "Include input cells in the export of a worksheet"
 msgstr ""
 
 #: ../src/IntegrateWiz.cpp:210 ../src/IntegrateWiz.cpp:220
 #: ../src/IntegrateWiz.cpp:229 ../src/IntegrateWiz.cpp:239
 #: ../src/LimitWiz.cpp:135 ../src/LimitWiz.cpp:145
-#: ../src/wxMaximaFrame.cpp:1374
+#: ../src/wxMaximaFrame.cpp:1360
 msgid "Infinity"
 msgstr "Ääretön"
 
-#: ../src/wxMaximaFrame.cpp:908
+#: ../src/wxMaximaFrame.cpp:942
 msgid "Info about Maxima build"
 msgstr "Tietoa Maximan versiosta"
 
@@ -2096,35 +2092,35 @@ msgstr "Tietoa Maximan versiosta"
 msgid "Initial Estimates:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:652
+#: ../src/wxMaximaFrame.cpp:686
 msgid "Initial Value Problem (&1)..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:655
+#: ../src/wxMaximaFrame.cpp:689
 msgid "Initial Value Problem (&2)..."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:685
+#: ../src/ConfigDialogue.cpp:686
 msgid "Input labels"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:349
+#: ../src/wxMaximaFrame.cpp:371
 msgid "Insert"
 msgstr "Lisää"
 
-#: ../src/ConfigDialogue.cpp:436
+#: ../src/ConfigDialogue.cpp:437
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:546
+#: ../src/wxMaximaFrame.cpp:580
 msgid "Insert &Section Cell\tCtrl-3"
 msgstr "Lisää &kappalesolu\tCtrl-3"
 
-#: ../src/wxMaximaFrame.cpp:542
+#: ../src/wxMaximaFrame.cpp:576
 msgid "Insert &Text Cell\tCtrl-1"
 msgstr "Lisää tekstisolu\tCtrl-1"
 
-#: ../src/wxMaximaFrame.cpp:492
+#: ../src/wxMaximaFrame.cpp:526
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "Lisää solu\tAlt-Shift-C"
 
@@ -2132,87 +2128,87 @@ msgstr "Lisää solu\tAlt-Shift-C"
 msgid "Insert Image"
 msgstr "Lisää kuva"
 
-#: ../src/wxMaximaFrame.cpp:554
+#: ../src/wxMaximaFrame.cpp:588
 msgid "Insert Image..."
 msgstr "Lisää kuva..."
 
-#: ../src/wxMaximaFrame.cpp:540
+#: ../src/wxMaximaFrame.cpp:574
 msgid "Insert Input &Cell"
 msgstr "Lisää &syötesolu"
 
-#: ../src/wxMaximaFrame.cpp:552
+#: ../src/wxMaximaFrame.cpp:586
 msgid "Insert Page Break"
 msgstr "Lisää sivunvaihto"
 
-#: ../src/wxMaximaFrame.cpp:548
+#: ../src/wxMaximaFrame.cpp:582
 msgid "Insert S&ubsection Cell\tCtrl-4"
 msgstr "Lisää &alikappalesolu\tCtrl-4"
 
-#: ../src/wxMaximaFrame.cpp:550
+#: ../src/wxMaximaFrame.cpp:584
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "Lisää &alialikappalesolu\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:953
+#: ../src/MathCtrl.cpp:962
 msgid "Insert Section Cell"
 msgstr "Lisää kappalesolu"
 
-#: ../src/MathCtrl.cpp:954
+#: ../src/MathCtrl.cpp:963
 msgid "Insert Subsection Cell"
 msgstr "Lisää alikappalesolu"
 
-#: ../src/MathCtrl.cpp:955
+#: ../src/MathCtrl.cpp:964
 msgid "Insert Subsubsection Cell"
 msgstr "Lisää alialikapplesolu"
 
-#: ../src/wxMaximaFrame.cpp:544
+#: ../src/wxMaximaFrame.cpp:578
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "Lisää O&tsikkosolu\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:951
+#: ../src/MathCtrl.cpp:960
 msgid "Insert Text Cell"
 msgstr "Lisää tekstisolu"
 
-#: ../src/MathCtrl.cpp:952
+#: ../src/MathCtrl.cpp:961
 msgid "Insert Title Cell"
 msgstr "Lisää otsikkosolu"
 
-#: ../src/wxMaximaFrame.cpp:541
+#: ../src/wxMaximaFrame.cpp:575
 msgid "Insert a new input cell"
 msgstr "Lisää uusi syötesolu"
 
-#: ../src/wxMaximaFrame.cpp:547
+#: ../src/wxMaximaFrame.cpp:581
 msgid "Insert a new section cell"
 msgstr "Lisää uusi kappalesolu"
 
-#: ../src/wxMaximaFrame.cpp:549
+#: ../src/wxMaximaFrame.cpp:583
 msgid "Insert a new subsection cell"
 msgstr "Lisää uusi alikapplesolu"
 
-#: ../src/wxMaximaFrame.cpp:551
+#: ../src/wxMaximaFrame.cpp:585
 msgid "Insert a new subsubsection cell"
 msgstr "Lisää uusi alialikappalesolu"
 
-#: ../src/wxMaximaFrame.cpp:543
+#: ../src/wxMaximaFrame.cpp:577
 msgid "Insert a new text cell"
 msgstr "Lisää uusi tekstisolu"
 
-#: ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:579
 msgid "Insert a new title cell"
 msgstr "Lisää uusi otsikkosolu"
 
-#: ../src/wxMaximaFrame.cpp:553
+#: ../src/wxMaximaFrame.cpp:587
 msgid "Insert a page break"
 msgstr "Lisää sivunvaihto"
 
-#: ../src/wxMaximaFrame.cpp:555
+#: ../src/wxMaximaFrame.cpp:589
 msgid "Insert image"
 msgstr "Lisää kuva"
 
-#: ../src/ConfigDialogue.cpp:400
+#: ../src/ConfigDialogue.cpp:401
 msgid "Integers and single letters"
 msgstr "Kokonaisluvut ja yksittäiset kirjaimet"
 
-#: ../src/wxMaximaFrame.cpp:1395
+#: ../src/wxMaximaFrame.cpp:1381
 msgid "Integral sign"
 msgstr "Integraali merkki"
 
@@ -2228,15 +2224,15 @@ msgstr "Integroi"
 msgid "Integrate (risch)"
 msgstr "Integroi (risch)"
 
-#: ../src/wxMaximaFrame.cpp:712
+#: ../src/wxMaximaFrame.cpp:746
 msgid "Integrate expression"
 msgstr "Integroi lauseke"
 
-#: ../src/wxMaximaFrame.cpp:714
+#: ../src/wxMaximaFrame.cpp:748
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integroi lauseke Rischin algoritmilla"
 
-#: ../src/MathCtrl.cpp:938 ../src/wxMaximaFrame.cpp:1126
+#: ../src/wxMaximaFrame.cpp:1160 ../src/MathCtrl.cpp:947
 msgid "Integrate..."
 msgstr "Integroi..."
 
@@ -2244,7 +2240,7 @@ msgstr "Integroi..."
 msgid "Interrupt"
 msgstr "Keskeytä"
 
-#: ../src/wxMaximaFrame.cpp:580 ../src/wxMaximaFrame.cpp:584
+#: ../src/wxMaximaFrame.cpp:614 ../src/wxMaximaFrame.cpp:618
 msgid "Interrupt current computation"
 msgstr "Keskeytä laskutoimitus"
 
@@ -2254,7 +2250,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:856
+#: ../src/ConfigDialogue.cpp:857
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2265,11 +2261,11 @@ msgstr ""
 msgid "Inverse Laplace"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:740
+#: ../src/wxMaximaFrame.cpp:774
 msgid "Inverse Laplace T&ransform..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1321
+#: ../src/wxMaximaFrame.cpp:1308
 msgid "Iota"
 msgstr "Ioota"
 
@@ -2280,23 +2276,23 @@ msgid ""
 "do that is to export a file in the .mac format."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:526
+#: ../src/ConfigDialogue.cpp:527
 msgid "Italian"
 msgstr "Italia"
 
-#: ../src/ConfigDialogue.cpp:720
+#: ../src/ConfigDialogue.cpp:721
 msgid "Italic"
 msgstr "Kursiivi"
 
-#: ../src/ConfigDialogue.cpp:527
+#: ../src/ConfigDialogue.cpp:528
 msgid "Japanese"
 msgstr "Japani"
 
-#: ../src/wxMaximaFrame.cpp:1322
+#: ../src/wxMaximaFrame.cpp:1309
 msgid "Kappa"
 msgstr "kappa"
 
-#: ../src/ConfigDialogue.cpp:427
+#: ../src/ConfigDialogue.cpp:428
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
@@ -2305,19 +2301,19 @@ msgstr ""
 msgid "LCM"
 msgstr "pyj"
 
-#: ../src/ConfigDialogue.cpp:475
+#: ../src/ConfigDialogue.cpp:476
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:478
+#: ../src/ConfigDialogue.cpp:479
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:407
+#: ../src/ConfigDialogue.cpp:408
 msgid "Label width:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1323
+#: ../src/wxMaximaFrame.cpp:1310
 msgid "Lambda"
 msgstr "lambda"
 
@@ -2325,7 +2321,7 @@ msgstr "lambda"
 msgid "Language used for wxMaxima GUI."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:510
+#: ../src/ConfigDialogue.cpp:511
 msgid "Language:"
 msgstr "Kieli:"
 
@@ -2333,15 +2329,15 @@ msgstr "Kieli:"
 msgid "Laplace"
 msgstr "Laplace"
 
-#: ../src/wxMaximaFrame.cpp:737
+#: ../src/wxMaximaFrame.cpp:771
 msgid "Laplace &Transform..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1408
+#: ../src/wxMaximaFrame.cpp:1394
 msgid "Leads to"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:746
+#: ../src/wxMaximaFrame.cpp:780
 msgid "Least Common Multiple..."
 msgstr "Pienin yhteinen jaettava..."
 
@@ -2349,7 +2345,7 @@ msgstr "Pienin yhteinen jaettava..."
 msgid "Least Squares Fit"
 msgstr "Pienimmän neliösumman sovitus"
 
-#: ../src/wxMaximaFrame.cpp:1168
+#: ../src/wxMaximaFrame.cpp:1202
 msgid "Least Squares Fit..."
 msgstr "Pienimmän neliösumman sovitus..."
 
@@ -2364,11 +2360,11 @@ msgstr ""
 msgid "Limit"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1127
+#: ../src/wxMaximaFrame.cpp:1161
 msgid "Limit..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1167
+#: ../src/wxMaximaFrame.cpp:1201
 msgid "Linear Regression..."
 msgstr "Lineaarinen regressio..."
 
@@ -2380,7 +2376,7 @@ msgstr "Lista(t):"
 msgid "List:"
 msgstr "Lista:"
 
-#: ../src/ConfigDialogue.cpp:723
+#: ../src/ConfigDialogue.cpp:724
 msgid "Load"
 msgstr "Lataa"
 
@@ -2388,15 +2384,15 @@ msgstr "Lataa"
 msgid "Load Package"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:413
+#: ../src/wxMaximaFrame.cpp:447
 msgid "Load a Maxima file using the batch command"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:411
+#: ../src/wxMaximaFrame.cpp:445
 msgid "Load a Maxima package file"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:1577
+#: ../src/ConfigDialogue.cpp:1578
 msgid "Load style from file"
 msgstr "Lataa tyyli tiedostosta"
 
@@ -2404,15 +2400,15 @@ msgstr "Lataa tyyli tiedostosta"
 msgid "Lower bound:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:705
+#: ../src/wxMaximaFrame.cpp:739
 msgid "Ma&p to Matrix..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:481
+#: ../src/wxMaximaFrame.cpp:515
 msgid "Main Toolbar\tAlt-Shift-B"
 msgstr "Päätyökalupalkki\tAlt+Shift+B"
 
-#: ../src/wxMaximaFrame.cpp:699
+#: ../src/wxMaximaFrame.cpp:733
 msgid "Make &List..."
 msgstr "Tee &lista..."
 
@@ -2420,15 +2416,15 @@ msgstr "Tee &lista..."
 msgid "Make list"
 msgstr "Tee lista"
 
-#: ../src/wxMaximaFrame.cpp:700
+#: ../src/wxMaximaFrame.cpp:734
 msgid "Make list from expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:841
+#: ../src/wxMaximaFrame.cpp:875
 msgid "Make substitution in expression"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:616
+#: ../src/wxMaximaFrame.cpp:650
 msgid "Manually trigger evaluation"
 msgstr ""
 
@@ -2436,23 +2432,23 @@ msgstr ""
 msgid "Map"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:704
+#: ../src/wxMaximaFrame.cpp:738
 msgid "Map function to a list"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:706
+#: ../src/wxMaximaFrame.cpp:740
 msgid "Map function to a matrix"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:418
+#: ../src/ConfigDialogue.cpp:419
 msgid "Match parenthesis in text controls"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:672
+#: ../src/ConfigDialogue.cpp:673
 msgid "Math font:"
 msgstr "Matematiikka fontti:"
 
-#: ../src/wxMaximaFrame.cpp:328
+#: ../src/wxMaximaFrame.cpp:344
 msgid "Mathematical Symbols"
 msgstr "Matemaattiset merkit"
 
@@ -2480,7 +2476,7 @@ msgstr "Maxima"
 msgid "Maxima got a question"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:684
+#: ../src/ConfigDialogue.cpp:685
 msgid "Maxima input"
 msgstr ""
 
@@ -2500,11 +2496,11 @@ msgstr ""
 msgid "Maxima process terminated."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:598
 msgid "Maxima program:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:686
+#: ../src/ConfigDialogue.cpp:687
 msgid "Maxima questions"
 msgstr "Maxima-kysymykset"
 
@@ -2535,19 +2531,19 @@ msgstr ""
 msgid "Maxima version: "
 msgstr "Maximan versio:"
 
-#: ../src/ConfigDialogue.cpp:383
+#: ../src/ConfigDialogue.cpp:384
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1165
+#: ../src/wxMaximaFrame.cpp:1199
 msgid "Mean Difference Test..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1164
+#: ../src/wxMaximaFrame.cpp:1198
 msgid "Mean Test..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1157
+#: ../src/wxMaximaFrame.cpp:1191
 msgid "Mean..."
 msgstr ""
 
@@ -2555,15 +2551,15 @@ msgstr ""
 msgid "Mean:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1158
+#: ../src/wxMaximaFrame.cpp:1192
 msgid "Median..."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:884 ../src/wxMaximaFrame.cpp:567
+#: ../src/wxMaximaFrame.cpp:601 ../src/MathCtrl.cpp:893
 msgid "Merge Cells"
 msgstr "Yhdistä solut"
 
-#: ../src/wxMaximaFrame.cpp:568
+#: ../src/wxMaximaFrame.cpp:602
 msgid "Merge the text from two input cells into one"
 msgstr "Yhdistä kahden syötetyn solun teksti yhteen soluun"
 
@@ -2583,7 +2579,7 @@ msgstr ""
 msgid "Modulus"
 msgstr "Modulus"
 
-#: ../src/wxMaximaFrame.cpp:1324
+#: ../src/wxMaximaFrame.cpp:1311
 msgid "My"
 msgstr ""
 
@@ -2595,7 +2591,7 @@ msgstr "Nimi:"
 msgid "New"
 msgstr "Uusi"
 
-#: ../src/wxMaximaFrame.cpp:391 ../src/wxMaximaFrame.cpp:394
+#: ../src/wxMaximaFrame.cpp:425 ../src/wxMaximaFrame.cpp:428
 msgid "New\tCtrl-N"
 msgstr "Uusi\tCtrl-N"
 
@@ -2611,11 +2607,11 @@ msgstr "Uusi arvo:"
 msgid "New variable:"
 msgstr "Uusi muuttuja:"
 
-#: ../src/wxMaximaFrame.cpp:564
+#: ../src/wxMaximaFrame.cpp:598
 msgid "Next Command\tAlt-Down"
 msgstr "Seuraava komento\tAlt-Down"
 
-#: ../src/ConfigDialogue.cpp:390 ../src/ConfigDialogue.cpp:399
+#: ../src/ConfigDialogue.cpp:391 ../src/ConfigDialogue.cpp:400
 msgid "No"
 msgstr "Ei"
 
@@ -2627,7 +2623,7 @@ msgstr "Ei dollarimerkkiä ($) tai puolipistettä (;) komennon loppuun"
 msgid "No matches found!"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1166
+#: ../src/wxMaximaFrame.cpp:1200
 msgid "Normality Test..."
 msgstr ""
 
@@ -2646,7 +2642,7 @@ msgid ""
 "maxima's input."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:528
+#: ../src/ConfigDialogue.cpp:529
 msgid "Norwegian"
 msgstr "Norja"
 
@@ -2674,11 +2670,11 @@ msgstr ""
 msgid "Number of equations:"
 msgstr "Yhtälöiden lukumäärä:"
 
-#: ../src/ConfigDialogue.cpp:679
+#: ../src/ConfigDialogue.cpp:680
 msgid "Numbers"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1325
+#: ../src/wxMaximaFrame.cpp:1312
 msgid "Ny"
 msgstr "Nyy"
 
@@ -2705,11 +2701,11 @@ msgstr "Vanha arvo:"
 msgid "Old variable:"
 msgstr "Vanha muuttuja:"
 
-#: ../src/wxMaximaFrame.cpp:1336
+#: ../src/wxMaximaFrame.cpp:1323
 msgid "Omega"
 msgstr "Oomega"
 
-#: ../src/wxMaximaFrame.cpp:1327
+#: ../src/wxMaximaFrame.cpp:1314
 msgid "Omnikron"
 msgstr "Omikron"
 
@@ -2727,28 +2723,28 @@ msgstr ""
 msgid "One sample t-test"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:905
+#: ../src/wxMaximaFrame.cpp:939
 msgid "Online tutorials"
 msgstr ""
 
-#: ../src/ToolBar.cpp:107 ../src/main.cpp:260 ../src/wxMaxima.cpp:2575
-#: ../src/ConfigDialogue.cpp:599
+#: ../src/ConfigDialogue.cpp:600 ../src/ToolBar.cpp:107 ../src/main.cpp:260
+#: ../src/wxMaxima.cpp:2575
 msgid "Open"
 msgstr "Avaa"
 
-#: ../src/wxMaximaFrame.cpp:400
+#: ../src/wxMaximaFrame.cpp:434
 msgid "Open Recent"
 msgstr "Avaa viimeisin"
 
-#: ../src/ConfigDialogue.cpp:433
+#: ../src/ConfigDialogue.cpp:434
 msgid "Open a cell when Maxima expects input"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:398
+#: ../src/wxMaximaFrame.cpp:432
 msgid "Open a document"
 msgstr "Avaa asiakirja"
 
-#: ../src/wxMaximaFrame.cpp:392 ../src/wxMaximaFrame.cpp:395
+#: ../src/wxMaximaFrame.cpp:426 ../src/wxMaximaFrame.cpp:429
 msgid "Open a new window"
 msgstr "Avaa uusi ikkuna"
 
@@ -2764,11 +2760,11 @@ msgstr "Avaa matriisi"
 msgid "Opening file"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:573
+#: ../src/ConfigDialogue.cpp:574
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ToolBar.cpp:119 ../src/ConfigDialogue.cpp:119
+#: ../src/ConfigDialogue.cpp:119 ../src/ToolBar.cpp:119
 msgid "Options"
 msgstr ""
 
@@ -2776,15 +2772,15 @@ msgstr ""
 msgid "Options:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:702
+#: ../src/ConfigDialogue.cpp:703
 msgid "Outdated cells"
 msgstr "Vanhentuneet solut"
 
-#: ../src/ConfigDialogue.cpp:687
+#: ../src/ConfigDialogue.cpp:688
 msgid "Output labels"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:730
+#: ../src/wxMaximaFrame.cpp:764
 msgid "P&ade Approximation..."
 msgstr ""
 
@@ -2799,15 +2795,15 @@ msgstr ""
 msgid "Pade approximation"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:731
+#: ../src/wxMaximaFrame.cpp:765
 msgid "Pade approximation of a Taylor series"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1446
+#: ../src/wxMaximaFrame.cpp:1435
 msgid "Pagebreak"
 msgstr "Sivunvaihto"
 
-#: ../src/wxMaximaFrame.cpp:1406
+#: ../src/wxMaximaFrame.cpp:1392
 msgid "Parallel to"
 msgstr "Yhdensuuntaiset"
 
@@ -2819,7 +2815,7 @@ msgstr ""
 msgid "Parsing output"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:753
+#: ../src/wxMaximaFrame.cpp:787
 msgid "Partial &Fractions..."
 msgstr ""
 
@@ -2831,17 +2827,17 @@ msgstr ""
 msgid "Parts of the document will not be loaded correctly!"
 msgstr ""
 
-#: ../src/MathParser.cpp:1111
+#: ../src/MathParser.cpp:991
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
 msgstr ""
 
-#: ../src/ToolBar.cpp:131 ../src/MathCtrl.cpp:948 ../src/MathCtrl.cpp:963
+#: ../src/ToolBar.cpp:131 ../src/MathCtrl.cpp:957 ../src/MathCtrl.cpp:972
 msgid "Paste"
 msgstr "Liitä"
 
-#: ../src/wxMaximaFrame.cpp:452
+#: ../src/wxMaximaFrame.cpp:486
 msgid "Paste\tCtrl-V"
 msgstr "Liitä\tCtrl-V"
 
@@ -2849,23 +2845,23 @@ msgstr "Liitä\tCtrl-V"
 msgid "Paste from clipboard"
 msgstr "Liitä leikepöydältä"
 
-#: ../src/wxMaximaFrame.cpp:453
+#: ../src/wxMaximaFrame.cpp:487
 msgid "Paste text from clipboard"
 msgstr "Liitä teksti leikepöydältä"
 
-#: ../src/wxMaximaFrame.cpp:1407
+#: ../src/wxMaximaFrame.cpp:1393
 msgid "Perpendicular to"
 msgstr "Kohtisuorassa"
 
-#: ../src/wxMaximaFrame.cpp:1333
+#: ../src/wxMaximaFrame.cpp:1320
 msgid "Phi"
 msgstr "Fii"
 
-#: ../src/wxMaximaFrame.cpp:1328
+#: ../src/wxMaximaFrame.cpp:1315
 msgid "Pi"
 msgstr "Pii"
 
-#: ../src/wxMaximaFrame.cpp:1175
+#: ../src/wxMaximaFrame.cpp:1209
 msgid "Piechart..."
 msgstr "Sektoridiagrammi..."
 
@@ -2873,19 +2869,19 @@ msgstr "Sektoridiagrammi..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:1410
+#: ../src/ConfigDialogue.cpp:1411
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:857
+#: ../src/wxMaximaFrame.cpp:891
 msgid "Plot &2d..."
 msgstr "Kuvaaja &2d..."
 
-#: ../src/wxMaximaFrame.cpp:859
+#: ../src/wxMaximaFrame.cpp:893
 msgid "Plot &3d..."
 msgstr "Kuvaaja &3d..."
 
-#: ../src/wxMaximaFrame.cpp:861
+#: ../src/wxMaximaFrame.cpp:895
 msgid "Plot &Format..."
 msgstr "&Kuvaajamuoto"
 
@@ -2894,11 +2890,11 @@ msgstr "&Kuvaajamuoto"
 msgid "Plot 2D"
 msgstr "Kuvaaja 2D"
 
-#: ../src/wxMaximaFrame.cpp:1129
+#: ../src/wxMaximaFrame.cpp:1163
 msgid "Plot 2D..."
 msgstr "Kuvaaja 2D..."
 
-#: ../src/MathCtrl.cpp:941
+#: ../src/MathCtrl.cpp:950
 msgid "Plot 2d..."
 msgstr "Kuvaaja 2d..."
 
@@ -2906,11 +2902,11 @@ msgstr "Kuvaaja 2d..."
 msgid "Plot 3D"
 msgstr "Kuvaaja 3D"
 
-#: ../src/wxMaximaFrame.cpp:1130
+#: ../src/wxMaximaFrame.cpp:1164
 msgid "Plot 3D..."
 msgstr "Kuvaaja 3D..."
 
-#: ../src/MathCtrl.cpp:942
+#: ../src/MathCtrl.cpp:951
 msgid "Plot 3d..."
 msgstr "Kuvaaja 3d..."
 
@@ -2918,11 +2914,11 @@ msgstr "Kuvaaja 3d..."
 msgid "Plot format"
 msgstr "Kuvaajamuoto"
 
-#: ../src/wxMaximaFrame.cpp:858
+#: ../src/wxMaximaFrame.cpp:892
 msgid "Plot in 2 dimensions"
 msgstr "Kaksiulotteinen kuvaaja"
 
-#: ../src/wxMaximaFrame.cpp:860
+#: ../src/wxMaximaFrame.cpp:894
 msgid "Plot in 3 dimensions"
 msgstr "Kolmiulotteinen kuvaaja"
 
@@ -2936,7 +2932,7 @@ msgstr "Kuvaaja tiedostoksi:"
 msgid "Point:"
 msgstr "Piste:"
 
-#: ../src/ConfigDialogue.cpp:529
+#: ../src/ConfigDialogue.cpp:530
 msgid "Polish"
 msgstr "Puola"
 
@@ -2948,7 +2944,7 @@ msgstr "Polynomi 1:"
 msgid "Polynomial 2:"
 msgstr "Polynomi 2:"
 
-#: ../src/ConfigDialogue.cpp:530
+#: ../src/ConfigDialogue.cpp:531
 msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brasilian)"
 
@@ -2960,7 +2956,7 @@ msgstr ""
 msgid "Precision"
 msgstr "Tarkkuus"
 
-#: ../src/wxMaximaFrame.cpp:471
+#: ../src/wxMaximaFrame.cpp:505
 msgid "Preferences...\tCtrl+,"
 msgstr ""
 
@@ -2972,7 +2968,7 @@ msgid ""
 "packages and from functions that are defined in the current file."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:562
+#: ../src/wxMaximaFrame.cpp:596
 msgid "Previous Command\tAlt-Up"
 msgstr ""
 
@@ -2980,7 +2976,7 @@ msgstr ""
 msgid "Print"
 msgstr "Tulosta"
 
-#: ../src/ToolBar.cpp:118 ../src/wxMaximaFrame.cpp:418
+#: ../src/ToolBar.cpp:118 ../src/wxMaximaFrame.cpp:452
 msgid "Print document"
 msgstr "Tulosta asiakirja"
 
@@ -2988,23 +2984,23 @@ msgstr "Tulosta asiakirja"
 msgid "Product"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1405
+#: ../src/wxMaximaFrame.cpp:1391
 msgid "Product sign"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1335
+#: ../src/wxMaximaFrame.cpp:1322
 msgid "Psi"
 msgstr "Psii"
 
-#: ../src/wxMaximaFrame.cpp:299
+#: ../src/wxMaximaFrame.cpp:303
 msgid "Raw XML monitor"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:526
+#: ../src/wxMaximaFrame.cpp:560
 msgid "Re-evaluate all cells above the one the cursor is in"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1180
+#: ../src/wxMaximaFrame.cpp:1214
 msgid "Read Matrix..."
 msgstr ""
 
@@ -3016,31 +3012,31 @@ msgstr ""
 msgid "Ready for user input"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:565
+#: ../src/wxMaximaFrame.cpp:599
 msgid "Recall next command from history"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:563
+#: ../src/wxMaximaFrame.cpp:597
 msgid "Recall previous command from history"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1117
+#: ../src/wxMaximaFrame.cpp:1151
 msgid "Rectform"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:429
+#: ../src/wxMaximaFrame.cpp:463
 msgid "Redo\tCtrl-Y"
 msgstr "Tee uudelleen\tCtrl+Y"
 
-#: ../src/wxMaximaFrame.cpp:430
+#: ../src/wxMaximaFrame.cpp:464
 msgid "Redo last change"
 msgstr "Tekee edellisen muutoksen uudelleen"
 
-#: ../src/wxMaximaFrame.cpp:1122
+#: ../src/wxMaximaFrame.cpp:1156
 msgid "Reduce (tr)"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:805
+#: ../src/wxMaximaFrame.cpp:839
 msgid "Reduce trigonometric expression"
 msgstr ""
 
@@ -3048,11 +3044,11 @@ msgstr ""
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:528
+#: ../src/wxMaximaFrame.cpp:562
 msgid "Remove All Output"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:529
+#: ../src/wxMaximaFrame.cpp:563
 msgid "Remove output from input cells"
 msgstr ""
 
@@ -3061,11 +3057,11 @@ msgstr ""
 msgid "Replaced %d occurrences."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:910
+#: ../src/wxMaximaFrame.cpp:944
 msgid "Report bug"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:587
+#: ../src/wxMaximaFrame.cpp:621
 msgid "Restart Maxima"
 msgstr "Uudelleenkäynnistä Maxima"
 
@@ -3073,7 +3069,7 @@ msgstr "Uudelleenkäynnistä Maxima"
 msgid "Restart maxima"
 msgstr "Uudelleenkäynnistä maxima"
 
-#: ../src/MathCtrl.cpp:3851
+#: ../src/MathCtrl.cpp:3860
 msgid "Result"
 msgstr "Tulos"
 
@@ -3081,23 +3077,23 @@ msgstr "Tulos"
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1329
+#: ../src/wxMaximaFrame.cpp:1316
 msgid "Rho"
 msgstr "Rhoo"
 
-#: ../src/wxMaximaFrame.cpp:1409
+#: ../src/wxMaximaFrame.cpp:1395
 msgid "Right arrow"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:713
+#: ../src/wxMaximaFrame.cpp:747
 msgid "Risch Integration..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:628
+#: ../src/wxMaximaFrame.cpp:662
 msgid "Roots of &Polynomial"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:631
+#: ../src/wxMaximaFrame.cpp:665
 msgid "Roots of Polynomial (bfloat)"
 msgstr ""
 
@@ -3105,7 +3101,7 @@ msgstr ""
 msgid "Rows:"
 msgstr "Rivit:"
 
-#: ../src/ConfigDialogue.cpp:531
+#: ../src/ConfigDialogue.cpp:532
 msgid "Russian"
 msgstr "Venäjä"
 
@@ -3121,12 +3117,12 @@ msgstr "Esimerkki 2:"
 msgid "Sample:"
 msgstr "Esimerkki:"
 
-#: ../src/ToolBar.cpp:110 ../src/wxMaxima.cpp:5676
-#: ../src/ConfigDialogue.cpp:724
+#: ../src/ConfigDialogue.cpp:725 ../src/ToolBar.cpp:110
+#: ../src/wxMaxima.cpp:5676
 msgid "Save"
 msgstr "Tallenna"
 
-#: ../src/MathCtrl.cpp:862
+#: ../src/MathCtrl.cpp:871
 msgid "Save Animation..."
 msgstr "Tallenna animaatio..."
 
@@ -3134,11 +3130,11 @@ msgstr "Tallenna animaatio..."
 msgid "Save As"
 msgstr "Tallenna nimellä"
 
-#: ../src/wxMaximaFrame.cpp:408
+#: ../src/wxMaximaFrame.cpp:442
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Tallenna nimellä...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:860
+#: ../src/MathCtrl.cpp:869
 msgid "Save Image..."
 msgstr "Tallenna kuva..."
 
@@ -3146,7 +3142,7 @@ msgstr "Tallenna kuva..."
 msgid "Save Selection to Image"
 msgstr "Tallenna valinta kuvaksi"
 
-#: ../src/wxMaximaFrame.cpp:462
+#: ../src/wxMaximaFrame.cpp:496
 msgid "Save Selection to Image..."
 msgstr "Tallenna valinta kuvaksi..."
 
@@ -3154,11 +3150,11 @@ msgstr "Tallenna valinta kuvaksi..."
 msgid "Save animation to file"
 msgstr "Tallenna animaatio tiedostoksi"
 
-#: ../src/ToolBar.cpp:112 ../src/wxMaximaFrame.cpp:407
+#: ../src/ToolBar.cpp:112 ../src/wxMaximaFrame.cpp:441
 msgid "Save document"
 msgstr "Tallenna asiakirja"
 
-#: ../src/wxMaximaFrame.cpp:409
+#: ../src/wxMaximaFrame.cpp:443
 msgid "Save document as"
 msgstr "Tallenna asiakirja nimellä"
 
@@ -3168,7 +3164,7 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:567
+#: ../src/ConfigDialogue.cpp:568
 msgid "Save panes layout"
 msgstr ""
 
@@ -3180,7 +3176,7 @@ msgstr ""
 msgid "Save plot to file"
 msgstr "Tallenna kuvaaja tiedostoksi "
 
-#: ../src/wxMaximaFrame.cpp:463
+#: ../src/wxMaximaFrame.cpp:497
 msgid "Save selection from document to an image file"
 msgstr ""
 
@@ -3188,11 +3184,11 @@ msgstr ""
 msgid "Save selection to file"
 msgstr "Tallenna valinta tiedostoksi"
 
-#: ../src/ConfigDialogue.cpp:1569
+#: ../src/ConfigDialogue.cpp:1570
 msgid "Save style to file"
 msgstr "Tallenna tyyli tiedostoksi"
 
-#: ../src/ConfigDialogue.cpp:564
+#: ../src/ConfigDialogue.cpp:565
 msgid "Save wxMaxima window size/position"
 msgstr "Tallenna wxMaximan ikkuna koko ja sijanti"
 
@@ -3216,15 +3212,15 @@ msgstr "Tallentaa..."
 msgid "Scatterplot"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1173
+#: ../src/wxMaximaFrame.cpp:1207
 msgid "Scatterplot..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1444
+#: ../src/wxMaximaFrame.cpp:1433
 msgid "Section"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:693
+#: ../src/ConfigDialogue.cpp:694
 msgid "Section cell"
 msgstr ""
 
@@ -3243,15 +3239,15 @@ msgid ""
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:949 ../src/MathCtrl.cpp:965
+#: ../src/MathCtrl.cpp:958 ../src/MathCtrl.cpp:974
 msgid "Select All"
 msgstr "Valitse kaikki"
 
-#: ../src/wxMaximaFrame.cpp:459
+#: ../src/wxMaximaFrame.cpp:493
 msgid "Select All\tCtrl-A"
 msgstr "Valitse kaikki\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:841 ../src/ConfigDialogue.cpp:846
+#: ../src/ConfigDialogue.cpp:842 ../src/ConfigDialogue.cpp:847
 msgid "Select Maxima program"
 msgstr "Valitse Maxima ohjelma"
 
@@ -3264,7 +3260,7 @@ msgstr ""
 msgid "Select a constant"
 msgstr "Valitse vakio"
 
-#: ../src/ToolBar.cpp:134 ../src/ToolBar.cpp:136 ../src/wxMaximaFrame.cpp:460
+#: ../src/ToolBar.cpp:134 ../src/ToolBar.cpp:136 ../src/wxMaximaFrame.cpp:494
 msgid "Select all"
 msgstr "Valitse kaikki"
 
@@ -3278,7 +3274,7 @@ msgid ""
 "a menu with convenient functions that will operate on the selection."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:700
+#: ../src/ConfigDialogue.cpp:701
 msgid "Selection"
 msgstr ""
 
@@ -3286,7 +3282,7 @@ msgstr ""
 msgid "Series"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1128
+#: ../src/wxMaximaFrame.cpp:1162
 msgid "Series..."
 msgstr ""
 
@@ -3294,11 +3290,11 @@ msgstr ""
 msgid "Server started"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:509
+#: ../src/wxMaximaFrame.cpp:543
 msgid "Set Zoom"
 msgstr "Suurennos"
 
-#: ../src/wxMaximaFrame.cpp:878
+#: ../src/wxMaximaFrame.cpp:912
 msgid "Set bigfloat &Precision..."
 msgstr ""
 
@@ -3306,61 +3302,61 @@ msgstr ""
 msgid "Set fixed font in text controls."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:862
+#: ../src/wxMaximaFrame.cpp:896
 msgid "Set plot format"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:879
+#: ../src/wxMaximaFrame.cpp:913
 msgid ""
 "Set the precision for numbers that are defined as bigfloat. Such numbers can "
 "be generated by entering 1.5b12 or as bfloat(1.234)"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:503
+#: ../src/wxMaximaFrame.cpp:537
 msgid "Set zoom to 100%"
 msgstr "Suurennos 100%"
 
-#: ../src/wxMaximaFrame.cpp:504
+#: ../src/wxMaximaFrame.cpp:538
 msgid "Set zoom to 120%"
 msgstr "Suurennos 120%"
 
-#: ../src/wxMaximaFrame.cpp:505
+#: ../src/wxMaximaFrame.cpp:539
 msgid "Set zoom to 150%"
 msgstr "Suurennos 150%"
 
-#: ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:540
 msgid "Set zoom to 200%"
 msgstr "Suurennos 200%"
 
-#: ../src/wxMaximaFrame.cpp:507
+#: ../src/wxMaximaFrame.cpp:541
 msgid "Set zoom to 300%"
 msgstr "Suurennos 300%"
 
-#: ../src/wxMaximaFrame.cpp:502
+#: ../src/wxMaximaFrame.cpp:536
 msgid "Set zoom to 80%"
 msgstr "Suurennos 80%"
 
-#: ../src/wxMaximaFrame.cpp:666
+#: ../src/wxMaximaFrame.cpp:700
 msgid "Setup atvalues for solving ODE with Laplace transformation"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:852
+#: ../src/wxMaximaFrame.cpp:886
 msgid "Setup modulus computation"
 msgstr "Aseta modulo-laskenta"
 
-#: ../src/wxMaximaFrame.cpp:596
+#: ../src/wxMaximaFrame.cpp:630
 msgid "Show &Definition..."
 msgstr "Näytä &Määritelmä..."
 
-#: ../src/wxMaximaFrame.cpp:594
+#: ../src/wxMaximaFrame.cpp:628
 msgid "Show &Functions"
 msgstr "Näytä &Funktiot"
 
-#: ../src/wxMaximaFrame.cpp:901
+#: ../src/wxMaximaFrame.cpp:935
 msgid "Show &Tips..."
 msgstr "Näytä &Vinkit..."
 
-#: ../src/wxMaximaFrame.cpp:599
+#: ../src/wxMaximaFrame.cpp:633
 msgid "Show &Variables"
 msgstr "Näytä &Muuttujat"
 
@@ -3368,11 +3364,11 @@ msgstr "Näytä &Muuttujat"
 msgid "Show Maxima help"
 msgstr "Näytä Maxima ohje"
 
-#: ../src/wxMaximaFrame.cpp:537
+#: ../src/wxMaximaFrame.cpp:571
 msgid "Show Template\tCtrl-Shift-K"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:902
+#: ../src/wxMaximaFrame.cpp:936
 msgid "Show a tip"
 msgstr "Näytä vihje"
 
@@ -3384,27 +3380,27 @@ msgstr "Näytä kaikki samanlaiset komennot:"
 msgid "Show an example for the command:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:896
+#: ../src/wxMaximaFrame.cpp:930
 msgid "Show an example of usage"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:899
+#: ../src/wxMaximaFrame.cpp:933
 msgid "Show commands similar to"
 msgstr "Näytä kaikki samanlaiset komennot"
 
-#: ../src/wxMaximaFrame.cpp:595
+#: ../src/wxMaximaFrame.cpp:629
 msgid "Show defined functions"
 msgstr "Näytä määritellyt funktiot"
 
-#: ../src/wxMaximaFrame.cpp:600
+#: ../src/wxMaximaFrame.cpp:634
 msgid "Show defined variables"
 msgstr "Näytä määritellyt muuttujat"
 
-#: ../src/wxMaximaFrame.cpp:597
+#: ../src/wxMaximaFrame.cpp:631
 msgid "Show definition of a function"
 msgstr "Näytä funktion määrittely"
 
-#: ../src/wxMaximaFrame.cpp:538
+#: ../src/wxMaximaFrame.cpp:572
 msgid "Show function template"
 msgstr ""
 
@@ -3412,7 +3408,7 @@ msgstr ""
 msgid "Show long expressions in wxMaxima document."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:388
+#: ../src/ConfigDialogue.cpp:389
 #, fuzzy
 msgid "Show long expressions:"
 msgstr "Lausekkeen tekijä"
@@ -3421,48 +3417,48 @@ msgstr "Lausekkeen tekijä"
 msgid "Show the definition of function:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:415
+#: ../src/ConfigDialogue.cpp:416
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:887 ../src/wxMaximaFrame.cpp:890
+#: ../src/wxMaximaFrame.cpp:921 ../src/wxMaximaFrame.cpp:924
 msgid "Show wxMaxima help"
 msgstr "Näytä Maxima ohje"
 
-#: ../src/wxMaximaFrame.cpp:1330
+#: ../src/wxMaximaFrame.cpp:1317
 msgid "Sigma"
 msgstr "Sigma"
 
-#: ../src/wxMaximaFrame.cpp:1113
+#: ../src/wxMaximaFrame.cpp:1147
 msgid "Simplify"
 msgstr "Sievennä"
 
-#: ../src/wxMaximaFrame.cpp:765
+#: ../src/wxMaximaFrame.cpp:799
 msgid "Simplify &Radicals"
 msgstr "Sievennä &juuret"
 
-#: ../src/wxMaximaFrame.cpp:1114
+#: ../src/wxMaximaFrame.cpp:1148
 msgid "Simplify (r)"
 msgstr "Sievennä (r)"
 
-#: ../src/wxMaximaFrame.cpp:1120
+#: ../src/wxMaximaFrame.cpp:1154
 msgid "Simplify (tr)"
 msgstr "Sievennä (tr)"
 
-#: ../src/MathCtrl.cpp:933
+#: ../src/MathCtrl.cpp:942
 msgid "Simplify Expression"
 msgstr "Sievennä lauseke"
 
-#: ../src/wxMaximaFrame.cpp:791
+#: ../src/wxMaximaFrame.cpp:825
 msgid "Simplify an expression containing factorials"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:766
+#: ../src/wxMaximaFrame.cpp:800
 msgid "Simplify expression containing radicals"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:764
+#: ../src/wxMaximaFrame.cpp:798
 msgid "Simplify rational expression"
 msgstr "Sievennä rationaalilauseke"
 
@@ -3470,7 +3466,7 @@ msgstr "Sievennä rationaalilauseke"
 msgid "Simplify the sum"
 msgstr "Sievennä summa"
 
-#: ../src/wxMaximaFrame.cpp:802
+#: ../src/wxMaximaFrame.cpp:836
 msgid "Simplify trigonometric expression"
 msgstr "Sievennä trigonometrinen lauseke"
 
@@ -3490,19 +3486,19 @@ msgstr "Ratkaisu:"
 msgid "Solve"
 msgstr "Ratkaise"
 
-#: ../src/wxMaximaFrame.cpp:640
+#: ../src/wxMaximaFrame.cpp:674
 msgid "Solve &Algebraic System..."
 msgstr "Ratkaise algebrallinen &yhtälöryhmä"
 
-#: ../src/wxMaximaFrame.cpp:637
+#: ../src/wxMaximaFrame.cpp:671
 msgid "Solve &Linear System..."
 msgstr "Ratkaise lineaarinen &yhtälöryhmä"
 
-#: ../src/wxMaximaFrame.cpp:648
+#: ../src/wxMaximaFrame.cpp:682
 msgid "Solve &ODE..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:624
+#: ../src/wxMaximaFrame.cpp:658
 msgid "Solve (to_poly)..."
 msgstr "Ratkaise (to_poly)..."
 
@@ -3510,11 +3506,11 @@ msgstr "Ratkaise (to_poly)..."
 msgid "Solve ODE"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:662
+#: ../src/wxMaximaFrame.cpp:696
 msgid "Solve ODE with Lapla&ce..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1124
+#: ../src/wxMaximaFrame.cpp:1158
 msgid "Solve ODE..."
 msgstr ""
 
@@ -3522,27 +3518,27 @@ msgstr ""
 msgid "Solve algebraic system"
 msgstr "Ratkaise algebrallinen &yhtälöryhmä"
 
-#: ../src/wxMaximaFrame.cpp:641
+#: ../src/wxMaximaFrame.cpp:675
 msgid "Solve algebraic system of equations"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:659
+#: ../src/wxMaximaFrame.cpp:693
 msgid "Solve boundary value problem for second degree ODE"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:623
+#: ../src/wxMaximaFrame.cpp:657
 msgid "Solve equation(s)"
 msgstr "Ratkaise yhtälö(t)"
 
-#: ../src/wxMaximaFrame.cpp:625
+#: ../src/wxMaximaFrame.cpp:659
 msgid "Solve equation(s) with to_poly_solve"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:653
+#: ../src/wxMaximaFrame.cpp:687
 msgid "Solve initial value problem for first degree ODE"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:656
+#: ../src/wxMaximaFrame.cpp:690
 msgid "Solve initial value problem for second degree ODE"
 msgstr ""
 
@@ -3550,19 +3546,19 @@ msgstr ""
 msgid "Solve linear system"
 msgstr "Ratkaise lineaarinen &yhtälöryhmä"
 
-#: ../src/wxMaximaFrame.cpp:638
+#: ../src/wxMaximaFrame.cpp:672
 msgid "Solve linear system of equations"
 msgstr "Ratkaise lineaarinen yhtälöryhmä"
 
-#: ../src/wxMaximaFrame.cpp:649
+#: ../src/wxMaximaFrame.cpp:683
 msgid "Solve ordinary differential equation of maximum degree 2"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:663
+#: ../src/wxMaximaFrame.cpp:697
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:930 ../src/wxMaximaFrame.cpp:1123
+#: ../src/wxMaximaFrame.cpp:1157 ../src/MathCtrl.cpp:939
 msgid "Solve..."
 msgstr "Ratkaise..."
 
@@ -3573,7 +3569,7 @@ msgid ""
 "needed in order to compile the output, though."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:532
+#: ../src/ConfigDialogue.cpp:533
 msgid "Spanish"
 msgstr "espanja"
 
@@ -3582,11 +3578,11 @@ msgstr "espanja"
 msgid "Special"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:681
+#: ../src/ConfigDialogue.cpp:682
 msgid "Special constants"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:863
+#: ../src/MathCtrl.cpp:872
 msgid "Start Animation"
 msgstr "Aloita animaatio"
 
@@ -3617,15 +3613,15 @@ msgstr ""
 msgid "Starting server on port %d"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:308
+#: ../src/wxMaximaFrame.cpp:314
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: ../src/wxMaximaFrame.cpp:484
+#: ../src/wxMaximaFrame.cpp:518
 msgid "Statistics\tAlt-Shift-S"
 msgstr "Tilastot\tAlt-Shift- S"
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:684
 msgid "Strings"
 msgstr "Merkkijonot"
 
@@ -3633,23 +3629,23 @@ msgstr "Merkkijonot"
 msgid "Style"
 msgstr "Tyyli"
 
-#: ../src/ConfigDialogue.cpp:659
+#: ../src/ConfigDialogue.cpp:660
 msgid "Styles"
 msgstr "Tyylit"
 
-#: ../src/wxMaximaFrame.cpp:1185
+#: ../src/wxMaximaFrame.cpp:1219
 msgid "Subsample..."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1442
+#: ../src/wxMaximaFrame.cpp:1431
 msgid "Subsection"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:692
+#: ../src/ConfigDialogue.cpp:693
 msgid "Subsection cell"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1118
+#: ../src/wxMaximaFrame.cpp:1152
 msgid "Subst..."
 msgstr ""
 
@@ -3658,15 +3654,15 @@ msgstr ""
 msgid "Substitute"
 msgstr "Korvaa"
 
-#: ../src/MathCtrl.cpp:936 ../src/wxMaximaFrame.cpp:840
+#: ../src/wxMaximaFrame.cpp:874 ../src/MathCtrl.cpp:945
 msgid "Substitute..."
 msgstr "Korvaa..."
 
-#: ../src/wxMaximaFrame.cpp:1443
+#: ../src/wxMaximaFrame.cpp:1432
 msgid "Subsubsection"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:691
+#: ../src/ConfigDialogue.cpp:692
 msgid "Subsubsection cell"
 msgstr ""
 
@@ -3674,11 +3670,11 @@ msgstr ""
 msgid "Sum"
 msgstr "Summa"
 
-#: ../src/wxMaximaFrame.cpp:1404
+#: ../src/wxMaximaFrame.cpp:1390
 msgid "Sum sign"
 msgstr "Summa-merkki"
 
-#: ../src/wxMaximaFrame.cpp:487
+#: ../src/wxMaximaFrame.cpp:521
 msgid "Symbols\tAlt-Shift-Y"
 msgstr ""
 
@@ -3686,15 +3682,15 @@ msgstr ""
 msgid "System info"
 msgstr "Järjestelmätiedot"
 
-#: ../src/wxMaximaFrame.cpp:290
+#: ../src/wxMaximaFrame.cpp:292
 msgid "Table of Contents"
 msgstr "Sisällysluettelo"
 
-#: ../src/wxMaximaFrame.cpp:490
+#: ../src/wxMaximaFrame.cpp:524
 msgid "Table of contents\tAlt-Shift-T"
 msgstr "Sisällysluettelo\tAlt-Shift-T"
 
-#: ../src/wxMaximaFrame.cpp:1331
+#: ../src/wxMaximaFrame.cpp:1318
 msgid "Tau"
 msgstr "tau"
 
@@ -3706,19 +3702,19 @@ msgstr "Taylorin sarjat:"
 msgid "Tellrat"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1440
+#: ../src/wxMaximaFrame.cpp:1429
 msgid "Text"
 msgstr "Teksti"
 
-#: ../src/ConfigDialogue.cpp:690
+#: ../src/ConfigDialogue.cpp:691
 msgid "Text cell"
 msgstr "Tekstisolu"
 
-#: ../src/ConfigDialogue.cpp:695
+#: ../src/ConfigDialogue.cpp:696
 msgid "Text cell background"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:701
+#: ../src/ConfigDialogue.cpp:702
 msgid "Text equal to selection"
 msgstr "Teksti vastaa valintaa"
 
@@ -3749,7 +3745,7 @@ msgid ""
 "the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:893
+#: ../src/wxMaximaFrame.cpp:927
 msgid "The offline manual of maxima"
 msgstr "Maximan offline-käsikirja"
 
@@ -3784,7 +3780,7 @@ msgid ""
 "Please report this as a bug."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1320
+#: ../src/wxMaximaFrame.cpp:1307
 msgid "Theta"
 msgstr "Theeta"
 
@@ -3800,11 +3796,11 @@ msgstr ""
 msgid "Tips not available, sorry!"
 msgstr "Vinkkejä ei ole saatavilla!"
 
-#: ../src/wxMaximaFrame.cpp:1441
+#: ../src/wxMaximaFrame.cpp:1430
 msgid "Title"
 msgstr "Otsikko"
 
-#: ../src/ConfigDialogue.cpp:694
+#: ../src/ConfigDialogue.cpp:695
 msgid "Title cell"
 msgstr "Otsikkosolu"
 
@@ -3815,19 +3811,19 @@ msgid ""
 "all sublevels of that cell will also fold/unfold."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:872
+#: ../src/wxMaximaFrame.cpp:906
 msgid "To &Bigfloat"
 msgstr "&Liukuluvuksi (Bigfloat)"
 
-#: ../src/wxMaximaFrame.cpp:869
+#: ../src/wxMaximaFrame.cpp:903
 msgid "To &Float"
 msgstr "&Liukuluvuksi (Float)"
 
-#: ../src/MathCtrl.cpp:928
+#: ../src/MathCtrl.cpp:937
 msgid "To Float"
 msgstr "Liukuluvuksi (Float)"
 
-#: ../src/wxMaximaFrame.cpp:875
+#: ../src/wxMaximaFrame.cpp:909
 msgid "To Numeri&c\tCtrl+Shift+N"
 msgstr "N&umeeriseksi\tCtrl+Shift+N"
 
@@ -3866,27 +3862,27 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:846
+#: ../src/wxMaximaFrame.cpp:880
 msgid "Toggle &Algebraic Flag"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:867
+#: ../src/wxMaximaFrame.cpp:901
 msgid "Toggle &Numeric Output"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:607
+#: ../src/wxMaximaFrame.cpp:641
 msgid "Toggle &Time Display"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:847
+#: ../src/wxMaximaFrame.cpp:881
 msgid "Toggle algebraic flag"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:511
+#: ../src/wxMaximaFrame.cpp:545
 msgid "Toggle full screen editing"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:868
+#: ../src/wxMaximaFrame.cpp:902
 msgid "Toggle numeric output"
 msgstr ""
 
@@ -3898,23 +3894,23 @@ msgstr "Työkalurivin kuvakkeet"
 msgid "Translated by"
 msgstr "Käännös"
 
-#: ../src/wxMaximaFrame.cpp:697
+#: ../src/wxMaximaFrame.cpp:731
 msgid "Transpose a matrix"
 msgstr "Transponoi matriisi"
 
-#: ../src/MathCtrl.cpp:5143
+#: ../src/MathCtrl.cpp:5152
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5207
+#: ../src/MathCtrl.cpp:5216
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:533
+#: ../src/ConfigDialogue.cpp:534
 msgid "Turkish"
 msgstr "Turkki"
 
-#: ../src/wxMaximaFrame.cpp:904
+#: ../src/wxMaximaFrame.cpp:938
 msgid "Tutorials"
 msgstr "Oppaat"
 
@@ -3926,7 +3922,7 @@ msgstr ""
 msgid "Type:"
 msgstr "Tyyppi:"
 
-#: ../src/ConfigDialogue.cpp:534
+#: ../src/ConfigDialogue.cpp:535
 msgid "Ukrainian"
 msgstr "Ukraina"
 
@@ -3944,31 +3940,31 @@ msgid ""
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:721
+#: ../src/ConfigDialogue.cpp:722
 msgid "Underlined"
 msgstr "Alleviivattu"
 
-#: ../src/ConfigDialogue.cpp:397
+#: ../src/ConfigDialogue.cpp:398
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:426
+#: ../src/wxMaximaFrame.cpp:460
 msgid "Undo\tCtrl-Z"
 msgstr "Kumoa\tCtrl-Z"
 
-#: ../src/wxMaximaFrame.cpp:427
+#: ../src/wxMaximaFrame.cpp:461
 msgid "Undo last change"
 msgstr "Kumoa viimeisin muutos"
 
-#: ../src/ConfigDialogue.cpp:552
+#: ../src/ConfigDialogue.cpp:553
 msgid "Undo limit (0 for none):"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:559
+#: ../src/wxMaximaFrame.cpp:593
 msgid "Unfold All\tCtrl-Alt-]"
 msgstr "Näytä kaikki\tCtrl-Alt-]"
 
-#: ../src/wxMaximaFrame.cpp:560
+#: ../src/wxMaximaFrame.cpp:594
 msgid "Unfold all folded sections"
 msgstr "Näytä piilotetut kappaleet\tCtrl-Alt-]"
 
@@ -3996,7 +3992,7 @@ msgstr "Yläraja:"
 msgid "Use Gosper algorithm"
 msgstr "Käytä Gosperin algoritmia"
 
-#: ../src/ConfigDialogue.cpp:493
+#: ../src/ConfigDialogue.cpp:494
 msgid "Use MathJAX in HTML export"
 msgstr "Käytä MathJAXia HTML viennissä"
 
@@ -4010,15 +4006,15 @@ msgid ""
 "bit of time in order to typeset an equation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:570
+#: ../src/ConfigDialogue.cpp:571
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:176 ../src/ConfigDialogue.cpp:424
+#: ../src/ConfigDialogue.cpp:176 ../src/ConfigDialogue.cpp:425
 msgid "Use centered dot character for multiplication"
 msgstr "Käytä keskitettyä pistettä kertolaskuissa"
 
-#: ../src/ConfigDialogue.cpp:674
+#: ../src/ConfigDialogue.cpp:675
 msgid "Use jsMath fonts"
 msgstr "Käytä jsMath fontteja"
 
@@ -4028,7 +4024,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:688
+#: ../src/ConfigDialogue.cpp:689
 msgid "User-defined labels"
 msgstr ""
 
@@ -4051,7 +4047,7 @@ msgstr "Muuttuja(t)"
 msgid "Variable:"
 msgstr "Muuttuja"
 
-#: ../src/ConfigDialogue.cpp:678
+#: ../src/ConfigDialogue.cpp:679
 msgid "Variables"
 msgstr "Muuttujat"
 
@@ -4060,15 +4056,15 @@ msgstr "Muuttujat"
 msgid "Variables:"
 msgstr "Muuttujat:"
 
-#: ../src/wxMaximaFrame.cpp:1159
+#: ../src/wxMaximaFrame.cpp:1193
 msgid "Variance..."
 msgstr "Varianssi..."
 
-#: ../src/wxMaximaFrame.cpp:514
+#: ../src/wxMaximaFrame.cpp:548
 msgid "View"
 msgstr "Näkymä"
 
-#: ../src/MathParser.cpp:1111 ../src/wxMaxima.cpp:1514 ../src/wxMaxima.cpp:1609
+#: ../src/MathParser.cpp:991 ../src/wxMaxima.cpp:1514 ../src/wxMaxima.cpp:1609
 #: ../src/wxMaxima.cpp:1786
 msgid "Warning"
 msgstr "Varoitus"
@@ -4115,15 +4111,15 @@ msgstr ""
 msgid "Written by"
 msgstr "Kirjoittanut"
 
-#: ../src/wxMaximaFrame.cpp:491
+#: ../src/wxMaximaFrame.cpp:525
 msgid "XML Inspector"
 msgstr "XML tarkastaja"
 
-#: ../src/wxMaximaFrame.cpp:1326
+#: ../src/wxMaximaFrame.cpp:1313
 msgid "Xi"
 msgstr "Ksii"
 
-#: ../src/ConfigDialogue.cpp:393
+#: ../src/ConfigDialogue.cpp:394
 msgid "Yes"
 msgstr "Kyllä"
 
@@ -4207,31 +4203,31 @@ msgstr "Tekemäsi muutokset häviävät ellet tallenna niitä."
 msgid "Your version of wxMaxima is up to date."
 msgstr "wxMaximassasi on viimeisin päivitys."
 
-#: ../src/wxMaximaFrame.cpp:1332
+#: ../src/wxMaximaFrame.cpp:1319
 msgid "Ypsilon"
 msgstr "ypsilon"
 
-#: ../src/wxMaximaFrame.cpp:1318
+#: ../src/wxMaximaFrame.cpp:1305
 msgid "Zeta"
 msgstr "Zeeta"
 
-#: ../src/wxMaximaFrame.cpp:496
+#: ../src/wxMaximaFrame.cpp:530
 msgid "Zoom &In\tCtrl-+"
 msgstr "Suurenna \tCtrl-+"
 
-#: ../src/wxMaximaFrame.cpp:498
+#: ../src/wxMaximaFrame.cpp:532
 msgid "Zoom Ou&t\tCtrl--"
 msgstr "Pienennä\tCtrl--"
 
-#: ../src/wxMaximaFrame.cpp:497
+#: ../src/wxMaximaFrame.cpp:531
 msgid "Zoom in 10%"
 msgstr "Suurenna 10%"
 
-#: ../src/wxMaximaFrame.cpp:499
+#: ../src/wxMaximaFrame.cpp:533
 msgid "Zoom out 10%"
 msgstr "Pienennä 10%"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5453
+#: ../src/wxMaxima.cpp:5453 ../src/wxMaximaFrame.cpp:260
 msgid "[ unsaved ]"
 msgstr "[ tallentamaton ]"
 
@@ -4244,21 +4240,21 @@ msgstr "[ tallentamaton* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3818
+#: ../src/MathCtrl.cpp:3827
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3928
+#: ../src/MathCtrl.cpp:3937
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >"
 
-#: ../src/wxMaximaFrame.cpp:1284
+#: ../src/wxMaximaFrame.cpp:1269
 msgid "alpha"
 msgstr "alfa"
 
-#: ../src/wxMaximaFrame.cpp:1378
+#: ../src/wxMaximaFrame.cpp:1364
 msgid "and"
 msgstr "ja"
 
@@ -4266,7 +4262,7 @@ msgstr "ja"
 msgid "antisymmetric"
 msgstr "epäsymmetrinen"
 
-#: ../src/wxMaximaFrame.cpp:1285
+#: ../src/wxMaximaFrame.cpp:1270
 msgid "beta"
 msgstr "beeta"
 
@@ -4274,11 +4270,11 @@ msgstr "beeta"
 msgid "both sides"
 msgstr "molemmat puolet"
 
-#: ../src/wxMaximaFrame.cpp:1305
+#: ../src/wxMaximaFrame.cpp:1290
 msgid "chi"
 msgstr "khii"
 
-#: ../src/ConfigDialogue.cpp:624
+#: ../src/ConfigDialogue.cpp:625
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -4287,7 +4283,7 @@ msgstr ""
 msgid "default"
 msgstr "oletus"
 
-#: ../src/wxMaximaFrame.cpp:1287
+#: ../src/wxMaximaFrame.cpp:1272
 msgid "delta"
 msgstr "delta"
 
@@ -4295,23 +4291,23 @@ msgstr "delta"
 msgid "diagonal"
 msgstr "diagonaalinen"
 
-#: ../src/wxMaximaFrame.cpp:1375
+#: ../src/wxMaximaFrame.cpp:1361
 msgid "empty"
 msgstr "tyhjä"
 
-#: ../src/wxMaximaFrame.cpp:1288
+#: ../src/wxMaximaFrame.cpp:1273
 msgid "epsilon"
 msgstr "epsilon"
 
-#: ../src/wxMaximaFrame.cpp:1383
+#: ../src/wxMaximaFrame.cpp:1369
 msgid "equivalent"
 msgstr "ekvivalentti"
 
-#: ../src/wxMaximaFrame.cpp:1290
+#: ../src/wxMaximaFrame.cpp:1275
 msgid "eta"
 msgstr "eeta"
 
-#: ../src/wxMaximaFrame.cpp:1371
+#: ../src/wxMaximaFrame.cpp:1357
 msgid "exists"
 msgstr "on olemassa"
 
@@ -4323,7 +4319,7 @@ msgid ""
 "all=_ marks subscripts."
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1286
+#: ../src/wxMaximaFrame.cpp:1271
 msgid "gamma"
 msgstr "gamma"
 
@@ -4331,11 +4327,11 @@ msgstr "gamma"
 msgid "general"
 msgstr "yleinen"
 
-#: ../src/wxMaximaFrame.cpp:1400
+#: ../src/wxMaximaFrame.cpp:1386
 msgid "greater than or equal"
 msgstr "suurempi tai yhtä suuri kuin"
 
-#: ../src/wxMaximaFrame.cpp:1370
+#: ../src/wxMaximaFrame.cpp:1356
 msgid "in"
 msgstr ""
 
@@ -4345,19 +4341,19 @@ msgstr ""
 msgid "inline"
 msgstr "avoin"
 
-#: ../src/wxMaximaFrame.cpp:1387
+#: ../src/wxMaximaFrame.cpp:1373
 msgid "intersection"
 msgstr "leikkaus"
 
-#: ../src/wxMaximaFrame.cpp:1292
+#: ../src/wxMaximaFrame.cpp:1277
 msgid "iota"
 msgstr "ioota"
 
-#: ../src/wxMaximaFrame.cpp:1293
+#: ../src/wxMaximaFrame.cpp:1278
 msgid "kappa"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1294
+#: ../src/wxMaximaFrame.cpp:1279
 msgid "lambda"
 msgstr "lambda"
 
@@ -4365,7 +4361,7 @@ msgstr "lambda"
 msgid "left"
 msgstr "vasen"
 
-#: ../src/wxMaximaFrame.cpp:1399
+#: ../src/wxMaximaFrame.cpp:1385
 msgid "less or equal"
 msgstr "pienempi tai yhtä suuri kuin"
 
@@ -4377,23 +4373,23 @@ msgstr "logaritminen asteikko"
 msgid "matrix[i,j]:"
 msgstr "matriisi[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:638
+#: ../src/ConfigDialogue.cpp:639
 msgid "maxima's pwd is path to document"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1402
+#: ../src/wxMaximaFrame.cpp:1388
 msgid "much greater than"
 msgstr "paljon suurempi kuin"
 
-#: ../src/wxMaximaFrame.cpp:1401
+#: ../src/wxMaximaFrame.cpp:1387
 msgid "much less than"
 msgstr "paljon pienempi kuin"
 
-#: ../src/wxMaximaFrame.cpp:1295
+#: ../src/wxMaximaFrame.cpp:1280
 msgid "my"
 msgstr "myy"
 
-#: ../src/wxMaximaFrame.cpp:1381
+#: ../src/wxMaximaFrame.cpp:1367
 msgid "nand"
 msgstr ""
 
@@ -4401,67 +4397,67 @@ msgstr ""
 msgid "no"
 msgstr "ei"
 
-#: ../src/wxMaximaFrame.cpp:1382
+#: ../src/wxMaximaFrame.cpp:1368
 msgid "nor"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1385
+#: ../src/wxMaximaFrame.cpp:1371
 msgid "not"
 msgstr "ei"
 
-#: ../src/wxMaximaFrame.cpp:1398
+#: ../src/wxMaximaFrame.cpp:1384
 msgid "not bytewise identical"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1391
+#: ../src/wxMaximaFrame.cpp:1377
 msgid "not subset"
 msgstr "ei osajoukko"
 
-#: ../src/wxMaximaFrame.cpp:1390
+#: ../src/wxMaximaFrame.cpp:1376
 msgid "not subset or equal"
 msgstr "ei osajoukko tai yhtäsuuri"
 
-#: ../src/wxMaximaFrame.cpp:1296
+#: ../src/wxMaximaFrame.cpp:1281
 msgid "ny"
 msgstr "nyy"
 
-#: ../src/wxMaximaFrame.cpp:1307
+#: ../src/wxMaximaFrame.cpp:1292
 msgid "omega"
 msgstr "oomega"
 
-#: ../src/wxMaximaFrame.cpp:1298
+#: ../src/wxMaximaFrame.cpp:1283
 msgid "omnikron"
 msgstr "omikron"
 
-#: ../src/wxMaximaFrame.cpp:1379
+#: ../src/wxMaximaFrame.cpp:1365
 msgid "or"
 msgstr "tai"
 
-#: ../src/wxMaximaFrame.cpp:1394
+#: ../src/wxMaximaFrame.cpp:1380
 msgid "partial sign"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1304
+#: ../src/wxMaximaFrame.cpp:1289
 msgid "phi"
 msgstr "fii"
 
-#: ../src/wxMaximaFrame.cpp:1299
+#: ../src/wxMaximaFrame.cpp:1284
 msgid "pi"
 msgstr "pii"
 
-#: ../src/wxMaximaFrame.cpp:1384
+#: ../src/wxMaximaFrame.cpp:1370
 msgid "plus or minus"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1397
+#: ../src/wxMaximaFrame.cpp:1383
 msgid "proportional to"
 msgstr "verrannollinen"
 
-#: ../src/wxMaximaFrame.cpp:1306
+#: ../src/wxMaximaFrame.cpp:1291
 msgid "psi"
 msgstr "psii"
 
-#: ../src/wxMaximaFrame.cpp:1300
+#: ../src/wxMaximaFrame.cpp:1285
 msgid "rho"
 msgstr "rhoo"
 
@@ -4469,19 +4465,19 @@ msgstr "rhoo"
 msgid "right"
 msgstr "oikea"
 
-#: ../src/wxMaximaFrame.cpp:1301
+#: ../src/wxMaximaFrame.cpp:1286
 msgid "sigma"
 msgstr "sigma"
 
-#: ../src/wxMaximaFrame.cpp:1366
+#: ../src/wxMaximaFrame.cpp:1352
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr "sqrt (tarvitsee sulkeet argumentille toimiakseen maximan komentona)"
 
-#: ../src/wxMaximaFrame.cpp:1389
+#: ../src/wxMaximaFrame.cpp:1375
 msgid "subset"
 msgstr "osajoukko"
 
-#: ../src/wxMaximaFrame.cpp:1388
+#: ../src/wxMaximaFrame.cpp:1374
 msgid "subset or equal"
 msgstr "osajoukko tai yhtäsuuri"
 
@@ -4489,31 +4485,31 @@ msgstr "osajoukko tai yhtäsuuri"
 msgid "symmetric"
 msgstr "symmetrinen"
 
-#: ../src/wxMaximaFrame.cpp:1302
+#: ../src/wxMaximaFrame.cpp:1287
 msgid "tau"
 msgstr "tau"
 
-#: ../src/ConfigDialogue.cpp:628
+#: ../src/ConfigDialogue.cpp:629
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1372
+#: ../src/wxMaximaFrame.cpp:1358
 msgid "there is no"
 msgstr "Ei ole olemassa"
 
-#: ../src/wxMaximaFrame.cpp:1291
+#: ../src/wxMaximaFrame.cpp:1276
 msgid "theta"
 msgstr "theeta"
 
-#: ../src/wxMaximaFrame.cpp:1364
+#: ../src/wxMaximaFrame.cpp:1350
 msgid "to the power of 2"
 msgstr "potenssiin 2"
 
-#: ../src/wxMaximaFrame.cpp:1365
+#: ../src/wxMaximaFrame.cpp:1351
 msgid "to the power of 3"
 msgstr "potenssiin 3"
 
-#: ../src/wxMaximaFrame.cpp:1386
+#: ../src/wxMaximaFrame.cpp:1372
 msgid "union"
 msgstr "unioni"
 
@@ -4521,8 +4517,8 @@ msgstr "unioni"
 msgid "unsaved"
 msgstr "tallentamaton"
 
-#: ../src/wxMaximaFrame.cpp:262 ../src/wxMaxima.cpp:2358
-#: ../src/wxMaxima.cpp:2604
+#: ../src/wxMaxima.cpp:2358 ../src/wxMaxima.cpp:2604
+#: ../src/wxMaximaFrame.cpp:262
 msgid "untitled"
 msgstr "nimetön"
 
@@ -4535,17 +4531,17 @@ msgstr "nimetön %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5453
-#: ../src/wxMaxima.cpp:5455 ../src/wxMaxima.cpp:5464 ../src/wxMaxima.cpp:5467
+#: ../src/wxMaxima.cpp:5453 ../src/wxMaxima.cpp:5455 ../src/wxMaxima.cpp:5464
+#: ../src/wxMaxima.cpp:5467 ../src/wxMaximaFrame.cpp:260
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
 
-#: ../src/wxMaximaFrame.cpp:886
+#: ../src/wxMaximaFrame.cpp:920
 msgid "wxMaxima &Help\tCtrl+?"
 msgstr "wxMaxima &Ohje\tCtrl+?"
 
-#: ../src/wxMaximaFrame.cpp:889
+#: ../src/wxMaximaFrame.cpp:923
 msgid "wxMaxima &Help\tF1"
 msgstr "wxMaxima &Ohje\tF1"
 
@@ -4650,15 +4646,15 @@ msgstr ""
 "wxMaxima on wxWidgetteihin pohjautuva graafinen käyttöliittymä CAS "
 "Maximalle. "
 
-#: ../src/ConfigDialogue.cpp:375
+#: ../src/ConfigDialogue.cpp:376
 msgid "x"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1297
+#: ../src/wxMaximaFrame.cpp:1282
 msgid "xi"
 msgstr "ksii"
 
-#: ../src/wxMaximaFrame.cpp:1380
+#: ../src/wxMaximaFrame.cpp:1366
 msgid "xor"
 msgstr ""
 
@@ -4666,10 +4662,16 @@ msgstr ""
 msgid "yes"
 msgstr "kyllä"
 
-#: ../src/wxMaximaFrame.cpp:1303
+#: ../src/wxMaximaFrame.cpp:1288
 msgid "ypsilon"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1289
+#: ../src/wxMaximaFrame.cpp:1274
 msgid "zeta"
 msgstr "zeeta"
+
+#~ msgid "Copy As Image"
+#~ msgstr "Kopioi kuvana"
+
+#~ msgid "Copy LaTeX"
+#~ msgstr "Kopioi LaTeX"
