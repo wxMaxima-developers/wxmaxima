@@ -333,6 +333,8 @@ void wxMaximaFrame::do_layout()
                     RightDockable(true).
                     PaneBorder(true).
                     MinSize(greekPane->GetEffectiveMinSize()).
+                    BestSize(greekPane->GetEffectiveMinSize()).
+                    FloatingSize(greekPane->GetEffectiveMinSize()).
                     Left());
 
   wxPanel *symbolsPane = CreateSymbolsPane();
@@ -346,9 +348,10 @@ void wxMaximaFrame::do_layout()
                     RightDockable(true).
                     PaneBorder(true).
                     MinSize(symbolsPane->GetEffectiveMinSize()).
+                    BestSize(symbolsPane->GetEffectiveMinSize()).
+                    FloatingSize(symbolsPane->GetEffectiveMinSize()).
                     Left());
 #endif
-  
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
                     Caption(_("General Math")).
