@@ -389,6 +389,16 @@ void wxMaximaFrame::do_layout()
     bool toolbar = true;
     config->Read(wxT("AUI/toolbar"), &toolbar);
     ShowToolBar(toolbar);
+    m_manager.GetPane(wxT("greek"))=m_manager.GetPane(wxT("greek")).
+      MinSize(greekPane->GetEffectiveMinSize()).
+      BestSize(greekPane->GetEffectiveMinSize()).
+      MaxSize(greekPane->GetEffectiveMinSize());
+
+    m_manager.GetPane(wxT("symbols"))=m_manager.GetPane(wxT("symbols")).
+      MinSize(symbolsPane->GetEffectiveMinSize()).
+      BestSize(symbolsPane->GetEffectiveMinSize()).
+      MaxSize(symbolsPane->GetEffectiveMinSize());
+
   }
   else
     m_manager.Update();
