@@ -212,6 +212,7 @@ void ConfigDialogue::SetProperties()
   wxString documentclass=wxT("article");
 #ifdef wxUSE_UNICODE
   wxString symbolPaneAdditionalChars=wxT("üØ");
+  m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 #endif
   int autoSaveInterval = 0;
   
@@ -281,7 +282,7 @@ void ConfigDialogue::SetProperties()
     m_language->SetSelection(0);
 
 #ifdef wxUSE_UNICODE
-  config->Read(wxT("symbolPaneAdditionalChars"), symbolPaneAdditionalChars);
+  config->Read(wxT("symbolPaneAdditionalChars"),&symbolPaneAdditionalChars);
 #endif
   
   m_documentclass->SetValue(documentclass);
