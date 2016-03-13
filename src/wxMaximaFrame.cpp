@@ -334,6 +334,7 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     MinSize(greekPane->GetEffectiveMinSize()).
                     BestSize(greekPane->GetEffectiveMinSize()).
+                    MaxSize(greekPane->GetEffectiveMinSize()).
                     FloatingSize(greekPane->GetEffectiveMinSize()).
                     Left());
 
@@ -349,6 +350,7 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     MinSize(symbolsPane->GetEffectiveMinSize()).
                     BestSize(symbolsPane->GetEffectiveMinSize()).
+                    MaxSize(symbolsPane->GetEffectiveMinSize()).
                     FloatingSize(symbolsPane->GetEffectiveMinSize()).
                     Left());
 #endif
