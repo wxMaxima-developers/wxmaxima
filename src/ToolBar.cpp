@@ -31,8 +31,8 @@ wxImage ToolBar::GetImage(wxString name)
 {
   Dirstructure dirstructure;
   wxImage img = wxImage(dirstructure.ConfigToolbarDir() + name + wxT(".png"));
-  int scaleFactor = wxGetDisplayPPI().x/72;
-  double imgWidth = 24*scaleFactor;
+  int resolutionMultiplier = wxGetDisplayPPI().x/72;
+  double imgWidth = 24.0 * resolutionMultiplier;
   int width,height;
   wxDisplaySize(&width,&height);
   if(width<800)
