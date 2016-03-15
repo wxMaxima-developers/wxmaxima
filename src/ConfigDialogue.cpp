@@ -78,7 +78,12 @@ wxImage ConfigDialogue::GetImage(wxString name)
 {
   Dirstructure dirstruct;
   wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
-  double imgWidth = wxGetDisplayPPI().x*32/72;
+  int resolutionMultiplier = wxGetDisplayPPI().x/72;
+  double imgWidth = 24.0 * resolutionMultiplier;
+  int width,height;
+  wxDisplaySize(&width,&height);
+  if(width<800)
+    imgWidth = 24;
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
 
