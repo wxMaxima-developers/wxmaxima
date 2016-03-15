@@ -327,6 +327,8 @@ void wxMaximaFrame::do_layout()
                     wxAuiPaneInfo().Name(wxT("greek")).
                     Caption(_("Greek letters")).
                     Show(false).
+                    DockFixed(false).
+                    Gripper(true).
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(true).
@@ -343,6 +345,8 @@ void wxMaximaFrame::do_layout()
                     wxAuiPaneInfo().Name(wxT("symbols")).
                     Caption(_("Mathematical Symbols")).
                     Show(false).
+                    DockFixed(false).
+                    Gripper(true).
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(true).

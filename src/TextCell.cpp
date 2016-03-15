@@ -481,9 +481,13 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
   text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
 #endif
+
+
   // m_IsHidden is set for multiplication signs and parenthesis that
   // don't need to be shown
   if (m_isHidden)
+    text = wxEmptyString;
+  else
   {
     /*
       Normally we want to draw a centered dot in this case. But if we
