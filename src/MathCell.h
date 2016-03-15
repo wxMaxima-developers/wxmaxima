@@ -401,12 +401,15 @@ public:
   bool m_bigSkip;
   //! true means: Add a linebreak to the end of this cell.
   bool m_isBroken;
-  /*! True means: This cell is a multiplication sign that isn't drawn.
+  /*! True means: This cell is not to be drawn.
 
-    Currently only the centered dots for multiplications fall in this category.
+    Currently the following items fall into this category:
+     - parenthesis around fractions or similar things that clearly can be recognized as atoms
+     - plus signs within numbers
+     - most multiplication dots.
    */
   bool m_isHidden;
-  /*! Determine if this cell contains text that won't be passed to maxima
+  /*! Determine if this cell contains text that isn't code
 
     \return true, if this is a text cell, a title cell, a section, a subsection or a subsubsection cell.
    */
