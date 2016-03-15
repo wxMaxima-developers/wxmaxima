@@ -1,4 +1,9 @@
 Current:
+  * A TeX-like subscript notation: A_1 is now by default shown as an A with
+    an 1 as subscript
+  * High-quality icons for high-dpi screens.
+  * Some broken .wxmx files generated with wxMaxima 13.04 and older will now
+    automatically be repaired
   * Tried to make communication with maxima more stable
   * Debug: A monitor for the xml communication between maxima and wxMaxima
   * Leading White-space in front of a character that has to be escaped in
@@ -9,11 +14,7 @@ Current:
   * Bumped the minor version of the .wxmx format: Some old versions of
     wxmaxima will replace .jpg files embedded in .wxmx files by a
     placeholder on load
-  * All Images that aren't currently displayed are now ony stored in their
-    original compressed form.
-  * Avoid as many image rescaling actions as possible.
-  * Having the already-compressed images in memory means a massive speedup for
-    saving files with many images.
+  * Increased both speed and memory-efficiency of image handling
   * Save the zoom factor at exit and reload it on opening a new file
   * An option that makes wxMaxima use user-defined labels instead of %o where an
     user-defined label exists. Works well together with unchecking the
