@@ -78,6 +78,11 @@ wxImage ConfigDialogue::GetImage(wxString name)
 {
   Dirstructure dirstruct;
   wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
+
+  // We want to scale the images according to the display's resolution.
+  // But we want to do so in discrete steps as scaling bitmaps by odd
+  // factors will add visible antialiassing to things that are clearly
+  // meant to be sharp lines.
   int resolutionMultiplier = wxGetDisplayPPI().x/72;
   double imgWidth = 24.0 * resolutionMultiplier;
   int width,height;
