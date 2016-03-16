@@ -428,8 +428,25 @@ wxString ParenCell::ToTeX()
   wxString s;
   if (!m_isBroken)
   {
+    wxString innerCell = m_innerCell->ListToTeX();
+
+    // Let's see if the cell contains anything potentially higher than a normal
+    // character.
+    bool needsLeftRight = false;
+    for(size_t i=0;i<innerCell.Length();i++)
+      if(!wxIsalnum(innerCell[i]))
+      {
+        needsLeftRight = true;
+        break;
+      }
+    
     if (m_print)
-      s = wxT("\\left( ") + m_innerCell->ListToTeX() + wxT("\\right) ");
+    {
+      if(needsLeftRight)
+        s = wxT("\\left( ") + m_innerCell->ListToTeX()  + wxT("\\right) ");
+      else
+        s = wxT("(") + m_innerCell->ListToTeX()  + wxT(")");
+    }
     else
       s = m_innerCell->ListToTeX();
   }
