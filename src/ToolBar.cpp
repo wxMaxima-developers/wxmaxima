@@ -36,10 +36,10 @@ wxImage ToolBar::GetImage(wxString name)
   // factors will add visible antialiassing to things that are clearly
   // meant to be sharp lines.
   int resolutionMultiplier = wxGetDisplayPPI().x/72;
-  double imgWidth = 24.0 * resolutionMultiplier;
+  int imgWidth = 24 * resolutionMultiplier;
   int width,height;
   wxDisplaySize(&width,&height);
-  if(width<800)
+  if(width<=800)
     imgWidth = 24;
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );

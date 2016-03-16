@@ -74,23 +74,33 @@ const int langs[] =
 
 #define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
 
+int ConfigDialogue::GetImageWidth()
+{
+    // We want to scale the images according to the display's resolution.
+  // But we want to do so in discrete steps as scaling bitmaps by odd
+  // factors will add visible antialiassing to things that are clearly
+  // meant to be sharp lines.
+  int resolutionMultiplier = wxGetDisplayPPI().x/72;
+  int imgWidth = 32 * resolutionMultiplier;
+  int width,height;
+  wxDisplaySize(&width,&height);
+  if(width<=800)
+    imgWidth = 32;
+  return(imgWidth);
+}
+
 wxImage ConfigDialogue::GetImage(wxString name)
 {
   Dirstructure dirstruct;
-  wxImage img = wxImage(dirstruct.ConfigArtDir() + name);
+  wxImage img(dirstruct.ConfigArtDir() + name);
 
   // We want to scale the images according to the display's resolution.
   // But we want to do so in discrete steps as scaling bitmaps by odd
   // factors will add visible antialiassing to things that are clearly
   // meant to be sharp lines.
-  int resolutionMultiplier = wxGetDisplayPPI().x/72;
-  double imgWidth = 24.0 * resolutionMultiplier;
-  int width,height;
-  wxDisplaySize(&width,&height);
-  if(width<800)
-    imgWidth = 24;
-  double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  int imgWidth = GetImageWidth();
+  double scaleFactor = (double)imgWidth/ img.GetWidth();
+  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
 
   return img;
 }
@@ -106,7 +116,7 @@ ConfigDialogue::ConfigDialogue(wxWindow* parent)
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
-  double imgWidth = wxGetDisplayPPI().x*32/72;
+  int imgWidth = GetImageWidth();
   wxSize imageSize(imgWidth, imgWidth);
   m_imageList = new wxImageList(imgWidth,imgWidth);
   m_imageList->Add(GetImage(wxT("editing.png")));

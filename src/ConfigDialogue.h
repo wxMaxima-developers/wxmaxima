@@ -149,7 +149,10 @@ private:
 
   //! Loads the image for a configuration tab
   wxImage GetImage(wxString name);
-    
+
+  //! Get the width of the images we want to display.
+  int GetImageWidth();
+
   //! The panel that allows to set the editing options
   wxPanel* CreateWorksheetPanel();
   //! A panel that allows to set general options
