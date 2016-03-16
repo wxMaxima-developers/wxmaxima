@@ -562,7 +562,7 @@ wxString TextCell::ToTeX()
     }
     else if (m_textStyle == TS_VARIABLE)
     {
-      if(text.Length() > 1)
+      if((text.Length() > 1)&&(text[1]!=wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
       text.Replace(wxT("%pi"),wxT("\\ensuremath{\\pi}"));
     }
