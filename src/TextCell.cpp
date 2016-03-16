@@ -558,7 +558,7 @@ wxString TextCell::ToTeX()
     if (m_textStyle == TS_FUNCTION)
     {
       if(text!=wxEmptyString)
-        text = wxT("\\mathrm{") + text + wxT("}");
+        text = wxT("\\operatorname{") + text + wxT("}");
     }
     else if (m_textStyle == TS_VARIABLE)
     {
