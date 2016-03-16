@@ -133,7 +133,24 @@ wxString FunCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
+
+  wxString s;
+  
+  if(
+    (m_nameCell->ToString() == wxT("sin")) ||
+    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("cosh")) ||
+    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("log")) ||
+    (m_nameCell->ToString() == wxT("cot")) ||
+    (m_nameCell->ToString() == wxT("sec")) ||
+    (m_nameCell->ToString() == wxT("csc")) ||
+    (m_nameCell->ToString() == wxT("tan"))
+    ) 
+    s = wxT("\\")+m_nameCell->ToString()+wxT("{")+m_argCell->ListToTeX()+wxT("}");
+  else
+    s = wxT("\\operatorname{") + m_nameCell->ListToTeX() + wxT("}") + m_argCell->ListToTeX();
+        
   return s;
 }
 
