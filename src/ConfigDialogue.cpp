@@ -86,6 +86,8 @@ int ConfigDialogue::GetImageWidth()
   wxDisplaySize(&width,&height);
   if(width<=800)
     imgWidth = 32;
+  if(imgWidth < 32)
+    imgWidth = 32;
   return(imgWidth);
 }
 
