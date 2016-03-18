@@ -39,13 +39,13 @@ wxImage ToolBar::GetImage(wxString name)
   int imgWidth = 24 * resolutionMultiplier;
   int width,height;
   wxDisplaySize(&width,&height);
-  if(width<=800)
+  if(width <= 800)
     imgWidth = 24;
   if(imgWidth < 24)
     imgWidth = 24;
 
-  double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  double scaleFactor = (double)imgWidth / img.GetWidth();
+  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
   return img;
 }
 #else

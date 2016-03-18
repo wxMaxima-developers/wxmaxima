@@ -101,8 +101,11 @@ wxImage ConfigDialogue::GetImage(wxString name)
   // factors will add visible antialiassing to things that are clearly
   // meant to be sharp lines.
   int imgWidth = GetImageWidth();
+  if(imgWidth < 32)
+    imgWidth = 32;
+
   double scaleFactor = (double)imgWidth/ img.GetWidth();
-  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
 
   return img;
 }
