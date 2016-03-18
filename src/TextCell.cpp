@@ -469,10 +469,10 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x2225",wxT("\\ensuremath{\\parallel}"));
   text.Replace(L"\x27C2",wxT("\\ensuremath{\\bot}"));
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
-  text.Replace(wxT("_"), wxT("\\_"));
-  text.Replace(wxT("$"), wxT("\\$"));
-  text.Replace(wxT("%"), wxT("\\%"));
-  text.Replace(wxT("&"), wxT("\\&"));
+  text.Replace(wxT("_"), wxT("\\_ "));
+  text.Replace(wxT("$"), wxT("\\$ "));
+  text.Replace(wxT("%"), wxT("\\% "));
+  text.Replace(wxT("&"), wxT("\\& "));
   text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
@@ -486,7 +486,31 @@ wxString TextCell::ToTeX()
   // m_IsHidden is set for multiplication signs and parenthesis that
   // don't need to be shown
   if (m_isHidden)
-    text = wxEmptyString;
+  {
+    // Normally in TeX the spacing between variable names following each other directly
+    // is chosen to show that this is a multiplication.
+    // But any use of \mathit{} will change to ordinary text spacing which means we need
+    // to add a \, to show that we want to multiply the two long variable names.
+    if((text == wxT("*"))||(text == wxT("\xB7")))
+    {
+      // We have a hidden multiplication sign
+      if(
+        // This multiplication sign is between 2 cells
+        ((m_previous != NULL)&&(m_next != NULL)) &&
+        // These cells are two variable names
+        ((m_previous->GetStyle() == TS_VARIABLE) && (m_next->GetStyle() == TS_VARIABLE)) &&
+        // The variable name prior to this cell has no subscript
+        (!(m_previous->ToString().Contains(wxT('_')))) &&
+        // we will be using \mathit{} for the TeX outout.
+        ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
+        )
+        text=wxT("\\,");
+      else
+      text = wxEmptyString;        
+    }
+    else
+      text = wxEmptyString;
+  }
   else
   {
     /*
@@ -500,8 +524,8 @@ wxString TextCell::ToTeX()
     
     if (m_SuppressMultiplicationDot)
     {
-      text.Replace(wxT("*"),wxEmptyString);
-      text.Replace(wxT("\xB7"),wxEmptyString);
+      text.Replace(wxT("*"),wxT("\\,"));
+      text.Replace(wxT("\xB7"),wxT("\\,"));
     }
     else
     {
@@ -520,11 +544,10 @@ wxString TextCell::ToTeX()
           text.Replace(wxT("\xB7"),wxT("\\cdot"));
         }
       }
-      return text;
     }
   }
   
-  if (m_textStyle == TS_GREEK_CONSTANT)
+  if (GetStyle() == TS_GREEK_CONSTANT)
   {
     if (text[0] != '%')
       return wxT("\\") + text;
@@ -532,7 +555,7 @@ wxString TextCell::ToTeX()
       return text;
   }
   
-  if (m_textStyle == TS_SPECIAL_CONSTANT)
+  if (GetStyle() == TS_SPECIAL_CONSTANT)
   {
     if (text == wxT("inf"))
       return wxT("\\infty ");
@@ -546,7 +569,7 @@ wxString TextCell::ToTeX()
       return text;
   }
   
-  if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
+  if ((GetStyle() == TS_LABEL)||(GetStyle() == TS_USERLABEL))
   {
     wxString conditionalLinebreak;
     if(m_previous) conditionalLinebreak = wxT("\\]\n\\[");
@@ -555,23 +578,23 @@ wxString TextCell::ToTeX()
   }
   else
   {
-    if (m_textStyle == TS_FUNCTION)
+    if (GetStyle() == TS_FUNCTION)
     {
       if(text!=wxEmptyString)
         text = wxT("\\operatorname{") + text + wxT("}");
     }
-    else if (m_textStyle == TS_VARIABLE)
+    else if (GetStyle() == TS_VARIABLE)
     {
       if((text.Length() > 1)&&(text[1]!=wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
       text.Replace(wxT("%pi"),wxT("\\ensuremath{\\pi}"));
     }
-    else if (m_textStyle == TS_ERROR)
+    else if (GetStyle() == TS_ERROR)
     {
       if(text.Length() > 1)
         text = wxT("\\mbox{") + text + wxT("}");
     }
-    else if (m_textStyle == TS_DEFAULT)
+    else if (GetStyle() == TS_DEFAULT)
     {
       if(text.Length() > 2)
         text = wxT("\\mbox{") + text + wxT("}");
@@ -579,28 +602,28 @@ wxString TextCell::ToTeX()
   }
   
   if (
-    (m_textStyle != TS_FUNCTION) &&
-    (m_textStyle != TS_OUTDATED) &&
-    (m_textStyle != TS_VARIABLE) &&
-    (m_textStyle != TS_NUMBER)   &&
-    (m_textStyle != TS_GREEK_CONSTANT)   &&
-    (m_textStyle != TS_SPECIAL_CONSTANT)
+    (GetStyle() != TS_FUNCTION) &&
+    (GetStyle() != TS_OUTDATED) &&
+    (GetStyle() != TS_VARIABLE) &&
+    (GetStyle() != TS_NUMBER)   &&
+    (GetStyle() != TS_GREEK_CONSTANT)   &&
+    (GetStyle() != TS_SPECIAL_CONSTANT)
     )
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
   
-  if((m_textStyle == TS_DEFAULT)||(m_textStyle == TS_STRING))
+  if((GetStyle() == TS_DEFAULT)||(GetStyle() == TS_STRING))
   {
     if(text.Length()>1)
     {
       if(((m_forceBreakLine)||(m_breakLine)))
         //text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\")+text;
-      if(m_textStyle != TS_DEFAULT)
+      if(GetStyle() != TS_DEFAULT)
         text.Replace(wxT(" "), wxT("\\,"));
     }
   }
 
-  if ((m_textStyle == TS_LABEL)||(m_textStyle == TS_LABEL))
+  if ((GetStyle() == TS_LABEL)||(GetStyle() == TS_LABEL))
     text = text + wxT(" ");
   return text;
 }
@@ -624,7 +647,7 @@ wxString TextCell::ToMathML()
   }
   text.Replace(wxT("*"),  wxT("\xB7"));
       
-  switch(m_textStyle)
+  switch(GetStyle())
     {
     case TS_GREEK_CONSTANT:
       text = GetGreekStringUnicode();
@@ -632,7 +655,7 @@ wxString TextCell::ToMathML()
     {
       // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
       // support this currently => Commenting it out.
-      // if((m_textStyle == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+      // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
       //   text = wxT("&#2146;");
       bool keepPercent = true;
       wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
@@ -682,7 +705,7 @@ wxString TextCell::ToXML()
   wxString flags;
   if(m_isHidden)tag=_T("h");
     else
-      switch(m_textStyle)
+      switch(GetStyle())
 	{
 	case TS_GREEK_CONSTANT: tag=_T("g");break;
 	case TS_SPECIAL_CONSTANT: tag=_T("s");break;
@@ -697,10 +720,10 @@ wxString TextCell::ToXML()
 	default: tag=_T("t");
 	}
 
-  if((m_forceBreakLine)&&(m_textStyle!=TS_LABEL)&&(m_textStyle!=TS_USERLABEL))
+  if((m_forceBreakLine)&&(GetStyle()!=TS_LABEL)&&(GetStyle()!=TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
     
-  if(m_textStyle == TS_ERROR)
+  if(GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
     
   wxString xmlstring = m_text;
@@ -731,11 +754,11 @@ bool TextCell::IsShortNum()
 void TextCell::SetAltText(CellParser& parser)
 {
   m_altJs = m_alt = false;
-  if (m_textStyle == TS_DEFAULT)
+  if (GetStyle() == TS_DEFAULT)
     return ;
 
   /// Greek characters are defined in jsMath, Windows and Unicode
-  if (m_textStyle == TS_GREEK_CONSTANT)
+  if (GetStyle() == TS_GREEK_CONSTANT)
   {
     m_altJs = true;
     m_altJsText = GetGreekStringTeX();
@@ -928,7 +951,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L"\x2192");
 #endif
  /*
-  else if (m_textStyle == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
+  else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
     return wxString(L"\x2202");
   */
 

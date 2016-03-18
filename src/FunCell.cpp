@@ -149,7 +149,7 @@ wxString FunCell::ToTeX()
     ) 
     s = wxT("\\")+m_nameCell->ToString()+wxT("{")+m_argCell->ListToTeX()+wxT("}");
   else
-    s = wxT("\\operatorname{") + m_nameCell->ListToTeX() + wxT("}") + m_argCell->ListToTeX();
+    s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
         
   return s;
 }
