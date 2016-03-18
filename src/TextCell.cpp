@@ -540,8 +540,8 @@ wxString TextCell::ToTeX()
         }
         else
         {
-          text.Replace(wxT("*"),wxT("\\cdot"));
-          text.Replace(wxT("\xB7"),wxT("\\cdot"));
+          text.Replace(wxT("*"),wxT("\\cdot "));
+          text.Replace(wxT("\xB7"),wxT("\\cdot "));
         }
       }
     }
