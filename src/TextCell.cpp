@@ -574,7 +574,10 @@ wxString TextCell::ToTeX()
     wxString conditionalLinebreak;
     if(m_previous) conditionalLinebreak = wxT("\\]\n\\[");
     text.Trim(true);
-    text = conditionalLinebreak + wxT("\\tag{") + text.SubString(1,text.Length()-2) + wxT("}");
+    wxString label = text.SubString(1,text.Length()-2);
+    text = conditionalLinebreak + wxT("\n\\tag{") + label + wxT("}");
+    label.Replace(wxT("\\%"),wxT(""));
+    text += wxT("\\label{") + label + wxT("}\n");
   }
   else
   {
