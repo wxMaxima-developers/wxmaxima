@@ -471,7 +471,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
   text.Replace(wxT("_"), wxT("\\_ "));
   text.Replace(wxT("$"), wxT("\\$ "));
-  text.Replace(wxT("%"), wxT("\\% "));
+  text.Replace(wxT("%"), wxT("\\%{}"));
   text.Replace(wxT("&"), wxT("\\& "));
   text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
@@ -575,9 +575,9 @@ wxString TextCell::ToTeX()
     if(m_previous) conditionalLinebreak = wxT("\\]\n\\[");
     text.Trim(true);
     wxString label = text.SubString(1,text.Length()-2);
-    text = conditionalLinebreak + wxT("\n\\tag{") + label + wxT("}");
-    label.Replace(wxT("\\%"),wxT(""));
-    text += wxT("\\label{") + label + wxT("}\n");
+    text = conditionalLinebreak + wxT("\\tag{") + label + wxT("}");
+    label.Replace(wxT("\\%{}"),wxT(""));
+    text += wxT("\\label{") + label + wxT("}");
   }
   else
   {
