@@ -1064,7 +1064,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   }
   else
   {
-    cell = new TextCell(_(" << Expression too long to display! >>"));
+    cell = new TextCell(_(" << Expression longer than allowed by the configuration setting! >>"));
     cell->ForceBreakLine(true);
   }
   return cell;
