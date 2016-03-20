@@ -57,7 +57,10 @@ wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
   wxString exe = wxStandardPaths::Get().GetExecutablePath();
+  exe.Replace(wxT("wxmaxima/wxmaxima.exe"), wxT("bin/maxima.bat"));
+  exe.Replace(wxT("wxmaxima/wxMaxima.exe"), wxT("bin/maxima.bat"));
   exe.Replace(wxT("wxMaxima/wxmaxima.exe"), wxT("bin/maxima.bat"));
+  exe.Replace(wxT("wxMaxima/wxMaxima.exe"), wxT("bin/maxima.bat"));
   return exe;
 #elif defined __WXMAC__
   return wxT("/Applications/Maxima.app");
