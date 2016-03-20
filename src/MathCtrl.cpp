@@ -1625,6 +1625,7 @@ void MathCtrl::DeleteSelection()
     dynamic_cast<GroupCell*>(m_selectionEnd->GetParent())
     );
   TreeUndo_ClearRedoActionList();
+  m_selectionStart = m_selectionEnd = NULL;
 }
 
 void MathCtrl::DeleteCurrentCell()
