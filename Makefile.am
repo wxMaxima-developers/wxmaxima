@@ -87,8 +87,8 @@ wxMaxima.win: all
 	cp $(srcdir)/info/*.jpg  wxMaxima/help
 	cp $(srcdir)/info/*.png  wxMaxima/
 # Try to autodetect which libraries to ship with wxMaxima.
-	-cp `gcc -print-libgcc-file-name` wxMaxima
-	-cp `gcc -print-file-name=libstdc++.dll` wxMaxima
+#	-cp `gcc -print-libgcc-file-name` wxMaxima
+#	-cp `gcc -print-file-name=libstdc++.dll` wxMaxima
 if CHM
 	cp $(srcdir)/info/*.chm  wxMaxima/help
 else
