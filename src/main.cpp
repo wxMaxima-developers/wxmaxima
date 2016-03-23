@@ -175,6 +175,7 @@ bool MyApp::OnInit()
 	{
 	  wxFileName FileName=cmdLineParser.GetParam();
 	  FileName.MakeAbsolute();
+          
 	  wxString CanonicalFilename=FileName.GetFullPath();
 	  NewWindow(CanonicalFilename,batchmode);
 	}

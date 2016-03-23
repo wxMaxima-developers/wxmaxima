@@ -320,9 +320,9 @@ void ConfigDialogue::SetProperties()
 
   Dirstructure dirstruct;
 
-  if (wxFileExists(dirstruct.MaximaDefaultName()))
+  if (wxFileExists(dirstruct.MaximaDefaultLocation()))
   {
-    m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
+    m_maximaProgram->SetValue(dirstruct.MaximaDefaultLocation());
     m_maximaProgram->Enable(false);
     m_mpBrowse->Enable(false);
   }
@@ -331,7 +331,7 @@ void ConfigDialogue::SetProperties()
     if (mp.Length())
       m_maximaProgram->SetValue(mp);
     else
-      m_maximaProgram->SetValue(dirstruct.MaximaDefaultName());
+      m_maximaProgram->SetValue(dirstruct.MaximaDefaultLocation());
   }
   
   m_additionalParameters->SetValue(mc);
@@ -884,8 +884,7 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent& event)
 
   if (file.Length())
   {
-    if (file.Right(8) == wxT("wxmaxima") || file.Right(12) == wxT("wxmaxima.exe") ||
-        file.Right(12) == wxT("wxMaxima.exe"))
+    if (file.Right(8).Lower() == wxT("wxmaxima") || file.Right(12).Lower() == wxT("wxmaxima.exe"))
       wxMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter the path to Maxima program again."),
                    _("Error"),
                    wxOK|wxICON_ERROR);

@@ -22,6 +22,7 @@
 //
 
 #include "Dirstructure.h"
+#include <wx/filename.h>
 
 wxString Dirstructure::ResourcesDir()
 {
@@ -56,12 +57,15 @@ wxString Dirstructure::UserConfDir()
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  exe.Replace(wxT("wxmaxima/wxmaxima.exe"), wxT("bin/maxima.bat"));
-  exe.Replace(wxT("wxmaxima/wxMaxima.exe"), wxT("bin/maxima.bat"));
-  exe.Replace(wxT("wxMaxima/wxmaxima.exe"), wxT("bin/maxima.bat"));
-  exe.Replace(wxT("wxMaxima/wxMaxima.exe"), wxT("bin/maxima.bat"));
-  return exe;
+  wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
+  exe.MakeAbsolute();
+  wxString exeDir = exe.GetPathWithSep();
+  wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
+    wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
+
+  wxFileName maxima(maximapath);
+  maxima.MakeAbsolute();
+  return maxima.GetFullPath();
 #elif defined __WXMAC__
   return wxT("/Applications/Maxima.app");
 #else

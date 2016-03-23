@@ -108,15 +108,6 @@ public:
    */
   wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
   
-  //! The path maxima is found at by default.
-#if defined __WXMAC__
-  wxString MaximaDefaultName() {return wxT("/Applications/Maxima.app");}
-#elif defined __WXMSW__
-  wxString MaximaDefaultName() {return wxStandardPaths::Get().GetExecutablePath()+wxT("/bin/maxima.bat");}
-#else
-  wxString MaximaDefaultName() {return wxT("maxima");}
-#endif
-
   //! The path we pass to the operating system if we want it to locate maxima instead
   wxString MaximaDefaultLocation();
 
