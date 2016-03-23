@@ -563,8 +563,8 @@ wxString TextCell::ToTeX()
       return wxT("e");
     else if (text == wxT("%i"))
       return wxT("i");
-    else if (text == wxT("%pi"))
-      return wxT("\\pi ");
+    else if (text == wxT("\\%{}pi"))
+      return wxT("\\ensuremath{\\pi} ");
     else
       return text;
   }
@@ -590,7 +590,8 @@ wxString TextCell::ToTeX()
     {
       if((text.Length() > 1)&&(text[1]!=wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
-      text.Replace(wxT("%pi"),wxT("\\ensuremath{\\pi}"));
+      if (text == wxT("\\%{}pi"))
+        text = wxT("\\ensuremath{\\pi} ");
     }
     else if (GetStyle() == TS_ERROR)
     {
