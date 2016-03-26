@@ -74,6 +74,7 @@ wxXmlNode* MathParser::GetNextTag(wxXmlNode* node)
 
 MathParser::MathParser(wxString zipfile)
 {
+  m_workingDirectory = wxEmptyString;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
   m_highlight = false;
@@ -895,11 +896,25 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
 
         if (m_fileSystem) // loading from zip
           imageCell = new ImgCell(filename, false, m_fileSystem);
-        else if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
-          imageCell = new ImgCell(filename, true, NULL);
         else
-          imageCell = new ImgCell(filename, false, NULL);
+        {
+          if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
+            imageCell = new ImgCell(filename, true, NULL);
+          else
+          {
+            // This is the only case show_image() produces ergo this is the only
+            // case we might get a local path
 
+            if(
+              (!wxFileExists(filename)) &&
+              (wxFileExists(m_workingDirectory + wxT("/") + filename))
+              )
+              filename = m_workingDirectory + wxT("/") + filename;
+            
+            imageCell = new ImgCell(filename, false, NULL);
+          }
+        }
+        
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);
 

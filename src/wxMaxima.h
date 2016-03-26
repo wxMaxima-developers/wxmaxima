@@ -382,7 +382,6 @@ protected:
   wxPrintData* m_printData;
   bool m_closing;
   wxString m_openFile;
-  wxString m_currentFile;
   bool m_fileSaved;
   bool m_variablesOK;
   wxString m_chmhelpFile;

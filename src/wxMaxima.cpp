@@ -144,7 +144,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 
   m_closing = false;
   m_openFile = wxEmptyString;
-  m_currentFile = wxEmptyString;
   m_fileSaved = true;
   m_printData = NULL;
 
@@ -162,6 +161,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   UpdateRecentDocuments();
 
   m_console->m_findDialog = NULL;
+  m_console->m_currentFile = wxEmptyString;
   m_findData.SetFlags(wxFR_DOWN);
 
   m_console->SetFocus();
@@ -1285,6 +1285,9 @@ void wxMaxima::SetCWD(wxString file)
   // If maxima isn't connected we cannot do anything
   if(!m_client)
     return;
+
+  // Tell the math parser where to search for local files.
+  m_MParser.SetWorkingDirectory(wxFileName(file).GetPath());
   
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
@@ -1382,7 +1385,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   document->InsertGroupCells(tree); // this also recalculates
 
   if (clearDocument) {
-    m_currentFile = file;
+    m_console->m_currentFile = file;
     ResetTitle(true,true);
     document->SetSaved(true);
   }
@@ -1426,7 +1429,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   {
     document->ClearDocument();
 
-    m_currentFile = file;
+    m_console->m_currentFile = file;
     ResetTitle(true,true);
     document->SetSaved(true);
     document->Thaw();
@@ -1542,7 +1545,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   document->InsertGroupCells(tree); // this also recalculates
 
   if (clearDocument) {
-    m_currentFile = file;
+    m_console->m_currentFile = file;
     ResetTitle(true,true);
     document->SetSaved(true);
   }
@@ -1757,9 +1760,9 @@ void wxMaxima::SetupVariables()
              wxT("/share/wxMaxima/wxmathml\")"));
 #endif
 
-  if (m_currentFile != wxEmptyString)
+  if (m_console->m_currentFile != wxEmptyString)
   {
-    wxString filename(m_currentFile);
+    wxString filename(m_console->m_currentFile);
     
     SetCWD(filename);
   }
@@ -2143,10 +2146,10 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     wxPrinter printer(&printDialogData);
     wxString title(_("wxMaxima document")), suffix;
 
-    if (m_currentFile.Length())
+    if (m_console->m_currentFile.Length())
     {
       wxString suffix;
-      wxFileName::SplitPath(m_currentFile, NULL, NULL, &title, &suffix);
+      wxFileName::SplitPath(m_console->m_currentFile, NULL, NULL, &title, &suffix);
       title << wxT(".") << suffix;
     }
 
@@ -2332,7 +2335,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
   }
   
-  if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0))
+  if((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 
   if(m_console)m_console->TreeUndo_ClearBuffers();
@@ -2343,9 +2346,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   if(wxcd)
   {
     SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
-    if (m_currentFile != wxEmptyString)
+    if (m_console->m_currentFile != wxEmptyString)
     {
-      wxString filename(m_currentFile);
+      wxString filename(m_console->m_currentFile);
       SetCWD(filename);
     }
   }
@@ -2353,7 +2356,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
 bool wxMaxima::SaveFile(bool forceSave)
 {  
-  wxString file = m_currentFile;
+  wxString file = m_console->m_currentFile;
   wxString fileExt=wxT("wxmx");
   int ext=0;
   
@@ -2418,7 +2421,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     StatusSaveStart();
     config->Write(wxT("defaultExt"), wxT("wxmx"));
 
-    m_currentFile = file;
+    m_console->m_currentFile = file;
     m_lastPath = wxPathOnly(file);
     if (file.Right(5) == wxT(".wxmx")) {
       if (!m_console->ExportToWXMX(file))
@@ -2519,7 +2522,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
   break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
     m_console->m_keyboardInactive = true;
-    if((m_autoSaveIntervalExpired) && (m_currentFile.Length() > 0) && SaveNecessary())
+    if((m_autoSaveIntervalExpired) && (m_console->m_currentFile.Length() > 0) && SaveNecessary())
     {
       SaveFile(false);
       m_autoSaveIntervalExpired = false;
@@ -2529,7 +2532,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     break;
   case AUTO_SAVE_TIMER_ID:
     m_autoSaveIntervalExpired = true;
-    if((m_console->m_keyboardInactive) && (m_currentFile.Length() > 0) && SaveNecessary())
+    if((m_console->m_keyboardInactive) && (m_console->m_currentFile.Length() > 0) && SaveNecessary())
     {
       SaveFile(false);
 	
@@ -2606,7 +2609,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   case menu_export_html:
   {    
     // Determine a sane default file name;
-    wxString file = m_currentFile;
+    wxString file = m_console->m_currentFile;
 
     if (file.Length() == 0)
       file = _("untitled");
@@ -2802,9 +2805,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     if(wxcd)
     {
       SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
-      if (m_currentFile != wxEmptyString)
+      if (m_console->m_currentFile != wxEmptyString)
       {
-        wxString filename(m_currentFile);
+        wxString filename(m_console->m_currentFile);
         SetCWD(filename);
       }
     }
@@ -2850,7 +2853,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
     m_autoSaveInterval *= 60000;
 
-    if((m_autoSaveInterval > 10000) && (m_currentFile.Length() > 0 ))
+    if((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0 ))
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     else
       m_autoSaveTimer.Stop();
@@ -5455,7 +5458,7 @@ void wxMaxima::ResetTitle(bool saved,bool force)
   if ((saved != m_fileSaved)||(force))
   {
     m_fileSaved = saved;
-    if (m_currentFile.Length() == 0) {
+    if (m_console->m_currentFile.Length() == 0) {
 #ifndef __WXMAC__
       if (saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
@@ -5466,7 +5469,7 @@ void wxMaxima::ResetTitle(bool saved,bool force)
     else
     {
       wxString name, ext;
-      wxFileName::SplitPath(m_currentFile, NULL, NULL, &name, &ext);
+      wxFileName::SplitPath(m_console->m_currentFile, NULL, NULL, &name, &ext);
 #ifndef __WXMAC__
       if (m_fileSaved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
@@ -5481,15 +5484,15 @@ void wxMaxima::ResetTitle(bool saved,bool force)
 #if defined __WXMAC__
 #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-    if (m_currentFile != wxEmptyString)
-      SetRepresentedFilename(m_currentFile);
+    if (m_console->m_currentFile != wxEmptyString)
+      SetRepresentedFilename(m_console->m_currentFile);
 #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win,!saved);
-    if (m_currentFile != wxEmptyString)
+    if (m_console->m_currentFile != wxEmptyString)
     {
       FSRef fsref;
-      wxMacPathToFSRef(m_currentFile, &fsref);
+      wxMacPathToFSRef(m_console->m_currentFile, &fsref);
       HIWindowSetProxyFSRef(win, &fsref);
     }
 #endif
@@ -5651,7 +5654,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if (m_currentFile == wxEmptyString)
+  if (m_console->m_currentFile == wxEmptyString)
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
@@ -5671,7 +5674,7 @@ int wxMaxima::SaveDocumentP()
 	return wxID_NO;
 
     wxString ext;
-    wxFileName::SplitPath(m_currentFile, NULL, NULL, &file, &ext);
+    wxFileName::SplitPath(m_console->m_currentFile, NULL, NULL, &file, &ext);
     file += wxT(".") + ext;
   }
 

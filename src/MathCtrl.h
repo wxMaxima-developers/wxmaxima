@@ -430,6 +430,9 @@ private:
 
 
 public:
+  //! The name of the currently-opened file
+  wxString m_currentFile;
+
   /*! Make a few unicode characters interpretable by maxima.
     
     Does convert the not equal sign to a '#' and similar.

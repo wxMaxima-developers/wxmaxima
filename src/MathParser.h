@@ -44,10 +44,12 @@ class MathParser
 {
 public:
   MathParser(wxString zipfile = wxEmptyString);
+  void SetWorkingDirectory(wxString dir) {m_workingDirectory = dir;};
   ~MathParser();
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
 private:
+  wxString m_workingDirectory;
   /*! Get the next xml tag
 
     wxXmlNode can operate in two modes:
