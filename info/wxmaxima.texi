@@ -1018,29 +1018,31 @@ getting the following command:
 
 @section Plotting
 @subsection Can I make wxMaxima output both image files and embedded plots at once?
-It is possible to write a command that does do so
+It is easier to make it first generate the images and then import them again
+as the following two functions will do:
 @example
-     mydraw(name,[contents]):=
-     (
-         wxdraw(contents),
-         draw
-         (
-             append(    
-                 [
-                     terminal=pngcairo,
-                     file_name=name
-                 ],
-                 contents
-             )
-         )
-     );
+load("draw");
+pngdraw(name,[contents]):=
+(    
+    draw(
+        append(   
+            [
+                terminal=pngcairo,
+                dimensions=wxplot_size,
+                file_name=name
+            ],
+            contents
+        )
+    ),
+    show_image(printf(false,"~a.png",name))
+);
+pngdraw2d(name,[contents]):=
+    pngdraw(name,gr2d(contents));
+    
+pngdraw2d("Test",
+        explicit(sin(x),x,1,10)
+);
 @end example
-Using this command a file can be plotted in both ways by issuing the
-following command:
-@example
-     mydraw("filename",explicit(sin(x),x,1,10)$
-@end example
-
 @subsection Can I set the aspect ratio of a plot?
 Not directly using Maxima. But there are gnuplot commands for it:
 @example
