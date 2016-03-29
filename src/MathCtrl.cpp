@@ -6011,6 +6011,13 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         ScrollToCaret();
         UpdateTableOfContents();
         Refresh();
+        if(wrappedSearch)
+        {
+          wxMessageDialog dialog(this,
+                                 _("Wrapped search"),
+                                 wxEmptyString, wxCENTER | wxOK);
+          dialog.ShowModal();
+        }
         return true;
       }
     }
