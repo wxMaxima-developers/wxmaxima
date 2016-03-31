@@ -281,8 +281,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         }
       }
 
-      tmp->m_currentPoint.x = point.x;
-      tmp->m_currentPoint.y = point.y;
       if (tmp->DrawThisCell(parser, point))
         tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE));
       if (tmp->m_next != NULL) {
@@ -554,19 +552,8 @@ void MathCtrl::Recalculate(bool force)
   int d_fontsize = parser.GetDefaultFontSize();
   int m_fontsize = parser.GetMathFontSize();
 
-  wxPoint point;
-  point.x = MC_GROUP_LEFT_INDENT;
-  point.y = MC_BASE_INDENT ;
-
-  while (tmp != NULL) {
+  while (tmp != NULL)
     tmp->Recalculate(parser, d_fontsize, m_fontsize);
-    point.y += tmp->GetMaxCenter();
-    tmp->m_currentPoint.x = point.x;
-    tmp->m_currentPoint.y = point.y;
-    point.y += tmp->GetMaxDrop();
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-    point.y += MC_GROUP_SKIP;
-  }
   
   AdjustSize();
   // Re-calculate the table of contents
@@ -6013,7 +6000,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         Refresh();
         if(wrappedSearch)
         {
-          wxMessageDialog dialog(this,
+          wxMessageDialog dialog(m_findDialog,
                                  _("Wrapped search"),
                                  wxEmptyString, wxCENTER | wxOK);
           dialog.ShowModal();

@@ -446,6 +446,18 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
   }
 
   m_appendedCells = NULL;
+
+  if(m_previous == NULL)
+  {
+    m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+    m_currentPoint.y = MC_BASE_INDENT + GetMaxCenter();
+  }
+  else
+  {
+    m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+    m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+      GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+  }
 }
 
 // We assume that appended cells will be in a new line!
