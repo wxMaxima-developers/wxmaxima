@@ -281,8 +281,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         }
       }
 
-      tmp->m_currentPoint.x = point.x;
-      tmp->m_currentPoint.y = point.y;
+//      tmp->m_currentPoint.x = point.x;
+//      tmp->m_currentPoint.y = point.y;
       if (tmp->DrawThisCell(parser, point))
         tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE));
       if (tmp->m_next != NULL) {
