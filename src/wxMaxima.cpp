@@ -689,6 +689,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
+    m_process = NULL;
     if (!m_closing)
       m_console->m_evaluationQueue->Clear();
     // Inform the user that the evaluation queue is empty.
