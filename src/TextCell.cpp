@@ -361,12 +361,15 @@ wxString TextCell::ToString()
       for(int i=0;i<charsNeedingQuotes.Length();i++)
         text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
   }
-    break;
+  case TS_LABEL:
+  case TS_USERLABEL:
+    text = text.SubString(1,text.Length()-1);
+  break;
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
     break;
   }
-
+  
   return text;
 }
 
