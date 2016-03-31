@@ -553,8 +553,11 @@ void MathCtrl::Recalculate(bool force)
   int m_fontsize = parser.GetMathFontSize();
 
   while (tmp != NULL)
+  {
     tmp->Recalculate(parser, d_fontsize, m_fontsize);
-  
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+ 
   AdjustSize();
   // Re-calculate the table of contents
   UpdateTableOfContents();
