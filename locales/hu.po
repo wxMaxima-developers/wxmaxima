@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-29 17:40+0200\n"
+"POT-Creation-Date: 2016-03-31 08:25+0200\n"
 "PO-Revision-Date: 2015-09-10 14:35+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -617,7 +617,7 @@ msgstr "Böngészés"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hiba: Automatikus kiegészítési kérés ismeretlen típusú elemhez."
 
-#: ../src/MathCtrl.cpp:1750
+#: ../src/MathCtrl.cpp:1740
 msgid "Bug: Cell left but not entered."
 msgstr "Hiba: Cella elhagyása belépés nélkül."
 
@@ -629,23 +629,23 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1978
+#: ../src/MathCtrl.cpp:1968
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hiba: Kérdés merült fel, de nincs cella a válaszhoz"
 
-#: ../src/MathCtrl.cpp:5158
+#: ../src/MathCtrl.cpp:5148
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Hiba: Kérés egy munkalap kezdete előtti cella tartalmának megváltoztatására."
 
-#: ../src/MathCtrl.cpp:5229
+#: ../src/MathCtrl.cpp:5219
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr "Hiba: Kérés egy munkalap kezdete előtti cella törlésére."
 
-#: ../src/MathCtrl.cpp:5198
+#: ../src/MathCtrl.cpp:5188
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -659,14 +659,14 @@ msgstr ""
 "Hiba: a matematika cella azt állítja, hogy nem tartozik egyetlen "
 "cellacsoporthoz sem."
 
-#: ../src/MathCtrl.cpp:1793
+#: ../src/MathCtrl.cpp:1783
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 "Hiba: Egy sorban két kérés érkezett összefűzés elkezdésére vagy befejezésére."
 
-#: ../src/MathCtrl.cpp:1760
+#: ../src/MathCtrl.cpp:1750
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 
@@ -676,13 +676,13 @@ msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 "Hiba: Megkísérelte elmenti egy cella tartalmának változását cella nélkül. "
 
-#: ../src/MathCtrl.cpp:504
+#: ../src/MathCtrl.cpp:502
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Hiba: A Maxima kimenetét megkísérelte hozzáfűzni egy munkalapon kívüli "
 "cellához."
 
-#: ../src/MathCtrl.cpp:1692
+#: ../src/MathCtrl.cpp:1682
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -690,28 +690,28 @@ msgstr ""
 "Hiba: Kísérlet különálló cellák összevonására, melyek között további cellák "
 "vannak."
 
-#: ../src/MathCtrl.cpp:5789
+#: ../src/MathCtrl.cpp:5779
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr "Hiba: Vízszintes kurzort nem lehet egy csoportcellába helyezni."
 
-#: ../src/MathCtrl.cpp:1762
+#: ../src/MathCtrl.cpp:1752
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Hiba: Megkísérelte elmenti egy cella tartalmának változását cella nélkül. "
 
-#: ../src/MathCtrl.cpp:1332
+#: ../src/MathCtrl.cpp:1322
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Hiba: Kijelölést kísérelt meg egy cellában, annak kijelölése nélkül. "
 
-#: ../src/MathCtrl.cpp:5199
+#: ../src/MathCtrl.cpp:5189
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hiba: Visszavonási esemény cella tartalmának változásához és cella "
 "hozzáadásához"
 
-#: ../src/MathCtrl.cpp:5163 ../src/MathCtrl.cpp:5234 ../src/MathCtrl.cpp:5268
+#: ../src/MathCtrl.cpp:5153 ../src/MathCtrl.cpp:5224 ../src/MathCtrl.cpp:5258
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
@@ -929,7 +929,7 @@ msgstr "Vesszővel válassza el az x koordinátákat"
 msgid "Comma separated y coordinates"
 msgstr "Vesszővel válassza el az y koordinátákat"
 
-#: ../src/MathCtrl.cpp:977
+#: ../src/MathCtrl.cpp:967
 msgid "Comment Selection"
 msgstr "Megjegyzés kiválasztása"
 
@@ -1062,8 +1062,8 @@ msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítá
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvény  exponenciális formává alakítása"
 
-#: ../src/MathCtrl.cpp:868 ../src/MathCtrl.cpp:881 ../src/MathCtrl.cpp:925
-#: ../src/MathCtrl.cpp:971 ../src/ToolBar.cpp:136
+#: ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871 ../src/MathCtrl.cpp:915
+#: ../src/MathCtrl.cpp:961 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Másolás"
 
@@ -1075,11 +1075,11 @@ msgstr "E&lőző bemenet másolása\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "E&lőző kimenet másolása\tCtrl-U"
 
-#: ../src/MathCtrl.cpp:884 ../src/MathCtrl.cpp:929 ../src/wxMaximaFrame.cpp:486
+#: ../src/MathCtrl.cpp:874 ../src/MathCtrl.cpp:919 ../src/wxMaximaFrame.cpp:486
 msgid "Copy as Image"
 msgstr "Másolás képként"
 
-#: ../src/MathCtrl.cpp:882 ../src/MathCtrl.cpp:926 ../src/wxMaximaFrame.cpp:479
+#: ../src/MathCtrl.cpp:872 ../src/MathCtrl.cpp:916 ../src/wxMaximaFrame.cpp:479
 msgid "Copy as LaTeX"
 msgstr "&LaTeX másolás"
 
@@ -1088,7 +1088,7 @@ msgstr "&LaTeX másolás"
 msgid "Copy as MathML"
 msgstr "Másolás képként"
 
-#: ../src/MathCtrl.cpp:883 ../src/MathCtrl.cpp:927
+#: ../src/MathCtrl.cpp:873 ../src/MathCtrl.cpp:917
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1134,7 +1134,7 @@ msgstr "Kurzor"
 msgid "Custom symbols sidebar glyphs:"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:970 ../src/ToolBar.cpp:133
+#: ../src/MathCtrl.cpp:960 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -1217,7 +1217,7 @@ msgstr "Törlés"
 msgid "Delete F&unction..."
 msgstr "Fü&ggvény törlése..."
 
-#: ../src/MathCtrl.cpp:887 ../src/MathCtrl.cpp:932
+#: ../src/MathCtrl.cpp:877 ../src/MathCtrl.cpp:922
 msgid "Delete Selection"
 msgstr "Kijelölt rész törlése"
 
@@ -1281,7 +1281,7 @@ msgstr "Differenciálás"
 msgid "Differentiate expression"
 msgstr "Kifejezés differenciálása"
 
-#: ../src/MathCtrl.cpp:948
+#: ../src/MathCtrl.cpp:938
 msgid "Differentiate..."
 msgstr "Differenciálás..."
 
@@ -1313,7 +1313,7 @@ msgstr "Megjeleníti mennyi idő alatt fut le az eljárás"
 msgid "Divide"
 msgstr "Osztás"
 
-#: ../src/MathCtrl.cpp:979 ../src/wxMaximaFrame.cpp:607
+#: ../src/MathCtrl.cpp:969 ../src/wxMaximaFrame.cpp:607
 msgid "Divide Cell"
 msgstr "Cella kettéosztása"
 
@@ -1481,7 +1481,7 @@ msgstr "&Minden cella újraszámolása\tCtrl-Shift-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "&Minden látható cella újraszámolása\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:890 ../src/wxMaximaFrame.cpp:557
+#: ../src/MathCtrl.cpp:880 ../src/wxMaximaFrame.cpp:557
 msgid "Evaluate Cell(s)"
 msgstr "C&ellák újraszámolása"
 
@@ -1489,19 +1489,19 @@ msgstr "C&ellák újraszámolása"
 msgid "Evaluate Cells above this point\tCtrl-Shift-P"
 msgstr "Az aktuális hely feletti cellák újraszámolása\tCtrl-Shift-P"
 
-#: ../src/MathCtrl.cpp:904 ../src/MathCtrl.cpp:998
+#: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:909 ../src/MathCtrl.cpp:1000
+#: ../src/MathCtrl.cpp:899 ../src/MathCtrl.cpp:990
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:919 ../src/MathCtrl.cpp:1004
+#: ../src/MathCtrl.cpp:909 ../src/MathCtrl.cpp:994
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:914 ../src/MathCtrl.cpp:1002
+#: ../src/MathCtrl.cpp:904 ../src/MathCtrl.cpp:992
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1554,7 +1554,7 @@ msgstr "Felbont"
 msgid "Expand (tr)"
 msgstr "Felbont (tr)"
 
-#: ../src/MathCtrl.cpp:944
+#: ../src/MathCtrl.cpp:934
 msgid "Expand Expression"
 msgstr "Kifejezés felbontása"
 
@@ -1637,7 +1637,7 @@ msgstr "Faktorizál"
 msgid "Factor Complex"
 msgstr "K&omplex faktorizáció"
 
-#: ../src/MathCtrl.cpp:943
+#: ../src/MathCtrl.cpp:933
 msgid "Factor Expression"
 msgstr "Kifejezés faktorizálása"
 
@@ -1657,7 +1657,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: ../src/GroupCell.cpp:1453
+#: ../src/GroupCell.cpp:1465
 #, c-format
 msgid "Figure %d:"
 msgstr "%d. ábra:"
@@ -1703,7 +1703,7 @@ msgstr "&Határérték számolása..."
 msgid "Find Minimum..."
 msgstr "&Minimum keresése..."
 
-#: ../src/MathCtrl.cpp:940
+#: ../src/MathCtrl.cpp:930
 msgid "Find Root..."
 msgstr "Megoldás numerikusan..."
 
@@ -1944,7 +1944,7 @@ msgstr "Komplex kifejezés képzetes része"
 msgid "Get the real part of complex expression"
 msgstr "Komplex kifejezés valós része"
 
-#: ../src/MathCtrl.cpp:5248
+#: ../src/MathCtrl.cpp:5238
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2221,15 +2221,15 @@ msgstr "&Alfejezetcella beszúrása\tCtrl-4"
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "&Al-alfejezetcella beszúrása\tCtrl-5"
 
-#: ../src/MathCtrl.cpp:962
+#: ../src/MathCtrl.cpp:952
 msgid "Insert Section Cell"
 msgstr "&Fejezetcella beszúrása"
 
-#: ../src/MathCtrl.cpp:963
+#: ../src/MathCtrl.cpp:953
 msgid "Insert Subsection Cell"
 msgstr "&Alfejezetcella beszúrása"
 
-#: ../src/MathCtrl.cpp:964
+#: ../src/MathCtrl.cpp:954
 msgid "Insert Subsubsection Cell"
 msgstr "&Al-alfejezetcella beszúrása"
 
@@ -2237,11 +2237,11 @@ msgstr "&Al-alfejezetcella beszúrása"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "&Címcella beszúrása\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:960
+#: ../src/MathCtrl.cpp:950
 msgid "Insert Text Cell"
 msgstr "&Szövegcella beszúrása"
 
-#: ../src/MathCtrl.cpp:961
+#: ../src/MathCtrl.cpp:951
 msgid "Insert Title Cell"
 msgstr "&Címcella beszúrása"
 
@@ -2306,7 +2306,7 @@ msgstr "Függvény integrálása"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
-#: ../src/MathCtrl.cpp:947 ../src/wxMaximaFrame.cpp:1164
+#: ../src/MathCtrl.cpp:937 ../src/wxMaximaFrame.cpp:1164
 msgid "Integrate..."
 msgstr "Integrál..."
 
@@ -2654,7 +2654,7 @@ msgstr "Átlag:"
 msgid "Median..."
 msgstr "Medián..."
 
-#: ../src/MathCtrl.cpp:893 ../src/wxMaximaFrame.cpp:605
+#: ../src/MathCtrl.cpp:883 ../src/wxMaximaFrame.cpp:605
 msgid "Merge Cells"
 msgstr "Cellák egyesítése"
 
@@ -2838,7 +2838,7 @@ msgstr "Egymintás t-próba"
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
-#: ../src/ConfigDialogue.cpp:629 ../src/main.cpp:261 ../src/ToolBar.cpp:115
+#: ../src/ConfigDialogue.cpp:629 ../src/ToolBar.cpp:115 ../src/main.cpp:261
 #: ../src/wxMaxima.cpp:2586
 msgid "Open"
 msgstr "Megnyitás"
@@ -2948,7 +2948,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "A dokumentum egyes részei nem töltődtek be!"
 
-#: ../src/MathCtrl.cpp:957 ../src/MathCtrl.cpp:972 ../src/ToolBar.cpp:139
+#: ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -3009,7 +3009,7 @@ msgstr "Kétdimenziós ábrázolás"
 msgid "Plot 2D..."
 msgstr "2D..."
 
-#: ../src/MathCtrl.cpp:950
+#: ../src/MathCtrl.cpp:940
 msgid "Plot 2d..."
 msgstr "2d-s ábrázolás..."
 
@@ -3021,7 +3021,7 @@ msgstr "Háromdimenziós ábrázolás"
 msgid "Plot 3D..."
 msgstr "3D..."
 
-#: ../src/MathCtrl.cpp:951
+#: ../src/MathCtrl.cpp:941
 msgid "Plot 3d..."
 msgstr "3d-s ábrázolás..."
 
@@ -3190,7 +3190,7 @@ msgstr "A Maxima újraindítása"
 msgid "Restart maxima"
 msgstr "A Maxima újraindítása"
 
-#: ../src/MathCtrl.cpp:3861
+#: ../src/MathCtrl.cpp:3851
 msgid "Result"
 msgstr "Eredmény"
 
@@ -3243,7 +3243,7 @@ msgstr "Minta:"
 msgid "Save"
 msgstr "Mentés"
 
-#: ../src/MathCtrl.cpp:871
+#: ../src/MathCtrl.cpp:861
 msgid "Save Animation..."
 msgstr "Animáció mentése..."
 
@@ -3255,7 +3255,7 @@ msgstr "Mentés másként"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Men&tés másként...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:869
+#: ../src/MathCtrl.cpp:859
 msgid "Save Image..."
 msgstr "Kép mentése..."
 
@@ -3362,7 +3362,7 @@ msgid ""
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:958 ../src/MathCtrl.cpp:974
+#: ../src/MathCtrl.cpp:948 ../src/MathCtrl.cpp:964
 msgid "Select All"
 msgstr "Cellatartalom kijelölése"
 
@@ -3575,7 +3575,7 @@ msgstr "Egysz. (r)"
 msgid "Simplify (tr)"
 msgstr "Egysz. (tr)"
 
-#: ../src/MathCtrl.cpp:942
+#: ../src/MathCtrl.cpp:932
 msgid "Simplify Expression"
 msgstr "Kifejezés egyszerűsítése"
 
@@ -3698,7 +3698,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
-#: ../src/MathCtrl.cpp:939 ../src/wxMaximaFrame.cpp:1161
+#: ../src/MathCtrl.cpp:929 ../src/wxMaximaFrame.cpp:1161
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -3725,7 +3725,7 @@ msgstr "Különleges"
 msgid "Special constants"
 msgstr "Különleges állandó"
 
-#: ../src/MathCtrl.cpp:872
+#: ../src/MathCtrl.cpp:862
 msgid "Start Animation"
 msgstr "Animáció indítása"
 
@@ -3799,7 +3799,7 @@ msgstr "Behelyet...."
 msgid "Substitute"
 msgstr "Behelyettesítés"
 
-#: ../src/MathCtrl.cpp:945 ../src/wxMaximaFrame.cpp:878
+#: ../src/MathCtrl.cpp:935 ../src/wxMaximaFrame.cpp:878
 msgid "Substitute..."
 msgstr "&Behelyettesítés..."
 
@@ -3984,7 +3984,7 @@ msgstr "&Hosszú tizedestört"
 msgid "To &Float"
 msgstr "&Tizedestört"
 
-#: ../src/MathCtrl.cpp:937
+#: ../src/MathCtrl.cpp:927
 msgid "To Float"
 msgstr "Tizedestört"
 
@@ -4070,11 +4070,11 @@ msgstr "Fordították"
 msgid "Transpose a matrix"
 msgstr "Mátrix transzponálás"
 
-#: ../src/MathCtrl.cpp:5153
+#: ../src/MathCtrl.cpp:5143
 msgid "Trying to undo an action without starting cell."
 msgstr "Kísérlet egy esemény visszavonására cella nélkül."
 
-#: ../src/MathCtrl.cpp:5217
+#: ../src/MathCtrl.cpp:5207
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Kísérlet valaminek a visszavonására, de a visszavonandó ismeretlen."
 
@@ -4291,7 +4291,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6017
+#: ../src/MathCtrl.cpp:6007
 msgid "Wrapped search"
 msgstr ""
 
@@ -4440,12 +4440,12 @@ msgstr "[ mentetlen* ]"
 msgid "[%i digits]"
 msgstr "[%i számjegy]"
 
-#: ../src/MathCtrl.cpp:3828
+#: ../src/MathCtrl.cpp:3818
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animált diagram\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3938
+#: ../src/MathCtrl.cpp:3928
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animált diagram\" style=\"max-width:90%%;\" >"
