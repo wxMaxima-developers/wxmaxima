@@ -59,7 +59,7 @@ public:
    */
   void Update(MathCell* tree,GroupCell *pos);
   //! Get the nth Cell in the table of contents.
-  MathCell *GetCell(int index){return m_structure[index];}
+  MathCell *GetCell(int index);
 private:
   //! Update the displayed contents.
   void UpdateDisplay();

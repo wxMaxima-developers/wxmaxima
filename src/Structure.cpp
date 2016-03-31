@@ -133,6 +133,55 @@ void Structure::UpdateDisplay()
     m_displayedItems->Set(items);
 }
 
+MathCell *Structure::GetCell(int index)
+{
+  wxRegEx matcher;
+  int currentIndex = -1;
+  wxString regex = m_regex->GetValue();
+
+  if (regex != wxEmptyString)
+    matcher.Compile(regex);
+
+  for (unsigned int i=0; i<m_structure.size(); i++)
+  {
+    
+    wxString curr;
+    switch(dynamic_cast<GroupCell*>(m_structure[i])->GetGroupType())
+    {
+    case GC_TYPE_TITLE:
+      curr = m_structure[i]->ToString();
+      break;
+    case GC_TYPE_SECTION:
+      curr = wxT("  ") + m_structure[i]->ToString();
+      break;
+    case GC_TYPE_SUBSECTION:
+      curr = wxT("    ") + m_structure[i]->ToString();
+      m_structure[i]->ToString();
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      curr = wxT("      ") + m_structure[i]->ToString();
+	m_structure[i]->ToString();
+	break;
+    }
+    
+    // Respecting linebreaks doesn't make much sense here.
+    curr.Replace(wxT("\n"),wxT(" "));
+
+    if (regex.Length()>0)
+    {
+      if((matcher.IsValid())&&((matcher.Matches(curr))))
+        currentIndex ++;
+    }
+    
+    else
+      currentIndex ++;
+
+    if(currentIndex == index)
+      return m_structure[i];
+  }
+  return NULL;
+}
+
 void Structure::OnRegExEvent(wxCommandEvent &ev)
 {
   UpdateDisplay();

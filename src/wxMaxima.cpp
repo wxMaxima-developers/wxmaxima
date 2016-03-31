@@ -2353,6 +2353,11 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       SetCWD(filename);
     }
   }
+  if(m_console->m_structure)
+  {
+    m_console->m_scheduleUpdateToc = false;
+    m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+  }
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
@@ -5559,7 +5564,9 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 
 void wxMaxima::StructureDClick(wxCommandEvent& ev)
 {
-  m_console->SetHCaret(((GroupCell *)m_console->m_structure->GetCell(ev.GetSelection())->GetParent()));
+  GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_structure->GetCell(ev.GetSelection())->GetParent());
+  if(selection)
+    m_console->SetHCaret(selection);
   m_console->ScrollToCaret();
   m_console->SetFocus();
 }
