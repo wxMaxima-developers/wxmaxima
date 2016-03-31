@@ -364,7 +364,7 @@ wxString TextCell::ToString()
   case TS_LABEL:
   case TS_USERLABEL:
     if(text.Length()>2)
-      text = text.SubString(1,text.Length()-2);
+      text = text.SubString(1,text.Length()-3);
   break;
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
