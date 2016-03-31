@@ -5558,7 +5558,9 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 
 void wxMaxima::StructureDClick(wxCommandEvent& ev)
 {
-  m_console->ScrollToCell(((GroupCell *)m_console->m_structure->GetCell(ev.GetSelection())->GetParent()));
+  m_console->SetHCaret(((GroupCell *)m_console->m_structure->GetCell(ev.GetSelection())->GetParent()));
+  m_console->ScrollToCaret();
+  m_console->SetFocus();
 }
 
 //! Called when the "Scroll to currently evaluated" button is pressed.
