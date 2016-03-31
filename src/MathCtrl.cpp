@@ -1961,6 +1961,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   if (renumber)
     NumberSections();
 
+  UpdateTableOfContents();
   Recalculate();
   Refresh();
 }
@@ -5560,6 +5561,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
   // Tell the undo functionality that the current paste action has finished now.
   TreeUndo_MergeSubsequentEdits(false);
   UpdateMLast();
+  UpdateTableOfContents();
 }
 
 void MathCtrl::SelectAll()
