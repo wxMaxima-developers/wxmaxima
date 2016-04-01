@@ -1177,8 +1177,8 @@ void wxMaxima::ReadPrompt(wxString &data)
   else
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
 
-  // Input prompts begin with (%i. Question prompts don't.
-  if (o.StartsWith(wxT("(%i")))
+  // Input prompts begin with (%. Question prompts don't.
+  if (o.StartsWith(wxT("(%")))
   {
     // Maxima displayed a new main prompt => We don't have a question
     m_console->QuestionAnswered();

@@ -26,10 +26,6 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-;; If the inchar changes wxMaxima no more knows how to recognize a input prompt
-;; => write-protect inchar.
-(setf (get '$inchar 'assign) 'neverset)
-
 (defvar $wxfilename "")
 (defvar $wxdirname "")
 
