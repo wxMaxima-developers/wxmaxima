@@ -189,7 +189,9 @@ wxMaxima::~wxMaxima()
 {
   if (m_client != NULL)
     m_client->Destroy();
-
+  m_client  = NULL;
+  m_process = NULL;
+  
   if (m_printData != NULL)
     delete m_printData;
 }
@@ -689,7 +691,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
-    m_process = NULL;
     if (!m_closing)
       m_console->m_evaluationQueue->Clear();
     // Inform the user that the evaluation queue is empty.
@@ -701,6 +702,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_pid = -1;
     m_client->Destroy();
     m_client = NULL;
+    m_process = NULL;
     m_isConnected = false;
     if (!m_closing)
     {
@@ -916,6 +918,7 @@ void wxMaxima::KillMaxima()
 {
   if(m_process)
     m_process->Detach();
+
   if (m_pid < 0)
   {
     if (m_inLispMode)
@@ -925,6 +928,8 @@ void wxMaxima::KillMaxima()
     return ;
   }
   wxProcess::Kill(m_pid, wxSIGKILL);
+  m_process = NULL;
+  m_client = NULL;
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
