@@ -27,7 +27,7 @@ git:
   depth: 3
 
 script: |
-  curl https://raw.githubusercontent.com/wxWidgets/wxWidgets/master/wxwin.m4 -o acinclude.m4 &&
+  cp .travis/wxwin.m4 acinclude.m4 &
   ./bootstrap &&
   ./configure &&
   make &&
