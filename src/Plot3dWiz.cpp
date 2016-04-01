@@ -62,7 +62,7 @@ Plot3DWiz::Plot3DWiz(wxWindow* parent, int id,
       _("default"),
       _("inline"),
       wxT("gnuplot"),
-      wxT("openmath")
+      wxT("xmaxima")
     };
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(150, -1), 4, combo_box_1_choices,
