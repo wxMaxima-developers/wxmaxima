@@ -946,6 +946,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   if (!m_closing)
   {
     SetStatusText(_("Maxima process terminated."), 1);
+    ConsoleAppend(wxT("\nMaxima has terminated unexpectedly.\n"),
+                  MC_TYPE_ERROR);
     m_console->m_evaluationQueue->Clear();
   }
   
