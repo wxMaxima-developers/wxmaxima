@@ -949,8 +949,11 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
-  //  delete m_process;
+  //  Mark sure that no debris from the current process remains.
   m_process = NULL;
+  m_client = NULL;
+  m_currentOutput = wxEmptyString;
+  m_console->QuestionAnswered();
 }
 
 void wxMaxima::CleanUp()
