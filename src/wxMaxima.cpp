@@ -944,8 +944,11 @@ void wxMaxima::KillMaxima()
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
+  {
     SetStatusText(_("Maxima process terminated."), 1);
-
+    m_console->m_evaluationQueue->Clear();
+  }
+  
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
