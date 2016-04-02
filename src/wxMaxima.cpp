@@ -704,6 +704,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_client = NULL;
     m_process = NULL;
     m_isConnected = false;
+    m_currentOutput = wxEmptyString;
+    m_console->QuestionAnswered();
     if (!m_closing)
     {
       if(m_unsuccessfullConnectionAttempts > 0)
@@ -742,6 +744,8 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
       tmp->Close();
       return;
     }
+    m_console->QuestionAnswered();
+    m_currentOutput = wxEmptyString;
     m_isConnected = true;
     m_client = m_server->Accept(false);
     m_client->SetEventHandler(*this, socket_client_id);
@@ -840,6 +844,7 @@ bool wxMaxima::StartMaxima(bool force)
       //    m_client->Close();
       m_isConnected = false;
       m_closing = true;
+      m_currentOutput = wxEmptyString;
     }
 
     m_console->QuestionAnswered();
@@ -930,6 +935,8 @@ void wxMaxima::KillMaxima()
   wxProcess::Kill(m_pid, wxSIGKILL);
   m_process = NULL;
   m_client = NULL;
+  m_currentOutput = wxEmptyString;
+  m_console->QuestionAnswered();
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
@@ -952,6 +959,8 @@ void wxMaxima::CleanUp()
     KillMaxima();
   if (m_isRunning)
     m_server->Destroy();
+  m_currentOutput = wxEmptyString;
+  m_console->QuestionAnswered();
 }
 
 ///--------------------------------------------------------------------------------

@@ -944,7 +944,8 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
             images.Add(token);
           }
         }
-        slideShow->LoadImages(images);
+        if(slideShow)
+          slideShow->LoadImages(images);
         tmp = slideShow;
       }
       else if (tagName == wxT("editor"))
