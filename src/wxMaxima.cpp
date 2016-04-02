@@ -921,14 +921,10 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
 
 void wxMaxima::KillMaxima()
 {
-  m_currentOutput = wxEmptyString;
-  m_console->QuestionAnswered();
   if(m_process)
     m_process->Detach();
-  else
-    return;
-  
-  if (m_pid > 0)
+
+  if (m_pid < 0)
   {
     if (m_inLispMode)
       SendMaxima(wxT("($quit)"));
@@ -936,29 +932,25 @@ void wxMaxima::KillMaxima()
       SendMaxima(wxT("quit();"));
     return ;
   }
-  wxProcess::Kill(m_pid, wxSIGKILL);
+  else
+      wxProcess::Kill(m_pid, wxSIGKILL);
+
   m_process = NULL;
   m_client = NULL;
+  m_currentOutput = wxEmptyString;
+  m_console->QuestionAnswered();
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
-  {
     SetStatusText(_("Maxima process terminated."), 1);
-    ConsoleAppend(wxT("\nMaxima has terminated unexpectedly.\n"),
-                  MC_TYPE_ERROR);
-    m_console->m_evaluationQueue->Clear();
-  }
-  
+
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
-  //  Mark sure that no debris from the current process remains.
+  //  delete m_process;
   m_process = NULL;
-  m_client = NULL;
-  m_currentOutput = wxEmptyString;
-  m_console->QuestionAnswered();
 }
 
 void wxMaxima::CleanUp()
