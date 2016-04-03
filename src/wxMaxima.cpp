@@ -700,7 +700,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
     m_pid = -1;
-    m_client->Destroy();
+    if(m_client != NULL)
+      m_client->Destroy();
     m_client = NULL;
     m_process = NULL;
     m_isConnected = false;
