@@ -936,7 +936,6 @@ void wxMaxima::KillMaxima()
       wxProcess::Kill(m_pid, wxSIGKILL);
 
   m_process = NULL;
-  m_client = NULL;
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
 }
