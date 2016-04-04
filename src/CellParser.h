@@ -97,6 +97,8 @@ public:
   wxString GetTeXCMEX() { return m_fontCMEX; }
   wxString GetTeXCMMI() { return m_fontCMMI; }
   wxString GetTeXCMTI() { return m_fontCMTI; }
+  void SetPrinter(bool printer) { m_printer = printer; }
+  bool GetPrinter() { return m_printer; }
 private:
   int m_indent;
   double m_scale;
@@ -115,6 +117,7 @@ private:
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
+  bool m_printer;
 };
 
 #endif // CELLPARSER_H

@@ -61,7 +61,6 @@ bool MathPrintout::OnPrintPage(int num)
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
 
-
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
 
@@ -93,6 +92,7 @@ bool MathPrintout::OnPrintPage(int num)
     CellParser parser(*dc, ppiScale);
 
     parser.SetIndent(marginX);
+    parser.SetPrinter(true);
 
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {

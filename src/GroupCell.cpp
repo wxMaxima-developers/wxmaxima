@@ -529,7 +529,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     //
     // Paint background if we have a text cell
     //
-    if (m_groupType == GC_TYPE_TEXT) {
+    if (m_groupType == GC_TYPE_TEXT && !parser.GetPrinter()) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
 
