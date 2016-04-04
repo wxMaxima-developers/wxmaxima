@@ -46,6 +46,8 @@ MathCell::MathCell()
   m_textStyle = TS_VARIABLE;
   m_SuppressMultiplicationDot = false;
   m_imageBorderWidth = 0;
+  m_currentPoint.x = -1;
+  m_currentPoint.y = -1;
 }
 
 /***
