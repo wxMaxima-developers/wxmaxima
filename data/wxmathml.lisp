@@ -1812,6 +1812,8 @@
     ($ldisp (cons (append '($matrix simp) mtrx) (cdr mat)))
     '$done))
 
+(putprop '$table_form t 'evfun)
+
 ;; Load the initial functions (from mac-init.mac)
 (let ((*print-circle* nil))
   (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
