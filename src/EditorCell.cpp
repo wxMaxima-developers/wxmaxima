@@ -2799,7 +2799,7 @@ void EditorCell::StyleText()
     
     if(m_firstLineOnly)
     {
-      size_t newlinepos = textToStyle.find(wxT("\nd"));
+      size_t newlinepos = textToStyle.Find(wxT("\nd"));
       if(newlinepos != wxNOT_FOUND)
       {
         textToStyle = textToStyle.Left(newlinepos) +
