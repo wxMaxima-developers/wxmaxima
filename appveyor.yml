@@ -15,5 +15,6 @@ build_script:
        cp .travis/wxwin.m4 acinclude.m4
        ./bootstrap
        ./configure
+       cat config.log
        make
       "@
