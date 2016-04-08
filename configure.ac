@@ -140,9 +140,15 @@ LDFLAGS="$_save_ldflags"
 dnl we have to setup rc compiling under 32-bit Windows
 if test x"${win32}" = x"true" ; then
    RC_OBJ="Resources.o"
-   wx_prefix=`$WX_CONFIG_NAME --prefix`
-   wx_release=`$WX_CONFIG_NAME --release`
-   WX_RC_PATH="${wx_prefix}/include/wx-${wx_release}"
+   WX_RC_PATH=""
+   for incpath in $WX_CXXFLAGS
+   do
+     case "$incpath" in
+       -I*)
+         WX_RC_PATH="$WX_RCP_PATH --include `echo \"$incpath\" | cut -c 3-`"
+         ;;
+     esac
+   done
 else
    RC_OBJ=""
    WX_RC_PATH=""
