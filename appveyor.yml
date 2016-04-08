@@ -5,6 +5,7 @@ install:
   - pacman -S --noconfirm pacman
   - pacman --sync --noconfirm base-devel
   - pacman --sync --noconfirm msys2-devel
+  - pacman --sync --noconfirm isl
   - pacman --sync --noconfirm mingw-w64-x86_64-toolchain
   - pacman --sync --noconfirm mingw-w64-x86_64-wxWidgets
   
