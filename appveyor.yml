@@ -3,8 +3,8 @@ install:
   - set MSYSTEM=MINGW64
   - pacman --sync --noconfirm base-devel
   - pacman --sync --noconfirm msys2-devel
-  - pacman --sync --noconfirm mingw-w64-i686-toolchain
-  - pacman --sync --noconfirm mingw-w64-i686-wxWidgets
+  - pacman --sync --noconfirm mingw-w64-x86_64-toolchain
+  - pacman --sync --noconfirm mingw-w64-x86_64-wxWidgets
   
 
 build_script:
