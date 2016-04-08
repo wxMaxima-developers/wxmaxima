@@ -145,7 +145,7 @@ if test x"${win32}" = x"true" ; then
    do
      case "$incpath" in
        -I*)
-         WX_RC_PATH="$WX_RCP_PATH --include `echo \"$incpath\" | cut -c 3-`"
+         WX_RC_PATH="$WX_RCP_PATH --include-dir `echo \"$incpath\" | cut -c 3-`"
          ;;
      esac
    done
