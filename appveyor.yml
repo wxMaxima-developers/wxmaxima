@@ -3,7 +3,6 @@ install:
   - set MSYSTEM=MINGW64
   - pacman -Sy --noconfirm pacman-mirrors
   - pacman -S --noconfirm pacman
-  - update-core
   - pacman --sync --noconfirm base-devel
   - pacman --sync --noconfirm msys2-devel
   - pacman --sync --noconfirm mingw-w64-x86_64-toolchain
