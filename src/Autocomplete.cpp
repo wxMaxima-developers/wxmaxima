@@ -53,9 +53,8 @@ bool AutoComplete::LoadSymbols(wxString file)
       m_wordList[command].Add(line.Mid(10));
     else if (line.StartsWith(wxT("TEMPLATE: ")))
       m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-      else if
-        (line.StartsWith(wxT("UNIT: ")))
-        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+    else if (line.StartsWith(wxT("UNIT: ")))
+      m_wordList[unit].Add(FixTemplate(line.Mid(6)));
   }
 
   index.Close();
@@ -180,7 +179,8 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
   {
     fun = fun.Mid(10);
     type = tmplte;
-  } else if (fun.StartsWith(wxT("UNIT: ")))
+  }
+  else if (fun.StartsWith(wxT("UNIT: ")))
   {
     fun = fun.Mid(6);
     type = unit;
