@@ -883,6 +883,7 @@ bool wxMaxima::StartMaxima(bool force)
       wxExecute(command, wxEXEC_ASYNC, m_process);
       m_input = m_process->GetInputStream();
       m_error = m_process->GetErrorStream();
+      m_lastPrompt = wxT("(%i1) ");
 
       SetStatusText(_("Maxima started. Waiting for connection..."), 1);
     }
