@@ -261,17 +261,20 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
   if (child)
   {
     MathCell *enumerator = ParseTag(child, false);
+    wxASSERT_LEVEL_2_MSG(enumerator != NULL,_wxT("Bug: Fraction without enumerator"));
     if(enumerator==NULL)
       return NULL;
     frac->SetNum(enumerator);
     child = GetNextTag(child);
     child = SkipWhitespaceNode(child);
+    wxASSERT_LEVEL_2_MSG(((child != NULL) && (enumerator != NULL)),_wxT("Bug: Fraction without enumerator"));
     if ((child != NULL) && (enumerator != NULL))
     {
       MathCell *denominator = ParseTag(child, false);
       if(denominator != NULL)
       {
         frac->SetDenom(denominator);
+        wxASSERT_LEVEL_2_MSG(enumerator != NULL,_wxT("Bug: Fraction without denominator"));
         frac->SetStyle(TS_VARIABLE);
         
         if(node->GetAttribute(wxT("line")) == wxT("no"))
@@ -287,8 +290,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
     }
   }
 
-  // The frac tag didn't have a child tag. TODO: Raise an assert in this
-  // case?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid frac tag"));
   delete frac;
   return NULL;
 }
@@ -339,8 +341,7 @@ MathCell* MathParser::ParseSupTag(wxXmlNode* node)
     }
   }
 
-  // SupTag without subscript => Return nothing. TODO: Raise an assert
-  // in this case?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sup tag"));
   delete expt;
   return NULL;
 }
@@ -372,8 +373,7 @@ MathCell* MathParser::ParseSubSupTag(wxXmlNode* node)
     }
   }
 
-  // subsup tag without super- or subscript => return nothing.
-  // TODO: Raise an assert in this case?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid subsup tag"));
   delete subsup;
   return NULL;
 }
@@ -404,8 +404,7 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
     }
   }
 
-  // subtag without subscript => Return nothing:
-  // TODO: Raise an assert?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sub tag"));
   delete sub;
   return NULL;
 }
@@ -429,6 +428,7 @@ MathCell* MathParser::ParseAtTag(wxXmlNode* node)
       return at;
     }
   }
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid at tag"));
   delete at;
   return NULL;
 }
@@ -451,8 +451,7 @@ MathCell* MathParser::ParseFunTag(wxXmlNode* node)
       return fun;
     }
   }
-  // Function tag without parameters => Return nothing.
-  // TODO: Raise an assert?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid function tag"));
   delete fun;
   return NULL;
 }
@@ -619,8 +618,7 @@ MathCell* MathParser::ParseLimitTag(wxXmlNode* node)
     }
   }
 
-  // Limit tag with out argument => Return nothing.
-  // TODO: Raise an assert?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid limit tag"));
   delete limit;
   return NULL;
 }
@@ -653,8 +651,7 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
       }
     }
   }
-  // Sum without nothing to sum up => Return nothing.
-  // TODO: Raise an assert?
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sum tag"));
   delete sum;
   return NULL;
 }
@@ -706,6 +703,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
       }
     }
   }
+  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid int tag"));
   delete in;
   return NULL;
 }
