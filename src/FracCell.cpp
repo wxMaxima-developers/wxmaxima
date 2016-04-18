@@ -357,15 +357,21 @@ void FracCell::SetupBreakUps()
     m_close1 = new TextCell(wxT(")"));
     m_open2 = new TextCell(wxT("("));
     m_close2 = new TextCell(wxT(")"));
-    if (!m_num->IsCompound())
+    if(m_num)
     {
-      m_open1->m_isHidden = true;
-      m_close1->m_isHidden = true;
+      if (!m_num->IsCompound())
+      {
+        m_open1->m_isHidden = true;
+        m_close1->m_isHidden = true;
+      }
     }
-    if (!m_denom->IsCompound())
+    if(m_denom)
     {
-      m_open2->m_isHidden = true;
-      m_close2->m_isHidden = true;
+      if (!m_denom->IsCompound())
+      {
+        m_open2->m_isHidden = true;
+        m_close2->m_isHidden = true;
+      }
     }
     m_divide = new TextCell(wxT("/"));
   }
