@@ -260,23 +260,30 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
   child = SkipWhitespaceNode(child);
   if (child)
   {
-    frac->SetNum(ParseTag(child, false));
+    MathCell *enumerator = ParseTag(child, false);
+    if(enumerator==NULL)
+      return NULL;
+    frac->SetNum(enumerator);
     child = GetNextTag(child);
-
-    if (child)
+    child = SkipWhitespaceNode(child);
+    if ((child != NULL) && (enumerator != NULL))
     {
-      frac->SetDenom(ParseTag(child, false));
-      frac->SetStyle(TS_VARIABLE);
-
-      if(node->GetAttribute(wxT("line")) == wxT("no"))
+      MathCell *denominator = ParseTag(child, false);
+      if(denominator != NULL)
       {
-        frac->SetFracStyle(FracCell::FC_CHOOSE);
+        frac->SetDenom(denominator);
+        frac->SetStyle(TS_VARIABLE);
+        
+        if(node->GetAttribute(wxT("line")) == wxT("no"))
+        {
+          frac->SetFracStyle(FracCell::FC_CHOOSE);
+        }
+        if(node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
+          frac->SetFracStyle(FracCell::FC_DIFF);
+        frac->SetType(m_ParserStyle);
+        frac->SetupBreakUps();
+        return frac;
       }
-      if(node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
-        frac->SetFracStyle(FracCell::FC_DIFF);
-      frac->SetType(m_ParserStyle);
-      frac->SetupBreakUps();
-      return frac;
     }
   }
 
