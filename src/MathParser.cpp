@@ -265,7 +265,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
       return NULL;
     frac->SetNum(enumerator);
     child = GetNextTag(child);
-
+    child = SkipWhitespaceNode(child);
     if ((child != NULL) && (enumerator != NULL))
     {
       MathCell *denominator = ParseTag(child, false);
