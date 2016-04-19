@@ -561,8 +561,6 @@ void MathCtrl::Recalculate(bool force)
   }
  
   AdjustSize();
-  // Re-calculate the table of contents
-  // UpdateTableOfContents();
 }
 
 /***
@@ -1176,6 +1174,25 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   Refresh();
   // Re-calculate the table of contents
   UpdateTableOfContents();
+}
+
+
+GroupCell *MathCtrl::FirstVisibleGC()
+{
+  wxPoint point;
+  CalcUnscrolledPosition(0, 0, &point.x, &point.y);
+  wxRect rect;
+  GroupCell * tmp = m_tree;
+
+  while (tmp != NULL) { // go through all groupcells
+    rect = tmp->GetRect();
+
+    if (point.y < rect.GetBottom() )
+      return tmp;
+    
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+  }
+  return NULL;
 }
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {

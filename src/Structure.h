@@ -61,6 +61,8 @@ public:
   //! Get the nth Cell in the table of contents.
   MathCell *GetCell(int index);
 private:
+  //! The last selected item
+  int m_lastSelection;
   //! Update the displayed contents.
   void UpdateDisplay();
   wxListBox *m_displayedItems;

@@ -294,6 +294,19 @@ void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)
   }
 }
 
+void MathCell::RecalculateList(CellParser& parser, int fontsize)
+{
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->RecalculateSize(parser, fontsize);
+      tmp->RecalculateWidths(parser, fontsize);
+      tmp=tmp->m_next;
+    }  
+}
+
+
 void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
 {
   MathCell *tmp=this;

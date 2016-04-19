@@ -2121,7 +2121,13 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
     if(m_console->m_structure)
     {
       m_console->m_scheduleUpdateToc = false;
-      m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+      GroupCell *cursorPos;
+      cursorPos = m_console->GetHCaret();
+      if((!m_console->HCaretActive())&&(cursorPos == m_console->GetLastCell()))
+      {
+        cursorPos = m_console->FirstVisibleGC();
+      }
+      m_console->m_structure->Update(m_console->GetTree(),cursorPos);
     }
   }
      

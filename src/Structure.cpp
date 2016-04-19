@@ -34,7 +34,8 @@ Structure::Structure(wxWindow* parent, int id) : wxPanel(parent, id)
 
   box->Add(m_displayedItems, 0, wxEXPAND | wxALL, 0);
   box->Add(m_regex, 0, wxEXPAND | wxALL, 1);
-
+  m_lastSelection = -1;
+  
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
@@ -48,7 +49,7 @@ Structure::~Structure()
 
 void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
 {
-  int selection = -1;
+  int selection = m_lastSelection;
   if(IsShown())
     {
       GroupCell* cell=  dynamic_cast<GroupCell*>(tree);
@@ -78,7 +79,12 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
       
       UpdateDisplay();
       if((selection >= 0)&&(m_displayedItems->GetSelection()!=selection))
+      {
+        if(m_displayedItems->GetCount()<selection)
+          selection = m_displayedItems->GetCount();
         m_displayedItems->SetSelection(selection);
+        m_lastSelection = selection;
+      }
     }
 }
 

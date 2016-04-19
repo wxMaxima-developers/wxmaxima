@@ -712,6 +712,9 @@ public:
   //! Is the caret (hcaret or vcaret) currently visible on the worksheet?
   bool CaretVisibleIs();
 
+  //! The first groupCell that is currently visible.
+  GroupCell *FirstVisibleGC();
+
   //! Scrolls to a point on the worksheet
   void ShowPoint(wxPoint point);
   void OnSetFocus(wxFocusEvent& event);
@@ -728,8 +731,15 @@ public:
   bool AnimationRunning() { return m_animate; }
   //! Tell if an animation should run running
   void AnimationRunning(bool state) { m_animate = state; }
+  //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
+  //! Informs the worksheet which GroupCell maxima is currently working in
   void SetWorkingGroup(GroupCell *group);
+  //! Returns the last cell of the worksheet
+  GroupCell *GetLastCell()
+    {
+      return m_last;
+    }
   bool IsSelectionInWorking();
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
   void SetDefaultHCaret();

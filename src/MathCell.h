@@ -278,6 +278,11 @@ public:
   virtual void RecalculateWidths(CellParser& parser, int fontsize);
   //! Marks all widths of this list as to be recalculated on query.
   void RecalculateWidthsList(CellParser& parser, int fontsize);
+  /*! Recalculate both width and height of this list of cells.
+
+    Is faster than a <code>RecalculateSizeList();RecalculateWidths();</code>.
+   */
+  void RecalculateList(CellParser& parser, int fontsize);
   //! Mark all cached size information as "to be calculated".
   void ResetData();
   //! Mark the cached height informations as "to be calculated".
