@@ -24,6 +24,11 @@
 
 #include "MathCell.h"
 
+/*! A Text cell
+
+  Everything on the worksheet that is composed of characters with the eception
+  of input cells: Input cells are handled by EditorCell instead.
+ */
 class TextCell : public MathCell
 {
 public:
