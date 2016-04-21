@@ -5041,7 +5041,10 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 void MathCtrl::Undo()
 {
   if(CanUndoInsideCell())
+  {
     UndoInsideCell();
+    RecalculateForce();
+  }
   else
   {
     if(CanTreeUndo())
