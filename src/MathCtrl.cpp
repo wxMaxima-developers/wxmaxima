@@ -5374,6 +5374,7 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
 }
 
 void MathCtrl::ShowPoint(wxPoint point) {
+  wxASSERT_MSG((point.x >=0) && (point.y >=0),wxT("Bug: Trying to scroll to a non-existing position!"));
   if (point.x == -1 || point.y == -1)
     return;
 
@@ -6118,14 +6119,6 @@ void MathCtrl::ScrollToCaret()
       wxClientDC dc(this);
       CellParser parser(dc);
       wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
-      if(point.y<1)
-      {
-        RecalculateForce();
-        ScrollToCell(GetActiveCell()->GetParent());
-        point = GetActiveCell()->PositionToPoint(parser, -1);
-        if(point.y<1)
-          point = GetActiveCell()->GetParent()->PositionToPoint(parser, -1);
-      }
       ShowPoint(point);
     }   
   }
