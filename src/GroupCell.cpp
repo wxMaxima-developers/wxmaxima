@@ -461,6 +461,8 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
   
   if(m_input)
     m_input->m_currentPoint = m_currentPoint;
+  if(GetEditable())
+    GetEditable()->m_currentPoint = m_currentPoint;
 }
 
 // We assume that appended cells will be in a new line!

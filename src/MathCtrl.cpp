@@ -6119,6 +6119,11 @@ void MathCtrl::ScrollToCaret()
       wxClientDC dc(this);
       CellParser parser(dc);
       wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
+      if(point.y==-1)
+      {
+        RecalculateForce();
+        point = GetActiveCell()->PositionToPoint(parser, -1);
+      }
       ShowPoint(point);
     }   
   }
