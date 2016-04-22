@@ -480,6 +480,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
   text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
   text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
+  text.Replace(wxT("\x27F6"), wxT("\\ensuremath{\\longrightarrow}"));
 #endif
 
 
@@ -953,6 +954,8 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxString(L"\x00AC");
   else if (m_text == wxT("->"))
     return wxString(L"\x2192");
+  else if (m_text == wxT("-->"))
+    return wxString(L"\x27F6");
 #endif
  /*
   else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))

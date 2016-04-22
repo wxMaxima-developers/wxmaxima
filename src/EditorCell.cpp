@@ -253,6 +253,7 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
   text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
   text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
+  text.Replace(wxT("\x27F6"), wxT("\\ensuremath{\\longrightarrow}"));
   return text;
 }
 
@@ -2076,6 +2077,8 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x219D";
   else if (txt == wxT("->"))
     return L"\x2192";
+  else if (txt == wxT("-->"))
+    return L"\x27F6";
 
   /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

@@ -1397,6 +1397,7 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   lowercase->Add(CharButton(panel,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x219D'),_("Leads to")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x2192'),_("Right arrow")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(panel,  wxT('\x27F6'),_("Long Right arrow")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
   vbox->Add(lowercase,0,style,border);
 
