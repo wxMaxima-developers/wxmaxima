@@ -329,18 +329,23 @@ MathCell* MathParser::ParseSupTag(wxXmlNode* node)
   if (child)
   {
     expt->SetBase(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
+    if(expt != NULL)
     {
-      MathCell* power = ParseTag(child, false);
-      power->SetExponentFlag();
-      expt->SetPower(power);
-      expt->SetType(m_ParserStyle);
-      expt->SetStyle(TS_VARIABLE);
-      return expt;
+      child = GetNextTag(child);
+      if (child)
+      {
+        MathCell* power = ParseTag(child, false);
+        if(power)
+        {
+          power->SetExponentFlag();
+          expt->SetPower(power);
+          expt->SetType(m_ParserStyle);
+          expt->SetStyle(TS_VARIABLE);
+          return expt;
+        }
+      }
     }
   }
-
   wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sup tag"));
   delete expt;
   return NULL;
@@ -1015,7 +1020,7 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
     }
     
-    if ((cell != NULL) &&(node->GetAttribute(wxT("altCopy"), &altCopy)))
+    if ((cell != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
       cell->SetAltCopyText(altCopy);
     
     node = GetNextTag(node);
