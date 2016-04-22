@@ -3845,6 +3845,14 @@ bool MathCtrl::ExportToHTML(wxString file) {
             line.Replace(wxT(">"), wxT("&gt;"));
             
             output<<wxT("\\[")<<line<<wxT("\\]\n");
+/*	The following is faster to render but not really there (April 2016):
+           - Firefox and Opera still don't print out equation numbers
+           - MathaJaX doesn't currently correct this
+           - And the combination of MathJaX and IE fails to display nice fractions.
+
+            wxString line = chunk->ListToMathML();            
+            output<<wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")<<line<<wxT("</math>\n");
+*/
           }
           else
           {
