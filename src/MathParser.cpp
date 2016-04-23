@@ -994,7 +994,11 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else
         cell->AppendCell(ParseText(node));
     }
-    
+
+    // The new cell may needing being equipped with a "altCopy" tag.
+    if ((cell != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
+      cell->SetAltCopyText(altCopy);
+
     if (cell != NULL)
     {
       // Append the new cell to the return value
@@ -1003,8 +1007,9 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else
         cell = cell->m_next;
     }
-    else if (warning)
+    else if ((warning) && (!all))
     {
+      // Tell the user we ran into problems.
       wxString name;
       name.Trim(true);
       name.Trim(false);
@@ -1017,9 +1022,6 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       }
     }
     
-    if ((cell != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
-      cell->SetAltCopyText(altCopy);
-
     if (!all)
       break;
     
