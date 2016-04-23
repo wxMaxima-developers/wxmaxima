@@ -995,9 +995,6 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         cell->AppendCell(ParseText(node));
     }
     
-    if (!all)
-      break;
-    
     if (cell != NULL)
     {
       // Append the new cell to the return value
@@ -1022,13 +1019,14 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
     
     if ((cell != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
       cell->SetAltCopyText(altCopy);
+
+    if (!all)
+      break;
     
     node = GetNextTag(node);
   }
   
-  if (retval != NULL)
-    return retval;
-  return cell;
+  return retval;
 }
 
 /***

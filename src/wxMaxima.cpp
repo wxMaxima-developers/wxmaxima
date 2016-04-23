@@ -354,7 +354,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
       }
       else {
 
-        // If the string doesn't begin with a <mth> we add the
+        // If the string does begin with a <mth> we add the
         // part of the string that precedes the <mth> to the console
         // first.
         wxString pre = s.SubString(0, start - 1);
