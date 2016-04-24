@@ -442,28 +442,25 @@ wxString IntCell::ToMathML()
 
 wxString IntCell::ToXML()
 {
-  MathCell* tmp = m_base;
-  wxString base = _T("<r>") + tmp->ListToXML() + _T("</r>");
-
-  tmp = m_var;
-  wxString var = ( tmp == NULL )? wxEmptyString : _T("<r>");
-  var += tmp->ListToXML();
-  var += ( var == wxEmptyString )? wxEmptyString : _T("</r>");
-
   wxString from;
-  tmp = m_under;
-  if(tmp  != NULL)
-    from = _T("<r>") + tmp->ListToXML() + _T("</r>");
-  else
-    from = _T("<r></r>");
-    
+  if(m_under != NULL)
+    from = m_under->ListToXML();
+  from = wxT("<r>")+from+wxT("</r>");
 
   wxString to;
-  tmp = m_over;
-  if(tmp  != NULL)
-    from = _T("<r>") + tmp->ListToXML() + _T("</r>");
-  else
-    from = _T("<r></r>");
+  if(m_over != NULL)
+    to = m_over->ListToXML();
+  to = wxT("<r>")+to+wxT("</r>");
+
+  wxString base;
+  if(m_base != NULL)
+    base = m_base->ListToXML();
+  base = wxT("<r>")+base+wxT("</r>");
+
+  wxString var;
+  if(m_var != NULL)
+    var = m_var->ListToXML();
+  var = wxT("<r>")+var+wxT("</r>");
 
   if (m_intStyle == INT_DEF)
     return wxT("<in>") + from + to + base + var + wxT("</in>");
