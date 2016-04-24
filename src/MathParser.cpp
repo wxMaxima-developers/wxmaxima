@@ -19,6 +19,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+#define wxDEBUG_LEVEL 2
+
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
@@ -261,20 +263,20 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
   if (child)
   {
     MathCell *enumerator = ParseTag(child, false);
-    wxASSERT_LEVEL_2_MSG(enumerator != NULL,_wxT("Bug: Fraction without enumerator"));
+    wxASSERT_LEVEL_2_MSG(enumerator != NULL,_("Bug: Fraction without enumerator"));
     if(enumerator==NULL)
       return NULL;
     frac->SetNum(enumerator);
     child = GetNextTag(child);
     child = SkipWhitespaceNode(child);
-    wxASSERT_LEVEL_2_MSG(((child != NULL) && (enumerator != NULL)),_wxT("Bug: Fraction without enumerator"));
+    wxASSERT_LEVEL_2_MSG(((child != NULL) && (enumerator != NULL)),_("Bug: Fraction without enumerator"));
     if ((child != NULL) && (enumerator != NULL))
     {
       MathCell *denominator = ParseTag(child, false);
       if(denominator != NULL)
       {
         frac->SetDenom(denominator);
-        wxASSERT_LEVEL_2_MSG(enumerator != NULL,_wxT("Bug: Fraction without denominator"));
+        wxASSERT_LEVEL_2_MSG(enumerator != NULL,_("Bug: Fraction without denominator"));
         frac->SetStyle(TS_VARIABLE);
         
         if(node->GetAttribute(wxT("line")) == wxT("no"))
@@ -667,8 +669,9 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   in->SetHighlight(m_highlight);
-  if (node->GetAttributes() == NULL)
+  if (node->GetAttribute(wxT("def"), wxT("true")) == wxT("false"))
   {
+    // A Definite integral
     in->SetIntStyle(IntCell::INT_DEF);
     if (child)
     {
@@ -695,6 +698,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   }
   else
   {
+    // A indefinite integral
     if (child)
     {
       in->SetBase(ParseTag(child, false));
