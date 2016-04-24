@@ -667,8 +667,28 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   in->SetHighlight(m_highlight);
-  if (node->GetAttribute(wxT("def"), wxT("true")) == wxT("false"))
+  wxString definiteAtt=node->GetAttribute(wxT("def"),wxT("true"));
+  std::cerr<<"Att="<<definiteAtt<<";\n";
+  if (definiteAtt != wxT("true"))
   {
+    std::cerr<<"Indefinite\n";
+    // A indefinite integral
+    if (child)
+    {
+      in->SetBase(ParseTag(child, false));
+      child = GetNextTag(child);
+      if (child)
+      {
+        in->SetVar(ParseTag(child, true));
+        in->SetType(m_ParserStyle);
+        in->SetStyle(TS_VARIABLE);
+        return in;
+      }
+    }
+  }
+  else
+  {
+    std::cerr<<"definite\n";
     // A Definite integral
     in->SetIntStyle(IntCell::INT_DEF);
     if (child)
@@ -694,22 +714,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
       }
     }
   }
-  else
-  {
-    // A indefinite integral
-    if (child)
-    {
-      in->SetBase(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        in->SetVar(ParseTag(child, true));
-        in->SetType(m_ParserStyle);
-        in->SetStyle(TS_VARIABLE);
-        return in;
-      }
-    }
-  }
+  
   wxASSERT_MSG(false,_("bug:Invalid int tag"));
   delete in;
   return NULL;
