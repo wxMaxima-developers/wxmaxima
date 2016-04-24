@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-22 07:04+0200\n"
+"POT-Creation-Date: 2016-04-24 16:25+0200\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/MathParser.cpp:1088
+#: ../src/MathParser.cpp:1097
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr "Ορισμός οριακών τιμών..."
 msgid "Abort evaluation on error"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:958 ../src/wxMaxima.cpp:4432
+#: ../src/wxMaxima.cpp:4432 ../src/wxMaximaFrame.cpp:958
 msgid "About"
 msgstr "Πληροφορίες για το wxMaxima"
 
@@ -616,6 +616,14 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
+#: ../src/MathParser.cpp:277
+msgid "Bug: Fraction without denominator"
+msgstr ""
+
+#: ../src/MathParser.cpp:264 ../src/MathParser.cpp:270
+msgid "Bug: Fraction without enumerator"
+msgstr ""
+
 #: ../src/MathCtrl.cpp:1988
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
@@ -665,7 +673,7 @@ msgid ""
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5811
+#: ../src/MathCtrl.cpp:5812
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -1045,8 +1053,8 @@ msgstr "Μετατροπή τριγωνομετρικής παράστασης �
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Μετατροπή τριγωνομετρικών συναρτήσεων σε εκθετική μορφή"
 
-#: ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871 ../src/MathCtrl.cpp:915
-#: ../src/MathCtrl.cpp:961 ../src/ToolBar.cpp:136
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871
+#: ../src/MathCtrl.cpp:915 ../src/MathCtrl.cpp:961
 msgid "Copy"
 msgstr "Αντιγραφή"
 
@@ -1119,7 +1127,7 @@ msgstr "Κέρσορας"
 msgid "Custom symbols sidebar glyphs:"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:960 ../src/ToolBar.cpp:133
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:960
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -1645,7 +1653,7 @@ msgstr "Παραγοντικά και Γάμμα"
 msgid "Fatal error"
 msgstr "Ολέθριο σφάλμα"
 
-#: ../src/GroupCell.cpp:1468
+#: ../src/GroupCell.cpp:1470
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Σχέδιο"
@@ -2914,14 +2922,14 @@ msgstr "Μερικά κλάσματα"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
 
-#: ../src/MathParser.cpp:1012
+#: ../src/MathParser.cpp:1023
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
 msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
 
-#: ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962 ../src/ToolBar.cpp:139
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962
 msgid "Paste"
 msgstr "Επικόλληση"
 
@@ -4202,7 +4210,7 @@ msgstr "Διακύμανση"
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1012 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
+#: ../src/MathParser.cpp:1023 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
 #: ../src/wxMaxima.cpp:1815
 msgid "Warning"
 msgstr "Προειδοποίηση"
@@ -4245,7 +4253,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6039
+#: ../src/MathCtrl.cpp:6040
 msgid "Wrapped search"
 msgstr ""
 
@@ -4386,7 +4394,7 @@ msgstr "Μεγέθυνση κατά 10%"
 msgid "Zoom out 10%"
 msgstr "Σμίκρυνση κατά 10%"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaximaFrame.cpp:260
 msgid "[ unsaved ]"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
@@ -4394,7 +4402,7 @@ msgstr "[ δεν έχει αποθηκευθεί ]"
 msgid "[ unsaved* ]"
 msgstr "[ δεν έχει αποθηκευθεί* ]"
 
-#: ../src/MathParser.cpp:484
+#: ../src/MathParser.cpp:489
 #, c-format
 msgid "[%i digits]"
 msgstr ""
@@ -4430,7 +4438,7 @@ msgstr ""
 msgid "both sides"
 msgstr "από τις δύο πλευρές"
 
-#: ../src/MathParser.cpp:431
+#: ../src/MathParser.cpp:436
 msgid "bug:Invalid at tag"
 msgstr ""
 
@@ -4438,31 +4446,31 @@ msgstr ""
 msgid "bug:Invalid frac tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:454
+#: ../src/MathParser.cpp:459
 msgid "bug:Invalid function tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:706
+#: ../src/MathParser.cpp:715
 msgid "bug:Invalid int tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:621
+#: ../src/MathParser.cpp:626
 msgid "bug:Invalid limit tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:407
+#: ../src/MathParser.cpp:412
 msgid "bug:Invalid sub tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:376
+#: ../src/MathParser.cpp:381
 msgid "bug:Invalid subsup tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:654
+#: ../src/MathParser.cpp:659
 msgid "bug:Invalid sum tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:344
+#: ../src/MathParser.cpp:349
 msgid "bug:Invalid sup tag"
 msgstr ""
 
@@ -4725,8 +4733,8 @@ msgstr ""
 msgid "unsaved"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
-#: ../src/wxMaximaFrame.cpp:262 ../src/wxMaxima.cpp:2398
-#: ../src/wxMaxima.cpp:2644
+#: ../src/wxMaxima.cpp:2398 ../src/wxMaxima.cpp:2644
+#: ../src/wxMaximaFrame.cpp:262
 msgid "untitled"
 msgstr "ανώνυμο"
 
@@ -4739,8 +4747,8 @@ msgstr "ανώνυμο"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
-#: ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504 ../src/wxMaxima.cpp:5507
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504
+#: ../src/wxMaxima.cpp:5507 ../src/wxMaximaFrame.cpp:260
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"

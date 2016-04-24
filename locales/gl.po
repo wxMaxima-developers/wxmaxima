@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-22 07:04+0200\n"
+"POT-Creation-Date: 2016-04-24 16:25+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <gl@li.org>\n"
@@ -74,7 +74,7 @@ msgstr "      -l <nome>"
 msgid " (Graphics) "
 msgstr " (Gráficos) "
 
-#: ../src/MathParser.cpp:1088
+#: ../src/MathParser.cpp:1097
 #, fuzzy
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
@@ -428,7 +428,7 @@ msgstr "&Condición inicial"
 msgid "Abort evaluation on error"
 msgstr "Interrupción do cálculo debido a erro"
 
-#: ../src/wxMaximaFrame.cpp:958 ../src/wxMaxima.cpp:4432
+#: ../src/wxMaxima.cpp:4432 ../src/wxMaximaFrame.cpp:958
 msgid "About"
 msgstr "A&cerca de..."
 
@@ -627,6 +627,14 @@ msgstr "Fallo: encontrado marcador final sen marcador de inicio."
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr "Fallo: encontrado fin de autocompleción sen inicio"
 
+#: ../src/MathParser.cpp:277
+msgid "Bug: Fraction without denominator"
+msgstr ""
+
+#: ../src/MathParser.cpp:264 ../src/MathParser.cpp:270
+msgid "Bug: Fraction without enumerator"
+msgstr ""
+
 #: ../src/MathCtrl.cpp:1988
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Fallo: pregunta sen cela asociada"
@@ -687,7 +695,7 @@ msgstr ""
 "Fallo: Intento de xuntar celas individuais nunha rexión do búffer de "
 "desfacer, pero no hai outras celas entre elas."
 
-#: ../src/MathCtrl.cpp:5811
+#: ../src/MathCtrl.cpp:5812
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -1057,8 +1065,8 @@ msgstr "Convirte expresión trigonométrica á forma canónica casi linear"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Convirte funcións trigonométricas á forma exponencial"
 
-#: ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871 ../src/MathCtrl.cpp:915
-#: ../src/MathCtrl.cpp:961 ../src/ToolBar.cpp:136
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871
+#: ../src/MathCtrl.cpp:915 ../src/MathCtrl.cpp:961
 msgid "Copy"
 msgstr "Copiar"
 
@@ -1130,7 +1138,7 @@ msgstr "Cursor"
 msgid "Custom symbols sidebar glyphs:"
 msgstr "Barra lateral de símbolos"
 
-#: ../src/MathCtrl.cpp:960 ../src/ToolBar.cpp:133
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:960
 msgid "Cut"
 msgstr "Cortar"
 
@@ -1647,7 +1655,7 @@ msgstr "Factoriais e &gamma"
 msgid "Fatal error"
 msgstr "Erro fatal"
 
-#: ../src/GroupCell.cpp:1468
+#: ../src/GroupCell.cpp:1470
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
@@ -2936,7 +2944,7 @@ msgstr "Fraccións simples"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Lectura do documento parcialmente correcta!"
 
-#: ../src/MathParser.cpp:1012
+#: ../src/MathParser.cpp:1023
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
@@ -2944,7 +2952,7 @@ msgstr ""
 "Partes do documento non se cargarán correctamente!\n"
 "Atopouse etiqueta XML descoñecida "
 
-#: ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962 ../src/ToolBar.cpp:139
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962
 msgid "Paste"
 msgstr "Pega"
 
@@ -4230,7 +4238,7 @@ msgstr "Varianza"
 msgid "View"
 msgstr "Ver"
 
-#: ../src/MathParser.cpp:1012 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
+#: ../src/MathParser.cpp:1023 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
 #: ../src/wxMaxima.cpp:1815
 msgid "Warning"
 msgstr "Aviso"
@@ -4277,7 +4285,7 @@ msgstr ""
 "Envolver ecuacións exportadas coa opción \"copiar como LaTeX\" entre "
 "corchetes como marcadores de ecuacións"
 
-#: ../src/MathCtrl.cpp:6039
+#: ../src/MathCtrl.cpp:6040
 msgid "Wrapped search"
 msgstr ""
 
@@ -4406,7 +4414,7 @@ msgstr "Disminuir 10%"
 msgid "Zoom out 10%"
 msgstr "Ampliar 10%"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaximaFrame.cpp:260
 msgid "[ unsaved ]"
 msgstr "[non gardado]"
 
@@ -4414,7 +4422,7 @@ msgstr "[non gardado]"
 msgid "[ unsaved* ]"
 msgstr "[non gardado*]"
 
-#: ../src/MathParser.cpp:484
+#: ../src/MathParser.cpp:489
 #, c-format
 msgid "[%i digits]"
 msgstr "[%i díxitos]"
@@ -4449,7 +4457,7 @@ msgstr "beta"
 msgid "both sides"
 msgstr "ambos os dous lados"
 
-#: ../src/MathParser.cpp:431
+#: ../src/MathParser.cpp:436
 msgid "bug:Invalid at tag"
 msgstr ""
 
@@ -4457,31 +4465,31 @@ msgstr ""
 msgid "bug:Invalid frac tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:454
+#: ../src/MathParser.cpp:459
 msgid "bug:Invalid function tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:706
+#: ../src/MathParser.cpp:715
 msgid "bug:Invalid int tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:621
+#: ../src/MathParser.cpp:626
 msgid "bug:Invalid limit tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:407
+#: ../src/MathParser.cpp:412
 msgid "bug:Invalid sub tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:376
+#: ../src/MathParser.cpp:381
 msgid "bug:Invalid subsup tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:654
+#: ../src/MathParser.cpp:659
 msgid "bug:Invalid sum tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:344
+#: ../src/MathParser.cpp:349
 msgid "bug:Invalid sup tag"
 msgstr ""
 
@@ -4737,8 +4745,8 @@ msgstr "unión"
 msgid "unsaved"
 msgstr "non gardado"
 
-#: ../src/wxMaximaFrame.cpp:262 ../src/wxMaxima.cpp:2398
-#: ../src/wxMaxima.cpp:2644
+#: ../src/wxMaxima.cpp:2398 ../src/wxMaxima.cpp:2644
+#: ../src/wxMaximaFrame.cpp:262
 msgid "untitled"
 msgstr "sen título"
 
@@ -4751,8 +4759,8 @@ msgstr "sen título %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
-#: ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504 ../src/wxMaxima.cpp:5507
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504
+#: ../src/wxMaxima.cpp:5507 ../src/wxMaximaFrame.cpp:260
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

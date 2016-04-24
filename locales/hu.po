@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-22 07:04+0200\n"
+"POT-Creation-Date: 2016-04-24 16:25+0200\n"
 "PO-Revision-Date: 2016-04-12 13:08+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -75,7 +75,7 @@ msgstr "      -l <név>"
 msgid " (Graphics) "
 msgstr "(Grafika)"
 
-#: ../src/MathParser.cpp:1088
+#: ../src/MathParser.cpp:1097
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr "<<A kifejezés hosszabb a beállításokban megengedettnél! >>"
 
@@ -427,7 +427,7 @@ msgstr "Ér&tékadás..."
 msgid "Abort evaluation on error"
 msgstr "Kiértékelés megszakítása hiba esetén "
 
-#: ../src/wxMaximaFrame.cpp:958 ../src/wxMaxima.cpp:4432
+#: ../src/wxMaxima.cpp:4432 ../src/wxMaximaFrame.cpp:958
 msgid "About"
 msgstr "Névjegy"
 
@@ -623,6 +623,14 @@ msgstr "Hiba: matematika mód végjel található nyitójel nélkül."
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr "Hiba: automatikus kiegészítési végjel található kezdőjel nélkül"
 
+#: ../src/MathParser.cpp:277
+msgid "Bug: Fraction without denominator"
+msgstr ""
+
+#: ../src/MathParser.cpp:264 ../src/MathParser.cpp:270
+msgid "Bug: Fraction without enumerator"
+msgstr ""
+
 #: ../src/MathCtrl.cpp:1988
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hiba: Kérdés merült fel, de nincs cella a válaszhoz"
@@ -682,7 +690,7 @@ msgstr ""
 "Hiba: Kísérlet különálló cellák összevonására, melyek között további cellák "
 "vannak."
 
-#: ../src/MathCtrl.cpp:5811
+#: ../src/MathCtrl.cpp:5812
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -1054,8 +1062,8 @@ msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítá
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvény  exponenciális formává alakítása"
 
-#: ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871 ../src/MathCtrl.cpp:915
-#: ../src/MathCtrl.cpp:961 ../src/ToolBar.cpp:136
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:858 ../src/MathCtrl.cpp:871
+#: ../src/MathCtrl.cpp:915 ../src/MathCtrl.cpp:961
 msgid "Copy"
 msgstr "Másolás"
 
@@ -1127,7 +1135,7 @@ msgstr "Kurzor"
 msgid "Custom symbols sidebar glyphs:"
 msgstr "Felhasználói szimbólumok oldalsáv betűképei:"
 
-#: ../src/MathCtrl.cpp:960 ../src/ToolBar.cpp:133
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:960
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -1646,7 +1654,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: ../src/GroupCell.cpp:1468
+#: ../src/GroupCell.cpp:1470
 #, c-format
 msgid "Figure %d:"
 msgstr "%d. ábra:"
@@ -2938,7 +2946,7 @@ msgstr "Parciális törtek"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "A dokumentum egyes részei nem töltődtek be!"
 
-#: ../src/MathParser.cpp:1012
+#: ../src/MathParser.cpp:1023
 msgid ""
 "Parts of the document will not be loaded correctly!\n"
 "Found unknown XML Tag name "
@@ -2946,7 +2954,7 @@ msgstr ""
 "A dokumentum egyes részei nem töltődnek be helyesen,\n"
 "mivel ismeretlen XML címkenevet tartalmaz"
 
-#: ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962 ../src/ToolBar.cpp:139
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -4251,7 +4259,7 @@ msgstr "Szórásnégyzet..."
 msgid "View"
 msgstr "Nézet"
 
-#: ../src/MathParser.cpp:1012 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
+#: ../src/MathParser.cpp:1023 ../src/wxMaxima.cpp:1543 ../src/wxMaxima.cpp:1638
 #: ../src/wxMaxima.cpp:1815
 msgid "Warning"
 msgstr "Figyelmeztetés"
@@ -4298,7 +4306,7 @@ msgid ""
 "as equation markers"
 msgstr "A \"LaTeX másolás\" \\[ és \\] jelek közé rakja a kifejezéseket."
 
-#: ../src/MathCtrl.cpp:6039
+#: ../src/MathCtrl.cpp:6040
 msgid "Wrapped search"
 msgstr "Csomagolt keresés"
 
@@ -4431,7 +4439,7 @@ msgstr "Nagyítás 10%-kal"
 msgid "Zoom out 10%"
 msgstr "Kicsinyítés 10%-kal"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaximaFrame.cpp:260
 msgid "[ unsaved ]"
 msgstr "[ mentetlen ]"
 
@@ -4439,7 +4447,7 @@ msgstr "[ mentetlen ]"
 msgid "[ unsaved* ]"
 msgstr "[ mentetlen* ]"
 
-#: ../src/MathParser.cpp:484
+#: ../src/MathParser.cpp:489
 #, c-format
 msgid "[%i digits]"
 msgstr "[%i számjegy]"
@@ -4474,7 +4482,7 @@ msgstr "béta"
 msgid "both sides"
 msgstr "két oldalról"
 
-#: ../src/MathParser.cpp:431
+#: ../src/MathParser.cpp:436
 msgid "bug:Invalid at tag"
 msgstr ""
 
@@ -4482,31 +4490,31 @@ msgstr ""
 msgid "bug:Invalid frac tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:454
+#: ../src/MathParser.cpp:459
 msgid "bug:Invalid function tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:706
+#: ../src/MathParser.cpp:715
 msgid "bug:Invalid int tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:621
+#: ../src/MathParser.cpp:626
 msgid "bug:Invalid limit tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:407
+#: ../src/MathParser.cpp:412
 msgid "bug:Invalid sub tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:376
+#: ../src/MathParser.cpp:381
 msgid "bug:Invalid subsup tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:654
+#: ../src/MathParser.cpp:659
 msgid "bug:Invalid sum tag"
 msgstr ""
 
-#: ../src/MathParser.cpp:344
+#: ../src/MathParser.cpp:349
 msgid "bug:Invalid sup tag"
 msgstr ""
 
@@ -4762,8 +4770,8 @@ msgstr "unió"
 msgid "unsaved"
 msgstr "mentetlen"
 
-#: ../src/wxMaximaFrame.cpp:262 ../src/wxMaxima.cpp:2398
-#: ../src/wxMaxima.cpp:2644
+#: ../src/wxMaxima.cpp:2398 ../src/wxMaxima.cpp:2644
+#: ../src/wxMaximaFrame.cpp:262
 msgid "untitled"
 msgstr "névtelen"
 
@@ -4776,8 +4784,8 @@ msgstr "névtelen %d"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5493
-#: ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504 ../src/wxMaxima.cpp:5507
+#: ../src/wxMaxima.cpp:5493 ../src/wxMaxima.cpp:5495 ../src/wxMaxima.cpp:5504
+#: ../src/wxMaxima.cpp:5507 ../src/wxMaximaFrame.cpp:260
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
