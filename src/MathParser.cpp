@@ -261,20 +261,20 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
   if (child)
   {
     MathCell *enumerator = ParseTag(child, false);
-    wxASSERT_LEVEL_2_MSG(enumerator != NULL,_("Bug: Fraction without enumerator"));
+    wxASSERT_MSG(enumerator != NULL,_("Bug: Fraction without enumerator"));
     if(enumerator==NULL)
       return NULL;
     frac->SetNum(enumerator);
     child = GetNextTag(child);
     child = SkipWhitespaceNode(child);
-    wxASSERT_LEVEL_2_MSG(((child != NULL) && (enumerator != NULL)),_("Bug: Fraction without enumerator"));
+    wxASSERT_MSG(((child != NULL) && (enumerator != NULL)),_("Bug: Fraction without enumerator"));
     if ((child != NULL) && (enumerator != NULL))
     {
       MathCell *denominator = ParseTag(child, false);
       if(denominator != NULL)
       {
         frac->SetDenom(denominator);
-        wxASSERT_LEVEL_2_MSG(enumerator != NULL,_("Bug: Fraction without denominator"));
+        wxASSERT_MSG(enumerator != NULL,_("Bug: Fraction without denominator"));
         frac->SetStyle(TS_VARIABLE);
         
         if(node->GetAttribute(wxT("line")) == wxT("no"))
@@ -290,7 +290,7 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
     }
   }
 
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid frac tag"));
+  wxASSERT_MSG(false,_("bug:Invalid frac tag"));
   delete frac;
   return NULL;
 }
@@ -346,7 +346,7 @@ MathCell* MathParser::ParseSupTag(wxXmlNode* node)
       }
     }
   }
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sup tag"));
+  wxASSERT_MSG(false,_("bug:Invalid sup tag"));
   delete expt;
   return NULL;
 }
@@ -378,7 +378,7 @@ MathCell* MathParser::ParseSubSupTag(wxXmlNode* node)
     }
   }
 
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid subsup tag"));
+  wxASSERT_MSG(false,_("bug:Invalid subsup tag"));
   delete subsup;
   return NULL;
 }
@@ -409,7 +409,7 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
     }
   }
 
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sub tag"));
+  wxASSERT_MSG(false,_("bug:Invalid sub tag"));
   delete sub;
   return NULL;
 }
@@ -433,7 +433,7 @@ MathCell* MathParser::ParseAtTag(wxXmlNode* node)
       return at;
     }
   }
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid at tag"));
+  wxASSERT_MSG(false,_("bug:Invalid at tag"));
   delete at;
   return NULL;
 }
@@ -456,7 +456,7 @@ MathCell* MathParser::ParseFunTag(wxXmlNode* node)
       return fun;
     }
   }
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid function tag"));
+  wxASSERT_MSG(false,_("bug:Invalid function tag"));
   delete fun;
   return NULL;
 }
@@ -623,7 +623,7 @@ MathCell* MathParser::ParseLimitTag(wxXmlNode* node)
     }
   }
 
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid limit tag"));
+  wxASSERT_MSG(false,_("bug:Invalid limit tag"));
   delete limit;
   return NULL;
 }
@@ -656,7 +656,7 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
       }
     }
   }
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid sum tag"));
+  wxASSERT_MSG(false,_("bug:Invalid sum tag"));
   delete sum;
   return NULL;
 }
@@ -710,7 +710,7 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
       }
     }
   }
-  wxASSERT_LEVEL_2_MSG(false,_("bug:Invalid int tag"));
+  wxASSERT_MSG(false,_("bug:Invalid int tag"));
   delete in;
   return NULL;
 }
