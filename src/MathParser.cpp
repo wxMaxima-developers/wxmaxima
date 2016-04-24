@@ -668,10 +668,8 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   child = SkipWhitespaceNode(child);
   in->SetHighlight(m_highlight);
   wxString definiteAtt=node->GetAttribute(wxT("def"),wxT("true"));
-  std::cerr<<"Att="<<definiteAtt<<";\n";
   if (definiteAtt != wxT("true"))
   {
-    std::cerr<<"Indefinite\n";
     // A indefinite integral
     if (child)
     {
@@ -688,7 +686,6 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   }
   else
   {
-    std::cerr<<"definite\n";
     // A Definite integral
     in->SetIntStyle(IntCell::INT_DEF);
     if (child)
