@@ -274,7 +274,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       {
         // Only actually clear the image cache if we did display the
         // image in the last step: Else it most probably isn't actually cached.
-        if((rect.GetBottom()<=m_lastBottom)||(rect.GetTop()>=m_lastTop))
+        if((rect.GetBottom()<=m_lastBottom-200)||(rect.GetTop()>=m_lastTop+200))
         {
           if(tmp->GetOutput())
             tmp->GetOutput()->ClearCacheList();
