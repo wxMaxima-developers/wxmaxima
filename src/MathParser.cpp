@@ -19,8 +19,6 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#define wxDEBUG_LEVEL 2
-
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
