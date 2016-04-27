@@ -1218,7 +1218,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       }
       m_isDirty = true;
       m_containsChanges = true;
-      if((cursorAtStartOfLine) &&(!autoIndent))
+      if(cursorAtStartOfLine)
         m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
     }
     break;
