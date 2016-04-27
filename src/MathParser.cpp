@@ -387,8 +387,7 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
 {
   SubCell *sub = new SubCell;
   wxXmlNode* child = node->GetChildren();
-  child = SkipWhitespaceNode(child);
-  
+  child = SkipWhitespaceNode(child);  
   if (child)
   {
     sub->SetBase(ParseTag(child, false));
@@ -405,6 +404,7 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
         return(NULL);
       sub->SetType(m_ParserStyle);
       sub->SetStyle(TS_VARIABLE);
+
       return sub;
     }
   }
@@ -979,6 +979,10 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
         tmp = ParseTag(node->GetChildren());
       }
 
+      // The new cell may needing being equipped with a "altCopy" tag.
+      if ((tmp != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
+        tmp->SetAltCopyText(altCopy);
+
       // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
       if(tmp != NULL)
       {
@@ -998,10 +1002,6 @@ MathCell* MathParser::ParseTag(wxXmlNode* node, bool all)
       else
         cell->AppendCell(ParseText(node));
     }
-
-    // The new cell may needing being equipped with a "altCopy" tag.
-    if ((cell != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
-      cell->SetAltCopyText(altCopy);
 
     if (cell != NULL)
     {

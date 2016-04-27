@@ -1596,7 +1596,6 @@ void ConfigDialogue::UpdateExample()
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent& event)
 {
-  std::cerr<<"Test\n";
   wxConfigBase* config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"),event.GetSelection());
 }
