@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-24 16:25+0200\n"
-"PO-Revision-Date: 2016-04-24 16:30+0200\n"
+"POT-Creation-Date: 2016-04-28 06:59+0200\n"
+"PO-Revision-Date: 2016-04-28 07:00+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -644,20 +644,20 @@ msgstr "Interner Fehler: Bruch ohne Zähler"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5184
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:5250
+#: ../src/MathCtrl.cpp:5255
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:5219
+#: ../src/MathCtrl.cpp:5224
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -701,7 +701,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:5812
+#: ../src/MathCtrl.cpp:5817
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -721,13 +721,13 @@ msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5220
+#: ../src/MathCtrl.cpp:5225
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:5184 ../src/MathCtrl.cpp:5255 ../src/MathCtrl.cpp:5289
+#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -1006,7 +1006,7 @@ msgstr ""
 msgid "Condition:"
 msgstr "Bedingung:"
 
-#: ../src/ConfigDialogue.cpp:1610 ../src/ConfigDialogue.cpp:1618
+#: ../src/ConfigDialogue.cpp:1609 ../src/ConfigDialogue.cpp:1617
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurationsdatei (*.ini)|*.ini"
 
@@ -1471,7 +1471,7 @@ msgstr "Gleichung:"
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/ConfigDialogue.cpp:889 ../src/Image.cpp:132 ../src/wxMaxima.cpp:1366
+#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:889 ../src/wxMaxima.cpp:1366
 #: ../src/wxMaxima.cpp:1380 ../src/wxMaxima.cpp:1501 ../src/wxMaxima.cpp:1512
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1899 ../src/wxMaxima.cpp:2073
 #: ../src/wxMaxima.cpp:5198 ../src/wxMaxima.cpp:5628 ../src/wxMaxima.cpp:5679
@@ -1552,7 +1552,7 @@ msgstr "&Zellen bis hier evaluieren"
 msgid "Example"
 msgstr "Beispiel"
 
-#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1655
+#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1654
 msgid "Example text"
 msgstr "Mustertext"
 
@@ -1803,7 +1803,7 @@ msgstr "Folge"
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr "Zeichensatzproblem: Das Klammer-Symbol ist zu klein!"
 
-#: ../src/IntCell.cpp:277 ../src/ParenCell.cpp:352
+#: ../src/ParenCell.cpp:352 ../src/IntCell.cpp:277
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -1969,7 +1969,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:5269
+#: ../src/MathCtrl.cpp:5274
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2509,7 +2509,7 @@ msgstr "Eine Maxima Batch-Datei laden"
 msgid "Load a Maxima package file"
 msgstr "Ein Maxima Paket laden"
 
-#: ../src/ConfigDialogue.cpp:1616
+#: ../src/ConfigDialogue.cpp:1615
 msgid "Load style from file"
 msgstr "Lade Layout aus einer Datei"
 
@@ -2873,7 +2873,7 @@ msgstr "Einstichproben t-Test"
 msgid "Online tutorials"
 msgstr "Online Tutorials"
 
-#: ../src/ConfigDialogue.cpp:629 ../src/ToolBar.cpp:115 ../src/main.cpp:261
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:261 ../src/ConfigDialogue.cpp:629
 #: ../src/wxMaxima.cpp:2615
 msgid "Open"
 msgstr "Öffnen"
@@ -2910,7 +2910,7 @@ msgstr "Öffne Datei"
 msgid "Optimize wxmx files for version control"
 msgstr "Optimiere wxmx-Dateien für Versionskontrollsysteme"
 
-#: ../src/ConfigDialogue.cpp:144 ../src/ToolBar.cpp:127
+#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:144
 msgid "Options"
 msgstr "Optionen"
 
@@ -2978,11 +2978,11 @@ msgstr "Teile des Dokuments werden nicht korrekt geladen!"
 
 #: ../src/MathParser.cpp:1023
 msgid ""
-"Parts of the document will not be loaded correctly!\n"
+"Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr ""
-"Teile des Dokuments werden nicht korrekt geladen!\n"
-"Unbekanntes XML-Tag gefunden mit dem namen "
+"Teile des Dokuments werden nicht korrekt geladen:\n"
+"Unbekanntes XML-Tag gefunden mit dem Name "
 
 #: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:962
 msgid "Paste"
@@ -3272,7 +3272,7 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/ConfigDialogue.cpp:754 ../src/ToolBar.cpp:118
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:754
 #: ../src/wxMaxima.cpp:5720
 msgid "Save"
 msgstr "Speichern"
@@ -3341,7 +3341,7 @@ msgstr "Auswahl des Dokumentes in Bild-Datei speichern"
 msgid "Save selection to file"
 msgstr "Auswahl in eine Datei speichern"
 
-#: ../src/ConfigDialogue.cpp:1608
+#: ../src/ConfigDialogue.cpp:1607
 msgid "Save style to file"
 msgstr "Speichere Layout in eine Datei"
 
@@ -4109,13 +4109,13 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:5174
+#: ../src/MathCtrl.cpp:5179
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:5238
+#: ../src/MathCtrl.cpp:5243
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
@@ -4337,7 +4337,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6040
+#: ../src/MathCtrl.cpp:6045
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 

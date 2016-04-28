@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-24 16:25+0200\n"
+"POT-Creation-Date: 2016-04-28 06:59+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <es@li.org>\n"
@@ -642,7 +642,7 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Fallo: pregunta sin celda asociada"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5184
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -650,14 +650,14 @@ msgstr ""
 "Fallo: Se ha solicitado cambiar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5250
+#: ../src/MathCtrl.cpp:5255
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Fallo: Se ha solicitado eliminar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5219
+#: ../src/MathCtrl.cpp:5224
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -699,7 +699,7 @@ msgstr ""
 "Fallo: Intento de unir celdas individuales en una región del búffer de "
 "deshacer, pero no hay otras celdas entre ellas."
 
-#: ../src/MathCtrl.cpp:5812
+#: ../src/MathCtrl.cpp:5817
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -715,11 +715,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Fallo: Intento de selección no válida del contenido de una celda."
 
-#: ../src/MathCtrl.cpp:5220
+#: ../src/MathCtrl.cpp:5225
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr "Fallo: Acción de deshacer."
 
-#: ../src/MathCtrl.cpp:5184 ../src/MathCtrl.cpp:5255 ../src/MathCtrl.cpp:5289
+#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Fallo: Solicitud de deshacer para una celda fuera da la hoja de trabajo."
@@ -995,7 +995,7 @@ msgstr "Calcular el mínimo común múltiplo (cargar(funciones) antes de usar)"
 msgid "Condition:"
 msgstr "Condición"
 
-#: ../src/ConfigDialogue.cpp:1610 ../src/ConfigDialogue.cpp:1618
+#: ../src/ConfigDialogue.cpp:1609 ../src/ConfigDialogue.cpp:1617
 msgid "Config file (*.ini)|*.ini"
 msgstr "Fichero de configuración (*.ini)|*.ini"
 
@@ -1458,7 +1458,7 @@ msgstr "Ecuación:"
 msgid "Equations:"
 msgstr "Ecuaciones:"
 
-#: ../src/ConfigDialogue.cpp:889 ../src/Image.cpp:132 ../src/wxMaxima.cpp:1366
+#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:889 ../src/wxMaxima.cpp:1366
 #: ../src/wxMaxima.cpp:1380 ../src/wxMaxima.cpp:1501 ../src/wxMaxima.cpp:1512
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1899 ../src/wxMaxima.cpp:2073
 #: ../src/wxMaxima.cpp:5198 ../src/wxMaxima.cpp:5628 ../src/wxMaxima.cpp:5679
@@ -1538,7 +1538,7 @@ msgstr "Evaluar hasta el punto"
 msgid "Example"
 msgstr "Ejemplo"
 
-#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1655
+#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1654
 msgid "Example text"
 msgstr "Texto de ejemplo"
 
@@ -1789,7 +1789,7 @@ msgstr "Seguir"
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr "Problema tipográfico: paréntesis demasiado pequeño"
 
-#: ../src/IntCell.cpp:277 ../src/ParenCell.cpp:352
+#: ../src/ParenCell.cpp:352 ../src/IntCell.cpp:277
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -1955,7 +1955,7 @@ msgstr "Calcular la parte imaginaria de una expresión compleja"
 msgid "Get the real part of complex expression"
 msgstr "Calcular la parte real de una expresión compleja"
 
-#: ../src/MathCtrl.cpp:5269
+#: ../src/MathCtrl.cpp:5274
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2491,7 +2491,7 @@ msgstr "Cargar un archivo Maxima usando el comando batch"
 msgid "Load a Maxima package file"
 msgstr "Cargar un paquete Maxima"
 
-#: ../src/ConfigDialogue.cpp:1616
+#: ../src/ConfigDialogue.cpp:1615
 msgid "Load style from file"
 msgstr "Leer estilo desde un archivo"
 
@@ -2851,7 +2851,7 @@ msgstr "Test t para una muestra"
 msgid "Online tutorials"
 msgstr "Tutoriales en línea"
 
-#: ../src/ConfigDialogue.cpp:629 ../src/ToolBar.cpp:115 ../src/main.cpp:261
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:261 ../src/ConfigDialogue.cpp:629
 #: ../src/wxMaxima.cpp:2615
 msgid "Open"
 msgstr "Abrir"
@@ -2888,7 +2888,7 @@ msgstr "Abriendo archivo"
 msgid "Optimize wxmx files for version control"
 msgstr "Optimizar los ficheros wxmx para el control de versiones"
 
-#: ../src/ConfigDialogue.cpp:144 ../src/ToolBar.cpp:127
+#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:144
 msgid "Options"
 msgstr "Opciones"
 
@@ -2955,8 +2955,9 @@ msgid "Parts of the document will not be loaded correctly!"
 msgstr "¡Lectura del documento parcialmente correcta!"
 
 #: ../src/MathParser.cpp:1023
+#, fuzzy
 msgid ""
-"Parts of the document will not be loaded correctly!\n"
+"Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr ""
 "¡Lectura del documento parcialmente correcta!\n"
@@ -3246,7 +3247,7 @@ msgstr "Ejemplo 2:"
 msgid "Sample:"
 msgstr "Muestra:"
 
-#: ../src/ConfigDialogue.cpp:754 ../src/ToolBar.cpp:118
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:754
 #: ../src/wxMaxima.cpp:5720
 msgid "Save"
 msgstr "Guardar"
@@ -3315,7 +3316,7 @@ msgstr "Copiar selección del documento a imagen"
 msgid "Save selection to file"
 msgstr "Guardar selección en un archivo"
 
-#: ../src/ConfigDialogue.cpp:1608
+#: ../src/ConfigDialogue.cpp:1607
 msgid "Save style to file"
 msgstr "Guardar estilo en archivo"
 
@@ -4077,11 +4078,11 @@ msgstr "Traducido por"
 msgid "Transpose a matrix"
 msgstr "Trasponer una matriz"
 
-#: ../src/MathCtrl.cpp:5174
+#: ../src/MathCtrl.cpp:5179
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentando deshacer una acción sin celda de comienzo."
 
-#: ../src/MathCtrl.cpp:5238
+#: ../src/MathCtrl.cpp:5243
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentando deshacer una acción que no existe."
 
@@ -4296,7 +4297,7 @@ msgstr ""
 "Envuelve ecuaciones exportadas con \"copiar como LaTeX\" entre \\[ and \\] "
 "como marcadores de ecuaciones"
 
-#: ../src/MathCtrl.cpp:6040
+#: ../src/MathCtrl.cpp:6045
 msgid "Wrapped search"
 msgstr ""
 
