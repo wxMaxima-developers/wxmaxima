@@ -65,6 +65,9 @@ public:
   bool m_flowedTextRequested;             //!< For HTML: Do we want to pass all newlines to the output?
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
   virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
+  virtual wxString quoteChar()=0;         //!< The marker for an quote
+  virtual wxString quoteBegin()=0;        //!< The marker that says we want to start quote
+  virtual wxString quoteEnd  ()=0;        //!< The marker that says we want to end quote
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
   virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
@@ -77,6 +80,9 @@ class MarkDownTeX: public MarkDownParser
 public:
   MarkDownTeX();
  private:
+  virtual wxString quoteBegin(){return wxT("\\begin{quote}\n");}
+  virtual wxString quoteEnd  (){return wxT("\\end{quote}\n");}
+  virtual wxString quoteChar (){return wxT("\\ensuremath{>}");}
   virtual wxString itemizeBegin(){return wxT("\\begin{itemize}\n");}
   virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
   virtual wxString itemizeItem(){return wxT("\\item ");}
@@ -91,6 +97,9 @@ class MarkDownHTML: public MarkDownParser
 public:
   MarkDownHTML();
  private:
+  virtual wxString quoteChar (){return wxT("&gt;");}
+  virtual wxString quoteBegin(){return wxT("<blockquote>\n");}
+  virtual wxString quoteEnd  (){return wxT("</blockquote>\n");}
   virtual wxString itemizeBegin(){return wxT("<UL>\n");}
   virtual wxString itemizeEnd(){return wxT("</UL>\n");}
   virtual wxString itemizeItem(){return wxT("<LI>");}

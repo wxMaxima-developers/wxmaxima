@@ -436,6 +436,17 @@ Ordinary text
 Ordinary text
 @end example
 
+wxMaxima will recognize text starting with > chars as block quotes:
+@example
+Ordinary text
+> quote quote quote quote
+> quote quote quote quote
+> quote quote quote quote
+Ordinary text
+@end example
+
+
+
 wxMaxima will also recognize @code{=>} and replace it by a 
 @example
 cogito => sum.

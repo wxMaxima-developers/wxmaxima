@@ -50,14 +50,32 @@ wxString MarkDownParser::MarkDown(wxString str)
   // The list of indentation levels for bullet lists we found
   // so far
   std::list <int> indentationLevels;
-
+  int quoting=0;
+  
   // Now process the input string line-by-line.
   wxStringTokenizer lines(str,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
   while(lines.HasMoreTokens())
   {
+    wxString line = lines.GetNextToken();
+
+    // Handle quoting
+    if(line.StartsWith(quoteChar()))
+    {
+      if(quoting==0)
+        result+=quoteBegin();
+      quoting=1;
+      line=line.Right(line.Length()-quoteChar().Length());
+    }
+    else
+    {
+      if(quoting==1)
+        result+=quoteEnd();
+      
+      quoting=0;
+    }
+
     // Determine the amount of indentation and the contents of the rest
     // of the line.
-    wxString line = lines.GetNextToken();
 
     // We will add our own newline characters when needed.
     line.Replace(NewLine(),wxT(" "));
