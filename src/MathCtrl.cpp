@@ -1635,6 +1635,7 @@ void MathCtrl::DeleteSelection()
     );
   TreeUndo_ClearRedoActionList();
   m_selectionStart = m_selectionEnd = NULL;
+  UpdateTableOfContents();
 }
 
 void MathCtrl::DeleteCurrentCell()
