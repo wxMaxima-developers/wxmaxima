@@ -325,7 +325,7 @@ void wxMaximaFrame::do_layout()
 #ifdef wxUSE_UNICODE
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
-                    Caption(_("Greek letters")).
+                    Caption(_("Greek Letters")).
                     Show(false).
                     DockFixed(false).
                     Gripper(true).
@@ -521,11 +521,11 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
 #ifdef wxUSE_UNICODE
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek letters\tAlt-Shift-G"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt-Shift-G"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt-Shift-Y"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of contents\tAlt-Shift-T"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of Contents\tAlt-Shift-T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector,  _("XML Inspector"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
   m_Maxima_Panes_Sub->AppendSeparator();
@@ -560,7 +560,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl-Shift-R"),
                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells above this point\tCtrl-Shift-P"),
+  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl-Shift-P"),
                      _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
 
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
@@ -651,7 +651,7 @@ void wxMaximaFrame::SetupMenu()
   m_MaximaMenu->Append(menu_texform, _("Display Te&X Form"),
                        _("Display last result in TeX form"), wxITEM_NORMAL);
   m_MaximaMenu->AppendSeparator();
-  m_MaximaMenu->Append(menu_triggerEvaluation, _("Manually trigger evaluation"),
+  m_MaximaMenu->Append(menu_triggerEvaluation, _("Manually Trigger Evaluation"),
                        _("If maxima ever finishes evaluating without wxMaxima realizing this this menu item can force wxMaxima to try to send commands to maxima again."), wxITEM_NORMAL);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
