@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 06:59+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
 "PO-Revision-Date: 2015-08-18 10:34+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -621,7 +621,7 @@ msgstr "Перегляд"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Вада: надіслано запит щодо автодоповнення для невідомого типу записів."
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr "Вада: полишено комірку без введення даних."
 
@@ -641,24 +641,24 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Вада: маємо питання, але не маємо комірки для відповіді на нього"
 
-#: ../src/MathCtrl.cpp:5184
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5255
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5224
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -672,7 +672,7 @@ msgstr ""
 "Вада: комірка рівняння, у якої немає групи комірок, до якої ця комірка "
 "належить"
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -680,7 +680,7 @@ msgstr ""
 "Вада: надіслано запит на початок і завершення об’єднання послідовних дій з "
 "редагування два рази поспіль."
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr "Вада: змінено текст, але немає активної комірки."
 
@@ -695,7 +695,7 @@ msgstr ""
 "Вада: спроба дописати виведені maxima дані до комірки поза межами робочого "
 "аркуша."
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -703,14 +703,14 @@ msgstr ""
 "Вада: спроба об’єднати окремі комірки додає область у буфері скасування, але "
 "між цими комірками є інші комірки."
 
-#: ../src/MathCtrl.cpp:5817
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 "Вада: спроба пересунути горизонтальний курсор до місця усередині GroupCell."
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Вада: спроба запису зміни вмісту комірки без визначення комірки."
 
@@ -718,13 +718,13 @@ msgstr "Вада: спроба запису зміни вмісту комірк
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Вада: спроба позначити щось у комірці без визначення поточної комірки"
 
-#: ../src/MathCtrl.cpp:5225
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
@@ -1502,7 +1502,8 @@ msgid "Evaluate Cell(s)"
 msgstr "Обчислити комірки"
 
 #: ../src/wxMaximaFrame.cpp:563
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+#, fuzzy
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Обчислити усі комірки над поточною\tCtrl-Shift-P"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1959,7 +1960,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: ../src/MathCtrl.cpp:5274
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1971,19 +1972,19 @@ msgstr ""
 msgid "Greek"
 msgstr "грецька"
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Грецькі сталі"
-
 #: ../src/wxMaximaFrame.cpp:328
 #, fuzzy
-msgid "Greek letters"
+msgid "Greek Letters"
 msgstr "Грецькі сталі"
 
 #: ../src/wxMaximaFrame.cpp:524
 #, fuzzy
-msgid "Greek letters\tAlt-Shift-G"
+msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Математика\tAlt-Shift-M"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Грецькі сталі"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2539,7 +2540,8 @@ msgid "Make substitution in expression"
 msgstr "Виконати заміну у виразі"
 
 #: ../src/wxMaximaFrame.cpp:654
-msgid "Manually trigger evaluation"
+#, fuzzy
+msgid "Manually Trigger Evaluation"
 msgstr "Ініціювати обчислення вручну"
 
 #: ../src/wxMaxima.cpp:3619
@@ -3220,7 +3222,7 @@ msgstr "Перезапустити Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr "Результат"
 
@@ -3859,7 +3861,8 @@ msgid "Table of Contents"
 msgstr "Зміст"
 
 #: ../src/wxMaximaFrame.cpp:528
-msgid "Table of contents\tAlt-Shift-T"
+#, fuzzy
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Зміст\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4095,11 +4098,11 @@ msgstr "Переклад"
 msgid "Transpose a matrix"
 msgstr "Транспонувати матрицю"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr "Спроба скасування дії без визначення початкової комірки."
 
-#: ../src/MathCtrl.cpp:5243
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Намагаємося скасувати дію, але дія зі скасування є порожньою."
 
@@ -4319,7 +4322,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6045
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr ""
 
@@ -4470,12 +4473,12 @@ msgstr "[ не збережено* ]"
 msgid "[%i digits]"
 msgstr "[%i цифр]"
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >"

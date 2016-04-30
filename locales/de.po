@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 06:59+0200\n"
-"PO-Revision-Date: 2016-04-28 07:00+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
+"PO-Revision-Date: 2016-04-30 11:38+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -616,7 +616,7 @@ msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Fehler: Textvervollständigung für eine unbekannte Kategorie aufgerufen."
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
@@ -640,24 +640,24 @@ msgstr "Interner Fehler: Bdurch ohne Nenner"
 msgid "Bug: Fraction without enumerator"
 msgstr "Interner Fehler: Bruch ohne Zähler"
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5184
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:5255
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:5224
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -667,7 +667,7 @@ msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Interner Fehler: Eine MathCell behauptet, keine GroupCell zu besitzen."
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -675,7 +675,7 @@ msgstr ""
 "Interner Fehler: Soll gleichzeitig zweimal mit dem Sammeln neuer Zellen "
 "beginnen oder aufhören."
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
@@ -693,7 +693,7 @@ msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
 "Arbeitsblattes an."
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -701,7 +701,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:5817
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -709,7 +709,7 @@ msgstr ""
 "Fehler: Versuche, den horizontal dargestellten Cursor in einer Zelle zu "
 "platzieren."
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Interner Fehler: Versuche, die Änderung des Inhalts einer Zelle zu "
@@ -721,13 +721,13 @@ msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5225
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -1504,7 +1504,7 @@ msgid "Evaluate Cell(s)"
 msgstr "Zelle(n) auswerten"
 
 #: ../src/wxMaximaFrame.cpp:563
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Zellen über dem Cursor neu auswerten\tCtrl-Shift-P"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1969,7 +1969,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:5274
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1981,17 +1981,17 @@ msgstr ""
 msgid "Greek"
 msgstr "Griechisch"
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Griechische Konstanten"
-
 #: ../src/wxMaximaFrame.cpp:328
-msgid "Greek letters"
+msgid "Greek Letters"
 msgstr "Griechische Buchstaben"
 
 #: ../src/wxMaximaFrame.cpp:524
-msgid "Greek letters\tAlt-Shift-G"
+msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Griechische Buchstaben\tAlt-Shift-G"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Griechische Konstanten"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2546,7 +2546,7 @@ msgid "Make substitution in expression"
 msgstr "Substitution in einem Ausdruck ausführen"
 
 #: ../src/wxMaximaFrame.cpp:654
-msgid "Manually trigger evaluation"
+msgid "Manually Trigger Evaluation"
 msgstr "Manueller Neubeginn des Evaluierens ."
 
 #: ../src/wxMaxima.cpp:3619
@@ -3224,7 +3224,7 @@ msgstr "Maxima wird neu gestartet"
 msgid "Restart maxima"
 msgstr "Neustart von Maxima"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr "Resultat"
 
@@ -3867,7 +3867,7 @@ msgid "Table of Contents"
 msgstr "Inhaltsverzeichnis"
 
 #: ../src/wxMaximaFrame.cpp:528
-msgid "Table of contents\tAlt-Shift-T"
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Inhaltsverzeichnis\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4109,13 +4109,13 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:5243
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
@@ -4337,7 +4337,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6045
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -4483,12 +4483,12 @@ msgstr "[ nicht gespeichert* ]"
 msgid "[%i digits]"
 msgstr "[%i Ziffern]"
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"

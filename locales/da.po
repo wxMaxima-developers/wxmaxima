@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 06:59+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -602,7 +602,7 @@ msgstr "Gennemse"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -622,22 +622,22 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5184
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5255
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5224
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -647,13 +647,13 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -665,19 +665,19 @@ msgstr ""
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5817
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
@@ -685,11 +685,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5225
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -1489,7 +1489,7 @@ msgstr "Beregn celle(r)"
 
 #: ../src/wxMaximaFrame.cpp:563
 #, fuzzy
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Beregn alle celler\tCtrl-R"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1966,7 +1966,7 @@ msgstr "Bestem imaginærdelen af komplekst udtryk"
 msgid "Get the real part of complex expression"
 msgstr "Bestem realdelen af komplekst udtryk"
 
-#: ../src/MathCtrl.cpp:5274
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1976,18 +1976,19 @@ msgstr ""
 msgid "Greek"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Græske konstanter"
-
 #: ../src/wxMaximaFrame.cpp:328
 #, fuzzy
-msgid "Greek letters"
+msgid "Greek Letters"
 msgstr "Græske konstanter"
 
 #: ../src/wxMaximaFrame.cpp:524
-msgid "Greek letters\tAlt-Shift-G"
-msgstr ""
+#, fuzzy
+msgid "Greek Letters\tAlt-Shift-G"
+msgstr "Græske konstanter"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Græske konstanter"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2530,7 +2531,7 @@ msgstr "Udfør substitution i udtryk"
 
 #: ../src/wxMaximaFrame.cpp:654
 #, fuzzy
-msgid "Manually trigger evaluation"
+msgid "Manually Trigger Evaluation"
 msgstr "Vis beregningstid"
 
 #: ../src/wxMaxima.cpp:3619
@@ -3208,7 +3209,7 @@ msgstr "Genstart Maxima"
 msgid "Restart maxima"
 msgstr "Genstart Maxima"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr ""
 
@@ -3866,7 +3867,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:528
 #, fuzzy
-msgid "Table of contents\tAlt-Shift-T"
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Indsæt celle(r)\tCtrl-Shift-V"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4092,11 +4093,11 @@ msgstr ""
 msgid "Transpose a matrix"
 msgstr "Transponer en matrix"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5243
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4304,7 +4305,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6045
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr ""
 
@@ -4449,12 +4450,12 @@ msgstr "[ ikke gemt* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

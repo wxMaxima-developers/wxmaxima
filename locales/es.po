@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 06:59+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <es@li.org>\n"
@@ -618,7 +618,7 @@ msgstr "Navegar"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Fallo: autocompleción solicitada para elemento desconocido."
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr "Fallo: celda abandonada sin haber entrado."
 
@@ -638,11 +638,11 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Fallo: pregunta sin celda asociada"
 
-#: ../src/MathCtrl.cpp:5184
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -650,14 +650,14 @@ msgstr ""
 "Fallo: Se ha solicitado cambiar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5255
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Fallo: Se ha solicitado eliminar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5224
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -669,7 +669,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Fallo: celda sin grupo al que pertenecer"
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -677,7 +677,7 @@ msgstr ""
 "Fallo: Se ha solicitado dos veces en una fila el inicio y final de pegado de "
 "acciones de edición."
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr "Fallo: Texto cambiado sin celda activa."
 
@@ -691,7 +691,7 @@ msgstr ""
 "Fallo: Intento de añadir el resultado de Maxima a una celda fuera de la hoja "
 "de trabajo."
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -699,14 +699,14 @@ msgstr ""
 "Fallo: Intento de unir celdas individuales en una región del búffer de "
 "deshacer, pero no hay otras celdas entre ellas."
 
-#: ../src/MathCtrl.cpp:5817
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 "Fallo: intento de mover cursor horizontal dentro de un grupo de celdas."
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Fallo: Intento de guardar el cambio del contenido de una celda sin celda."
@@ -715,11 +715,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Fallo: Intento de selección no válida del contenido de una celda."
 
-#: ../src/MathCtrl.cpp:5225
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr "Fallo: Acción de deshacer."
 
-#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Fallo: Solicitud de deshacer para una celda fuera da la hoja de trabajo."
@@ -1491,7 +1491,8 @@ msgid "Evaluate Cell(s)"
 msgstr "E&valuar celda(s)"
 
 #: ../src/wxMaximaFrame.cpp:563
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+#, fuzzy
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Evaluar celdas superiores\tCtrl-Shift-P"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1955,7 +1956,7 @@ msgstr "Calcular la parte imaginaria de una expresión compleja"
 msgid "Get the real part of complex expression"
 msgstr "Calcular la parte real de una expresión compleja"
 
-#: ../src/MathCtrl.cpp:5274
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1967,17 +1968,19 @@ msgstr ""
 msgid "Greek"
 msgstr "Griego"
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Constantes griegas"
-
 #: ../src/wxMaximaFrame.cpp:328
-msgid "Greek letters"
+#, fuzzy
+msgid "Greek Letters"
 msgstr "Letras griegas"
 
 #: ../src/wxMaximaFrame.cpp:524
-msgid "Greek letters\tAlt-Shift-G"
+#, fuzzy
+msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Letras griegas\tAlt-Shift-G"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Constantes griegas"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2528,7 +2531,8 @@ msgid "Make substitution in expression"
 msgstr "Hacer una sustitución en una expresión"
 
 #: ../src/wxMaximaFrame.cpp:654
-msgid "Manually trigger evaluation"
+#, fuzzy
+msgid "Manually Trigger Evaluation"
 msgstr "Inicio manual de la evaluación"
 
 #: ../src/wxMaxima.cpp:3619
@@ -3199,7 +3203,7 @@ msgstr "Reiniciar maxima"
 msgid "Restart maxima"
 msgstr "Reiniciar Maxima"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr "Resultado"
 
@@ -3841,7 +3845,8 @@ msgid "Table of Contents"
 msgstr "Tabla de contenido"
 
 #: ../src/wxMaximaFrame.cpp:528
-msgid "Table of contents\tAlt-Shift-T"
+#, fuzzy
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Tabla de contenidos\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4078,11 +4083,11 @@ msgstr "Traducido por"
 msgid "Transpose a matrix"
 msgstr "Trasponer una matriz"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentando deshacer una acción sin celda de comienzo."
 
-#: ../src/MathCtrl.cpp:5243
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentando deshacer una acción que no existe."
 
@@ -4297,7 +4302,7 @@ msgstr ""
 "Envuelve ecuaciones exportadas con \"copiar como LaTeX\" entre \\[ and \\] "
 "como marcadores de ecuaciones"
 
-#: ../src/MathCtrl.cpp:6045
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr ""
 
@@ -4440,12 +4445,12 @@ msgstr "[no guardado*]"
 msgid "[%i digits]"
 msgstr "[%i dígitos]"
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Diagrama animado\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Diagrama animado\" style=\"max-width:90%%;\" >"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 08:25+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
 "PO-Revision-Date: 2016-04-28 18:51+0200\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -608,7 +608,7 @@ msgstr "Navegar"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Error: es requereix l'auto completat per un tipus d'ítem desconegut."
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr "Error: cel·la esquerra sense entrada."
 
@@ -628,11 +628,11 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -640,14 +640,14 @@ msgstr ""
 "Error: hi ha una petició de canviar el contingut d'una cel·la situada abans "
 "de l'inici del full de càlcul."
 
-#: ../src/MathCtrl.cpp:5250
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Error: hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
 "full de càlcul."
 
-#: ../src/MathCtrl.cpp:5219
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -659,7 +659,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -667,7 +667,7 @@ msgstr ""
 "Error: s'ha sol·licitat la fusió de l'inici o final d'accions d'edició "
 "encadenades dues vegades en una fila."
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr "Error: ha canviat el text però no hi ha cap cel·la activa."
 
@@ -684,7 +684,7 @@ msgstr ""
 "Error: s'està intentant afegir la sortida de Maxima a una cel·la situada "
 "fora del full de càlcul."
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -692,13 +692,13 @@ msgstr ""
 "Error: s'està intentant combinar addicions de cel·les individuals a una "
 "regió a la coa de desfer accions però hi ha altres cel·les entre elles."
 
-#: ../src/MathCtrl.cpp:5812
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Error: s'està intentant registrar els canvis de contingut de la cel·la que "
@@ -711,13 +711,13 @@ msgstr ""
 "Error: s'està intentant registrar els canvis de contingut de la cel·la que "
 "no existeix."
 
-#: ../src/MathCtrl.cpp:5220
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Error: desfer acció amb canvi del contingut de la cel·la i addició de la "
 "cel·la."
 
-#: ../src/MathCtrl.cpp:5184 ../src/MathCtrl.cpp:5255 ../src/MathCtrl.cpp:5289
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Error: s'està intentant desfer una acció a una cel·la situada fora del full "
@@ -996,7 +996,7 @@ msgstr ""
 msgid "Condition:"
 msgstr "Condició"
 
-#: ../src/ConfigDialogue.cpp:1610 ../src/ConfigDialogue.cpp:1618
+#: ../src/ConfigDialogue.cpp:1609 ../src/ConfigDialogue.cpp:1617
 msgid "Config file (*.ini)|*.ini"
 msgstr "Arxius de configuració (*.ini)|*.ini"
 
@@ -1463,7 +1463,7 @@ msgstr "Equació:"
 msgid "Equations:"
 msgstr "Equacions:"
 
-#: ../src/ConfigDialogue.cpp:889 ../src/Image.cpp:132 ../src/wxMaxima.cpp:1366
+#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:889 ../src/wxMaxima.cpp:1366
 #: ../src/wxMaxima.cpp:1380 ../src/wxMaxima.cpp:1501 ../src/wxMaxima.cpp:1512
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1899 ../src/wxMaxima.cpp:2073
 #: ../src/wxMaxima.cpp:5198 ../src/wxMaxima.cpp:5628 ../src/wxMaxima.cpp:5679
@@ -1496,7 +1496,8 @@ msgid "Evaluate Cell(s)"
 msgstr "A&valuar cel·la(es)"
 
 #: ../src/wxMaximaFrame.cpp:563
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+#, fuzzy
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Avaluar les cel·les anteriors\tCtrl-Shift-P"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1548,7 +1549,7 @@ msgstr "Avaluar formes &nominals"
 msgid "Example"
 msgstr "Exemple"
 
-#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1655
+#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1654
 msgid "Example text"
 msgstr "Text d'exemple"
 
@@ -1804,7 +1805,7 @@ msgstr "Segueix"
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr ""
 
-#: ../src/IntCell.cpp:277 ../src/ParenCell.cpp:352
+#: ../src/ParenCell.cpp:352 ../src/IntCell.cpp:277
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -1963,7 +1964,7 @@ msgstr "Calcula la part imaginària d'una expressió complexa"
 msgid "Get the real part of complex expression"
 msgstr "Calcula la part real d'una expressió complexa"
 
-#: ../src/MathCtrl.cpp:5269
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1975,19 +1976,19 @@ msgstr ""
 msgid "Greek"
 msgstr "Grec"
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Constants gregues"
-
 #: ../src/wxMaximaFrame.cpp:328
 #, fuzzy
-msgid "Greek letters"
+msgid "Greek Letters"
 msgstr "Constants gregues"
 
 #: ../src/wxMaximaFrame.cpp:524
 #, fuzzy
-msgid "Greek letters\tAlt-Shift-G"
+msgid "Greek Letters\tAlt-Shift-G"
 msgstr "&Matemàtiques generals\tAlt-Shift-M"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Constants gregues"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2490,7 +2491,7 @@ msgstr "Carrega un arxiu Maxima fent servir l'ordre batch"
 msgid "Load a Maxima package file"
 msgstr "Carrega un paquet Maxima"
 
-#: ../src/ConfigDialogue.cpp:1616
+#: ../src/ConfigDialogue.cpp:1615
 msgid "Load style from file"
 msgstr "Llegir estil des d'un arxiu"
 
@@ -2529,7 +2530,7 @@ msgstr "Fer una substitució en una expressió"
 
 #: ../src/wxMaximaFrame.cpp:654
 #, fuzzy
-msgid "Manually trigger evaluation"
+msgid "Manually Trigger Evaluation"
 msgstr "Mostra el temps de l'avaluació"
 
 #: ../src/wxMaxima.cpp:3619
@@ -2853,7 +2854,7 @@ msgstr "Test t per a una mostra"
 msgid "Online tutorials"
 msgstr "Tutorials en línia"
 
-#: ../src/ConfigDialogue.cpp:629 ../src/ToolBar.cpp:115 ../src/main.cpp:261
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:261 ../src/ConfigDialogue.cpp:629
 #: ../src/wxMaxima.cpp:2615
 msgid "Open"
 msgstr "Obre"
@@ -2890,7 +2891,7 @@ msgstr "Obrint arxiu"
 msgid "Optimize wxmx files for version control"
 msgstr "Optimitzar els fitxer wxmx per al control de versions"
 
-#: ../src/ConfigDialogue.cpp:144 ../src/ToolBar.cpp:127
+#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:144
 msgid "Options"
 msgstr "Opcions"
 
@@ -2959,7 +2960,7 @@ msgstr "Parts del document no s'han carregat correctament!"
 #: ../src/MathParser.cpp:1023
 #, fuzzy
 msgid ""
-"Parts of the document will not be loaded correctly!\n"
+"Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr "Parts del document no s'han carregat correctament!"
 
@@ -3200,7 +3201,7 @@ msgstr "Reinicia Maxima"
 msgid "Restart maxima"
 msgstr "Reinicia Maxima"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr ""
 
@@ -3248,7 +3249,7 @@ msgstr "Exemple 2:"
 msgid "Sample:"
 msgstr "Mostra:"
 
-#: ../src/ConfigDialogue.cpp:754 ../src/ToolBar.cpp:118
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:754
 #: ../src/wxMaxima.cpp:5720
 msgid "Save"
 msgstr "Desa"
@@ -3317,7 +3318,7 @@ msgstr "Copia la selecció del document a una imatge"
 msgid "Save selection to file"
 msgstr "Desa la selecció en un arxiu"
 
-#: ../src/ConfigDialogue.cpp:1608
+#: ../src/ConfigDialogue.cpp:1607
 msgid "Save style to file"
 msgstr "Desa estil en un arxiu"
 
@@ -3839,7 +3840,7 @@ msgstr "Taula de continguts"
 
 #: ../src/wxMaximaFrame.cpp:528
 #, fuzzy
-msgid "Table of contents\tAlt-Shift-T"
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Taula de continguts\tAlt-Shift-I"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4075,11 +4076,11 @@ msgstr "Traduït per"
 msgid "Transpose a matrix"
 msgstr "Matriu transposta"
 
-#: ../src/MathCtrl.cpp:5174
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentant desfer una acció sense cel·la inicial."
 
-#: ../src/MathCtrl.cpp:5238
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentant desfer alguna acció sense que hi hagi accions per desfer."
 
@@ -4290,7 +4291,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6040
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr ""
 
@@ -4438,12 +4439,12 @@ msgstr "[sense desar*]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

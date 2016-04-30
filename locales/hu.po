@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 06:59+0200\n"
+"POT-Creation-Date: 2016-04-30 11:36+0200\n"
 "PO-Revision-Date: 2016-04-12 13:08+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -611,7 +611,7 @@ msgstr "Böngészés"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hiba: Automatikus kiegészítési kérés ismeretlen típusú elemhez."
 
-#: ../src/MathCtrl.cpp:1759
+#: ../src/MathCtrl.cpp:1760
 msgid "Bug: Cell left but not entered."
 msgstr "Hiba: Cella elhagyása belépés nélkül."
 
@@ -631,23 +631,23 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1988
+#: ../src/MathCtrl.cpp:1989
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hiba: Kérdés merült fel, de nincs cella a válaszhoz"
 
-#: ../src/MathCtrl.cpp:5184
+#: ../src/MathCtrl.cpp:5185
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Hiba: Kérés egy munkalap kezdete előtti cella tartalmának megváltoztatására."
 
-#: ../src/MathCtrl.cpp:5255
+#: ../src/MathCtrl.cpp:5256
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr "Hiba: Kérés egy munkalap kezdete előtti cella törlésére."
 
-#: ../src/MathCtrl.cpp:5224
+#: ../src/MathCtrl.cpp:5225
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -661,14 +661,14 @@ msgstr ""
 "Hiba: a matematika cella azt állítja, hogy nem tartozik egyetlen "
 "cellacsoporthoz sem."
 
-#: ../src/MathCtrl.cpp:1802
+#: ../src/MathCtrl.cpp:1803
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 "Hiba: Egy sorban két kérés érkezett összefűzés elkezdésére vagy befejezésére."
 
-#: ../src/MathCtrl.cpp:1769
+#: ../src/MathCtrl.cpp:1770
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 
@@ -682,7 +682,7 @@ msgstr ""
 "Hiba: A Maxima kimenetét megkísérelte hozzáfűzni egy munkalapon kívüli "
 "cellához."
 
-#: ../src/MathCtrl.cpp:1701
+#: ../src/MathCtrl.cpp:1702
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -690,13 +690,13 @@ msgstr ""
 "Hiba: Kísérlet különálló cellák összevonására, melyek között további cellák "
 "vannak."
 
-#: ../src/MathCtrl.cpp:5817
+#: ../src/MathCtrl.cpp:5818
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr "Hiba: Vízszintes kurzort nem lehet egy csoportcellába helyezni."
 
-#: ../src/MathCtrl.cpp:1771
+#: ../src/MathCtrl.cpp:1772
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Hiba: Megkísérelte elmenti egy cella tartalmának változását cella nélkül. "
@@ -705,13 +705,13 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Hiba: Kijelölést kísérelt meg egy cellában, annak kijelölése nélkül. "
 
-#: ../src/MathCtrl.cpp:5225
+#: ../src/MathCtrl.cpp:5226
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hiba: Visszavonási esemény cella tartalmának változásához és cella "
 "hozzáadásához"
 
-#: ../src/MathCtrl.cpp:5189 ../src/MathCtrl.cpp:5260 ../src/MathCtrl.cpp:5294
+#: ../src/MathCtrl.cpp:5190 ../src/MathCtrl.cpp:5261 ../src/MathCtrl.cpp:5295
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
@@ -1484,7 +1484,8 @@ msgid "Evaluate Cell(s)"
 msgstr "C&ellák újraszámolása"
 
 #: ../src/wxMaximaFrame.cpp:563
-msgid "Evaluate Cells above this point\tCtrl-Shift-P"
+#, fuzzy
+msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Az aktuális hely feletti cellák újraszámolása\tCtrl-Shift-P"
 
 #: ../src/MathCtrl.cpp:894 ../src/MathCtrl.cpp:988
@@ -1948,7 +1949,7 @@ msgstr "Komplex kifejezés képzetes része"
 msgid "Get the real part of complex expression"
 msgstr "Komplex kifejezés valós része"
 
-#: ../src/MathCtrl.cpp:5274
+#: ../src/MathCtrl.cpp:5275
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -1960,17 +1961,19 @@ msgstr ""
 msgid "Greek"
 msgstr "Görög"
 
-#: ../src/ConfigDialogue.cpp:712
-msgid "Greek constants"
-msgstr "Görög betűk"
-
 #: ../src/wxMaximaFrame.cpp:328
-msgid "Greek letters"
+#, fuzzy
+msgid "Greek Letters"
 msgstr "Görög betűk"
 
 #: ../src/wxMaximaFrame.cpp:524
-msgid "Greek letters\tAlt-Shift-G"
+#, fuzzy
+msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Görög betűk\tAlt-Shift-G"
+
+#: ../src/ConfigDialogue.cpp:712
+msgid "Greek constants"
+msgstr "Görög betűk"
 
 #: ../src/Plot3dWiz.cpp:51
 msgid "Grid:"
@@ -2521,7 +2524,8 @@ msgid "Make substitution in expression"
 msgstr "Behelyettesítés kifejezésbe"
 
 #: ../src/wxMaximaFrame.cpp:654
-msgid "Manually trigger evaluation"
+#, fuzzy
+msgid "Manually Trigger Evaluation"
 msgstr "Trigger manuális végrehajtása"
 
 #: ../src/wxMaxima.cpp:3619
@@ -3195,7 +3199,7 @@ msgstr "A Maxima újraindítása"
 msgid "Restart maxima"
 msgstr "A Maxima újraindítása"
 
-#: ../src/MathCtrl.cpp:3879
+#: ../src/MathCtrl.cpp:3880
 msgid "Result"
 msgstr "Eredmény"
 
@@ -3844,7 +3848,8 @@ msgid "Table of Contents"
 msgstr "Tartalomjegyzék"
 
 #: ../src/wxMaximaFrame.cpp:528
-msgid "Table of contents\tAlt-Shift-T"
+#, fuzzy
+msgid "Table of Contents\tAlt-Shift-T"
 msgstr "Tartalomjegyzék\tAlt-Shift-T"
 
 #: ../src/wxMaximaFrame.cpp:1322
@@ -4085,11 +4090,11 @@ msgstr "Fordították"
 msgid "Transpose a matrix"
 msgstr "Mátrix transzponálás"
 
-#: ../src/MathCtrl.cpp:5179
+#: ../src/MathCtrl.cpp:5180
 msgid "Trying to undo an action without starting cell."
 msgstr "Kísérlet egy esemény visszavonására cella nélkül."
 
-#: ../src/MathCtrl.cpp:5243
+#: ../src/MathCtrl.cpp:5244
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Kísérlet valaminek a visszavonására, de a visszavonandó ismeretlen."
 
@@ -4307,7 +4312,7 @@ msgid ""
 "as equation markers"
 msgstr "A \"LaTeX másolás\" \\[ és \\] jelek közé rakja a kifejezéseket."
 
-#: ../src/MathCtrl.cpp:6045
+#: ../src/MathCtrl.cpp:6046
 msgid "Wrapped search"
 msgstr "Csomagolt keresés"
 
@@ -4453,12 +4458,12 @@ msgstr "[ mentetlen* ]"
 msgid "[%i digits]"
 msgstr "[%i számjegy]"
 
-#: ../src/MathCtrl.cpp:3838
+#: ../src/MathCtrl.cpp:3839
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animált diagram\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:3956
+#: ../src/MathCtrl.cpp:3957
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animált diagram\" style=\"max-width:90%%;\" >"
