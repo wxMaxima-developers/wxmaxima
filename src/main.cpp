@@ -114,6 +114,12 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
     wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
+  /* Add private jsMath fonts, if they exist */ 
+  if (wxFileExists("fonts/jsMath-cmex10.ttf")) AddFontResource(wxT("fonts/jsMath-cmex10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmsy10.ttf")) AddFontResource(wxT("fonts/jsMath-cmsy10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmr10.ttf"))  AddFontResource(wxT("fonts/jsMath-cmr10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmmi10.ttf")) AddFontResource(wxT("fonts/jsMath-cmmi10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmti10.ttf")) AddFontResource(wxT("fonts/jsMath-cmti10.ttf"));
 #endif
   
   m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
@@ -184,6 +190,17 @@ bool MyApp::OnInit()
     }
   return true;
 }
+
+#if defined (__WXMSW__)
+int MyApp::OnExit()
+{
+  if (wxFileExists("fonts/jsMath-cmex10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmex10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmsy10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmsy10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmr10.ttf"))  RemoveFontResource(wxT("fonts/jsMath-cmr10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmmi10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmmi10.ttf"));
+  if (wxFileExists("fonts/jsMath-cmti10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmti10.ttf"));
+}
+#endif
 
 #if defined __WXMAC__
 int window_counter = 0;
