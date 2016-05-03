@@ -419,6 +419,9 @@ class MyApp : public wxApp
 {
 public:
   virtual bool OnInit();
+#if defined (__WXMSW__)
+  virtual int OnExit();
+#endif
   wxLocale m_locale;
   /*! Create a new window
 
