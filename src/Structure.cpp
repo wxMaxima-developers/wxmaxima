@@ -82,7 +82,8 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
       {
         if(m_displayedItems->GetCount()<selection)
           selection = m_displayedItems->GetCount();
-        m_displayedItems->SetSelection(selection);
+        if(m_displayedItems->GetCount()>0)
+          m_displayedItems->SetSelection(selection);
         m_lastSelection = selection;
       }
     }
@@ -135,8 +136,11 @@ void Structure::UpdateDisplay()
       items.Add(curr);
   }
 
-  if(items!=m_items_old)
+  // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
+  if((items!=m_items_old)||(items.GetCount()==0))
+  {
     m_displayedItems->Set(items);
+  }
 }
 
 MathCell *Structure::GetCell(int index)
