@@ -55,16 +55,20 @@ void XmlInspector::Add(wxString text)
   {
     wxChar ch = text[index];
 
-    if(m_lastChar == wxT('<'))
-    {
-      if (ch == wxT('/'))
-      {
+    // Assume that all tags add indentation
+    if(ch == wxT('>'))
+      m_indentLevel ++;
+      
+    // A closing tag needs to remove the indentation of the opening tag 
+    // plus the indentation of the closing tag
+    if((m_lastChar == wxT('<')) && (ch == wxT('/')))
         m_indentLevel -= 2;
-      }
-      else
-        m_indentLevel ++;
-    }
+    
+    // Self-closing Tags remove their own indentation
+    if((m_lastChar == wxT('/'))&&(ch == wxT('>')))
+        m_indentLevel -= 1;
 
+    // Add a linebreak and indent if we are at the space between 2 tags
     if((m_lastChar == wxT('>')) && (ch == wxT('<')))
     {
       text = text.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + text.Right(text.Length()-index);
