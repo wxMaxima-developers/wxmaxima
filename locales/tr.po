@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-30 11:36+0200\n"
+"POT-Creation-Date: 2016-05-07 08:48+0200\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -61,11 +61,11 @@ msgstr ""
 "\n"
 "Bağlantı yok."
 
-#: ../src/ConfigDialogue.cpp:656
+#: ../src/ConfigDialogue.cpp:662
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:652
+#: ../src/ConfigDialogue.cpp:658
 msgid "      -l <name>"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 " wxMaxima'nın daha yeni bir sürümü ile kaydedildi;Lütfen wxMaxima'yı "
 "güncelleyin Lütfen wxMaxima'yı güncelleyin."
 
-#: ../src/ConfigDialogue.cpp:511
+#: ../src/ConfigDialogue.cpp:517
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr "&Maxima Yardımı"
 msgid "&Modulus Computation..."
 msgstr "&Modüler Hesaplama"
 
-#: ../src/main.cpp:135
+#: ../src/main.cpp:141
 msgid "&New\tCtrl-N"
 msgstr "&Yeni\tCtrl-N"
 
@@ -289,7 +289,7 @@ msgstr "Numerik İntegral"
 msgid "&Nusum"
 msgstr "&Nusum"
 
-#: ../src/main.cpp:136
+#: ../src/main.cpp:142
 msgid "&Open\tCtrl-O"
 msgstr "&Aç\tCtrl-O"
 
@@ -369,7 +369,7 @@ msgstr "&Trigonometrik Sadeleştirme"
 msgid "&pm3d"
 msgstr "&pm3B"
 
-#: ../src/ConfigDialogue.cpp:543
+#: ../src/ConfigDialogue.cpp:549
 msgid "(Use default language)"
 msgstr "(Varsayılan dili kullan)"
 
@@ -425,7 +425,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "&Başlangıç Şartı"
 
-#: ../src/ConfigDialogue.cpp:674
+#: ../src/ConfigDialogue.cpp:680
 msgid "Abort evaluation on error"
 msgstr "Hata oluştuğunda değerlendirmeyi durdur"
 
@@ -437,7 +437,7 @@ msgstr "Hakkında"
 msgid "About wxMaxima"
 msgstr "wxMaxima hakkında"
 
-#: ../src/ConfigDialogue.cpp:728
+#: ../src/ConfigDialogue.cpp:734
 msgid "Active cell bracket"
 msgstr "Aktif hücre ayıracı"
 
@@ -461,7 +461,7 @@ msgstr "Yola dizin ekle :"
 msgid "Add equality to the rational simplifier"
 msgstr "Rasyonel sadeleştiriciye eşitlik ekle"
 
-#: ../src/ConfigDialogue.cpp:520
+#: ../src/ConfigDialogue.cpp:526
 msgid "Add the .wxmx file to the HTML export"
 msgstr ".wxmx dosyasını HTML çıkarımına ekle"
 
@@ -474,7 +474,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr "LaTeX in pdftex önsözüne eklenebilecek ek komutlar."
 
-#: ../src/ConfigDialogue.cpp:491
+#: ../src/ConfigDialogue.cpp:497
 msgid "Additional lines for the TeX preamble:"
 msgstr "TeX önsözü için ek satırlar:"
 
@@ -482,7 +482,7 @@ msgstr "TeX önsözü için ek satırlar:"
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Maxima için ek parametreler (p. ex. -l clisp)"
 
-#: ../src/ConfigDialogue.cpp:646
+#: ../src/ConfigDialogue.cpp:652
 #, fuzzy
 msgid "Additional parameters for maxima"
 msgstr "Ek parametreler:"
@@ -495,12 +495,12 @@ msgstr ""
 "with_slider_draw ( ) ile yapılmış bir animasyona tıkladıktan sonra  geçerli "
 "çerçeveyi değiştirmeye izin verir."
 
-#: ../src/ConfigDialogue.cpp:431
+#: ../src/ConfigDialogue.cpp:434
 #, fuzzy
 msgid "All variable names"
 msgstr "Eski Değişken:"
 
-#: ../src/ConfigDialogue.cpp:881
+#: ../src/ConfigDialogue.cpp:888
 msgid "All|*"
 msgstr "Hepsi|*"
 
@@ -528,7 +528,7 @@ msgstr "Dizin:"
 msgid "Artwork by"
 msgstr "Çizim:"
 
-#: ../src/ConfigDialogue.cpp:606
+#: ../src/ConfigDialogue.cpp:612
 msgid "Ask to save untitled documents"
 msgstr "İsim verilmemiş belgeyi kaydederken sor"
 
@@ -536,7 +536,7 @@ msgstr "İsim verilmemiş belgeyi kaydederken sor"
 msgid "At value"
 msgstr "Başlangıç Değeri"
 
-#: ../src/ConfigDialogue.cpp:469
+#: ../src/ConfigDialogue.cpp:472
 msgid "Auto-indent new lines"
 msgstr ""
 
@@ -554,7 +554,7 @@ msgstr ""
 "belgeleri açmayabilir. (Örn: maxima C: de kurulu,  belgeniz D: de... 5.35 "
 "hata verebiliyor.)"
 
-#: ../src/ConfigDialogue.cpp:577
+#: ../src/ConfigDialogue.cpp:583
 #, fuzzy
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Otomatik kaydetme aralığı (dakika,0 kapalı demektir)"
@@ -567,7 +567,7 @@ msgstr "SŞ2"
 msgid "Barsplot..."
 msgstr "Sütun Diyagramı"
 
-#: ../src/ConfigDialogue.cpp:876
+#: ../src/ConfigDialogue.cpp:883
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "bat Dosyaları (*.bat)|*.bat|tümü|*"
 
@@ -593,12 +593,12 @@ msgstr ""
 msgid "Beta"
 msgstr "Beta"
 
-#: ../src/ConfigDialogue.cpp:497
+#: ../src/ConfigDialogue.cpp:503
 #, fuzzy
 msgid "Bitmap scale for export:"
 msgstr "Çıkarım için Bitmap ölçüsü"
 
-#: ../src/ConfigDialogue.cpp:749
+#: ../src/ConfigDialogue.cpp:755
 msgid "Bold"
 msgstr "Koyu"
 
@@ -809,7 +809,7 @@ msgstr "İptal et"
 msgid "Canonical (tr)"
 msgstr "Kanonik (trig)"
 
-#: ../src/ConfigDialogue.cpp:544
+#: ../src/ConfigDialogue.cpp:550
 msgid "Catalan"
 msgstr "Katalanca"
 
@@ -817,7 +817,7 @@ msgstr "Katalanca"
 msgid "Ce&ll"
 msgstr "&Hücre"
 
-#: ../src/ConfigDialogue.cpp:727
+#: ../src/ConfigDialogue.cpp:733
 msgid "Cell bracket"
 msgstr "Hücre parantezi"
 
@@ -859,16 +859,16 @@ msgstr "wxMaxima/Maxima'nın daha yeni bir sürümü olup olmadığına bak."
 msgid "Chi"
 msgstr "Chi"
 
-#: ../src/ConfigDialogue.cpp:545
+#: ../src/ConfigDialogue.cpp:551
 msgid "Chinese Simplified"
 msgstr "Basit Çince"
 
-#: ../src/ConfigDialogue.cpp:546
+#: ../src/ConfigDialogue.cpp:552
 msgid "Chinese traditional"
 msgstr "Geleneksel çince"
 
-#: ../src/ConfigDialogue.cpp:701 ../src/ConfigDialogue.cpp:703
-#: ../src/ConfigDialogue.cpp:743
+#: ../src/ConfigDialogue.cpp:707 ../src/ConfigDialogue.cpp:709
+#: ../src/ConfigDialogue.cpp:749
 msgid "Choose font"
 msgstr "Yazı tipini değiştir"
 
@@ -888,31 +888,31 @@ msgstr "Kapat\tCtrl-W"
 msgid "Close window"
 msgstr "Pencereyi kapat"
 
-#: ../src/ConfigDialogue.cpp:735
+#: ../src/ConfigDialogue.cpp:741
 msgid "Code highlighting: Comments"
 msgstr "Kod vurgulama: Açıklamalar"
 
-#: ../src/ConfigDialogue.cpp:739
+#: ../src/ConfigDialogue.cpp:745
 msgid "Code highlighting: End of line"
 msgstr "Kod vurgulama: Satır sonu"
 
-#: ../src/ConfigDialogue.cpp:734
+#: ../src/ConfigDialogue.cpp:740
 msgid "Code highlighting: Functions"
 msgstr "Kod vurgulama: Fonksiyonlar"
 
-#: ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:742
 msgid "Code highlighting: Numbers"
 msgstr "Kod vurgulama: Sayılar"
 
-#: ../src/ConfigDialogue.cpp:738
+#: ../src/ConfigDialogue.cpp:744
 msgid "Code highlighting: Operators"
 msgstr "Kod vurgulama: İşlemciler"
 
-#: ../src/ConfigDialogue.cpp:737
+#: ../src/ConfigDialogue.cpp:743
 msgid "Code highlighting: Strings"
 msgstr "Kod vurgulama: Dizinler"
 
-#: ../src/ConfigDialogue.cpp:733
+#: ../src/ConfigDialogue.cpp:739
 msgid "Code highlighting: Variables"
 msgstr "Kod vurgulama: Değişkenler"
 
@@ -998,11 +998,11 @@ msgstr "OKEK hesapla (önce load(functs) paketini yükle)"
 msgid "Condition:"
 msgstr "Şart:"
 
-#: ../src/ConfigDialogue.cpp:1609 ../src/ConfigDialogue.cpp:1617
+#: ../src/ConfigDialogue.cpp:1616 ../src/ConfigDialogue.cpp:1624
 msgid "Config file (*.ini)|*.ini"
 msgstr "Config dosyası (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1443
+#: ../src/ConfigDialogue.cpp:1450
 msgid "Configuration warning"
 msgstr "Yapılandırma uyarısı"
 
@@ -1137,11 +1137,11 @@ msgstr "Bir önceki girdi ile yeni bir hücre oluştur"
 msgid "Create a new cell with previous output"
 msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 
-#: ../src/ConfigDialogue.cpp:729
+#: ../src/ConfigDialogue.cpp:735
 msgid "Cursor"
 msgstr "İmleç"
 
-#: ../src/ConfigDialogue.cpp:571
+#: ../src/ConfigDialogue.cpp:577
 msgid "Custom symbols sidebar glyphs:"
 msgstr ""
 
@@ -1157,11 +1157,11 @@ msgstr "Kes\tCtrl-X"
 msgid "Cut selection"
 msgstr "Seçimi kes"
 
-#: ../src/ConfigDialogue.cpp:547
+#: ../src/ConfigDialogue.cpp:553
 msgid "Czech"
 msgstr "Çekçe"
 
-#: ../src/ConfigDialogue.cpp:548
+#: ../src/ConfigDialogue.cpp:554
 msgid "Danish"
 msgstr "Danimarkaca"
 
@@ -1180,7 +1180,7 @@ msgstr "Veri dosyası (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Veri:"
 
-#: ../src/ConfigDialogue.cpp:677
+#: ../src/ConfigDialogue.cpp:683
 #, fuzzy
 msgid "Debug: watch maxima's stdout stream"
 msgstr "Onar: Maxima'nın stdout (standart çıktı) akışını izle"
@@ -1189,24 +1189,24 @@ msgstr "Onar: Maxima'nın stdout (standart çıktı) akışını izle"
 msgid "Decompose rational function to partial fractions"
 msgstr "Rasyonel fonksiyonu parçalı fonksiyonlara ayır"
 
-#: ../src/ConfigDialogue.cpp:707
+#: ../src/ConfigDialogue.cpp:713
 msgid "Default"
 msgstr "Varsayılan"
 
-#: ../src/ConfigDialogue.cpp:587
+#: ../src/ConfigDialogue.cpp:593
 msgid "Default animation framerate:"
 msgstr "Varsayılan animasyon resim oranı"
 
-#: ../src/ConfigDialogue.cpp:700
+#: ../src/ConfigDialogue.cpp:706
 msgid "Default font:"
 msgstr "Varsayılan Yazı Tipi:"
 
-#: ../src/ConfigDialogue.cpp:401
+#: ../src/ConfigDialogue.cpp:404
 #, fuzzy
 msgid "Default plot size for new maxima sessions:"
 msgstr "Yeni maxima oturumları için varsayılan çizim (çerçeve) ölçüsü"
 
-#: ../src/ConfigDialogue.cpp:639
+#: ../src/ConfigDialogue.cpp:645
 msgid "Default port for communication with wxMaxima:"
 msgstr "wxMaxima'nın iletişiminde kullanılan bağlantı noktası"
 
@@ -1342,11 +1342,11 @@ msgstr "Belgede yaptığınız değişiklikleri kaydetmek isityormusunuz? \""
 msgid "Document "
 msgstr "Belge"
 
-#: ../src/ConfigDialogue.cpp:726
+#: ../src/ConfigDialogue.cpp:732
 msgid "Document background"
 msgstr "Belge arkaplanı"
 
-#: ../src/ConfigDialogue.cpp:486
+#: ../src/ConfigDialogue.cpp:492
 msgid "Documentclass for TeX export:"
 msgstr "TeX çıkarımı için belge sınıfı:"
 
@@ -1391,7 +1391,7 @@ msgstr "Bir denklem sisteminde bir değişkeni sadeleştirerek ortadan kaldır"
 msgid "End of proof"
 msgstr "İspat ın sonu"
 
-#: ../src/ConfigDialogue.cpp:549
+#: ../src/ConfigDialogue.cpp:555
 msgid "English"
 msgstr "İngilizce"
 
@@ -1417,7 +1417,7 @@ msgstr "Rasyonel sadeleştirilmek üzere bir denklem Girin:"
 msgid "Enter comma separated list of variables."
 msgstr "Değişkenlerin listesini 'virgülle ayrılmış' olarak girin"
 
-#: ../src/ConfigDialogue.cpp:460
+#: ../src/ConfigDialogue.cpp:463
 msgid "Enter evaluates cells"
 msgstr "Enter tuşu hücreleri değerlendirsin"
 
@@ -1460,7 +1460,7 @@ msgstr "Denklem:"
 msgid "Equations:"
 msgstr "Denklemler:"
 
-#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:889 ../src/wxMaxima.cpp:1366
+#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:896 ../src/wxMaxima.cpp:1366
 #: ../src/wxMaxima.cpp:1380 ../src/wxMaxima.cpp:1501 ../src/wxMaxima.cpp:1512
 #: ../src/wxMaxima.cpp:1535 ../src/wxMaxima.cpp:1899 ../src/wxMaxima.cpp:2073
 #: ../src/wxMaxima.cpp:5198 ../src/wxMaxima.cpp:5628 ../src/wxMaxima.cpp:5679
@@ -1541,11 +1541,11 @@ msgstr "Noktaya Değerlendir "
 msgid "Example"
 msgstr "Örnek"
 
-#: ../src/ConfigDialogue.cpp:1557 ../src/ConfigDialogue.cpp:1654
+#: ../src/ConfigDialogue.cpp:1564 ../src/ConfigDialogue.cpp:1661
 msgid "Example text"
 msgstr "Örnek Metin"
 
-#: ../src/ConfigDialogue.cpp:649
+#: ../src/ConfigDialogue.cpp:655
 #, fuzzy
 msgid "Examples:"
 msgstr "Örnek"
@@ -1586,7 +1586,7 @@ msgstr "Simge dosyalarının bulunması beklenen yer"
 msgid "Export"
 msgstr "Çıkart"
 
-#: ../src/ConfigDialogue.cpp:502
+#: ../src/ConfigDialogue.cpp:508
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1670,7 +1670,7 @@ msgstr "Ölümcül Hata"
 msgid "Figure %d:"
 msgstr "Şekil %d:"
 
-#: ../src/main.cpp:137
+#: ../src/main.cpp:143
 msgid "File"
 msgstr "Dosya"
 
@@ -1763,18 +1763,18 @@ msgstr "Polinomun gerçel köklerini bul"
 msgid "Find root"
 msgstr "Kökünü hesapla"
 
-#: ../src/ConfigDialogue.cpp:550
+#: ../src/ConfigDialogue.cpp:556
 #, fuzzy
 msgid "Finnish"
 msgstr "Danimarkaca"
 
-#: ../src/ConfigDialogue.cpp:609
+#: ../src/ConfigDialogue.cpp:615
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 "Kaydetmeden önce yeniden düzenlenmiş referans indislerini (of %i, %o) onar"
 
-#: ../src/ConfigDialogue.cpp:451
+#: ../src/ConfigDialogue.cpp:454
 msgid "Fixed font in text controls"
 msgstr "Metin kontrolünde değişmez yazı tipi"
 
@@ -1827,7 +1827,7 @@ msgstr "Belgede gösterilecek yazı tipi"
 msgid "Font used for displaying math characters in document."
 msgstr "Belgede matematik karakterlerini gösterimde kullanılan yazı tipi"
 
-#: ../src/ConfigDialogue.cpp:688
+#: ../src/ConfigDialogue.cpp:694
 msgid "Fonts"
 msgstr "Yazı Tipleri"
 
@@ -1840,7 +1840,7 @@ msgstr "Format:"
 msgid "Frame %i of %i"
 msgstr "Çerçeve %i nın %i'si"
 
-#: ../src/ConfigDialogue.cpp:551
+#: ../src/ConfigDialogue.cpp:557
 msgid "French"
 msgstr "Fransızca"
 
@@ -1858,7 +1858,7 @@ msgstr "Tüm Ekran\tAlt-Return"
 msgid "Function"
 msgstr "Fonksiyon"
 
-#: ../src/ConfigDialogue.cpp:710
+#: ../src/ConfigDialogue.cpp:716
 msgid "Function names"
 msgstr "Fonksiyon isimleri"
 
@@ -1891,7 +1891,7 @@ msgstr "OBEB"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF resmi (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:552
+#: ../src/ConfigDialogue.cpp:558
 msgid "Galician"
 msgstr "Galiçyaca"
 
@@ -1923,7 +1923,7 @@ msgstr "2B dizinden matris oluştur"
 msgid "Generate a matrix from a lambda expression"
 msgstr "Bir Lambda ifadesinden matris oluştur"
 
-#: ../src/ConfigDialogue.cpp:553
+#: ../src/ConfigDialogue.cpp:559
 msgid "German"
 msgstr "Almanca"
 
@@ -1967,7 +1967,7 @@ msgstr ""
 "Hata: Şu anda mümkün olmayan bir silme konutu içeren geri al eylemi isteği "
 "alındı."
 
-#: ../src/ConfigDialogue.cpp:554
+#: ../src/ConfigDialogue.cpp:560
 msgid "Greek"
 msgstr "Yunanca"
 
@@ -1981,7 +1981,7 @@ msgstr "Yunan harfleri"
 msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Yunan harfleri\tAlt-Shift-G"
 
-#: ../src/ConfigDialogue.cpp:712
+#: ../src/ConfigDialogue.cpp:718
 msgid "Greek constants"
 msgstr "Yunanca Sabitler"
 
@@ -1997,7 +1997,7 @@ msgstr ""
 "HTML Dosyası (*.html)|*.html|Kütük Dosyası (*mac.).*mac |pdfLaTeX dosyası (*."
 "tex)|*.tex)"
 
-#: ../src/ConfigDialogue.cpp:514
+#: ../src/ConfigDialogue.cpp:520
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
 
@@ -2013,7 +2013,7 @@ msgstr "Araç çubuklarının hepsini gizle\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "Bütün panoları gizle"
 
-#: ../src/ConfigDialogue.cpp:719
+#: ../src/ConfigDialogue.cpp:725
 msgid "Highlight (dpart)"
 msgstr "Belirginleştir"
 
@@ -2045,7 +2045,7 @@ msgstr ""
 "'hücreleri seçer, backspace tuşuna basarak yada delete tuşuna iki defa "
 "basmakla yanındaki hücreyi siler."
 
-#: ../src/ConfigDialogue.cpp:555
+#: ../src/ConfigDialogue.cpp:561
 msgid "Hungarian"
 msgstr "Macarca"
 
@@ -2088,11 +2088,11 @@ msgstr ""
 "Bir seferde birden fazla hücreler değerlendirilirse: wxMaxima maxima'nın bir "
 "hatayla karşılaştığını belirlediğinde değerlendirmeyi durdur."
 
-#: ../src/ConfigDialogue.cpp:422
+#: ../src/ConfigDialogue.cpp:425
 msgid "If not extremely long"
 msgstr "Eğer çok çok uzun değilse"
 
-#: ../src/ConfigDialogue.cpp:421
+#: ../src/ConfigDialogue.cpp:424
 msgid "If not very long"
 msgstr "Eğer çok uzun değilse"
 
@@ -2163,7 +2163,7 @@ msgstr ""
 msgid "Include columns:"
 msgstr "Sütunları kapsa:"
 
-#: ../src/ConfigDialogue.cpp:517
+#: ../src/ConfigDialogue.cpp:523
 msgid "Include input cells in the export of a worksheet"
 msgstr "Bir çalışma yaprağı çıkarımında girdi hücrelerini içerir"
 
@@ -2190,7 +2190,7 @@ msgstr "Başlangıç Değer Problemi (&1)"
 msgid "Initial Value Problem (&2)..."
 msgstr "Başlangıç Değer Problemi (&2)"
 
-#: ../src/ConfigDialogue.cpp:715
+#: ../src/ConfigDialogue.cpp:721
 msgid "Input labels"
 msgstr "GİRDİ Etiketleri"
 
@@ -2198,7 +2198,7 @@ msgstr "GİRDİ Etiketleri"
 msgid "Insert"
 msgstr "Yerleştir"
 
-#: ../src/ConfigDialogue.cpp:466
+#: ../src/ConfigDialogue.cpp:469
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr "Bir hücrenin başında bir işlemciden önce % yerleştir"
 
@@ -2294,7 +2294,7 @@ msgstr "Bir Sayfa Kesmesi Ekle"
 msgid "Insert image"
 msgstr "Resim Yerleştir"
 
-#: ../src/ConfigDialogue.cpp:430
+#: ../src/ConfigDialogue.cpp:433
 msgid "Integers and single letters"
 msgstr ""
 
@@ -2342,7 +2342,7 @@ msgstr ""
 "Bu hesaplamayı durdur. Maxima'yı yeniden başlatmak için bunu solundaki "
 "butona bas."
 
-#: ../src/ConfigDialogue.cpp:888
+#: ../src/ConfigDialogue.cpp:895
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2377,15 +2377,15 @@ msgstr ""
 "yada \"(%o1) \"C:/Users/kullanıcı ismi/maxima\" dizini içine koyun. Aksi "
 "halde \"dosya bulunamadı\" mesajı alırsınız."
 
-#: ../src/ConfigDialogue.cpp:556
+#: ../src/ConfigDialogue.cpp:562
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: ../src/ConfigDialogue.cpp:750
+#: ../src/ConfigDialogue.cpp:756
 msgid "Italic"
 msgstr "İtalik"
 
-#: ../src/ConfigDialogue.cpp:557
+#: ../src/ConfigDialogue.cpp:563
 msgid "Japanese"
 msgstr "Japonca"
 
@@ -2393,7 +2393,7 @@ msgstr "Japonca"
 msgid "Kappa"
 msgstr "Kappa"
 
-#: ../src/ConfigDialogue.cpp:457
+#: ../src/ConfigDialogue.cpp:460
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Özel sembolleri yüzde işareti ile yaz: %e, %i, v.b."
@@ -2402,15 +2402,15 @@ msgstr "Özel sembolleri yüzde işareti ile yaz: %e, %i, v.b."
 msgid "LCM"
 msgstr "OKEK"
 
-#: ../src/ConfigDialogue.cpp:505
+#: ../src/ConfigDialogue.cpp:511
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr "LaTeX: Üs ifadelerini indislerin üstüne değil sonrasına yerleştirin"
 
-#: ../src/ConfigDialogue.cpp:508
+#: ../src/ConfigDialogue.cpp:514
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:437
+#: ../src/ConfigDialogue.cpp:440
 #, fuzzy
 msgid "Label width:"
 msgstr "ile etiketle"
@@ -2423,7 +2423,7 @@ msgstr "Lambda"
 msgid "Language used for wxMaxima GUI."
 msgstr "wxMaxima arayüzü için kullanılan dil."
 
-#: ../src/ConfigDialogue.cpp:540
+#: ../src/ConfigDialogue.cpp:546
 msgid "Language:"
 msgstr "Dil:"
 
@@ -2482,7 +2482,7 @@ msgstr "Liste:"
 msgid "List:"
 msgstr "Liste:"
 
-#: ../src/ConfigDialogue.cpp:753
+#: ../src/ConfigDialogue.cpp:759
 msgid "Load"
 msgstr "Yükle"
 
@@ -2498,7 +2498,7 @@ msgstr "Bir Maxima dosyasını kütük komutu ile yükle"
 msgid "Load a Maxima package file"
 msgstr "Bir Maxima dosyasını yükle"
 
-#: ../src/ConfigDialogue.cpp:1615
+#: ../src/ConfigDialogue.cpp:1622
 msgid "Load style from file"
 msgstr "Sitili dosyadan yükle"
 
@@ -2551,11 +2551,11 @@ msgstr "Fonksiyonu listeye Eşle"
 msgid "Map function to a matrix"
 msgstr "Fonksiyonu matrise Eşle"
 
-#: ../src/ConfigDialogue.cpp:448
+#: ../src/ConfigDialogue.cpp:451
 msgid "Match parenthesis in text controls"
 msgstr "Metin kontrolünde parantezi eşleştir"
 
-#: ../src/ConfigDialogue.cpp:702
+#: ../src/ConfigDialogue.cpp:708
 msgid "Math font:"
 msgstr "Mat. yazı tipi:"
 
@@ -2587,7 +2587,7 @@ msgstr "Maxima"
 msgid "Maxima got a question"
 msgstr "Maxima'nın bir sorusu var"
 
-#: ../src/ConfigDialogue.cpp:714
+#: ../src/ConfigDialogue.cpp:720
 msgid "Maxima input"
 msgstr "Maxima GİRDİsi"
 
@@ -2607,11 +2607,11 @@ msgstr "Maxima Paketi (*.mac)|*.mac|Lisp Paketi (*.lisp)|*.lisp|Tümü|*"
 msgid "Maxima process terminated."
 msgstr "Maxima'nın çalışması sonlandı."
 
-#: ../src/ConfigDialogue.cpp:627
+#: ../src/ConfigDialogue.cpp:633
 msgid "Maxima program:"
 msgstr "Maxima programı:"
 
-#: ../src/ConfigDialogue.cpp:716
+#: ../src/ConfigDialogue.cpp:722
 msgid "Maxima questions"
 msgstr "Maxima sorular"
 
@@ -2652,7 +2652,7 @@ msgstr ""
 msgid "Maxima version: "
 msgstr "Maxima Sürümü: "
 
-#: ../src/ConfigDialogue.cpp:413
+#: ../src/ConfigDialogue.cpp:416
 msgid "Maximum displayed number of digits:"
 msgstr "Gösterilecek en fazla basamak sayısı"
 
@@ -2720,6 +2720,10 @@ msgstr "Yeni\tCtrl-N"
 msgid "New document"
 msgstr "Yeni belge"
 
+#: ../src/ConfigDialogue.cpp:475
+msgid "New lines: Jump to text"
+msgstr ""
+
 #: ../src/SubstituteWiz.cpp:34
 msgid "New value:"
 msgstr "Yeni Değer:"
@@ -2732,7 +2736,7 @@ msgstr "Yeni Değişken:"
 msgid "Next Command\tAlt-Down"
 msgstr "Sonraki komut\tAlt-Down"
 
-#: ../src/ConfigDialogue.cpp:420 ../src/ConfigDialogue.cpp:429
+#: ../src/ConfigDialogue.cpp:423 ../src/ConfigDialogue.cpp:432
 msgid "No"
 msgstr "Hayır"
 
@@ -2769,7 +2773,7 @@ msgstr ""
 "Ancak bazen maxima girdisi kullanıcını keyfini kaçırır. Bu seçenek "
 "maxima'nın girdilerini kapatır."
 
-#: ../src/ConfigDialogue.cpp:558
+#: ../src/ConfigDialogue.cpp:564
 msgid "Norwegian"
 msgstr "Norveçce"
 
@@ -2797,7 +2801,7 @@ msgstr "Say.derecesi:"
 msgid "Number of equations:"
 msgstr "Denklemlerin sayısı:"
 
-#: ../src/ConfigDialogue.cpp:709
+#: ../src/ConfigDialogue.cpp:715
 msgid "Numbers"
 msgstr "Sayılar"
 
@@ -2859,8 +2863,8 @@ msgstr "Bir örnek t-testi"
 msgid "Online tutorials"
 msgstr "Çevirimiçi Çalışma Notları"
 
-#: ../src/ToolBar.cpp:115 ../src/main.cpp:261 ../src/ConfigDialogue.cpp:629
-#: ../src/wxMaxima.cpp:2615
+#: ../src/ToolBar.cpp:115 ../src/ConfigDialogue.cpp:635
+#: ../src/wxMaxima.cpp:2615 ../src/main.cpp:278
 msgid "Open"
 msgstr "Aç"
 
@@ -2868,7 +2872,7 @@ msgstr "Aç"
 msgid "Open Recent"
 msgstr "Yakın Geçmişi Aç"
 
-#: ../src/ConfigDialogue.cpp:463
+#: ../src/ConfigDialogue.cpp:466
 msgid "Open a cell when Maxima expects input"
 msgstr "Maxima girdi beklerken yeni bir hücre aç"
 
@@ -2892,7 +2896,7 @@ msgstr "Matris Aç"
 msgid "Opening file"
 msgstr "Dosya açılıyor"
 
-#: ../src/ConfigDialogue.cpp:603
+#: ../src/ConfigDialogue.cpp:609
 msgid "Optimize wxmx files for version control"
 msgstr "sürüm kontrolünde wxmx dosyalarını optimize et"
 
@@ -2904,11 +2908,11 @@ msgstr "Seçenekler"
 msgid "Options:"
 msgstr "Seçenekler:"
 
-#: ../src/ConfigDialogue.cpp:732
+#: ../src/ConfigDialogue.cpp:738
 msgid "Outdated cells"
 msgstr "Kullanılmayan Hücreler"
 
-#: ../src/ConfigDialogue.cpp:717
+#: ../src/ConfigDialogue.cpp:723
 msgid "Output labels"
 msgstr "Çıktı Etiketleri"
 
@@ -3005,7 +3009,7 @@ msgstr "Pasta dilimi"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Lütfen wxMaxima'yı 'Düzenle-> Yapılandır' ile yapılandırınız."
 
-#: ../src/ConfigDialogue.cpp:1442
+#: ../src/ConfigDialogue.cpp:1449
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Değişikliklerin aktif olabilmesi içi wxMaxima'yı yeniden başlat"
 
@@ -3068,7 +3072,7 @@ msgstr "Grafiği Bir Dosyaya çiz:"
 msgid "Point:"
 msgstr "Nokta:"
 
-#: ../src/ConfigDialogue.cpp:559
+#: ../src/ConfigDialogue.cpp:565
 msgid "Polish"
 msgstr "Polonyaca"
 
@@ -3080,7 +3084,7 @@ msgstr "Polinom 1:"
 msgid "Polynomial 2:"
 msgstr "Polinom 2:"
 
-#: ../src/ConfigDialogue.cpp:560
+#: ../src/ConfigDialogue.cpp:566
 msgid "Portuguese (Brazilian)"
 msgstr "Portekizce (Brezilya)"
 
@@ -3243,7 +3247,7 @@ msgstr "Polinomun Kökleri (büyKaySayı)"
 msgid "Rows:"
 msgstr "Sıralar:"
 
-#: ../src/ConfigDialogue.cpp:561
+#: ../src/ConfigDialogue.cpp:567
 msgid "Russian"
 msgstr "Rusça"
 
@@ -3259,7 +3263,7 @@ msgstr "Örnek 2:"
 msgid "Sample:"
 msgstr "Örnek:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:754
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:760
 #: ../src/wxMaxima.cpp:5720
 msgid "Save"
 msgstr "Kaydet"
@@ -3308,7 +3312,7 @@ msgstr ""
 "Geri Al arabelleğinde sadece bu kadar eylem sayısını Kaydet. 0 sonsuz eylem "
 "sayısı anlamına gelir."
 
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:603
 msgid "Save panes layout"
 msgstr "Panellerin Yerleşimini Kaydet"
 
@@ -3328,11 +3332,11 @@ msgstr "Seçileni Bir Resim Dosyası Olarak Kaydet"
 msgid "Save selection to file"
 msgstr "Seçileni Dosyaya Kaydet"
 
-#: ../src/ConfigDialogue.cpp:1607
+#: ../src/ConfigDialogue.cpp:1614
 msgid "Save style to file"
 msgstr "Stili dosyaya Kaydet"
 
-#: ../src/ConfigDialogue.cpp:594
+#: ../src/ConfigDialogue.cpp:600
 msgid "Save wxMaxima window size/position"
 msgstr "wxMaxima penceresinin boyut\\pozisyonunu kaydet"
 
@@ -3364,7 +3368,7 @@ msgstr "Dağılım Grafiği..."
 msgid "Section"
 msgstr "Kısım"
 
-#: ../src/ConfigDialogue.cpp:723
+#: ../src/ConfigDialogue.cpp:729
 msgid "Section cell"
 msgstr "Kısım Hücresi"
 
@@ -3399,7 +3403,7 @@ msgstr "Tümünü Seç"
 msgid "Select All\tCtrl-A"
 msgstr "Tümünü Seç\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:874 ../src/ConfigDialogue.cpp:879
+#: ../src/ConfigDialogue.cpp:881 ../src/ConfigDialogue.cpp:886
 msgid "Select Maxima program"
 msgstr "Maxima Programını Seç"
 
@@ -3428,7 +3432,7 @@ msgstr ""
 "Çıktının bir bölümünü seçip fareyi sağ tıkladığınızdaseçilen bölüm ile "
 "yapılabilecekler menüsü gelir"
 
-#: ../src/ConfigDialogue.cpp:730
+#: ../src/ConfigDialogue.cpp:736
 msgid "Selection"
 msgstr "Seçim"
 
@@ -3565,7 +3569,7 @@ msgstr "Fonksiyon Şablonunu Göster"
 msgid "Show long expressions in wxMaxima document."
 msgstr "wxMaxima Belgesinde Uzun İfadeleri Göster"
 
-#: ../src/ConfigDialogue.cpp:418
+#: ../src/ConfigDialogue.cpp:421
 #, fuzzy
 msgid "Show long expressions:"
 msgstr "Uzun İfadeleri Göster"
@@ -3574,7 +3578,7 @@ msgstr "Uzun İfadeleri Göster"
 msgid "Show the definition of function:"
 msgstr "Fonksiyonun Tanımını Göster:"
 
-#: ../src/ConfigDialogue.cpp:445
+#: ../src/ConfigDialogue.cpp:448
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr "(%oxx) yerine kullanıcı tanımlı etiketleri göster"
@@ -3733,7 +3737,7 @@ msgstr ""
 "bunları çıkarım yapabilir. Bu seçenek seçildiğinde çıkarımın derlenmesi için "
 "ek LaTeX paketlerine gereksinim olabilir."
 
-#: ../src/ConfigDialogue.cpp:562
+#: ../src/ConfigDialogue.cpp:568
 msgid "Spanish"
 msgstr "İspanyolca"
 
@@ -3742,7 +3746,7 @@ msgstr "İspanyolca"
 msgid "Special"
 msgstr "Özel"
 
-#: ../src/ConfigDialogue.cpp:711
+#: ../src/ConfigDialogue.cpp:717
 msgid "Special constants"
 msgstr "Özel Sabitler"
 
@@ -3787,7 +3791,7 @@ msgstr "İstatistik"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "İstatistik\tAlt-Shift-S"
 
-#: ../src/ConfigDialogue.cpp:713
+#: ../src/ConfigDialogue.cpp:719
 msgid "Strings"
 msgstr "Dizinler"
 
@@ -3795,7 +3799,7 @@ msgstr "Dizinler"
 msgid "Style"
 msgstr "Stil"
 
-#: ../src/ConfigDialogue.cpp:689
+#: ../src/ConfigDialogue.cpp:695
 msgid "Styles"
 msgstr "Stiller"
 
@@ -3807,7 +3811,7 @@ msgstr "Alt Örnek"
 msgid "Subsection"
 msgstr "Alt Kısım"
 
-#: ../src/ConfigDialogue.cpp:722
+#: ../src/ConfigDialogue.cpp:728
 msgid "Subsection cell"
 msgstr "Alt Kısım Hücresi"
 
@@ -3828,7 +3832,7 @@ msgstr "Yerine koy..."
 msgid "Subsubsection"
 msgstr "Alt-alt Kısım"
 
-#: ../src/ConfigDialogue.cpp:721
+#: ../src/ConfigDialogue.cpp:727
 msgid "Subsubsection cell"
 msgstr "Alt-alt Kısım Hücresi"
 
@@ -3873,15 +3877,15 @@ msgstr "Tellrat"
 msgid "Text"
 msgstr "Metin"
 
-#: ../src/ConfigDialogue.cpp:720
+#: ../src/ConfigDialogue.cpp:726
 msgid "Text cell"
 msgstr "Metin Hücresi"
 
-#: ../src/ConfigDialogue.cpp:725
+#: ../src/ConfigDialogue.cpp:731
 msgid "Text cell background"
 msgstr "Metin Hücresi Arka Planı"
 
-#: ../src/ConfigDialogue.cpp:731
+#: ../src/ConfigDialogue.cpp:737
 msgid "Text equal to selection"
 msgstr "Metin seçime eşit"
 
@@ -3983,7 +3987,7 @@ msgstr "Yararlı Bilgi Bulunamadı Üzgünüz, "
 msgid "Title"
 msgstr "Başlık"
 
-#: ../src/ConfigDialogue.cpp:724
+#: ../src/ConfigDialogue.cpp:730
 msgid "Title cell"
 msgstr "Başlık Hücresi"
 
@@ -4099,7 +4103,7 @@ msgstr ""
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Birşeyi geri almaya çalışıyor ancak geri alacak bir şey yok."
 
-#: ../src/ConfigDialogue.cpp:563
+#: ../src/ConfigDialogue.cpp:569
 msgid "Turkish"
 msgstr "Türkçe"
 
@@ -4115,7 +4119,7 @@ msgstr "İki Örnek t-testi"
 msgid "Type:"
 msgstr "Tip:"
 
-#: ../src/ConfigDialogue.cpp:564
+#: ../src/ConfigDialogue.cpp:570
 msgid "Ukrainian"
 msgstr "Ukraynaca"
 
@@ -4135,11 +4139,11 @@ msgstr ""
 "\"http://andrejv.github.io//wxmaxima/version.txt\" den edindiğim sürüm "
 "bilgisini yorumlayamıyor:"
 
-#: ../src/ConfigDialogue.cpp:751
+#: ../src/ConfigDialogue.cpp:757
 msgid "Underlined"
 msgstr "Altı Çizili"
 
-#: ../src/ConfigDialogue.cpp:427
+#: ../src/ConfigDialogue.cpp:430
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
@@ -4151,7 +4155,7 @@ msgstr "Geri Al\tCtrl-Z"
 msgid "Undo last change"
 msgstr "Son Değişikliği Geri Al"
 
-#: ../src/ConfigDialogue.cpp:582
+#: ../src/ConfigDialogue.cpp:588
 #, fuzzy
 msgid "Undo limit (0 for none):"
 msgstr "Geri alma limiti ( 0, geri alma işlemi yapma! demektir)"
@@ -4188,7 +4192,7 @@ msgstr "Üst Sınır:"
 msgid "Use Gosper algorithm"
 msgstr "Gosper Algoritmasını Kullan"
 
-#: ../src/ConfigDialogue.cpp:523
+#: ../src/ConfigDialogue.cpp:529
 msgid "Use MathJAX in HTML export"
 msgstr "HTML olarak çıkarımlarda MathJAX kullan"
 
@@ -4208,15 +4212,15 @@ msgstr ""
 "ise JavaScript gerektirmesi ve matematiksel ifadeyi yazma işleminin uzun "
 "olasıdır."
 
-#: ../src/ConfigDialogue.cpp:600
+#: ../src/ConfigDialogue.cpp:606
 msgid "Use cairo to improve plot quality."
 msgstr "Çizim kalitesini arttırmak için cairo kullan."
 
-#: ../src/ConfigDialogue.cpp:205 ../src/ConfigDialogue.cpp:454
+#: ../src/ConfigDialogue.cpp:205 ../src/ConfigDialogue.cpp:457
 msgid "Use centered dot character for multiplication"
 msgstr "Çarpma işareti gösterimi için 'ortada nokta'yı kullan '.' "
 
-#: ../src/ConfigDialogue.cpp:704
+#: ../src/ConfigDialogue.cpp:710
 msgid "Use jsMath fonts"
 msgstr "jsMath Yazı tipini kullan"
 
@@ -4226,7 +4230,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:718
+#: ../src/ConfigDialogue.cpp:724
 msgid "User-defined labels"
 msgstr "Kullanıcı tanımlı etiketler"
 
@@ -4249,7 +4253,7 @@ msgstr "Değişken(ler):"
 msgid "Variable:"
 msgstr "Değişken:"
 
-#: ../src/ConfigDialogue.cpp:708
+#: ../src/ConfigDialogue.cpp:714
 msgid "Variables"
 msgstr "Değişken(ler)"
 
@@ -4334,7 +4338,7 @@ msgstr "XML Denetleyecisi"
 msgid "Xi"
 msgstr "Xi"
 
-#: ../src/ConfigDialogue.cpp:423
+#: ../src/ConfigDialogue.cpp:426
 msgid "Yes"
 msgstr "Evet"
 
@@ -4529,7 +4533,7 @@ msgstr ""
 msgid "chi"
 msgstr "orkide"
 
-#: ../src/ConfigDialogue.cpp:654
+#: ../src/ConfigDialogue.cpp:660
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -4628,7 +4632,7 @@ msgstr "log ölçek"
 msgid "matrix[i,j]:"
 msgstr "matris[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:668
+#: ../src/ConfigDialogue.cpp:674
 msgid "maxima's pwd is path to document"
 msgstr "Maxima'nın pwd si (print working directory) belgeye yönlendirilmiştir."
 
@@ -4745,7 +4749,7 @@ msgstr "simetrik"
 msgid "tau"
 msgstr "tau"
 
-#: ../src/ConfigDialogue.cpp:658
+#: ../src/ConfigDialogue.cpp:664
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
@@ -4778,12 +4782,12 @@ msgstr "kaydedilmemiş"
 msgid "untitled"
 msgstr "Başlıksız"
 
-#: ../src/main.cpp:241
+#: ../src/main.cpp:258
 #, c-format
 msgid "untitled %d"
 msgstr "Başlıksız %d"
 
-#: ../src/main.cpp:225 ../src/wxMaxima.cpp:4367
+#: ../src/wxMaxima.cpp:4367 ../src/main.cpp:242
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
@@ -4872,7 +4876,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima Belgesi"
 
-#: ../src/main.cpp:263 ../src/wxMaxima.cpp:2617
+#: ../src/wxMaxima.cpp:2617 ../src/main.cpp:280
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima Belgesi (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
@@ -4901,7 +4905,7 @@ msgstr ""
 "wxMaxima, wxWidgets ile geliştirilmiştir.Bilgisayar Cebiri Sistemi "
 "Maxima'nın bir grafiksel kullanıcı arayüzüdür."
 
-#: ../src/ConfigDialogue.cpp:405
+#: ../src/ConfigDialogue.cpp:408
 msgid "x"
 msgstr "x"
 

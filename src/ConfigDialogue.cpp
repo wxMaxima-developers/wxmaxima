@@ -472,7 +472,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   m_autoIndent = new wxCheckBox(panel, -1, _("Auto-indent new lines"));
   vsizer->Add(m_autoIndent, 0, wxALL, 5);
 
-  m_cursorJump = new wxCheckBox(panel, -1, _("Jump to text in new lines"));
+  m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
   vsizer->Add(m_cursorJump, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
