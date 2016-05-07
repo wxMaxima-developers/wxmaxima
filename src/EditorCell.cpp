@@ -1218,9 +1218,13 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       }
       m_isDirty = true;
       m_containsChanges = true;
-      if(cursorAtStartOfLine)
+      bool cursorJump = true;
+      wxConfig::Get()->Read(wxT("cursorJump"), &cursorJump);
+   
+      if((!cursorJump)||((cursorAtStartOfLine)&&(!autoIndent)))
         m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
-    }
+    }      
+      
     break;
 
   case WXK_DELETE:

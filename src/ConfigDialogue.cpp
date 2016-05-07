@@ -227,6 +227,7 @@ void ConfigDialogue::SetProperties()
     exportWithMathJAX = true;
   bool insertAns = true;
   bool autoIndent = true;
+  bool cursorJump = true;
 
   int labelWidth = 4;
   int  undoLimit = 0;
@@ -292,6 +293,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("openHCaret"), &openHCaret);
   config->Read(wxT("insertAns"), &insertAns);
   config->Read(wxT("autoIndent"), &autoIndent);
+  config->Read(wxT("cursorJump"), &cursorJump);
   config->Read(wxT("labelWidth"), &labelWidth);
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("bitmapScale"), &bitmapScale);
@@ -360,6 +362,7 @@ void ConfigDialogue::SetProperties()
   m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
   m_autoIndent->SetValue(autoIndent);
+  m_cursorJump->SetValue(cursorJump);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
   m_bitmapScale->SetValue(bitmapScale);
@@ -468,6 +471,9 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   m_autoIndent = new wxCheckBox(panel, -1, _("Auto-indent new lines"));
   vsizer->Add(m_autoIndent, 0, wxALL, 5);
+
+  m_cursorJump = new wxCheckBox(panel, -1, _("Jump to text in new lines"));
+  vsizer->Add(m_cursorJump, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -822,6 +828,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
   config->Write(wxT("autoIndent"), m_autoIndent->GetValue());
+  config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());

@@ -206,6 +206,7 @@ protected:
   wxCheckBox* m_openHCaret;
   wxCheckBox* m_insertAns;
   wxCheckBox* m_autoIndent;
+  wxCheckBox* m_cursorJump;
   wxSpinCtrl* m_labelWidth;
   wxSpinCtrl* m_undoLimit;
   wxSpinCtrl* m_bitmapScale;
