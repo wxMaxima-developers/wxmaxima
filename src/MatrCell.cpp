@@ -233,7 +233,13 @@ wxString MatrCell::ToString()
 
 wxString MatrCell::ToTeX()
 {
-  wxString s = wxT("\\begin{pmatrix}");
+  //ToDo: We ignore colNames and rowNames here. Are they currently in use?
+  wxString s;
+
+    if(!m_specialMatrix)
+      s = wxT("\\begin{pmatrix}");
+    else
+      s = wxT("\\begin{align}");
   for (int i = 0; i < m_matHeight; i++)
   {
     for (int j = 0; j < m_matWidth; j++)
@@ -245,7 +251,10 @@ wxString MatrCell::ToTeX()
     if (i < m_matHeight - 1)
       s += wxT("\\\\\n");
   }
-  s += wxT("\\end{pmatrix}");
+    if(!m_specialMatrix)
+      s += wxT("\\end{pmatrix}");
+    else
+      s += wxT("\\end{align}");
   return s;
 }
 
