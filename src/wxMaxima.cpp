@@ -1053,6 +1053,7 @@ void wxMaxima::ReadMiscText(wxString &data)
 
      if(
        (trimmedLine.StartsWith(wxT("-- an error."))) ||
+       (trimmedLine.Contains(wxT(":incorrect syntax:"))) ||
        (trimmedLine.StartsWith(wxT("incorrect syntax"))) ||
        (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
        (trimmedLine.StartsWith(wxT("killcontext: no such context")))
