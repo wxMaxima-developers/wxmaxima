@@ -1618,6 +1618,7 @@ void MathCtrl::DeleteSelection()
     );
   TreeUndo_ClearRedoActionList();
   m_selectionStart = m_selectionEnd = NULL;
+  UpdateTableOfContents();
 }
 
 void MathCtrl::DeleteCurrentCell()
@@ -4880,11 +4881,16 @@ void MathCtrl::AddDocumentToEvaluationQueue()
 
 void MathCtrl::AddToEvaluationQueue(GroupCell *cell)
 {
-  // Gray out the output of the cell in order to mark it as "not current".
-  if(cell->GetInput())
-    cell->GetInput()->ContainsChanges(true);
-  // ...and add it to the evaluation queue
-  m_evaluationQueue->AddToQueue(cell);
+  if(cell->GetGroupType() == GC_TYPE_CODE)
+  {
+    // Gray out the output of the cell in order to mark it as "not current".
+    if(cell->GetInput())
+    {
+      cell->GetInput()->ContainsChanges(true);
+      // ...and add it to the evaluation queue
+      m_evaluationQueue->AddToQueue(cell);
+    }
+  }
 }
 
 /**
@@ -5041,7 +5047,10 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 void MathCtrl::Undo()
 {
   if(CanUndoInsideCell())
+  {
     UndoInsideCell();
+    RecalculateForce();
+  }
   else
   {
     if(CanTreeUndo())
