@@ -665,8 +665,26 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   in->SetHighlight(m_highlight);
-  if (node->GetAttributes() == NULL)
+  wxString definiteAtt=node->GetAttribute(wxT("def"),wxT("true"));
+  if (definiteAtt != wxT("true"))
   {
+    // A indefinite integral
+    if (child)
+    {
+      in->SetBase(ParseTag(child, false));
+      child = GetNextTag(child);
+      if (child)
+      {
+        in->SetVar(ParseTag(child, true));
+        in->SetType(m_ParserStyle);
+        in->SetStyle(TS_VARIABLE);
+        return in;
+      }
+    }
+  }
+  else
+  {
+    // A Definite integral
     in->SetIntStyle(IntCell::INT_DEF);
     if (child)
     {
@@ -688,21 +706,6 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
             return in;
           }
         }
-      }
-    }
-  }
-  else
-  {
-    if (child)
-    {
-      in->SetBase(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        in->SetVar(ParseTag(child, true));
-        in->SetType(m_ParserStyle);
-        in->SetStyle(TS_VARIABLE);
-        return in;
       }
     }
   }
