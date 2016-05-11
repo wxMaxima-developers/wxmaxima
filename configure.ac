@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([wxMaxima], [16.04.1])
+AC_INIT([wxMaxima], [16.04.2])
 AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
 
