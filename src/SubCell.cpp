@@ -144,8 +144,17 @@ wxString SubCell::ToString()
 
 wxString SubCell::ToTeX()
 {
-  wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
-               m_indexCell->ListToTeX() + wxT("}}");
+  wxString s;
+  wxString base=m_baseCell->ListToTeX();
+  wxString index=m_indexCell->ListToTeX();
+  if(base.Length()>1)
+    s = wxT("{{") + base  + wxT("}_");
+  else
+    s = wxT("{" ) + base  + wxT( "_");
+  if(index.Length()>1)
+    s += wxT("{") + index + wxT("}}");
+  else
+    s +=            index + wxT( "}");
   return s;
 }
 
