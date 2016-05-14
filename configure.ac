@@ -220,7 +220,6 @@ else
    AC_DEFINE([WXM_CHM], [0], ["Not using chm help"])
 fi
 
-
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
@@ -252,6 +251,7 @@ AC_CONFIG_FILES([
         Doxygen/Doxyfile
         locales/Makefile
         data/Makefile
+        data/wxmathml.lisp
         info/Makefile
         test/Makefile
         wxmaxima.spec
