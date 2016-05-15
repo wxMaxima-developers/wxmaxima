@@ -3844,7 +3844,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
             
             line.Replace(wxT("<"), wxT("&lt;"));
             line.Replace(wxT(">"), wxT("&gt;"));
-            
+            // Work around a known limitation in MathJaX: According to
+            // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
+            // be interpreted as Text, not as TeX for a long while.
+            line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{%"));
+
             output<<wxT("\\[")<<line<<wxT("\\]\n");
 /*	The following is faster to render but not really there (April 2016):
            - Firefox and Opera still don't print out equation numbers
