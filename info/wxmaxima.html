@@ -9,7 +9,7 @@
     <meta name="keywords" content="wxMaxima Manual">
     <meta name="resource-type" content="document">
     <meta name="distribution" content="global">
-    <meta name="Generator" content="makeinfo">
+    <meta name="generator" content="Bluefish 2.2.6" >
     <link href="#Top" rel="start" title="top">
     <link href="#SEC_Contents" rel="contents" title="Table of Contents">
     <link href="#Top" rel="up" title="(dir)">
@@ -93,7 +93,7 @@ functions.
       make <span style="font-style: italic;">wxMaxima</span> one of the most
       popular GUIs for <span style="font-style: italic;">Maxima</span>.</p>
     <div style="text-align: center;"><a href="wxMaximaLogo"><img alt="wxMaxima logo"
-          src="wxMaximaLogo.png"></a></div>
+          src="./wxMaximaLogo.png"></a></div>
     <p style="text-align: left;">Before we look at the content a few points
       regarding navigation are in order. Immediately below is a short table of
       contents. Clicking on any of the listed items moves the cursor to the top
@@ -187,7 +187,7 @@ functions.
       variables, and it can also provide analytical solutions. Furthermore, it
       offers a range of numerical methods of analysis for equations or systems
       of equations that cannot be solved analytically. </p>
-    <div style="text-align: center;"><img alt="Maxima screenshot" src="maxima_screenshot.jpg"></div>
+    <div style="text-align: center;"><img alt="Maxima screenshot" src="./maxima_screenshot.jpg"></div>
     <p>Extensive documentation for <span style="font-style: italic;">Maxima</span>
       is&nbsp; <a href="http://maxima.sourceforge.net/documentation.html">available
         in the internet</a>. Part of this documentation is also available in <span
@@ -209,7 +209,7 @@ functions.
       to illustrate aspects of its use, is online at the <span style="font-style: italic;">wxMaxima</span>
       <a target="_blank" href="http://andrejv.github.io/wxmaxima/help.html">help
         site</a>, as well as via the help menu.</p>
-    <img alt="wxMaxima window" src="wxMaximaWindow.jpg">
+    <img alt="wxMaxima window" src="./wxMaximaWindow.jpg">
     <p>The calculations that are entered in <em>wxMaxima</em> are performed by
       the <span style="font-style: italic;">Maxima</span> command-line tool in
       the background. <a name="Worksheet-basics"></a></p>
@@ -246,7 +246,7 @@ functions.
       input cells that will eventually be sent to Maxima. A pair of such
       commands appears below. Once the input is executed, the resulting output
       appears in the same cell. </p>
-    <div style="text-align: center;"><img alt="Input/output cell" src="InputCell.jpg"></div>
+    <div style="text-align: center;"><img alt="Input/output cell" src="./InputCell.jpg"></div>
     <p>On evaluation of an input cell’s contents the input cell <em>Maxima</em>
       assigns a label to the input (by default shown in red and recognizable by
       the <code>%i</code>) by which it can be referenced later in the <em>wxMaxima</em>
@@ -265,7 +265,7 @@ functions.
       global undo buffer that can undo cell edits, adds and deletes. </p>
     <p>The figure below shows a title cell, a section cell, a text cell, and
       part of an input/output cell.</p>
-    <img alt="Noise filter " src="NoiseFilter.jpg">
+    <img alt="Noise filter " src="./NoiseFilter.jpg">
     <p><a name="Cells"></a></p>
     To <a title="To top of document" href="#Top" accesskey="u" rel="up">top</a>
     <h4 class="subsection">1.2.2 Cells</h4>
@@ -321,7 +321,7 @@ functions.
       combination <tt class="key">Ctrl</tt>+<tt class="key">k</tt>. The
       autocompletion is context-sensitive and if activated within an unit
       specification for ezUnits it will offer a list of applicable units.</p>
-    <img alt="ezUnits" src="ezUnits.png">
+    <img alt="ezUnits" src="./ezUnits.png">
     <p>Besides completing the current command’s or variable’s name the
       autocompletion is able to show a template for most of the commands
       indicating the type (and meaning) of the parameters this program expects.
@@ -465,7 +465,7 @@ leadsto       a "leads to" sign
       contains Greek letters can be opened. This pane provides an alternative to
       the methods of entering these letters that the preceding section
       discusses.</p>
-    <img alt="Side panes" src="SidePanes.jpg">
+    <img alt="Side panes" src="./SidePanes.jpg">
     <h4>1.2.7 MathML output </h4>
     <p>Several word processors and similar programs either recognize MathML
       input and automatically insert it as an editable 2D equation - or (like
@@ -542,7 +542,7 @@ single-
       two commands: <code>f(x) := (x - 5)^2;</code> and <code>wxdraw2d(
         explicit(f(x),x,-5,15))</code>. The result of entering that batch file
       appears below. (Some directory path information is deleted.) </p>
-    <div style="text-align: center;"><img alt="Batch image" src="BatchImage.png"></div>
+    <div style="text-align: center;"><img alt="Batch image" src="./BatchImage.png"></div>
     <div class="example">
       <pre class="example">%i1 read("test.mac");
 </pre></div>
@@ -601,7 +601,7 @@ single-
         the current session only by overwriting their values from the worksheet,
         as shown below.</li>
     </ul>
-    <div style="text-align: center;"><img alt="wxMaxima configuration 1" src="wxMaxima_configuration_001.png"></div>
+    <div style="text-align: center;"><img alt="wxMaxima configuration 1" src="./wxMaxima_configuration_001.png"></div>
     <h4><a name="Default-animation-framerate"></a>1.4.1 Default animation
       framerate </h4>
     <p>The animation framerate that is used for new animations is kept in the
@@ -622,7 +622,7 @@ single-
     <h4 class="subsection">1.4.3 Use jsMath fonts</h4>
     <p>The style menu allows customization that pertains to the appearance of
       your notebook as you work. </p>
-    <div style="text-align: center;"><img alt="wxMaxima configuration 2" src="wxMaxima_configuration_002.png"></div>
+    <div style="text-align: center;"><img alt="wxMaxima configuration 2" src="./wxMaxima_configuration_002.png"></div>
     <p>It also contains the option to use jsMath fonts. It is a good idea to
       install these fonts since they were especially designed for mathematics
       and tend to resolve issues that can be caused by broken fonts. If they are
@@ -907,14 +907,14 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 </pre></div>
     <p> As the next example shows, the lists that are assembled by the
       table_form command can be created before the command is executed.</p>
-    <div style="text-align: center;"><img alt="A third table example" src="file:///home/wilson/Dropbox/wxMaximaBook/temp/wxmaxima/MatrixTableExample.png"></div>
+    <div style="text-align: center;"><img alt="A third table example" src="./Matrix%20table%20example.png"></div>
     <div style="text-align: center;">
       <div style="text-align: left;">
         <p> <a name="Matrix"></a>Also, because a matrix is a list of lists,
           matrices can be converted to tables in a similar fashion.</p>
       </div>
     </div>
-    <div style="text-align: center;"><img alt="Another table_form example" src="file:///home/wilson/Dropbox/wxMaximaBook/temp/wxmaxima/SecondTableExample.png"></div>
+    <div style="text-align: center;"><img alt="Another table_form example" src="./Second%20table%20example.png"></div>
     <h3 class="section"><a name="Bug-reporting"></a>2.7 Bug reporting</h3>
     <p>wxMaxima provides a few functions that gather bug reporting information
       about the current system: </p>
@@ -1132,7 +1132,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
     <p>One way to provide maxima (and thus sbcl) with command line parameters is
       the <code>additional parameters</code> field of <span style="font-style: italic;">wxMaxima</span>’s
       configuration dialogue.</p>
-    <div style="text-align: center;"><img alt="sbcl memory" src="sbclMemory.png"></div>
+    <div style="text-align: center;"><img alt="sbcl memory" src="./sbclMemory.png"></div>
     <p><a name="Input-sometimes-is-sluggish_002fignoring-keys-on-Ubuntu"></a>To
       <a title="To top of document" href="#Top" accesskey="u" rel="up">top</a> </p>
     <h3 class="section">3.14 Input sometimes is sluggish/ignoring keys on Ubuntu</h3>
