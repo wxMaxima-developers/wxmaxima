@@ -239,7 +239,12 @@ wxString MatrCell::ToTeX()
     if(!m_specialMatrix)
       s = wxT("\\begin{pmatrix}");
     else
-      s = wxT("\\begin{align}");
+    {
+      s = wxT("\\begin{array}{");
+      for (int j = 0; j < m_matWidth; j++)
+        s += wxT("c");
+      s += wxT("}");
+    }
   for (int i = 0; i < m_matHeight; i++)
   {
     for (int j = 0; j < m_matWidth; j++)
@@ -254,7 +259,7 @@ wxString MatrCell::ToTeX()
     if(!m_specialMatrix)
       s += wxT("\\end{pmatrix}");
     else
-      s += wxT("\\end{align}");
+      s += wxT("\\end{array}");
   return s;
 }
 
