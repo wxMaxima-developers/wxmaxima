@@ -3847,7 +3847,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
             // Work around a known limitation in MathJaX: According to
             // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
             // be interpreted as Text, not as TeX for a long while.
-            line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{%"));
+            //
+            // Removing the "\%o1" by "%o1" currently works fine. But it will
+            // break things if MathJaX will ever start interpreting % as a comment
+            // character like TeX dows. Perhaps a lesser evil is to remove the %
+            // alltogether.
+            line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{"));
 
             output<<wxT("\\[")<<line<<wxT("\\]\n");
 /*	The following is faster to render but not really there (April 2016):
