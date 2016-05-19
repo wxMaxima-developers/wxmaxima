@@ -952,6 +952,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 
   //  Mark m_process as deleted
   m_process = NULL;
+  StatusMaximaBusy(disconnected);
 }
 
 void wxMaxima::CleanUp()
@@ -2549,6 +2550,18 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
   switch (event.GetId()) {
   case MAXIMA_STDOUT_POLL_ID:
     ReadStdErr();
+
+    if(m_process != NULL)
+    {
+      // The atexit() of maxima informs us if the process dies. But it sometimes doesn't do
+      // so if it dies due to an out of memory => Periodically check if it really lives.
+      if(!wxProcess::Exists(m_process->GetPid()))
+      {
+        wxProcessEvent *processEvent;
+        processEvent = new wxProcessEvent();
+        GetEventHandler()->QueueEvent(processEvent);
+      }
+    }
   break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
     m_console->m_keyboardInactive = true;
