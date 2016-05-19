@@ -1187,8 +1187,8 @@ void wxMaxima::ReadPrompt(wxString &data)
   else
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
 
-  // Input prompts have a length > 0, question prompts not.
-  if (o.Length()>0)
+  // Input prompts have a length > 0 and don't begin with a "enter space-separated", question prompts not.
+  if ((o.Length()>0)&&(!o.StartsWith(wxT("Enter space-separated"))))
   {
     // Maxima displayed a new main prompt => We don't have a question
     m_console->QuestionAnswered();
