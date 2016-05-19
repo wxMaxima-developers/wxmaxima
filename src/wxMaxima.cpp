@@ -950,7 +950,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
-  //  delete m_process;
+  //  Mark m_process as deleted
   m_process = NULL;
 }
 
@@ -1090,7 +1090,7 @@ void wxMaxima::ReadMath(wxString &data)
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
   int end;
-  while ((end = data.Find(mth)) != wxNOT_FOUND)
+  if ((end = data.Find(mth)) != wxNOT_FOUND)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
