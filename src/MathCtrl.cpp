@@ -4336,7 +4336,7 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\x00B3"), wxT("^3"));
   s.Replace(wxT("\x00BD"), wxT("(1/2)"));
   s.Replace(wxT("\x221A"), wxT("sqrt"));
-  s.Replace(wxT("\x03C0"), wxT("%pi"));
+//  s.Replace(wxT("\x03C0"), wxT("%pi"));
 //  s.Replace(wxT("\x2148"), wxT("%i"));
 //  s.Replace(wxT("\x2147"), wxT("%e"));
   s.Replace(wxT("\x221E"), wxT("inf"));
@@ -4354,7 +4354,27 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
   s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
 #endif
-  return s;
+
+  // Convert \x03C0 to %pi if it isn't part of a synbol name
+  wxString retval;
+  for(size_t i=0;i<s.Length();i++)
+    switch(wxChar(s[i]))
+    {
+    case wxT('\x03C0'):
+    {
+      if(
+        ((i==0)||(!wxIsalnum(s[i-1]))) &&
+        ((i==s.Length()-1)||(!wxIsalnum(s[i+1])))
+        )
+        retval+=wxT("%pi");
+      else
+        retval+=s[i];
+    }
+    break;
+    default:
+      retval+=s[i];
+    }
+  return retval;
 }
 
 void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
