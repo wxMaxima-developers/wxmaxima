@@ -691,10 +691,6 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
-    if (!m_closing)
-      m_console->m_evaluationQueue->Clear();
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
     SetBatchMode(false);
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
@@ -725,6 +721,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         StartMaxima(true);
       }
       m_console->m_evaluationQueue->Clear();
+      // Inform the user that the evaluation queue is empty.
+      EvaluationQueueLength(0);
     }
     break;
 
@@ -764,9 +762,6 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
 
   case wxSOCKET_LOST:
     StatusMaximaBusy(disconnected);
-    m_console->m_evaluationQueue->Clear();
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
     SetBatchMode(false);
     m_pid = -1;
     m_isConnected = false;
@@ -784,6 +779,9 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
         m_unsuccessfullConnectionAttempts ++;
         StartMaxima();
       }
+      m_console->m_evaluationQueue->Clear();
+      // Inform the user that the evaluation queue is empty.
+      EvaluationQueueLength(0);
     }
 
   default:
@@ -3207,7 +3205,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -3219,7 +3217,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -3231,7 +3229,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima(true);
+    StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -5275,7 +5273,10 @@ void wxMaxima::TryEvaluateNextInQueue()
   {
     tmp->RemoveOutput();
   }
+
   wxString text = m_console->m_evaluationQueue->GetCommand();
+  std::cerr<<text<<"\n";
+
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     m_console->Recalculate();
