@@ -703,7 +703,10 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     if(m_client != NULL)
       m_client->Destroy();
     m_client = NULL;
-    m_process = NULL;
+    // If we did close maxima by hand we already might have a new process
+    // and therefore invalidate the wrong process in this step
+    if(!m_closing)
+      m_process = NULL;
     m_isConnected = false;
     m_currentOutput = wxEmptyString;
     m_console->QuestionAnswered();
@@ -842,8 +845,6 @@ bool wxMaxima::StartMaxima(bool force)
     if (m_isConnected)
     {
       KillMaxima();
-      //    m_client->Close();
-      m_isConnected = false;
       m_closing = true;
       m_currentOutput = wxEmptyString;
     }
@@ -924,7 +925,10 @@ void wxMaxima::Interrupt(wxCommandEvent& event)
 void wxMaxima::KillMaxima()
 {
   if(m_process)
+  {
     m_process->Detach();
+    m_process = NULL;
+  }
 
   if (m_pid < 0)
   {
@@ -937,6 +941,10 @@ void wxMaxima::KillMaxima()
   else
       wxProcess::Kill(m_pid, wxSIGKILL);
 
+  if(m_client)
+    m_client->Close();
+  m_client = NULL;
+  m_isConnected = false;
   m_process = NULL;
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
@@ -3199,7 +3207,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    StartMaxima(true);
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -3211,7 +3219,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    StartMaxima(true);
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -3223,7 +3231,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    StartMaxima(true);
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size());
@@ -4770,6 +4778,7 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
+  m_process = NULL;
 #if defined __WXMAC__
   wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
 #endif
