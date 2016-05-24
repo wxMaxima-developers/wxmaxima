@@ -945,13 +945,16 @@ void wxMaxima::KillMaxima()
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   if (!m_closing)
+  {
     SetStatusText(_("Maxima process terminated."), 1);
-
+    // if m_closing==true we might already have a new process
+    // and therefore would mark the wrong process as deleted
+    m_process = NULL;
+  }
+  
   m_maximaVersion = wxEmptyString;
   m_lispVersion = wxEmptyString;
 
-  //  Mark m_process as deleted
-  m_process = NULL;
   StatusMaximaBusy(disconnected);
 }
 
