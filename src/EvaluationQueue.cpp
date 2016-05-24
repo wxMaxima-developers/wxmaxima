@@ -75,9 +75,9 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
     m_last = newelement;
   }
   m_size++;
-  m_queue->group->GetEditable()->AddEnding();
   if(emptyWas)
   {
+    m_queue->group->GetEditable()->AddEnding();
     AddTokens(gr->GetEditable()->GetValue());
     m_workingGroupChanged = true;
   }
