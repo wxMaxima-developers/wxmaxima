@@ -57,7 +57,11 @@ void XmlInspector::Add(wxString text)
 
     // Assume that all tags add indentation
     if(ch == wxT('>'))
+    {
       m_indentLevel ++;
+      if(text.Left(index+1).EndsWith(wxT("</wxxml-symbols>")))
+        m_indentLevel = 0;
+    }
       
     // A closing tag needs to remove the indentation of the opening tag 
     // plus the indentation of the closing tag
