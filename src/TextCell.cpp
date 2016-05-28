@@ -471,7 +471,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("~"),wxT("\\ensuremath{\\sim }"));
   text.Replace(wxT("_"), wxT("\\_ "));
   text.Replace(wxT("$"), wxT("\\$ "));
-  text.Replace(wxT("%"), wxT("\\%{}"));
+  text.Replace(wxT("%"), wxT("\\% "));
   text.Replace(wxT("&"), wxT("\\& "));
   text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
   text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
@@ -550,10 +550,104 @@ wxString TextCell::ToTeX()
   
   if (GetStyle() == TS_GREEK_CONSTANT)
   {
-    if (text[0] != '%')
-      return wxT("\\") + text;
-    else
-      return text;
+    if (text == wxT("\\% alpha"))
+      return wxT("\\alpha ");
+    else if (text == wxT("\\% beta"))
+      return wxT("\\beta ");
+    else if (text == wxT("\\% gamma"))
+      return wxT("\\gamma ");
+    else if (text == wxT("\\% delta"))
+      return wxT("\\delta ");
+    else if (text == wxT("\\% epsilon"))
+      return wxT("\\epsilon ");
+    else if (text == wxT("\\% zeta"))
+      return wxT("\\zeta ");
+    else if (text == wxT("\\% eta"))
+      return wxT("\\eta ");
+    else if (text == wxT("\\% theta"))
+      return wxT("\\theta ");
+    else if (text == wxT("\\% iota"))
+      return wxT("\\iota ");
+    else if (text == wxT("\\% kappa"))
+      return wxT("\\kappa ");
+    else if (text == wxT("\\% lambda"))
+      return wxT("\\lambda ");
+    else if (text == wxT("\\% mu"))
+      return wxT("\\mu ");
+    else if (text == wxT("\\% nu"))
+      return wxT("\\nu ");
+    else if (text == wxT("\\% xi"))
+      return wxT("\\xi ");
+    else if (text == wxT("\\% omicron"))
+      return wxT("\\omicron ");
+    else if (text == wxT("\\% pi"))
+      return wxT("\\pi ");
+    else if (text == wxT("\\% rho"))
+      return wxT("\\rho ");
+    else if (text == wxT("\\% sigma"))
+      return wxT("\\sigma ");
+    else if (text == wxT("\\% tau"))
+      return wxT("\\tau ");
+    else if (text == wxT("\\% upsilon"))
+      return wxT("\\upsilon ");
+    else if (text == wxT("\\% phi"))
+      return wxT("\\phi ");
+    else if (text == wxT("\\% chi"))
+      return wxT("\\chi ");
+    else if (text == wxT("\\% psi"))
+      return wxT("\\psi ");
+    else if (text == wxT("\\% omega"))
+      return wxT("\\omega ");
+    else if (text == wxT("\\% Alpha"))
+      return wxT("\\Alpha ");
+    else if (text == wxT("\\% Beta"))
+      return wxT("\\Beta ");
+    else if (text == wxT("\\% Gamma"))
+      return wxT("\\Gamma ");
+    else if (text == wxT("\\% Delta"))
+      return wxT("\\Delta ");
+    else if (text == wxT("\\% Epsilon"))
+      return wxT("\\Epsilon ");
+    else if (text == wxT("\\% Zeta"))
+      return wxT("\\Zeta ");
+    else if (text == wxT("\\% Eta"))
+      return wxT("\\Eta ");
+    else if (text == wxT("\\% Theta"))
+      return wxT("\\Theta ");
+    else if (text == wxT("\\% Iota"))
+      return wxT("\\Iota ");
+    else if (text == wxT("\\% Kappa"))
+      return wxT("\\Kappa ");
+    else if (text == wxT("\\% Lambda"))
+      return wxT("\\Lambda ");
+    else if (text == wxT("\\% Mu"))
+      return wxT("\\Mu ");
+    else if (text == wxT("\\% Nu"))
+      return wxT("\\Nu ");
+    else if (text == wxT("\\% Xi"))
+      return wxT("\\Xi ");
+    else if (text == wxT("\\% Omicron"))
+      return wxT("\\Omicron ");
+    else if (text == wxT("\\% Pi"))
+      return wxT("\\Pi ");
+    else if (text == wxT("\\% Rho"))
+      return wxT("\\Rho ");
+    else if (text == wxT("\\% Sigma"))
+      return wxT("\\Sigma ");
+    else if (text == wxT("\\% Tau"))
+      return wxT("\\Tau ");
+    else if (text == wxT("\\% Upsilon"))
+      return wxT("\\Upsilon ");
+    else if (text == wxT("\\% Phi"))
+      return wxT("\\Phi ");
+    else if (text == wxT("\\% Chi"))
+      return wxT("\\Chi ");
+    else if (text == wxT("\\% Psi"))
+      return wxT("\\Psi ");
+    else if (text == wxT("\\% Omega"))
+      return wxT("\\Omega ");
+    
+    return text;
   }
   
   if (GetStyle() == TS_SPECIAL_CONSTANT)
@@ -564,7 +658,7 @@ wxString TextCell::ToTeX()
       return wxT("e");
     else if (text == wxT("%i"))
       return wxT("i");
-    else if (text == wxT("\\%{}pi"))
+    else if (text == wxT("\\% pi"))
       return wxT("\\ensuremath{\\pi} ");
     else
       return text;
@@ -577,7 +671,7 @@ wxString TextCell::ToTeX()
     text.Trim(true);
     wxString label = text.SubString(1,text.Length()-2);
     text = conditionalLinebreak + wxT("\\tag{") + label + wxT("}");
-    label.Replace(wxT("\\%{}"),wxT(""));
+    label.Replace(wxT("\\% "),wxT(""));
     text += wxT("\\label{") + label + wxT("}");
   }
   else
@@ -591,7 +685,7 @@ wxString TextCell::ToTeX()
     {
       if((text.Length() > 1)&&(text[1]!=wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
-      if (text == wxT("\\%{}pi"))
+      if (text == wxT("\\% pi"))
         text = wxT("\\ensuremath{\\pi} ");
     }
     else if (GetStyle() == TS_ERROR)
@@ -630,6 +724,7 @@ wxString TextCell::ToTeX()
 
   if ((GetStyle() == TS_LABEL)||(GetStyle() == TS_LABEL))
     text = text + wxT(" ");
+
   return text;
 }
 
@@ -653,55 +748,55 @@ wxString TextCell::ToMathML()
   text.Replace(wxT("*"),  wxT("\xB7"));
       
   switch(GetStyle())
-    {
-    case TS_GREEK_CONSTANT:
-      text = GetGreekStringUnicode();
-    case TS_SPECIAL_CONSTANT:
-    {
-      // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
-      // support this currently => Commenting it out.
-      // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
-      //   text = wxT("&#2146;");
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-      if (!keepPercent) {
-        if (text == wxT("%e"))
-          text = wxT("e");
-        else if (text == wxT("%i"))
-          text = wxT("i");
-      }
+  {
+  case TS_GREEK_CONSTANT:
+    text = GetGreekStringUnicode();
+  case TS_SPECIAL_CONSTANT:
+  {
+    // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
+    // support this currently => Commenting it out.
+    // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+    //   text = wxT("&#2146;");
+    bool keepPercent = true;
+    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+    if (!keepPercent) {
+      if (text == wxT("%e"))
+        text = wxT("e");
+      else if (text == wxT("%i"))
+        text = wxT("i");
     }
-    case TS_VARIABLE:
-    {
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+  }
+  case TS_VARIABLE:
+  {
+    bool keepPercent = true;
+    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
       
-      if (!keepPercent) {
-        if (text == wxT("%pi"))
-          text = wxT("\x03C0");
-      }
+    if (!keepPercent) {
+      if (text == wxT("%pi"))
+        text = wxT("\x03C0");
     }
-    case TS_FUNCTION:
-      if(text == wxT("inf"))
-        text = wxT("\x221e");
-      return wxT("<mi>")+text+wxT("</mi>\n");
-      break;
-    case TS_NUMBER:
-      return wxT("<mn>")+text+wxT("</mn>\n");
-      break;
+  }
+  case TS_FUNCTION:
+    if(text == wxT("inf"))
+      text = wxT("\x221e");
+    return wxT("<mi>")+text+wxT("</mi>\n");
+    break;
+  case TS_NUMBER:
+    return wxT("<mn>")+text+wxT("</mn>\n");
+    break;
 
-    case TS_LABEL:
-    case TS_USERLABEL:
-      return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
-      break;
+  case TS_LABEL:
+  case TS_USERLABEL:
+    return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
+    break;
 
-    case TS_STRING:
-    default:
-      if (text.StartsWith(wxT("\"")))
-        return wxT("<ms>")+text+wxT("</ms>\n");
-      else
-        return wxT("<mo>")+text+wxT("</mo>\n");
-    }
+  case TS_STRING:
+  default:
+    if (text.StartsWith(wxT("\"")))
+      return wxT("<ms>")+text+wxT("</ms>\n");
+    else
+      return wxT("<mo>")+text+wxT("</mo>\n");
+  }
 }
 
 wxString TextCell::ToXML()
@@ -709,21 +804,21 @@ wxString TextCell::ToXML()
   wxString tag;
   wxString flags;
   if(m_isHidden)tag=_T("h");
-    else
-      switch(GetStyle())
-	{
-	case TS_GREEK_CONSTANT: tag=_T("g");break;
-	case TS_SPECIAL_CONSTANT: tag=_T("s");break;
-	case TS_VARIABLE: tag=_T("v");break;
-	case TS_FUNCTION: tag=_T("fnm");break;
-	case TS_NUMBER: tag=_T("n");break;
-	case TS_STRING: tag=_T("st");break;
-	case TS_LABEL: tag=_T("lbl");break;
-	case TS_USERLABEL: tag=_T("lbl");
-          flags += wxT(" userdefined=\"yes\"");
-          break;
-	default: tag=_T("t");
-	}
+  else
+    switch(GetStyle())
+    {
+    case TS_GREEK_CONSTANT: tag=_T("g");break;
+    case TS_SPECIAL_CONSTANT: tag=_T("s");break;
+    case TS_VARIABLE: tag=_T("v");break;
+    case TS_FUNCTION: tag=_T("fnm");break;
+    case TS_NUMBER: tag=_T("n");break;
+    case TS_STRING: tag=_T("st");break;
+    case TS_LABEL: tag=_T("lbl");break;
+    case TS_USERLABEL: tag=_T("lbl");
+      flags += wxT(" userdefined=\"yes\"");
+      break;
+    default: tag=_T("t");
+    }
 
   if((m_forceBreakLine)&&(GetStyle()!=TS_LABEL)&&(GetStyle()!=TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
@@ -814,109 +909,109 @@ wxString TextCell::GetGreekStringUnicode()
   wxString txt(m_text);
 
   if (txt == wxT("gamma"))
-    return wxString(L"\x0393");
+    return wxT("\x0393");
   else if (txt == wxT("psi"))
-    return wxString(L"\x03A8");
+    return wxT("\x03A8");
 
   if (txt[0] != '%')
     txt = wxT("%") + txt;
 
   if (txt == wxT("%alpha"))
-    return wxString(L"\x03B1");
+    return wxT("\x03B1");
   else if (txt == wxT("%beta"))
-    return wxString(L"\x03B2");
+    return wxT("\x03B2");
   else if (txt == wxT("%gamma"))
-    return wxString(L"\x03B3");
+    return wxT("\x03B3");
   else if (txt == wxT("%delta"))
-    return wxString(L"\x03B4");
+    return wxT("\x03B4");
   else if (txt == wxT("%epsilon"))
-    return wxString(L"\x03B5");
+    return wxT("\x03B5");
   else if (txt == wxT("%zeta"))
-    return wxString(L"\x03B6");
+    return wxT("\x03B6");
   else if (txt == wxT("%eta"))
-    return wxString(L"\x03B7");
+    return wxT("\x03B7");
   else if (txt == wxT("%theta"))
-    return wxString(L"\x03B8");
+    return wxT("\x03B8");
   else if (txt == wxT("%iota"))
-    return wxString(L"\x03B9");
+    return wxT("\x03B9");
   else if (txt == wxT("%kappa"))
-    return wxString(L"\x03BA");
+    return wxT("\x03BA");
   else if (txt == wxT("%lambda"))
-    return wxString(L"\x03BB");
+    return wxT("\x03BB");
   else if (txt == wxT("%mu"))
-    return wxString(L"\x03BC");
+    return wxT("\x03BC");
   else if (txt == wxT("%nu"))
-    return wxString(L"\x03BD");
+    return wxT("\x03BD");
   else if (txt == wxT("%xi"))
-    return wxString(L"\x03BE");
+    return wxT("\x03BE");
   else if (txt == wxT("%omicron"))
-    return wxString(L"\x03BF");
+    return wxT("\x03BF");
   else if (txt == wxT("%pi"))
-    return wxString(L"\x03C0");
+    return wxT("\x03C0");
   else if (txt == wxT("%rho"))
-    return wxString(L"\x03C1");
+    return wxT("\x03C1");
   else if (txt == wxT("%sigma"))
-    return wxString(L"\x03C3");
+    return wxT("\x03C3");
   else if (txt == wxT("%tau"))
-    return wxString(L"\x03C4");
+    return wxT("\x03C4");
   else if (txt == wxT("%upsilon"))
-    return wxString(L"\x03C5");
+    return wxT("\x03C5");
   else if (txt == wxT("%phi"))
-    return wxString(L"\x03C6");
+    return wxT("\x03C6");
   else if (txt == wxT("%chi"))
-    return wxString(L"\x03C7");
+    return wxT("\x03C7");
   else if (txt == wxT("%psi"))
-    return wxString(L"\x03C8");
+    return wxT("\x03C8");
   else if (txt == wxT("%omega"))
-    return wxString(L"\x03C9");
+    return wxT("\x03C9");
   else if (txt == wxT("%Alpha"))
-    return wxString(L"\x0391");
+    return wxT("\x0391");
   else if (txt == wxT("%Beta"))
-    return wxString(L"\x0392");
+    return wxT("\x0392");
   else if (txt == wxT("%Gamma"))
-    return wxString(L"\x0393");
+    return wxT("\x0393");
   else if (txt == wxT("%Delta"))
-    return wxString(L"\x0394");
+    return wxT("\x0394");
   else if (txt == wxT("%Epsilon"))
-    return wxString(L"\x0395");
+    return wxT("\x0395");
   else if (txt == wxT("%Zeta"))
-    return wxString(L"\x0396");
+    return wxT("\x0396");
   else if (txt == wxT("%Eta"))
-    return wxString(L"\x0397");
+    return wxT("\x0397");
   else if (txt == wxT("%Theta"))
-    return wxString(L"\x0398");
+    return wxT("\x0398");
   else if (txt == wxT("%Iota"))
-    return wxString(L"\x0399");
+    return wxT("\x0399");
   else if (txt == wxT("%Kappa"))
-    return wxString(L"\x039A");
+    return wxT("\x039A");
   else if (txt == wxT("%Lambda"))
-    return wxString(L"\x039B");
+    return wxT("\x039B");
   else if (txt == wxT("%Mu"))
-    return wxString(L"\x039C");
+    return wxT("\x039C");
   else if (txt == wxT("%Nu"))
-    return wxString(L"\x039D");
+    return wxT("\x039D");
   else if (txt == wxT("%Xi"))
-    return wxString(L"\x039E");
+    return wxT("\x039E");
   else if (txt == wxT("%Omicron"))
-    return wxString(L"\x039F");
+    return wxT("\x039F");
   else if (txt == wxT("%Pi"))
-    return wxString(L"\x03A0");
+    return wxT("\x03A0");
   else if (txt == wxT("%Rho"))
-    return wxString(L"\x03A1");
+    return wxT("\x03A1");
   else if (txt == wxT("%Sigma"))
-    return wxString(L"\x03A3");
+    return wxT("\x03A3");
   else if (txt == wxT("%Tau"))
-    return wxString(L"\x03A4");
+    return wxT("\x03A4");
   else if (txt == wxT("%Upsilon"))
-    return wxString(L"\x03A5");
+    return wxT("\x03A5");
   else if (txt == wxT("%Phi"))
-    return wxString(L"\x03A6");
+    return wxT("\x03A6");
   else if (txt == wxT("%Chi"))
-    return wxString(L"\x03A7");
+    return wxT("\x03A7");
   else if (txt == wxT("%Psi"))
-    return wxString(L"\x03A8");
+    return wxT("\x03A8");
   else if (txt == wxT("%Omega"))
-    return wxString(L"\x03A9");
+    return wxT("\x03A9");
 
   return wxEmptyString;
 }
@@ -928,45 +1023,45 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
   else if (m_text == wxT("="))
     return wxT("=");
   else if (m_text == wxT("inf"))
-    return wxString(L"\x221E");
+    return wxT("\x221E");
   else if (m_text == wxT("%pi"))
-    return wxString(L"\x03C0");
+    return wxT("\x03C0");
   else if (m_text == wxT("<="))
-    return wxString(L"\x2264");
+    return wxT("\x2264");
   else if (m_text == wxT(">="))
-    return wxString(L"\x2265");
+    return wxT("\x2265");
 #ifndef __WXMSW__
   else if (m_text == wxT(" and "))
-    return wxString(L" \x22C0 ");
+    return wxT(" \x22C0 ");
   else if (m_text == wxT(" or "))
-    return wxString(L" \x22C1 ");
+    return wxT(" \x22C1 ");
   else if (m_text == wxT(" xor "))
-    return wxString(L" \x22BB ");
+    return wxT(" \x22BB ");
   else if (m_text == wxT(" nand "))
-    return wxString(L" \x22BC ");
+    return wxT(" \x22BC ");
   else if (m_text == wxT(" nor "))
-    return wxString(L" \x22BD ");
+    return wxT(" \x22BD ");
   else if (m_text == wxT(" implies "))
-    return wxString(L" \x21D2 ");
+    return wxT(" \x21D2 ");
   else if (m_text == wxT(" equiv "))
-    return wxString(L" \x21D4 ");
+    return wxT(" \x21D4 ");
   else if (m_text == wxT("not"))
-    return wxString(L"\x00AC");
+    return wxT("\x00AC");
   else if (m_text == wxT("->"))
-    return wxString(L"\x2192");
+    return wxT("\x2192");
   else if (m_text == wxT("-->"))
-    return wxString(L"\x27F6");
+    return wxT("\x27F6");
 #endif
  /*
   else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
-    return wxString(L"\x2202");
+    return wxT("\x2202");
   */
 
   if (!keepPercent) {
     if (m_text == wxT("%e"))
-      return wxString(L"e");
+      return wxT("e");
     else if (m_text == wxT("%i"))
-      return wxString(L"i");
+      return wxT("i");
     else if (m_text == wxT("%pi"))
       return wxString(wxT("\x03C0"));
   }
@@ -1123,9 +1218,9 @@ wxString TextCell::GetSymbolSymbol(bool keepPercent)
       
   if (!keepPercent) {
     if (m_text == wxT("%e"))
-      return wxString(L"e");
+      return wxT("e");
     else if (m_text == wxT("%i"))
-      return wxString(L"i");
+      return wxT("i");
   }
 
   return wxEmptyString;

@@ -3841,7 +3841,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           else if (mathjax &&
                    (chunk->GetType() != MC_TYPE_IMAGE)) {
             wxString line = chunk->ListToTeX();
-            
+        
             line.Replace(wxT("<"), wxT("&lt;"));
             line.Replace(wxT(">"), wxT("&gt;"));
             // Work around a known limitation in MathJaX: According to
