@@ -5275,7 +5275,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
 
   wxString text = m_console->m_evaluationQueue->GetCommand();
-  std::cerr<<text<<"\n";
 
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
