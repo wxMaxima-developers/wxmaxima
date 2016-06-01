@@ -614,6 +614,10 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   {
 
   case wxSOCKET_INPUT:
+
+    // Read out stderr: We will do that in the background on a regular basis, anyway. 
+    // But if we do it manually now, too, the probability that things are presented 
+    // to the user in chronological order increases a bit.
     ReadStdErr();
 
     // It is theoretically possible that the client has exited after sending us
