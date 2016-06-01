@@ -113,7 +113,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
           m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
           m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
         }
-        SetStatusText(_("Maxima got a question"), 1);
+        SetStatusText(_("Maxima has a question"), 1);
         break;
       case waiting:
         m_console->SetWorkingGroup(NULL);
