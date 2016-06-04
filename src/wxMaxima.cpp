@@ -986,8 +986,9 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
+  int start = 0;
 #if defined(__WXMSW__)
-  int start = data.Find(wxT("Maxima"));
+  start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
@@ -1011,6 +1012,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
+  
   data = wxEmptyString;
   m_console->EnableEdit(true);
 
@@ -1572,7 +1574,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
       zoom = 100;
-    document->SetZoomFactor( double(zoom) / 100.0, false); // Set zoom if opening, dont recalculate
+    document->SetZoomFactor( double(zoom) / 100.0, false); // Set zoom if opening, don't recalculate
   }
 
   document->InsertGroupCells(tree); // this also recalculates

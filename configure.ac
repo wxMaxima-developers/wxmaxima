@@ -117,7 +117,7 @@ AC_TRY_LINK([#include <wx/wx.h>],
             [echo ""
              echo ""
              echo "*** The test program failed to compile or link. See the file config.log for the"
-             echo "*** exact error that occured. This usually means that wxWidgets library was"
+             echo "*** exact error that occurred. This usually means that wxWidgets library was"
              echo "*** incorrectly installed."
              echo ""
              AC_MSG_ERROR([Failed to compile a test program])])

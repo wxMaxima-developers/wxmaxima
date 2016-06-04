@@ -90,7 +90,7 @@ enum {
   Besides the cell types that are directly user visible there are cells for several
   kinds of items that are displayed in a special way like abs() statements (displayed
   as horizontal rules), subscripts, superscripts and exponents.
-  Another important concept realized realized by a clas derived from this one is 
+  Another important concept realized realized by a class derived from this one is 
   the group cell that groups all things that are foldable in the gui like:
    - A combination of maxima input with the output, the input prompt and the output 
      label.

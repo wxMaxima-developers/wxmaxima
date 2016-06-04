@@ -497,7 +497,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
                       parser,scale,dc,TS_SELECTION);
 
       //
-      // Matching parens - draw only if we dont have selection
+      // Matching parens - draw only if we don't have selection
       //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {

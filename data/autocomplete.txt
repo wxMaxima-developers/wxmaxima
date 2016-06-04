@@ -4128,13 +4128,13 @@ TEMPLATE: geo_annuity_pv(<rate>,<growing_rate>,<PV>,<num>)
 FUNCTION: geo_annuity_fv
 TEMPLATE: geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)
 FUNCTION: amortization
-TEMPLATE: amortization(<rate>,<ammount>,<num>)
+TEMPLATE: amortization(<rate>,<amount>,<num>)
 FUNCTION: arit_amortization
-TEMPLATE: arit_amortization(<rate>,<increment>,<ammount>,<num>)
+TEMPLATE: arit_amortization(<rate>,<increment>,<amount>,<num>)
 FUNCTION: geo_amortization
-TEMPLATE: geo_amortization(<rate>,<growing_rate>,<ammount>,<num>)
+TEMPLATE: geo_amortization(<rate>,<growing_rate>,<amount>,<num>)
 FUNCTION: saving
-TEMPLATE: saving(<rate>,<ammount>,<num>)
+TEMPLATE: saving(<rate>,<amount>,<num>)
 FUNCTION: npv
 TEMPLATE: npv(<rate>,<val>)
 FUNCTION: irr

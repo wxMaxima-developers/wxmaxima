@@ -3851,7 +3851,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
             // Removing the "\%o1" by "%o1" currently works fine. But it will
             // break things if MathJaX will ever start interpreting % as a comment
             // character like TeX dows. Perhaps a lesser evil is to remove the %
-            // alltogether.
+            // altogether.
             line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{"));
 
             output<<wxT("\\[")<<line<<wxT("\\]\n");

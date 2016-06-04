@@ -342,7 +342,7 @@ private:
 #if wxUSE_UNICODE
   /*! Handle ESC shortcuts for special characters
 
-    These characters can be tought to LaTeX and the html browser if neccessary in
+    These characters can be tought to LaTeX and the html browser if necessary in
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */

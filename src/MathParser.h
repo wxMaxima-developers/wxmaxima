@@ -60,14 +60,14 @@ private:
        between XML tags. This one is more helpful - but only if we provide a function
        that skips these whitespace text nodes.
     If we encounter a non-whitespace text node where we shouldn't we raise an 
-    assertation that informs the user that we might want a bug report about this.
+    assertion that informs the user that we might want a bug report about this.
    */
   wxXmlNode* GetNextTag(wxXmlNode* node);
 
   /*! Returns node - or (if node is a whitespace-only text node) the next one.
 
     If we encounter a non-whitespace text node where we shouldn't we raise an 
-    assertation that informs the user that we might want a bug report about this.
+    assertion that informs the user that we might want a bug report about this.
    */
   wxXmlNode* SkipWhitespaceNode(wxXmlNode* node);
 

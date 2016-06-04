@@ -140,7 +140,7 @@ private:
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
   int m_maxOutputCellsPerCommand;
-  //! The number of consecutive unsucessfull attempts to connect to the maxima server
+  //! The number of consecutive unsuccessful attempts to connect to the maxima server
   int m_unsuccessfullConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
@@ -250,7 +250,7 @@ protected:
 
     Normally a restart is only needed if
       - maxima isn't currently in the process of starting up or
-      - maxima is runnning and has never evaluated any program 
+      - maxima is running and has never evaluated any program 
         so a restart won't change anything
     \param force true means to restart maxima unconditionally.
    */
