@@ -1207,7 +1207,11 @@ void wxMaxima::ReadPrompt(wxString &data)
     o=data.SubString(begin + m_promptPrefix.Length(), end - 1);
 
   // Input prompts have a length > 0 and don't begin with a "enter space-separated", question prompts not.
-  if ((o.Length()>0)&&(!o.StartsWith(wxT("Enter space-separated"))))
+  if (
+    (o.Length()>0)&&
+    (!o.StartsWith(wxT("Enter space-separated")))&&
+    (!o.StartsWith(wxT("Still waiting:")))
+    )
   {
     // Maxima displayed a new main prompt => We don't have a question
     m_console->QuestionAnswered();
