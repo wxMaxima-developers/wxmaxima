@@ -980,11 +980,11 @@
 (defun wxxml-d-abbrev-subscript (l_vars l_ords &aux var_xml)
   (let ((sub ()))
     (loop while l_vars do
-	  (setq var_xml (car (wxxml (car l_vars) nil nil 'mparen 'mparen)))
-	  (loop for i from 1 to (car l_ords) do
-		(setq sub (cons var_xml sub)))
-	  (setq l_vars (cdr l_vars)
-		l_ords (cdr l_ords)))
+         (setq var_xml (car (wxxml (car l_vars) nil nil 'mparen 'mparen)))
+         (loop for i from 1 to (car l_ords) do
+              (setq sub (cons var_xml sub)))
+         (setq l_vars (cdr l_vars)
+               l_ords (cdr l_ords)))
     (reverse sub)))
 
 (defun wxxml-d-abbrev (x)
@@ -1536,7 +1536,8 @@
 
 (defun $wxdraw (&rest args)
   (unless ($get '$draw '$version) ($load "draw"))
-  (let* ((filename (wxplot-filename nil))
+  (let* ((file_name_spec ($assoc '$file_name (first args)))
+         (filename (or file_name_spec (wxplot-filename nil)))
 	 (*windows-OS* t)
 	 res)
     (setq res ($apply '$draw
@@ -1555,7 +1556,9 @@
                           `(((mequal simp) $dimensions ,$wxplot_size)))))))
     (if $display_graphics
 	(progn
-          ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"))
+          ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"
+                    ,(when file_name_spec
+                           "del=\"no\"")))
           (setq res ""))
 	(setf res `((wxxmltag simp) ,(format nil "~a.png" filename) "img")))
     res))
