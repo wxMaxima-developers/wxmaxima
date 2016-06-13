@@ -1534,9 +1534,15 @@
 
 (defvar $display_graphics t)
 
+(defun option-sublist (lst)
+  (cons '(mlist simp)
+        (loop for l in lst
+           when (and (listp l) (= ($length l) 2))
+           collect l)))
+
 (defun $wxdraw (&rest args)
   (unless ($get '$draw '$version) ($load "draw"))
-  (let* ((file_name_spec ($assoc '$file_name (first args)))
+  (let* ((file_name_spec ($assoc '$file_name (option-sublist args)))
          (filename (or file_name_spec (wxplot-filename nil)))
 	 (*windows-OS* t)
 	 res)
