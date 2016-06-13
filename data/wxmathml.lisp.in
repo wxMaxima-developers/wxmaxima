@@ -1542,7 +1542,9 @@
 
 (defun $wxdraw (&rest args)
   (unless ($get '$draw '$version) ($load "draw"))
-  (let* ((file_name_spec ($assoc '$file_name (option-sublist args)))
+  (let* ((file_name_spec ($assoc '$file_name
+                                 (option-sublist (append (cdar args)
+                                                         (cdr args)))))
          (filename (or file_name_spec (wxplot-filename nil)))
 	 (*windows-OS* t)
 	 res)
