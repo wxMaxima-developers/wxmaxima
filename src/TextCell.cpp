@@ -505,7 +505,7 @@ wxString TextCell::ToTeX()
         // we will be using \mathit{} for the TeX outout.
         ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
         )
-        text=wxT("\\,");
+        text=wxT("\\, ");
       else
       text = wxEmptyString;        
     }
@@ -525,8 +525,8 @@ wxString TextCell::ToTeX()
     
     if (m_SuppressMultiplicationDot)
     {
-      text.Replace(wxT("*"),wxT("\\,"));
-      text.Replace(wxT("\xB7"),wxT("\\,"));
+      text.Replace(wxT("*"),wxT("\\, "));
+      text.Replace(wxT("\xB7"),wxT("\\, "));
     }
     else
     {
@@ -536,8 +536,8 @@ wxString TextCell::ToTeX()
       {
         if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX()==wxT("d"))
         {
-          text.Replace(wxT("*"),wxT("\\,"));
-          text.Replace(wxT("\xB7"),wxT("\\,"));
+          text.Replace(wxT("*"),wxT("\\, "));
+          text.Replace(wxT("\xB7"),wxT("\\, "));
         }
         else
         {
@@ -718,7 +718,7 @@ wxString TextCell::ToTeX()
         //text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\")+text;
       if(GetStyle() != TS_DEFAULT)
-        text.Replace(wxT(" "), wxT("\\,"));
+        text.Replace(wxT(" "), wxT("\\, "));
     }
   }
 
