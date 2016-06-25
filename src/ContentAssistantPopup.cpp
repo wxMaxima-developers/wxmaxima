@@ -194,17 +194,15 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
 
 void ContentAssistantPopup::OnClick(wxCommandEvent& event)
 {
-  if(m_completions.GetCount()>0)
+  if(m_completions.GetCount()<0)
+    return;
   {
     int selection = event.GetSelection();
-    if(selection > 0)
-    {
-      m_editor->ReplaceSelection(
-        m_editor->GetSelectionString(),
-        m_completions[selection]
-        );
-      this->GetParent()->GetParent()->Refresh();
-    }
+    if(selection < 0) selection = 0;
+    m_editor->ReplaceSelection(
+      m_editor->GetSelectionString(),
+      m_completions[selection]
+      );
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
       m_editor->ActivateCell();
@@ -226,6 +224,9 @@ ContentAssistantPopup::ContentAssistantPopup(
   m_autocompletions = new wxListBox(this, -1);
   
   m_autocompletions->Connect(wxEVT_LISTBOX,
+                             wxCommandEventHandler(ContentAssistantPopup::OnClick),
+                             NULL, this);
+  m_autocompletions->Connect(wxEVT_LISTBOX_DCLICK,
                              wxCommandEventHandler(ContentAssistantPopup::OnClick),
                              NULL, this);
   m_autocompletions->Connect(wxEVT_CHAR,
