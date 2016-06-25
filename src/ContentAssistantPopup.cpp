@@ -172,18 +172,25 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
     }
     else if(wxIsprint(key))
     {
+      // The current key is no more part of the current command
+      //
+      // => Add the current selection to the worksheet and handle this keypress normally.
       int selection = m_autocompletions->GetSelection();
       if(selection<0)
         selection = 0;
       
       m_editor->ReplaceSelection(
         m_editor->GetSelectionString(),
-        m_completions[selection]+key
+        m_completions[selection]
         );
       this->GetParent()->GetParent()->Refresh();
       if(!m_editor->IsActive())
         m_editor->ActivateCell();
       Dismiss();
+
+      // Tell MathCtrl to handle this key event the normal way.
+      wxKeyEvent *keyEvent=new wxKeyEvent(event);
+      GetParent()->GetEventHandler()->QueueEvent(keyEvent);
       
     } else
       event.Skip();
