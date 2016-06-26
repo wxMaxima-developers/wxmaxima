@@ -657,7 +657,7 @@ public:
   bool CopyTeX();
   //! Copy the MathML representation of the current selection to the clipboard
   bool CopyMathML();
-  //! Copy a bitmap of the the current selection to the clipboard
+  //! Copy a bitmap of the current selection to the clipboard
   bool CopyBitmap();
   wxSize CopyToFile(wxString file);
   wxSize CopyToFile(wxString file, MathCell* start, MathCell* end, bool asData = false,int scale=1);

@@ -1281,15 +1281,15 @@ wxPanel* wxMaximaFrame::CreateGreekPane()
   lowercase->Add(CharButton(panel,  wxT('\x03B9'),_("iota")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03BA'),_("kappa")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03BB'),_("lambda")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x03BC'),_("my")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x03BD'),_("ny")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(panel,  wxT('\x03BC'),_("mu")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(panel,  wxT('\x03BD'),_("nu")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03BE'),_("xi")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x03BF'),_("omnikron")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(panel,  wxT('\x03BF'),_("omicron")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C0'),_("pi")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C1'),_("rho")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C3'),_("sigma")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C4'),_("tau")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x03C5'),_("ypsilon")),0,wxALL | wxEXPAND,2);
+  lowercase->Add(CharButton(panel,  wxT('\x03C5'),_("upsilon")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C6'),_("phi")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C7'),_("chi")),0,wxALL | wxEXPAND,2);
   lowercase->Add(CharButton(panel,  wxT('\x03C8'),_("psi")),0,wxALL | wxEXPAND,2);
@@ -1312,15 +1312,15 @@ wxPanel* wxMaximaFrame::CreateGreekPane()
   uppercase->Add(CharButton(panel,  wxT('\x0399'),_("Iota")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x039A'),_("Kappa")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x039B'),_("Lambda")),0,wxALL | wxEXPAND,2);
-  uppercase->Add(CharButton(panel,  wxT('\x039C'),_("My")),0,wxALL | wxEXPAND,2);
-  uppercase->Add(CharButton(panel,  wxT('\x039D'),_("Ny")),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(panel,  wxT('\x039C'),_("Mu")),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(panel,  wxT('\x039D'),_("Nu")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x039E'),_("Xi")),0,wxALL | wxEXPAND,2);
-  uppercase->Add(CharButton(panel,  wxT('\x039F'),_("Omnikron")),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(panel,  wxT('\x039F'),_("Omicron")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A0'),_("Pi")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A1'),_("Rho")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A3'),_("Sigma")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A4'),_("Tau")),0,wxALL | wxEXPAND,2);
-  uppercase->Add(CharButton(panel,  wxT('\x03A5'),_("Ypsilon")),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(panel,  wxT('\x03A5'),_("Upsilon")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A6'),_("Phi")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A7'),_("Chi")),0,wxALL | wxEXPAND,2);
   uppercase->Add(CharButton(panel,  wxT('\x03A8'),_("Psi")),0,wxALL | wxEXPAND,2);
@@ -1409,7 +1409,7 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   wxString symbolPaneAdditionalChars=wxT("üØ");
   wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"),&symbolPaneAdditionalChars);
   for (size_t i=0;i<symbolPaneAdditionalChars.Length();i++)
-  uppercase->Add(CharButton(panel, symbolPaneAdditionalChars[i],_("A symbol from the configuraton dialogue")),0,wxALL | wxEXPAND,2);
+  uppercase->Add(CharButton(panel, symbolPaneAdditionalChars[i],_("A symbol from the configuration dialogue")),0,wxALL | wxEXPAND,2);
   vbox->Add(uppercase,0,style,border);
 
   panel->SetSizerAndFit(vbox);
