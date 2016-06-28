@@ -5348,8 +5348,11 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if (m_activeCell != NULL)
   {
-    TreeUndo_CellLeft();
-    m_activeCell->ActivateCell();
+    if(m_activeCell != cell)
+    {
+      TreeUndo_CellLeft();
+      m_activeCell->ActivateCell();
+    }
   }
 
   if (cell == NULL)
@@ -6314,8 +6317,8 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     ClientToScreen(&pos.x, &pos.y);
     ContentAssistantPopup *autocompletePopup;
     autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type);
-    autocompletePopup -> Popup();
     autocompletePopup -> Position(pos, wxDefaultSize);
+    autocompletePopup -> Popup();
     #else
     // On Win and Mac a popup window doesn't accept clicks and keypresses.
     // a popup menu at least accepts clicks => we stick to the traditional
