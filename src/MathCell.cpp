@@ -789,3 +789,4 @@ bool MathCell::IsMath()
 }
 
 wxSize MathCell::m_canvasSize;
+wxRect MathCell::m_displayedRect;

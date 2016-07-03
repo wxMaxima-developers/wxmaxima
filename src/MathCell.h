@@ -116,6 +116,13 @@ public:
    */
   virtual void Destroy() = 0;
 
+  /*! Set the rectangle that is currently being drawn
+
+    This allows a cell to decide if actually needs to change anything
+    in the screen in case of Draw being called
+   */
+  static void SetDrawRect(wxRect rect) { m_displayedRect = rect;}
+
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
   
@@ -489,6 +496,7 @@ public:
 
    */
   void SetCanvasSize(wxSize size) { m_canvasSize = size; }
+
 protected:
   /*! The GroupCell this list of cells belongs to.
     
@@ -498,6 +506,8 @@ protected:
   MathCell *m_group;
   //! The size of the canvas our cells have to be drawn on
   static wxSize m_canvasSize;
+  //! The recangle that is displayed by the current redraw command.
+  static wxRect m_displayedRect;
   int m_height;
   //! The width of this cell
   int m_width;

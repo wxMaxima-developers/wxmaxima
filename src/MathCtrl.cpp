@@ -144,10 +144,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   wxRect rect = GetUpdateRegion().GetBox();
   // printf("Updating rect [%d, %d] -> [%d, %d]\n", rect.x, rect.y, rect.width, rect.height);
   wxSize sz = GetSize();
-  int xstart, top, bottom, drop;
-  CalcUnscrolledPosition(0, rect.GetTop(), &xstart, &top);
-  CalcUnscrolledPosition(0, rect.GetBottom(), &xstart, &bottom);
+  int xstart, xend, top, bottom, drop;
+  CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
+  CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
 
+  MathCell::SetDrawRect(wxRect(xstart,top,bottom-top,xend-xstart));
+  
   if(sz.x == 0) sz.x=1;
   if(sz.y == 0) sz.y=1;
   
