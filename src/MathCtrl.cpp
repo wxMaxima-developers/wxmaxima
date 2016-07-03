@@ -5346,18 +5346,17 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   
  */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
-  if (m_activeCell != NULL)
+  if ((m_activeCell != NULL) &&(m_activeCell != cell))
   {
-    if(m_activeCell != cell)
-    {
-      TreeUndo_CellLeft();
-      m_activeCell->ActivateCell();
-    }
+    TreeUndo_CellLeft();
+    m_activeCell->ActivateCell(false);
   }
-
-  if (cell == NULL)
+  if(cell != NULL)
+  {
+    cell->ActivateCell(true);
     m_caretTimer.Stop();
-
+  }
+  
   m_activeCell = cell;
   TreeUndo_CellEntered();
 
@@ -5370,7 +5369,14 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
       wxConfig::Get()->Read(wxT("matchParens"), &match);
       wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
     }
-    m_activeCell->ActivateCell();
+    if(m_activeCell != cell)
+    {
+      if(m_activeCell != NULL)
+        m_activeCell->ActivateCell(false);
+    }
+    if(cell != NULL)
+      cell->ActivateCell(true);
+    
     m_activeCell->SetMatchParens(match);
     m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = true;

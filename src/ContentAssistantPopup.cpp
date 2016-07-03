@@ -42,7 +42,7 @@ void ContentAssistantPopup::UpdateResults()
     m_editor->ClearSelection();
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCell();
+      m_editor->ActivateCell(true);
     Dismiss();
     break;
   default:
@@ -104,7 +104,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         );
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCell();
+      m_editor->ActivateCell(true);
     Dismiss();
   }
   break;
@@ -112,7 +112,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
   case WXK_ESCAPE:
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCell();
+      m_editor->ActivateCell(true);
     Dismiss();
     break;
   case WXK_UP:
@@ -153,7 +153,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
     else
       this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCell();
+      m_editor->ActivateCell(true);
     
     Dismiss();
     break;
@@ -185,7 +185,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         );
       this->GetParent()->GetParent()->Refresh();
       if(!m_editor->IsActive())
-        m_editor->ActivateCell();
+        m_editor->ActivateCell(true);
       Dismiss();
 
       // Tell MathCtrl to handle this key event the normal way.
@@ -212,7 +212,7 @@ void ContentAssistantPopup::OnClick(wxCommandEvent& event)
       );
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCell();
+      m_editor->ActivateCell(true);
     Dismiss();
   }
 }

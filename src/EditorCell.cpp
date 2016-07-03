@@ -481,7 +481,12 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       while((start = m_text.find(m_selectionString,start)) != wxNOT_FOUND)
       {
         size_t end = start + m_selectionString.Length();
-        MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION);
+
+        // Mark only text that won't be marked in the next step:
+        // This would not only be unneccessary but also could cause
+        // selections to flicker in very long texts
+        if((!m_isActive)||(start!=MIN(m_selectionStart, m_selectionEnd)))
+          MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION);
         start = end;
       }
     }
@@ -2100,14 +2105,17 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
 }
 #endif
 
-bool EditorCell::ActivateCell()
+bool EditorCell::ActivateCell(bool active)
 {
-  m_isActive = !m_isActive;
+  m_isActive = active;
+  
   if (m_isActive)
+  {
     SaveValue();
-  m_displayCaret = true;
-  m_hasFocus = true;
-
+    m_displayCaret = true;
+    m_hasFocus = true;
+  }
+  
   ClearSelection();
   m_paren1 = m_paren2 = -1;
 

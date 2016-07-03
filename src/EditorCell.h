@@ -128,7 +128,7 @@ public:
   void Reset();
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
-  bool ActivateCell();
+  bool ActivateCell(bool active);
   //! Return the index of the 1st char of the line containing the letter #pos.
   size_t BeginningOfLine(size_t pos);
   size_t EndOfLine(size_t pos);
