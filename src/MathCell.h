@@ -122,7 +122,17 @@ public:
     in the screen in case of Draw being called
    */
   static void SetDrawRect(wxRect rect) { m_displayedRect = rect;}
-
+  //! Get the rectangle that is currently drawn
+  static wxRect GetDrawRect() { return m_displayedRect;}
+  //! The part of the rectangle rect that is in the region that is currently drawn
+  static wxRect CropToDrawRegion(wxRect rect);
+  //! Is part of this this rectangle in the region that is currently drawn?
+  static bool InDrawRegion(wxRect rect);
+  //! Is this cell inside the region that is currently drawn?
+  static bool InDrawRegion()
+    {
+      return InDrawRegion(wxRect());
+    }
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
   

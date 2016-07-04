@@ -433,6 +433,7 @@ void EditorCell::MarkSelection(size_t start, size_t end,CellParser& parser,doubl
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
       selectionWidth = rect.GetRight() - point.x - SCALE_PX(2,scale);
 #endif
+
     dc.DrawRectangle(point.x + SCALE_PX(2, scale), // draw the rectangle
                      point.y + SCALE_PX(2, scale) - m_center,
                      selectionWidth,

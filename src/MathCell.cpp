@@ -371,6 +371,31 @@ wxRect MathCell::GetRect(bool all)
                 m_width, m_height);
 }
 
+bool MathCell::InDrawRegion(wxRect rect)
+{
+  return
+    (rect.GetLeft()  >= m_displayedRect.GetLeft())  &&
+    (rect.GetRight() <= m_displayedRect.GetRight()) &&
+    (rect.GetBottom()>= m_displayedRect.GetLeft())  &&
+    (rect.GetTop()   >= m_displayedRect.GetTop())   &&
+    (rect.GetBottom()<= m_displayedRect.GetBottom());
+}
+
+wxRect MathCell::CropToDrawRegion(wxRect rect)
+{
+  size_t
+    startx = rect.GetLeft(),
+    starty = rect.GetTop(),
+    endx   = rect.GetRight(),
+    endy   = rect.GetBottom();
+
+  if (startx<m_displayedRect.GetLeft()) startx = m_displayedRect.GetLeft();
+  if (starty<m_displayedRect.GetLeft()) starty = m_displayedRect.GetLeft();
+  if (endx  <m_displayedRect.GetLeft()) endx   = m_displayedRect.GetLeft();
+  if (endy  <m_displayedRect.GetLeft()) endy   = m_displayedRect.GetLeft();
+  return wxRect(startx,starty,endx-startx,endy-starty);
+}
+
 /***
  * Draws a box around this cell - if all is true draws a box around the whole
  * line.
