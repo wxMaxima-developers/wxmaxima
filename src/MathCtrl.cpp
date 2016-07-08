@@ -2217,9 +2217,13 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         }
       }
       else
-      {      
+      {
+        // User pressed "Evaluate" inside an active cell.
+        
         if (m_activeCell->GetType() != MC_TYPE_INPUT)
         {
+          // User tries to evaluate a cell that doesn't contain code.
+          
           bool enterEvaluates = false;
           bool controlOrShift = event.ControlDown() || event.ShiftDown();
           wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
@@ -2240,13 +2244,28 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
           
         }
         else {
+          // User tries to evaluate a cell that actually contains code.
+          
           bool enterEvaluates = false;
           bool controlOrShift = event.ControlDown() || event.ShiftDown();
           wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
           if ((!enterEvaluates &&  controlOrShift) ||
               ( enterEvaluates && !controlOrShift) )
-          { // shift-enter pressed === menu_evaluate event          
-            dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+          { // shift-enter pressed === menu_evaluate event
+            GroupCell *currentGroup=dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
+            if(m_evaluationQueue->IsLastInQueue(currentGroup))
+            {
+              // User tries to evaluate a cell that already is to be evaluated as the
+              // last element of the evaluation queue => It is most probable that
+              // the intention is to evaluate more than one cell => Move the cursor
+              // forward a bit
+                SetHCaret(currentGroup);
+            }
+            else
+            {
+              // Finally evaluate the cell
+              dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+            }
           } else
           {
             event.Skip();

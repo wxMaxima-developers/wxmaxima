@@ -69,6 +69,14 @@ public:
   ~EvaluationQueue() {};
 
   //! Is GroupCell gr part of the evaluation queue?
+  bool IsLastInQueue(GroupCell* gr)
+    {
+      if(m_last == NULL)
+        return false;
+      else
+        return(gr == m_last->group);
+    }
+  //! Is GroupCell gr part of the evaluation queue?
   bool IsInQueue(GroupCell* gr);
   //! Adds a GroupCell to the evaluation queue.
   void AddToQueue(GroupCell* gr);
