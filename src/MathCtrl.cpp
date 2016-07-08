@@ -134,6 +134,11 @@ MathCtrl::~MathCtrl() {
  * Redraw the control
  */
 void MathCtrl::OnPaint(wxPaintEvent& event) {
+
+  // Inform all cells how wide our display is
+  int virtualsize_x;
+  int virtualsize_y;
+  MathCell::SetCanvasSize(GetClientSize());
   wxPaintDC dc(this);
   wxMemoryDC dcm;
 
@@ -147,9 +152,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   int xstart, xend, top, bottom, drop;
   CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
   CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
+  wxRect updateRegion;
+  updateRegion.SetLeft(xstart);
+  updateRegion.SetRight(xend);
+  updateRegion.SetTop(top);
+  updateRegion.SetBottom(bottom);
+  MathCell::SetUpdateRegion(updateRegion);
 
-  MathCell::SetDrawRect(wxRect(xstart,top,bottom-top,xend-xstart));
-  
   if(sz.x == 0) sz.x=1;
   if(sz.y == 0) sz.y=1;
   
@@ -201,8 +210,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         while (tmp != NULL)
         {
           wxRect rect = tmp->GetRect();
+          rect=wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           // TODO globally define x coordinates of the left GC brackets
-          dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+          if(MathCell::InUpdateRegion(rect))
+            dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
 
           if (tmp == m_selectionEnd)
 	    break;
@@ -232,18 +243,23 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       dcm.SetBrush(*wxTRANSPARENT_BRUSH);
       while (tmp != NULL)
       {
-        wxRect rect = tmp->GetRect();        
+        wxRect rect = tmp->GetRect();
         if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
           if (m_evaluationQueue->GetCell() == tmp)
           {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
-            dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+            rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+            if(MathCell::InUpdateRegion(rect))
+              dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
 
           }
           else
           {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
-            dcm.DrawRectangle( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+            rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+            if(MathCell::InUpdateRegion(rect))
+              dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
+
           }
         }
         tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -3086,11 +3102,14 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
           rect.SetTop(caretY - 1);
           rect.SetBottom(caretY + 1);
         }
+        int virtualsize_x;
+        int virtualsize_y;
+        GetVirtualSize(&virtualsize_x,&virtualsize_y);
         rect.SetLeft(0);
-        rect.SetRight(5000);
-
+        rect.SetRight(virtualsize_x);
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      rect.SetWidth(5000);
       RefreshRect(rect);
     }
 

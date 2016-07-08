@@ -172,7 +172,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize);
 
-  if (DrawThisCell(parser, point) && !m_isHidden)
+  if (DrawThisCell(parser, point) && !m_isHidden && InUpdateRegion())
   {
     SetFont(parser, fontsize);
     SetForeground(parser);

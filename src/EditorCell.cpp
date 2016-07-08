@@ -434,10 +434,13 @@ void EditorCell::MarkSelection(size_t start, size_t end,CellParser& parser,doubl
       selectionWidth = rect.GetRight() - point.x - SCALE_PX(2,scale);
 #endif
 
-    dc.DrawRectangle(point.x + SCALE_PX(2, scale), // draw the rectangle
-                     point.y + SCALE_PX(2, scale) - m_center,
-                     selectionWidth,
-                     m_charHeight);
+    wxRect rect(point.x + SCALE_PX(2, scale),
+                point.y + SCALE_PX(2, scale) - m_center,
+                selectionWidth,
+                m_charHeight);
+    // draw the rectangle if it is in the region that is to be updated.
+    if(InUpdateRegion(rect))
+      dc.DrawRectangle(CropToUpdateRegion(rect));
     pos1++;
     pos2 = pos1;
   }
@@ -508,7 +511,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 #if defined(__WXMAC__)
-        wxRect rect = GetRect(); // rectangle representing the cell
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
         dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
@@ -518,14 +520,18 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         wxPoint point = PositionToPoint(parser, m_paren1);
         int width, height;
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        dc.DrawRectangle(point.x + SCALE_PX(2, scale) + 1,
-                         point.y  + SCALE_PX(2, scale) - m_center + 1,
-                         width - 1, height - 1);
+        wxRect rect(point.x + SCALE_PX(2, scale) + 1,
+                    point.y  + SCALE_PX(2, scale) - m_center + 1,
+                    width - 1, height - 1);
+        if(InUpdateRegion(rect))
+          dc.DrawRectangle(CropToUpdateRegion(rect));
         point = PositionToPoint(parser, m_paren2);
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        dc.DrawRectangle(point.x + SCALE_PX(2, scale) + 1,
-                         point.y  + SCALE_PX(2, scale) - m_center + 1,
-                         width - 1, height - 1);
+        rect=wxRect(point.x + SCALE_PX(2, scale) + 1,
+                    point.y  + SCALE_PX(2, scale) - m_center + 1,
+                    width - 1, height - 1);
+        if(InUpdateRegion(rect))
+          dc.DrawRectangle(CropToUpdateRegion(rect));
       } // else if (m_paren1 != -1 && m_paren2 != -1)
     } // if (m_isActive)
 
