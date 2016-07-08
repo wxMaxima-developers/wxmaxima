@@ -373,12 +373,11 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
-  bool result = 
-    (rect.GetRight()  >= m_updateRegion.GetLeft())  &&
-    (rect.GetLeft()   <= m_updateRegion.GetRight()) &&
-    (rect.GetBottom() >= m_updateRegion.GetTop())  &&
-    (rect.GetTop()    <= m_updateRegion.GetBottom());
-  return result;
+  return
+    (rect.GetRight()  >= m_updateRegion.GetLeft()   - SCROLL_UNIT) &&
+    (rect.GetLeft()   <= m_updateRegion.GetRight()  + SCROLL_UNIT) &&
+    (rect.GetBottom() >= m_updateRegion.GetTop()    - SCROLL_UNIT) &&
+    (rect.GetTop()    <= m_updateRegion.GetBottom() + SCROLL_UNIT);
 }
 
 wxRect MathCell::CropToUpdateRegion(wxRect rect)
