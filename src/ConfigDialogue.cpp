@@ -638,9 +638,9 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-    int defaultPort = 4010;
+  int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 5000, defaultPort);
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 65534, defaultPort);
   m_defaultPort->SetValue(defaultPort);
   wxStaticText* dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
