@@ -226,6 +226,7 @@ protected:
   int m_mathFontSize;
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
+private:
   wxRect m_outputRect;
 };
 

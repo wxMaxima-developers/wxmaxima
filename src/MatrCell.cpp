@@ -136,7 +136,9 @@ void MatrCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
@@ -208,7 +210,6 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     }
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString MatrCell::ToString()

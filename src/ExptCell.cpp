@@ -148,7 +148,9 @@ void ExptCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     double scale = parser.GetScale();
     wxPoint bs, pw;
@@ -162,8 +164,6 @@ void ExptCell::Draw(CellParser& parser, wxPoint point, int fontsize)
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
     m_powCell->DrawList(parser, pw, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   }
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ExptCell::ToString()

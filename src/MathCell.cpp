@@ -371,29 +371,27 @@ wxRect MathCell::GetRect(bool all)
                 m_width, m_height);
 }
 
-bool MathCell::InDrawRegion(wxRect rect)
+bool MathCell::InUpdateRegion(wxRect rect)
 {
+  // The update region contains a calculation step that is executed modulo
+  // the scroll unit => We need to draw text that looks like it were
+  // outside the screen by SCROLL_UNIT - 1 pixel + 1 pixel to allow for
+  // rectangles we misinterpret to be on-screeen.
+  
   return
-    (rect.GetLeft()  >= m_displayedRect.GetLeft())  &&
-    (rect.GetRight() <= m_displayedRect.GetRight()) &&
-    (rect.GetBottom()>= m_displayedRect.GetLeft())  &&
-    (rect.GetTop()   >= m_displayedRect.GetTop())   &&
-    (rect.GetBottom()<= m_displayedRect.GetBottom());
+    (rect.GetRight()  >= m_updateRegion.GetLeft()   - SCROLL_UNIT ) &&
+    (rect.GetLeft()   <= m_updateRegion.GetRight()  + SCROLL_UNIT ) &&
+    (rect.GetBottom() >= m_updateRegion.GetTop()    - SCROLL_UNIT ) &&
+    (rect.GetTop()    <= m_updateRegion.GetBottom() + SCROLL_UNIT );
 }
 
-wxRect MathCell::CropToDrawRegion(wxRect rect)
+wxRect MathCell::CropToUpdateRegion(wxRect rect)
 {
-  size_t
-    startx = rect.GetLeft(),
-    starty = rect.GetTop(),
-    endx   = rect.GetRight(),
-    endy   = rect.GetBottom();
-
-  if (startx<m_displayedRect.GetLeft()) startx = m_displayedRect.GetLeft();
-  if (starty<m_displayedRect.GetLeft()) starty = m_displayedRect.GetLeft();
-  if (endx  <m_displayedRect.GetLeft()) endx   = m_displayedRect.GetLeft();
-  if (endy  <m_displayedRect.GetLeft()) endy   = m_displayedRect.GetLeft();
-  return wxRect(startx,starty,endx-startx,endy-starty);
+  if (rect.GetLeft()  <m_updateRegion.GetLeft())   rect.SetLeft  (m_updateRegion.GetLeft());
+  if (rect.GetRight() >m_updateRegion.GetRight())  rect.SetRight (m_updateRegion.GetRight());
+  if (rect.GetTop()   <m_updateRegion.GetTop())    rect.SetTop   (m_updateRegion.GetTop());
+  if (rect.GetBottom()>m_updateRegion.GetBottom()) rect.SetBottom(m_updateRegion.GetBottom());
+  return rect;
 }
 
 /***
@@ -405,7 +403,8 @@ void MathCell::DrawBoundingBox(wxDC& dc, bool all, int border)
   wxRect rect = GetRect(all);
   int x = rect.GetX(), y = rect.GetY();
   int width = rect.GetWidth(), height = rect.GetHeight();
-  dc.DrawRectangle(x - border, y - border, width + 2*border, height + 2*border);
+  if(InUpdateRegion(rect))
+    dc.DrawRectangle(CropToUpdateRegion(rect));
 }
 
 /***
@@ -814,4 +813,4 @@ bool MathCell::IsMath()
 }
 
 wxSize MathCell::m_canvasSize;
-wxRect MathCell::m_displayedRect;
+wxRect MathCell::m_updateRegion;

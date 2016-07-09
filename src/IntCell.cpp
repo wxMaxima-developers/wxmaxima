@@ -233,7 +233,9 @@ void IntCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
@@ -363,8 +365,6 @@ void IntCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     var.x = base.x + m_base->GetFullWidth(scale);
     m_var->DrawList(parser, var, fontsize);
   }
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString IntCell::ToString()

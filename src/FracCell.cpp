@@ -200,8 +200,9 @@ void FracCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
 
-  if (DrawThisCell(parser, point))
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
@@ -243,8 +244,6 @@ void FracCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       UnsetPen(parser);
     }
   }
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString FracCell::ToString()

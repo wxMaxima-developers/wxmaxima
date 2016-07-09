@@ -5286,13 +5286,14 @@ void wxMaxima::TryEvaluateNextInQueue()
   if(m_console->m_evaluationQueue->m_workingGroupChanged)
   {
     tmp->RemoveOutput();
+    m_console->Recalculate();
+    m_console->Refresh();
   }
 
   wxString text = m_console->m_evaluationQueue->GetCommand();
 
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
-    m_console->Recalculate();
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
     if(parenthesisError==wxEmptyString)
     {          
@@ -5305,9 +5306,6 @@ void wxMaxima::TryEvaluateNextInQueue()
           m_console->ScrollToCaret();
         }
       }
-      else
-        m_console->Recalculate();
-
       
       m_console->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
@@ -5339,7 +5337,6 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_console->SetSelection(NULL);
         
       m_console->SetWorkingGroup(NULL);
-      m_console->Recalculate();
       m_console->Refresh();
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
@@ -5359,6 +5356,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         TryEvaluateNextInQueue();
       }
     }
+    m_console->Recalculate();
   }
   else
   {

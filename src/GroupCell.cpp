@@ -511,6 +511,8 @@ void GroupCell::RecalculateAppended(CellParser& parser)
 
 void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
   if (m_width == -1 || m_height == -1) {
@@ -525,8 +527,8 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       wxRect rect = GetRect(false);
       int y = rect.GetY();
       wxPen pen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
-      dc.SetPen(pen);
-      dc.DrawLine(0, y , 10000, y);
+      dc.SetPen(pen);      
+      dc.DrawLine(0,y,m_canvasSize.GetWidth(),y);
       MathCell::Draw(parser, point, fontsize);
       return;
     }
@@ -543,7 +545,9 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
         dc.SetBrush(br);
         wxPen pen(parser.GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
-        dc.DrawRectangle(0, y , 10000, rect.GetHeight());
+        wxRect rect(0, y, m_canvasSize.GetWidth(), rect.GetHeight());
+        if(InUpdateRegion(rect))
+          dc.DrawRectangle(CropToUpdateRegion(rect));
       }
     }
     //
@@ -651,7 +655,6 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxRect GroupCell::HideRect()
@@ -1512,4 +1515,3 @@ bool GroupCell::Contains(GroupCell *cell)
   
   return false;
 }
-

@@ -58,6 +58,14 @@
 #include "CellParser.h"
 #include "TextStyle.h"
 
+/*! The size of a scroll step
+
+  Defines the size of a scroll step, but besides that also the accuracy wxScrolledCanvas
+  calculates some widths in.
+ */
+#define SCROLL_UNIT 10
+
+
 /*! The supported types of math cells
  */
 enum {
@@ -116,22 +124,18 @@ public:
    */
   virtual void Destroy() = 0;
 
-  /*! Set the rectangle that is currently being drawn
-
-    This allows a cell to decide if actually needs to change anything
-    in the screen in case of Draw being called
-   */
-  static void SetDrawRect(wxRect rect) { m_displayedRect = rect;}
+  //! Sets the region that is to be updated on Draw()
+  static void SetUpdateRegion(wxRect region) { m_updateRegion = region; }
   //! Get the rectangle that is currently drawn
-  static wxRect GetDrawRect() { return m_displayedRect;}
+  static wxRect GetUpdateRegion() { return m_updateRegion;}
   //! The part of the rectangle rect that is in the region that is currently drawn
-  static wxRect CropToDrawRegion(wxRect rect);
+  static wxRect CropToUpdateRegion(wxRect rect);
   //! Is part of this this rectangle in the region that is currently drawn?
-  static bool InDrawRegion(wxRect rect);
+  static bool InUpdateRegion(wxRect rect);
   //! Is this cell inside the region that is currently drawn?
-  static bool InDrawRegion()
+  bool InUpdateRegion()
     {
-      return InDrawRegion(wxRect());
+      return InUpdateRegion(wxRect(m_currentPoint,m_currentPoint+wxPoint(m_width,m_height)));
     }
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
@@ -505,9 +509,11 @@ public:
   /*! Set the size of the canvas our cells have to be drawn on
 
    */
-  void SetCanvasSize(wxSize size) { m_canvasSize = size; }
+  static void SetCanvasSize(wxSize size)     { m_canvasSize = size; }
 
 protected:
+  static wxRect m_updateRegion;
+
   /*! The GroupCell this list of cells belongs to.
     
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetParent():
@@ -516,8 +522,6 @@ protected:
   MathCell *m_group;
   //! The size of the canvas our cells have to be drawn on
   static wxSize m_canvasSize;
-  //! The recangle that is displayed by the current redraw command.
-  static wxRect m_displayedRect;
   int m_height;
   //! The width of this cell
   int m_width;
