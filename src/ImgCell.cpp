@@ -118,8 +118,6 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
-
   wxDC& dc = parser.GetDC();
 
   // Todo: Find a way to redraw only the parts of the Cells that are
@@ -132,6 +130,8 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   
     m_height = (m_image->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_image->m_width)  + 2 * m_imageBorderWidth;
+
+    MathCell::Draw(parser, point, fontsize);
 
     SetPen(parser);
     if (m_drawRectangle)

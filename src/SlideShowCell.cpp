@@ -159,8 +159,6 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
-
   wxDC& dc = parser.GetDC();
 
   // Todo: Find a way to redraw only the parts of the Cells that are
@@ -173,6 +171,8 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
   
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
+
+    MathCell::Draw(parser, point, fontsize);
 
     dc.SetPen(*wxRED_PEN);
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));  
