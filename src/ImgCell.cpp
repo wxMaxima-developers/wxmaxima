@@ -102,7 +102,6 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_width = (scale * m_image->m_width) + 2 * m_imageBorderWidth;
-  ResetData();
 }
 
 void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
@@ -111,13 +110,12 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_height = (scale * m_image->m_height) + 2 * m_imageBorderWidth;
-  ResetData();
-
   m_center = m_height / 2;
 }
 
 void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
   wxDC& dc = parser.GetDC();
 
   // Todo: Find a way to redraw only the parts of the Cells that are
@@ -131,8 +129,6 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     m_height = (m_image->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_image->m_width)  + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
-
-    MathCell::Draw(parser, point, fontsize);
 
     SetPen(parser);
     if (m_drawRectangle)
