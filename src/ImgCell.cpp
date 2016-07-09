@@ -118,9 +118,13 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   wxDC& dc = parser.GetDC();
 
-  if (DrawThisCell(parser, point) && m_image != NULL)
+  // Todo: Find a way to redraw only the parts of the Cells that are
+  // inside the draw region.
+  if (DrawThisCell(parser, point) && (m_image != NULL))
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
@@ -142,8 +146,6 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ImgCell::ToString()

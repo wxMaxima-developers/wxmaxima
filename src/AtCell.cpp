@@ -108,9 +108,11 @@ void AtCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point))
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     wxPoint bs, in;
 
@@ -129,7 +131,6 @@ void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                 in.y);
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString AtCell::ToString()

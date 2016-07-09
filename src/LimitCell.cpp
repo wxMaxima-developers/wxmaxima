@@ -132,7 +132,9 @@ void LimitCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     double scale = parser.GetScale();
     wxPoint base(point), under(point), name(point);
@@ -152,8 +154,6 @@ void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                   m_under->GetFullWidth(scale));
     m_base->DrawList(parser, base, fontsize);
   }
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString LimitCell::ToString()

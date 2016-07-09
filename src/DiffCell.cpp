@@ -107,7 +107,9 @@ void DiffCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point)) {
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion()) {
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;
@@ -117,8 +119,6 @@ void DiffCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     bs.y = point.y;
     m_baseCell->DrawList(parser, bs, fontsize);
   }
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString DiffCell::ToString()

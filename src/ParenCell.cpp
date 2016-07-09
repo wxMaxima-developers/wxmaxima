@@ -241,7 +241,8 @@ void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+  if (DrawThisCell(parser, point)&&(InUpdateRegion()))
   {
     double scale = parser.GetScale();
     wxDC& dc = parser.GetDC();
@@ -407,7 +408,6 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     }
     m_innerCell->DrawList(parser, in, fontsize);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ParenCell::ToString()

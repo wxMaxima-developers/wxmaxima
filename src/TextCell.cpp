@@ -166,72 +166,76 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 
 void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
 
+  wxASSERT_MSG((m_currentPoint.x>0)&&(m_currentPoint.y>0),_("bug: Try to draw text without a position"));
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize);
 
-  if (DrawThisCell(parser, point) && !m_isHidden && InUpdateRegion())
+  if (DrawThisCell(parser, point) && !m_isHidden)
   {
     SetFont(parser, fontsize);
     SetForeground(parser);
 
-    /// Labels and prompts have special fontsize
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    if(InUpdateRegion())
     {
-      SetFont(parser, m_fontSizeLabel);
-      dc.DrawText(m_text,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + (m_height - m_labelHeight)/2);
-    }
-
-    /// Check if we are using jsMath and have jsMath character
-    else if (m_altJs && parser.CheckTeXFonts())
-      dc.DrawText(m_altJsText,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-    /// We are using a special symbol
-    else if (m_alt)
-      dc.DrawText(m_altText,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-    /// Change asterisk
-    else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
-      dc.DrawText(wxT("\xB7"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-#if wxUSE_UNICODE
-    else if (m_text == wxT("#"))
-      dc.DrawText(wxT("\x2260"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-#endif
-    /// This is the default.
-    else
-    {
-      switch(GetType())
+      /// Labels and prompts have special fontsize
+      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-      case MC_TYPE_TEXT:
-        // TODO: Add markdown formatting for bold, italic and underlined here.
+        SetFont(parser, m_fontSizeLabel);
         dc.DrawText(m_text,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-        break;
-      case MC_TYPE_INPUT:
-        // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-        break;
-      default:
-        dc.DrawText(m_text,
+                    point.y - m_realCenter + (m_height - m_labelHeight)/2);
+      }
+      
+      /// Check if we are using jsMath and have jsMath character
+      else if (m_altJs && parser.CheckTeXFonts())
+        dc.DrawText(m_altJsText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+      
+      /// We are using a special symbol
+      else if (m_alt)
+        dc.DrawText(m_altText,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+      
+      /// Change asterisk
+      else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
+        dc.DrawText(wxT("\xB7"),
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+      
+#if wxUSE_UNICODE
+      else if (m_text == wxT("#"))
+        dc.DrawText(wxT("\x2260"),
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#endif
+      /// This is the default.
+      else
+      {
+        switch(GetType())
+        {
+        case MC_TYPE_TEXT:
+          // TODO: Add markdown formatting for bold, italic and underlined here.
+          dc.DrawText(m_text,
+                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                      point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+          break;
+        case MC_TYPE_INPUT:
+          // This cell has already been drawn as an EditorCell => we don't repeat this action here.
+          break;
+        default:
+          dc.DrawText(m_text,
+                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                      point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        }
       }
     }
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 void TextCell::SetFont(CellParser& parser, int fontsize)

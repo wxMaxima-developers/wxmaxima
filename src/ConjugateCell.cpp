@@ -101,9 +101,11 @@ void ConjugateCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point))
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     SetPen(parser);
     wxPoint in;
@@ -119,7 +121,6 @@ void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 		//                point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString ConjugateCell::ToString()

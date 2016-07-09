@@ -460,6 +460,8 @@ The order this cell is drawn is:
 */
 void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 {
+  MathCell::Draw(parser, point1, fontsize);
+
   m_selectionChanged = false;
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
@@ -633,8 +635,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 
     UnsetPen(parser);
 
-  } // if (DrawThisCell(parser, point) && !m_isHidden)
-  MathCell::Draw(parser, point1, fontsize);
+  }
 }
 
 void EditorCell::SetFont(CellParser& parser, int fontsize)

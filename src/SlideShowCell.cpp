@@ -159,9 +159,13 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   wxDC& dc = parser.GetDC();
 
-  if (DrawThisCell(parser, point) && m_images[m_displayed] != NULL)
+  // Todo: Find a way to redraw only the parts of the Cells that are
+  // inside the draw region.
+  if (DrawThisCell(parser, point) && (m_images[m_displayed] != NULL))
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
@@ -181,8 +185,6 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
-
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString SlideShow::ToString()

@@ -373,17 +373,22 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
+  // The update region contains a calculation step that is executed modulo
+  // the scroll unit => We need to draw text that looks like it were
+  // outside the screen by SCROLL_UNIT - 1 pixel + 1 pixel to allow for
+  // rectangles we misinterpret to be on-screeen.
+  
   return
-    (rect.GetRight()  >= m_updateRegion.GetLeft()   - SCROLL_UNIT) &&
-    (rect.GetLeft()   <= m_updateRegion.GetRight()  + SCROLL_UNIT) &&
-    (rect.GetBottom() >= m_updateRegion.GetTop()    - SCROLL_UNIT) &&
-    (rect.GetTop()    <= m_updateRegion.GetBottom() + SCROLL_UNIT);
+    (rect.GetRight()  >= m_updateRegion.GetLeft()   - SCROLL_UNIT ) &&
+    (rect.GetLeft()   <= m_updateRegion.GetRight()  + SCROLL_UNIT ) &&
+    (rect.GetBottom() >= m_updateRegion.GetTop()    - SCROLL_UNIT ) &&
+    (rect.GetTop()    <= m_updateRegion.GetBottom() + SCROLL_UNIT );
 }
 
 wxRect MathCell::CropToUpdateRegion(wxRect rect)
 {
-//  if (rect.GetLeft()  <m_updateRegion.GetLeft())   rect.SetLeft  (m_updateRegion.GetLeft());
-//  if (rect.GetRight() >m_updateRegion.GetRight())  rect.SetRight (m_updateRegion.GetRight());
+  if (rect.GetLeft()  <m_updateRegion.GetLeft())   rect.SetLeft  (m_updateRegion.GetLeft());
+  if (rect.GetRight() >m_updateRegion.GetRight())  rect.SetRight (m_updateRegion.GetRight());
   if (rect.GetTop()   <m_updateRegion.GetTop())    rect.SetTop   (m_updateRegion.GetTop());
   if (rect.GetBottom()>m_updateRegion.GetBottom()) rect.SetBottom(m_updateRegion.GetBottom());
   return rect;

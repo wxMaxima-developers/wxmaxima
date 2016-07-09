@@ -511,6 +511,8 @@ void GroupCell::RecalculateAppended(CellParser& parser)
 
 void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
+  MathCell::Draw(parser, point, fontsize);
+
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
   if (m_width == -1 || m_height == -1) {
@@ -653,7 +655,6 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     UnsetPen(parser);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxRect GroupCell::HideRect()

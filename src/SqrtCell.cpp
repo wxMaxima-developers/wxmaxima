@@ -150,7 +150,9 @@ void SqrtCell::RecalculateSize(CellParser& parser, int fontsize)
 
 void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  if (DrawThisCell(parser, point))
+  MathCell::Draw(parser, point, fontsize);
+
+  if (DrawThisCell(parser, point) && InUpdateRegion())
   {
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
@@ -239,7 +241,6 @@ void SqrtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     m_innerCell->DrawList(parser, in, fontsize);
   }
-  MathCell::Draw(parser, point, fontsize);
 }
 
 wxString SqrtCell::ToString()
