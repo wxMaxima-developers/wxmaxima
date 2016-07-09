@@ -583,9 +583,12 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     }
   }
   else
+  {
     ConsoleAppend(_("Refusing to send cell to maxima: " ) +
                   parenthesisError + wxT("\n"),
                   MC_TYPE_ERROR);
+    m_console->SetWorkingGroup(NULL);
+  }
 }
 
 ///--------------------------------------------------------------------------------
