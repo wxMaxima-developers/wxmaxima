@@ -81,6 +81,12 @@ protected:
   wxString ToXML();
 	static int s_counter;
 	bool m_drawRectangle;
+  virtual void DrawBoundingBox(wxDC& dc, bool all = false)
+    {
+      m_drawBoundingBox = true;
+    }
+private:
+  bool m_drawBoundingBox;
 };
 
 #endif // IMGCELL_H

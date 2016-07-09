@@ -216,10 +216,9 @@ public:
     \param all
      - true:  Draw the bounding box around this list of cells
      - false: Draw the bounding box around this cell only
-     \param border The width of the border in pixels
      \param dc Where to draw the box.
   */
-  void DrawBoundingBox(wxDC& dc, bool all = false, int border = 0);
+  virtual void DrawBoundingBox(wxDC& dc, bool all = false);
   bool DrawThisCell(CellParser& parser, wxPoint point);
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.

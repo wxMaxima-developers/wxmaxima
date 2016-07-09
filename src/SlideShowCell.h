@@ -94,6 +94,12 @@ protected:
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
+  virtual void DrawBoundingBox(wxDC& dc, bool all = false)
+    {
+      m_drawBoundingBox = true;
+    }
+private:
+  bool m_drawBoundingBox;
 };
 
 #endif // SLIDESHOWCELL_H

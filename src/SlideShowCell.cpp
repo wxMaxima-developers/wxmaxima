@@ -38,6 +38,7 @@ SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
   m_fileSystem = filesystem; // NULL when not loading from wxmx
   m_framerate = framerate;
   m_imageBorderWidth = 1;
+  m_drawBoundingBox = false;
 }
 
 SlideShow::~SlideShow()
@@ -171,8 +172,16 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
-    
-    dc.SetPen(*wxRED_PEN);
+
+    // Slide show cells have a red border except if they are selected
+    if(m_drawBoundingBox)
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))));
+    else
+      dc.SetPen(*wxRED_PEN);
+
+    // If we need a selection border on another redraw we will be informed by OnPaint() again.
+    m_drawBoundingBox = false;
+
     dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));  
 
     wxBitmap bitmap = m_images[m_displayed]->GetBitmap();

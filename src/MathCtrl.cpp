@@ -222,12 +222,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
       else {  // We have a selection of output
         while (tmp != NULL) {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp) {
-            if ((tmp->GetType() == MC_TYPE_IMAGE) || (tmp->GetType() == MC_TYPE_SLIDE))
-              tmp->DrawBoundingBox(dcm, false, 5); // draw 5 pixels of border for img/slide cells
-            else
-              tmp->DrawBoundingBox(dcm, false);
-          }
+          if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp)
+            tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
@@ -267,7 +263,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     m_lastTop = top;
     m_lastBottom = bottom;
     //
-    // Draw content over
+    // Draw content over the highlighting we did until now
     //
     wxPoint point;
     point.x = MC_GROUP_LEFT_INDENT;
