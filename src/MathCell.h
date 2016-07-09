@@ -135,7 +135,10 @@ public:
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
     {
-      return InUpdateRegion(wxRect(m_currentPoint,m_currentPoint+wxPoint(m_width,m_height)));
+      wxRect boundingBox(
+        m_currentPoint+wxPoint(0,-m_center),
+        m_currentPoint+wxPoint(0,-m_center)+wxPoint(m_width,m_height));
+      return InUpdateRegion(boundingBox);
     }
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
