@@ -3077,6 +3077,10 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   break;
   case CARET_TIMER_ID:
   {
+    int virtualsize_x;
+    int virtualsize_y;
+    GetVirtualSize(&virtualsize_x,&virtualsize_y);
+    
     if (m_switchDisplayCaret) {
       wxRect rect;
 
@@ -3099,14 +3103,11 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
           rect.SetTop(caretY - 1);
           rect.SetBottom(caretY + 1);
         }
-        int virtualsize_x;
-        int virtualsize_y;
-        GetVirtualSize(&virtualsize_x,&virtualsize_y);
         rect.SetLeft(0);
         rect.SetRight(virtualsize_x);
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      rect.SetWidth(5000);
+      rect.SetWidth(virtualsize_x);
       RefreshRect(rect);
     }
 

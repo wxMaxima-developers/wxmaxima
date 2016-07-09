@@ -40,7 +40,22 @@
 
 /*! The canvas that contains the spreadsheet the whole program is about.
 
-This canvas contains all the math, title, image etc.- cells of the current session.
+This canvas contains all the math-, title-, image- input- ("editor-")- etc.- 
+cells of the current session.
+
+Most of the logic that handles that this canvas might be larger than the screen
+(and could even be a bitmap that is larger than the computer's RAM) is provided
+by wxWidgets:
+ - If part of the screen needs to be drawn it calls the OnPaint() method. 
+ - If the canvas is scrolled wxWidgets the parts that are already decides how much 
+   of the off-screen part of the canvas is cached in a backing store
+ - Also if the canvas is scrolled wxWidgets is intelligent enough to only request
+   the parts of the new view that aren't available on the screen or in the backing 
+   store
+ - If we call the Refresh() method wxWidgets requests us to draw the entire visible
+   part of the worksheet anew and invalidates all cached areas it might have.
+ - and the RefreshRect() method notifies wxWidgets that a rectangular region
+   contains changes that need to be redrawn.
  */
 class MathCtrl: public wxScrolledCanvas
 {
