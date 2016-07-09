@@ -11,8 +11,9 @@ Current:
   * Keeping the "evaluate" key (Enter or Ctrl+Enter) pressed now evaluates one
     of a document's cells after the other.
   * Support for cells that are >5000 pixels wide
-  * Speedup: Don't draw the text of an entire cell if we only need to refresh half
-    of it.
+  * Speedup for displaying big cells: Don't attempt to draw text that isn't
+    in the area that is currently visible or cached even if it is part of the
+    current cell.
 
 16.04:
   * A TeX-like subscript notation: A_1 is now by default shown as an A with
