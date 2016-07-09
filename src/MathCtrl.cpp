@@ -1065,7 +1065,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       wxRect rect = editor->GetRect();
       if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
         m_cellMouseSelectionStartedIn=editor;
-        SetActiveCell(editor, false); // do not refresh
+        SetActiveCell(editor, false); // do not refresh as we will do so later
         wxClientDC dc(this);
         m_activeCell->SelectPointText(dc, m_down);
         m_switchDisplayCaret = true;
@@ -1325,7 +1325,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
   if(m_selectionStart)
   {
       if (m_selectionEnd == (m_selectionStart->m_previous)) {
-        SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false); // will refresh at the end of function
+        SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd), false);
       }
       else {
         m_hCaretActive = false;
@@ -1387,6 +1387,10 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
         RefreshRect(rect);
+
+        // Remove the marker that we need to refresh
+        selectionStartOld = m_selectionStart;
+        selectionEndOld   = m_selectionEnd;
       }
       break;
     }
@@ -2581,7 +2585,6 @@ void MathCtrl::SelectWithChar(int ccode) {
       SetSelection(NULL);
       m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromBot();
       m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-      Refresh();
     }
     else
     {
@@ -2605,7 +2608,6 @@ void MathCtrl::SelectWithChar(int ccode) {
       SetSelection(NULL);
       m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
       m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromTop();
-      Refresh();
     }
     else
     {
@@ -2629,7 +2631,6 @@ void MathCtrl::SelectWithChar(int ccode) {
     else {
       SetSelection(m_hCaretPositionEnd,m_hCaretPositionStart);
     }
-    Refresh();
   }
   Refresh();
 }
@@ -2652,15 +2653,14 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
 
     if (editor->GetWidth() == -1)
       Recalculate();
-    Refresh();
   }
   else { // can't get editor... jump over cell..
     if (top)
       m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_next);
     else
       m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous);
-    Refresh();
   }
+  Refresh();
 }
 
 void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
@@ -2729,7 +2729,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     if (m_hCaretPosition != NULL) {
       SetSelection(m_hCaretPosition);
       m_hCaretActive = false;
-      Refresh();
       return;
     }
     break;
@@ -2739,14 +2738,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if (m_tree != NULL) {
         SetSelection(m_tree);
         m_hCaretActive = false;
-        Refresh();
         return;
       }
     }
     else if (m_hCaretPosition->m_next != NULL) {
       SetSelection(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next));
       m_hCaretActive = false;
-      Refresh();
       return;
     }
     break;
@@ -2802,8 +2799,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
     else if (!ActivatePrevInput())
       event.Skip();
-    else
-      Refresh();
     break;
 
   case WXK_DOWN:
@@ -2860,8 +2855,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd->GetParent()));
     else if (!ActivateNextInput())
       event.Skip();
-    else
-      Refresh();
     break;
     
   case WXK_RETURN:
@@ -4859,16 +4852,16 @@ bool MathCtrl::CanEdit() {
 void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
   if (m_activeCell != NULL) {
     m_activeCell->SelectWordUnderCaret();
-    Refresh();
   }
   else if (m_selectionStart != NULL) {
     GroupCell *parent = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
     MathCell *selectionStart = m_selectionStart;
     MathCell *selectionEnd   = m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
-    Refresh();
   }
-  // Re-calculate the table of contents  
+  
+  Refresh();
+// Re-calculate the table of contents  
   UpdateTableOfContents();
 }
 
