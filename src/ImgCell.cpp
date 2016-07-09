@@ -130,6 +130,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   
     m_height = (m_image->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_image->m_width)  + 2 * m_imageBorderWidth;
+    m_center = m_height / 2;
 
     MathCell::Draw(parser, point, fontsize);
 

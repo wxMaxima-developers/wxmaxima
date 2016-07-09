@@ -171,7 +171,8 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
   
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
-
+    m_center = m_height / 2;
+    
     MathCell::Draw(parser, point, fontsize);
 
     dc.SetPen(*wxRED_PEN);
