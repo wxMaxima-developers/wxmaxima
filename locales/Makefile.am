@@ -2,8 +2,8 @@
 # This file is based on the corresponding file for the poedit program
 #
 
-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb en
-WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb
+WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb kab en
+WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb kab
 
 localedir = $(datadir)/locale
 
