@@ -36,7 +36,7 @@ doc_DATA = README README.md COPYING art/config/options.png art/config/maxima.png
 	art/config/styles.png art/config/editing.png art/config/Document-export.png
 
 LANGS = en fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb kab
-wxLANGS =  fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb kab
+wxLANGS =  fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb
 
 wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
