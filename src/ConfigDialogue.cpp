@@ -63,7 +63,7 @@ const int langs[] =
   wxLANGUAGE_HUNGARIAN,
   wxLANGUAGE_ITALIAN,
   wxLANGUAGE_JAPANESE,
-#ifdef wxLANGUAGE_KABYLE
+#if wxCHECK_VERSION(3,0,1)
   wxLANGUAGE_KABYLE,
 #endif
   wxLANGUAGE_NORWEGIAN_BOKMAL,
@@ -564,7 +564,7 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
       _("Hungarian"),
       _("Italian"),
       _("Japanese"),
-#ifdef wxLANGUAGE_KABYLE
+#if wxCHECK_VERSION(3,0,1)
       _("Kabyle"),
 #endif
       _("Norwegian"),
