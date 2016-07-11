@@ -373,11 +373,13 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
+  // The +1 seems to be necessary for cells whose outmost pixel
+  // isn't white.
   return
-    (rect.GetRight()  >= m_updateRegion.GetLeft()  ) &&
-    (rect.GetLeft()   <= m_updateRegion.GetRight() ) &&
-    (rect.GetBottom() >= m_updateRegion.GetTop()   ) &&
-    (rect.GetTop()    <= m_updateRegion.GetBottom());
+    (rect.GetRight()  >= m_updateRegion.GetLeft()   - 1 ) &&
+    (rect.GetLeft()   <= m_updateRegion.GetRight()  + 1 ) &&
+    (rect.GetBottom() >= m_updateRegion.GetTop()    - 1 ) &&
+    (rect.GetTop()    <= m_updateRegion.GetBottom() + 1);
 }
 
 wxRect MathCell::CropToUpdateRegion(wxRect rect)
