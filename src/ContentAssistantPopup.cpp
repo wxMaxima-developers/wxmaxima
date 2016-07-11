@@ -201,7 +201,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
 
 void ContentAssistantPopup::OnClick(wxCommandEvent& event)
 {
-  if(m_completions.GetCount()<0)
+  if(m_completions.GetCount() <= 0)
     return;
   {
     int selection = event.GetSelection();

@@ -545,7 +545,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
         dc.SetBrush(br);
         wxPen pen(parser.GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
-        wxRect rect(0, y, m_canvasSize.GetWidth(), rect.GetHeight());
+        rect.SetWidth(m_canvasSize.GetWidth());
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
       }
