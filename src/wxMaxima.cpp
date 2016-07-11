@@ -339,7 +339,10 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     StatusMaximaBusy(parsing);
 
   if (type == MC_TYPE_DEFAULT)
-  {    
+  {
+    // Show a busy cursor whilst interpreting and layouting potentially long data from maxima.
+    wxBusyCursor crs;
+    
     while (s.Length() > 0)
     {
       int start = s.Find(wxT("<mth"));
@@ -376,6 +379,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
                         wxT("</span>"), type, false);
         s = s.SubString(end + 1, s.Length());
       }
+//      wxSafeYield();
     }
   }
   
