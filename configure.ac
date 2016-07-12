@@ -93,10 +93,6 @@ AC_ARG_ENABLE(static-wx,
 
 AM_PATH_WXCONFIG([3.0.0], [wxWin=1], [wxWin=0], [std,xml,html,adv,aui,core,net,base])
 
-PKG_CHECK_MODULES(KABTMP, wxWidgets >= 3.0.2, [kab="kab"], [kab=""])
-
-AC_SUBST(kab)
-
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
           wxWidgets must be installed on your system.
