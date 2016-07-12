@@ -373,8 +373,8 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
-  // The +1 seems to be necessary for cells whose outmost pixel
-  // isn't white.
+  // The +/-1 is necessary in order to hinder the width or height of boxes
+  // to shrink to 0 as windows seems to be allergic to that.
   return
     (rect.GetRight()  >= m_updateRegion.GetLeft()   - 1 ) &&
     (rect.GetLeft()   <= m_updateRegion.GetRight()  + 1 ) &&
@@ -392,6 +392,10 @@ wxRect MathCell::CropToUpdateRegion(wxRect rect)
   if (right  > m_updateRegion.GetRight())  right  = m_updateRegion.GetRight();
   if (top    < m_updateRegion.GetTop())    top    = m_updateRegion.GetTop();
   if (bottom > m_updateRegion.GetBottom()) bottom = m_updateRegion.GetBottom();
+
+  // Windows seems to utterly dislike rectangles with the width or height 0.
+  if(bottom == top) bottom++;
+  if(left == right) right++;
   return wxRect(wxPoint(left,top),wxPoint(right,bottom));
 }
 
