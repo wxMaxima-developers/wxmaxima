@@ -285,9 +285,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       // Clear the image cache of all cells above or below the viewport.
       if((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
       {
-        // Only actually clear the image cache if we did display the
-        // image in the last step: Else it most probably isn't actually cached.
-        if((rect.GetBottom()<=m_lastBottom-200)||(rect.GetTop()>=m_lastTop+200))
+        int width;
+        int height;
+        GetClientSize(&width,&height);
+        // Only actually clear the image cache if there is a screen's height between
+        // us and the image's position: Else the chance is too high that we will
+        // very soon have to generated a scaled image again.
+        if((rect.GetBottom()<=m_lastBottom-height)||(rect.GetTop()>=m_lastTop+height))
         {
           if(tmp->GetOutput())
             tmp->GetOutput()->ClearCacheList();
