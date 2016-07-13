@@ -373,13 +373,11 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
-  // The +/-1 is necessary in order to hinder the width or height of boxes
-  // to shrink to 0 as windows seems to be allergic to that.
-  return
-    (rect.GetRight()  >= m_updateRegion.GetLeft()   - 1 ) &&
-    (rect.GetLeft()   <= m_updateRegion.GetRight()  + 1 ) &&
-    (rect.GetBottom() >= m_updateRegion.GetTop()    - 1 ) &&
-    (rect.GetTop()    <= m_updateRegion.GetBottom() + 1);
+  if (rect.GetLeft()   > m_updateRegion.GetRight())  return false;
+  if (rect.GetRight()  < m_updateRegion.GetLeft())   return false;
+  if (rect.GetBottom() < m_updateRegion.GetTop())    return false;
+  if (rect.GetTop()    > m_updateRegion.GetBottom()) return false;
+  return true;
 }
 
 wxRect MathCell::CropToUpdateRegion(wxRect rect)
@@ -399,16 +397,13 @@ wxRect MathCell::CropToUpdateRegion(wxRect rect)
   return wxRect(wxPoint(left,top),wxPoint(right,bottom));
 }
 
-/***
- * Draws a box around this cell - if all is true draws a box around the whole
- * line.
- */
 void MathCell::DrawBoundingBox(wxDC& dc, bool all)
 {
   wxRect rect = GetRect(all);
   int x = rect.GetLeft(), y = rect.GetTop();
   int width = rect.GetWidth(), height = rect.GetHeight();
-  dc.DrawRectangle(CropToUpdateRegion(rect));
+  if(InUpdateRegion())
+    dc.DrawRectangle(CropToUpdateRegion(rect));
 }
 
 /***
