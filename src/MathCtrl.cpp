@@ -3149,16 +3149,20 @@ MathCell* MathCtrl::CopyTree() {
  * Copy selection as bitmap
  */
 bool MathCtrl::CopyBitmap() {
+  MathCell::SetPrinting(true);
   MathCell* tmp = CopySelection();
 
   Bitmap bmp;
   bmp.SetData(tmp);
 
-  return bmp.ToClipboard();
+  bool retval = bmp.ToClipboard();
+  
+  MathCell::SetPrinting(false);
+  return retval;
 }
 
 wxSize MathCtrl::CopyToFile(wxString file) {
-
+  
   if (m_selectionStart != NULL &&
       m_selectionStart == m_selectionEnd &&
       (m_selectionStart->GetType() == MC_TYPE_IMAGE ||
@@ -3171,24 +3175,36 @@ wxSize MathCtrl::CopyToFile(wxString file) {
   }
   else
   {
+    MathCell::SetPrinting(true);
+
     MathCell* tmp = CopySelection();
 
     Bitmap bmp;
     bmp.SetData(tmp);
 
-    return bmp.ToFile(file);
+    wxSize retval=bmp.ToFile(file);
+
+    MathCell::SetPrinting(false);
+
+    return retval;
   }
 }
 
 wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
                             bool asData,int scale)
 {
+  MathCell::SetPrinting(true);
+
   MathCell* tmp = CopySelection(start, end, asData);
 
   Bitmap bmp(scale);
   bmp.SetData(tmp);
 
-  return bmp.ToFile(file);
+  wxSize retval = bmp.ToFile(file);;
+
+  MathCell::SetPrinting(false);
+
+  return retval;
 }
 
 /***
@@ -3341,6 +3357,8 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
  * Export content to a HTML file.
  */
 bool MathCtrl::ExportToHTML(wxString file) {
+
+  MathCell::SetPrinting(true);
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -3362,12 +3380,18 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   if (!wxDirExists(imgDir)) {
     if (!wxMkdir(imgDir))
+    {
+      MathCell::SetPrinting(false);
       return false;
+    }
   }
 
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
+  {
+    MathCell::SetPrinting(false);
     return false;
+  }
 
   wxTextOutputStream output(outfile);
 
@@ -3375,7 +3399,10 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString cssfileName = path + wxT("/") + cssfileName_rel;
   wxFileOutputStream cssfile(cssfileName);
   if (!cssfile.IsOk())
+  {
+    MathCell::SetPrinting(false);
     return false;
+  }
 
 
   // Show a busy cursor as long as we export.
@@ -4053,7 +4080,8 @@ bool MathCtrl::ExportToHTML(wxString file) {
   bool cssOK =     !cssfile.GetFile()->Error();
   outfile.Close();
   cssfile.Close();
-  
+
+  MathCell::SetPrinting(false);
   return outfileOK && cssOK;
 }
 
