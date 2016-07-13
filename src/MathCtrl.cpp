@@ -60,6 +60,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
   m_lastTop    = 0;
@@ -3100,7 +3101,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         rect.SetRight(virtualsize_x);
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      rect.SetWidth(virtualsize_x);
+      rect.SetRight(virtualsize_x);
       RefreshRect(rect);
     }
 

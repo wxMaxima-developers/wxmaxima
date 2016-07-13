@@ -135,11 +135,14 @@ public:
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
     {
+      if(m_printing) return true;
       wxRect boundingBox(
         m_currentPoint+wxPoint(0,-m_center),
         m_currentPoint+wxPoint(0,-m_center)+wxPoint(m_width,m_height));
       return InUpdateRegion(boundingBox);
     }
+  //! true=Don't crop anything just because it is not on the screen
+  static void SetPrinting(bool printing){m_printing = printing;}
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
   
@@ -211,7 +214,7 @@ public:
      - false: only this cell has to be drawn
    */
   void DrawList(CellParser& parser, wxPoint point, int fontsize);
-  /*! Draw the bounding box of this cell or this list of cells
+  /*! Draw a rectangle that marks this cell or this list of cells as selected
 
     \param all
      - true:  Draw the bounding box around this list of cells
@@ -552,7 +555,15 @@ protected:
   //! true means we forcce this cell to begin with a line break.  
   bool m_forceBreakLine;
   bool m_highlight;
-  wxString m_altCopyText; // m_altCopyText is not check in all cells!
+  /* Text that should end up on the clipboard if this cell is copied as text.
+
+     \attention  m_altCopyText is not check in all cell types!
+  */
+  wxString m_altCopyText; 
+private:
+  static bool m_printing;
 };
 
 #endif // MATHCELL_H
+
+

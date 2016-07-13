@@ -92,8 +92,12 @@ bool MathPrintout::OnPrintPage(int num)
     CellParser parser(*dc, ppiScale);
 
     parser.SetIndent(marginX);
+    // Inform the output routines that we are printing
     parser.SetPrinter(true);
-
+    // Make sure that during print nothing is outside the crop rectangle
+    MathCell::SetUpdateRegion(wxRect(0,0,2^31,2^31));
+    MathCell::SetPrinting(true);
+    
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
       // The following line seems to misteriously fix the "subsequent text
@@ -112,8 +116,10 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
+    MathCell::SetPrinting(false);
     return true;
   }
+  MathCell::SetPrinting(false);
   return false;
 }
 

@@ -373,6 +373,7 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(wxRect rect)
 {
+  if (m_printing) return true;
   if (rect.GetLeft()   > m_updateRegion.GetRight())  return false;
   if (rect.GetRight()  < m_updateRegion.GetLeft())   return false;
   if (rect.GetBottom() < m_updateRegion.GetTop())    return false;
@@ -382,6 +383,8 @@ bool MathCell::InUpdateRegion(wxRect rect)
 
 wxRect MathCell::CropToUpdateRegion(wxRect rect)
 {
+  if(m_printing) return rect;
+  
   int left  =rect.GetLeft();
   int top   =rect.GetTop ();
   int right =rect.GetRight();
@@ -813,3 +816,4 @@ bool MathCell::IsMath()
 
 wxSize MathCell::m_canvasSize;
 wxRect MathCell::m_updateRegion;
+bool   MathCell::m_printing;
