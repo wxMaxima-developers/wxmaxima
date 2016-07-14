@@ -95,7 +95,6 @@ bool MathPrintout::OnPrintPage(int num)
     // Inform the output routines that we are printing
     parser.SetPrinter(true);
     // Make sure that during print nothing is outside the crop rectangle
-    MathCell::SetUpdateRegion(wxRect(0,0,2^31,2^31));
     MathCell::SetPrinting(true);
     
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
@@ -257,6 +256,7 @@ void MathPrintout::Recalculate()
 
   parser.SetClientWidth(pageWidth - marginX - marginY
                         - SCALE_PX(MC_BASE_INDENT, scale));
+  MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
 
   marginX += SCALE_PX(MC_BASE_INDENT, scale);
   parser.SetIndent(marginX);

@@ -580,7 +580,7 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 #ifdef wxUSE_UNICODE
-  wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Custom symbols sidebar glyphs:"));
+  wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
   grid_sizer->Add(additionalSymbols, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
