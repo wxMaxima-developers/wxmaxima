@@ -347,6 +347,11 @@ public:
   bool IsCompound();
   virtual bool IsShortNum() { return false; }
 
+  /*! Returns the parent cell of this one
+
+    This may be the output cell a list of 2D math cells is in or the group cell 
+    an input or output cell can be found in.
+   */
   MathCell* GetParent();
 
   //! For the bitmap export we sometimes want to know how big the result will be...
