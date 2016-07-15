@@ -7,7 +7,7 @@ bashcompletion_DATA = wxmaxima
 EXTRA_DIST = wxmaxima tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt wxmaxima.manifest
 
 appdatadir = $(datarootdir)/appdata
-dist_appdata_DATA = wxmaxima.appdata.xml
+dist_appdata_DATA = wxMaxima.appdata.xml
 
 appicondir = $(datarootdir)/pixmaps
 dist_appicon_DATA = wxmaxima.svg wxmaxima.png text-x-wxmaxima-batch.svg text-x-wxmathml.svg wxmaxima-16.xpm wxmaxima-32.xpm
