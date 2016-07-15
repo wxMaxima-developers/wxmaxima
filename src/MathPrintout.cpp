@@ -263,6 +263,7 @@ void MathPrintout::Recalculate()
 
   while (tmp != NULL)
   {
+    tmp->ResetSize();
     tmp->Recalculate(parser, fontsize, mfontsize);
     tmp = (GroupCell *)tmp->m_next;
   }

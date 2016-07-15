@@ -2210,7 +2210,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
           } else
             event.Skip();
-        
         }
         else
         {
@@ -2271,7 +2270,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
               ( enterEvaluates && !controlOrShift) )
           { // shift-enter pressed === menu_evaluate event
             GroupCell *currentGroup=dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
-            if(m_evaluationQueue->IsLastInQueue(currentGroup))
+            if((m_evaluationQueue->IsLastInQueue(currentGroup)) && (!QuestionPending()))
             {
               // User tries to evaluate a cell that already is to be evaluated as the
               // last element of the evaluation queue => It is most probable that
