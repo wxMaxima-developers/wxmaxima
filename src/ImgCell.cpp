@@ -110,7 +110,6 @@ void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
   double scale = parser.GetScale();
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
 
-  std::cerr<<"Canvas="<<m_canvasSize.x<<"x"<<m_canvasSize.y<<"\n";
   m_height = (scale * m_image->m_height) + 2 * m_imageBorderWidth;
   m_center = m_height / 2;
 }
