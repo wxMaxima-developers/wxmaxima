@@ -5951,6 +5951,7 @@ void MathCtrl::UndoInsideCell()
   if (m_activeCell != NULL) {
     m_activeCell->Undo();
     m_activeCell->GetParent()->ResetSize();
+    m_activeCell->ResetSize();
     Recalculate();
     Refresh();
   }
@@ -6237,8 +6238,14 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
     if (m_activeCell->ReplaceSelection(oldString, newString))
     {
       m_saved = false;
-      dynamic_cast<GroupCell*>(m_activeCell->GetParent())->ResetInputLabel();
-      RecalculateForce();
+      GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+      group->ResetInputLabel();
+//      RecalculateForce();
+      wxClientDC dc(this);
+      CellParser parser(dc);
+      group->ResetSize();
+      m_activeCell->ResetSize();
+      Recalculate();
       Refresh();
     }
   }
