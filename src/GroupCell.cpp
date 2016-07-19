@@ -422,7 +422,19 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
         tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
-
+      
+      if(m_previous == NULL)
+      {
+        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+        m_currentPoint.y = MC_BASE_INDENT + GetMaxCenter();
+      }
+      else
+      {
+      m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+      m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+      }
+      
       m_outputRect.x = m_currentPoint.x;
       m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
       m_outputRect.width = 0;
@@ -443,22 +455,24 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
         tmp = tmp->m_nextToDraw;
       }
     }
-  }
-
-  m_appendedCells = NULL;
-
-  if(m_previous == NULL)
-  {
-    m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-    m_currentPoint.y = MC_BASE_INDENT + GetMaxCenter();
-  }
-  else
-  {
-    m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-    m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-      dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+    else
+    {
+      if(m_previous == NULL)
+      {
+        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+        m_currentPoint.y = MC_BASE_INDENT + GetMaxCenter();
+      }
+      else
+      {
+        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+        m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+      }
+    }
   }
   
+  m_appendedCells = NULL;
+
   if(m_input)
     m_input->m_currentPoint = m_currentPoint;
   if(GetEditable())
