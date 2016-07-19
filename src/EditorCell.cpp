@@ -3062,6 +3062,9 @@ void EditorCell::SetValue(wxString text)
 
   // Style the text.
   StyleText();
+  ResetSize();
+  if(m_group != NULL)
+    m_group->ResetSize();  
 }
 
 bool EditorCell::CheckChanges()
