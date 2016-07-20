@@ -2226,7 +2226,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             else
             {
               if(m_tree)
+              {
                 SetActiveCell(m_tree->GetEditable());
+                ScrollToCaret();
+              }
             }
           }
           else
@@ -2250,8 +2253,11 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             // In this cell there isn't anything to evaluate. But we can jump to the next
             // cell. Perhaps there is something there...
             if(GetActiveCell()->GetParent()->m_next)
+            {
               // Jump to the next cell.
               SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
+              ScrollToCaret();
+            }
             else
               // No next cell -> Jump to the end of the document.
               SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
