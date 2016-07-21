@@ -306,6 +306,17 @@ void MathCell::RecalculateList(CellParser& parser, int fontsize)
     }  
 }
 
+void MathCell::ResetSizeList()
+{
+  MathCell *tmp=this;
+
+  while(tmp!=NULL)
+    {
+      tmp->ResetSize();
+      tmp=tmp->m_next;
+    }
+}
+
 
 void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
 {

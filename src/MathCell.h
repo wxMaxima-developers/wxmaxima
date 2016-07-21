@@ -313,6 +313,7 @@ public:
   void ResetData();
   //! Mark the cached height informations as "to be calculated".
   void ResetSize() { m_width = m_height = -1; }
+  void ResetSizeList();
 
   void SetSkip(bool skip) { m_bigSkip = skip; }
   //! Sets the text style according to the type
