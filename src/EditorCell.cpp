@@ -2991,8 +2991,16 @@ void EditorCell::StyleText()
   }
   else {
     wxString token;
+
     for (size_t i = 0; i<m_text.Length(); i++) {
       if (m_text.GetChar(i) == '\n') {
+        if(m_firstLineOnly)
+        {
+          m_styledText.push_back(StyledText(token +
+                                            wxString::Format(wxT(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))));
+          token = wxEmptyString;
+          break;
+        }
         m_styledText.push_back(StyledText(token));
         m_styledText.push_back(StyledText(wxT("\n")));
         token = wxEmptyString;
