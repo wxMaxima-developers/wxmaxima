@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-14 12:39+0200\n"
+"POT-Creation-Date: 2016-07-22 14:36+0200\n"
 "PO-Revision-Date: 2013-01-04 00:31+0800\n"
 "Last-Translator: crickzhang1 <crickzhang1@gmail.com>\n"
 "Language-Team: amateur\n"
@@ -69,8 +69,13 @@ msgstr ""
 msgid "      -l <name>"
 msgstr ""
 
-#: ../src/ImgCell.cpp:163 ../src/ImgCell.cpp:168
+#: ../src/ImgCell.cpp:162 ../src/ImgCell.cpp:167
 msgid " (Graphics) "
+msgstr ""
+
+#: ../src/EditorCell.cpp:2829 ../src/EditorCell.cpp:3000
+#, c-format
+msgid " ... + %i hidden lines"
 msgstr ""
 
 #: ../src/MathParser.cpp:1097
@@ -597,7 +602,7 @@ msgstr "浏览"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1780
+#: ../src/MathCtrl.cpp:1779
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -617,22 +622,22 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2009
+#: ../src/MathCtrl.cpp:2008
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5272
+#: ../src/MathCtrl.cpp:5281
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5343
+#: ../src/MathCtrl.cpp:5355
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5312
+#: ../src/MathCtrl.cpp:5324
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -642,49 +647,49 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1823
+#: ../src/MathCtrl.cpp:1822
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1790
+#: ../src/MathCtrl.cpp:1789
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
-#: ../src/GroupCell.cpp:315
+#: ../src/GroupCell.cpp:322
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:520
+#: ../src/MathCtrl.cpp:519
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1722
+#: ../src/MathCtrl.cpp:1721
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5914
+#: ../src/MathCtrl.cpp:5926
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1792
+#: ../src/MathCtrl.cpp:1791
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1357
+#: ../src/MathCtrl.cpp:1356
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5313
+#: ../src/MathCtrl.cpp:5325
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5277 ../src/MathCtrl.cpp:5348 ../src/MathCtrl.cpp:5382
+#: ../src/MathCtrl.cpp:5286 ../src/MathCtrl.cpp:5360 ../src/MathCtrl.cpp:5394
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -901,7 +906,7 @@ msgstr "x坐标，以逗号分割"
 msgid "Comma separated y coordinates"
 msgstr "y 坐标，以逗号分割"
 
-#: ../src/MathCtrl.cpp:983
+#: ../src/MathCtrl.cpp:982
 msgid "Comment Selection"
 msgstr "注释掉所选内容"
 
@@ -1033,8 +1038,8 @@ msgstr "转换三角函数表达式为标准拟线性形式"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "转换三角函数为指数形式"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:874 ../src/MathCtrl.cpp:887
-#: ../src/MathCtrl.cpp:931 ../src/MathCtrl.cpp:977
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:873 ../src/MathCtrl.cpp:886
+#: ../src/MathCtrl.cpp:930 ../src/MathCtrl.cpp:976
 msgid "Copy"
 msgstr "复制"
 
@@ -1046,11 +1051,11 @@ msgstr "复制前一次输入\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "复制前一次输出\tCtrl-U"
 
-#: ../src/wxMaximaFrame.cpp:486 ../src/MathCtrl.cpp:890 ../src/MathCtrl.cpp:935
+#: ../src/wxMaximaFrame.cpp:486 ../src/MathCtrl.cpp:889 ../src/MathCtrl.cpp:934
 msgid "Copy as Image"
 msgstr "复制为图片"
 
-#: ../src/wxMaximaFrame.cpp:479 ../src/MathCtrl.cpp:888 ../src/MathCtrl.cpp:932
+#: ../src/wxMaximaFrame.cpp:479 ../src/MathCtrl.cpp:887 ../src/MathCtrl.cpp:931
 msgid "Copy as LaTeX"
 msgstr "复制为 LaTeX"
 
@@ -1059,7 +1064,7 @@ msgstr "复制为 LaTeX"
 msgid "Copy as MathML"
 msgstr "复制为图片"
 
-#: ../src/MathCtrl.cpp:889 ../src/MathCtrl.cpp:933
+#: ../src/MathCtrl.cpp:888 ../src/MathCtrl.cpp:932
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1101,7 +1106,7 @@ msgstr "使用前一次输出新建单元"
 msgid "Cursor"
 msgstr "光标"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:976
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:975
 msgid "Cut"
 msgstr "剪切"
 
@@ -1179,7 +1184,7 @@ msgstr "删除"
 msgid "Delete F&unction..."
 msgstr "删除函数(&U)..."
 
-#: ../src/MathCtrl.cpp:893 ../src/MathCtrl.cpp:938
+#: ../src/MathCtrl.cpp:892 ../src/MathCtrl.cpp:937
 msgid "Delete Selection"
 msgstr "删除所选区域"
 
@@ -1243,7 +1248,7 @@ msgstr "微分"
 msgid "Differentiate expression"
 msgstr "对表达式求微分"
 
-#: ../src/MathCtrl.cpp:954
+#: ../src/MathCtrl.cpp:953
 msgid "Differentiate..."
 msgstr "微分..."
 
@@ -1275,7 +1280,7 @@ msgstr "显示求值时间"
 msgid "Divide"
 msgstr "数字/多项式相除"
 
-#: ../src/wxMaximaFrame.cpp:607 ../src/MathCtrl.cpp:985
+#: ../src/wxMaximaFrame.cpp:607 ../src/MathCtrl.cpp:984
 msgid "Divide Cell"
 msgstr "分割单元"
 
@@ -1441,7 +1446,7 @@ msgstr "对所有单元求值\tCtrl-Shift-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "对所有可见单元求值\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:557 ../src/MathCtrl.cpp:896
+#: ../src/wxMaximaFrame.cpp:557 ../src/MathCtrl.cpp:895
 msgid "Evaluate Cell(s)"
 msgstr "对单元求值"
 
@@ -1450,19 +1455,19 @@ msgstr "对单元求值"
 msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "对所有单元求值\tCtrl-Shift-R"
 
-#: ../src/MathCtrl.cpp:910 ../src/MathCtrl.cpp:1004
+#: ../src/MathCtrl.cpp:909 ../src/MathCtrl.cpp:1003
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:915 ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:914 ../src/MathCtrl.cpp:1005
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:925 ../src/MathCtrl.cpp:1010
+#: ../src/MathCtrl.cpp:924 ../src/MathCtrl.cpp:1009
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:920 ../src/MathCtrl.cpp:1008
+#: ../src/MathCtrl.cpp:919 ../src/MathCtrl.cpp:1007
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1516,7 +1521,7 @@ msgstr "展开"
 msgid "Expand (tr)"
 msgstr "展开（三角）"
 
-#: ../src/MathCtrl.cpp:950
+#: ../src/MathCtrl.cpp:949
 msgid "Expand Expression"
 msgstr "展开表达式"
 
@@ -1600,7 +1605,7 @@ msgstr "因式分解"
 msgid "Factor Complex"
 msgstr "复数因式分解"
 
-#: ../src/MathCtrl.cpp:949
+#: ../src/MathCtrl.cpp:948
 msgid "Factor Expression"
 msgstr "对表达式因式分解"
 
@@ -1620,7 +1625,7 @@ msgstr "阶乘和 Gamma 函数(&G)"
 msgid "Fatal error"
 msgstr "致命错误"
 
-#: ../src/GroupCell.cpp:1473
+#: ../src/GroupCell.cpp:1496
 #, c-format
 msgid "Figure %d:"
 msgstr "图 %d："
@@ -1668,7 +1673,7 @@ msgstr "求极限(&L)..."
 msgid "Find Minimum..."
 msgstr "求极小值..."
 
-#: ../src/MathCtrl.cpp:946
+#: ../src/MathCtrl.cpp:945
 msgid "Find Root..."
 msgstr "求根..."
 
@@ -1908,7 +1913,7 @@ msgstr "取复数表达式的虚部"
 msgid "Get the real part of complex expression"
 msgstr "取复数表达式的实部"
 
-#: ../src/MathCtrl.cpp:5362
+#: ../src/MathCtrl.cpp:5374
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2164,15 +2169,15 @@ msgstr "插入小节单元(&U)\tCtrl-4"
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "插入小节单元(&U)\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:968
+#: ../src/MathCtrl.cpp:967
 msgid "Insert Section Cell"
 msgstr "插入节单元"
 
-#: ../src/MathCtrl.cpp:969
+#: ../src/MathCtrl.cpp:968
 msgid "Insert Subsection Cell"
 msgstr "插入小节单元"
 
-#: ../src/MathCtrl.cpp:970
+#: ../src/MathCtrl.cpp:969
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "插入小节单元"
@@ -2181,11 +2186,11 @@ msgstr "插入小节单元"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "插入标题单元(&I)\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:966
+#: ../src/MathCtrl.cpp:965
 msgid "Insert Text Cell"
 msgstr "插入文本单元"
 
-#: ../src/MathCtrl.cpp:967
+#: ../src/MathCtrl.cpp:966
 msgid "Insert Title Cell"
 msgstr "插入标题单元"
 
@@ -2251,7 +2256,7 @@ msgstr "对表达式求积分"
 msgid "Integrate expression with Risch algorithm"
 msgstr "使用 Risch 算法对表达式求积分"
 
-#: ../src/wxMaximaFrame.cpp:1164 ../src/MathCtrl.cpp:953
+#: ../src/wxMaximaFrame.cpp:1164 ../src/MathCtrl.cpp:952
 msgid "Integrate..."
 msgstr "积分..."
 
@@ -2589,7 +2594,7 @@ msgstr "平均值："
 msgid "Median..."
 msgstr "中值..."
 
-#: ../src/wxMaximaFrame.cpp:605 ../src/MathCtrl.cpp:899
+#: ../src/wxMaximaFrame.cpp:605 ../src/MathCtrl.cpp:898
 msgid "Merge Cells"
 msgstr "合并单元"
 
@@ -2879,7 +2884,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "文档的某些部分无法正确载入！"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:978
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:962 ../src/MathCtrl.cpp:977
 msgid "Paste"
 msgstr "粘贴"
 
@@ -2940,7 +2945,7 @@ msgstr "二维绘图"
 msgid "Plot 2D..."
 msgstr "二维绘图..."
 
-#: ../src/MathCtrl.cpp:956
+#: ../src/MathCtrl.cpp:955
 msgid "Plot 2d..."
 msgstr "二维绘图..."
 
@@ -2952,7 +2957,7 @@ msgstr "三维绘图"
 msgid "Plot 3D..."
 msgstr "三维绘图..."
 
-#: ../src/MathCtrl.cpp:957
+#: ../src/MathCtrl.cpp:956
 msgid "Plot 3d..."
 msgstr "三维绘图..."
 
@@ -3120,7 +3125,7 @@ msgstr "重启 Maxima"
 msgid "Restart maxima"
 msgstr "重启 Maxima"
 
-#: ../src/MathCtrl.cpp:3948
+#: ../src/MathCtrl.cpp:3957
 msgid "Result"
 msgstr ""
 
@@ -3173,7 +3178,7 @@ msgstr "样本："
 msgid "Save"
 msgstr "保存"
 
-#: ../src/MathCtrl.cpp:877
+#: ../src/MathCtrl.cpp:876
 msgid "Save Animation..."
 msgstr "保存动画"
 
@@ -3185,7 +3190,7 @@ msgstr "另存为"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "另存为...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:875
+#: ../src/MathCtrl.cpp:874
 msgid "Save Image..."
 msgstr "保存图片..."
 
@@ -3291,7 +3296,7 @@ msgid ""
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:964 ../src/MathCtrl.cpp:980
+#: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:979
 msgid "Select All"
 msgstr "选择全部"
 
@@ -3503,7 +3508,7 @@ msgstr "化简根式"
 msgid "Simplify (tr)"
 msgstr "化简三角函数"
 
-#: ../src/MathCtrl.cpp:948
+#: ../src/MathCtrl.cpp:947
 msgid "Simplify Expression"
 msgstr "化简表达式"
 
@@ -3617,7 +3622,7 @@ msgstr "求解常微分方程（最大2阶）"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "利用 Laplace 变换求解常微分方程"
 
-#: ../src/wxMaximaFrame.cpp:1161 ../src/MathCtrl.cpp:945
+#: ../src/wxMaximaFrame.cpp:1161 ../src/MathCtrl.cpp:944
 msgid "Solve..."
 msgstr "求解..."
 
@@ -3641,7 +3646,7 @@ msgstr "特殊"
 msgid "Special constants"
 msgstr "特殊常量"
 
-#: ../src/MathCtrl.cpp:878
+#: ../src/MathCtrl.cpp:877
 msgid "Start Animation"
 msgstr "开始动画"
 
@@ -3714,7 +3719,7 @@ msgstr "代换"
 msgid "Substitute"
 msgstr "代换"
 
-#: ../src/wxMaximaFrame.cpp:878 ../src/MathCtrl.cpp:951
+#: ../src/wxMaximaFrame.cpp:878 ../src/MathCtrl.cpp:950
 msgid "Substitute..."
 msgstr "代换"
 
@@ -3901,7 +3906,7 @@ msgstr "转换成长浮点数(&B)"
 msgid "To &Float"
 msgstr "转换成浮点数(&F)"
 
-#: ../src/MathCtrl.cpp:943
+#: ../src/MathCtrl.cpp:942
 msgid "To Float"
 msgstr "转换成浮点数"
 
@@ -3983,11 +3988,11 @@ msgstr "翻译人员："
 msgid "Transpose a matrix"
 msgstr "转置矩阵"
 
-#: ../src/MathCtrl.cpp:5267
+#: ../src/MathCtrl.cpp:5276
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5331
+#: ../src/MathCtrl.cpp:5343
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4195,7 +4200,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6142
+#: ../src/MathCtrl.cpp:6155
 msgid "Wrapped search"
 msgstr ""
 
@@ -4329,12 +4334,12 @@ msgstr "未保存*"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:3898
+#: ../src/MathCtrl.cpp:3907
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4025
+#: ../src/MathCtrl.cpp:4034
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

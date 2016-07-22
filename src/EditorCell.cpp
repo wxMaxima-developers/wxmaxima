@@ -2826,7 +2826,7 @@ void EditorCell::StyleText()
       if(newlinepos != wxNOT_FOUND)
       {
         textToStyle = textToStyle.Left(newlinepos) +
-          wxString::Format(wxT(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
+          wxString::Format(_(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
       }
     }
     
@@ -2997,7 +2997,7 @@ void EditorCell::StyleText()
         if(m_firstLineOnly)
         {
           m_styledText.push_back(StyledText(token +
-                                            wxString::Format(wxT(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))));
+                                            wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))));
           token = wxEmptyString;
           break;
         }
