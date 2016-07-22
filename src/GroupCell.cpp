@@ -305,8 +305,8 @@ void GroupCell::RemoveOutput()
   
   DestroyOutput(!(GetGroupType() == GC_TYPE_IMAGE));
   ResetSize();
-  if(GetGroupType() != GC_TYPE_IMAGE)
-    m_height = GetEditable()->GetHeight();
+//  if(GetGroupType() != GC_TYPE_IMAGE)
+//    m_height = GetEditable()->GetHeight();
   m_hide = false;
 }
 
@@ -416,7 +416,8 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
     m_height = m_input->GetMaxHeight();
     m_indent = parser.GetIndent();
 
-    if (m_output != NULL && !m_hide) {
+    if (m_output != NULL && !m_hide)
+    {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
         tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);

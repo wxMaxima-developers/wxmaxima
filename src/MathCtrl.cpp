@@ -512,8 +512,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
         ScrollToCaret();
       }
     }
-    else
-      Refresh();
+    Refresh();
   }
   else
   {
@@ -2099,6 +2098,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
   ScrolledAwayFromEvaluation();
+  Recalculate();
   Refresh();
 }
 
@@ -5170,7 +5170,7 @@ void MathCtrl::Undo()
   if(CanUndoInsideCell())
   {
     UndoInsideCell();
-    RecalculateForce();
+    Recalculate();
   }
   else
   {
@@ -5649,7 +5649,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
             }
           }
           NumberSections();
-          RecalculateForce();
+          Recalculate();
           Refresh();
           SetHCaret(end);
         }
@@ -6253,7 +6253,6 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       m_saved = false;
       GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
       group->ResetInputLabel();
-//      RecalculateForce();
       wxClientDC dc(this);
       CellParser parser(dc);
       group->ResetSize();
@@ -6284,6 +6283,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
       {
         count += replaced;
         tmp->ResetInputLabel();
+        tmp->ResetSize();
       }
       count += editor->ReplaceAll(oldString, newString, ignoreCase);
     }
@@ -6294,7 +6294,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
   if (count > 0)
   {
     m_saved = false;
-    RecalculateForce();
+    Recalculate();
     Refresh();
   }
 
@@ -6486,6 +6486,7 @@ bool MathCtrl::InsertText(wxString text)
     }
     else {
       m_activeCell->InsertText(text);
+      Recalculate();
       Refresh();
     }
   }
