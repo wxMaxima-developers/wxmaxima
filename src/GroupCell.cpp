@@ -294,6 +294,7 @@ void GroupCell::SetOutput(MathCell *output)
   while (m_lastInOutput->m_next != NULL)
     m_lastInOutput = m_lastInOutput->m_next;
 
+ // ResetSize();
   //m_appendedCells = output;
 }
 
@@ -304,9 +305,15 @@ void GroupCell::RemoveOutput()
     return;
   
   DestroyOutput(!(GetGroupType() == GC_TYPE_IMAGE));
-  ResetSize();
-//  if(GetGroupType() != GC_TYPE_IMAGE)
-//    m_height = GetEditable()->GetHeight();
+
+  // If we have removed the output we know the new height of this cell
+  // If we haven't we don't need to change the size of this cell, anyway.
+  if(m_output == NULL)
+  {
+    m_height = GetEditable()->GetMaxHeight();
+    m_center = GetEditable()->GetMaxCenter();
+    m_outputRect = wxRect(m_currentPoint,m_currentPoint+wxPoint(m_height,m_width));
+  }
   m_hide = false;
 }
 
@@ -343,6 +350,7 @@ void GroupCell::AppendOutput(MathCell *cell)
 
   if (m_appendedCells == NULL)
     m_appendedCells = cell;
+ // ResetSize();
 }
 
 void GroupCell::Recalculate(CellParser& parser, int d_fontsize, int m_fontsize)
