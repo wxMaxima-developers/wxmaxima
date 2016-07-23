@@ -118,10 +118,10 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   MathCell::Draw(parser, point, fontsize);
 
-  wxDC& dc = parser.GetDC();
+  // TODO: Enable this when unselecting text updates the right region.
+  //if (!InUpdateRegion()) return;
 
-  // Todo: Find a way to redraw only the parts of the Cells that are
-  // inside the draw region.
+  wxDC& dc = parser.GetDC();
   if (DrawThisCell(parser, point) && (m_image != NULL))
   {
     wxMemoryDC bitmapDC;

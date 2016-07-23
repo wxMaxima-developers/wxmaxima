@@ -1171,7 +1171,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
     // The click will has changed the position that is in focus so we assume
-    // the user wants to work herr and doesn't want the evaluation mechanism
+    // the user wants to work here and doesn't want the evaluation mechanism
     // to automatically follow the evaluation any more.
     ScrolledAwayFromEvaluation(true);
   }

@@ -159,10 +159,12 @@ void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
   MathCell::Draw(parser, point, fontsize);
+
+  // TODO: Enable this when unselecting text updates the right region.
+  //if (!InUpdateRegion()) return;
+  
   wxDC& dc = parser.GetDC();
 
-  // Todo: Find a way to redraw only the parts of the Cells that are
-  // inside the draw region.
   if (DrawThisCell(parser, point) && (m_images[m_displayed] != NULL))
   {
     wxMemoryDC bitmapDC;
