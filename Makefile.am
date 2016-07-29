@@ -43,7 +43,7 @@ wxMaxima.app: all
 	mkdir -p wxMaxima.app/Contents/MacOS
 	mkdir -p wxMaxima.app/Contents/Resources
 	cp $(srcdir)/test/testbench_simple.wxmx wxMaxima.app/Contents/Resources
-	cp $(srcdir)/data/wxmathml.lisp wxMaxima.app/Contents/Resources
+	cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
 	cp $(srcdir)/data/wxmaxima.png wxMaxima.app/Contents/Resources
 	cp $(srcdir)/data/wxmaxima.svg wxMaxima.app/Contents/Resources
 	cp $(srcdir)/data/autocomplete.txt wxMaxima.app/Contents/Resources
@@ -76,9 +76,8 @@ wxMaxima.app: all
 wxMaxima.win: all
 	mkdir -p wxMaxima/art
 	mkdir -p wxMaxima/data
-	cp $(srcdir)/data/wxmathml.lisp wxMaxima/data
+	cp data/wxmathml.lisp wxMaxima/data
 	cp $(srcdir)/test/testbench_simple.wxmx wxMaxima/data
-	cp $(srcdir)/data/wxmathml.lisp wxMaxima/data
 	cp $(srcdir)/data/wxmaxima.png wxMaxima/data
 	cp $(srcdir)/data/wxmaxima.manifest wxMaxima
 	cp $(srcdir)/data/wxmaxima.svg wxMaxima/data
