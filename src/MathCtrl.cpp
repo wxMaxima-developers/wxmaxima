@@ -74,6 +74,7 @@ wxScrolledCanvas(
   m_cellKeyboardSelectionStartedIn = NULL;
   m_questionPrompt = false;
   m_answerCell = NULL;
+  m_scheduleUpdateToc = false;
   m_scrolledAwayFromEvaluation = false;
   m_keyboardInactive = true;
   m_tree = NULL;

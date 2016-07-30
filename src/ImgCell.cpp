@@ -42,6 +42,7 @@ ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
+  m_drawBoundingBox = false;
 }
 
 int ImgCell::s_counter = 0;
@@ -55,6 +56,7 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
     m_image = new Image(image,remove,filesystem);
   else
     m_image = new Image();
+  m_drawBoundingBox = false;
 }
 
 ImgCell::~ImgCell()
