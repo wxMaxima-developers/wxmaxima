@@ -307,12 +307,16 @@ void GroupCell::RemoveOutput()
   DestroyOutput(!(GetGroupType() == GC_TYPE_IMAGE));
 
   // If we have removed the output we know the new height of this cell
-  // If we haven't we don't need to change the size of this cell, anyway.
   if(m_output == NULL)
   {
     m_height = GetEditable()->GetMaxHeight();
     m_center = GetEditable()->GetMaxCenter();
     m_outputRect = wxRect(m_currentPoint,m_currentPoint+wxPoint(m_height,m_width));
+  }
+  else
+  {
+    ResetSize();
+    m_output->ResetSizeList();
   }
   m_hide = false;
 }
