@@ -5292,6 +5292,18 @@ void wxMaxima::TryEvaluateNextInQueue()
 
   if(m_console->m_evaluationQueue->m_workingGroupChanged)
   {
+    // If the cell's output that we are about to remove contains the currently
+    // selected cells we undo the selection.
+    if(m_console->GetSelectionStart())
+    {
+      if(m_console->GetSelectionStart()->GetParent()==tmp)
+        m_console->SetSelection(NULL,NULL);
+    }
+    if(m_console->GetSelectionEnd())
+    {
+      if(m_console->GetSelectionEnd()->GetParent()==tmp)
+        m_console->SetSelection(NULL,NULL);
+    }
     tmp->RemoveOutput();
     m_console->Recalculate();
     m_console->Refresh();
