@@ -112,7 +112,7 @@ wxMaxima.win.zip: wxMaxima.win
 	zip -r wxMaxima.win.zip wxMaxima
 
 allmo:
-	    cd locales&&$(MAKE) allmo
+	cd locales&&$(MAKE) allmo
 
 signeddist: dist-gzip
 	gpg --armor --detach-sign $(distdir).tar.gz
