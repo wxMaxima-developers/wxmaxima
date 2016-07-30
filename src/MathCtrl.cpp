@@ -497,7 +497,13 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     parser.SetZoomFactor(m_zoomFactor);
     parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-    tmp->RecalculateAppended(parser);
+//    tmp->RecalculateAppended(parser);
+    // TODO: Is the following statement necessary - and if it is:
+    // Do we need to correct RecalculateAppended?
+    tmp->ResetSize();
+    if(tmp->GetOutput())
+      tmp->GetOutput()->ResetSize();
+
     Recalculate();
 
     if(FollowEvaluation()) {
