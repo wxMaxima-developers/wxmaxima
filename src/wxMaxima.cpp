@@ -5082,7 +5082,8 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
   bool evaluating = !m_console->m_evaluationQueue->Empty();
-  m_console->FollowEvaluation(true);
+  if(!evaluating)
+    m_console->FollowEvaluation(true);
   MathCell* tmp = m_console->GetActiveCell();
   if(m_console->QuestionPending())
     evaluating = true;

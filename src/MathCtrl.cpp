@@ -428,8 +428,7 @@ void MathCtrl::ScrollToError()
     {
       FoldOccurred();
       Recalculate(true);
-      if(FollowEvaluation())
-        SetHCaret(ErrorCell);
+      SetHCaret(ErrorCell);
     }
   }
 }
@@ -2222,7 +2221,14 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             if(GetHCaret())
             {
               if(GetHCaret()->m_next)
+              {
                 SetActiveCell(dynamic_cast<GroupCell*>(GetHCaret()->m_next)->GetEditable());
+                
+                // User has in a way moved the cursor manually and definitively doesn't want
+                // to be returned to the end of the cell being evaluated if the evaluation
+                // stops before the "evaluate" key can be pressed again.
+                FollowEvaluation(false);
+              }
             }
             else
             {
@@ -2230,6 +2236,10 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
               {
                 SetActiveCell(m_tree->GetEditable());
                 ScrollToCaret();
+                // User has in a way moved the cursor manually and definitively doesn't want
+                // to be returned to the end of the cell being evaluated if the evaluation
+                // stops before the "evaluate" key can be pressed again.
+                FollowEvaluation(false);
               }
             }
           }
@@ -2286,8 +2296,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
               // User tries to evaluate a cell that already is to be evaluated as the
               // last element of the evaluation queue => It is most probable that
               // the intention is to evaluate more than one cell => Move the cursor
-              // forward a bit
-                SetHCaret(currentGroup);
+              // forward a bit.
+              //
+              // If the current cell isn't the last cell in the evaluation queue
+              // there is a chance tht the user has decided to re-evaluate something
+              // So we just do what we are requested to in this case. 
+              SetHCaret(currentGroup);
             }
             else
             {
