@@ -14,6 +14,11 @@ Current:
   * Speedup for displaying big cells: Don't attempt to draw sub-cells that aren't
     in the area that is currently visible or cached.
   * A Kabyle Translation for users of wxWidgets >= 3.0.1
+  * Holding the "evaluate" key now evaluates all cells of the document one-by-one
+  * Even if we scrolled away from evaluation we want to scroll back if an error
+    occurs so the user can see that this has happened.
+  * Smarter decisions on when to recalculate all cell's sizes.
+  * Many additional bug fixes and performance improvements.
 
 16.04:
   * A TeX-like subscript notation: A_1 is now by default shown as an A with
