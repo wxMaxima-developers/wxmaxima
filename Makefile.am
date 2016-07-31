@@ -91,9 +91,9 @@ wxMaxima.win: all
 #	-cp `gcc -print-file-name=libstdc++.dll` wxMaxima
 if CHM
 	cp $(srcdir)/info/*.chm  wxMaxima/help
-endif
-	-cp info/*.html wxMaxima/help
 	-cp $(srcdir)/info/wxmaxima.hhp wxMaxima/help
+endif
+	-cp $(srcdir)/info/*.html wxMaxima/help
 	mkdir -p wxMaxima/art/toolbar
 	cp $(srcdir)/art/toolbar/*.png wxMaxima/art/toolbar
 	mkdir -p wxMaxima/art/config
