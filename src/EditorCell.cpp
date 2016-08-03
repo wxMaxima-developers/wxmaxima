@@ -39,8 +39,8 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_changeAsterisk = false;
   wxConfig::Get()->Read(wxT("changeAsterisk"), &m_changeAsterisk);
   m_selectionChanged = false;
-  m_oldSelectionStart = NULL;
-  m_oldSelectionEnd = NULL;
+  m_oldSelectionStart = -1;
+  m_oldSelectionEnd = -1;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
   m_text = wxEmptyString;
