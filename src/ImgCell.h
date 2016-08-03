@@ -33,6 +33,7 @@ class ImgCell : public MathCell
 {
 public:
   ImgCell();
+  ImgCell(wxMemoryBuffer image,wxString type);
   ImgCell(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
   ImgCell(const wxBitmap &bitmap);
   ~ImgCell();
@@ -71,6 +72,8 @@ public:
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
   //! Returns the file name extension that matches the image type
   wxString GetExtension(){if(m_image)return m_image->GetExtension(); else return wxEmptyString;}
+  //! Returnes the original compressed version of the image
+  wxMemoryBuffer GetCompressedImage(){return m_image->m_compressedImage;}
 protected:
   Image *m_image;
   void RecalculateSize(CellParser& parser, int fontsize);

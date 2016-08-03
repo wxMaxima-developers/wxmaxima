@@ -279,6 +279,7 @@ void GroupCell::AppendInput(MathCell *cell)
   }
 }
 
+
 void GroupCell::SetOutput(MathCell *output)
 {
   if (output == NULL)

@@ -37,6 +37,22 @@ Image::Image()
   m_scaledBitmap.Create (1,1);
 }
 
+Image::Image(wxMemoryBuffer image,wxString type)
+{
+  m_viewportWidth  = 640;
+  m_viewportHeight = 480;
+  m_scale          = 1;  
+  m_scaledBitmap.Create (1,1);
+  m_compressedImage = image;
+  m_extension = type;
+  wxImage Image;
+  if(m_compressedImage.GetDataLen()>0)
+    {
+      wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
+      Image.LoadFile(istream);
+    } 
+}
+
 Image::Image(const wxBitmap &bitmap)
 {
   m_viewportWidth  = 640;

@@ -36,6 +36,17 @@ ImgCell::ImgCell() : MathCell()
   m_drawBoundingBox = false;
 }
 
+ImgCell::ImgCell(wxMemoryBuffer image,wxString type)
+{
+  m_image = new Image(image,type);
+  m_type = MC_TYPE_IMAGE;
+  m_drawRectangle = true;
+  m_imageBorderWidth = 1;
+  m_drawBoundingBox = false;
+}
+
+
+
 ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
 {
   m_image = new Image(bitmap);

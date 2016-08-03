@@ -4236,6 +4236,49 @@ GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       }
     }
 
+    // Print an image
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: caption start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: caption end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(GC_TYPE_IMAGE, line);
+      if (hide) {
+        cell->Hide(true);
+        hide = false;
+      }
+      if (wxmLines->Item(0) == wxT("/* [wxMaxima: image   start ]"))
+      {
+        wxmLines->RemoveAt(0);
+
+        // Read the image type
+        wxString imgtype = wxmLines->Item(0);
+        wxmLines->RemoveAt(0);
+
+        wxString line;
+        while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: image   end   ] */")))
+        {
+          if (line.Length() == 0)
+            line += wxmLines->Item(0);
+          else
+            line += wxT("\n") + wxmLines->Item(0);
+          
+          wxmLines->RemoveAt(0);
+        }
+        
+        cell->SetOutput(new ImgCell(wxBase64Decode(line),imgtype));
+      }
+    }
     // Print input
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: input   start ] */"))
     {
@@ -4528,7 +4571,10 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
       if (wxm) {
         switch (txt->GetType()) {
         case MC_TYPE_TEXT:
-          AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
+          if(tmp->GetGroupType()==GC_TYPE_IMAGE)
+            AddLineToFile(output, wxT("/* [wxMaxima: caption start ]"), false);
+          else
+            AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
           break;
         case MC_TYPE_SECTION:
           AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
@@ -4555,7 +4601,21 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
       if (wxm) {
         switch (txt->GetType()) {
         case MC_TYPE_TEXT:
-          AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
+          if(tmp->GetGroupType()==GC_TYPE_IMAGE)
+          {
+            AddLineToFile(output, wxT("   [wxMaxima: caption end   ] */"), false);
+            if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
+            {
+              std::cerr<<"Imga2e\n";
+              ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
+              AddLineToFile(output, wxT("/* [wxMaxima: image   start ]"), false);
+              AddLineToFile(output,image->GetExtension());
+              AddLineToFile(output,wxBase64Encode(image->GetCompressedImage()));
+              AddLineToFile(output, wxT("   [wxMaxima: image   end   ] */"), false);              
+            }
+          }
+          else
+            AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
           break;
         case MC_TYPE_SECTION:
           AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);

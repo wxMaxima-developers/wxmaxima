@@ -56,6 +56,8 @@ class Image
 {
 public:
   Image();
+  //! A constructor that loads the compressed file from a wxMemoryBuffer
+  Image(wxMemoryBuffer image,wxString type);
   /*! A constructor that loads a bitmap
 
     This constructor actually has to do some compression since we got
@@ -100,6 +102,8 @@ public:
   wxMemoryBuffer GetCompressedImage(){return m_compressedImage;}
   size_t GetOriginalWidth(){return m_originalWidth;}
   size_t GetOriginalHeight(){return m_originalHeight;}
+  //! The image in its original compressed form
+  wxMemoryBuffer m_compressedImage;
 
 protected:
   //! The width of the unscaled image
@@ -112,8 +116,6 @@ protected:
   size_t m_viewportWidth;
   //! The current viewport height
   size_t m_viewportHeight;
-  //! The image in its original compressed form
-  wxMemoryBuffer m_compressedImage;
   //! The bitmap, scaled down to the screen size
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
