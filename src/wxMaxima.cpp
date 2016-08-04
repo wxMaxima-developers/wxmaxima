@@ -2436,7 +2436,7 @@ bool wxMaxima::SaveFile(bool forceSave)
                             _("Save As"), m_lastPath,
                             file,
                             _(  "Whole document (*.wxmx)|*.wxmx|"
-                                "The input without images (*.wxm)|*.wxm"),
+                                "The input, readable by load() (maxima > 5.38) (*.wxm)|*.wxm"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       
     if (fileExt == wxT("wxmx"))

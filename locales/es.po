@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-22 14:36+0200\n"
+"POT-Creation-Date: 2016-08-03 20:14+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <es@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "\n"
 "Versión de Maxima: "
 
-#: ../src/wxMaxima.cpp:5243
+#: ../src/wxMaxima.cpp:5244
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -72,11 +72,11 @@ msgstr "      --dynamic-space-size <int>"
 msgid "      -l <name>"
 msgstr "      -l <name>"
 
-#: ../src/ImgCell.cpp:162 ../src/ImgCell.cpp:167
+#: ../src/ImgCell.cpp:175 ../src/ImgCell.cpp:180
 msgid " (Graphics) "
 msgstr " (Gráficos) "
 
-#: ../src/EditorCell.cpp:2829 ../src/EditorCell.cpp:3000
+#: ../src/EditorCell.cpp:2831 ../src/EditorCell.cpp:3002
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -654,7 +654,7 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Fallo: pregunta sin celda asociada"
 
-#: ../src/MathCtrl.cpp:5281
+#: ../src/MathCtrl.cpp:5356
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -662,14 +662,14 @@ msgstr ""
 "Fallo: Se ha solicitado cambiar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5355
+#: ../src/MathCtrl.cpp:5430
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Fallo: Se ha solicitado eliminar el contenido de una celda por encima del "
 "comienzo de la hoja de trabajo."
 
-#: ../src/MathCtrl.cpp:5324
+#: ../src/MathCtrl.cpp:5399
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -693,7 +693,7 @@ msgstr ""
 msgid "Bug: Text changed, but no active cell."
 msgstr "Fallo: Texto cambiado sin celda activa."
 
-#: ../src/GroupCell.cpp:322
+#: ../src/GroupCell.cpp:327
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr "Fallo: Intento de añadir NULL a un grupo de celdas."
 
@@ -711,7 +711,7 @@ msgstr ""
 "Fallo: Intento de unir celdas individuales en una región del búffer de "
 "deshacer, pero no hay otras celdas entre ellas."
 
-#: ../src/MathCtrl.cpp:5926
+#: ../src/MathCtrl.cpp:6001
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -727,11 +727,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Fallo: Intento de selección no válida del contenido de una celda."
 
-#: ../src/MathCtrl.cpp:5325
+#: ../src/MathCtrl.cpp:5400
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr "Fallo: Acción de deshacer."
 
-#: ../src/MathCtrl.cpp:5286 ../src/MathCtrl.cpp:5360 ../src/MathCtrl.cpp:5394
+#: ../src/MathCtrl.cpp:5361 ../src/MathCtrl.cpp:5435 ../src/MathCtrl.cpp:5469
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Fallo: Solicitud de deshacer para una celda fuera da la hoja de trabajo."
@@ -793,11 +793,11 @@ msgstr "Calcular productos"
 msgid "Calculate sums"
 msgstr "Calcular sumas"
 
-#: ../src/wxMaxima.cpp:5673
+#: ../src/wxMaxima.cpp:5686
 msgid "Can not connect to the web server."
 msgstr "No se puede acceder al servidor web."
 
-#: ../src/wxMaxima.cpp:5724
+#: ../src/wxMaxima.cpp:5737
 msgid "Can not download version info."
 msgstr "No se puede descargar la versión."
 
@@ -813,7 +813,7 @@ msgstr "No se puede descargar la versión."
 #: ../src/PlotFormatWiz.cpp:44 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:5765
+#: ../src/wxMaxima.cpp:5778
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -833,7 +833,7 @@ msgstr "Ce&lda"
 msgid "Cell bracket"
 msgstr "Corchete de celda"
 
-#: ../src/wxMaxima.cpp:5123
+#: ../src/wxMaxima.cpp:5124
 msgid "Cell ends in a backslash"
 msgstr "Celda termina en barra invertida"
 
@@ -940,7 +940,7 @@ msgstr "Columnas:"
 msgid "Combine factorials in an expression"
 msgstr "Combinar factoriales en una expresión"
 
-#: ../src/wxMaxima.cpp:5155
+#: ../src/wxMaxima.cpp:5156
 msgid "Comma directly followed by a closing parenthesis"
 msgstr "Coma seguida de paréntesis que cierra"
 
@@ -1339,7 +1339,7 @@ msgstr "Dividir números o polinomios"
 msgid "Divide this input cell into two cells"
 msgstr "Dividir esta celda de entrada en dos celdas"
 
-#: ../src/wxMaxima.cpp:5760
+#: ../src/wxMaxima.cpp:5773
 msgid "Do you want to save the changes you made in the document \""
 msgstr "¿Quiere guardar los cambios hechos al documento \""
 
@@ -1365,7 +1365,7 @@ msgstr ""
 "dificulta a los sistemas de control de versiones (git, svn) detectar "
 "diferencias de forma efectiva."
 
-#: ../src/wxMaxima.cpp:5765
+#: ../src/wxMaxima.cpp:5778
 msgid "Don't save"
 msgstr "No guardar"
 
@@ -1466,10 +1466,10 @@ msgstr "Ecuación:"
 msgid "Equations:"
 msgstr "Ecuaciones:"
 
-#: ../src/Image.cpp:132 ../src/ConfigDialogue.cpp:902 ../src/wxMaxima.cpp:1398
+#: ../src/Image.cpp:148 ../src/ConfigDialogue.cpp:902 ../src/wxMaxima.cpp:1398
 #: ../src/wxMaxima.cpp:1412 ../src/wxMaxima.cpp:1533 ../src/wxMaxima.cpp:1544
 #: ../src/wxMaxima.cpp:1567 ../src/wxMaxima.cpp:1931 ../src/wxMaxima.cpp:2105
-#: ../src/wxMaxima.cpp:5243 ../src/wxMaxima.cpp:5673 ../src/wxMaxima.cpp:5724
+#: ../src/wxMaxima.cpp:5244 ../src/wxMaxima.cpp:5686 ../src/wxMaxima.cpp:5737
 msgid "Error"
 msgstr "Error"
 
@@ -1670,7 +1670,7 @@ msgstr "Factoriales y &gamma"
 msgid "Fatal error"
 msgstr "Error fatal"
 
-#: ../src/GroupCell.cpp:1496
+#: ../src/GroupCell.cpp:1501
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
@@ -1964,7 +1964,7 @@ msgstr "Calcular la parte imaginaria de una expresión compleja"
 msgid "Get the real part of complex expression"
 msgstr "Calcular la parte real de una expresión compleja"
 
-#: ../src/MathCtrl.cpp:5374
+#: ../src/MathCtrl.cpp:5449
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2151,7 +2151,7 @@ msgstr ""
 msgid "Image"
 msgstr "Imagen"
 
-#: ../src/wxMaxima.cpp:5484
+#: ../src/wxMaxima.cpp:5497
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Archivos gráficos (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2219,7 +2219,7 @@ msgstr "Nueva celda de te&xto\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "In&sertar celda\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5482
+#: ../src/wxMaxima.cpp:5495
 msgid "Insert Image"
 msgstr "Insertar imagen"
 
@@ -2702,7 +2702,7 @@ msgstr "Mensaje de la salida estándar de Maxima: "
 msgid "Method:"
 msgstr "Método:"
 
-#: ../src/wxMaxima.cpp:5151
+#: ../src/wxMaxima.cpp:5152
 msgid "Mismatched parenthesis"
 msgstr "Paréntesis no pareados"
 
@@ -2750,7 +2750,7 @@ msgstr "Siguiente instrucción\tAlt-Abajo"
 msgid "No"
 msgstr "No"
 
-#: ../src/wxMaxima.cpp:5224
+#: ../src/wxMaxima.cpp:5225
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 "No hay símbolo de dólar ($) ni de punto y coma (;) al final de la instrucción"
@@ -3193,7 +3193,7 @@ msgstr "Reducir (tr)"
 msgid "Reduce trigonometric expression"
 msgstr "Simplificar expresión trigonométrica"
 
-#: ../src/wxMaxima.cpp:591 ../src/wxMaxima.cpp:5336
+#: ../src/wxMaxima.cpp:591 ../src/wxMaxima.cpp:5349
 msgid "Refusing to send cell to maxima: "
 msgstr "Rechazado enviar una celda a Maxima: "
 
@@ -3222,7 +3222,7 @@ msgstr "Reiniciar maxima"
 msgid "Restart maxima"
 msgstr "Reiniciar Maxima"
 
-#: ../src/MathCtrl.cpp:3957
+#: ../src/MathCtrl.cpp:3972
 msgid "Result"
 msgstr "Resultado"
 
@@ -3271,7 +3271,7 @@ msgid "Sample:"
 msgstr "Muestra:"
 
 #: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:766
-#: ../src/wxMaxima.cpp:5765
+#: ../src/wxMaxima.cpp:5778
 msgid "Save"
 msgstr "Guardar"
 
@@ -3962,7 +3962,7 @@ msgstr ""
 "andrejv.github.com/wxmaxima/help.html para más información sobre cómo "
 "utilizar wxMaxima y Maxima."
 
-#: ../src/SlideShowCell.cpp:265
+#: ../src/SlideShowCell.cpp:267
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -4112,11 +4112,11 @@ msgstr "Traducido por"
 msgid "Transpose a matrix"
 msgstr "Trasponer una matriz"
 
-#: ../src/MathCtrl.cpp:5276
+#: ../src/MathCtrl.cpp:5351
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentando deshacer una acción sin celda de comienzo."
 
-#: ../src/MathCtrl.cpp:5343
+#: ../src/MathCtrl.cpp:5418
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentando deshacer una acción que no existe."
 
@@ -4140,15 +4140,15 @@ msgstr "Tipo:"
 msgid "Ukrainian"
 msgstr "Ucraniano"
 
-#: ../src/wxMaxima.cpp:5218
+#: ../src/wxMaxima.cpp:5219
 msgid "Un-closed parenthesis"
 msgstr "Paréntesis no cerrado"
 
-#: ../src/wxMaxima.cpp:5185
+#: ../src/wxMaxima.cpp:5186
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "Paréntesis mal pareado o ha escrito ; o $ antes de tiempo"
 
-#: ../src/wxMaxima.cpp:5717
+#: ../src/wxMaxima.cpp:5730
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4190,15 +4190,15 @@ msgstr "Desplegar todas las secciones"
 msgid "Unicode Support"
 msgstr "Soporte Unicode"
 
-#: ../src/wxMaxima.cpp:5197
+#: ../src/wxMaxima.cpp:5198
 msgid "Unterminated comment."
 msgstr "Comentario sin terminar"
 
-#: ../src/wxMaxima.cpp:5171
+#: ../src/wxMaxima.cpp:5172
 msgid "Unterminated string."
 msgstr "Cadena de texto sin terminar."
 
-#: ../src/wxMaxima.cpp:5702 ../src/wxMaxima.cpp:5709 ../src/wxMaxima.cpp:5717
+#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5722 ../src/wxMaxima.cpp:5730
 msgid "Upgrade"
 msgstr "Actualizar"
 
@@ -4322,7 +4322,10 @@ msgstr ""
 "línea se pueden hacer manualmente introduciendo una línea en blanco."
 
 #: ../src/wxMaxima.cpp:2438
-msgid "Whole document (*.wxmx)|*.wxmx|The input without images (*.wxm)|*.wxm"
+#, fuzzy
+msgid ""
+"Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
+"(*.wxm)|*.wxm"
 msgstr "Documento completo (*.wxmx)|*.wxmx|Entrada sin imágenes (*.wxm)|*.wxm"
 
 #: ../src/ConfigDialogue.cpp:143
@@ -4337,7 +4340,7 @@ msgstr ""
 "Envuelve ecuaciones exportadas con \"copiar como LaTeX\" entre \\[ and \\] "
 "como marcadores de ecuaciones"
 
-#: ../src/MathCtrl.cpp:6155
+#: ../src/MathCtrl.cpp:6230
 msgid "Wrapped search"
 msgstr ""
 
@@ -4425,7 +4428,7 @@ msgstr ""
 "horizontal, para luego operar sobre la selección. Esto será útil cuando se "
 "quieran borrar o evaluar varias celdas a un tiempo."
 
-#: ../src/wxMaxima.cpp:5699
+#: ../src/wxMaxima.cpp:5712
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4436,11 +4439,11 @@ msgstr ""
 "\n"
 "Selecciónese OK para acceder a la página de wxMaxima."
 
-#: ../src/wxMaxima.cpp:5764
+#: ../src/wxMaxima.cpp:5777
 msgid "Your changes will be lost if you don't save them."
 msgstr "Se perderán los cambios si no se guardan."
 
-#: ../src/wxMaxima.cpp:5709
+#: ../src/wxMaxima.cpp:5722
 msgid "Your version of wxMaxima is up to date."
 msgstr "La versión de wxMaxima está actualizada"
 
@@ -4464,11 +4467,11 @@ msgstr "Disminuir 10%"
 msgid "Zoom out 10%"
 msgstr "Ampliar 10%"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5538
+#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5551
 msgid "[ unsaved ]"
 msgstr "[no guardado]"
 
-#: ../src/wxMaxima.cpp:5540
+#: ../src/wxMaxima.cpp:5553
 msgid "[ unsaved* ]"
 msgstr "[no guardado*]"
 
@@ -4477,12 +4480,12 @@ msgstr "[no guardado*]"
 msgid "[%i digits]"
 msgstr "[%i dígitos]"
 
-#: ../src/MathCtrl.cpp:3907
+#: ../src/MathCtrl.cpp:3922
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Diagrama animado\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4034
+#: ../src/MathCtrl.cpp:4049
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Diagrama animado\" style=\"max-width:90%%;\" >"
@@ -4795,7 +4798,7 @@ msgstr "a la tercera potencia"
 msgid "union"
 msgstr "unión"
 
-#: ../src/wxMaxima.cpp:5746
+#: ../src/wxMaxima.cpp:5759
 msgid "unsaved"
 msgstr "no guardado"
 
@@ -4818,8 +4821,8 @@ msgstr "Épsilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5538
-#: ../src/wxMaxima.cpp:5540 ../src/wxMaxima.cpp:5549 ../src/wxMaxima.cpp:5552
+#: ../src/wxMaximaFrame.cpp:260 ../src/wxMaxima.cpp:5551
+#: ../src/wxMaxima.cpp:5553 ../src/wxMaxima.cpp:5562 ../src/wxMaxima.cpp:5565
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

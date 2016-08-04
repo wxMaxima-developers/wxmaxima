@@ -1619,6 +1619,19 @@ bool MathCtrl::CopyCells()
       s += tmp->GetEditable()->ToString() + wxT("\n");
       s += wxT("   [wxMaxima: title   end   ] */\n");
       break;
+    case GC_TYPE_IMAGE:
+      s += wxT("/* [wxMaxima: caption start ]\n");
+      s += tmp->GetEditable()->ToString() + wxT("\n");
+      s += wxT("   [wxMaxima: caption end   ] */\n");
+      if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
+      {
+        ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
+        s += wxT("/* [wxMaxima: image   start ]\n");
+        s += image->GetExtension()+wxT("\n");
+        s += wxBase64Encode(image->GetCompressedImage())+wxT("\n");
+        s += wxT("   [wxMaxima: image   end   ] */\n");
+      }
+      break;
     }
     if (tmp == end)
       break;
