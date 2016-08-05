@@ -140,20 +140,25 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
 {
+  // Here we recalculate the height, as well:
+  //  - This doesn't cost much time and
+  //  - as image cell's sizes might change when the resolution does
+  //    we might have intermittent calculation issues otherwise
   double scale = parser.GetScale();
   m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
-  m_width = (scale * m_images[m_displayed]->m_width) + 2 * m_imageBorderWidth;
+  m_width  = (scale * m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
+  m_height = (scale * m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
+  m_center = m_height / 2;
 }
 
 void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
 {
-  double scale = parser.GetScale();
-  m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
-  
-  m_height = (scale * m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
-
-  m_center = m_height / 2;
+  // Here we recalculate the width, as well:
+  //  - This doesn't cost much time and
+  //  - as image cell's sizes might change when the resolution does
+  //    we might have intermittent calculation issues otherwise
+  RecalculateWidths(parser,fontsize);
 }
 
 void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)

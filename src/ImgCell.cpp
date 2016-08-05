@@ -112,19 +112,25 @@ void ImgCell::Destroy()
 
 void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
+  // Here we recalculate the height, as well:
+  //  - This doesn't cost much time and
+  //  - as image cell's sizes might change when the resolution does
+  //    we might have intermittent calculation issues otherwise
   double scale = parser.GetScale();
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
-  m_width = (scale * m_image->m_width) + 2 * m_imageBorderWidth;
+  m_width  = (scale * m_image->m_width)  + 2 * m_imageBorderWidth;
+  m_height = (scale * m_image->m_height) + 2 * m_imageBorderWidth;
+  m_center = m_height / 2;
 }
 
 void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
 {
-  double scale = parser.GetScale();
-  m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
-
-  m_height = (scale * m_image->m_height) + 2 * m_imageBorderWidth;
-  m_center = m_height / 2;
+  // Here we recalculate the width, as well:
+  //  - This doesn't cost much time and
+  //  - as image cell's sizes might change when the resolution does
+  //    we might have intermittent calculation issues otherwise
+  RecalculateWidths(parser,fontsize);
 }
 
 void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
@@ -139,11 +145,6 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   {
     wxMemoryDC bitmapDC;
     double scale = parser.GetScale();
-    m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
-  
-    m_height = (m_image->m_height) + 2 * m_imageBorderWidth;
-    m_width  = (m_image->m_width)  + 2 * m_imageBorderWidth;
-    m_center = m_height / 2;
 
     if(m_drawBoundingBox)
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))));
@@ -167,7 +168,6 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     // The next time we need to draw a bounding box we will be informed again.
     m_drawBoundingBox = false;
-
 }
 
 wxString ImgCell::ToString()
