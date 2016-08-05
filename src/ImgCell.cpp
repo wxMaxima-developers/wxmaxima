@@ -36,7 +36,7 @@ ImgCell::ImgCell() : MathCell()
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(wxMemoryBuffer image,wxString type)
+ImgCell::ImgCell(wxMemoryBuffer image,wxString type) : MathCell()
 {
   m_image = new Image(image,type);
   m_type = MC_TYPE_IMAGE;
