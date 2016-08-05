@@ -314,7 +314,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
             if(MathCell::InUpdateRegion(rect))
-              dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
+              dcm.DrawRectangle(rect);
             
           }
         else
@@ -322,7 +322,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
           rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           if(MathCell::InUpdateRegion(rect))
-            dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
+            dcm.DrawRectangle(rect);
           
         }
       }
