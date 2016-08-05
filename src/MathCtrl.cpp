@@ -296,39 +296,40 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
       int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom() + 1;
       dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, caretY,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT,  caretY);
-    }
-    
-    //
-    // Mark groupcells currently in queue. TODO better in gc::draw?
-    //
-    if (m_evaluationQueue->GetCell() != NULL) {
-      GroupCell* tmp = m_tree;
-      dcm.SetBrush(*wxTRANSPARENT_BRUSH);
-      while (tmp != NULL)
-      {
-        wxRect rect = tmp->GetRect();
-        if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
-          if (m_evaluationQueue->GetCell() == tmp)
+    }    
+  }
+  
+  //
+  // Mark groupcells currently in queue. TODO better in gc::draw?
+  //
+  if (m_evaluationQueue->GetCell() != NULL) {
+    GroupCell* tmp = m_tree;
+    dcm.SetBrush(*wxTRANSPARENT_BRUSH);
+    while (tmp != NULL)
+    {
+      wxRect rect = tmp->GetRect();
+      if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
+        if (m_evaluationQueue->GetCell() == tmp)
           {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
             if(MathCell::InUpdateRegion(rect))
               dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
-
+            
           }
-          else
-          {
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
-            rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
-            if(MathCell::InUpdateRegion(rect))
-              dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
-
-          }
+        else
+        {
+          dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
+          rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+          if(MathCell::InUpdateRegion(rect))
+            dcm.DrawRectangle(MathCell::CropToUpdateRegion(rect));
+          
         }
-        tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       }
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
   }
+  
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
