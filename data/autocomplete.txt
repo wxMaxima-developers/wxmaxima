@@ -3958,6 +3958,8 @@ FUNCTION: tpartpol
 TEMPLATE: tpartpol(<pol>, <lvar>)
 FUNCTION: direct
 TEMPLATE: direct([<p_1>, <...>, <p_n>], <y>, <f>, [<lvar_1>, <...>, <lvar_n>])
+FUNCTION: directory
+TEMPLATE: directory(<pattern>)
 FUNCTION: multi_orbit
 TEMPLATE: multi_orbit(<P>, [<lvar_1>, <lvar_2>,<...>, <lvar_p>])
 FUNCTION: multsym

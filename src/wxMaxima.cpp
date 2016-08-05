@@ -399,6 +399,8 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
+
+  m_console->Recalculate();
 }
 
 void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
