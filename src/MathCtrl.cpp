@@ -4620,7 +4620,6 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
             AddLineToFile(output, wxT("   [wxMaxima: caption end   ] */"), false);
             if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
             {
-              std::cerr<<"Imga2e\n";
               ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
               AddLineToFile(output, wxT("/* [wxMaxima: image   start ]"), false);
               AddLineToFile(output,image->GetExtension());
