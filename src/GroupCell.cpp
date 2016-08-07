@@ -596,10 +596,8 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       m_outputRect.x = in.x;
 
       while (tmp != NULL) {
-
+        tmp->m_currentPoint = in;
         if (!tmp->m_isBroken) {
-          tmp->m_currentPoint.x = in.x;
-          tmp->m_currentPoint.y = in.y;
           if (tmp->DrawThisCell(parser, in))
             tmp->Draw(parser, in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
           if (tmp->m_nextToDraw != NULL) {
