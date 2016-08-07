@@ -300,8 +300,8 @@ void MathCell::RecalculateList(CellParser& parser, int fontsize)
 
   while(tmp!=NULL)
     {
-      tmp->RecalculateSize(parser, fontsize);
       tmp->RecalculateWidths(parser, fontsize);
+      tmp->RecalculateSize(parser, fontsize);
       tmp=tmp->m_next;
     }  
 }
