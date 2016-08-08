@@ -2144,6 +2144,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   switch (event.GetKeyCode()) {
 
   case WXK_DELETE:
+  case WXK_NUMPAD_DELETE:
     if (event.ShiftDown()) {
       wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
       GetParent()->ProcessWindowEvent(ev);
@@ -2515,7 +2516,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   m_cellKeyboardSelectionStartedIn = NULL;
 
   // an empty cell is removed on backspace/delete
-  if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE) &&
+  if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_NUMPAD_DELETE) &&
       m_activeCell->GetValue() == wxEmptyString) {
     SetSelection(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
     DeleteSelection();
@@ -2774,6 +2775,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
       
   case WXK_DELETE:
+  case WXK_NUMPAD_DELETE:
     if (m_hCaretPosition == NULL) {
       if (m_tree != NULL) {
         SetSelection(m_tree);
@@ -2953,6 +2955,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       !(event.GetKeyCode() == WXK_UP)    &&
       !(event.GetKeyCode() == WXK_DOWN)  &&
       !(event.GetKeyCode() == WXK_BACK)  &&
+      !(event.GetKeyCode() == WXK_NUMPAD_DELETE)  &&
       !(event.GetKeyCode() == WXK_DELETE)
       )
     {
