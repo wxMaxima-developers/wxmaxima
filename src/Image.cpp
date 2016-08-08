@@ -45,13 +45,18 @@ Image::Image(wxMemoryBuffer image,wxString type)
   m_scaledBitmap.Create (1,1);
   m_compressedImage = image;
   m_extension = type;
+  m_originalWidth  = 640;
+  m_originalHeight = 480;  
+
   wxImage Image;
   if(m_compressedImage.GetDataLen()>0)
     {
       wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
-    } 
-}
+      m_originalWidth  = Image.GetWidth();
+      m_originalHeight = Image.GetHeight();  
+    }
+  }
 
 Image::Image(const wxBitmap &bitmap)
 {

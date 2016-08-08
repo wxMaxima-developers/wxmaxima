@@ -4260,6 +4260,7 @@ GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       wxmLines->RemoveAt(0);
 
       wxString line;
+      
       while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: caption end   ] */")))
       {
         if (line.Length() == 0)
@@ -4270,11 +4271,15 @@ GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
         wxmLines->RemoveAt(0);
       }
 
-      cell = new GroupCell(GC_TYPE_IMAGE, line);
+      cell = new GroupCell(GC_TYPE_IMAGE);
+      cell->GetEditable()->SetValue(line);
+      
       if (hide) {
         cell->Hide(true);
         hide = false;
       }
+      
+      wxmLines->RemoveAt(0);
       if (wxmLines->Item(0) == wxT("/* [wxMaxima: image   start ]"))
       {
         wxmLines->RemoveAt(0);
@@ -4293,7 +4298,7 @@ GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
           
           wxmLines->RemoveAt(0);
         }
-        
+
         cell->SetOutput(new ImgCell(wxBase64Decode(line),imgtype));
       }
     }

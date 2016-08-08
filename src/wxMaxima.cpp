@@ -4274,6 +4274,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
         "</p>"
         "<h4>Patches</h4>"
         "Sandro Montanar (SF-patch 2537150)"
+        "Wolfgang Dautermann"
         "</p>"
         "<h4>%s</h4>"
         "<p>"
