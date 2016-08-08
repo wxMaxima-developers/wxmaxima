@@ -270,6 +270,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
         }
       }
 
+      tmp->m_currentPoint = point;
       if (tmp->DrawThisCell(parser, point))
         tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE));
       if (tmp->m_next != NULL) {
