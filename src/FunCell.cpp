@@ -158,8 +158,8 @@ wxString FunCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<fn>") + m_nameCell->ListToXML() +
-    m_argCell->ListToXML() + _T("</fn>");
+  return wxT("<fn><r>") + m_nameCell->ListToXML() + wxT("</r>") +
+    m_argCell->ListToXML() + wxT("</fn>");
 }
 
 wxString FunCell::ToMathML()

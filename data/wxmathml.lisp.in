@@ -403,13 +403,13 @@
 (defprop $false "<t>false</t>" wxxmlword)
 
 (defprop mprogn wxxml-matchfix wxxml)
-(defprop mprogn (("<p>") "</p>") wxxmlsym)
+(defprop mprogn (("<r><p>") "</p></r>") wxxmlsym)
 
 (defprop mlist wxxml-matchfix wxxml)
-(defprop mlist (("<t>[</t>")"<t>]</t>") wxxmlsym)
+(defprop mlist (("<r><t>[</t>")"<t>]</t></r>") wxxmlsym)
 
 (defprop $set wxxml-matchfix wxxml)
-(defprop $set (("<t>{</t>")"<t>}</t>") wxxmlsym)
+(defprop $set (("<r><t>{</t>")"<t>}</t></r>") wxxmlsym)
 
 (defprop mabs wxxml-matchfix wxxml)
 (defprop mabs (("<a>")"</a>") wxxmlsym)
