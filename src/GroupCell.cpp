@@ -43,6 +43,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_outputRect.width = 0;
   m_outputRect.height = 0;
   m_group = this;
+  m_fontSize = 10;
+  m_mathFontSize = 10;
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
@@ -500,9 +502,10 @@ void GroupCell::RecalculateAppended(CellParser& parser)
     return;
 
   MathCell *tmp = m_appendedCells;
-  int fontsize = m_fontSize;
+  m_fontSize = parser.GetFontSize(TS_TEXT);
   double scale = parser.GetScale();
-
+  m_mathFontSize = parser.GetMathFontSize();
+  
   // Recalculate widths of cells
   while (tmp != NULL) {
     tmp->RecalculateWidths(parser, tmp->IsMath() ? m_mathFontSize : m_fontSize);
@@ -510,7 +513,7 @@ void GroupCell::RecalculateAppended(CellParser& parser)
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells, parser, fontsize, parser.GetClientWidth());
+  BreakUpCells(m_appendedCells, parser, m_fontSize, parser.GetClientWidth());
   BreakLines(m_appendedCells, parser.GetClientWidth());
 
   // Recalculate size of cells
