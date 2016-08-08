@@ -1968,6 +1968,8 @@ FUNCTION: batchload
 TEMPLATE: batchload(<filename>)
 FUNCTION: closefile
 TEMPLATE: closefile()
+FUNCTION: close
+TEMPLATE: close(<stream>)
 FUNCTION: collapse
 TEMPLATE: collapse(<expr>)
 FUNCTION: concat
@@ -1992,11 +1994,15 @@ TEMPLATE: expt(<a>, <b>)
 OPTION  : exptdispflag
 FUNCTION: filename_merge
 TEMPLATE: filename_merge(<path>, <filename>)
+OPTION:   file_output_append
 FUNCTION: file_search
 TEMPLATE: file_search(<filename>)
 TEMPLATE: file_search(<filename>, <pathlist>)
-OPTION  : file_search_maxima
+OPTION  : file_search_demo
 OPTION  : file_search_lisp
+OPTION  : file_search_maxima
+OPTION  : file_search_usage
+OPTION  : file_search_tests
 FUNCTION: file_type
 TEMPLATE: file_type(<filename>)
 OPTION  : file_type_maxima
