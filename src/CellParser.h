@@ -99,6 +99,9 @@ public:
   wxString GetTeXCMTI() { return m_fontCMTI; }
   void SetPrinter(bool printer) { m_printer = printer; }
   bool GetPrinter() { return m_printer; }
+
+  //! Returns a pointer to the instance of CellParser that exists
+  CellParser *Get() {return m_cellParser;}
 private:
   int m_indent;
   double m_scale;
@@ -118,6 +121,7 @@ private:
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;
+  static CellParser *m_cellParser;
 };
 
 #endif // CELLPARSER_H

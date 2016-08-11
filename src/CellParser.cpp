@@ -26,6 +26,7 @@
 
 CellParser::CellParser(wxDC& dc) : m_dc(dc)
 {
+  m_cellParser = this;
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
@@ -411,3 +412,6 @@ wxFontEncoding CellParser::GetGreekFontEncoding()
 #endif
 }
 */
+
+// Create all static variables
+CellParser *CellParser::m_cellParser;
