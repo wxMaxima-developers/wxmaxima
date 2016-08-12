@@ -170,7 +170,6 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
 
-  wxASSERT_MSG((m_currentPoint.x>0)&&(m_currentPoint.y>0),_("bug: Try to draw text without a position"));
   if (m_width == -1 || m_height == -1)
     RecalculateWidths(parser, fontsize);
 

@@ -278,8 +278,7 @@ int MathCell::GetLineWidth(double scale)
  */
 void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 {
-  m_currentPoint.x = point.x;
-  m_currentPoint.y = point.y;
+  m_currentPoint = point;
 }
 
 void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)

@@ -35,6 +35,7 @@ public:
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
    */
   wxSize ToFile(wxString file);
+  wxBitmap GetBitmap(){return m_bmp;}
   bool ToClipboard();
 protected:
   void DestroyTree();

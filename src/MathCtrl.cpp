@@ -60,6 +60,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_mathmlFormat = wxDataFormat(wxT("MathML"));
   MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
@@ -1473,10 +1474,30 @@ bool MathCtrl::Copy(bool astext) {
     return true;
   }
   else {
-    wxString s = GetString(true);
-
     if (wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(s));
+      wxDataObjectComposite *data = new wxDataObjectComposite;
+
+      // Add a string representation of the data to the clipboard
+      wxString s = GetString(true);
+      data->Add(new wxTextDataObject(s),true);
+  
+      // Add a bitmap representation of the data to the clipboard
+      MathCell::SetPrinting(true);
+      MathCell* tmp = CopySelection();
+      Bitmap bmp;
+      bmp.SetData(tmp);
+      MathCell::SetPrinting(false);
+      data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
+
+      // Add a mathML representation of the data to the clipboard
+      s = ConvertSelectionToMathML();
+      if(s!=wxEmptyString)
+      {
+        data->Add(new MathMLDataObject(s));        
+      }
+
+      
+      wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
       return true;
     }
@@ -1484,21 +1505,21 @@ bool MathCtrl::Copy(bool astext) {
   }
 }
 
-bool MathCtrl::CopyMathML()
+wxString MathCtrl::ConvertSelectionToMathML()
 {
   if (m_activeCell != NULL)
-    return false;
-
+    return wxEmptyString;
+  
   if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
-    return false;
-
+    return wxEmptyString;
+  
   wxString s;
   MathCell* tmp = CopySelection(m_selectionStart, m_selectionEnd,true);
   
   s = wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")+
     tmp->ListToMathML(true)+
     wxT("</math>");
-
+  
   // We might add indentation as additional eye candy to all but extremely long
   // xml data chunks.
   if(s.Length() < 1000000)
@@ -1513,7 +1534,7 @@ bool MathCtrl::CopyMathML()
       wxMemoryInputStream istream(ostream);
       doc.Load(istream);
     }
-
+    
     // If we failed to load the document the word processor will most probably fail, too.
     // But we can still put it into the clipboard for debugging purposes.
     if(doc.IsOk())
@@ -1526,6 +1547,12 @@ bool MathCtrl::CopyMathML()
       s = s.SubString(s.Find("\n")+1,s.Length());
     }
   }
+  return s;
+}
+
+bool MathCtrl::CopyMathML()
+{
+  wxString s = ConvertSelectionToMathML();
   
   if (wxTheClipboard->Open()) {
     wxTheClipboard->SetData(new wxTextDataObject(s));
@@ -6661,3 +6688,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_SCROLL_CHANGED(MathCtrl::OnScrollChanged)
   EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
 END_EVENT_TABLE()
+
+// Define the static variable that contains the format info for placing MathMl
+// on the clip board
+wxDataFormat MathCtrl::m_mathmlFormat;

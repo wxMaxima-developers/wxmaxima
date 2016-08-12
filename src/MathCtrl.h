@@ -60,6 +60,27 @@ by wxWidgets:
 class MathCtrl: public wxScrolledCanvas
 {
 private:
+
+  //! The clipboard format "mathML"
+
+  //! A class that might contain MathML data for the clipboard
+  static wxDataFormat m_mathmlFormat;
+  class MathMLDataObject:public wxDataObjectSimple
+  {
+  public:
+    MathMLDataObject(wxString data){m_data=data.utf8_str();}
+    virtual ~MathMLDataObject(){}
+    virtual void GetAllFormats(wxDataFormat* formats,wxDataObjectBase::Direction dir) const {formats=&m_mathmlFormat;}
+    virtual bool GetDataHere(const wxDataFormat &format, void *buf) const
+      {memcpy(buf,m_data.data(),m_data.length());return true;}
+    virtual size_t GetDataSize(const wxDataFormat& format) const {return m_data.length();}
+    virtual wxDataFormat GetFormat() const {return m_mathmlFormat;}
+    virtual void SetFormat(const wxDataFormat& format) {}
+    virtual bool SetData(const wxDataFormat &format,size_t len,const void *buf) {}
+  private:
+    wxScopedCharBuffer m_data;
+  };
+    
   //! true, if we have the current focus.
   bool m_hasFocus;
   //! The last beginning for the area being drawn
@@ -670,6 +691,10 @@ public:
   bool CopyCells();
   //! Copy the TeX representation of the current selection to the clipboard
   bool CopyTeX();
+  //! Convert the current selection to MathML
+  wxString ConvertSelectionToMathML();
+  //! Convert the current selection to a bitmap
+  wxBitmap ConvertSelectionToBitmap();
   //! Copy the MathML representation of the current selection to the clipboard
   bool CopyMathML();
   //! Copy a bitmap of the current selection to the clipboard
