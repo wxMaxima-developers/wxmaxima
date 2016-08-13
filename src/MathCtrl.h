@@ -76,7 +76,7 @@ private:
     virtual size_t GetDataSize(const wxDataFormat& format) const {return m_data.length();}
     virtual wxDataFormat GetFormat() const {return m_mathmlFormat;}
     virtual void SetFormat(const wxDataFormat& format) {}
-    virtual bool SetData(const wxDataFormat &format,size_t len,const void *buf) {}
+    virtual bool SetData(const wxDataFormat &format,size_t len,const void *buf) {return false;}
   private:
     wxScopedCharBuffer m_data;
   };

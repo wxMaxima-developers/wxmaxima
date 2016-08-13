@@ -60,7 +60,7 @@ wxScrolledCanvas(
 #endif
   )
 {
-  m_mathmlFormat = wxDataFormat(wxT("MathML"));
+  m_mathmlFormat = wxDataFormat(wxT("MathML Presentation"));
   MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
