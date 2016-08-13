@@ -1485,6 +1485,7 @@ bool MathCtrl::Copy(bool astext) {
       // bitmap isn't way too large:
       MathCell::SetPrinting(true);
       MathCell* tmp = CopySelection();
+      // TODO: Does the comparison that now follows require us to recalculate the cell first?
       if(tmp->GetHeight()*tmp->GetWidth() < 50000000)
       {
         Bitmap bmp;
