@@ -1481,21 +1481,24 @@ bool MathCtrl::Copy(bool astext) {
       wxString s = GetString(true);
       data->Add(new wxTextDataObject(s),true);
   
-      // Add a bitmap representation of the data to the clipboard
+      // Add a bitmap representation of the data to the clipboard - if this
+      // bitmap isn't way too large:
       MathCell::SetPrinting(true);
       MathCell* tmp = CopySelection();
-      Bitmap bmp;
-      bmp.SetData(tmp);
-      MathCell::SetPrinting(false);
-      data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
-
+      if(tmp->GetHeight()*tmp->GetWidth() < 50000000)
+      {
+        Bitmap bmp;
+        bmp.SetData(tmp);
+        MathCell::SetPrinting(false);
+        data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
+      }
+      
       // Add a mathML representation of the data to the clipboard
       s = ConvertSelectionToMathML();
       if(s!=wxEmptyString)
       {
         data->Add(new MathMLDataObject(s));        
       }
-
       
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
