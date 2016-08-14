@@ -26,6 +26,7 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <wx/clipbrd.h>
+#include <wx/mstream.h>
 
 ImgCell::ImgCell() : MathCell()
 {
@@ -44,8 +45,6 @@ ImgCell::ImgCell(wxMemoryBuffer image,wxString type) : MathCell()
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
 }
-
-
 
 ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
 {
@@ -183,6 +182,45 @@ wxString ImgCell::ToTeX()
 wxSize ImgCell::ToImageFile(wxString file)
 {
   return m_image->ToImageFile(file);
+}
+
+wxString ImgCell::ToRTF()
+{
+  // Lines that are common to all types of images
+  wxString header=wxT("{\\*\\shppict{\\pict");
+  wxString footer=wxT("\n}}");
+  
+  // Extract the description of the image data
+  wxString image;
+  wxMemoryBuffer imgdata;
+  if(m_image->GetExtension().Lower() == wxT("png"))
+  {
+    imgdata = GetCompressedImage();
+    image=wxT("\\pngblip\n");
+  } else if(
+    (m_image->GetExtension().Lower() == wxT("jpg"))||
+    (m_image->GetExtension().Lower() == wxT("jpeg"))
+    )
+  {
+    imgdata = GetCompressedImage();
+    image=wxT("\\jpegblip\n");
+  }
+    else
+    {
+      // Convert any non-rtf-enabled format to .png before adding it to the .rtf file.
+      image=wxT("\\pngblip\n");
+      wxImage image = m_image->GetUnscaledBitmap().ConvertToImage();
+      wxMemoryOutputStream stream;
+      image.SaveFile(stream,wxBITMAP_TYPE_PNG);
+      imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
+                         stream.GetOutputStreamBuffer()->GetBufferSize());
+    }
+  
+  // Convert the data into a hexadecimal string
+  for(size_t i=0;i<= imgdata.GetDataLen();i++)
+    image+=wxString::Format("%01x",((char *)imgdata.GetData())[i]);
+
+  return header+image+footer;
 }
 
 wxString ImgCell::ToXML()

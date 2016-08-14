@@ -30,6 +30,7 @@
 #include <wx/clipbrd.h>
 #include <wx/config.h>
 #include "wx/config.h"
+#include <wx/mstream.h>
 
 SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
 {
@@ -240,6 +241,49 @@ wxSize SlideShow::ToImageFile(wxString file)
 {
   return m_images[m_displayed]->ToImageFile(file);
 }
+
+wxString SlideShow::ToRTF()
+{
+  // Animations aren't supported by RTF so we just export the currently shown
+  // image.
+  
+  // Lines that are common to all types of images
+  wxString header=wxT("{\\*\\shppict{\\pict");
+  wxString footer=wxT("\n}}");
+  
+  // Extract the description of the image data
+  wxString image;
+  wxMemoryBuffer imgdata;
+  if(m_images[m_displayed]->GetExtension().Lower() == wxT("png"))
+  {
+    imgdata = m_images[m_displayed]->GetCompressedImage();
+    image=wxT("\\pngblip\n");
+  } else if(
+    (m_images[m_displayed]->GetExtension().Lower() == wxT("jpg"))||
+    (m_images[m_displayed]->GetExtension().Lower() == wxT("jpeg"))
+    )
+  {
+    imgdata = m_images[m_displayed]->GetCompressedImage();
+    image=wxT("\\jpegblip\n");
+  }
+    else
+    {
+      // Convert any non-rtf-enabled format to .png before adding it to the .rtf file.
+      image=wxT("\\pngblip\n");
+      wxImage image = m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
+      wxMemoryOutputStream stream;
+      image.SaveFile(stream,wxBITMAP_TYPE_PNG);
+      imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
+                         stream.GetOutputStreamBuffer()->GetBufferSize());
+    }
+  
+  // Convert the data into a hexadecimal string
+  for(size_t i=0;i<= imgdata.GetDataLen();i++)
+    image+=wxString::Format("%01x",((char *)imgdata.GetData())[i]);
+
+  return header+image+footer;
+}
+
 
 wxSize SlideShow::ToGif(wxString file)
 {

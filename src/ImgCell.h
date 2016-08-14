@@ -80,6 +80,7 @@ protected:
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   wxString ToString();
+  wxString ToRTF();
   wxString ToTeX();
   wxString ToXML();
 	static int s_counter;
