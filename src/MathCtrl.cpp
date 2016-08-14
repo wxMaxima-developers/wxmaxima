@@ -1477,12 +1477,12 @@ bool MathCtrl::Copy(bool astext) {
     if (wxTheClipboard->Open()) {
       wxDataObjectComposite *data = new wxDataObjectComposite;
 
-      // Add a string representation of the data to the clipboard
+      // Add a string representation of the selected output to the clipboard
       wxString s = GetString(true);
-      data->Add(new wxTextDataObject(s),true);
+      data->Add(new wxTextDataObject(s));
   
-      // Add a bitmap representation of the data to the clipboard - if this
-      // bitmap isn't way too large:
+      // Add a bitmap representation of the selected output to the clipboard - if this
+      // bitmap isn't way too large for this to make sense:
       MathCell::SetPrinting(true);
       MathCell* tmp = CopySelection();
       // TODO: Does the comparison that now follows require us to recalculate the cell first?
@@ -1498,7 +1498,10 @@ bool MathCtrl::Copy(bool astext) {
       s = ConvertSelectionToMathML();
       if(s!=wxEmptyString)
       {
-        data->Add(new MathMLDataObject(s));        
+        // We mark the MathML version of the data on the clipboard as "preferred"
+        // as if an application supports MathML neither bitmaps nor plain text
+        // makes much sense.
+        data->Add(new MathMLDataObject(s),true);        
       }
       
       wxTheClipboard->SetData(data);
