@@ -65,20 +65,13 @@ private:
 
   //! A class that might contain MathML data for the clipboard
   static wxDataFormat m_mathmlFormat;
-  class MathMLDataObject:public wxDataObjectSimple
+  class MathMLDataObject:public wxCustomDataObject
   {
   public:
-    MathMLDataObject(wxString data){m_data=data.utf8_str();}
-    virtual ~MathMLDataObject(){}
-    virtual void GetAllFormats(wxDataFormat* formats,wxDataObjectBase::Direction dir) const {formats=&m_mathmlFormat;}
-    virtual bool GetDataHere(const wxDataFormat &format, void *buf) const
-      {memcpy(buf,m_data.data(),m_data.length());return true;}
-    virtual size_t GetDataSize(const wxDataFormat& format) const {return m_data.length();}
-    virtual wxDataFormat GetFormat() const {return m_mathmlFormat;}
-    virtual void SetFormat(const wxDataFormat& format) {}
-    virtual bool SetData(const wxDataFormat &format,size_t len,const void *buf) {return false;}
+    MathMLDataObject(wxString data);
+    MathMLDataObject();
   private:
-    wxScopedCharBuffer m_data;
+    wxCharBuffer m_databuf;
   };
     
   //! true, if we have the current focus.

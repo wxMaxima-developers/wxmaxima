@@ -1476,9 +1476,19 @@ bool MathCtrl::Copy(bool astext) {
   else {
     if (wxTheClipboard->Open()) {
       wxDataObjectComposite *data = new wxDataObjectComposite;
+      
+      // Add a mathML representation of the data to the clipboard
+      wxString s = ConvertSelectionToMathML();
+      if(s!=wxEmptyString)
+      {
+        // We mark the MathML version of the data on the clipboard as "preferred"
+        // as if an application supports MathML neither bitmaps nor plain text
+        // makes much sense.
+        data->Add(new MathMLDataObject(s),true);        
+      }
 
       // Add a string representation of the selected output to the clipboard
-      wxString s = GetString(true);
+      s = GetString(true);
       data->Add(new wxTextDataObject(s));
   
       // Add a bitmap representation of the selected output to the clipboard - if this
@@ -1492,16 +1502,6 @@ bool MathCtrl::Copy(bool astext) {
         bmp.SetData(tmp);
         MathCell::SetPrinting(false);
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
-      }
-      
-      // Add a mathML representation of the data to the clipboard
-      s = ConvertSelectionToMathML();
-      if(s!=wxEmptyString)
-      {
-        // We mark the MathML version of the data on the clipboard as "preferred"
-        // as if an application supports MathML neither bitmaps nor plain text
-        // makes much sense.
-        data->Add(new MathMLDataObject(s),true);        
       }
       
       wxTheClipboard->SetData(data);
@@ -6670,6 +6670,16 @@ void MathCtrl::OnFollow()
       ScrollToCell(GetWorkingGroup());
     }
   }
+}
+
+MathCtrl::MathMLDataObject::MathMLDataObject():wxCustomDataObject(m_mathmlFormat)
+{
+}
+
+MathCtrl::MathMLDataObject::MathMLDataObject(wxString data):wxCustomDataObject(m_mathmlFormat)
+{
+    m_databuf = data.utf8_str();
+    SetData(m_databuf.length(),m_databuf.data());
 }
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
