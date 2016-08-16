@@ -170,6 +170,12 @@ wxString FunCell::ToMathML()
     wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML()+ wxT("</mrow>\n");
 }
 
+wxString FunCell::ToOMML()
+{
+  return wxT("<m:func><m:fname><m:r>")+m_nameCell->ListToOMML() +
+    wxT("</m:r></m:fname><m:e><m:r>") + m_argCell->ListToOMML()+ wxT("</m:r></m:e></m:func>\n");
+}
+
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

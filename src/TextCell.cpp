@@ -802,6 +802,81 @@ wxString TextCell::ToMathML()
   }
 }
 
+wxString TextCell::ToOMML()
+{
+  //Text-only lines are better handled in RTF.
+  if(
+    ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->ForceBreakLineHere())) &&
+    (ForceBreakLineHere())
+    )
+    return wxEmptyString;
+  
+  wxString text=m_text;
+  text.Replace(wxT("&"),wxT("&amp;"));
+  text.Replace(wxT("<"),wxT("&lt;"));
+  text.Replace(wxT(">"),wxT("&gt;"));
+  text.Replace(wxT("'"),  wxT("&apos;"));
+  text.Replace(wxT("\""), wxT("&quot;"));
+
+  // If we didn't display a multiplication dot we want to do the same in MathML.
+  if(m_isHidden)
+  {
+    text.Replace(wxT("*"),     wxT("&#8290;"));
+    text.Replace(wxT("\xB7"),  wxT("&#8290;"));
+    if(text != wxT ("&#8290;"))
+      text = wxEmptyString;
+  }
+  text.Replace(wxT("*"),  wxT("\xB7"));
+      
+  switch(GetStyle())
+  {
+  case TS_GREEK_CONSTANT:
+    text = GetGreekStringUnicode();
+  case TS_SPECIAL_CONSTANT:
+  {
+    // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
+    // support this currently => Commenting it out.
+    // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+    //   text = wxT("&#2146;");
+    bool keepPercent = true;
+    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+    if (!keepPercent) {
+      if (text == wxT("%e"))
+        text = wxT("e");
+      else if (text == wxT("%i"))
+        text = wxT("i");
+    }
+  }
+  case TS_VARIABLE:
+  {
+    bool keepPercent = true;
+    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      
+    if (!keepPercent) {
+      if (text == wxT("%pi"))
+        text = wxT("\x03C0");
+    }
+  }
+  case TS_FUNCTION:
+    if(text == wxT("inf"))
+      text = wxT("\x221e");
+    return wxT("<mi>")+text+wxT("</mi>\n");
+    break;
+  case TS_NUMBER:
+    return wxT("<mn>")+text+wxT("</mn>\n");
+    break;
+
+  case TS_LABEL:
+  case TS_USERLABEL:
+    return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
+    break;
+
+  case TS_STRING:
+  default:
+    return wxT("<m:t>")+text+wxT("</m:t>\n");
+  }
+}
+
 wxString TextCell::ToXML()
 {
   wxString tag;

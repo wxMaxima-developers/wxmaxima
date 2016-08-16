@@ -40,6 +40,7 @@ public:
   wxString ToTeX();
   wxString ToMathML();
   wxString ToXML();
+  wxString ToOMML();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   bool BreakUp();
   void Unbreak();

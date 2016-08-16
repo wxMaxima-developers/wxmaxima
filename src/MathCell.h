@@ -368,10 +368,24 @@ public:
   virtual wxString ListToTeX();
   //! Convert this list to an representation fit for saving in a .wxmx file
   virtual wxString ListToXML();
-  //! Convert this list to an representation fit for saving in a .wxmx file
+  //! Convert this list to a MathML representation
   virtual wxString ListToMathML(bool startofline = false);
+  //! Convert this list to an OMML representation
+  virtual wxString ListToOMML(bool startofline = false);
   //! Returns the cell's representation as a string.
   virtual wxString ToString();
+  /*! Returns the cell's representation as RTF.
+
+    If this method returns wxEmptyString this might mean that this cell is 
+    better handled in OMML.
+   */
+  virtual wxString ToRTF() { return wxEmptyString; }
+  /*! Returns the cell's representation as RTF
+
+    If this method returns wxEmptyString this might mean that this cell is 
+    better handled in RTF.
+   */
+  virtual wxString ToOMML() { return wxEmptyString; }
   //! Convert this cell to its LaTeX representation
   virtual wxString ToTeX();
   //! Convert this cell to an representation fit for saving in a .wxmx file
@@ -556,9 +570,9 @@ protected:
 
   //! Does this cell begin with a forced page break?
   bool m_breakPage;
-  //! Are we allowed to add a linee break before this cell?
+  //! Are we allowed to add a line break before this cell?
   bool m_breakLine;
-  //! true means we forcce this cell to begin with a line break.  
+  //! true means we force this cell to begin with a line break.  
   bool m_forceBreakLine;
   bool m_highlight;
   /* Text that should end up on the clipboard if this cell is copied as text.

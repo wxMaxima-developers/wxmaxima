@@ -140,6 +140,12 @@ wxString ConjugateCell::ToMathML()
     wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
+wxString ConjugateCell::ToOMML()
+{
+  return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e><m:r>") +
+    m_innerCell->ListToOMML() + wxT("</m:r></m:e></m:bar>");
+}
+
 wxString ConjugateCell::ToXML()
 {
   return wxT("<cj>") + m_innerCell->ListToXML() + wxT("</cj>");

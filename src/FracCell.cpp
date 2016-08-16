@@ -315,6 +315,14 @@ wxString FracCell::ToMathML()
     m_denom->ListToMathML() + wxT("</mfrac>\n");
 }
 
+
+wxString FracCell::ToOMML()
+{
+  return wxT("<m:f><m:num><m:r>") +
+    m_num->ListToOMML() + wxT("</m:r></m:num><m:den><m:r>") + 
+    m_denom->ListToOMML() + wxT("</m:r></m:den></m:f>\n");
+}
+
 wxString FracCell::ToXML()
 {
   wxString s = ( m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF )?

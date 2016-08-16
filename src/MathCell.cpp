@@ -570,6 +570,25 @@ wxString MathCell::ListToMathML(bool startofline)
   return retval;
 }
 
+wxString MathCell::ListToOMML(bool startofline)
+{
+  bool highlight=false;
+  
+  wxString retval;
+
+  // If the region to export contains linebreaks or labels we put it into a table.
+  // Export all cells
+
+  MathCell *temp = this;
+  while(temp!=NULL)
+  {
+    retval+=temp->ToOMML();
+    temp=temp->m_next;
+  }
+
+  return retval;
+}
+
 wxString MathCell::ListToXML()
 {
   bool highlight=false;
