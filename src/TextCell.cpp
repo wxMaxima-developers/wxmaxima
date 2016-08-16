@@ -376,6 +376,19 @@ wxString TextCell::ToString()
 wxString TextCell::ToTeX()
 {
   wxString text = m_text;
+
+  bool keepPercent = true;
+  wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+  
+  if (!keepPercent) {
+    if (text == wxT("%e"))
+      text = wxT("e");
+    else if (text == wxT("%i"))
+      text = wxT("i");
+    else if (text == wxT("%pi"))
+      text = wxString(wxT("\x03C0"));
+  }
+  
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
   text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
   text.Replace(wxT(">"), wxT("\\ensuremath{>}"));

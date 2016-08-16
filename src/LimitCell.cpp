@@ -206,6 +206,14 @@ wxString LimitCell::ToXML()
     m_base->ListToXML() + _T("</r></lm>");
 }
 
+wxString LimitCell::ToOMML()
+{
+  return _T("<m:limLow><m:limLowPr><m:ctlPr>") + m_name->ListToOMML() +
+    wxT("</m:ctlPr></m:limLowPr><m:e><m:r>") +
+    m_under->ListToXML() + wxT("</m:r></m:e><m:lim><m:r>") +
+    m_base->ListToXML() + wxT("</m:r></m:lim></m:limLow>");
+}
+
 void LimitCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
 {
   *first = NULL;

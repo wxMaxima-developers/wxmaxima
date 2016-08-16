@@ -1562,7 +1562,12 @@ bool MathCtrl::CopyMathML()
   wxString s = ConvertSelectionToMathML();
   
   if (wxTheClipboard->Open()) {
-    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxDataObjectComposite *data = new wxDataObjectComposite;
+    // The default clipboard slot for MathML
+    data->Add(new MathMLDataObject(s),true);        
+    // A fallback for communicating with non-mathML-aware programs
+    data->Add(new wxTextDataObject(s));
+    wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
   }
