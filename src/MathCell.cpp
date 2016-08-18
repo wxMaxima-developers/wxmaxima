@@ -585,7 +585,7 @@ wxString MathCell::RTFescape(wxString input)
     if(ch < 128)
     {
       if (ch == wxT('\n'))
-        output += wxT("\\par");
+        output += wxT("\\par\n");
       else
         output += input[i];
         
