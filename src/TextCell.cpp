@@ -873,10 +873,8 @@ wxString TextCell::ToOMML()
   case TS_FUNCTION:
     if(text == wxT("inf"))
       text = wxT("\x221e");
-    return wxT("<mi>")+text+wxT("</mi>\n");
     break;
   case TS_NUMBER:
-    return wxT("<mn>")+text+wxT("</mn>\n");
     break;
 
   case TS_LABEL:
@@ -886,8 +884,11 @@ wxString TextCell::ToOMML()
 
   case TS_STRING:
   default:
-    return wxT("<m:t>")+text+wxT("</m:t>\n");
+  {
   }
+  }
+  text = wxT("<m:t>")+text+wxT("</m:t>\n");
+  return text;
 }
 
 wxString TextCell::ToRTF()

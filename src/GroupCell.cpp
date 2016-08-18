@@ -722,9 +722,15 @@ wxString GroupCell::ToRTF()
 
   MathCell *tmp = GetLabel();
 
+  if(tmp!= NULL)
+  {
+    retval += wxT("\\s0\\par\n");
+  }
+  
   while(tmp != NULL)
   {
-    wxString rtf;
+    wxString rtf = tmp->ToRTF();
+    std::cerr<<"rtf:"<<rtf<<"\n";
     if(tmp->ToRTF() != wxEmptyString)
     {
       retval += rtf;
@@ -732,11 +738,13 @@ wxString GroupCell::ToRTF()
     }
     else
     {
-      // Until we support exporting equations we can stop here.
-      break;
-      tmp = tmp->m_next;
+      std::cerr<<"omml2rtf:"<<OMML2RTF(tmp->ListToOMML())<<"\n";
+
+      retval += OMML2RTF(tmp->ListToOMML());
+
       // Skip the rest of this equation
-      while((tmp != NULL)&&(tmp->ToOMML() != wxEmptyString))
+      tmp = tmp->m_next;
+      while(tmp != NULL)
       {
         // A newline starts a new equation
         if(tmp->ForceBreakLineHere())
@@ -744,10 +752,14 @@ wxString GroupCell::ToRTF()
           tmp = tmp->m_next;
           break;
         }
+
+        // A non-equation item starts a new rtf item
+        if (tmp->ToOMML() == wxEmptyString)
+          break;
+          
+        tmp = tmp->m_next;
       }
-      break;
-    }
-    
+    }    
 }
 
   

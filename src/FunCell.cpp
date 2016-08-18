@@ -172,8 +172,8 @@ wxString FunCell::ToMathML()
 
 wxString FunCell::ToOMML()
 {
-  return wxT("<m:func><m:fname><m:r>")+m_nameCell->ListToOMML() +
-    wxT("</m:r></m:fname><m:e><m:r>") + m_argCell->ListToOMML()+ wxT("</m:r></m:e></m:func>\n");
+  return m_nameCell->ListToOMML() + 
+    m_argCell->ListToOMML();
 }
 
 void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)

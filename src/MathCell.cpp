@@ -587,8 +587,9 @@ wxString MathCell::OMML2RTF(wxXmlNode *node)
       while(attributes != NULL)
       {
         wxString ommlatt = attributes -> GetName();
-        result += wxT("\\m")+ommlatt.Right(ommlatt.
-                                           Length()-2) + wxT("=")+attributes->GetValue();
+        result += wxT("{\\m")+ommlatt.Right(ommlatt.Length()-2) +
+          wxT(" ")+attributes->GetValue()+wxT("}");
+        attributes = attributes -> GetNext();
       }
 
       // Convert all child nodes
@@ -600,6 +601,8 @@ wxString MathCell::OMML2RTF(wxXmlNode *node)
     }
     else
       result += wxT(" ")+RTFescape(node->GetContent());
+
+    node = node->GetNext();
   }
   return result;
 }
@@ -608,6 +611,9 @@ wxString MathCell::OMML2RTF(wxString ommltext)
 {
   wxString result;
   wxXmlDocument ommldoc;
+  ommltext = wxT("<m:r>")+ommltext+wxT("</m:r>");
+  std::cerr<<"omml:"<<ommltext<<"\n";
+
   wxStringInputStream ommlStream(ommltext);
   
   ommldoc.Load(ommlStream,wxT("UTF-8"));
@@ -617,7 +623,7 @@ wxString MathCell::OMML2RTF(wxString ommltext)
 
   if(result != wxEmptyString)
   {
-    result = wxT("{\\mmath {\\*\\moMath {\\mr a}{\\md {\\mdPr {\\mbegChr (}{\\mendChr )}}{\\me {\\mf {\\mfPr {\\mtype skw}}") + result + wxT("}}}}}");
+    result = wxT("{\\mmath {\\*\\moMath") + result + wxT("}}");
   }
   return result;
 }
