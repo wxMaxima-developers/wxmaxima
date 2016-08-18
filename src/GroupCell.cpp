@@ -720,6 +720,38 @@ wxString GroupCell::ToRTF()
   if(GetEditable() != NULL)
     retval += GetEditable()->ToRTF();
 
+  MathCell *tmp = GetLabel();
+
+  while(tmp != NULL)
+  {
+    wxString rtf;
+    if(tmp->ToRTF() != wxEmptyString)
+    {
+      retval += rtf;
+      tmp = tmp->m_next;
+    }
+    else
+    {
+      // Until we support exporting equations we can stop here.
+      break;
+      tmp = tmp->m_next;
+      // Skip the rest of this equation
+      while((tmp != NULL)&&(tmp->ToOMML() != wxEmptyString))
+      {
+        // A newline starts a new equation
+        if(tmp->ForceBreakLineHere())
+        {
+          tmp = tmp->m_next;
+          break;
+        }
+      }
+      break;
+    }
+    
+}
+
+  
+  
   return retval;
 }
 

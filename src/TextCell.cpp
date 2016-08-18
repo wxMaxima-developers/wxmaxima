@@ -881,13 +881,27 @@ wxString TextCell::ToOMML()
 
   case TS_LABEL:
   case TS_USERLABEL:
-    return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
+    return wxEmptyString;
     break;
 
   case TS_STRING:
   default:
     return wxT("<m:t>")+text+wxT("</m:t>\n");
   }
+}
+
+wxString TextCell::ToRTF()
+{
+  wxString retval;
+  
+  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+  {
+    retval += wxT("\\s0");
+    retval += wxString::Format(wxT("\\cf%i "),(int)GetStyle());
+    retval += RTFescape(m_text);
+    retval += wxT("\\cf0 ");
+  }
+  return retval;
 }
 
 wxString TextCell::ToXML()

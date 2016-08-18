@@ -45,6 +45,7 @@ public:
   wxString ToTeX();
   wxString ToMathML();
   wxString ToOMML();
+  wxString ToRTF();
   wxString ToXML();
   wxString GetDiffPart();
   bool IsOperator();

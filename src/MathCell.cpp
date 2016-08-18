@@ -21,6 +21,7 @@
 
 #include "MathCell.h"
 #include <wx/regex.h>
+#include <wx/sstream.h>
 
 MathCell::MathCell()
 {
@@ -570,6 +571,57 @@ wxString MathCell::ListToMathML(bool startofline)
   return retval;
 }
 
+wxString MathCell::OMML2RTF(wxXmlNode *node)
+{
+  wxString result;
+
+  while(node != NULL)
+  {
+    if (node->GetType() == wxXML_ELEMENT_NODE)
+    {
+      wxString ommlname = node->GetName();
+      result += wxT("{\\m")+ommlname.Right(ommlname.Length()-2);
+
+      // Convert the attributes
+      wxXmlAttribute* attributes = node->GetAttributes();
+      while(attributes != NULL)
+      {
+        wxString ommlatt = attributes -> GetName();
+        result += wxT("\\m")+ommlatt.Right(ommlatt.
+                                           Length()-2) + wxT("=")+attributes->GetValue();
+      }
+
+      // Convert all child nodes
+      if(node->GetChildren() != NULL)
+      {
+        result += OMML2RTF(node->GetChildren());
+      }
+      result += wxT("}");
+    }
+    else
+      result += wxT(" ")+RTFescape(node->GetContent());
+  }
+  return result;
+}
+  
+wxString MathCell::OMML2RTF(wxString ommltext)
+{
+  wxString result;
+  wxXmlDocument ommldoc;
+  wxStringInputStream ommlStream(ommltext);
+  
+  ommldoc.Load(ommlStream,wxT("UTF-8"));
+
+  wxXmlNode *node = ommldoc.GetRoot();
+  result += OMML2RTF(node);
+
+  if(result != wxEmptyString)
+  {
+    result = wxT("{\\mmath {\\*\\moMath {\\mr a}{\\md {\\mdPr {\\mbegChr (}{\\mendChr )}}{\\me {\\mf {\\mfPr {\\mtype skw}}") + result + wxT("}}}}}");
+  }
+  return result;
+}
+
 wxString MathCell::RTFescape(wxString input)
 {
   // Characters with a special meaning in RTF
@@ -614,11 +666,22 @@ wxString MathCell::ListToOMML(bool startofline)
   // If the region to export contains linebreaks or labels we put it into a table.
   // Export all cells
 
-  MathCell *temp = this;
-  while(temp!=NULL)
+  MathCell *tmp = this;
+  while(tmp!=NULL)
   {
-    retval+=temp->ToOMML();
-    temp=temp->m_next;
+    wxString token = tmp->ToOMML();
+
+    // End exporting the equation if we reached the end of the equation.
+    if(token == wxEmptyString)
+      break;
+    
+    retval += token;
+
+    // Hard linebreaks aren't supported by OMML and therefore need a new equation object
+    if(tmp->ForceBreakLineHere())
+      break;
+    
+    tmp=tmp->m_next;
   }
 
   return retval;

@@ -55,6 +55,7 @@
 #endif
 
 #include <wx/wx.h>
+#include <wx/xml/xml.h>
 #include "CellParser.h"
 #include "TextStyle.h"
 
@@ -380,6 +381,12 @@ public:
     better handled in OMML.
    */
   virtual wxString ToRTF() { return wxEmptyString; }
+
+  //! Converts an OMML tag to the corresponding RTF snippet
+  wxString OMML2RTF(wxXmlNode *node);
+  //! Converts OMML math to RTF math
+  wxString OMML2RTF(wxString data);
+
   /*! Returns the cell's representation as RTF
 
     If this method returns wxEmptyString this might mean that this cell is 

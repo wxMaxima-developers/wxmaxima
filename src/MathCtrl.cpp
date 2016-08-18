@@ -6754,6 +6754,7 @@ wxString MathCtrl::RTFStart()
        20   Title Cell
        21   Math Cell
        22   Math Cell with Label
+       23   Caption
   */
   document += wxT("{\\stylesheet");
   document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\cf0\\kerning1\\dbch\\af5\\langfe2052\\dbch\\af6\\afs24\\alang1081\\loch\\f3\\fs24\\lang1033 Normal;}");
@@ -6764,6 +6765,7 @@ wxString MathCtrl::RTFStart()
   document += wxT("{\\s20\\sbasedon0\\snext0\\qc\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs56\\ab\\loch\\f4\\fs56 Title;}");
   document += wxT("{\\s21\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi0 Math;}");
   document += wxT("{\\s22\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi-737 Math+Label;}");
+  document += wxT("{\\s23\\sbasedon0\\snext0\\li737\\ri0\\lin737\\rin0\\fi-737 Caption;}");
   document += wxT("}");
   return document;
 }

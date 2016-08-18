@@ -155,13 +155,13 @@ wxString EditorCell::ToRTF()
     retval += wxT("\\s20 ") + RTFescape(m_text);
     break;
   case MC_TYPE_SECTION:
-    retval += wxT("\\s1  ") + RTFescape(m_text);
+    retval += wxT("\\s1 ") + RTFescape(m_text);
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxT("\\s2  ") + RTFescape(m_text);
+    retval += wxT("\\s2 ") + RTFescape(m_text);
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxT("\\s3  ") + RTFescape(m_text);
+    retval += wxT("\\s3 ") + RTFescape(m_text);
     break;
   case MC_TYPE_INPUT:
   {
