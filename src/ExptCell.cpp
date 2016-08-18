@@ -209,6 +209,12 @@ wxString ExptCell::ToMathML()
 //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
 }
 
+wxString ExptCell::ToOMML()
+{
+  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") + 
+    m_powCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
+}
+
 wxString ExptCell::ToXML()
 {
 //  if (m_isBroken)

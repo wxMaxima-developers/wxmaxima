@@ -41,6 +41,7 @@ public:
   wxString ToString();
   wxString ToTeX();
   wxString ToXML();
+  wxString ToOMML();
   wxString ToMathML();
   wxString GetDiffPart();
   void SelectInner(wxRect& rect, MathCell **first, MathCell **last);

@@ -166,6 +166,12 @@ wxString SubCell::ToMathML()
     wxT("</msub>\n");
 }
 
+wxString SubCell::ToOMML()
+{
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") + 
+    m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+}
+
 wxString SubCell::ToXML()
 {
   if (m_altCopyText == wxEmptyString)

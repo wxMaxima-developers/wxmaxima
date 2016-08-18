@@ -161,6 +161,15 @@ wxString DiffCell::ToMathML()
   return retval;
 }
 
+wxString DiffCell::ToOMML()
+{
+  wxString retval;
+
+  retval = m_diffCell->ListToOMML();
+  if(m_baseCell)
+    retval += m_baseCell->ListToOMML();
+}
+
 wxString DiffCell::ToXML()
 {
   return _T("<d>") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");

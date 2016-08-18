@@ -440,6 +440,34 @@ wxString IntCell::ToMathML()
   return(wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
+wxString IntCell::ToOMML()
+{
+  wxString base = m_base->ListToMathML();
+
+  wxString var;
+  if(m_var) var = m_var->ListToMathML();
+  
+  wxString from;
+  if(m_under) from = m_under->ListToMathML();
+  
+  wxString to;
+  if(m_over) to = m_over->ListToMathML();
+
+  wxString retval;
+  if(from.IsEmpty() && to.IsEmpty())
+    retval = wxT("<mo>&#x222B;</mo>") + base;
+  if(from.IsEmpty() && !to.IsEmpty())
+    retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
+  if(!from.IsEmpty() && to.IsEmpty())
+    retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
+  if(!from.IsEmpty() && !to.IsEmpty())
+    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n")+ base;
+  if(!var.IsEmpty())
+    retval = retval + var;
+
+  return(wxT("<mrow>") + retval + wxT("</mrow>"));
+}
+
 wxString IntCell::ToXML()
 {
   wxString from;

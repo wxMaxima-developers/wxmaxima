@@ -147,6 +147,12 @@ wxString AbsCell::ToMathML()
 //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
 }
 
+wxString AbsCell::ToOMML()
+{
+  return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e><m:r>") +
+    m_innerCell->ListToOMML()+wxT("</m:r></m:e></m:d>");
+}
+
 wxString AbsCell::ToXML()
 {
   return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");

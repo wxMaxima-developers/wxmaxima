@@ -54,6 +54,7 @@ protected:
   wxString ToTeX();
   wxString ToMathML();
   wxString ToXML();
+  wxString ToOMML();
 };
 
 #endif // ABSCELL_H

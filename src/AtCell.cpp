@@ -155,6 +155,13 @@ wxString AtCell::ToMathML()
     m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
+wxString AtCell::ToOMML()
+{
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") + 
+    m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+}
+
+
 wxString AtCell::ToXML()
 {
   return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
