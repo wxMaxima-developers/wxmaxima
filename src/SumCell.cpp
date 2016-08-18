@@ -331,7 +331,13 @@ wxString SumCell::ToOMML()
 
   wxString retval;
 
-  retval = wxT("<m:nary><m:naryPr><m:chr>\x2211</m:chr></m:naryPr>");
+  retval = wxT("<m:nary><m:naryPr><m:chr>");
+  if (m_sumStyle == SM_SUM)
+    retval += wxT("\x2211");
+  else
+    retval += wxT("\x220F");
+    
+  retval += wxT("</m:chr></m:naryPr>");
   if(from != wxEmptyString)
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
   if(to != wxEmptyString)
