@@ -248,8 +248,8 @@ wxString SlideShow::ToRTF()
   // image.
   
   // Lines that are common to all types of images
-  wxString header=wxT("{\\*\\shppict{\\pict");
-  wxString footer=wxT("\n}}");
+  wxString header=wxT("{\\pict");
+  wxString footer=wxT("}\n");
   
   // Extract the description of the image data
   wxString image;
@@ -270,16 +270,21 @@ wxString SlideShow::ToRTF()
     {
       // Convert any non-rtf-enabled format to .png before adding it to the .rtf file.
       image=wxT("\\pngblip\n");
-      wxImage image = m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
+      wxImage imagedata = m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
       wxMemoryOutputStream stream;
-      image.SaveFile(stream,wxBITMAP_TYPE_PNG);
+      imagedata.SaveFile(stream,wxBITMAP_TYPE_PNG);
       imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
                          stream.GetOutputStreamBuffer()->GetBufferSize());
     }
-  
+
+  image += wxString::Format(wxT("\\picw%li\\pich%li "),
+                            m_images[m_displayed]->GetOriginalWidth(),
+                            m_images[m_displayed]->GetOriginalHeight()
+    );
+
   // Convert the data into a hexadecimal string
   for(size_t i=0;i<= imgdata.GetDataLen();i++)
-    image+=wxString::Format("%01x",((char *)imgdata.GetData())[i]);
+    image += wxString::Format("%02x",((unsigned char *)imgdata.GetData())[i]);
 
   return header+image+footer;
 }

@@ -187,8 +187,8 @@ wxSize ImgCell::ToImageFile(wxString file)
 wxString ImgCell::ToRTF()
 {
   // Lines that are common to all types of images
-  wxString header=wxT("{\\*\\shppict{\\pict");
-  wxString footer=wxT("\n}}");
+  wxString header=wxT("{\\pict");
+  wxString footer=wxT("}\n");
   
   // Extract the description of the image data
   wxString image;
@@ -196,29 +196,34 @@ wxString ImgCell::ToRTF()
   if(m_image->GetExtension().Lower() == wxT("png"))
   {
     imgdata = GetCompressedImage();
-    image=wxT("\\pngblip\n");
+    image=wxT("\\pngblip");
   } else if(
     (m_image->GetExtension().Lower() == wxT("jpg"))||
     (m_image->GetExtension().Lower() == wxT("jpeg"))
     )
   {
     imgdata = GetCompressedImage();
-    image=wxT("\\jpegblip\n");
+    image=wxT("\\jpegblip");
   }
     else
     {
       // Convert any non-rtf-enabled format to .png before adding it to the .rtf file.
-      image=wxT("\\pngblip\n");
-      wxImage image = m_image->GetUnscaledBitmap().ConvertToImage();
+      image = wxT("\\pngblip");
+      wxImage imagedata = m_image->GetUnscaledBitmap().ConvertToImage();
       wxMemoryOutputStream stream;
-      image.SaveFile(stream,wxBITMAP_TYPE_PNG);
+      imagedata.SaveFile(stream,wxBITMAP_TYPE_PNG);
       imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
                          stream.GetOutputStreamBuffer()->GetBufferSize());
     }
+
+  image +=wxString::Format(wxT("\\picw%li\\pich%li "),
+                           m_image->GetOriginalWidth(),
+                           m_image->GetOriginalHeight()
+    );
   
   // Convert the data into a hexadecimal string
   for(size_t i=0;i<= imgdata.GetDataLen();i++)
-    image+=wxString::Format("%01x",((char *)imgdata.GetData())[i]);
+    image += wxString::Format("%02x",((unsigned char *)imgdata.GetData())[i]);
 
   return header+image+footer;
 }

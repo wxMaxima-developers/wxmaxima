@@ -333,10 +333,10 @@ wxString SumCell::ToOMML()
 
   retval = wxT("<m:nary><m:naryPr><m:chr>\x2211</m:chr></m:naryPr>");
   if(from != wxEmptyString)
-    retval += wxT("<m:sub><m:r>") + from + wxT("</m:r></m:sub>");
+    retval += wxT("<m:sub>") + from + wxT("</m:sub>");
   if(to != wxEmptyString)
-    retval += wxT("<m:sup><m:r>") + to + wxT("</m:r></m:sup>");
-  retval += wxT("<m:e><m:r>") + base + wxT("</m:r></m:e></m:nary>");
+    retval += wxT("<m:sup>") + to + wxT("</m:sup>");
+  retval += wxT("<m:e>") + base + wxT("</m:e></m:nary>");
 
   return retval;
 }

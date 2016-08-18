@@ -168,6 +168,8 @@ wxString DiffCell::ToOMML()
   retval = m_diffCell->ListToOMML();
   if(m_baseCell)
     retval += m_baseCell->ListToOMML();
+
+  return retval;
 }
 
 wxString DiffCell::ToXML()

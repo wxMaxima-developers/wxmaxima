@@ -318,9 +318,9 @@ wxString FracCell::ToMathML()
 
 wxString FracCell::ToOMML()
 {
-  return wxT("<m:f><m:num><m:r>") +
-    m_num->ListToOMML() + wxT("</m:r></m:num><m:den><m:r>") + 
-    m_denom->ListToOMML() + wxT("</m:r></m:den></m:f>\n");
+  return wxT("<m:f><m:num>") +
+    m_num->ListToOMML() + wxT("</m:num><m:den>") + 
+    m_denom->ListToOMML() + wxT("</m:den></m:f>\n");
 }
 
 wxString FracCell::ToXML()

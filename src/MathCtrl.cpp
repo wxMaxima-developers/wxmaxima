@@ -1508,6 +1508,18 @@ bool MathCtrl::Copy(bool astext)
         MathCell::SetPrinting(false);
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
       }
+
+      // Add a RTF representation of the currently selected text
+      // to the clipboard: For some reason libreoffice likes RTF more than
+      // it likes the MathML - which is standartized.
+      MathCell* tmp2 = CopySelection();
+      wxString rtf;
+      if(tmp != NULL)
+      {
+        rtf = RTFStart() + tmp2->ListToRTF() + RTFEnd();  
+        data->Add(new RtfDataObject(rtf),true);
+        data->Add(new RtfDataObject2(rtf));
+      }
       
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
@@ -6725,7 +6737,7 @@ MathCtrl::RtfDataObject2::RtfDataObject2(wxString data):wxCustomDataObject(m_rtf
 wxString MathCtrl::RTFStart()
 {
   // The beginning of the RTF document
-  wxString document = wxT("{\\rtf1\\ansi\\deff3\\adeflang1025");
+  wxString document = wxT("{\\rtf1\\ansi\\deff3");
   
   // The font table  
   document += wxT("{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Times New Roman;}{\\f1\\froman\\fprq2\\fcharset2 Symbol;}{\\f2\\fswiss\\fprq2\\fcharset0 Arial;}{\\f3\\froman\\fprq2\\fcharset0 Liberation Serif{\\*\\falt Times New Roman};}{\\f4\\fswiss\\fprq2\\fcharset0 Liberation Sans{\\*\\falt Arial};}{\\f5\\fnil\\fprq2\\fcharset0 DejaVu Sans;}{\\f6\\fnil\\fprq2\\fcharset0 FreeSans;}{\\f7\\fswiss\\fprq0\\fcharset128 FreeSans;}}");

@@ -373,6 +373,8 @@ public:
   virtual wxString ListToMathML(bool startofline = false);
   //! Convert this list to an OMML representation
   virtual wxString ListToOMML(bool startofline = false);
+  //! Convert this list to an RTF representation
+  virtual wxString ListToRTF(bool startofline = false);
   //! Returns the cell's representation as a string.
   virtual wxString ToString();
   /*! Returns the cell's representation as RTF.
@@ -400,7 +402,7 @@ public:
   //! Convert this cell to an representation fit for saving in a .wxmx file
   virtual wxString ToMathML();
   //! Escape a string for RTF
-  static wxString RTFescape(wxString);
+  static wxString RTFescape(wxString,bool MarkDown = false);
 
   void UnsetPen(CellParser& parser);
   /*! Unbreak this cell

@@ -456,8 +456,8 @@ wxString ParenCell::ToTeX()
 wxString ParenCell::ToOMML()
 {
   return wxT("<m:d><m:dPr m:begChr=\"") + RTFescape(m_open->ToString()) + wxT("\" m:endChr=\"") +
-    RTFescape(m_close->ToString()) + wxT("\"></m:dPr><m:e><m:r>") +
-    m_innerCell->ListToOMML()+wxT("</m:r></m:e></m:d>");
+    RTFescape(m_close->ToString()) + wxT("\"></m:dPr><m:e>") +
+    m_innerCell->ListToOMML()+wxT("</m:e></m:d>");
 }
 
 wxString ParenCell::ToMathML()

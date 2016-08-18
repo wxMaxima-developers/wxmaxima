@@ -147,7 +147,7 @@ wxString EditorCell::ToString()
 
 wxString EditorCell::ToRTF()
 {
-  wxString retval = wxT("\\s0\\par\n");
+  wxString retval;
   
   switch (m_type)
   {
@@ -166,35 +166,36 @@ wxString EditorCell::ToRTF()
   case MC_TYPE_INPUT:
   {
     std::list<StyledText> styledText = m_styledText;
-    retval += wxT("\\s0 ");
     while(!styledText.empty())
     {
       // Grab a portion of text from the list.
       StyledText TextSnippet = styledText.front();
       styledText.pop_front();
 
-      wxString text =  PrependNBSP(EscapeHTMLChars(TextSnippet.GetText()));
+      wxString text =  RTFescape(TextSnippet.GetText());
 
       if(TextSnippet.StyleSet())
       {
         retval += wxString::Format(wxT("\\cf%i "),(int)TextSnippet.GetStyle());
-        retval += RTFescape(TextSnippet.GetText());
+        retval += text;
       }
       else
       {
         retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
-          retval += RTFescape(TextSnippet.GetText());
+        retval += RTFescape(TextSnippet.GetText(),false);
       }
+      if(TextSnippet.GetText().Contains(wxT("\n")))
+        {
+          retval += wxT("\\s21 ");
+        }
     }
     retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
     break;
   }
   default:
-    retval += wxT("\\s0 ") + RTFescape(m_text);
+    retval += RTFescape(m_text);
     break;
   }
-  retval += wxT("\n");
-  
   return retval;
 }
 

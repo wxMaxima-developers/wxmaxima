@@ -609,10 +609,12 @@ wxString MathCell::OMML2RTF(wxXmlNode *node)
   
 wxString MathCell::OMML2RTF(wxString ommltext)
 {
+  if(ommltext == wxEmptyString)
+    return wxEmptyString;
+  
   wxString result;
   wxXmlDocument ommldoc;
   ommltext = wxT("<m:r>")+ommltext+wxT("</m:r>");
-  std::cerr<<"omml:"<<ommltext<<"\n";
 
   wxStringInputStream ommlStream(ommltext);
   
@@ -621,14 +623,14 @@ wxString MathCell::OMML2RTF(wxString ommltext)
   wxXmlNode *node = ommldoc.GetRoot();
   result += OMML2RTF(node);
 
-  if(result != wxEmptyString)
+  if((result != wxEmptyString) && (result != wxT("\\mr")))
   {
     result = wxT("{\\mmath {\\*\\moMath") + result + wxT("}}");
   }
   return result;
 }
 
-wxString MathCell::RTFescape(wxString input)
+wxString MathCell::RTFescape(wxString input,bool MarkDown)
 {
   // Characters with a special meaning in RTF
   input.Replace("\\","\\\\");
@@ -640,17 +642,22 @@ wxString MathCell::RTFescape(wxString input)
   for(size_t i=0;i<input.Length();i++)
   {
     wxChar ch = input[i];
-    if(ch < 128)
+    if (ch == wxT('\n'))
     {
-      if (ch == wxT('\n'))
+      if(((i>0) && (input[i-1] == wxT('\n'))) || !MarkDown)
         output += wxT("\\par\n");
       else
-        output += input[i];
-        
+        output += wxT("\n");
     }
     else
     {
-      if(ch < 32768)
+      if((ch < 128) && (ch > 0))
+      {
+        output += ch;
+      }
+      else
+      {
+        if(ch < 32768)
         {
           output += wxString::Format("\\u%i?",int(ch));
         }
@@ -658,6 +665,7 @@ wxString MathCell::RTFescape(wxString input)
         {
           output += wxString::Format("\\u%i?",int(ch)-65536);
         }
+      }
     }
   }
   return(output);
@@ -665,8 +673,8 @@ wxString MathCell::RTFescape(wxString input)
 
 wxString MathCell::ListToOMML(bool startofline)
 {
-  bool highlight=false;
-  
+  bool multiCell = (m_next != NULL);
+
   wxString retval;
 
   // If the region to export contains linebreaks or labels we put it into a table.
@@ -690,6 +698,72 @@ wxString MathCell::ListToOMML(bool startofline)
     tmp=tmp->m_next;
   }
 
+  if((multiCell) && (retval != wxEmptyString))
+    return wxT("<m:r>")+retval+wxT("</m:r>");
+  else
+    return retval;
+}
+
+wxString MathCell::ListToRTF(bool startofline)
+{
+  wxString retval;
+  MathCell *tmp = this;
+  
+  while(tmp != NULL)
+  {    
+    wxString rtf = tmp->ToRTF();
+    if(rtf != wxEmptyString)
+    {
+      if(GetStyle() == TS_LABEL)
+      {
+        retval += wxT("\\s22\\par\n") + rtf;
+        startofline = false;
+      }
+      else 
+      {
+        if(startofline)
+          retval += wxT("\\s21\\par\n") + rtf;
+        startofline = true;
+      }
+      tmp = tmp->m_next;
+    }
+    else
+    {
+      if(tmp->ListToOMML() != wxEmptyString)
+      {
+        // Math!
+        
+        // set the style for this line.
+        if(startofline)
+          retval += wxT("\\s21\\par\n");
+        
+        retval += OMML2RTF(tmp->ListToOMML());
+        
+        startofline = true;
+        
+        // Skip the rest of this equation
+        while(tmp != NULL)
+        {
+          // A non-equation item starts a new rtf item
+          if (tmp->ToOMML() == wxEmptyString)
+            break;
+          
+          // A newline starts a new equation
+        if(tmp->ForceBreakLineHere())
+        {
+          tmp = tmp->m_next;
+          break;
+        }
+        
+        tmp = tmp->m_next;
+        }
+      }
+      else
+      {
+        tmp = tmp->m_next;
+      }
+    }
+  }
   return retval;
 }
 

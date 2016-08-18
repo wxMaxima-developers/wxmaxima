@@ -716,54 +716,31 @@ wxString GroupCell::ToTeX()
 
 wxString GroupCell::ToRTF()
 {
-  wxString retval = wxT("\\s0\\par\n");
+  if(m_groupType == GC_TYPE_PAGEBREAK)
+    return(wxT("\\page "));
+  
+  wxString retval;
+  if(m_groupType == GC_TYPE_CODE)
+  {
+    if(m_input != NULL)
+    {
+      retval = wxT("\\s22\\par\n");
+      retval += RTFescape(m_input->ToString());
+      retval += wxT("\\tab\n");
+    }
+    else
+      retval = wxT("\\s21\\par\n");
+  }
+  else
+    retval = wxT("\\s0\\par\n");
   if(GetEditable() != NULL)
     retval += GetEditable()->ToRTF();
 
-  MathCell *tmp = GetLabel();
-
-  if(tmp!= NULL)
+  MathCell *out = GetLabel();
+  if(out != NULL)
   {
-    retval += wxT("\\s0\\par\n");
+    retval += out->ListToRTF(true);
   }
-  
-  while(tmp != NULL)
-  {
-    wxString rtf = tmp->ToRTF();
-    std::cerr<<"rtf:"<<rtf<<"\n";
-    if(tmp->ToRTF() != wxEmptyString)
-    {
-      retval += rtf;
-      tmp = tmp->m_next;
-    }
-    else
-    {
-      std::cerr<<"omml2rtf:"<<OMML2RTF(tmp->ListToOMML())<<"\n";
-
-      retval += OMML2RTF(tmp->ListToOMML());
-
-      // Skip the rest of this equation
-      tmp = tmp->m_next;
-      while(tmp != NULL)
-      {
-        // A newline starts a new equation
-        if(tmp->ForceBreakLineHere())
-        {
-          tmp = tmp->m_next;
-          break;
-        }
-
-        // A non-equation item starts a new rtf item
-        if (tmp->ToOMML() == wxEmptyString)
-          break;
-          
-        tmp = tmp->m_next;
-      }
-    }    
-}
-
-  
-  
   return retval;
 }
 

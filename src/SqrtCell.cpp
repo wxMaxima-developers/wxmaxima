@@ -264,7 +264,7 @@ wxString SqrtCell::ToMathML()
 
 wxString SqrtCell::ToOMML()
 {
-  return wxT("<m:rad><m:e>") + m_innerCell->ListToMathML() +wxT("</m:e></m:rad>\n");
+  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +wxT("</m:e></m:rad>\n");
 }
 
 wxString SqrtCell::ToXML()
