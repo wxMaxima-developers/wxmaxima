@@ -67,6 +67,7 @@ private:
   static wxDataFormat m_mathmlFormat;
   //! A class that might contain RTF data for the clipboard
   static wxDataFormat m_rtfFormat;
+  static wxDataFormat m_rtfFormat2;
   class MathMLDataObject:public wxCustomDataObject
   {
   public:
@@ -85,7 +86,17 @@ private:
     wxCharBuffer m_databuf;
   };
 
-  //! true, if we have the current focus.
+
+    class RtfDataObject2:public wxCustomDataObject
+  {
+  public:
+    RtfDataObject2(wxString data);
+    RtfDataObject2();
+  private:
+    wxCharBuffer m_databuf;
+  };
+
+//! true, if we have the current focus.
   bool m_hasFocus;
   //! The last beginning for the area being drawn
   size_t m_lastTop;

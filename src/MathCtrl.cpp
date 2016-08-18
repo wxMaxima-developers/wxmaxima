@@ -63,6 +63,7 @@ wxScrolledCanvas(
 {
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
+  m_rtfFormat2 = wxDataFormat(wxT("text/richtext"));
   MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
@@ -1692,6 +1693,7 @@ bool MathCtrl::CopyCells()
     rtf += RTFEnd();
     
     data->Add(new RtfDataObject(rtf),true);
+    data->Add(new RtfDataObject2(rtf));
     data->Add(new wxTextDataObject(wxm));
     
     wxTheClipboard->SetData(data);
@@ -6710,6 +6712,16 @@ MathCtrl::RtfDataObject::RtfDataObject(wxString data):wxCustomDataObject(m_rtfFo
     SetData(m_databuf.length(),m_databuf.data());
 }
 
+MathCtrl::RtfDataObject2::RtfDataObject2():wxCustomDataObject(m_rtfFormat2)
+{
+}
+
+MathCtrl::RtfDataObject2::RtfDataObject2(wxString data):wxCustomDataObject(m_rtfFormat2)
+{
+    m_databuf = data.utf8_str();
+    SetData(m_databuf.length(),m_databuf.data());
+}
+
 wxString MathCtrl::RTFStart()
 {
   // The beginning of the RTF document
@@ -6794,3 +6806,4 @@ END_EVENT_TABLE()
 // on the clip board
 wxDataFormat MathCtrl::m_mathmlFormat;
 wxDataFormat MathCtrl::m_rtfFormat;
+wxDataFormat MathCtrl::m_rtfFormat2;
