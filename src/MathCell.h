@@ -392,7 +392,8 @@ public:
   virtual wxString ToXML();
   //! Convert this cell to an representation fit for saving in a .wxmx file
   virtual wxString ToMathML();
-  //! The height of this cell
+  //! Escape a string for RTF
+  static wxString RTFescape(wxString);
 
   void UnsetPen(CellParser& parser);
   /*! Unbreak this cell

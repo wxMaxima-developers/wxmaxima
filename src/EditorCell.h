@@ -108,6 +108,8 @@ public:
   wxString ToXML();
   //! Convert the current cell to HTML code.
   wxString ToHTML();
+  //! Convert the current cell to RTF code
+  wxString ToRTF();
   void SetFont(CellParser& parser, int fontsize);
   void SetForeground(CellParser& parser);
 

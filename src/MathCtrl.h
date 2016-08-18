@@ -65,6 +65,8 @@ private:
 
   //! A class that might contain MathML data for the clipboard
   static wxDataFormat m_mathmlFormat;
+  //! A class that might contain RTF data for the clipboard
+  static wxDataFormat m_rtfFormat;
   class MathMLDataObject:public wxCustomDataObject
   {
   public:
@@ -73,7 +75,16 @@ private:
   private:
     wxCharBuffer m_databuf;
   };
-    
+
+  class RtfDataObject:public wxCustomDataObject
+  {
+  public:
+    RtfDataObject(wxString data);
+    RtfDataObject();
+  private:
+    wxCharBuffer m_databuf;
+  };
+
   //! true, if we have the current focus.
   bool m_hasFocus;
   //! The last beginning for the area being drawn
@@ -707,6 +718,10 @@ public:
                              worksheet's "modified" status.
   */
   bool ExportToWXMX(wxString file, bool markAsSaved = true);	
+  //! The start of a RTF document
+  wxString RTFStart();
+  //! The end of a RTF document
+  wxString RTFEnd();
   //! export to a LaTeX file
   bool ExportToTeX(wxString file);
   /*! Convert the current selection to a string 

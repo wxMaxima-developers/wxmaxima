@@ -61,6 +61,7 @@ wxScrolledCanvas(
   )
 {
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
+  m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
   MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
@@ -1449,8 +1450,10 @@ wxString MathCtrl::GetString(bool lb) {
 /***
  * Copy selection to clipboard.
  */
-bool MathCtrl::Copy(bool astext) {
-  if (m_activeCell != NULL) {
+bool MathCtrl::Copy(bool astext)
+{
+  if (m_activeCell != NULL)
+  {
     return m_activeCell->CopyToClipboard();
   }
 
@@ -1495,8 +1498,8 @@ bool MathCtrl::Copy(bool astext) {
       // bitmap isn't way too large for this to make sense:
       MathCell::SetPrinting(true);
       MathCell* tmp = CopySelection();
-      // TODO: Does the comparison that now follows require us to recalculate the cell first?
-      if(tmp->GetHeight()*tmp->GetWidth() < 50000000)
+      // Todo: We need somehow calculate the bitmap's width in order to get this work.
+      if(tmp->GetHeight()*tmp->GetWidth() < 15000000)
       {
         Bitmap bmp;
         bmp.SetData(tmp);
@@ -1578,22 +1581,22 @@ bool MathCtrl::CopyMathML()
 bool MathCtrl::CopyTeX() {
   if (m_activeCell != NULL)
     return false;
-
+  
   if (m_selectionStart == NULL)
     return false;
-
+  
   wxString s;
   MathCell* tmp = m_selectionStart;
-
+  
   bool inMath = false;
   wxString label;
-
+  
   wxConfig *config = (wxConfig *)wxConfig::Get();
   bool wrapLatexMath = true;
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
 
   if (tmp->GetType() != MC_TYPE_GROUP) {
-    inMath = true;
+  inMath = true;
     if(wrapLatexMath)
       s = wxT("\\[");
   }
@@ -1607,8 +1610,9 @@ bool MathCtrl::CopyTeX() {
 
   if ((inMath == true) && (wrapLatexMath))
     s += wxT("\\]");
-
-  if (wxTheClipboard->Open()) {
+  
+  if (wxTheClipboard->Open())
+  {
     wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
@@ -1621,71 +1625,79 @@ bool MathCtrl::CopyCells()
 {
   if (m_selectionStart == NULL)
     return false;
-
-  wxString s;
-  GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
-  GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
-
-  while (tmp != NULL) {
-
-    switch (tmp->GetGroupType())
-    {
-    case GC_TYPE_CODE:
-      s += wxT("/* [wxMaxima: input   start ] */\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("/* [wxMaxima: input   end   ] */\n");
-      break;
-    case GC_TYPE_TEXT:
-      s += wxT("/* [wxMaxima: comment start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: comment end   ] */\n");
-      break;
-    case GC_TYPE_SECTION:
-      s += wxT("/* [wxMaxima: section start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: section end   ] */\n");
-      break;
-    case GC_TYPE_SUBSECTION:
-      s += wxT("/* [wxMaxima: subsect start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: subsect end   ] */\n");
-      break;
-    case GC_TYPE_SUBSUBSECTION:
-      s += wxT("/* [wxMaxima: subsubsect start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: subsubsect end   ] */\n");
-      break;
-    case GC_TYPE_TITLE:
-      s += wxT("/* [wxMaxima: title   start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: title   end   ] */\n");
-      break;
-    case GC_TYPE_IMAGE:
-      s += wxT("/* [wxMaxima: caption start ]\n");
-      s += tmp->GetEditable()->ToString() + wxT("\n");
-      s += wxT("   [wxMaxima: caption end   ] */\n");
-      if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
-      {
-        ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
-        s += wxT("/* [wxMaxima: image   start ]\n");
-        s += image->GetExtension()+wxT("\n");
-        s += wxBase64Encode(image->GetCompressedImage())+wxT("\n");
-        s += wxT("   [wxMaxima: image   end   ] */\n");
-      }
-      break;
-    }
-    if (tmp == end)
-      break;
-    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-  }
-
+  
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxDataObjectComposite *data = new wxDataObjectComposite;
+    wxString wxm;
+    wxString rtf = RTFStart();
+    GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
+    GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
+    
+    while (tmp != NULL) {
+      rtf += tmp->ToRTF();
+
+      switch (tmp->GetGroupType())
+      {
+      case GC_TYPE_CODE:
+        wxm += wxT("/* [wxMaxima: input   start ] */\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("/* [wxMaxima: input   end   ] */\n");
+        break;
+      case GC_TYPE_TEXT:
+        wxm += wxT("/* [wxMaxima: comment start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: comment end   ] */\n");
+        break;
+      case GC_TYPE_SECTION:
+        wxm += wxT("/* [wxMaxima: section start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: section end   ] */\n");
+        break;
+      case GC_TYPE_SUBSECTION:
+        wxm += wxT("/* [wxMaxima: subsect start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: subsect end   ] */\n");
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        wxm += wxT("/* [wxMaxima: subsubsect start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: subsubsect end   ] */\n");
+        break;
+      case GC_TYPE_TITLE:
+        wxm += wxT("/* [wxMaxima: title   start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: title   end   ] */\n");
+        break;
+      case GC_TYPE_IMAGE:
+        wxm += wxT("/* [wxMaxima: caption start ]\n");
+        wxm += tmp->GetEditable()->ToString() + wxT("\n");
+        wxm += wxT("   [wxMaxima: caption end   ] */\n");
+        if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
+        {
+          ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
+          wxm += wxT("/* [wxMaxima: image   start ]\n");
+          wxm += image->GetExtension()+wxT("\n");
+          wxm += wxBase64Encode(image->GetCompressedImage())+wxT("\n");
+          wxm += wxT("   [wxMaxima: image   end   ] */\n");
+        }
+        break;
+      }
+      if (tmp == end)
+        break;
+      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
+    }
+    
+    rtf += RTFEnd();
+    
+    data->Add(new RtfDataObject(rtf),true);
+    data->Add(new wxTextDataObject(wxm));
+    
+    wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
   }
-
+  
   return false;
 }
 
@@ -6687,6 +6699,72 @@ MathCtrl::MathMLDataObject::MathMLDataObject(wxString data):wxCustomDataObject(m
     SetData(m_databuf.length(),m_databuf.data());
 }
 
+MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_mathmlFormat)
+{
+}
+
+MathCtrl::RtfDataObject::RtfDataObject(wxString data):wxCustomDataObject(m_mathmlFormat)
+{
+    m_databuf = data.utf8_str();
+    SetData(m_databuf.length(),m_databuf.data());
+}
+
+wxString MathCtrl::RTFStart()
+{
+  // The beginning of the RTF document
+  wxString document = wxT("{\\rtf1\\ansi\\deff3\\adeflang1025");
+  
+  // The font table  
+  document += wxT("{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Times New Roman;}{\\f1\\froman\\fprq2\\fcharset2 Symbol;}{\\f2\\fswiss\\fprq2\\fcharset0 Arial;}{\\f3\\froman\\fprq2\\fcharset0 Liberation Serif{\\*\\falt Times New Roman};}{\\f4\\fswiss\\fprq2\\fcharset0 Liberation Sans{\\*\\falt Arial};}{\\f5\\fnil\\fprq2\\fcharset0 DejaVu Sans;}{\\f6\\fnil\\fprq2\\fcharset0 FreeSans;}{\\f7\\fswiss\\fprq0\\fcharset128 FreeSans;}}");
+
+  // Define the colors of all of our styles
+  document += wxT("{\\colortbl;");
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  for(int i = 1;i<STYLE_NUM;i++)
+  {
+    wxColor color = wxColor(parser.GetColor(i));
+    if(color.IsOk())
+      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;"),color.Red(),color.Green(),color.Blue());
+    else
+      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;"),0,0,0);
+  }
+  document += wxT("}");
+  
+  /* Our style sheet:
+     Style  Meaning
+       0    Ordinary text
+       1    Chapter Cell
+       2    Section Cell
+       3    Subsection Cell
+       4    Subsubsection Cell
+       20   Title Cell
+       21   Math Cell
+       22   Math Cell with Label
+  */
+  document += wxT("{\\stylesheet");
+  document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\cf0\\kerning1\\dbch\\af5\\langfe2052\\dbch\\af6\\afs24\\alang1081\\loch\\f3\\fs24\\lang1033 Normal;}");
+  document += wxT("{\\s1\\sbasedon15\\snext0\\ilvl0\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs36\\ab\\loch\\f4\\fs36 Heading 1;}");
+  document += wxT("{\\s2\\sbasedon15\\snext0\\ilvl1\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs32\\ab\\loch\\f4\\fs32 Heading 2;}");
+  document += wxT("{\\s3\\sbasedon15\\snext0\\ilvl2\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs28\\ab\\loch\\f4\\fs28 Heading 3;}");
+  document += wxT("{\\s4\\sbasedon0\\snext0\\sb240\\sa120\\keepn\\dbch\\af5\\dbch\\af6\\afs28\\loch\\f4\\fs28 Heading 4;}");
+  document += wxT("{\\s20\\sbasedon0\\snext0\\qc\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs56\\ab\\loch\\f4\\fs56 Title;}");
+  document += wxT("{\\s21\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi0 Math;}");
+  document += wxT("{\\s22\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi-737 Math+Label;}");
+  document += wxT("}");
+  return document;
+}
+
+wxString MathCtrl::RTFEnd()
+{
+  wxString document;
+  // Close the document
+  document += wxT("}");
+
+  return document;
+}
+
+
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
   EVT_SIZE(MathCtrl::OnSize)
@@ -6714,3 +6792,4 @@ END_EVENT_TABLE()
 // Define the static variable that contains the format info for placing MathMl
 // on the clip board
 wxDataFormat MathCtrl::m_mathmlFormat;
+wxDataFormat MathCtrl::m_rtfFormat;

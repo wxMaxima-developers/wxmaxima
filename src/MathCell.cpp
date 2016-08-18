@@ -570,6 +570,41 @@ wxString MathCell::ListToMathML(bool startofline)
   return retval;
 }
 
+wxString MathCell::RTFescape(wxString input)
+{
+  // Characters with a special meaning in RTF
+  input.Replace("\\","\\\\");
+  input.Replace("{","\\{");
+  input.Replace("}","\\}");
+
+  // Encode unicode characters in a rather mind-boggling way
+  wxString output;
+  for(size_t i=0;i<input.Length();i++)
+  {
+    wxChar ch = input[i];
+    if(ch < 128)
+    {
+      if (ch == wxT('\n'))
+        output += wxT("\\par");
+      else
+        output += input[i];
+        
+    }
+    else
+    {
+      if(ch < 32768)
+        {
+          output += wxString::Format("\\u%i?",int(ch));
+        }
+        else
+        {
+          output += wxString::Format("\\u%i?",int(ch)-65536);
+        }
+    }
+  }
+  return(output);
+}
+
 wxString MathCell::ListToOMML(bool startofline)
 {
   bool highlight=false;

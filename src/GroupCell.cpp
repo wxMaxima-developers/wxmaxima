@@ -714,6 +714,14 @@ wxString GroupCell::ToTeX()
   return ToTeX(wxEmptyString, wxEmptyString, NULL);
 }
 
+wxString GroupCell::ToRTF()
+{
+  wxString retval = wxT("\\s0\\par\n");
+  if(GetEditable() != NULL)
+    retval += GetEditable()->ToRTF();
+
+  return retval;
+}
 
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
