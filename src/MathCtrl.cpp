@@ -23,6 +23,7 @@
 
 
 #include "wxMaxima.h"
+#include <wx/richtext/richtextbuffer.h>
 #include "wxMaximaFrame.h"
 #include "MathCtrl.h"
 #include "Bitmap.h"
@@ -6699,11 +6700,11 @@ MathCtrl::MathMLDataObject::MathMLDataObject(wxString data):wxCustomDataObject(m
     SetData(m_databuf.length(),m_databuf.data());
 }
 
-MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_mathmlFormat)
+MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_rtfFormat)
 {
 }
 
-MathCtrl::RtfDataObject::RtfDataObject(wxString data):wxCustomDataObject(m_mathmlFormat)
+MathCtrl::RtfDataObject::RtfDataObject(wxString data):wxCustomDataObject(m_rtfFormat)
 {
     m_databuf = data.utf8_str();
     SetData(m_databuf.length(),m_databuf.data());
