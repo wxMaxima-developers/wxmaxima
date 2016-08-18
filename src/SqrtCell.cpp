@@ -262,6 +262,11 @@ wxString SqrtCell::ToMathML()
   return wxT("<msqrt>") + m_innerCell->ListToMathML() +wxT("</msqrt>\n");
 }
 
+wxString SqrtCell::ToOMML()
+{
+  return wxT("<m:rad><m:e>") + m_innerCell->ListToMathML() +wxT("</m:e></m:rad>\n");
+}
+
 wxString SqrtCell::ToXML()
 {
 //  if (m_isBroken)

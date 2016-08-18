@@ -442,30 +442,27 @@ wxString IntCell::ToMathML()
 
 wxString IntCell::ToOMML()
 {
-  wxString base = m_base->ListToMathML();
+  wxString base = m_base->ListToOMML();
 
   wxString var;
-  if(m_var) var = m_var->ListToMathML();
+  if(m_var) var = m_var->ListToOMML();
   
   wxString from;
-  if(m_under) from = m_under->ListToMathML();
+  if(m_under) from = m_under->ListToOMML();
   
   wxString to;
-  if(m_over) to = m_over->ListToMathML();
+  if(m_over) to = m_over->ListToOMML();
 
   wxString retval;
-  if(from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<mo>&#x222B;</mo>") + base;
-  if(from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
-  if(!from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
-  if(!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n")+ base;
-  if(!var.IsEmpty())
-    retval = retval + var;
 
-  return(wxT("<mrow>") + retval + wxT("</mrow>"));
+  retval = wxT("<m:nary><m:naryPr><m:chr>\x222b</m:chr></m:naryPr>");
+  if(from != wxEmptyString)
+    retval += wxT("<m:sub><m:r>") + from + wxT("</m:r></m:sub>");
+  if(to != wxEmptyString)
+    retval += wxT("<m:sup><m:r>") + to + wxT("</m:r></m:sup>");
+  retval += wxT("<m:e><m:r>") + base + var + wxT("</m:r></m:e></m:nary>");
+
+  return retval;
 }
 
 wxString IntCell::ToXML()

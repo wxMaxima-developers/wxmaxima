@@ -55,6 +55,7 @@ public:
   wxString ToString();
   wxString ToTeX();
   wxString ToMathML();
+  wxString ToOMML();
   wxString ToXML();
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
   void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }

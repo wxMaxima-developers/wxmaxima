@@ -284,6 +284,28 @@ wxString MatrCell::ToMathML()
   return retval;
 }
 
+wxString MatrCell::ToOMML()
+{
+  wxString retval;
+
+  retval = wxT("<m:d>");
+   if(!m_specialMatrix)
+     retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr></m:dPr>");
+
+   retval += wxT("<m:e><m:m>");
+
+   for (int i = 0; i < m_matHeight; i++)
+   {
+     retval += wxT("<m:mr>");
+     for (int j = 0; j < m_matWidth; j++)
+       retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() + wxT("</m:e>");
+     retval += wxT("</m:mr>");
+   }
+
+   retval += wxT("</m:m></m:e></m:d>");
+   return retval;
+}
+
 wxString MatrCell::ToXML()
 {
   wxString s = wxEmptyString;

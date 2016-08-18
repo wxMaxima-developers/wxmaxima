@@ -319,6 +319,29 @@ wxString SumCell::ToTeX()
   return s;
 }
 
+wxString SumCell::ToOMML()
+{
+  wxString base = m_base->ListToOMML();
+
+  wxString from;
+  if(m_under) from = m_under->ListToOMML();
+  
+  wxString to;
+  if(m_over) to = m_over->ListToOMML();
+
+  wxString retval;
+
+  retval = wxT("<m:nary><m:naryPr><m:chr>\x2211</m:chr></m:naryPr>");
+  if(from != wxEmptyString)
+    retval += wxT("<m:sub><m:r>") + from + wxT("</m:r></m:sub>");
+  if(to != wxEmptyString)
+    retval += wxT("<m:sup><m:r>") + to + wxT("</m:r></m:sup>");
+  retval += wxT("<m:e><m:r>") + base + wxT("</m:r></m:e></m:nary>");
+
+  return retval;
+}
+
+
 wxString SumCell::ToXML()
 {
   wxString type(wxT("sum"));
