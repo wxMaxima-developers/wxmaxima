@@ -893,7 +893,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString, wxITEM_NORMAL);
+          if(m_selectionStart == m_selectionEnd)
+            popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -1665,6 +1666,7 @@ bool MathCtrl::CopyText()
     if (tmp == m_selectionEnd)
       break;
     tmp = tmp->m_next;
+    firstcell = false;
   }
   
   if (wxTheClipboard->Open())

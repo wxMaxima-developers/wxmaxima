@@ -403,6 +403,8 @@ public:
   virtual wxString ToMathML();
   //! Escape a string for RTF
   static wxString RTFescape(wxString,bool MarkDown = false);
+  //! Escape a string for XML
+  static wxString XMLescape(wxString);
 
   void UnsetPen(CellParser& parser);
   /*! Unbreak this cell

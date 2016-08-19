@@ -630,6 +630,16 @@ wxString MathCell::OMML2RTF(wxString ommltext)
   return result;
 }
 
+wxString MathCell::XMLescape(wxString input)
+{
+  input.Replace(wxT("&"),  wxT("&amp;"));
+  input.Replace(wxT("<"),  wxT("&lt;"));
+  input.Replace(wxT(">"),  wxT("&gt;"));
+  input.Replace(wxT("'"),  wxT("&apos;"));
+  input.Replace(wxT("\""), wxT("&quot;"));
+  return input;
+}
+
 wxString MathCell::RTFescape(wxString input,bool MarkDown)
 {
   // Characters with a special meaning in RTF

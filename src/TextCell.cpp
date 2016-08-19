@@ -746,12 +746,7 @@ wxString TextCell::ToTeX()
 
 wxString TextCell::ToMathML()
 {
-  wxString text=m_text;
-  text.Replace(wxT("&"),wxT("&amp;"));
-  text.Replace(wxT("<"),wxT("&lt;"));
-  text.Replace(wxT(">"),wxT("&gt;"));
-  text.Replace(wxT("'"),  wxT("&apos;"));
-  text.Replace(wxT("\""), wxT("&quot;"));
+  wxString text=XMLescape(m_text);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if(m_isHidden)
@@ -824,12 +819,7 @@ wxString TextCell::ToOMML()
     )
     return wxEmptyString;
   
-  wxString text=m_text;
-  text.Replace(wxT("&"),wxT("&amp;"));
-  text.Replace(wxT("<"),wxT("&lt;"));
-  text.Replace(wxT(">"),wxT("&gt;"));
-  text.Replace(wxT("'"),  wxT("&apos;"));
-  text.Replace(wxT("\""), wxT("&quot;"));
+  wxString text=XMLescape(m_text);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if(m_isHidden)
@@ -931,13 +921,8 @@ wxString TextCell::ToXML()
   if(GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
     
-  wxString xmlstring = m_text;
+  wxString xmlstring = XMLescape(m_text);
   // convert it, so that the XML parser doesn't fail
-  xmlstring.Replace(wxT("&"),  wxT("&amp;"));
-  xmlstring.Replace(wxT("<"),  wxT("&lt;"));
-  xmlstring.Replace(wxT(">"),  wxT("&gt;"));
-  xmlstring.Replace(wxT("'"),  wxT("&apos;"));
-  xmlstring.Replace(wxT("\""), wxT("&quot;"));
 
   return _T("<") + tag + flags +_T(">") + xmlstring + _T("</") + tag + _T(">");
 }
