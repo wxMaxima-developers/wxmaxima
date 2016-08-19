@@ -1490,7 +1490,11 @@ bool MathCtrl::Copy(bool astext)
         // We mark the MathML version of the data on the clipboard as "preferred"
         // as if an application supports MathML neither bitmaps nor plain text
         // makes much sense.
-        data->Add(new MathMLDataObject(s),true);        
+        data->Add(new MathMLDataObject(s),true);
+        data->Add(new MathMLDataObject2(s),true);
+        // wxMathML is a HTML5 flavour, as well.
+        // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+        data->Add(new wxHTMLDataObject(s));
       }
 
       // Add a string representation of the selected output to the clipboard
@@ -1583,7 +1587,10 @@ bool MathCtrl::CopyMathML()
     wxDataObjectComposite *data = new wxDataObjectComposite;
     // The default clipboard slot for MathML
     data->Add(new MathMLDataObject(s),true);        
-    data->Add(new MathMLDataObject2(s),true);        
+    data->Add(new MathMLDataObject2(s),true);
+    // wxMathML is a HTML5 flavour, as well.
+    // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+    data->Add(new wxHTMLDataObject(s));
     // A fallback for communicating with non-mathML-aware programs
     data->Add(new wxTextDataObject(s));
     wxTheClipboard->SetData(data);
