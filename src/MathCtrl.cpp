@@ -892,6 +892,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
@@ -936,6 +937,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
         if (CanCopy()) {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString, wxITEM_NORMAL);
           
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
@@ -1641,6 +1643,37 @@ bool MathCtrl::CopyTeX() {
     return true;
   }
 
+  return false;
+}
+
+bool MathCtrl::CopyText()
+{
+  if (m_activeCell != NULL)
+    return false;
+  
+  if (m_selectionStart == NULL)
+    return false;
+  
+  wxString result;
+  MathCell* tmp = m_selectionStart;
+
+  bool firstcell = true;
+  while (tmp != NULL) {
+    if(!firstcell)
+      result += wxT("\n\n");
+    result += tmp->ToString();
+    if (tmp == m_selectionEnd)
+      break;
+    tmp = tmp->m_next;
+  }
+  
+  if (wxTheClipboard->Open())
+  {
+    wxTheClipboard->SetData(new wxTextDataObject(result));
+    wxTheClipboard->Close();
+    return true;
+  }
+  
   return false;
 }
 
@@ -3269,7 +3302,10 @@ bool MathCtrl::CopyBitmap() {
   MathCell::SetPrinting(true);
   MathCell* tmp = CopySelection();
 
-  Bitmap bmp;
+  int bitmapScale = 3;
+  wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+  
+  Bitmap bmp(bitmapScale);
   bmp.SetData(tmp);
 
   bool retval = bmp.ToClipboard();

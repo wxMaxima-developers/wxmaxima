@@ -4851,6 +4851,10 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     if (m_console->CanCopy(true))
       m_console->CopyTeX();
     break;
+  case MathCtrl::popid_copy_text:
+    if (m_console->CanCopy(true))
+      m_console->CopyText();
+    break;
   case MathCtrl::popid_cut:
     if (m_console->CanCopy(true))
       m_console->CutToClipboard();
@@ -5814,6 +5818,7 @@ EVT_MENU(MathCtrl::popid_diff, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_integrate, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_float, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_copy_tex, wxMaxima::PopupMenu)
+EVT_MENU(MathCtrl::popid_copy_text, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_image, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_animation_save, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_animation_start, wxMaxima::FileMenu)

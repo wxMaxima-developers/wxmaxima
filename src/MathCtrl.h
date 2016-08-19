@@ -565,6 +565,7 @@ public:
     popid_add_comment,
     popid_insert_input,
     popid_copy_tex,
+    popid_copy_text,
     popid_copy_mathml,
     popid_image,
     popid_animation_save,
@@ -716,6 +717,8 @@ public:
   bool Copy(bool astext = false);
   //! Copy the selection to the clipboard as it would appear in a .wxm file
   bool CopyCells();
+  //! Copy a textual representation of the current selection to the clipboard
+  bool CopyText();
   //! Copy the TeX representation of the current selection to the clipboard
   bool CopyTeX();
   //! Convert the current selection to MathML
