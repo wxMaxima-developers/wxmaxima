@@ -62,6 +62,7 @@ wxScrolledCanvas(
   )
 {
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
+  m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
   m_rtfFormat2 = wxDataFormat(wxT("text/richtext"));
   MathCell::SetPrinting(false);
@@ -1582,6 +1583,7 @@ bool MathCtrl::CopyMathML()
     wxDataObjectComposite *data = new wxDataObjectComposite;
     // The default clipboard slot for MathML
     data->Add(new MathMLDataObject(s),true);        
+    data->Add(new MathMLDataObject2(s),true);        
     // A fallback for communicating with non-mathML-aware programs
     data->Add(new wxTextDataObject(s));
     wxTheClipboard->SetData(data);
@@ -6714,6 +6716,16 @@ MathCtrl::MathMLDataObject::MathMLDataObject(wxString data):wxCustomDataObject(m
     SetData(m_databuf.length(),m_databuf.data());
 }
 
+MathCtrl::MathMLDataObject2::MathMLDataObject2():wxCustomDataObject(m_mathmlFormat2)
+{
+}
+
+MathCtrl::MathMLDataObject2::MathMLDataObject2(wxString data):wxCustomDataObject(m_mathmlFormat2)
+{
+    m_databuf = data.utf8_str();
+    SetData(m_databuf.length(),m_databuf.data());
+}
+
 MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_rtfFormat)
 {
 }
@@ -6775,9 +6787,9 @@ wxString MathCtrl::RTFStart()
   document += wxT("{\\s3\\sbasedon15\\snext0\\ilvl2\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs28\\ab\\loch\\f4\\fs28 Heading 3;}");
   document += wxT("{\\s4\\sbasedon0\\snext0\\sb240\\sa120\\keepn\\dbch\\af5\\dbch\\af6\\afs28\\loch\\f4\\fs28 Heading 4;}");
   document += wxT("{\\s20\\sbasedon0\\snext0\\qc\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs56\\ab\\loch\\f4\\fs56 Title;}");
-  document += wxT("{\\s21\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi0 Math;}");
-  document += wxT("{\\s22\\sbasedon0\\snext21\\li737\\ri0\\lin737\\rin0\\fi-737 Math+Label;}");
-  document += wxT("{\\s23\\sbasedon0\\snext0\\li737\\ri0\\lin737\\rin0\\fi-737 Caption;}");
+  document += wxT("{\\s21\\sbasedon0\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi0 Math;}");
+  document += wxT("{\\s22\\sbasedon0\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi-1105 Math+Label;}");
+  document += wxT("{\\s23\\sbasedon0\\snext0\\li1105\\ri0\\lin1105\\rin0\\fi-1105 Caption;}");
   document += wxT("}");
   return document;
 }
@@ -6819,5 +6831,6 @@ END_EVENT_TABLE()
 // Define the static variable that contains the format info for placing MathMl
 // on the clip board
 wxDataFormat MathCtrl::m_mathmlFormat;
+wxDataFormat MathCtrl::m_mathmlFormat2;
 wxDataFormat MathCtrl::m_rtfFormat;
 wxDataFormat MathCtrl::m_rtfFormat2;

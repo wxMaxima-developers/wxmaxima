@@ -714,15 +714,15 @@ wxString MathCell::ListToRTF(bool startofline)
     wxString rtf = tmp->ToRTF();
     if(rtf != wxEmptyString)
     {
-      if(GetStyle() == TS_LABEL)
+      if((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL)))
       {
-        retval += wxT("\\s22\\par\n") + rtf;
+        retval += wxT("\\par\\s22\n") + rtf + wxT("\\tab ");
         startofline = false;
       }
       else 
       {
         if(startofline)
-          retval += wxT("\\s21\\par\n") + rtf;
+          retval += wxT("\\par\\s21\n") + rtf;
         startofline = true;
       }
       tmp = tmp->m_next;
@@ -735,7 +735,7 @@ wxString MathCell::ListToRTF(bool startofline)
         
         // set the style for this line.
         if(startofline)
-          retval += wxT("\\s21\\par\n");
+          retval += wxT("\\par\\s21\n");
         
         retval += OMML2RTF(tmp->ListToOMML());
         

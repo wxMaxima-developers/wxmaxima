@@ -724,15 +724,16 @@ wxString GroupCell::ToRTF()
   {
     if(m_input != NULL)
     {
-      retval = wxT("\\s22\\par\n");
+      retval = wxT("\\par\\s22\n");
       retval += RTFescape(m_input->ToString());
       retval += wxT("\\tab\n");
     }
     else
-      retval = wxT("\\s21\\par\n");
+      retval = wxT("\\par\\s21\n");
   }
   else
-    retval = wxT("\\s0\\par\n");
+    retval = wxT("\\par\n");
+
   if(GetEditable() != NULL)
     retval += GetEditable()->ToRTF();
 

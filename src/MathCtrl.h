@@ -63,16 +63,28 @@ private:
 
   //! The clipboard format "mathML"
 
-  //! A class that might contain MathML data for the clipboard
+  //! A class that publishes MathML data to the clipboard
   static wxDataFormat m_mathmlFormat;
-  //! A class that might contain RTF data for the clipboard
+  //! A second way to publish MathML data for the cipboard
+  static wxDataFormat m_mathmlFormat2;
+  //! A class that publishes RTF data to the clipboard
   static wxDataFormat m_rtfFormat;
+  //! A second way to publish RTF data on the clipboard
   static wxDataFormat m_rtfFormat2;
   class MathMLDataObject:public wxCustomDataObject
   {
   public:
     MathMLDataObject(wxString data);
     MathMLDataObject();
+  private:
+    wxCharBuffer m_databuf;
+  };
+
+  class MathMLDataObject2:public wxCustomDataObject
+  {
+  public:
+    MathMLDataObject2(wxString data);
+    MathMLDataObject2();
   private:
     wxCharBuffer m_databuf;
   };
