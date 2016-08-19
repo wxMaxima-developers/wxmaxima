@@ -296,6 +296,9 @@ wxSize SlideShow::ToGif(wxString file)
   bool success = true;
 
   wxString convert(wxT("convert -delay "+wxString::Format(wxT("%i"),100/GetFrameRate())));
+  // At least one ImageMagick version for windows comes without that symlink
+  // See https://github.com/andrejv/wxmaxima/issues/757
+  wxString convert2(wxT("magick -delay "+wxString::Format(wxT("%i"),100/GetFrameRate())));
   wxString convertArgs;
 
   wxString tmpdir = wxFileName::GetTempDir();
@@ -313,8 +316,10 @@ wxSize SlideShow::ToGif(wxString file)
 
 #if defined __WXMSW__
   if (!wxShell(convert))
+    if (!wxShell(convert2))
 #else
   if (wxExecute(convert, wxEXEC_SYNC) != 0)
+  if (wxExecute(convert2, wxEXEC_SYNC) != 0)
 #endif
   {
     success = false;
