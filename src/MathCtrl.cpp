@@ -61,6 +61,7 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
@@ -1500,35 +1501,38 @@ bool MathCtrl::Copy(bool astext)
         data->Add(new wxHTMLDataObject(s));
       }
 
-      // Add a string representation of the selected output to the clipboard
+      // Add the wxm code corresponding to the selected output to the clipboard
       s = GetString(true);
-      data->Add(new wxTextDataObject(s));
-  
-      // Add a bitmap representation of the selected output to the clipboard - if this
-      // bitmap isn't way too large for this to make sense:
-      MathCell::SetPrinting(true);
-      MathCell* tmp = CopySelection();
-      // Todo: We need somehow calculate the bitmap's width in order to get this work.
-      if(tmp->GetHeight()*tmp->GetWidth() < 15000000)
-      {
-        Bitmap bmp;
-        bmp.SetData(tmp);
-        MathCell::SetPrinting(false);
-        data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
-      }
+      data->Add(new wxmDataObject(s));
 
       // Add a RTF representation of the currently selected text
       // to the clipboard: For some reason libreoffice likes RTF more than
       // it likes the MathML - which is standartized.
       MathCell* tmp2 = CopySelection();
       wxString rtf;
-      if(tmp != NULL)
+      if(tmp2 != NULL)
       {
         rtf = RTFStart() + tmp2->ListToRTF() + RTFEnd();  
         data->Add(new RtfDataObject(rtf),true);
         data->Add(new RtfDataObject2(rtf));
       }
       
+      // Add a string representation of the selected output to the clipboard
+      s = tmp2->ToString();
+      data->Add(new wxTextDataObject(s));
+      
+      // Add a bitmap representation of the selected output to the clipboard - if this
+      // bitmap isn't way too large for this to make sense:
+      MathCell::SetPrinting(true);
+      // Todo: We need somehow calculate the bitmap's width in order to get this work.
+      if(tmp2->GetHeight()*tmp2->GetWidth() < 15000000)
+      {
+        Bitmap bmp;
+        bmp.SetData(tmp2);
+        MathCell::SetPrinting(false);
+        data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
+      }
+
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
       return true;
@@ -1667,8 +1671,8 @@ bool MathCtrl::CopyText()
       break;
     tmp = tmp->m_next;
     firstcell = false;
-  }
-  
+  } 
+ 
   if (wxTheClipboard->Open())
   {
     wxTheClipboard->SetData(new wxTextDataObject(result));
@@ -1688,11 +1692,18 @@ bool MathCtrl::CopyCells()
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
     wxString wxm;
+    wxString str;
     wxString rtf = RTFStart();
     GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
     GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
     
+    bool firstcell = true;
     while (tmp != NULL) {
+      if(!firstcell)
+        str += wxT("\n\n");
+      str += tmp->ToString();
+      firstcell = false;
+      
       rtf += tmp->ToRTF();
 
       switch (tmp->GetGroupType())
@@ -1750,7 +1761,8 @@ bool MathCtrl::CopyCells()
     
     data->Add(new RtfDataObject(rtf),true);
     data->Add(new RtfDataObject2(rtf));
-    data->Add(new wxTextDataObject(wxm));
+    data->Add(new wxmDataObject(wxm));
+    data->Add(new wxTextDataObject(str));
     
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
@@ -5773,12 +5785,22 @@ void MathCtrl::PasteFromClipboard(bool primary)
   if (wxTheClipboard->Open())
   {
     // Check if the clipboard contains text.
-    if (wxTheClipboard->IsSupported( wxDF_TEXT ))
+    if ((wxTheClipboard->IsSupported( wxDF_TEXT )) || (wxTheClipboard->IsSupported( m_wxmFormat )))
     {
-      wxTextDataObject data;
-      wxTheClipboard->GetData(data);
-      wxString inputs(data.GetText());
-
+      wxString inputs;
+      if(wxTheClipboard->IsSupported( m_wxmFormat ))
+      {
+        wxmDataObject data;
+        wxTheClipboard->GetData(data);
+        inputs = wxString::FromUTF8((char *)data.GetData());
+      }
+      else
+      {
+        wxTextDataObject data;
+        wxTheClipboard->GetData(data);
+        inputs = data.GetText();
+      }
+      
       if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
       {
 
@@ -6761,6 +6783,16 @@ MathCtrl::MathMLDataObject::MathMLDataObject(wxString data):wxCustomDataObject(m
     SetData(m_databuf.length(),m_databuf.data());
 }
 
+MathCtrl::wxmDataObject::wxmDataObject():wxCustomDataObject(m_wxmFormat)
+{
+}
+
+MathCtrl::wxmDataObject::wxmDataObject(wxString data):wxCustomDataObject(m_wxmFormat)
+{
+    m_databuf = data.utf8_str();
+    SetData(m_databuf.length(),m_databuf.data());
+}
+
 MathCtrl::MathMLDataObject2::MathMLDataObject2():wxCustomDataObject(m_mathmlFormat2)
 {
 }
@@ -6879,3 +6911,4 @@ wxDataFormat MathCtrl::m_mathmlFormat;
 wxDataFormat MathCtrl::m_mathmlFormat2;
 wxDataFormat MathCtrl::m_rtfFormat;
 wxDataFormat MathCtrl::m_rtfFormat2;
+wxDataFormat MathCtrl::m_wxmFormat;

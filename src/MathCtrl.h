@@ -63,6 +63,8 @@ private:
 
   //! The clipboard format "mathML"
 
+  //! A class that publishes wxm data to the clipboard
+  static wxDataFormat m_wxmFormat;
   //! A class that publishes MathML data to the clipboard
   static wxDataFormat m_mathmlFormat;
   //! A second way to publish MathML data for the cipboard
@@ -76,6 +78,15 @@ private:
   public:
     MathMLDataObject(wxString data);
     MathMLDataObject();
+  private:
+    wxCharBuffer m_databuf;
+  };
+
+  class wxmDataObject:public wxCustomDataObject
+  {
+  public:
+    wxmDataObject(wxString data);
+    wxmDataObject();
   private:
     wxCharBuffer m_databuf;
   };

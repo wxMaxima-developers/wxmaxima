@@ -200,9 +200,10 @@ public:
   bool Empty();
   //! Does this tree contain the cell "cell"?
   bool Contains(GroupCell *cell);
+  //! A textual representation of this cell
+  wxString ToString();
 
 protected:
-  wxString ToString();
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;

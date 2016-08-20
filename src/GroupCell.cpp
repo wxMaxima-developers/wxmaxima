@@ -698,9 +698,11 @@ wxString GroupCell::ToString()
     str = m_input->ListToString();
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
+      bool firstCell = true;
       while (tmp != NULL) {
-        if (tmp->ForceBreakLineHere() && str.Length()>0)
+        if (firstCell || (tmp->ForceBreakLineHere() && str.Length()>0))
           str += wxT("\n");
+        firstCell = false;
         str += tmp->ToString();
         tmp = tmp->m_nextToDraw;
       }
