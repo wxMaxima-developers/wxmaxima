@@ -242,9 +242,14 @@ wxMaximaFrame::~wxMaximaFrame()
   wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
 #endif
   m_manager.UnInit();
-  delete m_history;
-  //  delete m_console->m_structure;
-  delete m_console;
+
+  // We cannot call delete here as we don't know if there are still timer-
+  // or similar events pending for the wxWindows we want to free the memory
+  // for.
+  m_history->Destroy();
+  m_console->m_structure->Destroy();
+  m_console->m_structure = NULL;
+  m_console->Destroy();
 }
 
 void wxMaximaFrame::set_properties()
