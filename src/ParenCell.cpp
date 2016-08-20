@@ -467,9 +467,9 @@ wxString ParenCell::ToMathML()
   wxString open   = m_open->ToString();
   wxString close  = m_close->ToString();
   return(
-    wxT("<mfenced separators=\"\" open=\'") + open + wxT("\' close=\'") + close + wxT("\'>") +
+    wxT("<mrow><mo>") + XMLescape(open) + wxT("</mo>") +
     m_innerCell->ListToMathML() +
-    wxT("</mfenced>\n")
+    wxT("<mo>") + XMLescape(close) +  wxT("</mo></mrow>\n")
     );
 }
 
