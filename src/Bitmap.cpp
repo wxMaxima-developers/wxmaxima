@@ -32,7 +32,7 @@ Bitmap::Bitmap(int scale)
 {
   m_tree = NULL;
   m_scale=scale;
-  m_bmp.Create(10,10);
+  m_bmp.CreateScaled(10,10,wxBITMAP_SCREEN_DEPTH,1.0/((double)scale));
 }
 
 Bitmap::~Bitmap()
@@ -263,18 +263,25 @@ void Bitmap::Draw()
 
 wxSize Bitmap::ToFile(wxString file)
 {
+  // Assign an resolution to the bitmap.
+  wxImage img=m_bmp.ConvertToImage();
+  int resolution = img.GetOptionInt(wxIMAGE_OPTION_RESOLUTION);
+  if(resolution <= 0)
+    resolution = 75;
+  img.SetOption(wxIMAGE_OPTION_RESOLUTION,resolution * m_scale);
+
   bool success = false;
   if (file.Right(4) == wxT(".bmp"))
-    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_BMP);
+    success = img.SaveFile(file, wxBITMAP_TYPE_BMP);
   else if (file.Right(4) == wxT(".xpm"))
-    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_XPM);
+    success = img.SaveFile(file, wxBITMAP_TYPE_XPM);
   else if (file.Right(4) == wxT(".jpg"))
-    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_JPEG);
+    success = img.SaveFile(file, wxBITMAP_TYPE_JPEG);
   else
   {
     if (file.Right(4) != wxT(".png"))
       file = file + wxT(".png");
-    success = m_bmp.SaveFile(file, wxBITMAP_TYPE_PNG);
+    success = img.SaveFile(file, wxBITMAP_TYPE_PNG);
   }
 
   wxSize retval;
