@@ -190,8 +190,13 @@ wxMaxima::~wxMaxima()
   if (m_client != NULL)
     m_client->Destroy();
   m_client  = NULL;
-  m_process = NULL;
-  
+
+  if(m_process)
+  {
+    m_process->Detach();
+    m_process = NULL;
+  }
+
   if (m_printData != NULL)
     delete m_printData;
 }
