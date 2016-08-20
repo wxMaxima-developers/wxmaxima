@@ -1518,7 +1518,7 @@ bool MathCtrl::Copy(bool astext)
       }
       
       // Add a string representation of the selected output to the clipboard
-      s = tmp2->ToString();
+      s = tmp2->ListToString();
       data->Add(new wxTextDataObject(s));
       
       // Add a bitmap representation of the selected output to the clipboard - if this
