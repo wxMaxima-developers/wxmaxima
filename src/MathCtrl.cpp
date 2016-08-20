@@ -1552,8 +1552,13 @@ wxString MathCtrl::ConvertSelectionToMathML()
   wxString s;
   MathCell* tmp = CopySelection(m_selectionStart, m_selectionEnd,true);
   
-  s = wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")+
+  s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
+    wxT("<semantics>") +
     tmp->ListToMathML(true)+
+    wxT("<annotation encoding=\"application/x-maxima\">") +
+    MathCell::XMLescape(tmp->ListToString()) +
+    wxT("</annotation>") +
+    wxT("</semantics>") +
     wxT("</math>");
   
   // We might add indentation as additional eye candy to all but extremely long
