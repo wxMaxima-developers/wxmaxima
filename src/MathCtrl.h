@@ -73,6 +73,11 @@ private:
   static wxDataFormat m_rtfFormat;
   //! A second way to publish RTF data on the clipboard
   static wxDataFormat m_rtfFormat2;
+
+  /*! An object that can be filled with MathML data for the clipboard
+
+    \todo Is there a way to make this object share its data with MathMLDataObject2?
+   */
   class MathMLDataObject:public wxCustomDataObject
   {
   public:
@@ -82,6 +87,7 @@ private:
     wxCharBuffer m_databuf;
   };
 
+  //! An object that can be filled with wxm data for the clipboard
   class wxmDataObject:public wxCustomDataObject
   {
   public:
@@ -100,6 +106,10 @@ private:
     wxCharBuffer m_databuf;
   };
 
+  /*! An object that can be filled with MathML data for the clipboard
+
+    \todo Is there a way to make this object share its data with RTFDataObject2?
+   */
   class RtfDataObject:public wxCustomDataObject
   {
   public:
@@ -109,8 +119,7 @@ private:
     wxCharBuffer m_databuf;
   };
 
-
-    class RtfDataObject2:public wxCustomDataObject
+  class RtfDataObject2:public wxCustomDataObject
   {
   public:
     RtfDataObject2(wxString data);
