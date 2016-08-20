@@ -3069,7 +3069,7 @@ void EditorCell::StyleText()
 }
 
 
-void EditorCell::SetValue(wxString text)
+void EditorCell::SetValue(const wxString &text)
 {
   if (m_type == MC_TYPE_INPUT)
   {

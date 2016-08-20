@@ -36,7 +36,7 @@ public:
   {
     return text_ctrl_1->GetValue();
   }
-  void SetValue(wxString v)
+  void SetValue(const wxString &v)
   {
     text_ctrl_1->SetValue(v);
     text_ctrl_1->SetSelection(-1, -1);

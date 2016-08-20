@@ -45,7 +45,7 @@ TextCell::~TextCell()
     delete m_next;
 }
 
-void TextCell::SetValue(wxString text)
+void TextCell::SetValue(const wxString &text)
 {
   m_text = text;
   m_width = -1;

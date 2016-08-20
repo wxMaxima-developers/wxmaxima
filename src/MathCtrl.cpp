@@ -6621,7 +6621,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     wxMenu *popup = new AutocompletePopup(editor,&m_autocomplete,type);
     // Show the popup menu
     PopupMenu(popup, pos.x, pos.y);
-    delete popup;
+    popup->Destroy();
     #endif
   }
 

@@ -117,7 +117,7 @@ public:
     
     Automatically calls StyleText().
    */
-  void SetValue(wxString text);
+  void SetValue(const wxString &text);
   wxString GetValue()
   {
     return m_text;

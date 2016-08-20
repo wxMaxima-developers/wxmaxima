@@ -382,7 +382,7 @@ wxRect MathCell::GetRect(bool all)
                 m_width, m_height);
 }
 
-bool MathCell::InUpdateRegion(wxRect rect)
+bool MathCell::InUpdateRegion(const wxRect &rect)
 {
   if (m_printing) return true;
   if (rect.GetLeft()   > m_updateRegion.GetRight())  return false;
@@ -392,7 +392,7 @@ bool MathCell::InUpdateRegion(wxRect rect)
   return true;
 }
 
-wxRect MathCell::CropToUpdateRegion(wxRect rect)
+wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
 {
   if(m_printing) return rect;
   
@@ -873,7 +873,7 @@ bool MathCell::BreakLineHere()
   return (((!m_isBroken) && m_breakLine) || m_forceBreakLine);
 }
 
-bool MathCell::ContainsRect(wxRect& sm, bool all)
+bool MathCell::ContainsRect(const wxRect& sm, bool all)
 {
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&
@@ -984,7 +984,7 @@ void MathCell::UnsetPen(CellParser& parser)
 /***
  * Copy all important data from s to t
  */
-void MathCell::CopyData(MathCell* s, MathCell* t)
+void MathCell::CopyData(MathCell *s, MathCell *t)
 {
   t->m_altCopyText = s->m_altCopyText;
   t->m_forceBreakLine = s->m_forceBreakLine;

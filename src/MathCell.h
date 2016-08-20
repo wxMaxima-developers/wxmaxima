@@ -130,9 +130,9 @@ public:
   //! Get the rectangle that is currently drawn
   static wxRect GetUpdateRegion() { return m_updateRegion;}
   //! The part of the rectangle rect that is in the region that is currently drawn
-  static wxRect CropToUpdateRegion(wxRect rect);
+  static wxRect CropToUpdateRegion(const wxRect &rect);
   //! Is part of this this rectangle in the region that is currently drawn?
-  static bool InUpdateRegion(wxRect rect);
+  static bool InUpdateRegion(const wxRect &rect);
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
     {
@@ -173,7 +173,7 @@ public:
      - true means test this cell and the ones that are following it in the list
      - false means test this cell only.
    */
-  bool ContainsRect(wxRect& big, bool all = true);
+  bool ContainsRect(const wxRect& big, bool all = true);
   /*! Is a given point inside this cell?
 
     \param point The point to test for collision with this cell
@@ -327,7 +327,7 @@ public:
   //! Is this cell highlighted (e.G. inside a maxima box)
   bool GetHighlight() { return m_highlight; }
   virtual void SetExponentFlag() { }
-  virtual void SetValue(wxString text) { }
+  virtual void SetValue(const wxString &text) { }
   virtual wxString GetValue() { return wxEmptyString; }
 
   //! Get the first cell in this list of cells
