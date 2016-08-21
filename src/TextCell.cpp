@@ -884,11 +884,12 @@ wxString TextCell::ToOMML()
 wxString TextCell::ToRTF()
 {
   wxString retval;
-  
+  wxString text=m_text;
+  text.Replace(wxT("-->"),wxT("\x2192"));
   if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
     retval += wxString::Format(wxT("\\cf%i{"),(int)GetStyle());
-    retval += RTFescape(m_text);
+    retval += RTFescape(text);
     retval += wxT("}\\cf0");
   }
   return retval;

@@ -6834,9 +6834,9 @@ wxString MathCtrl::RTFStart()
   wxString document = wxT("{\\rtf1\\ansi\\deff0\n");
   
   // The font table  
-  document += wxT("{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Times New Roman;}}\n");
+  document += wxT("{\\fonttbl{\\f0\\froman Times Roman;}}\n");
 
-  // Define the colors of all of our styles
+  // Define all colors we want to use
   document += wxT("{\\colortbl;");
   wxClientDC dc(this);
   CellParser parser(dc);
@@ -6861,13 +6861,13 @@ wxString MathCtrl::RTFStart()
        22   Math Cell with Label
   */
   document += wxT("{\\stylesheet\n");
-  document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\af0\\fs24\\afs24 Normal;}\n");
-  document += wxT("{\\s1\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\b\\ab\\dbch\\af0\\dbch\\af0\\afs40\\ab\\loch\\f0\\fs40\\sbasedon16\\snext0 Heading 1;}\n");
-  document += wxT("{\\s2\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\ab\\f0\\af0\\afs36\\fs36\\sbasedon1\\snext0 Heading 2;}\n");
-  document += wxT("{\\s3\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\ab\\f0\\af0\\afs32\\fs32\\sbasedon2\\snext0 Heading 3;}\n");
-  document += wxT("{\\s16\\sb240\\sa120\\keepn\\b\\ab\\f0\\af0\\fs56\\afs56\\snext0 Title;}\n");
-  document += wxT("{\\s21\\li1105\\ri0\\lin1105\\rin0\\fi0\\f0\\af0\\fs24\\afs24\\sbasedon0 Math;}\n");
-  document += wxT("{\\s22\\li1105\\ri0\\lin1105\\rin0\\fi-1105\\f0\\af0\\fs24\\afs24\\sbasedon0\\snext21 Math+Label;}\n");
+  document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\fs24 Normal;}\n");
+  document += wxT("{\\s1\\outlinelevel0\\b\\f0\\fs40\\sbasedon16\\snext0 Heading 1;}\n");
+  document += wxT("{\\s2\\outlinelevel1\\b\\f0\\fs36\\sbasedon1\\snext0 Heading 2;}\n");
+  document += wxT("{\\s3\\outlinelevel2\\b\\f0\\fs32\\sbasedon2\\snext0 Heading 3;}\n");
+  document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title;}\n");
+  document += wxT("{\\s21\\li1105\\lin1105\\f0\\fs24\\sbasedon0 Math;}\n");
+  document += wxT("{\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24\\sbasedon0\\snext21 Math+Label;}\n");
   document += wxT("}\n");
   document += wxT("\\pgndec\\pard\\plain\n");
   return document;

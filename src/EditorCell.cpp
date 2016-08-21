@@ -152,16 +152,16 @@ wxString EditorCell::ToRTF()
   switch (m_type)
   {
   case MC_TYPE_TITLE:
-    retval += wxT("\\pard\\f0\\s16\\fs50 ") + RTFescape(m_text)+wxT("\n");
+    retval += wxT("\\pard\\s16 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SECTION:
-    retval += wxT("\\pard\\f0\\s1\\fs40 ") + RTFescape(m_text)+wxT("\n");
+    retval += wxT("\\pard\\s1 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxT("\\pard\\f0\\s2\\fs36 ") + RTFescape(m_text)+wxT("\n");
+    retval += wxT("\\pard\\s2 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxT("\\pard\\f0\\s3\\fs32 ") + RTFescape(m_text)+wxT("\n");
+    retval += wxT("\\pard\\s3 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_PROMPT:
     retval += wxString::Format(wxT("\\cf%i"),(int)GetStyle());
@@ -169,6 +169,7 @@ wxString EditorCell::ToRTF()
     break;
   case MC_TYPE_INPUT:
   {
+    retval += wxT(" ");
     std::list<StyledText> styledText = m_styledText;
     while(!styledText.empty())
     {
@@ -181,8 +182,7 @@ wxString EditorCell::ToRTF()
       if(TextSnippet.StyleSet())
       {
         retval += wxString::Format(wxT("\\cf%i"),(int)TextSnippet.GetStyle());
-        retval += wxT("{");
-        retval += RTFescape(TextSnippet.GetText())+wxT("}\n");
+        retval += RTFescape(TextSnippet.GetText());
       }
       else
       {
@@ -198,7 +198,7 @@ wxString EditorCell::ToRTF()
     break;
   }
   default:
-    retval += wxT("{\\pard\\s0 ")+RTFescape(m_text)+wxT("}\n");
+    retval += wxT("\\pard\\s0 ")+RTFescape(m_text);
     break;
   }
   return retval;
