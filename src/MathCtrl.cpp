@@ -1513,8 +1513,8 @@ bool MathCtrl::Copy(bool astext)
       if(tmp2 != NULL)
       {
         rtf = RTFStart() + tmp2->ListToRTF() + RTFEnd();  
-        data->Add(new RtfDataObject(rtf),true);
-        data->Add(new RtfDataObject2(rtf));
+        data->Add(new RtfDataObject(rtf));
+        data->Add(new RtfDataObject2(rtf),true);
       }
       
       // Add a string representation of the selected output to the clipboard
