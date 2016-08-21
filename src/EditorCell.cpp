@@ -164,8 +164,8 @@ wxString EditorCell::ToRTF()
     retval += wxT("\\pard\\s3 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_PROMPT:
-    retval += wxString::Format(wxT("\\cf%i"),(int)GetStyle());
-    retval += wxT("\\pard\\s22 ") + RTFescape(m_text)+wxT("\n");
+    retval += wxString::Format(wxT("\\cf%i"),(int)GetStyle()) +
+      wxT("\\pard\\s22 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_INPUT:
   {
@@ -181,12 +181,12 @@ wxString EditorCell::ToRTF()
 
       if(TextSnippet.StyleSet())
       {
-        retval += wxString::Format(wxT("\\cf%i"),(int)TextSnippet.GetStyle());
+        retval += wxString::Format(wxT("\\cf%i "),(int)TextSnippet.GetStyle());
         retval += RTFescape(TextSnippet.GetText());
       }
       else
       {
-        retval += wxString::Format(wxT("\\cf%i"),(int)TS_DEFAULT);
+        retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
         retval += wxT("{")+RTFescape(TextSnippet.GetText())+wxT("}\n");
       }
       if(TextSnippet.GetText().Contains(wxT("\n")))

@@ -818,7 +818,11 @@ wxString TextCell::ToOMML()
     (ForceBreakLineHere())
     )
     return wxEmptyString;
-  
+
+  // Labels are text-only.
+  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+    return wxEmptyString;
+
   wxString text=XMLescape(m_text);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
