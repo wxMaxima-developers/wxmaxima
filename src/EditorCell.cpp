@@ -152,16 +152,16 @@ wxString EditorCell::ToRTF()
   switch (m_type)
   {
   case MC_TYPE_TITLE:
-    retval += wxT("\\s20 ") + RTFescape(m_text);
+    retval += wxT("{\\pard\\s20 ") + RTFescape(m_text)+wxT("}\n");
     break;
   case MC_TYPE_SECTION:
-    retval += wxT("\\s1 ") + RTFescape(m_text);
+    retval += wxT("{\\pard\\s1 ") + RTFescape(m_text)+wxT("}\n");
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxT("\\s2 ") + RTFescape(m_text);
+    retval += wxT("{\\pard\\s2 ") + RTFescape(m_text)+wxT("}\n");
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxT("\\s3 ") + RTFescape(m_text);
+    retval += wxT("{\\pard\\s3 ") + RTFescape(m_text)+wxT("}\n");
     break;
   case MC_TYPE_INPUT:
   {
@@ -176,24 +176,24 @@ wxString EditorCell::ToRTF()
 
       if(TextSnippet.StyleSet())
       {
-        retval += wxString::Format(wxT("\\cf%i "),(int)TextSnippet.GetStyle());
-        retval += text;
+        retval += wxString::Format(wxT("\\cf%i"),(int)TextSnippet.GetStyle());
+        retval += wxT("{\\pard\\s0 ")+RTFescape(TextSnippet.GetText())+wxT("}\n");
       }
       else
       {
-        retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
-        retval += RTFescape(TextSnippet.GetText(),false);
+        retval += wxString::Format(wxT("\\cf%i"),(int)TS_DEFAULT);
+        retval += wxT("{\\pard\\s0 ")+RTFescape(TextSnippet.GetText())+wxT("}\n");
       }
       if(TextSnippet.GetText().Contains(wxT("\n")))
         {
-          retval += wxT("\\s21 ");
+          retval += wxT("\\pard\\plain\\s21 ");
         }
     }
     retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
     break;
   }
   default:
-    retval += RTFescape(m_text);
+    retval += wxT("\\pard\\plain\\s0{")+RTFescape(m_text)+wxT("}\n");
     break;
   }
   return retval;

@@ -4525,7 +4525,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
     wxT("}\n\n");
   output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
   output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
-  output<<wxT("\\setlength{\\parindent}{0pt}\n");
+  output<<wxT("\\setlength{\\paxorindent}{0pt}\n");
   output<<wxT("\\usepackage[utf8]{luainputenc}\n");
   // Tell LaTeX how to handle a few special characters.
   output<<wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
@@ -6831,10 +6831,10 @@ MathCtrl::RtfDataObject2::RtfDataObject2(wxString data):wxCustomDataObject(m_rtf
 wxString MathCtrl::RTFStart()
 {
   // The beginning of the RTF document
-  wxString document = wxT("{\\rtf1\\ansi\\deff3");
+  wxString document = wxT("{\\rtf1\\ansi\\deff0\n");
   
   // The font table  
-  document += wxT("{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Times New Roman;}{\\f1\\froman\\fprq2\\fcharset2 Symbol;}{\\f2\\fswiss\\fprq2\\fcharset0 Arial;}{\\f3\\froman\\fprq2\\fcharset0 Liberation Serif{\\*\\falt Times New Roman};}{\\f4\\fswiss\\fprq2\\fcharset0 Liberation Sans{\\*\\falt Arial};}{\\f5\\fnil\\fprq2\\fcharset0 DejaVu Sans;}{\\f6\\fnil\\fprq2\\fcharset0 FreeSans;}{\\f7\\fswiss\\fprq0\\fcharset128 FreeSans;}}");
+  document += wxT("{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Times New Roman;}}\n");
 
   // Define the colors of all of our styles
   document += wxT("{\\colortbl;");
@@ -6848,7 +6848,7 @@ wxString MathCtrl::RTFStart()
     else
       document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;"),0,0,0);
   }
-  document += wxT("}");
+  document += wxT("}\n");
   
   /* Our style sheet:
      Style  Meaning
@@ -6856,23 +6856,20 @@ wxString MathCtrl::RTFStart()
        1    Chapter Cell
        2    Section Cell
        3    Subsection Cell
-       4    Subsubsection Cell
        20   Title Cell
        21   Math Cell
        22   Math Cell with Label
-       23   Caption
   */
-  document += wxT("{\\stylesheet");
-  document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\cf0\\kerning1\\dbch\\af5\\langfe2052\\dbch\\af6\\afs24\\alang1081\\loch\\f3\\fs24\\lang1033 Normal;}");
-  document += wxT("{\\s1\\sbasedon15\\snext0\\ilvl0\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs36\\ab\\loch\\f4\\fs36 Heading 1;}");
-  document += wxT("{\\s2\\sbasedon15\\snext0\\ilvl1\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs32\\ab\\loch\\f4\\fs32 Heading 2;}");
-  document += wxT("{\\s3\\sbasedon15\\snext0\\ilvl2\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs28\\ab\\loch\\f4\\fs28 Heading 3;}");
-  document += wxT("{\\s4\\sbasedon0\\snext0\\sb240\\sa120\\keepn\\dbch\\af5\\dbch\\af6\\afs28\\loch\\f4\\fs28 Heading 4;}");
-  document += wxT("{\\s20\\sbasedon0\\snext0\\qc\\sb240\\sa120\\keepn\\b\\dbch\\af5\\dbch\\af6\\afs56\\ab\\loch\\f4\\fs56 Title;}");
-  document += wxT("{\\s21\\sbasedon0\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi0 Math;}");
-  document += wxT("{\\s22\\sbasedon0\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi-1105 Math+Label;}");
-  document += wxT("{\\s23\\sbasedon0\\snext0\\li1105\\ri0\\lin1105\\rin0\\fi-1105 Caption;}");
-  document += wxT("}");
+  document += wxT("{\\stylesheet\n");
+  document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\af0\\fs24\\afs24 Normal;}\n");
+  document += wxT("{\\s1\\snext0\\ilvl0\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\dbch\\af0\\afs40\\ab\\loch\\f0\\fs40 Heading 1;}\n");
+  document += wxT("{\\s2\\snext0\\ilvl1\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\sbasedon1\\af0\\afs36\\ab\\loch\\f0\\fs36 Heading 2;}\n");
+  document += wxT("{\\s3\\snext0\\ilvl2\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\sbasedon2\\af0\\afs32\\ab\\loch\\f0\\fs32 Heading 3;}\n");
+  document += wxT("{\\s20\\snext0\\sb240\\sa120\\keepn\\b\\afs56\\sbasedon0\\f0\\fs56 Title;}\n");
+  document += wxT("{\\s21\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi0\\f0\\af0\\fs24\\afs24\\sbasedon0 Math;}\n");
+  document += wxT("{\\s22\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi-1105\\f0\\af0\\fs24\\afs24\\sbasedon0 Math+Label;}\n");
+  document += wxT("}\n");
+  document += wxT("\\pgndec\\pard\\plain\n");
   return document;
 }
 

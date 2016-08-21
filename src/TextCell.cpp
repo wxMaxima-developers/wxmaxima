@@ -887,9 +887,9 @@ wxString TextCell::ToRTF()
   
   if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
-    retval += wxString::Format(wxT("\\cf%i "),(int)GetStyle());
+    retval += wxString::Format(wxT("\\cf%i{"),(int)GetStyle());
     retval += RTFescape(m_text);
-    retval += wxT("\\cf0 ");
+    retval += wxT("}\\cf0");
   }
   return retval;
 }

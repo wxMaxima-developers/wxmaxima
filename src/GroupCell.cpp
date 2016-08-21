@@ -726,12 +726,12 @@ wxString GroupCell::ToRTF()
   {
     if(m_input != NULL)
     {
-      retval = wxT("\\par\\s22\n");
+      retval = wxT("\\par\\pard\\plain\\s22\n");
       retval += RTFescape(m_input->ToString());
       retval += wxT("\\tab\n");
     }
     else
-      retval = wxT("\\par\\s21\n");
+      retval = wxT("\\par\\pard\\plain\\s21\n");
   }
   else
     retval = wxT("\\par\n");
