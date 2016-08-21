@@ -6856,18 +6856,18 @@ wxString MathCtrl::RTFStart()
        1    Chapter Cell
        2    Section Cell
        3    Subsection Cell
-       20   Title Cell
+       16   Title Cell
        21   Math Cell
        22   Math Cell with Label
   */
   document += wxT("{\\stylesheet\n");
   document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\af0\\fs24\\afs24 Normal;}\n");
-  document += wxT("{\\s1\\snext0\\ilvl0\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\dbch\\af0\\afs40\\ab\\loch\\f0\\fs40 Heading 1;}\n");
-  document += wxT("{\\s2\\snext0\\ilvl1\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\sbasedon1\\af0\\afs36\\ab\\loch\\f0\\fs36 Heading 2;}\n");
-  document += wxT("{\\s3\\snext0\\ilvl2\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\sbasedon2\\af0\\afs32\\ab\\loch\\f0\\fs32 Heading 3;}\n");
-  document += wxT("{\\s20\\snext0\\sb240\\sa120\\keepn\\b\\afs56\\sbasedon0\\f0\\fs56 Title;}\n");
-  document += wxT("{\\s21\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi0\\f0\\af0\\fs24\\afs24\\sbasedon0 Math;}\n");
-  document += wxT("{\\s22\\snext21\\li1105\\ri0\\lin1105\\rin0\\fi-1105\\f0\\af0\\fs24\\afs24\\sbasedon0 Math+Label;}\n");
+  document += wxT("{\\s1\\outlinelevel0\\li0\\ri0\\lin0\\rin0\\fi0\\sb240\\sa120\\keepn\\b\\ab\\dbch\\af0\\dbch\\af0\\afs40\\ab\\loch\\f0\\fs40\\sbasedon16\\snext0 Heading 1;}\n");
+  document += wxT("{\\s2\\outlinelevel1\\li0\\ri0\\lin0\\rin0\\fi0\\sb200\\sa120\\keepn\\b\\ab\\f0\\af0\\afs36\\fs36\\sbasedon1\\snext0 Heading 2;}\n");
+  document += wxT("{\\s3\\outlinelevel2\\li0\\ri0\\lin0\\rin0\\fi0\\sb140\\sa120\\keepn\\b\\ab\\f0\\af0\\afs32\\fs32\\sbasedon2\\snext0 Heading 3;}\n");
+  document += wxT("{\\s16\\sb240\\sa120\\keepn\\b\\ab\\f0\\af0\\fs56\\afs56\\snext0 Title;}\n");
+  document += wxT("{\\s21\\li1105\\ri0\\lin1105\\rin0\\fi0\\f0\\af0\\fs24\\afs24\\sbasedon0 Math;}\n");
+  document += wxT("{\\s22\\li1105\\ri0\\lin1105\\rin0\\fi-1105\\f0\\af0\\fs24\\afs24\\sbasedon0\\snext21 Math+Label;}\n");
   document += wxT("}\n");
   document += wxT("\\pgndec\\pard\\plain\n");
   return document;

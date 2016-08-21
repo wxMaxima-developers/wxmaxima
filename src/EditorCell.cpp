@@ -152,16 +152,20 @@ wxString EditorCell::ToRTF()
   switch (m_type)
   {
   case MC_TYPE_TITLE:
-    retval += wxT("{\\pard\\s20 ") + RTFescape(m_text)+wxT("}\n");
+    retval += wxT("\\pard\\f0\\s16\\fs50 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SECTION:
-    retval += wxT("{\\pard\\s1 ") + RTFescape(m_text)+wxT("}\n");
+    retval += wxT("\\pard\\f0\\s1\\fs40 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxT("{\\pard\\s2 ") + RTFescape(m_text)+wxT("}\n");
+    retval += wxT("\\pard\\f0\\s2\\fs36 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxT("{\\pard\\s3 ") + RTFescape(m_text)+wxT("}\n");
+    retval += wxT("\\pard\\f0\\s3\\fs32 ") + RTFescape(m_text)+wxT("\n");
+    break;
+  case MC_TYPE_PROMPT:
+    retval += wxString::Format(wxT("\\cf%i"),(int)GetStyle());
+    retval += wxT("\\pard\\s22 ") + RTFescape(m_text)+wxT("\n");
     break;
   case MC_TYPE_INPUT:
   {
@@ -177,23 +181,24 @@ wxString EditorCell::ToRTF()
       if(TextSnippet.StyleSet())
       {
         retval += wxString::Format(wxT("\\cf%i"),(int)TextSnippet.GetStyle());
-        retval += wxT("{\\pard\\s0 ")+RTFescape(TextSnippet.GetText())+wxT("}\n");
+        retval += wxT("{");
+        retval += RTFescape(TextSnippet.GetText())+wxT("}\n");
       }
       else
       {
         retval += wxString::Format(wxT("\\cf%i"),(int)TS_DEFAULT);
-        retval += wxT("{\\pard\\s0 ")+RTFescape(TextSnippet.GetText())+wxT("}\n");
+        retval += wxT("{")+RTFescape(TextSnippet.GetText())+wxT("}\n");
       }
       if(TextSnippet.GetText().Contains(wxT("\n")))
         {
-          retval += wxT("\\pard\\plain\\s21 ");
+          retval += wxT("\\pard\\s21 ");
         }
     }
     retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
     break;
   }
   default:
-    retval += wxT("\\pard\\plain\\s0{")+RTFescape(m_text)+wxT("}\n");
+    retval += wxT("{\\pard\\s0 ")+RTFescape(m_text)+wxT("}\n");
     break;
   }
   return retval;

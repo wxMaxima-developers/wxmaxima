@@ -655,7 +655,7 @@ wxString MathCell::RTFescape(wxString input,bool MarkDown)
     if (ch == wxT('\n'))
     {
       if(((i>0) && (input[i-1] == wxT('\n'))) || !MarkDown)
-        output += wxT("\\par\n");
+        output += wxT("\\par");
       else
         output += wxT("\n");
     }
@@ -726,13 +726,13 @@ wxString MathCell::ListToRTF(bool startofline)
     {
       if((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL)))
       {
-        retval += wxT("\\par\\pard\\plain\\s22\n") + rtf + wxT("\\tab ");
+        retval += wxT("\\par{\\pard\\s22 ") + rtf + wxT("}\\tab\n");
         startofline = false;
       }
       else 
       {
         if(startofline)
-          retval += wxT("\\par\\pard\\plain\\s21\n") + rtf;
+          retval += wxT("\\par{\\pard\\s21\n") + rtf + wxT("}");
         startofline = true;
       }
       tmp = tmp->m_next;
@@ -742,10 +742,10 @@ wxString MathCell::ListToRTF(bool startofline)
       if(tmp->ListToOMML() != wxEmptyString)
       {
         // Math!
-        
+
         // set the style for this line.
         if(startofline)
-          retval += wxT("\\par\\pard\\plain\\s21\n");
+          retval += wxT("\\par{\\pard\\s21\\n");
         
         retval += OMML2RTF(tmp->ListToOMML());
         
