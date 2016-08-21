@@ -460,7 +460,7 @@ wxString IntCell::ToOMML()
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
   if(to != wxEmptyString)
     retval += wxT("<m:sup>") + to + wxT("</m:sup>");
-  retval += wxT("<m:e>") + base + var + wxT("</m:e></m:nary>");
+  retval += wxT("<m:e><m:r>") + base + var + wxT("</m:r></m:e></m:nary>");
 
   return retval;
 }
