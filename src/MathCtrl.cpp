@@ -1498,7 +1498,11 @@ bool MathCtrl::Copy(bool astext)
         data->Add(new MathMLDataObject2(s),true);
         // wxMathML is a HTML5 flavour, as well.
         // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-        data->Add(new wxHTMLDataObject(s));
+        //
+        // Unfortunately MS Word and Libreoffice Writer don't like this idea so I have
+        // disabled the following line of code again:
+        // 
+        // data->Add(new wxHTMLDataObject(s));
       }
 
       // Add the wxm code corresponding to the selected output to the clipboard
@@ -1512,7 +1516,7 @@ bool MathCtrl::Copy(bool astext)
       wxString rtf;
       if(tmp2 != NULL)
       {
-        rtf = RTFStart() + tmp2->ListToRTF() + RTFEnd();  
+        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("}\\par\n") + RTFEnd();  
         data->Add(new RtfDataObject(rtf));
         data->Add(new RtfDataObject2(rtf),true);
       }
@@ -1698,7 +1702,7 @@ bool MathCtrl::CopyCells()
     wxDataObjectComposite *data = new wxDataObjectComposite;
     wxString wxm;
     wxString str;
-    wxString rtf = RTFStart();
+    wxString rtf = RTFStart() + wxT("{");
     GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
     GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
     
@@ -1762,7 +1766,7 @@ bool MathCtrl::CopyCells()
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
     }
     
-    rtf += RTFEnd();
+    rtf += wxT("}\\par") + RTFEnd();
     
     data->Add(new RtfDataObject(rtf),true);
     data->Add(new RtfDataObject2(rtf));
@@ -6862,10 +6866,10 @@ wxString MathCtrl::RTFStart()
   */
   document += wxT("{\\stylesheet\n");
   document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\fs24 Normal;}\n");
-  document += wxT("{\\s1\\outlinelevel0\\b\\f0\\fs40\\sbasedon16\\snext0 Heading 1;}\n");
-  document += wxT("{\\s2\\outlinelevel1\\b\\f0\\fs36\\sbasedon1\\snext0 Heading 2;}\n");
-  document += wxT("{\\s3\\outlinelevel2\\b\\f0\\fs32\\sbasedon2\\snext0 Heading 3;}\n");
-  document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title;}\n");
+  document += wxT("{\\s1\\outlinelevel0\\b\\f0\\fs40\\sbasedon16\\snext0 Section Cell;}\n");
+  document += wxT("{\\s2\\outlinelevel1\\b\\f0\\fs36\\sbasedon1\\snext0 Subsection Cell;}\n");
+  document += wxT("{\\s3\\outlinelevel2\\b\\f0\\fs32\\sbasedon2\\snext0 SubSubsection Cell;}\n");
+  document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title Cell;}\n");
   document += wxT("{\\s21\\li1105\\lin1105\\f0\\fs24\\sbasedon0 Math;}\n");
   document += wxT("{\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24\\sbasedon0\\snext21 Math+Label;}\n");
   document += wxT("}\n");
