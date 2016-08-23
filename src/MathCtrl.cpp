@@ -5957,8 +5957,18 @@ void MathCtrl::SelectAll()
     m_hCaretActive = false;
   }
   else if (m_activeCell != NULL)
-    m_activeCell->SelectAll();
-
+  {
+    if(!m_activeCell->AllSelected())
+      m_activeCell->SelectAll();
+    else
+    {
+      SetActiveCell(NULL);
+      SetSelection(m_tree,m_last);
+      m_clickType = CLICK_TYPE_GROUP_SELECTION;
+      m_hCaretActive = false;
+    }
+  }
+  
   Refresh();
 }
 
