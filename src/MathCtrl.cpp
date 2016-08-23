@@ -1486,9 +1486,13 @@ bool MathCtrl::Copy(bool astext)
   else {
     if (wxTheClipboard->Open()) {
       wxDataObjectComposite *data = new wxDataObjectComposite;
-      
+
+      // Add the wxm code corresponding to the selected output to the clipboard
+      wxString s = GetString(true);
+      data->Add(new wxmDataObject(s));
+
       // Add a mathML representation of the data to the clipboard
-      wxString s = ConvertSelectionToMathML();
+      s = ConvertSelectionToMathML();
       if(s!=wxEmptyString)
       {
         // We mark the MathML version of the data on the clipboard as "preferred"
@@ -1504,10 +1508,6 @@ bool MathCtrl::Copy(bool astext)
         // 
         // data->Add(new wxHTMLDataObject(s));
       }
-
-      // Add the wxm code corresponding to the selected output to the clipboard
-      s = GetString(true);
-      data->Add(new wxmDataObject(s));
 
       // Add a RTF representation of the currently selected text
       // to the clipboard: For some reason libreoffice likes RTF more than
@@ -1606,7 +1606,7 @@ bool MathCtrl::CopyMathML()
     data->Add(new MathMLDataObject2(s),true);
     // wxMathML is a HTML5 flavour, as well.
     // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-    data->Add(new wxHTMLDataObject(s));
+    data->Add(new wxHTMLDataObject(s+wxT('\0')));
     // A fallback for communicating with non-mathML-aware programs
     data->Add(new wxTextDataObject(s));
     wxTheClipboard->SetData(data);
@@ -1770,8 +1770,8 @@ bool MathCtrl::CopyCells()
     
     data->Add(new RtfDataObject(rtf),true);
     data->Add(new RtfDataObject2(rtf));
-    data->Add(new wxmDataObject(wxm));
     data->Add(new wxTextDataObject(str));
+    data->Add(new wxmDataObject(wxm));
     
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
@@ -6808,8 +6808,9 @@ MathCtrl::wxmDataObject::wxmDataObject():wxCustomDataObject(m_wxmFormat)
 
 MathCtrl::wxmDataObject::wxmDataObject(wxString data):wxCustomDataObject(m_wxmFormat)
 {
-    m_databuf = data.utf8_str();
-    SetData(m_databuf.length(),m_databuf.data());
+  data += wxT('\0');
+  m_databuf = data.utf8_str();
+  SetData(m_databuf.length(),m_databuf.data());
 }
 
 MathCtrl::MathMLDataObject2::MathMLDataObject2():wxCustomDataObject(m_mathmlFormat2)
@@ -6818,8 +6819,9 @@ MathCtrl::MathMLDataObject2::MathMLDataObject2():wxCustomDataObject(m_mathmlForm
 
 MathCtrl::MathMLDataObject2::MathMLDataObject2(wxString data):wxCustomDataObject(m_mathmlFormat2)
 {
-    m_databuf = data.utf8_str();
-    SetData(m_databuf.length(),m_databuf.data());
+  data += wxT('\0');
+  m_databuf = data.utf8_str();
+  SetData(m_databuf.length(),m_databuf.data());
 }
 
 MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_rtfFormat)
@@ -6828,8 +6830,9 @@ MathCtrl::RtfDataObject::RtfDataObject():wxCustomDataObject(m_rtfFormat)
 
 MathCtrl::RtfDataObject::RtfDataObject(wxString data):wxCustomDataObject(m_rtfFormat)
 {
-    m_databuf = data.utf8_str();
-    SetData(m_databuf.length(),m_databuf.data());
+  data += wxT('\0');
+  m_databuf = data.utf8_str();
+  SetData(m_databuf.length(),m_databuf.data());
 }
 
 MathCtrl::RtfDataObject2::RtfDataObject2():wxCustomDataObject(m_rtfFormat2)
@@ -6838,8 +6841,9 @@ MathCtrl::RtfDataObject2::RtfDataObject2():wxCustomDataObject(m_rtfFormat2)
 
 MathCtrl::RtfDataObject2::RtfDataObject2(wxString data):wxCustomDataObject(m_rtfFormat2)
 {
-    m_databuf = data.utf8_str();
-    SetData(m_databuf.length(),m_databuf.data());
+  data += wxT('\0');
+  m_databuf = data.utf8_str();
+  SetData(m_databuf.length(),m_databuf.data());
 }
 
 wxString MathCtrl::RTFStart()
