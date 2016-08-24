@@ -1516,7 +1516,7 @@ bool MathCtrl::Copy(bool astext)
       wxString rtf;
       if(tmp2 != NULL)
       {
-        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("}\\par\n") + RTFEnd();  
+        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("\\par}\n") + RTFEnd();  
         data->Add(new RtfDataObject(rtf));
         data->Add(new RtfDataObject2(rtf),true);
       }
@@ -1766,7 +1766,7 @@ bool MathCtrl::CopyCells()
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
     }
     
-    rtf += wxT("}\\par") + RTFEnd();
+    rtf += wxT("\\par}") + RTFEnd();
     
     data->Add(new RtfDataObject(rtf),true);
     data->Add(new RtfDataObject2(rtf));
