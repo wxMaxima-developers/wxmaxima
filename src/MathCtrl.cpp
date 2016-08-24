@@ -6056,7 +6056,7 @@ void MathCtrl::CheckUnixCopy()
   if (CanCopy(true)) {
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+      wxTheClipboard->SetData(new wxTextDataObject(GetString()+wxT('\0')));
       wxTheClipboard->Close();
     }
     wxTheClipboard->UsePrimarySelection(false);
