@@ -655,7 +655,7 @@ wxString MathCell::RTFescape(wxString input,bool MarkDown)
     if (ch == wxT('\n'))
     {
       if(((i>0) && (input[i-1] == wxT('\n'))) || !MarkDown)
-        output += wxT("\\par}\n{\pard ");
+        output += wxT("\\par}\n{\\pard ");
       else
         output += wxT("\n");
     }
