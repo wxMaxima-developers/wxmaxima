@@ -104,6 +104,9 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
     {
       switch(status)
       {
+      case process_wont_start:
+        SetStatusText(_("Cannot start the maxima binary"), 1);
+        break;
       case userinput:	
         m_MenuBar->Enable(menu_remove_output,false);
         if(m_console->m_mainToolBar)

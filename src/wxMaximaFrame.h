@@ -361,6 +361,7 @@ public:
   void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
   
   enum ToolbarStatus {
+    process_wont_start,
     waiting,
     calculating,
     parsing,
