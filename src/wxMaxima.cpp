@@ -2564,11 +2564,11 @@ void wxMaxima::ReadStdErr()
   if(m_process->IsInputAvailable())
   {
     wxASSERT_MSG(m_input != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
+    wxTextInputStream istrm(*m_input);
     wxString o;
     while (m_process->IsInputAvailable())
-    {
-      o += m_input->GetC();
-    }
+      o += istrm.ReadLine() + wxT("\n");
+
     bool pollStdOut = false; 
     wxConfig *config = (wxConfig *)wxConfig::Get();
     config->Read(wxT("pollStdOut"), &pollStdOut);
@@ -2580,10 +2580,9 @@ void wxMaxima::ReadStdErr()
   {
     wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
     wxString o = wxT("Message from maxima's stderr stream: ");
-    while (m_process->IsErrorAvailable())
-    {
-      o += m_error->GetC();
-    }
+    wxTextInputStream istrm(*m_error);
+    while (m_process->IsInputAvailable())
+      o += istrm.ReadLine() + wxT("\n");
 
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
     
