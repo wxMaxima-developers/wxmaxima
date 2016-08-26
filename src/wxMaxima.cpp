@@ -787,6 +787,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   case wxSOCKET_LOST:
     StatusMaximaBusy(disconnected);
     SetBatchMode(false);
+    ReadStdErr();
     m_pid = -1;
     m_isConnected = false;
     if (!m_closing)
@@ -989,8 +990,13 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   if (!m_closing)
   {
     SetStatusText(_("Maxima process terminated."), 1);
+
+    // Let's see if maxima has told us why this did happen.
+    ReadStdErr();
+    
     // if m_closing==true we might already have a new process
-    // and therefore would mark the wrong process as deleted
+    // and therefore the following lines would probably mark
+    // the wrong process as "deleted".
     m_process = NULL;
     m_input = NULL;
     m_error = NULL;
