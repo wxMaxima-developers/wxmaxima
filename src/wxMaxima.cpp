@@ -907,7 +907,7 @@ bool wxMaxima::StartMaxima(bool force)
       if(wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
       {
         StatusMaximaBusy(process_wont_start);
-        SetStatusText(_("Cannot start the maxima binary..."), 1);
+        SetStatusText(_("Cannot start the maxima binary"), 1);
         m_process = NULL;
         m_input   = NULL;
         m_error   = NULL;
