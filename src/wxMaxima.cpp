@@ -2013,8 +2013,6 @@ wxString wxMaxima::GetHelpFile()
   else
     headerFile = wxEmptyString;
 
-  wxProcess *process = new wxProcess(this, -1);
-  process->Redirect();
   wxString command = GetCommand();
   command += wxT(" -d");
   wxArrayString output;
