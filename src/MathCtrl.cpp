@@ -1489,7 +1489,7 @@ bool MathCtrl::Copy(bool astext)
 
       // Add the wxm code corresponding to the selected output to the clipboard
       wxString s = GetString(true);
-      data->Add(new wxmDataObject(s));
+      data->Add(new wxmDataObject(s  + wxT("\0")));
 
       // Add a mathML representation of the data to the clipboard
       s = ConvertSelectionToMathML();
@@ -1498,8 +1498,8 @@ bool MathCtrl::Copy(bool astext)
         // We mark the MathML version of the data on the clipboard as "preferred"
         // as if an application supports MathML neither bitmaps nor plain text
         // makes much sense.
-        data->Add(new MathMLDataObject(s),true);
-        data->Add(new MathMLDataObject2(s),true);
+        data->Add(new MathMLDataObject(s + wxT("\0")),true);
+        data->Add(new MathMLDataObject2(s + wxT("\0")),true);
         // wxMathML is a HTML5 flavour, as well.
         // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
         //
@@ -1516,7 +1516,7 @@ bool MathCtrl::Copy(bool astext)
       wxString rtf;
       if(tmp2 != NULL)
       {
-        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("\\par}\n") + RTFEnd();  
+        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("\\par}\n") + RTFEnd() + wxT("\0");  
         data->Add(new RtfDataObject(rtf));
         data->Add(new RtfDataObject2(rtf),true);
       }
@@ -5801,7 +5801,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
       {
         wxmDataObject data;
         wxTheClipboard->GetData(data);
-        inputs = wxString::FromUTF8((char *)data.GetData());
+        inputs = wxString::FromUTF8((char *)data.GetData()) + wxT("\0");
       }
       else
       {
