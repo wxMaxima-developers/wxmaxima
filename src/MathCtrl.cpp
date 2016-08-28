@@ -1489,7 +1489,7 @@ bool MathCtrl::Copy(bool astext)
 
       // Add the wxm code corresponding to the selected output to the clipboard
       wxString s = GetString(true);
-      data->Add(new wxmDataObject(s  + wxT("\0")));
+      data->Add(new wxmDataObject(s));
 
       // Add a mathML representation of the data to the clipboard
       s = ConvertSelectionToMathML();
@@ -1604,11 +1604,14 @@ bool MathCtrl::CopyMathML()
     // The default clipboard slot for MathML
     data->Add(new MathMLDataObject(s),true);        
     data->Add(new MathMLDataObject2(s),true);
-    // wxMathML is a HTML5 flavour, as well.
-    // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-    data->Add(new wxHTMLDataObject(s+wxT('\0')));
     // A fallback for communicating with non-mathML-aware programs
     data->Add(new wxTextDataObject(s));
+    // wxMathML is a HTML5 flavour, as well.
+    // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+    //
+    // The \0 tries to work around a strange bug in wxWidgets that sometimes makes string
+    // endings disappear
+    data->Add(new wxHTMLDataObject(s+wxT('\0')));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
@@ -6056,7 +6059,8 @@ void MathCtrl::CheckUnixCopy()
   if (CanCopy(true)) {
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(GetString()+wxT('\0')));
+      // The \0 seems to prevent data corruption on seleting strings while evaluating.
+      wxTheClipboard->SetData(new wxTextDataObject(GetString() + wxT('\0')));
       wxTheClipboard->Close();
     }
     wxTheClipboard->UsePrimarySelection(false);
