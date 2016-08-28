@@ -1498,8 +1498,8 @@ bool MathCtrl::Copy(bool astext)
         // We mark the MathML version of the data on the clipboard as "preferred"
         // as if an application supports MathML neither bitmaps nor plain text
         // makes much sense.
-        data->Add(new MathMLDataObject(s + wxT("\0")),true);
-        data->Add(new MathMLDataObject2(s + wxT("\0")),true);
+        data->Add(new MathMLDataObject(s),true);
+        data->Add(new MathMLDataObject2(s),true);
         // wxMathML is a HTML5 flavour, as well.
         // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
         //
@@ -1513,10 +1513,10 @@ bool MathCtrl::Copy(bool astext)
       // to the clipboard: For some reason libreoffice likes RTF more than
       // it likes the MathML - which is standartized.
       MathCell* tmp2 = CopySelection();
-      wxString rtf;
       if(tmp2 != NULL)
       {
-        rtf = RTFStart() + wxT("{") + tmp2->ListToRTF() + wxT("\\par}\n") + RTFEnd() + wxT("\0");  
+        wxString rtf;
+        rtf = RTFStart() + tmp2->ListToRTF() + wxT("\\par\n") + RTFEnd();
         data->Add(new RtfDataObject(rtf));
         data->Add(new RtfDataObject2(rtf),true);
       }
@@ -1702,7 +1702,7 @@ bool MathCtrl::CopyCells()
     wxDataObjectComposite *data = new wxDataObjectComposite;
     wxString wxm;
     wxString str;
-    wxString rtf = RTFStart() + wxT("{");
+    wxString rtf = RTFStart();
     GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
     GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
     
@@ -1766,7 +1766,7 @@ bool MathCtrl::CopyCells()
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
     }
     
-    rtf += wxT("\\par}") + RTFEnd();
+    rtf += wxT("\\par") + RTFEnd();
     
     data->Add(new RtfDataObject(rtf),true);
     data->Add(new RtfDataObject2(rtf));
@@ -6849,24 +6849,24 @@ MathCtrl::RtfDataObject2::RtfDataObject2(wxString data):wxCustomDataObject(m_rtf
 wxString MathCtrl::RTFStart()
 {
   // The beginning of the RTF document
-  wxString document = wxT("{\\rtf1\\ansi\\deff0\n");
+  wxString document = wxT("{\\rtf1\\ansi\\deff0\n\n");
   
   // The font table  
-  document += wxT("{\\fonttbl{\\f0\\froman Times Roman;}}\n");
+  document += wxT("{\\fonttbl{\\f0 Times;}}\n\n");
 
   // Define all colors we want to use
-  document += wxT("{\\colortbl;");
+  document += wxT("{\\colortbl;\n");
   wxClientDC dc(this);
   CellParser parser(dc);
   for(int i = 1;i<STYLE_NUM;i++)
   {
     wxColor color = wxColor(parser.GetColor(i));
     if(color.IsOk())
-      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;"),color.Red(),color.Green(),color.Blue());
+      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;\n"),color.Red(),color.Green(),color.Blue());
     else
-      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;"),0,0,0);
+      document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;\n"),0,0,0);
   }
-  document += wxT("}\n");
+  document += wxT("}\n\n");
   
   /* Our style sheet:
      Style  Meaning
@@ -6886,8 +6886,7 @@ wxString MathCtrl::RTFStart()
   document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title Cell;}\n");
   document += wxT("{\\s21\\li1105\\lin1105\\f0\\fs24\\sbasedon0 Math;}\n");
   document += wxT("{\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24\\sbasedon0\\snext21 Math+Label;}\n");
-  document += wxT("}\n");
-  document += wxT("\\pgndec\\pard\\plain\n");
+  document += wxT("}\n\n{\n");
   return document;
 }
 
@@ -6895,7 +6894,7 @@ wxString MathCtrl::RTFEnd()
 {
   wxString document;
   // Close the document
-  document += wxT("}");
+  document += wxT("}\n}");
 
   return document;
 }
