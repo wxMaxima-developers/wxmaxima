@@ -29,12 +29,16 @@ PlotFormatWiz::PlotFormatWiz(wxWindow* parent, int id, const wxString& title,
   const wxString combo_box_1_choices[] = 
   {
       wxT("gnuplot"),
+#if !defined(__WXMSW__)
+      /* gnuplot_pipes is not available on Windows, geomview requires Motif, which is not available on Windows */
+      wxT("gnuplot_pipes"),
+      wxT("geomview"),
+#endif
       wxT("xmaxima"),
-      wxT("mgnuplot"),
-      wxT("gnuplot_pipes")
+      wxT("mgnuplot")
   };
   combo_box_1 = new wxComboBox(this, -1, combo_box_1_choices[0], wxDefaultPosition,
-                               wxSize(140, -1), 4, combo_box_1_choices,
+                               wxSize(140, -1), sizeof(combo_box_1_choices) / sizeof(combo_box_1_choices[0]), combo_box_1_choices,
                                wxCB_DROPDOWN);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
