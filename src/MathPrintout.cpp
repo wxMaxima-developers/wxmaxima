@@ -95,7 +95,7 @@ bool MathPrintout::OnPrintPage(int num)
     // Inform the output routines that we are printing
     parser.SetPrinter(true);
     // Make sure that during print nothing is outside the crop rectangle
-    MathCell::SetPrinting(true);
+    MathCell::ClipToDrawRegion(true);
     
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
@@ -115,10 +115,10 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
-    MathCell::SetPrinting(false);
+    MathCell::ClipToDrawRegion(false);
     return true;
   }
-  MathCell::SetPrinting(false);
+  MathCell::ClipToDrawRegion(false);
   return false;
 }
 

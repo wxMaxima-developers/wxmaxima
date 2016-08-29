@@ -136,14 +136,20 @@ public:
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
     {
-      if(m_printing) return true;
+      if(m_clipToDrawRegion) return true;
       wxRect boundingBox(
         m_currentPoint+wxPoint(0,-m_center),
         m_currentPoint+wxPoint(0,-m_center)+wxPoint(m_width,m_height));
       return InUpdateRegion(boundingBox);
     }
-  //! true=Don't crop anything just because it is not on the screen
-  static void SetPrinting(bool printing){m_printing = printing;}
+  /*! true = Don't crop anything just because it is not on the screen
+
+    On some operating systems drawing text outside the screen is slow so
+    if this flag is set we avoid drawing parts of cells that aren't currently
+    visible. During printing or while creating bitmaps we don't want to crop 
+    things to the portion we needed to redraw on the screen last, though.
+   */
+  static void ClipToDrawRegion(bool printing){m_clipToDrawRegion = printing;}
   //! Delete this cell and all cells that follow it in the list.
   void DestroyList();
   
@@ -593,7 +599,7 @@ protected:
   */
   wxString m_altCopyText; 
 private:
-  static bool m_printing;
+  static bool m_clipToDrawRegion;
 };
 
 #endif // MATHCELL_H

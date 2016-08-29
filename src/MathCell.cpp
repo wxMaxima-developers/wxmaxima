@@ -384,7 +384,7 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(const wxRect &rect)
 {
-  if (m_printing) return true;
+  if (m_clipToDrawRegion) return true;
   if (rect.GetLeft()   > m_updateRegion.GetRight())  return false;
   if (rect.GetRight()  < m_updateRegion.GetLeft())   return false;
   if (rect.GetBottom() < m_updateRegion.GetTop())    return false;
@@ -394,7 +394,7 @@ bool MathCell::InUpdateRegion(const wxRect &rect)
 
 wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
 {
-  if(m_printing) return rect;
+  if(m_clipToDrawRegion) return rect;
   
   int left  =rect.GetLeft();
   int top   =rect.GetTop ();
@@ -1033,4 +1033,4 @@ bool MathCell::IsMath()
 
 wxSize MathCell::m_canvasSize;
 wxRect MathCell::m_updateRegion;
-bool   MathCell::m_printing;
+bool   MathCell::m_clipToDrawRegion;

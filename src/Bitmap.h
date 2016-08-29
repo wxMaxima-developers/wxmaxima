@@ -29,7 +29,13 @@ class Bitmap
 public:
   Bitmap(int scale=1);
   ~Bitmap();
-  void SetData(MathCell* tree);
+  /*! Renders tree as bitmap
+    
+    \param tree The list of cells that is to be rendered
+    \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered. 
+           -1 means: No limit.
+   */
+  void SetData(MathCell* tree,long int maxSize = -1);
   /*! Exports this bitmap to a file
 
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
@@ -44,7 +50,7 @@ protected:
   void RecalculateSize();
   void GetMaxPoint(int* width, int* height);
   void BreakUpCells();
-  void Layout();
+  void Layout(long int maxSize = -1);
   void Draw();
   MathCell *m_tree;
   double GetRealHeight();

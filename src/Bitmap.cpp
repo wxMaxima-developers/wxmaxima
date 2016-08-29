@@ -41,7 +41,7 @@ Bitmap::~Bitmap()
     DestroyTree();
 }
 
-void Bitmap::SetData(MathCell* tree)
+void Bitmap::SetData(MathCell* tree,long int maxSize)
 {
   if (m_tree != NULL)
     delete m_tree;
@@ -49,7 +49,7 @@ void Bitmap::SetData(MathCell* tree)
   Layout();
 }
 
-void Bitmap::Layout()
+void Bitmap::Layout(long int maxSize)
 {
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
@@ -80,8 +80,15 @@ void Bitmap::Layout()
 
   int width, height;
   GetMaxPoint(&width, &height);
-  m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale);
-  Draw();
+  if((maxSize < 0) || (width*height < maxSize))
+  {
+    m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale);
+    Draw();
+  }
+  else
+  {
+    m_bmp = wxNullBitmap;
+  }
 }
 
 double Bitmap::GetRealWidth()
@@ -198,7 +205,7 @@ void Bitmap::GetMaxPoint(int* width, int* height)
 
 void Bitmap::Draw()
 {
-  MathCell::SetPrinting(true);
+  MathCell::ClipToDrawRegion(true);
   MathCell* tmp = m_tree;
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
@@ -258,7 +265,7 @@ void Bitmap::Draw()
   m_ppi = dc.GetPPI();
   m_ppi.x *= m_scale;
   m_ppi.y *= m_scale;
-  MathCell::SetPrinting(false);
+  MathCell::ClipToDrawRegion(false);
 }
 
 wxSize Bitmap::ToFile(wxString file)
