@@ -313,6 +313,11 @@ void wxMaxima::FirstOutput(wxString s)
  */
 void wxMaxima::ConsoleAppend(wxString s, int type)
 {
+  // If we want to append an error message to the worksheet and there is no cell
+  // that can contain it we need to create such a cell.
+  if(m_console->GetTree() == NULL)
+    m_console->InsertGroupCells(new GroupCell(GC_TYPE_CODE,wxEmptyString));
+
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
 
@@ -435,6 +440,11 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
+  // If we want to append an error message to the worksheet and there is no cell
+  // that can contain it we need to create such a cell.
+  if(m_console->GetTree() == NULL)
+    m_console->InsertGroupCells(new GroupCell(GC_TYPE_CODE,wxEmptyString));
+
   if(s.IsEmpty())
     return;
 
