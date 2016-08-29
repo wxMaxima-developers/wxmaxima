@@ -65,7 +65,7 @@ wxScrolledCanvas(
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
-  m_rtfFormat2 = wxDataFormat(wxT("text/richtext"));
+  m_rtfFormat2 = wxDataFormat(wxT("text/rtf"));
   MathCell::SetPrinting(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
@@ -1523,7 +1523,7 @@ bool MathCtrl::Copy(bool astext)
       
       // Add a string representation of the selected output to the clipboard
       s = tmp2->ListToString();
-      data->Add(new wxTextDataObject(s));
+//      data->Add(new wxTextDataObject(s));
       
       // Add a bitmap representation of the selected output to the clipboard - if this
       // bitmap isn't way too large for this to make sense:
@@ -6856,7 +6856,7 @@ wxString MathCtrl::RTFStart()
   wxString document = wxT("{\\rtf1\\ansi\\deff0\n\n");
   
   // The font table  
-  document += wxT("{\\fonttbl{\\f0 Times;}}\n\n");
+  document += wxT("{\\fonttbl{\\f0\\froman Times;}}\n\n");
 
   // Define all colors we want to use
   document += wxT("{\\colortbl;\n");
