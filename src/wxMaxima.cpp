@@ -2581,24 +2581,27 @@ void wxMaxima::ReadStdErr()
   {
     wxASSERT_MSG(m_input != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
     wxTextInputStream istrm(*m_input);
-    wxString o;
-    while (m_process->IsInputAvailable())
-      o += m_input->GetC();
+    wxString o = _("Message from the stdout of Maxima: ");
+    wxChar ch;
+    while ((ch = istrm.GetChar()) != 0) 
+      o += ch;
 
     bool pollStdOut = false; 
     wxConfig *config = (wxConfig *)wxConfig::Get();
     config->Read(wxT("pollStdOut"), &pollStdOut);
      
     if(pollStdOut)
-      DoRawConsoleAppend(_("Message from the stdout of Maxima: ") + o, MC_TYPE_DEFAULT);
+      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
   if(m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
     wxString o = wxT("Message from maxima's stderr stream: ");
-    while (m_process->IsErrorAvailable())
-      o += m_error->GetC();
-
+    wxTextInputStream estrm(*m_error);
+    wxChar ch;
+    while ((ch = estrm.GetChar()) != 0) 
+      o += ch;
+    
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
     
     // If maxima did output something it defintively has stopped.
