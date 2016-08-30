@@ -22,33 +22,33 @@
 
 \section Wheretostart Where to start reading the code?
 The main starting points would be:
- * For things having to do with the worksheet: MathCtrl
- * For things having to do with how text the user input is displayed: EditorCell
- * For the items surrounding the work sheet: wxMaximaFrame
- * For the general program logic and communication with maxima: wxMaxima.cpp
- * For how 2d math items are handled: MathCell and all cells derived from it
- * For how math is rendered as bitmap: Bitmap
- * For the configuration dialogue: ConfigDialogue
+ - For things having to do with the worksheet: MathCtrl
+ - For things having to do with how text the user input is displayed: EditorCell
+ - For the items surrounding the work sheet: wxMaximaFrame
+ - For the general program logic and communication with maxima: wxMaxima.cpp
+ - For how 2d math items are handled: MathCell and all cells derived from it
+ - For how math is rendered as bitmap: Bitmap
+ - For the configuration dialogue: ConfigDialogue
 
 \section GeneralPrinciple The general principle
 The main things that are important to know are:
- * Maxima is a command-line program that can use a network connection co communicate 
-with a frontend.
- * In data/wxmathml.lisp it teaches maxima to talk in a xml dialect
+ - Maxima is a command-line program that can use a network connection in order
+   to communicate with a frontend.
+ - In data/wxmathml.lisp it teaches maxima to talk in a xml dialect
    that allows to distinguish what element was output what for.
- * The worksheet is defined in the class MathCtrl and is organized in GroupCells that
+ - The worksheet is defined in the class MathCtrl and is organized in GroupCells that
    each can contain an user input and 2d math from maxima
- * For every mathematical function, image or piece of text a Cell there is a specialized 
+ - For every mathematical function, image or piece of text a Cell there is a specialized 
    MathCell type that "knows" how to draw it, how to convert it to a string or how to 
    convert it to Mathml, OOML, RTF or any other data format wxMaxima supports.
    There is, for example, an AbsCell for the <code>abs()</code> command, a IntCell 
    representing <code>integrate</code>, a ParenCell for parenthesis and a FunCell for 
    all the functions no special handling is needed for.
- * All cells are part of an double-linked list for the logical order they appear in and
+ - All cells are part of an double-linked list for the logical order they appear in and
    a second double-linked list that tells which cell to draw next. The latter is needed 
    for handling the fact that some things (like fractions) can be displayed as 2D maths
    and in a more linear way.
- * CellParser is something like a central object keeping the configuration needed for 
+ - CellParser is something like a central object keeping the configuration needed for 
    displaying cells.
  */
 
