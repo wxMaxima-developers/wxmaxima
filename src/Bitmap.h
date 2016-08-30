@@ -24,9 +24,15 @@
 
 #include "MathCell.h"
 
+//! This class renders cells (including 2D maths) as a bitmap.
 class Bitmap
 {
 public:
+  /*! The constructor.
+
+    \param scale By which factor the resolution should be increased in respect
+                 to the default 755 DPI?
+  */
   Bitmap(int scale=1);
   ~Bitmap();
   /*! Renders tree as bitmap
@@ -41,7 +47,9 @@ public:
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
    */
   wxSize ToFile(wxString file);
+  //! Returns the bitmap representation of the list of cells that was passed to SetData()
   wxBitmap GetBitmap(){return m_bmp;}
+  //! Copies the bitmap representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 protected:
   void DestroyTree();
