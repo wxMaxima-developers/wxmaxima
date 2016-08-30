@@ -25,9 +25,11 @@ Current:
     load .wxm files like it would load .mac files.
   * Copy bitmap now can generate higher-resolution bitmaps
   * The application we drag-and-drop to now can select a format to get the data in
-    including RTF, MathML, MathML as HTML5 element, wxm, bitmap and plain text.
+    including RTF, MathML, wxm, bitmap and plain text.
   * A new "copy as plain text" right-click menu item that copies the input and
     output of a cell.
+  * Make sure that wxMaxima detects (and notifies the user) if maxima crashes
+    or runs out of memory.
   * Many additional bug fixes and performance improvements.
 
 16.04:
