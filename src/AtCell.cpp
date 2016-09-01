@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class AtCell
+
+  AtCell is the MathCell type that represents maxima's at() command.
+*/
+
 #include "AtCell.h"
 
 AtCell::AtCell() : MathCell()

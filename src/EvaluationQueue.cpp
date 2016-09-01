@@ -20,6 +20,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class EvaluationQueue
+
+  This queue contains all code cells that still have to be passed to maxima.
+*/
+
 #include "EvaluationQueue.h"
 
 EvaluationQueueElement::EvaluationQueueElement(GroupCell* gr)

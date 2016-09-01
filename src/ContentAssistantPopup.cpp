@@ -1,7 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//  Copyright (C) 2015 Gunter Königsmann     <wxMaxima@physikbuch.de>
+//  Copyright (C) 2015-2016 Gunter Königsmann     <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,13 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
+
+/*! \file
+  This file defines the class ContentAssistantPopup.
+
+  The content assistant offers more functionality than AutocompletePopup but 
+  only works on systems that allow popups to handle key presses.
+*/
 
 #include "ContentAssistantPopup.h"
 #include "Dirstructure.h"

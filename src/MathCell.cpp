@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class MathCell
+
+  MathCell is the base class for all cell- or list-type elements.
+*/
+
 #include "MathCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>

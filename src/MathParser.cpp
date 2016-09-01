@@ -19,6 +19,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class MathParser that reads wxmx data and math from maxma.
+*/
+
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>

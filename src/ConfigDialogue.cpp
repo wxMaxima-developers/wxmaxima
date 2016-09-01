@@ -22,7 +22,7 @@
 
 /*\file
 
-  The C code for the preferences dialog.
+  The C code for ConfigDialogue, the preferences dialog.
 */
 
 #include "ConfigDialogue.h"

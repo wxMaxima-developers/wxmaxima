@@ -21,6 +21,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class GroupCell
+
+  GroupCell is the MathCell type that bundles user input with eventual images or 
+  output from maxima that belongs to it.
+*/
+
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 #include "MarkDown.h"
