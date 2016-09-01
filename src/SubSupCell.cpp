@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class SubSupCell
+
+  SubSubCell is the MathCell type that represents a math element with subscript and
+  superscript.
+ */
+
 #include "SubSupCell.h"
 #include <wx/config.h>
 #include "wx/config.h"

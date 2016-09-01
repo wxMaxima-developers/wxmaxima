@@ -18,6 +18,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class ConjugateCell
+
+  ConjugateCell is the MathCell type that represents the field that represents the 
+  conjugate() command.
+ */
+
 #include "ConjugateCell.h"
 #include "TextCell.h"
 

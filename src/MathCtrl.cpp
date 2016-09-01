@@ -49,8 +49,17 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 
+//! The binking speed of the cursor
 #define CARET_TIMER_TIMEOUT 500
+//! The default delay between animation steps in milliseconds
 #define ANIMATION_TIMER_TIMEOUT 300
+
+/*! \file
+  This file defines the class MathCtrl
+
+  MathCtrl represents the worksheet.
+ */
+
 
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 wxScrolledCanvas(

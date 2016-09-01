@@ -16,8 +16,7 @@ How to get documentation for the code?
    (it generates call graphs, inheritance graphs and caller graphs
    so it really makes the documentation more usable)
  - make sure these two utilities are in the search path of your
-   system
-   
+   system   
  - cd into the [Doxygen](../) directory of the [wxMaxima sources](../../) and type:
 
         make

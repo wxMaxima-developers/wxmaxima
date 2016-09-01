@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class History
+
+  History is a side bar that shows all recently issued maxima commands.
+ */
+
 #include "History.h"
 
 #include <wx/sizer.h>

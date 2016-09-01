@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class TextCell
+
+  TextCell is the MathCell type that is used in order to display text that is
+  contained in maxima's output.
+ */
+
 #include "TextCell.h"
 #include "Setup.h"
 #include "wx/config.h"

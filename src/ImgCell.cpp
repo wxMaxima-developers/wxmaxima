@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class ImgCell
+
+  ImgCell is the MathCell type that represents still images in maxima's output
+  or in user-provided images.
+ */
+
 #include "ImgCell.h"
 
 #include <wx/file.h>

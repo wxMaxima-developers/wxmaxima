@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class FunCell
+
+  FunCell is the MathCell type that represents functions that don't require special handling.
+ */
+
 #include "FunCell.h"
 
 FunCell::FunCell() : MathCell()

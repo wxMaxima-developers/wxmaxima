@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class ParenCell
+
+  ParenCell is the MathCell type that represents a math element that is kept
+  between parenthesis.
+ */
+
 #include "ParenCell.h"
 #include "TextCell.h"
 

@@ -21,6 +21,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class wxMaximaFrame
+
+  wxMaximaFrame is responsible for everything that is displayed around the actual 
+  worksheet - which is displayed by MathCtrl and whose logic partially is defined in
+  wxMaxima.
+ */
 #include "wxMaximaFrame.h"
 #include "Dirstructure.h"
 
