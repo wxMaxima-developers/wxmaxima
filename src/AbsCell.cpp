@@ -24,7 +24,7 @@
 
   AbsCell is the MathCell type that represents the field that represents the 
   <code>abs()</code> and <code>cabs()</code> commands.
- */
+*/
 
 
 #include "AbsCell.h"

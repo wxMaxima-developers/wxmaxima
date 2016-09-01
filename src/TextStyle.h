@@ -18,9 +18,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*!\file 
+This file declares everything needed in order to style all the elements
+shown on the work sheet.
+*/
+
+
 #ifndef TEXTSTYLE_H
 #define TEXTSTYLE_H
 
+//! A text style for the work sheet
 struct style
 {
   style() :
@@ -34,7 +41,11 @@ struct style
   bool underlined;
 };
 
-//! All text styles known to wxMaxima
+/*! All text styles known to wxMaxima
+
+  \attention If an additional style is added here STYLE_NUM has to be incremented 
+             accordingly. 
+ */
 enum TextStyle
 {
   TS_DEFAULT = 0,
@@ -72,6 +83,7 @@ enum TextStyle
   TS_CODE_ENDOFLINE
 };
 
+//! The number of entries TextStyle is long
 #define STYLE_NUM 33
 
 #endif // TEXTSTYLE_H

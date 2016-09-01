@@ -20,6 +20,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class MathCtrl
+
+  MathCtrl represents the worksheet.
+ */
+
 #ifndef MATHCTRL_H
 #define MATHCTRL_H
 

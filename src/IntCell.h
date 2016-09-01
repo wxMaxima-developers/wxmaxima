@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class IntCell
+
+  IntCell is the MathCell type that represents maxima's <code>integrate()</code> command.
+*/
+
+
 #ifndef INTCELL_H
 #define INTCELL_H
 

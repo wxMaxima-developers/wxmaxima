@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class FracCell
+
+  FracCell is the MathCell type that represents fractions.
+*/
+
 #ifndef FRACCELL_H
 #define FRACCELL_H
 

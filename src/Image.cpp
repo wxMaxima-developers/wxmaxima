@@ -19,14 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#include "Image.h"
-#include <wx/mstream.h>
-#include <wx/wfstream.h>
-
 /*! \file
   This file defines the class Image that stores compressed images and handles scaling and uncompressing them.
 */
 
+#include "Image.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {

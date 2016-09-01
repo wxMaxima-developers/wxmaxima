@@ -20,7 +20,7 @@
 //
 
 /*! \file
-  This file defines the class InttCell
+  This file defines the class IntCell
 
   IntCell is the MathCell type that represents maxima's <code>integrate()</code> command.
 */

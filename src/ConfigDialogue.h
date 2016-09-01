@@ -23,8 +23,9 @@
 \file 
 The configuration dialog.
 
-This file contains the code for the preferences dialog. The preferences themself will
-be read directly using <code> config->Read </code>, instead, where needed.
+This file contains the code for ConfigDialogue, the class that handles the preferences 
+dialog. The preferences themself will be read directly using 
+<code> config->Read </code>, instead, where needed or from CellParser.
 */
 
 #include <wx/wx.h>

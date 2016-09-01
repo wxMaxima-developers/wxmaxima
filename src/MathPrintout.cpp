@@ -23,7 +23,7 @@
   This file defines the class MathPrintOut
 
   MathPrintOut is the class that handles printing.
- */
+*/
 
 #include "MathPrintout.h"
 #include "GroupCell.h"

@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class LimitCell
+
+  LimitCell is the MathCell type that represents maxima's <code>limit()</code> command.
+*/
+
 #ifndef LIMITCELL_H
 #define LIMITCELL_H
 

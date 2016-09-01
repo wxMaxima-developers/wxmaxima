@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class SlideShowCell
+
+  SlideShowCell is the MathCell type that represents animations.
+*/
+
 #ifndef SLIDESHOWCELL_H
 #define SLIDESHOWCELL_H
 

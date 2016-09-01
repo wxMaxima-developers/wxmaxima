@@ -20,6 +20,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*!\file 
+This file declares the class wxMaximaFrame
+
+wxMaximaFrame draws everything which can be seen
+surrounding the worksheet.
+*/
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
 

@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class DirStructure
+
+  DirStructure informs about what directory is to be found where on the current system.
+*/
+
 #ifndef DIRSTRUCTURE_H
 #define DIRSTRUCTURE_H
 

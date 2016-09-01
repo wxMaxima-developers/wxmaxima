@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class AbsCell
+
+  AbsCell is the MathCell type that represents the field that represents the 
+  <code>abs()</code> and <code>cabs()</code> commands.
+ */
+
 #ifndef ABSCELL_H
 #define ABSCELL_H
 

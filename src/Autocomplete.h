@@ -19,6 +19,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class AutoComplete.
+
+  AutoComplete creates the list of autocompletions for a string and allows
+  dynamically appending maxima commands to this list as soon as they are defined.
+*/
+
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 

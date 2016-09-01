@@ -23,8 +23,8 @@
 /*! \file 
 The evaluation queue
 
-The class that is defined here handles the queue of commands that still have to
-be sent to maxima.
+The class EvaluationQueue that is declared here handles the queue of commands 
+that still have to be sent to maxima.
  */
 
 

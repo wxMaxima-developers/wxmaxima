@@ -19,6 +19,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class SumCell
+
+  SumCell is the MathCell type that represents maxima's <code>sum()</code>, 
+  <code>lsum</code> and <code>product()</code> 
+  commands.
+*/
+
 #ifndef SUMCELL_H
 #define SUMCELL_H
 

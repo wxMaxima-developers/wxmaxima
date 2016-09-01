@@ -19,6 +19,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*!\file
+  This file declares the class wxMaxima that contains most of the program's logic. 
+
+  The worksheet is defined in the class MathCtrl instead and 
+  everything surrounding it in wxMaximaFrame.
+ */
+
+
 #ifndef WXMAXIMA_H
 #define WXMAXIMA_H
 

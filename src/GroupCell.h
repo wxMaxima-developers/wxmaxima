@@ -22,7 +22,7 @@
 
 /*! \file
 
-  This file defines the class GroupCell.
+  This file defines the class GroupCell that bundles input and output in the worksheet.
  */
 
 #ifndef GROUPCELL_H

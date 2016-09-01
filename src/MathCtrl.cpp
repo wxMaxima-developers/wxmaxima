@@ -21,6 +21,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file defines the class MathCtrl
+
+  MathCtrl represents the worksheet.
+ */
+
 
 #include "wxMaxima.h"
 #include <wx/richtext/richtextbuffer.h>
@@ -54,13 +60,7 @@
 //! The default delay between animation steps in milliseconds
 #define ANIMATION_TIMER_TIMEOUT 300
 
-/*! \file
-  This file defines the class MathCtrl
-
-  MathCtrl represents the worksheet.
- */
-
-
+//! This class represents the worksheet shown in the middle of the wxMaxima window.
 MathCtrl::MathCtrl(wxWindow* parent, int id, wxPoint position, wxSize size) :
 wxScrolledCanvas(
   parent, id, position, size,

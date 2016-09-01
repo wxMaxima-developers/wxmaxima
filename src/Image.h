@@ -19,6 +19,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
+/*! \file
+  This file declares the class Image
+
+  Image stores compressed images and handles scaling and uncompressing them.
+*/
+
 #ifndef IMAGE_H
 #define IMAGE_H
 
