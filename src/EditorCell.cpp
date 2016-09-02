@@ -496,16 +496,17 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
     point = PositionToPoint(parser, pos2);  // left  point
     point1 = PositionToPoint(parser, pos1); // right point
     long selectionWidth = point1.x - point.x;
+    wxRect rect;
 #if defined(__WXMAC__)
-    wxRect rect = GetRect(); // rectangle representing the cell
+      rect = GetRect(); // rectangle representing the cell
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
       selectionWidth = rect.GetRight() - point.x - SCALE_PX(2,scale);
 #endif
 
-    wxRect rect(point.x + SCALE_PX(2, scale),
-                point.y + SCALE_PX(2, scale) - m_center,
-                selectionWidth,
-                m_charHeight);
+    rect = wxRect(point.x + SCALE_PX(2, scale),
+                  point.y + SCALE_PX(2, scale) - m_center,
+                  selectionWidth,
+                  m_charHeight);
     // draw the rectangle if it is in the region that is to be updated.
     if(InUpdateRegion(rect))
       dc.DrawRectangle(CropToUpdateRegion(rect));
