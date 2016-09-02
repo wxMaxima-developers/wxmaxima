@@ -375,8 +375,19 @@ wxString TextCell::ToString()
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
     break;
+
+    // Labels sometimes end with a few spaces. But if they are long they don't do
+    // that any more => Add a TAB to the end of any label replacing trailing
+    // whitespace. But don't do this if we copy only the label.
   case TS_LABEL:
-    text = text + wxT(" ");
+  case TS_USERLABEL:
+  case TS_MAIN_PROMPT:
+  case TS_OTHER_PROMPT:
+    if(m_next != NULL)
+    {
+      text.Trim();
+      text = text + wxT("\t");
+    }
     break;
   }
   
