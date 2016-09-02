@@ -122,7 +122,7 @@ wxString History::GetCommand(bool next)
   else
   {
     ++m_current;
-    if (m_current >= commands.GetCount())
+    if (m_current >= (long)commands.GetCount())
       m_current = 0;
     return commands[m_current];
   }

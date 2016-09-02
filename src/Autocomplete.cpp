@@ -146,7 +146,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   wxASSERT_MSG((type>=command)&&(type<=unit),_("Bug: Autocompletion requested for unknown type of item."));
   
   if (type != tmplte) {
-    for (int i=0; i<m_wordList[type].GetCount(); i++)
+    for (size_t i=0; i<m_wordList[type].GetCount(); i++)
     {
       if (m_wordList[type][i].StartsWith(partial) &&
           completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
@@ -155,7 +155,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   }
 
   else {
-    for (int i=0; i<m_wordList[type].GetCount(); i++)
+    for (size_t i=0; i<m_wordList[type].GetCount(); i++)
     {
       wxString templ = m_wordList[type][i];
       if (templ.StartsWith(partial))
@@ -203,11 +203,12 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
   {
     fun = FixTemplate(fun);
     wxString funName = fun.SubString(0, fun.Find(wxT("(")));
-    int count = fun.Freq('<'), i=0;
+    long count = fun.Freq('<');
+    size_t i=0;
     for (i=0; i<m_wordList[type].GetCount(); i++)
     {
       wxString t = m_wordList[type][i];
-      if (t.StartsWith(funName) && t.Freq('<') == count)
+      if (t.StartsWith(funName) && (t.Freq('<') == count))
         break;
     }
     if (i == m_wordList[type].GetCount())

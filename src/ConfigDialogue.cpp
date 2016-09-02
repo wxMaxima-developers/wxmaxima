@@ -75,7 +75,7 @@ const int langs[] =
   wxLANGUAGE_UKRAINIAN
 };
 
-#define LANGUAGE_NUMBER sizeof(langs)/(signed)sizeof(langs[1])
+#define LANGUAGE_NUMBER (long)(sizeof(langs)/(signed)sizeof(langs[1]))
 
 int ConfigDialogue::GetImageWidth()
 {
@@ -813,7 +813,6 @@ void ConfigDialogue::OnClose(wxCloseEvent& event)
 
 void ConfigDialogue::WriteSettings()
 {
-  int i = 0;
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
   wxString maxima = m_maximaProgram->GetValue();
@@ -868,6 +867,7 @@ void ConfigDialogue::WriteSettings()
     config->Write(wxT("pos-restore"), 1);
   else
     config->Write(wxT("pos-restore"), 0);
+  long i = 0;
   i = m_language->GetSelection();
   if (i > -1 && i < LANGUAGE_NUMBER)
     config->Write(wxT("language"), langs[i]);

@@ -395,10 +395,14 @@ public:
   //! Converts OMML math to RTF math
   wxString OMML2RTF(wxString data);
 
-  /*! Returns the cell's representation as RTF
+  /*! Returns the cell's representation as OMML
 
     If this method returns wxEmptyString this might mean that this cell is 
-    better handled in RTF.
+    better handled in RTF; The OOML can later be translated to the 
+    respective RTF maths commands using OMML2RTF.
+
+    Don't know why OMML was implemented in a world that already knows MathML,
+    though.
    */
   virtual wxString ToOMML() { return wxEmptyString; }
   //! Convert this cell to its LaTeX representation

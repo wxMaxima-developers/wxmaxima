@@ -101,9 +101,9 @@ public:
   //! Needs to be called on changing the viewport size 
   void ViewportSize(size_t viewPortWidth,size_t viewPortHeight,double scale);
   //! The width of the scaled image
-  size_t m_width;
+  long m_width;
   //! The height of the scaled image
-  size_t m_height;
+  long m_height;
   //! Returns the original image in its compressed form
   wxMemoryBuffer GetCompressedImage(){return m_compressedImage;}
   size_t GetOriginalWidth(){return m_originalWidth;}

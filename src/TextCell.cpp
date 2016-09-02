@@ -358,9 +358,9 @@ wxString TextCell::ToString()
     // TODO: We could escape the - char. But we get false positives, then.
     wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
     bool isOperator = true;
-    for(int i=0;i<m_text.Length();i++)
+    for(size_t i=0;i<m_text.Length();i++)
     {
-      if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.find(m_text[i])==wxNOT_FOUND))
+      if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
       {
         isOperator = false;
         break;
@@ -368,12 +368,15 @@ wxString TextCell::ToString()
     }
 
     if(!isOperator)
-      for(int i=0;i<charsNeedingQuotes.Length();i++)
+      for(size_t i=0;i<charsNeedingQuotes.Length();i++)
         text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
   }
     break;
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
+    break;
+  case TS_LABEL:
+    text = text + wxT(" ");
     break;
   }
   

@@ -56,7 +56,7 @@ wxString XmlInspector::IndentString(int level)
 
 void XmlInspector::Add(wxString text)
 {
-  int index=0;
+  size_t index=0;
   text.Replace(wxT("$FUNCTION:"),wxT("\n$FUNCTION:"));      
   while(index < text.Length())
   {

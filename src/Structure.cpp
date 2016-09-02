@@ -55,11 +55,10 @@ Structure::~Structure()
 
 void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
 {
-  int selection = m_lastSelection;
+  long selection = m_lastSelection;
   if(IsShown())
     {
       GroupCell* cell=  dynamic_cast<GroupCell*>(tree);
-      int pos=0;
       m_structure.clear();
       
       // Get a new list of tokens.
@@ -86,7 +85,7 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
       UpdateDisplay();
       if((selection >= 0)&&(m_displayedItems->GetSelection()!=selection))
       {
-        if(m_displayedItems->GetCount()<selection)
+        if((long)m_displayedItems->GetCount() < selection)
           selection = m_displayedItems->GetCount();
         if(m_displayedItems->GetCount()>0)
           m_displayedItems->SetSelection(selection);

@@ -734,18 +734,18 @@ wxString GroupCell::ToRTF()
     if(m_input != NULL)
     {
       if(m_previous != NULL)
-        retval = wxT("\\par}{\\pard\\s22\n");
+        retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
-        retval += wxT("\\pard\\s22 ");
+        retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
       retval += RTFescape(m_input->ToString());
       retval += wxT("\\tab\n");
     }
     else
     {
       if(m_previous != NULL)
-        retval = wxT("\\par}\n{\\pard\\s21 ");
+        retval = wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       else
-        retval = wxT("\\pard\\s21 ");        
+        retval = wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");        
     }
   }
   else
@@ -765,7 +765,6 @@ wxString GroupCell::ToRTF()
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
-  bool SuppressLeadingNewlines = true;
   // Now we might want to introduce some markdown:
   MarkDownTeX MarkDownParser;
 
@@ -773,7 +772,6 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   {
   case GC_TYPE_PAGEBREAK:
     str = wxT("\\pagebreak\n");
-    SuppressLeadingNewlines = true;
     break;
 
   case GC_TYPE_IMAGE:

@@ -420,8 +420,6 @@ wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
 void MathCell::DrawBoundingBox(wxDC& dc, bool all)
 {
   wxRect rect = GetRect(all);
-  int x = rect.GetLeft(), y = rect.GetTop();
-  int width = rect.GetWidth(), height = rect.GetHeight();
   if(InUpdateRegion())
     dc.DrawRectangle(CropToUpdateRegion(rect));
 }
@@ -732,13 +730,13 @@ wxString MathCell::ListToRTF(bool startofline)
     {
       if((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL)))
       {
-        retval += wxT("\\par}\n{\\pard\\s22 ") + rtf + wxT("\\tab");
+        retval += wxT("\\par}\n{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") + rtf + wxT("\\tab");
         startofline = false;
       }
       else 
       {
         if(startofline)
-          retval += wxT("\\par}\n{\\pard\\s21 ") + rtf+wxT("\\n");
+          retval += wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") + rtf+wxT("\\n");
         startofline = true;
       }
       tmp = tmp->m_next;
@@ -751,7 +749,7 @@ wxString MathCell::ListToRTF(bool startofline)
 
         // set the style for this line.
         if(startofline)
-          retval += wxT("\\pard\\s21 ");
+          retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
         
         retval += OMML2RTF(tmp->ListToOMML());
         

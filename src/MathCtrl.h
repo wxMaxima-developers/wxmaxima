@@ -137,9 +137,9 @@ private:
 //! true, if we have the current focus.
   bool m_hasFocus;
   //! The last beginning for the area being drawn
-  size_t m_lastTop;
+  long m_lastTop;
   //! The last ending for the area being drawn
-  size_t m_lastBottom;
+  long m_lastBottom;
   /*! \defgroup UndoBufferFill
 
     These methods and classes contain the undo functionality for tree changes:

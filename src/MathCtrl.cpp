@@ -152,8 +152,6 @@ MathCtrl::~MathCtrl() {
 void MathCtrl::OnPaint(wxPaintEvent& event) {
 
   // Inform all cells how wide our display is
-  int virtualsize_x;
-  int virtualsize_y;
   MathCell::SetCanvasSize(GetClientSize());
   wxPaintDC dc(this);
   wxMemoryDC dcm;
@@ -3529,9 +3527,9 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
           }
         }
 
-        int promptIndex = getMathCellIndex(prompt);
-        int outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
-        int index = promptIndex;
+        size_t promptIndex = getMathCellIndex(prompt);
+        size_t outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        size_t index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
         else
         {
@@ -5442,12 +5440,12 @@ void MathCtrl::TreeUndo_LimitUndoBuffer()
 {
   
   wxConfigBase *config = wxConfig::Get();
-  int undoLimit;
+  long undoLimit;
   config->Read(wxT("undoLimit"),&undoLimit);
 
   if(undoLimit == 0)
     return;
-  while(treeUndoActions.size() > undoLimit)
+  while((long)treeUndoActions.size() > undoLimit)
     TreeUndo_DiscardAction(&treeUndoActions);
 }
 
@@ -6909,9 +6907,9 @@ wxString MathCtrl::RTFStart()
   */
   document += wxT("{\\stylesheet\n");
   document += wxT("{\\s0\\snext0\\widctlpar\\hyphpar0\\kerning1\\li0\\ri0\\lin0\\rin0\\fi0\\f0\\fs24 Normal;}\n");
-  document += wxT("{\\s1\\outlinelevel0\\b\\f0\\fs40\\sbasedon16\\snext0 Section Cell;}\n");
-  document += wxT("{\\s2\\outlinelevel1\\b\\f0\\fs36\\sbasedon1\\snext0 Subsection Cell;}\n");
-  document += wxT("{\\s3\\outlinelevel2\\b\\f0\\fs32\\sbasedon2\\snext0 SubSubsection Cell;}\n");
+  document += wxT("{\\s1\\outlinelevel0\\keepn\\b\\f0\\fs40\\sbasedon16\\snext0 Section Cell;}\n");
+  document += wxT("{\\s2\\outlinelevel1\\keepn\\b\\f0\\fs36\\sbasedon1\\snext0 Subsection Cell;}\n");
+  document += wxT("{\\s3\\outlinelevel2\\keepn\\b\\f0\\fs32\\sbasedon2\\snext0 SubSubsection Cell;}\n");
   document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title Cell;}\n");
   document += wxT("{\\s21\\li1105\\lin1105\\f0\\fs24\\sbasedon0 Math;}\n");
   document += wxT("{\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24\\sbasedon0\\snext21 Math+Label;}\n");

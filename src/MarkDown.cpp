@@ -54,7 +54,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 
   // The list of indentation levels for bullet lists we found
   // so far
-  std::list <int> indentationLevels;
+  std::list <size_t> indentationLevels;
   int quoting=0;
   
   // Now process the input string line-by-line.

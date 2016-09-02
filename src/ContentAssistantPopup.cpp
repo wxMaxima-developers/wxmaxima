@@ -73,7 +73,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
       wxChar ch;
       bool addChar = true;
       wxString word=m_editor->GetSelectionString();
-      int index=word.Length();
+      size_t index=word.Length();
       do
       {
         if(m_completions[0].Length()<=index)
@@ -136,10 +136,10 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
   }
   case WXK_DOWN:
   {
-    int selection = m_autocompletions->GetSelection();
+    long selection = m_autocompletions->GetSelection();
     if(selection<0) selection = 0;
     selection++;
-    if(selection >= m_completions.GetCount())
+    if(selection >= (long) m_completions.GetCount())
       selection--;
     if(m_completions.GetCount()>0)
       m_autocompletions->SetSelection(selection);

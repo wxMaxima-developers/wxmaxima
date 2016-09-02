@@ -55,7 +55,8 @@ private:
   wxListBox *m_history;
   wxTextCtrl *m_regex;
   wxArrayString commands;
-  int m_current;
+  //! The currently selected item. -1=none.
+  long m_current;
   DECLARE_EVENT_TABLE()
 };
 

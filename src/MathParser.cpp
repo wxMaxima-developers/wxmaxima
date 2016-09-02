@@ -481,11 +481,11 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
     if (style == TS_NUMBER)
     {
       m_displayedDigits=100;
-      wxConfigBase *config = wxConfig::Get();      
+      wxConfigBase *config = wxConfig::Get();
       config->Read(wxT("displayedDigits"),&m_displayedDigits);
 
       if (m_displayedDigits<10)m_displayedDigits=10;
-      if (str.Length() > m_displayedDigits)
+      if ((long)str.Length() > m_displayedDigits)
 	{
 	  int left= m_displayedDigits/3;
 	  if (left>30) left=30;
@@ -1077,7 +1077,7 @@ MathCell* MathParser::ParseLine(wxString s, int style)
   graph.Replace(&s, wxT("?"));
 #endif
 
-  if ((s.Length() < showLength) || (showLength==0))
+  if (((long)s.Length() < showLength) || (showLength==0))
   {
 
     wxXmlDocument xml;

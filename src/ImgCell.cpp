@@ -150,7 +150,6 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   if (DrawThisCell(parser, point) && (m_image != NULL))
   {
     wxMemoryDC bitmapDC;
-    double scale = parser.GetScale();
 
     if(m_drawBoundingBox)
       dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))));
@@ -171,9 +170,9 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
-
-    // The next time we need to draw a bounding box we will be informed again.
-    m_drawBoundingBox = false;
+  
+  // The next time we need to draw a bounding box we will be informed again.
+  m_drawBoundingBox = false;
 }
 
 wxString ImgCell::ToString()

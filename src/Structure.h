@@ -62,7 +62,7 @@ public:
   MathCell *GetCell(int index);
 private:
   //! The last selected item
-  int m_lastSelection;
+  long m_lastSelection;
   //! Update the displayed contents.
   void UpdateDisplay();
   wxListBox *m_displayedItems;

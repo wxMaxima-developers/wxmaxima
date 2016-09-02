@@ -115,7 +115,7 @@ MathCell* SlideShow::Copy()
   SlideShow* tmp = new SlideShow;
   CopyData(this, tmp);
 
-  for(int i=0;i<m_images.size();i++)
+  for(size_t i=0;i<m_images.size();i++)
   {
     Image *image = new Image(*m_images[i]);
     tmp->m_images.push_back(image);

@@ -44,7 +44,7 @@ class EditorCell : public MathCell
 {
 private:
   //! Draw a box that marks the current selection
-  void MarkSelection(size_t start, size_t end,CellParser& parser,double scale, wxDC& dc, TextStyle style);
+  void MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style);
   /*! The start of the current selection.
 
      - >0: the position of the cursors in characters from start
@@ -85,7 +85,7 @@ public:
     \param posInLine The number of characters that come before the input in the same line
     \todo Implement the actual TAB expansion
   */
-  wxString TabExpand(wxString input, size_t posInLine);
+  wxString TabExpand(wxString input, long posInLine);
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
   //! Convert all but the first of a row of multiple spaces to non-breakable
@@ -132,8 +132,8 @@ public:
   void ProcessEvent(wxKeyEvent& event);
   bool ActivateCell(bool active);
   //! Return the index of the 1st char of the line containing the letter #pos.
-  size_t BeginningOfLine(size_t pos);
-  size_t EndOfLine(size_t pos);
+  size_t BeginningOfLine(long pos);
+  size_t EndOfLine(long pos);
   bool AddEnding();
   void PositionToXY(int pos, int* line, int* col);
   int XYToPosition(int x, int y);
@@ -152,7 +152,7 @@ public:
   }
   bool AllSelected()
     {
-      return (m_selectionStart==0)&&(m_selectionEnd == m_text.Length());
+      return (m_selectionStart==0)&&(m_selectionEnd == (long) m_text.Length());
     }
   void SelectNone()
   {
@@ -204,7 +204,7 @@ public:
   //! Move the cursor to the start of this cell
   void CaretToStart();
   //! Is the cursor at the end of this cell?
-  bool CaretAtEnd() { return m_positionOfCaret == m_text.Length(); }
+  bool CaretAtEnd() { return m_positionOfCaret == (long)m_text.Length(); }
   //! Move the cursor to the end of this cell
   void CaretToEnd();
   //! Move the cursor to a certain position in the cell

@@ -1043,7 +1043,6 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
-  int start = 0;
 #if defined(__WXMSW__)
   start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
@@ -2588,24 +2587,27 @@ void wxMaxima::ReadStdErr()
   {
     wxASSERT_MSG(m_input != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
     wxTextInputStream istrm(*m_input);
-    wxString o;
-    while (m_process->IsInputAvailable())
-      o += m_input->GetC();
-
+    wxString o = _("Message from the stdout of Maxima: ");
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()))
+      o += ch;
+    
     bool pollStdOut = false; 
     wxConfig *config = (wxConfig *)wxConfig::Get();
     config->Read(wxT("pollStdOut"), &pollStdOut);
-     
+    
     if(pollStdOut)
-      DoRawConsoleAppend(_("Message from the stdout of Maxima: ") + o, MC_TYPE_DEFAULT);
+      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
   if(m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
+    wxTextInputStream istrm(*m_error);
     wxString o = wxT("Message from maxima's stderr stream: ");
-    while (m_process->IsErrorAvailable())
-      o += m_error->GetC();
-
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()))
+      o += ch;
+    
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
     
     // If maxima did output something it defintively has stopped.
@@ -5231,7 +5233,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       break;
 
     case wxT(':'):
-      if(text.find(wxT("lisp"),index + 1) == index + 1)
+      if((long)text.find(wxT("lisp"),index + 1) == index + 1)
         lisp = true;
       lastC=c;
       break;
@@ -5650,9 +5652,6 @@ void wxMaxima::ResetTitle(bool saved,bool force)
 
 void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 {
-  //! The length of the current slideshow at the last call of UpdateSlider()
-  int m_slideShowMaxIndex;
-
   if(m_console->m_mainToolBar)
   {
     if (m_console->m_mainToolBar->m_plotSlider)
