@@ -4149,7 +4149,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
             int borderwidth = 0;
             wxString alttext = _("Result");
             alttext = chunk->ListToString();
-//            alttext.Replace(wxT("\n"),wxT(" "));
             alttext = EditorCell::EscapeHTMLChars(alttext);
             borderwidth = chunk->m_imageBorderWidth;
             
@@ -4215,7 +4214,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
         MathCell *out = tmp->GetLabel();
         output<<wxT("<P CLASS=\"image\">\n");
         output<<EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
-                                                                    wxT(" ") +
                                                                     tmp->GetEditable()->ToString()))<<wxT("\n");
         output<<wxT("<BR/>\n");
         if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
