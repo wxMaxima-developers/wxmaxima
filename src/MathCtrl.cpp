@@ -3527,9 +3527,9 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
           }
         }
 
-        size_t promptIndex = getMathCellIndex(prompt);
-        size_t outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
-        size_t index = promptIndex;
+        long promptIndex = getMathCellIndex(prompt);
+        long outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        long index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
         else
         {
@@ -3539,7 +3539,7 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
             outputExpressions = 0;
           }
           else
-            if (index + outputExpressions > cellMap.size()) cellMap.resize(index+outputExpressions);
+            if (index + outputExpressions > (long)cellMap.size()) cellMap.resize(index+outputExpressions);
           for (int i=0; i < outputExpressions; i++)
             cellMap[index + i] = cellIndex + i;
         }

@@ -497,6 +497,7 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
     point1 = PositionToPoint(parser, pos1); // right point
     long selectionWidth = point1.x - point.x;
 #if defined(__WXMAC__)
+    wxRect rect = GetRect(); // rectangle representing the cell
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
       selectionWidth = rect.GetRight() - point.x - SCALE_PX(2,scale);
 #endif
