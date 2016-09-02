@@ -386,7 +386,7 @@ wxString TextCell::ToString()
     if(m_next != NULL)
     {
       text.Trim();
-      text = text + wxT("\t");
+      text += wxT("\t");
     }
     break;
   }
