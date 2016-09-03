@@ -1044,6 +1044,7 @@ void wxMaxima::CleanUp()
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
 #if defined(__WXMSW__)
+  int start = 0;
   start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
     start = 0;
