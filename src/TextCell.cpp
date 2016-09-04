@@ -829,6 +829,8 @@ wxString TextCell::ToMathML()
     else
       return wxT("<mo>")+text+wxT("</mo>\n");
   }
+
+  return wxT("<mo>")+text+wxT("</mo>\n");
 }
 
 wxString TextCell::ToOMML()
