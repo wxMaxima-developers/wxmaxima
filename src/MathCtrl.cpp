@@ -2889,7 +2889,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   case WXK_PAGEUP:
 #ifdef WXK_PRIOR
   case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
-  case WXK_NEXT:  
   #endif 
 #ifdef WXK_NEXT
   case WXK_NEXT:
@@ -2910,17 +2909,46 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     else
       StepAnimation(ccode == WXK_LEFT ? -1 : 1);
     break;
-    
-  case WXK_HOME: // TODO: if shift down, select.
-    SetHCaret(NULL);
-    if (m_tree != NULL)
-      ScrollToCell(m_tree);
+
+  case WXK_HOME:
+    // Returning to the beginning of the worksheet on pressing POS1 isn't what one
+    // would expect from an ordinary editor so we ignore the key if it is.
+    // pressed alone. But on pressing Ctrl+POS1 one would expect to end up at the
+    // beginning of the document...
+
+    if(event.CmdDown())
+    {      
+      GroupCell *oldCell = GetHCaret();
+      SetHCaret(NULL);
+      if (m_tree != NULL)
+        ScrollToCell(m_tree);
+      if(event.ShiftDown())
+      {
+        SetSelection(m_tree,oldCell);
+      }
+    }
     break;
     
   case WXK_END:
-    SetHCaret(m_last);
-    if (m_last != NULL)
-      ScrollToCell(m_last);
+    // Jumping to the end of the worksheet on pressing End isn't what one
+    // would expect from an ordinary editor so we ignore the key if it is.
+    // pressed alone. But on pressing Ctrl+End one would expect to end up at the
+    // end of the document...
+
+    if(event.CmdDown())
+    {
+      GroupCell *oldCell = GetHCaret();
+      SetHCaret(m_last);
+      if (m_last != NULL)
+        ScrollToCell(m_last);
+      if(event.ShiftDown())
+      {
+        if(oldCell != NULL)
+          oldCell = dynamic_cast<GroupCell*>(oldCell->m_next);
+        SetSelection(oldCell,m_last);
+      }
+
+    }
     break;
 
   case WXK_BACK:
@@ -3113,7 +3141,9 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
       !(event.GetKeyCode() == WXK_DOWN)  &&
       !(event.GetKeyCode() == WXK_BACK)  &&
       !(event.GetKeyCode() == WXK_NUMPAD_DELETE)  &&
-      !(event.GetKeyCode() == WXK_DELETE)
+      !(event.GetKeyCode() == WXK_DELETE) &&
+      !(event.GetKeyCode() == WXK_HOME) &&
+      !(event.GetKeyCode() == WXK_END)
       )
     {
       event.Skip();
