@@ -6561,7 +6561,6 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
         tmp->ResetInputLabel();
         tmp->ResetSize();
       }
-      count += editor->ReplaceAll(oldString, newString, ignoreCase);
     }
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);

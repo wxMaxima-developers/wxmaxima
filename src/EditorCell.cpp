@@ -3168,7 +3168,7 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString,bool IgnoreCas
   StyleText();
 
   // If text is selected setting the selection again updates m_selectionString
-  if(m_selectionStart >0)
+  if(m_selectionStart > 0)
     SetSelection(m_selectionStart,m_selectionEnd);
   
   return count;
