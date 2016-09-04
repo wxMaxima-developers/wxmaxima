@@ -796,7 +796,15 @@ public:
   //! Select the cell sel
   void SetSelection(MathCell* sel) { SetSelection(sel,sel); }
   //! Select the cell range start-end
-  void SetSelection(MathCell* start,MathCell* end) { m_selectionStart = start;m_selectionEnd = end; }
+  void SetSelection(MathCell* start,MathCell* end) {
+    m_selectionStart = start;
+    m_selectionEnd = end;
+    if(m_selectionStart == NULL)
+    {
+      m_hCaretPositionStart = NULL;
+      m_hCaretPositionEnd = NULL;
+    }
+  }
   bool CanEdit();
   void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();

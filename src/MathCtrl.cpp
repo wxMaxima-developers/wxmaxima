@@ -1355,6 +1355,17 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
         m_hCaretActive = true;
         m_hCaretPosition = m_last;
   }
+
+  if(down.y>up.y)
+  {
+    m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionStart);
+    m_hCaretPositionEnd   = dynamic_cast<GroupCell*>(m_selectionEnd);
+  }
+  else
+  {
+    m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionEnd);
+    m_hCaretPositionEnd   = dynamic_cast<GroupCell*>(m_selectionStart);
+  }
 }
 
 void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
@@ -2925,6 +2936,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       if(event.ShiftDown())
       {
         SetSelection(m_tree,oldCell);
+        m_hCaretPositionStart = oldCell;
+        m_hCaretPositionEnd = m_tree;
       }
     }
     break;
@@ -2946,6 +2959,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         if(oldCell != NULL)
           oldCell = dynamic_cast<GroupCell*>(oldCell->m_next);
         SetSelection(oldCell,m_last);
+        m_hCaretPositionStart = oldCell;
+        m_hCaretPositionEnd = m_last;
       }
 
     }
@@ -6822,7 +6837,10 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
       FollowEvaluation(true);
       OpenQuestionCaret();
     }
+    m_hCaretPositionEnd   = cell;
+    m_hCaretPositionStart = cell;
   }
+
 }
 
 void MathCtrl::OnFollow()
