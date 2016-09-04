@@ -1169,7 +1169,19 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     return;
   }
   
-  // default when clicking
+  // Handle a shift-click when the hCaret is active
+  if ((m_hCaretPosition != NULL) && (event.ShiftDown()))
+  {
+    // We were selecting group cells when the shift-click happened.
+    m_clickType = CLICK_TYPE_GROUP_SELECTION;
+    // Set a fake starting point for the selection that is inside the cell the selection started in.
+    m_down = wxPoint(m_hCaretPosition->GetRect().GetLeft(),m_hCaretPosition->GetRect().GetTop());
+    // Handle the mouse pointer position
+    OnMouseMotion(event);
+    return;
+  }
+  
+// default when clicking
   m_clickType = CLICK_TYPE_NONE;
   SetSelection(NULL);
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
