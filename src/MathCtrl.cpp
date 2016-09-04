@@ -1157,6 +1157,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
   if (m_tree == NULL)
     return ;
 
+  // Handle a shift-click when GroupCells were selected.
   if ((m_hCaretPositionStart != NULL) && (event.ShiftDown()))
   {
     // We were selecting group cells when the shift-click happened.

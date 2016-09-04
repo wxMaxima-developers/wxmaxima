@@ -458,14 +458,14 @@ private:
   GroupCell *m_hCaretPosition;
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
-    This cell does actually define weree the selection was started and therefore does not need 
-    to be above m_hCaretPositionEnd in the worksheet.
+    This cell does define were the selection was actually started and therefore does not need 
+    to be above m_hCaretPositionEnd in the worksheet. See also m_selectionStart.
    */
   GroupCell *m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
-    This cell does actually define where the selection was ended and therefore does not need 
-    to be below m_hCaretPositionEnd in the worksheet.
+    This cell does define where the selection was actually ended and therefore does not need 
+    to be below m_hCaretPositionEnd in the worksheet. See also m_selectionEnd.
    */
   GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
@@ -483,7 +483,23 @@ private:
   GroupCell *m_workingGroup;
   //! The last group cell maxima was working on.
   GroupCell *m_lastWorkingGroup;
+  /*! The first cell of the currently selected range of groupCells.
+    
+    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+    is selected and therefore the selection is handled by EditorCell; This cell is 
+    always above m_selectionEnd.
+
+    See also m_hCaretPositionStart
+   */
   MathCell *m_selectionStart;
+  /*! The last cell of the currently selected range of groupCells.
+    
+    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+    is selected and therefore the selection is handled by EditorCell; This cell is 
+    always below m_selectionStart.
+
+    See also m_hCaretPositionEnd
+   */
   MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
