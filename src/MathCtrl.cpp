@@ -1175,7 +1175,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     // We were selecting group cells when the shift-click happened.
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     // Set a fake starting point for the selection that is inside the cell the selection started in.
-    m_down = wxPoint(m_hCaretPosition->GetRect().GetLeft(),m_hCaretPosition->GetRect().GetTop());
+    m_down = wxPoint(m_hCaretPosition->GetRect().GetLeft(),m_hCaretPosition->GetRect().GetBottom() + 1);
     // Handle the mouse pointer position
     OnMouseMotion(event);
     return;
