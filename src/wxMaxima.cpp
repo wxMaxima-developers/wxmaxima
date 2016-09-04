@@ -129,8 +129,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_pid = -1;
   m_hasEvaluatedCells = false;
   m_process = NULL;
-  m_input = NULL;
-  m_error = NULL;  
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;  
   m_ready = false;
   m_inLispMode = false;
   m_first = true;
@@ -202,8 +202,8 @@ wxMaxima::~wxMaxima()
   {
     m_process->Detach();
     m_process = NULL;
-    m_input = NULL;
-    m_error = NULL;
+    m_maximaStdout = NULL;
+    m_maximaStderr = NULL;
   }
 
   if (m_printData != NULL)
@@ -741,8 +741,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     if(!m_closing)
     {
       m_process = NULL;
-      m_input = NULL;
-      m_error = NULL;
+      m_maximaStdout = NULL;
+      m_maximaStderr = NULL;
     }
     m_isConnected = false;
     m_currentOutput = wxEmptyString;
@@ -926,12 +926,12 @@ bool wxMaxima::StartMaxima(bool force)
         StatusMaximaBusy(process_wont_start);
         SetStatusText(_("Cannot start the maxima binary"), 1);
         m_process = NULL;
-        m_input   = NULL;
-        m_error   = NULL;
+        m_maximaStdout   = NULL;
+        m_maximaStderr   = NULL;
         return false;
       }
-      m_input = m_process->GetInputStream();
-      m_error = m_process->GetErrorStream();
+      m_maximaStdout = m_process->GetInputStream();
+      m_maximaStderr = m_process->GetErrorStream();
       m_lastPrompt = wxT("(%i1) ");
 
       SetStatusText(_("Maxima started. Waiting for connection..."), 1);
@@ -975,8 +975,8 @@ void wxMaxima::KillMaxima()
   if(m_process)
   {
     m_process->Detach();
-    m_input = NULL;
-    m_error = NULL;
+    m_maximaStdout = NULL;
+    m_maximaStderr = NULL;
     m_process = NULL;
   }
 
@@ -996,8 +996,8 @@ void wxMaxima::KillMaxima()
   m_client = NULL;
   m_isConnected = false;
   m_process = NULL;
-  m_input = NULL;
-  m_error = NULL;
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
 }
@@ -1015,8 +1015,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
     // and therefore the following lines would probably mark
     // the wrong process as "deleted".
     m_process = NULL;
-    m_input = NULL;
-    m_error = NULL;
+    m_maximaStdout = NULL;
+    m_maximaStderr = NULL;
   }
   
   m_maximaVersion = wxEmptyString;
@@ -1767,13 +1767,13 @@ void wxMaxima::ReadProcessOutput()
     return;
 
   // If there is no stdin from maxima we can return from this function, too.
-  if(m_input == NULL)
+  if(m_maximaStdout == NULL)
     return;
   
   wxString o;
   
   while (m_process->IsInputAvailable())
-    o += m_input->GetC();
+    o += m_maximaStdout->GetC();
 
   int st = o.Find(wxT("Maxima"));
   if (st == -1)
@@ -2586,11 +2586,11 @@ void wxMaxima::ReadStdErr()
   
   if(m_process->IsInputAvailable())
   {
-    wxASSERT_MSG(m_input != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
-    wxTextInputStream istrm(*m_input);
+    wxASSERT_MSG(m_maximaStdout != NULL,wxT("Bug: Trying to read from maxima but don't have a input stream"));
+    wxTextInputStream istrm(*m_maximaStdout);
     wxString o = _("Message from the stdout of Maxima: ");
     wxChar ch;
-    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_input->Eof()))
+    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_maximaStdout->Eof()))
       o += ch;
     
     bool pollStdOut = false; 
@@ -2602,11 +2602,11 @@ void wxMaxima::ReadStdErr()
   }
   if(m_process->IsErrorAvailable())
   {
-    wxASSERT_MSG(m_error!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
-    wxTextInputStream istrm(*m_error);
+    wxASSERT_MSG(m_maximaStderr!=NULL,wxT("Bug: Trying to read from maxima but don't have a error input stream"));
+    wxTextInputStream istrm(*m_maximaStderr);
     wxString o = wxT("Message from maxima's stderr stream: ");
     wxChar ch;
-    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_error->Eof()))
+    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_maximaStderr->Eof()))
       o += ch;
     
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
@@ -4852,8 +4852,8 @@ void wxMaxima::OnClose(wxCloseEvent& event)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
   m_process = NULL;
-  m_input = NULL;
-  m_error = NULL;
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
 #if defined __WXMAC__
   wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
 #endif

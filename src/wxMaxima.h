@@ -361,16 +361,19 @@ protected:
     }
   wxSocketBase *m_client;
   wxSocketServer *m_server;
+  //! Is the network connection to maxima working?
   bool m_isConnected;
+  //! Is maxima running?
   bool m_isRunning;
+  //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   wxProcess *m_process;
-  // The stdout of the maxima process
-  wxInputStream *m_input;
-  // The stderr of the maxima process
-  wxInputStream *m_error;
+  //! The stdout of the maxima process
+  wxInputStream *m_maximaStdout;
+  //! The stderr of the maxima process
+  wxInputStream *m_maximaStderr;
   int m_port;
   wxString m_currentOutput;
   //! The marker for the start of a input prompt
