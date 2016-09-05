@@ -2590,8 +2590,12 @@ void wxMaxima::ReadStdErr()
     wxTextInputStream istrm(*m_maximaStdout);
     wxString o = _("Message from the stdout of Maxima: ");
     wxChar ch;
-    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_maximaStdout->Eof()))
+    int len=0;
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()) && (len < 65535))
+    {
       o += ch;
+      len++;
+    }
     
     bool pollStdOut = false; 
     wxConfig *config = (wxConfig *)wxConfig::Get();
@@ -2606,8 +2610,12 @@ void wxMaxima::ReadStdErr()
     wxTextInputStream istrm(*m_maximaStderr);
     wxString o = wxT("Message from maxima's stderr stream: ");
     wxChar ch;
-    while (((ch = istrm.GetChar()) != 0) && (m_process->IsInputAvailable()) && (!m_maximaStderr->Eof()))
+    int len=0;
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()) && (len < 65535))
+    {
       o += ch;
+      len++;
+    }
     
     DoRawConsoleAppend(o, MC_TYPE_ERROR);
     
