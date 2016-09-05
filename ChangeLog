@@ -1,15 +1,13 @@
 Current:
+  * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
+    load .wxm files like it would load .mac files.
   * Errors in xml from maxima or in the output cells of .wxmx files now result in error
     messages, not in silently discarded math elements.
-  * Corrected some scrolling bugs.
   * Integrals should now always be saved correcly.
   * Markdown: Block quote support
-  * Better detection of the case that the maxima process has been killed by the
-    operating system
-  * More unicode characters in the symbols pane
-  * Several content assistent enhancements for platforms that support it.
-  * Keeping the "evaluate" key (Enter or Ctrl+Enter) pressed now evaluates one
-    of a document's cells after the other.
+  * If the maxima process has been killed by the operating system we should detect that
+    now in all cases even if the OS fails to notify us that the network connection with
+    maxima has dropped.
   * Support for cells that are >5000 pixels wide
   * Speedup for displaying big cells: Don't attempt to draw sub-cells that aren't
     in the area that is currently visible or cached.
@@ -21,8 +19,6 @@ Current:
   * Revised big parts of the cell size recalculation logic.
   * .wxm files now include image cells
   * Drag-and-drop now handles image cells
-  * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
-    load .wxm files like it would load .mac files.
   * Copy bitmap now can generate higher-resolution bitmaps
   * The application we drag-and-drop to now can select a format to get the data in
     including RTF, MathML, wxm, bitmap and plain text.
@@ -30,6 +26,11 @@ Current:
     output of a cell.
   * Make sure that wxMaxima detects (and notifies the user) if maxima crashes
     or runs out of memory.
+  * An all-new manual and improved documentation of the source code.
+  * Several small editor enhancements.
+  * More unicode characters in the symbols pane
+  * Several content assistent enhancements for platforms that support it.
+  * Corrected a few scrolling bugs.
   * Many additional bug fixes and performance improvements.
 
 16.04:
