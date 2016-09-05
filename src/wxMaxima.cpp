@@ -1581,6 +1581,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
         if(!xmldoc.IsOk())
         {
           s.Replace(wxT("\n"),wxT("\r\n"));
+          s.Replace(wxT("\r\r\n"),wxT("\r\n"));
           wxMemoryOutputStream ostream;
           wxTextOutputStream txtstrm(ostream);
           txtstrm.WriteString(s);
