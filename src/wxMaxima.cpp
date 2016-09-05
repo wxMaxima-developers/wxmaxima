@@ -1565,14 +1565,28 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
         // Remove the illegal character
         s.Replace(wxT('\x1b'),wxT("|"));
 
-        // Write the string into a memory buffer
-        wxMemoryOutputStream ostream;
-        wxTextOutputStream txtstrm(ostream);
-        txtstrm.WriteString(s);
-        wxMemoryInputStream istream(ostream);
+        {
+          // Write the string into a memory buffer
+          wxMemoryOutputStream ostream;
+          wxTextOutputStream txtstrm(ostream);
+          txtstrm.WriteString(s);
+          wxMemoryInputStream istream(ostream);
+          
+          // Try to load the file from the memory buffer.
+          xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
+        }
 
-        // Try to load the file from the memory buffer.
-        xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
+        // Work around a bug in wxWidgets 3.1.0 on windows that for some reason insists on
+        // getting Windows line endings.
+        if(!xmldoc.IsOk())
+        {
+          s.Replace(wxT("\n"),wxT("\r\n"));
+          wxMemoryOutputStream ostream;
+          wxTextOutputStream txtstrm(ostream);
+          txtstrm.WriteString(s);
+          wxMemoryInputStream istream(ostream);
+          xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
+        }
       }
     }
   }
