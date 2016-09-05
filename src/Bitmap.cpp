@@ -36,7 +36,10 @@ Bitmap::Bitmap(int scale)
 {
   m_tree = NULL;
   m_scale=scale;
-  m_bmp.CreateScaled(10,10,wxBITMAP_SCREEN_DEPTH,1.0/((double)scale));
+  // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
+  // windows applications will interpret as rgba if they appear on
+  // the clipboards and therefore render them all-transparent.
+  m_bmp.CreateScaled(10,10,24,1.0/((double)scale));
 }
 
 Bitmap::~Bitmap()
@@ -86,7 +89,10 @@ void Bitmap::Layout(long int maxSize)
   GetMaxPoint(&width, &height);
   if((maxSize < 0) || (width*height < maxSize))
   {
-    m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale);
+    // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
+    // windows applications will interpret as rgba if they appear on
+    // the clipboards and therefore render them all-transparent.
+    m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale,24);
     Draw();
   }
   else
