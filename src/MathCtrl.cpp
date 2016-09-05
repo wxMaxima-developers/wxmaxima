@@ -4617,7 +4617,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   wxString documentclass = wxT("article");
   wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
   
-  output<<wxT("\\documentclass{") +
+  output<<wxT("\\documentclass[leqno]{") +
     documentclass +
     wxT("}\n\n");
   output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
