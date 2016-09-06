@@ -1580,8 +1580,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
         // getting Windows line endings.
         if(!xmldoc.IsOk())
         {
+          s.Replace(wxT("\r"),wxT(""));
           s.Replace(wxT("\n"),wxT("\r\n"));
-          s.Replace(wxT("\r\r\n"),wxT("\r\n"));
           wxMemoryOutputStream ostream;
           wxTextOutputStream txtstrm(ostream);
           txtstrm.WriteString(s);
