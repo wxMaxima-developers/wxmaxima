@@ -1591,17 +1591,45 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       }
     }
   }
+
+  if (!xmldoc.IsOk())
+  {
+    // Re-open the file.
+    delete fsfile;
+    fsfile = fs.OpenFile(filename);
+    if(fsfile)
+    {
+      // Read the file into a string using windows line endings
+      wxString s;
+      wxTextInputStream istream1(*fsfile->GetStream());
+      while(!fsfile->GetStream()->Eof())
+        s += istream1.ReadLine()+wxT("\r\n");
+      
+      // Remove illegal characters
+      s.Replace(wxT('\x1b'),wxT("|"));
+
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(s);
+      wxMemoryInputStream istream(ostream);
+      
+      // Try to load the file from the memory buffer.
+      xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
+    }
+  }
+  
+  delete fsfile;
+  
   if (!xmldoc.IsOk())
   {
     document->Thaw();
-    delete fsfile;
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     SetStatusText(_("File could not be opened"), 1);
     return false;
   }
-  delete fsfile;
 
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
