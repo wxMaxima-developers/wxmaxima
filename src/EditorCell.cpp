@@ -2908,6 +2908,8 @@ void EditorCell::StyleText()
     {
       wxString token = tokens[i];
       token = token.Left(token.Length()-1);
+	  if (token.Length() < 1)
+		  continue;
       wxChar Ch = token[0];
 
       // Save the last non-whitespace character in lastChar -

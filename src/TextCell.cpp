@@ -110,9 +110,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
 	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
-        dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
       else
-        dc.GetTextExtent(wxT("(\%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
       m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width>0)||(m_text==wxEmptyString),_("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       if(m_width < 1) m_width = 10;

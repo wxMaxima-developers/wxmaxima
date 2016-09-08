@@ -968,13 +968,16 @@ void wxMaximaFrame::SetupMenu()
 #ifndef __WXMAC__
   m_HelpMenu->AppendSeparator();
 #endif
-  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
 #ifndef __WXMAC__
-                   _("About"),
+  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
+	  _("About"),
+	  _("About wxMaxima"), wxT("stock_about"));
 #else
-                   _("About wxMaxima"),
+  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
+	  _("About wxMaxima"),
+	  _("About wxMaxima"), wxT("stock_about"));
 #endif
-                   _("About wxMaxima"), wxT("stock_about"));
+
   m_MenuBar->Append(m_HelpMenu, _("&Help"));
 
   SetMenuBar(m_MenuBar);

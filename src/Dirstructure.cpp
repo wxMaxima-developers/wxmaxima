@@ -54,6 +54,9 @@ wxString Dirstructure::ResourcesDir()
 
 wxString Dirstructure::Prefix()
 {
+#ifndef PREFIX
+#define PREFIX "/usr"
+#endif
   return wxT(PREFIX);
 }
 

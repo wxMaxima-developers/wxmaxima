@@ -24,7 +24,7 @@
 
 #include "MathCell.h"
 #include <wx/image.h>
-#include <Image.h>
+#include "Image.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>

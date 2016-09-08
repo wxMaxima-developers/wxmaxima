@@ -162,7 +162,7 @@ void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     wxBitmap bitmap = m_image->GetBitmap();
     bitmapDC.SelectObject(bitmap);
 
-    if((m_drawBoundingBox == false) or (m_imageBorderWidth > 0))
+    if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))
       dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
     else
       dc.StretchBlit(point.x + 5, point.y - m_center + 5, m_width - 2 * 5, m_height - 2 * 5, &bitmapDC, 0, 0, m_width, m_height);

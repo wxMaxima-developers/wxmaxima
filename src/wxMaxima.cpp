@@ -1591,40 +1591,23 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       }
     }
   }
-
-  if (!xmldoc.IsOk())
+  else
   {
-    // Re-open the file.
-    delete fsfile;
-    fsfile = fs.OpenFile(filename);
-    if(fsfile)
-    {
-      // Read the file into a string using windows line endings
-      wxString s;
-      wxTextInputStream istream1(*fsfile->GetStream());
-      while(!fsfile->GetStream()->Eof())
-        s += istream1.ReadLine()+wxT("\r\n");
-      
-      // Remove illegal characters
-      s.Replace(wxT('\x1b'),wxT("|"));
-
-      // Write the string into a memory buffer
-      wxMemoryOutputStream ostream;
-      wxTextOutputStream txtstrm(ostream);
-      txtstrm.WriteString(s);
-      wxMemoryInputStream istream(ostream);
-      
-      // Try to load the file from the memory buffer.
-      xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
-    }
+    document->Thaw();
+    wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file, _("Error"),
+                 wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
+    return false;
   }
+
   
   delete fsfile;
   
   if (!xmldoc.IsOk())
   {
     document->Thaw();
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
+    wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     SetStatusText(_("File could not be opened"), 1);
@@ -1634,7 +1617,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
     document->Thaw();
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"),
+    wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     SetStatusText(_("File could not be opened"), 1);
@@ -4400,26 +4383,14 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
         "Eric Delevaux (fr)<br>"
         "Michele Gosse (fr)<br>"
         "Marco Ciampa (it)<br>"
-#if wxUSE_UNICODE
         "Blahota István (hu)<br>"
-#else
-        "Blahota Istvan (hu)<br>"
-#endif
-#if wxUSE_UNICODE
         "Asbjørn Apeland (nb)<br>"
-#else
-        "Asbjorn Apeland (nb)<br>"
-#endif
         "Rafal Topolnicki (pl)<br>"
         "Eduardo M. Kalinowski (pt_br)<br>"
         "Alexey Beshenov (ru)<br>"
         "Vadim V. Zhytnikov (ru)<br>"
         "Sergey Semerikov (uk)<br>"
-#if wxUSE_UNICODE
         "Tufan Şirin (tr)<br>"
-#else
-        "Tufan Sirin (tr)<br>"
-#endif
         "Frank Weng (zh_TW)<br>"
         "cw.ahbong (zh_TW)"
         "  </p>"
@@ -4430,11 +4401,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
     _("System info"),
     wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
     _("Unicode Support"),
-#if wxUSE_UNICODE
     wxT("yes"),
-#else
-    wxT("no"),
-#endif
     description.c_str(),
     _("Written by"),
     _("Artwork by"),
