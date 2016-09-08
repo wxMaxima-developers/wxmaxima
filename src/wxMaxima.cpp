@@ -1543,6 +1543,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
   wxString filename = wxmxURI + wxT("#zip:content.xml");
   wxFSFile *fsfile = fs.OpenFile(filename);
+  if(!fsfile)
+  {
+    filename = wxmxURI + wxT("#zip:/content.xml");
+    fsfile = fs.OpenFile(filename);
+  }
   if(fsfile)
   {
     // Let's see if we can open this file.
