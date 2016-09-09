@@ -1541,16 +1541,26 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   wxFileSystem fs;
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
+  // wxURI doesn't know that a "#" in a file name is a literal "#" and
+  // not an anchor within the file so we have to care about url-encoding
+  // this char by hand.
+  wxmxURI.Replace("#","%231");
+
+  // The URI of the wxm code contained within the .wxmx file
   wxString filename = wxmxURI + wxT("#zip:content.xml");
+
+  // Open the file
   wxFSFile *fsfile = fs.OpenFile(filename);
   if(!fsfile)
   {
     filename = wxmxURI + wxT("#zip:/content.xml");
     fsfile = fs.OpenFile(filename);
   }
+
+  // Did we succeed in opening the file?
   if(fsfile)
   {
-    // Let's see if we can open this file.
+    // Let's see if we can load the XML contained in this file.
     if(!xmldoc.Load(*(fsfile->GetStream()),wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES))
     {
       // If we cannot read the file a typical error in old wxMaxima versions was to include
@@ -1580,26 +1590,14 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
           // Try to load the file from the memory buffer.
           xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
         }
-
-        // Work around a bug in wxWidgets 3.1.0 on windows that for some reason insists on
-        // getting Windows line endings.
-        if(!xmldoc.IsOk())
-        {
-          s.Replace(wxT("\r"),wxT(""));
-          s.Replace(wxT("\n"),wxT("\r\n"));
-          wxMemoryOutputStream ostream;
-          wxTextOutputStream txtstrm(ostream);
-          txtstrm.WriteString(s);
-          wxMemoryInputStream istream(ostream);
-          xmldoc.Load(istream,wxT("UTF-8"),wxXMLDOC_KEEP_WHITESPACE_NODES);
-        }
       }
     }
   }
   else
   {
     document->Thaw();
-    wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file, _("Error"),
+    wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
+                 wxT(", URI=") + filename, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     SetStatusText(_("File could not be opened"), 1);
