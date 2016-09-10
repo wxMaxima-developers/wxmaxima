@@ -324,6 +324,7 @@ private:
     StyledText(wxString text)
       {
         m_text = text;
+        m_style = TS_DEFAULT;
         m_styleThisText = false;
       }
     //! Returns the piece of text

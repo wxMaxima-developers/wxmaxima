@@ -31,7 +31,6 @@
 #include <wx/clipbrd.h>
 
 #define BM_FULL_WIDTH 1000
-
 Bitmap::Bitmap(int scale)
 {
   m_tree = NULL;
@@ -40,6 +39,8 @@ Bitmap::Bitmap(int scale)
   // windows applications will interpret as rgba if they appear on
   // the clipboards and therefore render them all-transparent.
   m_bmp.CreateScaled(10,10,24,1.0/((double)scale));
+  m_width = 10;
+  m_height = 10;
 }
 
 Bitmap::~Bitmap()

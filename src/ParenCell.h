@@ -65,7 +65,18 @@ protected:
   int m_charWidth1, m_charHeight1;
 #endif
   int m_parenFontSize, m_signTop, m_signSize, m_signWidth;
-  int m_bigParenType;
+  enum parenthesisStyle
+  {
+    PARENTHESIS_NORMAL = 0,   //!< An ordinary parenthesis sign
+    PARENTHESIS_BIG = 1    ,  //!< A "big parenthesis" sign
+    PARENTHESIS_ASSEMBLED = 2 //!< Assemble a "Parenthesis top half sign", a bot half sign and a
+                              //   vertical line.
+  };
+
+  /* How to create a big parenthesis sign?
+     - 0 = 
+   */
+  parenthesisStyle m_bigParenType;
 };
 
 #endif // PARENCELL_H

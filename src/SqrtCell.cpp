@@ -32,6 +32,12 @@
 
 SqrtCell::SqrtCell() : MathCell()
 {
+  m_signSize = 50;
+  m_signWidth = 18;
+  m_signTop = m_signSize / 2;
+  m_last = NULL;
+  m_signType = 0;
+  m_signFontScale = 0;
   m_innerCell = NULL;
   m_open = new TextCell(wxT("sqrt("));
   m_close = new TextCell(wxT(")"));
@@ -85,8 +91,9 @@ void SqrtCell::SetInner(MathCell *inner)
   m_innerCell = inner;
 
   m_last = inner;
-  while (m_last->m_next != NULL)
-    m_last = m_last->m_next;
+  if(m_last != NULL)
+    while (m_last->m_next != NULL)
+      m_last = m_last->m_next;
 }
 
 void SqrtCell::RecalculateWidths(CellParser& parser, int fontsize)
@@ -302,8 +309,12 @@ bool SqrtCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    m_last->m_nextToDraw = m_close;
-    m_close->m_previousToDraw = m_last;
+    wxASSERT_MSG(m_last != NULL,_("Bug: No last cell inside a suare root!"));
+    if(m_last != NULL)
+    {
+      m_last->m_nextToDraw = m_close;
+      m_close->m_previousToDraw = m_last;
+    }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;

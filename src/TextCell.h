@@ -68,7 +68,6 @@ protected:
   bool m_alt, m_altJs;
   int m_realCenter;
   int m_fontSize;
-  int m_fontSizeTeX;
   int m_fontSizeLabel;
   int m_labelWidth, m_labelHeight;
 private:

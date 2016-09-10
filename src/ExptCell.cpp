@@ -32,6 +32,8 @@
 
 ExptCell::ExptCell() : MathCell()
 {
+  m_last1=NULL;
+  m_last2=NULL;
   m_baseCell = NULL;
   m_powCell = NULL;
   m_isMatrix = false;
@@ -102,8 +104,9 @@ void ExptCell::SetPower(MathCell *power)
   }
 
   m_last2 = power;
-  while (m_last2->m_next != NULL)
-    m_last2 = m_last2->m_next;
+  if(m_last2 != NULL)
+    while (m_last2->m_next != NULL)
+      m_last2 = m_last2->m_next;
 }
 
 void ExptCell::SetBase(MathCell *base)
@@ -115,8 +118,9 @@ void ExptCell::SetBase(MathCell *base)
   m_baseCell = base;
 
   m_last1 = base;
-  while (m_last1->m_next != NULL)
-    m_last1 = m_last1->m_next;
+  if(m_last1 != NULL)
+    while (m_last1->m_next != NULL)
+      m_last1 = m_last1->m_next;
 }
 
 void ExptCell::RecalculateWidths(CellParser& parser, int fontsize)
@@ -250,14 +254,22 @@ bool ExptCell::BreakUp()
   {
     m_isBroken = true;
     m_baseCell->m_previousToDraw = this;
-    m_last1->m_nextToDraw = m_exp;
-    m_exp->m_previousToDraw = m_last1;
+    wxASSERT_MSG(m_last1 != NULL,_("Bug: No last cell in the base of an exptCell!"));
+    if(m_last1 != NULL)
+    {
+      m_last1->m_nextToDraw = m_exp;
+      m_exp->m_previousToDraw = m_last1;
+    }
     m_exp->m_nextToDraw = m_open;
     m_open->m_previousToDraw = m_exp;
     m_open->m_nextToDraw = m_powCell;
     m_powCell->m_previousToDraw = m_open;
-    m_last2->m_nextToDraw = m_close;
-    m_close->m_previousToDraw = m_last2;
+    wxASSERT_MSG(m_last2 != NULL,_("Bug: No last cell in an exponent of an exptCell!"));
+    if(m_last2 != NULL)
+    {
+      m_last2->m_nextToDraw = m_close;
+      m_close->m_previousToDraw = m_last2;
+    }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;

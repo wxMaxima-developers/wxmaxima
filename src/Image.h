@@ -61,6 +61,7 @@
 class Image
 {
 public:
+  //! A constructor that generates an empty image. See LoadImage()
   Image();
   //! A constructor that loads the compressed file from a wxMemoryBuffer
   Image(wxMemoryBuffer image,wxString type);
@@ -106,7 +107,9 @@ public:
   long m_height;
   //! Returns the original image in its compressed form
   wxMemoryBuffer GetCompressedImage(){return m_compressedImage;}
+  //! Returns the original width
   size_t GetOriginalWidth(){return m_originalWidth;}
+  //! Returns the original height
   size_t GetOriginalHeight(){return m_originalHeight;}
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;

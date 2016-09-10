@@ -58,6 +58,10 @@ Image::Image()
 {
   m_viewportWidth  = 640;
   m_viewportHeight = 480;
+  m_width = 1;
+  m_height = 1;
+  m_originalWidth = 1;
+  m_originalHeight = 1;
   m_scale          = 1;  
   m_scaledBitmap.Create (1,1);
 }
@@ -70,6 +74,8 @@ Image::Image(wxMemoryBuffer image,wxString type)
   m_scaledBitmap.Create (1,1);
   m_compressedImage = image;
   m_extension = type;
+  m_width = 1;
+  m_height = 1;
   m_originalWidth  = 640;
   m_originalHeight = 480;  
 

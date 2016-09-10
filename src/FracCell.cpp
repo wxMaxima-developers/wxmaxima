@@ -34,6 +34,9 @@ FracCell::FracCell() : MathCell()
 {
   m_num = NULL;
   m_denom = NULL;
+  m_last1 = NULL;
+  m_last2 = NULL;
+  m_expDivideWidth = 12;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
   m_horizontalGap = 0;
@@ -400,12 +403,18 @@ void FracCell::SetupBreakUps()
   }
 
   m_last1 = m_num;
-  while (m_last1->m_next != NULL)
-    m_last1 = m_last1->m_next;
-
+  if(m_last1 != NULL)
+  {
+    while (m_last1->m_next != NULL)
+      m_last1 = m_last1->m_next;
+  }
+  
   m_last2 = m_denom;
-  while (m_last2->m_next != NULL)
-    m_last2 = m_last2->m_next;
+  if(m_last2 != NULL)
+  {
+    while (m_last2->m_next != NULL)
+      m_last2 = m_last2->m_next;
+  }
 }
 
 bool FracCell::BreakUp()
@@ -419,16 +428,24 @@ bool FracCell::BreakUp()
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;
     m_num->m_previousToDraw = m_open1;
-    m_last1->m_nextToDraw = m_close1;
-    m_close1->m_previousToDraw = m_last1;
+    wxASSERT_MSG(m_last1 != NULL,_("Bug: No last cell in an numerator!"));
+    if(m_last1 != NULL)
+    {
+      m_last1->m_nextToDraw = m_close1;
+      m_close1->m_previousToDraw = m_last1;
+    }
     m_close1->m_nextToDraw = m_divide;
     m_divide->m_previousToDraw = m_close1;
     m_divide->m_nextToDraw = m_open2;
     m_open2->m_previousToDraw = m_divide;
     m_open2->m_nextToDraw = m_denom;
     m_denom->m_previousToDraw = m_open2;
-    m_last2->m_nextToDraw = m_close2;
-    m_close2->m_previousToDraw = m_last2;
+    wxASSERT_MSG(m_last2 != NULL,_("Bug: No last cell in an denominator!"));
+    if(m_last2 != NULL)
+    {
+      m_last2->m_nextToDraw = m_close2;
+      m_close2->m_previousToDraw = m_last2;
+    }
     m_close2->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close2;

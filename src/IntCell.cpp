@@ -43,6 +43,7 @@ IntCell::IntCell() : MathCell()
   m_var = NULL;
   m_signSize = 50;
   m_signWidth = 18;
+  m_signTop = m_signSize / 2;
   m_intStyle = INT_IDEF;
 }
 

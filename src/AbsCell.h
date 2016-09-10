@@ -52,8 +52,14 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
+  //! The contents of the abs() comand
   MathCell *m_innerCell;
-  MathCell *m_open, *m_close, *m_last;
+  //! The cell containing the eventual "abs" and the opening parenthesis
+  MathCell *m_open;
+  //! The cell containing the closing parenthesis
+  MathCell *m_close;
+  //! The last element of m_innerCell
+  MathCell *m_last;
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);

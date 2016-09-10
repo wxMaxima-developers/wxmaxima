@@ -40,6 +40,7 @@ SumCell::SumCell() : MathCell()
   m_under = NULL;
   m_over = NULL;
   m_signSize = 50;
+  m_signTop = (2* m_signSize) / 5;
   m_signWidth = 30;
   m_signWCenter = 15;
   m_sumStyle = SM_SUM;

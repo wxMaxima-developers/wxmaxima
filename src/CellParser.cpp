@@ -40,9 +40,10 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   m_indent = MC_GROUP_LEFT_INDENT;
   m_changeAsterisk = false;
   m_outdated = false;
+  m_printer = false;
   m_TeXFonts = false;
   m_printer = false;
-
+  m_clientWidth = 800;
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&

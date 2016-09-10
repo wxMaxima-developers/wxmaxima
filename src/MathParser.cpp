@@ -78,6 +78,7 @@ wxXmlNode* MathParser::GetNextTag(wxXmlNode* node)
 
 MathParser::MathParser(wxString zipfile)
 {
+  m_displayedDigits=100;
   m_workingDirectory = wxEmptyString;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;

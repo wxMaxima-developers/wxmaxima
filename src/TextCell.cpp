@@ -36,10 +36,22 @@ TextCell::TextCell() : MathCell()
   m_fontSize = -1;
   m_highlight = false;
   m_altJs = m_alt = false;
+  m_height = -1;
+  m_labelWidth = -1;
+  m_labelHeight = -1;
+  m_realCenter = m_center = 0;
+  m_fontSize = 12;
+  m_fontSizeLabel = 12;
 }
 
 TextCell::TextCell(wxString text) : MathCell()
 {
+  m_height = -1;
+  m_labelWidth = -1;
+  m_labelHeight = -1;
+  m_realCenter = m_center = 0;
+  m_fontSize = 12;
+  m_fontSizeLabel = 12;
   m_text = text;
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_highlight = false;

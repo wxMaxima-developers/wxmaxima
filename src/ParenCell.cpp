@@ -55,6 +55,12 @@
 
 ParenCell::ParenCell() : MathCell()
 {
+  m_last1 = NULL;
+  m_signSize = 50;
+  m_signWidth = 18;
+  m_signTop = m_signSize / 2;
+  m_parenFontSize = 12;
+  m_bigParenType = PARENTHESIS_NORMAL;
   m_innerCell = NULL;
   m_print = true;
   m_open = new TextCell(wxT("("));
@@ -130,41 +136,48 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
   {
     wxDC& dc = parser.GetDC();
     m_innerCell->RecalculateSizeList(parser, fontsize);
-    int size = m_innerCell->GetMaxHeight();
-
+    int size = m_innerCell->GetMaxHeight() * scale;
+    /// BUG 2897415: Exporting equations to HTML locks up on Mac
+    ///  there is something wrong with what dc.GetTextExtent returns,
+    ///  make sure there is no infinite loop!
+    // Avoid a possible infinite loop.
+    if(size < 2) size = 12;
+    
     int fontsize1 = (int) ((fontsize * scale + 0.5));
 
     if (size < 2*fontsize1)
-      m_bigParenType = 0;
-    else if (size < 4*fontsize1)
-      m_bigParenType = 1;
+    {
+      m_bigParenType = PARENTHESIS_NORMAL;
+      dc.SetFont(
+        wxFont(fontsize1, wxFONTFAMILY_MODERN,
+               wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+               parser.GetTeXCMRI())
+        );
+      dc.GetTextExtent( wxT("("),&m_signWidth, &m_signSize);
+    }
     else
-      m_bigParenType = 2;
-
-    if (m_bigParenType < 2)
+    {
+      if (size < 4*fontsize1)
+      {
+        m_bigParenType = PARENTHESIS_BIG;
+        dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                           parser.GetTeXCMEX()));
+        dc.GetTextExtent(wxT(PAREN_OPEN),
+                         &m_signWidth, &m_signSize);
+      }
+      else
+        m_bigParenType = PARENTHESIS_ASSEMBLED;
+    }
+    
+    if (m_bigParenType != PARENTHESIS_ASSEMBLED)
     {
       m_parenFontSize = fontsize;
       fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-
-      dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
-			 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-			 m_bigParenType == 0 ?
-			 parser.GetTeXCMRI() :
-			 parser.GetTeXCMEX()));
-      dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
-                       m_bigParenType == 1 ? wxT(PAREN_OPEN) :
-		       wxT(PAREN_OPEN_TOP),
-                       &m_signWidth, &m_signSize);
-
-      /// BUG 2897415: Exporting equations to HTML locks up on Mac
-      ///  there is something wrong with what dc.GetTextExtent returns,
-      ///  make sure there is no infinite loop!
+      
       int i=0;
       
-      // Avoid a possible infinite loop.
-      if(size < 2) size = 2;
-
-      wxASSERT_MSG(m_signSize > 0,_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      
       if(m_signSize > 0)
         while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
         {
@@ -510,8 +523,12 @@ bool ParenCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    m_last1->m_nextToDraw = m_close;
-    m_close->m_previousToDraw = m_last1;
+    wxASSERT_MSG(m_last1 != NULL,_("Bug: No last cell inside a parenthesis!"));
+    if(m_last1 != NULL)
+    {
+      m_last1->m_nextToDraw = m_close;
+      m_close->m_previousToDraw = m_last1;
+    }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;

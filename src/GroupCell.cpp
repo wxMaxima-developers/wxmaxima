@@ -764,6 +764,8 @@ wxString GroupCell::ToRTF()
 
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
+  wxASSERT_MSG((imgCounter != NULL),_("Bug: No image counter to write to!"));
+  if (imgCounter == NULL) return wxEmptyString;
   wxString str;
   // Now we might want to introduce some markdown:
   MarkDownTeX MarkDownParser;
@@ -933,6 +935,9 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
 wxString GroupCell::ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename, int *imgCounter)
 {
+  wxASSERT_MSG((imgCounter != NULL),_("Bug: No image counter to write to!"));
+  if (imgCounter == NULL) return wxEmptyString;
+
   wxString str;
   
   if (imgDir != wxEmptyString)

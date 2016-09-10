@@ -77,7 +77,9 @@ public:
 #else
     m_size = 10;
 #endif
-
+    m_italic = false;
+    m_bold = false;
+    m_underlined = false;
   };
 
   //! Sets all user-changable elements of style of the example at once.

@@ -24,7 +24,11 @@
 
 #include "MathCell.h"
 
-//! This class renders cells (including 2D maths) as a bitmap.
+/* Renders portions of the work sheet (including 2D maths) as bitmap.
+
+   This is used for exporting HTML with embedded maths as bitmap
+   and for putting bitmaps for the clipboard
+ */
 class Bitmap
 {
 public:

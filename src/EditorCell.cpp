@@ -42,6 +42,8 @@ wxString EditorCell::m_selectionString;
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
+  m_numberOfLines = 1;
+  m_charHeight = 12;
   m_changeAsterisk = false;
   wxConfig::Get()->Read(wxT("changeAsterisk"), &m_changeAsterisk);
   m_selectionChanged = false;

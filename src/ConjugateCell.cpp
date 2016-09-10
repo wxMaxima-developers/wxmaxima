@@ -31,6 +31,7 @@
 ConjugateCell::ConjugateCell() : MathCell()
 {
   m_innerCell = NULL;
+  m_last = NULL;
   m_open = new TextCell(wxT("conjugate("));
   m_close = new TextCell(wxT(")"));
 }
@@ -82,8 +83,9 @@ void ConjugateCell::SetInner(MathCell *inner)
   m_innerCell = inner;
 
   m_last = m_innerCell;
-  while (m_last->m_next != NULL)
-    m_last = m_last->m_next;
+  if (m_last != NULL)
+    while (m_last->m_next != NULL)
+      m_last = m_last->m_next;
 }
 
 void ConjugateCell::RecalculateWidths(CellParser& parser, int fontsize)
@@ -180,8 +182,12 @@ bool ConjugateCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    m_last->m_nextToDraw = m_close;
-    m_close->m_previousToDraw = m_last;
+    wxASSERT_MSG(m_last != NULL,_("Bug: No last cell in an conjugateCell!"));
+    if(m_last != NULL)
+    {
+      m_last->m_nextToDraw = m_close;
+      m_close->m_previousToDraw = m_last;
+    }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
