@@ -1081,9 +1081,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
     if (event.ShiftDown())
     {
       if (m_selectionStart == -1)
-      {
-        SetSelection(m_positionOfCaret,m_positionOfCaret);
-      }
+        m_selectionStart = m_positionOfCaret;
     }
     else
       ClearSelection();
