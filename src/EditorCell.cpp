@@ -379,7 +379,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    dc.GetTextExtent(wxT("X"), &charWidth, &m_charHeight);
+    dc.GetTextExtent(wxT("gXÄy"), &charWidth, &m_charHeight);
 
     unsigned int newLinePos = 0, prevNewLinePos = 0;
     int width = 0, width1, height1;
@@ -415,9 +415,8 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
       width = charWidth;
 
     m_width = width + 2 * SCALE_PX(2, scale);
-    m_height = m_numberOfLines * m_charHeight + 2 * SCALE_PX(2, scale);
-
-    m_center = m_charHeight / 2 + SCALE_PX(2, scale);
+    m_height = m_numberOfLines * (m_charHeight + 2 * SCALE_PX(MC_TEXT_PADDING, scale));
+    m_center = m_charHeight / 2  + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
   }
   ResetData();
 }
@@ -546,8 +545,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
 
     // Need correct m_currentPoint before we call MathCell::Draw!
-    m_currentPoint.x = point.x;
-    m_currentPoint.y = point.y;
+    //  m_currentPoint.x = point.x;
+    //  m_currentPoint.y = point.y;
 
     //
     // Mark text that coincides with the selection

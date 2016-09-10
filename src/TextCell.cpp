@@ -160,7 +160,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     /// Empty string has height of X
     else if (m_text == wxEmptyString)
     {
-      dc.GetTextExtent(wxT("X"), &m_width, &m_height);
+      dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
       m_width = 0;
     }
 
