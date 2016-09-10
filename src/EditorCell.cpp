@@ -953,14 +953,19 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
+#ifdef WXK_NUMPAD_PRIOR
+      (event.GetKeyCode() != WXK_NUMPAD_PRIOR) &&
+#endif
 #ifdef WXK_PRIOR
       (event.GetKeyCode() != WXK_PRIOR) &&
 #endif
 #ifdef WXK_NEXT
       (event.GetKeyCode() != WXK_NEXT) &&
 #endif
-      (event.GetKeyCode() != WXK_UP) &&
-      (event.GetKeyCode() != WXK_PAGEDOWN)
+#ifdef WXK_NUMPAD_NEXT
+      (event.GetKeyCode() != WXK_NUMPAD_NEXT) &&
+#endif
+      (event.GetKeyCode() != WXK_UP)
     )
     m_caretColumn = -1; // make caretColumn invalid
   
@@ -1129,6 +1134,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 #ifdef WXK_NEXT
   case WXK_NEXT:
 #endif
+#ifdef WXK_NUMPAD_NEXT
+  case WXK_NUMPAD_NEXT:
+#endif
   case WXK_DOWN:
     SaveValue();
     {
@@ -1164,6 +1172,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
   case WXK_PAGEUP:
 #ifdef WXK_PRIOR
   case WXK_PRIOR:
+#endif
+#ifdef WXK_NUMPAD_PRIOR
+  case WXK_NUMPAD_PRIOR:
 #endif
   case WXK_UP:
     SaveValue();

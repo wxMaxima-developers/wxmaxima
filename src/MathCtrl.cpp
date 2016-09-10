@@ -2617,6 +2617,9 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 #ifdef WXK_PRIOR
       || (event.GetKeyCode() != WXK_PRIOR)
 #endif
+#ifdef WXK_NUMPAD_PRIOR
+      || (event.GetKeyCode() != WXK_NUMPAD_PRIOR)
+#endif
       )&&
     m_activeCell->CaretAtStart()
     )
@@ -2662,8 +2665,11 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     (
       (event.GetKeyCode() == WXK_DOWN) ||
       (event.GetKeyCode() == WXK_PAGEDOWN)
-#ifdef WXK_PRIOR
+#ifdef WXK_NEXT
       || (event.GetKeyCode() != WXK_NEXT)
+#endif
+#ifdef WXK_NUMPAD_NEXT
+      || (event.GetKeyCode() != WXK_NUMPAD_NEXT)
 #endif
       )&&
       m_activeCell->CaretAtEnd()
@@ -2925,8 +2931,14 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 #ifdef WXK_PRIOR
   case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
   #endif 
-#ifdef WXK_NEXT
+#ifdef WXK_NEXT   // Is on some systems a replacement for WXK_PAGEDOWN
   case WXK_NEXT:
+#endif
+#ifdef WXK_NUMPAD_PRIOR
+  case WXK_NUMPAD_PRIOR:
+  #endif 
+#ifdef WXK_NUMPAD_NEXT
+  case WXK_NUMPAD_NEXT:
 #endif
   case WXK_PAGEDOWN:
   case WXK_WINDOWS_LEFT:
