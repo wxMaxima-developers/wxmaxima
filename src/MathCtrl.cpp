@@ -5187,6 +5187,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
 
       delete imagefile;
       wxMemoryFSHandler::RemoveFile(name);
+      delete fsfile;
     }
   }
 
