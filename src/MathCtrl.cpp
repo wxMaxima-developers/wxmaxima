@@ -5174,7 +5174,9 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
     wxString name = wxT("image");
     name << i << wxT(".*");
     name = fsystem->FindFirst(name);
-    
+
+    // Todo: Ths file remains as memory leak. But calling delete on it
+    // causes already-freed memory to be overwritten.
     wxFSFile *fsfile = fsystem->OpenFile(name);
 
     name = name.Right(name.Length() - 7);
@@ -5187,7 +5189,6 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
 
       delete imagefile;
       wxMemoryFSHandler::RemoveFile(name);
-      delete fsfile;
     }
   }
 
