@@ -4880,6 +4880,8 @@ void wxMaxima::OnClose(wxCloseEvent& event)
 #endif
   wxTheClipboard->Flush();
   CleanUp();
+  if(m_console->GetTree())
+    m_console->DestroyTree();
   Destroy();
 }
 
