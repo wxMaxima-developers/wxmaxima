@@ -136,6 +136,10 @@ wxScrolledCanvas(
 }
 
 MathCtrl::~MathCtrl() {
+  if(m_mainToolBar != NULL)
+    delete m_mainToolBar;
+  m_mainToolBar = NULL;
+  
   if (m_tree != NULL)
     DestroyTree();
   if (m_memory != NULL)

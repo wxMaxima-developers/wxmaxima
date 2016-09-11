@@ -1035,6 +1035,8 @@ void wxMaxima::CleanUp()
     m_server->Destroy();
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
+  if(m_process != NULL) delete m_process;
+  m_process = NULL;
 }
 
 ///--------------------------------------------------------------------------------

@@ -82,12 +82,30 @@ MathCell* FracCell::Copy()
 
 FracCell::~FracCell()
 {
+  if (m_open1 != NULL)
+    delete m_open1;
+  m_open1 = NULL;
+  if (m_close1 != NULL)
+    delete m_close1;
+  m_close1 = NULL;
+  if (m_open2 != NULL)
+    delete m_open2;
+  m_open2 = NULL;
+  if (m_close2 != NULL)
+    delete m_close2;
+  m_close2 = NULL;
   if (m_num != NULL)
     delete m_num;
+  m_num = NULL;
   if (m_denom != NULL)
     delete m_denom;
+  m_denom = NULL;
+  if (m_divide != NULL)
+    delete m_divide;
+  m_divide = NULL;
   if (m_next != NULL)
     delete m_next;
+  m_next = NULL;
 }
 
 void FracCell::Destroy()
@@ -100,11 +118,21 @@ void FracCell::Destroy()
   m_denom = NULL;
   m_next = NULL;
 
-  delete m_open1;
-  delete m_open2;
-  delete m_close1;
-  delete m_close2;
-  delete m_divide;
+  if(m_open1)
+    delete m_open1;
+  m_open1 = NULL;
+  if(m_open2)
+    delete m_open2;
+  m_open2 = NULL;
+  if(m_close1)
+    delete m_close1;
+  m_close1 = NULL;
+  if(m_close2)
+    delete m_close2;
+  m_close2 = NULL;
+  if(m_divide)
+    delete m_divide;
+  m_divide = NULL;
 }
 
 void FracCell::SetNum(MathCell *num)
