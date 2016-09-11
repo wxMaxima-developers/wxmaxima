@@ -140,7 +140,7 @@ MathCtrl::~MathCtrl() {
     DestroyTree();
   if (m_memory != NULL)
     delete m_memory;
-
+  
   delete m_evaluationQueue;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("ZoomFactor"),m_zoomFactor);
@@ -1948,6 +1948,14 @@ void MathCtrl::TreeUndo_ClearRedoActionList()
   }
 }
 
+void MathCtrl::TreeUndo_ClearUndoActionList()
+{
+  while(!treeUndoActions.empty())
+  {
+    TreeUndo_DiscardAction(&treeUndoActions);
+  }
+}
+
 void MathCtrl::TreeUndo_ClearBuffers()
 {
   m_currentUndoAction.Clear();
@@ -3403,6 +3411,8 @@ void MathCtrl::DestroyTree() {
   DestroyTree(m_tree);
   m_tree = m_last = NULL;
   m_lastWorkingGroup = NULL;
+  TreeUndo_ClearUndoActionList();
+  TreeUndo_ClearRedoActionList();
 }
 
 void MathCtrl::DestroyTree(MathCell* tmp) {

@@ -217,6 +217,9 @@ private:
   //! Clear the list of actions for which an undo can be undone
   void TreeUndo_ClearRedoActionList();
 
+  //! Clear the list of actions for which undo can undo
+  void TreeUndo_ClearUndoActionList();
+
   //! Remove one action ftom the action list
   void TreeUndo_DiscardAction(std::list <TreeUndoAction *> *actionList);
 
