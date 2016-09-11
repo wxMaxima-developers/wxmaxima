@@ -207,7 +207,10 @@ wxMaxima::~wxMaxima()
   }
 
   if (m_printData != NULL)
+  {
     delete m_printData;
+    m_printData = NULL;
+  }
 }
 
 
@@ -2295,9 +2298,11 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     MathPrintout printout(title);
     MathCell* copy = m_console->CopyTree();
     printout.SetData(copy);
-    if (printer.Print(this, &printout, true)) {
+    if (printer.Print(this, &printout, true))
+    {
       if (m_printData != NULL)
         delete m_printData;
+      
       m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
     }
     break;
