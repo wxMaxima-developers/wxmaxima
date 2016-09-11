@@ -2300,7 +2300,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // insert a new group cell
   GroupCell *group = new GroupCell(type, txt);
   // check how much to unfold for this type
-  if (m_hCaretPosition) {
+  if (m_hCaretPosition != NULL) {
     while (IsLesserGCType(type, m_hCaretPosition->GetGroupType())) {
       GroupCell *result = m_hCaretPosition->Unfold();
       if (result == NULL) // assumes that unfold sets hcaret to the end of unfolded cells
@@ -5535,11 +5535,15 @@ void MathCtrl::TreeUndo_LimitUndoBuffer()
 {
   
   wxConfigBase *config = wxConfig::Get();
-  long undoLimit;
+  long undoLimit = 0;
   config->Read(wxT("undoLimit"),&undoLimit);
 
   if(undoLimit == 0)
     return;
+
+  if(undoLimit < 0)
+    undoLimit = 0;
+
   while((long)treeUndoActions.size() > undoLimit)
     TreeUndo_DiscardAction(&treeUndoActions);
 }
@@ -6293,7 +6297,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   SetSelection(NULL);
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   SetActiveCell(NULL, false);
-  if(where)
+  if(where != NULL)
     wxASSERT_MSG(
       where->GetType()==MC_TYPE_GROUP,
       _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
