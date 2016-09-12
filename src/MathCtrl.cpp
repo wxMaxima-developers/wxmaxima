@@ -411,7 +411,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   m_tree->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
-  Recalculate();
+  Recalculate(where);
   m_saved = false; // document has been modified
   
   if(undoBuffer)
@@ -517,7 +517,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
     tmp->RecalculateAppended(parser);
-    Recalculate();
+    Recalculate(tmp);
 
     if(FollowEvaluation()) {
       SetSelection(NULL);
@@ -573,9 +573,14 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     ScrollToCell(CellToScrollTo);
 }
 
-void MathCtrl::Recalculate(bool force)
+void MathCtrl::Recalculate(GroupCell *start,bool force)
 {
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp;
+  
+  if(start == NULL)
+    tmp = m_tree;
+  else
+    tmp = start;
 
   if(m_tree)
     m_tree->SetCanvasSize(GetClientSize());
@@ -1054,12 +1059,12 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC)
         ToggleFoldAll(clickedInGC);
       else
         ToggleFold(clickedInGC);
-      Recalculate(true);
+      Recalculate(clickedInGC,true);
     }
     else {
       clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
       clickedInGC->ResetSize();
-      Recalculate();
+      Recalculate(clickedInGC);
       m_clickType = CLICK_TYPE_NONE; // ignore drag-select
     }
   }
@@ -1093,7 +1098,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_switchDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
-          Recalculate();
+          Recalculate(clickedInGC);
         Refresh();
         return;
       }
@@ -2236,7 +2241,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   if (m_workingGroup->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(true);
+    Recalculate(m_workingGroup,true);
   }
 
   // If we still haven't a cell to put the answer in we now create one.
@@ -2317,7 +2322,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
   ScrolledAwayFromEvaluation();
-  Recalculate();
+  Recalculate(group);
   Refresh();
 }
 
@@ -2775,7 +2780,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (m_activeCell == group->GetEditable()))
       group->ResetInputLabel();
-    Recalculate();
+    Recalculate(group);
     Refresh();
   }
   else
@@ -2903,7 +2908,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
     ScrollToCaret();
 
     if (editor->GetWidth() == -1)
-      Recalculate();
+      Recalculate(editor->GetParent());
   }
   else { // can't get editor... jump over cell..
     if (top)
@@ -6424,7 +6429,7 @@ void MathCtrl::CommentSelection()
     active->CommentSelection();
     active->ResetSize();
     active->GetParent()->ResetSize();
-    Recalculate();
+    Recalculate(active->GetParent());
   }
 }
 
@@ -6635,7 +6640,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       group->ResetSize();
       m_activeCell->ResetSize();
       Recalculate();
-      Refresh();
+      Refresh(group);
     }
   }
 }
@@ -6758,7 +6763,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 
     editor->ResetSize();
     editor->GetParent()->ResetSize();
-    Recalculate();
+    Recalculate(editor->GetParent());
 
     Refresh();
   }
@@ -6821,7 +6826,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 
   editor->ResetSize();
   editor->GetParent()->ResetSize();
-  Recalculate();
+  Recalculate(editor->GetParent());
 
   Refresh();
 }
@@ -6843,7 +6848,7 @@ void MathCtrl::SetActiveCellText(wxString text)
       parent->ResetSize();
       parent->ResetData();
       parent->ResetInputLabel();
-      Recalculate();
+      Recalculate(parent);
       Refresh();
     }
   }
@@ -6862,7 +6867,7 @@ bool MathCtrl::InsertText(wxString text)
     }
     else {
       m_activeCell->InsertText(text);
-      Recalculate();
+      Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
       Refresh();
     }
   }

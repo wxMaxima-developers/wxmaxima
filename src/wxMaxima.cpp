@@ -5407,7 +5407,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_console->SetSelection(NULL,NULL);
     }
     tmp->RemoveOutput();
-    m_console->Recalculate();
+    m_console->Recalculate(tmp);
     m_console->Refresh();
   }
 

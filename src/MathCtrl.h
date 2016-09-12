@@ -669,7 +669,11 @@ public:
     the line is appended to m_last, instead.
   */
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
-  void Recalculate(bool force = false);  
+  //! Recalculate the worksheet starting with the cell start.
+  void Recalculate(GroupCell *start,bool force = false);
+  
+  void Recalculate(bool force = false) {Recalculate(m_tree,force);}
+  //! Force a full recalculation of the worksheet
   void RecalculateForce() {
     Recalculate(true);
   }
