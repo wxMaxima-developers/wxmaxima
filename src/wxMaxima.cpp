@@ -1551,6 +1551,15 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // this char by hand.
   wxmxURI.Replace("#","%231");
 
+  #ifdef  __WXMSW__
+  // Fixes a missing "///" after the "file:". This works because we always get absolute
+  // file names.
+  wxRegEx uriCorector1("^file:([a-zA-Z]):");
+  wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
+
+  uriCorector1.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+  uriCorector2.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+  #endif
   // The URI of the wxm code contained within the .wxmx file
   wxString filename = wxmxURI + wxT("#zip:content.xml");
 
@@ -5261,7 +5270,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
           index++;
         index++;
       }
-      if(text[index]!=wxT('\"')) return(_("Unterminated string."));
+      if((index<len)&&(text[index]!=wxT('\"'))) return(_("Unterminated string."));
       lastC=c;
       break;
 
