@@ -142,10 +142,14 @@ MathCtrl::~MathCtrl() {
   
   if (m_tree != NULL)
     DestroyTree();
+  m_tree = NULL;
+  
   if (m_memory != NULL)
     delete m_memory;
+  m_memory = NULL;
   
   delete m_evaluationQueue;
+  m_evaluationQueue = NULL;
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("ZoomFactor"),m_zoomFactor);
 }
