@@ -119,7 +119,8 @@ On Windows execute instead:
     make wxMaxima.win
 
 which builds the directory structure necessary for running wxMaxima.
-Alternatively
+Note that using wxWidgets 3.1.0 there seems to be the possibility that
+wxmaxima cannot load all .wxmx files on all computers. Alternatively
 
     make wxMaxima.win.zip
 
