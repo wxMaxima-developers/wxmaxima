@@ -1549,7 +1549,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // wxURI doesn't know that a "#" in a file name is a literal "#" and
   // not an anchor within the file so we have to care about url-encoding
   // this char by hand.
-  wxmxURI.Replace("#","%231");
+  wxmxURI.Replace("#","%23");
 
   #ifdef  __WXMSW__
   // Fixes a missing "///" after the "file:". This works because we always get absolute

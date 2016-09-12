@@ -1519,7 +1519,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
               }
               while((pos < end) && (m_text[pos] != wxT('\n')))
                 pos ++;
-              if(m_text[pos] == wxT('\n'))
+              if((pos < end) && (m_text[pos] == wxT('\n')))
                 pos ++;
             }
             SetSelection(start,end);
