@@ -83,6 +83,24 @@ To build wxMaxima on Linux execute
     make allmo
     sudo make install
 
+You can also try to create a .deb package instead of installing the
+program by doing a
+
+    ./configure
+    make
+    make allmo
+    checkinstall -D make install
+
+On ubuntu or debian the build prerequisites can be installed by doing
+a
+
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf imagemagick ibus-gtk ibus-gtk3
+
+beforehand or (if apt-get is configured to load the source package
+repositories and not only the binary packages) by the simpler
+
+    sudo apt-get build-dep wxmaxima
+
 To build an application bundle of wxMaxima on Mac OS X
 
     ./configure --with-wx-config=<path to wx-config>
