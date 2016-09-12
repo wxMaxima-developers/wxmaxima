@@ -64,8 +64,8 @@ Now build wxWidgets with
 You do not need to install the library with `make install`. You will
 need to specify a path to wx-config when configuring wxMaxima. There
 are two files in `build/lib/wx/config`. The correct file to use is
-`inplace-msw-ansi-release-static-3.0` on Windows and
-`inplace-mac-unicode-release-static-3.0` on Mac OS X. You will also
+`inplace-msw-ansi-release-static-3.1` on Windows and
+`inplace-mac-unicode-release-static-3.1` on Mac OS X. You will also
 need to copy the file `wxwin.m4` to `acinclude.m4` in the wxMaxima
 source directory.
 
@@ -118,14 +118,20 @@ On Windows execute instead:
     make allmo
     make wxMaxima.win
 
-which builds the directory structure necessary for running wxMaxima.
-Note that using wxWidgets 3.1.0 there seems to be the possibility that
-wxmaxima cannot load all .wxmx files on all computers. Alternatively
+which builds the directory structure necessary for running wxMaxima. Note
+that this structure might be lacking a few .dll files, depending on the
+compiler. They will be named libstdc++-6.dll and libgcc_s_sjlj-1.dll or
+similar. If configure is called the following way:
+
+    ./configure --with-wx-config=<path to wx-config> --with-hhc=<path to hhc.exe> --enable-chm --enable-fullystatic
+
+it is possible that they are already included in the resulting .exe file.
 
     make wxMaxima.win.zip
 
 will build the whole application as a zip archive whose contents is a self-contained wxMaxima
-installation that can be placed in the folder maxima was installed in.
+installation that can be placed in the folder maxima was installed in,
+again with the caveat of the .dll files.
 
 The `--enable-chm` and the `--with-hhc` are only necessary to allow the
 builder to convert the wxMaxima offline manual to a format the
