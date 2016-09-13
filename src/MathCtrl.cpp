@@ -2926,7 +2926,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
 void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   int ccode = event.GetKeyCode();
   wxString txt; // Usually we open an Editor Cell with initial content txt
-
+  
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
   if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {
     SelectWithChar(ccode);
@@ -2942,26 +2942,63 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     Animate(!AnimationRunning());
     return;
   }
-    
+  
   // Remove selection with shift+WXK_UP/WXK_DOWN
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  
+
   switch (ccode) {
-    // These are ingored
   case WXK_PAGEUP:
 #ifdef WXK_PRIOR
   case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
-  #endif 
-#ifdef WXK_NEXT   // Is on some systems a replacement for WXK_PAGEDOWN
-  case WXK_NEXT:
 #endif
 #ifdef WXK_NUMPAD_PRIOR
   case WXK_NUMPAD_PRIOR:
-  #endif 
+#endif
+  {
+    wxPoint topleft;
+    int width;
+    int height;
+    CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
+    GroupCell *CellToScrollTo = m_last;
+    GetClientSize(&width,&height);
+    while (CellToScrollTo != NULL)
+    {      
+      if(CellToScrollTo->GetRect().GetTop() < topleft.y-height)
+      {
+        break;
+      }
+      CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_previous);
+    }
+    SetHCaret(CellToScrollTo);
+    ScrollToCaret();
+    break;
+  }
+#ifdef WXK_NEXT   // Is on some systems a replacement for WXK_PAGEDOWN
+  case WXK_NEXT:
+#endif
 #ifdef WXK_NUMPAD_NEXT
   case WXK_NUMPAD_NEXT:
 #endif
   case WXK_PAGEDOWN:
+  {
+    wxPoint topleft;
+    int width;
+    int height;
+    CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
+    GroupCell *CellToScrollTo = m_tree;
+    GetClientSize(&width,&height);
+    while ((CellToScrollTo != NULL) &&((CellToScrollTo != m_last)))
+    {      
+      if(CellToScrollTo->GetRect().GetBottom() > topleft.y + 2*height)
+        break;
+      else
+        CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_next);
+    }
+    SetHCaret(CellToScrollTo);
+    ScrollToCaret();
+    break;
+  }
+  // These are ingored
   case WXK_WINDOWS_LEFT:
   case WXK_WINDOWS_RIGHT:
   case WXK_WINDOWS_MENU:
@@ -3203,7 +3240,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
 #endif
 
   // Skip all events that look like they might be hotkey invocations so they
-  // are processed by the other receipients
+  // are processed by the other recipients
   if (event.CmdDown() && !event.AltDown())
   {
     if (
@@ -3223,6 +3260,7 @@ void MathCtrl::OnChar(wxKeyEvent& event) {
     }
   }
 
+  // Forward cell creation hotkeys to the class wxMaxima
   if (event.CmdDown() && event.AltDown())
   {
     if(
@@ -5482,7 +5520,12 @@ void MathCtrl::FollowEvaluation(bool followEvaluation)
 void MathCtrl::ScrollToCell(MathCell *cell)
 {
   if (cell == NULL)
+  {
+    int view_x, view_y;    
+    GetViewStart(&view_x, &view_y);
+    Scroll(view_x,0);
     return;
+  }
 
   MathCell *tmp = cell->GetParent();
   if (tmp == NULL)
@@ -6606,7 +6649,7 @@ bool MathCtrl::CaretVisibleIs()
   }
   
 }
-
+  
 void MathCtrl::ScrollToCaret()
 {
   if(m_hCaretActive)

@@ -1544,6 +1544,10 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // open wxmx file
   wxXmlDocument xmldoc;
 
+  // We get only absolute paths so the path should start with a "/"
+  //if(!file.StartsWith(wxT("/")))
+  //  file = wxT("/") + file;
+  
   wxFileSystem fs;
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
   // wxURI doesn't know that a "#" in a file name is a literal "#" and
