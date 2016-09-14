@@ -54,7 +54,7 @@ void Bitmap::SetData(MathCell* tree,long int maxSize)
   if (m_tree != NULL)
     delete m_tree;
   m_tree = tree;
-  Layout();
+  Layout(maxSize);
 }
 
 void Bitmap::Layout(long int maxSize)
@@ -88,6 +88,7 @@ void Bitmap::Layout(long int maxSize)
 
   int width, height;
   GetMaxPoint(&width, &height);
+  std::cerr<<width*height<<"\n";
   if((maxSize < 0) || (width*height < maxSize))
   {
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
