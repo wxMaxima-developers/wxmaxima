@@ -2971,6 +2971,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     }
     SetHCaret(CellToScrollTo);
     ScrollToCaret();
+    ScrolledAwayFromEvaluation();
     break;
   }
 #ifdef WXK_NEXT   // Is on some systems a replacement for WXK_PAGEDOWN
@@ -2996,6 +2997,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     }
     SetHCaret(CellToScrollTo);
     ScrollToCaret();
+    ScrolledAwayFromEvaluation();
     break;
   }
   // These are ingored
@@ -3033,6 +3035,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         m_hCaretPositionStart = oldCell;
         m_hCaretPositionEnd = m_tree;
       }
+      ScrolledAwayFromEvaluation();
     }
     break;
     
@@ -3056,7 +3059,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         m_hCaretPositionStart = oldCell;
         m_hCaretPositionEnd = m_last;
       }
-
+      ScrolledAwayFromEvaluation();
     }
     break;
 
@@ -3076,6 +3079,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
         m_hCaretActive = false;
         return;
       }
+      ScrolledAwayFromEvaluation();
     }
     else if (m_hCaretPosition->m_next != NULL) {
       SetSelection(dynamic_cast<GroupCell*>(m_hCaretPosition->m_next));
@@ -3194,6 +3198,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     break;
     
   case WXK_RETURN:
+    ScrolledAwayFromEvaluation();
     if (m_selectionStart == NULL || m_selectionEnd == NULL)
       OpenHCaret(wxEmptyString);
     else
