@@ -1197,8 +1197,9 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
-    if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionEnd();
-    m_down = wxPoint(m_activeCell->PositionToPoint(parser,m_activeCell->GetCaretPosition()));
+    if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionStart();
+    m_down = wxPoint(m_activeCell->PositionToPoint(parser,startingChar));
+    m_activeCell->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
 
