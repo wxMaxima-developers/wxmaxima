@@ -372,6 +372,8 @@ private:
     True means: A save will be issued after the user stops typing.
    */
   bool m_autoSaveIntervalExpired;
+  //! Handle pinch-to-zoom-events
+  void OnMouseMagnify(wxMouseEvent& event);
   void OnMouseExit(wxMouseEvent& event);
   void OnMouseEnter(wxMouseEvent& event);
   /*! Is called by wxWidgets when it wants to redraw the console.

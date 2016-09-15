@@ -1359,6 +1359,13 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
 }
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
+
+  // If the mouse key was released on a different screen than the one
+  // the application is on we might have missed the mouse button release
+  // event.
+  if(!event.Dragging())
+    OnMouseLeftUp(event);
+  
   if (m_tree == NULL || !m_leftDown)
     return;
   m_mouseDrag = true;
@@ -3374,6 +3381,17 @@ void MathCtrl::OnMouseExit(wxMouseEvent& event) {
     m_timer.Start(200, true);
   }
 }
+
+#ifdef GetMagnification
+void MathCtrl::OnMouseMagnify(wxMouseEvent& event)
+{
+  m_zoomFactor += 0.1*event.GetMagnification();
+  if (m_zoomFactor > 3.0)
+    m_zoomFactor = 3;
+  if (m_zoomFactor < 0.8)
+    m_zoomFactor = .8;
+}
+#endif
 
 void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
   m_mouseOutside = false;
@@ -7114,6 +7132,9 @@ wxString MathCtrl::RTFEnd()
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
+#ifdef GetMagnification
+  EVT_MAGNIFY(MathCtrl::OnMagnify)
+#endif
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
