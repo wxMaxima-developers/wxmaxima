@@ -145,6 +145,9 @@ public:
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard(bool primary = false);
+  //! Get the start of the selection
+  int GetSelectionEnd(){return m_selectionEnd;}
+  //! Select the whole text contained in this Cell
   void SelectAll()
   {
     m_selectionStart = 0;

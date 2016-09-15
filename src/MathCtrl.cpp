@@ -1182,6 +1182,31 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     return;
   }
   
+  // Handle a shift-click when the text editor is active.
+  if ((m_activeCell != NULL) && (event.ShiftDown()))
+  {
+    
+    // We were within an input cell when the selection has started.
+    m_clickType = CLICK_TYPE_INPUT_SELECTION;
+
+    // The mouse selection was started in the currently active EditorCell
+    m_cellMouseSelectionStartedIn = m_activeCell;
+    
+    wxClientDC dc(this);
+    CellParser parser(dc);
+    
+    // Set a fake starting point for the selection that is inside the cell the selection started in.
+    int startingChar = m_activeCell->GetCaretPosition();
+    if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionEnd();
+    m_down = wxPoint(m_activeCell->PositionToPoint(parser,m_activeCell->GetCaretPosition()));
+    // Handle the mouse pointer position
+    OnMouseMotion(event);
+
+    // Did we shift-click in the currently active cell?
+
+    return;
+  }
+  
   // Handle a shift-click when the hCaret is active
   if ((m_hCaretPosition != NULL) && (event.ShiftDown()))
   {
@@ -1193,6 +1218,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
     OnMouseMotion(event);
     return;
   }
+
   
 // default when clicking
   m_clickType = CLICK_TYPE_NONE;
