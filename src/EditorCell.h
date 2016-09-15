@@ -49,18 +49,22 @@ private:
 
      - >0: the position of the cursors in characters from start
      - -1: Currently no selection is active
+
+     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
    */
   long m_selectionStart;
   /*! The end of the current selection.
 
      - >0: the position of the cursors in characters from start
      - -1: Currently no selection is active
+
+     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
    */
   long m_selectionEnd;
   /*! The currently selected string. 
 
     Since this string is defined statically it is available in every editor cell
-    for highlighting selected strings.
+    for highlighting other instances of the selected string.
   */
   static wxString m_selectionString;
   long m_oldSelectionStart;
@@ -130,10 +134,13 @@ public:
   void Reset();
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
+  //! If the cell is activated it contains a blinking cursor.
   bool ActivateCell(bool active);
   //! Return the index of the 1st char of the line containing the letter #pos.
   size_t BeginningOfLine(long pos);
+  //! Return the index of the last char of the line containing the letter #pos,
   size_t EndOfLine(long pos);
+  //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
   bool AddEnding();
   void PositionToXY(int pos, int* line, int* col);
   int XYToPosition(int x, int y);
@@ -145,9 +152,9 @@ public:
   bool CopyToClipboard();
   bool CutToClipboard();
   void PasteFromClipboard(bool primary = false);
-  //! Get the start of the selection
+  //! Get the character position the selection has been started with
   int GetSelectionStart(){return m_selectionStart;}
-  //! Get the end of the selection
+  //! Get the character position the selection has been ended with
   int GetSelectionEnd(){return m_selectionEnd;}
   //! Select the whole text contained in this Cell
   void SelectAll()
