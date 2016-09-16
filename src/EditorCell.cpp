@@ -379,8 +379,8 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    dc.GetTextExtent(wxT("gXÄy"), &charWidth, &m_charHeight);
-
+    dc.GetTextExtent(wxT("äXgy"), &charWidth, &m_charHeight);
+    m_charHeight += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     unsigned int newLinePos = 0, prevNewLinePos = 0;
     int width = 0, width1, height1;
 
@@ -415,8 +415,8 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
       width = charWidth;
 
     m_width = width + 2 * SCALE_PX(2, scale);
-    m_height = m_numberOfLines * (m_charHeight + 2 * SCALE_PX(MC_TEXT_PADDING, scale));
-    m_center = m_charHeight / 2  + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_height = m_numberOfLines * m_charHeight;
+    m_center = m_charHeight / 2;
   }
   ResetData();
 }
@@ -694,12 +694,12 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
                   point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
+                  point.y - SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #else
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                  point.y + SCALE_PX(1, scale) - m_center + caretInLine * m_charHeight,
                   point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+                  point.y - SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #endif
     }
 
