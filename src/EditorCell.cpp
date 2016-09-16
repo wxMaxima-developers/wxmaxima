@@ -379,7 +379,10 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
-    dc.GetTextExtent(wxT("äXgy"), &charWidth, &m_charHeight);
+    // Measure the text hight using characters that might extend below or above the region
+    // ordinary characters move in.
+    dc.GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
+    // We want a little bit of vertical space between two text lines (and between two labels).
     m_charHeight += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     unsigned int newLinePos = 0, prevNewLinePos = 0;
     int width = 0, width1, height1;
