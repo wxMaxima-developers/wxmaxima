@@ -1162,7 +1162,12 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
  * - if it falls between groupCells activate caret and CLICK_TYPE_GROUP_SELECTION
  * - if it falls within a groupcell investigate where did it fall (input or output)
  */
-void MathCtrl::OnMouseLeftDown(wxMouseEvent& event) {
+void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
+{
+  // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
+  CaptureMouse();
+
+  
   AnimationRunning(false);
   m_leftDown = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
@@ -1292,7 +1297,12 @@ GroupCell *MathCtrl::FirstVisibleGC()
   return NULL;
 }
 
-void MathCtrl::OnMouseLeftUp(wxMouseEvent& event) {
+void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
+{
+  // No more track the mouse when it is outside the worksheet
+  if(m_leftDown)
+    ReleaseMouse();
+
   AnimationRunning(false);
   m_leftDown = false;
   m_mouseDrag = false;
