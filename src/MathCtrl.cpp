@@ -1368,14 +1368,8 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
   }
 }
 
-void MathCtrl::OnMouseMotion(wxMouseEvent& event) {
-
-  // If the mouse key was released on a different screen than the one
-  // the application is on we might have missed the mouse button release
-  // event.
-  if(!event.Dragging())
-    OnMouseLeftUp(event);
-  
+void MathCtrl::OnMouseMotion(wxMouseEvent& event)
+{
   if (m_tree == NULL || !m_leftDown)
     return;
   m_mouseDrag = true;
