@@ -3004,7 +3004,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     int height;
     CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
     GroupCell *CellToScrollTo = m_last;
+
     GetClientSize(&width,&height);
+
+
+    // Scroll as many cells as are needed to make sure that
+    // the new cell is the upmost cell that begins on the new page. 
     while (CellToScrollTo != NULL)
     {      
       if(CellToScrollTo->GetRect().GetTop() < topleft.y-height)
@@ -3013,6 +3018,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       }
       CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_previous);
     }
+    // We want to put the cursor to the space above this cell.
+    if(CellToScrollTo != NULL)
+      CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_previous);
+    
     SetHCaret(CellToScrollTo);
     ScrollToCaret();
     ScrolledAwayFromEvaluation();
@@ -3032,6 +3041,13 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     CalcUnscrolledPosition(0,0,&topleft.x,&topleft.y);
     GroupCell *CellToScrollTo = m_tree;
     GetClientSize(&width,&height);
+
+    // Make sure we scroll at least one cell
+    if(CellToScrollTo != NULL)
+      CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_next);
+
+    // Now scroll far enough that the bottom of the cell we reach is the last
+    // bottom of a cell on the new page.
     while ((CellToScrollTo != NULL) &&((CellToScrollTo != m_last)))
     {      
       if(CellToScrollTo->GetRect().GetBottom() > topleft.y + 2*height)
