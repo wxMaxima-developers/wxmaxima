@@ -617,9 +617,9 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_history_next, _("Next Command\tAlt-Down"),
                      _("Recall next command from history"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(MathCtrl::popid_merge_cells, _("Merge Cells"),
+  m_CellMenu->Append(MathCtrl::popid_merge_cells, _("Merge Cells\tCtrl-M"),
                      _("Merge the text from two input cells into one"), wxITEM_NORMAL);
-  m_CellMenu->Append(MathCtrl::popid_divide_cell, _("Divide Cell"),
+  m_CellMenu->Append(MathCtrl::popid_divide_cell, _("Divide Cell\tCtrl-D"),
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
