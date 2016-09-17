@@ -2492,7 +2492,14 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
     {
       if(left < 1)
         break;
-      if(m_text.GetChar(left-2) != wxT('\\'))
+
+      // An escaped non-alphanumeric character and a dot inside a number are part of a word.
+      if((m_text.GetChar(left-2) != wxT('\\'))&&
+         !(
+           (m_text.GetChar(left-1)==wxT('.'))&&
+           ((IsNum(m_text.GetChar(left-2))||(IsNum(m_text.GetChar(left)))))
+           )
+        )
         break;
     }
     left--;
@@ -2502,6 +2509,19 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   {
     while (right < (signed)m_text.length() )
     {
+      // A dot inside a number is part of a word.
+      if(m_text.GetChar(right) == wxT('.'))
+      {
+        if(
+          ((right>0)&&(IsNum(m_text.GetChar(right-1))))||
+          ((right<(signed)m_text.length()-1)&&(IsNum(m_text.GetChar(right+1))))
+          )
+        {
+          right++;
+          continue;
+        }
+      }
+      // An escaped non-alphanumeric character is part of a word.
       if(m_text.GetChar(right) == wxT('\\'))
         {
          right +=2;
@@ -2764,7 +2784,7 @@ bool EditorCell::IsAlpha(wxChar ch)
 
 bool EditorCell::IsNum(wxChar ch)
 {
-  if (ch >= '0' && ch <= '9')
+  if ((ch >= '0' && ch <= '9'))
     return true;
 
   return false;
@@ -3021,7 +3041,7 @@ void EditorCell::StyleText()
           m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
-      if(isdigit(token[0]))
+      if(isdigit(token[0])||((token[0]==wxT('.'))&&(nextChar>=wxT('0'))&&(nextChar<=wxT('9'))))
       {
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
         continue;
