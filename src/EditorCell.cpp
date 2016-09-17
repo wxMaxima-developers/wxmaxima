@@ -2420,19 +2420,52 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   return true;
 }
 
-// DivideAtCaret
-// returns the string from caret to end and
-// modifies the m_text so it contains only the string
-// from beginning to caret
-// Used for 'Divide Cell', called from MathCtrl
 wxString EditorCell::DivideAtCaret()
 {
   wxString original = m_text;
   m_containsChanges = true;
-  SetValue(m_text.SubString(0, m_positionOfCaret - 1));
+  wxString newText = m_text.SubString(0, m_positionOfCaret - 1);
+  
+  // Remove an eventual newline from the end of the old cell
+  // that would appear if the cell is divided at the beginning of a line.
+  if(newText.Length()>0)
+  {
+    // Search for the end of whitespace at the end of the new cell
+    size_t whiteSpaceEnd=newText.Length() - 1;
+    while((whiteSpaceEnd<newText.Length())&&
+          (
+            (newText[whiteSpaceEnd]==wxT(' '))||
+            (newText[whiteSpaceEnd]==wxT('\t'))
+            )
+      )
+      whiteSpaceEnd--;
+
+    if(newText[whiteSpaceEnd]==wxT('\n'))
+      newText=newText.SubString(0,whiteSpaceEnd-1);
+  }
+  
+  SetValue(newText);
   ResetSize();
   GetParent()->ResetSize();
-  return original.SubString(m_positionOfCaret, original.Length());
+  wxString retval=original.SubString(m_positionOfCaret, original.Length());
+  // Remove an eventual newline from the beginning of a new cell
+  // that would appear if the cell is divided at the end of a line.
+  if(retval.Length()>0)
+    {
+      // Search for the end of whitespace at the beginning of the new cell
+     size_t whiteSpaceEnd=0;
+      while((whiteSpaceEnd<retval.Length())&&
+            (
+              (retval[whiteSpaceEnd]==wxT(' '))||
+              (retval[whiteSpaceEnd]==wxT('\t'))
+              )
+        )
+        whiteSpaceEnd++;
+
+      if(retval[whiteSpaceEnd]==wxT('\n'))
+        retval=retval.SubString(whiteSpaceEnd+1,retval.Length());
+    }
+    return retval;
 }
 
 

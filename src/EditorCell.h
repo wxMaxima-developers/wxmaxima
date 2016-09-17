@@ -231,6 +231,12 @@ public:
   void Redo();
   //! Save the current contents of this cell in the undo buffer.
   void SaveValue();
+  /*! DivideAtCaret
+    Returns the string from caret to end and
+    modifies the m_text so it contains only the string
+    from beginning to caret
+    Used for 'Divide Cell', called from MathCtrl
+  */
   wxString DivideAtCaret();
   void CommentSelection();
   void ClearUndo();
