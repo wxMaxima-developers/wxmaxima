@@ -1312,7 +1312,8 @@ void GroupCell::Hide(bool hide) {
     GetEditable()->SetFirstLineOnly(m_hide);
 
   // Don't keep cached versions of scaled images around if they aren't visible at all.
-  GetLabel()->ClearCacheList();
+  if(GetLabel())
+    GetLabel()->ClearCacheList();
 
   ResetSize();
   GetEditable()->ResetSize();
