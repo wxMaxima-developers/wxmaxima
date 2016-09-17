@@ -1164,12 +1164,18 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
-  // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
-  CaptureMouse();
 
   
   AnimationRunning(false);
-  m_leftDown = true;
+
+  if(!m_leftDown)
+  {
+    // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
+    CaptureMouse();
+    
+    m_leftDown = true;
+  }
+  
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
   if (m_tree == NULL)
@@ -7141,6 +7147,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
 #endif
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
+  EVT_MOUSE_CAPTURE_LOST(MathCtrl::OnMouseCaptureLost)
   EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
   EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
   EVT_RIGHT_DOWN(MathCtrl::OnMouseRightDown)
