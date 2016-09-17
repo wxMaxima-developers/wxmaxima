@@ -1084,7 +1084,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     EvaluationQueueLength(0);
     bool open = false;
     wxConfig::Get()->Read(wxT("openHCaret"), &open);
-    if (open)
+    if ((open)&&(m_console->GetActiveCell() != NULL))
       m_console->OpenNextOrCreateCell();
   }
   else
@@ -1337,7 +1337,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     {
       bool open = false;
       wxConfig::Get()->Read(wxT("openHCaret"), &open);
-      if (open)
+      if ((open)&&(m_console->GetActiveCell() != NULL))
         m_console->OpenNextOrCreateCell();
     }
   }
