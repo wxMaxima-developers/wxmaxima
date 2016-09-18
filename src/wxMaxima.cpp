@@ -2256,7 +2256,10 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
       cursorPos = m_console->GetHCaret();
       if((!m_console->HCaretActive())&&(cursorPos == m_console->GetLastCell()))
       {
-        cursorPos = m_console->FirstVisibleGC();
+        if(m_console->GetActiveCell() != NULL)
+          cursorPos=dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent());
+        else
+          cursorPos = m_console->FirstVisibleGC();
       }
       m_console->m_structure->Update(m_console->GetTree(),cursorPos);
     }
