@@ -192,10 +192,17 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
     WorksheetWords::iterator it;
     for( it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it )
     {
-      if(completions.Index(it->first) == wxNOT_FOUND)
-        completions.Add(it->first);
+      if (it->first.StartsWith(partial))
+      {
+        if(completions.Index(it->first) == wxNOT_FOUND)
+        {
+          completions.Add(it->first);
+        }
+      }
     }
   }
+
+  completions.Sort();
   
   if (perfectCompletions.Count() > 0)
     return perfectCompletions;

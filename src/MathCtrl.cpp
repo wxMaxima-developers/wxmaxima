@@ -6875,8 +6875,8 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
         if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
           m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
         
-        tmp =dynamic_cast<GroupCell*>(tmp->m_next);
       }
+      tmp =dynamic_cast<GroupCell*>(tmp->m_next);
     }
   }
   
