@@ -88,7 +88,6 @@ void Bitmap::Layout(long int maxSize)
 
   int width, height;
   GetMaxPoint(&width, &height);
-  std::cerr<<width*height<<"\n";
   if((maxSize < 0) || (width*height < maxSize))
   {
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
