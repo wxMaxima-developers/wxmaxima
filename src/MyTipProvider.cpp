@@ -60,6 +60,7 @@ wxString MyTipProvider::GetTip()
   {
     tip = tip.BeforeLast(wxT('\"'));
     tip.Replace(wxT("\\\""), wxT("\""));
+    tip.Replace(wxT("\\n"), wxT("\n"));
     tip = wxGetTranslation(tip);
   }
 

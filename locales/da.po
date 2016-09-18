@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-17 23:42+0200\n"
+"POT-Creation-Date: 2016-09-18 10:13+0200\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -417,6 +417,12 @@ msgstr ""
 "blot gemmer dine input, output og tekst bemærkninger, men også output fra "
 "dine beregninger. Vælg 'wxMaxima XML document' som filtype, når du gemmer "
 "dit dokument. "
+
+#: ../data/tips.txt:31
+msgid ""
+"A plot to be embedded into the work sheet by preceding its name with a \"wx"
+"\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc."
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1430
 msgid "A symbol from the configuration dialogue"
@@ -1504,6 +1510,13 @@ msgstr "Ligning(er):"
 msgid "Equation:"
 msgstr "Ligning:"
 
+#: ../data/tips.txt:37
+msgid ""
+"Equations have several advantages over functions. For example they can be "
+"manipulated with factor(), expand() and similar functions. They can easily "
+"be introduced one into another. Also they are always printed out as 2D maths."
+msgstr ""
+
 #: ../src/wxMaxima.cpp:3538
 msgid "Equations:"
 msgstr "Ligninger:"
@@ -2161,6 +2174,13 @@ msgid ""
 "displayed abbreviated by an ellipsis."
 msgstr ""
 
+#: ../data/tips.txt:34
+msgid ""
+"If the \"Autosave\" functionality is enabled in the configuration dialogue "
+"wxMaxima acts like mobile apps that backup the file every few minutes and "
+"save it on closing."
+msgstr ""
+
 #: ../src/ConfigDialogue.cpp:180
 msgid ""
 "If this number of minutes has elapsed after the last save of the file, the "
@@ -2197,6 +2217,23 @@ msgstr ""
 #: ../src/wxMaxima.cpp:5602
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Billedfiler  (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
+
+#: ../data/tips.txt:33
+msgid ""
+"In order to visualize how a parameter affects an equation wxmaxima provides "
+"commands that start with \"with_slider_\" and that create animations. One "
+"example would be:.\n"
+"\n"
+"    with_slider_draw(\n"
+"        a,[-16,-9,-4,-2,0,1,2,3,4,5,6l7],\n"
+"        title=concat(\"a=\",i),\n"
+"        grid=true,\n"
+"        explicit(\n"
+"            x^2-a*x,\n"
+"            x,-10,10\n"
+"        )\n"
+"    );"
+msgstr ""
 
 #: ../src/ConfigDialogue.cpp:187
 msgid ""
@@ -2425,11 +2462,18 @@ msgstr "In&vers Laplace Transformation..."
 msgid "Iota"
 msgstr ""
 
+#: ../data/tips.txt:35
+msgid ""
+"It is possible to add custom symbols to the \"symbols\" sidebar by copying "
+"them into the respective field in the configuration dialogue."
+msgstr ""
+
 #: ../data/tips.txt:27
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
-"export a file in the .mac format."
+"export a file in the .mac or to save it in the .wxm format. Note, though, "
+"that a few special characters like the "
 msgstr ""
 
 #: ../src/ConfigDialogue.cpp:565
@@ -2704,6 +2748,35 @@ msgstr ""
 #, fuzzy
 msgid "Maxima version: "
 msgstr "Maxima-spørgsmål"
+
+#: ../data/tips.txt:38
+msgid ""
+"Maxima's \"at\" function allows to access to arbitrary variables in a list "
+"of results:\n"
+"\n"
+"    g1:a*x+y=0;\n"
+"    g2:b*y+x*x=1;\n"
+"    solve([g1,g2],[a,b]);\n"
+"    %[1];\n"
+"    result_b:b=at(b,%);\n"
+msgstr ""
+
+#: ../data/tips.txt:36
+msgid ""
+"Maxima's strengths are manipulating equations and in symbolic calculations. "
+"It therefore makes sense to use functions (as opposed to equations with "
+"labels) sparingly and to keep the actual values of variables in a list, "
+"instead of directly assigning them values. An example session that does do "
+"so would be:\n"
+"\n"
+"/* We keep the actual values in a list so we can use them lateron */\n"
+"    Values:[a=10,c=100];\n"
+"    Pyth:a^2+b^2=c^2;\n"
+"    solve(%,b);\n"
+"    result:%[2];\n"
+"    at(result,Values);\n"
+"    float(%);\n"
+msgstr ""
 
 #: ../src/ConfigDialogue.cpp:419
 msgid "Maximum displayed number of digits:"
@@ -3971,12 +4044,13 @@ msgstr "Tekstcelle baggrund"
 msgid "Text equal to selection"
 msgstr "Klip markering"
 
-#: ../data/tips.txt:30
+#: ../data/tips.txt:39
 msgid ""
-"The \"Copy as MathML\" feature allows to copy equations in a format MS Word "
-"will automatically recognize as \"formula editor object\". Other word "
-"processor's formula editors have an import functionality for the MathML "
-"format, too."
+"The \"at\" function allows to introduce one equation into another:\n"
+"\n"
+"    ohm:U=R*I;\n"
+"    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
+"    result:at(ohm,r_parallel);\n"
 msgstr ""
 
 #: ../src/ConfigDialogue.cpp:184
@@ -4006,6 +4080,12 @@ msgid ""
 "the configuration dialogue should fix it."
 msgstr ""
 
+#: ../data/tips.txt:30
+msgid ""
+"The load() command of Maxima versions >5.38 is able to load .wxm files as "
+"library of maxima's commands."
+msgstr ""
+
 #: ../src/wxMaximaFrame.cpp:946
 msgid "The offline manual of maxima"
 msgstr ""
@@ -4015,6 +4095,22 @@ msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it."
+msgstr ""
+
+#: ../data/tips.txt:40
+msgid ""
+"The rhs() (\"right hand side\") command allows to retrieve the result of an "
+"equation in exactly the format a function would have:\n"
+"\n"
+"    Values:[\n"
+"        /* m=1.2 tons */\n"
+"        m=1.2*10^3,\n"
+"        /* 100 km/h*/\n"
+"        v=100*10^3/(60*60)\n"
+"    ];\n"
+"    Energy:W=1/2*m*v^2;\n"
+"    at(Energy,Values);\n"
+"    W_mech:rhs(%);"
 msgstr ""
 
 #: ../data/tips.txt:11
@@ -4998,6 +5094,14 @@ msgid ""
 msgstr ""
 "wxMaxima er en grafisk brugerflade for computer algebra systemet MAXIMA "
 "baseret på wxWidgets."
+
+#: ../data/tips.txt:32
+msgid ""
+"wxMaxima provides the \"table_form\" command that shows lists in an "
+"alternative form. One example would be:\n"
+"\n"
+"table_form([1,2,3,4,5]);"
+msgstr ""
 
 #: ../src/ConfigDialogue.cpp:411
 msgid "x"
