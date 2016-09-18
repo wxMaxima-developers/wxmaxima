@@ -745,7 +745,7 @@ wxString TextCell::ToTeX()
     }
     else if (GetStyle() == TS_DEFAULT)
     {
-      if(text.Length() > 2)
+      if((text.Length() > 2)&&(text!=wxT("\\,")))
         text = wxT("\\mbox{") + text + wxT("}");
     }
   }
@@ -767,8 +767,8 @@ wxString TextCell::ToTeX()
       if(((m_forceBreakLine)||(m_breakLine)))
         //text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\")+text;
-      if(GetStyle() != TS_DEFAULT)
-        text.Replace(wxT(" "), wxT("\\, "));
+/*      if(GetStyle() != TS_DEFAULT)
+        text.Replace(wxT(" "), wxT("\\, "));*/
     }
   }
 
