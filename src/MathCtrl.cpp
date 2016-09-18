@@ -6868,10 +6868,15 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     GroupCell *tmp = m_tree;
     while(tmp != NULL)
     {
-      if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
-        m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
-
-      tmp =dynamic_cast<GroupCell*>(tmp->m_next);
+      // Don't collect the current word as possible autocompletion.
+      if(tmp != m_activeCell->GetParent())
+      {
+        // Only collect words from Code Cells.
+        if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
+          m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
+        
+        tmp =dynamic_cast<GroupCell*>(tmp->m_next);
+      }
     }
   }
   
