@@ -43,6 +43,8 @@
 class EditorCell : public MathCell
 {
 private:
+  //! A list of all potential autoComplete targets within this cell
+  wxArrayString m_wordList;
   //! Draw a box that marks the current selection
   void MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style);
   /*! The start of the current selection.
@@ -76,6 +78,8 @@ private:
    */
   bool m_changeAsterisk;
 public:
+  //! A list of words that might be applicable to the autocomplete function.
+  wxArrayString GetWordList(){return m_wordList;}
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged;
   //! The constructor

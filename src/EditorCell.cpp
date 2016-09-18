@@ -2949,6 +2949,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 
 void EditorCell::StyleText()
 {
+  m_wordList.Clear();
   m_styledText.clear();
 
   if(m_type == MC_TYPE_INPUT)
@@ -3117,13 +3118,22 @@ void EditorCell::StyleText()
               token == wxT("false"))
             m_styledText.push_back(token);
           else if(nextChar==wxT('('))
+          {
             m_styledText.push_back(StyledText(TS_CODE_FUNCTION,token));
+            m_wordList.Add(token);
+          }
           else
+          {
             m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
+            m_wordList.Add(token);
+          }
           continue;
         }
         else
+        {
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE,token));
+          m_wordList.Add(token);
+        }
       }
       m_styledText.push_back(StyledText(token));
     }
@@ -3149,6 +3159,7 @@ void EditorCell::StyleText()
     }
     m_styledText.push_back(StyledText(token));
   }
+  m_wordList.Sort();
 }
 
 

@@ -6860,6 +6860,21 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   
   wxString partial = editor->GetSelectionString();
 
+  if(type == AutoComplete::command)
+  {
+    // Update the list of words that might not be defined as maxima function or variable
+    // but that still appear on the workSheet.
+    m_autocomplete.ClearWorksheetWords();
+    GroupCell *tmp = m_tree;
+    while(tmp != NULL)
+    {
+      if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
+        m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
+
+      tmp =dynamic_cast<GroupCell*>(tmp->m_next);
+    }
+  }
+  
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
   m_completions.Sort();
   m_autocompleteTemplates = (type == AutoComplete::tmplte);

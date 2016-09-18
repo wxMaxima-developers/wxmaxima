@@ -36,6 +36,21 @@ AutoComplete::AutoComplete()
   m_args.Compile(wxT("[[]<([^>]*)>[]]"));
 }
 
+void AutoComplete::ClearWorksheetWords()
+{
+  m_worksheetWords.clear();
+}
+
+void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
+{
+  wxArrayString::iterator it;
+    for( it = wordlist.begin(); it != wordlist.end(); ++it )
+    {
+      if(m_worksheetWords[*it]!=1)
+        m_worksheetWords[*it]=1;
+    }
+}
+
 bool AutoComplete::LoadSymbols(wxString file)
 {
   if (!wxFileExists(file))
@@ -145,7 +160,8 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
 
   wxASSERT_MSG((type>=command)&&(type<=unit),_("Bug: Autocompletion requested for unknown type of item."));
   
-  if (type != tmplte) {
+  if (type != tmplte)
+  {
     for (size_t i=0; i<m_wordList[type].GetCount(); i++)
     {
       if (m_wordList[type][i].StartsWith(partial) &&
@@ -153,8 +169,8 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
         completions.Add(m_wordList[type][i]);
     }
   }
-
-  else {
+  else
+  {
     for (size_t i=0; i<m_wordList[type].GetCount(); i++)
     {
       wxString templ = m_wordList[type][i];
@@ -169,6 +185,18 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
     }
   }
 
+  // Add a list of words that were definied on the work sheet but that aren't
+  // defined as maxima commands or functions.
+  if (type == command)
+  {
+    WorksheetWords::iterator it;
+    for( it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it )
+    {
+      if(completions.Index(it->first) == wxNOT_FOUND)
+        completions.Add(it->first);
+    }
+  }
+  
   if (perfectCompletions.Count() > 0)
     return perfectCompletions;
   return completions;
