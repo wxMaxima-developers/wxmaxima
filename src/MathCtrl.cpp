@@ -6199,6 +6199,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
   TreeUndo_MergeSubsequentEdits(false);
   UpdateMLast();
   UpdateTableOfContents();
+  ScrolledAwayFromEvaluation();
 }
 
 void MathCtrl::SelectAll()
@@ -6221,7 +6222,7 @@ void MathCtrl::SelectAll()
       m_hCaretActive = false;
     }
   }
-  
+  ScrolledAwayFromEvaluation();
   Refresh();
 }
 
@@ -6247,7 +6248,7 @@ void MathCtrl::DivideCell()
   OpenHCaret(newcellstring, gctype);
   if (m_activeCell)
     m_activeCell->CaretToStart();
-
+  ScrolledAwayFromEvaluation();
 }
 
 void MathCtrl::MergeCells()
@@ -6279,6 +6280,7 @@ void MathCtrl::MergeCells()
   editor->ResetSize();
   Recalculate();
   SetActiveCell(editor, true);
+  ScrolledAwayFromEvaluation();
 }
 
 void MathCtrl::OnSetFocus(wxFocusEvent& event)
