@@ -1,6 +1,7 @@
 Current:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
     load .wxm files like it would load .mac files.
+  * Better detection and diagnosis for maxima process that terminate unexpectedly
   * Errors in xml from maxima or in the output cells of .wxmx files now result in error
     messages, not in silently discarded math elements.
   * Integrals should now always be saved correcly.
