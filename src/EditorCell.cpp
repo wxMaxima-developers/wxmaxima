@@ -1140,6 +1140,46 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 #ifdef WXK_NUMPAD_NEXT
   case WXK_NUMPAD_NEXT:
 #endif
+    SaveValue();
+    {
+      if (event.ShiftDown())
+      {
+        if (m_selectionStart == -1)
+        {
+          SetSelection(m_positionOfCaret,m_positionOfCaret);
+          m_lastSelectionStart = m_positionOfCaret;
+        }
+      }
+      else
+        ClearSelection();
+      int column, line;
+      PositionToXY(m_positionOfCaret, &column, &line); // get current line
+      if (m_caretColumn > -1)
+        column = m_caretColumn;
+      else
+        m_caretColumn = column;
+
+      if (line < m_numberOfLines-1) // can we go down ?
+      {
+        int scrolllength = m_canvasSize.y - m_charHeight;
+        
+        while((line < m_numberOfLines-1) && (scrolllength > 0))
+        {
+          line++;
+          m_positionOfCaret = XYToPosition(column, line);
+          scrolllength -= m_charHeight;
+        }
+      }
+      else { // we can't go down. move caret to the end
+        m_positionOfCaret = (signed)m_text.Length();
+        m_caretColumn = -1; // make caretColumn invalid
+      }
+
+      if (event.ShiftDown())
+        SetSelection(m_selectionStart,m_positionOfCaret);
+    }
+    break;
+
   case WXK_DOWN:
     SaveValue();
     {
@@ -1179,6 +1219,47 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 #ifdef WXK_NUMPAD_PRIOR
   case WXK_NUMPAD_PRIOR:
 #endif
+    SaveValue();
+    {
+      if (event.ShiftDown())
+      {
+        if (m_selectionStart == -1)
+        {
+          SetSelection(m_positionOfCaret,m_positionOfCaret);
+          m_lastSelectionStart = m_positionOfCaret;
+        }
+      }
+      else
+        ClearSelection();
+
+      int column, line;
+      PositionToXY(m_positionOfCaret, &column, &line); // get current line
+      if (m_caretColumn > -1)
+        column = m_caretColumn;
+      else
+        m_caretColumn = column;
+
+      if (line > 0) // can we go up?
+      {
+        int scrolllength = m_canvasSize.y - m_charHeight;
+        
+        while((line > 0) && (scrolllength > 0))
+        {
+          line--;
+          m_positionOfCaret = XYToPosition(column, line);
+          scrolllength -= m_charHeight;
+        }
+      }
+      else { // we can't move up, move to the beginning
+        m_positionOfCaret = 0;
+        m_caretColumn = -1; // make caretColumn invalid
+      }
+
+      if (event.ShiftDown())
+        SetSelection(m_selectionStart,m_positionOfCaret);
+    }
+    break;
+
   case WXK_UP:
     SaveValue();
     {
