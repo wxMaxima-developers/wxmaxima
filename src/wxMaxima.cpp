@@ -5358,7 +5358,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     }
     return ;
   }
-
+  
   // Initialize maxima if necessary.
   if (!m_variablesOK) {
     m_variablesOK = true;
@@ -5448,6 +5448,13 @@ void wxMaxima::TryEvaluateNextInQueue()
       }
       
       SendMaxima(text, true);
+
+      text.Trim(false);
+      if(!m_hasEvaluatedCells)
+      {
+        if(text.StartsWith(wxT(":lisp")))
+          SetStatusText(_("A \":lisp\" as the first command might fail to send a \"finished\" signal."));
+      }
 
       // Mark the current maxima process as "no more in its initial condition".
       m_hasEvaluatedCells = true;

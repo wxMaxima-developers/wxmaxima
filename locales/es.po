@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-18 15:11+0200\n"
+"POT-Creation-Date: 2016-09-21 22:15+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <es@li.org>\n"
@@ -76,7 +76,7 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Gráficos) "
 
-#: ../src/EditorCell.cpp:2967 ../src/EditorCell.cpp:3149
+#: ../src/EditorCell.cpp:3048 ../src/EditorCell.cpp:3230
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -401,6 +401,11 @@ msgstr "1/2"
 #: ../src/wxMaxima.cpp:4572
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
+
+#: ../src/wxMaxima.cpp:5456
+msgid ""
+"A \":lisp\" as the first command might fail to send a \"finished\" signal."
+msgstr ""
 
 #: ../data/tips.txt:13
 msgid ""
@@ -754,7 +759,7 @@ msgstr ""
 "Fallo: Intento de unir celdas individuales en una región del búffer de "
 "deshacer, pero no hay otras celdas entre ellas."
 
-#: ../src/MathCtrl.cpp:6431
+#: ../src/MathCtrl.cpp:6439
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -836,11 +841,11 @@ msgstr "Calcular productos"
 msgid "Calculate sums"
 msgstr "Calcular sumas"
 
-#: ../src/wxMaxima.cpp:5791
+#: ../src/wxMaxima.cpp:5798
 msgid "Can not connect to the web server."
 msgstr "No se puede acceder al servidor web."
 
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:5849
 msgid "Can not download version info."
 msgstr "No se puede descargar la versión."
 
@@ -856,7 +861,7 @@ msgstr "No se puede descargar la versión."
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1396,7 +1401,7 @@ msgstr "Dividir números o polinomios"
 msgid "Divide this input cell into two cells"
 msgstr "Dividir esta celda de entrada en dos celdas"
 
-#: ../src/wxMaxima.cpp:5878
+#: ../src/wxMaxima.cpp:5885
 msgid "Do you want to save the changes you made in the document \""
 msgstr "¿Quiere guardar los cambios hechos al documento \""
 
@@ -1422,7 +1427,7 @@ msgstr ""
 "dificulta a los sistemas de control de versiones (git, svn) detectar "
 "diferencias de forma efectiva."
 
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Don't save"
 msgstr "No guardar"
 
@@ -1533,8 +1538,8 @@ msgstr "Ecuaciones:"
 #: ../src/ConfigDialogue.cpp:902 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1453
 #: ../src/wxMaxima.cpp:1467 ../src/wxMaxima.cpp:1618 ../src/wxMaxima.cpp:1631
 #: ../src/wxMaxima.cpp:1641 ../src/wxMaxima.cpp:1664 ../src/wxMaxima.cpp:2032
-#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5791
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5798
+#: ../src/wxMaxima.cpp:5849
 msgid "Error"
 msgstr "Error"
 
@@ -2223,7 +2228,7 @@ msgstr ""
 msgid "Image"
 msgstr "Imagen"
 
-#: ../src/wxMaxima.cpp:5605
+#: ../src/wxMaxima.cpp:5612
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Archivos gráficos (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2308,7 +2313,7 @@ msgstr "Nueva celda de te&xto\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "In&sertar celda\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5603
+#: ../src/wxMaxima.cpp:5610
 msgid "Insert Image"
 msgstr "Insertar imagen"
 
@@ -3323,7 +3328,7 @@ msgstr "Reducir (tr)"
 msgid "Reduce trigonometric expression"
 msgstr "Simplificar expresión trigonométrica"
 
-#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5457
+#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5464
 msgid "Refusing to send cell to maxima: "
 msgstr "Rechazado enviar una celda a Maxima: "
 
@@ -3401,7 +3406,7 @@ msgid "Sample:"
 msgstr "Muestra:"
 
 #: ../src/ConfigDialogue.cpp:766 ../src/ToolBar.cpp:122
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Save"
 msgstr "Guardar"
 
@@ -4301,7 +4306,7 @@ msgstr "Paréntesis no cerrado"
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "Paréntesis mal pareado o ha escrito ; o $ antes de tiempo"
 
-#: ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5842
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4351,7 +4356,7 @@ msgstr "Comentario sin terminar"
 msgid "Unterminated string."
 msgstr "Cadena de texto sin terminar."
 
-#: ../src/wxMaxima.cpp:5820 ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5834 ../src/wxMaxima.cpp:5842
 msgid "Upgrade"
 msgstr "Actualizar"
 
@@ -4493,7 +4498,7 @@ msgstr ""
 "Envuelve ecuaciones exportadas con \"copiar como LaTeX\" entre \\[ and \\] "
 "como marcadores de ecuaciones"
 
-#: ../src/MathCtrl.cpp:6660
+#: ../src/MathCtrl.cpp:6668
 msgid "Wrapped search"
 msgstr ""
 
@@ -4581,7 +4586,7 @@ msgstr ""
 "horizontal, para luego operar sobre la selección. Esto será útil cuando se "
 "quieran borrar o evaluar varias celdas a un tiempo."
 
-#: ../src/wxMaxima.cpp:5817
+#: ../src/wxMaxima.cpp:5824
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4592,11 +4597,11 @@ msgstr ""
 "\n"
 "Selecciónese OK para acceder a la página de wxMaxima."
 
-#: ../src/wxMaxima.cpp:5882
+#: ../src/wxMaxima.cpp:5889
 msgid "Your changes will be lost if you don't save them."
 msgstr "Se perderán los cambios si no se guardan."
 
-#: ../src/wxMaxima.cpp:5827
+#: ../src/wxMaxima.cpp:5834
 msgid "Your version of wxMaxima is up to date."
 msgstr "La versión de wxMaxima está actualizada"
 
@@ -4620,11 +4625,11 @@ msgstr "Disminuir 10%"
 msgid "Zoom out 10%"
 msgstr "Ampliar 10%"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
 msgid "[ unsaved ]"
 msgstr "[no guardado]"
 
-#: ../src/wxMaxima.cpp:5661
+#: ../src/wxMaxima.cpp:5668
 msgid "[ unsaved* ]"
 msgstr "[no guardado*]"
 
@@ -4947,7 +4952,7 @@ msgstr "a la tercera potencia"
 msgid "union"
 msgstr "unión"
 
-#: ../src/wxMaxima.cpp:5864
+#: ../src/wxMaxima.cpp:5871
 msgid "unsaved"
 msgstr "no guardado"
 
@@ -4970,8 +4975,8 @@ msgstr "Épsilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
-#: ../src/wxMaxima.cpp:5661 ../src/wxMaxima.cpp:5670 ../src/wxMaxima.cpp:5673
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
+#: ../src/wxMaxima.cpp:5668 ../src/wxMaxima.cpp:5677 ../src/wxMaxima.cpp:5680
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

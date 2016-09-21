@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-18 15:11+0200\n"
+"POT-Creation-Date: 2016-09-21 22:15+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:2967 ../src/EditorCell.cpp:3149
+#: ../src/EditorCell.cpp:3048 ../src/EditorCell.cpp:3230
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -394,6 +394,11 @@ msgstr ""
 #: ../src/wxMaxima.cpp:4572
 msgid "<br>Lisp: "
 msgstr "<br>Lisp 版本："
+
+#: ../src/wxMaxima.cpp:5456
+msgid ""
+"A \":lisp\" as the first command might fail to send a \"finished\" signal."
+msgstr ""
 
 #: ../data/tips.txt:13
 msgid ""
@@ -717,7 +722,7 @@ msgid ""
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6431
+#: ../src/MathCtrl.cpp:6439
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -796,11 +801,11 @@ msgstr "計算乘積"
 msgid "Calculate sums"
 msgstr "計算加總"
 
-#: ../src/wxMaxima.cpp:5791
+#: ../src/wxMaxima.cpp:5798
 msgid "Can not connect to the web server."
 msgstr "無法連線至網路伺服器。"
 
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:5849
 msgid "Can not download version info."
 msgstr "無法下載版本資訊。"
 
@@ -816,7 +821,7 @@ msgstr "無法下載版本資訊。"
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Cancel"
 msgstr "取消"
 
@@ -1355,7 +1360,7 @@ msgstr "將數字或多項式相除"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5878
+#: ../src/wxMaxima.cpp:5885
 msgid "Do you want to save the changes you made in the document \""
 msgstr "您是否想儲存於此文件中的變更： \""
 
@@ -1378,7 +1383,7 @@ msgid ""
 "differences."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Don't save"
 msgstr "不要儲存"
 
@@ -1491,8 +1496,8 @@ msgstr "方程式："
 #: ../src/ConfigDialogue.cpp:902 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1453
 #: ../src/wxMaxima.cpp:1467 ../src/wxMaxima.cpp:1618 ../src/wxMaxima.cpp:1631
 #: ../src/wxMaxima.cpp:1641 ../src/wxMaxima.cpp:1664 ../src/wxMaxima.cpp:2032
-#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5791
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5798
+#: ../src/wxMaxima.cpp:5849
 msgid "Error"
 msgstr "錯誤"
 
@@ -2162,7 +2167,7 @@ msgstr ""
 msgid "Image"
 msgstr "圖片"
 
-#: ../src/wxMaxima.cpp:5605
+#: ../src/wxMaxima.cpp:5612
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "圖片檔 (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2244,7 +2249,7 @@ msgstr "插入文字單元(&T)\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "插入(單元)\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5603
+#: ../src/wxMaxima.cpp:5610
 msgid "Insert Image"
 msgstr "插入圖片"
 
@@ -3237,7 +3242,7 @@ msgstr "縮併 (三角)"
 msgid "Reduce trigonometric expression"
 msgstr "縮併三角函數數式"
 
-#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5457
+#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5464
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -3316,7 +3321,7 @@ msgid "Sample:"
 msgstr "樣本："
 
 #: ../src/ConfigDialogue.cpp:766 ../src/ToolBar.cpp:122
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Save"
 msgstr "儲存"
 
@@ -4191,7 +4196,7 @@ msgstr ""
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5842
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4238,7 +4243,7 @@ msgstr ""
 msgid "Unterminated string."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5820 ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5834 ../src/wxMaxima.cpp:5842
 msgid "Upgrade"
 msgstr "升級"
 
@@ -4370,7 +4375,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6660
+#: ../src/MathCtrl.cpp:6668
 msgid "Wrapped search"
 msgstr ""
 
@@ -4452,7 +4457,7 @@ msgstr ""
 "您可以透過滑鼠(在單元之間或左側的單元框拖曳)或鍵盤(在移動水平游標時按住Shift"
 "鍵)選取多個單元，然後對所選區域操作。這在您想要刪除或評算多個單元時很有用。"
 
-#: ../src/wxMaxima.cpp:5817
+#: ../src/wxMaxima.cpp:5824
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4463,11 +4468,11 @@ msgstr ""
 "\n"
 "按「確認」至 wxMaxima 首頁。"
 
-#: ../src/wxMaxima.cpp:5882
+#: ../src/wxMaxima.cpp:5889
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果您未儲存，您所做的所有修改將遺失。"
 
-#: ../src/wxMaxima.cpp:5827
+#: ../src/wxMaxima.cpp:5834
 msgid "Your version of wxMaxima is up to date."
 msgstr "您的 wxMaxima 是最新版本"
 
@@ -4493,11 +4498,11 @@ msgstr "將顯示比例放大 10%"
 msgid "Zoom out 10%"
 msgstr "將顯示比例縮小 10%"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
 msgid "[ unsaved ]"
 msgstr "[ 未儲存 ]"
 
-#: ../src/wxMaxima.cpp:5661
+#: ../src/wxMaxima.cpp:5668
 msgid "[ unsaved* ]"
 msgstr "[ 未儲存* ]"
 
@@ -4827,7 +4832,7 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5864
+#: ../src/wxMaxima.cpp:5871
 msgid "unsaved"
 msgstr "未儲存"
 
@@ -4850,8 +4855,8 @@ msgstr "Epsilon:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
-#: ../src/wxMaxima.cpp:5661 ../src/wxMaxima.cpp:5670 ../src/wxMaxima.cpp:5673
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
+#: ../src/wxMaxima.cpp:5668 ../src/wxMaxima.cpp:5677 ../src/wxMaxima.cpp:5680
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

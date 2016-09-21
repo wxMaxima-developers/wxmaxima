@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-18 15:11+0200\n"
+"POT-Creation-Date: 2016-09-21 22:15+0200\n"
 "PO-Revision-Date: 2015-01-11 07:47+0100\n"
 "Last-Translator: Asbjørn Apeland <asap openmailbox org>\n"
 "Language-Team: norwegian\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:2967 ../src/EditorCell.cpp:3149
+#: ../src/EditorCell.cpp:3048 ../src/EditorCell.cpp:3230
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -398,6 +398,11 @@ msgstr ""
 #: ../src/wxMaxima.cpp:4572
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
+
+#: ../src/wxMaxima.cpp:5456
+msgid ""
+"A \":lisp\" as the first command might fail to send a \"finished\" signal."
+msgstr ""
 
 #: ../data/tips.txt:13
 msgid ""
@@ -723,7 +728,7 @@ msgid ""
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6431
+#: ../src/MathCtrl.cpp:6439
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -801,11 +806,11 @@ msgstr "Kalkuler produkter"
 msgid "Calculate sums"
 msgstr "Kalkuler summer"
 
-#: ../src/wxMaxima.cpp:5791
+#: ../src/wxMaxima.cpp:5798
 msgid "Can not connect to the web server."
 msgstr "Kan ikke koble til web server."
 
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:5849
 msgid "Can not download version info."
 msgstr "Kan ikke laste ned versjonsinformasjon."
 
@@ -821,7 +826,7 @@ msgstr "Kan ikke laste ned versjonsinformasjon."
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -1361,7 +1366,7 @@ msgstr "Divider tall eller polynomer"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5878
+#: ../src/wxMaxima.cpp:5885
 msgid "Do you want to save the changes you made in the document \""
 msgstr "Vil du lagre endringene i dokumentet \""
 
@@ -1387,7 +1392,7 @@ msgstr ""
 "gjør versjonkontrollsystem som git og svn i stand til å effektivt oppdage "
 "forskjeller."
 
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Don't save"
 msgstr "Ikke lagre"
 
@@ -1500,8 +1505,8 @@ msgstr "Likninger:"
 #: ../src/ConfigDialogue.cpp:902 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1453
 #: ../src/wxMaxima.cpp:1467 ../src/wxMaxima.cpp:1618 ../src/wxMaxima.cpp:1631
 #: ../src/wxMaxima.cpp:1641 ../src/wxMaxima.cpp:1664 ../src/wxMaxima.cpp:2032
-#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5791
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5798
+#: ../src/wxMaxima.cpp:5849
 msgid "Error"
 msgstr "Feil"
 
@@ -2179,7 +2184,7 @@ msgstr ""
 msgid "Image"
 msgstr "Bilde"
 
-#: ../src/wxMaxima.cpp:5605
+#: ../src/wxMaxima.cpp:5612
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Bildefiler (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2261,7 +2266,7 @@ msgstr "Sett Inn &Tekstcelle\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "Sett Inn Celle\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5603
+#: ../src/wxMaxima.cpp:5610
 msgid "Insert Image"
 msgstr "Sett Inn Bilde"
 
@@ -3257,7 +3262,7 @@ msgstr "Reduser (tr)"
 msgid "Reduce trigonometric expression"
 msgstr "Reduser trigonometrisk uttrykk"
 
-#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5457
+#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5464
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -3336,7 +3341,7 @@ msgid "Sample:"
 msgstr "Måling:"
 
 #: ../src/ConfigDialogue.cpp:766 ../src/ToolBar.cpp:122
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Save"
 msgstr "Lagre"
 
@@ -4220,7 +4225,7 @@ msgstr ""
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5842
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4267,7 +4272,7 @@ msgstr ""
 msgid "Unterminated string."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5820 ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5834 ../src/wxMaxima.cpp:5842
 msgid "Upgrade"
 msgstr "Oppgrader"
 
@@ -4401,7 +4406,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6660
+#: ../src/MathCtrl.cpp:6668
 msgid "Wrapped search"
 msgstr ""
 
@@ -4487,7 +4492,7 @@ msgstr ""
 "Shift mens du flytter den horisontale pekeren — og betjen deretter utvalget. "
 "Dette er hendig når du vil slette eller utføre flere celler."
 
-#: ../src/wxMaxima.cpp:5817
+#: ../src/wxMaxima.cpp:5824
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4498,11 +4503,11 @@ msgstr ""
 "\n"
 "Velg OK for å besøke wxMaxima-nettsiden."
 
-#: ../src/wxMaxima.cpp:5882
+#: ../src/wxMaxima.cpp:5889
 msgid "Your changes will be lost if you don't save them."
 msgstr "Endringene dine vil gå tapt om du ikke lagrer dem."
 
-#: ../src/wxMaxima.cpp:5827
+#: ../src/wxMaxima.cpp:5834
 msgid "Your version of wxMaxima is up to date."
 msgstr "Du har siste versjon av wxMaxima."
 
@@ -4528,11 +4533,11 @@ msgstr "Zoom inn 10%"
 msgid "Zoom out 10%"
 msgstr "Zoom ut 10%"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
 msgid "[ unsaved ]"
 msgstr "[ ulagret ]"
 
-#: ../src/wxMaxima.cpp:5661
+#: ../src/wxMaxima.cpp:5668
 msgid "[ unsaved* ]"
 msgstr "[ ulagret* ]"
 
@@ -4863,7 +4868,7 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5864
+#: ../src/wxMaxima.cpp:5871
 msgid "unsaved"
 msgstr "ulagret"
 
@@ -4886,8 +4891,8 @@ msgstr "Epsilon:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
-#: ../src/wxMaxima.cpp:5661 ../src/wxMaxima.cpp:5670 ../src/wxMaxima.cpp:5673
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
+#: ../src/wxMaxima.cpp:5668 ../src/wxMaxima.cpp:5677 ../src/wxMaxima.cpp:5680
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "

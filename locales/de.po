@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-18 15:11+0200\n"
-"PO-Revision-Date: 2016-09-18 15:11+0200\n"
+"POT-Creation-Date: 2016-09-21 22:15+0200\n"
+"PO-Revision-Date: 2016-09-21 22:16+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -72,7 +72,7 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: ../src/EditorCell.cpp:2967 ../src/EditorCell.cpp:3149
+#: ../src/EditorCell.cpp:3048 ../src/EditorCell.cpp:3230
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
@@ -395,6 +395,11 @@ msgstr "1/2"
 #: ../src/wxMaxima.cpp:4572
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
+
+#: ../src/wxMaxima.cpp:5456
+msgid ""
+"A \":lisp\" as the first command might fail to send a \"finished\" signal."
+msgstr "Ein \":lisp\" als erster Befehl meldet evtl. nicht, wenn er fertig ist."
 
 #: ../data/tips.txt:13
 msgid ""
@@ -756,7 +761,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:6431
+#: ../src/MathCtrl.cpp:6439
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -845,11 +850,11 @@ msgstr "Produkte berechnen"
 msgid "Calculate sums"
 msgstr "Summen berechnen"
 
-#: ../src/wxMaxima.cpp:5791
+#: ../src/wxMaxima.cpp:5798
 msgid "Can not connect to the web server."
 msgstr "Keine Verbindung mit dem Webserver."
 
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:5849
 msgid "Can not download version info."
 msgstr "Kann Information zur Version nicht laden."
 
@@ -865,7 +870,7 @@ msgstr "Kann Information zur Version nicht laden."
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1407,7 +1412,7 @@ msgstr "Dividiere Zahlen oder Polynome"
 msgid "Divide this input cell into two cells"
 msgstr "Teile diese Eingabezelle in zwei Zellen auf."
 
-#: ../src/wxMaxima.cpp:5878
+#: ../src/wxMaxima.cpp:5885
 msgid "Do you want to save the changes you made in the document \""
 msgstr "Wollen Sie Änderungen im Dokument speichern \""
 
@@ -1433,7 +1438,7 @@ msgstr ""
 "der Bilder für sich: Dies erlaubt Versionskontroll-Systemen wie svn und git, "
 "genau zu ermitteln, welche Elemente sich geändert haben. "
 
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Don't save"
 msgstr "Nicht speichern"
 
@@ -1548,8 +1553,8 @@ msgstr "Gleichungen:"
 #: ../src/ConfigDialogue.cpp:902 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1453
 #: ../src/wxMaxima.cpp:1467 ../src/wxMaxima.cpp:1618 ../src/wxMaxima.cpp:1631
 #: ../src/wxMaxima.cpp:1641 ../src/wxMaxima.cpp:1664 ../src/wxMaxima.cpp:2032
-#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5791
-#: ../src/wxMaxima.cpp:5842
+#: ../src/wxMaxima.cpp:2204 ../src/wxMaxima.cpp:5352 ../src/wxMaxima.cpp:5798
+#: ../src/wxMaxima.cpp:5849
 msgid "Error"
 msgstr "Fehler"
 
@@ -2246,7 +2251,7 @@ msgstr ""
 msgid "Image"
 msgstr "Bild"
 
-#: ../src/wxMaxima.cpp:5605
+#: ../src/wxMaxima.cpp:5612
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Bild-Dateien (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2344,7 +2349,7 @@ msgstr "Neue &Textzelle\tCtrl-1"
 msgid "Insert Cell\tAlt-Shift-C"
 msgstr "Zellen einfügen\tAlt-Shift-C"
 
-#: ../src/wxMaxima.cpp:5603
+#: ../src/wxMaxima.cpp:5610
 msgid "Insert Image"
 msgstr "Bild einfügen"
 
@@ -3385,7 +3390,7 @@ msgstr "Trigreduce"
 msgid "Reduce trigonometric expression"
 msgstr "Versucht den Grad von trigonometrischen Ausdrücken zu veringern"
 
-#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5457
+#: ../src/wxMaxima.cpp:620 ../src/wxMaxima.cpp:5464
 msgid "Refusing to send cell to maxima: "
 msgstr "Weigere mich, die Zelle an Maxima zu senden: "
 
@@ -3463,7 +3468,7 @@ msgid "Sample:"
 msgstr "Probe:"
 
 #: ../src/ConfigDialogue.cpp:766 ../src/ToolBar.cpp:122
-#: ../src/wxMaxima.cpp:5883
+#: ../src/wxMaxima.cpp:5890
 msgid "Save"
 msgstr "Speichern"
 
@@ -4388,7 +4393,7 @@ msgstr "Nicht geschlossene Klammer"
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "; oder $, bei dem nicht alle Klammern geschlossen waren"
 
-#: ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5842
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4436,7 +4441,7 @@ msgstr "Fehlende Kommentarendemarkierung"
 msgid "Unterminated string."
 msgstr "Fehlendes schließendes Anführungszeichen"
 
-#: ../src/wxMaxima.cpp:5820 ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5835
+#: ../src/wxMaxima.cpp:5827 ../src/wxMaxima.cpp:5834 ../src/wxMaxima.cpp:5842
 msgid "Upgrade"
 msgstr "Aktualisierung"
 
@@ -4585,7 +4590,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6660
+#: ../src/MathCtrl.cpp:6668
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -4675,7 +4680,7 @@ msgstr ""
 "auszuwählenden Zellen. Dies ist nützlich, wenn Sie mehrere Zellen auf einmal "
 "löschen oder auswerten wollen."
 
-#: ../src/wxMaxima.cpp:5817
+#: ../src/wxMaxima.cpp:5824
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4686,11 +4691,11 @@ msgstr ""
 "\n"
 "Wählen Sie OK, um die wxMaxima Homepage zu besuchen."
 
-#: ../src/wxMaxima.cpp:5882
+#: ../src/wxMaxima.cpp:5889
 msgid "Your changes will be lost if you don't save them."
 msgstr "Nicht gespeicherte Änderungen gehen verloren."
 
-#: ../src/wxMaxima.cpp:5827
+#: ../src/wxMaxima.cpp:5834
 msgid "Your version of wxMaxima is up to date."
 msgstr "Ihre wxMaxima Version ist aktuell."
 
@@ -4714,11 +4719,11 @@ msgstr "Zoom in Schritten von 10 %"
 msgid "Zoom out 10%"
 msgstr "Zoom in Schritten von 10 %"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
 msgid "[ unsaved ]"
 msgstr "[ nicht gespeichert ]"
 
-#: ../src/wxMaxima.cpp:5661
+#: ../src/wxMaxima.cpp:5668
 msgid "[ unsaved* ]"
 msgstr "[ nicht gespeichert* ]"
 
@@ -5043,7 +5048,7 @@ msgstr "Hoch 3"
 msgid "union"
 msgstr "Vereinigung"
 
-#: ../src/wxMaxima.cpp:5864
+#: ../src/wxMaxima.cpp:5871
 msgid "unsaved"
 msgstr "nicht gespeichert"
 
@@ -5065,8 +5070,8 @@ msgstr "ypsilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5659
-#: ../src/wxMaxima.cpp:5661 ../src/wxMaxima.cpp:5670 ../src/wxMaxima.cpp:5673
+#: ../src/wxMaximaFrame.cpp:275 ../src/wxMaxima.cpp:5666
+#: ../src/wxMaxima.cpp:5668 ../src/wxMaxima.cpp:5677 ../src/wxMaxima.cpp:5680
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
