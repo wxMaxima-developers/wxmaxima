@@ -6097,12 +6097,18 @@ void MathCtrl::PasteFromClipboard(bool primary)
           {
             if(m_hCaretActive)
             {
+              if((m_selectionStart != NULL)&&(m_selectionStart->GetType()==MC_TYPE_GROUP))
+                DeleteSelection();
+              
               if(m_hCaretPosition == NULL)
-              {                
+              {
                 end->m_next = m_tree;
                 end->m_nextToDraw = m_tree;
-                m_tree -> m_previous = end;
-                m_tree -> m_previousToDraw = end;
+                if(m_tree != NULL)
+                {
+                  m_tree -> m_previous = end;
+                  m_tree -> m_previousToDraw = end;
+                }
                 m_tree = contents;
               }
               else

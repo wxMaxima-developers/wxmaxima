@@ -130,9 +130,10 @@ public:
   {
     return m_text;
   }
-  /*! Converts m_text to a list of styled text snippets that will later be used by draw().
+  /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
-    \todo Actually set the needed text styles.
+    This function also generates a wordlist for this EditorCell so Autocompletion can learn
+    about variable names contained in lists or cells that still haven't been evaluated.
    */
   void StyleText();
   void Reset();
@@ -146,12 +147,19 @@ public:
   size_t EndOfLine(long pos);
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
   bool AddEnding();
+  //! Determines which line and column the pos'th char is at.
   void PositionToXY(int pos, int* line, int* col);
+  //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
+  //! The screen coordinates of the cursor
   wxPoint PositionToPoint(CellParser& parser, int pos = -1);
+  //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxDC &dc, wxPoint& point);
+  //! Selects the text beween the screen coordinates one and two
   void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two);
+  //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true);
+  //! Is the point point inside the currently selected text?
   bool IsPointInSelection(wxDC& dc, wxPoint point);
   bool CopyToClipboard();
   bool CutToClipboard();
@@ -166,14 +174,17 @@ public:
     m_selectionStart = 0;
     m_selectionEnd = m_positionOfCaret = m_text.Length();
   }
+  //! Does the selection currently span the whole cell?
   bool AllSelected()
     {
       return (m_selectionStart==0)&&(m_selectionEnd == (long) m_text.Length());
     }
+  //! Unselect everything.
   void SelectNone()
   {
     m_selectionStart = m_selectionEnd = 0;
   }
+  //! Is there any text selected right now?
   bool SelectionActive()
   {
     return (m_selectionStart != -1)&&(m_selectionEnd != -1);
