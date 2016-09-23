@@ -29,15 +29,13 @@
 #include "ParenCell.h"
 #include "TextCell.h"
 
-#if defined __WXMSW__
- #define PAREN_LEFT_TOP "\xE6"
- #define PAREN_LEFT_BOTTOM "\xE8"
- #define PAREN_RIGHT_TOP "\xF6"
- #define PAREN_RIGHT_BOTTOM "\xF8"
- #define PAREN_LEFT_EXTEND "\xE7"
- #define PAREN_RIGHT_EXTEND "\xF7"
- #define PAREN_FONT_SIZE 12
-#endif
+#define PAREN_LEFT_TOP "\xE6"
+#define PAREN_LEFT_BOTTOM "\xE8"
+#define PAREN_RIGHT_TOP "\xF6"
+#define PAREN_RIGHT_BOTTOM "\xF8"
+#define PAREN_LEFT_EXTEND "\xE7"
+#define PAREN_RIGHT_EXTEND "\xF7"
+#define PAREN_FONT_SIZE 12
 
 #define PAREN_OPEN "\xB0"
 #define PAREN_CLOSE "\xD1"
@@ -167,7 +165,17 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
                          &m_signWidth, &m_signSize);
       }
       else
+      {
         m_bigParenType = PARENTHESIS_ASSEMBLED;
+#ifdef __WXMSW__
+        dc.GetTextExtent(wxT(PAREN_LEFT_TOP),
+                         &m_signWidth, &m_signSize);
+        m_signSize *= 2;
+#else
+        dc.GetTextExtent(wxT(PAREN_OPEN),
+                         &m_signWidth, &m_signSize);
+#endif
+      }
     }
     
     if (m_bigParenType != PARENTHESIS_ASSEMBLED)
@@ -179,11 +187,11 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
       
       
       if(m_signSize > 0)
-        while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<20)
+        while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<40)
         {
           int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
           dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                             m_bigParenType == 0 ?
                             parser.GetTeXCMRI() :
                             parser.GetTeXCMEX()));
@@ -329,7 +337,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     }
     else
     {
-#if defined __WXMSW__
+#ifdef __WXMSW__
       in.x += m_charWidth;
       int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
       SetForeground(parser);
