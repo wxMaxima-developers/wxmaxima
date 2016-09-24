@@ -2232,6 +2232,20 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
  */
 void wxMaxima::OnIdle(wxIdleEvent& event)
 {
+
+  // Marking occurrences of the currently searched-for word seems not to work, alas!
+  // The problem is that wxFindDialog() won't tell us the currently searched-for string
+  // but only the one it got when being created.
+  //if(m_console->m_findDialog != NULL)
+  //{
+  //  if(m_oldFindString != m_console->m_findDialog->GetData()->GetFindString())
+  //  {
+  //    m_oldFindString = m_console->m_findDialog->GetData()->GetFindString();
+  //    EditorCell::SetSelectionString(m_oldFindString);
+  //    m_console->Refresh();
+  //  }
+  //}
+  
   ResetTitle(m_console->IsSaved());
   // On my linux box the menus need only rarely to be updated
   // and the idle loop is called
@@ -2949,10 +2963,10 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
 {
-  if (m_console->m_findDialog != NULL) {
-    event.Skip();
-    return;
-  }
+  //if (m_console->m_findDialog != NULL) {
+  //  event.Skip();
+  //  return;
+  //}
 
   switch (event.GetId())
   {
@@ -3187,7 +3201,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
         if(selected.Length()>0)
           m_findData.SetFindString(selected);
       }
-      m_console->m_findDialog = new wxFindReplaceDialog(
+      m_console->m_findDialog = new FindReplaceDialog(
         this,
         &m_findData,
         _("Find and Replace"),

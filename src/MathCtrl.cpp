@@ -3130,6 +3130,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   case WXK_BACK:
     if (m_hCaretPosition != NULL) {
       SetSelection(m_hCaretPosition);
+      Refresh();
       m_hCaretActive = false;
       return;
     }

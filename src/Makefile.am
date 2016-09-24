@@ -10,6 +10,7 @@ wxmaxima_SOURCES = \
 	ConfigDialogue.cpp         ConfigDialogue.h         \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \
+	FindReplaceDialog.cpp       FindReplaceDialog.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \
 	SubstituteWiz.cpp  SubstituteWiz.h  \
 	IntegrateWiz.cpp   IntegrateWiz.h   \

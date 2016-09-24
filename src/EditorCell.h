@@ -78,6 +78,9 @@ private:
    */
   bool m_changeAsterisk;
 public:
+  //! Set the string that is to be highlighted as "identical to the curent selection"
+  static void SetSelectionString(wxString string)
+    {m_selectionString = string;}
   //! A list of words that might be applicable to the autocomplete function.
   wxArrayString GetWordList(){return m_wordList;}
   //! Has the selection changed since the last draw event?

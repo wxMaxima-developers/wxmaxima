@@ -140,6 +140,8 @@ public:
   bool DocumentSaved() { return m_fileSaved; }
   void LoadImage(wxString file) { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 private:
+  //! This string allows us to detect when the string we search for has changed.
+  wxString m_oldFindString;
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts

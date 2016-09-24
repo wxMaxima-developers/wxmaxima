@@ -39,6 +39,7 @@
 #include "EditorCell.h"
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
+#include "FindReplaceDialog.h"
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
 #include "Structure.h"
@@ -557,7 +558,7 @@ public:
   //! Get the last known GroupCell maxima was working on
   GroupCell *GetLastWorkingGroup();
   //! The find-and-replace-dialog
-  wxFindReplaceDialog *m_findDialog;
+  FindReplaceDialog *m_findDialog;
   
   /*! True = schedule an update of the table of contents
     
