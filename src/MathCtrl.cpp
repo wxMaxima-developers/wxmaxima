@@ -7195,6 +7195,12 @@ wxString MathCtrl::RTFEnd()
   return document;
 }
 
+MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent& event)
+{
+  m_mouseCaptured = false;
+  m_leftDown = false;
+}
+
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)

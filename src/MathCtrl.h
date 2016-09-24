@@ -387,7 +387,7 @@ private:
   void OnMouseRightDown(wxMouseEvent& event);
   void OnMouseLeftUp(wxMouseEvent& event);
   //! We lost the mouse connection during drag-and-drop
-  void OnMouseCaptureLost(wxMouseCaptureLostEvent& event){m_leftDown = false;}
+  void OnMouseCaptureLost(wxMouseCaptureLostEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
   void OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC);
   void OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC);
