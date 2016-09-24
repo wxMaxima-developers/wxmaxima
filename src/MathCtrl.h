@@ -480,6 +480,8 @@ private:
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation;
   bool m_mouseDrag;
+  //! Do we track the mouse whereabouts due to drag-and-drop?
+  bool m_mouseCaptured;
   bool m_mouseOutside;
   //! The list of tree that contains the document itself
   GroupCell *m_tree;

@@ -78,6 +78,7 @@ wxScrolledCanvas(
   MathCell::ClipToDrawRegion(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
+  m_mouseCaptured = false;
   m_lastTop    = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
@@ -1171,11 +1172,14 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
   if(!m_leftDown)
   {
     // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
-    CaptureMouse();
-    
+    if(!m_mouseCaptured)
+    {
+      CaptureMouse();
+      m_mouseCaptured = true;
+    }
     m_leftDown = true;
   }
-  
+
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
   if (m_tree == NULL)
@@ -1306,9 +1310,12 @@ GroupCell *MathCtrl::FirstVisibleGC()
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
 {
   // No more track the mouse when it is outside the worksheet
-  if(m_leftDown)
+  if(m_mouseCaptured)
+  {
     ReleaseMouse();
-
+    m_mouseCaptured = false;
+  }
+  
   AnimationRunning(false);
   m_leftDown = false;
   m_mouseDrag = false;
