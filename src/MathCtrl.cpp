@@ -7195,7 +7195,7 @@ wxString MathCtrl::RTFEnd()
   return document;
 }
 
-MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent& event)
+void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent& event)
 {
   m_mouseCaptured = false;
   m_leftDown = false;
