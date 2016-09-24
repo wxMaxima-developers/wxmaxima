@@ -21,6 +21,14 @@ install-wxstd-catalogs:
 		$(INSTALL_DATA) $(srcdir)/wxwin/$$i.mo $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 
+uninstall-local:
+	for i in $(WXMAXIMA_LINGUAS) ; do \
+		rm -f $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima.mo ; \
+	done
+	for i in $(WXWIN_LINGUAS) ; do \
+		rm -f $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
+	done
+
 
 
 # ----------------------------------------------------------------------------
