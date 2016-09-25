@@ -3795,8 +3795,10 @@ FUNCTION: opena
 TEMPLATE: opena(<file>) 
 FUNCTION: openr
 TEMPLATE: openr(<file>) 
+TEMPLATE: openr(<file>,<encoding_name_as_string>) 
 FUNCTION: openw
 TEMPLATE: openw(<file>) 
+TEMPLATE: openw(<file>,<encoding_name_as_string>) 
 FUNCTION: printf
 TEMPLATE: printf(<dest>, <string>)
 TEMPLATE: printf(<dest>, <string>, <expr_1>, <...>, <expr_n>)

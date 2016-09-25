@@ -208,6 +208,7 @@ void ConfigDialogue::SetProperties()
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
+  m_recentItems->SetToolTip(_("The number of recently opened files that is to be rememberedx."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -233,7 +234,8 @@ void ConfigDialogue::SetProperties()
   bool cursorJump = true;
 
   int labelWidth = 4;
-  int  undoLimit = 0;
+  int undoLimit  = 0;
+  int recentItems= 10;
   int showLength = 0;
   int autosubscript = 1;
   int  bitmapScale = 3;
@@ -299,6 +301,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("cursorJump"), &cursorJump);
   config->Read(wxT("labelWidth"), &labelWidth);
   config->Read(wxT("undoLimit"), &undoLimit);
+  config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
@@ -368,6 +371,7 @@ void ConfigDialogue::SetProperties()
   m_cursorJump->SetValue(cursorJump);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
+  m_recentItems->SetValue(recentItems);
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
   m_showUserDefinedLabels->SetValue(showUserDefinedLabels);
@@ -543,7 +547,7 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
@@ -595,6 +599,11 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
   m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
+
+  wxStaticText* rf = new wxStaticText(panel, -1, _("Recent files list length:"));
+  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 5, 30);
+  grid_sizer->Add(rf, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_recentItems, 0, wxALL, 5);
 
   wxStaticText* df = new wxStaticText(panel, -1, _("Default animation framerate:"));
   m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 200);
@@ -836,6 +845,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
+  config->Write(wxT("recentItems"), m_recentItems->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("showUserDefinedLabels"), m_showUserDefinedLabels->GetValue());

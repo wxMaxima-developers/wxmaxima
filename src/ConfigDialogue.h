@@ -212,6 +212,7 @@ protected:
   wxCheckBox* m_cursorJump;
   wxSpinCtrl* m_labelWidth;
   wxSpinCtrl* m_undoLimit;
+  wxSpinCtrl* m_recentItems;
   wxSpinCtrl* m_bitmapScale;
   wxCheckBox* m_fixReorderedIndices;
   wxCheckBox* m_showUserDefinedLabels;

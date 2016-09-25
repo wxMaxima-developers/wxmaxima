@@ -991,7 +991,13 @@ void wxMaximaFrame::LoadRecentDocuments()
   wxConfigBase *config = wxConfig::Get();
   m_recentDocuments.Clear();
 
-  for (int i=0; i<10; i++)
+  long recentItems = 10;
+  wxConfig::Get()->Read(wxT("recentItems"),&recentItems);
+
+  if(recentItems<5) recentItems = 5;
+  if(recentItems>30) recentItems = 30;
+
+  for (int i=0; i<recentItems; i++)
   {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     wxString file;
@@ -1004,8 +1010,14 @@ void wxMaximaFrame::SaveRecentDocuments()
 {
   wxConfigBase *config = wxConfig::Get();
 
+    long recentItems = 10;
+  wxConfig::Get()->Read(wxT("recentItems"),&recentItems);
+
+  if(recentItems<5) recentItems = 5;
+  if(recentItems>30) recentItems = 30;
+
   // Delete previous recent documents
-  for (unsigned int i=0; i<10; i++) {
+  for (unsigned int i=0; i<recentItems; i++) {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     config->DeleteEntry(recent);
   }
@@ -1019,8 +1031,14 @@ void wxMaximaFrame::SaveRecentDocuments()
 
 void wxMaximaFrame::UpdateRecentDocuments()
 {
+  long recentItems = 10;
+  wxConfig::Get()->Read(wxT("recentItems"),&recentItems);
+
+  if(recentItems<5) recentItems = 5;
+  if(recentItems>30) recentItems = 30;
+  
   // Iterate through all the entries to the recent documents menu.
-  for (int i=menu_recent_document_0; i<= menu_recent_document_9; i++)
+  for (int i=menu_recent_document_0; i<= menu_recent_document_0+recentItems; i++)
   {
     if (m_recentDocumentsMenu->FindItem(i) != NULL)
     {
@@ -1036,6 +1054,17 @@ void wxMaximaFrame::UpdateRecentDocuments()
       wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
 
       m_recentDocumentsMenu->Append(i, label);
+    }
+  }
+  
+  for (int i=menu_recent_document_0+recentItems; i<= menu_recent_document_0+30; i++)
+  {
+    if(m_recentDocumentsMenu->FindItem(i,NULL)!=NULL)
+    {
+      wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
+      if(item != NULL)
+        delete item;
+      item = NULL;
     }
   }
 
