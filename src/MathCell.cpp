@@ -104,6 +104,7 @@ void MathCell::SetType(int type)
     m_textStyle = TS_DEFAULT;
     break;
   }
+  ResetSize();
 }
 
 MathCell *MathCell::CopyList()

@@ -5614,6 +5614,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
   case menu_format_pagebreak:
     m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
                                 m_console->GetHCaret());
+    m_console->RecalculateForce();
     m_console->Refresh();
     m_console->SetFocus();
     return;

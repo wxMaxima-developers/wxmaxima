@@ -319,7 +319,7 @@ public:
   //! Mark all cached size information as "to be calculated".
   void ResetData();
   //! Mark the cached height informations as "to be calculated".
-  void ResetSize() { m_width = m_height = -1; }
+  void ResetSize() { m_width = m_height = m_center = -1; }
   void ResetSizeList();
 
   void SetSkip(bool skip) { m_bigSkip = skip; }

@@ -120,7 +120,7 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
-	  // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
+      // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
         dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
       else
@@ -178,9 +178,8 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
       m_height = 0;
       m_width = m_width / 4;
     }
-
-    m_realCenter = m_center = m_height / 2;
   }
+  m_realCenter = m_center = m_height / 2;
   ResetData();
 }
 
@@ -275,6 +274,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   }
 
   fontsize1 = MAX(fontsize1, 1);
+  m_fontSize = fontsize1;
 
   // Use jsMath
   if (m_altJs && parser.CheckTeXFonts())
