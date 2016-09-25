@@ -208,7 +208,7 @@ void ConfigDialogue::SetProperties()
   m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
-  m_recentItems->SetToolTip(_("The number of recently opened files that is to be rememberedx."));
+  m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
