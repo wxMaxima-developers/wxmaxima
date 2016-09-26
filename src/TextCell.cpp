@@ -433,6 +433,18 @@ wxString TextCell::ToTeX()
     mathModeStart=wxT("\\ensuremath{");
     mathModeEnd  =wxT("}");
   }
+  else
+  {
+    // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
+    // math mode. Fortunately amsTeX provides the \text command that allows to
+    // switch to plain text mode again - but with the math font size.
+    text.Replace(wxT("ä"), wxT("\\text{ä}"));
+    text.Replace(wxT("ö"), wxT("\\text{ö}"));
+    text.Replace(wxT("ü"), wxT("\\text{ü}"));
+    text.Replace(wxT("Ä"), wxT("\\text{Ä}"));
+    text.Replace(wxT("Ö"), wxT("\\text{Ö}"));
+    text.Replace(wxT("Ü"), wxT("\\text{Ü}"));  
+  }
   
   text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
   text.Replace(wxT("<"), mathModeStart+wxT("<")+mathModeEnd);
