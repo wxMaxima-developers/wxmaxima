@@ -37,7 +37,7 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, 
 void FindReplaceDialog::OnActivate(wxActivateEvent& event)
 {
   if(event.GetActive())
-    SetTransparent(230);
+    SetTransparent(255);
   else
     SetTransparent(180);
   std::cerr<<"Test2\n";
