@@ -40,8 +40,7 @@ public:
   FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style=0);
 
 protected:
-  void OnFocus(wxFocusEvent& event);
-  void OnFocusLoss(wxFocusEvent& event);
+  void OnActivate(wxActivateEvent& event);
   DECLARE_EVENT_TABLE()
 
   private:

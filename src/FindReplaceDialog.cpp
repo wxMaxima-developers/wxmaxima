@@ -34,21 +34,19 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, 
   m_active = true;
 }
 
-void FindReplaceDialog::OnFocus(wxFocusEvent& event)
+void FindReplaceDialog::OnActivate(wxActivateEvent& event)
 {
-  SetTransparent(255);
+  if(event.GetActive())
+    SetTransparent(230);
+  else
+    SetTransparent(180);
+  std::cerr<<"Test2\n";
+  std::cerr<<event.GetActive()<<"\n";
   m_active = true;
-}
-
-void FindReplaceDialog::OnFocusLoss(wxFocusEvent& event)
-{
-  SetTransparent(64);
-  m_active = false;
 }
 
 
 BEGIN_EVENT_TABLE(FindReplaceDialog, wxFindReplaceDialog)
- EVT_SET_FOCUS(FindReplaceDialog::OnFocus)
- EVT_KILL_FOCUS(FindReplaceDialog::OnFocusLoss)
+ EVT_ACTIVATE(FindReplaceDialog::OnActivate)
 
 END_EVENT_TABLE()
