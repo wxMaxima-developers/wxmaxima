@@ -274,7 +274,6 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   }
 
   fontsize1 = MAX(fontsize1, 1);
-  m_fontSize = fontsize1;
 
   // Use jsMath
   if (m_altJs && parser.CheckTeXFonts())

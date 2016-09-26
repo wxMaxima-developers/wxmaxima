@@ -1017,7 +1017,7 @@ void wxMaximaFrame::SaveRecentDocuments()
   if(recentItems>30) recentItems = 30;
 
   // Delete previous recent documents
-  for (unsigned int i=0; i<recentItems; i++) {
+  for (int i=0; i<recentItems; i++) {
     wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
     config->DeleteEntry(recent);
   }
