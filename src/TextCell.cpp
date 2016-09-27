@@ -434,6 +434,7 @@ wxString TextCell::ToTeX()
     mathModeEnd  =wxT("}");
   }
   else
+  if((GetStyle() != TS_ERROR) && (GetStyle() != TS_DEFAULT))
   {
     // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
     // math mode. Fortunately amsTeX provides the \text command that allows to
@@ -760,6 +761,12 @@ wxString TextCell::ToTeX()
         text = wxT("\\mathit{") + text + wxT("}");
       if (text == wxT("\\% pi"))
         text = wxT("\\ensuremath{\\pi} ");
+      text.Replace(wxT("\\text{ä}"),wxT("\\text{\textit{ä}}"));
+      text.Replace(wxT("\\text{ö}"),wxT("\\text{\textit{ö}}"));
+      text.Replace(wxT("\\text{ü}"),wxT("\\text{\textit{ü}}"));
+      text.Replace(wxT("\\text{Ä}"),wxT("\\text{\textit{Ä}}"));
+      text.Replace(wxT("\\text{Ö}"),wxT("\\text{\textit{Ö}}"));
+      text.Replace(wxT("\\text{Ü}"),wxT("\\text{\textit{Ü}}")); 
     }
     else if (GetStyle() == TS_ERROR)
     {
