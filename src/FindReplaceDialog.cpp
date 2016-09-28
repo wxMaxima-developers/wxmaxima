@@ -40,8 +40,6 @@ void FindReplaceDialog::OnActivate(wxActivateEvent& event)
     SetTransparent(255);
   else
     SetTransparent(180);
-  std::cerr<<"Test2\n";
-  std::cerr<<event.GetActive()<<"\n";
   m_active = true;
 }
 
