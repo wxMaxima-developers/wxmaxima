@@ -68,6 +68,8 @@ class MathCtrl: public wxScrolledCanvas
 {
 private:
 
+  //! Do we need to repaint the worksheet?
+  bool m_refreshRequested;
   //! Which groupCell incremental search has started in?
   GroupCell *m_cellSearchStartedIn;
   //! Which cursor position incremental search has started at?
@@ -370,7 +372,7 @@ private:
                two orders differ.
    */
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
-  
+
   void GetMaxPoint(int* width, int* height);
   //! Is executed if a timer associated with MathCtrl has expired.
   void OnTimer(wxTimerEvent& event);
@@ -551,6 +553,13 @@ private:
 
 
 public:
+  //! Request the worksheet to be redrawn
+  void RequestRefresh();
+  //! Redraw the worksheet if RequestRefresh() has been called
+  void RefreshIfRequested() {if(m_refreshRequested) Refresh();m_refreshRequested = false;}
+  //! Redraw the worksheet region rect or the entire worksheet if RequestRefresh() has been called
+  void RefreshRequestedPlusRect(wxRect rect);
+
   //! The name of the currently-opened file
   wxString m_currentFile;
 

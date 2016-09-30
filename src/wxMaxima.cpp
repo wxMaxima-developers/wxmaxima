@@ -1321,11 +1321,11 @@ void wxMaxima::ReadPrompt(wxString &data)
       }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     else { // we don't have an empty queue
       m_ready = false;
-      m_console->Refresh();
+      m_console->RequestRefresh();
       m_console->EnableEdit();
       StatusMaximaBusy(calculating);
       TryEvaluateNextInQueue();
@@ -1498,7 +1498,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     ResetTitle(false);
 
   document->Thaw();
-  document->Refresh(); // redraw document outside Freeze-Thaw
+  document->RequestRefresh(); // redraw document outside Freeze-Thaw
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
@@ -1700,7 +1700,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     ResetTitle(false);
 
   document->Thaw();
-  document->Refresh(); // redraw document outside Freeze-Thaw
+  document->RequestRefresh(); // redraw document outside Freeze-Thaw
 
   m_console->SetDefaultHCaret();
   m_console->SetFocus();
@@ -2252,7 +2252,6 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
         m_console->FindIncremental(m_findData.GetFindString(),
                                    m_findData.GetFlags() & wxFR_DOWN,
                                    !(m_findData.GetFlags() & wxFR_MATCHCASE));
-//        m_console->Refresh();
       }
     }
   }
@@ -2289,7 +2288,8 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
       m_console->m_structure->Update(m_console->GetTree(),cursorPos);
     }
   }
-     
+
+  m_console->RefreshIfRequested();
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
@@ -3004,7 +3004,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       config->Flush();
       // Refresh the display as the settings that affect it might have changed.
       m_console->RecalculateForce();
-      m_console->Refresh();
+      m_console->RequestRefresh();
       ConfigChanged();
     }
 
@@ -3149,7 +3149,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     {
       m_console->DeleteSelection();
       m_console->Recalculate();
-      m_console->Refresh();
+      m_console->RequestRefresh();
       return;
     }
     break;
@@ -5375,7 +5375,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       
       // Clear the evaluation queue.
       m_console->m_evaluationQueue->Clear();
-      m_console->Refresh();
+      m_console->RequestRefresh();
       EvaluationQueueLength(0);
     }
     return ;
@@ -5401,7 +5401,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     EvaluationQueueLength(0);
     // The cell from the last evaluation might still be shown in it's "evaluating" state
     // so let's refresh the console to update the display of this.
-    m_console->Refresh();
+    m_console->RequestRefresh();
     return; //empty queue
   }
 
@@ -5437,7 +5437,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     }
     tmp->RemoveOutput();
     m_console->Recalculate(tmp);
-    m_console->Refresh();
+    m_console->RequestRefresh();
   }
 
   wxString text = m_console->m_evaluationQueue->GetCommand();
@@ -5494,7 +5494,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_console->SetSelection(NULL);
         
       m_console->SetWorkingGroup(NULL);
-      m_console->Refresh();
+      m_console->RequestRefresh();
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       SetBatchMode(false);
@@ -5549,7 +5549,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_CODE);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_convert_to_comment:
@@ -5557,7 +5557,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TEXT);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_add_comment:
@@ -5571,7 +5571,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TITLE);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_add_title:
@@ -5584,7 +5584,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SECTION);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_add_section:
@@ -5597,7 +5597,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSECTION);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_add_subsection:
@@ -5610,7 +5610,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     {
       m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSUBSECTION);
       m_console->Recalculate(true);
-      m_console->Refresh();
+      m_console->RequestRefresh();
     }
     break;
   case menu_add_subsubsection:
@@ -5623,7 +5623,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
                                 m_console->GetHCaret());
     m_console->RecalculateForce();
-    m_console->Refresh();
+    m_console->RequestRefresh();
     m_console->SetFocus();
     return;
     break;
@@ -5757,7 +5757,7 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
 
     wxRect rect = cell->GetRect();
     m_console->CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-    m_console->RefreshRect(rect);
+    m_console->RefreshRequestedPlusRect(rect);
   }
 }
 
