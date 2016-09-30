@@ -2245,7 +2245,6 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 
       bool incrementalSearch = true;
       wxConfig::Get()->Read("incrementalSearch",&incrementalSearch);
-      std::cerr<<incrementalSearch<<"\n";
       if(incrementalSearch)
       {
         m_oldFindFlags  = m_console->m_findDialog->GetData()->GetFlags();
