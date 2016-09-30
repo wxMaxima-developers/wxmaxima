@@ -56,6 +56,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_text.Replace(wxT("-->"),wxT("\x27f6"));
   m_text.Replace(wxT("->"),wxT("\x2192"));
+  m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
   m_highlight = false;
   m_altJs = m_alt = false;
 }
@@ -73,6 +74,7 @@ void TextCell::SetValue(const wxString &text)
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_text.Replace(wxT("-->"),wxT("\x27f6"));
   m_text.Replace(wxT("->"),wxT("\x2192"));
+  m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
   m_alt = m_altJs = false;
 }
 
