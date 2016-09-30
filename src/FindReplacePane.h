@@ -40,7 +40,9 @@
 class FindReplacePane: public wxPanel
 {
 private:
+  //! The storage the search strings and settings are kept in
   wxFindReplaceData *m_findReplaceData;
+  //! Is this pane currently in focus?
   bool m_active;
   wxTextCtrl *m_searchText;
   wxTextCtrl *m_replaceText;

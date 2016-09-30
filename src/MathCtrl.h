@@ -972,9 +972,10 @@ public:
   void CommentSelection();
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);
-  /*! Do an incremental search
+  /*! Do an incremental search from the cursor or the point the last search started at
 
     Used by the find dialog.
+    \todo Keep a list of positions the last few letters were found at?
    */
   bool FindIncremental(wxString str, bool down, bool ignoreCase);
   /*! Find the next ocourrence of a string
