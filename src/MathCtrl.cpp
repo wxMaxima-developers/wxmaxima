@@ -6649,7 +6649,7 @@ bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
     SetActiveCell(m_cellSearchStartedIn->GetEditable());
   if((m_cellSearchStartedIn!=NULL)&&(m_cellSearchStartedIn->GetEditable()!=NULL))
     m_cellSearchStartedIn->GetEditable()->CaretToPosition(m_indexSearchStartedAt);
-  FindNext(str,down,ignoreCase);
+  FindNext(str,down,ignoreCase,false);
 }
 
 bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
