@@ -6654,15 +6654,31 @@ bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
 
 bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
 {
-
   if (m_tree == NULL)
     return false;
 
-  // Determine where to begin the search
-  GroupCell *pos = m_tree;
-  if (!down)
-    pos = m_last;
+  GroupCell *pos;
 
+  int starty=0;
+  if(!down)
+  {
+    wxSize canvasSize= GetClientSize();
+    starty=canvasSize.y;
+  }
+  
+  // Default the start of the search at the top or the bottom of the screen
+  wxPoint topleft;
+  CalcUnscrolledPosition(0,starty,&topleft.x,&topleft.y);
+  pos = GetTree();
+  while (pos != NULL)
+  {
+    wxRect rect = pos->GetRect();
+    if(rect.GetBottom() > topleft.y)
+      break;
+    pos = dynamic_cast<GroupCell *>(pos -> m_next);
+  }
+  
+  // If a cursor is active we start the search there instead
   if (m_activeCell != NULL)
     pos = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
   else if (m_hCaretActive)
@@ -6670,18 +6686,21 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
     if (down)
     {
       if (m_hCaretPosition != NULL)
-        pos = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+      {
+        if(m_hCaretPosition->m_next!=NULL)
+          pos = dynamic_cast<GroupCell*>(m_hCaretPosition->m_next);
+        else
+          pos = m_hCaretPosition;
+      }
     }
     else
     {
       pos = m_hCaretPosition;
     }
-  }
-  if(pos == NULL)
-    pos = m_tree;
-
-  // If we still don't have a place to pos searching there we tried to
-  // search in a empty worksheet and know we won't get any result.
+  } 
+    
+  // If we still don't have a place to start searching we have definitively tried to 
+  // search in any empty worksheet and know we won't get any result.
   if(pos == NULL)
     return false;
 
