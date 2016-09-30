@@ -209,6 +209,7 @@ void ConfigDialogue::SetProperties()
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
   m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
+  m_incrementalSearch->SetToolTip(_("Start searching while the phrase to search for is still being typed."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -240,6 +241,7 @@ void ConfigDialogue::SetProperties()
   int autosubscript = 1;
   int  bitmapScale = 3;
   bool fixReorderedIndices = false;
+  bool incrementalSearch = true;
   bool showUserDefinedLabels = true;
   int defaultFramerate = 2;
   int displayedDigits = 100;
@@ -304,6 +306,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
+  config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
@@ -374,6 +377,7 @@ void ConfigDialogue::SetProperties()
   m_recentItems->SetValue(recentItems);
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
+  m_incrementalSearch->SetValue(incrementalSearch);
   m_showUserDefinedLabels->SetValue(showUserDefinedLabels);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
@@ -629,6 +633,8 @@ wxPanel* ConfigDialogue::CreateOptionsPanel()
 
   m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
   vsizer->Add(m_fixReorderedIndices, 0, wxALL, 5);
+  m_incrementalSearch = new wxCheckBox(panel, -1, _("Incremental Search"));
+  vsizer->Add(m_incrementalSearch, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -848,6 +854,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("recentItems"), m_recentItems->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
+  config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
   config->Write(wxT("showUserDefinedLabels"), m_showUserDefinedLabels->GetValue());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   #ifdef __WXMSW__

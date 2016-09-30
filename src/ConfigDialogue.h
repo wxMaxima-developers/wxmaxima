@@ -215,6 +215,7 @@ protected:
   wxSpinCtrl* m_recentItems;
   wxSpinCtrl* m_bitmapScale;
   wxCheckBox* m_fixReorderedIndices;
+  wxCheckBox* m_incrementalSearch;
   wxCheckBox* m_showUserDefinedLabels;
   wxButton* m_getFont;
   wxButton* m_getStyleFont;
