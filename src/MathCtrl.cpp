@@ -70,6 +70,9 @@ wxScrolledCanvas(
 #endif
   )
 {
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
@@ -840,7 +843,11 @@ GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end) {
 /***
  * Right mouse - popup-menu
  */
-void MathCtrl::OnMouseRightDown(wxMouseEvent& event) {
+void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
+{
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
   wxMenu* popupMenu = new wxMenu();
 
   int downx, downy;
@@ -1166,7 +1173,9 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
 
-  
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
   AnimationRunning(false);
 
   if(!m_leftDown)
@@ -1309,6 +1318,9 @@ GroupCell *MathCtrl::FirstVisibleGC()
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
 {
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
   // No more track the mouse when it is outside the worksheet
   if(m_mouseCaptured)
   {
@@ -2132,7 +2144,10 @@ void MathCtrl::DeleteRegion(
   DeleteRegion(start,end,&treeUndoActions);
 }
 
-void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoAction *> *undoBuffer) {
+void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoAction *> *undoBuffer)
+{
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
 
   // Abort deletion if there is no valid selection or if we cannot
   // delete it.
@@ -3309,7 +3324,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
  * OnChar handles key events. If we have an active cell, sends the
  * event to the active cell, else moves the cursor between groups.
  */
-void MathCtrl::OnChar(wxKeyEvent& event) {
+void MathCtrl::OnChar(wxKeyEvent& event)
+{
+
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
 #if defined __WXMSW__
   if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
     return;
@@ -6555,6 +6575,9 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
 {
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
 #if defined __WXGTK__
   OnMouseLeftDown(event);
   m_leftDown = false;
@@ -6620,8 +6643,18 @@ wxString MathCtrl::GetOutputAboveCaret()
   return output;
 }
 
-bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
+bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
 {
+  if(m_cellSearchStartedIn != NULL)
+    SetActiveCell(m_cellSearchStartedIn->GetEditable());
+  if((m_cellSearchStartedIn!=NULL)&&(m_cellSearchStartedIn->GetEditable()!=NULL))
+    m_cellSearchStartedIn->GetEditable()->CaretToPosition(m_indexSearchStartedAt);
+  FindNext(str,down,ignoreCase);
+}
+
+bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
+{
+
   if (m_tree == NULL)
     return false;
 
@@ -6651,7 +6684,10 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
   // search in a empty worksheet and know we won't get any result.
   if(pos == NULL)
     return false;
-  
+
+  m_cellSearchStartedIn = pos;
+  m_indexSearchStartedAt = pos->GetEditable()->GetCaretPosition();
+
   // Remember where to go if we need to wrapp the search.
   GroupCell *start = pos;
 
@@ -6674,7 +6710,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase)
         ScrollToCaret();
         UpdateTableOfContents();
         Refresh();
-        if(wrappedSearch)
+        if((wrappedSearch)&&warn)
         {
           wxMessageDialog dialog(m_findDialog,
                                  _("Wrapped search"),
@@ -6771,6 +6807,7 @@ void MathCtrl::ScrollToCaret()
 
 void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
 {
+  
   if (m_activeCell != NULL)
   {
     if (m_activeCell->ReplaceSelection(oldString, newString))
@@ -6785,11 +6822,17 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       Recalculate();
       Refresh(group);
     }
+    m_cellSearchStartedIn = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    m_indexSearchStartedAt = GetActiveCell()->GetCaretPosition();
   }
 }
 
 int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
 {
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+
+  
   if (m_tree == NULL)
     return 0;
 

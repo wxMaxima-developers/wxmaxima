@@ -142,6 +142,8 @@ public:
 private:
   //! This string allows us to detect when the string we search for has changed.
   wxString m_oldFindString;
+  //! This string allows us to detect when the string we search for has changed.
+  int m_oldFindFlags;
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts

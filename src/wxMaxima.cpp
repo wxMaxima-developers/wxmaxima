@@ -2233,18 +2233,24 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 void wxMaxima::OnIdle(wxIdleEvent& event)
 {
 
-  // Marking occurrences of the currently searched-for word seems not to work, alas!
-  // The problem is that wxFindDialog() won't tell us the currently searched-for string
-  // but only the one it got when being created.
-  //if(m_console->m_findDialog != NULL)
-  //{
-  //  if(m_oldFindString != m_console->m_findDialog->GetData()->GetFindString())
-  //  {
-  //    m_oldFindString = m_console->m_findDialog->GetData()->GetFindString();
-  //    EditorCell::SetSelectionString(m_oldFindString);
-  //    m_console->Refresh();
-  //  }
-  //}
+  // Incremental search is done from the idle task. This means that we don't forcefully
+  // need to do a new search on every character that is entered into the search box.
+  if(m_console->m_findDialog != NULL)
+  {
+    if(
+      (m_oldFindString != m_console->m_findDialog->GetData()->GetFindString()) ||
+      (m_oldFindFlags  != m_console->m_findDialog->GetData()->GetFlags())
+      )
+    {
+
+      m_oldFindFlags  = m_console->m_findDialog->GetData()->GetFlags();
+      m_oldFindString = m_console->m_findDialog->GetData()->GetFindString();
+      m_console->FindIncremental(m_findData.GetFindString(),
+                                 m_findData.GetFlags() & wxFR_DOWN,
+                                 !(m_findData.GetFlags() & wxFR_MATCHCASE));
+      m_console->Refresh();
+    }
+  }
   
   ResetTitle(m_console->IsSaved());
   // On my linux box the menus need only rarely to be updated
@@ -3193,22 +3199,19 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       m_console->m_findDialog->Destroy();
       m_console->m_findDialog = NULL;
     }
-    else
+    if(m_console->GetActiveCell()!=NULL)
     {
-      if(m_console->GetActiveCell()!=NULL)
-      {
-        wxString selected = m_console->GetActiveCell()->GetSelectionString();
-        if(selected.Length()>0)
-          m_findData.SetFindString(selected);
-      }
-      m_console->m_findDialog = new FindReplaceDialog(
-        this,
-        &m_findData,
-        _("Find and Replace"),
-        wxFR_REPLACEDIALOG |
-        wxFR_NOWHOLEWORD);
-      m_console->m_findDialog->Show(true);
+      wxString selected = m_console->GetActiveCell()->GetSelectionString();
+      if(selected.Length()>0)
+        m_findData.SetFindString(selected);
     }
+    m_console->m_findDialog = new FindReplaceDialog(
+      this,
+      &m_findData,
+      _("Find and Replace"),
+      wxFR_REPLACEDIALOG |
+      wxFR_NOWHOLEWORD);
+    m_console->m_findDialog->Show(true);
     break;
   case menu_history_next:
   {

@@ -68,6 +68,12 @@ class MathCtrl: public wxScrolledCanvas
 {
 private:
 
+  //! Which groupCell incremental search has started in?
+  GroupCell *m_cellSearchStartedIn;
+  //! Which cursor position incremental search has started at?
+  int m_indexSearchStartedAt;
+  
+  
   //! The clipboard format "mathML"
 
   //! A class that publishes wxm data to the clipboard
@@ -966,11 +972,16 @@ public:
   void CommentSelection();
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);
+  /*! Do an incremental search
+
+    Used by the find dialog.
+   */
+  bool FindIncremental(wxString str, bool down, bool ignoreCase);
   /*! Find the next ocourrence of a string
 
     Used by the find dialog.
    */
-  bool FindNext(wxString str, bool down, bool ignoreCase);
+  bool FindNext(wxString str, bool down, bool ignoreCase,bool warn=true);
   /*! Replace the current ocourrence of a string
 
     Used by the find dialog.

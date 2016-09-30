@@ -29,9 +29,27 @@
 #include "EditorCell.h"
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style):
-  wxFindReplaceDialog(parent,data,title,style)
+  wxDialog(parent,wxID_ANY,title,wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
   m_active = true;
+  m_contents = new FindReplacePane(this,data);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(m_contents,wxSizerFlags().Expand());
+  SetSizerAndFit(vbox);
+}
+
+void FindReplaceDialog::OnKeyDown(wxKeyEvent& event)
+{
+  if(event.GetKeyCode()==WXK_ESCAPE)
+    Close();
+  else
+    event.Skip();
+}
+  
+void FindReplaceDialog::OnClose(wxCloseEvent& event)
+{
+  wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_CLOSE);
+  GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
 void FindReplaceDialog::OnActivate(wxActivateEvent& event)
@@ -44,7 +62,9 @@ void FindReplaceDialog::OnActivate(wxActivateEvent& event)
 }
 
 
-BEGIN_EVENT_TABLE(FindReplaceDialog, wxFindReplaceDialog)
+BEGIN_EVENT_TABLE(FindReplaceDialog, wxDialog)
  EVT_ACTIVATE(FindReplaceDialog::OnActivate)
+ EVT_CHAR_HOOK(FindReplaceDialog::OnKeyDown)
+ EVT_CLOSE(FindReplaceDialog::OnClose)
 
 END_EVENT_TABLE()

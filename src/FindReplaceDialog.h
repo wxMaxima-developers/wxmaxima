@@ -29,23 +29,28 @@
 #ifndef FINDREPLACEDIALOG_H
 #define FINDREPLACEDIALOG_H
 
-#include <wx/fdrepdlg.h>
+#include <wx/dialog.h>
 #include <wx/event.h>
+#include "FindReplacePane.h"
 
 /*! The find+replace dialog
  */
-class FindReplaceDialog: public wxFindReplaceDialog
+class FindReplaceDialog: public wxDialog
 {
 public:
   FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style=0);
+  wxFindReplaceData *GetData(){return m_contents->GetData();}
 
 protected:
   void OnActivate(wxActivateEvent& event);
+  void OnKeyDown(wxKeyEvent& event);
+  void OnClose(wxCloseEvent& event);
+  FindReplacePane *m_contents;
   DECLARE_EVENT_TABLE()
 
   private:
   bool m_active;
-
+  
 };
   
 #endif // FINDREPLACEDIALOG_H

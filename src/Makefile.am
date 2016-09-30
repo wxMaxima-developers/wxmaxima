@@ -11,6 +11,7 @@ wxmaxima_SOURCES = \
 	main.cpp                            \
 	wxMaxima.cpp       wxMaxima.h       \
 	FindReplaceDialog.cpp       FindReplaceDialog.h       \
+	FindReplacePane.cpp       FindReplacePane.h       \
 	wxMaximaFrame.cpp  wxMaximaFrame.h  \
 	SubstituteWiz.cpp  SubstituteWiz.h  \
 	IntegrateWiz.cpp   IntegrateWiz.h   \
