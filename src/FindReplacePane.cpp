@@ -41,7 +41,6 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
   grid_sizer->AddGrowableCol(1,1);
   grid_sizer->AddGrowableCol(2,0);
 
-  std::cerr<<data->GetFindString()<<"\n";
   grid_sizer->Add(new wxStaticText(this,-1,_("Find:")),wxSizerFlags().Expand());
   m_searchText = new wxTextCtrl(this,-1,data->GetFindString());
   m_searchText->Connect(
@@ -168,7 +167,6 @@ void FindReplacePane::OnActivate(wxActivateEvent& event)
 void FindReplacePane::OnFindStringChange(wxCommandEvent& event)
 {
   m_findReplaceData->SetFindString(m_searchText->GetValue());
-  std::cerr<<"test:"<<m_searchText->GetValue()<<"\n";
 }
 
 void FindReplacePane::OnReplaceStringChange(wxCommandEvent& event)
