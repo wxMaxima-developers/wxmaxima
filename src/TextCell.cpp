@@ -54,6 +54,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_fontSizeLabel = 12;
   m_text = text;
   m_text.Replace(wxT("\n"), wxEmptyString);
+  m_text.Replace(wxT("-->"),wxT("\x27f6"));
   m_highlight = false;
   m_altJs = m_alt = false;
 }
@@ -69,6 +70,7 @@ void TextCell::SetValue(const wxString &text)
   m_text = text;
   m_width = -1;
   m_text.Replace(wxT("\n"), wxEmptyString);
+  m_text.Replace(wxT("-->"),wxT("\x27f6"));
   m_alt = m_altJs = false;
 }
 
@@ -356,6 +358,7 @@ wxString TextCell::ToString()
     text = m_text;
 #if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+    text.Replace(wxT("\x27f6"),wxT("-->"));
 #endif
   }
   switch(m_textStyle)

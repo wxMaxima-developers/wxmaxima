@@ -2244,7 +2244,8 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
     {
 
       bool incrementalSearch = true;
-      wxConfig::Get()->ReadBool("incrementalSearch",&incrementalSearch);
+      wxConfig::Get()->Read("incrementalSearch",&incrementalSearch);
+      std::cerr<<incrementalSearch<<"\n";
       if(incrementalSearch)
       {
         m_oldFindFlags  = m_console->m_findDialog->GetData()->GetFlags();
@@ -2252,7 +2253,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
         m_console->FindIncremental(m_findData.GetFindString(),
                                    m_findData.GetFlags() & wxFR_DOWN,
                                    !(m_findData.GetFlags() & wxFR_MATCHCASE));
-        m_console->Refresh();
+//        m_console->Refresh();
       }
     }
   }
