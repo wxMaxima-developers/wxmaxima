@@ -1122,6 +1122,9 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         if (editor->GetWidth() == -1)
           Recalculate(clickedInGC);
         RequestRefresh();
+        // Here we tend to get unacceptably long delays before the display is
+        // refreshed by the idle loop => Trigger the refresh manually.
+        RefreshIfRequested();
         return;
       }
     }
@@ -1182,7 +1185,6 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
-
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
 
@@ -2404,6 +2406,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   ScrolledAwayFromEvaluation();
   Recalculate(group);
   RequestRefresh();
+
+  // Here we tend to get unacceptably long delays before the display is
+  // refreshed by the idle loop => Trigger the refresh manually.
+  RefreshIfRequested();
 }
 
 /***

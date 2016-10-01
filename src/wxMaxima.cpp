@@ -2255,7 +2255,8 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
       }
     }
   }
-  
+  m_console->RefreshIfRequested();
+
   ResetTitle(m_console->IsSaved());
   // On my linux box the menus need only rarely to be updated
   // and the idle loop is called
@@ -2289,7 +2290,6 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
     }
   }
 
-  m_console->RefreshIfRequested();
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
