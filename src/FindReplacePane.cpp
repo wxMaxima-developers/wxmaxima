@@ -59,6 +59,11 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
     );
   grid_sizer->Add(new wxStaticText(this,-1,_("Replacement:")),wxSizerFlags().Expand());
   m_replaceText = new wxTextCtrl(this,-1,data->GetReplaceString());
+  m_replaceText->Connect(
+    wxEVT_TEXT,
+    wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
+    NULL, this
+    );
   grid_sizer->Add(m_replaceText,wxSizerFlags().Expand());
   m_replaceButton = new wxButton (this,wxID_REPLACE);
   m_replaceButton->Connect(
@@ -171,6 +176,7 @@ void FindReplacePane::OnFindStringChange(wxCommandEvent& event)
 
 void FindReplacePane::OnReplaceStringChange(wxCommandEvent& event)
 {
+  std::cerr<<m_replaceText->GetValue()<<"\n";
   m_findReplaceData->SetReplaceString(m_replaceText->GetValue());
 }
 
