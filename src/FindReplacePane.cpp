@@ -111,9 +111,11 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
     wxCommandEventHandler(FindReplacePane::OnMatchCase),
     NULL, this
     );
+
+  // If I press <tab> in the search text box I want to arrive in the
+  // replacement text box immediately.
+  m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(vbox);
-//  vbox->SetSizeHints(this);
-//  Layout();
 }
 void FindReplacePane::SetFindString(wxString string)
 {
