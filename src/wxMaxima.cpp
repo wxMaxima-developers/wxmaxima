@@ -2227,9 +2227,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 ///  Idle event
 ///--------------------------------------------------------------------------------
 
-/***
- * On idle event we check if the document is saved.
- */
 void wxMaxima::OnIdle(wxIdleEvent& event)
 {
 

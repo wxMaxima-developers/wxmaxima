@@ -182,6 +182,24 @@ protected:
   void ShowHTMLHelp(wxString helpfile,wxString otherhelpfile,wxString keyword);
   void CheckForUpdates(bool reportUpToDate = false);
   void OnRecentDocument(wxCommandEvent& event);
+  /*! The idle task that refreshes the gui (worksheet, menus, title line,...)
+
+    In GUIs normally all events (mouse events, key presses,...) are 
+    put into a queue and then are executed one by one. This makes
+    sure that they will be processed in order - but makes a gui a
+    more or less single-processor-task.
+
+    If the queue is empty (which means that the computer has caught 
+    up with the incoming events) this function is called once.
+
+    Moving the screen update to this function makes sure that we
+    don't do many subsequent updates slowing down the computer any 
+    further if there are still a handful of key presses to process
+    lowering the average response times of the program.
+
+    The worksheet is refreshed by a timer task in case the computer 
+    is too busy to execute the idle task at all.
+  */
   void OnIdle(wxIdleEvent& event);
   void MenuCommand(wxString cmd);                  //
   void FileMenu(wxCommandEvent& event);            //
