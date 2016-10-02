@@ -187,6 +187,8 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
         break;
       }
     }
+    m_console->RequestRefresh()
+    m_console->RefreshIfRequested();
   }
   m_StatusMaximaBusy = status;
   m_forceStatusbarUpdate = false;
