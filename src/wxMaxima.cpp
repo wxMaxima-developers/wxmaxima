@@ -3362,7 +3362,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
@@ -3374,7 +3374,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
@@ -3386,7 +3386,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
@@ -5236,7 +5236,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     m_console->AddSelectionToEvaluationQueue();
   }
   // Inform the user about the length of the evaluation queue.
-  EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+  EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
   if(!evaluating)
     TryEvaluateNextInQueue();;
 }
@@ -5404,7 +5404,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
 
   // Display the evaluation queue's status.
-  EvaluationQueueLength(m_console->m_evaluationQueue->Size());
+  EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
 
   // We don't want to evaluate a new cell if the user still has to answer
   // a question.
@@ -5439,7 +5439,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
 
   wxString text = m_console->m_evaluationQueue->GetCommand();
-
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
@@ -5468,6 +5467,9 @@ void wxMaxima::TryEvaluateNextInQueue()
       }
       
       SendMaxima(text, true);
+      EvaluationQueueLength(m_console->m_evaluationQueue->Size(),
+                            m_console->m_evaluationQueue->CommandsLeftInCell()
+        );
 
       text.Trim(false);
       if(!m_hasEvaluatedCells)
@@ -6206,7 +6208,7 @@ EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)
 EVT_IDLE(wxMaxima::OnIdle)
 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
-EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_9, wxMaxima::OnRecentDocument)
+EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)
 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)

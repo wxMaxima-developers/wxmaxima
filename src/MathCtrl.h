@@ -554,6 +554,8 @@ private:
 
 public:
   //! Request the worksheet to be redrawn
+  void MarkRefreshAsDone(){m_refreshRequested = false;}
+  //! Request the worksheet to be redrawn
   void RequestRefresh();
   //! Redraw the worksheet if RequestRefresh() has been called
   void RefreshIfRequested() {if(m_refreshRequested) Refresh();m_refreshRequested = false;}

@@ -90,15 +90,26 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_console->SetFocus();
 }
 
-void wxMaximaFrame::EvaluationQueueLength(int length)
+void wxMaximaFrame::EvaluationQueueLength(int length,int numberOfCommands)
 {
-  if(length != m_EvaluationQueueLength)
+  if((length != m_EvaluationQueueLength)||(m_commandsLeftInCurrentCell != numberOfCommands))
   {
+    m_commandsLeftInCurrentCell = numberOfCommands;
     m_EvaluationQueueLength = length;
-    if(length>0)
-      SetStatusText(wxString::Format(_("%i cells in evaluation queue"),length),0);
+    if((length>0) || (numberOfCommands >= 1))
+    {
+      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),length);
+      if(numberOfCommands > 1)
+        statusLine += wxString::Format(_("; %i commands left in the current cell"),numberOfCommands-1);
+      SetStatusText(statusLine,0);
+    }
     else
-      SetStatusText(_("Welcome to wxMaxima"),0);
+    {
+      if(m_first)
+        SetStatusText(_("Welcome to wxMaxima"),0);
+      else
+        SetStatusText(_("Maxima is ready for input."),0);
+    }
   }
 }
 

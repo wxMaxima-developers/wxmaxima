@@ -101,6 +101,12 @@ public:
     {
       return m_size;
     }
+
+  //! Get the size of the queue
+  int CommandsLeftInCell()
+    {
+      return m_tokens.GetCount();
+    }
 };
 
 

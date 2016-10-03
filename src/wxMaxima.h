@@ -387,8 +387,6 @@ protected:
   bool m_isConnected;
   //! Is maxima running?
   bool m_isRunning;
-  //! Do we expect the 1st prompt from maxima to appear?
-  bool m_first;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   wxProcess *m_process;

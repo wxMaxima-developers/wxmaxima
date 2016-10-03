@@ -399,7 +399,7 @@ public:
   /*! Inform the user about the length of the evaluation queue.
 
    */
-  void EvaluationQueueLength(int length);
+  void EvaluationQueueLength(int length,int numberOfCommands = -1);
 
   /*! Set the status according to if maxima is calculating 
 
@@ -425,6 +425,8 @@ public:
 private:
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
+  //! The number of commands left in the current of the evaluation queue item
+  int m_commandsLeftInCurrentCell;
   //! True=We are currently saving.
   bool m_StatusSaving;
   //! The menu bar
@@ -488,6 +490,8 @@ private:
   wxPanel *CreateSymbolsPane();
 #endif
 protected:
+  //! Do we expect the 1st prompt from maxima to appear?
+  bool m_first;
   void CharacterButtonPressed(wxMouseEvent &event);
   void LoadRecentDocuments();
   void SaveRecentDocuments();
