@@ -412,13 +412,13 @@
 (defprop $set (("<r><t>{</t>")"<t>}</t></r>") wxxmlsym)
 
 (defprop mabs wxxml-matchfix wxxml)
-(defprop mabs (("<a>")"</a>") wxxmlsym)
+(defprop mabs (("<r><a>")"</a></r>") wxxmlsym)
 
 (defprop $conjugate wxxml-matchfix wxxml)
-(defprop $conjugate (("<cj>")"</cj>") wxxmlsym)
+(defprop $conjugate (("<r><cj>")"</cj></r>") wxxmlsym)
 
 (defprop %conjugate wxxml-matchfix wxxml)
-(defprop %conjugate (("<cj>")"</cj>") wxxmlsym)
+(defprop %conjugate (("<r><cj>")"</cj></r>") wxxmlsym)
 
 (defprop mbox wxxml-mbox wxxml)
 (defprop mlabox wxxml-mbox wxxml)
@@ -430,8 +430,8 @@
 (defprop mlabbox 10. wxxml-lbp)
 
 (defun wxxml-mbox (x l r)
-  (setq l (wxxml (cadr x) (append l '("<hl>")) nil 'mparen 'mparen)
-        r (append '("</hl>") r))
+  (setq l (wxxml (cadr x) (append l '("<r><hl>")) nil 'mparen 'mparen)
+        r (append '("</hl></r>") r))
   (append l r))
 
 (defprop mqapply wxxml-mqapply wxxml)
