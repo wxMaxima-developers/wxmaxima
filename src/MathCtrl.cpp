@@ -69,7 +69,7 @@ wxScrolledCanvas(
   | wxSUNKEN_BORDER
 #endif
   )
-{
+{  
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
   m_refreshRequested = false;
@@ -3429,7 +3429,8 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
 /***
  * Adjust the virtual size and scrollbars.
  */
-void MathCtrl::AdjustSize() {
+void MathCtrl::AdjustSize()
+{ 
   int width= MC_BASE_INDENT, height= MC_BASE_INDENT;
   int clientWidth, clientHeight, virtualHeight;
 
@@ -3441,7 +3442,19 @@ void MathCtrl::AdjustSize() {
   virtualHeight = MAX(clientHeight  + 10 , height); // ensure we always have VSCROLL active
 
   SetVirtualSize(width, virtualHeight);
-  SetScrollRate(SCROLL_UNIT, SCROLL_UNIT);
+
+  // Don't set m_scrollUnit too high for big windows on hi-res screens:
+  // Allow scrolling by a tenth of a line doesn't make too much sense,
+  // but will make scrolling feel sluggish.
+  m_scrollUnit = height/20;
+  // Ensure a sane scroll unit even for the fringe case of a very small
+  // screen.
+  if(m_scrollUnit < 10)
+    m_scrollUnit = height - 1;
+  if(m_scrollUnit < 1)
+    m_scrollUnit = 1;
+
+  SetScrollRate(m_scrollUnit, m_scrollUnit);
 }
 
 /***
@@ -5696,13 +5709,13 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   GetViewStart(&view_x, &view_y);
   GetSize(&width, &height);
 
-  view_y *= SCROLL_UNIT;
+  view_y *= m_scrollUnit;
 
-  if (cellY + cellDrop + SCROLL_UNIT > view_y + height - height / 10)
-    Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/SCROLL_UNIT + 4, 0));
-  else if (cellY - cellCenter - SCROLL_UNIT < view_y && cellDrop + cellCenter < height)
+  if (cellY + cellDrop + m_scrollUnit > view_y + height - height / 10)
+    Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/m_scrollUnit + 4, 0));
+  else if (cellY - cellCenter - m_scrollUnit < view_y && cellDrop + cellCenter < height)
   {
-    Scroll(-1, MAX(cellY/SCROLL_UNIT - 2, 0));
+    Scroll(-1, MAX(cellY/m_scrollUnit - 2, 0));
   }
   RequestRefresh();
 }
@@ -6019,8 +6032,8 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
   GetViewStart(&view_x, &view_y);
   GetSize(&width, &height);  
 
-  view_x *= SCROLL_UNIT;
-  view_y *= SCROLL_UNIT;
+  view_x *= m_scrollUnit;
+  view_y *= m_scrollUnit;
 
   if ((point.y < view_y) || (point.y > view_y + height
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
@@ -6047,8 +6060,8 @@ void MathCtrl::ShowPoint(wxPoint point) {
   GetViewStart(&view_x, &view_y);
   GetSize(&width, &height);
 
-  view_x *= SCROLL_UNIT;
-  view_y *= SCROLL_UNIT;
+  view_x *= m_scrollUnit;
+  view_y *= m_scrollUnit;
 
   if ((point.y - 2 < view_y) || (point.y + 2 > view_y + height
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
@@ -6066,7 +6079,7 @@ void MathCtrl::ShowPoint(wxPoint point) {
 
   if (sc)
   {
-    Scroll(scrollToX / SCROLL_UNIT, scrollToY / SCROLL_UNIT);
+    Scroll(scrollToX / m_scrollUnit, scrollToY / m_scrollUnit);
   }
 }
 
@@ -6804,10 +6817,10 @@ bool MathCtrl::CaretVisibleIs()
     int height, width;
     
     GetViewStart(&view_x, &view_y);
-    GetSize(&width, &height);  
+    GetSize(&width, &height); 
     
-    view_x *= SCROLL_UNIT;
-    view_y *= SCROLL_UNIT;
+    view_x *= m_scrollUnit;
+    view_y *= m_scrollUnit;
 
     return ((y >= view_y) && (y <= view_y + height));
   }

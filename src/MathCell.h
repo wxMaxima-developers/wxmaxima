@@ -59,14 +59,6 @@
 #include "CellParser.h"
 #include "TextStyle.h"
 
-/*! The size of a scroll step
-
-  Defines the size of a scroll step, but besides that also the accuracy wxScrolledCanvas
-  calculates some widths in.
- */
-#define SCROLL_UNIT 10
-
-
 /*! The supported types of math cells
  */
 enum {

@@ -67,7 +67,13 @@ by wxWidgets:
 class MathCtrl: public wxScrolledCanvas
 {
 private:
-
+  /*! The size of a scroll step
+    
+    Defines the size of a 
+    scroll step, but besides that also the accuracy wxScrolledCanvas
+    calculates some widths in.
+  */
+  int m_scrollUnit;
   //! Do we need to repaint the worksheet?
   bool m_refreshRequested;
   //! Which groupCell incremental search has started in?

@@ -31,7 +31,7 @@
 #include "MathCell.h"
 #include "EditorCell.h"
 
-#define EMPTY_INPUT_LABEL wxT("-->  ")
+#define EMPTY_INPUT_LABEL wxT(" -->  ")
 
 enum
 {
