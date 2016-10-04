@@ -42,6 +42,7 @@
 #include "ContentAssistantPopup.h"
 
 #include <wx/clipbrd.h>
+#include <wx/caret.h>
 #include <wx/config.h>
 #include <wx/settings.h>
 #include <wx/filename.h>
@@ -55,8 +56,6 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 
-//! The blinking speed of the cursor
-#define CARET_TIMER_TIMEOUT 500
 //! The default delay between animation steps in milliseconds
 #define ANIMATION_TIMER_TIMEOUT 300
 
@@ -126,7 +125,7 @@ wxScrolledCanvas(
   AdjustSize();
   m_autocompleteTemplates = false;
 
-  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
+  m_caretTimer.Start(wxCaret::GetBlinkTime());
 
   DisableKeyboardScrolling();
 
@@ -146,7 +145,7 @@ void MathCtrl::RequestRefresh()
   
   // Make sure there is a timeout for the redraw
   if(!m_caretTimer.IsRunning())
-    m_caretTimer.Start(CARET_TIMER_TIMEOUT);
+    m_caretTimer.Start(wxCaret::GetBlinkTime());
 }
 
 MathCtrl::~MathCtrl() {
@@ -6011,7 +6010,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_activeCell->SetMatchParens(match);
     m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = true;
-    m_caretTimer.Start(CARET_TIMER_TIMEOUT);
+    m_caretTimer.Start(wxCaret::GetBlinkTime());
   }
 
   if (cell != NULL)
@@ -6368,7 +6367,7 @@ void MathCtrl::OnSetFocus(wxFocusEvent& event)
 {
   m_hasFocus = true;
   // We want the cursor to blink in this case
-  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
+  m_caretTimer.Start(wxCaret::GetBlinkTime());
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(true);
 
@@ -6522,7 +6521,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   // Tell the cursor to blink, but to be visible right now.
   m_switchDisplayCaret = true;
   m_hCaretBlinkVisible = true;
-  m_caretTimer.Start(CARET_TIMER_TIMEOUT);
+  m_caretTimer.Start(wxCaret::GetBlinkTime());
 }
 
 void MathCtrl::ShowHCaret()
