@@ -40,6 +40,7 @@ class FindReplaceDialog: public wxDialog
 public:
   FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style=0);
   wxFindReplaceData *GetData(){return m_contents->GetData();}
+  void SetFindString(wxString string) {m_contents->SetFindString(string);}
 
 protected:
   void OnActivate(wxActivateEvent& event);

@@ -168,6 +168,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   UpdateRecentDocuments();
 
   m_console->m_findDialog = NULL;
+  m_oldFindString = wxEmptyString;
+  m_oldFindFlags = 0;
   m_console->m_currentFile = wxEmptyString;
   m_findData.SetFlags(wxFR_DOWN);
 
@@ -3197,24 +3199,30 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_find:
 #endif
-    if ( m_console->m_findDialog != NULL )
-    {
-      m_console->m_findDialog->Destroy();
-      m_console->m_findDialog = NULL;
-    }
     if(m_console->GetActiveCell()!=NULL)
     {
+      // Start incremental search and highlighting of search results again.
+      if ( m_console->m_findDialog != NULL )
+        m_oldFindString = wxEmptyString;
+
       wxString selected = m_console->GetActiveCell()->GetSelectionString();
       if(selected.Length()>0)
-        m_findData.SetFindString(selected);
+      {
+        if ( m_console->m_findDialog != NULL )
+          m_console->m_findDialog->SetFindString(selected);
+      }
     }
-    m_console->m_findDialog = new FindReplaceDialog(
+
+    if ( m_console->m_findDialog == NULL )
+      m_console->m_findDialog = new FindReplaceDialog(
       this,
       &m_findData,
       _("Find and Replace"),
       wxFR_REPLACEDIALOG |
       wxFR_NOWHOLEWORD);
     m_console->m_findDialog->Show(true);
+    m_console->m_findDialog->SetFocus();
+    m_console->m_findDialog->Raise();
     break;
   case menu_history_next:
   {
@@ -3244,6 +3252,7 @@ void wxMaxima::OnFind(wxFindDialogEvent& event)
 void wxMaxima::OnFindClose(wxFindDialogEvent& event)
 {
   m_console->m_findDialog->Destroy();
+  m_oldFindString = wxEmptyString;
   m_console->m_findDialog = NULL;
 }
 
