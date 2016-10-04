@@ -75,7 +75,7 @@ private:
   */
   int m_scrollUnit;
   //! Do we need to repaint the worksheet?
-  bool m_refreshRequested;
+  bool m_redrawRequested;
   //! Which groupCell incremental search has started in?
   GroupCell *m_cellSearchStartedIn;
   //! Which cursor position incremental search has started at?
@@ -560,13 +560,15 @@ private:
 
 public:
   //! Request the worksheet to be redrawn
-  void MarkRefreshAsDone(){m_refreshRequested = false;}
+  void MarkRefreshAsDone(){m_redrawRequested = false;}
+  //! Redraw the worksheet if RequestRedraw() has been called
+  void RedrawIfRequested() {if(m_redrawRequested) Refresh();m_redrawRequested = false;}
+  //! Redraw the worksheet region rect or the entire worksheet if RequestRedraw() has been called
+  void RedrawRect(wxRect rect);
   //! Request the worksheet to be redrawn
-  void RequestRefresh();
-  //! Redraw the worksheet if RequestRefresh() has been called
-  void RefreshIfRequested() {if(m_refreshRequested) Refresh();m_refreshRequested = false;}
-  //! Redraw the worksheet region rect or the entire worksheet if RequestRefresh() has been called
-  void RefreshRequestedPlusRect(wxRect rect);
+  void RequestRedraw();
+  //! Redraw the window now and mark any pending redraw request as "handled".
+  void ForceRedraw(){RequestRedraw();RedrawIfRequested();}
 
   //! The name of the currently-opened file
   wxString m_currentFile;

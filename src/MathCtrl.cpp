@@ -71,7 +71,7 @@ wxScrolledCanvas(
 {  
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
-  m_refreshRequested = false;
+  m_redrawRequested = false;
   
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
@@ -139,9 +139,9 @@ wxScrolledCanvas(
 
 }
 
-void MathCtrl::RequestRefresh()
+void MathCtrl::RequestRedraw()
 {
-  m_refreshRequested = true;
+  m_redrawRequested = true;
   
   // Make sure there is a timeout for the redraw
   if(!m_caretTimer.IsRunning())
@@ -548,7 +548,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
         ScrollToCaret();
       }
     }
-    RequestRefresh();
+    RequestRedraw();
   }
   else
   {
@@ -583,7 +583,7 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   if (recalc)
   {
     RecalculateForce();
-    RequestRefresh();
+    RequestRedraw();
   }
   
   if(CellToScrollTo)
@@ -655,7 +655,7 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
   else
     AdjustSize();
 
-  RequestRefresh();
+  RequestRedraw();
   if(CellToScrollTo)ScrollToCell(CellToScrollTo);
   //wxScrolledCanvas::OnSize(event);
 }
@@ -1120,10 +1120,9 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
           Recalculate(clickedInGC);
-        RequestRefresh();
         // Here we tend to get unacceptably long delays before the display is
         // refreshed by the idle loop => Trigger the refresh manually.
-        RefreshIfRequested();
+        ForceRedraw();
         return;
       }
     }
@@ -1146,7 +1145,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         FollowEvaluation(true);    
         OpenQuestionCaret();
-        RequestRefresh();
+        RequestRedraw();
         return;
       }
       else {
@@ -1303,7 +1302,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
   }
 
-  RequestRefresh();
+  RequestRedraw();
   // Re-calculate the table of contents
   UpdateTableOfContents();
 }
@@ -1382,7 +1381,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
     
     wxRect rect = m_selectionStart->GetRect();
     CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-    RefreshRequestedPlusRect(rect);
+    RedrawRect(rect);
 
     #ifdef __WXMSW__
     // On windows: Set the focus to the slider so it handles further wheel events
@@ -1526,7 +1525,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         m_switchDisplayCaret = true;
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-        RefreshRequestedPlusRect(rect);
+        RedrawRect(rect);
 
         // Remove the marker that we need to refresh
         selectionStartOld = m_selectionStart;
@@ -1555,7 +1554,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
 
   // Refresh only if the selection has changed
   if ((selectionStartOld != m_selectionStart) || (selectionEndOld != m_selectionEnd))
-    RequestRefresh();
+    RequestRedraw();
 }
 
 /***
@@ -2305,7 +2304,7 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
   UpdateTableOfContents();
   Recalculate();
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
@@ -2347,7 +2346,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
     ScrollToCell(tmp);
   }
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
@@ -2404,11 +2403,10 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // to scroll away.
   ScrolledAwayFromEvaluation();
   Recalculate(group);
-  RequestRefresh();
 
   // Here we tend to get unacceptably long delays before the display is
   // refreshed by the idle loop => Trigger the refresh manually.
-  RefreshIfRequested();
+  ForceRedraw();
 }
 
 /***
@@ -2624,7 +2622,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             // Sometimes and only in certain zoom factors pressing enter doesn't change the
             // size of an EditorCell. Let's see if that helps...
             Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
-            RequestRefresh();
+            RequestRedraw();
           }
         }
       }
@@ -2635,7 +2633,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 #ifndef wxUSE_UNICODE
     if (m_activeCell == NULL) {
       SetSelection(NULL);
-      RequestRefresh();
+      RequestRedraw();
     }
     else
       SetHCaret(m_activeCell->GetParent()); // also refreshes
@@ -2740,7 +2738,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
-      RequestRefresh();
+      RequestRedraw();
     }
     else
     {
@@ -2794,7 +2792,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
-      RequestRefresh();
+      RequestRedraw();
     }
     else
     {
@@ -2870,13 +2868,13 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         (m_activeCell == group->GetEditable()))
       group->ResetInputLabel();
     Recalculate(group);
-    RequestRefresh();
+    RequestRedraw();
   }
   else
   {
     if(m_activeCell->m_selectionChanged)
     {
-      RequestRefresh();
+      RequestRedraw();
     }
     /// Otherwise refresh only the active cell
     else {
@@ -2894,7 +2892,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         rect.width = GetVirtualSize().x;
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RefreshRequestedPlusRect(rect);
+      RedrawRect(rect);
     }
   }
   if(GetActiveCell())
@@ -2977,7 +2975,7 @@ void MathCtrl::SelectWithChar(int ccode) {
       SetSelection(m_hCaretPositionEnd,m_hCaretPositionStart);
     }
   }
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
@@ -3005,7 +3003,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
     else
       m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous);
   }
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
@@ -3167,7 +3165,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
   case WXK_BACK:
     if (m_hCaretPosition != NULL) {
       SetSelection(m_hCaretPosition);
-      RequestRefresh();
+      RequestRedraw();
       m_hCaretActive = false;
       return;
     }
@@ -3332,7 +3330,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       OpenHCaret(txt);
   }
 
-  RequestRefresh();
+  RequestRedraw();
 }
 
 /*****
@@ -3441,11 +3439,12 @@ void MathCtrl::AdjustSize()
   virtualHeight = MAX(clientHeight  + 10 , height); // ensure we always have VSCROLL active
 
   SetVirtualSize(width, virtualHeight);
-
+  
   // Don't set m_scrollUnit too high for big windows on hi-res screens:
   // Allow scrolling by a tenth of a line doesn't make too much sense,
   // but will make scrolling feel sluggish.
-  m_scrollUnit = height/20;
+  height = GetClientSize().y;
+  m_scrollUnit = height/30;
   // Ensure a sane scroll unit even for the fringe case of a very small
   // screen.
   if(m_scrollUnit < 10)
@@ -3498,7 +3497,7 @@ void MathCtrl::StepAnimation(int change)
   // Refresh the displayed bitmap
   wxRect rect = m_selectionStart->GetRect();
   CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-  RefreshRequestedPlusRect(rect);
+  RedrawRect(rect);
 
   // Set the slider to its new value
   if(m_mainToolBar)
@@ -3580,7 +3579,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
 
       // Make sure we don't refresh part of the screen twice and make sure that
       // we periodically update the screen even if we are never idle.
-      RefreshRequestedPlusRect(rect);
+      RedrawRect(rect);
     }
 
     // We only blink the cursor if we have the focus => If we loose the focus
@@ -3592,12 +3591,12 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
   }
 }
 
-void MathCtrl::RefreshRequestedPlusRect(wxRect rect)
+void MathCtrl::RedrawRect(wxRect rect)
 {
-  if(m_refreshRequested)
+  if(m_redrawRequested)
   {
     Refresh();
-    m_refreshRequested = false;
+    m_redrawRequested = false;
   }
   else
     RefreshRect(rect);
@@ -5447,7 +5446,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
     parent->SelectOutput(&selectionStart, &selectionEnd);
   }
   
-  RequestRefresh();
+  RequestRedraw();
 // Re-calculate the table of contents  
   UpdateTableOfContents();
 }
@@ -5486,7 +5485,7 @@ bool MathCtrl::ActivatePrevInput() {
   SetActiveCell(inpt, false);
   m_activeCell->CaretToEnd();
 
-  RequestRefresh();
+  RequestRedraw();
 
   return true;
 }
@@ -5528,7 +5527,7 @@ bool MathCtrl::ActivateNextInput(bool input) {
   SetActiveCell(inpt, false);
   m_activeCell->CaretToStart();
 
-  RequestRefresh();
+  RequestRedraw();
 
   return true;
 }
@@ -5716,7 +5715,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
   {
     Scroll(-1, MAX(cellY/m_scrollUnit - 2, 0));
   }
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::Undo()
@@ -5877,7 +5876,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
       sourcelist->pop_front();
 
       Recalculate(true);
-      RequestRefresh();
+      RequestRedraw();
 
       wxASSERT_MSG(action->m_newCellsEnd==NULL,_("Bug: Got a request to first change the contents of a cell and to then undelete it."));
       wxASSERT_MSG(action->m_oldCells==NULL,_("Bug: Undo action with both cell contents change and cell addition."));
@@ -5967,7 +5966,7 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
   sourcelist->pop_front();
 
   Recalculate(true);
-  RequestRefresh();
+  RequestRedraw();
 
   return true;
 }
@@ -5984,7 +5983,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   if(cell != NULL)
   {
     cell->ActivateCell(true);
-    if(!m_refreshRequested) m_caretTimer.Stop();
+    if(!m_redrawRequested) m_caretTimer.Stop();
   }
   
   m_activeCell = cell;
@@ -6020,7 +6019,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   }
   
   if (callRefresh) // = true default
-    RequestRefresh();
+    RequestRedraw();
 }
 
 bool MathCtrl::PointVisibleIs(wxPoint point)
@@ -6089,7 +6088,7 @@ bool MathCtrl::CutToClipboard()
     m_activeCell->CutToClipboard();
     m_activeCell->GetParent()->ResetSize();
     Recalculate();
-    RequestRefresh();
+    RequestRedraw();
     return true;
   }
   else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP)
@@ -6224,7 +6223,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
           }
           NumberSections();
           Recalculate();
-          RequestRefresh();
+          RequestRedraw();
           SetHCaret(end);
         }
       }
@@ -6255,7 +6254,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
       m_activeCell->PasteFromClipboard();
       m_activeCell->GetParent()->ResetSize();
       Recalculate();
-      RequestRefresh();
+      RequestRedraw();
     }
     else
     {
@@ -6266,7 +6265,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
           wxString txt = obj.GetText();
           
           OpenHCaret(txt);
-          RequestRefresh();
+          RequestRedraw();
         }
       wxTheClipboard->Close();
       }
@@ -6303,7 +6302,7 @@ void MathCtrl::SelectAll()
     }
   }
   ScrolledAwayFromEvaluation();
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::DivideCell()
@@ -6515,7 +6514,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   m_hCaretActive = true;
   
   if (callRefresh) // = true default
-    RequestRefresh();
+    RequestRedraw();
   ScrollToCell(where);
   
   // Tell the cursor to blink, but to be visible right now.
@@ -6553,7 +6552,7 @@ void MathCtrl::UndoInsideCell()
     m_activeCell->GetParent()->ResetSize();
     m_activeCell->ResetSize();
     Recalculate();
-    RequestRefresh();
+    RequestRedraw();
   }
 }
 
@@ -6570,7 +6569,7 @@ void MathCtrl::RedoInsideCell()
     m_activeCell->Redo();
     m_activeCell->GetParent()->ResetSize();
     Recalculate();
-    RequestRefresh();
+    RequestRedraw();
   }
 }
 
@@ -6592,7 +6591,7 @@ void MathCtrl::RemoveAllOutput()
   RemoveAllOutput(m_tree);
 
   Recalculate();
-  RequestRefresh();
+  RequestRedraw();
 }
 
 void MathCtrl::RemoveAllOutput(GroupCell *tree)
@@ -6680,7 +6679,7 @@ wxString MathCtrl::GetOutputAboveCaret()
 
   SetSelection(NULL);
 
-  RequestRefresh();
+  RequestRedraw();
 
   return output;
 }
@@ -6770,7 +6769,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
         editor->SetSelection(start, end);
         ScrollToCaret();
         UpdateTableOfContents();
-        RequestRefresh();
+        RequestRedraw();
         if((wrappedSearch)&&warn)
         {
           wxMessageDialog dialog(m_findDialog,
@@ -6923,7 +6922,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
   {
     m_saved = false;
     Recalculate();
-    RequestRefresh();
+    RequestRedraw();
   }
 
   return count;
@@ -7032,7 +7031,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     editor->GetParent()->ResetSize();
     Recalculate(editor->GetParent());
 
-    RequestRefresh();
+    RequestRedraw();
   }
 
   /// If there are more than one completions, popup a menu
@@ -7095,7 +7094,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   editor->GetParent()->ResetSize();
   Recalculate(editor->GetParent());
 
-  RequestRefresh();
+  RequestRedraw();
 }
 
 
@@ -7116,7 +7115,7 @@ void MathCtrl::SetActiveCellText(wxString text)
       parent->ResetData();
       parent->ResetInputLabel();
       Recalculate(parent);
-      RequestRefresh();
+      RequestRedraw();
     }
   }
   else
@@ -7135,7 +7134,7 @@ bool MathCtrl::InsertText(wxString text)
     else {
       m_activeCell->InsertText(text);
       Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
-      RequestRefresh();
+      RequestRedraw();
     }
   }
   else
