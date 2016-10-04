@@ -184,7 +184,12 @@ void FindReplacePane::OnReplaceStringChange(wxCommandEvent& event)
 
 void FindReplacePane::OnKeyDown(wxKeyEvent& event)
 {
-  if(event.GetKeyCode()==WXK_RETURN)
+  if(event.ControlDown()&&(event.GetUnicodeKey()==wxT('F')))
+  {
+    wxCommandEvent dummyEvent;
+    OnSearch(dummyEvent);
+  }
+  else if(event.GetKeyCode()==WXK_RETURN)
   {
     if(m_searchText->HasFocus())
     {
