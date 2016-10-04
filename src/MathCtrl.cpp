@@ -6699,9 +6699,10 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
     return false;
 
   GroupCell *pos;
-
-  int starty=0;
-  if(!down)
+  int starty;
+  if(down)
+    starty = 0;
+  else
   {
     wxSize canvasSize= GetClientSize();
     starty=canvasSize.y;
@@ -6710,13 +6711,21 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
   // Default the start of the search at the top or the bottom of the screen
   wxPoint topleft;
   CalcUnscrolledPosition(0,starty,&topleft.x,&topleft.y);
-  pos = GetTree();
+  pos = m_tree;
   while (pos != NULL)
   {
     wxRect rect = pos->GetRect();
     if(rect.GetBottom() > topleft.y)
       break;
     pos = dynamic_cast<GroupCell *>(pos -> m_next);
+  }
+  
+  if(pos == NULL)
+  {
+    if(down)
+      pos = m_tree;
+    else
+      pos = m_last;
   }
   
   // If a cursor is active we start the search there instead
