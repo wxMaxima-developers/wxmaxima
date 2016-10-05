@@ -117,6 +117,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(vbox);
 }
+
 void FindReplacePane::SetFindString(wxString string)
 {
   m_findReplaceData->SetFindString(string);
