@@ -552,6 +552,7 @@ private:
   wxBitmap *m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
+  //! The current zoom level
   double m_zoomFactor;
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
@@ -559,6 +560,7 @@ private:
 
 
 public:
+  ///@{
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone(){m_redrawRequested = false;}
   //! Redraw the worksheet if RequestRedraw() has been called
@@ -569,6 +571,7 @@ public:
   void RequestRedraw();
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw(){RequestRedraw();RedrawIfRequested();}
+  ///@}
 
   //! The name of the currently-opened file
   wxString m_currentFile;

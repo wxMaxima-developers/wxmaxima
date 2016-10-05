@@ -39,9 +39,10 @@ TextCell::TextCell() : MathCell()
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
-  m_realCenter = m_center = 0;
+  m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
+  ResetSize();
 }
 
 TextCell::TextCell(wxString text) : MathCell()
@@ -49,7 +50,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
-  m_realCenter = m_center = 0;
+  m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
   m_text = text;
@@ -115,17 +116,16 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
 {
   SetAltText(parser);
 
-  if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
+  if (m_height == -1 || m_width == -1 || parser.ForceUpdate())
   {
-    m_fontSize = fontsize;
-
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT)) {
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    {
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
         dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
@@ -267,7 +267,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
 
-  int fontsize1 = (int) (((double)fontsize) * scale + 0.5);
+  m_fontSize = (int) (((double)fontsize) * scale + 0.5);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
@@ -275,16 +275,16 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
       (m_textStyle == TS_SUBSUBSECTION)
     )
   {
-    fontsize1 = parser.GetFontSize(m_textStyle);
-    fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
+    m_fontSize = parser.GetFontSize(m_textStyle);
+    m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
   }
 
-  fontsize1 = MAX(fontsize1, 1);
+  m_fontSize = MAX(m_fontSize, 1);
 
   // Use jsMath
   if (m_altJs && parser.CheckTeXFonts())
   {
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
                       parser.IsBold(m_textStyle),
                       parser.IsUnderlined(m_textStyle),
@@ -296,7 +296,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   // We have an alternative symbol
   else if (m_alt)
   {
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
                       parser.IsBold(m_textStyle),
                       false,
@@ -313,7 +313,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
            (m_textStyle == TS_SUBSUBSECTION)
     )
   {
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                 parser.IsItalic(m_textStyle),
                 parser.IsBold(m_textStyle),
                 false,
@@ -325,7 +325,7 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   // Default
   else
   {
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                 parser.IsItalic(m_textStyle),
                 parser.IsBold(m_textStyle),
                 parser.IsUnderlined(m_textStyle),

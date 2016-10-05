@@ -1516,8 +1516,13 @@ bool GroupCell::IsLesserGCType(int comparedTo) {
   }
 }
 
-void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &image) {
-  switch (m_groupType) {
+void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &image)
+{
+  GroupCell *tmp = this;
+
+  while(tmp != NULL)
+  {
+    switch (tmp->m_groupType) {
     case GC_TYPE_TITLE:
       section = subsection = subsubsection = 0;
       break;
@@ -1527,7 +1532,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT(" ");
         num << section << wxT(" ");
-        ((TextCell*)m_input)->SetValue(num);
+        ((TextCell*)tmp->m_input)->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSECTION:
@@ -1536,7 +1541,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(" ");
-        ((TextCell*)m_input)->SetValue(num);
+        ((TextCell*)tmp->m_input)->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSUBSECTION:
@@ -1544,25 +1549,25 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
-        ((TextCell*)m_input)->SetValue(num);
+        ((TextCell*)tmp->m_input)->SetValue(num);
       }
       break;
     case GC_TYPE_IMAGE:
       image++;
       {
         wxString num = wxString::Format(_("Figure %d:"), image);
-        ((TextCell*)m_input)->SetValue(num);
+        ((TextCell*)tmp->m_input)->SetValue(num);
       }
       break;
     default:
       break;
+    }
+
+    if (IsFoldable() && tmp->m_hiddenTree)
+      tmp->m_hiddenTree->Number(section, subsection, subsubsection, image);
+
+    tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
-
-  if (IsFoldable() && m_hiddenTree)
-    m_hiddenTree->Number(section, subsection, subsubsection, image);
-
-  if (m_next)
-    dynamic_cast<GroupCell*>(m_next)->Number(section, subsection, subsubsection, image);
 }
 
 bool GroupCell::IsMainInput(MathCell *active)

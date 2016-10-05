@@ -80,6 +80,11 @@ TEMPLATE: bode_phase(<H>, <range>, ...<plot_opts>...)
 FUNCTION: run_testsuite
 TEMPLATE: run_testsuite([<options>])
 OPTION  : testsuite_files
+OPTION  : display_all
+OPTION  : display_known_bugs
+OPTION  : tests
+OPTION  : time
+OPTION  : share_tests
 FUNCTION: bug_report
 TEMPLATE: bug_report()
 FUNCTION: build_info

@@ -2845,19 +2845,23 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   if (m_activeCell->IsDirty()) {
     m_saved = false;
 
+    
     int height = m_activeCell->GetHeight();
+    //   int fontsize = parser.GetDefaultFontSize();
+    parser.SetZoomFactor(m_zoomFactor);
+    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
     int fontsize = parser.GetDefaultFontSize();
-
+    
     m_activeCell->ResetData();
     m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE));
     m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE));
-
+    
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
         GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT)
       needRecalculate = true;
   }
-
+  
   /// If we need to recalculate then refresh the window
   if (needRecalculate) {
     GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());

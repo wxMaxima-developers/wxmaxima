@@ -73,6 +73,7 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_firstLineOnly = false;
   m_historyPosition = -1;
   m_text = TabExpand(text,0);
+  ResetSize();
 }
 
 EditorCell::~EditorCell()
@@ -372,9 +373,8 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
   int charWidth;
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || fontsize != m_fontSize || parser.ForceUpdate())
+  if (m_height == -1 || m_width == -1 || parser.ForceUpdate())
   {
-    m_fontSize = fontsize;
     wxDC& dc = parser.GetDC();
     double scale = parser.GetScale();
     SetFont(parser, fontsize);
@@ -382,6 +382,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
     // Measure the text hight using characters that might extend below or above the region
     // ordinary characters move in.
     dc.GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
+
     // We want a little bit of vertical space between two text lines (and between two labels).
     m_charHeight += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     unsigned int newLinePos = 0, prevNewLinePos = 0;
@@ -418,7 +419,8 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
       width = charWidth;
 
     m_width = width + 2 * SCALE_PX(2, scale);
-    m_height = m_numberOfLines * m_charHeight;
+    m_height = m_numberOfLines * (m_charHeight + 2 * SCALE_PX(2, scale));
+    // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
   ResetData();
@@ -539,8 +541,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
   double scale = parser.GetScale();
   wxDC& dc = parser.GetDC();
   wxPoint point(point1);
-
-  if (m_width == -1 || m_height == -1)
+  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
     RecalculateWidths(parser, fontsize);
 
   if (DrawThisCell(parser, point) && !m_isHidden)
@@ -619,7 +620,6 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     wxPoint TextStartingpoint = point;
     // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
     TextStartingpoint.x += SCALE_PX(2, scale);
-    TextStartingpoint.y += SCALE_PX(2, scale);
     wxPoint TextCurrentPoint = TextStartingpoint;
     std::list<StyledText> styledText = m_styledText;
     int lastStyle = -1;
@@ -716,13 +716,12 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   wxDC& dc = parser.GetDC();
   double scale = parser.GetScale();
 
-  int fontsize1 = parser.GetFontSize(m_textStyle);
-  if (fontsize1 == 0)
-    fontsize1 = fontsize;
-  m_fontSize = fontsize1;
+  m_fontSize = parser.GetFontSize(m_textStyle);
+  if (m_fontSize == 0)
+    m_fontSize = fontsize;
 
-  fontsize1 = (int) (((double)fontsize1) * scale + 0.5);
-  fontsize1 = MAX(fontsize1, 1);
+  m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
+  m_fontSize = MAX(m_fontSize, 1);
 
   m_fontName = parser.GetFontName(m_textStyle);
   m_fontStyle = parser.IsItalic(m_textStyle);
@@ -730,12 +729,13 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
   m_underlined = parser.IsUnderlined(m_textStyle);
   m_fontEncoding = parser.GetFontEncoding();
 
-  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+  dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,
                     m_fontName,
                     m_fontEncoding));
+
 }
 
 void EditorCell::SetForeground(CellParser& parser)
@@ -2369,7 +2369,6 @@ int EditorCell::XYToPosition(int x, int y)
 wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
 {
   wxDC& dc = parser.GetDC();
-  SetFont(parser, m_fontSize);
 
   int x = m_currentPoint.x, y = m_currentPoint.y;
   int width;
@@ -2465,13 +2464,11 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
     return false;
 
   wxString s;
-  int fontsize1 = m_fontSize;
-
   wxString text = m_text;
   if (m_changeAsterisk)  
     text.Replace(wxT("*"), wxT("\xB7"));
 
-  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+  dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,

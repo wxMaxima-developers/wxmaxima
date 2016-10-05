@@ -67,9 +67,9 @@ protected:
   wxString m_fontname, m_texFontname;
   bool m_alt, m_altJs;
   int m_realCenter;
-  //! If the fontsize has changed m_fontSize is no more accurate which will
-  //  cause a recalculation of the dimensions of this cell.
+  //! The line height
   int m_fontSize;
+  //! The actual font size for labels (that have a fixed width)
   int m_fontSizeLabel;
   int m_labelWidth, m_labelHeight;
 private:
