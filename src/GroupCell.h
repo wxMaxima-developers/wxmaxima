@@ -185,10 +185,7 @@ public:
   bool IsLesserGCType(int comparedTo);
   //! @}
   bool IsMainInput(MathCell *active);
-  /*!  Return this cell's section- or image number.
-
-    \todo This code is still using recursive function calls.
-   */
+  //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &image);
   /*! Recalculate the cell dimensions after appending new lines.
 

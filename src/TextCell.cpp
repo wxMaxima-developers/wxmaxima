@@ -375,7 +375,8 @@ wxString TextCell::ToString()
     // are quoted by a backslash: They cannot be quoted by quotation
     // marks since maxima would'nt allow strings here.
   {
-    // TODO: We could escape the - char. But we get false positives, then.
+    // TODO: We could escape the - char inside a variable name.
+    // But we get false positives, then.
     wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
     bool isOperator = true;
     for(size_t i=0;i<m_text.Length();i++)

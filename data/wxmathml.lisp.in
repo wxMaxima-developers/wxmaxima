@@ -274,7 +274,7 @@
   (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
 (defun wxxml-paren (x l r)
-  (wxxml x (append l '("<p>")) (cons "</p>" r) 'mparen 'mparen))
+  (wxxml x (append l '("<r><p>")) (cons "</p></r>" r) 'mparen 'mparen))
 
 (defun wxxml-array (x l r &aux f)
   (if (eq 'mqapply (caar x))
