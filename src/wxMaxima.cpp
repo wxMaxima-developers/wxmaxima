@@ -2415,7 +2415,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(wxID_PRINT, false);
   }
   double zf = m_console->GetZoomFactor();
-  if (zf < 3.0)
+  if (zf < 6.0)
     menubar->Enable(MathCtrl::menu_zoom_in, true);
   else
     menubar->Enable(MathCtrl::menu_zoom_in, false);
@@ -3155,7 +3155,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case MathCtrl::menu_zoom_in:
     
-    if (m_console->GetZoomFactor() < 3.0) {
+    if (m_console->GetZoomFactor() < 6.0) {
       m_console->SetZoomFactor(m_console->GetZoomFactor() + 0.1);
     }
     break;

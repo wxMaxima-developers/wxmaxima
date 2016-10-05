@@ -3475,8 +3475,8 @@ void MathCtrl::OnMouseExit(wxMouseEvent& event) {
 void MathCtrl::OnMouseMagnify(wxMouseEvent& event)
 {
   m_zoomFactor += 0.1*event.GetMagnification();
-  if (m_zoomFactor > 3.0)
-    m_zoomFactor = 3;
+  if (m_zoomFactor > 6.0)
+    m_zoomFactor = 6;
   if (m_zoomFactor < 0.8)
     m_zoomFactor = .8;
 }
