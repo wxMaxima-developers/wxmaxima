@@ -510,7 +510,7 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
 #endif
 
     rect = wxRect(point.x + SCALE_PX(2, scale),
-                  point.y + SCALE_PX(2, scale) - m_center,
+                  point.y + SCALE_PX(1, scale) - m_center,
                   selectionWidth,
                   m_charHeight);
     // draw the rectangle if it is in the region that is to be updated.
@@ -695,12 +695,12 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                  point.y + SCALE_PX(3, scale) - m_center + caretInLine * m_charHeight,
                   point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y - SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #else
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(1, scale) - m_center + caretInLine * m_charHeight,
+                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
                   point.x + SCALE_PX(2, scale) + lineWidth,
                   point.y - SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
 #endif
