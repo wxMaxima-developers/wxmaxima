@@ -419,7 +419,7 @@ void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
       width = charWidth;
 
     m_width = width + 2 * SCALE_PX(2, scale);
-    m_height = m_numberOfLines * (m_charHeight + 2 * SCALE_PX(2, scale));
+    m_height = m_numberOfLines * (m_charHeight) + 2 * SCALE_PX(2, scale);
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
