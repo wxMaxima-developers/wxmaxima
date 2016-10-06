@@ -2371,15 +2371,14 @@ wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
   wxDC& dc = parser.GetDC();
 
   int x = m_currentPoint.x, y = m_currentPoint.y;
+  if (x == -1 || y == -1)
+    return wxPoint(-1, -1);
+
   int width;
   int cX, cY;
-  wxString line = wxEmptyString;
 
   if (pos == -1)
     pos = m_positionOfCaret;
-
-  if (x == -1 || y == -1)
-    return wxPoint(-1, -1);
 
   PositionToXY(pos, &cX, &cY);
 

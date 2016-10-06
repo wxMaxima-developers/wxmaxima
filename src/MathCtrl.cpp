@@ -6028,13 +6028,12 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
   int view_x, view_y;
   int height, width;
 
-  GetViewStart(&view_x, &view_y);
+  CalcUnscrolledPosition(0,0,&view_x,&view_y);
+
   GetSize(&width, &height);  
 
-  view_x *= m_scrollUnit;
-  view_y *= m_scrollUnit;
-
-  if ((point.y < view_y) || (point.y > view_y + height
+  if ((point.y < view_y) ||
+      (point.y > view_y + height
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20))
     return false;
 
@@ -6050,51 +6049,40 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.x == -1 || point.y == -1)
     return;
 
-  int view_x, view_y;
   int height, width;
-  bool scrollNeeded = false;
-
-  int scrollToX = -1, scrollToY = -1;
-
-  GetViewStart(&view_x, &view_y);
   GetClientSize(&width, &height);
+  wxPoint topLeft = CalcUnscrolledPosition(wxPoint(0,0));
+  wxRect viewPort(topLeft,topLeft+wxPoint(width,height));
 
-  // Convert the view start to device units
-  view_x *= m_scrollUnit;
-  view_y *= m_scrollUnit;
-
-  if (
-    (point.y - m_scrollUnit / 2 < view_y) ||
-    (point.y + m_scrollUnit * 2 > view_y + height - wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y))  
-    )
+  bool scrollNeeded = false;
+  wxPoint scrollTo = topLeft;
+    
+  if (point.y - m_scrollUnit < viewPort.GetTop())
   {
     scrollNeeded = true;
-    scrollToY = point.y - height / 2;
+    scrollTo.y   = point.y - height / 3;
+    if(scrollTo.y<0) scrollTo.y = 0;
   }
-  else
-    scrollToY = view_y;
-
-  if (
-    (point.x - m_scrollUnit / 2 < view_x) ||
-    (point.x + m_scrollUnit * 2 > view_x + width - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X))
-    )
+  if (point.y + m_scrollUnit + MC_BASE_INDENT > viewPort.GetBottom())
   {
     scrollNeeded = true;
-    scrollToX = point.x - width / 2;
+    scrollTo.y   = point.y + height / 3;
   }
-  else
-    scrollToX = view_x;
   
-  if (scrollNeeded)
+  if (point.x - m_scrollUnit < viewPort.GetLeft())
   {
-    wxPoint scrollPoint(
-      (scrollToX + wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) + m_scrollUnit - 1) / m_scrollUnit,
-      (scrollToY + wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y) + m_scrollUnit - 1) / m_scrollUnit
-      );
-    if(scrollPoint.x<0) scrollPoint.x = 0;
-    if(scrollPoint.y<0) scrollPoint.y = 0;
-    Scroll(scrollPoint);
+    scrollNeeded = true;
+    scrollTo.x   = point.x - width / 3;
+    if(scrollTo.x<0) scrollTo.x = 0;
   }
+  if (point.x + m_scrollUnit > viewPort.GetRight())
+  {
+    scrollNeeded = true;
+    scrollTo.x   = point.x + width / 3;
+  }
+
+  if(scrollNeeded)
+    Scroll(scrollTo.x / m_scrollUnit,scrollTo.y / m_scrollUnit);
 }
 
 bool MathCtrl::CutToClipboard()
