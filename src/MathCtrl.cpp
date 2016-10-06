@@ -6050,7 +6050,9 @@ void MathCtrl::ShowPoint(wxPoint point) {
     return;
 
   int height, width;
+  int workSheetHeight, workSheetWidth;
   GetClientSize(&width, &height);
+  GetVirtualSize(&workSheetWidth, &workSheetHeight);
   wxPoint topLeft = CalcUnscrolledPosition(wxPoint(0,0));
   wxRect viewPort(topLeft,topLeft+wxPoint(width,height));
 
@@ -6075,10 +6077,11 @@ void MathCtrl::ShowPoint(wxPoint point) {
     scrollTo.x   = point.x - width / 3;
     if(scrollTo.x<0) scrollTo.x = 0;
   }
-  if (point.x + m_scrollUnit > viewPort.GetRight())
+  if (point.x + 10*m_scrollUnit > viewPort.GetRight())
   {
     scrollNeeded = true;
     scrollTo.x   = point.x + width / 3;
+    if(scrollTo.x > workSheetWidth) scrollTo.x = workSheetWidth - 1;
   }
 
   if(scrollNeeded)
