@@ -6052,33 +6052,48 @@ void MathCtrl::ShowPoint(wxPoint point) {
 
   int view_x, view_y;
   int height, width;
-  bool sc = false;
+  bool scrollNeeded = false;
 
   int scrollToX = -1, scrollToY = -1;
 
   GetViewStart(&view_x, &view_y);
-  GetSize(&width, &height);
+  GetClientSize(&width, &height);
 
+  // Convert the view start to device units
   view_x *= m_scrollUnit;
   view_y *= m_scrollUnit;
 
-  if ((point.y - m_scrollUnit < view_y) || (point.y + m_scrollUnit > view_y + height
-                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
-    sc = true;
+  if (
+    (point.y - m_scrollUnit / 2 < view_y) ||
+    (point.y + m_scrollUnit * 2 > view_y + height - wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y))  
+    )
+  {
+    scrollNeeded = true;
     scrollToY = point.y - height / 2;
-  } else
+  }
+  else
     scrollToY = view_y;
 
-  if ((point.x - m_scrollUnit < view_x) || (point.x + m_scrollUnit > view_x + width
-                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
-    sc = true;
-    scrollToX = point.x - width / 2;
-  } else
-    scrollToX = view_x;
-
-  if (sc)
+  if (
+    (point.x - m_scrollUnit / 2 < view_x) ||
+    (point.x + m_scrollUnit * 2 > view_x + width - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X))
+    )
   {
-    Scroll(scrollToX / m_scrollUnit, scrollToY / m_scrollUnit);
+    scrollNeeded = true;
+    scrollToX = point.x - width / 2;
+  }
+  else
+    scrollToX = view_x;
+  
+  if (scrollNeeded)
+  {
+    wxPoint scrollPoint(
+      (scrollToX + wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) + m_scrollUnit - 1) / m_scrollUnit,
+      (scrollToY + wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y) + m_scrollUnit - 1) / m_scrollUnit
+      );
+    if(scrollPoint.x<0) scrollPoint.x = 0;
+    if(scrollPoint.y<0) scrollPoint.y = 0;
+    Scroll(scrollPoint);
   }
 }
 
