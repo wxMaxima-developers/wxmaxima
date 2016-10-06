@@ -1410,7 +1410,7 @@ void MathCtrl::OnMouseMotion(wxMouseEvent& event)
   m_mouseDrag = true;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_up.x, &m_up.y);
   if (m_mouseOutside) {
-    m_mousePoint.x = event.GetX();
+     m_mousePoint.x = event.GetX();
     m_mousePoint.y = event.GetY();
   }
   ClickNDrag(m_down, m_up);
@@ -2418,7 +2418,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
   m_keyboardInactive = false;
-
 
   if(event.ControlDown()&&event.AltDown())
   {
@@ -3452,10 +3451,8 @@ void MathCtrl::AdjustSize()
   // Ensure a sane scroll unit even for the fringe case of a very small
   // screen.
   if(m_scrollUnit < 10)
-    m_scrollUnit = height - 1;
-  if(m_scrollUnit < 1)
-    m_scrollUnit = 1;
-
+    m_scrollUnit = 10;
+  
   SetScrollRate(m_scrollUnit, m_scrollUnit);
 }
 
@@ -3526,14 +3523,14 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
     CalcUnscrolledPosition(0, 0, &currX, &currY);
     
     if (m_mousePoint.x <= 0)
-      dx = -10;
+      dx = -m_scrollUnit;
     else if (m_mousePoint.x >= size.GetWidth())
-      dx = 10;
+      dx = m_scrollUnit;
     if (m_mousePoint.y <= 0)
-      dy = -10;
+      dy = -m_scrollUnit;
     else if (m_mousePoint.y >= size.GetHeight())
-      dy = 10;
-    Scroll((currX + dx) / 10, (currY + dy) / 10);
+      dy = m_scrollUnit;
+    Scroll((currX + dx * 2) / m_scrollUnit, (currY + dy * 2) / m_scrollUnit);
     m_timer.Start(50, true);
   }
   break;
@@ -5713,11 +5710,11 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 
   view_y *= m_scrollUnit;
 
-  if (cellY + cellDrop + m_scrollUnit > view_y + height - height / 10)
-    Scroll(-1, MAX((cellY + cellDrop - height + height / 10)/m_scrollUnit + 4, 0));
-  else if (cellY - cellCenter - m_scrollUnit < view_y && cellDrop + cellCenter < height)
+  if (cellY + cellDrop + m_scrollUnit / 2 > view_y + height - height / 10)
+    Scroll(-1, MAX((cellY + cellDrop - height + height / 10) / m_scrollUnit + 4, 0));
+  else if (cellY - cellCenter - m_scrollUnit / 2 < view_y && cellDrop + cellCenter < height)
   {
-    Scroll(-1, MAX(cellY/m_scrollUnit - 2, 0));
+    Scroll(-1, MAX(cellY / m_scrollUnit - 2, 0));
   }
   RequestRedraw();
 }
@@ -6065,14 +6062,14 @@ void MathCtrl::ShowPoint(wxPoint point) {
   view_x *= m_scrollUnit;
   view_y *= m_scrollUnit;
 
-  if ((point.y - 2 < view_y) || (point.y + 2 > view_y + height
+  if ((point.y - m_scrollUnit < view_y) || (point.y + m_scrollUnit > view_y + height
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
     sc = true;
     scrollToY = point.y - height / 2;
   } else
     scrollToY = view_y;
 
-  if ((point.x - 2 < view_x) || (point.x + 2 > view_x + width
+  if ((point.x - m_scrollUnit < view_x) || (point.x + m_scrollUnit > view_x + width
                              - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
     sc = true;
     scrollToX = point.x - width / 2;

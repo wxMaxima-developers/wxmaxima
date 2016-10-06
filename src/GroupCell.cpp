@@ -703,14 +703,27 @@ wxString GroupCell::ToString()
   wxString str;
   if (GetEditable()) {
     str = m_input->ListToString();
+    str.Replace(wxT("\n"),wxT("\n\t"));
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
       bool firstCell = true;
       while (tmp != NULL) {
         if (firstCell || (tmp->ForceBreakLineHere() && str.Length()>0))
-          str += wxT("\n");
-        firstCell = false;
+        {
+          if(firstCell)
+            str += wxT("\n");
+          else
+          {
+            str += wxT("\n");
+            if(
+              (tmp->m_nextToDraw->GetStyle()!=TS_LABEL) &&
+              (tmp->m_nextToDraw->GetStyle()!=TS_USERLABEL)
+              )
+              str += wxT("\t");
+          }
+        }
         str += tmp->ToString();
+        firstCell = false;
         tmp = tmp->m_nextToDraw;
       }
     }
