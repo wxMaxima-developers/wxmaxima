@@ -103,7 +103,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
 
   wxBoxSizer *vbox=new wxBoxSizer(wxVERTICAL);
   vbox->Add(grid_sizer,wxSizerFlags().Expand());
-  m_matchCase=new wxCheckBox(this,-1,wxT("Match Case"));
+  m_matchCase=new wxCheckBox(this,-1,_("Match Case"));
   m_matchCase->SetValue(!!(data->GetFlags() & wxFR_MATCHCASE));
   vbox->Add(m_matchCase,wxSizerFlags().Expand());
   m_matchCase->Connect(
