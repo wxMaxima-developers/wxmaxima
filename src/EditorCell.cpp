@@ -479,7 +479,7 @@ wxString EditorCell::ToHTML()
   return retval; 
 }
 
-void EditorCell::MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style)
+void EditorCell::MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style,int fontsize)
 {
   if((start < 0)||(end < 0)) return;
   wxPoint point, point1;
@@ -499,8 +499,8 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
     while (pos1 < end && m_text.GetChar(pos1) != '\n')
       pos1++;
     
-    point = PositionToPoint(parser, pos2);  // left  point
-    point1 = PositionToPoint(parser, pos1); // right point
+    point = PositionToPoint(parser, fontsize, pos2);  // left  point
+    point1 = PositionToPoint(parser, fontsize, pos1); // right point
     long selectionWidth = point1.x - point.x;
     wxRect rect;
 #if defined(__WXMAC__)
@@ -566,7 +566,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         // This would not only be unneccessary but also could cause
         // selections to flicker in very long texts
         if((!m_isActive)||(start!=MIN(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION);
+          MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION,fontsize);
         start = end;
       }
     }
@@ -579,7 +579,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
-                      parser,scale,dc,TS_SELECTION);
+                      parser,scale,dc,TS_SELECTION,fontsize);
 
       //
       // Matching parens - draw only if we don't have selection
@@ -593,7 +593,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #endif
         dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
 
-        wxPoint point = PositionToPoint(parser, m_paren1);
+        wxPoint point = PositionToPoint(parser, fontsize, m_paren1);
         int width, height;
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect rect(point.x + SCALE_PX(2, scale) + 1,
@@ -601,7 +601,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
                     width - 1, height - 1);
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
-        point = PositionToPoint(parser, m_paren2);
+        point = PositionToPoint(parser, fontsize, m_paren2);
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         rect=wxRect(point.x + SCALE_PX(2, scale) + 1,
                     point.y  + SCALE_PX(2, scale) - m_center + 1,
@@ -2366,10 +2366,11 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(CellParser& parser, int pos)
+wxPoint EditorCell::PositionToPoint(CellParser& parser, int fontsize, int pos)
 {
   wxDC& dc = parser.GetDC();
-
+  SetFont(parser, fontsize);
+  
   int x = m_currentPoint.x, y = m_currentPoint.y;
   if (x == -1 || y == -1)
     return wxPoint(-1, -1);

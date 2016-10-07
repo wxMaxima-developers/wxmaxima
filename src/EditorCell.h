@@ -46,7 +46,7 @@ private:
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style);
+  void MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style,int fontsize);
   /*! The start of the current selection.
 
      - >0: the position of the cursors in characters from start
@@ -155,7 +155,7 @@ public:
   //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(CellParser& parser, int pos = -1);
+  wxPoint PositionToPoint(CellParser& parser, int fontsize, int pos = -1);
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxDC &dc, wxPoint& point);
   //! Selects the text beween the screen coordinates one and two

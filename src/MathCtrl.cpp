@@ -1232,7 +1232,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
     if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionStart();
-    m_down = wxPoint(m_activeCell->PositionToPoint(parser,startingChar));
+    m_down = wxPoint(m_activeCell->PositionToPoint(parser,parser.GetDefaultFontSize(),startingChar));
     m_activeCell->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -5693,7 +5693,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
       wxClientDC dc(this);
       CellParser parser(dc);
       
-      cellY = tmp->GetParent()->PositionToPoint(parser, -1).y;
+      cellY = tmp->GetParent()->PositionToPoint(parser,parser.GetDefaultFontSize()).y;
     }
   }
 
@@ -6062,25 +6062,25 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.y - m_scrollUnit < viewPort.GetTop())
   {
     scrollNeeded = true;
-    scrollTo.y   = point.y - height / 3;
+    scrollTo.y   = point.y - height / 2;
     if(scrollTo.y<0) scrollTo.y = 0;
   }
   if (point.y + m_scrollUnit + MC_BASE_INDENT > viewPort.GetBottom())
   {
     scrollNeeded = true;
-    scrollTo.y   = point.y + height / 3;
+    scrollTo.y   = point.y + height / 2;
   }
   
   if (point.x - m_scrollUnit < viewPort.GetLeft())
   {
     scrollNeeded = true;
-    scrollTo.x   = point.x - width / 3;
+    scrollTo.x   = point.x - width / 2;
     if(scrollTo.x<0) scrollTo.x = 0;
   }
-  if (point.x + 10*m_scrollUnit > viewPort.GetRight())
+  if (point.x + 2*m_scrollUnit > viewPort.GetRight())
   {
     scrollNeeded = true;
-    scrollTo.x   = point.x + width / 3;
+    scrollTo.x   = point.x + width / 2;
     if(scrollTo.x > workSheetWidth) scrollTo.x = workSheetWidth - 1;
   }
 
@@ -6844,11 +6844,11 @@ bool MathCtrl::CaretVisibleIs()
     {
       wxClientDC dc(this);
       CellParser parser(dc);
-      wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
+      wxPoint point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       if(point.y<1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(parser, -1);
+        point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       }
       return PointVisibleIs(point);
     }
@@ -6870,11 +6870,11 @@ void MathCtrl::ScrollToCaret()
     {
       wxClientDC dc(this);
       CellParser parser(dc);
-      wxPoint point = GetActiveCell()->PositionToPoint(parser, -1);
+      wxPoint point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       if(point.y==-1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(parser, -1);
+        point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       }
       ShowPoint(point);
     }   
@@ -7056,7 +7056,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     // Find the position for the popup menu
     wxClientDC dc(this);
     CellParser parser(dc);
-    wxPoint pos = editor->PositionToPoint(parser, -1);
+    wxPoint pos = editor->PositionToPoint(parser, parser.GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
     #ifdef __WXGTK__
