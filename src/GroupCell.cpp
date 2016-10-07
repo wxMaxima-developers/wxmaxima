@@ -716,6 +716,7 @@ wxString GroupCell::ToString()
           {
             str += wxT("\n");
             if(
+              (tmp->m_nextToDraw != NULL ) &&
               (tmp->m_nextToDraw->GetStyle()!=TS_LABEL) &&
               (tmp->m_nextToDraw->GetStyle()!=TS_USERLABEL)
               )
