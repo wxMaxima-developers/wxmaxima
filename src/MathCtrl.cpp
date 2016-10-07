@@ -6049,6 +6049,9 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.x == -1 || point.y == -1)
     return;
 
+  wxClientDC dc(this);
+  CellParser parser(dc);
+  
   int height, width;
   int workSheetHeight, workSheetWidth;
   GetClientSize(&width, &height);
@@ -6077,10 +6080,10 @@ void MathCtrl::ShowPoint(wxPoint point) {
     scrollTo.x   = point.x - width / 2;
     if(scrollTo.x<0) scrollTo.x = 0;
   }
-  if (point.x + 2*m_scrollUnit > viewPort.GetRight())
+  if (point.x + 2 * m_scrollUnit > viewPort.GetRight())
   {
     scrollNeeded = true;
-    scrollTo.x   = point.x + width / 2;
+    scrollTo.x   = point.x + width / 2 + m_scrollUnit - 1;
     if(scrollTo.x > workSheetWidth) scrollTo.x = workSheetWidth - 1;
   }
 
@@ -6876,6 +6879,9 @@ void MathCtrl::ScrollToCaret()
         RecalculateForce();
         point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       }
+      // TODO: Why is this necessary in order to horizontally scroll to the right
+      // point at higher zoom factors? And why don't we need this for the y axis?
+      point.x= (int) ((double)point.x * m_zoomFactor);
       ShowPoint(point);
     }   
   }
