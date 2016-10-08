@@ -33,7 +33,7 @@ ConjugateCell::ConjugateCell() : MathCell()
   m_innerCell = NULL;
   m_last = NULL;
   m_open = new TextCell(wxT("conjugate("));
-  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
+  m_open -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
 }
 
@@ -64,7 +64,8 @@ MathCell* ConjugateCell::Copy()
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
-  
+  tmp->m_open->DontEscapeOpeningParenthesis();
+ 
   return tmp;
 }
 

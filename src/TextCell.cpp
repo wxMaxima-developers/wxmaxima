@@ -90,7 +90,8 @@ MathCell* TextCell::Copy()
   retval->m_isHidden = m_isHidden;
   retval->m_textStyle = m_textStyle;
   retval->m_highlight = m_highlight;
-
+  retval->m_dontEscapeOpeningParenthesis = m_dontEscapeOpeningParenthesis;
+  
   return retval;
 }
 
@@ -390,20 +391,19 @@ wxString TextCell::ToString()
     }
 
     if(!isOperator)
-      if(!m_dontEscapeOpeningParenthesis)
+    {
+      wxString lastChar;
+      if((m_dontEscapeOpeningParenthesis)&&(text.Length()>0)&&(text[text.Length()-1]==wxT('(')))
       {
-        for(size_t i=0;i<charsNeedingQuotes.Length();i++)
-          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+        lastChar = text[text.Length()-1];
+        text = text.Left(text.Length()-1);
       }
-    else
-      {
-        // Don't escape the opening parenthesis this function name ends with:
-        // It is actually the opening parenthesis of the function.
-        for(size_t i=0;i<charsNeedingQuotes.Length()-1;i++)
-          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-      }
-  }
+      for(size_t i=0;i<charsNeedingQuotes.Length();i++)
+        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      text += lastChar;
+    }
     break;
+  }
   case TS_STRING:
     text = wxT("\"") + text + wxT("\"");
     break;

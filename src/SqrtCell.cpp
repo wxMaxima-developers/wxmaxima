@@ -40,7 +40,7 @@ SqrtCell::SqrtCell() : MathCell()
   m_signFontScale = 0;
   m_innerCell = NULL;
   m_open = new TextCell(wxT("sqrt("));
-  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
+  m_open -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
 }
 
@@ -72,6 +72,7 @@ MathCell* SqrtCell::Copy()
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
+  tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
 }

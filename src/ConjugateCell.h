@@ -23,6 +23,7 @@
 #define CONJUGATECELL_H
 
 #include "MathCell.h"
+#include "TextCell.h"
 
 /*! \file
 
@@ -57,7 +58,8 @@ public:
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_innerCell;
-  MathCell *m_open, *m_close, *m_last;
+  TextCell *m_open, *m_close;
+  MathCell *m_last;
   void RecalculateSize(CellParser& parser, int fontsize);
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);

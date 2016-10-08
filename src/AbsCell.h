@@ -30,6 +30,7 @@
 #define ABSCELL_H
 
 #include "MathCell.h"
+#include "TextCell.h"
 
 /*! \file
 
@@ -66,9 +67,9 @@ protected:
   //! The contents of the abs() comand
   MathCell *m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
-  MathCell *m_open;
+  TextCell *m_open;
   //! The cell containing the closing parenthesis
-  MathCell *m_close;
+  TextCell *m_close;
   //! The last element of m_innerCell
   MathCell *m_last;
   void RecalculateSize(CellParser& parser, int fontsize);

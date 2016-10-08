@@ -23,7 +23,7 @@
 #define SQRTCELL_H
 
 #include "MathCell.h"
-
+#include "TextCell.h"
 
 /*! \file
 
@@ -66,7 +66,8 @@ public:
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_innerCell;
-  MathCell *m_open, *m_close, *m_last;
+  TextCell *m_open, *m_close;
+  MathCell *m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;

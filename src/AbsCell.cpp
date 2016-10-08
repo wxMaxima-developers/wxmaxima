@@ -34,7 +34,7 @@ AbsCell::AbsCell() : MathCell()
 {
   m_innerCell = NULL;
   m_open = new TextCell(wxT("abs("));
-  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
+  m_open -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
   m_last = NULL;
 }
@@ -66,6 +66,7 @@ MathCell* AbsCell::Copy()
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
+  tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
 }

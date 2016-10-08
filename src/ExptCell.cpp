@@ -39,7 +39,7 @@ ExptCell::ExptCell() : MathCell()
   m_isMatrix = false;
   m_exp = new TextCell(wxT("^"));
   m_open = new TextCell(wxT("("));
-  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
+  m_open -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
 }
 
@@ -76,6 +76,7 @@ MathCell* ExptCell::Copy()
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
   tmp->m_isBroken = m_isBroken;
+  tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
 }

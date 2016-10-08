@@ -23,6 +23,8 @@
 #define EXPTCELL_H
 
 #include "MathCell.h"
+#include "TextCell.h"
+
 /*!\file
 
   This file declares the class ExptCell which represents a exp() or %e^x-construct.
@@ -72,7 +74,9 @@ public:
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_baseCell, *m_powCell;
-  MathCell *m_open, *m_close, *m_exp, *m_last1, *m_last2;
+  TextCell *m_open, *m_close;
+  MathCell *m_last2;
+  MathCell *m_exp, *m_last1;
   bool m_isMatrix;
 };
 
