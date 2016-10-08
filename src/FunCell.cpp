@@ -58,6 +58,7 @@ MathCell* FunCell::Copy()
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->CopyList());
   tmp->SetArg(m_argCell->CopyList());
+  tmp->m_isBroken = m_isBroken;
 
   return tmp;
 }

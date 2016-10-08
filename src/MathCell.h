@@ -428,30 +428,43 @@ public:
 
   /*! The next cell in the list of cells
 
-    Reads NULL, if this is the last cell of the list.
+    Reads NULL, if this is the last cell of the list. See also m_nextToDraw, m_previous
+    and m_previousToDraw
    */
   MathCell *m_next;
   /*! The previous cell in the list of cells
     
-    Reads NULL, if this is the first cell of the list.    
+    Reads NULL, if this is the first cell of the list. See also m_previousToDraw, 
+    m_nextToDraw and m_next
    */
   MathCell *m_previous;
   /*! The next cell to draw
     
-    Normally things are drawn in the order in which they appear in this list.
-    But in special cases (for example if a fraction is broken into several lines
-    and therefore cannot be displayed as a fraction) the order in which items are
-    drawn varies. Each cell is therefore part of a second list made up by 
-    m_nextToDraw and m_previousToDraw.
+    For cells that are drawn as an atomic construct this pointer points 
+    to the cell that follows this one just like m_next would.
+    
+    In the case that a cell is broken into two or more lines the cell
+    itself won't be drawn, but will be handled as a list of individual
+    elements that can be drawn on individual lines, if needed.
+
+    In the example of a SqrtCell if the SqrtCell isn't broken into lines
+    m_nextToDraw will point to the cell following the SqrtCell. If the
+    SqrtCell is broken into lines the list made up by m_nextToDraw and
+    m_previousToDraw will point to the sqrtCell, then to a cell
+    containing the word "sqrt", then one that represents the opening
+    and closing parenthesis (that will again be followed by a list 
+    containing the "(", the contents and the ")" of the parenthesis
+    as individdual elements) and then the cell that follows the SqrtCell. 
+
+    See also m_previousToDraw and m_next.
    */
   MathCell *m_nextToDraw;
   /*! The previous cell to draw
     
-    Normally things are drawn in the order in which they appear in this list.
-    But in special cases (for example if a fraction is broken into several lines
-    and therefore cannot be displayed as a fraction) the order in which items are
-    drawn varies. Each cell is therefore part of a second list made up by 
-    m_nextToDraw and m_previousToDraw.
+    Normally cells are drawn one by one. But if a function is broken into several lines 
+    the list made up by m_nextToDraw and m_previousToDraw will contain the function itself,
+    the function name and its arguments as individual list elements so they can be drawn
+    separately (and on separate lines).
    */
   MathCell *m_previousToDraw;
   /*! The point in the work sheet at which this cell begins.
@@ -464,7 +477,11 @@ public:
   */
   wxPoint m_currentPoint;  
   bool m_bigSkip;
-  //! true means: Add a linebreak to the end of this cell.
+  /*! true means:  This cell is broken into two or more lines.
+    
+    Long abs(), conjugate(), fraction and similar cells can be broken into more
+    than one line and will change their visual representation in this case.
+   */
   bool m_isBroken;
   /*! True means: This cell is not to be drawn.
 

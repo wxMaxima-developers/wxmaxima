@@ -40,6 +40,7 @@ SqrtCell::SqrtCell() : MathCell()
   m_signFontScale = 0;
   m_innerCell = NULL;
   m_open = new TextCell(wxT("sqrt("));
+  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
 }
 
@@ -70,6 +71,7 @@ MathCell* SqrtCell::Copy()
   SqrtCell* tmp = new SqrtCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
+  tmp->m_isBroken = m_isBroken;
 
   return tmp;
 }
@@ -260,14 +262,16 @@ wxString SqrtCell::ToString()
 {
   if (m_isBroken)
     return wxEmptyString;
-  return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
+  else
+    return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
 
 wxString SqrtCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
+  else
+    return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
 wxString SqrtCell::ToMathML()

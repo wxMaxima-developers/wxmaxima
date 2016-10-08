@@ -31,6 +31,9 @@
  */
 class TextCell : public MathCell
 {
+private:
+  //! Is an ending "(" of a function name the opening parenthesis of the function?
+  bool m_dontEscapeOpeningParenthesis;
 public:
   TextCell();
   TextCell(wxString text);
@@ -41,6 +44,11 @@ public:
   void RecalculateWidths(CellParser& parser, int fontsize);
   void Draw(CellParser& parser, wxPoint point, int fontsize);
   void SetFont(CellParser& parser, int fontsize);
+  /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
+
+    The "(" is the opening parenthesis of a function instead.
+   */
+  void DontEscapeOpeningParenthesis(){m_dontEscapeOpeningParenthesis = true;}
   wxString ToString();
   wxString ToTeX();
   wxString ToMathML();
@@ -65,6 +73,7 @@ protected:
   wxString m_text;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
+
   bool m_alt, m_altJs;
   int m_realCenter;
   //! The line height

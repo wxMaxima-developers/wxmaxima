@@ -32,6 +32,20 @@
 #include "MathCell.h"
 #include "Setup.h"
 
+/*! The class that represents parenthesis that are wrapped around text
+
+  In the case that this cell is broken into two lines in the order of
+  m_nextToDraw this cell is represented by the following individual 
+  cells:
+  
+   - The ParenCell itself
+   - The opening "("
+   - The contents
+   - The closing ")".
+   
+  If it isn't broken into multiple cells m_nextToDraw points to the 
+  cell that follows this Cell.
+ */
 class ParenCell : public MathCell
 {
 public:

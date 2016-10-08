@@ -76,7 +76,8 @@ MathCell* FracCell::Copy()
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->SetupBreakUps();
-  
+  tmp->m_isBroken = m_isBroken;
+
   return tmp;
 }
 

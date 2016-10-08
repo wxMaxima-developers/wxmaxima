@@ -366,17 +366,21 @@ private:
   //! Add a line to a file.
   void AddLineToFile(wxTextFile& output, wxString s, bool unicode = true);
   //! Copy the currently selected cells
-  MathCell* CopySelection();
+  MathCell* CopySelection(bool asData = false);
   /*! Copy the currently given list of cells
 
     \param start The cell to start copying at
     \param end   The cell the copy has to end with
     \param asdata 
-      - true:  The cells are copied in the order they are stored
-      - false: The cells are copied in the order they are displayed: Sometimes (for 
-               example with fractions that can be displayed in 2d or flat) these
-               two orders differ.
-   */
+      - true:  The cells are copied in the order they are stored. m_next and m_previous
+               therefore point to the right places. But m_nextToDraw and m_previousToDraw
+               will be treated as aliasses of m_next and m_previous.
+      - false: If a cell is broken into individual lines m_nextToDraw won't point to the
+               next cell that is to be displayed. It will point to the cell containing the
+               function name instead that is followed by the cell containing its contents. 
+               This is accurately copied if asdata=false. But m_next and m_previous are
+               treated as mere aliasses of m_nextToDraw and m_previousToDraw in this case.
+  */
   MathCell* CopySelection(MathCell* start, MathCell* end, bool asData = false);
 
   void GetMaxPoint(int* width, int* height);
@@ -565,9 +569,13 @@ public:
   void MarkRefreshAsDone(){m_redrawRequested = false;}
   //! Redraw the worksheet if RequestRedraw() has been called
   void RedrawIfRequested() {if(m_redrawRequested) Refresh();m_redrawRequested = false;}
-  //! Redraw the worksheet region rect or the entire worksheet if RequestRedraw() has been called
+  //! Redraw the worksheet region merging this action with an eventual RequestRedraw()
   void RedrawRect(wxRect rect);
-  //! Request the worksheet to be redrawn
+  /*! Request the worksheet to be redrawn
+
+    \todo An optional argument that tells which cell we need to start the redraw at:
+    Most operations affect only the current cell and the ones that follow. 
+   */
   void RequestRedraw();
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw(){RequestRedraw();RedrawIfRequested();}

@@ -34,6 +34,7 @@ AbsCell::AbsCell() : MathCell()
 {
   m_innerCell = NULL;
   m_open = new TextCell(wxT("abs("));
+  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
   m_last = NULL;
 }
@@ -44,8 +45,8 @@ AbsCell::~AbsCell()
     delete m_innerCell;
   if (m_next != NULL)
     delete m_next;
-  delete m_open;
-  delete m_close;
+  wxDELETE(m_open);
+  wxDELETE(m_close);
 }
 
 void AbsCell::SetParent(MathCell *parent)
@@ -64,6 +65,7 @@ MathCell* AbsCell::Copy()
   AbsCell* tmp = new AbsCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
+  tmp->m_isBroken = m_isBroken;
 
   return tmp;
 }
@@ -138,15 +140,18 @@ void AbsCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
 wxString AbsCell::ToString()
 {
-  return wxT("abs(") + m_innerCell->ListToString() + wxT(")");
+  if (m_isBroken)
+    return wxEmptyString;
+  wxString s;
+  s = wxT("abs(") + m_innerCell->ListToString() + wxT(")");
+  return s;
 }
 
 wxString AbsCell::ToTeX()
 {
-  if (!m_isBroken)
-    return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
-  else
-    return wxT("\\abs( ") + m_innerCell->ListToTeX();
+  if (m_isBroken)
+    return wxEmptyString;
+  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
 
 wxString AbsCell::ToMathML()

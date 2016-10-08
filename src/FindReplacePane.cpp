@@ -179,7 +179,6 @@ void FindReplacePane::OnFindStringChange(wxCommandEvent& event)
 
 void FindReplacePane::OnReplaceStringChange(wxCommandEvent& event)
 {
-  std::cerr<<m_replaceText->GetValue()<<"\n";
   m_findReplaceData->SetReplaceString(m_replaceText->GetValue());
 }
 

@@ -1560,7 +1560,8 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
 /***
  * Get the string representation of the selection
  */
-wxString MathCtrl::GetString(bool lb) {
+wxString MathCtrl::GetString(bool lb)
+{
 
   if (m_selectionStart == NULL) {
     if (m_activeCell == NULL)
@@ -1611,7 +1612,8 @@ bool MathCtrl::Copy(bool astext)
     ((SlideShow *)m_selectionStart)->CopyToClipboard();
     return true;
   }
-  else {
+  else
+  {
     if (wxTheClipboard->Open()) {
       wxDataObjectComposite *data = new wxDataObjectComposite;
 
@@ -1819,7 +1821,8 @@ bool MathCtrl::CopyText()
   MathCell* tmp = m_selectionStart;
 
   bool firstcell = true;
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
     if(!firstcell)
       result += wxT("\n\n");
     result += tmp->ToString();
@@ -3704,8 +3707,9 @@ wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
 /***
  * Copy selection
  */
-MathCell* MathCtrl::CopySelection() {
-  return CopySelection(m_selectionStart, m_selectionEnd);
+MathCell* MathCtrl::CopySelection(bool asData)
+{
+  return CopySelection(m_selectionStart, m_selectionEnd, asData);
 }
 
 MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
@@ -3716,7 +3720,9 @@ MathCell* MathCtrl::CopySelection(MathCell* start, MathCell* end, bool asData) {
     if (out == NULL) {
       out = tmp->Copy();
       outEnd = out;
-    } else {
+    }
+    else
+    {
       outEnd->AppendCell(tmp->Copy());
       outEnd = outEnd->m_next;
     }

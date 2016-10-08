@@ -23,7 +23,25 @@
 #define EXPTCELL_H
 
 #include "MathCell.h"
+/*!\file
 
+  This file declares the class ExptCell which represents a exp() or %e^x-construct.
+ */
+
+/*! This cell represents a exp() or %e^x-construct.
+
+  In the case that this cell is broken into two lines in the order of
+  m_nextToDraw this cell is represented by the following individual 
+  cells:
+  
+   - The ExptCell itself
+   - The opening "exp("
+   - The contents
+   - The closing ")".
+   
+  If it isn't broken into multiple cells m_nextToDraw points to the 
+  cell that follows this Cell. 
+ */
 class ExptCell : public MathCell
 {
 public:

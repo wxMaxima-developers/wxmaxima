@@ -37,7 +37,18 @@
  */
 
 /*! A cell that represents an abs(x) block
-
+  
+  In the case that this cell is broken into two lines in the order of
+  m_nextToDraw this cell is represented by the following individual 
+  cells:
+  
+   - The AbsCell itself
+   - The opening "abs("
+   - The contents
+   - The closing ")".
+   
+  If it isn't broken into multiple cells m_nextToDraw points to the 
+  cell that follows this AbsCell.  
  */
 class AbsCell : public MathCell
 {

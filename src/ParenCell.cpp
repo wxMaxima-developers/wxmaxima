@@ -92,6 +92,7 @@ MathCell* ParenCell::Copy()
   ParenCell *tmp = new ParenCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList(), m_type);
+  tmp->m_isBroken = m_isBroken;
 
   return tmp;
 }

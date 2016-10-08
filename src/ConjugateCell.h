@@ -31,6 +31,17 @@
 
 /*! A cell that represents an conjugate(x) block
 
+  In the case that this cell is broken into two lines in the order of
+  m_nextToDraw this cell is represented by the following individual 
+  cells:
+  
+   - The ConjugateCell itself
+   - The opening "conjugate("
+   - The contents
+   - The closing ")".
+   
+  If it isn't broken into multiple cells m_nextToDraw points to the 
+  cell that follows this Cell.
  */
 class ConjugateCell : public MathCell
 {

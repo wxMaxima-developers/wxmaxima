@@ -33,6 +33,7 @@ ConjugateCell::ConjugateCell() : MathCell()
   m_innerCell = NULL;
   m_last = NULL;
   m_open = new TextCell(wxT("conjugate("));
+  dynamic_cast<TextCell*>(m_open) -> DontEscapeOpeningParenthesis();
   m_close = new TextCell(wxT(")"));
 }
 
@@ -62,7 +63,8 @@ MathCell* ConjugateCell::Copy()
   ConjugateCell* tmp = new ConjugateCell;
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
-
+  tmp->m_isBroken = m_isBroken;
+  
   return tmp;
 }
 
@@ -134,12 +136,18 @@ void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
 wxString ConjugateCell::ToString()
 {
-  return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
+  if (m_isBroken)
+    return wxEmptyString;
+  else
+    return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
 wxString ConjugateCell::ToTeX()
 {
-  return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
+  if (m_isBroken)
+    return wxEmptyString;
+  else
+    return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
 wxString ConjugateCell::ToMathML()

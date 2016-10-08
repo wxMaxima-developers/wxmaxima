@@ -60,6 +60,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
   m_highlight = false;
   m_altJs = m_alt = false;
+  m_dontEscapeOpeningParenthesis = false;
 }
 
 TextCell::~TextCell()
@@ -389,8 +390,18 @@ wxString TextCell::ToString()
     }
 
     if(!isOperator)
-      for(size_t i=0;i<charsNeedingQuotes.Length();i++)
-        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      if(!m_dontEscapeOpeningParenthesis)
+      {
+        for(size_t i=0;i<charsNeedingQuotes.Length();i++)
+          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      }
+    else
+      {
+        // Don't escape the opening parenthesis this function name ends with:
+        // It is actually the opening parenthesis of the function.
+        for(size_t i=0;i<charsNeedingQuotes.Length()-1;i++)
+          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      }
   }
     break;
   case TS_STRING:

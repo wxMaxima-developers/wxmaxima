@@ -24,6 +24,26 @@
 
 #include "MathCell.h"
 
+
+/*! \file
+
+  This file defines the class for the cell type that represents a square root.
+ */
+
+/*! This class represents a square root
+  
+  In the case that this cell is broken into two lines in the order of
+  m_nextToDraw this cell is represented by the following individual 
+  cells:
+  
+   - The SqrtCell itself
+   - The opening "sqrt("
+   - The contents
+   - The closing ")".
+   
+  If it isn't broken into multiple cells m_nextToDraw points to the 
+  cell that follows this Cell.
+ */
 class SqrtCell : public MathCell
 {
 public:
