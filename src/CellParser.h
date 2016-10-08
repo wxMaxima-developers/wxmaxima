@@ -37,17 +37,18 @@ public:
   ~CellParser();
   void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
   void SetScale(double scale) { m_scale = scale; }
-  double GetScale() { return m_scale; }
+  const double GetScale() { return m_scale; }
+  //! Get a drawing context suitable for size calculations
   wxDC& GetDC() { return m_dc; }
   void SetBounds(int top, int bottom) {
     m_top = top;
     m_bottom = bottom;
   }
-  int GetTop()
+  const int GetTop()
   {
     return m_top;
   }
-  int GetBottom()
+  const int GetBottom()
   {
     return m_bottom;
   }
@@ -62,15 +63,15 @@ public:
   {
     m_forceUpdate = force;
   }
-  bool ForceUpdate()
+  const bool ForceUpdate()
   {
     return m_forceUpdate;
   }
-  wxFontEncoding GetFontEncoding()
+  const wxFontEncoding GetFontEncoding()
   {
     return m_fontEncoding;
   }
-  bool GetChangeAsterisk()
+  const bool GetChangeAsterisk()
   {
     return m_changeAsterisk;
   }
@@ -78,32 +79,35 @@ public:
   {
     m_changeAsterisk = changeAsterisk;
   }
-  int GetIndent() { return m_indent; }
+  const int GetLabelWidth(){return m_labelWidth;}
+  const int GetIndent() { return m_indent; }
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
-  int GetClientWidth() { return m_clientWidth; }
-  int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
-  int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
-  int GetFontSize(int st)
+  const int GetClientWidth() { return m_clientWidth; }
+  const int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
+  const int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
+  const int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return int(m_zoomFactor * double(m_styles[st].fontSize));
     return 0;
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
-  bool CheckTeXFonts() { return m_TeXFonts; }
-  bool CheckKeepPercent() { return m_keepPercent; }
-  wxString GetTeXCMRI() { return m_fontCMRI; }
-  wxString GetTeXCMSY() { return m_fontCMSY; }
-  wxString GetTeXCMEX() { return m_fontCMEX; }
-  wxString GetTeXCMMI() { return m_fontCMMI; }
-  wxString GetTeXCMTI() { return m_fontCMTI; }
+  const bool CheckTeXFonts() { return m_TeXFonts; }
+  const bool CheckKeepPercent() { return m_keepPercent; }
+  const wxString GetTeXCMRI() { return m_fontCMRI; }
+  const wxString GetTeXCMSY() { return m_fontCMSY; }
+  const wxString GetTeXCMEX() { return m_fontCMEX; }
+  const wxString GetTeXCMMI() { return m_fontCMMI; }
+  const wxString GetTeXCMTI() { return m_fontCMTI; }
   void SetPrinter(bool printer) { m_printer = printer; }
-  bool GetPrinter() { return m_printer; }
+  const bool GetPrinter() { return m_printer; }
 
   //! Returns a pointer to the instance of CellParser that exists
-  CellParser *Get() {return m_cellParser;}
+  const CellParser *Get() {return m_cellParser;}
 private:
+  //! The width of input and output labels [in chars]
+  int m_labelWidth;
   int m_indent;
   double m_scale;
   double m_zoomFactor;

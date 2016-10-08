@@ -64,6 +64,10 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
 
 void CellParser::ReadConfig()
 {
+  wxConfig *config = (wxConfig *)wxConfig::Get();
+  m_labelWidth = 4;
+  config->Read(wxT("labelWidth"), &m_labelWidth);
+
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
@@ -71,7 +75,7 @@ void CellParser::ReadConfig()
       wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
   {
     m_TeXFonts = true;
-    wxConfig::Get()->Read(wxT("usejsmath"), &m_TeXFonts);
+    config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
   m_keepPercent = true;

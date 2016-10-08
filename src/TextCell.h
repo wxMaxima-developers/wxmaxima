@@ -83,7 +83,7 @@ protected:
   int m_labelWidth, m_labelHeight;
 private:
   //! Produces a text sample that determines the label width
-  wxString LabelWidthText();
+  wxString LabelWidthText(CellParser &parser);
 
 };
 

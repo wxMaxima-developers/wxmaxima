@@ -100,15 +100,11 @@ void TextCell::Destroy()
   m_next = NULL;
 }
 
-wxString TextCell::LabelWidthText()
+wxString TextCell::LabelWidthText(CellParser &parser)
 {
   wxString result;
 
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int labelWidth = 4;
-  config->Read(wxT("labelWidth"), &labelWidth);
-
-  for(int i=0;i<labelWidth;i++)
+  for(int i=0;i<parser.GetLabelWidth();i++)
     result += wxT("X");
 
   return result;
@@ -130,9 +126,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     {
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText(parser)+wxT(")"), &m_width, &m_height);
       else
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText(parser)+wxT(")/R/"), &m_width, &m_height);
 
       m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width>0)||(m_text==wxEmptyString),_("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
