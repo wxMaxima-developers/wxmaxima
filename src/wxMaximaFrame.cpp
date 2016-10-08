@@ -47,7 +47,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_manager.SetManagedWindow(this);
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
-
+  
   // history
   m_history = new History(this, -1);
 
@@ -86,8 +86,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 
   set_properties();
   do_layout();
-
-  m_console->SetFocus();
 }
 
 void wxMaximaFrame::EvaluationQueueLength(int length,int numberOfCommands)

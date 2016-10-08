@@ -31,6 +31,7 @@
 class CellParser
 {
 public:
+  void ReadConfig();
   CellParser(wxDC& dc);
   CellParser(wxDC& dc, double scale);
   ~CellParser();

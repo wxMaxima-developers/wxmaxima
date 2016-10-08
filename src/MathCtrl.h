@@ -74,6 +74,13 @@ private:
     calculates some widths in.
   */
   int m_scrollUnit;
+  /*! The drawing contect used for calculating sizes. 
+
+    Drawing is done from a wxPaintDC in OnPaint() instead.
+  */
+  wxClientDC *m_dc;
+  //! The central settings storage
+  CellParser *m_parser;
   //! Do we need to repaint the worksheet?
   bool m_redrawRequested;
   //! Which groupCell incremental search has started in?
@@ -101,7 +108,7 @@ private:
    */
   class MathMLDataObject:public wxCustomDataObject
   {
-  public:
+  public:    
     MathMLDataObject(wxString data);
     MathMLDataObject();
   private:
@@ -581,6 +588,8 @@ public:
   void ForceRedraw(){RequestRedraw();RedrawIfRequested();}
   ///@}
 
+  //! Re-read the configuration
+  void UpdateConfig(){m_parser->ReadConfig();}
   //! The name of the currently-opened file
   wxString m_currentFile;
 

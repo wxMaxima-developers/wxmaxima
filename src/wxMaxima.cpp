@@ -111,6 +111,7 @@ void wxMaxima::ConfigChanged()
   m_autoSaveInterval = 0;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
+  m_console->UpdateConfig();
 }
 
 wxMaxima *MyApp::m_frame;
@@ -121,7 +122,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
 {
   m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  ConfigChanged();
   m_unsuccessfullConnectionAttempts = 0;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
@@ -292,6 +292,10 @@ void wxMaxima::InitSession()
     SetStatusText(_("Starting server failed"));
   else if (!StartMaxima())
     SetStatusText(_("Starting Maxima process failed"), 1);
+
+  Refresh();
+  ConfigChanged();
+  m_console->SetFocus();
 }
 
 void wxMaxima::FirstOutput(wxString s)

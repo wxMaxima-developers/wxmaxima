@@ -68,7 +68,10 @@ wxScrolledCanvas(
   | wxSUNKEN_BORDER
 #endif
   )
-{  
+{
+  m_dc = new wxClientDC(this);
+  m_parser = new CellParser(*m_dc);
+  m_parser->ReadConfig();
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
   m_redrawRequested = false;
@@ -149,6 +152,8 @@ void MathCtrl::RequestRedraw()
 }
 
 MathCtrl::~MathCtrl() {
+  delete m_parser;
+  delete m_dc;
   if(m_mainToolBar != NULL)
     delete m_mainToolBar;
   m_mainToolBar = NULL;
@@ -174,9 +179,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 
   // Inform all cells how wide our display is
   MathCell::SetCanvasSize(GetClientSize());
-  wxPaintDC dc(this);
   wxMemoryDC dcm;
-
+  wxPaintDC dc(this);
+  
   // Get the font size
   wxConfig *config = (wxConfig *)wxConfig::Get();
 
@@ -528,12 +533,10 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     
     tmp->AppendOutput(newCell);
     
-    wxClientDC dc(this);
-    CellParser parser(dc);
-    parser.SetZoomFactor(m_zoomFactor);
-    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+    m_parser->SetZoomFactor(m_zoomFactor);
+    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-    tmp->RecalculateAppended(parser);
+    tmp->RecalculateAppended(*m_parser);
     Recalculate(tmp);
 
     if(FollowEvaluation()) {
@@ -602,17 +605,15 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
   if(m_tree)
     m_tree->SetCanvasSize(GetClientSize());
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetZoomFactor(m_zoomFactor);
-  parser.SetForceUpdate(force);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-  int d_fontsize = parser.GetDefaultFontSize();
-  int m_fontsize = parser.GetMathFontSize();
+  m_parser->SetZoomFactor(m_zoomFactor);
+  m_parser->SetForceUpdate(force);
+  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+  int d_fontsize = m_parser->GetDefaultFontSize();
+  int m_fontsize = m_parser->GetMathFontSize();
 
   while (tmp != NULL)
   {
-    tmp->Recalculate(parser, d_fontsize, m_fontsize);
+    tmp->Recalculate(*m_parser, d_fontsize, m_fontsize);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
  
@@ -893,8 +894,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
   }
   // SELECTION IN EDITORCELL
   else if (m_activeCell != NULL) {
-    wxClientDC dc(this);
-    if (m_activeCell->IsPointInSelection(dc, wxPoint(downx, downy)))
+    if (m_activeCell->IsPointInSelection(*m_dc, wxPoint(downx, downy)))
       clickInSelection = true;
   }
 
@@ -1114,8 +1114,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
         m_cellMouseSelectionStartedIn=editor;
         SetActiveCell(editor, false); // do not refresh as we will do so later
-        wxClientDC dc(this);
-        m_activeCell->SelectPointText(dc, m_down);
+        m_activeCell->SelectPointText(*m_dc, m_down);
         m_switchDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
@@ -1139,8 +1138,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       {
         m_cellMouseSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
         SetActiveCell(m_cellMouseSelectionStartedIn, false);
-        wxClientDC dc(this);
-        m_activeCell->SelectPointText(dc, m_down);
+        m_activeCell->SelectPointText(*m_dc, m_down);
         m_switchDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         FollowEvaluation(true);    
@@ -1226,13 +1224,10 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // The mouse selection was started in the currently active EditorCell
     m_cellMouseSelectionStartedIn = m_activeCell;
     
-    wxClientDC dc(this);
-    CellParser parser(dc);
-    
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
     if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionStart();
-    m_down = wxPoint(m_activeCell->PositionToPoint(parser,parser.GetDefaultFontSize(),startingChar));
+    m_down = wxPoint(m_activeCell->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize(),startingChar));
     m_activeCell->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -1520,8 +1515,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         SetSelection(NULL);
         SetActiveCell(m_cellMouseSelectionStartedIn);
         // We are still inside the cell => select inside the current cell.
-        wxClientDC dc(this);
-        m_activeCell->SelectRectText(dc, down, up);
+        m_activeCell->SelectRectText(*m_dc, down, up);
         m_switchDisplayCaret = true;
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
@@ -2840,23 +2834,21 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   
   m_switchDisplayCaret = true;
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
   if (m_activeCell->IsDirty()) {
     m_saved = false;
 
     
     int height = m_activeCell->GetHeight();
-    //   int fontsize = parser.GetDefaultFontSize();
-    parser.SetZoomFactor(m_zoomFactor);
-    parser.SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
-    int fontsize = parser.GetDefaultFontSize();
+    //   int fontsize = m_parser->GetDefaultFontSize();
+    m_parser->SetZoomFactor(m_zoomFactor);
+    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
+    int fontsize = m_parser->GetDefaultFontSize();
     
     m_activeCell->ResetData();
-    m_activeCell->RecalculateWidths(parser, MAX(fontsize, MC_MIN_SIZE));
-    m_activeCell->RecalculateSize(parser, MAX(fontsize, MC_MIN_SIZE));
+    m_activeCell->RecalculateWidths(*m_parser, MAX(fontsize, MC_MIN_SIZE));
+    m_activeCell->RecalculateSize(*m_parser, MAX(fontsize, MC_MIN_SIZE));
     
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
@@ -2987,9 +2979,6 @@ void MathCtrl::SelectWithChar(int ccode) {
 void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
   if(editor != NULL)
   {
-    wxClientDC dc(this);
-    CellParser parser(dc);
-
     SetActiveCell(editor, false);
     m_hCaretActive = false;
 
@@ -5695,11 +5684,8 @@ void MathCtrl::ScrollToCell(MathCell *cell)
     cellY = tmp->GetCurrentY();
 
     if(cellY < 1)
-    {
-      wxClientDC dc(this);
-      CellParser parser(dc);
-      
-      cellY = tmp->GetParent()->PositionToPoint(parser,parser.GetDefaultFontSize()).y;
+    {      
+      cellY = tmp->GetParent()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize()).y;
     }
   }
 
@@ -6054,9 +6040,6 @@ void MathCtrl::ShowPoint(wxPoint point) {
   wxASSERT_MSG((point.x >=0) && (point.y >=0),wxT("Bug: Trying to scroll to a non-existing position!"));
   if (point.x == -1 || point.y == -1)
     return;
-
-  wxClientDC dc(this);
-  CellParser parser(dc);
 
   int view_x, view_y;
   int height, width;
@@ -6847,13 +6830,11 @@ bool MathCtrl::CaretVisibleIs()
   {
     if(m_activeCell)
     {
-      wxClientDC dc(this);
-      CellParser parser(dc);
-      wxPoint point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
       if(point.y<1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
       }
       return PointVisibleIs(point);
     }
@@ -6873,15 +6854,13 @@ void MathCtrl::ScrollToCaret()
   {
     if(m_activeCell)
     {
-      wxClientDC dc(this);
-      CellParser parser(dc);
-      parser.SetZoomFactor(m_zoomFactor);
+      m_parser->SetZoomFactor(m_zoomFactor);
 
-      wxPoint point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
       if(point.y==-1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
       }
       ShowPoint(point);
     }   
@@ -6898,8 +6877,6 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       m_saved = false;
       GroupCell *group = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
       group->ResetInputLabel();
-      wxClientDC dc(this);
-      CellParser parser(dc);
       group->ResetSize();
       m_activeCell->ResetSize();
       Recalculate();
@@ -7061,9 +7038,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   else {
 
     // Find the position for the popup menu
-    wxClientDC dc(this);
-    CellParser parser(dc);
-    wxPoint pos = editor->PositionToPoint(parser, parser.GetDefaultFontSize());
+    wxPoint pos = editor->PositionToPoint(*m_parser, m_parser->GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
     #ifdef __WXGTK__
@@ -7278,11 +7253,9 @@ wxString MathCtrl::RTFStart()
 
   // Define all colors we want to use
   document += wxT("{\\colortbl;\n");
-  wxClientDC dc(this);
-  CellParser parser(dc);
   for(int i = 1;i<STYLE_NUM;i++)
   {
-    wxColor color = wxColor(parser.GetColor(i));
+    wxColor color = wxColor(m_parser->GetColor(i));
     if(color.IsOk())
       document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;\n"),color.Red(),color.Green(),color.Blue());
     else
