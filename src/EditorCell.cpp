@@ -2378,7 +2378,7 @@ wxPoint EditorCell::PositionToPoint(CellParser& parser, int fontsize, int pos)
   int width;
   int cX, cY;
 
-  if (pos == -1)
+  if (pos < 0)
     pos = m_positionOfCaret;
 
   PositionToXY(pos, &cX, &cY);

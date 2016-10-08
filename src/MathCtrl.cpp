@@ -6055,40 +6055,39 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.x == -1 || point.y == -1)
     return;
 
+  wxClientDC dc(this);
+  CellParser parser(dc);
+
+  int view_x, view_y;
   int height, width;
-  GetClientSize(&width, &height);
-  wxPoint topLeft = CalcUnscrolledPosition(wxPoint(0,0));
-  wxRect viewPort(topLeft,topLeft+wxPoint(width,height));
+  bool sc = false;
 
-  bool scrollNeeded = false;
-  wxPoint scrollTo = topLeft;
-    
-  if (point.y - m_scrollUnit < viewPort.GetTop())
-  {
-    scrollNeeded = true;
-    scrollTo.y   = point.y - height / 3;
-    if(scrollTo.y<0) scrollTo.y = 0;
-  }
-  if (point.y + m_scrollUnit + MC_BASE_INDENT > viewPort.GetBottom())
-  {
-    scrollNeeded = true;
-    scrollTo.y   = point.y + height / 3;
-  }
-  
-  if (point.x - m_scrollUnit < viewPort.GetLeft())
-  {
-    scrollNeeded = true;
-    scrollTo.x   = point.x - width / 3;
-    if(scrollTo.x<0) scrollTo.x = 0;
-  }
-  if (point.x + m_scrollUnit > viewPort.GetRight())
-  {
-    scrollNeeded = true;
-    scrollTo.x   = point.x + width / 3;
-  }
+  int scrollToX = -1, scrollToY = -1;
 
-  if(scrollNeeded)
-    Scroll(scrollTo.x / m_scrollUnit,scrollTo.y / m_scrollUnit);
+  GetViewStart(&view_x, &view_y);
+  GetSize(&width, &height);
+
+  view_x *= m_scrollUnit;
+  view_y *= m_scrollUnit;
+
+  if ((point.y - 2 < view_y) || (point.y + 2 > view_y + height
+                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
+    sc = true;
+    scrollToY = point.y - height / 2;
+  } else
+    scrollToY = view_y;
+
+  if ((point.x - 2 < view_x) || (point.x + 2 > view_x + width
+                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
+    sc = true;
+    scrollToX = point.x - width / 2;
+  } else
+    scrollToX = view_x;
+
+  if (sc)
+  {
+    Scroll(scrollToX / m_scrollUnit, scrollToY / m_scrollUnit);
+  }
 }
 
 bool MathCtrl::CutToClipboard()
@@ -6876,15 +6875,14 @@ void MathCtrl::ScrollToCaret()
     {
       wxClientDC dc(this);
       CellParser parser(dc);
+      parser.SetZoomFactor(m_zoomFactor);
+
       wxPoint point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       if(point.y==-1)
       {
         RecalculateForce();
         point = GetActiveCell()->PositionToPoint(parser,parser.GetDefaultFontSize());
       }
-      // TODO: Why is this necessary in order to horizontally scroll to the right
-      // point at higher zoom factors? And why don't we need this for the y axis?
-      point.x= (int) ((double)point.x * m_zoomFactor);
       ShowPoint(point);
     }   
   }
