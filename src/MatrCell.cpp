@@ -221,21 +221,22 @@ void MatrCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 
 wxString MatrCell::ToString()
 {
-  wxString s = wxT("matrix(");
+  wxString s = wxT("matrix(\n");
   for (int i = 0; i < m_matHeight; i++)
   {
-    s += wxT("[");
+    s += wxT("\t\t[");
     for (int j = 0; j < m_matWidth; j++)
     {
       s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
-        s += wxT(",");
+        s += wxT(",\t");
     }
     s += wxT("]");
     if (i < m_matHeight - 1)
       s += wxT(",");
+    s += wxT("\n");
   }
-  s += wxT(")");
+  s += wxT("\t)");
   return s;
 }
 
