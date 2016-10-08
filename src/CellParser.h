@@ -28,6 +28,11 @@
 
 #include "Setup.h"
 
+/*! The configuration storage for the current worksheet.
+
+  Caching the information here means we don't need to search for the configuration
+  value's name every time we need the information.
+ */
 class CellParser
 {
 public:
