@@ -6055,13 +6055,8 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.x == -1 || point.y == -1)
     return;
 
-  wxClientDC dc(this);
-  CellParser parser(dc);
-  
   int height, width;
-  int workSheetHeight, workSheetWidth;
   GetClientSize(&width, &height);
-  GetVirtualSize(&workSheetWidth, &workSheetHeight);
   wxPoint topLeft = CalcUnscrolledPosition(wxPoint(0,0));
   wxRect viewPort(topLeft,topLeft+wxPoint(width,height));
 
@@ -6071,26 +6066,25 @@ void MathCtrl::ShowPoint(wxPoint point) {
   if (point.y - m_scrollUnit < viewPort.GetTop())
   {
     scrollNeeded = true;
-    scrollTo.y   = point.y - height / 2;
+    scrollTo.y   = point.y - height / 3;
     if(scrollTo.y<0) scrollTo.y = 0;
   }
   if (point.y + m_scrollUnit + MC_BASE_INDENT > viewPort.GetBottom())
   {
     scrollNeeded = true;
-    scrollTo.y   = point.y + height / 2;
+    scrollTo.y   = point.y + height / 3;
   }
   
   if (point.x - m_scrollUnit < viewPort.GetLeft())
   {
     scrollNeeded = true;
-    scrollTo.x   = point.x - width / 2;
+    scrollTo.x   = point.x - width / 3;
     if(scrollTo.x<0) scrollTo.x = 0;
   }
-  if (point.x + 2 * m_scrollUnit > viewPort.GetRight())
+  if (point.x + m_scrollUnit > viewPort.GetRight())
   {
     scrollNeeded = true;
-    scrollTo.x   = point.x + width / 2 + m_scrollUnit - 1;
-    if(scrollTo.x > workSheetWidth) scrollTo.x = workSheetWidth - 1;
+    scrollTo.x   = point.x + width / 3;
   }
 
   if(scrollNeeded)
