@@ -11,8 +11,7 @@ Current:
     now in all cases even if the OS fails to notify us that the network connection with
     maxima has dropped.
   * Support for cells that are >5000 pixels wide
-  * Speedup for displaying big cells: Don't attempt to draw sub-cells that aren't
-    in the area that is currently visible or cached.
+  * Massive speedups in the drawing code.
   * A Kabyle Translation for users of wxWidgets >= 3.0.1
   * Holding the "evaluate" key now evaluates all cells of the document one-by-one
   * Even if we scrolled away from evaluation we want to scroll back if an error
