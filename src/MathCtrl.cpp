@@ -149,14 +149,19 @@ void MathCtrl::RequestRedraw(GroupCell *start)
     m_redrawStart = m_tree;
   else
   {
-    // No need to waste time avoiding to waste time in a refresh when we don't
-    // know our cell's position.
-    if((start->m_currentPoint.y < 0) || (m_redrawStart->m_currentPoint.y < 0))
+    if(m_redrawStart != NULL)
     {
-      m_redrawStart = m_tree;
+      // No need to waste time avoiding to waste time in a refresh when we don't
+      // know our cell's position.
+      if((start->m_currentPoint.y < 0) || (m_redrawStart->m_currentPoint.y < 0))
+      {
+        m_redrawStart = m_tree;
+      }
+      else if(start->m_currentPoint.y < m_redrawStart->m_currentPoint.y)
+        m_redrawStart = start;
     }
-    else if(start->m_currentPoint.y < m_redrawStart->m_currentPoint.y)
-      m_redrawStart = start;
+    else 
+      m_redrawStart = start;  
   }
   
   // Make sure there is a timeout for the redraw
