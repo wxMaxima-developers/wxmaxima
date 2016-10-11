@@ -3256,7 +3256,8 @@ void wxMaxima::OnFind(wxFindDialogEvent& event)
 
 void wxMaxima::OnFindClose(wxFindDialogEvent& event)
 {
-  m_console->m_findDialog->Destroy();
+  if(m_console->m_findDialog != NULL)
+    m_console->m_findDialog->Destroy();
   m_oldFindString = wxEmptyString;
   m_console->m_findDialog = NULL;
 }
