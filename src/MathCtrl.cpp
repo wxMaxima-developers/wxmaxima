@@ -452,6 +452,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if(undoBuffer)
     TreeUndo_MarkCellsAsAdded(cells,lastOfCellsToInsert,undoBuffer);
 
+  RequestRedraw(where);
   return lastOfCellsToInsert;
 }
 
