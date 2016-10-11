@@ -43,6 +43,7 @@ surrounding the worksheet.
 #include "History.h"
 #include "ToolBar.h"
 #include "XmlInspector.h"
+#include <list>
 
 
 /*! The frame containing the menu and the sidebars
@@ -423,6 +424,11 @@ public:
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
 private:
+  //! A panel that shows all user-defined symbols on the symbols pane.
+  wxPanel *m_userSymbols;
+  //! A button per user defined symbol
+  std::list<wxPanel *> m_userSymbolButtons;
+  wxGridSizer *m_userSymbolsSizer;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
   //! The number of commands left in the current of the evaluation queue item
@@ -490,6 +496,8 @@ private:
   wxPanel *CreateSymbolsPane();
 #endif
 protected:
+  //! Update the "user symbols" portion of the symbols pane.
+  void UpdateUserSymbols();
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
   void CharacterButtonPressed(wxMouseEvent &event);

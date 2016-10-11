@@ -586,6 +586,8 @@ public:
   void RequestRedraw();
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw(){RequestRedraw();RedrawIfRequested();}
+  //! Is a Redraw requested?
+  bool RedrawRequested(){return m_redrawRequested;}
   ///@}
 
   //! Re-read the configuration

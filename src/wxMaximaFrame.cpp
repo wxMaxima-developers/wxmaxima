@@ -42,6 +42,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 
 {
+  m_userSymbols = NULL;
   m_EvaluationQueueLength = 0;
   m_forceStatusbarUpdate = false;
   m_manager.SetManagedWindow(this);
@@ -1404,78 +1405,98 @@ wxPanel* wxMaximaFrame::CreateSymbolsPane()
   int border = 0;
 #endif
 
-  wxFlexGridSizer *lowercase = new wxFlexGridSizer(8);
-  lowercase->SetFlexibleDirection(wxBOTH);
+  wxFlexGridSizer *builtInSymbolsSizer = new wxFlexGridSizer(8);
+  wxPanel *builtInSymbols = new wxPanel(panel);
+  builtInSymbolsSizer->SetFlexibleDirection(wxBOTH);
   for (int i=0;i<8;i++)
-    lowercase->AddGrowableCol(i,1);
-  lowercase->Add(CharButton(panel,  wxT('\x00BD'),_("1/2"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x00B2'),_("to the power of 2"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x00B3'),_("to the power of 3"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x221A'),_("sqrt (needs parenthesis for its argument to work as a maxima command)"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2148')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2147')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x210F')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2208'),_("in")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2203'),_("exists")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2204'),_("there is no")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x21D2'),_("\"implies\" symbol"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x221E'),_("Infinity"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2205'),_("empty")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x25b6')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x25b8')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22C0'),_("and"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22C1'),_("or"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22BB'),_("xor"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22BC'),_("nand"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22BD'),_("nor"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x21D4'),_("equivalent"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x00b1'),_("plus or minus")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x00AC'),_("not"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22C3'),_("union")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x22C2'),_("intersection")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2286'),_("subset or equal")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2282'),_("subset")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2288'),_("not subset or equal")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2284'),_("not subset")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x0127')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x0126')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2202'),_("partial sign")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x222b'),_("Integral sign")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x221d'),_("proportional to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2260'),_("not bytewise identical"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2264'),_("less or equal"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2265'),_("greater than or equal"),true),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x226A'),_("much less than")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x226B'),_("much greater than")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2211'),_("Sum sign")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x220F'),_("Product sign")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2225'),_("Parallel to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x219D'),_("Leads to")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x2192'),_("Right arrow")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x27F6'),_("Long Right arrow")),0,wxALL | wxEXPAND,2);
-  lowercase->Add(CharButton(panel,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
-  vbox->Add(lowercase,0,style,border);
+    builtInSymbolsSizer->AddGrowableCol(i,1);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x00BD'),_("1/2"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x00B2'),_("to the power of 2"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x00B3'),_("to the power of 3"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x221A'),_("sqrt (needs parenthesis for its argument to work as a maxima command)"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2148')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2147')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x210F')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2208'),_("in")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2203'),_("exists")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2204'),_("there is no")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x21D2'),_("\"implies\" symbol"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x221E'),_("Infinity"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2205'),_("empty")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x25b6')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x25b8')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22C0'),_("and"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22C1'),_("or"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22BB'),_("xor"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22BC'),_("nand"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22BD'),_("nor"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x21D4'),_("equivalent"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x00b1'),_("plus or minus")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x00AC'),_("not"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22C3'),_("union")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x22C2'),_("intersection")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2286'),_("subset or equal")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2282'),_("subset")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2288'),_("not subset or equal")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2284'),_("not subset")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x0127')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x0126')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2202'),_("partial sign")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x222b'),_("Integral sign")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2245')),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x221d'),_("proportional to")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2260'),_("not bytewise identical"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2264'),_("less or equal"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2265'),_("greater than or equal"),true),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x226A'),_("much less than")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x226B'),_("much greater than")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2263'),_("Identical to")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2211'),_("Sum sign")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x220F'),_("Product sign")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2225'),_("Parallel to")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x27C2'),_("Perpendicular to")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x219D'),_("Leads to")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x2192'),_("Right arrow")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x27F6'),_("Long Right arrow")),0,wxALL | wxEXPAND,2);
+  builtInSymbolsSizer->Add(CharButton(builtInSymbols,  wxT('\x220e'),_("End of proof")),0,wxALL | wxEXPAND,2);
+  builtInSymbols->SetSizer(builtInSymbolsSizer);
+  vbox->Add(builtInSymbols,0,style,border);
 
-  wxGridSizer *uppercase = new wxGridSizer(8);
-/*  uppercase->SetFlexibleDirection(wxBOTH);
-  for (int i=0;i<8;i++)
-    uppercase->AddGrowableCol(i,1);
-*/
-  wxString symbolPaneAdditionalChars=wxT("üØ");
-  wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"),&symbolPaneAdditionalChars);
-  for (size_t i=0;i<symbolPaneAdditionalChars.Length();i++)
-  uppercase->Add(CharButton(panel, symbolPaneAdditionalChars[i],_("A symbol from the configuration dialogue")),0,wxALL | wxEXPAND,2);
-  vbox->Add(uppercase,0,style,border);
-
+  m_userSymbols = new wxPanel(panel);
+  m_userSymbolsSizer = new wxGridSizer(8);
+  UpdateUserSymbols();
+  m_userSymbols->SetSizer(m_userSymbolsSizer);
+  vbox->Add(m_userSymbols,0,style,border);
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
-
   return panel;
 }
 #endif
+
+void wxMaximaFrame::UpdateUserSymbols()
+{
+
+  while(!m_userSymbolButtons.empty())
+  {
+    m_userSymbolButtons.front()->Destroy();
+    m_userSymbolButtons.pop_front();
+  }
+
+  if(m_userSymbols == NULL)
+    return;
+  // Clear the user symbols pane
+  m_userSymbols->DestroyChildren();
+
+  // Populate the pane with a button per user symbol
+  wxString symbolPaneAdditionalChars=wxT("Øü§");
+  wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"),&symbolPaneAdditionalChars);
+  for (size_t i=0;i<symbolPaneAdditionalChars.Length();i++)
+  {
+    wxPanel *button=CharButton(m_userSymbols, symbolPaneAdditionalChars[i],_("A symbol from the configuration dialogue"));
+    m_userSymbolButtons.push_back(button);
+    m_userSymbolsSizer->Add(button,0,wxALL | wxEXPAND,2);
+  }
+}
 
 wxPanel *wxMaximaFrame::CreateFormatPane()
 {

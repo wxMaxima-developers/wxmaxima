@@ -112,6 +112,7 @@ void wxMaxima::ConfigChanged()
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
   m_console->UpdateConfig();
+  // UpdateUserSymbols();
 }
 
 wxMaxima *MyApp::m_frame;
@@ -2259,21 +2260,21 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
       }
     }
   }
+  bool screenHasChanged = m_console->RedrawRequested();
   m_console->RedrawIfRequested();
 
   ResetTitle(m_console->IsSaved());
-  // On my linux box the menus need only rarely to be updated
-  // and the idle loop is called
-  //  - on every mouse movement
-  //  - at each key press
-  //  - and at each key release
-  //
-  // => TODO: Should we invest time in optimizing this any further?
-  wxUpdateUIEvent dummy;
-  UpdateMenus(dummy);
-  UpdateToolBar(dummy);
-  UpdateSlider(dummy);
 
+  // If nothing which is visible has changed nothing that would cause us to need
+  // update the menus and toolbars has.
+  if(screenHasChanged)
+  {
+    wxUpdateUIEvent dummy;
+    UpdateMenus(dummy);
+    UpdateToolBar(dummy);
+    UpdateSlider(dummy);
+  }
+  
   // If we have set the flag that tells us we should update the table of
   // contents sooner or later we should do so now that wxMaxima is idle.
   if(m_console->m_scheduleUpdateToc)
