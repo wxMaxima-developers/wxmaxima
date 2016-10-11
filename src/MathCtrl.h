@@ -81,7 +81,9 @@ private:
   wxClientDC *m_dc;
   //! The central settings storage
   CellParser *m_parser;
-  //! Do we need to repaint the worksheet?
+  //! Where do we need to start the repainting of the worksheet?
+  GroupCell *m_redrawStart;
+  //! Do we need to redraw the worksheet?
   bool m_redrawRequested;
   //! Which groupCell incremental search has started in?
   GroupCell *m_cellSearchStartedIn;
@@ -573,17 +575,25 @@ private:
 public:
   ///@{
   //! Request the worksheet to be redrawn
-  void MarkRefreshAsDone(){m_redrawRequested = false;}
-  //! Redraw the worksheet if RequestRedraw() has been called
-  void RedrawIfRequested() {if(m_redrawRequested) Refresh();m_redrawRequested = false;}
+  void MarkRefreshAsDone(){m_redrawStart = NULL; m_redrawRequested = false;}
+  //! Redraw the worksheet if RequestRedraw() has been called.
+  void RedrawIfRequested() {
+    if(m_redrawStart != NULL)
+      Refresh(m_redrawStart);
+    else
+      Refresh();
+    m_redrawRequested = false;
+    m_redrawStart = NULL;
+  }
   //! Redraw the worksheet region merging this action with an eventual RequestRedraw()
   void RedrawRect(wxRect rect);
   /*! Request the worksheet to be redrawn
 
-    \todo An optional argument that tells which cell we need to start the redraw at:
-    Most operations affect only the current cell and the ones that follow. 
+    \param start Which cell do we need to start the redraw in? Subsequent calls to 
+    this function with different cells start the redraw at the upmost of the cells
+    that were passed to it.
    */
-  void RequestRedraw();
+  void RequestRedraw(GroupCell *start = NULL);
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw(){RequestRedraw();RedrawIfRequested();}
   //! Is a Redraw requested?

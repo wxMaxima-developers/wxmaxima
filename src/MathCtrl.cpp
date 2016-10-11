@@ -74,6 +74,7 @@ wxScrolledCanvas(
   m_parser->ReadConfig();
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
+  m_redrawStart = NULL;
   m_redrawRequested = false;
   
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
@@ -142,9 +143,21 @@ wxScrolledCanvas(
 
 }
 
-void MathCtrl::RequestRedraw()
+void MathCtrl::RequestRedraw(GroupCell *start)
 {
-  m_redrawRequested = true;
+  if(start == 0)
+    m_redrawStart = m_tree;
+  else
+  {
+    // No need to waste time avoiding to waste time in a refresh when we don't
+    // know our cell's position.
+    if((start->m_currentPoint.y < 0) || (m_redrawStart->m_currentPoint.y < 0))
+    {
+      m_redrawStart = m_tree;
+    }
+    else if(start->m_currentPoint.y < m_redrawStart->m_currentPoint.y)
+      m_redrawStart = start;
+  }
   
   // Make sure there is a timeout for the redraw
   if(!m_caretTimer.IsRunning())
@@ -551,7 +564,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
         ScrollToCaret();
       }
     }
-    RequestRedraw();
+    RequestRedraw(tmp);
   }
   else
   {
@@ -2734,7 +2747,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
-      RequestRedraw();
+      RequestRedraw(m_hCaretPosition);
     }
     else
     {
@@ -2866,13 +2879,13 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         (m_activeCell == group->GetEditable()))
       group->ResetInputLabel();
     Recalculate(group);
-    RequestRedraw();
+    RequestRedraw(group);
   }
   else
   {
     if(m_activeCell->m_selectionChanged)
     {
-      RequestRedraw();
+      RequestRedraw(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
     }
     /// Otherwise refresh only the active cell
     else {
@@ -3586,10 +3599,10 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
 
 void MathCtrl::RedrawRect(wxRect rect)
 {
-  if(m_redrawRequested)
+  if(m_redrawStart != NULL)
   {
     Refresh();
-    m_redrawRequested = false;
+    m_redrawStart = NULL;
   }
   else
     RefreshRect(rect);
