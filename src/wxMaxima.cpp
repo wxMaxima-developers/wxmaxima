@@ -5337,12 +5337,16 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       {
         if(text[index + 1]==wxT('*'))
         {
-          index=text.find(wxT("*/"),index);
+          index = text.find(wxT("*/"),index + 2);
           if(index==wxNOT_FOUND)
             return(_("Unterminated comment."));
+          index ++;
         }
         else lastC=c;
       }
+      else lastC=c;
+      break;
+      
     default:
       if((c!=wxT('\n')) && (c!=wxT(' '))&& (c!=wxT('\t')))
         lastC=c;

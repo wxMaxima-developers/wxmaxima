@@ -2305,11 +2305,54 @@ bool EditorCell::ActivateCell(bool active)
 
 bool EditorCell::AddEnding()
 {
-  if (m_text.Left(5) == wxT(":lisp"))
+  if (m_text.StartsWith(wxT(":lisp")))
     return false;
 
-  wxString text = m_text.Trim();
-  if (text.Right(1) != wxT(";") && text.Right(1) != wxT("$")) {
+  wxString text;
+
+  size_t index = 0;
+  // Copy the text, but not comments or whitespace
+  while(index<m_text.Length())
+  {
+    if(
+      (m_text[index]!=wxT(' '))||
+      (m_text[index]!=wxT('\t'))||
+      (m_text[index]!=wxT('\n'))||
+      (m_text[index]!=wxT('\r'))
+      )
+    {
+      // Did we encounter a comment start?
+      if(
+        (index<m_text.Length()-1) &&
+        (m_text[index]==wxT('/')) &&
+        (m_text[index + 1]==wxT('*'))
+        )
+      {
+        // Comment start.
+        //
+        // Skip all text until the end of the comment
+        while(index<m_text.Length())
+        {
+          if(
+            (index<m_text.Length()-1) &&
+            (m_text[index]==wxT('*')) &&
+            (m_text[index + 1]==wxT('/'))
+            )
+          {
+            index++;
+            break;
+          }
+          index++;
+        }
+      }
+      else
+        text += m_text[index];
+      index ++;
+    }
+  }
+  text.Trim();
+  if (!(text.EndsWith(wxT(";")) || text.EndsWith(wxT("$"))))
+  {
     m_text += wxT(";");
     m_paren1 = m_paren2 = m_width = -1;
     StyleText();
