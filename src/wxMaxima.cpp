@@ -3204,6 +3204,14 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_find:
 #endif
+    if ( m_console->m_findDialog == NULL )
+      m_console->m_findDialog = new FindReplaceDialog(
+      this,
+      &m_findData,
+      _("Find and Replace"),
+      wxFR_REPLACEDIALOG |
+      wxFR_NOWHOLEWORD);
+
     if(m_console->GetActiveCell()!=NULL)
     {
       // Start incremental search and highlighting of search results again.
@@ -3218,13 +3226,6 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
       }
     }
 
-    if ( m_console->m_findDialog == NULL )
-      m_console->m_findDialog = new FindReplaceDialog(
-      this,
-      &m_findData,
-      _("Find and Replace"),
-      wxFR_REPLACEDIALOG |
-      wxFR_NOWHOLEWORD);
     m_console->m_findDialog->Show(true);
     m_console->m_findDialog->SetFocus();
     m_console->m_findDialog->Raise();

@@ -55,7 +55,7 @@ TextCell::TextCell(wxString text) : MathCell()
   m_fontSizeLabel = 12;
   m_text = text;
   m_text.Replace(wxT("\n"), wxEmptyString);
-  m_text.Replace(wxT("-->"),wxT("\x27f6"));
+  m_text.Replace(wxT("-->"),wxT("\x2794"));
   m_text.Replace(wxT("->"),wxT("\x2192"));
   m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
   m_highlight = false;
@@ -74,7 +74,7 @@ void TextCell::SetValue(const wxString &text)
   m_text = text;
   m_width = -1;
   m_text.Replace(wxT("\n"), wxEmptyString);
-  m_text.Replace(wxT("-->"),wxT("\x27f6"));
+  m_text.Replace(wxT("-->"),wxT("\x2794"));
   m_text.Replace(wxT("->"),wxT("\x2192"));
   m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
   m_alt = m_altJs = false;
@@ -360,7 +360,7 @@ wxString TextCell::ToString()
     text = m_text;
 #if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-    text.Replace(wxT("\x27f6"),wxT("-->"));
+    text.Replace(wxT("\x2794"),wxT("-->"));
     text.Replace(wxT("\x2192"),wxT("->"));
 #endif
   }
@@ -570,7 +570,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT(">"), mathModeStart+wxT(">")+mathModeEnd);
   text.Replace(wxT("\x219D"), mathModeStart+wxT("\\leadsto")+mathModeEnd);
   text.Replace(wxT("\x2192"), mathModeStart+wxT("\\rightarrow")+mathModeEnd);
-  text.Replace(wxT("\x27F6"), mathModeStart+wxT("\\longrightarrow")+mathModeEnd);
+  text.Replace(wxT("\x2794"), mathModeStart+wxT("\\longrightarrow")+mathModeEnd);
 #endif
 
 
@@ -1227,7 +1227,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
   else if (m_text == wxT("->"))
     return wxT("\x2192");
   else if (m_text == wxT("-->"))
-    return wxT("\x27F6");
+    return wxT("\x2794");
 #endif
  /*
   else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
