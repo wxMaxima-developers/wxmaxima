@@ -43,7 +43,9 @@ public:
   void SetFindString(wxString string) {m_contents->SetFindString(string);}
 
 protected:
+  //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent& event);
+  //! We catch a few hot keys here as we don't provide a menu that could declare them
   void OnKeyDown(wxKeyEvent& event);
   void OnClose(wxCloseEvent& event);
   FindReplacePane *m_contents;

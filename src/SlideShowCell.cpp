@@ -68,6 +68,10 @@ int SlideShow::GetFrameRate()
       
       config->Read(wxT("DefaultFramerate"),&framerate);
     }
+  if(framerate > 30)
+    framerate = 30;
+  if(framerate < 0)
+    framerate = 0;
   return(framerate);
 }
 

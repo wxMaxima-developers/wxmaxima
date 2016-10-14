@@ -6520,6 +6520,12 @@ void MathCtrl::SetDefaultHCaret()
   SetHCaret(m_last);
 }
 
+void MathCtrl::OnActivate(wxActivateEvent& event)
+{
+  // If the focus changes we might want to refresh the menu.
+  RequestRedraw();
+}
+
 /**
  * Set the HCaret at the location of the given MathCell.
  *
@@ -7343,6 +7349,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
 #ifdef GetMagnification
   EVT_MAGNIFY(MathCtrl::OnMagnify)
 #endif
+  EVT_ACTIVATE(MathCtrl::OnActivate)
   EVT_SIZE(MathCtrl::OnSize)
   EVT_PAINT(MathCtrl::OnPaint)
   EVT_MOUSE_CAPTURE_LOST(MathCtrl::OnMouseCaptureLost)

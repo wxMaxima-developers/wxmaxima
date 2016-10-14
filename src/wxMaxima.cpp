@@ -2589,7 +2589,8 @@ bool wxMaxima::SaveFile(bool forceSave)
     }
     else
     {
-      m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+      if((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
+        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
       return false;
     }
   }
