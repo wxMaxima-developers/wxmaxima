@@ -129,7 +129,10 @@ wxScrolledCanvas(
   AdjustSize();
   m_autocompleteTemplates = false;
 
-  m_caretTimer.Start(wxCaret::GetBlinkTime());
+  int blinktime = wxCaret::GetBlinkTime();
+  if(blinktime<200)
+    blinktime = 200;
+  m_caretTimer.Start(blinktime);
 
   DisableKeyboardScrolling();
 
@@ -166,7 +169,12 @@ void MathCtrl::RequestRedraw(GroupCell *start)
   
   // Make sure there is a timeout for the redraw
   if(!m_caretTimer.IsRunning())
-    m_caretTimer.Start(wxCaret::GetBlinkTime());
+  {
+    int blinktime = wxCaret::GetBlinkTime();
+    if(blinktime<200)
+      blinktime = 200;
+    m_caretTimer.Start(blinktime);
+  }
 }
 
 MathCtrl::~MathCtrl() {
@@ -6021,7 +6029,11 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     m_activeCell->SetMatchParens(match);
     m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = true;
-    m_caretTimer.Start(wxCaret::GetBlinkTime());
+
+    int blinktime = wxCaret::GetBlinkTime();
+    if(blinktime<200)
+      blinktime = 200;
+    m_caretTimer.Start(blinktime);
   }
 
   if (cell != NULL)
@@ -6377,7 +6389,10 @@ void MathCtrl::OnSetFocus(wxFocusEvent& event)
 {
   m_hasFocus = true;
   // We want the cursor to blink in this case
-  m_caretTimer.Start(wxCaret::GetBlinkTime());
+  int blinktime = wxCaret::GetBlinkTime();
+  if(blinktime<200)
+    blinktime = 200;
+  m_caretTimer.Start(blinktime);
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(true);
 
@@ -6531,7 +6546,10 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   // Tell the cursor to blink, but to be visible right now.
   m_switchDisplayCaret = true;
   m_hCaretBlinkVisible = true;
-  m_caretTimer.Start(wxCaret::GetBlinkTime());
+  int blinktime = wxCaret::GetBlinkTime();
+  if(blinktime<200)
+    blinktime = 200;
+  m_caretTimer.Start(blinktime);
 }
 
 void MathCtrl::ShowHCaret()
