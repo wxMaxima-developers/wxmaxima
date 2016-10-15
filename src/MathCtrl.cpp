@@ -1400,7 +1400,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
   }
   else
   {
-  if(CanAnimate() && (m_mainToolBar != NULL) && (m_mainToolBar -> m_plotSlider != NULL))
+  if(CanAnimate())
   {
 
     //! Step the slide show.
@@ -1417,10 +1417,17 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
     CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
     RedrawRect(rect);
 
-    #ifdef __WXMSW__
-    // On windows: Set the focus to the slider so it handles further wheel events
-    m_mainToolBar -> m_plotSlider -> SetFocus();
-
+    if ((m_mainToolBar != NULL) && (m_mainToolBar -> m_plotSlider != NULL))
+    {
+#ifdef __WXMSW__
+      // On windows: Set the focus to the slider so it handles further wheel events
+      m_mainToolBar -> m_plotSlider -> SetFocus();
+#endif
+      
+      if(m_mainToolBar->m_plotSlider)
+        m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+    }
+    
     // On windows the first scroll event scrolls the canvas. Let's scroll it back
     // again.
     int view_x,view_y;
@@ -1430,7 +1437,6 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
     else 
       view_y --;
       Scroll(view_x, view_y);
-    #endif
   }
   else
     event.Skip();
