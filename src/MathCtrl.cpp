@@ -148,12 +148,15 @@ wxScrolledCanvas(
 
 void MathCtrl::RedrawIfRequested()
 {
-  if(m_redrawStart != NULL)
-    Refresh(m_redrawStart);
-  else
-    Refresh();
-  m_redrawRequested = false;
-  m_redrawStart = NULL;
+  if(m_redrawRequested)
+  {
+    if(m_redrawStart != NULL)
+      Refresh(m_redrawStart);
+    else
+      Refresh();
+    m_redrawRequested = false;
+    m_redrawStart = NULL;
+  }
 }
 
 void MathCtrl::RequestRedraw(GroupCell *start)
