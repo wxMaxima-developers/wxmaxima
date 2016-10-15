@@ -2306,13 +2306,15 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 void wxMaxima::MenuCommand(wxString cmd)
 {
   bool evaluating = (!m_console->m_evaluationQueue->Empty()) && (m_StatusMaximaBusy == waiting);
-
+  
   m_console->SetFocus();
 //  m_console->SetSelection(NULL);
 //  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
-    if(!evaluating) TryEvaluateNextInQueue();
+  if(!evaluating)
+    TryEvaluateNextInQueue();
+  m_console->RequestRedraw();
 }
 
 ///--------------------------------------------------------------------------------
@@ -2354,6 +2356,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     break;
   }
   }
+  m_console->RequestRedraw();
 }
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
@@ -2976,6 +2979,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
   default:
     break;
   }
+  m_console->RequestRedraw();
 }
 
 void wxMaxima::EditMenu(wxCommandEvent& event)
@@ -3246,6 +3250,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
   }
   break;
   }
+  m_console->RequestRedraw();
 }
 
 void wxMaxima::OnFind(wxFindDialogEvent& event)
