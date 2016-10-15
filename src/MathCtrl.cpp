@@ -1400,46 +1400,48 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
   }
   else
   {
-  if(CanAnimate())
-  {
-
-    //! Step the slide show.
-    int rot = event.GetWheelRotation();
-    
-    SlideShow *tmp = (SlideShow *)m_selectionStart;
-    
-    if (rot > 0)
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
-    else
-      tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
-    
-    wxRect rect = m_selectionStart->GetRect();
-    CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-    RedrawRect(rect);
-
-    if ((m_mainToolBar != NULL) && (m_mainToolBar -> m_plotSlider != NULL))
+    if(CanAnimate())
     {
-#ifdef __WXMSW__
-      // On windows: Set the focus to the slider so it handles further wheel events
-      m_mainToolBar -> m_plotSlider -> SetFocus();
-#endif
       
-      if(m_mainToolBar->m_plotSlider)
-        m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
-    }
+      //! Step the slide show.
+      int rot = event.GetWheelRotation();
     
-    // On windows the first scroll event scrolls the canvas. Let's scroll it back
-    // again.
-    int view_x,view_y;
-    GetViewStart(&view_x, &view_y);
-    if(rot>0)
-      view_y ++;
-    else 
-      view_y --;
+      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      
+      if (rot > 0)
+        tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+      else
+        tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
+      
+      wxRect rect = m_selectionStart->GetRect();
+      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      RedrawRect(rect);
+      
+      if ((m_mainToolBar != NULL) && (m_mainToolBar -> m_plotSlider != NULL))
+      {
+#ifdef __WXMSW__
+        // On windows: Set the focus to the slider so it handles further wheel events
+        m_mainToolBar -> m_plotSlider -> SetFocus();
+#endif
+        
+        if(m_mainToolBar->m_plotSlider)
+          m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+      }
+
+#ifdef __WXMSW__
+      // On windows the first scroll event scrolls the canvas. Let's scroll it back
+      // again.
+      int view_x,view_y;
+      GetViewStart(&view_x, &view_y);
+      if(rot>0)
+        view_y ++;
+      else 
+        view_y --;
       Scroll(view_x, view_y);
-  }
-  else
-    event.Skip();
+#endif
+    }
+    else
+      event.Skip();
   }
 }
 
