@@ -51,8 +51,8 @@ This canvas contains all the math-, title-, image- input- ("editor-")- etc.-
 cells of the current session.
 
 Most of the logic that handles that this canvas might be larger than the screen
-(and could even be a bitmap that is larger than the computer's RAM) is provided
-by wxWidgets:
+(and could even be larger than the computer's RAM would it have been handled as
+a big bitmap) is provided by wxWidgets:
  - If part of the screen needs to be drawn it calls the OnPaint() method. 
  - If the canvas is scrolled wxWidgets the parts that are already decides how much 
    of the off-screen part of the canvas is cached in a backing store
@@ -63,7 +63,16 @@ by wxWidgets:
    part of the worksheet anew and invalidates all cached areas it might have.
  - and the RefreshRect() method notifies wxWidgets that a rectangular region
    contains changes that need to be redrawn.
- */
+
+The worksheet isn't immediately redrawn on a key press, a mouse klick or on
+maxima outputting new data. Instead all such events are processed in order until
+wxMaxima has caught up with all the events (which causes wxWidgets to send a Idle
+event to the wxMaxima object) or until we reach a timeout. If the user manages
+to type faster than wxMaxima redraws the screen this allows us to skip
+a few redraws in order to process the keypresses as fast as the user types.
+Also this keeps us responsive even if maxima outputs data faster than 
+wxMaxima can display it.
+*/
 class MathCtrl: public wxScrolledCanvas
 {
 private:
@@ -577,14 +586,7 @@ public:
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone(){m_redrawStart = NULL; m_redrawRequested = false;}
   //! Redraw the worksheet if RequestRedraw() has been called.
-  void RedrawIfRequested() {
-    if(m_redrawStart != NULL)
-      Refresh(m_redrawStart);
-    else
-      Refresh();
-    m_redrawRequested = false;
-    m_redrawStart = NULL;
-  }
+  void RedrawIfRequested();
   //! Redraw the worksheet region merging this action with an eventual RequestRedraw()
   void RedrawRect(wxRect rect);
   /*! Request the worksheet to be redrawn

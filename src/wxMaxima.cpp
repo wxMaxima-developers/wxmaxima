@@ -2236,6 +2236,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::OnIdle(wxIdleEvent& event)
 {
+  bool screenHasChanged = m_console->RedrawRequested();
 
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
@@ -2260,7 +2261,6 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
       }
     }
   }
-  bool screenHasChanged = m_console->RedrawRequested();
   m_console->RedrawIfRequested();
 
   ResetTitle(m_console->IsSaved());

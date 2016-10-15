@@ -146,8 +146,20 @@ wxScrolledCanvas(
 
 }
 
+void MathCtrl::RedrawIfRequested()
+{
+  if(m_redrawStart != NULL)
+    Refresh(m_redrawStart);
+  else
+    Refresh();
+  m_redrawRequested = false;
+  m_redrawStart = NULL;
+}
+
 void MathCtrl::RequestRedraw(GroupCell *start)
 {
+  m_redrawRequested = true;
+  
   if(start == 0)
     m_redrawStart = m_tree;
   else
