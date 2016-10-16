@@ -2878,7 +2878,16 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   ///
   /// send event to active cell
   ///
+  wxString oldValue = m_activeCell->GetValue();
+
   m_activeCell->ProcessEvent(event);
+  
+  // Update title and toolbar in order to reflect the "unsaved" state of the worksheet.
+  if((IsSaved()) && (m_activeCell->GetValue()!= oldValue))
+  {
+    m_saved = false;
+    RequestRedraw();
+  }
   // The keypress might have moved the cursor off-screen.
   ScrollToCaret();
   
@@ -2886,7 +2895,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
   m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-  if (m_activeCell->IsDirty()) {
+  if (m_activeCell->IsDirty())
+  {
     m_saved = false;
 
     

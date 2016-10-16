@@ -2263,14 +2263,13 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
   }
   m_console->RedrawIfRequested();
 
-  ResetTitle(m_console->IsSaved());
-
   // If nothing which is visible has changed nothing that would cause us to need
   // update the menus and toolbars has.
   if(screenHasChanged)
   {
     wxUpdateUIEvent dummy;
     UpdateMenus(dummy);
+    ResetTitle(m_console->IsSaved());
     UpdateToolBar(dummy);
     UpdateSlider(dummy);
   }
@@ -2308,7 +2307,7 @@ void wxMaxima::MenuCommand(wxString cmd)
   bool evaluating = (!m_console->m_evaluationQueue->Empty()) && (m_StatusMaximaBusy == waiting);
   
   m_console->SetFocus();
-//  m_console->SetSelection(NULL);
+//  ym_console->SetSelection(NULL);
 //  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell*>(m_console->GetActiveCell()->GetParent()));
