@@ -80,6 +80,8 @@ wxMaxima.win: all
 	cp $(srcdir)/test/testbench_simple.wxmx wxMaxima/data
 	cp $(srcdir)/data/wxmaxima.png wxMaxima/data
 	cp $(srcdir)/data/wxmaxima.manifest wxMaxima
+	cp $(srcdir)/data/wxmaxima.manifest wxMaxima/data
+	cp $(srcdir)/data/wxmaxima64.manifest wxMaxima/data
 	cp $(srcdir)/data/wxmaxima.svg wxMaxima/data
 	cp $(srcdir)/data/autocomplete.txt wxMaxima/data
 	cp $(srcdir)/data/tips*.txt wxMaxima/data
