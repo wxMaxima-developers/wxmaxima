@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 17:47+0900\n"
+"POT-Creation-Date: 2016-10-16 11:34+0200\n"
 "PO-Revision-Date: 2016-02-22 16:12-0500\n"
 "Last-Translator: kahkonen <mika.m.kahkonen@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -448,7 +448,7 @@ msgstr "&Kohdassa..."
 msgid "Abort evaluation on error"
 msgstr "Virhe"
 
-#: ../src/wxMaxima.cpp:4615 ../src/wxMaximaFrame.cpp:985
+#: ../src/wxMaximaFrame.cpp:985 ../src/wxMaxima.cpp:4615
 msgid "About"
 msgstr "Tietoja"
 
@@ -510,7 +510,7 @@ msgstr "Lisäparametreja maximaan"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:202 ../src/ToolBar.cpp:246
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -837,7 +837,7 @@ msgstr "Versiotiedon lataaminen ei onnistu"
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ../src/wxMaxima.cpp:937 ../src/wxMaximaFrame.cpp:125
+#: ../src/wxMaximaFrame.cpp:125 ../src/wxMaxima.cpp:937
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -994,7 +994,7 @@ msgstr "Täydennä sana\tCtrl-K"
 msgid "Complete word"
 msgstr "Täydennä sana"
 
-#: ../src/ToolBar.cpp:160
+#: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
 msgstr "Pysäytä maxima kokonaan ja käynnistä se uudelleen"
 
@@ -1038,7 +1038,7 @@ msgstr "Asetustiedosto (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr ""
 
-#: ../src/ToolBar.cpp:133 ../src/wxMaximaFrame.cpp:537
+#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
 #: ../src/wxMaximaFrame.cpp:540
 msgid "Configure wxMaxima"
 msgstr "Määrittele wxMaxima"
@@ -1105,8 +1105,8 @@ msgstr ""
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Muunna trigonometrinen funktio eksponenttimuotoon"
 
-#: ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973 ../src/MathCtrl.cpp:1019
-#: ../src/MathCtrl.cpp:1066 ../src/ToolBar.cpp:140
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973
+#: ../src/MathCtrl.cpp:1019 ../src/MathCtrl.cpp:1066
 msgid "Copy"
 msgstr "Kopioi"
 
@@ -1118,13 +1118,13 @@ msgstr "Kopioi aiempi syöte\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "Kopioi aiempi tuloste\tCtrl-I"
 
-#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:1024
-#: ../src/wxMaximaFrame.cpp:513
+#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:978
+#: ../src/MathCtrl.cpp:1024
 msgid "Copy as Image"
 msgstr "Kopioi kuvana"
 
-#: ../src/MathCtrl.cpp:974 ../src/MathCtrl.cpp:1020
-#: ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:974
+#: ../src/MathCtrl.cpp:1020
 msgid "Copy as LaTeX"
 msgstr "Kopioi LaTeXina"
 
@@ -1146,7 +1146,7 @@ msgstr "Kopioi tekstinä"
 msgid "Copy as plain text"
 msgstr "Kopioi kuvana"
 
-#: ../src/ToolBar.cpp:142 ../src/wxMaximaFrame.cpp:502
+#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
 msgid "Copy selection"
 msgstr "Kopioi valitun"
 
@@ -1180,7 +1180,7 @@ msgstr "Luo uusi solu aiemmalla tulosteella"
 msgid "Cursor"
 msgstr "Kursori"
 
-#: ../src/MathCtrl.cpp:1065 ../src/ToolBar.cpp:137
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1065
 msgid "Cut"
 msgstr "Leikkaa"
 
@@ -1188,7 +1188,7 @@ msgstr "Leikkaa"
 msgid "Cut\tCtrl-X"
 msgstr "Cut\tCtrl+X"
 
-#: ../src/ToolBar.cpp:139 ../src/wxMaximaFrame.cpp:499
+#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
 msgid "Cut selection"
 msgstr "Leikkaa valitun"
 
@@ -1325,7 +1325,7 @@ msgstr "Derivoi lauseke"
 msgid "Differentiate..."
 msgstr "Derivoi..."
 
-#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
+#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:76
 msgid "Direction:"
 msgstr "Suunta:"
 
@@ -1535,7 +1535,7 @@ msgstr "Evaluoi kaikki solut\tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Evaluoi kaikki näkyvät solut\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:984 ../src/wxMaximaFrame.cpp:584
+#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:984
 msgid "Evaluate Cell(s)"
 msgstr "Laske Solu(t)"
 
@@ -1576,11 +1576,11 @@ msgstr ""
 msgid "Evaluate all visible cells in the document"
 msgstr "Laske kaikki näkyvät solut\tCtrl-R"
 
-#: ../src/ToolBar.cpp:172
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../src/ToolBar.cpp:170
+#: ../src/ToolBar.cpp:166
 msgid "Evaluate to point"
 msgstr ""
 
@@ -1624,7 +1624,7 @@ msgstr "Laajenna lauseke"
 msgid "Expand trigonometric expression"
 msgstr "Laajenna trigonometrinen lauseke"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:109
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -1739,7 +1739,7 @@ msgstr ""
 msgid "File:"
 msgstr "Tiedosto:"
 
-#: ../src/ToolBar.cpp:152
+#: ../src/ToolBar.cpp:148
 msgid "Find"
 msgstr "Etsi"
 
@@ -1783,7 +1783,7 @@ msgstr "Etsi kaikki polynomin juuret (bfloat)"
 msgid "Find and Replace"
 msgstr "Etsi ja korvaa"
 
-#: ../src/ToolBar.cpp:154 ../src/wxMaximaFrame.cpp:522
+#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
 msgid "Find and replace"
 msgstr "Etsi ja korvaa"
 
@@ -1834,7 +1834,7 @@ msgstr "Piilota kaikki\tCtrl-Alt-["
 msgid "Fold all sections"
 msgstr "Piilota kaikki kappaleet"
 
-#: ../src/ToolBar.cpp:166
+#: ../src/ToolBar.cpp:162
 msgid "Follow"
 msgstr "Seuraa"
 
@@ -1876,7 +1876,7 @@ msgstr "Fontit"
 msgid "Format:"
 msgstr "Muoto:"
 
-#: ../src/ToolBar.cpp:90
+#: ../src/ToolBar.cpp:86
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
@@ -2038,7 +2038,7 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:210
+#: ../src/ToolBar.cpp:206
 msgid "Help"
 msgstr "Ohje"
 
@@ -2367,11 +2367,11 @@ msgstr "Integroi lauseke"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integroi lauseke Rischin algoritmilla"
 
-#: ../src/MathCtrl.cpp:1042 ../src/wxMaximaFrame.cpp:1223
+#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1042
 msgid "Integrate..."
 msgstr "Integroi..."
 
-#: ../src/ToolBar.cpp:161
+#: ../src/ToolBar.cpp:157
 msgid "Interrupt"
 msgstr "Keskeytä"
 
@@ -2379,7 +2379,7 @@ msgstr "Keskeytä"
 msgid "Interrupt current computation"
 msgstr "Keskeytä laskutoimitus"
 
-#: ../src/ToolBar.cpp:163
+#: ../src/ToolBar.cpp:159
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -2785,7 +2785,7 @@ msgstr ""
 msgid "Name:"
 msgstr "Nimi:"
 
-#: ../src/ToolBar.cpp:115
+#: ../src/ToolBar.cpp:111
 msgid "New"
 msgstr "Uusi"
 
@@ -2793,7 +2793,7 @@ msgstr "Uusi"
 msgid "New\tCtrl-N"
 msgstr "Uusi\tCtrl-N"
 
-#: ../src/ToolBar.cpp:117
+#: ../src/ToolBar.cpp:113
 msgid "New document"
 msgstr "Uusi asiakirja"
 
@@ -2929,7 +2929,7 @@ msgstr ""
 msgid "Online tutorials"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:119
+#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:115
 #: ../src/wxMaxima.cpp:2805
 msgid "Open"
 msgstr "Avaa"
@@ -2950,7 +2950,7 @@ msgstr "Avaa asiakirja"
 msgid "Open a new window"
 msgstr "Avaa uusi ikkuna"
 
-#: ../src/ToolBar.cpp:121
+#: ../src/ToolBar.cpp:117
 msgid "Open document"
 msgstr "Avaa asiakirja"
 
@@ -2966,7 +2966,7 @@ msgstr ""
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:131
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
 msgid "Options"
 msgstr ""
 
@@ -3035,7 +3035,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067 ../src/ToolBar.cpp:143
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067
 msgid "Paste"
 msgstr "Liitä"
 
@@ -3043,7 +3043,7 @@ msgstr "Liitä"
 msgid "Paste\tCtrl-V"
 msgstr "Liitä\tCtrl-V"
 
-#: ../src/ToolBar.cpp:145
+#: ../src/ToolBar.cpp:141
 msgid "Paste from clipboard"
 msgstr "Liitä leikepöydältä"
 
@@ -3174,11 +3174,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr ""
 
-#: ../src/ToolBar.cpp:128
+#: ../src/ToolBar.cpp:124
 msgid "Print"
 msgstr "Tulosta"
 
-#: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:483
+#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
 msgid "Print document"
 msgstr "Tulosta asiakirja"
 
@@ -3280,7 +3280,7 @@ msgstr ""
 msgid "Restart Maxima"
 msgstr "Uudelleenkäynnistä Maxima"
 
-#: ../src/ToolBar.cpp:158
+#: ../src/ToolBar.cpp:154
 msgid "Restart maxima"
 msgstr "Uudelleenkäynnistä maxima"
 
@@ -3288,7 +3288,7 @@ msgstr "Uudelleenkäynnistä maxima"
 msgid "Result"
 msgstr "Tulos"
 
-#: ../src/ToolBar.cpp:167
+#: ../src/ToolBar.cpp:163
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3332,7 +3332,7 @@ msgstr "Esimerkki 2:"
 msgid "Sample:"
 msgstr "Esimerkki:"
 
-#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:122
+#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:118
 #: ../src/wxMaxima.cpp:5937
 msgid "Save"
 msgstr "Tallenna"
@@ -3365,7 +3365,7 @@ msgstr "Tallenna valinta kuvaksi..."
 msgid "Save animation to file"
 msgstr "Tallenna animaatio tiedostoksi"
 
-#: ../src/ToolBar.cpp:124 ../src/wxMaximaFrame.cpp:472
+#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
 msgid "Save document"
 msgstr "Tallenna asiakirja"
 
@@ -3475,7 +3475,7 @@ msgstr ""
 msgid "Select a constant"
 msgstr "Valitse vakio"
 
-#: ../src/ToolBar.cpp:146 ../src/ToolBar.cpp:148 ../src/wxMaximaFrame.cpp:525
+#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
 msgid "Select all"
 msgstr "Valitse kaikki"
 
@@ -3575,7 +3575,7 @@ msgstr "Näytä &Vinkit..."
 msgid "Show &Variables"
 msgstr "Näytä &Muuttujat"
 
-#: ../src/ToolBar.cpp:212
+#: ../src/ToolBar.cpp:208
 msgid "Show Maxima help"
 msgstr "Näytä Maxima ohje"
 
@@ -3773,7 +3773,7 @@ msgstr ""
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1034 ../src/wxMaximaFrame.cpp:1220
+#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1034
 msgid "Solve..."
 msgstr "Ratkaise..."
 
@@ -3801,11 +3801,11 @@ msgstr ""
 msgid "Start Animation"
 msgstr "Aloita animaatio"
 
-#: ../src/ToolBar.cpp:190
+#: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
 msgstr "Aloita tai lopeta animaatio"
 
-#: ../src/ToolBar.cpp:192
+#: ../src/ToolBar.cpp:188
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -3873,7 +3873,7 @@ msgstr ""
 msgid "Substitute"
 msgstr "Korvaa"
 
-#: ../src/MathCtrl.cpp:1040 ../src/wxMaximaFrame.cpp:905
+#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1040
 msgid "Substitute..."
 msgstr "Korvaa..."
 
@@ -4496,7 +4496,7 @@ msgstr "Suurenna 10%"
 msgid "Zoom out 10%"
 msgstr "Pienennä 10%"
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
 msgid "[ unsaved ]"
 msgstr "[ tallentamaton ]"
 
@@ -4822,8 +4822,8 @@ msgstr "unioni"
 msgid "unsaved"
 msgstr "tallentamaton"
 
-#: ../src/wxMaxima.cpp:2566 ../src/wxMaxima.cpp:2834
-#: ../src/wxMaximaFrame.cpp:289
+#: ../src/wxMaximaFrame.cpp:289 ../src/wxMaxima.cpp:2566
+#: ../src/wxMaxima.cpp:2834
 msgid "untitled"
 msgstr "nimetön"
 
@@ -4841,8 +4841,8 @@ msgstr "Epsilon:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724
-#: ../src/wxMaxima.cpp:5727 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
+#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724 ../src/wxMaxima.cpp:5727
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"

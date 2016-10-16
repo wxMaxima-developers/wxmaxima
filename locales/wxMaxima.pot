@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 17:47+0900\n"
+"POT-Creation-Date: 2016-10-16 11:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Abort evaluation on error"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:4615 ../src/wxMaximaFrame.cpp:985
+#: ../src/wxMaximaFrame.cpp:985 ../src/wxMaxima.cpp:4615
 msgid "About"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:202 ../src/ToolBar.cpp:246
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -803,7 +803,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:937 ../src/wxMaximaFrame.cpp:125
+#: ../src/wxMaximaFrame.cpp:125 ../src/wxMaxima.cpp:937
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -960,7 +960,7 @@ msgstr ""
 msgid "Complete word"
 msgstr ""
 
-#: ../src/ToolBar.cpp:160
+#: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "Configuration warning"
 msgstr ""
 
-#: ../src/ToolBar.cpp:133 ../src/wxMaximaFrame.cpp:537
+#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
 #: ../src/wxMaximaFrame.cpp:540
 msgid "Configure wxMaxima"
 msgstr ""
@@ -1071,8 +1071,8 @@ msgstr ""
 msgid "Convert trigonometric functions to exponential form"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973 ../src/MathCtrl.cpp:1019
-#: ../src/MathCtrl.cpp:1066 ../src/ToolBar.cpp:140
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973
+#: ../src/MathCtrl.cpp:1019 ../src/MathCtrl.cpp:1066
 msgid "Copy"
 msgstr ""
 
@@ -1084,13 +1084,13 @@ msgstr ""
 msgid "Copy Previous Output\tCtrl-U"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:1024
-#: ../src/wxMaximaFrame.cpp:513
+#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:978
+#: ../src/MathCtrl.cpp:1024
 msgid "Copy as Image"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:974 ../src/MathCtrl.cpp:1020
-#: ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:974
+#: ../src/MathCtrl.cpp:1020
 msgid "Copy as LaTeX"
 msgstr ""
 
@@ -1110,7 +1110,7 @@ msgstr ""
 msgid "Copy as plain text"
 msgstr ""
 
-#: ../src/ToolBar.cpp:142 ../src/wxMaximaFrame.cpp:502
+#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
 msgid "Copy selection"
 msgstr ""
 
@@ -1144,7 +1144,7 @@ msgstr ""
 msgid "Cursor"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1065 ../src/ToolBar.cpp:137
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1065
 msgid "Cut"
 msgstr ""
 
@@ -1152,7 +1152,7 @@ msgstr ""
 msgid "Cut\tCtrl-X"
 msgstr ""
 
-#: ../src/ToolBar.cpp:139 ../src/wxMaximaFrame.cpp:499
+#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
 msgid "Cut selection"
 msgstr ""
 
@@ -1289,7 +1289,7 @@ msgstr ""
 msgid "Differentiate..."
 msgstr ""
 
-#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
+#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:76
 msgid "Direction:"
 msgstr ""
 
@@ -1498,7 +1498,7 @@ msgstr ""
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:984 ../src/wxMaximaFrame.cpp:584
+#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:984
 msgid "Evaluate Cell(s)"
 msgstr ""
 
@@ -1538,11 +1538,11 @@ msgstr ""
 msgid "Evaluate all visible cells in the document"
 msgstr ""
 
-#: ../src/ToolBar.cpp:172
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../src/ToolBar.cpp:170
+#: ../src/ToolBar.cpp:166
 msgid "Evaluate to point"
 msgstr ""
 
@@ -1586,7 +1586,7 @@ msgstr ""
 msgid "Expand trigonometric expression"
 msgstr ""
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:109
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -1701,7 +1701,7 @@ msgstr ""
 msgid "File:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:152
+#: ../src/ToolBar.cpp:148
 msgid "Find"
 msgstr ""
 
@@ -1745,7 +1745,7 @@ msgstr ""
 msgid "Find and Replace"
 msgstr ""
 
-#: ../src/ToolBar.cpp:154 ../src/wxMaximaFrame.cpp:522
+#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
 msgid "Find and replace"
 msgstr ""
 
@@ -1794,7 +1794,7 @@ msgstr ""
 msgid "Fold all sections"
 msgstr ""
 
-#: ../src/ToolBar.cpp:166
+#: ../src/ToolBar.cpp:162
 msgid "Follow"
 msgstr ""
 
@@ -1836,7 +1836,7 @@ msgstr ""
 msgid "Format:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:90
+#: ../src/ToolBar.cpp:86
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
@@ -1996,7 +1996,7 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:210
+#: ../src/ToolBar.cpp:206
 msgid "Help"
 msgstr ""
 
@@ -2318,11 +2318,11 @@ msgstr ""
 msgid "Integrate expression with Risch algorithm"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1042 ../src/wxMaximaFrame.cpp:1223
+#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1042
 msgid "Integrate..."
 msgstr ""
 
-#: ../src/ToolBar.cpp:161
+#: ../src/ToolBar.cpp:157
 msgid "Interrupt"
 msgstr ""
 
@@ -2330,7 +2330,7 @@ msgstr ""
 msgid "Interrupt current computation"
 msgstr ""
 
-#: ../src/ToolBar.cpp:163
+#: ../src/ToolBar.cpp:159
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -2728,7 +2728,7 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:115
+#: ../src/ToolBar.cpp:111
 msgid "New"
 msgstr ""
 
@@ -2736,7 +2736,7 @@ msgstr ""
 msgid "New\tCtrl-N"
 msgstr ""
 
-#: ../src/ToolBar.cpp:117
+#: ../src/ToolBar.cpp:113
 msgid "New document"
 msgstr ""
 
@@ -2872,7 +2872,7 @@ msgstr ""
 msgid "Online tutorials"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:119
+#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:115
 #: ../src/wxMaxima.cpp:2805
 msgid "Open"
 msgstr ""
@@ -2893,7 +2893,7 @@ msgstr ""
 msgid "Open a new window"
 msgstr ""
 
-#: ../src/ToolBar.cpp:121
+#: ../src/ToolBar.cpp:117
 msgid "Open document"
 msgstr ""
 
@@ -2909,7 +2909,7 @@ msgstr ""
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:131
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
 msgid "Options"
 msgstr ""
 
@@ -2978,7 +2978,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067 ../src/ToolBar.cpp:143
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067
 msgid "Paste"
 msgstr ""
 
@@ -2986,7 +2986,7 @@ msgstr ""
 msgid "Paste\tCtrl-V"
 msgstr ""
 
-#: ../src/ToolBar.cpp:145
+#: ../src/ToolBar.cpp:141
 msgid "Paste from clipboard"
 msgstr ""
 
@@ -3117,11 +3117,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr ""
 
-#: ../src/ToolBar.cpp:128
+#: ../src/ToolBar.cpp:124
 msgid "Print"
 msgstr ""
 
-#: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:483
+#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
 msgid "Print document"
 msgstr ""
 
@@ -3222,7 +3222,7 @@ msgstr ""
 msgid "Restart Maxima"
 msgstr ""
 
-#: ../src/ToolBar.cpp:158
+#: ../src/ToolBar.cpp:154
 msgid "Restart maxima"
 msgstr ""
 
@@ -3230,7 +3230,7 @@ msgstr ""
 msgid "Result"
 msgstr ""
 
-#: ../src/ToolBar.cpp:167
+#: ../src/ToolBar.cpp:163
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3274,7 +3274,7 @@ msgstr ""
 msgid "Sample:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:122
+#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:118
 #: ../src/wxMaxima.cpp:5937
 msgid "Save"
 msgstr ""
@@ -3307,7 +3307,7 @@ msgstr ""
 msgid "Save animation to file"
 msgstr ""
 
-#: ../src/ToolBar.cpp:124 ../src/wxMaximaFrame.cpp:472
+#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
 msgid "Save document"
 msgstr ""
 
@@ -3417,7 +3417,7 @@ msgstr ""
 msgid "Select a constant"
 msgstr ""
 
-#: ../src/ToolBar.cpp:146 ../src/ToolBar.cpp:148 ../src/wxMaximaFrame.cpp:525
+#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
 msgid "Select all"
 msgstr ""
 
@@ -3517,7 +3517,7 @@ msgstr ""
 msgid "Show &Variables"
 msgstr ""
 
-#: ../src/ToolBar.cpp:212
+#: ../src/ToolBar.cpp:208
 msgid "Show Maxima help"
 msgstr ""
 
@@ -3714,7 +3714,7 @@ msgstr ""
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1034 ../src/wxMaximaFrame.cpp:1220
+#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1034
 msgid "Solve..."
 msgstr ""
 
@@ -3742,11 +3742,11 @@ msgstr ""
 msgid "Start Animation"
 msgstr ""
 
-#: ../src/ToolBar.cpp:190
+#: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
 msgstr ""
 
-#: ../src/ToolBar.cpp:192
+#: ../src/ToolBar.cpp:188
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -3814,7 +3814,7 @@ msgstr ""
 msgid "Substitute"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1040 ../src/wxMaximaFrame.cpp:905
+#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1040
 msgid "Substitute..."
 msgstr ""
 
@@ -4404,7 +4404,7 @@ msgstr ""
 msgid "Zoom out 10%"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
 msgid "[ unsaved ]"
 msgstr ""
 
@@ -4730,8 +4730,8 @@ msgstr ""
 msgid "unsaved"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:2566 ../src/wxMaxima.cpp:2834
-#: ../src/wxMaximaFrame.cpp:289
+#: ../src/wxMaximaFrame.cpp:289 ../src/wxMaxima.cpp:2566
+#: ../src/wxMaxima.cpp:2834
 msgid "untitled"
 msgstr ""
 
@@ -4748,8 +4748,8 @@ msgstr ""
 msgid "wxMaxima"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724
-#: ../src/wxMaxima.cpp:5727 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
+#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724 ../src/wxMaxima.cpp:5727
 #, c-format
 msgid "wxMaxima %s "
 msgstr ""

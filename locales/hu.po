@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 17:47+0900\n"
+"POT-Creation-Date: 2016-10-16 11:34+0200\n"
 "PO-Revision-Date: 2016-08-15 11:27+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -448,7 +448,7 @@ msgstr "Ér&tékadás..."
 msgid "Abort evaluation on error"
 msgstr "Kiértékelés megszakítása hiba esetén "
 
-#: ../src/wxMaxima.cpp:4615 ../src/wxMaximaFrame.cpp:985
+#: ../src/wxMaximaFrame.cpp:985 ../src/wxMaxima.cpp:4615
 msgid "About"
 msgstr "Névjegy"
 
@@ -510,7 +510,7 @@ msgstr "További Maxima-paraméterek"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "További szimbólumok a \"Szimbólumok\" oldalpanelra:"
 
-#: ../src/ToolBar.cpp:202 ../src/ToolBar.cpp:246
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -861,7 +861,7 @@ msgstr "A verzióinformáció nem elérhető."
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: ../src/wxMaxima.cpp:937 ../src/wxMaximaFrame.cpp:125
+#: ../src/wxMaximaFrame.cpp:125 ../src/wxMaxima.cpp:937
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1018,7 +1018,7 @@ msgstr "Szó &kiegészítése\tCtrl-K"
 msgid "Complete word"
 msgstr "Szó automatikus kiegészítése"
 
-#: ../src/ToolBar.cpp:160
+#: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
 msgstr "A Maxima teljes leállítása és újraindítása"
 
@@ -1064,7 +1064,7 @@ msgstr "Konfigurációs fájl (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr "Figyelmeztetés a beállításokkal kapcsolatban"
 
-#: ../src/ToolBar.cpp:133 ../src/wxMaximaFrame.cpp:537
+#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
 #: ../src/wxMaximaFrame.cpp:540
 msgid "Configure wxMaxima"
 msgstr "A wxMaxima beállítása"
@@ -1131,8 +1131,8 @@ msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítá
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvény exponenciális formává alakítása"
 
-#: ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973 ../src/MathCtrl.cpp:1019
-#: ../src/MathCtrl.cpp:1066 ../src/ToolBar.cpp:140
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973
+#: ../src/MathCtrl.cpp:1019 ../src/MathCtrl.cpp:1066
 msgid "Copy"
 msgstr "Másolás"
 
@@ -1144,13 +1144,13 @@ msgstr "E&lőző bemenet másolása\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "E&lőző kimenet másolása\tCtrl-U"
 
-#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:1024
-#: ../src/wxMaximaFrame.cpp:513
+#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:978
+#: ../src/MathCtrl.cpp:1024
 msgid "Copy as Image"
 msgstr "Másolás képként"
 
-#: ../src/MathCtrl.cpp:974 ../src/MathCtrl.cpp:1020
-#: ../src/wxMaximaFrame.cpp:506
+#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:974
+#: ../src/MathCtrl.cpp:1020
 msgid "Copy as LaTeX"
 msgstr "&LaTeX másolás"
 
@@ -1171,7 +1171,7 @@ msgstr "&Szöveg másolása\tCtrl-Shift-C"
 msgid "Copy as plain text"
 msgstr "Másolás képként"
 
-#: ../src/ToolBar.cpp:142 ../src/wxMaximaFrame.cpp:502
+#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
 msgid "Copy selection"
 msgstr "Kijelölt rész másolása"
 
@@ -1207,7 +1207,7 @@ msgstr "Létrehoz egy új cellát az előző kimenet tartalmával"
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: ../src/MathCtrl.cpp:1065 ../src/ToolBar.cpp:137
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1065
 msgid "Cut"
 msgstr "Kivágás"
 
@@ -1215,7 +1215,7 @@ msgstr "Kivágás"
 msgid "Cut\tCtrl-X"
 msgstr "&Kivágás\tCtrl-X"
 
-#: ../src/ToolBar.cpp:139 ../src/wxMaximaFrame.cpp:499
+#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
 msgid "Cut selection"
 msgstr "Kijelölt rész kivágása"
 
@@ -1356,7 +1356,7 @@ msgstr "Kifejezés differenciálása"
 msgid "Differentiate..."
 msgstr "Differenciálás..."
 
-#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
+#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:76
 msgid "Direction:"
 msgstr "Irány:"
 
@@ -1569,7 +1569,7 @@ msgstr "&Minden cella újraszámolása\tCtrl-Shift-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "&Minden látható cella újraszámolása\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:984 ../src/wxMaximaFrame.cpp:584
+#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:984
 msgid "Evaluate Cell(s)"
 msgstr "C&ellák újraszámolása"
 
@@ -1609,11 +1609,11 @@ msgstr "Nem kiértékelésre szánt formákat is kiértékel"
 msgid "Evaluate all visible cells in the document"
 msgstr "A dokumentum összes látható cellájának újraszámolása"
 
-#: ../src/ToolBar.cpp:172
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr "Fájl kiértékelése annak kezdetétől a kurzor feletti celláig"
 
-#: ../src/ToolBar.cpp:170
+#: ../src/ToolBar.cpp:166
 msgid "Evaluate to point"
 msgstr "Kiértékelés eddig"
 
@@ -1657,7 +1657,7 @@ msgstr "Egy kifejezés felbontása"
 msgid "Expand trigonometric expression"
 msgstr "Trigonometrikus kifejezés felbontása"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:109
 msgid "Expected the icon files to be found at"
 msgstr "Ikon fájlok szükségesek"
 
@@ -1774,7 +1774,7 @@ msgstr "A megnyitni próbált fájl nem található."
 msgid "File:"
 msgstr "Fájl:"
 
-#: ../src/ToolBar.cpp:152
+#: ../src/ToolBar.cpp:148
 msgid "Find"
 msgstr "Keresés..."
 
@@ -1818,7 +1818,7 @@ msgstr "Polinom összes gyökének meghatározása (bfloat)"
 msgid "Find and Replace"
 msgstr "Keresés és csere"
 
-#: ../src/ToolBar.cpp:154 ../src/wxMaximaFrame.cpp:522
+#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
 msgid "Find and replace"
 msgstr "Keresés és csere"
 
@@ -1868,7 +1868,7 @@ msgstr "&Minden kiválasztása\tCtrl-Alt-["
 msgid "Fold all sections"
 msgstr "Minden fejezet elrejtése"
 
-#: ../src/ToolBar.cpp:166
+#: ../src/ToolBar.cpp:162
 msgid "Follow"
 msgstr "Követés"
 
@@ -1919,7 +1919,7 @@ msgstr "Betűkészletek"
 msgid "Format:"
 msgstr "Formátum:"
 
-#: ../src/ToolBar.cpp:90
+#: ../src/ToolBar.cpp:86
 #, c-format
 msgid "Frame %i of %i"
 msgstr "%i. kép a %i közül"
@@ -2083,7 +2083,7 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Szöveg cellák: Minden sortörés exportja"
 
-#: ../src/ToolBar.cpp:210
+#: ../src/ToolBar.cpp:206
 msgid "Help"
 msgstr "Súgó"
 
@@ -2432,11 +2432,11 @@ msgstr "Függvény integrálása"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
-#: ../src/MathCtrl.cpp:1042 ../src/wxMaximaFrame.cpp:1223
+#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1042
 msgid "Integrate..."
 msgstr "Integrál..."
 
-#: ../src/ToolBar.cpp:161
+#: ../src/ToolBar.cpp:157
 msgid "Interrupt"
 msgstr "Megszakítás"
 
@@ -2444,7 +2444,7 @@ msgstr "Megszakítás"
 msgid "Interrupt current computation"
 msgstr "Jelenlegi számítás megszakítása"
 
-#: ../src/ToolBar.cpp:163
+#: ../src/ToolBar.cpp:159
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -2870,7 +2870,7 @@ msgstr "Mű"
 msgid "Name:"
 msgstr "Név:"
 
-#: ../src/ToolBar.cpp:115
+#: ../src/ToolBar.cpp:111
 msgid "New"
 msgstr "Új"
 
@@ -2878,7 +2878,7 @@ msgstr "Új"
 msgid "New\tCtrl-N"
 msgstr "Ú&j\tCtrl-N"
 
-#: ../src/ToolBar.cpp:117
+#: ../src/ToolBar.cpp:113
 msgid "New document"
 msgstr "Új dokumentum"
 
@@ -3026,7 +3026,7 @@ msgstr "Egymintás t-próba"
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
-#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:119
+#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:115
 #: ../src/wxMaxima.cpp:2805
 msgid "Open"
 msgstr "Megnyitás"
@@ -3047,7 +3047,7 @@ msgstr "Dokumentum megnyitása"
 msgid "Open a new window"
 msgstr "Új ablak"
 
-#: ../src/ToolBar.cpp:121
+#: ../src/ToolBar.cpp:117
 msgid "Open document"
 msgstr "Dokumentum megnyitása"
 
@@ -3063,7 +3063,7 @@ msgstr "Fájl megnyitása"
 msgid "Optimize wxmx files for version control"
 msgstr "wxmx fájlok optimalizálása verzióellenőrzéshez"
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:131
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
 msgid "Options"
 msgstr "Beállítások"
 
@@ -3137,7 +3137,7 @@ msgstr ""
 "A dokumentum egyes részei nem töltődnek be helyesen,\n"
 "mivel az ismeretlen XML címkenevet tartalmaz"
 
-#: ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067 ../src/ToolBar.cpp:143
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067
 msgid "Paste"
 msgstr "Beillesztés"
 
@@ -3145,7 +3145,7 @@ msgstr "Beillesztés"
 msgid "Paste\tCtrl-V"
 msgstr "&Beillesztés\tCtrl-V"
 
-#: ../src/ToolBar.cpp:145
+#: ../src/ToolBar.cpp:141
 msgid "Paste from clipboard"
 msgstr "Szöveg beillesztése vágólapról"
 
@@ -3280,11 +3280,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr "Előző parancs\tAlt-Up"
 
-#: ../src/ToolBar.cpp:128
+#: ../src/ToolBar.cpp:124
 msgid "Print"
 msgstr "Nyomtatás"
 
-#: ../src/ToolBar.cpp:130 ../src/wxMaximaFrame.cpp:483
+#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
 msgid "Print document"
 msgstr "Dokumentum nyomtatása"
 
@@ -3386,7 +3386,7 @@ msgstr "Rendszerinformációk hiba bejelentéséhez"
 msgid "Restart Maxima"
 msgstr "A Maxima újraindítása"
 
-#: ../src/ToolBar.cpp:158
+#: ../src/ToolBar.cpp:154
 msgid "Restart maxima"
 msgstr "A Maxima újraindítása"
 
@@ -3394,7 +3394,7 @@ msgstr "A Maxima újraindítása"
 msgid "Result"
 msgstr "Eredmény"
 
-#: ../src/ToolBar.cpp:167
+#: ../src/ToolBar.cpp:163
 msgid "Return to the cell that is currently being evaluated"
 msgstr "Visszatérés a most kiértékelt cellára"
 
@@ -3438,7 +3438,7 @@ msgstr "2. minta:"
 msgid "Sample:"
 msgstr "Minta:"
 
-#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:122
+#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:118
 #: ../src/wxMaxima.cpp:5937
 msgid "Save"
 msgstr "Mentés"
@@ -3471,7 +3471,7 @@ msgstr "Ki&jelölés mentése képbe..."
 msgid "Save animation to file"
 msgstr "Animáció mentése fájlba"
 
-#: ../src/ToolBar.cpp:124 ../src/wxMaximaFrame.cpp:472
+#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
 msgid "Save document"
 msgstr "Dokumentum mentése"
 
@@ -3591,7 +3591,7 @@ msgstr "Részminta kiválasztása"
 msgid "Select a constant"
 msgstr "Állandó kiválasztása"
 
-#: ../src/ToolBar.cpp:146 ../src/ToolBar.cpp:148 ../src/wxMaximaFrame.cpp:525
+#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
 msgid "Select all"
 msgstr "Minden kiválasztása"
 
@@ -3697,7 +3697,7 @@ msgstr "&Tippek..."
 msgid "Show &Variables"
 msgstr "&Változók"
 
-#: ../src/ToolBar.cpp:212
+#: ../src/ToolBar.cpp:208
 msgid "Show Maxima help"
 msgstr "Maxima súgó"
 
@@ -3905,7 +3905,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
-#: ../src/MathCtrl.cpp:1034 ../src/wxMaximaFrame.cpp:1220
+#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1034
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -3936,11 +3936,11 @@ msgstr "Különleges állandó"
 msgid "Start Animation"
 msgstr "Animáció indítása"
 
-#: ../src/ToolBar.cpp:190
+#: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
 msgstr "Animáció indítása vagy leállítása"
 
-#: ../src/ToolBar.cpp:192
+#: ../src/ToolBar.cpp:188
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -4010,7 +4010,7 @@ msgstr "Behelyet...."
 msgid "Substitute"
 msgstr "Behelyettesítés"
 
-#: ../src/MathCtrl.cpp:1040 ../src/wxMaximaFrame.cpp:905
+#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1040
 msgid "Substitute..."
 msgstr "&Behelyettesítés..."
 
@@ -4682,7 +4682,7 @@ msgstr "Nagyítás 10%-kal"
 msgid "Zoom out 10%"
 msgstr "Kicsinyítés 10%-kal"
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
 msgid "[ unsaved ]"
 msgstr "[ mentetlen ]"
 
@@ -5013,8 +5013,8 @@ msgstr "unió"
 msgid "unsaved"
 msgstr "mentetlen"
 
-#: ../src/wxMaxima.cpp:2566 ../src/wxMaxima.cpp:2834
-#: ../src/wxMaximaFrame.cpp:289
+#: ../src/wxMaximaFrame.cpp:289 ../src/wxMaxima.cpp:2566
+#: ../src/wxMaxima.cpp:2834
 msgid "untitled"
 msgstr "névtelen"
 
@@ -5031,8 +5031,8 @@ msgstr "üpszilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:5713 ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724
-#: ../src/wxMaxima.cpp:5727 ../src/wxMaximaFrame.cpp:287
+#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
+#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724 ../src/wxMaxima.cpp:5727
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
