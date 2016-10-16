@@ -5929,8 +5929,8 @@ int wxMaxima::SaveDocumentP()
   }
 
   wxMessageDialog dialog(this,
-                         _("Do you want to save the changes you made in the document \"") +
-                         file + wxT("\"?"),
+                         wxString::Format(_("Do you want to save the changes you made in the document \"%s\"?"),
+                                          file),
 			 wxEmptyString, wxCENTER | wxYES_NO | wxCANCEL);
 
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
