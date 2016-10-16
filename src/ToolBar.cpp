@@ -48,7 +48,7 @@ wxImage ToolBar::GetImage(wxString name)
   if(imgWidth < 24)
     imgWidth = 24;
 
-  double scaleFactor = (double)imgWidth / img.GetWidth();
+  double scaleFactor = round((double)imgWidth / img.GetWidth());
   img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
   return img;
 }
@@ -57,14 +57,10 @@ wxBitmap ToolBar::GetImage(wxString name)
 {
   wxImage img;
   img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
-/*
-  I think scaling is unnecessary in this case since wxArtProvider should consider
-  the display's dpi number automagically. => Commented out the following lines:
 
   double imgWidth = wxGetDisplayPPI().x*24/72;
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
-*/
   return img;
 }
 #endif
