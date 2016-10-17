@@ -68,6 +68,9 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(&dc)
 void CellParser::ReadConfig()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
+  m_autoWrap = true;
+  config->Read(wxT("autoWrap"), &m_autoWrap);
+  
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 

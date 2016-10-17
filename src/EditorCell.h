@@ -35,10 +35,13 @@
  */
 
 /*! This class defines what the user sees as input cell
-
+  
   This class handles input cells including:
-   - The per-cell undo buffer
-   - The handling of key presses when this cell is active
+    - The per-cell undo buffer
+    - The handling of key presses when this cell is active
+  
+  Since Unicode doesn't provide us with a "soft linebreak" letter we 
+  use "\r" in order to start a new line at the end of the screen.
  */
 class EditorCell : public MathCell
 {
@@ -137,6 +140,8 @@ public:
 
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
     about variable names contained in lists or cells that still haven't been evaluated.
+
+    \todo Include a <code>\r</code> where we need a soft line break.
    */
   void StyleText();
   void Reset();

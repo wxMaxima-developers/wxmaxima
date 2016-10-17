@@ -210,6 +210,7 @@ protected:
   wxCheckBox* m_insertAns;
   wxCheckBox* m_autoIndent;
   wxCheckBox* m_cursorJump;
+  wxCheckBox* m_autoWrap;
   wxSpinCtrl* m_labelWidth;
   wxSpinCtrl* m_undoLimit;
   wxSpinCtrl* m_recentItems;

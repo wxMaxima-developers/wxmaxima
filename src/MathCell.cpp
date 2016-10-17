@@ -657,6 +657,9 @@ wxString MathCell::RTFescape(wxString input,bool MarkDown)
   input.Replace("{","\\{");
   input.Replace("}","\\}");
 
+  // The Character we will use as a soft line break
+  input.Replace("\r",wxEmptyString);
+
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
   for(size_t i=0;i<input.Length();i++)

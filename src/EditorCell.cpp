@@ -89,6 +89,7 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
   input.Replace(wxT("\n"), wxT("<BR>\n"));
+  input.Replace(wxT("\r"), wxT(" "));
   return input;
 }
 
@@ -96,6 +97,8 @@ wxString EditorCell::PrependNBSP(wxString input)
 {
   bool     firstSpace = true;;
   wxString retval;
+
+  input.Replace(wxT("\r"),wxT(" "));
   
   for(size_t i=0;i<input.Length();i++)
   {
@@ -143,7 +146,8 @@ void EditorCell::Destroy()
 wxString EditorCell::ToString()
 {
   wxString text = m_text;
-
+  // Remove all soft line breaks
+  text.Replace(wxT('\r'),wxT(' '));
   if (SelectionActive())
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
@@ -217,7 +221,7 @@ wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
-//  text.Replace(wxT("\n"), wxT("\\\\"));
+  text.Replace(wxT("\r"), wxEmptyString);
   text.Replace(wxT("^"), wxT("\\^{}"));
   text.Replace("°",wxT("\\ensuremath{^\\circ}"));
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
@@ -337,6 +341,7 @@ wxString EditorCell::ToXML()
   xmlstring.Replace(wxT("'"),  wxT("&apos;"));
   xmlstring.Replace(wxT("\""), wxT("&quot;"));
   xmlstring.Replace(wxT("\n"), wxT("</line>\n<line>"));
+  xmlstring.Replace(wxT("\r"), wxT(" "));
   xmlstring = wxT("<line>") + xmlstring + wxT("</line>\n");
   wxString head = wxT("<editor");
   switch (m_type) {
@@ -370,6 +375,10 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(int fontsize)
 {
+  //! Redo the wrapping of lines for non-code cells that support automatic line wrapping
+  if(m_type != MC_TYPE_INPUT)
+    
+    StyleText();
   int charWidth;
   CellParser *parser = CellParser::Get();
 
@@ -395,7 +404,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     {
       while (newLinePos < m_text.Length())
       {
-        if (m_text.GetChar(newLinePos) == '\n')
+        if ((m_text.GetChar(newLinePos) == '\n') || (m_text.GetChar(newLinePos) == '\r'))
           break;
         newLinePos++;
       }
@@ -403,7 +412,12 @@ void EditorCell::RecalculateWidths(int fontsize)
       dc.GetTextExtent(m_text.SubString(prevNewLinePos, newLinePos), &width1, &height1);
       width = MAX(width, width1);
 
-      while (newLinePos < m_text.Length() && m_text.GetChar(newLinePos) == '\n')
+      while (newLinePos < m_text.Length() &&
+             (
+               (m_text.GetChar(newLinePos) == '\n')||
+               (m_text.GetChar(newLinePos) == '\r')
+               )
+        )
       {
         newLinePos++;
         m_numberOfLines++;
@@ -498,7 +512,7 @@ void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, Text
   
   while (pos1 < end) // go through selection, draw a rect for each line of selection
   {
-    while (pos1 < end && m_text.GetChar(pos1) != '\n')
+    while (pos1 < end && m_text.GetChar(pos1) != '\n' && m_text.GetChar(pos1) != '\r')
       pos1++;
     
     point = PositionToPoint(fontsize, pos2);  // left  point
@@ -635,7 +649,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       int width, height;
       
       // A newline is a separate token.
-      if(TextToDraw == wxT("\n"))
+      if((TextToDraw == wxT("\n"))||(TextToDraw == wxT("\r")))
       {
         // A newline =>
         // set the point to the beginning of the next line.
@@ -799,14 +813,13 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   wxString retval;
   // Convert the text to our line endings.
   input.Replace(wxT("\r\n"),wxT("\n"));
-  input.Replace(wxT("\r"),wxT("\n"));
 
   size_t index = 0;
   while(index < input.Length())
   {
     wxChar ch = input[index++];
 
-    if(ch == wxT('\n'))
+    if((ch == wxT('\n')) || (ch == wxT('\r')))
     {
       posInLine = 0;
       retval += ch;
@@ -848,11 +861,11 @@ size_t EditorCell::BeginningOfLine(long pos)
   
   while(pos > 0)
   {
-    if(m_text[pos]==wxT('\n'))
+    if((m_text[pos]==wxT('\n')) || (m_text[pos]==wxT('\r')))
       break;
     pos--;
   }
-  if(m_text[pos]==wxT('\n'))
+  if((m_text[pos]==wxT('\n')) || (m_text[pos]==wxT('\r')))
     pos++;
   return pos;
 }
@@ -860,7 +873,7 @@ size_t EditorCell::BeginningOfLine(long pos)
 size_t EditorCell::EndOfLine(long pos)
 {
   if (pos<0) pos=0;
-  while (pos<(long)m_text.length() && m_text[pos] != wxT('\n'))
+  while (pos<(long)m_text.length() && m_text[pos] != wxT('\n') && m_text[pos] != wxT('\r'))
     pos++;
 
   return pos;
@@ -1103,7 +1116,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
     else
     {
       while (m_positionOfCaret < (signed)m_text.Length() &&
-             m_text.GetChar(m_positionOfCaret) != '\n')
+             m_text.GetChar(m_positionOfCaret) != '\n' &&
+             m_text.GetChar(m_positionOfCaret) != '\r')
         m_positionOfCaret++;
     }
 
@@ -1569,7 +1583,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 
           long start = MIN(m_selectionStart,m_selectionEnd);
           long end   = MAX(m_selectionStart,m_selectionEnd);
-          long newLineIndex = m_text.find(wxT('\n'),start);
+          long newLineIndex = MIN(m_text.find(wxT('\n'),start),m_text.find(wxT('\r'),start));
 
           if(((newLineIndex != wxNOT_FOUND) && (newLineIndex < end)) ||
              (m_text.SubString(newLineIndex,start).Trim() == wxEmptyString)
@@ -1578,7 +1592,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
             start = BeginningOfLine(start);
             long pos = start;
             
-            if(m_text[end-1]==wxT('\n'))
+            if((m_text[end-1]==wxT('\n')) || (m_text[end-1]==wxT('\r')))
               end++;
 
             if(end > (long)m_text.Length())
@@ -1606,9 +1620,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
                 end += 4;
                 pos += 4;
               }
-              while((pos < end) && (m_text[pos] != wxT('\n')))
+              while((pos < end) && (m_text[pos] != wxT('\n')) && (m_text[pos] != wxT('\r')))
                 pos ++;
-              if((pos < end) && (m_text[pos] == wxT('\n')))
+              if((pos < end) && (m_text[pos] == wxT('\n')) && (m_text[pos] == wxT('\r')))
                 pos ++;
             }
             SetSelection(start,end);
@@ -2378,7 +2392,7 @@ void EditorCell::PositionToXY(int position, int* x, int* y)
 
   while (pos < position)
   {
-    if (m_text.GetChar(pos) == '\n')
+    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
     {
       col = 0,
       lin++;
@@ -2398,14 +2412,14 @@ int EditorCell::XYToPosition(int x, int y)
 
   while (pos < (int)m_text.Length() && lin < y)
   {
-    if (m_text.GetChar(pos) == '\n')
+    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
       lin++;
     pos++;
   }
 
   while (pos < (int)m_text.Length() && col < x)
   {
-    if (m_text.GetChar(pos) == '\n')
+    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
       break;
     pos++;
     col++;
@@ -2467,7 +2481,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   if (m_changeAsterisk)  
     text.Replace(wxT("*"), wxT("\xB7"));
 
-  while (m_positionOfCaret < (signed)text.Length() && text.GetChar(m_positionOfCaret) != '\n')
+  while (m_positionOfCaret < (signed)text.Length() && text.GetChar(m_positionOfCaret) != '\n' && text.GetChar(m_positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, m_positionOfCaret);
     dc.GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
@@ -2530,7 +2544,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
-  while (text.GetChar(positionOfCaret) != '\n' && positionOfCaret < (signed)text.Length())
+  while (positionOfCaret < (signed)text.Length() && text.GetChar(positionOfCaret) != '\n' && text.GetChar(positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, positionOfCaret);
     dc.GetTextExtent(text.SubString(lineStart, positionOfCaret),
@@ -2567,7 +2581,7 @@ wxString EditorCell::DivideAtCaret()
       )
       whiteSpaceEnd--;
 
-    if(newText[whiteSpaceEnd]==wxT('\n'))
+    if((newText[whiteSpaceEnd]==wxT('\n')) || (newText[whiteSpaceEnd]==wxT('\r')))
       newText=newText.SubString(0,whiteSpaceEnd-1);
   }
   
@@ -2589,7 +2603,7 @@ wxString EditorCell::DivideAtCaret()
         )
         whiteSpaceEnd++;
 
-      if(retval[whiteSpaceEnd]==wxT('\n'))
+      if((retval[whiteSpaceEnd]==wxT('\n')) || (retval[whiteSpaceEnd]==wxT('\r')))
         retval=retval.SubString(whiteSpaceEnd+1,retval.Length());
     }
     return retval;
@@ -2804,7 +2818,7 @@ int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
     StyledText textSnippet = styledText.front();
     styledText.pop_front();
     wxString text = textSnippet.GetText();
-    if (text.Right(1) == '\n')
+    if ((text.Right(1) == '\n') || (text.Right(1) == '\r'))
       i++;
   }
 
@@ -2970,7 +2984,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
     wxChar Ch = string.GetChar(pos);
 
     // Check for new line
-    if(Ch==wxT('\n'))
+    if((Ch==wxT('\n')) || (Ch==wxT('\r')))
     {
       if(token != wxEmptyString) {
         retval.Add(token + wxT("d"));
@@ -3081,6 +3095,7 @@ void EditorCell::StyleText()
 
   if(m_type == MC_TYPE_INPUT)
   {
+    // We have to style code
     wxString textToStyle = m_text;
     if (m_changeAsterisk)  
       textToStyle.Replace(wxT("*"), wxT("\xB7"));
@@ -3265,11 +3280,64 @@ void EditorCell::StyleText()
       m_styledText.push_back(StyledText(token));
     }
   }
-  else {
-    wxString token;
+  else
+  {  
+    // We have to style ordinary text.
+    // Remove all soft line breaks
+    m_text.Replace(wxT("\r"),wxT(" "));
 
-    for (size_t i = 0; i<m_text.Length(); i++) {
-      if (m_text.GetChar(i) == '\n') {
+    // Insert new soft line breaks where we hit the right border of the worksheet, if
+    // this has been requested in the config dialogue
+    CellParser *parser = CellParser::Get();
+    if(parser->GetAutoWrap())
+    {
+      wxString line;
+      size_t lastSpace = 0;    
+      SetFont(parser->GetDefaultFontSize());
+      int width,height;
+      
+      for (size_t i = 0; i<m_text.Length(); i++)
+      {
+        if(m_text[i] == '\n')
+        {
+          line = wxEmptyString;
+          lastSpace = 0;
+        }
+        else
+        {
+          parser->GetDC().GetTextExtent(line, &width, &height);
+          if(width + m_currentPoint.x > parser->GetClientWidth())
+          {
+            // We need a line break
+            if(lastSpace > 0)
+            {
+              m_text[lastSpace]=wxT('\r');
+              line = m_text.SubString(lastSpace + 1,i);
+              lastSpace = 0;
+            }
+            else
+            {
+              if(m_text[i] == ' ')
+              {
+                m_text[i]=wxT('\r');
+                line = wxEmptyString;
+                lastSpace = 0;
+            }
+            }
+          }
+          else
+            if(m_text[i] == ' ')
+              lastSpace = i;
+          line += m_text[i];
+        }
+      }
+    }
+    
+    wxString token;
+    for (size_t i = 0; i<m_text.Length(); i++)
+    {      
+      if ((m_text.GetChar(i) == '\n') || (m_text.GetChar(i) == '\r'))
+      {
         if(m_firstLineOnly)
         {
           m_styledText.push_back(StyledText(token +
@@ -3365,13 +3433,16 @@ bool EditorCell::CheckChanges()
 int EditorCell::ReplaceAll(wxString oldString, wxString newString,bool IgnoreCase)
 {
   SaveValue();
-  int count = m_text.Replace(oldString, newString);
+  wxString newText = m_text;
+  newText.Replace(wxT("\r"),wxT(" "));
+  int count = newText.Replace(oldString, newString);
   if (count > 0)
   {
+    m_text = newText;
     m_containsChanges = true;
     ClearSelection();
+    StyleText();
   }
-  StyleText();
 
   // If text is selected setting the selection again updates m_selectionString
   if(m_selectionStart > 0)

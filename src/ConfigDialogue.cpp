@@ -233,6 +233,7 @@ void ConfigDialogue::SetProperties()
   bool insertAns = true;
   bool autoIndent = true;
   bool cursorJump = true;
+  bool autoWrap   = true;
 
   int labelWidth = 4;
   int undoLimit  = 0;
@@ -301,6 +302,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("insertAns"), &insertAns);
   config->Read(wxT("autoIndent"), &autoIndent);
   config->Read(wxT("cursorJump"), &cursorJump);
+  config->Read(wxT("autoWrap"), &autoWrap);
   config->Read(wxT("labelWidth"), &labelWidth);
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("recentItems"), &recentItems);
@@ -372,6 +374,7 @@ void ConfigDialogue::SetProperties()
   m_insertAns->SetValue(insertAns);
   m_autoIndent->SetValue(autoIndent);
   m_cursorJump->SetValue(cursorJump);
+  m_autoWrap->SetValue(autoWrap);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
   m_recentItems->SetValue(recentItems);
@@ -410,7 +413,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   wxArrayString showLengths;
   wxArrayString autosubscripts;
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(18,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
@@ -485,6 +488,9 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
   vsizer->Add(m_cursorJump, 0, wxALL, 5);
+
+  m_autoWrap = new wxCheckBox(panel, -1, _("Automatically wrap long text lines"));
+  vsizer->Add(m_autoWrap, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -849,6 +855,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
   config->Write(wxT("autoIndent"), m_autoIndent->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
+  config->Write(wxT("autoWrap"), m_autoWrap->GetValue());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("recentItems"), m_recentItems->GetValue());

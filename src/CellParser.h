@@ -31,7 +31,9 @@
 /*! The configuration storage for the current worksheet.
 
   Caching the information here means we don't need to search for the configuration
-  value's name every time we need the information.
+  value's name every time we need the information: Reading configuration values from
+  the system's configuration storage can be quite time consuming, especially on a 
+  MSW with a long registry.
  */
 class CellParser
 {
@@ -93,6 +95,7 @@ public:
   const int GetClientWidth() { return m_clientWidth; }
   const int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
   const int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
+  const bool GetAutoWrap() { return m_autoWrap;}
   const int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
@@ -113,6 +116,8 @@ public:
   //! Returns a pointer to the instance of CellParser that exists
   static CellParser *Get() {return m_cellParser;}
 private:
+  //! Automatically wrap long lines?
+  bool m_autoWrap;
   //! The CellParser that was active before this one
   CellParser *m_last;
   //! The width of input and output labels [in chars]
