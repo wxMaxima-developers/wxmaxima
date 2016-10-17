@@ -368,16 +368,17 @@ wxString EditorCell::ToXML()
   return head + xmlstring + wxT("</editor>\n");
 }
 
-void EditorCell::RecalculateWidths(CellParser& parser, int fontsize)
+void EditorCell::RecalculateWidths(int fontsize)
 {
   int charWidth;
+  CellParser *parser = CellParser::Get();
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || parser.ForceUpdate())
+  if (m_height == -1 || m_width == -1 || parser->ForceUpdate())
   {
-    wxDC& dc = parser.GetDC();
-    double scale = parser.GetScale();
-    SetFont(parser, fontsize);
+    wxDC& dc = parser->GetDC();
+    double scale = parser->GetScale();
+    SetFont(fontsize);
 
     // Measure the text hight using characters that might extend below or above the region
     // ordinary characters move in.
@@ -479,8 +480,9 @@ wxString EditorCell::ToHTML()
   return retval; 
 }
 
-void EditorCell::MarkSelection(long start, long end,CellParser& parser,double scale, wxDC& dc, TextStyle style,int fontsize)
+void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, TextStyle style,int fontsize)
 {
+  CellParser *parser = CellParser::Get();
   if((start < 0)||(end < 0)) return;
   wxPoint point, point1;
   long pos1 = start, pos2 = start;
@@ -488,10 +490,10 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
 #if defined(__WXMAC__)
   dc.SetPen(wxNullPen); // no border on rectangles
 #else
-  dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(style), 1, wxPENSTYLE_SOLID)) );
+  dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(style), 1, wxPENSTYLE_SOLID)) );
 // window linux, set a pen
 #endif
-  dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(style))) ); //highlight c.
+  dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(style))) ); //highlight c.
   
   
   while (pos1 < end) // go through selection, draw a rect for each line of selection
@@ -499,8 +501,8 @@ void EditorCell::MarkSelection(long start, long end,CellParser& parser,double sc
     while (pos1 < end && m_text.GetChar(pos1) != '\n')
       pos1++;
     
-    point = PositionToPoint(parser, fontsize, pos2);  // left  point
-    point1 = PositionToPoint(parser, fontsize, pos1); // right point
+    point = PositionToPoint(fontsize, pos2);  // left  point
+    point1 = PositionToPoint(fontsize, pos1); // right point
     long selectionWidth = point1.x - point.x;
     wxRect rect;
 #if defined(__WXMAC__)
@@ -533,18 +535,19 @@ The order this cell is drawn is:
  StyleText() converts m_text into. This way the decisions needed for styling 
  text are cached for later use.
 */
-void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
+void EditorCell::Draw(wxPoint point1, int fontsize)
 {
-  MathCell::Draw(parser, point1, fontsize);
+  MathCell::Draw(point1, fontsize);
+  CellParser *parser = CellParser::Get();
 
   m_selectionChanged = false;
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
+  double scale = parser->GetScale();
+  wxDC& dc = parser->GetDC();
   wxPoint point(point1);
-  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
-    RecalculateWidths(parser, fontsize);
+  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
+    RecalculateWidths(fontsize);
 
-  if (DrawThisCell(parser, point) && !m_isHidden)
+  if (DrawThisCell(point) && !m_isHidden)
   {
     dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
 
@@ -566,7 +569,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         // This would not only be unneccessary but also could cause
         // selections to flicker in very long texts
         if((!m_isActive)||(start!=MIN(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start,end,parser,scale,dc,TS_EQUALSSELECTION,fontsize);
+          MarkSelection(start,end,scale,dc,TS_EQUALSSELECTION,fontsize);
         start = end;
       }
     }
@@ -579,7 +582,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
       if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
-                      parser,scale,dc,TS_SELECTION,fontsize);
+                      scale,dc,TS_SELECTION,fontsize);
 
       //
       // Matching parens - draw only if we don't have selection
@@ -589,11 +592,11 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #if defined(__WXMAC__)
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
 #endif
-        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))) ); //highlight c.
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))) ); //highlight c.
 
-        wxPoint point = PositionToPoint(parser, fontsize, m_paren1);
+        wxPoint point = PositionToPoint(fontsize, m_paren1);
         int width, height;
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect rect(point.x + SCALE_PX(2, scale) + 1,
@@ -601,7 +604,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
                     width - 1, height - 1);
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
-        point = PositionToPoint(parser, fontsize, m_paren2);
+        point = PositionToPoint(fontsize, m_paren2);
         dc.GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         rect=wxRect(point.x + SCALE_PX(2, scale) + 1,
                     point.y  + SCALE_PX(2, scale) - m_center + 1,
@@ -614,8 +617,8 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
     //
     // Draw the text
     //
-    SetPen(parser);
-    SetFont(parser, fontsize);
+    SetPen();
+    SetFont(fontsize);
 
     wxPoint TextStartingpoint = point;
     // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
@@ -646,22 +649,22 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
         // Grab a pen of the right color.
         if(TextSnippet.StyleSet())
         {
-          wxDC& dc = parser.GetDC();
+          wxDC& dc = parser->GetDC();
           if(lastStyle != TextSnippet.GetStyle())
           {
-            dc.SetTextForeground(parser.GetColor(TextSnippet.GetStyle()));
+            dc.SetTextForeground(parser->GetColor(TextSnippet.GetStyle()));
             lastStyle = TextSnippet.GetStyle();
           }
         }
         else
         {
           lastStyle = -1;
-          SetForeground(parser);
+          SetForeground();
         }
 
 #if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot if requested
-        if ((m_changeAsterisk = parser.GetChangeAsterisk())!=0)
+        if ((m_changeAsterisk = parser->GetChangeAsterisk())!=0)
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
 #endif
         
@@ -691,7 +694,7 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 
       int lineWidth = GetLineWidth(dc, caretInLine, caretInColumn);
 
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); //TODO is there more efficient way to do this?
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); //TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
@@ -706,28 +709,29 @@ void EditorCell::Draw(CellParser& parser, wxPoint point1, int fontsize)
 #endif
     }
 
-    UnsetPen(parser);
+    UnsetPen();
 
   }
 }
 
-void EditorCell::SetFont(CellParser& parser, int fontsize)
+void EditorCell::SetFont(int fontsize)
 {
-  wxDC& dc = parser.GetDC();
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
+  double scale = parser->GetScale();
 
-  m_fontSize = parser.GetFontSize(m_textStyle);
+  m_fontSize = parser->GetFontSize(m_textStyle);
   if (m_fontSize == 0)
     m_fontSize = fontsize;
 
   m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
   m_fontSize = MAX(m_fontSize, 1);
 
-  m_fontName = parser.GetFontName(m_textStyle);
-  m_fontStyle = parser.IsItalic(m_textStyle);
-  m_fontWeight = parser.IsBold(m_textStyle);
-  m_underlined = parser.IsUnderlined(m_textStyle);
-  m_fontEncoding = parser.GetFontEncoding();
+  m_fontName = parser->GetFontName(m_textStyle);
+  m_fontStyle = parser->IsItalic(m_textStyle);
+  m_fontWeight = parser->IsBold(m_textStyle);
+  m_underlined = parser->IsUnderlined(m_textStyle);
+  m_fontEncoding = parser->GetFontEncoding();
 
   dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
                     m_fontStyle,
@@ -738,10 +742,11 @@ void EditorCell::SetFont(CellParser& parser, int fontsize)
 
 }
 
-void EditorCell::SetForeground(CellParser& parser)
+void EditorCell::SetForeground()
 {
-  wxDC& dc = parser.GetDC();
-  dc.SetTextForeground(parser.GetColor(m_textStyle));
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
+  dc.SetTextForeground(parser->GetColor(m_textStyle));
 }
 
 #ifndef WX_USE_UNICODE
@@ -2409,10 +2414,11 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(CellParser& parser, int fontsize, int pos)
+wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
 {
-  wxDC& dc = parser.GetDC();
-  SetFont(parser, fontsize);
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
+  SetFont(fontsize);
   
   int x = m_currentPoint.x, y = m_currentPoint.y;
   if (x == -1 || y == -1)

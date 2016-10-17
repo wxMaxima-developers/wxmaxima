@@ -113,57 +113,60 @@ void SubSupCell::SetExponent(MathCell *exp)
   m_exptCell = exp;
 }
 
-void SubSupCell::RecalculateWidths(CellParser& parser, int fontsize)
+void SubSupCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_baseCell->RecalculateWidthsList(parser, fontsize);
-  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  m_exptCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_baseCell->RecalculateWidthsList(fontsize);
+  m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_exptCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
-            SCALE_PX(2, parser.GetScale());
+            SCALE_PX(2, parser->GetScale());
   ResetData();
 }
 
-void SubSupCell::RecalculateSize(CellParser& parser, int fontsize)
+void SubSupCell::RecalculateSize(int fontsize)
 {
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();  
+  double scale = parser->GetScale();
 
-  m_baseCell->RecalculateSizeList(parser, fontsize);
-  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  m_exptCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_baseCell->RecalculateSizeList(fontsize);
+  m_indexCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_exptCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
-             2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser.GetScale());
+             2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser->GetScale());
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
 }
 
-void SubSupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void SubSupCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  CellParser *parser = CellParser::Get();
+  MathCell::Draw(point, fontsize);
 
-  if (DrawThisCell(parser, point) && InUpdateRegion())
+  if (DrawThisCell(point) && InUpdateRegion())
   {
-    double scale = parser.GetScale();
+    double scale = parser->GetScale();
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(parser, bs, fontsize);
+    m_baseCell->DrawList(bs, fontsize);
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_indexCell->DrawList(parser, in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
            SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-    m_exptCell->DrawList(parser, in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_exptCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   }
 }
 

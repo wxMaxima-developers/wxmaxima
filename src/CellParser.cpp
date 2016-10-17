@@ -29,9 +29,12 @@
 #include <wx/config.h>
 #include "MathCell.h"
 
-CellParser::CellParser(wxDC& dc) : m_dc(dc)
+CellParser::CellParser(wxDC& dc) : m_dc(&dc)
 {
+  // This is the currently active instance of this class
+  m_last = m_cellParser;
   m_cellParser = this;
+
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
@@ -47,7 +50,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(dc)
   ReadConfig();
 }
 
-CellParser::CellParser(wxDC& dc, double scale) : m_dc(dc)
+CellParser::CellParser(wxDC& dc, double scale) : m_dc(&dc)
 {
   m_scale = scale;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -85,7 +88,9 @@ void CellParser::ReadConfig()
 }
 
 CellParser::~CellParser()
-{}
+{
+  m_cellParser = m_last;
+}
 
 wxString CellParser::GetFontName(int type)
 {
@@ -365,7 +370,7 @@ void CellParser::ReadStyle()
 
 #undef READ_STYLES
 
-  m_dc.SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxPENSTYLE_SOLID)));
+  m_dc->SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxPENSTYLE_SOLID)));
 }
 
 wxFontWeight CellParser::IsBold(int st)
@@ -416,4 +421,4 @@ wxFontEncoding CellParser::GetGreekFontEncoding()
 */
 
 // Create all static variables
-CellParser *CellParser::m_cellParser;
+CellParser *CellParser::m_cellParser = NULL;

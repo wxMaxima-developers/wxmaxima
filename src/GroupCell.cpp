@@ -367,18 +367,19 @@ void GroupCell::AppendOutput(MathCell *cell)
  // ResetSize();
 }
 
-void GroupCell::Recalculate(CellParser& parser, int d_fontsize, int m_fontsize)
+void GroupCell::Recalculate(int d_fontsize, int m_fontsize)
 {
   m_fontSize = d_fontsize;
   m_mathFontSize = m_fontsize;
 
-  RecalculateWidths(parser, d_fontsize);
-  RecalculateSize(parser, d_fontsize);
+  RecalculateWidths(d_fontsize);
+  RecalculateSize(d_fontsize);
 }
 
-void GroupCell::RecalculateWidths(CellParser& parser, int fontsize)
+void GroupCell::RecalculateWidths(int fontsize)
 {
-  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
+  CellParser *parser = CellParser::Get();
+  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -390,8 +391,8 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize)
 
     UnBreakUpCells();
 
-    double scale = parser.GetScale();
-    m_input->RecalculateWidthsList(parser, fontsize);
+    double scale = parser->GetScale();
+    m_input->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
     if (m_input->m_next != NULL) {
@@ -405,22 +406,23 @@ void GroupCell::RecalculateWidths(CellParser& parser, int fontsize)
     else {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateWidths(parser, tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
       // This is not correct, m_width will be computed correctly in RecalculateSize!
       m_width = m_input->GetFullWidth(scale);
     }
 
-    BreakUpCells(parser, m_fontSize, parser.GetClientWidth());
-    BreakLines(parser.GetClientWidth());
+    BreakUpCells(m_fontSize, parser->GetClientWidth());
+    BreakLines(parser->GetClientWidth());
   }
   ResetData();
 }
 
-void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
+void GroupCell::RecalculateSize(int fontsize)
 {
-  if (m_width == -1 || m_height == -1 || parser.ForceUpdate())
+  CellParser *parser = CellParser::Get();
+  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
   {
     // special case
     if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -428,21 +430,21 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
       m_height = 2;
       m_center = 0;
       m_indent = 0;
-      MathCell::RecalculateWidthsList(parser, fontsize);
+      MathCell::RecalculateWidthsList(fontsize);
       return;
     }
 
-    double scale = parser.GetScale();
-    m_input->RecalculateSizeList(parser, fontsize);
+    double scale = parser->GetScale();
+    m_input->RecalculateSizeList(fontsize);
     m_center = m_input->GetMaxCenter();
     m_height = m_input->GetMaxHeight();
-    m_indent = parser.GetIndent();
+    m_indent = parser->GetIndent();
 
     if (m_output != NULL && !m_hide)
     {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
       
@@ -503,30 +505,31 @@ void GroupCell::RecalculateSize(CellParser& parser, int fontsize)
 }
 
 // We assume that appended cells will be in a new line!
-void GroupCell::RecalculateAppended(CellParser& parser)
+void GroupCell::RecalculateAppended()
 {
+  CellParser *parser = CellParser::Get();
   if (m_appendedCells == NULL)
     return;
 
   MathCell *tmp = m_appendedCells;
-  m_fontSize = parser.GetFontSize(TS_TEXT);
-  double scale = parser.GetScale();
-  m_mathFontSize = parser.GetMathFontSize();
+  m_fontSize = parser->GetFontSize(TS_TEXT);
+  double scale = parser->GetScale();
+  m_mathFontSize = parser->GetMathFontSize();
   
   // Recalculate widths of cells
   while (tmp != NULL) {
-    tmp->RecalculateWidths(parser, tmp->IsMath() ? m_mathFontSize : m_fontSize);
+    tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
     tmp = tmp->m_next;
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells, parser, m_fontSize, parser.GetClientWidth());
-  BreakLines(m_appendedCells, parser.GetClientWidth());
+  BreakUpCells(m_appendedCells, m_fontSize, parser->GetClientWidth());
+  BreakLines(m_appendedCells, parser->GetClientWidth());
 
   // Recalculate size of cells
   tmp = m_appendedCells;
   while (tmp != NULL) {
-    tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
+    tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
     tmp = tmp->m_next;
   }
 
@@ -547,41 +550,42 @@ void GroupCell::RecalculateAppended(CellParser& parser)
   m_appendedCells = NULL;
 }
 
-void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void GroupCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  wxDC& dc = parser->GetDC();
   if (m_width == -1 || m_height == -1) {
-    RecalculateWidths(parser, fontsize);
-    RecalculateSize(parser, fontsize);
+    RecalculateWidths(fontsize);
+    RecalculateSize(fontsize);
   }
-  if (DrawThisCell(parser, point))
+  if (DrawThisCell(point))
   {
     // draw a thick line for 'page break'
     // and return
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
-      wxPen pen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
+      wxPen pen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);      
       dc.DrawLine(0,y,m_canvasSize.GetWidth(),y);
-      MathCell::Draw(parser, point, fontsize);
+      MathCell::Draw(point, fontsize);
       return;
     }
 
     //
     // Paint background if we have a text cell
     //
-    if (m_groupType == GC_TYPE_TEXT && !parser.GetPrinter()) {
+    if (m_groupType == GC_TYPE_TEXT && !parser->GetPrinter()) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
 
       if (m_height > 0 && m_width > 0 && y>=0) {
-        wxBrush br(parser.GetColor(TS_TEXT_BACKGROUND));
+        wxBrush br(parser->GetColor(TS_TEXT_BACKGROUND));
         dc.SetBrush(br);
-        wxPen pen(parser.GetColor(TS_TEXT_BACKGROUND));
+        wxPen pen(parser->GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
         rect.SetWidth(m_canvasSize.GetWidth());
         if(InUpdateRegion(rect))
@@ -591,12 +595,12 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
     //
     // Draw input and output
     //
-    SetPen(parser);
+    SetPen();
     wxPoint in(point);
-    parser.Outdated(false);
-    m_input->DrawList(parser, in, fontsize);
+    parser->Outdated(false);
+    m_input->DrawList(in, fontsize);
     if (m_groupType == GC_TYPE_CODE && m_input->m_next)
-      parser.Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
+      parser->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
@@ -608,8 +612,8 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       while (tmp != NULL) {
         tmp->m_currentPoint = in;
         if (!tmp->m_isBroken) {
-          if (tmp->DrawThisCell(parser, in))
-            tmp->Draw(parser, in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
+          if (tmp->DrawThisCell(in))
+            tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
           if (tmp->m_nextToDraw != NULL) {
             if (tmp->m_nextToDraw->BreakLineHere()) {
               in.x = m_indent;
@@ -635,15 +639,15 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       }
     }
 
-    parser.Outdated(false);
+    parser->Outdated(false);
     MathCell *editable = GetEditable();
     if (editable != NULL && editable->IsActive()) {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
     }
     else {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_CELL_BRACKET)))); //highlight c.
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_CELL_BRACKET)))); //highlight c.
     }
 
     if ((!m_hide) && (!m_hiddenTree)) {
@@ -689,7 +693,7 @@ void GroupCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       }
     }
 
-    UnsetPen(parser);
+    UnsetPen();
   }
 }
 
@@ -1281,20 +1285,20 @@ void GroupCell::SelectOutput(MathCell **start, MathCell **end)
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells(CellParser parser, int fontsize, int clientWidth)
+void GroupCell::BreakUpCells(int fontsize, int clientWidth)
 {
-  BreakUpCells(m_output, parser, fontsize, clientWidth);
+  BreakUpCells(m_output, fontsize, clientWidth);
 }
 
-void GroupCell::BreakUpCells(MathCell *cell, CellParser parser, int fontsize, int clientWidth)
+void GroupCell::BreakUpCells(MathCell *cell, int fontsize, int clientWidth)
 {
   MathCell *tmp = cell;
 
   while (tmp != NULL && !m_hide) {
     if (tmp->GetWidth() > clientWidth) {
       if (tmp->BreakUp()) {
-        tmp->RecalculateWidths(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp->RecalculateSize(parser,  tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
       }
     }
     tmp = tmp->m_nextToDraw;

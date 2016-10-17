@@ -33,9 +33,9 @@ public:
   MathCell* Copy();
   void SetBase(MathCell *base);
   void SetDiff(MathCell *diff);
-  void RecalculateSize(CellParser& parser, int fontsize);
-  void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize);
+  void RecalculateSize(int fontsize);
+  void RecalculateWidths(int fontsize);
+  void Draw(wxPoint point, int fontsize);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   wxString ToString();
   wxString ToTeX();

@@ -111,11 +111,11 @@ public:
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   //
   wxRect GetOutputRect() { return m_outputRect; }
-  void RecalculateSize(CellParser& parser, int fontsize);
-  void RecalculateWidths(CellParser& parser, int fontsize);
-  void Recalculate(CellParser& parser, int d_fontsize, int m_fontsize);
-  void BreakUpCells(CellParser parser, int fontsize, int clientWidth);
-  void BreakUpCells(MathCell *cell, CellParser parser, int fontsize, int clientWidth);
+  void RecalculateSize(int fontsize);
+  void RecalculateWidths(int fontsize);
+  void Recalculate(int d_fontsize, int m_fontsize);
+  void BreakUpCells(int fontsize, int clientWidth);
+  void BreakUpCells(MathCell *cell, int fontsize, int clientWidth);
   void UnBreakUpCells();
   void BreakLines(int fullWidth);
   void BreakLines(MathCell *cell, int fullWidth);
@@ -191,8 +191,8 @@ public:
 
     Won't work if text has been added to the end of the line instead.
    */
-  void RecalculateAppended(CellParser& parser);
-  void Draw(CellParser& parser, wxPoint point, int fontsize);
+  void RecalculateAppended();
+  void Draw(wxPoint point, int fontsize);
   //! Is this list of cells empty?
   bool Empty();
   //! Does this tree contain the cell "cell"?

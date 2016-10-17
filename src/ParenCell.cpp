@@ -123,18 +123,19 @@ void ParenCell::SetInner(MathCell *inner, int type)
   m_last1 = inner;
 }
 
-void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
+void ParenCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
 
-  m_innerCell->RecalculateWidthsList(parser, fontsize);
+  m_innerCell->RecalculateWidthsList(fontsize);
 
-  if (parser.CheckTeXFonts())
+  if (parser->CheckTeXFonts())
   {
-    wxDC& dc = parser.GetDC();
-    m_innerCell->RecalculateSizeList(parser, fontsize);
+    wxDC& dc = parser->GetDC();
+    m_innerCell->RecalculateSizeList(fontsize);
     int size = m_innerCell->GetMaxHeight() * scale;
     /// BUG 2897415: Exporting equations to HTML locks up on Mac
     ///  there is something wrong with what dc.GetTextExtent returns,
@@ -150,7 +151,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
       dc.SetFont(
         wxFont(fontsize1, wxFONTFAMILY_MODERN,
                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-               parser.GetTeXCMRI())
+               parser->GetTeXCMRI())
         );
       dc.GetTextExtent( wxT("("),&m_signWidth, &m_signSize);
     }
@@ -161,7 +162,7 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
         m_bigParenType = PARENTHESIS_BIG;
         dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                           parser.GetTeXCMEX()));
+                           parser->GetTeXCMEX()));
         dc.GetTextExtent(wxT(PAREN_OPEN),
                          &m_signWidth, &m_signSize);
       }
@@ -194,8 +195,8 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
           dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                             m_bigParenType == 0 ?
-                            parser.GetTeXCMRI() :
-                            parser.GetTeXCMEX()));
+                            parser->GetTeXCMRI() :
+                            parser->GetTeXCMEX()));
           dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
                            m_bigParenType == 1 ? wxT(PAREN_OPEN) :
                            wxT(PAREN_OPEN_TOP),
@@ -212,8 +213,8 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
 			wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         m_bigParenType < 1 ?
-			parser.GetTeXCMRI() :
-			parser.GetTeXCMEX()));
+			parser->GetTeXCMRI() :
+			parser->GetTeXCMEX()));
       dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
     }
 
@@ -223,70 +224,72 @@ void ParenCell::RecalculateWidths(CellParser& parser, int fontsize)
   else
   {
 #if defined __WXMSW__
-    wxDC& dc = parser.GetDC();
+    wxDC& dc = parser->GetDC();
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      parser.IsItalic(TS_DEFAULT),
-                      parser.IsBold(TS_DEFAULT),
-                      parser.IsUnderlined(TS_DEFAULT),
-                      parser.GetSymbolFontName()));
+                      parser->IsItalic(TS_DEFAULT),
+                      parser->IsBold(TS_DEFAULT),
+                      parser->IsUnderlined(TS_DEFAULT),
+                      parser->GetSymbolFontName()));
     dc.GetTextExtent(PAREN_LEFT_TOP, &m_charWidth, &m_charHeight);
     if(m_charHeight < 2)
       m_charHeight = 2;
     m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;
 #else
-    m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser.GetScale());
+    m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, parser->GetScale());
 #endif
   }
-  m_open->RecalculateWidthsList(parser, fontsize);
-  m_close->RecalculateWidthsList(parser, fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
   ResetData();
 }
 
-void ParenCell::RecalculateSize(CellParser& parser, int fontsize)
+void ParenCell::RecalculateSize(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_innerCell->RecalculateSizeList(parser, fontsize);
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_innerCell->RecalculateSizeList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
 #if defined __WXMSW__
-  if (!parser.CheckTeXFonts())
+  if (!parser->CheckTeXFonts())
   {
-    wxDC& dc = parser.GetDC();
+    wxDC& dc = parser->GetDC();
     int fontsize1 = (int) ((fontsize * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      parser.GetFontName()));
+                      parser->GetFontName()));
     dc.GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
     if(m_charHeight1 < 2)
       m_charHeight1 = 2;
   }
 #endif
 
-  m_open->RecalculateSizeList(parser, fontsize);
-  m_close->RecalculateSizeList(parser, fontsize);
+  m_open->RecalculateSizeList(fontsize);
+  m_close->RecalculateSizeList(fontsize);
 }
 
-void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void ParenCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
-  if (DrawThisCell(parser, point)&&(InUpdateRegion()))
+  CellParser *parser = CellParser::Get();
+  MathCell::Draw(point, fontsize);
+  if (DrawThisCell(point)&&(InUpdateRegion()))
   {
-    double scale = parser.GetScale();
-    wxDC& dc = parser.GetDC();
+    double scale = parser->GetScale();
+    wxDC& dc = parser->GetDC();
     wxPoint in(point);
 
-    if (parser.CheckTeXFonts())
+    if (parser->CheckTeXFonts())
     {
       in.x = point.x + m_signWidth;
-      SetForeground(parser);
+      SetForeground();
       int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
 			wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         m_bigParenType < 1 ?
-			parser.GetTeXCMRI() :
-			parser.GetTeXCMEX()));
+			parser->GetTeXCMRI() :
+			parser->GetTeXCMEX()));
       if (m_bigParenType < 2)
       {
         dc.DrawText(m_bigParenType == 0 ? wxT("(") :
@@ -341,14 +344,14 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
 #ifdef __WXMSW__
       in.x += m_charWidth;
       int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
-      SetForeground(parser);
+      SetForeground();
       if (m_height < (3*m_charHeight)/2)
       {
         fontsize1 = (int) ((fontsize * scale + 0.5));
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                           false,
-                          parser.GetFontName()));
+                          parser->GetFontName()));
         dc.DrawText(wxT("("),
                     point.x + m_charWidth - m_charWidth1,
                     point.y - m_charHeight1 / 2);
@@ -361,7 +364,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                           false,
-                          parser.GetSymbolFontName(),
+                          parser->GetSymbolFontName(),
 			  wxFONTENCODING_CP1250));
         dc.DrawText(PAREN_LEFT_TOP,
                     point.x,
@@ -405,7 +408,7 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
       }
 #else
       in.x = point.x + SCALE_PX(6, scale);
-      SetPen(parser);
+      SetPen();
       // left
       dc.DrawLine(point.x + SCALE_PX(5, scale),
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
@@ -432,10 +435,10 @@ void ParenCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
                   point.x + m_width - SCALE_PX(5, scale) - 1,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
-      UnsetPen(parser);
+      UnsetPen();
 #endif
     }
-    m_innerCell->DrawList(parser, in, fontsize);
+    m_innerCell->DrawList(in, fontsize);
   }
 }
 

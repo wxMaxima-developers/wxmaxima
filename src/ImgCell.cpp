@@ -116,13 +116,14 @@ void ImgCell::Destroy()
   m_next = NULL;
 }
 
-void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
+void ImgCell::RecalculateWidths(int fontsize)
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_width  = (scale * m_image->m_width)  + 2 * m_imageBorderWidth;
@@ -130,31 +131,32 @@ void ImgCell::RecalculateWidths(CellParser& parser, int fontsize)
   m_center = m_height / 2;
 }
 
-void ImgCell::RecalculateSize(CellParser& parser, int fontsize)
+void ImgCell::RecalculateSize(int fontsize)
 {
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  RecalculateWidths(parser,fontsize);
+  RecalculateWidths(fontsize);
 }
 
-void ImgCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void ImgCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
 
-  wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point) && (m_image != NULL))
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
+  if (DrawThisCell(point) && (m_image != NULL))
   {
     wxMemoryDC bitmapDC;
 
     if(m_drawBoundingBox)
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))));
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))));
     else
-      SetPen(parser);
+      SetPen();
     
     if (m_drawRectangle || m_drawBoundingBox)
       dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));

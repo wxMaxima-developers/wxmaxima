@@ -261,10 +261,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetBackgroundMode(wxTRANSPARENT);
   dcm.SetLogicalFunction(wxCOPY);
 
-  CellParser parser(dcm);
-  parser.SetBounds(top, bottom);
-  parser.SetZoomFactor(m_zoomFactor);
-  int fontsize = parser.GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
+  m_parser->SetContext(dcm);
+  m_parser->SetBounds(top, bottom);
+  m_parser->SetZoomFactor(m_zoomFactor);
+  int fontsize = m_parser->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
   // Draw content
   if (m_tree != NULL)
@@ -279,10 +279,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
-      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION)))); //highlight c.
+      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_SELECTION)))); //highlight c.
 
       // Draw the marker that tells us which groups are selected -
       // if groups are selected, that is.
@@ -324,12 +324,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     GroupCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_DEFAULT))));
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_DEFAULT))));
 
     bool changeAsterisk = false;
     config->Read(wxT("changeAsterisk"), &changeAsterisk);
-    parser.SetChangeAsterisk(changeAsterisk);
+    m_parser->SetChangeAsterisk(changeAsterisk);
 
     while (tmp != NULL)
     {
@@ -351,8 +351,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       }
 
       tmp->m_currentPoint = point;
-      if (tmp->DrawThisCell(parser, point))
-        tmp->Draw(parser, point, MAX(fontsize, MC_MIN_SIZE));
+      if (tmp->DrawThisCell(point))
+        tmp->Draw(point, MAX(fontsize, MC_MIN_SIZE));
       if (tmp->m_next != NULL) {
         point.x = MC_GROUP_LEFT_INDENT;
         point.y += drop + tmp->m_next->GetMaxCenter();
@@ -369,7 +369,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus))
   {
     // TODO is there more efficient way to do this?
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
 
     if (m_hCaretPosition == NULL)
       dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, 5,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT, 5);
@@ -392,7 +392,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
         if (m_evaluationQueue->GetCell() == tmp)
           {
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
             if(MathCell::InUpdateRegion(rect))
               dcm.DrawRectangle(rect);
@@ -400,7 +400,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
           }
         else
         {
-          dcm.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
+          dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
           rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           if(MathCell::InUpdateRegion(rect))
             dcm.DrawRectangle(rect);
@@ -415,6 +415,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
           0, rect.GetTop());
+
+  m_parser->SetContext(*m_dc);
+
 }
 
 GroupCell *MathCtrl::InsertGroupCells(GroupCell* cells,GroupCell* where)
@@ -578,7 +581,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     m_parser->SetZoomFactor(m_zoomFactor);
     m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
-    tmp->RecalculateAppended(*m_parser);
+    tmp->RecalculateAppended();
     Recalculate(tmp);
 
     if(FollowEvaluation()) {
@@ -655,7 +658,7 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
 
   while (tmp != NULL)
   {
-    tmp->Recalculate(*m_parser, d_fontsize, m_fontsize);
+    tmp->Recalculate(d_fontsize, m_fontsize);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
  
@@ -1269,7 +1272,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
     if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionStart();
-    m_down = wxPoint(m_activeCell->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize(),startingChar));
+    m_down = wxPoint(m_activeCell->PositionToPoint(m_parser->GetDefaultFontSize(),startingChar));
     m_activeCell->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -2907,8 +2910,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     int fontsize = m_parser->GetDefaultFontSize();
     
     m_activeCell->ResetData();
-    m_activeCell->RecalculateWidths(*m_parser, MAX(fontsize, MC_MIN_SIZE));
-    m_activeCell->RecalculateSize(*m_parser, MAX(fontsize, MC_MIN_SIZE));
+    m_activeCell->RecalculateWidths(MAX(fontsize, MC_MIN_SIZE));
+    m_activeCell->RecalculateSize(MAX(fontsize, MC_MIN_SIZE));
     
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
@@ -5745,7 +5748,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 
     if(cellY < 1)
     {      
-      cellY = tmp->GetParent()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize()).y;
+      cellY = tmp->GetParent()->PositionToPoint(m_parser->GetDefaultFontSize()).y;
     }
   }
 
@@ -6906,11 +6909,11 @@ bool MathCtrl::CaretVisibleIs()
   {
     if(m_activeCell)
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
       if(point.y<1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
       }
       return PointVisibleIs(point);
     }
@@ -6932,11 +6935,11 @@ void MathCtrl::ScrollToCaret()
     {
       m_parser->SetZoomFactor(m_zoomFactor);
 
-      wxPoint point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
       if(point.y==-1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(*m_parser,m_parser->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
       }
       ShowPoint(point);
     }   
@@ -7114,7 +7117,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   else {
 
     // Find the position for the popup menu
-    wxPoint pos = editor->PositionToPoint(*m_parser, m_parser->GetDefaultFontSize());
+    wxPoint pos = editor->PositionToPoint(m_parser->GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
     #ifdef __WXGTK__

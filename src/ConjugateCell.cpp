@@ -91,39 +91,42 @@ void ConjugateCell::SetInner(MathCell *inner)
       m_last = m_last->m_next;
 }
 
-void ConjugateCell::RecalculateWidths(CellParser& parser, int fontsize)
+void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_innerCell->RecalculateWidthsList(parser, fontsize);
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
-  m_open->RecalculateWidthsList(parser, fontsize);
-  m_close->RecalculateWidthsList(parser, fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
   ResetData();
 }
 
-void ConjugateCell::RecalculateSize(CellParser& parser, int fontsize)
+void ConjugateCell::RecalculateSize(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_innerCell->RecalculateSizeList(parser, fontsize);
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_innerCell->RecalculateSizeList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
-  m_open->RecalculateSizeList(parser, fontsize);
-  m_close->RecalculateSizeList(parser, fontsize);
+  m_open->RecalculateSizeList(fontsize);
+  m_close->RecalculateSizeList(fontsize);
 }
 
-void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void ConjugateCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  CellParser *parser = CellParser::Get();
+  MathCell::Draw(point, fontsize);
 
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point) && InUpdateRegion())
+  double scale = parser->GetScale();
+  wxDC& dc = parser->GetDC();
+  if (DrawThisCell(point) && InUpdateRegion())
   {
-    SetPen(parser);
+    SetPen();
     wxPoint in;
     in.x = point.x + SCALE_PX(4, scale);
     in.y = point.y;
-    m_innerCell->DrawList(parser, in, fontsize);
+    m_innerCell->DrawList(in, fontsize);
 
     dc.DrawLine(point.x + SCALE_PX(2, scale),
                 point.y - m_center + SCALE_PX(2, scale),
@@ -131,7 +134,7 @@ void ConjugateCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                 point.y - m_center + SCALE_PX(2, scale)
 		);
 		//                point.y - m_center + m_height - SCALE_PX(2, scale));
-    UnsetPen(parser);
+    UnsetPen();
   }
 }
 

@@ -112,53 +112,55 @@ void LimitCell::SetUnder(MathCell *under)
   m_under = under;
 }
 
-void LimitCell::RecalculateWidths(CellParser& parser, int fontsize)
+void LimitCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
 
-  m_base->RecalculateWidthsList(parser, fontsize);
-  m_under->RecalculateWidthsList(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  m_name->RecalculateWidthsList(parser, fontsize);
+  m_base->RecalculateWidthsList(fontsize);
+  m_under->RecalculateWidthsList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+  m_name->RecalculateWidthsList(fontsize);
 
   m_width = MAX(m_name->GetFullWidth(scale), m_under->GetFullWidth(scale))
             + m_base->GetFullWidth(scale);
   ResetData();
 }
 
-void LimitCell::RecalculateSize(CellParser& parser, int fontsize)
+void LimitCell::RecalculateSize(int fontsize)
 {
-  m_under->RecalculateSizeList(parser, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  m_name->RecalculateSizeList(parser, fontsize);
-  m_base->RecalculateSizeList(parser, fontsize);
+  m_under->RecalculateSizeList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+  m_name->RecalculateSizeList(fontsize);
+  m_base->RecalculateSizeList(fontsize);
 
   m_center = MAX(m_base->GetMaxCenter(), m_name->GetMaxCenter());
   m_height = m_center + MAX(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
                             m_base->GetMaxDrop());
 }
 
-void LimitCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void LimitCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
-  if (DrawThisCell(parser, point) && InUpdateRegion())
+  if (DrawThisCell(point) && InUpdateRegion())
   {
-    double scale = parser.GetScale();
+    CellParser *parser = CellParser::Get();
+    double scale = parser->GetScale();
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x + MAX(m_name->GetFullWidth(scale),
                            m_under->GetFullWidth(scale)) / 2 -
              m_name->GetFullWidth(scale) / 2;
-    m_name->DrawList(parser, name, fontsize);
+    m_name->DrawList(name, fontsize);
 
     under.x = point.x + MAX(m_name->GetFullWidth(scale),
                             m_under->GetFullWidth(scale)) / 2 -
               m_under->GetFullWidth(scale) / 2;
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
-    m_under->DrawList(parser, under, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->DrawList(under, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
 
     base.x += MAX(m_name->GetFullWidth(scale),
                   m_under->GetFullWidth(scale));
-    m_base->DrawList(parser, base, fontsize);
+    m_base->DrawList(base, fontsize);
   }
 }
 

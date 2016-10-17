@@ -41,9 +41,9 @@ public:
   MathCell* Copy();
   void Destroy();
   void SetValue(const wxString &text);
-  void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize);
-  void SetFont(CellParser& parser, int fontsize);
+  void RecalculateWidths(int fontsize);
+  void Draw(wxPoint point, int fontsize);
+  void SetFont(int fontsize);
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
     The "(" is the opening parenthesis of a function instead.
@@ -69,7 +69,7 @@ public:
 #endif
   bool IsShortNum();
 protected:
-  void SetAltText(CellParser& parser);
+  void SetAltText();
   wxString m_text;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
@@ -83,7 +83,7 @@ protected:
   int m_labelWidth, m_labelHeight;
 private:
   //! Produces a text sample that determines the label width
-  wxString LabelWidthText(CellParser &parser);
+  wxString LabelWidthText();
 
 };
 

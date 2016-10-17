@@ -149,13 +149,14 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
+void SlideShow::RecalculateWidths(int fontsize)
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
   m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_width  = (scale * m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
@@ -163,28 +164,29 @@ void SlideShow::RecalculateWidths(CellParser& parser, int fontsize)
   m_center = m_height / 2;
 }
 
-void SlideShow::RecalculateSize(CellParser& parser, int fontsize)
+void SlideShow::RecalculateSize(int fontsize)
 {
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  RecalculateWidths(parser,fontsize);
+  RecalculateWidths(fontsize);
 }
 
-void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
+void SlideShow::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
   
-  wxDC& dc = parser.GetDC();
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
 
-  if (DrawThisCell(parser, point) && (m_images[m_displayed] != NULL))
+  if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
     wxMemoryDC bitmapDC;
-    double scale = parser.GetScale();
+    double scale = parser->GetScale();
     m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
@@ -193,7 +195,7 @@ void SlideShow::Draw(CellParser& parser, wxPoint point, int fontsize)
 
     // Slide show cells have a red border except if they are selected
     if(m_drawBoundingBox)
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser.GetColor(TS_SELECTION))));
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))));
     else
       dc.SetPen(*wxRED_PEN);
 

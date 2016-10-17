@@ -59,9 +59,9 @@ public:
     m_print = print;
   }
   void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
-  void RecalculateSize(CellParser& parser, int fontsize);
-  void RecalculateWidths(CellParser& parser, int fontsize);
-  void Draw(CellParser& parser, wxPoint point, int fontsize);
+  void RecalculateSize(int fontsize);
+  void RecalculateWidths(int fontsize);
+  void Draw(wxPoint point, int fontsize);
   bool BreakUp();
   void Unbreak();
   wxString ToString();

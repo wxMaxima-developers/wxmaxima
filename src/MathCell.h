@@ -203,7 +203,7 @@ public:
      - true: the whole list of cells has to be drawn starting with this one
      - false: only this cell has to be drawn
    */
-  virtual void Draw(CellParser& parser, wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point, int fontsize);
   /*! Draw this list of cells
 
     \param point The x and y position this cell is drawn at
@@ -212,7 +212,7 @@ public:
      - true: the whole list of cells has to be drawn starting with this one
      - false: only this cell has to be drawn
    */
-  void DrawList(CellParser& parser, wxPoint point, int fontsize);
+  void DrawList(wxPoint point, int fontsize);
   /*! Draw a rectangle that marks this cell or this list of cells as selected
 
     \param all
@@ -221,7 +221,7 @@ public:
      \param dc Where to draw the box.
   */
   virtual void DrawBoundingBox(wxDC& dc, bool all = false);
-  bool DrawThisCell(CellParser& parser, wxPoint point);
+  bool DrawThisCell(wxPoint point);
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.
 
@@ -296,18 +296,18 @@ public:
 
     Should set: m_height, m_center.
   */
-  virtual void RecalculateSize(CellParser& parser, int fontsize) { };
+  virtual void RecalculateSize(int fontsize) { };
   //! Recalculate the height of this list of cells 
-  void RecalculateSizeList(CellParser& parser, int fontsize);
+  void RecalculateSizeList(int fontsize);
   //! Marks all widths of this cell as to be recalculated on query.
-  virtual void RecalculateWidths(CellParser& parser, int fontsize);
+  virtual void RecalculateWidths(int fontsize);
   //! Marks all widths of this list as to be recalculated on query.
-  void RecalculateWidthsList(CellParser& parser, int fontsize);
+  void RecalculateWidthsList(int fontsize);
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateSizeList();RecalculateWidths();</code>.
    */
-  void RecalculateList(CellParser& parser, int fontsize);
+  void RecalculateList(int fontsize);
   //! Mark all cached size information as "to be calculated".
   void ResetData();
   //! Mark the cached height informations as "to be calculated".
@@ -319,7 +319,7 @@ public:
   void SetType(int type);
   int GetStyle(){ return m_textStyle; }	//l'ho aggiunto io
 
-  void SetPen(CellParser& parser);
+  void SetPen();
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight) { m_highlight = highlight; }
   //! Is this cell highlighted (e.G. inside a maxima box)
@@ -408,7 +408,7 @@ public:
   //! Escape a string for XML
   static wxString XMLescape(wxString);
 
-  void UnsetPen(CellParser& parser);
+  void UnsetPen();
   /*! Unbreak this cell
 
     Some cells have different representations when they contain a line break.
@@ -518,11 +518,11 @@ public:
   virtual void SelectAll() { }
   virtual bool CanCopy() { return false; }
   virtual void SetMatchParens(bool match) { }
-  virtual wxPoint PositionToPoint(CellParser& parser, int pos = -1) { return wxPoint(-1, -1); }
+  virtual wxPoint PositionToPoint(int pos = -1) { return wxPoint(-1, -1); }
   virtual bool IsDirty() { return false; }
   virtual void SwitchCaretDisplay() { }
   virtual void SetFocus(bool focus) { }
-  void SetForeground(CellParser& parser);
+  void SetForeground();
   virtual bool IsActive() { return false; }
   /*! Define which GroupCell is the parent of this cell.
     

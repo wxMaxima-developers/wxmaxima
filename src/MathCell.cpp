@@ -284,31 +284,33 @@ int MathCell::GetLineWidth(double scale)
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void MathCell::Draw(wxPoint point, int fontsize)
 {
   m_currentPoint = point;
 }
 
-void MathCell::DrawList(CellParser& parser, wxPoint point, int fontsize)
+void MathCell::DrawList(wxPoint point, int fontsize)
 {
+  CellParser *parser = CellParser::Get();
   MathCell *tmp=this;
   while(tmp!=NULL)
   {
-    tmp->Draw(parser,point,fontsize);
-    double scale = parser.GetScale();
+    tmp->Draw(point,fontsize);
+    double scale = parser->GetScale();
     point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
     tmp=tmp->m_nextToDraw;
   }
 }
 
-void MathCell::RecalculateList(CellParser& parser, int fontsize)
+void MathCell::RecalculateList(int fontsize)
 {
+  CellParser *parser = CellParser::Get();
   MathCell *tmp=this;
 
   while(tmp!=NULL)
     {
-      tmp->RecalculateWidths(parser, fontsize);
-      tmp->RecalculateSize(parser, fontsize);
+      tmp->RecalculateWidths(fontsize);
+      tmp->RecalculateSize(fontsize);
       tmp=tmp->m_next;
     }  
 }
@@ -325,13 +327,13 @@ void MathCell::ResetSizeList()
 }
 
 
-void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
+void MathCell::RecalculateSizeList(int fontsize)
 {
   MathCell *tmp=this;
 
   while(tmp!=NULL)
     {
-      tmp->RecalculateSize(parser, fontsize);
+      tmp->RecalculateSize(fontsize);
       tmp=tmp->m_next;
     }  
 }
@@ -343,28 +345,29 @@ void MathCell::RecalculateSizeList(CellParser& parser, int fontsize)
   
   Should set: set m_width.
 */
-void MathCell::RecalculateWidthsList(CellParser& parser, int fontsize)
+void MathCell::RecalculateWidthsList(int fontsize)
 {
   MathCell *tmp=this;
 
   while(tmp!=NULL)
     {
-      tmp->RecalculateWidths(parser, fontsize);
+      tmp->RecalculateWidths(fontsize);
       tmp=tmp->m_next;
     }
 }
 
-void MathCell::RecalculateWidths(CellParser& parser, int fontsize)
+void MathCell::RecalculateWidths(int fontsize)
 {
   ResetData();
 }
 
 /*! Is this cell currently visible in the window?.
  */
-bool MathCell::DrawThisCell(CellParser& parser, wxPoint point)
+bool MathCell::DrawThisCell(wxPoint point)
 {
-  int top = parser.GetTop();
-  int bottom = parser.GetBottom();
+  CellParser *parser = CellParser::Get();
+  int top = parser->GetTop();
+  int bottom = parser->GetBottom();
   if (top == -1 || bottom == -1)
     return true;
   if (point.y - GetMaxCenter() > bottom || point.y + GetMaxDrop() < top)
@@ -960,31 +963,33 @@ void MathCell::DestroyList()
 /***
  * Set the pen in device context accordint to the style of the cell.
  */
-void MathCell::SetPen(CellParser& parser)
+void MathCell::SetPen()
 {
-  wxDC& dc = parser.GetDC();
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
   if (m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_HIGHLIGHT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_HIGHLIGHT),
                 1, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_OTHER_PROMPT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_OTHER_PROMPT),
                 1, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_INPUT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_INPUT),
                 1, wxPENSTYLE_SOLID)));
   else
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_DEFAULT),
                     1, wxPENSTYLE_SOLID)));
 }
 
 /***
  * Reset the pen in the device context.
  */
-void MathCell::UnsetPen(CellParser& parser)
+void MathCell::UnsetPen()
 {
-  wxDC& dc = parser.GetDC();
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser.GetColor(TS_DEFAULT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_DEFAULT),
                 1, wxPENSTYLE_SOLID)));
 }
 
@@ -999,31 +1004,32 @@ void MathCell::CopyData(MathCell *s, MathCell *t)
   t->m_textStyle = s->m_textStyle;
 }
 
-void MathCell::SetForeground(CellParser& parser)
+void MathCell::SetForeground()
 {
+  CellParser *parser = CellParser::Get();
   wxColour color;
-  wxDC& dc = parser.GetDC();
+  wxDC& dc = parser->GetDC();
   if (m_highlight)
   {
-    color = parser.GetColor(TS_HIGHLIGHT);
+    color = parser->GetColor(TS_HIGHLIGHT);
   }
   else {
     switch (m_type)
     {
     case MC_TYPE_PROMPT:
-      color = parser.GetColor(TS_OTHER_PROMPT);
+      color = parser->GetColor(TS_OTHER_PROMPT);
       break;
     case MC_TYPE_MAIN_PROMPT:
-      color = parser.GetColor(TS_MAIN_PROMPT);
+      color = parser->GetColor(TS_MAIN_PROMPT);
       break;
     case MC_TYPE_ERROR:
       color = wxColour(wxT("red"));
       break;
     case MC_TYPE_LABEL:
-      color = parser.GetColor(TS_LABEL);
+      color = parser->GetColor(TS_LABEL);
       break;
     default:
-      color = parser.GetColor(m_textStyle);
+      color = parser->GetColor(m_textStyle);
       break;
     }
   }

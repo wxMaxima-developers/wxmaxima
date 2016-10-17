@@ -38,13 +38,15 @@ class CellParser
 public:
   void ReadConfig();
   CellParser(wxDC& dc);
+  //! Set the drawing context that is currently active
+  void SetContext(wxDC &dc){m_dc = &dc;}
   CellParser(wxDC& dc, double scale);
   ~CellParser();
   void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
   void SetScale(double scale) { m_scale = scale; }
   const double GetScale() { return m_scale; }
   //! Get a drawing context suitable for size calculations
-  wxDC& GetDC() { return m_dc; }
+  wxDC& GetDC() { return *m_dc; }
   void SetBounds(int top, int bottom) {
     m_top = top;
     m_bottom = bottom;
@@ -109,14 +111,16 @@ public:
   const bool GetPrinter() { return m_printer; }
 
   //! Returns a pointer to the instance of CellParser that exists
-  const CellParser *Get() {return m_cellParser;}
+  static CellParser *Get() {return m_cellParser;}
 private:
+  //! The CellParser that was active before this one
+  CellParser *m_last;
   //! The width of input and output labels [in chars]
   int m_labelWidth;
   int m_indent;
   double m_scale;
   double m_zoomFactor;
-  wxDC& m_dc;
+  wxDC *m_dc;
   int m_top, m_bottom;
   wxString m_fontName;
   int m_defaultFontSize, m_mathFontSize;

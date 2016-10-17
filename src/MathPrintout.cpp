@@ -110,7 +110,7 @@ bool MathPrintout::OnPrintPage(int num)
       // cells aren't printed" problem on linux.
       // No Idea why, though.
       dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
-      tmp->Draw(parser, point, fontsize);
+      tmp->Draw(point, fontsize);
       if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
@@ -271,7 +271,7 @@ void MathPrintout::Recalculate()
   while (tmp != NULL)
   {
     tmp->ResetSize();
-    tmp->Recalculate(parser, fontsize, mfontsize);
+    tmp->Recalculate(fontsize, mfontsize);
     tmp = (GroupCell *)tmp->m_next;
   }
 }

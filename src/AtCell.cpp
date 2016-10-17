@@ -92,50 +92,53 @@ void AtCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void AtCell::RecalculateWidths(CellParser& parser, int fontsize)
+void AtCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_baseCell->RecalculateWidthsList(parser, fontsize);
-  m_indexCell->RecalculateWidthsList(parser, MAX(MC_MIN_SIZE, fontsize - 4));
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_baseCell->RecalculateWidthsList(fontsize);
+  m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
             SCALE_PX(4, scale);
   ResetData();
 }
 
-void AtCell::RecalculateSize(CellParser& parser, int fontsize)
+void AtCell::RecalculateSize(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_baseCell->RecalculateSizeList(parser, fontsize);
-  m_indexCell->RecalculateSizeList(parser, MAX(MC_MIN_SIZE, fontsize - 3));
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_baseCell->RecalculateSizeList(fontsize);
+  m_indexCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX(7, scale);
   m_center = m_baseCell->GetCenter();
 }
 
-void AtCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void AtCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
-  if (DrawThisCell(parser, point) && InUpdateRegion())
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  wxDC& dc = parser->GetDC();
+  if (DrawThisCell(point) && InUpdateRegion())
   {
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(parser, bs, fontsize);
+    m_baseCell->DrawList(bs, fontsize);
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            + m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
-    m_indexCell->DrawList(parser, in, MAX(MC_MIN_SIZE, fontsize - 3));
-    SetPen(parser);
+    m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
+    SetPen();
     dc.DrawLine(in.x - SCALE_PX(2, scale),
                 bs.y - m_baseCell->GetMaxCenter(),
                 in.x - SCALE_PX(2, scale),
                 in.y);
-    UnsetPen(parser);
+    UnsetPen();
   }
 }
 

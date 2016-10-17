@@ -92,37 +92,39 @@ void FunCell::SetArg(MathCell *arg)
   m_argCell = arg;
 }
 
-void FunCell::RecalculateWidths(CellParser& parser, int fontsize)
+void FunCell::RecalculateWidths(int fontsize)
 {
-  double scale = parser.GetScale();
-  m_argCell->RecalculateWidthsList(parser, fontsize);
-  m_nameCell->RecalculateWidthsList(parser, fontsize);
+  CellParser *parser = CellParser::Get();
+  double scale = parser->GetScale();
+  m_argCell->RecalculateWidthsList(fontsize);
+  m_nameCell->RecalculateWidthsList(fontsize);
   m_width = m_nameCell->GetFullWidth(scale) + m_argCell->GetFullWidth(scale) -
             SCALE_PX(1, scale);
   ResetData();
 }
 
-void FunCell::RecalculateSize(CellParser& parser, int fontsize)
+void FunCell::RecalculateSize(int fontsize)
 {
-  m_nameCell->RecalculateSizeList(parser, fontsize);
-  m_argCell->RecalculateSizeList(parser, fontsize);
+  m_nameCell->RecalculateSizeList(fontsize);
+  m_argCell->RecalculateSizeList(fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
 }
 
-void FunCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void FunCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
+  MathCell::Draw(point, fontsize);
 
-  if (DrawThisCell(parser, point) && InUpdateRegion())
+  if (DrawThisCell(point) && InUpdateRegion())
   {
-    double scale = parser.GetScale();
+    CellParser *parser = CellParser::Get();
+    double scale = parser->GetScale();
 
     wxPoint name(point), arg(point);
-    m_nameCell->DrawList(parser, name, fontsize);
+    m_nameCell->DrawList(name, fontsize);
 
     arg.x += m_nameCell->GetFullWidth(scale) - SCALE_PX(1, scale);
-    m_argCell->DrawList(parser, arg, fontsize);
+    m_argCell->DrawList(arg, fontsize);
   }
 }
 

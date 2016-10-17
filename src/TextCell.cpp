@@ -100,25 +100,27 @@ void TextCell::Destroy()
   m_next = NULL;
 }
 
-wxString TextCell::LabelWidthText(CellParser &parser)
+wxString TextCell::LabelWidthText()
 {
+  CellParser *parser = CellParser::Get();
   wxString result;
 
-  for(int i=0;i<parser.GetLabelWidth();i++)
+  for(int i=0;i<parser->GetLabelWidth();i++)
     result += wxT("X");
 
   return result;
 }
 
-void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
+void TextCell::RecalculateWidths(int fontsize)
 {
-  SetAltText(parser);
+  CellParser *parser = CellParser::Get();
+  SetAltText();
 
-  if (m_height == -1 || m_width == -1 || parser.ForceUpdate())
+  if (m_height == -1 || m_width == -1 || parser->ForceUpdate())
   {
-    wxDC& dc = parser.GetDC();
-    double scale = parser.GetScale();
-    SetFont(parser, fontsize);
+    wxDC& dc = parser->GetDC();
+    double scale = parser->GetScale();
+    SetFont(fontsize);
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
@@ -126,9 +128,9 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
     {
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (m_text.Right(2) != wxT("/ "))
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText(parser)+wxT(")"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
       else
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText(parser)+wxT(")/R/"), &m_width, &m_height);
+        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
 
       m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width>0)||(m_text==wxEmptyString),_("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -138,17 +140,17 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
       while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-              parser.IsItalic(m_textStyle),
-              parser.IsBold(m_textStyle),
-              false, //parser.IsUnderlined(m_textStyle),
-              parser.GetFontName(m_textStyle),
-              parser.GetFontEncoding()));
+              parser->IsItalic(m_textStyle),
+              parser->IsBold(m_textStyle),
+              false, //parser->IsUnderlined(m_textStyle),
+              parser->GetFontName(m_textStyle),
+              parser->GetFontEncoding()));
         dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       }
     }
 
     /// Check if we are using jsMath and have jsMath character
-    else if (m_altJs && parser.CheckTeXFonts())
+    else if (m_altJs && parser->CheckTeXFonts())
     {
       dc.GetTextExtent(m_altJsText, &m_width, &m_height);
 
@@ -187,33 +189,34 @@ void TextCell::RecalculateWidths(CellParser& parser, int fontsize)
   ResetData();
 }
 
-void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
+void TextCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(parser, point, fontsize);
-  double scale = parser.GetScale();
-  wxDC& dc = parser.GetDC();
+  CellParser *parser = CellParser::Get();
+  MathCell::Draw(point, fontsize);
+  double scale = parser->GetScale();
+  wxDC& dc = parser->GetDC();
 
   if (m_width == -1 || m_height == -1)
-    RecalculateWidths(parser, fontsize);
+    RecalculateWidths(fontsize);
 
-  if (DrawThisCell(parser, point) && !m_isHidden)
+  if (DrawThisCell(point) && !m_isHidden)
   {
-    SetFont(parser, fontsize);
-    SetForeground(parser);
+    SetFont(fontsize);
+    SetForeground();
 
     if(InUpdateRegion())
     {
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        SetFont(parser, m_fontSizeLabel);
+        SetFont(m_fontSizeLabel);
         dc.DrawText(m_text,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + (m_height - m_labelHeight)/2);
       }
       
       /// Check if we are using jsMath and have jsMath character
-      else if (m_altJs && parser.CheckTeXFonts())
+      else if (m_altJs && parser->CheckTeXFonts())
         dc.DrawText(m_altJsText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -225,7 +228,7 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
       
       /// Change asterisk
-      else if (parser.GetChangeAsterisk() &&  m_text == wxT("*"))
+      else if (parser->GetChangeAsterisk() &&  m_text == wxT("*"))
         dc.DrawText(wxT("\xB7"),
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -260,10 +263,11 @@ void TextCell::Draw(CellParser& parser, wxPoint point, int fontsize)
   }
 }
 
-void TextCell::SetFont(CellParser& parser, int fontsize)
+void TextCell::SetFont(int fontsize)
 {
-  wxDC& dc = parser.GetDC();
-  double scale = parser.GetScale();
+  CellParser *parser = CellParser::Get();
+  wxDC& dc = parser->GetDC();
+  double scale = parser->GetScale();
 
   m_fontSize = (int) (((double)fontsize) * scale + 0.5);
 
@@ -273,19 +277,19 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
       (m_textStyle == TS_SUBSUBSECTION)
     )
   {
-    m_fontSize = parser.GetFontSize(m_textStyle);
+    m_fontSize = parser->GetFontSize(m_textStyle);
     m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
   }
 
   m_fontSize = MAX(m_fontSize, 1);
 
   // Use jsMath
-  if (m_altJs && parser.CheckTeXFonts())
+  if (m_altJs && parser->CheckTeXFonts())
   {
     wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
-                      parser.IsBold(m_textStyle),
-                      parser.IsUnderlined(m_textStyle),
+                      parser->IsBold(m_textStyle),
+                      parser->IsUnderlined(m_textStyle),
                          m_texFontname);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
@@ -296,11 +300,11 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   {
     wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL,
-                      parser.IsBold(m_textStyle),
+                      parser->IsBold(m_textStyle),
                       false,
                       m_fontname != wxEmptyString ?
-                          m_fontname : parser.GetFontName(m_textStyle),
-                  parser.GetFontEncoding());
+                          m_fontname : parser->GetFontName(m_textStyle),
+                  parser->GetFontEncoding());
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -312,11 +316,11 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
     )
   {
     wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
-                parser.IsItalic(m_textStyle),
-                parser.IsBold(m_textStyle),
+                parser->IsItalic(m_textStyle),
+                parser->IsBold(m_textStyle),
                 false,
-                parser.GetFontName(m_textStyle),
-                parser.GetFontEncoding());
+                parser->GetFontName(m_textStyle),
+                parser->GetFontEncoding());
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -324,11 +328,11 @@ void TextCell::SetFont(CellParser& parser, int fontsize)
   else
   {
     wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
-                parser.IsItalic(m_textStyle),
-                parser.IsBold(m_textStyle),
-                parser.IsUnderlined(m_textStyle),
-                parser.GetFontName(m_textStyle),
-                parser.GetFontEncoding());
+                parser->IsItalic(m_textStyle),
+                parser->IsBold(m_textStyle),
+                parser->IsUnderlined(m_textStyle),
+                parser->GetFontName(m_textStyle),
+                parser->GetFontEncoding());
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -1028,8 +1032,10 @@ bool TextCell::IsShortNum()
   return false;
 }
 
-void TextCell::SetAltText(CellParser& parser)
+void TextCell::SetAltText()
 {
+  CellParser *parser = CellParser::Get();
+  
   m_altJs = m_alt = false;
   if (GetStyle() == TS_DEFAULT)
     return ;
@@ -1065,11 +1071,11 @@ void TextCell::SetAltText(CellParser& parser)
       m_altJs = true;
     }
 #if wxUSE_UNICODE
-    m_altText = GetSymbolUnicode(parser.CheckKeepPercent());
+    m_altText = GetSymbolUnicode(parser->CheckKeepPercent());
     if (m_altText != wxEmptyString)
       m_alt = true;
 #elif defined __WXMSW__
-    m_altText = GetSymbolSymbol(parser.CheckKeepPercent());
+    m_altText = GetSymbolSymbol(parser->CheckKeepPercent());
     if (m_altText != wxEmptyString)
     {
       m_alt = true;
