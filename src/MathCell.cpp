@@ -304,7 +304,6 @@ void MathCell::DrawList(wxPoint point, int fontsize)
 
 void MathCell::RecalculateList(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
   MathCell *tmp=this;
 
   while(tmp!=NULL)
