@@ -1,10 +1,12 @@
-
 figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
 figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg wxMaximaLogo.png SidePanes.jpg ezUnits.jpg
 figurefiles += BatchImage.jpg wxMaxima_configuration_001.jpg wxMaxima_configuration_002.jpg
 figurefiles += wxMaxima_configuration_001.png wxMaxima_configuration_002.png sbclMemory.png
 figurefiles += sbclMemory.jpg ezUnits.png BatchImage.png Autocomplete1.jpg Autocomplete2.jpg
 figurefiles += SecondTableExample.png MatrixTableExample.png
+
+helpdir = ${datadir}/wxMaxima
+help_DATA = wxmaxima.html wxmaxima.hhp
 
 
 EXTRA_DIST = manual.css $(html_DATA)\
