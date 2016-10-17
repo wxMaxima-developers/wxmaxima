@@ -3,10 +3,4 @@ icon1 ICON "wxmac-doc.ico"
 
 #include <wx/msw/wx.rc>
 
-#if defined(WX_CPU_AMD64)
 1 24 "wxmaxima.manifest"
-#elif defined(WX_CPU_X86)
-1 24 "wxmaxima64.manifest"
-#else
-#error "One of WX_CPU_XXX constants must be defined."
-#endif

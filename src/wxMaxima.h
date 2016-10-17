@@ -201,29 +201,26 @@ protected:
     is too busy to execute the idle task at all.
   */
   void OnIdle(wxIdleEvent& event);
-  void MenuCommand(wxString cmd);                  //
-  void FileMenu(wxCommandEvent& event);            //
-  void MaximaMenu(wxCommandEvent& event);          //
-  void AlgebraMenu(wxCommandEvent& event);         //
-  void EquationsMenu(wxCommandEvent& event);       //
+  void MenuCommand(wxString cmd);                  //!< Inserts command cmd into the worksheet
+  void FileMenu(wxCommandEvent& event);            //!< Processes "file menu" clicks
+  void MaximaMenu(wxCommandEvent& event);          //!< Processes "maxima menu" clicks
+  void AlgebraMenu(wxCommandEvent& event);         //!< Processes "algebra menu" clicks
+  void EquationsMenu(wxCommandEvent& event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent& event);        //!< event handling for menus
-  void SimplifyMenu(wxCommandEvent& event);        //
-  void PlotMenu(wxCommandEvent& event);            //
-  void NumericalMenu(wxCommandEvent& event);       //
-  void HelpMenu(wxCommandEvent& event);            //
-  void EditMenu(wxCommandEvent& event);            //
-  void Interrupt(wxCommandEvent& event);           //
-  /* Make the menu item, toolbars and panes visible that should be visible right now.
-
-     \todo Didn't update the stats pane. I assume this was a bug.
-   */
-  void UpdateMenus(wxUpdateUIEvent& event);
-  void UpdateToolBar(wxUpdateUIEvent& event);      //
-  void UpdateSlider(wxUpdateUIEvent& event);       //
+  void SimplifyMenu(wxCommandEvent& event);        //!< Processes "Simplify menu" clicks
+  void PlotMenu(wxCommandEvent& event);            //!< Processes "Plot menu" cloicks
+  void NumericalMenu(wxCommandEvent& event);       //!< Processes "Numerical menu" clicks
+  void HelpMenu(wxCommandEvent& event);            //!< Processes "Help menu" clicks
+  void EditMenu(wxCommandEvent& event);            //!< Processes "Edit menu" clicks
+  void Interrupt(wxCommandEvent& event);           //!< Interrupt button and hotkey presses
+  //! Make the menu item, toolbars and panes visible that should be visible right now.
+  void UpdateMenus(wxUpdateUIEvent& event);	   //!< Enables and disables the Right menu buttons
+  void UpdateToolBar(wxUpdateUIEvent& event);      //!< Enables and disables the Right toolbar buttons
+  void UpdateSlider(wxUpdateUIEvent& event);       //!< Updates the slider to show the right frame
   /*! Toggle the visibility of a pane
     \param event The event that triggered calling this function.
    */
-  void ShowPane(wxCommandEvent& event);            
+  void ShowPane(wxCommandEvent& event);            //<! Makes a sidebar visible
   void OnProcessEvent(wxProcessEvent& event);      //
   void PopupMenu(wxCommandEvent& event);           //
   void StatsMenu(wxCommandEvent& event);           //
