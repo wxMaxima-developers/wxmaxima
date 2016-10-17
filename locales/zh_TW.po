@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 11:34+0200\n"
+"POT-Creation-Date: 2016-10-17 23:50+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -63,19 +63,19 @@ msgstr ""
 "\n"
 "未連線"
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:689
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:679
+#: ../src/ConfigDialogue.cpp:685
 msgid "      -l <name>"
 msgstr ""
 
-#: ../src/ImgCell.cpp:180 ../src/ImgCell.cpp:185
+#: ../src/ImgCell.cpp:182 ../src/ImgCell.cpp:187
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:3088 ../src/EditorCell.cpp:3270
+#: ../src/EditorCell.cpp:3109 ../src/EditorCell.cpp:3344
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -96,7 +96,7 @@ msgid ""
 " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr " 是以新版的 wxMaxima 儲存，請更新您的 wxMaxima 。"
 
-#: ../src/ConfigDialogue.cpp:528
+#: ../src/ConfigDialogue.cpp:534
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgstr "三角化簡(&T)"
 msgid "&pm3d"
 msgstr "pm3d(&P)"
 
-#: ../src/ConfigDialogue.cpp:560
+#: ../src/ConfigDialogue.cpp:566
 msgid "(Use default language)"
 msgstr "( 使用預設語言 )"
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "定點設值(T)..."
 
-#: ../src/ConfigDialogue.cpp:701
+#: ../src/ConfigDialogue.cpp:707
 msgid "Abort evaluation on error"
 msgstr ""
 
@@ -451,7 +451,7 @@ msgstr "關於"
 msgid "About wxMaxima"
 msgstr "關於 wxMaxima"
 
-#: ../src/ConfigDialogue.cpp:755
+#: ../src/ConfigDialogue.cpp:761
 msgid "Active cell bracket"
 msgstr "作用中的單元框"
 
@@ -475,7 +475,7 @@ msgstr "將目錄加入搜尋路徑："
 msgid "Add equality to the rational simplifier"
 msgstr "新增有理數式化簡所使用的等式"
 
-#: ../src/ConfigDialogue.cpp:537
+#: ../src/ConfigDialogue.cpp:543
 msgid "Add the .wxmx file to the HTML export"
 msgstr ""
 
@@ -488,7 +488,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:508
+#: ../src/ConfigDialogue.cpp:514
 msgid "Additional lines for the TeX preamble:"
 msgstr ""
 
@@ -496,27 +496,27 @@ msgstr ""
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Maxima 的附加參數 (例： -l clisp)"
 
-#: ../src/ConfigDialogue.cpp:673
+#: ../src/ConfigDialogue.cpp:679
 #, fuzzy
 msgid "Additional parameters for maxima"
 msgstr "附加參數："
 
-#: ../src/ConfigDialogue.cpp:591
+#: ../src/ConfigDialogue.cpp:597
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:200 ../src/ToolBar.cpp:244
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:445
+#: ../src/ConfigDialogue.cpp:448
 #, fuzzy
 msgid "All variable names"
 msgstr "舊變數："
 
-#: ../src/ConfigDialogue.cpp:911
+#: ../src/ConfigDialogue.cpp:918
 msgid "All|*"
 msgstr "所有類型|*"
 
@@ -544,7 +544,7 @@ msgstr "陣列："
 msgid "Artwork by"
 msgstr "美工"
 
-#: ../src/ConfigDialogue.cpp:631
+#: ../src/ConfigDialogue.cpp:637
 msgid "Ask to save untitled documents"
 msgstr "詢問是否儲存未命名文件"
 
@@ -552,7 +552,7 @@ msgstr "詢問是否儲存未命名文件"
 msgid "At value"
 msgstr "定點設值"
 
-#: ../src/ConfigDialogue.cpp:483
+#: ../src/ConfigDialogue.cpp:486
 msgid "Auto-indent new lines"
 msgstr ""
 
@@ -565,7 +565,11 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:492
+msgid "Automatically wrap long text lines"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:603
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr ""
 
@@ -577,7 +581,7 @@ msgstr "邊界條件(二階)"
 msgid "Barsplot..."
 msgstr "長條圖..."
 
-#: ../src/ConfigDialogue.cpp:906
+#: ../src/ConfigDialogue.cpp:913
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
 
@@ -598,11 +602,11 @@ msgstr ""
 msgid "Beta"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:514
+#: ../src/ConfigDialogue.cpp:520
 msgid "Bitmap scale for export:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:776
+#: ../src/ConfigDialogue.cpp:782
 msgid "Bold"
 msgstr "粗體"
 
@@ -622,7 +626,7 @@ msgstr "瀏覽"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2127
+#: ../src/MathCtrl.cpp:2130
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -642,22 +646,22 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2359
+#: ../src/MathCtrl.cpp:2362
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5891
+#: ../src/MathCtrl.cpp:5894
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5965
+#: ../src/MathCtrl.cpp:5968
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5934
+#: ../src/MathCtrl.cpp:5937
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -667,49 +671,49 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:781 ../src/GroupCell.cpp:952
+#: ../src/GroupCell.cpp:785 ../src/GroupCell.cpp:956
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
-#: ../src/AbsCell.cpp:199
+#: ../src/AbsCell.cpp:202
 msgid "Bug: No last cell in an absCell!"
 msgstr ""
 
-#: ../src/ConjugateCell.cpp:194
+#: ../src/ConjugateCell.cpp:197
 msgid "Bug: No last cell in an conjugateCell!"
 msgstr ""
 
-#: ../src/FracCell.cpp:472
+#: ../src/FracCell.cpp:475
 msgid "Bug: No last cell in an denominator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:270
+#: ../src/ExptCell.cpp:273
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr ""
 
-#: ../src/FracCell.cpp:460
+#: ../src/FracCell.cpp:463
 msgid "Bug: No last cell in an numerator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:260
+#: ../src/ExptCell.cpp:263
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
-#: ../src/ParenCell.cpp:535
+#: ../src/ParenCell.cpp:538
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
-#: ../src/SqrtCell.cpp:317
+#: ../src/SqrtCell.cpp:320
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2170
+#: ../src/MathCtrl.cpp:2173
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2137
+#: ../src/MathCtrl.cpp:2140
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -717,35 +721,35 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:600
+#: ../src/MathCtrl.cpp:603
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2061
+#: ../src/MathCtrl.cpp:2064
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6577
+#: ../src/MathCtrl.cpp:6580
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2139
+#: ../src/MathCtrl.cpp:2142
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1540
+#: ../src/MathCtrl.cpp:1543
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5935
+#: ../src/MathCtrl.cpp:5938
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5896 ../src/MathCtrl.cpp:5970 ../src/MathCtrl.cpp:6004
+#: ../src/MathCtrl.cpp:5899 ../src/MathCtrl.cpp:5973 ../src/MathCtrl.cpp:6007
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -838,7 +842,7 @@ msgstr ""
 msgid "Canonical (tr)"
 msgstr "標準型式 (三角)"
 
-#: ../src/ConfigDialogue.cpp:561
+#: ../src/ConfigDialogue.cpp:567
 msgid "Catalan"
 msgstr "Catalan"
 
@@ -846,7 +850,7 @@ msgstr "Catalan"
 msgid "Ce&ll"
 msgstr "單元(&L)"
 
-#: ../src/ConfigDialogue.cpp:754
+#: ../src/ConfigDialogue.cpp:760
 msgid "Cell bracket"
 msgstr "單元框"
 
@@ -886,16 +890,16 @@ msgstr "檢查是否存在新版的 wxMaxima 或 Maxima"
 msgid "Chi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:562
+#: ../src/ConfigDialogue.cpp:568
 msgid "Chinese Simplified"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:563
+#: ../src/ConfigDialogue.cpp:569
 msgid "Chinese traditional"
 msgstr "正體中文"
 
-#: ../src/ConfigDialogue.cpp:728 ../src/ConfigDialogue.cpp:730
-#: ../src/ConfigDialogue.cpp:770
+#: ../src/ConfigDialogue.cpp:734 ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:776
 msgid "Choose font"
 msgstr "選擇字型"
 
@@ -915,31 +919,31 @@ msgstr "關閉\tCtrl-W"
 msgid "Close window"
 msgstr "關閉視窗"
 
-#: ../src/ConfigDialogue.cpp:762
+#: ../src/ConfigDialogue.cpp:768
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:766
+#: ../src/ConfigDialogue.cpp:772
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:761
+#: ../src/ConfigDialogue.cpp:767
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:763
+#: ../src/ConfigDialogue.cpp:769
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:765
+#: ../src/ConfigDialogue.cpp:771
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:764
+#: ../src/ConfigDialogue.cpp:770
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:760
+#: ../src/ConfigDialogue.cpp:766
 msgid "Code highlighting: Variables"
 msgstr ""
 
@@ -967,7 +971,7 @@ msgstr "x 座標，以逗號分隔"
 msgid "Comma separated y coordinates"
 msgstr "y 座標，以逗號分隔"
 
-#: ../src/MathCtrl.cpp:1072
+#: ../src/MathCtrl.cpp:1075
 msgid "Comment Selection"
 msgstr "將所選區域變成註解"
 
@@ -988,7 +992,7 @@ msgstr "自動完成\tCtrl-K"
 msgid "Complete word"
 msgstr "自動完成"
 
-#: ../src/ToolBar.cpp:156
+#: ../src/ToolBar.cpp:158
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
@@ -1024,16 +1028,16 @@ msgstr "計算最小公倍式 (在使用前會先執行 load(functs) )"
 msgid "Condition:"
 msgstr "條件："
 
-#: ../src/ConfigDialogue.cpp:1639 ../src/ConfigDialogue.cpp:1647
+#: ../src/ConfigDialogue.cpp:1646 ../src/ConfigDialogue.cpp:1654
 msgid "Config file (*.ini)|*.ini"
 msgstr "設定檔 (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1473
+#: ../src/ConfigDialogue.cpp:1480
 msgid "Configuration warning"
 msgstr "設定值警告"
 
-#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
-#: ../src/wxMaximaFrame.cpp:540
+#: ../src/wxMaximaFrame.cpp:537 ../src/wxMaximaFrame.cpp:540
+#: ../src/ToolBar.cpp:131
 msgid "Configure wxMaxima"
 msgstr "設定 wxMaxima"
 
@@ -1099,8 +1103,8 @@ msgstr "轉換三角函數數式為標準準線性形式"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "轉換三角函數數式為指數形式"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973
-#: ../src/MathCtrl.cpp:1019 ../src/MathCtrl.cpp:1066
+#: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:976 ../src/MathCtrl.cpp:1022
+#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:138
 msgid "Copy"
 msgstr "複製"
 
@@ -1113,13 +1117,13 @@ msgstr "複製上一個輸入\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "複製上一個輸入\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:978
-#: ../src/MathCtrl.cpp:1024
+#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:981
+#: ../src/MathCtrl.cpp:1027
 msgid "Copy as Image"
 msgstr "複製為圖片"
 
-#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:974
-#: ../src/MathCtrl.cpp:1020
+#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:977
+#: ../src/MathCtrl.cpp:1023
 msgid "Copy as LaTeX"
 msgstr "複製為 LaTeX 格式"
 
@@ -1128,7 +1132,7 @@ msgstr "複製為 LaTeX 格式"
 msgid "Copy as MathML"
 msgstr "複製為圖片"
 
-#: ../src/MathCtrl.cpp:977 ../src/MathCtrl.cpp:1022
+#: ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:1025
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1136,12 +1140,12 @@ msgstr ""
 msgid "Copy as Text\tCtrl-Shift-C"
 msgstr "複製為純文字\tCtrl-Shift-C"
 
-#: ../src/MathCtrl.cpp:975 ../src/MathCtrl.cpp:1021
+#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:1024
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "複製為圖片"
 
-#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
+#: ../src/wxMaximaFrame.cpp:502 ../src/ToolBar.cpp:140
 msgid "Copy selection"
 msgstr "複製所選區域"
 
@@ -1172,11 +1176,11 @@ msgstr "以上一個輸入建立一個新的單元"
 msgid "Create a new cell with previous output"
 msgstr "以上一個輸入建立一個新的單元"
 
-#: ../src/ConfigDialogue.cpp:756
+#: ../src/ConfigDialogue.cpp:762
 msgid "Cursor"
 msgstr "游標"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1065
+#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:135
 msgid "Cut"
 msgstr "剪下"
 
@@ -1184,15 +1188,15 @@ msgstr "剪下"
 msgid "Cut\tCtrl-X"
 msgstr "剪下\tCtrl-X"
 
-#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
+#: ../src/wxMaximaFrame.cpp:499 ../src/ToolBar.cpp:137
 msgid "Cut selection"
 msgstr "剪下所選區域"
 
-#: ../src/ConfigDialogue.cpp:564
+#: ../src/ConfigDialogue.cpp:570
 msgid "Czech"
 msgstr "Czech"
 
-#: ../src/ConfigDialogue.cpp:565
+#: ../src/ConfigDialogue.cpp:571
 msgid "Danish"
 msgstr "Danish"
 
@@ -1211,7 +1215,7 @@ msgstr "資料檔 (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "資料："
 
-#: ../src/ConfigDialogue.cpp:704
+#: ../src/ConfigDialogue.cpp:710
 msgid "Debug: watch maxima's stdout stream"
 msgstr ""
 
@@ -1219,23 +1223,23 @@ msgstr ""
 msgid "Decompose rational function to partial fractions"
 msgstr "將有理函數分解為部分分式"
 
-#: ../src/ConfigDialogue.cpp:734
+#: ../src/ConfigDialogue.cpp:740
 msgid "Default"
 msgstr "預設"
 
-#: ../src/ConfigDialogue.cpp:612
+#: ../src/ConfigDialogue.cpp:618
 msgid "Default animation framerate:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:727
+#: ../src/ConfigDialogue.cpp:733
 msgid "Default font:"
 msgstr "預設字型："
 
-#: ../src/ConfigDialogue.cpp:415
+#: ../src/ConfigDialogue.cpp:418
 msgid "Default plot size for new maxima sessions:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:666
+#: ../src/ConfigDialogue.cpp:672
 #, fuzzy
 msgid "Default port for communication with wxMaxima:"
 msgstr "供 Maxima 與 wxMaxima 溝通的預設埠"
@@ -1254,7 +1258,7 @@ msgstr "刪除"
 msgid "Delete F&unction..."
 msgstr "刪除函數(&U)..."
 
-#: ../src/MathCtrl.cpp:981 ../src/MathCtrl.cpp:1027
+#: ../src/MathCtrl.cpp:984 ../src/MathCtrl.cpp:1030
 msgid "Delete Selection"
 msgstr "刪除所選區域"
 
@@ -1318,7 +1322,7 @@ msgstr "微分"
 msgid "Differentiate expression"
 msgstr "對數式微分"
 
-#: ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:1046
 msgid "Differentiate..."
 msgstr "微分..."
 
@@ -1350,7 +1354,7 @@ msgstr "顯示評算所花費的時間"
 msgid "Divide"
 msgstr "數字／多項式相除"
 
-#: ../src/MathCtrl.cpp:1074
+#: ../src/MathCtrl.cpp:1077
 msgid "Divide Cell"
 msgstr "分割單元"
 
@@ -1376,11 +1380,11 @@ msgstr "您是否想儲存於此文件中的變更： \""
 msgid "Document "
 msgstr "文件"
 
-#: ../src/ConfigDialogue.cpp:753
+#: ../src/ConfigDialogue.cpp:759
 msgid "Document background"
 msgstr "文件背景"
 
-#: ../src/ConfigDialogue.cpp:503
+#: ../src/ConfigDialogue.cpp:509
 msgid "Documentclass for TeX export:"
 msgstr ""
 
@@ -1427,7 +1431,7 @@ msgstr "自方程組中消去變數"
 msgid "End of proof"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:566
+#: ../src/ConfigDialogue.cpp:572
 msgid "English"
 msgstr "English"
 
@@ -1453,7 +1457,7 @@ msgstr "輸入供化簡有理數式的方程式："
 msgid "Enter comma separated list of variables."
 msgstr "輸入以逗號分隔的所有變數"
 
-#: ../src/ConfigDialogue.cpp:474
+#: ../src/ConfigDialogue.cpp:477
 msgid "Enter evaluates cells"
 msgstr "按 Enter 評算單元"
 
@@ -1505,7 +1509,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/ConfigDialogue.cpp:919 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1460
+#: ../src/ConfigDialogue.cpp:926 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1460
 #: ../src/wxMaxima.cpp:1474 ../src/wxMaxima.cpp:1625 ../src/wxMaxima.cpp:1638
 #: ../src/wxMaxima.cpp:1648 ../src/wxMaxima.cpp:1671 ../src/wxMaxima.cpp:2039
 #: ../src/wxMaxima.cpp:2211 ../src/wxMaxima.cpp:5397 ../src/wxMaxima.cpp:5845
@@ -1536,7 +1540,7 @@ msgstr "評算所有單元\tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "評算所有單元\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:984
+#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:987
 msgid "Evaluate Cell(s)"
 msgstr "評算單元"
 
@@ -1545,19 +1549,19 @@ msgstr "評算單元"
 msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "評算所有單元\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:998 ../src/MathCtrl.cpp:1093
+#: ../src/MathCtrl.cpp:1001 ../src/MathCtrl.cpp:1096
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1003 ../src/MathCtrl.cpp:1095
+#: ../src/MathCtrl.cpp:1006 ../src/MathCtrl.cpp:1098
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1013 ../src/MathCtrl.cpp:1099
+#: ../src/MathCtrl.cpp:1016 ../src/MathCtrl.cpp:1102
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1008 ../src/MathCtrl.cpp:1097
+#: ../src/MathCtrl.cpp:1011 ../src/MathCtrl.cpp:1100
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1578,11 +1582,11 @@ msgstr "評算數式中所有的名詞形式"
 msgid "Evaluate all visible cells in the document"
 msgstr "評算這份文件中的所有單元"
 
-#: ../src/ToolBar.cpp:168
+#: ../src/ToolBar.cpp:170
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../src/ToolBar.cpp:166
+#: ../src/ToolBar.cpp:168
 #, fuzzy
 msgid "Evaluate to point"
 msgstr "評算名詞形式(&N)"
@@ -1591,11 +1595,11 @@ msgstr "評算名詞形式(&N)"
 msgid "Example"
 msgstr "範例"
 
-#: ../src/ConfigDialogue.cpp:1587 ../src/ConfigDialogue.cpp:1684
+#: ../src/ConfigDialogue.cpp:1594 ../src/ConfigDialogue.cpp:1691
 msgid "Example text"
 msgstr "Example text 範例文字"
 
-#: ../src/ConfigDialogue.cpp:676
+#: ../src/ConfigDialogue.cpp:682
 #, fuzzy
 msgid "Examples:"
 msgstr "範例"
@@ -1612,7 +1616,7 @@ msgstr "展開"
 msgid "Expand (tr)"
 msgstr "展開 (三角)"
 
-#: ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:1042
 msgid "Expand Expression"
 msgstr "展開數式"
 
@@ -1628,7 +1632,7 @@ msgstr "展開數式"
 msgid "Expand trigonometric expression"
 msgstr "展開三角函數數式"
 
-#: ../src/ToolBar.cpp:109
+#: ../src/ToolBar.cpp:111
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -1636,7 +1640,7 @@ msgstr ""
 msgid "Export"
 msgstr "匯出"
 
-#: ../src/ConfigDialogue.cpp:519
+#: ../src/ConfigDialogue.cpp:525
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1696,7 +1700,7 @@ msgstr "因式分解"
 msgid "Factor Complex"
 msgstr "複數因式分解"
 
-#: ../src/MathCtrl.cpp:1038
+#: ../src/MathCtrl.cpp:1041
 msgid "Factor Expression"
 msgstr "因式分解數式"
 
@@ -1716,7 +1720,7 @@ msgstr "階乘與 Gamma 函數(&G)"
 msgid "Fatal error"
 msgstr "嚴重錯誤"
 
-#: ../src/GroupCell.cpp:1572
+#: ../src/GroupCell.cpp:1576
 #, c-format
 msgid "Figure %d:"
 msgstr "圖 %d:"
@@ -1748,7 +1752,7 @@ msgstr "找不到您想開啟的檔案。"
 msgid "File:"
 msgstr "檔案："
 
-#: ../src/ToolBar.cpp:148
+#: ../src/ToolBar.cpp:150
 msgid "Find"
 msgstr "尋找"
 
@@ -1764,7 +1768,7 @@ msgstr "求極限(&L)..."
 msgid "Find Minimum..."
 msgstr "求極小值..."
 
-#: ../src/MathCtrl.cpp:1035
+#: ../src/MathCtrl.cpp:1038
 msgid "Find Root..."
 msgstr "找根..."
 
@@ -1792,7 +1796,7 @@ msgstr "找多項式所有的根(以長浮點數表示)"
 msgid "Find and Replace"
 msgstr "尋找及取代"
 
-#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
+#: ../src/wxMaximaFrame.cpp:522 ../src/ToolBar.cpp:152
 msgid "Find and replace"
 msgstr "尋找及取代"
 
@@ -1821,17 +1825,17 @@ msgstr "找根"
 msgid "Find:"
 msgstr "尋找"
 
-#: ../src/ConfigDialogue.cpp:567
+#: ../src/ConfigDialogue.cpp:573
 #, fuzzy
 msgid "Finnish"
 msgstr "Danish"
 
-#: ../src/ConfigDialogue.cpp:634
+#: ../src/ConfigDialogue.cpp:640
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:465
+#: ../src/ConfigDialogue.cpp:468
 msgid "Fixed font in text controls"
 msgstr "文字控制項使用等寬字型"
 
@@ -1844,29 +1848,29 @@ msgstr "全部選取\tCtrl-A"
 msgid "Fold all sections"
 msgstr ""
 
-#: ../src/ToolBar.cpp:162
+#: ../src/ToolBar.cpp:164
 msgid "Follow"
 msgstr ""
 
-#: ../src/ParenCell.cpp:320
+#: ../src/ParenCell.cpp:323
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr ""
 
-#: ../src/IntCell.cpp:286 ../src/ParenCell.cpp:382
+#: ../src/IntCell.cpp:289 ../src/ParenCell.cpp:385
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:202
+#: ../src/SqrtCell.cpp:205
 msgid ""
 "Font issue: The sqrt() sign has the size 0! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:201
+#: ../src/SqrtCell.cpp:204
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr ""
 
@@ -1878,7 +1882,7 @@ msgstr "文件中用以顯示一般文字的字型"
 msgid "Font used for displaying math characters in document."
 msgstr "文件中用以顯示數學文字的字型"
 
-#: ../src/ConfigDialogue.cpp:715
+#: ../src/ConfigDialogue.cpp:721
 msgid "Fonts"
 msgstr "字型"
 
@@ -1886,12 +1890,12 @@ msgstr "字型"
 msgid "Format:"
 msgstr "格式："
 
-#: ../src/ToolBar.cpp:86
+#: ../src/ToolBar.cpp:88
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:568
+#: ../src/ConfigDialogue.cpp:574
 msgid "French"
 msgstr "French"
 
@@ -1909,7 +1913,7 @@ msgstr "全螢幕\tAlt-Enter"
 msgid "Function"
 msgstr "函數"
 
-#: ../src/ConfigDialogue.cpp:737
+#: ../src/ConfigDialogue.cpp:743
 msgid "Function names"
 msgstr "函數名"
 
@@ -1942,7 +1946,7 @@ msgstr "最大公因式"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:569
+#: ../src/ConfigDialogue.cpp:575
 msgid "Galician"
 msgstr ""
 
@@ -1974,7 +1978,7 @@ msgstr "以二維陣列產生一個矩陣"
 msgid "Generate a matrix from a lambda expression"
 msgstr "以 lambda 數式產生矩陣"
 
-#: ../src/ConfigDialogue.cpp:570
+#: ../src/ConfigDialogue.cpp:576
 msgid "German"
 msgstr "German"
 
@@ -2010,13 +2014,13 @@ msgstr "取得複數數式的虛部"
 msgid "Get the real part of complex expression"
 msgstr "取得複數數式的實部"
 
-#: ../src/MathCtrl.cpp:5984
+#: ../src/MathCtrl.cpp:5987
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:571
+#: ../src/ConfigDialogue.cpp:577
 msgid "Greek"
 msgstr "Greek"
 
@@ -2030,7 +2034,7 @@ msgstr "希臘字母"
 msgid "Greek Letters\tAlt-Shift-G"
 msgstr "常用數學\tAlt-Shift-M"
 
-#: ../src/ConfigDialogue.cpp:739
+#: ../src/ConfigDialogue.cpp:745
 msgid "Greek constants"
 msgstr "希臘字母"
 
@@ -2045,11 +2049,11 @@ msgid ""
 "tex)|*.tex"
 msgstr "HTML 檔案 (*.html)|*.html|pdfLaTeX 檔案 (*.tex)|*.tex|所有類型|*"
 
-#: ../src/ConfigDialogue.cpp:531
+#: ../src/ConfigDialogue.cpp:537
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:208
 msgid "Help"
 msgstr "說明"
 
@@ -2062,7 +2066,7 @@ msgstr "全部隱藏\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "隱藏所有窗格"
 
-#: ../src/ConfigDialogue.cpp:746
+#: ../src/ConfigDialogue.cpp:752
 msgid "Highlight (dpart)"
 msgstr "高亮度標記(於dpart函數中)"
 
@@ -2094,7 +2098,7 @@ msgstr ""
 "動時按住 Shift 鍵將會選擇單元，按 backspace 或 delete 鍵兩次會刪除相鄰的單"
 "元。"
 
-#: ../src/ConfigDialogue.cpp:572
+#: ../src/ConfigDialogue.cpp:578
 msgid "Hungarian"
 msgstr "Hungarian"
 
@@ -2130,11 +2134,11 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:436
+#: ../src/ConfigDialogue.cpp:439
 msgid "If not extremely long"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:435
+#: ../src/ConfigDialogue.cpp:438
 msgid "If not very long"
 msgstr ""
 
@@ -2215,11 +2219,11 @@ msgstr ""
 msgid "Include columns:"
 msgstr "包含欄位："
 
-#: ../src/ConfigDialogue.cpp:534
+#: ../src/ConfigDialogue.cpp:540
 msgid "Include input cells in the export of a worksheet"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:636
+#: ../src/ConfigDialogue.cpp:642
 msgid "Incremental Search"
 msgstr ""
 
@@ -2246,7 +2250,7 @@ msgstr "一階常微方初始值問題(&1)..."
 msgid "Initial Value Problem (&2)..."
 msgstr "二階常微方初始值問題(&2)..."
 
-#: ../src/ConfigDialogue.cpp:742
+#: ../src/ConfigDialogue.cpp:748
 msgid "Input labels"
 msgstr "輸入標籤"
 
@@ -2254,7 +2258,7 @@ msgstr "輸入標籤"
 msgid "Insert"
 msgstr "插入"
 
-#: ../src/ConfigDialogue.cpp:480
+#: ../src/ConfigDialogue.cpp:483
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
@@ -2295,15 +2299,15 @@ msgstr "插入子章節單元(&U)\tCtrl-4"
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "插入子章節單元(&U)\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1060
 msgid "Insert Section Cell"
 msgstr "插入章節單元"
 
-#: ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1061
 msgid "Insert Subsection Cell"
 msgstr "插入子章節單元"
 
-#: ../src/MathCtrl.cpp:1059
+#: ../src/MathCtrl.cpp:1062
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "插入子章節單元"
@@ -2312,11 +2316,11 @@ msgstr "插入子章節單元"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "插入標題單元(&I)\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:1055
+#: ../src/MathCtrl.cpp:1058
 msgid "Insert Text Cell"
 msgstr "插入文字單元"
 
-#: ../src/MathCtrl.cpp:1056
+#: ../src/MathCtrl.cpp:1059
 msgid "Insert Title Cell"
 msgstr "插入標題單元"
 
@@ -2353,7 +2357,7 @@ msgstr "插入一個換頁符號"
 msgid "Insert image"
 msgstr "插入圖片"
 
-#: ../src/ConfigDialogue.cpp:444
+#: ../src/ConfigDialogue.cpp:447
 msgid "Integers and single letters"
 msgstr ""
 
@@ -2382,11 +2386,11 @@ msgstr "對數式積分"
 msgid "Integrate expression with Risch algorithm"
 msgstr "使用 Risch 演算法積分數式"
 
-#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1042
+#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1045
 msgid "Integrate..."
 msgstr "積分..."
 
-#: ../src/ToolBar.cpp:157
+#: ../src/ToolBar.cpp:159
 msgid "Interrupt"
 msgstr "中斷"
 
@@ -2394,13 +2398,13 @@ msgstr "中斷"
 msgid "Interrupt current computation"
 msgstr "中斷目前的計算"
 
-#: ../src/ToolBar.cpp:159
+#: ../src/ToolBar.cpp:161
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:918
+#: ../src/ConfigDialogue.cpp:925
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2436,19 +2440,19 @@ msgid ""
 "that a few special characters like the "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:573
+#: ../src/ConfigDialogue.cpp:579
 msgid "Italian"
 msgstr "Italian"
 
-#: ../src/ConfigDialogue.cpp:777
+#: ../src/ConfigDialogue.cpp:783
 msgid "Italic"
 msgstr "斜體"
 
-#: ../src/ConfigDialogue.cpp:574
+#: ../src/ConfigDialogue.cpp:580
 msgid "Japanese"
 msgstr "Japanese"
 
-#: ../src/ConfigDialogue.cpp:576
+#: ../src/ConfigDialogue.cpp:582
 msgid "Kabyle"
 msgstr ""
 
@@ -2456,7 +2460,7 @@ msgstr ""
 msgid "Kappa"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:471
+#: ../src/ConfigDialogue.cpp:474
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
@@ -2465,15 +2469,15 @@ msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
 msgid "LCM"
 msgstr "最小公倍式"
 
-#: ../src/ConfigDialogue.cpp:522
+#: ../src/ConfigDialogue.cpp:528
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:525
+#: ../src/ConfigDialogue.cpp:531
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:451
+#: ../src/ConfigDialogue.cpp:454
 msgid "Label width:"
 msgstr ""
 
@@ -2485,7 +2489,7 @@ msgstr ""
 msgid "Language used for wxMaxima GUI."
 msgstr "wxMaxima 圖形介面的語言"
 
-#: ../src/ConfigDialogue.cpp:557
+#: ../src/ConfigDialogue.cpp:563
 msgid "Language:"
 msgstr "語言："
 
@@ -2541,7 +2545,7 @@ msgstr "串列："
 msgid "List:"
 msgstr "串列："
 
-#: ../src/ConfigDialogue.cpp:780
+#: ../src/ConfigDialogue.cpp:786
 msgid "Load"
 msgstr "載入"
 
@@ -2557,7 +2561,7 @@ msgstr "以批次命令的方式載入 Maxima 檔"
 msgid "Load a Maxima package file"
 msgstr "讀取 Maxima package 檔"
 
-#: ../src/ConfigDialogue.cpp:1645
+#: ../src/ConfigDialogue.cpp:1652
 msgid "Load style from file"
 msgstr "自檔案載入樣式"
 
@@ -2616,11 +2620,11 @@ msgstr "映射函數至矩陣"
 msgid "Match Case"
 msgstr "以批次檔載入"
 
-#: ../src/ConfigDialogue.cpp:462
+#: ../src/ConfigDialogue.cpp:465
 msgid "Match parenthesis in text controls"
 msgstr "在文字控制項中輸入時匹配括弧"
 
-#: ../src/ConfigDialogue.cpp:729
+#: ../src/ConfigDialogue.cpp:735
 msgid "Math font:"
 msgstr "數學字型："
 
@@ -2653,7 +2657,7 @@ msgstr "Maxima"
 msgid "Maxima has a question"
 msgstr "Maxima 詢問"
 
-#: ../src/ConfigDialogue.cpp:741
+#: ../src/ConfigDialogue.cpp:747
 msgid "Maxima input"
 msgstr "Maxima 輸入"
 
@@ -2678,11 +2682,11 @@ msgstr "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|所有類型|*
 msgid "Maxima process terminated."
 msgstr "Maxima 程序已結束"
 
-#: ../src/ConfigDialogue.cpp:654
+#: ../src/ConfigDialogue.cpp:660
 msgid "Maxima program:"
 msgstr "Maxima 程式："
 
-#: ../src/ConfigDialogue.cpp:743
+#: ../src/ConfigDialogue.cpp:749
 msgid "Maxima questions"
 msgstr "Maxima 詢問"
 
@@ -2743,7 +2747,7 @@ msgid ""
 "    float(%);"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:427
+#: ../src/ConfigDialogue.cpp:430
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
@@ -2767,7 +2771,7 @@ msgstr "平均值："
 msgid "Median..."
 msgstr "中位數..."
 
-#: ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:990
 msgid "Merge Cells"
 msgstr "合併單元"
 
@@ -2805,7 +2809,7 @@ msgstr ""
 msgid "Name:"
 msgstr "命名："
 
-#: ../src/ToolBar.cpp:111
+#: ../src/ToolBar.cpp:113
 msgid "New"
 msgstr "新增"
 
@@ -2813,11 +2817,11 @@ msgstr "新增"
 msgid "New\tCtrl-N"
 msgstr "新增\tCtrl-N"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:115
 msgid "New document"
 msgstr "新增文件"
 
-#: ../src/ConfigDialogue.cpp:486
+#: ../src/ConfigDialogue.cpp:489
 msgid "New lines: Jump to text"
 msgstr ""
 
@@ -2833,7 +2837,7 @@ msgstr "新變數："
 msgid "Next Command\tAlt-Down"
 msgstr "下一個命令\tAlt-Down"
 
-#: ../src/ConfigDialogue.cpp:434 ../src/ConfigDialogue.cpp:443
+#: ../src/ConfigDialogue.cpp:437 ../src/ConfigDialogue.cpp:446
 msgid "No"
 msgstr ""
 
@@ -2864,7 +2868,7 @@ msgid ""
 "maxima's input."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:578
+#: ../src/ConfigDialogue.cpp:584
 msgid "Norwegian"
 msgstr ""
 
@@ -2899,7 +2903,7 @@ msgstr "分子 degree："
 msgid "Number of equations:"
 msgstr "方程式數量："
 
-#: ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:742
 msgid "Numbers"
 msgstr "數字"
 
@@ -2952,8 +2956,8 @@ msgstr "單樣本 t-檢驗"
 msgid "Online tutorials"
 msgstr "線上教材"
 
-#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:115
-#: ../src/wxMaxima.cpp:2805
+#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/wxMaxima.cpp:2805
+#: ../src/ToolBar.cpp:117
 msgid "Open"
 msgstr "開啟"
 
@@ -2961,7 +2965,7 @@ msgstr "開啟"
 msgid "Open Recent"
 msgstr "最近開啟的文件"
 
-#: ../src/ConfigDialogue.cpp:477
+#: ../src/ConfigDialogue.cpp:480
 msgid "Open a cell when Maxima expects input"
 msgstr "當 Maxima 期望輸入時新增單元"
 
@@ -2973,7 +2977,7 @@ msgstr "開啟文件"
 msgid "Open a new window"
 msgstr "開新視窗"
 
-#: ../src/ToolBar.cpp:117
+#: ../src/ToolBar.cpp:119
 msgid "Open document"
 msgstr "開啟文件"
 
@@ -2985,11 +2989,11 @@ msgstr "開啟矩陣"
 msgid "Opening file"
 msgstr "正在開啟檔案"
 
-#: ../src/ConfigDialogue.cpp:628
+#: ../src/ConfigDialogue.cpp:634
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:129
 msgid "Options"
 msgstr "選項"
 
@@ -2997,11 +3001,11 @@ msgstr "選項"
 msgid "Options:"
 msgstr "選項："
 
-#: ../src/ConfigDialogue.cpp:759
+#: ../src/ConfigDialogue.cpp:765
 msgid "Outdated cells"
 msgstr "過時的單元"
 
-#: ../src/ConfigDialogue.cpp:744
+#: ../src/ConfigDialogue.cpp:750
 msgid "Output labels"
 msgstr "輸出標籤"
 
@@ -3062,7 +3066,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067
+#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:141
 msgid "Paste"
 msgstr "貼上"
 
@@ -3070,7 +3074,7 @@ msgstr "貼上"
 msgid "Paste\tCtrl-V"
 msgstr "貼上\tCtrl-V"
 
-#: ../src/ToolBar.cpp:141
+#: ../src/ToolBar.cpp:143
 msgid "Paste from clipboard"
 msgstr "從剪貼簿貼上"
 
@@ -3098,7 +3102,7 @@ msgstr "圓餅圖..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "請從「編輯(E)」->「設定(O)」設定 wxMaxima"
 
-#: ../src/ConfigDialogue.cpp:1472
+#: ../src/ConfigDialogue.cpp:1479
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "請重新啟動 wxMaxima 使變更生效！"
 
@@ -3123,7 +3127,7 @@ msgstr "二維繪圖"
 msgid "Plot 2D..."
 msgstr "二維繪圖..."
 
-#: ../src/MathCtrl.cpp:1045
+#: ../src/MathCtrl.cpp:1048
 msgid "Plot 2d..."
 msgstr "二維繪圖..."
 
@@ -3135,7 +3139,7 @@ msgstr "三維繪圖"
 msgid "Plot 3D..."
 msgstr "三維繪圖..."
 
-#: ../src/MathCtrl.cpp:1046
+#: ../src/MathCtrl.cpp:1049
 msgid "Plot 3d..."
 msgstr "三維繪圖..."
 
@@ -3161,7 +3165,7 @@ msgstr "繪圖存檔："
 msgid "Point:"
 msgstr "點："
 
-#: ../src/ConfigDialogue.cpp:579
+#: ../src/ConfigDialogue.cpp:585
 msgid "Polish"
 msgstr "Polish"
 
@@ -3173,7 +3177,7 @@ msgstr "多項式 1："
 msgid "Polynomial 2:"
 msgstr "多項式 2："
 
-#: ../src/ConfigDialogue.cpp:580
+#: ../src/ConfigDialogue.cpp:586
 msgid "Portuguese (Brazilian)"
 msgstr "Portuguese (Brazilian)"
 
@@ -3202,11 +3206,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr "上一個命令\tAlt-Up"
 
-#: ../src/ToolBar.cpp:124
+#: ../src/ToolBar.cpp:126
 msgid "Print"
 msgstr "列印"
 
-#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
+#: ../src/wxMaximaFrame.cpp:483 ../src/ToolBar.cpp:128
 msgid "Print document"
 msgstr "列印文件"
 
@@ -3252,7 +3256,7 @@ msgstr "呼叫歷史記錄中的下一個命令"
 msgid "Recall previous command from history"
 msgstr "呼叫歷史紀錄中的上一個命令"
 
-#: ../src/ConfigDialogue.cpp:607
+#: ../src/ConfigDialogue.cpp:613
 msgid "Recent files list length:"
 msgstr ""
 
@@ -3311,16 +3315,16 @@ msgstr "回報發現的錯誤"
 msgid "Restart Maxima"
 msgstr "重新啟動 Maxima"
 
-#: ../src/ToolBar.cpp:154
+#: ../src/ToolBar.cpp:156
 #, fuzzy
 msgid "Restart maxima"
 msgstr "重新啟動 Maxima"
 
-#: ../src/MathCtrl.cpp:4497
+#: ../src/MathCtrl.cpp:4500
 msgid "Result"
 msgstr ""
 
-#: ../src/ToolBar.cpp:163
+#: ../src/ToolBar.cpp:165
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3348,7 +3352,7 @@ msgstr "找多項式所有的根(長浮點數)"
 msgid "Rows:"
 msgstr "列："
 
-#: ../src/ConfigDialogue.cpp:581
+#: ../src/ConfigDialogue.cpp:587
 msgid "Russian"
 msgstr "Russian"
 
@@ -3364,12 +3368,12 @@ msgstr "樣本 2："
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:118
-#: ../src/wxMaxima.cpp:5937
+#: ../src/ConfigDialogue.cpp:787 ../src/wxMaxima.cpp:5937
+#: ../src/ToolBar.cpp:120
 msgid "Save"
 msgstr "儲存"
 
-#: ../src/MathCtrl.cpp:963
+#: ../src/MathCtrl.cpp:966
 msgid "Save Animation..."
 msgstr "儲存動畫..."
 
@@ -3381,7 +3385,7 @@ msgstr "另存新檔"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "另存新檔...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:961
+#: ../src/MathCtrl.cpp:964
 msgid "Save Image..."
 msgstr "儲存圖片..."
 
@@ -3397,7 +3401,7 @@ msgstr "儲存為圖片..."
 msgid "Save animation to file"
 msgstr "儲存動畫至檔案"
 
-#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:472 ../src/ToolBar.cpp:122
 msgid "Save document"
 msgstr "儲存文件"
 
@@ -3411,7 +3415,7 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:628
 msgid "Save panes layout"
 msgstr "儲存窗格配置"
 
@@ -3431,11 +3435,11 @@ msgstr "儲存所選區域為圖片檔"
 msgid "Save selection to file"
 msgstr "儲存選取區域至檔案"
 
-#: ../src/ConfigDialogue.cpp:1637
+#: ../src/ConfigDialogue.cpp:1644
 msgid "Save style to file"
 msgstr "將樣式儲存至檔案"
 
-#: ../src/ConfigDialogue.cpp:619
+#: ../src/ConfigDialogue.cpp:625
 msgid "Save wxMaxima window size/position"
 msgstr "儲存 wxMaxima 視窗的大小及位置"
 
@@ -3468,26 +3472,26 @@ msgstr "散布圖..."
 msgid "Section"
 msgstr "章節"
 
-#: ../src/ConfigDialogue.cpp:750
+#: ../src/ConfigDialogue.cpp:756
 msgid "Section cell"
 msgstr "章節單元"
 
-#: ../src/BTextCtrl.cpp:48 ../src/TextCell.cpp:290 ../src/TextCell.cpp:304
-#: ../src/TextCell.cpp:320 ../src/TextCell.cpp:332
+#: ../src/BTextCtrl.cpp:48 ../src/TextCell.cpp:294 ../src/TextCell.cpp:308
+#: ../src/TextCell.cpp:324 ../src/TextCell.cpp:336
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/TextCell.cpp:137
+#: ../src/TextCell.cpp:139
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1053 ../src/MathCtrl.cpp:1069
+#: ../src/MathCtrl.cpp:1056 ../src/MathCtrl.cpp:1072
 msgid "Select All"
 msgstr "全部選取"
 
@@ -3495,7 +3499,7 @@ msgstr "全部選取"
 msgid "Select All\tCtrl-A"
 msgstr "全部選取\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:904 ../src/ConfigDialogue.cpp:909
+#: ../src/ConfigDialogue.cpp:911 ../src/ConfigDialogue.cpp:916
 msgid "Select Maxima program"
 msgstr "選擇 Maxima 程式"
 
@@ -3508,7 +3512,7 @@ msgstr "選取子樣本"
 msgid "Select a constant"
 msgstr "選擇常數"
 
-#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
+#: ../src/wxMaximaFrame.cpp:525 ../src/ToolBar.cpp:144 ../src/ToolBar.cpp:146
 msgid "Select all"
 msgstr "全部選取"
 
@@ -3524,7 +3528,7 @@ msgid ""
 msgstr ""
 "選取輸出並點擊右鍵會顯示功能表，其中含有一些供您方便操作所選區域的函數。"
 
-#: ../src/ConfigDialogue.cpp:757
+#: ../src/ConfigDialogue.cpp:763
 msgid "Selection"
 msgstr "所選區域"
 
@@ -3611,7 +3615,7 @@ msgstr "顯示小秘訣(&T)..."
 msgid "Show &Variables"
 msgstr "顯示變數(&V)"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:210
 msgid "Show Maxima help"
 msgstr "顯示 Maxima 說明"
 
@@ -3659,7 +3663,7 @@ msgstr "顯示函數範本"
 msgid "Show long expressions in wxMaxima document."
 msgstr "在 wxMaxima 文件中顯示長的數式"
 
-#: ../src/ConfigDialogue.cpp:432
+#: ../src/ConfigDialogue.cpp:435
 #, fuzzy
 msgid "Show long expressions:"
 msgstr "顯示長的數式"
@@ -3668,7 +3672,7 @@ msgstr "顯示長的數式"
 msgid "Show the definition of function:"
 msgstr "顯示該函數的定義："
 
-#: ../src/ConfigDialogue.cpp:459
+#: ../src/ConfigDialogue.cpp:462
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
@@ -3698,7 +3702,7 @@ msgstr "化簡根式"
 msgid "Simplify (tr)"
 msgstr "化簡 (三角)"
 
-#: ../src/MathCtrl.cpp:1037
+#: ../src/MathCtrl.cpp:1040
 msgid "Simplify Expression"
 msgstr "化簡數式"
 
@@ -3813,7 +3817,7 @@ msgstr "解常微分方程式 (最大 2 階)"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "以 Laplace 變換解常微分方程式"
 
-#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1034
+#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1037
 msgid "Solve..."
 msgstr "求解..."
 
@@ -3824,7 +3828,7 @@ msgid ""
 "needed in order to compile the output, though."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:582
+#: ../src/ConfigDialogue.cpp:588
 msgid "Spanish"
 msgstr "Spanish"
 
@@ -3833,20 +3837,20 @@ msgstr "Spanish"
 msgid "Special"
 msgstr "特殊"
 
-#: ../src/ConfigDialogue.cpp:738
+#: ../src/ConfigDialogue.cpp:744
 msgid "Special constants"
 msgstr "特殊常數"
 
-#: ../src/MathCtrl.cpp:964
+#: ../src/MathCtrl.cpp:967
 msgid "Start Animation"
 msgstr "開始動畫"
 
-#: ../src/ToolBar.cpp:186
+#: ../src/ToolBar.cpp:188
 #, fuzzy
 msgid "Start or Stop animation"
 msgstr "開始動畫"
 
-#: ../src/ToolBar.cpp:188
+#: ../src/ToolBar.cpp:190
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -3881,7 +3885,7 @@ msgstr "統計"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "統計\tAlt-Shift-S"
 
-#: ../src/ConfigDialogue.cpp:740
+#: ../src/ConfigDialogue.cpp:746
 msgid "Strings"
 msgstr "字串"
 
@@ -3889,7 +3893,7 @@ msgstr "字串"
 msgid "Style"
 msgstr "樣式"
 
-#: ../src/ConfigDialogue.cpp:716
+#: ../src/ConfigDialogue.cpp:722
 msgid "Styles"
 msgstr "樣式"
 
@@ -3901,7 +3905,7 @@ msgstr "子樣本..."
 msgid "Subsection"
 msgstr "子章節"
 
-#: ../src/ConfigDialogue.cpp:749
+#: ../src/ConfigDialogue.cpp:755
 msgid "Subsection cell"
 msgstr "子章節單元"
 
@@ -3914,7 +3918,7 @@ msgstr "代換"
 msgid "Substitute"
 msgstr "代換"
 
-#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1040
+#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1043
 msgid "Substitute..."
 msgstr "代換..."
 
@@ -3923,7 +3927,7 @@ msgstr "代換..."
 msgid "Subsubsection"
 msgstr "子章節"
 
-#: ../src/ConfigDialogue.cpp:748
+#: ../src/ConfigDialogue.cpp:754
 #, fuzzy
 msgid "Subsubsection cell"
 msgstr "子章節單元"
@@ -3970,15 +3974,15 @@ msgstr "Tellrat 函數"
 msgid "Text"
 msgstr "文字"
 
-#: ../src/ConfigDialogue.cpp:747
+#: ../src/ConfigDialogue.cpp:753
 msgid "Text cell"
 msgstr "文字單元"
 
-#: ../src/ConfigDialogue.cpp:752
+#: ../src/ConfigDialogue.cpp:758
 msgid "Text cell background"
 msgstr "文字單元背景"
 
-#: ../src/ConfigDialogue.cpp:758
+#: ../src/ConfigDialogue.cpp:764
 #, fuzzy
 msgid "Text equal to selection"
 msgstr "剪下所選區域"
@@ -4012,7 +4016,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr ""
 
-#: ../src/TextCell.cpp:134
+#: ../src/TextCell.cpp:136
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4067,7 +4071,7 @@ msgstr ""
 "sourceforge.net/wiki/index.php/Tutorials 以獲得更多 wxMaxima 與 Maxima 的相關"
 "資訊。"
 
-#: ../src/SlideShowCell.cpp:336
+#: ../src/SlideShowCell.cpp:338
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -4107,7 +4111,7 @@ msgstr "抱歉，小秘訣無法顯示！"
 msgid "Title"
 msgstr "標題"
 
-#: ../src/ConfigDialogue.cpp:751
+#: ../src/ConfigDialogue.cpp:757
 msgid "Title cell"
 msgstr "標題單元"
 
@@ -4129,7 +4133,7 @@ msgstr "計算長浮點數(&B)"
 msgid "To &Float"
 msgstr "計算浮點數(&F)"
 
-#: ../src/MathCtrl.cpp:1032
+#: ../src/MathCtrl.cpp:1035
 msgid "To Float"
 msgstr "計算浮點數"
 
@@ -4212,15 +4216,15 @@ msgstr "翻譯者"
 msgid "Transpose a matrix"
 msgstr "計算轉置矩陣"
 
-#: ../src/MathCtrl.cpp:5886
+#: ../src/MathCtrl.cpp:5889
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5953
+#: ../src/MathCtrl.cpp:5956
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:583
+#: ../src/ConfigDialogue.cpp:589
 msgid "Turkish"
 msgstr ""
 
@@ -4236,7 +4240,7 @@ msgstr "雙樣本 t-檢驗"
 msgid "Type:"
 msgstr "類型："
 
-#: ../src/ConfigDialogue.cpp:584
+#: ../src/ConfigDialogue.cpp:590
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
@@ -4254,11 +4258,11 @@ msgid ""
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:778
+#: ../src/ConfigDialogue.cpp:784
 msgid "Underlined"
 msgstr "底線"
 
-#: ../src/ConfigDialogue.cpp:441
+#: ../src/ConfigDialogue.cpp:444
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
@@ -4270,7 +4274,7 @@ msgstr "復原\tCtrl-Z"
 msgid "Undo last change"
 msgstr "復原上次的變更"
 
-#: ../src/ConfigDialogue.cpp:602
+#: ../src/ConfigDialogue.cpp:608
 msgid "Undo limit (0 for none):"
 msgstr ""
 
@@ -4316,7 +4320,7 @@ msgstr "Epsilon:"
 msgid "Use Gosper algorithm"
 msgstr "使用 Gosper 演算法"
 
-#: ../src/ConfigDialogue.cpp:540
+#: ../src/ConfigDialogue.cpp:546
 msgid "Use MathJAX in HTML export"
 msgstr ""
 
@@ -4330,15 +4334,15 @@ msgid ""
 "time in order to typeset an equation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:625
+#: ../src/ConfigDialogue.cpp:631
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:208 ../src/ConfigDialogue.cpp:468
+#: ../src/ConfigDialogue.cpp:208 ../src/ConfigDialogue.cpp:471
 msgid "Use centered dot character for multiplication"
 msgstr "用圓點符號表示乘法"
 
-#: ../src/ConfigDialogue.cpp:731
+#: ../src/ConfigDialogue.cpp:737
 msgid "Use jsMath fonts"
 msgstr "使用 jsMath 字型"
 
@@ -4348,7 +4352,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:745
+#: ../src/ConfigDialogue.cpp:751
 msgid "User-defined labels"
 msgstr ""
 
@@ -4371,7 +4375,7 @@ msgstr "變數："
 msgid "Variable:"
 msgstr "變數："
 
-#: ../src/ConfigDialogue.cpp:735
+#: ../src/ConfigDialogue.cpp:741
 msgid "Variables"
 msgstr "變數"
 
@@ -4431,7 +4435,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6856
+#: ../src/MathCtrl.cpp:6859
 msgid "Wrapped search"
 msgstr ""
 
@@ -4451,7 +4455,7 @@ msgstr ""
 msgid "Xi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:437
+#: ../src/ConfigDialogue.cpp:440
 #, fuzzy
 msgid "Yes"
 msgstr "是"
@@ -4567,12 +4571,12 @@ msgstr "[ 未儲存* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4447
+#: ../src/MathCtrl.cpp:4450
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4572
+#: ../src/MathCtrl.cpp:4575
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -4638,7 +4642,7 @@ msgstr ""
 msgid "chi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:681
+#: ../src/ConfigDialogue.cpp:687
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -4742,7 +4746,7 @@ msgstr "對數尺度"
 msgid "matrix[i,j]:"
 msgstr "矩陣[i,j]："
 
-#: ../src/ConfigDialogue.cpp:695
+#: ../src/ConfigDialogue.cpp:701
 msgid "maxima's pwd is path to document"
 msgstr ""
 
@@ -4864,7 +4868,7 @@ msgstr "對稱"
 msgid "tau"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:685
+#: ../src/ConfigDialogue.cpp:691
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
@@ -5035,7 +5039,7 @@ msgid ""
 "table_form([1,2,3,4,5]);"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:419
+#: ../src/ConfigDialogue.cpp:422
 msgid "x"
 msgstr ""
 

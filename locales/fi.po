@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 11:34+0200\n"
+"POT-Creation-Date: 2016-10-17 23:50+0200\n"
 "PO-Revision-Date: 2016-02-22 16:12-0500\n"
 "Last-Translator: kahkonen <mika.m.kahkonen@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -61,20 +61,20 @@ msgstr ""
 "\n"
 "Ei yhdistetty."
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:689
 #, fuzzy
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr "      --dynamic-space-size <int>"
 
-#: ../src/ConfigDialogue.cpp:679
+#: ../src/ConfigDialogue.cpp:685
 msgid "      -l <name>"
 msgstr "      -l <nimi>"
 
-#: ../src/ImgCell.cpp:180 ../src/ImgCell.cpp:185
+#: ../src/ImgCell.cpp:182 ../src/ImgCell.cpp:187
 msgid " (Graphics) "
 msgstr " (Grafiikat) "
 
-#: ../src/EditorCell.cpp:3088 ../src/EditorCell.cpp:3270
+#: ../src/EditorCell.cpp:3109 ../src/EditorCell.cpp:3344
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -99,7 +99,7 @@ msgid ""
 " was saved using a newer version of wxMaxima. Please update your wxMaxima."
 msgstr " tallennettiin uudemmalla wxMaximan versiolla. Päivitä wxMaximasi."
 
-#: ../src/ConfigDialogue.cpp:528
+#: ../src/ConfigDialogue.cpp:534
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "\"Kopioi LaTeX\" lisää kaavamerkinnät"
 
@@ -372,7 +372,7 @@ msgstr "&Trigonometrinen sieventäminen"
 msgid "&pm3d"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:560
+#: ../src/ConfigDialogue.cpp:566
 msgid "(Use default language)"
 msgstr "(Käytä oletuskieltä)"
 
@@ -444,7 +444,7 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "&Kohdassa..."
 
-#: ../src/ConfigDialogue.cpp:701
+#: ../src/ConfigDialogue.cpp:707
 msgid "Abort evaluation on error"
 msgstr "Virhe"
 
@@ -457,7 +457,7 @@ msgstr "Tietoja"
 msgid "About wxMaxima"
 msgstr "Tietoja wxMaximasta"
 
-#: ../src/ConfigDialogue.cpp:755
+#: ../src/ConfigDialogue.cpp:761
 msgid "Active cell bracket"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgstr "Lisää hakemisto polkuu:"
 msgid "Add equality to the rational simplifier"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:537
+#: ../src/ConfigDialogue.cpp:543
 msgid "Add the .wxmx file to the HTML export"
 msgstr ""
 
@@ -494,7 +494,7 @@ msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:508
+#: ../src/ConfigDialogue.cpp:514
 msgid "Additional lines for the TeX preamble:"
 msgstr ""
 
@@ -502,25 +502,25 @@ msgstr ""
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:673
+#: ../src/ConfigDialogue.cpp:679
 msgid "Additional parameters for maxima"
 msgstr "Lisäparametreja maximaan"
 
-#: ../src/ConfigDialogue.cpp:591
+#: ../src/ConfigDialogue.cpp:597
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:200 ../src/ToolBar.cpp:244
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:445
+#: ../src/ConfigDialogue.cpp:448
 msgid "All variable names"
 msgstr "Kaikki muuttujanimet"
 
-#: ../src/ConfigDialogue.cpp:911
+#: ../src/ConfigDialogue.cpp:918
 msgid "All|*"
 msgstr "Kaikki | *"
 
@@ -548,7 +548,7 @@ msgstr "Taulukko:"
 msgid "Artwork by"
 msgstr "Kuvamateriaalin tehnyt"
 
-#: ../src/ConfigDialogue.cpp:631
+#: ../src/ConfigDialogue.cpp:637
 msgid "Ask to save untitled documents"
 msgstr "Ehdota nimettömien asiakirjojen tallentamista"
 
@@ -556,7 +556,7 @@ msgstr "Ehdota nimettömien asiakirjojen tallentamista"
 msgid "At value"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:483
+#: ../src/ConfigDialogue.cpp:486
 msgid "Auto-indent new lines"
 msgstr ""
 
@@ -569,7 +569,11 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:492
+msgid "Automatically wrap long text lines"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:603
 #, fuzzy
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Automaattitallennuksen väli (minuutteina, 0 tarkoittaa: off)"
@@ -582,7 +586,7 @@ msgstr ""
 msgid "Barsplot..."
 msgstr "Palkkikaavio..."
 
-#: ../src/ConfigDialogue.cpp:906
+#: ../src/ConfigDialogue.cpp:913
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Bat-tiedostot (*.bat) | *.bat | Kaikki | *"
 
@@ -603,11 +607,11 @@ msgstr ""
 msgid "Beta"
 msgstr "Beta"
 
-#: ../src/ConfigDialogue.cpp:514
+#: ../src/ConfigDialogue.cpp:520
 msgid "Bitmap scale for export:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:776
+#: ../src/ConfigDialogue.cpp:782
 msgid "Bold"
 msgstr "Lihavoi"
 
@@ -627,7 +631,7 @@ msgstr "Selaa"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2127
+#: ../src/MathCtrl.cpp:2130
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -647,22 +651,22 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2359
+#: ../src/MathCtrl.cpp:2362
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Virhe: Kysymykselle ei ole vastaussolua"
 
-#: ../src/MathCtrl.cpp:5891
+#: ../src/MathCtrl.cpp:5894
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5965
+#: ../src/MathCtrl.cpp:5968
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5934
+#: ../src/MathCtrl.cpp:5937
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -672,49 +676,49 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:781 ../src/GroupCell.cpp:952
+#: ../src/GroupCell.cpp:785 ../src/GroupCell.cpp:956
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
-#: ../src/AbsCell.cpp:199
+#: ../src/AbsCell.cpp:202
 msgid "Bug: No last cell in an absCell!"
 msgstr ""
 
-#: ../src/ConjugateCell.cpp:194
+#: ../src/ConjugateCell.cpp:197
 msgid "Bug: No last cell in an conjugateCell!"
 msgstr ""
 
-#: ../src/FracCell.cpp:472
+#: ../src/FracCell.cpp:475
 msgid "Bug: No last cell in an denominator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:270
+#: ../src/ExptCell.cpp:273
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr ""
 
-#: ../src/FracCell.cpp:460
+#: ../src/FracCell.cpp:463
 msgid "Bug: No last cell in an numerator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:260
+#: ../src/ExptCell.cpp:263
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
-#: ../src/ParenCell.cpp:535
+#: ../src/ParenCell.cpp:538
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
-#: ../src/SqrtCell.cpp:317
+#: ../src/SqrtCell.cpp:320
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2170
+#: ../src/MathCtrl.cpp:2173
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2137
+#: ../src/MathCtrl.cpp:2140
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -722,37 +726,37 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:600
+#: ../src/MathCtrl.cpp:603
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Virhe: Yrittää lisätä maximan tulosteen työkirjan ulkopuolella olevaan "
 "soluun."
 
-#: ../src/MathCtrl.cpp:2061
+#: ../src/MathCtrl.cpp:2064
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6577
+#: ../src/MathCtrl.cpp:6580
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2139
+#: ../src/MathCtrl.cpp:2142
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Virhe: Yrittää tallentaa solun sisällön muutoksen ilman solua."
 
-#: ../src/MathCtrl.cpp:1540
+#: ../src/MathCtrl.cpp:1543
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5935
+#: ../src/MathCtrl.cpp:5938
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5896 ../src/MathCtrl.cpp:5970 ../src/MathCtrl.cpp:6004
+#: ../src/MathCtrl.cpp:5899 ../src/MathCtrl.cpp:5973 ../src/MathCtrl.cpp:6007
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -845,7 +849,7 @@ msgstr ""
 msgid "Canonical (tr)"
 msgstr "Kanoninen (tr)"
 
-#: ../src/ConfigDialogue.cpp:561
+#: ../src/ConfigDialogue.cpp:567
 msgid "Catalan"
 msgstr "Katalaani"
 
@@ -853,7 +857,7 @@ msgstr "Katalaani"
 msgid "Ce&ll"
 msgstr "Solu"
 
-#: ../src/ConfigDialogue.cpp:754
+#: ../src/ConfigDialogue.cpp:760
 msgid "Cell bracket"
 msgstr ""
 
@@ -893,16 +897,16 @@ msgstr "Tarkista, onko wxMaximasta/Maximasta uudempaa versiota."
 msgid "Chi"
 msgstr "Khii"
 
-#: ../src/ConfigDialogue.cpp:562
+#: ../src/ConfigDialogue.cpp:568
 msgid "Chinese Simplified"
 msgstr "Yksinkertaistettu kiina"
 
-#: ../src/ConfigDialogue.cpp:563
+#: ../src/ConfigDialogue.cpp:569
 msgid "Chinese traditional"
 msgstr "Perinteinen kiina"
 
-#: ../src/ConfigDialogue.cpp:728 ../src/ConfigDialogue.cpp:730
-#: ../src/ConfigDialogue.cpp:770
+#: ../src/ConfigDialogue.cpp:734 ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:776
 msgid "Choose font"
 msgstr "Valitse fontti"
 
@@ -922,31 +926,31 @@ msgstr "Sulje\tCtrl+W"
 msgid "Close window"
 msgstr "Sulkee ikkunan"
 
-#: ../src/ConfigDialogue.cpp:762
+#: ../src/ConfigDialogue.cpp:768
 msgid "Code highlighting: Comments"
 msgstr "Koodin korostus: Kommentit"
 
-#: ../src/ConfigDialogue.cpp:766
+#: ../src/ConfigDialogue.cpp:772
 msgid "Code highlighting: End of line"
 msgstr "Koodin korotus: Rivin loppu"
 
-#: ../src/ConfigDialogue.cpp:761
+#: ../src/ConfigDialogue.cpp:767
 msgid "Code highlighting: Functions"
 msgstr "Koodin korostus: Funktiot"
 
-#: ../src/ConfigDialogue.cpp:763
+#: ../src/ConfigDialogue.cpp:769
 msgid "Code highlighting: Numbers"
 msgstr "Koodin korostus: Numerot"
 
-#: ../src/ConfigDialogue.cpp:765
+#: ../src/ConfigDialogue.cpp:771
 msgid "Code highlighting: Operators"
 msgstr "Koodin korostus: Operaattorit"
 
-#: ../src/ConfigDialogue.cpp:764
+#: ../src/ConfigDialogue.cpp:770
 msgid "Code highlighting: Strings"
 msgstr "Koodin korostus: Merkkijonot"
 
-#: ../src/ConfigDialogue.cpp:760
+#: ../src/ConfigDialogue.cpp:766
 msgid "Code highlighting: Variables"
 msgstr "Koodin korotus: Muuttujat"
 
@@ -974,7 +978,7 @@ msgstr "Pilkuilla erotetut x-koordinaatit"
 msgid "Comma separated y coordinates"
 msgstr "Pilkuilla erotetut y-koordinaatit"
 
-#: ../src/MathCtrl.cpp:1072
+#: ../src/MathCtrl.cpp:1075
 msgid "Comment Selection"
 msgstr ""
 
@@ -994,7 +998,7 @@ msgstr "Täydennä sana\tCtrl-K"
 msgid "Complete word"
 msgstr "Täydennä sana"
 
-#: ../src/ToolBar.cpp:156
+#: ../src/ToolBar.cpp:158
 msgid "Completely stop maxima and restart it"
 msgstr "Pysäytä maxima kokonaan ja käynnistä se uudelleen"
 
@@ -1030,16 +1034,16 @@ msgstr "Laske pienin yhteinen jaettava (lataa (load) funktiot ennen käyttöä)"
 msgid "Condition:"
 msgstr "Ehto:"
 
-#: ../src/ConfigDialogue.cpp:1639 ../src/ConfigDialogue.cpp:1647
+#: ../src/ConfigDialogue.cpp:1646 ../src/ConfigDialogue.cpp:1654
 msgid "Config file (*.ini)|*.ini"
 msgstr "Asetustiedosto (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1473
+#: ../src/ConfigDialogue.cpp:1480
 msgid "Configuration warning"
 msgstr ""
 
-#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
-#: ../src/wxMaximaFrame.cpp:540
+#: ../src/wxMaximaFrame.cpp:537 ../src/wxMaximaFrame.cpp:540
+#: ../src/ToolBar.cpp:131
 msgid "Configure wxMaxima"
 msgstr "Määrittele wxMaxima"
 
@@ -1105,8 +1109,8 @@ msgstr ""
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Muunna trigonometrinen funktio eksponenttimuotoon"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:973
-#: ../src/MathCtrl.cpp:1019 ../src/MathCtrl.cpp:1066
+#: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:976 ../src/MathCtrl.cpp:1022
+#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:138
 msgid "Copy"
 msgstr "Kopioi"
 
@@ -1118,13 +1122,13 @@ msgstr "Kopioi aiempi syöte\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "Kopioi aiempi tuloste\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:978
-#: ../src/MathCtrl.cpp:1024
+#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:981
+#: ../src/MathCtrl.cpp:1027
 msgid "Copy as Image"
 msgstr "Kopioi kuvana"
 
-#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:974
-#: ../src/MathCtrl.cpp:1020
+#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:977
+#: ../src/MathCtrl.cpp:1023
 msgid "Copy as LaTeX"
 msgstr "Kopioi LaTeXina"
 
@@ -1133,7 +1137,7 @@ msgstr "Kopioi LaTeXina"
 msgid "Copy as MathML"
 msgstr "Kopioi kuvana"
 
-#: ../src/MathCtrl.cpp:977 ../src/MathCtrl.cpp:1022
+#: ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:1025
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1141,12 +1145,12 @@ msgstr ""
 msgid "Copy as Text\tCtrl-Shift-C"
 msgstr "Kopioi tekstinä"
 
-#: ../src/MathCtrl.cpp:975 ../src/MathCtrl.cpp:1021
+#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:1024
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Kopioi kuvana"
 
-#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
+#: ../src/wxMaximaFrame.cpp:502 ../src/ToolBar.cpp:140
 msgid "Copy selection"
 msgstr "Kopioi valitun"
 
@@ -1176,11 +1180,11 @@ msgstr "Luo uusi solu aiemmalla syötteellä"
 msgid "Create a new cell with previous output"
 msgstr "Luo uusi solu aiemmalla tulosteella"
 
-#: ../src/ConfigDialogue.cpp:756
+#: ../src/ConfigDialogue.cpp:762
 msgid "Cursor"
 msgstr "Kursori"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1065
+#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:135
 msgid "Cut"
 msgstr "Leikkaa"
 
@@ -1188,15 +1192,15 @@ msgstr "Leikkaa"
 msgid "Cut\tCtrl-X"
 msgstr "Cut\tCtrl+X"
 
-#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
+#: ../src/wxMaximaFrame.cpp:499 ../src/ToolBar.cpp:137
 msgid "Cut selection"
 msgstr "Leikkaa valitun"
 
-#: ../src/ConfigDialogue.cpp:564
+#: ../src/ConfigDialogue.cpp:570
 msgid "Czech"
 msgstr "Tsekki"
 
-#: ../src/ConfigDialogue.cpp:565
+#: ../src/ConfigDialogue.cpp:571
 msgid "Danish"
 msgstr "Tanska"
 
@@ -1215,7 +1219,7 @@ msgstr "Datatiedosto  (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Data:"
 
-#: ../src/ConfigDialogue.cpp:704
+#: ../src/ConfigDialogue.cpp:710
 msgid "Debug: watch maxima's stdout stream"
 msgstr ""
 
@@ -1223,23 +1227,23 @@ msgstr ""
 msgid "Decompose rational function to partial fractions"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:734
+#: ../src/ConfigDialogue.cpp:740
 msgid "Default"
 msgstr "Oletus"
 
-#: ../src/ConfigDialogue.cpp:612
+#: ../src/ConfigDialogue.cpp:618
 msgid "Default animation framerate:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:727
+#: ../src/ConfigDialogue.cpp:733
 msgid "Default font:"
 msgstr "Oletus fontti"
 
-#: ../src/ConfigDialogue.cpp:415
+#: ../src/ConfigDialogue.cpp:418
 msgid "Default plot size for new maxima sessions:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:666
+#: ../src/ConfigDialogue.cpp:672
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
 
@@ -1257,7 +1261,7 @@ msgstr "Poista"
 msgid "Delete F&unction..."
 msgstr "Poista f&unktio..."
 
-#: ../src/MathCtrl.cpp:981 ../src/MathCtrl.cpp:1027
+#: ../src/MathCtrl.cpp:984 ../src/MathCtrl.cpp:1030
 msgid "Delete Selection"
 msgstr "Poista valittu"
 
@@ -1321,7 +1325,7 @@ msgstr "Derivoi"
 msgid "Differentiate expression"
 msgstr "Derivoi lauseke"
 
-#: ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:1046
 msgid "Differentiate..."
 msgstr "Derivoi..."
 
@@ -1353,7 +1357,7 @@ msgstr "Näytä evaluointiin käytetty aika"
 msgid "Divide"
 msgstr "Jaa"
 
-#: ../src/MathCtrl.cpp:1074
+#: ../src/MathCtrl.cpp:1077
 msgid "Divide Cell"
 msgstr "Jaa solu"
 
@@ -1379,11 +1383,11 @@ msgstr "Haluatko tallentaa asiakirjaan tekemäsi muutokset? \""
 msgid "Document "
 msgstr "Asiakirja"
 
-#: ../src/ConfigDialogue.cpp:753
+#: ../src/ConfigDialogue.cpp:759
 msgid "Document background"
 msgstr "Asiakirjan tausta"
 
-#: ../src/ConfigDialogue.cpp:503
+#: ../src/ConfigDialogue.cpp:509
 msgid "Documentclass for TeX export:"
 msgstr ""
 
@@ -1430,7 +1434,7 @@ msgstr "Eliminoi muuttuja yhtälöryhmästä"
 msgid "End of proof"
 msgstr "Todistuksen loppu"
 
-#: ../src/ConfigDialogue.cpp:566
+#: ../src/ConfigDialogue.cpp:572
 msgid "English"
 msgstr "Englanti"
 
@@ -1456,7 +1460,7 @@ msgstr ""
 msgid "Enter comma separated list of variables."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:474
+#: ../src/ConfigDialogue.cpp:477
 msgid "Enter evaluates cells"
 msgstr ""
 
@@ -1506,7 +1510,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Yhtälöt:"
 
-#: ../src/ConfigDialogue.cpp:919 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1460
+#: ../src/ConfigDialogue.cpp:926 ../src/Image.cpp:184 ../src/wxMaxima.cpp:1460
 #: ../src/wxMaxima.cpp:1474 ../src/wxMaxima.cpp:1625 ../src/wxMaxima.cpp:1638
 #: ../src/wxMaxima.cpp:1648 ../src/wxMaxima.cpp:1671 ../src/wxMaxima.cpp:2039
 #: ../src/wxMaxima.cpp:2211 ../src/wxMaxima.cpp:5397 ../src/wxMaxima.cpp:5845
@@ -1535,7 +1539,7 @@ msgstr "Evaluoi kaikki solut\tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Evaluoi kaikki näkyvät solut\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:984
+#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:987
 msgid "Evaluate Cell(s)"
 msgstr "Laske Solu(t)"
 
@@ -1544,19 +1548,19 @@ msgstr "Laske Solu(t)"
 msgid "Evaluate Cells Above\tCtrl-Shift-P"
 msgstr "Evaluoi kaikki solut\tCtrl-R"
 
-#: ../src/MathCtrl.cpp:998 ../src/MathCtrl.cpp:1093
+#: ../src/MathCtrl.cpp:1001 ../src/MathCtrl.cpp:1096
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1003 ../src/MathCtrl.cpp:1095
+#: ../src/MathCtrl.cpp:1006 ../src/MathCtrl.cpp:1098
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1013 ../src/MathCtrl.cpp:1099
+#: ../src/MathCtrl.cpp:1016 ../src/MathCtrl.cpp:1102
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1008 ../src/MathCtrl.cpp:1097
+#: ../src/MathCtrl.cpp:1011 ../src/MathCtrl.cpp:1100
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1576,11 +1580,11 @@ msgstr ""
 msgid "Evaluate all visible cells in the document"
 msgstr "Laske kaikki näkyvät solut\tCtrl-R"
 
-#: ../src/ToolBar.cpp:168
+#: ../src/ToolBar.cpp:170
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../src/ToolBar.cpp:166
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate to point"
 msgstr ""
 
@@ -1588,11 +1592,11 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
-#: ../src/ConfigDialogue.cpp:1587 ../src/ConfigDialogue.cpp:1684
+#: ../src/ConfigDialogue.cpp:1594 ../src/ConfigDialogue.cpp:1691
 msgid "Example text"
 msgstr "Esimerkkiteksti"
 
-#: ../src/ConfigDialogue.cpp:676
+#: ../src/ConfigDialogue.cpp:682
 msgid "Examples:"
 msgstr "Esimerkit:"
 
@@ -1608,7 +1612,7 @@ msgstr "Laajenna"
 msgid "Expand (tr)"
 msgstr "Laajenna (tr)"
 
-#: ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:1042
 msgid "Expand Expression"
 msgstr "Laajenna lauseke"
 
@@ -1624,7 +1628,7 @@ msgstr "Laajenna lauseke"
 msgid "Expand trigonometric expression"
 msgstr "Laajenna trigonometrinen lauseke"
 
-#: ../src/ToolBar.cpp:109
+#: ../src/ToolBar.cpp:111
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -1632,7 +1636,7 @@ msgstr ""
 msgid "Export"
 msgstr "Vie"
 
-#: ../src/ConfigDialogue.cpp:519
+#: ../src/ConfigDialogue.cpp:525
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1689,7 +1693,7 @@ msgstr "Tekijä"
 msgid "Factor Complex"
 msgstr "Kompleksitekijä"
 
-#: ../src/MathCtrl.cpp:1038
+#: ../src/MathCtrl.cpp:1041
 msgid "Factor Expression"
 msgstr "Lauseketekijä"
 
@@ -1709,7 +1713,7 @@ msgstr ""
 msgid "Fatal error"
 msgstr ""
 
-#: ../src/GroupCell.cpp:1572
+#: ../src/GroupCell.cpp:1576
 #, c-format
 msgid "Figure %d:"
 msgstr ""
@@ -1739,7 +1743,7 @@ msgstr ""
 msgid "File:"
 msgstr "Tiedosto:"
 
-#: ../src/ToolBar.cpp:148
+#: ../src/ToolBar.cpp:150
 msgid "Find"
 msgstr "Etsi"
 
@@ -1755,7 +1759,7 @@ msgstr "&Etsi raja-arvo..."
 msgid "Find Minimum..."
 msgstr "Etsi minimi..."
 
-#: ../src/MathCtrl.cpp:1035
+#: ../src/MathCtrl.cpp:1038
 msgid "Find Root..."
 msgstr "Etsi juuri..."
 
@@ -1783,7 +1787,7 @@ msgstr "Etsi kaikki polynomin juuret (bfloat)"
 msgid "Find and Replace"
 msgstr "Etsi ja korvaa"
 
-#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
+#: ../src/wxMaximaFrame.cpp:522 ../src/ToolBar.cpp:152
 msgid "Find and replace"
 msgstr "Etsi ja korvaa"
 
@@ -1812,17 +1816,17 @@ msgstr "Etsi juuri"
 msgid "Find:"
 msgstr "Etsi"
 
-#: ../src/ConfigDialogue.cpp:567
+#: ../src/ConfigDialogue.cpp:573
 #, fuzzy
 msgid "Finnish"
 msgstr "Tanska"
 
-#: ../src/ConfigDialogue.cpp:634
+#: ../src/ConfigDialogue.cpp:640
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:465
+#: ../src/ConfigDialogue.cpp:468
 msgid "Fixed font in text controls"
 msgstr ""
 
@@ -1834,29 +1838,29 @@ msgstr "Piilota kaikki\tCtrl-Alt-["
 msgid "Fold all sections"
 msgstr "Piilota kaikki kappaleet"
 
-#: ../src/ToolBar.cpp:162
+#: ../src/ToolBar.cpp:164
 msgid "Follow"
 msgstr "Seuraa"
 
-#: ../src/ParenCell.cpp:320
+#: ../src/ParenCell.cpp:323
 msgid "Font issue: The Parenthesis sign is too small!"
 msgstr ""
 
-#: ../src/IntCell.cpp:286 ../src/ParenCell.cpp:382
+#: ../src/IntCell.cpp:289 ../src/ParenCell.cpp:385
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:202
+#: ../src/SqrtCell.cpp:205
 msgid ""
 "Font issue: The sqrt() sign has the size 0! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:201
+#: ../src/SqrtCell.cpp:204
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr ""
 
@@ -1868,7 +1872,7 @@ msgstr "Asiakirjassa näytettävä fontti."
 msgid "Font used for displaying math characters in document."
 msgstr "Asiakirjassa matemaatisten merkkien näyttämiseen käytettävä fontti"
 
-#: ../src/ConfigDialogue.cpp:715
+#: ../src/ConfigDialogue.cpp:721
 msgid "Fonts"
 msgstr "Fontit"
 
@@ -1876,12 +1880,12 @@ msgstr "Fontit"
 msgid "Format:"
 msgstr "Muoto:"
 
-#: ../src/ToolBar.cpp:86
+#: ../src/ToolBar.cpp:88
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:568
+#: ../src/ConfigDialogue.cpp:574
 msgid "French"
 msgstr "Ranska"
 
@@ -1899,7 +1903,7 @@ msgstr "Koko ruutu\tAlt-Enter"
 msgid "Function"
 msgstr "Funktio"
 
-#: ../src/ConfigDialogue.cpp:737
+#: ../src/ConfigDialogue.cpp:743
 msgid "Function names"
 msgstr "Funktioiden nimet"
 
@@ -1932,7 +1936,7 @@ msgstr "SYT"
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF kuva (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:569
+#: ../src/ConfigDialogue.cpp:575
 msgid "Galician"
 msgstr "Galicia"
 
@@ -1964,7 +1968,7 @@ msgstr "Muodosta matriisi 2-ulotteisesta taulukosta"
 msgid "Generate a matrix from a lambda expression"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:570
+#: ../src/ConfigDialogue.cpp:576
 msgid "German"
 msgstr "Saksa"
 
@@ -2000,13 +2004,13 @@ msgstr ""
 msgid "Get the real part of complex expression"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5984
+#: ../src/MathCtrl.cpp:5987
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:571
+#: ../src/ConfigDialogue.cpp:577
 msgid "Greek"
 msgstr "Kreikka"
 
@@ -2020,7 +2024,7 @@ msgstr "Kreikkalaiset kirjaimet"
 msgid "Greek Letters\tAlt-Shift-G"
 msgstr "Kreikkalaiset kirjaimet\tAlt-Shift-G"
 
-#: ../src/ConfigDialogue.cpp:739
+#: ../src/ConfigDialogue.cpp:745
 msgid "Greek constants"
 msgstr "Kreikkalaiset vakiot"
 
@@ -2034,11 +2038,11 @@ msgid ""
 "tex)|*.tex"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:531
+#: ../src/ConfigDialogue.cpp:537
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:208
 msgid "Help"
 msgstr "Ohje"
 
@@ -2050,7 +2054,7 @@ msgstr "Piilota kaikki työkalupalkit\tAlt-Shift--"
 msgid "Hide all panes"
 msgstr "Piilota kaikki paneelit"
 
-#: ../src/ConfigDialogue.cpp:746
+#: ../src/ConfigDialogue.cpp:752
 msgid "Highlight (dpart)"
 msgstr "Korosta (dpart)"
 
@@ -2083,7 +2087,7 @@ msgstr ""
 "valikoituvat, painaessasi askelpalautinta/backspacea tai deleteä kahdesti "
 "poistaa solun kursorin vierestä."
 
-#: ../src/ConfigDialogue.cpp:572
+#: ../src/ConfigDialogue.cpp:578
 msgid "Hungarian"
 msgstr "Unkari"
 
@@ -2119,11 +2123,11 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:436
+#: ../src/ConfigDialogue.cpp:439
 msgid "If not extremely long"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:435
+#: ../src/ConfigDialogue.cpp:438
 msgid "If not very long"
 msgstr ""
 
@@ -2204,11 +2208,11 @@ msgstr ""
 msgid "Include columns:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:534
+#: ../src/ConfigDialogue.cpp:540
 msgid "Include input cells in the export of a worksheet"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:636
+#: ../src/ConfigDialogue.cpp:642
 msgid "Incremental Search"
 msgstr ""
 
@@ -2235,7 +2239,7 @@ msgstr ""
 msgid "Initial Value Problem (&2)..."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:742
+#: ../src/ConfigDialogue.cpp:748
 msgid "Input labels"
 msgstr ""
 
@@ -2243,7 +2247,7 @@ msgstr ""
 msgid "Insert"
 msgstr "Lisää"
 
-#: ../src/ConfigDialogue.cpp:480
+#: ../src/ConfigDialogue.cpp:483
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
@@ -2283,15 +2287,15 @@ msgstr "Lisää &alikappalesolu\tCtrl-4"
 msgid "Insert S&ubsubsection Cell\tCtrl-5"
 msgstr "Lisää &alialikappalesolu\tCtrl-4"
 
-#: ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1060
 msgid "Insert Section Cell"
 msgstr "Lisää kappalesolu"
 
-#: ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1061
 msgid "Insert Subsection Cell"
 msgstr "Lisää alikappalesolu"
 
-#: ../src/MathCtrl.cpp:1059
+#: ../src/MathCtrl.cpp:1062
 msgid "Insert Subsubsection Cell"
 msgstr "Lisää alialikapplesolu"
 
@@ -2299,11 +2303,11 @@ msgstr "Lisää alialikapplesolu"
 msgid "Insert T&itle Cell\tCtrl-2"
 msgstr "Lisää O&tsikkosolu\tCtrl-2"
 
-#: ../src/MathCtrl.cpp:1055
+#: ../src/MathCtrl.cpp:1058
 msgid "Insert Text Cell"
 msgstr "Lisää tekstisolu"
 
-#: ../src/MathCtrl.cpp:1056
+#: ../src/MathCtrl.cpp:1059
 msgid "Insert Title Cell"
 msgstr "Lisää otsikkosolu"
 
@@ -2339,7 +2343,7 @@ msgstr "Lisää sivunvaihto"
 msgid "Insert image"
 msgstr "Lisää kuva"
 
-#: ../src/ConfigDialogue.cpp:444
+#: ../src/ConfigDialogue.cpp:447
 msgid "Integers and single letters"
 msgstr "Kokonaisluvut ja yksittäiset kirjaimet"
 
@@ -2367,11 +2371,11 @@ msgstr "Integroi lauseke"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integroi lauseke Rischin algoritmilla"
 
-#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1042
+#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1045
 msgid "Integrate..."
 msgstr "Integroi..."
 
-#: ../src/ToolBar.cpp:157
+#: ../src/ToolBar.cpp:159
 msgid "Interrupt"
 msgstr "Keskeytä"
 
@@ -2379,13 +2383,13 @@ msgstr "Keskeytä"
 msgid "Interrupt current computation"
 msgstr "Keskeytä laskutoimitus"
 
-#: ../src/ToolBar.cpp:159
+#: ../src/ToolBar.cpp:161
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:918
+#: ../src/ConfigDialogue.cpp:925
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2418,19 +2422,19 @@ msgid ""
 "that a few special characters like the "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:573
+#: ../src/ConfigDialogue.cpp:579
 msgid "Italian"
 msgstr "Italia"
 
-#: ../src/ConfigDialogue.cpp:777
+#: ../src/ConfigDialogue.cpp:783
 msgid "Italic"
 msgstr "Kursiivi"
 
-#: ../src/ConfigDialogue.cpp:574
+#: ../src/ConfigDialogue.cpp:580
 msgid "Japanese"
 msgstr "Japani"
 
-#: ../src/ConfigDialogue.cpp:576
+#: ../src/ConfigDialogue.cpp:582
 msgid "Kabyle"
 msgstr ""
 
@@ -2438,7 +2442,7 @@ msgstr ""
 msgid "Kappa"
 msgstr "kappa"
 
-#: ../src/ConfigDialogue.cpp:471
+#: ../src/ConfigDialogue.cpp:474
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
@@ -2447,15 +2451,15 @@ msgstr ""
 msgid "LCM"
 msgstr "pyj"
 
-#: ../src/ConfigDialogue.cpp:522
+#: ../src/ConfigDialogue.cpp:528
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:525
+#: ../src/ConfigDialogue.cpp:531
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:451
+#: ../src/ConfigDialogue.cpp:454
 msgid "Label width:"
 msgstr ""
 
@@ -2467,7 +2471,7 @@ msgstr "lambda"
 msgid "Language used for wxMaxima GUI."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:557
+#: ../src/ConfigDialogue.cpp:563
 msgid "Language:"
 msgstr "Kieli:"
 
@@ -2527,7 +2531,7 @@ msgstr "Lista(t):"
 msgid "List:"
 msgstr "Lista:"
 
-#: ../src/ConfigDialogue.cpp:780
+#: ../src/ConfigDialogue.cpp:786
 msgid "Load"
 msgstr "Lataa"
 
@@ -2543,7 +2547,7 @@ msgstr ""
 msgid "Load a Maxima package file"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:1645
+#: ../src/ConfigDialogue.cpp:1652
 msgid "Load style from file"
 msgstr "Lataa tyyli tiedostosta"
 
@@ -2600,11 +2604,11 @@ msgstr ""
 msgid "Match Case"
 msgstr "Komentojonotiedosto"
 
-#: ../src/ConfigDialogue.cpp:462
+#: ../src/ConfigDialogue.cpp:465
 msgid "Match parenthesis in text controls"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:729
+#: ../src/ConfigDialogue.cpp:735
 msgid "Math font:"
 msgstr "Matematiikka fontti:"
 
@@ -2637,7 +2641,7 @@ msgstr "Maxima"
 msgid "Maxima has a question"
 msgstr "Maxima-kysymykset"
 
-#: ../src/ConfigDialogue.cpp:741
+#: ../src/ConfigDialogue.cpp:747
 msgid "Maxima input"
 msgstr ""
 
@@ -2661,11 +2665,11 @@ msgstr ""
 msgid "Maxima process terminated."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:654
+#: ../src/ConfigDialogue.cpp:660
 msgid "Maxima program:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:743
+#: ../src/ConfigDialogue.cpp:749
 msgid "Maxima questions"
 msgstr "Maxima-kysymykset"
 
@@ -2724,7 +2728,7 @@ msgid ""
 "    float(%);"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:427
+#: ../src/ConfigDialogue.cpp:430
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
@@ -2748,7 +2752,7 @@ msgstr ""
 msgid "Median..."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:990
 msgid "Merge Cells"
 msgstr "Yhdistä solut"
 
@@ -2785,7 +2789,7 @@ msgstr ""
 msgid "Name:"
 msgstr "Nimi:"
 
-#: ../src/ToolBar.cpp:111
+#: ../src/ToolBar.cpp:113
 msgid "New"
 msgstr "Uusi"
 
@@ -2793,11 +2797,11 @@ msgstr "Uusi"
 msgid "New\tCtrl-N"
 msgstr "Uusi\tCtrl-N"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:115
 msgid "New document"
 msgstr "Uusi asiakirja"
 
-#: ../src/ConfigDialogue.cpp:486
+#: ../src/ConfigDialogue.cpp:489
 msgid "New lines: Jump to text"
 msgstr ""
 
@@ -2813,7 +2817,7 @@ msgstr "Uusi muuttuja:"
 msgid "Next Command\tAlt-Down"
 msgstr "Seuraava komento\tAlt-Down"
 
-#: ../src/ConfigDialogue.cpp:434 ../src/ConfigDialogue.cpp:443
+#: ../src/ConfigDialogue.cpp:437 ../src/ConfigDialogue.cpp:446
 msgid "No"
 msgstr "Ei"
 
@@ -2844,7 +2848,7 @@ msgid ""
 "maxima's input."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:578
+#: ../src/ConfigDialogue.cpp:584
 msgid "Norwegian"
 msgstr "Norja"
 
@@ -2876,7 +2880,7 @@ msgstr ""
 msgid "Number of equations:"
 msgstr "Yhtälöiden lukumäärä:"
 
-#: ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:742
 msgid "Numbers"
 msgstr ""
 
@@ -2929,8 +2933,8 @@ msgstr ""
 msgid "Online tutorials"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:656 ../src/main.cpp:347 ../src/ToolBar.cpp:115
-#: ../src/wxMaxima.cpp:2805
+#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/wxMaxima.cpp:2805
+#: ../src/ToolBar.cpp:117
 msgid "Open"
 msgstr "Avaa"
 
@@ -2938,7 +2942,7 @@ msgstr "Avaa"
 msgid "Open Recent"
 msgstr "Avaa viimeisin"
 
-#: ../src/ConfigDialogue.cpp:477
+#: ../src/ConfigDialogue.cpp:480
 msgid "Open a cell when Maxima expects input"
 msgstr ""
 
@@ -2950,7 +2954,7 @@ msgstr "Avaa asiakirja"
 msgid "Open a new window"
 msgstr "Avaa uusi ikkuna"
 
-#: ../src/ToolBar.cpp:117
+#: ../src/ToolBar.cpp:119
 msgid "Open document"
 msgstr "Avaa asiakirja"
 
@@ -2962,11 +2966,11 @@ msgstr "Avaa matriisi"
 msgid "Opening file"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:628
+#: ../src/ConfigDialogue.cpp:634
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:129
 msgid "Options"
 msgstr ""
 
@@ -2974,11 +2978,11 @@ msgstr ""
 msgid "Options:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:759
+#: ../src/ConfigDialogue.cpp:765
 msgid "Outdated cells"
 msgstr "Vanhentuneet solut"
 
-#: ../src/ConfigDialogue.cpp:744
+#: ../src/ConfigDialogue.cpp:750
 msgid "Output labels"
 msgstr ""
 
@@ -3035,7 +3039,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr ""
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1052 ../src/MathCtrl.cpp:1067
+#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:141
 msgid "Paste"
 msgstr "Liitä"
 
@@ -3043,7 +3047,7 @@ msgstr "Liitä"
 msgid "Paste\tCtrl-V"
 msgstr "Liitä\tCtrl-V"
 
-#: ../src/ToolBar.cpp:141
+#: ../src/ToolBar.cpp:143
 msgid "Paste from clipboard"
 msgstr "Liitä leikepöydältä"
 
@@ -3071,7 +3075,7 @@ msgstr "Sektoridiagrammi..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:1472
+#: ../src/ConfigDialogue.cpp:1479
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr ""
 
@@ -3096,7 +3100,7 @@ msgstr "Kuvaaja 2D"
 msgid "Plot 2D..."
 msgstr "Kuvaaja 2D..."
 
-#: ../src/MathCtrl.cpp:1045
+#: ../src/MathCtrl.cpp:1048
 msgid "Plot 2d..."
 msgstr "Kuvaaja 2d..."
 
@@ -3108,7 +3112,7 @@ msgstr "Kuvaaja 3D"
 msgid "Plot 3D..."
 msgstr "Kuvaaja 3D..."
 
-#: ../src/MathCtrl.cpp:1046
+#: ../src/MathCtrl.cpp:1049
 msgid "Plot 3d..."
 msgstr "Kuvaaja 3d..."
 
@@ -3134,7 +3138,7 @@ msgstr "Kuvaaja tiedostoksi:"
 msgid "Point:"
 msgstr "Piste:"
 
-#: ../src/ConfigDialogue.cpp:579
+#: ../src/ConfigDialogue.cpp:585
 msgid "Polish"
 msgstr "Puola"
 
@@ -3146,7 +3150,7 @@ msgstr "Polynomi 1:"
 msgid "Polynomial 2:"
 msgstr "Polynomi 2:"
 
-#: ../src/ConfigDialogue.cpp:580
+#: ../src/ConfigDialogue.cpp:586
 msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brasilian)"
 
@@ -3174,11 +3178,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr ""
 
-#: ../src/ToolBar.cpp:124
+#: ../src/ToolBar.cpp:126
 msgid "Print"
 msgstr "Tulosta"
 
-#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
+#: ../src/wxMaximaFrame.cpp:483 ../src/ToolBar.cpp:128
 msgid "Print document"
 msgstr "Tulosta asiakirja"
 
@@ -3222,7 +3226,7 @@ msgstr ""
 msgid "Recall previous command from history"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:607
+#: ../src/ConfigDialogue.cpp:613
 msgid "Recent files list length:"
 msgstr ""
 
@@ -3280,15 +3284,15 @@ msgstr ""
 msgid "Restart Maxima"
 msgstr "Uudelleenkäynnistä Maxima"
 
-#: ../src/ToolBar.cpp:154
+#: ../src/ToolBar.cpp:156
 msgid "Restart maxima"
 msgstr "Uudelleenkäynnistä maxima"
 
-#: ../src/MathCtrl.cpp:4497
+#: ../src/MathCtrl.cpp:4500
 msgid "Result"
 msgstr "Tulos"
 
-#: ../src/ToolBar.cpp:163
+#: ../src/ToolBar.cpp:165
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3316,7 +3320,7 @@ msgstr ""
 msgid "Rows:"
 msgstr "Rivit:"
 
-#: ../src/ConfigDialogue.cpp:581
+#: ../src/ConfigDialogue.cpp:587
 msgid "Russian"
 msgstr "Venäjä"
 
@@ -3332,12 +3336,12 @@ msgstr "Esimerkki 2:"
 msgid "Sample:"
 msgstr "Esimerkki:"
 
-#: ../src/ConfigDialogue.cpp:781 ../src/ToolBar.cpp:118
-#: ../src/wxMaxima.cpp:5937
+#: ../src/ConfigDialogue.cpp:787 ../src/wxMaxima.cpp:5937
+#: ../src/ToolBar.cpp:120
 msgid "Save"
 msgstr "Tallenna"
 
-#: ../src/MathCtrl.cpp:963
+#: ../src/MathCtrl.cpp:966
 msgid "Save Animation..."
 msgstr "Tallenna animaatio..."
 
@@ -3349,7 +3353,7 @@ msgstr "Tallenna nimellä"
 msgid "Save As...\tShift-Ctrl-S"
 msgstr "Tallenna nimellä...\tShift-Ctrl-S"
 
-#: ../src/MathCtrl.cpp:961
+#: ../src/MathCtrl.cpp:964
 msgid "Save Image..."
 msgstr "Tallenna kuva..."
 
@@ -3365,7 +3369,7 @@ msgstr "Tallenna valinta kuvaksi..."
 msgid "Save animation to file"
 msgstr "Tallenna animaatio tiedostoksi"
 
-#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:472 ../src/ToolBar.cpp:122
 msgid "Save document"
 msgstr "Tallenna asiakirja"
 
@@ -3379,7 +3383,7 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:628
 msgid "Save panes layout"
 msgstr ""
 
@@ -3399,11 +3403,11 @@ msgstr ""
 msgid "Save selection to file"
 msgstr "Tallenna valinta tiedostoksi"
 
-#: ../src/ConfigDialogue.cpp:1637
+#: ../src/ConfigDialogue.cpp:1644
 msgid "Save style to file"
 msgstr "Tallenna tyyli tiedostoksi"
 
-#: ../src/ConfigDialogue.cpp:619
+#: ../src/ConfigDialogue.cpp:625
 msgid "Save wxMaxima window size/position"
 msgstr "Tallenna wxMaximan ikkuna koko ja sijanti"
 
@@ -3435,26 +3439,26 @@ msgstr ""
 msgid "Section"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:750
+#: ../src/ConfigDialogue.cpp:756
 msgid "Section cell"
 msgstr ""
 
-#: ../src/BTextCtrl.cpp:48 ../src/TextCell.cpp:290 ../src/TextCell.cpp:304
-#: ../src/TextCell.cpp:320 ../src/TextCell.cpp:332
+#: ../src/BTextCtrl.cpp:48 ../src/TextCell.cpp:294 ../src/TextCell.cpp:308
+#: ../src/TextCell.cpp:324 ../src/TextCell.cpp:336
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/TextCell.cpp:137
+#: ../src/TextCell.cpp:139
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1053 ../src/MathCtrl.cpp:1069
+#: ../src/MathCtrl.cpp:1056 ../src/MathCtrl.cpp:1072
 msgid "Select All"
 msgstr "Valitse kaikki"
 
@@ -3462,7 +3466,7 @@ msgstr "Valitse kaikki"
 msgid "Select All\tCtrl-A"
 msgstr "Valitse kaikki\tCtrl-A"
 
-#: ../src/ConfigDialogue.cpp:904 ../src/ConfigDialogue.cpp:909
+#: ../src/ConfigDialogue.cpp:911 ../src/ConfigDialogue.cpp:916
 msgid "Select Maxima program"
 msgstr "Valitse Maxima ohjelma"
 
@@ -3475,7 +3479,7 @@ msgstr ""
 msgid "Select a constant"
 msgstr "Valitse vakio"
 
-#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
+#: ../src/wxMaximaFrame.cpp:525 ../src/ToolBar.cpp:144 ../src/ToolBar.cpp:146
 msgid "Select all"
 msgstr "Valitse kaikki"
 
@@ -3489,7 +3493,7 @@ msgid ""
 "up a menu with convenient functions that will operate on the selection."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:757
+#: ../src/ConfigDialogue.cpp:763
 msgid "Selection"
 msgstr ""
 
@@ -3575,7 +3579,7 @@ msgstr "Näytä &Vinkit..."
 msgid "Show &Variables"
 msgstr "Näytä &Muuttujat"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:210
 msgid "Show Maxima help"
 msgstr "Näytä Maxima ohje"
 
@@ -3623,7 +3627,7 @@ msgstr ""
 msgid "Show long expressions in wxMaxima document."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:432
+#: ../src/ConfigDialogue.cpp:435
 #, fuzzy
 msgid "Show long expressions:"
 msgstr "Lausekkeen tekijä"
@@ -3632,7 +3636,7 @@ msgstr "Lausekkeen tekijä"
 msgid "Show the definition of function:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:459
+#: ../src/ConfigDialogue.cpp:462
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
@@ -3661,7 +3665,7 @@ msgstr "Sievennä (r)"
 msgid "Simplify (tr)"
 msgstr "Sievennä (tr)"
 
-#: ../src/MathCtrl.cpp:1037
+#: ../src/MathCtrl.cpp:1040
 msgid "Simplify Expression"
 msgstr "Sievennä lauseke"
 
@@ -3773,7 +3777,7 @@ msgstr ""
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1034
+#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1037
 msgid "Solve..."
 msgstr "Ratkaise..."
 
@@ -3784,7 +3788,7 @@ msgid ""
 "needed in order to compile the output, though."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:582
+#: ../src/ConfigDialogue.cpp:588
 msgid "Spanish"
 msgstr "espanja"
 
@@ -3793,19 +3797,19 @@ msgstr "espanja"
 msgid "Special"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:738
+#: ../src/ConfigDialogue.cpp:744
 msgid "Special constants"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:964
+#: ../src/MathCtrl.cpp:967
 msgid "Start Animation"
 msgstr "Aloita animaatio"
 
-#: ../src/ToolBar.cpp:186
+#: ../src/ToolBar.cpp:188
 msgid "Start or Stop animation"
 msgstr "Aloita tai lopeta animaatio"
 
-#: ../src/ToolBar.cpp:188
+#: ../src/ToolBar.cpp:190
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -3840,7 +3844,7 @@ msgstr "Tilastot"
 msgid "Statistics\tAlt-Shift-S"
 msgstr "Tilastot\tAlt-Shift- S"
 
-#: ../src/ConfigDialogue.cpp:740
+#: ../src/ConfigDialogue.cpp:746
 msgid "Strings"
 msgstr "Merkkijonot"
 
@@ -3848,7 +3852,7 @@ msgstr "Merkkijonot"
 msgid "Style"
 msgstr "Tyyli"
 
-#: ../src/ConfigDialogue.cpp:716
+#: ../src/ConfigDialogue.cpp:722
 msgid "Styles"
 msgstr "Tyylit"
 
@@ -3860,7 +3864,7 @@ msgstr ""
 msgid "Subsection"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:749
+#: ../src/ConfigDialogue.cpp:755
 msgid "Subsection cell"
 msgstr ""
 
@@ -3873,7 +3877,7 @@ msgstr ""
 msgid "Substitute"
 msgstr "Korvaa"
 
-#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1040
+#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1043
 msgid "Substitute..."
 msgstr "Korvaa..."
 
@@ -3881,7 +3885,7 @@ msgstr "Korvaa..."
 msgid "Subsubsection"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:748
+#: ../src/ConfigDialogue.cpp:754
 msgid "Subsubsection cell"
 msgstr ""
 
@@ -3926,15 +3930,15 @@ msgstr ""
 msgid "Text"
 msgstr "Teksti"
 
-#: ../src/ConfigDialogue.cpp:747
+#: ../src/ConfigDialogue.cpp:753
 msgid "Text cell"
 msgstr "Tekstisolu"
 
-#: ../src/ConfigDialogue.cpp:752
+#: ../src/ConfigDialogue.cpp:758
 msgid "Text cell background"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:758
+#: ../src/ConfigDialogue.cpp:764
 msgid "Text equal to selection"
 msgstr "Teksti vastaa valintaa"
 
@@ -3967,7 +3971,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr ""
 
-#: ../src/TextCell.cpp:134
+#: ../src/TextCell.cpp:136
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4021,7 +4025,7 @@ msgstr ""
 "andrejv.github.com/wxmaxima/help.html löytää lisätietoja sekä tutoriaaleja "
 "wxMaximan ja Maximan käytöstä."
 
-#: ../src/SlideShowCell.cpp:336
+#: ../src/SlideShowCell.cpp:338
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -4055,7 +4059,7 @@ msgstr "Vinkkejä ei ole saatavilla!"
 msgid "Title"
 msgstr "Otsikko"
 
-#: ../src/ConfigDialogue.cpp:751
+#: ../src/ConfigDialogue.cpp:757
 msgid "Title cell"
 msgstr "Otsikkosolu"
 
@@ -4074,7 +4078,7 @@ msgstr "&Liukuluvuksi (Bigfloat)"
 msgid "To &Float"
 msgstr "&Liukuluvuksi (Float)"
 
-#: ../src/MathCtrl.cpp:1032
+#: ../src/MathCtrl.cpp:1035
 msgid "To Float"
 msgstr "Liukuluvuksi (Float)"
 
@@ -4154,15 +4158,15 @@ msgstr "Käännös"
 msgid "Transpose a matrix"
 msgstr "Transponoi matriisi"
 
-#: ../src/MathCtrl.cpp:5886
+#: ../src/MathCtrl.cpp:5889
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5953
+#: ../src/MathCtrl.cpp:5956
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:583
+#: ../src/ConfigDialogue.cpp:589
 msgid "Turkish"
 msgstr "Turkki"
 
@@ -4178,7 +4182,7 @@ msgstr ""
 msgid "Type:"
 msgstr "Tyyppi:"
 
-#: ../src/ConfigDialogue.cpp:584
+#: ../src/ConfigDialogue.cpp:590
 msgid "Ukrainian"
 msgstr "Ukraina"
 
@@ -4196,11 +4200,11 @@ msgid ""
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:778
+#: ../src/ConfigDialogue.cpp:784
 msgid "Underlined"
 msgstr "Alleviivattu"
 
-#: ../src/ConfigDialogue.cpp:441
+#: ../src/ConfigDialogue.cpp:444
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
@@ -4212,7 +4216,7 @@ msgstr "Kumoa\tCtrl-Z"
 msgid "Undo last change"
 msgstr "Kumoa viimeisin muutos"
 
-#: ../src/ConfigDialogue.cpp:602
+#: ../src/ConfigDialogue.cpp:608
 msgid "Undo limit (0 for none):"
 msgstr ""
 
@@ -4257,7 +4261,7 @@ msgstr "Epsilon:"
 msgid "Use Gosper algorithm"
 msgstr "Käytä Gosperin algoritmia"
 
-#: ../src/ConfigDialogue.cpp:540
+#: ../src/ConfigDialogue.cpp:546
 msgid "Use MathJAX in HTML export"
 msgstr "Käytä MathJAXia HTML viennissä"
 
@@ -4271,15 +4275,15 @@ msgid ""
 "time in order to typeset an equation."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:625
+#: ../src/ConfigDialogue.cpp:631
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:208 ../src/ConfigDialogue.cpp:468
+#: ../src/ConfigDialogue.cpp:208 ../src/ConfigDialogue.cpp:471
 msgid "Use centered dot character for multiplication"
 msgstr "Käytä keskitettyä pistettä kertolaskuissa"
 
-#: ../src/ConfigDialogue.cpp:731
+#: ../src/ConfigDialogue.cpp:737
 msgid "Use jsMath fonts"
 msgstr "Käytä jsMath fontteja"
 
@@ -4289,7 +4293,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:745
+#: ../src/ConfigDialogue.cpp:751
 msgid "User-defined labels"
 msgstr ""
 
@@ -4312,7 +4316,7 @@ msgstr "Muuttuja(t)"
 msgid "Variable:"
 msgstr "Muuttuja"
 
-#: ../src/ConfigDialogue.cpp:735
+#: ../src/ConfigDialogue.cpp:741
 msgid "Variables"
 msgstr "Muuttujat"
 
@@ -4371,7 +4375,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6856
+#: ../src/MathCtrl.cpp:6859
 msgid "Wrapped search"
 msgstr ""
 
@@ -4391,7 +4395,7 @@ msgstr "XML tarkastaja"
 msgid "Xi"
 msgstr "Ksii"
 
-#: ../src/ConfigDialogue.cpp:437
+#: ../src/ConfigDialogue.cpp:440
 msgid "Yes"
 msgstr "Kyllä"
 
@@ -4509,12 +4513,12 @@ msgstr "[ tallentamaton* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4447
+#: ../src/MathCtrl.cpp:4450
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4572
+#: ../src/MathCtrl.cpp:4575
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >"
@@ -4579,7 +4583,7 @@ msgstr ""
 msgid "chi"
 msgstr "khii"
 
-#: ../src/ConfigDialogue.cpp:681
+#: ../src/ConfigDialogue.cpp:687
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -4678,7 +4682,7 @@ msgstr "logaritminen asteikko"
 msgid "matrix[i,j]:"
 msgstr "matriisi[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:695
+#: ../src/ConfigDialogue.cpp:701
 msgid "maxima's pwd is path to document"
 msgstr ""
 
@@ -4794,7 +4798,7 @@ msgstr "symmetrinen"
 msgid "tau"
 msgstr "tau"
 
-#: ../src/ConfigDialogue.cpp:685
+#: ../src/ConfigDialogue.cpp:691
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
@@ -4972,7 +4976,7 @@ msgid ""
 "table_form([1,2,3,4,5]);"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:419
+#: ../src/ConfigDialogue.cpp:422
 msgid "x"
 msgstr ""
 
