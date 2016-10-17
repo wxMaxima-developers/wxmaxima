@@ -575,7 +575,9 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     if (m_selectionString != wxEmptyString)
     {
       long start = 0;
-      while((start = m_text.find(m_selectionString,start)) != wxNOT_FOUND)
+      wxString text(m_text);
+      text.Replace(wxT('\r'),wxT(' '));
+      while((start = text.find(m_selectionString,start)) != wxNOT_FOUND)
       {
         long end = start + m_selectionString.Length();
 
@@ -3456,6 +3458,8 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   int start = down ? 0 : m_text.Length();
   wxString text(m_text);
 
+  text.Replace(wxT('\r'),wxT(' '));
+  
   if (ignoreCase)
   {
     str.MakeLower();
@@ -3491,6 +3495,9 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
 
 bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase)
 {
+  wxString text(m_text);
+  text.Replace(wxT("\r"),wxT(" "));
+
   long start = MIN(m_selectionStart, m_selectionEnd);
   long end = MAX(m_selectionStart, m_selectionEnd);
   if (m_selectionStart <0)
@@ -3503,22 +3510,22 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     
   if(IgnoreCase)
     {
-      if ( m_text.SubString(start,end - 1).Upper() !=
+      if ( text.SubString(start,end - 1).Upper() !=
            wxString(oldStr).Upper()
         )
         return false;
     }
     else
     {
-      if ( m_text.SubString(start,end - 1) != oldStr)
+      if ( text.SubString(start,end - 1) != oldStr)
         return false;
     }
   
   {
     // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-    m_text = m_text.SubString(0, start - 1) +
+    m_text = text.SubString(0, start - 1) +
              newStr +
-             m_text.SubString(end, m_text.Length());
+             text.SubString(end, text.Length());
     StyleText();
     
     m_containsChanges = true;
