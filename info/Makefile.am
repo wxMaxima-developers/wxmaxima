@@ -5,8 +5,8 @@ figurefiles += wxMaxima_configuration_001.png wxMaxima_configuration_002.png sbc
 figurefiles += sbclMemory.jpg ezUnits.png BatchImage.png Autocomplete1.jpg Autocomplete2.jpg
 figurefiles += SecondTableExample.png MatrixTableExample.png
 
-helpdir = ${datadir}/wxMaxima
-help_DATA = wxmaxima.html wxmaxima.hhp
+helpdir = ${docdir}
+help_DATA = wxmaxima.html wxmaxima.hhp $(figurefiles)
 
 
 EXTRA_DIST = manual.css $(html_DATA)\
