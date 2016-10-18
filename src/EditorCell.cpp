@@ -1624,7 +1624,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
               }
               while((pos < end) && (m_text[pos] != wxT('\n')) && (m_text[pos] != wxT('\r')))
                 pos ++;
-              if((pos < end) && (m_text[pos] == wxT('\n')) && (m_text[pos] == wxT('\r')))
+              if((pos < end) && ((m_text[pos] == wxT('\n')) || (m_text[pos] == wxT('\r'))))
                 pos ++;
             }
             SetSelection(start,end);
