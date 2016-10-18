@@ -795,7 +795,8 @@ wxString TextCell::ToTeX()
     }
     else if (GetStyle() == TS_DEFAULT)
     {
-      if((text.Length() > 2)&&(text!=wxT("\\,")))
+      std::cerr<<"\""<<text<<"\"\n";
+      if((text.Length() > 2)&&(text!=wxT("\\,"))&&(text!=wxT("\\, ")))
         text = wxT("\\mbox{") + text + wxT("}");
     }
   }
