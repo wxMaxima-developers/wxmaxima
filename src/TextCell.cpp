@@ -446,7 +446,7 @@ wxString TextCell::ToTeX()
   // math objects and therefore can leave this string blank.
   wxString mathModeStart;
   // The string needed in order to close the command that ensures we are in math mode.
-  wxString mathModeEnd;
+  wxString mathModeEnd = wxT(" ");
 
   if((GetStyle() == TS_ERROR) || (GetStyle() == TS_DEFAULT))
   {
@@ -601,7 +601,7 @@ wxString TextCell::ToTeX()
         )
         text=wxT("\\, ");
       else
-      text = wxEmptyString;        
+        text = wxT(" ");
     }
     else
       text = wxEmptyString;

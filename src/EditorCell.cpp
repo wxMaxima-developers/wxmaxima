@@ -3317,7 +3317,7 @@ void EditorCell::StyleText()
         else
         {
           parser->GetDC().GetTextExtent(line, &width, &height);
-          if(width + m_currentPoint.x > parser->GetClientWidth())
+          if(width + m_currentPoint.x >= parser->GetClientWidth())
           {
             // We need a line break
             if(lastSpace > 0)
@@ -3330,16 +3330,20 @@ void EditorCell::StyleText()
             {
               if(m_text[i] == ' ')
               {
-                m_text[i]=wxT('\r');
+                m_text[i] = wxT('\r');
                 line = wxEmptyString;
                 lastSpace = 0;
-            }
+              }
+              else
+                line += m_text[i];
             }
           }
           else
+          {
             if(m_text[i] == ' ')
               lastSpace = i;
-          line += m_text[i];
+            line += m_text[i];
+          }
         }
       }
     }
