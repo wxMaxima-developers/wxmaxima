@@ -34,6 +34,13 @@
   value's name every time we need the information: Reading configuration values from
   the system's configuration storage can be quite time consuming, especially on a 
   MSW with a long registry.
+
+  In order to make all cells temporary listen to a different set of configuration 
+  than the default one all that has to be done is to create a new configuration 
+  object that contains hold the right settings for printing/export as bitmap or 
+  similar: CellParser::Get() will always return the last CellParser that was 
+  created and therefore as long as the new configuration object exist will return
+  a pointer to this object if configuration is needed.
  */
 class CellParser
 {
