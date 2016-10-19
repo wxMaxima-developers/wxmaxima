@@ -41,7 +41,8 @@
     - The handling of key presses when this cell is active
   
   Since Unicode doesn't provide us with a "soft linebreak" letter we 
-  use "\r" in order to start a new line at the end of the screen.
+  use <code>\r</code> as a marker that this line has to be broken here if we
+  don't want it to extend beyond the right margin of the screen.
  */
 class EditorCell : public MathCell
 {
@@ -104,14 +105,9 @@ public:
   static wxString EscapeHTMLChars(wxString input);
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
-
   void Destroy();
   MathCell* Copy();
-  /*! Recalculate the widths of the current cell.
-
-      \todo If we use a centered dot instead of a * and we don't use a fixed-
-      size fonts we miscalculate the widths here.
-   */
+  //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   //! Convert the current cell to a string
@@ -124,7 +120,9 @@ public:
   wxString ToHTML();
   //! Convert the current cell to RTF code
   wxString ToRTF();
+  //! Set the currently used font to the one that matches this cell's formatting
   void SetFont(int fontsize);
+  //! Sets the current color to this cell's foreground color
   void SetForeground();
 
   /*! Sets the text that is to be displayed.
@@ -132,6 +130,10 @@ public:
     Automatically calls StyleText().
    */
   void SetValue(const wxString &text);
+  /*! Returns the text contained in this cell
+
+    Naturally all soft line breaks are converted back to spaces beforehand.
+   */
   wxString GetValue()
   {
     return m_text;
@@ -141,7 +143,8 @@ public:
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
     about variable names contained in lists or cells that still haven't been evaluated.
 
-    \todo Include a <code>\r</code> where we need a soft line break.
+    For cells containing text instead of code this function adds a <code>\r</code> that serves
+    as a marker that this line is to be broken here until the window's width changes.
    */
   void StyleText();
   void Reset();
