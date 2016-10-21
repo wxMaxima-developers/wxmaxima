@@ -1871,7 +1871,7 @@ bool MathCtrl::CopyText()
   while (tmp != NULL)
   {
     if(!firstcell)
-      result += wxT("\n\n");
+      result += wxT("\n");
     result += tmp->ToString();
     if (tmp == m_selectionEnd)
       break;
@@ -1906,7 +1906,7 @@ bool MathCtrl::CopyCells()
     bool firstcell = true;
     while (tmp != NULL) {
       if(!firstcell)
-        str += wxT("\n\n");
+        str += wxT("\n");
       str += tmp->ToString();
       firstcell = false;
       

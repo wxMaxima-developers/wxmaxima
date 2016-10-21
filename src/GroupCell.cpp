@@ -706,7 +706,13 @@ wxString GroupCell::ToString()
 {
   wxString str;
   if (GetEditable()) {
-    str = m_input->ListToString();
+    {
+      str = m_input->ToString();
+      if(m_input->m_next != NULL)
+      {
+        str += m_input->m_next->ListToString();
+      }
+    }
     str.Replace(wxT("\n"),wxT("\n\t"));
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
@@ -733,7 +739,7 @@ wxString GroupCell::ToString()
       }
     }
   }
-  return str;
+  return str + wxT("\n");
 }
 
 wxString GroupCell::ToTeX()
