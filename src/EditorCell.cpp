@@ -3331,13 +3331,14 @@ void EditorCell::StyleText()
       wxString indentChar;
       for (size_t i = 0; i<m_text.Length(); i++)
       {
+        wxChar ch = m_text[i];
         // Extract a line inserting a soft linebreak if necessary
         while(i<m_text.Length())
         {
-          if(m_text[i] == '\n')
+          if(ch == '\n')
           {
             line = m_text.SubString(lastLineStart,i-1);
-            lastLineStart = i+1;
+            lastLineStart = i + 1;
             lastSpace = 0;
             indentation = 0;
             break;
@@ -3357,15 +3358,15 @@ void EditorCell::StyleText()
                 m_text[lastSpace] = wxT('\r');
                 line = m_text.SubString(lastLineStart,lastSpace - 1);
                 i = lastSpace + 1;
-                lastLineStart = i+1;
+                lastLineStart = i;
                 lastSpace = 0;
                 break;
               }
               else
               {
-                if(m_text[i] == ' ')
+                if(ch == ' ')
                 {
-                  m_text[i] = wxT('\r');
+                  ch = wxT('\r');
                   line = m_text.SubString(lastLineStart,i-1);
                   lastLineStart = i+1;
                   lastSpace = 0;
@@ -3373,7 +3374,7 @@ void EditorCell::StyleText()
               }
             }
           }
-          if(m_text[i] == ' ')
+          if(ch == ' ')
             lastSpace = i;
           i++;
         }
@@ -3471,7 +3472,7 @@ void EditorCell::StyleText()
           m_styledText.push_back(StyledText(wxT("\r")));
         
         // Is this a real new line of comment - or did we insert a soft linebreak?
-        newLine = ((i==m_text.Length())||(m_text[i] == wxT('\n')));
+        newLine = ((i==m_text.Length())||(ch == wxT('\n')));
         
       } // The loop that loops over all lines
     } // Do we want to autowrap lines?
