@@ -3320,6 +3320,7 @@ void EditorCell::StyleText()
       SetFont(parser->GetDefaultFontSize());
       wxString line;
       size_t lastSpace = 0;
+      wxString::const_iterator lastSpaceIt;
       int indentation = 0;
       int lastLineStart = 0;
       int width,height;
@@ -3329,13 +3330,17 @@ void EditorCell::StyleText()
       std::list<wxString> prefixes;
       std::list<int> indentPixels;
       wxString indentChar;
-      for (size_t i = 0; i<m_text.Length(); i++)
+
+      int i = 0;
+      wxString::const_iterator it = m_text.begin();
+      if(m_text.Length() > 0)
+      while(it!=m_text.end())
       {
-        wxChar ch = m_text[i];
         // Extract a line inserting a soft linebreak if necessary
-        while(i<m_text.Length())
+        while(it!=m_text.end())
         {
-          if(ch == '\n')
+          std::cerr<<"Test"<<i<<"\n";
+          if(*it == '\n')
           {
             line = m_text.SubString(lastLineStart,i-1);
             lastLineStart = i + 1;
@@ -3359,14 +3364,16 @@ void EditorCell::StyleText()
                 line = m_text.SubString(lastLineStart,lastSpace - 1);
                 i = lastSpace + 1;
                 lastLineStart = i;
+                it = lastSpaceIt;
+                it++;
                 lastSpace = 0;
                 break;
               }
               else
               {
-                if(ch == ' ')
+                if(*it == ' ')
                 {
-                  ch = wxT('\r');
+                  *it = wxT('\r');
                   line = m_text.SubString(lastLineStart,i-1);
                   lastLineStart = i+1;
                   lastSpace = 0;
@@ -3374,8 +3381,12 @@ void EditorCell::StyleText()
               }
             }
           }
-          if(ch == ' ')
+          if(*it == ' ')
+          {
             lastSpace = i;
+            lastSpaceIt = it;
+          }
+          it++;
           i++;
         }
         // Extract the last line.
@@ -3466,14 +3477,16 @@ void EditorCell::StyleText()
         m_styledText.push_back(StyledText(line,indentation,indentChar));
         
         // Store the line ending in the list of styled text snippets
-        if (m_text.GetChar(i) == wxT('\n'))
+        if (*it == wxT('\n'))
           m_styledText.push_back(StyledText(wxT("\n")));
         else
           m_styledText.push_back(StyledText(wxT("\r")));
         
         // Is this a real new line of comment - or did we insert a soft linebreak?
-        newLine = ((i==m_text.Length())||(ch == wxT('\n')));
-        
+        newLine = ((i==m_text.Length())||(*it == wxT('\n')));
+
+        i++;
+        it++;
       } // The loop that loops over all lines
     } // Do we want to autowrap lines?
   } // Style text, not code?
