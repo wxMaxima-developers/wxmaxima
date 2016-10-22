@@ -370,7 +370,11 @@ private:
         m_styleThisText = true;
       }
 
-    //! Defines a piece of text with the default style that possibly is indented
+    /*! Defines a piece of text with the default style that possibly is indented
+
+      \todo Currently we access every char of the string by telling wxWidgets that we want
+      char #n. The wxWidgets docs tell that using an iterator is much more efficient.
+     */
     StyledText(wxString text,int indentPixels = 0,wxString indentChar=wxEmptyString)
       {
         m_text = text;
